@@ -212,12 +212,12 @@ void XMlVisualStudio::createActions() {
   connect(m_duplicateLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(duplicateCurrentLine()));
                             
   m_moveUpLineAct = new QAction("&Move line up", this);
-  m_moveUpLineAct->setShortcut(tr("Shift+Up"));
+  m_moveUpLineAct->setShortcut(tr("Ctrl+Alt+P"));
   m_moveUpLineAct->setStatusTip(tr("Move up the current line"));
   connect(m_moveUpLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
   
   m_moveDownLineAct = new QAction("&Move line down", this);
-  m_moveDownLineAct->setShortcut(tr("Shift+Down"));
+  m_moveDownLineAct->setShortcut(tr("Ctrl+Alt+M"));
   m_moveDownLineAct->setStatusTip(tr("Move down the current line"));
   connect(m_moveDownLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineDown()));
 

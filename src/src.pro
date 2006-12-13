@@ -11,14 +11,15 @@ HEADERS =   xmlvisualstudio.h \
   xmlhighlighter.h \
   ObjectView.h \
   javaobjectfileimpl.h
-TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \
   qt \
   exceptions \
-  debug
+  release 
 TARGET =   ../bin/xmlvisualstudio
 RESOURCES =   application.qrc
-QT +=   xml \
-  gui
 FORMS =   JavaObjectFile.ui
+TEMPLATE =   app
+QT +=   xml \
+  core \
+  gui
