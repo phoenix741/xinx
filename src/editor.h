@@ -29,6 +29,8 @@ class QHBoxLayout;
 class QPixmap;
 class QRect;
 class QPaintEvent;
+class QTextCursor;
+class StudioTextEdit;
 
 class NumberBar : public QWidget {
      Q_OBJECT
@@ -36,37 +38,14 @@ public:
      NumberBar( QWidget *parent );
      ~NumberBar();
  
-     void setCurrentLine( int lineno );
-     void setStopLine( int lineno );
-     void setBugLine( int lineno );
- 
-     int currentLine() const;
-     int stopLine() const;
-     int bugLine() const;
- 
      void setTextEdit( QTextEdit *edit );
      void paintEvent( QPaintEvent *ev );
-protected:
-     bool event( QEvent *ev );
- private:
-     QTextEdit *edit;
-     QPixmap stopMarker;
-     QPixmap currentMarker;
-     QPixmap bugMarker;
-     int m_stopLine;
-     int m_currentLine;
-     int m_bugLine;
-     QRect stopRect;
-     QRect currentRect;
-     QRect bugRect;
+private:
+     QTextEdit *m_edit;
 };
 
 class Editor : public QFrame {
   Q_OBJECT
-  Q_PROPERTY( QString text READ text WRITE setText )
-  Q_PROPERTY( int currentLine READ currentLine WRITE setCurrentLine )
-  Q_PROPERTY( int stopLine READ stopLine WRITE setStopLine )
-  Q_PROPERTY( int bugLine READ bugLine WRITE setBugLine )public:
 public:
   Editor( QWidget *parent = 0 );
 
@@ -75,28 +54,15 @@ public:
   void loadFile(const QString &fileName);
   bool saveFile(const QString &fileName = "");
  
-  QTextEdit *textEdit() const { return view; }
+  StudioTextEdit *textEdit() const { return view; }
  
-  void setCurrentLine( int lineno );
-  void setStopLine( int lineno );
-  void setBugLine( int lineno );
-
-  int currentLine() const;
-  int stopLine() const;
-  int bugLine() const;
-
   void duplicateCurrentLine();
   void moveLineUp();
   void moveLineDown();
-  void upperSelectedText();
-  void lowerSelectedText();
-  void commentSelectedText();
-  void uncommentSelectedText();
+  void uploSelectedText(bool upper = true);
+  void commentSelectedText(bool uncomment = false);
 
   bool eventFilter( QObject *obj, QEvent *event );
-
-  QString text() const;
-  void setText( const QString &text );
 signals:
   void mouseHover( const QString &word );
   void mouseHover( const QPoint &pos, const QString &word );
@@ -105,10 +71,10 @@ protected slots:
   void textChanged( int pos, int added, int removed );
 private:
   void setCurrentFile(const QString & name);
-
+  
   QString m_curFile;
 
-  QTextEdit *view;
+  StudioTextEdit *view;
   NumberBar *numbers;
   QHBoxLayout *box;
   QTextCursor highlight;

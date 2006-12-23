@@ -18,8 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "TabEditor.h"
-#include "Editor.h"
+#include "tabeditor.h"
+#include "editor.h"
+#include "texteditor.h"
 
 #include <QtGui>
 
@@ -94,11 +95,11 @@ void TabEditor::moveLineDown() {
 }
 
 void TabEditor::upperSelectedText() {
-  currentEditor()->upperSelectedText();
+  currentEditor()->uploSelectedText(true);
 }
 
 void TabEditor::lowerSelectedText() {
-  currentEditor()->lowerSelectedText();
+  currentEditor()->uploSelectedText(false);
 }
 
 void TabEditor::commentSelectedText() {
@@ -106,8 +107,13 @@ void TabEditor::commentSelectedText() {
 }
 
 void TabEditor::uncommentSelectedText() {
-  currentEditor()->uncommentSelectedText();
+  currentEditor()->commentSelectedText(true);
 }
+
+void TabEditor::complete() {
+  currentEditor()->textEdit()->complete();
+}
+
    
 void TabEditor::slotDocumentWasModified() {
   QString document = "untilted.xsl";

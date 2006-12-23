@@ -46,12 +46,17 @@ public slots:
   void selectAll();
   
   void duplicateCurrentLine();
+
   void moveLineUp();
   void moveLineDown();
+
   void upperSelectedText();
   void lowerSelectedText();
+
   void commentSelectedText();
   void uncommentSelectedText();
+
+  void complete();
 signals:
   void copyAvailable ( bool available );
   void undoAvailable ( bool available );

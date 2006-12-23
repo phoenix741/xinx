@@ -34,6 +34,7 @@ class QDockWidget;
 class Editor;
 class TabEditor;
 class ObjectsView;
+class CplNodeList;
 
 class XMlVisualStudio : public QMainWindow {
   Q_OBJECT
@@ -76,6 +77,7 @@ private:
   QMenu * m_fileMenu;
   QMenu * m_projectMenu;
   QMenu * m_editMenu;
+  QMenu * m_searchMenu;
   QMenu * m_windowsMenu;
   QMenu * m_helpMenu;
   
@@ -109,12 +111,22 @@ private:
 
   QAction * m_selectAllAct;
   QAction * m_duplicateLineAct;
+
   QAction * m_moveUpLineAct;
   QAction * m_moveDownLineAct;
+
   QAction * m_upperTextAct;
   QAction * m_lowerTextAct;
+
   QAction * m_commentLineAct;
   QAction * m_uncommentLineAct;
+
+  QAction * m_completeAct;
+  
+  QAction * m_searchAct;
+  QAction * m_searchNextAct;
+  QAction * m_searchPreviousAct;
+  QAction * m_replaceAct;
   
   QAction * m_javaViewObjectListAct;
   

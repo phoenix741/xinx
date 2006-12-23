@@ -23,5 +23,7 @@
      <file>images/nogood.png</file>
      <file>images/next.png</file>
      <file>images/bug.png</file>
+     
+     <file>images/find.png</file>
  </qresource>
 </RCC> 

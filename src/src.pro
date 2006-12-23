@@ -1,25 +1,30 @@
 SOURCES =   xmlvisualstudio.cpp \
   main.cpp \
-  Editor.cpp \
-  TabEditor.cpp \
+  editor.cpp \
+  tabeditor.cpp \
   xmlhighlighter.cpp \
-  ObjectView.cpp \
-  javaobjectfileimpl.cpp
+  objectview.cpp \
+  javaobjectfileimpl.cpp \
+  editorcompletion.cpp \
+  texteditor.cpp \
+  finddialog.cpp
 HEADERS =   xmlvisualstudio.h \
-  Editor.h \
-  TabEditor.h \
+  editor.h \
+  tabeditor.h \
   xmlhighlighter.h \
-  ObjectView.h \
-  javaobjectfileimpl.h
+  objectview.h \
+  javaobjectfileimpl.h \
+  editorcompletion.h \
+  texteditor.h \
+  finddialog.h
+TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \
   qt \
   exceptions \
-  release 
+  debug
 TARGET =   ../bin/xmlvisualstudio
 RESOURCES =   application.qrc
-FORMS =   JavaObjectFile.ui
-TEMPLATE =   app
 QT +=   xml \
-  core \
   gui
+FORMS =   javaobjectfile.ui

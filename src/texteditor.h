@@ -18,34 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef JAVAOBJECTFILEIMPL_H
-#define JAVAOBJECTFILEIMPL_H
-//
-#include "ui_javaobjectfile.h"
-//
+#ifndef _TEXTEDIT_H_
+#define _TEXTEDIT_H_
 
-#include "objectview.h"
+#include <QTextEdit>
 
-class JavaObjectFileImpl : public QDialog, public Ui::JavaObjectFile {
-Q_OBJECT
+class QCompleter;
+
+class StudioTextEdit : public QTextEdit {
+  Q_OBJECT
+  Q_PROPERTY( QString text READ text WRITE setText )
 public:
-	JavaObjectFileImpl( ObjectsView * objects, QWidget * parent = 0, Qt::WFlags f = 0 );
-private slots:
-	void on_m_javaObjectPathChange_clicked();
-	void on_m_javaObjectRefreshButton_clicked();
-	void on_okButton_clicked();
-	void on_m_javaObjectPathEdit_textChanged(QString);
+	StudioTextEdit(QWidget *parent = 0);
+	~StudioTextEdit();
+
+	QString text() const;
+	void setText( const QString &text );
+
+	void complete();
+
+	bool isCodeCommented(const QTextCursor & cursor) const;
+	bool isEditBalise(const QTextCursor & cursor) const;
+	bool isEditNode(const QTextCursor & cursor) const;
+	bool isEditParam(const QTextCursor & cursor) const;
+	bool isEditValue(const QTextCursor & cursor) const;
+   
+	QString textUnderCursor(const QTextCursor & cursor) const;
+	QString nodeName(const QTextCursor & cursor) const;
 	
-	void addItem(const QString &);
+	QCompleter * currentCompleter(const QTextCursor & cursor);
+protected slots:
+	void insertCompletion(const QString& completion);
+
+protected:
+	void keyPressEvent(QKeyEvent *e);
+	
 private:
-    ObjectsView * m_appObjects;
-    
-    void fillList(ObjectsView*);
-    bool validDir(const QString &);
+	QCompleter * m_completerNode;
+	QString m_completerParamNodeName;
+	QCompleter * m_completerParam;
+	QCompleter * m_completerValue;
 };
+
 #endif
-
-
-
-
-

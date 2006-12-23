@@ -21,10 +21,12 @@
 #include <QtGui>
 
 #include "xmlvisualstudio.h"
-#include "Editor.h"
-#include "TabEditor.h"
+#include "editor.h"
+#include "texteditor.h"
+#include "tabeditor.h"
 #include "javaobjectfileimpl.h"
-#include "ObjectView.h"
+#include "objectview.h"
+#include "editorcompletion.h"
 
 XMlVisualStudio::XMlVisualStudio() {
   setWindowTitle(tr("XML Visual Studio"));
@@ -33,6 +35,7 @@ XMlVisualStudio::XMlVisualStudio() {
   setCentralWidget(m_tabEditors);
   
   m_javaObjects = new ObjectsView();
+  completionNodeList = new CplNodeList();
 
   createActions();
   createMenus();
@@ -120,6 +123,8 @@ void XMlVisualStudio::about() {
 void XMlVisualStudio::openViewObjectList() {
   JavaObjectFileImpl dlg(m_javaObjects);
   dlg.exec();
+  completionNodeList->setPath(m_javaObjects->path() + "/completion.cpl");
+  completionNodeList->loadFiles();
 }
 
 void XMlVisualStudio::createActions() {
@@ -201,38 +206,65 @@ void XMlVisualStudio::createActions() {
                             "selection"));
   connect(m_pasteAct, SIGNAL(triggered()), m_tabEditors, SLOT(paste()));
                             
-  m_selectAllAct = new QAction("&Select All", this);
+  m_selectAllAct = new QAction(tr("&Select All"), this);
   m_selectAllAct->setShortcut(tr("Ctrl+A"));
   m_selectAllAct->setStatusTip(tr("Select all the text of the current editor"));  
   connect(m_selectAllAct, SIGNAL(triggered()), m_tabEditors, SLOT(selectAll()));
   
-  m_duplicateLineAct = new QAction("&Duplicate current line", this);
+  m_duplicateLineAct = new QAction(tr("&Duplicate current line"), this);
   m_duplicateLineAct->setShortcut(tr("Ctrl+D"));
   m_duplicateLineAct->setStatusTip(tr("Duplicate the current line"));  
   connect(m_duplicateLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(duplicateCurrentLine()));
                             
-  m_moveUpLineAct = new QAction("&Move line up", this);
+  m_moveUpLineAct = new QAction(tr("&Move line up"), this);
   m_moveUpLineAct->setShortcut(tr("Ctrl+Alt+P"));
   m_moveUpLineAct->setStatusTip(tr("Move up the current line"));
   connect(m_moveUpLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
   
-  m_moveDownLineAct = new QAction("&Move line down", this);
+  m_moveDownLineAct = new QAction(tr("&Move line down"), this);
   m_moveDownLineAct->setShortcut(tr("Ctrl+Alt+M"));
   m_moveDownLineAct->setStatusTip(tr("Move down the current line"));
   connect(m_moveDownLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineDown()));
 
-  m_upperTextAct = new QAction("&Upper Case", this);
+  m_upperTextAct = new QAction(tr("&Upper Case"), this);
   connect(m_upperTextAct, SIGNAL(triggered()), m_tabEditors, SLOT(upperSelectedText()));
+  m_upperTextAct->setEnabled(false);
+  connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_upperTextAct, SLOT(setEnabled(bool)));	
 
-  m_lowerTextAct = new QAction("&Lower Case", this);
+  m_lowerTextAct = new QAction(tr("&Lower Case"), this);
   connect(m_lowerTextAct, SIGNAL(triggered()), m_tabEditors, SLOT(lowerSelectedText()));
+  m_lowerTextAct->setEnabled(false);
+  connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_lowerTextAct, SLOT(setEnabled(bool)));	
 
-  m_commentLineAct = new QAction("&Comment", this);
+  m_commentLineAct = new QAction(tr("&Comment"), this);
+  m_commentLineAct->setShortcut(tr("Ctrl+Shift+C"));
   connect(m_commentLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(commentSelectedText()));
+  m_commentLineAct->setEnabled(false);
+  connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_commentLineAct, SLOT(setEnabled(bool)));	
 
-  m_uncommentLineAct = new QAction("&Uncomment", this);
+  m_uncommentLineAct = new QAction(tr("&Uncomment"), this);
+  m_uncommentLineAct->setShortcut(tr("Ctrl+Shift+D"));
   connect(m_uncommentLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(uncommentSelectedText()));
+  m_uncommentLineAct->setEnabled(false);
+  connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_uncommentLineAct, SLOT(setEnabled(bool)));	
+  
+  m_completeAct = new QAction(tr("Completer"), this);
+  m_completeAct->setShortcut(tr("Ctrl+E"));
+  /* Don't need, process by the editor directly */ 
+  connect(m_completeAct, SIGNAL(triggered()), m_tabEditors, SLOT(complete()));
+  
+  m_searchAct = new QAction(QIcon(":/images/find.png"), tr("Search ..."), this);
+  m_searchAct->setShortcut(tr("Ctrl+R"));
 
+  m_searchNextAct = new QAction(tr("Search next ..."), this);
+  m_searchNextAct->setShortcut(tr("F3"));
+  
+  m_searchPreviousAct = new QAction(tr("Search previous ..."), this);
+  m_searchPreviousAct->setShortcut(tr("Shift+F3"));
+
+  m_replaceAct = new QAction(tr("Replace ..."), this);
+  m_replaceAct->setShortcut(tr("Ctrl+H"));
+  
   m_javaViewObjectListAct = new QAction(tr("Java Object List"), this);
   m_javaViewObjectListAct->setStatusTip(tr("Change the path of the Java ViewObject. This files containts "
                                            "all fields of a non Dynamic ViewObject"));
@@ -281,7 +313,16 @@ void XMlVisualStudio::createMenus() {
   m_editMenu->addSeparator();
   m_editMenu->addAction(m_commentLineAct);
   m_editMenu->addAction(m_uncommentLineAct);
+  m_editMenu->addSeparator();
+  m_editMenu->addAction(m_completeAct);
   
+  m_searchMenu = menuBar()->addMenu(tr("&Search"));
+  m_searchMenu->addAction(m_searchAct);
+  m_searchMenu->addAction(m_searchNextAct);
+  m_searchMenu->addAction(m_searchPreviousAct);
+  m_searchMenu->addSeparator();
+  m_searchMenu->addAction(m_replaceAct);
+
   m_projectMenu = menuBar()->addMenu(tr("&Project"));
   m_projectMenu->addAction(m_javaViewObjectListAct);
 
@@ -351,6 +392,9 @@ void XMlVisualStudio::readSettings() {
   
   m_javaObjects->setPath(settings.value("xmljavapath", qApp->applicationDirPath() + "/xml").toString());
   m_javaObjects->loadFiles();
+  completionNodeList->setPath(settings.value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() + "/completion.cpl");
+  completionNodeList->loadFiles();
+
   
   m_xpathDock->setVisible(settings.value("xpath/visible", true).toBool());
   m_xslContentDock->setVisible(settings.value("xslContent/visible", true).toBool());

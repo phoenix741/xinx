@@ -22,7 +22,7 @@
 #include <QtXml>
 #include <QDir>
 
-#include "ObjectView.h"
+#include "objectview.h"
 
 /****************** ObjectFields *********************/
 

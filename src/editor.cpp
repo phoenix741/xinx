@@ -20,65 +20,34 @@
  
 #include <QtGui>
  
-#include "Editor.h"
-#include "xmlhighlighter.h"
+#include "editor.h"
+#include "texteditor.h"
 
 NumberBar::NumberBar( QWidget *parent )
-          : QWidget( parent ), edit(0), m_stopLine(-1), m_currentLine(-1), m_bugLine(-1) {
+          : QWidget( parent ), m_edit(0) {
   setFixedWidth( fontMetrics().width( QString("0000") + 10 + 32 ) );
-  stopMarker = QPixmap( ":/images/nogood.png" );
-  currentMarker = QPixmap( ":/images/next.png" );
-  bugMarker = QPixmap( ":/images/bug.png" );
 }
 
 NumberBar::~NumberBar() {
 }
 
-void NumberBar::setCurrentLine( int lineno ) {
-  m_currentLine = lineno;
-}
-
-void NumberBar::setStopLine( int lineno ) {
-  m_stopLine = lineno;
-}
-
-void NumberBar::setBugLine( int lineno ) {
-  m_bugLine = lineno;
-}
-
-int NumberBar::currentLine() const {
-  return m_currentLine;
-}
-
-int NumberBar::stopLine() const {
-  return m_stopLine;
-}
-
-int NumberBar::bugLine() const {
-  return m_bugLine;
-}
-
 void NumberBar::setTextEdit( QTextEdit *edit ) {
-  this->edit = edit;
-  connect( edit->document()->documentLayout(), SIGNAL( update(const QRectF &) ), this, SLOT( update() ) );
-  connect( edit->verticalScrollBar(), SIGNAL( valueChanged(int) ), this, SLOT( update() ) );
+  this->m_edit = edit;
+  connect( m_edit->document()->documentLayout(), SIGNAL( update(const QRectF &) ), this, SLOT( update() ) );
+  connect( m_edit->verticalScrollBar(), SIGNAL( valueChanged(int) ), this, SLOT( update() ) );
 }
 
 void NumberBar::paintEvent( QPaintEvent * ) {
-  QAbstractTextDocumentLayout *layout = edit->document()->documentLayout();
-  int contentsY = edit->verticalScrollBar()->value();
-  qreal pageBottom = contentsY + edit->viewport()->height();
+  QAbstractTextDocumentLayout *layout = m_edit->document()->documentLayout();
+  int contentsY = m_edit->verticalScrollBar()->value();
+  qreal pageBottom = contentsY + m_edit->viewport()->height();
   const QFontMetrics fm = fontMetrics();
   const int ascent = fontMetrics().ascent() + 1; // height = ascent + descent + 1
   int lineCount = 1;
 
   QPainter p(this);
  
-  bugRect = QRect();
-  stopRect = QRect();
-  currentRect = QRect();
- 
-  for ( QTextBlock block = edit->document()->begin(); block.isValid(); block = block.next(), ++lineCount ) {
+  for ( QTextBlock block = m_edit->document()->begin(); block.isValid(); block = block.next(), ++lineCount ) {
  
     const QRectF boundingRect = layout->blockBoundingRect( block );
  
@@ -90,60 +59,20 @@ void NumberBar::paintEvent( QPaintEvent * ) {
  
     const QString txt = QString::number( lineCount );
     p.drawText( width() - fm.width(txt), qRound( position.y() ) - contentsY + ascent, txt );
- 
-    // Bug marker
-    if ( m_bugLine == lineCount ) {
-      p.drawPixmap( 1, qRound( position.y() ) - contentsY, bugMarker );
-      bugRect = QRect( 1, qRound( position.y() ) - contentsY, bugMarker.width(), bugMarker.height() );
-    }
- 
-    // Stop marker
-    if ( m_stopLine == lineCount ) {
-      p.drawPixmap( 1, qRound( position.y() ) - contentsY, stopMarker );
-      stopRect = QRect( 1, qRound( position.y() ) - contentsY, stopMarker.width(), stopMarker.height() );
-    }
- 
-    // Current line marker
-    if ( m_currentLine == lineCount ) {
-      p.drawPixmap( 1, qRound( position.y() ) - contentsY, currentMarker );
-      currentRect = QRect( 1, qRound( position.y() ) - contentsY, currentMarker.width(), currentMarker.height() );
-    }
+
   }
 }
 
-bool NumberBar::event( QEvent *event ) {
-  if ( event->type() == QEvent::ToolTip ) {
-    QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
-
-    if ( stopRect.contains( helpEvent->pos() ) ) {
-      QToolTip::showText( helpEvent->globalPos(), "Stop Here" );
-    } else if ( currentRect.contains( helpEvent->pos() ) ) {
-      QToolTip::showText( helpEvent->globalPos(), "Current Line" );
-    } else if ( bugRect.contains( helpEvent->pos() ) ) {
-      QToolTip::showText( helpEvent->globalPos(), "Error Line" );
-    }
-  }
- 
-  return QWidget::event(event);
-}
+/* Editor */
 
 Editor::Editor( QWidget *parent ) : QFrame( parent ), m_curFile("") {
   setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
   setLineWidth( 2 );
   
-  // Setup the main view
-  QFont font;
-  font.setFamily("Monospace");
-  font.setFixedPitch(true);
-  font.setPointSize(10);
-
-  view = new QTextEdit( this );
+  view = new StudioTextEdit( this );
   view->setFrameStyle( QFrame::NoFrame );
-  view->installEventFilter( this );
   view->setLineWrapMode(QTextEdit::NoWrap);
-  view->setFont(font);
-  view->setTabStopWidth( 15 );
-  new XmlHighlighter(view->document());
+  view->installEventFilter( this );
   
   connect( view->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(textChanged(int,int,int)) );
   
@@ -156,11 +85,6 @@ Editor::Editor( QWidget *parent ) : QFrame( parent ), m_curFile("") {
   box->setMargin( 0 );
   box->addWidget( numbers );
   box->addWidget( view ); 
-}
-
-void Editor::setCurrentLine( int lineno ) {
-  numbers->setCurrentLine( lineno );
-  textChanged( 0, 0, 1 );
 }
 
 void Editor::duplicateCurrentLine() {
@@ -207,48 +131,65 @@ void Editor::moveLineDown() {
   cursor.endEditBlock();
 }
 
-void Editor::upperSelectedText() {
-	
+void Editor::uploSelectedText(bool upper) {
+  QTextCursor cursor(view->textCursor());
+  
+  int startPos = cursor.selectionStart();
+  int endPos   = cursor.selectionEnd();
+  QString text = cursor.selectedText();
+  
+  if(upper)
+    text = text.toUpper();
+  else
+    text = text.toLower();
+  
+  cursor.beginEditBlock();
+
+  cursor.insertText(text);  
+  
+  cursor.setPosition(startPos, QTextCursor::MoveAnchor);
+  cursor.setPosition(endPos, QTextCursor::KeepAnchor);
+
+  cursor.endEditBlock();
+
+  view->setTextCursor(cursor);
 }
 
-void Editor::lowerSelectedText() {
-	
-}
+void Editor::commentSelectedText(bool uncomment) {
+  QTextCursor cursor(view->textCursor());
+ 
+  QTextCursor cursorStart(view->textCursor());
+  cursorStart.setPosition(cursor.selectionStart());
+  bool isStartCommented = view->isCodeCommented(cursorStart);
 
-void Editor::commentSelectedText() {
-	
-}
+  QTextCursor cursorEnd(view->textCursor());
+  cursorEnd.setPosition(cursor.selectionEnd());
+  bool isEndCommented =  view->isCodeCommented(cursorEnd);
 
-void Editor::uncommentSelectedText() {
-	
-}
+  QString text = cursor.selectedText();
+  text = text.replace("<!--", "");
+  text = text.replace("-->", "");
+  
+  cursor.beginEditBlock();
 
-void Editor::setStopLine( int lineno ) {
-  numbers->setStopLine( lineno );
-}
+  cursor.removeSelectedText();
+  if(! ( isStartCommented ^ uncomment ) ) {
+    // Comment  	
+    if(! uncomment)
+      cursor.insertText("<!--");  
+    else
+      cursor.insertText("-->");  
+  }
+  cursor.insertText(text);  
+  if(! ( isEndCommented ^ uncomment )) {
+    // End the comment  	
+    if(! uncomment)
+      cursor.insertText("-->");  
+    else
+      cursor.insertText("<!--");  
+  }
 
-void Editor::setBugLine( int lineno ) {
-  numbers->setBugLine( lineno );
-}
-
-int Editor::currentLine() const {
-  return numbers->currentLine();
-}
-
-int Editor::stopLine() const {
-  return numbers->stopLine();
-}
-
-int Editor::bugLine() const {
-  return numbers->bugLine();
-}
-
-QString Editor::text() const {
-  return view->toPlainText ();
-}
-
-void Editor::setText( const QString &text ) {
-  view->setPlainText(text);
+  cursor.endEditBlock();
 }
 
 void Editor::textChanged( int pos, int removed, int added ) {
@@ -257,27 +198,26 @@ void Editor::textChanged( int pos, int removed, int added ) {
   if ( removed == 0 && added == 0 )
     return;
 
-  QTextBlock block = highlight.block();
-  QTextBlockFormat fmt = block.blockFormat();
-  QColor bg = view->palette().base().color();
-  fmt.setBackground( bg );
-  highlight.setBlockFormat( fmt );
-
-  int lineCount = 1;
-  for ( QTextBlock block = view->document()->begin(); block.isValid(); block = block.next(), ++lineCount ) {
-
-    if ( lineCount == numbers->currentLine() ) {
-      fmt = block.blockFormat();
-      QColor bg = view->palette().color(QPalette::Highlight).light( 175 );
-      fmt.setBackground( bg );
-
-      highlight = QTextCursor( block );
-      highlight.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
-      highlight.setBlockFormat( fmt );
-
-      break;
-    }
+  /*
+     Il faut savoir si on édite un noeud, un paramètre, la valeur du paramètre, ou du texte.
+     Si on édite un noeud : affichage de la completion sur les noeud
+     Si on édite un paramêtre : affichage de la completion sur les paramêtre pour un noeud donné
+     Si on édite une valeur : Edition d'un XPath
+     Si on édite du texte : peut rien faire ....
+  */
+  
+  if( added == 1 ) {
+     	
   }
+  
+  QString text = QString("Balise : %1\nNoeud: %2(%5)\nParam: %3\nValeur: %4").arg( view->isEditBalise( view->textCursor() ) )
+  																		 .arg( view->isEditNode( view->textCursor() ) )
+  																		 .arg( view->isEditParam( view->textCursor() ) )
+  																		 .arg( view->isEditValue( view->textCursor() ) )
+  																		 .arg( view->nodeName( view->textCursor() ) );
+
+
+  setToolTip(text);
 }
 
 bool Editor::eventFilter( QObject *obj, QEvent *event ) {
@@ -384,3 +324,35 @@ void MainWindow::onContentChange(int position, int charsRemoved, int charsAdded)
     }
 }        
 */
+
+/*
+
+  int startPos = cursor.selectionStart();
+  int endPos = cursor.selectionEnd();
+  QTextBlock startBlock = view->document()->findBlock(startPos);
+  QTextBlock endBlock = view->document()->findBlock(endPos);
+
+  cursor.beginEditBlock();
+  
+  QTextBlock block = startBlock;
+  cursor.setPosition(startPos);
+
+  while ( ! (endBlock < block) ) {
+  	QString text = block.text();
+    if (text.isEmpty()) continue;
+
+    if(upper)
+	  text = text.toUpper();
+	else
+	  text = text.toLower();
+
+    cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
+    cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
+    cursor.insertText(text);
+    cursor.movePosition(QTextCursor::NextBlock);
+    block = cursor.block();
+  }
+   
+  cursor.endEditBlock();
+*/
+
