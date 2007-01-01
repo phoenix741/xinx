@@ -26,16 +26,26 @@
 #include "finddialog.h"
 
 FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
-	label = new QLabel(tr("Find &what:"));
-	lineEdit = new QLineEdit;
-	label->setBuddy(lineEdit);
+	labelFind = new QLabel(tr("Find &what:"));
+	lineEditFind = new QLineEdit;
+	labelFind->setBuddy(lineEditFind);
+	
+	replaceCheckBox = new QCheckBox(tr("&Replace by:"));
+	lineEditReplace = new QLineEdit;
+	connect(replaceCheckBox, SIGNAL( toggled(bool) ), lineEditReplace, SLOT( setEnabled(bool) ));
+	replaceCheckBox->setChecked(false);
+	lineEditReplace->setEnabled(false);
 
-	caseCheckBox = new QCheckBox(tr("Match &case"));
+	caseCheckBox = new QCheckBox(tr("Match c&ase"));
 	fromStartCheckBox = new QCheckBox(tr("Search from &start"));
-	fromStartCheckBox->setChecked(true);
 
 	findButton = new QPushButton(tr("&Find"));
 	findButton->setDefault(true);
+	connect(findButton, SIGNAL( pressed() ), this, SLOT( callFind() ));
+	connect(findButton, SIGNAL( pressed() ), this, SLOT( hide() ));
+
+	closeButton = new QPushButton(tr("&Close"));
+	connect(closeButton, SIGNAL( pressed() ), this, SLOT( reject() ));
 
 	moreButton = new QPushButton(tr("&More"));
 	moreButton->setCheckable(true);
@@ -43,6 +53,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 
 	buttonBox = new QDialogButtonBox(Qt::Vertical);
 	buttonBox->addButton(findButton, QDialogButtonBox::ActionRole);
+	buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
 	buttonBox->addButton(moreButton, QDialogButtonBox::ActionRole);
 
 	extension = new QWidget;
@@ -50,6 +61,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 	wholeWordsCheckBox = new QCheckBox(tr("&Whole words"));
 	backwardCheckBox = new QCheckBox(tr("Search &backward"));
 	searchSelectionCheckBox = new QCheckBox(tr("Search se&lection"));
+	regularExpressionCheckBox = new QCheckBox(tr("&Use regular expression"));
 
 	connect(moreButton, SIGNAL(toggled(bool)), extension, SLOT(setVisible(bool)));
 
@@ -58,14 +70,20 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 	extensionLayout->addWidget(wholeWordsCheckBox);
 	extensionLayout->addWidget(backwardCheckBox);
 	extensionLayout->addWidget(searchSelectionCheckBox);
+	extensionLayout->addWidget(regularExpressionCheckBox);
 	extension->setLayout(extensionLayout);
 
 	QHBoxLayout *topLeftLayout = new QHBoxLayout;
-	topLeftLayout->addWidget(label);
-	topLeftLayout->addWidget(lineEdit);
+	topLeftLayout->addWidget(labelFind);
+	topLeftLayout->addWidget(lineEditFind);
+
+	QHBoxLayout *topLeftLayout2 = new QHBoxLayout;
+	topLeftLayout2->addWidget(replaceCheckBox);
+	topLeftLayout2->addWidget(lineEditReplace);
 
 	QVBoxLayout *leftLayout = new QVBoxLayout;
 	leftLayout->addLayout(topLeftLayout);
+	leftLayout->addLayout(topLeftLayout2);
 	leftLayout->addWidget(caseCheckBox);
 	leftLayout->addWidget(fromStartCheckBox);
 	leftLayout->addStretch(1);
@@ -79,4 +97,45 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 
 	setWindowTitle(tr("Extension"));
 	extension->hide();
+
+	connect(fromStartCheckBox, SIGNAL( toggled(bool) ), backwardCheckBox, SLOT( setDisabled(bool) ));
+	connect(fromStartCheckBox, SIGNAL( toggled(bool) ), searchSelectionCheckBox, SLOT( setDisabled(bool) ));
+	fromStartCheckBox->setChecked(true);
+}
+
+void FindDialog::setReplaceChecked(bool checked) { 
+	replaceCheckBox->setChecked(checked) ; 
+} 
+
+
+void FindDialog::callFind() {
+	struct FindOptions options;
+	options.matchCase = caseCheckBox->checkState() == Qt::Checked;
+	options.searchFromStart = fromStartCheckBox->checkState() == Qt::Checked;
+	options.wholeWords = wholeWordsCheckBox->checkState() == Qt::Checked;
+	options.backwardSearch = backwardCheckBox->checkState() == Qt::Checked;
+	options.selectionOnly = searchSelectionCheckBox->checkState() == Qt::Checked;
+	options.regularExpression = regularExpressionCheckBox->checkState() == Qt::Checked;
+	options.replace = replaceCheckBox->checkState() == Qt::Checked;
+	
+	emit find(lineEditFind->text(), lineEditReplace->text(), options);
+}
+
+QString FindDialog::replaceStr(const struct FindOptions & options, const QString & src, const QString & dest, const QString & content) {
+	if( ! options.replace ) return QString();
+	if( ! options.regularExpression ) return dest;
+		
+	QRegExp	expression(src);
+	expression.indexIn(content);
+	QStringList list = expression.capturedTexts();
+	QString result(dest);
+	int index = 1;
+
+	QStringList::iterator it = list.begin();
+	while (it != list.end()) {
+		result = result.replace(QString("\\%1").arg(index), *it);
+		it++; index++;
+	}
+	
+	return result;
 }

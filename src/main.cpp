@@ -20,6 +20,9 @@
 
 #include <QApplication>
 #include <QSplashScreen>
+#include <QStringList>
+#include <QFile>
+#include <QMessageBox>
 #include "xmlvisualstudio.h"
 
 int main(int argc, char *argv[]) {
@@ -34,6 +37,16 @@ int main(int argc, char *argv[]) {
 
   XMlVisualStudio mainWin;
   mainWin.show();
+  
+  QStringList args = app.arguments();
+  if(args.count() > 0) {
+	  QStringList::iterator it = args.begin();
+	  it++;
+	  while (it != args.end()) {
+	    if(QFile(*it).exists()) mainWin.open(*it);
+		it++;
+  	}
+  }
 
   splash.finish(&mainWin);
 

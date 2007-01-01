@@ -39,7 +39,7 @@ Editor * TabEditor::newTab(const QString & title) {
   setTabIcon( index, QIcon(":/images/doc.png") );
   setCurrentIndex( index );
 
-  slotCurrentTabChanged( currentIndex() );  
+  emit currentChanged( currentIndex() );  
 
   return textEdit;	
 }
@@ -52,10 +52,25 @@ void TabEditor::updateTitle(int i) {
 }
 
 
-void TabEditor::loadTab(const QString & fileName) {
-  Editor * textEdit = newTab( strippedName(fileName) );
-  textEdit->loadFile( fileName );
-  updateTitle( currentIndex() );
+void TabEditor::loadTab(const QString & filename) {
+	Editor * textEdit = editor(filename);
+	if(textEdit) {
+		setCurrentWidget( textEdit );
+	} else {
+		textEdit = newTab( strippedName(filename) );
+		textEdit->loadFile( filename );
+		updateTitle( currentIndex() );
+	}
+
+  emit currentChanged( currentIndex() );  
+}
+
+Editor * TabEditor::editor(QString filename) const {
+	for(int i = 0; i < count(); i++) {
+		if(editor(i)->getCurrentFile() == filename) 
+			return editor(i);
+	}
+	return NULL;
 }
 
 void TabEditor::copy() {
@@ -156,6 +171,7 @@ void TabEditor::dragEnterEvent(QDragEnterEvent *event) {
     event->acceptProposedAction();
   }
 }
+
 void TabEditor::dropEvent(QDropEvent *event) {
   const QMimeData *mimeData = event->mimeData();
   const QList<QUrl> & urls = mimeData->urls();

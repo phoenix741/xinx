@@ -25,5 +25,8 @@
      <file>images/bug.png</file>
      
      <file>images/find.png</file>
+     
+     <file>images/CVpublic_var.png</file>
+     <file>images/CVpublic_meth.png</file>
  </qresource>
 </RCC> 

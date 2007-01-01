@@ -54,7 +54,7 @@ public:
   void loadFile(const QString &fileName);
   bool saveFile(const QString &fileName = "");
  
-  StudioTextEdit *textEdit() const { return view; }
+   StudioTextEdit *textEdit() const { return view; }
  
   void duplicateCurrentLine();
   void moveLineUp();
@@ -67,8 +67,6 @@ signals:
   void mouseHover( const QString &word );
   void mouseHover( const QPoint &pos, const QString &word );
 
-protected slots:
-  void textChanged( int pos, int added, int removed );
 private:
   void setCurrentFile(const QString & name);
   

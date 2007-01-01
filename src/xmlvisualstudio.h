@@ -23,9 +23,10 @@
 #define XMLVISUALSTUDIO_H
 
 #include <qmainwindow.h>
-
 #include <QMainWindow>
+#include "finddialog.h"
 
+/* Declaration of used object */
 class QAction;
 class QMenu;
 class QTextEdit;
@@ -35,15 +36,25 @@ class Editor;
 class TabEditor;
 class ObjectsView;
 class CplNodeList;
+class XSLItemModel;
+class QModelIndex;
 
+/* Main object of application */
 class XMlVisualStudio : public QMainWindow {
   Q_OBJECT
 public:
   XMlVisualStudio();
 
+  void open(const QString & filename);
+
 protected:
+  /* Window event */
+
   void closeEvent(QCloseEvent *event);
+  
 private slots:
+  /* Action slots */
+
   void newFile();
   void open();
   bool save();
@@ -58,36 +69,78 @@ private slots:
   void openViewObjectList();
   
   void about();
+  
+  void find();
+  void replace();
+
+  /* FindDialog slots */
+  
+  void findNext();
+  void findFirst(const QString &, const QString &, const struct FindDialog::FindOptions &);
+  
+  /* Editor Change */
+  void slotCurrentTabChanged(int);
+  
+  /* XSL Content Dock Slots */
+  void xslDockDoubleClicked( const QModelIndex & );
+  
 private:
+  /* Create Window Menus, Tools, Status, Dock Bar */
+  
   void createActions();
   void createMenus();
   void createToolBars();
   void createStatusBar();
   void createDockWindows(); 
+  
+  /* Load and save Settings */
+  
   void readSettings();
   void writeSettings();
+  
+  /* Save an editor into a file */
 
   bool maybeSave(int index);
   bool saveEditor(int index);
   bool saveEditorAs(int index);
   
-  TabEditor * m_tabEditors;
-  ObjectsView * m_javaObjects;
+  /**** Object declaration ****/
+  
+  /* Dock Object */
+  XSLItemModel * m_xslModel;
 
+  /* Find declaration */
+  QString m_findExpression, m_replaceExpression;
+  struct FindDialog::FindOptions m_findOptions;
+  bool m_yesToAllReplace;
+
+  /* Generix Object */
+  ObjectsView * m_javaObjects;
+  
+  /* Interfaces */
+  TabEditor * m_tabEditors;
+  FindDialog * m_findDialog;
+
+  /* Menu */
   QMenu * m_fileMenu;
   QMenu * m_projectMenu;
   QMenu * m_editMenu;
   QMenu * m_searchMenu;
   QMenu * m_windowsMenu;
   QMenu * m_helpMenu;
-  
+
+  /* Tool bar */  
   QToolBar * m_fileToolBar;
   QToolBar * m_editToolBar;
   
+  /* Dock */
   QDockWidget * m_xpathDock;
   QDockWidget * m_xslContentDock;
   QDockWidget * m_configurationDock;
   
+  /* Actions */
+  
+  /* File */
   QAction * m_newAct;
   
   QAction * m_openAct;
@@ -102,6 +155,7 @@ private:
   
   QAction * m_exitAct;
   
+  /* Edit */
   QAction * m_undoAct;
   QAction * m_redoAct;
 
@@ -123,13 +177,17 @@ private:
 
   QAction * m_completeAct;
   
+  /* Search */
+  
   QAction * m_searchAct;
   QAction * m_searchNextAct;
-  QAction * m_searchPreviousAct;
   QAction * m_replaceAct;
+  
+  /* Project */
   
   QAction * m_javaViewObjectListAct;
   
+  /* About */
   QAction * m_aboutAct;
   QAction * m_aboutQtAct;
 };

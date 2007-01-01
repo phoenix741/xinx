@@ -74,8 +74,6 @@ Editor::Editor( QWidget *parent ) : QFrame( parent ), m_curFile("") {
   view->setLineWrapMode(QTextEdit::NoWrap);
   view->installEventFilter( this );
   
-  connect( view->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(textChanged(int,int,int)) );
-  
   // Setup the line number pane
   numbers = new NumberBar( this );
   numbers->setTextEdit( view );
@@ -190,34 +188,6 @@ void Editor::commentSelectedText(bool uncomment) {
   }
 
   cursor.endEditBlock();
-}
-
-void Editor::textChanged( int pos, int removed, int added ) {
-  Q_UNUSED( pos );
- 
-  if ( removed == 0 && added == 0 )
-    return;
-
-  /*
-     Il faut savoir si on édite un noeud, un paramètre, la valeur du paramètre, ou du texte.
-     Si on édite un noeud : affichage de la completion sur les noeud
-     Si on édite un paramêtre : affichage de la completion sur les paramêtre pour un noeud donné
-     Si on édite une valeur : Edition d'un XPath
-     Si on édite du texte : peut rien faire ....
-  */
-  
-  if( added == 1 ) {
-     	
-  }
-  
-  QString text = QString("Balise : %1\nNoeud: %2(%5)\nParam: %3\nValeur: %4").arg( view->isEditBalise( view->textCursor() ) )
-  																		 .arg( view->isEditNode( view->textCursor() ) )
-  																		 .arg( view->isEditParam( view->textCursor() ) )
-  																		 .arg( view->isEditValue( view->textCursor() ) )
-  																		 .arg( view->nodeName( view->textCursor() ) );
-
-
-  setToolTip(text);
 }
 
 bool Editor::eventFilter( QObject *obj, QEvent *event ) {

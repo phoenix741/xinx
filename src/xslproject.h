@@ -18,60 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef _TABEDITOR_H_
-#define _TABEDITOR_H_
+#ifndef _XSLPROJECT_H_
+#define _XSLPROJECT_H_
 
-#include <QTabWidget>
+#include <QString>
+#include <QDomDocument>
 
-class Editor;
-
-class TabEditor : public QTabWidget {
-	Q_OBJECT
+class XSLProject {
 public:
-  TabEditor(QWidget * parent);
-
-  Editor * newTab(const QString & title = "untilted.xsl");
-  void loadTab(const QString & filename);
-  void updateTitle(int);
-  Editor * currentEditor() const;
-  Editor * editor(int index) const;
-  Editor * editor(QString filename) const;
-public slots:
-  void copy();
-  void cut();
-  void paste();
-  
-  void undo();
-  void redo(); 
-  
-  void selectAll();
-  
-  void duplicateCurrentLine();
-
-  void moveLineUp();
-  void moveLineDown();
-
-  void upperSelectedText();
-  void lowerSelectedText();
-
-  void commentSelectedText();
-  void uncommentSelectedText();
-
-  void complete();
-signals:
-  void copyAvailable ( bool available );
-  void undoAvailable ( bool available );
-  void redoAvailable ( bool available );
-protected:
-  void dragEnterEvent(QDragEnterEvent *event);
-  void dropEvent(QDropEvent *event);
-private slots:
-  void slotDocumentWasModified();
-  void slotCurrentTabChanged(int);
+	XSLProject();
+	XSLProject(const XSLProject &);
+	XSLProject(const QString &);
+	~XSLProject();
+	
+	void loadFromFile(const QString &);
+	void saveToFile(const QString & = QString());
+	
+	QString defaultLang() const;
+	void setDefaultLang(const QString &);
+	
+	QString defaultNav() const;
+	void setDefaultNav(const QString &);
+	
+	QString projectPath() const;
+	void setProjectPath(const QString &);
+	
+	QString specifPath() const;
+	void setSpecifPath(const QString &);
+	
+	QString specifPrefix() const;
+	void setSpecifPrefix(const QString &);	
+	
+	const QString & fileName() const;
 private:
-  Editor * prec;
+	QString getValue( const QString & node ) const;
+	void setValue( const QString & node, const QString & value );
 
-  QString strippedName(const QString &fullFileName);
+	QString m_fileName;
+	QDomDocument m_projectDocument;
 };
 
 #endif

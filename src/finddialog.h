@@ -36,18 +36,46 @@ class QPushButton;
 class FindDialog : public QDialog {
 	Q_OBJECT
 public:
+	struct FindOptions {
+		bool matchCase;
+		bool searchFromStart;
+		bool wholeWords;
+		bool backwardSearch;
+		bool selectionOnly;
+		bool regularExpression;
+		bool replace;
+	};
 	FindDialog(QWidget *parent = 0);
+	
+	void setReplaceChecked(bool);
+	
+	/** @src regular expression for search
+	    @dest result type
+	    @content the content find in the editor
+	*/
+	static QString replaceStr(const struct FindOptions &, const QString & src, const QString & dest, const QString & content);
+	
+signals:
+	void find(const QString &, const QString &, const struct FindDialog::FindOptions &);
+
+private slots:
+	void callFind();
 
 private:
-	QLabel *label;
-	QLineEdit *lineEdit;
+
+	QLabel *labelFind;
+	QCheckBox *replaceCheckBox;
+	QLineEdit *lineEditFind;
+	QLineEdit *lineEditReplace;
 	QCheckBox *caseCheckBox;
 	QCheckBox *fromStartCheckBox;
 	QCheckBox *wholeWordsCheckBox;
 	QCheckBox *searchSelectionCheckBox;
 	QCheckBox *backwardCheckBox;
+	QCheckBox *regularExpressionCheckBox;
 	QDialogButtonBox *buttonBox;
 	QPushButton *findButton;
+	QPushButton *closeButton;
 	QPushButton *moreButton;
 	QWidget *extension;
 };

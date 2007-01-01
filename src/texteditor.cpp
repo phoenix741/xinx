@@ -249,12 +249,14 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 	
 			if( isEditBalise( tc ) && selected != "/>" ){
 				QString name = nodeName( tc );
-				int position = textCursor().position();
+				if( ! name.isEmpty() ) {
+					int position = textCursor().position();
 	         	
-				textCursor().insertText( QString("</%1>").arg(name) );
+					textCursor().insertText( QString("</%1>").arg(name) );
 		
-				tc.setPosition(position);
-				setTextCursor( tc );
+					tc.setPosition(position);
+					setTextCursor( tc );
+				}
 			}
 		} else if(e->text().right(1) == "=") {
 			QTextCursor tc(textCursor());

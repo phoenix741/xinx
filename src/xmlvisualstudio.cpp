@@ -27,6 +27,8 @@
 #include "javaobjectfileimpl.h"
 #include "objectview.h"
 #include "editorcompletion.h"
+#include "finddialog.h"
+#include "xsllistview.h"
 
 XMlVisualStudio::XMlVisualStudio() {
   setWindowTitle(tr("XML Visual Studio"));
@@ -36,6 +38,9 @@ XMlVisualStudio::XMlVisualStudio() {
   
   m_javaObjects = new ObjectsView();
   completionNodeList = new CplNodeList();
+
+  m_findDialog = new FindDialog(this);
+  connect(m_findDialog, SIGNAL(find(QString, QString, FindDialog::FindOptions)), this, SLOT(findFirst(QString, QString, FindDialog::FindOptions)));
 
   createActions();
   createMenus();
@@ -62,12 +67,17 @@ void XMlVisualStudio::newFile() {
 }
 
 void XMlVisualStudio::open() {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open XSL File"), QDir::currentPath(), tr("XSL Files (*.xsl *.xml)"));
-  if (!fileName.isEmpty()) {
-  	m_tabEditors->loadTab(fileName);
-    statusBar()->showMessage(tr("File loaded"), 2000);
+  QString filename = QFileDialog::getOpenFileName(this, tr("Open XSL File"), QDir::currentPath(), tr("XSL Files (*.xsl *.xml)"));
+  if (!filename.isEmpty()) {
+  	open(filename);
   }
 }
+
+void XMlVisualStudio::open(const QString & filename) {
+	m_tabEditors->loadTab(filename);
+	statusBar()->showMessage(tr("File loaded"), 2000);
+}
+
 
 bool XMlVisualStudio::save() {
   return saveEditor(m_tabEditors->currentIndex());
@@ -93,6 +103,8 @@ void XMlVisualStudio::print() {
   if (dlg->exec() != QDialog::Accepted) return;
 
   document->print(&printer);
+  
+  delete dlg;
 
   statusBar()->showMessage(tr("Ready"), 2000);
 }
@@ -115,6 +127,96 @@ void XMlVisualStudio::closeAllTab() {
   }
 }
 
+void XMlVisualStudio::find() {
+	m_findDialog->setReplaceChecked(false);
+	m_findDialog->show();
+}
+
+void XMlVisualStudio::replace() {
+	m_findDialog->setReplaceChecked(true);
+	m_findDialog->show();
+}
+
+
+void XMlVisualStudio::findFirst(const QString & chaine, const QString & dest, const struct FindDialog::FindOptions & options) {
+	m_findExpression = chaine;
+	m_replaceExpression = dest;
+	m_findOptions    = options;
+	m_yesToAllReplace = false;
+	findNext();
+}
+
+void XMlVisualStudio::findNext() {
+	StudioTextEdit * textEdit = m_tabEditors->currentEditor()->textEdit();
+	QTextDocument * document = textEdit->document();
+	QTextCursor cursor(textEdit->textCursor());
+	int selectionStart = cursor.selectionStart(),
+	    selectionEnd = cursor.selectionEnd();
+
+	if( m_findOptions.searchFromStart ) {
+		cursor.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+		m_findOptions.searchFromStart = false;
+	} else
+	if( m_findOptions.selectionOnly && ! m_findOptions.backwardSearch )
+		cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
+	else
+	if( m_findOptions.selectionOnly && m_findOptions.backwardSearch )
+		cursor.setPosition ( selectionEnd, QTextCursor::MoveAnchor );
+	else
+	if( m_findOptions.backwardSearch )
+		cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
+
+	
+	QTextDocument::FindFlags flags;
+	if( m_findOptions.backwardSearch ) flags ^= QTextDocument::FindBackward;
+	if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
+	if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
+	
+	if( m_findOptions.regularExpression ) {
+		cursor = document->find( QRegExp( m_findExpression ), cursor, flags );
+	} else {
+		cursor = document->find( m_findExpression, cursor, flags );
+	}
+	
+	if( cursor.isNull() || 
+		( m_findOptions.selectionOnly && ( ( !m_findOptions.backwardSearch && cursor.position() > selectionEnd ) || 
+			( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) 
+		QMessageBox::warning(this, tr("Application"), tr("%1 not found").arg( m_findExpression ), QMessageBox::Ok);
+	else {
+		textEdit->setTextCursor( cursor );
+		
+		if( m_findOptions.replace ) {
+			QMessageBox::StandardButton ret = QMessageBox::Yes;
+			
+			if(! m_yesToAllReplace) 
+				ret = QMessageBox::question(this, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel);
+
+			switch(ret) {
+			case QMessageBox::Yes: 	
+				// Replace chaine
+				cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
+
+				findNext();
+				break;
+			case QMessageBox::YesToAll: 	
+				cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
+				m_yesToAllReplace = true;
+				findNext();
+				m_yesToAllReplace = false;
+				break;
+			case QMessageBox::No: 	
+				
+				findNext();
+				break;
+			default : // Do nothing else
+				;
+			}
+		}
+		
+	}
+}
+
+
 void XMlVisualStudio::about() {
   QMessageBox::about(this, tr("About XML Visual Studio"),
                      tr("<b>XML Visual Studio</b> manage a <i>Generix</i> XSL/XML Project."));
@@ -126,6 +228,22 @@ void XMlVisualStudio::openViewObjectList() {
   completionNodeList->setPath(m_javaObjects->path() + "/completion.cpl");
   completionNodeList->loadFiles();
 }
+
+void XMlVisualStudio::slotCurrentTabChanged(int tab) {
+	Editor * ed = m_tabEditors->editor(tab);
+	m_xslModel->updateModel( ed->textEdit()->toPlainText() );
+}
+
+void XMlVisualStudio::xslDockDoubleClicked( const QModelIndex & index ) {
+	QVariant line = m_xslModel->data( index, Qt::UserRole );
+	StudioTextEdit * ed = m_tabEditors->currentEditor()->textEdit();
+	QTextCursor cursor = ed->textCursor();
+	cursor.movePosition( QTextCursor::Start );
+	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line.toInt() - 1 );
+	ed->setTextCursor( cursor );
+	ed->setFocus( Qt::OtherFocusReason );
+}
+
 
 void XMlVisualStudio::createActions() {
   m_newAct = new QAction(QIcon(":/images/filenew.png"), tr("&New"), this);
@@ -254,16 +372,16 @@ void XMlVisualStudio::createActions() {
   connect(m_completeAct, SIGNAL(triggered()), m_tabEditors, SLOT(complete()));
   
   m_searchAct = new QAction(QIcon(":/images/find.png"), tr("Search ..."), this);
-  m_searchAct->setShortcut(tr("Ctrl+R"));
+  m_searchAct->setShortcut(tr("Ctrl+F"));
+  connect(m_searchAct, SIGNAL(triggered()), this, SLOT(find()));
 
-  m_searchNextAct = new QAction(tr("Search next ..."), this);
+  m_searchNextAct = new QAction(tr("Search previous/next"), this);
   m_searchNextAct->setShortcut(tr("F3"));
+  connect(m_searchNextAct, SIGNAL(triggered()), this, SLOT(findNext()));
   
-  m_searchPreviousAct = new QAction(tr("Search previous ..."), this);
-  m_searchPreviousAct->setShortcut(tr("Shift+F3"));
-
   m_replaceAct = new QAction(tr("Replace ..."), this);
   m_replaceAct->setShortcut(tr("Ctrl+H"));
+  connect(m_replaceAct, SIGNAL(triggered()), this, SLOT(replace()));
   
   m_javaViewObjectListAct = new QAction(tr("Java Object List"), this);
   m_javaViewObjectListAct->setStatusTip(tr("Change the path of the Java ViewObject. This files containts "
@@ -319,7 +437,6 @@ void XMlVisualStudio::createMenus() {
   m_searchMenu = menuBar()->addMenu(tr("&Search"));
   m_searchMenu->addAction(m_searchAct);
   m_searchMenu->addAction(m_searchNextAct);
-  m_searchMenu->addAction(m_searchPreviousAct);
   m_searchMenu->addSeparator();
   m_searchMenu->addAction(m_replaceAct);
 
@@ -358,6 +475,8 @@ void XMlVisualStudio::createStatusBar() {
 }
 
 void XMlVisualStudio::createDockWindows() {
+  /* XPath Dock */	
+
   m_xpathDock = new QDockWidget(tr("XPath"), this);
   m_xpathDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   QListWidget * customerList = new QListWidget(m_xpathDock);
@@ -365,14 +484,26 @@ void XMlVisualStudio::createDockWindows() {
   addDockWidget(Qt::RightDockWidgetArea, m_xpathDock);
 
   m_windowsMenu->addAction(m_xpathDock->toggleViewAction());
+
+  /* XSL Content Dock */
   
   m_xslContentDock = new QDockWidget(tr("XSL Content"), this);
   m_xslContentDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-  customerList = new QListWidget(m_xslContentDock);
-  m_xslContentDock->setWidget(customerList);
+
+  QTreeView* treeView = new QTreeView(m_xslContentDock);
+  m_xslModel = new XSLItemModel(this);
+  treeView->setModel(m_xslModel);
+
+  m_xslContentDock->setWidget(treeView);
   addDockWidget(Qt::RightDockWidgetArea, m_xslContentDock);
 
   m_windowsMenu->addAction(m_xslContentDock->toggleViewAction()); 
+
+  connect(m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
+  connect(treeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(xslDockDoubleClicked(QModelIndex)) );
+
+
+  /* Configuration File Dock */
 
   m_configurationDock = new QDockWidget(tr("Configuration"), this);
   m_configurationDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
