@@ -18,61 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef _TABEDITOR_H_
-#define _TABEDITOR_H_
+#ifndef _UNIQUEAPPLICATION_H_
+#define _UNIQUEAPPLICATION_H_
 
-#include <QTabWidget>
+// HELP
+/*
+Verifier si DBUS est installé et fonction sous Windows ainsi que QtDbus
+http://api.kde.org/cvs-api/kdelibs-apidocs/kdecore/html/kuniqueapplication_8h-source.html
+http://api.kde.org/cvs-api/kdelibs-apidocs/kdecore/html/kuniqueapplication_8cpp-source.html
+http://api.kde.org/cvs-api/kdelibs-apidocs/kdecore/html/classKUniqueApplication.html
+*/
 
-class Editor;
+#include <QApplication>
 
-class TabEditor : public QTabWidget {
+class UniqueApplication : public QApplication {
 	Q_OBJECT
 public:
-  TabEditor(QWidget * parent);
-
-  Editor * newTab(const QString & title = "untilted.xsl");
-  void updateTitle(int);
-  Editor * currentEditor() const;
-  Editor * editor(int index) const;
-  Editor * editor(QString filename) const;
-public slots:
-  void loadTab(const QString & filename);
-
-  void copy();
-  void cut();
-  void paste();
-  
-  void undo();
-  void redo(); 
-  
-  void selectAll();
-  
-  void duplicateCurrentLine();
-
-  void moveLineUp();
-  void moveLineDown();
-
-  void upperSelectedText();
-  void lowerSelectedText();
-
-  void commentSelectedText();
-  void uncommentSelectedText();
-
-  void complete();
-signals:
-  void copyAvailable ( bool available );
-  void undoAvailable ( bool available );
-  void redoAvailable ( bool available );
-protected:
-  void dragEnterEvent(QDragEnterEvent *event);
-  void dropEvent(QDropEvent *event);
-private slots:
-  void slotDocumentWasModified();
-  void slotCurrentTabChanged(int);
+	UniqueApplication ( int & argc, char ** argv );
+	UniqueApplication ( int & argc, char ** argv, bool GUIenabled );
+	UniqueApplication ( int & argc, char ** argv, Type type );
+	UniqueApplication ( Display * display, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 );
+	UniqueApplication ( Display * display, int & argc, char ** argv, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 );
+	
+	virtual ~UniqueApplication ();
+	
+	void start();
+	
+	bool isUnique() { return m_isUnique; }
+	
+	void sendSignalOpen(const QString &fileName);
+Q_SIGNALS:
+    void open(const QString &fileName);
+    
 private:
-  Editor * prec;
-
-  QString strippedName(const QString &fullFileName);
+	bool m_isUnique;
 };
-
 #endif

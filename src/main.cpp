@@ -23,33 +23,48 @@
 #include <QStringList>
 #include <QFile>
 #include <QMessageBox>
+#include "uniqueapplication.h"
 #include "xmlvisualstudio.h"
 
 int main(int argc, char *argv[]) {
-  Q_INIT_RESOURCE(application);
+	Q_INIT_RESOURCE(application);
 
-  QApplication app(argc, argv);
-
-  QPixmap pixmap(":/images/splash.png");
-  QSplashScreen splash(pixmap);
-  splash.show();
-  app.processEvents();
-
-  XMlVisualStudio mainWin;
-  mainWin.show();
+	UniqueApplication app(argc, argv);
   
-  QStringList args = app.arguments();
-  if(args.count() > 0) {
-	  QStringList::iterator it = args.begin();
-	  it++;
-	  while (it != args.end()) {
-	    if(QFile(*it).exists()) mainWin.open(*it);
-		it++;
-  	}
-  }
+	if( app.isUnique() ) {
+		QPixmap pixmap(":/images/splash.png");
+		QSplashScreen splash(pixmap);
+		splash.show();
+		app.processEvents();
 
-  splash.finish(&mainWin);
+		XMlVisualStudio mainWin;
+		mainWin.show();
+  
+		QStringList args = app.arguments();
+		if(args.count() > 0) {
+			QStringList::iterator it = args.begin();
+			it++;
+			while (it != args.end()) {
+				if(QFile(*it).exists()) mainWin.open(*it);
+				it++;
+			}
+		}
 
-  return app.exec();
+		splash.finish(&mainWin);
+
+		return app.exec();
+ 	} else {
+		// Send Parameter to open
+		QStringList args = app.arguments();
+		if(args.count() > 0) {
+			QStringList::iterator it = args.begin();
+			it++;
+			while (it != args.end()) {
+				if(QFile(*it).exists()) app.sendSignalOpen(*it);
+				it++;
+			}
+		}
+ 		return 255;
+	}
 }
 

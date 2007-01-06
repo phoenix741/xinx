@@ -9,7 +9,10 @@ SOURCES +=   xmlvisualstudio.cpp \
   texteditor.cpp \
   finddialog.cpp \
   xsllistview.cpp \
-  xslproject.cpp
+  xslproject.cpp \
+  uniqueapplication.cpp \
+  studioadaptor.cpp \
+  studiointerface.cpp
 HEADERS +=   xmlvisualstudio.h \
   editor.h \
   tabeditor.h \
@@ -20,13 +23,17 @@ HEADERS +=   xmlvisualstudio.h \
   texteditor.h \
   finddialog.h \
   xsllistview.h \
-  xslproject.h
+  xslproject.h \
+  uniqueapplication.h \
+  studioadaptor.h \
+  studiointerface.h
 TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \
   qt \
   exceptions \
-  debug
+  debug \
+  qdbus
 TARGET =   ../bin/xmlvisualstudio
 RESOURCES +=   application.qrc
 QT +=   xml \

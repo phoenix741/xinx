@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QtGui>
+#include <QtDBus>
 
 #include "xmlvisualstudio.h"
 #include "editor.h"
@@ -29,12 +30,16 @@
 #include "editorcompletion.h"
 #include "finddialog.h"
 #include "xsllistview.h"
+#include "studiointerface.h"
 
 XMlVisualStudio::XMlVisualStudio() {
   setWindowTitle(tr("XML Visual Studio"));
 
   m_tabEditors = new TabEditor( this );
   setCentralWidget(m_tabEditors);
+  
+  com::generix::xmlstudio * iface = new com::generix::xmlstudio(QString(), QString(), QDBusConnection::sessionBus(), this);;
+  connect(iface, SIGNAL(open(QString)), m_tabEditors, SLOT(loadTab(QString)));
   
   m_javaObjects = new ObjectsView();
   completionNodeList = new CplNodeList();
