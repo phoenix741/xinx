@@ -10,9 +10,7 @@ SOURCES +=   xmlvisualstudio.cpp \
   finddialog.cpp \
   xsllistview.cpp \
   xslproject.cpp \
-  uniqueapplication.cpp \
-  studioadaptor.cpp \
-  studiointerface.cpp
+  uniqueapplication.cpp
 HEADERS +=   xmlvisualstudio.h \
   editor.h \
   tabeditor.h \
@@ -24,19 +22,27 @@ HEADERS +=   xmlvisualstudio.h \
   finddialog.h \
   xsllistview.h \
   xslproject.h \
-  uniqueapplication.h \
-  studioadaptor.h \
-  studiointerface.h
+  uniqueapplication.h
 TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \
   qt \
-  exceptions \
-  debug \
-  qdbus
+  exceptions
 TARGET =   ../bin/xmlvisualstudio
 RESOURCES +=   application.qrc
 QT +=   xml \
   gui
 FORMS +=   javaobjectfile.ui \
   projectproperty.ui
+
+win32 {
+  CONFIG += release
+}
+unix {
+  SOURCES += studioadaptor.cpp \
+    studiointerface.cpp
+  HEADERS += studioadaptor.h \
+    studiointerface.h
+  CONFIG += debug \
+    qdbus
+}

@@ -21,15 +21,11 @@
 #ifndef _UNIQUEAPPLICATION_H_
 #define _UNIQUEAPPLICATION_H_
 
-// HELP
-/*
-Verifier si DBUS est installé et fonction sous Windows ainsi que QtDbus
-http://api.kde.org/cvs-api/kdelibs-apidocs/kdecore/html/kuniqueapplication_8h-source.html
-http://api.kde.org/cvs-api/kdelibs-apidocs/kdecore/html/kuniqueapplication_8cpp-source.html
-http://api.kde.org/cvs-api/kdelibs-apidocs/kdecore/html/classKUniqueApplication.html
-*/
-
 #include <QApplication>
+
+#ifdef Q_WS_WIN
+	#include <windows.h>
+#endif
 
 class UniqueApplication : public QApplication {
 	Q_OBJECT
@@ -37,8 +33,10 @@ public:
 	UniqueApplication ( int & argc, char ** argv );
 	UniqueApplication ( int & argc, char ** argv, bool GUIenabled );
 	UniqueApplication ( int & argc, char ** argv, Type type );
+#ifndef Q_WS_WIN
 	UniqueApplication ( Display * display, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 );
 	UniqueApplication ( Display * display, int & argc, char ** argv, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 );
+#endif
 	
 	virtual ~UniqueApplication ();
 	
@@ -49,8 +47,21 @@ public:
 	void sendSignalOpen(const QString &fileName);
 Q_SIGNALS:
     void open(const QString &fileName);
-    
+	void hasFileToOpen(const QString & fileName);
+
+#ifdef Q_WS_WIN
+private Q_SLOTS:
+	void timerApplicationEvent();
+#endif
+
 private:
 	bool m_isUnique;
+	
+#ifdef Q_WS_WIN
+	void openSharedMem();
+
+	HWND m_handle, m_handleMutex, m_handleEvent;
+	char* m_fileView;
+#endif
 };
 #endif
