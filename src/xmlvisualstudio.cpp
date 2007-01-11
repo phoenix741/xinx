@@ -143,11 +143,13 @@ void XMlVisualStudio::closeAllTab() {
 }
 
 void XMlVisualStudio::find() {
+	m_findDialog->initialize();
 	m_findDialog->setReplaceChecked(false);
 	m_findDialog->show();
 }
 
 void XMlVisualStudio::replace() {
+	m_findDialog->initialize();
 	m_findDialog->setReplaceChecked(true);
 	m_findDialog->show();
 }

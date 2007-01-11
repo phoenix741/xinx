@@ -49,6 +49,8 @@ public:
 	
 	void setReplaceChecked(bool);
 	
+	void initialize();
+	
 	/** @src regular expression for search
 	    @dest result type
 	    @content the content find in the editor

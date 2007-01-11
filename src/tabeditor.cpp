@@ -61,6 +61,7 @@ void TabEditor::loadTab(const QString & filename) {
 		textEdit->loadFile( filename );
 		updateTitle( currentIndex() );
 	}
+	dynamic_cast<QWidget*>(parent())->activateWindow();
 
   emit currentChanged( currentIndex() );  
 }
