@@ -1,16 +1,16 @@
 <ui version="4.0" >
- <class>Project Property</class>
- <widget class="QDialog" name="Project Property" >
+ <class>ProjectProperty</class>
+ <widget class="QDialog" name="ProjectProperty" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>282</height>
+    <width>567</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Dialog</string>
+   <string>Project property</string>
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
@@ -20,31 +20,52 @@
     <number>6</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
+    <widget class="QGroupBox" name="groupBox_3" >
+     <property name="title" >
+      <string>Project</string>
      </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_3" >
-       <property name="text" >
-        <string>Project directory :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="m_projectLineEdit" />
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_projectButton" >
-       <property name="text" >
-        <string>...</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label_6" >
+        <property name="text" >
+         <string>Project &amp;Name :</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_nameLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2" >
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>Project &amp;directory :</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_projectLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QLineEdit" name="m_projectLineEdit" />
+      </item>
+      <item row="1" column="3" >
+       <widget class="QToolButton" name="m_projectButton" >
+        <property name="text" >
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLineEdit" name="m_nameLineEdit" />
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox" >
@@ -58,27 +79,6 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="1" column="1" >
-       <widget class="QComboBox" name="m_navigatorComboBox" >
-        <item>
-         <property name="text" >
-          <string>NAV/MIC</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>NAV/NET</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
-         <string>Lang</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1" >
        <widget class="QComboBox" name="m_langComboBox" >
         <item>
@@ -108,10 +108,37 @@
         </item>
        </widget>
       </item>
+      <item row="1" column="1" >
+       <widget class="QComboBox" name="m_navigatorComboBox" >
+        <item>
+         <property name="text" >
+          <string>NAV/MIC</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>NAV/NET</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>&amp;Lang</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_langComboBox</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0" >
        <widget class="QLabel" name="label_2" >
         <property name="text" >
-         <string>Navigator</string>
+         <string>N&amp;avigator</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_navigatorComboBox</cstring>
         </property>
        </widget>
       </item>
@@ -130,32 +157,38 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="0" column="2" >
-       <widget class="QToolButton" name="m_specifiquePathButton" >
-        <property name="text" >
-         <string>...</string>
-        </property>
-       </widget>
+      <item row="1" column="1" >
+       <widget class="QLineEdit" name="m_prefixLineEdit" />
       </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label_4" >
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_5" >
         <property name="text" >
-         <string>Specifique directory :</string>
+         <string>Specifique p&amp;refix :</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_prefixLineEdit</cstring>
         </property>
        </widget>
       </item>
       <item row="0" column="1" >
        <widget class="QLineEdit" name="m_specifiquePathLineEdit" />
       </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_5" >
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label_4" >
         <property name="text" >
-         <string>Specifique prefix :</string>
+         <string>Specifique d&amp;irectory :</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_specifiquePathLineEdit</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QLineEdit" name="m_prefixLineEdit" />
+      <item row="0" column="2" >
+       <widget class="QToolButton" name="m_specifiquePathButton" >
+        <property name="text" >
+         <string>...</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -199,17 +232,29 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_nameLineEdit</tabstop>
+  <tabstop>m_projectLineEdit</tabstop>
+  <tabstop>m_projectButton</tabstop>
+  <tabstop>m_langComboBox</tabstop>
+  <tabstop>m_navigatorComboBox</tabstop>
+  <tabstop>m_specifiquePathLineEdit</tabstop>
+  <tabstop>m_specifiquePathButton</tabstop>
+  <tabstop>m_prefixLineEdit</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
    <sender>okButton</sender>
    <signal>clicked()</signal>
-   <receiver>Project Property</receiver>
+   <receiver>ProjectProperty</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>278</x>
-     <y>253</y>
+     <x>475</x>
+     <y>337</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -220,12 +265,12 @@
   <connection>
    <sender>cancelButton</sender>
    <signal>clicked()</signal>
-   <receiver>Project Property</receiver>
+   <receiver>ProjectProperty</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>369</x>
-     <y>253</y>
+     <x>556</x>
+     <y>337</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>

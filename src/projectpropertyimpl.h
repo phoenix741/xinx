@@ -17,48 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef _XSLPROJECT_H_
-#define _XSLPROJECT_H_
 
-#include <QString>
-#include <QDomDocument>
+#ifndef PROJECTPROPERTYIMPL_H
+#define PROJECTPROPERTYIMPL_H
 
-class XSLProject {
+#include "ui_projectproperty.h"
+
+class XSLProject;
+
+class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
+Q_OBJECT
 public:
-	XSLProject();
-	XSLProject( const XSLProject & );
-	XSLProject( const QString & );
-	~XSLProject();
+	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 	
-	void loadFromFile( const QString & );
-	void saveToFile( const QString & = QString() );
-	
-	QString projectName() const;
-	void setProjectName( const QString & );
-
-	QString defaultLang() const;
-	void setDefaultLang( const QString & );
-	
-	QString defaultNav() const;
-	void setDefaultNav( const QString & );
-	
-	QString projectPath() const;
-	void setProjectPath( const QString & );
-	
-	QString specifPath() const;
-	void setSpecifPath( const QString & );
-	
-	QString specifPrefix() const;
-	void setSpecifPrefix( const QString & );	
-	
-	const QString & fileName() const;
-private:
-	QString getValue( const QString & node ) const;
-	void setValue( const QString & node, const QString & value );
-
-	QString m_fileName;
-	QDomDocument m_projectDocument;
+	void loadFromProject( XSLProject * );
+	void saveToProject( XSLProject * );
+private slots:
+	void on_m_projectLineEdit_textChanged( QString );
+	void on_m_projectButton_clicked();
+	void on_m_specifiquePathButton_clicked();
+	void on_m_specifiquePathLineEdit_textChanged( QString );
 };
-
 #endif
+
+
+
+
+
+

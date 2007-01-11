@@ -1,0 +1,518 @@
+<ui version="4.0" >
+ <class>MaintForm</class>
+ <widget class="QMainWindow" name="MaintForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>598</width>
+    <height>388</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>XML Visual Studio</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" >
+    <property name="margin" >
+     <number>0</number>
+    </property>
+    <property name="spacing" >
+     <number>0</number>
+    </property>
+    <item row="0" column="0" >
+     <widget class="TabEditor" name="m_tabEditors" />
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>598</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="m_editMenu" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="m_undoAct" />
+    <addaction name="m_redoAct" />
+    <addaction name="separator" />
+    <addaction name="m_cutAct" />
+    <addaction name="m_copyAct" />
+    <addaction name="m_pasteAct" />
+    <addaction name="separator" />
+    <addaction name="m_selectAllAct" />
+    <addaction name="m_duplicateLineAct" />
+    <addaction name="m_moveUpLineAct" />
+    <addaction name="m_moveDownLineAct" />
+    <addaction name="separator" />
+    <addaction name="m_upperTextAct" />
+    <addaction name="m_lowerTextAct" />
+    <addaction name="separator" />
+    <addaction name="m_commentLineAct" />
+    <addaction name="m_uncommentLineAct" />
+    <addaction name="m_completeAct" />
+   </widget>
+   <widget class="QMenu" name="m_fileMenu" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="m_newAct" />
+    <addaction name="m_openAct" />
+    <addaction name="m_saveAct" />
+    <addaction name="m_saveAsAct" />
+    <addaction name="m_saveAllAct" />
+    <addaction name="separator" />
+    <addaction name="m_closeAct" />
+    <addaction name="m_closeAllAct" />
+    <addaction name="separator" />
+    <addaction name="m_printAct" />
+    <addaction name="separator" />
+    <addaction name="m_exitAct" />
+   </widget>
+   <widget class="QMenu" name="m_searchMenu" >
+    <property name="title" >
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="m_searchAct" />
+    <addaction name="m_searchNextAct" />
+    <addaction name="separator" />
+    <addaction name="m_replaceAct" />
+   </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <addaction name="m_newProjectAct" />
+    <addaction name="separator" />
+    <addaction name="m_javaViewObjectListAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+   </widget>
+   <addaction name="m_fileMenu" />
+   <addaction name="m_editMenu" />
+   <addaction name="m_searchMenu" />
+   <addaction name="m_projectMenu" />
+   <addaction name="m_windowsMenu" />
+   <addaction name="m_helpMenu" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QToolBar" name="m_fileToolBar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="m_newAct" />
+   <addaction name="m_openAct" />
+   <addaction name="m_saveAct" />
+  </widget>
+  <widget class="QToolBar" name="m_editToolBar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="m_undoAct" />
+   <addaction name="separator" />
+   <addaction name="m_cutAct" />
+   <addaction name="m_copyAct" />
+   <addaction name="m_pasteAct" />
+  </widget>
+  <widget class="QDockWidget" name="m_xslContentDock" >
+   <property name="allowedAreas" >
+    <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle" >
+    <string>XSL Content</string>
+   </property>
+   <attribute name="dockWidgetArea" >
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents" >
+    <layout class="QGridLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>0</number>
+     </property>
+     <item row="0" column="0" >
+      <widget class="QTreeView" name="m_xslContentTreeView" />
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="toolBar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="m_searchAct" />
+  </widget>
+  <action name="m_newAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/filenew.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;New</string>
+   </property>
+   <property name="statusTip" >
+    <string>Create a new file</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="m_openAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Open ...</string>
+   </property>
+   <property name="statusTip" >
+    <string>Open an existing file</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="m_saveAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/filesave.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Save</string>
+   </property>
+   <property name="statusTip" >
+    <string>Save the document to disk</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="m_saveAsAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/filesaveas.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Save &amp;As...</string>
+   </property>
+   <property name="statusTip" >
+    <string>Save the document under a new name</string>
+   </property>
+  </action>
+  <action name="m_saveAllAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/filesaveall.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Save A&amp;ll...</string>
+   </property>
+   <property name="statusTip" >
+    <string>Save all documents to disk</string>
+   </property>
+  </action>
+  <action name="m_printAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/fileprint.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Print ...</string>
+   </property>
+   <property name="statusTip" >
+    <string>Print the current document</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="m_closeAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/fileclose.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Close</string>
+   </property>
+   <property name="statusTip" >
+    <string>Close the current document</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="m_closeAllAct" >
+   <property name="text" >
+    <string>&amp;Close All</string>
+   </property>
+   <property name="statusTip" >
+    <string>Close all opened document</string>
+   </property>
+  </action>
+  <action name="m_exitAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/exit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>E&amp;xit</string>
+   </property>
+   <property name="statusTip" >
+    <string>Exit the application</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="m_undoAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/undo.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Undo</string>
+   </property>
+   <property name="statusTip" >
+    <string>Undo the last action</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="m_redoAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/redo.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Redo</string>
+   </property>
+   <property name="statusTip" >
+    <string>Redo the next action</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="m_cutAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/editcut.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Cu&amp;t</string>
+   </property>
+   <property name="statusTip" >
+    <string>Cut the current selection's contents to the clipboard</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="m_copyAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/editcopy.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Copy</string>
+   </property>
+   <property name="statusTip" >
+    <string>Copy the current selection's contents to the clipboard</string>
+   </property>
+  </action>
+  <action name="m_pasteAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/editpaste.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Paste</string>
+   </property>
+   <property name="statusTip" >
+    <string>Paste the clipboard's contents into the current Paste the clipboard's contents into the current Paste the clipboard's contents into the current selection</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="m_selectAllAct" >
+   <property name="text" >
+    <string>&amp;Select All</string>
+   </property>
+   <property name="statusTip" >
+    <string>Select all the text of the current editor</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="m_duplicateLineAct" >
+   <property name="text" >
+    <string>&amp;Duplicate current line</string>
+   </property>
+   <property name="toolTip" >
+    <string>Duplicate current line</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="m_moveUpLineAct" >
+   <property name="text" >
+    <string>&amp;Move line up</string>
+   </property>
+   <property name="toolTip" >
+    <string>Move line up</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Alt+P</string>
+   </property>
+  </action>
+  <action name="m_moveDownLineAct" >
+   <property name="text" >
+    <string>&amp;Move line down</string>
+   </property>
+   <property name="toolTip" >
+    <string>Move line down</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Alt+M</string>
+   </property>
+  </action>
+  <action name="m_upperTextAct" >
+   <property name="text" >
+    <string>&amp;Upper Case</string>
+   </property>
+  </action>
+  <action name="m_lowerTextAct" >
+   <property name="text" >
+    <string>&amp;Lower Case</string>
+   </property>
+  </action>
+  <action name="m_commentLineAct" >
+   <property name="text" >
+    <string>&amp;Comment</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
+  <action name="m_uncommentLineAct" >
+   <property name="text" >
+    <string>&amp;Uncomment</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Shift+D</string>
+   </property>
+  </action>
+  <action name="m_completeAct" >
+   <property name="text" >
+    <string>Completer</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="m_searchAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/find.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Search ...</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="m_searchNextAct" >
+   <property name="text" >
+    <string>Search previous/next</string>
+   </property>
+   <property name="shortcut" >
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="m_replaceAct" >
+   <property name="text" >
+    <string>&amp;Replace ...</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="m_javaViewObjectListAct" >
+   <property name="text" >
+    <string>&amp;Java Object List</string>
+   </property>
+   <property name="statusTip" >
+    <string>Change the path of the Java ViewObject. This files containts all fields of a non Dynamic ViewObject</string>
+   </property>
+  </action>
+  <action name="m_newProjectAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/filenew.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;New project ...</string>
+   </property>
+  </action>
+  <action name="m_aboutAct" >
+   <property name="text" >
+    <string>&amp;About</string>
+   </property>
+   <property name="statusTip" >
+    <string>Show the application's About box</string>
+   </property>
+  </action>
+  <action name="m_aboutQtAct" >
+   <property name="text" >
+    <string>About &amp;Qt</string>
+   </property>
+   <property name="statusTip" >
+    <string>Show the Qt library's About box</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TabEditor</class>
+   <extends>QTabWidget</extends>
+   <header>tabeditor.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="application.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>m_exitAct</sender>
+   <signal>triggered()</signal>
+   <receiver>MaintForm</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>298</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

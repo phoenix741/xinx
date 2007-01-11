@@ -18,179 +18,90 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef XMLVISUALSTUDIO_H
 #define XMLVISUALSTUDIO_H
-
-#include <qmainwindow.h>
-#include <QMainWindow>
+//
+#include "ui_mainform.h"
 #include "finddialog.h"
+//
 
-/* Declaration of used object */
-class QAction;
-class QMenu;
-class QTextEdit;
-class QTabWidget;
-class QDockWidget;
-class Editor;
-class TabEditor;
-class ObjectsView;
-class CplNodeList;
 class XSLItemModel;
-class QModelIndex;
+class ObjectsView;
+class XSLProject;
 
-/* Main object of application */
-class XMlVisualStudio : public QMainWindow {
-  Q_OBJECT
+class XMlVisualStudio : public QMainWindow, public Ui::MaintForm {
+	Q_OBJECT
 public:
-  XMlVisualStudio();
+	XMlVisualStudio( QWidget * parent = 0, Qt::WFlags f = 0 );
+	
+	void open( const QString & filename );
+protected: 
+	/* Window event */
 
-  void open(const QString & filename);
-
-protected:
-  /* Window event */
-
-  void closeEvent(QCloseEvent *event);
-  
+	void closeEvent( QCloseEvent *event );
 private slots:
-  /* Action slots */
+	/* FindDialog slots */
+	void findFirst(const QString &, const QString &, const struct FindDialog::FindOptions &);
 
-  void newFile();
-  void open();
-  bool save();
-  bool saveAs();
-  bool saveAll();
-  
-  void print();
-  
-  void closeTab();
-  void closeAllTab();
-  
-  void openViewObjectList();
-  
-  void about();
-  
-  void find();
-  void replace();
-
-  /* FindDialog slots */
-  
-  void findNext();
-  void findFirst(const QString &, const QString &, const struct FindDialog::FindOptions &);
-  
-  /* Editor Change */
-  void slotCurrentTabChanged(int);
-  
-  /* XSL Content Dock Slots */
-  void xslDockDoubleClicked( const QModelIndex & );
-  
+	/* Editor Change */
+	void slotCurrentTabChanged(int);
+	
+	/* Auto slots */
+	
+	void on_m_newAct_triggered();
+	void on_m_openAct_triggered();
+	void on_m_saveAct_triggered();
+	void on_m_saveAsAct_triggered();
+	void on_m_saveAllAct_triggered();
+	void on_m_printAct_triggered();
+	void on_m_closeAct_triggered();
+	void on_m_closeAllAct_triggered();
+	void on_m_searchAct_triggered();
+	void on_m_searchNextAct_triggered();
+	void on_m_replaceAct_triggered();
+	void on_m_javaViewObjectListAct_triggered();
+	void on_m_newProjectAct_triggered();
+	void on_m_aboutAct_triggered();
+	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
 private:
-  /* Create Window Menus, Tools, Status, Dock Bar */
+	/* Create Window Menus, Tools, Status, Dock Bar */
   
-  void createActions();
-  void createMenus();
-  void createToolBars();
-  void createStatusBar();
-  void createDockWindows(); 
+	void createActions();
+	void createToolBars();
+	void createStatusBar();
+	void createDockWindows(); 
   
-  /* Load and save Settings */
+	/* Load and save Settings */
   
-  void readSettings();
-  void writeSettings();
+	void readSettings();
+	void writeSettings();
   
-  /* Save an editor into a file */
+	/* Save an editor into a file */
 
-  bool maybeSave(int index);
-  bool saveEditor(int index);
-  bool saveEditorAs(int index);
+	bool maybeSave(int index);
+	void saveEditor(int index);
+	void saveEditorAs(int index);
   
-  /**** Object declaration ****/
+	/**** Object declaration ****/
   
-  /* Dock Object */
-  XSLItemModel * m_xslModel;
+	/* Dock Object */
+	XSLItemModel * m_xslModel;
 
-  /* Find declaration */
-  QString m_findExpression, m_replaceExpression;
-  struct FindDialog::FindOptions m_findOptions;
-  bool m_yesToAllReplace;
+	/* Find declaration */
+	QString m_findExpression, m_replaceExpression;
+	struct FindDialog::FindOptions m_findOptions;
+	bool m_yesToAllReplace;
 
-  /* Generix Object */
-  ObjectsView * m_javaObjects;
+	/* Generix Object */
+	ObjectsView * m_javaObjects;
+	XSLProject * m_xslObject;
   
-  /* Interfaces */
-  TabEditor * m_tabEditors;
-  FindDialog * m_findDialog;
-
-  /* Menu */
-  QMenu * m_fileMenu;
-  QMenu * m_projectMenu;
-  QMenu * m_editMenu;
-  QMenu * m_searchMenu;
-  QMenu * m_windowsMenu;
-  QMenu * m_helpMenu;
-
-  /* Tool bar */  
-  QToolBar * m_fileToolBar;
-  QToolBar * m_editToolBar;
-  
-  /* Dock */
-  QDockWidget * m_xpathDock;
-  QDockWidget * m_xslContentDock;
-  QDockWidget * m_configurationDock;
-  
-  /* Actions */
-  
-  /* File */
-  QAction * m_newAct;
-  
-  QAction * m_openAct;
-  QAction * m_saveAct;
-  QAction * m_saveAsAct;
-  QAction * m_saveAllAct;
-  
-  QAction * m_printAct;
-  
-  QAction * m_closeAct;
-  QAction * m_closeAllAct;
-  
-  QAction * m_exitAct;
-  
-  /* Edit */
-  QAction * m_undoAct;
-  QAction * m_redoAct;
-
-  QAction * m_cutAct;
-  QAction * m_copyAct;
-  QAction * m_pasteAct;
-
-  QAction * m_selectAllAct;
-  QAction * m_duplicateLineAct;
-
-  QAction * m_moveUpLineAct;
-  QAction * m_moveDownLineAct;
-
-  QAction * m_upperTextAct;
-  QAction * m_lowerTextAct;
-
-  QAction * m_commentLineAct;
-  QAction * m_uncommentLineAct;
-
-  QAction * m_completeAct;
-  
-  /* Search */
-  
-  QAction * m_searchAct;
-  QAction * m_searchNextAct;
-  QAction * m_replaceAct;
-  
-  /* Project */
-  
-  QAction * m_javaViewObjectListAct;
-  
-  /* About */
-  QAction * m_aboutAct;
-  QAction * m_aboutQtAct;
+	/* Interfaces */
+	FindDialog * m_findDialog;
 };
- 
 #endif
+
+
+
+
 

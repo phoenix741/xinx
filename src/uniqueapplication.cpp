@@ -26,6 +26,7 @@
 #ifndef Q_WS_WIN
 	#include <QtDBus>
 	#include "studioadaptor.h"
+	#include "studiointerface.h"
 #else
 	#include <QTimer>
 	#include <QtGui>
@@ -99,6 +100,10 @@ void UniqueApplication::start() {
 	
 	new XmlstudioAdaptor( this );
 	QDBusConnection::sessionBus().registerObject( "/", this );
+
+	com::generix::xmlstudio * iface = new com::generix::xmlstudio(QString(), QString(), QDBusConnection::sessionBus(), this);;
+	connect( iface, SIGNAL(open(QString)), this, SIGNAL(hasFileToOpen(QString)) );
+
 #else
 	m_handleMutex = (HWND)CreateMutex( NULL, false, (WCHAR*)"com.generix.xmlstudio.mutex" );
 	int error = GetLastError();

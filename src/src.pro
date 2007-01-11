@@ -1,5 +1,4 @@
-SOURCES +=   xmlvisualstudio.cpp \
-  main.cpp \
+SOURCES +=   main.cpp \
   editor.cpp \
   tabeditor.cpp \
   xmlhighlighter.cpp \
@@ -10,9 +9,10 @@ SOURCES +=   xmlvisualstudio.cpp \
   finddialog.cpp \
   xsllistview.cpp \
   xslproject.cpp \
-  uniqueapplication.cpp
-HEADERS +=   xmlvisualstudio.h \
-  editor.h \
+  uniqueapplication.cpp \
+  projectpropertyimpl.cpp \
+  xmlvisualstudio.cpp
+HEADERS +=   editor.h \
   tabeditor.h \
   xmlhighlighter.h \
   objectview.h \
@@ -22,7 +22,9 @@ HEADERS +=   xmlvisualstudio.h \
   finddialog.h \
   xsllistview.h \
   xslproject.h \
-  uniqueapplication.h
+  uniqueapplication.h \
+  projectpropertyimpl.h \
+  xmlvisualstudio.h
 TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \
@@ -33,16 +35,17 @@ RESOURCES +=   application.qrc
 QT +=   xml \
   gui
 FORMS +=   javaobjectfile.ui \
-  projectproperty.ui
-
+  projectproperty.ui \
+  mainform.ui \
+  syntaxeditorproperty.ui
 win32 {
-  CONFIG += release
+  CONFIG +=     release
 }
 unix {
-  SOURCES += studioadaptor.cpp \
+  SOURCES +=     studioadaptor.cpp \
     studiointerface.cpp
-  HEADERS += studioadaptor.h \
+  HEADERS +=     studioadaptor.h \
     studiointerface.h
-  CONFIG += debug \
+  CONFIG +=     debug \
     qdbus
 }

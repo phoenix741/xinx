@@ -28,7 +28,7 @@ XSLProject::XSLProject() {
 	m_projectDocument.appendChild( root );
 }
 
-XSLProject::XSLProject(const XSLProject & object) {
+XSLProject::XSLProject( const XSLProject & object ) {
 	m_fileName =  object.m_fileName;
 	m_projectDocument = object.m_projectDocument;
 }
@@ -41,7 +41,7 @@ XSLProject::~XSLProject() {
 	saveToFile();
 }
 	
-void XSLProject::loadFromFile(const QString & filename) {
+void XSLProject::loadFromFile( const QString & filename ) {
 	QFile file(filename);
 	
 	// Open the file
@@ -75,7 +75,7 @@ void XSLProject::loadFromFile(const QString & filename) {
 	m_fileName = filename;
 }
 
-void XSLProject::saveToFile(const QString & filename) {
+void XSLProject::saveToFile( const QString & filename ) {
 	static const int IndentSize = 3;
 
 	QFile file(filename);
@@ -97,7 +97,10 @@ QString XSLProject::getValue( const QString & node ) const {
 	QDomElement elt  = root.firstChildElement( node );
 
 	if( ! elt.isNull() ){
-		return elt.toText().nodeValue();
+		QDomNode node = elt.firstChild();
+		while( ! ( node.isNull() || node.isText() ) ) node = node.nextSibling();
+		QDomText text = node.toText();
+		return text.nodeValue();
 	} else
 		return QString();
 }
@@ -111,7 +114,7 @@ void XSLProject::setValue( const QString & node, const QString & value ) {
 		elt = m_projectDocument.createElement( node );
 		root.appendChild( elt );
 	} else {
-		QDomNode node = root.firstChild();
+		QDomNode node = elt.firstChild();
 		while( ! ( node.isNull() || node.isText() ) ) node = node.nextSibling();
 		text = node.toText();
 	}
@@ -123,12 +126,19 @@ void XSLProject::setValue( const QString & node, const QString & value ) {
 		text.setData( value );
 }
 
+QString XSLProject::projectName() const {
+	return getValue( "name" );	
+}
+
+void XSLProject::setProjectName( const QString & value ) {
+	setValue( "name", value );	
+}
 	
 QString XSLProject::defaultLang() const {
 	return getValue( "lang" );
 }
 
-void XSLProject::setDefaultLang(const QString & value) {
+void XSLProject::setDefaultLang( const QString & value ) {
 	setValue( "lang", value );
 }
 	
@@ -136,7 +146,7 @@ QString XSLProject::defaultNav() const {
 	return getValue( "nav" );
 }
 
-void XSLProject::setDefaultNav(const QString & value) {
+void XSLProject::setDefaultNav( const QString & value ) {
 	setValue( "nav", value );
 }
 	
@@ -144,7 +154,7 @@ QString XSLProject::projectPath() const {
 	return getValue( "project" );
 }
 
-void XSLProject::setProjectPath(const QString & value) {
+void XSLProject::setProjectPath( const QString & value ) {
 	setValue( "project", value );
 }
 	
@@ -152,7 +162,7 @@ QString XSLProject::specifPath() const {
 	return getValue( "specifique" );
 }
 
-void XSLProject::setSpecifPath(const QString & value) {
+void XSLProject::setSpecifPath( const QString & value ) {
 	setValue( "specifique", value );
 }
 	
@@ -160,7 +170,7 @@ QString XSLProject::specifPrefix() const {
 	return getValue( "prefix" );
 }
 	
-void XSLProject::setSpecifPrefix(const QString & value) {
+void XSLProject::setSpecifPrefix( const QString & value ) {
 	setValue( "prefix", value );
 }
 	
