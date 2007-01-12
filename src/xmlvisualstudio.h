@@ -29,12 +29,14 @@ class XSLItemModel;
 class ObjectsView;
 class XSLProject;
 
-class XMlVisualStudio : public QMainWindow, public Ui::MaintForm {
+class XMLVisualStudio : public QMainWindow, public Ui::MaintForm {
 	Q_OBJECT
 public:
-	XMlVisualStudio( QWidget * parent = 0, Qt::WFlags f = 0 );
+	XMLVisualStudio( QWidget * parent = 0, Qt::WFlags f = 0 );
 	
 	void open( const QString & filename );
+	
+	void updateActions();
 protected: 
 	/* Window event */
 
@@ -61,6 +63,10 @@ private slots:
 	void on_m_replaceAct_triggered();
 	void on_m_javaViewObjectListAct_triggered();
 	void on_m_newProjectAct_triggered();
+	void on_m_openProjectAct_triggered();
+	void on_m_saveProjectAct_triggered();
+	void on_m_closeProjectAct_triggered();
+	void on_m_projectPropertyAct_triggered();
 	void on_m_aboutAct_triggered();
 	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
 private:
@@ -94,12 +100,14 @@ private:
 
 	/* Generix Object */
 	ObjectsView * m_javaObjects;
-	XSLProject * m_xslObject;
+	XSLProject * m_xslProject;
   
 	/* Interfaces */
 	FindDialog * m_findDialog;
 };
 #endif
+
+
 
 
 

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>598</width>
-    <height>388</height>
+    <width>607</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -30,8 +30,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>598</width>
-     <height>29</height>
+     <width>607</width>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_editMenu" >
@@ -83,18 +83,16 @@
     <addaction name="separator" />
     <addaction name="m_replaceAct" />
    </widget>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
-   </widget>
    <widget class="QMenu" name="m_projectMenu" >
     <property name="title" >
      <string>&amp;Project</string>
     </property>
     <addaction name="m_newProjectAct" />
+    <addaction name="m_openProjectAct" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="m_closeProjectAct" />
+    <addaction name="separator" />
+    <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
     <addaction name="m_javaViewObjectListAct" />
    </widget>
@@ -102,6 +100,13 @@
     <property name="title" >
      <string>&amp;Windows</string>
     </property>
+   </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -484,6 +489,35 @@
    </property>
    <property name="statusTip" >
     <string>Show the Qt library's About box</string>
+   </property>
+  </action>
+  <action name="m_openProjectAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Open project</string>
+   </property>
+  </action>
+  <action name="m_saveProjectAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/filesave.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="m_closeProjectAct" >
+   <property name="icon" >
+    <iconset resource="application.qrc" >:/images/fileclose.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Close Project</string>
+   </property>
+  </action>
+  <action name="m_projectPropertyAct" >
+   <property name="text" >
+    <string>Project &amp;property</string>
    </property>
   </action>
  </widget>

@@ -34,7 +34,7 @@ StudioTextEdit::StudioTextEdit(QWidget *parent) : QTextEdit(parent), m_completer
 	QFont font;
 	font.setFamily("Monospace");
 	font.setFixedPitch(true);
-	font.setPointSize(10);
+	font.setPointSize(8);
   
 	setFont(font);
 	setTabStopWidth( 15 );

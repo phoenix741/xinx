@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 		splash.show();
 		app.processEvents();
 
-		XMlVisualStudio mainWin;
+		XMLVisualStudio mainWin;
 		mainWin.show();
   
 		QStringList args = app.arguments();
