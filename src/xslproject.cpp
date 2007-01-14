@@ -73,12 +73,18 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	}
 	
 	m_fileName = filename;
+	
+	loadOpenedFile();
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
+	saveOpenedFile();
+	
+	if( ! filename.isEmpty() ) m_fileName = filename;
+	
 	static const int IndentSize = 3;
 
-	QFile file(filename);
+	QFile file( m_fileName );
 	
 	// Open the file
 	if (!file.open(QFile::WriteOnly | QFile::Text)) {
@@ -173,7 +179,59 @@ QString XSLProject::specifPrefix() const {
 void XSLProject::setSpecifPrefix( const QString & value ) {
 	setValue( "prefix", value );
 }
+
+QString	XSLProject::standardConfigurationFile() const {
+	return getValue( "standard" );
+}
+
+void XSLProject::setStandardConfigurationFile( const QString & value ) {
+	return setValue( "standard", value );
+}
 	
+QString	XSLProject::specifiqueConfigurationFile() const {
+	return getValue( "specifique" );
+}
+	
+void XSLProject::setSpecifiqueConfigurationFile( const QString & value ) {
+	return setValue( "specifique", value );
+}
+
+void XSLProject::loadOpenedFile() {
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement elt  = root.firstChildElement( "openedElementCount" );
+	
+	m_openedFile.clear();
+	
+	if( elt.isNull() ) return;
+		
+	QDomElement file = elt.firstChildElement( "file" );
+	
+	while ( ! file.isNull() ) {
+		m_openedFile.append( file.firstChild().toText().nodeValue() );	
+		
+		file = file.nextSiblingElement( "file" );
+	}
+}
+
+void XSLProject::saveOpenedFile() {
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement elt  = root.firstChildElement( "openedElementCount" );
+	
+	if( ! elt.isNull() )
+		root.removeChild( elt );
+
+	elt = m_projectDocument.createElement( "openedElementCount" );
+	root.appendChild( elt );
+	
+	foreach(QString filename, m_openedFile) {
+		QDomElement file = m_projectDocument.createElement( "file" );
+		elt.appendChild( file );
+		
+		QDomText text = m_projectDocument.createTextNode( filename );
+		file.appendChild( text );
+	}
+}
+
 const QString & XSLProject::fileName() const {
 	return m_fileName;
 }

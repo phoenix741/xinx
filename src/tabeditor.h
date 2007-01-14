@@ -35,6 +35,9 @@ public:
   Editor * currentEditor() const;
   Editor * editor(int index) const;
   Editor * editor(QString filename) const;
+
+
+  static QString strippedName(const QString &fullFileName);
 public slots:
   void loadTab(const QString & filename);
 
@@ -63,16 +66,16 @@ signals:
   void copyAvailable ( bool available );
   void undoAvailable ( bool available );
   void redoAvailable ( bool available );
+  void editAvailable ( bool available );
 protected:
   void dragEnterEvent(QDragEnterEvent *event);
   void dropEvent(QDropEvent *event);
+  void tabRemoved ( int index );
 private slots:
   void slotDocumentWasModified();
   void slotCurrentTabChanged(int);
 private:
   Editor * prec;
-
-  QString strippedName(const QString &fullFileName);
 };
 
 #endif

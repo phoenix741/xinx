@@ -85,25 +85,48 @@
          <property name="text" >
           <string>FRA</string>
          </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/france.png</iconset>
+         </property>
         </item>
         <item>
          <property name="text" >
           <string>ENG</string>
          </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/usa.png</iconset>
+         </property>
         </item>
         <item>
          <property name="text" >
-          <string>ESP</string>
+          <string>DEU</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/germany.png</iconset>
          </property>
         </item>
         <item>
          <property name="text" >
           <string>ITA</string>
          </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/italy.png</iconset>
+         </property>
         </item>
         <item>
          <property name="text" >
-          <string>DEU</string>
+          <string>ESP</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/spain.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>POR</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/portugal.png</iconset>
          </property>
         </item>
        </widget>
@@ -114,10 +137,16 @@
          <property name="text" >
           <string>NAV/MIC</string>
          </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/ie_logo.png</iconset>
+         </property>
         </item>
         <item>
          <property name="text" >
           <string>NAV/NET</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="application.qrc" >:/images/firefox_logo.png</iconset>
          </property>
         </item>
        </widget>
@@ -244,7 +273,9 @@
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="application.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>okButton</sender>

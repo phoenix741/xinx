@@ -142,9 +142,10 @@ void TabEditor::slotCurrentTabChanged(int index) {
   if(prec) prec->disconnect();
   Editor * ed = (Editor*)widget(index);
   
-  emit copyAvailable(false);
-  emit undoAvailable(ed->textEdit()->document()->isUndoAvailable());
-  emit redoAvailable(ed->textEdit()->document()->isRedoAvailable());
+  emit editAvailable( true );
+  emit copyAvailable( false );
+  emit undoAvailable( ed->textEdit()->document()->isUndoAvailable() );
+  emit redoAvailable( ed->textEdit()->document()->isRedoAvailable() );
   	
   connect( ed->textEdit()->document(), SIGNAL( contentsChanged() ), this, SLOT( slotDocumentWasModified() ) );
   connect( ed->textEdit(), SIGNAL( copyAvailable(bool) ), this, SIGNAL( copyAvailable(bool) ) );
@@ -187,3 +188,13 @@ void TabEditor::dropEvent(QDropEvent *event) {
   }
 }
 
+void TabEditor::tabRemoved ( int index ) {
+	Q_UNUSED( index );
+	
+	if( count() == 0 ) {
+		emit copyAvailable( false );
+		emit undoAvailable( false );
+		emit redoAvailable( false );
+		emit editAvailable( false );
+	}
+}

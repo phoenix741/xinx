@@ -31,9 +31,38 @@
      <x>0</x>
      <y>0</y>
      <width>607</width>
-     <height>19</height>
+     <height>29</height>
     </rect>
    </property>
+   <widget class="QMenu" name="m_fileMenu" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="m_newAct" />
+    <addaction name="m_openAct" />
+    <addaction name="m_saveAct" />
+    <addaction name="m_saveAsAct" />
+    <addaction name="m_saveAllAct" />
+    <addaction name="separator" />
+    <addaction name="m_closeAct" />
+    <addaction name="m_closeAllAct" />
+    <addaction name="separator" />
+    <addaction name="m_printAct" />
+    <addaction name="separator" />
+    <addaction name="m_exitAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
    <widget class="QMenu" name="m_editMenu" >
     <property name="title" >
      <string>&amp;Edit</string>
@@ -57,23 +86,6 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
-   <widget class="QMenu" name="m_fileMenu" >
-    <property name="title" >
-     <string>&amp;File</string>
-    </property>
-    <addaction name="m_newAct" />
-    <addaction name="m_openAct" />
-    <addaction name="m_saveAct" />
-    <addaction name="m_saveAsAct" />
-    <addaction name="m_saveAllAct" />
-    <addaction name="separator" />
-    <addaction name="m_closeAct" />
-    <addaction name="m_closeAllAct" />
-    <addaction name="separator" />
-    <addaction name="m_printAct" />
-    <addaction name="separator" />
-    <addaction name="m_exitAct" />
-   </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
      <string>&amp;Search</string>
@@ -87,26 +99,23 @@
     <property name="title" >
      <string>&amp;Project</string>
     </property>
+    <widget class="QMenu" name="m_recentProjectMenu" >
+     <property name="title" >
+      <string>&amp;Recent project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openProjectAct" />
+    </widget>
     <addaction name="m_newProjectAct" />
-    <addaction name="m_openProjectAct" />
+    <addaction name="m_recentProjectMenu" />
     <addaction name="m_saveProjectAct" />
     <addaction name="m_closeProjectAct" />
     <addaction name="separator" />
     <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
     <addaction name="m_javaViewObjectListAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -496,7 +505,7 @@
     <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
    </property>
    <property name="text" >
-    <string>&amp;Open project</string>
+    <string>&amp;Choose file ...</string>
    </property>
   </action>
   <action name="m_saveProjectAct" >
@@ -504,7 +513,7 @@
     <iconset resource="application.qrc" >:/images/filesave.png</iconset>
    </property>
    <property name="text" >
-    <string>Save</string>
+    <string>&amp;Save project</string>
    </property>
   </action>
   <action name="m_closeProjectAct" >

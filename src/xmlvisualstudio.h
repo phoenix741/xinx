@@ -25,9 +25,12 @@
 #include "finddialog.h"
 //
 
+#define MAXRECENTFILES 5
+
 class XSLItemModel;
 class ObjectsView;
 class XSLProject;
+class QSettings;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MaintForm {
 	Q_OBJECT
@@ -37,6 +40,7 @@ public:
 	void open( const QString & filename );
 	
 	void updateActions();
+	void updateRecentFiles();
 protected: 
 	/* Window event */
 
@@ -47,6 +51,10 @@ private slots:
 
 	/* Editor Change */
 	void slotCurrentTabChanged(int);
+	
+	/* Usefull for recent project */
+	
+	void openRecentProject();
 	
 	/* Auto slots */
 	
@@ -87,8 +95,16 @@ private:
 	bool maybeSave(int index);
 	void saveEditor(int index);
 	void saveEditorAs(int index);
+	
+	/* Usefull for Recent project */
+	
+	void setCurrentProject( const QString & filename );
+	void openProject( const QString & filename );
   
 	/**** Object declaration ****/
+	
+	/* Settings */
+	QSettings * m_settings;
   
 	/* Dock Object */
 	XSLItemModel * m_xslModel;
@@ -104,6 +120,8 @@ private:
   
 	/* Interfaces */
 	FindDialog * m_findDialog;
+	QAction * m_recentProjectActs[MAXRECENTFILES];
+	QAction * m_recentSeparator;
 };
 #endif
 

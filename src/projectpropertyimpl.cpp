@@ -66,13 +66,14 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 		palette.setColor( QPalette::Text, Qt::red );
 	}
 	m_projectLineEdit->setPalette( palette );
+	updateSpecifiquePath();
 }
 
 void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_nameLineEdit->setText( project->projectName() );
 	m_projectLineEdit->setText( project->projectPath() );
-	m_langComboBox->setEditText( project->defaultLang() );
-	m_navigatorComboBox->setEditText( project->defaultNav() );
+	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
+	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
 }
@@ -85,3 +86,16 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
 }
+
+void ProjectPropertyImpl::updateSpecifiquePath() {
+	QString path = QString("%1/langue/%2/nav/projet").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() );
+	
+	m_specifiquePathLineEdit->setText( QDir::cleanPath( path ) );
+}
+
+void ProjectPropertyImpl::on_m_langComboBox_currentIndexChanged( QString str ) {
+	Q_UNUSED( str );
+	
+	updateSpecifiquePath();
+}
+

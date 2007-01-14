@@ -1,32 +1,33 @@
- <!DOCTYPE RCC><RCC version="1.0">
- <qresource>
-     <file>images/filenew.png</file>
-     <file>images/fileopen.png</file>
-     <file>images/filesave.png</file>
-     <file>images/filesaveas.png</file>
-     <file>images/filesaveall.png</file>
-     <file>images/fileprint.png</file>
-     <file>images/fileclose.png</file>
-     <file>images/exit.png</file>
-
-     <file>images/undo.png</file>
-     <file>images/redo.png</file>
-
-     <file>images/editcopy.png</file>
-     <file>images/editcut.png</file>
-     <file>images/editpaste.png</file>
-
-     <file>images/splash.png</file>
-
-     <file>images/doc.png</file>
-
-     <file>images/nogood.png</file>
-     <file>images/next.png</file>
-     <file>images/bug.png</file>
-     
-     <file>images/find.png</file>
-     
-     <file>images/CVpublic_var.png</file>
-     <file>images/CVpublic_meth.png</file>
- </qresource>
-</RCC> 
+<RCC>
+    <qresource prefix="/" >
+        <file>images/CVpublic_meth.png</file>
+        <file>images/CVpublic_var.png</file>
+        <file>images/bug.png</file>
+        <file>images/doc.png</file>
+        <file>images/editcopy.png</file>
+        <file>images/editcut.png</file>
+        <file>images/editpaste.png</file>
+        <file>images/exit.png</file>
+        <file>images/fileclose.png</file>
+        <file>images/filenew.png</file>
+        <file>images/fileopen.png</file>
+        <file>images/fileprint.png</file>
+        <file>images/filesave.png</file>
+        <file>images/filesaveall.png</file>
+        <file>images/filesaveas.png</file>
+        <file>images/find.png</file>
+        <file>images/firefox_logo.png</file>
+        <file>images/france.png</file>
+        <file>images/germany.png</file>
+        <file>images/ie_logo.png</file>
+        <file>images/italy.png</file>
+        <file>images/next.png</file>
+        <file>images/nogood.png</file>
+        <file>images/portugal.png</file>
+        <file>images/redo.png</file>
+        <file>images/spain.png</file>
+        <file>images/splash.png</file>
+        <file>images/undo.png</file>
+        <file>images/usa.png</file>
+    </qresource>
+</RCC>

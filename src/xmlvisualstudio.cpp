@@ -43,6 +43,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(
 	// Detete the first Tab
 	//m_tabEditors->removeTab(0);
 	
+	m_settings = new QSettings("Generix", "XML Visual Studio");
+	
 	m_javaObjects = new ObjectsView();
 	m_xslProject = NULL;
 	completionNodeList = new CplNodeList();
@@ -68,11 +70,14 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_openAct_triggered() {
-	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), QDir::currentPath(), tr("XSL Files (*.xsl *.xml)") );
+	QString path = QDir::currentPath();
+	
+	if( m_xslProject ) path = m_xslProject->projectPath();
+	
+	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), path, tr("XSL Files (*.xsl *.xml)") );
 	if ( !filename.isEmpty() ) {
 		open( filename );
 	}
-	updateActions();
 }
 
 void XMLVisualStudio::on_m_saveAct_triggered() {
@@ -219,31 +224,41 @@ void XMLVisualStudio::on_m_newProjectAct_triggered() {
 		
 		QString fileName = QFileDialog::getSaveFileName( this, tr("Save a project"), m_xslProject->projectPath(), "Projet (*.prj)" );
 		
-		if( !fileName.isEmpty() )		
+		if( !fileName.isEmpty() ) {
 			m_xslProject->saveToFile( fileName );
-		else 
+			setCurrentProject( fileName );
+		} else 
 			on_m_closeProjectAct_triggered();
 	}
+	
 	updateActions();
 }
 
 void XMLVisualStudio::on_m_openProjectAct_triggered() {
 	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), QString(), "Projet (*.prj)" );
 	
-	if( !fileName.isEmpty() ) {
-		m_xslProject = new XSLProject( fileName );
-	}
-	updateActions();
+	openProject( fileName );	
 }
 
 void XMLVisualStudio::on_m_saveProjectAct_triggered() {
-	// TODO
+	m_xslProject->openedFiles().clear();
+	for( int i = 0; i < m_tabEditors->count(); i++ ) {
+		m_xslProject->openedFiles().append( m_tabEditors->editor( i )->getCurrentFile() );
+	}
+	
+	m_xslProject->saveToFile();
 }
 
 void XMLVisualStudio::on_m_closeProjectAct_triggered() {
-	delete m_xslProject;
-	m_xslProject = NULL;
-	updateActions();
+	if( m_xslProject ) {
+		on_m_saveProjectAct_triggered();
+		
+		delete m_xslProject;
+		m_xslProject = NULL;
+		
+		updateActions();
+		setCurrentProject( "" );
+	}
 }
 
 void XMLVisualStudio::on_m_projectPropertyAct_triggered() {
@@ -277,12 +292,14 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
       return;
      }
   }
+  on_m_closeProjectAct_triggered();
   writeSettings();
   event->accept();
 }
 
 void XMLVisualStudio::open( const QString & filename ) {
 	m_tabEditors->loadTab(filename);
+	updateActions();
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
@@ -297,6 +314,12 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
 	Editor * ed = m_tabEditors->editor(tab);
 	m_xslModel->updateModel( ed->textEdit()->toPlainText() );
+}
+
+void XMLVisualStudio::openRecentProject() {
+     QAction * action = qobject_cast<QAction *>( sender() );
+     if( action )
+         openProject( action->data().toString() );	
 }
 
 void XMLVisualStudio::createActions() {
@@ -322,18 +345,28 @@ void XMLVisualStudio::createActions() {
 
 	// Paste
 	connect(m_pasteAct, SIGNAL(triggered()), m_tabEditors, SLOT(paste()));
+	m_pasteAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_pasteAct, SLOT(setEnabled(bool)));	
   
 	// Select All
 	connect(m_selectAllAct, SIGNAL(triggered()), m_tabEditors, SLOT(selectAll()));
+	m_selectAllAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_selectAllAct, SLOT(setEnabled(bool)));	
   
 	// Duplicate Line
 	connect(m_duplicateLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(duplicateCurrentLine()));
+	m_duplicateLineAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_duplicateLineAct, SLOT(setEnabled(bool)));	
   
 	// Move Line Up
 	connect(m_moveUpLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
+	m_moveUpLineAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_moveUpLineAct, SLOT(setEnabled(bool)));	
   
 	// Move Line Down
 	connect(m_moveDownLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineDown()));
+	m_moveDownLineAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_moveDownLineAct, SLOT(setEnabled(bool)));	
 
 	// Upper Case
 	connect(m_upperTextAct, SIGNAL(triggered()), m_tabEditors, SLOT(upperSelectedText()));
@@ -358,11 +391,38 @@ void XMLVisualStudio::createActions() {
 	// Complete  
 	/* Don't need, process by the editor directly */ 
 	connect(m_completeAct, SIGNAL(triggered()), m_tabEditors, SLOT(complete()));
+	m_completeAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_completeAct, SLOT(setEnabled(bool)));	
+	
+	// Search 
+	connect(m_searchAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
+	m_searchAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_searchAct, SLOT(setEnabled(bool)));	
+	
+	// Search next/previous
+	connect(m_searchNextAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
+	m_searchNextAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_searchNextAct, SLOT(setEnabled(bool)));	
+
+	// Replace
+	connect(m_replaceAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
+	m_replaceAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_replaceAct, SLOT(setEnabled(bool)));	
   
   	// About Qt
 	connect(m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+	// Recent project file
+	m_recentSeparator = m_recentProjectMenu->addSeparator();
+	for(int i = 0; i < MAXRECENTFILES; i++) {
+		m_recentProjectActs[i] = new QAction( this );
+		m_recentProjectActs[i]->setVisible( false );
+		m_recentProjectMenu->addAction( m_recentProjectActs[i] );
+		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
+	}
+
 	updateActions();
+	updateRecentFiles();
 }
 
 void XMLVisualStudio::createToolBars() {
@@ -386,27 +446,26 @@ void XMLVisualStudio::createDockWindows() {
 }
 
 void XMLVisualStudio::readSettings() {
-  QSettings settings("Generix", "XML Visual Studio");
-  QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
-  QSize size = settings.value("size", QSize(400, 400)).toSize();
+  QPoint pos = m_settings->value( "pos", QPoint(200, 200) ).toPoint();
+  QSize size = m_settings->value( "size", QSize(400, 400) ).toSize();
   resize(size);
   move(pos);
   
-  m_javaObjects->setPath(settings.value("xmljavapath", qApp->applicationDirPath() + "/xml").toString());
+  m_javaObjects->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() );
   m_javaObjects->loadFiles();
-  completionNodeList->setPath(settings.value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() + "/completion.cpl");
+  
+  completionNodeList->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() + "/completion.cpl" );
   completionNodeList->loadFiles();
 
-  m_xslContentDock->setVisible(settings.value("xslContent/visible", true).toBool());
+  m_xslContentDock->setVisible( m_settings->value("xslContent/visible", true).toBool() );
 }
 
 void XMLVisualStudio::writeSettings() {
-  QSettings settings("Generix", "XML Visual Studio");
-  settings.setValue("pos", pos());
-  settings.setValue("size", size());
-  settings.setValue("xmljavapath", m_javaObjects->path());
+  m_settings->setValue( "pos", pos() );
+  m_settings->setValue( "size", size() );
+  m_settings->setValue( "xmljavapath", m_javaObjects->path() );
 
-  settings.setValue("xslContent/visible", ! m_xslContentDock->isHidden());
+  m_settings->setValue( "xslContent/visible", ! m_xslContentDock->isHidden() );
 }
 
 
@@ -446,6 +505,22 @@ void XMLVisualStudio::saveEditorAs(int index) {
   statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getCurrentFile() ), 2000);
 }
 
+void XMLVisualStudio::openProject( const QString & filename ) {
+	if( ! filename.isEmpty() ) {
+		if( m_xslProject ) on_m_closeProjectAct_triggered();
+		
+		m_xslProject = new XSLProject( filename );
+		setCurrentProject( filename );
+		
+		on_m_closeAllAct_triggered();
+		foreach( QString str, m_xslProject->openedFiles() ) {
+			open( str );
+		}
+
+		updateActions();
+	}
+}
+
 void XMLVisualStudio::updateActions() {
 	/* Project action */
 	m_saveProjectAct->setEnabled( m_xslProject != NULL );
@@ -461,5 +536,40 @@ void XMLVisualStudio::updateActions() {
 	m_printAct->setEnabled( m_tabEditors->count() );
 }
 
+void XMLVisualStudio::setCurrentProject( const QString & filename ) {
+	if( filename.isEmpty() )
+		setWindowTitle( tr("XML Visual Studio") );
+	else {
+		setWindowTitle( tr("%1 - %2").arg( TabEditor::strippedName( filename ) ).arg( tr("XML Visual Studio") ) );
+
+		QStringList files = m_settings->value( "Recent Project Files" ).toStringList();
+		files.removeAll( filename );
+		files.prepend( filename );
+     
+		while( files.size() > MAXRECENTFILES )
+			files.removeLast();
+
+		m_settings->setValue( "Recent Project Files", files );
+
+		updateRecentFiles();
+	}
+}
+
+
+void XMLVisualStudio::updateRecentFiles() {
+	QStringList files = m_settings->value( "Recent Project Files" ).toStringList();
+	int numRecentFiles = qMin( files.size(), MAXRECENTFILES );
+
+	for( int i = 0; i < numRecentFiles; i++ ) {
+		QString text = tr("&%1 %2").arg(i + 1).arg( TabEditor::strippedName( files[i] ) );
+		m_recentProjectActs[i]->setText( text );
+		m_recentProjectActs[i]->setData( files[i] );
+		m_recentProjectActs[i]->setVisible( true );
+	}
+	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
+		m_recentProjectActs[j]->setVisible(false);
+
+	m_recentSeparator->setVisible( numRecentFiles > 0 );
+}
 
 

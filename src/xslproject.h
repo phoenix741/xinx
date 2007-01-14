@@ -23,6 +23,15 @@
 
 #include <QString>
 #include <QDomDocument>
+#include <QList>
+
+/*
+TODO : 
+Conf standard/Specifique
+File loaded
+
+Precedent Files
+*/
 
 class XSLProject {
 public:
@@ -50,15 +59,27 @@ public:
 	void setSpecifPath( const QString & );
 	
 	QString specifPrefix() const;
-	void setSpecifPrefix( const QString & );	
+	void setSpecifPrefix( const QString & );
 	
+	QString	standardConfigurationFile() const;
+	void setStandardConfigurationFile( const QString & );
+	
+	QString	specifiqueConfigurationFile() const;
+	void setSpecifiqueConfigurationFile( const QString & );
+
+	QList<QString> & openedFiles() { return m_openedFile; };
+
 	const QString & fileName() const;
 private:
 	QString getValue( const QString & node ) const;
 	void setValue( const QString & node, const QString & value );
+	
+	void loadOpenedFile();
+	void saveOpenedFile();
 
 	QString m_fileName;
 	QDomDocument m_projectDocument;
+	QList<QString> m_openedFile;
 };
 
 #endif
