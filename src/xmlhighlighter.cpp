@@ -110,6 +110,8 @@ void XmlHighlighter::highlightBlock(const QString& text)
 	int brackets = 0;
 	
 	state = (previousBlockState() == InElement ? ExpectAttributeOrEndOfElement : NoState);
+	
+	setCurrentBlockState(NoBlock);
 
 	if (previousBlockState() == InComment)
 	{

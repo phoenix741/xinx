@@ -395,17 +395,14 @@ void XMLVisualStudio::createActions() {
 	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_completeAct, SLOT(setEnabled(bool)));	
 	
 	// Search 
-	connect(m_searchAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
 	m_searchAct->setEnabled(false);
 	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_searchAct, SLOT(setEnabled(bool)));	
 	
 	// Search next/previous
-	connect(m_searchNextAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
 	m_searchNextAct->setEnabled(false);
 	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_searchNextAct, SLOT(setEnabled(bool)));	
 
 	// Replace
-	connect(m_replaceAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
 	m_replaceAct->setEnabled(false);
 	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_replaceAct, SLOT(setEnabled(bool)));	
   
@@ -436,13 +433,13 @@ void XMLVisualStudio::createStatusBar() {
 }
 
 void XMLVisualStudio::createDockWindows() {
-  /* XSL Content Dock */
-  m_xslModel = new XSLItemModel( this );
-  m_xslContentTreeView->setModel( m_xslModel );
+	/* XSL Content Dock */
+	m_xslModel = new XSLItemModel( this );
+	m_xslContentTreeView->setModel( m_xslModel );
+  
+	m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
 
-  m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
-
-  connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
+	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
 
 void XMLVisualStudio::readSettings() {
@@ -491,6 +488,7 @@ void XMLVisualStudio::saveEditor(int index) {
     m_tabEditors->editor( index )->saveFile();
   }
   m_tabEditors->updateTitle( index );
+  slotCurrentTabChanged( index );
 
   statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getCurrentFile() ), 2000 );
 }

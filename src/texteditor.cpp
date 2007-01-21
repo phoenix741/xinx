@@ -236,7 +236,7 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
 	if (!c || !isShortcut) // dont process the shortcut when we have a completer
 		QTextEdit::keyPressEvent(e);
-
+		
 	if(!e->text().isEmpty()) {
 		if(e->text().right(1) == ">") {
 			QTextCursor tc(textCursor());
@@ -269,6 +269,23 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 	}
 
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+
+	if( ( ! ctrlOrShift ) && ( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) ) {
+		QTextCursor tc( textCursor() );
+		QTextBlock previous = tc.block().previous();	
+		QString indent = previous.text();
+		
+		indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
+		
+		tc.movePosition( QTextCursor::StartOfLine );
+		
+		tc.insertText( indent );
+		
+		setTextCursor( tc );
+		
+		return;
+	}
+
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
 		return;
 
