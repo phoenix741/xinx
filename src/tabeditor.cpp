@@ -17,175 +17,183 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
+#include <typeinfo>
 #include "tabeditor.h"
 #include "editor.h"
-#include "texteditor.h"
+#include "fileeditor.h"
 
 #include <QtGui>
-
-TabEditor::TabEditor(QWidget * parent) : QTabWidget(parent), prec(NULL) {
-  setAcceptDrops(true);
+#include <QDir>
+//
+TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), previous(NULL) {
+	setAcceptDrops(true);
        
-  connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
+	connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
+}
+//
+TabEditor::~TabEditor() {
+}
+//
+
+inline bool TabEditor::isFileEditor( Editor * editor ) {
+	return typeid(*editor) == typeid(FileEditor);
 }
 
-Editor * TabEditor::newTab(const QString & title) {
-  Editor * textEdit = new Editor( this );
-  textEdit->textEdit()->setAcceptRichText(false);
-  
-  int index = addTab(textEdit, title);
-  
-  setTabIcon( index, QIcon(":/images/doc.png") );
-  setCurrentIndex( index );
-
-  emit currentChanged( currentIndex() );  
-
-  return textEdit;	
+Editor * TabEditor::currentEditor() {
+	return dynamic_cast<Editor*>( currentWidget() );
 }
 
-void TabEditor::updateTitle(int i) {
-  if(! currentEditor()->getCurrentFile().isEmpty())
-    setTabText ( i, strippedName( currentEditor()->getCurrentFile() ) );
-  else
-    setTabText ( i, "untilted.xsl" );
+Editor * TabEditor::editor( int index ) {
+	return dynamic_cast<Editor*>( widget( index ) );
 }
 
-
-void TabEditor::loadTab(const QString & filename) {
-	Editor * textEdit = editor(filename);
-	if(textEdit) {
-		setCurrentWidget( textEdit );
-	} else {
-		textEdit = newTab( strippedName(filename) );
-		textEdit->loadFile( filename );
-		updateTitle( currentIndex() );
-	}
-	dynamic_cast<QWidget*>(parent())->activateWindow();
-
-  emit currentChanged( currentIndex() );  
-}
-
-Editor * TabEditor::editor(QString filename) const {
-	for(int i = 0; i < count(); i++) {
-		if(editor(i)->getCurrentFile() == filename) 
+Editor * TabEditor::editor( const QString & filename ) {
+	for( int i = 0; i < count(); i++ ) {
+		if( ( isFileEditor( editor( i ) ) ) && ( static_cast<FileEditor*>( editor(i) )->getFileName() == filename ) ) 
 			return editor(i);
 	}
 	return NULL;
 }
 
-void TabEditor::copy() {
-  currentEditor()->textEdit()->copy();
+void TabEditor::newFileEditor() {
+	FileEditor * editor = new FileEditor( this );
+	int index = addTab( editor, editor->getTitle() );
+	
+	setTabIcon( index, QIcon(":/images/doc.png") );
+	setCurrentIndex( index );
+
+	emit currentChanged( currentIndex() );  
 }
-  
+
+void TabEditor::loadFileEditor( const QString & fileName ) {
+	Editor * ed = editor( fileName );
+	if( ! ed ) {
+		ed = new FileEditor( this );
+		
+		static_cast<FileEditor*>( ed )->loadFile( fileName );
+		
+		int index = addTab( ed, ed->getTitle() );
+		setTabIcon( index, QIcon(":/images/doc.png") );
+	}
+	setCurrentWidget( ed );
+	dynamic_cast<QWidget*>( parent() )->activateWindow();
+	emit currentChanged( currentIndex() );  
+}
+
+void TabEditor::copy() {
+	Editor * editor = currentEditor();
+	if( editor && editor->canCopy() ) 
+		editor->copy();
+}
+	
 void TabEditor::cut() {
-  currentEditor()->textEdit()->cut();
+	Editor * editor = currentEditor();
+	if( editor && editor->canCopy() ) 
+		editor->cut();
 }
 
 void TabEditor::paste() {
-  currentEditor()->textEdit()->paste();
+	Editor * editor = currentEditor();
+	if( editor && editor->canPaste() ) 
+		editor->paste();
 }
-
+  
 void TabEditor::undo() {
-  currentEditor()->textEdit()->undo();
+	Editor * editor = currentEditor();
+	if( editor && editor->canUndo() ) 
+		editor->undo();	
 }
-
+	
 void TabEditor::redo() {
-  currentEditor()->textEdit()->redo();
+	Editor * editor = currentEditor();
+	if( editor && editor->canRedo() ) 
+		editor->redo();
 }
-    
+  
 void TabEditor::selectAll() {
-  currentEditor()->textEdit()->selectAll();
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->selectAll();
+	}
 }
-
+  
 void TabEditor::duplicateCurrentLine() {
-  currentEditor()->duplicateCurrentLine();
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->duplicateCurrentLine();
+	}
 }
 
 void TabEditor::moveLineUp() {
-  currentEditor()->moveLineUp();
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->moveLineUp();
+	}
 }
-
+	
 void TabEditor::moveLineDown() {
-  currentEditor()->moveLineDown();
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->moveLineDown();
+	}
 }
 
 void TabEditor::upperSelectedText() {
-  currentEditor()->uploSelectedText(true);
+	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->uploSelectedText();
+	}
 }
-
+	
 void TabEditor::lowerSelectedText() {
-  currentEditor()->uploSelectedText(false);
+	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->uploSelectedText( false );
+	}
 }
 
 void TabEditor::commentSelectedText() {
-  currentEditor()->commentSelectedText();
+	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->commentSelectedText();
+	}
 }
 
 void TabEditor::uncommentSelectedText() {
-  currentEditor()->commentSelectedText(true);
+	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->commentSelectedText( true );
+	}
 }
 
 void TabEditor::complete() {
-  currentEditor()->textEdit()->complete();
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->complete();
+	}
 }
 
-   
-void TabEditor::slotDocumentWasModified() {
-  QString document = "untilted.xsl";
-  if(! currentEditor()->getCurrentFile().isEmpty() )
-  	document = strippedName( currentEditor()->getCurrentFile() );
-  setTabText ( currentIndex(), tr("%1*").arg( document ) );
+void TabEditor::dragEnterEvent( QDragEnterEvent *event ) {
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasUrls()) {
+		setBackgroundRole(QPalette::Highlight);
+		event->acceptProposedAction();
+	}
 }
 
-void TabEditor::slotCurrentTabChanged(int index) {
-  if(prec) prec->disconnect();
-  Editor * ed = (Editor*)widget(index);
-  
-  emit editAvailable( true );
-  emit copyAvailable( false );
-  emit undoAvailable( ed->textEdit()->document()->isUndoAvailable() );
-  emit redoAvailable( ed->textEdit()->document()->isRedoAvailable() );
-  	
-  connect( ed->textEdit()->document(), SIGNAL( contentsChanged() ), this, SLOT( slotDocumentWasModified() ) );
-  connect( ed->textEdit(), SIGNAL( copyAvailable(bool) ), this, SIGNAL( copyAvailable(bool) ) );
-  connect( ed->textEdit(), SIGNAL( copyAvailable(bool) ), this, SIGNAL( copyAvailable(bool) ) );	
-  connect( ed->textEdit(), SIGNAL( undoAvailable(bool) ), this, SIGNAL( undoAvailable(bool) ) );	
-  connect( ed->textEdit(), SIGNAL( redoAvailable(bool) ), this, SIGNAL( redoAvailable(bool) ) );	
-}
-
-Editor * TabEditor::currentEditor() const {
-  return (Editor*)currentWidget();	
-}
-
-Editor * TabEditor::editor(int index) const {
-  return (Editor*)widget( index );
-}
-  
-QString TabEditor::strippedName(const QString &fullFileName) {
-  return QFileInfo(fullFileName).fileName();
-}
-
-void TabEditor::dragEnterEvent(QDragEnterEvent *event) {
-  const QMimeData *mimeData = event->mimeData();
-  if (mimeData->hasUrls()) {
-    setBackgroundRole(QPalette::Highlight);
-    event->acceptProposedAction();
-  }
-}
-
-void TabEditor::dropEvent(QDropEvent *event) {
-  const QMimeData *mimeData = event->mimeData();
-  const QList<QUrl> & urls = mimeData->urls();
-  if (mimeData->hasUrls()) {
-    for(int i = 0; i < urls.size(); i++) {
-      if((!urls.at(i).toLocalFile().isEmpty()))
-        loadTab( urls.at(i).toLocalFile() );
-   	}
+void TabEditor::dropEvent( QDropEvent *event ) {
+	const QMimeData *mimeData = event->mimeData();
+	const QList<QUrl> & urls = mimeData->urls();
+	if (mimeData->hasUrls()) {
+		for(int i = 0; i < urls.size(); i++) {
+			if((!urls.at(i).toLocalFile().isEmpty()))
+				loadFileEditor( urls.at(i).toLocalFile() );
+		}
 	 
-    setBackgroundRole(QPalette::NoRole);
-    event->acceptProposedAction(); 
-  }
+		setBackgroundRole(QPalette::NoRole);
+		event->acceptProposedAction(); 
+	}
 }
 
 void TabEditor::tabRemoved ( int index ) {
@@ -193,8 +201,46 @@ void TabEditor::tabRemoved ( int index ) {
 	
 	if( count() == 0 ) {
 		emit copyAvailable( false );
+		emit pasteAvailable( false );
 		emit undoAvailable( false );
 		emit redoAvailable( false );
-		emit editAvailable( false );
+		emit textAvailable( false );
+		emit hasTextSelection( false );
 	}
 }
+
+void TabEditor::slotModifiedChange( bool changed ) {
+	if( changed ) 
+		setTabText ( currentIndex(), tr("%1*").arg( currentEditor()->getTitle() ) );
+	else
+		setTabText ( currentIndex(), tr("%1").arg( currentEditor()->getTitle() ) );
+}
+
+void TabEditor::slotCurrentTabChanged( int index ) {
+	Q_UNUSED( index );
+	
+	if( previous ) previous->disconnect();
+	
+	Editor * editor = currentEditor();
+	
+	emit copyAvailable( editor->canCopy() );
+	emit pasteAvailable( editor->canPaste() );
+	emit undoAvailable( editor->canUndo() );
+	emit redoAvailable( editor->canRedo() );
+	
+	connect( editor, SIGNAL( modificationChanged(bool) ), this, SLOT( slotModifiedChange(bool) ) );
+	connect( editor, SIGNAL( copyAvailable(bool) ), this, SIGNAL( copyAvailable(bool) ) );
+	connect( editor, SIGNAL( pasteAvailable(bool) ), this, SIGNAL( pasteAvailable(bool) ) );	
+	connect( editor, SIGNAL( undoAvailable(bool) ), this, SIGNAL( undoAvailable(bool) ) );	
+	connect( editor, SIGNAL( redoAvailable(bool) ), this, SIGNAL( redoAvailable(bool) ) );	
+	
+	if( isFileEditor( editor ) ) {
+		emit textAvailable( true );
+		
+		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
+	} else {
+		emit textAvailable( false );
+		emit hasTextSelection( false );
+	}
+}
+

@@ -17,65 +17,43 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef _EDITOR_H_
-#define _EDITOR_H_
 
-#include <QTextEdit>
-
-class QTabWidget;
-class QTextEdit;
-class QHBoxLayout;
-class QPixmap;
-class QRect;
-class QPaintEvent;
-class QTextCursor;
-class StudioTextEdit;
-
-class NumberBar : public QWidget {
-     Q_OBJECT
-public:
-     NumberBar( QWidget *parent );
-     ~NumberBar();
- 
-     void setTextEdit( QTextEdit *edit );
-     void paintEvent( QPaintEvent *ev );
-private:
-     QTextEdit *m_edit;
-};
-
+#ifndef EDITOR_H
+#define EDITOR_H
+//
+#include <QFrame>
+//
 class Editor : public QFrame {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  Editor( QWidget *parent = 0 );
+	Editor( QWidget * parent = 0 );
+	virtual ~Editor();
 
-  const QString & getCurrentFile() const;
+	virtual QString getTitle() const = 0;
+	virtual bool hasName() const = 0;
+	
+	virtual bool canCopy() = 0;
+	virtual bool canPaste() = 0;
+	virtual bool canUndo() = 0;
+	virtual bool canRedo() = 0;
+	virtual bool isModified() = 0;
 
-  void loadFile(const QString &fileName);
-  bool saveFile(const QString &fileName = "");
- 
-   StudioTextEdit *textEdit() const { return view; }
- 
-  void duplicateCurrentLine();
-  void moveLineUp();
-  void moveLineDown();
-  void uploSelectedText(bool upper = true);
-  void commentSelectedText(bool uncomment = false);
+public Q_SLOTS : 
+	virtual void undo() = 0;
+	virtual void redo() = 0;
 
-  bool eventFilter( QObject *obj, QEvent *event );
-signals:
-  void mouseHover( const QString &word );
-  void mouseHover( const QPoint &pos, const QString &word );
-
-private:
-  void setCurrentFile(const QString & name);
-  
-  QString m_curFile;
-
-  StudioTextEdit *view;
-  NumberBar *numbers;
-  QHBoxLayout *box;
-  QTextCursor highlight;
+	virtual void cut() = 0;
+	virtual void copy() = 0;
+	virtual void paste() = 0;
+	
+	virtual void setModified( bool ) = 0;
+	
+Q_SIGNALS:
+	void undoAvailable( bool available );
+	void redoAvailable( bool available );
+	void copyAvailable( bool available );
+	void pasteAvailable( bool available );
+	
+	void modificationChanged( bool changed );
 };
-
 #endif

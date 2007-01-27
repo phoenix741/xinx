@@ -17,65 +17,71 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef _TABEDITOR_H_
-#define _TABEDITOR_H_
 
+#ifndef TABEDITOR_H
+#define TABEDITOR_H
+//
 #include <QTabWidget>
-
+//
 class Editor;
 
 class TabEditor : public QTabWidget {
 	Q_OBJECT
 public:
-  TabEditor(QWidget * parent);
-
-  Editor * newTab(const QString & title = "untilted.xsl");
-  void updateTitle(int);
-  Editor * currentEditor() const;
-  Editor * editor(int index) const;
-  Editor * editor(QString filename) const;
-
-
-  static QString strippedName(const QString &fullFileName);
+	TabEditor( QWidget * parent = 0 );
+	virtual ~TabEditor();
+	
+	Editor * currentEditor();
+	Editor * editor( int index );
+	Editor * editor( const QString & filename );
+	
+	static bool isFileEditor( Editor * editor );
 public slots:
-  void loadTab(const QString & filename);
+	void newFileEditor();
+	void loadFileEditor( const QString & fileName );
 
-  void copy();
-  void cut();
-  void paste();
+	void copy();
+	void cut();
+	void paste();
   
-  void undo();
-  void redo(); 
+	void undo();
+	void redo(); 
   
-  void selectAll();
+	void selectAll();
   
-  void duplicateCurrentLine();
+	void duplicateCurrentLine();
 
-  void moveLineUp();
-  void moveLineDown();
+	void moveLineUp();
+	void moveLineDown();
 
-  void upperSelectedText();
-  void lowerSelectedText();
+	void upperSelectedText();
+	void lowerSelectedText();
 
-  void commentSelectedText();
-  void uncommentSelectedText();
+	void commentSelectedText();
+	void uncommentSelectedText();
 
-  void complete();
-signals:
-  void copyAvailable ( bool available );
-  void undoAvailable ( bool available );
-  void redoAvailable ( bool available );
-  void editAvailable ( bool available );
+	void complete();	
+Q_SIGNALS:
+	void undoAvailable( bool available );
+	void redoAvailable( bool available );
+	void copyAvailable( bool available );
+	void pasteAvailable( bool available );
+
+	void textAvailable( bool available ); // For move, duplicate line, complete and select all
+	void hasTextSelection( bool selection ); // For Upper/Lower Case ; Comment/Uncomment
+
 protected:
-  void dragEnterEvent(QDragEnterEvent *event);
-  void dropEvent(QDropEvent *event);
-  void tabRemoved ( int index );
+	void dragEnterEvent( QDragEnterEvent *event );
+	void dropEvent( QDropEvent *event );
+	void tabRemoved ( int index );
+	
 private slots:
-  void slotDocumentWasModified();
-  void slotCurrentTabChanged(int);
+	void slotCurrentTabChanged( int );
+	void slotModifiedChange( bool );
+	
 private:
-  Editor * prec;
+
+	Editor * previous;
 };
 
 #endif

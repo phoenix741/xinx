@@ -1,30 +1,32 @@
 SOURCES +=   main.cpp \
-  editor.cpp \
-  tabeditor.cpp \
   xmlhighlighter.cpp \
   objectview.cpp \
   javaobjectfileimpl.cpp \
   editorcompletion.cpp \
-  texteditor.cpp \
   finddialog.cpp \
   xsllistview.cpp \
   xslproject.cpp \
   uniqueapplication.cpp \
   projectpropertyimpl.cpp \
-  xmlvisualstudio.cpp
-HEADERS +=   editor.h \
-  tabeditor.h \
-  xmlhighlighter.h \
+  xmlvisualstudio.cpp \
+  fileeditor.cpp \
+  xmleditor.cpp \
+  tabeditor.cpp \
+  editor.cpp
+HEADERS +=   xmlhighlighter.h \
   objectview.h \
   javaobjectfileimpl.h \
   editorcompletion.h \
-  texteditor.h \
   finddialog.h \
   xsllistview.h \
   xslproject.h \
   uniqueapplication.h \
   projectpropertyimpl.h \
-  xmlvisualstudio.h
+  xmlvisualstudio.h \
+  fileeditor.h \
+  xmleditor.h \
+  tabeditor.h \
+  editor.h
 TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \

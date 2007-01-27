@@ -23,9 +23,9 @@
 #include "uniqueapplication.h"
 
 #include "xmlvisualstudio.h"
-#include "editor.h"
-#include "texteditor.h"
 #include "tabeditor.h"
+#include "editor.h"
+#include "fileeditor.h"
 #include "javaobjectfileimpl.h"
 #include "objectview.h"
 #include "editorcompletion.h"
@@ -60,12 +60,12 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(
 	readSettings();
 
 	// Connection for auto open
-	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(hasFileToOpen(QString)), m_tabEditors, SLOT(loadTab(QString)) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(hasFileToOpen(QString)), m_tabEditors, SLOT(loadFileEditor(QString)) );
 }
 //
 
 void XMLVisualStudio::on_m_newAct_triggered() {
-	m_tabEditors->newTab();
+	m_tabEditors->newFileEditor();
 	updateActions();
 }
 
@@ -95,17 +95,20 @@ void XMLVisualStudio::on_m_saveAllAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_printAct_triggered() {
-	QTextDocument *document = m_tabEditors->currentEditor()->textEdit()->document();
-	QPrinter printer;
+	if( m_tabEditors->currentEditor() && TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
+		QTextDocument *document = editor->textEdit()->document();
+		QPrinter printer;
 
-	QPrintDialog *dlg = new QPrintDialog(&printer, this);
-	if (dlg->exec() != QDialog::Accepted) return;
+		QPrintDialog *dlg = new QPrintDialog( &printer, this );
+		if ( dlg->exec() != QDialog::Accepted ) return;
 
-	document->print(&printer);
+		document->print( &printer );
   
-	delete dlg;
+		delete dlg;
 
-	statusBar()->showMessage(tr("Printed"), 2000);
+		statusBar()->showMessage( tr("Printed"), 2000 );
+	}
 }
 
 void XMLVisualStudio::on_m_closeAct_triggered() {
@@ -134,72 +137,73 @@ void XMLVisualStudio::on_m_searchAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_searchNextAct_triggered() {
-	StudioTextEdit * textEdit = m_tabEditors->currentEditor()->textEdit();
-	QTextDocument * document = textEdit->document();
-	QTextCursor cursor(textEdit->textCursor());
-	int selectionStart = cursor.selectionStart(),
-	    selectionEnd = cursor.selectionEnd();
+	if( m_tabEditors->currentEditor() && TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		QTextDocument * document = textEdit->document();
+		QTextCursor cursor(textEdit->textCursor());
+		int selectionStart = cursor.selectionStart(),
+		    selectionEnd = cursor.selectionEnd();
 
-	if( m_findOptions.searchFromStart ) {
-		cursor.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
-		m_findOptions.searchFromStart = false;
-	} else
-	if( m_findOptions.selectionOnly && ! m_findOptions.backwardSearch )
-		cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
-	else
-	if( m_findOptions.selectionOnly && m_findOptions.backwardSearch )
-		cursor.setPosition ( selectionEnd, QTextCursor::MoveAnchor );
-	else
-	if( m_findOptions.backwardSearch )
-		cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
-
+		if( m_findOptions.searchFromStart ) {
+			cursor.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+			m_findOptions.searchFromStart = false;
+		} else
+		if( m_findOptions.selectionOnly && ! m_findOptions.backwardSearch )
+			cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
+		else
+		if( m_findOptions.selectionOnly && m_findOptions.backwardSearch )
+			cursor.setPosition ( selectionEnd, QTextCursor::MoveAnchor );
+		else
+		if( m_findOptions.backwardSearch )
+			cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
 	
-	QTextDocument::FindFlags flags;
-	if( m_findOptions.backwardSearch ) flags ^= QTextDocument::FindBackward;
-	if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
-	if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
 	
-	if( m_findOptions.regularExpression ) {
-		cursor = document->find( QRegExp( m_findExpression ), cursor, flags );
-	} else {
-		cursor = document->find( m_findExpression, cursor, flags );
-	}
+		QTextDocument::FindFlags flags;
+		if( m_findOptions.backwardSearch ) flags ^= QTextDocument::FindBackward;
+		if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
+		if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
 	
-	if( cursor.isNull() || 
-		( m_findOptions.selectionOnly && ( ( !m_findOptions.backwardSearch && cursor.position() > selectionEnd ) || 
-			( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) 
-		QMessageBox::warning(this, tr("Application"), tr("%1 not found").arg( m_findExpression ), QMessageBox::Ok);
-	else {
-		textEdit->setTextCursor( cursor );
-		
-		if( m_findOptions.replace ) {
-			QMessageBox::StandardButton ret = QMessageBox::Yes;
+		if( m_findOptions.regularExpression ) {
+			cursor = document->find( QRegExp( m_findExpression ), cursor, flags );
+		} else {
+			cursor = document->find( m_findExpression, cursor, flags );
+		}
+	
+		if( cursor.isNull() || 
+			( m_findOptions.selectionOnly && ( ( !m_findOptions.backwardSearch && cursor.position() > selectionEnd ) || 
+				( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) 
+			QMessageBox::warning(this, tr("Application"), tr("%1 not found").arg( m_findExpression ), QMessageBox::Ok);
+		else {
+			textEdit->setTextCursor( cursor );
 			
-			if(! m_yesToAllReplace) 
-				ret = QMessageBox::question(this, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel);
-
-			switch(ret) {
-			case QMessageBox::Yes: 	
-				// Replace chaine
-				cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
-
-				on_m_searchNextAct_triggered();
-				break;
-			case QMessageBox::YesToAll: 	
-				cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
-				m_yesToAllReplace = true;
-				on_m_searchNextAct_triggered();
-				m_yesToAllReplace = false;
-				break;
-			case QMessageBox::No: 	
+			if( m_findOptions.replace ) {
+				QMessageBox::StandardButton ret = QMessageBox::Yes;
+			
+				if(! m_yesToAllReplace) 
+					ret = QMessageBox::question(this, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel);
+	
+				switch(ret) {
+				case QMessageBox::Yes: 	
+					// Replace chaine
+					cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
+	
+					on_m_searchNextAct_triggered();
+					break;
+				case QMessageBox::YesToAll: 	
+					cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
+					m_yesToAllReplace = true;
+					on_m_searchNextAct_triggered();
+					m_yesToAllReplace = false;
+					break;
+				case QMessageBox::No: 	
 				
-				on_m_searchNextAct_triggered();
-				break;
-			default : // Do nothing else
-				;
+					on_m_searchNextAct_triggered();
+					break;
+				default : // Do nothing else
+					;
+				}
 			}
 		}
-		
 	}
 }
 
@@ -243,7 +247,9 @@ void XMLVisualStudio::on_m_openProjectAct_triggered() {
 void XMLVisualStudio::on_m_saveProjectAct_triggered() {
 	m_xslProject->openedFiles().clear();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		m_xslProject->openedFiles().append( m_tabEditors->editor( i )->getCurrentFile() );
+		if( TabEditor::isFileEditor( m_tabEditors->editor( i ) ) ) {
+			m_xslProject->openedFiles().append( static_cast<FileEditor*>( m_tabEditors->editor( i ) )->getFileName() );
+		}
 	}
 	
 	m_xslProject->saveToFile();
@@ -276,13 +282,15 @@ void XMLVisualStudio::on_m_aboutAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_xslContentTreeView_doubleClicked(QModelIndex index) {
-	QVariant line = m_xslModel->data( index, Qt::UserRole );
-	StudioTextEdit * ed = m_tabEditors->currentEditor()->textEdit();
-	QTextCursor cursor = ed->textCursor();
-	cursor.movePosition( QTextCursor::Start );
-	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line.toInt() - 1 );
-	ed->setTextCursor( cursor );
-	ed->setFocus( Qt::OtherFocusReason );
+	if( m_tabEditors->currentEditor() && TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		QVariant line = m_xslModel->data( index, Qt::UserRole );
+		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		QTextCursor cursor = ed->textCursor();
+		cursor.movePosition( QTextCursor::Start );
+		cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line.toInt() - 1 );
+		ed->setTextCursor( cursor );
+		ed->setFocus( Qt::OtherFocusReason );
+	}
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
@@ -298,7 +306,7 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 }
 
 void XMLVisualStudio::open( const QString & filename ) {
-	m_tabEditors->loadTab(filename);
+	m_tabEditors->loadFileEditor(filename);
 	updateActions();
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
@@ -312,8 +320,10 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 }
 
 void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
-	Editor * ed = m_tabEditors->editor(tab);
-	m_xslModel->updateModel( ed->textEdit()->toPlainText() );
+	if( TabEditor::isFileEditor( m_tabEditors->editor( tab ) ) ) {
+		FileEditor * ed = static_cast<FileEditor*>( m_tabEditors->editor( tab ) );
+		m_xslModel->updateModel( ed->textEdit()->toPlainText() );
+	}
 }
 
 void XMLVisualStudio::openRecentProject() {
@@ -346,65 +356,65 @@ void XMLVisualStudio::createActions() {
 	// Paste
 	connect(m_pasteAct, SIGNAL(triggered()), m_tabEditors, SLOT(paste()));
 	m_pasteAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_pasteAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(pasteAvailable(bool)), m_pasteAct, SLOT(setEnabled(bool)));	
   
 	// Select All
 	connect(m_selectAllAct, SIGNAL(triggered()), m_tabEditors, SLOT(selectAll()));
 	m_selectAllAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_selectAllAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_selectAllAct, SLOT(setEnabled(bool)));	
   
 	// Duplicate Line
 	connect(m_duplicateLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(duplicateCurrentLine()));
 	m_duplicateLineAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_duplicateLineAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_duplicateLineAct, SLOT(setEnabled(bool)));	
   
 	// Move Line Up
 	connect(m_moveUpLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineUp()));
 	m_moveUpLineAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_moveUpLineAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_moveUpLineAct, SLOT(setEnabled(bool)));	
   
 	// Move Line Down
 	connect(m_moveDownLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(moveLineDown()));
 	m_moveDownLineAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_moveDownLineAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_moveDownLineAct, SLOT(setEnabled(bool)));	
 
 	// Upper Case
 	connect(m_upperTextAct, SIGNAL(triggered()), m_tabEditors, SLOT(upperSelectedText()));
 	m_upperTextAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_upperTextAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(hasTextSelection(bool)), m_upperTextAct, SLOT(setEnabled(bool)));	
 
 	// Lower Case
 	connect(m_lowerTextAct, SIGNAL(triggered()), m_tabEditors, SLOT(lowerSelectedText()));
 	m_lowerTextAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_lowerTextAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(hasTextSelection(bool)), m_lowerTextAct, SLOT(setEnabled(bool)));	
 
 	// Comment
 	connect(m_commentLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(commentSelectedText()));
 	m_commentLineAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_commentLineAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(hasTextSelection(bool)), m_commentLineAct, SLOT(setEnabled(bool)));	
 
 	// Uncomment
 	connect(m_uncommentLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(uncommentSelectedText()));
 	m_uncommentLineAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(copyAvailable(bool)), m_uncommentLineAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(hasTextSelection(bool)), m_uncommentLineAct, SLOT(setEnabled(bool)));	
 
 	// Complete  
 	/* Don't need, process by the editor directly */ 
 	connect(m_completeAct, SIGNAL(triggered()), m_tabEditors, SLOT(complete()));
 	m_completeAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_completeAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_completeAct, SLOT(setEnabled(bool)));	
 	
 	// Search 
 	m_searchAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_searchAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_searchAct, SLOT(setEnabled(bool)));	
 	
 	// Search next/previous
 	m_searchNextAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_searchNextAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_searchNextAct, SLOT(setEnabled(bool)));	
 
 	// Replace
 	m_replaceAct->setEnabled(false);
-	connect(m_tabEditors, SIGNAL(editAvailable(bool)), m_replaceAct, SLOT(setEnabled(bool)));	
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_replaceAct, SLOT(setEnabled(bool)));	
   
   	// About Qt
 	connect(m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -443,64 +453,63 @@ void XMLVisualStudio::createDockWindows() {
 }
 
 void XMLVisualStudio::readSettings() {
-  QPoint pos = m_settings->value( "pos", QPoint(200, 200) ).toPoint();
-  QSize size = m_settings->value( "size", QSize(400, 400) ).toSize();
-  resize(size);
-  move(pos);
+	QPoint pos = m_settings->value( "pos", QPoint(200, 200) ).toPoint();
+	QSize size = m_settings->value( "size", QSize(400, 400) ).toSize();
+	resize(size);
+	move(pos);
   
-  m_javaObjects->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() );
-  m_javaObjects->loadFiles();
+	m_javaObjects->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() );
+	m_javaObjects->loadFiles();
   
-  completionNodeList->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() + "/completion.cpl" );
-  completionNodeList->loadFiles();
+	completionNodeList->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() + "/completion.cpl" );
+	completionNodeList->loadFiles();
 
-  m_xslContentDock->setVisible( m_settings->value("xslContent/visible", true).toBool() );
+	m_xslContentDock->setVisible( m_settings->value("xslContent/visible", true).toBool() );
 }
 
 void XMLVisualStudio::writeSettings() {
-  m_settings->setValue( "pos", pos() );
-  m_settings->setValue( "size", size() );
-  m_settings->setValue( "xmljavapath", m_javaObjects->path() );
+	m_settings->setValue( "pos", pos() );
+	m_settings->setValue( "size", size() );
+	m_settings->setValue( "xmljavapath", m_javaObjects->path() );
 
-  m_settings->setValue( "xslContent/visible", ! m_xslContentDock->isHidden() );
+	m_settings->setValue( "xslContent/visible", ! m_xslContentDock->isHidden() );
 }
 
 
 bool XMLVisualStudio::maybeSave(int index) {
-  if ( m_tabEditors->editor(index)->textEdit()->document()->isModified() ) {
-    QMessageBox::StandardButton ret;
-    ret = QMessageBox::warning(this, tr("Application"),
-                               tr("The document %1 has been modified.\n"
-                                  "Do you want to save your changes?").arg( m_tabEditors->editor(index)->getCurrentFile() ),
-                               QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-     if (ret == QMessageBox::Save) {
-       saveEditor(index);
-     } else if (ret == QMessageBox::Cancel)
-       return false;
-  }
-  return true;
+	if ( m_tabEditors->editor(index)->isModified() ) {
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::warning(this, tr("Application"),
+									tr("The document %1 has been modified.\n"
+									"Do you want to save your changes?").arg( m_tabEditors->editor(index)->getTitle() ),
+									QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+		if (ret == QMessageBox::Save) {
+		saveEditor(index);
+	} else if (ret == QMessageBox::Cancel)
+		return false;
+	}
+	return true;
 }
 
-void XMLVisualStudio::saveEditor(int index) {
-  if ( m_tabEditors->editor(index)->getCurrentFile().isEmpty() ) {
-    on_m_saveAsAct_triggered();
-  } else {
-    m_tabEditors->editor( index )->saveFile();
-  }
-  m_tabEditors->updateTitle( index );
-  slotCurrentTabChanged( index );
+void XMLVisualStudio::saveEditor( int index ) {
+	if ( ! m_tabEditors->editor(index)->hasName() ) {
+		on_m_saveAsAct_triggered();
+	} else {
+		dynamic_cast<FileEditor*>( m_tabEditors->editor( index ) )->saveFile();
+	}
+	m_tabEditors->editor( index )->setModified( false );
 
-  statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getCurrentFile() ), 2000 );
+	statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
 }
 
 void XMLVisualStudio::saveEditorAs(int index) {
-  QString fileName = QFileDialog::getSaveFileName(this);
-  if (fileName.isEmpty()) return ;
+	QString fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty()) return ;
 
-  m_tabEditors->editor(index)->saveFile(fileName);
-  m_tabEditors->updateTitle(index);
+	dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->saveFile( fileName );
+	m_tabEditors->editor( index )->setModified( false );
 
-  statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getCurrentFile() ), 2000);
+	statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000);
 }
 
 void XMLVisualStudio::openProject( const QString & filename ) {
@@ -538,7 +547,7 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	if( filename.isEmpty() )
 		setWindowTitle( tr("XML Visual Studio") );
 	else {
-		setWindowTitle( tr("%1 - %2").arg( TabEditor::strippedName( filename ) ).arg( tr("XML Visual Studio") ) );
+		setWindowTitle( tr("%1 - %2").arg( QFileInfo( filename ).fileName() ).arg( tr("XML Visual Studio") ) );
 
 		QStringList files = m_settings->value( "Recent Project Files" ).toStringList();
 		files.removeAll( filename );
@@ -559,7 +568,7 @@ void XMLVisualStudio::updateRecentFiles() {
 	int numRecentFiles = qMin( files.size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( TabEditor::strippedName( files[i] ) );
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( files[i] ).fileName() );
 		m_recentProjectActs[i]->setText( text );
 		m_recentProjectActs[i]->setData( files[i] );
 		m_recentProjectActs[i]->setVisible( true );

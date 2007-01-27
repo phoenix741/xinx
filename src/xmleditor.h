@@ -17,47 +17,47 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef _TEXTEDIT_H_
-#define _TEXTEDIT_H_
 
-#include <QTextEdit>
+#ifndef __XMLEDITOR_H__
+#define __XMLEDITOR_H__
+
+#include "fileeditor.h"
+#include <QTextCursor>
 
 class QCompleter;
+class QTextDocument;
+class QTextEdit;
 
-class StudioTextEdit : public QTextEdit {
-  Q_OBJECT
-  Q_PROPERTY( QString text READ text WRITE setText )
+class XMLProcessor : public TextProcessor {
+	Q_OBJECT
 public:
-	StudioTextEdit(QWidget *parent = 0);
-	~StudioTextEdit();
+	XMLProcessor( QTextEdit * widget, QObject * parent = 0 );
+	virtual ~XMLProcessor();
+	
+	virtual void commentSelectedText( bool uncomment );
+	virtual void complete();
+	virtual void keyPressEvent( QKeyEvent *e );
+	
+protected slots:
+	void insertCompletion(const QString& completion);
 
-	QString text() const;
-	void setText( const QString &text );
-
-	void complete();
-
-	bool isCodeCommented(const QTextCursor & cursor) const;
-	bool isEditBalise(const QTextCursor & cursor) const;
-	bool isEditNode(const QTextCursor & cursor) const;
-	bool isEditParam(const QTextCursor & cursor) const;
-	bool isEditValue(const QTextCursor & cursor) const;
+private:
+	bool isCodeCommented( const QTextCursor & cursor ) const;
+	bool isEditBalise( const QTextCursor & cursor ) const;
+	bool isEditNode( const QTextCursor & cursor ) const;
+	bool isEditParam( const QTextCursor & cursor ) const;
+	bool isEditValue( const QTextCursor & cursor ) const;
    
 	QString textUnderCursor(const QTextCursor & cursor) const;
 	QString nodeName(const QTextCursor & cursor) const;
 	
 	QCompleter * currentCompleter(const QTextCursor & cursor);
-protected slots:
-	void insertCompletion(const QString& completion);
 
-protected:
-	void keyPressEvent(QKeyEvent *e);
-	
-private:
+
 	QCompleter * m_completerNode;
 	QString m_completerParamNodeName;
 	QCompleter * m_completerParam;
 	QCompleter * m_completerValue;
 };
 
-#endif
+#endif // __XMLEDITOR_H__

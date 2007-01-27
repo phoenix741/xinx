@@ -17,117 +17,98 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "texteditor.h"
-#include "editorcompletion.h"
-#include "xmlhighlighter.h"
 
 #include <QtGui>
 #include <QCompleter>
 
+#include "xmleditor.h"
+#include "editorcompletion.h"
+
+/* XMLProcessor */
 
 #define EOW			"~!@#$%^&*()+{}|\"<>?,./;'[]\\="
 #define EOWREGEXP	"[~!@#\\$%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,\\./;'\\[\\]\\\\=\\s]"
 
-StudioTextEdit::StudioTextEdit(QWidget *parent) : QTextEdit(parent), m_completerNode(0), m_completerParamNodeName(""), m_completerParam(0), m_completerValue(0) {
-	// Setup the main view
-	QFont font;
-	font.setFamily("Monospace");
-	font.setFixedPitch(true);
-	font.setPointSize(8);
-  
-	setFont(font);
-	setTabStopWidth( 15 );
-	new XmlHighlighter(document());
-
+XMLProcessor::XMLProcessor( QTextEdit * widget, QObject * parent ) : TextProcessor( widget, parent ), m_completerParamNodeName( "" ), m_completerValue( 0 ) {
 	QStringList wordList;
 	for(int i = 0; i < completionNodeList->count(); i++) {
 		wordList << completionNodeList->node(i)->name();
 	}
 
 	// Completer
-	m_completerNode = new QCompleter(wordList, this);
-	m_completerNode->setWidget(this);
-	m_completerNode->setCompletionMode(QCompleter::PopupCompletion);
-	m_completerNode->setCaseSensitivity(Qt::CaseInsensitive);
-	connect(m_completerNode, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)));
+	m_completerNode = new QCompleter( wordList, this );
+	m_completerNode->setWidget( textEdit() );
+	m_completerNode->setCompletionMode( QCompleter::PopupCompletion );
+	m_completerNode->setCaseSensitivity( Qt::CaseInsensitive );
+	connect( m_completerNode, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
    
-	m_completerParam = new QCompleter(this);
-	m_completerParam->setWidget(this);
-	m_completerParam->setCompletionMode(QCompleter::PopupCompletion);
-	m_completerParam->setCaseSensitivity(Qt::CaseInsensitive);
-	connect(m_completerParam, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)));
-
+	m_completerParam = new QCompleter( this );
+	m_completerParam->setWidget( textEdit() );
+	m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
+	m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
+	connect( m_completerParam, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
 }
 
-StudioTextEdit::~StudioTextEdit() {
+XMLProcessor::~XMLProcessor() {
 	
 }
 	
-QString StudioTextEdit::text() const {
-	return toPlainText ();	
-}
-
-void StudioTextEdit::setText( const QString &text ) {
-	setPlainText(text);
-}
-
-bool StudioTextEdit::isCodeCommented(const QTextCursor & cursor) const {
-  QTextCursor cursorCommentStart ( document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
-  QTextCursor cursorCommentEnd ( document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
+bool XMLProcessor::isCodeCommented( const QTextCursor & cursor ) const {
+	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
   
-  if( cursorCommentStart.isNull() && cursorCommentEnd.isNull() ) return false;
-  if( cursorCommentEnd.isNull() ) return true;
-  if( cursorCommentStart.isNull() ) return false;
-  if( cursorCommentStart < cursorCommentEnd ) return false;
-  return true;
+	if( cursorCommentStart.isNull() && cursorCommentEnd.isNull() ) return false;
+	if( cursorCommentEnd.isNull() ) return true;
+	if( cursorCommentStart.isNull() ) return false;
+	if( cursorCommentStart < cursorCommentEnd ) return false;
+	return true;
 }
 
-bool StudioTextEdit::isEditBalise(const QTextCursor & cursor) const {
-  QTextCursor cursorBaliseStart ( document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
-  QTextCursor cursorBaliseEnd ( document()->find ( ">", cursor, QTextDocument::FindBackward ) );
+bool XMLProcessor::isEditBalise( const QTextCursor & cursor ) const {
+	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorBaliseEnd ( textEdit()->document()->find ( ">", cursor, QTextDocument::FindBackward ) );
   
-  if( cursorBaliseStart.isNull() && cursorBaliseStart.isNull() ) return false;
-  if( cursorBaliseEnd.isNull() ) return true;
-  if( cursorBaliseStart.isNull() ) return false;
-  if( cursorBaliseStart < cursorBaliseEnd ) return false;
-  return true;
+	if( cursorBaliseStart.isNull() && cursorBaliseStart.isNull() ) return false;
+	if( cursorBaliseEnd.isNull() ) return true;
+	if( cursorBaliseStart.isNull() ) return false;
+	if( cursorBaliseStart < cursorBaliseEnd ) return false;
+	return true;
 }
 
-bool StudioTextEdit::isEditNode(const QTextCursor & cursor) const {
-	if(! isEditBalise(cursor)) return false;
+bool XMLProcessor::isEditNode( const QTextCursor & cursor ) const {
+	if( ! isEditBalise(cursor) ) return false;
 	
-	QTextCursor cursorBaliseStart ( document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorSpace ( document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
 	
-	if(cursorSpace.isNull()) return true;
-	if(cursorSpace < cursorBaliseStart) return true;
+	if( cursorSpace.isNull() ) return true;
+	if( cursorSpace < cursorBaliseStart ) return true;
 	return false;
 }
 
-bool StudioTextEdit::isEditParam(const QTextCursor & cursor) const {
-	if(isEditNode(cursor) || (! isEditBalise(cursor))) return false;
+bool XMLProcessor::isEditParam( const QTextCursor & cursor ) const {
+	if( isEditNode( cursor ) || (! isEditBalise( cursor )) ) return false;
 	
-	QTextCursor cursorSpace ( document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorEgal ( document()->find ( "=", cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorEgal ( textEdit()->document()->find ( "=", cursor, QTextDocument::FindBackward ) );
 	
 	/* 
-	Cas non géré : S'il y a une espace dans une valeur d'un paramêtre ....
+		Cas non géré : S'il y a une espace dans une valeur d'un paramètre ....
 	*/
 	
-	if(cursorEgal.isNull()) return true;
-	if(cursorEgal < cursorSpace) return true;
+	if( cursorEgal.isNull() ) return true;
+	if( cursorEgal < cursorSpace ) return true;
 	return false;
 }
 
-bool StudioTextEdit::isEditValue(const QTextCursor & cursor) const {
-	return isEditBalise(cursor) && !isEditNode(cursor) && !isEditParam(cursor);
+bool XMLProcessor::isEditValue( const QTextCursor & cursor ) const {
+	return isEditBalise( cursor ) && !isEditNode( cursor ) && !isEditParam( cursor );
 }
 
 
-QString StudioTextEdit::textUnderCursor(const QTextCursor & cursor) const {
-	QTextCursor before ( document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
-	QTextCursor after ( document()->find ( QRegExp( EOWREGEXP ), cursor ) );
+QString XMLProcessor::textUnderCursor( const QTextCursor & cursor ) const {
+	QTextCursor before ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
+	QTextCursor after ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursor ) );
 
 	QTextCursor tc = cursor;
 	
@@ -144,11 +125,11 @@ QString StudioTextEdit::textUnderCursor(const QTextCursor & cursor) const {
 	return tc.selectedText().trimmed();
 }
 
-QString StudioTextEdit::nodeName(const QTextCursor & cursor) const {
-	if(! isEditBalise(cursor)) return QString();
+QString XMLProcessor::nodeName( const QTextCursor & cursor ) const {
+	if( ! isEditBalise( cursor ) ) return QString();
 	
-	QTextCursor cursorBaliseStart ( document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorSpace ( document()->find ( QRegExp( EOWREGEXP ), cursorBaliseStart ) );
+	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursorBaliseStart ) );
 	
 	QTextCursor tc = cursor;
 	
@@ -161,17 +142,17 @@ QString StudioTextEdit::nodeName(const QTextCursor & cursor) const {
 	return tc.selectedText().trimmed();
 }
 
-void StudioTextEdit::insertCompletion(const QString& completion) {
-	QTextCursor tc = textCursor();
-	QCompleter * c = currentCompleter(tc);
+void XMLProcessor::insertCompletion( const QString& completion ) {
+	QTextCursor tc = textEdit()->textCursor();
+	QCompleter * c = currentCompleter( tc );
 	
 	int extra = completion.length() - c->completionPrefix().length();
 	tc.insertText(completion.right(extra));
-	tc.movePosition(QTextCursor::EndOfWord);
-	setTextCursor(tc);
+	tc.movePosition( QTextCursor::EndOfWord );
+	textEdit()->setTextCursor( tc );
 }
 
-QCompleter * StudioTextEdit::currentCompleter(const QTextCursor & cursor) {
+QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 	if( isEditNode( cursor ) ) {
 		return m_completerNode;
 	} else if ( isEditParam( cursor ) ) {
@@ -197,13 +178,13 @@ QCompleter * StudioTextEdit::currentCompleter(const QTextCursor & cursor) {
 	return NULL;	
 }
 
-void StudioTextEdit::complete() {
-	QTextCursor cursor = textCursor();
+void XMLProcessor::complete() {
+	QTextCursor cursor = textEdit()->textCursor();
 	
-	QRect cr = cursorRect();
+	QRect cr = textEdit()->cursorRect();
 	QString completionPrefix = textUnderCursor(cursor);
 
-	QCompleter * c = currentCompleter(textCursor());
+	QCompleter * c = currentCompleter(textEdit()->textCursor());
 
 	if(c) {
 		if( completionPrefix != m_completerNode->completionPrefix() ) {
@@ -215,8 +196,8 @@ void StudioTextEdit::complete() {
 	}
 }
 
-void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
-	QCompleter * c = currentCompleter(textCursor());
+void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
+	QCompleter * c = currentCompleter( textEdit()->textCursor() );
 	
 	if (c && c->popup()->isVisible()) {
 		// The following keys are forwarded by the completer to the widget
@@ -235,11 +216,11 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 
 	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
 	if (!c || !isShortcut) // dont process the shortcut when we have a completer
-		QTextEdit::keyPressEvent(e);
+		parentKeyPressEvent( e );
 		
 	if(!e->text().isEmpty()) {
 		if(e->text().right(1) == ">") {
-			QTextCursor tc(textCursor());
+			QTextCursor tc(textEdit()->textCursor());
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 		
@@ -250,20 +231,20 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 			if( isEditBalise( tc ) && selected != "/>" ){
 				QString name = nodeName( tc );
 				if( ! name.isEmpty() ) {
-					int position = textCursor().position();
+					int position = textEdit()->textCursor().position();
 	         	
-					textCursor().insertText( QString("</%1>").arg(name) );
+					textEdit()->textCursor().insertText( QString("</%1>").arg(name) );
 		
 					tc.setPosition(position);
-					setTextCursor( tc );
+					textEdit()->setTextCursor( tc );
 				}
 			}
 		} else if(e->text().right(1) == "=") {
-			QTextCursor tc(textCursor());
+			QTextCursor tc(textEdit()->textCursor());
 			if( isEditValue( tc ) ) {
 				tc.insertText( "\"\"" );
 				tc.movePosition( QTextCursor::PreviousCharacter );
-				setTextCursor( tc );
+				textEdit()->setTextCursor( tc );
 			}
 		}
 	}
@@ -271,7 +252,7 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 
 	if( ( ! ctrlOrShift ) && ( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) ) {
-		QTextCursor tc( textCursor() );
+		QTextCursor tc( textEdit()->textCursor() );
 		QTextBlock previous = tc.block().previous();	
 		QString indent = previous.text();
 		
@@ -281,7 +262,7 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 		
 		tc.insertText( indent );
 		
-		setTextCursor( tc );
+		textEdit()->setTextCursor( tc );
 		
 		return;
 	}
@@ -291,7 +272,7 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
 
      static QString eow(EOW); // end of word
      bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-     QString completionPrefix = textUnderCursor( textCursor() );
+     QString completionPrefix = textUnderCursor( textEdit()->textCursor() );
 
      if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
          c->popup()->hide();
@@ -303,7 +284,46 @@ void StudioTextEdit::keyPressEvent(QKeyEvent *e) {
          c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
      }
 
-     QRect cr = cursorRect();
+     QRect cr = textEdit()->cursorRect();
      cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
      c->complete(cr); // popup it up!
 }
+
+void XMLProcessor::commentSelectedText( bool uncomment ) {
+	QTextCursor cursor( textEdit()->textCursor() );
+ 
+	QTextCursor cursorStart( textEdit()->textCursor() );
+	cursorStart.setPosition( cursor.selectionStart() );
+	bool isStartCommented = isCodeCommented( cursorStart );
+
+	QTextCursor cursorEnd( textEdit()->textCursor() );
+	cursorEnd.setPosition( cursor.selectionEnd() );
+	bool isEndCommented =  isCodeCommented( cursorEnd );
+
+	QString text = cursor.selectedText();
+	text = text.replace( "<!--", "" );
+	text = text.replace( "-->", "" );
+  
+	cursor.beginEditBlock();
+
+	cursor.removeSelectedText();
+	if(! ( isStartCommented ^ uncomment ) ) {
+		// Comment  	
+		if(! uncomment)
+			cursor.insertText("<!--");  
+		else
+			cursor.insertText("-->");  
+	}
+	cursor.insertText(text);  
+	if(! ( isEndCommented ^ uncomment )) {
+		// End the comment  	
+		if(! uncomment)
+			cursor.insertText("-->");  
+		else
+			cursor.insertText("<!--");  
+	}
+
+	cursor.endEditBlock();
+}
+
+#include "xmleditor.moc"
