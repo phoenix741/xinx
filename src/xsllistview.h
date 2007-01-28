@@ -28,10 +28,11 @@
 #include <QAbstractItemModel>
 
 class QDomElement;
+class XSLProject;
 
 class XSLModelData {
 public:
-	XSLModelData( XSLModelData * orig = 0 ) : m_parent(0) { m_parent = orig; }
+	XSLModelData( XSLModelData * orig = 0 ) : m_parent( orig ) { if( m_parent ) { m_fileName = m_parent->m_fileName; m_project = m_parent->m_project; } };
 	virtual ~XSLModelData() { qDeleteAll( m_child ); };
 
 	enum ElementType { etImport, etVariable, etTemplate };
@@ -47,24 +48,30 @@ public:
 
 	const int & line() const { return m_documentLine; };
 	void setLine( int value )  { m_documentLine = value; };
+
+	const QString & filename() const { return m_fileName; };
+	void setFilename( const QString & value )  { m_fileName = value; };
 	
 	XSLModelData * parent() const { return m_parent; };
 	int row() const { if( m_parent ) return m_parent->m_child.indexOf( const_cast<XSLModelData*>(this) ); return 0; };
 	
 	XSLModelData * child(int row) { return m_child.at( row ); };
-	int childCount() const { return m_child.size(); };
+	int childCount();
 	void appendChild(XSLModelData * child) { m_child.append( child ); };
 	
-	void loadFromXML(const QDomElement&);
-	void loadFromFile(const QString&);
-	void loadFromContent(const QString&);
+	void loadFromXML( const QDomElement&, XSLProject * );
+	void loadFromFile( const QString&, XSLProject * );
+	void loadFromContent( const QString&, XSLProject * );
 	
 private:
-	int m_documentLine;
-
 	XSLModelData * m_parent;
 	enum ElementType m_type;
 	QString m_name, m_value;
+	
+	int m_documentLine;
+	QString m_fileName;
+
+	XSLProject * m_project;
 	
 	QList<XSLModelData*> m_child;
 };
@@ -75,6 +82,11 @@ public:
 	XSLItemModel( QObject *parent = 0 );
 	virtual ~XSLItemModel();
 	
+	struct user_data {
+		int line;
+		QString filename;
+	};
+	
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -84,10 +96,12 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 	
 public slots:
-	void updateModel(const QString &);
+	void updateModel( const QString &, XSLProject * );
 	
 private:
 	XSLModelData* rootItem;
 };
+
+Q_DECLARE_METATYPE ( XSLItemModel::user_data )
 
 #endif

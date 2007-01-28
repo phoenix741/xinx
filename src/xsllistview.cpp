@@ -22,6 +22,7 @@
  ****************************************************************************/
  
 #include "xsllistview.h"
+#include "xslproject.h"
 
 #include <QDomElement>
 #include <QFile>
@@ -29,7 +30,7 @@
 #include <QApplication>
 #include <QIcon>
 
-void XSLModelData::loadFromXML(const QDomElement& element) {
+void XSLModelData::loadFromXML( const QDomElement& element, XSLProject * project ) {
 	qDeleteAll( m_child );
 	m_child.clear();
 	
@@ -37,7 +38,8 @@ void XSLModelData::loadFromXML(const QDomElement& element) {
   
 	while (! child.isNull()) {
 		if( child.prefix() == "xsl" && ( child.tagName() == "import" || child.tagName() == "variable" || child.tagName() == "template" ) ) {
-  			XSLModelData * data = new XSLModelData( this );
+			XSLModelData * data = new XSLModelData( this );
+			
   			if( child.tagName() == "import" ) {
 				data->setType( etImport );
 	  			data->setName( child.attribute( "href" ) );
@@ -57,12 +59,15 @@ void XSLModelData::loadFromXML(const QDomElement& element) {
   			m_child.append( data );
  		}
 		child = child.nextSiblingElement();
-	}    	
+	} 
+	
+	m_project = project;
 }
 
-void XSLModelData::loadFromFile(const QString& filename) {
+void XSLModelData::loadFromFile( const QString& filename, XSLProject * project ) {
 	QFile file(filename);
 	QDomDocument xsl;
+	m_fileName = filename;
 	
 	// Open the file
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -79,15 +84,16 @@ void XSLModelData::loadFromFile(const QString& filename) {
 	if (xsl.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
-			loadFromXML( root );
+			loadFromXML( root, project );
 	} else {
 		qDeleteAll( m_child );
 		m_child.clear();		
 	}
 }
 
-void XSLModelData::loadFromContent(const QString& content) {
+void XSLModelData::loadFromContent( const QString& content, XSLProject * project ) {
 	QDomDocument xsl;
+	m_fileName = QString();
 
 	// Load XML Document
 	QString errorStr;
@@ -96,12 +102,31 @@ void XSLModelData::loadFromContent(const QString& content) {
 	if (xsl.setContent(content, true, &errorStr, &errorLine, &errorColumn)) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
-			loadFromXML( root );
+			loadFromXML( root, project );
 	} else {
 		qDeleteAll( m_child );
 		m_child.clear();		
 	}  
 }
+
+int XSLModelData::childCount() { 
+	if( m_project && ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
+		if( QFile::exists( m_project->specifPath() + m_name ) ) {
+			loadFromFile( m_project->specifPath() + m_name, m_project );
+		} else
+		if( QFile::exists( m_project->navPath() + m_name ) ) {
+			loadFromFile( m_project->navPath() + m_name, m_project );
+		} else
+		if( QFile::exists( m_project->projectPath() + m_name ) ) {
+			loadFromFile( m_project->projectPath() + m_name, m_project );
+		} else 
+		if( QFile::exists( m_project->languePath() + m_name ) ) {
+			loadFromFile( m_project->languePath() + m_name, m_project );
+		} 
+	}
+	return m_child.size();
+};
+
 
 
 XSLItemModel::XSLItemModel( QObject *parent ) : QAbstractItemModel(parent) {
@@ -133,7 +158,12 @@ QVariant XSLItemModel::data(const QModelIndex &index, int role) const {
 		}
 	} 
 	
-	if ( role == Qt::UserRole ) return data->line();
+	if ( role == Qt::UserRole ) {
+		struct user_data ud;
+		ud.line = data->line();
+		ud.filename = data->filename();
+		return QVariant::fromValue(ud);	
+	}
 	
 	if ( role == Qt::DisplayRole ) 
 		switch(index.column()) {
@@ -217,8 +247,8 @@ int XSLItemModel::columnCount(const QModelIndex &parent) const {
 	return 2; // Name & Value
 }
 
-void XSLItemModel::updateModel(const QString & filename) {
-	rootItem->loadFromContent( filename );
+void XSLItemModel::updateModel(const QString & filename, XSLProject * project ) {
+	rootItem->loadFromContent( filename, project );
 	reset();
 }
 

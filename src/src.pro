@@ -12,7 +12,8 @@ SOURCES +=   main.cpp \
   fileeditor.cpp \
   xmleditor.cpp \
   tabeditor.cpp \
-  editor.cpp
+  editor.cpp \
+  jshighlighter.cpp
 HEADERS +=   xmlhighlighter.h \
   objectview.h \
   javaobjectfileimpl.h \
@@ -26,7 +27,8 @@ HEADERS +=   xmlhighlighter.h \
   fileeditor.h \
   xmleditor.h \
   tabeditor.h \
-  editor.h
+  editor.h \
+  jshighlighter.h
 TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \

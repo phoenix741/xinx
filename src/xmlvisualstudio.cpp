@@ -36,6 +36,8 @@
 
 #include "xmlvisualstudio.h"
 
+#define OPEN_SAVE_DIALOG_FILTER "*.xsl *.xml *.js"
+
 //
 XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
 	setupUi(this);
@@ -47,6 +49,7 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(
 	
 	m_javaObjects = new ObjectsView();
 	m_xslProject = NULL;
+	m_xslModel = NULL;
 	completionNodeList = new CplNodeList();
 
 	m_findDialog = new FindDialog(this);
@@ -71,10 +74,9 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 
 void XMLVisualStudio::on_m_openAct_triggered() {
 	QString path = QDir::currentPath();
-	
 	if( m_xslProject ) path = m_xslProject->projectPath();
 	
-	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), path, tr("XSL Files (*.xsl *.xml)") );
+	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), path, tr( OPEN_SAVE_DIALOG_FILTER ) );
 	if ( !filename.isEmpty() ) {
 		open( filename );
 	}
@@ -283,11 +285,15 @@ void XMLVisualStudio::on_m_aboutAct_triggered() {
 
 void XMLVisualStudio::on_m_xslContentTreeView_doubleClicked(QModelIndex index) {
 	if( m_tabEditors->currentEditor() && TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		QVariant line = m_xslModel->data( index, Qt::UserRole );
+		struct XSLItemModel::user_data data = m_xslModel->data( index, Qt::UserRole ).value<XSLItemModel::user_data>();
+		int line = data.line;
+
+		open( data.filename );
+		
 		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 		QTextCursor cursor = ed->textCursor();
 		cursor.movePosition( QTextCursor::Start );
-		cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line.toInt() - 1 );
+		cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line - 1 );
 		ed->setTextCursor( cursor );
 		ed->setFocus( Qt::OtherFocusReason );
 	}
@@ -306,7 +312,7 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 }
 
 void XMLVisualStudio::open( const QString & filename ) {
-	m_tabEditors->loadFileEditor(filename);
+	m_tabEditors->loadFileEditor( filename );
 	updateActions();
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
@@ -322,7 +328,7 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
 	if( TabEditor::isFileEditor( m_tabEditors->editor( tab ) ) ) {
 		FileEditor * ed = static_cast<FileEditor*>( m_tabEditors->editor( tab ) );
-		m_xslModel->updateModel( ed->textEdit()->toPlainText() );
+		m_xslModel->updateModel( ed->textEdit()->toPlainText(), m_xslProject );
 	}
 }
 
@@ -503,7 +509,10 @@ void XMLVisualStudio::saveEditor( int index ) {
 }
 
 void XMLVisualStudio::saveEditorAs(int index) {
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString path = QDir::currentPath();
+	if( m_xslProject ) path = m_xslProject->specifPath();
+
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Open XSL File"), path, tr( OPEN_SAVE_DIALOG_FILTER ) );
 	if (fileName.isEmpty()) return ;
 
 	dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->saveFile( fileName );
@@ -541,6 +550,8 @@ void XMLVisualStudio::updateActions() {
 	m_closeAct->setEnabled( m_tabEditors->count() );
 	m_closeAllAct->setEnabled( m_tabEditors->count() );
 	m_printAct->setEnabled( m_tabEditors->count() );
+	
+	if( m_xslModel && ( m_tabEditors->count() == 0 )  ) m_xslModel->updateModel( "", NULL );
 }
 
 void XMLVisualStudio::setCurrentProject( const QString & filename ) {

@@ -45,6 +45,8 @@ public:
 	
 	QString projectName() const;
 	void setProjectName( const QString & );
+	QString languePath() const { return projectPath() + "langue/" + defaultLang().toLower() + "/"; };
+	QString navPath() const { return languePath() + "nav/"; };
 
 	QString defaultLang() const;
 	void setDefaultLang( const QString & );

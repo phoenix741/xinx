@@ -22,6 +22,7 @@
  
 #include "fileeditor.h"
 #include "xmlhighlighter.h"
+#include "jshighlighter.h"
 #include "xmleditor.h"
 
 /* NumberBar */
@@ -87,6 +88,7 @@ public:
 	virtual void complete();
 
 	void formatToXML();
+	void formatToJS();
 	
 protected:
 	void keyPressEvent(QKeyEvent *e);
@@ -120,6 +122,13 @@ void TextEditor::formatToXML() {
 	m_highlighter = new XmlHighlighter( document() );
 	delete m_processor;
 	m_processor = new XMLProcessor( this, this );
+}
+
+void TextEditor::formatToJS() {
+	delete m_highlighter;
+	m_highlighter = new JsHighlighter( document() );
+	delete m_processor;
+	m_processor = NULL;
 }
 
 void TextEditor::commentSelectedText( bool uncomment ) {
@@ -300,6 +309,9 @@ inline void FileEditor::setFileName( const QString & name ) {
 	m_fileName = name;
 	if( QDir::match( "*.xml;*.xsl;*.html", m_fileName ) ) 
 		m_view->formatToXML();
+	else
+	if( QDir::match( "*.js", m_fileName ) ) 
+		m_view->formatToJS();
 }
 
 void FileEditor::loadFile( const QString & fileName ){
