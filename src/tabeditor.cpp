@@ -36,7 +36,7 @@ TabEditor::~TabEditor() {
 }
 //
 
-inline bool TabEditor::isFileEditor( Editor * editor ) {
+bool TabEditor::isFileEditor( Editor * editor ) {
 	return typeid(*editor) == typeid(FileEditor);
 }
 

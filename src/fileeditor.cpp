@@ -301,11 +301,11 @@ bool FileEditor::hasName() const {
 	return ! m_fileName.isEmpty();
 }
 
-inline const QString & FileEditor::getFileName() const {
+const QString & FileEditor::getFileName() const {
 	return m_fileName;
 }
 
-inline void FileEditor::setFileName( const QString & name ) {
+void FileEditor::setFileName( const QString & name ) {
 	m_fileName = name;
 	if( QDir::match( "*.xml;*.xsl;*.html", m_fileName ) ) 
 		m_view->formatToXML();

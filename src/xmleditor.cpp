@@ -326,4 +326,3 @@ void XMLProcessor::commentSelectedText( bool uncomment ) {
 	cursor.endEditBlock();
 }
 
-#include "xmleditor.moc"
