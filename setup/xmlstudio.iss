@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=XML Visual Studio
-AppVerName=XML Visual Studio 0.1 beta
+AppVerName=XML Visual Studio 0.4 beta
 DefaultDirName={pf}\XML Visual Studio
 DefaultGroupName=XML Visual Studio
 OutputDir=.\
