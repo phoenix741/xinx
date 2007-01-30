@@ -53,6 +53,45 @@ XMLProcessor::~XMLProcessor() {
 	
 }
 	
+XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cursor ) const {
+	cursorPosition cPosition = cpNone;
+	
+	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
+	
+	bool inComment = ! ( 
+			cursorCommentStart.isNull() // No comment before where i am
+		||	( (! cursorCommentEnd.isNull()) && ( cursorCommentStart < cursorCommentEnd ) ) // There is a end before, and the last is the end balise
+	 );
+
+	if( inComment ) {
+		cPosition = cpEditComment;
+		return cPosition;
+	} // else
+	
+	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) ); // A balise is'nt a comment
+	QTextCursor cursorBaliseEnd ( textEdit()->document()->find ( ">", cursor, QTextDocument::FindBackward ) );
+
+	bool inNode = (! cursorBaliseStart.isNull()) && ( cursorBaliseEnd.isNull() || ( cursorBaliseEnd < cursorBaliseStart ) );
+	if( ! inNode ) {
+		return cPosition; // = cpNone;
+	} // else
+	
+	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
+
+	bool editBaliseName = cursorSpace.isNull() || ( cursorSpace < cursorBaliseStart );
+	if( editBaliseName ) {
+		cPosition = cpEditNodeName;
+		return cPosition;
+	} // else
+	
+	QTextCursor cursorEgal ( textEdit()->document()->find ( "=", cursor, QTextDocument::FindBackward ) );
+	QTextCursor cursorQuote ( textEdit()->document()->find ( "\"", cursor, QTextDocument::FindBackward ) );
+	
+
+}
+
+	
 bool XMLProcessor::isCodeCommented( const QTextCursor & cursor ) const {
 	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
 	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );

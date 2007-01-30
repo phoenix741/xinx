@@ -42,6 +42,16 @@ protected slots:
 	void insertCompletion(const QString& completion);
 
 private:
+	enum cursorPosition {
+		cpEditComment, // <!-- XXXXX  -->
+		cpEditNodeName, // <XXXXX>
+		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
+		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
+		cpNone
+	};
+	
+	cursorPosition editPosition( const QTextCursor & cursor ) const;
+
 	bool isCodeCommented( const QTextCursor & cursor ) const;
 	bool isEditBalise( const QTextCursor & cursor ) const;
 	bool isEditNode( const QTextCursor & cursor ) const;
