@@ -88,60 +88,49 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 	QTextCursor cursorEgal ( textEdit()->document()->find ( "=", cursor, QTextDocument::FindBackward ) );
 	QTextCursor cursorQuote ( textEdit()->document()->find ( "\"", cursor, QTextDocument::FindBackward ) );
 	
-
+	/* 
+		<Noeud Param1=Value1 Param2="Value 2" Param3="Value3" Param4 Param5="Value 5"/>
+		       1   5    10   15   20   25   30   35   40   45   50   55   60   65   70
+		       
+		1 => Param / Space not null, Egal null, Quote null
+		8 => Value / Space < Egal, Quote null
+		15 => Param / Egal < Space, Quote null
+		22 => Value / Space < Egal, Quote null
+		23 => Value / Space < Egal < Quote
+		29 => Value / Egal < Quote < Space
+		31 => Param / Egal < Space  < Quote	
+		35 => Param / Egal < Quote < Space
+		
+	*/
+	
+	if( cursorEgal.isNull() || ( ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) ) ) {
+		cPosition = cpEditParamName;
+		return cPosition;
+	}
+	
+	cPosition = cpEditParamValue;
+	return cPosition;
 }
 
 	
 bool XMLProcessor::isCodeCommented( const QTextCursor & cursor ) const {
-	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
-  
-	if( cursorCommentStart.isNull() && cursorCommentEnd.isNull() ) return false;
-	if( cursorCommentEnd.isNull() ) return true;
-	if( cursorCommentStart.isNull() ) return false;
-	if( cursorCommentStart < cursorCommentEnd ) return false;
-	return true;
+	return editPosition( cursor ) == XMLProcessor::cpEditComment;
 }
 
 bool XMLProcessor::isEditBalise( const QTextCursor & cursor ) const {
-	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorBaliseEnd ( textEdit()->document()->find ( ">", cursor, QTextDocument::FindBackward ) );
-  
-	if( cursorBaliseStart.isNull() && cursorBaliseStart.isNull() ) return false;
-	if( cursorBaliseEnd.isNull() ) return true;
-	if( cursorBaliseStart.isNull() ) return false;
-	if( cursorBaliseStart < cursorBaliseEnd ) return false;
-	return true;
+	return isEditNode( cursor ) || isEditParam( cursor ) || isEditValue( cursor );
 }
 
 bool XMLProcessor::isEditNode( const QTextCursor & cursor ) const {
-	if( ! isEditBalise(cursor) ) return false;
-	
-	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
-	
-	if( cursorSpace.isNull() ) return true;
-	if( cursorSpace < cursorBaliseStart ) return true;
-	return false;
+	return editPosition( cursor ) == XMLProcessor::cpEditNodeName;
 }
 
 bool XMLProcessor::isEditParam( const QTextCursor & cursor ) const {
-	if( isEditNode( cursor ) || (! isEditBalise( cursor )) ) return false;
-	
-	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorEgal ( textEdit()->document()->find ( "=", cursor, QTextDocument::FindBackward ) );
-	
-	/* 
-		Cas non géré : S'il y a une espace dans une valeur d'un paramètre ....
-	*/
-	
-	if( cursorEgal.isNull() ) return true;
-	if( cursorEgal < cursorSpace ) return true;
-	return false;
+	return editPosition( cursor ) == XMLProcessor::cpEditParamName;
 }
 
 bool XMLProcessor::isEditValue( const QTextCursor & cursor ) const {
-	return isEditBalise( cursor ) && !isEditNode( cursor ) && !isEditParam( cursor );
+	return editPosition( cursor ) == XMLProcessor::cpEditParamValue;
 }
 
 
@@ -187,34 +176,39 @@ void XMLProcessor::insertCompletion( const QString& completion ) {
 	
 	int extra = completion.length() - c->completionPrefix().length();
 	tc.insertText(completion.right(extra));
-	tc.movePosition( QTextCursor::EndOfWord );
+	// tc.movePosition( QTextCursor::EndOfWord ); /* Don't need this */
 	textEdit()->setTextCursor( tc );
 }
 
 QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
-	if( isEditNode( cursor ) ) {
-		return m_completerNode;
-	} else if ( isEditParam( cursor ) ) {
-		QString node = nodeName(cursor);
+	XMLProcessor::cursorPosition position = editPosition( cursor );
+	switch( position ) {
+		case XMLProcessor::cpEditNodeName:
+			return m_completerNode;
+		case XMLProcessor::cpEditParamName: 
+			{
+				QString node = nodeName( cursor );
 		
-		if(node != m_completerParamNodeName) {
-			m_completerParamNodeName = node;
-			if(completionNodeList->node(node)) {
-				QStringList wordList;
-				for(int i = 0; i < completionNodeList->node(node)->count(); i++) {
-					wordList << completionNodeList->node(node)->param(i);
+				if(node != m_completerParamNodeName) {
+					m_completerParamNodeName = node;
+					if(completionNodeList->node(node)) {
+						QStringList wordList;
+						for(int i = 0; i < completionNodeList->node(node)->count(); i++) {
+							wordList << completionNodeList->node(node)->param(i);
+						}
+					
+						m_completerParam->setModel(new QStringListModel(wordList, m_completerParam));
+					} else 
+						return NULL;
 				}
-			
-				m_completerParam->setModel(new QStringListModel(wordList, m_completerParam));
-			} else 
-				return NULL;
-		}
+			}
 		
-		return m_completerParam;
-	} else if ( isEditValue ( cursor ) ) {
-		return m_completerValue;
+			return m_completerParam;
+		case XMLProcessor::cpEditParamValue:		
+			return m_completerValue;
+		default:
+			return NULL;	
 	}
-	return NULL;	
 }
 
 void XMLProcessor::complete() {
@@ -279,8 +273,10 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 				}
 			}
 		} else if(e->text().right(1) == "=") {
-			QTextCursor tc(textEdit()->textCursor());
-			if( isEditValue( tc ) ) {
+			QTextCursor tc( textEdit()->textCursor() );
+			QTextCursor tc2( textEdit()->textCursor() );
+			tc2.movePosition( QTextCursor::PreviousCharacter );
+			if( isEditParam( tc2 ) ) {
 				tc.insertText( "\"\"" );
 				tc.movePosition( QTextCursor::PreviousCharacter );
 				textEdit()->setTextCursor( tc );

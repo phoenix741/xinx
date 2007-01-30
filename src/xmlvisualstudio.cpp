@@ -285,10 +285,13 @@ void XMLVisualStudio::on_m_aboutAct_triggered() {
 
 void XMLVisualStudio::on_m_xslContentTreeView_doubleClicked(QModelIndex index) {
 	if( m_tabEditors->currentEditor() && TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		struct XSLItemModel::user_data data = m_xslModel->data( index, Qt::UserRole ).value<XSLItemModel::user_data>();
+		QModelIndex mappingIndex = m_sortXslModel->mapToSource( index );
+		
+		struct XSLItemModel::user_data data = m_xslModel->data( mappingIndex, Qt::UserRole ).value<XSLItemModel::user_data>();
 		int line = data.line;
 
-		open( data.filename );
+		if( ! data.filename.isEmpty() )
+			open( data.filename );
 		
 		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 		QTextCursor cursor = ed->textCursor();
@@ -451,7 +454,9 @@ void XMLVisualStudio::createStatusBar() {
 void XMLVisualStudio::createDockWindows() {
 	/* XSL Content Dock */
 	m_xslModel = new XSLItemModel( this );
-	m_xslContentTreeView->setModel( m_xslModel );
+	m_sortXslModel = new QSortFilterProxyModel( this );
+	m_sortXslModel->setSourceModel( m_xslModel );
+	m_xslContentTreeView->setModel( m_sortXslModel );
   
 	m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
 

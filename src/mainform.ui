@@ -168,7 +168,11 @@
       <number>0</number>
      </property>
      <item row="0" column="0" >
-      <widget class="QTreeView" name="m_xslContentTreeView" />
+      <widget class="QTreeView" name="m_xslContentTreeView" >
+       <property name="sortingEnabled" >
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

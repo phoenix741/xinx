@@ -28,6 +28,7 @@
 #define MAXRECENTFILES 5
 
 class XSLItemModel;
+class QSortFilterProxyModel;
 class ObjectsView;
 class XSLProject;
 class QSettings;
@@ -108,6 +109,7 @@ private:
   
 	/* Dock Object */
 	XSLItemModel * m_xslModel;
+	QSortFilterProxyModel * m_sortXslModel;
 
 	/* Find declaration */
 	QString m_findExpression, m_replaceExpression;
