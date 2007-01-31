@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=XML Visual Studio
-AppVerName=XML Visual Studio 0.4 beta
+AppVerName=XML Visual Studio 0.5-1 beta
 DefaultDirName={pf}\XML Visual Studio
 DefaultGroupName=XML Visual Studio
 OutputDir=.\
@@ -12,6 +12,8 @@ Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 AppID={{AB2A9C86-AD08-4373-98FD-6A9AA8496AEE}
+AppCopyright=Generix
+UserInfoPage=true
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -21,10 +23,10 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 Source: ..\src\bin\xmlvisualstudio.exe; DestDir: {app}; Flags: ignoreversion; Components: application
-Source: C:\Qt\4.2.1\bin\QtXml4.dll; DestDir: {app}; Flags: ignoreversion; Components: application
-Source: C:\Qt\4.2.1\bin\mingwm10.dll; DestDir: {app}; Flags: ignoreversion; Components: application
-Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Flags: ignoreversion; Components: application
-Source: C:\Qt\4.2.1\bin\QtGui4.dll; DestDir: {app}; Flags: ignoreversion; Components: application
+Source: C:\Qt\4.2.1\bin\QtXml4.dll; DestDir: {app}; Components: application
+Source: C:\Qt\4.2.1\bin\mingwm10.dll; DestDir: {app}; Components: application
+Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Components: application
+Source: C:\Qt\4.2.1\bin\QtGui4.dll; DestDir: {app}; Components: application
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: ..\xml\completion.cpl; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: application
 Source: ..\xml\JAbcView.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
