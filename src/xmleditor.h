@@ -50,16 +50,10 @@ private:
 		cpNone
 	};
 	
-	cursorPosition editPosition( const QTextCursor & cursor ) const;
+	cursorPosition editPosition( const QTextCursor & cursor );
+	QString m_nodeName;
 
-	bool isCodeCommented( const QTextCursor & cursor ) const;
-	bool isEditBalise( const QTextCursor & cursor ) const;
-	bool isEditNode( const QTextCursor & cursor ) const;
-	bool isEditParam( const QTextCursor & cursor ) const;
-	bool isEditValue( const QTextCursor & cursor ) const;
-   
 	QString textUnderCursor(const QTextCursor & cursor) const;
-	QString nodeName(const QTextCursor & cursor) const;
 	
 	QCompleter * currentCompleter(const QTextCursor & cursor);
 

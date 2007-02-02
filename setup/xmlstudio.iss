@@ -20,6 +20,7 @@ Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: assoxml; Description: Use XML/XSL file with this Application
 
 [Files]
 Source: ..\src\bin\xmlvisualstudio.exe; DestDir: {app}; Flags: ignoreversion; Components: application
@@ -433,6 +434,83 @@ Source: ..\xml\VBstc5View.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Com
 Source: ..\xml\VBstc6View.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 Source: ..\xml\VEneView.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 Source: ..\xml\VEntView.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
+Source: ..\xmlvisualstudio.pro; DestDir: {app}\src; Components: source
+Source: ..\COPYING; DestDir: {app}\src; Components: source
+Source: ..\src\images\editdelete.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\editpaste.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\exit.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\fileclose.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\filenew.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\fileopen.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\fileprint.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\filesave.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\filesaveall.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\filesaveas.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\find.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\firefox_logo.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\france.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\germany.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\ie_logo.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\italy.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\next.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\nogood.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\portugal.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\redo.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\spain.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\splash.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\undo.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\usa.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\bug.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\CVpublic_meth.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\CVpublic_var.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\doc.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\edit.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\editcopy.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\editcut.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\studiointerface.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\studiointerface.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\syntaxeditorproperty.ui; DestDir: {app}\src\src; Components: source
+Source: ..\src\tabeditor.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\tabeditor.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\uniqueapplication.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\uniqueapplication.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\xmleditor.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\xmleditor.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\xmlhighlighter.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\xmlhighlighter.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\xmlvisualstudio.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\xmlvisualstudio.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\xsllistview.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\xsllistview.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\xslproject.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\xslproject.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\application.qrc; DestDir: {app}\src\src; Components: source
+Source: ..\src\com.generix.xmlstudio.xml; DestDir: {app}\src\src; Components: source
+Source: ..\src\editor.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\editor.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\editorcompletion.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\editorcompletion.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\fileeditor.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\fileeditor.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\finddialog.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\finddialog.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\genxml.sh; DestDir: {app}\src\src; Components: source
+Source: ..\src\javaobjectfile.ui; DestDir: {app}\src\src; Components: source
+Source: ..\src\javaobjectfileimpl.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\javaobjectfileimpl.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\jshighlighter.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\jshighlighter.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\main.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\mainform.ui; DestDir: {app}\src\src; Components: source
+Source: ..\src\objectview.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\objectview.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\projectproperty.ui; DestDir: {app}\src\src; Components: source
+Source: ..\src\projectpropertyimpl.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\projectpropertyimpl.h; DestDir: {app}\src\src; Components: source
+Source: ..\src\src.pro; DestDir: {app}\src\src; Components: source
+Source: ..\src\studioadaptor.cpp; DestDir: {app}\src\src; Components: source
+Source: ..\src\studioadaptor.h; DestDir: {app}\src\src; Components: source
+Source: xmlstudio.iss; DestDir: {app}\src\setup; Components: source
 
 [Icons]
 Name: {group}\XML Visual Studio; Filename: {app}\xmlvisualstudio.exe
@@ -440,11 +518,16 @@ Name: {group}\{cm:UninstallProgram,XML Visual Studio}; Filename: {uninstallexe}
 Name: {userdesktop}\XML Visual Studio; Filename: {app}\xmlvisualstudio.exe; Tasks: desktopicon
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xmlvisualstudio.exe; ValueType: string; ValueName: Path; ValueData: {app}
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xmlvisualstudio.exe; ValueType: string; ValueData: {app}\xmlvisualstudio.exe
-Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey
-Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Fichier de présentation; Flags: uninsdeletekey
-Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData: """{app}\xmlvisualstudio.exe"" ""%1"""; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xmlvisualstudio.exe; ValueType: string; ValueName: Path; ValueData: {app}; Tasks: assoxml
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xmlvisualstudio.exe; ValueType: string; ValueData: {app}\xmlvisualstudio.exe; Tasks: assoxml
+Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey; Tasks: assoxml
+Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Fichier de présentation; Flags: uninsdeletekey; Tasks: assoxml
+Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData: """{app}\xmlvisualstudio.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assoxml
+
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
-Name: objects; Description: Java Objects File; Types: custom full; Languages: 
+Name: objects; Description: Java Objects File
+Name: source; Description: Source de l'Application; Types: full; Languages: 
+
+[Dirs]
+Name: {app}\src\bin

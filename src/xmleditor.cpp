@@ -29,6 +29,9 @@
 #define EOW			"~!@#$%^&*()+{}|\"<>?,./;'[]\\="
 #define EOWREGEXP	"[~!@#\\$%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,\\./;'\\[\\]\\\\=\\s]"
 
+#define isEditBalise(value) ((value == XMLProcessor::cpEditNodeName) || (value == XMLProcessor::cpEditParamName) || (value == XMLProcessor::cpEditParamValue))
+
+
 XMLProcessor::XMLProcessor( QTextEdit * widget, QObject * parent ) : TextProcessor( widget, parent ), m_completerParamNodeName( "" ), m_completerValue( 0 ) {
 	QStringList wordList;
 	for(int i = 0; i < completionNodeList->count(); i++) {
@@ -53,12 +56,12 @@ XMLProcessor::~XMLProcessor() {
 	
 }
 	
-XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cursor ) const {
+XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cursor ) {
 	cursorPosition cPosition = cpNone;
 	
 	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
 	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
-	
+
 	bool inComment = ! ( 
 			cursorCommentStart.isNull() // No comment before where i am
 		||	( (! cursorCommentEnd.isNull()) && ( cursorCommentStart < cursorCommentEnd ) ) // There is a end before, and the last is the end balise
@@ -76,6 +79,18 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 	if( ! inNode ) {
 		return cPosition; // = cpNone;
 	} // else
+
+	/* Retrieve the name of node */
+	QTextCursor cursorSpaceAfterNodeName ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursorBaliseStart ) );
+	QTextCursor tc = cursor;
+	
+	tc.setPosition( cursorBaliseStart.position(), QTextCursor::MoveAnchor ) ;
+	if( ! cursorSpaceAfterNodeName.isNull() )
+		tc.setPosition( cursorSpaceAfterNodeName.position() - 1, QTextCursor::KeepAnchor ) ;
+	else
+		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
+		
+	m_nodeName = tc.selectedText().trimmed();
 	
 	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
 
@@ -112,28 +127,6 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 	return cPosition;
 }
 
-	
-bool XMLProcessor::isCodeCommented( const QTextCursor & cursor ) const {
-	return editPosition( cursor ) == XMLProcessor::cpEditComment;
-}
-
-bool XMLProcessor::isEditBalise( const QTextCursor & cursor ) const {
-	return isEditNode( cursor ) || isEditParam( cursor ) || isEditValue( cursor );
-}
-
-bool XMLProcessor::isEditNode( const QTextCursor & cursor ) const {
-	return editPosition( cursor ) == XMLProcessor::cpEditNodeName;
-}
-
-bool XMLProcessor::isEditParam( const QTextCursor & cursor ) const {
-	return editPosition( cursor ) == XMLProcessor::cpEditParamName;
-}
-
-bool XMLProcessor::isEditValue( const QTextCursor & cursor ) const {
-	return editPosition( cursor ) == XMLProcessor::cpEditParamValue;
-}
-
-
 QString XMLProcessor::textUnderCursor( const QTextCursor & cursor ) const {
 	QTextCursor before ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
 	QTextCursor after ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursor ) );
@@ -147,23 +140,6 @@ QString XMLProcessor::textUnderCursor( const QTextCursor & cursor ) const {
 		
 	if( ! after.isNull() )
 		tc.setPosition( after.position() - 1, QTextCursor::KeepAnchor ) ;
-	else
-		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
-		
-	return tc.selectedText().trimmed();
-}
-
-QString XMLProcessor::nodeName( const QTextCursor & cursor ) const {
-	if( ! isEditBalise( cursor ) ) return QString();
-	
-	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) );
-	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursorBaliseStart ) );
-	
-	QTextCursor tc = cursor;
-	
-	tc.setPosition( cursorBaliseStart.position(), QTextCursor::MoveAnchor ) ;
-	if( !cursorSpace.isNull() )
-		tc.setPosition( cursorSpace.position() - 1, QTextCursor::KeepAnchor ) ;
 	else
 		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
 		
@@ -187,7 +163,7 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 			return m_completerNode;
 		case XMLProcessor::cpEditParamName: 
 			{
-				QString node = nodeName( cursor );
+				QString node = m_nodeName;
 		
 				if(node != m_completerParamNodeName) {
 					m_completerParamNodeName = node;
@@ -253,7 +229,7 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 		
 	if(!e->text().isEmpty()) {
 		if(e->text().right(1) == ">") {
-			QTextCursor tc(textEdit()->textCursor());
+			QTextCursor tc( textEdit()->textCursor() );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 		
@@ -261,8 +237,8 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 
 			tc.movePosition( QTextCursor::NextCharacter );
 	
-			if( isEditBalise( tc ) && selected != "/>" ){
-				QString name = nodeName( tc );
+			if( isEditBalise( editPosition( tc ) ) && selected != "/>" ){
+				QString name = m_nodeName;
 				if( ! name.isEmpty() ) {
 					int position = textEdit()->textCursor().position();
 	         	
@@ -276,7 +252,7 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 			QTextCursor tc( textEdit()->textCursor() );
 			QTextCursor tc2( textEdit()->textCursor() );
 			tc2.movePosition( QTextCursor::PreviousCharacter );
-			if( isEditParam( tc2 ) ) {
+			if( editPosition( tc2 ) == XMLProcessor::cpEditParamName ) {
 				tc.insertText( "\"\"" );
 				tc.movePosition( QTextCursor::PreviousCharacter );
 				textEdit()->setTextCursor( tc );
@@ -329,11 +305,11 @@ void XMLProcessor::commentSelectedText( bool uncomment ) {
  
 	QTextCursor cursorStart( textEdit()->textCursor() );
 	cursorStart.setPosition( cursor.selectionStart() );
-	bool isStartCommented = isCodeCommented( cursorStart );
+	bool isStartCommented = editPosition( cursorStart ) == XMLProcessor::cpEditComment;
 
 	QTextCursor cursorEnd( textEdit()->textCursor() );
 	cursorEnd.setPosition( cursor.selectionEnd() );
-	bool isEndCommented =  isCodeCommented( cursorEnd );
+	bool isEndCommented =  editPosition( cursorEnd ) == XMLProcessor::cpEditComment;
 
 	QString text = cursor.selectedText();
 	text = text.replace( "<!--", "" );
