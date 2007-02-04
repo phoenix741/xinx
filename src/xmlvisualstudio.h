@@ -104,6 +104,9 @@ private:
   
 	/**** Object declaration ****/
 	
+	/* Open/Save Dialog */	
+	QString m_lastPlace;
+	
 	/* Settings */
 	QSettings * m_settings;
   

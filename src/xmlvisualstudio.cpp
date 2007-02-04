@@ -47,6 +47,7 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(
 	
 	m_settings = new QSettings("Generix", "XML Visual Studio");
 	
+	m_lastPlace = QDir::currentPath();
 	m_javaObjects = new ObjectsView();
 	m_xslProject = NULL;
 	m_xslModel = NULL;
@@ -73,11 +74,9 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_openAct_triggered() {
-	QString path = QDir::currentPath();
-	if( m_xslProject ) path = m_xslProject->projectPath();
-	
-	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), path, tr( OPEN_SAVE_DIALOG_FILTER ) );
+	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), m_lastPlace, tr( OPEN_SAVE_DIALOG_FILTER ) );
 	if ( !filename.isEmpty() ) {
+		m_lastPlace = QFileInfo( filename ).absolutePath();
 		open( filename );
 	}
 }
@@ -514,16 +513,15 @@ void XMLVisualStudio::saveEditor( int index ) {
 }
 
 void XMLVisualStudio::saveEditorAs(int index) {
-	QString path = QDir::currentPath();
-	if( m_xslProject ) path = m_xslProject->specifPath();
-
-	QString fileName = QFileDialog::getSaveFileName( this, tr("Open XSL File"), path, tr( OPEN_SAVE_DIALOG_FILTER ) );
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Open XSL File"), m_lastPlace, tr( OPEN_SAVE_DIALOG_FILTER ) );
 	if (fileName.isEmpty()) return ;
+
+	m_lastPlace = QFileInfo( fileName ).absolutePath();
 
 	dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->saveFile( fileName );
 	m_tabEditors->editor( index )->setModified( false );
 
-	statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000);
+	statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
 }
 
 void XMLVisualStudio::openProject( const QString & filename ) {
@@ -531,6 +529,7 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		if( m_xslProject ) on_m_closeProjectAct_triggered();
 		
 		m_xslProject = new XSLProject( filename );
+		m_lastPlace = m_xslProject->projectPath();
 		setCurrentProject( filename );
 		
 		on_m_closeAllAct_triggered();

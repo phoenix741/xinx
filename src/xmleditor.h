@@ -52,6 +52,7 @@ private:
 	
 	cursorPosition editPosition( const QTextCursor & cursor );
 	QString m_nodeName;
+	QString m_paramName;
 
 	QString textUnderCursor(const QTextCursor & cursor) const;
 	
@@ -59,7 +60,7 @@ private:
 
 
 	QCompleter * m_completerNode;
-	QString m_completerParamNodeName;
+	QString m_completerParamNodeName, m_completerValueParamName;
 	QCompleter * m_completerParam;
 	QCompleter * m_completerValue;
 };

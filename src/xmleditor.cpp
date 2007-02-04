@@ -50,6 +50,12 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, QObject * parent ) : TextProcess
 	m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
 	connect( m_completerParam, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
+
+	m_completerValue = new QCompleter( this );
+	m_completerValue->setWidget( textEdit() );
+	m_completerValue->setCompletionMode( QCompleter::PopupCompletion );
+	m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
+	connect( m_completerValue, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
 }
 
 XMLProcessor::~XMLProcessor() {
@@ -58,6 +64,8 @@ XMLProcessor::~XMLProcessor() {
 	
 XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cursor ) {
 	cursorPosition cPosition = cpNone;
+	m_nodeName = QString();
+	m_paramName = QString();
 	
 	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
 	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
@@ -118,6 +126,15 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 		
 	*/
 	
+	QTextCursor cursorParam ( textEdit()->document()->find ( QRegExp( "[=\\s]" ), cursorSpace ) );
+	tc.setPosition( cursorSpace.position(), QTextCursor::MoveAnchor ) ;
+	if( ! cursorParam.isNull() )
+		tc.setPosition( cursorParam.position() - 1, QTextCursor::KeepAnchor ) ;
+	else
+		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
+		
+	m_paramName = tc.selectedText().trimmed();
+
 	if( cursorEgal.isNull() || ( ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) ) ) {
 		cPosition = cpEditParamName;
 		return cPosition;
@@ -162,25 +179,29 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 		case XMLProcessor::cpEditNodeName:
 			return m_completerNode;
 		case XMLProcessor::cpEditParamName: 
-			{
-				QString node = m_nodeName;
-		
-				if(node != m_completerParamNodeName) {
-					m_completerParamNodeName = node;
-					if(completionNodeList->node(node)) {
-						QStringList wordList;
-						for(int i = 0; i < completionNodeList->node(node)->count(); i++) {
-							wordList << completionNodeList->node(node)->param(i);
-						}
-					
-						m_completerParam->setModel(new QStringListModel(wordList, m_completerParam));
-					} else 
-						return NULL;
-				}
+			if(m_nodeName != m_completerParamNodeName) {
+				m_completerParamNodeName = m_nodeName;
+				if(completionNodeList->node( m_nodeName )) {
+					QStringList wordList;
+					for(int i = 0; i < completionNodeList->node( m_nodeName )->count(); i++) {
+						wordList << completionNodeList->node( m_nodeName )->param(i);
+					}
+				
+					m_completerParam->setModel(new QStringListModel(wordList, m_completerParam));
+				} else 
+					return NULL;
 			}
 		
 			return m_completerParam;
-		case XMLProcessor::cpEditParamValue:		
+		case XMLProcessor::cpEditParamValue: 
+			if( ( m_completerValueParamName != m_paramName ) || ( m_nodeName != m_completerParamNodeName ) ) {
+				m_completerParamNodeName = m_nodeName;
+				m_completerValueParamName = m_paramName;
+				
+				QStringList wordList;			
+				wordList << m_nodeName << m_paramName;
+				m_completerValue->setModel( new QStringListModel(wordList, m_completerValue) );
+			}
 			return m_completerValue;
 		default:
 			return NULL;	
