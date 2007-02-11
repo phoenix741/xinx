@@ -20,7 +20,7 @@
 
 #include "editor.h"
 //
-Editor::Editor( QWidget * parent )  : QFrame( parent ) {
+Editor::Editor( QWidget * parent, XSLProject * project )  : QFrame( parent ), m_project( project ) {
 	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
 	setLineWidth( 2 );
 }

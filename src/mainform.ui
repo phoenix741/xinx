@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>MaintForm</class>
- <widget class="QMainWindow" name="MaintForm" >
+ <class>MainForm</class>
+ <widget class="QMainWindow" name="MainForm" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>XML Visual Studio</string>
+   <string>XINX</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
@@ -548,7 +548,7 @@
   <connection>
    <sender>m_exitAct</sender>
    <signal>triggered()</signal>
-   <receiver>MaintForm</receiver>
+   <receiver>MainForm</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel" >

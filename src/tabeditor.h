@@ -24,6 +24,7 @@
 #include <QTabWidget>
 //
 class Editor;
+class XSLProject;
 
 class TabEditor : public QTabWidget {
 	Q_OBJECT
@@ -38,7 +39,7 @@ public:
 	static bool isFileEditor( Editor * editor );
 public slots:
 	void newFileEditor();
-	void loadFileEditor( const QString & fileName );
+	void loadFileEditor( const QString & fileName, XSLProject * project = NULL );
 
 	void copy();
 	void cut();

@@ -89,8 +89,8 @@ void XSLProject::saveToFile( const QString & filename ) {
 	// Open the file
 	if (!file.open(QFile::WriteOnly | QFile::Text)) {
 		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Cannot write file %1:\n%2.")
-                                                        				 		.arg(filename)
-																		 		.arg(file.errorString()));
+                                                        				 		.arg( m_fileName )
+																		 		.arg( file.errorString()) );
 		return;
 	}
 	QTextStream text( &file );

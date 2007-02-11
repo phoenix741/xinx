@@ -30,7 +30,7 @@ class QTextEdit;
 class TextProcessor : public QObject {
 	Q_OBJECT
 public:
-	TextProcessor( QTextEdit * widget, QObject * parent = 0 ) : QObject( parent ), m_widget( widget ) { };
+	TextProcessor( QTextEdit * widget, XSLProject * project = NULL, QObject * parent = 0 ) : QObject( parent ), m_widget( widget ), m_project( project ) { };
 	virtual ~TextProcessor() {};
 	
 	virtual void commentSelectedText( bool uncomment ) = 0;
@@ -38,18 +38,22 @@ public:
 	virtual void keyPressEvent( QKeyEvent *e ) = 0;
 	
 	void parentKeyPressEvent( QKeyEvent * e );
+
+	virtual QAbstractItemModel * model() = 0;
 	
 protected:
 	QTextEdit * textEdit() const { return m_widget; };
+	XSLProject * project() const { return m_project; }
 	
 private:
 	QTextEdit * m_widget;
+	XSLProject * m_project;
 };
 
 class FileEditor : public Editor {
 	Q_OBJECT
 public:
-	FileEditor( QWidget *parent = 0 );
+	FileEditor( QWidget *parent = 0, XSLProject * project = NULL );
 
 	const QString & getFileName() const;
 	virtual QString getTitle() const;
@@ -66,6 +70,7 @@ public:
 	virtual bool canRedo();
 	virtual bool isModified();
 
+	virtual QAbstractItemModel * model();
 public Q_SLOTS : 
 	virtual void undo();
 	virtual void redo();

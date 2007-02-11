@@ -141,6 +141,7 @@ QString FindDialog::replaceStr(const struct FindOptions & options, const QString
 }
 
 void FindDialog::initialize() {
+	lineEditFind->selectAll();
 	lineEditFind->setFocus( Qt::ActiveWindowFocusReason );
 	findButton->setDefault(true);
 }

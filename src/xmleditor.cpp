@@ -20,9 +20,11 @@
 
 #include <QtGui>
 #include <QCompleter>
+#include <assert.h>
 
 #include "xmleditor.h"
 #include "editorcompletion.h"
+#include "xsllistview.h"
 
 /* XMLProcessor */
 
@@ -32,7 +34,10 @@
 #define isEditBalise(value) ((value == XMLProcessor::cpEditNodeName) || (value == XMLProcessor::cpEditParamName) || (value == XMLProcessor::cpEditParamValue))
 
 
-XMLProcessor::XMLProcessor( QTextEdit * widget, QObject * parent ) : TextProcessor( widget, parent ), m_completerParamNodeName( "" ), m_completerValue( 0 ) {
+XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * parent ) : TextProcessor( widget, project, parent ) {
+	assert( completionNodeList != NULL );
+	assert( textEdit() != NULL );
+	
 	QStringList wordList;
 	for(int i = 0; i < completionNodeList->count(); i++) {
 		wordList << completionNodeList->node(i)->name();
@@ -50,12 +55,17 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, QObject * parent ) : TextProcess
 	m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
 	connect( m_completerParam, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
+	m_completerParamNodeName = "";
+	m_completerValue 		 = 0;
 
 	m_completerValue = new QCompleter( this );
 	m_completerValue->setWidget( textEdit() );
 	m_completerValue->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
 	connect( m_completerValue, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
+	
+	m_contentModel = new XSLItemModel( this, project );
+	m_contentModel->updateModel( textEdit()->toPlainText() );
 }
 
 XMLProcessor::~XMLProcessor() {
@@ -63,6 +73,8 @@ XMLProcessor::~XMLProcessor() {
 }
 	
 XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cursor ) {
+	assert( ! cursor.isNull() );
+	
 	cursorPosition cPosition = cpNone;
 	m_nodeName = QString();
 	m_paramName = QString();
@@ -145,6 +157,8 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 }
 
 QString XMLProcessor::textUnderCursor( const QTextCursor & cursor ) const {
+	assert( ! cursor.isNull() );
+
 	QTextCursor before ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
 	QTextCursor after ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursor ) );
 
@@ -174,6 +188,8 @@ void XMLProcessor::insertCompletion( const QString& completion ) {
 }
 
 QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
+	assert( ! cursor.isNull() );
+
 	XMLProcessor::cursorPosition position = editPosition( cursor );
 	switch( position ) {
 		case XMLProcessor::cpEditNodeName:
@@ -200,7 +216,7 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 				
 				QStringList wordList;			
 				wordList << m_nodeName << m_paramName;
-				m_completerValue->setModel( new QStringListModel(wordList, m_completerValue) );
+				m_completerValue->setModel( new QStringListModel( wordList, m_completerValue ) );
 			}
 			return m_completerValue;
 		default:
@@ -216,7 +232,7 @@ void XMLProcessor::complete() {
 
 	QCompleter * c = currentCompleter(textEdit()->textCursor());
 
-	if(c) {
+	if( c ) {
 		if( completionPrefix != m_completerNode->completionPrefix() ) {
 		    c->setCompletionPrefix( completionPrefix );
 			c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
@@ -269,6 +285,7 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 					textEdit()->setTextCursor( tc );
 				}
 			}
+			m_contentModel->updateModel( textEdit()->toPlainText() );
 		} else if(e->text().right(1) == "=") {
 			QTextCursor tc( textEdit()->textCursor() );
 			QTextCursor tc2( textEdit()->textCursor() );
@@ -358,3 +375,6 @@ void XMLProcessor::commentSelectedText( bool uncomment ) {
 	cursor.endEditBlock();
 }
 
+QAbstractItemModel * XMLProcessor::model() {
+	return m_contentModel;
+}

@@ -66,10 +66,10 @@ void TabEditor::newFileEditor() {
 	emit currentChanged( currentIndex() );  
 }
 
-void TabEditor::loadFileEditor( const QString & fileName ) {
+void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
-		ed = new FileEditor( this );
+		ed = new FileEditor( this, project );
 		
 		static_cast<FileEditor*>( ed )->loadFile( fileName );
 		

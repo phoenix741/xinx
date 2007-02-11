@@ -23,10 +23,14 @@
 //
 #include <QFrame>
 //
+
+class QAbstractItemModel;
+class XSLProject;
+
 class Editor : public QFrame {
 	Q_OBJECT
 public:
-	Editor( QWidget * parent = 0 );
+	Editor( QWidget * parent = 0, XSLProject * project = NULL );
 	virtual ~Editor();
 
 	virtual QString getTitle() const = 0;
@@ -37,6 +41,8 @@ public:
 	virtual bool canUndo() = 0;
 	virtual bool canRedo() = 0;
 	virtual bool isModified() = 0;
+	
+	virtual QAbstractItemModel * model() = 0;
 
 public Q_SLOTS : 
 	virtual void undo() = 0;
@@ -55,5 +61,8 @@ Q_SIGNALS:
 	void pasteAvailable( bool available );
 	
 	void modificationChanged( bool changed );
+	
+protected:
+	XSLProject * m_project;
 };
 #endif

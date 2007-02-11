@@ -32,7 +32,7 @@ class XSLProject;
 
 class XSLModelData {
 public:
-	XSLModelData( XSLModelData * orig = 0 ) : m_parent( orig ) { if( m_parent ) { m_fileName = m_parent->m_fileName; m_project = m_parent->m_project; } };
+	XSLModelData( XSLModelData * orig = 0, XSLProject * project = 0 );
 	virtual ~XSLModelData() { qDeleteAll( m_child ); };
 
 	enum ElementType { etImport, etVariable, etTemplate };
@@ -59,9 +59,9 @@ public:
 	int childCount();
 	void appendChild(XSLModelData * child) { m_child.append( child ); };
 	
-	void loadFromXML( const QDomElement&, XSLProject * );
-	void loadFromFile( const QString&, XSLProject * );
-	void loadFromContent( const QString&, XSLProject * );
+	void loadFromXML( const QDomElement& );
+	void loadFromFile( const QString& );
+	void loadFromContent( const QString& );
 	
 private:
 	XSLModelData * m_parent;
@@ -74,12 +74,14 @@ private:
 	XSLProject * m_project;
 	
 	QList<XSLModelData*> m_child;
+
+friend class XSLItemModel;
 };
 
 class XSLItemModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
-	XSLItemModel( QObject *parent = 0 );
+	XSLItemModel( QObject *parent = 0, XSLProject * project = 0 );
 	virtual ~XSLItemModel();
 	
 	struct user_data {
@@ -96,7 +98,7 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 	
 public slots:
-	void updateModel( const QString &, XSLProject * );
+	void updateModel( const QString & );
 	
 private:
 	XSLModelData* rootItem;

@@ -33,15 +33,17 @@ class ObjectsView;
 class XSLProject;
 class QSettings;
 
-class XMLVisualStudio : public QMainWindow, public Ui::MaintForm {
+class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
 public:
 	XMLVisualStudio( QWidget * parent = 0, Qt::WFlags f = 0 );
 	
-	void open( const QString & filename );
-	
 	void updateActions();
 	void updateRecentFiles();
+
+public slots:
+	/* Open file */
+	void open( const QString & filename );
 protected: 
 	/* Window event */
 
@@ -111,7 +113,7 @@ private:
 	QSettings * m_settings;
   
 	/* Dock Object */
-	XSLItemModel * m_xslModel;
+	QAbstractItemModel * m_xslModel;
 	QSortFilterProxyModel * m_sortXslModel;
 
 	/* Find declaration */

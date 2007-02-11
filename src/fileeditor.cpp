@@ -81,7 +81,7 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
 class TextEditor : public QTextEdit {
 	Q_OBJECT
 public:
-	TextEditor( QWidget * parent = 0 );
+	TextEditor( QWidget * parent = 0, XSLProject * project = NULL );
 	virtual ~TextEditor();
 
 	virtual void commentSelectedText( bool uncomment = false );
@@ -90,18 +90,21 @@ public:
 	void formatToXML();
 	void formatToJS();
 	
+	QAbstractItemModel * model();
 protected:
 	void keyPressEvent(QKeyEvent *e);
 	void parentKeyPressEvent( QKeyEvent * e );
+    void mouseDoubleClickEvent( QMouseEvent * event );
 
 private:
+	XSLProject * m_project;
 	TextProcessor * m_processor;
 	QSyntaxHighlighter * m_highlighter;
 	
 	friend class TextProcessor;
 };
 
-TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ), m_processor( 0 ), m_highlighter( 0 ) { 
+TextEditor::TextEditor( QWidget * parent, XSLProject * project ) : QTextEdit( parent ), m_project( project ), m_processor( 0 ), m_highlighter( 0 ) { 
 	// Setup the main view
 	QFont font;
 	font.setFamily( "Monospace" );
@@ -117,11 +120,17 @@ TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ), m_processor( 0
 TextEditor::~TextEditor() {
 }
 
+QAbstractItemModel * TextEditor::model() {
+	if( m_processor )
+		return m_processor->model();
+	return NULL;
+}
+
 void TextEditor::formatToXML() {
 	delete m_highlighter;
 	m_highlighter = new XmlHighlighter( document() );
 	delete m_processor;
-	m_processor = new XMLProcessor( this, this );
+	m_processor = new XMLProcessor( this, m_project, this );
 }
 
 void TextEditor::formatToJS() {
@@ -154,15 +163,32 @@ void TextEditor::parentKeyPressEvent( QKeyEvent * e ) {
 	QTextEdit::keyPressEvent( e );
 }
 
+void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
+	QPoint mousePosition = event->pos();
+	QString m_plainText = toPlainText();
+    QTextCursor cursor = textCursor();
+    int pos = cursor.position();
+    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos-1 ).toUpper()  ) )
+        pos--;
+    cursor.setPosition(pos, QTextCursor::MoveAnchor);
+    setTextCursor( cursor );
+    //
+    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos ).toUpper()  ) )
+        pos++;
+    cursor.setPosition(pos, QTextCursor::KeepAnchor);
+    setTextCursor( cursor );
+}
+
 /* TextProcessor */
 
 void TextProcessor::parentKeyPressEvent( QKeyEvent * e ) {
 	static_cast<TextEditor*>( m_widget )->parentKeyPressEvent( e );
 }
+
 /* FileEditor */
 
-FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
-	m_view = new TextEditor( this );
+FileEditor::FileEditor( QWidget *parent, XSLProject * project ) : Editor( parent, project ) {
+	m_view = new TextEditor( this, project );
 	m_view->setFrameStyle( QFrame::NoFrame );
 	m_view->setLineWrapMode(QTextEdit::NoWrap);
 	m_view->installEventFilter( this );
@@ -323,12 +349,12 @@ void FileEditor::loadFile( const QString & fileName ){
 		return;
 	}
 
-	setFileName( fileName );
-
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
 	QApplication::restoreOverrideCursor();
+
+	setFileName( fileName );
 }
 
 bool FileEditor::saveFile( const QString & fileName ){
@@ -348,6 +374,10 @@ bool FileEditor::saveFile( const QString & fileName ){
 	QApplication::restoreOverrideCursor();
 
 	return true;	
+}
+
+QAbstractItemModel * FileEditor::model() {
+	return m_view->model();
 }
 
 bool FileEditor::canCopy() {

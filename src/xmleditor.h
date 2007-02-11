@@ -27,16 +27,19 @@
 class QCompleter;
 class QTextDocument;
 class QTextEdit;
+class XSLItemModel;
 
 class XMLProcessor : public TextProcessor {
 	Q_OBJECT
 public:
-	XMLProcessor( QTextEdit * widget, QObject * parent = 0 );
+	XMLProcessor( QTextEdit * widget, XSLProject * project = NULL, QObject * parent = 0 );
 	virtual ~XMLProcessor();
 	
 	virtual void commentSelectedText( bool uncomment );
 	virtual void complete();
 	virtual void keyPressEvent( QKeyEvent *e );
+	
+	virtual QAbstractItemModel * model();
 	
 protected slots:
 	void insertCompletion(const QString& completion);
@@ -58,11 +61,12 @@ private:
 	
 	QCompleter * currentCompleter(const QTextCursor & cursor);
 
-
 	QCompleter * m_completerNode;
 	QString m_completerParamNodeName, m_completerValueParamName;
 	QCompleter * m_completerParam;
 	QCompleter * m_completerValue;
+	
+	XSLItemModel * m_contentModel;
 };
 
 #endif // __XMLEDITOR_H__

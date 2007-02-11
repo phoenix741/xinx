@@ -30,7 +30,21 @@
 #include <QApplication>
 #include <QIcon>
 
-void XSLModelData::loadFromXML( const QDomElement& element, XSLProject * project ) {
+XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : m_parent( orig ), m_project( project ) { 
+	m_name         = QString();
+	m_value        = QString();
+	m_type         = etVariable;
+	m_fileName     = QString();
+	m_documentLine = -1;
+
+	if( m_parent ) { 
+		m_fileName = m_parent->m_fileName; 
+		if( !m_project ) 
+			m_project = m_parent->m_project; 
+	}
+}
+
+void XSLModelData::loadFromXML( const QDomElement& element ) {
 	qDeleteAll( m_child );
 	m_child.clear();
 	
@@ -44,7 +58,7 @@ void XSLModelData::loadFromXML( const QDomElement& element, XSLProject * project
 				data->setType( etImport );
 	  			data->setName( child.attribute( "href" ) );
 			} else
-  			if( child.tagName() == "variable" )  {
+  			if( ( child.tagName() == "variable" ) || ( child.tagName() == "param" ) )  {
   				data->setType( etVariable );
 	  			data->setName( child.attribute( "name" ) );
 	  			data->setValue( child.attribute( "select", child.text() ) );
@@ -60,12 +74,10 @@ void XSLModelData::loadFromXML( const QDomElement& element, XSLProject * project
  		}
 		child = child.nextSiblingElement();
 	} 
-	
-	m_project = project;
 }
 
-void XSLModelData::loadFromFile( const QString& filename, XSLProject * project ) {
-	QFile file(filename);
+void XSLModelData::loadFromFile( const QString& filename ) {
+	QFile file( filename );
 	QDomDocument xsl;
 	m_fileName = filename;
 	
@@ -84,14 +96,14 @@ void XSLModelData::loadFromFile( const QString& filename, XSLProject * project )
 	if (xsl.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
-			loadFromXML( root, project );
+			loadFromXML( root );
 	} else {
 		qDeleteAll( m_child );
 		m_child.clear();		
 	}
 }
 
-void XSLModelData::loadFromContent( const QString& content, XSLProject * project ) {
+void XSLModelData::loadFromContent( const QString& content ) {
 	QDomDocument xsl;
 	m_fileName = QString();
 
@@ -102,7 +114,7 @@ void XSLModelData::loadFromContent( const QString& content, XSLProject * project
 	if (xsl.setContent(content, true, &errorStr, &errorLine, &errorColumn)) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
-			loadFromXML( root, project );
+			loadFromXML( root );
 	} else {
 		qDeleteAll( m_child );
 		m_child.clear();		
@@ -112,16 +124,16 @@ void XSLModelData::loadFromContent( const QString& content, XSLProject * project
 int XSLModelData::childCount() { 
 	if( m_project && ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
 		if( QFile::exists( m_project->specifPath() + m_name ) ) {
-			loadFromFile( m_project->specifPath() + m_name, m_project );
+			loadFromFile( m_project->specifPath() + m_name );
 		} else
 		if( QFile::exists( m_project->navPath() + m_name ) ) {
-			loadFromFile( m_project->navPath() + m_name, m_project );
+			loadFromFile( m_project->navPath() + m_name );
 		} else
 		if( QFile::exists( m_project->projectPath() + m_name ) ) {
-			loadFromFile( m_project->projectPath() + m_name, m_project );
+			loadFromFile( m_project->projectPath() + m_name );
 		} else 
 		if( QFile::exists( m_project->languePath() + m_name ) ) {
-			loadFromFile( m_project->languePath() + m_name, m_project );
+			loadFromFile( m_project->languePath() + m_name );
 		} 
 	}
 	return m_child.size();
@@ -129,15 +141,15 @@ int XSLModelData::childCount() {
 
 
 
-XSLItemModel::XSLItemModel( QObject *parent ) : QAbstractItemModel(parent) {
-	rootItem = new XSLModelData();
+XSLItemModel::XSLItemModel( QObject *parent, XSLProject * project ) : QAbstractItemModel(parent) {
+	rootItem = new XSLModelData( NULL, project );
 }
 
 XSLItemModel::~XSLItemModel() {
 	delete rootItem;
 }
 	
-QVariant XSLItemModel::data(const QModelIndex &index, int role) const {
+QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 	if (!index.isValid()) return QVariant();
 
 	XSLModelData * data = static_cast<XSLModelData*>(index.internalPointer());
@@ -247,8 +259,8 @@ int XSLItemModel::columnCount(const QModelIndex &parent) const {
 	return 2; // Name & Value
 }
 
-void XSLItemModel::updateModel(const QString & filename, XSLProject * project ) {
-	rootItem->loadFromContent( filename, project );
+void XSLItemModel::updateModel(const QString & filename ) {
+	rootItem->loadFromContent( filename );
 	reset();
 }
 
