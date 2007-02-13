@@ -50,7 +50,7 @@ Editor * TabEditor::editor( int index ) {
 
 Editor * TabEditor::editor( const QString & filename ) {
 	for( int i = 0; i < count(); i++ ) {
-		if( ( isFileEditor( editor( i ) ) ) && ( static_cast<FileEditor*>( editor(i) )->getFileName() == filename ) ) 
+		if( ( isFileEditor( editor( i ) ) ) && ( static_cast<FileEditor*>( editor(i) )->getFileName() == QDir::fromNativeSeparators( filename ) ) ) 
 			return editor(i);
 	}
 	return NULL;

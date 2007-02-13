@@ -44,6 +44,7 @@ FORMS +=   javaobjectfile.ui \
   syntaxeditorproperty.ui
 win32 {
   CONFIG +=     release
+  RC_FILE = xinx.rc
 }
 unix {
   SOURCES +=     studioadaptor.cpp \

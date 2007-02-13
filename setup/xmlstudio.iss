@@ -2,10 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=XML Visual Studio
-AppVerName=XML Visual Studio 0.6 beta
-DefaultDirName={pf}\XML Visual Studio
-DefaultGroupName=XML Visual Studio
+AppName=XINX
+AppVerName=XINX 0.6 beta
+DefaultDirName={pf}\XINX
+DefaultGroupName=XINX
 OutputDir=.\
 OutputBaseFilename=setup
 Compression=lzma
@@ -14,6 +14,8 @@ ShowLanguageDialog=yes
 AppID={{AB2A9C86-AD08-4373-98FD-6A9AA8496AEE}
 AppCopyright=Generix
 UserInfoPage=true
+SetupIconFile=
+UninstallDisplayIcon={app}\xmlvisualstudio.exe
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -30,14 +32,16 @@ Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtGui4.dll; DestDir: {app}; Components: application
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: ..\xml\completion.cpl; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: application
-Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
+;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 Source: ..\xmlvisualstudio.pro; DestDir: {app}\src; Components: source
 Source: ..\COPYING; DestDir: {app}\src; Components: source
 Source: ..\src\images\*.png; DestDir: {app}\src\src\images; Components: source
+Source: ..\src\images\*.ico; DestDir: {app}\src\src\images; Components: source
 Source: ..\src\*.cpp; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.h; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.ui; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.xml; DestDir: {app}\src\src; Components: source
+Source: ..\src\*.rc; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.sh; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.pro; DestDir: {app}\src\src; Components: source
 Source: xmlstudio.iss; DestDir: {app}\src\setup; Components: source

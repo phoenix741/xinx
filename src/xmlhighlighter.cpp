@@ -25,9 +25,11 @@ static const QColor DEFAULT_OTHER			= Qt::black;
 
 // Regular expressions for parsing XML borrowed from:
 // http://www.cs.sfu.ca/~cameron/REX.html
-static const QString EXPR_COMMENT			= "<!--[^-]*-([^-][^-]*-)*->";
 static const QString EXPR_COMMENT_BEGIN		= "<!--";
-static const QString EXPR_COMMENT_END		= "[^-]*-([^-][^-]*-)*->";
+//static const QString EXPR_COMMENT			= "<!--[^-]*-([^-][^-]*-)*->";
+//static const QString EXPR_COMMENT_END		= "[^-]*-([^-][^-]*-)*->";
+static const QString EXPR_COMMENT_END		= "([^-]|(-(?!->)))*-->";
+static const QString EXPR_COMMENT			= EXPR_COMMENT_BEGIN + EXPR_COMMENT_END;
 static const QString EXPR_ATTRIBUTE_VALUE	= "\"[^<\"]*\"|'[^<']*'";
 static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
 
@@ -242,7 +244,7 @@ void XmlHighlighter::highlightBlock(const QString& text)
 
 					setFormat(pos, 4, fmtSyntaxChar);
 					setFormat(pos + 4, iLength - 7, fmtComment);
-					setFormat(iLength - 3, 3, fmtSyntaxChar);
+					setFormat(pos + iLength - 3, 3, fmtSyntaxChar);
 					i += iLength - 2; // skip comment
 					state = NoState;
 					brackets--;

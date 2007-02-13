@@ -332,7 +332,7 @@ const QString & FileEditor::getFileName() const {
 }
 
 void FileEditor::setFileName( const QString & name ) {
-	m_fileName = name;
+	m_fileName = QDir::fromNativeSeparators( name );
 	if( QDir::match( "*.xml;*.xsl;*.html", m_fileName ) ) 
 		m_view->formatToXML();
 	else
