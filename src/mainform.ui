@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>607</width>
-     <height>29</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -50,41 +50,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
-   </widget>
-   <widget class="QMenu" name="m_editMenu" >
-    <property name="title" >
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="m_undoAct" />
-    <addaction name="m_redoAct" />
-    <addaction name="separator" />
-    <addaction name="m_cutAct" />
-    <addaction name="m_copyAct" />
-    <addaction name="m_pasteAct" />
-    <addaction name="separator" />
-    <addaction name="m_selectAllAct" />
-    <addaction name="m_duplicateLineAct" />
-    <addaction name="m_moveUpLineAct" />
-    <addaction name="m_moveDownLineAct" />
-    <addaction name="separator" />
-    <addaction name="m_upperTextAct" />
-    <addaction name="m_lowerTextAct" />
-    <addaction name="separator" />
-    <addaction name="m_commentLineAct" />
-    <addaction name="m_uncommentLineAct" />
-    <addaction name="m_completeAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -116,6 +81,47 @@
     <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
     <addaction name="m_javaViewObjectListAct" />
+   </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="m_editMenu" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="m_undoAct" />
+    <addaction name="m_redoAct" />
+    <addaction name="separator" />
+    <addaction name="m_cutAct" />
+    <addaction name="m_copyAct" />
+    <addaction name="m_pasteAct" />
+    <addaction name="separator" />
+    <addaction name="m_selectAllAct" />
+    <addaction name="m_duplicateLineAct" />
+    <addaction name="m_moveUpLineAct" />
+    <addaction name="m_moveDownLineAct" />
+    <addaction name="separator" />
+    <addaction name="m_upperTextAct" />
+    <addaction name="m_lowerTextAct" />
+    <addaction name="separator" />
+    <addaction name="m_indentAct" />
+    <addaction name="m_unindentAct" />
+    <addaction name="separator" />
+    <addaction name="m_commentLineAct" />
+    <addaction name="m_uncommentLineAct" />
+    <addaction name="m_completeAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -531,6 +537,35 @@
   <action name="m_projectPropertyAct" >
    <property name="text" >
     <string>Project &amp;property</string>
+   </property>
+  </action>
+  <action name="m_nextTabAct" >
+   <property name="text" >
+    <string>Next tab</string>
+   </property>
+   <property name="toolTip" >
+    <string>Next tab</string>
+   </property>
+  </action>
+  <action name="m_previousTabAct" >
+   <property name="text" >
+    <string>Previous Tab</string>
+   </property>
+  </action>
+  <action name="m_indentAct" >
+   <property name="text" >
+    <string>Indent Code</string>
+   </property>
+   <property name="shortcut" >
+    <string>Tab</string>
+   </property>
+  </action>
+  <action name="m_unindentAct" >
+   <property name="text" >
+    <string>Unindent code</string>
+   </property>
+   <property name="shortcut" >
+    <string>Shift+Tab</string>
    </property>
   </action>
  </widget>

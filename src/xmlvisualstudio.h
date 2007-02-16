@@ -80,6 +80,8 @@ private slots:
 	void on_m_projectPropertyAct_triggered();
 	void on_m_aboutAct_triggered();
 	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
+	void on_m_nextTabAct_triggered();
+	void on_m_previousTabAct_triggered();
 private:
 	/* Create Window Menus, Tools, Status, Dock Bar */
   
@@ -103,6 +105,7 @@ private:
 	
 	void setCurrentProject( const QString & filename );
 	void openProject( const QString & filename );
+	void closeProject( bool closeAll );
   
 	/**** Object declaration ****/
 	
@@ -131,6 +134,8 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
+
 
 
 

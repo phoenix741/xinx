@@ -3,11 +3,11 @@
 
 [Setup]
 AppName=XINX
-AppVerName=XINX 0.6 beta
+AppVerName=XINX 0.6-1 beta
 DefaultDirName={pf}\XINX
 DefaultGroupName=XINX
 OutputDir=.\
-OutputBaseFilename=setup
+OutputBaseFilename=xinx-0.6-1
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes

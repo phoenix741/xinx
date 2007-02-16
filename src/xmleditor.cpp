@@ -184,6 +184,12 @@ void XMLProcessor::insertCompletion( const QString& completion ) {
 	int extra = completion.length() - c->completionPrefix().length();
 	tc.insertText(completion.right(extra));
 	// tc.movePosition( QTextCursor::EndOfWord ); /* Don't need this */
+
+	if( editPosition(tc) == XMLProcessor::cpEditParamName ) {		
+		tc.insertText("=\"\"");
+		tc.movePosition( QTextCursor::PreviousCharacter );
+	}
+
 	textEdit()->setTextCursor( tc );
 }
 

@@ -167,6 +167,20 @@ void TabEditor::uncommentSelectedText() {
 	}
 }
 
+void TabEditor::indent() {
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->indent();
+	}
+}
+
+void TabEditor::unindent() {
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->indent( true );
+	}
+}
+
 void TabEditor::complete() {
 	if( currentEditor() && isFileEditor( currentEditor() ) ) {
 		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );

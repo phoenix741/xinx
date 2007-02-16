@@ -182,6 +182,20 @@ void XMLVisualStudio::createActions() {
   
   	// About Qt
 	connect(m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+	
+	// Previous/Next Tab
+	m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
+	m_nextTabAct->setShortcut( QKeySequence::NextChild );
+
+	// Indent	
+	connect(m_indentAct, SIGNAL(triggered()), m_tabEditors, SLOT(indent()));
+	m_indentAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_indentAct, SLOT(setEnabled(bool)));	
+
+	// Unindent	
+	connect(m_unindentAct, SIGNAL(triggered()), m_tabEditors, SLOT(unindent()));
+	m_unindentAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_unindentAct, SLOT(setEnabled(bool)));	
 
 	// Recent project file
 	m_recentSeparator = m_recentProjectMenu->addSeparator();
@@ -209,6 +223,8 @@ void XMLVisualStudio::updateActions() {
 	m_closeAct->setEnabled( m_tabEditors->count() );
 	m_closeAllAct->setEnabled( m_tabEditors->count() );
 	m_printAct->setEnabled( m_tabEditors->count() );
+	m_previousTabAct->setEnabled( m_tabEditors->count() );
+	m_nextTabAct->setEnabled( m_tabEditors->count() );
 	
 	if( m_tabEditors->count() == 0 ) {
 		if( m_sortXslModel ) delete m_sortXslModel;
@@ -451,17 +467,7 @@ void XMLVisualStudio::on_m_saveProjectAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_closeProjectAct_triggered() {
-	if( m_xslProject ) {
-		on_m_saveProjectAct_triggered();
-		
-		on_m_closeAllAct_triggered();
-
-		delete m_xslProject;
-		m_xslProject = NULL;
-		
-		updateActions();
-		setCurrentProject( "" );
-	}
+	closeProject( true );
 }
 
 void XMLVisualStudio::on_m_projectPropertyAct_triggered() {
@@ -504,6 +510,14 @@ void XMLVisualStudio::on_m_xslContentTreeView_doubleClicked( QModelIndex index )
 	}
 }
 
+void XMLVisualStudio::on_m_nextTabAct_triggered() {
+	m_tabEditors->setCurrentIndex( ( m_tabEditors->currentIndex() + 1 ) % m_tabEditors->count() );
+}
+
+void XMLVisualStudio::on_m_previousTabAct_triggered() {
+	m_tabEditors->setCurrentIndex( ( m_tabEditors->currentIndex() - 1 ) % m_tabEditors->count() );
+}
+
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
 		if ( ! maybeSave( i ) ) {
@@ -511,7 +525,7 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 			return;
 		}
 	}
-	on_m_closeProjectAct_triggered();
+	closeProject( false );
 	
 	writeSettings();
 	
@@ -626,6 +640,21 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	}
 }
 
+void XMLVisualStudio::closeProject( bool closeAll ) {
+	if( m_xslProject ) {
+		on_m_saveProjectAct_triggered();
+		
+		if( closeAll )
+			on_m_closeAllAct_triggered();
+
+		delete m_xslProject;
+		m_xslProject = NULL;
+		
+		updateActions();
+		setCurrentProject( "" );
+	}
+}
+
 void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	if( filename.isEmpty() )
 		setWindowTitle( tr("XINX") );
@@ -644,5 +673,4 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 		updateRecentFiles();
 	}
 }
-
 

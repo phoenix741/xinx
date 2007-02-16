@@ -85,6 +85,7 @@ public Q_SLOTS :
 	virtual void moveLineDown();
 	virtual void uploSelectedText( bool upper = true );
 	virtual void commentSelectedText( bool uncomment = false );
+	virtual void indent( bool unindent = false );
 	virtual void complete();
 
 	virtual void setModified( bool );

@@ -60,6 +60,9 @@ public slots:
 
 	void commentSelectedText();
 	void uncommentSelectedText();
+	
+	void indent();
+	void unindent();
 
 	void complete();	
 Q_SIGNALS:

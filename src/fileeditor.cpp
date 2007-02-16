@@ -287,6 +287,131 @@ void FileEditor::uploSelectedText( bool upper ) {
 	m_view->setTextCursor( cursor );
 }
 
+void FileEditor::indent( bool unindent ) {
+	QTextCursor tc ( m_view->textCursor() );
+
+	if( tc.selectedText().isEmpty() ) {
+		tc.insertText( "\t" );
+		m_view->setTextCursor( tc );
+		return;		
+	}	
+	
+    tc.beginEditBlock();
+
+    int startPos = tc.selectionStart();
+    int endPos = tc.selectionEnd();
+    if( startPos > endPos ) {
+    	int tmp = endPos;
+    	endPos = startPos;
+    	startPos = tmp;
+   	}
+    tc.clearSelection();
+	
+    tc.setPosition( endPos, QTextCursor::MoveAnchor );
+    tc.movePosition( QTextCursor::EndOfLine, QTextCursor::MoveAnchor );
+    QTextBlock endBlock = tc.block();
+
+    tc.setPosition( startPos, QTextCursor::MoveAnchor );
+    tc.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
+    QTextBlock startBlock = tc.block();
+    
+    QTextBlock block = startBlock;
+    do {
+	    tc.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
+	    
+	    if( ! unindent )
+		    tc.insertText( "\t" );
+		else
+          if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
+			tc.deleteChar();
+  		    
+		tc.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor );
+    	block = tc.block();
+   	} while( ( block < endBlock ) );
+   	if( block.position() < endPos ) {
+	    if( ! unindent )
+		    tc.insertText( "\t" );
+		else
+			if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
+				tc.deleteChar();
+	}
+	
+	tc.endEditBlock();
+}
+
+/*
+
+    //
+    if ( blocDebut == blocFin )
+    {
+        if ( m_tabSpaces )
+        {
+            int nbSpaces = tabStopWidth() / fontMetrics().width( " " );
+            for (int i = 0; i<nbSpaces; i++)
+                curseurActuel.insertText( " " );
+        }
+        else
+            curseurActuel.insertText( "\t" );
+        setTextCursor( curseurActuel );
+        return;
+    }
+    //
+    int ligneDebut = 1;
+    for ( QTextBlock block = document()->begin(); block.isValid() && block!=blocDebut; block = block.next(), ligneDebut++)
+        ;
+    //
+    int ligneFin = ligneDebut-1;
+    QTextBlock block = blocDebut;
+    do
+    {
+        c.setPosition(block.position(), QTextCursor::MoveAnchor);
+        if ( !indenter )
+        {
+            if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
+                c.deleteChar();
+        }
+        else
+        {
+            if ( m_tabSpaces )
+            {
+                int nbSpaces = tabStopWidth() / fontMetrics().width( " " );
+                for (int i = 0; i<nbSpaces; i++)
+                    c.insertText( " " );
+            }
+            else
+            {
+                if ( m_tabSpaces )
+                {
+                    int nbSpaces = tabStopWidth() / fontMetrics().width( " " );
+                    for (int i = 0; i<nbSpaces; i++)
+                        c.insertText( " " );
+                }
+                else
+                    c.insertText( "\t" );
+            }
+        }
+        setTextCursor( c );
+        ligneFin++;
+        block = block.next();
+    }
+    while (  block.isValid() && block != blocFin );
+    selectLines(ligneDebut, ligneFin);
+
+void TextEdit::selectLines(int debut, int fin)
+{
+    if ( debut > fin )
+        qSwap( debut, fin);
+    QTextCursor c = textCursor();
+    c.movePosition(QTextCursor::Start );
+    c.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, debut-1 );
+    c.movePosition(QTextCursor::Down, QTextCursor::KeepAnchor, fin-debut+1 );
+    setTextCursor( c );
+    ensureCursorVisible();
+}
+
+
+*/
+
 void FileEditor::commentSelectedText( bool uncomment ) {
 	m_view->commentSelectedText( uncomment );
 }
