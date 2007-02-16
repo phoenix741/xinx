@@ -221,7 +221,12 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 				m_completerValueParamName = m_paramName;
 				
 				QStringList wordList;			
-				wordList << m_nodeName << m_paramName;
+				if( m_completerValueParamName == "select" ) {
+					for(int i = 0; i < m_contentModel->modelData()->childCount(); i++) {
+						if( m_contentModel->modelData()->child( i )->type() == XSLModelData::etVariable )
+							wordList << m_contentModel->modelData()->child( i )->name();
+					}
+				}
 				m_completerValue->setModel( new QStringListModel( wordList, m_completerValue ) );
 			}
 			return m_completerValue;

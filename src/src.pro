@@ -34,7 +34,7 @@ CONFIG +=   warn_on \
   thread \
   qt \
   exceptions
-TARGET =   ../bin/xmlvisualstudio
+TARGET =   ../bin/xinx
 RESOURCES +=   application.qrc
 QT +=   xml \
   gui

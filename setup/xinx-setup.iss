@@ -3,29 +3,29 @@
 
 [Setup]
 AppName=XINX
-AppVerName=XINX 0.6-1 beta
+AppVerName=XINX 0.6-2 beta
 DefaultDirName={pf}\XINX
 DefaultGroupName=XINX
 OutputDir=.\
-OutputBaseFilename=xinx-0.6-1
+OutputBaseFilename=xinx-0.6-2
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 AppID={{AB2A9C86-AD08-4373-98FD-6A9AA8496AEE}
 AppCopyright=Generix
 UserInfoPage=true
-SetupIconFile=
-UninstallDisplayIcon={app}\xmlvisualstudio.exe
+UninstallDisplayIcon={app}\xinx.exe
+LicenseFile=..\COPYING
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: assoxml; Description: Use XML/XSL file with this Application
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
+Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unchecked
 
 [Files]
-Source: ..\src\bin\xmlvisualstudio.exe; DestDir: {app}; Flags: ignoreversion; Components: application
+Source: ..\src\bin\xinx.exe; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtXml4.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\mingwm10.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Components: application
@@ -35,6 +35,7 @@ Source: ..\xml\completion.cpl; DestDir: {app}\xml; Flags: onlyifdoesntexist; Com
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 Source: ..\xmlvisualstudio.pro; DestDir: {app}\src; Components: source
 Source: ..\COPYING; DestDir: {app}\src; Components: source
+Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\src\images\*.png; DestDir: {app}\src\src\images; Components: source
 Source: ..\src\images\*.ico; DestDir: {app}\src\src\images; Components: source
 Source: ..\src\*.cpp; DestDir: {app}\src\src; Components: source
@@ -44,24 +45,27 @@ Source: ..\src\*.xml; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.rc; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.sh; DestDir: {app}\src\src; Components: source
 Source: ..\src\*.pro; DestDir: {app}\src\src; Components: source
-Source: xmlstudio.iss; DestDir: {app}\src\setup; Components: source
+Source: xinx-setup.iss; DestDir: {app}\src\setup; Components: source
 
 [Icons]
-Name: {group}\XML Visual Studio; Filename: {app}\xmlvisualstudio.exe
-Name: {group}\{cm:UninstallProgram,XML Visual Studio}; Filename: {uninstallexe}
-Name: {userdesktop}\XML Visual Studio; Filename: {app}\xmlvisualstudio.exe; Tasks: desktopicon
+Name: {group}\XINX; Filename: {app}\xinx.exe
+Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
+Name: {userdesktop}\XINX; Filename: {app}\xinx.exe; Tasks: desktopicon
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xmlvisualstudio.exe; ValueType: string; ValueName: Path; ValueData: {app}; Tasks: assoxml
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xmlvisualstudio.exe; ValueType: string; ValueData: {app}\xmlvisualstudio.exe; Tasks: assoxml
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}; Tasks: assoxml
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\xinx.exe; Tasks: assoxml
 Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey; Tasks: assoxml
 Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Fichier de présentation; Flags: uninsdeletekey; Tasks: assoxml
-Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData: """{app}\xmlvisualstudio.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assoxml
+Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData: """{app}\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assoxml
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
-Name: objects; Description: Java Objects File
+;Name: objects; Description: Java Objects File
 Name: source; Description: Source de l'Application; Types: full; Languages: 
 
 [Dirs]
 Name: {app}\src\bin
+
+[InstallDelete]
+Name: {app}\xmlvisualstudio.exe; Type: files; Components: application; Tasks: ; Languages: 

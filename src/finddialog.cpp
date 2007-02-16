@@ -100,7 +100,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 
 	connect(fromStartCheckBox, SIGNAL( toggled(bool) ), backwardCheckBox, SLOT( setDisabled(bool) ));
 	connect(fromStartCheckBox, SIGNAL( toggled(bool) ), searchSelectionCheckBox, SLOT( setDisabled(bool) ));
-	fromStartCheckBox->setChecked(true);
+	fromStartCheckBox->setChecked(false);
 }
 
 void FindDialog::setReplaceChecked(bool checked) { 
