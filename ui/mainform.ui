@@ -69,7 +69,7 @@
       <string>&amp;Recent project</string>
      </property>
      <property name="icon" >
-      <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
      </property>
      <addaction name="m_openProjectAct" />
     </widget>
@@ -194,7 +194,7 @@
   </widget>
   <action name="m_newAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/filenew.png</iconset>
+    <iconset resource="../images/application.qrc" >:/filenew.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;New</string>
@@ -208,7 +208,7 @@
   </action>
   <action name="m_openAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
+    <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Open ...</string>
@@ -222,7 +222,7 @@
   </action>
   <action name="m_saveAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/filesave.png</iconset>
+    <iconset resource="../images/application.qrc" >:/filesave.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Save</string>
@@ -236,7 +236,7 @@
   </action>
   <action name="m_saveAsAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/filesaveas.png</iconset>
+    <iconset resource="../images/application.qrc" >:/filesaveas.png</iconset>
    </property>
    <property name="text" >
     <string>Save &amp;As...</string>
@@ -247,7 +247,7 @@
   </action>
   <action name="m_saveAllAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/filesaveall.png</iconset>
+    <iconset resource="../images/application.qrc" >:/filesaveall.png</iconset>
    </property>
    <property name="text" >
     <string>Save A&amp;ll...</string>
@@ -258,7 +258,7 @@
   </action>
   <action name="m_printAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/fileprint.png</iconset>
+    <iconset resource="../images/application.qrc" >:/fileprint.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Print ...</string>
@@ -272,7 +272,7 @@
   </action>
   <action name="m_closeAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/fileclose.png</iconset>
+    <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Close</string>
@@ -294,7 +294,7 @@
   </action>
   <action name="m_exitAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/exit.png</iconset>
+    <iconset resource="../images/application.qrc" >:/exit.png</iconset>
    </property>
    <property name="text" >
     <string>E&amp;xit</string>
@@ -308,7 +308,7 @@
   </action>
   <action name="m_undoAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/undo.png</iconset>
+    <iconset resource="../images/application.qrc" >:/undo.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Undo</string>
@@ -322,7 +322,7 @@
   </action>
   <action name="m_redoAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/redo.png</iconset>
+    <iconset resource="../images/application.qrc" >:/redo.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Redo</string>
@@ -336,7 +336,7 @@
   </action>
   <action name="m_cutAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/editcut.png</iconset>
+    <iconset resource="../images/application.qrc" >:/editcut.png</iconset>
    </property>
    <property name="text" >
     <string>Cu&amp;t</string>
@@ -350,7 +350,7 @@
   </action>
   <action name="m_copyAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/editcopy.png</iconset>
+    <iconset resource="../images/application.qrc" >:/editcopy.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Copy</string>
@@ -361,7 +361,7 @@
   </action>
   <action name="m_pasteAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/editpaste.png</iconset>
+    <iconset resource="../images/application.qrc" >:/editpaste.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Paste</string>
@@ -453,7 +453,7 @@
   </action>
   <action name="m_searchAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/find.png</iconset>
+    <iconset resource="../images/application.qrc" >:/find.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Search ...</string>
@@ -488,7 +488,7 @@
   </action>
   <action name="m_newProjectAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/filenew.png</iconset>
+    <iconset resource="../images/application.qrc" >:/filenew.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;New project ...</string>
@@ -512,7 +512,7 @@
   </action>
   <action name="m_openProjectAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/fileopen.png</iconset>
+    <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Choose file ...</string>
@@ -520,7 +520,7 @@
   </action>
   <action name="m_saveProjectAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/filesave.png</iconset>
+    <iconset resource="../images/application.qrc" >:/filesave.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Save project</string>
@@ -528,7 +528,7 @@
   </action>
   <action name="m_closeProjectAct" >
    <property name="icon" >
-    <iconset resource="application.qrc" >:/images/fileclose.png</iconset>
+    <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Close Project</string>
@@ -573,11 +573,11 @@
   <customwidget>
    <class>TabEditor</class>
    <extends>QTabWidget</extends>
-   <header>tabeditor.h</header>
+   <header>src/tabeditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="application.qrc" />
+  <include location="../images/application.qrc" />
  </resources>
  <connections>
   <connection>
