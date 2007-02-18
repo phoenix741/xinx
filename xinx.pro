@@ -49,7 +49,7 @@ CONFIG +=   warn_on \
   qt \
   exceptions
 
-TARGET =   bin/xinx
+TARGET =   xinx
 
 RESOURCES +=   images/application.qrc
 
