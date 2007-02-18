@@ -30,7 +30,8 @@
 class QDomElement;
 class XSLProject;
 
-class XSLModelData {
+class XSLModelData : public QObject {
+	Q_OBJECT
 public:
 	XSLModelData( XSLModelData * orig = 0, XSLProject * project = 0 );
 	virtual ~XSLModelData() { qDeleteAll( m_child ); };
@@ -63,6 +64,9 @@ public:
 	void loadFromFile( const QString& );
 	void loadFromContent( const QString& );
 	
+signals:
+	void childReseted();
+	
 private:
 	XSLModelData * m_parent;
 	enum ElementType m_type;
@@ -82,6 +86,7 @@ class XSLItemModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
 	XSLItemModel( QObject *parent = 0, XSLProject * project = 0 );
+	XSLItemModel( XSLModelData * data, QObject *parent = 0 );
 	virtual ~XSLItemModel();
 	
 	struct user_data {
@@ -98,11 +103,9 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 	
 	XSLModelData* modelData() { return rootItem; };
-public slots:
-	void updateModel( const QString & );
-	
 private:
 	XSLModelData* rootItem;
+	bool toDelete;
 };
 
 Q_DECLARE_METATYPE ( XSLItemModel::user_data )

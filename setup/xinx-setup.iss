@@ -25,27 +25,27 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unchecked
 
 [Files]
-Source: ..\src\bin\xinx.exe; DestDir: {app}; Components: application
+Source: ..\COPYING; DestDir: {app}; Components: application
+Source: ..\bin\xinx.exe; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtXml4.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\mingwm10.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtGui4.dll; DestDir: {app}; Components: application
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: ..\xml\completion.cpl; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: application
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
-Source: ..\xmlvisualstudio.pro; DestDir: {app}\src; Components: source
-Source: ..\COPYING; DestDir: {app}\src; Components: source
-Source: ..\COPYING; DestDir: {app}; Components: application
-Source: ..\src\images\*.png; DestDir: {app}\src\src\images; Components: source
-Source: ..\src\images\*.ico; DestDir: {app}\src\src\images; Components: source
-Source: ..\src\*.cpp; DestDir: {app}\src\src; Components: source
-Source: ..\src\*.h; DestDir: {app}\src\src; Components: source
-Source: ..\src\*.ui; DestDir: {app}\src\src; Components: source
-Source: ..\src\*.xml; DestDir: {app}\src\src; Components: source
-Source: ..\src\*.rc; DestDir: {app}\src\src; Components: source
-Source: ..\src\*.sh; DestDir: {app}\src\src; Components: source
-Source: ..\src\*.pro; DestDir: {app}\src\src; Components: source
-Source: xinx-setup.iss; DestDir: {app}\src\setup; Components: source
+
+Source: ..\xinx.pro; DestDir: {app}\source; Components: source
+Source: ..\COPYING; DestDir: {app}\source; Components: source
+Source: ..\images\*.png; DestDir: {app}\source\images; Components: source
+Source: ..\images\*.ico; DestDir: {app}\source\images; Components: source
+Source: ..\src\*.cpp; DestDir: {app}\source\src; Components: source
+Source: ..\src\*.h; DestDir: {app}\source\src; Components: source
+Source: ..\src\*.xml; DestDir: {app}\source\src; Components: source
+Source: ..\src\*.sh; DestDir: {app}\source\src; Components: source
+Source: ..\ui\*.ui; DestDir: {app}\source\ui; Components: source
+Source: ..\rc\*.rc; DestDir: {app}\source\rc; Components: source
+Source: ..\xml\completion.cpl; DestDir: {app}\source\xml; Components: source
+Source: ..\setup\xinx-setup.iss; DestDir: {app}\source\setup; Components: source
 
 [Icons]
 Name: {group}\XINX; Filename: {app}\xinx.exe
@@ -65,7 +65,7 @@ Name: application; Description: Application; Flags: fixed; Types: custom compact
 Name: source; Description: Source de l'Application; Types: full; Languages: 
 
 [Dirs]
-Name: {app}\src\bin
+Name: {app}\source\bin
 
 [InstallDelete]
 Name: {app}\xmlvisualstudio.exe; Type: files; Components: application; Tasks: ; Languages: 

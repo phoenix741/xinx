@@ -2,6 +2,7 @@ DESTDIR = bin
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
+RCC_DIR = build
 
 SOURCES +=   src/main.cpp \
   src/xmlhighlighter.cpp \

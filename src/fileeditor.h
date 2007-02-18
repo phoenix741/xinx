@@ -41,6 +41,9 @@ public:
 
 	virtual QAbstractItemModel * model() = 0;
 	
+public slots:
+	virtual void updateModel() = 0;
+
 protected:
 	QTextEdit * textEdit() const { return m_widget; };
 	XSLProject * project() const { return m_project; }

@@ -30,7 +30,7 @@
 #include <QApplication>
 #include <QIcon>
 
-XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : m_parent( orig ), m_project( project ) { 
+XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : QObject( orig ), m_parent( orig ), m_project( project ) { 
 	m_name         = QString();
 	m_value        = QString();
 	m_type         = etVariable;
@@ -74,6 +74,8 @@ void XSLModelData::loadFromXML( const QDomElement& element ) {
  		}
 		child = child.nextSiblingElement();
 	} 
+	
+	emit childReseted();
 }
 
 void XSLModelData::loadFromFile( const QString& filename ) {
@@ -141,12 +143,22 @@ int XSLModelData::childCount() {
 
 
 
-XSLItemModel::XSLItemModel( QObject *parent, XSLProject * project ) : QAbstractItemModel(parent) {
+XSLItemModel::XSLItemModel( QObject *parent, XSLProject * project ) : QAbstractItemModel( parent ) {
 	rootItem = new XSLModelData( NULL, project );
+	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	toDelete = true;
+}
+
+XSLItemModel::XSLItemModel( XSLModelData * data, QObject *parent ) : QAbstractItemModel( parent ) {
+	rootItem = data;
+	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	toDelete = false;
 }
 
 XSLItemModel::~XSLItemModel() {
-	delete rootItem;
+	disconnect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	if( toDelete )
+		delete rootItem;
 }
 	
 QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
@@ -157,13 +169,13 @@ QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 	if(role == Qt::DecorationRole && index.column() == 0) {
 		switch( data->type() ) {
 		case XSLModelData::etImport:
-			return QIcon(":/images/doc.png");
+			return QIcon(":/doc.png");
 			break;
 		case XSLModelData::etVariable:
-			return QIcon(":/images/CVpublic_var.png");
+			return QIcon(":/CVpublic_var.png");
 			break;
 		case XSLModelData::etTemplate:
-			return QIcon(":/images/CVpublic_meth.png");
+			return QIcon(":/CVpublic_meth.png");
 			break;
 		default:
 			return QVariant();
@@ -258,9 +270,3 @@ int XSLItemModel::columnCount(const QModelIndex &parent) const {
 	
 	return 2; // Name & Value
 }
-
-void XSLItemModel::updateModel(const QString & filename ) {
-	rootItem->loadFromContent( filename );
-	reset();
-}
-

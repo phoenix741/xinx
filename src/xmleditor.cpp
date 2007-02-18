@@ -20,6 +20,7 @@
 
 #include <QtGui>
 #include <QCompleter>
+#include <QDomElement>
 #include <assert.h>
 
 #include "xmleditor.h"
@@ -33,6 +34,97 @@
 
 #define isEditBalise(value) ((value == XMLProcessor::cpEditNodeName) || (value == XMLProcessor::cpEditParamName) || (value == XMLProcessor::cpEditParamValue))
 
+/* XSLValueCompletionModel */
+
+class XSLValueCompletionModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	XSLValueCompletionModel( XSLModelData * data, QObject *parent = 0 );
+	virtual ~XSLValueCompletionModel();
+	
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	
+	void setFiltre(XSLModelData::ElementType filtre) { m_filtre = filtre; refreshList(); };
+	void refreshList();
+private:
+	void refreshRecursive(XSLModelData * data);
+
+	QStringList m_list;
+	XSLModelData::ElementType m_filtre;
+	XSLModelData* rootItem;
+};
+
+XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *parent ) : QAbstractListModel( parent ) {
+	rootItem = data;
+	m_filtre = XSLModelData::etVariable;
+	refreshList();
+	
+	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+}
+
+XSLValueCompletionModel::~XSLValueCompletionModel() {
+	disconnect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+}
+
+void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
+	for( int i = 0; i < data->childCount(); i++ ) {
+		if( data->child( i )->type() == m_filtre ) {
+			m_list.append( data->child( i )->name() );
+		}
+		if( data->child( i )->type() == XSLModelData::etImport ) {
+			refreshRecursive( data->child( i ) );
+		}
+	}
+}
+
+void XSLValueCompletionModel::refreshList() {
+	m_list.clear();
+	refreshRecursive( rootItem );
+	m_list.sort();
+	emit layoutChanged();
+}
+	
+QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) const {
+	if (!index.isValid()) return QVariant();
+
+	QString data = m_list[ index.row() ];
+	
+	if( role == Qt::DecorationRole ) {
+		switch( m_filtre ) {
+		case XSLModelData::etVariable:
+			return QIcon(":/CVpublic_var.png");
+			break;
+		case XSLModelData::etTemplate:
+			return QIcon(":/CVpublic_meth.png");
+			break;
+		default:
+			return QVariant();
+		}
+	} 
+	
+	if ( role == Qt::DisplayRole ) 
+		return data;
+	
+	return QVariant();
+}
+
+Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
+	if ( index.isValid() )
+		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+	return Qt::ItemIsEnabled;
+}
+
+int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
+	if ( ! parent.isValid() )
+		return m_list.count();
+	else
+		return 0;
+}
+
+/* XMLProcessor */
 
 XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * parent ) : TextProcessor( widget, project, parent ) {
 	assert( completionNodeList != NULL );
@@ -42,6 +134,7 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * 
 	for(int i = 0; i < completionNodeList->count(); i++) {
 		wordList << completionNodeList->node(i)->name();
 	}
+	wordList.sort();
 
 	// Completer
 	m_completerNode = new QCompleter( wordList, this );
@@ -64,8 +157,11 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * 
 	m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
 	connect( m_completerValue, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
 	
-	m_contentModel = new XSLItemModel( this, project );
-	m_contentModel->updateModel( textEdit()->toPlainText() );
+	m_modelData = new XSLModelData( NULL, project );
+	m_modelData->loadFromContent( textEdit()->toPlainText() );
+	
+	m_contentModel = new XSLItemModel( m_modelData, this );
+	m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
 }
 
 XMLProcessor::~XMLProcessor() {
@@ -208,7 +304,7 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 					for(int i = 0; i < completionNodeList->node( m_nodeName )->count(); i++) {
 						wordList << completionNodeList->node( m_nodeName )->param(i);
 					}
-				
+					wordList.sort();
 					m_completerParam->setModel(new QStringListModel(wordList, m_completerParam));
 				} else 
 					return NULL;
@@ -220,14 +316,11 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 				m_completerParamNodeName = m_nodeName;
 				m_completerValueParamName = m_paramName;
 				
-				QStringList wordList;			
 				if( m_completerValueParamName == "select" ) {
-					for(int i = 0; i < m_contentModel->modelData()->childCount(); i++) {
-						if( m_contentModel->modelData()->child( i )->type() == XSLModelData::etVariable )
-							wordList << m_contentModel->modelData()->child( i )->name();
-					}
-				}
-				m_completerValue->setModel( new QStringListModel( wordList, m_completerValue ) );
+					m_completionValueModel->setFiltre( XSLModelData::etVariable );
+					m_completerValue->setModel( m_completionValueModel );
+				} else
+					m_completerValue->setModel( NULL );
 			}
 			return m_completerValue;
 		default:
@@ -296,7 +389,7 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 					textEdit()->setTextCursor( tc );
 				}
 			}
-			m_contentModel->updateModel( textEdit()->toPlainText() );
+			updateModel();
 		} else if(e->text().right(1) == "=") {
 			QTextCursor tc( textEdit()->textCursor() );
 			QTextCursor tc2( textEdit()->textCursor() );
@@ -387,5 +480,13 @@ void XMLProcessor::commentSelectedText( bool uncomment ) {
 }
 
 QAbstractItemModel * XMLProcessor::model() {
+	/* Est-ce anti performant ? */
+	updateModel();
 	return m_contentModel;
 }
+
+void XMLProcessor::updateModel() {
+	m_modelData->loadFromContent( textEdit()->toPlainText() );
+}
+
+#include "xmleditor.moc"

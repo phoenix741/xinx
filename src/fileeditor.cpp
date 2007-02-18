@@ -102,6 +102,7 @@ private:
 	QSyntaxHighlighter * m_highlighter;
 	
 	friend class TextProcessor;
+	friend class FileEditor;
 };
 
 TextEditor::TextEditor( QWidget * parent, XSLProject * project ) : QTextEdit( parent ), m_project( project ), m_processor( 0 ), m_highlighter( 0 ) { 
@@ -474,12 +475,16 @@ void FileEditor::loadFile( const QString & fileName ){
 		return;
 	}
 
+	setFileName( fileName );
+
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
 	QApplication::restoreOverrideCursor();
-
-	setFileName( fileName );
+	
+	if( m_view->m_processor ) {
+		m_view->m_processor->updateModel();
+	}
 }
 
 bool FileEditor::saveFile( const QString & fileName ){
@@ -497,6 +502,10 @@ bool FileEditor::saveFile( const QString & fileName ){
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	out << m_view->toPlainText();
 	QApplication::restoreOverrideCursor();
+
+	if( m_view->m_processor ) {
+		m_view->m_processor->updateModel();
+	}
 
 	return true;	
 }

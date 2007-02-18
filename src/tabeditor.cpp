@@ -74,7 +74,7 @@ void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project )
 		static_cast<FileEditor*>( ed )->loadFile( fileName );
 		
 		int index = addTab( ed, ed->getTitle() );
-		setTabIcon( index, QIcon(":/images/doc.png") );
+		setTabIcon( index, QIcon(":/doc.png") );
 	}
 	setCurrentWidget( ed );
 	dynamic_cast<QWidget*>( parent() )->activateWindow();

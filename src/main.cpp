@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 	UniqueApplication app(argc, argv);
   
 	if( app.isUnique() ) {
-		QPixmap pixmap(":/images/splash.png");
+		QPixmap pixmap(":/splash.png");
 		QSplashScreen splash(pixmap);
 		splash.show();
 		app.processEvents();

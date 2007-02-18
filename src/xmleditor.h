@@ -28,6 +28,8 @@ class QCompleter;
 class QTextDocument;
 class QTextEdit;
 class XSLItemModel;
+class XSLModelData;
+class XSLValueCompletionModel;
 
 class XMLProcessor : public TextProcessor {
 	Q_OBJECT
@@ -40,6 +42,9 @@ public:
 	virtual void keyPressEvent( QKeyEvent *e );
 	
 	virtual QAbstractItemModel * model();
+
+public slots:
+	virtual void updateModel();
 	
 protected slots:
 	void insertCompletion(const QString& completion);
@@ -66,7 +71,9 @@ private:
 	QCompleter * m_completerParam;
 	QCompleter * m_completerValue;
 	
+	XSLModelData * m_modelData;
 	XSLItemModel * m_contentModel;
+	XSLValueCompletionModel * m_completionValueModel;
 };
 
 #endif // __XMLEDITOR_H__
