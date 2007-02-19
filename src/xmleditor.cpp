@@ -29,8 +29,8 @@
 
 /* XMLProcessor */
 
-#define EOW			"~!@#$%^&*()+{}|\"<>?,./;'[]\\="
-#define EOWREGEXP	"[~!@#\\$%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,\\./;'\\[\\]\\\\=\\s]"
+#define EOW			"~!@$#%^&*()+{}|\"<>?,./;'[]\\="
+#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,\\./;'\\[\\]\\\\=\\s]"
 
 #define isEditBalise(value) ((value == XMLProcessor::cpEditNodeName) || (value == XMLProcessor::cpEditParamName) || (value == XMLProcessor::cpEditParamValue))
 
@@ -46,12 +46,19 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	
-	void setFiltre(XSLModelData::ElementType filtre) { m_filtre = filtre; refreshList(); };
+	/*
+	 * Le filtre doit être capable de gérer :
+	 *  - Les variables ( si $ positionné, alors variable uniquement )
+	 *  - Les variables & Templates ( si rien de positionné )
+	 *  - Les modes ( sur séléction d'un template )
+	 *  - Le XPATH également
+ 	*/
+ 	void setFiltre(XSLModelData::ElementType filtre) { m_filtre = filtre; refreshList(); };
 	void refreshList();
 private:
 	void refreshRecursive(XSLModelData * data);
 
-	QStringList m_list;
+	QList<XSLModelData*> m_objList;
 	XSLModelData::ElementType m_filtre;
 	XSLModelData* rootItem;
 };
@@ -71,7 +78,7 @@ XSLValueCompletionModel::~XSLValueCompletionModel() {
 void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
 	for( int i = 0; i < data->childCount(); i++ ) {
 		if( data->child( i )->type() == m_filtre ) {
-			m_list.append( data->child( i )->name() );
+			m_objList.append( data->child( i ) );
 		}
 		if( data->child( i )->type() == XSLModelData::etImport ) {
 			refreshRecursive( data->child( i ) );
@@ -79,20 +86,24 @@ void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
 	}
 }
 
+bool XSLValueCompletionModelObjListSort( XSLModelData * d1, XSLModelData * d2 ) {
+	return d1->name() < d2->name();
+}
+
 void XSLValueCompletionModel::refreshList() {
-	m_list.clear();
+	m_objList.clear();
 	refreshRecursive( rootItem );
-	m_list.sort();
+	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );
 	emit layoutChanged();
 }
 	
 QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) const {
 	if (!index.isValid()) return QVariant();
 
-	QString data = m_list[ index.row() ];
+	XSLModelData * data = m_objList[ index.row() ];
 	
 	if( role == Qt::DecorationRole ) {
-		switch( m_filtre ) {
+		switch( data->type() ) {
 		case XSLModelData::etVariable:
 			return QIcon(":/CVpublic_var.png");
 			break;
@@ -104,8 +115,8 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 		}
 	} 
 	
-	if ( role == Qt::DisplayRole ) 
-		return data;
+	if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
+		return data->name();
 	
 	return QVariant();
 }
@@ -119,7 +130,7 @@ Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
 
 int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() )
-		return m_list.count();
+		return m_objList.count();
 	else
 		return 0;
 }
@@ -155,6 +166,7 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * 
 	m_completerValue->setWidget( textEdit() );
 	m_completerValue->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
+	m_completerValue->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerValue, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
 	
 	m_modelData = new XSLModelData( NULL, project );
@@ -274,6 +286,7 @@ QString XMLProcessor::textUnderCursor( const QTextCursor & cursor ) const {
 }
 
 void XMLProcessor::insertCompletion( const QString& completion ) {
+	qDebug() << "insertCompletion( " << completion << " )";
 	QTextCursor tc = textEdit()->textCursor();
 	QCompleter * c = currentCompleter( tc );
 	
@@ -295,9 +308,12 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 	XMLProcessor::cursorPosition position = editPosition( cursor );
 	switch( position ) {
 		case XMLProcessor::cpEditNodeName:
+			qDebug() << "currentCompleter() : EditNodeName";
 			return m_completerNode;
 		case XMLProcessor::cpEditParamName: 
+			qDebug() << "currentCompleter() : EditParamName";
 			if(m_nodeName != m_completerParamNodeName) {
+				qDebug() <<  "currentCompleter() : node change";
 				m_completerParamNodeName = m_nodeName;
 				if(completionNodeList->node( m_nodeName )) {
 					QStringList wordList;
@@ -312,14 +328,17 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 		
 			return m_completerParam;
 		case XMLProcessor::cpEditParamValue: 
+			qDebug() << "currentCompleter() : EditParamValue";
 			if( ( m_completerValueParamName != m_paramName ) || ( m_nodeName != m_completerParamNodeName ) ) {
+				qDebug() <<  "currentCompleter() : param or node change";
 				m_completerParamNodeName = m_nodeName;
 				m_completerValueParamName = m_paramName;
 				
 				if( m_completerValueParamName == "select" ) {
 					m_completionValueModel->setFiltre( XSLModelData::etVariable );
 					m_completerValue->setModel( m_completionValueModel );
-				} else
+				}
+				 else
 					m_completerValue->setModel( NULL );
 			}
 			return m_completerValue;
@@ -350,6 +369,7 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 	QCompleter * c = currentCompleter( textEdit()->textCursor() );
 	
 	if (c && c->popup()->isVisible()) {
+		qDebug() << "keyPressEvent() : completer is visible";
 		// The following keys are forwarded by the completer to the widget
 		switch (e->key()) {
 		case Qt::Key_Enter:
@@ -428,8 +448,14 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
      QString completionPrefix = textUnderCursor( textEdit()->textCursor() );
 
      if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-         c->popup()->hide();
-         return;
+		qDebug() << "keyPressEvent() : hide completer";
+		qDebug() << "keyPressEvent() :               isShortcut = " << isShortcut;
+		qDebug() << "keyPressEvent() :               hasModifier = " << hasModifier;
+		qDebug() << "keyPressEvent() :               e->text().isEmpty() = " << e->text().isEmpty();
+		qDebug() << "keyPressEvent() :               completionPrefix.length() = " << completionPrefix.length();
+		qDebug() << "keyPressEvent() :               eow.contains(e->text().right(1)) = " << eow.contains(e->text().right(1));
+        c->popup()->hide();
+        return;
      }
 
      if (completionPrefix != c->completionPrefix()) {
@@ -437,9 +463,10 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
          c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
      }
 
-     QRect cr = textEdit()->cursorRect();
-     cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-     c->complete(cr); // popup it up!
+	QRect cr = textEdit()->cursorRect();
+	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+	qDebug() << "keyPressEvent() : show completer";
+	c->complete(cr); // popup it up!
 }
 
 void XMLProcessor::commentSelectedText( bool uncomment ) {

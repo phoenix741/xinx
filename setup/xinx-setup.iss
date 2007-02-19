@@ -26,7 +26,7 @@ Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unche
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
-Source: ..\bin\xinx.exe; DestDir: {app}; Components: application
+Source: ..\bin\xinx.exe; DestDir: {app}; Components: application; Flags: replacesameversion
 Source: C:\Qt\4.2.1\bin\QtXml4.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\mingwm10.dll; DestDir: {app}; Components: application
 Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Components: application
@@ -68,4 +68,4 @@ Name: source; Description: Source de l'Application; Types: full; Languages:
 Name: {app}\source\bin
 
 [InstallDelete]
-Name: {app}\xmlvisualstudio.exe; Type: files; Components: application; Tasks: ; Languages: 
+Name: {app}\xmlvisualstudio.exe; Type: files; Components: application

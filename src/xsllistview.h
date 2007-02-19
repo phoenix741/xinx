@@ -64,6 +64,8 @@ public:
 	void loadFromFile( const QString& );
 	void loadFromContent( const QString& );
 	
+	bool operator< ( const XSLModelData & cmp ) const { return m_name < cmp.m_name; };
+	
 signals:
 	void childReseted();
 	

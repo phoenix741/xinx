@@ -57,7 +57,8 @@ QT +=   xml \
   gui
 
 win32 {
-  CONFIG +=     release
+  CONFIG +=     release \
+	console
   RC_FILE +=     rc/xinx.rc
 }
 

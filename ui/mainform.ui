@@ -573,7 +573,7 @@
   <customwidget>
    <class>TabEditor</class>
    <extends>QTabWidget</extends>
-   <header>src/tabeditor.h</header>
+   <header>../src/tabeditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>
