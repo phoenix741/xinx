@@ -61,7 +61,10 @@ Q_SIGNALS:
 	void pasteAvailable( bool available );
 	
 	void modificationChanged( bool changed );
-	
+
+	void deleteModel();
+	void createModel();
+
 protected:
 	XSLProject * m_project;
 };

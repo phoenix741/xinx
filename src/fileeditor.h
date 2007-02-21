@@ -98,7 +98,7 @@ Q_SIGNALS:
 	void mouseHover( const QPoint &pos, const QString &word );
 	
 	void selectionAvailable ( bool yes );
-
+	
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 

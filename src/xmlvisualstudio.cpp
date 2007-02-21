@@ -97,6 +97,9 @@ void XMLVisualStudio::writeSettings() {
 }
 
 void XMLVisualStudio::createActions() {
+	connect( m_tabEditors, SIGNAL(modelCreated()), this, SLOT(slotModelCreated()) );
+	connect( m_tabEditors, SIGNAL(modelDeleted()), this, SLOT(slotModelDeleted()) );
+	
 	// Undo
 	connect(m_undoAct, SIGNAL(triggered()), m_tabEditors, SLOT(undo()));
 	m_undoAct->setEnabled(false);
@@ -549,10 +552,7 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 	on_m_searchNextAct_triggered();
 }
 
-void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
-	assert( tab < m_tabEditors->count() );
-	assert( 0   < m_tabEditors->count() );
-
+void XMLVisualStudio::slotModelDeleted() {
 	m_xslContentTreeView->setModel( NULL );
 
 	if( m_sortXslModel ) {
@@ -560,13 +560,23 @@ void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
 		m_sortXslModel = NULL;
 		m_xslModel = NULL;
 	}
+}
 
-	m_xslModel = m_tabEditors->editor( tab )->model();
+void XMLVisualStudio::slotModelCreated() {
+	m_xslModel = m_tabEditors->currentEditor( )->model();
 	if( m_xslModel ) {
 		m_sortXslModel = new QSortFilterProxyModel( this );
 		m_sortXslModel->setSourceModel( m_xslModel );
 		m_xslContentTreeView->setModel( m_sortXslModel );
 	}
+}
+
+void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
+	assert( tab < m_tabEditors->count() );
+	assert( 0   < m_tabEditors->count() );
+
+	slotModelDeleted();
+	slotModelCreated();
 }
 
 void XMLVisualStudio::openRecentProject() {
@@ -618,6 +628,7 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	m_lastPlace = QFileInfo( fileName ).absolutePath();
 
 	dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->saveFile( fileName );
+	m_tabEditors->editor( index )->setModified( true );
 	m_tabEditors->editor( index )->setModified( false );
 
 	statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );

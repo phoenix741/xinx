@@ -73,6 +73,9 @@ Q_SIGNALS:
 
 	void textAvailable( bool available ); // For move, duplicate line, complete and select all
 	void hasTextSelection( bool selection ); // For Upper/Lower Case ; Comment/Uncomment
+	
+	void modelCreated();
+	void modelDeleted();
 
 protected:
 	void dragEnterEvent( QDragEnterEvent *event );

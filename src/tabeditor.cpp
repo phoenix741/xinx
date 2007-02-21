@@ -247,6 +247,9 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	connect( editor, SIGNAL( pasteAvailable(bool) ), this, SIGNAL( pasteAvailable(bool) ) );	
 	connect( editor, SIGNAL( undoAvailable(bool) ), this, SIGNAL( undoAvailable(bool) ) );	
 	connect( editor, SIGNAL( redoAvailable(bool) ), this, SIGNAL( redoAvailable(bool) ) );	
+
+	connect( editor, SIGNAL( createModel() ), this, SIGNAL( modelCreated() ) );	
+	connect( editor, SIGNAL( deleteModel() ), this, SIGNAL( modelDeleted() ) );	
 	
 	if( isFileEditor( editor ) ) {
 		emit textAvailable( true );

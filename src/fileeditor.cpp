@@ -89,8 +89,14 @@ public:
 
 	void formatToXML();
 	void formatToJS();
+	void formatToNothing();
 	
 	QAbstractItemModel * model();
+	
+signals:
+	void deleteModel();
+	void createModel();
+
 protected:
 	void keyPressEvent(QKeyEvent *e);
 	void parentKeyPressEvent( QKeyEvent * e );
@@ -119,6 +125,7 @@ TextEditor::TextEditor( QWidget * parent, XSLProject * project ) : QTextEdit( pa
 }
 
 TextEditor::~TextEditor() {
+	formatToNothing();
 }
 
 QAbstractItemModel * TextEditor::model() {
@@ -127,17 +134,28 @@ QAbstractItemModel * TextEditor::model() {
 	return NULL;
 }
 
+void TextEditor::formatToNothing() {
+	emit deleteModel();
+	if( m_highlighter ) {
+		delete m_highlighter;  
+		m_highlighter = NULL;
+	}
+	if( m_processor ) {
+		delete m_processor; 
+		m_processor = NULL;
+	}
+}
+
 void TextEditor::formatToXML() {
-	delete m_highlighter;
+	formatToNothing();
 	m_highlighter = new XmlHighlighter( document() );
-	delete m_processor;
 	m_processor = new XMLProcessor( this, m_project, this );
+	emit createModel();
 }
 
 void TextEditor::formatToJS() {
-	delete m_highlighter;
+	formatToNothing();
 	m_highlighter = new JsHighlighter( document() );
-	delete m_processor;
 	m_processor = NULL;
 }
 
@@ -210,6 +228,9 @@ FileEditor::FileEditor( QWidget *parent, XSLProject * project ) : Editor( parent
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
+	
+	connect( m_view, SIGNAL(deleteModel()), this, SIGNAL(deleteModel()) );
+	connect( m_view, SIGNAL(createModel()), this, SIGNAL(createModel()) );
 }
 
 QTextEdit * FileEditor::textEdit() const { 
@@ -464,6 +485,8 @@ void FileEditor::setFileName( const QString & name ) {
 	else
 	if( QDir::match( "*.js", m_fileName ) ) 
 		m_view->formatToJS();
+	else
+		m_view->formatToNothing();
 }
 
 void FileEditor::loadFile( const QString & fileName ){

@@ -54,6 +54,8 @@ private slots:
 
 	/* Editor Change */
 	void slotCurrentTabChanged(int);
+	void slotModelDeleted();
+	void slotModelCreated();
 	
 	/* Usefull for recent project */
 	
