@@ -60,7 +60,7 @@ void TabEditor::newFileEditor() {
 	FileEditor * editor = new FileEditor( this );
 	int index = addTab( editor, editor->getTitle() );
 	
-	setTabIcon( index, QIcon(":/images/doc.png") );
+	setTabIcon( index, QIcon(":/doc.png") );
 	setCurrentIndex( index );
 
 	emit currentChanged( currentIndex() );  

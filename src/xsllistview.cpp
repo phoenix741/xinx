@@ -51,26 +51,34 @@ void XSLModelData::loadFromXML( const QDomElement& element ) {
 	QDomElement child = element.firstChildElement();
   
 	while (! child.isNull()) {
-		if( child.prefix() == "xsl" && ( child.tagName() == "import" || child.tagName() == "variable" || child.tagName() == "template" ) ) {
-			XSLModelData * data = new XSLModelData( this );
-			
+		if( child.prefix() == "xsl" && ( child.tagName() == "import" || child.tagName() == "variable" || child.tagName() == "template" || child.tagName() == "param" ) ) {
   			if( child.tagName() == "import" ) {
+				XSLModelData * data = new XSLModelData( this );
 				data->setType( etImport );
 	  			data->setName( child.attribute( "href" ) );
+				data->setLine( child.lineNumber() );
+	  			m_child.append( data );
 			} else
   			if( ( child.tagName() == "variable" ) || ( child.tagName() == "param" ) )  {
+				XSLModelData * data = new XSLModelData( this );
   				data->setType( etVariable );
 	  			data->setName( child.attribute( "name" ) );
 	  			data->setValue( child.attribute( "select", child.text() ) );
+				data->setLine( child.lineNumber() );
+	  			m_child.append( data );
 			} else
   			if( child.tagName() == "template" ) {
-				data->setType( etTemplate );   				
-	  			data->setName( child.attribute( "name", child.attribute( "match" ) ) );
-	  			data->setValue( child.attribute( "mode" ) );
+  				QStringList list = child.attribute( "name", child.attribute( "match" ) ).split( "|", QString::SkipEmptyParts );
+
+				foreach( QString template_name, list ) {
+					XSLModelData * data = new XSLModelData( this );
+					data->setType( etTemplate );   				
+		  			data->setName( template_name.trimmed() );
+		  			data->setValue( child.attribute( "mode" ) );
+					data->setLine( child.lineNumber() );
+		  			m_child.append( data );
+				}
 			}
-			data->setLine( child.lineNumber() );
-  			
-  			m_child.append( data );
  		}
 		child = child.nextSiblingElement();
 	} 
@@ -102,10 +110,19 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 	} else {
 		qDeleteAll( m_child );
 		m_child.clear();		
+		emit childReseted();
+		QMessageBox::warning( qApp->activeWindow(), tr("XSL Structure Error"), tr("%1 at line %2:%3").arg(errorStr).arg(errorLine).arg(errorColumn) );
 	}
 }
 
 void XSLModelData::loadFromContent( const QString& content ) {
+	if( content.trimmed().isEmpty() ) {
+		qDeleteAll( m_child );
+		m_child.clear();		
+		emit childReseted();
+		return;		
+	}
+	
 	QDomDocument xsl;
 	m_fileName = QString();
 
@@ -120,6 +137,8 @@ void XSLModelData::loadFromContent( const QString& content ) {
 	} else {
 		qDeleteAll( m_child );
 		m_child.clear();		
+		emit childReseted();
+		QMessageBox::warning( qApp->activeWindow(), tr("XSL Structure Error"), tr("%1 at line %2:%3").arg(errorStr).arg(errorLine).arg(errorColumn) );
 	}  
 }
 

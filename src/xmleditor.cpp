@@ -45,42 +45,31 @@ public:
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	
-	/*
-	 * Le filtre doit être capable de gérer :
-	 *  - Les variables ( si $ positionné, alors variable uniquement )
-	 *  - Les variables & Templates ( si rien de positionné )
-	 *  - Les modes ( sur séléction d'un template )
-	 *  - Le XPATH également
- 	*/
- 	void setFiltre(XSLModelData::ElementType filtre) { m_filtre = filtre; refreshList(); };
+public slots:
 	void refreshList();
 private:
 	void refreshRecursive(XSLModelData * data);
 
 	QList<XSLModelData*> m_objList;
-	XSLModelData::ElementType m_filtre;
 	XSLModelData* rootItem;
 };
 
 XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *parent ) : QAbstractListModel( parent ) {
 	rootItem = data;
-	m_filtre = XSLModelData::etVariable;
 	refreshList();
 	
-	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
-	disconnect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
 	for( int i = 0; i < data->childCount(); i++ ) {
-		if( data->child( i )->type() == m_filtre ) {
+		if( data->child( i )->type() != XSLModelData::etImport ) {
 			m_objList.append( data->child( i ) );
-		}
-		if( data->child( i )->type() == XSLModelData::etImport ) {
+		} else {
 			refreshRecursive( data->child( i ) );
 		}
 	}
@@ -91,6 +80,7 @@ bool XSLValueCompletionModelObjListSort( XSLModelData * d1, XSLModelData * d2 ) 
 }
 
 void XSLValueCompletionModel::refreshList() {
+	qDebug() << "refreshList()";
 	m_objList.clear();
 	refreshRecursive( rootItem );
 	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );
@@ -335,7 +325,6 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 				m_completerValueParamName = m_paramName;
 				
 				if( m_completerValueParamName == "select" ) {
-					m_completionValueModel->setFiltre( XSLModelData::etVariable );
 					m_completerValue->setModel( m_completionValueModel );
 				}
 				 else

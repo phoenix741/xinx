@@ -480,11 +480,11 @@ void FileEditor::loadFile( const QString & fileName ){
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
-	QApplication::restoreOverrideCursor();
 	
 	if( m_view->m_processor ) {
 		m_view->m_processor->updateModel();
 	}
+	QApplication::restoreOverrideCursor();
 }
 
 bool FileEditor::saveFile( const QString & fileName ){
@@ -501,11 +501,12 @@ bool FileEditor::saveFile( const QString & fileName ){
 	QTextStream out( &file );
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	out << m_view->toPlainText();
-	QApplication::restoreOverrideCursor();
 
 	if( m_view->m_processor ) {
 		m_view->m_processor->updateModel();
 	}
+
+	QApplication::restoreOverrideCursor();
 
 	return true;	
 }
