@@ -81,6 +81,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	saveOpenedFile();
 	
 	if( ! filename.isEmpty() ) m_fileName = filename;
+	if( m_fileName.isEmpty() ) return;
 	
 	static const int IndentSize = 3;
 

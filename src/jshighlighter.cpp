@@ -51,26 +51,25 @@ void JsHighlighter::init() {
 	fmtComment.setForeground( DEFAULT_COMMENT );
 	fmtError.setForeground( DEFAULT_ERROR );
 	fmtOther.setForeground( DEFAULT_OTHER );
-	fmtFunction.setForeground( DEFAULT_OTHER );
-    fmtFunction.setFontItalic(true);
 	
 	keywordPatterns.clear();
-	keywordPatterns << "\\babstract\\b" << "\\bboolean\\b" << "\\bbreak\\b" 
-					<< "\\bbyte\\b" << "\\bcase\\b" << "\\bcatch\\b" << "\\bchar\\b" 
-					<< "\\bclass\\b" << "\\bconst\\b" << "\\bcontinue\\b" 
-					<< "\\bdebugger\\b" << "\\bdefault\\b" << "\\bdelete\\b" 
-					<< "\\bdo\\b" << "\\bdouble\\b" << "\\belse\\b" << "\\benum\\b" 
-					<< "\\bexport\\b" << "\\bextends\\b" << "\\bfalse\\b" << "\\bfinal\\b" 
-					<< "\\bfinally\\b" << "\\bfloat\\b" << "\\bfor\\b" << "\\bfunction\\b" 
-					<< "\\bgoto\\b" << "\\bif\\b" << "\\bimplements\\b" << "\\bimport\\b" 
-					<< "\\bin\\b" << "\\binstanceof\\b" << "\\bint\\b" << "\\binterface\\b" 
-					<< "\\blong\\b" << "\\bnative\\b" << "\\bnew\\b" << "\\bnull\\b" 
-					<< "\\bpackage\\b" << "\\bprivate\\b" << "\\bprotected\\b" 
-					<< "\\bpublic\\b" << "\\breturn\\b" << "\\bshort\\b" << "\\bstatic\\b" 
-					<< "\\bsuper\\b" << "\\bswitch\\b" << "\\bsynchronized\\b" 
-					<< "\\bthis\\b" << "\\bthrow\\b" << "\\bthrows\\b" << "\\btransient\\b" 
-					<< "\\btrue\\b" << "\\btry\\b" << "\\btypeof\\b" << "\\bvar\\b" 
-					<< "\\bvoid\\b" << "\\bvolatile\\b" << "\\bwhile\\b" << "\\bwith\\b";
+	keywordPatterns << "abstract" << "boolean" << "break" 
+					<< "byte" << "case" << "catch" << "char" 
+					<< "class" << "const" << "continue" 
+					<< "debugger" << "default" << "delete" 
+					<< "do" << "double" << "else" << "enum" 
+					<< "export" << "extends" << "false" << "final" 
+					<< "finally" << "float" << "for" << "function" 
+					<< "goto" << "if" << "implements" << "import" 
+					<< "in" << "instanceof" << "int" << "interface" 
+					<< "long" << "native" << "new" << "null" 
+					<< "package" << "private" << "protected" 
+					<< "public" << "return" << "short" << "static" 
+					<< "super" << "switch" << "synchronized" 
+					<< "this" << "throw" << "throws" << "transient" 
+					<< "true" << "try" << "typeof" << "var" 
+					<< "void" << "volatile" << "while" << "with";
+	keywordPatterns.sort();
 }
 
 void JsHighlighter::setHighlightColor( HighlightType type, QColor color, bool foreground ) {
@@ -103,54 +102,99 @@ void JsHighlighter::setHighlightFormat(HighlightType type, QTextCharFormat forma
 		case Other:
 			fmtOther = format;
 			break;
-		case Function:
-			fmtFunction = format;
-			break;
 	}
 	rehighlight();
 }
 
-void JsHighlighter::highlightBlock( const QString& text ) {
-	foreach ( QString pattern, keywordPatterns ) {
-		processDefaultText( pattern, text, fmtReservedWord );
-	}
-	processDefaultText( "\\b[A-Za-z0-9_]+(?=\\s*\\()", text, fmtFunction );
-	processDefaultText( "\\b[\\-\\+]?[0-9]+(\\.[0-9]+)?\\b", text, fmtNumber );
-	processDefaultText( "\"[^\"]*\"", text, fmtString );
-	processDefaultText( "'[^\']*'", text, fmtString );
-	processDefaultText( "//[^\n]*", text, fmtComment );
+void JsHighlighter::highlightBlock( const QString & text ) {
+	int i = 0;
+	int pos = 0;
 
-
-	QRegExp commentStartExpression("/\\*");
+	QRegExp commentStartExpression("^/\\*");
 	QRegExp commentEndExpression("\\*/");
-     
-	setCurrentBlockState( 0 ); 
-	int startIndex = 0;
-	if ( previousBlockState() != 1 )
-		startIndex = text.indexOf( commentStartExpression );
+	QRegExp numberExpression("^\\b[\\-\\+]?[0-9]+(\\.[0-9]+)?\\b");
+	QRegExp functionNameExpression("^\\b[A-Za-z0-9_]+(?=\\s*\\()");
+	QRegExp motExpression("^\\w*");
+	QRegExp commentExpression("^//[^\n]*");
+	QRegExp string1Expression("^'[^\']*'");
+	QRegExp string2Expression("^\"[^\"]*\"");
 		
-	while (startIndex >= 0) {
-		int endIndex = text.indexOf( commentEndExpression, startIndex );
-		int commentLength;
-		if ( endIndex == -1 ) {
-			setCurrentBlockState( 1 );
-			commentLength = text.length() - startIndex;
-		} else {
-			commentLength = endIndex - startIndex + commentEndExpression.matchedLength();
-		}
-		setFormat( startIndex, commentLength, fmtComment );
-		startIndex = text.indexOf( commentStartExpression, startIndex + commentLength );
-	}	
-}
+	setCurrentBlockState(NoBlock);
+	
+	if ( previousBlockState() == InComment ) {
+		pos = commentEndExpression.indexIn( text, i );
 
-void JsHighlighter::processDefaultText( const QString& pattern, const QString& text, const QTextCharFormat& format ) {
-	QRegExp expression( pattern );
-	int index = text.indexOf( expression );
-	while ( index >= 0 ) {
-		int length = expression.matchedLength();
-		setFormat( index, length, format );
-		index = text.indexOf(expression, index + length);
+		if (pos >= 0) {
+			// end comment found
+			const int iLength = commentEndExpression.matchedLength();
+			setFormat( 0, pos + iLength, fmtComment );
+			i += pos + iLength; // skip comment
+		} else {
+			// in comment
+			setFormat( 0, text.length(), fmtComment );
+			setCurrentBlockState( InComment );
+			return;
+		}
 	}
+	
+	for (; i < text.length(); i++) {
+		char c = text.at(i).toLower().toAscii();
+		if( ( c >= '0' ) && ( c <= '9' ) ) {
+			pos = numberExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				const int iLength = numberExpression.matchedLength();
+				setFormat( pos, iLength, fmtNumber );
+				i += iLength;
+			}
+		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
+			pos = motExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			if( pos == i ) {
+				const int iLength = motExpression.matchedLength();
+				if( keywordPatterns.contains( text.mid( i, iLength ) ) ) {
+					setFormat( pos, iLength, fmtReservedWord );
+				}
+				i += iLength;
+			}
+		} else if ( c == '/' ) {
+			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				int posEnd = commentEndExpression.indexIn( text, i + 2 ) + 2;
+ 				int length = (posEnd >= 0) ? posEnd : ( text.length() - pos );
+
+				setFormat( pos, length, fmtComment );
+				i += length;
+				if( posEnd == -1 ) {
+					setCurrentBlockState( InComment );
+					return;
+				}
+			} else {
+				pos = commentExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+				if( pos == i ) {
+					const int iLength = commentExpression.matchedLength() + 2;
+					i += iLength;
+					setFormat( pos, iLength, fmtComment );
+				}
+			}
+		} else if ( c == '\'' ) {
+			pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				const int iLength = string1Expression.matchedLength();
+				setFormat( pos, iLength, fmtString );
+				i += iLength;
+			}
+		} else if ( c == '\"' ) {
+			pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				const int iLength = string2Expression.matchedLength();
+				setFormat( pos, iLength, fmtString );
+				i += iLength;
+			}
+		}
+	}	
 }
 
 //

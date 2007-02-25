@@ -36,7 +36,6 @@ public:
 		ReservedWord,
 		Number,
 		String,
-		Function,	
 		Comment,
 		Error,
 		Other
@@ -47,9 +46,14 @@ public:
 
 protected:
 	void highlightBlock( const QString& rstrText );
-	void processDefaultText( const QString& pattern, const QString& text, const QTextCharFormat& format );
 
 private:
+	enum BlockState
+	{
+		NoBlock = -1,
+		InComment
+	};
+	
 	void init();
 
 	QStringList keywordPatterns;
@@ -57,7 +61,6 @@ private:
 	QTextCharFormat fmtReservedWord;
 	QTextCharFormat fmtNumber;
 	QTextCharFormat fmtString;
-	QTextCharFormat fmtFunction;
 	QTextCharFormat fmtComment;
 	QTextCharFormat fmtError;
 	QTextCharFormat fmtOther;

@@ -107,6 +107,10 @@ void FindDialog::setReplaceChecked(bool checked) {
 	replaceCheckBox->setChecked(checked) ; 
 } 
 
+void FindDialog::setText(const QString & text) {
+	lineEditFind->setText( text );
+}
+
 
 void FindDialog::callFind() {
 	struct FindOptions options;

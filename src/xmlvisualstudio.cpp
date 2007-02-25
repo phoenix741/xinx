@@ -340,6 +340,12 @@ void XMLVisualStudio::on_m_closeAllAct_triggered() {
 void XMLVisualStudio::on_m_searchAct_triggered() {
 	m_findDialog->initialize();
 	m_findDialog->setReplaceChecked(false);
+
+	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	if( ! textEdit->textCursor().selectedText().isEmpty() ){
+		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	}
+
 	m_findDialog->show();
 }
 
@@ -419,6 +425,12 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 void XMLVisualStudio::on_m_replaceAct_triggered() {
 	m_findDialog->initialize();
 	m_findDialog->setReplaceChecked(true);
+
+	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	if( ! textEdit->textCursor().selectedText().isEmpty() ){
+		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	}
+
 	m_findDialog->show();
 }
 
@@ -435,16 +447,19 @@ void XMLVisualStudio::on_m_javaViewObjectListAct_triggered() {
 void XMLVisualStudio::on_m_newProjectAct_triggered() {
 	ProjectPropertyImpl property ( this );
 	if( property.exec() ) {
-		m_xslProject = new XSLProject( );
-		property.saveToProject( m_xslProject );
+		XSLProject* project = new XSLProject( );
+		property.saveToProject( project );
 		
-		QString fileName = QFileDialog::getSaveFileName( this, tr("Save a project"), m_xslProject->projectPath(), "Projet (*.prj)" );
+		QString fileName = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
 		
 		if( ! fileName.isEmpty() ) {
-			m_xslProject->saveToFile( fileName );
+			project->saveToFile( fileName );
+			m_lastPlace = project->projectPath();
+			closeProject( true );
+			m_xslProject = project;
 			setCurrentProject( fileName );
 		} else 
-			on_m_closeProjectAct_triggered();
+			delete project;
 	}
 	
 	updateActions();
@@ -610,7 +625,12 @@ void XMLVisualStudio::saveEditor( int index ) {
 	if ( ! m_tabEditors->editor( index )->hasName() ) {
 		on_m_saveAsAct_triggered();
 	} else {
-		dynamic_cast<FileEditor*>( m_tabEditors->editor( index ) )->saveFile();
+		QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
+		if( m_xslProject && (! QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) ) {
+			QMessageBox::warning( this, tr("Save standard XSL"), tr("You're being to save standard file, please save it as specifique") );
+			saveEditorAs( index );
+		} else
+			dynamic_cast<FileEditor*>( m_tabEditors->editor( index ) )->saveFile();
 	}
 	
 	m_tabEditors->editor( index )->setModified( false );
@@ -622,7 +642,24 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	assert( index >= 0 );
 	assert( index < m_tabEditors->count() );
 	
-	QString fileName = QFileDialog::getSaveFileName( this, tr("Open XSL File"), m_lastPlace, tr( OPEN_SAVE_DIALOG_FILTER ) );
+	QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
+	if( ( ! fileName.isEmpty() ) && ( m_xslProject ) ) {
+		fileName = QFileInfo( fileName ).fileName();
+		if( ! fileName.startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) {
+			fileName = m_xslProject->specifPrefix().toLower() + "_" + fileName;
+			fileName = QDir( m_xslProject->specifPath() ).absoluteFilePath( fileName );
+		} else 
+			fileName = QDir( m_lastPlace ).absoluteFilePath( fileName );
+	} else 
+		fileName = m_lastPlace;
+	
+	fileName = QFileDialog::getSaveFileName( 
+		this, 
+		tr("Save XSL File"), 
+		fileName, 
+		tr( OPEN_SAVE_DIALOG_FILTER )
+	);
+	
 	if( fileName.isEmpty() ) return ;
 
 	m_lastPlace = QFileInfo( fileName ).absolutePath();
@@ -636,13 +673,12 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 
 void XMLVisualStudio::openProject( const QString & filename ) {
 	if( ! filename.isEmpty() ) {
-		if( m_xslProject ) on_m_closeProjectAct_triggered();
+		if( m_xslProject ) closeProject( true );
 		
 		m_xslProject = new XSLProject( filename );
 		m_lastPlace = m_xslProject->projectPath();
 		setCurrentProject( filename );
 		
-		on_m_closeAllAct_triggered();
 		foreach( QString str, m_xslProject->openedFiles() ) {
 			open( str );
 		}

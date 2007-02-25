@@ -48,6 +48,7 @@ public:
 	FindDialog(QWidget *parent = 0);
 	
 	void setReplaceChecked(bool);
+	void setText(const QString &);
 	
 	void initialize();
 	

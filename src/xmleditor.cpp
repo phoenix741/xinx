@@ -164,6 +164,8 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * 
 	
 	m_contentModel = new XSLItemModel( m_modelData, this );
 	m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
+	
+	m_completerValue->setModel( m_completionValueModel );
 }
 
 XMLProcessor::~XMLProcessor() {
@@ -318,18 +320,18 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 		
 			return m_completerParam;
 		case XMLProcessor::cpEditParamValue: 
-			qDebug() << "currentCompleter() : EditParamValue";
-			if( ( m_completerValueParamName != m_paramName ) || ( m_nodeName != m_completerParamNodeName ) ) {
-				qDebug() <<  "currentCompleter() : param or node change";
-				m_completerParamNodeName = m_nodeName;
-				m_completerValueParamName = m_paramName;
-				
-				if( m_completerValueParamName == "select" ) {
-					m_completerValue->setModel( m_completionValueModel );
-				}
-				 else
-					m_completerValue->setModel( NULL );
-			}
+			//qDebug() << "currentCompleter() : EditParamValue";
+			//if( ( m_completerValueParamName != m_paramName ) || ( m_nodeName != m_completerParamNodeName ) ) {
+				//qDebug() <<  "currentCompleter() : param or node change";
+				//m_completerParamNodeName = m_nodeName;
+				//m_completerValueParamName = m_paramName;
+				//
+				//if( m_completerValueParamName == "select" ) {
+					//m_completerValue->setModel( m_completionValueModel );
+				//}
+				 //else
+					//m_completerValue->setModel( NULL );
+			//}
 			return m_completerValue;
 		default:
 			return NULL;	
