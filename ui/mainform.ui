@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>394</height>
+    <width>722</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,7 +18,7 @@
      <number>0</number>
     </property>
     <property name="spacing" >
-     <number>0</number>
+     <number>6</number>
     </property>
     <item row="0" column="0" >
      <widget class="TabEditor" name="m_tabEditors" />
@@ -30,8 +30,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>607</width>
-     <height>19</height>
+     <width>722</width>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -50,15 +50,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_searchMenu" >
-    <property name="title" >
-     <string>&amp;Search</string>
-    </property>
-    <addaction name="m_searchAct" />
-    <addaction name="m_searchNextAct" />
-    <addaction name="separator" />
-    <addaction name="m_replaceAct" />
    </widget>
    <widget class="QMenu" name="m_projectMenu" >
     <property name="title" >
@@ -123,6 +114,15 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
+   <widget class="QMenu" name="m_searchMenu" >
+    <property name="title" >
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="m_searchAct" />
+    <addaction name="m_searchNextAct" />
+    <addaction name="separator" />
+    <addaction name="m_replaceAct" />
+   </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
    <addaction name="m_searchMenu" />
@@ -155,12 +155,21 @@
    <addaction name="m_copyAct" />
    <addaction name="m_pasteAct" />
   </widget>
+  <widget class="QToolBar" name="toolBar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="m_searchAct" />
+  </widget>
   <widget class="QDockWidget" name="m_xslContentDock" >
    <property name="allowedAreas" >
     <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle" >
-    <string>XSL Content</string>
+    <string>Opened File Content</string>
    </property>
    <attribute name="dockWidgetArea" >
     <number>2</number>
@@ -182,15 +191,6 @@
      </item>
     </layout>
    </widget>
-  </widget>
-  <widget class="QToolBar" name="toolBar" >
-   <property name="orientation" >
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <attribute name="toolBarArea" >
-    <number>4</number>
-   </attribute>
-   <addaction name="m_searchAct" />
   </widget>
   <action name="m_newAct" >
    <property name="icon" >
