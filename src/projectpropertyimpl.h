@@ -35,6 +35,8 @@ public:
 private:
 	void updateSpecifiquePath();
 private slots:
+	void on_m_webServiceBtnDel_clicked();
+	void on_m_webServiceBtnAdd_clicked();
 	void on_m_langComboBox_currentIndexChanged( QString );
 	void on_m_projectLineEdit_textChanged( QString );
 	void on_m_projectButton_clicked();
@@ -43,6 +45,7 @@ private slots:
 	void on_m_projectTypeCombo_currentIndexChanged( int );
 };
 #endif
+
 
 
 

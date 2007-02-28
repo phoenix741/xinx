@@ -20,6 +20,8 @@
 
 #include <QDir>
 #include <QFileDialog>
+#include <QInputDialog>
+#include <assert.h>
 
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
@@ -44,7 +46,7 @@ void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
 }
 
 void ProjectPropertyImpl::on_m_projectTypeCombo_currentIndexChanged( int index ) {
-	m_serveurWebLineEdit->setEnabled( (XSLProject::enumProjectType)index == XSLProject::SERVICES );
+	m_webServiceGroupBox->setEnabled( (XSLProject::enumProjectType)index == XSLProject::SERVICES );
 }
 
 void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text ) {
@@ -80,8 +82,14 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
-	m_serveurWebLineEdit->setText( project->serveurWeb() );
 	m_projectTypeCombo->setCurrentIndex( (int)project->projectType() );
+	
+	m_webServiceList->clear();
+	foreach( QString link, project->serveurWeb() ) {
+		m_webServiceList->addItem( link );
+	}
+
+	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
@@ -91,8 +99,12 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
 	project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
-	project->setServeurWeb( m_serveurWebLineEdit->text() );
 	project->setProjectType( (XSLProject::enumProjectType)m_projectTypeCombo->currentIndex() );
+	
+	project->serveurWeb().clear();
+	for( int i = 0; i < m_webServiceList->count(); i++ ) {
+		project->serveurWeb().append( m_webServiceList->item( i )->text() );
+	}
 }
 
 void ProjectPropertyImpl::updateSpecifiquePath() {
@@ -105,5 +117,22 @@ void ProjectPropertyImpl::on_m_langComboBox_currentIndexChanged( QString str ) {
 	Q_UNUSED( str );
 	
 	updateSpecifiquePath();
+}
+
+
+void ProjectPropertyImpl::on_m_webServiceBtnDel_clicked() {
+	assert( m_webServiceList->currentRow() >= 0 );
+	
+	delete m_webServiceList->currentItem();
+	
+	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
+}
+
+void ProjectPropertyImpl::on_m_webServiceBtnAdd_clicked() {
+	QString text = QInputDialog::getText( this, "Add WebService", "URL of the WebServices", QLineEdit::Normal, "http://localhost:8888/gce120/services/" );
+	if( ! text.isEmpty() )
+		m_webServiceList->addItem( text );
+
+	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
 }
 

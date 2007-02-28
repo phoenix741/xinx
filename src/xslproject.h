@@ -23,7 +23,7 @@
 
 #include <QString>
 #include <QDomDocument>
-#include <QList>
+#include <QStringList>
 
 /*
 TODO : 
@@ -48,9 +48,6 @@ public:
 	enumProjectType projectType() const;
 	void setProjectType( const enumProjectType & );
 	
-	QString serveurWeb() const;
-	void setServeurWeb( const QString & );
-
 	QString defaultLang() const;
 	void setDefaultLang( const QString & );
 	
@@ -75,7 +72,8 @@ public:
 	QString	specifiqueConfigurationFile() const;
 	void setSpecifiqueConfigurationFile( const QString & );
 
-	QList<QString> & openedFiles() { return m_openedFile; };
+	QStringList & openedFiles() { return m_openedFile; };
+	QStringList & serveurWeb() { return m_webServiceLink; };
 
 	const QString & fileName() const;
 private:
@@ -85,9 +83,13 @@ private:
 	void loadOpenedFile();
 	void saveOpenedFile();
 
+	void loadWebServicesLink();
+	void saveWebServicesLink();
+
 	QString m_fileName;
 	QDomDocument m_projectDocument;
-	QList<QString> m_openedFile;
+	QStringList m_openedFile;
+	QStringList m_webServiceLink;
 };
 
 #endif

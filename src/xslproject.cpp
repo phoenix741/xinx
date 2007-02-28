@@ -161,10 +161,12 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	m_fileName = filename;
 	
 	loadOpenedFile();
+	loadWebServicesLink();
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
 	saveOpenedFile();
+	saveWebServicesLink();
 	
 	if( ! filename.isEmpty() ) m_fileName = filename;
 	if( m_fileName.isEmpty() ) return;
@@ -237,14 +239,6 @@ void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
 	default:
 		setValue( "type", "default" );	
 	}
-}
-
-QString XSLProject::serveurWeb() const {
-	return getValue( "serveur" );
-}
-
-void XSLProject::setServeurWeb( const QString & value ) {
-	setValue( "serveur", value );
 }
 
 QString XSLProject::projectName() const {
@@ -346,6 +340,42 @@ void XSLProject::saveOpenedFile() {
 	
 	foreach(QString filename, m_openedFile) {
 		QDomElement file = m_projectDocument.createElement( "file" );
+		elt.appendChild( file );
+		
+		QDomText text = m_projectDocument.createTextNode( filename );
+		file.appendChild( text );
+	}
+}
+
+void XSLProject::loadWebServicesLink() {
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement elt  = root.firstChildElement( "webServiceLink" );
+	
+	m_webServiceLink.clear();
+	
+	if( elt.isNull() ) return;
+		
+	QDomElement file = elt.firstChildElement( "link" );
+	
+	while ( ! file.isNull() ) {
+		m_webServiceLink.append( file.firstChild().toText().nodeValue() );	
+		
+		file = file.nextSiblingElement( "link" );
+	}
+}
+
+void XSLProject::saveWebServicesLink() {
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement elt  = root.firstChildElement( "webServiceLink" );
+	
+	if( ! elt.isNull() )
+		root.removeChild( elt );
+
+	elt = m_projectDocument.createElement( "webServiceLink" );
+	root.appendChild( elt );
+	
+	foreach(QString filename, m_webServiceLink) {
+		QDomElement file = m_projectDocument.createElement( "link" );
 		elt.appendChild( file );
 		
 		QDomText text = m_projectDocument.createTextNode( filename );
