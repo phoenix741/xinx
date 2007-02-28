@@ -23,6 +23,92 @@
 #include <QtGui>
 #include <QtXml>
 
+class WebServices;
+
+class Operation {
+public:
+	Operation( QString name, QString soapAction ) : m_name( name ), m_action( soapAction ) {};
+
+	const QString & name() const { return m_name; };
+	const QString & soapAction() const { return m_action; };
+	
+	const QStringList & inputParam() { return m_inputParam; };
+	const QStringList & outputParam() { return m_outputParam; };
+private:
+	QString m_name;
+	QString m_action;
+	
+	QStringList m_inputParam;
+	QStringList m_outputParam;
+	
+friend class WebServices;
+};
+
+class WebServices {
+public:
+	WebServices( const QDomElement & element );
+
+	const QString & name() const { return m_name; };
+	
+	const QList<Operation> & operations() const { return m_list; };
+private:
+	QString m_name;
+	QList<Operation> m_list;
+};
+
+WebServices::WebServices( const QDomElement & element ) {
+	// /definitions
+	QDomElement xmlDefinition = element.firstChildElement( "definitions" );
+	m_name = xmlDefinition.attribute( "name" );
+
+	// /definitions/binding
+	QDomNodeList xmlBindings = xmlDefinition.elementsByTagName( "binding" );
+	for( int i = 0; i < xmlBindings.size(); i++ ) {
+		QDomElement xmlBinding = xmlBindings.at( i ).toElement();
+			
+		// /definitions/binding[@name="WSCRUDManagerBinding"]
+		if( xmlBinding.attribute( "name" ) == ( m_name + "Binding" ) ) {
+			QDomNodeList xmlOperations = xmlBinding.elementsByTagName( "operation" );
+				
+			for( int j = 0; j < xmlOperations.size(); j++ ) {
+				// /definitions/binding[@name="WSCRUDManagerBinding"]/operation
+				QDomElement xmlOperation = xmlOperations.at( j ).toElement();
+				QDomElement xmlSoapAction = xmlOperation.firstChildElement(" operation ");
+				
+				Operation operation( xmlOperation.attribute( "name" ), xmlSoapAction.attribute( "soapAction" ) );
+				
+				// /definitions/message
+				QDomNodeList xmlMessages = xmlDefinition.elementsByTagName( "message" );
+				for( int k = 0; k < xmlMessages.size(); k++ ) {
+					QDomElement xmlMessage = xmlMessages.at( k ).toElement();
+					if( xmlMessage.attribute( "name" ) == operation.name() + "Input" ) {
+						QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
+						
+						for( int l = 0; l < xmlParts.size(); l++ ){
+							QDomElement xmlPart = xmlParts.at( l ).toElement();
+							operation.m_inputParam.append( xmlPart.attribute( "name" ) );
+						}
+					}
+					if( xmlMessage.attribute( "name" ) == operation.name() + "Output" ) {
+						QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
+						
+						for( int l = 0; l < xmlParts.size(); l++ ){
+							QDomElement xmlPart = xmlParts.at( l ).toElement();
+							operation.m_outputParam.append( xmlPart.attribute( "name" ) );
+						}
+					}
+				}
+				
+				m_list.append( operation );
+			}
+				
+			break;
+		}
+	}
+}
+
+
+
 XSLProject::XSLProject() {
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
 	m_projectDocument.appendChild( root );
@@ -131,6 +217,34 @@ void XSLProject::setValue( const QString & node, const QString & value ) {
 		elt.appendChild( text );
 	} else
 		text.setData( value );
+}
+
+XSLProject::enumProjectType XSLProject::projectType() const {
+	if( getValue( "type" ) == "services" ) 
+		return SERVICES; 	
+	else
+		return WEB;
+}
+
+void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
+	switch( value ) {
+	case SERVICES:
+		setValue( "type", "services" );	
+		break;
+	case WEB:
+		setValue( "type", "web" );	
+		break;
+	default:
+		setValue( "type", "default" );	
+	}
+}
+
+QString XSLProject::serveurWeb() const {
+	return getValue( "serveur" );
+}
+
+void XSLProject::setServeurWeb( const QString & value ) {
+	setValue( "serveur", value );
 }
 
 QString XSLProject::projectName() const {

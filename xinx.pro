@@ -1,9 +1,8 @@
-DESTDIR = bin
-OBJECTS_DIR = build
-MOC_DIR = build
-UI_DIR = build
-RCC_DIR = build
-
+DESTDIR +=   bin
+OBJECTS_DIR +=   build
+MOC_DIR +=   build
+UI_DIR +=   build
+RCC_DIR +=   build
 SOURCES +=   src/main.cpp \
   src/xmlhighlighter.cpp \
   src/objectview.cpp \
@@ -19,8 +18,8 @@ SOURCES +=   src/main.cpp \
   src/xmleditor.cpp \
   src/tabeditor.cpp \
   src/editor.cpp \
-  src/jshighlighter.cpp
-
+  src/jshighlighter.cpp \
+  src/aboutdialogimpl.cpp
 HEADERS +=   src/xmlhighlighter.h \
   src/objectview.h \
   src/javaobjectfileimpl.h \
@@ -35,32 +34,25 @@ HEADERS +=   src/xmlhighlighter.h \
   src/xmleditor.h \
   src/tabeditor.h \
   src/editor.h \
-  src/jshighlighter.h
-
+  src/jshighlighter.h \
+  src/aboutdialogimpl.h
 FORMS +=   ui/javaobjectfile.ui \
   ui/projectproperty.ui \
   ui/mainform.ui \
-  ui/syntaxeditorproperty.ui
-
+  ui/syntaxeditorproperty.ui \
+  ui/about.ui
 TEMPLATE =   app
-
 CONFIG +=   warn_on \
   thread \
   qt \
   exceptions
-
 TARGET =   xinx
-
 RESOURCES +=   images/application.qrc
-
 QT +=   xml \
   gui
-
 win32 {
-  CONFIG +=     release
   RC_FILE +=     rc/xinx.rc
 }
-
 unix {
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp

@@ -32,6 +32,7 @@ class QSortFilterProxyModel;
 class ObjectsView;
 class XSLProject;
 class QSettings;
+class AboutDialogImpl;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -121,7 +122,11 @@ private:
 	QAbstractItemModel * m_xslModel;
 	QSortFilterProxyModel * m_sortXslModel;
 
+	/* About Dialog */
+	AboutDialogImpl * m_aboutDialog;
+
 	/* Find declaration */
+	FindDialog * m_findDialog;
 	QString m_findExpression, m_replaceExpression;
 	struct FindDialog::FindOptions m_findOptions;
 	bool m_yesToAllReplace;
@@ -131,7 +136,6 @@ private:
 	XSLProject * m_xslProject;
   
 	/* Interfaces */
-	FindDialog * m_findDialog;
 	QAction * m_recentProjectActs[MAXRECENTFILES];
 	QAction * m_recentSeparator;
 };

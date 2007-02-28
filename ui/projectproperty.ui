@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>350</height>
+    <width>569</width>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -31,6 +31,50 @@
       <property name="spacing" >
        <number>6</number>
       </property>
+      <item row="3" column="1" >
+       <widget class="QLineEdit" name="m_serveurWebLineEdit" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+        <property name="text" >
+         <string>http://localhost:8888/gce/services/</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="label_8" >
+        <property name="text" >
+         <string>&amp;Serveur :</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_serveurWebLineEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QComboBox" name="m_projectTypeCombo" >
+        <item>
+         <property name="text" >
+          <string>Module WEB</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Module Services</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QToolButton" name="m_projectButton" >
+        <property name="text" >
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QLineEdit" name="m_projectLineEdit" />
+      </item>
       <item row="0" column="0" >
        <widget class="QLabel" name="label_6" >
         <property name="text" >
@@ -41,28 +85,28 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2" >
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="m_nameLineEdit" />
+      </item>
+      <item row="1" column="0" >
        <widget class="QLabel" name="label_3" >
         <property name="text" >
-         <string>Project &amp;directory :</string>
+         <string>Project &amp;Directory :</string>
         </property>
         <property name="buddy" >
          <cstring>m_projectLineEdit</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="2" >
-       <widget class="QLineEdit" name="m_projectLineEdit" />
-      </item>
-      <item row="1" column="3" >
-       <widget class="QToolButton" name="m_projectButton" >
+      <item row="2" column="0" >
+       <widget class="QLabel" name="label_7" >
         <property name="text" >
-         <string>...</string>
+         <string>Project &amp;Type :</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_projectTypeCombo</cstring>
         </property>
        </widget>
-      </item>
-      <item row="0" column="2" >
-       <widget class="QLineEdit" name="m_nameLineEdit" />
       </item>
      </layout>
     </widget>
@@ -79,6 +123,16 @@
       <property name="spacing" >
        <number>6</number>
       </property>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>&amp;Lang</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_langComboBox</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1" >
        <widget class="QComboBox" name="m_langComboBox" >
         <item>
@@ -131,6 +185,16 @@
         </item>
        </widget>
       </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>N&amp;avigator</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_navigatorComboBox</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1" >
        <widget class="QComboBox" name="m_navigatorComboBox" >
         <item>
@@ -149,26 +213,6 @@
           <iconset resource="../images/application.qrc" >:/firefox_logo.png</iconset>
          </property>
         </item>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
-         <string>&amp;Lang</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_langComboBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_2" >
-        <property name="text" >
-         <string>N&amp;avigator</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_navigatorComboBox</cstring>
-        </property>
        </widget>
       </item>
      </layout>
@@ -284,8 +328,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>475</x>
-     <y>337</y>
+     <x>224</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -300,8 +344,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>556</x>
-     <y>337</y>
+     <x>307</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>

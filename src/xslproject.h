@@ -28,13 +28,12 @@
 /*
 TODO : 
 Conf standard/Specifique
-File loaded
-
-Precedent Files
 */
 
 class XSLProject {
 public:
+	enum enumProjectType {WEB = 0, SERVICES = 1} ;
+
 	XSLProject();
 	XSLProject( const XSLProject & );
 	XSLProject( const QString & );
@@ -46,6 +45,12 @@ public:
 	QString projectName() const;
 	void setProjectName( const QString & );
 
+	enumProjectType projectType() const;
+	void setProjectType( const enumProjectType & );
+	
+	QString serveurWeb() const;
+	void setServeurWeb( const QString & );
+
 	QString defaultLang() const;
 	void setDefaultLang( const QString & );
 	
@@ -54,6 +59,7 @@ public:
 	
 	QString projectPath() const;
 	void setProjectPath( const QString & );
+	
 	QString languePath() const { return projectPath() + "langue/" + defaultLang().toLower() + "/"; };
 	QString navPath() const { return languePath() + "nav/"; };
 

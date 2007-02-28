@@ -41,11 +41,11 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 
 	findButton = new QPushButton(tr("&Find"));
 	findButton->setDefault(true);
-	connect(findButton, SIGNAL( pressed() ), this, SLOT( callFind() ));
-	connect(findButton, SIGNAL( pressed() ), this, SLOT( hide() ));
+	connect(findButton, SIGNAL( clicked() ), this, SLOT( callFind() ));
+	connect(findButton, SIGNAL( clicked() ), this, SLOT( hide() ));
 
 	closeButton = new QPushButton(tr("&Close"));
-	connect(closeButton, SIGNAL( pressed() ), this, SLOT( reject() ));
+	connect(closeButton, SIGNAL( clicked() ), this, SLOT( reject() ));
 
 	moreButton = new QPushButton(tr("&More"));
 	moreButton->setCheckable(true);

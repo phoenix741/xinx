@@ -1,0 +1,26 @@
+XINX - 0.6-2
+============
+- 0000015: [Correction] Coloration syntaxique lente (phoenix)
+- 0000030: [Evolution] Ajout du préfix lors de la sauvegarde (phoenix)
+- 0000029: [Evolution] Permettre la completion sur les valeurs (phoenix)
+- 0000012: [Correction] Plantage à l'ouverture d'un fichier (phoenix)
+- 0000037: [Correction] Ouverture de fichier sur un nouveau projet (phoenix)
+- 0000035: [Correction] Plantage à l'enregistrement d'un fichier (phoenix)
+- 0000023: [Correction] Attributs sur balise xsl:attribute (phoenix)
+- 0000022: [Correction] Recherche dans un fichier (phoenix)
+
+XINX - 0.6-1
+============
+- 0000020: [Evolution] Complétion des attributs (apostrophes) (phoenix)
+- 0000007: [Evolution] Changement d'onglet (phoenix)
+- 0000005: [Evolution] Indentation (phoenix)
+
+XINX - 0.6
+==========
+- 0000001: [Correction] Contenue du fichier XSL (phoenix)
+- 0000010: [Evolution] Sélection de texte (phoenix)
+- 0000009: [Evolution] Icône (phoenix)
+- 0000006: [Correction] Ouverture de fichier en double (phoenix)
+- 0000003: [Correction] Couleur des commentaires (phoenix)
+- 0000018: [Evolution] Répertoire par défaut pour la commande "Open..." (phoenix)
+- 0000008: [Correction] Recherche (phoenix)

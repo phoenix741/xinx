@@ -37,6 +37,8 @@
 
 #include "xmlvisualstudio.h"
 
+#include "aboutdialogimpl.h"
+
 #define OPEN_SAVE_DIALOG_FILTER "*.xsl *.xml *.js"
 
 XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
@@ -46,6 +48,7 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(
 	m_xslModel         = NULL;
 	m_sortXslModel     = NULL;
 	m_recentSeparator  = NULL;
+	m_aboutDialog 	   = NULL;
 
 	m_lastPlace    = QDir::currentPath();
 
@@ -338,14 +341,12 @@ void XMLVisualStudio::on_m_closeAllAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_searchAct_triggered() {
-	m_findDialog->initialize();
-	m_findDialog->setReplaceChecked(false);
-
 	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}
-
+	m_findDialog->initialize();
+	m_findDialog->setReplaceChecked(false);
 	m_findDialog->show();
 }
 
@@ -423,14 +424,12 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_replaceAct_triggered() {
-	m_findDialog->initialize();
-	m_findDialog->setReplaceChecked(true);
-
 	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}
-
+	m_findDialog->initialize();
+	m_findDialog->setReplaceChecked(true);
 	m_findDialog->show();
 }
 
@@ -500,10 +499,13 @@ void XMLVisualStudio::on_m_projectPropertyAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_aboutAct_triggered() {
-	QMessageBox::about(this, tr("About XINX"),
-							 tr("<b>XINX</b> is not XDME. \n"
-							    "<b>XINX</b> is a software written by U. VAN DEN HEKKE. \n"
-							    "Thanks to report detailled bug ;)"));
+	//QMessageBox::about(this, tr("About XINX"),
+							 //tr("<b>XINX</b> is not XDME. \n"
+							    //"<b>XINX</b> is a software written by U. VAN DEN HEKKE. \n"
+							    //"Thanks to report detailled bug ;)"));
+	if( ! m_aboutDialog ) 
+		m_aboutDialog = new AboutDialogImpl( this );
+	m_aboutDialog->show();
 }
 
 void XMLVisualStudio::on_m_xslContentTreeView_doubleClicked( QModelIndex index ) {

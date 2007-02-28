@@ -43,6 +43,10 @@ void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
 	}
 }
 
+void ProjectPropertyImpl::on_m_projectTypeCombo_currentIndexChanged( int index ) {
+	m_serveurWebLineEdit->setEnabled( (XSLProject::enumProjectType)index == XSLProject::SERVICES );
+}
+
 void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text ) {
 	QDir dir (text);
 	QPalette palette( m_specifiquePathLineEdit->palette() );
@@ -76,6 +80,8 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
+	m_serveurWebLineEdit->setText( project->serveurWeb() );
+	m_projectTypeCombo->setCurrentIndex( (int)project->projectType() );
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
@@ -85,6 +91,8 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
 	project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
+	project->setServeurWeb( m_serveurWebLineEdit->text() );
+	project->setProjectType( (XSLProject::enumProjectType)m_projectTypeCombo->currentIndex() );
 }
 
 void ProjectPropertyImpl::updateSpecifiquePath() {

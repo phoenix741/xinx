@@ -40,6 +40,7 @@ private slots:
 	void on_m_projectButton_clicked();
 	void on_m_specifiquePathButton_clicked();
 	void on_m_specifiquePathLineEdit_textChanged( QString );
+	void on_m_projectTypeCombo_currentIndexChanged( int );
 };
 #endif
 

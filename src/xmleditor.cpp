@@ -29,8 +29,8 @@
 
 /* XMLProcessor */
 
-#define EOW			"~!@$#%^&*()+{}|\"<>?,./;'[]\\="
-#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,\\./;'\\[\\]\\\\=\\s]"
+#define EOW			"~!@$#%^&*()+{}|\"<>?,/;'[]\\="
+#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
 
 #define isEditBalise(value) ((value == XMLProcessor::cpEditNodeName) || (value == XMLProcessor::cpEditParamName) || (value == XMLProcessor::cpEditParamValue))
 
