@@ -84,6 +84,21 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_prefixLineEdit->setText( project->specifPrefix() );
 	m_projectTypeCombo->setCurrentIndex( (int)project->projectType() );
 	
+	switch( project->projectVersion() ) {
+	case XSLProject::EGX500ES1 :
+		m_projectVersionCombo->setCurrentIndex( 0 );
+		break;
+	case XSLProject::EGX500ES2 :
+		m_projectVersionCombo->setCurrentIndex( 1 );
+		break;
+	case XSLProject::GCE110 :
+		m_projectVersionCombo->setCurrentIndex( 2 );
+		break;
+	case XSLProject::GCE120 :
+		m_projectVersionCombo->setCurrentIndex( 3 );
+		break;
+	}
+	
 	m_webServiceList->clear();
 	foreach( QString link, project->serveurWeb() ) {
 		m_webServiceList->addItem( link );
@@ -100,6 +115,13 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
 	project->setProjectType( (XSLProject::enumProjectType)m_projectTypeCombo->currentIndex() );
+	
+	switch( m_projectVersionCombo->currentIndex() ) {
+	case 0 : project->setProjectVersion( XSLProject::EGX500ES1 ); break;
+	case 1 : project->setProjectVersion( XSLProject::EGX500ES2 ); break;
+	case 2 : project->setProjectVersion( XSLProject::GCE110 ); break;
+	case 3 : project->setProjectVersion( XSLProject::GCE120 ); break;
+	}
 	
 	project->serveurWeb().clear();
 	for( int i = 0; i < m_webServiceList->count(); i++ ) {

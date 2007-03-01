@@ -675,14 +675,17 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 
 void XMLVisualStudio::openProject( const QString & filename ) {
 	if( ! filename.isEmpty() ) {
-		if( m_xslProject ) closeProject( true );
+		if( m_xslProject ) closeProject( true ); else on_m_closeAllAct_triggered();
 		
 		m_xslProject = new XSLProject( filename );
 		m_lastPlace = m_xslProject->projectPath();
 		setCurrentProject( filename );
 		
 		foreach( QString str, m_xslProject->openedFiles() ) {
-			open( str );
+			if( ! str.isEmpty() ) 
+				open( str );
+			else
+				on_m_newAct_triggered();
 		}
 
 		updateActions();

@@ -45,19 +45,21 @@ TEMPLATE =   app
 CONFIG +=   warn_on \
   thread \
   qt \
-  exceptions
+  exceptions \
+  debug
 TARGET =   xinx
 RESOURCES +=   images/application.qrc
 QT +=   xml \
-  gui
+  gui \
+  network
 win32 {
   RC_FILE +=     rc/xinx.rc
+  CONFIG +=     debug
 }
 unix {
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
-  CONFIG +=     debug \
-    qdbus
+  CONFIG +=     debug
 }

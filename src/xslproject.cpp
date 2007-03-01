@@ -22,43 +22,19 @@
 
 #include <QtGui>
 #include <QtXml>
+#include <QHttp>
 
-class WebServices;
+WebServices::WebServices( const QString & link, QObject * parent ) : QObject( parent ), m_requestId( -1 ), m_http( NULL ), m_response( NULL ) {
+	m_response = new QBuffer( this );
+//	m_response = new QFile( "c:\\temp.services" , this );
+	m_http = new QHttp( this );
 
-class Operation {
-public:
-	Operation( QString name, QString soapAction ) : m_name( name ), m_action( soapAction ) {};
+	askWSDL( link );
+}
 
-	const QString & name() const { return m_name; };
-	const QString & soapAction() const { return m_action; };
-	
-	const QStringList & inputParam() { return m_inputParam; };
-	const QStringList & outputParam() { return m_outputParam; };
-private:
-	QString m_name;
-	QString m_action;
-	
-	QStringList m_inputParam;
-	QStringList m_outputParam;
-	
-friend class WebServices;
-};
-
-class WebServices {
-public:
-	WebServices( const QDomElement & element );
-
-	const QString & name() const { return m_name; };
-	
-	const QList<Operation> & operations() const { return m_list; };
-private:
-	QString m_name;
-	QList<Operation> m_list;
-};
-
-WebServices::WebServices( const QDomElement & element ) {
+void WebServices::loadFromElement( const QDomElement & element ) {
 	// /definitions
-	QDomElement xmlDefinition = element.firstChildElement( "definitions" );
+	QDomElement xmlDefinition = element;//element.firstChildElement( "definitions" );
 	m_name = xmlDefinition.attribute( "name" );
 
 	// /definitions/binding
@@ -107,7 +83,26 @@ WebServices::WebServices( const QDomElement & element ) {
 	}
 }
 
+void WebServices::httpRequestFinished ( int id, bool error ) {
+	if( ( id == m_requestId ) && ( ! error ) ) {
+		m_response->seek( 0 );
+		
+		QDomDocument document;
+		document.setContent( m_response );
+		
+		loadFromElement( document.toElement() );
+	}
+}
 
+void WebServices::askWSDL( const QString & link ) {
+	m_response->open( QIODevice::ReadWrite );
+
+	QUrl wsdlUrl( link );
+	m_http->setHost( wsdlUrl.host(), wsdlUrl.port() );
+	connect( m_http, SIGNAL( requestFinished(int,bool) ), this, SLOT(httpRequestFinished(int,bool)) );
+
+	m_requestId = m_http->get( wsdlUrl.path() + "?WSDL", m_response ); 
+}
 
 XSLProject::XSLProject() {
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
@@ -162,6 +157,8 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	
 	loadOpenedFile();
 	loadWebServicesLink();
+	if( projectType() == SERVICES ) 
+		refreshWebServices();
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -240,6 +237,20 @@ void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
 		setValue( "type", "default" );	
 	}
 }
+
+XSLProject::enumProjectVersion XSLProject::projectVersion() const {
+	bool ok;
+	int version = getValue( "version" ).toInt( &ok );
+	
+	if( ok )
+		return (enumProjectVersion)version;
+	else
+		return GCE120;
+}
+
+void XSLProject::setProjectVersion( const XSLProject::enumProjectVersion & value ) {
+	setValue( "version", QString::number( (int)value ) );
+}	
 
 QString XSLProject::projectName() const {
 	return getValue( "name" );	
@@ -385,5 +396,11 @@ void XSLProject::saveWebServicesLink() {
 
 const QString & XSLProject::fileName() const {
 	return m_fileName;
+}
+
+void XSLProject::refreshWebServices() {
+	foreach( QString link, m_webServiceLink ) {
+		new WebServices( link );
+	}
 }
 
