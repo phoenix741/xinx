@@ -19,7 +19,8 @@ SOURCES +=   src/main.cpp \
   src/tabeditor.cpp \
   src/editor.cpp \
   src/jshighlighter.cpp \
-  src/aboutdialogimpl.cpp
+  src/aboutdialogimpl.cpp \
+  src/webservices.cpp
 HEADERS +=   src/xmlhighlighter.h \
   src/objectview.h \
   src/javaobjectfileimpl.h \
@@ -35,7 +36,8 @@ HEADERS +=   src/xmlhighlighter.h \
   src/tabeditor.h \
   src/editor.h \
   src/jshighlighter.h \
-  src/aboutdialogimpl.h
+  src/aboutdialogimpl.h \
+  src/webservices.h
 FORMS +=   ui/javaobjectfile.ui \
   ui/projectproperty.ui \
   ui/mainform.ui \
@@ -54,12 +56,10 @@ QT +=   xml \
   network
 win32 {
   RC_FILE +=     rc/xinx.rc
-  CONFIG +=     debug
 }
 unix {
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
-  CONFIG +=     debug
 }

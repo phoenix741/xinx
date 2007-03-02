@@ -30,50 +30,6 @@ TODO :
 Conf standard/Specifique
 */
 
-class WebServices;
-class QHttp;
-class QIODevice;
-
-class Operation {
-public:
-	Operation( QString name, QString soapAction ) : m_name( name ), m_action( soapAction ) {};
-
-	const QString & name() const { return m_name; };
-	const QString & soapAction() const { return m_action; };
-	
-	const QStringList & inputParam() { return m_inputParam; };
-	const QStringList & outputParam() { return m_outputParam; };
-private:
-	QString m_name;
-	QString m_action;
-	
-	QStringList m_inputParam;
-	QStringList m_outputParam;
-	
-friend class WebServices;
-};
-
-class WebServices : QObject {
-	Q_OBJECT
-public:
-	WebServices( const QString & link, QObject * parent = 0 );
-
-	const QString & name() const { return m_name; };
-	const QList<Operation> & operations() const { return m_list; };
-	
-	void askWSDL( const QString & link );
-	void loadFromElement( const QDomElement & element );
-private slots:
-	void httpRequestFinished ( int id, bool error );
-private:
-	QString m_name;
-	QList<Operation> m_list;
-
-	int m_requestId;
-	QHttp * m_http;
-	QIODevice * m_response;
-};
-
 class XSLProject {
 public:
 	enum enumProjectType {WEB = 0, SERVICES = 1} ;
