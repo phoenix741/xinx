@@ -34,6 +34,7 @@
 #include "xsllistview.h"
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
+#include "webservices.h"
 
 #include "xmlvisualstudio.h"
 
@@ -74,6 +75,9 @@ void XMLVisualStudio::createDockWindows() {
 	m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
 
 	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
+
+	m_windowsMenu->addAction( m_webServicesDock->toggleViewAction() ); 
+	m_webServicesTreeView->header()->hide();
 }
 
 void XMLVisualStudio::readSettings() {
@@ -89,6 +93,7 @@ void XMLVisualStudio::readSettings() {
 	completionNodeList->loadFiles();
 
 	m_xslContentDock->setVisible( m_settings->value("xslContent/visible", true).toBool() );
+	m_webServicesDock->setVisible( m_settings->value("webServices/visible", true).toBool() );
 }
 
 void XMLVisualStudio::writeSettings() {
@@ -97,6 +102,7 @@ void XMLVisualStudio::writeSettings() {
 	m_settings->setValue( "xmljavapath", m_javaObjects->path() );
 
 	m_settings->setValue( "xslContent/visible", ! m_xslContentDock->isHidden() );
+	m_settings->setValue( "webServices/visible", ! m_webServicesDock->isHidden() );
 }
 
 void XMLVisualStudio::createActions() {
@@ -688,12 +694,17 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 				on_m_newAct_triggered();
 		}
 
+		if( m_xslProject->webServicesModel() )
+			m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
+
 		updateActions();
 	}
 }
 
 void XMLVisualStudio::closeProject( bool closeAll ) {
 	if( m_xslProject ) {
+		m_webServicesTreeView->setModel( NULL );
+		
 		on_m_saveProjectAct_triggered();
 		
 		if( closeAll )

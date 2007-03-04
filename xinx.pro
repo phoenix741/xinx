@@ -62,4 +62,5 @@ unix {
     src/studiointerface.cpp
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
+  CONFIG += qdbus
 }

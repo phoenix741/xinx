@@ -29,5 +29,8 @@
         <file>splash.png</file>
         <file>undo.png</file>
         <file>usa.png</file>
+        <file>wrap.png</file>
+        <file>CVstruct.png</file>
+        <file>CVpublic_slot.png</file>
     </qresource>
 </RCC>

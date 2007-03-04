@@ -19,6 +19,7 @@
  ***************************************************************************/
  
 #include "webservices.h"
+#include "xslproject.h"
 
 #include <QtGui>
 #include <QtXml>
@@ -33,6 +34,8 @@ WebServices::WebServices( const QString & link, QObject * parent ) : QObject( pa
 }
 
 void WebServices::loadFromElement( const QDomElement & element ) {
+	m_list.clear();
+
 	// /definitions
 	QDomElement xmlDefinition = element; //element.firstChild( "definitions" );
 	m_name = xmlDefinition.attribute( "name" );
@@ -44,43 +47,48 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 			
 		// /definitions/binding[@name="WSCRUDManagerBinding"]
 		if( xmlBinding.attribute( "name" ) == ( m_name + "Binding" ) ) {
-			QDomNodeList xmlOperations = xmlBinding.elementsByTagName( "operation" );
+			QDomNodeList xmlOperations = xmlBinding.childNodes ();
 				
 			for( int j = 0; j < xmlOperations.size(); j++ ) {
-				// /definitions/binding[@name="WSCRUDManagerBinding"]/operation
-				QDomElement xmlOperation = xmlOperations.at( j ).toElement();
-				QDomElement xmlSoapAction = xmlOperation.firstChildElement( "operation" );
-				
-				Operation operation( xmlOperation.attribute( "name" ), xmlSoapAction.attribute( "soapAction" ) );
-				
-				// /definitions/message
-				QDomNodeList xmlMessages = xmlDefinition.elementsByTagName( "message" );
-				for( int k = 0; k < xmlMessages.size(); k++ ) {
-					QDomElement xmlMessage = xmlMessages.at( k ).toElement();
-					if( xmlMessage.attribute( "name" ) == operation.name() + "Input" ) {
-						QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
+				if( xmlOperations.at( j ).isElement() && xmlOperations.at( j ).localName() == "operation" ) {
+					// /definitions/binding[@name="WSCRUDManagerBinding"]/operation
+					QDomElement xmlOperation = xmlOperations.at( j ).toElement();
+					QDomElement xmlSoapAction = xmlOperation.firstChildElement( "operation" );
+					
+					Operation operation( xmlOperation.attribute( "name" ), xmlSoapAction.attribute( "soapAction" ) );
+					
+					// /definitions/message
+					QDomNodeList xmlMessages = xmlDefinition.elementsByTagName( "message" );
+					for( int k = 0; k < xmlMessages.size(); k++ ) {
+						QDomElement xmlMessage = xmlMessages.at( k ).toElement();
+						if( xmlMessage.attribute( "name" ) == operation.name() + "Input" ) {
+							QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
+							
+							for( int l = 0; l < xmlParts.size(); l++ ){
+								QDomElement xmlPart = xmlParts.at( l ).toElement();
+								operation.m_inputParam.append( xmlPart.attribute( "name" ) );
+							}
+						}
+						if( xmlMessage.attribute( "name" ) == operation.name() + "Output" ) {
+							QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
 						
-						for( int l = 0; l < xmlParts.size(); l++ ){
-							QDomElement xmlPart = xmlParts.at( l ).toElement();
-							operation.m_inputParam.append( xmlPart.attribute( "name" ) );
+							for( int l = 0; l < xmlParts.size(); l++ ){
+								QDomElement xmlPart = xmlParts.at( l ).toElement();
+								operation.m_outputParam.append( xmlPart.attribute( "name" ) );
+							}
 						}
 					}
-					if( xmlMessage.attribute( "name" ) == operation.name() + "Output" ) {
-						QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
-						
-						for( int l = 0; l < xmlParts.size(); l++ ){
-							QDomElement xmlPart = xmlParts.at( l ).toElement();
-							operation.m_outputParam.append( xmlPart.attribute( "name" ) );
-						}
-					}
+				
+					m_list.append( operation );
+					
 				}
-				
-				m_list.append( operation );
 			}
 				
 			break;
 		}
 	}
+	
+	emit updated();
 }
 
 void WebServices::httpRequestFinished ( int id, bool error ) {
@@ -111,4 +119,84 @@ void WebServices::askWSDL( const QString & link ) {
 	connect( m_http, SIGNAL( requestFinished(int,bool) ), this, SLOT(httpRequestFinished(int,bool)) );
 
 	m_requestId = m_http->get( wsdlUrl.path() + "?WSDL", m_response ); 
+}
+
+
+WebServicesModel::WebServicesModel( QObject *parent, XSLProject * project ) : QAbstractItemModel( parent ), m_project( project ) {
+	for( int i = 0; i < m_project->webServices().count(); i++ ) {
+		connect( m_project->webServices().at( i ), SIGNAL(updated()), this, SIGNAL(layoutChanged()) );
+	}
+}
+
+WebServicesModel::~WebServicesModel() {
+	
+}
+	
+QVariant WebServicesModel::data(const QModelIndex &index, int role) const {
+	if (!index.isValid()) return QVariant();
+
+	if( index.internalPointer() ) {
+		if( role == Qt::DecorationRole && index.column() == 0 ) {
+			return QIcon(":/CVpublic_slot.png");
+		} 	
+		if( role == Qt::DisplayRole && index.column() == 0 ) {
+			WebServices * services = static_cast<WebServices*>( index.internalPointer() );
+			Operation operation = services->operations().at( index.row() );
+			return operation.name();
+		}
+	} else {
+		if( role == Qt::DecorationRole && index.column() == 0 ) {
+			return QIcon(":/CVstruct.png");
+		} 
+		if( role == Qt::DisplayRole && index.column() == 0 ) {
+			WebServices * services = m_project->webServices().at( index.row() );
+			return services->name();
+		}
+	}
+	
+	return QVariant();
+}
+	
+Qt::ItemFlags WebServicesModel::flags(const QModelIndex &index) const {
+	if (!index.isValid())
+		return Qt::ItemIsEnabled;
+
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;	
+}
+	
+QModelIndex WebServicesModel::index(int row, int column, const QModelIndex &parent) const {
+	if( column > 0 ) return QModelIndex();
+		
+	if( parent.isValid() ) {
+		return createIndex( row, 0, m_project->webServices().at( parent.row() ) );
+	} else
+		return createIndex( row, 0 );
+}
+	
+QModelIndex WebServicesModel::parent(const QModelIndex &index) const {
+	if ( !index.isValid() )
+		return QModelIndex();
+
+	if( index.internalPointer() ) {
+		WebServices * services = static_cast<WebServices*>(index.internalPointer());
+		return createIndex( m_project->webServices().indexOf( services ), 0 );	
+	} else
+		return QModelIndex();
+
+}
+	
+int WebServicesModel::rowCount(const QModelIndex &parent) const {
+	if( parent.isValid() ) {
+		if( ! parent.internalPointer() )
+			return m_project->webServices().at( parent.row() )->operations().count();
+		else
+			return 0;		
+	} else
+		return m_project->webServices().count();
+}
+
+int WebServicesModel::columnCount(const QModelIndex &parent) const {
+	Q_UNUSED(parent);
+	
+	return 1;
 }

@@ -30,9 +30,13 @@ TODO :
 Conf standard/Specifique
 */
 
-class XSLProject {
+class WebServices;
+class WebServicesModel;
+
+class XSLProject : public QObject {
+	Q_OBJECT
 public:
-	enum enumProjectType {WEB = 0, SERVICES = 1} ;
+	enum enumProjectType { WEB = 0, SERVICES = 1 } ;
 	enum enumProjectVersion { EGX500ES1 = 100, EGX500ES2 = 101, GCE110 = 110, GCE120 = 120 };
 
 	XSLProject();
@@ -80,6 +84,8 @@ public:
 	QStringList & serveurWeb() { return m_webServiceLink; };
 	
 	void refreshWebServices();
+	const QList<WebServices*> & webServices() const { return m_webServices; };
+	WebServicesModel * webServicesModel() const { return m_webServicesModel; };
 
 	const QString & fileName() const;
 private:
@@ -95,7 +101,10 @@ private:
 	QString m_fileName;
 	QDomDocument m_projectDocument;
 	QStringList m_openedFile;
+	
 	QStringList m_webServiceLink;
+	QList<WebServices*> m_webServices;
+	WebServicesModel * m_webServicesModel;
 };
 
 #endif

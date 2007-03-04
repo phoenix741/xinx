@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>21</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -187,6 +187,9 @@
        <property name="text" >
         <string>Refresh</string>
        </property>
+       <property name="icon" >
+        <iconset resource="../images/application.qrc" >:/wrap.png</iconset>
+       </property>
       </widget>
      </item>
      <item row="0" column="0" >
@@ -203,11 +206,7 @@
       </spacer>
      </item>
      <item row="1" column="0" colspan="2" >
-      <widget class="QTreeView" name="m_webServicesTreeView" >
-       <property name="sortingEnabled" >
-        <bool>true</bool>
-       </property>
-      </widget>
+      <widget class="QTreeView" name="m_webServicesTreeView" />
      </item>
     </layout>
    </widget>

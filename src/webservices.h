@@ -24,10 +24,12 @@
 #include <QString>
 #include <QStringList>
 #include <QDomElement>
+#include <QAbstractItemModel>
 
 class WebServices;
 class QHttp;
 class QIODevice;
+class XSLProject;
 
 class Operation {
 public:
@@ -48,7 +50,7 @@ private:
 friend class WebServices;
 };
 
-class WebServices : QObject {
+class WebServices : public QObject {
 	Q_OBJECT
 public:
 	WebServices( const QString & link, QObject * parent = 0 );
@@ -58,6 +60,8 @@ public:
 	
 	void askWSDL( const QString & link );
 	void loadFromElement( const QDomElement & element );
+signals:
+	void updated();	
 private slots:
 	void httpRequestFinished ( int id, bool error );
 private:
@@ -69,5 +73,22 @@ private:
 	QIODevice * m_response;
 };
 
+class WebServicesModel : public QAbstractItemModel {
+	Q_OBJECT
+public:
+	WebServicesModel( QObject *parent = 0, XSLProject * project = 0 );
+	virtual ~WebServicesModel();
+	
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex parent(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
+private:
+	XSLProject* m_project;
+
+friend class XSLProject;
+};
 
 #endif // __WEBSERVICES_H__
