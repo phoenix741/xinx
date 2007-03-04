@@ -85,6 +85,7 @@ private slots:
 	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
 	void on_m_nextTabAct_triggered();
 	void on_m_previousTabAct_triggered();
+	void on_m_webServicesRefreshBtn_clicked();
 private:
 	/* Create Window Menus, Tools, Status, Dock Bar */
   
@@ -140,6 +141,7 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
 
 
 

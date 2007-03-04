@@ -40,9 +40,9 @@
 
 #include "aboutdialogimpl.h"
 
-#define OPEN_SAVE_DIALOG_FILTER "*.xsl *.xml *.js"
+#define OPEN_SAVE_DIALOG_FILTER "*.xsl *.xml *.js *.fws"
 
-XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
+XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow(parent, f) {
 	setupUi(this);
 
 	m_xslProject       = NULL;
@@ -463,6 +463,11 @@ void XMLVisualStudio::on_m_newProjectAct_triggered() {
 			closeProject( true );
 			m_xslProject = project;
 			setCurrentProject( fileName );
+
+			if( m_xslProject->webServicesModel() ) {
+				m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
+				m_webServicesDock->show();
+			}
 		} else 
 			delete project;
 	}
@@ -500,6 +505,7 @@ void XMLVisualStudio::on_m_projectPropertyAct_triggered() {
 	property.loadFromProject( m_xslProject );
 	if( property.exec() ) {
 		property.saveToProject( m_xslProject );
+		m_xslProject->refreshWebServices();
 		on_m_saveProjectAct_triggered();
 	}
 }
@@ -542,6 +548,11 @@ void XMLVisualStudio::on_m_nextTabAct_triggered() {
 
 void XMLVisualStudio::on_m_previousTabAct_triggered() {
 	m_tabEditors->setCurrentIndex( ( m_tabEditors->currentIndex() - 1 ) % m_tabEditors->count() );
+}
+
+void XMLVisualStudio::on_m_webServicesRefreshBtn_clicked() {
+	if( m_xslProject->projectType() == XSLProject::SERVICES )
+		m_xslProject->refreshWebServices();
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
@@ -694,8 +705,10 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 				on_m_newAct_triggered();
 		}
 
-		if( m_xslProject->webServicesModel() )
+		if( m_xslProject->webServicesModel() ) {
 			m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
+			m_webServicesDock->show();
+		}
 
 		updateActions();
 	}
@@ -704,6 +717,7 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 void XMLVisualStudio::closeProject( bool closeAll ) {
 	if( m_xslProject ) {
 		m_webServicesTreeView->setModel( NULL );
+		m_webServicesDock->hide();
 		
 		on_m_saveProjectAct_triggered();
 		
@@ -736,4 +750,3 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 		updateRecentFiles();
 	}
 }
-

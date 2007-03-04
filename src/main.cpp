@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	
 	QString locale = QLocale::system().name();
 	QTranslator translator;
-	translator.load(QString("xinx_") + locale);
+	translator.load(QString("xinx_") + locale, app.applicationDirPath());
 	app.installTranslator(&translator);
  
 	if( app.isUnique() ) {

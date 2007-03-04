@@ -200,3 +200,11 @@ int WebServicesModel::columnCount(const QModelIndex &parent) const {
 	
 	return 1;
 }
+
+void WebServicesModel::reset() {
+	for( int i = 0; i < m_project->webServices().count(); i++ ) {
+		connect( m_project->webServices().at( i ), SIGNAL(updated()), this, SIGNAL(layoutChanged()) );
+	}
+	
+	QAbstractItemModel::reset();
+}

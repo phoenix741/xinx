@@ -51,7 +51,7 @@ CONFIG +=   warn_on \
   debug
 TARGET =   xinx
 RESOURCES +=   images/application.qrc
-TRANSLATIONS = translations/xinx_fr.ts
+TRANSLATIONS +=   translations/xinx_fr.ts
 QT +=   xml \
   gui \
   network
@@ -63,5 +63,5 @@ unix {
     src/studiointerface.cpp
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
-  CONFIG += qdbus
+  CONFIG +=     qdbus
 }
