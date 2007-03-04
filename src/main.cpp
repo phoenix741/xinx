@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <QFile>
 #include <QMessageBox>
+#include <QLocale>
+#include <QTranslator>
 #include "uniqueapplication.h"
 #include "xmlvisualstudio.h"
 
@@ -30,7 +32,12 @@ int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
 
 	UniqueApplication app(argc, argv);
-  
+	
+	QString locale = QLocale::system().name();
+	QTranslator translator;
+	translator.load(QString("xinx_") + locale);
+	app.installTranslator(&translator);
+ 
 	if( app.isUnique() ) {
 		QPixmap pixmap(":/splash.png");
 		QSplashScreen splash(pixmap);

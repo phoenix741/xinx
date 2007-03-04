@@ -51,6 +51,7 @@ CONFIG +=   warn_on \
   debug
 TARGET =   xinx
 RESOURCES +=   images/application.qrc
+TRANSLATIONS = translations/xinx_fr.ts
 QT +=   xml \
   gui \
   network
