@@ -22,6 +22,7 @@ AppMutex=com.generix.xmlstudio.mutex
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
+Name: french; MessagesFile: compiler:Languages\French.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
@@ -30,10 +31,11 @@ Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unche
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}; Components: application; Flags: replacesameversion
-Source: C:\Qt\4.2.1\bin\QtXml4.dll; DestDir: {app}; Components: application
-Source: C:\Qt\4.2.1\bin\mingwm10.dll; DestDir: {app}; Components: application
-Source: C:\Qt\4.2.1\bin\QtCore4.dll; DestDir: {app}; Components: application
-Source: C:\Qt\4.2.1\bin\QtGui4.dll; DestDir: {app}; Components: application
+Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: replacesameversion; Languages: french
+Source: C:\Qt\4.2.2\bin\QtXml4.dll; DestDir: {app}; Components: application
+Source: C:\Qt\4.2.2\bin\mingwm10.dll; DestDir: {app}; Components: application
+Source: C:\Qt\4.2.2\bin\QtCore4.dll; DestDir: {app}; Components: application
+Source: C:\Qt\4.2.2\bin\QtGui4.dll; DestDir: {app}; Components: application
 Source: ..\xml\completion.cpl; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: application
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 
@@ -47,6 +49,7 @@ Source: ..\src\*.xml; DestDir: {app}\source\src; Components: source
 Source: ..\src\*.sh; DestDir: {app}\source\src; Components: source
 Source: ..\ui\*.ui; DestDir: {app}\source\ui; Components: source
 Source: ..\rc\*.rc; DestDir: {app}\source\rc; Components: source
+Source: ..\translations\*.ts; DestDir: {app}\source\translations; Components: source
 Source: ..\xml\completion.cpl; DestDir: {app}\source\xml; Components: source
 Source: ..\setup\xinx-setup.iss; DestDir: {app}\source\setup; Components: source
 

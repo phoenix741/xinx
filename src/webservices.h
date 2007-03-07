@@ -26,6 +26,33 @@
 #include <QDomElement>
 #include <QAbstractItemModel>
 
+class WSDLType {
+	
+};
+
+class WSDLPart {
+private:
+	QString m_name;
+	QString m_type;
+	QString m_element;
+};
+
+class WSDLMessage {
+public:
+private:
+	QList<WSDLPart> m_part;
+};
+
+class WSDL {
+public:
+private:	
+	QHash<QString,WSDLType> m_types;
+	QHash<QString,WSDLMessage> m_messages;
+	QHash<QString,WSDLBinding> m_binding;
+	QHash<QString,WSDLPortType> m_portType;
+	QList<WSDLService> m_service;
+}
+
 class WebServices;
 class QHttp;
 class QIODevice;

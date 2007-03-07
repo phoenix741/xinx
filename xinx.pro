@@ -48,7 +48,7 @@ CONFIG +=   warn_on \
   thread \
   qt \
   exceptions \
-  debug
+  release
 TARGET =   xinx
 RESOURCES +=   images/application.qrc
 TRANSLATIONS +=   translations/xinx_fr.ts
