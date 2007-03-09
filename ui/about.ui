@@ -22,7 +22,9 @@
    <item row="3" column="1" >
     <widget class="QLabel" name="label_5" >
      <property name="text" >
-      <string>Main Author : Ulrich Van Den Hekke</string>
+      <string>Main Author : Ulrich VANDENHEKKE
+Reporter : Mickaël BERTELOOT, Kamal B.         
+</string>
      </property>
     </widget>
    </item>

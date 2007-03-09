@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Java Object Files</string>
+   <string>Descriptions files</string>
   </property>
   <property name="modal" >
    <bool>true</bool>
@@ -33,7 +33,7 @@
      <item>
       <widget class="QLabel" name="label" >
        <property name="text" >
-        <string>Path of Java XML Object File :</string>
+        <string>Path of XML descriptions :</string>
        </property>
        <property name="buddy" >
         <cstring>m_javaObjectPathEdit</cstring>
@@ -71,7 +71,7 @@
        <item>
         <widget class="QLabel" name="label_2" >
          <property name="text" >
-          <string>List of Java Object File :</string>
+          <string>List of detected business object :</string>
          </property>
          <property name="buddy" >
           <cstring>m_javaObjectList</cstring>
@@ -94,7 +94,7 @@
        <item>
         <widget class="QPushButton" name="m_javaObjectRefreshButton" >
          <property name="text" >
-          <string>&amp;Refresh</string>
+          <string>&amp;Refresh list</string>
          </property>
         </widget>
        </item>

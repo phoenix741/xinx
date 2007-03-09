@@ -520,8 +520,11 @@ bool FileEditor::saveFile( const QString & fileName ){
 		if( (!isOldSpecifiqueFile) && isNewSpecifiqueFile )
 			QFile::copy( m_fileName, destName );
 	}
-	if( fileName.isEmpty() || ( m_fileName == fileName )  )
+	if( fileName.isEmpty() || ( m_fileName == fileName )  ){
+		if( QFile::exists( m_fileName + ".bak" ) ) 
+			QFile::remove( m_fileName + ".bak" );
 		QFile::copy( m_fileName, m_fileName + ".bak" );
+	}
 	
 	if( fileName != "" ) setFileName( fileName );
 	

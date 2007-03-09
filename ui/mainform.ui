@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>29</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -216,7 +216,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle" >
-    <string>Opened File Content</string>
+    <string>File Content</string>
    </property>
    <attribute name="dockWidgetArea" >
     <number>2</number>
@@ -246,8 +246,11 @@
    <property name="text" >
     <string>&amp;New</string>
    </property>
+   <property name="toolTip" >
+    <string>Create a new text file</string>
+   </property>
    <property name="statusTip" >
-    <string>Create a new file</string>
+    <string>Create a new text file</string>
    </property>
    <property name="shortcut" >
     <string>Ctrl+N</string>
