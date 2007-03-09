@@ -25,6 +25,108 @@
 #include <QtXml>
 #include <QHttp>
 
+WSDLPart::WSDLPart( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	m_type = element.attribute( "type" );
+	m_element = element.attribute( "element" );
+}
+
+WSDLMessage::WSDLMessage( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	
+	QDomElement childs = element.firstChildElement( "part" );
+	while( ! childs.isNull() ) {
+		m_parts.append( WSDLPart( childs ) );
+		
+		childs = childs.nextSiblingElement( "part" );
+	}
+}
+
+WSDLOperation::WSDLOperation( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	m_parameterOrder = element.attribute( "parameterOrder" );
+	
+	QDomElement input = element.firstChildElement( "input" );
+	QDomElement output = element.firstChildElement( "output" );
+	
+	m_inputMessage = input.attribute( "message" );
+	m_outputMessage = output.attribute( "message" );
+}
+
+WSDLBinding::WSDLBinding( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	m_type = element.attribute( "type" );
+	
+	QDomElement childs = element.firstChildElement( "operation" );
+	while( ! childs.isNull() ) {
+		m_operations.append( WSDLOperation( childs ) );
+		
+		childs = childs.nextSiblingElement( "operation" );
+	}
+}
+
+WSDLPortType::WSDLPortType( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	
+	QDomElement childs = element.firstChildElement( "operation" );
+	while( ! childs.isNull() ) {
+		m_operations.append( WSDLOperation( childs ) );
+		
+		childs = childs.nextSiblingElement( "operation" );
+	}
+}
+
+WSDLPort::WSDLPort( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	m_binding = element.attribute( "binding" );
+	
+	QDomElement address = element.firstChildElement( "address" );
+	m_addressLocation = address.attribute( "location" );
+}
+
+WSDLService::WSDLService( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+
+	QDomElement port = element.firstChildElement( "port" );
+	m_port = WSDLPort( port );
+}
+
+WSDL::WSDL( const QDomElement & element ) {
+	m_name = element.attribute( "name" );
+	
+	QDomElement message = element.firstChildElement( "message" );
+	while( ! message.isNull() ) {
+		WSDLMessage e ( message );
+		m_messages[ e.name() ] = e;
+		
+		message = message.nextSiblingElement( "message" );
+	}
+
+	QDomElement portType = element.firstChildElement( "portType" );
+	while( ! portType.isNull() ) {
+		WSDLPortType e ( portType );
+		m_portTypes[ e.name() ] = e;
+		
+		portType = portType.nextSiblingElement( "portType" );
+	}
+
+	QDomElement binding = element.firstChildElement( "binding" );
+	while( ! binding.isNull() ) {
+		WSDLBinding e ( binding );
+		m_bindings[ e.name() ] = e;
+		
+		binding = binding.nextSiblingElement( "binding" );
+	}
+
+	QDomElement service = element.firstChildElement( "service" );
+	while( ! service.isNull() ) {
+		m_services.append( WSDLService ( service ) );
+		
+		service = service.nextSiblingElement( "service" );
+	}
+}
+
+
 WebServices::WebServices( const QString & link, QObject * parent ) : QObject( parent ), m_requestId( -1 ), m_http( NULL ), m_response( NULL ) {
 	m_response = new QBuffer( this );
 //	m_response = new QFile( "c:\\temp.services" , this );
@@ -35,56 +137,32 @@ WebServices::WebServices( const QString & link, QObject * parent ) : QObject( pa
 
 void WebServices::loadFromElement( const QDomElement & element ) {
 	m_list.clear();
-
-	// /definitions
-	QDomElement xmlDefinition = element; //element.firstChild( "definitions" );
-	m_name = xmlDefinition.attribute( "name" );
-
-	// /definitions/binding
-	QDomNodeList xmlBindings = xmlDefinition.elementsByTagName( "binding" );
-	for( int i = 0; i < xmlBindings.size(); i++ ) {
-		QDomElement xmlBinding = xmlBindings.at( i ).toElement();
+	
+	m_wsdl = WSDL( element );
+	
+	foreach( WSDLService service, m_wsdl.services() ) {
+		QString tnsBinding = service.port().binding().remove( "tns:" );
+		WSDLBinding binding = m_wsdl.bindings()[ tnsBinding ];
+		QString tnsType = binding.type().remove( "tns:" );
+		WSDLPortType portType = m_wsdl.portTypes()[ tnsType ];
+		
+		foreach( WSDLOperation operation, portType.operations() ) {
+			Operation wsOperation ( operation.name() );
 			
-		// /definitions/binding[@name="WSCRUDManagerBinding"]
-		if( xmlBinding.attribute( "name" ) == ( m_name + "Binding" ) ) {
-			QDomNodeList xmlOperations = xmlBinding.childNodes ();
-				
-			for( int j = 0; j < xmlOperations.size(); j++ ) {
-				if( xmlOperations.at( j ).isElement() && xmlOperations.at( j ).localName() == "operation" ) {
-					// /definitions/binding[@name="WSCRUDManagerBinding"]/operation
-					QDomElement xmlOperation = xmlOperations.at( j ).toElement();
-					QDomElement xmlSoapAction = xmlOperation.firstChildElement( "operation" );
-					
-					Operation operation( xmlOperation.attribute( "name" ), xmlSoapAction.attribute( "soapAction" ) );
-					
-					// /definitions/message
-					QDomNodeList xmlMessages = xmlDefinition.elementsByTagName( "message" );
-					for( int k = 0; k < xmlMessages.size(); k++ ) {
-						QDomElement xmlMessage = xmlMessages.at( k ).toElement();
-						if( xmlMessage.attribute( "name" ) == operation.name() + "Input" ) {
-							QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
-							
-							for( int l = 0; l < xmlParts.size(); l++ ){
-								QDomElement xmlPart = xmlParts.at( l ).toElement();
-								operation.m_inputParam.append( xmlPart.attribute( "name" ) );
-							}
-						}
-						if( xmlMessage.attribute( "name" ) == operation.name() + "Output" ) {
-							QDomNodeList xmlParts = xmlMessage.elementsByTagName( "part" );
-						
-							for( int l = 0; l < xmlParts.size(); l++ ){
-								QDomElement xmlPart = xmlParts.at( l ).toElement();
-								operation.m_outputParam.append( xmlPart.attribute( "name" ) );
-							}
-						}
-					}
-				
-					m_list.append( operation );
-					
-				}
+			QString tnsInputMessage = operation.inputMessage().remove ( "tns:" );
+			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
+			foreach( WSDLPart part, inputMessage.parts() ) {
+				wsOperation.m_inputParam.append( part.name() );
 			}
-				
-			break;
+			
+			
+			QString tnsOutputMessage = operation.outputMessage().remove ( "tns:" );
+			WSDLMessage outputMessage = m_wsdl.messages()[ tnsOutputMessage ];
+			foreach( WSDLPart part, outputMessage.parts() ) {
+				wsOperation.m_outputParam.append( part.name() );
+			}
+			
+			m_list.append( wsOperation );
 		}
 	}
 	

@@ -31,11 +31,12 @@ Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unche
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}; Components: application; Flags: replacesameversion
-Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: replacesameversion; Languages: french
-Source: C:\Qt\4.2.2\bin\QtXml4.dll; DestDir: {app}; Components: application
-Source: C:\Qt\4.2.2\bin\mingwm10.dll; DestDir: {app}; Components: application
-Source: C:\Qt\4.2.2\bin\QtCore4.dll; DestDir: {app}; Components: application
-Source: C:\Qt\4.2.2\bin\QtGui4.dll; DestDir: {app}; Components: application
+Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion; Languages: french
+Source: C:\Qt\4.2.2\translations\qt_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion; Languages: french
+Source: C:\Qt\4.2.2\bin\QtXml4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: C:\Qt\4.2.2\bin\mingwm10.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: C:\Qt\4.2.2\bin\QtCore4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: C:\Qt\4.2.2\bin\QtGui4.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: ..\xml\completion.cpl; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: application
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 

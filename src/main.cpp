@@ -34,9 +34,11 @@ int main(int argc, char *argv[]) {
 	UniqueApplication app(argc, argv);
 	
 	QString locale = QLocale::system().name();
-	QTranslator translator;
-	translator.load(QString("xinx_") + locale, app.applicationDirPath());
-	app.installTranslator(&translator);
+	QTranslator translator_xinx, translator_qt;
+	translator_qt.load(QString("qt_") + locale, app.applicationDirPath());
+	app.installTranslator(&translator_qt);
+	translator_xinx.load(QString("xinx_") + locale, app.applicationDirPath());
+	app.installTranslator(&translator_xinx);
  
 	if( app.isUnique() ) {
 		QPixmap pixmap(":/splash.png");

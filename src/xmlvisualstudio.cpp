@@ -393,9 +393,19 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 	
 		if( cursor.isNull() || 
 			( m_findOptions.selectionOnly && ( ( !m_findOptions.backwardSearch && cursor.position() > selectionEnd ) || 
-				( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) 
-			QMessageBox::warning(this, tr("Application"), tr("%1 not found").arg( m_findExpression ), QMessageBox::Ok);
-		else {
+				( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) {
+			QMessageBox::StandardButton ret = QMessageBox::warning( this, 
+						tr("Application"), 
+						tr("The word '%1' isn't found. Return to the beginning of the document ?").arg( m_findExpression ), 
+						QMessageBox::Yes | QMessageBox::No);
+						
+			if( ret == QMessageBox::Yes ) {
+				QTextCursor beginning( textEdit->textCursor() );
+				beginning.movePosition( QTextCursor::Start );
+				textEdit->setTextCursor( beginning );
+				on_m_searchNextAct_triggered();
+			}
+		} else {
 			textEdit->setTextCursor( cursor );
 			
 			if( m_findOptions.replace ) {

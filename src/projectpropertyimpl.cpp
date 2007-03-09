@@ -59,7 +59,16 @@ void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text 
 		palette.setColor( QPalette::Text, Qt::red );
 	}
 	m_specifiquePathLineEdit->setPalette( palette );
+	
+	updateOkButton();
 }
+
+void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
+	Q_UNUSED( text );
+	
+	updateOkButton();
+}
+
 
 
 void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
@@ -133,6 +142,16 @@ void ProjectPropertyImpl::updateSpecifiquePath() {
 	QString path = QString("%1/langue/%2/nav/projet").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() );
 	
 	m_specifiquePathLineEdit->setText( QDir::cleanPath( path ) );
+}
+
+void ProjectPropertyImpl::updateOkButton() {
+	if( m_specifiquePathLineEdit->text().isEmpty() ) {
+		okButton->setEnabled( true );
+	} else
+	if( m_prefixLineEdit->text().isEmpty() ) {
+		okButton->setEnabled( false );
+	} else
+		okButton->setEnabled( true );
 }
 
 void ProjectPropertyImpl::on_m_langComboBox_currentIndexChanged( QString str ) {

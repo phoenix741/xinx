@@ -25,12 +25,19 @@
 #include <QStringList>
 #include <QDomElement>
 #include <QAbstractItemModel>
+#include <QHash>
 
 class WSDLType {
 	
 };
 
 class WSDLPart {
+public:
+	WSDLPart( const QDomElement & );
+
+	QString name() const { return m_name; };
+	QString type() const { return m_type; };
+	QString element() const { return m_element; };
 private:
 	QString m_name;
 	QString m_type;
@@ -39,19 +46,111 @@ private:
 
 class WSDLMessage {
 public:
+	WSDLMessage() {};
+	WSDLMessage( const QDomElement & );
+
+	QString name() const { return m_name; };
+	const QList<WSDLPart> & parts() const { return m_parts; };
 private:
-	QList<WSDLPart> m_part;
+	QString m_name;
+	QList<WSDLPart> m_parts;
+};
+
+class WSDLOperation {
+public:
+	WSDLOperation( const QDomElement & );
+	
+	QString name() const { return m_name; };
+	QString parameterOrder() const { return m_parameterOrder; };
+	QString inputMessage() const { return m_inputMessage; };
+	QString outputMessage() const { return m_outputMessage; };
+private:
+	QString m_name;
+	QString m_parameterOrder;
+	
+	QString m_inputMessage;
+	QString m_outputMessage;
+};
+
+class WSDLBinding {
+public:
+	WSDLBinding() {};
+	WSDLBinding( const QDomElement & );
+	
+	QString name() const { return m_name; };
+	QString type() const { return m_type; };
+	
+	const QList<WSDLOperation> & operations() const { return m_operations; };
+private:
+	QString m_name;
+	QString m_type;
+	
+	QList<WSDLOperation> m_operations;
+};
+
+class WSDLPortType {
+public:
+	WSDLPortType() {};
+	WSDLPortType( const QDomElement & );
+
+	QString name() const { return m_name; };
+	
+	const QList<WSDLOperation> & operations() const { return m_operations; };
+private:
+	QString m_name;
+
+	QList<WSDLOperation> m_operations;
+};
+
+class WSDLPort {
+public:
+	WSDLPort() {};
+	WSDLPort( const QDomElement & );
+	
+	QString name() const { return m_name; };
+	QString binding() const { return m_binding; };
+
+	QString addressLocation() const { return m_addressLocation; };
+private:
+	QString m_name;
+	QString m_binding;
+	
+	QString m_addressLocation;
+};
+
+class WSDLService {
+public:
+	WSDLService( const QDomElement & );
+
+	QString name() const { return m_name; };
+
+	const WSDLPort & port() const { return m_port; };
+private:
+	QString m_name;
+	WSDLPort m_port;
 };
 
 class WSDL {
 public:
+	WSDL() {};
+	WSDL( const QDomElement & );
+	
+	QString name() { return m_name; };
+	
+	const QHash<QString,WSDLType> & types() const { return m_types; };
+	const QHash<QString,WSDLMessage> & messages() const { return m_messages; };
+	const QHash<QString,WSDLBinding> & bindings() const { return m_bindings; };
+	const QHash<QString,WSDLPortType> & portTypes() const { return m_portTypes; };
+	const QList<WSDLService> & services() const { return m_services; };
 private:	
+	QString m_name;
+
 	QHash<QString,WSDLType> m_types;
 	QHash<QString,WSDLMessage> m_messages;
-	QHash<QString,WSDLBinding> m_binding;
-	QHash<QString,WSDLPortType> m_portType;
-	QList<WSDLService> m_service;
-}
+	QHash<QString,WSDLBinding> m_bindings;
+	QHash<QString,WSDLPortType> m_portTypes;
+	QList<WSDLService> m_services;
+};
 
 class WebServices;
 class QHttp;
@@ -60,16 +159,14 @@ class XSLProject;
 
 class Operation {
 public:
-	Operation( QString name, QString soapAction ) : m_name( name ), m_action( soapAction ) {};
+	Operation( QString name ) : m_name( name ) {};
 
-	const QString & name() const { return m_name; };
-	const QString & soapAction() const { return m_action; };
+	QString name() { return m_name; };
 	
 	const QStringList & inputParam() { return m_inputParam; };
 	const QStringList & outputParam() { return m_outputParam; };
 private:
 	QString m_name;
-	QString m_action;
 	
 	QStringList m_inputParam;
 	QStringList m_outputParam;
@@ -82,17 +179,19 @@ class WebServices : public QObject {
 public:
 	WebServices( const QString & link, QObject * parent = 0 );
 
-	const QString & name() const { return m_name; };
+	QString name() { return m_wsdl.name(); };
 	const QList<Operation> & operations() const { return m_list; };
 	
 	void askWSDL( const QString & link );
 	void loadFromElement( const QDomElement & element );
 signals:
 	void updated();	
+	
 private slots:
 	void httpRequestFinished ( int id, bool error );
 private:
-	QString m_name;
+	WSDL m_wsdl;
+
 	QList<Operation> m_list;
 
 	int m_requestId;
