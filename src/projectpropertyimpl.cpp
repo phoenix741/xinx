@@ -170,7 +170,7 @@ void ProjectPropertyImpl::on_m_webServiceBtnDel_clicked() {
 }
 
 void ProjectPropertyImpl::on_m_webServiceBtnAdd_clicked() {
-	QString text = QInputDialog::getText( this, "Add WebService", "URL of the WebServices", QLineEdit::Normal, "http://localhost:8888/gce120/services/" );
+	QString text = QInputDialog::getText( this, tr("Add WebService"), tr("URL of the WebServices"), QLineEdit::Normal, "http://localhost:8888/gce120/services/" );
 	if( ! text.isEmpty() )
 		m_webServiceList->addItem( text );
 

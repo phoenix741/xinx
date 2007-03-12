@@ -73,7 +73,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
   
 	// Test if Project File
 	if(root.tagName() != "XSLProject") {
-		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file isn't an XSL Project"));
+		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file isn't a XINX Project"));
 	    return;
 	}
 	

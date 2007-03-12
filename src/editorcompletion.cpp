@@ -66,7 +66,7 @@ void CplNodeList::loadFiles() {
   QDomElement root = objectFile.documentElement();
   
   // Test if Completion
-  if(root.tagName() != "completion") throw ENotCompletionFile(tr("%1 is not for auto completion").arg(m_filesPath));
+  if(root.tagName() != "completion") throw ENotCompletionFile(tr("%1 is not auto completion file").arg(m_filesPath));
   	
   // HTML
   QDomElement html = root.firstChildElement("html");
@@ -98,93 +98,3 @@ CplNode* CplNodeList::node(const QString & name) const {
 	}
 	return NULL;
 }
-
-
-/* CplModel */
-
-/* Plutot raté ;) 
-
-CplModel::CplModel(CplNodeList * nodeList, QObject *parent) : QAbstractItemModel(parent) {
-	m_rootItem = nodeList;
-}
-
-QModelIndex CplModel::index(int row, int column, const QModelIndex &parent) const {
-	qDebug() << "index (" << row << ", " << column << ", " << parent.isValid() << ", " << parent.row() << ")";
-	if (!parent.isValid()) {
-		return createIndex(row, column);
-	} else {
-		if(parent.parent().isValid()) {
-			return createIndex( row, column, parent.parent().internalPointer() );
-		} else {
-			CplNode * nodeName = m_rootItem->node( parent.row() );
-			return createIndex( row, column, nodeName );
-		}
-	}
-}
-
-QModelIndex CplModel::parent ( const QModelIndex & index ) const {
-	qDebug() << "parent (" << index.isValid() << ", " << index.row() << ", " << index.internalPointer() << ")";
-	if(index.isValid() && index.internalPointer()) {
-		qDebug() << index.internalPointer();
-		qDebug() << m_rootItem->indexOf( static_cast<CplNode*>( index.internalPointer() ) );
-		qDebug() << m_rootItem->count();
-		return createIndex( m_rootItem->indexOf( static_cast<CplNode*>( index.internalPointer() ) ), 0 );
-	} else
-		return QModelIndex();
-}
-
-int CplModel::rowCount(const QModelIndex &parent) const {
-	qDebug() << "rowCount (" << parent.isValid() << ", " << parent.row() << ", " << parent.internalPointer() << ")";
-	if(!parent.isValid())
-		return m_rootItem->count();
-	else {
-		if( parent.internalPointer() ) {
-			CplNode * nodeName = static_cast<CplNode*>(parent.internalPointer());
-			return nodeName->count();
-//			return 0;
-		} else {
-			CplNode * nodeName 	= m_rootItem->node( parent.row() );
-			return nodeName->count();
-		}
-	}
-}
-
-int CplModel::columnCount(const QModelIndex &parent) const {
-	qDebug() << "columnCount (" << parent.isValid() << ", " << parent.row() << ", " << parent.internalPointer() << ")";
-	return 1;
-}
-
-QVariant CplModel::data(const QModelIndex &index, int role) const {
-	qDebug() << "data (" << index.isValid() << ", " << index.row() << ", " << index.internalPointer() << ")";
-	if (!index.isValid()) return QVariant();
-
-	if (role != Qt::DisplayRole) return QVariant();
-
-	qDebug() << "data parent valid (" << index.parent().isValid() << ")";
-	if(index.parent().isValid()) {
-		CplNode * node = static_cast<CplNode*>( index.internalPointer() );
-		qDebug() << "Index Param : " << index.row();
-		qDebug() << "Count Param : " << node->count();
-		return node->param( index.row() );
-	} else {
-		qDebug() << "Index Node : " << index.row();
-		qDebug() << "Count Node : " << m_rootItem->count();
-		return m_rootItem->node ( index.row() )->name();
-	}
-}
-
-Qt::ItemFlags CplModel::flags(const QModelIndex &index) const {
-     return QAbstractItemModel::flags(index);	
-}
-
-QVariant CplModel::headerData(int section, Qt::Orientation orientation, int role) const {
-     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-     	switch(section) {
-     		case 0 : return tr("Node");
-			default : return QVariant();
-   		}
-
-     return QVariant();
-}
-*/
-

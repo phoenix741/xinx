@@ -18,20 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ABOUTDIALOGIMPL_H
-#define ABOUTDIALOGIMPL_H
-//
-#include "ui_about.h"
-//
-class AboutDialogImpl : public QDialog, public Ui::AboutDialog {
+#ifndef __JSEDITOR_H__
+#define __JSEDITOR_H__
+
+#include "fileeditor.h"
+#include <QTextCursor>
+
+class JSProcessor : public TextProcessor {
 	Q_OBJECT
 public:
-	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
-private slots:
+	JSProcessor( QTextEdit * widget, XSLProject * project = NULL, QObject * parent = 0 );
+	virtual ~JSProcessor();
+	
+	virtual void commentSelectedText( bool uncomment );
+	virtual void complete();
+	virtual void keyPressEvent( QKeyEvent *e );
+	
+	virtual QAbstractItemModel * model();
+
+public slots:
+	virtual void updateModel();
+
+private:
 };
-#endif
 
-
-
-
-
+#endif // __JSEDITOR_H__

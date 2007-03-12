@@ -18,20 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ABOUTDIALOGIMPL_H
-#define ABOUTDIALOGIMPL_H
-//
-#include "ui_about.h"
-//
-class AboutDialogImpl : public QDialog, public Ui::AboutDialog {
-	Q_OBJECT
-public:
-	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
-private slots:
-};
-#endif
+#include <QtGui>
+#include <QCompleter>
+#include <QDomElement>
+
+#include "jseditor.h"
 
 
+/* JSProcessor */
 
+JSProcessor::JSProcessor( QTextEdit * widget, XSLProject * project, QObject * parent ) : TextProcessor( widget, project, parent ) {
 
+}
 
+JSProcessor::~JSProcessor() {
+	
+}
+
+void JSProcessor::complete() {
+}
+
+void JSProcessor::keyPressEvent( QKeyEvent *e ) {
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+	if (!isShortcut) // dont process the shortcut when we have a completer
+		parentKeyPressEvent( e );
+
+	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+
+	if( ( ! ctrlOrShift ) && ( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) ) {
+		QTextCursor tc( textEdit()->textCursor() );
+		QTextBlock previous = tc.block().previous();	
+		QString indent = previous.text();
+		
+		indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
+		
+		tc.movePosition( QTextCursor::StartOfLine );
+		
+		tc.insertText( indent );
+		
+		textEdit()->setTextCursor( tc );
+		
+		return;
+	}
+}
+
+void JSProcessor::commentSelectedText( bool uncomment ) {
+}
+
+void JSProcessor::updateModel() {
+	
+}
+
+QAbstractItemModel * JSProcessor::model() {
+	return NULL;
+}

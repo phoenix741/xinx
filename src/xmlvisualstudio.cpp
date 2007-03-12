@@ -40,7 +40,9 @@
 
 #include "aboutdialogimpl.h"
 
-#define OPEN_SAVE_DIALOG_FILTER "*.xsl *.xml *.js *.fws"
+#define OPEN_SAVE_DIALOG_FILTER "All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws);;All Managed File (*.xml;*.xsl;*.js;*.fws)"
+
+/* XMLVisualStudio */
 
 XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow(parent, f) {
 	setupUi(this);
@@ -270,7 +272,7 @@ void XMLVisualStudio::createToolBars() {
 }
 
 void XMLVisualStudio::createStatusBar() {
-	statusBar()->showMessage(tr("Ready"));
+	statusBar()->showMessage(tr("Ready"), 2000);
 }
 
 /* Actions */
@@ -281,7 +283,7 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_openAct_triggered() {
-	QString filename = QFileDialog::getOpenFileName( this, tr("Open XSL File"), m_lastPlace, tr( OPEN_SAVE_DIALOG_FILTER ) );
+	QString filename = QFileDialog::getOpenFileName( this, tr("Open text file"), m_lastPlace, tr( OPEN_SAVE_DIALOG_FILTER ) );
 	if ( ! filename.isEmpty() ) {
 		m_lastPlace = QFileInfo( filename ).absolutePath();
 		open( filename );
@@ -396,7 +398,7 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 				( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) {
 			QMessageBox::StandardButton ret = QMessageBox::warning( this, 
 						tr("Application"), 
-						tr("The word '%1' isn't found. Return to the beginning of the document ?").arg( m_findExpression ), 
+						tr("Can found new occurence of word '%1'. Return to the beginning of the document ?").arg( m_findExpression ), 
 						QMessageBox::Yes | QMessageBox::No);
 						
 			if( ret == QMessageBox::Yes ) {
@@ -521,10 +523,6 @@ void XMLVisualStudio::on_m_projectPropertyAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_aboutAct_triggered() {
-	//QMessageBox::about(this, tr("About XINX"),
-							 //tr("<b>XINX</b> is not XDME. \n"
-							    //"<b>XINX</b> is a software written by U. VAN DEN HEKKE. \n"
-							    //"Thanks to report detailled bug ;)"));
 	if( ! m_aboutDialog ) 
 		m_aboutDialog = new AboutDialogImpl( this );
 	m_aboutDialog->show();
@@ -684,7 +682,7 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	
 	fileName = QFileDialog::getSaveFileName( 
 		this, 
-		tr("Save XSL File"), 
+		tr("Save text file"), 
 		fileName, 
 		tr( OPEN_SAVE_DIALOG_FILTER )
 	);

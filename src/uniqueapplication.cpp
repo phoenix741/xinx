@@ -39,7 +39,7 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
 	if (!QDBusConnection::sessionBus().isConnected() || !(dbusService = QDBusConnection::sessionBus().interface())) {
-		std::cout << "UniqueApplication: Cannot find the D-Bus session server" << std::endl;
+		std::cout << QDBusConnection::tr("UniqueApplication: Cannot find the D-Bus session server") << std::endl;
 		return NULL;
 	}
 	return dbusService;
@@ -84,11 +84,11 @@ void UniqueApplication::start() {
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
 	if ( (dbusService) && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
-		std::cout << "UniqueApplication: Can't setup D-Bus service. Probably already running." << std::endl;
+		std::cout << QDBusConnection::tr("UniqueApplication: Can't setup D-Bus service. Probably already running.") << std::endl;
 		
 		QString pid = QString::number(getpid());
 		if( dbusService->registerService(appName + '-' + pid) != QDBusConnectionInterface::ServiceRegistered ) {
-			std::cout << "UniqueApplication: Can't really create D-Bus service.";
+			std::cout << QDBusConnection::tr("UniqueApplication: Can't really create D-Bus service.");
 		} else {
 			new XmlstudioAdaptor( this );
 			QDBusConnection::sessionBus().registerObject( "/", this );
@@ -109,7 +109,7 @@ void UniqueApplication::start() {
 	int error = GetLastError();
 
 	if( m_handleMutex == 0 ) {
-		std::cout << "UniqueApplication: Can't create mutex.";
+		std::cout << QCoreApplication::translate("UniqueApplication", "UniqueApplication: Can't create mutex.").toStdString ();
 		m_isUnique = false;
 		return;
 	}
@@ -138,13 +138,13 @@ void UniqueApplication::openSharedMem() {
 
 	m_handle = (HWND)CreateFileMapping( (void*)(0xFFFFFFFF), NULL, PAGE_READWRITE, 0, SIZE, (WCHAR*)"com.generix.xmlstudio.mapping" );
 	if( m_handle == 0 ) {
-		std::cout << "UniqueApplication: Error creating shared memory.";
+		std::cout << QCoreApplication::translate("UniqueApplication", "UniqueApplication: Error creating shared memory.").toStdString();
 		return;
 	} 
 
 	m_fileView = (char*)MapViewOfFile( m_handle, FILE_MAP_WRITE, 0, 0, SIZE );
 	if( m_fileView == 0 ) {
-		std::cout << "UniqueApplication: Error can't map file";
+		std::cout << QCoreApplication::translate("UniqueApplication", "UniqueApplication: Error can't map file").toStdString();
 		CloseHandle( m_handle );
 		return;
 	}

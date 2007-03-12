@@ -247,7 +247,7 @@
     <string>&amp;New</string>
    </property>
    <property name="toolTip" >
-    <string>Create a new text file</string>
+    <string>New</string>
    </property>
    <property name="statusTip" >
     <string>Create a new text file</string>
@@ -292,7 +292,7 @@
     <string>Save &amp;As...</string>
    </property>
    <property name="statusTip" >
-    <string>Save the document under a new name</string>
+    <string>Save the document with a new name</string>
    </property>
   </action>
   <action name="m_saveAllAct" >
@@ -339,7 +339,7 @@
     <string>&amp;Close All</string>
    </property>
    <property name="statusTip" >
-    <string>Close all opened document</string>
+    <string>Close all document</string>
    </property>
   </action>
   <action name="m_exitAct" >
@@ -350,7 +350,7 @@
     <string>E&amp;xit</string>
    </property>
    <property name="statusTip" >
-    <string>Exit the application</string>
+    <string>Quit XINX</string>
    </property>
    <property name="shortcut" >
     <string>Ctrl+Q</string>
@@ -392,7 +392,7 @@
     <string>Cu&amp;t</string>
    </property>
    <property name="statusTip" >
-    <string>Cut the current selection's contents to the clipboard</string>
+    <string>Cut the selection to the clipboard</string>
    </property>
    <property name="shortcut" >
     <string>Ctrl+X</string>
@@ -406,7 +406,7 @@
     <string>&amp;Copy</string>
    </property>
    <property name="statusTip" >
-    <string>Copy the current selection's contents to the clipboard</string>
+    <string>Copy the selection to the clipboard</string>
    </property>
   </action>
   <action name="m_pasteAct" >
@@ -417,7 +417,7 @@
     <string>&amp;Paste</string>
    </property>
    <property name="statusTip" >
-    <string>Paste the clipboard's contents into the current Paste the clipboard's contents into the current Paste the clipboard's contents into the current selection</string>
+    <string>Paste the clipboard's contents</string>
    </property>
    <property name="shortcut" >
     <string>Ctrl+V</string>
@@ -438,9 +438,6 @@
    <property name="text" >
     <string>&amp;Duplicate current line</string>
    </property>
-   <property name="toolTip" >
-    <string>Duplicate current line</string>
-   </property>
    <property name="shortcut" >
     <string>Ctrl+D</string>
    </property>
@@ -449,9 +446,6 @@
    <property name="text" >
     <string>&amp;Move line up</string>
    </property>
-   <property name="toolTip" >
-    <string>Move line up</string>
-   </property>
    <property name="shortcut" >
     <string>Ctrl+Alt+P</string>
    </property>
@@ -459,9 +453,6 @@
   <action name="m_moveDownLineAct" >
    <property name="text" >
     <string>&amp;Move line down</string>
-   </property>
-   <property name="toolTip" >
-    <string>Move line down</string>
    </property>
    <property name="shortcut" >
     <string>Ctrl+Alt+M</string>
@@ -530,10 +521,10 @@
   </action>
   <action name="m_javaViewObjectListAct" >
    <property name="text" >
-    <string>&amp;Java Object List</string>
+    <string>&amp;Description path</string>
    </property>
    <property name="statusTip" >
-    <string>Change the path of the Java ViewObject. This files containts all fields of a non Dynamic ViewObject</string>
+    <string>Change the path of object used in configuration file</string>
    </property>
   </action>
   <action name="m_newProjectAct" >

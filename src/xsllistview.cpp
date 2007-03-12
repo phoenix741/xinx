@@ -111,7 +111,7 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
-		QMessageBox::warning( qApp->activeWindow(), tr("XSL Structure Error"), tr("%1 at line %2:%3").arg(errorStr).arg(errorLine).arg(errorColumn) );
+		QMessageBox::warning( qApp->activeWindow(), tr("XSL Structure Error"), tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	}
 }
 
@@ -138,7 +138,7 @@ void XSLModelData::loadFromContent( const QString& content ) {
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
-		QMessageBox::warning( qApp->activeWindow(), tr("XSL Structure Error"), tr("%1 at line %2:%3").arg(errorStr).arg(errorLine).arg(errorColumn) );
+		QMessageBox::warning( qApp->activeWindow(), tr("XSL Structure Error"), tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	}  
 }
 

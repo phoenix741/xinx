@@ -24,6 +24,7 @@
 #include "xmlhighlighter.h"
 #include "jshighlighter.h"
 #include "xmleditor.h"
+#include "jseditor.h"
 #include "xslproject.h"
 
 /* NumberBar */
@@ -157,7 +158,7 @@ void TextEditor::formatToXML() {
 void TextEditor::formatToJS() {
 	formatToNothing();
 	m_highlighter = new JsHighlighter( document() );
-	m_processor = NULL;
+	m_processor = new JSProcessor( this, m_project, this );
 }
 
 void TextEditor::commentSelectedText( bool uncomment ) {
@@ -362,79 +363,6 @@ void FileEditor::indent( bool unindent ) {
 	tc.endEditBlock();
 }
 
-/*
-
-    //
-    if ( blocDebut == blocFin )
-    {
-        if ( m_tabSpaces )
-        {
-            int nbSpaces = tabStopWidth() / fontMetrics().width( " " );
-            for (int i = 0; i<nbSpaces; i++)
-                curseurActuel.insertText( " " );
-        }
-        else
-            curseurActuel.insertText( "\t" );
-        setTextCursor( curseurActuel );
-        return;
-    }
-    //
-    int ligneDebut = 1;
-    for ( QTextBlock block = document()->begin(); block.isValid() && block!=blocDebut; block = block.next(), ligneDebut++)
-        ;
-    //
-    int ligneFin = ligneDebut-1;
-    QTextBlock block = blocDebut;
-    do
-    {
-        c.setPosition(block.position(), QTextCursor::MoveAnchor);
-        if ( !indenter )
-        {
-            if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
-                c.deleteChar();
-        }
-        else
-        {
-            if ( m_tabSpaces )
-            {
-                int nbSpaces = tabStopWidth() / fontMetrics().width( " " );
-                for (int i = 0; i<nbSpaces; i++)
-                    c.insertText( " " );
-            }
-            else
-            {
-                if ( m_tabSpaces )
-                {
-                    int nbSpaces = tabStopWidth() / fontMetrics().width( " " );
-                    for (int i = 0; i<nbSpaces; i++)
-                        c.insertText( " " );
-                }
-                else
-                    c.insertText( "\t" );
-            }
-        }
-        setTextCursor( c );
-        ligneFin++;
-        block = block.next();
-    }
-    while (  block.isValid() && block != blocFin );
-    selectLines(ligneDebut, ligneFin);
-
-void TextEdit::selectLines(int debut, int fin)
-{
-    if ( debut > fin )
-        qSwap( debut, fin);
-    QTextCursor c = textCursor();
-    c.movePosition(QTextCursor::Start );
-    c.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, debut-1 );
-    c.movePosition(QTextCursor::Down, QTextCursor::KeepAnchor, fin-debut+1 );
-    setTextCursor( c );
-    ensureCursorVisible();
-}
-
-
-*/
-
 void FileEditor::commentSelectedText( bool uncomment ) {
 	m_view->commentSelectedText( uncomment );
 }
@@ -493,7 +421,7 @@ void FileEditor::setFileName( const QString & name ) {
 void FileEditor::loadFile( const QString & fileName ){
 	QFile file( fileName );
 	if ( ! file.open( QFile::ReadOnly | QFile::Text ) ) {
-		QMessageBox::warning(this, tr( "XML Visual Studio" ), tr( "Cannot read file %1:\n%2." )
+		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot read file %1:\n%2." )
 																.arg( fileName )
 																.arg( file.errorString() ) );
 		return;
@@ -530,7 +458,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 	
 	QFile file( getFileName() );
 	if ( ! file.open( QFile::WriteOnly | QFile::Text ) ) {
-		QMessageBox::warning(this, tr( "XML Visual Studio" ), tr( "Cannot write file %1:\n%2." )
+		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot write file %1:\n%2." )
 																.arg( fileName )
 																.arg( file.errorString() ) );
 		return false;

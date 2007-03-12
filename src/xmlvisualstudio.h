@@ -33,6 +33,7 @@ class ObjectsView;
 class XSLProject;
 class QSettings;
 class AboutDialogImpl;
+class XINXFileDialog;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
