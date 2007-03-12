@@ -33,6 +33,7 @@ Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}; Components: application; Flags: replacesameversion
 Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion; Languages: french
 Source: C:\Qt\4.2.2\translations\qt_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion; Languages: french
+Source: C:\Qt\4.2.2\bin\QtNetwork4.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: C:\Qt\4.2.2\bin\QtXml4.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: C:\Qt\4.2.2\bin\mingwm10.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: C:\Qt\4.2.2\bin\QtCore4.dll; DestDir: {app}; Components: application; Flags: sharedfile
