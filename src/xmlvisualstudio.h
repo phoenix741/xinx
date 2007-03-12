@@ -40,12 +40,12 @@ class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 public:
 	XMLVisualStudio( QWidget * parent = 0, Qt::WFlags f = 0 );
 	
-	void updateActions();
-	void updateRecentFiles();
-
 public slots:
 	/* Open file */
 	void open( const QString & filename );
+
+	void updateActions();
+	void updateRecentFiles();
 protected: 
 	/* Window event */
 

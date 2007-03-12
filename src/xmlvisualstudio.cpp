@@ -70,6 +70,7 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 
 	// Connection for auto open
 	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(hasFileToOpen(QString)), this, SLOT(open(QString)) );
+	connect( m_tabEditors, SIGNAL(fileDragged()), this, SLOT(updateActions()) );
 }
 
 void XMLVisualStudio::createDockWindows() {

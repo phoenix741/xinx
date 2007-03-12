@@ -208,6 +208,7 @@ void TabEditor::dropEvent( QDropEvent *event ) {
 		setBackgroundRole(QPalette::NoRole);
 		event->acceptProposedAction(); 
 	}
+	emit fileDragged();
 }
 
 void TabEditor::tabRemoved ( int index ) {

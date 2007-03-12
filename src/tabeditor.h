@@ -76,6 +76,8 @@ Q_SIGNALS:
 	
 	void modelCreated();
 	void modelDeleted();
+	
+	void fileDragged();
 
 protected:
 	void dragEnterEvent( QDragEnterEvent *event );

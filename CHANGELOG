@@ -1,3 +1,17 @@
+XINX - 0.6-3
+============
+- 0000053: [Evolution] Boite de dialogue Perso (phoenix)
+- 0000045: [Correction] Indentation d'un bloc dans fichier js (phoenix)
+- 0000034: [Evolution] Texte / Raccourci (phoenix)
+- 0000052: [Evolution] Création d'un fichier .bak avec le contenue de l'ancienne version (phoenix)
+- 0000029: [Evolution] Permettre la completion sur les valeurs (phoenix)
+- 0000039: [Correction] Clic sur les boutons de la recherche (phoenix)
+- 0000041: [Evolution] Recherche : repartir au début (phoenix)
+- 0000026: [Evolution] Faire une boite de dialogue "A propos" (phoenix)
+- 0000048: [Correction] Préfixage des spécifiques (phoenix)
+- 0000044: [Correction] Ouverture de projet (phoenix)
+- 0000036: [Evolution] Evolution pour la recherche de texte : ctrl-f (phoenix)
+
 XINX - 0.6-2
 ============
 - 0000015: [Correction] Coloration syntaxique lente (phoenix)
