@@ -78,8 +78,14 @@ Q_SIGNALS:
 	void modelDeleted();
 	
 	void fileDragged();
+	
+	void closeTab( int );
+	void refreshTab( int );
+	void saveTab( int );
+	void saveAsTab( int );
 
 protected:
+    bool eventFilter( QObject *obj, QEvent *event );
 	void dragEnterEvent( QDragEnterEvent *event );
 	void dropEvent( QDropEvent *event );
 	void tabRemoved ( int index );
@@ -88,7 +94,13 @@ private slots:
 	void slotCurrentTabChanged( int );
 	void slotModifiedChange( bool );
 	
+	void slotCloseAsked();
+	void slotRefreshAsked();
+	void slotSaveAsked();
+	void slotSaveAsAsked();
+	
 private:
+	int m_clickedItem;
 
 	Editor * previous;
 };

@@ -62,7 +62,7 @@ public:
 	virtual QString getTitle() const;
 	virtual bool hasName() const;
 	
-	void loadFile( const QString &fileName );
+	void loadFile( const QString &fileName = "" );
 	bool saveFile( const QString &fileName = "" );
  
 	QTextEdit * textEdit() const;

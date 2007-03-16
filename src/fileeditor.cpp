@@ -334,6 +334,8 @@ void FileEditor::indent( bool unindent ) {
     tc.setPosition( endPos, QTextCursor::MoveAnchor );
     tc.movePosition( QTextCursor::EndOfLine, QTextCursor::MoveAnchor );
     QTextBlock endBlock = tc.block();
+    if( endBlock.position() == endPos ) 
+    	endBlock = endBlock.previous();
 
     tc.setPosition( startPos, QTextCursor::MoveAnchor );
     tc.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
@@ -341,24 +343,16 @@ void FileEditor::indent( bool unindent ) {
     
     QTextBlock block = startBlock;
     do {
-	    tc.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
-	    
+		tc.setPosition( block.position() );
+
 	    if( ! unindent )
 		    tc.insertText( "\t" );
 		else
           if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
 			tc.deleteChar();
   		    
-		tc.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor );
-    	block = tc.block();
-   	} while( ( block < endBlock ) );
-   	if( block.position() < endPos ) {
-	    if( ! unindent )
-		    tc.insertText( "\t" );
-		else
-			if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
-				tc.deleteChar();
-	}
+    	block = block.next();
+   	} while( block.isValid() && (( block < endBlock ) || ( block == endBlock )) );
 	
 	tc.endEditBlock();
 }
@@ -419,15 +413,16 @@ void FileEditor::setFileName( const QString & name ) {
 }
 
 void FileEditor::loadFile( const QString & fileName ){
-	QFile file( fileName );
+	if( fileName != "" ) setFileName( fileName );
+
+	QFile file( getFileName() );
 	if ( ! file.open( QFile::ReadOnly | QFile::Text ) ) {
 		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot read file %1:\n%2." )
-																.arg( fileName )
+																.arg( getFileName() )
 																.arg( file.errorString() ) );
 		return;
 	}
 
-	setFileName( fileName );
 
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );

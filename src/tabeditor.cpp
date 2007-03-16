@@ -28,6 +28,10 @@
 //
 TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), previous(NULL) {
 	setAcceptDrops(true);
+//	setContextMenuPolicy( Qt::CustomContextMenu );
+//	setContextMenuPolicy( Qt::ActionsContextMenu );
+
+    tabBar()->installEventFilter(this);
        
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
@@ -262,3 +266,45 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	}
 }
 
+bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
+	if ( obj==tabBar() ) {
+		if (event->type() == QEvent::MouseButtonPress ) {
+			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+			for (int i=0; i<tabBar()->count(); i++) {
+				if ( tabBar()->tabRect(i).contains( mouseEvent->pos() ) ) {
+					m_clickedItem = i;
+					break;
+				}
+			}
+			
+			if ( mouseEvent->button() == Qt::RightButton ) {
+				QMenu *menu = new QMenu( this );
+				connect( menu->addAction(QIcon(":/wrap.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
+				menu->addSeparator();
+				connect( menu->addAction(QIcon(":/filesave.png"), tr("Save")), SIGNAL(triggered()), this, SLOT(slotSaveAsked()) );
+				connect( menu->addAction(QIcon(":/filesaveas.png"), tr("Save As ....")), SIGNAL(triggered()), this, SLOT(slotSaveAsAsked()) );
+				menu->addSeparator();
+				connect( menu->addAction(QIcon(":/fileclose.png"), tr("Close")), SIGNAL(triggered()), this, SLOT(slotCloseAsked()) );
+				menu->exec(mouseEvent->globalPos());
+				delete menu;
+			}
+		}
+	}
+	return QTabWidget::eventFilter( obj, event);
+}
+
+void TabEditor::slotCloseAsked() {
+	emit closeTab( m_clickedItem );	
+}
+
+void TabEditor::slotRefreshAsked() {
+	emit refreshTab( m_clickedItem );	
+}
+
+void TabEditor::slotSaveAsked() {
+	emit saveTab( m_clickedItem );	
+}
+
+void TabEditor::slotSaveAsAsked() {
+	emit saveAsTab( m_clickedItem );	
+}

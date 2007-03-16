@@ -179,6 +179,7 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 	m_nodeName = QString();
 	m_paramName = QString();
 	
+	/* is a Comment ? */
 	QTextCursor cursorCommentStart ( textEdit()->document()->find ( "<!--", cursor, QTextDocument::FindBackward ) );
 	QTextCursor cursorCommentEnd ( textEdit()->document()->find ( "-->", cursor, QTextDocument::FindBackward ) );
 
@@ -192,6 +193,7 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 		return cPosition;
 	} // else
 	
+	/* or simple text */
 	QTextCursor cursorBaliseStart ( textEdit()->document()->find ( QRegExp("<(?!\\!\\-\\-)"), cursor, QTextDocument::FindBackward ) ); // A balise is'nt a comment
 	QTextCursor cursorBaliseEnd ( textEdit()->document()->find ( ">", cursor, QTextDocument::FindBackward ) );
 
@@ -201,7 +203,7 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 	} // else
 
 	/* Retrieve the name of node */
-	QTextCursor cursorSpaceAfterNodeName ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursorBaliseStart ) );
+	QTextCursor cursorSpaceAfterNodeName ( textEdit()->document()->find ( QRegExp( "\\s" ), cursorBaliseStart ) );
 	QTextCursor tc = cursor;
 	
 	tc.setPosition( cursorBaliseStart.position(), QTextCursor::MoveAnchor ) ;
@@ -212,9 +214,12 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 		
 	m_nodeName = tc.selectedText().trimmed();
 	
+	/* i'm editing a balise name ? */
 	QTextCursor cursorSpace ( textEdit()->document()->find ( QRegExp("\\s"), cursor, QTextDocument::FindBackward ) );
+	if( cursorSpace < cursorBaliseStart ) 
+		cursorSpace = QTextCursor();
 
-	bool editBaliseName = cursorSpace.isNull() || ( cursorSpace < cursorBaliseStart );
+	bool editBaliseName = cursorSpace.isNull();
 	if( editBaliseName ) {
 		cPosition = cpEditNodeName;
 		return cPosition;
@@ -222,20 +227,40 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 	
 	QTextCursor cursorEgal ( textEdit()->document()->find ( "=", cursor, QTextDocument::FindBackward ) );
 	QTextCursor cursorQuote ( textEdit()->document()->find ( "\"", cursor, QTextDocument::FindBackward ) );
+	if( cursorEgal < cursorBaliseStart ) 
+		cursorEgal = QTextCursor();
+	if( cursorQuote < cursorBaliseStart ) 
+		cursorQuote = QTextCursor();
+
+	int quoteCount = 0;
+	if( ! cursorQuote.isNull() ) {
+		quoteCount ++;
+		QTextCursor cursorPreviousQuote( cursorQuote );
+
+		cursorPreviousQuote.movePosition( QTextCursor::PreviousCharacter );			
+		cursorPreviousQuote = textEdit()->document()->find ( "\"", cursorPreviousQuote, QTextDocument::FindBackward );
+		while( ( ! cursorPreviousQuote.isNull() ) &&  ( cursorBaliseStart < cursorPreviousQuote ) ) {
+			quoteCount ++;
+
+			cursorPreviousQuote.movePosition( QTextCursor::PreviousCharacter );			
+			cursorPreviousQuote = textEdit()->document()->find ( "\"", cursorPreviousQuote, QTextDocument::FindBackward );
+		}
+	}
 	
 	/* 
 		<Noeud Param1=Value1 Param2="Value 2" Param3="Value3" Param4 Param5="Value 5"/>
 		       1   5    10   15   20   25   30   35   40   45   50   55   60   65   70
 		       
-		1 => Param / Space not null, Egal null, Quote null
-		8 => Value / Space < Egal, Quote null
-		15 => Param / Egal < Space, Quote null
-		22 => Value / Space < Egal, Quote null
-		23 => Value / Space < Egal < Quote
-		29 => Value / Egal < Quote < Space
-		31 => Param / Egal < Space  < Quote	
-		35 => Param / Egal < Quote < Space
-		
+		1 => Param / Space not null, Egal null, Quote null / 0
+		8 => Value / Space < Egal, Quote null / 0
+		15 => Param / Egal < Space, Quote null / 0
+		22 => Value / Space < Egal, Quote null / 1
+		23 => Value / Space < Egal < Quote / 1
+		29 => Value / Egal < Quote < Space / 1
+		31 => Param / Egal < Space  < Quote	 / 2
+		35 => Param / Egal < Quote < Space / 2
+	
+		Compter le nombre de guillement	
 	*/
 	
 	QTextCursor cursorParam ( textEdit()->document()->find ( QRegExp( "[=\\s]" ), cursorSpace ) );
@@ -247,7 +272,7 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 		
 	m_paramName = tc.selectedText().trimmed();
 
-	if( cursorEgal.isNull() || ( ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) ) ) {
+	if( cursorEgal.isNull() || ( ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) && ( ( quoteCount % 2 ) == 0 ) ) ) {
 		cPosition = cpEditParamName;
 		return cPosition;
 	}

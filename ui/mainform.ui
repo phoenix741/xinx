@@ -34,6 +34,13 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
    <widget class="QMenu" name="m_fileMenu" >
     <property name="title" >
      <string>&amp;File</string>
@@ -50,35 +57,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="m_recentProjectMenu" >
-     <property name="title" >
-      <string>&amp;Recent project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
-     </property>
-     <addaction name="m_openProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectMenu" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="m_closeProjectAct" />
-    <addaction name="separator" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_javaViewObjectListAct" />
-   </widget>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
    </widget>
    <widget class="QMenu" name="m_windowsMenu" >
     <property name="title" >
@@ -122,6 +100,29 @@
     <addaction name="m_searchNextAct" />
     <addaction name="separator" />
     <addaction name="m_replaceAct" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="m_recentProjectMenu" >
+     <property name="title" >
+      <string>&amp;Recent project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectMenu" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="m_closeProjectAct" />
+    <addaction name="separator" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_javaViewObjectListAct" />
+    <addaction name="m_customApplicationAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -607,6 +608,14 @@
    </property>
    <property name="shortcut" >
     <string>Shift+Tab</string>
+   </property>
+  </action>
+  <action name="m_customApplicationAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/folder_config_48.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Customize ...</string>
    </property>
   </action>
  </widget>

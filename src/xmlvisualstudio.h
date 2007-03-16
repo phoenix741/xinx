@@ -51,6 +51,13 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
+	/* Manage files opened */
+	void slotCloseFile( int );
+	void slotRefreshFile( int );
+
+	void saveEditor(int index);
+	void saveEditorAs(int index);
+
 	/* FindDialog slots */
 	void findFirst(const QString &, const QString &, const struct FindDialog::FindOptions &);
 
@@ -87,6 +94,7 @@ private slots:
 	void on_m_nextTabAct_triggered();
 	void on_m_previousTabAct_triggered();
 	void on_m_webServicesRefreshBtn_clicked();
+	void on_m_customApplicationAct_triggered();
 private:
 	/* Create Window Menus, Tools, Status, Dock Bar */
   
@@ -103,8 +111,6 @@ private:
 	/* Save an editor into a file */
 
 	bool maybeSave(int index);
-	void saveEditor(int index);
-	void saveEditorAs(int index);
 	
 	/* Usefull for Recent project */
 	
@@ -142,6 +148,7 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
 
 
 

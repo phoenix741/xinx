@@ -1,7 +1,10 @@
 <RCC>
     <qresource prefix="/" >
         <file>CVpublic_meth.png</file>
+        <file>CVpublic_slot.png</file>
         <file>CVpublic_var.png</file>
+        <file>CVstruct.png</file>
+        <file>Desktop.png</file>
         <file>bug.png</file>
         <file>doc.png</file>
         <file>editcopy.png</file>
@@ -17,6 +20,9 @@
         <file>filesaveas.png</file>
         <file>find.png</file>
         <file>firefox_logo.png</file>
+        <file>folder_config128.png</file>
+        <file>folder_config_48.png</file>
+        <file>folder_fost.png</file>
         <file>france.png</file>
         <file>germany.png</file>
         <file>ie_logo.png</file>
@@ -30,7 +36,5 @@
         <file>undo.png</file>
         <file>usa.png</file>
         <file>wrap.png</file>
-        <file>CVstruct.png</file>
-        <file>CVpublic_slot.png</file>
     </qresource>
 </RCC>

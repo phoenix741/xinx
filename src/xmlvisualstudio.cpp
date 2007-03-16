@@ -35,12 +35,13 @@
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
 #include "webservices.h"
+#include "customdialogimpl.h"
 
 #include "xmlvisualstudio.h"
 
 #include "aboutdialogimpl.h"
 
-#define OPEN_SAVE_DIALOG_FILTER "All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws);;All Managed File (*.xml;*.xsl;*.js;*.fws)"
+#define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
 
 /* XMLVisualStudio */
 
@@ -67,10 +68,14 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	createActions();
 	createToolBars();
 	createStatusBar();
-
+	
 	// Connection for auto open
 	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(hasFileToOpen(QString)), this, SLOT(open(QString)) );
 	connect( m_tabEditors, SIGNAL(fileDragged()), this, SLOT(updateActions()) );
+	connect( m_tabEditors, SIGNAL(closeTab(int)), this, SLOT(slotCloseFile(int)) );
+	connect( m_tabEditors, SIGNAL(refreshTab(int)), this, SLOT(slotRefreshFile(int)) );
+	connect( m_tabEditors, SIGNAL(saveTab(int)), this, SLOT(saveEditor(int)) );
+	connect( m_tabEditors, SIGNAL(saveAsTab(int)), this, SLOT(saveEditorAs(int)) );
 }
 
 void XMLVisualStudio::createDockWindows() {
@@ -329,12 +334,8 @@ void XMLVisualStudio::on_m_closeAct_triggered() {
 	int index = m_tabEditors->currentIndex();
 	
 	assert( index >= 0 );
-	
-	if( maybeSave( index ) ) {
-		m_tabEditors->removeTab( index );
-	}
-	
-	updateActions();
+
+	slotCloseFile( index );
 }
 
 void XMLVisualStudio::on_m_closeAllAct_triggered() {
@@ -564,6 +565,15 @@ void XMLVisualStudio::on_m_webServicesRefreshBtn_clicked() {
 		m_xslProject->refreshWebServices();
 }
 
+
+void XMLVisualStudio::on_m_customApplicationAct_triggered() {
+	CustomDialogImpl * custom = new CustomDialogImpl( this );
+	
+	custom->exec();
+	
+	delete custom;
+}
+
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
 		if ( ! maybeSave( i ) ) {
@@ -626,6 +636,36 @@ void XMLVisualStudio::openRecentProject() {
      QAction * action = qobject_cast<QAction *>( sender() );
      if( action )
          openProject( action->data().toString() );	
+}
+
+void XMLVisualStudio::slotCloseFile( int index ) {
+	if( maybeSave( index ) ) {
+		m_tabEditors->removeTab( index );
+	}
+	
+	updateActions();
+}
+
+void XMLVisualStudio::slotRefreshFile( int index ) {
+	assert( index >= 0 );
+	
+	if( TabEditor::isFileEditor( m_tabEditors->editor( index ) ) ) {
+		FileEditor * ed = static_cast<FileEditor*>( m_tabEditors->editor( index ) );
+		bool act = ! ed->isModified();
+		
+		if( ! act ) {
+			QMessageBox::StandardButton ret;
+			ret = QMessageBox::question(this, tr("Application"),
+										tr("The document %1 has been modified.\n"
+										"Do you really want refresh this?").arg( ed->getTitle() ),
+										QMessageBox::Yes | QMessageBox::No);
+			act = ( ret == QMessageBox::Yes );
+		}
+		if( act ) {
+			ed->loadFile();
+			ed->setModified( false );
+		}
+	}
 }
 
 bool XMLVisualStudio::maybeSave( int index ) {
@@ -759,3 +799,4 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 		updateRecentFiles();
 	}
 }
+

@@ -1,20 +1,21 @@
-CONFIG +=   exceptions \
+CONFIG += exceptions \
   qt \
   release \
   thread \
   warn_on
 DESTDIR +=   bin
 FORMS +=   ui/about.ui \
+  ui/custom.ui \
   ui/javaobjectfile.ui \
   ui/mainform.ui \
-  ui/projectproperty.ui \
-  ui/syntaxeditorproperty.ui
+  ui/projectproperty.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \
   src/fileeditor.h \
   src/finddialog.h \
   src/javaobjectfileimpl.h \
+  src/jseditor.h \
   src/jshighlighter.h \
   src/objectview.h \
   src/projectpropertyimpl.h \
@@ -22,11 +23,12 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/uniqueapplication.h \
   src/webservices.h \
   src/xmleditor.h \
-  src/jseditor.h \
   src/xmlhighlighter.h \
   src/xmlvisualstudio.h \
   src/xsllistview.h \
-  src/xslproject.h
+  src/xslproject.h \
+  src/customdialogimpl.h \
+  src/kcolorcombo.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -40,6 +42,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/fileeditor.cpp \
   src/finddialog.cpp \
   src/javaobjectfileimpl.cpp \
+  src/jseditor.cpp \
   src/jshighlighter.cpp \
   src/main.cpp \
   src/objectview.cpp \
@@ -48,11 +51,12 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/uniqueapplication.cpp \
   src/webservices.cpp \
   src/xmleditor.cpp \
-  src/jseditor.cpp \
   src/xmlhighlighter.cpp \
   src/xmlvisualstudio.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp
+  src/xslproject.cpp \
+  src/customdialogimpl.cpp \
+  src/kcolorcombo.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
