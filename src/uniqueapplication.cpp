@@ -39,7 +39,7 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
 	if (!QDBusConnection::sessionBus().isConnected() || !(dbusService = QDBusConnection::sessionBus().interface())) {
-		std::cout << QDBusConnection::tr("UniqueApplication: Cannot find the D-Bus session server") << std::endl;
+		std::cout << QObject::tr("UniqueApplication: Cannot find the D-Bus session server").toStdString() << std::endl;
 		return NULL;
 	}
 	return dbusService;
@@ -84,11 +84,11 @@ void UniqueApplication::start() {
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
 	if ( (dbusService) && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
-		std::cout << QDBusConnection::tr("UniqueApplication: Can't setup D-Bus service. Probably already running.") << std::endl;
+		std::cout << QObject::tr("UniqueApplication: Can't setup D-Bus service. Probably already running.").toStdString() << std::endl;
 		
 		QString pid = QString::number(getpid());
 		if( dbusService->registerService(appName + '-' + pid) != QDBusConnectionInterface::ServiceRegistered ) {
-			std::cout << QDBusConnection::tr("UniqueApplication: Can't really create D-Bus service.");
+			std::cout << QObject::tr("UniqueApplication: Can't really create D-Bus service.").toStdString();
 		} else {
 			new XmlstudioAdaptor( this );
 			QDBusConnection::sessionBus().registerObject( "/", this );

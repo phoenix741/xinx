@@ -48,7 +48,7 @@ void JSProcessor::keyPressEvent( QKeyEvent *e ) {
 	if( ( ! ctrlOrShift ) && ( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) ) {
 		QTextCursor tc( textEdit()->textCursor() );
 		QTextBlock previous = tc.block().previous();	
-		QString indent = previous.text();
+		QString indent = previous.text(); 
 		
 		indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
 		

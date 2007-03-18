@@ -1,4 +1,4 @@
-CONFIG += exceptions \
+CONFIG +=   exceptions \
   qt \
   release \
   thread \
@@ -28,7 +28,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsllistview.h \
   src/xslproject.h \
   src/customdialogimpl.h \
-  src/kcolorcombo.h
+  src/kcolorcombo.h \
+  src/xinxconfig.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -56,7 +57,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsllistview.cpp \
   src/xslproject.cpp \
   src/customdialogimpl.cpp \
-  src/kcolorcombo.cpp
+  src/kcolorcombo.cpp \
+  src/xinxconfig.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
