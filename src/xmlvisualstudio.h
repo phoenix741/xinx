@@ -31,7 +31,6 @@ class XSLItemModel;
 class QSortFilterProxyModel;
 class ObjectsView;
 class XSLProject;
-class QSettings;
 class AboutDialogImpl;
 class XINXFileDialog;
 
@@ -123,9 +122,6 @@ private:
 	/* Open/Save Dialog */	
 	QString m_lastPlace;
 	
-	/* Settings */
-	QSettings * m_settings;
-  
 	/* Dock Object */
 	QAbstractItemModel * m_xslModel;
 	QSortFilterProxyModel * m_sortXslModel;

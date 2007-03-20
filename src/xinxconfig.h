@@ -26,13 +26,17 @@
 #include <QList>
 #include <QString>
 #include <QTextCharFormat>
+#include <QPoint>
+#include <QSize>
+
+class QSettings;
 
 //
 class XINXConfig {
 
 public:
 	struct managedStructure {
-		QHash<QString,QTextCharFormat> color;
+		QHash<QString,QTextFormat> color;
 		QString example;
 	};
 	struct managedFile {
@@ -42,14 +46,31 @@ public:
 		bool canBeCustomize;
 		QString structure;
 	};
+	enum docks {
+		contents = 0x01,
+		services = 0x02,
+		configuration = 0x04
+	};
 
 	XINXConfig();
+	~XINXConfig();
 	
 	void save();
 	void load();
 	
 	QString lang() const { return m_lang; };
 	void setLang( const QString & value ) { m_lang = value; };
+	
+	int visibleDock() { return m_docks; };
+	bool isDockSet( enum docks dock ) { return (m_docks & dock) == dock; };
+	void setDock( enum docks dock ) { m_docks |= dock; };
+	void unsetDock( enum docks dock ) { m_docks &= ~dock; };
+	
+	QPoint position() const { return m_xinxPosition; };
+	void setPosition( QPoint value ) { m_xinxPosition = value; };
+	
+	QSize size() const { return m_xinxSize; };
+	void setSize( QSize value ) { m_xinxSize = value; };
 	
 	bool isCreateBackupFile() const { return m_createBackupFile; };
 	void setCreateBackupFile( bool value ) { m_createBackupFile = value; };
@@ -66,19 +87,31 @@ public:
 	QString completionFilesPath() const { return m_objectDescriptionPath; };
 	void setCompletionFilesPath( const QString & value ) { m_objectDescriptionPath = value; };
 	
-	const QList<struct managedFile> & managedFile() const { return m_managedFileList; };
-	const QHash<QString,struct managedStructure> & managedStructure() const { return m_managedStrucureList; };
+	QStringList & recentProjectFiles() { return m_recentProjectFiles; };
+	QList<struct managedFile> & managedFile() { return m_managedFileList; };
+	QHash<QString,struct managedStructure> & managedStructure() { return m_managedStrucureList; };
 	
 	QString extentions();
 	
 private:
+	QSettings * m_settings;
+
+	QPoint m_xinxPosition;
+	QSize m_xinxSize;
+	
+	int m_docks;
+
 	QString m_lang;
 	bool m_createBackupFile;
 	bool m_alertWhenStdFile;
 	QString m_xinxProjectPath;
 	QString m_objectDescriptionPath;
 	
+	QStringList m_recentProjectFiles;
+	
 	QList<struct managedFile> m_managedFileList;
 	QHash<QString, struct managedStructure> m_managedStrucureList;
 };
+
+extern XINXConfig * xinxConfig;
 #endif

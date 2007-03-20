@@ -121,9 +121,11 @@ void UniqueApplication::start() {
 		return;
 	}
 
-	QTimer* timer = new QTimer( this );
-	connect( timer, SIGNAL(timeout()), this, SLOT(timerApplicationEvent()) );
-	timer->start( 500 );
+	if( m_handleMutex && m_handle && m_fileView ) {
+		QTimer* timer = new QTimer( this );
+		connect( timer, SIGNAL(timeout()), this, SLOT(timerApplicationEvent()) );
+		timer->start( 500 );
+	}
 #endif
 
 	m_isUnique = true;

@@ -41,7 +41,9 @@
 
 #include "aboutdialogimpl.h"
 
-#define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
+#include "xinxConfig.h"
+
+//#define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
 
 /* XMLVisualStudio */
 
@@ -56,7 +58,6 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 
 	m_lastPlace    = QDir::currentPath();
 
-	m_settings         = new QSettings("Generix", "XINX");
 	m_javaObjects      = new ObjectsView();
 	completionNodeList = new CplNodeList();
 
@@ -89,28 +90,35 @@ void XMLVisualStudio::createDockWindows() {
 }
 
 void XMLVisualStudio::readSettings() {
-	QPoint pos = m_settings->value( "pos", QPoint(200, 200) ).toPoint();
-	QSize size = m_settings->value( "size", QSize(400, 400) ).toSize();
-	resize(size);
-	move(pos);
+	resize( xinxConfig->size() );
+	move( xinxConfig->position() );
   
-	m_javaObjects->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() );
+	m_javaObjects->setPath( xinxConfig->objectDescriptionPath() );
 	m_javaObjects->loadFiles();
   
-	completionNodeList->setPath( m_settings->value("xmljavapath", qApp->applicationDirPath() + "/xml").toString() + "/completion.cpl" );
+	completionNodeList->setPath( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
 	completionNodeList->loadFiles();
 
-	m_xslContentDock->setVisible( m_settings->value("xslContent/visible", true).toBool() );
-	m_webServicesDock->setVisible( m_settings->value("webServices/visible", true).toBool() );
+	m_xslContentDock->setVisible( xinxConfig->isDockSet( XINXConfig::contents ) );
+	m_webServicesDock->setVisible( xinxConfig->isDockSet( XINXConfig::services ) );
 }
 
 void XMLVisualStudio::writeSettings() {
-	m_settings->setValue( "pos", pos() );
-	m_settings->setValue( "size", size() );
-	m_settings->setValue( "xmljavapath", m_javaObjects->path() );
+	xinxConfig->setPosition( pos() );
+	xinxConfig->setSize( size() );
+	xinxConfig->setObjectDescriptionPath( m_javaObjects->path() );
 
-	m_settings->setValue( "xslContent/visible", ! m_xslContentDock->isHidden() );
-	m_settings->setValue( "webServices/visible", ! m_webServicesDock->isHidden() );
+	if( ! m_xslContentDock->isHidden() ) 
+		xinxConfig->setDock( XINXConfig::contents );
+	else 
+		xinxConfig->unsetDock ( XINXConfig::contents );
+
+	if( ! m_webServicesDock->isHidden() ) 
+		xinxConfig->setDock( XINXConfig::services );
+	else 
+		xinxConfig->unsetDock( XINXConfig::services );
+	
+	xinxConfig->save();
 }
 
 void XMLVisualStudio::createActions() {
@@ -255,13 +263,12 @@ void XMLVisualStudio::updateActions() {
 }
 
 void XMLVisualStudio::updateRecentFiles() {
-	QStringList files = m_settings->value( "Recent Project Files" ).toStringList();
-	int numRecentFiles = qMin( files.size(), MAXRECENTFILES );
+	int numRecentFiles = qMin( xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( files[i] ).fileName() );
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( xinxConfig->recentProjectFiles()[i] ).fileName() );
 		m_recentProjectActs[i]->setText( text );
-		m_recentProjectActs[i]->setData( files[i] );
+		m_recentProjectActs[i]->setData( xinxConfig->recentProjectFiles()[i] );
 		m_recentProjectActs[i]->setVisible( true );
 	}
 	
@@ -289,7 +296,7 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_openAct_triggered() {
-	QString filename = QFileDialog::getOpenFileName( this, tr("Open text file"), m_lastPlace, tr( OPEN_SAVE_DIALOG_FILTER ) );
+	QString filename = QFileDialog::getOpenFileName( this, tr("Open text file"), m_lastPlace, xinxConfig->extentions() );
 	if ( ! filename.isEmpty() ) {
 		m_lastPlace = QFileInfo( filename ).absolutePath();
 		open( filename );
@@ -725,7 +732,7 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 		this, 
 		tr("Save text file"), 
 		fileName, 
-		tr( OPEN_SAVE_DIALOG_FILTER )
+		xinxConfig->extentions()
 	);
 	
 	if( fileName.isEmpty() ) return ;
@@ -787,14 +794,11 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	else {
 		setWindowTitle( tr("%1 - %2").arg( QFileInfo( filename ).fileName() ).arg( tr("XINX") ) );
 
-		QStringList files = m_settings->value( "Recent Project Files" ).toStringList();
-		files.removeAll( filename );
-		files.prepend( filename );
+		xinxConfig->recentProjectFiles().removeAll( filename );
+		xinxConfig->recentProjectFiles().prepend( filename );
      
-		while( files.size() > MAXRECENTFILES )
-			files.removeLast();
-
-		m_settings->setValue( "Recent Project Files", files );
+		while( xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
+			xinxConfig->recentProjectFiles().removeLast();
 
 		updateRecentFiles();
 	}
