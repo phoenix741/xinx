@@ -16,12 +16,12 @@
 #ifndef XMLHIGHLIGHTER_H
 #define XMLHIGHLIGHTER_H
 
-#include <QSyntaxHighlighter>
+#include "syntaxhighlighter.h"
 #include <QTextCharFormat>
 #include <QColor>
 
-class XmlHighlighter : public QSyntaxHighlighter
-{
+class XmlHighlighter : public SyntaxHighlighter {
+	Q_OBJECT
 public:
 	XmlHighlighter(QObject* parent);
 	XmlHighlighter(QTextDocument* parent);
@@ -43,11 +43,12 @@ public:
 	void setHighlightFormat(HighlightType type, QTextCharFormat format);
 
 protected:
+	virtual void init();
+
 	void highlightBlock(const QString& rstrText);
 	int  processDefaultText(int i, const QString& rstrText);
 
 private:
-	void init();
 
 	QTextCharFormat fmtSyntaxChar;
     QTextCharFormat fmtElementName;

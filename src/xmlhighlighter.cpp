@@ -35,19 +35,19 @@ static const QString EXPR_ATTRIBUTE_VALUE	= "\"[^<\"]*\"|'[^<']*'";
 static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
 
 XmlHighlighter::XmlHighlighter(QObject* parent)
-: QSyntaxHighlighter(parent)
+: SyntaxHighlighter(parent)
 {
 	init();
 }
 
 XmlHighlighter::XmlHighlighter(QTextDocument* parent)
-: QSyntaxHighlighter(parent)
+: SyntaxHighlighter(parent)
 {
 	init();
 }
 
 XmlHighlighter::XmlHighlighter(QTextEdit* parent)
-: QSyntaxHighlighter(parent)
+: SyntaxHighlighter(parent)
 {
 	init();
 }

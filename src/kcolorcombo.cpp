@@ -28,6 +28,9 @@
 // <mweilguni@sime.com>
 //
 
+/*
+ * Ulrich Van Den Hekke ( 21/03/2007 ) Adapt for Qt4
+ */
 
 #include <stdio.h>
 #include <stdlib.h>

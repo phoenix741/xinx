@@ -22,6 +22,10 @@
 // layout management added Oct 1997 by Mario Weilguni
 // <mweilguni@sime.com>
 
+/*
+ * Ulrich Van Den Hekke ( 21/03/2007 ) Adapt for Qt4
+ */
+
 
 #ifndef _KCOLORCOMBO_H__
 #define _KCOLORCOMBO_H__

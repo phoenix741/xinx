@@ -21,10 +21,10 @@
 #ifndef JSHIGHLIGHTER_H
 #define JSHIGHLIGHTER_H
 //
-#include <QSyntaxHighlighter>
+#include "syntaxhighlighter.h"
 //
 
-class JsHighlighter : public QSyntaxHighlighter {
+class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
 	JsHighlighter( QObject* parent );

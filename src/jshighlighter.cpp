@@ -28,15 +28,15 @@ static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
 static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
 static const QColor DEFAULT_OTHER			= Qt::black;
 
-JsHighlighter::JsHighlighter( QObject* parent ) : QSyntaxHighlighter( parent ) {
+JsHighlighter::JsHighlighter( QObject* parent ) : SyntaxHighlighter( parent ) {
 	init();
 }
 
-JsHighlighter::JsHighlighter( QTextDocument* parent ) : QSyntaxHighlighter( parent ) {
+JsHighlighter::JsHighlighter( QTextDocument* parent ) : SyntaxHighlighter( parent ) {
 	init();
 }
 
-JsHighlighter::JsHighlighter( QTextEdit* parent ) : QSyntaxHighlighter( parent ) {
+JsHighlighter::JsHighlighter( QTextEdit* parent ) : SyntaxHighlighter( parent ) {
 	init();
 }
 
