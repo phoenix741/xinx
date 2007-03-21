@@ -17,11 +17,8 @@
 
 static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
 static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
-static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
 static const QColor DEFAULT_ATTRIBUTE_NAME	= Qt::red;
 static const QColor DEFAULT_ATTRIBUTE_VALUE	= Qt::blue;
-static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
-static const QColor DEFAULT_OTHER			= Qt::black;
 
 // Regular expressions for parsing XML borrowed from:
 // http://www.cs.sfu.ca/~cameron/REX.html
@@ -34,80 +31,47 @@ static const QString EXPR_COMMENT			= EXPR_COMMENT_BEGIN + EXPR_COMMENT_TEXT + E
 static const QString EXPR_ATTRIBUTE_VALUE	= "\"[^<\"]*\"|'[^<']*'";
 static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
 
-XmlHighlighter::XmlHighlighter(QObject* parent)
-: SyntaxHighlighter(parent)
-{
+XmlHighlighter::XmlHighlighter(QObject* parent) : SyntaxHighlighter(parent) {
 	init();
 }
 
-XmlHighlighter::XmlHighlighter(QTextDocument* parent)
-: SyntaxHighlighter(parent)
-{
+XmlHighlighter::XmlHighlighter(QTextDocument* parent) : SyntaxHighlighter(parent) {
 	init();
 }
 
-XmlHighlighter::XmlHighlighter(QTextEdit* parent)
-: SyntaxHighlighter(parent)
-{
+XmlHighlighter::XmlHighlighter(QTextEdit* parent) : SyntaxHighlighter(parent) {
 	init();
 }
 
-XmlHighlighter::~XmlHighlighter()
-{
+XmlHighlighter::~XmlHighlighter() {
 }
 
-void XmlHighlighter::init()
-{
-	fmtSyntaxChar.setForeground(DEFAULT_SYNTAX_CHAR);
-    fmtElementName.setForeground(DEFAULT_ELEMENT_NAME);
-	fmtComment.setForeground(DEFAULT_COMMENT);
-	fmtAttributeName.setForeground(DEFAULT_ATTRIBUTE_NAME);
-	fmtAttributeValue.setForeground(DEFAULT_ATTRIBUTE_VALUE);
-	fmtError.setForeground(DEFAULT_ERROR);
-	fmtOther.setForeground(DEFAULT_OTHER);
+void XmlHighlighter::init() {
+	SyntaxHighlighter::init();
+
+	m_syntaxFormats["SyntaxChar"].setForeground( DEFAULT_SYNTAX_CHAR );
+	m_syntaxFormats["ElementName"].setForeground( DEFAULT_ELEMENT_NAME );
+	m_syntaxFormats["AttributeName"].setForeground( DEFAULT_ATTRIBUTE_NAME );	
+	m_syntaxFormats["AttributeValue"].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
 }
 
-void XmlHighlighter::setHighlightColor(HighlightType type, QColor color, bool foreground)
-{
-	QTextCharFormat format;
-	if (foreground)
-		format.setForeground(color);
+bool XmlHighlighter::isFormat( QString type ) {
+	if( type == "SyntaxChar" ) 
+		return true;
+	else 	
+	if( type == "ElementName" ) 
+		return true;
 	else
-		format.setBackground(color);
-	setHighlightFormat(type, format);
+	if( type == "AttributeName" ) 
+		return true;
+	else
+	if( type == "AttributeValue" ) 
+		return true;
+
+	return SyntaxHighlighter::isFormat( type );
 }
 
-void XmlHighlighter::setHighlightFormat(HighlightType type, QTextCharFormat format)
-{
-	switch (type)
-	{
-		case SyntaxChar:
-			fmtSyntaxChar = format;
-			break;
-		case ElementName:
-			fmtElementName = format;
-			break;
-		case Comment:
-			fmtComment = format;
-			break;
-		case AttributeName:
-			fmtAttributeName = format;
-			break;
-		case AttributeValue:
-			fmtAttributeValue = format;
-			break;
-		case Error:
-			fmtError = format;
-			break;
-		case Other:
-			fmtOther = format;
-			break;
-	}
-	rehighlight();
-}
-
-void XmlHighlighter::highlightBlock(const QString& text)
-{
+void XmlHighlighter::highlightBlock( const QString& text ) {
 	int i = 0;
 	int pos = 0;
 	int brackets = 0;
@@ -126,14 +90,14 @@ void XmlHighlighter::highlightBlock(const QString& text)
 		{
 			// end comment found
 //			const int iLength = expression.matchedLength();
-			setFormat(0, pos, fmtComment);
-			setFormat(pos, 3, fmtSyntaxChar);
+			setFormat(0, pos, m_syntaxFormats["Comment"]);
+			setFormat(pos, 3, m_syntaxFormats["SyntaxChar"]);
 			i += pos + 3; // skip comment
 		}
 		else
 		{
 			// in comment
-			setFormat(0, text.length(), fmtComment);
+			setFormat(0, text.length(), m_syntaxFormats["Comment"]);
 			setCurrentBlockState(InComment);
 			return;
 		}
@@ -147,13 +111,13 @@ void XmlHighlighter::highlightBlock(const QString& text)
 			brackets++;
 			if (brackets == 1)
 			{
-				setFormat(i, 1, fmtSyntaxChar);
+				setFormat(i, 1, m_syntaxFormats["SyntaxChar"]);
 				state = ExpectElementNameOrSlash;
 			}
 			else
 			{
 				// wrong bracket nesting
-				setFormat(i, 1, fmtError);
+				setFormat(i, 1, m_syntaxFormats["Error"]);
 			}
 			break;
 
@@ -161,12 +125,12 @@ void XmlHighlighter::highlightBlock(const QString& text)
 			brackets--;
 			if (brackets == 0)
 			{
-				setFormat(i, 1, fmtSyntaxChar);
+				setFormat(i, 1, m_syntaxFormats["SyntaxChar"]);
 			}
 			else
 			{
 				// wrong bracket nesting
-				setFormat( i, 1, fmtError);
+				setFormat( i, 1, m_syntaxFormats["Error"]);
 			}
 			state = NoState;
 			break;
@@ -175,13 +139,13 @@ void XmlHighlighter::highlightBlock(const QString& text)
 			if (state == ExpectElementNameOrSlash)
 			{
 				state = ExpectElementName;
-				setFormat(i, 1, fmtSyntaxChar);
+				setFormat(i, 1, m_syntaxFormats["SyntaxChar"]);
 			}
 			else
 			{
 				if (state == ExpectAttributeOrEndOfElement)
 				{
-					setFormat(i, 1, fmtSyntaxChar);
+					setFormat(i, 1, m_syntaxFormats["SyntaxChar"]);
 				}
 				else
 				{
@@ -194,7 +158,7 @@ void XmlHighlighter::highlightBlock(const QString& text)
 			if (state == ExpectEqual)
 			{
 				state = ExpectAttributeValue;
-				setFormat(i, 1, fmtOther);
+				setFormat(i, 1, m_syntaxFormats["Other"]);
 			}
 			else
 			{
@@ -214,9 +178,9 @@ void XmlHighlighter::highlightBlock(const QString& text)
 				{
 					const int iLength = expression.matchedLength();
 
-					setFormat(i, 1, fmtOther);
-					setFormat(i + 1, iLength - 2, fmtAttributeValue);
-					setFormat(i + iLength - 1, 1, fmtOther);
+					setFormat(i, 1, m_syntaxFormats["Other"]);
+					setFormat(i + 1, iLength - 2, m_syntaxFormats["AttributeValue"]);
+					setFormat(i + iLength - 1, 1, m_syntaxFormats["Other"]);
 
 					i += iLength - 1; // skip attribute value
 					state = ExpectAttributeOrEndOfElement;
@@ -243,9 +207,9 @@ void XmlHighlighter::highlightBlock(const QString& text)
 				{
 					const int iLength = expression.matchedLength();
 
-					setFormat(pos, 4, fmtSyntaxChar);
-					setFormat(pos + 4, iLength - 7, fmtComment);
-					setFormat(pos + iLength - 3, 3, fmtSyntaxChar);
+					setFormat(pos, 4, m_syntaxFormats["SyntaxChar"]);
+					setFormat(pos + 4, iLength - 7, m_syntaxFormats["Comment"]);
+					setFormat(pos + iLength - 3, 3, m_syntaxFormats["SyntaxChar"]);
 					i += iLength - 2; // skip comment
 					state = NoState;
 					brackets--;
@@ -259,8 +223,8 @@ void XmlHighlighter::highlightBlock(const QString& text)
 					//if (pos == i - 1) // comment found ?
 					if (pos >= i - 1)
 					{
-						setFormat(i, 3, fmtSyntaxChar);
-						setFormat(i + 3, text.length() - i - 3, fmtComment);
+						setFormat(i, 3, m_syntaxFormats["SyntaxChar"]);
+						setFormat(i + 3, text.length() - i - 3, m_syntaxFormats["Comment"]);
 						setCurrentBlockState(InComment);
 						return;
 					}
@@ -309,12 +273,12 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			{
 				iLength = expression.matchedLength();
 
-				setFormat(pos, iLength, fmtElementName);
+				setFormat(pos, iLength, m_syntaxFormats["ElementName"]);
 				state = ExpectAttributeOrEndOfElement;
 			}
 			else
 			{
-				setFormat(i, 1, fmtOther);
+				setFormat(i, 1, m_syntaxFormats["Other"]);
 			}
 		}  
 		break;
@@ -329,18 +293,18 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			{
 				iLength = expression.matchedLength();
 
-				setFormat(pos, iLength, fmtAttributeName);
+				setFormat(pos, iLength, m_syntaxFormats["AttributeName"]);
 				state = ExpectEqual;
 			}
 			else
 			{
-				setFormat(i, 1, fmtOther);
+				setFormat(i, 1, m_syntaxFormats["Other"]);
 			}
 		}
 		break;
 
 	default:
-		setFormat(i, 1, fmtOther);
+		setFormat(i, 1, m_syntaxFormats["Other"]);
 		break;
 	}
 	return iLength;

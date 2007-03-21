@@ -24,9 +24,6 @@
 static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
 static const QColor DEFAULT_NUMBER			= Qt::blue;
 static const QColor DEFAULT_STRING			= Qt::red;
-static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
-static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
-static const QColor DEFAULT_OTHER			= Qt::black;
 
 JsHighlighter::JsHighlighter( QObject* parent ) : SyntaxHighlighter( parent ) {
 	init();
@@ -44,13 +41,12 @@ JsHighlighter::~JsHighlighter() {
 }
 
 void JsHighlighter::init() {
-	fmtReservedWord.setForeground( DEFAULT_RESERVEDWORD );
-	fmtReservedWord.setFontWeight(QFont::Bold);
-	fmtNumber.setForeground( DEFAULT_NUMBER );
-	fmtString.setForeground( DEFAULT_STRING );
-	fmtComment.setForeground( DEFAULT_COMMENT );
-	fmtError.setForeground( DEFAULT_ERROR );
-	fmtOther.setForeground( DEFAULT_OTHER );
+	SyntaxHighlighter::init();
+
+	m_syntaxFormats["ReservedWord"].setForeground( DEFAULT_RESERVEDWORD );
+	m_syntaxFormats["ReservedWord"].setFontWeight(QFont::Bold);
+	m_syntaxFormats["Number"].setForeground( DEFAULT_NUMBER );
+	m_syntaxFormats["String"].setForeground( DEFAULT_STRING );	
 	
 	keywordPatterns.clear();
 	keywordPatterns << "abstract" << "boolean" << "break" 
@@ -72,39 +68,19 @@ void JsHighlighter::init() {
 	keywordPatterns.sort();
 }
 
-void JsHighlighter::setHighlightColor( HighlightType type, QColor color, bool foreground ) {
-	QTextCharFormat format;
-	if (foreground)
-		format.setForeground(color);
+bool JsHighlighter::isFormat( QString type ) {
+	if( type == "ReservedWord" ) 
+		return true;
+	else 	
+	if( type == "Number" ) 
+		return true;
 	else
-		format.setBackground(color);
-	setHighlightFormat(type, format);
+	if( type == "String" ) 
+		return true;
+
+	return SyntaxHighlighter::isFormat( type );
 }
 
-void JsHighlighter::setHighlightFormat(HighlightType type, QTextCharFormat format) {
-	switch (type)
-	{
-		case ReservedWord:
-			fmtReservedWord = format;
-			break;
-		case Number:
-			fmtNumber = format;
-			break;
-		case String:
-			fmtString = format;
-			break;
-		case Comment:
-			fmtComment = format;
-			break;
-		case Error:
-			fmtError = format;
-			break;
-		case Other:
-			fmtOther = format;
-			break;
-	}
-	rehighlight();
-}
 
 void JsHighlighter::highlightBlock( const QString & text ) {
 	int i = 0;
@@ -127,11 +103,11 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 		if (pos >= 0) {
 			// end comment found
 			const int iLength = commentEndExpression.matchedLength();
-			setFormat( 0, pos + iLength, fmtComment );
+			setFormat( 0, pos + iLength, m_syntaxFormats["Comment"] );
 			i += pos + iLength; // skip comment
 		} else {
 			// in comment
-			setFormat( 0, text.length(), fmtComment );
+			setFormat( 0, text.length(), m_syntaxFormats["Comment"] );
 			setCurrentBlockState( InComment );
 			return;
 		}
@@ -144,7 +120,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			
 			if( pos == i ) {
 				const int iLength = numberExpression.matchedLength();
-				setFormat( pos, iLength, fmtNumber );
+				setFormat( pos, iLength, m_syntaxFormats["Number"] );
 				i += iLength;
 			}
 		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
@@ -152,7 +128,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			if( pos == i ) {
 				const int iLength = motExpression.matchedLength();
 				if( keywordPatterns.contains( text.mid( i, iLength ) ) ) {
-					setFormat( pos, iLength, fmtReservedWord );
+					setFormat( pos, iLength, m_syntaxFormats["ReservedWord"] );
 				}
 				i += iLength;
 			}
@@ -163,7 +139,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				int posEnd = commentEndExpression.indexIn( text, i + 2 ) + 2;
  				int length = (posEnd >= 0) ? posEnd : ( text.length() - pos );
 
-				setFormat( pos, length, fmtComment );
+				setFormat( pos, length, m_syntaxFormats["Comment"] );
 				i += length;
 				if( posEnd == -1 ) {
 					setCurrentBlockState( InComment );
@@ -174,7 +150,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				if( pos == i ) {
 					const int iLength = commentExpression.matchedLength() + 2;
 					i += iLength;
-					setFormat( pos, iLength, fmtComment );
+					setFormat( pos, iLength, m_syntaxFormats["Comment"] );
 				}
 			}
 		} else if ( c == '\'' ) {
@@ -182,7 +158,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			
 			if( pos == i ) {
 				const int iLength = string1Expression.matchedLength();
-				setFormat( pos, iLength, fmtString );
+				setFormat( pos, iLength, m_syntaxFormats["String"] );
 				i += iLength;
 			}
 		} else if ( c == '\"' ) {
@@ -190,7 +166,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			
 			if( pos == i ) {
 				const int iLength = string2Expression.matchedLength();
-				setFormat( pos, iLength, fmtString );
+				setFormat( pos, iLength, m_syntaxFormats["String"] );
 				i += iLength;
 			}
 		}

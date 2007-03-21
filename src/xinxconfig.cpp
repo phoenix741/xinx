@@ -22,7 +22,11 @@
 #include <QDir>
 #include <QLocale>
 #include <QSettings>
+
 #include "xinxconfig.h"
+#include "jshighlighter.h"
+#include "xmlhighlighter.h"
+
 //
 
 // #define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
@@ -50,6 +54,11 @@ XINXConfig::XINXConfig(  ) {
 								"	<<book name=\"with error\">"
 								"</library>"
 								);
+	structure.color.clear();
+	XmlHighlighter * xmlh = new XmlHighlighter( );
+	foreach( QString key, xmlh->formats().keys() )
+		structure.color[ key ] = xmlh->formats()[ key ];
+	delete xmlh;
 	m_managedStrucureList["xml"] = structure;
 	
 	structure.example = QObject::tr(
@@ -59,10 +68,15 @@ XINXConfig::XINXConfig(  ) {
 								"	xyz = 123; // no a number"
 								"}"
 								);
+	structure.color.clear();
+	JsHighlighter * jsh = new JsHighlighter( );
+	foreach( QString key, jsh->formats().keys() )
+		structure.color[ key ] = jsh->formats()[ key ];
+	delete jsh;
 	m_managedStrucureList["js"] = structure;
 	
 	struct managedFile file;
-	file.extentions = "*.xml;*.xsl";
+	file.extentions = "*.xml *.xsl";
 	file.name = QObject::tr("All XML File");
 	file.canBeCustomize = true;
 	file.customPath = "";
@@ -100,9 +114,12 @@ XINXConfig::~XINXConfig(  ) {
 QString XINXConfig::extentions() {
 	QString result;
 
-	result += QObject::tr( "All Managed file" ) + " (";
+	result += QObject::tr( "All Managed file" ) + "(";
 	foreach( struct managedFile file, m_managedFileList ) {
-		result += file.extentions + ";";
+		result += file.extentions;
+		if( m_managedFileList.last().name != file.name ) {
+			result += " ";
+		}
 	}
 	result += ")";
 	

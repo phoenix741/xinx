@@ -22,16 +22,26 @@
 #define SYNTAXHIGHLIGHTER_H
 //
 #include <QSyntaxHighlighter>
+#include <QHash>
 //
+
 
 class SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
-protected:
-	virtual void init();
 public:
-	SyntaxHighlighter( QObject* parent );
+	SyntaxHighlighter( QObject* parent = NULL );
 	SyntaxHighlighter( QTextDocument* parent );
 	SyntaxHighlighter( QTextEdit* parent );
 	~SyntaxHighlighter();
+
+	virtual void setHighlightColor( QString type, QColor color, bool foreground = true );
+	virtual void setHighlightFormat( QString type, QTextCharFormat format );
+	
+	virtual bool isFormat( QString type );
+	
+	const QHash<QString,QTextCharFormat> & formats() const { return m_syntaxFormats; };
+protected:
+	virtual void init();
+	QHash<QString,QTextCharFormat> m_syntaxFormats;
 };
 #endif

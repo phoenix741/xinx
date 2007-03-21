@@ -41,7 +41,7 @@
 
 #include "aboutdialogimpl.h"
 
-#include "xinxConfig.h"
+#include "xinxconfig.h"
 
 //#define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
 

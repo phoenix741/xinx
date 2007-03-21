@@ -23,24 +23,12 @@
 class XmlHighlighter : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	XmlHighlighter(QObject* parent);
+	XmlHighlighter(QObject* parent = NULL);
 	XmlHighlighter(QTextDocument* parent);
 	XmlHighlighter(QTextEdit* parent);
 	~XmlHighlighter();
 
-    enum HighlightType
-	{
-		SyntaxChar,
-        ElementName,
-		Comment,
-		AttributeName,
-		AttributeValue,
-		Error,
-		Other
-	};
-
-	void setHighlightColor(HighlightType type, QColor color, bool foreground = true);
-	void setHighlightFormat(HighlightType type, QTextCharFormat format);
+	virtual bool isFormat( QString type );
 
 protected:
 	virtual void init();
@@ -49,14 +37,6 @@ protected:
 	int  processDefaultText(int i, const QString& rstrText);
 
 private:
-
-	QTextCharFormat fmtSyntaxChar;
-    QTextCharFormat fmtElementName;
-	QTextCharFormat fmtComment;
-	QTextCharFormat fmtAttributeName;
-	QTextCharFormat fmtAttributeValue;
-	QTextCharFormat fmtError;
-	QTextCharFormat fmtOther;
 
 	enum ParsingState
 	{

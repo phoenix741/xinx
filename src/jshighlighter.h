@@ -27,23 +27,12 @@
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	JsHighlighter( QObject* parent );
+	JsHighlighter( QObject* parent = NULL );
 	JsHighlighter( QTextDocument* parent );
 	JsHighlighter( QTextEdit* parent );
 	~JsHighlighter();
 
-	enum HighlightType {
-		ReservedWord,
-		Number,
-		String,
-		Comment,
-		Error,
-		Other
-	};
-
-	void setHighlightColor( HighlightType type, QColor color, bool foreground = true );
-	void setHighlightFormat( HighlightType type, QTextCharFormat format );
-
+	virtual bool isFormat( QString type );
 protected:
 	void highlightBlock( const QString& rstrText );
 
@@ -54,15 +43,9 @@ private:
 		InComment
 	};
 	
-	void init();
+	virtual void init();
 
 	QStringList keywordPatterns;
 
-	QTextCharFormat fmtReservedWord;
-	QTextCharFormat fmtNumber;
-	QTextCharFormat fmtString;
-	QTextCharFormat fmtComment;
-	QTextCharFormat fmtError;
-	QTextCharFormat fmtOther;
 };
 #endif
