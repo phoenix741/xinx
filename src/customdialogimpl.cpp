@@ -28,3 +28,28 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(p
 }
 //
 
+void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
+	myConfig = *config;
+	
+	m_alertStandardCheckBox->setChecked( myConfig.isAlertWhenStdFile() );
+	m_createBakCheckBox->setChecked( myConfig.isCreateBackupFile() );
+	int index = m_langComboBox->findText( QString("(%1)").arg( myConfig.lang() ) );
+	m_langComboBox->setCurrentIndex( index );
+	
+	m_projectPathLineEdit->setText( myConfig.xinxProjectPath() );
+	m_objectDescriptionPathLineEdit->setText( myConfig.objectDescriptionPath() );
+	
+	m_fileTypeComboBox->clear();
+	foreach( struct XINXConfig::managedFile file, myConfig.managedFile() ) {
+		m_fileTypeComboBox->addItem( QString("%1 (%2)").arg( file.name ).arg( file.extentions ) );
+	}
+
+	m_syntaxFileTypeComboBox->clear();
+	foreach( QString cle, myConfig.managedStructure().keys() ) {
+		m_syntaxFileTypeComboBox->addItem( cle );
+	}
+}
+
+void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
+//	*config = myConfig;
+}

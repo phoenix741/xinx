@@ -25,7 +25,7 @@
 #include <QHash>
 #include <QList>
 #include <QString>
-#include <QTextCharFormat>
+#include <QTextFormat>
 #include <QPoint>
 #include <QSize>
 

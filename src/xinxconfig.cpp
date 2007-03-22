@@ -145,10 +145,10 @@ void XINXConfig::save() {
 	m_settings->setValue( "Dock/File Content Visible", isDockSet( contents ) );
 	m_settings->setValue( "Dock/Web Services Visible", isDockSet( services ) );
 	
-	
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
-			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), m_managedStrucureList[cle].color[color] );
+			QTextFormat format = m_managedStrucureList[cle].color[color];
+			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), format );
 		}
 	}
 	foreach( struct managedFile file, m_managedFileList ) {
@@ -182,7 +182,11 @@ void XINXConfig::load() {
 
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
-			m_managedStrucureList[cle].color[color] = m_settings->value( QString("Structure/%1/%2").arg( cle ).arg( color ), m_managedStrucureList[cle].color[color] ).value<QTextFormat>();
+			QString name = QString("Structure/%1/%2").arg( cle ).arg( color );
+			QVariant value = m_settings->value( name, m_managedStrucureList[cle].color[color] );
+			if( value.isValid() && value.canConvert<QTextFormat>() ) {
+				m_managedStrucureList[cle].color[color] = value.value<QTextFormat>();
+			}
 		}
 	}
 	foreach( struct managedFile file, m_managedFileList ) {

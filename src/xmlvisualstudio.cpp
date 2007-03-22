@@ -575,7 +575,7 @@ void XMLVisualStudio::on_m_webServicesRefreshBtn_clicked() {
 
 void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	CustomDialogImpl * custom = new CustomDialogImpl( this );
-	
+	custom->loadFromConfig( xinxConfig );
 	custom->exec();
 	
 	delete custom;

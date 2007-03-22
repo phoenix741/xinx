@@ -22,12 +22,18 @@
 #define CUSTOMDIALOGIMPL_H
 //
 #include "ui_custom.h"
+#include "xinxconfig.h"
 //
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT
 public:
 	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	
+	void loadFromConfig( XINXConfig * config );
+	void saveToConfig( XINXConfig * config );
 private slots:
+private:
+	XINXConfig myConfig;
 };
 #endif
 

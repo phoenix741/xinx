@@ -80,7 +80,7 @@
             </item>
             <item>
              <property name="text" >
-              <string>(fr) French</string>
+              <string>(fr_FR) French</string>
              </property>
             </item>
            </widget>
