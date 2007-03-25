@@ -34,8 +34,8 @@
 XINXConfig * xinxConfig = NULL;
 
 XINXConfig::XINXConfig(  ) {
-	m_settings = new QSettings("Generix", "XINX");
-
+	m_settings = NULL;
+	
 	m_lang = QLocale::system().name();
 	m_createBackupFile = true;
 	m_alertWhenStdFile = true;
@@ -107,9 +107,18 @@ XINXConfig::XINXConfig(  ) {
 }
 
 XINXConfig::~XINXConfig(  ) {
-	delete m_settings;
+	deleteSettings();
 }
 
+void XINXConfig::createSettings() {
+	m_settings = new QSettings("Generix", "XINX");
+}
+
+void XINXConfig::deleteSettings() {
+	if( m_settings )
+		delete m_settings;
+	m_settings = NULL;
+}
 
 QString XINXConfig::extentions() {
 	QString result;
@@ -131,6 +140,7 @@ QString XINXConfig::extentions() {
 }
 
 void XINXConfig::save() {
+	createSettings();
 	m_settings->setValue( "Language", m_lang );
 	m_settings->setValue( "Create Backup File", m_createBackupFile );
 	m_settings->setValue( "Position", m_xinxPosition );
@@ -147,8 +157,14 @@ void XINXConfig::save() {
 	
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
-			QTextFormat format = m_managedStrucureList[cle].color[color];
-			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), format );
+			QTextCharFormat format = m_managedStrucureList[cle].color[color];
+			m_settings->setValue( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() );
+			m_settings->setValue( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() );
+			m_settings->setValue( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() );
+			m_settings->setValue( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() );
+			m_settings->setValue( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() );
+			m_settings->setValue( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() );
+			m_settings->setValue( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() );
 //			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), QColor(Qt::red) );
 		}
 	}
@@ -156,9 +172,11 @@ void XINXConfig::save() {
 		m_settings->setValue( QString("Files/%1/customPath").arg( file.name ), file.customPath );
 		m_settings->setValue( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize );
 	}
+	deleteSettings();
 }
 
 void XINXConfig::load() {
+	createSettings();
 	m_lang             = m_settings->value( "Language", m_lang ).toString();
 	m_createBackupFile = m_settings->value( "Create Backup File", m_createBackupFile ).toBool();
 	m_xinxPosition     = m_settings->value( "Position", m_xinxPosition ).toPoint();
@@ -183,11 +201,21 @@ void XINXConfig::load() {
 
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
-			QString name = QString("Structure/%1/%2").arg( cle ).arg( color );
-			QVariant value = m_settings->value( name, m_managedStrucureList[cle].color[color] );
-			if( value.isValid() && value.canConvert<QTextFormat>() ) {
-				m_managedStrucureList[cle].color[color] = value.value<QTextFormat>();
-			}
+			QTextCharFormat format = m_managedStrucureList[cle].color[color];
+			m_settings->value( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() );
+			m_settings->value( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() );
+			m_settings->value( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() );
+			m_settings->value( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() );
+			m_settings->value( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() );
+			m_settings->value( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() );
+			m_settings->value( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() );
+			m_managedStrucureList[cle].color[color] = format;
+			//QString name = QString("Structure/%1/%2").arg( cle ).arg( color );
+			//QVariant value = m_settings->value( name, m_managedStrucureList[cle].color[color] );
+			//if( value.isValid() && value.canConvert<QTextFormat>() ) {
+				//m_managedStrucureList[cle].color[color] = value.value<QTextFormat>();
+			//}
+			
 		}
 	}
 
@@ -195,6 +223,7 @@ void XINXConfig::load() {
 		file.customPath = m_settings->value( QString("Files/%1/customPath").arg( file.name ), file.customPath ).toString();
 		file.canBeCustomize = m_settings->value( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize ).toBool();
 	}		
+	deleteSettings();
 }
 
 //

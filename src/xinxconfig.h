@@ -36,7 +36,7 @@ class XINXConfig {
 
 public:
 	struct managedStructure {
-		QHash<QString,QTextFormat> color;
+		QHash<QString,QTextCharFormat> color;
 		QString example;
 	};
 	struct managedFile {
@@ -111,6 +111,9 @@ private:
 	
 	QList<struct managedFile> m_managedFileList;
 	QHash<QString, struct managedStructure> m_managedStrucureList;
+	
+	void createSettings();
+	void deleteSettings();
 };
 
 extern XINXConfig * xinxConfig;

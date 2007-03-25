@@ -30,11 +30,18 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(p
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	myConfig = *config;
-	
+
 	m_alertStandardCheckBox->setChecked( myConfig.isAlertWhenStdFile() );
 	m_createBakCheckBox->setChecked( myConfig.isCreateBackupFile() );
-	int index = m_langComboBox->findText( QString("(%1)").arg( myConfig.lang() ) );
-	m_langComboBox->setCurrentIndex( index );
+	int index = -1;
+	for( int i = 0; i < m_langComboBox->count(); i++ ) {
+		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( myConfig.lang() ) ) )
+			index = i;
+	}
+	if( index == -1 ) 
+		m_langComboBox->setCurrentIndex( 0 );
+	else
+		m_langComboBox->setCurrentIndex( index );
 	
 	m_projectPathLineEdit->setText( myConfig.xinxProjectPath() );
 	m_objectDescriptionPathLineEdit->setText( myConfig.objectDescriptionPath() );
@@ -51,5 +58,5 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
-//	*config = myConfig;
+	*config = myConfig;
 }
