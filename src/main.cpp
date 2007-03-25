@@ -36,13 +36,13 @@ int main(int argc, char *argv[]) {
 
 	xinxConfig = new XINXConfig();
 	xinxConfig->load();
-		
+
 	QTranslator translator_xinx, translator_qt;
 	translator_qt.load(QString("qt_") + xinxConfig->lang(), app.applicationDirPath());
 	app.installTranslator(&translator_qt);
 	translator_xinx.load(QString("xinx_") + xinxConfig->lang(), app.applicationDirPath());
 	app.installTranslator(&translator_xinx);
- 
+
 	if( app.isUnique() ) {
 		QPixmap pixmap(":/splash.png");
 		QSplashScreen splash(pixmap);

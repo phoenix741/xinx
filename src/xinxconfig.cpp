@@ -149,6 +149,7 @@ void XINXConfig::save() {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
 			QTextFormat format = m_managedStrucureList[cle].color[color];
 			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), format );
+//			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), QColor(Qt::red) );
 		}
 	}
 	foreach( struct managedFile file, m_managedFileList ) {
@@ -189,6 +190,7 @@ void XINXConfig::load() {
 			}
 		}
 	}
+
 	foreach( struct managedFile file, m_managedFileList ) {
 		file.customPath = m_settings->value( QString("Files/%1/customPath").arg( file.name ), file.customPath ).toString();
 		file.canBeCustomize = m_settings->value( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize ).toBool();
