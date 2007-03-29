@@ -49,7 +49,8 @@ public:
 	enum docks {
 		contents = 0x01,
 		services = 0x02,
-		configuration = 0x04
+		configuration = 0x04,
+		files = 0x08
 	};
 
 	XINXConfig();
@@ -65,6 +66,7 @@ public:
 	bool isDockSet( enum docks dock ) { return (m_docks & dock) == dock; };
 	void setDock( enum docks dock ) { m_docks |= dock; };
 	void unsetDock( enum docks dock ) { m_docks &= ~dock; };
+	void setDock( enum docks dock, bool unset ) { if( unset ) unsetDock( dock ); else setDock( dock ); };
 	
 	QPoint position() const { return m_xinxPosition; };
 	void setPosition( QPoint value ) { m_xinxPosition = value; };

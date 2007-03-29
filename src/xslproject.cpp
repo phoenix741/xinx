@@ -207,8 +207,10 @@ void XSLProject::setDefaultNav( const QString & value ) {
 	
 QString XSLProject::projectPath() const {
 	QString path = getValue( "project" );
-	if( path[ path.length() - 1 ] != '/' ) 
-		path = path + '/';
+	if( ! path.isEmpty() ) {
+		if( path[ path.length() - 1 ] != '/' ) 
+			path = path + '/';
+	}
 	return path;
 }
 
@@ -218,8 +220,10 @@ void XSLProject::setProjectPath( const QString & value ) {
 	
 QString XSLProject::specifPath() const {
 	QString path = getValue( "specifique" );
-	if( path[ path.length() - 1 ] != '/' ) 
-		path = path + '/';
+	if( ! path.isEmpty() ) {
+		if( path[ path.length() - 1 ] != '/' ) 
+			path = path + '/';
+	}
 	return path;
 }
 

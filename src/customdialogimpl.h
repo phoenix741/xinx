@@ -23,6 +23,8 @@
 //
 #include "ui_custom.h"
 #include "xinxconfig.h"
+
+class SyntaxHighlighter;
 //
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT
@@ -32,10 +34,36 @@ public:
 	void loadFromConfig( XINXConfig * config );
 	void saveToConfig( XINXConfig * config );
 private slots:
+	void on_m_changeObjectPathBtn_clicked();
+	void on_m_changeProjectPathBtn_clicked();
+	void on_m_objectDescriptionPathLineEdit_textChanged(QString );
+	void on_m_underlineCheckBox_toggled(bool checked);
+	void on_m_StrikeoutCheckBox_toggled(bool checked);
+	void on_m_italicCheckBox_toggled(bool checked);
+	void on_m_boldCheckBox_toggled(bool checked);
+	void on_m_fontComboBox_currentFontChanged(QFont f);
+	void on_m_projectPathLineEdit_textChanged(QString );
+	void on_m_fileTypePath_textChanged(QString );
+	void on_m_specifiqueCheckBox_toggled(bool checked);
+	void on_m_createBakCheckBox_toggled(bool checked);
+	void on_m_alertStandardCheckBox_toggled(bool checked);
+	void on_m_langComboBox_currentIndexChanged(QString );
+	void on_m_fileTypeComboBox_currentIndexChanged(int);
+	void on_m_syntaxFileTypeComboBox_currentIndexChanged(QString);
+	void on_m_syntaxTypeComboBox_currentIndexChanged(QString);
+	void on_m_colorComboBox_activated( QColor c );
 private:
-	XINXConfig myConfig;
+	XINXConfig m_config;
+	SyntaxHighlighter * m_highlighter;
 };
 #endif
+
+
+
+
+
+
+
 
 
 

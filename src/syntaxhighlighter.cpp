@@ -64,7 +64,7 @@ void SyntaxHighlighter::setHighlightColor( QString type, QColor color, bool fore
 	else
 		format.setBackground( color );
 
-	setHighlightFormat( type, format);
+	setHighlightFormat( type, format );
 }
 
 void SyntaxHighlighter::setHighlightFormat( QString type, QTextCharFormat format ) {

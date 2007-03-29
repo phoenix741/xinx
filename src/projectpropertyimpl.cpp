@@ -25,6 +25,7 @@
 
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
+#include "xinxconfig.h"
 
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
@@ -32,14 +33,22 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 
 
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
-	QString value = QFileDialog::getExistingDirectory( this, tr("Project path"), m_projectLineEdit->text() );
+	QString value = m_projectLineEdit->text();
+	if( value.isEmpty() ) 
+		value = xinxConfig->xinxProjectPath();
+		
+	value = QFileDialog::getExistingDirectory( this, tr("Project path"), value );
 	if( ! value.isEmpty() ) {
 		m_projectLineEdit->setText( value );		
 	}
 }
 
 void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
-	QString value = QFileDialog::getExistingDirectory( this, tr("Specifique path"), m_specifiquePathLineEdit->text() );
+	QString value = m_specifiquePathLineEdit->text();
+	if( value.isEmpty() ) 
+		value = xinxConfig->xinxProjectPath();
+		
+	value = QFileDialog::getExistingDirectory( this, tr("Specifique path"), value );
 	if( ! value.isEmpty() ) {
 		m_specifiquePathLineEdit->setText( value );		
 	}
@@ -81,6 +90,8 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 		palette.setColor( QPalette::Text, Qt::red );
 	}
 	m_projectLineEdit->setPalette( palette );
+
+	updateOkButton();
 	updateSpecifiquePath();
 }
 
@@ -145,13 +156,12 @@ void ProjectPropertyImpl::updateSpecifiquePath() {
 }
 
 void ProjectPropertyImpl::updateOkButton() {
-	if( m_specifiquePathLineEdit->text().isEmpty() ) {
-		okButton->setEnabled( true );
-	} else
-	if( m_prefixLineEdit->text().isEmpty() ) {
-		okButton->setEnabled( false );
-	} else
-		okButton->setEnabled( true );
+	bool okButtonEnabled = ! (
+		m_specifiquePathLineEdit->text().isEmpty() ||
+		m_prefixLineEdit->text().isEmpty() ||
+		m_projectLineEdit->text().isEmpty() );
+
+	okButton->setEnabled( okButtonEnabled );
 }
 
 void ProjectPropertyImpl::on_m_langComboBox_currentIndexChanged( QString str ) {

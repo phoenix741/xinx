@@ -43,7 +43,8 @@
 
 #include "xinxconfig.h"
 
-//#define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
+#define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
+#define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
 
 /* XMLVisualStudio */
 
@@ -87,6 +88,9 @@ void XMLVisualStudio::createDockWindows() {
 
 	m_windowsMenu->addAction( m_webServicesDock->toggleViewAction() ); 
 	m_webServicesTreeView->header()->hide();
+	
+	m_dirModel = new QDirModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
 }
 
 void XMLVisualStudio::readSettings() {
@@ -101,6 +105,7 @@ void XMLVisualStudio::readSettings() {
 
 	m_xslContentDock->setVisible( xinxConfig->isDockSet( XINXConfig::contents ) );
 	m_webServicesDock->setVisible( xinxConfig->isDockSet( XINXConfig::services ) );
+	m_projectDirectoryDock->setVisible( xinxConfig->isDockSet( XINXConfig::files ) );
 }
 
 void XMLVisualStudio::writeSettings() {
@@ -108,15 +113,9 @@ void XMLVisualStudio::writeSettings() {
 	xinxConfig->setSize( size() );
 	xinxConfig->setObjectDescriptionPath( m_javaObjects->path() );
 
-	if( ! m_xslContentDock->isHidden() ) 
-		xinxConfig->setDock( XINXConfig::contents );
-	else 
-		xinxConfig->unsetDock ( XINXConfig::contents );
-
-	if( ! m_webServicesDock->isHidden() ) 
-		xinxConfig->setDock( XINXConfig::services );
-	else 
-		xinxConfig->unsetDock( XINXConfig::services );
+	xinxConfig->setDock( XINXConfig::contents, m_xslContentDock->isHidden() );
+	xinxConfig->setDock( XINXConfig::services, m_webServicesDock->isHidden() );
+	xinxConfig->setDock( XINXConfig::files, m_projectDirectoryDock->isHidden() );
 	
 	xinxConfig->save();
 }
@@ -489,6 +488,11 @@ void XMLVisualStudio::on_m_newProjectAct_triggered() {
 				m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
 				m_webServicesDock->show();
 			}
+
+			m_projectDirectoryTreeView->setModel( m_dirModel );
+			for(int i = 1; i < m_dirModel->columnCount(); i++ )
+				m_projectDirectoryTreeView->hideColumn( i );
+			m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_xslProject->projectPath() ) );
 		} else 
 			delete project;
 	}
@@ -497,7 +501,7 @@ void XMLVisualStudio::on_m_newProjectAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_openProjectAct_triggered() {
-	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), QString(), "Projet (*.prj)" );
+	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
 	openProject( fileName );	
 }
 
@@ -575,10 +579,32 @@ void XMLVisualStudio::on_m_webServicesRefreshBtn_clicked() {
 
 void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	CustomDialogImpl * custom = new CustomDialogImpl( this );
+	writeSettings();
 	custom->loadFromConfig( xinxConfig );
-	custom->exec();
+	if( custom->exec() ) {
+		custom->saveToConfig( xinxConfig );
+		xinxConfig->save();	
+		readSettings();	
+	}
 	
 	delete custom;
+}
+
+void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
+	if( filtre.isEmpty() ) 
+		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
+	else
+		m_dirModel->setNameFilters( 
+			QStringList() 
+				<< QString("*%1*.xsl").arg( filtre )
+				<< QString("*%1*.js").arg( filtre )
+				<< QString("*%1*.xml").arg( filtre )
+				<< QString("*%1*.fws").arg( filtre )
+		);
+}
+
+void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
+	open( m_dirModel->filePath( index ) );
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
@@ -701,9 +727,12 @@ void XMLVisualStudio::saveEditor( int index ) {
 		on_m_saveAsAct_triggered();
 	} else {
 		QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
-		if( m_xslProject && (! QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) ) {
-			QMessageBox::warning( this, tr("Save standard XSL"), tr("You're being to save standard file, please save it as specifique") );
-			saveEditorAs( index );
+		if( xinxConfig->isAlertWhenStdFile() && m_xslProject && (! QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) ) {
+			QMessageBox::StandardButton res = QMessageBox::warning( this, tr("Save standard XSL"), tr("You're being to save standard file, do you whant make it specifique"), QMessageBox::Yes | QMessageBox::No );
+			if( res == QMessageBox::Yes )
+				saveEditorAs( index );
+			else
+				dynamic_cast<FileEditor*>( m_tabEditors->editor( index ) )->saveFile();
 		} else
 			dynamic_cast<FileEditor*>( m_tabEditors->editor( index ) )->saveFile();
 	}
@@ -718,14 +747,15 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	assert( index < m_tabEditors->count() );
 	
 	QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
-	if( ( ! fileName.isEmpty() ) && ( m_xslProject ) ) {
+
+	if( ( ! fileName.isEmpty() ) && m_xslProject && xinxConfig->isAlertWhenStdFile() ) {
 		fileName = QFileInfo( fileName ).fileName();
 		if( ! fileName.startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) {
 			fileName = m_xslProject->specifPrefix().toLower() + "_" + fileName;
 			fileName = QDir( m_xslProject->specifPath() ).absoluteFilePath( fileName );
 		} else 
 			fileName = QDir( m_lastPlace ).absoluteFilePath( fileName );
-	} else 
+	} else if( fileName.isEmpty() )
 		fileName = m_lastPlace;
 	
 	fileName = QFileDialog::getSaveFileName( 
@@ -766,12 +796,19 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 			m_webServicesDock->show();
 		}
 
+		m_projectDirectoryTreeView->setModel( m_dirModel );
+		for(int i = 1; i < m_dirModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_xslProject->projectPath() ) );
+
 		updateActions();
 	}
 }
 
 void XMLVisualStudio::closeProject( bool closeAll ) {
 	if( m_xslProject ) {
+		m_projectDirectoryTreeView->setModel( NULL );
+
 		m_webServicesTreeView->setModel( NULL );
 		m_webServicesDock->hide();
 		
@@ -803,4 +840,5 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 		updateRecentFiles();
 	}
 }
+
 

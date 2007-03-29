@@ -48,11 +48,11 @@ XINXConfig::XINXConfig(  ) {
 	
 	struct managedStructure structure;
 	structure.example = QObject::tr(
-								"<library name=\"xinx\">"
-								"	<book name=\"noname\">This is a description</book>"
-								"	<!--This is a comment ;) -->"
-								"	<<book name=\"with error\">"
-								"</library>"
+								"<library name=\"xinx\">\n"
+								"	<book name=\"noname\">This is a description</book>\n"
+								"	<!--This is a comment ;) -->\n"
+								"	<<book name=\"with error\">\n"
+								"</library>\n"
 								);
 	structure.color.clear();
 	XmlHighlighter * xmlh = new XmlHighlighter( );
@@ -62,11 +62,11 @@ XINXConfig::XINXConfig(  ) {
 	m_managedStrucureList["xml"] = structure;
 	
 	structure.example = QObject::tr(
-								"function xxx( a, b, c ) {"
-								"	var xyz;"
-								"	xyz = 'this is a text';"
-								"	xyz = 123; // no a number"
-								"}"
+								"function xxx( a, b, c ) {\n"
+								"	var xyz;\n"
+								"	xyz = 'this is a text';\n"
+								"	xyz = 123; // no a number\n"
+								"}\n"
 								);
 	structure.color.clear();
 	JsHighlighter * jsh = new JsHighlighter( );
@@ -152,8 +152,7 @@ void XINXConfig::save() {
 	m_settings->setValue( "Project/Alert when saving Standard File", m_alertWhenStdFile );
 	m_settings->setValue( "Project/Recent Project Files", m_recentProjectFiles );
 
-	m_settings->setValue( "Dock/File Content Visible", isDockSet( contents ) );
-	m_settings->setValue( "Dock/Web Services Visible", isDockSet( services ) );
+	m_settings->setValue( "Dock", m_docks );
 	
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
@@ -164,6 +163,7 @@ void XINXConfig::save() {
 			m_settings->setValue( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() );
 			m_settings->setValue( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() );
 			m_settings->setValue( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() );
+			m_settings->setValue( QString("Structure/%1/%2/weight").arg( cle ).arg( color ), format.fontWeight() );
 			m_settings->setValue( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() );
 //			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), QColor(Qt::red) );
 		}
@@ -188,27 +188,24 @@ void XINXConfig::load() {
 	m_alertWhenStdFile   = m_settings->value( "Project/Alert when saving Standard File", m_alertWhenStdFile ).toBool();
 	m_recentProjectFiles = m_settings->value( "Project/Recent Project Files" ).toStringList();
 
-	if( m_settings->value( "Dock/File Content Visible", isDockSet( contents ) ).toBool() )
-		setDock( contents );
-	else
-		unsetDock( contents );
-		
-	if( m_settings->value( "Dock/Web Services Visible", isDockSet( services ) ).toBool() )
-		setDock( services );
-	else
-		unsetDock( services );
+	m_docks = m_settings->value( "Dock", m_docks ).toInt();
 		
 
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
 			QTextCharFormat format = m_managedStrucureList[cle].color[color];
-			m_settings->value( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() );
-			m_settings->value( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() );
-			m_settings->value( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() );
-			m_settings->value( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() );
-			m_settings->value( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() );
-			m_settings->value( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() );
-			m_settings->value( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() );
+			format.setFontFamily(m_settings->value( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() ).toString());
+			format.setFontItalic(m_settings->value( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() ).toBool());
+			format.setFontOverline(m_settings->value( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() ).toBool());
+			format.setFontStrikeOut(m_settings->value( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() ).toBool());
+			format.setFontUnderline(m_settings->value( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() ).toBool());
+			qreal pointSize = m_settings->value( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() ).toDouble();
+			if( pointSize > 0 )
+				format.setFontPointSize( pointSize );
+			else 
+				format.setFontPointSize( 8 );
+			format.setFontWeight(m_settings->value( QString("Structure/%1/%2/weight").arg( cle ).arg( color ), format.fontWeight() ).toInt());
+			format.setForeground(m_settings->value( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() ).value<QColor>());
 			m_managedStrucureList[cle].color[color] = format;
 			//QString name = QString("Structure/%1/%2").arg( cle ).arg( color );
 			//QVariant value = m_settings->value( name, m_managedStrucureList[cle].color[color] );
@@ -219,9 +216,11 @@ void XINXConfig::load() {
 		}
 	}
 
-	foreach( struct managedFile file, m_managedFileList ) {
+	for(int i = 0; i < m_managedFileList.size(); i++) {
+		struct managedFile file = m_managedFileList.at(i);
 		file.customPath = m_settings->value( QString("Files/%1/customPath").arg( file.name ), file.customPath ).toString();
 		file.canBeCustomize = m_settings->value( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize ).toBool();
+		m_managedFileList[i] = file;
 	}		
 	deleteSettings();
 }

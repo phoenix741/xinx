@@ -58,14 +58,6 @@
     <addaction name="separator" />
     <addaction name="m_exitAct" />
    </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-   </widget>
    <widget class="QMenu" name="m_editMenu" >
     <property name="title" >
      <string>&amp;Edit</string>
@@ -92,15 +84,6 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
-   <widget class="QMenu" name="m_searchMenu" >
-    <property name="title" >
-     <string>&amp;Search</string>
-    </property>
-    <addaction name="m_searchAct" />
-    <addaction name="m_searchNextAct" />
-    <addaction name="separator" />
-    <addaction name="m_replaceAct" />
-   </widget>
    <widget class="QMenu" name="m_projectMenu" >
     <property name="title" >
      <string>&amp;Project</string>
@@ -123,6 +106,23 @@
     <addaction name="separator" />
     <addaction name="m_javaViewObjectListAct" />
     <addaction name="m_customApplicationAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="m_searchMenu" >
+    <property name="title" >
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="m_searchAct" />
+    <addaction name="m_searchNextAct" />
+    <addaction name="separator" />
+    <addaction name="m_replaceAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -236,6 +236,40 @@
         <bool>true</bool>
        </property>
       </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="m_projectDirectoryDock" >
+   <property name="allowedAreas" >
+    <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle" >
+    <string>Project Directory</string>
+   </property>
+   <attribute name="dockWidgetArea" >
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2" >
+    <layout class="QGridLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="m_filtreLineEdit" />
+     </item>
+     <item row="0" column="0" >
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>Filtre :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2" >
+      <widget class="QTreeView" name="m_projectDirectoryTreeView" />
      </item>
     </layout>
    </widget>
@@ -526,6 +560,9 @@
    </property>
    <property name="statusTip" >
     <string>Change the path of object used in configuration file</string>
+   </property>
+   <property name="visible" >
+    <bool>false</bool>
    </property>
   </action>
   <action name="m_newProjectAct" >

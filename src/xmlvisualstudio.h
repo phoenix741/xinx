@@ -33,6 +33,7 @@ class ObjectsView;
 class XSLProject;
 class AboutDialogImpl;
 class XINXFileDialog;
+class QDirModel;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -94,6 +95,8 @@ private slots:
 	void on_m_previousTabAct_triggered();
 	void on_m_webServicesRefreshBtn_clicked();
 	void on_m_customApplicationAct_triggered();
+	void on_m_filtreLineEdit_textChanged(QString );
+	void on_m_projectDirectoryTreeView_doubleClicked(QModelIndex index);
 private:
 	/* Create Window Menus, Tools, Status, Dock Bar */
   
@@ -123,6 +126,7 @@ private:
 	QString m_lastPlace;
 	
 	/* Dock Object */
+	QDirModel * m_dirModel;
 	QAbstractItemModel * m_xslModel;
 	QSortFilterProxyModel * m_sortXslModel;
 
@@ -144,6 +148,7 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
 
 
 
