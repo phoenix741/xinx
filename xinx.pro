@@ -2,7 +2,7 @@ CONFIG +=   exceptions \
   qt \
   thread \
   warn_on \
-  debug
+  release
 DESTDIR +=   bin
 FORMS +=   ui/about.ui \
   ui/custom.ui \

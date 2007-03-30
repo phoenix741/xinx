@@ -24,16 +24,16 @@ static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
 static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
 static const QColor DEFAULT_OTHER			= Qt::black;
 
-SyntaxHighlighter::SyntaxHighlighter( QObject* parent ) : QSyntaxHighlighter( parent ) {
-	init();
+SyntaxHighlighter::SyntaxHighlighter( QObject* parent, bool useConfig ) : QSyntaxHighlighter( parent ) {
+	init( useConfig );
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent ) : QSyntaxHighlighter( parent ) {
-	init();
+SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, bool useConfig ) : QSyntaxHighlighter( parent ) {
+	init( useConfig );
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent ) : QSyntaxHighlighter( parent ) {
-	init();
+SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, bool useConfig ) : QSyntaxHighlighter( parent ) {
+	init( useConfig );
 }
 
 SyntaxHighlighter::~SyntaxHighlighter() {
@@ -51,10 +51,12 @@ bool SyntaxHighlighter::isFormat( QString type ) {
 	return false;
 }
 
-void SyntaxHighlighter::init() {
-	m_syntaxFormats["Comment"].setForeground( DEFAULT_COMMENT );
-	m_syntaxFormats["Error"].setForeground( DEFAULT_ERROR );
-	m_syntaxFormats["Other"].setForeground( DEFAULT_OTHER );
+void SyntaxHighlighter::init( bool useConfig ) {
+	if( ! useConfig ) {
+		m_syntaxFormats["Comment"].setForeground( DEFAULT_COMMENT );
+		m_syntaxFormats["Error"].setForeground( DEFAULT_ERROR );
+		m_syntaxFormats["Other"].setForeground( DEFAULT_OTHER );
+	}
 }
 
 void SyntaxHighlighter::setHighlightColor( QString type, QColor color, bool foreground ) {

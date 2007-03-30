@@ -25,14 +25,13 @@
 #include <QHash>
 //
 
-
 class SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( QObject* parent = NULL );
-	SyntaxHighlighter( QTextDocument* parent );
-	SyntaxHighlighter( QTextEdit* parent );
-	~SyntaxHighlighter();
+	SyntaxHighlighter( QObject* parent = NULL, bool useConfig = true );
+	SyntaxHighlighter( QTextDocument* parent, bool useConfig = true );
+	SyntaxHighlighter( QTextEdit* parent, bool useConfig = true );
+	virtual ~SyntaxHighlighter();
 
 	virtual void setHighlightColor( QString type, QColor color, bool foreground = true );
 	virtual void setHighlightFormat( QString type, QTextCharFormat format );
@@ -41,7 +40,7 @@ public:
 	
 	const QHash<QString,QTextCharFormat> & formats() const { return m_syntaxFormats; };
 protected:
-	virtual void init();
+	virtual void init( bool useConfig );
 	QHash<QString,QTextCharFormat> m_syntaxFormats;
 };
 #endif

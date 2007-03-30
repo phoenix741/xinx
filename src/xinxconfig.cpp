@@ -44,7 +44,7 @@ XINXConfig::XINXConfig(  ) {
 	
 	m_xinxPosition = QPoint(200, 200);
 	m_xinxSize = QSize(400, 400);
-	m_docks = contents | services;
+	m_docks = contents | files;
 	
 	struct managedStructure structure;
 	structure.example = QObject::tr(
@@ -55,7 +55,7 @@ XINXConfig::XINXConfig(  ) {
 								"</library>\n"
 								);
 	structure.color.clear();
-	XmlHighlighter * xmlh = new XmlHighlighter( );
+	XmlHighlighter * xmlh = new XmlHighlighter( static_cast<QObject*>( NULL ), false );
 	foreach( QString key, xmlh->formats().keys() )
 		structure.color[ key ] = xmlh->formats()[ key ];
 	delete xmlh;
@@ -69,7 +69,7 @@ XINXConfig::XINXConfig(  ) {
 								"}\n"
 								);
 	structure.color.clear();
-	JsHighlighter * jsh = new JsHighlighter( );
+	JsHighlighter * jsh = new JsHighlighter( static_cast<QObject*>( NULL ), false );
 	foreach( QString key, jsh->formats().keys() )
 		structure.color[ key ] = jsh->formats()[ key ];
 	delete jsh;
@@ -179,14 +179,14 @@ void XINXConfig::load() {
 	createSettings();
 	m_lang             = m_settings->value( "Language", m_lang ).toString();
 	m_createBackupFile = m_settings->value( "Create Backup File", m_createBackupFile ).toBool();
-	m_xinxPosition     = m_settings->value( "Position", m_xinxPosition ).toPoint();
-	m_xinxSize         = m_settings->value( "Size", m_xinxSize ).toSize();
+	m_xinxPosition     = m_settings->value( "Position", m_settings->value( "pos", m_xinxPosition ) ).toPoint();
+	m_xinxSize         = m_settings->value( "Size", m_settings->value( "size", m_xinxSize ) ).toSize();
 
-	m_objectDescriptionPath = m_settings->value( "Descriptions/Object", m_objectDescriptionPath ).toString();
+	m_objectDescriptionPath = m_settings->value( "Descriptions/Object", m_settings->value( "xmljavapath", m_objectDescriptionPath ) ).toString();
 	
 	m_xinxProjectPath    = m_settings->value( "Project/Default Path", m_xinxProjectPath ).toString();
 	m_alertWhenStdFile   = m_settings->value( "Project/Alert when saving Standard File", m_alertWhenStdFile ).toBool();
-	m_recentProjectFiles = m_settings->value( "Project/Recent Project Files" ).toStringList();
+	m_recentProjectFiles = m_settings->value( "Project/Recent Project Files", m_settings->value( "Recent Project Files" ) ).toStringList();
 
 	m_docks = m_settings->value( "Dock", m_docks ).toInt();
 		
@@ -224,5 +224,21 @@ void XINXConfig::load() {
 	}		
 	deleteSettings();
 }
+
+struct XINXConfig::managedFile XINXConfig::managedFile4Name( QString filename ) {
+	foreach( struct managedFile file, m_managedFileList ) {
+		QStringList list = file.extentions.split(" ");
+		foreach( QString regexp, list ) {
+			QRegExp extention( regexp );
+			extention.setPatternSyntax( QRegExp::Wildcard );
+			if( extention.exactMatch( filename ) ) {
+				return file;
+			}
+		}
+	}
+	struct managedFile vide;
+	return vide;
+}
+
 
 //

@@ -14,6 +14,7 @@
 **
 ****************************************************************************/
 #include "xmlhighlighter.h"
+#include "xinxconfig.h"
 
 static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
 static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
@@ -31,28 +32,19 @@ static const QString EXPR_COMMENT			= EXPR_COMMENT_BEGIN + EXPR_COMMENT_TEXT + E
 static const QString EXPR_ATTRIBUTE_VALUE	= "\"[^<\"]*\"|'[^<']*'";
 static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
 
-XmlHighlighter::XmlHighlighter(QObject* parent) : SyntaxHighlighter(parent) {
-	init();
-}
+void XmlHighlighter::init( bool useConfig ) {
+	SyntaxHighlighter::init( useConfig );
 
-XmlHighlighter::XmlHighlighter(QTextDocument* parent) : SyntaxHighlighter(parent) {
-	init();
-}
-
-XmlHighlighter::XmlHighlighter(QTextEdit* parent) : SyntaxHighlighter(parent) {
-	init();
-}
-
-XmlHighlighter::~XmlHighlighter() {
-}
-
-void XmlHighlighter::init() {
-	SyntaxHighlighter::init();
-
-	m_syntaxFormats["SyntaxChar"].setForeground( DEFAULT_SYNTAX_CHAR );
-	m_syntaxFormats["ElementName"].setForeground( DEFAULT_ELEMENT_NAME );
-	m_syntaxFormats["AttributeName"].setForeground( DEFAULT_ATTRIBUTE_NAME );	
-	m_syntaxFormats["AttributeValue"].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
+	if( ! useConfig ) {
+		m_syntaxFormats["SyntaxChar"].setForeground( DEFAULT_SYNTAX_CHAR );
+		m_syntaxFormats["ElementName"].setForeground( DEFAULT_ELEMENT_NAME );
+		m_syntaxFormats["AttributeName"].setForeground( DEFAULT_ATTRIBUTE_NAME );	
+		m_syntaxFormats["AttributeValue"].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
+	} else {
+		foreach( QString key, xinxConfig->managedStructure()["xml"].color.keys() ) {
+			m_syntaxFormats[ key ] = xinxConfig->managedStructure()["xml"].color[ key ];
+		}
+	}
 }
 
 bool XmlHighlighter::isFormat( QString type ) {

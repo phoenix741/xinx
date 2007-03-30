@@ -27,10 +27,10 @@
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	JsHighlighter( QObject* parent = NULL );
-	JsHighlighter( QTextDocument* parent );
-	JsHighlighter( QTextEdit* parent );
-	~JsHighlighter();
+	JsHighlighter( QObject* parent = NULL, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	JsHighlighter( QTextDocument* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	JsHighlighter( QTextEdit* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	virtual ~JsHighlighter() {};
 
 	virtual bool isFormat( QString type );
 protected:
@@ -43,7 +43,7 @@ private:
 		InComment
 	};
 	
-	virtual void init();
+	virtual void init( bool useConfig );
 
 	QStringList keywordPatterns;
 

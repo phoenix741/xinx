@@ -90,6 +90,9 @@ void XMLVisualStudio::createDockWindows() {
 	m_webServicesTreeView->header()->hide();
 	
 	m_dirModel = new QDirModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+	m_modelTimer = new QTimer( this );
+	m_modelTimer->setInterval( 500 );
+	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
 }
 
@@ -590,17 +593,33 @@ void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	delete custom;
 }
 
-void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
+void XMLVisualStudio::filtreChange() {
+	QString filtre = m_filtreLineEdit->text();
 	if( filtre.isEmpty() ) 
 		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
-	else
-		m_dirModel->setNameFilters( 
-			QStringList() 
-				<< QString("*%1*.xsl").arg( filtre )
-				<< QString("*%1*.js").arg( filtre )
-				<< QString("*%1*.xml").arg( filtre )
-				<< QString("*%1*.fws").arg( filtre )
-		);
+	else {
+		QString extention = QFileInfo( filtre ).suffix();
+		QString filename = QFileInfo( filtre ).fileName();
+		if( extention.isEmpty() )
+			m_dirModel->setNameFilters( 
+				QStringList() 
+					<< QString("*%1*.xsl").arg( filtre )
+					<< QString("*%1*.js").arg( filtre )
+					<< QString("*%1*.xml").arg( filtre )
+					<< QString("*%1*.fws").arg( filtre )
+				);
+		else
+			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
+		
+	}
+	m_modelTimer->stop();
+}
+
+void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
+	Q_UNUSED( filtre );
+	
+	m_modelTimer->stop();
+	m_modelTimer->start();
 }
 
 void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
@@ -727,7 +746,7 @@ void XMLVisualStudio::saveEditor( int index ) {
 		on_m_saveAsAct_triggered();
 	} else {
 		QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
-		if( xinxConfig->isAlertWhenStdFile() && m_xslProject && (! QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) ) {
+		if( xinxConfig->isAlertWhenStdFile() && m_xslProject && (! QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) && xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
 			QMessageBox::StandardButton res = QMessageBox::warning( this, tr("Save standard XSL"), tr("You're being to save standard file, do you whant make it specifique"), QMessageBox::Yes | QMessageBox::No );
 			if( res == QMessageBox::Yes )
 				saveEditorAs( index );
@@ -748,11 +767,11 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	
 	QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
 
-	if( ( ! fileName.isEmpty() ) && m_xslProject && xinxConfig->isAlertWhenStdFile() ) {
+	if( ( ! fileName.isEmpty() ) && m_xslProject && xinxConfig->isAlertWhenStdFile() && xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
 		fileName = QFileInfo( fileName ).fileName();
 		if( ! fileName.startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) {
 			fileName = m_xslProject->specifPrefix().toLower() + "_" + fileName;
-			fileName = QDir( m_xslProject->specifPath() ).absoluteFilePath( fileName );
+			fileName = QDir( QDir( m_xslProject->specifPath() ).absoluteFilePath( xinxConfig->managedFile4Name( fileName ).customPath ) ).absoluteFilePath( fileName );
 		} else 
 			fileName = QDir( m_lastPlace ).absoluteFilePath( fileName );
 	} else if( fileName.isEmpty() )

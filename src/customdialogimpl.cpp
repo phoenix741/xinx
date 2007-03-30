@@ -111,31 +111,39 @@ void CustomDialogImpl::on_m_fileTypeComboBox_currentIndexChanged( int index ) {
 
 
 void CustomDialogImpl::on_m_underlineCheckBox_toggled( bool checked ) {
-	QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
-	format.setFontUnderline( checked );
-	m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-	m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	if( m_highlighter ) {
+		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+		format.setFontUnderline( checked );
+		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	}
 }
 
 void CustomDialogImpl::on_m_StrikeoutCheckBox_toggled( bool checked ) {
-	QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
-	format.setFontStrikeOut( checked );
-	m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-	m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	if( m_highlighter ) {
+		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+		format.setFontStrikeOut( checked );
+		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	}
 }
 
 void CustomDialogImpl::on_m_italicCheckBox_toggled( bool checked ) {
-	QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
-	format.setFontItalic( checked );
-	m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-	m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	if( m_highlighter ) {
+		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+		format.setFontItalic( checked );
+		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	}
 }
 
 void CustomDialogImpl::on_m_boldCheckBox_toggled( bool checked ) {
-	QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
-	format.setFontWeight( checked ? QFont::Bold : QFont::Normal );
-	m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-	m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	if( m_highlighter ) {
+		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+		format.setFontWeight( checked ? QFont::Bold : QFont::Normal );
+		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	}
 }
 
 void CustomDialogImpl::on_m_fontComboBox_currentFontChanged( QFont f ) {
@@ -151,7 +159,7 @@ void CustomDialogImpl::on_m_colorComboBox_activated( QColor c ) {
 	if( m_highlighter ) {
 		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setForeground( c );
-		m_highlighter->setHighlightColor( m_syntaxTypeComboBox->currentText(), c );
+		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
 		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }

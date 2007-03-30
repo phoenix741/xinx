@@ -23,15 +23,15 @@
 class XmlHighlighter : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	XmlHighlighter(QObject* parent = NULL);
-	XmlHighlighter(QTextDocument* parent);
-	XmlHighlighter(QTextEdit* parent);
-	~XmlHighlighter();
+	XmlHighlighter( QObject* parent = NULL, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	XmlHighlighter( QTextDocument* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	XmlHighlighter( QTextEdit* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	virtual ~XmlHighlighter() {};
 
 	virtual bool isFormat( QString type );
 
 protected:
-	virtual void init();
+	virtual void init( bool useConfig );
 
 	void highlightBlock(const QString& rstrText);
 	int  processDefaultText(int i, const QString& rstrText);

@@ -404,7 +404,7 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 	
 			if( isEditBalise( editPosition( tc ) ) && selected != "/>" ){
 				QString name = m_nodeName;
-				if( ! name.isEmpty() ) {
+				if( ( ! name.isEmpty() ) && ( name.at(0) != '/' ) ) {
 					int position = textEdit()->textCursor().position();
 	         	
 					textEdit()->textCursor().insertText( QString("</%1>").arg(name) );

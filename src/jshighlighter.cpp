@@ -19,34 +19,26 @@
  ***************************************************************************/
 
 #include "jshighlighter.h"
+#include "xinxconfig.h"
 //
 
 static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
 static const QColor DEFAULT_NUMBER			= Qt::blue;
 static const QColor DEFAULT_STRING			= Qt::red;
 
-JsHighlighter::JsHighlighter( QObject* parent ) : SyntaxHighlighter( parent ) {
-	init();
-}
-
-JsHighlighter::JsHighlighter( QTextDocument* parent ) : SyntaxHighlighter( parent ) {
-	init();
-}
-
-JsHighlighter::JsHighlighter( QTextEdit* parent ) : SyntaxHighlighter( parent ) {
-	init();
-}
-
-JsHighlighter::~JsHighlighter() {
-}
-
-void JsHighlighter::init() {
-	SyntaxHighlighter::init();
-
-	m_syntaxFormats["ReservedWord"].setForeground( DEFAULT_RESERVEDWORD );
-	m_syntaxFormats["ReservedWord"].setFontWeight(QFont::Bold);
-	m_syntaxFormats["Number"].setForeground( DEFAULT_NUMBER );
-	m_syntaxFormats["String"].setForeground( DEFAULT_STRING );	
+void JsHighlighter::init( bool useConfig ) {
+	SyntaxHighlighter::init( useConfig );
+	
+	if( ! useConfig ) {
+		m_syntaxFormats["ReservedWord"].setForeground( DEFAULT_RESERVEDWORD );
+		m_syntaxFormats["ReservedWord"].setFontWeight(QFont::Bold);
+		m_syntaxFormats["Number"].setForeground( DEFAULT_NUMBER );
+		m_syntaxFormats["String"].setForeground( DEFAULT_STRING );	
+	} else {
+		foreach( QString key, xinxConfig->managedStructure()["js"].color.keys() ) {
+			m_syntaxFormats[ key ] = xinxConfig->managedStructure()["js"].color[ key ];
+		}
+	}
 	
 	keywordPatterns.clear();
 	keywordPatterns << "abstract" << "boolean" << "break" 

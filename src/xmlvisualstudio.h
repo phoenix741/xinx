@@ -51,6 +51,9 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
+	/* Project file filtre */
+	void filtreChange();
+	
 	/* Manage files opened */
 	void slotCloseFile( int );
 	void slotRefreshFile( int );
@@ -126,6 +129,7 @@ private:
 	QString m_lastPlace;
 	
 	/* Dock Object */
+	QTimer * m_modelTimer;
 	QDirModel * m_dirModel;
 	QAbstractItemModel * m_xslModel;
 	QSortFilterProxyModel * m_sortXslModel;

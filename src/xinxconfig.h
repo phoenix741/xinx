@@ -94,6 +94,7 @@ public:
 	QHash<QString,struct managedStructure> & managedStructure() { return m_managedStrucureList; };
 	
 	QString extentions();
+	struct managedFile managedFile4Name( QString filename );
 	
 private:
 	QSettings * m_settings;
