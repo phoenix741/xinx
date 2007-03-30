@@ -45,8 +45,8 @@ Rapporteur d&apos;anomalies et d&apos;évolutions : Mickaël BERTELOOT, Kamal B.
     </message>
     <message>
         <location filename="../ui/about.ui" line="90"/>
-        <source>Version 0.6-4</source>
-        <translation>Version 0.6-4</translation>
+        <source>Version 0.6-5</source>
+        <translation>Version 0.6-5</translation>
     </message>
 </context>
 <context>

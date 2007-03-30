@@ -3,11 +3,11 @@
 
 [Setup]
 AppName=XINX
-AppVerName=XINX 0.6-4 beta
+AppVerName=XINX 0.6-5 beta
 DefaultDirName={pf}\XINX
 DefaultGroupName=XINX
 OutputDir=.\
-OutputBaseFilename=xinx-0.6-4
+OutputBaseFilename=xinx-0.6-5
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
@@ -16,7 +16,7 @@ AppCopyright=Generix
 UserInfoPage=true
 UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
-VersionInfoVersion=0.6.4
+VersionInfoVersion=0.6.5
 VersionInfoCompany=Generix
 AppMutex=com.generix.xmlstudio.mutex
 
