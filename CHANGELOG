@@ -1,3 +1,16 @@
+XINX - 0.6-4
+============
+- 0000051: [Evolution] Répertoire par défaut pour les projets (phoenix)
+- 0000031: [Evolution] Permettre la modification de la coloration syntaxique (phoenix)
+- 0000033: [Evolution] Système d'ouverture rapide (phoenix)
+- 0000048: [Correction] Préfixage des spécifiques (phoenix)
+- 0000057: [Correction] Sélection des mots contenant des éè.. (phoenix)
+- 0000019: [Evolution] Menu contextuel sur les onglets (phoenix)
+- 0000045: [Correction] Indentation d'un bloc dans fichier js (phoenix)
+- 0000024: [Correction] Egal dans un attribut (phoenix)
+- 0000046: [Correction] Indentation dans xinx (phoenix)
+- 0000055: [Correction] Ouverture d'un fichier avec le glisser deposer : Les actions ne sont pas mise à jours. (phoenix)
+
 XINX - 0.6-3
 ============
 - 0000053: [Evolution] Boite de dialogue Perso (phoenix)
