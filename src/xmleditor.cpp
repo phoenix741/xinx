@@ -202,8 +202,8 @@ XMLProcessor::cursorPosition XMLProcessor::editPosition( const QTextCursor & cur
 		return cPosition; // = cpNone;
 	} // else
 
-	/* Retrieve the name of node */
-	QTextCursor cursorSpaceAfterNodeName ( textEdit()->document()->find ( QRegExp( "\\s" ), cursorBaliseStart ) );
+	/* Retrieve the name of node */ /* Space ? or other ? */
+	QTextCursor cursorSpaceAfterNodeName ( textEdit()->document()->find ( QRegExp( EOWREGEXP ), cursorBaliseStart ) );
 	QTextCursor tc = cursor;
 	
 	tc.setPosition( cursorBaliseStart.position(), QTextCursor::MoveAnchor ) ;
