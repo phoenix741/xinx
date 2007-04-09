@@ -237,6 +237,11 @@ struct XINXConfig::managedFile XINXConfig::managedFile4Name( QString filename ) 
 		}
 	}
 	struct managedFile vide;
+	vide.extentions = QString();
+	vide.name = QString();
+	vide.customPath = QString();
+	vide.canBeCustomize = false;
+	vide.structure = QString();
 	return vide;
 }
 

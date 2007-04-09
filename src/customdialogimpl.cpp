@@ -181,14 +181,14 @@ void CustomDialogImpl::on_m_projectPathLineEdit_textChanged( QString path ) {
 void CustomDialogImpl::on_m_fileTypePath_textChanged( QString path ) {
 	int index = m_fileTypeComboBox->currentIndex();
 	if( index >= 0 ) {
-		m_config.managedFile()[ index ].customPath = m_fileTypePath->text();
+		m_config.managedFile()[ index ].customPath = path;
 	}
 }
 
 void CustomDialogImpl::on_m_specifiqueCheckBox_toggled( bool checked ) {
 	int index = m_fileTypeComboBox->currentIndex();
 	if( index >= 0 ) {
-		m_config.managedFile()[ index ].canBeCustomize = m_specifiqueCheckBox->isChecked();
+		m_config.managedFile()[ index ].canBeCustomize = checked;
 	}
 }
 
