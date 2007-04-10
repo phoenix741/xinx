@@ -86,7 +86,6 @@ private slots:
 	void on_m_searchAct_triggered();
 	void on_m_searchNextAct_triggered();
 	void on_m_replaceAct_triggered();
-	void on_m_javaViewObjectListAct_triggered();
 	void on_m_newProjectAct_triggered();
 	void on_m_openProjectAct_triggered();
 	void on_m_saveProjectAct_triggered();

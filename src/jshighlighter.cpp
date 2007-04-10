@@ -128,8 +128,8 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			
 			if( pos == i ) {
-				int posEnd = commentEndExpression.indexIn( text, i + 2 ) + 2;
- 				int length = (posEnd >= 0) ? posEnd : ( text.length() - pos );
+				int posEnd = commentEndExpression.indexIn( text, i + 2 );
+ 				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
 
 				setFormat( pos, length, m_syntaxFormats["Comment"] );
 				i += length;

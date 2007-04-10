@@ -27,7 +27,6 @@
 #include "tabeditor.h"
 #include "editor.h"
 #include "fileeditor.h"
-#include "javaobjectfileimpl.h"
 #include "objectview.h"
 #include "editorcompletion.h"
 #include "finddialog.h"
@@ -460,16 +459,6 @@ void XMLVisualStudio::on_m_replaceAct_triggered() {
 	m_findDialog->initialize();
 	m_findDialog->setReplaceChecked(true);
 	m_findDialog->show();
-}
-
-void XMLVisualStudio::on_m_javaViewObjectListAct_triggered() {
-	assert( m_javaObjects );
-	
-	JavaObjectFileImpl dlg( m_javaObjects );
-	if( dlg.exec() )  {
-		completionNodeList->setPath(m_javaObjects->path() + "/completion.cpl");
-		completionNodeList->loadFiles();
-	}
 }
 
 void XMLVisualStudio::on_m_newProjectAct_triggered() {

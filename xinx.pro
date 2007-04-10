@@ -6,7 +6,6 @@ CONFIG +=   exceptions \
 DESTDIR +=   bin
 FORMS +=   ui/about.ui \
   ui/custom.ui \
-  ui/javaobjectfile.ui \
   ui/mainform.ui \
   ui/projectproperty.ui
 HEADERS +=   src/aboutdialogimpl.h \
@@ -14,7 +13,6 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/editorcompletion.h \
   src/fileeditor.h \
   src/finddialog.h \
-  src/javaobjectfileimpl.h \
   src/jseditor.h \
   src/jshighlighter.h \
   src/objectview.h \
@@ -43,7 +41,6 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/editorcompletion.cpp \
   src/fileeditor.cpp \
   src/finddialog.cpp \
-  src/javaobjectfileimpl.cpp \
   src/jseditor.cpp \
   src/jshighlighter.cpp \
   src/main.cpp \

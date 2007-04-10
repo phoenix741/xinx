@@ -58,6 +58,23 @@
     <addaction name="separator" />
     <addaction name="m_exitAct" />
    </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="m_searchMenu" >
+    <property name="title" >
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="m_searchAct" />
+    <addaction name="m_searchNextAct" />
+    <addaction name="separator" />
+    <addaction name="m_replaceAct" />
+   </widget>
    <widget class="QMenu" name="m_editMenu" >
     <property name="title" >
      <string>&amp;Edit</string>
@@ -104,25 +121,7 @@
     <addaction name="separator" />
     <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
-    <addaction name="m_javaViewObjectListAct" />
     <addaction name="m_customApplicationAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-   </widget>
-   <widget class="QMenu" name="m_searchMenu" >
-    <property name="title" >
-     <string>&amp;Search</string>
-    </property>
-    <addaction name="m_searchAct" />
-    <addaction name="m_searchNextAct" />
-    <addaction name="separator" />
-    <addaction name="m_replaceAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -552,17 +551,6 @@
    </property>
    <property name="shortcut" >
     <string>Ctrl+H</string>
-   </property>
-  </action>
-  <action name="m_javaViewObjectListAct" >
-   <property name="text" >
-    <string>&amp;Description path</string>
-   </property>
-   <property name="statusTip" >
-    <string>Change the path of object used in configuration file</string>
-   </property>
-   <property name="visible" >
-    <bool>false</bool>
    </property>
   </action>
   <action name="m_newProjectAct" >
