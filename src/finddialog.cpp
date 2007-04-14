@@ -21,9 +21,15 @@
  **
  ****************************************************************************/
 
-#include <QtGui>
-
 #include "finddialog.h"
+
+#include <QLabel>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 FindDialog::FindDialog(QWidget *parent) : QDialog(parent) {
 	labelFind = new QLabel(tr("Find &what:"));

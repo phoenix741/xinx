@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui>
- 
 #include "fileeditor.h"
 #include "xmlhighlighter.h"
 #include "jshighlighter.h"
@@ -27,6 +25,18 @@
 #include "jseditor.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
+
+#include <QTextEdit>
+#include <QAbstractTextDocumentLayout>
+#include <QScrollBar>
+#include <QPainter>
+#include <QHBoxLayout>
+#include <QFileInfo>
+#include <QDir>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QApplication>
+#include <QTextDocumentFragment>
 
 /* NumberBar */
 
@@ -190,12 +200,12 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 	QString m_plainText = toPlainText();
     QTextCursor cursor = textCursor();
     int pos = cursor.position();
-    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ÀÁÂÄÃÅÆÇÈÉËÊÌÍÎÏÒÔÕÖÙÚÛÜÝ").contains( m_plainText.at( pos-1 ).toUpper()  ) )
+    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos-1 ).toUpper()  ) )
         pos--;
     cursor.setPosition(pos, QTextCursor::MoveAnchor);
     setTextCursor( cursor );
     //
-    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ÀÁÂÄÃÅÆÇÈÉËÊÌÍÎÏÒÔÕÖÙÚÛÜÝ").contains( m_plainText.at( pos ).toUpper()  ) )
+    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos ).toUpper()  ) )
         pos++;
     cursor.setPosition(pos, QTextCursor::KeepAnchor);
     setTextCursor( cursor );

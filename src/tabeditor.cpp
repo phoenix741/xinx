@@ -18,13 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDir>
+#include <QTabBar>
+#include <QDragEnterEvent>
+#include <QUrl>
+#include <QMenu>
+
 #include <typeinfo>
 #include "tabeditor.h"
 #include "editor.h"
 #include "fileeditor.h"
 
-#include <QtGui>
-#include <QDir>
 //
 TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), previous(NULL) {
 	setAcceptDrops(true);

@@ -18,11 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui> 
-#include <QtXml>
-#include <QDir>
-
 #include "objectview.h"
+
+#include <QDomElement>
+#include <QDomDocument>
+#include <QMessageBox>
+#include <QApplication>
+#include <QDir>
 
 /****************** ObjectFields *********************/
 

@@ -18,12 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
+#include <QBuffer>
+#include <QIODevice>
+#include <QHttp>
+#include <QMessageBox>
+#include <QApplication>
+#include <QUrl>
+#include <QIcon>
+
 #include "webservices.h"
 #include "xslproject.h"
-
-#include <QtGui>
-#include <QtXml>
-#include <QHttp>
 
 WSDLPart::WSDLPart( const QDomElement & element ) {
 	m_name = element.attribute( "name" );

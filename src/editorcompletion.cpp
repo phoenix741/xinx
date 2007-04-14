@@ -20,8 +20,10 @@
  
 #include "editorcompletion.h"
 
-#include <QtGui>
-#include <QtXml>
+#include <QDomElement>
+#include <QFile>
+#include <QMessageBox>
+#include <QApplication>
 
 CplNodeList * completionNodeList = NULL;
 
@@ -98,3 +100,117 @@ CplNode* CplNodeList::node(const QString & name) const {
 	}
 	return NULL;
 }
+
+
+/* Completion */
+
+Completion * completionContents = NULL;
+
+
+Completion::Completion( const QString & name ) : m_name( name ) {
+	load();
+}
+
+Completion::~Completion() {
+	qDeleteAll( m_xmlBalises );
+}
+
+void Completion::load() {
+	QFile file( m_name );
+	QDomDocument objectFile;
+  
+	// Open the file
+	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) {
+		QMessageBox::warning(
+			qApp->activeWindow(), 
+			QApplication::translate("Completion", "Completion"), 
+			QApplication::translate("Completion", "Cannot read file %1:\n%2.").arg( m_name ).arg( file.errorString() ) );
+	    return;
+	}
+
+	// Load XML Document
+	QString errorStr;
+	int errorLine;
+	int errorColumn;  
+	if ( !objectFile.setContent(&file, false, &errorStr, &errorLine, &errorColumn) ) {
+		QMessageBox::information(
+			qApp->activeWindow(), 
+			QApplication::translate("Completion", "Completion"), 
+			QApplication::translate("Completion", "Parse error at line %1, column %2:\n%3")
+				.arg(errorLine)
+				.arg(errorColumn)
+				.arg(errorStr) );
+		return;
+	}  
+  
+	QDomElement root = objectFile.documentElement();
+  
+	// Test if Completion
+	if( root.tagName() != "completion" ) 
+		throw ENotCompletionFile( QApplication::translate("Completion", "%1 is not auto completion file").arg( m_name ) );
+  	
+	// HTML
+	QDomElement xml = root.firstChildElement( "xml" );
+	if( ! xml.isNull() ) {
+		QDomElement type = xml.firstChildElement( "type" );
+		while( !type.isNull() ) {
+			QString typeName = type.attribute( "name", "other" );
+			
+			QDomNodeList balises = type.elementsByTagName( "balise" );
+			for( int i = 0; i < balises.count(); i++ ) 
+				if( balises.at( i ).isElement() ) 
+					m_xmlBalises.append( new CompletionXMLBalise( typeName, balises.at( i ).toElement() ) );
+				
+			
+			type = type.nextSiblingElement( "type" );
+		};
+	}
+}
+
+/* CompletionXMLBalise */
+
+CompletionXMLBalise::CompletionXMLBalise( const QString & category, const QDomElement & node ) : m_category( category ) {
+	m_name = node.attribute( "name" );
+	m_isDefault = node.attribute( "default" ) == "true";
+	
+	QDomNodeList balises = node.elementsByTagName( "balise" );
+	for( int i = 0; i < balises.count(); i++ ) 
+		if( balises.at( i ).isElement() ) 
+			m_balises.append( new CompletionXMLBalise( category, balises.at( i ).toElement() ) );
+	
+	QDomNodeList attributes = node.elementsByTagName( "attribute" );
+	for( int i = 0; i < attributes.count(); i++ ) 
+		if( attributes.at( i ).isElement() ) 
+			m_attributes.append( new CompletionXMLAttribute( attributes.at( i ).toElement() ) );
+}
+
+CompletionXMLBalise::~CompletionXMLBalise() {
+	qDeleteAll( m_attributes );
+	qDeleteAll( m_balises );
+}
+
+/* CompletionXMLAttribute */
+
+CompletionXMLAttribute::CompletionXMLAttribute( const QDomElement & node ) {
+	m_name = node.attribute( "name" );
+	m_isDefault = node.attribute( "default" ) == "true";
+	m_defaultValue = -1;
+
+	QDomNodeList values = node.elementsByTagName( "value" );
+	for( int i = 0; i < values.count(); i++ ) 
+		if( values.at( i ).isElement() ) {
+			QDomElement value = values.at( i ).toElement();
+			
+			m_values.append( value.text() );
+			
+			if( ( m_defaultValue == -1 ) && ( value.attribute( "default" ) == "true" ) ) {
+				m_defaultValue = m_values.size() - 1;
+			}
+		}
+}
+
+CompletionXMLAttribute::~CompletionXMLAttribute() {
+	
+}
+
+

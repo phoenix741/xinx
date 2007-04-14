@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
+#include <QFile>
+#include <QMessageBox>
+#include <QApplication>
+#include <QTextStream>
 #include "xslproject.h"
-
-#include <QtGui>
-#include <QtXml>
-
 #include "webservices.h"
 
 XSLProject::XSLProject() : QObject() {

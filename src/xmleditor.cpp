@@ -18,7 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui>
+#include <QDebug>
+#include <QIcon>
+#include <QTextEdit>
+#include <QStringListModel>
+#include <QAbstractItemView>	
+#include <QScrollBar>
+#include <QKeyEvent>
+#include <QTextBlock>
 #include <QCompleter>
 #include <QDomElement>
 #include <assert.h>

@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui>
-#include <QCompleter>
-#include <QDomElement>
-
 #include "jseditor.h"
 
+#include <QCompleter>
+#include <QDomElement>
+#include <QKeyEvent>
+#include <QTextEdit>
+#include <QTextBlock>
 
 /* JSProcessor */
 

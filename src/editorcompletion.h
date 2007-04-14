@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <QList>
-#include <QAbstractItemModel>
+#include <QStringList>
 
 class QDomElement;
 
@@ -72,24 +72,58 @@ private:
 
 extern CplNodeList * completionNodeList;
 
-/*
-
-class CplModel : public QAbstractItemModel {
-	Q_OBJECT
+class CompletionXMLAttribute {
 public:
-	CplModel(CplNodeList * nodeList, QObject *parent = 0);
+	CompletionXMLAttribute( const QDomElement & node );
+	~CompletionXMLAttribute();
 
-	QVariant data(const QModelIndex &index, int role) const;
-	Qt::ItemFlags flags(const QModelIndex &index) const;
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-	QModelIndex parent ( const QModelIndex & index ) const;
-	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	const QString & name() const { return m_name; };
+	bool isDefault() const { return m_isDefault; };
+	
+	const QStringList & values() const { return m_values; };
+	int defaultValue() const { return m_defaultValue; };
 private:
-	CplNodeList * m_rootItem;
+	QString m_name;
+	bool m_isDefault;
+	
+	QStringList m_values;
+	int m_defaultValue;
 };
 
-*/
+class CompletionXMLBalise {
+public:
+	CompletionXMLBalise( const QString & category, const QDomElement & node );
+	~CompletionXMLBalise();
+
+	const QString & name() const { return m_name; };
+	const QString & category() const { return m_category; };
+	bool isDefault() const { return m_isDefault; };
+	
+	const QList<CompletionXMLAttribute*> & attributes() const { return m_attributes; };
+	const QList<CompletionXMLBalise*> & balises() const { return m_balises; };
+private:	
+	QString m_name;
+	bool m_isDefault;
+	
+	QString m_category;
+	
+	QList<CompletionXMLAttribute*> m_attributes;
+	QList<CompletionXMLBalise*> m_balises;
+};
+
+class Completion {
+public:
+	Completion( const QString & name );
+	~Completion();
+
+	const QList<CompletionXMLBalise*> xmlBalises() { return m_xmlBalises; };
+protected:
+	void load();
+private:
+	QList<CompletionXMLBalise*> m_xmlBalises;
+	QString m_name;
+};
+
+extern Completion * completionContents;
 
 #endif

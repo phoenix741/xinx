@@ -18,7 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui>
+#include <QDir>
+#include <QHeaderView>
+#include <QDirModel>
+#include <QTimer>
+#include <QSortFilterProxyModel>
+#include <QFileDialog>
+#include <QPrintDialog>
+#include <QMessageBox>
+#include <QPrinter>
+#include <QCloseEvent>
 #include <assert.h>
 
 #include "uniqueapplication.h"
@@ -102,6 +111,10 @@ void XMLVisualStudio::readSettings() {
 	m_javaObjects->setPath( xinxConfig->objectDescriptionPath() );
 	m_javaObjects->loadFiles();
   
+  	/* New Completion method */
+	if( completionContents ) delete completionContents;
+	completionContents = new Completion( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
+	/* Old Completion method */
 	completionNodeList->setPath( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
 	completionNodeList->loadFiles();
 
