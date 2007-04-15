@@ -49,6 +49,8 @@ public:
 	XSLValueCompletionModel( XSLModelData * data, QObject *parent = 0 );
 	virtual ~XSLValueCompletionModel();
 	
+	void setBaliseName( const QString & name, const QString & attribute );
+	
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -59,16 +61,21 @@ private:
 
 	QList<XSLModelData*> m_objList;
 	XSLModelData* rootItem;
+	
+	QString m_baliseName;
+	QString m_attributeName;
 };
 
 XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *parent ) : QAbstractListModel( parent ) {
 	rootItem = data;
 	refreshList();
 	
+	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
+	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
@@ -93,27 +100,67 @@ void XSLValueCompletionModel::refreshList() {
 	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );
 	emit layoutChanged();
 }
+
+void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
+	int before = m_objList.count(), after  = m_objList.count();
+	
+	if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
+		before += completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
+		
+	if( completionContents && completionContents->balise( name ) && completionContents->balise( name )->attribute( attribute ) )
+		after += completionContents->balise( name )->attribute( attribute )->values().count();
+		
+	int diff = after - before;
+
+	if( diff > 0 ) 
+		beginInsertRows( QModelIndex(), before + 1, after );
+	else if( diff < 0 )
+		beginRemoveRows( QModelIndex(), after + 1, before );
+
+	m_baliseName = name; 
+	m_attributeName = attribute; 
+
+	if( diff > 0 ) {
+		emit dataChanged( index( m_objList.count() ), index( before ) );
+		endInsertRows();
+	} else  if( diff < 0 ) {
+		emit dataChanged( index( m_objList.count() ), index( after ) );
+		endRemoveRows();
+	}
+}
+
 	
 QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) const {
 	if (!index.isValid()) return QVariant();
 
-	XSLModelData * data = m_objList[ index.row() ];
+	if( index.row() < m_objList.count() ) {
+		XSLModelData * data = m_objList[ index.row() ];
 	
-	if( role == Qt::DecorationRole ) {
-		switch( data->type() ) {
-		case XSLModelData::etVariable:
-			return QIcon(":/CVpublic_var.png");
-			break;
-		case XSLModelData::etTemplate:
-			return QIcon(":/CVpublic_meth.png");
-			break;
-		default:
-			return QVariant();
+		if( role == Qt::DecorationRole ) {
+			switch( data->type() ) {
+			case XSLModelData::etVariable:
+				return QIcon(":/CVpublic_var.png");
+				break;
+			case XSLModelData::etTemplate:
+				return QIcon(":/Chtml_template.png");
+				break;
+			default:
+				return QVariant();
+			}
+		} 
+	
+		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
+			return data->name();
+	} else {
+		int value_row = index.row() - m_objList.count(); 
+		if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
+			if( role == Qt::DecorationRole ) 
+				return QIcon(":/Chtml_value.png");
+			if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
+				return completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
 		}
-	} 
-	
-	if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-		return data->name();
+		
+	}
 	
 	return QVariant();
 }
@@ -126,38 +173,154 @@ Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
 }
 
 int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
-	if ( ! parent.isValid() )
-		return m_objList.count();
-	else
+	if ( ! parent.isValid() ) {
+		int size = m_objList.count();	
+		if( completionContents ) {
+			if( completionContents->balise( m_baliseName ) ) {
+				if( completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
+					size += completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
+			}
+		}
+		return size;
+	} else
+		return 0;
+	}
+
+/* XSLParamCompletionModel */
+
+class XSLParamCompletionModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	XSLParamCompletionModel( QObject *parent = 0 );
+	virtual ~XSLParamCompletionModel();
+	
+	void setBaliseName( const QString & name );
+	
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+private:
+	QString m_baliseName;
+};
+
+XSLParamCompletionModel::XSLParamCompletionModel( QObject *parent ) : QAbstractListModel( parent ) {
+}
+
+XSLParamCompletionModel::~XSLParamCompletionModel() {
+}
+
+void XSLParamCompletionModel::setBaliseName( const QString & name ) { 
+	emit layoutAboutToBeChanged();
+	m_baliseName = name; 
+	emit layoutChanged();
+}
+
+	
+QVariant XSLParamCompletionModel::data( const QModelIndex &index, int role ) const {
+	if (!index.isValid()) return QVariant();
+
+	int value_row = index.row(); 
+	if( completionContents && completionContents->balise( m_baliseName ) ) {
+		if( role == Qt::DecorationRole ) 
+			return QIcon(":/CVpublic_meth.png");
+		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
+			return completionContents->balise( m_baliseName )->attributes().at( value_row )->name();
+	}
+	
+	return QVariant();
+}
+
+Qt::ItemFlags XSLParamCompletionModel::flags(const QModelIndex &index) const {
+	if ( index.isValid() )
+		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+	return Qt::ItemIsEnabled;
+}
+
+int XSLParamCompletionModel::rowCount(const QModelIndex &parent) const {
+	if ( ! parent.isValid() ) {
+		int size = 0;	
+		if( completionContents && completionContents->balise( m_baliseName ) ) 
+			size += completionContents->balise( m_baliseName )->attributes().count();
+		return size;
+	} else
 		return 0;
 }
+
+/* XSLBaliseCompletionModel */
+
+class XSLBaliseCompletionModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	XSLBaliseCompletionModel( QObject *parent = 0 );
+	virtual ~XSLBaliseCompletionModel();
+	
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+};
+
+XSLBaliseCompletionModel::XSLBaliseCompletionModel( QObject *parent ) : QAbstractListModel( parent ) {
+}
+
+XSLBaliseCompletionModel::~XSLBaliseCompletionModel() {
+}
+
+QVariant XSLBaliseCompletionModel::data( const QModelIndex &index, int role ) const {
+	if (!index.isValid()) return QVariant();
+
+	int value_row = index.row(); 
+	if( completionContents ) {
+		if( role == Qt::DecorationRole ) 
+			return QIcon(":/Chtml_balise.png");
+		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
+			return completionContents->xmlBalises().at( value_row )->name();
+	}
+	
+	return QVariant();
+}
+
+Qt::ItemFlags XSLBaliseCompletionModel::flags(const QModelIndex &index) const {
+	if ( index.isValid() )
+		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+	return Qt::ItemIsEnabled;
+}
+
+int XSLBaliseCompletionModel::rowCount(const QModelIndex &parent) const {
+	if ( ! parent.isValid() ) {
+		int size = 0;	
+		if( completionContents ) 
+			size += completionContents->xmlBalises().count();
+		return size;
+	} else
+		return 0;
+}
+
 
 /* XMLProcessor */
 
 XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * parent ) : TextProcessor( widget, project, parent ) {
-	assert( completionNodeList != NULL );
 	assert( textEdit() != NULL );
-	
-	QStringList wordList;
-	for(int i = 0; i < completionNodeList->count(); i++) {
-		wordList << completionNodeList->node(i)->name();
-	}
-	wordList.sort();
 
 	// Completer
-	m_completerNode = new QCompleter( wordList, this );
+	m_completerValueParamName = "";
+	m_completerParamNodeName  = "";
+	m_completerValue 		  = 0;
+
+	m_completerNode = new QCompleter( this );
 	m_completerNode->setWidget( textEdit() );
 	m_completerNode->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerNode->setCaseSensitivity( Qt::CaseInsensitive );
+	m_completerNode->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerNode, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
    
 	m_completerParam = new QCompleter( this );
 	m_completerParam->setWidget( textEdit() );
 	m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
+	m_completerParam->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerParam, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
-	m_completerParamNodeName = "";
-	m_completerValue 		 = 0;
 
 	m_completerValue = new QCompleter( this );
 	m_completerValue->setWidget( textEdit() );
@@ -170,9 +333,15 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * 
 	m_modelData->loadFromContent( textEdit()->toPlainText() );
 	
 	m_contentModel = new XSLItemModel( m_modelData, this );
+
 	m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
-	
 	m_completerValue->setModel( m_completionValueModel );
+
+	m_completionParamModel = new XSLParamCompletionModel( this );
+	m_completerParam->setModel( m_completionParamModel );
+
+	m_completionBaliseModel = new XSLBaliseCompletionModel( this );
+	m_completerNode->setModel( m_completionBaliseModel );
 }
 
 XMLProcessor::~XMLProcessor() {
@@ -309,18 +478,78 @@ QString XMLProcessor::textUnderCursor( const QTextCursor & cursor ) const {
 	return tc.selectedText().trimmed();
 }
 
-void XMLProcessor::insertCompletion( const QString& completion ) {
+void XMLProcessor::insertCompletionValue( QTextCursor & tc, QString node, QString param ) {
+	if( completionContents && completionContents->balise( node ) && completionContents->balise( node )->attribute( param ) && completionContents->balise( node )->attribute( param )->defaultValue() >= 0 ) {
+		int defaultValue = completionContents->balise( node )->attribute( param )->defaultValue();
+		tc.insertText( QString("=\"%1\"").arg( completionContents->balise( node )->attribute( param )->values().at( defaultValue ) ) );
+	} else {
+		tc.insertText("=\"\"");
+		tc.movePosition( QTextCursor::PreviousCharacter );
+	}
+}
+
+int XMLProcessor::insertCompletionParam( QTextCursor & tc, QString node, bool movePosition ) {
+	int position = -1;
+	CompletionXMLBalise* balise = completionContents->balise( node );
+	foreach( CompletionXMLAttribute* attr, balise->attributes() ) {
+		if( attr->isDefault() ) {
+			int defaultValue = attr->defaultValue();
+			QString defaultValueString;
+			if( defaultValue >= 0 )
+				defaultValueString = attr->values().at( defaultValue );
+			tc.insertText( QString(" %1=\"%2\"").arg( attr->name() ).arg( defaultValueString ) );
+			if( defaultValueString.isEmpty() ) {
+				tc.movePosition( QTextCursor::PreviousCharacter );
+				position = tc.position();
+				tc.movePosition( QTextCursor::NextCharacter );
+			}
+		}
+	}
+	if( ( position != -1 ) && ( movePosition ) )
+		tc.setPosition( position );
+	return position;
+}
+
+int XMLProcessor::insertCompletionBalises( QTextCursor & tc, QString node ) {
+	QString indent = tc.block().text();
+	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
+
+	int position = -1, cnt = 0;
+	CompletionXMLBalise* balise = completionContents->balise( node );
+	foreach( CompletionXMLBalise* b, balise->balises() ) {
+		if( b->isDefault() ) {
+			tc.insertText( "\n" + indent + "\t" );
+			tc.insertText( "<" + b->name() );
+			int insertPosition = insertCompletionParam( tc, b->name(), false );
+			if( position == -1 ) position = insertPosition;
+			tc.insertText( ">" );
+			insertCompletionBalises( tc, b->name() );
+			cnt++;
+		}
+	}
+	if( cnt > 0 )
+		tc.insertText( "\n" + indent );
+	tc.insertText( QString("</%1>").arg( node ) );
+	if( position != -1 )
+		tc.setPosition( position );
+		
+	return position;
+} 
+
+void XMLProcessor::insertCompletion( const QString & completion ) {
 	qDebug() << "insertCompletion( " << completion << " )";
 	QTextCursor tc = textEdit()->textCursor();
 	QCompleter * c = currentCompleter( tc );
 	
-	int extra = completion.length() - c->completionPrefix().length();
-	tc.insertText(completion.right(extra));
-	// tc.movePosition( QTextCursor::EndOfWord ); /* Don't need this */
+	for( int i = 0; i < c->completionPrefix().length(); i++ ) tc.deletePreviousChar();
+	tc.insertText( completion );
 
-	if( editPosition(tc) == XMLProcessor::cpEditParamName ) {		
-		tc.insertText("=\"\"");
-		tc.movePosition( QTextCursor::PreviousCharacter );
+	XMLProcessor::cursorPosition pos = editPosition(tc);
+	if( pos == XMLProcessor::cpEditParamName ) {
+		insertCompletionValue( tc, m_nodeName, completion );
+	} else
+	if( pos == XMLProcessor::cpEditNodeName ) {
+		insertCompletionParam( tc, completion );
 	}
 
 	textEdit()->setTextCursor( tc );
@@ -332,26 +561,26 @@ QCompleter * XMLProcessor::currentCompleter( const QTextCursor & cursor ) {
 	XMLProcessor::cursorPosition position = editPosition( cursor );
 	switch( position ) {
 		case XMLProcessor::cpEditNodeName:
-			qDebug() << "currentCompleter() : EditNodeName";
+			qDebug() << "currentCompleter() : cpEditNodeName";
 			return m_completerNode;
 		case XMLProcessor::cpEditParamName: 
-			qDebug() << "currentCompleter() : EditParamName";
+			qDebug() << "currentCompleter() : cpEditParamName";
 			if(m_nodeName != m_completerParamNodeName) {
 				qDebug() <<  "currentCompleter() : node change";
+				m_completionParamModel->setBaliseName( m_nodeName );
 				m_completerParamNodeName = m_nodeName;
-				if(completionNodeList->node( m_nodeName )) {
-					QStringList wordList;
-					for(int i = 0; i < completionNodeList->node( m_nodeName )->count(); i++) {
-						wordList << completionNodeList->node( m_nodeName )->param(i);
-					}
-					wordList.sort();
-					m_completerParam->setModel(new QStringListModel(wordList, m_completerParam));
-				} else 
-					return NULL;
+				return m_completerParam;
 			}
 		
 			return m_completerParam;
 		case XMLProcessor::cpEditParamValue: 
+			qDebug() << "currentCompleter() : cpEditParamValue";
+			if( ( m_nodeName != m_completerParamNodeName ) || ( m_paramName != m_completerValueParamName ) ) {
+				m_completionParamModel->setBaliseName( m_nodeName );
+				m_completionValueModel->setBaliseName( m_nodeName, m_paramName );
+				m_completerParamNodeName = m_nodeName;
+				m_completerValueParamName = m_paramName;
+			}
 			return m_completerValue;
 		default:
 			return NULL;	
@@ -412,22 +641,35 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
 			if( isEditBalise( editPosition( tc ) ) && selected != "/>" ){
 				QString name = m_nodeName;
 				if( ( ! name.isEmpty() ) && ( name.at(0) != '/' ) ) {
+					tc.movePosition( QTextCursor::NextCharacter );
+		
 					int position = textEdit()->textCursor().position();
 	         	
-					textEdit()->textCursor().insertText( QString("</%1>").arg(name) );
-		
-					tc.setPosition(position);
+					/*textEdit()->textCursor().insertText( QString("</%1>").arg(name) );*/
+					int newPosition = insertCompletionBalises( tc, name );
+					if( newPosition == -1 ) 
+						tc.setPosition(position);
 					textEdit()->setTextCursor( tc );
 				}
 			}
 			updateModel();
-		} else if(e->text().right(1) == "=") {
+		} else if( e->text().right(1) == "=" ) { 
 			QTextCursor tc( textEdit()->textCursor() );
 			QTextCursor tc2( textEdit()->textCursor() );
 			tc2.movePosition( QTextCursor::PreviousCharacter );
 			if( editPosition( tc2 ) == XMLProcessor::cpEditParamName ) {
-				tc.insertText( "\"\"" );
-				tc.movePosition( QTextCursor::PreviousCharacter );
+				tc.deletePreviousChar();
+				insertCompletionValue( tc, m_nodeName, m_paramName );
+				textEdit()->setTextCursor( tc );
+			}
+		} else if( e->text().right(1) == " " ) { 
+			QTextCursor tc( textEdit()->textCursor() );
+			QTextCursor tc2( textEdit()->textCursor() );
+			tc2.movePosition( QTextCursor::PreviousCharacter );
+			if( editPosition( tc2 ) == XMLProcessor::cpEditNodeName ) {
+				tc.deletePreviousChar();
+				if( insertCompletionParam( tc, m_nodeName ) == -1 )
+					tc.insertText( " " );
 				textEdit()->setTextCursor( tc );
 			}
 		}

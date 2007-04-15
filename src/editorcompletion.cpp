@@ -25,90 +25,14 @@
 #include <QMessageBox>
 #include <QApplication>
 
-CplNodeList * completionNodeList = NULL;
-
-CplNode::CplNode(QObject * parent, const QDomElement & node) : QObject(parent) {
-	m_name = node.tagName();
-	if( ! node.prefix().isEmpty() )
-		m_name = node.prefix() + ":" + m_name;
-	QDomNamedNodeMap attr = node.attributes();
-	
-	for(int i = 0; i < attr.count(); i++) {
-		if( attr.item( i ).isAttr() ) 
-			m_params.push_back( attr.item( i ).toAttr().name() );
-	}
-}
-
-void CplNodeList::loadFiles() {
-  m_list.clear();
-
-  QFile file(m_filesPath);
-  QDomDocument objectFile;
-  
-  // Open the file
-  if (!file.open(QFile::ReadOnly | QFile::Text)) {
-    QMessageBox::warning(qApp->activeWindow(), tr("Completion"), tr("Cannot read file %1:\n%2.")
-                                                        .arg(m_filesPath)
-														.arg(file.errorString()));
-    return;
-  }
-
-  // Load XML Document
-  QString errorStr;
-  int errorLine;
-  int errorColumn;  
-  if (!objectFile.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-    QMessageBox::information(qApp->activeWindow(), tr("Completion"), tr("Parse error at line %1, column %2:\n%3")
-																.arg(errorLine)
-                              									.arg(errorColumn)
-																.arg(errorStr));
-    return;
-  }  
-  
-  QDomElement root = objectFile.documentElement();
-  
-  // Test if Completion
-  if(root.tagName() != "completion") throw ENotCompletionFile(tr("%1 is not auto completion file").arg(m_filesPath));
-  	
-  // HTML
-  QDomElement html = root.firstChildElement("html");
-
-  QDomNode child = html.firstChild();
-  while ((! child.isNull()) && (child.isElement())) {
-    m_list.append(new CplNode(this, child.toElement()));
-    child = child.nextSibling();
-  }	
-
-  // XSL
-  QDomElement xsl = root.firstChildElement("xsl");
-
-  child = xsl.firstChild();
-  while ((! child.isNull()) && (child.isElement())) {
-    m_list.append(new CplNode(this, child.toElement()));
-    child = child.nextSibling();
-  }	
-}
-
-CplNodeList::CplNodeList(const QString & name) {
-	m_filesPath = name;
-}
-
-CplNode* CplNodeList::node(const QString & name) const {
-	for(int i = 0; i < count(); i++) {
-		if(name == node(i)->name())
-			return node(i);
-	}
-	return NULL;
-}
-
-
 /* Completion */
 
 Completion * completionContents = NULL;
 
 
 Completion::Completion( const QString & name ) : m_name( name ) {
-	load();
+	if( ! m_name.isEmpty() )
+		load();
 }
 
 Completion::~Completion() {
@@ -167,6 +91,15 @@ void Completion::load() {
 	}
 }
 
+CompletionXMLBalise* Completion::balise( const QString & name ) const {
+	foreach( CompletionXMLBalise* b, m_xmlBalises ) {
+		if( b->name() == name ) 
+			return b;
+	}
+	return NULL;
+}
+
+
 /* CompletionXMLBalise */
 
 CompletionXMLBalise::CompletionXMLBalise( const QString & category, const QDomElement & node ) : m_category( category ) {
@@ -178,16 +111,34 @@ CompletionXMLBalise::CompletionXMLBalise( const QString & category, const QDomEl
 		if( balises.at( i ).isElement() ) 
 			m_balises.append( new CompletionXMLBalise( category, balises.at( i ).toElement() ) );
 	
-	QDomNodeList attributes = node.elementsByTagName( "attribute" );
-	for( int i = 0; i < attributes.count(); i++ ) 
-		if( attributes.at( i ).isElement() ) 
-			m_attributes.append( new CompletionXMLAttribute( attributes.at( i ).toElement() ) );
+	QDomElement attribute = node.firstChildElement( "attribute" );
+	while( ! attribute.isNull() ) {
+		m_attributes.append( new CompletionXMLAttribute( attribute ) );
+		attribute = attribute.nextSiblingElement( "attribute" );
+	}
 }
 
 CompletionXMLBalise::~CompletionXMLBalise() {
 	qDeleteAll( m_attributes );
 	qDeleteAll( m_balises );
 }
+
+CompletionXMLBalise* CompletionXMLBalise::balise( const QString & name ) const {
+	foreach( CompletionXMLBalise* b, m_balises ) {
+		if( b->name() == name ) 
+			return b;
+	}
+	return NULL;
+}
+
+CompletionXMLAttribute* CompletionXMLBalise::attribute( const QString & name ) const {
+	foreach( CompletionXMLAttribute* b, m_attributes ) {
+		if( b->name() == name ) 
+			return b;
+	}
+	return NULL;
+}
+
 
 /* CompletionXMLAttribute */
 

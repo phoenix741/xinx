@@ -21,27 +21,10 @@
 #ifndef _EDITORCOMPLETION_H_
 #define _EDITORCOMPLETION_H_
 
-#include <QObject>
 #include <QList>
 #include <QStringList>
 
 class QDomElement;
-
-class ENotCompletionFile;
-
-class CplNode : public QObject  {
-	Q_OBJECT
-public:
-	CplNode(QObject * parent, const QDomElement & node);
-	
-	const QString & name() const { return m_name; };
-
-	int count() const { return m_params.count(); };
-	const QString & param(int i) const { return m_params.at(i); };
-private:
-	QString m_name;
-	QList<QString> m_params;
-};
 
 class ENotCompletionFile {
 public:
@@ -49,28 +32,6 @@ public:
     qDebug(message.toLatin1());
   }
 };
-
-class CplNodeList : public QObject {
-	Q_OBJECT
-public:
-	CplNodeList(const QString & = "");
-
-	void loadFiles();
-
-	const QString & path() const { return m_filesPath; };
-	void setPath(const QString & path) { m_filesPath = path; };
-
-	int indexOf( CplNode * node, int from = 0 ) const { return m_list.indexOf( node, from ); };
-	
-	int count() const { return m_list.count(); };
-	CplNode* node(int i) const { return m_list.at(i); };
-	CplNode* node(const QString & name) const;
-private:
-	QList<CplNode*> m_list;
-	QString m_filesPath;
-};
-
-extern CplNodeList * completionNodeList;
 
 class CompletionXMLAttribute {
 public:
@@ -101,6 +62,9 @@ public:
 	
 	const QList<CompletionXMLAttribute*> & attributes() const { return m_attributes; };
 	const QList<CompletionXMLBalise*> & balises() const { return m_balises; };
+	
+	CompletionXMLBalise* balise( const QString & name ) const;
+	CompletionXMLAttribute* attribute( const QString & name ) const;
 private:	
 	QString m_name;
 	bool m_isDefault;
@@ -113,10 +77,15 @@ private:
 
 class Completion {
 public:
-	Completion( const QString & name );
+	Completion( const QString & name = QString() );
 	~Completion();
 
 	const QList<CompletionXMLBalise*> xmlBalises() { return m_xmlBalises; };
+	CompletionXMLBalise* balise( const QString & name ) const;
+
+	const QString & path() const { return m_name; };
+	void setPath( const QString & name ) { m_name = name; if( ! m_name.isEmpty() ) load(); };
+	
 protected:
 	void load();
 private:

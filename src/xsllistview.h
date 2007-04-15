@@ -68,6 +68,7 @@ public:
 	
 signals:
 	void childReseted();
+	void childAboutToBeReset();
 	
 private:
 	XSLModelData * m_parent;

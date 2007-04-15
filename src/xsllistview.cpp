@@ -45,6 +45,8 @@ XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : QObjec
 }
 
 void XSLModelData::loadFromXML( const QDomElement& element ) {
+	emit childAboutToBeReset();
+	
 	qDeleteAll( m_child );
 	m_child.clear();
 	
@@ -108,6 +110,7 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
 	} else {
+		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
@@ -117,6 +120,7 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 
 void XSLModelData::loadFromContent( const QString& content ) {
 	if( content.trimmed().isEmpty() ) {
+		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
@@ -135,6 +139,7 @@ void XSLModelData::loadFromContent( const QString& content ) {
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
 	} else {
+		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
@@ -164,17 +169,20 @@ int XSLModelData::childCount() {
 
 XSLItemModel::XSLItemModel( QObject *parent, XSLProject * project ) : QAbstractItemModel( parent ) {
 	rootItem = new XSLModelData( NULL, project );
+	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
 	toDelete = true;
 }
 
 XSLItemModel::XSLItemModel( XSLModelData * data, QObject *parent ) : QAbstractItemModel( parent ) {
 	rootItem = data;
+	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
 	toDelete = false;
 }
 
 XSLItemModel::~XSLItemModel() {
+	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	disconnect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
 	if( toDelete )
 		delete rootItem;
@@ -194,7 +202,7 @@ QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 			return QIcon(":/CVpublic_var.png");
 			break;
 		case XSLModelData::etTemplate:
-			return QIcon(":/CVpublic_meth.png");
+			return QIcon(":/Chtml_template.png");
 			break;
 		default:
 			return QVariant();

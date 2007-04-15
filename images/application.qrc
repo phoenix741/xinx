@@ -36,5 +36,8 @@
         <file>undo.png</file>
         <file>usa.png</file>
         <file>wrap.png</file>
+        <file>Chtml_value.png</file>
+        <file>Chtml_template.png</file>
+        <file>Chtml_balise.png</file>
     </qresource>
 </RCC>

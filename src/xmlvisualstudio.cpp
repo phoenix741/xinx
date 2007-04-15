@@ -67,8 +67,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 
 	m_lastPlace    = QDir::currentPath();
 
+	completionContents = new Completion();
 	m_javaObjects      = new ObjectsView();
-	completionNodeList = new CplNodeList();
 
 	m_findDialog       = new FindDialog(this);
 	connect( m_findDialog, SIGNAL(find(QString, QString, FindDialog::FindOptions)), this, SLOT(findFirst(QString, QString, FindDialog::FindOptions)) );
@@ -111,12 +111,7 @@ void XMLVisualStudio::readSettings() {
 	m_javaObjects->setPath( xinxConfig->objectDescriptionPath() );
 	m_javaObjects->loadFiles();
   
-  	/* New Completion method */
-	if( completionContents ) delete completionContents;
-	completionContents = new Completion( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
-	/* Old Completion method */
-	completionNodeList->setPath( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
-	completionNodeList->loadFiles();
+	completionContents->setPath( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
 
 	m_xslContentDock->setVisible( xinxConfig->isDockSet( XINXConfig::contents ) );
 	m_webServicesDock->setVisible( xinxConfig->isDockSet( XINXConfig::services ) );
