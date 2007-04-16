@@ -32,6 +32,7 @@ class XSLModelData;
 class XSLValueCompletionModel;
 class XSLParamCompletionModel;
 class XSLBaliseCompletionModel;
+class QModelIndex;
 
 class XMLProcessor : public TextProcessor {
 	Q_OBJECT
@@ -49,7 +50,7 @@ public slots:
 	virtual void updateModel();
 	
 protected slots:
-	void insertCompletion(const QString& completion);
+	void insertCompletion( const QModelIndex& index );
 
 private:
 	enum cursorPosition {
@@ -63,6 +64,7 @@ private:
 	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
 	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
 	int insertCompletionBalises( QTextCursor & tc, QString node );
+	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type );
 	
 	cursorPosition editPosition( const QTextCursor & cursor );
 	QString m_nodeName;

@@ -102,6 +102,8 @@ void XMLVisualStudio::createDockWindows() {
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
+
+	m_projectDirectoryTreeView->header()->hide();
 }
 
 void XMLVisualStudio::readSettings() {

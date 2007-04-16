@@ -151,6 +151,10 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 	
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
 			return data->name();
+		
+		if( role == Qt::UserRole ) {
+			return (int)data->type();
+		}
 	} else {
 		int value_row = index.row() - m_objList.count(); 
 		if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
@@ -158,8 +162,10 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 				return QIcon(":/Chtml_value.png");
 			if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
 				return completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
+			if( role == Qt::UserRole ) {
+				return -1;
+			}
 		}
-		
 	}
 	
 	return QVariant();
@@ -313,21 +319,21 @@ XMLProcessor::XMLProcessor( QTextEdit * widget, XSLProject * project, QObject * 
 	m_completerNode->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerNode->setCaseSensitivity( Qt::CaseInsensitive );
 	m_completerNode->setCompletionRole( Qt::DisplayRole );
-	connect( m_completerNode, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
+	connect( m_completerNode, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
    
 	m_completerParam = new QCompleter( this );
 	m_completerParam->setWidget( textEdit() );
 	m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
 	m_completerParam->setCompletionRole( Qt::DisplayRole );
-	connect( m_completerParam, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
+	connect( m_completerParam, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
 
 	m_completerValue = new QCompleter( this );
 	m_completerValue->setWidget( textEdit() );
 	m_completerValue->setCompletionMode( QCompleter::PopupCompletion );
 	m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
 	m_completerValue->setCompletionRole( Qt::DisplayRole );
-	connect( m_completerValue, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)) );
+	connect( m_completerValue, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
 	
 	m_modelData = new XSLModelData( NULL, project );
 	m_modelData->loadFromContent( textEdit()->toPlainText() );
@@ -490,20 +496,22 @@ void XMLProcessor::insertCompletionValue( QTextCursor & tc, QString node, QStrin
 
 int XMLProcessor::insertCompletionParam( QTextCursor & tc, QString node, bool movePosition ) {
 	int position = -1;
-	CompletionXMLBalise* balise = completionContents->balise( node );
-	foreach( CompletionXMLAttribute* attr, balise->attributes() ) {
-		if( attr->isDefault() ) {
-			int defaultValue = attr->defaultValue();
-			QString defaultValueString;
-			if( defaultValue >= 0 )
-				defaultValueString = attr->values().at( defaultValue );
-			tc.insertText( QString(" %1=\"%2\"").arg( attr->name() ).arg( defaultValueString ) );
-			if( defaultValueString.isEmpty() ) {
-				tc.movePosition( QTextCursor::PreviousCharacter );
-				position = tc.position();
-				tc.movePosition( QTextCursor::NextCharacter );
+	if( completionContents && completionContents->balise( node ) ) {
+		CompletionXMLBalise* balise = completionContents->balise( node );
+		foreach( CompletionXMLAttribute* attr, balise->attributes() ) {
+			if( attr->isDefault() ) {
+				int defaultValue = attr->defaultValue();
+				QString defaultValueString;
+				if( defaultValue >= 0 )
+					defaultValueString = attr->values().at( defaultValue );
+				tc.insertText( QString(" %1=\"%2\"").arg( attr->name() ).arg( defaultValueString ) );
+				if( defaultValueString.isEmpty() ) {
+					tc.movePosition( QTextCursor::PreviousCharacter );
+					position = tc.position();
+					tc.movePosition( QTextCursor::NextCharacter );
+				}
 			}
-		}
+		}	
 	}
 	if( ( position != -1 ) && ( movePosition ) )
 		tc.setPosition( position );
@@ -515,16 +523,19 @@ int XMLProcessor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
 
 	int position = -1, cnt = 0;
-	CompletionXMLBalise* balise = completionContents->balise( node );
-	foreach( CompletionXMLBalise* b, balise->balises() ) {
-		if( b->isDefault() ) {
-			tc.insertText( "\n" + indent + "\t" );
-			tc.insertText( "<" + b->name() );
-			int insertPosition = insertCompletionParam( tc, b->name(), false );
-			if( position == -1 ) position = insertPosition;
-			tc.insertText( ">" );
-			insertCompletionBalises( tc, b->name() );
-			cnt++;
+	
+	if( completionContents && completionContents->balise( node ) ) {
+		CompletionXMLBalise* balise = completionContents->balise( node );
+		foreach( CompletionXMLBalise* b, balise->balises() ) {
+			if( b->isDefault() ) {
+				tc.insertText( "\n" + indent + "\t" );
+				tc.insertText( "<" + b->name() );
+				int insertPosition = insertCompletionParam( tc, b->name(), false );
+				if( position == -1 ) position = insertPosition;
+				tc.insertText( ">" );
+				insertCompletionBalises( tc, b->name() );
+				cnt++;
+			}
 		}
 	}
 	if( cnt > 0 )
@@ -536,10 +547,39 @@ int XMLProcessor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	return position;
 } 
 
-void XMLProcessor::insertCompletion( const QString & completion ) {
-	qDebug() << "insertCompletion( " << completion << " )";
+void XMLProcessor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type ) {
+	QTextCursor tc2( tc );
+	tc2.movePosition( QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, value.length() );
+	
+	bool insertDollard = true;
+	QTextCursor tc3( tc2 );
+	tc3.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
+	if( tc3.selectedText() == "$" ) {
+		tc2.movePosition( QTextCursor::PreviousCharacter );
+		insertDollard = false;
+	}
+
+	if( completionContents && completionContents->balise( node ) ) {
+		CompletionXMLBalise* balise = completionContents->balise( node );
+		if( (balise->category() != "stylesheet") && ( ( type == (int)XSLModelData::etVariable ) || ( type == (int)XSLModelData::etTemplate ) )) {
+//			QMessageBox::warning(qApp->activeWindow(), "", "");
+			if( insertDollard && ( type == (int)XSLModelData::etVariable ) ) 
+				tc2.insertText( "{$" );
+			else
+				tc2.insertText( "{" );
+			tc.insertText( "}" );
+		} else
+		if( insertDollard && (balise->category() == "stylesheet") && ( type == (int)XSLModelData::etVariable ) ) {
+			tc2.insertText( "$" );
+		}
+	}
+}
+
+void XMLProcessor::insertCompletion( const QModelIndex& index ) {
 	QTextCursor tc = textEdit()->textCursor();
 	QCompleter * c = currentCompleter( tc );
+	QString completion = c->completionModel()->data( index ).toString();
+	qDebug() << "insertCompletion( " << completion << " )";
 	
 	for( int i = 0; i < c->completionPrefix().length(); i++ ) tc.deletePreviousChar();
 	tc.insertText( completion );
@@ -550,6 +590,10 @@ void XMLProcessor::insertCompletion( const QString & completion ) {
 	} else
 	if( pos == XMLProcessor::cpEditNodeName ) {
 		insertCompletionParam( tc, completion );
+	} else
+	if( pos == XMLProcessor::cpEditParamValue ) {
+		int type = c->completionModel()->data( index, Qt::UserRole ).toInt();
+		insertCompletionAccolade( tc, m_nodeName, m_paramName, completion, type );
 	}
 
 	textEdit()->setTextCursor( tc );
