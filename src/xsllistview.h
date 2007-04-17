@@ -106,6 +106,8 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 	
 	XSLModelData* modelData() { return rootItem; };
+protected slots:
+	void slotReset() { reset(); };
 private:
 	XSLModelData* rootItem;
 	bool toDelete;

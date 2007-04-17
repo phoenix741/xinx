@@ -71,12 +71,12 @@ XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *
 	refreshList();
 	
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
+//	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
 	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
+//	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
@@ -98,7 +98,7 @@ void XSLValueCompletionModel::refreshList() {
 	m_objList.clear();
 	refreshRecursive( rootItem );
 	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );
-	emit layoutChanged();
+	reset();
 }
 
 void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
@@ -548,6 +548,8 @@ int XMLProcessor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 } 
 
 void XMLProcessor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type ) {
+	Q_UNUSED( param );	
+	
 	QTextCursor tc2( tc );
 	tc2.movePosition( QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, value.length() );
 	
@@ -745,12 +747,6 @@ void XMLProcessor::keyPressEvent( QKeyEvent *e ) {
      QString completionPrefix = textUnderCursor( textEdit()->textCursor() );
 
      if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-		qDebug() << "keyPressEvent() : hide completer";
-		qDebug() << "keyPressEvent() :               isShortcut = " << isShortcut;
-		qDebug() << "keyPressEvent() :               hasModifier = " << hasModifier;
-		qDebug() << "keyPressEvent() :               e->text().isEmpty() = " << e->text().isEmpty();
-		qDebug() << "keyPressEvent() :               completionPrefix.length() = " << completionPrefix.length();
-		qDebug() << "keyPressEvent() :               eow.contains(e->text().right(1)) = " << eow.contains(e->text().right(1));
         c->popup()->hide();
         return;
      }

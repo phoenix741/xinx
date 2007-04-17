@@ -170,20 +170,20 @@ int XSLModelData::childCount() {
 XSLItemModel::XSLItemModel( QObject *parent, XSLProject * project ) : QAbstractItemModel( parent ) {
 	rootItem = new XSLModelData( NULL, project );
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	toDelete = true;
 }
 
 XSLItemModel::XSLItemModel( XSLModelData * data, QObject *parent ) : QAbstractItemModel( parent ) {
 	rootItem = data;
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	toDelete = false;
 }
 
 XSLItemModel::~XSLItemModel() {
 	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	disconnect( rootItem, SIGNAL( childReseted() ), this, SIGNAL( layoutChanged() ) );
+	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	if( toDelete )
 		delete rootItem;
 }
