@@ -449,8 +449,9 @@ bool FileEditor::saveFile( const QString & fileName ){
 	if( ( ! fileName.isEmpty() ) && ( ! m_fileName.isEmpty() ) && ( fileName != m_fileName ) ) {
 		bool isOldSpecifiqueFile = QFileInfo( m_fileName ).fileName().startsWith( m_project->specifPrefix().toLower() + "_" );
 		bool isNewSpecifiqueFile = QFileInfo( fileName ).fileName().startsWith( m_project->specifPrefix().toLower() + "_" );
-		QString destName = QDir( m_project->specifPath() ).absoluteFilePath( QFileInfo( m_fileName ).fileName() );
-		
+		QString infoFileName = QFileInfo( m_fileName ).fileName();
+		QString destName = QDir( QDir( m_project->specifPath() ).absoluteFilePath( xinxConfig->managedFile4Name( infoFileName ).customPath ) ).absoluteFilePath( infoFileName );
+				
 		if( (!isOldSpecifiqueFile) && isNewSpecifiqueFile )
 			QFile::copy( m_fileName, destName );
 	}
