@@ -1,6 +1,5 @@
 CONFIG +=   exceptions \
   qt \
-  thread \
   warn_on \
   debug
 DESTDIR +=   bin
