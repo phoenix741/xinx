@@ -28,7 +28,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/customdialogimpl.h \
   src/kcolorcombo.h \
   src/xinxconfig.h \
-  src/syntaxhighlighter.h
+  src/syntaxhighlighter.h \
+  src/finddialogimpl.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -57,7 +58,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/customdialogimpl.cpp \
   src/kcolorcombo.cpp \
   src/xinxconfig.cpp \
-  src/syntaxhighlighter.cpp
+  src/syntaxhighlighter.cpp \
+  src/finddialogimpl.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
