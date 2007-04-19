@@ -28,7 +28,7 @@ class XSLProject;
 class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
 Q_OBJECT
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	
 	void loadFromProject( XSLProject * );
 	void saveToProject( XSLProject * );

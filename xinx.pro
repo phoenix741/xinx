@@ -6,7 +6,8 @@ DESTDIR +=   bin
 FORMS +=   ui/about.ui \
   ui/custom.ui \
   ui/mainform.ui \
-  ui/projectproperty.ui
+  ui/projectproperty.ui \
+  ui/search.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \

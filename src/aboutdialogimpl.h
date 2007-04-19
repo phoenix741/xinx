@@ -26,7 +26,7 @@
 class AboutDialogImpl : public QDialog, public Ui::AboutDialog {
 	Q_OBJECT
 public:
-	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 private slots:
 };
 #endif

@@ -29,7 +29,7 @@ class SyntaxHighlighter;
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT
 public:
-	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	
 	void loadFromConfig( XINXConfig * config );
 	void saveToConfig( XINXConfig * config );
