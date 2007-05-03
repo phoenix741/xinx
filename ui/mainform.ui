@@ -34,13 +34,6 @@
      <height>29</height>
     </rect>
    </property>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
-   </widget>
    <widget class="QMenu" name="m_fileMenu" >
     <property name="title" >
      <string>&amp;File</string>
@@ -58,6 +51,28 @@
     <addaction name="separator" />
     <addaction name="m_exitAct" />
    </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="m_recentProjectMenu" >
+     <property name="title" >
+      <string>&amp;Recent project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectMenu" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="m_closeProjectAct" />
+    <addaction name="separator" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
+   </widget>
    <widget class="QMenu" name="m_windowsMenu" >
     <property name="title" >
      <string>&amp;Windows</string>
@@ -66,12 +81,20 @@
     <addaction name="m_previousTabAct" />
     <addaction name="separator" />
    </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
      <string>&amp;Search</string>
     </property>
     <addaction name="m_searchAct" />
     <addaction name="m_searchNextAct" />
+    <addaction name="m_searchPreviousAct" />
     <addaction name="separator" />
     <addaction name="m_replaceAct" />
    </widget>
@@ -100,28 +123,6 @@
     <addaction name="m_commentLineAct" />
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="m_recentProjectMenu" >
-     <property name="title" >
-      <string>&amp;Recent project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
-     </property>
-     <addaction name="m_openProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectMenu" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="m_closeProjectAct" />
-    <addaction name="separator" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -536,7 +537,13 @@
   </action>
   <action name="m_searchNextAct" >
    <property name="text" >
-    <string>Search previous/next</string>
+    <string>Search next</string>
+   </property>
+   <property name="iconText" >
+    <string>Search next</string>
+   </property>
+   <property name="toolTip" >
+    <string>Search next</string>
    </property>
    <property name="shortcut" >
     <string>F3</string>
@@ -638,6 +645,20 @@
    </property>
    <property name="text" >
     <string>Customize ...</string>
+   </property>
+  </action>
+  <action name="m_searchPreviousAct" >
+   <property name="text" >
+    <string>Search previous</string>
+   </property>
+   <property name="iconText" >
+    <string>Search previous</string>
+   </property>
+   <property name="toolTip" >
+    <string>Search previous</string>
+   </property>
+   <property name="shortcut" >
+    <string>Shift+F3</string>
    </property>
   </action>
  </widget>

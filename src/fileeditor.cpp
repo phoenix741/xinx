@@ -116,6 +116,8 @@ protected:
     void mouseDoubleClickEvent( QMouseEvent * event );
 
 private:
+	void key_home( bool );
+
 	XSLProject * m_project;
 	TextProcessor * m_processor;
 	QSyntaxHighlighter * m_highlighter;
@@ -183,29 +185,50 @@ void TextEditor::complete() {
 
 }
 
-void TextEditor::keyPressEvent(QKeyEvent *e) {
+void TextEditor::keyPressEvent( QKeyEvent *e ) {
 	if( m_processor ) 
 		m_processor->keyPressEvent( e );
 	else
 		parentKeyPressEvent(e);
-
 }
 
 void TextEditor::parentKeyPressEvent( QKeyEvent * e ) {
-	QTextEdit::keyPressEvent( e );
+	if ( e->key() == Qt::Key_Home && ( e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier ) ) {
+		key_home( e->modifiers() == Qt::ShiftModifier );
+		e->accept();
+	} else
+		QTextEdit::keyPressEvent( e );
 }
+
+void TextEditor::key_home( bool select ) {
+	QTextCursor cursor = textCursor();
+	int col = cursor.columnNumber();
+	cursor.movePosition( QTextCursor::StartOfLine, select ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor );
+	QTextCursor cursorStart( cursor );
+	QTextBlock b = cursorStart.block();
+	int i = 0;
+	while ( b.text().at(i) == ' ' || b.text().at(i) == '\t' ) {
+		cursorStart.movePosition( QTextCursor::NextCharacter, select ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor );
+		i++;
+	}
+	if( col == cursorStart.columnNumber() )
+		setTextCursor( cursor );
+	else
+		setTextCursor( cursorStart );
+}
+
 
 void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 	QPoint mousePosition = event->pos();
 	QString m_plainText = toPlainText();
     QTextCursor cursor = textCursor();
     int pos = cursor.position();
-    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ÀÁÂÄÃÅÆÇÈÉËÊÌÍÎÏÒÔÕÖÙÚÛÜÝ").contains( m_plainText.at( pos-1 ).toUpper()  ) )
+    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos-1 ).toUpper()  ) )
         pos--;
     cursor.setPosition(pos, QTextCursor::MoveAnchor);
     setTextCursor( cursor );
     //
-    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ÀÁÂÄÃÅÆÇÈÉËÊÌÍÎÏÒÔÕÖÙÚÛÜÝ").contains( m_plainText.at( pos ).toUpper()  ) )
+    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos ).toUpper()  ) )
         pos++;
     cursor.setPosition(pos, QTextCursor::KeepAnchor);
     setTextCursor( cursor );

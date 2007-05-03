@@ -21,6 +21,8 @@
 #ifndef XMLVISUALSTUDIO_H
 #define XMLVISUALSTUDIO_H
 //
+#include <QTextCursor>
+
 #include "ui_mainform.h"
 #include "replacedialogimpl.h"
 //
@@ -85,6 +87,7 @@ private slots:
 	void on_m_closeAllAct_triggered();
 	void on_m_searchAct_triggered();
 	void on_m_searchNextAct_triggered();
+	void on_m_searchPreviousAct_triggered();
 	void on_m_replaceAct_triggered();
 	void on_m_newProjectAct_triggered();
 	void on_m_openProjectAct_triggered();
@@ -140,7 +143,9 @@ private:
 	ReplaceDialogImpl * m_findDialog;
 	QString m_findExpression, m_replaceExpression;
 	struct ReplaceDialogImpl::FindOptions m_findOptions;
-	bool m_yesToAllReplace;
+	bool m_yesToAllReplace, m_searchInverse;
+	QTextCursor m_cursorStart, m_cursorEnd;
+	int m_nbFindedText;
 
 	/* Generix Object */
 	ObjectsView * m_javaObjects;
@@ -151,6 +156,7 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
 
 
 
