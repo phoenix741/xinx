@@ -7,12 +7,11 @@ FORMS +=   ui/about.ui \
   ui/custom.ui \
   ui/mainform.ui \
   ui/projectproperty.ui \
-  ui/search.ui
+  ui/replace.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \
   src/fileeditor.h \
-  src/finddialog.h \
   src/jseditor.h \
   src/jshighlighter.h \
   src/objectview.h \
@@ -29,7 +28,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/kcolorcombo.h \
   src/xinxconfig.h \
   src/syntaxhighlighter.h \
-  src/finddialogimpl.h
+  src/replacedialogimpl.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -41,7 +40,6 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/editor.cpp \
   src/editorcompletion.cpp \
   src/fileeditor.cpp \
-  src/finddialog.cpp \
   src/jseditor.cpp \
   src/jshighlighter.cpp \
   src/main.cpp \
@@ -59,7 +57,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/kcolorcombo.cpp \
   src/xinxconfig.cpp \
   src/syntaxhighlighter.cpp \
-  src/finddialogimpl.cpp
+  src/replacedialogimpl.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

@@ -22,7 +22,7 @@
 #define XMLVISUALSTUDIO_H
 //
 #include "ui_mainform.h"
-#include "finddialog.h"
+#include "replacedialogimpl.h"
 //
 
 #define MAXRECENTFILES 5
@@ -62,7 +62,7 @@ private slots:
 	void saveEditorAs(int index);
 
 	/* FindDialog slots */
-	void findFirst(const QString &, const QString &, const struct FindDialog::FindOptions &);
+	void findFirst(const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions &);
 
 	/* Editor Change */
 	void slotCurrentTabChanged(int);
@@ -137,9 +137,9 @@ private:
 	AboutDialogImpl * m_aboutDialog;
 
 	/* Find declaration */
-	FindDialog * m_findDialog;
+	ReplaceDialogImpl * m_findDialog;
 	QString m_findExpression, m_replaceExpression;
-	struct FindDialog::FindOptions m_findOptions;
+	struct ReplaceDialogImpl::FindOptions m_findOptions;
 	bool m_yesToAllReplace;
 
 	/* Generix Object */

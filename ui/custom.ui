@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
-    <height>353</height>
+    <width>511</width>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -348,20 +348,20 @@
     <widget class="QListWidget" name="listWidget" >
      <property name="minimumSize" >
       <size>
-       <width>96</width>
+       <width>128</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize" >
       <size>
-       <width>96</width>
+       <width>128</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="iconSize" >
       <size>
-       <width>60</width>
-       <height>60</height>
+       <width>70</width>
+       <height>70</height>
       </size>
      </property>
      <property name="movement" >

@@ -21,66 +21,49 @@
  **
  ****************************************************************************/
 
-#ifndef _FINDDIALOG_H
-#define _FINDDIALOG_H
-
-#include <QDialog>
-
-class QCheckBox;
-class QDialogButtonBox;
-class QGroupBox;
-class QLabel;
-class QLineEdit;
-class QPushButton;
-
-class FindDialog : public QDialog {
+#ifndef REPLACEDIALOGIMPL_H
+#define REPLACEDIALOGIMPL_H
+//
+#include "ui_replace.h"
+//
+class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog {
 	Q_OBJECT
 public:
 	struct FindOptions {
+		bool toReplace;
+
 		bool matchCase;
 		bool searchFromStart;
 		bool wholeWords;
-		bool backwardSearch;
-		bool selectionOnly;
 		bool regularExpression;
-		bool replace;
+
+		enum { SEARCHUP, SEARCHDOWN } searchDirection;
+		enum { SEARCHALL, SEARCHSELECTION } searchExtend;
 	};
-	FindDialog(QWidget *parent = 0);
-	
-	void setReplaceChecked(bool);
-	void setText(const QString &);
+
+	ReplaceDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	
 	void initialize();
-	
+	void setText( const QString & );
+	void setReplace( bool );
+
 	/** @src regular expression for search
 	    @dest result type
 	    @content the content find in the editor
 	*/
-	static QString replaceStr(const struct FindOptions &, const QString & src, const QString & dest, const QString & content);
-	
+	static QString replaceStr( const struct FindOptions &, const QString & src, const QString & dest, const QString & content );
+
 signals:
-	void find(const QString &, const QString &, const struct FindDialog::FindOptions &);
+	void find( const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions & );
 
 private slots:
-	void callFind();
-
-private:
-
-	QLabel *labelFind;
-	QCheckBox *replaceCheckBox;
-	QLineEdit *lineEditFind;
-	QLineEdit *lineEditReplace;
-	QCheckBox *caseCheckBox;
-	QCheckBox *fromStartCheckBox;
-	QCheckBox *wholeWordsCheckBox;
-	QCheckBox *searchSelectionCheckBox;
-	QCheckBox *backwardCheckBox;
-	QCheckBox *regularExpressionCheckBox;
-	QDialogButtonBox *buttonBox;
-	QPushButton *findButton;
-	QPushButton *closeButton;
-	QPushButton *moreButton;
-	QWidget *extension;
+	void on_m_findButton_clicked();
+	void on_m_replaceCheckBox_toggled(bool checked);
 };
-
 #endif
+
+
+
+
+
+

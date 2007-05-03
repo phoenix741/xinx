@@ -38,7 +38,7 @@
 #include "fileeditor.h"
 #include "objectview.h"
 #include "editorcompletion.h"
-#include "finddialog.h"
+#include "replacedialogimpl.h"
 #include "xsllistview.h"
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
@@ -70,8 +70,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	completionContents = new Completion();
 	m_javaObjects      = new ObjectsView();
 
-	m_findDialog       = new FindDialog(this);
-	connect( m_findDialog, SIGNAL(find(QString, QString, FindDialog::FindOptions)), this, SLOT(findFirst(QString, QString, FindDialog::FindOptions)) );
+	m_findDialog       = new ReplaceDialogImpl(this);
+	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
 
 	createDockWindows();
 	readSettings();
@@ -374,12 +374,14 @@ void XMLVisualStudio::on_m_searchAct_triggered() {
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}
 	m_findDialog->initialize();
-	m_findDialog->setReplaceChecked(false);
+	m_findDialog->setReplace(false);
 	m_findDialog->show();
 }
 
 void XMLVisualStudio::on_m_searchNextAct_triggered() {
 	assert( m_tabEditors->currentEditor() );
+	#define selectionOnly ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION )
+	#define backwardSearch ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP )
 	
 	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
 		QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
@@ -392,18 +394,18 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 			cursor.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
 			m_findOptions.searchFromStart = false;
 		} else
-		if( m_findOptions.selectionOnly && ! m_findOptions.backwardSearch )
+		if( selectionOnly && ! backwardSearch )
 			cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
 		else
-		if( m_findOptions.selectionOnly && m_findOptions.backwardSearch )
+		if( selectionOnly && backwardSearch )
 			cursor.setPosition ( selectionEnd, QTextCursor::MoveAnchor );
 		else
-		if( m_findOptions.backwardSearch )
+		if( backwardSearch )
 			cursor.setPosition ( selectionStart, QTextCursor::MoveAnchor );
 	
 	
 		QTextDocument::FindFlags flags;
-		if( m_findOptions.backwardSearch ) flags ^= QTextDocument::FindBackward;
+		if( backwardSearch ) flags ^= QTextDocument::FindBackward;
 		if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
 		if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
 	
@@ -414,8 +416,8 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 		}
 	
 		if( cursor.isNull() || 
-			( m_findOptions.selectionOnly && ( ( !m_findOptions.backwardSearch && cursor.position() > selectionEnd ) || 
-				( m_findOptions.backwardSearch && cursor.position() < selectionStart ) ) ) ) {
+			( selectionOnly && ( ( !backwardSearch && cursor.position() > selectionEnd ) || 
+				( backwardSearch && cursor.position() < selectionStart ) ) ) ) {
 			QMessageBox::StandardButton ret = QMessageBox::warning( this, 
 						tr("Application"), 
 						tr("Can found new occurence of word '%1'. Return to the beginning of the document ?").arg( m_findExpression ), 
@@ -430,21 +432,28 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 		} else {
 			textEdit->setTextCursor( cursor );
 			
-			if( m_findOptions.replace ) {
+			if( m_findOptions.toReplace ) {
 				QMessageBox::StandardButton ret = QMessageBox::Yes;
 			
+/*
+				if(! m_yesToAllReplace) {
+ 					QMessageBox messageBoxQuestion( QMessageBox::Question, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, this );
+					messageBoxQuestion.setWindowModality( Qt::NonModal );
+					ret = messageBoxQuestion.exec();
+				}
+*/
 				if(! m_yesToAllReplace) 
 					ret = QMessageBox::question(this, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel);
 	
 				switch(ret) {
 				case QMessageBox::Yes: 	
 					// Replace chaine
-					cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
+					cursor.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
 	
 					on_m_searchNextAct_triggered();
 					break;
 				case QMessageBox::YesToAll: 	
-					cursor.insertText( FindDialog::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
+					cursor.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, cursor.selectedText() ) );
 					m_yesToAllReplace = true;
 					on_m_searchNextAct_triggered();
 					m_yesToAllReplace = false;
@@ -467,7 +476,7 @@ void XMLVisualStudio::on_m_replaceAct_triggered() {
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}
 	m_findDialog->initialize();
-	m_findDialog->setReplaceChecked(true);
+	m_findDialog->setReplace(true);
 	m_findDialog->show();
 }
 
@@ -647,7 +656,7 @@ void XMLVisualStudio::open( const QString & filename ) {
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
-void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, const struct FindDialog::FindOptions & options) {
+void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options) {
 	m_findExpression    = chaine;
 	m_replaceExpression = dest;
 	m_findOptions       = options;
