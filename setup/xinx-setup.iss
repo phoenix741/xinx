@@ -41,6 +41,7 @@ Source: C:\Qt\4.2.3\bin\QtCore4.dll; DestDir: {app}; Components: application; Fl
 Source: C:\Qt\4.2.3\bin\QtGui4.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: ..\xml\completion.cpl; DestDir: {app}\xml; Components: application; Tasks: remplace_completion
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
+Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
 
 Source: ..\xinx.pro; DestDir: {app}\source; Components: source
 Source: ..\COPYING; DestDir: {app}\source; Components: source
@@ -54,6 +55,8 @@ Source: ..\ui\*.ui; DestDir: {app}\source\ui; Components: source
 Source: ..\rc\*.rc; DestDir: {app}\source\rc; Components: source
 Source: ..\translations\*.ts; DestDir: {app}\source\translations; Components: source
 Source: ..\xml\completion.cpl; DestDir: {app}\source\xml; Components: source
+;Source: ..\xml\*.xml; DestDir: {app}\source\xml; Flags: onlyifdoesntexist; Components: source
+Source: ..\xml\*.xsd; DestDir: {app}\source\xml; Flags: onlyifdoesntexist; Components: source
 Source: ..\setup\xinx-setup.iss; DestDir: {app}\source\setup; Components: source
 
 [Icons]
@@ -71,6 +74,7 @@ Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
 ;Name: objects; Description: Java Objects File
+Name: webservices; Description: WebServices File
 Name: source; Description: Source de l'Application; Types: full; Languages: 
 
 [Dirs]
