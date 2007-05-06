@@ -98,7 +98,7 @@ private slots:
 	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
 	void on_m_nextTabAct_triggered();
 	void on_m_previousTabAct_triggered();
-	void on_m_webServicesRefreshBtn_clicked();
+	void on_m_refreshWebServicesListAct_triggered();
 	void on_m_customApplicationAct_triggered();
 	void on_m_filtreLineEdit_textChanged(QString );
 	void on_m_projectDirectoryTreeView_doubleClicked(QModelIndex index);
@@ -156,6 +156,7 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
 
 
 

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>508</height>
+    <width>637</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,7 +18,7 @@
      <number>0</number>
     </property>
     <property name="spacing" >
-     <number>6</number>
+     <number>0</number>
     </property>
     <item row="0" column="0" >
      <widget class="TabEditor" name="m_tabEditors" />
@@ -30,7 +30,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>637</width>
      <height>29</height>
     </rect>
    </property>
@@ -50,43 +50,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="m_recentProjectMenu" >
-     <property name="title" >
-      <string>&amp;Recent project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
-     </property>
-     <addaction name="m_openProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectMenu" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="m_closeProjectAct" />
-    <addaction name="separator" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-   </widget>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -124,15 +87,68 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="m_recentProjectMenu" >
+     <property name="title" >
+      <string>&amp;Recent project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectMenu" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="m_closeProjectAct" />
+    <addaction name="separator" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
+   </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="enabled" >
+     <bool>false</bool>
+    </property>
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
+    <addaction name="m_webServicesFilePropertyAct" />
+   </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+   </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
    <addaction name="m_searchMenu" />
    <addaction name="m_projectMenu" />
+   <addaction name="m_webServicesMenu" />
    <addaction name="m_windowsMenu" />
    <addaction name="m_helpMenu" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="m_fileToolBar" >
+   <property name="windowTitle" >
+    <string>File Tool Bar</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -144,6 +160,9 @@
    <addaction name="m_saveAct" />
   </widget>
   <widget class="QToolBar" name="m_editToolBar" >
+   <property name="windowTitle" >
+    <string>Edit Tool Bar</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -156,7 +175,10 @@
    <addaction name="m_copyAct" />
    <addaction name="m_pasteAct" />
   </widget>
-  <widget class="QToolBar" name="toolBar" >
+  <widget class="QToolBar" name="m_searchToolBar" >
+   <property name="windowTitle" >
+    <string>Search Tool Bar</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -181,32 +203,9 @@
       <number>0</number>
      </property>
      <property name="spacing" >
-      <number>6</number>
+      <number>0</number>
      </property>
-     <item row="0" column="1" >
-      <widget class="QToolButton" name="m_webServicesRefreshBtn" >
-       <property name="text" >
-        <string>Refresh</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/wrap.png</iconset>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="0" colspan="2" >
       <widget class="QTreeView" name="m_webServicesTreeView" />
      </item>
     </layout>
@@ -273,6 +272,22 @@
      </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QToolBar" name="m_webServicesToolBar" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle" >
+    <string>WebServices Tool Bar</string>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="m_refreshWebServicesListAct" />
+   <addaction name="m_callWebServicesAct" />
   </widget>
   <action name="m_newAct" >
    <property name="icon" >
@@ -659,6 +674,27 @@
    </property>
    <property name="shortcut" >
     <string>Shift+F3</string>
+   </property>
+  </action>
+  <action name="m_refreshWebServicesListAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/wrap.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Refresh WebServices List</string>
+   </property>
+  </action>
+  <action name="m_webServicesFilePropertyAct" >
+   <property name="text" >
+    <string>WebServices File Property</string>
+   </property>
+  </action>
+  <action name="m_callWebServicesAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/resume.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Call WebServices</string>
    </property>
   </action>
  </widget>

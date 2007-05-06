@@ -7,7 +7,8 @@ FORMS +=   ui/about.ui \
   ui/custom.ui \
   ui/mainform.ui \
   ui/projectproperty.ui \
-  ui/replace.ui
+  ui/replace.ui \
+  ui/newservicefile.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \
@@ -28,7 +29,9 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/kcolorcombo.h \
   src/xinxconfig.h \
   src/syntaxhighlighter.h \
-  src/replacedialogimpl.h
+  src/replacedialogimpl.h \
+  src/webservicespropertydialogimpl.h \
+  src/xsddocument.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -57,7 +60,9 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/kcolorcombo.cpp \
   src/xinxconfig.cpp \
   src/syntaxhighlighter.cpp \
-  src/replacedialogimpl.cpp
+  src/replacedialogimpl.cpp \
+  src/webservicespropertydialogimpl.cpp \
+  src/xsddocument.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

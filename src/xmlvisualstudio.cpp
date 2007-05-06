@@ -48,6 +48,7 @@
 #include "xmlvisualstudio.h"
 
 #include "aboutdialogimpl.h"
+#include "webservicespropertydialogimpl.h"
 
 #include "xinxconfig.h"
 
@@ -306,6 +307,11 @@ void XMLVisualStudio::createStatusBar() {
 
 void XMLVisualStudio::on_m_newAct_triggered() {
 	m_tabEditors->newFileEditor();
+	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) {
+		WebServicesPropertyDialogImpl dlg;
+		dlg.setProject( m_xslProject );
+		dlg.exec();
+	}
 	updateActions();
 }
 
@@ -492,7 +498,6 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 	bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP );
 
 	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-	QTextDocument * document = textEdit->document();
 
 	m_cursorStart = textEdit->textCursor();
 	m_cursorEnd   = QTextCursor();
@@ -561,6 +566,8 @@ void XMLVisualStudio::on_m_newProjectAct_triggered() {
 			if( m_xslProject->webServicesModel() ) {
 				m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
 				m_webServicesDock->show();
+				m_webServicesMenu->setEnabled( true );
+				m_webServicesToolBar->setEnabled( true );
 			}
 
 			m_projectDirectoryTreeView->setModel( m_dirModel );
@@ -645,11 +652,11 @@ void XMLVisualStudio::on_m_previousTabAct_triggered() {
 	m_tabEditors->setCurrentIndex( ( m_tabEditors->currentIndex() - 1 ) % m_tabEditors->count() );
 }
 
-void XMLVisualStudio::on_m_webServicesRefreshBtn_clicked() {
+
+void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {
 	if( m_xslProject->projectType() == XSLProject::SERVICES )
 		m_xslProject->refreshWebServices();
 }
-
 
 void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	CustomDialogImpl * custom = new CustomDialogImpl( this );
@@ -875,6 +882,8 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		if( m_xslProject->webServicesModel() ) {
 			m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
 			m_webServicesDock->show();
+			m_webServicesMenu->setEnabled( true );
+			m_webServicesToolBar->setEnabled( true );
 		}
 
 		m_projectDirectoryTreeView->setModel( m_dirModel );
@@ -892,6 +901,8 @@ void XMLVisualStudio::closeProject( bool closeAll ) {
 
 		m_webServicesTreeView->setModel( NULL );
 		m_webServicesDock->hide();
+		m_webServicesMenu->setEnabled( false );
+		m_webServicesToolBar->setEnabled( false );
 		
 		on_m_saveProjectAct_triggered();
 		
@@ -921,6 +932,7 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 		updateRecentFiles();
 	}
 }
+
 
 
 

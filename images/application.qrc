@@ -4,12 +4,18 @@
         <file>CVpublic_slot.png</file>
         <file>CVpublic_var.png</file>
         <file>CVstruct.png</file>
+        <file>Chtml_balise.png</file>
+        <file>Chtml_template.png</file>
+        <file>Chtml_value.png</file>
         <file>Desktop.png</file>
+        <file>ajouter.png</file>
         <file>bug.png</file>
+        <file>dbgmemview.png</file>
         <file>doc.png</file>
         <file>editcopy.png</file>
         <file>editcut.png</file>
         <file>editpaste.png</file>
+        <file>exec.png</file>
         <file>exit.png</file>
         <file>fileclose.png</file>
         <file>filenew.png</file>
@@ -30,14 +36,14 @@
         <file>next.png</file>
         <file>nogood.png</file>
         <file>portugal.png</file>
+        <file>previous.png</file>
         <file>redo.png</file>
+        <file>resume.png</file>
         <file>spain.png</file>
         <file>splash.png</file>
+        <file>supprimer.png</file>
         <file>undo.png</file>
         <file>usa.png</file>
         <file>wrap.png</file>
-        <file>Chtml_value.png</file>
-        <file>Chtml_template.png</file>
-        <file>Chtml_balise.png</file>
     </qresource>
 </RCC>
