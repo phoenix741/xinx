@@ -322,7 +322,7 @@
    <sender>m_fromStartCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>m_DownRadioButton</receiver>
-   <slot>setOn(bool)</slot>
+   <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>114</x>
@@ -338,7 +338,7 @@
    <sender>m_fromStartCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>m_searchAllRadioButton</receiver>
-   <slot>setOn(bool)</slot>
+   <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>150</x>

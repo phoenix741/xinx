@@ -23,23 +23,36 @@
 
 #include <QString>
 #include <QList>
-
+#include <QMap>
+#include <QRegExp>
+#include <QDomElement>
 
 /* XSD Description */
 
 class XSDObject {
-	
+protected:
+	virtual void loadElement( const QDomElement & ) {};
+public:
 };
 
 class XSDAnnotation : public XSDObject {
+public:
+	XSDAnnotation( const QDomElement & element ) { loadElement( element ); };	
+
 	const QString & documentation() const { return m_documentation; };
+protected:
+	virtual void loadElement( const QDomElement & );
 private:
 	QString m_documentation;	
 };
 
 class XSDAnnotedObject : public XSDObject {
 public:
+	XSDAnnotedObject( const QDomElement & element ) { loadElement( element ); };	
+
 	XSDAnnotation * annotation() const { return m_annotation; };
+protected:
+	virtual void loadElement( const QDomElement & );
 private:
 	XSDAnnotation * m_annotation;
 };
@@ -56,8 +69,12 @@ private:
 
 class XSDComplexType : public XSDObject { /* xs:complexType */ // Type of element
 public:
+	XSDComplexType( const QDomElement & element ) { loadElement( element ); };	
+
 	const QString & name() const { return m_name; };
 	XSDType * type() const { return m_type; };
+protected:
+	virtual void loadElement( const QDomElement & ) {};
 private:
 	QString m_name;
 	XSDType * m_type;
@@ -95,39 +112,82 @@ private:
 
 class XSDIntegerBoudary : public XSDRestriction {
 public:
-	int minInclusive() const;
-	int maxInclusive() const;
+	int minInclusive() const { return m_minInclusive; };
+	int maxInclusive() const { return m_maxInclusive; };
+private:
+	int m_minInclusive, m_maxInclusive;
 };
 
 class XSDStringRegExp : public XSDRestriction {
 public:
-	const QRegExp & regexp();
+	const QRegExp & regexp() { return m_regexp; };
+private:
+	QRegExp m_regexp;
 };
 
 class XSDSimpleType : public XSDObject { /* xsl:simpleType */ // Type of attibute
-	const QString & name() const;
-	const XSDRestriction * restriction();
+public:
+	XSDSimpleType( const QDomElement & element ) { loadElement( element ); };	
+
+	const QString & name() const { return m_name; };
+	const XSDRestriction * restriction() { return m_restriction; };
+protected:
+	virtual void loadElement( const QDomElement & ) {};
+private:
+	QString m_name;
+	XSDRestriction * m_restriction;
 };
 
 class XSDElement : public XSDAnnotedObject { /* xs:sequence */
 public:
-	const QString & name() const;
-	const QString & typeName() const; 
-	const XSDType * type() const;
+	XSDElement( const QDomElement & element ) : XSDAnnotedObject( element ) { loadElement( element ); };	
+
+	const QString & name() const { return m_name; };
+	const QString & typeName() const { return m_typeName; }; 
+	const XSDType * type() const { return m_type; };
 	
-	unsigned int minOccurs() const;
-	unsigned int maxOccurs() const; // MAX for unbounded
+	unsigned int minOccurs() const { return m_minOccurs; };
+	unsigned int maxOccurs() const { return m_maxOccurs; }; // MAX for unbounded
+protected:
+	virtual void loadElement( const QDomElement & ) {};
+private:
+	QString m_name, m_typeName;
+	XSDType * m_type;
+	
+	unsigned int m_minOccurs, m_maxOccurs;
 };
 
 class XSDAttribute : public XSDAnnotedObject {
 public:
-	const QString & name() const;
-	const QString & typeName() const; 
-	const QString & defaultValue() const;
-	const XSDType * type() const;
+	XSDAttribute( const QDomElement & element ) : XSDAnnotedObject( element ) { loadElement( element ); };
 	
-	const QString & use() const;
+	const QString & name() const { return m_name; };
+	const QString & typeName() const { return m_typeName; }; 
+	const QString & defaultValue() const { return m_defaultValue; };
+	const XSDType * type() const { return m_type; };
+	
+	const QString & use() const { return m_use; };
+protected:
+	virtual void loadElement( const QDomElement & );
+private:
+	QString m_name, m_typeName, m_defaultValue, m_use;
+	XSDType * m_type;
 };
 
+class XSDSchema : public XSDObject {
+public:
+	XSDSchema(const QString &);
+
+	const QMap<QString,XSDElement*> & elements() const { return m_elements; };
+	const QMap<QString,XSDComplexType*> & complexType() const { return m_complexType; };
+	const QMap<QString,XSDSimpleType*> & simpleType() const { return m_simpleType; };
+private:
+	void loadFileByName( const QString & );
+	virtual void loadElement( const QDomElement & );
+
+	QMap<QString,XSDElement*> m_elements;
+	QMap<QString,XSDComplexType*> m_complexType;
+	QMap<QString,XSDSimpleType*> m_simpleType;
+};
 
 #endif // __XSDDOCUMENT_H__
