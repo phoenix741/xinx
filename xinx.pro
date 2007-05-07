@@ -8,7 +8,8 @@ FORMS +=   ui/about.ui \
   ui/mainform.ui \
   ui/newservicefile.ui \
   ui/projectproperty.ui \
-  ui/replace.ui
+  ui/replace.ui \
+  ui/resultatServices.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/customdialogimpl.h \
   src/editor.h \
@@ -31,7 +32,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xmlvisualstudio.h \
   src/xsddocument.h \
   src/xsllistview.h \
-  src/xslproject.h
+  src/xslproject.h \
+  src/serviceresultdialogimpl.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -62,7 +64,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xmlvisualstudio.cpp \
   src/xsddocument.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp
+  src/xslproject.cpp \
+  src/serviceresultdialogimpl.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

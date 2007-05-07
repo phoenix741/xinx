@@ -34,6 +34,7 @@ public:
 	
 	QString generateXMLFile();
 private slots:
+	void on_m_testButton_clicked();
 	void on_m_nextParamToolButton_clicked();
 	void on_m_nextFieldToolButton_clicked();
 	void on_m_previousParamToolButton_clicked();
@@ -48,6 +49,7 @@ private:
 	XSLProject * m_project;
 };
 #endif
+
 
 
 

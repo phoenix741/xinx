@@ -22,6 +22,7 @@
 
 #include "xslproject.h"
 #include "webservices.h"
+#include "serviceresultdialogimpl.h"
 //
 WebServicesPropertyDialogImpl::WebServicesPropertyDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f), m_project(NULL) {
@@ -162,6 +163,18 @@ QString WebServicesPropertyDialogImpl::generateXMLFile() {
 	QDomElement egx_ws = document.createElement( "egx_ws" );
 	document.appendChild( egx_ws );
 	
+	QDomElement ctx = document.createElement( "ctx" );
+	egx_ws.appendChild( ctx );
+	
+	if( ! m_entityLineEdit->text().isEmpty() )
+		ctx.setAttribute( "entity", m_entityLineEdit->text() );
+	if( ! m_userLineEdit->text().isEmpty() )
+		ctx.setAttribute( "user", m_userLineEdit->text() );
+	if( ! m_passwordLineEdit->text().isEmpty() )
+		ctx.setAttribute( "password", m_passwordLineEdit->text() );
+	if( ! m_targetLineEdit->text().isEmpty() )
+		ctx.setAttribute( "target", m_targetLineEdit->text() );
+	
 	QDomElement bean_in = document.createElement( "bean_in" );
 	egx_ws.appendChild( bean_in );
 	
@@ -169,11 +182,56 @@ QString WebServicesPropertyDialogImpl::generateXMLFile() {
 	bean_in.appendChild( api );
 	
 	api.setAttribute( "xmlns", "http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" );
-	api.setAttributeNS( "xmlns", "xsi", "http://www.w3.org/2001/XMLSchema-instance" );
-	api.setAttributeNS( "xsi", "schemaLocation", QString("http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common %1.xsd").arg( apiName ) );
+	api.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+	api.setAttribute( "xsi:schemaLocation", QString("http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common %1.xsd").arg( apiName ) );
 	
 	if( m_serviceTypeComboBox->currentIndex() == 0 ) {
 		api.setAttribute( "viewObjectName", m_viewObjectLineEdit->text() );
+		
+		if( ( serviceName == "retrieve" ) || ( serviceName == "update" ) || ( serviceName == "delete" ) || ( serviceName == "updateCreate" ) ) {
+			QDomElement retrieve = document.createElement( "retrieve" );
+			api.appendChild( retrieve );
+			
+			retrieve.setAttribute( "key", m_retrieveKeyLineEdit->text() );
+			for( int i = 0 ; i < m_paramTableWidget->rowCount() ; i++ ) {
+				QDomElement param = document.createElement( "param" );
+				retrieve.appendChild( param );
+					
+				param.setAttribute( "num", QString( "%1" ).arg( i + 1 ) );
+				if( ! m_paramTableWidget->item( i, 0 )->text().isEmpty() ) 
+					param.setAttribute( "value", m_paramTableWidget->item( i, 0 )->text() );
+				
+			}
+		} 
+		if( ( serviceName == "create" ) || ( serviceName == "update" ) || ( serviceName == "updateCreate" ) ) {
+			QDomElement row = document.createElement( "row" );
+			api.appendChild( row );
+			
+			row.setAttribute( "num", "1" );
+			
+			for( int i = 0 ; i < m_setTableWidget->rowCount() ; i++ ) {
+				QDomElement field = document.createElement( "field" );
+				row.appendChild( field );
+				
+				if( ! m_setTableWidget->item( i, 0 )->text().isEmpty() )
+					field.setAttribute( "name", m_setTableWidget->item( i, 0 )->text() );
+				if( ! m_setTableWidget->item( i, 1 )->text().isEmpty() )
+					field.setAttribute( "value", m_setTableWidget->item( i, 1 )->text() );
+			}
+		}
 	}
+	
+	return document.toString( 2 );
+}
+
+
+void WebServicesPropertyDialogImpl::on_m_testButton_clicked() {
+	ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
+	dlg->show();
+	
+	dlg->setInputStreamText( generateXMLFile() );
+	
+	dlg->exec();
+	delete dlg;
 }
 

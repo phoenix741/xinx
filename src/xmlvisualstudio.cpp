@@ -310,7 +310,11 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) {
 		WebServicesPropertyDialogImpl dlg;
 		dlg.setProject( m_xslProject );
-		dlg.exec();
+		if( dlg.exec() == QDialog::Accepted ) {
+			FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
+			QTextDocument *document = editor->textEdit()->document();
+			document->setPlainText( dlg.generateXMLFile() );
+		}
 	}
 	updateActions();
 }
