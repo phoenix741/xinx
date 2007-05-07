@@ -31,6 +31,8 @@ public:
 	WebServicesPropertyDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	
 	void setProject( XSLProject * project );
+	
+	QString generateXMLFile();
 private slots:
 	void on_m_nextParamToolButton_clicked();
 	void on_m_nextFieldToolButton_clicked();

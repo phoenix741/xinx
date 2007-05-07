@@ -145,3 +145,35 @@ void WebServicesPropertyDialogImpl::on_m_nextFieldToolButton_clicked() {
 	}
 }
 
+QString WebServicesPropertyDialogImpl::generateXMLFile() {
+	QString webServicesName, serviceName, apiName;
+	webServicesName = m_webServicesNameComboBox->currentText();
+	serviceName     = m_serviceNameComboBox->currentText();
+	
+	if( webServicesName == "crudManager" )
+		apiName = "CRUDManager" + serviceName + "In";
+	else
+	if( webServicesName == "gCEService" )
+		apiName = "GCEService" + serviceName + "In";
+	else
+		apiName = webServicesName + serviceName + "In";
+	
+	QDomDocument document;
+	QDomElement egx_ws = document.createElement( "egx_ws" );
+	document.appendChild( egx_ws );
+	
+	QDomElement bean_in = document.createElement( "bean_in" );
+	egx_ws.appendChild( bean_in );
+	
+	QDomElement api = document.createElement( apiName );
+	bean_in.appendChild( api );
+	
+	api.setAttribute( "xmlns", "http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" );
+	api.setAttributeNS( "xmlns", "xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+	api.setAttributeNS( "xsi", "schemaLocation", QString("http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common %1.xsd").arg( apiName ) );
+	
+	if( m_serviceTypeComboBox->currentIndex() == 0 ) {
+		api.setAttribute( "viewObjectName", m_viewObjectLineEdit->text() );
+	}
+}
+
