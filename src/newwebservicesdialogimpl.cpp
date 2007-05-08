@@ -51,6 +51,33 @@ void NewWebServicesDialogImpl::on_m_webServicesNameComboBox_currentIndexChanged(
 	}
 }
 
+WebServices * NewWebServicesDialogImpl::calledWebServices() {
+	QString webServicesName = m_webServicesNameComboBox->currentText();
+	
+	for( int i = 0; i < m_project->webServices().count(); i++ ) {
+		if( m_project->webServices()[ i ]->name() == webServicesName ) {
+			return m_project->webServices()[ i ];
+		}
+	}
+	
+	return NULL;
+}
+
+Operation NewWebServicesDialogImpl::calledOperation(){
+	QString serviceName = m_serviceNameComboBox->currentText();
+	WebServices * s = calledWebServices();
+	
+	for( int j = 0; j < s->operations().count(); j++ ) {
+		Operation op = (s->operations())[ j ];
+		if( op.name() == serviceName ) {
+			return op;
+		}
+	}
+	
+	return Operation("");
+}
+
+
 QString NewWebServicesDialogImpl::generateXMLFile() {
 	QString webServicesName, serviceName, apiName;
 	webServicesName = m_webServicesNameComboBox->currentText();

@@ -71,12 +71,12 @@ XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *
 	refreshList();
 	
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-//	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
+	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
 	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-//	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
+	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {

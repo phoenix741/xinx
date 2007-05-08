@@ -53,30 +53,6 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
-	/* Project file filtre */
-	void filtreChange();
-	
-	/* Manage files opened */
-	void slotCloseFile( int );
-	void slotRefreshFile( int );
-
-	void saveEditor(int index);
-	void saveEditorAs(int index);
-
-	/* FindDialog slots */
-	void findFirst(const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions &);
-
-	/* Editor Change */
-	void slotCurrentTabChanged(int);
-	void slotModelDeleted();
-	void slotModelCreated();
-	
-	/* Usefull for recent project */
-	
-	void openRecentProject();
-	
-	/* Auto slots */
-	
 	void on_m_newAct_triggered();
 	void on_m_openAct_triggered();
 	void on_m_saveAct_triggered();
@@ -102,6 +78,33 @@ private slots:
 	void on_m_customApplicationAct_triggered();
 	void on_m_filtreLineEdit_textChanged(QString );
 	void on_m_projectDirectoryTreeView_doubleClicked(QModelIndex index);
+	void on_m_callWebServicesAct_triggered();
+private slots:
+	/* Project file filtre */
+	void filtreChange();
+	
+	/* Manage files opened */
+	void slotCloseFile( int );
+	void slotRefreshFile( int );
+
+	void saveEditor(int index);
+	void saveEditorAs(int index);
+
+	/* FindDialog slots */
+	void findFirst(const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions &);
+
+	/* Editor Change */
+	void slotCurrentTabChanged(int);
+	void slotModelDeleted();
+	void slotModelCreated();
+	
+	/* Usefull for recent project */
+	
+	void openRecentProject();
+	
+	/* WebServices */
+	void webServicesReponse( QString query, QString response, QString errorCode, QString errorString );
+	
 private:
 	/* Create Window Menus, Tools, Status, Dock Bar */
   
@@ -156,6 +159,7 @@ private:
 	QAction * m_recentSeparator;
 };
 #endif
+
 
 
 

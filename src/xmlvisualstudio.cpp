@@ -51,6 +51,7 @@
 #include "newwebservicesdialogimpl.h"
 
 #include "xinxconfig.h"
+#include "serviceresultdialogimpl.h"
 
 #define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
@@ -572,6 +573,9 @@ void XMLVisualStudio::on_m_newProjectAct_triggered() {
 				m_webServicesDock->show();
 				m_webServicesMenu->setEnabled( true );
 				m_webServicesToolBar->setEnabled( true );
+			
+				for( int i = 0; i < m_xslProject->webServices().count(); i++ )
+					connect( m_xslProject->webServices()[i], SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
 			}
 
 			m_projectDirectoryTreeView->setModel( m_dirModel );
@@ -660,6 +664,23 @@ void XMLVisualStudio::on_m_previousTabAct_triggered() {
 void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {
 	if( m_xslProject->projectType() == XSLProject::SERVICES )
 		m_xslProject->refreshWebServices();
+}
+
+void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
+	assert( m_tabEditors->currentEditor() != NULL );
+	assert( m_xslProject );
+	
+	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		
+		NewWebServicesDialogImpl dlg;
+		dlg.setProject( m_xslProject );
+		if( dlg.exec() == QDialog::Accepted ) {
+			QStringList params;
+			params.append( ed->toPlainText() );
+			dlg.calledWebServices()->call( dlg.calledOperation(), params );
+		}
+	}
 }
 
 void XMLVisualStudio::on_m_customApplicationAct_triggered() {
@@ -888,6 +909,9 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 			m_webServicesDock->show();
 			m_webServicesMenu->setEnabled( true );
 			m_webServicesToolBar->setEnabled( true );
+			
+			for( int i = 0; i < m_xslProject->webServices().count(); i++ )
+				connect( m_xslProject->webServices()[i], SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
 		}
 
 		m_projectDirectoryTreeView->setModel( m_dirModel );
@@ -937,6 +961,13 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	}
 }
 
+void XMLVisualStudio::webServicesReponse( QString query, QString response, QString errorCode, QString errorString ) {
+	ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
+	dlg->setInputStreamText( query );
+	dlg->setOutputStreamText( response );
+	dlg->exec();
+	delete dlg;
+}
 
 
 

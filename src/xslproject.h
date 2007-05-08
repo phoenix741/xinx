@@ -84,8 +84,8 @@ public:
 	QStringList & serveurWeb() { return m_webServiceLink; };
 	
 	void refreshWebServices();
-	const QList<WebServices*> & webServices() const { return m_webServices; };
-	WebServicesModel * webServicesModel() const { return m_webServicesModel; };
+	const QList<WebServices*> & webServices() { return m_webServices; };
+	WebServicesModel * webServicesModel() { return m_webServicesModel; };
 
 	const QString & fileName() const;
 private:

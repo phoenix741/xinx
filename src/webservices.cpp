@@ -26,6 +26,8 @@
 #include <QUrl>
 #include <QIcon>
 
+#include <QDomElement>
+
 #include "webservices.h"
 #include "xslproject.h"
 
@@ -192,6 +194,32 @@ void WebServices::httpRequestFinished ( int id, bool error ) {
 		}  
 		
 		loadFromElement( document.documentElement() );
+		m_response->close();
+		m_http->disconnect();
+	}
+}
+
+void WebServices::httpSoapRequestFinished ( int id, bool error ) {
+	if( ( id == m_requestId ) && ( ! error ) ) {
+		m_response->seek( 0 );
+
+		
+		QDomDocument document;
+		QString errorStr;
+		int errorLine;
+		int errorColumn;  
+		if (!document.setContent( m_response, true, &errorStr, &errorLine, &errorColumn)) {
+			QMessageBox::information(qApp->activeWindow(), QObject::tr("Invok WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
+																						.arg(errorLine)
+	        			                      											.arg(errorColumn)
+																						.arg(errorStr));
+		    return;
+		}  
+		
+		emit soapResponse( m_query, document.toString(), QString(), QString() );
+		
+		m_response->close();
+		m_http->disconnect();
 	}
 }
 
@@ -238,8 +266,58 @@ Out:2
 </env:Envelope>
 */
 
-void WebServices::call( Operation operation, const QStringList & param, QString & errorCode, QString & errorString ) {
+void WebServices::call( Operation op, const QStringList & param ) {
+	QDomDocument document;
+	QDomElement envelope = document.createElement( "soap:Envelope" );
+	document.appendChild( envelope );
 	
+	envelope.setAttribute( "xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/" );
+	envelope.setAttribute( "xmlns:ns",   "urn:GCE" );
+	envelope.setAttribute( "xmlns:xsd", "http://www.w3.org/2001/XMLSchema" );
+	envelope.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+	envelope.setAttribute( "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/" );
+	
+	QDomElement body = document.createElement( "soap:Body" );
+	envelope.appendChild( body );
+	
+	body.setAttribute( "soap:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/" );
+
+	QDomElement operation = document.createElement( QString( "ns:%1" ).arg( op.name() ) );
+	body.appendChild( operation );
+	
+	for( int i = 0; i < op.inputParam().count(); i++ ) {
+		QDomElement param_elt = document.createElement( op.inputParam()[i].paramString() );
+		operation.appendChild( param_elt );
+		
+		param_elt.setAttribute( "xsi:type", op.inputParam()[i].paramType() );
+		
+		if( i < param.count() ) {
+			m_query += op.inputParam()[i].paramString() + "=\n" + param[i] + "\n";
+
+			QString query = param[i].simplified();
+			QDomText text = document.createTextNode( query );
+			param_elt.appendChild( text );
+		}
+	}
+	delete m_response;
+	m_response = new QBuffer();
+	m_response->open( QIODevice::ReadWrite );
+
+	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
+	m_http->setHost( queryUrl.host(), queryUrl.port() );
+	connect( m_http, SIGNAL( requestFinished(int,bool) ), this, SLOT(httpSoapRequestFinished(int,bool)) );
+
+	QByteArray buffer = document.toString().toUtf8();
+	buffer.truncate( buffer.size() - 1 );
+	
+	QHttpRequestHeader header( "POST", queryUrl.path() );
+	header.setValue( "Host", queryUrl.host() );
+	header.setValue( "Connection", "Keep-Alive" );
+	header.setContentLength( buffer.size() );
+	header.setContentType( "text/xml" );
+
+	m_requestId = m_http->request( header, buffer, m_response );
+//	m_requestId = m_http->post( queryUrl.path(), buffer, m_response ); 
 }
 
 

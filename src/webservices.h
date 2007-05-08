@@ -155,6 +155,7 @@ private:
 class WebServices;
 class QHttp;
 class QIODevice;
+class QBuffer;
 class XSLProject;
 
 class Parameter {
@@ -190,17 +191,19 @@ public:
 	WebServices( const QString & link, QObject * parent = 0 );
 
 	QString name() { return m_wsdl.name(); };
-	const QList<Operation> & operations() const { return m_list; };
+	const QList<Operation> & operations() { return m_list; };
 	
 	void askWSDL( const QString & link );
 	void loadFromElement( const QDomElement & element );
 	
-	void call( Operation operation, const QStringList & param, QString & errorCode, QString & errorString );
+	void call( Operation operation, const QStringList & param );
 signals:
 	void updated();	
+	void soapResponse( QString query, QString response, QString errorCode, QString errorString );
 	
 private slots:
 	void httpRequestFinished ( int id, bool error );
+	void httpSoapRequestFinished ( int id, bool error );
 private:
 	WSDL m_wsdl;
 
@@ -208,7 +211,8 @@ private:
 
 	int m_requestId;
 	QHttp * m_http;
-	QIODevice * m_response;
+	QBuffer * m_response;
+	QString m_query;
 };
 
 class WebServicesModel : public QAbstractItemModel {

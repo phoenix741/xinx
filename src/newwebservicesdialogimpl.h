@@ -25,6 +25,8 @@
 //
 
 class XSLProject;
+class WebServices;
+class Operation;
 
 class NewWebServicesDialogImpl : public QDialog, public Ui::NewWebServicesDialog {
 	Q_OBJECT
@@ -34,6 +36,8 @@ public:
 	void setProject( XSLProject * project );
 	
 	QString generateXMLFile();
+	WebServices * calledWebServices();
+	Operation calledOperation();
 private slots:
 	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
 private:
