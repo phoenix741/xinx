@@ -156,14 +156,16 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 			QString tnsInputMessage = operation.inputMessage().remove ( "tns:" );
 			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
 			foreach( WSDLPart part, inputMessage.parts() ) {
-				wsOperation.m_inputParam.append( part.name() );
+				Parameter param( part.name(), part.type() );
+				wsOperation.m_inputParam.append( param );
 			}
 			
 			
 			QString tnsOutputMessage = operation.outputMessage().remove ( "tns:" );
 			WSDLMessage outputMessage = m_wsdl.messages()[ tnsOutputMessage ];
 			foreach( WSDLPart part, outputMessage.parts() ) {
-				wsOperation.m_outputParam.append( part.name() );
+				Parameter param( part.name(), part.type() );
+				wsOperation.m_outputParam.append( param );
 			}
 			
 			m_list.append( wsOperation );
@@ -203,6 +205,45 @@ void WebServices::askWSDL( const QString & link ) {
 	m_requestId = m_http->get( wsdlUrl.path() + "?WSDL", m_response ); 
 }
 
+/* 
+In:
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<soap:Body soap:encodingStyle="http://schema.xmlsoap.org/soap/encoding/">
+		<ns:retrieve>
+			<String_1 xsi:type="xsd:string"></String1>
+		</ns:retrieve>
+	</soap:Body>
+</soap:Envelope>
+
+Out:
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<env:Body>
+		<env:Fault>
+			<faultcode>env:Server</faultcode>
+			<faultstring>Internal Server Error (...)</faultstring>
+		</env:Fault>
+	</env:Body>
+</env:Envelope>
+
+Out:2
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<env:Body>
+		<ns0:retrieveReponse env:encoding...>
+			<result xsi:type="xsd:string">
+			</result>
+		</ns0:retrieveReponse>
+	</env:Body>
+</env:Envelope>
+*/
+
+void WebServices::call( Operation operation, const QStringList & param, QString & errorCode, QString & errorString ) {
+	
+}
+
+
+/* WebServicesModel */
 
 WebServicesModel::WebServicesModel( QObject *parent, XSLProject * project ) : QAbstractItemModel( parent ), m_project( project ) {
 	for( int i = 0; i < m_project->webServices().count(); i++ ) {

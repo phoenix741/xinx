@@ -24,63 +24,39 @@
 #include "webservices.h"
 #include "serviceresultdialogimpl.h"
 //
-WebServicesPropertyDialogImpl::WebServicesPropertyDialogImpl( QWidget * parent, Qt::WFlags f) 
+CrudWebServicesPropertyDialogImpl::CrudWebServicesPropertyDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f), m_project(NULL) {
 	setupUi(this);
 }
 //
 
-void WebServicesPropertyDialogImpl::setProject( XSLProject * project ) {
+void CrudWebServicesPropertyDialogImpl::setProject( XSLProject * project ) {
 	m_project = project;
-	
-	m_webServicesNameComboBox->clear();
-	
-	if( m_project ) {
-		foreach( WebServices* service, m_project->webServices() ) {
-			m_webServicesNameComboBox->addItem( QIcon(":/CVstruct.png"), service->name() );
-		}
-	}
-	on_m_webServicesNameComboBox_currentIndexChanged( m_webServicesNameComboBox->currentIndex() );
 }
 
-void WebServicesPropertyDialogImpl::on_m_webServicesNameComboBox_currentIndexChanged( int index ) {
-	m_serviceNameComboBox->clear();
-	if( m_project ) {
-		if( m_project->webServices()[ index ]->name() == "crudManager" ) 
-			m_serviceTypeComboBox->setCurrentIndex( 0 );		
-		else 
-			m_serviceTypeComboBox->setCurrentIndex( 1 );		
-		
-		foreach( Operation operation, m_project->webServices()[ index ]->operations() ) {
-			m_serviceNameComboBox->addItem( QIcon(":/CVpublic_slot.png"), operation.name() );
-		}
-	}
-}
-
-
-void WebServicesPropertyDialogImpl::on_m_addParamToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_addParamToolButton_clicked() {
 	m_paramTableWidget->setRowCount( m_paramTableWidget->rowCount() + 1 );
 	m_paramTableWidget->setCurrentCell( m_paramTableWidget->rowCount() - 1, 0 );
 	m_paramTableWidget->editItem( m_paramTableWidget->item( m_paramTableWidget->rowCount() - 1, 0 ) );
 }
 
-void WebServicesPropertyDialogImpl::on_m_addFieldToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_addFieldToolButton_clicked() {
 	m_setTableWidget->setRowCount( m_setTableWidget->rowCount() + 1 );
 	m_setTableWidget->setCurrentCell( m_setTableWidget->rowCount() - 1, 0 );
 	m_setTableWidget->editItem( m_setTableWidget->item( m_setTableWidget->rowCount() - 1, 0 ) );
 }
 
 
-void WebServicesPropertyDialogImpl::on_m_delParamToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_delParamToolButton_clicked() {
 	m_paramTableWidget->removeRow( m_paramTableWidget->currentRow() );
 }
 
-void WebServicesPropertyDialogImpl::on_m_delFieldToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_delFieldToolButton_clicked() {
 	m_setTableWidget->removeRow( m_setTableWidget->currentRow() );
 }
 
 
-void WebServicesPropertyDialogImpl::on_m_previousParamToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_previousParamToolButton_clicked() {
 	int currentRow = m_paramTableWidget->currentRow(), precedentRow = currentRow - 1;
 	
 	if( currentRow > 0 ) {
@@ -94,7 +70,7 @@ void WebServicesPropertyDialogImpl::on_m_previousParamToolButton_clicked() {
 	}
 }
 
-void WebServicesPropertyDialogImpl::on_m_previousFieldToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_previousFieldToolButton_clicked() {
 	int currentRow = m_setTableWidget->currentRow(), precedentRow = currentRow - 1;
 	
 	if( currentRow > 0 ) {
@@ -114,7 +90,7 @@ void WebServicesPropertyDialogImpl::on_m_previousFieldToolButton_clicked() {
 }
 
 
-void WebServicesPropertyDialogImpl::on_m_nextParamToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_nextParamToolButton_clicked() {
 	int currentRow = m_paramTableWidget->currentRow(), nextRow = currentRow + 1;
 	
 	if( nextRow < m_paramTableWidget->rowCount() ) {
@@ -128,7 +104,7 @@ void WebServicesPropertyDialogImpl::on_m_nextParamToolButton_clicked() {
 	}
 }
 
-void WebServicesPropertyDialogImpl::on_m_nextFieldToolButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_nextFieldToolButton_clicked() {
 	int currentRow = m_setTableWidget->currentRow(), nextRow = currentRow + 1;
 	
 	if( nextRow < m_setTableWidget->rowCount() ) {
@@ -146,10 +122,10 @@ void WebServicesPropertyDialogImpl::on_m_nextFieldToolButton_clicked() {
 	}
 }
 
-QString WebServicesPropertyDialogImpl::generateXMLFile() {
+QString CrudWebServicesPropertyDialogImpl::generateXMLFile() {
 	QString webServicesName, serviceName, apiName;
-	webServicesName = m_webServicesNameComboBox->currentText();
-	serviceName     = m_serviceNameComboBox->currentText();
+//	webServicesName = m_webServicesNameComboBox->currentText();
+//	serviceName     = m_serviceNameComboBox->currentText();
 	
 	if( webServicesName == "crudManager" )
 		apiName = "CRUDManager" + serviceName + "In";
@@ -185,39 +161,37 @@ QString WebServicesPropertyDialogImpl::generateXMLFile() {
 	api.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
 	api.setAttribute( "xsi:schemaLocation", QString("http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common %1.xsd").arg( apiName ) );
 	
-	if( m_serviceTypeComboBox->currentIndex() == 0 ) {
-		api.setAttribute( "viewObjectName", m_viewObjectLineEdit->text() );
+	api.setAttribute( "viewObjectName", m_viewObjectLineEdit->text() );
 		
-		if( ( serviceName == "retrieve" ) || ( serviceName == "update" ) || ( serviceName == "delete" ) || ( serviceName == "updateCreate" ) ) {
-			QDomElement retrieve = document.createElement( "retrieve" );
-			api.appendChild( retrieve );
-			
-			retrieve.setAttribute( "key", m_retrieveKeyLineEdit->text() );
-			for( int i = 0 ; i < m_paramTableWidget->rowCount() ; i++ ) {
-				QDomElement param = document.createElement( "param" );
-				retrieve.appendChild( param );
+	if( ( serviceName == "retrieve" ) || ( serviceName == "update" ) || ( serviceName == "delete" ) || ( serviceName == "updateCreate" ) ) {
+		QDomElement retrieve = document.createElement( "retrieve" );
+		api.appendChild( retrieve );
+		
+		retrieve.setAttribute( "key", m_retrieveKeyLineEdit->text() );
+		for( int i = 0 ; i < m_paramTableWidget->rowCount() ; i++ ) {
+			QDomElement param = document.createElement( "param" );
+			retrieve.appendChild( param );
 					
-				param.setAttribute( "num", QString( "%1" ).arg( i + 1 ) );
-				if( ! m_paramTableWidget->item( i, 0 )->text().isEmpty() ) 
-					param.setAttribute( "value", m_paramTableWidget->item( i, 0 )->text() );
-				
-			}
-		} 
-		if( ( serviceName == "create" ) || ( serviceName == "update" ) || ( serviceName == "updateCreate" ) ) {
-			QDomElement row = document.createElement( "row" );
-			api.appendChild( row );
+			param.setAttribute( "num", QString( "%1" ).arg( i + 1 ) );
+			if( ! m_paramTableWidget->item( i, 0 )->text().isEmpty() ) 
+				param.setAttribute( "value", m_paramTableWidget->item( i, 0 )->text() );
 			
-			row.setAttribute( "num", "1" );
-			
-			for( int i = 0 ; i < m_setTableWidget->rowCount() ; i++ ) {
-				QDomElement field = document.createElement( "field" );
-				row.appendChild( field );
+		}
+	} 
+	if( ( serviceName == "create" ) || ( serviceName == "update" ) || ( serviceName == "updateCreate" ) ) {
+		QDomElement row = document.createElement( "row" );
+		api.appendChild( row );
+		
+		row.setAttribute( "num", "1" );
+		
+		for( int i = 0 ; i < m_setTableWidget->rowCount() ; i++ ) {
+			QDomElement field = document.createElement( "field" );
+			row.appendChild( field );
 				
-				if( ! m_setTableWidget->item( i, 0 )->text().isEmpty() )
-					field.setAttribute( "name", m_setTableWidget->item( i, 0 )->text() );
-				if( ! m_setTableWidget->item( i, 1 )->text().isEmpty() )
-					field.setAttribute( "value", m_setTableWidget->item( i, 1 )->text() );
-			}
+			if( ! m_setTableWidget->item( i, 0 )->text().isEmpty() )
+				field.setAttribute( "name", m_setTableWidget->item( i, 0 )->text() );
+			if( ! m_setTableWidget->item( i, 1 )->text().isEmpty() )
+				field.setAttribute( "value", m_setTableWidget->item( i, 1 )->text() );
 		}
 	}
 	
@@ -225,7 +199,7 @@ QString WebServicesPropertyDialogImpl::generateXMLFile() {
 }
 
 
-void WebServicesPropertyDialogImpl::on_m_testButton_clicked() {
+void CrudWebServicesPropertyDialogImpl::on_m_testButton_clicked() {
 	ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
 	dlg->show();
 	

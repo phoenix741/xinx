@@ -18,41 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef WEBSERVICESPROPERTYDIALOGIMPL_H
-#define WEBSERVICESPROPERTYDIALOGIMPL_H
+#ifndef NEWWEBSERVICESDIALOGIMPL_H
+#define NEWWEBSERVICESDIALOGIMPL_H
 //
-#include "ui_crudpropertyservicefile.h"
+#include "ui_newservicefile.h"
 //
+
 class XSLProject;
 
-class CrudWebServicesPropertyDialogImpl : public QDialog, public Ui::CrudWebServicesPropertyDialog {
+class NewWebServicesDialogImpl : public QDialog, public Ui::NewWebServicesDialog {
 	Q_OBJECT
 public:
-	CrudWebServicesPropertyDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	
+	NewWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+
 	void setProject( XSLProject * project );
 	
 	QString generateXMLFile();
 private slots:
-	void on_m_testButton_clicked();
-	void on_m_nextParamToolButton_clicked();
-	void on_m_nextFieldToolButton_clicked();
-	void on_m_previousParamToolButton_clicked();
-	void on_m_previousFieldToolButton_clicked();
-	void on_m_delParamToolButton_clicked();
-	void on_m_delFieldToolButton_clicked();
-	void on_m_addParamToolButton_clicked();
-	void on_m_addFieldToolButton_clicked();
+	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
 private:
 	XSLProject * m_project;
 };
 #endif
-
-
-
-
-
-
 
 
 

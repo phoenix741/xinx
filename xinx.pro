@@ -4,6 +4,7 @@ CONFIG +=   debug \
   warn_on
 DESTDIR +=   bin
 FORMS +=   ui/about.ui \
+  ui/crudpropertyservicefile.ui \
   ui/custom.ui \
   ui/mainform.ui \
   ui/newservicefile.ui \
@@ -18,9 +19,11 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/jseditor.h \
   src/jshighlighter.h \
   src/kcolorcombo.h \
+  src/newwebservicesdialogimpl.h \
   src/objectview.h \
   src/projectpropertyimpl.h \
   src/replacedialogimpl.h \
+  src/serviceresultdialogimpl.h \
   src/syntaxhighlighter.h \
   src/tabeditor.h \
   src/uniqueapplication.h \
@@ -32,8 +35,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xmlvisualstudio.h \
   src/xsddocument.h \
   src/xsllistview.h \
-  src/xslproject.h \
-  src/serviceresultdialogimpl.h
+  src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -50,9 +52,11 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/jshighlighter.cpp \
   src/kcolorcombo.cpp \
   src/main.cpp \
+  src/newwebservicesdialogimpl.cpp \
   src/objectview.cpp \
   src/projectpropertyimpl.cpp \
   src/replacedialogimpl.cpp \
+  src/serviceresultdialogimpl.cpp \
   src/syntaxhighlighter.cpp \
   src/tabeditor.cpp \
   src/uniqueapplication.cpp \
@@ -64,8 +68,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xmlvisualstudio.cpp \
   src/xsddocument.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp \
-  src/serviceresultdialogimpl.cpp
+  src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

@@ -157,19 +157,29 @@ class QHttp;
 class QIODevice;
 class XSLProject;
 
+class Parameter {
+public:
+	Parameter( QString ParamString, QString ParamType ) : m_paramString( ParamString ), m_paramType( ParamType ) { };
+	const QString & paramString() const { return m_paramString; };
+	const QString & paramType() const { return m_paramType; };
+private:
+	QString m_paramString;
+	QString m_paramType;
+};
+
 class Operation {
 public:
 	Operation( QString name ) : m_name( name ) {};
 
 	QString name() { return m_name; };
 	
-	const QStringList & inputParam() { return m_inputParam; };
-	const QStringList & outputParam() { return m_outputParam; };
+	const QList<Parameter> & inputParam() { return m_inputParam; };
+	const QList<Parameter> & outputParam() { return m_outputParam; };
 private:
 	QString m_name;
 	
-	QStringList m_inputParam;
-	QStringList m_outputParam;
+	QList<Parameter> m_inputParam;
+	QList<Parameter> m_outputParam;
 	
 friend class WebServices;
 };
@@ -184,6 +194,8 @@ public:
 	
 	void askWSDL( const QString & link );
 	void loadFromElement( const QDomElement & element );
+	
+	void call( Operation operation, const QStringList & param, QString & errorCode, QString & errorString );
 signals:
 	void updated();	
 	

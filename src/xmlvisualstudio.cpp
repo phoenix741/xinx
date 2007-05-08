@@ -48,7 +48,7 @@
 #include "xmlvisualstudio.h"
 
 #include "aboutdialogimpl.h"
-#include "webservicespropertydialogimpl.h"
+#include "newwebservicesdialogimpl.h"
 
 #include "xinxconfig.h"
 
@@ -308,7 +308,7 @@ void XMLVisualStudio::createStatusBar() {
 void XMLVisualStudio::on_m_newAct_triggered() {
 	m_tabEditors->newFileEditor();
 	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) {
-		WebServicesPropertyDialogImpl dlg;
+		NewWebServicesDialogImpl dlg;
 		dlg.setProject( m_xslProject );
 		if( dlg.exec() == QDialog::Accepted ) {
 			FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
