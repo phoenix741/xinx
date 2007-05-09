@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=XINX
-AppVerName=XINX 0.6-5 beta
+AppVerName=XINX 0.6.5 beta
 DefaultDirName={pf}\XINX
 DefaultGroupName=XINX
 OutputDir=.\
