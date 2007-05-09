@@ -1,3 +1,22 @@
+XINX - 0.6.5.1
+==============
+- 0000050: [Interface graphique] Remplacement de chaine : replace all (phoenix)
+- 0000057: [Divers] Sélection des mots contenant des éè.. (phoenix)
+- 0000025: [Interface graphique] Historique des mots recherchés (phoenix)
+- 0000068: [Editeur] Plantage de XINX après un replace all (phoenix)
+- 0000069: [Editeur] Doublons dans liste des mots recherchés (phoenix)
+
+XINX - 0.6.5.0
+==============
+- 0000056: [Editeur] Utilisation de SHIFT+Home (phoenix)
+- 0000047: [Editeur] Remplacement de chaine (phoenix)
+- 0000004: [Completion] Attribut par défaut (phoenix)
+- 0000063: [Completion] Respect de la casse sur la complétion (phoenix)
+- 0000054: [Completion] Complétion imcompléte (phoenix)
+- 0000064: [Editeur] Il faudrait pouvoir faire Shift + F3 pour faire une recherche arrière (phoenix)
+- 0000049: [Editeur] Recherche sur la séléction (phoenix)
+- 0000065: [Divers] Personalisation d'un fichier javascript (phoenix)
+
 XINX - 0.6-4
 ============
 - 0000051: [Evolution] Répertoire par défaut pour les projets (phoenix)
