@@ -52,9 +52,9 @@ void ReplaceDialogImpl::setReplace( bool value ) {
 }
 
 void ReplaceDialogImpl::on_m_findButton_clicked() {
-	if( ! m_comboFind->lineEdit()->text().isEmpty() )
+	if( ! m_comboFind->lineEdit()->text().isEmpty() && ( m_comboFind->findText( m_comboFind->lineEdit()->text() ) == -1 ) )
 		m_comboFind->addItem( m_comboFind->lineEdit()->text() );
-	if( ! m_comboReplace->lineEdit()->text().isEmpty() )
+	if( ! m_comboReplace->lineEdit()->text().isEmpty() && ( m_comboReplace->findText( m_comboFind->lineEdit()->text() ) == -1 ) )
 		m_comboReplace->addItem( m_comboReplace->lineEdit()->text() );
 	
 	struct FindOptions options;
