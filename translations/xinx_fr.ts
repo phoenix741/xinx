@@ -1302,75 +1302,75 @@ Rapporteur d&apos;anomalies et d&apos;évolutions : Mickaël BERTELOOT, Kamal B.
     <message>
         <location filename="../ui/replace.ui" line="33"/>
         <source>&amp;Replace by :</source>
-        <translation>&amp;Replacer par :</translation>
+        <translation>&amp;Remplacer par :</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="55"/>
+        <location filename="../ui/replace.ui" line="61"/>
         <source>Find &amp;what :</source>
         <translation>R&amp;echercher :</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="98"/>
+        <location filename="../ui/replace.ui" line="107"/>
         <source>Direction</source>
         <translation>Sens</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="110"/>
+        <location filename="../ui/replace.ui" line="119"/>
         <source>Go up</source>
         <translation>En haut</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="117"/>
+        <location filename="../ui/replace.ui" line="126"/>
         <source>Go down</source>
         <translation>En bas</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="143"/>
+        <location filename="../ui/replace.ui" line="152"/>
         <source>Extend</source>
         <translation>Etendue</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="155"/>
+        <location filename="../ui/replace.ui" line="164"/>
         <source>All</source>
         <translation>Tous</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="165"/>
+        <location filename="../ui/replace.ui" line="174"/>
         <source>Selection</source>
-        <translation>Selection</translation>
+        <translation>Sélection</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="175"/>
+        <location filename="../ui/replace.ui" line="184"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="187"/>
+        <location filename="../ui/replace.ui" line="196"/>
         <source>Match c&amp;ase</source>
-        <translation>Senssible à la c&amp;asse</translation>
+        <translation>Sensible à la c&amp;asse</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="194"/>
+        <location filename="../ui/replace.ui" line="203"/>
         <source>Search from &amp;start</source>
         <translation>Chercher depuis le &amp;début</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="201"/>
+        <location filename="../ui/replace.ui" line="210"/>
         <source>&amp;Whole words</source>
         <translation>&amp;Mot entier</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="208"/>
+        <location filename="../ui/replace.ui" line="217"/>
         <source>&amp;Use regular expression</source>
-        <translation>&amp;Utiliser des expressions régulière</translation>
+        <translation>&amp;Utiliser des expressions régulières</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="241"/>
+        <location filename="../ui/replace.ui" line="250"/>
         <source>Find</source>
         <translation>Rechercher</translation>
     </message>
     <message>
-        <location filename="../ui/replace.ui" line="248"/>
+        <location filename="../ui/replace.ui" line="257"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -1480,7 +1480,7 @@ Rapporteur d&apos;anomalies et d&apos;évolutions : Mickaël BERTELOOT, Kamal B.
         <translation>Imprimer</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="823"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="824"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
@@ -1490,44 +1490,44 @@ Rapporteur d&apos;anomalies et d&apos;évolutions : Mickaël BERTELOOT, Kamal B.
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="562"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="563"/>
         <source>Save a project</source>
         <translation>Sauver le projet</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="593"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="594"/>
         <source>Open a project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="751"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="752"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="825"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="826"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
         <translation>Le document %1 n&apos;a pas été modifié.
 Voulez-vous sauvegarder les changements ?</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="844"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="845"/>
         <source>Save standard XSL</source>
         <translation>Sauvegarder le fichier standard</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="889"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="890"/>
         <source>File %1 saved</source>
         <translation>Fichier %1 sauver</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="952"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="953"/>
         <source>XINX</source>
         <translation>XINX</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="952"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="953"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>
@@ -1537,19 +1537,19 @@ Voulez-vous sauvegarder les changements ?</translation>
         <translation>Ouvrir un document text</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="876"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="877"/>
         <source>Save text file</source>
         <translation>Sauver un document text</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="806"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="807"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous vraiment réouvrir celui-ci ?</translation>
     </message>
     <message>
-        <location filename="../src/xmlvisualstudio.cpp" line="844"/>
+        <location filename="../src/xmlvisualstudio.cpp" line="845"/>
         <source>You&apos;re being to save standard file, do you whant make it specifique</source>
         <translation>Vous êtes sur le point d&apos;enregistre un fichier standard. Voulez-vous en faire une spécifique</translation>
     </message>
