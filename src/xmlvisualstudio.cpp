@@ -476,7 +476,8 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 					}
 				}
 			}
-			textEdit->setTextCursor( m_cursorStart );
+			if( ! m_cursorStart.isNull() )
+				textEdit->setTextCursor( m_cursorStart );
 		}
 	}
 	m_yesToAllReplace = false;
