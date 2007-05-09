@@ -1,4 +1,4 @@
-CONFIG +=   debug \
+CONFIG +=   release \
   exceptions \
   qt \
   warn_on
