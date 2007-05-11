@@ -505,7 +505,7 @@ int XMLProcessor::insertCompletionParam( QTextCursor & tc, QString node, bool mo
 				if( defaultValue >= 0 )
 					defaultValueString = attr->values().at( defaultValue );
 				tc.insertText( QString(" %1=\"%2\"").arg( attr->name() ).arg( defaultValueString ) );
-				if( defaultValueString.isEmpty() ) {
+				if( ( position == -1 ) && defaultValueString.isEmpty() ) {
 					tc.movePosition( QTextCursor::PreviousCharacter );
 					position = tc.position();
 					tc.movePosition( QTextCursor::NextCharacter );
