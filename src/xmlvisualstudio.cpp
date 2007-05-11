@@ -444,6 +444,8 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 			} else {
 				m_nbFindedText++;
 			
+				textEdit->setTextCursor( m_cursorStart );
+
 				if( m_findOptions.toReplace ) {
 					QMessageBox::StandardButton ret = QMessageBox::Yes;
 			
@@ -969,6 +971,7 @@ void XMLVisualStudio::webServicesReponse( QString query, QString response, QStri
 	dlg->exec();
 	delete dlg;
 }
+
 
 
 
