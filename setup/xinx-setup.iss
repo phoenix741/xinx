@@ -16,7 +16,7 @@ AppCopyright=Generix
 UserInfoPage=true
 UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
-VersionInfoVersion=0.6.5.1
+VersionInfoVersion=0.6.5.2
 VersionInfoCompany=Generix
 AppMutex=com.generix.xmlstudio.mutex
 
