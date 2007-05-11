@@ -1,7 +1,7 @@
 CONFIG +=   exceptions \
   qt \
   warn_on \
-  release
+  debug
 DESTDIR +=   bin
 FORMS +=   ui/about.ui \
   ui/crudpropertyservicefile.ui \
