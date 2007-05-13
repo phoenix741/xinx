@@ -17,37 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "soap.h"
+#include "wsdl.h"
 
-#ifndef NEWWEBSERVICESDIALOGIMPL_H
-#define NEWWEBSERVICESDIALOGIMPL_H
-//
-#include "ui_newservicefile.h"
-//
 
-class XSLProject;
-class WebServices;
-class Operation;
-
-typedef QList<WebServices*> WebServicesList;
-
-class NewWebServicesDialogImpl : public QDialog, public Ui::NewWebServicesDialog {
-	Q_OBJECT
-public:
-	NewWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-
-	void setProject( WebServicesList * list );
+Envelop::Envelop( WSDL * wsdl ) : m_wsdl( wsdl ) {
+	QDomElement envelope = m_envelop.createElementNS( "http://schemas.xmlsoap.org/soap/envelope/", "soap:Envelope" );
+	m_envelop.appendChild( envelope );
 	
-	QString generateXMLFile();
-	WebServices * calledWebServices();
-	Operation calledOperation();
-private slots:
-	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
-private:
-	WebServicesList *  m_list;
-};
-#endif
-
-
-
-
-
+	envelope.setAttribute( "xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/" );
+	envelope.setAttribute( "xmlns:ns",   "urn:GCE" );
+	envelope.setAttribute( "xmlns:xsd", "http://www.w3.org/2001/XMLSchema" );
+	envelope.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+	envelope.setAttribute( "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/" );
+	
+	QDomElement body = m_envelop.createElementNS( "http://schemas.xmlsoap.org/soap/envelope/", "soap:Body" );
+	envelope.appendChild( body );
+	
+	body.setAttribute( "soap:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/" );
+}

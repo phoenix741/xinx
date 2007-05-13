@@ -75,6 +75,7 @@ void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text 
 void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
 	Q_UNUSED( text );
 	
+	m_prefixLineEdit->setText( text.toUpper() );
 	updateOkButton();
 }
 

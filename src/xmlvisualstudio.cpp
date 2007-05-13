@@ -20,8 +20,6 @@
 
 #include <QDir>
 #include <QHeaderView>
-#include <QDirModel>
-#include <QTimer>
 #include <QSortFilterProxyModel>
 #include <QFileDialog>
 #include <QPrintDialog>
@@ -40,21 +38,14 @@
 #include "editorcompletion.h"
 #include "replacedialogimpl.h"
 #include "xsllistview.h"
-#include "projectpropertyimpl.h"
 #include "xslproject.h"
-#include "webservices.h"
 #include "customdialogimpl.h"
 
 #include "xmlvisualstudio.h"
 
 #include "aboutdialogimpl.h"
-#include "newwebservicesdialogimpl.h"
 
 #include "xinxconfig.h"
-#include "serviceresultdialogimpl.h"
-
-#define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
-#define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
 
 /* XMLVisualStudio */
 
@@ -70,7 +61,7 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	m_cursorStart 	   = QTextCursor();
 	m_cursorEnd		   = QTextCursor();
 
-	m_lastPlace    = QDir::currentPath();
+	m_lastPlace        = QDir::currentPath();
 
 	completionContents = new Completion();
 	m_javaObjects      = new ObjectsView();
@@ -78,6 +69,9 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	m_findDialog       = new ReplaceDialogImpl(this);
 	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
 
+	createProjectPart();
+	createWebServicesPart();
+	
 	createDockWindows();
 	readSettings();
 	createActions();
@@ -102,13 +96,7 @@ void XMLVisualStudio::createDockWindows() {
 	m_windowsMenu->addAction( m_webServicesDock->toggleViewAction() ); 
 	m_webServicesTreeView->header()->hide();
 	
-	m_dirModel = new QDirModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
-	m_modelTimer = new QTimer( this );
-	m_modelTimer->setInterval( 500 );
-	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
-
-	m_projectDirectoryTreeView->header()->hide();
 }
 
 void XMLVisualStudio::readSettings() {
@@ -242,13 +230,7 @@ void XMLVisualStudio::createActions() {
 	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_unindentAct, SLOT(setEnabled(bool)));	
 
 	// Recent project file
-	m_recentSeparator = m_recentProjectMenu->addSeparator();
-	for(int i = 0; i < MAXRECENTFILES; i++) {
-		m_recentProjectActs[i] = new QAction( this );
-		m_recentProjectActs[i]->setVisible( false );
-		m_recentProjectMenu->addAction( m_recentProjectActs[i] );
-		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
-	}
+	setupRecentProjectMenu( m_recentProjectMenu );
 
 	updateActions();
 	updateRecentFiles();
@@ -278,22 +260,6 @@ void XMLVisualStudio::updateActions() {
 	}
 }
 
-void XMLVisualStudio::updateRecentFiles() {
-	int numRecentFiles = qMin( xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
-
-	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( xinxConfig->recentProjectFiles()[i] ).fileName() );
-		m_recentProjectActs[i]->setText( text );
-		m_recentProjectActs[i]->setData( xinxConfig->recentProjectFiles()[i] );
-		m_recentProjectActs[i]->setVisible( true );
-	}
-	
-	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
-		m_recentProjectActs[j]->setVisible(false);
-
-	m_recentSeparator->setVisible( numRecentFiles > 0 );
-}
-
 void XMLVisualStudio::createToolBars() {
 	QToolButton * closeTab = new QToolButton(m_tabEditors);
 	closeTab->setDefaultAction(m_closeAct);
@@ -308,15 +274,8 @@ void XMLVisualStudio::createStatusBar() {
 
 void XMLVisualStudio::on_m_newAct_triggered() {
 	m_tabEditors->newFileEditor();
-	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) {
-		NewWebServicesDialogImpl dlg;
-		dlg.setProject( m_xslProject );
-		if( dlg.exec() == QDialog::Accepted ) {
-			FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
-			QTextDocument *document = editor->textEdit()->document();
-			document->setPlainText( dlg.generateXMLFile() );
-		}
-	}
+	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
+		newWebServices( qobject_cast<FileEditor*>( m_tabEditors->currentEditor() ) );
 	updateActions();
 }
 
@@ -382,251 +341,6 @@ void XMLVisualStudio::on_m_closeAllAct_triggered() {
 	updateActions();
 }
 
-void XMLVisualStudio::on_m_searchNextAct_triggered() {
-	assert( m_tabEditors->currentEditor() );
-	
-	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-		QTextDocument * document = textEdit->document();
-	
-		bool continuer = true;
-	
-		while( continuer ) {
-			continuer = false;
-
-			m_cursorStart = textEdit->textCursor();
-		
-			bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
-			bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP ) || m_searchInverse;
-			
-			if( backwardSearch ) 
-				m_cursorStart.setPosition( m_cursorStart.selectionStart() );
-			else
-				m_cursorStart.setPosition( m_cursorStart.selectionEnd() );
-	
-			QTextDocument::FindFlags flags;
-			if( backwardSearch ) flags ^= QTextDocument::FindBackward;
-			if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
-			if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
-		
-			if( ! m_cursorStart.isNull() ) {
-				if( m_findOptions.regularExpression ) {
-					m_cursorStart = document->find( QRegExp( m_findExpression ), m_cursorStart, flags );
-				} else {
-					m_cursorStart = document->find( m_findExpression, m_cursorStart, flags );
-				}
-			}
-	
-			if( m_cursorStart.isNull() || ( selectionOnly && ( ( !backwardSearch && m_cursorEnd < m_cursorStart ) || ( backwardSearch && m_cursorStart < m_cursorEnd ) ) ) ) {
-				if( m_findOptions.toReplace && m_yesToAllReplace ) {
-					QMessageBox::information( this, 
-								tr("Search/Replace"), 
-								tr("%1 occurences of '%2' replaced.").arg( m_nbFindedText ).arg( m_findExpression ), 
-								QMessageBox::Ok);
-				} else {
-					QMessageBox::StandardButton ret = QMessageBox::warning( this, 
-								tr("Search/Replace"), 
-								tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg( m_nbFindedText ).arg( m_findExpression ).arg( m_findOptions.toReplace ? tr("replaced") : tr("finded") ), 
-								QMessageBox::Yes | QMessageBox::No);
-							
-					if( ret == QMessageBox::Yes ) {
-						m_findOptions.searchExtend = ReplaceDialogImpl::FindOptions::SEARCHALL;
-						m_cursorStart = textEdit->textCursor();
-						if( ! backwardSearch ) 
-							m_cursorStart.movePosition( QTextCursor::Start );
-						else
-							m_cursorStart.movePosition( QTextCursor::End );
-						m_cursorEnd = QTextCursor();
-						
-						continuer = true;
-					}
-				}
-			} else {
-				m_nbFindedText++;
-			
-				textEdit->setTextCursor( m_cursorStart );
-
-				if( m_findOptions.toReplace ) {
-					QMessageBox::StandardButton ret = QMessageBox::Yes;
-			
-
-					if(! m_yesToAllReplace) {
-	 					QMessageBox messageBoxQuestion( QMessageBox::Question, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, this );
-						messageBoxQuestion.setWindowModality( Qt::NonModal );
-						messageBoxQuestion.show();
-						while( messageBoxQuestion.isVisible() ) qApp->processEvents();
-						ret = messageBoxQuestion.standardButton( messageBoxQuestion.clickedButton() );
-					}
-
-					switch(ret) {
-					case QMessageBox::Yes: 	
-						// Replace chaine
-						m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
-		
-						continuer = true;
-						break;
-					case QMessageBox::YesToAll: 	
-						m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
-						m_yesToAllReplace = true;
-						continuer = true;
-						break;
-					case QMessageBox::No: 	
-						continuer = true;
-						break;
-					default : // Do nothing else
-						;
-					}
-				}
-			}
-			if( ! m_cursorStart.isNull() )
-				textEdit->setTextCursor( m_cursorStart );
-		}
-	}
-	m_yesToAllReplace = false;
-}
-
-void XMLVisualStudio::on_m_searchPreviousAct_triggered() {
-	m_searchInverse = true;
-	on_m_searchNextAct_triggered();
-	m_searchInverse = false;
-}
-
-void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options) {
-	if( ! TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) 
-		return; // TODO : Error
-
-	m_findExpression    = chaine;
-	m_replaceExpression = dest;
-	m_findOptions       = options;
-	m_yesToAllReplace   = false;
-	m_nbFindedText		= 0;
-	m_searchInverse		= false;
-
-	bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
-	bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP );
-
-	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-
-	m_cursorStart = textEdit->textCursor();
-	m_cursorEnd   = QTextCursor();
-
-	int selectionStart = m_cursorStart.selectionStart(),
-	    selectionEnd = m_cursorStart.selectionEnd();
-
-	if( m_findOptions.searchFromStart ) {
-		m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
-		m_findOptions.searchFromStart = false;
-	} else 
-	if( selectionOnly && ! backwardSearch ) {
-		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
-		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.setPosition( selectionEnd, QTextCursor::MoveAnchor );
-	} else
-	if( selectionOnly && backwardSearch ) {
-		m_cursorStart.setPosition( selectionEnd, QTextCursor::MoveAnchor );
-		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.setPosition( selectionStart, QTextCursor::MoveAnchor );
-	} else
-	if( backwardSearch ) {
-		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
-	}
-	
-	textEdit->setTextCursor( m_cursorStart );
-	
-	on_m_searchNextAct_triggered();
-}
-
-void XMLVisualStudio::on_m_searchAct_triggered() {
-	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-	if( ! textEdit->textCursor().selectedText().isEmpty() ){
-		m_findDialog->setText( textEdit->textCursor().selectedText() );
-	}
-	m_findDialog->initialize();
-	m_findDialog->setReplace(false);
-	m_findDialog->exec();
-}
-
-void XMLVisualStudio::on_m_replaceAct_triggered() {
-	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-	if( ! textEdit->textCursor().selectedText().isEmpty() ){
-		m_findDialog->setText( textEdit->textCursor().selectedText() );
-	}
-	m_findDialog->initialize();
-	m_findDialog->setReplace(true);
-	m_findDialog->exec();
-}
-
-void XMLVisualStudio::on_m_newProjectAct_triggered() {
-	ProjectPropertyImpl property ( this );
-	if( property.exec() ) {
-		XSLProject* project = new XSLProject( );
-		property.saveToProject( project );
-		
-		QString fileName = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
-		
-		if( ! fileName.isEmpty() ) {
-			project->saveToFile( fileName );
-			m_lastPlace = project->projectPath();
-			closeProject( true );
-			m_xslProject = project;
-			setCurrentProject( fileName );
-
-			if( m_xslProject->webServicesModel() ) {
-				m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
-				m_webServicesDock->show();
-				m_webServicesMenu->setEnabled( true );
-				m_webServicesToolBar->setEnabled( true );
-			
-				for( int i = 0; i < m_xslProject->webServices().count(); i++ )
-					connect( m_xslProject->webServices()[i], SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
-			}
-
-			m_projectDirectoryTreeView->setModel( m_dirModel );
-			for(int i = 1; i < m_dirModel->columnCount(); i++ )
-				m_projectDirectoryTreeView->hideColumn( i );
-			m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_xslProject->projectPath() ) );
-		} else 
-			delete project;
-	}
-	
-	updateActions();
-}
-
-void XMLVisualStudio::on_m_openProjectAct_triggered() {
-	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
-	openProject( fileName );	
-}
-
-void XMLVisualStudio::on_m_saveProjectAct_triggered() {
-	assert( m_xslProject != NULL );
-	
-	m_xslProject->openedFiles().clear();
-	
-	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		if( TabEditor::isFileEditor( m_tabEditors->editor( i ) ) ) {
-			m_xslProject->openedFiles().append( static_cast<FileEditor*>( m_tabEditors->editor( i ) )->getFileName() );
-		}
-	}
-	
-	m_xslProject->saveToFile();
-}
-
-void XMLVisualStudio::on_m_closeProjectAct_triggered() {
-	closeProject( true );
-}
-
-void XMLVisualStudio::on_m_projectPropertyAct_triggered() {
-	assert( m_xslProject != NULL );
-	
-	ProjectPropertyImpl property ( this );
-	property.loadFromProject( m_xslProject );
-	if( property.exec() ) {
-		property.saveToProject( m_xslProject );
-		m_xslProject->refreshWebServices();
-		on_m_saveProjectAct_triggered();
-	}
-}
-
 void XMLVisualStudio::on_m_aboutAct_triggered() {
 	if( ! m_aboutDialog ) 
 		m_aboutDialog = new AboutDialogImpl( this );
@@ -663,29 +377,6 @@ void XMLVisualStudio::on_m_previousTabAct_triggered() {
 	m_tabEditors->setCurrentIndex( ( m_tabEditors->currentIndex() - 1 ) % m_tabEditors->count() );
 }
 
-
-void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {
-	if( m_xslProject->projectType() == XSLProject::SERVICES )
-		m_xslProject->refreshWebServices();
-}
-
-void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
-	assert( m_tabEditors->currentEditor() != NULL );
-	assert( m_xslProject );
-	
-	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-		
-		NewWebServicesDialogImpl dlg;
-		dlg.setProject( m_xslProject );
-		if( dlg.exec() == QDialog::Accepted ) {
-			QStringList params;
-			params.append( ed->toPlainText() );
-			dlg.calledWebServices()->call( dlg.calledOperation(), params );
-		}
-	}
-}
-
 void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	CustomDialogImpl * custom = new CustomDialogImpl( this );
 	writeSettings();
@@ -697,39 +388,6 @@ void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	}
 	
 	delete custom;
-}
-
-void XMLVisualStudio::filtreChange() {
-	QString filtre = m_filtreLineEdit->text();
-	if( filtre.isEmpty() ) 
-		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
-	else {
-		QString extention = QFileInfo( filtre ).suffix();
-		QString filename = QFileInfo( filtre ).fileName();
-		if( extention.isEmpty() )
-			m_dirModel->setNameFilters( 
-				QStringList() 
-					<< QString("*%1*.xsl").arg( filtre )
-					<< QString("*%1*.js").arg( filtre )
-					<< QString("*%1*.xml").arg( filtre )
-					<< QString("*%1*.fws").arg( filtre )
-				);
-		else
-			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
-		
-	}
-	m_modelTimer->stop();
-}
-
-void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
-	Q_UNUSED( filtre );
-	
-	m_modelTimer->stop();
-	m_modelTimer->start();
-}
-
-void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
-	open( m_dirModel->filePath( index ) );
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
@@ -779,12 +437,6 @@ void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
 
 	slotModelDeleted();
 	slotModelCreated();
-}
-
-void XMLVisualStudio::openRecentProject() {
-     QAction * action = qobject_cast<QAction *>( sender() );
-     if( action )
-         openProject( action->data().toString() );	
 }
 
 void XMLVisualStudio::slotCloseFile( int index ) {
@@ -892,85 +544,12 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
 }
 
-void XMLVisualStudio::openProject( const QString & filename ) {
-	if( ! filename.isEmpty() ) {
-		if( m_xslProject ) closeProject( true ); else on_m_closeAllAct_triggered();
-		
-		m_xslProject = new XSLProject( filename );
-		m_lastPlace = m_xslProject->projectPath();
-		setCurrentProject( filename );
-		
-		foreach( QString str, m_xslProject->openedFiles() ) {
-			if( ! str.isEmpty() ) 
-				open( str );
-			else
-				on_m_newAct_triggered();
-		}
-
-		if( m_xslProject->webServicesModel() ) {
-			m_webServicesTreeView->setModel( m_xslProject->webServicesModel() );
-			m_webServicesDock->show();
-			m_webServicesMenu->setEnabled( true );
-			m_webServicesToolBar->setEnabled( true );
-			
-			for( int i = 0; i < m_xslProject->webServices().count(); i++ )
-				connect( m_xslProject->webServices()[i], SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
-		}
-
-		m_projectDirectoryTreeView->setModel( m_dirModel );
-		for(int i = 1; i < m_dirModel->columnCount(); i++ )
-			m_projectDirectoryTreeView->hideColumn( i );
-		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_xslProject->projectPath() ) );
-
-		updateActions();
-	}
-}
-
-void XMLVisualStudio::closeProject( bool closeAll ) {
-	if( m_xslProject ) {
-		m_projectDirectoryTreeView->setModel( NULL );
-
-		m_webServicesTreeView->setModel( NULL );
-		m_webServicesDock->hide();
-		m_webServicesMenu->setEnabled( false );
-		m_webServicesToolBar->setEnabled( false );
-		
-		on_m_saveProjectAct_triggered();
-		
-		if( closeAll )
-			on_m_closeAllAct_triggered();
-
-		delete m_xslProject;
-		m_xslProject = NULL;
-		
-		updateActions();
-		setCurrentProject( "" );
-	}
-}
-
 void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	if( filename.isEmpty() )
 		setWindowTitle( tr("XINX") );
 	else {
 		setWindowTitle( tr("%1 - %2").arg( QFileInfo( filename ).fileName() ).arg( tr("XINX") ) );
-
-		xinxConfig->recentProjectFiles().removeAll( filename );
-		xinxConfig->recentProjectFiles().prepend( filename );
-     
-		while( xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
-			xinxConfig->recentProjectFiles().removeLast();
-
-		updateRecentFiles();
 	}
 }
-
-void XMLVisualStudio::webServicesReponse( QString query, QString response, QString errorCode, QString errorString ) {
-	ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
-	dlg->setInputStreamText( query );
-	dlg->setOutputStreamText( response );
-	dlg->exec();
-	delete dlg;
-}
-
 
 

@@ -17,37 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __SOAP_H__
+#define __SOAP_H__
 
-#ifndef NEWWEBSERVICESDIALOGIMPL_H
-#define NEWWEBSERVICESDIALOGIMPL_H
-//
-#include "ui_newservicefile.h"
-//
+#include <QString>
+#include <QDomDocument>
 
-class XSLProject;
-class WebServices;
-class Operation;
+class WSDL;
 
-typedef QList<WebServices*> WebServicesList;
-
-class NewWebServicesDialogImpl : public QDialog, public Ui::NewWebServicesDialog {
-	Q_OBJECT
-public:
-	NewWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-
-	void setProject( WebServicesList * list );
+class Envelop {
+public: 
+	Envelop( WSDL * wsdl );
 	
-	QString generateXMLFile();
-	WebServices * calledWebServices();
-	Operation calledOperation();
-private slots:
-	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
 private:
-	WebServicesList *  m_list;
+	WSDL * m_wsdl;
+	QDomDocument m_envelop;
 };
-#endif
 
-
-
-
-
+#endif // __SOAP_H__

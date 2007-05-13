@@ -36,6 +36,12 @@ class XSLProject;
 class AboutDialogImpl;
 class XINXFileDialog;
 class QDirModel;
+class QMenu;
+class FileEditor;
+class WebServicesModel;
+class WebServices;
+
+typedef QList<WebServices*> WebServicesList;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -47,7 +53,6 @@ public slots:
 	void open( const QString & filename );
 
 	void updateActions();
-	void updateRecentFiles();
 protected: 
 	/* Window event */
 
@@ -61,28 +66,24 @@ private slots:
 	void on_m_printAct_triggered();
 	void on_m_closeAct_triggered();
 	void on_m_closeAllAct_triggered();
+	void on_m_aboutAct_triggered();
+	void on_m_nextTabAct_triggered();
+	void on_m_previousTabAct_triggered();
+	void on_m_customApplicationAct_triggered();
+
 	void on_m_searchAct_triggered();
 	void on_m_searchNextAct_triggered();
 	void on_m_searchPreviousAct_triggered();
 	void on_m_replaceAct_triggered();
-	void on_m_newProjectAct_triggered();
-	void on_m_openProjectAct_triggered();
-	void on_m_saveProjectAct_triggered();
+
 	void on_m_closeProjectAct_triggered();
-	void on_m_projectPropertyAct_triggered();
-	void on_m_aboutAct_triggered();
-	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
-	void on_m_nextTabAct_triggered();
-	void on_m_previousTabAct_triggered();
-	void on_m_refreshWebServicesListAct_triggered();
-	void on_m_customApplicationAct_triggered();
 	void on_m_filtreLineEdit_textChanged(QString );
 	void on_m_projectDirectoryTreeView_doubleClicked(QModelIndex index);
+
+	void on_m_refreshWebServicesListAct_triggered();
 	void on_m_callWebServicesAct_triggered();
+	void on_m_xslContentTreeView_doubleClicked(QModelIndex index);
 private slots:
-	/* Project file filtre */
-	void filtreChange();
-	
 	/* Manage files opened */
 	void slotCloseFile( int );
 	void slotRefreshFile( int );
@@ -90,20 +91,10 @@ private slots:
 	void saveEditor(int index);
 	void saveEditorAs(int index);
 
-	/* FindDialog slots */
-	void findFirst(const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions &);
-
 	/* Editor Change */
 	void slotCurrentTabChanged(int);
 	void slotModelDeleted();
 	void slotModelCreated();
-	
-	/* Usefull for recent project */
-	
-	void openRecentProject();
-	
-	/* WebServices */
-	void webServicesReponse( QString query, QString response, QString errorCode, QString errorString );
 	
 private:
 	/* Create Window Menus, Tools, Status, Dock Bar */
@@ -121,12 +112,6 @@ private:
 	/* Save an editor into a file */
 
 	bool maybeSave(int index);
-	
-	/* Usefull for Recent project */
-	
-	void setCurrentProject( const QString & filename );
-	void openProject( const QString & filename );
-	void closeProject( bool closeAll );
   
 	/**** Object declaration ****/
 	
@@ -134,15 +119,68 @@ private:
 	QString m_lastPlace;
 	
 	/* Dock Object */
-	QTimer * m_modelTimer;
-	QDirModel * m_dirModel;
 	QAbstractItemModel * m_xslModel;
 	QSortFilterProxyModel * m_sortXslModel;
 
 	/* About Dialog */
 	AboutDialogImpl * m_aboutDialog;
 
-	/* Find declaration */
+	/* Generix Object */
+	ObjectsView * m_javaObjects;
+  
+	
+																				/* ***** Project Main Form Part ***** */
+public slots:
+	void updateRecentFiles();
+
+private slots: /* slots definition */
+	void filtreChange();
+	void openRecentProject();
+	void newProject();
+	void openProject();
+	void changeProjectProperty();
+	void saveProject();
+
+private: /* Private definition */
+	/* Functions */
+	void createProjectPart();
+	void setupRecentProjectMenu( QMenu * menu );
+	void openProject( const QString & filename );
+	void setCurrentProject( const QString & filename );
+	void closeProject( bool closeAll );
+	
+	/* Variables */	
+	QString m_lastProjectOpenedPlace;
+
+	QTimer * m_modelTimer;
+	QDirModel * m_dirModel;
+
+	XSLProject * m_xslProject;
+
+	QAction * m_recentProjectActs[MAXRECENTFILES]; 
+	QAction * m_recentSeparator;
+
+																				/* ***** WebSerivces Form Part ***** */
+private slots: /* slot definition */
+	void refreshWebServicesList();
+	void webServicesReponse( QString query, QString response, QString errorCode, QString errorString );
+	
+private: /* private definition */
+	/* Functions */
+	void createWebServicesPart();
+	void setWebServicesView( bool enabled );
+	void newWebServices( FileEditor* );
+	
+	/* Variables */
+	WebServicesList*  m_webServices;
+	WebServicesModel* m_webServicesModel;
+																				/* ***** Search Form Part ***** */
+private slots: /* slot definition */
+	void findFirst(const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions &);
+
+private: /* private definition */
+
+	/* Variables */
 	ReplaceDialogImpl * m_findDialog;
 	QString m_findExpression, m_replaceExpression;
 	struct ReplaceDialogImpl::FindOptions m_findOptions;
@@ -150,13 +188,6 @@ private:
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
 
-	/* Generix Object */
-	ObjectsView * m_javaObjects;
-	XSLProject * m_xslProject;
-  
-	/* Interfaces */
-	QAction * m_recentProjectActs[MAXRECENTFILES];
-	QAction * m_recentSeparator;
 };
 #endif
 

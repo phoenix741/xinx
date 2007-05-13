@@ -1,7 +1,7 @@
-CONFIG +=   exceptions \
+CONFIG +=   debug \
+  exceptions \
   qt \
-  warn_on \
-  debug
+  warn_on
 DESTDIR +=   bin
 FORMS +=   ui/about.ui \
   ui/crudpropertyservicefile.ui \
@@ -10,8 +10,10 @@ FORMS +=   ui/about.ui \
   ui/newservicefile.ui \
   ui/projectproperty.ui \
   ui/replace.ui \
-  ui/resultatServices.ui
+  ui/resultatServices.ui \
+  ui/servicesconnection.ui
 HEADERS +=   src/aboutdialogimpl.h \
+  src/connectionwebservicesdialogimpl.h \
   src/customdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \
@@ -24,11 +26,13 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/projectpropertyimpl.h \
   src/replacedialogimpl.h \
   src/serviceresultdialogimpl.h \
+  src/soap.h \
   src/syntaxhighlighter.h \
   src/tabeditor.h \
   src/uniqueapplication.h \
   src/webservices.h \
   src/webservicespropertydialogimpl.h \
+  src/wsdl.h \
   src/xinxconfig.h \
   src/xmleditor.h \
   src/xmlhighlighter.h \
@@ -44,6 +48,7 @@ QT +=   gui \
 RCC_DIR +=   build
 RESOURCES +=   images/application.qrc
 SOURCES +=   src/aboutdialogimpl.cpp \
+  src/connectionwebservicesdialogimpl.cpp \
   src/customdialogimpl.cpp \
   src/editor.cpp \
   src/editorcompletion.cpp \
@@ -54,14 +59,19 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/main.cpp \
   src/newwebservicesdialogimpl.cpp \
   src/objectview.cpp \
+  src/projectmainform.cpp \
   src/projectpropertyimpl.cpp \
   src/replacedialogimpl.cpp \
+  src/searchmainform.cpp \
   src/serviceresultdialogimpl.cpp \
+  src/soap.cpp \
   src/syntaxhighlighter.cpp \
   src/tabeditor.cpp \
   src/uniqueapplication.cpp \
   src/webservices.cpp \
+  src/webservicesmainform.cpp \
   src/webservicespropertydialogimpl.cpp \
+  src/wsdl.cpp \
   src/xinxconfig.cpp \
   src/xmleditor.cpp \
   src/xmlhighlighter.cpp \

@@ -83,10 +83,6 @@ public:
 	QStringList & openedFiles() { return m_openedFile; };
 	QStringList & serveurWeb() { return m_webServiceLink; };
 	
-	void refreshWebServices();
-	const QList<WebServices*> & webServices() { return m_webServices; };
-	WebServicesModel * webServicesModel() { return m_webServicesModel; };
-
 	const QString & fileName() const;
 private:
 	QString getValue( const QString & node ) const;
@@ -103,8 +99,6 @@ private:
 	QStringList m_openedFile;
 	
 	QStringList m_webServiceLink;
-	QList<WebServices*> m_webServices;
-	WebServicesModel * m_webServicesModel;
 };
 
 #endif

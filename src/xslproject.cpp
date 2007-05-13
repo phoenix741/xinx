@@ -28,17 +28,14 @@
 XSLProject::XSLProject() : QObject() {
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
 	m_projectDocument.appendChild( root );
-	m_webServicesModel = NULL;
 }
 
 XSLProject::XSLProject( const XSLProject & object ) : QObject() {
 	m_fileName =  object.m_fileName;
 	m_projectDocument = object.m_projectDocument;
-	m_webServicesModel = NULL;
 }
 
 XSLProject::XSLProject( const QString & project ) : QObject() {
-	m_webServicesModel = NULL;
 	loadFromFile(project);
 }
 
@@ -81,9 +78,6 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	
 	loadOpenedFile();
 	loadWebServicesLink();
-	if( projectType() == SERVICES ) {
-		refreshWebServices();
-	}
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -154,13 +148,9 @@ void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
 	switch( value ) {
 	case SERVICES:
 		setValue( "type", "services" );	
-		refreshWebServices();
 		break;
 	case WEB:
 		setValue( "type", "web" );	
-		qDeleteAll( m_webServices );
-		m_webServices.clear();
-		delete m_webServicesModel; m_webServicesModel = NULL;
 		break;
 	default:
 		setValue( "type", "default" );	
@@ -331,17 +321,4 @@ const QString & XSLProject::fileName() const {
 	return m_fileName;
 }
 
-void XSLProject::refreshWebServices() {
-	qDeleteAll( m_webServices );
-	m_webServices.clear();
-	
-	foreach( QString link, m_webServiceLink ) {
-		m_webServices.append( new WebServices( link, this ) );
-	}
-		
-	if( ! m_webServicesModel ) {
-		m_webServicesModel = new WebServicesModel( this, this );
-	} else
-		m_webServicesModel->reset();
-}
 

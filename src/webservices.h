@@ -22,135 +22,10 @@
 #define __WEBSERVICES_H__
 
 #include <QString>
-#include <QStringList>
 #include <QDomElement>
 #include <QAbstractItemModel>
-#include <QHash>
 
-class WSDLType {
-	
-};
-
-class WSDLPart {
-public:
-	WSDLPart( const QDomElement & );
-
-	QString name() const { return m_name; };
-	QString type() const { return m_type; };
-	QString element() const { return m_element; };
-private:
-	QString m_name;
-	QString m_type;
-	QString m_element;
-};
-
-class WSDLMessage {
-public:
-	WSDLMessage() {};
-	WSDLMessage( const QDomElement & );
-
-	QString name() const { return m_name; };
-	const QList<WSDLPart> & parts() const { return m_parts; };
-private:
-	QString m_name;
-	QList<WSDLPart> m_parts;
-};
-
-class WSDLOperation {
-public:
-	WSDLOperation( const QDomElement & );
-	
-	QString name() const { return m_name; };
-	QString parameterOrder() const { return m_parameterOrder; };
-	QString inputMessage() const { return m_inputMessage; };
-	QString outputMessage() const { return m_outputMessage; };
-private:
-	QString m_name;
-	QString m_parameterOrder;
-	
-	QString m_inputMessage;
-	QString m_outputMessage;
-};
-
-class WSDLBinding {
-public:
-	WSDLBinding() {};
-	WSDLBinding( const QDomElement & );
-	
-	QString name() const { return m_name; };
-	QString type() const { return m_type; };
-	
-	const QList<WSDLOperation> & operations() const { return m_operations; };
-private:
-	QString m_name;
-	QString m_type;
-	
-	QList<WSDLOperation> m_operations;
-};
-
-class WSDLPortType {
-public:
-	WSDLPortType() {};
-	WSDLPortType( const QDomElement & );
-
-	QString name() const { return m_name; };
-	
-	const QList<WSDLOperation> & operations() const { return m_operations; };
-private:
-	QString m_name;
-
-	QList<WSDLOperation> m_operations;
-};
-
-class WSDLPort {
-public:
-	WSDLPort() {};
-	WSDLPort( const QDomElement & );
-	
-	QString name() const { return m_name; };
-	QString binding() const { return m_binding; };
-
-	QString addressLocation() const { return m_addressLocation; };
-private:
-	QString m_name;
-	QString m_binding;
-	
-	QString m_addressLocation;
-};
-
-class WSDLService {
-public:
-	WSDLService( const QDomElement & );
-
-	QString name() const { return m_name; };
-
-	const WSDLPort & port() const { return m_port; };
-private:
-	QString m_name;
-	WSDLPort m_port;
-};
-
-class WSDL {
-public:
-	WSDL() {};
-	WSDL( const QDomElement & );
-	
-	QString name() { return m_name; };
-	
-	const QHash<QString,WSDLType> & types() const { return m_types; };
-	const QHash<QString,WSDLMessage> & messages() const { return m_messages; };
-	const QHash<QString,WSDLBinding> & bindings() const { return m_bindings; };
-	const QHash<QString,WSDLPortType> & portTypes() const { return m_portTypes; };
-	const QList<WSDLService> & services() const { return m_services; };
-private:	
-	QString m_name;
-
-	QHash<QString,WSDLType> m_types;
-	QHash<QString,WSDLMessage> m_messages;
-	QHash<QString,WSDLBinding> m_bindings;
-	QHash<QString,WSDLPortType> m_portTypes;
-	QList<WSDLService> m_services;
-};
+#include "wsdl.h"
 
 class WebServices;
 class QHttp;
@@ -193,7 +68,7 @@ public:
 	QString name() { return m_wsdl.name(); };
 	const QList<Operation> & operations() { return m_list; };
 	
-	void askWSDL( const QString & link );
+	void askWSDL( QWidget * parent = 0 );
 	void loadFromElement( const QDomElement & element );
 	
 	void call( Operation operation, const QStringList & param );
@@ -202,11 +77,10 @@ signals:
 	void soapResponse( QString query, QString response, QString errorCode, QString errorString );
 	
 private slots:
-	void httpRequestFinished ( int id, bool error );
 	void httpSoapRequestFinished ( int id, bool error );
 private:
 	WSDL m_wsdl;
-
+	QString m_link;
 	QList<Operation> m_list;
 
 	int m_requestId;
@@ -215,10 +89,12 @@ private:
 	QString m_query;
 };
 
+typedef QList<WebServices*> WebServicesList;
+
 class WebServicesModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
-	WebServicesModel( QObject *parent = 0, XSLProject * project = 0 );
+	WebServicesModel( QObject *parent = 0, WebServicesList * list = 0 );
 	virtual ~WebServicesModel();
 	
 	QVariant data(const QModelIndex &index, int role) const;
@@ -227,12 +103,10 @@ public:
 	QModelIndex parent(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
-protected:
-	void reset();
-private:
-	XSLProject* m_project;
 
-friend class XSLProject;
+	void reset( WebServicesList * list = 0 );
+private:
+	WebServicesList * m_list;
 };
 
 #endif // __WEBSERVICES_H__

@@ -18,32 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef NEWWEBSERVICESDIALOGIMPL_H
-#define NEWWEBSERVICESDIALOGIMPL_H
+#ifndef CONNECTIONWEBSERVICESDIALOGIMPL_H
+#define CONNECTIONWEBSERVICESDIALOGIMPL_H
 //
-#include "ui_newservicefile.h"
+#include "ui_servicesconnection.h"
 //
+class QHttp;
+class QIODevice;
+class QHttpRequestHeader;
 
-class XSLProject;
-class WebServices;
-class Operation;
-
-typedef QList<WebServices*> WebServicesList;
-
-class NewWebServicesDialogImpl : public QDialog, public Ui::NewWebServicesDialog {
+class ConnectionWebServicesDialogImpl : public QDialog, public Ui::ConnectionWebServicesDialog {
 	Q_OBJECT
 public:
-	NewWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	enum QueryType { qtGet, qtPost };
 
-	void setProject( WebServicesList * list );
-	
-	QString generateXMLFile();
-	WebServices * calledWebServices();
-	Operation calledOperation();
+	ConnectionWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	virtual ~ConnectionWebServicesDialogImpl();
+
+	void setHost( const QString & path, quint16 port = 80 );
+	bool get( const QString & path, QIODevice * to );
+	bool post( const QString & path, QByteArray * data, QIODevice * to );
+	bool request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to );
 private slots:
-	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
+	void requestFinished( int id, bool error );
+	void stateChanged( int state );
+	void setSendProgress( int value, int max );
+	void setReadProgress( int value, int max );
 private:
-	WebServicesList *  m_list;
+	int m_requestId;
+	QHttp * m_http;
+	bool m_hasResult;
 };
 #endif
 
