@@ -19,21 +19,81 @@
  ***************************************************************************/
  
 #include "soap.h"
-#include "wsdl.h"
 
+#include <assert.h>
 
-Envelop::Envelop( WSDL * wsdl ) : m_wsdl( wsdl ) {
-	QDomElement envelope = m_envelop.createElementNS( "http://schemas.xmlsoap.org/soap/envelope/", "soap:Envelope" );
+/* 
+In:
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<soap:Body soap:encodingStyle="http://schema.xmlsoap.org/soap/encoding/">
+		<ns:retrieve>
+			<String_1 xsi:type="xsd:string"></String1>
+		</ns:retrieve>
+	</soap:Body>
+</soap:Envelope>
+
+Out:
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<env:Body>
+		<env:Fault>
+			<faultcode>env:Server</faultcode>
+			<faultstring>Internal Server Error (...)</faultstring>
+		</env:Fault>
+	</env:Body>
+</env:Envelope>
+
+Out:2
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<env:Body>
+		<ns0:retrieveReponse env:encoding...>
+			<result xsi:type="xsd:string">
+			</result>
+		</ns0:retrieveReponse>
+	</env:Body>
+</env:Envelope>
+*/
+
+Envelop::Envelop( const QString & operation ) {
+	QString operationNamespace = "urn:GCE";
+
+	QDomElement envelope = m_envelop.createElement( "soap:Envelope" );
 	m_envelop.appendChild( envelope );
 	
 	envelope.setAttribute( "xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/" );
-	envelope.setAttribute( "xmlns:ns",   "urn:GCE" );
+	envelope.setAttribute( "xmlns:ns",   operationNamespace );
 	envelope.setAttribute( "xmlns:xsd", "http://www.w3.org/2001/XMLSchema" );
 	envelope.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
 	envelope.setAttribute( "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/" );
 	
-	QDomElement body = m_envelop.createElementNS( "http://schemas.xmlsoap.org/soap/envelope/", "soap:Body" );
+	QDomElement body = m_envelop.createElement( "soap:Body" );
 	envelope.appendChild( body );
 	
 	body.setAttribute( "soap:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/" );
+
+	m_operation = m_envelop.createElement( QString( "ns:%1" ).arg( operation ) );
+	body.appendChild( m_operation );
+
 }
+
+Envelop::~Envelop() {
+
+}
+
+
+void Envelop::setParam( const QString & name, const QString & type, const QString & value ) {
+	QDomElement param_elt = m_envelop.createElement( name );
+	m_operation.appendChild( param_elt );
+			
+	param_elt.setAttribute( "xsi:type", type );
+
+	QString query = value.simplified();
+	QDomText text = m_envelop.createTextNode( query );
+	param_elt.appendChild( text );
+}
+
+QString Envelop::toString() {
+	return m_envelop.toString();
+}
+

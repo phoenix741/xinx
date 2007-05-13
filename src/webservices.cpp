@@ -32,12 +32,10 @@
 #include "webservices.h"
 #include "xslproject.h"
 #include "wsdl.h"
+#include "soap.h"
 #include "connectionwebservicesdialogimpl.h"
 
-WebServices::WebServices( const QString & link, QObject * parent ) : QObject( parent ), m_link ( link ), m_requestId( -1 ) {
-	m_response = new QBuffer( this );
-//	m_response = new QFile( "c:\\temp.services" , this );
-	m_http = new QHttp( this );
+WebServices::WebServices( const QString & link, QObject * parent ) : QObject( parent ), m_link ( link ) {
 }
 
 void WebServices::loadFromElement( const QDomElement & element ) {
@@ -76,30 +74,6 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 	emit updated();
 }
 
-void WebServices::httpSoapRequestFinished ( int id, bool error ) {
-	if( ( id == m_requestId ) && ( ! error ) ) {
-		m_response->seek( 0 );
-
-		
-		QDomDocument document;
-		QString errorStr;
-		int errorLine;
-		int errorColumn;  
-		if (!document.setContent( m_response, true, &errorStr, &errorLine, &errorColumn)) {
-			QMessageBox::information(qApp->activeWindow(), QObject::tr("Invok WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
-																						.arg(errorLine)
-	        			                      											.arg(errorColumn)
-																						.arg(errorStr));
-		    return;
-		}  
-		
-		emit soapResponse( m_query, document.toString(), QString(), QString() );
-		
-		m_response->close();
-		m_http->disconnect();
-	}
-}
-
 void WebServices::askWSDL( QWidget * parent ) {
 	QUrl wsdlUrl( m_link );
 	QBuffer buffer;
@@ -126,92 +100,47 @@ void WebServices::askWSDL( QWidget * parent ) {
 	}
 }
 
-/* 
-In:
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
-	<soap:Body soap:encodingStyle="http://schema.xmlsoap.org/soap/encoding/">
-		<ns:retrieve>
-			<String_1 xsi:type="xsd:string"></String1>
-		</ns:retrieve>
-	</soap:Body>
-</soap:Envelope>
-
-Out:
-<?xml version="1.0" encoding="UTF-8"?>
-<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
-	<env:Body>
-		<env:Fault>
-			<faultcode>env:Server</faultcode>
-			<faultstring>Internal Server Error (...)</faultstring>
-		</env:Fault>
-	</env:Body>
-</env:Envelope>
-
-Out:2
-<?xml version="1.0" encoding="UTF-8"?>
-<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns0="urn:GCE" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
-	<env:Body>
-		<ns0:retrieveReponse env:encoding...>
-			<result xsi:type="xsd:string">
-			</result>
-		</ns0:retrieveReponse>
-	</env:Body>
-</env:Envelope>
-*/
-
 void WebServices::call( Operation op, const QStringList & param ) {
-	QDomDocument document;
-	QDomElement envelope = document.createElementNS( "http://schemas.xmlsoap.org/soap/envelope/", "soap:Envelope" );
-	document.appendChild( envelope );
-	
-//	envelope.setAttribute( "xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/" );
-//	envelope.setAttribute( "xmlns:ns",   "urn:GCE" );
-	envelope.setAttribute( "xmlns:xsd", "http://www.w3.org/2001/XMLSchema" );
-//	envelope.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
-	envelope.setAttribute( "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/" );
-	
-	QDomElement body = document.createElement( "soap:Body" );
-	envelope.appendChild( body );
-	
-	body.setAttribute( "soap:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/" );
-
-	QDomElement operation = document.createElementNS( "urn:GCE", QString( "ns:%1" ).arg( op.name() ) );
-	body.appendChild( operation );
+	Envelop soapEnvelop( op.name() );
+	QString query;
 	
 	for( int i = 0; i < op.inputParam().count(); i++ ) {
-		QDomElement param_elt = document.createElement( op.inputParam()[i].paramString() );
-		operation.appendChild( param_elt );
-		
-		param_elt.setAttributeNS( "http://www.w3.org/2001/XMLSchema-instance", "xsi:type", op.inputParam()[i].paramType() );
-		
-		if( i < param.count() ) {
-			m_query += op.inputParam()[i].paramString() + "=\n" + param[i] + "\n";
-
-			QString query = param[i].simplified();
-			QDomText text = document.createTextNode( query );
-			param_elt.appendChild( text );
-		}
+		soapEnvelop.setParam( op.inputParam()[i].paramString(), op.inputParam()[i].paramType (), param[i] );
+		query += op.inputParam()[i].paramString() + "=\n" + param[i] + "\n";
 	}
-	delete m_response;
-	m_response = new QBuffer();
-	m_response->open( QIODevice::ReadWrite );
 
 	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
-	m_http->setHost( queryUrl.host(), queryUrl.port() );
-	connect( m_http, SIGNAL( requestFinished(int,bool) ), this, SLOT(httpSoapRequestFinished(int,bool)) );
+	QBuffer obuffer;
+	obuffer.open( QIODevice::ReadWrite );
 
-	m_query = document.toString();
-	QByteArray buffer = document.toString().toUtf8();
-	buffer.truncate( buffer.size() - 1 );
-	
+	QByteArray ibuffer = soapEnvelop.toString().toUtf8();
+	ibuffer.truncate( ibuffer.size() - 1 );
+
 	QHttpRequestHeader header( "POST", queryUrl.path() );
 	header.setValue( "Host", queryUrl.host() );
 	header.setValue( "Connection", "Keep-Alive" );
-	header.setContentLength( buffer.size() );
+	header.setContentLength( ibuffer.size() );
 	header.setContentType( "text/xml" );
 
-	m_requestId = m_http->request( header, buffer, m_response );
-//	m_requestId = m_http->post( queryUrl.path(), buffer, m_response ); 
+	ConnectionWebServicesDialogImpl dlg;
+	dlg.setHost( queryUrl.host(), queryUrl.port() );
+	if( dlg.request( &header, &ibuffer, &obuffer ) ) {
+		obuffer.seek( 0 );
+
+		QDomDocument document;
+		QString errorStr;
+		int errorLine;
+		int errorColumn;  
+		if (!document.setContent( &obuffer, true, &errorStr, &errorLine, &errorColumn)) {
+			QMessageBox::information(qApp->activeWindow(), QObject::tr("Invok WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
+																						.arg(errorLine)
+	        			                      											.arg(errorColumn)
+																						.arg(errorStr));
+		    return;
+		}  
+		
+		emit soapResponse( query, document.toString(), QString(), QString() );
+	}
 }
 
 

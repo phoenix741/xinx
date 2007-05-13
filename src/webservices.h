@@ -75,18 +75,10 @@ public:
 signals:
 	void updated();	
 	void soapResponse( QString query, QString response, QString errorCode, QString errorString );
-	
-private slots:
-	void httpSoapRequestFinished ( int id, bool error );
 private:
 	WSDL m_wsdl;
 	QString m_link;
 	QList<Operation> m_list;
-
-	int m_requestId;
-	QHttp * m_http;
-	QBuffer * m_response;
-	QString m_query;
 };
 
 typedef QList<WebServices*> WebServicesList;

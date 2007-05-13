@@ -57,6 +57,7 @@ private:
 
 class WSDLOperation {
 public:
+	WSDLOperation() {};
 	WSDLOperation( const QDomElement & );
 	
 	QString name() const { return m_name; };

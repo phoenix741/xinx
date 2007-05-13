@@ -24,15 +24,18 @@
 #include <QString>
 #include <QDomDocument>
 
-class WSDL;
+#include "wsdl.h"
 
 class Envelop {
 public: 
-	Envelop( WSDL * wsdl );
+	Envelop( const QString & operation );
+	~Envelop();
+	void setParam( const QString & name, const QString & type, const QString & value );
+	QString toString();
 	
 private:
-	WSDL * m_wsdl;
 	QDomDocument m_envelop;
+	QDomElement m_operation;
 };
 
 #endif // __SOAP_H__
