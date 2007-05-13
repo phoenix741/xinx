@@ -51,8 +51,13 @@ public:
 	
 	const QList<Parameter> & inputParam() { return m_inputParam; };
 	const QList<Parameter> & outputParam() { return m_outputParam; };
+	
+	QString encodingStyle() { return m_encodingStyle; };
+	QString namespaceString() { return m_namespaceString; };
 private:
 	QString m_name;
+	QString m_encodingStyle;
+	QString m_namespaceString;
 	
 	QList<Parameter> m_inputParam;
 	QList<Parameter> m_outputParam;

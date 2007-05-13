@@ -55,22 +55,20 @@ Out:2
 </env:Envelope>
 */
 
-Envelop::Envelop( const QString & operation ) {
-	QString operationNamespace = "urn:GCE";
-
+Envelop::Envelop( const QString & encodingStyle, const QString & namespaceString, const QString & operation ) {
 	QDomElement envelope = m_envelop.createElement( "soap:Envelope" );
 	m_envelop.appendChild( envelope );
 	
 	envelope.setAttribute( "xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/" );
-	envelope.setAttribute( "xmlns:ns",   operationNamespace );
+	envelope.setAttribute( "xmlns:ns",   namespaceString );
 	envelope.setAttribute( "xmlns:xsd", "http://www.w3.org/2001/XMLSchema" );
 	envelope.setAttribute( "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" );
-	envelope.setAttribute( "xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/" );
+	envelope.setAttribute( "xmlns:soapenc", encodingStyle );
 	
 	QDomElement body = m_envelop.createElement( "soap:Body" );
 	envelope.appendChild( body );
 	
-	body.setAttribute( "soap:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/" );
+	body.setAttribute( "soap:encodingStyle", encodingStyle );
 
 	m_operation = m_envelop.createElement( QString( "ns:%1" ).arg( operation ) );
 	body.appendChild( m_operation );

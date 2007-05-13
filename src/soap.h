@@ -24,11 +24,9 @@
 #include <QString>
 #include <QDomDocument>
 
-#include "wsdl.h"
-
 class Envelop {
 public: 
-	Envelop( const QString & operation );
+	Envelop( const QString & encodingStyle, const QString & namespaceString, const QString & operation );
 	~Envelop();
 	void setParam( const QString & name, const QString & type, const QString & value );
 	QString toString();

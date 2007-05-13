@@ -64,12 +64,24 @@ public:
 	QString parameterOrder() const { return m_parameterOrder; };
 	QString inputMessage() const { return m_inputMessage; };
 	QString outputMessage() const { return m_outputMessage; };
+	
+	QString inputEncodingStyle() const { return m_inputEncodingStyle; };
+	QString outputEncodingStyle() const { return m_outputEncodingStyle; };
+
+	QString inputNamespace() const { return m_inputNamespace; };
+	QString outputNamespace() const { return m_outputNamespace; };
 private:
 	QString m_name;
 	QString m_parameterOrder;
 	
 	QString m_inputMessage;
 	QString m_outputMessage;
+	
+	QString m_inputEncodingStyle;
+	QString m_outputEncodingStyle;
+	
+	QString m_inputNamespace;
+	QString m_outputNamespace;
 };
 
 class WSDLBinding {

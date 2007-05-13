@@ -41,11 +41,25 @@ WSDLOperation::WSDLOperation( const QDomElement & element ) {
 	m_name = element.attribute( "name" );
 	m_parameterOrder = element.attribute( "parameterOrder" );
 	
-	QDomElement input = element.firstChildElement( "input" );
-	QDomElement output = element.firstChildElement( "output" );
+	QDomElement inputMsg = element.firstChildElement( "input" );
+	QDomElement outputMsg = element.firstChildElement( "output" );
 	
-	m_inputMessage = input.attribute( "message" );
-	m_outputMessage = output.attribute( "message" );
+	m_inputMessage = inputMsg.attribute( "message" );
+	m_outputMessage = outputMsg.attribute( "message" );
+	
+	QDomElement input = element.firstChildElement( "input" );
+	if( ! input.isNull() ) {
+		QDomElement inputBody = input.firstChildElement( "body" );
+		m_inputEncodingStyle = inputBody.attribute( "encodingStyle" );
+		m_inputNamespace = inputBody.attribute( "namespace" );
+	}
+	
+	QDomElement output = element.firstChildElement( "output" );
+	if( ! input.isNull() ) {
+		QDomElement outputBody = output.firstChildElement( "body" );
+		m_outputEncodingStyle = outputBody.attribute( "encodingStyle" );
+		m_outputNamespace = outputBody.attribute( "namespace" );
+	}
 }
 
 WSDLBinding::WSDLBinding( const QDomElement & element ) {

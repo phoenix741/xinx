@@ -52,6 +52,13 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 		foreach( WSDLOperation operation, portType.operations() ) {
 			Operation wsOperation ( operation.name() );
 			
+			foreach( WSDLOperation bindingOperation, binding.operations() ) {
+				if( bindingOperation.name() == operation.name() ) {
+					wsOperation.m_encodingStyle = bindingOperation.inputEncodingStyle();
+					wsOperation.m_namespaceString = bindingOperation.inputNamespace();
+				}
+			}
+			
 			QString tnsInputMessage = operation.inputMessage().remove ( "tns:" );
 			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
 			foreach( WSDLPart part, inputMessage.parts() ) {
@@ -101,7 +108,7 @@ void WebServices::askWSDL( QWidget * parent ) {
 }
 
 void WebServices::call( Operation op, const QStringList & param ) {
-	Envelop soapEnvelop( op.name() );
+	Envelop soapEnvelop( op.encodingStyle(), op.namespaceString() , op.name() );
 	QString query;
 	
 	for( int i = 0; i < op.inputParam().count(); i++ ) {
@@ -113,6 +120,7 @@ void WebServices::call( Operation op, const QStringList & param ) {
 	QBuffer obuffer;
 	obuffer.open( QIODevice::ReadWrite );
 
+	query = soapEnvelop.toString();
 	QByteArray ibuffer = soapEnvelop.toString().toUtf8();
 	ibuffer.truncate( ibuffer.size() - 1 );
 
