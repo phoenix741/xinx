@@ -26,6 +26,8 @@
 class NumberBar;
 class TextEditor;
 class QTextEdit;
+class QHBoxLayout;
+class QVBoxLayout;
 
 class TextProcessor : public QObject {
 	Q_OBJECT
@@ -57,13 +59,14 @@ class FileEditor : public Editor {
 	Q_OBJECT
 public:
 	FileEditor( QWidget *parent = 0, XSLProject * project = NULL );
+	virtual ~FileEditor();
 
 	const QString & getFileName() const;
 	virtual QString getTitle() const;
 	virtual bool hasName() const;
 	
-	void loadFile( const QString &fileName = "" );
-	bool saveFile( const QString &fileName = "" );
+	virtual void loadFile( const QString &fileName = "" );
+	virtual bool saveFile( const QString &fileName = "" );
  
 	QTextEdit * textEdit() const;
  
@@ -102,11 +105,13 @@ Q_SIGNALS:
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 
-private:
+protected:
 	void setFileName( const QString & name );
   
 	QString m_fileName;
 
+	QVBoxLayout * m_vbox;
+	QHBoxLayout * m_hbox;
 	NumberBar * m_numbers;
 	TextEditor * m_view;
 };

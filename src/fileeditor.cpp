@@ -269,11 +269,16 @@ FileEditor::FileEditor( QWidget *parent, XSLProject * project ) : Editor( parent
 	m_numbers = new NumberBar( this );
 	m_numbers->setTextEdit( m_view );
  
-	QHBoxLayout * box = new QHBoxLayout( this );
-	box->setSpacing( 0 );
-	box->setMargin( 0 );
-	box->addWidget( m_numbers );
-	box->addWidget( m_view ); 
+	m_hbox = new QHBoxLayout;
+	m_hbox->setSpacing( 0 );
+	m_hbox->setMargin( 0 );
+	m_hbox->addWidget( m_numbers );
+	m_hbox->addWidget( m_view ); 
+
+ 	m_vbox = new QVBoxLayout( this );
+	m_vbox->setSpacing( 0 );
+	m_vbox->setMargin( 0 );
+	m_vbox->addLayout( m_hbox );
 	
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)) );
@@ -284,6 +289,10 @@ FileEditor::FileEditor( QWidget *parent, XSLProject * project ) : Editor( parent
 	
 	connect( m_view, SIGNAL(deleteModel()), this, SIGNAL(deleteModel()) );
 	connect( m_view, SIGNAL(createModel()), this, SIGNAL(createModel()) );
+}
+
+FileEditor::~FileEditor() {
+	
 }
 
 QTextEdit * FileEditor::textEdit() const { 

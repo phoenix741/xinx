@@ -25,6 +25,9 @@
 //
 class Editor;
 class XSLProject;
+class WebServices;
+
+typedef QList<WebServices*> WebServicesList;
 
 class TabEditor : public QTabWidget {
 	Q_OBJECT
@@ -38,8 +41,8 @@ public:
 	
 	static bool isFileEditor( Editor * editor );
 public slots:
-	void newFileEditor();
-	void loadFileEditor( const QString & fileName, XSLProject * project = NULL );
+	void newFileEditor( XSLProject * project = NULL, WebServicesList * services = NULL );
+	void loadFileEditor( const QString & fileName, XSLProject * project = NULL, WebServicesList * services = NULL );
 
 	void copy();
 	void cut();

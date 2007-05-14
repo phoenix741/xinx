@@ -28,6 +28,8 @@
 #include "tabeditor.h"
 #include "editor.h"
 #include "fileeditor.h"
+#include "webserviceseditor.h"
+#include "xslproject.h"
 
 //
 TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), previous(NULL) {
@@ -64,8 +66,13 @@ Editor * TabEditor::editor( const QString & filename ) {
 	return NULL;
 }
 
-void TabEditor::newFileEditor() {
-	FileEditor * editor = new FileEditor( this );
+void TabEditor::newFileEditor( XSLProject * project, WebServicesList * services ) {
+	FileEditor * editor;
+	if( project->projectType() != XSLProject::SERVICES ) 
+		editor = new FileEditor( this, project );
+	else
+		editor = new WebServicesEditor( services, this, project );
+		
 	int index = addTab( editor, editor->getTitle() );
 	
 	setTabIcon( index, QIcon(":/doc.png") );
@@ -74,10 +81,14 @@ void TabEditor::newFileEditor() {
 	emit currentChanged( currentIndex() );  
 }
 
-void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project ) {
+void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project, WebServicesList * services ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
-		ed = new FileEditor( this, project );
+		if( project->projectType() != XSLProject::SERVICES ) 
+			ed = new FileEditor( this, project );
+		else
+			ed = new WebServicesEditor( services, this, project );
+		
 		
 		static_cast<FileEditor*>( ed )->loadFile( fileName );
 		

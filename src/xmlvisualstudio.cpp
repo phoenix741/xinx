@@ -273,9 +273,9 @@ void XMLVisualStudio::createStatusBar() {
 /* Actions */
 
 void XMLVisualStudio::on_m_newAct_triggered() {
-	m_tabEditors->newFileEditor();
-	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
-		newWebServices( qobject_cast<FileEditor*>( m_tabEditors->currentEditor() ) );
+	m_tabEditors->newFileEditor( m_xslProject );
+//	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
+//		newWebServices( qobject_cast<FileEditor*>( m_tabEditors->currentEditor() ) );
 	updateActions();
 }
 

@@ -31,6 +31,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/tabeditor.h \
   src/uniqueapplication.h \
   src/webservices.h \
+  src/webserviceseditor.h \
   src/webservicespropertydialogimpl.h \
   src/wsdl.h \
   src/xinxconfig.h \
@@ -69,6 +70,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/tabeditor.cpp \
   src/uniqueapplication.cpp \
   src/webservices.cpp \
+  src/webserviceseditor.cpp \
   src/webservicesmainform.cpp \
   src/webservicespropertydialogimpl.cpp \
   src/wsdl.cpp \
