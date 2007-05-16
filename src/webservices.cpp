@@ -120,7 +120,7 @@ void WebServices::call( Operation op, const QStringList & param ) {
 	QBuffer obuffer;
 	obuffer.open( QIODevice::ReadWrite );
 
-	query = soapEnvelop.toString();
+//	query = soapEnvelop.toString();
 	QByteArray ibuffer = soapEnvelop.toString().toUtf8();
 	ibuffer.truncate( ibuffer.size() - 1 );
 

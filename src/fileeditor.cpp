@@ -240,12 +240,12 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 	QString m_plainText = toPlainText();
     QTextCursor cursor = textCursor();
     int pos = cursor.position();
-    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos-1 ).toUpper()  ) )
+    while ( pos>0  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_юабдцефгхикйлмнортужызшэщ").contains( m_plainText.at( pos-1 ).toUpper()  ) )
         pos--;
     cursor.setPosition(pos, QTextCursor::MoveAnchor);
     setTextCursor( cursor );
     //
-    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_").contains( m_plainText.at( pos ).toUpper()  ) )
+    while ( pos < m_plainText.length()  && QString("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_юабдцефгхикйлмнортужызшэщ").contains( m_plainText.at( pos ).toUpper()  ) )
         pos++;
     cursor.setPosition(pos, QTextCursor::KeepAnchor);
     setTextCursor( cursor );
