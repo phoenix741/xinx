@@ -317,6 +317,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 void FileEditor::serializeEditor( QDomElement & element ) {
 	element.setAttribute( "filename", m_fileName );
 	element.setAttribute( "ismodified", m_view->document()->isModified() );
+	element.setAttribute( "position", m_view->textCursor()->position() );
 	
 	QDomText text;
 	text.setData( m_view->toPlainText() );
@@ -325,7 +326,6 @@ void FileEditor::serializeEditor( QDomElement & element ) {
 
 void FileEditor::deserializeEditor( const QDomElement & element ) {
 	m_fileName = element.attribute( "filename" );
-	m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
 	
 	QString plainText;
 	QDomNode node = element.firstChild();
@@ -337,6 +337,11 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 		node = node.nextSibling();
 	}
 	m_view->setPlainText( plainText );
+
+	m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
+	QTextCursor tc = m_view->textCursor();
+	tc->setPosition( element.attribute( "position" ).toInt() );
+	m_view->setTextCursor( tc );
 }
 
 QAbstractItemModel * FileEditor::model() {
