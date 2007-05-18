@@ -27,6 +27,9 @@
 #include <typeinfo>
 #include "tabeditor.h"
 #include "editor.h"
+#include "xmlfileeditor.h"
+#include "jsfileeditor.h"
+#include "texteditor.h"
 #include "fileeditor.h"
 #include "webserviceseditor.h"
 #include "xslproject.h"
@@ -66,8 +69,19 @@ Editor * TabEditor::editor( const QString & filename ) {
 	return NULL;
 }
 
+void TabEditor::newFileEditorXSL( XSLProject * project ) {
+	FileEditor * editor = new XSLFileEditor( this, project );
+		
+	int index = addTab( editor, editor->getTitle() );
+	
+	setTabIcon( index, QIcon(":/doc.png") );
+	setCurrentIndex( index );
+
+	emit currentChanged( currentIndex() );  
+}
+
 void TabEditor::newFileEditorXML( XSLProject * project ) {
-	FileEditor * editor = new FileEditor( this, project );
+	FileEditor * editor = new XMLFileEditor( this, project );
 		
 	int index = addTab( editor, editor->getTitle() );
 	
@@ -78,7 +92,14 @@ void TabEditor::newFileEditorXML( XSLProject * project ) {
 }
 
 void TabEditor::newFileEditorJS( XSLProject * project ) {
-	newFileEditorXML( project );
+	FileEditor * editor = new JSFileEditor( this, project );
+		
+	int index = addTab( editor, editor->getTitle() );
+	
+	setTabIcon( index, QIcon(":/doc.png") );
+	setCurrentIndex( index );
+
+	emit currentChanged( currentIndex() );  
 }
 
 void TabEditor::newFileEditorWS( XSLProject * project, WebServicesList * services ) {
@@ -98,7 +119,16 @@ void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project, 
 		if( QDir::match( "*.fws", fileName ) ) 
 			ed = new WebServicesEditor( services, this, project );
 		else
-			ed = new FileEditor( this, project );
+		if( QDir::match( "*.xsl;*.xslt", fileName ) ) 
+			ed = new XSLFileEditor( this, project );
+		else
+		if( QDir::match( "*.xml", fileName ) ) 
+			ed = new XSLFileEditor( this, project );
+		else
+		if( QDir::match( "*.js", fileName ) ) 
+			ed = new JSFileEditor( this, project );
+		else
+			ed = new FileEditor( new TextEditor( this ), this, project );
 		
 		
 		static_cast<FileEditor*>( ed )->loadFile( fileName );

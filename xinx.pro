@@ -19,9 +19,11 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/editorcompletion.h \
   src/fileeditor.h \
   src/jseditor.h \
+  src/jsfileeditor.h \
   src/jshighlighter.h \
   src/kcolorcombo.h \
   src/newwebservicesdialogimpl.h \
+  src/numberbar.h \
   src/objectview.h \
   src/projectpropertyimpl.h \
   src/replacedialogimpl.h \
@@ -29,6 +31,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/soap.h \
   src/syntaxhighlighter.h \
   src/tabeditor.h \
+  src/texteditor.h \
   src/uniqueapplication.h \
   src/webservices.h \
   src/webserviceseditor.h \
@@ -36,9 +39,11 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/wsdl.h \
   src/xinxconfig.h \
   src/xmleditor.h \
+  src/xmlfileeditor.h \
   src/xmlhighlighter.h \
   src/xmlvisualstudio.h \
   src/xsddocument.h \
+  src/xsleditor.h \
   src/xsllistview.h \
   src/xslproject.h
 MOC_DIR +=   build
@@ -55,10 +60,12 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/editorcompletion.cpp \
   src/fileeditor.cpp \
   src/jseditor.cpp \
+  src/jsfileeditor.cpp \
   src/jshighlighter.cpp \
   src/kcolorcombo.cpp \
   src/main.cpp \
   src/newwebservicesdialogimpl.cpp \
+  src/numberbar.cpp \
   src/objectview.cpp \
   src/projectmainform.cpp \
   src/projectpropertyimpl.cpp \
@@ -68,6 +75,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/soap.cpp \
   src/syntaxhighlighter.cpp \
   src/tabeditor.cpp \
+  src/texteditor.cpp \
   src/uniqueapplication.cpp \
   src/webservices.cpp \
   src/webserviceseditor.cpp \
@@ -76,9 +84,11 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/wsdl.cpp \
   src/xinxconfig.cpp \
   src/xmleditor.cpp \
+  src/xmlfileeditor.cpp \
   src/xmlhighlighter.cpp \
   src/xmlvisualstudio.cpp \
   src/xsddocument.cpp \
+  src/xsleditor.cpp \
   src/xsllistview.cpp \
   src/xslproject.cpp
 TARGET =   xinx

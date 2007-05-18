@@ -21,38 +21,16 @@
 #ifndef __XMLEDITOR_H__
 #define __XMLEDITOR_H__
 
-#include "fileeditor.h"
-#include <QTextCursor>
+#include "texteditor.h"
 
-class QCompleter;
-class QTextDocument;
-class QTextEdit;
-class XSLItemModel;
-class XSLModelData;
-class XSLValueCompletionModel;
-class XSLParamCompletionModel;
-class XSLBaliseCompletionModel;
-class QModelIndex;
-
-class XMLProcessor : public TextProcessor {
+class XMLEditor : public TextEditor {
 	Q_OBJECT
 public:
-	XMLProcessor( QTextEdit * widget, XSLProject * project = NULL, QObject * parent = 0 );
-	virtual ~XMLProcessor();
+	XMLEditor( QWidget * parent = 0 );
+	virtual ~XMLEditor();
 	
-	virtual void commentSelectedText( bool uncomment );
-	virtual void complete();
-	virtual void keyPressEvent( QKeyEvent *e );
-	
-	virtual QAbstractItemModel * model();
-
-public slots:
-	virtual void updateModel();
-	
-protected slots:
-	void insertCompletion( const QModelIndex& index );
-
-private:
+	virtual void commentSelectedText( bool uncomment = false );
+protected:
 	enum cursorPosition {
 		cpEditComment, // <!-- XXXXX  -->
 		cpEditNodeName, // <XXXXX>
@@ -61,29 +39,11 @@ private:
 		cpNone
 	};
 	
-	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
-	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
-	int insertCompletionBalises( QTextCursor & tc, QString node );
-	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type );
-	
 	cursorPosition editPosition( const QTextCursor & cursor );
 	QString m_nodeName;
 	QString m_paramName;
 
 	QString textUnderCursor(const QTextCursor & cursor) const;
-	
-	QCompleter * currentCompleter(const QTextCursor & cursor);
-
-	QCompleter * m_completerNode;
-	QString m_completerParamNodeName, m_completerValueParamName;
-	QCompleter * m_completerParam;
-	QCompleter * m_completerValue;
-	
-	XSLModelData * m_modelData;
-	XSLItemModel * m_contentModel;
-	XSLValueCompletionModel * m_completionValueModel;
-	XSLParamCompletionModel * m_completionParamModel;
-	XSLBaliseCompletionModel * m_completionBaliseModel;
 };
 
 #endif // __XMLEDITOR_H__

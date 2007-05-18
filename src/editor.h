@@ -22,6 +22,7 @@
 #define EDITOR_H
 //
 #include <QFrame>
+#include <QDomElement>
 //
 
 class QAbstractItemModel;
@@ -43,7 +44,10 @@ public:
 	virtual bool isModified() = 0;
 	
 	virtual QAbstractItemModel * model() = 0;
-
+	
+//	virtual void serializeEditor( QDomElement & element ) = 0;
+//	virtual void deserializeEditor( const QDomElement & element ) = 0;
+	
 public Q_SLOTS : 
 	virtual void undo() = 0;
 	virtual void redo() = 0;

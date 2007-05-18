@@ -25,6 +25,8 @@
 #include "jseditor.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
+#include "texteditor.h"
+#include "numberbar.h"
 
 #include <QTextEdit>
 #include <QAbstractTextDocumentLayout>
@@ -38,229 +40,10 @@
 #include <QApplication>
 #include <QTextDocumentFragment>
 
-/* NumberBar */
-
-class NumberBar : public QWidget {
-	Q_OBJECT
-public:
-	enum BarDirection { VerticalBar, HorizontalBar } ;
-
-	NumberBar( QWidget *parent, enum BarDirection direction = VerticalBar );
-	virtual ~NumberBar();
- 
-	void setTextEdit( QTextEdit *edit );
-	void paintEvent( QPaintEvent *ev );
-
-	void setDirection( enum BarDirection direction );
-	enum BarDirection getDirection() { return m_direction; };
-private:
-	enum BarDirection m_direction;
-	QTextEdit *m_edit;
-};
-
-NumberBar::NumberBar( QWidget *parent, enum BarDirection direction ) : QWidget( parent ), m_edit(0) {
-	setDirection( direction );
-}
-
-NumberBar::~NumberBar() {
-}
-
-void NumberBar::setDirection( enum BarDirection direction ) { 
-	m_direction = direction; 
-	if( m_direction == VerticalBar ) 
-		setFixedWidth( fontMetrics().width( QString("0000") + 10 + 32 ) );
-	else
-		setFixedHeight( fontMetrics().width( QString("0000") + 10 + 32 ) );
-}
-
-void NumberBar::setTextEdit( QTextEdit *edit ) {
-	this->m_edit = edit;
-	connect( m_edit->document()->documentLayout(), SIGNAL( update(const QRectF &) ), this, SLOT( update() ) );
-	connect( m_edit->verticalScrollBar(), SIGNAL( valueChanged(int) ), this, SLOT( update() ) );
-}
-
-void NumberBar::paintEvent( QPaintEvent * event ) {
-	Q_UNUSED( event );
-	
-	QAbstractTextDocumentLayout *layout = m_edit->document()->documentLayout();
-	const QFontMetrics fm = fontMetrics();
-	QPainter p(this);
- 	
-	if( m_direction == VerticalBar ) {
-		int contentsY = m_edit->verticalScrollBar()->value();
-		qreal pageBottom = contentsY + m_edit->viewport()->height();
-		const int ascent = fontMetrics().ascent() + 1; // height = ascent + descent + 1
-		int lineCount = 1;
-	
-		for ( QTextBlock block = m_edit->document()->begin(); block.isValid(); block = block.next(), ++lineCount ) {
-			const QRectF boundingRect = layout->blockBoundingRect( block );
- 	
-			QPointF position = boundingRect.topLeft();
-			if ( position.y() + boundingRect.height() < contentsY ) continue;
-			if ( position.y() > pageBottom ) break;
- 	
-			const QString txt = QString::number( lineCount );
-			p.drawText( width() - fm.width(txt), qRound( position.y() ) - contentsY + ascent, txt );
-		}
-	} else {
-	}
-}
-
-/* Editor */
-
-class TextEditor : public QTextEdit {
-	Q_OBJECT
-public:
-	TextEditor( QWidget * parent = 0, XSLProject * project = NULL );
-	virtual ~TextEditor();
-
-	virtual void commentSelectedText( bool uncomment = false );
-	virtual void complete();
-
-	void formatToXML();
-	void formatToJS();
-	void formatToNothing();
-	
-	QAbstractItemModel * model();
-	
-signals:
-	void deleteModel();
-	void createModel();
-
-protected:
-	void keyPressEvent(QKeyEvent *e);
-	void parentKeyPressEvent( QKeyEvent * e );
-    void mouseDoubleClickEvent( QMouseEvent * event );
-
-private:
-	void key_home( bool );
-
-	XSLProject * m_project;
-	TextProcessor * m_processor;
-	QSyntaxHighlighter * m_highlighter;
-	
-	friend class TextProcessor;
-	friend class FileEditor;
-};
-
-TextEditor::TextEditor( QWidget * parent, XSLProject * project ) : QTextEdit( parent ), m_project( project ), m_processor( 0 ), m_highlighter( 0 ) { 
-	// Setup the main view
-	QFont font;
-	font.setFamily( "Monospace" );
-	font.setFixedPitch( true );
-	font.setPointSize( 8 );
-  
-	setAcceptRichText(false);
-
-	setFont( font );
-	setTabStopWidth( 15 );
-}
-
-TextEditor::~TextEditor() {
-	formatToNothing();
-}
-
-QAbstractItemModel * TextEditor::model() {
-	if( m_processor )
-		return m_processor->model();
-	return NULL;
-}
-
-void TextEditor::formatToNothing() {
-	emit deleteModel();
-	if( m_highlighter ) {
-		delete m_highlighter;  
-		m_highlighter = NULL;
-	}
-	if( m_processor ) {
-		delete m_processor; 
-		m_processor = NULL;
-	}
-}
-
-void TextEditor::formatToXML() {
-	formatToNothing();
-	m_highlighter = new XmlHighlighter( document() );
-	m_processor = new XMLProcessor( this, m_project, this );
-	emit createModel();
-}
-
-void TextEditor::formatToJS() {
-	formatToNothing();
-	m_highlighter = new JsHighlighter( document() );
-	m_processor = new JSProcessor( this, m_project, this );
-}
-
-void TextEditor::commentSelectedText( bool uncomment ) {
-	if( m_processor )
-		m_processor->commentSelectedText( uncomment );
-}
-
-void TextEditor::complete() {
-	if( m_processor )
-		m_processor->complete();
-
-}
-
-void TextEditor::keyPressEvent( QKeyEvent *e ) {
-	if( m_processor ) 
-		m_processor->keyPressEvent( e );
-	else
-		parentKeyPressEvent(e);
-}
-
-void TextEditor::parentKeyPressEvent( QKeyEvent * e ) {
-	if ( e->key() == Qt::Key_Home && ( e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier ) ) {
-		key_home( e->modifiers() == Qt::ShiftModifier );
-		e->accept();
-	} else
-		QTextEdit::keyPressEvent( e );
-}
-
-void TextEditor::key_home( bool select ) {
-	QTextCursor cursor = textCursor();
-	int col = cursor.columnNumber();
-	cursor.movePosition( QTextCursor::StartOfLine, select ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor );
-	QTextCursor cursorStart( cursor );
-	QTextBlock b = cursorStart.block();
-	int i = 0;
-	while ( b.text().at(i) == ' ' || b.text().at(i) == '\t' ) {
-		cursorStart.movePosition( QTextCursor::NextCharacter, select ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor );
-		i++;
-	}
-	if( col == cursorStart.columnNumber() )
-		setTextCursor( cursor );
-	else
-		setTextCursor( cursorStart );
-}
-
-
-void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
-	QPoint mousePosition = event->pos();
-	QString m_plainText = toPlainText();
-    QTextCursor cursor = textCursor();
-    int pos = cursor.position();
-    while ( (pos>0)  && ( m_plainText.at( pos-1 ).isLetter() || (m_plainText.at( pos-1 ) == QChar('_')) ) )
-        pos--;
-    cursor.setPosition(pos, QTextCursor::MoveAnchor);
-    //setTextCursor( cursor );
-    //
-    while ( (pos < m_plainText.length()) && ( m_plainText.at( pos ).isLetter() || (m_plainText.at( pos ) == QChar('_')) ) )
-        pos++;
-    cursor.setPosition(pos, QTextCursor::KeepAnchor);
-    setTextCursor( cursor );
-}
-
-/* TextProcessor */
-
-void TextProcessor::parentKeyPressEvent( QKeyEvent * e ) {
-	static_cast<TextEditor*>( m_widget )->parentKeyPressEvent( e );
-}
-
 /* FileEditor */
 
-FileEditor::FileEditor( QWidget *parent, XSLProject * project ) : Editor( parent, project ) {
-	m_view = new TextEditor( this, project );
+FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent, XSLProject * project ) : Editor( parent, project ) {
+	m_view = textEditor;
 	m_view->setFrameStyle( QFrame::NoFrame );
 	m_view->setLineWrapMode(QTextEdit::NoWrap);
 	m_view->installEventFilter( this );
@@ -463,6 +246,7 @@ const QString & FileEditor::getFileName() const {
 
 void FileEditor::setFileName( const QString & name ) {
 	m_fileName = QDir::fromNativeSeparators( name );
+	/*
 	if( QDir::match( "*.xml;*.xsl;*.html;*.fws", m_fileName ) ) 
 		m_view->formatToXML();
 	else
@@ -470,6 +254,7 @@ void FileEditor::setFileName( const QString & name ) {
 		m_view->formatToJS();
 	else
 		m_view->formatToNothing();
+	*/
 }
 
 void FileEditor::loadFile( const QString & fileName ){
@@ -487,10 +272,8 @@ void FileEditor::loadFile( const QString & fileName ){
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
-	
-	if( m_view->m_processor ) {
-		m_view->m_processor->updateModel();
-	}
+	m_view->updateModel();
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -524,9 +307,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	out << m_view->toPlainText();
 
-	if( m_view->m_processor ) {
-		m_view->m_processor->updateModel();
-	}
+	m_view->updateModel();
 
 	QApplication::restoreOverrideCursor();
 
@@ -580,5 +361,3 @@ void FileEditor::copy() {
 void FileEditor::paste() {
 	textEdit()->paste();
 }
-
-#include "fileeditor.moc"

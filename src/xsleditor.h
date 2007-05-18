@@ -18,77 +18,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __FILEEDITOR_H__
-#define __FILEEDITOR_H__
+#ifndef __XSLEDITOR_H__
+#define __XSLEDITOR_H__
 
-#include "editor.h"
+#include "xmleditor.h"
+#include <QTextCursor>
 
-class NumberBar;
-class TextEditor;
+class QCompleter;
+class QTextDocument;
 class QTextEdit;
-class QHBoxLayout;
-class QVBoxLayout;
+class XSLItemModel;
+class XSLModelData;
+class XSLValueCompletionModel;
+class XSLParamCompletionModel;
+class XSLBaliseCompletionModel;
+class QModelIndex;
+class XSLProject;
+class QAbstractItemModel;
+class QKeyEvent;
 
-class FileEditor : public Editor {
+class XSLEditor : public XMLEditor {
 	Q_OBJECT
 public:
-	FileEditor( TextEditor * textEditor, QWidget *parent = 0, XSLProject * project = NULL );
-	virtual ~FileEditor();
-
-	const QString & getFileName() const;
-	virtual QString getTitle() const;
-	virtual bool hasName() const;
+	XSLEditor( QWidget * parent = 0, XSLProject * project = NULL );
+	virtual ~XSLEditor();
 	
-	virtual void loadFile( const QString &fileName = "" );
-	virtual bool saveFile( const QString &fileName = "" );
- 
-	QTextEdit * textEdit() const;
- 
-	virtual bool canCopy();
-	virtual bool canPaste();
-	virtual bool canUndo();
-	virtual bool canRedo();
-	virtual bool isModified();
-
-	virtual QAbstractItemModel * model();
-public Q_SLOTS : 
-	virtual void undo();
-	virtual void redo();
-
-	virtual void cut();
-	virtual void copy();
-	virtual void paste();
-
-	virtual void selectAll();
-	virtual void duplicateCurrentLine();
-	virtual void moveLineUp();
-	virtual void moveLineDown();
-	virtual void uploSelectedText( bool upper = true );
 	virtual void commentSelectedText( bool uncomment = false );
-	virtual void indent( bool unindent = false );
 	virtual void complete();
 
-	virtual void setModified( bool );
-
-Q_SIGNALS:
-	void mouseHover( const QString &word );
-	void mouseHover( const QPoint &pos, const QString &word );
+	virtual QAbstractItemModel * model();
 	
-	void selectionAvailable ( bool yes );
+public slots:
+	virtual void updateModel();
 	
 protected:
-	virtual bool eventFilter( QObject *obj, QEvent *event );
+	void keyPressEvent(QKeyEvent *e);
 
-protected:
-	void setFileName( const QString & name );
-  
-	QString m_fileName;
+protected slots:
+	void insertCompletion( const QModelIndex& index );
 
-	QVBoxLayout * m_vbox;
-	QHBoxLayout * m_hbox;
-	NumberBar * m_numbers;
-	TextEditor * m_view;
+private:
+	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
+	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
+	int insertCompletionBalises( QTextCursor & tc, QString node );
+	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type );
+	
+	QCompleter * currentCompleter(const QTextCursor & cursor);
+
+	QCompleter * m_completerNode;
+	QString m_completerParamNodeName, m_completerValueParamName;
+	QCompleter * m_completerParam;
+	QCompleter * m_completerValue;
+	
+	XSLModelData * m_modelData;
+	XSLItemModel * m_contentModel;
+	XSLValueCompletionModel * m_completionValueModel;
+	XSLParamCompletionModel * m_completionParamModel;
+	XSLBaliseCompletionModel * m_completionBaliseModel;
 };
 
-
-#endif // __FILEEDITOR_H__
+#endif // __XSLEDITOR_H__

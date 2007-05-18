@@ -18,19 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __JSEDITOR_H__
-#define __JSEDITOR_H__
+#ifndef __NUMBERBAR_H__
+#define __NUMBERBAR_H__
 
-#include "texteditor.h"
-#include <QTextCursor>
+#include <QWidget>
 
-class JSEditor : public TextEditor {
+class QTextEdit;
+class QPaintEvent;
+
+class NumberBar : public QWidget {
 	Q_OBJECT
 public:
-	JSEditor( QWidget * parent = 0, XSLProject * project = NULL );
-	virtual ~JSEditor();
+	enum BarDirection { VerticalBar, HorizontalBar } ;
 
+	NumberBar( QWidget *parent, enum BarDirection direction = VerticalBar );
+	virtual ~NumberBar();
+ 
+	void setTextEdit( QTextEdit *edit );
+	void paintEvent( QPaintEvent *ev );
+
+	void setDirection( enum BarDirection direction );
+	enum BarDirection getDirection() { return m_direction; };
 private:
+	enum BarDirection m_direction;
+	QTextEdit *m_edit;
 };
 
-#endif // __JSEDITOR_H__
+#endif // __NUMBERBAR_H__

@@ -18,19 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __JSEDITOR_H__
-#define __JSEDITOR_H__
+#ifndef __TEXTEDITOR_H__
+#define __TEXTEDITOR_H__
 
-#include "texteditor.h"
-#include <QTextCursor>
+#include <QTextEdit>
 
-class JSEditor : public TextEditor {
+class XSLProject;
+class QAbstractItemModel;
+class TextProcessor;
+class QSyntaxHighlighter;
+
+class TextEditor : public QTextEdit {
 	Q_OBJECT
 public:
-	JSEditor( QWidget * parent = 0, XSLProject * project = NULL );
-	virtual ~JSEditor();
+	TextEditor( QWidget * parent = 0 );
+	virtual ~TextEditor();
+
+	virtual void commentSelectedText( bool uncomment = false );
+	virtual void complete();
+
+	virtual QAbstractItemModel * model();
+
+public slots:
+	virtual void updateModel();
+	
+signals:
+	void deleteModel();
+	void createModel();
+
+protected:
+	void keyPressEvent(QKeyEvent *e);
+    void mouseDoubleClickEvent( QMouseEvent * event );
 
 private:
+	void key_home( bool );
+	void key_enter();
 };
-
-#endif // __JSEDITOR_H__
+#endif // __TEXTEDITOR_H__

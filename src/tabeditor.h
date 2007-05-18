@@ -42,6 +42,7 @@ public:
 	static bool isFileEditor( Editor * editor );
 public slots:
 	void newFileEditorXML( XSLProject * project = NULL );
+	void newFileEditorXSL( XSLProject * project = NULL );
 	void newFileEditorJS( XSLProject * project = NULL );
 	void newFileEditorWS( XSLProject * project = NULL, WebServicesList * services = NULL );
 	void loadFileEditor( const QString & fileName, XSLProject * project = NULL, WebServicesList * services = NULL );

@@ -19,13 +19,14 @@
  ***************************************************************************/
 
 #include "webserviceseditor.h"
+#include "xmleditor.h"
 
 #include <QLabel>
 #include <QComboBox>
 #include <QVBoxLayout>
 
 WebServicesEditor::WebServicesEditor( WebServicesList * list, QWidget *parent, XSLProject * project ) :
-	FileEditor( parent, project ), m_list( list ) {
+	FileEditor( new XMLEditor( parent ), parent, project ), m_list( list ) {
 	
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
 	m_servicesList = new QComboBox( this );

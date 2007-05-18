@@ -18,19 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __JSEDITOR_H__
-#define __JSEDITOR_H__
+#ifndef __JSFILEEDITOR_H__
+#define __JSFILEEDITOR_H__
 
-#include "texteditor.h"
-#include <QTextCursor>
+#include "fileeditor.h"
 
-class JSEditor : public TextEditor {
+class JSFileEditor : public FileEditor {
 	Q_OBJECT
 public:
-	JSEditor( QWidget * parent = 0, XSLProject * project = NULL );
-	virtual ~JSEditor();
-
-private:
+	JSFileEditor( QWidget *parent = 0, XSLProject * project = NULL );
+	virtual ~JSFileEditor();
+	
 };
 
-#endif // __JSEDITOR_H__
+#endif // __JSFILEEDITOR_H__
