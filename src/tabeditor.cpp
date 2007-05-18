@@ -50,7 +50,7 @@ TabEditor::~TabEditor() {
 //
 
 bool TabEditor::isFileEditor( Editor * editor ) {
-	return typeid(*editor) == typeid(FileEditor);
+	return dynamic_cast<FileEditor*>(editor) != NULL;
 }
 
 Editor * TabEditor::currentEditor() {

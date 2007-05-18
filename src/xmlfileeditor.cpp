@@ -30,7 +30,7 @@ XMLFileEditor::~XMLFileEditor() {
 	
 }
 
-XSLFileEditor::XSLFileEditor( QWidget *parent, XSLProject * project ) : XMLFileEditor( parent, project, new XSLEditor( parent ) ) {
+XSLFileEditor::XSLFileEditor( QWidget *parent, XSLProject * project ) : XMLFileEditor( parent, project, new XSLEditor( parent, project ) ) {
 	
 }
 
