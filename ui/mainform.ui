@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>923</width>
-     <height>29</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -48,28 +48,6 @@
     <addaction name="m_nextTabAct" />
     <addaction name="m_previousTabAct" />
     <addaction name="separator" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="m_recentProjectMenu" >
-     <property name="title" >
-      <string>&amp;Recent project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
-     </property>
-     <addaction name="m_openProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectMenu" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="m_closeProjectAct" />
-    <addaction name="separator" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -134,6 +112,37 @@
     <addaction name="m_refreshWebServicesListAct" />
     <addaction name="separator" />
     <addaction name="m_callWebServicesAct" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="menu_Close_project_2" >
+     <property name="title" >
+      <string>&amp;Close project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
+     </property>
+     <addaction name="m_closeProjectAct" />
+     <addaction name="m_closeProjectSessionAct" />
+    </widget>
+    <widget class="QMenu" name="m_recentProjectMenu" >
+     <property name="title" >
+      <string>&amp;Recent project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectMenu" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="menu_Close_project_2" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -612,11 +621,8 @@
    </property>
   </action>
   <action name="m_closeProjectAct" >
-   <property name="icon" >
-    <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
-   </property>
    <property name="text" >
-    <string>&amp;Close Project</string>
+    <string>&amp;Close Project (no session)</string>
    </property>
   </action>
   <action name="m_projectPropertyAct" >
@@ -709,6 +715,11 @@
   <action name="m_newWebServicesFileAct" >
    <property name="text" >
     <string>New WebServices file</string>
+   </property>
+  </action>
+  <action name="m_closeProjectSessionAct" >
+   <property name="text" >
+    <string>Close Project (session)</string>
    </property>
   </action>
  </widget>

@@ -81,6 +81,7 @@ private slots:
 	void on_m_replaceAct_triggered();
 
 	void on_m_closeProjectAct_triggered();
+	void on_m_closeProjectSessionAct_triggered();
 	void on_m_filtreLineEdit_textChanged(QString );
 	void on_m_projectDirectoryTreeView_doubleClicked(QModelIndex index);
 
@@ -151,7 +152,7 @@ private: /* Private definition */
 	void setupRecentProjectMenu( QMenu * menu );
 	void openProject( const QString & filename );
 	void setCurrentProject( const QString & filename );
-	void closeProject( bool closeAll );
+	void closeProject( bool closeAll, bool saveSession );
 	
 	/* Variables */	
 	QString m_lastProjectOpenedPlace;

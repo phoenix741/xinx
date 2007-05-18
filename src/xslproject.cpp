@@ -28,15 +28,19 @@
 XSLProject::XSLProject() : QObject() {
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
 	m_projectDocument.appendChild( root );
+	
+	QDomElement session = m_sessionDocument.createElement( "Session" );
+	m_sessionDocument.appendChild( session );
 }
 
 XSLProject::XSLProject( const XSLProject & object ) : QObject() {
 	m_fileName =  object.m_fileName;
 	m_projectDocument = object.m_projectDocument;
+	m_sessionDocument = object.m_sessionDocument;
 }
 
 XSLProject::XSLProject( const QString & project ) : QObject() {
-	loadFromFile(project);
+	loadFromFile( project );
 }
 
 XSLProject::~XSLProject() {
@@ -76,7 +80,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	
 	m_fileName = filename;
 	
-	loadOpenedFile();
+	loadOpenedFile( fileName + ".session" );
 	loadWebServicesLink();
 }
 
@@ -245,7 +249,8 @@ void XSLProject::setSpecifiqueConfigurationFile( const QString & value ) {
 	return setValue( "specifique", value );
 }
 
-void XSLProject::loadOpenedFile() {
+void XSLProject::loadOpenedFile( const QString & fileName ) {
+	/*
 	QDomElement root = m_projectDocument.documentElement();
 	QDomElement elt  = root.firstChildElement( "openedElementCount" );
 	
@@ -260,9 +265,11 @@ void XSLProject::loadOpenedFile() {
 		
 		file = file.nextSiblingElement( "file" );
 	}
+	*/
 }
 
 void XSLProject::saveOpenedFile() {
+	/*
 	QDomElement root = m_projectDocument.documentElement();
 	QDomElement elt  = root.firstChildElement( "openedElementCount" );
 	
@@ -279,6 +286,7 @@ void XSLProject::saveOpenedFile() {
 		QDomText text = m_projectDocument.createTextNode( filename );
 		file.appendChild( text );
 	}
+	*/
 }
 
 void XSLProject::loadWebServicesLink() {

@@ -76,7 +76,7 @@ void XMLVisualStudio::newProject() {
 	}
 	m_lastProjectOpenedPlace = project->projectPath();
 
-	closeProject( true );
+	closeProject( true, true );
 	project->saveToFile( filename );
 	delete project;
 	
@@ -98,7 +98,7 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	assert( ! filename.isEmpty() );
 
 	if( m_xslProject ) 
-		closeProject( true ); 
+		closeProject( true, true ); 
 	else 
 		on_m_closeAllAct_triggered();
 		
@@ -133,14 +133,6 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 void XMLVisualStudio::saveProject() {
 	assert( m_xslProject != NULL );
 	
-	m_xslProject->openedFiles().clear();
-	
-	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		if( TabEditor::isFileEditor( m_tabEditors->editor( i ) ) ) {
-			m_xslProject->openedFiles().append( qobject_cast<FileEditor*>( m_tabEditors->editor( i ) )->getFileName() );
-		}
-	}
-	
 	m_xslProject->saveToFile();
 }
 
@@ -157,13 +149,25 @@ void XMLVisualStudio::changeProjectProperty() {
 }
 
 void XMLVisualStudio::on_m_closeProjectAct_triggered() {
-	closeProject( true );
+	closeProject( true, false );
 }
 
-void XMLVisualStudio::closeProject( bool closeAll ) {
+void XMLVisualStudio::on_m_closeProjectSessionAct_triggered() {
+	closeProject( true, true );
+}
+
+void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	if( ! m_xslProject ) return;
 		
 	saveProject();
+
+	m_xslProject->openedFiles().clear();
+	for( int i = 0; i < m_tabEditors->count(); i++ ) {
+		if( TabEditor::isFileEditor( m_tabEditors->editor( i ) ) ) {
+			m_xslProject->openedFiles().append( qobject_cast<FileEditor*>( m_tabEditors->editor( i ) )->getFileName() );
+		}
+	}
+
 	if( closeAll ) on_m_closeAllAct_triggered();
 
 	m_projectDirectoryTreeView->setModel( NULL );

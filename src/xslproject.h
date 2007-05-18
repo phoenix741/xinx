@@ -88,14 +88,17 @@ private:
 	QString getValue( const QString & node ) const;
 	void setValue( const QString & node, const QString & value );
 	
-	void loadOpenedFile();
+	void loadOpenedFile( const QString & fileName );
 	void saveOpenedFile();
 
 	void loadWebServicesLink();
 	void saveWebServicesLink();
 
 	QString m_fileName;
+	
 	QDomDocument m_projectDocument;
+	QDomDocument m_sessionDocument;
+	
 	QStringList m_openedFile;
 	
 	QStringList m_webServiceLink;

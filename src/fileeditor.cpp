@@ -314,6 +314,31 @@ bool FileEditor::saveFile( const QString & fileName ){
 	return true;	
 }
 
+void FileEditor::serializeEditor( QDomElement & element ) {
+	element.setAttribute( "filename", m_fileName );
+	element.setAttribute( "ismodified", m_view->document()->isModified() );
+	
+	QDomText text;
+	text.setData( m_view->toPlainText() );
+	element.appendChild( text );
+}
+
+void FileEditor::deserializeEditor( const QDomElement & element ) {
+	m_fileName = element.attribute( "filename" );
+	m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
+	
+	QString plainText;
+	QDomNode node = element.firstChild();
+	while( ! node.isNull() ) {
+		if( node.isText() ) {
+			plainText += node.toText().data();
+		}
+				
+		node = node.nextSibling();
+	}
+	m_view->setPlainText( plainText );
+}
+
 QAbstractItemModel * FileEditor::model() {
 	return m_view->model();
 }

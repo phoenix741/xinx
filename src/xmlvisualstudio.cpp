@@ -430,7 +430,7 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 			return;
 		}
 	}
-	closeProject( false );
+	closeProject( false, true );
 	
 	writeSettings();
 	
