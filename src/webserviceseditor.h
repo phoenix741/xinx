@@ -33,7 +33,7 @@ class WebServicesEditor : public FileEditor {
 public:
 	WebServicesEditor( WebServicesList * list, QWidget *parent = 0, XSLProject * project = NULL );
 private:
-	QComboBox * m_paramList;
+	QComboBox * m_paramList, * m_servicesList, * m_actionList;
 	WebServicesList * m_list;
 };
 

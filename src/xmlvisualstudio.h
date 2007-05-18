@@ -58,6 +58,10 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
+	void on_m_newStylesheetFileAct_triggered();
+	void on_m_newXMLFileAct_triggered();
+	void on_m_newJavascriptFileAct_triggered();
+	void on_m_newWebServicesFileAct_triggered();
 	void on_m_newAct_triggered();
 	void on_m_openAct_triggered();
 	void on_m_saveAct_triggered();
@@ -190,6 +194,7 @@ private: /* private definition */
 
 };
 #endif
+
 
 
 

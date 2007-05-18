@@ -126,6 +126,14 @@ void XMLVisualStudio::writeSettings() {
 }
 
 void XMLVisualStudio::createActions() {
+	QMenu * newMenu = new QMenu( this );
+	newMenu->addAction( m_newStylesheetFileAct );
+	newMenu->addAction( m_newXMLFileAct );
+	newMenu->addAction( m_newJavascriptFileAct );
+	newMenu->addAction( m_newWebServicesFileAct );
+	
+	m_newAct->setMenu( newMenu );
+	
 	connect( m_tabEditors, SIGNAL(modelCreated()), this, SLOT(slotModelCreated()) );
 	connect( m_tabEditors, SIGNAL(modelDeleted()), this, SLOT(slotModelDeleted()) );
 	
@@ -273,11 +281,36 @@ void XMLVisualStudio::createStatusBar() {
 /* Actions */
 
 void XMLVisualStudio::on_m_newAct_triggered() {
-	m_tabEditors->newFileEditor( m_xslProject );
+	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
+		on_m_newWebServicesFileAct_triggered();
+	else
+		on_m_newStylesheetFileAct_triggered();
+}
+
+
+void XMLVisualStudio::on_m_newStylesheetFileAct_triggered() {
+	m_tabEditors->newFileEditorXML( m_xslProject );
+	updateActions();
+}
+
+void XMLVisualStudio::on_m_newXMLFileAct_triggered() {
+	m_tabEditors->newFileEditorXML( m_xslProject );
+	updateActions();
+}
+
+void XMLVisualStudio::on_m_newJavascriptFileAct_triggered() {
+	m_tabEditors->newFileEditorJS( m_xslProject );
+	updateActions();
+}
+
+void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
+	m_tabEditors->newFileEditorWS( m_xslProject, m_webServices );
 //	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
 //		newWebServices( qobject_cast<FileEditor*>( m_tabEditors->currentEditor() ) );
 	updateActions();
 }
+
+
 
 void XMLVisualStudio::on_m_openAct_triggered() {
 	QString filename = QFileDialog::getOpenFileName( this, tr("Open text file"), m_lastPlace, xinxConfig->extentions() );

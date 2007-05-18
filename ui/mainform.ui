@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>637</width>
-    <height>550</height>
+    <width>923</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -30,10 +30,57 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>637</width>
+     <width>923</width>
      <height>29</height>
     </rect>
    </property>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="m_recentProjectMenu" >
+     <property name="title" >
+      <string>&amp;Recent project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectMenu" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="m_closeProjectAct" />
+    <addaction name="separator" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
+   </widget>
+   <widget class="QMenu" name="m_searchMenu" >
+    <property name="title" >
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="m_searchAct" />
+    <addaction name="m_searchNextAct" />
+    <addaction name="m_searchPreviousAct" />
+    <addaction name="separator" />
+    <addaction name="m_replaceAct" />
+   </widget>
    <widget class="QMenu" name="m_fileMenu" >
     <property name="title" >
      <string>&amp;File</string>
@@ -50,16 +97,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_searchMenu" >
-    <property name="title" >
-     <string>&amp;Search</string>
-    </property>
-    <addaction name="m_searchAct" />
-    <addaction name="m_searchNextAct" />
-    <addaction name="m_searchPreviousAct" />
-    <addaction name="separator" />
-    <addaction name="m_replaceAct" />
    </widget>
    <widget class="QMenu" name="m_editMenu" >
     <property name="title" >
@@ -87,28 +124,6 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="m_recentProjectMenu" >
-     <property name="title" >
-      <string>&amp;Recent project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
-     </property>
-     <addaction name="m_openProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectMenu" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="m_closeProjectAct" />
-    <addaction name="separator" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
-   </widget>
    <widget class="QMenu" name="m_webServicesMenu" >
     <property name="enabled" >
      <bool>false</bool>
@@ -119,22 +134,6 @@
     <addaction name="m_refreshWebServicesListAct" />
     <addaction name="separator" />
     <addaction name="m_callWebServicesAct" />
-    <addaction name="m_webServicesFilePropertyAct" />
-   </widget>
-   <widget class="QMenu" name="m_helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -684,17 +683,32 @@
     <string>Refresh WebServices List</string>
    </property>
   </action>
-  <action name="m_webServicesFilePropertyAct" >
-   <property name="text" >
-    <string>WebServices File Property</string>
-   </property>
-  </action>
   <action name="m_callWebServicesAct" >
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/resume.png</iconset>
    </property>
    <property name="text" >
     <string>Call WebServices</string>
+   </property>
+  </action>
+  <action name="m_newStylesheetFileAct" >
+   <property name="text" >
+    <string>New Stylesheet file</string>
+   </property>
+  </action>
+  <action name="m_newXMLFileAct" >
+   <property name="text" >
+    <string>New XML file</string>
+   </property>
+  </action>
+  <action name="m_newJavascriptFileAct" >
+   <property name="text" >
+    <string>New JavaScript file</string>
+   </property>
+  </action>
+  <action name="m_newWebServicesFileAct" >
+   <property name="text" >
+    <string>New WebServices file</string>
    </property>
   </action>
  </widget>

@@ -27,13 +27,28 @@
 WebServicesEditor::WebServicesEditor( WebServicesList * list, QWidget *parent, XSLProject * project ) :
 	FileEditor( parent, project ), m_list( list ) {
 	
-	QLabel * label = new QLabel( tr("Parameter list:"), this );	
+	QLabel * label1 = new QLabel( tr("WebServices : "), this );
+	m_servicesList = new QComboBox( this );
+	m_servicesList->addItem( "crudManager" );
+
+	QLabel * label2 = new QLabel( tr("Action : "), this );
+	m_actionList = new QComboBox( this );
+	m_actionList->addItem( "create" );
+		
+	QLabel * label3 = new QLabel( tr("Parameter : "), this );	
 	m_paramList = new QComboBox( this );
-	m_paramList->addItem( "" );
+	m_paramList->addItem( "String_1" );
 	
 	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( label );
+	hbox->addWidget( label1 );
+	hbox->addWidget( m_servicesList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( label2 );
+	hbox->addWidget( m_actionList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( label3 );
 	hbox->addWidget( m_paramList );
+	hbox->addStretch();
 	
 	m_vbox->insertLayout( 0, hbox );
 }
