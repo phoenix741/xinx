@@ -248,6 +248,7 @@ void XMLVisualStudio::updateActions() {
 	/* Project action */
 	m_saveProjectAct->setEnabled( m_xslProject != NULL );
 	m_closeProjectAct->setEnabled( m_xslProject != NULL );
+	m_closeProjectSessionAct->setEnabled( m_xslProject != NULL );
 	m_projectPropertyAct->setEnabled( m_xslProject != NULL );
 
 	/* Files */
@@ -424,13 +425,15 @@ void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
-	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		if ( ! maybeSave( i ) ) {
-			event->ignore();
-			return;
+	if( ! xinxConfig->saveSessionByDefault() ) {
+		for( int i = 0; i < m_tabEditors->count(); i++ ) {
+			if ( ! maybeSave( i ) ) {
+				event->ignore();
+				return;
+			}
 		}
 	}
-	closeProject( false, true );
+	closeProject( false, xinxConfig->saveSessionByDefault() );
 	
 	writeSettings();
 	

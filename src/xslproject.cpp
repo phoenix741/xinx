@@ -29,14 +29,15 @@ XSLProject::XSLProject() : QObject() {
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
 	m_projectDocument.appendChild( root );
 	
-	QDomElement session = m_sessionDocument.createElement( "Session" );
-	m_sessionDocument.appendChild( session );
+	m_sessionNode = m_sessionDocument.createElement( "Session" );
+	m_sessionDocument.appendChild( m_sessionNode );
 }
 
 XSLProject::XSLProject( const XSLProject & object ) : QObject() {
 	m_fileName =  object.m_fileName;
 	m_projectDocument = object.m_projectDocument;
 	m_sessionDocument = object.m_sessionDocument;
+	m_sessionNode     = object.m_sessionNode;
 }
 
 XSLProject::XSLProject( const QString & project ) : QObject() {
@@ -79,17 +80,18 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	}
 	
 	m_fileName = filename;
-	
-	loadOpenedFile( fileName + ".session" );
 	loadWebServicesLink();
+	
+	loadOpenedFile( m_fileName + ".session" );
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
-	saveOpenedFile();
-	saveWebServicesLink();
-	
 	if( ! filename.isEmpty() ) m_fileName = filename;
 	if( m_fileName.isEmpty() ) return;
+	
+	saveOpenedFile( m_fileName + ".session" );
+	
+	saveWebServicesLink();
 	
 	static const int IndentSize = 3;
 
@@ -249,44 +251,56 @@ void XSLProject::setSpecifiqueConfigurationFile( const QString & value ) {
 	return setValue( "specifique", value );
 }
 
-void XSLProject::loadOpenedFile( const QString & fileName ) {
-	/*
-	QDomElement root = m_projectDocument.documentElement();
-	QDomElement elt  = root.firstChildElement( "openedElementCount" );
+void XSLProject::loadOpenedFile( const QString fileName ) {
+	QFile file( fileName );
 	
-	m_openedFile.clear();
-	
-	if( elt.isNull() ) return;
-		
-	QDomElement file = elt.firstChildElement( "file" );
-	
-	while ( ! file.isNull() ) {
-		m_openedFile.append( file.firstChild().toText().nodeValue() );	
-		
-		file = file.nextSiblingElement( "file" );
+	// Open the file
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		QDomElement session = m_sessionDocument.createElement( "Session" );
+		m_sessionDocument.appendChild( session );
+	} else {
+		// Load XML Document
+		QString errorStr;
+		int errorLine;
+		int errorColumn;  
+		if (!m_sessionDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+			QMessageBox::information(qApp->activeWindow(), QObject::tr("Session file"), QObject::tr("Parse error at line %1, column %2:\n%3")
+																						.arg(errorLine)
+	        			                      											.arg(errorColumn)
+																						.arg(errorStr));
+		    return;
+		}  
 	}
-	*/
+		
+	m_sessionNode = m_sessionDocument.documentElement();
+  
+	// Test if Project File
+	if( m_sessionNode.tagName() != "Session" ) {
+		QMessageBox::information(qApp->activeWindow(), QObject::tr("Session file"), QObject::tr("The file isn't a XINX Project Session file"));
+	    return;
+	}
 }
 
-void XSLProject::saveOpenedFile() {
-	/*
-	QDomElement root = m_projectDocument.documentElement();
-	QDomElement elt  = root.firstChildElement( "openedElementCount" );
+void XSLProject::saveOpenedFile( const QString fileName ) {
+	static const int IndentSize = 3;
+	QFile file( fileName );
 	
-	if( ! elt.isNull() )
-		root.removeChild( elt );
-
-	elt = m_projectDocument.createElement( "openedElementCount" );
-	root.appendChild( elt );
-	
-	foreach(QString filename, m_openedFile) {
-		QDomElement file = m_projectDocument.createElement( "file" );
-		elt.appendChild( file );
-		
-		QDomText text = m_projectDocument.createTextNode( filename );
-		file.appendChild( text );
+	// Open the file
+	if (!file.open(QFile::WriteOnly | QFile::Text)) {
+		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Session file"), QObject::tr("Cannot write file %1:\n%2.")
+                                                        				 		.arg( m_fileName )
+																		 		.arg( file.errorString()) );
+		return;
 	}
-	*/
+	QTextStream text( &file );
+	
+	m_sessionDocument.save( text, IndentSize );
+}
+
+void XSLProject::clearSessionNode() {
+	m_sessionDocument.removeChild( m_sessionNode );
+	m_sessionNode = m_sessionDocument.createElement( "Session" );
+	m_sessionDocument.appendChild( m_sessionNode );
 }
 
 void XSLProject::loadWebServicesLink() {

@@ -45,7 +45,7 @@ public:
 	
 	virtual QAbstractItemModel * model() = 0;
 	
-	virtual void serializeEditor( QDomElement & element ) = 0;
+	virtual void serializeEditor( QDomElement & element, bool content ) = 0;
 	virtual void deserializeEditor( const QDomElement & element ) = 0;
 	
 public Q_SLOTS : 

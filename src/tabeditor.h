@@ -40,13 +40,16 @@ public:
 	Editor * editor( const QString & filename );
 	
 	static bool isFileEditor( Editor * editor );
-public slots:
-	void newFileEditorXML( XSLProject * project = NULL );
-	void newFileEditorXSL( XSLProject * project = NULL );
-	void newFileEditorJS( XSLProject * project = NULL );
-	void newFileEditorWS( XSLProject * project = NULL, WebServicesList * services = NULL );
-	void loadFileEditor( const QString & fileName, XSLProject * project = NULL, WebServicesList * services = NULL );
 
+	void newFileEditor( Editor * editor );
+	Editor * newFileEditorTxt( XSLProject * project = NULL );
+	Editor * newFileEditorXML( XSLProject * project = NULL );
+	Editor * newFileEditorXSL( XSLProject * project = NULL );
+	Editor * newFileEditorJS( XSLProject * project = NULL );
+	Editor * newFileEditorWS( XSLProject * project = NULL, WebServicesList * services = NULL );
+	Editor * loadFileEditor( const QString & fileName, XSLProject * project = NULL, WebServicesList * services = NULL );
+
+public slots:
 	void copy();
 	void cut();
 	void paste();

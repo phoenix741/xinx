@@ -23,6 +23,7 @@
 
 #include <QString>
 #include <QDomDocument>
+#include <QDomElement>
 #include <QStringList>
 
 /*
@@ -80,16 +81,19 @@ public:
 	QString	specifiqueConfigurationFile() const;
 	void setSpecifiqueConfigurationFile( const QString & );
 
-	QStringList & openedFiles() { return m_openedFile; };
 	QStringList & serveurWeb() { return m_webServiceLink; };
-	
+
+	QDomDocument & sessionDocument() { return m_sessionDocument; };
+	QDomElement & sessionNode() { return m_sessionNode; };
+	void clearSessionNode();
+
 	const QString & fileName() const;
 private:
 	QString getValue( const QString & node ) const;
 	void setValue( const QString & node, const QString & value );
 	
-	void loadOpenedFile( const QString & fileName );
-	void saveOpenedFile();
+	void loadOpenedFile( const QString fileName );
+	void saveOpenedFile( const QString fileName );
 
 	void loadWebServicesLink();
 	void saveWebServicesLink();
@@ -98,8 +102,7 @@ private:
 	
 	QDomDocument m_projectDocument;
 	QDomDocument m_sessionDocument;
-	
-	QStringList m_openedFile;
+	QDomElement m_sessionNode;
 	
 	QStringList m_webServiceLink;
 };

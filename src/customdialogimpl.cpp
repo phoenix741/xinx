@@ -43,6 +43,8 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 
 	m_alertStandardCheckBox->setChecked( m_config.isAlertWhenStdFile() );
 	m_createBakCheckBox->setChecked( m_config.isCreateBackupFile() );
+	m_saveSessionCheckBox->setChecked( m_config.saveSessionByDefault() );
+		
 	int index = -1;
 	for( int i = 0; i < m_langComboBox->count(); i++ ) {
 		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( m_config.lang() ) ) )
@@ -233,5 +235,10 @@ void CustomDialogImpl::on_m_changeProjectPathBtn_clicked() {
 	if( ! value.isEmpty() ) {
 		m_projectPathLineEdit->setText( value );		
 	}
+}
+
+
+void CustomDialogImpl::on_m_saveSessionCheckBox_toggled(bool checked) {
+	m_config.setSaveSessionByDefault( checked );
 }
 

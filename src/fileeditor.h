@@ -52,7 +52,7 @@ public:
 
 	virtual QAbstractItemModel * model();
 
-	virtual void serializeEditor( QDomElement & element );
+	virtual void serializeEditor( QDomElement & element, bool content );
 	virtual void deserializeEditor( const QDomElement & element );
 public Q_SLOTS : 
 	virtual void undo();

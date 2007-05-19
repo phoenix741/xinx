@@ -69,9 +69,7 @@ Editor * TabEditor::editor( const QString & filename ) {
 	return NULL;
 }
 
-void TabEditor::newFileEditorXSL( XSLProject * project ) {
-	FileEditor * editor = new XSLFileEditor( this, project );
-		
+void TabEditor::newFileEditor( Editor * editor ) {
 	int index = addTab( editor, editor->getTitle() );
 	
 	setTabIcon( index, QIcon(":/doc.png") );
@@ -80,40 +78,37 @@ void TabEditor::newFileEditorXSL( XSLProject * project ) {
 	emit currentChanged( currentIndex() );  
 }
 
-void TabEditor::newFileEditorXML( XSLProject * project ) {
-	FileEditor * editor = new XMLFileEditor( this, project );
-		
-	int index = addTab( editor, editor->getTitle() );
-	
-	setTabIcon( index, QIcon(":/doc.png") );
-	setCurrentIndex( index );
-
-	emit currentChanged( currentIndex() );  
+Editor * TabEditor::newFileEditorTxt( XSLProject * project ) {
+	Editor * editor = new FileEditor( new TextEditor( this ), this, project );
+	newFileEditor( editor );
+	return editor;
 }
 
-void TabEditor::newFileEditorJS( XSLProject * project ) {
-	FileEditor * editor = new JSFileEditor( this, project );
-		
-	int index = addTab( editor, editor->getTitle() );
-	
-	setTabIcon( index, QIcon(":/doc.png") );
-	setCurrentIndex( index );
-
-	emit currentChanged( currentIndex() );  
+Editor * TabEditor::newFileEditorXSL( XSLProject * project ) {
+	Editor * editor = new XSLFileEditor( this, project );
+	newFileEditor( editor );
+	return editor;
 }
 
-void TabEditor::newFileEditorWS( XSLProject * project, WebServicesList * services ) {
-	FileEditor * editor = new WebServicesEditor( services, this, project );
-		
-	int index = addTab( editor, editor->getTitle() );
-	
-	setTabIcon( index, QIcon(":/doc.png") );
-	setCurrentIndex( index );
-
-	emit currentChanged( currentIndex() );  
+Editor * TabEditor::newFileEditorXML( XSLProject * project ) {
+	Editor * editor = new XMLFileEditor( this, project );
+	newFileEditor( editor );
+	return editor;
 }
 
-void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project, WebServicesList * services ) {
+Editor * TabEditor::newFileEditorJS( XSLProject * project ) {
+	Editor * editor = new JSFileEditor( this, project );
+	newFileEditor( editor );
+	return editor;
+}
+
+Editor * TabEditor::newFileEditorWS( XSLProject * project, WebServicesList * services ) {
+	Editor * editor = new WebServicesEditor( services, this, project );
+	newFileEditor( editor );
+	return editor;
+}
+
+Editor * TabEditor::loadFileEditor( const QString & fileName, XSLProject * project, WebServicesList * services ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
 		if( QDir::match( "*.fws", fileName ) ) 
@@ -139,6 +134,7 @@ void TabEditor::loadFileEditor( const QString & fileName, XSLProject * project, 
 	setCurrentWidget( ed );
 	dynamic_cast<QWidget*>( parent() )->activateWindow();
 	emit currentChanged( currentIndex() );  
+	return ed;
 }
 
 void TabEditor::copy() {

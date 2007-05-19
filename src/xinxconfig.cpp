@@ -39,6 +39,7 @@ XINXConfig::XINXConfig(  ) {
 	m_lang = QLocale::system().name();
 	m_createBackupFile = true;
 	m_alertWhenStdFile = true;
+	m_saveSessionByDefault = true;	
 	m_xinxProjectPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
 	m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "xml" );
 	
@@ -143,6 +144,7 @@ void XINXConfig::save() {
 	createSettings();
 	m_settings->setValue( "Language", m_lang );
 	m_settings->setValue( "Create Backup File", m_createBackupFile );
+	m_settings->setValue( "Save Session By Default", m_saveSessionByDefault );
 	m_settings->setValue( "Position", m_xinxPosition );
 	m_settings->setValue( "Size", m_xinxSize );
 	m_settings->setValue( "Descriptions/Object", m_objectDescriptionPath );
@@ -177,10 +179,11 @@ void XINXConfig::save() {
 
 void XINXConfig::load() {
 	createSettings();
-	m_lang             = m_settings->value( "Language", m_lang ).toString();
-	m_createBackupFile = m_settings->value( "Create Backup File", m_createBackupFile ).toBool();
-	m_xinxPosition     = m_settings->value( "Position", m_settings->value( "pos", m_xinxPosition ) ).toPoint();
-	m_xinxSize         = m_settings->value( "Size", m_settings->value( "size", m_xinxSize ) ).toSize();
+	m_lang                 = m_settings->value( "Language", m_lang ).toString();
+	m_createBackupFile     = m_settings->value( "Create Backup File", m_createBackupFile ).toBool();
+	m_saveSessionByDefault = m_settings->value( "Save Session By Default", m_saveSessionByDefault ).toBool();
+	m_xinxPosition         = m_settings->value( "Position", m_settings->value( "pos", m_xinxPosition ) ).toPoint();
+	m_xinxSize             = m_settings->value( "Size", m_settings->value( "size", m_xinxSize ) ).toSize();
 
 	m_objectDescriptionPath = m_settings->value( "Descriptions/Object", m_settings->value( "xmljavapath", m_objectDescriptionPath ) ).toString();
 	

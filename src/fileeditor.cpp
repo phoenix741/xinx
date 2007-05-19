@@ -314,14 +314,16 @@ bool FileEditor::saveFile( const QString & fileName ){
 	return true;	
 }
 
-void FileEditor::serializeEditor( QDomElement & element ) {
+void FileEditor::serializeEditor( QDomElement & element, bool content ) {
+	element.setAttribute( "class", metaObject()->className() );
 	element.setAttribute( "filename", m_fileName );
-	element.setAttribute( "ismodified", m_view->document()->isModified() );
-	element.setAttribute( "position", m_view->textCursor()->position() );
-	
-	QDomText text;
-	text.setData( m_view->toPlainText() );
-	element.appendChild( text );
+	element.setAttribute( "position", m_view->textCursor().position() );
+
+	if( content && m_view->document()->isModified() ) {
+		element.setAttribute( "ismodified", m_view->document()->isModified() );
+		QDomText text = m_project->sessionDocument().createTextNode( m_view->toPlainText() );
+		element.appendChild( text );
+	}
 }
 
 void FileEditor::deserializeEditor( const QDomElement & element ) {
@@ -336,11 +338,16 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 				
 		node = node.nextSibling();
 	}
-	m_view->setPlainText( plainText );
+	if( ! plainText.isEmpty() ) {
+		m_view->setPlainText( plainText );
+		m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
+	} else {
+		if( !m_fileName.isEmpty() )
+			loadFile( m_fileName );
+	}
 
-	m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
 	QTextCursor tc = m_view->textCursor();
-	tc->setPosition( element.attribute( "position" ).toInt() );
+	tc.setPosition( element.attribute( "position" ).toInt() );
 	m_view->setTextCursor( tc );
 }
 

@@ -83,7 +83,7 @@ void TextEditor::key_home( bool select ) {
 	QTextCursor cursorStart( cursor );
 	QTextBlock b = cursorStart.block();
 	int i = 0;
-	while ( b.text().at(i) == ' ' || b.text().at(i) == '\t' ) {
+	while ( ( i < b.text().size() ) && ( i >= 0 ) && ( b.text().at(i) == ' ' || b.text().at(i) == '\t' ) ) {
 		cursorStart.movePosition( QTextCursor::NextCharacter, select ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor );
 		i++;
 	}

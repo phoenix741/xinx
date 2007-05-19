@@ -62,6 +62,9 @@ public:
 	QString lang() const { return m_lang; };
 	void setLang( const QString & value ) { m_lang = value; };
 	
+	bool saveSessionByDefault() const { return m_saveSessionByDefault; };
+	void setSaveSessionByDefault( bool value ) { m_saveSessionByDefault = value; };
+	
 	int visibleDock() { return m_docks; };
 	bool isDockSet( enum docks dock ) { return (m_docks & dock) == dock; };
 	void setDock( enum docks dock ) { m_docks |= dock; };
@@ -107,6 +110,7 @@ private:
 	QString m_lang;
 	bool m_createBackupFile;
 	bool m_alertWhenStdFile;
+	bool m_saveSessionByDefault;
 	QString m_xinxProjectPath;
 	QString m_objectDescriptionPath;
 	
