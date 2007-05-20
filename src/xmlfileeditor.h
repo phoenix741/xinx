@@ -29,6 +29,7 @@ public:
 	XMLFileEditor( QWidget *parent = 0, XSLProject * project = NULL, TextEditor * textEditor = NULL );
 	virtual ~XMLFileEditor();
 	
+	virtual QString getSuffix() const;
 };
 
 class XSLFileEditor : public XMLFileEditor {
@@ -37,6 +38,7 @@ public:
 	XSLFileEditor( QWidget *parent = 0, XSLProject * project = NULL );
 	virtual ~XSLFileEditor();
 	
+	virtual QString getSuffix() const;
 };
 
 #endif // __XMLFILEEDITOR_H__

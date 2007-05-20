@@ -98,6 +98,7 @@ public:
 	
 	QString extentions();
 	struct managedFile managedFile4Name( QString filename );
+	struct managedFile managedFile4Suffix( QString suffix );
 	
 private:
 	QSettings * m_settings;

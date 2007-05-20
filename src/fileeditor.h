@@ -36,6 +36,7 @@ public:
 	virtual ~FileEditor();
 
 	const QString & getFileName() const;
+	virtual QString getSuffix() const;
 	virtual QString getTitle() const;
 	virtual bool hasName() const;
 	

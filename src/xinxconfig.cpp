@@ -248,5 +248,9 @@ struct XINXConfig::managedFile XINXConfig::managedFile4Name( QString filename ) 
 	return vide;
 }
 
+struct XINXConfig::managedFile XINXConfig::managedFile4Suffix( QString suffix ) {
+	return managedFile4Name( "noname." + suffix );
+}
+
 
 //

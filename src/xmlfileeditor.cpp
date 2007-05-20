@@ -30,6 +30,14 @@ XMLFileEditor::~XMLFileEditor() {
 	
 }
 
+QString XMLFileEditor::getSuffix() const {
+	if( getFileName().isEmpty() ) 
+		return "xml";
+	else
+		return FileEditor::getSuffix();
+}
+
+
 XSLFileEditor::XSLFileEditor( QWidget *parent, XSLProject * project ) : XMLFileEditor( parent, project, new XSLEditor( parent, project ) ) {
 	
 }
@@ -38,3 +46,9 @@ XSLFileEditor::~XSLFileEditor() {
 	
 }
 
+QString XSLFileEditor::getSuffix() const {
+	if( getFileName().isEmpty() ) 
+		return "xsl";
+	else
+		return XMLFileEditor::getSuffix();
+}

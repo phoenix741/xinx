@@ -103,7 +103,8 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		on_m_closeAllAct_triggered();
 		
 	m_xslProject             = new XSLProject( filename );
-	m_lastProjectOpenedPlace = m_xslProject->projectPath();
+	m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
+	m_lastPlace              = m_xslProject->projectPath();
 
 	xinxConfig->recentProjectFiles().removeAll( filename );
 	xinxConfig->recentProjectFiles().prepend( filename );

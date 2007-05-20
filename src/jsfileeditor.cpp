@@ -28,3 +28,10 @@ JSFileEditor::JSFileEditor( QWidget *parent, XSLProject * project ) : FileEditor
 JSFileEditor::~JSFileEditor() {
 	
 }
+
+QString JSFileEditor::getSuffix() const {
+	if( getFileName().isEmpty() ) 
+		return "js";
+	else
+		return FileEditor::getSuffix();
+}

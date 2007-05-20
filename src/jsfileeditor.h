@@ -29,6 +29,7 @@ public:
 	JSFileEditor( QWidget *parent = 0, XSLProject * project = NULL );
 	virtual ~JSFileEditor();
 	
+	virtual QString getSuffix() const;
 };
 
 #endif // __JSFILEEDITOR_H__

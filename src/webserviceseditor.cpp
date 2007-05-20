@@ -54,3 +54,9 @@ WebServicesEditor::WebServicesEditor( WebServicesList * list, QWidget *parent, X
 	m_vbox->insertLayout( 0, hbox );
 }
 
+QString WebServicesEditor::getSuffix() const {
+	if( getFileName().isEmpty() ) 
+		return "fws";
+	else
+		return FileEditor::getSuffix();
+}

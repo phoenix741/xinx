@@ -32,6 +32,8 @@ class WebServicesEditor : public FileEditor {
 	Q_OBJECT
 public:
 	WebServicesEditor( WebServicesList * list, QWidget *parent = 0, XSLProject * project = NULL );
+
+	virtual QString getSuffix() const;
 private:
 	QComboBox * m_paramList, * m_servicesList, * m_actionList;
 	WebServicesList * m_list;

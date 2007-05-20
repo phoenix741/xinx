@@ -244,6 +244,14 @@ const QString & FileEditor::getFileName() const {
 	return m_fileName;
 }
 
+QString FileEditor::getSuffix() const { 
+	if( m_fileName.isEmpty() )
+		return "txt";
+	else
+		return QFileInfo( m_fileName ).suffix();
+}
+
+
 void FileEditor::setFileName( const QString & name ) {
 	m_fileName = QDir::fromNativeSeparators( name );
 	/*

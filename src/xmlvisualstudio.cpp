@@ -290,7 +290,7 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 
 
 void XMLVisualStudio::on_m_newStylesheetFileAct_triggered() {
-	m_tabEditors->newFileEditorXML( m_xslProject );
+	m_tabEditors->newFileEditorXSL( m_xslProject );
 	updateActions();
 }
 
@@ -314,11 +314,26 @@ void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
 
 
 void XMLVisualStudio::on_m_openAct_triggered() {
+	QFileDialog dlg( this, tr("Open text file"), m_lastPlace );
+	dlg.setAcceptMode( QFileDialog::AcceptOpen );
+    dlg.setFileMode( QFileDialog::ExistingFiles );
+	dlg.setFilters( xinxConfig->extentions().split( ";;" ) );
+
+	if( dlg.exec() == QDialog::Accepted ) {
+		QStringList selectedFiles = dlg.selectedFiles();
+		foreach( QString filename, selectedFiles ) {
+			m_lastPlace = QFileInfo( filename ).absolutePath();
+			open( filename );
+		}
+	}
+
+	/*
 	QString filename = QFileDialog::getOpenFileName( this, tr("Open text file"), m_lastPlace, xinxConfig->extentions() );
 	if ( ! filename.isEmpty() ) {
 		m_lastPlace = QFileInfo( filename ).absolutePath();
 		open( filename );
 	}
+	*/
 }
 
 void XMLVisualStudio::on_m_saveAct_triggered() {
@@ -549,25 +564,46 @@ void XMLVisualStudio::saveEditor( int index ) {
 void XMLVisualStudio::saveEditorAs( int index ) {
 	assert( index >= 0 );
 	assert( index < m_tabEditors->count() );
-	
-	QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
 
-	if( ( ! fileName.isEmpty() ) && m_xslProject && xinxConfig->isAlertWhenStdFile() && xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
-		fileName = QFileInfo( fileName ).fileName();
-		if( ! fileName.startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) {
-			fileName = m_xslProject->specifPrefix().toLower() + "_" + fileName;
-			fileName = QDir( QDir( m_xslProject->specifPath() ).absoluteFilePath( xinxConfig->managedFile4Name( fileName ).customPath ) ).absoluteFilePath( fileName );
-		} else 
-			fileName = QDir( m_lastPlace ).absoluteFilePath( fileName );
-	} else if( fileName.isEmpty() )
-		fileName = m_lastPlace;
+	QFileDialog dlg( this, tr("Save text file") );
+	dlg.setAcceptMode( QFileDialog::AcceptSave );
+    dlg.setFileMode( QFileDialog::AnyFile );
+	dlg.setFilters( xinxConfig->extentions().split( ";;" ) );
 	
-	fileName = QFileDialog::getSaveFileName( 
-		this, 
-		tr("Save text file"), 
-		fileName, 
-		xinxConfig->extentions()
-	);
+	QString fileName    = qobject_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName(),
+			fileSuffix  = qobject_cast<FileEditor*>( m_tabEditors->editor(index) )->getSuffix(),
+			specifPath;
+			
+	dlg.setDefaultSuffix( fileSuffix );
+
+	struct XINXConfig::managedFile customFile = xinxConfig->managedFile4Suffix( fileSuffix );
+
+	if( m_xslProject ) 
+		specifPath = QDir( m_xslProject->specifPath() ).absoluteFilePath( customFile.customPath );
+	else
+	 	specifPath = m_lastPlace;
+ 	
+
+	if( fileName.isEmpty() ) {
+		dlg.setDirectory( specifPath );
+		dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" );
+	} else {
+		if( m_xslProject && customFile.canBeCustomize ) {
+			dlg.setDirectory( specifPath );
+			dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
+		} else {
+			dlg.setDirectory( QFileInfo( fileName ).absolutePath() );
+			dlg.selectFile( QFileInfo( fileName ).fileName() );
+		}
+	}
+	
+	if( dlg.exec() == QDialog::Accepted ) {
+		if( dlg.selectedFiles().count() == 1 )
+			fileName = dlg.selectedFiles()[ 0 ];
+		else
+			return;
+	} else
+		return;
 	
 	if( fileName.isEmpty() ) return ;
 
