@@ -59,7 +59,19 @@ void XMLVisualStudio::setupRecentProjectMenu( QMenu * menu ) {
 		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
 	}
 	
-	updateRecentFiles();
+	updateRecentProjects();
+}
+
+void XMLVisualStudio::setupRecentFileMenu( QMenu * menu ) {
+	m_recentFileSeparator = menu->addSeparator();
+	for(int i = 0; i < MAXRECENTFILES; i++) {
+		m_recentFileActs[i] = new QAction( this );
+		m_recentFileActs[i]->setVisible( false );
+		menu->addAction( m_recentFileActs[i] );
+		connect( m_recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()) );
+	}
+	
+	updateRecentFiles();	
 }
 
 void XMLVisualStudio::newProject() {
@@ -87,6 +99,12 @@ void XMLVisualStudio::openRecentProject() {
 	QAction * action = qobject_cast<QAction*>( sender() );
 	if( action )
 		openProject( action->data().toString() );	
+}
+
+void XMLVisualStudio::openRecentFile() {
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action )
+		open( action->data().toString() );	
 }
 
 void XMLVisualStudio::openProject() {
@@ -149,8 +167,8 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		element = element.nextSiblingElement( "editor" );
 	}
 	updateActions();
+	updateRecentProjects();
 	updateRecentFiles();
-	
 }
 
 void XMLVisualStudio::saveProject() {
@@ -180,13 +198,13 @@ void XMLVisualStudio::on_m_closeProjectSessionAct_triggered() {
 }
 
 void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
-	if( ! m_xslProject ) return;
+	if( ! m_xslProject ) return;		
 		
 	m_xslProject->clearSessionNode();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
 		QDomElement node = m_xslProject->sessionDocument().createElement( "editor" );
 		m_tabEditors->editor( i )->serializeEditor( node, saveSession );
-		m_xslProject->sessionNode().appendChild( node );		
+		m_xslProject->sessionNode().appendChild( node );
 	}
 	saveProject();
 
@@ -204,10 +222,11 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	m_xslProject = NULL;
 
 	updateActions();
+	updateRecentFiles();
 	setCurrentProject( "" );
 }
 
-void XMLVisualStudio::updateRecentFiles() {
+void XMLVisualStudio::updateRecentProjects() {
 	int numRecentFiles = qMin( xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
@@ -221,6 +240,26 @@ void XMLVisualStudio::updateRecentFiles() {
 		m_recentProjectActs[j]->setVisible(false);
 
 	m_recentSeparator->setVisible( numRecentFiles > 0 );
+}
+
+void XMLVisualStudio::updateRecentFiles() {
+	int numRecentFiles;
+	if( m_xslProject ) {
+		numRecentFiles = qMin( m_xslProject->lastOpenedFile().size(), MAXRECENTFILES );
+
+		for( int i = 0; i < numRecentFiles; i++ ) {
+			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( m_xslProject->lastOpenedFile()[i] ).fileName() );
+			m_recentFileActs[i]->setText( text );
+			m_recentFileActs[i]->setData( m_xslProject->lastOpenedFile()[i] );
+			m_recentFileActs[i]->setVisible( true );
+		}
+	} else 
+		numRecentFiles = 0;
+	
+	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
+		m_recentFileActs[j]->setVisible(false);
+
+	m_recentFileSeparator->setVisible( numRecentFiles > 0 );
 }
 
 void XMLVisualStudio::filtreChange() {

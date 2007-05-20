@@ -48,6 +48,9 @@ public:
 
 	virtual QAbstractItemModel * model();
 	
+signals:
+	void hasError( QString );
+	
 public slots:
 	virtual void updateModel();
 	

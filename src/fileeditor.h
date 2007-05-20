@@ -28,6 +28,7 @@ class TextEditor;
 class QTextEdit;
 class QHBoxLayout;
 class QVBoxLayout;
+class QLabel;
 
 class FileEditor : public Editor {
 	Q_OBJECT
@@ -73,13 +74,16 @@ public Q_SLOTS :
 	virtual void complete();
 
 	virtual void setModified( bool );
-
 Q_SIGNALS:
 	void mouseHover( const QString &word );
 	void mouseHover( const QPoint &pos, const QString &word );
 	
 	void selectionAvailable ( bool yes );
-	
+
+protected slots:
+	void setMessage( QString );
+
+
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 
@@ -92,6 +96,8 @@ protected:
 	QHBoxLayout * m_hbox;
 	NumberBar * m_numbers;
 	TextEditor * m_view;
+	QLabel * m_messageErreur;
+	QWidget * m_messageBox;
 };
 
 

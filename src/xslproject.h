@@ -86,14 +86,15 @@ public:
 	QDomDocument & sessionDocument() { return m_sessionDocument; };
 	QDomElement & sessionNode() { return m_sessionNode; };
 	void clearSessionNode();
+	QStringList & lastOpenedFile() { return m_lastOpenedFile; }
 
 	const QString & fileName() const;
 private:
 	QString getValue( const QString & node ) const;
 	void setValue( const QString & node, const QString & value );
 	
-	void loadOpenedFile( const QString fileName );
-	void saveOpenedFile( const QString fileName );
+	void loadSessionFile( const QString fileName );
+	void saveSessionFile( const QString fileName );
 
 	void loadWebServicesLink();
 	void saveWebServicesLink();
@@ -102,9 +103,9 @@ private:
 	
 	QDomDocument m_projectDocument;
 	QDomDocument m_sessionDocument;
-	QDomElement m_sessionNode;
+	QDomElement m_sessionNode, m_rootSession;
 	
-	QStringList m_webServiceLink;
+	QStringList m_webServiceLink, m_lastOpenedFile;
 };
 
 #endif

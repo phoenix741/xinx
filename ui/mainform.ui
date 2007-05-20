@@ -63,8 +63,17 @@
     <property name="title" >
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="m_recentFileMenu" >
+     <property name="title" >
+      <string>&amp;Recent file</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+     </property>
+     <addaction name="m_openAct" />
+    </widget>
     <addaction name="m_newAct" />
-    <addaction name="m_openAct" />
+    <addaction name="m_recentFileMenu" />
     <addaction name="m_saveAct" />
     <addaction name="m_saveAsAct" />
     <addaction name="m_saveAllAct" />

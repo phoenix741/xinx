@@ -39,7 +39,7 @@ QString XMLFileEditor::getSuffix() const {
 
 
 XSLFileEditor::XSLFileEditor( QWidget *parent, XSLProject * project ) : XMLFileEditor( parent, project, new XSLEditor( parent, project ) ) {
-	
+	connect( m_view, SIGNAL(hasError(QString)), this, SLOT(setMessage(QString)) );
 }
 
 XSLFileEditor::~XSLFileEditor() {

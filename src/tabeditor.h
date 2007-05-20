@@ -92,6 +92,8 @@ Q_SIGNALS:
 	void refreshTab( int );
 	void saveTab( int );
 	void saveAsTab( int );
+	
+	void setEditorPosition( int, int );
 
 protected:
     bool eventFilter( QObject *obj, QEvent *event );

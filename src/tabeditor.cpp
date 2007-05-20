@@ -310,8 +310,10 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	
 	if( isFileEditor( editor ) ) {
 		emit textAvailable( true );
+//		emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit() );
 		
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
+		
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );

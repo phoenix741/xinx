@@ -136,6 +136,7 @@ void XMLVisualStudio::createActions() {
 	
 	connect( m_tabEditors, SIGNAL(modelCreated()), this, SLOT(slotModelCreated()) );
 	connect( m_tabEditors, SIGNAL(modelDeleted()), this, SLOT(slotModelDeleted()) );
+	connect( m_tabEditors, SIGNAL(setEditorPosition(int,int)), this, SLOT(setEditorPosition(int,int)));	
 	
 	// Undo
 	connect(m_undoAct, SIGNAL(triggered()), m_tabEditors, SLOT(undo()));
@@ -239,6 +240,7 @@ void XMLVisualStudio::createActions() {
 
 	// Recent project file
 	setupRecentProjectMenu( m_recentProjectMenu );
+	setupRecentFileMenu( m_recentFileMenu );
 
 	updateActions();
 	updateRecentFiles();
@@ -276,8 +278,17 @@ void XMLVisualStudio::createToolBars() {
 }
 
 void XMLVisualStudio::createStatusBar() {
+	m_editorPosition = new QLabel( "000x000" );
+	statusBar()->addPermanentWidget( m_editorPosition );
+	setEditorPosition( 1, 1 );
+	
 	statusBar()->showMessage(tr("Ready"), 2000);
 }
+
+void XMLVisualStudio::setEditorPosition( int line, int column ) {
+	m_editorPosition->setText( QString("%1x%2").arg(line, 3, 10, QLatin1Char('0')).arg(column, 3, 10, QLatin1Char('0')) );
+}
+
 
 /* Actions */
 
@@ -457,7 +468,15 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 
 void XMLVisualStudio::open( const QString & filename ) {
 	assert( ! filename.isEmpty() );
-	
+
+	if( m_xslProject ) {
+		m_xslProject->lastOpenedFile().removeAll( filename );
+		m_xslProject->lastOpenedFile().prepend( filename );
+     
+		while( m_xslProject->lastOpenedFile().size() > MAXRECENTFILES )
+			m_xslProject->lastOpenedFile().removeLast();
+	}
+
 	m_tabEditors->loadFileEditor( filename, m_xslProject );
 	updateActions();
 	statusBar()->showMessage(tr("File loaded"), 2000);

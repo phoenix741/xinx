@@ -345,6 +345,8 @@ XSLEditor::XSLEditor( QWidget * parent, XSLProject * project ) : XMLEditor( pare
 
 	m_completionBaliseModel = new XSLBaliseCompletionModel( this );
 	m_completerNode->setModel( m_completionBaliseModel );
+	
+	connect( m_modelData, SIGNAL(hasError(QString)), this, SIGNAL(hasError(QString)) );
 }
 
 XSLEditor::~XSLEditor() {

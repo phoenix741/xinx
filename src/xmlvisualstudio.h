@@ -27,7 +27,7 @@
 #include "replacedialogimpl.h"
 //
 
-#define MAXRECENTFILES 5
+#define MAXRECENTFILES 10
 
 class XSLItemModel;
 class QSortFilterProxyModel;
@@ -132,15 +132,22 @@ private:
 
 	/* Generix Object */
 	ObjectsView * m_javaObjects;
+	
+	/* Position in editor */
+	QLabel * m_editorPosition;
   
 	
 																				/* ***** Project Main Form Part ***** */
 public slots:
+	void updateRecentProjects();
 	void updateRecentFiles();
+	
+	void setEditorPosition( int line, int column );
 
 private slots: /* slots definition */
 	void filtreChange();
 	void openRecentProject();
+	void openRecentFile();
 	void newProject();
 	void openProject();
 	void changeProjectProperty();
@@ -150,6 +157,7 @@ private: /* Private definition */
 	/* Functions */
 	void createProjectPart();
 	void setupRecentProjectMenu( QMenu * menu );
+	void setupRecentFileMenu( QMenu * menu );
 	void openProject( const QString & filename );
 	void setCurrentProject( const QString & filename );
 	void closeProject( bool closeAll, bool saveSession );
@@ -165,6 +173,8 @@ private: /* Private definition */
 	QAction * m_recentProjectActs[MAXRECENTFILES]; 
 	QAction * m_recentSeparator;
 
+	QAction * m_recentFileActs[MAXRECENTFILES]; 
+	QAction * m_recentFileSeparator;
 																				/* ***** WebSerivces Form Part ***** */
 private slots: /* slot definition */
 	void refreshWebServicesList();

@@ -39,6 +39,8 @@
 #include <QTextStream>
 #include <QApplication>
 #include <QTextDocumentFragment>
+#include <QLabel>
+#include <QPushButton>
 
 /* FileEditor */
 
@@ -58,10 +60,23 @@ FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent, XSLProject * p
 	m_hbox->addWidget( m_numbers );
 	m_hbox->addWidget( m_view ); 
 
+	m_messageBox = new QWidget( this );
+
+	m_messageErreur = new QLabel( "erreur text" );
+	QPushButton * btnClose = new QPushButton( tr("&Close"), this );
+
+	QHBoxLayout * messageBoxLayout = new QHBoxLayout( m_messageBox );
+	messageBoxLayout->addWidget( m_messageErreur );
+	messageBoxLayout->addWidget( btnClose );
+
+	connect( btnClose, SIGNAL(clicked()), m_messageBox, SLOT(hide()) );
+
+
  	m_vbox = new QVBoxLayout( this );
 	m_vbox->setSpacing( 0 );
 	m_vbox->setMargin( 0 );
 	m_vbox->addLayout( m_hbox );
+	m_vbox->addWidget( m_messageBox );
 	
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)) );
@@ -72,11 +87,19 @@ FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent, XSLProject * p
 	
 	connect( m_view, SIGNAL(deleteModel()), this, SIGNAL(deleteModel()) );
 	connect( m_view, SIGNAL(createModel()), this, SIGNAL(createModel()) );
+
+	m_messageBox->hide();
 }
 
 FileEditor::~FileEditor() {
 	
 }
+
+void FileEditor::setMessage( QString message ) {
+	m_messageErreur->setText( message );
+	m_messageBox->show();
+}
+
 
 QTextEdit * FileEditor::textEdit() const { 
 	return static_cast<QTextEdit*>( m_view );
