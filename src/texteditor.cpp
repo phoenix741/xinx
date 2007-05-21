@@ -43,6 +43,16 @@ QAbstractItemModel * TextEditor::model() {
 	return NULL;
 }
 
+int TextEditor::currentColumn() {
+	QTextCursor tc( textCursor() );
+	return tc.columnNumber() + 1;
+}
+
+int TextEditor::currentRow() {
+	QTextCursor tc( textCursor() );
+	return tc.blockNumber() + 1;
+}
+
 void TextEditor::updateModel() {
 	
 }

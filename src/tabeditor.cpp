@@ -287,6 +287,11 @@ void TabEditor::slotModifiedChange( bool changed ) {
 		setTabText ( currentIndex(), tr("%1").arg( currentEditor()->getTitle() ) );
 }
 
+void TabEditor::slotCursorPositionChanged() {
+	Editor * editor = currentEditor();
+	emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<FileEditor*>( editor )->textEdit()->currentColumn() );
+}
+
 void TabEditor::slotCurrentTabChanged( int index ) {
 	Q_UNUSED( index );
 	
@@ -310,10 +315,10 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	
 	if( isFileEditor( editor ) ) {
 		emit textAvailable( true );
-//		emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit() );
+		emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<FileEditor*>( editor )->textEdit()->currentColumn() );
 		
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
-		
+		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );

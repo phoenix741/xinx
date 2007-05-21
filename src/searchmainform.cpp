@@ -24,13 +24,14 @@
 #include <QMessageBox>
 
 #include "xmlvisualstudio.h"
+#include "texteditor.h"
 #include "fileeditor.h"
  
 void XMLVisualStudio::on_m_searchNextAct_triggered() {
 	assert( m_tabEditors->currentEditor() );
 	
 	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 		QTextDocument * document = textEdit->document();
 	
 		bool continuer = true;
@@ -149,7 +150,7 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 	bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
 	bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP );
 
-	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 
 	m_cursorStart = textEdit->textCursor();
 	m_cursorEnd   = QTextCursor();
@@ -181,7 +182,7 @@ void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, co
 }
 
 void XMLVisualStudio::on_m_searchAct_triggered() {
-	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}
@@ -191,7 +192,7 @@ void XMLVisualStudio::on_m_searchAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_replaceAct_triggered() {
-	QTextEdit * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}

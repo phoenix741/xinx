@@ -110,6 +110,8 @@ private slots:
 	void slotSaveAsked();
 	void slotSaveAsAsked();
 	
+	void slotCursorPositionChanged();
+	
 private:
 	int m_clickedItem;
 

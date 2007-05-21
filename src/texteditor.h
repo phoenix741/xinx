@@ -38,6 +38,9 @@ public:
 	virtual void complete();
 
 	virtual QAbstractItemModel * model();
+	
+	int currentColumn();
+	int currentRow();
 
 public slots:
 	virtual void updateModel();

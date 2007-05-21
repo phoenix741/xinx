@@ -101,8 +101,8 @@ void FileEditor::setMessage( QString message ) {
 }
 
 
-QTextEdit * FileEditor::textEdit() const { 
-	return static_cast<QTextEdit*>( m_view );
+TextEditor * FileEditor::textEdit() const { 
+	return static_cast<TextEditor*>( m_view );
 }
 
 void FileEditor::selectAll() {

@@ -21,6 +21,7 @@
 #include <assert.h>
 
 #include "xmlvisualstudio.h" 
+#include "texteditor.h"
 #include "fileeditor.h"
 #include "xslproject.h"
 #include "webservices.h"

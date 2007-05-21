@@ -44,7 +44,7 @@ public:
 	virtual void loadFile( const QString &fileName = "" );
 	virtual bool saveFile( const QString &fileName = "" );
  
-	QTextEdit * textEdit() const;
+	TextEditor * textEdit() const;
  
 	virtual bool canCopy();
 	virtual bool canPaste();

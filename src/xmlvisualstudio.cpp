@@ -33,6 +33,7 @@
 #include "xmlvisualstudio.h"
 #include "tabeditor.h"
 #include "editor.h"
+#include "texteditor.h"
 #include "fileeditor.h"
 #include "objectview.h"
 #include "editorcompletion.h"
@@ -286,7 +287,7 @@ void XMLVisualStudio::createStatusBar() {
 }
 
 void XMLVisualStudio::setEditorPosition( int line, int column ) {
-	m_editorPosition->setText( QString("%1x%2").arg(line, 3, 10, QLatin1Char('0')).arg(column, 3, 10, QLatin1Char('0')) );
+	m_editorPosition->setText( QString("   %1 x %2   ").arg(line, 3, 10, QLatin1Char('0')).arg(column, 3, 10, QLatin1Char('0')) );
 }
 
 
