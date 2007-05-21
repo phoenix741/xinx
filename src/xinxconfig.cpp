@@ -77,7 +77,7 @@ XINXConfig::XINXConfig(  ) {
 	m_managedStrucureList["js"] = structure;
 	
 	struct managedFile file;
-	file.extentions = "*.xml *.xsl";
+	file.extentions = "*.xml";
 	file.name = QObject::tr("All XML File");
 	file.canBeCustomize = true;
 	file.customPath = "";
@@ -121,24 +121,40 @@ void XINXConfig::deleteSettings() {
 	m_settings = NULL;
 }
 
-QString XINXConfig::extentions() {
-	QString result;
+QStringList XINXConfig::dialogFilters() {
+	QStringList result;
 
-	result += QObject::tr( "All Managed file" ) + "(";
+	QString managed = QObject::tr( "All Managed file" ) + "(";
 	foreach( struct managedFile file, m_managedFileList ) {
-		result += file.extentions;
+		managed += file.extentions;
 		if( m_managedFileList.last().name != file.name ) {
-			result += " ";
+			managed += " ";
 		}
 	}
-	result += ")";
+	managed += ")";
+	result.append( managed );
 	
 	foreach( struct managedFile file, m_managedFileList ) {
-		result += ";;" + file.name + "(" + file.extentions + ")";
+		result.append( file.name + "(" + file.extentions + ")" );
 	}
 	
 	return result;
 }
+
+QString XINXConfig::dialogFilter( QString ext ) {
+	foreach( struct managedFile file, m_managedFileList ) {
+		QStringList list = file.extentions.split(" ");
+		foreach( QString regexp, list ) {
+			QRegExp extention( regexp );
+			extention.setPatternSyntax( QRegExp::Wildcard );
+			if( extention.exactMatch( "filename." + ext ) ) {
+				return file.name + "(" + file.extentions + ")";
+			}
+		}
+	}
+	return QString();
+}
+
 
 void XINXConfig::save() {
 	createSettings();

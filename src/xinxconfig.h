@@ -96,7 +96,8 @@ public:
 	QList<struct managedFile> & managedFile() { return m_managedFileList; };
 	QHash<QString,struct managedStructure> & managedStructure() { return m_managedStrucureList; };
 	
-	QString extentions();
+	QStringList dialogFilters();
+	QString dialogFilter( QString ext );
 	struct managedFile managedFile4Name( QString filename );
 	struct managedFile managedFile4Suffix( QString suffix );
 	
