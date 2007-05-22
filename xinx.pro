@@ -95,6 +95,7 @@ TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
 UI_DIR +=   build
+DISTFILES += CHANGELOG COPYING TODO src/com.generix.xmlstudio.xml src/genxml.sh xml/completion.cpl
 unix {
   CONFIG +=     qdbus
   HEADERS +=     src/studioadaptor.h \
@@ -104,4 +105,5 @@ unix {
 }
 win32 {
   RC_FILE +=     rc/xinx.rc
+  DISTFILES += rc/xinx.rc setup/xinx-setup.iss 
 }

@@ -43,21 +43,7 @@ Source: ..\xml\completion.cpl; DestDir: {app}\xml; Components: application; Task
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 ;Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
 
-Source: ..\xinx.pro; DestDir: {app}\source; Components: source
-Source: ..\COPYING; DestDir: {app}\source; Components: source
-Source: ..\images\*.png; DestDir: {app}\source\images; Components: source
-Source: ..\images\*.ico; DestDir: {app}\source\images; Components: source
-Source: ..\src\*.cpp; DestDir: {app}\source\src; Components: source
-Source: ..\src\*.h; DestDir: {app}\source\src; Components: source
-Source: ..\src\*.xml; DestDir: {app}\source\src; Components: source
-Source: ..\src\*.sh; DestDir: {app}\source\src; Components: source
-Source: ..\ui\*.ui; DestDir: {app}\source\ui; Components: source
-Source: ..\rc\*.rc; DestDir: {app}\source\rc; Components: source
-Source: ..\translations\*.ts; DestDir: {app}\source\translations; Components: source
-Source: ..\xml\completion.cpl; DestDir: {app}\source\xml; Components: source
-;Source: ..\xml\*.xml; DestDir: {app}\source\xml; Flags: onlyifdoesntexist; Components: source
-;Source: ..\xml\*.xsd; DestDir: {app}\source\xml; Flags: onlyifdoesntexist; Components: source
-Source: ..\setup\xinx-setup.iss; DestDir: {app}\source\setup; Components: source
+Source: ..\xinx.zip; DestDir: {app}; Components: source
 
 [Icons]
 Name: {group}\XINX; Filename: {app}\xinx.exe
