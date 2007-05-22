@@ -21,7 +21,7 @@ UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany=Generix
-AppMutex=com.generix.xmlstudio.mutex
+AppMutex=com.generix.xmlstudio.mutex,Global\com.generix.xmlstudio.mutex
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl

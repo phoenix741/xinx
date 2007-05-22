@@ -47,14 +47,35 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 #endif
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
+#ifdef Q_WS_WIN
+	m_handle = 0;
+	m_handleMutex = 0;
+	m_handleMutexGbl = 0;
+	m_handleEvent = 0;
+	m_fileView = 0;
+#endif
 	start();
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
+#ifdef Q_WS_WIN
+	m_handle = 0;
+	m_handleMutex = 0;
+	m_handleMutexGbl = 0;
+	m_handleEvent = 0;
+	m_fileView = 0;
+#endif
 	start();	
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
+#ifdef Q_WS_WIN
+	m_handle = 0;
+	m_handleMutex = 0;
+	m_handleMutexGbl = 0;
+	m_handleEvent = 0;
+	m_fileView = 0;
+#endif
 	start();	
 }
 
@@ -75,6 +96,7 @@ UniqueApplication::~UniqueApplication() {
 	if( m_handle ) CloseHandle( m_handle );
 	if( m_handleEvent ) CloseHandle( m_handleEvent );
 	if( m_handleMutex ) CloseHandle( m_handleMutex );
+	if( m_handleMutexGbl ) CloseHandle( m_handleMutexGbl );
 #endif
 }
 
@@ -105,8 +127,19 @@ void UniqueApplication::start() {
 	connect( iface, SIGNAL(open(QString)), this, SIGNAL(hasFileToOpen(QString)) );
 
 #else
-	m_handleMutex = (HWND)CreateMutex( NULL, false, (WCHAR*)"com.generix.xmlstudio.mutex" );
+	SECURITY_DESCRIPTOR securityDesc;
+	SECURITY_ATTRIBUTES securityAttr;
+
+	InitializeSecurityDescriptor(&securityDesc, SECURITY_DESCRIPTOR_REVISION);
+  	SetSecurityDescriptorDacl(&securityDesc, true, NULL, false);
+  	
+	securityAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+	securityAttr.lpSecurityDescriptor = &securityDesc;
+	securityAttr.bInheritHandle = false;
+
+	m_handleMutex = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"com.generix.xmlstudio.mutex" );
 	int error = GetLastError();
+	m_handleMutexGbl = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"Global\\com.generix.xmlstudio.mutex" );
 
 	if( m_handleMutex == 0 ) {
 		std::cout << QCoreApplication::translate("UniqueApplication", "UniqueApplication: Can't create mutex.").toStdString ();

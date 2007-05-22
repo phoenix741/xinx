@@ -60,7 +60,7 @@ private:
 #ifdef Q_WS_WIN
 	void openSharedMem();
 
-	HWND m_handle, m_handleMutex, m_handleEvent;
+	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
 	char* m_fileView;
 #endif
 };
