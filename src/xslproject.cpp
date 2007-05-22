@@ -22,6 +22,8 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QTextStream>
+#include <QFileInfo>
+#include <QDir>
 #include "xslproject.h"
 #include "webservices.h"
 
@@ -94,6 +96,13 @@ void XSLProject::saveToFile( const QString & filename ) {
 	
 	saveSessionFile( m_fileName + ".session" );
 	
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement oldSession = root.firstChildElement( "openedElementCount" );
+	root.removeChild( oldSession );
+	
+	setProjectPath( projectPath() );
+	setSpecifPrefix( specifPrefix() );
+
 	saveWebServicesLink();
 	
 	static const int IndentSize = 3;
@@ -206,30 +215,38 @@ void XSLProject::setDefaultNav( const QString & value ) {
 	
 QString XSLProject::projectPath() const {
 	QString path = getValue( "project" );
-	if( ! path.isEmpty() ) {
-		if( path[ path.length() - 1 ] != '/' ) 
-			path = path + '/';
-	}
-	return path;
+
+	if( QDir( path ).isAbsolute() )
+		return path;
+	else
+		return QFileInfo( m_fileName ).absoluteDir().absoluteFilePath( path );
 }
 
 void XSLProject::setProjectPath( const QString & value ) {
-	setValue( "project", value );
+	setValue( "project", QFileInfo( m_fileName ).absoluteDir().relativeFilePath( value ) );
 }
 	
 QString XSLProject::specifPath() const {
 	QString path = getValue( "specifique" );
-	if( ! path.isEmpty() ) {
-		if( path[ path.length() - 1 ] != '/' ) 
-			path = path + '/';
-	}
-	return path;
+
+	if( QDir( path ).isAbsolute() )
+		return path;
+	else
+		return QFileInfo( m_fileName ).absoluteDir().absoluteFilePath( path );
 }
 
 void XSLProject::setSpecifPath( const QString & value ) {
-	setValue( "specifique", value );
+	setValue( "specifique", QFileInfo( m_fileName ).absoluteDir().relativeFilePath( value ) );
 }
-	
+
+QString XSLProject::languePath() const { 
+	return QDir( projectPath() ).absoluteFilePath( "langue/" + defaultLang().toLower() ); 
+}
+
+QString XSLProject::navPath() const { 
+	return QDir( languePath() ).absoluteFilePath( "nav" ); 
+}
+
 QString XSLProject::specifPrefix() const {
 	return getValue( "prefix" );
 }

@@ -97,7 +97,10 @@ FileEditor::~FileEditor() {
 
 void FileEditor::setMessage( QString message ) {
 	m_messageErreur->setText( message );
-	m_messageBox->show();
+	if( message.isEmpty() )
+		m_messageBox->hide();
+	else
+		m_messageBox->show();
 }
 
 

@@ -66,8 +66,8 @@ public:
 	QString projectPath() const;
 	void setProjectPath( const QString & );
 	
-	QString languePath() const { return projectPath() + "langue/" + defaultLang().toLower() + "/"; };
-	QString navPath() const { return languePath() + "nav/"; };
+	QString languePath() const;
+	QString navPath() const;
 
 	QString specifPath() const;
 	void setSpecifPath( const QString & );

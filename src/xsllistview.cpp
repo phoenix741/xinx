@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QIcon>
+#include <QDir>
 
 XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : QObject( orig ), m_parent( orig ), m_project( project ) { 
 	m_name         = QString();
@@ -107,6 +108,7 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
+		emit hasError( "" );
 	} else {
 		emit childAboutToBeReset();
 		qDeleteAll( m_child );
@@ -136,6 +138,7 @@ void XSLModelData::loadFromContent( const QString& content ) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
+		emit hasError( "" );
 	} else {
 		emit childAboutToBeReset();
 		qDeleteAll( m_child );
@@ -147,17 +150,17 @@ void XSLModelData::loadFromContent( const QString& content ) {
 
 int XSLModelData::childCount() { 
 	if( m_project && ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
-		if( QFile::exists( m_project->specifPath() + m_name ) ) {
-			loadFromFile( m_project->specifPath() + m_name );
+		if( QFile::exists( QDir( m_project->specifPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( m_project->specifPath() ).absoluteFilePath( m_name ) );
 		} else
-		if( QFile::exists( m_project->navPath() + m_name ) ) {
-			loadFromFile( m_project->navPath() + m_name );
+		if( QFile::exists( QDir( m_project->navPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( m_project->navPath() ).absoluteFilePath( m_name ) );
 		} else
-		if( QFile::exists( m_project->projectPath() + m_name ) ) {
-			loadFromFile( m_project->projectPath() + m_name );
+		if( QFile::exists( QDir( m_project->projectPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( m_project->projectPath() ).absoluteFilePath( m_name ) );
 		} else 
-		if( QFile::exists( m_project->languePath() + m_name ) ) {
-			loadFromFile( m_project->languePath() + m_name );
+		if( QFile::exists( QDir( m_project->languePath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( m_project->languePath() ).absoluteFilePath( m_name ) );
 		} 
 	}
 	return m_child.size();
