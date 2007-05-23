@@ -602,7 +602,9 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 		/*dlg.setDirectory( specifPath );
 		dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" );*/
 	} else {
-		if( m_xslProject && customFile.canBeCustomize ) {
+		bool isCustomized = 
+			m_xslProject && QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() );
+		if( m_xslProject && customFile.canBeCustomize && (!isCustomized) ) {
 			newFileName = QDir( specifPath ).
 				absoluteFilePath( m_xslProject->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 			/*dlg.setDirectory( specifPath );
@@ -636,10 +638,11 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 }
 
 void XMLVisualStudio::setCurrentProject( const QString & filename ) {
-	if( filename.isEmpty() )
+	Q_UNUSED( filename );
+	if( ! m_xslProject )
 		setWindowTitle( tr("XINX") );
 	else {
-		setWindowTitle( tr("%1 - %2").arg( QFileInfo( filename ).fileName() ).arg( tr("XINX") ) );
+		setWindowTitle( tr("%1 - %2").arg( m_xslProject->projectName() ).arg( tr("XINX") ) );
 	}
 }
 

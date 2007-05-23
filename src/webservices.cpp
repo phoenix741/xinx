@@ -19,6 +19,7 @@
  ***************************************************************************/
  
 #include <QBuffer>
+#include <QFile>
 #include <QIODevice>
 #include <QHttp>
 #include <QMessageBox>
@@ -26,6 +27,7 @@
 #include <QUrl>
 #include <QIcon>
 #include <QDomElement>
+#include <QPair>
 
 #include <assert.h>
 
@@ -44,9 +46,13 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 	m_wsdl = WSDL( element );
 	
 	foreach( WSDLService service, m_wsdl.services() ) {
-		QString tnsBinding = service.port().binding().remove( "tns:" );
+		QString tnsBinding = service.port().binding();
+		tnsBinding = tnsBinding.mid( tnsBinding.indexOf( ":" ) + 1 );
+		
 		WSDLBinding binding = m_wsdl.bindings()[ tnsBinding ];
-		QString tnsType = binding.type().remove( "tns:" );
+		QString tnsType = binding.type();
+		tnsType = tnsType.mid( tnsType.indexOf( ":" ) + 1 );
+		
 		WSDLPortType portType = m_wsdl.portTypes()[ tnsType ];
 		
 		foreach( WSDLOperation operation, portType.operations() ) {
@@ -59,7 +65,9 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 				}
 			}
 			
-			QString tnsInputMessage = operation.inputMessage().remove ( "tns:" );
+			QString tnsInputMessage = operation.inputMessage();
+			tnsInputMessage = tnsInputMessage.mid( tnsInputMessage.indexOf( ":" ) + 1 );
+			
 			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
 			foreach( WSDLPart part, inputMessage.parts() ) {
 				Parameter param( part.name(), part.type() );
@@ -67,7 +75,9 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 			}
 			
 			
-			QString tnsOutputMessage = operation.outputMessage().remove ( "tns:" );
+			QString tnsOutputMessage = operation.outputMessage();
+			tnsOutputMessage = tnsOutputMessage.mid( tnsOutputMessage.indexOf( ":" ) + 1 );
+
 			WSDLMessage outputMessage = m_wsdl.messages()[ tnsOutputMessage ];
 			foreach( WSDLPart part, outputMessage.parts() ) {
 				Parameter param( part.name(), part.type() );
@@ -81,14 +91,27 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 	emit updated();
 }
 
+typedef
+	QPair<QString,QString> ParamStr;
+
 void WebServices::askWSDL( QWidget * parent ) {
 	QUrl wsdlUrl( m_link );
 	QBuffer buffer;
+//	QFile buffer( "c:\\temp.wsdl" );
 	buffer.open( QIODevice::ReadWrite );
 
 	ConnectionWebServicesDialogImpl dlg( parent );
 	dlg.setHost( wsdlUrl.host(), wsdlUrl.port() );
-	if( dlg.get( wsdlUrl.path() + "?WSDL", &buffer ) ) {
+	QString query = wsdlUrl.path();
+	if( wsdlUrl.hasQuery() ) {
+		query += "?";
+		foreach( ParamStr param, wsdlUrl.queryItems() ) {
+			query += param.first;
+			if( !param.second.isEmpty() )
+				query += "=" + param.second;
+		}
+	}
+	if( dlg.get( query, &buffer ) ) {
 		buffer.seek( 0 );
 		
 		QDomDocument document;

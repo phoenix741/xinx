@@ -130,8 +130,6 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	while( xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
 		xinxConfig->recentProjectFiles().removeLast();
 
-	setCurrentProject( filename );
-		
 	if( m_xslProject->projectType() == XSLProject::SERVICES )
 		setWebServicesView( true );
 
@@ -139,7 +137,6 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	for(int i = 1; i < m_dirModel->columnCount(); i++ )
 		m_projectDirectoryTreeView->hideColumn( i );
 	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_xslProject->projectPath() ) );
-
 
 	/* TODO 
 	foreach( QString str, m_xslProject->openedFiles() )
@@ -169,6 +166,8 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	updateActions();
 	updateRecentProjects();
 	updateRecentFiles();
+
+	setCurrentProject( filename );
 }
 
 void XMLVisualStudio::saveProject() {
