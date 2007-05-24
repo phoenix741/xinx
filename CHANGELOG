@@ -1,3 +1,15 @@
+XINX - 0.6.6
+============
+- 0000043: [Interface graphique] Affichage du numéro de colonne courante (phoenix)
+- 0000042: [Editeur] Erreur de parsing (phoenix)
+- 0000060: [Interface graphique] Quitter XINX alors que projet supprimé (phoenix)
+- 0000021: [Interface graphique] Dernier fichiers ouverts (phoenix)
+- 0000066: [Interface graphique] Plantage XINX lors du rafraichissement du contenue du fichier (phoenix)
+- 0000058: [Interface graphique] Ouverture simultanée de plusieurs fichiers (phoenix)
+- Début de mise en place des WebServices
+- Sauvegarde d'une session XINX (et séparation entre le fichier projet (versionnable) et le fichier session)
+- Quelques corrections de bugs ...
+
 XINX - 0.6.5.1
 ==============
 - 0000050: [Interface graphique] Remplacement de chaine : replace all (phoenix)
