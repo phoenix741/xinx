@@ -27,6 +27,9 @@
 #include "xslproject.h"
 #include "webservices.h"
 
+#define XINX_PROJECT_VERSION_1 1
+#define XINX_PROJECT_VERSION 1
+
 XSLProject::XSLProject() : QObject() {
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
 	m_projectDocument.appendChild( root );
@@ -84,10 +87,36 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	    return;
 	}
 	
+	m_version  = getValue( "xinx_version" ).isEmpty() ? 0 : getValue( "xinx_version" ).toInt();
+	if( m_version > XINX_PROJECT_VERSION ) {
+		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file is a too recent XINX Project"));
+	    return;
+	}
 	m_fileName = filename;
 	loadWebServicesLink();
+
+	if( m_version < XINX_PROJECT_VERSION_1 ) {
+		clearSessionNode();
+		m_rootSession = m_sessionDocument.createElement( "Session" );
+		m_sessionDocument.appendChild( m_rootSession );
 	
-	loadSessionFile( m_fileName + ".session" );
+		m_sessionNode = m_sessionDocument.createElement( "Opened" );
+		m_rootSession.appendChild( m_sessionNode );
+		QDomElement elt = root.firstChildElement( "openedElementCount" );
+		if( ! elt.isNull() ) {
+			QDomElement file = elt.firstChildElement( "file" );
+			while ( ! file.isNull() ) {
+				QDomElement node = m_sessionDocument.createElement( "editor" );
+				node.setAttribute( "filename", file.firstChild().toText().nodeValue() );
+				node.setAttribute( "position", 0 );
+				m_sessionNode.appendChild( node );
+		
+				file = file.nextSiblingElement( "file" );
+			}
+		}
+	} else {
+		loadSessionFile( m_fileName + ".session" );
+	}
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -96,9 +125,14 @@ void XSLProject::saveToFile( const QString & filename ) {
 	
 	saveSessionFile( m_fileName + ".session" );
 	
-	QDomElement root = m_projectDocument.documentElement();
-	QDomElement oldSession = root.firstChildElement( "openedElementCount" );
-	root.removeChild( oldSession );
+	if( m_version != XINX_PROJECT_VERSION_1 ) {
+		setValue( "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
+	}
+	if( m_version < XINX_PROJECT_VERSION_1 ) {
+		QDomElement root = m_projectDocument.documentElement();
+		QDomElement oldSession = root.firstChildElement( "openedElementCount" );
+		root.removeChild( oldSession );
+	} 
 	
 	setProjectPath( projectPath() );
 	setSpecifPrefix( specifPrefix() );

@@ -100,6 +100,7 @@ private:
 	void saveWebServicesLink();
 
 	QString m_fileName;
+	int m_version;
 	
 	QDomDocument m_projectDocument;
 	QDomDocument m_sessionDocument;
