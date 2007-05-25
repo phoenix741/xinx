@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "globals.h"
 #include "webserviceseditor.h"
 #include "xmleditor.h"
+#include "webservices.h"
 
 #include <QLabel>
 #include <QComboBox>
@@ -30,11 +32,11 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) :
 	
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
 	m_servicesList = new QComboBox( this );
-	m_servicesList->addItem( "crudManager" );
+	webServicesChanged();
 
 	QLabel * label2 = new QLabel( tr("Action : "), this );
 	m_actionList = new QComboBox( this );
-	m_actionList->addItem( "create" );
+	webServicesActivated( m_servicesList->currentIndex() );
 		
 	QLabel * label3 = new QLabel( tr("Parameter : "), this );	
 	m_paramList = new QComboBox( this );
@@ -52,6 +54,9 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) :
 	hbox->addStretch();
 	
 	m_vbox->insertLayout( 0, hbox );
+	
+	connect( &global, SIGNAL(webServicesChanged()), this, SLOT(webServicesChanged()) );
+	connect( m_servicesList, SIGNAL(activated(int)), this, SLOT(webServicesActivated(int)) );
 }
 
 QString WebServicesEditor::getSuffix() const {
@@ -59,4 +64,25 @@ QString WebServicesEditor::getSuffix() const {
 		return "fws";
 	else
 		return FileEditor::getSuffix();
+}
+
+void WebServicesEditor::webServicesChanged() {
+	m_servicesList->clear();
+	foreach( WebServices * ed, *(global.m_webServices) ) {
+		m_servicesList->addItem( QIcon(":/CVstruct.png"), ed->name(), (int)ed );
+	}
+}
+
+void WebServicesEditor::webServicesActivated( int index ) {
+	m_actionList->clear();
+	if( index >= 0 ) {
+		WebServices * ed = (WebServices*)(m_servicesList->itemData( index ).toInt());
+		foreach( Operation op, ed->operations() ) {
+			m_actionList->addItem( QIcon(":/CVpublic_slot.png"), op.name() );
+		}
+	}
+}
+
+void WebServicesEditor::webServicesParamActivated( int index ) {
+	
 }

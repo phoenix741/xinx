@@ -41,6 +41,9 @@ public:
 	WebServicesList*  m_webServices;
 	WebServicesModel* m_webServicesModel;
 	XSLProject * m_project;
+	
+	void emitProjectChanged();
+	void emitWebServicesChanged();
 Q_SIGNALS:
 	void projectChanged();
 	void webServicesChanged();

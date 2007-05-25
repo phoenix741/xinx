@@ -66,6 +66,7 @@ void XMLVisualStudio::refreshWebServicesList() {
 			ws->askWSDL( this );
 			connect( ws, SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
 		}
+		global.emitWebServicesChanged();
 		
 		if( ! global.m_webServicesModel ) 
 			global.m_webServicesModel = new WebServicesModel( this, global.m_webServices );

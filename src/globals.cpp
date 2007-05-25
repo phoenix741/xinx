@@ -37,3 +37,11 @@ Globals::~Globals() {
 	}
 	if( m_webServicesModel ) delete m_webServicesModel;
 }
+
+void Globals::emitProjectChanged() {
+	emit projectChanged();
+}
+
+void Globals::emitWebServicesChanged() {
+	emit webServicesChanged();
+}

@@ -139,11 +139,6 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		m_projectDirectoryTreeView->hideColumn( i );
 	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 
-	/* TODO 
-	foreach( QString str, m_xslProject->openedFiles() )
-		if( ! str.isEmpty() ) 
-			open( str );
-	*/
 	QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
 	while( ! element.isNull() ) {
 		Editor * editor;
@@ -169,6 +164,7 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	updateRecentFiles();
 
 	setCurrentProject( filename );
+	global.emitProjectChanged();
 }
 
 void XMLVisualStudio::saveProject() {
@@ -184,6 +180,7 @@ void XMLVisualStudio::changeProjectProperty() {
 	property.loadFromProject( global.m_project );
 	if( property.exec() ) {
 		property.saveToProject( global.m_project );
+		global.emitProjectChanged();
 		refreshWebServicesList();
 		saveProject();
 	}
@@ -224,6 +221,7 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	updateActions();
 	updateRecentFiles();
 	setCurrentProject( "" );
+	global.emitProjectChanged();
 }
 
 void XMLVisualStudio::updateRecentProjects() {

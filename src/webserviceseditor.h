@@ -34,6 +34,10 @@ public:
 	WebServicesEditor( QWidget *parent = 0 );
 
 	virtual QString getSuffix() const;
+private Q_SLOTS:
+	void webServicesChanged();
+	void webServicesActivated( int );
+	void webServicesParamActivated( int );
 private:
 	QComboBox * m_paramList, * m_servicesList, * m_actionList;
 };
