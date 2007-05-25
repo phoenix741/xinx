@@ -27,7 +27,7 @@
 class JSEditor : public TextEditor {
 	Q_OBJECT
 public:
-	JSEditor( QWidget * parent = 0, XSLProject * project = NULL );
+	JSEditor( QWidget * parent = 0 );
 	virtual ~JSEditor();
 
 private:

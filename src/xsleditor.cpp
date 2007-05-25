@@ -305,7 +305,7 @@ int XSLBaliseCompletionModel::rowCount(const QModelIndex &parent) const {
 
 /* XSLEditor */
 
-XSLEditor::XSLEditor( QWidget * parent, XSLProject * project ) : XMLEditor( parent ) {
+XSLEditor::XSLEditor( QWidget * parent ) : XMLEditor( parent ) {
 	// Completer
 	m_completerValueParamName = "";
 	m_completerParamNodeName  = "";
@@ -332,7 +332,7 @@ XSLEditor::XSLEditor( QWidget * parent, XSLProject * project ) : XMLEditor( pare
 	m_completerValue->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerValue, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
 	
-	m_modelData = new XSLModelData( NULL, project );
+	m_modelData = new XSLModelData( NULL );
 	m_modelData->loadFromContent( toPlainText() );
 	
 	m_contentModel = new XSLItemModel( m_modelData, this );

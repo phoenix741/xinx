@@ -40,7 +40,7 @@ class QKeyEvent;
 class XSLEditor : public XMLEditor {
 	Q_OBJECT
 public:
-	XSLEditor( QWidget * parent = 0, XSLProject * project = NULL );
+	XSLEditor( QWidget * parent = 0 );
 	virtual ~XSLEditor();
 	
 	virtual void commentSelectedText( bool uncomment = false );

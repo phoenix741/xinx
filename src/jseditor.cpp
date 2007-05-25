@@ -30,7 +30,7 @@
 
 /* JSEditor */
 
-JSEditor::JSEditor( QWidget * parent, XSLProject * project ) : TextEditor( parent ) {
+JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
 	new JsHighlighter( document() );
 }
 

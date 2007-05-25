@@ -28,6 +28,7 @@
 #include <QCloseEvent>
 #include <assert.h>
 
+#include "globals.h"
 #include "uniqueapplication.h"
 
 #include "xmlvisualstudio.h"
@@ -53,7 +54,6 @@
 XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow(parent, f) {
 	setupUi(this);
 
-	m_xslProject       = NULL;
 	m_xslModel         = NULL;
 	m_sortXslModel     = NULL;
 	m_recentSeparator  = NULL;
@@ -249,10 +249,10 @@ void XMLVisualStudio::createActions() {
 
 void XMLVisualStudio::updateActions() {
 	/* Project action */
-	m_saveProjectAct->setEnabled( m_xslProject != NULL );
-	m_closeProjectAct->setEnabled( m_xslProject != NULL );
-	m_closeProjectSessionAct->setEnabled( m_xslProject != NULL );
-	m_projectPropertyAct->setEnabled( m_xslProject != NULL );
+	m_saveProjectAct->setEnabled( global.m_project != NULL );
+	m_closeProjectAct->setEnabled( global.m_project != NULL );
+	m_closeProjectSessionAct->setEnabled( global.m_project != NULL );
+	m_projectPropertyAct->setEnabled( global.m_project != NULL );
 
 	/* Files */
 	m_saveAct->setEnabled( m_tabEditors->count() );
@@ -294,7 +294,7 @@ void XMLVisualStudio::setEditorPosition( int line, int column ) {
 /* Actions */
 
 void XMLVisualStudio::on_m_newAct_triggered() {
-	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
+	if( global.m_project && ( global.m_project->projectType() == XSLProject::SERVICES ) ) 
 		on_m_newWebServicesFileAct_triggered();
 	else
 		on_m_newStylesheetFileAct_triggered();
@@ -302,22 +302,22 @@ void XMLVisualStudio::on_m_newAct_triggered() {
 
 
 void XMLVisualStudio::on_m_newStylesheetFileAct_triggered() {
-	m_tabEditors->newFileEditorXSL( m_xslProject );
+	m_tabEditors->newFileEditorXSL();
 	updateActions();
 }
 
 void XMLVisualStudio::on_m_newXMLFileAct_triggered() {
-	m_tabEditors->newFileEditorXML( m_xslProject );
+	m_tabEditors->newFileEditorXML();
 	updateActions();
 }
 
 void XMLVisualStudio::on_m_newJavascriptFileAct_triggered() {
-	m_tabEditors->newFileEditorJS( m_xslProject );
+	m_tabEditors->newFileEditorJS();
 	updateActions();
 }
 
 void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
-	m_tabEditors->newFileEditorWS( m_xslProject, m_webServices );
+	m_tabEditors->newFileEditorWS();
 //	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
 //		newWebServices( qobject_cast<FileEditor*>( m_tabEditors->currentEditor() ) );
 	updateActions();
@@ -455,15 +455,15 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 void XMLVisualStudio::open( const QString & filename ) {
 	assert( ! filename.isEmpty() );
 
-	if( m_xslProject ) {
-		m_xslProject->lastOpenedFile().removeAll( filename );
-		m_xslProject->lastOpenedFile().prepend( filename );
+	if( global.m_project ) {
+		global.m_project->lastOpenedFile().removeAll( filename );
+		global.m_project->lastOpenedFile().prepend( filename );
      
-		while( m_xslProject->lastOpenedFile().size() > MAXRECENTFILES )
-			m_xslProject->lastOpenedFile().removeLast();
+		while( global.m_project->lastOpenedFile().size() > MAXRECENTFILES )
+			global.m_project->lastOpenedFile().removeLast();
 	}
 
-	m_tabEditors->loadFileEditor( filename, m_xslProject );
+	m_tabEditors->loadFileEditor( filename );
 	updateRecentFiles();
 	updateActions();
 	statusBar()->showMessage(tr("File loaded"), 2000);
@@ -552,7 +552,7 @@ void XMLVisualStudio::saveEditor( int index ) {
 		on_m_saveAsAct_triggered();
 	} else {
 		QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
-		if( xinxConfig->isAlertWhenStdFile() && m_xslProject && (! QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() + "_" ) ) && xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
+		if( xinxConfig->isAlertWhenStdFile() && global.m_project && (! QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() + "_" ) ) && xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
 			QMessageBox::StandardButton res = QMessageBox::warning( this, tr("Save standard XSL"), tr("You're being to save standard file, do you whant make it specifique"), QMessageBox::Yes | QMessageBox::No );
 			if( res == QMessageBox::Yes )
 				saveEditorAs( index );
@@ -587,26 +587,26 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 
 	struct XINXConfig::managedFile customFile = xinxConfig->managedFile4Suffix( fileSuffix );
 
-	if( m_xslProject ) 
-		specifPath = QDir( m_xslProject->specifPath() ).absoluteFilePath( customFile.customPath );
+	if( global.m_project ) 
+		specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( customFile.customPath );
 	else
 	 	specifPath = m_lastPlace;
  	
 
 	if( fileName.isEmpty() ) {
-		if( m_xslProject ) 
+		if( global.m_project ) 
 			newFileName = QDir( specifPath ).
-				absoluteFilePath( m_xslProject->specifPrefix().toLower() + "_" );
+				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" );
 		else
 			newFileName = specifPath;
 		/*dlg.setDirectory( specifPath );
 		dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" );*/
 	} else {
 		bool isCustomized = 
-			m_xslProject && QFileInfo( fileName ).fileName().startsWith( m_xslProject->specifPrefix().toLower() );
-		if( m_xslProject && customFile.canBeCustomize && (!isCustomized) ) {
+			global.m_project && QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() );
+		if( global.m_project && customFile.canBeCustomize && (!isCustomized) ) {
 			newFileName = QDir( specifPath ).
-				absoluteFilePath( m_xslProject->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
+				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 			/*dlg.setDirectory( specifPath );
 			dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );*/
 		} else {
@@ -639,10 +639,10 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 
 void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	Q_UNUSED( filename );
-	if( ! m_xslProject )
+	if( ! global.m_project )
 		setWindowTitle( tr("XINX") );
 	else {
-		setWindowTitle( tr("%1 - %2").arg( m_xslProject->projectName() ).arg( tr("XINX") ) );
+		setWindowTitle( tr("%1 - %2").arg( global.m_project->projectName() ).arg( tr("XINX") ) );
 	}
 }
 

@@ -26,12 +26,11 @@
 //
 
 class QAbstractItemModel;
-class XSLProject;
 
 class Editor : public QFrame {
 	Q_OBJECT
 public:
-	Editor( QWidget * parent = 0, XSLProject * project = NULL );
+	Editor( QWidget * parent = 0 );
 	virtual ~Editor();
 
 	virtual QString getTitle() const = 0;
@@ -68,8 +67,5 @@ Q_SIGNALS:
 
 	void deleteModel();
 	void createModel();
-
-protected:
-	XSLProject * m_project;
 };
 #endif

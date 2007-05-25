@@ -78,52 +78,52 @@ void TabEditor::newFileEditor( Editor * editor ) {
 	emit currentChanged( currentIndex() );  
 }
 
-Editor * TabEditor::newFileEditorTxt( XSLProject * project ) {
-	Editor * editor = new FileEditor( new TextEditor( this ), this, project );
+Editor * TabEditor::newFileEditorTxt() {
+	Editor * editor = new FileEditor( new TextEditor( this ), this );
 	newFileEditor( editor );
 	return editor;
 }
 
-Editor * TabEditor::newFileEditorXSL( XSLProject * project ) {
-	Editor * editor = new XSLFileEditor( this, project );
+Editor * TabEditor::newFileEditorXSL() {
+	Editor * editor = new XSLFileEditor( this );
 	newFileEditor( editor );
 	return editor;
 }
 
-Editor * TabEditor::newFileEditorXML( XSLProject * project ) {
-	Editor * editor = new XMLFileEditor( this, project );
+Editor * TabEditor::newFileEditorXML() {
+	Editor * editor = new XMLFileEditor( this );
 	newFileEditor( editor );
 	return editor;
 }
 
-Editor * TabEditor::newFileEditorJS( XSLProject * project ) {
-	Editor * editor = new JSFileEditor( this, project );
+Editor * TabEditor::newFileEditorJS() {
+	Editor * editor = new JSFileEditor( this );
 	newFileEditor( editor );
 	return editor;
 }
 
-Editor * TabEditor::newFileEditorWS( XSLProject * project, WebServicesList * services ) {
-	Editor * editor = new WebServicesEditor( services, this, project );
+Editor * TabEditor::newFileEditorWS() {
+	Editor * editor = new WebServicesEditor( this );
 	newFileEditor( editor );
 	return editor;
 }
 
-Editor * TabEditor::loadFileEditor( const QString & fileName, XSLProject * project, WebServicesList * services ) {
+Editor * TabEditor::loadFileEditor( const QString & fileName ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
 		if( QDir::match( "*.fws", fileName ) ) 
-			ed = new WebServicesEditor( services, this, project );
+			ed = new WebServicesEditor( this );
 		else
 		if( QDir::match( "*.xsl;*.xslt", fileName ) ) 
-			ed = new XSLFileEditor( this, project );
+			ed = new XSLFileEditor( this );
 		else
 		if( QDir::match( "*.xml", fileName ) ) 
-			ed = new XSLFileEditor( this, project );
+			ed = new XSLFileEditor( this );
 		else
 		if( QDir::match( "*.js", fileName ) ) 
-			ed = new JSFileEditor( this, project );
+			ed = new JSFileEditor( this );
 		else
-			ed = new FileEditor( new TextEditor( this ), this, project );
+			ed = new FileEditor( new TextEditor( this ), this );
 		
 		
 		static_cast<FileEditor*>( ed )->loadFile( fileName );

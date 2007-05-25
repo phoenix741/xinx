@@ -21,6 +21,7 @@
  **
  ****************************************************************************/
  
+#include "globals.h"
 #include "xsllistview.h"
 #include "xslproject.h"
 
@@ -31,7 +32,7 @@
 #include <QIcon>
 #include <QDir>
 
-XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : QObject( orig ), m_parent( orig ), m_project( project ) { 
+XSLModelData::XSLModelData( XSLModelData * orig ) : QObject( orig ), m_parent( orig ) { 
 	m_name         = QString();
 	m_value        = QString();
 	m_type         = etVariable;
@@ -40,8 +41,6 @@ XSLModelData::XSLModelData( XSLModelData * orig, XSLProject * project ) : QObjec
 
 	if( m_parent ) { 
 		m_fileName = m_parent->m_fileName; 
-		if( !m_project ) 
-			m_project = m_parent->m_project; 
 	}
 }
 
@@ -149,18 +148,18 @@ void XSLModelData::loadFromContent( const QString& content ) {
 }
 
 int XSLModelData::childCount() { 
-	if( m_project && ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
-		if( QFile::exists( QDir( m_project->specifPath() ).absoluteFilePath( m_name ) ) ) {
-			loadFromFile( QDir( m_project->specifPath() ).absoluteFilePath( m_name ) );
+	if( global.m_project && ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
+		if( QFile::exists( QDir( global.m_project->specifPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( global.m_project->specifPath() ).absoluteFilePath( m_name ) );
 		} else
-		if( QFile::exists( QDir( m_project->navPath() ).absoluteFilePath( m_name ) ) ) {
-			loadFromFile( QDir( m_project->navPath() ).absoluteFilePath( m_name ) );
+		if( QFile::exists( QDir( global.m_project->navPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( global.m_project->navPath() ).absoluteFilePath( m_name ) );
 		} else
-		if( QFile::exists( QDir( m_project->projectPath() ).absoluteFilePath( m_name ) ) ) {
-			loadFromFile( QDir( m_project->projectPath() ).absoluteFilePath( m_name ) );
+		if( QFile::exists( QDir( global.m_project->projectPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( global.m_project->projectPath() ).absoluteFilePath( m_name ) );
 		} else 
-		if( QFile::exists( QDir( m_project->languePath() ).absoluteFilePath( m_name ) ) ) {
-			loadFromFile( QDir( m_project->languePath() ).absoluteFilePath( m_name ) );
+		if( QFile::exists( QDir( global.m_project->languePath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( global.m_project->languePath() ).absoluteFilePath( m_name ) );
 		} 
 	}
 	return m_child.size();
@@ -168,8 +167,8 @@ int XSLModelData::childCount() {
 
 
 
-XSLItemModel::XSLItemModel( QObject *parent, XSLProject * project ) : QAbstractItemModel( parent ) {
-	rootItem = new XSLModelData( NULL, project );
+XSLItemModel::XSLItemModel( QObject *parent ) : QAbstractItemModel( parent ) {
+	rootItem = new XSLModelData( NULL );
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	toDelete = true;

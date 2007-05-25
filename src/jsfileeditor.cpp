@@ -21,7 +21,7 @@
 #include "jseditor.h"
 #include "jsfileeditor.h"
 
-JSFileEditor::JSFileEditor( QWidget *parent, XSLProject * project ) : FileEditor( new JSEditor( parent ), parent, project ) {
+JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( new JSEditor( parent ), parent ) {
 	
 }
 

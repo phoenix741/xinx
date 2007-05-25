@@ -101,7 +101,10 @@ void WebServices::askWSDL( QWidget * parent ) {
 	buffer.open( QIODevice::ReadWrite );
 
 	ConnectionWebServicesDialogImpl dlg( parent );
-	dlg.setHost( wsdlUrl.host(), wsdlUrl.port() );
+	if( wsdlUrl.port() >= 0 )
+		dlg.setHost( wsdlUrl.host(), wsdlUrl.port() );
+	else
+		dlg.setHost( wsdlUrl.host() );
 	QString query = wsdlUrl.path();
 	if( wsdlUrl.hasQuery() ) {
 		query += "?";

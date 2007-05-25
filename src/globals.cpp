@@ -18,45 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "webserviceseditor.h"
-#include "xmleditor.h"
+#include "globals.h"
 
-#include <QLabel>
-#include <QComboBox>
-#include <QVBoxLayout>
+#include "xslproject.h"
+#include "webservices.h"
 
-WebServicesEditor::WebServicesEditor( QWidget *parent ) :
-	FileEditor( new XMLEditor( parent ), parent ) {
-	
-	QLabel * label1 = new QLabel( tr("WebServices : "), this );
-	m_servicesList = new QComboBox( this );
-	m_servicesList->addItem( "crudManager" );
+Globals global;
 
-	QLabel * label2 = new QLabel( tr("Action : "), this );
-	m_actionList = new QComboBox( this );
-	m_actionList->addItem( "create" );
-		
-	QLabel * label3 = new QLabel( tr("Parameter : "), this );	
-	m_paramList = new QComboBox( this );
-	m_paramList->addItem( "String_1" );
+Globals::Globals() : m_webServices(0), m_webServicesModel(0), m_project(0) {
 	
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( label1 );
-	hbox->addWidget( m_servicesList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( label2 );
-	hbox->addWidget( m_actionList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( label3 );
-	hbox->addWidget( m_paramList );
-	hbox->addStretch();
-	
-	m_vbox->insertLayout( 0, hbox );
 }
 
-QString WebServicesEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "fws";
-	else
-		return FileEditor::getSuffix();
+Globals::~Globals() {
+	if( m_project ) delete m_project;
+	if( m_webServices ) {
+		qDeleteAll( *m_webServices );
+		delete m_webServices;	
+	}
+	if( m_webServicesModel ) delete m_webServicesModel;
 }

@@ -32,16 +32,11 @@
 class XSLItemModel;
 class QSortFilterProxyModel;
 class ObjectsView;
-class XSLProject;
 class AboutDialogImpl;
 class XINXFileDialog;
 class QDirModel;
 class QMenu;
 class FileEditor;
-class WebServicesModel;
-class WebServices;
-
-typedef QList<WebServices*> WebServicesList;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -168,8 +163,6 @@ private: /* Private definition */
 	QTimer * m_modelTimer;
 	QDirModel * m_dirModel;
 
-	XSLProject * m_xslProject;
-
 	QAction * m_recentProjectActs[MAXRECENTFILES]; 
 	QAction * m_recentSeparator;
 
@@ -186,9 +179,6 @@ private: /* private definition */
 	void setWebServicesView( bool enabled );
 	void newWebServices( FileEditor* );
 	
-	/* Variables */
-	WebServicesList*  m_webServices;
-	WebServicesModel* m_webServicesModel;
 																				/* ***** Search Form Part ***** */
 private slots: /* slot definition */
 	void findFirst(const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions &);

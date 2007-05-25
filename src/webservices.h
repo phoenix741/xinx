@@ -31,7 +31,6 @@ class WebServices;
 class QHttp;
 class QIODevice;
 class QBuffer;
-class XSLProject;
 
 class Parameter {
 public:

@@ -26,7 +26,7 @@
 class JSFileEditor : public FileEditor {
 	Q_OBJECT
 public:
-	JSFileEditor( QWidget *parent = 0, XSLProject * project = NULL );
+	JSFileEditor( QWidget *parent = 0 );
 	virtual ~JSFileEditor();
 	
 	virtual QString getSuffix() const;

@@ -20,6 +20,7 @@
 
 #include <assert.h>
 
+#include "globals.h"
 #include "xmlvisualstudio.h" 
 #include "texteditor.h"
 #include "fileeditor.h"
@@ -29,20 +30,19 @@
 #include "serviceresultdialogimpl.h"
 
 void XMLVisualStudio::createWebServicesPart() {
-	m_webServices = new WebServicesList();	
-	m_webServicesModel = NULL;
+	global.m_webServices = new WebServicesList();	
 }
 
 void XMLVisualStudio::setWebServicesView( bool enabled ) {
 	if( enabled ) {
 		refreshWebServicesList();
-		m_webServicesTreeView->setModel( m_webServicesModel );
+		m_webServicesTreeView->setModel( global.m_webServicesModel );
 	} else {
 		m_webServicesTreeView->setModel( NULL );
-		delete m_webServicesModel;
-		m_webServicesModel = NULL;
-		qDeleteAll( *m_webServices );
-		m_webServices->clear();
+		delete global.m_webServicesModel;
+		global.m_webServicesModel = NULL;
+		qDeleteAll( *(global.m_webServices) );
+		global.m_webServices->clear();
 	}
 		
 	m_webServicesDock->setVisible( enabled );
@@ -55,28 +55,27 @@ void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {
 }
 
 void XMLVisualStudio::refreshWebServicesList() {
-	qDeleteAll( *m_webServices );
-	m_webServices->clear();
-	if( m_webServicesModel ) m_webServicesModel->reset();			
+	qDeleteAll( *(global.m_webServices) );
+	global.m_webServices->clear();
+	if( global.m_webServicesModel ) global.m_webServicesModel->reset();			
 
-	if( m_xslProject ) {
-		foreach( QString link, m_xslProject->serveurWeb() ) {
+	if( global.m_project ) {
+		foreach( QString link, global.m_project->serveurWeb() ) {
 			WebServices * ws = new WebServices( link, this );
-			m_webServices->append( ws );
+			global.m_webServices->append( ws );
 			ws->askWSDL( this );
 			connect( ws, SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
 		}
 		
-		if( ! m_webServicesModel ) 
-			m_webServicesModel = new WebServicesModel( this, m_webServices );
+		if( ! global.m_webServicesModel ) 
+			global.m_webServicesModel = new WebServicesModel( this, global.m_webServices );
 		else
-			m_webServicesModel->reset();			
+			global.m_webServicesModel->reset();			
 	}
 }
 
 void XMLVisualStudio::newWebServices( FileEditor* editor ) {
 	NewWebServicesDialogImpl dlg;
-	dlg.setProject( m_webServices );
 	if( dlg.exec() == QDialog::Accepted ) {
 		QTextDocument *document = editor->textEdit()->document();
 		document->setPlainText( dlg.generateXMLFile() );
@@ -93,13 +92,12 @@ void XMLVisualStudio::webServicesReponse( QString query, QString response, QStri
 
 void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
 	assert( m_tabEditors->currentEditor() != NULL );
-	assert( m_xslProject );
+	assert( global.m_project );
 	
 	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
 		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 		
 		NewWebServicesDialogImpl dlg;
-		dlg.setProject( m_webServices );
 		if( dlg.exec() == QDialog::Accepted ) {
 			QStringList params;
 			params.append( ed->toPlainText() );

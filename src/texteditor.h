@@ -23,7 +23,6 @@
 
 #include <QTextEdit>
 
-class XSLProject;
 class QAbstractItemModel;
 class TextProcessor;
 class QSyntaxHighlighter;

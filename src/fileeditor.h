@@ -33,7 +33,7 @@ class QLabel;
 class FileEditor : public Editor {
 	Q_OBJECT
 public:
-	FileEditor( TextEditor * textEditor, QWidget *parent = 0, XSLProject * project = NULL );
+	FileEditor( TextEditor * textEditor, QWidget *parent = 0 );
 	virtual ~FileEditor();
 
 	const QString & getFileName() const;

@@ -22,31 +22,27 @@
 
 #include <assert.h>
 
+#include "globals.h"
 #include "xslproject.h"
 #include "webservices.h"
 //
 NewWebServicesDialogImpl::NewWebServicesDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
 	setupUi(this);
-}
-//
 
-void NewWebServicesDialogImpl::setProject( WebServicesList * list ) {
-	assert( list != NULL );
-	
-	m_list = list;
 	m_webServicesNameComboBox->clear();
-	foreach( WebServices* service, *list ) 
+	foreach( WebServices* service, *(global.m_webServices) ) 
 		m_webServicesNameComboBox->addItem( QIcon(":/CVstruct.png"), service->name() );
 
 	on_m_webServicesNameComboBox_currentIndexChanged( m_webServicesNameComboBox->currentIndex() );
 }
+//
 
 void NewWebServicesDialogImpl::on_m_webServicesNameComboBox_currentIndexChanged( int index ) {
-	assert( m_list != NULL );
+	assert( global.m_webServices != NULL );
 	m_serviceNameComboBox->clear();
 
-	foreach( Operation operation, (*m_list)[ index ]->operations() ) {
+	foreach( Operation operation, (*(global.m_webServices))[ index ]->operations() ) {
 		m_serviceNameComboBox->addItem( QIcon(":/CVpublic_slot.png"), operation.name() );
 	}
 }
@@ -54,9 +50,9 @@ void NewWebServicesDialogImpl::on_m_webServicesNameComboBox_currentIndexChanged(
 WebServices * NewWebServicesDialogImpl::calledWebServices() {
 	QString webServicesName = m_webServicesNameComboBox->currentText();
 	
-	for( int i = 0; i < m_list->count(); i++ ) {
-		if( (*m_list)[ i ]->name() == webServicesName ) {
-			return (*m_list)[ i ];
+	for( int i = 0; i < global.m_webServices->count(); i++ ) {
+		if( (*(global.m_webServices))[ i ]->name() == webServicesName ) {
+			return (*(global.m_webServices))[ i ];
 		}
 	}
 	

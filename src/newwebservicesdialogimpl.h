@@ -24,26 +24,19 @@
 #include "ui_newservicefile.h"
 //
 
-class XSLProject;
 class WebServices;
 class Operation;
-
-typedef QList<WebServices*> WebServicesList;
 
 class NewWebServicesDialogImpl : public QDialog, public Ui::NewWebServicesDialog {
 	Q_OBJECT
 public:
 	NewWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 
-	void setProject( WebServicesList * list );
-	
 	QString generateXMLFile();
 	WebServices * calledWebServices();
 	Operation calledOperation();
 private slots:
 	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
-private:
-	WebServicesList *  m_list;
 };
 #endif
 

@@ -33,7 +33,7 @@ class XSLProject;
 class XSLModelData : public QObject {
 	Q_OBJECT
 public:
-	XSLModelData( XSLModelData * orig = 0, XSLProject * project = 0 );
+	XSLModelData( XSLModelData * orig = 0 );
 	virtual ~XSLModelData() { qDeleteAll( m_child ); };
 
 	enum ElementType { etImport, etVariable, etTemplate };
@@ -79,8 +79,6 @@ private:
 	int m_documentLine;
 	QString m_fileName;
 
-	XSLProject * m_project;
-	
 	QList<XSLModelData*> m_child;
 
 friend class XSLItemModel;
@@ -89,7 +87,7 @@ friend class XSLItemModel;
 class XSLItemModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
-	XSLItemModel( QObject *parent = 0, XSLProject * project = 0 );
+	XSLItemModel( QObject *parent = 0 );
 	XSLItemModel( XSLModelData * data, QObject *parent = 0 );
 	virtual ~XSLItemModel();
 	

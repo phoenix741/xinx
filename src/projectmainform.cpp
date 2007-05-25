@@ -27,6 +27,7 @@
 
 #include <assert.h>
 
+#include "globals.h"
 #include "xmlvisualstudio.h" 
 #include "xinxconfig.h"
 #include "xslproject.h"
@@ -115,14 +116,14 @@ void XMLVisualStudio::openProject() {
 void XMLVisualStudio::openProject( const QString & filename ) {
 	assert( ! filename.isEmpty() );
 
-	if( m_xslProject ) 
+	if( global.m_project ) 
 		closeProject( true, xinxConfig->saveSessionByDefault() ); 
 	else 
 		on_m_closeAllAct_triggered();
 		
-	m_xslProject             = new XSLProject( filename );
+	global.m_project      = new XSLProject( filename );
 	m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
-	m_lastPlace              = m_xslProject->projectPath();
+	m_lastPlace              = global.m_project->projectPath();
 
 	xinxConfig->recentProjectFiles().removeAll( filename );
 	xinxConfig->recentProjectFiles().prepend( filename );
@@ -130,35 +131,35 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	while( xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
 		xinxConfig->recentProjectFiles().removeLast();
 
-	if( m_xslProject->projectType() == XSLProject::SERVICES )
+	if( global.m_project->projectType() == XSLProject::SERVICES )
 		setWebServicesView( true );
 
 	m_projectDirectoryTreeView->setModel( m_dirModel );
 	for(int i = 1; i < m_dirModel->columnCount(); i++ )
 		m_projectDirectoryTreeView->hideColumn( i );
-	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_xslProject->projectPath() ) );
+	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 
 	/* TODO 
 	foreach( QString str, m_xslProject->openedFiles() )
 		if( ! str.isEmpty() ) 
 			open( str );
 	*/
-	QDomElement element = m_xslProject->sessionNode().firstChildElement( "editor" );
+	QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
 	while( ! element.isNull() ) {
 		Editor * editor;
 		if( element.attribute( "class" ) == "XMLFileEditor" ) 
-			editor = m_tabEditors->newFileEditorXML( m_xslProject ) ;
+			editor = m_tabEditors->newFileEditorXML() ;
 		else
 		if( element.attribute( "class" ) == "XSLFileEditor" ) 
-			editor = m_tabEditors->newFileEditorXSL( m_xslProject ) ;
+			editor = m_tabEditors->newFileEditorXSL() ;
 		else
 		if( element.attribute( "class" ) == "JSFileEditor" ) 
-			editor = m_tabEditors->newFileEditorJS( m_xslProject ) ;
+			editor = m_tabEditors->newFileEditorJS() ;
 		else
 		if( element.attribute( "class" ) == "WebServicesEditor" ) 
-			editor = m_tabEditors->newFileEditorWS( m_xslProject ) ;
+			editor = m_tabEditors->newFileEditorWS() ;
 		else
-			editor = m_tabEditors->newFileEditorTxt( m_xslProject ) ;
+			editor = m_tabEditors->newFileEditorTxt() ;
 		editor->deserializeEditor( element );
 		
 		element = element.nextSiblingElement( "editor" );
@@ -171,18 +172,18 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 }
 
 void XMLVisualStudio::saveProject() {
-	assert( m_xslProject != NULL );
+	assert( global.m_project != NULL );
 	
-	m_xslProject->saveToFile();
+	global.m_project->saveToFile();
 }
 
 void XMLVisualStudio::changeProjectProperty() {
-	assert( m_xslProject != NULL );
+	assert( global.m_project != NULL );
 	
 	ProjectPropertyImpl property ( this );
-	property.loadFromProject( m_xslProject );
+	property.loadFromProject( global.m_project );
 	if( property.exec() ) {
-		property.saveToProject( m_xslProject );
+		property.saveToProject( global.m_project );
 		refreshWebServicesList();
 		saveProject();
 	}
@@ -197,13 +198,13 @@ void XMLVisualStudio::on_m_closeProjectSessionAct_triggered() {
 }
 
 void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
-	if( ! m_xslProject ) return;		
+	if( ! global.m_project ) return;		
 		
-	m_xslProject->clearSessionNode();
+	global.m_project->clearSessionNode();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		QDomElement node = m_xslProject->sessionDocument().createElement( "editor" );
+		QDomElement node = global.m_project->sessionDocument().createElement( "editor" );
 		m_tabEditors->editor( i )->serializeEditor( node, saveSession );
-		m_xslProject->sessionNode().appendChild( node );
+		global.m_project->sessionNode().appendChild( node );
 	}
 	saveProject();
 
@@ -217,8 +218,8 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	m_projectDirectoryTreeView->setModel( NULL );
 	setWebServicesView( false );
 
-	delete m_xslProject;
-	m_xslProject = NULL;
+	delete global.m_project;
+	global.m_project = NULL;
 
 	updateActions();
 	updateRecentFiles();
@@ -243,13 +244,13 @@ void XMLVisualStudio::updateRecentProjects() {
 
 void XMLVisualStudio::updateRecentFiles() {
 	int numRecentFiles;
-	if( m_xslProject ) {
-		numRecentFiles = qMin( m_xslProject->lastOpenedFile().size(), MAXRECENTFILES );
+	if( global.m_project ) {
+		numRecentFiles = qMin( global.m_project->lastOpenedFile().size(), MAXRECENTFILES );
 
 		for( int i = 0; i < numRecentFiles; i++ ) {
-			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( m_xslProject->lastOpenedFile()[i] ).fileName() );
+			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->lastOpenedFile()[i] ).fileName() );
 			m_recentFileActs[i]->setText( text );
-			m_recentFileActs[i]->setData( m_xslProject->lastOpenedFile()[i] );
+			m_recentFileActs[i]->setData( global.m_project->lastOpenedFile()[i] );
 			m_recentFileActs[i]->setVisible( true );
 		}
 	} else 

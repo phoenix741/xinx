@@ -18,45 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "webserviceseditor.h"
-#include "xmleditor.h"
+#ifndef __GLOBALS_H__
+#define __GLOBALS_H__
 
-#include <QLabel>
-#include <QComboBox>
-#include <QVBoxLayout>
+#include <QObject>
+#include <QList>
 
-WebServicesEditor::WebServicesEditor( QWidget *parent ) :
-	FileEditor( new XMLEditor( parent ), parent ) {
-	
-	QLabel * label1 = new QLabel( tr("WebServices : "), this );
-	m_servicesList = new QComboBox( this );
-	m_servicesList->addItem( "crudManager" );
+class XSLProject;
+class WebServicesModel;
+class WebServices;
 
-	QLabel * label2 = new QLabel( tr("Action : "), this );
-	m_actionList = new QComboBox( this );
-	m_actionList->addItem( "create" );
-		
-	QLabel * label3 = new QLabel( tr("Parameter : "), this );	
-	m_paramList = new QComboBox( this );
-	m_paramList->addItem( "String_1" );
-	
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( label1 );
-	hbox->addWidget( m_servicesList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( label2 );
-	hbox->addWidget( m_actionList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( label3 );
-	hbox->addWidget( m_paramList );
-	hbox->addStretch();
-	
-	m_vbox->insertLayout( 0, hbox );
-}
+typedef QList<WebServices*> WebServicesList;
 
-QString WebServicesEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "fws";
-	else
-		return FileEditor::getSuffix();
-}
+/* Ajouter XINXConfig ici */ 
+
+class Globals : public QObject {
+	Q_OBJECT
+public:
+	Globals();
+	~Globals();
+
+	WebServicesList*  m_webServices;
+	WebServicesModel* m_webServicesModel;
+	XSLProject * m_project;
+Q_SIGNALS:
+	void projectChanged();
+	void webServicesChanged();
+};
+
+extern Globals global;
+
+#endif // __GLOBALS_H__

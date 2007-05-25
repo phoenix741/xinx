@@ -3,6 +3,12 @@ CONFIG +=   debug \
   qt \
   warn_on
 DESTDIR +=   bin
+DISTFILES +=   CHANGELOG \
+  COPYING \
+  TODO \
+  src/com.generix.xmlstudio.xml \
+  src/genxml.sh \
+  xml/completion.cpl
 FORMS +=   ui/about.ui \
   ui/crudpropertyservicefile.ui \
   ui/custom.ui \
@@ -18,6 +24,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \
   src/fileeditor.h \
+  src/globals.h \
   src/jseditor.h \
   src/jsfileeditor.h \
   src/jshighlighter.h \
@@ -59,6 +66,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/editor.cpp \
   src/editorcompletion.cpp \
   src/fileeditor.cpp \
+  src/globals.cpp \
   src/jseditor.cpp \
   src/jsfileeditor.cpp \
   src/jshighlighter.cpp \
@@ -95,7 +103,6 @@ TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
 UI_DIR +=   build
-DISTFILES += CHANGELOG COPYING TODO src/com.generix.xmlstudio.xml src/genxml.sh xml/completion.cpl
 unix {
   CONFIG +=     qdbus
   HEADERS +=     src/studioadaptor.h \
@@ -104,6 +111,7 @@ unix {
     src/studiointerface.cpp
 }
 win32 {
+  DISTFILES +=     rc/xinx.rc \
+    setup/xinx-setup.iss
   RC_FILE +=     rc/xinx.rc
-  DISTFILES += rc/xinx.rc setup/xinx-setup.iss 
 }
