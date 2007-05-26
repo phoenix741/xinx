@@ -83,12 +83,12 @@ Q_SIGNALS:
 protected slots:
 	void setMessage( QString );
 
-
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 
 protected:
 	void setFileName( const QString & name );
+	void createBackup( const QString & filename );
   
 	QString m_fileName;
 

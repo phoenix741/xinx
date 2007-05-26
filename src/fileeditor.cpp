@@ -279,21 +279,33 @@ QString FileEditor::getSuffix() const {
 }
 
 
-void FileEditor::setFileName( const QString & name ) {
-	m_fileName = QDir::fromNativeSeparators( name );
-	/*
-	if( QDir::match( "*.xml;*.xsl;*.html;*.fws", m_fileName ) ) 
-		m_view->formatToXML();
-	else
-	if( QDir::match( "*.js", m_fileName ) ) 
-		m_view->formatToJS();
-	else
-		m_view->formatToNothing();
-	*/
+void FileEditor::setFileName( const QString & fileName ) {
+	if( ! ( m_fileName.isEmpty() || fileName.isEmpty() ) ) {
+		QString prefix = global.m_project->specifPrefix().toLower() + "_";
+		bool isOldSpecifiqueFile = QFileInfo( m_fileName ).fileName().startsWith( prefix );
+		bool isNewSpecifiqueFile = QFileInfo( fileName ).fileName().startsWith( prefix );
+
+		QString infoFileName = QFileInfo( m_fileName ).fileName();
+		QString destName = QDir( QDir( global.m_project->specifPath() ).absoluteFilePath( xinxConfig->managedFile4Name( infoFileName ).customPath ) ).absoluteFilePath( infoFileName );
+
+		if( (!isOldSpecifiqueFile) && isNewSpecifiqueFile )
+			QFile::copy( m_fileName, destName );
+	}
+
+	if( ! fileName.isEmpty() )
+		m_fileName = fileName;
+}
+
+void FileEditor::createBackup( const QString & filename ) {
+	if( xinxConfig->isCreateBackupFile() ){
+		if( QFile::exists( filename + ".bak" ) ) 
+			QFile::remove( filename + ".bak" );
+		QFile::copy( filename, filename + ".bak" );
+	}
 }
 
 void FileEditor::loadFile( const QString & fileName ){
-	if( fileName != "" ) setFileName( fileName );
+	if( ! fileName.isEmpty() ) m_fileName = fileName;
 
 	QFile file( getFileName() );
 	if ( ! file.open( QFile::ReadOnly | QFile::Text ) ) {
@@ -313,22 +325,8 @@ void FileEditor::loadFile( const QString & fileName ){
 }
 
 bool FileEditor::saveFile( const QString & fileName ){
-	if( ( ! fileName.isEmpty() ) && ( ! m_fileName.isEmpty() ) && ( fileName != m_fileName ) ) {
-		bool isOldSpecifiqueFile = QFileInfo( m_fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() + "_" );
-		bool isNewSpecifiqueFile = QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() + "_" );
-		QString infoFileName = QFileInfo( m_fileName ).fileName();
-		QString destName = QDir( QDir( global.m_project->specifPath() ).absoluteFilePath( xinxConfig->managedFile4Name( infoFileName ).customPath ) ).absoluteFilePath( infoFileName );
-				
-		if( (!isOldSpecifiqueFile) && isNewSpecifiqueFile )
-			QFile::copy( m_fileName, destName );
-	}
-	if( xinxConfig->isCreateBackupFile() && ( fileName.isEmpty() || ( m_fileName == fileName ) )  ){
-		if( QFile::exists( m_fileName + ".bak" ) ) 
-			QFile::remove( m_fileName + ".bak" );
-		QFile::copy( m_fileName, m_fileName + ".bak" );
-	}
-	
-	if( fileName != "" ) setFileName( fileName );
+	if( ( fileName == m_fileName ) || fileName.isEmpty() ) createBackup( m_fileName ); 
+	if( ! fileName.isEmpty() ) setFileName( fileName );
 	
 	QFile file( getFileName() );
 	if ( ! file.open( QFile::WriteOnly | QFile::Text ) ) {

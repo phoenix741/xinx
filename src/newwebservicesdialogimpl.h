@@ -34,7 +34,7 @@ public:
 
 	QString generateXMLFile();
 	WebServices * calledWebServices();
-	Operation calledOperation();
+	Operation * calledOperation();
 private slots:
 	void on_m_webServicesNameComboBox_currentIndexChanged(int index);
 };

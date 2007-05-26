@@ -23,10 +23,12 @@
 
 #include "fileeditor.h"
 
-class WebServices;
-class QComboBox;
+#include <QHash>
+#include <QString>
 
-typedef QList<WebServices*> WebServicesList;
+class WebServices;
+class Operation;
+class QComboBox;
 
 class WebServicesEditor : public FileEditor {
 	Q_OBJECT
@@ -34,12 +36,30 @@ public:
 	WebServicesEditor( QWidget *parent = 0 );
 
 	virtual QString getSuffix() const;
+	
+	WebServices * service();
+	Operation * operation();
+	const QHash<QString,QString> & values() const { return m_paramValues; };
+	
+	virtual void loadFile( const QString &fileName = "" );
+	virtual bool saveFile( const QString &fileName = "" );
+
+	virtual void serializeEditor( QDomElement & element, bool content );
+	virtual void deserializeEditor( const QDomElement & element );
+	
 private Q_SLOTS:
 	void webServicesChanged();
 	void webServicesActivated( int );
 	void webServicesParamActivated( int );
+	void webServicesValueActivated();
 private:
+	void store( const QString & );
+	void restore( const QString & );
+
+	bool isModified;
+	QString m_oldParamValue;
 	QComboBox * m_paramList, * m_servicesList, * m_actionList;
+	QHash<QString,QString> m_paramValues;
 };
 
 #endif // __WEBSERVICESEDITOR_H__

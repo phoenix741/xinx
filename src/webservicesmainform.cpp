@@ -28,6 +28,7 @@
 #include "webservices.h"
 #include "newwebservicesdialogimpl.h"
 #include "serviceresultdialogimpl.h"
+#include "webserviceseditor.h"
 
 void XMLVisualStudio::createWebServicesPart() {
 	global.m_webServices = new WebServicesList();	
@@ -95,15 +96,20 @@ void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
 	assert( m_tabEditors->currentEditor() != NULL );
 	assert( global.m_project );
 	
-	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		QTextEdit * ed = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-		
-		NewWebServicesDialogImpl dlg;
-		if( dlg.exec() == QDialog::Accepted ) {
-			QStringList params;
-			params.append( ed->toPlainText() );
-			dlg.calledWebServices()->call( dlg.calledOperation(), params );
-		}
+	WebServicesEditor * editor = dynamic_cast<WebServicesEditor*>(m_tabEditors->currentEditor());
+	if( editor ) {
+		editor->service()->call( editor->operation(), editor->values() );
 	}
+	
+	//if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		//QTextEdit * ed = static_cast<WebServicesEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		//
+		//NewWebServicesDialogImpl dlg;
+		//if( dlg.exec() == QDialog::Accepted ) {
+			//QStringList params;
+			//params.append( ed->toPlainText() );
+			//dlg.calledWebServices()->call( dlg.calledOperation(), params );
+		//}
+	//}
 }
 

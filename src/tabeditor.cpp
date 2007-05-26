@@ -78,6 +78,33 @@ void TabEditor::newFileEditor( Editor * editor, const QString & icon ) {
 	emit currentChanged( currentIndex() );  
 }
 
+Editor * TabEditor::newFileEditor( const QString & fileName ) {
+	Editor * ed;
+	QString icon;
+	if( QDir::match( "*.fws", fileName ) ) {
+		ed = new WebServicesEditor( this );
+		icon = ":/typefws.png";
+	} else
+	if( QDir::match( "*.xsl;*.xslt", fileName ) ) {
+		ed = new XSLFileEditor( this );
+		icon = ":/typexsl.png";
+	} else
+	if( QDir::match( "*.xml", fileName ) ) {
+		ed = new XSLFileEditor( this );
+		icon = ":/typexml.png";
+	} else
+	if( QDir::match( "*.js", fileName ) ) {
+		ed = new JSFileEditor( this );
+		icon = ":/typejs.png";
+	} else {
+		ed = new FileEditor( new TextEditor( this ), this );	
+		icon = ":/typeunkown.png";
+	}
+	newFileEditor( ed, icon );
+	return ed;
+}
+
+
 Editor * TabEditor::newFileEditorTxt() {
 	Editor * editor = new FileEditor( new TextEditor( this ), this );
 	newFileEditor( editor );
@@ -111,25 +138,11 @@ Editor * TabEditor::newFileEditorWS() {
 Editor * TabEditor::loadFileEditor( const QString & fileName ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
-		if( QDir::match( "*.fws", fileName ) ) 
-			ed = new WebServicesEditor( this );
-		else
-		if( QDir::match( "*.xsl;*.xslt", fileName ) ) 
-			ed = new XSLFileEditor( this );
-		else
-		if( QDir::match( "*.xml", fileName ) ) 
-			ed = new XSLFileEditor( this );
-		else
-		if( QDir::match( "*.js", fileName ) ) 
-			ed = new JSFileEditor( this );
-		else
-			ed = new FileEditor( new TextEditor( this ), this );
-		
+		ed = newFileEditor( fileName );	
 		
 		static_cast<FileEditor*>( ed )->loadFile( fileName );
 		
-		int index = addTab( ed, ed->getTitle() );
-		setTabIcon( index, QIcon(":/doc.png") );
+		setTabText( currentIndex(), ed->getTitle() );
 	}
 	setCurrentWidget( ed );
 	dynamic_cast<QWidget*>( parent() )->activateWindow();
@@ -338,7 +351,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			if ( mouseEvent->button() == Qt::RightButton ) {
 				QMenu *menu = new QMenu( this );
-				connect( menu->addAction(QIcon(":/wrap.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
+				connect( menu->addAction(QIcon(":/reload.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
 				menu->addSeparator();
 				connect( menu->addAction(QIcon(":/filesave.png"), tr("Save")), SIGNAL(triggered()), this, SLOT(slotSaveAsked()) );
 				connect( menu->addAction(QIcon(":/filesaveas.png"), tr("Save As ....")), SIGNAL(triggered()), this, SLOT(slotSaveAsAsked()) );

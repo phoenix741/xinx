@@ -24,6 +24,7 @@
 #include <QString>
 #include <QDomElement>
 #include <QAbstractItemModel>
+#include <QHash>
 
 #include "wsdl.h"
 
@@ -45,11 +46,12 @@ private:
 class Operation {
 public:
 	Operation( QString name ) : m_name( name ) {};
+	~Operation();
 
 	QString name() { return m_name; };
 	
-	const QList<Parameter> & inputParam() { return m_inputParam; };
-	const QList<Parameter> & outputParam() { return m_outputParam; };
+	const QList<Parameter*> & inputParam() { return m_inputParam; };
+	const QList<Parameter*> & outputParam() { return m_outputParam; };
 	
 	QString encodingStyle() { return m_encodingStyle; };
 	QString namespaceString() { return m_namespaceString; };
@@ -58,8 +60,8 @@ private:
 	QString m_encodingStyle;
 	QString m_namespaceString;
 	
-	QList<Parameter> m_inputParam;
-	QList<Parameter> m_outputParam;
+	QList<Parameter*> m_inputParam;
+	QList<Parameter*> m_outputParam;
 	
 friend class WebServices;
 };
@@ -68,21 +70,22 @@ class WebServices : public QObject {
 	Q_OBJECT
 public:
 	WebServices( const QString & link, QObject * parent = 0 );
+	~WebServices();
 
 	QString name() { return m_wsdl.name(); };
-	const QList<Operation> & operations() { return m_list; };
+	const QList<Operation*> & operations() { return m_list; };
 	
 	void askWSDL( QWidget * parent = 0 );
 	void loadFromElement( const QDomElement & element );
 	
-	void call( Operation operation, const QStringList & param );
+	void call( Operation * operation, const QHash<QString,QString> & param );
 signals:
 	void updated();	
 	void soapResponse( QString query, QString response, QString errorCode, QString errorString );
 private:
 	WSDL m_wsdl;
 	QString m_link;
-	QList<Operation> m_list;
+	QList<Operation*> m_list;
 };
 
 typedef QList<WebServices*> WebServicesList;

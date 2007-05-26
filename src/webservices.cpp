@@ -41,6 +41,7 @@ WebServices::WebServices( const QString & link, QObject * parent ) : QObject( pa
 }
 
 void WebServices::loadFromElement( const QDomElement & element ) {
+	qDeleteAll( m_list );
 	m_list.clear();
 	
 	m_wsdl = WSDL( element );
@@ -56,12 +57,12 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 		WSDLPortType portType = m_wsdl.portTypes()[ tnsType ];
 		
 		foreach( WSDLOperation operation, portType.operations() ) {
-			Operation wsOperation ( operation.name() );
+			Operation * wsOperation = new Operation( operation.name() );
 			
 			foreach( WSDLOperation bindingOperation, binding.operations() ) {
 				if( bindingOperation.name() == operation.name() ) {
-					wsOperation.m_encodingStyle = bindingOperation.inputEncodingStyle();
-					wsOperation.m_namespaceString = bindingOperation.inputNamespace();
+					wsOperation->m_encodingStyle = bindingOperation.inputEncodingStyle();
+					wsOperation->m_namespaceString = bindingOperation.inputNamespace();
 				}
 			}
 			
@@ -70,8 +71,8 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 			
 			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
 			foreach( WSDLPart part, inputMessage.parts() ) {
-				Parameter param( part.name(), part.type() );
-				wsOperation.m_inputParam.append( param );
+				Parameter * param = new Parameter( part.name(), part.type() );
+				wsOperation->m_inputParam.append( param );
 			}
 			
 			
@@ -80,8 +81,8 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 
 			WSDLMessage outputMessage = m_wsdl.messages()[ tnsOutputMessage ];
 			foreach( WSDLPart part, outputMessage.parts() ) {
-				Parameter param( part.name(), part.type() );
-				wsOperation.m_outputParam.append( param );
+				Parameter * param = new Parameter( part.name(), part.type() );
+				wsOperation->m_outputParam.append( param );
 			}
 			
 			m_list.append( wsOperation );
@@ -90,6 +91,11 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 	
 	emit updated();
 }
+
+WebServices::~WebServices() {
+	qDeleteAll( m_list );
+}
+
 
 typedef
 	QPair<QString,QString> ParamStr;
@@ -133,13 +139,13 @@ void WebServices::askWSDL( QWidget * parent ) {
 	}
 }
 
-void WebServices::call( Operation op, const QStringList & param ) {
-	Envelop soapEnvelop( op.encodingStyle(), op.namespaceString() , op.name() );
+void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
+	Envelop soapEnvelop( op->encodingStyle(), op->namespaceString() , op->name() );
 	QString query;
 	
-	for( int i = 0; i < op.inputParam().count(); i++ ) {
-		soapEnvelop.setParam( op.inputParam()[i].paramString(), op.inputParam()[i].paramType (), param[i] );
-		query += op.inputParam()[i].paramString() + "=\n" + param[i] + "\n";
+	for( int i = 0; i < op->inputParam().count(); i++ ) {
+		soapEnvelop.setParam( op->inputParam()[i]->paramString(), op->inputParam()[i]->paramType(), param[ op->inputParam()[i]->paramString() ] );
+		query += op->inputParam()[i]->paramString() + "=\n" + param[ op->inputParam()[i]->paramString() ] + "\n";
 	}
 
 	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
@@ -177,6 +183,13 @@ void WebServices::call( Operation op, const QStringList & param ) {
 	}
 }
 
+/* Operation */
+
+Operation::~Operation() {
+	qDeleteAll( m_inputParam );
+	qDeleteAll( m_outputParam );
+}
+
 
 /* WebServicesModel */
 
@@ -200,8 +213,8 @@ QVariant WebServicesModel::data(const QModelIndex &index, int role) const {
 		} 	
 		if( role == Qt::DisplayRole && index.column() == 0 ) {
 			WebServices * services = static_cast<WebServices*>( index.internalPointer() );
-			Operation operation = services->operations().at( index.row() );
-			return operation.name();
+			Operation * operation = services->operations().at( index.row() );
+			return operation->name();
 		}
 	} else {
 		if( role == Qt::DecorationRole && index.column() == 0 ) {

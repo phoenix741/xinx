@@ -12,6 +12,9 @@
   <property name="windowTitle" >
    <string>XINX</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../images/application.qrc" >:/splash.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
     <property name="margin" >

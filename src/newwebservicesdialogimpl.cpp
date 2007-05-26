@@ -42,8 +42,8 @@ void NewWebServicesDialogImpl::on_m_webServicesNameComboBox_currentIndexChanged(
 	assert( global.m_webServices != NULL );
 	m_serviceNameComboBox->clear();
 
-	foreach( Operation operation, (*(global.m_webServices))[ index ]->operations() ) {
-		m_serviceNameComboBox->addItem( QIcon(":/action.png"), operation.name() );
+	foreach( Operation * operation, (*(global.m_webServices))[ index ]->operations() ) {
+		m_serviceNameComboBox->addItem( QIcon(":/action.png"), operation->name() );
 	}
 }
 
@@ -59,18 +59,18 @@ WebServices * NewWebServicesDialogImpl::calledWebServices() {
 	return NULL;
 }
 
-Operation NewWebServicesDialogImpl::calledOperation(){
+Operation  *NewWebServicesDialogImpl::calledOperation(){
 	QString serviceName = m_serviceNameComboBox->currentText();
 	WebServices * s = calledWebServices();
 	
 	for( int j = 0; j < s->operations().count(); j++ ) {
-		Operation op = (s->operations())[ j ];
-		if( op.name() == serviceName ) {
+		Operation * op = s->operations()[ j ];
+		if( op->name() == serviceName ) {
 			return op;
 		}
 	}
 	
-	return Operation("");
+	return NULL;
 }
 
 
