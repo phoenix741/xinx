@@ -117,24 +117,31 @@ void ConnectionWebServicesDialogImpl::stateChanged( int state ) {
 	switch( state ) {
 	case QHttp::Unconnected:
 		m_labelState->setText( tr("There is no connection to the host.") );
+		m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
 		break;
 	case QHttp::HostLookup:
 		m_labelState->setText( tr("A host name lookup is in progress.") );
+		m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
 		break;
 	case QHttp::Connecting:
 		m_labelState->setText( tr("An attempt to connect to the host is in progress.") );
+		m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
 		break;
 	case QHttp::Sending:
 		m_labelState->setText( tr("The client is sending its request to the server.") );
+		m_iconState->setPixmap( QPixmap( ":/network_outgoing_lan.png" ) );
 		break;
 	case QHttp::Reading:
 		m_labelState->setText( tr("The client's request has been sent and the client is reading the server's response.") );
+		m_iconState->setPixmap( QPixmap( ":/network_incoming_lan.png" ) );
 		break;
 	case QHttp::Connected:
 		m_labelState->setText( tr("The connection to the host is open.") );
+		m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
 		break;
 	case QHttp::Closing:
 		m_labelState->setText( tr("The connection is closing down.") );
+		m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
 		break;
 	}
 	qApp->processEvents();

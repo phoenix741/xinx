@@ -32,7 +32,7 @@ NewWebServicesDialogImpl::NewWebServicesDialogImpl( QWidget * parent, Qt::WFlags
 
 	m_webServicesNameComboBox->clear();
 	foreach( WebServices* service, *(global.m_webServices) ) 
-		m_webServicesNameComboBox->addItem( QIcon(":/CVstruct.png"), service->name() );
+		m_webServicesNameComboBox->addItem( QIcon(":/services.png"), service->name() );
 
 	on_m_webServicesNameComboBox_currentIndexChanged( m_webServicesNameComboBox->currentIndex() );
 }
@@ -43,7 +43,7 @@ void NewWebServicesDialogImpl::on_m_webServicesNameComboBox_currentIndexChanged(
 	m_serviceNameComboBox->clear();
 
 	foreach( Operation operation, (*(global.m_webServices))[ index ]->operations() ) {
-		m_serviceNameComboBox->addItem( QIcon(":/CVpublic_slot.png"), operation.name() );
+		m_serviceNameComboBox->addItem( QIcon(":/action.png"), operation.name() );
 	}
 }
 

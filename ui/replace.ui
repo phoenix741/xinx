@@ -277,7 +277,9 @@
   <tabstop>m_findButton</tabstop>
   <tabstop>m_closeButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../images/application.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>m_findButton</sender>

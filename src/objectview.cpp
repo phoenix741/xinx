@@ -64,7 +64,7 @@ bool ObjectFields::isQueriable() const {
 
 /****************** ObjectView *********************/
 
-ObjectView::ObjectView( QObject* parent, const QString & fileName	) : QObject(parent) {
+ObjectView::ObjectView( QObject* parent, const QString & fileName ) : QObject(parent) {
 	QFile file(fileName);
 	QDomDocument objectFile;
   
@@ -80,8 +80,8 @@ ObjectView::ObjectView( QObject* parent, const QString & fileName	) : QObject(pa
 
 	// Load XML Document
 	QString errorStr;
-	int errorLine;
-	int errorColumn;  
+	int errorLine = 0;
+	int errorColumn = 0;  
 	if (!objectFile.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
 		QMessageBox::information(qApp->activeWindow(), 
 			tr("XSL Stylesheet"), 

@@ -69,16 +69,16 @@ QString WebServicesEditor::getSuffix() const {
 void WebServicesEditor::webServicesChanged() {
 	m_servicesList->clear();
 	foreach( WebServices * ed, *(global.m_webServices) ) {
-		m_servicesList->addItem( QIcon(":/CVstruct.png"), ed->name(), (int)ed );
+		m_servicesList->addItem( QIcon(":/services.png"), ed->name(), (unsigned long long)ed );
 	}
 }
 
 void WebServicesEditor::webServicesActivated( int index ) {
 	m_actionList->clear();
 	if( index >= 0 ) {
-		WebServices * ed = (WebServices*)(m_servicesList->itemData( index ).toInt());
+		WebServices * ed = (WebServices*)(m_servicesList->itemData( index ).toULongLong());
 		foreach( Operation op, ed->operations() ) {
-			m_actionList->addItem( QIcon(":/CVpublic_slot.png"), op.name() );
+			m_actionList->addItem( QIcon(":/action.png"), op.name() );
 		}
 	}
 }

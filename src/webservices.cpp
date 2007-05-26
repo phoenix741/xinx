@@ -196,7 +196,7 @@ QVariant WebServicesModel::data(const QModelIndex &index, int role) const {
 
 	if( index.internalPointer() ) {
 		if( role == Qt::DecorationRole && index.column() == 0 ) {
-			return QIcon(":/CVpublic_slot.png");
+			return QIcon(":/action.png");
 		} 	
 		if( role == Qt::DisplayRole && index.column() == 0 ) {
 			WebServices * services = static_cast<WebServices*>( index.internalPointer() );
@@ -205,7 +205,7 @@ QVariant WebServicesModel::data(const QModelIndex &index, int role) const {
 		}
 	} else {
 		if( role == Qt::DecorationRole && index.column() == 0 ) {
-			return QIcon(":/CVstruct.png");
+			return QIcon(":/services.png");
 		} 
 		if( role == Qt::DisplayRole && index.column() == 0 ) {
 			WebServices * services = m_list->at( index.row() );

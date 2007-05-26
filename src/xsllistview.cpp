@@ -131,8 +131,8 @@ void XSLModelData::loadFromContent( const QString& content ) {
 
 	// Load XML Document
 	QString errorStr;
-	int errorLine;
-	int errorColumn;  
+	int errorLine = 0;
+	int errorColumn = 0;  
 	if (xsl.setContent(content, true, &errorStr, &errorLine, &errorColumn)) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
@@ -196,13 +196,13 @@ QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 	if(role == Qt::DecorationRole && index.column() == 0) {
 		switch( data->type() ) {
 		case XSLModelData::etImport:
-			return QIcon(":/doc.png");
+			return QIcon(":/import.png");
 			break;
 		case XSLModelData::etVariable:
-			return QIcon(":/CVpublic_var.png");
+			return QIcon(":/variable.png");
 			break;
 		case XSLModelData::etTemplate:
-			return QIcon(":/Chtml_template.png");
+			return QIcon(":/template.png");
 			break;
 		default:
 			return QVariant();

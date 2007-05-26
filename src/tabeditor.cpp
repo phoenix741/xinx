@@ -69,10 +69,10 @@ Editor * TabEditor::editor( const QString & filename ) {
 	return NULL;
 }
 
-void TabEditor::newFileEditor( Editor * editor ) {
+void TabEditor::newFileEditor( Editor * editor, const QString & icon ) {
 	int index = addTab( editor, editor->getTitle() );
 	
-	setTabIcon( index, QIcon(":/doc.png") );
+	setTabIcon( index, QIcon(icon) );
 	setCurrentIndex( index );
 
 	emit currentChanged( currentIndex() );  
@@ -86,25 +86,25 @@ Editor * TabEditor::newFileEditorTxt() {
 
 Editor * TabEditor::newFileEditorXSL() {
 	Editor * editor = new XSLFileEditor( this );
-	newFileEditor( editor );
+	newFileEditor( editor, ":/typexsl.png" );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorXML() {
 	Editor * editor = new XMLFileEditor( this );
-	newFileEditor( editor );
+	newFileEditor( editor, ":/typexml.png" );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorJS() {
 	Editor * editor = new JSFileEditor( this );
-	newFileEditor( editor );
+	newFileEditor( editor, ":/typejs.png" );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorWS() {
 	Editor * editor = new WebServicesEditor( this );
-	newFileEditor( editor );
+	newFileEditor( editor, ":/typefws.png" );
 	return editor;
 }
 

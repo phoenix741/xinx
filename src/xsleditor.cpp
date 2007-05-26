@@ -138,10 +138,10 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 		if( role == Qt::DecorationRole ) {
 			switch( data->type() ) {
 			case XSLModelData::etVariable:
-				return QIcon(":/CVpublic_var.png");
+				return QIcon(":/variable.png");
 				break;
 			case XSLModelData::etTemplate:
-				return QIcon(":/Chtml_template.png");
+				return QIcon(":/template.png");
 				break;
 			default:
 				return QVariant();
@@ -158,7 +158,7 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 		int value_row = index.row() - m_objList.count(); 
 		if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 			if( role == Qt::DecorationRole ) 
-				return QIcon(":/Chtml_value.png");
+				return QIcon(":/html_value.png");
 			if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
 				return completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
 			if( role == Qt::UserRole ) {
@@ -227,7 +227,7 @@ QVariant XSLParamCompletionModel::data( const QModelIndex &index, int role ) con
 	int value_row = index.row(); 
 	if( completionContents && completionContents->balise( m_baliseName ) ) {
 		if( role == Qt::DecorationRole ) 
-			return QIcon(":/CVpublic_meth.png");
+			return QIcon(":/noeud.png");
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
 			return completionContents->balise( m_baliseName )->attributes().at( value_row )->name();
 	}
@@ -277,7 +277,7 @@ QVariant XSLBaliseCompletionModel::data( const QModelIndex &index, int role ) co
 	int value_row = index.row(); 
 	if( completionContents ) {
 		if( role == Qt::DecorationRole ) 
-			return QIcon(":/Chtml_balise.png");
+			return QIcon(":/balise.png");
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
 			return completionContents->xmlBalises().at( value_row )->name();
 	}

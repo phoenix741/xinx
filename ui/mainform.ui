@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>923</width>
-     <height>19</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -133,15 +133,15 @@
      <property name="icon" >
       <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
      </property>
-     <addaction name="m_closeProjectAct" />
      <addaction name="m_closeProjectSessionAct" />
+     <addaction name="m_closeProjectAct" />
     </widget>
     <widget class="QMenu" name="m_recentProjectMenu" >
      <property name="title" >
       <string>&amp;Recent project</string>
      </property>
      <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+      <iconset resource="../images/application.qrc" >:/project_open.png</iconset>
      </property>
      <addaction name="m_openProjectAct" />
     </widget>
@@ -510,6 +510,9 @@
    </property>
   </action>
   <action name="m_moveUpLineAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/1uparrow.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Move line up</string>
    </property>
@@ -518,6 +521,9 @@
    </property>
   </action>
   <action name="m_moveDownLineAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/1downarrow.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Move line down</string>
    </property>
@@ -526,11 +532,17 @@
    </property>
   </action>
   <action name="m_upperTextAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/fontsizeup.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Upper Case</string>
    </property>
   </action>
   <action name="m_lowerTextAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/fontsizedown.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Lower Case</string>
    </property>
@@ -591,7 +603,7 @@
   </action>
   <action name="m_newProjectAct" >
    <property name="icon" >
-    <iconset resource="../images/application.qrc" >:/filenew.png</iconset>
+    <iconset resource="../images/application.qrc" >:/window_new.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;New project ...</string>
@@ -615,7 +627,7 @@
   </action>
   <action name="m_openProjectAct" >
    <property name="icon" >
-    <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+    <iconset resource="../images/application.qrc" >:/project_open.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Choose file ...</string>
@@ -669,9 +681,6 @@
    </property>
   </action>
   <action name="m_customApplicationAct" >
-   <property name="icon" >
-    <iconset resource="../images/application.qrc" >:/folder_config_48.png</iconset>
-   </property>
    <property name="text" >
     <string>Customize ...</string>
    </property>
@@ -692,7 +701,7 @@
   </action>
   <action name="m_refreshWebServicesListAct" >
    <property name="icon" >
-    <iconset resource="../images/application.qrc" >:/wrap.png</iconset>
+    <iconset resource="../images/application.qrc" >:/reload.png</iconset>
    </property>
    <property name="text" >
     <string>Refresh WebServices List</string>
@@ -700,28 +709,40 @@
   </action>
   <action name="m_callWebServicesAct" >
    <property name="icon" >
-    <iconset resource="../images/application.qrc" >:/resume.png</iconset>
+    <iconset resource="../images/application.qrc" >:/run.png</iconset>
    </property>
    <property name="text" >
     <string>Call WebServices</string>
    </property>
   </action>
   <action name="m_newStylesheetFileAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/typexsl.png</iconset>
+   </property>
    <property name="text" >
     <string>New Stylesheet file</string>
    </property>
   </action>
   <action name="m_newXMLFileAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/typexml.png</iconset>
+   </property>
    <property name="text" >
     <string>New XML file</string>
    </property>
   </action>
   <action name="m_newJavascriptFileAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/typejs.png</iconset>
+   </property>
    <property name="text" >
     <string>New JavaScript file</string>
    </property>
   </action>
   <action name="m_newWebServicesFileAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/typefws.png</iconset>
+   </property>
    <property name="text" >
     <string>New WebServices file</string>
    </property>
