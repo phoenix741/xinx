@@ -24,6 +24,7 @@
 #include <QFileDialog>
 #include <QTimer>
 #include <QHeaderView>
+#include <QFileIconProvider>
 
 #include <assert.h>
 
@@ -37,9 +38,46 @@
 #define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
 
+/* IconProvider */
+
+class IconProjectProvider : public QFileIconProvider {
+public:
+	IconProjectProvider();
+	~IconProjectProvider();
+	
+	QIcon icon( const QFileInfo & info ) const;
+};
+
+IconProjectProvider::IconProjectProvider() : QFileIconProvider() {
+	
+}
+
+IconProjectProvider::~IconProjectProvider() {
+	
+}
+	
+QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
+	if( info.suffix() == "xsl" ) {
+		return QIcon( ":/typexsl.png" );
+	} else
+	if( info.suffix() == "xml" ) {
+		return QIcon( ":/typexml.png" );
+	} else
+	if( info.suffix() == "js" ) {
+		return QIcon( ":/typejs.png" );
+	} else
+	if( info.suffix() == "fws" ) {
+		return QIcon( ":/typefws.png" );
+	} else
+		return QFileIconProvider::icon( info );
+}
+
+
 void XMLVisualStudio::createProjectPart() {
 	m_lastProjectOpenedPlace = QDir::currentPath();
 	m_dirModel = new QDirModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+	m_iconProvider = new IconProjectProvider();
+	m_dirModel->setIconProvider( m_iconProvider );
 	m_modelTimer = new QTimer( this );
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );

@@ -37,6 +37,7 @@ class XINXFileDialog;
 class QDirModel;
 class QMenu;
 class FileEditor;
+class IconProjectProvider;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -162,6 +163,7 @@ private: /* Private definition */
 
 	QTimer * m_modelTimer;
 	QDirModel * m_dirModel;
+	IconProjectProvider * m_iconProvider;
 
 	QAction * m_recentProjectActs[MAXRECENTFILES]; 
 	QAction * m_recentSeparator;
