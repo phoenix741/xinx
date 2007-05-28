@@ -89,39 +89,35 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 }
 
 void XMLVisualStudio::createDockWindows() {
-	/* XSL Content Dock */
 	m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
+	m_windowsMenu->addAction( m_webServicesDock->toggleViewAction() ); 
+	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
 
+	m_webServicesTreeView->header()->hide();
 	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 
-	m_windowsMenu->addAction( m_webServicesDock->toggleViewAction() ); 
-	m_webServicesTreeView->header()->hide();
-	
-	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
 }
 
 void XMLVisualStudio::readSettings() {
 	resize( xinxConfig->size() );
 	move( xinxConfig->position() );
   
+	if( ! xinxConfig->storedMainWindowState().isEmpty() ) {
+		restoreState( xinxConfig->storedMainWindowState() );
+	}
+
 	m_javaObjects->setPath( xinxConfig->objectDescriptionPath() );
 	m_javaObjects->loadFiles();
   
 	completionContents->setPath( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
-
-	m_xslContentDock->setVisible( xinxConfig->isDockSet( XINXConfig::contents ) );
-	m_webServicesDock->setVisible( xinxConfig->isDockSet( XINXConfig::services ) );
-	m_projectDirectoryDock->setVisible( xinxConfig->isDockSet( XINXConfig::files ) );
 }
 
 void XMLVisualStudio::writeSettings() {
+	xinxConfig->storeMainWindowState( saveState() );
+	
 	xinxConfig->setPosition( pos() );
 	xinxConfig->setSize( size() );
 	xinxConfig->setObjectDescriptionPath( m_javaObjects->path() );
-
-	xinxConfig->setDock( XINXConfig::contents, m_xslContentDock->isHidden() );
-	xinxConfig->setDock( XINXConfig::services, m_webServicesDock->isHidden() );
-	xinxConfig->setDock( XINXConfig::files, m_projectDirectoryDock->isHidden() );
 	
 	xinxConfig->save();
 }
@@ -135,6 +131,20 @@ void XMLVisualStudio::createActions() {
 	
 	m_newAct->setMenu( newMenu );
 	
+	// Recent project file
+	QMenu * recentProjectMenu = new QMenu( this );
+	recentProjectMenu->addAction( m_openProjectAct );
+	QMenu * recentFileMenu = new QMenu( this );
+	recentFileMenu->addAction( m_openAct );
+	
+	m_recentProjectAct->setMenu( recentProjectMenu );
+	connect( m_recentProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
+	m_recentFileAct->setMenu( recentFileMenu );
+	connect( m_recentFileAct, SIGNAL(triggered()), this, SLOT(on_m_openAct_triggered()) );
+
+	setupRecentProjectMenu( recentProjectMenu );
+	setupRecentFileMenu( recentFileMenu );
+
 	connect( m_tabEditors, SIGNAL(modelCreated()), this, SLOT(slotModelCreated()) );
 	connect( m_tabEditors, SIGNAL(modelDeleted()), this, SLOT(slotModelDeleted()) );
 	connect( m_tabEditors, SIGNAL(setEditorPosition(int,int)), this, SLOT(setEditorPosition(int,int)));	
@@ -238,10 +248,6 @@ void XMLVisualStudio::createActions() {
 	connect(m_unindentAct, SIGNAL(triggered()), m_tabEditors, SLOT(unindent()));
 	m_unindentAct->setEnabled(false);
 	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_unindentAct, SLOT(setEnabled(bool)));	
-
-	// Recent project file
-	setupRecentProjectMenu( m_recentProjectMenu );
-	setupRecentFileMenu( m_recentFileMenu );
 
 	updateActions();
 	updateRecentFiles();

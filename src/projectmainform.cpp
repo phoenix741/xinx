@@ -90,6 +90,7 @@ void XMLVisualStudio::createProjectPart() {
 }
 
 void XMLVisualStudio::setupRecentProjectMenu( QMenu * menu ) {
+	
 	m_recentSeparator = menu->addSeparator();
 	for(int i = 0; i < MAXRECENTFILES; i++) {
 		m_recentProjectActs[i] = new QAction( this );
@@ -148,7 +149,8 @@ void XMLVisualStudio::openRecentFile() {
 
 void XMLVisualStudio::openProject() {
 	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
-	openProject( fileName );	
+	if( ! fileName.isEmpty() )
+		openProject( fileName );	
 }
 
 void XMLVisualStudio::openProject( const QString & filename ) {

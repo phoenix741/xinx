@@ -45,8 +45,6 @@ XINXConfig::XINXConfig(  ) {
 	
 	m_xinxPosition = QPoint(200, 200);
 	m_xinxSize = QSize(400, 400);
-	m_docks = contents | files;
-	
 	struct managedStructure structure;
 	structure.example = QObject::tr(
 								"<library name=\"xinx\">\n"
@@ -170,7 +168,7 @@ void XINXConfig::save() {
 	m_settings->setValue( "Project/Alert when saving Standard File", m_alertWhenStdFile );
 	m_settings->setValue( "Project/Recent Project Files", m_recentProjectFiles );
 
-	m_settings->setValue( "Dock", m_docks );
+	m_settings->setValue( "State", m_mainWindowState );
 	
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
@@ -207,8 +205,7 @@ void XINXConfig::load() {
 	m_alertWhenStdFile   = m_settings->value( "Project/Alert when saving Standard File", m_alertWhenStdFile ).toBool();
 	m_recentProjectFiles = m_settings->value( "Project/Recent Project Files", m_settings->value( "Recent Project Files" ) ).toStringList();
 
-	m_docks = m_settings->value( "Dock", m_docks ).toInt();
-		
+	m_mainWindowState    = m_settings->value( "State" ).toByteArray();		
 
 	foreach( QString cle, m_managedStrucureList.keys() ) {
 		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {

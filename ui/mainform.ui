@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>923</width>
-    <height>609</height>
+    <width>668</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -21,7 +21,7 @@
      <number>0</number>
     </property>
     <property name="spacing" >
-     <number>0</number>
+     <number>6</number>
     </property>
     <item row="0" column="0" >
      <widget class="TabEditor" name="m_tabEditors" />
@@ -33,8 +33,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>923</width>
-     <height>29</height>
+     <width>668</width>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -52,6 +52,36 @@
     <addaction name="m_previousTabAct" />
     <addaction name="separator" />
    </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="menu_Close_project_2" >
+     <property name="title" >
+      <string>&amp;Close project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
+     </property>
+     <addaction name="m_closeProjectSessionAct" />
+     <addaction name="m_closeProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectAct" />
+    <addaction name="m_saveProjectAct" />
+    <addaction name="menu_Close_project_2" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
+   </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
      <string>&amp;Search</string>
@@ -61,32 +91,6 @@
     <addaction name="m_searchPreviousAct" />
     <addaction name="separator" />
     <addaction name="m_replaceAct" />
-   </widget>
-   <widget class="QMenu" name="m_fileMenu" >
-    <property name="title" >
-     <string>&amp;File</string>
-    </property>
-    <widget class="QMenu" name="m_recentFileMenu" >
-     <property name="title" >
-      <string>&amp;Recent file</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
-     </property>
-     <addaction name="m_openAct" />
-    </widget>
-    <addaction name="m_newAct" />
-    <addaction name="m_recentFileMenu" />
-    <addaction name="m_saveAct" />
-    <addaction name="m_saveAsAct" />
-    <addaction name="m_saveAllAct" />
-    <addaction name="separator" />
-    <addaction name="m_closeAct" />
-    <addaction name="m_closeAllAct" />
-    <addaction name="separator" />
-    <addaction name="m_printAct" />
-    <addaction name="separator" />
-    <addaction name="m_exitAct" />
    </widget>
    <widget class="QMenu" name="m_editMenu" >
     <property name="title" >
@@ -114,47 +118,22 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
-    <property name="enabled" >
-     <bool>false</bool>
-    </property>
+   <widget class="QMenu" name="m_fileMenu" >
     <property name="title" >
-     <string>WebServices</string>
+     <string>&amp;File</string>
     </property>
-    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="m_newAct" />
+    <addaction name="m_recentFileAct" />
+    <addaction name="m_saveAct" />
+    <addaction name="m_saveAsAct" />
+    <addaction name="m_saveAllAct" />
     <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="menu_Close_project_2" >
-     <property name="title" >
-      <string>&amp;Close project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
-     </property>
-     <addaction name="m_closeProjectSessionAct" />
-     <addaction name="m_closeProjectAct" />
-    </widget>
-    <widget class="QMenu" name="m_recentProjectMenu" >
-     <property name="title" >
-      <string>&amp;Recent project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/project_open.png</iconset>
-     </property>
-     <addaction name="m_openProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectMenu" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="menu_Close_project_2" />
-    <addaction name="m_projectPropertyAct" />
+    <addaction name="m_closeAct" />
+    <addaction name="m_closeAllAct" />
     <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
+    <addaction name="m_printAct" />
+    <addaction name="separator" />
+    <addaction name="m_exitAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -165,6 +144,16 @@
    <addaction name="m_helpMenu" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
+  <widget class="QToolBar" name="m_projectToolBar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="m_recentProjectAct" />
+   <addaction name="m_closeProjectSessionAct" />
+  </widget>
   <widget class="QToolBar" name="m_fileToolBar" >
    <property name="windowTitle" >
     <string>File Tool Bar</string>
@@ -176,8 +165,11 @@
     <number>4</number>
    </attribute>
    <addaction name="m_newAct" />
-   <addaction name="m_openAct" />
+   <addaction name="m_recentFileAct" />
    <addaction name="m_saveAct" />
+   <addaction name="m_saveAllAct" />
+   <addaction name="separator" />
+   <addaction name="m_printAct" />
   </widget>
   <widget class="QToolBar" name="m_editToolBar" >
    <property name="windowTitle" >
@@ -194,6 +186,12 @@
    <addaction name="m_cutAct" />
    <addaction name="m_copyAct" />
    <addaction name="m_pasteAct" />
+   <addaction name="separator" />
+   <addaction name="m_moveUpLineAct" />
+   <addaction name="m_moveDownLineAct" />
+   <addaction name="separator" />
+   <addaction name="m_lowerTextAct" />
+   <addaction name="m_upperTextAct" />
   </widget>
   <widget class="QToolBar" name="m_searchToolBar" >
    <property name="windowTitle" >
@@ -294,9 +292,6 @@
    </widget>
   </widget>
   <widget class="QToolBar" name="m_webServicesToolBar" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
    <property name="windowTitle" >
     <string>WebServices Tool Bar</string>
    </property>
@@ -703,6 +698,9 @@
    </property>
   </action>
   <action name="m_refreshWebServicesListAct" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/reload.png</iconset>
    </property>
@@ -711,6 +709,9 @@
    </property>
   </action>
   <action name="m_callWebServicesAct" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/run.png</iconset>
    </property>
@@ -751,8 +752,27 @@
    </property>
   </action>
   <action name="m_closeProjectSessionAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
+   </property>
    <property name="text" >
     <string>Close Project (session)</string>
+   </property>
+  </action>
+  <action name="m_recentProjectAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/project_open.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Recent Project</string>
+   </property>
+  </action>
+  <action name="m_recentFileAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/fileopen.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Recent file</string>
    </property>
   </action>
  </widget>

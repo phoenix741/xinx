@@ -1,3 +1,10 @@
+XINX - 0.6.7
+============
+- Amélioration des WebServices
+- Sauvegarde de l'emplacement des docks et des toolbars
+- Modifications des icones
+- Modifications des menus
+
 XINX - 0.6.6
 ============
 - 0000043: [Interface graphique] Affichage du numéro de colonne courante (phoenix)

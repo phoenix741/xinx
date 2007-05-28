@@ -28,6 +28,7 @@
 #include <QTextFormat>
 #include <QPoint>
 #include <QSize>
+#include <QByteArray>
 
 class QSettings;
 
@@ -46,12 +47,6 @@ public:
 		bool canBeCustomize;
 		QString structure;
 	};
-	enum docks {
-		contents = 0x01,
-		services = 0x02,
-		configuration = 0x04,
-		files = 0x08
-	};
 
 	XINXConfig();
 	~XINXConfig();
@@ -64,12 +59,9 @@ public:
 	
 	bool saveSessionByDefault() const { return m_saveSessionByDefault; };
 	void setSaveSessionByDefault( bool value ) { m_saveSessionByDefault = value; };
-	
-	int visibleDock() { return m_docks; };
-	bool isDockSet( enum docks dock ) { return (m_docks & dock) == dock; };
-	void setDock( enum docks dock ) { m_docks |= dock; };
-	void unsetDock( enum docks dock ) { m_docks &= ~dock; };
-	void setDock( enum docks dock, bool unset ) { if( unset ) unsetDock( dock ); else setDock( dock ); };
+
+	QByteArray storedMainWindowState() { return m_mainWindowState; };
+	void storeMainWindowState( QByteArray state ) { m_mainWindowState = state; };
 	
 	QPoint position() const { return m_xinxPosition; };
 	void setPosition( QPoint value ) { m_xinxPosition = value; };
@@ -107,8 +99,8 @@ private:
 	QPoint m_xinxPosition;
 	QSize m_xinxSize;
 	
-	int m_docks;
-
+	QByteArray m_mainWindowState;
+	
 	QString m_lang;
 	bool m_createBackupFile;
 	bool m_alertWhenStdFile;
