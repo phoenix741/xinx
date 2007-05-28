@@ -37,16 +37,13 @@ void XMLVisualStudio::createWebServicesPart() {
 void XMLVisualStudio::setWebServicesView( bool enabled ) {
 	if( enabled ) {
 		refreshWebServicesList();
-		m_webServicesTreeView->setModel( global.m_webServicesModel );
 	} else {
-		m_webServicesTreeView->setModel( NULL );
 		delete global.m_webServicesModel;
 		global.m_webServicesModel = NULL;
 		qDeleteAll( *(global.m_webServices) );
 		global.m_webServices->clear();
 	}
 		
-	m_webServicesDock->setVisible( enabled );
 	m_webServicesMenu->setEnabled( enabled );
 	m_webServicesToolBar->setEnabled( enabled );
 }

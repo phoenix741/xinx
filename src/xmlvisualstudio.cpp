@@ -90,12 +90,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 
 void XMLVisualStudio::createDockWindows() {
 	m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
-	m_windowsMenu->addAction( m_webServicesDock->toggleViewAction() ); 
 	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
-
-	m_webServicesTreeView->header()->hide();
 	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
-
 }
 
 void XMLVisualStudio::readSettings() {
