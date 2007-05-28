@@ -21,6 +21,8 @@
 #ifndef __RCS_H__
 #define __RCS_H__
 
+#include <QObject>
+
 class RCS : public QObject {
 	Q_OBJECT
 public:
@@ -28,10 +30,9 @@ public:
 		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown
 	};
 	
-	rcsState status( const QString & path );
-	
+	virtual rcsState status( const QString & path ) = 0;
 signals: 
-	
+	void stateChanged( const QString & fileName );
 };
 
 #endif // __RCS_H__

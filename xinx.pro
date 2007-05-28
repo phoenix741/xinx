@@ -1,7 +1,7 @@
-CONFIG +=   debug \
-  exceptions \
+CONFIG +=   exceptions \
   qt \
-  warn_on
+  warn_on \
+  debug
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
   COPYING \
@@ -53,7 +53,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsleditor.h \
   src/xsllistview.h \
   src/xslproject.h \
-  src/rcs.h
+  src/rcs.h \
+  src/rcs_cvs.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -100,7 +101,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsleditor.cpp \
   src/xsllistview.cpp \
   src/xslproject.cpp \
-  src/rcs.cpp
+  src/rcs.cpp \
+  src/rcs_cvs.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
