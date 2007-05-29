@@ -35,8 +35,42 @@
 #include "projectpropertyimpl.h"
 #include "editor.h"
 
+#include "rcs_cvs.h"
+
 #define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
+
+/* DirRCSModel */
+
+class DirRCSModel : public QDirModel {
+public:
+	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
+	DirRCSModel( QObject *parent = 0 );
+	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
+private:
+	RCS * m_rcs;
+};
+
+DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
+	m_rcs = new RCS_CVS();
+}
+
+DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
+}
+
+QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
+	if (role == Qt::BackgroundRole && index.column() == 0) {
+   		RCS::rcsState state = m_rcs->status( filePath(index) );
+   		if( state == RCS::Updated )
+			return QBrush( Qt::green );
+   		if( state == RCS::LocallyModified )
+			return QBrush( Qt::yellow );
+			
+		return QDirModel::data(index, role);
+	}
+
+	return QDirModel::data(index, role);
+}
 
 /* IconProvider */
 
@@ -75,7 +109,7 @@ QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
 
 void XMLVisualStudio::createProjectPart() {
 	m_lastProjectOpenedPlace = QDir::currentPath();
-	m_dirModel = new QDirModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
 	m_iconProvider = new IconProjectProvider();
 	m_dirModel->setIconProvider( m_iconProvider );
 	m_modelTimer = new QTimer( this );
@@ -330,6 +364,7 @@ void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
 }
 
 void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
-	open( m_dirModel->filePath( index ) );
+	if( ! m_dirModel->fileInfo( index ).isDir() )
+		open( m_dirModel->filePath( index ) );
 }
 
