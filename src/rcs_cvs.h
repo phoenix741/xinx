@@ -25,6 +25,9 @@
 
 class PrivateRCS_CVS;
 
+class ProcessExecutedException {	
+};
+
 class RCS_CVS : public RCS {
 	Q_OBJECT
 public:
@@ -32,6 +35,7 @@ public:
 	~RCS_CVS();
 
 	rcsState status( const QString & path );
+	void update( const QString & path );
 private:
 	PrivateRCS_CVS * d;
 	friend class PrivateRCS_CVS;

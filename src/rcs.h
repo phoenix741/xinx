@@ -29,10 +29,16 @@ public:
 	enum rcsState {
 		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown
 	};
+	enum rcsLog {
+		Error, Warning, Debug
+	};
 	
 	virtual rcsState status( const QString & path ) = 0;
+	virtual void update( const QString & path ) = 0;
 signals: 
 	void stateChanged( const QString & fileName );
+	void log( rcsLog niveau, const QString & info );
+	void updateTerminated();
 };
 
 #endif // __RCS_H__

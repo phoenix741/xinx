@@ -28,6 +28,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
+#include <QProcess>
 
 /* RCS_CVSEntry */
 
@@ -37,7 +38,7 @@ public:
 	RCS_CVSEntry( const QString & path );
 	
 	void setFileName( const QString & filename );
-	void setDate( const QString & date );
+	void setDate( QString date );
 	void loadFileDate();
 	RCS::rcsState status();
 	
@@ -46,6 +47,7 @@ public:
 
 	QString m_cvsVersion;
 	QDateTime m_cvsDate;
+	bool m_hasConflict;
 	
 	QFileInfo m_fileInfo;
 	QDateTime m_fileDate;	
@@ -59,8 +61,13 @@ RCS_CVSEntry::RCS_CVSEntry( const QString & path ) {
 	m_path = path;
 }
 
-void RCS_CVSEntry::setDate( const QString & date ) {
-	m_cvsDate = QDateTime::fromString( date ); // , "ddd MMM d hh:mm:ss yyyy"
+void RCS_CVSEntry::setDate( QString date ) {
+	if( date.contains( "+conflict" ) )
+		m_hasConflict = true;
+	else
+		m_hasConflict = false;
+	
+	m_cvsDate = QDateTime::fromString( date.remove( "+conflict" ) ); // , "ddd MMM d hh:mm:ss yyyy"
 	m_cvsDate.setTimeSpec( Qt::UTC );
 }
 
@@ -85,13 +92,16 @@ void RCS_CVSEntry::loadFileDate() {
 
 RCS::rcsState RCS_CVSEntry::status() {
 	if( ! m_fileInfo.exists() ) return RCS::LocallyRemoved;
+	if( m_cvsVersion == "0" ) return RCS::LocallyAdded;
 	if( ! m_fileInfo.isDir() ) {
-		if( m_cvsDate < m_fileDate )
+		if( m_cvsDate.isNull() || ( m_cvsDate < m_fileDate ) )
 			return RCS::LocallyModified;
-		else
+		else if( m_hasConflict )
+			return RCS::FileHadConflictsOnMerge;
+		else		
 			return RCS::Updated;
 	} else
-		return RCS::Unknown;
+		return RCS::Updated;
 }
 
 
@@ -106,6 +116,7 @@ public:
 	QFileSystemWatcher * m_watcher;
 	QStringList m_entriesFile;
 	QHash<QString,RCS_CVSEntry> m_entries;
+	QProcess * m_process;
 	
 	void reloadDir( const QString & path );
 	void reloadEntriesFile( const QString & path );
@@ -120,6 +131,7 @@ private:
 PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) {
 	m_parent = parent;
 	m_watcher = new QFileSystemWatcher( parent );
+	m_process = NULL;
 	connect( m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)) );
 	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
 }
@@ -208,6 +220,13 @@ RCS::rcsState RCS_CVS::status( const QString & path ) {
 		return RCS::Unknown;
 	else
 		return d->m_entries[ localPath ].status();
+}
+
+void RCS_CVS::update( const QString & path ) {
+	// TODO : Update	
+	if( d->m_process ) {
+		throw ProcessExecutedException();
+	}
 }
 
 #include "rcs_cvs.moc"

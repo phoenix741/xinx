@@ -61,10 +61,14 @@ DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	if (role == Qt::BackgroundRole && index.column() == 0) {
    		RCS::rcsState state = m_rcs->status( filePath(index) );
-   		if( state == RCS::Updated )
-			return QBrush( Qt::green );
+   		if( state == RCS::Unknown )
+			return QBrush( Qt::gray );
    		if( state == RCS::LocallyModified )
 			return QBrush( Qt::yellow );
+   		if( state == RCS::LocallyAdded )
+			return QBrush( Qt::green );
+		if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
+			return QBrush( Qt::red );
 			
 		return QDirModel::data(index, role);
 	}
