@@ -32,6 +32,10 @@
         <file>ie_logo.png</file>
         <file>import.png</file>
         <file>italy.png</file>
+        <file>kdesvnadd.png</file>
+        <file>kdesvncommit.png</file>
+        <file>kdesvndelete.png</file>
+        <file>kdesvnupdate.png</file>
         <file>network_connected_lan.png</file>
         <file>network_disconnected_lan.png</file>
         <file>network_incoming_lan.png</file>

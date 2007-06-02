@@ -121,19 +121,23 @@ public:
 	void reloadDir( const QString & path );
 	void reloadEntriesFile( const QString & path );
 	void reloadEntriesFiles();
+	
+	void callUpdate( const QString & path );
 public slots:
-	void directoryChanged ( const QString & path );
-	void fileChanged ( const QString & path );
+	void watcherFileChanged ( const QString & path );
+	
+	void processUpdateReadyReadStandardOutput();
+	void processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus );
 private:
 	RCS_CVS * m_parent;
+	QString m_updatePath, m_updateContent;
 };
 
 PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) {
 	m_parent = parent;
 	m_watcher = new QFileSystemWatcher( parent );
 	m_process = NULL;
-	connect( m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)) );
-	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
+	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(watcherFileChanged(QString)) );
 }
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {
@@ -185,10 +189,7 @@ void PrivateRCS_CVS::reloadEntriesFiles() {
 		reloadEntriesFile( file );
 }
 
-void PrivateRCS_CVS::directoryChanged( const QString & path ) {
-}
-
-void PrivateRCS_CVS::fileChanged ( const QString & path ) {
+void PrivateRCS_CVS::watcherFileChanged ( const QString & path ) {
 	if( m_entriesFile.contains( path ) )
 		reloadEntriesFile( path );
 	else {
@@ -197,6 +198,26 @@ void PrivateRCS_CVS::fileChanged ( const QString & path ) {
 		if( m_entries.count( path ) > 0 ) 
 			m_entries[ path ].loadFileDate();
 	}
+}
+
+void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
+	m_updateContent += m_process->readAllStandardOutput();
+}
+
+#include <QMessageBox>
+
+void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
+	QMessageBox::information( NULL, "", m_updateContent );	
+}
+
+void PrivateRCS_CVS::callUpdate( const QString & path ) {
+	m_updatePath = path;
+	m_updateContent = "";
+	m_process = new QProcess( this );
+	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
+	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processUpdateFinished(int,QProcess::ExitStatus)) );
+	m_process->setWorkingDirectory( m_updatePath );
+	m_process->start( "cvs", QStringList() << "update" );
 }
 
 /* RCS_CVS */
@@ -226,7 +247,8 @@ void RCS_CVS::update( const QString & path ) {
 	// TODO : Update	
 	if( d->m_process ) {
 		throw ProcessExecutedException();
-	}
+	} else
+		d->callUpdate( path );
 }
 
 #include "rcs_cvs.moc"

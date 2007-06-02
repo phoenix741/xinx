@@ -56,6 +56,7 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
+	
 }
 
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
@@ -110,6 +111,11 @@ QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
 		return QFileIconProvider::icon( info );
 }
 
+/* XMLVisualStudio */
+
+void XMLVisualStudio::on_m_updateProjectBtn_clicked() {
+	// TODO
+}
 
 void XMLVisualStudio::createProjectPart() {
 	m_lastProjectOpenedPlace = QDir::currentPath();

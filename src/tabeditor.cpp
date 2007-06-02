@@ -98,7 +98,7 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 		icon = ":/typejs.png";
 	} else {
 		ed = new FileEditor( new TextEditor( this ), this );	
-		icon = ":/typeunkown.png";
+		icon = ":/typeunknown.png";
 	}
 	newFileEditor( ed, icon );
 	return ed;
