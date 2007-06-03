@@ -38,6 +38,7 @@ class QDirModel;
 class QMenu;
 class FileEditor;
 class IconProjectProvider;
+class RCSLogDialogImpl;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -149,6 +150,8 @@ private slots: /* slots definition */
 	void openProject();
 	void changeProjectProperty();
 	void saveProject();
+	
+	void rcsLogTerminated();
 
 private: /* Private definition */
 	/* Functions */
@@ -160,6 +163,7 @@ private: /* Private definition */
 	void closeProject( bool closeAll, bool saveSession );
 	
 	/* Variables */	
+	RCSLogDialogImpl * m_rcslogDialog;
 	QString m_lastProjectOpenedPlace;
 
 	QTimer * m_modelTimer;

@@ -17,28 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef __RCS_H__
-#define __RCS_H__
-
-#include <QObject>
-
-class RCS : public QObject {
+ 
+#ifndef RCSLOGDIALOGIMPL_H
+#define RCSLOGDIALOGIMPL_H
+//
+#include "ui_rcslogform.h"
+#include "rcs.h"
+//
+class RCSLogDialogImpl : public QDialog, public Ui::RCSLogDialog {
 	Q_OBJECT
 public:
-	enum rcsState {
-		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown
-	};
-	enum rcsLog {
-		Error, Warning, Information, Debug
-	};
-	
-	virtual rcsState status( const QString & path ) = 0;
-	virtual void update( const QString & path ) = 0;
-signals: 
-	void stateChanged( const QString & fileName );
+	RCSLogDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	void init();
+public slots:
 	void log( RCS::rcsLog niveau, const QString & info );
-	void updateTerminated();
+	void logTerminated();	
+private slots:
 };
+#endif
 
-#endif // __RCS_H__
+
+
+
+

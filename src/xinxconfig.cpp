@@ -103,6 +103,7 @@ XINXConfig::XINXConfig(  ) {
 	file.customPath = "js/";
 	m_managedFileList.append( file );
 
+	m_toolsPath[ "cvs" ] = "/usr/bin/cvs";
 }
 
 XINXConfig::~XINXConfig(  ) {
@@ -188,6 +189,11 @@ void XINXConfig::save() {
 		m_settings->setValue( QString("Files/%1/customPath").arg( file.name ), file.customPath );
 		m_settings->setValue( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize );
 	}
+	
+	foreach( QString tool, m_toolsPath.keys() ) {
+		m_settings->setValue( QString("Tools/%1").arg( tool ), m_toolsPath[ tool ] );
+	}
+	
 	deleteSettings();
 }
 
@@ -238,6 +244,11 @@ void XINXConfig::load() {
 		file.canBeCustomize = m_settings->value( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize ).toBool();
 		m_managedFileList[i] = file;
 	}		
+
+	foreach( QString tool, m_toolsPath.keys() ) {
+		m_toolsPath[ tool ] = m_settings->value( QString("Tools/%1").arg( tool ), m_toolsPath[ tool ] ).toString();
+	}
+
 	deleteSettings();
 }
 

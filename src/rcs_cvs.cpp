@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "rcs_cvs.h"
+#include "xinxconfig.h"
 
 #include <QFileSystemWatcher>
 #include <QHash>
@@ -126,6 +127,7 @@ public:
 public slots:
 	void watcherFileChanged ( const QString & path );
 	
+	void processUpdateReadyReadStandardError();
 	void processUpdateReadyReadStandardOutput();
 	void processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus );
 private:
@@ -200,24 +202,36 @@ void PrivateRCS_CVS::watcherFileChanged ( const QString & path ) {
 	}
 }
 
-void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
-	m_updateContent += m_process->readAllStandardOutput();
+void PrivateRCS_CVS::processUpdateReadyReadStandardError() {
+	m_process->setReadChannel( QProcess::StandardError );
+	while( m_process->canReadLine() ) {
+		QString line = m_process->readLine();
+		emit m_parent->log( RCS::Error, line );
+	}
 }
 
-#include <QMessageBox>
+void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
+	m_process->setReadChannel( QProcess::StandardOutput );
+	while( m_process->canReadLine() ) {
+		QString line = m_process->readLine();
+		emit m_parent->log( RCS::Information, line );
+	}
+}
 
 void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
-	QMessageBox::information( NULL, "", m_updateContent );	
+	m_process->disconnect();
+	emit m_parent->updateTerminated();
 }
 
 void PrivateRCS_CVS::callUpdate( const QString & path ) {
 	m_updatePath = path;
 	m_updateContent = "";
-	m_process = new QProcess( this );
+	if( ! m_process ) m_process = new QProcess( this );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardError()) );
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processUpdateFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( m_updatePath );
-	m_process->start( "cvs", QStringList() << "update" );
+	m_process->start( xinxConfig->toolsPath()["cvs"], QStringList() << "update" );
 }
 
 /* RCS_CVS */
@@ -245,7 +259,7 @@ RCS::rcsState RCS_CVS::status( const QString & path ) {
 
 void RCS_CVS::update( const QString & path ) {
 	// TODO : Update	
-	if( d->m_process ) {
+	if( d->m_process && ( d->m_process->state() != QProcess::NotRunning )  ) {
 		throw ProcessExecutedException();
 	} else
 		d->callUpdate( path );

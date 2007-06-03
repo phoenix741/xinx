@@ -67,6 +67,8 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	foreach( QString cle, m_config.managedStructure().keys() ) {
 		m_syntaxFileTypeComboBox->addItem( cle );
 	}
+	
+	m_CVSToolsLineEdit->setText( m_config.toolsPath()[ "cvs" ] );
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
@@ -242,3 +244,15 @@ void CustomDialogImpl::on_m_saveSessionCheckBox_toggled(bool checked) {
 	m_config.setSaveSessionByDefault( checked );
 }
 
+
+void CustomDialogImpl::on_m_CVSToolsLineEdit_textChanged(QString path) {
+	m_config.toolsPath()[ "cvs" ] = path;
+}
+
+
+void CustomDialogImpl::on_m_cvsToolButton_clicked() {
+	QString value = QFileDialog::getOpenFileName( this, tr("CVS path"), m_CVSToolsLineEdit->text() );
+	if( ! value.isEmpty() ) {
+		m_CVSToolsLineEdit->setText( value );		
+	}
+}

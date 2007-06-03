@@ -17,28 +17,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "rcslogdialogimpl.h"
 
-#ifndef __RCS_H__
-#define __RCS_H__
+//
+RCSLogDialogImpl::RCSLogDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
+	setupUi(this);
 
-#include <QObject>
+}
+//
 
-class RCS : public QObject {
-	Q_OBJECT
-public:
-	enum rcsState {
-		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown
-	};
-	enum rcsLog {
-		Error, Warning, Information, Debug
-	};
-	
-	virtual rcsState status( const QString & path ) = 0;
-	virtual void update( const QString & path ) = 0;
-signals: 
-	void stateChanged( const QString & fileName );
-	void log( RCS::rcsLog niveau, const QString & info );
-	void updateTerminated();
-};
+void RCSLogDialogImpl::init() {
+	m_closeButton->setEnabled( false );
+	m_rcsLogListWidget->clear();
+}
 
-#endif // __RCS_H__
+void RCSLogDialogImpl::log( RCS::rcsLog niveau, const QString & info ) {
+	QListWidgetItem * item = new QListWidgetItem(info, m_rcsLogListWidget);
+	switch( niveau ) {
+	case RCS::Error :
+		item->setForeground( Qt::red );
+		break;
+	case RCS::Warning :
+		item->setForeground( Qt::yellow );
+		break;
+	case RCS::Information :
+		item->setForeground( Qt::green );
+		break;
+	default:
+		;
+	}
+}
+
+void RCSLogDialogImpl::logTerminated() {
+	m_closeButton->setEnabled( true );
+}

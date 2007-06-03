@@ -36,6 +36,7 @@
 #include "editor.h"
 
 #include "rcs_cvs.h"
+#include "rcslogdialogimpl.h"
 
 #define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
@@ -47,20 +48,28 @@ public:
 	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
 	DirRCSModel( QObject *parent = 0 );
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
+	RCS * rcs();
 private:
 	RCS * m_rcs;
 };
 
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
-	m_rcs = new RCS_CVS();
+	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) ) 
+		m_rcs = new RCS_CVS();
+	else
+		m_rcs = NULL;
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
 	
 }
 
+RCS * DirRCSModel::rcs() { 
+	return m_rcs;
+}
+
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
-	if (role == Qt::BackgroundRole && index.column() == 0) {
+	if (m_rcs && ( role == Qt::BackgroundRole && index.column() == 0 ) ) {
    		RCS::rcsState state = m_rcs->status( filePath(index) );
    		if( state == RCS::Unknown )
 			return QBrush( Qt::gray );
@@ -113,19 +122,35 @@ QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
 
 /* XMLVisualStudio */
 
+void XMLVisualStudio::rcsLogTerminated() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		rcs->disconnect();
+	}
+}
+
 void XMLVisualStudio::on_m_updateProjectBtn_clicked() {
-	// TODO
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(updateTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(updateTerminated()), this, SLOT(rcsLogTerminated()) );
+		m_rcslogDialog->init();
+		m_rcslogDialog->show();
+		rcs->update( global.m_project->projectPath() );
+	}
 }
 
 void XMLVisualStudio::createProjectPart() {
 	m_lastProjectOpenedPlace = QDir::currentPath();
-	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
-	m_iconProvider = new IconProjectProvider();
-	m_dirModel->setIconProvider( m_iconProvider );
+	m_dirModel = NULL;
 	m_modelTimer = new QTimer( this );
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_projectDirectoryTreeView->header()->hide();
+	
+	m_rcslogDialog = new RCSLogDialogImpl( this );
 	
 	connect( m_newProjectAct, SIGNAL(triggered()), this, SLOT(newProject()) );
 	connect( m_openProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
@@ -218,6 +243,11 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	if( global.m_project->projectType() == XSLProject::SERVICES )
 		setWebServicesView( true );
 
+
+	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+	m_iconProvider = new IconProjectProvider();
+	m_dirModel->setIconProvider( m_iconProvider );
+
 	m_projectDirectoryTreeView->setModel( m_dirModel );
 	for(int i = 1; i < m_dirModel->columnCount(); i++ )
 		m_projectDirectoryTreeView->hideColumn( i );
@@ -297,6 +327,8 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	}
 
 	m_projectDirectoryTreeView->setModel( NULL );
+	delete m_dirModel;
+	m_dirModel = NULL;
 	setWebServicesView( false );
 
 	delete global.m_project;

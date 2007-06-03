@@ -93,6 +93,8 @@ public:
 	struct managedFile managedFile4Name( QString filename );
 	struct managedFile managedFile4Suffix( QString suffix );
 	
+	QHash<QString,QString> toolsPath() { return m_toolsPath; };
+	
 private:
 	QSettings * m_settings;
 
@@ -112,6 +114,8 @@ private:
 	
 	QList<struct managedFile> m_managedFileList;
 	QHash<QString, struct managedStructure> m_managedStrucureList;
+	
+	QHash<QString,QString> m_toolsPath;
 	
 	void createSettings();
 	void deleteSettings();

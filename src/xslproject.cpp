@@ -223,6 +223,30 @@ void XSLProject::setProjectVersion( const XSLProject::enumProjectVersion & value
 	setValue( "version", QString::number( (int)value ) );
 }	
 
+XSLProject::enumProjectRCS XSLProject::projectRCS() const {
+	QString value = getValue( "rcs" );
+	if( value == "cvs" ) 
+		return CVS; 	
+	else
+	if( value == "subversion" ) 
+		return SUBVERSION; 	
+	else
+		return NORCS;
+}
+
+void XSLProject::setProjectRCS( const XSLProject::enumProjectRCS & value ) {
+	switch( value ) {
+	case CVS:
+		setValue( "rcs", "cvs" );	
+		break;
+	case SUBVERSION:
+		setValue( "rcs", "subversion" );	
+		break;
+	default:
+		setValue( "rcs", "no" );	
+	}
+}
+
 QString XSLProject::projectName() const {
 	return getValue( "name" );	
 }

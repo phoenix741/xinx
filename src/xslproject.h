@@ -39,6 +39,7 @@ class XSLProject : public QObject {
 public:
 	enum enumProjectType { WEB = 0, SERVICES = 1 } ;
 	enum enumProjectVersion { EGX500ES1 = 100, EGX500ES2 = 101, GCE110 = 110, GCE120 = 120 };
+	enum enumProjectRCS { NORCS = 0, CVS = 1, SUBVERSION = 2 };
 
 	XSLProject();
 	XSLProject( const XSLProject & );
@@ -56,6 +57,9 @@ public:
 
 	enumProjectVersion projectVersion() const;
 	void setProjectVersion( const enumProjectVersion & );
+	
+	enumProjectRCS projectRCS() const;
+	void setProjectRCS( const enumProjectRCS & );
 	
 	QString defaultLang() const;
 	void setDefaultLang( const QString & );

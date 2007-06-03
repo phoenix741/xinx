@@ -17,7 +17,8 @@ FORMS +=   ui/about.ui \
   ui/projectproperty.ui \
   ui/replace.ui \
   ui/resultatServices.ui \
-  ui/servicesconnection.ui
+  ui/servicesconnection.ui \
+  ui/rcslogform.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/connectionwebservicesdialogimpl.h \
   src/customdialogimpl.h \
@@ -54,7 +55,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsllistview.h \
   src/xslproject.h \
   src/rcs.h \
-  src/rcs_cvs.h
+  src/rcs_cvs.h \
+  src/rcslogdialogimpl.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   gui \
@@ -102,7 +104,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsllistview.cpp \
   src/xslproject.cpp \
   src/rcs.cpp \
-  src/rcs_cvs.cpp
+  src/rcs_cvs.cpp \
+  src/rcslogdialogimpl.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

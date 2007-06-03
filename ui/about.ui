@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>186</height>
+    <width>473</width>
+    <height>185</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -79,6 +79,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QPushButton" name="okButton" >
        <property name="text" >
         <string>OK</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../images/application.qrc" >:/button_ok.png</iconset>
        </property>
       </widget>
      </item>
