@@ -26,7 +26,6 @@
 #include "fileeditor.h"
 #include "xslproject.h"
 #include "webservices.h"
-#include "newwebservicesdialogimpl.h"
 #include "serviceresultdialogimpl.h"
 #include "webserviceseditor.h"
 
@@ -72,15 +71,6 @@ void XMLVisualStudio::refreshWebServicesList() {
 			global.m_webServicesModel->reset();			
 	}
 }
-
-void XMLVisualStudio::newWebServices( FileEditor* editor ) {
-	NewWebServicesDialogImpl dlg;
-	if( dlg.exec() == QDialog::Accepted ) {
-		QTextDocument *document = editor->textEdit()->document();
-		document->setPlainText( dlg.generateXMLFile() );
-	}
-}
-
 
 void XMLVisualStudio::webServicesReponse( QString query, QString response, QString errorCode, QString errorString ) {
 	ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );

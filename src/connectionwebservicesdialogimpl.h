@@ -27,6 +27,8 @@ class QHttp;
 class QIODevice;
 class QHttpRequestHeader;
 
+class PrivateConnectionWebServicesDialogImpl;
+
 class ConnectionWebServicesDialogImpl : public QDialog, public Ui::ConnectionWebServicesDialog {
 	Q_OBJECT
 public:
@@ -39,15 +41,9 @@ public:
 	bool get( const QString & path, QIODevice * to );
 	bool post( const QString & path, QByteArray * data, QIODevice * to );
 	bool request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to );
-private slots:
-	void requestFinished( int id, bool error );
-	void stateChanged( int state );
-	void setSendProgress( int value, int max );
-	void setReadProgress( int value, int max );
 private:
-	int m_requestId;
-	QHttp * m_http;
-	bool m_hasResult;
+	PrivateConnectionWebServicesDialogImpl * d;
+	friend class PrivateConnectionWebServicesDialogImpl;
 };
 #endif
 

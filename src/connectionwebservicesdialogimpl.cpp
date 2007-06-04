@@ -22,130 +22,163 @@
 
 #include <QHttp>
 
-ConnectionWebServicesDialogImpl::ConnectionWebServicesDialogImpl( QWidget * parent, Qt::WFlags f) 
-	: QDialog(parent, f) {
-	setupUi(this);
+/* PrivateConnectionWebServicesDialogImpl */
+
+class PrivateConnectionWebServicesDialogImpl : QObject {
+	Q_OBJECT
+public:
+	PrivateConnectionWebServicesDialogImpl( ConnectionWebServicesDialogImpl * parent );
+	~PrivateConnectionWebServicesDialogImpl();
+public slots:
+	void requestFinished( int id, bool error );
+	void stateChanged( int state );
+	void setSendProgress( int value, int max );
+	void setReadProgress( int value, int max );
+public:
+	int m_requestId;
+	QHttp * m_http;
+	bool m_hasResult;
+private:
+	ConnectionWebServicesDialogImpl * m_parent;
+};
+
+PrivateConnectionWebServicesDialogImpl::PrivateConnectionWebServicesDialogImpl( ConnectionWebServicesDialogImpl * parent ) {
+	m_parent = parent;
 	
-	m_http = new QHttp( this );
-	m_sendProgressBar->setValue( 0 );
-	m_recieveProgressBar->setValue( 0 );
-	
-	connect( m_abortPushButton, SIGNAL(clicked()), m_http, SLOT(abort()) );
 	connect( m_http, SIGNAL(dataSendProgress(int,int)), this, SLOT(setSendProgress(int,int)) );
 	connect( m_http, SIGNAL(dataReadProgress(int,int)), this, SLOT(setReadProgress(int,int)) );
 	connect( m_http, SIGNAL(requestFinished(int,bool)), this, SLOT(requestFinished(int,bool)) );
 	connect( m_http, SIGNAL(stateChanged(int)), this, SLOT(stateChanged(int)) );
 }
 
-ConnectionWebServicesDialogImpl::~ConnectionWebServicesDialogImpl() {
+PrivateConnectionWebServicesDialogImpl::~PrivateConnectionWebServicesDialogImpl() {
 	delete m_http;
 }
 
-void ConnectionWebServicesDialogImpl::setSendProgress( int value, int max ) {
-	m_sendProgressBar->setValue( value );
-	m_sendProgressBar->setMaximum( max );
-}
 
-void ConnectionWebServicesDialogImpl::setReadProgress( int value, int max ) {
-	m_recieveProgressBar->setValue( value );
-	m_recieveProgressBar->setMaximum( max );
-}
-
-void ConnectionWebServicesDialogImpl::setHost( const QString & path, quint16 port ) {
-	m_http->setHost( path, port );
-}
-
-bool ConnectionWebServicesDialogImpl::get( const QString & path, QIODevice * to ) {
-	this->show();
-	m_requestId = m_http->get( path, to );
-	this->exec();
-	return m_hasResult;
-}
-
-bool ConnectionWebServicesDialogImpl::post( const QString & path, QByteArray * data, QIODevice * to ) {
-	this->show();
-	m_requestId = m_http->post( path, *data, to );
-	this->exec();
-	return m_hasResult;
-}
-
-bool ConnectionWebServicesDialogImpl::request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to ) {
-	this->show();
-	m_requestId = m_http->request( *header, *data, to );
-	this->exec();
-	return m_hasResult;
-}
-
-
-void ConnectionWebServicesDialogImpl::requestFinished( int id, bool error ) {
+void PrivateConnectionWebServicesDialogImpl::requestFinished( int id, bool error ) {
 	if( m_requestId == id ) {
 		m_hasResult = ! error;
 		if( error ) {
-			m_abortPushButton->setText( tr("Close") );
-			m_abortPushButton->disconnect();
-			connect( m_abortPushButton, SIGNAL(clicked()), this, SLOT(close()) );
+			m_parent->m_abortPushButton->setText( tr("Close") );
+			m_parent->m_abortPushButton->disconnect();
+			connect( m_parent->m_abortPushButton, SIGNAL(clicked()), m_parent, SLOT(close()) );
 			
 			switch( m_http->error() ) {
 			case QHttp::HostNotFound:
-				m_labelState->setText( tr("The host name lookup failed.") );
+				m_parent->m_labelState->setText( tr("The host name lookup failed.") );
 				break;
 			case QHttp::ConnectionRefused:
-				m_labelState->setText( tr("The server refused the connection.") );
+				m_parent->m_labelState->setText( tr("The server refused the connection.") );
 				break;
 			case QHttp::UnexpectedClose:
-				m_labelState->setText( tr("The server closed the connection unexpectedly.") );
+				m_parent->m_labelState->setText( tr("The server closed the connection unexpectedly.") );
 				break;
 			case QHttp::InvalidResponseHeader:
-				m_labelState->setText( tr("The server sent an invalid response header.") );
+				m_parent->m_labelState->setText( tr("The server sent an invalid response header.") );
 				break;
 			case QHttp::WrongContentLength:
-				m_labelState->setText( tr("The client could not read the content correctly.") );
+				m_parent->m_labelState->setText( tr("The client could not read the content correctly.") );
 				break;
 			case QHttp::Aborted:
-				m_labelState->setText( tr("The request was aborted.") );
+				m_parent->m_labelState->setText( tr("The request was aborted.") );
 				break;
 			default:
-				m_labelState->setText( tr("An error occure.") );
+				m_parent->m_labelState->setText( tr("An error occure.") );
 			}
 		} else {
-			close();
+			m_parent->close();
 		}
 	}
 }
 
-void ConnectionWebServicesDialogImpl::stateChanged( int state ) {
+void PrivateConnectionWebServicesDialogImpl::stateChanged( int state ) {
 	switch( state ) {
 	case QHttp::Unconnected:
-		m_labelState->setText( tr("There is no connection to the host.") );
-		m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
+		m_parent->m_labelState->setText( tr("There is no connection to the host.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
 		break;
 	case QHttp::HostLookup:
-		m_labelState->setText( tr("A host name lookup is in progress.") );
-		m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
+		m_parent->m_labelState->setText( tr("A host name lookup is in progress.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
 		break;
 	case QHttp::Connecting:
-		m_labelState->setText( tr("An attempt to connect to the host is in progress.") );
-		m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
+		m_parent->m_labelState->setText( tr("An attempt to connect to the host is in progress.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
 		break;
 	case QHttp::Sending:
-		m_labelState->setText( tr("The client is sending its request to the server.") );
-		m_iconState->setPixmap( QPixmap( ":/network_outgoing_lan.png" ) );
+		m_parent->m_labelState->setText( tr("The client is sending its request to the server.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_outgoing_lan.png" ) );
 		break;
 	case QHttp::Reading:
-		m_labelState->setText( tr("The client's request has been sent and the client is reading the server's response.") );
-		m_iconState->setPixmap( QPixmap( ":/network_incoming_lan.png" ) );
+		m_parent->m_labelState->setText( tr("The client's request has been sent and the client is reading the server's response.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_incoming_lan.png" ) );
 		break;
 	case QHttp::Connected:
-		m_labelState->setText( tr("The connection to the host is open.") );
-		m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
+		m_parent->m_labelState->setText( tr("The connection to the host is open.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
 		break;
 	case QHttp::Closing:
-		m_labelState->setText( tr("The connection is closing down.") );
-		m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
+		m_parent->m_labelState->setText( tr("The connection is closing down.") );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
 		break;
 	}
 	qApp->processEvents();
 }
 
+void PrivateConnectionWebServicesDialogImpl::setSendProgress( int value, int max ) {
+	m_parent->m_sendProgressBar->setValue( value );
+	m_parent->m_sendProgressBar->setMaximum( max );
+}
+
+void PrivateConnectionWebServicesDialogImpl::setReadProgress( int value, int max ) {
+	m_parent->m_recieveProgressBar->setValue( value );
+	m_parent->m_recieveProgressBar->setMaximum( max );
+}
 
 
+/* ConnectionWebServicesDialogImpl */
+
+ConnectionWebServicesDialogImpl::ConnectionWebServicesDialogImpl( QWidget * parent, Qt::WFlags f) 
+	: QDialog(parent, f) {
+	d = new PrivateConnectionWebServicesDialogImpl( this );	
+	
+	setupUi(this);
+	
+	d->m_http = new QHttp( this );
+	m_sendProgressBar->setValue( 0 );
+	m_recieveProgressBar->setValue( 0 );
+	
+	connect( m_abortPushButton, SIGNAL(clicked()), d->m_http, SLOT(abort()) );
+}
+
+ConnectionWebServicesDialogImpl::~ConnectionWebServicesDialogImpl() {
+	delete d;
+}
+
+void ConnectionWebServicesDialogImpl::setHost( const QString & path, quint16 port ) {
+	d->m_http->setHost( path, port );
+}
+
+bool ConnectionWebServicesDialogImpl::get( const QString & path, QIODevice * to ) {
+	this->show();
+	d->m_requestId = d->m_http->get( path, to );
+	this->exec();
+	return d->m_hasResult;
+}
+
+bool ConnectionWebServicesDialogImpl::post( const QString & path, QByteArray * data, QIODevice * to ) {
+	this->show();
+	d->m_requestId = d->m_http->post( path, *data, to );
+	this->exec();
+	return d->m_hasResult;
+}
+
+bool ConnectionWebServicesDialogImpl::request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to ) {
+	this->show();
+	d->m_requestId = d->m_http->request( *header, *data, to );
+	this->exec();
+	return d->m_hasResult;
+}
+
+#include "connectionwebservicesdialogimpl.moc"

@@ -10,10 +10,8 @@ DISTFILES +=   CHANGELOG \
   src/genxml.sh \
   xml/completion.cpl
 FORMS +=   ui/about.ui \
-  ui/crudpropertyservicefile.ui \
   ui/custom.ui \
   ui/mainform.ui \
-  ui/newservicefile.ui \
   ui/projectproperty.ui \
   ui/replace.ui \
   ui/resultatServices.ui \
@@ -30,7 +28,6 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/jsfileeditor.h \
   src/jshighlighter.h \
   src/kcolorcombo.h \
-  src/newwebservicesdialogimpl.h \
   src/numberbar.h \
   src/objectview.h \
   src/projectpropertyimpl.h \
@@ -76,7 +73,6 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/jshighlighter.cpp \
   src/kcolorcombo.cpp \
   src/main.cpp \
-  src/newwebservicesdialogimpl.cpp \
   src/numberbar.cpp \
   src/objectview.cpp \
   src/projectmainform.cpp \
