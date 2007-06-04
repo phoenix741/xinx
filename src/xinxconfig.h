@@ -93,7 +93,7 @@ public:
 	struct managedFile managedFile4Name( QString filename );
 	struct managedFile managedFile4Suffix( QString suffix );
 	
-	QHash<QString,QString> toolsPath() { return m_toolsPath; };
+	QHash<QString,QString> & toolsPath() { return m_toolsPath; };
 	
 private:
 	QSettings * m_settings;

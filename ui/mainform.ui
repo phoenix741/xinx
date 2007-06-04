@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>26</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -59,28 +59,6 @@
     <addaction name="m_refreshWebServicesListAct" />
     <addaction name="separator" />
     <addaction name="m_callWebServicesAct" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="menu_Close_project_2" >
-     <property name="title" >
-      <string>&amp;Close project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
-     </property>
-     <addaction name="m_closeProjectSessionAct" />
-     <addaction name="m_closeProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectAct" />
-    <addaction name="m_saveProjectAct" />
-    <addaction name="menu_Close_project_2" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -134,6 +112,27 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="menu_Close_project_2" >
+     <property name="title" >
+      <string>&amp;Close project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../images/application.qrc" >:/fileclose.png</iconset>
+     </property>
+     <addaction name="m_closeProjectSessionAct" />
+     <addaction name="m_closeProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectAct" />
+    <addaction name="menu_Close_project_2" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -271,7 +270,7 @@
        </property>
        <item>
         <widget class="QToolButton" name="m_updateProjectBtn" >
-         <property name="text" >
+         <property name="toolTip" >
           <string>Update project</string>
          </property>
          <property name="icon" >
@@ -281,7 +280,7 @@
        </item>
        <item>
         <widget class="QToolButton" name="m_commitProjectBtn" >
-         <property name="text" >
+         <property name="toolTip" >
           <string>Commit project</string>
          </property>
          <property name="icon" >
@@ -291,7 +290,7 @@
        </item>
        <item>
         <widget class="QToolButton" name="m_addFileToProjectBtn" >
-         <property name="text" >
+         <property name="toolTip" >
           <string>Add file(s) to project</string>
          </property>
          <property name="icon" >
@@ -301,7 +300,7 @@
        </item>
        <item>
         <widget class="QToolButton" name="m_deleteFileFromProject" >
-         <property name="text" >
+         <property name="toolTip" >
           <string>Delete file(s) from project</string>
          </property>
          <property name="icon" >

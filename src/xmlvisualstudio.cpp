@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QPrinter>
 #include <QCloseEvent>
+#include <QToolButton>
 #include <assert.h>
 
 #include "globals.h"
@@ -135,8 +136,17 @@ void XMLVisualStudio::createActions() {
 	
 	m_recentProjectAct->setMenu( recentProjectMenu );
 	connect( m_recentProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
+	
+	QToolButton * btn = qobject_cast<QToolButton*>(m_projectToolBar->widgetForAction( m_recentProjectAct ));
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
+	
 	m_recentFileAct->setMenu( recentFileMenu );
 	connect( m_recentFileAct, SIGNAL(triggered()), this, SLOT(on_m_openAct_triggered()) );
+
+	btn = qobject_cast<QToolButton*>(m_fileToolBar->widgetForAction( m_recentFileAct ));
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
 
 	setupRecentProjectMenu( recentProjectMenu );
 	setupRecentFileMenu( recentFileMenu );
@@ -329,10 +339,13 @@ void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
 
 void XMLVisualStudio::on_m_openAct_triggered() {
 	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), m_lastPlace, xinxConfig->dialogFilters().join(";;") );
+	
+	m_tabEditors->setUpdatesEnabled( false );
 	foreach( QString filename, selectedFiles ) {
 		m_lastPlace = QFileInfo( filename ).absolutePath();
 		open( filename );
 	}
+	m_tabEditors->setUpdatesEnabled( true );
 }
 
 void XMLVisualStudio::on_m_saveAct_triggered() {

@@ -205,7 +205,7 @@ void PrivateRCS_CVS::watcherFileChanged ( const QString & path ) {
 void PrivateRCS_CVS::processUpdateReadyReadStandardError() {
 	m_process->setReadChannel( QProcess::StandardError );
 	while( m_process->canReadLine() ) {
-		QString line = m_process->readLine();
+		QString line = m_process->readLine().simplified();
 		emit m_parent->log( RCS::Error, line );
 	}
 }
@@ -213,7 +213,7 @@ void PrivateRCS_CVS::processUpdateReadyReadStandardError() {
 void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
 	m_process->setReadChannel( QProcess::StandardOutput );
 	while( m_process->canReadLine() ) {
-		QString line = m_process->readLine();
+		QString line = m_process->readLine().simplified();
 		emit m_parent->log( RCS::Information, line );
 	}
 }
@@ -231,7 +231,7 @@ void PrivateRCS_CVS::callUpdate( const QString & path ) {
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processUpdateFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( m_updatePath );
-	m_process->start( xinxConfig->toolsPath()["cvs"], QStringList() << "update" );
+	m_process->start( xinxConfig->toolsPath()["cvs"], QStringList() << "-z9" << "update" );
 }
 
 /* RCS_CVS */

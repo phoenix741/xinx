@@ -44,6 +44,7 @@
 /* DirRCSModel */
 
 class DirRCSModel : public QDirModel {
+	Q_OBJECT
 public:
 	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
 	DirRCSModel( QObject *parent = 0 );
@@ -253,26 +254,17 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		m_projectDirectoryTreeView->hideColumn( i );
 	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 
+	m_tabEditors->setUpdatesEnabled( false );
+
 	QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
 	while( ! element.isNull() ) {
-		Editor * editor;
-		if( element.attribute( "class" ) == "XMLFileEditor" ) 
-			editor = m_tabEditors->newFileEditorXML() ;
-		else
-		if( element.attribute( "class" ) == "XSLFileEditor" ) 
-			editor = m_tabEditors->newFileEditorXSL() ;
-		else
-		if( element.attribute( "class" ) == "JSFileEditor" ) 
-			editor = m_tabEditors->newFileEditorJS() ;
-		else
-		if( element.attribute( "class" ) == "WebServicesEditor" ) 
-			editor = m_tabEditors->newFileEditorWS() ;
-		else
-			editor = m_tabEditors->newFileEditorTxt() ;
+		Editor * editor = m_tabEditors->newFileEditor( element.attribute( "filename" ) );
 		editor->deserializeEditor( element );
 		
 		element = element.nextSiblingElement( "editor" );
 	}
+	m_tabEditors->setUpdatesEnabled( true );
+
 	updateActions();
 	updateRecentProjects();
 	updateRecentFiles();
@@ -410,3 +402,4 @@ void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex i
 		open( m_dirModel->filePath( index ) );
 }
 
+#include "projectmainform.moc"
