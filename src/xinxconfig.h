@@ -30,8 +30,7 @@
 #include <QSize>
 #include <QByteArray>
 
-class QSettings;
-
+class PrivateXINXConfig;
 //
 class XINXConfig {
 
@@ -54,72 +53,50 @@ public:
 	void save();
 	void load();
 	
-	QString lang() const { return m_lang; };
-	void setLang( const QString & value ) { m_lang = value; };
+	QString lang() const;
+	void setLang( const QString & value );
 	
-	bool saveSessionByDefault() const { return m_saveSessionByDefault; };
-	void setSaveSessionByDefault( bool value ) { m_saveSessionByDefault = value; };
+	bool saveSessionByDefault() const;
+	void setSaveSessionByDefault( bool value );
 
-	QByteArray storedMainWindowState() { return m_mainWindowState; };
-	void storeMainWindowState( QByteArray state ) { m_mainWindowState = state; };
+	QByteArray storedMainWindowState();
+	void storeMainWindowState( QByteArray state );
 	
-	QPoint position() const { return m_xinxPosition; };
-	void setPosition( QPoint value ) { m_xinxPosition = value; };
+	QPoint position() const;
+	void setPosition( QPoint value );
 	
-	QSize size() const { return m_xinxSize; };
-	void setSize( QSize value ) { m_xinxSize = value; };
+	QSize size() const;
+	void setSize( QSize value );
 	
-	bool isCreateBackupFile() const { return m_createBackupFile; };
-	void setCreateBackupFile( bool value ) { m_createBackupFile = value; };
+	bool isCreateBackupFile() const;
+	void setCreateBackupFile( bool value );
 	
-	bool isAlertWhenStdFile() const { return m_alertWhenStdFile; };
-	void setAlertWhenStdFile( bool value ) {  m_alertWhenStdFile = value; };
+	bool isAlertWhenStdFile() const;
+	void setAlertWhenStdFile( bool value );
 	
-	QString xinxProjectPath() const { return m_xinxProjectPath; };
-	void setXinxProjectPath( const QString & value ) { m_xinxProjectPath = value; };
+	QString xinxProjectPath() const;
+	void setXinxProjectPath( const QString & value );
 	
-	QString objectDescriptionPath() const { return m_objectDescriptionPath; };
-	void setObjectDescriptionPath( const QString & value ) { m_objectDescriptionPath = value; };
+	QString objectDescriptionPath() const;
+	void setObjectDescriptionPath( const QString & value );
 	
-	QString completionFilesPath() const { return m_objectDescriptionPath; };
-	void setCompletionFilesPath( const QString & value ) { m_objectDescriptionPath = value; };
+	QString completionFilesPath() const;
+	void setCompletionFilesPath( const QString & value );
 	
-	QStringList & recentProjectFiles() { return m_recentProjectFiles; };
-	QList<struct managedFile> & managedFile() { return m_managedFileList; };
-	QHash<QString,struct managedStructure> & managedStructure() { return m_managedStrucureList; };
+	QStringList & recentProjectFiles();
+	QList<struct managedFile> & managedFile();
+	QHash<QString,struct managedStructure> & managedStructure();
 	
 	QStringList dialogFilters();
 	QString dialogFilter( QString ext );
 	struct managedFile managedFile4Name( QString filename );
 	struct managedFile managedFile4Suffix( QString suffix );
 	
-	QHash<QString,QString> & toolsPath() { return m_toolsPath; };
+	QHash<QString,QString> & toolsPath();
 	
 private:
-	QSettings * m_settings;
-
-	QPoint m_xinxPosition;
-	QSize m_xinxSize;
-	
-	QByteArray m_mainWindowState;
-	
-	QString m_lang;
-	bool m_createBackupFile;
-	bool m_alertWhenStdFile;
-	bool m_saveSessionByDefault;
-	QString m_xinxProjectPath;
-	QString m_objectDescriptionPath;
-	
-	QStringList m_recentProjectFiles;
-	
-	QList<struct managedFile> m_managedFileList;
-	QHash<QString, struct managedStructure> m_managedStrucureList;
-	
-	QHash<QString,QString> m_toolsPath;
-	
-	void createSettings();
-	void deleteSettings();
+	PrivateXINXConfig * d;
+	friend class PrivateXINXConfig;
 };
 
-extern XINXConfig * xinxConfig;
 #endif

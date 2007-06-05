@@ -65,8 +65,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 
 	m_lastPlace        = QDir::currentPath();
 
-	completionContents = new Completion();
-	m_javaObjects      = new ObjectsView();
+	completionContents   = new Completion();
+	global.m_javaObjects = new ObjectsView();
 
 	m_findDialog       = new ReplaceDialogImpl(this);
 	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
@@ -96,27 +96,27 @@ void XMLVisualStudio::createDockWindows() {
 }
 
 void XMLVisualStudio::readSettings() {
-	resize( xinxConfig->size() );
-	move( xinxConfig->position() );
+	resize( global.m_xinxConfig->size() );
+	move( global.m_xinxConfig->position() );
   
-	if( ! xinxConfig->storedMainWindowState().isEmpty() ) {
-		restoreState( xinxConfig->storedMainWindowState() );
+	if( ! global.m_xinxConfig->storedMainWindowState().isEmpty() ) {
+		restoreState( global.m_xinxConfig->storedMainWindowState() );
 	}
 
-	m_javaObjects->setPath( xinxConfig->objectDescriptionPath() );
-	m_javaObjects->loadFiles();
+	global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
+	global.m_javaObjects->loadFiles();
   
-	completionContents->setPath( QDir( xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
+	completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
 }
 
 void XMLVisualStudio::writeSettings() {
-	xinxConfig->storeMainWindowState( saveState() );
+	global.m_xinxConfig->storeMainWindowState( saveState() );
 	
-	xinxConfig->setPosition( pos() );
-	xinxConfig->setSize( size() );
-	xinxConfig->setObjectDescriptionPath( m_javaObjects->path() );
+	global.m_xinxConfig->setPosition( pos() );
+	global.m_xinxConfig->setSize( size() );
+	global.m_xinxConfig->setObjectDescriptionPath( global.m_javaObjects->path() );
 	
-	xinxConfig->save();
+	global.m_xinxConfig->save();
 }
 
 void XMLVisualStudio::createActions() {
@@ -338,7 +338,7 @@ void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
 
 
 void XMLVisualStudio::on_m_openAct_triggered() {
-	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), m_lastPlace, xinxConfig->dialogFilters().join(";;") );
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), m_lastPlace, global.m_xinxConfig->dialogFilters().join(";;") );
 	
 	m_tabEditors->setUpdatesEnabled( false );
 	foreach( QString filename, selectedFiles ) {
@@ -441,10 +441,10 @@ void XMLVisualStudio::on_m_previousTabAct_triggered() {
 void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 	CustomDialogImpl * custom = new CustomDialogImpl( this );
 	writeSettings();
-	custom->loadFromConfig( xinxConfig );
+	custom->loadFromConfig( global.m_xinxConfig );
 	if( custom->exec() ) {
-		custom->saveToConfig( xinxConfig );
-		xinxConfig->save();	
+		custom->saveToConfig( global.m_xinxConfig );
+		global.m_xinxConfig->save();	
 		readSettings();	
 	}
 	
@@ -452,7 +452,7 @@ void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
-	if( ! xinxConfig->saveSessionByDefault() ) {
+	if( ! global.m_xinxConfig->saveSessionByDefault() ) {
 		for( int i = 0; i < m_tabEditors->count(); i++ ) {
 			if ( ! maybeSave( i ) ) {
 				event->ignore();
@@ -460,7 +460,7 @@ void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
 			}
 		}
 	}
-	closeProject( false, xinxConfig->saveSessionByDefault() );
+	closeProject( false, global.m_xinxConfig->saveSessionByDefault() );
 	
 	writeSettings();
 	
@@ -567,7 +567,7 @@ void XMLVisualStudio::saveEditor( int index ) {
 		on_m_saveAsAct_triggered();
 	} else {
 		QString fileName = dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName();
-		if( xinxConfig->isAlertWhenStdFile() && global.m_project && (! QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() + "_" ) ) && xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
+		if( global.m_xinxConfig->isAlertWhenStdFile() && global.m_project && (! QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() + "_" ) ) && global.m_xinxConfig->managedFile4Name( fileName ).canBeCustomize ) {
 			QMessageBox::StandardButton res = QMessageBox::warning( this, tr("Save standard XSL"), tr("You're being to save standard file, do you whant make it specifique"), QMessageBox::Yes | QMessageBox::No );
 			if( res == QMessageBox::Yes )
 				saveEditorAs( index );
@@ -596,11 +596,11 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	QString fileName    = qobject_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName(),
 			fileSuffix  = qobject_cast<FileEditor*>( m_tabEditors->editor(index) )->getSuffix(),
 			specifPath,
-			filter = xinxConfig->dialogFilter( fileSuffix ),
+			filter = global.m_xinxConfig->dialogFilter( fileSuffix ),
 			newFileName;
 	/*dlg.setDefaultSuffix( fileSuffix );*/
 
-	struct XINXConfig::managedFile customFile = xinxConfig->managedFile4Suffix( fileSuffix );
+	struct XINXConfig::managedFile customFile = global.m_xinxConfig->managedFile4Suffix( fileSuffix );
 
 	if( global.m_project ) 
 		specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( customFile.customPath );
@@ -631,7 +631,7 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 		}
 	}
 	
-	fileName = QFileDialog::getSaveFileName( this, tr("Save text file"), newFileName, xinxConfig->dialogFilters().join(";;"), &filter );
+	fileName = QFileDialog::getSaveFileName( this, tr("Save text file"), newFileName, global.m_xinxConfig->dialogFilters().join(";;"), &filter );
 	
 	/*if( dlg.exec() == QDialog::Accepted ) {
 		if( dlg.selectedFiles().count() == 1 )

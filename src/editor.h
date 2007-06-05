@@ -47,7 +47,7 @@ public:
 	virtual void serializeEditor( QDomElement & element, bool content ) = 0;
 	virtual void deserializeEditor( const QDomElement & element ) = 0;
 	
-public Q_SLOTS : 
+public slots : 
 	virtual void undo() = 0;
 	virtual void redo() = 0;
 
@@ -57,7 +57,7 @@ public Q_SLOTS :
 	
 	virtual void setModified( bool ) = 0;
 	
-Q_SIGNALS:
+signals:
 	void undoAvailable( bool available );
 	void redoAvailable( bool available );
 	void copyAvailable( bool available );

@@ -31,7 +31,6 @@
 
 class XSLItemModel;
 class QSortFilterProxyModel;
-class ObjectsView;
 class AboutDialogImpl;
 class XINXFileDialog;
 class QDirModel;
@@ -127,9 +126,6 @@ private:
 
 	/* About Dialog */
 	AboutDialogImpl * m_aboutDialog;
-
-	/* Generix Object */
-	ObjectsView * m_javaObjects;
 	
 	/* Position in editor */
 	QLabel * m_editorPosition;

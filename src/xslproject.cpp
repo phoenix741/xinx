@@ -30,7 +30,34 @@
 #define XINX_PROJECT_VERSION_1 1
 #define XINX_PROJECT_VERSION 1
 
-XSLProject::XSLProject() : QObject() {
+class PrivateXSLProject {
+public:
+	PrivateXSLProject( XSLProject * parent );
+	
+	QString getValue( const QString & node ) const;
+	void setValue( const QString & node, const QString & value );
+	
+	void loadSessionFile( const QString fileName );
+	void saveSessionFile( const QString fileName );
+
+	void loadWebServicesLink();
+	void saveWebServicesLink();
+
+	QString m_fileName;
+	int m_version;
+	
+	QDomDocument m_projectDocument;
+	QDomDocument m_sessionDocument;
+	QDomElement m_sessionNode, m_rootSession;
+	
+	QStringList m_webServiceLink, m_lastOpenedFile;
+private:
+	XSLProject * m_parent;
+};
+
+PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
+	m_parent = parent;
+
 	QDomElement root = m_projectDocument.createElement( "XSLProject" );
 	m_projectDocument.appendChild( root );
 	
@@ -41,121 +68,7 @@ XSLProject::XSLProject() : QObject() {
 	m_rootSession.appendChild( m_sessionNode );
 }
 
-XSLProject::XSLProject( const XSLProject & object ) : QObject() {
-	m_fileName =  object.m_fileName;
-	m_projectDocument = object.m_projectDocument;
-	m_sessionDocument = object.m_sessionDocument;
-	m_sessionNode     = object.m_sessionNode;
-}
-
-XSLProject::XSLProject( const QString & project ) : QObject() {
-	loadFromFile( project );
-}
-
-XSLProject::~XSLProject() {
-	saveToFile();
-}
-	
-void XSLProject::loadFromFile( const QString & filename ) {
-	QFile file(filename);
-	
-	// Open the file
-	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Cannot read file %1:\n%2.")
-                                                        				 		.arg(filename)
-																		 		.arg(file.errorString()));
-		return;
-	}
-	
-	// Load XML Document
-	QString errorStr;
-	int errorLine;
-	int errorColumn;  
-	if (!m_projectDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Parse error at line %1, column %2:\n%3")
-																					.arg(errorLine)
-        			                      											.arg(errorColumn)
-																					.arg(errorStr));
-	    return;
-	}  
-	
-	QDomElement root = m_projectDocument.documentElement();
-  
-	// Test if Project File
-	if(root.tagName() != "XSLProject") {
-		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file isn't a XINX Project"));
-	    return;
-	}
-	
-	m_version  = getValue( "xinx_version" ).isEmpty() ? 0 : getValue( "xinx_version" ).toInt();
-	if( m_version > XINX_PROJECT_VERSION ) {
-		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file is a too recent XINX Project"));
-	    return;
-	}
-	m_fileName = filename;
-	loadWebServicesLink();
-
-	if( m_version < XINX_PROJECT_VERSION_1 ) {
-		clearSessionNode();
-		m_rootSession = m_sessionDocument.createElement( "Session" );
-		m_sessionDocument.appendChild( m_rootSession );
-	
-		m_sessionNode = m_sessionDocument.createElement( "Opened" );
-		m_rootSession.appendChild( m_sessionNode );
-		QDomElement elt = root.firstChildElement( "openedElementCount" );
-		if( ! elt.isNull() ) {
-			QDomElement file = elt.firstChildElement( "file" );
-			while ( ! file.isNull() ) {
-				QDomElement node = m_sessionDocument.createElement( "editor" );
-				node.setAttribute( "filename", file.firstChild().toText().nodeValue() );
-				node.setAttribute( "position", 0 );
-				m_sessionNode.appendChild( node );
-		
-				file = file.nextSiblingElement( "file" );
-			}
-		}
-	} else {
-		loadSessionFile( m_fileName + ".session" );
-	}
-}
-
-void XSLProject::saveToFile( const QString & filename ) {
-	if( ! filename.isEmpty() ) m_fileName = filename;
-	if( m_fileName.isEmpty() ) return;
-	
-	saveSessionFile( m_fileName + ".session" );
-	
-	if( m_version != XINX_PROJECT_VERSION_1 ) {
-		setValue( "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
-	}
-	if( m_version < XINX_PROJECT_VERSION_1 ) {
-		QDomElement root = m_projectDocument.documentElement();
-		QDomElement oldSession = root.firstChildElement( "openedElementCount" );
-		root.removeChild( oldSession );
-	} 
-	
-	setProjectPath( projectPath() );
-	setSpecifPrefix( specifPrefix() );
-
-	saveWebServicesLink();
-	
-	static const int IndentSize = 3;
-
-	QFile file( m_fileName );
-	
-	// Open the file
-	if (!file.open(QFile::WriteOnly | QFile::Text)) {
-		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Cannot write file %1:\n%2.")
-                                                        				 		.arg( m_fileName )
-																		 		.arg( file.errorString()) );
-		return;
-	}
-	QTextStream text( &file );
-	
-	m_projectDocument.save( text, IndentSize );
-}
-	
-QString XSLProject::getValue( const QString & node ) const {
+QString PrivateXSLProject::getValue( const QString & node ) const {
 	QDomElement root = m_projectDocument.documentElement();
 	QDomElement elt  = root.firstChildElement( node );
 
@@ -168,7 +81,7 @@ QString XSLProject::getValue( const QString & node ) const {
 		return QString();
 }
 
-void XSLProject::setValue( const QString & node, const QString & value ) {
+void PrivateXSLProject::setValue( const QString & node, const QString & value ) {
 	QDomElement root = m_projectDocument.documentElement();
 	QDomElement elt  = root.firstChildElement( node );
 	QDomText    text;
@@ -189,147 +102,7 @@ void XSLProject::setValue( const QString & node, const QString & value ) {
 		text.setData( value );
 }
 
-XSLProject::enumProjectType XSLProject::projectType() const {
-	if( getValue( "type" ) == "services" ) 
-		return SERVICES; 	
-	else
-		return WEB;
-}
-
-void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
-	switch( value ) {
-	case SERVICES:
-		setValue( "type", "services" );	
-		break;
-	case WEB:
-		setValue( "type", "web" );	
-		break;
-	default:
-		setValue( "type", "default" );	
-	}
-}
-
-XSLProject::enumProjectVersion XSLProject::projectVersion() const {
-	bool ok;
-	int version = getValue( "version" ).toInt( &ok );
-	
-	if( ok )
-		return (enumProjectVersion)version;
-	else
-		return GCE120;
-}
-
-void XSLProject::setProjectVersion( const XSLProject::enumProjectVersion & value ) {
-	setValue( "version", QString::number( (int)value ) );
-}	
-
-XSLProject::enumProjectRCS XSLProject::projectRCS() const {
-	QString value = getValue( "rcs" );
-	if( value == "cvs" ) 
-		return CVS; 	
-	else
-	if( value == "subversion" ) 
-		return SUBVERSION; 	
-	else
-		return NORCS;
-}
-
-void XSLProject::setProjectRCS( const XSLProject::enumProjectRCS & value ) {
-	switch( value ) {
-	case CVS:
-		setValue( "rcs", "cvs" );	
-		break;
-	case SUBVERSION:
-		setValue( "rcs", "subversion" );	
-		break;
-	default:
-		setValue( "rcs", "no" );	
-	}
-}
-
-QString XSLProject::projectName() const {
-	return getValue( "name" );	
-}
-
-void XSLProject::setProjectName( const QString & value ) {
-	setValue( "name", value );	
-}
-	
-QString XSLProject::defaultLang() const {
-	return getValue( "lang" );
-}
-
-void XSLProject::setDefaultLang( const QString & value ) {
-	setValue( "lang", value );
-}
-	
-QString XSLProject::defaultNav() const {
-	return getValue( "nav" );
-}
-
-void XSLProject::setDefaultNav( const QString & value ) {
-	setValue( "nav", value );
-}
-	
-QString XSLProject::projectPath() const {
-	QString path = getValue( "project" );
-
-	if( QDir( path ).isAbsolute() )
-		return path;
-	else
-		return QFileInfo( m_fileName ).absoluteDir().absoluteFilePath( path );
-}
-
-void XSLProject::setProjectPath( const QString & value ) {
-	setValue( "project", QFileInfo( m_fileName ).absoluteDir().relativeFilePath( value ) );
-}
-	
-QString XSLProject::specifPath() const {
-	QString path = getValue( "specifique" );
-
-	if( QDir( path ).isAbsolute() )
-		return path;
-	else
-		return QFileInfo( m_fileName ).absoluteDir().absoluteFilePath( path );
-}
-
-void XSLProject::setSpecifPath( const QString & value ) {
-	setValue( "specifique", QFileInfo( m_fileName ).absoluteDir().relativeFilePath( value ) );
-}
-
-QString XSLProject::languePath() const { 
-	return QDir( projectPath() ).absoluteFilePath( "langue/" + defaultLang().toLower() ); 
-}
-
-QString XSLProject::navPath() const { 
-	return QDir( languePath() ).absoluteFilePath( "nav" ); 
-}
-
-QString XSLProject::specifPrefix() const {
-	return getValue( "prefix" );
-}
-	
-void XSLProject::setSpecifPrefix( const QString & value ) {
-	setValue( "prefix", value );
-}
-
-QString	XSLProject::standardConfigurationFile() const {
-	return getValue( "standard" );
-}
-
-void XSLProject::setStandardConfigurationFile( const QString & value ) {
-	return setValue( "standard", value );
-}
-	
-QString	XSLProject::specifiqueConfigurationFile() const {
-	return getValue( "specifique" );
-}
-	
-void XSLProject::setSpecifiqueConfigurationFile( const QString & value ) {
-	return setValue( "specifique", value );
-}
-
-void XSLProject::loadSessionFile( const QString fileName ) {
+void PrivateXSLProject::loadSessionFile( const QString fileName ) {
 	QFile file( fileName );
 	
 	// Open the file
@@ -376,7 +149,7 @@ void XSLProject::loadSessionFile( const QString fileName ) {
 	
 }
 
-void XSLProject::saveSessionFile( const QString fileName ) {
+void PrivateXSLProject::saveSessionFile( const QString fileName ) {
 	QDomElement lastOpenedFile = m_rootSession.firstChildElement( "lastOpenedFile" );
 
 	m_rootSession.removeChild( lastOpenedFile );
@@ -404,13 +177,7 @@ void XSLProject::saveSessionFile( const QString fileName ) {
 	m_sessionDocument.save( text, IndentSize );
 }
 
-void XSLProject::clearSessionNode() {
-	m_rootSession.removeChild( m_sessionNode );
-	m_sessionNode = m_sessionDocument.createElement( "Opened" );
-	m_rootSession.appendChild( m_sessionNode );
-}
-
-void XSLProject::loadWebServicesLink() {
+void PrivateXSLProject::loadWebServicesLink() {
 	QDomElement root = m_projectDocument.documentElement();
 	QDomElement elt  = root.firstChildElement( "webServiceLink" );
 	
@@ -427,7 +194,7 @@ void XSLProject::loadWebServicesLink() {
 	}
 }
 
-void XSLProject::saveWebServicesLink() {
+void PrivateXSLProject::saveWebServicesLink() {
 	QDomElement root = m_projectDocument.documentElement();
 	QDomElement elt  = root.firstChildElement( "webServiceLink" );
 	
@@ -446,8 +213,296 @@ void XSLProject::saveWebServicesLink() {
 	}
 }
 
+/* XSLProject */
+
+XSLProject::XSLProject() : QObject() {
+	d = new PrivateXSLProject( this );
+}
+
+XSLProject::XSLProject( const XSLProject & object ) : QObject() {
+	d = new PrivateXSLProject( this );
+
+	d->m_fileName 		  = object.d->m_fileName;
+	d->m_projectDocument = object.d->m_projectDocument;
+	d->m_sessionDocument = object.d->m_sessionDocument;
+	d->m_sessionNode     = object.d->m_sessionNode;
+}
+
+XSLProject::XSLProject( const QString & project ) : QObject() {
+	d = new PrivateXSLProject( this );
+	
+	loadFromFile( project );
+}
+
+XSLProject::~XSLProject() {
+	saveToFile();
+	
+	delete d;
+}
+	
+void XSLProject::loadFromFile( const QString & filename ) {
+	QFile file(filename);
+	
+	// Open the file
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Cannot read file %1:\n%2.")
+                                                        				 		.arg(filename)
+																		 		.arg(file.errorString()));
+		return;
+	}
+	
+	// Load XML Document
+	QString errorStr;
+	int errorLine;
+	int errorColumn;  
+	if (!d->m_projectDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
+		QMessageBox::information(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Parse error at line %1, column %2:\n%3")
+																					.arg(errorLine)
+        			                      											.arg(errorColumn)
+																					.arg(errorStr));
+	    return;
+	}  
+	
+	QDomElement root = d->m_projectDocument.documentElement();
+  
+	// Test if Project File
+	if( root.tagName() != "XSLProject" ) {
+		QMessageBox::information( qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file isn't a XINX Project") );
+	    return;
+	}
+	
+	d->m_version  = d->getValue( "xinx_version" ).isEmpty() ? 0 : d->getValue( "xinx_version" ).toInt();
+	if( d->m_version > XINX_PROJECT_VERSION ) {
+		QMessageBox::information( qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file is a too recent XINX Project") );
+	    return;
+	}
+	
+	d->m_fileName = filename;
+	d->loadWebServicesLink();
+
+	if( d->m_version < XINX_PROJECT_VERSION_1 ) {
+		clearSessionNode();
+		d->m_rootSession = d->m_sessionDocument.createElement( "Session" );
+		d->m_sessionDocument.appendChild( d->m_rootSession );
+	
+		d->m_sessionNode = d->m_sessionDocument.createElement( "Opened" );
+		d->m_rootSession.appendChild( d->m_sessionNode );
+		QDomElement elt = root.firstChildElement( "openedElementCount" );
+		if( ! elt.isNull() ) {
+			QDomElement file = elt.firstChildElement( "file" );
+			while ( ! file.isNull() ) {
+				QDomElement node = d->m_sessionDocument.createElement( "editor" );
+				node.setAttribute( "filename", file.firstChild().toText().nodeValue() );
+				node.setAttribute( "position", 0 );
+				d->m_sessionNode.appendChild( node );
+		
+				file = file.nextSiblingElement( "file" );
+			}
+		}
+	} else {
+		d->loadSessionFile( d->m_fileName + ".session" );
+	}
+}
+
+void XSLProject::saveToFile( const QString & filename ) {
+	if( ! filename.isEmpty() ) d->m_fileName = filename;
+	if( d->m_fileName.isEmpty() ) return;
+	
+	d->saveSessionFile( d->m_fileName + ".session" );
+	
+	if( d->m_version != XINX_PROJECT_VERSION_1 ) {
+		d->setValue( "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
+	}
+	if( d->m_version < XINX_PROJECT_VERSION_1 ) {
+		QDomElement root = d->m_projectDocument.documentElement();
+		QDomElement oldSession = root.firstChildElement( "openedElementCount" );
+		root.removeChild( oldSession );
+	} 
+	
+	setProjectPath( projectPath() );
+	setSpecifPrefix( specifPrefix() );
+
+	d->saveWebServicesLink();
+	
+	static const int IndentSize = 3;
+
+	QFile file( d->m_fileName );
+	
+	// Open the file
+	if (!file.open(QFile::WriteOnly | QFile::Text)) {
+		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Cannot write file %1:\n%2.")
+                                                        				 		.arg( d->m_fileName )
+																		 		.arg( file.errorString()) );
+		return;
+	}
+	QTextStream text( &file );
+	
+	d->m_projectDocument.save( text, IndentSize );
+}
+	
+XSLProject::enumProjectType XSLProject::projectType() const {
+	if( d->getValue( "type" ) == "services" ) 
+		return SERVICES; 	
+	else
+		return WEB;
+}
+
+void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
+	switch( value ) {
+	case SERVICES:
+		d->setValue( "type", "services" );	
+		break;
+	case WEB:
+		d->setValue( "type", "web" );	
+		break;
+	default:
+		d->setValue( "type", "default" );	
+	}
+}
+
+XSLProject::enumProjectVersion XSLProject::projectVersion() const {
+	bool ok;
+	int version = d->getValue( "version" ).toInt( &ok );
+	
+	if( ok )
+		return (enumProjectVersion)version;
+	else
+		return GCE120;
+}
+
+void XSLProject::setProjectVersion( const XSLProject::enumProjectVersion & value ) {
+	d->setValue( "version", QString::number( (int)value ) );
+}	
+
+XSLProject::enumProjectRCS XSLProject::projectRCS() const {
+	QString value = d->getValue( "rcs" );
+	if( value == "cvs" ) 
+		return CVS; 	
+	else
+	if( value == "subversion" ) 
+		return SUBVERSION; 	
+	else
+		return NORCS;
+}
+
+void XSLProject::setProjectRCS( const XSLProject::enumProjectRCS & value ) {
+	switch( value ) {
+	case CVS:
+		d->setValue( "rcs", "cvs" );	
+		break;
+	case SUBVERSION:
+		d->setValue( "rcs", "subversion" );	
+		break;
+	default:
+		d->setValue( "rcs", "no" );	
+	}
+}
+
+QString XSLProject::projectName() const {
+	return d->getValue( "name" );	
+}
+
+void XSLProject::setProjectName( const QString & value ) {
+	d->setValue( "name", value );	
+}
+	
+QString XSLProject::defaultLang() const {
+	return d->getValue( "lang" );
+}
+
+void XSLProject::setDefaultLang( const QString & value ) {
+	d->setValue( "lang", value );
+}
+	
+QString XSLProject::defaultNav() const {
+	return d->getValue( "nav" );
+}
+
+void XSLProject::setDefaultNav( const QString & value ) {
+	d->setValue( "nav", value );
+}
+	
+QString XSLProject::projectPath() const {
+	QString path = d->getValue( "project" );
+
+	if( QDir( path ).isAbsolute() )
+		return path;
+	else
+		return QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( path );
+}
+
+void XSLProject::setProjectPath( const QString & value ) {
+	d->setValue( "project", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( value ) );
+}
+	
+QString XSLProject::specifPath() const {
+	QString path = d->getValue( "specifique" );
+
+	if( QDir( path ).isAbsolute() )
+		return path;
+	else
+		return QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( path );
+}
+
+void XSLProject::setSpecifPath( const QString & value ) {
+	d->setValue( "specifique", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( value ) );
+}
+
+QString XSLProject::languePath() const { 
+	return QDir( projectPath() ).absoluteFilePath( "langue/" + defaultLang().toLower() ); 
+}
+
+QString XSLProject::navPath() const { 
+	return QDir( languePath() ).absoluteFilePath( "nav" ); 
+}
+
+QString XSLProject::specifPrefix() const {
+	return d->getValue( "prefix" );
+}
+	
+void XSLProject::setSpecifPrefix( const QString & value ) {
+	d->setValue( "prefix", value );
+}
+
+QString	XSLProject::standardConfigurationFile() const {
+	return d->getValue( "standard" );
+}
+
+void XSLProject::setStandardConfigurationFile( const QString & value ) {
+	return d->setValue( "standard", value );
+}
+	
+QString	XSLProject::specifiqueConfigurationFile() const {
+	return d->getValue( "specifique" );
+}
+	
+void XSLProject::setSpecifiqueConfigurationFile( const QString & value ) {
+	return d->setValue( "specifique", value );
+}
+
+void XSLProject::clearSessionNode() {
+	d->m_rootSession.removeChild( d->m_sessionNode );
+	d->m_sessionNode = d->m_sessionDocument.createElement( "Opened" );
+	d->m_rootSession.appendChild( d->m_sessionNode );
+}
+
 const QString & XSLProject::fileName() const {
-	return m_fileName;
+	return d->m_fileName;
 }
 
 
+QStringList & XSLProject::serveurWeb() { 
+	return d->m_webServiceLink; 
+}
+
+QDomDocument & XSLProject::sessionDocument() { 
+	return d->m_sessionDocument;
+}
+
+QDomElement & XSLProject::sessionNode() { 
+	return d->m_sessionNode; 
+}
+
+QStringList & XSLProject::lastOpenedFile() { 
+	return d->m_lastOpenedFile; 
+}

@@ -15,6 +15,7 @@
 ****************************************************************************/
 #include "xmlhighlighter.h"
 #include "xinxconfig.h"
+#include "globals.h"
 
 static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
 static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
@@ -41,8 +42,8 @@ void XmlHighlighter::init( bool useConfig ) {
 		m_syntaxFormats["AttributeName"].setForeground( DEFAULT_ATTRIBUTE_NAME );	
 		m_syntaxFormats["AttributeValue"].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
 	} else {
-		foreach( QString key, xinxConfig->managedStructure()["xml"].color.keys() ) {
-			m_syntaxFormats[ key ] = xinxConfig->managedStructure()["xml"].color[ key ];
+		foreach( QString key, global.m_xinxConfig->managedStructure()["xml"].color.keys() ) {
+			m_syntaxFormats[ key ] = global.m_xinxConfig->managedStructure()["xml"].color[ key ];
 		}
 	}
 }

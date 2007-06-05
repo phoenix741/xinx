@@ -37,8 +37,6 @@ void XMLVisualStudio::setWebServicesView( bool enabled ) {
 	if( enabled ) {
 		refreshWebServicesList();
 	} else {
-		delete global.m_webServicesModel;
-		global.m_webServicesModel = NULL;
 		qDeleteAll( *(global.m_webServices) );
 		global.m_webServices->clear();
 	}
@@ -54,7 +52,6 @@ void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {
 void XMLVisualStudio::refreshWebServicesList() {
 	qDeleteAll( *(global.m_webServices) );
 	global.m_webServices->clear();
-	if( global.m_webServicesModel ) global.m_webServicesModel->reset();			
 
 	if( global.m_project ) {
 		foreach( QString link, global.m_project->serveurWeb() ) {
@@ -64,11 +61,6 @@ void XMLVisualStudio::refreshWebServicesList() {
 			connect( ws, SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
 		}
 		global.emitWebServicesChanged();
-		
-		if( ! global.m_webServicesModel ) 
-			global.m_webServicesModel = new WebServicesModel( this, global.m_webServices );
-		else
-			global.m_webServicesModel->reset();			
 	}
 }
 

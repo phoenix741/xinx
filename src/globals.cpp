@@ -25,7 +25,7 @@
 
 Globals global;
 
-Globals::Globals() : m_webServices(0), m_webServicesModel(0), m_project(0) {
+Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_xinxConfig(0) {
 	
 }
 
@@ -35,7 +35,6 @@ Globals::~Globals() {
 		qDeleteAll( *m_webServices );
 		delete m_webServices;	
 	}
-	if( m_webServicesModel ) delete m_webServicesModel;
 }
 
 void Globals::emitProjectChanged() {

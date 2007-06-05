@@ -34,6 +34,8 @@ Conf standard/Specifique
 class WebServices;
 class WebServicesModel;
 
+class PrivateXSLProject;
+
 class XSLProject : public QObject {
 	Q_OBJECT
 public:
@@ -85,32 +87,16 @@ public:
 	QString	specifiqueConfigurationFile() const;
 	void setSpecifiqueConfigurationFile( const QString & );
 
-	QStringList & serveurWeb() { return m_webServiceLink; };
+	QStringList & serveurWeb();
 
-	QDomDocument & sessionDocument() { return m_sessionDocument; };
-	QDomElement & sessionNode() { return m_sessionNode; };
+	QDomDocument & sessionDocument();
+	QDomElement & sessionNode();
 	void clearSessionNode();
-	QStringList & lastOpenedFile() { return m_lastOpenedFile; }
-
+	QStringList & lastOpenedFile();
 	const QString & fileName() const;
 private:
-	QString getValue( const QString & node ) const;
-	void setValue( const QString & node, const QString & value );
-	
-	void loadSessionFile( const QString fileName );
-	void saveSessionFile( const QString fileName );
-
-	void loadWebServicesLink();
-	void saveWebServicesLink();
-
-	QString m_fileName;
-	int m_version;
-	
-	QDomDocument m_projectDocument;
-	QDomDocument m_sessionDocument;
-	QDomElement m_sessionNode, m_rootSession;
-	
-	QStringList m_webServiceLink, m_lastOpenedFile;
+	PrivateXSLProject * d;
+	friend class PrivateXSLProject;
 };
 
 #endif

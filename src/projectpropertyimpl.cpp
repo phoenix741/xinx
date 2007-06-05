@@ -26,6 +26,7 @@
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
+#include "globals.h"
 
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
@@ -35,7 +36,7 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
 	QString value = m_projectLineEdit->text();
 	if( value.isEmpty() ) 
-		value = xinxConfig->xinxProjectPath();
+		value = global.m_xinxConfig->xinxProjectPath();
 		
 	value = QFileDialog::getExistingDirectory( this, tr("Project path"), value );
 	if( ! value.isEmpty() ) {
@@ -46,7 +47,7 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
 	QString value = m_specifiquePathLineEdit->text();
 	if( value.isEmpty() ) 
-		value = xinxConfig->xinxProjectPath();
+		value = global.m_xinxConfig->xinxProjectPath();
 		
 	value = QFileDialog::getExistingDirectory( this, tr("Specifique path"), value );
 	if( ! value.isEmpty() ) {

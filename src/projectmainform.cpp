@@ -198,7 +198,7 @@ void XMLVisualStudio::newProject() {
 	}
 	m_lastProjectOpenedPlace = project->projectPath();
 
-	closeProject( true, xinxConfig->saveSessionByDefault() );
+	closeProject( true, global.m_xinxConfig->saveSessionByDefault() );
 	project->saveToFile( filename );
 	delete project;
 	
@@ -218,7 +218,7 @@ void XMLVisualStudio::openRecentFile() {
 }
 
 void XMLVisualStudio::openProject() {
-	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
+	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), global.m_xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
 	if( ! fileName.isEmpty() )
 		openProject( fileName );	
 }
@@ -227,7 +227,7 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	assert( ! filename.isEmpty() );
 
 	if( global.m_project ) 
-		closeProject( true, xinxConfig->saveSessionByDefault() ); 
+		closeProject( true, global.m_xinxConfig->saveSessionByDefault() ); 
 	else 
 		on_m_closeAllAct_triggered();
 		
@@ -235,11 +235,11 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
 	m_lastPlace              = global.m_project->projectPath();
 
-	xinxConfig->recentProjectFiles().removeAll( filename );
-	xinxConfig->recentProjectFiles().prepend( filename );
+	global.m_xinxConfig->recentProjectFiles().removeAll( filename );
+	global.m_xinxConfig->recentProjectFiles().prepend( filename );
      
-	while( xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
-		xinxConfig->recentProjectFiles().removeLast();
+	while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
+		global.m_xinxConfig->recentProjectFiles().removeLast();
 
 	if( global.m_project->projectType() == XSLProject::SERVICES )
 		setWebServicesView( true );
@@ -333,12 +333,12 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 }
 
 void XMLVisualStudio::updateRecentProjects() {
-	int numRecentFiles = qMin( xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
+	int numRecentFiles = qMin( global.m_xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( xinxConfig->recentProjectFiles()[i] ).fileName() );
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_xinxConfig->recentProjectFiles()[i] ).fileName() );
 		m_recentProjectActs[i]->setText( text );
-		m_recentProjectActs[i]->setData( xinxConfig->recentProjectFiles()[i] );
+		m_recentProjectActs[i]->setData( global.m_xinxConfig->recentProjectFiles()[i] );
 		m_recentProjectActs[i]->setVisible( true );
 	}
 	

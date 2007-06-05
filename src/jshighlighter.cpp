@@ -20,6 +20,7 @@
 
 #include "jshighlighter.h"
 #include "xinxconfig.h"
+#include "globals.h"
 //
 
 static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
@@ -35,8 +36,8 @@ void JsHighlighter::init( bool useConfig ) {
 		m_syntaxFormats["Number"].setForeground( DEFAULT_NUMBER );
 		m_syntaxFormats["String"].setForeground( DEFAULT_STRING );	
 	} else {
-		foreach( QString key, xinxConfig->managedStructure()["js"].color.keys() ) {
-			m_syntaxFormats[ key ] = xinxConfig->managedStructure()["js"].color[ key ];
+		foreach( QString key, global.m_xinxConfig->managedStructure()["js"].color.keys() ) {
+			m_syntaxFormats[ key ] = global.m_xinxConfig->managedStructure()["js"].color[ key ];
 		}
 	}
 	

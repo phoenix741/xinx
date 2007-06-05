@@ -25,12 +25,11 @@
 #include <QList>
 
 class XSLProject;
-class WebServicesModel;
 class WebServices;
+class ObjectsView;
+class XINXConfig;
 
 typedef QList<WebServices*> WebServicesList;
-
-/* Ajouter XINXConfig ici */ 
 
 class Globals : public QObject {
 	Q_OBJECT
@@ -38,9 +37,10 @@ public:
 	Globals();
 	~Globals();
 
+	ObjectsView * m_javaObjects;
 	WebServicesList*  m_webServices;
-	WebServicesModel* m_webServicesModel;
 	XSLProject * m_project;
+	XINXConfig * m_xinxConfig;
 	
 	void emitProjectChanged();
 	void emitWebServicesChanged();

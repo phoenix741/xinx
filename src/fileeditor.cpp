@@ -286,7 +286,7 @@ void FileEditor::setFileName( const QString & fileName ) {
 		bool isNewSpecifiqueFile = QFileInfo( fileName ).fileName().startsWith( prefix );
 
 		QString infoFileName = QFileInfo( m_fileName ).fileName();
-		QString destName = QDir( QDir( global.m_project->specifPath() ).absoluteFilePath( xinxConfig->managedFile4Name( infoFileName ).customPath ) ).absoluteFilePath( infoFileName );
+		QString destName = QDir( QDir( global.m_project->specifPath() ).absoluteFilePath( global.m_xinxConfig->managedFile4Name( infoFileName ).customPath ) ).absoluteFilePath( infoFileName );
 
 		if( (!isOldSpecifiqueFile) && isNewSpecifiqueFile )
 			QFile::copy( m_fileName, destName );
@@ -297,7 +297,7 @@ void FileEditor::setFileName( const QString & fileName ) {
 }
 
 void FileEditor::createBackup( const QString & filename ) {
-	if( xinxConfig->isCreateBackupFile() ){
+	if( global.m_xinxConfig->isCreateBackupFile() ){
 		if( QFile::exists( filename + ".bak" ) ) 
 			QFile::remove( filename + ".bak" );
 		QFile::copy( filename, filename + ".bak" );

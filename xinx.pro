@@ -1,7 +1,8 @@
-CONFIG +=   exceptions \
+CONFIG +=   debug \
+  exceptions \
   qt \
-  warn_on \
-  debug
+  warn_on
+DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
   COPYING \
@@ -13,10 +14,10 @@ FORMS +=   ui/about.ui \
   ui/custom.ui \
   ui/mainform.ui \
   ui/projectproperty.ui \
+  ui/rcslogform.ui \
   ui/replace.ui \
   ui/resultatServices.ui \
-  ui/servicesconnection.ui \
-  ui/rcslogform.ui
+  ui/servicesconnection.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/connectionwebservicesdialogimpl.h \
   src/customdialogimpl.h \
@@ -31,16 +32,19 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/numberbar.h \
   src/objectview.h \
   src/projectpropertyimpl.h \
+  src/rcs.h \
+  src/rcs_cvs.h \
+  src/rcslogdialogimpl.h \
   src/replacedialogimpl.h \
   src/serviceresultdialogimpl.h \
   src/soap.h \
+  src/stable_header.h \
   src/syntaxhighlighter.h \
   src/tabeditor.h \
   src/texteditor.h \
   src/uniqueapplication.h \
   src/webservices.h \
   src/webserviceseditor.h \
-  src/webservicespropertydialogimpl.h \
   src/wsdl.h \
   src/xinxconfig.h \
   src/xmleditor.h \
@@ -50,12 +54,10 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsddocument.h \
   src/xsleditor.h \
   src/xsllistview.h \
-  src/xslproject.h \
-  src/rcs.h \
-  src/rcs_cvs.h \
-  src/rcslogdialogimpl.h
+  src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
+PRECOMPILED_HEADER +=   src/stable_header.h
 QT +=   gui \
   network \
   xml
@@ -77,6 +79,9 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/objectview.cpp \
   src/projectmainform.cpp \
   src/projectpropertyimpl.cpp \
+  src/rcs.cpp \
+  src/rcs_cvs.cpp \
+  src/rcslogdialogimpl.cpp \
   src/replacedialogimpl.cpp \
   src/searchmainform.cpp \
   src/serviceresultdialogimpl.cpp \
@@ -88,7 +93,6 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/webservices.cpp \
   src/webserviceseditor.cpp \
   src/webservicesmainform.cpp \
-  src/webservicespropertydialogimpl.cpp \
   src/wsdl.cpp \
   src/xinxconfig.cpp \
   src/xmleditor.cpp \
@@ -98,10 +102,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsddocument.cpp \
   src/xsleditor.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp \
-  src/rcs.cpp \
-  src/rcs_cvs.cpp \
-  src/rcslogdialogimpl.cpp
+  src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

@@ -27,25 +27,70 @@
 #include "jshighlighter.h"
 #include "xmlhighlighter.h"
 
-//
+/* PrivateXINXConfig */
 
-// #define OPEN_SAVE_DIALOG_FILTER "All Managed File (*.xml;*.xsl;*.js;*.fws);;All XML File (*.xml;*.xsl);;All XSL File (*.xsl);;All JS File (*.js);;All WebServices XINX File (*.fws)"
+class PrivateXINXConfig {
+public:
+	PrivateXINXConfig( XINXConfig * parent );
 
-XINXConfig * xinxConfig = NULL;
+	QSettings * m_settings;
+
+	QPoint m_xinxPosition;
+	QSize m_xinxSize;
+	
+	QByteArray m_mainWindowState;
+	
+	QString m_lang;
+	bool m_createBackupFile;
+	bool m_alertWhenStdFile;
+	bool m_saveSessionByDefault;
+	QString m_xinxProjectPath;
+	QString m_objectDescriptionPath;
+	
+	QStringList m_recentProjectFiles;
+	
+	QList<struct XINXConfig::managedFile> m_managedFileList;
+	QHash<QString, struct XINXConfig::managedStructure> m_managedStrucureList;
+	
+	QHash<QString,QString> m_toolsPath;
+	
+	void createSettings();
+	void deleteSettings();
+private:
+	XINXConfig * m_parent;
+};
+
+PrivateXINXConfig::PrivateXINXConfig( XINXConfig * parent ) {
+	m_parent = parent;
+}
+
+void PrivateXINXConfig::createSettings() {
+	m_settings = new QSettings("Generix", "XINX");
+}
+
+void PrivateXINXConfig::deleteSettings() {
+	if( m_settings )
+		delete m_settings;
+	m_settings = NULL;
+}
+
+/* XINXConfig */
 
 XINXConfig::XINXConfig(  ) {
-	m_settings = NULL;
+	d = new PrivateXINXConfig( this );
 	
-	m_lang = QLocale::system().name();
-	m_createBackupFile = true;
-	m_alertWhenStdFile = true;
-	m_saveSessionByDefault = true;	
-	m_xinxProjectPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
-	m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "xml" );
+	d->m_settings = NULL;
 	
-	m_xinxPosition = QPoint(200, 200);
-	m_xinxSize = QSize(400, 400);
-	struct managedStructure structure;
+	d->m_lang = QLocale::system().name();
+	d->m_createBackupFile = true;
+	d->m_alertWhenStdFile = true;
+	d->m_saveSessionByDefault = true;	
+	d->m_xinxProjectPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
+	d->m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "xml" );
+	
+	d->m_xinxPosition = QPoint(200, 200);
+	d->m_xinxSize = QSize(400, 400);
+	struct XINXConfig::managedStructure structure;
 	structure.example = QObject::tr(
 								"<library name=\"xinx\">\n"
 								"	<book name=\"noname\">This is a description</book>\n"
@@ -58,7 +103,7 @@ XINXConfig::XINXConfig(  ) {
 	foreach( QString key, xmlh->formats().keys() )
 		structure.color[ key ] = xmlh->formats()[ key ];
 	delete xmlh;
-	m_managedStrucureList["xml"] = structure;
+	d->m_managedStrucureList["xml"] = structure;
 	
 	structure.example = QObject::tr(
 								"function xxx( a, b, c ) {\n"
@@ -72,68 +117,58 @@ XINXConfig::XINXConfig(  ) {
 	foreach( QString key, jsh->formats().keys() )
 		structure.color[ key ] = jsh->formats()[ key ];
 	delete jsh;
-	m_managedStrucureList["js"] = structure;
+	d->m_managedStrucureList["js"] = structure;
 	
-	struct managedFile file;
+	struct XINXConfig::managedFile file;
 	file.extentions = "*.xml";
 	file.name = QObject::tr("All XML File");
 	file.canBeCustomize = true;
 	file.customPath = "";
 	file.structure = "xml";
-	m_managedFileList.append( file );
+	d->m_managedFileList.append( file );
 	
 	file.extentions = "*.xsl";
 	file.name = QObject::tr("All Stylesheet");
 	file.canBeCustomize = true;
 	file.customPath = "";
 	file.structure = "xml";
-	m_managedFileList.append( file );
+	d->m_managedFileList.append( file );
 
 	file.extentions = "*.fws";
 	file.name = QObject::tr("All XINX Webservices");
 	file.canBeCustomize = false;
 	file.customPath = "";
 	file.structure = "xml";
-	m_managedFileList.append( file );	
+	d->m_managedFileList.append( file );	
 
 	file.extentions = "*.js";
 	file.name = QObject::tr("All JavaScript");
 	file.canBeCustomize = true;
 	file.structure = "js";
 	file.customPath = "js/";
-	m_managedFileList.append( file );
+	d->m_managedFileList.append( file );
 
-	m_toolsPath[ "cvs" ] = "/usr/bin/cvs";
+	d->m_toolsPath[ "cvs" ] = "/usr/bin/cvs";
 }
 
 XINXConfig::~XINXConfig(  ) {
-	deleteSettings();
-}
-
-void XINXConfig::createSettings() {
-	m_settings = new QSettings("Generix", "XINX");
-}
-
-void XINXConfig::deleteSettings() {
-	if( m_settings )
-		delete m_settings;
-	m_settings = NULL;
+	d->deleteSettings();
 }
 
 QStringList XINXConfig::dialogFilters() {
 	QStringList result;
 
 	QString managed = QObject::tr( "All Managed file" ) + "(";
-	foreach( struct managedFile file, m_managedFileList ) {
+	foreach( struct XINXConfig::managedFile file, d->m_managedFileList ) {
 		managed += file.extentions;
-		if( m_managedFileList.last().name != file.name ) {
+		if( d->m_managedFileList.last().name != file.name ) {
 			managed += " ";
 		}
 	}
 	managed += ")";
 	result.append( managed );
 	
-	foreach( struct managedFile file, m_managedFileList ) {
+	foreach( struct XINXConfig::managedFile file, d->m_managedFileList ) {
 		result.append( file.name + "(" + file.extentions + ")" );
 	}
 	
@@ -141,7 +176,7 @@ QStringList XINXConfig::dialogFilters() {
 }
 
 QString XINXConfig::dialogFilter( QString ext ) {
-	foreach( struct managedFile file, m_managedFileList ) {
+	foreach( struct managedFile file, d->m_managedFileList ) {
 		QStringList list = file.extentions.split(" ");
 		foreach( QString regexp, list ) {
 			QRegExp extention( regexp );
@@ -156,79 +191,79 @@ QString XINXConfig::dialogFilter( QString ext ) {
 
 
 void XINXConfig::save() {
-	createSettings();
-	m_settings->setValue( "Language", m_lang );
-	m_settings->setValue( "Create Backup File", m_createBackupFile );
-	m_settings->setValue( "Save Session By Default", m_saveSessionByDefault );
-	m_settings->setValue( "Position", m_xinxPosition );
-	m_settings->setValue( "Size", m_xinxSize );
-	m_settings->setValue( "Descriptions/Object", m_objectDescriptionPath );
-	m_settings->setValue( "Descriptions/Completion", m_objectDescriptionPath );
+	d->createSettings();
+	d->m_settings->setValue( "Language", d->m_lang );
+	d->m_settings->setValue( "Create Backup File", d->m_createBackupFile );
+	d->m_settings->setValue( "Save Session By Default", d->m_saveSessionByDefault );
+	d->m_settings->setValue( "Position", d->m_xinxPosition );
+	d->m_settings->setValue( "Size", d->m_xinxSize );
+	d->m_settings->setValue( "Descriptions/Object", d->m_objectDescriptionPath );
+	d->m_settings->setValue( "Descriptions/Completion", d->m_objectDescriptionPath );
 
-	m_settings->setValue( "Project/Default Path", m_xinxProjectPath );
-	m_settings->setValue( "Project/Alert when saving Standard File", m_alertWhenStdFile );
-	m_settings->setValue( "Project/Recent Project Files", m_recentProjectFiles );
+	d->m_settings->setValue( "Project/Default Path", d->m_xinxProjectPath );
+	d->m_settings->setValue( "Project/Alert when saving Standard File", d->m_alertWhenStdFile );
+	d->m_settings->setValue( "Project/Recent Project Files",d-> m_recentProjectFiles );
 
-	m_settings->setValue( "State", m_mainWindowState );
+	d->m_settings->setValue( "State", d->m_mainWindowState );
 	
-	foreach( QString cle, m_managedStrucureList.keys() ) {
-		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
-			QTextCharFormat format = m_managedStrucureList[cle].color[color];
-			m_settings->setValue( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() );
-			m_settings->setValue( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() );
-			m_settings->setValue( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() );
-			m_settings->setValue( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() );
-			m_settings->setValue( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() );
-			m_settings->setValue( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() );
-			m_settings->setValue( QString("Structure/%1/%2/weight").arg( cle ).arg( color ), format.fontWeight() );
-			m_settings->setValue( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() );
-//			m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), QColor(Qt::red) );
+	foreach( QString cle, d->m_managedStrucureList.keys() ) {
+		foreach( QString color, d->m_managedStrucureList[cle].color.keys() ) {
+			QTextCharFormat format = d->m_managedStrucureList[cle].color[color];
+			d->m_settings->setValue( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() );
+			d->m_settings->setValue( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() );
+			d->m_settings->setValue( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() );
+			d->m_settings->setValue( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() );
+			d->m_settings->setValue( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() );
+			d->m_settings->setValue( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() );
+			d->m_settings->setValue( QString("Structure/%1/%2/weight").arg( cle ).arg( color ), format.fontWeight() );
+			d->m_settings->setValue( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() );
+//			d->m_settings->setValue( QString("Structure/%1/%2").arg( cle ).arg( color ), QColor(Qt::red) );
 		}
 	}
-	foreach( struct managedFile file, m_managedFileList ) {
-		m_settings->setValue( QString("Files/%1/customPath").arg( file.name ), file.customPath );
-		m_settings->setValue( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize );
+	foreach( struct managedFile file, d->m_managedFileList ) {
+		d->m_settings->setValue( QString("Files/%1/customPath").arg( file.name ), file.customPath );
+		d->m_settings->setValue( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize );
 	}
 	
-	foreach( QString tool, m_toolsPath.keys() ) {
-		m_settings->setValue( QString("Tools/%1").arg( tool ), m_toolsPath[ tool ] );
+	foreach( QString tool, d->m_toolsPath.keys() ) {
+		d->m_settings->setValue( QString("Tools/%1").arg( tool ), d->m_toolsPath[ tool ] );
 	}
 	
-	deleteSettings();
+	d->deleteSettings();
 }
 
 void XINXConfig::load() {
-	createSettings();
-	m_lang                 = m_settings->value( "Language", m_lang ).toString();
-	m_createBackupFile     = m_settings->value( "Create Backup File", m_createBackupFile ).toBool();
-	m_saveSessionByDefault = m_settings->value( "Save Session By Default", m_saveSessionByDefault ).toBool();
-	m_xinxPosition         = m_settings->value( "Position", m_settings->value( "pos", m_xinxPosition ) ).toPoint();
-	m_xinxSize             = m_settings->value( "Size", m_settings->value( "size", m_xinxSize ) ).toSize();
+	d->createSettings();
+	d->m_lang                 = d->m_settings->value( "Language", d->m_lang ).toString();
+	d->m_createBackupFile     = d->m_settings->value( "Create Backup File", d->m_createBackupFile ).toBool();
+	d->m_saveSessionByDefault = d->m_settings->value( "Save Session By Default", d->m_saveSessionByDefault ).toBool();
+	d->m_xinxPosition         = d->m_settings->value( "Position", d->m_settings->value( "pos", d->m_xinxPosition ) ).toPoint();
+	d->m_xinxSize             = d->m_settings->value( "Size", d->m_settings->value( "size", d->m_xinxSize ) ).toSize();
 
-	m_objectDescriptionPath = m_settings->value( "Descriptions/Object", m_settings->value( "xmljavapath", m_objectDescriptionPath ) ).toString();
+	d->m_objectDescriptionPath = d->m_settings->value( "Descriptions/Object", d->m_settings->value( "xmljavapath", d->m_objectDescriptionPath ) ).toString();
 	
-	m_xinxProjectPath    = m_settings->value( "Project/Default Path", m_xinxProjectPath ).toString();
-	m_alertWhenStdFile   = m_settings->value( "Project/Alert when saving Standard File", m_alertWhenStdFile ).toBool();
-	m_recentProjectFiles = m_settings->value( "Project/Recent Project Files", m_settings->value( "Recent Project Files" ) ).toStringList();
+	d->m_xinxProjectPath    = d->m_settings->value( "Project/Default Path", d->m_xinxProjectPath ).toString();
+	d->m_alertWhenStdFile   = d->m_settings->value( "Project/Alert when saving Standard File", d->m_alertWhenStdFile ).toBool();
+	d->m_recentProjectFiles = d->m_settings->value( "Project/Recent Project Files", d->m_settings->value( "Recent Project Files" ) ).toStringList();
 
-	m_mainWindowState    = m_settings->value( "State" ).toByteArray();		
+	d->m_mainWindowState    = d->m_settings->value( "State" ).toByteArray();		
 
-	foreach( QString cle, m_managedStrucureList.keys() ) {
-		foreach( QString color, m_managedStrucureList[cle].color.keys() ) {
-			QTextCharFormat format = m_managedStrucureList[cle].color[color];
-			format.setFontFamily(m_settings->value( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() ).toString());
-			format.setFontItalic(m_settings->value( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() ).toBool());
-			format.setFontOverline(m_settings->value( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() ).toBool());
-			format.setFontStrikeOut(m_settings->value( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() ).toBool());
-			format.setFontUnderline(m_settings->value( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() ).toBool());
-			qreal pointSize = m_settings->value( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() ).toDouble();
+	foreach( QString cle, d->m_managedStrucureList.keys() ) {
+		foreach( QString color, d->m_managedStrucureList[cle].color.keys() ) {
+			QTextCharFormat format = d->m_managedStrucureList[cle].color[color];
+			format.setFontFamily(d->m_settings->value( QString("Structure/%1/%2/family").arg( cle ).arg( color ), format.fontFamily() ).toString());
+			format.setFontItalic(d->m_settings->value( QString("Structure/%1/%2/italic").arg( cle ).arg( color ), format.fontItalic() ).toBool());
+			format.setFontOverline(d->m_settings->value( QString("Structure/%1/%2/overline").arg( cle ).arg( color ), format.fontOverline() ).toBool());
+			format.setFontStrikeOut(d->m_settings->value( QString("Structure/%1/%2/strikeOut").arg( cle ).arg( color ), format.fontStrikeOut() ).toBool());
+			format.setFontUnderline(d->m_settings->value( QString("Structure/%1/%2/underline").arg( cle ).arg( color ), format.fontUnderline() ).toBool());
+			qreal pointSize = d->m_settings->value( QString("Structure/%1/%2/size").arg( cle ).arg( color ), format.fontPointSize() ).toDouble();
 			if( pointSize > 0 )
 				format.setFontPointSize( pointSize );
 			else 
 				format.setFontPointSize( 8 );
-			format.setFontWeight(m_settings->value( QString("Structure/%1/%2/weight").arg( cle ).arg( color ), format.fontWeight() ).toInt());
-			format.setForeground(m_settings->value( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() ).value<QColor>());
-			m_managedStrucureList[cle].color[color] = format;
+			format.setFontWeight(d->m_settings->value( QString("Structure/%1/%2/weight").arg( cle ).arg( color ), format.fontWeight() ).toInt());
+			format.setForeground(d->m_settings->value( QString("Structure/%1/%2/color").arg( cle ).arg( color ), format.foreground() ).value<QColor>());
+			d->m_managedStrucureList[cle].color[color] = format;
 			//QString name = QString("Structure/%1/%2").arg( cle ).arg( color );
 			//QVariant value = m_settings->value( name, m_managedStrucureList[cle].color[color] );
 			//if( value.isValid() && value.canConvert<QTextFormat>() ) {
@@ -238,22 +273,22 @@ void XINXConfig::load() {
 		}
 	}
 
-	for(int i = 0; i < m_managedFileList.size(); i++) {
-		struct managedFile file = m_managedFileList.at(i);
-		file.customPath = m_settings->value( QString("Files/%1/customPath").arg( file.name ), file.customPath ).toString();
-		file.canBeCustomize = m_settings->value( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize ).toBool();
-		m_managedFileList[i] = file;
+	for(int i = 0; i < d->m_managedFileList.size(); i++) {
+		struct managedFile file = d->m_managedFileList.at(i);
+		file.customPath = d->m_settings->value( QString("Files/%1/customPath").arg( file.name ), file.customPath ).toString();
+		file.canBeCustomize = d->m_settings->value( QString("Files/%1/canBeCustomize").arg( file.name ), file.canBeCustomize ).toBool();
+		d->m_managedFileList[i] = file;
 	}		
 
-	foreach( QString tool, m_toolsPath.keys() ) {
-		m_toolsPath[ tool ] = m_settings->value( QString("Tools/%1").arg( tool ), m_toolsPath[ tool ] ).toString();
+	foreach( QString tool, d->m_toolsPath.keys() ) {
+		d->m_toolsPath[ tool ] = d->m_settings->value( QString("Tools/%1").arg( tool ), d->m_toolsPath[ tool ] ).toString();
 	}
 
-	deleteSettings();
+	d->deleteSettings();
 }
 
 struct XINXConfig::managedFile XINXConfig::managedFile4Name( QString filename ) {
-	foreach( struct managedFile file, m_managedFileList ) {
+	foreach( struct managedFile file, d->m_managedFileList ) {
 		QStringList list = file.extentions.split(" ");
 		foreach( QString regexp, list ) {
 			QRegExp extention( regexp );
@@ -277,4 +312,98 @@ struct XINXConfig::managedFile XINXConfig::managedFile4Suffix( QString suffix ) 
 }
 
 
-//
+QString XINXConfig::lang() const { 
+	return d->m_lang;
+}
+
+void XINXConfig::setLang( const QString & value ) { 
+	d->m_lang = value; 
+}
+	
+bool XINXConfig::saveSessionByDefault() const { 
+	return d->m_saveSessionByDefault; 
+}
+
+void XINXConfig::setSaveSessionByDefault( bool value ) {
+	d->m_saveSessionByDefault = value; 
+}
+
+QByteArray XINXConfig::storedMainWindowState() { 
+	return d->m_mainWindowState; 
+}
+
+void XINXConfig::storeMainWindowState( QByteArray state ) { 
+	d->m_mainWindowState = state; 
+}
+	
+QPoint XINXConfig::position() const { 
+	return d->m_xinxPosition; 
+}
+
+void XINXConfig::setPosition( QPoint value ) { 
+	d->m_xinxPosition = value; 
+}
+	
+QSize XINXConfig::size() const { 
+	return d->m_xinxSize; 
+}
+
+void XINXConfig::setSize( QSize value ) { 
+	d->m_xinxSize = value;
+}
+	
+bool XINXConfig::isCreateBackupFile() const { 
+	return d->m_createBackupFile; 
+}
+
+void XINXConfig::setCreateBackupFile( bool value ) { 
+	d->m_createBackupFile = value; 
+}
+	
+bool XINXConfig::isAlertWhenStdFile() const { 
+	return d->m_alertWhenStdFile; 
+}
+
+void XINXConfig::setAlertWhenStdFile( bool value ) { 
+	d->m_alertWhenStdFile = value;
+}
+	
+QString XINXConfig::xinxProjectPath() const { 
+	return d->m_xinxProjectPath; 
+}
+
+void XINXConfig::setXinxProjectPath( const QString & value ) { 
+	d->m_xinxProjectPath = value; 
+}
+	
+QString XINXConfig::objectDescriptionPath() const { 
+	return d->m_objectDescriptionPath; 
+}
+
+void XINXConfig::setObjectDescriptionPath( const QString & value ) { 
+	d->m_objectDescriptionPath = value; 
+}
+	
+QString XINXConfig::completionFilesPath() const { 
+	return d->m_objectDescriptionPath; 
+}
+
+void XINXConfig::setCompletionFilesPath( const QString & value ) { 
+	d->m_objectDescriptionPath = value; 
+}
+	
+QStringList & XINXConfig::recentProjectFiles() { 
+	return d->m_recentProjectFiles; 
+}
+
+QList<struct XINXConfig::managedFile> & XINXConfig::managedFile() { 
+	return d->m_managedFileList; 
+}
+
+QHash<QString,struct XINXConfig::managedStructure> & XINXConfig::managedStructure() { 
+	return d->m_managedStrucureList;
+}
+	
+QHash<QString,QString> & XINXConfig::toolsPath() { 
+	return d->m_toolsPath; 
+}
