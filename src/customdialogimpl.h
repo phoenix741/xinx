@@ -23,9 +23,9 @@
 //
 #include "ui_custom.h"
 #include "xinxconfig.h"
-
-class SyntaxHighlighter;
 //
+class PrivateCustomDialogImpl;
+
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT
 public:
@@ -56,8 +56,8 @@ private slots:
 	void on_m_syntaxTypeComboBox_currentIndexChanged(QString);
 	void on_m_colorComboBox_activated( QColor c );
 private:
-	XINXConfig m_config;
-	SyntaxHighlighter * m_highlighter;
+	PrivateCustomDialogImpl * d;
+	friend class PrivateCustomDialogImpl;
 };
 #endif
 

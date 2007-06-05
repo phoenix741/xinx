@@ -25,10 +25,28 @@
 #include "jshighlighter.h"
 #include "xmlhighlighter.h"
 
+/* PrivateCustomDialogImpl */
+
+class PrivateCustomDialogImpl {
+public:
+	PrivateCustomDialogImpl( CustomDialogImpl * parent );
+
+	XINXConfig m_config;
+	SyntaxHighlighter * m_highlighter;	
+private:
+	CustomDialogImpl * m_parent;
+};
+
+PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
+	m_highlighter = 0;
+	m_parent = parent;
+}
+
 /* CustomDialogImpl */
 
 //
-CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(parent, f), m_highlighter(0) {
+CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(parent, f) {
+	d = new PrivateCustomDialogImpl( this );
 	setupUi(this);
 	
 	QFont font( "Monospace", 8 );
@@ -39,15 +57,15 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(p
 //
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
-	m_config = *config;
+	d->m_config = *config;
 
-	m_alertStandardCheckBox->setChecked( m_config.isAlertWhenStdFile() );
-	m_createBakCheckBox->setChecked( m_config.isCreateBackupFile() );
-	m_saveSessionCheckBox->setChecked( m_config.saveSessionByDefault() );
+	m_alertStandardCheckBox->setChecked( d->m_config.isAlertWhenStdFile() );
+	m_createBakCheckBox->setChecked( d->m_config.isCreateBackupFile() );
+	m_saveSessionCheckBox->setChecked( d->m_config.saveSessionByDefault() );
 		
 	int index = -1;
 	for( int i = 0; i < m_langComboBox->count(); i++ ) {
-		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( m_config.lang() ) ) )
+		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( d->m_config.lang() ) ) )
 			index = i;
 	}
 	if( index == -1 ) 
@@ -55,28 +73,28 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	else
 		m_langComboBox->setCurrentIndex( index );
 	
-	m_projectPathLineEdit->setText( m_config.xinxProjectPath() );
-	m_objectDescriptionPathLineEdit->setText( m_config.objectDescriptionPath() );
+	m_projectPathLineEdit->setText( d->m_config.xinxProjectPath() );
+	m_objectDescriptionPathLineEdit->setText( d->m_config.objectDescriptionPath() );
 	
 	m_fileTypeComboBox->clear();
-	foreach( struct XINXConfig::managedFile file, m_config.managedFile() ) {
+	foreach( struct XINXConfig::managedFile file, d->m_config.managedFile() ) {
 		m_fileTypeComboBox->addItem( QString("%1 (%2)").arg( file.name ).arg( file.extentions ) );
 	}
 
 	m_syntaxFileTypeComboBox->clear();
-	foreach( QString cle, m_config.managedStructure().keys() ) {
+	foreach( QString cle, d->m_config.managedStructure().keys() ) {
 		m_syntaxFileTypeComboBox->addItem( cle );
 	}
 	
-	m_CVSToolsLineEdit->setText( m_config.toolsPath()[ "cvs" ] );
+	m_CVSToolsLineEdit->setText( d->m_config.toolsPath()[ "cvs" ] );
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
-	*config = m_config;
+	*config = d->m_config;
 }
 
 void CustomDialogImpl::on_m_syntaxTypeComboBox_currentIndexChanged( QString text ){
-	QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ text ];
+	QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ text ];
 	m_italicCheckBox->setChecked( format.fontItalic() );
 	m_underlineCheckBox->setChecked( format.fontUnderline() );
 	m_StrikeoutCheckBox->setChecked( format.fontStrikeOut() );
@@ -91,80 +109,80 @@ void CustomDialogImpl::on_m_syntaxTypeComboBox_currentIndexChanged( QString text
 
 
 void CustomDialogImpl::on_m_syntaxFileTypeComboBox_currentIndexChanged( QString text ) {
-	m_exempleTextEdit->setText( m_config.managedStructure()[ text ].example );
+	m_exempleTextEdit->setText( d->m_config.managedStructure()[ text ].example );
 	m_syntaxTypeComboBox->clear();
-	foreach( QString name, m_config.managedStructure()[ text ].color.keys() ) {
+	foreach( QString name, d->m_config.managedStructure()[ text ].color.keys() ) {
 		m_syntaxTypeComboBox->addItem( name );
 	}
 	m_syntaxTypeComboBox->setCurrentIndex( 0 );
 	
-	if( m_highlighter ) { delete m_highlighter; m_highlighter = NULL; };
+	if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 	if( text == "js" ) {
-		m_highlighter = new JsHighlighter( m_exempleTextEdit->document() );
+		d->m_highlighter = new JsHighlighter( m_exempleTextEdit->document() );
 	} else if( text == "xml" ) {
-		m_highlighter = new XmlHighlighter( m_exempleTextEdit->document() );
+		d->m_highlighter = new XmlHighlighter( m_exempleTextEdit->document() );
 	}
 }
 
 void CustomDialogImpl::on_m_fileTypeComboBox_currentIndexChanged( int index ) {
 	if( index >= 0 ) {
-		m_fileTypePath->setText( m_config.managedFile()[ index ].customPath );
-		m_specifiqueCheckBox->setChecked( m_config.managedFile()[ index ].canBeCustomize );
+		m_fileTypePath->setText( d->m_config.managedFile()[ index ].customPath );
+		m_specifiqueCheckBox->setChecked( d->m_config.managedFile()[ index ].canBeCustomize );
 	}
 }
 
 
 void CustomDialogImpl::on_m_underlineCheckBox_toggled( bool checked ) {
-	if( m_highlighter ) {
-		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setFontUnderline( checked );
-		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }
 
 void CustomDialogImpl::on_m_StrikeoutCheckBox_toggled( bool checked ) {
-	if( m_highlighter ) {
-		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setFontStrikeOut( checked );
-		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }
 
 void CustomDialogImpl::on_m_italicCheckBox_toggled( bool checked ) {
-	if( m_highlighter ) {
-		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setFontItalic( checked );
-		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }
 
 void CustomDialogImpl::on_m_boldCheckBox_toggled( bool checked ) {
-	if( m_highlighter ) {
-		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setFontWeight( checked ? QFont::Bold : QFont::Normal );
-		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }
 
 void CustomDialogImpl::on_m_fontComboBox_currentFontChanged( QFont f ) {
-	if( m_highlighter ) {
-		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setFontFamily( f.family() );
-		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }
 
 void CustomDialogImpl::on_m_colorComboBox_activated( QColor c ) {
-	if( m_highlighter ) {
-		QTextCharFormat format = m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setForeground( c );
-		m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
-		m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}
 }
 
@@ -179,35 +197,35 @@ void CustomDialogImpl::on_m_projectPathLineEdit_textChanged( QString path ) {
 	}
 	m_projectPathLineEdit->setPalette( palette );
 
-	m_config.setXinxProjectPath( path );
+	d->m_config.setXinxProjectPath( path );
 }
 
 void CustomDialogImpl::on_m_fileTypePath_textChanged( QString path ) {
 	int index = m_fileTypeComboBox->currentIndex();
 	if( index >= 0 ) {
-		m_config.managedFile()[ index ].customPath = path;
+		d->m_config.managedFile()[ index ].customPath = path;
 	}
 }
 
 void CustomDialogImpl::on_m_specifiqueCheckBox_toggled( bool checked ) {
 	int index = m_fileTypeComboBox->currentIndex();
 	if( index >= 0 ) {
-		m_config.managedFile()[ index ].canBeCustomize = checked;
+		d->m_config.managedFile()[ index ].canBeCustomize = checked;
 	}
 }
 
 void CustomDialogImpl::on_m_createBakCheckBox_toggled( bool checked ) {
-	m_config.setCreateBackupFile( checked );
+	d->m_config.setCreateBackupFile( checked );
 }
 
 void CustomDialogImpl::on_m_alertStandardCheckBox_toggled( bool checked ) {
-	m_config.setAlertWhenStdFile( checked );
+	d->m_config.setAlertWhenStdFile( checked );
 }
 
 void CustomDialogImpl::on_m_langComboBox_currentIndexChanged( QString lang ) {
 	QRegExp exp("^\\((.*)\\).*$");
 	if( exp.indexIn( lang ) >= 0 )
-		m_config.setLang( exp.cap( 1 ) );
+		d->m_config.setLang( exp.cap( 1 ) );
 }
 
 void CustomDialogImpl::on_m_objectDescriptionPathLineEdit_textChanged( QString path ) {
@@ -221,7 +239,7 @@ void CustomDialogImpl::on_m_objectDescriptionPathLineEdit_textChanged( QString p
 	}
 	m_objectDescriptionPathLineEdit->setPalette( palette );
 
-	m_config.setObjectDescriptionPath( path );
+	d->m_config.setObjectDescriptionPath( path );
 }
 
 
@@ -241,12 +259,12 @@ void CustomDialogImpl::on_m_changeProjectPathBtn_clicked() {
 
 
 void CustomDialogImpl::on_m_saveSessionCheckBox_toggled(bool checked) {
-	m_config.setSaveSessionByDefault( checked );
+	d->m_config.setSaveSessionByDefault( checked );
 }
 
 
 void CustomDialogImpl::on_m_CVSToolsLineEdit_textChanged(QString path) {
-	m_config.toolsPath()[ "cvs" ] = path;
+	d->m_config.toolsPath()[ "cvs" ] = path;
 }
 
 
