@@ -17,7 +17,8 @@ FORMS +=   ui/about.ui \
   ui/rcslogform.ui \
   ui/replace.ui \
   ui/resultatServices.ui \
-  ui/servicesconnection.ui
+  ui/servicesconnection.ui \
+  ui/commitmessages.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/connectionwebservicesdialogimpl.h \
   src/customdialogimpl.h \
@@ -54,7 +55,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsddocument.h \
   src/xsleditor.h \
   src/xsllistview.h \
-  src/xslproject.h
+  src/xslproject.h \
+  src/commitmessagedialogimpl.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 PRECOMPILED_HEADER +=   src/stable_header.h
@@ -102,7 +104,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsddocument.cpp \
   src/xsleditor.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp
+  src/xslproject.cpp \
+  src/commitmessagedialogimpl.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

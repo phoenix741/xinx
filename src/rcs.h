@@ -35,10 +35,16 @@ public:
 	
 	virtual rcsState status( const QString & path ) = 0;
 	virtual void update( const QString & path ) = 0;
+	virtual void commit( const QString & path, const QString & message ) = 0;
+	virtual void add( const QString & path ) = 0;
+	virtual void remove( const QString & path ) = 0;
 signals: 
 	void stateChanged( const QString & fileName );
 	void log( RCS::rcsLog niveau, const QString & info );
 	void updateTerminated();
+	void commitTerminated();
+	void addTerminated();
+	void removeTerminated();
 };
 
 #endif // __RCS_H__

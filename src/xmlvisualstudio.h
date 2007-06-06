@@ -54,6 +54,9 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
+	void on_m_commitProjectBtn_clicked();
+	void on_m_addFileToProjectBtn_clicked();
+	void on_m_deleteFileFromProject_clicked();
 	void on_m_updateProjectBtn_clicked();
 	void on_m_newStylesheetFileAct_triggered();
 	void on_m_newXMLFileAct_triggered();
@@ -198,6 +201,8 @@ private: /* private definition */
 
 };
 #endif
+
+
 
 
 

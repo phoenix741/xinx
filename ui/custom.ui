@@ -415,6 +415,14 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>CVS</string>
+      </attribute>
+      <attribute name="icon" >
+       <iconset resource="../images/application.qrc" >:/cervisia.png</iconset>
+      </attribute>
+     </widget>
     </widget>
    </item>
    <item>

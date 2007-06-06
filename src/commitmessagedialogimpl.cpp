@@ -18,30 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __RCS_CVS_H__
-#define __RCS_CVS_H__
+#include "commitmessagedialogimpl.h"
+//
+CommitMessageDialogImpl::CommitMessageDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
+	setupUi(this);
+}
+//
+void CommitMessageDialogImpl::setMessages( const QString & message ) {
+	m_textEditMessages->setText( message );
+}
 
-#include "rcs.h"
-
-class PrivateRCS_CVS;
-
-class ProcessExecutedException {	
-};
-
-class RCS_CVS : public RCS {
-	Q_OBJECT
-public:
-	RCS_CVS();
-	~RCS_CVS();
-
-	rcsState status( const QString & path );
-	virtual void update( const QString & path );
-	virtual void commit( const QString & path, const QString & message );
-	virtual void add( const QString & path );
-	virtual void remove( const QString & path );
-private:
-	PrivateRCS_CVS * d;
-	friend class PrivateRCS_CVS;
-};
-
-#endif // __RCS_CVS_H__
+QString CommitMessageDialogImpl::messages() {
+	return m_textEditMessages->toPlainText();
+}

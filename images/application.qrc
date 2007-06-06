@@ -7,7 +7,7 @@
         <file>balise.png</file>
         <file>button_cancel.png</file>
         <file>button_ok.png</file>
-        <file>warning.png</file>
+        <file>cervisia.png</file>
         <file>colors.png</file>
         <file>desktop.png</file>
         <file>down.png</file>
@@ -65,6 +65,7 @@
         <file>up.png</file>
         <file>usa.png</file>
         <file>variable.png</file>
+        <file>warning.png</file>
         <file>window_new.png</file>
     </qresource>
 </RCC>
