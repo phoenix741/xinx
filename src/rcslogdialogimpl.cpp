@@ -36,13 +36,13 @@ void RCSLogDialogImpl::log( RCS::rcsLog niveau, const QString & info ) {
 	QListWidgetItem * item = new QListWidgetItem(info, m_rcsLogListWidget);
 	switch( niveau ) {
 	case RCS::Error :
-		item->setForeground( Qt::red );
+		item->setIcon( QIcon(":/button_cancel.png") );
 		break;
 	case RCS::Warning :
-		item->setForeground( Qt::yellow );
+		item->setIcon( QIcon(":/warning.png") );
 		break;
 	case RCS::Information :
-		item->setForeground( Qt::green );
+		item->setIcon( QIcon(":/button_ok.png") );
 		break;
 	default:
 		;

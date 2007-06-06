@@ -79,16 +79,5 @@ void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
 	if( editor ) {
 		editor->service()->call( editor->operation(), editor->values() );
 	}
-	
-	//if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
-		//QTextEdit * ed = static_cast<WebServicesEditor*>( m_tabEditors->currentEditor() )->textEdit();
-		//
-		//NewWebServicesDialogImpl dlg;
-		//if( dlg.exec() == QDialog::Accepted ) {
-			//QStringList params;
-			//params.append( ed->toPlainText() );
-			//dlg.calledWebServices()->call( dlg.calledOperation(), params );
-		//}
-	//}
 }
 

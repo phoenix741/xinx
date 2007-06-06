@@ -29,51 +29,50 @@
 #include "wsdl.h"
 
 class WebServices;
-class QHttp;
-class QIODevice;
-class QBuffer;
+
+class PrivateParameter;
 
 class Parameter {
 public:
-	Parameter( QString ParamString, QString ParamType ) : m_paramString( ParamString ), m_paramType( ParamType ) { };
-	const QString & paramString() const { return m_paramString; };
-	const QString & paramType() const { return m_paramType; };
+	Parameter( QString paramString, QString paramType );
+	virtual ~Parameter();
+	const QString & paramString() const;
+	const QString & paramType() const;
 private:
-	QString m_paramString;
-	QString m_paramType;
+	PrivateParameter * d;
+	friend class PrivateParameter;
 };
+
+class PrivateOperation;
 
 class Operation {
 public:
-	Operation( QString name ) : m_name( name ) {};
-	~Operation();
+	Operation( QString name );
+	virtual ~Operation();
 
-	QString name() { return m_name; };
+	QString name();
 	
-	const QList<Parameter*> & inputParam() { return m_inputParam; };
-	const QList<Parameter*> & outputParam() { return m_outputParam; };
+	const QList<Parameter*> & inputParam();
+	const QList<Parameter*> & outputParam();
 	
-	QString encodingStyle() { return m_encodingStyle; };
-	QString namespaceString() { return m_namespaceString; };
+	QString encodingStyle();
+	QString namespaceString();
 private:
-	QString m_name;
-	QString m_encodingStyle;
-	QString m_namespaceString;
-	
-	QList<Parameter*> m_inputParam;
-	QList<Parameter*> m_outputParam;
-	
-friend class WebServices;
+	PrivateOperation * d;
+	friend class PrivateOperation;	
+	friend class WebServices;
 };
+
+class PrivateWebServices;
 
 class WebServices : public QObject {
 	Q_OBJECT
 public:
 	WebServices( const QString & link, QObject * parent = 0 );
-	~WebServices();
+	virtual ~WebServices();
 
-	QString name() { return m_wsdl.name(); };
-	const QList<Operation*> & operations() { return m_list; };
+	QString name();
+	const QList<Operation*> & operations();
 	
 	void askWSDL( QWidget * parent = 0 );
 	void loadFromElement( const QDomElement & element );
@@ -83,9 +82,8 @@ signals:
 	void updated();	
 	void soapResponse( QString query, QString response, QString errorCode, QString errorString );
 private:
-	WSDL m_wsdl;
-	QString m_link;
-	QList<Operation*> m_list;
+	PrivateWebServices * d;
+	friend class PrivateWebServices;
 };
 
 typedef QList<WebServices*> WebServicesList;
