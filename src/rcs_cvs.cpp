@@ -228,6 +228,13 @@ void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
 void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
+	QString reste = m_process->readAllStandardError();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Error, reste );
+	reste = m_process->readAllStandardOutput();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Information, reste );
+	
 	m_process->disconnect();
 	emit m_parent->updateTerminated();
 }
@@ -235,6 +242,13 @@ void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus e
 void PrivateRCS_CVS::processCommitFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
+	QString reste = m_process->readAllStandardError();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Error, reste );
+	reste = m_process->readAllStandardOutput();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Information, reste );
+
 	m_process->disconnect();
 	emit m_parent->commitTerminated();
 }
@@ -242,6 +256,13 @@ void PrivateRCS_CVS::processCommitFinished( int exitCode, QProcess::ExitStatus e
 void PrivateRCS_CVS::processAddFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
+	QString reste = m_process->readAllStandardError();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Error, reste );
+	reste = m_process->readAllStandardOutput();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Information, reste );
+
 	m_process->disconnect();
 	emit m_parent->addTerminated();
 }
@@ -249,6 +270,13 @@ void PrivateRCS_CVS::processAddFinished( int exitCode, QProcess::ExitStatus exit
 void PrivateRCS_CVS::processRemoveFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
+	QString reste = m_process->readAllStandardError();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Error, reste );
+	reste = m_process->readAllStandardOutput();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Information, reste );
+
 	m_process->disconnect();
 	emit m_parent->removeTerminated();
 }

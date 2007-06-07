@@ -43,9 +43,67 @@
 #include <QLabel>
 #include <QPushButton>
 
+#include <QMessageBox>
+#include <QFileSystemWatcher>
+
+/* PrivateFileEditor */
+
+class PrivateFileEditor : QObject {
+	Q_OBJECT
+public:
+	PrivateFileEditor( FileEditor * parent );
+	~PrivateFileEditor();
+	
+	bool hasWatcher();
+	void setWatcher( const QString & path );
+	void activateWatcher();
+	void desactivateWatcher();
+	QFileSystemWatcher * m_watcher;
+public slots:
+	void fileChanged ( const QString & path );
+private:
+	FileEditor * m_parent;
+	QString m_path;
+};
+
+PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) {
+	m_parent = parent;
+	m_watcher = NULL;
+}
+
+PrivateFileEditor::~PrivateFileEditor() {
+	delete m_watcher;
+}
+
+void PrivateFileEditor::setWatcher( const QString & path ) {
+	m_path = path;
+
+	delete m_watcher;
+	m_watcher = new QFileSystemWatcher( this );
+
+	activateWatcher();
+}
+
+void PrivateFileEditor::activateWatcher() {
+	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
+	m_watcher->addPath( m_path );
+}
+
+void PrivateFileEditor::desactivateWatcher() {
+	m_watcher->removePath( m_path );
+	m_watcher->disconnect();
+}
+
+void PrivateFileEditor::fileChanged( const QString & path ) {
+	if( QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
+		m_parent->loadFile();
+}
+
 /* FileEditor */
 
 FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( parent ) {
+	d = new PrivateFileEditor( this );
+	
 	m_view = textEditor;
 	m_view->setFrameStyle( QFrame::NoFrame );
 	m_view->setLineWrapMode(QTextEdit::NoWrap);
@@ -93,7 +151,7 @@ FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( par
 }
 
 FileEditor::~FileEditor() {
-	
+	delete d;
 }
 
 void FileEditor::setMessage( QString message ) {
@@ -292,8 +350,10 @@ void FileEditor::setFileName( const QString & fileName ) {
 			QFile::copy( m_fileName, destName );
 	}
 
-	if( ! fileName.isEmpty() )
+	if( ! fileName.isEmpty() ) {
 		m_fileName = fileName;
+		d->setWatcher( m_fileName );
+	}
 }
 
 void FileEditor::createBackup( const QString & filename ) {
@@ -302,6 +362,14 @@ void FileEditor::createBackup( const QString & filename ) {
 			QFile::remove( filename + ".bak" );
 		QFile::copy( filename, filename + ".bak" );
 	}
+}
+
+void FileEditor::desactivateWatcher() {
+	d->desactivateWatcher();
+}
+
+void FileEditor::activateWatcher() {
+	d->activateWatcher();
 }
 
 void FileEditor::loadFile( const QString & fileName ){
@@ -328,19 +396,26 @@ bool FileEditor::saveFile( const QString & fileName ){
 	if( ( fileName == m_fileName ) || fileName.isEmpty() ) createBackup( m_fileName ); 
 	if( ! fileName.isEmpty() ) setFileName( fileName );
 	
+	desactivateWatcher();
+	
 	QFile file( getFileName() );
 	if ( ! file.open( QFile::WriteOnly | QFile::Text ) ) {
 		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot write file %1:\n%2." )
 																.arg( fileName )
 																.arg( file.errorString() ) );
+		activateWatcher();
 		return false;
 	}
-
-	QTextStream out( &file );
 	QApplication::setOverrideCursor(Qt::WaitCursor);
+
+	QTextStream out ( &file );
 	out << m_view->toPlainText();
+	file.flush();
+	file.close();
 
 	m_view->updateModel();
+
+	activateWatcher();
 
 	QApplication::restoreOverrideCursor();
 
@@ -382,6 +457,8 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( element.attribute( "position" ).toInt() );
 	m_view->setTextCursor( tc );
+	
+	d->setWatcher( m_fileName );
 }
 
 QAbstractItemModel * FileEditor::model() {
@@ -431,3 +508,5 @@ void FileEditor::copy() {
 void FileEditor::paste() {
 	textEdit()->paste();
 }
+
+#include "fileeditor.moc"

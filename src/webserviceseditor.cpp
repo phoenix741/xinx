@@ -212,6 +212,9 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	if( ! fileName.isEmpty() ) setFileName( fileName );
 	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
+	
+	desactivateWatcher();
+	
 	/*
 	QTextStream out( &file );
 	out << m_view->toPlainText();
@@ -238,13 +241,18 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot write file %1:\n%2." )
 																.arg( fileName )
 																.arg( file.errorString() ) );
+		activateWatcher();
 		return false;
 	}
 
 	QTextStream out( &file );
 	document.save( out, 3 );
+	file.flush();
+	file.close();
 	
 	isModified = false;
+	
+	activateWatcher();
 
 	QApplication::restoreOverrideCursor();
 

@@ -30,6 +30,8 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QLabel;
 
+class PrivateFileEditor;
+
 class FileEditor : public Editor {
 	Q_OBJECT
 public:
@@ -87,6 +89,9 @@ protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 
 protected:
+	void desactivateWatcher();
+	void activateWatcher();
+
 	void setFileName( const QString & name );
 	void createBackup( const QString & filename );
   
@@ -98,6 +103,9 @@ protected:
 	TextEditor * m_view;
 	QLabel * m_messageErreur;
 	QWidget * m_messageBox;
+private:
+	PrivateFileEditor * d;
+	friend class PrivateFileEditor;
 };
 
 
