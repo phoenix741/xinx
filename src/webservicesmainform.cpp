@@ -42,7 +42,8 @@ void XMLVisualStudio::setWebServicesView( bool enabled ) {
 	}
 		
 	m_webServicesMenu->setEnabled( enabled );
-	m_webServicesToolBar->setEnabled( enabled );
+	m_refreshWebServicesListAct->setEnabled( enabled );
+	m_callWebServicesAct->setEnabled( enabled );
 }
 
 void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {

@@ -24,7 +24,7 @@
 
 /* PrivateConnectionWebServicesDialogImpl */
 
-class PrivateConnectionWebServicesDialogImpl : QObject {
+class PrivateConnectionWebServicesDialogImpl : public QObject {
 	Q_OBJECT
 public:
 	PrivateConnectionWebServicesDialogImpl( ConnectionWebServicesDialogImpl * parent );
@@ -44,6 +44,7 @@ private:
 
 PrivateConnectionWebServicesDialogImpl::PrivateConnectionWebServicesDialogImpl( ConnectionWebServicesDialogImpl * parent ) {
 	m_parent = parent;
+	m_http = new QHttp( this );
 	
 	connect( m_http, SIGNAL(dataSendProgress(int,int)), this, SLOT(setSendProgress(int,int)) );
 	connect( m_http, SIGNAL(dataReadProgress(int,int)), this, SLOT(setReadProgress(int,int)) );
@@ -141,14 +142,12 @@ void PrivateConnectionWebServicesDialogImpl::setReadProgress( int value, int max
 
 ConnectionWebServicesDialogImpl::ConnectionWebServicesDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
-	d = new PrivateConnectionWebServicesDialogImpl( this );	
-	
 	setupUi(this);
-	
-	d->m_http = new QHttp( this );
 	m_sendProgressBar->setValue( 0 );
 	m_recieveProgressBar->setValue( 0 );
-	
+
+	d = new PrivateConnectionWebServicesDialogImpl( this );	
+
 	connect( m_abortPushButton, SIGNAL(clicked()), d->m_http, SLOT(abort()) );
 }
 
@@ -161,21 +160,18 @@ void ConnectionWebServicesDialogImpl::setHost( const QString & path, quint16 por
 }
 
 bool ConnectionWebServicesDialogImpl::get( const QString & path, QIODevice * to ) {
-	this->show();
 	d->m_requestId = d->m_http->get( path, to );
 	this->exec();
 	return d->m_hasResult;
 }
 
 bool ConnectionWebServicesDialogImpl::post( const QString & path, QByteArray * data, QIODevice * to ) {
-	this->show();
 	d->m_requestId = d->m_http->post( path, *data, to );
 	this->exec();
 	return d->m_hasResult;
 }
 
 bool ConnectionWebServicesDialogImpl::request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to ) {
-	this->show();
 	d->m_requestId = d->m_http->request( *header, *data, to );
 	this->exec();
 	return d->m_hasResult;

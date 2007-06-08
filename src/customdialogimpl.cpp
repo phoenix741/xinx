@@ -62,6 +62,7 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	m_alertStandardCheckBox->setChecked( d->m_config.isAlertWhenStdFile() );
 	m_createBakCheckBox->setChecked( d->m_config.isCreateBackupFile() );
 	m_saveSessionCheckBox->setChecked( d->m_config.saveSessionByDefault() );
+	m_popupWhenFileModifiedCheckBox->setChecked( d->m_config.popupWhenFileModified() );
 		
 	int index = -1;
 	for( int i = 0; i < m_langComboBox->count(); i++ ) {
@@ -273,4 +274,8 @@ void CustomDialogImpl::on_m_cvsToolButton_clicked() {
 	if( ! value.isEmpty() ) {
 		m_CVSToolsLineEdit->setText( value );		
 	}
+}
+
+void CustomDialogImpl::on_m_popupWhenFileModifiedCheckBox_toggled(bool checked) {
+	d->m_config.setPopupWhenFileModified( checked );
 }

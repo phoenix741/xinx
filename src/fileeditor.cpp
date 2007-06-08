@@ -58,17 +58,17 @@ public:
 	void setWatcher( const QString & path );
 	void activateWatcher();
 	void desactivateWatcher();
-	QFileSystemWatcher * m_watcher;
 public slots:
 	void fileChanged ( const QString & path );
 private:
+	QFileSystemWatcher * m_watcher;
 	FileEditor * m_parent;
 	QString m_path;
 };
 
 PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) {
 	m_parent = parent;
-	m_watcher = NULL;
+	m_watcher = new QFileSystemWatcher( this );
 }
 
 PrivateFileEditor::~PrivateFileEditor() {
@@ -77,10 +77,6 @@ PrivateFileEditor::~PrivateFileEditor() {
 
 void PrivateFileEditor::setWatcher( const QString & path ) {
 	m_path = path;
-
-	delete m_watcher;
-	m_watcher = new QFileSystemWatcher( this );
-
 	activateWatcher();
 }
 
@@ -90,12 +86,12 @@ void PrivateFileEditor::activateWatcher() {
 }
 
 void PrivateFileEditor::desactivateWatcher() {
+	disconnect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
 	m_watcher->removePath( m_path );
-	m_watcher->disconnect();
 }
 
 void PrivateFileEditor::fileChanged( const QString & path ) {
-	if( QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
+	if( global.m_xinxConfig->popupWhenFileModified() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
 		m_parent->loadFile();
 }
 

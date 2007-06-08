@@ -1,7 +1,8 @@
 CONFIG +=   debug \
   exceptions \
   qt \
-  warn_on
+  warn_on \
+  x86
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
@@ -11,15 +12,16 @@ DISTFILES +=   CHANGELOG \
   src/genxml.sh \
   xml/completion.cpl
 FORMS +=   ui/about.ui \
+  ui/commitmessages.ui \
   ui/custom.ui \
   ui/mainform.ui \
   ui/projectproperty.ui \
   ui/rcslogform.ui \
   ui/replace.ui \
   ui/resultatServices.ui \
-  ui/servicesconnection.ui \
-  ui/commitmessages.ui
+  ui/servicesconnection.ui
 HEADERS +=   src/aboutdialogimpl.h \
+  src/commitmessagedialogimpl.h \
   src/connectionwebservicesdialogimpl.h \
   src/customdialogimpl.h \
   src/editor.h \
@@ -55,17 +57,16 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsddocument.h \
   src/xsleditor.h \
   src/xsllistview.h \
-  src/xslproject.h \
-  src/commitmessagedialogimpl.h
+  src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 PRECOMPILED_HEADER +=   src/stable_header.h
-QT +=   gui \
-  network \
+QT +=   network \
   xml
 RCC_DIR +=   build
 RESOURCES +=   images/application.qrc
 SOURCES +=   src/aboutdialogimpl.cpp \
+  src/commitmessagedialogimpl.cpp \
   src/connectionwebservicesdialogimpl.cpp \
   src/customdialogimpl.cpp \
   src/editor.cpp \
@@ -104,8 +105,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsddocument.cpp \
   src/xsleditor.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp \
-  src/commitmessagedialogimpl.cpp
+  src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

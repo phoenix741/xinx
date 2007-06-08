@@ -44,6 +44,7 @@ public:
 	bool m_createBackupFile;
 	bool m_alertWhenStdFile;
 	bool m_saveSessionByDefault;
+	bool m_popupWhenFileModified;
 	QString m_xinxProjectPath;
 	QString m_objectDescriptionPath;
 	
@@ -199,6 +200,7 @@ void XINXConfig::save() {
 	d->m_settings->setValue( "Size", d->m_xinxSize );
 	d->m_settings->setValue( "Descriptions/Object", d->m_objectDescriptionPath );
 	d->m_settings->setValue( "Descriptions/Completion", d->m_objectDescriptionPath );
+	d->m_settings->setValue( "Popup When File Modified", d->m_popupWhenFileModified );
 
 	d->m_settings->setValue( "Project/Default Path", d->m_xinxProjectPath );
 	d->m_settings->setValue( "Project/Alert when saving Standard File", d->m_alertWhenStdFile );
@@ -234,11 +236,12 @@ void XINXConfig::save() {
 
 void XINXConfig::load() {
 	d->createSettings();
-	d->m_lang                 = d->m_settings->value( "Language", d->m_lang ).toString();
-	d->m_createBackupFile     = d->m_settings->value( "Create Backup File", d->m_createBackupFile ).toBool();
-	d->m_saveSessionByDefault = d->m_settings->value( "Save Session By Default", d->m_saveSessionByDefault ).toBool();
-	d->m_xinxPosition         = d->m_settings->value( "Position", d->m_settings->value( "pos", d->m_xinxPosition ) ).toPoint();
-	d->m_xinxSize             = d->m_settings->value( "Size", d->m_settings->value( "size", d->m_xinxSize ) ).toSize();
+	d->m_lang                  = d->m_settings->value( "Language", d->m_lang ).toString();
+	d->m_createBackupFile      = d->m_settings->value( "Create Backup File", d->m_createBackupFile ).toBool();
+	d->m_saveSessionByDefault  = d->m_settings->value( "Save Session By Default", d->m_saveSessionByDefault ).toBool();
+	d->m_xinxPosition          = d->m_settings->value( "Position", d->m_settings->value( "pos", d->m_xinxPosition ) ).toPoint();
+	d->m_xinxSize              = d->m_settings->value( "Size", d->m_settings->value( "size", d->m_xinxSize ) ).toSize();
+	d->m_popupWhenFileModified = d->m_settings->value( "Popup When File Modified", d->m_popupWhenFileModified ).toBool();
 
 	d->m_objectDescriptionPath = d->m_settings->value( "Descriptions/Object", d->m_settings->value( "xmljavapath", d->m_objectDescriptionPath ) ).toString();
 	
@@ -407,3 +410,12 @@ QHash<QString,struct XINXConfig::managedStructure> & XINXConfig::managedStructur
 QHash<QString,QString> & XINXConfig::toolsPath() { 
 	return d->m_toolsPath; 
 }
+
+bool XINXConfig::popupWhenFileModified() const {
+	return d->m_popupWhenFileModified;
+}
+
+void XINXConfig::setPopupWhenFileModified( bool value ) {
+	d->m_popupWhenFileModified = value;
+}
+	

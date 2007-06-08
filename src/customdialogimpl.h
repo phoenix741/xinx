@@ -37,6 +37,7 @@ private slots:
 	void on_m_cvsToolButton_clicked();
 	void on_m_CVSToolsLineEdit_textChanged(QString );
 	void on_m_saveSessionCheckBox_toggled(bool checked);
+	void on_m_popupWhenFileModifiedCheckBox_toggled(bool checked);
 	void on_m_changeObjectPathBtn_clicked();
 	void on_m_changeProjectPathBtn_clicked();
 	void on_m_objectDescriptionPathLineEdit_textChanged(QString );

@@ -127,6 +127,9 @@ void XMLVisualStudio::createActions() {
 	newMenu->addAction( m_newWebServicesFileAct );
 	
 	m_newAct->setMenu( newMenu );
+	QToolButton * btn = qobject_cast<QToolButton*>(m_fileToolBar->widgetForAction( m_newAct ));
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
 	
 	// Recent project file
 	QMenu * recentProjectMenu = new QMenu( this );
@@ -137,7 +140,7 @@ void XMLVisualStudio::createActions() {
 	m_recentProjectAct->setMenu( recentProjectMenu );
 	connect( m_recentProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
 	
-	QToolButton * btn = qobject_cast<QToolButton*>(m_projectToolBar->widgetForAction( m_recentProjectAct ));
+	btn = qobject_cast<QToolButton*>(m_projectToolBar->widgetForAction( m_recentProjectAct ));
 	if( btn )
 		btn->setPopupMode( QToolButton::MenuButtonPopup );
 	
@@ -329,9 +332,11 @@ void XMLVisualStudio::on_m_newJavascriptFileAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
+	if( global.m_webServices->size() == 0 ) {
+		QMessageBox::warning( this, tr("WebServices"), tr("No WebServices can be found. Please update WebServices list to continue.") );
+		return;
+	}
 	m_tabEditors->newFileEditorWS();
-//	if( m_xslProject && ( m_xslProject->projectType() == XSLProject::SERVICES ) ) 
-//		newWebServices( qobject_cast<FileEditor*>( m_tabEditors->currentEditor() ) );
 	updateActions();
 }
 

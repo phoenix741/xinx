@@ -74,6 +74,9 @@ public:
 	bool isAlertWhenStdFile() const;
 	void setAlertWhenStdFile( bool value );
 	
+	bool popupWhenFileModified() const;
+	void setPopupWhenFileModified( bool value );
+	
 	QString xinxProjectPath() const;
 	void setXinxProjectPath( const QString & value );
 	
