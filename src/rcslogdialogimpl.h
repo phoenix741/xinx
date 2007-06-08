@@ -29,6 +29,8 @@ class RCSLogDialogImpl : public QDialog, public Ui::RCSLogDialog {
 public:
 	RCSLogDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 	void init();
+signals:
+	void abort();
 public slots:
 	void log( RCS::rcsLog niveau, const QString & info );
 	void logTerminated();	

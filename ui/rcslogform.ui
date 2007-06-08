@@ -59,6 +59,16 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="m_abortButton" >
+       <property name="text" >
+        <string>&amp;Abort</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../images/application.qrc" >:/button_cancel.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="m_closeButton" >
        <property name="text" >
         <string>&amp;Close</string>

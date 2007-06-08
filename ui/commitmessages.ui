@@ -72,7 +72,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images/application.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>m_validButton</sender>

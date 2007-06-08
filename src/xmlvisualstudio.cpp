@@ -90,8 +90,12 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 }
 
 void XMLVisualStudio::createDockWindows() {
-	m_windowsMenu->addAction( m_xslContentDock->toggleViewAction() ); 
-	m_windowsMenu->addAction( m_projectDirectoryDock->toggleViewAction() ); 
+	QAction * action = m_xslContentDock->toggleViewAction();
+	action->setShortcut( tr("Ctrl+1") );
+	m_windowsMenu->addAction( action ); 
+	action = m_projectDirectoryDock->toggleViewAction();
+	action->setShortcut( tr("Ctrl+2") );
+	m_windowsMenu->addAction( action ); 
 	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
 
@@ -268,6 +272,11 @@ void XMLVisualStudio::updateActions() {
 	m_closeProjectAct->setEnabled( global.m_project != NULL );
 	m_closeProjectSessionAct->setEnabled( global.m_project != NULL );
 	m_projectPropertyAct->setEnabled( global.m_project != NULL );
+	
+	m_updateProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_commitProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_addFileToProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_deleteFileFromProject->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
 
 	/* Files */
 	m_saveAct->setEnabled( m_tabEditors->count() );

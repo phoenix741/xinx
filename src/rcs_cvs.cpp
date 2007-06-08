@@ -131,13 +131,14 @@ public:
 public slots:
 	void watcherFileChanged ( const QString & path );
 	
-	void processUpdateReadyReadStandardError();
 	void processUpdateReadyReadStandardOutput();
 	void processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processCommitFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processAddFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processRemoveFinished( int exitCode, QProcess::ExitStatus exitStatus );
 private:
+	void processLine( bool error, const QString & line );
+
 	RCS_CVS * m_parent;
 	QString m_updatePath;
 };
@@ -209,20 +210,29 @@ void PrivateRCS_CVS::watcherFileChanged ( const QString & path ) {
 	}
 }
 
-void PrivateRCS_CVS::processUpdateReadyReadStandardError() {
-	m_process->setReadChannel( QProcess::StandardError );
-	while( m_process->canReadLine() ) {
-		QString line = m_process->readLine().simplified();
-		emit m_parent->log( RCS::Error, line );
-	}
+void PrivateRCS_CVS::processLine( bool error, const QString & line ) {
+	QString lline = line.simplified();
+	if( lline.startsWith( "? " ) )
+		emit m_parent->log( RCS::Warning, lline );
+	else if( lline.startsWith( "M " ) )
+		emit m_parent->log( RCS::Information, lline );
+	else if( lline.startsWith( "U " ) )
+		emit m_parent->log( RCS::Information, lline );
+ 	else if( lline.startsWith( "cvs" ) ) 
+		emit m_parent->log( RCS::Debug, lline );
+	else if( error )
+		emit m_parent->log( RCS::Error, lline );
+	else 
+		emit m_parent->log( RCS::Information, lline );
 }
 
 void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
 	m_process->setReadChannel( QProcess::StandardOutput );
-	while( m_process->canReadLine() ) {
-		QString line = m_process->readLine().simplified();
-		emit m_parent->log( RCS::Information, line );
-	}
+	while( m_process->canReadLine() ) 
+		processLine( true, m_process->readLine() );
+	m_process->setReadChannel( QProcess::StandardError );
+	while( m_process->canReadLine() )
+		processLine( false, m_process->readLine() );
 }
 
 void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
@@ -284,7 +294,7 @@ void PrivateRCS_CVS::processRemoveFinished( int exitCode, QProcess::ExitStatus e
 void PrivateRCS_CVS::callUpdate( const QString & path ) {
 	m_updatePath = path;
 	if( ! m_process ) m_process = new QProcess( this );
-	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardError()) );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processUpdateFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( m_updatePath );
@@ -293,7 +303,7 @@ void PrivateRCS_CVS::callUpdate( const QString & path ) {
 
 void PrivateRCS_CVS::callCommit( const QString & path, const QString & message ) {
 	if( ! m_process ) m_process = new QProcess( this );
-	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardError()) );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processCommitFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( path );
@@ -302,7 +312,7 @@ void PrivateRCS_CVS::callCommit( const QString & path, const QString & message )
 
 void PrivateRCS_CVS::callAdd( const QString & path ) {
 	if( ! m_process ) m_process = new QProcess( this );
-	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardError()) );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processAddFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( QFileInfo( path ).absolutePath() );
@@ -311,7 +321,7 @@ void PrivateRCS_CVS::callAdd( const QString & path ) {
 
 void PrivateRCS_CVS::callRemove( const QString & path ) {
 	if( ! m_process ) m_process = new QProcess( this );
-	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardError()) );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processRemoveFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( QFileInfo( path ).absolutePath() );
@@ -367,6 +377,10 @@ void RCS_CVS::remove( const QString & path ) {
 		throw ProcessExecutedException();
 	} else
 		d->callRemove( path );
+}
+
+void RCS_CVS::abort() {
+	d->m_process->terminate();
 }
 
 

@@ -38,6 +38,8 @@ public:
 	virtual void commit( const QString & path, const QString & message ) = 0;
 	virtual void add( const QString & path ) = 0;
 	virtual void remove( const QString & path ) = 0;
+public slots:
+	virtual void abort() = 0;
 signals: 
 	void stateChanged( const QString & fileName );
 	void log( RCS::rcsLog niveau, const QString & info );

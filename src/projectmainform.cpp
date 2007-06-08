@@ -139,6 +139,7 @@ void XMLVisualStudio::on_m_updateProjectBtn_clicked() {
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(updateTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
 		connect( rcs, SIGNAL(updateTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 		m_rcslogDialog->init();
 		m_rcslogDialog->show();
 		rcs->update( global.m_project->projectPath() );
@@ -153,6 +154,7 @@ void XMLVisualStudio::on_m_addFileToProjectBtn_clicked() {
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(addTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
 		connect( rcs, SIGNAL(addTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 		m_rcslogDialog->init();
 		m_rcslogDialog->show();
 
@@ -168,6 +170,7 @@ void XMLVisualStudio::on_m_deleteFileFromProject_clicked() {
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(removeTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
 		connect( rcs, SIGNAL(removeTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 		m_rcslogDialog->init();
 		m_rcslogDialog->show();
 
@@ -188,6 +191,7 @@ void XMLVisualStudio::on_m_commitProjectBtn_clicked() {
 			connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
 			connect( rcs, SIGNAL(commitTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
 			connect( rcs, SIGNAL(commitTerminated()), this, SLOT(rcsLogTerminated()) );
+			connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 			m_rcslogDialog->init();
 			m_rcslogDialog->show();
 			rcs->commit( global.m_project->projectPath(), message );
@@ -202,7 +206,7 @@ void XMLVisualStudio::createProjectPart() {
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_projectDirectoryTreeView->header()->hide();
-	m_projectDirectoryTreeView->setSelectionMode( QAbstractItemView::MultiSelection );
+//	m_projectDirectoryTreeView->setSelectionMode( QAbstractItemView::MultiSelection );
 	
 	m_rcslogDialog = new RCSLogDialogImpl( this );
 	
@@ -318,11 +322,12 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	}
 	m_tabEditors->setUpdatesEnabled( true );
 
+	setCurrentProject( filename );
+
 	updateActions();
 	updateRecentProjects();
 	updateRecentFiles();
 
-	setCurrentProject( filename );
 	global.emitProjectChanged();
 }
 

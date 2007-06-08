@@ -39,6 +39,8 @@ public:
 	virtual void commit( const QString & path, const QString & message );
 	virtual void add( const QString & path );
 	virtual void remove( const QString & path );
+public slots:
+	virtual void abort();
 private:
 	PrivateRCS_CVS * d;
 	friend class PrivateRCS_CVS;

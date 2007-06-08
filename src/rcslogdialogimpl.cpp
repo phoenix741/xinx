@@ -23,11 +23,12 @@
 //
 RCSLogDialogImpl::RCSLogDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
-
+	connect( m_abortButton, SIGNAL(clicked()), this, SIGNAL(abort()) );
 }
 //
 
 void RCSLogDialogImpl::init() {
+	m_abortButton->setEnabled( true );
 	m_closeButton->setEnabled( false );
 	m_rcsLogListWidget->clear();
 }
@@ -47,8 +48,10 @@ void RCSLogDialogImpl::log( RCS::rcsLog niveau, const QString & info ) {
 	default:
 		;
 	}
+	m_rcsLogListWidget->scrollToItem( item );
 }
 
 void RCSLogDialogImpl::logTerminated() {
 	m_closeButton->setEnabled( true );
+	m_abortButton->setEnabled( false );
 }
