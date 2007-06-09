@@ -30,36 +30,28 @@ class WebServices;
 class Operation;
 class QComboBox;
 
+class PrivateWebServicesEditor;
+
 class WebServicesEditor : public FileEditor {
 	Q_OBJECT
 public:
 	WebServicesEditor( QWidget *parent = 0 );
+	~WebServicesEditor();
 
 	virtual QString getSuffix() const;
 	
 	WebServices * service();
 	Operation * operation();
-	const QHash<QString,QString> & values() const { return m_paramValues; };
+	const QHash<QString,QString> & values() const;
 	
 	virtual void loadFile( const QString &fileName = "" );
 	virtual bool saveFile( const QString &fileName = "" );
 
 	virtual void serializeEditor( QDomElement & element, bool content );
 	virtual void deserializeEditor( const QDomElement & element );
-	
-private Q_SLOTS:
-	void webServicesChanged();
-	void webServicesActivated( int );
-	void webServicesParamActivated( int );
-	void webServicesValueActivated();
 private:
-	void store( const QString & );
-	void restore( const QString & );
-
-	bool isModified;
-	QString m_oldParamValue;
-	QComboBox * m_paramList, * m_servicesList, * m_actionList;
-	QHash<QString,QString> m_paramValues;
+	PrivateWebServicesEditor * d;
+	friend class PrivateWebServicesEditor;
 };
 
 #endif // __WEBSERVICESEDITOR_H__

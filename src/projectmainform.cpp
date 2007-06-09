@@ -292,15 +292,14 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
 	m_lastPlace              = global.m_project->projectPath();
 
+	if( global.m_project->projectType() == XSLProject::SERVICES )
+		setWebServicesView( true );
+
 	global.m_xinxConfig->recentProjectFiles().removeAll( filename );
 	global.m_xinxConfig->recentProjectFiles().prepend( filename );
      
 	while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
 		global.m_xinxConfig->recentProjectFiles().removeLast();
-
-	if( global.m_project->projectType() == XSLProject::SERVICES )
-		setWebServicesView( true );
-
 
 	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
 	m_iconProvider = new IconProjectProvider();

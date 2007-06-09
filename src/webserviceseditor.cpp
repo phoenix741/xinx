@@ -36,41 +36,154 @@
 #include <QDir>
 #include <QDomDocument>
 
-WebServicesEditor::WebServicesEditor( QWidget *parent ) :
-	FileEditor( new XMLEditor( parent ), parent ) {
+/* PrivateWebServicesEditor */
+
+class PrivateWebServicesEditor : public QObject {
+	Q_OBJECT
+public:
+	PrivateWebServicesEditor( WebServicesEditor * parent );
+	~PrivateWebServicesEditor();
 	
-	m_oldParamValue = QString();
+	void store( const QString & );
+	void restore( const QString & );
+
+	QString m_serviceName, m_operationName, m_oldParamValue;
+	QComboBox * m_servicesList, * m_paramList, * m_actionList;
+	QHash<QString,QString> m_paramValues;
+	bool m_isModified;
+
+public slots:
+	void webServicesChanged();
+	void webServicesActivated( int );
+	void webServicesParamActivated( int );
+	void webServicesValueActivated();
+
+private:
+	WebServicesEditor * m_parent;
+};
+
+PrivateWebServicesEditor::PrivateWebServicesEditor( WebServicesEditor * parent ) {
+	m_parent = parent;
+}
+
+PrivateWebServicesEditor::~PrivateWebServicesEditor() {
+	
+}
+
+void PrivateWebServicesEditor::webServicesChanged() {
+	m_servicesList->clear();
+	foreach( WebServices * ed, *(global.m_webServices) ) 
+		m_servicesList->addItem( QIcon(":/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
+	
+	if( ! ( m_serviceName.isEmpty() || ( m_servicesList->findText( m_serviceName ) != -1 ) ) ) {
+		m_servicesList->addItem( QIcon(":/services.png"), m_serviceName );
+		m_servicesList->setItemData( m_servicesList->count() - 1, Qt::gray, Qt::ForegroundRole );
+		m_servicesList->setCurrentIndex( m_servicesList->count() - 1 );
+	} else if( m_servicesList->count() > 0 )
+		m_servicesList->setCurrentIndex( 0 );
+}
+
+void PrivateWebServicesEditor::webServicesActivated( int index ) {
+	m_isModified = true;	
+
+	m_actionList->clear();
+	
+	if( ( index >= 0 ) && ( m_servicesList->itemData( index ).isValid() ) ) {
+		WebServices * ed = (WebServices*)(m_servicesList->itemData( index ).value<void*>());
+		foreach( Operation * op, ed->operations() ) 
+			m_actionList->addItem( QIcon(":/action.png"), op->name(), qVariantFromValue( (void*)op ) );
+	}
+	
+	if( ! ( m_operationName.isEmpty() || ( m_actionList->findText( m_operationName ) != -1 ) ) ) {
+		m_actionList->addItem( QIcon(":/action.png"), m_operationName );
+		m_actionList->setItemData( m_actionList->count() - 1, Qt::gray, Qt::ForegroundRole );
+		m_actionList->setCurrentIndex( m_actionList->count() - 1 );
+	} else if( m_actionList->count() > 0 )
+		m_actionList->setCurrentIndex( 0 );
+}
+
+void PrivateWebServicesEditor::webServicesParamActivated( int index ) {
+	m_isModified = true;
+	m_paramList->clear(); 
+
+	if( ( index >= 0 ) && ( m_actionList->itemData( index ).isValid() ) ) {
+		Operation * op = (Operation*)( m_actionList->itemData( index ).value<void*>() );
+		foreach( Parameter * param, op->inputParam() ) 
+			m_paramList->addItem( QIcon(":/serviceparam.png"), param->paramString() );
+	}
+	
+	foreach( QString param, m_paramValues.keys() ) {
+		if( m_paramList->findText( param ) == -1 ) {
+			m_paramList->addItem( QIcon(":/serviceparam.png"), param );
+			m_paramList->setItemData( m_paramList->count() - 1, Qt::gray, Qt::ForegroundRole );
+		}
+	}
+	if( m_paramList->count() > 0 )
+		m_paramList->setCurrentIndex( 0 );
+}
+
+void PrivateWebServicesEditor::webServicesValueActivated() {
+	if( ! m_oldParamValue.isEmpty() ) store( m_oldParamValue );
+	m_oldParamValue = m_paramList->currentText();
+	restore( m_oldParamValue );	
+}
+
+void PrivateWebServicesEditor::store( const QString & paramStr ) {
+	m_paramValues[ paramStr ] = m_parent->textEdit()->toPlainText();
+	m_isModified = m_isModified || m_parent->textEdit()->document()->isModified();
+}
+
+void PrivateWebServicesEditor::restore( const QString & paramStr ) {
+	m_parent->textEdit()->setPlainText( m_paramValues[ paramStr ] );
+	m_parent->textEdit()->document()->setModified( m_isModified );
+	m_parent->m_view->updateModel();
+}
+
+/* WebServicesEditor */
+
+WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( new XMLEditor( parent ), parent ) {
+	d = new PrivateWebServicesEditor( this );
+	
+	d->m_oldParamValue = QString();
 	
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
-	m_servicesList = new QComboBox( this );
+	d->m_servicesList = new QComboBox( this );
 
 	QLabel * label2 = new QLabel( tr("Action : "), this );
-	m_actionList = new QComboBox( this );
+	d->m_actionList = new QComboBox( this );
 		
 	QLabel * label3 = new QLabel( tr("Parameter : "), this );	
-	m_paramList = new QComboBox( this );
+	d->m_paramList = new QComboBox( this );
 
-	webServicesChanged();
-	
 	QHBoxLayout * hbox = new QHBoxLayout;
 	hbox->addWidget( label1 );
-	hbox->addWidget( m_servicesList );
+	hbox->addWidget( d->m_servicesList );
 	hbox->addSpacing( 10 );
 	hbox->addWidget( label2 );
-	hbox->addWidget( m_actionList );
+	hbox->addWidget( d->m_actionList );
 	hbox->addSpacing( 10 );
 	hbox->addWidget( label3 );
-	hbox->addWidget( m_paramList );
-	hbox->addStretch();
+	hbox->addWidget( d->m_paramList );
+	//hbox->addStretch();
 	
 	m_vbox->insertLayout( 0, hbox );
 	
-	connect( &global, SIGNAL(webServicesChanged()), this, SLOT(webServicesChanged()) );
-	connect( m_servicesList, SIGNAL(activated(int)), this, SLOT(webServicesActivated(int)) );
-	connect( m_actionList, SIGNAL(activated(int)), this, SLOT(webServicesParamActivated(int)) );
-	connect( m_paramList, SIGNAL(activated(int)), this, SLOT(webServicesValueActivated()) );
+	connect( &global, SIGNAL(webServicesChanged()), d, SLOT(webServicesChanged()) );
+	connect( d->m_servicesList, SIGNAL(currentIndexChanged(int)), d, SLOT(webServicesActivated(int)) );
+	connect( d->m_actionList, SIGNAL(currentIndexChanged(int)), d, SLOT(webServicesParamActivated(int)) );
+	connect( d->m_paramList, SIGNAL(currentIndexChanged(int)), d, SLOT(webServicesValueActivated()) );
 
-	isModified = false;
+	d->webServicesChanged();
+
+	d->m_isModified = false;
+}
+
+WebServicesEditor::~WebServicesEditor() {
+	delete d;
+}
+
+const QHash<QString,QString> & WebServicesEditor::values() const { 
+	return d->m_paramValues; 
 }
 
 QString WebServicesEditor::getSuffix() const {
@@ -81,72 +194,19 @@ QString WebServicesEditor::getSuffix() const {
 }
 
 WebServices * WebServicesEditor::service() {
-	int index = m_servicesList->currentIndex();
-	if( index >= 0 )
-		return static_cast<WebServices*>(m_servicesList->itemData( index ).value<void*>());
+	int index = d->m_servicesList->currentIndex();
+	if( ( index >= 0 ) && d->m_servicesList->itemData( index ).isValid() )
+		return static_cast<WebServices*>( d->m_servicesList->itemData( index ).value<void*>() );
 	else
 		return NULL;
 }
 
 Operation * WebServicesEditor::operation() {
-	int index = m_actionList->currentIndex();
-	if( index >= 0 )
-		return (Operation*)(m_actionList->itemData( index ).value<void*>());
+	int index = d->m_actionList->currentIndex();
+	if( ( index >= 0 ) && d->m_actionList->itemData( index ).isValid() )
+		return (Operation*)( d->m_actionList->itemData( index ).value<void*>() );
 	else
 		return NULL;
-}
-
-
-void WebServicesEditor::webServicesChanged() {
-	m_servicesList->clear();
-	foreach( WebServices * ed, *(global.m_webServices) ) {
-		m_servicesList->addItem( QIcon(":/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
-	}
-	webServicesActivated( m_servicesList->currentIndex() );
-}
-
-void WebServicesEditor::webServicesActivated( int index ) {
-	m_actionList->clear();
-	isModified = true;
-	if( index >= 0 ) {
-		WebServices * ed = (WebServices*)(m_servicesList->itemData( index ).value<void*>());
-		foreach( Operation * op, ed->operations() ) {
-			m_actionList->addItem( QIcon(":/action.png"), op->name(), qVariantFromValue( (void*)op ) );
-		}
-		webServicesParamActivated( m_actionList->currentIndex() );
-	}
-}
-
-void WebServicesEditor::webServicesParamActivated( int index ) {
-	m_paramList->clear(); 
-	isModified = true;
-	if( index >= 0 ) {
-		Operation * op = (Operation*)( m_actionList->itemData( index ).value<void*>() );
-		foreach( Parameter * param, op->inputParam() ) {
-			m_paramList->addItem( QIcon(":/serviceparam.png"), param->paramString() );
-		}
-		webServicesValueActivated();
-	}
-}
-
-void WebServicesEditor::webServicesValueActivated() {
-	isModified = true;
-	QString paramStr = m_paramList->currentText();
-	if( ! m_oldParamValue.isEmpty() )
-		store( m_oldParamValue );
-	restore( paramStr );	
-	m_oldParamValue = paramStr;
-}
-
-void WebServicesEditor::store( const QString & paramStr ) {
-	m_paramValues[ paramStr ] = textEdit()->toPlainText();
-	isModified = isModified || textEdit()->document()->isModified();
-}
-
-void WebServicesEditor::restore( const QString & paramStr ) {
-	textEdit()->setPlainText( m_paramValues[ paramStr ] );
-	textEdit()->document()->setModified( isModified );
-	m_view->updateModel();
 }
 
 class WrongFwsFormatException {};
@@ -164,14 +224,13 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 
 	try {
 		QDomDocument document;
-		if( ! document.setContent( &file, false ) )
-			throw WrongFwsFormatException();
+		if( ! document.setContent( &file, false ) ) throw WrongFwsFormatException();
+			
 		QDomElement element = document.documentElement();
-		if( element.tagName() != "webservice" )
-			throw WrongFwsFormatException();
+		if( element.tagName() != "webservice" ) throw WrongFwsFormatException();
 		
-		QString services = element.attribute( "service" );
-		QString action = element.attribute( "action" );
+		d->m_serviceName = element.attribute( "service" );
+		d->m_operationName = element.attribute( "action" );
 		
 		QDomElement param = element.firstChildElement();
 		while( ! param.isNull() ) {
@@ -186,14 +245,17 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 				text = text.nextSibling();
 			}
 			
-			m_paramValues[ paramStr ] = paramValue;
+			d->m_paramValues[ paramStr ] = paramValue;
 			
 			param = param.nextSiblingElement();
 		}
 		
-		m_servicesList->setCurrentIndex( m_servicesList->findText( services ) );
-		m_actionList->setCurrentIndex( m_actionList->findText( action ) );
-		restore( m_paramList->currentText() );
+		d->webServicesChanged();
+		/*
+		d->m_servicesList->setCurrentIndex( d->m_servicesList->findText( services ) );
+		d->m_actionList->setCurrentIndex( d->m_actionList->findText( action ) );
+		d->restore( d->m_paramList->currentText() );
+		*/
 	} catch(WrongFwsFormatException) {
 		file.seek( 0 );
 		QTextStream in( &file );
@@ -202,7 +264,7 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 		m_view->updateModel();
 	}
 
-	isModified = false;
+	d->m_isModified = false;
 	
 	QApplication::restoreOverrideCursor();
 }
@@ -215,24 +277,19 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	
 	desactivateWatcher();
 	
-	/*
-	QTextStream out( &file );
-	out << m_view->toPlainText();
-	m_view->updateModel();
-	*/
-	store( m_paramList->currentText() );
+	d->store( d->m_paramList->currentText() );
 	
 	QDomDocument document;
 	QDomElement element = document.createElement( "webservice" );
 	document.appendChild( element );
-	element.setAttribute( "service", m_servicesList->currentText() );
-	element.setAttribute( "action", m_actionList->currentText() );
+	element.setAttribute( "service", d->m_serviceName );
+	element.setAttribute( "action", d->m_operationName );
 	
-	foreach( QString param, m_paramValues.keys() ) {
+	foreach( QString param, d->m_paramValues.keys() ) {
 		QDomElement paramElement = document.createElement( param ) ;
 		element.appendChild( paramElement );
 				
-		QDomText text = document.createTextNode( m_paramValues[param] );
+		QDomText text = document.createTextNode( d->m_paramValues[param] );
 		paramElement.appendChild( text );
 	}
 
@@ -250,7 +307,7 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	file.flush();
 	file.close();
 	
-	isModified = false;
+	d->m_isModified = false;
 	
 	activateWatcher();
 
@@ -260,24 +317,24 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 }
 
 void WebServicesEditor::serializeEditor( QDomElement & element, bool content ) {
-	store( m_paramList->currentText() );
+	d->store( d->m_paramList->currentText() );
 
 	element.setAttribute( "class", metaObject()->className() );
 	element.setAttribute( "filename", m_fileName );
 	element.setAttribute( "position", m_view->textCursor().position() );
 
-	element.setAttribute( "service", m_servicesList->currentText() );
-	element.setAttribute( "action", m_actionList->currentText() );
-	element.setAttribute( "param", m_paramList->currentText() );
+	element.setAttribute( "service", d->m_servicesList->currentText() );
+	element.setAttribute( "action", d->m_actionList->currentText() );
+	element.setAttribute( "param", d->m_paramList->currentText() );
 
 	if( content && m_view->document()->isModified() ) {
-		element.setAttribute( "ismodified", isModified );
+		element.setAttribute( "ismodified", d->m_isModified );
 
-		foreach( QString param, m_paramValues.keys() ) {
+		foreach( QString param, d->m_paramValues.keys() ) {
 			QDomElement paramElement = global.m_project->sessionDocument().createElement( param ) ;
 			element.appendChild( paramElement );
 				
-			QDomText text = global.m_project->sessionDocument().createTextNode( m_paramValues[param] );
+			QDomText text = global.m_project->sessionDocument().createTextNode( d->m_paramValues[param] );
 			paramElement.appendChild( text );
 		}
 	}
@@ -301,30 +358,33 @@ void WebServicesEditor::deserializeEditor( const QDomElement & element ) {
 			node = node.nextSibling();
 		}
 		
-		m_paramValues[ name ] = plainText;
+		d->m_paramValues[ name ] = plainText;
 		
 		params = params.nextSiblingElement();
 	}
 		
-	if( content ) {
-		isModified = (bool)(element.attribute( "ismodified" ).toInt());
-	} else {
-		if( !m_fileName.isEmpty() )
-			loadFile( m_fileName );
-	}
+	if( ( ! content ) && ( !m_fileName.isEmpty() ) ) 
+		loadFile( m_fileName );
 
-	QString services = element.attribute( "service" );
-	QString action = element.attribute( "action" );
+	d->m_serviceName = element.attribute( "service" );
+	d->m_operationName = element.attribute( "action" );
 	QString param = element.attribute( "param" );
 	
-	if( !( services.isEmpty() || action.isEmpty() || param.isEmpty() ) ) {
-		m_servicesList->setCurrentIndex( m_servicesList->findText( services ) );
-		m_actionList->setCurrentIndex( m_actionList->findText( action ) );
-		m_paramList->setCurrentIndex( m_paramList->findText( param ) );
-		restore( m_paramList->currentText() );
+	d->webServicesChanged();
+
+	if( content ) 
+		d->m_isModified = (bool)(element.attribute( "ismodified" ).toInt());
+	else 
+		d->m_isModified = false;
+
+	if( ! param.isEmpty() ) {
+		d->m_paramList->setCurrentIndex( d->m_paramList->findText( param ) );
+		d->restore( d->m_paramList->currentText() );
 	}
 
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( element.attribute( "position" ).toInt() );
 	m_view->setTextCursor( tc );
 }
+
+#include "webserviceseditor.moc"

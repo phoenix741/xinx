@@ -64,13 +64,16 @@ RCS_CVSEntry::RCS_CVSEntry( const QString & path ) {
 }
 
 void RCS_CVSEntry::setDate( QString date ) {
-	if( date.contains( "+conflict" ) )
-		m_hasConflict = true;
-	else
-		m_hasConflict = false;
+	if( ! m_fileInfo.isDir() ) {
+		if( date.contains( "+conflict" ) )
+			m_hasConflict = true;
+		else
+			m_hasConflict = false;
 	
-	m_cvsDate = QDateTime::fromString( date.remove( "+conflict" ) ); // , "ddd MMM d hh:mm:ss yyyy"
-	m_cvsDate.setTimeSpec( Qt::UTC );
+		m_cvsDate = QDateTime::fromString( date.remove( "+conflict" ) ); // , "ddd MMM d hh:mm:ss yyyy"
+		m_cvsDate.setTimeSpec( Qt::UTC );
+	} else
+		m_cvsDate = QDateTime();
 }
 
 void RCS_CVSEntry::setFileName( const QString & filename ) {
