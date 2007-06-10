@@ -45,6 +45,9 @@ void RCSLogDialogImpl::log( RCS::rcsLog niveau, const QString & info ) {
 	case RCS::Information :
 		item->setIcon( QIcon(":/button_ok.png") );
 		break;
+	case RCS::Debug :
+		item->setForeground( Qt::gray );
+		break;
 	default:
 		;
 	}

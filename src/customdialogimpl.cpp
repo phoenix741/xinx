@@ -63,7 +63,20 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	m_createBakCheckBox->setChecked( d->m_config.isCreateBackupFile() );
 	m_saveSessionCheckBox->setChecked( d->m_config.saveSessionByDefault() );
 	m_popupWhenFileModifiedCheckBox->setChecked( d->m_config.popupWhenFileModified() );
-		
+
+	m_cvsCompressionComboBox->setCurrentIndex( d->m_config.cvsCompressionLevel() );
+	m_cvsPruneCheckBox->setChecked( d->m_config.cvsPruneEmptyDirectories() );
+	if( d->m_config.cvsProgressMessages().isEmpty() ) 
+		m_cvsVerboseComboBox->setCurrentIndex( 0 );
+	else
+	if( d->m_config.cvsProgressMessages() == "-q" ) 
+		m_cvsVerboseComboBox->setCurrentIndex( 1 );
+	else
+	if( d->m_config.cvsProgressMessages() == "-Q" ) 
+		m_cvsVerboseComboBox->setCurrentIndex( 2 );
+	m_cvsCreateDirCheckBox->setChecked( d->m_config.cvsCreateDirectories() );
+
+
 	int index = -1;
 	for( int i = 0; i < m_langComboBox->count(); i++ ) {
 		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( d->m_config.lang() ) ) )
@@ -279,3 +292,30 @@ void CustomDialogImpl::on_m_cvsToolButton_clicked() {
 void CustomDialogImpl::on_m_popupWhenFileModifiedCheckBox_toggled(bool checked) {
 	d->m_config.setPopupWhenFileModified( checked );
 }
+
+void CustomDialogImpl::on_m_cvsCompressionComboBox_currentIndexChanged(int index) {
+	d->m_config.setCVSCompressionLevel( index );
+}
+
+void CustomDialogImpl::on_m_cvsPruneCheckBox_toggled(bool checked) {
+	d->m_config.setCVSPruneEmptyDirectories( checked );
+}
+
+void CustomDialogImpl::on_m_cvsVerboseComboBox_currentIndexChanged(int index) {
+	switch( index ) {
+	case 0: 
+		d->m_config.setCVSProgressMessages( "" );
+		break;
+	case 1: 
+		d->m_config.setCVSProgressMessages( "-q" );
+		break;
+	case 2: 
+		d->m_config.setCVSProgressMessages( "-Q" );
+		break;
+	}
+}
+
+void CustomDialogImpl::on_m_cvsCreateDirCheckBox_toggled(bool checked) {
+	d->m_config.setCVSCreateDirectories( checked );
+}
+

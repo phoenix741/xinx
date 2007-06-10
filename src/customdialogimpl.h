@@ -34,6 +34,10 @@ public:
 	void loadFromConfig( XINXConfig * config );
 	void saveToConfig( XINXConfig * config );
 private slots:
+	void on_m_cvsCompressionComboBox_currentIndexChanged(int index);
+	void on_m_cvsPruneCheckBox_toggled(bool checked);
+	void on_m_cvsVerboseComboBox_currentIndexChanged(int index);
+	void on_m_cvsCreateDirCheckBox_toggled(bool checked);
 	void on_m_cvsToolButton_clicked();
 	void on_m_CVSToolsLineEdit_textChanged(QString );
 	void on_m_saveSessionCheckBox_toggled(bool checked);

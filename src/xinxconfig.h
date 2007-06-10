@@ -96,6 +96,14 @@ public:
 	struct managedFile managedFile4Suffix( QString suffix );
 	
 	QHash<QString,QString> & toolsPath();
+	QString cvsProgressMessages();
+	void setCVSProgressMessages( QString value );
+	int cvsCompressionLevel();
+	void setCVSCompressionLevel( int value );
+	bool cvsPruneEmptyDirectories();
+	void setCVSPruneEmptyDirectories( bool value );
+	bool cvsCreateDirectories();
+	void setCVSCreateDirectories( bool value );
 	
 private:
 	PrivateXINXConfig * d;

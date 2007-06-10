@@ -221,6 +221,8 @@ void PrivateRCS_CVS::processLine( bool error, const QString & line ) {
 		emit m_parent->log( RCS::Information, lline );
 	else if( lline.startsWith( "U " ) )
 		emit m_parent->log( RCS::Information, lline );
+	else if( lline.startsWith( "P " ) )
+		emit m_parent->log( RCS::Information, lline );
  	else if( lline.startsWith( "cvs" ) ) 
 		emit m_parent->log( RCS::Debug, lline );
 	else if( error )
@@ -247,6 +249,8 @@ void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus e
 	reste = m_process->readAllStandardOutput();
 	if( ! reste.isEmpty() ) 
 		emit m_parent->log( RCS::Information, reste );
+
+	emit m_parent->log( RCS::Debug, tr("Update terminated") );
 	
 	m_process->disconnect();
 	emit m_parent->updateTerminated();
@@ -262,6 +266,8 @@ void PrivateRCS_CVS::processCommitFinished( int exitCode, QProcess::ExitStatus e
 	if( ! reste.isEmpty() ) 
 		emit m_parent->log( RCS::Information, reste );
 
+	emit m_parent->log( RCS::Debug, tr("Commit terminated") );
+
 	m_process->disconnect();
 	emit m_parent->commitTerminated();
 }
@@ -275,6 +281,8 @@ void PrivateRCS_CVS::processAddFinished( int exitCode, QProcess::ExitStatus exit
 	reste = m_process->readAllStandardOutput();
 	if( ! reste.isEmpty() ) 
 		emit m_parent->log( RCS::Information, reste );
+
+	emit m_parent->log( RCS::Debug, tr("Add terminated") );
 
 	m_process->disconnect();
 	emit m_parent->addTerminated();
@@ -290,6 +298,8 @@ void PrivateRCS_CVS::processRemoveFinished( int exitCode, QProcess::ExitStatus e
 	if( ! reste.isEmpty() ) 
 		emit m_parent->log( RCS::Information, reste );
 
+	emit m_parent->log( RCS::Debug, tr("Remove terminated") );
+
 	m_process->disconnect();
 	emit m_parent->removeTerminated();
 }
@@ -301,7 +311,15 @@ void PrivateRCS_CVS::callUpdate( const QString & path ) {
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processUpdateFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( m_updatePath );
-	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], QStringList() << "-z9" << "update" );
+	QStringList parameters;
+	if( ! global.m_xinxConfig->cvsProgressMessages().isEmpty() )
+		parameters << global.m_xinxConfig->cvsProgressMessages();
+	parameters << QString("-z%1").arg( global.m_xinxConfig->cvsCompressionLevel() ) << "update";
+	if( global.m_xinxConfig->cvsPruneEmptyDirectories() )
+		parameters << "-P";
+	if( global.m_xinxConfig->cvsCreateDirectories() )
+		parameters << "-d";
+	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], parameters );
 }
 
 void PrivateRCS_CVS::callCommit( const QString & path, const QString & message ) {
@@ -310,7 +328,11 @@ void PrivateRCS_CVS::callCommit( const QString & path, const QString & message )
 	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
 	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processCommitFinished(int,QProcess::ExitStatus)) );
 	m_process->setWorkingDirectory( path );
-	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], QStringList() << "-z9" << "commit" << "-m" << message );
+	QStringList parameters;
+	if( ! global.m_xinxConfig->cvsProgressMessages().isEmpty() )
+		parameters << global.m_xinxConfig->cvsProgressMessages();
+	parameters << QString("-z%1").arg( global.m_xinxConfig->cvsCompressionLevel() ) << "commit" << "-m" << message;
+	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], parameters );
 }
 
 void PrivateRCS_CVS::callAdd( const QString & path ) {

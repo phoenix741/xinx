@@ -55,6 +55,11 @@ public:
 	
 	QHash<QString,QString> m_toolsPath;
 	
+	QString m_cvsProgressMessages;
+	int m_cvsCompressionLevel;
+	bool m_cvsPruneEmptyDirectories;
+	bool m_cvsCreateDirectories;
+	
 	void createSettings();
 	void deleteSettings();
 private:
@@ -86,6 +91,7 @@ XINXConfig::XINXConfig(  ) {
 	d->m_createBackupFile = true;
 	d->m_alertWhenStdFile = true;
 	d->m_saveSessionByDefault = true;	
+	d->m_popupWhenFileModified = true;
 	d->m_xinxProjectPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
 	d->m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "xml" );
 	
@@ -150,6 +156,10 @@ XINXConfig::XINXConfig(  ) {
 	d->m_managedFileList.append( file );
 
 	d->m_toolsPath[ "cvs" ] = "/usr/bin/cvs";
+	d->m_cvsProgressMessages = "-q";
+	d->m_cvsCompressionLevel = 9;
+	d->m_cvsPruneEmptyDirectories = false;
+	d->m_cvsCreateDirectories = true;
 }
 
 XINXConfig::~XINXConfig(  ) {
@@ -230,6 +240,10 @@ void XINXConfig::save() {
 	foreach( QString tool, d->m_toolsPath.keys() ) {
 		d->m_settings->setValue( QString("Tools/%1").arg( tool ), d->m_toolsPath[ tool ] );
 	}
+	d->m_settings->setValue( "CVS/Progress Messages", d->m_cvsProgressMessages );
+	d->m_settings->setValue( "CVS/Comression Level", d->m_cvsCompressionLevel );
+	d->m_settings->setValue( "CVS/Prune Empty Directories", d->m_cvsPruneEmptyDirectories );
+	d->m_settings->setValue( "CVS/Create Directories", d->m_cvsCreateDirectories );
 	
 	d->deleteSettings();
 }
@@ -286,6 +300,10 @@ void XINXConfig::load() {
 	foreach( QString tool, d->m_toolsPath.keys() ) {
 		d->m_toolsPath[ tool ] = d->m_settings->value( QString("Tools/%1").arg( tool ), d->m_toolsPath[ tool ] ).toString();
 	}
+	d->m_cvsProgressMessages = d->m_settings->value( "CVS/Progress Messages", d->m_cvsProgressMessages ).toString();
+	d->m_cvsCompressionLevel = d->m_settings->value( "CVS/Comression Level", d->m_cvsCompressionLevel ).toInt();
+	d->m_cvsPruneEmptyDirectories = d->m_settings->value( "CVS/Prune Empty Directories", d->m_cvsPruneEmptyDirectories ).toBool();
+	d->m_cvsCreateDirectories = d->m_settings->value( "CVS/Create Directories", d->m_cvsCreateDirectories ).toBool();
 
 	d->deleteSettings();
 }
@@ -419,3 +437,34 @@ void XINXConfig::setPopupWhenFileModified( bool value ) {
 	d->m_popupWhenFileModified = value;
 }
 	
+QString XINXConfig::cvsProgressMessages() {
+	return d->m_cvsProgressMessages;
+}
+
+int XINXConfig::cvsCompressionLevel() {
+	return d->m_cvsCompressionLevel;
+}
+
+bool XINXConfig::cvsPruneEmptyDirectories() {
+	return d->m_cvsPruneEmptyDirectories;
+}
+
+bool XINXConfig::cvsCreateDirectories() {
+	return d->m_cvsCreateDirectories;	
+}
+
+void XINXConfig::setCVSProgressMessages( QString value ) {
+	d->m_cvsProgressMessages = value;
+}
+
+void XINXConfig::setCVSCompressionLevel( int value ) {
+	d->m_cvsCompressionLevel = value;
+}
+
+void XINXConfig::setCVSPruneEmptyDirectories( bool value ) {
+	d->m_cvsPruneEmptyDirectories = value;
+}
+
+void XINXConfig::setCVSCreateDirectories( bool value ) {
+	d->m_cvsCreateDirectories = value;
+}
