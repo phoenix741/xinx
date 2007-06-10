@@ -20,4 +20,50 @@
 
 #include "flattreeview.h"
 
-// place your code here
+class PrivateFlatModel {
+public:
+	PrivateFlatModel( FlatModel * parent );
+	~PrivateFlatModel();
+	
+	FlatModel * m_model;
+private:
+	FlatModel * m_parent;
+};
+
+FlatModel::FlatModel( QAbstractItemModel * model ) {
+	d = new PrivateFlatModel( this );
+	d->m_model = model;
+}
+
+FlatModel::~FlatModel() {
+	delete d;
+}
+	
+int FlatModel::columnCount ( const QModelIndex & parent = QModelIndex() ) const {
+
+}
+
+QVariant FlatModel::data ( const QModelIndex & index, int role = Qt::DisplayRole ) const {
+	
+}
+
+Qt::ItemFlags FlatModel::flags ( const QModelIndex & index ) const {
+	
+}
+
+QVariant FlatModel::headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const {
+	
+}
+
+QModelIndex FlatModel::index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const {
+	
+}
+
+QModelIndex FlatModel::parent ( const QModelIndex & index ) const {
+	
+}
+
+int FlatModel::rowCount ( const QModelIndex & parent = QModelIndex() ) const {
+	
+}
+

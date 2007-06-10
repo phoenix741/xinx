@@ -21,6 +21,26 @@
 #ifndef __FLATTREEVIEW_H__
 #define __FLATTREEVIEW_H__
 
-// place your code here
+#include <QAbstractItemModel>
+
+class PrivateFlatModel;
+
+class FlatModel : public QAbstractItemModel {
+public:
+	FlatModel( QAbstractItemModel * model );
+	virtual ~FlatModel();
+	
+	virtual int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
+	virtual QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+	virtual Qt::ItemFlags flags ( const QModelIndex & index ) const;
+	virtual QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	virtual QModelIndex index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+	virtual QModelIndex parent ( const QModelIndex & index ) const;
+	virtual int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
+	
+private:
+	PrivateFlatModel * d;
+	friend class PrivateFlatModel;
+};
 
 #endif // __FLATTREEVIEW_H__
