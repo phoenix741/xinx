@@ -93,7 +93,6 @@ bool XSLValueCompletionModelObjListSort( XSLModelData * d1, XSLModelData * d2 ) 
 }
 
 void XSLValueCompletionModel::refreshList() {
-	qDebug() << "refreshList()";
 	m_objList.clear();
 	refreshRecursive( rootItem );
 	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );

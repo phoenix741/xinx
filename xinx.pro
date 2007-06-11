@@ -1,8 +1,8 @@
-CONFIG +=   debug \
-  exceptions \
+CONFIG +=   exceptions \
   qt \
   warn_on \
-  x86
+  x86 \
+  release
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \

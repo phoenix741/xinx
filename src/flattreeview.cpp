@@ -25,10 +25,18 @@ public:
 	PrivateFlatModel( FlatModel * parent );
 	~PrivateFlatModel();
 	
-	FlatModel * m_model;
+	QAbstractItemModel * m_model;
 private:
 	FlatModel * m_parent;
 };
+
+PrivateFlatModel::PrivateFlatModel( FlatModel * parent ) {
+	m_parent = parent;
+}
+
+PrivateFlatModel::~PrivateFlatModel() {
+	
+}
 
 FlatModel::FlatModel( QAbstractItemModel * model ) {
 	d = new PrivateFlatModel( this );
@@ -39,11 +47,11 @@ FlatModel::~FlatModel() {
 	delete d;
 }
 	
-int FlatModel::columnCount ( const QModelIndex & parent = QModelIndex() ) const {
+int FlatModel::columnCount ( const QModelIndex & parent ) const {
 
 }
 
-QVariant FlatModel::data ( const QModelIndex & index, int role = Qt::DisplayRole ) const {
+QVariant FlatModel::data ( const QModelIndex & index, int role ) const {
 	
 }
 
@@ -51,11 +59,11 @@ Qt::ItemFlags FlatModel::flags ( const QModelIndex & index ) const {
 	
 }
 
-QVariant FlatModel::headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const {
+QVariant FlatModel::headerData ( int section, Qt::Orientation orientation, int role ) const {
 	
 }
 
-QModelIndex FlatModel::index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const {
+QModelIndex FlatModel::index ( int row, int column, const QModelIndex & parent ) const {
 	
 }
 
@@ -63,7 +71,9 @@ QModelIndex FlatModel::parent ( const QModelIndex & index ) const {
 	
 }
 
-int FlatModel::rowCount ( const QModelIndex & parent = QModelIndex() ) const {
+int FlatModel::rowCount ( const QModelIndex & parent ) const {
 	
 }
+
+
 

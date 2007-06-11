@@ -139,7 +139,9 @@ void UniqueApplication::start() {
 
 	m_handleMutex = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"com.generix.xmlstudio.mutex" );
 	int error = GetLastError();
+	if( ! m_handleMutex ) perror( "CreateMutex" );
 	m_handleMutexGbl = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"Global\\com.generix.xmlstudio.mutex" );
+	if( ! m_handleMutexGbl ) perror( "CreateMutex" );
 
 	if( m_handleMutex == 0 ) {
 		std::cout << QCoreApplication::translate("UniqueApplication", "UniqueApplication: Can't create mutex.").toStdString ();

@@ -22,6 +22,10 @@
 #include "globals.h"
 #include "xinxconfig.h"
 
+#ifdef Q_WS_WIN
+	#include <windows.h>
+#endif
+
 #include <QFileSystemWatcher>
 #include <QHash>
 #include <QDateTime>
@@ -405,6 +409,16 @@ void RCS_CVS::remove( const QString & path ) {
 }
 
 void RCS_CVS::abort() {
+#ifdef Q_WS_WIN
+	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, d->m_process->pid()->dwProcessId ) != 0 )
+		perror( "GenerateConsoleCtrlEvent" );
+	if( GenerateConsoleCtrlEvent( CTRL_C_EVENT, d->m_process->pid()->dwProcessId ) != 0 )
+		perror( "GenerateConsoleCtrlEvent" );
+	if( ! d->m_process->waitForFinished( 1000 ) ) {
+		emit log( RCS::Error, tr("I'M A PROCESS KILLER") );
+		d->m_process->kill();
+	}
+#endif
 	d->m_process->terminate();
 }
 
