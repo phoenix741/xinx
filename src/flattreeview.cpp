@@ -59,10 +59,6 @@ Qt::ItemFlags FlatModel::flags ( const QModelIndex & index ) const {
 	
 }
 
-QVariant FlatModel::headerData ( int section, Qt::Orientation orientation, int role ) const {
-	
-}
-
 QModelIndex FlatModel::index ( int row, int column, const QModelIndex & parent ) const {
 	
 }
