@@ -109,11 +109,11 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 	QString m_plainText = toPlainText();
     QTextCursor cursor = textCursor();
     int pos = cursor.position();
-    while ( (pos>0)  && ( m_plainText.at( pos-1 ).isLetter() || (m_plainText.at( pos-1 ) == QChar('_')) ) )
+    while ( (pos>0)  && ( m_plainText.at( pos-1 ).isLetter() || m_plainText.at( pos-1 ).isNumber() || (m_plainText.at( pos-1 ) == QChar('_')) ) )
         pos--;
     cursor.setPosition(pos, QTextCursor::MoveAnchor);
 
-    while ( (pos < m_plainText.length()) && ( m_plainText.at( pos ).isLetter() || (m_plainText.at( pos ) == QChar('_')) ) )
+    while ( (pos < m_plainText.length()) && ( m_plainText.at( pos ).isLetter() || m_plainText.at( pos ).isNumber() || (m_plainText.at( pos ) == QChar('_')) ) )
         pos++;
     cursor.setPosition(pos, QTextCursor::KeepAnchor);
     setTextCursor( cursor );

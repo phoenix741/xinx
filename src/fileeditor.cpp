@@ -389,17 +389,17 @@ void FileEditor::loadFile( const QString & fileName ){
 }
 
 bool FileEditor::saveFile( const QString & fileName ){
+	d->desactivateWatcher();
+
 	if( ( fileName == m_fileName ) || fileName.isEmpty() ) createBackup( m_fileName ); 
 	if( ! fileName.isEmpty() ) setFileName( fileName );
-	
-	desactivateWatcher();
 	
 	QFile file( getFileName() );
 	if ( ! file.open( QFile::WriteOnly | QFile::Text ) ) {
 		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot write file %1:\n%2." )
 																.arg( fileName )
 																.arg( file.errorString() ) );
-		activateWatcher();
+		d->activateWatcher();
 		return false;
 	}
 	QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -411,7 +411,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 
 	m_view->updateModel();
 
-	activateWatcher();
+	d->activateWatcher();
 
 	QApplication::restoreOverrideCursor();
 

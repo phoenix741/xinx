@@ -1812,7 +1812,7 @@ Voulez-vous sauvegarder les changements ?</translation>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="666"/>
         <source>File %1 saved</source>
-        <translation>Fichier %1 sauver</translation>
+        <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="674"/>

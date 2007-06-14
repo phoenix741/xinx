@@ -222,6 +222,7 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 		return;
 	}
 
+	d->m_paramValues.clear(); d->m_oldParamValue = QString();
 	try {
 		QDomDocument document;
 		if( ! document.setContent( &file, false ) ) throw WrongFwsFormatException();
@@ -251,6 +252,10 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 		}
 		
 		d->webServicesChanged();
+		if( d->m_paramList->count() > 0 ) {
+			d->m_paramList->setCurrentIndex( 0 );
+			d->restore( d->m_paramList->currentText() );
+		}
 		/*
 		d->m_servicesList->setCurrentIndex( d->m_servicesList->findText( services ) );
 		d->m_actionList->setCurrentIndex( d->m_actionList->findText( action ) );
@@ -343,6 +348,7 @@ void WebServicesEditor::serializeEditor( QDomElement & element, bool content ) {
 void WebServicesEditor::deserializeEditor( const QDomElement & element ) {
 	m_fileName = element.attribute( "filename" );
 	
+	d->m_paramValues.clear(); d->m_oldParamValue = QString();
 	bool content = false;
 	QDomElement params = element.firstChildElement();
 	while( !params.isNull() ) {

@@ -422,7 +422,7 @@ void XSLEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QStrin
 	QTextCursor tc2( tc );
 	tc2.movePosition( QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, value.length() );
 	
-	bool insertDollard = true;
+	bool insertDollard = true, insertAccolade = true;
 	QTextCursor tc3( tc2 );
 	tc3.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 	if( tc3.selectedText() == "$" ) {
@@ -430,9 +430,15 @@ void XSLEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QStrin
 		insertDollard = false;
 	}
 
+	QTextCursor accOpen, accClose, debParam;
+	accOpen = document()->find( "{", tc2, QTextDocument::FindBackward );
+	accClose = document()->find( "}", tc2, QTextDocument::FindBackward );
+	debParam = document()->find( "\"", tc2, QTextDocument::FindBackward );
+	if( ( accOpen > accClose ) && ( accOpen > debParam ) ) insertAccolade = false;
+
 	if( completionContents && completionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = completionContents->balise( node );
-		if( (balise->category() != "stylesheet") && ( ( type == (int)XSLModelData::etVariable ) || ( type == (int)XSLModelData::etTemplate ) )) {
+		if( insertAccolade && (balise->category() != "stylesheet") && ( ( type == (int)XSLModelData::etVariable ) || ( type == (int)XSLModelData::etTemplate ) )) {
 //			QMessageBox::warning(qApp->activeWindow(), "", "");
 			if( insertDollard && ( type == (int)XSLModelData::etVariable ) ) 
 				tc2.insertText( "{$" );
@@ -440,7 +446,7 @@ void XSLEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QStrin
 				tc2.insertText( "{" );
 			tc.insertText( "}" );
 		} else
-		if( insertDollard && (balise->category() == "stylesheet") && ( type == (int)XSLModelData::etVariable ) ) {
+		if( insertDollard && ( type == (int)XSLModelData::etVariable ) ) {
 			tc2.insertText( "$" );
 		}
 	}

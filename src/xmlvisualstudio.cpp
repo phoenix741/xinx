@@ -409,7 +409,9 @@ void XMLVisualStudio::on_m_closeAllAct_triggered() {
 		if ( ! maybeSave( i ) ) {
 			return;
 		} else {
+			Editor * ed = m_tabEditors->editor( i );
 			m_tabEditors->removeTab( i );	
+			delete ed;
 		}
 	}
 	
@@ -527,7 +529,9 @@ void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
 
 void XMLVisualStudio::slotCloseFile( int index ) {
 	if( maybeSave( index ) ) {
+		Editor * ed = m_tabEditors->editor( index );
 		m_tabEditors->removeTab( index );
+		delete ed;
 	}
 	
 	updateActions();
