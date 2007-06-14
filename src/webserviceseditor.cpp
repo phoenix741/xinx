@@ -58,6 +58,11 @@ public slots:
 	void webServicesParamActivated( int );
 	void webServicesValueActivated();
 
+public:
+	void loadServicesList();
+	void loadActionsList( int index );
+	void loadValuesList( int index );
+
 private:
 	WebServicesEditor * m_parent;
 };
@@ -70,42 +75,46 @@ PrivateWebServicesEditor::~PrivateWebServicesEditor() {
 	
 }
 
-void PrivateWebServicesEditor::webServicesChanged() {
+void PrivateWebServicesEditor::loadServicesList() {
 	m_servicesList->clear();
 	foreach( WebServices * ed, *(global.m_webServices) ) 
-		m_servicesList->addItem( QIcon(":/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
-	
-	if( ! ( m_serviceName.isEmpty() || ( m_servicesList->findText( m_serviceName ) != -1 ) ) ) {
+		if( ! ed->name().isEmpty() ) 
+			m_servicesList->addItem( QIcon(":/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
+
+	int findIndex = m_servicesList->findText( m_serviceName );
+	if( ( ! m_serviceName.isEmpty() ) && ( findIndex == -1 ) ) {
 		m_servicesList->addItem( QIcon(":/services.png"), m_serviceName );
 		m_servicesList->setItemData( m_servicesList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		m_servicesList->setCurrentIndex( m_servicesList->count() - 1 );
+	} else if( findIndex >= 0 ) {
+		m_servicesList->setCurrentIndex( findIndex );
 	} else if( m_servicesList->count() > 0 )
 		m_servicesList->setCurrentIndex( 0 );
 }
 
-void PrivateWebServicesEditor::webServicesActivated( int index ) {
-	m_isModified = true;	
-
+void PrivateWebServicesEditor::loadActionsList( int index ) {
 	m_actionList->clear();
-	
 	if( ( index >= 0 ) && ( m_servicesList->itemData( index ).isValid() ) ) {
-		WebServices * ed = (WebServices*)(m_servicesList->itemData( index ).value<void*>());
+		WebServices * ed = (WebServices*)( m_servicesList->itemData( index ).value<void*>() );
 		foreach( Operation * op, ed->operations() ) 
 			m_actionList->addItem( QIcon(":/action.png"), op->name(), qVariantFromValue( (void*)op ) );
 	}
 	
-	if( ! ( m_operationName.isEmpty() || ( m_actionList->findText( m_operationName ) != -1 ) ) ) {
+	int findIndex = m_actionList->findText( m_operationName );
+	if( ( ! m_operationName.isEmpty() ) && ( findIndex == -1 ) ) {
 		m_actionList->addItem( QIcon(":/action.png"), m_operationName );
 		m_actionList->setItemData( m_actionList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		m_actionList->setCurrentIndex( m_actionList->count() - 1 );
+	} else if( findIndex >= 0 ) {
+		m_actionList->setCurrentIndex( findIndex );
 	} else if( m_actionList->count() > 0 )
 		m_actionList->setCurrentIndex( 0 );
 }
 
-void PrivateWebServicesEditor::webServicesParamActivated( int index ) {
-	m_isModified = true;
+void PrivateWebServicesEditor::loadValuesList( int index ) {
+	QString param = m_paramList->currentText();
+	
 	m_paramList->clear(); 
-
 	if( ( index >= 0 ) && ( m_actionList->itemData( index ).isValid() ) ) {
 		Operation * op = (Operation*)( m_actionList->itemData( index ).value<void*>() );
 		foreach( Parameter * param, op->inputParam() ) 
@@ -113,13 +122,35 @@ void PrivateWebServicesEditor::webServicesParamActivated( int index ) {
 	}
 	
 	foreach( QString param, m_paramValues.keys() ) {
-		if( m_paramList->findText( param ) == -1 ) {
+		if( ( !param.isEmpty() ) && m_paramList->findText( param ) == -1 ) {
 			m_paramList->addItem( QIcon(":/serviceparam.png"), param );
 			m_paramList->setItemData( m_paramList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		}
 	}
-	if( m_paramList->count() > 0 )
+	
+	if( ! param.isEmpty() ) {
+		int paramIndex = m_paramList->findText( param );
+		if( paramIndex != -1 )
+			m_paramList->setCurrentIndex( paramIndex );
+	} else if( m_paramList->count() > 0 )
 		m_paramList->setCurrentIndex( 0 );
+}
+
+void PrivateWebServicesEditor::webServicesChanged() {
+	loadServicesList();
+	loadActionsList( m_servicesList->currentIndex() );
+	loadValuesList( m_actionList->currentIndex() );
+}
+
+void PrivateWebServicesEditor::webServicesActivated( int index ) {
+	m_isModified = true;	
+	loadActionsList( index );
+	loadValuesList( m_actionList->currentIndex() );
+}
+
+void PrivateWebServicesEditor::webServicesParamActivated( int index ) {
+	m_isModified = true;
+	loadValuesList( index );
 }
 
 void PrivateWebServicesEditor::webServicesValueActivated() {
@@ -169,11 +200,13 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( new XMLEdi
 	m_vbox->insertLayout( 0, hbox );
 	
 	connect( &global, SIGNAL(webServicesChanged()), d, SLOT(webServicesChanged()) );
-	connect( d->m_servicesList, SIGNAL(currentIndexChanged(int)), d, SLOT(webServicesActivated(int)) );
-	connect( d->m_actionList, SIGNAL(currentIndexChanged(int)), d, SLOT(webServicesParamActivated(int)) );
-	connect( d->m_paramList, SIGNAL(currentIndexChanged(int)), d, SLOT(webServicesValueActivated()) );
+	connect( d->m_servicesList, SIGNAL(activated(int)), d, SLOT(webServicesActivated(int)) );
+	connect( d->m_actionList, SIGNAL(activated(int)), d, SLOT(webServicesParamActivated(int)) );
+	connect( d->m_paramList, SIGNAL(activated(int)), d, SLOT(webServicesValueActivated()) );
 
-	d->webServicesChanged();
+	d->loadServicesList();
+	d->loadActionsList( d->m_servicesList->currentIndex() );
+	d->loadValuesList( d->m_actionList->currentIndex() );
 
 	d->m_isModified = false;
 }
@@ -251,16 +284,10 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 			param = param.nextSiblingElement();
 		}
 		
-		d->webServicesChanged();
-		if( d->m_paramList->count() > 0 ) {
-			d->m_paramList->setCurrentIndex( 0 );
-			d->restore( d->m_paramList->currentText() );
-		}
-		/*
-		d->m_servicesList->setCurrentIndex( d->m_servicesList->findText( services ) );
-		d->m_actionList->setCurrentIndex( d->m_actionList->findText( action ) );
+		d->loadServicesList();
+		d->loadActionsList( d->m_servicesList->currentIndex() );
+		d->loadValuesList( d->m_actionList->currentIndex() );
 		d->restore( d->m_paramList->currentText() );
-		*/
 	} catch(WrongFwsFormatException) {
 		file.seek( 0 );
 		QTextStream in( &file );
@@ -376,17 +403,17 @@ void WebServicesEditor::deserializeEditor( const QDomElement & element ) {
 	d->m_operationName = element.attribute( "action" );
 	QString param = element.attribute( "param" );
 	
-	d->webServicesChanged();
+	d->loadServicesList();
+	d->loadActionsList( d->m_servicesList->currentIndex() );
+	d->loadValuesList( d->m_actionList->currentIndex() );
+	if( ! param.isEmpty() ) 
+		d->m_paramList->setCurrentIndex( d->m_paramList->findText( param ) );
+	d->restore( d->m_paramList->currentText() );
 
 	if( content ) 
 		d->m_isModified = (bool)(element.attribute( "ismodified" ).toInt());
 	else 
 		d->m_isModified = false;
-
-	if( ! param.isEmpty() ) {
-		d->m_paramList->setCurrentIndex( d->m_paramList->findText( param ) );
-		d->restore( d->m_paramList->currentText() );
-	}
 
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( element.attribute( "position" ).toInt() );
