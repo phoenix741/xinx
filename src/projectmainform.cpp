@@ -40,6 +40,8 @@
 
 #include "commitmessagedialogimpl.h"
 
+#include "flattreeview.h"
+
 #define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
 
@@ -305,7 +307,7 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	m_iconProvider = new IconProjectProvider();
 	m_dirModel->setIconProvider( m_iconProvider );
 
-	m_projectDirectoryTreeView->setModel( m_dirModel );
+	m_projectDirectoryTreeView->setModel( new FlatModel( m_dirModel ) );
 	for(int i = 1; i < m_dirModel->columnCount(); i++ )
 		m_projectDirectoryTreeView->hideColumn( i );
 	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
