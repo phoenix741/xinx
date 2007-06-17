@@ -32,6 +32,7 @@ public:
 	int rowCount( QModelIndex index = QModelIndex() );
 	
 	QAbstractItemModel * m_model;
+	QPersistentModelIndex m_root;
 private:
 	QHash<QModelIndex,int> m_count;
 
@@ -42,16 +43,21 @@ PrivateFlatModel::PrivateFlatModel( FlatModel * parent ) {
 	m_parent = parent;
 }
 
-int PrivateFlatModel::rowCount( QModelIndex index ) {
-	if( m_count.count( index ) ) return m_count[ index ];	// Utiliser une table de hashage ?	
+#include <assert.h>
 
-	int count = m_model->rowCount( index ), size = count;
+int PrivateFlatModel::rowCount( QModelIndex index ) {
+	assert( m_root.isValid() );
+	QModelIndex idx = index.isValid() ? index : QModelIndex(m_root);
+	
+	if( m_count.count( idx ) ) return m_count[ idx ] + 1;	// Utiliser une table de hashage ?	
+
+	int count = 0, size = m_model->rowCount( idx );
 	for( int i = 0; i < size ; i ++ ) {
-		count += rowCount( m_model->index( i, index.column(), index ) );
+		count += rowCount( m_model->index( i, idx.column(), idx ) );
 	}
 
-	if( ! m_count.count( index ) ) m_count[ index ] = count;	// Utiliser une table de hashage ?	
-	return count;
+	if( ! m_count.count( idx ) ) m_count[ idx ] = count;	// Utiliser une table de hashage ?	
+	return count + 1;
 }
 
 /*
@@ -70,24 +76,30 @@ int PrivateFlatModel::rowCount( QModelIndex index ) {
 */
 
 QModelIndex PrivateFlatModel::flatToModel( QModelIndex index, int row ) {
-	if( row == 0 ) return m_model->index( row, 0, index );
+	assert( m_root.isValid() );
+	if( row == 0 ) return index;
 	int i = 0, rowDel = 0, size = m_model->rowCount( index );
 	do {
 		int cnt = rowCount( m_model->index( i, 0, index ) );
-		if( ( row - rowDel ) < cnt )
-			return flatToModel( m_model->index( i, 0, index ), row - rowDel );
+		if( ( row - rowDel - 1 ) < cnt )
+			return flatToModel( m_model->index( i, 0, index ), row - rowDel - 1 );
 		else
-			rowDel += cnt + 1;
-	} while( i < size );
+			rowDel += cnt;
+		i++;
+	} while( ( i < size) && ( row - rowDel >= 0 ) );
 	return QModelIndex();
 }
 
 QModelIndex PrivateFlatModel::flatToModel( QModelIndex index ) {
-	QModelIndex newIndex = flatToModel( QModelIndex(), index.row() );
-	if( ! newIndex.isValid() )
-		return QModelIndex();
-	else
-		return m_model->index( newIndex.row(), index.column(), index.parent() );
+	if( index.isValid() ) {
+		QModelIndex newIndex = flatToModel( m_root, index.row() );
+		if( ! newIndex.isValid() )
+			return m_root;
+		else
+			return m_model->index( newIndex.row(), index.column(), newIndex.parent() );
+	} else {
+		return m_root;
+	}
 }
 
 
@@ -95,9 +107,10 @@ PrivateFlatModel::~PrivateFlatModel() {
 	
 }
 
-FlatModel::FlatModel( QAbstractItemModel * model ) {
+FlatModel::FlatModel( QAbstractItemModel * model, QModelIndex root ) {
 	d = new PrivateFlatModel( this );
 	d->m_model = model;
+	d->m_root = QPersistentModelIndex( root );
 }
 
 FlatModel::~FlatModel() {
