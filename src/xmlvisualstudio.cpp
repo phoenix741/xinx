@@ -277,6 +277,9 @@ void XMLVisualStudio::updateActions() {
 	m_commitProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
 	m_addFileToProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
 	m_deleteFileFromProject->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	
+	m_flatListBtn->setEnabled( global.m_project != NULL );
+	m_filtreLineEdit->setEnabled( global.m_project != NULL );
 
 	/* Files */
 	m_saveAct->setEnabled( m_tabEditors->count() );
@@ -348,8 +351,6 @@ void XMLVisualStudio::on_m_newWebServicesFileAct_triggered() {
 	m_tabEditors->newFileEditorWS();
 	updateActions();
 }
-
-
 
 void XMLVisualStudio::on_m_openAct_triggered() {
 	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), m_lastPlace, global.m_xinxConfig->dialogFilters().join(";;") );
@@ -604,19 +605,11 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	assert( index >= 0 );
 	assert( index < m_tabEditors->count() );
 
-	/*
-	QFileDialog dlg( this, tr("Save text file") );
-	dlg.setAcceptMode( QFileDialog::AcceptSave );
-    dlg.setFileMode( QFileDialog::AnyFile );
-	dlg.setFilters( xinxConfig->dialogFilters() );
-	*/
-	
 	QString fileName    = qobject_cast<FileEditor*>( m_tabEditors->editor(index) )->getFileName(),
 			fileSuffix  = qobject_cast<FileEditor*>( m_tabEditors->editor(index) )->getSuffix(),
 			specifPath,
 			filter = global.m_xinxConfig->dialogFilter( fileSuffix ),
 			newFileName;
-	/*dlg.setDefaultSuffix( fileSuffix );*/
 
 	struct XINXConfig::managedFile customFile = global.m_xinxConfig->managedFile4Suffix( fileSuffix );
 
@@ -632,32 +625,18 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" );
 		else
 			newFileName = specifPath;
-		/*dlg.setDirectory( specifPath );
-		dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" );*/
 	} else {
 		bool isCustomized = 
 			global.m_project && QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() );
 		if( global.m_project && customFile.canBeCustomize && (!isCustomized) ) {
 			newFileName = QDir( specifPath ).
 				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
-			/*dlg.setDirectory( specifPath );
-			dlg.selectFile( m_xslProject->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );*/
 		} else {
 			newFileName = fileName;
-			/*dlg.setDirectory( QFileInfo( fileName ).absolutePath() );
-			dlg.selectFile( QFileInfo( fileName ).fileName() );*/
 		}
 	}
 	
 	fileName = QFileDialog::getSaveFileName( this, tr("Save text file"), newFileName, global.m_xinxConfig->dialogFilters().join(";;"), &filter );
-	
-	/*if( dlg.exec() == QDialog::Accepted ) {
-		if( dlg.selectedFiles().count() == 1 )
-			fileName = dlg.selectedFiles()[ 0 ];
-		else
-			return;
-	} else
-		return;*/
 	
 	if( fileName.isEmpty() ) return ;
 

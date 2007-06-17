@@ -463,8 +463,11 @@ void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
 }
 
 void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
-	if( ! m_dirModel->fileInfo( index ).isDir() )
-		open( m_dirModel->filePath( index ) );
+	QModelIndex idx = index;
+	if( m_flatModel ) 
+		idx = qobject_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+	if( ! m_dirModel->fileInfo( idx ).isDir() )
+		open( m_dirModel->filePath( idx ) );
 }
 
 void XMLVisualStudio::on_m_flatListBtn_toggled( bool value ) {
@@ -474,11 +477,13 @@ void XMLVisualStudio::on_m_flatListBtn_toggled( bool value ) {
 		m_projectDirectoryTreeView->setRootIndex( QModelIndex() );
 		for(int i = 1; i < m_flatModel->columnCount(); i++ )
 			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIsDecorated( false );
 	} else  {
 		m_projectDirectoryTreeView->setModel( m_dirModel );
 		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 		for(int i = 1; i < m_dirModel->columnCount(); i++ )
 			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIsDecorated( true );
 		delete m_flatModel;
 		m_flatModel = NULL;
 	}

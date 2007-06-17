@@ -117,6 +117,11 @@ FlatModel::~FlatModel() {
 	delete d;
 }
 	
+QModelIndex FlatModel::mappingToSource( const QModelIndex & index ) {
+	QString path = d->m_pathList.at( index.row() );
+	return d->m_model->index( path );
+}
+
 int FlatModel::columnCount ( const QModelIndex & parent ) const {
 	if( parent.isValid() ) {
 		QString path = d->m_pathList.at( parent.row() );

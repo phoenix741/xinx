@@ -39,6 +39,8 @@ public:
 	virtual QModelIndex parent ( const QModelIndex & index ) const;
 	virtual int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
 	
+	QModelIndex mappingToSource( const QModelIndex & index );
+	
 private:
 	PrivateFlatModel * d;
 	friend class PrivateFlatModel;
