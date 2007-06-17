@@ -303,15 +303,16 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
 		global.m_xinxConfig->recentProjectFiles().removeLast();
 
-//	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
-	m_dirModel = new DirRCSModel( QStringList() << "*inventaire*frame*.xsl", DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+//	m_dirModel = new DirRCSModel( QStringList() << "*inventaire*frame*.xsl", DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
 	m_iconProvider = new IconProjectProvider();
 	m_dirModel->setIconProvider( m_iconProvider );
 
-	m_projectDirectoryTreeView->setModel( new FlatModel( m_dirModel, m_dirModel->index( global.m_project->projectPath() ) ) );
+//	m_projectDirectoryTreeView->setModel( new FlatModel( m_dirModel, m_dirModel->index( global.m_project->projectPath() ) ) );
+	m_projectDirectoryTreeView->setModel( m_dirModel );
 	for(int i = 1; i < m_dirModel->columnCount(); i++ )
 		m_projectDirectoryTreeView->hideColumn( i );
-//	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
+	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 
 	m_tabEditors->setUpdatesEnabled( false );
 
