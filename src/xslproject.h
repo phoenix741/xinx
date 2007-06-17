@@ -36,6 +36,8 @@ class WebServicesModel;
 
 class PrivateXSLProject;
 
+class XSLProjectException {};
+
 class XSLProject : public QObject {
 	Q_OBJECT
 public:

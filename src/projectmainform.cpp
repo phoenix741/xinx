@@ -204,6 +204,7 @@ void XMLVisualStudio::on_m_commitProjectBtn_clicked() {
 void XMLVisualStudio::createProjectPart() {
 	m_lastProjectOpenedPlace = QDir::currentPath();
 	m_dirModel = NULL;
+	m_flatModel = NULL;
 	m_modelTimer = new QTimer( this );
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
@@ -290,47 +291,49 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 	else 
 		on_m_closeAllAct_triggered();
 		
-	global.m_project      = new XSLProject( filename );
-	m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
-	m_lastPlace              = global.m_project->projectPath();
-
-	if( global.m_project->projectType() == XSLProject::SERVICES )
-		setWebServicesView( true );
-
 	global.m_xinxConfig->recentProjectFiles().removeAll( filename );
-	global.m_xinxConfig->recentProjectFiles().prepend( filename );
+
+	try {
+		global.m_project      	 = new XSLProject( filename );
+		m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
+		m_lastPlace              = global.m_project->projectPath();
+
+		if( global.m_project->projectType() == XSLProject::SERVICES )
+			setWebServicesView( true );
+
+		global.m_xinxConfig->recentProjectFiles().prepend( filename );
      
-	while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
-		global.m_xinxConfig->recentProjectFiles().removeLast();
+		while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
+			global.m_xinxConfig->recentProjectFiles().removeLast();
 
-	m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
-//	m_dirModel = new DirRCSModel( QStringList() << "*inventaire*frame*.xsl", DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
-	m_iconProvider = new IconProjectProvider();
-	m_dirModel->setIconProvider( m_iconProvider );
+		m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+		m_iconProvider = new IconProjectProvider();
+		m_dirModel->setIconProvider( m_iconProvider );
 
-//	m_projectDirectoryTreeView->setModel( new FlatModel( m_dirModel, m_dirModel->index( global.m_project->projectPath() ) ) );
-	m_projectDirectoryTreeView->setModel( m_dirModel );
-	for(int i = 1; i < m_dirModel->columnCount(); i++ )
-		m_projectDirectoryTreeView->hideColumn( i );
-	m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
+		m_projectDirectoryTreeView->setModel( m_dirModel );
+		for(int i = 1; i < m_dirModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 
-	m_tabEditors->setUpdatesEnabled( false );
+		m_tabEditors->setUpdatesEnabled( false );
+	
+		QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
+		while( ! element.isNull() ) {
+			Editor * editor = m_tabEditors->newFileEditor( element.attribute( "filename" ) );
+			editor->deserializeEditor( element );
+			
+			element = element.nextSiblingElement( "editor" );
+		}
+		m_tabEditors->setUpdatesEnabled( true );
 
-	QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
-	while( ! element.isNull() ) {
-		Editor * editor = m_tabEditors->newFileEditor( element.attribute( "filename" ) );
-		editor->deserializeEditor( element );
+		setCurrentProject( filename );
+
+	} catch( XSLProjectException ) {
 		
-		element = element.nextSiblingElement( "editor" );
 	}
-	m_tabEditors->setUpdatesEnabled( true );
-
-	setCurrentProject( filename );
-
 	updateActions();
 	updateRecentProjects();
 	updateRecentFiles();
-
 	global.emitProjectChanged();
 }
 
@@ -431,9 +434,10 @@ void XMLVisualStudio::updateRecentFiles() {
 
 void XMLVisualStudio::filtreChange() {
 	QString filtre = m_filtreLineEdit->text();
-	if( filtre.isEmpty() ) 
+	if( filtre.isEmpty() ) {
 		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
-	else {
+		m_flatListBtn->setChecked( false );
+	} else {
 		QString extention = QFileInfo( filtre ).suffix();
 		QString filename = QFileInfo( filtre ).fileName();
 		if( extention.isEmpty() )
@@ -446,7 +450,7 @@ void XMLVisualStudio::filtreChange() {
 				);
 		else
 			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
-		
+		m_flatListBtn->setChecked( true );
 	}
 	m_modelTimer->stop();
 }
@@ -461,6 +465,23 @@ void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
 void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
 	if( ! m_dirModel->fileInfo( index ).isDir() )
 		open( m_dirModel->filePath( index ) );
+}
+
+void XMLVisualStudio::on_m_flatListBtn_toggled( bool value ) {
+	if( value ) {
+		m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( global.m_project->projectPath() ) );
+		m_projectDirectoryTreeView->setModel( m_flatModel );
+		m_projectDirectoryTreeView->setRootIndex( QModelIndex() );
+		for(int i = 1; i < m_flatModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+	} else  {
+		m_projectDirectoryTreeView->setModel( m_dirModel );
+		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
+		for(int i = 1; i < m_dirModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+		delete m_flatModel;
+		m_flatModel = NULL;
+	}
 }
 
 #include "projectmainform.moc"

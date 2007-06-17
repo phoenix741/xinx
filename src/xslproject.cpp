@@ -248,7 +248,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 		QMessageBox::warning(qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("Cannot read file %1:\n%2.")
                                                         				 		.arg(filename)
 																		 		.arg(file.errorString()));
-		return;
+		throw XSLProjectException();
 	}
 	
 	// Load XML Document
@@ -260,7 +260,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 																					.arg(errorLine)
         			                      											.arg(errorColumn)
 																					.arg(errorStr));
-	    return;
+		throw XSLProjectException();
 	}  
 	
 	QDomElement root = d->m_projectDocument.documentElement();
@@ -268,13 +268,13 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	// Test if Project File
 	if( root.tagName() != "XSLProject" ) {
 		QMessageBox::information( qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file isn't a XINX Project") );
-	    return;
+		throw XSLProjectException();
 	}
 	
 	d->m_version  = d->getValue( "xinx_version" ).isEmpty() ? 0 : d->getValue( "xinx_version" ).toInt();
 	if( d->m_version > XINX_PROJECT_VERSION ) {
 		QMessageBox::information( qApp->activeWindow(), QObject::tr("Project file"), QObject::tr("The file is a too recent XINX Project") );
-	    return;
+		throw XSLProjectException();
 	}
 	
 	d->m_fileName = filename;

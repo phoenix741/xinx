@@ -25,9 +25,11 @@
 
 class PrivateFlatModel;
 
+class QDirModel;
+
 class FlatModel : public QAbstractItemModel {
 public:
-	FlatModel( QAbstractItemModel * model, QModelIndex root );
+	FlatModel( QDirModel * model, QModelIndex root );
 	virtual ~FlatModel();
 	
 	virtual int columnCount ( const QModelIndex & parent = QModelIndex() ) const;

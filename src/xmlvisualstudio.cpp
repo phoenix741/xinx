@@ -680,3 +680,5 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 }
 
 
+
+

@@ -38,6 +38,7 @@ class QMenu;
 class FileEditor;
 class IconProjectProvider;
 class RCSLogDialogImpl;
+class QAbstractItemModel;
 
 class XMLVisualStudio : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
@@ -54,6 +55,7 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
+	void on_m_flatListBtn_toggled(bool);
 	void on_m_commitProjectBtn_clicked();
 	void on_m_addFileToProjectBtn_clicked();
 	void on_m_deleteFileFromProject_clicked();
@@ -167,6 +169,7 @@ private: /* Private definition */
 
 	QTimer * m_modelTimer;
 	QDirModel * m_dirModel;
+	QAbstractItemModel * m_flatModel;
 	IconProjectProvider * m_iconProvider;
 
 	QAction * m_recentProjectActs[MAXRECENTFILES]; 
@@ -201,6 +204,7 @@ private: /* private definition */
 
 };
 #endif
+
 
 
 
