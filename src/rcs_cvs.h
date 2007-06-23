@@ -35,6 +35,7 @@ public:
 	~RCS_CVS();
 
 	rcsState status( const QString & path );
+	virtual RCS::FilesOperation operations( const QString & path );
 	virtual void update( const QString & path );
 	virtual void commit( const QString & path, const QString & message );
 	virtual void add( const QString & path );

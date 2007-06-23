@@ -22,6 +22,8 @@
 #define __RCS_H__
 
 #include <QObject>
+#include <QPair>
+#include <QList>
 
 class RCS : public QObject {
 	Q_OBJECT
@@ -32,8 +34,15 @@ public:
 	enum rcsLog {
 		Error, Warning, Information, Debug
 	};
+	enum rcsOperation {
+		RemoveAndCommit, AddAndCommit, Commit, Nothing
+	};
+	
+	typedef QPair<rcsOperation,QString> FileOperation;
+	typedef QList<FileOperation> FilesOperation;
 	
 	virtual rcsState status( const QString & path ) = 0;
+	virtual FilesOperation operations( const QString & path ) = 0;
 	virtual void update( const QString & path ) = 0;
 	virtual void commit( const QString & path, const QString & message ) = 0;
 	virtual void add( const QString & path ) = 0;

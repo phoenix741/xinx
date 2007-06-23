@@ -35,6 +35,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QProcess>
+#include <QApplication>
 
 /* RCS_CVSEntry */
 
@@ -131,7 +132,10 @@ public:
 	void reloadEntriesFile( const QString & path );
 	void reloadEntriesFiles();
 	
+	void callCVS( const QString & path, const QStringList & options );
 	void callUpdate( const QString & path );
+	
+//	void callUpdate( const QString & path );
 	void callCommit( const QString & path, const QString & message );
 	void callAdd( const QString & path );
 	void callRemove( const QString & path );
@@ -139,12 +143,14 @@ public slots:
 	void watcherFileChanged ( const QString & path );
 	
 	void processUpdateReadyReadStandardOutput();
+	void processFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processCommitFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processAddFinished( int exitCode, QProcess::ExitStatus exitStatus );
 	void processRemoveFinished( int exitCode, QProcess::ExitStatus exitStatus );
 private:
 	void processLine( bool error, const QString & line );
+	RCS::FilesOperation operationOfPath( const QString & path );
 
 	RCS_CVS * m_parent;
 	QString m_updatePath;
@@ -159,6 +165,10 @@ PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) {
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {
 	delete m_watcher;
+}
+
+RCS::FilesOperation PrivateRCS_CVS::operationOfPath( const QString & path ) {
+	
 }
 
 void PrivateRCS_CVS::reloadEntriesFile( const QString & entries ) {
@@ -244,6 +254,46 @@ void PrivateRCS_CVS::processUpdateReadyReadStandardOutput() {
 		processLine( false, m_process->readLine() );
 }
 
+void PrivateRCS_CVS::processFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
+	Q_UNUSED( exitCode );
+	Q_UNUSED( exitStatus );
+	QString reste = m_process->readAllStandardError();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Error, reste );
+	reste = m_process->readAllStandardOutput();
+	if( ! reste.isEmpty() ) 
+		emit m_parent->log( RCS::Information, reste );
+}
+
+void PrivateRCS_CVS::callCVS( const QString & path, const QStringList & options ) {
+	m_updatePath = path;
+	if( ! m_process ) m_process = new QProcess( this );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardOutput()) );
+	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processUpdateReadyReadStandardOutput()) );
+	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processFinished(int,QProcess::ExitStatus)) );
+	m_process->setWorkingDirectory( m_updatePath );
+	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options );
+	while( ! m_process->waitForFinished() ) {
+		qApp->processEvents();
+	}
+}
+
+void PrivateRCS_CVS::callUpdate( const QString & path ) {
+	QStringList parameters;
+	if( ! global.m_xinxConfig->cvsProgressMessages().isEmpty() )
+		parameters << global.m_xinxConfig->cvsProgressMessages();
+	parameters << QString("-z%1").arg( global.m_xinxConfig->cvsCompressionLevel() ) << "update";
+	if( global.m_xinxConfig->cvsPruneEmptyDirectories() )
+		parameters << "-P";
+	if( global.m_xinxConfig->cvsCreateDirectories() )
+		parameters << "-d";
+
+// CreateFileList
+
+//	callCVS( workingPath, parameters );
+	
+}
+
 void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
@@ -307,7 +357,7 @@ void PrivateRCS_CVS::processRemoveFinished( int exitCode, QProcess::ExitStatus e
 	m_process->disconnect();
 	emit m_parent->removeTerminated();
 }
-
+/*
 void PrivateRCS_CVS::callUpdate( const QString & path ) {
 	m_updatePath = path;
 	if( ! m_process ) m_process = new QProcess( this );
@@ -325,7 +375,7 @@ void PrivateRCS_CVS::callUpdate( const QString & path ) {
 		parameters << "-d";
 	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], parameters );
 }
-
+*/
 void PrivateRCS_CVS::callCommit( const QString & path, const QString & message ) {
 	if( ! m_process ) m_process = new QProcess( this );
 	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processUpdateReadyReadStandardOutput()) );
@@ -367,6 +417,10 @@ RCS_CVS::RCS_CVS() {
 
 RCS_CVS::~RCS_CVS() {
 	delete d;
+}
+
+RCS::FilesOperation RCS_CVS::operations( const QString & path ) {
+	
 }
 
 RCS::rcsState RCS_CVS::status( const QString & path ) {

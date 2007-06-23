@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -43,22 +43,6 @@
     </property>
     <addaction name="m_aboutAct" />
     <addaction name="m_aboutQtAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-   </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
-    <property name="title" >
-     <string>WebServices</string>
-    </property>
-    <addaction name="m_refreshWebServicesListAct" />
-    <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -132,7 +116,30 @@
     <addaction name="menu_Close_project_2" />
     <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
+    <addaction name="m_updateFromRCSAct" />
+    <addaction name="m_commitToRCSAct" />
+    <addaction name="m_addToRCSAct" />
+    <addaction name="m_deleteFromRCSAct" />
+    <addaction name="separator" />
     <addaction name="m_customApplicationAct" />
+   </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+    <addaction name="m_toggledFlatView" />
+    <addaction name="separator" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -315,9 +322,6 @@
         <widget class="QToolButton" name="m_flatListBtn" >
          <property name="icon" >
           <iconset resource="../images/application.qrc" >:/flatlist.png</iconset>
-         </property>
-         <property name="checkable" >
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -821,6 +825,49 @@
    </property>
    <property name="text" >
     <string>&amp;Recent file</string>
+   </property>
+  </action>
+  <action name="m_updateFromRCSAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/kdesvnupdate.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Update project</string>
+   </property>
+  </action>
+  <action name="m_commitToRCSAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/kdesvncommit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Commit project</string>
+   </property>
+  </action>
+  <action name="m_addToRCSAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/kdesvnadd.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Add file(s) to project</string>
+   </property>
+  </action>
+  <action name="m_deleteFromRCSAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/kdesvndelete.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Delete file(s) from project</string>
+   </property>
+  </action>
+  <action name="m_toggledFlatView" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/flatlist.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Toggled Flat Viexw</string>
    </property>
   </action>
  </widget>

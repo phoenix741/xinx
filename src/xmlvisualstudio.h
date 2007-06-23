@@ -55,11 +55,11 @@ protected:
 
 	void closeEvent( QCloseEvent *event );
 private slots:
-	void on_m_flatListBtn_toggled(bool);
-	void on_m_commitProjectBtn_clicked();
-	void on_m_addFileToProjectBtn_clicked();
-	void on_m_deleteFileFromProject_clicked();
-	void on_m_updateProjectBtn_clicked();
+	void on_m_toggledFlatView_toggled(bool checked);
+	void on_m_updateFromRCSAct_triggered();
+	void on_m_commitToRCSAct_triggered();
+	void on_m_addToRCSAct_triggered();
+	void on_m_deleteFromRCSAct_triggered();
 	void on_m_newStylesheetFileAct_triggered();
 	void on_m_newXMLFileAct_triggered();
 	void on_m_newJavascriptFileAct_triggered();
@@ -204,6 +204,7 @@ private: /* private definition */
 
 };
 #endif
+
 
 
 
