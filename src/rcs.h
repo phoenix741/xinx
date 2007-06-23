@@ -51,7 +51,7 @@ public slots:
 	virtual void abort() = 0;
 signals: 
 	void stateChanged( const QString & fileName );
-	void log( RCS::rcsLog niveau, const QString & info );
+	void log( RCS::rcsLog  niveau, const QString & info );
 	void updateTerminated();
 	void commitTerminated();
 	void addTerminated();

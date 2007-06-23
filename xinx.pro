@@ -35,6 +35,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/kcolorcombo.h \
   src/numberbar.h \
   src/objectview.h \
+  src/p_rcs_cvs.h \
   src/projectpropertyimpl.h \
   src/rcs.h \
   src/rcs_cvs.h \
@@ -82,6 +83,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/main.cpp \
   src/numberbar.cpp \
   src/objectview.cpp \
+  src/p_rcs_cvs.cpp \
   src/projectmainform.cpp \
   src/projectpropertyimpl.cpp \
   src/rcs.cpp \
