@@ -38,7 +38,7 @@ public:
 		RemoveAndCommit, AddAndCommit, Commit, Nothing
 	};
 	
-	typedef QPair<rcsOperation,QString> FileOperation;
+	typedef QPair<QString,rcsOperation> FileOperation;
 	typedef QList<FileOperation> FilesOperation;
 	
 	virtual rcsState status( const QString & path ) = 0;

@@ -139,6 +139,11 @@ public:
 	void callCommit( const QString & path, const QString & message );
 	void callAdd( const QString & path );
 	void callRemove( const QString & path );
+
+	RCS::FilesOperation operationsOfPath( const QString & path );
+	RCS::FilesOperation operationsOfRecursivePath( const QString & path );
+	QHash<QString,RCS_CVSEntry> loadEntryFile( const QString & entry );
+	QHash<QString,RCS_CVSEntry> loadEntryDir( const QString & dir );
 public slots:
 	void watcherFileChanged ( const QString & path );
 	
@@ -150,7 +155,6 @@ public slots:
 	void processRemoveFinished( int exitCode, QProcess::ExitStatus exitStatus );
 private:
 	void processLine( bool error, const QString & line );
-	RCS::FilesOperation operationOfPath( const QString & path );
 
 	RCS_CVS * m_parent;
 	QString m_updatePath;
@@ -167,8 +171,81 @@ PrivateRCS_CVS::~PrivateRCS_CVS() {
 	delete m_watcher;
 }
 
-RCS::FilesOperation PrivateRCS_CVS::operationOfPath( const QString & path ) {
+RCS::FilesOperation PrivateRCS_CVS::operationsOfRecursivePath( const QString & path ) {
+	RCS::FilesOperation files = operationsOfPath( path );
+	QStringList infolist = QDir( path ).entryList( QDir::Dirs );
+	foreach( QString fileName, infolist ) {
+		QString file = QDir( path ).absoluteFilePath ( fileName );
+		files += operationsOfRecursivePath( file );
+	}
+	return files;
+}
+
+RCS::FilesOperation PrivateRCS_CVS::operationsOfPath( const QString & path ) {
+	QHash<QString,RCS_CVSEntry> cvsEntries = loadEntryDir( path );
+	RCS::FilesOperation files;
+	foreach( QString path, cvsEntries.keys() ) {
+		RCS::rcsState status = cvsEntries[path].status();
+		if( status != RCS::Updated ) {
+			RCS::FileOperation file;
+			file.first = path;
+			if( status == RCS::LocallyRemoved )
+				file.second = RCS::RemoveAndCommit;
+			else
+				file.second = RCS::Commit;
+			files.append( file );
+		}
+	}
+	QStringList existFile =	QDir( path ).entryList();
+	foreach( QString fileName, existFile ) {
+		QString file = QDir( path ).absoluteFilePath ( fileName );
+		if( cvsEntries.keys().indexOf( file ) == 0 ) {
+			RCS::FileOperation file;
+			file.first = path;
+			file.second = RCS::AddAndCommit;
+			files.append( file );
+		}
+			
+	}
+	return files;
+}
+
+
+QHash<QString,RCS_CVSEntry> PrivateRCS_CVS::loadEntryFile( const QString & entry ) {
+	QDir entriesPath = QFileInfo( entry ).dir();
+	entriesPath.cdUp();
+	QString path = entriesPath.absolutePath();
+		
+	QFile entriesFile( entry );
+	entriesFile.open( QIODevice::ReadOnly | QIODevice::Text );
+	QTextStream entriesTextStream( &entriesFile );
+	QString entryLine;
 	
+	QHash<QString,RCS_CVSEntry> result;
+	
+	while( ! ( entryLine = entriesTextStream.readLine() ).isNull() ) {
+		QStringList entryField = entryLine.split( "/" );
+		
+		if( entryField.size() >= 4 ) {
+			RCS_CVSEntry cvsEntry( path );
+			cvsEntry.setFileName( entryField[1] );
+			cvsEntry.m_cvsVersion  = entryField[2];
+			cvsEntry.setDate( entryField[3] );
+		
+			QString entryPath = QDir( path ).absoluteFilePath( cvsEntry.m_fileName );
+			result[ entryPath ] = cvsEntry;  
+		}
+	}
+	return result;
+}
+
+QHash<QString,RCS_CVSEntry> PrivateRCS_CVS::loadEntryDir( const QString & dir ) {
+	// Read Entries file
+	QString entries = QDir( dir ).absoluteFilePath( "CVS/Entries" );
+	if( ! QFileInfo( entries ).exists() ) 
+		entries = QDir( dir ).absoluteFilePath( ".cvs/Entries" );
+	
+	return loadEntryFile( entries );
 }
 
 void PrivateRCS_CVS::reloadEntriesFile( const QString & entries ) {
@@ -288,10 +365,7 @@ void PrivateRCS_CVS::callUpdate( const QString & path ) {
 	if( global.m_xinxConfig->cvsCreateDirectories() )
 		parameters << "-d";
 
-// CreateFileList
-
-//	callCVS( workingPath, parameters );
-	
+	callCVS( path, parameters );
 }
 
 void PrivateRCS_CVS::processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
@@ -420,7 +494,7 @@ RCS_CVS::~RCS_CVS() {
 }
 
 RCS::FilesOperation RCS_CVS::operations( const QString & path ) {
-	
+	return d->operationsOfRecursivePath( path );
 }
 
 RCS::rcsState RCS_CVS::status( const QString & path ) {
