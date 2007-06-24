@@ -19,15 +19,71 @@
  ***************************************************************************/
 
 #include "commitmessagedialogimpl.h"
-//
+
+/* PrivateCommitMessageDialogImpl */
+
+class PrivateCommitMessageDialogImpl {
+public:
+	PrivateCommitMessageDialogImpl( CommitMessageDialogImpl * parent );
+	~PrivateCommitMessageDialogImpl();
+	
+	RCS::FilesOperation m_files;
+private:
+	CommitMessageDialogImpl * m_parent;
+};
+
+PrivateCommitMessageDialogImpl::PrivateCommitMessageDialogImpl( CommitMessageDialogImpl * parent ) {
+	m_parent = parent;
+}
+
+PrivateCommitMessageDialogImpl::~PrivateCommitMessageDialogImpl() {
+	
+}
+
+/* CommitMessageDialogImpl */
+
 CommitMessageDialogImpl::CommitMessageDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
+	d = new PrivateCommitMessageDialogImpl( this );
 }
-//
+
+CommitMessageDialogImpl::~CommitMessageDialogImpl() {
+	delete d;
+}
+
 void CommitMessageDialogImpl::setMessages( const QString & message ) {
 	m_textEditMessages->setText( message );
 }
 
 QString CommitMessageDialogImpl::messages() {
 	return m_textEditMessages->toPlainText();
+}
+
+void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
+	m_fileListWidget->clear();
+	d->m_files = files;
+	foreach( RCS::FileOperation file, d->m_files ) {
+		QString fileName = file.first;
+		switch( file.second ) {
+		case RCS::Commit: 
+			fileName += tr( "Commit" );
+			break;
+		case RCS::AddAndCommit: 
+			fileName += tr( "Ass and Commit" );
+			break;
+		case RCS::RemoveAndCommit: 
+			fileName += tr( "Remove and Commit" );
+			break;
+		default: ;
+		}
+		QListWidgetItem * item = new QListWidgetItem( fileName, m_fileListWidget );
+		item->setCheckState( Qt::Unchecked );
+		if( file.second == RCS::Commit ) {
+			item->setCheckState( Qt::Checked );
+		}
+	}
+}
+
+RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
+	
 }

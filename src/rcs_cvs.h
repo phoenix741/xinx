@@ -26,6 +26,8 @@
 class PrivateRCS_CVS;
 class CVSThread;
 class CVSUpdateThread;
+class CVSAddThread;
+class CVSRemoveThread;
 
 class ProcessExecutedException {	
 };
@@ -38,10 +40,10 @@ public:
 
 	rcsState status( const QString & path );
 	virtual RCS::FilesOperation operations( const QString & path );
-	virtual void update( const QString & path );
-	virtual void commit( const QString & path, const QString & message );
-	virtual void add( const QString & path );
-	virtual void remove( const QString & path );
+	virtual void update( const QStringList & path );
+	virtual void commit( const QStringList & path, const QString & message );
+	virtual void add( const QStringList & path );
+	virtual void remove( const QStringList & path );
 public slots:
 	virtual void abort();
 private:
@@ -49,6 +51,8 @@ private:
 	friend class PrivateRCS_CVS;
 	friend class CVSThread;
 	friend class CVSUpdateThread;
+	friend class CVSAddThread;
+	friend class CVSRemoveThread;
 };
 
 #endif // __RCS_CVS_H__

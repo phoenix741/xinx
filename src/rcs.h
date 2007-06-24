@@ -21,6 +21,7 @@
 #ifndef __RCS_H__
 #define __RCS_H__
 
+#include <QMetaType>
 #include <QObject>
 #include <QPair>
 #include <QList>
@@ -28,6 +29,8 @@
 class RCS : public QObject {
 	Q_OBJECT
 public:
+	RCS();
+
 	enum rcsState {
 		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown
 	};
@@ -43,19 +46,18 @@ public:
 	
 	virtual rcsState status( const QString & path ) = 0;
 	virtual FilesOperation operations( const QString & path ) = 0;
-	virtual void update( const QString & path ) = 0;
-	virtual void commit( const QString & path, const QString & message ) = 0;
-	virtual void add( const QString & path ) = 0;
-	virtual void remove( const QString & path ) = 0;
+	virtual void update( const QStringList & path ) = 0;
+	virtual void commit( const QStringList & path, const QString & message ) = 0;
+	virtual void add( const QStringList & path ) = 0;
+	virtual void remove( const QStringList & path ) = 0;
 public slots:
 	virtual void abort() = 0;
 signals: 
 	void stateChanged( const QString & fileName );
-	void log( RCS::rcsLog  niveau, const QString & info );
-	void updateTerminated();
-	void commitTerminated();
-	void addTerminated();
-	void removeTerminated();
+	void log( RCS::rcsLog niveau, const QString & info );
+	void operationTerminated();
 };
+
+Q_DECLARE_METATYPE( RCS::rcsLog )
 
 #endif // __RCS_H__

@@ -47,28 +47,28 @@ RCS::rcsState RCS_CVS::status( const QString & path ) {
 		return d->m_entries[ localPath ].status();
 }
 
-void RCS_CVS::update( const QString & path ) {
+void RCS_CVS::update( const QStringList & path ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException();
 	} else
 		d->callUpdate( path );
 }
 
-void RCS_CVS::commit( const QString & path, const QString & message ) {
+void RCS_CVS::commit( const QStringList & path, const QString & message ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException();
 	} else
 		d->callCommit( path, message );
 }
 
-void RCS_CVS::add( const QString & path ) {
+void RCS_CVS::add( const QStringList & path ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException();
 	} else
 		d->callAdd( path );
 }
 
-void RCS_CVS::remove( const QString & path ) {
+void RCS_CVS::remove( const QStringList & path ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException();
 	} else

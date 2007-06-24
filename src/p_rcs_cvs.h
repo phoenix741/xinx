@@ -40,6 +40,8 @@
 #include <QProcess>
 #include <QThread>
 
+Q_DECLARE_METATYPE( QProcess::ExitStatus )
+
 /* RCS_CVSEntry */
 
 class RCS_CVSEntry {
@@ -81,10 +83,10 @@ public:
 	void reloadEntriesFile( const QString & path );
 	void reloadEntriesFiles();
 	
-	void callUpdate( const QString & path );
-	void callCommit( const QString & path, const QString & message );
-	void callAdd( const QString & path );
-	void callRemove( const QString & path );
+	void callUpdate( const QStringList & path );
+	void callCommit( const QStringList & path, const QString & message );
+	void callAdd( const QStringList & path );
+	void callRemove( const QStringList & path );
 
 	RCS::FilesOperation operationsOfPath( const QString & path );
 	RCS::FilesOperation operationsOfRecursivePath( const QString & path );
@@ -92,14 +94,6 @@ public:
 	QHash<QString,RCS_CVSEntry> loadEntryDir( const QString & dir );
 public slots:
 	void watcherFileChanged ( const QString & path );
-	/*
-	void processUpdateReadyReadStandardOutput();
-	void processFinished( int exitCode, QProcess::ExitStatus exitStatus );
-	void processUpdateFinished( int exitCode, QProcess::ExitStatus exitStatus );
-	void processCommitFinished( int exitCode, QProcess::ExitStatus exitStatus );
-	void processAddFinished( int exitCode, QProcess::ExitStatus exitStatus );
-	void processRemoveFinished( int exitCode, QProcess::ExitStatus exitStatus );*/
-
 };
 
 /* CVSThread */
@@ -111,7 +105,6 @@ public:
 	~CVSThread();
 public slots:
 	virtual void processReadOutput();
-	virtual void processFinished();
 	void abort();
 protected:
 	void callCVS( const QString & path, const QStringList & options );
@@ -126,15 +119,38 @@ protected:
 class CVSUpdateThread : public CVSThread {
 	Q_OBJECT
 public:
-	CVSUpdateThread( PrivateRCS_CVS * parent, QString path );
-public slots:
-	virtual void processReadOutput();
-	virtual void processFinished();
+	CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths );
 protected:
-	void callUpdate( const QString & path );	
+	void callUpdate( const QString & path, const QStringList & files );	
 	virtual void run();
 private:
-	QString m_path;
+	QStringList m_paths;
+};
+
+/* CVSAddThread */
+
+class CVSAddThread : public CVSThread {
+	Q_OBJECT
+public:
+	CVSAddThread( PrivateRCS_CVS * parent, QStringList paths );
+protected:
+	void callAdd( const QString & path, const QStringList & files );	
+	virtual void run();
+private:
+	QStringList m_paths;
+};
+
+/* CVSRemoveThread */
+
+class CVSRemoveThread : public CVSThread {
+	Q_OBJECT
+public:
+	CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths );
+protected:
+	void callRemove( const QString & path, const QStringList & files );	
+	virtual void run();
+private:
+	QStringList m_paths;
 };
 
 #endif // __P_RCS_CVS_H__

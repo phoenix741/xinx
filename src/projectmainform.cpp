@@ -415,12 +415,22 @@ void XMLVisualStudio::on_m_updateFromRCSAct_triggered() {
 		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
 		
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(updateTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
-		connect( rcs, SIGNAL(updateTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
 		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 		m_rcslogDialog->init();
-		m_rcslogDialog->show();
-		rcs->update( global.m_project->projectPath() );
+		
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( list.size() == 0 ) {
+			rcs->update( QStringList() << global.m_project->projectPath() );
+		} else {
+			foreach( QModelIndex index, list )
+				paths << m_dirModel->filePath( index );
+			rcs->update( paths );
+		}
+		
+		m_rcslogDialog->exec();
 	}
 }
 
@@ -433,12 +443,22 @@ void XMLVisualStudio::on_m_commitToRCSAct_triggered() {
 			RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
 			
 			connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-			connect( rcs, SIGNAL(commitTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
-			connect( rcs, SIGNAL(commitTerminated()), this, SLOT(rcsLogTerminated()) );
+			connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+			connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
 			connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 			m_rcslogDialog->init();
-			m_rcslogDialog->show();
-			rcs->commit( global.m_project->projectPath(), message );
+
+			QStringList paths;
+			QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+			if( list.size() == 0 ) {
+				rcs->commit( QStringList() << global.m_project->projectPath(), message );
+			} else {
+				foreach( QModelIndex index, list )
+					paths << m_dirModel->filePath( index );
+				rcs->commit( paths, message );
+			}
+
+			m_rcslogDialog->exec();
 		}
 	}
 }
@@ -448,14 +468,20 @@ void XMLVisualStudio::on_m_addToRCSAct_triggered() {
 		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
 		
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(addTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
-		connect( rcs, SIGNAL(addTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
 		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 		m_rcslogDialog->init();
-		m_rcslogDialog->show();
 
-		QModelIndex index = m_projectDirectoryTreeView->currentIndex();
-		rcs->add( m_dirModel->filePath( index ) );
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( list.size() > 0 ) {
+			foreach( QModelIndex index, list )
+				paths << m_dirModel->filePath( index );
+			rcs->add( paths );
+		}
+
+		m_rcslogDialog->exec();
 	}
 }
 
@@ -464,15 +490,25 @@ void XMLVisualStudio::on_m_deleteFromRCSAct_triggered() {
 		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
 		
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(removeTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
-		connect( rcs, SIGNAL(removeTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
 		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
 		m_rcslogDialog->init();
 		m_rcslogDialog->show();
 
-		QModelIndex index = m_projectDirectoryTreeView->currentIndex();
-		QFile::remove( m_dirModel->filePath( index ) );
-		rcs->remove( m_dirModel->filePath( index ) );
+		m_rcslogDialog->init();
+
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( list.size() > 0 ) {
+			foreach( QModelIndex index, list ) {
+				paths << m_dirModel->filePath( index );
+				QFile::remove( m_dirModel->filePath( index ) );
+			}
+			rcs->remove( paths );
+		}
+
+		m_rcslogDialog->exec();
 	}
 }
 

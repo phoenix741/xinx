@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>360</height>
+    <width>583</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -33,6 +33,24 @@
       </property>
       <item row="0" column="0" >
        <widget class="QTextEdit" name="m_textEditMessages" />
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>Files to commit</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QListWidget" name="m_fileListWidget" />
       </item>
      </layout>
     </widget>

@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -338,7 +338,11 @@
       <widget class="QLineEdit" name="m_filtreLineEdit" />
      </item>
      <item>
-      <widget class="QTreeView" name="m_projectDirectoryTreeView" />
+      <widget class="QTreeView" name="m_projectDirectoryTreeView" >
+       <property name="selectionMode" >
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

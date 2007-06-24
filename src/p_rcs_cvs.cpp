@@ -87,17 +87,27 @@ PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) {
 }
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {
+	if( m_thread ) delete m_thread;
 	delete m_watcher;
 }
 
 RCS::FilesOperation PrivateRCS_CVS::operationsOfRecursivePath( const QString & path ) {
-	RCS::FilesOperation files = operationsOfPath( path );
-	QStringList infolist = QDir( path ).entryList( QDir::Dirs );
-	foreach( QString fileName, infolist ) {
-		QString file = QDir( path ).absoluteFilePath ( fileName );
-		files += operationsOfRecursivePath( file );
+	if( QFileInfo( path ).isDir() ) {
+		RCS::FilesOperation files = operationsOfPath( path );
+		QStringList infolist = QDir( path ).entryList( QDir::Dirs );
+		foreach( QString fileName, infolist ) {
+			QString file = QDir( path ).absoluteFilePath ( fileName );
+			files += operationsOfRecursivePath( file );
+		}
+		return files;
+	} else {
+		RCS::FilesOperation files = operationsOfPath( QFileInfo( path ).absolutePath() );
+		foreach( RCS::FileOperation file, files ) {
+			if( file.first == path ) 
+				return RCS::FilesOperation() << file;
+		}
+		return RCS::FilesOperation() << qMakePair( path, RCS::Nothing );
 	}
-	return files;
 }
 
 RCS::FilesOperation PrivateRCS_CVS::operationsOfPath( const QString & path ) {
@@ -288,21 +298,26 @@ void PrivateRCS_CVS::processRemoveFinished( int exitCode, QProcess::ExitStatus e
 	emit m_parent->removeTerminated();
 }*/
 
-void PrivateRCS_CVS::callUpdate( const QString & path ) {
+void PrivateRCS_CVS::callUpdate( const QStringList & path ) {
+	if( m_thread ) delete m_thread;
 	m_thread = new CVSUpdateThread( this, path );
 	m_thread->start();
 }
 
-void PrivateRCS_CVS::callCommit( const QString & path, const QString & message ) {
+void PrivateRCS_CVS::callCommit( const QStringList & path, const QString & message ) {
 	
 }
 
-void PrivateRCS_CVS::callAdd( const QString & path ) {
-	
+void PrivateRCS_CVS::callAdd( const QStringList & path ) {
+	if( m_thread ) delete m_thread;
+	m_thread = new CVSAddThread( this, path );
+	m_thread->start();
 }
 
-void PrivateRCS_CVS::callRemove( const QString & path ) {
-	
+void PrivateRCS_CVS::callRemove( const QStringList & path ) {
+	if( m_thread ) delete m_thread;
+	m_thread = new CVSRemoveThread( this, path );
+	m_thread->start();
 }
 
 /*
@@ -341,13 +356,14 @@ void PrivateRCS_CVS::callRemove( const QString & path ) {
 /* CVSThread */
 
 CVSThread::CVSThread( PrivateRCS_CVS * parent ) : QThread() {
+	qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
 	m_privateParent = parent;
 	m_parent = m_privateParent->m_parent;
 	m_process = NULL;
 }
 
 CVSThread::~CVSThread() {
-	
+	delete m_process;
 }
 
 void CVSThread::processLine( bool error, const QString & line ) {
@@ -377,22 +393,19 @@ void CVSThread::processReadOutput() {
 		processLine( false, m_process->readLine() );
 }
 
-void CVSThread::processFinished() {
-	QString reste = m_process->readAllStandardError();
-	if( ! reste.isEmpty() ) 
-		emit m_parent->log( RCS::Error, reste );
-	reste = m_process->readAllStandardOutput();
-	if( ! reste.isEmpty() ) 
-		emit m_parent->log( RCS::Information, reste );
-}
-
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
-	m_process = new QProcess();
-	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
-	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processReadOutput()) );
-	connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processFinished()) );
+	if( ! m_process ) {
+		m_process = new QProcess();
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
+		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processReadOutput()) );
+		connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processReadOutput()) );
+	}
+	emit m_parent->log( RCS::Debug, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );
+	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ) );
 	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options );
+	while( ! m_process->waitForFinished() );
+	processReadOutput();
 }
 
 void CVSThread::abort() {
@@ -411,11 +424,11 @@ void CVSThread::abort() {
 
 /* CVSUpdateThread */
 
-CVSUpdateThread::CVSUpdateThread( PrivateRCS_CVS * parent, QString path ) : CVSThread( parent ) {
-	m_path = path;
+CVSUpdateThread::CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths ) : CVSThread( parent ) {
+	m_paths = paths;
 }
 
-void CVSUpdateThread::callUpdate( const QString & path ) {
+void CVSUpdateThread::callUpdate( const QString & path, const QStringList & files ) {
 	QStringList parameters;
 	if( ! global.m_xinxConfig->cvsProgressMessages().isEmpty() )
 		parameters << global.m_xinxConfig->cvsProgressMessages();
@@ -425,22 +438,121 @@ void CVSUpdateThread::callUpdate( const QString & path ) {
 	if( global.m_xinxConfig->cvsCreateDirectories() )
 		parameters << "-d";
 
+	parameters << files;
+
 	callCVS( path, parameters );
 }
 
 void CVSUpdateThread::run() {
-	callUpdate( m_path );
-	exec();
-}
-
-void CVSUpdateThread::processFinished() {
-	CVSThread::processFinished();
+	m_paths.sort();
+	
+	int i = 0;
+	QString path;
+	QStringList files;
+	
+	do {
+		files.clear();
+		QFileInfo info = QFileInfo( m_paths.at( i ) );
+		if( info.isDir() )
+			path = m_paths.at( i );
+		else {
+			path = info.absolutePath();
+			files << info.fileName();
+		}
+		i++;
+		QFileInfo infoNext; 
+		while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {
+			files << infoNext.fileName();
+			i++;
+		}
+		callUpdate( path, files );
+	} while( i < m_paths.size() );
+	
 	emit m_parent->log( RCS::Debug, tr("Update terminated") );
-	emit m_parent->updateTerminated();
-	delete m_process;
-	exit();
+	emit m_parent->operationTerminated();
 }
 
-void CVSUpdateThread::processReadOutput() {
-	CVSThread::processReadOutput();
+/* CVSAddThread */
+
+CVSAddThread::CVSAddThread( PrivateRCS_CVS * parent, QStringList paths ) : CVSThread( parent ) {
+	m_paths = paths;
 }
+
+void CVSAddThread::callAdd( const QString & path, const QStringList & files ) {
+	QStringList parameters;
+	parameters << "add";
+	parameters << files;
+	callCVS( path, parameters );
+}
+
+void CVSAddThread::run() {
+	m_paths.sort();
+	
+	int i = 0;
+	QString path;
+	QStringList files;
+	
+	do {
+		files.clear();
+		QFileInfo info = QFileInfo( m_paths.at( i ) );
+		if( info.isDir() )
+			path = m_paths.at( i );
+		else {
+			path = info.absolutePath();
+			files << info.fileName();
+		}
+		i++;
+		QFileInfo infoNext; 
+		while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {
+			files << infoNext.fileName();
+			i++;
+		}
+		callAdd( path, files );
+	} while( i < m_paths.size() );
+	
+	emit m_parent->log( RCS::Debug, tr("Add terminated") );
+	emit m_parent->operationTerminated();
+}
+
+/* CVSRemoveThread */
+
+CVSRemoveThread::CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths ) : CVSThread( parent ) {
+	m_paths = paths;
+}
+
+void CVSRemoveThread::callRemove( const QString & path, const QStringList & files ) {
+	QStringList parameters;
+	parameters << "remove";
+	parameters << files;
+	callCVS( path, parameters );
+}
+
+void CVSRemoveThread::run() {
+	m_paths.sort();
+	
+	int i = 0;
+	QString path;
+	QStringList files;
+	
+	do {
+		files.clear();
+		QFileInfo info = QFileInfo( m_paths.at( i ) );
+		if( info.isDir() )
+			path = m_paths.at( i );
+		else {
+			path = info.absolutePath();
+			files << info.fileName();
+		}
+		i++;
+		QFileInfo infoNext; 
+		while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {
+			files << infoNext.fileName();
+			i++;
+		}
+		callRemove( path, files );
+	} while( i < m_paths.size() );
+	
+	emit m_parent->log( RCS::Debug, tr("Remove terminated") );
+	emit m_parent->operationTerminated();
+}
+

@@ -27,7 +27,7 @@
 class RCSLogDialogImpl : public QDialog, public Ui::RCSLogDialog {
 	Q_OBJECT
 public:
-	RCSLogDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	RCSLogDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	void init();
 signals:
 	void abort();

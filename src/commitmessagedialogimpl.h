@@ -23,14 +23,25 @@
 //
 #include "ui_commitmessages.h"
 //
+#include "rcs.h"
+
+class PrivateCommitMessageDialogImpl;
+
 class CommitMessageDialogImpl : public QDialog, public Ui::CommitMessageDialog {
 	Q_OBJECT
 public:
-	CommitMessageDialogImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	CommitMessageDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	~CommitMessageDialogImpl();
 	
 	void setMessages( const QString & message );
 	QString messages();
+	
+	void setFilesOperation( RCS::FilesOperation files );
+	RCS::FilesOperation filesOperation(); 
 private slots:
+private:
+	PrivateCommitMessageDialogImpl * d;
+	friend class PrivateCommitMessageDialogImpl;
 };
 #endif
 

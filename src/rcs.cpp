@@ -20,4 +20,7 @@
 
 #include "rcs.h"
 
-// place your code here
+RCS::RCS() {
+	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
+}
+
