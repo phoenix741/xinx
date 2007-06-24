@@ -273,12 +273,12 @@ void XMLVisualStudio::updateActions() {
 	m_closeProjectSessionAct->setEnabled( global.m_project != NULL );
 	m_projectPropertyAct->setEnabled( global.m_project != NULL );
 	
-	m_updateProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_commitProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_addFileToProjectBtn->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_deleteFileFromProject->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_updateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_commitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_addToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_deleteFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
 	
-	m_flatListBtn->setEnabled( global.m_project != NULL );
+	m_toggledFlatView->setEnabled( global.m_project != NULL );
 	m_filtreLineEdit->setEnabled( global.m_project != NULL );
 
 	/* Files */
