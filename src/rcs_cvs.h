@@ -28,6 +28,7 @@ class CVSThread;
 class CVSUpdateThread;
 class CVSAddThread;
 class CVSRemoveThread;
+class CVSCommitThread;
 
 class ProcessExecutedException {	
 };
@@ -53,6 +54,7 @@ private:
 	friend class CVSUpdateThread;
 	friend class CVSAddThread;
 	friend class CVSRemoveThread;
+	friend class CVSCommitThread;
 };
 
 #endif // __RCS_CVS_H__

@@ -101,17 +101,19 @@ public slots:
 class CVSThread : public QThread {
 	Q_OBJECT
 public:
-	CVSThread( PrivateRCS_CVS * parent );
+	CVSThread( PrivateRCS_CVS * parent, QStringList paths );
 	~CVSThread();
 public slots:
 	virtual void processReadOutput();
 	void abort();
 protected:
-	void callCVS( const QString & path, const QStringList & options );
+	virtual void run();
+	virtual void callCVS( const QString & path, const QStringList & options );
 	void processLine( bool error, const QString & line );
 	PrivateRCS_CVS * m_privateParent;
 	RCS_CVS * m_parent;
 	QProcess * m_process;
+	QStringList m_paths;
 };
 
 /* CVSUpdateThread */
@@ -121,10 +123,8 @@ class CVSUpdateThread : public CVSThread {
 public:
 	CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths );
 protected:
-	void callUpdate( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
-private:
-	QStringList m_paths;
 };
 
 /* CVSAddThread */
@@ -134,10 +134,8 @@ class CVSAddThread : public CVSThread {
 public:
 	CVSAddThread( PrivateRCS_CVS * parent, QStringList paths );
 protected:
-	void callAdd( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
-private:
-	QStringList m_paths;
 };
 
 /* CVSRemoveThread */
@@ -147,10 +145,21 @@ class CVSRemoveThread : public CVSThread {
 public:
 	CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths );
 protected:
-	void callRemove( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void run();
+};
+
+/* CVSCommitThread */
+
+class CVSCommitThread : public CVSThread {
+	Q_OBJECT
+public:
+	CVSCommitThread( PrivateRCS_CVS * parent, QStringList paths, QString message );
+protected:
+	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
 private:
-	QStringList m_paths;
+	QString m_message;
 };
 
 #endif // __P_RCS_CVS_H__
