@@ -113,6 +113,7 @@ void CustomDialogImpl::on_m_syntaxTypeComboBox_currentIndexChanged( QString text
 	m_underlineCheckBox->setChecked( format.fontUnderline() );
 	m_StrikeoutCheckBox->setChecked( format.fontStrikeOut() );
 	m_boldCheckBox->setChecked( format.fontWeight() != QFont::Normal );
+	m_fontSizeSpinBox->setValue( format.fontPointSize() );
 	
 	m_colorComboBox->setColor( format.foreground().color() );
 	if( ! format.fontFamily().isEmpty() ) 
@@ -195,6 +196,15 @@ void CustomDialogImpl::on_m_colorComboBox_activated( QColor c ) {
 	if( d->m_highlighter ) {
 		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
 		format.setForeground( c );
+		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
+		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
+	}
+}
+
+void CustomDialogImpl::on_m_fontSizeSpinBox_valueChanged( double value ) {
+	if( d->m_highlighter ) {
+		QTextCharFormat format = d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ]; 
+		format.setFontPointSize( value );
 		d->m_highlighter->setHighlightFormat( m_syntaxTypeComboBox->currentText(), format );
 		d->m_config.managedStructure()[ m_syntaxFileTypeComboBox->currentText() ].color[ m_syntaxTypeComboBox->currentText() ] = format;	
 	}

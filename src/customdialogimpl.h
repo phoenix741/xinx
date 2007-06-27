@@ -60,6 +60,7 @@ private slots:
 	void on_m_syntaxFileTypeComboBox_currentIndexChanged(QString);
 	void on_m_syntaxTypeComboBox_currentIndexChanged(QString);
 	void on_m_colorComboBox_activated( QColor c );
+	void on_m_fontSizeSpinBox_valueChanged( double value );
 private:
 	PrivateCustomDialogImpl * d;
 	friend class PrivateCustomDialogImpl;

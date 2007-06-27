@@ -368,6 +368,8 @@ void FileEditor::activateWatcher() {
 	d->activateWatcher();
 }
 
+#include <QMessageBox>
+
 void FileEditor::loadFile( const QString & fileName ){
 	if( ! fileName.isEmpty() ) m_fileName = fileName;
 

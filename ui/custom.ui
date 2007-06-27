@@ -326,7 +326,7 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="4" column="0" >
+          <item row="5" column="0" >
            <widget class="QLabel" name="label_6" >
             <property name="text" >
              <string>Font :</string>
@@ -388,18 +388,28 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0" >
+          <item row="4" column="0" >
            <widget class="QLabel" name="label_5" >
             <property name="text" >
              <string>Color :</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1" colspan="3" >
+          <item row="5" column="1" colspan="3" >
            <widget class="QFontComboBox" name="m_fontComboBox" />
           </item>
-          <item row="3" column="1" colspan="3" >
+          <item row="4" column="1" colspan="3" >
            <widget class="KColorCombo" name="m_colorComboBox" />
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_10" >
+            <property name="text" >
+             <string>Font size :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="3" >
+           <widget class="QDoubleSpinBox" name="m_fontSizeSpinBox" />
           </item>
          </layout>
         </widget>

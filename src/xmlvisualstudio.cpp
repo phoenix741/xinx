@@ -469,7 +469,7 @@ void XMLVisualStudio::on_m_customApplicationAct_triggered() {
 }
 
 void XMLVisualStudio::closeEvent( QCloseEvent *event ) {
-	if( ! global.m_xinxConfig->saveSessionByDefault() ) {
+	if( ! ( global.m_project && global.m_xinxConfig->saveSessionByDefault()) ) {
 		for( int i = 0; i < m_tabEditors->count(); i++ ) {
 			if ( ! maybeSave( i ) ) {
 				event->ignore();

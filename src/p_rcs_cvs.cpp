@@ -410,11 +410,11 @@ void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 
 void CVSThread::abort() {
 #ifdef Q_WS_WIN
-	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, d->m_process->pid()->dwProcessId ) != 0 )
+	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, m_process->pid()->dwProcessId ) != 0 )
 		perror( "GenerateConsoleCtrlEvent" );
-	if( GenerateConsoleCtrlEvent( CTRL_C_EVENT, d->m_process->pid()->dwProcessId ) != 0 )
+	if( GenerateConsoleCtrlEvent( CTRL_C_EVENT, m_process->pid()->dwProcessId ) != 0 )
 		perror( "GenerateConsoleCtrlEvent" );
-	if( ! >m_process->waitForFinished( 1000 ) ) {
+	if( ! m_process->waitForFinished( 1000 ) ) {
 		emit m_parent->log( RCS::Error, tr("I'M A PROCESS KILLER") );
 		m_process->kill();
 	}

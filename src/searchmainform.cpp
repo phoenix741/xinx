@@ -86,6 +86,7 @@ void XMLVisualStudio::on_m_searchNextAct_triggered() {
 						continuer = true;
 					}
 				}
+				m_nbFindedText = 0;
 			} else {
 				m_nbFindedText++;
 			
