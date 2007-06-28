@@ -77,6 +77,16 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="m_cancelBtn" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../images/application.qrc" >:/button_cancel.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="m_validButton" >
        <property name="text" >
         <string>&amp;Valid</string>
@@ -101,12 +111,28 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>442</x>
-     <y>333</y>
+     <x>572</x>
+     <y>431</y>
     </hint>
     <hint type="destinationlabel" >
      <x>377</x>
      <y>339</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_cancelBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CommitMessageDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>497</x>
+     <y>427</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>359</x>
+     <y>407</y>
     </hint>
    </hints>
   </connection>

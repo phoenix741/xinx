@@ -32,7 +32,7 @@ RCS_CVS::~RCS_CVS() {
 	delete d;
 }
 
-RCS::FilesOperation RCS_CVS::operations( const QString & path ) {
+RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 	return d->operationsOfRecursivePath( path );
 }
 

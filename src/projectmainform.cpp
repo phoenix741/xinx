@@ -435,31 +435,32 @@ void XMLVisualStudio::on_m_updateFromRCSAct_triggered() {
 }
 
 void XMLVisualStudio::on_m_commitToRCSAct_triggered() {
-	CommitMessageDialogImpl dlg;
-	if( dlg.exec() ) {
-		QString message = dlg.messages();
-		
-		if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
-			RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
-			
-			connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-			connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
-			connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
-			connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
-			m_rcslogDialog->init();
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		CommitMessageDialogImpl dlg;
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
 
-			QStringList paths;
-			QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
-			if( list.size() == 0 ) {
-				rcs->commit( QStringList() << global.m_project->projectPath(), message );
-			} else {
-				foreach( QModelIndex index, list )
-					paths << m_dirModel->filePath( index );
-				rcs->commit( paths, message );
-			}
-
-			m_rcslogDialog->exec();
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( list.size() == 0 ) {
+			paths = QStringList() << global.m_project->projectPath();
+		} else {
+			foreach( QModelIndex index, list )
+				paths << m_dirModel->filePath( index );
 		}
+
+		dlg.setFilesOperation( rcs->operations( paths ) );
+		if( ! dlg.exec() ) return ;
+		QString message = dlg.messages();
+
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+
+		rcs->commit( dlg.filesOperation(), message );
+
+		m_rcslogDialog->exec();
 	}
 }
 

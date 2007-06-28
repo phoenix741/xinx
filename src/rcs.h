@@ -45,7 +45,7 @@ public:
 	typedef QList<FileOperation> FilesOperation;
 	
 	virtual rcsState status( const QString & path ) = 0;
-	virtual FilesOperation operations( const QString & path ) = 0;
+	virtual FilesOperation operations( const QStringList & path ) = 0;
 	virtual void update( const QStringList & path ) = 0;
 	virtual void commit( const QStringList & path, const QString & message ) = 0;
 	virtual void add( const QStringList & path ) = 0;

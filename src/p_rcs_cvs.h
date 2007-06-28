@@ -90,6 +90,7 @@ public:
 
 	RCS::FilesOperation operationsOfPath( const QString & path );
 	RCS::FilesOperation operationsOfRecursivePath( const QString & path );
+	RCS::FilesOperation operationsOfRecursivePath( const QStringList & path );
 	QHash<QString,RCS_CVSEntry> loadEntryFile( const QString & entry );
 	QHash<QString,RCS_CVSEntry> loadEntryDir( const QString & dir );
 public slots:

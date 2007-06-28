@@ -66,13 +66,13 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 		QString fileName = file.first;
 		switch( file.second ) {
 		case RCS::Commit: 
-			fileName += tr( "Commit" );
+			fileName += tr( " ( Commit )" );
 			break;
 		case RCS::AddAndCommit: 
-			fileName += tr( "Ass and Commit" );
+			fileName += tr( " ( Add and Commit )" );
 			break;
 		case RCS::RemoveAndCommit: 
-			fileName += tr( "Remove and Commit" );
+			fileName += tr( " ( Remove and Commit )" );
 			break;
 		default: ;
 		}
@@ -85,5 +85,11 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 }
 
 RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
-	
+	for( int i = 0 ; i < m_fileListWidget->count(); i++ ) {
+		RCS::FileOperation op;
+		op = d->m_files.at( i );
+		if( m_fileListWidget->item( i )->checkState() == Qt::Unchecked )
+			d->m_files.replace( i , qMakePair( op.first, RCS::Nothing ) );
+	}
+	return d->m_files;
 }

@@ -91,13 +91,24 @@ PrivateRCS_CVS::~PrivateRCS_CVS() {
 	delete m_watcher;
 }
 
+RCS::FilesOperation PrivateRCS_CVS::operationsOfRecursivePath( const QStringList & path ) {
+	RCS::FilesOperation files;
+	foreach( QString p, path ) {
+		files += operationsOfRecursivePath( p );
+	}
+	return files;
+}
+
+
 RCS::FilesOperation PrivateRCS_CVS::operationsOfRecursivePath( const QString & path ) {
 	if( QFileInfo( path ).isDir() ) {
 		RCS::FilesOperation files = operationsOfPath( path );
 		QStringList infolist = QDir( path ).entryList( QDir::Dirs );
 		foreach( QString fileName, infolist ) {
-			QString file = QDir( path ).absoluteFilePath ( fileName );
-			files += operationsOfRecursivePath( file );
+			if( ( fileName != "." ) && ( fileName != ".." ) ) {
+				QString file = QDir( path ).absoluteFilePath ( fileName );
+				files += operationsOfRecursivePath( file );
+			}
 		}
 		return files;
 	} else {
@@ -128,7 +139,7 @@ RCS::FilesOperation PrivateRCS_CVS::operationsOfPath( const QString & path ) {
 	QStringList existFile =	QDir( path ).entryList();
 	foreach( QString fileName, existFile ) {
 		QString file = QDir( path ).absoluteFilePath ( fileName );
-		if( cvsEntries.keys().indexOf( file ) == 0 ) {
+		if( ( ! QFileInfo( path ).isDir() ) && ( cvsEntries.keys().indexOf( file ) == 0 ) ) {
 			RCS::FileOperation file;
 			file.first = path;
 			file.second = RCS::AddAndCommit;
