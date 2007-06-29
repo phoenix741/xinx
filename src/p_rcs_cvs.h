@@ -84,7 +84,7 @@ public:
 	void reloadEntriesFiles();
 	
 	void callUpdate( const QStringList & path );
-	void callCommit( const QStringList & path, const QString & message );
+	void callCommit( const RCS::FilesOperation & path, const QString & message );
 	void callAdd( const QStringList & path );
 	void callRemove( const QStringList & path );
 
@@ -102,7 +102,7 @@ public slots:
 class CVSThread : public QThread {
 	Q_OBJECT
 public:
-	CVSThread( PrivateRCS_CVS * parent, QStringList paths );
+	CVSThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
 	~CVSThread();
 public slots:
 	virtual void processReadOutput();
@@ -115,6 +115,7 @@ protected:
 	RCS_CVS * m_parent;
 	QProcess * m_process;
 	QStringList m_paths;
+	bool m_terminate;
 };
 
 /* CVSUpdateThread */
@@ -122,7 +123,7 @@ protected:
 class CVSUpdateThread : public CVSThread {
 	Q_OBJECT
 public:
-	CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths );
+	CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
@@ -133,7 +134,7 @@ protected:
 class CVSAddThread : public CVSThread {
 	Q_OBJECT
 public:
-	CVSAddThread( PrivateRCS_CVS * parent, QStringList paths );
+	CVSAddThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
@@ -144,7 +145,7 @@ protected:
 class CVSRemoveThread : public CVSThread {
 	Q_OBJECT
 public:
-	CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths );
+	CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
@@ -155,12 +156,14 @@ protected:
 class CVSCommitThread : public CVSThread {
 	Q_OBJECT
 public:
-	CVSCommitThread( PrivateRCS_CVS * parent, QStringList paths, QString message );
+	CVSCommitThread( PrivateRCS_CVS * parent, RCS::FilesOperation paths, QString message, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
 private:
 	QString m_message;
+	QStringList m_addList;
+	QStringList m_removeList;
 };
 
 #endif // __P_RCS_CVS_H__

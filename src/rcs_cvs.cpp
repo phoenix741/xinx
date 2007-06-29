@@ -54,7 +54,7 @@ void RCS_CVS::update( const QStringList & path ) {
 		d->callUpdate( path );
 }
 
-void RCS_CVS::commit( const QStringList & path, const QString & message ) {
+void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException();
 	} else

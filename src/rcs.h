@@ -47,7 +47,7 @@ public:
 	virtual rcsState status( const QString & path ) = 0;
 	virtual FilesOperation operations( const QStringList & path ) = 0;
 	virtual void update( const QStringList & path ) = 0;
-	virtual void commit( const QStringList & path, const QString & message ) = 0;
+	virtual void commit( const FilesOperation & path, const QString & message ) = 0;
 	virtual void add( const QStringList & path ) = 0;
 	virtual void remove( const QStringList & path ) = 0;
 public slots:
