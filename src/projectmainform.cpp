@@ -142,8 +142,7 @@ void XMLVisualStudio::createProjectPart() {
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_projectDirectoryTreeView->header()->hide();
-//	m_projectDirectoryTreeView->setSelectionMode( QAbstractItemView::MultiSelection );
-	
+
 	m_rcslogDialog = new RCSLogDialogImpl( this );
 	
 	m_updateProjectBtn->setDefaultAction( m_updateFromRCSAct );
