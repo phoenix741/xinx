@@ -273,10 +273,8 @@ void XMLVisualStudio::updateActions() {
 	m_closeProjectSessionAct->setEnabled( global.m_project != NULL );
 	m_projectPropertyAct->setEnabled( global.m_project != NULL );
 	
-	m_updateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_commitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_addToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_deleteFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_globalUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_globalCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
 	
 	m_toggledFlatView->setEnabled( global.m_project != NULL );
 	m_filtreLineEdit->setEnabled( global.m_project != NULL );

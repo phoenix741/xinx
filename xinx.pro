@@ -59,8 +59,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsddocument.h \
   src/xsleditor.h \
   src/xsllistview.h \
-  src/xslproject.h \
-  src/projecttreeview.h
+  src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 PRECOMPILED_HEADER +=   src/stable_header.h
@@ -110,8 +109,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsddocument.cpp \
   src/xsleditor.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp \
-  src/projecttreeview.cpp
+  src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

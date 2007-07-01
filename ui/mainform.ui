@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -97,6 +97,24 @@
     <addaction name="separator" />
     <addaction name="m_exitAct" />
    </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+    <addaction name="m_toggledFlatView" />
+    <addaction name="separator" />
+   </widget>
    <widget class="QMenu" name="m_projectMenu" >
     <property name="title" >
      <string>&amp;Project</string>
@@ -116,30 +134,10 @@
     <addaction name="menu_Close_project_2" />
     <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
-    <addaction name="m_updateFromRCSAct" />
-    <addaction name="m_commitToRCSAct" />
-    <addaction name="m_addToRCSAct" />
-    <addaction name="m_deleteFromRCSAct" />
+    <addaction name="m_globalUpdateFromRCSAct" />
+    <addaction name="m_globalCommitToRCSAct" />
     <addaction name="separator" />
     <addaction name="m_customApplicationAct" />
-   </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
-    <property name="title" >
-     <string>WebServices</string>
-    </property>
-    <addaction name="m_refreshWebServicesListAct" />
-    <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-    <addaction name="m_toggledFlatView" />
-    <addaction name="separator" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -286,26 +284,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="m_addFileToProjectBtn" >
-         <property name="toolTip" >
-          <string>Add file(s) to project</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/kdesvnadd.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="m_deleteFileFromProject" >
-         <property name="toolTip" >
-          <string>Delete file(s) from project</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/kdesvndelete.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -338,7 +316,7 @@
       <widget class="QLineEdit" name="m_filtreLineEdit" />
      </item>
      <item>
-      <widget class="ProjectTreeView" name="m_projectDirectoryTreeView" >
+      <widget class="QTreeView" name="m_projectDirectoryTreeView" >
        <property name="selectionMode" >
         <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>
@@ -831,7 +809,7 @@
     <string>&amp;Recent file</string>
    </property>
   </action>
-  <action name="m_updateFromRCSAct" >
+  <action name="m_globalUpdateFromRCSAct" >
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/kdesvnupdate.png</iconset>
    </property>
@@ -839,7 +817,7 @@
     <string>Update project</string>
    </property>
   </action>
-  <action name="m_commitToRCSAct" >
+  <action name="m_globalCommitToRCSAct" >
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/kdesvncommit.png</iconset>
    </property>
@@ -847,7 +825,23 @@
     <string>Commit project</string>
    </property>
   </action>
-  <action name="m_addToRCSAct" >
+  <action name="m_selectedUpdateFromRCSAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/kdesvnupdate.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Update project</string>
+   </property>
+  </action>
+  <action name="m_selectedCommitToRCSAct" >
+   <property name="icon" >
+    <iconset resource="../images/application.qrc" >:/kdesvncommit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Commit project</string>
+   </property>
+  </action>
+  <action name="m_selectedAddToRCSAct" >
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/kdesvnadd.png</iconset>
    </property>
@@ -855,7 +849,7 @@
     <string>Add file(s) to project</string>
    </property>
   </action>
-  <action name="m_deleteFromRCSAct" >
+  <action name="m_selectedRemoveFromRCSAct" >
    <property name="icon" >
     <iconset resource="../images/application.qrc" >:/kdesvndelete.png</iconset>
    </property>
@@ -876,11 +870,6 @@
   </action>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>ProjectTreeView</class>
-   <extends>QTreeView</extends>
-   <header>src/projecttreeview.h</header>
-  </customwidget>
   <customwidget>
    <class>TabEditor</class>
    <extends>QTabWidget</extends>

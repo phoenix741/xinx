@@ -38,6 +38,8 @@ public:
 	
 	void setFilesOperation( RCS::FilesOperation files );
 	RCS::FilesOperation filesOperation(); 
+public slots:
+	int exec();
 private slots:
 private:
 	PrivateCommitMessageDialogImpl * d;

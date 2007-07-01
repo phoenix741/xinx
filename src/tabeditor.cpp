@@ -340,7 +340,7 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj==tabBar() ) {
-		if ( ( event->type() == QEvent::MouseButtonPress ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
+		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
 			m_clickedItem = -1;
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 			for (int i=0; i<tabBar()->count(); i++) {
@@ -364,8 +364,8 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			} else
 			if ( ( event->type() == QEvent::MouseButtonDblClick ) && ( mouseEvent->button() == Qt::LeftButton ) ) {
 				emit closeTab( m_clickedItem );	
-				return true;
 			}
+			return true;
 		}
 	}
 	return QTabWidget::eventFilter( obj, event );

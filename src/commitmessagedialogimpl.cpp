@@ -20,6 +20,8 @@
 
 #include "commitmessagedialogimpl.h"
 
+#include <QMessageBox>
+
 /* PrivateCommitMessageDialogImpl */
 
 class PrivateCommitMessageDialogImpl {
@@ -92,4 +94,12 @@ RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
 			d->m_files.replace( i , qMakePair( op.first, RCS::Nothing ) );
 	}
 	return d->m_files;
+}
+
+int CommitMessageDialogImpl::exec() {
+	if( d->m_files.size() == 0 ) {
+		QMessageBox::information( this, tr("Commit"), tr("Nothing to do.") );
+		return QDialog::Rejected;
+	}
+	return QDialog::exec();
 }

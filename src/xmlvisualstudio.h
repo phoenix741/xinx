@@ -54,12 +54,15 @@ protected:
 	/* Window event */
 
 	void closeEvent( QCloseEvent *event );
+	bool eventFilter( QObject *obj, QEvent *event );
 private slots:
 	void on_m_toggledFlatView_toggled(bool checked);
-	void on_m_updateFromRCSAct_triggered();
-	void on_m_commitToRCSAct_triggered();
-	void on_m_addToRCSAct_triggered();
-	void on_m_deleteFromRCSAct_triggered();
+	void on_m_globalUpdateFromRCSAct_triggered();
+	void on_m_globalCommitToRCSAct_triggered();
+	void on_m_selectedUpdateFromRCSAct_triggered();
+	void on_m_selectedCommitToRCSAct_triggered();
+	void on_m_selectedAddToRCSAct_triggered();
+	void on_m_selectedRemoveFromRCSAct_triggered();
 	void on_m_newStylesheetFileAct_triggered();
 	void on_m_newXMLFileAct_triggered();
 	void on_m_newJavascriptFileAct_triggered();
