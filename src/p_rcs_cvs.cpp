@@ -311,38 +311,53 @@ void CVSThread::processLine( bool error, const QString & line ) {
 }
 
 void CVSThread::processReadOutput() {
-	qDebug() << "Std" << endl;
 	m_process->setReadChannel( QProcess::StandardOutput );
 	while( m_process->canReadLine() ) 
 		processLine( true, m_process->readLine() );
-	qDebug() << "Err" << endl;
 	m_process->setReadChannel( QProcess::StandardError );
 	while( m_process->canReadLine() )
 		processLine( false, m_process->readLine() );
 }
 
+void CVSThread::error( QProcess::ProcessError error ) {
+	switch( error ) {
+	case QProcess::FailedToStart:
+		qDebug() << "Failed To Start process";
+		break;
+	case QProcess::Crashed:
+		qDebug() << "Process crashed";
+		break;
+	case QProcess::Timedout:
+		qDebug() << "Process timed out";
+		break;
+	case QProcess::WriteError:
+		qDebug() << "Write error";
+		break;
+	case QProcess::ReadError:
+		qDebug() << "Read error";
+		break;
+	case QProcess::UnknownError:	
+		qDebug() << "Unknown error";
+		break;
+	}
+	qDebug() << endl;
+}
+
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 	if( ! m_process ) {
-		qDebug() << "Create process" << endl;
 		m_process = new QProcess();
-		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
+		m_process->setProcessChannelMode( QProcess::MergedChannels );
 		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processReadOutput()) );
-		qDebug() << "End create process" << endl;
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
+		connect( m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)) );
 	}
-	qDebug() << "Set Working Dir" << endl;
 	emit m_parent->log( RCS::Debug, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );
-	qDebug() << "1/Exec cvs" << endl;
 	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ) );
-	qDebug() << "2/Exec cvs" << endl;
-	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options );
-	qDebug() << "Wait started : " << m_process->state () << endl;
-	while( ! m_process->waitForStarted() );
-	qDebug() << "Wait finished : " << m_process->state () << endl;
-	while( ! m_process->waitForFinished() );
-	qDebug() << "Read Output" << endl;
+	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options, QIODevice::ReadOnly | QIODevice::Text );
+	while( ! m_process->waitForStarted( -1 ) );
+	while( ! m_process->waitForFinished( -1 ) );
 	processReadOutput();
-	qDebug() << "Delete object" << endl;
 	delete m_process;
 	m_process = NULL;
 }
@@ -370,9 +385,7 @@ void CVSThread::run() {
 	QString path;
 	QStringList files;
 	
-	qDebug() << "Start boucle : " << i << endl;
 	do {
-		qDebug() << "bcl : " << i << endl;
 		files.clear();
 		QFileInfo info = QFileInfo( m_paths.at( i ) );
 		if( info.isDir() )
@@ -387,11 +400,8 @@ void CVSThread::run() {
 			files << infoNext.fileName();
 			i++;
 		}
-		qDebug() << "Path : " << path << endl;
 		callCVS( path, files );
-		qDebug() << "next" << endl;
 	} while( i < m_paths.size() );
-	qDebug() << "end" << endl;
 }
 
 /* CVSUpdateThread */
