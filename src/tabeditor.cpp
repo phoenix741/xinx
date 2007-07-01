@@ -340,7 +340,8 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj==tabBar() ) {
-		if (event->type() == QEvent::MouseButtonPress ) {
+		if ( ( event->type() == QEvent::MouseButtonPress ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
+			m_clickedItem = -1;
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 			for (int i=0; i<tabBar()->count(); i++) {
 				if ( tabBar()->tabRect(i).contains( mouseEvent->pos() ) ) {
@@ -348,8 +349,9 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 					break;
 				}
 			}
+			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
 			
-			if ( mouseEvent->button() == Qt::RightButton ) {
+			if ( ( event->type() == QEvent::MouseButtonPress ) && ( mouseEvent->button() == Qt::RightButton ) ) {
 				QMenu *menu = new QMenu( this );
 				connect( menu->addAction(QIcon(":/reload.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
 				menu->addSeparator();
@@ -359,10 +361,14 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 				connect( menu->addAction(QIcon(":/fileclose.png"), tr("Close")), SIGNAL(triggered()), this, SLOT(slotCloseAsked()) );
 				menu->exec(mouseEvent->globalPos());
 				delete menu;
+			} else
+			if ( ( event->type() == QEvent::MouseButtonDblClick ) && ( mouseEvent->button() == Qt::LeftButton ) ) {
+				emit closeTab( m_clickedItem );	
+				return true;
 			}
 		}
 	}
-	return QTabWidget::eventFilter( obj, event);
+	return QTabWidget::eventFilter( obj, event );
 }
 
 void TabEditor::slotCloseAsked() {
