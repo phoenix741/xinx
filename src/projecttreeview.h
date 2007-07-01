@@ -23,10 +23,15 @@
 //
 #include <QTreeView>
 //
+class PrivateProjectTreeView;
+
 class ProjectTreeView : public QTreeView {
 	Q_OBJECT
 public:
 	ProjectTreeView( QWidget * parent = 0 );
 	virtual ~ProjectTreeView();
+private:
+	PrivateProjectTreeView * d;
+	friend class PrivateProjectTreeView;
 };
 #endif

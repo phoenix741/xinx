@@ -19,11 +19,47 @@
  ***************************************************************************/
 
 #include "projecttreeview.h"
-//
-ProjectTreeView::ProjectTreeView( QWidget * parent ) : QTreeView() {
-	// TODO
+
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QIcon>
+
+/* PrivateProjectTreeView */
+
+class PrivateProjectTreeView : public QObject {
+	Q_OBJECT
+public:
+	PrivateProjectTreeView( ProjectTreeView * parent );
+	bool eventFilter( QObject *obj, QEvent *event );
+private:
+	ProjectTreeView * m_parent;
+};
+
+PrivateProjectTreeView::PrivateProjectTreeView( ProjectTreeView * parent ) {
+	m_parent = parent;
 }
-//
+
+bool PrivateProjectTreeView::eventFilter( QObject *obj, QEvent *event ) {
+	if ( ( obj == m_parent ) && ( event->type() == QEvent::ContextMenu ) ) {
+		// Search the item selected
+		QMenu *menu = new QMenu( m_parent );
+		menu->addAction( QIcon(":/reload.png"), "toto" );
+		menu->exec( static_cast<QContextMenuEvent*>(event)->globalPos() );
+		delete menu;
+	}
+	return QObject::eventFilter( obj, event );
+}
+
+/* ProjectTreeView */
+
+ProjectTreeView::ProjectTreeView( QWidget * parent ) : QTreeView( parent ) {
+	d = new PrivateProjectTreeView( this );
+	this->installEventFilter( d );
+}
+
 ProjectTreeView::~ProjectTreeView() {
+	delete d;
 }
-//
+
+
+#include "projecttreeview.moc"
