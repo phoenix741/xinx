@@ -20,12 +20,22 @@
 
 #ifndef ABOUTDIALOGIMPL_H
 #define ABOUTDIALOGIMPL_H
-//
+
 #include "ui_about.h"
-//
+
+/*!
+ * Implementation of about dialog containts informations as the version, the licence,
+ * the logo, and authors.
+ * The implementation containts only a constructor who defines default dialog 
+ * presentation : Windows Style Dialog.
+ */
 class AboutDialogImpl : public QDialog, public Ui::AboutDialog {
 	Q_OBJECT
 public:
+	/*!
+	 * Constructor of The about dialog implementation. We defines a default windows flags.
+	 * The windows can be resize.
+	 */
 	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 private slots:
 };

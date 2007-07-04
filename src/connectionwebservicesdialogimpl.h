@@ -29,17 +29,48 @@ class QHttpRequestHeader;
 
 class PrivateConnectionWebServicesDialogImpl;
 
+/*!
+ * This is the implementation of a dialog who show the progress of the connection to the WebServices.
+ * This dialog initiate the connection and make the request. The data is returned in a QIODevice.
+ */
 class ConnectionWebServicesDialogImpl : public QDialog, public Ui::ConnectionWebServicesDialog {
 	Q_OBJECT
 public:
-	enum QueryType { qtGet, qtPost };
-
+	/*! 
+	 * Constructor of the WebServices Connection dialog. 
+	 * The dialog as a fixed size.
+	 */
 	ConnectionWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	/*!
+	 * Destructor of the WebServices Connection dialog.
+	 */
 	virtual ~ConnectionWebServicesDialogImpl();
 
+	/*!
+	 * Define the host and the port of the connection.
+	 * \param path The serveur who wants to connect.
+	 * \param port Port to connect ( the default is 80 )
+	 */
 	void setHost( const QString & path, quint16 port = 80 );
+	/*!
+	 * Make a HTTP Get request.
+	 * \param path Path on the server to connect
+	 * \param to Contents returned when the request is terminated.
+	 */
 	bool get( const QString & path, QIODevice * to );
+	/*!
+	 * Make a HTTP Post request.
+	 * \param path Path on the server to connect
+	 * \param data Data to be send to the server.
+	 * \param to Contents returned when the request is terminated.
+	 */
 	bool post( const QString & path, QByteArray * data, QIODevice * to );
+	/*!
+	 * Make a HTTP Defined Request.
+	 * \param header The header contains path, and other header information.
+	 * \param data Data to be send to the server.
+	 * \param to Contents returned when the request is terminated.
+	 */
 	bool request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to );
 private:
 	PrivateConnectionWebServicesDialogImpl * d;
