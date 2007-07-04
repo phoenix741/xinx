@@ -286,6 +286,10 @@ CVSThread::CVSThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate
 	m_process = NULL;
 	m_paths = paths;
 	m_terminate = terminate;
+	m_process = new QProcess( this );
+	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processReadOutput()) );
+	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
+	connect( m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)) );
 }
 
 CVSThread::~CVSThread() {
@@ -344,13 +348,6 @@ void CVSThread::error( QProcess::ProcessError error ) {
 }
 
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
-	if( ! m_process ) {
-		m_process = new QProcess();
-		m_process->setProcessChannelMode( QProcess::MergedChannels );
-		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processReadOutput()) );
-		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
-		connect( m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)) );
-	}
 	emit m_parent->log( RCS::Debug, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );
 	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ) );
@@ -358,8 +355,6 @@ void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 	while( ! m_process->waitForStarted( -1 ) );
 	while( ! m_process->waitForFinished( -1 ) );
 	processReadOutput();
-	delete m_process;
-	m_process = NULL;
 }
 
 void CVSThread::abort() {
@@ -478,9 +473,16 @@ void CVSRemoveThread::run() {
 
 CVSCommitThread::CVSCommitThread( PrivateRCS_CVS * parent, RCS::FilesOperation paths, QString message, bool terminate ) : CVSThread( parent, QStringList(), terminate ) {
 	m_message = message;
+	m_message += "\n";
+	m_message += tr("==================") + "\n";
+	m_message += tr("| Files commited |") + "\n";
+	m_message += tr("==================") + "\n";
+	m_message += "\n";
 	foreach( RCS::FileOperation file, paths ) {
-		if( file.second != RCS::Nothing ) 
+		if( file.second != RCS::Nothing ) {
+			m_message += QFileInfo( file.first ).fileName() + "\n";
 			m_paths  << file.first;
+		}
 		if( file.second == RCS::RemoveAndCommit ) 
 			m_removeList  << file.first;
 		if( file.second == RCS::AddAndCommit ) 
