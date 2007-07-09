@@ -39,6 +39,8 @@ public:
 	/*! 
 	 * Constructor of the WebServices Connection dialog. 
 	 * The dialog as a fixed size.
+	 * \param parent Parent of the dialog
+	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	ConnectionWebServicesDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
@@ -47,29 +49,31 @@ public:
 	virtual ~ConnectionWebServicesDialogImpl();
 
 	/*!
-	 * Define the host and the port of the connection.
+	 * Define the host and the port of the connection. This param is used to configure the internal QHttp.
 	 * \param path The serveur who wants to connect.
 	 * \param port Port to connect ( the default is 80 )
 	 */
 	void setHost( const QString & path, quint16 port = 80 );
 	/*!
-	 * Make a HTTP Get request.
-	 * \param path Path on the server to connect
-	 * \param to Contents returned when the request is terminated.
+	 * Call the get request of the QHttp, with a path. The dialog show the progression
+	 * of the connection (downloading, and uploading). 
+	 * \param path Path on the server where we want to send data.
+	 * \param to Device where the content will be returned.
 	 */
 	bool get( const QString & path, QIODevice * to );
 	/*!
-	 * Make a HTTP Post request.
+	 * Call the post request of the QHttp, with a path. The data to post at the QHttp is stored in a
+	 * QByteArray. The dialog show the progression of the connection (downloading, and uploading).
 	 * \param path Path on the server to connect
-	 * \param data Data to be send to the server.
-	 * \param to Contents returned when the request is terminated.
+	 * \param data Data to post to the server.
+	 * \param to Device where the content will be returned.
 	 */
 	bool post( const QString & path, QByteArray * data, QIODevice * to );
 	/*!
-	 * Make a HTTP Defined Request.
+	 * Call the request method of the QHttp. We used this method to defines user request.
 	 * \param header The header contains path, and other header information.
 	 * \param data Data to be send to the server.
-	 * \param to Contents returned when the request is terminated.
+	 * \param to Device where the content will be returned.
 	 */
 	bool request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to );
 private:

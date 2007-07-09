@@ -28,7 +28,7 @@
 class PrivateCommitMessageDialogImpl;
 
 /*!
- * Implementation of a commit dialog. This dialog is used to choose file to be commited
+ * Implementation of the commit dialog. This dialog is used to choose file to be commited
  * and message to be assigned at the operations.
  */
 class CommitMessageDialogImpl : public QDialog, public Ui::CommitMessageDialog {
@@ -37,6 +37,8 @@ public:
 	/*!
 	 * Constructor of the commit dialog. The dialog as a windows flag who said the flag is not
 	 * resizable.
+	 * \param parent Parent of the dialog
+	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	CommitMessageDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!

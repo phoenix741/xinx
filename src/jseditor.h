@@ -24,6 +24,9 @@
 #include "texteditor.h"
 #include <QTextCursor>
 
+/*!
+ * JavaScript Editor
+ */
 class JSEditor : public TextEditor {
 	Q_OBJECT
 public:

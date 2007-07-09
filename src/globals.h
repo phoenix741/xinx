@@ -29,26 +29,69 @@ class WebServices;
 class ObjectsView;
 class XINXConfig;
 
+/*!
+ * List of WebServices object.
+ */
 typedef QList<WebServices*> WebServicesList;
 
+/*!
+ * Create globals class contains global definition.
+ */
 class Globals : public QObject {
 	Q_OBJECT
 public:
+	/*!
+	 * Intialize default value of object.
+	 */ 
 	Globals();
+	/*!
+	 * Destruct the global object.
+	 */
 	~Globals();
 
+	/*!
+	 * List all XML Java View Object File.
+	 */
 	ObjectsView * m_javaObjects;
+	/*!
+	 * List all WebServices in coordination with the project.
+	 */
 	WebServicesList*  m_webServices;
+	/*!
+	 * Opened project.
+	 */
 	XSLProject * m_project;
+	/*!
+	 * XINX Config file.
+	 */
 	XINXConfig * m_xinxConfig;
 	
+	/*!
+	 * Call this function when you want emit signals \e projectChanged().
+	 * \sa projectChanged()
+	 */
 	void emitProjectChanged();
+	/*!
+	 * Call this function when you want emit signals \e webServicesChanged().
+	 * \sa webServicesChanged()
+	 */
 	void emitWebServicesChanged();
 Q_SIGNALS:
+	/*!
+	 * Signal emited when the project has changed
+	 * \sa emitProjectChanged()
+	 */
 	void projectChanged();
+	/*!
+	 * Signal emited when webservices list has changed
+	 * \sa emitWebServicesChanged() 
+	 */
 	void webServicesChanged();
 };
 
+/*!
+ * Global defintion of global
+ */
 extern Globals global;
 
 #endif // __GLOBALS_H__

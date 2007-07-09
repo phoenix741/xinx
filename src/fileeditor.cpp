@@ -54,7 +54,7 @@ public:
 	PrivateFileEditor( FileEditor * parent );
 	~PrivateFileEditor();
 	
-	bool hasWatcher();
+	bool hasWatcher(); 
 	void setWatcher( const QString & path );
 	void activateWatcher();
 	void desactivateWatcher();
@@ -100,6 +100,7 @@ void PrivateFileEditor::fileChanged( const QString & path ) {
 FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( parent ) {
 	d = new PrivateFileEditor( this );
 	
+	// Set filter event layout.
 	m_view = textEditor;
 	m_view->setFrameStyle( QFrame::NoFrame );
 	m_view->setLineWrapMode(QTextEdit::NoWrap);

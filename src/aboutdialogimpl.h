@@ -35,6 +35,8 @@ public:
 	/*!
 	 * Constructor of The about dialog implementation. We defines a default windows flags.
 	 * The windows can be resize.
+	 * \param parent The parent of the dialog
+	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 private slots:

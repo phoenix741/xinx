@@ -27,9 +27,21 @@ class PrivateFlatModel;
 
 class QDirModel;
 
+/*!
+ * Item model transform a tree Item model (QDirModel) on a Flat model. A flat model is a list.
+ * Node in the tree is show as title, and leaf is show as it.
+ */
 class FlatModel : public QAbstractItemModel {
 public:
+	/*!
+	 * Create a flat model based on a QDirModel and a root index (if we don't want show all the model).
+	 * \param model Model on which the object is based.
+	 * \param root  First index on which the model must start.
+	 */
 	FlatModel( QDirModel * model, QModelIndex root );
+	/*!
+	 * Destructor of the flat model.
+	 */
 	virtual ~FlatModel();
 	
 	virtual int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
@@ -39,6 +51,11 @@ public:
 	virtual QModelIndex parent ( const QModelIndex & index ) const;
 	virtual int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
 	
+	/*!
+	 * Return the index on QDirModel, for an index in the flat model.
+	 * \param index Index in the flat model
+	 * \return Index in the QDirModel
+	 */
 	QModelIndex mappingToSource( const QModelIndex & index );
 	
 private:

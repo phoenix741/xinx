@@ -45,11 +45,11 @@ void Completion::load() {
   
 	// Open the file
 	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) {
-		QMessageBox::warning(
+		QMessageBox::warning( 
 			qApp->activeWindow(), 
 			QApplication::translate("Completion", "Completion"), 
 			QApplication::translate("Completion", "Cannot read file %1:\n%2.").arg( m_name ).arg( file.errorString() ) );
-	    return;
+		throw ENotCompletionFile( QApplication::translate("Completion", "Can't open or read the file %1.").arg( m_name ) );
 	}
 
 	// Load XML Document
@@ -64,7 +64,7 @@ void Completion::load() {
 				.arg(errorLine)
 				.arg(errorColumn)
 				.arg(errorStr) );
-		return;
+		throw ENotCompletionFile( QApplication::translate("Completion", "Can't parse the file %1.").arg( m_name ) );
 	}  
   
 	QDomElement root = objectFile.documentElement();
@@ -73,15 +73,15 @@ void Completion::load() {
 	if( root.tagName() != "completion" ) 
 		throw ENotCompletionFile( QApplication::translate("Completion", "%1 is not auto completion file").arg( m_name ) );
   	
-	// HTML
+	// Read the XML part of the completion
 	QDomElement xml = root.firstChildElement( "xml" );
 	if( ! xml.isNull() ) {
-		QDomElement type = xml.firstChildElement( "type" );
+		QDomElement type = xml.firstChildElement( "type" ); // Read the category to use. (html, stylesheet)
 		while( !type.isNull() ) {
-			QString typeName = type.attribute( "name", "other" );
+			QString typeName = type.attribute( "name", "other" ); // If no category, use "other"
 			
-			QDomNodeList balises = type.elementsByTagName( "balise" );
-			for( int i = 0; i < balises.count(); i++ ) 
+			QDomNodeList balises = type.elementsByTagName( "balise" ); // Search ALL the children balise (balise, and children of balise
+			for( int i = 0; i < balises.count(); i++ ) // For each append to list
 				if( balises.at( i ).isElement() ) 
 					m_xmlBalises.append( new CompletionXMLBalise( typeName, balises.at( i ).toElement() ) );
 				
@@ -92,7 +92,7 @@ void Completion::load() {
 }
 
 CompletionXMLBalise* Completion::balise( const QString & name ) const {
-	foreach( CompletionXMLBalise* b, m_xmlBalises ) {
+	foreach( CompletionXMLBalise* b, m_xmlBalises ) { // Search the balise with the name ...
 		if( b->name() == name ) 
 			return b;
 	}
@@ -103,14 +103,17 @@ CompletionXMLBalise* Completion::balise( const QString & name ) const {
 /* CompletionXMLBalise */
 
 CompletionXMLBalise::CompletionXMLBalise( const QString & category, const QDomElement & node ) : m_category( category ) {
+	// Read node attribute
 	m_name = node.attribute( "name" );
 	m_isDefault = node.attribute( "default" ) == "true";
 	
-	QDomNodeList balises = node.elementsByTagName( "balise" );
+	/* If children balise is present, add them as child */
+	QDomNodeList balises = node.elementsByTagName( "balise" ); 
 	for( int i = 0; i < balises.count(); i++ ) 
 		if( balises.at( i ).isElement() ) 
 			m_balises.append( new CompletionXMLBalise( category, balises.at( i ).toElement() ) );
 	
+	/* Read all attribute for the balise */
 	QDomElement attribute = node.firstChildElement( "attribute" );
 	while( ! attribute.isNull() ) {
 		m_attributes.append( new CompletionXMLAttribute( attribute ) );

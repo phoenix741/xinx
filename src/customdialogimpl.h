@@ -29,21 +29,27 @@ class PrivateCustomDialogImpl;
 /*!
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
  * This dialog save and restore modification in a XINXConfig class.
+ * 
+ * \todo Dialog maybe evoluate to be more dynamic
  */
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT
 public:
 	/*! 
 	 * Custom dialog constructor. The dialog is create with a fixed size 
+	 * \param parent Parent of the dialog
+	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	
 	/*!
 	 * Restore the XINXConfig class in the custom dialog to reflect the configuration of application.
+	 * \param config The config file used to load options.
 	 */
 	void loadFromConfig( XINXConfig * config );
 	/*!
 	 * Store the modification of options in a XINXConfig class.
+	 * \param config The config file where to store options
 	 */
 	void saveToConfig( XINXConfig * config );
 private slots:
