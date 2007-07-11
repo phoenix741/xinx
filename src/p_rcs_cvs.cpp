@@ -350,7 +350,7 @@ void CVSThread::error( QProcess::ProcessError error ) {
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 	emit m_parent->log( RCS::Debug, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );
-	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ) );
+	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() );
 	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options, QIODevice::ReadOnly | QIODevice::Text );
 	while( ! m_process->waitForStarted( -1 ) );
 	while( ! m_process->waitForFinished( -1 ) );

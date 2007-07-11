@@ -32,6 +32,7 @@ class QDirModel;
  * Node in the tree is show as title, and leaf is show as it.
  */
 class FlatModel : public QAbstractItemModel {
+	Q_OBJECT
 public:
 	/*!
 	 * Create a flat model based on a QDirModel and a root index (if we don't want show all the model).

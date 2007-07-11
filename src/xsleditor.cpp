@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
 #include <QIcon>
 #include <QTextEdit>
 #include <QStringListModel>
@@ -456,7 +455,6 @@ void XSLEditor::insertCompletion( const QModelIndex& index ) {
 	QTextCursor tc = textCursor();
 	QCompleter * c = currentCompleter( tc );
 	QString completion = c->completionModel()->data( index ).toString();
-	qDebug() << "insertCompletion( " << completion << " )";
 	
 	for( int i = 0; i < c->completionPrefix().length(); i++ ) tc.deletePreviousChar();
 	tc.insertText( completion );
@@ -466,7 +464,10 @@ void XSLEditor::insertCompletion( const QModelIndex& index ) {
 		insertCompletionValue( tc, m_nodeName, completion );
 	} else
 	if( pos == XSLEditor::cpEditNodeName ) {
-		insertCompletionParam( tc, completion );
+		if( ! m_nodeName.isEmpty() )
+			insertCompletionParam( tc, completion );
+		else
+			tc.insertText( ">" );
 	} else
 	if( pos == XSLEditor::cpEditParamValue ) {
 		int type = c->completionModel()->data( index, Qt::UserRole ).toInt();
@@ -482,12 +483,9 @@ QCompleter * XSLEditor::currentCompleter( const QTextCursor & cursor ) {
 	XSLEditor::cursorPosition position = editPosition( cursor );
 	switch( position ) {
 		case XSLEditor::cpEditNodeName:
-			qDebug() << "currentCompleter() : cpEditNodeName";
 			return m_completerNode;
 		case XSLEditor::cpEditParamName: 
-			qDebug() << "currentCompleter() : cpEditParamName";
 			if(m_nodeName != m_completerParamNodeName) {
-				qDebug() <<  "currentCompleter() : node change";
 				m_completionParamModel->setBaliseName( m_nodeName );
 				m_completerParamNodeName = m_nodeName;
 				return m_completerParam;
@@ -495,7 +493,6 @@ QCompleter * XSLEditor::currentCompleter( const QTextCursor & cursor ) {
 		
 			return m_completerParam;
 		case XSLEditor::cpEditParamValue: 
-			qDebug() << "currentCompleter() : cpEditParamValue";
 			if( ( m_nodeName != m_completerParamNodeName ) || ( m_paramName != m_completerValueParamName ) ) {
 				m_completionParamModel->setBaliseName( m_nodeName );
 				m_completionValueModel->setBaliseName( m_nodeName, m_paramName );
@@ -530,7 +527,6 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 	QCompleter * c = currentCompleter( textCursor() );
 	
 	if (c && c->popup()->isVisible()) {
-		qDebug() << "keyPressEvent() : completer is visible";
 		// The following keys are forwarded by the completer to the widget
 		switch (e->key()) {
 		case Qt::Key_Enter:
@@ -617,7 +613,6 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-	qDebug() << "keyPressEvent() : show completer";
 	c->complete(cr); // popup it up!
 }
 
