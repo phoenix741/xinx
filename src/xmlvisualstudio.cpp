@@ -528,6 +528,7 @@ void XMLVisualStudio::slotCurrentTabChanged( int tab ) {
 
 void XMLVisualStudio::slotCloseFile( int index ) {
 	if( maybeSave( index ) ) {
+		slotModelDeleted();
 		Editor * ed = m_tabEditors->editor( index );
 		m_tabEditors->removeTab( index );
 		delete ed;
