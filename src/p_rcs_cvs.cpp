@@ -348,8 +348,10 @@ void CVSThread::error( QProcess::ProcessError error ) {
 }
 
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
+	qDebug() << QString("Working dir : %1").arg( path ) << endl;
 	emit m_parent->log( RCS::Debug, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );
+	qDebug() << QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() << endl;
 	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() );
 	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options, QIODevice::ReadOnly | QIODevice::Text );
 	while( ! m_process->waitForStarted( -1 ) );
@@ -379,24 +381,39 @@ void CVSThread::run() {
 	int i = 0;
 	QString path;
 	QStringList files;
-	
+
+	qDebug() << "do {" << endl;
 	do {
+		qDebug() << "files.clear()" << endl;
 		files.clear();
+		qDebug() << "QFileInfo info = QFileInfo( m_paths.at( i ) );" << endl;
 		QFileInfo info = QFileInfo( m_paths.at( i ) );
-		if( info.isDir() )
+		qDebug() << "if( info.isDir() )" << endl;
+		if( info.isDir() ) {
+			qDebug() << "path = m_paths.at( i );" << endl;
 			path = m_paths.at( i );
-		else {
+		} else {
+			qDebug() << "path = info.absolutePath();" << endl;
 			path = info.absolutePath();
+			qDebug() << "files << info.fileName();" << endl;
 			files << info.fileName();
 		}
+		qDebug() << "i++" << endl;
 		i++;
+		qDebug() << "QFileInfo infoNext;" << endl;
 		QFileInfo infoNext; 
+		qDebug() << "while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {" << endl;
 		while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {
+			qDebug() << "files << infoNext.fileName();" << endl;
 			files << infoNext.fileName();
+			qDebug() << "i++;" << endl;
 			i++;
 		}
+		qDebug() << "callCVS( path, files );" << endl;
 		callCVS( path, files );
+		qDebug() << "while" << endl;
 	} while( i < m_paths.size() );
+	qDebug() << "flut" << endl;
 }
 
 /* CVSUpdateThread */
@@ -508,7 +525,6 @@ void CVSCommitThread::run() {
 		thread->start();
 		thread->wait();
 		delete thread;
-		sleep( 1 );
 	}
 	if( m_removeList.size() > 0 ) {
 		CVSThread * thread = new CVSRemoveThread( m_privateParent, m_removeList, false );
@@ -516,7 +532,6 @@ void CVSCommitThread::run() {
 		thread->start();
 		thread->wait();
 		delete thread;
-		sleep( 1 );
 	}
 
 	qDebug() << "Thread start" << endl;
