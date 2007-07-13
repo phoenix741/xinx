@@ -34,12 +34,12 @@ RCS_CVSEntry::RCS_CVSEntry( const QString & path ) {
 
 void RCS_CVSEntry::setDate( QString date ) {
 	if( ! m_fileInfo.isDir() ) {
-		if( date.contains( "+conflict" ) )
+		if( date.contains( "+" ) )
 			m_hasConflict = true;
 		else
 			m_hasConflict = false;
 	
-		m_cvsDate = QDateTime::fromString( date.remove( "+conflict" ) ); // , "ddd MMM d hh:mm:ss yyyy"
+		m_cvsDate = QDateTime::fromString( date.remove( 0, date.indexOf("+") + 1 ) ); // , "ddd MMM d hh:mm:ss yyyy"
 		m_cvsDate.setTimeSpec( Qt::UTC );
 	} else
 		m_cvsDate = QDateTime();
@@ -145,7 +145,7 @@ RCS::FilesOperation PrivateRCS_CVS::operationsOfPath( const QString & path ) {
 		}
 	}
 	
-	QStringList existFile =	QDir( path ).entryList( QDir::Files );
+	QStringList existFile =	QDir( path ).entryList( DEFAULT_PROJECT_FILTRE, QDir::Files );
 	foreach( QString fileName, existFile ) {
 		QString file = QDir( path ).absoluteFilePath ( fileName );
 		if( cvsEntries.keys().indexOf( file ) == -1 ) {

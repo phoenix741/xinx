@@ -94,4 +94,13 @@ Q_SIGNALS:
  */
 extern Globals global;
 
+/*!
+ * Default extention filtre 
+ */
+#define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
+/*!
+ * Default project options filtre
+ */
+#define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
+
 #endif // __GLOBALS_H__

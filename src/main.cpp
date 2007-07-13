@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QLocale>
 #include <QTranslator>
+#include <QPlastiqueStyle>
 #include "uniqueapplication.h"
 #include "xmlvisualstudio.h"
 #include "xinxconfig.h"
@@ -43,6 +44,14 @@ int main(int argc, char *argv[]) {
 	app.installTranslator(&translator_qt);
 	translator_xinx.load(QString("xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
 	app.installTranslator(&translator_xinx);
+	
+/*#ifdef QT_DEBUG
+	app.setStyle( new QPlastiqueStyle() );
+	QFile qssFile( ":/coffee.qss" );
+	qssFile.open( QFile::ReadOnly );
+	app.setStyleSheet( qssFile.readAll() );
+	qssFile.close();
+#endif */
 
 	if( app.isUnique() ) {
 		QPixmap pixmap(":/splash.png");

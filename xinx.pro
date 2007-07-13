@@ -1,8 +1,8 @@
-CONFIG +=   debug \
-  exceptions \
+CONFIG +=   exceptions \
   qt \
   warn_on \
-  x86
+  x86 \
+  debug
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
@@ -62,7 +62,6 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
-PRECOMPILED_HEADER +=   src/stable_header.h
 QT +=   network \
   xml
 RCC_DIR +=   build

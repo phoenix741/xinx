@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>581</width>
-    <height>410</height>
+    <height>411</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -336,9 +336,7 @@
           <item row="2" column="0" colspan="3" >
            <widget class="QCheckBox" name="m_underlineCheckBox" >
             <property name="font" >
-             <font>
-              <underline>true</underline>
-             </font>
+             <font/>
             </property>
             <property name="text" >
              <string>Underline</string>
@@ -354,9 +352,7 @@
           <item row="2" column="3" >
            <widget class="QCheckBox" name="m_StrikeoutCheckBox" >
             <property name="font" >
-             <font>
-              <strikeout>true</strikeout>
-             </font>
+             <font/>
             </property>
             <property name="text" >
              <string>Strikeout</string>
@@ -366,9 +362,7 @@
           <item row="1" column="3" >
            <widget class="QCheckBox" name="m_italicCheckBox" >
             <property name="font" >
-             <font>
-              <italic>true</italic>
-             </font>
+             <font/>
             </property>
             <property name="text" >
              <string>Italic</string>
@@ -378,10 +372,7 @@
           <item row="1" column="0" colspan="3" >
            <widget class="QCheckBox" name="m_boldCheckBox" >
             <property name="font" >
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
+             <font/>
             </property>
             <property name="text" >
              <string>Bold</string>

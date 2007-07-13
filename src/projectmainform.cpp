@@ -44,9 +44,6 @@
 
 #include "flattreeview.h"
 
-#define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
-#define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
-
 /* DirRCSModel */
 
 class DirRCSModel : public QDirModel {
@@ -468,6 +465,13 @@ void XMLVisualStudio::on_m_selectedUpdateFromRCSAct_triggered() {
 		
 		QStringList paths;
 		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
 		foreach( QModelIndex index, list )
 			paths << m_dirModel->filePath( index );
 		rcs->update( paths );
@@ -483,6 +487,13 @@ void XMLVisualStudio::on_m_selectedCommitToRCSAct_triggered() {
 
 		QStringList paths;
 		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
 		foreach( QModelIndex index, list )
 			paths << m_dirModel->filePath( index );
 
@@ -514,6 +525,13 @@ void XMLVisualStudio::on_m_selectedAddToRCSAct_triggered() {
 
 		QStringList paths;
 		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
 		foreach( QModelIndex index, list )
 			paths << m_dirModel->filePath( index );
 		rcs->add( paths );
@@ -537,6 +555,13 @@ void XMLVisualStudio::on_m_selectedRemoveFromRCSAct_triggered() {
 
 		QStringList paths;
 		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
 		foreach( QModelIndex index, list ) {
 			paths << m_dirModel->filePath( index );
 			QFile::remove( m_dirModel->filePath( index ) );
