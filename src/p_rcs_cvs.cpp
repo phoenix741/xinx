@@ -20,8 +20,6 @@
 
 #include "p_rcs_cvs.h"
 
-#include <QDebug>
-
 /* RCS_CVSEntry */
 
 RCS_CVSEntry::RCS_CVSEntry() {
@@ -280,86 +278,67 @@ void PrivateRCS_CVS::callRemove( const QStringList & path ) {
 /* CVSThread */
 
 CVSThread::CVSThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate ) : QThread() {
-	qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
 	m_privateParent = parent;
 	m_parent = m_privateParent->m_parent;
 	m_process = NULL;
 	m_paths = paths;
 	m_terminate = terminate;
-	m_process = new QProcess( this );
-	connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(processReadOutput()) );
-	connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(processReadOutput()) );
-	connect( m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)) );
 }
 
 CVSThread::~CVSThread() {
 	delete m_process;
 }
 
-void CVSThread::processLine( bool error, const QString & line ) {
+void CVSThread::processLine( const QString & line ) {
 	QString lline = line.simplified();
-	if( lline.startsWith( "? " ) )
-		emit m_parent->log( RCS::Warning, lline );
-	else if( lline.startsWith( "M " ) )
-		emit m_parent->log( RCS::Information, lline );
+	
+	if( lline.startsWith( "M " ) )
+		emit m_parent->log( RCS::LogLocallyModified, lline );
+	else if( lline.startsWith( "A " ) )
+		emit m_parent->log( RCS::LogLocallyModified, lline );
+	else if( lline.startsWith( "R " ) )
+		emit m_parent->log( RCS::LogLocallyModified, lline );
 	else if( lline.startsWith( "U " ) )
-		emit m_parent->log( RCS::Information, lline );
+		emit m_parent->log( RCS::LogRemotlyModified, lline );
 	else if( lline.startsWith( "P " ) )
-		emit m_parent->log( RCS::Information, lline );
- 	else if( lline.startsWith( "cvs" ) ) 
-		emit m_parent->log( RCS::Debug, lline );
-	else if( error )
-		emit m_parent->log( RCS::Error, lline );
-	else 
-		emit m_parent->log( RCS::Information, lline );
+		emit m_parent->log( RCS::LogRemotlyModified, lline );
+	else if( lline.startsWith( "C " ) )
+		emit m_parent->log( RCS::LogConflict, lline );
+	else if( lline.startsWith( "? " ) )
+		emit m_parent->log( RCS::LogNotManaged, lline );
+	else		
+		emit m_parent->log( RCS::LogNormal, lline );
 }
 
 void CVSThread::processReadOutput() {
 	m_process->setReadChannel( QProcess::StandardOutput );
 	while( m_process->canReadLine() ) 
-		processLine( true, m_process->readLine() );
+		processLine( m_process->readLine() );
+		
+	/* Process error */
 	m_process->setReadChannel( QProcess::StandardError );
 	while( m_process->canReadLine() )
-		processLine( false, m_process->readLine() );
-}
-
-void CVSThread::error( QProcess::ProcessError error ) {
-	switch( error ) {
-	case QProcess::FailedToStart:
-		qDebug() << "Failed To Start process";
-		break;
-	case QProcess::Crashed:
-		qDebug() << "Process crashed";
-		break;
-	case QProcess::Timedout:
-		qDebug() << "Process timed out";
-		break;
-	case QProcess::WriteError:
-		qDebug() << "Write error";
-		break;
-	case QProcess::ReadError:
-		qDebug() << "Read error";
-		break;
-	case QProcess::UnknownError:	
-		qDebug() << "Unknown error";
-		break;
-	}
-	qDebug() << endl;
+		emit m_parent->log( RCS::LogError, m_process->readLine().simplified() );
 }
 
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
-	qDebug() << QString("Working dir : %1").arg( path ) << endl;
-	emit m_parent->log( RCS::Debug, QString("Working dir : %1").arg( path ) );
+	/* Create process */
+	m_process = new QProcess( this );
+
+	emit m_parent->log( RCS::LogApplication, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );
-	qDebug() << QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() << endl;
-	emit m_parent->log( RCS::Debug, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() );
-	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options, QIODevice::ReadOnly | QIODevice::Text );
-	while( ! m_process->waitForStarted( -1 ) );
-	while( ! m_process->waitForFinished( -1 ) );
+	emit m_parent->log( RCS::LogApplication, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() );
+	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options, QIODevice::ReadWrite | QIODevice::Text );
+
+	while( m_process->waitForReadyRead( -1 ) ) processReadOutput();
 	processReadOutput();
+
+	delete m_process;
+	m_process = NULL;
 }
 
 void CVSThread::abort() {
+	if( ! m_process ) return ;
 #ifdef Q_WS_WIN
 	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, m_process->pid()->dwProcessId ) != 0 )
 		perror( "GenerateConsoleCtrlEvent" );
@@ -382,38 +361,23 @@ void CVSThread::run() {
 	QString path;
 	QStringList files;
 
-	qDebug() << "do {" << endl;
 	do {
-		qDebug() << "files.clear()" << endl;
 		files.clear();
-		qDebug() << "QFileInfo info = QFileInfo( m_paths.at( i ) );" << endl;
 		QFileInfo info = QFileInfo( m_paths.at( i ) );
-		qDebug() << "if( info.isDir() )" << endl;
 		if( info.isDir() ) {
-			qDebug() << "path = m_paths.at( i );" << endl;
 			path = m_paths.at( i );
 		} else {
-			qDebug() << "path = info.absolutePath();" << endl;
 			path = info.absolutePath();
-			qDebug() << "files << info.fileName();" << endl;
 			files << info.fileName();
 		}
-		qDebug() << "i++" << endl;
 		i++;
-		qDebug() << "QFileInfo infoNext;" << endl;
 		QFileInfo infoNext; 
-		qDebug() << "while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {" << endl;
 		while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {
-			qDebug() << "files << infoNext.fileName();" << endl;
 			files << infoNext.fileName();
-			qDebug() << "i++;" << endl;
 			i++;
 		}
-		qDebug() << "callCVS( path, files );" << endl;
 		callCVS( path, files );
-		qDebug() << "while" << endl;
 	} while( i < m_paths.size() );
-	qDebug() << "flut" << endl;
 }
 
 /* CVSUpdateThread */
@@ -439,7 +403,7 @@ void CVSUpdateThread::callCVS( const QString & path, const QStringList & files )
 void CVSUpdateThread::run() {
 	CVSThread::run();
 		
-	emit m_parent->log( RCS::Debug, tr("Update terminated") );
+	emit m_parent->log( RCS::LogApplication, tr("Update terminated") );
 	if( m_terminate )
 		emit m_parent->operationTerminated();
 }
@@ -460,7 +424,7 @@ void CVSAddThread::callCVS( const QString & path, const QStringList & files ) {
 void CVSAddThread::run() {
 	CVSThread::run();
 	
-	emit m_parent->log( RCS::Debug, tr("Add terminated") );
+	emit m_parent->log( RCS::LogApplication, tr("Add terminated") );
 	if( m_terminate )
 		emit m_parent->operationTerminated();
 }
@@ -481,7 +445,7 @@ void CVSRemoveThread::callCVS( const QString & path, const QStringList & files )
 void CVSRemoveThread::run() {
 	CVSThread::run();
 	
-	emit m_parent->log( RCS::Debug, tr("Remove terminated") );
+	emit m_parent->log( RCS::LogApplication, tr("Remove terminated") );
 	if( m_terminate )
 		emit m_parent->operationTerminated();
 }
@@ -534,12 +498,10 @@ void CVSCommitThread::run() {
 		delete thread;
 	}
 
-	qDebug() << "Thread start" << endl;
 	CVSThread::run();
-	qDebug() << "Thread stop" << endl;
 
 	
-	emit m_parent->log( RCS::Debug, tr("Commit terminated") );
+	emit m_parent->log( RCS::LogApplication, tr("Commit terminated") );
 	if( m_terminate )
 		emit m_parent->operationTerminated();
 }

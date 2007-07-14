@@ -816,6 +816,9 @@
    <property name="text" >
     <string>Update project</string>
    </property>
+   <property name="shortcut" >
+    <string>F5</string>
+   </property>
   </action>
   <action name="m_globalCommitToRCSAct" >
    <property name="icon" >
@@ -823,6 +826,9 @@
    </property>
    <property name="text" >
     <string>Commit project</string>
+   </property>
+   <property name="shortcut" >
+    <string>F6</string>
    </property>
   </action>
   <action name="m_selectedUpdateFromRCSAct" >

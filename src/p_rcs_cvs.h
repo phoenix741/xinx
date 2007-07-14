@@ -105,13 +105,12 @@ public:
 	CVSThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
 	~CVSThread();
 public slots:
-	void error( QProcess::ProcessError error );
 	virtual void processReadOutput();
 	void abort();
 protected:
 	virtual void run();
 	virtual void callCVS( const QString & path, const QStringList & options );
-	void processLine( bool error, const QString & line );
+	void processLine( const QString & line );
 	PrivateRCS_CVS * m_privateParent;
 	RCS_CVS * m_parent;
 	QProcess * m_process;

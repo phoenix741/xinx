@@ -35,7 +35,7 @@ public:
 		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown
 	};
 	enum rcsLog {
-		Error, Warning, Information, Debug
+		LogError, LogNormal, LogConflict, LogLocallyModified, LogRemotlyModified, LogNotManaged, LogApplication
 	};
 	enum rcsOperation {
 		RemoveAndCommit, AddAndCommit, Commit, Nothing
