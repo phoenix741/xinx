@@ -31,12 +31,15 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="0" column="0" >
+      <item row="1" column="0" >
        <widget class="QTextEdit" name="m_inputStreamTextEdit" >
         <property name="readOnly" >
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QComboBox" name="m_inputComboBox" />
       </item>
      </layout>
     </widget>
@@ -53,12 +56,15 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="0" column="0" >
+      <item row="1" column="0" >
        <widget class="QTextEdit" name="m_outputStreamTextEdit" >
         <property name="readOnly" >
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QComboBox" name="m_outputComboBox" />
       </item>
      </layout>
     </widget>

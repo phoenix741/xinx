@@ -21,20 +21,36 @@
 #include "serviceresultdialogimpl.h"
 
 #include "xmlhighlighter.h"
-//
+
+class PrivateServiceResultDialogImpl {
+public:
+	PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent );
+	
+	QHash<QString,QString> m_input;
+	QHash<QString,QString> m_output;
+private:
+	ServiceResultDialogImpl * m_parent;	
+};
+
 ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
 	setupUi(this);
+	d = new PrivateServiceResultDialogImpl( this );
 	
 	new XmlHighlighter( m_inputStreamTextEdit->document() );
 	new XmlHighlighter( m_outputStreamTextEdit->document() );
 }
-//
 
-void ServiceResultDialogImpl::setInputStreamText( const QString & text ) {
-	m_inputStreamTextEdit->setText( text );
+virtual ServiceResultDialogImpl::~ServiceResultDialogImpl() {
+	delete d;
 }
 
-void ServiceResultDialogImpl::setOutputStreamText( const QString & text ) {
-	m_outputStreamTextEdit->setText( text );
+void ServiceResultDialogImpl::setInputStreamText( const QHash<QString,QString> & text ) {
+	d->m_input = text;
+	m_inputStreamTextEdit->setText( text.at(1) );
+}
+
+void ServiceResultDialogImpl::setOutputStreamText( const QHash<QString,QString> & text ) {
+	d->m_output = text;
+	m_outputStreamTextEdit->setText( text.at(1) );
 }
