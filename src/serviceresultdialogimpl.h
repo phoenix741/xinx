@@ -52,9 +52,9 @@ public:
 	 * \param output List of parameter and value of the parameter.
 	 */
 	void setOutputStreamText( const QHash<QString,QString> & output );
-private slots:
-	class PrivateServiceResultDialogImpl;
+private:
 	PrivateServiceResultDialogImpl * d;
+	friend class PrivateServiceResultDialogImpl;
 };
 #endif
 

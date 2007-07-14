@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include <assert.h>
 
 #include "globals.h"
@@ -59,17 +61,21 @@ void XMLVisualStudio::refreshWebServicesList() {
 			WebServices * ws = new WebServices( link, this );
 			global.m_webServices->append( ws );
 			ws->askWSDL( this );
-			connect( ws, SIGNAL(soapResponse(QString,QString,QString,QString)), this, SLOT(webServicesReponse(QString,QString,QString,QString)) );
+			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), this, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
 		}
 		global.emitWebServicesChanged();
 	}
 }
 
-void XMLVisualStudio::webServicesReponse( QString query, QString response, QString errorCode, QString errorString ) {
-	ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
-	dlg->setInputStreamText( query );
-	dlg->setOutputStreamText( response );
-	dlg->show();
+void XMLVisualStudio::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
+	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
+		QMessageBox::warning( this, tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
+	} else {
+		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
+		dlg->setInputStreamText( query );
+		dlg->setOutputStreamText( response );
+		dlg->show();
+	}
 }
 
 void XMLVisualStudio::on_m_callWebServicesAct_triggered() {

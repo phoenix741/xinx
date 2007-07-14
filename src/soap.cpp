@@ -75,6 +75,33 @@ Envelop::Envelop( const QString & encodingStyle, const QString & namespaceString
 
 }
 
+Envelop::Envelop( const QString & element, const QString & response ) {
+	m_envelop.setContent( element, true );
+	
+	QDomElement envelop = m_envelop.documentElement();
+	QDomElement body = envelop.firstChildElement( "Body" );
+	m_operation = body.firstChildElement( response );
+	
+	QDomElement fault = body.firstChildElement( "Fault" );
+	QDomElement faultCode = fault.firstChildElement( "faultcode" );
+	QDomElement faultString = fault.firstChildElement( "faultstring" );
+
+	QDomNode text = faultCode.firstChild();
+	while( ! text.isNull() ) {
+		if( text.isText() ) {
+			m_errorCode += text.toText().data();
+		}
+		text = text.nextSibling();
+	}
+	text = faultString.firstChild();
+	while( ! text.isNull() ) {
+		if( text.isText() ) {
+			m_errorString += text.toText().data();
+		}
+		text = text.nextSibling();
+	}
+}
+
 Envelop::~Envelop() {
 
 }
@@ -89,6 +116,48 @@ void Envelop::setParam( const QString & name, const QString & type, const QStrin
 	QString query = value.simplified();
 	QDomText text = m_envelop.createTextNode( query );
 	param_elt.appendChild( text );
+}
+
+QStringList Envelop::getParams() {
+	QStringList result;
+	
+	QDomElement param = m_operation.firstChildElement();
+	while( ! param.isNull() ) {
+		result << param.tagName();
+		param = param.nextSiblingElement();
+	}
+	
+	return result;
+}
+
+QPair<QString,QString> Envelop::getParam( const QString & name ) {
+	QDomElement param = m_operation.firstChildElement();
+	while( ! param.isNull() ) {
+		if( param.tagName() == name ) {
+			QString type = param.attribute( "type" );
+			QString value;
+			
+			QDomNode text = param.firstChild();
+			while( ! text.isNull() ) {
+				if( text.isText() ) {
+					value += text.toText().data();
+				}
+				text = text.nextSibling();
+			}
+		
+			return qMakePair( value, type );
+		}
+		param = param.nextSiblingElement();
+	}
+	return qMakePair( QString(), QString() );
+}
+
+QString Envelop::getErrorCode() {
+	return m_errorCode;
+}
+
+QString Envelop::getErrorString() {
+	return m_errorString;
 }
 
 QString Envelop::toString() {

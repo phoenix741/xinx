@@ -300,8 +300,16 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 																						.arg(errorStr));
 		    return;
 		}  
+
+		Envelop soapResult( document.toString(), op->name() + "Response" );
+		QHash<QString,QString> response;
+		QStringList params = soapResult.getParams();
+		foreach( QString param, params ) {
+			QPair<QString,QString> pair = soapResult.getParam( param );
+			response[ param ] = pair.first;
+		}
 		
-		emit soapResponse( query, document.toString(), QString(), QString() );
+		emit soapResponse( param, response, soapResult.getErrorCode(), soapResult.getErrorString() );
 	}
 }
 

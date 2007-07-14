@@ -23,17 +23,28 @@
 
 #include <QString>
 #include <QDomDocument>
+#include <QPair>
+#include <QStringList>
 
 class Envelop {
 public: 
 	Envelop( const QString & encodingStyle, const QString & namespaceString, const QString & operation );
+	Envelop( const QString & element, const QString & response );
 	~Envelop();
 	void setParam( const QString & name, const QString & type, const QString & value );
+	
+	QStringList getParams();
+	QPair<QString,QString> getParam( const QString & name );
+	
+	QString getErrorCode();
+	QString getErrorString();
+	
 	QString toString();
 	
 private:
 	QDomDocument m_envelop;
 	QDomElement m_operation;
+	QString m_errorCode, m_errorString;
 };
 
 #endif // __SOAP_H__

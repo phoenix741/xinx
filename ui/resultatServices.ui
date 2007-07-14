@@ -20,53 +20,56 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
-      <string>Input Stream</string>
+    <widget class="QSplitter" name="splitter" >
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
+     <widget class="QGroupBox" name="groupBox" >
+      <property name="title" >
+       <string>Input Stream</string>
       </property>
-      <property name="spacing" >
-       <number>6</number>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <widget class="QTextEdit" name="m_inputStreamTextEdit" >
+         <property name="readOnly" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QComboBox" name="m_inputComboBox" />
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2" >
+      <property name="title" >
+       <string>Output Stream</string>
       </property>
-      <item row="1" column="0" >
-       <widget class="QTextEdit" name="m_inputStreamTextEdit" >
-        <property name="readOnly" >
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QComboBox" name="m_inputComboBox" />
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
-      <string>Output Stream</string>
-     </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="1" column="0" >
-       <widget class="QTextEdit" name="m_outputStreamTextEdit" >
-        <property name="readOnly" >
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QComboBox" name="m_outputComboBox" />
-      </item>
-     </layout>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <widget class="QTextEdit" name="m_outputStreamTextEdit" >
+         <property name="readOnly" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QComboBox" name="m_outputComboBox" />
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>

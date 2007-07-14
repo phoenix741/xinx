@@ -80,7 +80,7 @@ public:
 	void call( Operation * operation, const QHash<QString,QString> & param );
 signals:
 	void updated();	
-	void soapResponse( QString query, QString response, QString errorCode, QString errorString );
+	void soapResponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 private:
 	PrivateWebServices * d;
 	friend class PrivateWebServices;

@@ -183,7 +183,7 @@ private: /* Private definition */
 																				/* ***** WebSerivces Form Part ***** */
 private slots: /* slot definition */
 	void refreshWebServicesList();
-	void webServicesReponse( QString query, QString response, QString errorCode, QString errorString );
+	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 	
 private: /* private definition */
 	/* Functions */

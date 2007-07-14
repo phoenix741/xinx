@@ -22,35 +22,64 @@
 
 #include "xmlhighlighter.h"
 
-class PrivateServiceResultDialogImpl {
+/* PrivateServiceResultDialogImpl */
+
+class PrivateServiceResultDialogImpl : public QObject {
+	Q_OBJECT
 public:
 	PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent );
 	
 	QHash<QString,QString> m_input;
 	QHash<QString,QString> m_output;
+	
+public slots:
+	void inputComboChanged( QString value );
+	void outputComboChanged( QString value );
+	
 private:
 	ServiceResultDialogImpl * m_parent;	
 };
 
-ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f) 
+PrivateServiceResultDialogImpl::PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent ) {
+	m_parent = parent;
+}
+
+void PrivateServiceResultDialogImpl::inputComboChanged( QString value ) {
+	m_parent->m_inputStreamTextEdit->setText( m_input.value( value ) );
+}
+
+void PrivateServiceResultDialogImpl::outputComboChanged( QString value ) {
+	m_parent->m_outputStreamTextEdit->setText( m_output.value( value ) );
+}
+
+/* ServiceResultDialogImpl */
+
+ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f ) 
 	: QDialog(parent, f) {
-	setupUi(this);
+	setupUi(this);	
 	d = new PrivateServiceResultDialogImpl( this );
 	
 	new XmlHighlighter( m_inputStreamTextEdit->document() );
 	new XmlHighlighter( m_outputStreamTextEdit->document() );
+
+	connect( m_inputComboBox, SIGNAL(activated(QString)), d, SLOT(inputComboChanged(QString)) );
+	connect( m_outputComboBox, SIGNAL(activated(QString)), d, SLOT(outputComboChanged(QString)) );
 }
 
-virtual ServiceResultDialogImpl::~ServiceResultDialogImpl() {
+ServiceResultDialogImpl::~ServiceResultDialogImpl() {
 	delete d;
 }
 
 void ServiceResultDialogImpl::setInputStreamText( const QHash<QString,QString> & text ) {
 	d->m_input = text;
-	m_inputStreamTextEdit->setText( text.at(1) );
+	m_inputComboBox->addItems( text.keys() );
+	m_inputStreamTextEdit->setText( text.values().at( 0 ) );
 }
 
 void ServiceResultDialogImpl::setOutputStreamText( const QHash<QString,QString> & text ) {
 	d->m_output = text;
-	m_outputStreamTextEdit->setText( text.at(1) );
+	m_outputComboBox->addItems( text.keys() );
+	m_outputStreamTextEdit->setText( text.values().at( 0 ) );
 }
+
+#include "serviceresultdialogimpl.moc"
