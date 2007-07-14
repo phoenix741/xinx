@@ -32,7 +32,7 @@
        <string>Preference</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="../images/application.qrc" >:/desktop.png</iconset>
+       <iconset resource="../application.qrc" >:/images/desktop.png</iconset>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -60,7 +60,7 @@
               <string>(en) English</string>
              </property>
              <property name="icon" >
-              <iconset resource="../images/application.qrc" >:/usa.png</iconset>
+              <iconset resource="../application.qrc" >:/images/usa.png</iconset>
              </property>
             </item>
             <item>
@@ -68,7 +68,7 @@
               <string>(fr_FR) French</string>
              </property>
              <property name="icon" >
-              <iconset resource="../images/application.qrc" >:/france.png</iconset>
+              <iconset resource="../application.qrc" >:/images/france.png</iconset>
              </property>
             </item>
            </widget>
@@ -134,7 +134,7 @@
        <string>Path</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="../images/application.qrc" >:/folder.png</iconset>
+       <iconset resource="../application.qrc" >:/images/folder.png</iconset>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -305,7 +305,7 @@
        <string>Editor</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="../images/application.qrc" >:/style.png</iconset>
+       <iconset resource="../application.qrc" >:/images/style.png</iconset>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -428,7 +428,7 @@
        <string>CVS</string>
       </attribute>
       <attribute name="icon" >
-       <iconset resource="../images/application.qrc" >:/cervisia.png</iconset>
+       <iconset resource="../application.qrc" >:/images/cervisia.png</iconset>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -592,7 +592,7 @@
         <string>OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -602,7 +602,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>
@@ -618,7 +618,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../images/application.qrc" />
+  <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>

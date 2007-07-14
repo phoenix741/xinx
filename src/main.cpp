@@ -30,6 +30,7 @@
 #include "xmlvisualstudio.h"
 #include "xinxconfig.h"
 #include "globals.h"
+#include "objectview.h"
 
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
@@ -47,21 +48,31 @@ int main(int argc, char *argv[]) {
 	
 /*#ifdef QT_DEBUG
 	app.setStyle( new QPlastiqueStyle() );
-	QFile qssFile( ":/coffee.qss" );
+	QFile qssFile( ":/qss/coffee.qss" );
 	qssFile.open( QFile::ReadOnly );
 	app.setStyleSheet( qssFile.readAll() );
 	qssFile.close();
 #endif */
 
 	if( app.isUnique() ) {
-		QPixmap pixmap(":/splash.png");
+		QPixmap pixmap(":/images/splash.png");
 		QSplashScreen splash(pixmap);
 		splash.show();
-		app.processEvents();
+  		app.processEvents();
 
+  		splash.showMessage( splash.tr("Load objects file ...") );
+  		app.processEvents();
+		global.m_javaObjects = new ObjectsView();
+		global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
+		global.m_javaObjects->loadFiles();
+
+  		splash.showMessage( splash.tr("Load main window ...") );
+  		app.processEvents();
 		XMLVisualStudio mainWin;
 		mainWin.show();
   
+  		splash.showMessage( splash.tr("Load arguments ...") );
+  		app.processEvents();
 		QStringList args = app.arguments();
 		if(args.count() > 0) {
 			QStringList::iterator it = args.begin();

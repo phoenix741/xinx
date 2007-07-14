@@ -97,31 +97,31 @@ void PrivateConnectionWebServicesDialogImpl::stateChanged( int state ) {
 	switch( state ) {
 	case QHttp::Unconnected:
 		m_parent->m_labelState->setText( tr("There is no connection to the host.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_disconnected_lan.png" ) );
 		break;
 	case QHttp::HostLookup:
 		m_parent->m_labelState->setText( tr("A host name lookup is in progress.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_connected_lan.png" ) );
 		break;
 	case QHttp::Connecting:
 		m_parent->m_labelState->setText( tr("An attempt to connect to the host is in progress.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_connected_lan.png" ) );
 		break;
 	case QHttp::Sending:
 		m_parent->m_labelState->setText( tr("The client is sending its request to the server.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_outgoing_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_outgoing_lan.png" ) );
 		break;
 	case QHttp::Reading:
 		m_parent->m_labelState->setText( tr("The client's request has been sent and the client is reading the server's response.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_incoming_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_incoming_lan.png" ) );
 		break;
 	case QHttp::Connected:
 		m_parent->m_labelState->setText( tr("The connection to the host is open.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_connected_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_connected_lan.png" ) );
 		break;
 	case QHttp::Closing:
 		m_parent->m_labelState->setText( tr("The connection is closing down.") );
-		m_parent->m_iconState->setPixmap( QPixmap( ":/network_disconnected_lan.png" ) );
+		m_parent->m_iconState->setPixmap( QPixmap( ":/images/network_disconnected_lan.png" ) );
 		break;
 	}
 	qApp->processEvents();

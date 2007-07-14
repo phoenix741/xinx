@@ -83,22 +83,22 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 	QString icon;
 	if( QDir::match( "*.fws", fileName ) ) {
 		ed = new WebServicesEditor( this );
-		icon = ":/typefws.png";
+		icon = ":/images/typefws.png";
 	} else
 	if( QDir::match( "*.xsl;*.xslt", fileName ) ) {
 		ed = new XSLFileEditor( this );
-		icon = ":/typexsl.png";
+		icon = ":/images/typexsl.png";
 	} else
 	if( QDir::match( "*.xml", fileName ) ) {
 		ed = new XSLFileEditor( this );
-		icon = ":/typexml.png";
+		icon = ":/images/typexml.png";
 	} else
 	if( QDir::match( "*.js", fileName ) ) {
 		ed = new JSFileEditor( this );
-		icon = ":/typejs.png";
+		icon = ":/images/typejs.png";
 	} else {
 		ed = new FileEditor( new TextEditor( this ), this );	
-		icon = ":/typeunknown.png";
+		icon = ":/images/typeunknown.png";
 	}
 	newFileEditor( ed, icon );
 	return ed;
@@ -113,25 +113,25 @@ Editor * TabEditor::newFileEditorTxt() {
 
 Editor * TabEditor::newFileEditorXSL() {
 	Editor * editor = new XSLFileEditor( this );
-	newFileEditor( editor, ":/typexsl.png" );
+	newFileEditor( editor, ":/images/typexsl.png" );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorXML() {
 	Editor * editor = new XMLFileEditor( this );
-	newFileEditor( editor, ":/typexml.png" );
+	newFileEditor( editor, ":/images/typexml.png" );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorJS() {
 	Editor * editor = new JSFileEditor( this );
-	newFileEditor( editor, ":/typejs.png" );
+	newFileEditor( editor, ":/images/typejs.png" );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorWS() {
 	Editor * editor = new WebServicesEditor( this );
-	newFileEditor( editor, ":/typefws.png" );
+	newFileEditor( editor, ":/images/typefws.png" );
 	return editor;
 }
 
@@ -353,12 +353,12 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			if ( ( event->type() == QEvent::MouseButtonPress ) && ( mouseEvent->button() == Qt::RightButton ) ) {
 				QMenu *menu = new QMenu( this );
-				connect( menu->addAction(QIcon(":/reload.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
+				connect( menu->addAction(QIcon(":/images/reload.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
 				menu->addSeparator();
-				connect( menu->addAction(QIcon(":/filesave.png"), tr("Save")), SIGNAL(triggered()), this, SLOT(slotSaveAsked()) );
-				connect( menu->addAction(QIcon(":/filesaveas.png"), tr("Save As ....")), SIGNAL(triggered()), this, SLOT(slotSaveAsAsked()) );
+				connect( menu->addAction(QIcon(":/images/filesave.png"), tr("Save")), SIGNAL(triggered()), this, SLOT(slotSaveAsked()) );
+				connect( menu->addAction(QIcon(":/images/filesaveas.png"), tr("Save As ....")), SIGNAL(triggered()), this, SLOT(slotSaveAsAsked()) );
 				menu->addSeparator();
-				connect( menu->addAction(QIcon(":/fileclose.png"), tr("Close")), SIGNAL(triggered()), this, SLOT(slotCloseAsked()) );
+				connect( menu->addAction(QIcon(":/images/fileclose.png"), tr("Close")), SIGNAL(triggered()), this, SLOT(slotCloseAsked()) );
 				menu->exec(mouseEvent->globalPos());
 				delete menu;
 			} else

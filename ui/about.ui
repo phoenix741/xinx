@@ -98,7 +98,7 @@ Reporter : Mickaël BERTELOOT, Kamal B.
         <string/>
        </property>
        <property name="pixmap" >
-        <pixmap resource="../images/application.qrc" >:/splash.png</pixmap>
+        <pixmap resource="../application.qrc" >:/images/splash.png</pixmap>
        </property>
        <property name="scaledContents" >
         <bool>true</bool>
@@ -147,7 +147,7 @@ Reporter : Mickaël BERTELOOT, Kamal B.
         <string>OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -156,7 +156,7 @@ Reporter : Mickaël BERTELOOT, Kamal B.
   </layout>
  </widget>
  <resources>
-  <include location="../images/application.qrc" />
+  <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>

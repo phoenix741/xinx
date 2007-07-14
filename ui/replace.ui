@@ -250,7 +250,7 @@
         <string>Find</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/find.png</iconset>
+        <iconset resource="../application.qrc" >:/images/find.png</iconset>
        </property>
       </widget>
      </item>
@@ -260,7 +260,7 @@
         <string>Close</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>
@@ -284,7 +284,7 @@
   <tabstop>m_closeButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../images/application.qrc" />
+  <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>

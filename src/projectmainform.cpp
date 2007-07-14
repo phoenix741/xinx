@@ -110,16 +110,16 @@ IconProjectProvider::~IconProjectProvider() {
 	
 QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
 	if( info.suffix() == "xsl" ) {
-		return QIcon( ":/typexsl.png" );
+		return QIcon( ":/images/typexsl.png" );
 	} else
 	if( info.suffix() == "xml" ) {
-		return QIcon( ":/typexml.png" );
+		return QIcon( ":/images/typexml.png" );
 	} else
 	if( info.suffix() == "js" ) {
-		return QIcon( ":/typejs.png" );
+		return QIcon( ":/images/typejs.png" );
 	} else
 	if( info.suffix() == "fws" ) {
-		return QIcon( ":/typefws.png" );
+		return QIcon( ":/images/typefws.png" );
 	} else
 		return QFileIconProvider::icon( info );
 }

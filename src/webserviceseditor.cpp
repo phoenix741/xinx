@@ -79,11 +79,11 @@ void PrivateWebServicesEditor::loadServicesList() {
 	m_servicesList->clear();
 	foreach( WebServices * ed, *(global.m_webServices) ) 
 		if( ! ed->name().isEmpty() ) 
-			m_servicesList->addItem( QIcon(":/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
+			m_servicesList->addItem( QIcon(":/images/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
 
 	int findIndex = m_servicesList->findText( m_serviceName );
 	if( ( ! m_serviceName.isEmpty() ) && ( findIndex == -1 ) ) {
-		m_servicesList->addItem( QIcon(":/services.png"), m_serviceName );
+		m_servicesList->addItem( QIcon(":/images/services.png"), m_serviceName );
 		m_servicesList->setItemData( m_servicesList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		m_servicesList->setCurrentIndex( m_servicesList->count() - 1 );
 	} else if( findIndex >= 0 ) {
@@ -97,12 +97,12 @@ void PrivateWebServicesEditor::loadActionsList( int index ) {
 	if( ( index >= 0 ) && ( m_servicesList->itemData( index ).isValid() ) ) {
 		WebServices * ed = (WebServices*)( m_servicesList->itemData( index ).value<void*>() );
 		foreach( Operation * op, ed->operations() ) 
-			m_actionList->addItem( QIcon(":/action.png"), op->name(), qVariantFromValue( (void*)op ) );
+			m_actionList->addItem( QIcon(":/images/action.png"), op->name(), qVariantFromValue( (void*)op ) );
 	}
 	
 	int findIndex = m_actionList->findText( m_operationName );
 	if( ( ! m_operationName.isEmpty() ) && ( findIndex == -1 ) ) {
-		m_actionList->addItem( QIcon(":/action.png"), m_operationName );
+		m_actionList->addItem( QIcon(":/images/action.png"), m_operationName );
 		m_actionList->setItemData( m_actionList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		m_actionList->setCurrentIndex( m_actionList->count() - 1 );
 	} else if( findIndex >= 0 ) {
@@ -118,12 +118,12 @@ void PrivateWebServicesEditor::loadValuesList( int index ) {
 	if( ( index >= 0 ) && ( m_actionList->itemData( index ).isValid() ) ) {
 		Operation * op = (Operation*)( m_actionList->itemData( index ).value<void*>() );
 		foreach( Parameter * param, op->inputParam() ) 
-			m_paramList->addItem( QIcon(":/serviceparam.png"), param->paramString() );
+			m_paramList->addItem( QIcon(":/images/serviceparam.png"), param->paramString() );
 	}
 	
 	foreach( QString param, m_paramValues.keys() ) {
 		if( ( !param.isEmpty() ) && m_paramList->findText( param ) == -1 ) {
-			m_paramList->addItem( QIcon(":/serviceparam.png"), param );
+			m_paramList->addItem( QIcon(":/images/serviceparam.png"), param );
 			m_paramList->setItemData( m_paramList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		}
 	}

@@ -183,7 +183,7 @@
           <string>FRA</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/france.png</iconset>
+          <iconset resource="../application.qrc" >:/images/france.png</iconset>
          </property>
         </item>
         <item>
@@ -191,7 +191,7 @@
           <string>ENG</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/usa.png</iconset>
+          <iconset resource="../application.qrc" >:/images/usa.png</iconset>
          </property>
         </item>
         <item>
@@ -199,7 +199,7 @@
           <string>DEU</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/germany.png</iconset>
+          <iconset resource="../application.qrc" >:/images/germany.png</iconset>
          </property>
         </item>
         <item>
@@ -207,7 +207,7 @@
           <string>ITA</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/italy.png</iconset>
+          <iconset resource="../application.qrc" >:/images/italy.png</iconset>
          </property>
         </item>
         <item>
@@ -215,7 +215,7 @@
           <string>ESP</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/spain.png</iconset>
+          <iconset resource="../application.qrc" >:/images/spain.png</iconset>
          </property>
         </item>
         <item>
@@ -223,7 +223,7 @@
           <string>POR</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/portugal.png</iconset>
+          <iconset resource="../application.qrc" >:/images/portugal.png</iconset>
          </property>
         </item>
        </widget>
@@ -245,7 +245,7 @@
           <string>NAV/MIC</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/ie_logo.png</iconset>
+          <iconset resource="../application.qrc" >:/images/ie_logo.png</iconset>
          </property>
         </item>
         <item>
@@ -253,7 +253,7 @@
           <string>NAV/NET</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/application.qrc" >:/firefox_logo.png</iconset>
+          <iconset resource="../application.qrc" >:/images/firefox_logo.png</iconset>
          </property>
         </item>
        </widget>
@@ -282,7 +282,7 @@
          <string>Delete link</string>
         </property>
         <property name="icon" >
-         <iconset resource="../images/application.qrc" >:/remove.png</iconset>
+         <iconset resource="../application.qrc" >:/images/remove.png</iconset>
         </property>
        </widget>
       </item>
@@ -300,7 +300,7 @@
          <string>Add link</string>
         </property>
         <property name="icon" >
-         <iconset resource="../images/application.qrc" >:/add.png</iconset>
+         <iconset resource="../application.qrc" >:/images/add.png</iconset>
         </property>
        </widget>
       </item>
@@ -388,7 +388,7 @@
         <string>OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -398,7 +398,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>
@@ -424,7 +424,7 @@
   <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../images/application.qrc" />
+  <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>

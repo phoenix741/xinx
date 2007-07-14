@@ -82,7 +82,7 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>
@@ -92,7 +92,7 @@
         <string>&amp;Valid</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/application.qrc" >:/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -101,7 +101,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../images/application.qrc" />
+  <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>

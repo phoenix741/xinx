@@ -37,7 +37,6 @@
 #include "editor.h"
 #include "texteditor.h"
 #include "fileeditor.h"
-#include "objectview.h"
 #include "editorcompletion.h"
 #include "replacedialogimpl.h"
 #include "xsllistview.h"
@@ -66,7 +65,6 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	m_lastPlace        = QDir::currentPath();
 
 	completionContents   = new Completion();
-	global.m_javaObjects = new ObjectsView();
 
 	m_findDialog       = new ReplaceDialogImpl(this);
 	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
@@ -107,9 +105,6 @@ void XMLVisualStudio::readSettings() {
 		restoreState( global.m_xinxConfig->storedMainWindowState() );
 	}
 
-	global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
-	global.m_javaObjects->loadFiles();
-  
 	completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.cpl" ) );
 }
 
@@ -118,7 +113,6 @@ void XMLVisualStudio::writeSettings() {
 	
 	global.m_xinxConfig->setPosition( pos() );
 	global.m_xinxConfig->setSize( size() );
-	global.m_xinxConfig->setObjectDescriptionPath( global.m_javaObjects->path() );
 	
 	global.m_xinxConfig->save();
 }

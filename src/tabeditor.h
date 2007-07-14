@@ -37,7 +37,7 @@ public:
 	
 	static bool isFileEditor( Editor * editor );
 
-	void newFileEditor( Editor * editor, const QString & icon = ":/typeunknown.png" );
+	void newFileEditor( Editor * editor, const QString & icon = ":/images/typeunknown.png" );
 	Editor * newFileEditor( const QString & fileName );
 
 	Editor * newFileEditorTxt();

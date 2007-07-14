@@ -196,13 +196,13 @@ QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 	if(role == Qt::DecorationRole && index.column() == 0) {
 		switch( data->type() ) {
 		case XSLModelData::etImport:
-			return QIcon(":/import.png");
+			return QIcon(":/images/import.png");
 			break;
 		case XSLModelData::etVariable:
-			return QIcon(":/variable.png");
+			return QIcon(":/images/variable.png");
 			break;
 		case XSLModelData::etTemplate:
-			return QIcon(":/template.png");
+			return QIcon(":/images/template.png");
 			break;
 		default:
 			return QVariant();

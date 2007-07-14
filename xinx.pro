@@ -1,9 +1,9 @@
-CONFIG +=   exceptions \
+CONFIG +=   debug \
+  exceptions \
   qt \
+  thread \
   warn_on \
-  x86 \
-  debug \
-  thread
+  x86
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
@@ -30,6 +30,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/fileeditor.h \
   src/flattreeview.h \
   src/globals.h \
+  src/javascriptparser.h \
   src/jseditor.h \
   src/jsfileeditor.h \
   src/jshighlighter.h \
@@ -66,7 +67,7 @@ OBJECTS_DIR +=   build
 QT +=   network \
   xml
 RCC_DIR +=   build
-RESOURCES +=   images/application.qrc
+RESOURCES +=   application.qrc
 SOURCES +=   src/aboutdialogimpl.cpp \
   src/commitmessagedialogimpl.cpp \
   src/connectionwebservicesdialogimpl.cpp \
@@ -76,6 +77,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/fileeditor.cpp \
   src/flattreeview.cpp \
   src/globals.cpp \
+  src/javascriptparser.cpp \
   src/jseditor.cpp \
   src/jsfileeditor.cpp \
   src/jshighlighter.cpp \
