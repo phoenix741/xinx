@@ -62,7 +62,7 @@ const QStringList & JavaScriptFunction::variables() {
 
 class PrivateJavaScriptParser {
 public:
-	enum JAVASCRIPT_TOKEN { TOKEN_UNKOWN, TOKEN_IDENTIFIER, TOKEN_CHARACTER, TOKEN_STRING, TOKEN_NUMBER };
+	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION };
 
 	PrivateJavaScriptParser( JavaScriptParser * parent );
 	virtual ~PrivateJavaScriptParser();
@@ -70,10 +70,9 @@ public:
 	QStringList m_variables;
 	QList<JavaScriptFunction> m_functions;
 	
-	QString m_content;
-	int m_position;
-	
-	enum JAVASCRIPT_TOKEN nextIdentifier( QString & identifier );
+	int m_line;
+		
+	void nextIdentifier( QIODevice & device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
 private:
 	JavaScriptParser * m_parent;
 };
@@ -86,17 +85,127 @@ PrivateJavaScriptParser::~PrivateJavaScriptParser() {
 	
 }
 
-enum JAVASCRIPT_TOKEN PrivateJavaScriptParser::nextIdentifier( QString & identifier ) {
-	enum JAVASCRIPT_TOKEN token = TOKEN_UNKOWN;
-	identifier = "";
-	int index = m_position;
+void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName ) {
+	char ch, c;
+	QString st;
+	enum { STATE_START, STATE_IDENTIFIER, STATE_STRING1, STATE_STRING2, STATE_NUMBER, STATE_STARTCOMMENT, STATE_COMMENT1, STATE_COMMENT2, STATE_EOCOMMENT1, STATE_END } state;
 	
-	char c = m_content.at( index );
-	if( ( c >= 'A' ) || ( c <= 'Z' ) ) {
-		
-	}
+	state = STATE_START;
+	st    = "";
 	
-	return token;
+	do {
+		if( ! device.getChar( &ch ) ) state = STATE_END;
+		c = QChar( ch ).toUpper().toAscii();
+		switch( state ) {
+		case STATE_START:
+			if( ( c == ' ' ) || ( c == 10 ) ) 
+				; // Skip space
+			else if( c == 13 ) 
+				m_line++; 
+			else if( ( c == '{' ) || ( c == '}' ) || ( c == '&' ) || ( c == '|' ) || ( c == '*' ) || 
+			         ( c == ';' ) || ( c == '=' ) || ( c == '(' ) || ( c == ')' ) ) {
+				symbType = TOKEN_PONCTUATION;
+				st = c;
+				symbName = st;
+				state = STATE_END;
+		    } else if( c == '/' ) {
+		    	state = STATE_STARTCOMMENT;
+	    	} else if( ( c >= 'A' ) && ( c <= 'Z' ) ) {
+	    		state = STATE_IDENTIFIER;
+	    		st = c;
+    		} else if( ( c == '+' ) || ( c == '-' ) || ( ( c >= '0' ) && ( c <= '9' ) ) ) {
+    			st = c;
+    			state = STATE_NUMBER;
+   			} else if( c == '\'' ) {
+   				state = STATE_STRING1;
+   			} else if( c == '\'' ) {
+   				state = STATE_STRING2;
+  			} else {
+  				st = c;	
+  				symbName = st;
+  				symbType = TOKEN_UNKNOWN;
+  				state = STATE_END;
+ 			}			
+			break;
+		case STATE_STARTCOMMENT:
+			if( c == '*' ) 
+				state = STATE_COMMENT1;
+			else if( c == '/' )
+				state = STATE_COMMENT2;
+			else {
+				device.ungetChar( ch );
+				state = STATE_START;
+			}
+			break;
+		case STATE_COMMENT1:
+			if( c == '*' ) 
+				state = STATE_EOCOMMENT1;
+			else if( c == 13 )
+				m_line++;
+			break;
+		case STATE_EOCOMMENT1:
+			if( c == '/' ) 
+				state = STATE_START;
+			else {
+				state = STATE_COMMENT1;
+				if( c == 13 )
+					m_line++;				
+			}
+			break;
+		case STATE_COMMENT2:
+			if( c == 13 ) {
+				state = STATE_START;
+				m_line++;				
+			}
+			break;
+		case STATE_IDENTIFIER:
+			if( ( ( c >= 'A' ) && ( c <= 'Z' ) ) || ( ( c >= '0' ) && ( c <= '9' ) ) || ( c == '_' ) )
+				st += c;
+			else {
+				symbName = st;
+				symbType = TOKEN_IDENTIFIER;
+				state = STATE_END;
+				device.ungetChar( ch );
+			}
+			break;
+		case STATE_NUMBER:
+			if( ( ( c >= '0' ) && ( c <= '9' ) ) || ( c == '+' ) || ( c == '-' ) )
+				st += c;
+			else {
+				symbName = st;
+				symbType = TOKEN_NUMBER;
+				state = STATE_END;
+				device.ungetChar( ch );
+			}
+			break;
+		case STATE_STRING1:
+			if( c == '\'' ) {
+				symbName = st;
+				symbType = TOKEN_STRING;
+				state = STATE_END;
+			} else if ( c == '\\' ) {
+				if( ! device.getChar( &ch ) ) state = STATE_END; else {
+					st += ch;
+				}
+			} else
+				st += ch;
+			break;
+		case STATE_STRING2:
+			if( c == '"' ) {
+				symbName = st;
+				symbType = TOKEN_STRING;
+				state = STATE_END;
+			} else if ( c == '\\' ) {
+				if( ! device.getChar( &ch ) ) state = STATE_END; else {
+					st += ch;
+				}
+			} else
+				st += ch;
+			break;
+		case STATE_END:
+			;
+		}
+	} while( state != STATE_END );
 }
 
 /* JavaScriptParser */
@@ -127,10 +236,10 @@ void JavaScriptParser::load( const QString & content ) {
 }
 
 const QStringList & JavaScriptParser::variables() {
-	return m_variables;
+	return d->m_variables;
 }
 
 const QList<JavaScriptFunction> & JavaScriptParser::functions() {
-	return m_functions;
+	return d->m_functions;
 }
 
