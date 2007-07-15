@@ -27,17 +27,25 @@
 class PrivateJavaScriptFunction;
 class PrivateJavaScriptParser;
 
+class JavaScriptParserException {
+public:
+	JavaScriptParserException( int line );
+};
+
 class JavaScriptFunction {
 public:
 	JavaScriptFunction();
 	virtual ~JavaScriptFunction();
 
+	const QString & name();
 	const QStringList & params();
 	const QStringList & variables();
+	int line();
 private:
 	PrivateJavaScriptFunction * d;
 	friend class PrivateJavaScriptFunction;
 	friend class PrivateJavaScriptParser;
+	friend class JavaScriptParser;
 };
 
 class JavaScriptParser {
@@ -45,14 +53,16 @@ public:
 	JavaScriptParser();
 	virtual ~JavaScriptParser();
 	
-	void load( const QString & content );
+	void load( const QString & content, const QString & filename );
 
 	const QStringList & variables();
-	const QList<JavaScriptFunction> & functions();
+	const QList<JavaScriptFunction*> & functions();
+	const QString & filename();
 private:
 	PrivateJavaScriptParser * d;
 	friend class PrivateJavaScriptParser;
 	friend class PrivateJavaScriptFunction;
+	friend class JavaScriptFunction;
 };
 
 #endif // __JAVASCRIPTPARSER_H__

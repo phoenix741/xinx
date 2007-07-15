@@ -23,6 +23,11 @@
 
 #include "fileeditor.h"
 
+class PrivateJSFileEditor;
+
+/*!
+ * Editor for file of type JavaScript.
+ */
 class JSFileEditor : public FileEditor {
 	Q_OBJECT
 public:
@@ -30,6 +35,10 @@ public:
 	virtual ~JSFileEditor();
 	
 	virtual QString getSuffix() const;
+	virtual QAbstractItemModel * model();
+private:
+	PrivateJSFileEditor * d;
+	friend class PrivateJSFileEditor;
 };
 
 #endif // __JSFILEEDITOR_H__

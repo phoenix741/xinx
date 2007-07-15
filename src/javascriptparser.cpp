@@ -20,7 +20,16 @@
 
 #include "javascriptparser.h"
 
-#define JAVASCRIPT_IDENTIFIER "\\w"
+#include <QBuffer>
+#include <QDebug>
+
+/* 	JavaScriptParserException */
+
+JavaScriptParserException::JavaScriptParserException( int line ) {
+	qDebug() << QObject::tr("Error at line %1").arg( line );
+}
+
+/* PrivateJavaScriptFunction */
 
 class PrivateJavaScriptFunction {
 public:
@@ -28,6 +37,9 @@ public:
 	virtual ~PrivateJavaScriptFunction();
 	
 	QStringList m_params, m_variables;
+	QString m_name;
+	
+	int m_line;
 private:
 	JavaScriptFunction * m_parent;
 };
@@ -58,21 +70,33 @@ const QStringList & JavaScriptFunction::variables() {
 	return d->m_variables;
 }
 
+const QString & JavaScriptFunction::name() {
+	return d->m_name;
+}
+
+int JavaScriptFunction::line() {
+	return d->m_line;
+}
+
+
 /* PrivateJavaScriptParser */
 
 class PrivateJavaScriptParser {
 public:
-	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION };
+	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION, TOKEN_EOF };
 
 	PrivateJavaScriptParser( JavaScriptParser * parent );
 	virtual ~PrivateJavaScriptParser();
 	
 	QStringList m_variables;
-	QList<JavaScriptFunction> m_functions;
+	QList<JavaScriptFunction*> m_functions;
 	
 	int m_line;
+	QString m_filename;
 		
-	void nextIdentifier( QIODevice & device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
+	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
+	QStringList loadVariables( QIODevice * device );
+	JavaScriptFunction * loadFunction( QIODevice * device );
 private:
 	JavaScriptParser * m_parent;
 };
@@ -82,10 +106,10 @@ PrivateJavaScriptParser::PrivateJavaScriptParser( JavaScriptParser * parent ) {
 }
 
 PrivateJavaScriptParser::~PrivateJavaScriptParser() {
-	
+	qDeleteAll( m_functions );
 }
 
-void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName ) {
+void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName ) {
 	char ch, c;
 	QString st;
 	enum { STATE_START, STATE_IDENTIFIER, STATE_STRING1, STATE_STRING2, STATE_NUMBER, STATE_STARTCOMMENT, STATE_COMMENT1, STATE_COMMENT2, STATE_EOCOMMENT1, STATE_END } state;
@@ -94,13 +118,17 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 	st    = "";
 	
 	do {
-		if( ! device.getChar( &ch ) ) state = STATE_END;
+		if( ! device->getChar( &ch ) )  {
+			symbName = "";
+			symbType = TOKEN_EOF;
+			state = STATE_END;	
+		}
 		c = QChar( ch ).toUpper().toAscii();
 		switch( state ) {
 		case STATE_START:
-			if( ( c == ' ' ) || ( c == 10 ) ) 
+			if( ( c == ' ' ) || ( c == 13 ) || ( c == 9 ) ) 
 				; // Skip space
-			else if( c == 13 ) 
+			else if( c == 10 ) 
 				m_line++; 
 			else if( ( c == '{' ) || ( c == '}' ) || ( c == '&' ) || ( c == '|' ) || ( c == '*' ) || 
 			         ( c == ';' ) || ( c == '=' ) || ( c == '(' ) || ( c == ')' ) ) {
@@ -112,7 +140,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 		    	state = STATE_STARTCOMMENT;
 	    	} else if( ( c >= 'A' ) && ( c <= 'Z' ) ) {
 	    		state = STATE_IDENTIFIER;
-	    		st = c;
+	    		st = ch;
     		} else if( ( c == '+' ) || ( c == '-' ) || ( ( c >= '0' ) && ( c <= '9' ) ) ) {
     			st = c;
     			state = STATE_NUMBER;
@@ -133,7 +161,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 			else if( c == '/' )
 				state = STATE_COMMENT2;
 			else {
-				device.ungetChar( ch );
+				device->ungetChar( ch );
 				state = STATE_START;
 			}
 			break;
@@ -160,12 +188,12 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 			break;
 		case STATE_IDENTIFIER:
 			if( ( ( c >= 'A' ) && ( c <= 'Z' ) ) || ( ( c >= '0' ) && ( c <= '9' ) ) || ( c == '_' ) )
-				st += c;
+				st += ch;
 			else {
 				symbName = st;
 				symbType = TOKEN_IDENTIFIER;
 				state = STATE_END;
-				device.ungetChar( ch );
+				device->ungetChar( ch );
 			}
 			break;
 		case STATE_NUMBER:
@@ -175,7 +203,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 				symbName = st;
 				symbType = TOKEN_NUMBER;
 				state = STATE_END;
-				device.ungetChar( ch );
+				device->ungetChar( ch );
 			}
 			break;
 		case STATE_STRING1:
@@ -184,7 +212,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 				symbType = TOKEN_STRING;
 				state = STATE_END;
 			} else if ( c == '\\' ) {
-				if( ! device.getChar( &ch ) ) state = STATE_END; else {
+				if( ! device->getChar( &ch ) ) state = STATE_END; else {
 					st += ch;
 				}
 			} else
@@ -196,7 +224,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 				symbType = TOKEN_STRING;
 				state = STATE_END;
 			} else if ( c == '\\' ) {
-				if( ! device.getChar( &ch ) ) state = STATE_END; else {
+				if( ! device->getChar( &ch ) ) state = STATE_END; else {
 					st += ch;
 				}
 			} else
@@ -208,6 +236,61 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice & device, enum JAVASCRIP
 	} while( state != STATE_END );
 }
 
+QStringList PrivateJavaScriptParser::loadVariables( QIODevice * buffer ) {
+	QStringList variables;
+	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
+	QString name;
+
+	nextIdentifier( buffer, type, name );
+	if( type != TOKEN_IDENTIFIER )
+		throw JavaScriptParserException( m_line );
+
+	variables << name;
+	bool cont = true;
+	do {
+		nextIdentifier( buffer, type, name );
+		if( ( type == TOKEN_PONCTUATION ) && ( name == ";" ) ) 
+			cont = false;
+		else if( ( type == TOKEN_PONCTUATION ) && ( name == "," ) ) {
+			nextIdentifier( buffer, type, name );
+			if( type != TOKEN_IDENTIFIER )
+				throw JavaScriptParserException( m_line );
+			variables << name;
+		}
+	} while( cont );
+	return variables;
+}
+
+JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer ) {
+	JavaScriptFunction * function = new JavaScriptFunction();
+	
+	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
+	QString name;
+
+	nextIdentifier( buffer, type, name );
+	if( type != TOKEN_IDENTIFIER )
+		throw JavaScriptParserException( m_line );
+	function->d->m_name = name;
+	function->d->m_line = m_line;
+	
+	nextIdentifier( buffer, type, name );
+	if( ! ( ( type == TOKEN_PONCTUATION ) && ( name == "(" ) ) ) 
+		throw JavaScriptParserException( m_line );
+	
+	do {		
+		nextIdentifier( buffer, type, name );
+		if( type == TOKEN_IDENTIFIER ) 
+			function->d->m_params << name;
+		
+		do {
+			nextIdentifier( buffer, type, name );
+		} while( ( type != TOKEN_PONCTUATION ) || ( ( name != ")" ) && ( name != "," ) ) );
+	} while( ( type != TOKEN_PONCTUATION ) || ( name != ")" ) );
+
+	return function;	
+}
+
+
 /* JavaScriptParser */
 
 JavaScriptParser::JavaScriptParser() {
@@ -218,28 +301,66 @@ JavaScriptParser::~JavaScriptParser() {
 	delete d;
 }
 
-void JavaScriptParser::load( const QString & content ) {
-	int pos = 0, index;
-	do {
-		QRegExp expression( JAVASCRIPT_IDENTIFIER );
-		index = expression.indexIn( content, pos );
-		if( index != -1 ) {
-			QString identifier = expression.cap( 1 );
-			pos += expression.matchedLength();
-			if( identifier == "var" ) {
-				
-			} else if( identifier == "function" ) {
-				
-			}
-		}
-	} while( index < content.length() );
-}
+void JavaScriptParser::load( const QString & content, const QString & filename ) {
+	d->m_variables.clear();
+	qDeleteAll( d->m_functions );
+	d->m_functions.clear();
+	
+	d->m_filename = filename;
+	
+	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
+	QString name;
 
+	QByteArray array = content.toAscii();
+	QBuffer buffer ( &array );
+	buffer.open( QIODevice::ReadWrite | QIODevice::Text );	
+	buffer.seek( 0 );
+	
+	JavaScriptFunction * function;
+	int bloc = 0;
+	
+	do {
+		d->nextIdentifier( &buffer, type, name );
+		switch( type ) {
+		case PrivateJavaScriptParser::TOKEN_IDENTIFIER:
+			if( name == "var" ) { // variable
+				if( bloc == 0 )
+					d->m_variables << d->loadVariables( &buffer );
+				else 
+					function->d->m_variables << d->loadVariables( &buffer );
+			} else
+			if( name == "function" ) {
+				function = d->loadFunction( &buffer );
+				d->m_functions << function;
+			} else
+			do {
+				d->nextIdentifier( &buffer, type, name );
+			} while( ( type != PrivateJavaScriptParser::TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) ) );
+			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
+			break;
+		case PrivateJavaScriptParser::TOKEN_PONCTUATION:
+			if( name == "{" )
+				bloc++;
+			if( name == "}" )
+				bloc--;
+			if( bloc < 0 ) 
+				throw JavaScriptParserException( d->m_line );
+		case PrivateJavaScriptParser::TOKEN_EOF:
+			break;
+		default:
+			throw JavaScriptParserException( d->m_line );
+		}
+	} while( ! buffer.atEnd() );
+}
+	
 const QStringList & JavaScriptParser::variables() {
 	return d->m_variables;
 }
 
-const QList<JavaScriptFunction> & JavaScriptParser::functions() {
+const QList<JavaScriptFunction*> & JavaScriptParser::functions() {
 	return d->m_functions;
 }
 
+const QString & JavaScriptParser::filename() {
+	return d->m_filename;
+}
