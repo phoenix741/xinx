@@ -26,7 +26,8 @@
 /* 	JavaScriptParserException */
 
 JavaScriptParserException::JavaScriptParserException( int line ) {
-	qDebug() << QObject::tr("Error at line %1").arg( line );
+	m_line = line;
+	qDebug() << QObject::tr("Error at line %1").arg( line ) << endl;
 }
 
 /* PrivateJavaScriptFunction */
@@ -103,6 +104,7 @@ private:
 
 PrivateJavaScriptParser::PrivateJavaScriptParser( JavaScriptParser * parent ) {
 	m_parent = parent;
+	m_line = 1;
 }
 
 PrivateJavaScriptParser::~PrivateJavaScriptParser() {
@@ -131,7 +133,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
 			else if( c == 10 ) 
 				m_line++; 
 			else if( ( c == '{' ) || ( c == '}' ) || ( c == '&' ) || ( c == '|' ) || ( c == '*' ) || 
-			         ( c == ';' ) || ( c == '=' ) || ( c == '(' ) || ( c == ')' ) ) {
+			         ( c == ';' ) || ( c == '=' ) || ( c == '(' ) || ( c == ')' ) || ( c == ',' ) ) {
 				symbType = TOKEN_PONCTUATION;
 				st = c;
 				symbName = st;
@@ -162,26 +164,30 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
 				state = STATE_COMMENT2;
 			else {
 				device->ungetChar( ch );
-				state = STATE_START;
+  				symbName = "/";
+  				symbType = TOKEN_UNKNOWN;
+  				state = STATE_END;
 			}
 			break;
 		case STATE_COMMENT1:
 			if( c == '*' ) 
 				state = STATE_EOCOMMENT1;
-			else if( c == 13 )
+			else if( c == 10 )
 				m_line++;
 			break;
 		case STATE_EOCOMMENT1:
 			if( c == '/' ) 
 				state = STATE_START;
+			else if ( c == '*' ) 
+				state = STATE_EOCOMMENT1;
 			else {
 				state = STATE_COMMENT1;
-				if( c == 13 )
+				if( c == 10 )
 					m_line++;				
 			}
 			break;
 		case STATE_COMMENT2:
-			if( c == 13 ) {
+			if( c == 10 ) {
 				state = STATE_START;
 				m_line++;				
 			}
@@ -282,9 +288,9 @@ JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer )
 		if( type == TOKEN_IDENTIFIER ) 
 			function->d->m_params << name;
 		
-		do {
+		while( ( type != TOKEN_PONCTUATION ) || ( ( name != ")" ) && ( name != "," ) ) ) {
 			nextIdentifier( buffer, type, name );
-		} while( ( type != TOKEN_PONCTUATION ) || ( ( name != ")" ) && ( name != "," ) ) );
+		} 
 	} while( ( type != TOKEN_PONCTUATION ) || ( name != ")" ) );
 
 	return function;	
@@ -305,6 +311,7 @@ void JavaScriptParser::load( const QString & content, const QString & filename )
 	d->m_variables.clear();
 	qDeleteAll( d->m_functions );
 	d->m_functions.clear();
+	d->m_line = 1;
 	
 	d->m_filename = filename;
 	

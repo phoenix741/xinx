@@ -30,6 +30,7 @@ class PrivateJavaScriptParser;
 class JavaScriptParserException {
 public:
 	JavaScriptParserException( int line );
+	int m_line;
 };
 
 class JavaScriptFunction {

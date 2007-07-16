@@ -23,6 +23,8 @@
 #include "javascriptparser.h"
 
 #include <QAbstractItemModel>
+#include <QApplication>
+#include <QMessageBox>
 
 /* JSItemModel */
 
@@ -57,7 +59,7 @@ JSItemModel::JSItemModel( QObject * parent ) : QAbstractItemModel( parent ) {
 	rootItem = NULL;
 }
 
-JSItemModel::JSItemModel( JavaScriptParser * data, QObjet * parent ) : QAbstractItemModel( parent ) {
+JSItemModel::JSItemModel( JavaScriptParser * data, QObject * parent ) : QAbstractItemModel( parent ) {
 	rootItem = data;
 }
 
@@ -136,7 +138,13 @@ QString JSFileEditor::getSuffix() const {
 }
 
 QAbstractItemModel * JSFileEditor::model() {
-	d->m_parser->load( textEdit()->toPlainText(), getFileName() );
+	try {
+		d->m_parser->load( textEdit()->toPlainText(), getFileName() );
+	} catch( JavaScriptParserException e ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("JavaScript error"), tr("Error JS at line %1").arg( e.m_line ) );
+	}
 	
 	return NULL;
 }
+
+#include "jsfileeditor.moc"
