@@ -345,7 +345,7 @@ void CVSThread::abort() {
 	if( GenerateConsoleCtrlEvent( CTRL_C_EVENT, m_process->pid()->dwProcessId ) != 0 )
 		perror( "GenerateConsoleCtrlEvent" );
 	if( ! m_process->waitForFinished( 1000 ) ) {
-		emit m_parent->log( RCS::Error, tr("I'M A PROCESS KILLER") );
+		emit m_parent->log( RCS::LogError, tr("I'M A PROCESS KILLER") );
 		m_process->kill();
 	}
 #endif
