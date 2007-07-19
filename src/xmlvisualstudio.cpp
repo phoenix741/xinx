@@ -234,6 +234,8 @@ void XMLVisualStudio::createActions() {
 	// Search next/previous
 	m_searchNextAct->setEnabled(false);
 	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_searchNextAct, SLOT(setEnabled(bool)));	
+	m_searchPreviousAct->setEnabled(false);
+	connect(m_tabEditors, SIGNAL(textAvailable(bool)), m_searchPreviousAct, SLOT(setEnabled(bool)));	
 
 	// Replace
 	m_replaceAct->setEnabled(false);

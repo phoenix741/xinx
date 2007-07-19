@@ -31,10 +31,38 @@
 #include "xinxconfig.h"
 #include "globals.h"
 #include "objectview.h"
+#include <csignal>
+#include <iostream>
+
+XMLVisualStudio * mainWin = NULL;
+
+void backup_appli() {
+	std::signal(SIGSEGV, SIG_DFL);
+	std::signal(SIGABRT, SIG_DFL);
+	std::signal(SIGINT, SIG_DFL);
+	std::signal(SIGTERM, SIG_DFL);
+	std::signal(SIGBREAK, SIG_DFL);
+	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
+	
+	if( mainWin )
+		mainWin->closeProject( false, true );
+	
+	qApp->quit();
+}
+
+void backup_appli_signal( int ) {
+	backup_appli();
+}
 
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
 
+	std::signal(SIGSEGV, backup_appli_signal);
+	std::signal(SIGABRT, backup_appli_signal);
+	std::signal(SIGINT, backup_appli_signal);
+	std::signal(SIGTERM, backup_appli_signal);
+	std::signal(SIGBREAK, backup_appli_signal);
+	
 	UniqueApplication app(argc, argv);
 
 	global.m_xinxConfig = new XINXConfig();
@@ -68,8 +96,8 @@ int main(int argc, char *argv[]) {
 
   		splash.showMessage( splash.tr("Load main window ...") );
   		app.processEvents();
-		XMLVisualStudio mainWin;
-		mainWin.show();
+		mainWin = new XMLVisualStudio();
+		mainWin->show();
   
   		splash.showMessage( splash.tr("Load arguments ...") );
   		app.processEvents();
@@ -78,12 +106,12 @@ int main(int argc, char *argv[]) {
 			QStringList::iterator it = args.begin();
 			it++;
 			while (it != args.end()) {
-				if(QFile(*it).exists()) mainWin.open(*it);
+				if(QFile(*it).exists()) mainWin->open(*it);
 				it++;
 			}
 		}
 
-		splash.finish(&mainWin);
+		splash.finish(mainWin);
 
 		return app.exec();
  	} else {

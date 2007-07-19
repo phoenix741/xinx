@@ -138,8 +138,10 @@ private:
 	/* Position in editor */
 	QLabel * m_editorPosition;
   
-	
 																				/* ***** Project Main Form Part ***** */
+public:
+	void closeProject( bool closeAll, bool saveSession );
+
 public slots:
 	void updateRecentProjects();
 	void updateRecentFiles();
@@ -164,7 +166,6 @@ private: /* Private definition */
 	void setupRecentFileMenu( QMenu * menu );
 	void openProject( const QString & filename );
 	void setCurrentProject( const QString & filename );
-	void closeProject( bool closeAll, bool saveSession );
 	
 	/* Variables */	
 	RCSLogDialogImpl * m_rcslogDialog;

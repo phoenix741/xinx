@@ -330,7 +330,10 @@ void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 	emit m_parent->log( RCS::LogApplication, QString("%1 %2").arg( global.m_xinxConfig->toolsPath()["cvs"] ).arg( options.join( " " ) ).simplified() );
 	m_process->start( global.m_xinxConfig->toolsPath()["cvs"], options, QIODevice::ReadWrite | QIODevice::Text );
 
-	while( m_process->waitForReadyRead( -1 ) ) processReadOutput();
+	while( m_process->state() != QProcess::NotRunning ) {
+		if( m_process->waitForReadyRead( 100 ) )
+			processReadOutput();
+	}
 	processReadOutput();
 
 	delete m_process;
@@ -338,7 +341,8 @@ void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 }
 
 void CVSThread::abort() {
-	if( ! m_process ) return ;
+	if( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) ) return ;
+	m_process->terminate();
 #ifdef Q_WS_WIN
 	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, m_process->pid()->dwProcessId ) != 0 )
 		perror( "GenerateConsoleCtrlEvent" );
@@ -349,7 +353,6 @@ void CVSThread::abort() {
 		m_process->kill();
 	}
 #endif
-	m_process->terminate();
 }
 
 void CVSThread::run() {

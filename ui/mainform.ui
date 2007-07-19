@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>29</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -43,6 +43,48 @@
     </property>
     <addaction name="m_aboutAct" />
     <addaction name="m_aboutQtAct" />
+   </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+    <addaction name="m_toggledFlatView" />
+    <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="menu_Close_project_2" >
+     <property name="title" >
+      <string>&amp;Close project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
+     </property>
+     <addaction name="m_closeProjectSessionAct" />
+     <addaction name="m_closeProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectAct" />
+    <addaction name="menu_Close_project_2" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_globalUpdateFromRCSAct" />
+    <addaction name="m_globalCommitToRCSAct" />
+    <addaction name="separator" />
+    <addaction name="m_customApplicationAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -96,48 +138,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
-    <property name="title" >
-     <string>WebServices</string>
-    </property>
-    <addaction name="m_refreshWebServicesListAct" />
-    <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-    <addaction name="m_toggledFlatView" />
-    <addaction name="separator" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="menu_Close_project_2" >
-     <property name="title" >
-      <string>&amp;Close project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
-     </property>
-     <addaction name="m_closeProjectSessionAct" />
-     <addaction name="m_closeProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectAct" />
-    <addaction name="menu_Close_project_2" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_globalUpdateFromRCSAct" />
-    <addaction name="m_globalCommitToRCSAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -365,9 +365,6 @@
    <property name="statusTip" >
     <string>Open an existing file</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+O</string>
-   </property>
   </action>
   <action name="m_saveAct" >
    <property name="icon" >
@@ -506,6 +503,9 @@
    </property>
    <property name="statusTip" >
     <string>Copy the selection to the clipboard</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="m_pasteAct" >
@@ -807,6 +807,9 @@
    </property>
    <property name="text" >
     <string>&amp;Recent file</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="m_globalUpdateFromRCSAct" >
