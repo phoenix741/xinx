@@ -29,6 +29,8 @@
 #include <QToolButton>
 #include <assert.h>
 
+#include "rcs.h"
+
 #include "globals.h"
 #include "uniqueapplication.h"
 
@@ -640,6 +642,12 @@ void XMLVisualStudio::saveEditorAs( int index ) {
 	dynamic_cast<FileEditor*>( m_tabEditors->editor(index) )->saveFile( fileName );
 	m_tabEditors->editor( index )->setModified( true );
 	m_tabEditors->editor( index )->setModified( false );
+	
+	if( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) ) {
+		QMessageBox::StandardButton res = QMessageBox::question( this, tr("Add file"), tr("Do you want add this file to the repository ?"), QMessageBox::Yes | QMessageBox::No );
+		if( res == QMessageBox::Yes ) 
+			addRCSFile( fileName );
+	}
 
 	statusBar()->showMessage(tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
 }

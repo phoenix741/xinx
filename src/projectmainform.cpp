@@ -540,6 +540,21 @@ void XMLVisualStudio::on_m_selectedAddToRCSAct_triggered() {
 	}
 }
 
+void XMLVisualStudio::addRCSFile( const QString & filename ) {
+	if( ! m_dirModel ) return ;
+	RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+
+	if( rcs ) {
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+		rcs->add( QStringList() << filename );
+		m_rcslogDialog->exec();
+	}
+}
+
 void XMLVisualStudio::on_m_selectedRemoveFromRCSAct_triggered() {
 	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
 		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();

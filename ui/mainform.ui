@@ -874,7 +874,7 @@
     <iconset resource="../application.qrc" >:/images/flatlist.png</iconset>
    </property>
    <property name="text" >
-    <string>Toggled Flat Viexw</string>
+    <string>Toggled Flat View</string>
    </property>
   </action>
  </widget>

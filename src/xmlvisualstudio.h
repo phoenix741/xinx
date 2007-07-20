@@ -166,6 +166,7 @@ private: /* Private definition */
 	void setupRecentFileMenu( QMenu * menu );
 	void openProject( const QString & filename );
 	void setCurrentProject( const QString & filename );
+	void addRCSFile( const QString & filename );
 	
 	/* Variables */	
 	RCSLogDialogImpl * m_rcslogDialog;
