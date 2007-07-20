@@ -142,7 +142,6 @@ public:
 	QList<JavaScriptFunction*> m_functions;
 	
 	int m_line;
-	QString m_filename;
 		
 	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
 	QList<JavaScriptVariables*> loadVariables( QIODevice * device );
@@ -360,7 +359,7 @@ void JavaScriptParser::load( const QString & content, const QString & filename )
 	d->m_functions.clear();
 	d->m_line = 1;
 	
-	d->m_filename = filename;
+	setName( filename );
 	
 	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
 	QString name;
@@ -416,5 +415,5 @@ const QList<JavaScriptFunction*> & JavaScriptParser::functions() {
 }
 
 const QString & JavaScriptParser::filename() {
-	return d->m_filename;
+	return name();
 }
