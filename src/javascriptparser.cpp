@@ -30,6 +30,64 @@ JavaScriptParserException::JavaScriptParserException( int line ) {
 	qDebug() << QObject::tr("Error at line %1").arg( line ) << endl;
 }
 
+/* PrivateJavaScriptElement */
+
+class PrivateJavaScriptElement {
+public:
+	PrivateJavaScriptElement( JavaScriptElement * parent );
+	
+	int m_line;
+	QString m_name;
+private:
+	JavaScriptElement * m_parent;
+};
+
+PrivateJavaScriptElement::PrivateJavaScriptElement( JavaScriptElement * parent ) {
+	m_parent = parent;
+	m_line   = -1;
+	m_name   = QString();
+}
+
+/* JavaScriptElement */
+
+JavaScriptElement::JavaScriptElement( const QString & name, int line ) {
+	d = new PrivateJavaScriptElement( this );
+	d->m_line = line;
+	d->m_name = name;
+}
+
+JavaScriptElement::~JavaScriptElement() {
+	delete d;
+}
+	
+const QString & JavaScriptElement::name() {
+	return d->m_name;
+}
+	
+int JavaScriptElement::line() {
+	return d->m_line;
+}
+
+void JavaScriptElement::setName( const QString & name ) {
+	d->m_name = name;
+}
+	
+void JavaScriptElement::setLine( int line ) {
+	d->m_line = line;
+}
+
+/* JavaScriptParams */
+
+JavaScriptParams::JavaScriptParams( const QString & name, int line ) : JavaScriptElement( name, line ) {
+	
+}
+
+/* JavaScriptVariables */
+
+JavaScriptVariables::JavaScriptVariables( const QString & name, int line ) : JavaScriptParams( name, line ) {
+	
+}
+
 /* PrivateJavaScriptFunction */
 
 class PrivateJavaScriptFunction {
@@ -37,10 +95,8 @@ public:
 	PrivateJavaScriptFunction( JavaScriptFunction * parent );
 	virtual ~PrivateJavaScriptFunction();
 	
-	QStringList m_params, m_variables;
-	QString m_name;
-	
-	int m_line;
+	QList<JavaScriptParams*> m_params;
+	QList<JavaScriptVariables*> m_variables;
 private:
 	JavaScriptFunction * m_parent;
 };
@@ -55,30 +111,23 @@ PrivateJavaScriptFunction::~PrivateJavaScriptFunction() {
 
 /* JavaScriptFunction */
 
-JavaScriptFunction::JavaScriptFunction() {
+JavaScriptFunction::JavaScriptFunction( const QString & name, int line ) : JavaScriptElement( name, line ) {
 	d = new PrivateJavaScriptFunction( this );
 }
 
 JavaScriptFunction::~JavaScriptFunction() {
+	qDeleteAll( d->m_params );
+	qDeleteAll( d->m_variables );
 	delete d;
 }
 
-const QStringList & JavaScriptFunction::params() {
+const QList<JavaScriptParams*> & JavaScriptFunction::params() {
 	return d->m_params;
 }
 
-const QStringList & JavaScriptFunction::variables() {
+const QList<JavaScriptVariables*> & JavaScriptFunction::variables() {
 	return d->m_variables;
 }
-
-const QString & JavaScriptFunction::name() {
-	return d->m_name;
-}
-
-int JavaScriptFunction::line() {
-	return d->m_line;
-}
-
 
 /* PrivateJavaScriptParser */
 
@@ -89,14 +138,14 @@ public:
 	PrivateJavaScriptParser( JavaScriptParser * parent );
 	virtual ~PrivateJavaScriptParser();
 	
-	QStringList m_variables;
+	QList<JavaScriptVariables*> m_variables;
 	QList<JavaScriptFunction*> m_functions;
 	
 	int m_line;
 	QString m_filename;
 		
 	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
-	QStringList loadVariables( QIODevice * device );
+	QList<JavaScriptVariables*> loadVariables( QIODevice * device );
 	JavaScriptFunction * loadFunction( QIODevice * device );
 private:
 	JavaScriptParser * m_parent;
@@ -242,8 +291,8 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
 	} while( state != STATE_END );
 }
 
-QStringList PrivateJavaScriptParser::loadVariables( QIODevice * buffer ) {
-	QStringList variables;
+QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * buffer ) {
+	QList<JavaScriptVariables*> variables;
 	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
 	QString name;
 
@@ -251,7 +300,7 @@ QStringList PrivateJavaScriptParser::loadVariables( QIODevice * buffer ) {
 	if( type != TOKEN_IDENTIFIER )
 		throw JavaScriptParserException( m_line );
 
-	variables << name;
+	variables << new JavaScriptVariables( name, m_line );
 	bool cont = true;
 	do {
 		nextIdentifier( buffer, type, name );
@@ -261,24 +310,22 @@ QStringList PrivateJavaScriptParser::loadVariables( QIODevice * buffer ) {
 			nextIdentifier( buffer, type, name );
 			if( type != TOKEN_IDENTIFIER )
 				throw JavaScriptParserException( m_line );
-			variables << name;
+			variables << new JavaScriptVariables( name, m_line );
 		}
 	} while( cont );
 	return variables;
 }
 
 JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer ) {
-	JavaScriptFunction * function = new JavaScriptFunction();
-	
 	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
 	QString name;
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
 		throw JavaScriptParserException( m_line );
-	function->d->m_name = name;
-	function->d->m_line = m_line;
-	
+
+	JavaScriptFunction * function = new JavaScriptFunction( name, m_line );
+
 	nextIdentifier( buffer, type, name );
 	if( ! ( ( type == TOKEN_PONCTUATION ) && ( name == "(" ) ) ) 
 		throw JavaScriptParserException( m_line );
@@ -286,7 +333,7 @@ JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer )
 	do {		
 		nextIdentifier( buffer, type, name );
 		if( type == TOKEN_IDENTIFIER ) 
-			function->d->m_params << name;
+			function->d->m_params << new JavaScriptParams( name, m_line );
 		
 		while( ( type != TOKEN_PONCTUATION ) || ( ( name != ")" ) && ( name != "," ) ) ) {
 			nextIdentifier( buffer, type, name );
@@ -299,7 +346,7 @@ JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer )
 
 /* JavaScriptParser */
 
-JavaScriptParser::JavaScriptParser() {
+JavaScriptParser::JavaScriptParser() : JavaScriptElement( QString(), -1 ) {
 	d = new PrivateJavaScriptParser( this );
 }
 
@@ -360,7 +407,7 @@ void JavaScriptParser::load( const QString & content, const QString & filename )
 	} while( ! buffer.atEnd() );
 }
 	
-const QStringList & JavaScriptParser::variables() {
+const QList<JavaScriptVariables*> & JavaScriptParser::variables() {
 	return d->m_variables;
 }
 

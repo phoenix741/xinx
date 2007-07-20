@@ -24,6 +24,7 @@
 #include <QStringList>
 #include <QList>
 
+class PrivateJavaScriptElement;
 class PrivateJavaScriptFunction;
 class PrivateJavaScriptParser;
 
@@ -33,15 +34,38 @@ public:
 	int m_line;
 };
 
-class JavaScriptFunction {
+class JavaScriptElement {
 public:
-	JavaScriptFunction();
+	JavaScriptElement( const QString & name, int line );
+	virtual ~JavaScriptElement();
+	
+	const QString & name();
+	int line();
+protected:
+	void setName( const QString & name );
+	void setLine( int line );
+private:
+	PrivateJavaScriptElement * d;
+	friend class PrivateJavaScriptElement;
+};
+
+class JavaScriptParams : public JavaScriptElement {
+public:
+	JavaScriptParams( const QString & name, int line );
+};
+
+class JavaScriptVariables : public JavaScriptParams {
+public:
+	JavaScriptVariables( const QString & name, int line );
+};
+
+class JavaScriptFunction : public JavaScriptElement {
+public:
+	JavaScriptFunction( const QString & name, int line );
 	virtual ~JavaScriptFunction();
 
-	const QString & name();
-	const QStringList & params();
-	const QStringList & variables();
-	int line();
+	const QList<JavaScriptParams*> & params();
+	const QList<JavaScriptVariables*> & variables();
 private:
 	PrivateJavaScriptFunction * d;
 	friend class PrivateJavaScriptFunction;
@@ -49,14 +73,14 @@ private:
 	friend class JavaScriptParser;
 };
 
-class JavaScriptParser {
+class JavaScriptParser : public JavaScriptElement {
 public:
 	JavaScriptParser();
 	virtual ~JavaScriptParser();
 	
 	void load( const QString & content, const QString & filename );
 
-	const QStringList & variables();
+	const QList<JavaScriptVariables*> & variables();
 	const QList<JavaScriptFunction*> & functions();
 	const QString & filename();
 private:

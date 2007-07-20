@@ -41,13 +41,13 @@ void backup_appli() {
 	std::signal(SIGABRT, SIG_DFL);
 	std::signal(SIGINT, SIG_DFL);
 	std::signal(SIGTERM, SIG_DFL);
-	std::signal(SIGBREAK, SIG_DFL);
+//	std::signal(SIGBREAK, SIG_DFL);
 	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
 	
 	if( mainWin )
 		mainWin->closeProject( false, true );
 	
-	qApp->quit();
+	exit(1);
 }
 
 void backup_appli_signal( int ) {
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 	std::signal(SIGABRT, backup_appli_signal);
 	std::signal(SIGINT, backup_appli_signal);
 	std::signal(SIGTERM, backup_appli_signal);
-	std::signal(SIGBREAK, backup_appli_signal);
+//	std::signal(SIGBREAK, backup_appli_signal);
 	
 	UniqueApplication app(argc, argv);
 
