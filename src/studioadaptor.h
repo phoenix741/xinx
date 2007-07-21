@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef STUDIOADAPTOR_H_1168087321
-#define STUDIOADAPTOR_H_1168087321
+#ifndef STUDIOADAPTOR_H_1185032082
+#define STUDIOADAPTOR_H_1185032082
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -30,7 +30,12 @@ class XmlstudioAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "com.generix.xmlstudio")
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.generix.xmlstudio\" >\n"
+"    <signal name=\"openNew\" />\n"
 "    <signal name=\"open\" >\n"
+"      <arg direction=\"out\" type=\"s\" name=\"fileName\" />\n"
+"    </signal>\n"
+"    <signal name=\"saveAll\" />\n"
+"    <signal name=\"openProject\" >\n"
 "      <arg direction=\"out\" type=\"s\" name=\"fileName\" />\n"
 "    </signal>\n"
 "  </interface>\n"
@@ -43,6 +48,9 @@ public: // PROPERTIES
 public Q_SLOTS: // METHODS
 Q_SIGNALS: // SIGNALS
     void open(const QString &fileName);
+    void openNew();
+    void openProject(const QString &fileName);
+    void saveAll();
 };
 
 #endif

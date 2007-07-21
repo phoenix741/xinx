@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,60 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
-#include "javascriptparser.h"
+#ifndef __FILECONTENTITEMMODEL_H__
+#define __FILECONTENTITEMMODEL_H__
 
 #include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
 
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
+/*!
+ * Model of data used in the content tree view. Represent the content of a file
+ * For each element of the tree, the model return a link with the line and the
+ * filename.
+ */
+class FileContentItemModel : public QAbstractItemModel {
+	Q_OBJECT
 public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+	/*!
+	 * Construct a file content model.
+	 * \param parent Parent of the file content model.
+	 */
+	FileContentItemModel( QObject *parent = 0 );
+	/*!
+	 * Destroy the model.
+	 */
+	virtual ~FileContentItemModel();
 	
-	JavaScriptParser * m_parser;
-private:
-	JSFileEditor * m_parent;
+	/*!
+	 * This structure give the line and the filename where we can find data that
+	 * model represents.
+	 * If the filename is empty, the model refere to the current file.
+	 */
+	struct struct_file_content {
+		/*!
+		 * The line of the element.
+		 */
+		int line;
+		/*!
+		 * The file name of the element. If empty the file is the current file.
+		 */
+		QString filename;
+	};
 };
 
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-	m_parser = NULL;
-}
+Q_DECLARE_METATYPE ( FileContentItemModel::struct_file_content )
 
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-	delete m_parser;
-}
-
-/* JSFileEditor */
-
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( new JSEditor( parent ), parent ) {
-	d = new PrivateJSFileEditor( this );
-}
-
-JSFileEditor::~JSFileEditor() {
-	delete d;
-}
-
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QAbstractItemModel * JSFileEditor::model() {
-	try {
-		JavaScriptParser * parser = new JavaScriptParser( textEdit()->toPlainText() );
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-	} catch( JavaScriptParserException e ) {
-		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
-	}
-	
-	return NULL;
-}
+#endif // __FILECONTENTITEMMODEL_H__

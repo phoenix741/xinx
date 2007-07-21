@@ -345,21 +345,20 @@ JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer )
 
 /* JavaScriptParser */
 
-JavaScriptParser::JavaScriptParser() : JavaScriptElement( QString(), -1 ) {
+JavaScriptParser::JavaScriptParser( const QString & content ) : JavaScriptElement( QString(), -1 ) {
 	d = new PrivateJavaScriptParser( this );
+	load( content );
 }
 
 JavaScriptParser::~JavaScriptParser() {
 	delete d;
 }
 
-void JavaScriptParser::load( const QString & content, const QString & filename ) {
+void JavaScriptParser::load( const QString & content ) {
 	d->m_variables.clear();
 	qDeleteAll( d->m_functions );
 	d->m_functions.clear();
 	d->m_line = 1;
-	
-	setName( filename );
 	
 	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
 	QString name;
@@ -412,8 +411,4 @@ const QList<JavaScriptVariables*> & JavaScriptParser::variables() {
 
 const QList<JavaScriptFunction*> & JavaScriptParser::functions() {
 	return d->m_functions;
-}
-
-const QString & JavaScriptParser::filename() {
-	return name();
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,60 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
-#include "javascriptparser.h"
+#include "filecontentitemmodel.h"
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
-
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
-public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+FileContentItemModel::FileContentItemModel( QObject * parent ) : QAbstractItemModel( parent ) {
 	
-	JavaScriptParser * m_parser;
-private:
-	JSFileEditor * m_parent;
-};
-
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-	m_parser = NULL;
 }
 
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-	delete m_parser;
-}
-
-/* JSFileEditor */
-
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( new JSEditor( parent ), parent ) {
-	d = new PrivateJSFileEditor( this );
-}
-
-JSFileEditor::~JSFileEditor() {
-	delete d;
-}
-
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QAbstractItemModel * JSFileEditor::model() {
-	try {
-		JavaScriptParser * parser = new JavaScriptParser( textEdit()->toPlainText() );
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-	} catch( JavaScriptParserException e ) {
-		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
-	}
+FileContentItemModel::~FileContentItemModel() {
 	
-	return NULL;
 }

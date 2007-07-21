@@ -156,21 +156,15 @@ private:
 class JavaScriptParser : public JavaScriptElement {
 public:
 	/*!
-	 * Create the parser.
+	 * Create the parser with the content of a Javascript file.
+	 * \param content Content of the Javascript file.
 	 */
-	JavaScriptParser();
+	JavaScriptParser( const QString & content );
 	/*!
 	 * Delete the parser
 	 */
 	virtual ~JavaScriptParser();
 	
-	/*!
-	 * Load and parse the content of the file.
-	 * \param content Content of the file
-	 * \param filename File name to store in the parser.
-	 */
-	void load( const QString & content, const QString & filename );
-
 	/*!
 	 * List all globals variables.
 	 * \return list of variables.
@@ -181,11 +175,12 @@ public:
 	 * \return list of functions.
 	 */
 	const QList<JavaScriptFunction*> & functions();
+protected:
 	/*!
-	 * Name of the file.
-	 * \return Return the file name.
+	 * Load and parse the content of the file.
+	 * \param content Content of the file
 	 */
-	const QString & filename();
+	void load( const QString & content );
 private:
 	PrivateJavaScriptParser * d;
 	friend class PrivateJavaScriptParser;

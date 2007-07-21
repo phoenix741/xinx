@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef STUDIOINTERFACE_H_1168087321
-#define STUDIOINTERFACE_H_1168087321
+#ifndef STUDIOINTERFACE_H_1185032083
+#define STUDIOINTERFACE_H_1185032083
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -38,6 +38,9 @@ public:
 public Q_SLOTS: // METHODS
 Q_SIGNALS: // SIGNALS
     void open(const QString &fileName);
+    void openNew();
+    void openProject(const QString &fileName);
+    void saveAll();
 };
 
 namespace com {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,60 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
-#include "javascriptparser.h"
+#ifndef __JAVASCRIPTFILECONTENT_H__
+#define __JAVASCRIPTFILECONTENT_H__
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
+#include "filecontentitemmodel.h"
 
-/* PrivateJSFileEditor */
+class PrivateJavascriptFileContent;
+class JavaScriptParser;
 
-class PrivateJSFileEditor {
+class JavascriptFileContent : public FileContentItemModel {
+	Q_OBJECT
 public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+	JavascriptFileContent( JavaScriptParser * parser );
+	virtual ~JavascriptFileContent();
 	
-	JavaScriptParser * m_parser;
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex parent(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 private:
-	JSFileEditor * m_parent;
+	PrivateJavascriptFileContent * d;
+	friend class PrivateJavascriptFileContent;
 };
 
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-	m_parser = NULL;
-}
-
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-	delete m_parser;
-}
-
-/* JSFileEditor */
-
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( new JSEditor( parent ), parent ) {
-	d = new PrivateJSFileEditor( this );
-}
-
-JSFileEditor::~JSFileEditor() {
-	delete d;
-}
-
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QAbstractItemModel * JSFileEditor::model() {
-	try {
-		JavaScriptParser * parser = new JavaScriptParser( textEdit()->toPlainText() );
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-	} catch( JavaScriptParserException e ) {
-		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
-	}
-	
-	return NULL;
-}
+#endif // __JAVASCRIPTFILECONTENT_H__

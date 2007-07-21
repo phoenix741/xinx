@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,60 +18,66 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
+#include "javascriptfilecontent.h"
 #include "javascriptparser.h"
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
+/* PrivateJavascriptFileContent */
 
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
+class PrivateJavascriptFileContent {
 public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+	PrivateJavascriptFileContent( JavascriptFileContent * parent );
+	virtual ~PrivateJavascriptFileContent();
 	
 	JavaScriptParser * m_parser;
 private:
-	JSFileEditor * m_parent;
+	JavascriptFileContent * m_parent;
 };
 
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
+PrivateJavascriptFileContent::PrivateJavascriptFileContent( JavascriptFileContent * parent ) : m_parent( parent ) {
 	m_parser = NULL;
 }
 
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-	delete m_parser;
+PrivateJavascriptFileContent::~PrivateJavascriptFileContent() {
+	
 }
 
-/* JSFileEditor */
 
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( new JSEditor( parent ), parent ) {
-	d = new PrivateJSFileEditor( this );
+/* JavascriptFileContent */
+
+JavascriptFileContent::JavascriptFileContent( JavaScriptParser * parser ) {
+	d = new PrivateJavascriptFileContent( this );
 }
 
-JSFileEditor::~JSFileEditor() {
+JavascriptFileContent::~JavascriptFileContent() {
 	delete d;
 }
 
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
+QVariant JavascriptFileContent::data( const QModelIndex &index, int role ) const {
+	
 }
 
-QAbstractItemModel * JSFileEditor::model() {
-	try {
-		JavaScriptParser * parser = new JavaScriptParser( textEdit()->toPlainText() );
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-	} catch( JavaScriptParserException e ) {
-		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
+Qt::ItemFlags JavascriptFileContent::flags( const QModelIndex &index ) const {
+	if (!index.isValid())
+		return Qt::ItemIsEnabled;
+
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;	
+}
+
+QModelIndex JavascriptFileContent::index( int row, int column, const QModelIndex &parent ) const {
+	JavaScriptElement * parentElement = d->m_parser;
+	if( parent.isValid() ) {
+		parentElement = static_cast<JavaScriptElement*>( parent.internalPointer() );
 	}
+}
 	
-	return NULL;
+QModelIndex JavascriptFileContent::parent( const QModelIndex &index ) const {
+	
+}
+
+int JavascriptFileContent::rowCount( const QModelIndex &parent ) const {
+	
+}
+	
+int JavascriptFileContent::columnCount( const QModelIndex &parent ) const {
+	return 1;
 }

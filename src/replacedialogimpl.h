@@ -47,10 +47,11 @@ public:
 	void setText( const QString & );
 	void setReplace( bool );
 
-	/** @src regular expression for search
-	    @dest result type
-	    @content the content find in the editor
-	*/
+	/*!
+	 * \param src regular expression for search
+	 * \param dest result type
+	 * \param content the content find in the editor
+	 */
 	static QString replaceStr( const struct FindOptions &, const QString & src, const QString & dest, const QString & content );
 
 signals:
