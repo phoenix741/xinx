@@ -44,8 +44,9 @@ PrivateJavascriptFileContent::~PrivateJavascriptFileContent() {
 
 /* JavascriptFileContent */
 
-JavascriptFileContent::JavascriptFileContent( JavaScriptParser * parser ) {
+JavascriptFileContent::JavascriptFileContent( JavaScriptParser * parser, QObject *parent ) : FileContentItemModel( parent ) {
 	d = new PrivateJavascriptFileContent( this );
+	d->m_parser = parser;
 }
 
 JavascriptFileContent::~JavascriptFileContent() {
@@ -53,7 +54,24 @@ JavascriptFileContent::~JavascriptFileContent() {
 }
 
 QVariant JavascriptFileContent::data( const QModelIndex &index, int role ) const {
-	
+	if( !index.isValid() ) 
+		return QVariant();
+		
+	FileContentItemModel::struct_file_content data;
+	JavaScriptElement * element = static_cast<JavaScriptElement*>( index.internalPointer() );
+		
+	switch( role ) {
+	case Qt::DisplayRole:
+		return element->name();
+	case Qt::DecorationRole:
+		return QVariant();
+	case Qt::UserRole:
+		data.line = element->line();
+		data.filename = QString();
+		return QVariant::fromValue( data );
+	default:
+		return QVariant();
+	}
 }
 
 Qt::ItemFlags JavascriptFileContent::flags( const QModelIndex &index ) const {
@@ -64,20 +82,41 @@ Qt::ItemFlags JavascriptFileContent::flags( const QModelIndex &index ) const {
 }
 
 QModelIndex JavascriptFileContent::index( int row, int column, const QModelIndex &parent ) const {
-	JavaScriptElement * parentElement = d->m_parser;
+	JavaScriptElement * parentElement = d->m_parser, * currentElement;
 	if( parent.isValid() ) {
 		parentElement = static_cast<JavaScriptElement*>( parent.internalPointer() );
 	}
+	currentElement = parentElement->element( row );
+	
+	if( currentElement )
+		return createIndex(row, column, currentElement );
+	else 
+		return QModelIndex();
 }
 	
 QModelIndex JavascriptFileContent::parent( const QModelIndex &index ) const {
+	if( !index.isValid() )
+		return QModelIndex();
 	
+	JavaScriptElement * element = static_cast<JavaScriptElement*>( index.internalPointer() ),
+					  * parent  = element->parent();
+	
+	if( element == d->m_parser )
+		return QModelIndex();
+	
+	return createIndex( parent->row(), 0, parent );
 }
 
 int JavascriptFileContent::rowCount( const QModelIndex &parent ) const {
-	
+	if( parent.isValid() ) {
+		JavaScriptElement * element = static_cast<JavaScriptElement*>( parent.internalPointer() );
+		return element->rowCount();		
+	} else {
+		return d->m_parser->rowCount();
+	}
 }
 	
 int JavascriptFileContent::columnCount( const QModelIndex &parent ) const {
+	Q_UNUSED( parent );
 	return 1;
 }

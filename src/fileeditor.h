@@ -105,6 +105,7 @@ public:
 	virtual bool isModified();
 
 	virtual QAbstractItemModel * model();
+	virtual void updateModel();
 
 	virtual void serializeEditor( QDomElement & element, bool content );
 	virtual void deserializeEditor( const QDomElement & element );

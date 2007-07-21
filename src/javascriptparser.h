@@ -56,7 +56,7 @@ public:
 	 * \param name Name of the element.
 	 * \param line Line where the element is.
 	 */
-	JavaScriptElement( const QString & name, int line );
+	JavaScriptElement( JavaScriptElement * parent, const QString & name, int line );
 	/*!
 	 * Destroy the element.
 	 */
@@ -66,12 +66,36 @@ public:
 	 * Name of the element.
 	 * \return Return the name of the element.
 	 */
-	const QString & name();
+	virtual const QString & name();
 	/*!
 	 * Return the line where the element is.
 	 * \return the line of the element.
 	 */
 	int line();
+	
+	/*!
+	 * Count the number of child of the element.
+	 * \return the number of child.
+	 */
+	virtual int rowCount();
+	/*!
+	 * Return the index-th child element of the object. Return null if i can't.
+	 * \param index Index of the child element.
+	 * \return The child element.
+	 */
+	virtual JavaScriptElement * element( int index );
+	
+	/*!
+	 * Return the parent of this element.
+	 * \return The parent of this element.
+	 */
+	virtual JavaScriptElement * parent();
+	 
+	/*!
+	 * Return the row index in the parent list.
+	 * \return The index of the element
+	 */ 
+	virtual int row();
 protected:
 	/*!
 	 * Function to change the name of the element. This function is only accessible
@@ -100,7 +124,7 @@ public:
 	 * \param name Name of the parameter.
 	 * \param line Line of the parameter.
 	 */
-	JavaScriptParams( const QString & name, int line );
+	JavaScriptParams( JavaScriptElement * parent, const QString & name, int line );
 };
 
 /*!
@@ -113,7 +137,7 @@ public:
 	 * \param name Name of the variable
 	 * \param line Line of the parameter.
 	 */
-	JavaScriptVariables( const QString & name, int line );
+	JavaScriptVariables( JavaScriptElement * parent, const QString & name, int line );
 };
 
 /*!
@@ -127,7 +151,7 @@ public:
 	 * \param name Name of the function.
 	 * \param line Line of the function.
 	 */
-	JavaScriptFunction( const QString & name, int line );
+	JavaScriptFunction( JavaScriptElement * parent, const QString & name, int line );
 	/*!
 	 * Detele the function
 	 */
@@ -143,6 +167,9 @@ public:
 	 * \return The list of the variables.
 	 */
 	const QList<JavaScriptVariables*> & variables();
+	
+	virtual int rowCount();
+	virtual JavaScriptElement * element( int index );
 private:
 	PrivateJavaScriptFunction * d;
 	friend class PrivateJavaScriptFunction;
@@ -175,6 +202,9 @@ public:
 	 * \return list of functions.
 	 */
 	const QList<JavaScriptFunction*> & functions();
+
+	virtual int rowCount();
+	virtual JavaScriptElement * element( int index );
 protected:
 	/*!
 	 * Load and parse the content of the file.

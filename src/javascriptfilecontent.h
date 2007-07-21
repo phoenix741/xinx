@@ -29,7 +29,7 @@ class JavaScriptParser;
 class JavascriptFileContent : public FileContentItemModel {
 	Q_OBJECT
 public:
-	JavascriptFileContent( JavaScriptParser * parser );
+	JavascriptFileContent( JavaScriptParser * parser, QObject *parent = 0 );
 	virtual ~JavascriptFileContent();
 	
 	QVariant data(const QModelIndex &index, int role) const;

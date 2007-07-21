@@ -104,7 +104,7 @@ public:
 	 * in XINX application.
 	 * If model neet to be deleted or recreated, signals can be emitted.
 	 * \return The model who contains the content of editor.
-	 * \sa deleteModel(), createModel()
+	 * \sa deleteModel(), createModel(), updateModel()
 	 */
 	virtual QAbstractItemModel * model() = 0;
 	
@@ -125,6 +125,11 @@ public:
 	 */
 	virtual void deserializeEditor( const QDomElement & element ) = 0;	
 public slots : 
+	/*!
+	 * Update the model.
+	 * \sa deleteModel(), createModel(), model()
+	 */
+	virtual void updateModel() = 0;
 	/*!
 	 * Call undo operation on the editor, if available. This operation rollback the last modification
 	 * made on the editor.
@@ -196,12 +201,12 @@ signals:
 
 	/*!
 	 * Signal emited before the model is deleted and becomes NULL.
-	 * \sa model()
+	 * \sa model(), updateModel(), createModel()
 	 */
 	void deleteModel();
 	/*!
 	 * Signal emitted after the model is created and can be used.
-	 * \sa model()
+	 * \sa model(), updateModel(), deleteModel()
 	 */
 	void createModel();
 };

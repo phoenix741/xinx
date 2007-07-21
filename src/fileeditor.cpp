@@ -386,7 +386,7 @@ void FileEditor::loadFile( const QString & fileName ){
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
-	m_view->updateModel();
+	updateModel();
 
 	QApplication::restoreOverrideCursor();
 }
@@ -412,7 +412,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 	file.flush();
 	file.close();
 
-	m_view->updateModel();
+	updateModel();
 
 	d->activateWatcher();
 
@@ -462,6 +462,10 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 
 QAbstractItemModel * FileEditor::model() {
 	return m_view->model();
+}
+
+void FileEditor::updateModel() {
+	m_view->updateModel();
 }
 
 bool FileEditor::canCopy() {
