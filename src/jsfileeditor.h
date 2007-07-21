@@ -26,20 +26,26 @@
 class PrivateJSFileEditor;
 
 /*!
- * Editor for file of type JavaScript.
+ * Editor for file of type JavaScript. This editor use the JSEditor text editor
+ * to edit files.
  */
 class JSFileEditor : public FileEditor {
 	Q_OBJECT
 public:
+	/*!
+	 * Construct the javascript file editor.
+	 * \param parent Parent of the Javascript File Editor 
+	 */
 	JSFileEditor( QWidget *parent = 0 );
+	/*!
+	 * Destroy the javascript file editor.
+	 */
 	virtual ~JSFileEditor();
 	
 	virtual QString getSuffix() const;
 	virtual QAbstractItemModel * model();
-
 public slots:
 	virtual void updateModel();
-
 private:
 	PrivateJSFileEditor * d;
 	friend class PrivateJSFileEditor;

@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QIcon>
+
 #include "javascriptfilecontent.h"
 #include "javascriptparser.h"
 
@@ -64,6 +66,15 @@ QVariant JavascriptFileContent::data( const QModelIndex &index, int role ) const
 	case Qt::DisplayRole:
 		return element->name();
 	case Qt::DecorationRole:
+		if( dynamic_cast<JavaScriptFunction*>( element ) ) {
+			return QIcon( ":/images/noeud.png" );			
+		} else
+		if( dynamic_cast<JavaScriptVariables*>( element ) ) {
+			return QIcon( ":/images/variable.png" );			
+		} else
+		if( dynamic_cast<JavaScriptParams*>( element ) ) {
+			return QIcon( ":/images/html_value.png" );			
+		}
 		return QVariant();
 	case Qt::UserRole:
 		data.line = element->line();
@@ -119,4 +130,11 @@ int JavascriptFileContent::rowCount( const QModelIndex &parent ) const {
 int JavascriptFileContent::columnCount( const QModelIndex &parent ) const {
 	Q_UNUSED( parent );
 	return 1;
+}
+
+QVariant JavascriptFileContent::headerData(int section, Qt::Orientation orientation, int role) const {
+	if( ( orientation == Qt::Horizontal ) && ( role == Qt::DisplayRole ) && ( section == 0 ) )
+		return tr("Function");
+		
+	return QVariant();
 }

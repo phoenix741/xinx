@@ -71,16 +71,17 @@ QString JSFileEditor::getSuffix() const {
 void JSFileEditor::updateModel() {
 	try {
 		JavaScriptParser * parser = new JavaScriptParser( textEdit()->toPlainText() );
+		emit deleteModel();
 		delete d->m_model; d->m_model = NULL;
 		delete d->m_parser; d->m_parser = NULL;
 		d->m_parser = parser;
 		d->m_model  = new JavascriptFileContent( d->m_parser, this );
+		emit createModel();
 	} catch( JavaScriptParserException e ) {
 		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
 	}
 }
 
 QAbstractItemModel * JSFileEditor::model() {
-	updateModel();
 	return d->m_model;
 }

@@ -25,12 +25,21 @@
 #include <QTextCursor>
 
 /*!
- * JavaScript Editor
+ * Editor based on a TextEditor (from a QTextEdit) who have JavaScript syntaxique 
+ * coloration.
+ * \todo Make completion on javascript.
  */
 class JSEditor : public TextEditor {
 	Q_OBJECT
 public:
+	/*!
+	 * Create the Javascript editor.
+	 * \param parent Parent of the QTextEdit.
+	 */
 	JSEditor( QWidget * parent = 0 );
+	/*!
+	 * Destroy the editor.
+	 */
 	virtual ~JSEditor();
 
 private:

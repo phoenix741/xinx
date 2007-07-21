@@ -26,10 +26,25 @@
 class PrivateJavascriptFileContent;
 class JavaScriptParser;
 
+/*!
+ * Model to show the file content of file of type JavaScript. The file is showed in a tree.
+ * The globals variables and function in the root, and parameter and variables of functions in
+ * the child.
+ *
+ * There is nothing to show other Javascript (like the XML Tree View).
+ */
 class JavascriptFileContent : public FileContentItemModel {
 	Q_OBJECT
 public:
+	/*!
+	 * Construct the file content model with a simple javascript parser.
+	 * \param parser The simple javascript parser.
+	 * \param parent The parent of the object parent.
+	 */
 	JavascriptFileContent( JavaScriptParser * parser, QObject *parent = 0 );
+	/*!
+	 * Destroy the file content object
+	 */
 	virtual ~JavascriptFileContent();
 	
 	QVariant data(const QModelIndex &index, int role) const;
@@ -37,6 +52,7 @@ public:
 	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	QModelIndex parent(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 private:
 	PrivateJavascriptFileContent * d;

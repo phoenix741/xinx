@@ -27,9 +27,11 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/customdialogimpl.h \
   src/editor.h \
   src/editorcompletion.h \
+  src/filecontentitemmodel.h \
   src/fileeditor.h \
   src/flattreeview.h \
   src/globals.h \
+  src/javascriptfilecontent.h \
   src/javascriptparser.h \
   src/jseditor.h \
   src/jsfileeditor.h \
@@ -61,9 +63,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xsddocument.h \
   src/xsleditor.h \
   src/xsllistview.h \
-  src/xslproject.h \
-  src/filecontentitemmodel.h \
-  src/javascriptfilecontent.h
+  src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
 QT +=   network \
@@ -76,9 +76,11 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/customdialogimpl.cpp \
   src/editor.cpp \
   src/editorcompletion.cpp \
+  src/filecontentitemmodel.cpp \
   src/fileeditor.cpp \
   src/flattreeview.cpp \
   src/globals.cpp \
+  src/javascriptfilecontent.cpp \
   src/javascriptparser.cpp \
   src/jseditor.cpp \
   src/jsfileeditor.cpp \
@@ -113,9 +115,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xsddocument.cpp \
   src/xsleditor.cpp \
   src/xsllistview.cpp \
-  src/xslproject.cpp \
-  src/filecontentitemmodel.cpp \
-  src/javascriptfilecontent.cpp
+  src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts

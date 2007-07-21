@@ -179,6 +179,7 @@ private:
 
 /*!
  * This is a simple Javascript parser who create a tree with variables, functions, ...
+ * \todo Detect non declared variable.
  */
 class JavaScriptParser : public JavaScriptElement {
 public:

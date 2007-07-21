@@ -20,10 +20,12 @@
 
 #ifndef JSHIGHLIGHTER_H
 #define JSHIGHLIGHTER_H
-//
-#include "syntaxhighlighter.h"
-//
 
+#include "syntaxhighlighter.h"
+
+/*!
+ * Syntax highlighter on Javascript
+ */
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
