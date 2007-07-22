@@ -27,14 +27,54 @@
 #include <QTextBlock>
 
 #include "jshighlighter.h"
+#include "javascriptparser.h"
+#include "javascriptfilecontent.h"
+
+/* PrivateJSEditor */
+
+class PrivateJSEditor {
+public:
+	PrivateJSEditor( JSEditor * parent );
+	virtual ~PrivateJSEditor();
+	
+	JavaScriptParser * m_parser;
+	JavascriptFileContent * m_model;
+private:
+	JSEditor * m_parent;
+};
+
+PrivateJSEditor::PrivateJSEditor( JSEditor * parent ) {
+	m_parent = parent;
+	m_parser = NULL;
+	m_model  = NULL;
+}
+
+PrivateJSEditor::~PrivateJSEditor() {
+	delete m_model;
+	delete m_parser;
+}
 
 /* JSEditor */
 
 JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
+	d = new PrivateJSEditor( this );
 	new JsHighlighter( document() );
 }
 
 JSEditor::~JSEditor() {
-	
+	delete d;
 }
 
+void JSEditor::updateModel() {
+	JavaScriptParser * parser = new JavaScriptParser( toPlainText() );
+	emit deleteModel();
+	delete d->m_model; d->m_model = NULL;
+	delete d->m_parser; d->m_parser = NULL;
+	d->m_parser = parser;
+	d->m_model  = new JavascriptFileContent( d->m_parser, this );
+	emit createModel();
+}
+
+QAbstractItemModel * JSEditor::model() {
+	return d->m_model;
+}

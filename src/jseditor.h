@@ -24,6 +24,8 @@
 #include "texteditor.h"
 #include <QTextCursor>
 
+class PrivateJSEditor;
+
 /*!
  * Editor based on a TextEditor (from a QTextEdit) who have JavaScript syntaxique 
  * coloration.
@@ -41,8 +43,13 @@ public:
 	 * Destroy the editor.
 	 */
 	virtual ~JSEditor();
-
+	
+	virtual QAbstractItemModel * model();
+public slots:
+	virtual void updateModel();
 private:
+	PrivateJSEditor * d;
+	friend class PrivateJSEditor;
 };
 
 #endif // __JSEDITOR_H__

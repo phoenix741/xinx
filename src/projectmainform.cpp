@@ -87,6 +87,9 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 			
 		return QDirModel::data(index, role);
 	}
+	/* else if( role == Qt::SizeHintRole ) {
+		return QSize( 9999, 10 );
+	}*/
 
 	return QDirModel::data(index, role);
 }
@@ -155,10 +158,11 @@ void XMLVisualStudio::createProjectPart() {
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 	m_projectDirectoryTreeView->header()->hide();
+//	m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
+//	m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
 	m_projectDirectoryTreeView->installEventFilter( this );
 
 	m_rcslogDialog = new RCSLogDialogImpl( this );
-	
 	m_updateProjectBtn->setDefaultAction( m_globalUpdateFromRCSAct );
 	m_commitProjectBtn->setDefaultAction( m_globalCommitToRCSAct );
 	m_flatListBtn->setDefaultAction( m_toggledFlatView );
@@ -261,7 +265,9 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 		m_dirModel->setIconProvider( m_iconProvider );
 
 		m_projectDirectoryTreeView->setModel( m_dirModel );
-		for(int i = 1; i < m_dirModel->columnCount(); i++ )
+		m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
+		m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
+		for(int i = 2; i < m_dirModel->columnCount(); i++ )
 			m_projectDirectoryTreeView->hideColumn( i );
 		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
 

@@ -24,6 +24,32 @@
 #include <QAbstractItemModel>
 
 /*!
+ * Exception throw when the model can't be updated.
+ */
+class FileContentException {
+public:
+	/*!
+	 * Create the exception with a message and a line.
+	 * \param message Error of the exception.
+	 * \param line Line where the error is.
+	 */
+	FileContentException( const QString & message, int line );
+	/*!
+	 * Return the message.
+	 * \return The message of the error.
+	 */
+	const QString & getMessage() const;
+	/*!
+	 * Return the line where the error is.
+	 * \return The line of the error.
+	 */
+	int getLine() const;
+private:
+	int m_line;
+	QString m_message;
+};
+
+/*!
  * Model of data used in the content tree view. Represent the content of a file
  * For each element of the tree, the model return a link with the line and the
  * filename.

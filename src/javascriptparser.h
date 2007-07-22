@@ -21,6 +21,8 @@
 #ifndef __JAVASCRIPTPARSER_H__
 #define __JAVASCRIPTPARSER_H__
 
+#include "filecontentitemmodel.h"
+
 #include <QStringList>
 #include <QList>
 
@@ -31,18 +33,13 @@ class PrivateJavaScriptParser;
 /*!
  * This exception is launch when the file can't be parsed.
  */
-class JavaScriptParserException {
+class JavaScriptParserException : public FileContentException {
 public:
 	/*!
 	 * Create the exception
 	 * \param line Line where the exception is throw
 	 */
-	JavaScriptParserException( int line );
-	
-	/*!
-	 * Line where the exception is throw.
-	 */
-	int m_line;
+	JavaScriptParserException( const QString & message, int line );
 };
 
 /*!

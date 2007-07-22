@@ -28,6 +28,7 @@
 #include "xinxconfig.h"
 #include "texteditor.h"
 #include "numberbar.h"
+#include "filecontentitemmodel.h"
 
 #include <QTextEdit>
 #include <QAbstractTextDocumentLayout>
@@ -369,8 +370,6 @@ void FileEditor::activateWatcher() {
 	d->activateWatcher();
 }
 
-#include <QMessageBox>
-
 void FileEditor::loadFile( const QString & fileName ){
 	if( ! fileName.isEmpty() ) m_fileName = fileName;
 
@@ -465,7 +464,12 @@ QAbstractItemModel * FileEditor::model() {
 }
 
 void FileEditor::updateModel() {
-	m_view->updateModel();
+	try {
+		m_view->updateModel();
+		setMessage("");
+	} catch( FileContentException e ) {
+		setMessage( tr("%1 at %2").arg( e.getMessage() ).arg( e.getLine() ) );
+	}
 }
 
 bool FileEditor::canCopy() {

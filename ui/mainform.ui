@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -317,6 +317,9 @@
      </item>
      <item>
       <widget class="QTreeView" name="m_projectDirectoryTreeView" >
+       <property name="alternatingRowColors" >
+        <bool>true</bool>
+       </property>
        <property name="selectionMode" >
         <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>

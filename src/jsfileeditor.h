@@ -43,9 +43,6 @@ public:
 	virtual ~JSFileEditor();
 	
 	virtual QString getSuffix() const;
-	virtual QAbstractItemModel * model();
-public slots:
-	virtual void updateModel();
 private:
 	PrivateJSFileEditor * d;
 	friend class PrivateJSFileEditor;

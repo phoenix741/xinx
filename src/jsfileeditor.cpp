@@ -20,8 +20,6 @@
 
 #include "jseditor.h"
 #include "jsfileeditor.h"
-#include "javascriptparser.h"
-#include "javascriptfilecontent.h"
 
 #include <QAbstractItemModel>
 #include <QApplication>
@@ -34,21 +32,15 @@ public:
 	PrivateJSFileEditor( JSFileEditor * parent );
 	virtual ~PrivateJSFileEditor();
 	
-	JavaScriptParser * m_parser;
-	JavascriptFileContent * m_model;
 private:
 	JSFileEditor * m_parent;
 };
 
 PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
 	m_parent = parent;
-	m_parser = NULL;
-	m_model  = NULL;
 }
 
 PrivateJSFileEditor::~PrivateJSFileEditor() {
-	delete m_model;
-	delete m_parser;
 }
 
 /* JSFileEditor */
@@ -66,23 +58,4 @@ QString JSFileEditor::getSuffix() const {
 		return "js";
 	else
 		return FileEditor::getSuffix();
-}
-
-void JSFileEditor::updateModel() {
-	try {
-		JavaScriptParser * parser = new JavaScriptParser( textEdit()->toPlainText() );
-		emit deleteModel();
-		delete d->m_model; d->m_model = NULL;
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-		d->m_model  = new JavascriptFileContent( d->m_parser, this );
-		emit createModel();
-		setMessage( "" );
-	} catch( JavaScriptParserException e ) {
-		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
-	}
-}
-
-QAbstractItemModel * JSFileEditor::model() {
-	return d->m_model;
 }

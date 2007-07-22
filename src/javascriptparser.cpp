@@ -25,9 +25,8 @@
 
 /* 	JavaScriptParserException */
 
-JavaScriptParserException::JavaScriptParserException( int line ) {
-	m_line = line;
-	qDebug() << QObject::tr("Error at line %1").arg( line ) << endl;
+JavaScriptParserException::JavaScriptParserException( const QString & message, int line ) : FileContentException( message, line ) {
+	qDebug() << QObject::tr("Error %1 at line %2").arg( message ).arg( line ) << endl;
 }
 
 /* PrivateJavaScriptElement */
@@ -347,7 +346,7 @@ void PrivateJavaScriptParser::loadInstruction( QIODevice * buffer, JavaScriptFun
 		if( ( TOKEN_PONCTUATION == type ) && ( name == ")" ) )
 			bloc--;
 		nextIdentifier( buffer, type, name );
-		if( type == TOKEN_EOF ) throw JavaScriptParserException( m_line );
+		if( type == TOKEN_EOF ) throw JavaScriptParserException( QObject::tr("End of file is prematured"), m_line );
 	};
 }
 
@@ -359,7 +358,7 @@ QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * 
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
-		throw JavaScriptParserException( m_line );
+		throw JavaScriptParserException( QObject::tr("I wait an identifier"), m_line );
 
 	variables << new JavaScriptVariables( this->m_parent, name, m_line );
 	bool cont = true, loadIdentifier = true;
@@ -367,14 +366,14 @@ QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * 
 		if( loadIdentifier )
 			nextIdentifier( buffer, type, name );
 		loadIdentifier = true;
-		if( type == TOKEN_EOF ) throw JavaScriptParserException( m_line );
+		if( type == TOKEN_EOF ) throw JavaScriptParserException( QObject::tr("End of file is prematured"), m_line );
 			
 		if( ( type == TOKEN_PONCTUATION ) && ( name == ";" ) ) 
 			cont = false;
 		else if( ( type == TOKEN_PONCTUATION ) && ( name == "," ) ) {
 			nextIdentifier( buffer, type, name );
 			if( type != TOKEN_IDENTIFIER )
-				throw JavaScriptParserException( m_line );
+				throw JavaScriptParserException( QObject::tr("I wait an identifier."), m_line );
 			variables << new JavaScriptVariables( this->m_parent, name, m_line );
 		} else if ( ( type == TOKEN_PONCTUATION ) && ( name == "=" ) ) {
 			loadInstruction( buffer, NULL, name, type );
@@ -390,23 +389,23 @@ JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer )
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
-		throw JavaScriptParserException( m_line );
+		throw JavaScriptParserException( QObject::tr("I wait an identifier."), m_line );
 
 	JavaScriptFunction * function = new JavaScriptFunction( this->m_parent, name, m_line );
 
 	nextIdentifier( buffer, type, name );
 	if( ! ( ( type == TOKEN_PONCTUATION ) && ( name == "(" ) ) ) 
-		throw JavaScriptParserException( m_line );
+		throw JavaScriptParserException( QObject::tr("I wait a '('"), m_line );
 	
 	do {		
 		nextIdentifier( buffer, type, name );
-		if( type == TOKEN_EOF ) throw JavaScriptParserException( m_line );
+		if( type == TOKEN_EOF ) throw JavaScriptParserException( QObject::tr("End of file is prematured"), m_line );
 		if( type == TOKEN_IDENTIFIER ) 
 			function->d->m_params << new JavaScriptParams( this->m_parent, name, m_line );
 		
 		while( ( type != TOKEN_PONCTUATION ) || ( ( name != ")" ) && ( name != "," ) ) ) {
 			nextIdentifier( buffer, type, name );
-			if( type == TOKEN_EOF ) throw JavaScriptParserException( m_line );
+			if( type == TOKEN_EOF ) throw JavaScriptParserException( QObject::tr("End of file is prematured"), m_line );
 		} 
 	} while( ( type != TOKEN_PONCTUATION ) || ( name != ")" ) );
 
@@ -459,7 +458,7 @@ void JavaScriptParser::load( const QString & content ) {
 			} else
 			do {
 				d->nextIdentifier( &buffer, type, name );
-				if( type == PrivateJavaScriptParser::TOKEN_EOF ) throw JavaScriptParserException( d->m_line );
+				if( type == PrivateJavaScriptParser::TOKEN_EOF ) throw JavaScriptParserException( QObject::tr("End of file is prematured"), d->m_line );
 			} while( ( type != PrivateJavaScriptParser::TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) && ( name != "}" ) ) );
 			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
 			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "}" ) ) bloc --;
@@ -470,11 +469,11 @@ void JavaScriptParser::load( const QString & content ) {
 			if( name == "}" )
 				bloc--;
 			if( bloc < 0 ) 
-				throw JavaScriptParserException( d->m_line );
+				throw JavaScriptParserException( QObject::tr("Too many '}'"), d->m_line );
 		case PrivateJavaScriptParser::TOKEN_EOF:
 			break;
 		default:
-			throw JavaScriptParserException( d->m_line );
+			throw JavaScriptParserException( QObject::tr("I wait something but i don't know what !"), d->m_line );
 		}
 	} while( ! buffer.atEnd() );
 }

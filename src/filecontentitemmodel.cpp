@@ -20,6 +20,22 @@
 
 #include "filecontentitemmodel.h"
 
+/* FileContentException */
+
+FileContentException::FileContentException( const QString & message, int line ) : m_line( line ), m_message( message ) {
+	
+}
+
+const QString & FileContentException::getMessage() const {
+	return m_message;
+}
+
+int FileContentException::getLine() const {
+	return m_line;
+}
+
+/* FileContentItemModel */
+
 FileContentItemModel::FileContentItemModel( QObject * parent ) : QAbstractItemModel( parent ) {
 	
 }
