@@ -77,6 +77,7 @@ void JSFileEditor::updateModel() {
 		d->m_parser = parser;
 		d->m_model  = new JavascriptFileContent( d->m_parser, this );
 		emit createModel();
+		setMessage( "" );
 	} catch( JavaScriptParserException e ) {
 		setMessage( tr("Error JS at line %1").arg( e.m_line ) );
 	}

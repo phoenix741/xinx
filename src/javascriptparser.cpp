@@ -186,6 +186,7 @@ public:
 	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
 	QList<JavaScriptVariables*> loadVariables( QIODevice * device );
 	JavaScriptFunction * loadFunction( QIODevice * device );
+	void loadInstruction( QIODevice * buffer, JavaScriptFunction * function, QString & name, PrivateJavaScriptParser::JAVASCRIPT_TOKEN & type );
 private:
 	JavaScriptParser * m_parent;
 };
@@ -237,7 +238,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
     			state = STATE_NUMBER;
    			} else if( c == '\'' ) {
    				state = STATE_STRING1;
-   			} else if( c == '\'' ) {
+   			} else if( c == '"' ) {
    				state = STATE_STRING2;
   			} else {
   				st = c;	
@@ -331,13 +332,23 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
 	} while( state != STATE_END );
 }
 
-void PrivateJavaScriptParser::loadInstruction( JavaScriptFunction * function, const QString & firstString, const JAVASCRIPT_TOKET fistToken ) {
-	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type = firstType;
-	QString name = firstName;
-	
+void PrivateJavaScriptParser::loadInstruction( QIODevice * buffer, JavaScriptFunction * function, QString & name, PrivateJavaScriptParser::JAVASCRIPT_TOKEN & type ) {
+	Q_UNUSED( function );
 	// Compter les paranthèses. Aller jusqu'au point virgule.
 	// Si Identifier suivis de paranthèse alors appel (1er = identifier).
 	// Sinon constante, opération, ...
+	
+	int bloc = 0;
+	
+	while( ( bloc > 0 ) || ( TOKEN_PONCTUATION != type ) || ( ( name != "," ) && ( name != ";" ) ) ) {
+		if( ( TOKEN_PONCTUATION == type ) && ( name == "(" ) )
+			bloc++;
+		else
+		if( ( TOKEN_PONCTUATION == type ) && ( name == ")" ) )
+			bloc--;
+		nextIdentifier( buffer, type, name );
+		if( type == TOKEN_EOF ) throw JavaScriptParserException( m_line );
+	};
 }
 
 
@@ -351,9 +362,11 @@ QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * 
 		throw JavaScriptParserException( m_line );
 
 	variables << new JavaScriptVariables( this->m_parent, name, m_line );
-	bool cont = true;
+	bool cont = true, loadIdentifier = true;
 	do {
-		nextIdentifier( buffer, type, name );
+		if( loadIdentifier )
+			nextIdentifier( buffer, type, name );
+		loadIdentifier = true;
 		if( type == TOKEN_EOF ) throw JavaScriptParserException( m_line );
 			
 		if( ( type == TOKEN_PONCTUATION ) && ( name == ";" ) ) 
@@ -363,6 +376,9 @@ QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * 
 			if( type != TOKEN_IDENTIFIER )
 				throw JavaScriptParserException( m_line );
 			variables << new JavaScriptVariables( this->m_parent, name, m_line );
+		} else if ( ( type == TOKEN_PONCTUATION ) && ( name == "=" ) ) {
+			loadInstruction( buffer, NULL, name, type );
+			loadIdentifier = false;
 		}
 	} while( cont );
 	return variables;
@@ -443,6 +459,7 @@ void JavaScriptParser::load( const QString & content ) {
 			} else
 			do {
 				d->nextIdentifier( &buffer, type, name );
+				if( type == PrivateJavaScriptParser::TOKEN_EOF ) throw JavaScriptParserException( d->m_line );
 			} while( ( type != PrivateJavaScriptParser::TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) ) );
 			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
 			break;
