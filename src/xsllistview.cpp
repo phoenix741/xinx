@@ -167,14 +167,14 @@ int XSLModelData::childCount() {
 
 
 
-XSLItemModel::XSLItemModel( QObject *parent ) : QAbstractItemModel( parent ) {
+XSLItemModel::XSLItemModel( QObject *parent ) : FileContentItemModel( parent ) {
 	rootItem = new XSLModelData( NULL );
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	toDelete = true;
 }
 
-XSLItemModel::XSLItemModel( XSLModelData * data, QObject *parent ) : QAbstractItemModel( parent ) {
+XSLItemModel::XSLItemModel( XSLModelData * data, QObject *parent ) : FileContentItemModel( parent ) {
 	rootItem = data;
 	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
 	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
@@ -210,7 +210,7 @@ QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 	} 
 	
 	if ( role == Qt::UserRole ) {
-		struct user_data ud;
+		struct FileContentItemModel::struct_file_content ud;
 		ud.line = data->line();
 		ud.filename = data->filename();
 		return QVariant::fromValue(ud);	

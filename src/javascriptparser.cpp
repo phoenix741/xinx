@@ -460,8 +460,9 @@ void JavaScriptParser::load( const QString & content ) {
 			do {
 				d->nextIdentifier( &buffer, type, name );
 				if( type == PrivateJavaScriptParser::TOKEN_EOF ) throw JavaScriptParserException( d->m_line );
-			} while( ( type != PrivateJavaScriptParser::TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) ) );
+			} while( ( type != PrivateJavaScriptParser::TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) && ( name != "}" ) ) );
 			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
+			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "}" ) ) bloc --;
 			break;
 		case PrivateJavaScriptParser::TOKEN_PONCTUATION:
 			if( name == "{" )

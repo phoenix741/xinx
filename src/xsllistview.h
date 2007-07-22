@@ -24,8 +24,7 @@
 #ifndef _XSLLISTVIEW_H_
 #define _XSLLISTVIEW_H_
 
-#include <QObject>
-#include <QAbstractItemModel>
+#include "filecontentitemmodel.h"
 
 class QDomElement;
 class XSLProject;
@@ -84,17 +83,12 @@ private:
 friend class XSLItemModel;
 };
 
-class XSLItemModel : public QAbstractItemModel {
+class XSLItemModel : public FileContentItemModel {
 	Q_OBJECT
 public:
 	XSLItemModel( QObject *parent = 0 );
 	XSLItemModel( XSLModelData * data, QObject *parent = 0 );
 	virtual ~XSLItemModel();
-	
-	struct user_data {
-		int line;
-		QString filename;
-	};
 	
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -111,7 +105,5 @@ private:
 	XSLModelData* rootItem;
 	bool toDelete;
 };
-
-Q_DECLARE_METATYPE ( XSLItemModel::user_data )
 
 #endif

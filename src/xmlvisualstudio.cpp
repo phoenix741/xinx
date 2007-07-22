@@ -427,7 +427,7 @@ void XMLVisualStudio::on_m_xslContentTreeView_doubleClicked( QModelIndex index )
 	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
 		QModelIndex mappingIndex = m_sortXslModel->mapToSource( index );
 		
-		struct XSLItemModel::user_data data = m_xslModel->data( mappingIndex, Qt::UserRole ).value<XSLItemModel::user_data>();
+		struct FileContentItemModel::struct_file_content data = m_xslModel->data( mappingIndex, Qt::UserRole ).value<FileContentItemModel::struct_file_content>();
 		int line = data.line;
 
 		if( ! data.filename.isEmpty() )
