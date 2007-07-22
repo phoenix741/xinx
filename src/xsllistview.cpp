@@ -44,6 +44,44 @@ XSLModelData::XSLModelData( XSLModelData * orig ) : QObject( orig ), m_parent( o
 	}
 }
 
+void XSLModelData::loadFromElement( const QDomElement& element ) {
+	QDomNodeList list = element.elementsByTagName( "script" );
+	for( int i = 0 ; i < list.count(); i++ ) {
+		QDomElement child = list.at( i ).toElement();
+		if( child.attribute( "type" ).toLower().contains( "javascript" ) && (!child.attribute( "src" ).isEmpty()) ) {
+			XSLModelData * data = new XSLModelData( this );
+			data->setType( etJavascript );   				
+			data->setName( child.attribute( "src" ) );
+			data->setLine( child.lineNumber() );
+			m_child.append( data );
+		}
+	}
+	
+	list = element.elementsByTagName( "variable" );
+	for( int i = 0 ; i < list.count(); i++ ) {
+		QDomElement child = list.at( i ).toElement();
+
+		XSLModelData * data = new XSLModelData( this );
+		data->setType( etVariable );
+		data->setName( child.attribute( "name" ) );
+		data->setValue( child.attribute( "select", child.text() ) );
+		data->setLine( child.lineNumber() );
+		m_child.append( data );
+	}
+
+	list = element.elementsByTagName( "param" );
+	for( int i = 0 ; i < list.count(); i++ ) {
+		QDomElement child = list.at( i ).toElement();
+
+		XSLModelData * data = new XSLModelData( this );
+		data->setType( etVariable );
+		data->setName( child.attribute( "name" ) );
+		data->setValue( child.attribute( "select", child.text() ) );
+		data->setLine( child.lineNumber() );
+		m_child.append( data );
+	}
+}
+
 void XSLModelData::loadFromXML( const QDomElement& element ) {
 	emit childAboutToBeReset();
 	
@@ -78,6 +116,7 @@ void XSLModelData::loadFromXML( const QDomElement& element ) {
 		  			data->setName( template_name.trimmed() );
 		  			data->setValue( child.attribute( "mode" ) );
 					data->setLine( child.lineNumber() );
+					data->loadFromElement( child );
 		  			m_child.append( data );
 				}
 			}
@@ -148,7 +187,7 @@ void XSLModelData::loadFromContent( const QString& content ) {
 }
 
 int XSLModelData::childCount() { 
-	if( global.m_project && ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
+	if( global.m_project && ( m_child.size() == 0 ) && ( ( m_type == etImport ) || ( m_type == etJavascript ) ) ) {
 		if( QFile::exists( QDir( global.m_project->specifPath() ).absoluteFilePath( m_name ) ) ) {
 			loadFromFile( QDir( global.m_project->specifPath() ).absoluteFilePath( m_name ) );
 		} else
@@ -160,6 +199,9 @@ int XSLModelData::childCount() {
 		} else 
 		if( QFile::exists( QDir( global.m_project->languePath() ).absoluteFilePath( m_name ) ) ) {
 			loadFromFile( QDir( global.m_project->languePath() ).absoluteFilePath( m_name ) );
+		} else 
+		if( QFile::exists( QDir( global.m_project->languesPath() ).absoluteFilePath( m_name ) ) ) {
+			loadFromFile( QDir( global.m_project->languesPath() ).absoluteFilePath( m_name ) );
 		} 
 	}
 	return m_child.size();
@@ -203,6 +245,9 @@ QVariant XSLItemModel::data( const QModelIndex &index, int role ) const {
 			break;
 		case XSLModelData::etTemplate:
 			return QIcon(":/images/template.png");
+			break;
+		case XSLModelData::etJavascript:
+			return QIcon(":/images/typejs.png");
 			break;
 		default:
 			return QVariant();

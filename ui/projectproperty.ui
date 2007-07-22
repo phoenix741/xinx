@@ -62,6 +62,9 @@
       </item>
       <item row="3" column="1" >
        <widget class="QComboBox" name="m_projectVersionCombo" >
+        <property name="currentIndex" >
+         <number>3</number>
+        </property>
         <item>
          <property name="text" >
           <string>Egx 500 ES1</string>

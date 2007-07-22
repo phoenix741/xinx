@@ -86,6 +86,9 @@ public:
 	QString completionFilesPath() const;
 	void setCompletionFilesPath( const QString & value );
 	
+	QString getDefaultProjectPathName() const;
+	void setDefaultProjectPathName( const QString & value );
+	
 	QStringList & recentProjectFiles();
 	QList<struct managedFile> & managedFile();
 	QHash<QString,struct managedStructure> & managedStructure();

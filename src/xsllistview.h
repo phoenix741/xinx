@@ -35,7 +35,7 @@ public:
 	XSLModelData( XSLModelData * orig = 0 );
 	virtual ~XSLModelData() { qDeleteAll( m_child ); };
 
-	enum ElementType { etImport, etVariable, etTemplate };
+	enum ElementType { etImport, etVariable, etTemplate, etJavascript };
 	
 	const ElementType & type() const { return m_type; };
 	void setType( const ElementType & value ) { m_type = value; };
@@ -62,6 +62,7 @@ public:
 	void loadFromXML( const QDomElement& );
 	void loadFromFile( const QString& );
 	void loadFromContent( const QString& );
+	void loadFromElement( const QDomElement& );
 	
 	bool operator< ( const XSLModelData & cmp ) const { return m_name < cmp.m_name; };
 	

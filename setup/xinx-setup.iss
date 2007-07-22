@@ -30,7 +30,7 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
 Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unchecked
-Name: remplace_completion; Description: Replace completion.cpl file; Flags: checkedonce
+Name: remplace_completion; Description: Replace completion.xnx file; Flags: checkedonce
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -42,7 +42,7 @@ Source: C:\Qt\4.2.3\bin\QtXml4.dll; DestDir: {app}; Components: application; Fla
 Source: C:\Qt\4.2.3\bin\mingwm10.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: C:\Qt\4.2.3\bin\QtCore4.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: C:\Qt\4.2.3\bin\QtGui4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: ..\xml\completion.cpl; DestDir: {app}\xml; Components: application; Tasks: remplace_completion
+Source: ..\xml\completion.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_completion
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 ;Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression; DestName: src.zip

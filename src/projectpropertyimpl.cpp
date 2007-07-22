@@ -165,16 +165,16 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 }
 
 void ProjectPropertyImpl::updateSpecifiquePath() {
-	QString path = QString("%1/langue/%2/nav/projet").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() );
+	QString path = QString("%1/langue/%2/nav/%3").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() ).arg( global.m_xinxConfig->getDefaultProjectPathName() );
 	
 	m_specifiquePathLineEdit->setText( QDir::cleanPath( path ) );
 }
 
 void ProjectPropertyImpl::updateOkButton() {
 	bool okButtonEnabled = ! (
-		m_specifiquePathLineEdit->text().isEmpty() ||
-		m_prefixLineEdit->text().isEmpty() ||
-		m_projectLineEdit->text().isEmpty() );
+		( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ) ||
+		( m_projectLineEdit->text().isEmpty() || !QDir( m_projectLineEdit->text() ).exists() ) ||
+		m_prefixLineEdit->text().isEmpty() );
 
 	okButton->setEnabled( okButtonEnabled );
 }

@@ -53,6 +53,7 @@ public:
 	 */
 	void saveToConfig( XINXConfig * config );
 private slots:
+	void on_m_lineEditDefaultProjectPathName_textChanged(QString );
 	void on_m_cvsCompressionComboBox_currentIndexChanged(int index);
 	void on_m_cvsPruneCheckBox_toggled(bool checked);
 	void on_m_cvsVerboseComboBox_currentIndexChanged(int index);

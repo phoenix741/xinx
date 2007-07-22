@@ -47,6 +47,7 @@ public:
 	bool m_popupWhenFileModified;
 	QString m_xinxProjectPath;
 	QString m_objectDescriptionPath;
+	QString m_defaultProjectPathName;
 	
 	QStringList m_recentProjectFiles;
 	
@@ -94,6 +95,7 @@ XINXConfig::XINXConfig(  ) {
 	d->m_popupWhenFileModified = true;
 	d->m_xinxProjectPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
 	d->m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "xml" );
+	d->m_defaultProjectPathName = "projet";
 	
 	d->m_xinxPosition = QPoint(200, 200);
 	d->m_xinxSize = QSize(400, 400);
@@ -215,6 +217,7 @@ void XINXConfig::save() {
 	d->m_settings->setValue( "Project/Default Path", d->m_xinxProjectPath );
 	d->m_settings->setValue( "Project/Alert when saving Standard File", d->m_alertWhenStdFile );
 	d->m_settings->setValue( "Project/Recent Project Files",d-> m_recentProjectFiles );
+	d->m_settings->setValue( "Project/Default Project Path Name", d->m_defaultProjectPathName );
 
 	d->m_settings->setValue( "State", d->m_mainWindowState );
 	
@@ -262,6 +265,7 @@ void XINXConfig::load() {
 	d->m_xinxProjectPath    = d->m_settings->value( "Project/Default Path", d->m_xinxProjectPath ).toString();
 	d->m_alertWhenStdFile   = d->m_settings->value( "Project/Alert when saving Standard File", d->m_alertWhenStdFile ).toBool();
 	d->m_recentProjectFiles = d->m_settings->value( "Project/Recent Project Files", d->m_settings->value( "Recent Project Files" ) ).toStringList();
+	d->m_defaultProjectPathName = d->m_settings->value( "Project/Default Project Path Name", d->m_defaultProjectPathName ).toString();
 
 	d->m_mainWindowState    = d->m_settings->value( "State" ).toByteArray();		
 
@@ -411,6 +415,14 @@ QString XINXConfig::completionFilesPath() const {
 
 void XINXConfig::setCompletionFilesPath( const QString & value ) { 
 	d->m_objectDescriptionPath = value; 
+}
+
+QString XINXConfig::getDefaultProjectPathName() const {
+	return d->m_defaultProjectPathName;
+}
+
+void XINXConfig::setDefaultProjectPathName( const QString & value ) {
+	d->m_defaultProjectPathName = value;
 }
 	
 QStringList & XINXConfig::recentProjectFiles() { 

@@ -36,7 +36,13 @@ class WebServicesModel;
 
 class PrivateXSLProject;
 
-class XSLProjectException {};
+class XSLProjectException {
+public:
+	XSLProjectException( const QString & message );
+	const QString & getMessage() const; 
+private:
+	QString m_message;
+};
 
 class XSLProject : public QObject {
 	Q_OBJECT
@@ -76,6 +82,7 @@ public:
 	
 	QString languePath() const;
 	QString navPath() const;
+	QString languesPath() const;
 
 	QString specifPath() const;
 	void setSpecifPath( const QString & );

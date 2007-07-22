@@ -27,6 +27,7 @@
 #include <QFileIconProvider>
 #include <QContextMenuEvent>
 #include <QMenu>
+#include <QMessageBox>
 
 #include <assert.h>
 
@@ -277,8 +278,8 @@ void XMLVisualStudio::openProject( const QString & filename ) {
 
 		setCurrentProject( filename );
 
-	} catch( XSLProjectException ) {
-		
+	} catch( XSLProjectException e ) {
+		QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}
 	updateActions();
 	updateRecentProjects();

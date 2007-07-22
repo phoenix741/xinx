@@ -101,10 +101,16 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	}
 	
 	m_CVSToolsLineEdit->setText( d->m_config.toolsPath()[ "cvs" ] );
+	
+	m_lineEditDefaultProjectPathName->setText( d->m_config.getDefaultProjectPathName() );
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 	*config = d->m_config;
+}
+
+void CustomDialogImpl::on_m_lineEditDefaultProjectPathName_textChanged( QString text ) {
+	d->m_config.setDefaultProjectPathName( text );
 }
 
 void CustomDialogImpl::on_m_syntaxTypeComboBox_currentIndexChanged( QString text ){
