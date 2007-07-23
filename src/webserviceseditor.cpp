@@ -314,8 +314,8 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	QDomDocument document;
 	QDomElement element = document.createElement( "webservice" );
 	document.appendChild( element );
-	element.setAttribute( "service", d->m_serviceName );
-	element.setAttribute( "action", d->m_operationName );
+	element.setAttribute( "service", d->m_servicesList->currentText() );
+	element.setAttribute( "action", d->m_actionList->currentText() );
 	
 	foreach( QString param, d->m_paramValues.keys() ) {
 		QDomElement paramElement = document.createElement( param ) ;

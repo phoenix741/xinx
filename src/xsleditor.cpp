@@ -654,8 +654,6 @@ void XSLEditor::commentSelectedText( bool uncomment ) {
 }
 
 QAbstractItemModel * XSLEditor::model() {
-	/* Est-ce anti performant ? */
-	updateModel();
 	return m_contentModel;
 }
 
