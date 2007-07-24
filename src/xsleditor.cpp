@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -55,6 +55,7 @@ public:
 public slots:
 	void refreshList();
 private:
+	bool contains( XSLModelData * data );
 	void refreshRecursive(XSLModelData * data);
 
 	QList<XSLModelData*> m_objList;
@@ -77,9 +78,18 @@ XSLValueCompletionModel::~XSLValueCompletionModel() {
 	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
+bool XSLValueCompletionModel::contains( XSLModelData * data ) {
+	for( int i = 0; i < m_objList.count(); i++ ) {
+		if( *(m_objList.at( i )) == *data ) 
+			return true;
+	}
+	return false;
+}
+
 void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
 	for( int i = 0; i < data->childCount(); i++ ) {
 		if( data->child( i )->type() != XSLModelData::etImport ) {
+			if( ! contains( data->child( i ) ) )
 			m_objList.append( data->child( i ) );
 		} else {
 			refreshRecursive( data->child( i ) );
