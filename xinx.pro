@@ -126,9 +126,15 @@ unix {
     src/studiointerface.h
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
+  QMAKE_CC = ccache distcc
+  QMAKE_CXX = ccache distcc
+  QMAKE_LINK = ccache distcc
 }
 win32 {
   DISTFILES +=     rc/xinx.rc \
     setup/xinx-setup.iss
   RC_FILE +=     rc/xinx.rc
+  QMAKE_CC = ccache gcc
+  QMAKE_CXX = ccache gcc
+  QMAKE_LINK = ccache gcc
 }
