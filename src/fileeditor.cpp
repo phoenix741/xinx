@@ -73,10 +73,13 @@ PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) {
 }
 
 PrivateFileEditor::~PrivateFileEditor() {
+	desactivateWatcher();
 	delete m_watcher;
 }
 
 void PrivateFileEditor::setWatcher( const QString & path ) {
+	if( ( m_path != path ) && ( ! m_path.isEmpty() ) )
+		desactivateWatcher();
 	m_path = path;
 	activateWatcher();
 }
@@ -84,16 +87,27 @@ void PrivateFileEditor::setWatcher( const QString & path ) {
 void PrivateFileEditor::activateWatcher() {
 	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
 	m_watcher->addPath( m_path );
+	qApp->processEvents();
 }
 
 void PrivateFileEditor::desactivateWatcher() {
 	disconnect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
 	m_watcher->removePath( m_path );
+	qApp->processEvents();
 }
 
 void PrivateFileEditor::fileChanged( const QString & path ) {
-	if( global.m_xinxConfig->popupWhenFileModified() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
+	desactivateWatcher(); // Pour éviter d'être appeler plusieurs fois.
+	if( global.m_xinxConfig->popupWhenFileModified() && QFile( path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
 		m_parent->loadFile();
+	else
+		m_parent->setModified( true );
+		
+	if( global.m_xinxConfig->popupWhenFileModified() && ( ! QFile( path ).exists() ) ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was removed.").arg( QFileInfo( path ).fileName() ) );
+		m_parent->setModified( true );		
+	}
+	activateWatcher();
 }
 
 /* FileEditor */
@@ -371,7 +385,7 @@ void FileEditor::activateWatcher() {
 }
 
 void FileEditor::loadFile( const QString & fileName ){
-	if( ! fileName.isEmpty() ) m_fileName = fileName;
+	if( ! fileName.isEmpty() ) setFileName( fileName );
 
 	QFile file( getFileName() );
 	if ( ! file.open( QFile::ReadOnly | QFile::Text ) ) {
@@ -447,6 +461,8 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 	if( ! plainText.isEmpty() ) {
 		m_view->setPlainText( plainText );
 		m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
+	
+		d->setWatcher( m_fileName );
 	} else {
 		if( !m_fileName.isEmpty() )
 			loadFile( m_fileName );
@@ -455,8 +471,6 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( element.attribute( "position" ).toInt() );
 	m_view->setTextCursor( tc );
-	
-	d->setWatcher( m_fileName );
 }
 
 QAbstractItemModel * FileEditor::model() {

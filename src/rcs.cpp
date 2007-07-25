@@ -24,3 +24,7 @@ RCS::RCS() {
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
+RCS::~RCS() {
+	
+}
+

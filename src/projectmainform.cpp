@@ -52,6 +52,7 @@ class DirRCSModel : public QDirModel {
 public:
 	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
 	DirRCSModel( QObject *parent = 0 );
+	virtual ~DirRCSModel();
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	RCS * rcs();
 private:
@@ -67,6 +68,10 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
 	
+}
+
+DirRCSModel::~DirRCSModel() {
+	delete m_rcs;
 }
 
 RCS * DirRCSModel::rcs() { 
@@ -333,8 +338,11 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 
 	if( closeAll && ( ! saveSession ) ) on_m_closeAllAct_triggered(); else
 	if( closeAll ) {
-		for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) 
+		for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) {
+			Editor * ed = m_tabEditors->editor( i );
 			m_tabEditors->removeTab( i );	
+			delete ed;
+		}
 		updateActions();
 	}
 

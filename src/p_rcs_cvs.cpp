@@ -388,6 +388,10 @@ void CVSThread::run() {
 CVSUpdateThread::CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate ) : CVSThread( parent, paths, terminate ) {
 }
 
+CVSUpdateThread::~CVSUpdateThread() {
+	
+}
+
 void CVSUpdateThread::callCVS( const QString & path, const QStringList & files ) {
 	QStringList parameters;
 	if( ! global.m_xinxConfig->cvsProgressMessages().isEmpty() )
@@ -416,6 +420,10 @@ void CVSUpdateThread::run() {
 CVSAddThread::CVSAddThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate ) : CVSThread( parent, paths, terminate ) {
 }
 
+CVSAddThread::~CVSAddThread() {
+	
+}
+
 void CVSAddThread::callCVS( const QString & path, const QStringList & files ) {
 	QStringList parameters;
 	parameters << "add";
@@ -435,6 +443,10 @@ void CVSAddThread::run() {
 /* CVSRemoveThread */
 
 CVSRemoveThread::CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate ) : CVSThread( parent, paths, terminate ) {
+}
+
+CVSRemoveThread::~CVSRemoveThread() {
+	
 }
 
 void CVSRemoveThread::callCVS( const QString & path, const QStringList & files ) {
@@ -472,6 +484,10 @@ CVSCommitThread::CVSCommitThread( PrivateRCS_CVS * parent, RCS::FilesOperation p
 		if( file.second == RCS::AddAndCommit ) 
 			m_addList  << file.first;
 	}
+}
+
+CVSCommitThread::~CVSCommitThread() {
+	
 }
 
 void CVSCommitThread::callCVS( const QString & path, const QStringList & files ) {

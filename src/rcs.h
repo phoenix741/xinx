@@ -30,6 +30,7 @@ class RCS : public QObject {
 	Q_OBJECT
 public:
 	RCS();
+	virtual ~RCS();
 
 	enum rcsState {
 		Updated, LocallyModified, LocallyAdded, LocallyRemoved, NeedsCheckout, NeedPatch, UnresolvedConflict, FileHadConflictsOnMerge, Unknown

@@ -71,7 +71,7 @@ class PrivateRCS_CVS : public QObject {
 	Q_OBJECT
 public:
 	PrivateRCS_CVS( RCS_CVS * parent );
-	~PrivateRCS_CVS();
+	virtual ~PrivateRCS_CVS();
 
 	RCS_CVS * m_parent;
 	QThread * m_thread;
@@ -103,7 +103,7 @@ class CVSThread : public QThread {
 	Q_OBJECT
 public:
 	CVSThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
-	~CVSThread();
+	virtual ~CVSThread();
 public slots:
 	virtual void processReadOutput();
 	void abort();
@@ -124,6 +124,7 @@ class CVSUpdateThread : public CVSThread {
 	Q_OBJECT
 public:
 	CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
+	virtual ~CVSUpdateThread();
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
@@ -135,6 +136,7 @@ class CVSAddThread : public CVSThread {
 	Q_OBJECT
 public:
 	CVSAddThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
+	virtual ~CVSAddThread();
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
@@ -146,6 +148,7 @@ class CVSRemoveThread : public CVSThread {
 	Q_OBJECT
 public:
 	CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
+	virtual ~CVSRemoveThread();
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
@@ -157,6 +160,7 @@ class CVSCommitThread : public CVSThread {
 	Q_OBJECT
 public:
 	CVSCommitThread( PrivateRCS_CVS * parent, RCS::FilesOperation paths, QString message, bool terminate = true );
+	virtual ~CVSCommitThread();
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();

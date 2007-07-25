@@ -28,7 +28,7 @@ class PrivateFlatModel : public QObject {
 	Q_OBJECT
 public:
 	PrivateFlatModel( FlatModel * parent );
-	~PrivateFlatModel();
+	virtual ~PrivateFlatModel();
 	
 	QDirModel * m_model;
 	QPersistentModelIndex m_root;

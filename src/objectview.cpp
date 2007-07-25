@@ -22,8 +22,6 @@
 
 #include <QDomElement>
 #include <QDomDocument>
-#include <QMessageBox>
-#include <QApplication>
 #include <QDir>
 
 /****************** ObjectFields *********************/
@@ -69,28 +67,16 @@ ObjectView::ObjectView( QObject* parent, const QString & fileName ) : QObject(pa
 	QDomDocument objectFile;
   
 	// Open the file
-	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) {
-		QMessageBox::warning(qApp->activeWindow(), 
-			tr("XSL Stylesheet"), 
-			tr("Cannot read file %1:\n%2.")
-				.arg(fileName)
-				.arg(file.errorString()));
-		return;
-	}
+	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) 
+		throw ENotViewObject( tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()) );
 
 	// Load XML Document
 	QString errorStr;
 	int errorLine = 0;
 	int errorColumn = 0;  
-	if (!objectFile.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-		QMessageBox::information(qApp->activeWindow(), 
-			tr("XSL Stylesheet"), 
-			tr("Parse error at line %1, column %2:\n%3")
-				.arg(errorLine)
-                .arg(errorColumn)
-				.arg(errorStr));
-		return;
-	}  
+	if (!objectFile.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) 
+		throw ENotViewObject( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
+	
   
 	QDomElement root = objectFile.documentElement();
   
@@ -109,7 +95,7 @@ ObjectView::ObjectView( QObject* parent, const QString & fileName ) : QObject(pa
 }
 
 ObjectView::~ObjectView() {
-	// QObject free is child
+	qDeleteAll( m_fields );
 }
  
 const QString & ObjectView::name() const {
@@ -131,7 +117,7 @@ ObjectsView::ObjectsView(const QString & filesPath) {
 }
 
 ObjectsView::~ObjectsView() {
-	// Auto destroy
+	qDeleteAll( m_objectsview.values() );
 }
   
 void ObjectsView::loadFiles() {

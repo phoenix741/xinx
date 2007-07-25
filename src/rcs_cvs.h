@@ -37,7 +37,7 @@ class RCS_CVS : public RCS {
 	Q_OBJECT
 public:
 	RCS_CVS();
-	~RCS_CVS();
+	virtual ~RCS_CVS();
 
 	rcsState status( const QString & path );
 	virtual RCS::FilesOperation operations( const QStringList & path );
