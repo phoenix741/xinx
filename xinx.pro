@@ -1,9 +1,9 @@
-CONFIG +=   debug \
-  exceptions \
+CONFIG +=   exceptions \
   qt \
   thread \
   warn_on \
-  x86
+  x86 \
+  debug
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
@@ -126,14 +126,13 @@ unix {
     src/studiointerface.h
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
-  QMAKE_CC = ccache gcc
-  QMAKE_CXX = ccache g++
+  QMAKE_CC = "ccache gcc"
+  QMAKE_CXX = "ccache gcc"
 }
 win32 {
   DISTFILES +=     rc/xinx.rc \
     setup/xinx-setup.iss
   RC_FILE +=     rc/xinx.rc
-  QMAKE_CC = ccache gcc
-  QMAKE_CXX = ccache gcc
-  QMAKE_LINK = ccache gcc
+  QMAKE_CC = "ccache gcc"
+  QMAKE_CXX = "ccache gcc"
 }
