@@ -229,7 +229,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
 				state = STATE_END;
 		    } else if( c == '/' ) {
 		    	state = STATE_STARTCOMMENT;
-	    	} else if( ( c >= 'A' ) && ( c <= 'Z' ) ) {
+	    	} else if( ( ( c >= 'A' ) && ( c <= 'Z' ) ) || ( c == '_' ) ) {
 	    		state = STATE_IDENTIFIER;
 	    		st = ch;
     		} else if( ( c == '+' ) || ( c == '-' ) || ( ( c >= '0' ) && ( c <= '9' ) ) ) {

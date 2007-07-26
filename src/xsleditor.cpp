@@ -579,7 +579,11 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 					setTextCursor( tc );
 				}
 			}
-			updateModel();
+			try {
+				updateModel();
+			} catch( XMLParserException e ) {
+				emit hasError( tr( "Error %1 at %2" ).arg( e.getMessage() ).arg( e.getLine() ) );
+			}
 		} else if( e->text().right(1) == "=" ) { 
 			QTextCursor tc( textCursor() );
 			QTextCursor tc2( textCursor() );
