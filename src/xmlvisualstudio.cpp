@@ -107,7 +107,11 @@ void XMLVisualStudio::readSettings() {
 		restoreState( global.m_xinxConfig->storedMainWindowState() );
 	}
 
-	completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+	try {
+		completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+	} catch( ENotCompletionFile ) {
+		// TODO
+	}
 }
 
 void XMLVisualStudio::writeSettings() {

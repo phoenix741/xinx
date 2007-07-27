@@ -131,7 +131,9 @@ unix {
 }
 win32 {
   DISTFILES +=     rc/xinx.rc \
-    setup/xinx-setup.iss
+    setup/xinx-setup.iss \
+	ui/*.ui \
+	application.qrc
   RC_FILE +=     rc/xinx.rc
   QMAKE_CC = "ccache gcc"
   QMAKE_CXX = "ccache gcc"
