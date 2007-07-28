@@ -19,137 +19,61 @@
  ***************************************************************************/
  
 #include "javascriptmodelcompeter.h"
+#include "javascriptparser.h"
 
-XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *parent ) : QAbstractListModel( parent ) {
-	rootItem = data;
-	refreshList();
+#include <QIcon>
+
+/* JavascriptModelCompleter */
+
+JavascriptModelCompleter::JavascriptModelCompleter( JavaScriptParser * parser, QObject *parent ) : QAbstractListModel( parent ) {
+	refreshList( parser );
+}
+
+JavascriptModelCompleter::~JavascriptModelCompleter() {
 	
-	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
-
-XSLValueCompletionModel::~XSLValueCompletionModel() {
-	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
-}
-
-bool XSLValueCompletionModel::contains( XSLModelData * data ) {
-	for( int i = 0; i < m_objList.count(); i++ ) {
-		if( *(m_objList.at( i )) == *data ) 
-			return true;
-	}
-	return false;
-}
-
-void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
-	for( int i = 0; i < data->childCount(); i++ ) {
-		if( data->child( i )->type() != XSLModelData::etImport ) {
-			if( ! contains( data->child( i ) ) )
-			m_objList.append( data->child( i ) );
-		} else {
-			refreshRecursive( data->child( i ) );
-		}
-	}
-}
-
-bool XSLValueCompletionModelObjListSort( XSLModelData * d1, XSLModelData * d2 ) {
-	return d1->name() < d2->name();
-}
-
-void XSLValueCompletionModel::refreshList() {
-	m_objList.clear();
-	refreshRecursive( rootItem );
-	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );
-	reset();
-}
-
-void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
-	int before = m_objList.count(), after  = m_objList.count();
 	
-	if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
-		before += completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
-		
-	if( completionContents && completionContents->balise( name ) && completionContents->balise( name )->attribute( attribute ) )
-		after += completionContents->balise( name )->attribute( attribute )->values().count();
-		
-	int diff = after - before;
+QVariant JavascriptModelCompleter::data( const QModelIndex &index, int role ) const {
+	if ( ! index.isValid() ) return QVariant();
 
-	if( diff > 0 ) 
-		beginInsertRows( QModelIndex(), before + 1, after );
-	else if( diff < 0 )
-		beginRemoveRows( QModelIndex(), after + 1, before );
-
-	m_baliseName = name; 
-	m_attributeName = attribute; 
-
-	if( diff > 0 ) {
-		emit dataChanged( index( m_objList.count() ), index( before ) );
-		endInsertRows();
-	} else  if( diff < 0 ) {
-		emit dataChanged( index( m_objList.count() ), index( after ) );
-		endRemoveRows();
-	}
+	JavaScriptElement * e = m_objList.at( index.row() );
+	
+	if( role == Qt::DecorationRole ) {
+		if( dynamic_cast<JavaScriptFunction*>( e ) ) {
+			return QIcon( ":/images/noeud.png" );			
+		} else
+		if( dynamic_cast<JavaScriptVariables*>( e ) ) {
+			return QIcon( ":/images/variable.png" );			
+		} else
+		if( dynamic_cast<JavaScriptParams*>( e ) ) {
+			return QIcon( ":/images/html_value.png" );			
+		} else
+			return QVariant();
+	} else
+	if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
+		return e->name();
+	
+	return QVariant();	
 }
 
-	
-QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) const {
-	if (!index.isValid()) return QVariant();
-
-	if( index.row() < m_objList.count() ) {
-		XSLModelData * data = m_objList[ index.row() ];
-	
-		if( role == Qt::DecorationRole ) {
-			switch( data->type() ) {
-			case XSLModelData::etVariable:
-				return QIcon(":/images/variable.png");
-				break;
-			case XSLModelData::etTemplate:
-				return QIcon(":/images/template.png");
-				break;
-			default:
-				return QVariant();
-			}
-		} 
-	
-		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return data->name();
-		
-		if( role == Qt::UserRole ) {
-			return (int)data->type();
-		}
-	} else {
-		int value_row = index.row() - m_objList.count(); 
-		if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
-			if( role == Qt::DecorationRole ) 
-				return QIcon(":/images/html_value.png");
-			if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-				return completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
-			if( role == Qt::UserRole ) {
-				return -1;
-			}
-		}
-	}
-	
-	return QVariant();
-}
-
-Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags JavascriptModelCompleter::flags( const QModelIndex &index ) const {
 	if ( index.isValid() )
 		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
 	return Qt::ItemIsEnabled;
 }
 
-int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
-	if ( ! parent.isValid() ) {
-		int size = m_objList.count();	
-		if( completionContents ) {
-			if( completionContents->balise( m_baliseName ) ) {
-				if( completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
-					size += completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
-			}
-		}
-		return size;
-	} else
+int JavascriptModelCompleter::rowCount( const QModelIndex &parent ) const {
+	if( parent.isValid() ) 
+		return m_objList.size();
+	else
 		return 0;
+}
+
+void JavascriptModelCompleter::refreshList( JavaScriptElement * element ) {
+	JavaScriptElement * e = element;
+	for( int i = 0 ; i < e->rowCount() ; i++ ) {
+		m_objList.append( e->element( i ) );
+		refreshList( e->element( i ) );
 	}
+}

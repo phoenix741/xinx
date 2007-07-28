@@ -23,7 +23,10 @@
 
 #include <QAbstractListModel>
 
-/* XSLValueCompletionModel */
+class JavaScriptElement;
+class JavaScriptParser;
+
+/* JavascriptModelCompleter */
 
 class JavascriptModelCompleter : public QAbstractListModel {
 	Q_OBJECT
@@ -35,16 +38,9 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 public slots:
-	void refreshList();
+	void refreshList( JavaScriptElement * element );
 private:
-	bool contains( XSLModelData * data );
-	void refreshRecursive(XSLModelData * data);
-
-	QList<XSLModelData*> m_objList;
-	XSLModelData* rootItem;
-	
-	QString m_baliseName;
-	QString m_attributeName;
+	QList<JavaScriptElement*> m_objList;
 };
 
 #endif // __JAVASCRIPTMODELCOMPETER_H__

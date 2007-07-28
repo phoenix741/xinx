@@ -23,6 +23,7 @@
 
 #include "texteditor.h"
 #include <QTextCursor>
+#include <QModelIndex>
 
 class PrivateJSEditor;
 
@@ -47,6 +48,9 @@ public:
 	virtual QAbstractItemModel * model();
 public slots:
 	virtual void updateModel();
+	void insertCompletion( const QModelIndex& index );
+protected:
+	void keyPressEvent( QKeyEvent * e );
 private:
 	PrivateJSEditor * d;
 	friend class PrivateJSEditor;

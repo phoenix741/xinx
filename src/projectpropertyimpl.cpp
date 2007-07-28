@@ -119,6 +119,12 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	case XSLProject::GCE120 :
 		m_projectVersionCombo->setCurrentIndex( 3 );
 		break;
+	case XSLProject::GCE130 :
+		m_projectVersionCombo->setCurrentIndex( 4 );
+		break;
+	case XSLProject::GCE140 :
+		m_projectVersionCombo->setCurrentIndex( 5 );
+		break;
 	}
 	
 	switch( project->projectRCS() ) {
@@ -156,6 +162,8 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	case 1 : project->setProjectVersion( XSLProject::EGX500ES2 ); break;
 	case 2 : project->setProjectVersion( XSLProject::GCE110 ); break;
 	case 3 : project->setProjectVersion( XSLProject::GCE120 ); break;
+	case 4 : project->setProjectVersion( XSLProject::GCE130 ); break;
+	case 5 : project->setProjectVersion( XSLProject::GCE140 ); break;
 	}
 	
 	project->serveurWeb().clear();

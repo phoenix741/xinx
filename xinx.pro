@@ -126,8 +126,8 @@ unix {
   CONFIG +=     qdbus
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
-  QMAKE_CC +=     "ccache gcc"
-  QMAKE_CXX +=     "ccache gcc"
+  QMAKE_CC =     "ccache gcc"
+  QMAKE_CXX =     "ccache gcc"
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
 }
@@ -136,7 +136,7 @@ win32 {
     rc/xinx.rc \
     setup/xinx-setup.iss \
     ui/*.ui
-  QMAKE_CC +=     "ccache gcc"
-  QMAKE_CXX +=     "ccache gcc"
+  QMAKE_CC =     "ccache gcc"
+  QMAKE_CXX =     "ccache gcc"
   RC_FILE +=     rc/xinx.rc
 }
