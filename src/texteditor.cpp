@@ -23,6 +23,8 @@
 #include <QSyntaxHighlighter>
 #include <QKeyEvent>
 
+#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
+
 TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) { 
 	// Setup the main view
 	QFont font;
@@ -117,4 +119,25 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
         pos++;
     cursor.setPosition(pos, QTextCursor::KeepAnchor);
     setTextCursor( cursor );
+}
+
+QString TextEditor::textUnderCursor( const QTextCursor & cursor ) const {
+	Q_ASSERT( ! cursor.isNull() );
+
+	QTextCursor before ( document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
+	QTextCursor after ( document()->find ( QRegExp( EOWREGEXP ), cursor ) );
+
+	QTextCursor tc = cursor;
+	
+	if( ! before.isNull() )
+		tc.setPosition( before.position(), QTextCursor::MoveAnchor );
+	else
+		tc.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor ) ;
+		
+	if( ! after.isNull() )
+		tc.setPosition( after.position() - 1, QTextCursor::KeepAnchor ) ;
+	else
+		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
+		
+	return tc.selectedText().trimmed();
 }

@@ -145,27 +145,6 @@ XMLEditor::cursorPosition XMLEditor::editPosition( const QTextCursor & cursor ) 
 	return cPosition;
 }
 
-QString XMLEditor::textUnderCursor( const QTextCursor & cursor ) const {
-	assert( ! cursor.isNull() );
-
-	QTextCursor before ( document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
-	QTextCursor after ( document()->find ( QRegExp( EOWREGEXP ), cursor ) );
-
-	QTextCursor tc = cursor;
-	
-	if( ! before.isNull() )
-		tc.setPosition( before.position(), QTextCursor::MoveAnchor );
-	else
-		tc.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor ) ;
-		
-	if( ! after.isNull() )
-		tc.setPosition( after.position() - 1, QTextCursor::KeepAnchor ) ;
-	else
-		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
-		
-	return tc.selectedText().trimmed();
-}
-
 void XMLEditor::commentSelectedText( bool uncomment ) {
 	QTextCursor cursor( textCursor() );
  

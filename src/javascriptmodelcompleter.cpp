@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "javascriptmodelcompeter.h"
+#include "javascriptmodelcompleter.h"
 #include "javascriptparser.h"
 
 #include <QIcon>

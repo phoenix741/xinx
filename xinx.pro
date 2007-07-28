@@ -32,7 +32,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/flattreeview.h \
   src/globals.h \
   src/javascriptfilecontent.h \
-  src/javascriptmodelcompeter.h \
+  src/javascriptmodelcompleter.h \
   src/javascriptparser.h \
   src/jseditor.h \
   src/jsfileeditor.h \
@@ -82,7 +82,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/flattreeview.cpp \
   src/globals.cpp \
   src/javascriptfilecontent.cpp \
-  src/javascriptmodelcompeter.cpp \
+  src/javascriptmodelcompleter.cpp \
   src/javascriptparser.cpp \
   src/jseditor.cpp \
   src/jsfileeditor.cpp \

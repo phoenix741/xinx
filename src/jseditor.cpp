@@ -25,6 +25,8 @@
 #include <QKeyEvent>
 #include <QTextEdit>
 #include <QTextBlock>
+#include <QAbstractItemView>
+#include <QScrollBar>
 
 #include "jshighlighter.h"
 #include "javascriptparser.h"
@@ -135,19 +137,19 @@ void JSEditor::keyPressEvent( QKeyEvent * e ) {
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
 		return;
 
-     static QString eow(EOW); // end of word
-     bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-     QString completionPrefix = textUnderCursor( textCursor() );
+    static QString eow(EOW); // end of word
+    bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+    QString completionPrefix = textUnderCursor( textCursor() );
 
-     if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-        c->popup()->hide();
-        return;
-     }
+    if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
+       c->popup()->hide();
+       return;
+    }
 
-     if ( completionPrefix != c->completionPrefix() ) {
-         c->setCompletionPrefix( completionPrefix );
-         c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
-     }
+    if ( completionPrefix != c->completionPrefix() ) {
+        c->setCompletionPrefix( completionPrefix );
+        c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
+    }
 
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());

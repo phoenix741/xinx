@@ -42,8 +42,6 @@ protected:
 	cursorPosition editPosition( const QTextCursor & cursor );
 	QString m_nodeName;
 	QString m_paramName;
-
-	QString textUnderCursor(const QTextCursor & cursor) const;
 };
 
 #endif // __XMLEDITOR_H__
