@@ -69,6 +69,10 @@ JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
 	new JsHighlighter( document() );
 
 	d->m_completer = new QCompleter( this );
+	d->m_completer->setWidget( this );
+	d->m_completer->setCompletionMode( QCompleter::PopupCompletion );
+	d->m_completer->setCaseSensitivity( Qt::CaseInsensitive );
+	d->m_completer->setCompletionRole( Qt::DisplayRole );
 	connect( d->m_completer, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
 }
 
@@ -110,6 +114,24 @@ void JSEditor::insertCompletion( const QModelIndex& index ) {
 	setTextCursor( tc );
 }
 
+void JSEditor::complete() {
+	QTextCursor cursor = textCursor();
+	
+	QRect cr = cursorRect();
+	QString completionPrefix = textUnderCursor(cursor);
+
+	QCompleter * c = d->m_completer;
+
+	if( c ) {
+		if( completionPrefix != c->completionPrefix() ) {
+		    c->setCompletionPrefix( completionPrefix );
+			c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
+		}
+		cr.setWidth( c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width() );
+		c->complete( cr );
+	}
+}
+
 void JSEditor::keyPressEvent( QKeyEvent * e ) {
 	QCompleter * c = d->m_completer;
 	
@@ -142,7 +164,7 @@ void JSEditor::keyPressEvent( QKeyEvent * e ) {
     QString completionPrefix = textUnderCursor( textCursor() );
 
     if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-       c->popup()->hide();
+//       c->popup()->hide();
        return;
     }
 

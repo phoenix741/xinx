@@ -46,6 +46,7 @@ public:
 	virtual ~JSEditor();
 	
 	virtual QAbstractItemModel * model();
+	virtual void complete();
 public slots:
 	virtual void updateModel();
 	void insertCompletion( const QModelIndex& index );

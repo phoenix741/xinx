@@ -64,7 +64,7 @@ Qt::ItemFlags JavascriptModelCompleter::flags( const QModelIndex &index ) const 
 }
 
 int JavascriptModelCompleter::rowCount( const QModelIndex &parent ) const {
-	if( parent.isValid() ) 
+	if( ! parent.isValid() ) 
 		return m_objList.size();
 	else
 		return 0;
