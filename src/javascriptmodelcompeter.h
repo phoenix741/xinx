@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,70 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __JAVASCRIPTMODELCOMPETER_H__
+#define __JAVASCRIPTMODELCOMPETER_H__
 
-#include "jseditor.h"
+#include <QAbstractListModel>
 
-#include <QCompleter>
-#include <QDomElement>
-#include <QKeyEvent>
-#include <QTextEdit>
-#include <QTextBlock>
+/* XSLValueCompletionModel */
 
-#include "jshighlighter.h"
-#include "javascriptparser.h"
-#include "javascriptfilecontent.h"
-
-/* PrivateJSEditor */
-
-class PrivateJSEditor {
+class JavascriptModelCompleter : public QAbstractListModel {
+	Q_OBJECT
 public:
-	PrivateJSEditor( JSEditor * parent );
-	virtual ~PrivateJSEditor();
+	JavascriptModelCompleter( JavaScriptParser * parser, QObject *parent = 0 );
+	virtual ~JavascriptModelCompleter();
 	
-	JavaScriptParser * m_parser;
-	JavascriptFileContent * m_model;
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+public slots:
+	void refreshList();
 private:
-	JSEditor * m_parent;
+	bool contains( XSLModelData * data );
+	void refreshRecursive(XSLModelData * data);
+
+	QList<XSLModelData*> m_objList;
+	XSLModelData* rootItem;
+	
+	QString m_baliseName;
+	QString m_attributeName;
 };
 
-PrivateJSEditor::PrivateJSEditor( JSEditor * parent ) {
-	m_parent = parent;
-	m_parser = NULL;
-	m_model  = NULL;
-}
-
-PrivateJSEditor::~PrivateJSEditor() {
-	delete m_model;
-	delete m_parser;
-}
-
-/* JSEditor */
-
-JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
-	d = new PrivateJSEditor( this );
-	new JsHighlighter( document() );
-}
-
-JSEditor::~JSEditor() {
-	delete d;
-}
-
-void JSEditor::updateModel() {
-	JavaScriptParser * parser = NULL;
-	try {
-		parser = new JavaScriptParser( toPlainText() );
-		emit deleteModel();
-		delete d->m_model; d->m_model = NULL;
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-		d->m_model  = new JavascriptFileContent( d->m_parser, this );
-		emit createModel();
-	} catch( JavaScriptParserException e ) {
-		delete parser;
-		throw e;
-	}
-}
-
-QAbstractItemModel * JSEditor::model() {
-	return d->m_model;
-}
+#endif // __JAVASCRIPTMODELCOMPETER_H__

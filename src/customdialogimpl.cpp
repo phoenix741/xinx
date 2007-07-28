@@ -47,7 +47,8 @@ PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
 //
 CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(parent, f) {
 	d = new PrivateCustomDialogImpl( this );
-	setupUi(this);
+
+	setupUi( this );
 	
 	QFont font( "Monospace", 8 );
 	font.setFixedPitch( true );
@@ -57,6 +58,8 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(p
 //
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
+	Q_ASSERT( config );
+	
 	d->m_config = *config;
 
 	m_alertStandardCheckBox->setChecked( d->m_config.isAlertWhenStdFile() );
@@ -106,6 +109,8 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
+	Q_ASSERT( config );
+	
 	*config = d->m_config;
 }
 

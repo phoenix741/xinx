@@ -142,7 +142,7 @@ void PrivateConnectionWebServicesDialogImpl::setReadProgress( int value, int max
 
 ConnectionWebServicesDialogImpl::ConnectionWebServicesDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
-	setupUi(this);
+	setupUi( this );
 	m_sendProgressBar->setValue( 0 );
 	m_recieveProgressBar->setValue( 0 );
 

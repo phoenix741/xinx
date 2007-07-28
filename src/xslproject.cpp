@@ -47,8 +47,8 @@ public:
 	QString getValue( const QString & node ) const;
 	void setValue( const QString & node, const QString & value );
 	
-	void loadSessionFile( const QString fileName );
-	void saveSessionFile( const QString fileName );
+	void loadSessionFile( const QString & fileName );
+	void saveSessionFile( const QString & fileName );
 
 	void loadWebServicesLink();
 	void saveWebServicesLink();
@@ -112,55 +112,58 @@ void PrivateXSLProject::setValue( const QString & node, const QString & value ) 
 		text.setData( value );
 }
 
-void PrivateXSLProject::loadSessionFile( const QString fileName ) {
+void PrivateXSLProject::loadSessionFile( const QString & fileName ) {
 	QFile file( fileName );
 	
-	// Open the file
-	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		QDomElement rootSession = m_sessionDocument.createElement( "Session" );
-		m_sessionDocument.appendChild( rootSession );
-	
-		QDomElement sessionNode = m_sessionDocument.createElement( "Opened" );
-		rootSession.appendChild( sessionNode );
-	} else {
+	try {
+		m_sessionDocument = QDomDocument( "Session" );
+
+		// Open the file
+		if ( ! file.open(QFile::ReadOnly | QFile::Text) ) 
+			throw XSLProjectException( XSLProject::tr("Can't open session file." ) );
+
 		// Load XML Document
 		QString errorStr;
 		int errorLine;
 		int errorColumn;  
-		if (!m_sessionDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-			throw XSLProjectException( QObject::tr("Parse error at line %1, column %2:\n%3")
-																						.arg(errorLine)
-	        			                      											.arg(errorColumn)
-																						.arg(errorStr));
-		}  
-	}
-		
-	m_rootSession = m_sessionDocument.documentElement();
+		if (!m_sessionDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) 
+			throw XSLProjectException( XSLProject::tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr));
+
+		m_rootSession = m_sessionDocument.documentElement();
   
-	// Test if Project File
-	if( m_rootSession.tagName() != "Session" ) {
-		throw XSLProjectException( QObject::tr("The file isn't a XINX Project Session file") );
-	}
-	
-	m_sessionNode = m_rootSession.firstChildElement( "Opened" );
-	
-	m_lastOpenedFile.clear();
-	QDomElement lastOpenedFile = m_rootSession.firstChildElement( "lastOpenedFile" );
-	if( ! lastOpenedFile.isNull() ) {
-		QDomElement file = lastOpenedFile.firstChildElement( "file" );
-		while( ! file.isNull() ) {
-			m_lastOpenedFile.append( file.attribute( "name" ) );
-			
-			file = file.nextSiblingElement( "file" );
+		// Test if Project File
+		if( m_rootSession.tagName() != "Session" ) {
+			throw XSLProjectException( XSLProject::tr("The file isn't a XINX Project Session file") );
 		}
-	}
 	
+		m_sessionNode = m_rootSession.firstChildElement( "Opened" );
+	
+		m_lastOpenedFile.clear();
+		QDomElement lastOpenedFile = m_rootSession.firstChildElement( "lastOpenedFile" );
+		if( ! lastOpenedFile.isNull() ) {
+			QDomElement file = lastOpenedFile.firstChildElement( "file" );
+			while( ! file.isNull() ) {
+				m_lastOpenedFile.append( file.attribute( "name" ) );
+				
+				file = file.nextSiblingElement( "file" );
+			}
+		}
+	} catch( XSLProjectException ) {
+		m_sessionDocument = QDomDocument( "Session" );
+
+		m_rootSession = m_sessionDocument.createElement( "Session" );
+		m_sessionDocument.appendChild( m_rootSession );
+	
+		m_sessionNode = m_sessionDocument.createElement( "Opened" );
+		m_rootSession.appendChild( m_sessionNode );
+	}
 }
 
-void PrivateXSLProject::saveSessionFile( const QString fileName ) {
+void PrivateXSLProject::saveSessionFile( const QString & fileName ) {
 	QDomElement lastOpenedFile = m_rootSession.firstChildElement( "lastOpenedFile" );
+	if( ! lastOpenedFile.isNull() ) 
+		m_rootSession.removeChild( lastOpenedFile );
 
-	m_rootSession.removeChild( lastOpenedFile );
 	lastOpenedFile = m_sessionDocument.createElement( "lastOpenedFile" );
 	m_rootSession.appendChild( lastOpenedFile );	
 
@@ -174,12 +177,11 @@ void PrivateXSLProject::saveSessionFile( const QString fileName ) {
 	QFile file( fileName );
 	
 	// Open the file
-	if (!file.open(QFile::WriteOnly | QFile::Text)) {
-		throw XSLProjectException( QObject::tr("Cannot write file %1:\n%2.").arg( m_fileName ).arg( file.errorString()) );
-		return;
-	}
+	if ( ! file.open(QFile::WriteOnly | QFile::Text) ) 
+		throw XSLProjectException( XSLProject::tr("Cannot write file %1:\n%2.").arg( m_fileName ).arg( file.errorString()) );
+		
+	// Save the content
 	QTextStream text( &file );
-	
 	m_sessionDocument.save( text, IndentSize );
 }
 
@@ -250,31 +252,25 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	QFile file(filename);
 	
 	// Open the file
-	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		throw XSLProjectException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()) );
-	}
+	if (!file.open(QFile::ReadOnly | QFile::Text)) 
+		throw XSLProjectException( tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()) );
 	
 	// Load XML Document
 	QString errorStr;
 	int errorLine;
 	int errorColumn;  
-	if (!d->m_projectDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-		throw XSLProjectException( QObject::tr("Parse error at line %1, column %2:\n%3").arg(errorLine)
-        			                      												.arg(errorColumn)
-																						.arg(errorStr) );
-	}  
+	if (!d->m_projectDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn))
+		throw XSLProjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	
 	QDomElement root = d->m_projectDocument.documentElement();
   
 	// Test if Project File
-	if( root.tagName() != "XSLProject" ) {
-		throw XSLProjectException( QObject::tr("The file isn't a XINX Project") );
-	}
+	if( root.tagName() != "XSLProject" ) 
+		throw XSLProjectException( tr("The file isn't a XINX Project") );
 	
 	d->m_version  = d->getValue( "xinx_version" ).isEmpty() ? 0 : d->getValue( "xinx_version" ).toInt();
-	if( d->m_version > XINX_PROJECT_VERSION ) {
-		throw XSLProjectException( QObject::tr("The file is a too recent XINX Project") );
-	}
+	if( d->m_version > XINX_PROJECT_VERSION ) 
+		throw XSLProjectException( tr("The file is a too recent XINX Project") );
 	
 	d->m_fileName = filename;
 	d->loadWebServicesLink();
@@ -298,14 +294,13 @@ void XSLProject::loadFromFile( const QString & filename ) {
 				file = file.nextSiblingElement( "file" );
 			}
 		}
-	} else {
+	} else 
 		d->loadSessionFile( d->m_fileName + ".session" );
-	}
 	
 	if( ! QDir( projectPath() ).exists() )
-		throw XSLProjectException( QObject::tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
+		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 	if( ! QDir( specifPath() ).exists() )
-		throw XSLProjectException( QObject::tr( "Specifique path (%1) don't exists." ).arg( specifPath() ) );
+		throw XSLProjectException( tr( "Specifique path (%1) don't exists." ).arg( specifPath() ) );
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -468,22 +463,6 @@ QString XSLProject::specifPrefix() const {
 	
 void XSLProject::setSpecifPrefix( const QString & value ) {
 	d->setValue( "prefix", value );
-}
-
-QString	XSLProject::standardConfigurationFile() const {
-	return d->getValue( "standard" );
-}
-
-void XSLProject::setStandardConfigurationFile( const QString & value ) {
-	return d->setValue( "standard", value );
-}
-	
-QString	XSLProject::specifiqueConfigurationFile() const {
-	return d->getValue( "specifique" );
-}
-	
-void XSLProject::setSpecifiqueConfigurationFile( const QString & value ) {
-	return d->setValue( "specifique", value );
 }
 
 void XSLProject::clearSessionNode() {

@@ -237,6 +237,9 @@ public:
 	void setPath( const QString & name ) { m_name = name; if( ! m_name.isEmpty() ) load(); };
 	
 protected:
+	/*!
+	 * Load the completion file and charged it in memory.
+	 */
 	void load();
 private:
 	QList<CompletionXMLBalise*> m_xmlBalises;

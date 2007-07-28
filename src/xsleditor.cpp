@@ -672,7 +672,30 @@ QAbstractItemModel * XSLEditor::model() {
 }
 
 void XSLEditor::updateModel() {
-	m_modelData->loadFromContent( toPlainText() );
+	XSLModelData * datas = NULL;
+	try {
+		datas = new XSLModelData();
+		datas->loadFromContent( toPlainText() );	
+	
+		emit deleteModel();
+	
+		m_completerValue->setModel( NULL );
+	
+		delete m_contentModel; m_contentModel = NULL;
+		delete m_completionValueModel; m_completionValueModel = NULL;
+		delete m_modelData; m_modelData = NULL;
+	
+		m_modelData = datas;
+		m_contentModel  = new XSLItemModel( m_modelData, this );
+		m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
+	
+		emit createModel();
+
+		m_completerValue->setModel( m_completionValueModel );
+	} catch( XMLParserException e ) {
+		delete datas;
+		throw e;
+	}
 }
 
 #include "xsleditor.moc"

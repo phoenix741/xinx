@@ -1,9 +1,9 @@
-CONFIG +=   exceptions \
+CONFIG +=   debug \
+  exceptions \
   qt \
   thread \
   warn_on \
-  x86 \
-  debug
+  x86
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
@@ -32,6 +32,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/flattreeview.h \
   src/globals.h \
   src/javascriptfilecontent.h \
+  src/javascriptmodelcompeter.h \
   src/javascriptparser.h \
   src/jseditor.h \
   src/jsfileeditor.h \
@@ -81,6 +82,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/flattreeview.cpp \
   src/globals.cpp \
   src/javascriptfilecontent.cpp \
+  src/javascriptmodelcompeter.cpp \
   src/javascriptparser.cpp \
   src/jseditor.cpp \
   src/jsfileeditor.cpp \
@@ -124,17 +126,17 @@ unix {
   CONFIG +=     qdbus
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
+  QMAKE_CC +=     "ccache gcc"
+  QMAKE_CXX +=     "ccache gcc"
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
-  QMAKE_CC = "ccache gcc"
-  QMAKE_CXX = "ccache gcc"
 }
 win32 {
-  DISTFILES +=     rc/xinx.rc \
+  DISTFILES +=     application.qrc \
+    rc/xinx.rc \
     setup/xinx-setup.iss \
-	ui/*.ui \
-	application.qrc
+    ui/*.ui
+  QMAKE_CC +=     "ccache gcc"
+  QMAKE_CXX +=     "ccache gcc"
   RC_FILE +=     rc/xinx.rc
-  QMAKE_CC = "ccache gcc"
-  QMAKE_CXX = "ccache gcc"
 }

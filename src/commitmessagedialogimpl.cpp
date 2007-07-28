@@ -20,7 +20,11 @@
 
 #include "commitmessagedialogimpl.h"
 
+#include "globals.h"
+#include "xslproject.h"
+
 #include <QMessageBox>
+#include <QDir>
 
 /* PrivateCommitMessageDialogImpl */
 
@@ -62,10 +66,12 @@ QString CommitMessageDialogImpl::messages() {
 }
 
 void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
+	Q_ASSERT( global.m_project != NULL );
+	
 	m_fileListWidget->clear();
 	d->m_files = files;
 	foreach( RCS::FileOperation file, d->m_files ) {
-		QString fileName = file.first;
+		QString fileName = QDir( global.m_project->projectPath() ).relativeFilePath( file.first );
 		switch( file.second ) {
 		case RCS::Commit: 
 			fileName += tr( " ( Commit )" );

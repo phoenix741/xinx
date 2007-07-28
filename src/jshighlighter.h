@@ -24,7 +24,7 @@
 #include "syntaxhighlighter.h"
 
 /*!
- * Syntax highlighter on Javascript
+ * Syntax highlighter on Javascript.
  */
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT

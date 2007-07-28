@@ -30,6 +30,7 @@ class XMLParserException : public FileContentException {
 public:
 	/*!
 	 * Create the exception
+	 * \param message The message to show.
 	 * \param line Line where the exception is throw
 	 */
 	XMLParserException( const QString & message, int line );
