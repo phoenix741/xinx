@@ -1,9 +1,9 @@
-CONFIG +=   exceptions \
+CONFIG +=   debug \
+  exceptions \
   qt \
   thread \
   warn_on \
-  x86 \
-  debug
+  x86
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
@@ -47,6 +47,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/rcslogdialogimpl.h \
   src/replacedialogimpl.h \
   src/serviceresultdialogimpl.h \
+  src/snipet.h \
+  src/snipetdialog.h \
   src/soap.h \
   src/stable_header.h \
   src/syntaxhighlighter.h \
@@ -100,6 +102,8 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/replacedialogimpl.cpp \
   src/searchmainform.cpp \
   src/serviceresultdialogimpl.cpp \
+  src/snipet.cpp \
+  src/snipetdialog.cpp \
   src/soap.cpp \
   src/syntaxhighlighter.cpp \
   src/tabeditor.cpp \

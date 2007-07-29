@@ -44,6 +44,7 @@
 #include "xsllistview.h"
 #include "xslproject.h"
 #include "customdialogimpl.h"
+#include "snipetdialog.h"
 
 #include "xmlvisualstudio.h"
 
@@ -665,8 +666,15 @@ void XMLVisualStudio::setCurrentProject( const QString & filename ) {
 	}
 }
 
-
-
-
-
+void XMLVisualStudio::on_m_createTemplate_triggered() {
+	assert( m_tabEditors->currentEditor() != NULL );
+	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
+		QString selectedText = editor->textEdit()->textCursor().selectedText();
+		
+		SnipetDialogImpl dlg;
+		dlg.setText( selectedText );
+		dlg.exec();
+	}
+}
 

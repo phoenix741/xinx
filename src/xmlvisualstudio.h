@@ -56,6 +56,7 @@ protected:
 	void closeEvent( QCloseEvent *event );
 	bool eventFilter( QObject *obj, QEvent *event );
 private slots:
+	void on_m_createTemplate_triggered();
 	void on_m_toggledFlatView_toggled(bool checked);
 	void on_m_globalUpdateFromRCSAct_triggered();
 	void on_m_globalCommitToRCSAct_triggered();
@@ -209,6 +210,7 @@ private: /* private definition */
 
 };
 #endif
+
 
 
 

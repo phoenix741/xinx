@@ -44,13 +44,22 @@
     <addaction name="m_aboutAct" />
     <addaction name="m_aboutQtAct" />
    </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
+   <widget class="QMenu" name="m_fileMenu" >
     <property name="title" >
-     <string>WebServices</string>
+     <string>&amp;File</string>
     </property>
-    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="m_newAct" />
+    <addaction name="m_recentFileAct" />
+    <addaction name="m_saveAct" />
+    <addaction name="m_saveAsAct" />
+    <addaction name="m_saveAllAct" />
     <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
+    <addaction name="m_closeAct" />
+    <addaction name="m_closeAllAct" />
+    <addaction name="separator" />
+    <addaction name="m_printAct" />
+    <addaction name="separator" />
+    <addaction name="m_exitAct" />
    </widget>
    <widget class="QMenu" name="m_windowsMenu" >
     <property name="title" >
@@ -61,6 +70,14 @@
     <addaction name="separator" />
     <addaction name="m_toggledFlatView" />
     <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
    </widget>
    <widget class="QMenu" name="m_projectMenu" >
     <property name="title" >
@@ -83,8 +100,6 @@
     <addaction name="separator" />
     <addaction name="m_globalUpdateFromRCSAct" />
     <addaction name="m_globalCommitToRCSAct" />
-    <addaction name="separator" />
-    <addaction name="m_customApplicationAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -122,22 +137,13 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
-   <widget class="QMenu" name="m_fileMenu" >
+   <widget class="QMenu" name="menu_Tools" >
     <property name="title" >
-     <string>&amp;File</string>
+     <string>&amp;Tools</string>
     </property>
-    <addaction name="m_newAct" />
-    <addaction name="m_recentFileAct" />
-    <addaction name="m_saveAct" />
-    <addaction name="m_saveAsAct" />
-    <addaction name="m_saveAllAct" />
+    <addaction name="m_createTemplate" />
     <addaction name="separator" />
-    <addaction name="m_closeAct" />
-    <addaction name="m_closeAllAct" />
-    <addaction name="separator" />
-    <addaction name="m_printAct" />
-    <addaction name="separator" />
-    <addaction name="m_exitAct" />
+    <addaction name="m_customApplicationAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -145,6 +151,7 @@
    <addaction name="m_projectMenu" />
    <addaction name="m_webServicesMenu" />
    <addaction name="m_windowsMenu" />
+   <addaction name="menu_Tools" />
    <addaction name="m_helpMenu" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
@@ -875,6 +882,11 @@
    </property>
    <property name="text" >
     <string>Toggled Flat View</string>
+   </property>
+  </action>
+  <action name="m_createTemplate" >
+   <property name="text" >
+    <string>Create &amp;template</string>
    </property>
   </action>
  </widget>
