@@ -19,9 +19,10 @@
  ***************************************************************************/
 
 #include "snipetdialog.h"
+#include "xmleditor.h"
+#include "jseditor.h"
 
 #include <QApplication>
-#include <QTextEdit>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -49,6 +50,8 @@ public:
 	QGridLayout * m_paramGrid;
 	
 	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
+	
+	enum Snipet::SnipetType m_snipetType;
 public slots:
 	void textChanged();
 private:
@@ -69,9 +72,14 @@ void PrivateSnipetDialogImpl::setupUi( QDialog * dlg ) {
 	m_textEditGroupBox = new QGroupBox( dlg );
 	QGridLayout * grid1 = new QGridLayout( m_textEditGroupBox );
 
-	m_textEdit = new QTextEdit( m_textEditGroupBox );
-	m_textEdit->setWordWrapMode( QTextOption::NoWrap );
-	m_textEdit->setLineWrapMode( QTextEdit::NoWrap );
+	switch( m_snipetType ) {
+	case Snipet::SNIPET_XSL:
+		m_textEdit = new XMLEditor( m_textEditGroupBox );
+		break;
+	case Snipet::SNIPET_JAVASCRIPT:
+		m_textEdit = new JSEditor( m_textEditGroupBox );
+		break;
+	}
 	grid1->addWidget( m_textEdit );
 	
 	vbox1->addWidget( m_textEditGroupBox );
@@ -150,8 +158,16 @@ void PrivateSnipetDialogImpl::addParamLine() {
 
 SnipetDialogImpl::SnipetDialogImpl( QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
 	d = new PrivateSnipetDialogImpl( this );
+	d->m_snipetType = Snipet::SNIPET_XSL;
 	d->setupUi( this );
 }
+
+SnipetDialogImpl::SnipetDialogImpl( enum Snipet::SnipetType type, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+	d = new PrivateSnipetDialogImpl( this );
+	d->m_snipetType = type;
+	d->setupUi( this );
+}
+
 
 SnipetDialogImpl::~SnipetDialogImpl() {
 	delete d;

@@ -23,6 +23,8 @@
 
 #include <QDialog>
 
+#include "snipet.h"
+
 class PrivateSnipetDialogImpl;
 
 /*!
@@ -41,6 +43,15 @@ public:
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	SnipetDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	/*!
+	 * Constructor of the snipet dialog implementation. We defines a default windows flags.
+	 * The windows can be resize.
+	 * This constructor defines the type of the template.
+	 * \param type Type of snipet
+	 * \param parent The parent of the dialog
+	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+	 */
+	SnipetDialogImpl( enum Snipet::SnipetType type, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
 	 * Destroy the dialog. 
 	 */

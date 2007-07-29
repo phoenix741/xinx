@@ -36,6 +36,16 @@ class PrivateSnipet;
 class Snipet {
 public:
 	/*!
+	 * Type of template that XINX can manage.
+	 */
+	enum SnipetType {
+		/// XSL Stylesheet type
+	 	SNIPET_XSL,
+	 	/// Javascript type
+	 	SNIPET_JAVASCRIPT
+ 	};
+
+	/*!
 	 * Create an empty template.
 	 */
 	Snipet();
