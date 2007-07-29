@@ -37,7 +37,8 @@
 
 /* PrivateJSEditor */
 
-class PrivateJSEditor {
+class PrivateJSEditor : public QObject {
+	Q_OBJECT
 public:
 	PrivateJSEditor( JSEditor * parent );
 	virtual ~PrivateJSEditor();
@@ -46,6 +47,10 @@ public:
 	JavascriptFileContent * m_model;
 	JavascriptModelCompleter * m_modelCompleter;
 	QCompleter * m_completer;
+	
+	QString currentFunction();
+public slots:
+	void insertCompletion( const QModelIndex& index );
 private:
 	JSEditor * m_parent;
 };
@@ -58,8 +63,49 @@ PrivateJSEditor::PrivateJSEditor( JSEditor * parent ) {
 }
 
 PrivateJSEditor::~PrivateJSEditor() {
+	delete m_completer;
+	delete m_modelCompleter;
 	delete m_model;
 	delete m_parser;
+}
+
+void PrivateJSEditor::insertCompletion( const QModelIndex& index ) {
+	QTextCursor tc = m_parent->textCursor();
+	QCompleter * c = m_completer;
+	QString completion = c->completionModel()->data( index ).toString();
+	
+	for( int i = 0; i < c->completionPrefix().length(); i++ ) tc.deletePreviousChar();
+	tc.insertText( completion );
+
+	m_parent->setTextCursor( tc );
+}
+
+QString PrivateJSEditor::currentFunction() {
+	QTextCursor tc = m_parent->textCursor();
+	QString name;
+	int bloc = 0;
+	bool finded = false;
+	// Recherche le début du document ou le mot function (compte le nombre d'accollade en passant)
+	if( ! tc.atStart() )
+	while( true ) {
+		QTextCursor selectedCursor = tc;
+		selectedCursor.select( QTextCursor::WordUnderCursor );
+		if( selectedCursor.selectedText() == "function" ) {
+			finded = true;
+			break;
+		} else if( tc.atStart() ) break;
+		name = selectedCursor.selectedText();
+		if( name == "{" )
+			bloc++;
+		else if( name == "}" )
+			bloc--;
+//		tc.movePosition( QTextCursor::PreviousCharacter );
+		tc.movePosition( QTextCursor::PreviousWord );
+	}
+	if( finded && ( bloc >= 0 ) )
+		return name;
+	else
+		return QString();
 }
 
 /* JSEditor */
@@ -73,7 +119,7 @@ JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
 	d->m_completer->setCompletionMode( QCompleter::PopupCompletion );
 	d->m_completer->setCaseSensitivity( Qt::CaseInsensitive );
 	d->m_completer->setCompletionRole( Qt::DisplayRole );
-	connect( d->m_completer, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
+	connect( d->m_completer, SIGNAL(activated(const QModelIndex&)), d, SLOT(insertCompletion(const QModelIndex&)) );
 }
 
 JSEditor::~JSEditor() {
@@ -103,18 +149,9 @@ QAbstractItemModel * JSEditor::model() {
 	return d->m_model;
 }
 
-void JSEditor::insertCompletion( const QModelIndex& index ) {
-	QTextCursor tc = textCursor();
-	QCompleter * c = d->m_completer;
-	QString completion = c->completionModel()->data( index ).toString();
-	
-	for( int i = 0; i < c->completionPrefix().length(); i++ ) tc.deletePreviousChar();
-	tc.insertText( completion );
-
-	setTextCursor( tc );
-}
-
 void JSEditor::complete() {
+	if( ! d->m_modelCompleter ) return ;
+		
 	QTextCursor cursor = textCursor();
 	
 	QRect cr = cursorRect();
@@ -133,6 +170,11 @@ void JSEditor::complete() {
 }
 
 void JSEditor::keyPressEvent( QKeyEvent * e ) {
+	if( ! d->m_modelCompleter ) {
+		TextEditor::keyPressEvent( e );
+		return ;	
+	}
+
 	QCompleter * c = d->m_completer;
 	
 	if ( c && c->popup()->isVisible() ) {
@@ -164,11 +206,12 @@ void JSEditor::keyPressEvent( QKeyEvent * e ) {
     QString completionPrefix = textUnderCursor( textCursor() );
 
     if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-//       c->popup()->hide();
+       c->popup()->hide();
        return;
     }
 
     if ( completionPrefix != c->completionPrefix() ) {
+		d->m_modelCompleter->setFilter( d->currentFunction() );
         c->setCompletionPrefix( completionPrefix );
         c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
     }
@@ -177,3 +220,5 @@ void JSEditor::keyPressEvent( QKeyEvent * e ) {
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
 	c->complete(cr); // popup it up!
 }
+
+#include "jseditor.moc"

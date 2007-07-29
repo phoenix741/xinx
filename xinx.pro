@@ -1,9 +1,9 @@
-CONFIG +=   debug \
-  exceptions \
+CONFIG +=   exceptions \
   qt \
   thread \
   warn_on \
-  x86
+  x86 \
+  debug
 DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \

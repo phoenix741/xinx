@@ -38,9 +38,13 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 public slots:
-	void refreshList( JavaScriptElement * element );
+	void setFilter( const QString & functionName = QString() );
 private:
+	void refreshList( JavaScriptElement * element );
 	QList<JavaScriptElement*> m_objList;
+	
+	JavaScriptParser * m_parser;
+	QString m_functionFiltre;
 };
 
 #endif // __JAVASCRIPTMODELCOMPETER_H__

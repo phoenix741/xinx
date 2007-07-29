@@ -49,7 +49,6 @@ public:
 	virtual void complete();
 public slots:
 	virtual void updateModel();
-	void insertCompletion( const QModelIndex& index );
 protected:
 	void keyPressEvent( QKeyEvent * e );
 private:

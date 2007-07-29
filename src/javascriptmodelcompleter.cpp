@@ -26,7 +26,8 @@
 /* JavascriptModelCompleter */
 
 JavascriptModelCompleter::JavascriptModelCompleter( JavaScriptParser * parser, QObject *parent ) : QAbstractListModel( parent ) {
-	refreshList( parser );
+	m_parser = parser;
+	refreshList( m_parser );
 }
 
 JavascriptModelCompleter::~JavascriptModelCompleter() {
@@ -76,4 +77,22 @@ void JavascriptModelCompleter::refreshList( JavaScriptElement * element ) {
 		m_objList.append( e->element( i ) );
 		refreshList( e->element( i ) );
 	}
+}
+
+void JavascriptModelCompleter::setFilter( const QString & functionName ) {
+	if( m_functionFiltre == functionName ) return;
+	emit layoutAboutToBeChanged();
+	
+	m_functionFiltre = functionName;
+	
+	m_objList.clear();
+	if( functionName.isEmpty() ) 
+		refreshList( m_parser );
+	else foreach( JavaScriptFunction* function, m_parser->functions() ) {
+		m_objList.append( function );
+		if( function->name() == functionName ) 
+			refreshList( function );
+	}
+			
+	emit layoutChanged();
 }
