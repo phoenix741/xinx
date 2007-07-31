@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS version="1.1" language="fr">
 <context>
     <name>PPDOptionsModel</name>
     <message>
         <location filename="../src/gui/dialogs/qprintdialog_unix.cpp" line="1542"/>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qprintdialog_unix.cpp" line="1544"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur</translation>
     </message>
 </context>
 <context>
@@ -687,7 +687,7 @@ en
     <message>
         <location filename="../src/network/qabstractsocket.cpp" line="1719"/>
         <source>Socket is not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Socket non connecté</translation>
     </message>
 </context>
 <context>
@@ -760,12 +760,12 @@ en
     <message>
         <location filename="../src/plugins/accessible/widgets/simplewidgets.cpp" line="77"/>
         <source>Uncheck</source>
-        <translation type="unfinished"></translation>
+        <translation>Décoché</translation>
     </message>
     <message>
         <location filename="../src/plugins/accessible/widgets/simplewidgets.cpp" line="80"/>
         <source>Check</source>
-        <translation type="unfinished"></translation>
+        <translation>Coché</translation>
     </message>
     <message>
         <location filename="../src/plugins/accessible/widgets/simplewidgets.cpp" line="81"/>
@@ -851,7 +851,7 @@ en
     <message>
         <location filename="../src/plugins/accessible/widgets/complexwidgets.cpp" line="864"/>
         <source>Open</source>
-        <translation type="unfinished">Ouvrir</translation>
+        <translation>Ouvrir</translation>
     </message>
 </context>
 <context>
@@ -946,102 +946,102 @@ en
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="437"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="441"/>
         <source>Save</source>
-        <translation type="unfinished">Enregistrer</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="445"/>
         <source>Open</source>
-        <translation type="unfinished">Ouvrir</translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="449"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="453"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="457"/>
         <source>Apply</source>
-        <translation type="unfinished">Appliquer</translation>
+        <translation>Appliquer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="461"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="465"/>
         <source>Help</source>
-        <translation type="unfinished">Aide</translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="470"/>
         <source>Don&apos;t Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne pas enregistrer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="474"/>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Continuer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="478"/>
         <source>&amp;Yes</source>
-        <translation type="unfinished">&amp;Oui</translation>
+        <translation>&amp;Oui</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="481"/>
         <source>Yes to &amp;All</source>
-        <translation type="unfinished">Oui à &amp;tout</translation>
+        <translation>Oui à &amp;tout</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="485"/>
         <source>&amp;No</source>
-        <translation type="unfinished">&amp;Non</translation>
+        <translation>&amp;Non</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="488"/>
         <source>N&amp;o to All</source>
-        <translation type="unfinished">Non à to&amp;ut</translation>
+        <translation>Non à to&amp;ut</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="491"/>
         <source>Save All</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer tout</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="494"/>
         <source>Abort</source>
-        <translation type="unfinished">Abandonner</translation>
+        <translation>Abandonner</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="497"/>
         <source>Retry</source>
-        <translation type="unfinished">Réessayer</translation>
+        <translation>Réessayer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="500"/>
         <source>Ignore</source>
-        <translation type="unfinished">Ignorer</translation>
+        <translation>Ignorer</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="503"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer les valeurs par défauts</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qdialogbuttonbox.cpp" line="472"/>
         <source>Close without Saving</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer sans Enregistrer</translation>
     </message>
 </context>
 <context>
@@ -1154,7 +1154,7 @@ en
     <message>
         <location filename="../src/gui/itemviews/qdirmodel.cpp" line="659"/>
         <source>Date Modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Date de modification</translation>
     </message>
 </context>
 <context>
@@ -1330,21 +1330,23 @@ Veuillez vérifier que le nom du fichier est correct.</translation>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog.cpp" line="644"/>
         <source>Directory:</source>
-        <translation type="unfinished">Dossier :</translation>
+        <translation>Dossier :</translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog.cpp" line="914"/>
         <source>
 File not found.
 Please verify the correct file name was given</source>
-        <translation type="unfinished"></translation>
+        <translation>
+Fichier non trouvé.
+Verifier que le nom donné est correct</translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog.cpp" line="1109"/>
         <source>%1
 Directory not found.
 Please verify the correct directory name was given.</source>
-        <translation type="unfinished">%1
+        <translation>%1
 Dossier introuvable.
 Veuillez vérifier que le nom du dossier est correct.</translation>
     </message>
@@ -1367,37 +1369,37 @@ Do you want to delete it anyway?</source>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog_win.cpp" line="106"/>
         <source>All Files (*.*)</source>
-        <translation type="unfinished">Tous les fichiers (*.*)</translation>
+        <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog_win.cpp" line="393"/>
         <source>Save As</source>
-        <translation type="unfinished">Enregistrer sous</translation>
+        <translation>Enregistrer sous</translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog_win.cpp" line="497"/>
         <source>Open </source>
-        <translation type="unfinished">Ouvrir</translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qfiledialog_win.cpp" line="651"/>
         <source>Select a Directory</source>
-        <translation type="unfinished">Sélectionner un dossier</translation>
+        <translation>Sélectionner un dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/itemviews/qdirmodel.cpp" line="231"/>
         <source>Drive</source>
-        <translation type="unfinished">Unité</translation>
+        <translation>Unité</translation>
     </message>
     <message>
         <location filename="../src/gui/itemviews/qdirmodel.cpp" line="235"/>
         <source>File</source>
-        <translation type="unfinished">Fichier</translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/itemviews/qdirmodel.cpp" line="264"/>
         <source>Unknown</source>
-        <translation type="unfinished">Inconnu</translation>
+        <translation>Inconnu</translation>
     </message>
 </context>
 <context>
@@ -2052,17 +2054,17 @@ Veuillez vérifier que le nom du dossier est correct.</translation>
     <message>
         <location filename="../src/plugins/accessible/widgets/qaccessiblemenu.cpp" line="307"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../src/plugins/accessible/widgets/qaccessiblemenu.cpp" line="308"/>
         <source>Open</source>
-        <translation type="unfinished">Ouvrir</translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
         <location filename="../src/plugins/accessible/widgets/qaccessiblemenu.cpp" line="310"/>
         <source>Execute</source>
-        <translation type="unfinished"></translation>
+        <translation>Executer</translation>
     </message>
 </context>
 <context>
@@ -2070,27 +2072,27 @@ Veuillez vérifier que le nom du dossier est correct.</translation>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="305"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="311"/>
         <source>Config</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="312"/>
         <source>Preference</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférence</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="313"/>
         <source>Options</source>
-        <translation type="unfinished">Options</translation>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="314"/>
         <source>Setting</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramêtres</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="315"/>
@@ -2100,7 +2102,7 @@ Veuillez vérifier que le nom du dossier est correct.</translation>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="317"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="318"/>
@@ -2110,22 +2112,22 @@ Veuillez vérifier que le nom du dossier est correct.</translation>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="353"/>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="355"/>
         <source>About Qt</source>
-        <translation type="unfinished">À propos de Qt</translation>
+        <translation>À propos de Qt</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="357"/>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Préférences</translation>
     </message>
     <message>
         <location filename="../src/gui/widgets/qmenu_mac.cpp" line="359"/>
         <source>Quit %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter %1</translation>
     </message>
 </context>
 <context>
@@ -2218,7 +2220,7 @@ Veuillez vérifier que le nom du dossier est correct.</translation>
     <message>
         <location filename="../src/gui/dialogs/qmessagebox.cpp" line="253"/>
         <source>&lt;p&gt;This program uses Qt Open Source Edition version %1.&lt;/p&gt;&lt;p&gt;Qt Open Source Edition is intended for the development of Open Source applications. You need a commercial Qt license for development of proprietary (closed source) applications.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;http://www.trolltech.com/company/model/&quot;&gt;www.trolltech.com/company/model/&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Ce programme utilise l&apos;édition Open Source de Qt version %1.&lt;/p&gt;&lt;p&gt;L&apos;édition Open Source de Qt est destinée au développement de programmes Open Source. Si vous désirez écrire des applications commerciales (code source fermé), vous devez posséder une licence Qt commerciale.&lt;/p&gt;&lt;p&gt;Veuillez consulter &lt;tt&gt;http://www.trolltech.com/company/model.html&lt;/tt&gt; pour un aperçu des licences applicables à Qt.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3057,7 +3059,7 @@ Do you want to overwrite it?</source>
     <message>
         <location filename="../src/plugins/accessible/widgets/simplewidgets.cpp" line="73"/>
         <source>Open</source>
-        <translation type="unfinished">Ouvrir</translation>
+        <translation>Ouvrir</translation>
     </message>
 </context>
 <context>
@@ -3065,7 +3067,7 @@ Do you want to overwrite it?</source>
     <message>
         <location filename="../src/plugins/accessible/widgets/simplewidgets.cpp" line="85"/>
         <source>Check</source>
-        <translation type="unfinished"></translation>
+        <translation>Coché</translation>
     </message>
 </context>
 <context>
