@@ -594,7 +594,7 @@ void XMLVisualStudio::on_m_selectedRemoveFromRCSAct_triggered() {
 		}
 		foreach( QModelIndex index, list ) {
 			paths << m_dirModel->filePath( index );
-			QFile::remove( m_dirModel->filePath( index ) );
+			m_dirModel->remove( index );
 		}
 		rcs->remove( paths );
 

@@ -416,6 +416,7 @@ int XSLEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 			}
 		}
 	}
+	
 	if( cnt > 0 )
 		tc.insertText( "\n" + indent );
 	tc.insertText( QString("</%1>").arg( node ) );

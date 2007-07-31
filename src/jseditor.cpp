@@ -59,6 +59,7 @@ PrivateJSEditor::PrivateJSEditor( JSEditor * parent ) {
 	m_parent    = parent;
 	m_parser    = NULL;
 	m_model     = NULL;
+	m_modelCompleter = NULL;
 	m_completer = NULL;
 }
 
@@ -211,7 +212,9 @@ void JSEditor::keyPressEvent( QKeyEvent * e ) {
     }
 
     if ( completionPrefix != c->completionPrefix() ) {
-		d->m_modelCompleter->setFilter( d->currentFunction() );
+    	QString fct = d->currentFunction();
+    	if( d->m_modelCompleter )
+			d->m_modelCompleter->setFilter( fct );
         c->setCompletionPrefix( completionPrefix );
         c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
     }
