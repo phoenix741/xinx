@@ -336,6 +336,9 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	}
 	saveProject();
 
+	m_filtreLineEdit->setText( "" );
+	m_toggledFlatView->setChecked( false );
+
 	if( closeAll && ( ! saveSession ) ) on_m_closeAllAct_triggered(); else
 	if( closeAll ) {
 		for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) {

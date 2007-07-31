@@ -124,8 +124,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
-TRANSLATIONS +=   translations/xinx_fr.ts \
-	translations/qt_fr.ts
+TRANSLATIONS +=   translations/xinx_fr.ts 
 UI_DIR +=   build
 unix {
   CONFIG +=     qdbus
