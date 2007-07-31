@@ -37,16 +37,11 @@ public:
 	PrivateSnipetDialogImpl( SnipetDialogImpl * parent );
 	virtual ~PrivateSnipetDialogImpl();
 	
-	void setupUi( QDialog * dlg );
-    void retranslateUi( QDialog * dlg );
+	void setupUi();
 
 	void addParamLine();
 
-	QGroupBox * m_textEditGroupBox;
 	QTextEdit * m_textEdit;
-	QGroupBox * m_paramGroupBox;
-	QPushButton * m_okButton;
-	QPushButton * m_cancelButton;
 	QGridLayout * m_paramGrid;
 	
 	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
@@ -66,66 +61,32 @@ PrivateSnipetDialogImpl::~PrivateSnipetDialogImpl() {
 	
 }
 	
-void PrivateSnipetDialogImpl::setupUi( QDialog * dlg ) {
-    QVBoxLayout * vbox1 = new QVBoxLayout( dlg );
-	
-	m_textEditGroupBox = new QGroupBox( dlg );
-	QGridLayout * grid1 = new QGridLayout( m_textEditGroupBox );
+void PrivateSnipetDialogImpl::setupUi() {
+	QGridLayout * grid1 = new QGridLayout( m_parent->m_templateGroupBox );
 
 	switch( m_snipetType ) {
 	case Snipet::SNIPET_XSL:
-		m_textEdit = new XMLEditor( m_textEditGroupBox );
+		m_textEdit = new XMLEditor( m_parent->m_templateGroupBox );
 		break;
 	case Snipet::SNIPET_JAVASCRIPT:
-		m_textEdit = new JSEditor( m_textEditGroupBox );
+		m_textEdit = new JSEditor( m_parent->m_templateGroupBox );
 		break;
 	}
+	
+	m_textEdit->setLineWrapMode( QTextEdit::NoWrap );
 	grid1->addWidget( m_textEdit );
 	
-	vbox1->addWidget( m_textEditGroupBox );
+	m_paramGrid = new QGridLayout( m_parent->m_paramGroupBox );
+	m_parent->m_paramGroupBox->setVisible( false );
 	
-	m_paramGroupBox = new QGroupBox( dlg );
-	m_paramGrid = new QGridLayout( m_paramGroupBox );
-	
-	m_paramGroupBox->setVisible( false );
-	
-	vbox1->addWidget( m_paramGroupBox );
-
-	QHBoxLayout * hbox1 = new QHBoxLayout();
-	hbox1->addStretch( 0 );
-	
-	m_okButton = new QPushButton( dlg );
-	m_okButton->setIcon( QIcon(":/images/button_ok.png") );
-	hbox1->addWidget( m_okButton );
-
-	m_cancelButton = new QPushButton( dlg );
-	m_cancelButton->setIcon( QIcon(":/images/button_cancel.png") );
-	hbox1->addWidget( m_cancelButton );
-	
-	vbox1->addLayout( hbox1 );
-	
-	retranslateUi( dlg );
-	
-    QSize size( 560, 300 );
-    size = size.expandedTo( dlg->minimumSizeHint() );
-    dlg->resize( size );
-	
-    QObject::connect( m_okButton, SIGNAL(clicked()), dlg, SLOT(accept()) );
-    QObject::connect( m_cancelButton, SIGNAL(clicked()), dlg, SLOT(reject()) );
     QObject::connect( m_textEdit, SIGNAL(textChanged()), this, SLOT(textChanged()) );
-}
-
-void PrivateSnipetDialogImpl::retranslateUi( QDialog * dlg ) {
-    dlg->setWindowTitle( QApplication::translate("SnipetDialogImpl", "Template", 0, QApplication::UnicodeUTF8) );
-    m_textEditGroupBox->setTitle(QApplication::translate("SnipetDialogImpl", "Template", 0, QApplication::UnicodeUTF8));
-    m_okButton->setText( QApplication::translate("SnipetDialogImpl", "OK", 0, QApplication::UnicodeUTF8) );
-    m_cancelButton->setText( QApplication::translate("SnipetDialogImpl", "Cancel", 0, QApplication::UnicodeUTF8) );
 }
 
 void PrivateSnipetDialogImpl::textChanged() {
 	QString text = m_textEdit->toPlainText();
 	bool finded = true;
 	int i;
+	/* Create missing parameter */
 	for( i = 0; finded; i++ ) {
 		if( text.contains( QString("%%1").arg( i + 1 ) ) ) {
 			if( i >= m_paramList.size() ) {
@@ -134,17 +95,21 @@ void PrivateSnipetDialogImpl::textChanged() {
 		} else
 			finded = false;
 	}
+	/* Delete wrong parameter */
 	i -= 1;
 	for( int j = m_paramList.size() - 1; j >= i ; j-- ) {
 		delete m_paramList.at( j ).first;
 		delete m_paramList.at( j ).second;
 		m_paramList.removeAt( j );
 	}
-	m_paramGroupBox->setVisible( m_paramList.size() > 0 );
+	/* The parameter groupe box is show only if there is one parameter */
+	m_parent->m_paramGroupBox->setVisible( m_paramList.size() > 0 );
 }
 
 void PrivateSnipetDialogImpl::addParamLine() {
-	QLabel * label = new QLabel( QApplication::translate("SnipetDialogImpl", "Param &%1", 0, QApplication::UnicodeUTF8).arg( m_paramList.size() + 1 ), m_parent );
+	QLabel * label;
+	label = new QLabel( QApplication::translate("SnipetDialogImpl", "Param &%1 : ", 0, QApplication::UnicodeUTF8).arg( m_paramList.size() + 1 ), m_parent );
+		
 	QLineEdit * lineEdit = new QLineEdit( m_parent );
 	label->setBuddy( lineEdit );
 	
@@ -153,28 +118,69 @@ void PrivateSnipetDialogImpl::addParamLine() {
 	m_paramList.append( qMakePair( label, lineEdit ) );
 }
 
-
 /* SnipetDialogImpl */
 
-SnipetDialogImpl::SnipetDialogImpl( QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+SnipetDialogImpl::SnipetDialogImpl( const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+	setupUi( this );
+
 	d = new PrivateSnipetDialogImpl( this );
-	d->m_snipetType = Snipet::SNIPET_XSL;
-	d->setupUi( this );
+	d->m_snipetType   = Snipet::SNIPET_XSL;
+	d->setupUi();
+
+	d->m_textEdit->setPlainText( text );
 }
 
-SnipetDialogImpl::SnipetDialogImpl( enum Snipet::SnipetType type, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+SnipetDialogImpl::SnipetDialogImpl( enum Snipet::SnipetType type, const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+	setupUi( this );
+
 	d = new PrivateSnipetDialogImpl( this );
-	d->m_snipetType = type;
-	d->setupUi( this );
+	d->m_snipetType   = type;
+	d->setupUi();
+
+	d->m_textEdit->setPlainText( text );
 }
 
+SnipetDialogImpl::SnipetDialogImpl( Snipet * snipet, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+	setupUi( this );
+
+	d = new PrivateSnipetDialogImpl( this );
+	d->m_snipetType = snipet->type();
+	d->setupUi();
+	
+	m_nameLineEdit->setText( snipet->name() );
+	m_descriptionTextEdit->setPlainText( snipet->description() );
+	m_iconLineEdit->setText( snipet->icon() );
+	m_categoryComboBox->setEditText( snipet->category() );
+	d->m_textEdit->setPlainText( snipet->text() );
+	
+	QListIterator< QPair<QLabel*,QLineEdit*> > i( d->m_paramList );
+	int index = 0;
+	while( i.hasNext() ) {
+		QPair<QLabel*,QLineEdit*> pair = i.next();
+		if( index < snipet->params().size() )
+			( pair.second )->setText( snipet->params().at( index++ ) );
+	}
+}
 
 SnipetDialogImpl::~SnipetDialogImpl() {
 	delete d;
 }
 
-void SnipetDialogImpl::setText( const QString & text ) {
-	d->m_textEdit->setPlainText( text );
+Snipet * SnipetDialogImpl::getSnipet() {
+	Snipet * snipet = new Snipet();
+	snipet->setType( d->m_snipetType );
+	snipet->setName( m_nameLineEdit->text() );
+	snipet->setDescription( m_descriptionTextEdit->toPlainText() );
+	snipet->setIcon( m_iconLineEdit->text() );
+	snipet->setCategory( m_categoryComboBox->currentText() );
+	snipet->setText( d->m_textEdit->toPlainText() );
+		
+	QListIterator< QPair<QLabel*,QLineEdit*> > i( d->m_paramList );
+	while( i.hasNext() ) {
+		QPair<QLabel*,QLineEdit*> pair = i.next();
+		snipet->params().append( (pair.second)->text() );
+	}
+	return snipet ;
 }
 
 #include "snipetdialog.moc"

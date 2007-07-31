@@ -49,10 +49,88 @@ public:
 	 * Create an empty template.
 	 */
 	Snipet();
+	
+	/*!
+	 * Copy constructor
+	 */
+	Snipet( const Snipet & snipet );
+
 	/*!
 	 * Destroy the template 
 	 */ 
 	virtual ~Snipet();
+	
+	/*!
+	 * Name of the template. Use when show a list of snipet.
+	 * \return Name of the template.
+	 * \sa setName()
+	 */
+	const QString & name() const;
+	
+	/*!
+	 * Set the name of the template.
+	 * \param name New name of the template.
+	 * \sa name()
+	 */
+	void setName( const QString & name );
+	
+	/*!
+	 * Type of template. The type of template help to filter.
+	 * \return Type of template.
+	 * \sa setType()
+	 */
+	enum SnipetType type() const;
+	 
+	/*!
+	 * Set the type of template.
+	 * \param type new type of template.
+	 * \sa type()
+	 */
+	void setType( enum SnipetType type );
+	
+	/*!
+	 * Description of the template. 
+	 * \return the description of the template.
+	 * \sa setDescription()
+	 */
+	const QString & description() const;
+	
+	/*!
+	 * Set the description of the template.
+	 * \param name New description of the template.
+	 * \sa description()
+	 */
+	void setDescription( const QString & description );
+	
+	/*!
+	 * Return the category to use to store template. The category is used
+	 * to class the template in different way.
+	 * \return the category to use.
+	 * \sa setCategory()
+	 */
+	const QString & category() const;
+	
+	/*!
+	 * Set the category used to store the template.
+	 * \param value The new category used to store the template.
+	 * \sa category()
+	 */
+	void setCategory( const QString & category );
+
+	/*!
+	 * Icon to show link in the list of template. The icon can be 
+	 * a resource.
+	 * \return the link of the icon to use.
+	 * \sa setIcon()
+	 */
+	const QString & icon() const;
+	
+	/*!
+	 * Set the icon of the template.
+	 * \param name New icon of the template.
+	 * \sa icon()
+	 */
+	void setIcon( const QString & icon );
 	
 	/*!
 	 * This method retrieve the text used to add. This text contains %1,
@@ -69,10 +147,12 @@ public:
 	void setText( const QString & value );
 	
 	/*!
-	 * List of parameter of the snipet. This list is a 'pointer', the value can be modified.
+	 * List of parameters of the template. This list is a 'pointer', 
+	 * the value can be modified. 
 	 * \return a list of parameter.
 	 */
 	QStringList & params();
+	
 private:
 	PrivateSnipet * d;
 	friend class PrivateSnipet;

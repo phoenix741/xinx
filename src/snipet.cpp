@@ -27,10 +27,12 @@ public:
 	PrivateSnipet( Snipet * parent );
 	virtual ~PrivateSnipet();
 	
-	QString m_text;
+	QString m_text, m_name, m_description, m_icon, m_category;
 	QStringList m_params;
+	enum Snipet::SnipetType m_type;
 private:
 	Snipet * m_parent;
+	friend class Snipet;
 };
 
 PrivateSnipet::PrivateSnipet( Snipet * parent ) : m_parent( parent ) {
@@ -46,11 +48,58 @@ PrivateSnipet::~PrivateSnipet() {
 Snipet::Snipet() {
 	d = new PrivateSnipet( this );
 }
+
+Snipet::Snipet( const Snipet & snipet ) {
+	d = new PrivateSnipet( this );
+	*d = *(snipet.d);
+	d->m_parent = this;
+}
+
 	
 Snipet::~Snipet() {
 	delete d;
 }
 	
+const QString & Snipet::name() const {
+	return d->m_name;
+}
+
+void Snipet::setName( const QString & name ) {
+	d->m_name = name;
+}
+
+enum Snipet::SnipetType Snipet::type() const {
+	return d->m_type;
+}
+	 
+void Snipet::setType( enum Snipet::SnipetType type ) {
+	d->m_type = type;
+}
+	
+const QString & Snipet::description() const {
+	return d->m_description;
+}
+
+void Snipet::setDescription( const QString & description ) {
+	d->m_description = description;
+}
+	
+const QString & Snipet::icon() const {
+	return d->m_icon;
+}
+
+void Snipet::setIcon( const QString & icon ) {
+	d->m_icon = icon;
+}
+
+const QString & Snipet::category() const {
+	return d->m_category;
+}
+	
+void Snipet::setCategory( const QString & category ) {
+	d->m_category = category;
+}
+
 const QString & Snipet::text() const {
 	return d->m_text;
 }

@@ -23,48 +23,56 @@
 
 #include <QDialog>
 
+#include "ui_snipetproperty.h"
 #include "snipet.h"
 
 class PrivateSnipetDialogImpl;
 
 /*!
- * Implementation of snipet dialog. This dialog permit to create, modify, or
- * use snipet.
+ * Implementation of snipet dialog. This dialog permit to create, modify.
  * The implementation containts only a constructor who defines default dialog 
  * presentation : Windows Style Dialog.
  */
-class SnipetDialogImpl : public QDialog{
+class SnipetDialogImpl : public QDialog, public Ui::SnipetDialog {
 	Q_OBJECT
 public:
 	/*!
 	 * Constructor of the snipet dialog implementation. We defines a default windows flags.
-	 * The windows can be resize.
+	 * The windows can't be resize.
+	 * \param text Text used for the template
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	SnipetDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SnipetDialogImpl( const QString & text, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
-	 * Constructor of the snipet dialog implementation. We defines a default windows flags.
-	 * The windows can be resize.
+	 * Constructor of the snipet dialog implementation. 
 	 * This constructor defines the type of the template.
+	 * We defines a default windows flags. The windows can be resize.
 	 * \param type Type of snipet
+	 * \parap text Text used for the template
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	SnipetDialogImpl( enum Snipet::SnipetType type, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SnipetDialogImpl( enum Snipet::SnipetType type, const QString & text, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	/*!
+	 * Constructor of the snipet dialog implementation, the dialog is created to use a snipet. 
+	 * We defines a default windows flags. The windows can be resize.
+	 * \param snipet The template to use.
+	 * \param parent The parent of the dialog
+	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+	 */
+	SnipetDialogImpl( Snipet * snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
 	 * Destroy the dialog. 
 	 */
 	virtual ~SnipetDialogImpl();
 	
-public slots:
 	/*!
-	 * Set the text of the template to show in the dialog. It can be used to show the text
-	 * selected by the user.
-	 * \param text The text to show in the dialog.
+	 * Create a template with information given informations.
+	 * \return a template
 	 */
-	void setText( const QString & text );
-
+	Snipet * getSnipet();
+	
 private slots:
 
 private:

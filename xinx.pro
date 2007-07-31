@@ -20,7 +20,9 @@ FORMS +=   ui/about.ui \
   ui/rcslogform.ui \
   ui/replace.ui \
   ui/resultatServices.ui \
-  ui/servicesconnection.ui
+  ui/runsnipet.ui \
+  ui/servicesconnection.ui \
+  ui/snipetproperty.ui
 HEADERS +=   src/aboutdialogimpl.h \
   src/commitmessagedialogimpl.h \
   src/connectionwebservicesdialogimpl.h \
@@ -46,6 +48,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/rcs_cvs.h \
   src/rcslogdialogimpl.h \
   src/replacedialogimpl.h \
+  src/runsnipetdialogimpl.h \
   src/serviceresultdialogimpl.h \
   src/snipet.h \
   src/snipetdialog.h \
@@ -69,6 +72,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
+QMAKE_CC =   "ccache gcc"
+QMAKE_CXX =   "ccache gcc"
 QT +=   network \
   xml
 RCC_DIR +=   build
@@ -100,6 +105,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/rcs_cvs.cpp \
   src/rcslogdialogimpl.cpp \
   src/replacedialogimpl.cpp \
+  src/runsnipetdialogimpl.cpp \
   src/searchmainform.cpp \
   src/serviceresultdialogimpl.cpp \
   src/snipet.cpp \
@@ -124,14 +130,12 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/xslproject.cpp
 TARGET =   xinx
 TEMPLATE =   app
-TRANSLATIONS +=   translations/xinx_fr.ts 
+TRANSLATIONS +=   translations/xinx_fr.ts
 UI_DIR +=   build
 unix {
   CONFIG +=     qdbus
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
-  QMAKE_CC =     "ccache gcc"
-  QMAKE_CXX =     "ccache gcc"
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
 }
@@ -140,7 +144,5 @@ win32 {
     rc/xinx.rc \
     setup/xinx-setup.iss \
     ui/*.ui
-  QMAKE_CC =     "ccache gcc"
-  QMAKE_CXX =     "ccache gcc"
   RC_FILE +=     rc/xinx.rc
 }

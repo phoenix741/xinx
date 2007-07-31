@@ -45,6 +45,7 @@
 #include "xslproject.h"
 #include "customdialogimpl.h"
 #include "snipetdialog.h"
+#include "runsnipetdialogimpl.h"
 
 #include "xmlvisualstudio.h"
 
@@ -675,9 +676,18 @@ void XMLVisualStudio::on_m_createTemplate_triggered() {
 		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
 		QString selectedText = editor->textEdit()->textCursor().selectedText();
 		
-		SnipetDialogImpl dlg;
-		dlg.setText( selectedText );
+		Snipet * pet;
+		{
+		SnipetDialogImpl dlg( selectedText );
 		dlg.exec();
+		pet = dlg.getSnipet();
+		}
+		{
+		RunSnipetDialogImpl dlg2( pet );
+		dlg2.exec();
+		QMessageBox::information( this, "", dlg2.getResult() );
+		delete pet;
+		}
 	}
 }
 
