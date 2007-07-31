@@ -71,7 +71,7 @@ RCS::rcsState RCS_CVSEntry::status() {
 	}
 	if( m_cvsVersion == "0" ) return RCS::LocallyAdded;
 	if( ! m_fileInfo.isDir() ) {
-		if( m_cvsDate.isNull() || ( m_cvsDate < m_fileDate ) )
+		if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) )
 			return RCS::LocallyModified;
 		else if( m_hasConflict )
 			return RCS::FileHadConflictsOnMerge;

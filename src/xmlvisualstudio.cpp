@@ -97,6 +97,9 @@ void XMLVisualStudio::createDockWindows() {
 	action = m_projectDirectoryDock->toggleViewAction();
 	action->setShortcut( tr("Ctrl+2") );
 	m_windowsMenu->addAction( action ); 
+	action = m_snipetDock->toggleViewAction();
+	action->setShortcut( tr("Ctrl+3") );
+	m_windowsMenu->addAction( action ); 
 	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
 
