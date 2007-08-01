@@ -52,6 +52,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/serviceresultdialogimpl.h \
   src/snipet.h \
   src/snipetdialog.h \
+  src/snipetlist.h \
   src/soap.h \
   src/stable_header.h \
   src/syntaxhighlighter.h \
@@ -110,6 +111,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/serviceresultdialogimpl.cpp \
   src/snipet.cpp \
   src/snipetdialog.cpp \
+  src/snipetlist.cpp \
   src/soap.cpp \
   src/syntaxhighlighter.cpp \
   src/tabeditor.cpp \
