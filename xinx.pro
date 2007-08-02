@@ -4,14 +4,17 @@ CONFIG +=   debug \
   thread \
   warn_on \
   x86
-DEFINES +=   USING_PCH
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
   COPYING \
   TODO \
   src/com.generix.xmlstudio.xml \
   src/genxml.sh \
-  xml/completion.cpl
+  xml/completion.cpl \
+  application.qrc \
+  rc/xinx.rc \
+  setup/xinx-setup.iss \
+  ui/*.ui
 FORMS +=   ui/about.ui \
   ui/commitmessages.ui \
   ui/custom.ui \
@@ -142,9 +145,5 @@ unix {
     src/studiointerface.cpp
 }
 win32 {
-  DISTFILES +=     application.qrc \
-    rc/xinx.rc \
-    setup/xinx-setup.iss \
-    ui/*.ui
   RC_FILE +=     rc/xinx.rc
 }

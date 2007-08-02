@@ -89,10 +89,15 @@ void JavascriptModelCompleter::setFilter( const QString functionName ) {
 	m_objList.clear();
 	if( functionName.isEmpty() ) 
 		refreshList( m_parser );
-	else foreach( JavaScriptFunction* function, m_parser->functions() ) {
-		m_objList.append( function );
-		if( function->name() == functionName ) 
-			refreshList( function );
+	else {
+		foreach( JavaScriptFunction* function, m_parser->functions() ) {
+			m_objList.append( function );
+			if( function->name() == functionName ) 
+				refreshList( function );
+		}	
+		foreach( JavaScriptVariables* variable, m_parser->variables() ) {
+			m_objList.append( variable );
+		}
 	}
 			
 	emit layoutChanged();

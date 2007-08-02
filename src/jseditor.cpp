@@ -86,12 +86,12 @@ QString PrivateJSEditor::currentFunction() {
 	QString name;
 	int bloc = 0;
 	bool finded = false;
-	// Recherche le dÃ©but du document ou le mot function (compte le nombre d'accollade en passant)
+	// Recherche le début du document ou le mot function (compte le nombre d'accollade en passant)
 	if( ! tc.atStart() )
 	while( true ) {
 		QTextCursor selectedCursor = tc;
 		selectedCursor.select( QTextCursor::WordUnderCursor );
-		if( selectedCursor.selectedText() == "function" ) {
+		if( ( selectedCursor.selectedText() == "function" ) && ( name != "{" ) && ( name != "function" ) ) {
 			finded = true;
 			break;
 		} else if( tc.atStart() ) break;
