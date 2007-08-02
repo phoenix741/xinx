@@ -53,6 +53,8 @@ public:
 	PrivateSnipetList( SnipetList * parent );
 	virtual ~PrivateSnipetList();
 	
+	QStringList m_categories;
+	
 	QList<Snipet*> m_list;
 private:
 	SnipetList * m_parent;
@@ -93,6 +95,8 @@ SnipetList::~SnipetList() {
  * \param snipet The snipet to add.
  */
 void SnipetList::add( Snipet * snipet ) {
+	if( ! d->m_categories.contains( snipet->category() ) )
+		d->m_categories.append( snipet->category() );
 	d->m_list.append( snipet );
 }
 
@@ -135,6 +139,14 @@ int SnipetList::count() {
 }
 
 /*!
+ * List of categories used by templates
+ * \return List of template.
+ */
+const QStringList & SnipetList::categories() const {
+	return d->m_categories;
+}
+
+/*!
  * Save the snipet list into a file.
  * \param filename The filename where we want save snipet.
  * \throw SnipetListException
@@ -154,9 +166,25 @@ void SnipetList::saveToFile( const QString & filename ) {
 		s.setAttribute( "type", snipet->type() );
 		s.setAttribute( "category", snipet->category() );
 		s.setAttribute( "icon", snipet->icon() );
+		
+		QDomElement description = document.createElement( "Description" );
+		s.appendChild( description );
+		QDomText text = document.createTextNode( snipet->description() );
+		description.appendChild( text );
+		
+		QDomElement textElement = document.createElement( "Text" );
+		s.appendChild( textElement );
+		text = document.createTextNode( snipet->text() );
+		textElement.appendChild( text );
+		
+		foreach( QString params, snipet->params() ) {
+			QDomElement param = document.createElement( "Param" );
+			s.appendChild( param );
+			param.setAttribute( "name", params );
+		}
 	}
 
-	QFile file(filename);
+	QFile file( filename );
 	if ( ! file.open( QFile::WriteOnly | QFile::Text ) )
 		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(filename).arg(file.errorString()) );
 	QTextStream out( &file );
@@ -168,5 +196,58 @@ void SnipetList::saveToFile( const QString & filename ) {
  * \param filename The filename used to load snipet.
  */
 void SnipetList::loadFromFile( const QString & filename ) {
+	d->m_categories.clear();
+	qDeleteAll( d->m_list );
+	d->m_list.clear();
 	
+	QFile file( filename );
+	if( ! file.open( QFile::ReadOnly | QFile::Text ) )
+		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(filename).arg(file.errorString()) ); 
+		
+	QDomDocument document( "SnipetList" );
+	if( ! document.setContent( &file ) )
+		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.", 0, QApplication::UnicodeUTF8) );
+	
+	QDomElement root = document.documentElement();
+	if( root.tagName() == "SnipetList" ) 
+		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.", 0, QApplication::UnicodeUTF8) );
+
+	Snipet *  newSnipet;
+	QDomElement snipet = root.firstChildElement( "Snipet" );
+	while( ! snipet.isNull() ) {
+		newSnipet = new Snipet();
+		newSnipet->setName( snipet.attribute( "name" ) );
+		newSnipet->setType( (enum Snipet::SnipetType)snipet.attribute( "type" ).toInt() );
+		newSnipet->setCategory( snipet.attribute( "category" ) );
+		newSnipet->setIcon( snipet.attribute( "icon" ) );
+		
+		QDomElement description = snipet.firstChildElement( "Description" );
+		QDomNode text = description.firstChild(); 
+		QString strText = "";
+		while( ! text.isNull() ) {
+			if( text.isText() ) 
+				strText += text.toText().data();
+			text = text.nextSibling();			
+		}
+		newSnipet->setDescription( strText );
+
+		QDomElement textElement = snipet.firstChildElement( "Text" );
+		text = description.firstChild(); 
+		strText = "";
+		while( ! text.isNull() ) {
+			if( text.isText() ) 
+				strText += text.toText().data();
+			text = text.nextSibling();			
+		}
+		newSnipet->setText( strText );
+		
+		QDomElement param = snipet.firstChildElement( "Param" );
+		while( ! param.isNull() ) {
+			newSnipet->params().append( param.attribute( "name" ) );
+			param = param.nextSiblingElement( "Param" );
+		}
+		
+		add( newSnipet );		
+		snipet = snipet.nextSiblingElement( "Snipet" );
+	}
 }

@@ -52,6 +52,7 @@
 #include "aboutdialogimpl.h"
 
 #include "xinxconfig.h"
+#include "snipetlist.h"
 
 /* XMLVisualStudio */
 
@@ -68,7 +69,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 
 	m_lastPlace        = QDir::currentPath();
 
-	completionContents   = new Completion();
+	global.m_completionContents   = new Completion();
+	global.m_snipetList = new SnipetList();
 
 	m_findDialog       = new ReplaceDialogImpl(this);
 	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
@@ -113,13 +115,18 @@ void XMLVisualStudio::readSettings() {
 	}
 
 	try {
-		completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+		global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+		global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
 	} catch( ENotCompletionFile ) {
+		// TODO
+	} catch( SnipetListException ) {
 		// TODO
 	}
 }
 
 void XMLVisualStudio::writeSettings() {
+	global.m_snipetList->saveToFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+
 	global.m_xinxConfig->storeMainWindowState( saveState() );
 	
 	global.m_xinxConfig->setPosition( pos() );

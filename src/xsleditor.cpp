@@ -29,6 +29,7 @@
 #include <QDomElement>
 #include <assert.h>
 
+#include "globals.h"
 #include "xsleditor.h"
 #include "editorcompletion.h"
 #include "xsllistview.h"
@@ -111,11 +112,11 @@ void XSLValueCompletionModel::refreshList() {
 void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
 	int before = m_objList.count(), after  = m_objList.count();
 	
-	if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
-		before += completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
+	if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) && global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
+		before += global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
 		
-	if( completionContents && completionContents->balise( name ) && completionContents->balise( name )->attribute( attribute ) )
-		after += completionContents->balise( name )->attribute( attribute )->values().count();
+	if( global.m_completionContents && global.m_completionContents->balise( name ) && global.m_completionContents->balise( name )->attribute( attribute ) )
+		after += global.m_completionContents->balise( name )->attribute( attribute )->values().count();
 		
 	int diff = after - before;
 
@@ -164,11 +165,11 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 		}
 	} else {
 		int value_row = index.row() - m_objList.count(); 
-		if( completionContents && completionContents->balise( m_baliseName ) && completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
+		if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) && global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 			if( role == Qt::DecorationRole ) 
 				return QIcon(":/images/html_value.png");
 			if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-				return completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
+				return global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
 			if( role == Qt::UserRole ) {
 				return -1;
 			}
@@ -188,10 +189,10 @@ Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
 int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() ) {
 		int size = m_objList.count();	
-		if( completionContents ) {
-			if( completionContents->balise( m_baliseName ) ) {
-				if( completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
-					size += completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
+		if( global.m_completionContents ) {
+			if( global.m_completionContents->balise( m_baliseName ) ) {
+				if( global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
+					size += global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
 			}
 		}
 		return size;
@@ -233,11 +234,11 @@ QVariant XSLParamCompletionModel::data( const QModelIndex &index, int role ) con
 	if (!index.isValid()) return QVariant();
 
 	int value_row = index.row(); 
-	if( completionContents && completionContents->balise( m_baliseName ) ) {
+	if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) ) {
 		if( role == Qt::DecorationRole ) 
 			return QIcon(":/images/noeud.png");
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return completionContents->balise( m_baliseName )->attributes().at( value_row )->name();
+			return global.m_completionContents->balise( m_baliseName )->attributes().at( value_row )->name();
 	}
 	
 	return QVariant();
@@ -253,8 +254,8 @@ Qt::ItemFlags XSLParamCompletionModel::flags(const QModelIndex &index) const {
 int XSLParamCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() ) {
 		int size = 0;	
-		if( completionContents && completionContents->balise( m_baliseName ) ) 
-			size += completionContents->balise( m_baliseName )->attributes().count();
+		if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) ) 
+			size += global.m_completionContents->balise( m_baliseName )->attributes().count();
 		return size;
 	} else
 		return 0;
@@ -283,11 +284,11 @@ QVariant XSLBaliseCompletionModel::data( const QModelIndex &index, int role ) co
 	if (!index.isValid()) return QVariant();
 
 	int value_row = index.row(); 
-	if( completionContents ) {
+	if( global.m_completionContents ) {
 		if( role == Qt::DecorationRole ) 
 			return QIcon(":/images/balise.png");
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return completionContents->xmlBalises().at( value_row )->name();
+			return global.m_completionContents->xmlBalises().at( value_row )->name();
 	}
 	
 	return QVariant();
@@ -303,8 +304,8 @@ Qt::ItemFlags XSLBaliseCompletionModel::flags(const QModelIndex &index) const {
 int XSLBaliseCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() ) {
 		int size = 0;	
-		if( completionContents ) 
-			size += completionContents->xmlBalises().count();
+		if( global.m_completionContents ) 
+			size += global.m_completionContents->xmlBalises().count();
 		return size;
 	} else
 		return 0;
@@ -363,9 +364,9 @@ XSLEditor::~XSLEditor() {
 	
 
 void XSLEditor::insertCompletionValue( QTextCursor & tc, QString node, QString param ) {
-	if( completionContents && completionContents->balise( node ) && completionContents->balise( node )->attribute( param ) && completionContents->balise( node )->attribute( param )->defaultValue() >= 0 ) {
-		int defaultValue = completionContents->balise( node )->attribute( param )->defaultValue();
-		tc.insertText( QString("=\"%1\"").arg( completionContents->balise( node )->attribute( param )->values().at( defaultValue ) ) );
+	if( global.m_completionContents && global.m_completionContents->balise( node ) && global.m_completionContents->balise( node )->attribute( param ) && global.m_completionContents->balise( node )->attribute( param )->defaultValue() >= 0 ) {
+		int defaultValue = global.m_completionContents->balise( node )->attribute( param )->defaultValue();
+		tc.insertText( QString("=\"%1\"").arg( global.m_completionContents->balise( node )->attribute( param )->values().at( defaultValue ) ) );
 	} else {
 		tc.insertText("=\"\"");
 		tc.movePosition( QTextCursor::PreviousCharacter );
@@ -374,8 +375,8 @@ void XSLEditor::insertCompletionValue( QTextCursor & tc, QString node, QString p
 
 int XSLEditor::insertCompletionParam( QTextCursor & tc, QString node, bool movePosition ) {
 	int position = -1;
-	if( completionContents && completionContents->balise( node ) ) {
-		CompletionXMLBalise* balise = completionContents->balise( node );
+	if( global.m_completionContents && global.m_completionContents->balise( node ) ) {
+		CompletionXMLBalise* balise = global.m_completionContents->balise( node );
 		foreach( CompletionXMLAttribute* attr, balise->attributes() ) {
 			if( attr->isDefault() ) {
 				int defaultValue = attr->defaultValue();
@@ -402,8 +403,8 @@ int XSLEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 
 	int position = -1, cnt = 0;
 	
-	if( completionContents && completionContents->balise( node ) ) {
-		CompletionXMLBalise* balise = completionContents->balise( node );
+	if( global.m_completionContents && global.m_completionContents->balise( node ) ) {
+		CompletionXMLBalise* balise = global.m_completionContents->balise( node );
 		foreach( CompletionXMLBalise* b, balise->balises() ) {
 			if( b->isDefault() ) {
 				tc.insertText( "\n" + indent + "\t" );
@@ -446,8 +447,8 @@ void XSLEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QStrin
 	debParam = document()->find( "\"", tc2, QTextDocument::FindBackward );
 	if( ( accOpen > accClose ) && ( accOpen > debParam ) ) insertAccolade = false;
 
-	if( completionContents && completionContents->balise( node ) ) {
-		CompletionXMLBalise* balise = completionContents->balise( node );
+	if( global.m_completionContents && global.m_completionContents->balise( node ) ) {
+		CompletionXMLBalise* balise = global.m_completionContents->balise( node );
 		if( insertAccolade && (balise->category() != "stylesheet") && ( ( type == (int)XSLModelData::etVariable ) || ( type == (int)XSLModelData::etTemplate ) )) {
 //			QMessageBox::warning(qApp->activeWindow(), "", "");
 			if( insertDollard && ( type == (int)XSLModelData::etVariable ) ) 

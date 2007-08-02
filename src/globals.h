@@ -28,6 +28,8 @@ class XSLProject;
 class WebServices;
 class ObjectsView;
 class XINXConfig;
+class SnipetList;
+class Completion;
 
 /*!
  * List of WebServices object.
@@ -61,10 +63,21 @@ public:
 	 * Opened project.
 	 */
 	XSLProject * m_project;
+	
 	/*!
 	 * XINX Config file.
 	 */
 	XINXConfig * m_xinxConfig;
+	
+	/*!
+	 * List of snipet.
+	 */
+	SnipetList * m_snipetList;
+	
+	/*!
+	 * Completion content.
+	 */
+	Completion * m_completionContents;
 	
 	/*!
 	 * Call this function when you want emit signals \e projectChanged().

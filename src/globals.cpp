@@ -22,15 +22,19 @@
 
 #include "xslproject.h"
 #include "webservices.h"
+#include "editorcompletion.h"
+#include "snipetlist.h"
 
 Globals global;
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_xinxConfig(0) {
+Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_xinxConfig(0), m_snipetList(0), m_completionContents(0) {
 	
 }
 
 Globals::~Globals() {
-	if( m_project ) delete m_project;
+	delete m_completionContents;
+	delete m_snipetList;
+	delete m_project;
 	if( m_webServices ) {
 		qDeleteAll( *m_webServices );
 		delete m_webServices;	

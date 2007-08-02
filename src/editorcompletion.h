@@ -246,6 +246,4 @@ private:
 	QString m_name;
 };
 
-extern Completion * completionContents;
-
 #endif

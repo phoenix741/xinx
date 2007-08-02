@@ -47,6 +47,8 @@ public:
 	
 	void saveToFile( const QString & filename );
 	void loadFromFile( const QString & filename );
+	
+	const QStringList & categories() const;
 private:
 	PrivateSnipetList * d;
 	friend class PrivateSnipetList;

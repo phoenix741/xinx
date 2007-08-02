@@ -27,9 +27,6 @@
 
 /* Completion */
 
-Completion * completionContents = NULL;
-
-
 Completion::Completion( const QString & name ) : m_name( name ) {
 	if( ! m_name.isEmpty() )
 		load();
