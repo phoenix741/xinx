@@ -21,6 +21,7 @@ static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
 static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
 static const QColor DEFAULT_ATTRIBUTE_NAME	= Qt::red;
 static const QColor DEFAULT_ATTRIBUTE_VALUE	= Qt::blue;
+static const QColor DEFAULT_XPATH_VALUE		= Qt::darkMagenta;
 
 // Regular expressions for parsing XML borrowed from:
 // http://www.cs.sfu.ca/~cameron/REX.html
@@ -32,6 +33,7 @@ static const QString EXPR_COMMENT_END		= "-->";
 static const QString EXPR_COMMENT			= EXPR_COMMENT_BEGIN + EXPR_COMMENT_TEXT + EXPR_COMMENT_END;
 static const QString EXPR_ATTRIBUTE_VALUE	= "\"[^<\"]*\"|'[^<']*'";
 static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
+static const QString EXPR_XPATH_VALUE       = "\\{[^\\{]*\\}";
 
 void XmlHighlighter::init( bool useConfig ) {
 	SyntaxHighlighter::init( useConfig );
@@ -41,6 +43,7 @@ void XmlHighlighter::init( bool useConfig ) {
 		m_syntaxFormats["ElementName"].setForeground( DEFAULT_ELEMENT_NAME );
 		m_syntaxFormats["AttributeName"].setForeground( DEFAULT_ATTRIBUTE_NAME );	
 		m_syntaxFormats["AttributeValue"].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
+		m_syntaxFormats["XPathValue"].setForeground( DEFAULT_XPATH_VALUE );	
 	} else {
 		foreach( QString key, global.m_xinxConfig->managedStructure()["xml"].color.keys() ) {
 			m_syntaxFormats[ key ] = global.m_xinxConfig->managedStructure()["xml"].color[ key ];
@@ -59,6 +62,9 @@ bool XmlHighlighter::isFormat( QString type ) {
 		return true;
 	else
 	if( type == "AttributeValue" ) 
+		return true;
+	else
+	if( type == "XPathValue" ) 
 		return true;
 
 	return SyntaxHighlighter::isFormat( type );
@@ -174,6 +180,18 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 					setFormat(i, 1, m_syntaxFormats["Other"]);
 					setFormat(i + 1, iLength - 2, m_syntaxFormats["AttributeValue"]);
 					setFormat(i + iLength - 1, 1, m_syntaxFormats["Other"]);
+					
+					/* Le XPATH d'une autre couleur */ /// \todo parse this better
+					QRegExp xpath( EXPR_XPATH_VALUE );
+					int xpathPos = xpath.indexIn( text, i );
+					int xpathLen;
+					if( ( xpathPos < i + iLength ) && ( xpathPos != -1 ) )
+						do {
+							xpathLen = xpath.matchedLength();
+							setFormat(xpathPos, 1, m_syntaxFormats["AttributeValue"]);
+							setFormat(xpathPos + 1, xpathLen - 2, m_syntaxFormats["XPathValue"]);
+							setFormat(xpathPos + xpathLen - 1, 1, m_syntaxFormats["AttributeValue"]);
+						} while( ( ( xpathPos = xpath.indexIn( text, xpathPos + xpathLen ) ) < ( i + iLength ) ) && ( xpathPos != -1 ) );
 
 					i += iLength - 1; // skip attribute value
 					state = ExpectAttributeOrEndOfElement;
