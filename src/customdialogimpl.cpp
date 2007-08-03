@@ -104,6 +104,7 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	}
 	
 	m_CVSToolsLineEdit->setText( d->m_config.toolsPath()[ "cvs" ] );
+	m_mergeToolLineEdit->setText( d->m_config.toolsPath()[ "merge" ] );
 	
 	m_lineEditDefaultProjectPathName->setText( d->m_config.getDefaultProjectPathName() );
 }
@@ -297,6 +298,16 @@ void CustomDialogImpl::on_m_saveSessionCheckBox_toggled(bool checked) {
 	d->m_config.setSaveSessionByDefault( checked );
 }
 
+void CustomDialogImpl::on_m_mergeToolLineEdit_textChanged( QString path ) {
+	d->m_config.toolsPath()[ "merge" ] = path;
+}
+
+void CustomDialogImpl::on_m_mergeToolButton_clicked() {
+	QString value = QFileDialog::getOpenFileName( this, tr("Merge path"), m_mergeToolLineEdit->text() );
+	if( ! value.isEmpty() ) {
+		m_mergeToolLineEdit->setText( value );		
+	}
+}
 
 void CustomDialogImpl::on_m_CVSToolsLineEdit_textChanged(QString path) {
 	d->m_config.toolsPath()[ "cvs" ] = path;

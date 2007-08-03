@@ -92,7 +92,7 @@ PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) {
 }
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {
-	if( m_thread ) delete m_thread;
+	delete m_thread;
 	delete m_watcher;
 }
 

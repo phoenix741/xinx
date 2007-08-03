@@ -209,13 +209,13 @@ public:
 	/*!
 	 * Destructor of the completion structure.
 	 */
-	~Completion();
+	virtual ~Completion();
 
 	/*!
 	 * List of all balise from which the user can complete (include children balise).
 	 * \return A list of balise
 	 */
-	const QList<CompletionXMLBalise*> xmlBalises() { return m_xmlBalises; };
+	const QList<CompletionXMLBalise*> xmlBalises();
 	/*! 
 	 * Return a balise class corresponding on name in parameters.
 	 * \param name Name used to find the balise
@@ -227,14 +227,16 @@ public:
 	/*!
 	 * Path of the file name used for completion.
 	 * \return The path of file name used for completion.
+	 * \sa setPath()
 	 */
-	const QString & path() const { return m_name; };
+	const QString & path() const;
 	/*!
 	 * Set the path of the completion file.
 	 * \param name New name of the path.
 	 * \throw ENotCompletionFile if the document isn't valid.
+	 * \sa path()
 	 */
-	void setPath( const QString & name ) { m_name = name; if( ! m_name.isEmpty() ) load(); };
+	void setPath( const QString & name );
 	
 protected:
 	/*!

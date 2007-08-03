@@ -683,18 +683,13 @@ void XMLVisualStudio::on_m_createTemplate_triggered() {
 		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
 		QString selectedText = editor->textEdit()->textCursor().selectedText();
 		
-		Snipet * pet;
-		{
+		Snipet * newSnipet;
 		SnipetDialogImpl dlg( selectedText );
-		dlg.exec();
-		pet = dlg.getSnipet();
+		if( dlg.exec() == QDialog::Accepted ) {
+			newSnipet = dlg.getSnipet();
+			global.m_snipetList->add( newSnipet );
 		}
-		{
-		RunSnipetDialogImpl dlg2( pet );
-		dlg2.exec();
-		QMessageBox::information( this, "", dlg2.getResult() );
-		delete pet;
-		}
+		
 	}
 }
 

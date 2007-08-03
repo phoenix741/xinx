@@ -96,6 +96,21 @@ CompletionXMLBalise* Completion::balise( const QString & name ) const {
 	return NULL;
 }
 
+const QList<CompletionXMLBalise*> Completion::xmlBalises() { 
+	return m_xmlBalises;
+}
+
+void Completion::setPath( const QString & name ) { 
+	qDeleteAll( m_xmlBalises );
+	m_xmlBalises.clear();
+	m_name = name; 
+	if( ! m_name.isEmpty() ) 
+		load(); 
+}
+
+const QString & Completion::path() const { 
+	return m_name; 
+}
 
 /* CompletionXMLBalise */
 

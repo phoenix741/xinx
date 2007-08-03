@@ -162,6 +162,8 @@ XINXConfig::XINXConfig(  ) {
 	d->m_cvsCompressionLevel = 9;
 	d->m_cvsPruneEmptyDirectories = false;
 	d->m_cvsCreateDirectories = true;
+
+	d->m_toolsPath[ "merge" ] = "WinMerge.exe";
 }
 
 XINXConfig::~XINXConfig(  ) {

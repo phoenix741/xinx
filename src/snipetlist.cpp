@@ -209,7 +209,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.", 0, QApplication::UnicodeUTF8) );
 	
 	QDomElement root = document.documentElement();
-	if( root.tagName() == "SnipetList" ) 
+	if( root.tagName() != "SnipetList" ) 
 		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.", 0, QApplication::UnicodeUTF8) );
 
 	Snipet *  newSnipet;
