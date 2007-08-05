@@ -1,0 +1,66 @@
+            XINX (XINX Is Not XDME)
+            =======================
+            
+This document describe how to compile and install xinx on Windows and or Gnu/Linux. This document suppose you have the source file of XINX.
+
+1. WINDOWS
+==========
+
+    1.1 INSTALLATION
+    ================
+    
+    If you install XINX with the installer, all is made automatically for you. You don't have to compile XINX. All thing you have to do is the say Yes at all the questions ;).
+    
+    1.2 COMPILATION
+    ===============
+    
+    When you have the source file of XINX, you can compile the source to change it, or to execute, ...
+    
+        1.2.1 NEEDS
+        ===========
+        
+        To comile XINX, you need different piece of software :
+        
+        - A C++ compilator. On Windows XINX is compiled with MinGW. MinGW is a GCC compilator for Windows. XINX would be compile with MSVC but it's not tested. You can download MinGW on the MinGW website (http://mingw.org) or in the Trolltech site (ftp://ftp.trolltech.com/misc) where you look for MinGW-3.4.2.exe. 
+        - Download and install GetGnuWin32 (contains some library).
+        - Win32Libs. Win32lib is necessessary for dbus. Download and unzip win32libs from the web. You need library bin and lib for expat.
+        - Dbus. Dbus is a inter-process communication daemon. It's used on Gnu/Linux, and ported on Windows. You can use it to send message to XINX or to open files from XINX. Don't install dbus in a path with space. (Get the lastet windbus from svn)
+        - Qt 4 from Trolltech. You need Qt 4 from Trolltech. You can install it from the installer, but you need to compile it for install QDBus (http://www.trolltech.com/products/qt/downloads). Take the source of the version 4.2.3 to compile with XINX. To compile QDbus you need to configure Qt with the -qdbus options. Other options is at your preference. (At the moment Qt need to be installed in the path C:\Qt\4.2.3, another path make error when compile software).
+        - Innosetup from jrsoftware to compile the installation programme.
+        
+        1.2.2 COMPILE
+        =============
+        
+        To compile XINX go to the path where you unzip the source of XINX and use :
+        
+        set QTDIR=C:\Qt\4.2.3
+        set PATH=%QTDIR%\bin;c:\dbus\bin\;c:\MinGW\bin\;%PATH%
+        qmake
+        mingw32-make -f Makefile.Release
+        
+2. LINUX
+========
+
+    2.1 INSTALLATION
+    ================
+    
+    Unzip and compile XINX.
+    
+    2.2 COMPILATION
+    ===============
+    
+        2.2.1 NEEDS
+        ===========
+        
+        You need this library installed :
+        - Qt4
+        - Dbus
+        - gcc/g++
+        
+        2.2.2 COMPILE
+        =============
+        
+        Use the following commande :
+        
+        qmake
+        make -f Makefile.Release

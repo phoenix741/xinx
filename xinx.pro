@@ -8,13 +8,13 @@ DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
   COPYING \
   TODO \
-  src/com.generix.xmlstudio.xml \
-  src/genxml.sh \
-  xml/completion.cpl \
   application.qrc \
   rc/xinx.rc \
   setup/xinx-setup.iss \
-  ui/*.ui
+  src/com.generix.xmlstudio.xml \
+  src/genxml.sh \
+  ui/*.ui \
+  xml/completion.cpl
 FORMS +=   ui/about.ui \
   ui/commitmessages.ui \
   ui/custom.ui \
@@ -56,6 +56,7 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/snipet.h \
   src/snipetdialog.h \
   src/snipetlist.h \
+  src/snipetmodel.h \
   src/soap.h \
   src/stable_header.h \
   src/syntaxhighlighter.h \
@@ -76,8 +77,8 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
-QMAKE_CC =   "ccache gcc"
-QMAKE_CXX =   "ccache gcc"
+QMAKE_CC +=   "ccache gcc"
+QMAKE_CXX +=   "ccache gcc"
 QT +=   network \
   xml
 RCC_DIR +=   build
@@ -115,6 +116,7 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/snipet.cpp \
   src/snipetdialog.cpp \
   src/snipetlist.cpp \
+  src/snipetmodel.cpp \
   src/soap.cpp \
   src/syntaxhighlighter.cpp \
   src/tabeditor.cpp \

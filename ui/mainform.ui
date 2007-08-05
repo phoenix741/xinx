@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>21</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_helpMenu" >
@@ -355,24 +355,7 @@
       <number>6</number>
      </property>
      <item row="0" column="0" >
-      <widget class="QToolBox" name="m_snipetToolBox" >
-       <property name="currentIndex" >
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="other" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>70</width>
-          <height>261</height>
-         </rect>
-        </property>
-        <attribute name="label" >
-         <string>Other</string>
-        </attribute>
-       </widget>
-      </widget>
+      <widget class="QListView" name="m_TemplateListView" />
      </item>
     </layout>
    </widget>
