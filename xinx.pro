@@ -8,13 +8,16 @@ DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
   COPYING \
   TODO \
+  INSTALL \
+  Doxyfile \
   application.qrc \
   rc/xinx.rc \
   setup/xinx-setup.iss \
   src/com.generix.xmlstudio.xml \
   src/genxml.sh \
   ui/*.ui \
-  xml/completion.cpl
+  xml/completion.xnx \
+  xml/template.xnx
 FORMS +=   ui/about.ui \
   ui/commitmessages.ui \
   ui/custom.ui \
@@ -77,8 +80,6 @@ HEADERS +=   src/aboutdialogimpl.h \
   src/xslproject.h
 MOC_DIR +=   build
 OBJECTS_DIR +=   build
-QMAKE_CC +=   "ccache gcc"
-QMAKE_CXX +=   "ccache gcc"
 QT +=   network \
   xml
 RCC_DIR +=   build
@@ -148,4 +149,6 @@ unix {
 }
 win32 {
   RC_FILE +=     rc/xinx.rc
+  QMAKE_CC =   "ccache gcc"
+  QMAKE_CXX =   "ccache gcc"
 }
