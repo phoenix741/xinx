@@ -3,6 +3,7 @@
 
 #define AppName "XINX"
 #define AppVersion GetFileVersion("..\bin\xinx.exe")
+#define QTDIR GetEnv("QTDIR")
 
 [Setup]
 AppName={#AppName}
@@ -22,35 +23,78 @@ LicenseFile=..\COPYING
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany=Generix
 AppMutex=com.generix.xmlstudio.mutex,Global\com.generix.xmlstudio.mutex
+VersionInfoDescription=XSL / Javascript editor
+ChangesAssociations=true
+AppVersion={#AppVersion}
+UninstallDisplayName={#AppName}
+TerminalServicesAware=false
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
 Name: french; MessagesFile: compiler:Languages\French.isl
 
 [Tasks]
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
-Name: assoxml; Description: Use XML/XSL file with this Application; Flags: unchecked
-Name: remplace_completion; Description: Replace completion.xnx file; Flags: checkedonce
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
+Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
+Name: remplace_completion; Description: Replace completion.xnx file; Components: 
+Name: remplace_template; Description: Replace template.xnx file; Flags: unchecked
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}; Components: application; Flags: replacesameversion
-Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion; Languages: french
-Source: C:\Qt\4.2.3\translations\qt_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion; Languages: french
-Source: C:\Qt\4.2.3\bin\QtNetwork4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: C:\Qt\4.2.3\bin\QtXml4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: C:\Qt\4.2.3\bin\mingwm10.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: C:\Qt\4.2.3\bin\QtCore4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: C:\Qt\4.2.3\bin\QtGui4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion
+Source: ..\bin\qt_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion
+Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}; Components: application; Flags: sharedfile
 Source: ..\xml\completion.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_completion
+Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 ;Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
-Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression; DestName: src.zip
+Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
+Source: ..\xinx-doc.zip; DestDir: {app}; Components: documentation; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: doc.zip
+Source: C:\Qt\dbus\bin\dbus-daemon.exe; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\bin\dbus-env.bat; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\bin\dbus-launch.exe; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\bin\dbus-monitor.exe; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\bin\dbus-send.exe; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\bin\libdbus-1.dll; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\bin\libexpat.dll; DestDir: {pf}\dbus\bin; Components: dbus
+Source: C:\Qt\dbus\data\dbus-1\services\debug-echo.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
+Source: C:\Qt\dbus\data\dbus-1\services\debug-segfault.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
+Source: C:\Qt\dbus\data\dbus-1\services\debug-shell-echo-fail.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
+Source: C:\Qt\dbus\data\dbus-1\services\debug-shell-echo-success.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
+Source: C:\Qt\dbus\etc\session.conf; DestDir: {pf}\dbus\etc; Components: dbus
+Source: C:\Qt\dbus\etc\session.conf.simple; DestDir: {pf}\dbus\etc; Components: dbus
+Source: C:\Qt\dbus\etc\system.conf; DestDir: {pf}\dbus\etc; Components: dbus
+Source: C:\Qt\dbus\etc\system.conf.simple; DestDir: {pf}\dbus\etc; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-address.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-arch-deps.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-bus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-connection.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-errors.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-macros.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-memory.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-message.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-misc.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-pending-call.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-protocol.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-server.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-shared.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-signature.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-threads.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus-types.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\include\dbus\dbus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
+Source: C:\Qt\dbus\lib\libdbus-1.dll.a; DestDir: {pf}\dbus\lib; Components: dbus
+Source: C:\Qt\dbus\lib\libdbus-1d.dll.a; DestDir: {pf}\dbus\lib; Components: dbus
 
 [Icons]
-Name: {group}\XINX; Filename: {app}\xinx.exe
+Name: {group}\{#AppName}; Filename: {app}\xinx.exe; IconIndex: 0; Components: application; Tasks: ; Languages: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
-Name: {userdesktop}\XINX; Filename: {app}\xinx.exe; Tasks: desktopicon
+Name: {userdesktop}\{#AppName}; Filename: {app}\xinx.exe; Tasks: desktopicon; IconIndex: 0; Components: application
 
 [Registry]
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}; Tasks: assoxml
@@ -62,8 +106,9 @@ Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
 ;Name: objects; Description: Java Objects File
-;Name: webservices; Description: WebServices File
 Name: source; Description: Source de l'Application; Types: full; Languages: 
+Name: documentation; Description: Technical documentation of XINX; Types: full
+Name: dbus; Description: D-Bus support; Types: full
 
 [InstallDelete]
 Name: {app}\xmlvisualstudio.exe; Type: files; Components: application

@@ -22,8 +22,9 @@
 #include <unistd.h>
 
 #include <QString>
+#include "uniqueapplication.h"
 
-#ifndef Q_WS_WIN
+#ifdef DBUS
 	#include <QtDBus>
 	#include "studioadaptor.h"
 	#include "studiointerface.h"
@@ -32,9 +33,7 @@
 	#include <QtGui>
 #endif
  
-#include "uniqueapplication.h"
-
-#ifndef Q_WS_WIN
+#ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
@@ -47,7 +46,7 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 #endif
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
-#ifdef Q_WS_WIN
+#ifndef DBUS
 	m_handle = 0;
 	m_handleMutex = 0;
 	m_handleMutexGbl = 0;
@@ -58,7 +57,7 @@ UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication(
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
-#ifdef Q_WS_WIN
+#ifndef DBUS
 	m_handle = 0;
 	m_handleMutex = 0;
 	m_handleMutexGbl = 0;
@@ -69,7 +68,7 @@ UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled 
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
-#ifdef Q_WS_WIN
+#ifndef DBUS
 	m_handle = 0;
 	m_handleMutex = 0;
 	m_handleMutexGbl = 0;
@@ -90,7 +89,7 @@ UniqueApplication::UniqueApplication( Display * display, int & argc, char ** arg
 #endif	
 
 UniqueApplication::~UniqueApplication() {
-#ifdef Q_WS_WIN
+#ifndef DBUS
 	if( m_fileView ) UnmapViewOfFile( m_fileView );
 
 	if( m_handle ) CloseHandle( m_handle );
@@ -101,7 +100,7 @@ UniqueApplication::~UniqueApplication() {
 }
 
 void UniqueApplication::start() {
-#ifndef Q_WS_WIN
+#ifdef DBUS
 	QString appName = "com.generix.xmlstudio";
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
@@ -166,7 +165,7 @@ void UniqueApplication::start() {
 	m_isUnique = true;
 }
 
-#ifdef Q_WS_WIN
+#ifndef DBUS
 
 void UniqueApplication::openSharedMem() {
 	#define SIZE 4096
@@ -195,7 +194,7 @@ void UniqueApplication::openSharedMem() {
 #endif
 
 void UniqueApplication::sendSignalOpen(const QString &fileName) {
-#ifdef Q_WS_WIN
+#ifndef DBUS
 	while( strlen(m_fileView) > 0 ) Sleep( 250 );
 	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {
 		strncpy( m_fileView, const_cast<char*>(fileName.toAscii().data()), 4096 );
@@ -207,7 +206,7 @@ void UniqueApplication::sendSignalOpen(const QString &fileName) {
 #endif
 }
 
-#ifdef Q_WS_WIN
+#ifndef DBUS
 
 void UniqueApplication::timerApplicationEvent() {
 	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {

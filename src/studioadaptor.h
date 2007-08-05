@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef STUDIOADAPTOR_H_1185032082
-#define STUDIOADAPTOR_H_1185032082
+#ifndef STUDIOADAPTOR_H_1186345624
+#define STUDIOADAPTOR_H_1186345624
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>

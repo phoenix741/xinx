@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef STUDIOINTERFACE_H_1185032083
-#define STUDIOINTERFACE_H_1185032083
+#ifndef STUDIOINTERFACE_H_1186345623
+#define STUDIOINTERFACE_H_1186345623
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>

@@ -140,15 +140,17 @@ TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
 UI_DIR +=   build
+CONFIG +=     qdbus
 unix {
-  CONFIG +=     qdbus
+  QMAKE_CC =   "ccache gcc"
+  QMAKE_CXX =   "ccache gcc"
+}
+win32 {
+  RC_FILE +=     rc/xinx.rc
+}
+contains( CONFIG, qdbus ) {
   HEADERS +=     src/studioadaptor.h \
     src/studiointerface.h
   SOURCES +=     src/studioadaptor.cpp \
     src/studiointerface.cpp
-}
-win32 {
-  RC_FILE +=     rc/xinx.rc
-  QMAKE_CC =   "ccache gcc"
-  QMAKE_CXX =   "ccache gcc"
 }

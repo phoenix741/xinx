@@ -1,5 +1,5 @@
 1 VERSIONINFO
-FILEVERSION 0, 6, 7, 0
+FILEVERSION 0, 6, 8, 0
 PRODUCTVERSION 0, 6, 0, 0
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -18,7 +18,7 @@ BEGIN
 		VALUE "Comments", "\0"
 		VALUE "CompanyName", "Generix"
 		VALUE "FileDescription", "XINX is not XDME"
-        VALUE "FileVersion", "0, 6, 7, 0"
+        VALUE "FileVersion", "0, 6, 8, 0"
         VALUE "InternalName", "xinx"
         VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2007"
 		VALUE "LegalTrademarks", "\0"

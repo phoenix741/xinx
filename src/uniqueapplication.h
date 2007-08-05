@@ -24,6 +24,14 @@
 #include <QApplication>
 
 #ifdef Q_WS_WIN
+	#ifndef QT_QTDBUS
+		#define DBUS
+	#endif
+#else
+	#define DBUS
+#endif
+
+#ifndef DBUS
 	#include <windows.h>
 #endif
 
@@ -49,7 +57,7 @@ Q_SIGNALS:
     void open(const QString &fileName);
 	void hasFileToOpen(const QString & fileName);
 
-#ifdef Q_WS_WIN
+#ifndef DBUS
 private Q_SLOTS:
 	void timerApplicationEvent();
 #endif
@@ -57,7 +65,7 @@ private Q_SLOTS:
 private:
 	bool m_isUnique;
 	
-#ifdef Q_WS_WIN
+#ifndef DBUS
 	void openSharedMem();
 
 	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
