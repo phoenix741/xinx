@@ -48,7 +48,8 @@ const QString & SnipetListException::getMessage() const {
 
 /* PrivateSnipetList */
 
-class PrivateSnipetList {
+class PrivateSnipetList : public QObject {
+	Q_OBJECT
 public:
 	PrivateSnipetList( SnipetList * parent );
 	virtual ~PrivateSnipetList();
@@ -56,6 +57,8 @@ public:
 	QStringList m_categories;
 	
 	QList<Snipet*> m_list;
+public slots:
+	void addCategory( QString newCategory );
 private:
 	SnipetList * m_parent;
 };
@@ -67,6 +70,13 @@ PrivateSnipetList::PrivateSnipetList( SnipetList * parent ) : m_parent( parent )
 PrivateSnipetList::~PrivateSnipetList() {
 	
 }
+
+void PrivateSnipetList::addCategory( QString newCategory ) {
+	if( ! m_categories.contains( newCategory ) )
+		m_categories.append( newCategory );
+	emit m_parent->listChanged();
+}
+
 
 /* SnipetList */
 
@@ -95,9 +105,9 @@ SnipetList::~SnipetList() {
  * \param snipet The snipet to add.
  */
 void SnipetList::add( Snipet * snipet ) {
-	if( ! d->m_categories.contains( snipet->category() ) )
-		d->m_categories.append( snipet->category() );
 	d->m_list.append( snipet );
+	d->addCategory( snipet->category() );
+	connect( snipet, SIGNAL(categoryChange(QString)), d, SLOT(addCategory(QString)) );
 }
 
 /*!
@@ -106,6 +116,7 @@ void SnipetList::add( Snipet * snipet ) {
  */
 void SnipetList::remove( int index ) {
 	d->m_list.removeAt( index );
+	emit listChanged();
 }
 
 /*!
@@ -118,6 +129,7 @@ void SnipetList::remove( int index ) {
 Snipet * SnipetList::replace( int index, Snipet * snipet ) {
 	Snipet * s = d->m_list.at( index );	
 	d->m_list.replace( index, snipet );
+	emit listChanged();
 	return s;
 }
 
@@ -163,6 +175,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 		root.appendChild( s );
 		
 		s.setAttribute( "name", snipet->name() );
+		s.setAttribute( "key", snipet->key() );
 		s.setAttribute( "type", snipet->type() );
 		s.setAttribute( "category", snipet->category() );
 		s.setAttribute( "icon", snipet->icon() );
@@ -217,6 +230,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 	while( ! snipet.isNull() ) {
 		newSnipet = new Snipet();
 		newSnipet->setName( snipet.attribute( "name" ) );
+		newSnipet->setKey( snipet.attribute( "key" ) );
 		newSnipet->setType( (enum Snipet::SnipetType)snipet.attribute( "type" ).toInt() );
 		newSnipet->setCategory( snipet.attribute( "category" ) );
 		newSnipet->setIcon( snipet.attribute( "icon" ) );
@@ -232,7 +246,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		newSnipet->setDescription( strText );
 
 		QDomElement textElement = snipet.firstChildElement( "Text" );
-		text = description.firstChild(); 
+		text = textElement.firstChild(); 
 		strText = "";
 		while( ! text.isNull() ) {
 			if( text.isText() ) 
@@ -250,4 +264,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		add( newSnipet );		
 		snipet = snipet.nextSiblingElement( "Snipet" );
 	}
+	emit listChanged();
 }
+
+#include "snipetlist.moc"

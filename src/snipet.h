@@ -33,7 +33,8 @@ class PrivateSnipet;
  * The text contains %1, %2, ... this data will be replaced by params.
  * The params of this class, is just names. 
  */
-class Snipet {
+class Snipet : public QObject {
+	Q_OBJECT
 public:
 	/*!
 	 * Type of template that XINX can manage.
@@ -75,6 +76,20 @@ public:
 	void setName( const QString & name );
 	
 	/*!
+	 * Get the key to use when complete with a snipet.
+	 * \return the key to use.
+	 * \sa setKey()
+	 */
+	const QString & key() const;
+	 
+	/*!
+	 * Set the key to use when complete a snipet.
+	 * \param The new Key to use.
+	 * \sa key();
+	 */
+	void setKey( const QString & key );
+	
+	/*!
 	 * Type of template. The type of template help to filter.
 	 * \return Type of template.
 	 * \sa setType()
@@ -106,14 +121,14 @@ public:
 	 * Return the category to use to store template. The category is used
 	 * to class the template in different way.
 	 * \return the category to use.
-	 * \sa setCategory()
+	 * \sa setCategory(), categoryChange()
 	 */
 	const QString & category() const;
 	
 	/*!
 	 * Set the category used to store the template.
 	 * \param value The new category used to store the template.
-	 * \sa category()
+	 * \sa category(), categoryChange()
 	 */
 	void setCategory( const QString & category );
 
@@ -152,6 +167,15 @@ public:
 	 * \return a list of parameter.
 	 */
 	QStringList & params();
+	
+signals:
+	/*!
+	 * Signal emitted by the object when the category is modified. This signal help to refresh list
+	 * when needed.
+	 * \param newValue New value of the category
+	 * \sa setCategory(), category()
+	 */
+	void categoryChange( QString newValue );
 	
 private:
 	PrivateSnipet * d;

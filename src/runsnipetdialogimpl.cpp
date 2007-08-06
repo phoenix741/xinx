@@ -23,9 +23,12 @@
 #include <QLabel>
 #include <QLineEdit>
 
+#include "snipetdialog.h"
+
 /* PrivateRunSnipetDialogImpl */
 
-class PrivateRunSnipetDialogImpl {
+class PrivateRunSnipetDialogImpl : public QObject {
+	Q_OBJECT
 public:
 	PrivateRunSnipetDialogImpl( RunSnipetDialogImpl * parent );
 	virtual ~PrivateRunSnipetDialogImpl();
@@ -33,8 +36,12 @@ public:
 	QGridLayout * m_paramGrid;
 	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
 	QString m_text;
+	Snipet * m_snipet;
 	
 	void setupUi();
+	
+public slots:
+	void changeSnipet();
 private:
 	RunSnipetDialogImpl * m_parent;
 };
@@ -48,7 +55,16 @@ PrivateRunSnipetDialogImpl::~PrivateRunSnipetDialogImpl() {
 }
 
 void PrivateRunSnipetDialogImpl::setupUi() {
+	connect( m_parent->m_detailPushButton, SIGNAL(clicked()), this, SLOT(changeSnipet()) );
 }
+
+void PrivateRunSnipetDialogImpl::changeSnipet() {
+	SnipetDialogImpl dlg( m_snipet );
+	if( dlg.exec() == QDialog::Accepted ) {
+		dlg.getSnipet();
+	}
+}
+
 
 /* RunSnipetDialogImpl */
 
@@ -56,6 +72,8 @@ RunSnipetDialogImpl::RunSnipetDialogImpl( Snipet * snipet, QWidget * parent, Qt:
 	setupUi(this);
 	
 	d = new PrivateRunSnipetDialogImpl( this );
+	d->setupUi();
+	d->m_snipet = snipet;
 	
 	d->m_text = snipet->text();
 	
@@ -88,3 +106,5 @@ QString RunSnipetDialogImpl::getResult() {
 	}
 	return text;
 }
+
+#include "runsnipetdialogimpl.moc"

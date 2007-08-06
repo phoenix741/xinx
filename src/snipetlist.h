@@ -21,7 +21,10 @@
 #ifndef __SNIPETLIST_H__
 #define __SNIPETLIST_H__
 
+#include <QObject>
 #include <QString>
+
+class QMenu;
 
 class SnipetListException {
 public:
@@ -34,7 +37,8 @@ private:
 class Snipet;
 class PrivateSnipetList;
 
-class SnipetList {
+class SnipetList : public QObject {
+	Q_OBJECT
 public:
 	SnipetList();
 	virtual ~SnipetList();
@@ -49,6 +53,8 @@ public:
 	void loadFromFile( const QString & filename );
 	
 	const QStringList & categories() const;
+signals:
+	void listChanged();
 private:
 	PrivateSnipetList * d;
 	friend class PrivateSnipetList;

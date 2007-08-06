@@ -337,6 +337,7 @@ void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
 	saveProject();
 
 	m_filtreLineEdit->setText( "" );
+	m_modelTimer->stop();
 	m_toggledFlatView->setChecked( false );
 
 	if( closeAll && ( ! saveSession ) ) on_m_closeAllAct_triggered(); else
@@ -400,6 +401,9 @@ void XMLVisualStudio::updateRecentFiles() {
 }
 
 void XMLVisualStudio::filtreChange() {
+	Q_ASSERT( m_dirModel );
+	m_modelTimer->stop();
+	
 	QString filtre = m_filtreLineEdit->text();
 	if( filtre.isEmpty() ) {
 		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
@@ -419,12 +423,12 @@ void XMLVisualStudio::filtreChange() {
 			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
 		m_toggledFlatView->setChecked( true );
 	}
-	m_modelTimer->stop();
 }
 
 void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
 	Q_UNUSED( filtre );
-	
+	Q_ASSERT( m_dirModel );
+
 	m_modelTimer->stop();
 	m_modelTimer->start();
 }

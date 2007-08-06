@@ -97,6 +97,8 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	connect( m_tabEditors, SIGNAL(refreshTab(int)), this, SLOT(slotRefreshFile(int)) );
 	connect( m_tabEditors, SIGNAL(saveTab(int)), this, SLOT(saveEditor(int)) );
 	connect( m_tabEditors, SIGNAL(saveAsTab(int)), this, SLOT(saveEditorAs(int)) );
+
+	connect( global.m_snipetList, SIGNAL(listChanged()), this, SLOT(refreshSnipetMenu()) );
 }
 
 void XMLVisualStudio::createDockWindows() {
@@ -123,6 +125,7 @@ void XMLVisualStudio::readSettings() {
 	try {
 		global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
 		global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+		refreshSnipetMenu();
 	} catch( ENotCompletionFile ) {
 		// TODO
 	} catch( SnipetListException ) {
@@ -699,3 +702,42 @@ void XMLVisualStudio::on_m_createTemplate_triggered() {
 	}
 }
 
+Q_DECLARE_METATYPE(Snipet*);
+
+void XMLVisualStudio::refreshSnipetMenu() {
+	qDeleteAll( m_snipetActs ); m_snipetActs.clear();
+	qDeleteAll( m_snipetCategoryActs.values() ); m_snipetCategoryActs.clear();
+	if( global.m_snipetList->count() > 0 ) {
+		foreach( QString category, global.m_snipetList->categories() ) {
+			QAction * act = new QAction( category, this );
+			m_snipetCategoryActs[ category ] = act;
+			act->setMenu( new QMenu( this ) );
+		}
+		for( int i = 0 ; i < global.m_snipetList->count() ; i++ ) {
+			Snipet * snipet = global.m_snipetList->at( i );
+			QAction * act = new QAction( QIcon( snipet->icon() ), snipet->name(), this );
+			m_snipetActs.append( act );
+			m_snipetCategoryActs[ snipet->category() ]->menu()->addAction( act );
+			act->setData( QVariant::fromValue( snipet ) );
+			connect( act, SIGNAL(triggered()), this, SLOT(callSnipetMenu()) );
+		}
+		m_toolsMenu->insertActions( m_createTemplate, m_snipetCategoryActs.values() );
+	}
+}
+
+void XMLVisualStudio::callSnipetMenu() {
+	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
+
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action && TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		Snipet * snipet = action->data().value<Snipet*>();
+		
+		RunSnipetDialogImpl dlg( snipet );
+		if( dlg.exec() ) {
+			QTextEdit * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+			QTextCursor cursor = editor->textCursor();
+			cursor.insertText( dlg.getResult() );
+			editor->setTextCursor( cursor );
+		}		
+	}
+}

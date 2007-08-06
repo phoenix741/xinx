@@ -18,9 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "globals.h"
 #include "snipetdialog.h"
 #include "xmleditor.h"
 #include "jseditor.h"
+#include "snipetlist.h"
 
 #include <QApplication>
 #include <QGroupBox>
@@ -47,6 +49,7 @@ public:
 	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
 	
 	enum Snipet::SnipetType m_snipetType;
+	Snipet * m_snipet;
 public slots:
 	void textChanged();
 private:
@@ -54,7 +57,7 @@ private:
 };
 
 PrivateSnipetDialogImpl::PrivateSnipetDialogImpl( SnipetDialogImpl * parent ) : m_parent( parent ) {
-	
+	m_snipet = NULL;
 }
 
 PrivateSnipetDialogImpl::~PrivateSnipetDialogImpl() {
@@ -62,6 +65,9 @@ PrivateSnipetDialogImpl::~PrivateSnipetDialogImpl() {
 }
 	
 void PrivateSnipetDialogImpl::setupUi() {
+	m_parent->m_categoryComboBox->clear();
+	m_parent->m_categoryComboBox->addItems( global.m_snipetList->categories() );
+	
 	QGridLayout * grid1 = new QGridLayout( m_parent->m_templateGroupBox );
 
 	switch( m_snipetType ) {
@@ -144,6 +150,7 @@ SnipetDialogImpl::SnipetDialogImpl( Snipet * snipet, QWidget * parent, Qt::WFlag
 	setupUi( this );
 
 	d = new PrivateSnipetDialogImpl( this );
+	d->m_snipet = snipet;
 	d->m_snipetType = snipet->type();
 	d->setupUi();
 	
@@ -167,20 +174,22 @@ SnipetDialogImpl::~SnipetDialogImpl() {
 }
 
 Snipet * SnipetDialogImpl::getSnipet() {
-	Snipet * snipet = new Snipet();
-	snipet->setType( d->m_snipetType );
-	snipet->setName( m_nameLineEdit->text() );
-	snipet->setDescription( m_descriptionTextEdit->toPlainText() );
-	snipet->setIcon( m_iconLineEdit->text() );
-	snipet->setCategory( m_categoryComboBox->currentText() );
-	snipet->setText( d->m_textEdit->toPlainText() );
+	if( ! d->m_snipet )
+		d->m_snipet = new Snipet();
+		
+	d->m_snipet->setType( d->m_snipetType );
+	d->m_snipet->setName( m_nameLineEdit->text() );
+	d->m_snipet->setDescription( m_descriptionTextEdit->toPlainText() );
+	d->m_snipet->setIcon( m_iconLineEdit->text() );
+	d->m_snipet->setCategory( m_categoryComboBox->currentText() );
+	d->m_snipet->setText( d->m_textEdit->toPlainText() );
 		
 	QListIterator< QPair<QLabel*,QLineEdit*> > i( d->m_paramList );
 	while( i.hasNext() ) {
 		QPair<QLabel*,QLineEdit*> pair = i.next();
-		snipet->params().append( (pair.second)->text() );
+		d->m_snipet->params().append( (pair.second)->text() );
 	}
-	return snipet ;
+	return d->m_snipet ;
 }
 
 #include "snipetdialog.moc"

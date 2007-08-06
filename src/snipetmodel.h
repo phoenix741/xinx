@@ -21,6 +21,6 @@
 #ifndef __SNIPETMODEL_H__
 #define __SNIPETMODEL_H__
 
-// place your code here
+/// \todo Create a snipet model to show in a dock
 
 #endif // __SNIPETMODEL_H__

@@ -27,7 +27,7 @@ public:
 	PrivateSnipet( Snipet * parent );
 	virtual ~PrivateSnipet();
 	
-	QString m_text, m_name, m_description, m_icon, m_category;
+	QString m_text, m_name, m_description, m_icon, m_category, m_key;
 	QStringList m_params;
 	enum Snipet::SnipetType m_type;
 private:
@@ -49,7 +49,7 @@ Snipet::Snipet() {
 	d = new PrivateSnipet( this );
 }
 
-Snipet::Snipet( const Snipet & snipet ) {
+Snipet::Snipet( const Snipet & snipet ) : QObject( snipet.parent() ) {
 	d = new PrivateSnipet( this );
 	*d = *(snipet.d);
 	d->m_parent = this;
@@ -66,6 +66,14 @@ const QString & Snipet::name() const {
 
 void Snipet::setName( const QString & name ) {
 	d->m_name = name;
+}
+
+const QString & Snipet::key() const {
+	return d->m_key;
+}
+	 
+void Snipet::setKey( const QString & key ) {
+	d->m_key = key;
 }
 
 enum Snipet::SnipetType Snipet::type() const {
@@ -98,6 +106,7 @@ const QString & Snipet::category() const {
 	
 void Snipet::setCategory( const QString & category ) {
 	d->m_category = category;
+	emit categoryChange( category );
 }
 
 const QString & Snipet::text() const {

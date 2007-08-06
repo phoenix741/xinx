@@ -67,6 +67,13 @@
       <number>6</number>
      </property>
      <item>
+      <widget class="QPushButton" name="m_detailPushButton" >
+       <property name="text" >
+        <string>&amp;Detail ...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>

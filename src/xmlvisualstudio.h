@@ -22,6 +22,7 @@
 #define XMLVISUALSTUDIO_H
 //
 #include <QTextCursor>
+#include <QHash>
 
 #include "ui_mainform.h"
 #include "replacedialogimpl.h"
@@ -208,6 +209,13 @@ private: /* private definition */
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
 
+																				/* ***** Template manager ***** */
+private slots:
+	void callSnipetMenu();
+	void refreshSnipetMenu();
+private:
+	QHash<QString,QAction*> m_snipetCategoryActs;
+	QList<QAction*> m_snipetActs;
 };
 #endif
 
