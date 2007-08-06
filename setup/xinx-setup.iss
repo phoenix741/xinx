@@ -37,7 +37,7 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
 Name: remplace_completion; Description: Replace completion.xnx file; Components: 
-Name: remplace_template; Description: Replace template.xnx file; Flags: unchecked
+Name: remplace_template; Description: Replace template.xnx file
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -56,45 +56,14 @@ Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks:
 ;Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\xinx-doc.zip; DestDir: {app}; Components: documentation; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: doc.zip
-Source: C:\Qt\dbus\bin\dbus-daemon.exe; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\bin\dbus-env.bat; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\bin\dbus-launch.exe; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\bin\dbus-monitor.exe; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\bin\dbus-send.exe; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\bin\libdbus-1.dll; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\bin\libexpat.dll; DestDir: {pf}\dbus\bin; Components: dbus
-Source: C:\Qt\dbus\data\dbus-1\services\debug-echo.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
-Source: C:\Qt\dbus\data\dbus-1\services\debug-segfault.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
-Source: C:\Qt\dbus\data\dbus-1\services\debug-shell-echo-fail.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
-Source: C:\Qt\dbus\data\dbus-1\services\debug-shell-echo-success.service; DestDir: {pf}\dbus\data\dbus-1\services; Components: dbus
-Source: C:\Qt\dbus\etc\session.conf; DestDir: {pf}\dbus\etc; Components: dbus
-Source: C:\Qt\dbus\etc\session.conf.simple; DestDir: {pf}\dbus\etc; Components: dbus
-Source: C:\Qt\dbus\etc\system.conf; DestDir: {pf}\dbus\etc; Components: dbus
-Source: C:\Qt\dbus\etc\system.conf.simple; DestDir: {pf}\dbus\etc; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-address.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-arch-deps.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-bus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-connection.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-errors.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-macros.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-memory.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-message.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-misc.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-pending-call.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-protocol.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-server.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-shared.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-signature.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-threads.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus-types.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\include\dbus\dbus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus
-Source: C:\Qt\dbus\lib\libdbus-1.dll.a; DestDir: {pf}\dbus\lib; Components: dbus
-Source: C:\Qt\dbus\lib\libdbus-1d.dll.a; DestDir: {pf}\dbus\lib; Components: dbus
+Source: dbus-1.1.2-win32.exe; DestDir: {tmp}; Flags: deleteafterinstall
+DestDir: {app}; Source: {#QTDIR}\bin\qdbusviewer.exe; Flags: sharedfile; Components: dbus
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\xinx.exe; IconIndex: 0; Components: application; Tasks: ; Languages: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
 Name: {userdesktop}\{#AppName}; Filename: {app}\xinx.exe; Tasks: desktopicon; IconIndex: 0; Components: application
+Name: {group}\D-BUS Viewer; Filename: {app}\qdbusviewer.exe; Components: dbus; Tasks: ; Languages: 
 
 [Registry]
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}; Tasks: assoxml
@@ -114,3 +83,5 @@ Name: dbus; Description: D-Bus support; Types: full
 Name: {app}\xmlvisualstudio.exe; Type: files; Components: application
 Name: {app}\src; Type: filesandordirs
 Name: {app}\source; Type: filesandordirs
+[Run]
+Filename: {tmp}\dbus-1.1.2-win32.exe; Parameters: /S; Components: dbus; Tasks: 

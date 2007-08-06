@@ -155,6 +155,7 @@ private slots: /* slots definition */
 	void openRecentFile();
 	void newProject();
 	void openProject();
+	void openProject( const QString & filename );
 	void changeProjectProperty();
 	void saveProject();
 	
@@ -165,7 +166,6 @@ private: /* Private definition */
 	void createProjectPart();
 	void setupRecentProjectMenu( QMenu * menu );
 	void setupRecentFileMenu( QMenu * menu );
-	void openProject( const QString & filename );
 	void setCurrentProject( const QString & filename );
 	void addRCSFile( const QString & filename );
 	

@@ -74,14 +74,6 @@ int main(int argc, char *argv[]) {
 	translator_xinx.load(QString("xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
 	app.installTranslator(&translator_xinx);
 	
-/*#ifdef QT_DEBUG
-	app.setStyle( new QPlastiqueStyle() );
-	QFile qssFile( ":/qss/coffee.qss" );
-	qssFile.open( QFile::ReadOnly );
-	app.setStyleSheet( qssFile.readAll() );
-	qssFile.close();
-#endif */
-
 	if( app.isUnique() ) {
 		QPixmap pixmap(":/images/splash.png");
 		QSplashScreen splash(pixmap);
@@ -121,7 +113,7 @@ int main(int argc, char *argv[]) {
 			QStringList::iterator it = args.begin();
 			it++;
 			while (it != args.end()) {
-				if(QFile(*it).exists()) app.sendSignalOpen(*it);
+				if(QFile(*it).exists()) app.callOpenFile(*it);
 				it++;
 			}
 		}

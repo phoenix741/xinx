@@ -23,17 +23,7 @@
 
 #include <QApplication>
 
-#ifdef Q_WS_WIN
-	#ifndef QT_QTDBUS
-		#define DBUS
-	#endif
-#else
-	#define DBUS
-#endif
-
-#ifndef DBUS
-	#include <windows.h>
-#endif
+class PrivateUniqueApplication;
 
 class UniqueApplication : public QApplication {
 	Q_OBJECT
@@ -41,35 +31,23 @@ public:
 	UniqueApplication ( int & argc, char ** argv );
 	UniqueApplication ( int & argc, char ** argv, bool GUIenabled );
 	UniqueApplication ( int & argc, char ** argv, Type type );
-#ifndef Q_WS_WIN
-	UniqueApplication ( Display * display, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 );
-	UniqueApplication ( Display * display, int & argc, char ** argv, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0 );
-#endif
 	
 	virtual ~UniqueApplication ();
 	
-	void start();
+	bool isUnique();
+	void callOpenFile( const QString & fileName );
 	
-	bool isUnique() { return m_isUnique; }
-	
-	void sendSignalOpen(const QString &fileName);
-Q_SIGNALS:
-    void open(const QString &fileName);
-	void hasFileToOpen(const QString & fileName);
-
-#ifndef DBUS
-private Q_SLOTS:
-	void timerApplicationEvent();
-#endif
+signals:
+    void newFile();
+    void openFile( const QString & fileName );
+    void saveAllFile();
+    void closeAllFile();
+    void openProject( const QString & filename );
+    void closeProject();
 
 private:
-	bool m_isUnique;
-	
-#ifndef DBUS
-	void openSharedMem();
-
-	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
-	char* m_fileView;
-#endif
+	PrivateUniqueApplication * d;
+	friend class PrivateUniqueApplication;
 };
+
 #endif

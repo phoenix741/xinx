@@ -85,7 +85,13 @@ XMLVisualStudio::XMLVisualStudio( QWidget * parent, Qt::WFlags f ) : QMainWindow
 	createStatusBar();
 	
 	// Connection for auto open
-	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(hasFileToOpen(QString)), this, SLOT(open(QString)) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(newFile()), this, SLOT(on_m_newAct_triggered()) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(openFile(QString)), this, SLOT(open(QString)) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(saveAllFile()), this, SLOT(on_m_saveAllAct_triggered()) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(closeAllFile()), this, SLOT(on_m_closeAllAct_triggered()) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(openProject(QString)), this, SLOT(openProject(QString)) );
+	connect( static_cast<UniqueApplication*>(qApp), SIGNAL(closeProject()), this, SLOT(on_m_closeProjectAct_triggered()) );
+	
 	connect( m_tabEditors, SIGNAL(fileDragged()), this, SLOT(updateActions()) );
 	connect( m_tabEditors, SIGNAL(closeTab(int)), this, SLOT(slotCloseFile(int)) );
 	connect( m_tabEditors, SIGNAL(refreshTab(int)), this, SLOT(slotRefreshFile(int)) );

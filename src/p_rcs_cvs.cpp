@@ -32,13 +32,14 @@ RCS_CVSEntry::RCS_CVSEntry( const QString & path ) {
 
 void RCS_CVSEntry::setDate( QString date ) {
 	if( ! m_fileInfo.isDir() ) {
-		if( date.contains( "+" ) )
+		if( date.contains( "+" ) ) {
+			m_cvsDate = QDateTime();
 			m_hasConflict = true;
-		else
+		} else {
 			m_hasConflict = false;
-	
-		m_cvsDate = QDateTime::fromString( date.remove( 0, date.indexOf("+") + 1 ) ); // , "ddd MMM d hh:mm:ss yyyy"
-		m_cvsDate.setTimeSpec( Qt::UTC );
+			m_cvsDate = QDateTime::fromString( date.simplified() ); // , "ddd MMM d hh:mm:ss yyyy"
+			m_cvsDate.setTimeSpec( Qt::UTC );
+		}
 	} else
 		m_cvsDate = QDateTime();
 }
@@ -71,10 +72,10 @@ RCS::rcsState RCS_CVSEntry::status() {
 	}
 	if( m_cvsVersion == "0" ) return RCS::LocallyAdded;
 	if( ! m_fileInfo.isDir() ) {
-		if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) )
-			return RCS::LocallyModified;
-		else if( m_hasConflict )
+		if( m_hasConflict )
 			return RCS::FileHadConflictsOnMerge;
+		else if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) ) 
+			return RCS::LocallyModified;
 		else		
 			return RCS::Updated;
 	} else

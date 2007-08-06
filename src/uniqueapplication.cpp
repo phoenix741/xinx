@@ -18,21 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifdef Q_WS_WIN
+	#ifndef QT_QTDBUS
+		#define DBUS
+	#endif
+#else
+	#define DBUS
+#endif
+
+#include "uniqueapplication.h"
 #include <iostream>
 #include <unistd.h>
-
 #include <QString>
-#include "uniqueapplication.h"
-
 #ifdef DBUS
 	#include <QtDBus>
 	#include "studioadaptor.h"
 	#include "studiointerface.h"
 #else
+	#include <windows.h>
 	#include <QTimer>
 	#include <QtGui>
 #endif
- 
+
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health
@@ -45,87 +52,116 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 }
 #endif
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
+/* PrivateUniqueApplication */
+
+class PrivateUniqueApplication : public QObject {
+	Q_OBJECT
+public:
+	PrivateUniqueApplication( UniqueApplication * parent );
+	virtual ~PrivateUniqueApplication();
+	
+	bool m_isUnique;
+
+#ifndef DBUS
+	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
+	char* m_fileView;
+	void openSharedMem();
+#else
+	ComGenerixXinxInterface * m_interface;
+#endif
+	void start();
+
+public slots:
+    void closeAllFile();
+    void closeProject();
+    void newFile();
+    void openFile( const QString & filename );
+    void openProject( const QString & filename );
+    void saveAllFile();
+#ifndef DBUS
+	void timerApplicationEvent();
+#endif
+private:
+	UniqueApplication * m_parent;
+};
+
+PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent ) : m_parent( parent ) {
 #ifndef DBUS
 	m_handle = 0;
 	m_handleMutex = 0;
 	m_handleMutexGbl = 0;
 	m_handleEvent = 0;
 	m_fileView = 0;
+#else
+	m_interface = NULL;
 #endif
-	start();
 }
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
-#ifndef DBUS
-	m_handle = 0;
-	m_handleMutex = 0;
-	m_handleMutexGbl = 0;
-	m_handleEvent = 0;
-	m_fileView = 0;
-#endif
-	start();	
-}
-
-UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
-#ifndef DBUS
-	m_handle = 0;
-	m_handleMutex = 0;
-	m_handleMutexGbl = 0;
-	m_handleEvent = 0;
-	m_fileView = 0;
-#endif
-	start();	
-}
-
-#ifndef Q_WS_WIN
-UniqueApplication::UniqueApplication( Display * display, Qt::HANDLE visual, Qt::HANDLE colormap ) : QApplication( display, visual, colormap ) {
-	start();	
-}
-
-UniqueApplication::UniqueApplication( Display * display, int & argc, char ** argv, Qt::HANDLE visual, Qt::HANDLE colormap ) : QApplication( display, argc, argv, visual, colormap ) {
-	start();	
-}
-#endif	
-
-UniqueApplication::~UniqueApplication() {
+PrivateUniqueApplication::~PrivateUniqueApplication() {
 #ifndef DBUS
 	if( m_fileView ) UnmapViewOfFile( m_fileView );
-
 	if( m_handle ) CloseHandle( m_handle );
 	if( m_handleEvent ) CloseHandle( m_handleEvent );
 	if( m_handleMutex ) CloseHandle( m_handleMutex );
 	if( m_handleMutexGbl ) CloseHandle( m_handleMutexGbl );
-#endif
+#endif	
 }
 
-void UniqueApplication::start() {
+void PrivateUniqueApplication::closeAllFile() {
+	emit m_parent->closeAllFile();	
+}
+
+void PrivateUniqueApplication::closeProject() {
+	emit m_parent->closeProject();		
+}
+
+void PrivateUniqueApplication::newFile() {
+	emit m_parent->newFile();		
+}
+
+void PrivateUniqueApplication::openFile( const QString & filename ) {
+	emit m_parent->openFile( filename );
+}
+
+void PrivateUniqueApplication::openProject( const QString & filename ) {
+	emit m_parent->openProject( filename );
+}
+
+void PrivateUniqueApplication::saveAllFile() {
+	emit m_parent->saveAllFile();		
+}
+
 #ifdef DBUS
-	QString appName = "com.generix.xmlstudio";
+void PrivateUniqueApplication::start() {
+	QString appName = "com.generix.xinx";
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
-	if ( (dbusService) && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
+	if ( dbusService && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
 		std::cout << QObject::tr("UniqueApplication: Can't setup D-Bus service. Probably already running.").toStdString() << std::endl;
 		
 		QString pid = QString::number(getpid());
 		if( dbusService->registerService(appName + '-' + pid) != QDBusConnectionInterface::ServiceRegistered ) {
 			std::cout << QObject::tr("UniqueApplication: Can't really create D-Bus service.").toStdString();
 		} else {
-			new XmlstudioAdaptor( this );
-			QDBusConnection::sessionBus().registerObject( "/", this );
+//			new XinxAdaptor( this );
+//			QDBusConnection::sessionBus().registerObject( "/", this );
+			m_interface = new ComGenerixXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 		}
 		
 		m_isUnique = false;
 		return;
 	}
 	
-	new XmlstudioAdaptor( this );
+	new XinxAdaptor( this );
 	QDBusConnection::sessionBus().registerObject( "/", this );
 
-	com::generix::xmlstudio * iface = new com::generix::xmlstudio(QString(), QString(), QDBusConnection::sessionBus(), this);;
-	connect( iface, SIGNAL(open(QString)), this, SIGNAL(hasFileToOpen(QString)) );
+	m_interface = new ComGenerixXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 
+	m_isUnique = true;
+} 
 #else
+
+void PrivateUniqueApplication::start() {
 	SECURITY_DESCRIPTOR securityDesc;
 	SECURITY_ATTRIBUTES securityAttr;
 
@@ -160,14 +196,11 @@ void UniqueApplication::start() {
 		connect( timer, SIGNAL(timeout()), this, SLOT(timerApplicationEvent()) );
 		timer->start( 500 );
 	}
-#endif
 
 	m_isUnique = true;
 }
 
-#ifndef DBUS
-
-void UniqueApplication::openSharedMem() {
+void PrivateUniqueApplication::openSharedMem() {
 	#define SIZE 4096
 
 	// Mapping
@@ -191,27 +224,10 @@ void UniqueApplication::openSharedMem() {
 	
 }
 
-#endif
-
-void UniqueApplication::sendSignalOpen(const QString &fileName) {
-#ifndef DBUS
-	while( strlen(m_fileView) > 0 ) Sleep( 250 );
-	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {
-		strncpy( m_fileView, const_cast<char*>(fileName.toAscii().data()), 4096 );
-		
-		ReleaseMutex( m_handleMutex );
-	}
-#else
-	emit open(fileName);
-#endif
-}
-
-#ifndef DBUS
-
-void UniqueApplication::timerApplicationEvent() {
+void PrivateUniqueApplication::timerApplicationEvent() {
 	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {
 		if( strlen( m_fileView ) > 0 ) {
-			emit hasFileToOpen( QString(m_fileView) );
+			openFile( QString(m_fileView) );
 			m_fileView[0] = '\0';
 		}
 		ReleaseMutex( m_handleMutex );
@@ -219,3 +235,44 @@ void UniqueApplication::timerApplicationEvent() {
 }
 
 #endif
+
+
+/* UniqueApplication */
+
+UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
+	d = new PrivateUniqueApplication( this );
+	d->start();
+}
+
+UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
+	d = new PrivateUniqueApplication( this );
+	d->start();
+}
+
+UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
+	d = new PrivateUniqueApplication( this );
+	d->start();
+}
+
+UniqueApplication::~UniqueApplication() {
+	delete d;
+}
+
+bool UniqueApplication::isUnique() { 
+	return d->m_isUnique; 
+}
+
+void UniqueApplication::callOpenFile(const QString &fileName) {
+#ifndef DBUS
+	while( strlen( d->m_fileView ) > 0 ) Sleep( 250 );
+	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {
+		strncpy( m_fileView, const_cast<char*>(fileName.toAscii().data()), 4096 );
+		
+		ReleaseMutex( m_handleMutex );
+	}
+#else
+	d->m_interface->openFile( fileName );
+#endif
+}
+
+#include "uniqueapplication.moc"
