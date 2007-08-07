@@ -158,6 +158,14 @@ const QStringList & SnipetList::categories() const {
 	return d->m_categories;
 }
 
+Snipet * SnipetList::indexOf( const QString & key ) {
+	foreach( Snipet * snipet, d->m_list ) {
+		if( snipet->key() == key )
+			return snipet;
+	}
+	return NULL;
+}
+
 /*!
  * Save the snipet list into a file.
  * \param filename The filename where we want save snipet.

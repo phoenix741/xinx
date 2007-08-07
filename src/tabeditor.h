@@ -110,6 +110,8 @@ private slots:
 	
 	void slotCursorPositionChanged();
 	
+	void slotNeedInsertSnipet( const QString & snipet );
+	
 private:
 	int m_clickedItem;
 

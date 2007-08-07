@@ -34,6 +34,11 @@
 #include "webserviceseditor.h"
 #include "xslproject.h"
 
+#include "runsnipetdialogimpl.h"
+#include "globals.h"
+#include "snipet.h"
+#include "snipetlist.h"
+
 //
 TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), previous(NULL) {
 	setAcceptDrops(true);
@@ -332,10 +337,23 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 		
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
 		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
+		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
 	}
+}
+
+void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
+	Snipet * s = global.m_snipetList->indexOf( snipet );
+	if( ! s ) return ;
+	RunSnipetDialogImpl dlg( s );
+	if( dlg.exec() ) {
+		QTextEdit * textEdit = qobject_cast<QTextEdit*>( sender() );
+		QTextCursor cursor = textEdit->textCursor();
+		cursor.insertText( dlg.getResult() );
+		textEdit->setTextCursor( cursor );
+	}		
 }
 
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {

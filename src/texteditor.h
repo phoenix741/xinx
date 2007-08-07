@@ -47,6 +47,8 @@ public slots:
 signals:
 	void deleteModel();
 	void createModel();
+	
+	void needInsertSnipet( QString snipet );
 
 protected:
 	void keyPressEvent(QKeyEvent *e);

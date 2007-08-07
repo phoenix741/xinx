@@ -49,6 +49,8 @@ public:
 	Snipet * at( int index );
 	int count();
 	
+	Snipet * indexOf( const QString & key );
+	
 	void saveToFile( const QString & filename );
 	void loadFromFile( const QString & filename );
 	

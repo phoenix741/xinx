@@ -67,6 +67,8 @@ void TextEditor::complete() {
 }
 
 void TextEditor::keyPressEvent( QKeyEvent *e ) {
+	bool isShortcut = ( (e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space ); // CTRL+Space
+		
 	if ( ( e->key() == Qt::Key_Home ) && ( e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier ) ) {
 		key_home( e->modifiers() == Qt::ShiftModifier );
 		e->accept();
@@ -76,6 +78,9 @@ void TextEditor::keyPressEvent( QKeyEvent *e ) {
 		e->accept();
 	} else
 		QTextEdit::keyPressEvent( e );
+
+	if( isShortcut )
+		emit needInsertSnipet( textUnderCursor( textCursor() ) );
 }
 
 void TextEditor::key_enter() {
