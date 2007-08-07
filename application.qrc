@@ -68,6 +68,17 @@
         <file>images/variable.png</file>
         <file>images/warning.png</file>
         <file>images/window_new.png</file>
+        
+        <file>images/calendarwidget.png</file>
+        <file>images/checkbox.png</file>
+        <file>images/combobox.png</file>
+        <file>images/datetimeedit.png</file>
+        <file>images/label.png</file>
+        <file>images/lineedit.png</file>
+        <file>images/listbox.png</file>
+        <file>images/pushbutton.png</file>
+        <file>images/radiobutton.png</file>
+        <file>images/textedit.png</file>
  
 		<file>qss/coffee.qss</file>
     </qresource>

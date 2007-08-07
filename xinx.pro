@@ -139,8 +139,8 @@ TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
 UI_DIR +=   build
 unix {
-  QMAKE_CC +=     "ccache gcc"
-  QMAKE_CXX +=     "ccache gcc"
+  QMAKE_CC =     "ccache gcc"
+  QMAKE_CXX =     "ccache gcc"
 }
 win32 {
   RC_FILE +=     rc/xinx.rc

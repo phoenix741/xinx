@@ -156,6 +156,7 @@ SnipetDialogImpl::SnipetDialogImpl( Snipet * snipet, QWidget * parent, Qt::WFlag
 	
 	m_nameLineEdit->setText( snipet->name() );
 	m_descriptionTextEdit->setPlainText( snipet->description() );
+	m_keyLineEdit->setText( snipet->key() );
 	m_iconLineEdit->setText( snipet->icon() );
 	m_categoryComboBox->setEditText( snipet->category() );
 	d->m_textEdit->setPlainText( snipet->text() );
@@ -179,6 +180,7 @@ Snipet * SnipetDialogImpl::getSnipet() {
 		
 	d->m_snipet->setType( d->m_snipetType );
 	d->m_snipet->setName( m_nameLineEdit->text() );
+	d->m_snipet->setKey( m_keyLineEdit->text() );
 	d->m_snipet->setDescription( m_descriptionTextEdit->toPlainText() );
 	d->m_snipet->setIcon( m_iconLineEdit->text() );
 	d->m_snipet->setCategory( m_categoryComboBox->currentText() );
