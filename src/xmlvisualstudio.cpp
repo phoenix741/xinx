@@ -124,17 +124,23 @@ void XMLVisualStudio::readSettings() {
 
 	try {
 		global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
-		global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
-		refreshSnipetMenu();
 	} catch( ENotCompletionFile ) {
 		// TODO
+	}
+	try {
+		global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+		refreshSnipetMenu();
 	} catch( SnipetListException ) {
 		// TODO
 	}
 }
 
 void XMLVisualStudio::writeSettings() {
-	global.m_snipetList->saveToFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+	try {
+		global.m_snipetList->saveToFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+	} catch( SnipetListException ) {
+		// TODO
+	}
 
 	global.m_xinxConfig->storeMainWindowState( saveState() );
 	
@@ -741,3 +747,878 @@ void XMLVisualStudio::callSnipetMenu() {
 		}		
 	}
 }
+
+/****************************************************************************************/
+/* PROJECT */
+
+#include <QDir>
+#include <QDirModel>
+#include <QAction>
+#include <QFileDialog>
+#include <QTimer>
+#include <QHeaderView>
+#include <QFileIconProvider>
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QMessageBox>
+
+#include <assert.h>
+
+#include "globals.h"
+#include "xmlvisualstudio.h" 
+#include "xinxconfig.h"
+#include "xslproject.h"
+#include "projectpropertyimpl.h"
+#include "editor.h"
+
+#include "rcs_cvs.h"
+#include "rcslogdialogimpl.h"
+
+#include "commitmessagedialogimpl.h"
+
+#include "flattreeview.h"
+
+/* DirRCSModel */
+
+class DirRCSModel : public QDirModel {
+	Q_OBJECT
+public:
+	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
+	DirRCSModel( QObject *parent = 0 );
+	virtual ~DirRCSModel();
+	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
+	RCS * rcs();
+private:
+	RCS * m_rcs;
+};
+
+DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
+	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) ) 
+		m_rcs = new RCS_CVS();
+	else
+		m_rcs = NULL;
+}
+
+DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
+	
+}
+
+DirRCSModel::~DirRCSModel() {
+	delete m_rcs;
+}
+
+RCS * DirRCSModel::rcs() { 
+	return m_rcs;
+}
+
+QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
+	if (m_rcs && ( role == Qt::BackgroundRole && index.column() == 0 ) ) {
+   		RCS::rcsState state = m_rcs->status( filePath(index) );
+   		if( state == RCS::Unknown )
+			return QBrush( Qt::gray );
+   		if( state == RCS::LocallyModified )
+			return QBrush( Qt::yellow );
+   		if( state == RCS::LocallyAdded )
+			return QBrush( Qt::green );
+		if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
+			return QBrush( Qt::red );
+			
+		return QDirModel::data(index, role);
+	}
+	/* else if( role == Qt::SizeHintRole ) {
+		return QSize( 9999, 10 );
+	}*/
+
+	return QDirModel::data(index, role);
+}
+
+/* IconProvider */
+
+class IconProjectProvider : public QFileIconProvider {
+public:
+	IconProjectProvider();
+	~IconProjectProvider();
+	
+	QIcon icon( const QFileInfo & info ) const;
+};
+
+IconProjectProvider::IconProjectProvider() : QFileIconProvider() {
+	
+}
+
+IconProjectProvider::~IconProjectProvider() {
+	
+}
+	
+QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
+	if( info.suffix() == "xsl" ) {
+		return QIcon( ":/images/typexsl.png" );
+	} else
+	if( info.suffix() == "xml" ) {
+		return QIcon( ":/images/typexml.png" );
+	} else
+	if( info.suffix() == "js" ) {
+		return QIcon( ":/images/typejs.png" );
+	} else
+	if( info.suffix() == "fws" ) {
+		return QIcon( ":/images/typefws.png" );
+	} else
+		return QFileIconProvider::icon( info );
+}
+
+/* XMLVisualStudio */
+
+bool XMLVisualStudio::eventFilter( QObject *obj, QEvent *event ) {
+	if ( ( obj == m_projectDirectoryTreeView ) && ( event->type() == QEvent::ContextMenu ) ) {
+		QMenu *menu = new QMenu( m_projectDirectoryTreeView );
+		menu->addAction( m_selectedUpdateFromRCSAct );
+		menu->addAction( m_selectedCommitToRCSAct );
+		menu->addAction( m_selectedAddToRCSAct );
+		menu->addAction( m_selectedRemoveFromRCSAct );
+		menu->exec( static_cast<QContextMenuEvent*>(event)->globalPos() );
+		delete menu;
+	}
+	return QObject::eventFilter( obj, event );
+}
+
+void XMLVisualStudio::rcsLogTerminated() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		rcs->disconnect();
+	}
+}
+
+void XMLVisualStudio::createProjectPart() {
+	m_lastProjectOpenedPlace = QDir::currentPath();
+	m_dirModel = NULL;
+	m_flatModel = NULL;
+	m_modelTimer = new QTimer( this );
+	m_modelTimer->setInterval( 500 );
+	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
+	m_projectDirectoryTreeView->header()->hide();
+//	m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
+//	m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
+	m_projectDirectoryTreeView->installEventFilter( this );
+
+	m_rcslogDialog = new RCSLogDialogImpl( this );
+	m_updateProjectBtn->setDefaultAction( m_globalUpdateFromRCSAct );
+	m_commitProjectBtn->setDefaultAction( m_globalCommitToRCSAct );
+	m_flatListBtn->setDefaultAction( m_toggledFlatView );
+	
+	connect( m_newProjectAct, SIGNAL(triggered()), this, SLOT(newProject()) );
+	connect( m_openProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
+	connect( m_saveProjectAct, SIGNAL(triggered()), this, SLOT(saveProject()) );
+	connect( m_projectPropertyAct, SIGNAL(triggered()), this, SLOT(changeProjectProperty()) );
+}
+
+void XMLVisualStudio::setupRecentProjectMenu( QMenu * menu ) {
+	
+	m_recentSeparator = menu->addSeparator();
+	for(int i = 0; i < MAXRECENTFILES; i++) {
+		m_recentProjectActs[i] = new QAction( this );
+		m_recentProjectActs[i]->setVisible( false );
+		menu->addAction( m_recentProjectActs[i] );
+		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
+	}
+	
+	updateRecentProjects();
+}
+
+void XMLVisualStudio::setupRecentFileMenu( QMenu * menu ) {
+	m_recentFileSeparator = menu->addSeparator();
+	for(int i = 0; i < MAXRECENTFILES; i++) {
+		m_recentFileActs[i] = new QAction( this );
+		m_recentFileActs[i]->setVisible( false );
+		menu->addAction( m_recentFileActs[i] );
+		connect( m_recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()) );
+	}
+	
+	updateRecentFiles();	
+}
+
+void XMLVisualStudio::newProject() {
+	ProjectPropertyImpl property ( this );
+	if( ! property.exec() ) return;
+		
+	XSLProject* project = new XSLProject( );
+	property.saveToProject( project );
+
+	QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
+	if( filename.isEmpty() ) {
+		delete project;
+		return;
+	}
+	m_lastProjectOpenedPlace = project->projectPath();
+
+	closeProject( true, global.m_xinxConfig->saveSessionByDefault() );
+	project->saveToFile( filename );
+	delete project;
+	
+	openProject( filename );
+}
+
+void XMLVisualStudio::openRecentProject() {
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action )
+		openProject( action->data().toString() );	
+}
+
+void XMLVisualStudio::openRecentFile() {
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action )
+		open( action->data().toString() );	
+}
+
+void XMLVisualStudio::openProject() {
+	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), global.m_xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
+	if( ! fileName.isEmpty() )
+		openProject( fileName );	
+}
+
+void XMLVisualStudio::openProject( const QString & filename ) {
+	assert( ! filename.isEmpty() );
+
+	if( global.m_project ) 
+		closeProject( true, global.m_xinxConfig->saveSessionByDefault() ); 
+	else 
+		on_m_closeAllAct_triggered();
+		
+	global.m_xinxConfig->recentProjectFiles().removeAll( filename );
+
+	try {
+		global.m_project      	 = new XSLProject( filename );
+		m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
+		m_lastPlace              = global.m_project->projectPath();
+
+		if( global.m_project->projectType() == XSLProject::SERVICES )
+			setWebServicesView( true );
+
+		global.m_xinxConfig->recentProjectFiles().prepend( filename );
+     
+		while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
+			global.m_xinxConfig->recentProjectFiles().removeLast();
+
+		m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirectoryTreeView );
+		m_iconProvider = new IconProjectProvider();
+		m_dirModel->setIconProvider( m_iconProvider );
+
+		m_projectDirectoryTreeView->setModel( m_dirModel );
+		m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
+		m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
+		for(int i = 2; i < m_dirModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
+
+		m_tabEditors->setUpdatesEnabled( false );
+	
+		QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
+		while( ! element.isNull() ) {
+			Editor * editor = m_tabEditors->newFileEditor( element.attribute( "filename" ) );
+			editor->deserializeEditor( element );
+			
+			element = element.nextSiblingElement( "editor" );
+		}
+		m_tabEditors->setUpdatesEnabled( true );
+
+		setCurrentProject( filename );
+
+	} catch( XSLProjectException e ) {
+		QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
+	}
+	updateActions();
+	updateRecentProjects();
+	updateRecentFiles();
+	global.emitProjectChanged();
+}
+
+void XMLVisualStudio::saveProject() {
+	assert( global.m_project != NULL );
+	
+	global.m_project->saveToFile();
+}
+
+void XMLVisualStudio::changeProjectProperty() {
+	assert( global.m_project != NULL );
+	
+	ProjectPropertyImpl property ( this );
+	property.loadFromProject( global.m_project );
+	if( property.exec() ) {
+		property.saveToProject( global.m_project );
+		global.emitProjectChanged();
+		refreshWebServicesList();
+		saveProject();
+	}
+}
+
+void XMLVisualStudio::on_m_closeProjectAct_triggered() {
+	closeProject( true, false );
+}
+
+void XMLVisualStudio::on_m_closeProjectSessionAct_triggered() {
+	closeProject( true, true );
+}
+
+void XMLVisualStudio::closeProject( bool closeAll, bool saveSession ) {
+	if( ! global.m_project ) return;		
+		
+	global.m_project->clearSessionNode();
+	for( int i = 0; i < m_tabEditors->count(); i++ ) {
+		QDomElement node = global.m_project->sessionDocument().createElement( "editor" );
+		m_tabEditors->editor( i )->serializeEditor( node, saveSession );
+		global.m_project->sessionNode().appendChild( node );
+	}
+	saveProject();
+
+	m_filtreLineEdit->setText( "" );
+	m_modelTimer->stop();
+	m_toggledFlatView->setChecked( false );
+
+	if( closeAll && ( ! saveSession ) ) on_m_closeAllAct_triggered(); else
+	if( closeAll ) {
+		for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) {
+			Editor * ed = m_tabEditors->editor( i );
+			m_tabEditors->removeTab( i );	
+			delete ed;
+		}
+		updateActions();
+	}
+
+	m_projectDirectoryTreeView->setModel( NULL );
+	delete m_dirModel;
+	m_dirModel = NULL;
+	setWebServicesView( false );
+
+	delete global.m_project;
+	global.m_project = NULL;
+
+	updateActions();
+	updateRecentFiles();
+	setCurrentProject( "" );
+	global.emitProjectChanged();
+}
+
+void XMLVisualStudio::updateRecentProjects() {
+	int numRecentFiles = qMin( global.m_xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
+
+	for( int i = 0; i < numRecentFiles; i++ ) {
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_xinxConfig->recentProjectFiles()[i] ).fileName() );
+		m_recentProjectActs[i]->setText( text );
+		m_recentProjectActs[i]->setData( global.m_xinxConfig->recentProjectFiles()[i] );
+		m_recentProjectActs[i]->setVisible( true );
+	}
+	
+	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
+		m_recentProjectActs[j]->setVisible(false);
+
+	m_recentSeparator->setVisible( numRecentFiles > 0 );
+}
+
+void XMLVisualStudio::updateRecentFiles() {
+	int numRecentFiles;
+	if( global.m_project ) {
+		numRecentFiles = qMin( global.m_project->lastOpenedFile().size(), MAXRECENTFILES );
+
+		for( int i = 0; i < numRecentFiles; i++ ) {
+			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->lastOpenedFile()[i] ).fileName() );
+			m_recentFileActs[i]->setText( text );
+			m_recentFileActs[i]->setData( global.m_project->lastOpenedFile()[i] );
+			m_recentFileActs[i]->setVisible( true );
+		}
+	} else 
+		numRecentFiles = 0;
+	
+	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
+		m_recentFileActs[j]->setVisible(false);
+
+	m_recentFileSeparator->setVisible( numRecentFiles > 0 );
+}
+
+void XMLVisualStudio::filtreChange() {
+	Q_ASSERT( m_dirModel );
+	m_modelTimer->stop();
+	
+	QString filtre = m_filtreLineEdit->text();
+	if( filtre.isEmpty() ) {
+		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
+		m_toggledFlatView->setChecked( false );
+	} else {
+		QString extention = QFileInfo( filtre ).suffix();
+		QString filename = QFileInfo( filtre ).fileName();
+		if( extention.isEmpty() )
+			m_dirModel->setNameFilters( 
+				QStringList() 
+					<< QString("*%1*.xsl").arg( filtre )
+					<< QString("*%1*.js").arg( filtre )
+					<< QString("*%1*.xml").arg( filtre )
+					<< QString("*%1*.fws").arg( filtre )
+				);
+		else
+			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
+		m_toggledFlatView->setChecked( true );
+	}
+}
+
+void XMLVisualStudio::on_m_filtreLineEdit_textChanged( QString filtre ) {
+	Q_UNUSED( filtre );
+	Q_ASSERT( m_dirModel );
+
+	m_modelTimer->stop();
+	m_modelTimer->start();
+}
+
+void XMLVisualStudio::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
+	QModelIndex idx = index;
+	if( m_flatModel ) 
+		idx = qobject_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+	if( ! m_dirModel->fileInfo( idx ).isDir() )
+		open( m_dirModel->filePath( idx ) );
+}
+
+void XMLVisualStudio::on_m_globalUpdateFromRCSAct_triggered() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+		rcs->update( QStringList() << global.m_project->projectPath() );
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::on_m_globalCommitToRCSAct_triggered() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		CommitMessageDialogImpl dlg;
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+
+		dlg.setFilesOperation( rcs->operations( QStringList() << global.m_project->projectPath() ) );
+		if( ! dlg.exec() ) return ;
+		QString message = dlg.messages();
+
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+
+		rcs->commit( dlg.filesOperation(), message );
+
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::on_m_selectedUpdateFromRCSAct_triggered() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+		
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
+		foreach( QModelIndex index, list )
+			paths << m_dirModel->filePath( index );
+		rcs->update( paths );
+		
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::on_m_selectedCommitToRCSAct_triggered() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		CommitMessageDialogImpl dlg;
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
+		foreach( QModelIndex index, list )
+			paths << m_dirModel->filePath( index );
+
+		dlg.setFilesOperation( rcs->operations( paths ) );
+		if( ! dlg.exec() ) return ;
+		QString message = dlg.messages();
+
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+
+		rcs->commit( dlg.filesOperation(), message );
+
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::on_m_selectedAddToRCSAct_triggered() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
+		foreach( QModelIndex index, list )
+			paths << m_dirModel->filePath( index );
+		rcs->add( paths );
+
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::addRCSFile( const QString & filename ) {
+	if( ! m_dirModel ) return ;
+	RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+
+	if( rcs ) {
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+		rcs->add( QStringList() << filename );
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::on_m_selectedRemoveFromRCSAct_triggered() {
+	if( qobject_cast<DirRCSModel*>( m_dirModel ) ) {
+		RCS * rcs = qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
+		
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		m_rcslogDialog->init();
+		m_rcslogDialog->show();
+
+		m_rcslogDialog->init();
+
+		QStringList paths;
+		QModelIndexList list = m_projectDirectoryTreeView->selectionModel()->selectedRows();
+		if( m_flatModel ) {
+			QModelIndexList trf = list;
+			list.clear();
+			foreach( QModelIndex index, trf ) {
+				list << static_cast<FlatModel*>(m_flatModel)->mappingToSource( index );
+			}
+		}
+		foreach( QModelIndex index, list ) {
+			paths << m_dirModel->filePath( index );
+			m_dirModel->remove( index );
+		}
+		rcs->remove( paths );
+
+		m_rcslogDialog->exec();
+	}
+}
+
+void XMLVisualStudio::on_m_toggledFlatView_toggled( bool value ) {
+	if( value ) {
+		m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( global.m_project->projectPath() ) );
+		m_projectDirectoryTreeView->setModel( m_flatModel );
+		m_projectDirectoryTreeView->setRootIndex( QModelIndex() );
+		for(int i = 1; i < m_flatModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIsDecorated( false );
+	} else  {
+		m_projectDirectoryTreeView->setModel( m_dirModel );
+		m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( global.m_project->projectPath() ) );
+		for(int i = 1; i < m_dirModel->columnCount(); i++ )
+			m_projectDirectoryTreeView->hideColumn( i );
+		m_projectDirectoryTreeView->setRootIsDecorated( true );
+		delete m_flatModel;
+		m_flatModel = NULL;
+	}
+}
+
+/****************************************************************************************/
+/* SEARCH */
+
+#include <assert.h> 
+
+#include <QTextEdit>
+#include <QMessageBox>
+
+#include "xmlvisualstudio.h"
+#include "texteditor.h"
+#include "fileeditor.h"
+ 
+void XMLVisualStudio::on_m_searchNextAct_triggered() {
+	assert( m_tabEditors->currentEditor() );
+	
+	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		QTextDocument * document = textEdit->document();
+	
+		bool continuer = true;
+	
+		while( continuer ) {
+			continuer = false;
+
+			m_cursorStart = textEdit->textCursor();
+		
+			bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
+			bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP ) || m_searchInverse;
+			
+			if( backwardSearch ) 
+				m_cursorStart.setPosition( m_cursorStart.selectionStart() );
+			else
+				m_cursorStart.setPosition( m_cursorStart.selectionEnd() );
+	
+			QTextDocument::FindFlags flags;
+			if( backwardSearch ) flags ^= QTextDocument::FindBackward;
+			if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
+			if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
+		
+			if( ! m_cursorStart.isNull() ) {
+				if( m_findOptions.regularExpression ) {
+					m_cursorStart = document->find( QRegExp( m_findExpression ), m_cursorStart, flags );
+				} else {
+					m_cursorStart = document->find( m_findExpression, m_cursorStart, flags );
+				}
+			}
+	
+			if( m_cursorStart.isNull() || ( selectionOnly && ( ( !backwardSearch && m_cursorEnd < m_cursorStart ) || ( backwardSearch && m_cursorStart < m_cursorEnd ) ) ) ) {
+				if( m_findOptions.toReplace && m_yesToAllReplace ) {
+					QMessageBox::information( this, 
+								tr("Search/Replace"), 
+								tr("%1 occurences of '%2' replaced.").arg( m_nbFindedText ).arg( m_findExpression ), 
+								QMessageBox::Ok);
+				} else {
+					QMessageBox::StandardButton ret = QMessageBox::warning( this, 
+								tr("Search/Replace"), 
+								tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg( m_nbFindedText ).arg( m_findExpression ).arg( m_findOptions.toReplace ? tr("replaced") : tr("finded") ), 
+								QMessageBox::Yes | QMessageBox::No);
+							
+					if( ret == QMessageBox::Yes ) {
+						m_findOptions.searchExtend = ReplaceDialogImpl::FindOptions::SEARCHALL;
+						m_cursorStart = textEdit->textCursor();
+						if( ! backwardSearch ) 
+							m_cursorStart.movePosition( QTextCursor::Start );
+						else
+							m_cursorStart.movePosition( QTextCursor::End );
+						m_cursorEnd = QTextCursor();
+						
+						continuer = true;
+					}
+				}
+				m_nbFindedText = 0;
+			} else {
+				m_nbFindedText++;
+			
+				textEdit->setTextCursor( m_cursorStart );
+
+				if( m_findOptions.toReplace ) {
+					QMessageBox::StandardButton ret = QMessageBox::Yes;
+			
+
+					if(! m_yesToAllReplace) {
+	 					QMessageBox messageBoxQuestion( QMessageBox::Question, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, this );
+						messageBoxQuestion.setWindowModality( Qt::NonModal );
+						messageBoxQuestion.show();
+						while( messageBoxQuestion.isVisible() ) qApp->processEvents();
+						ret = messageBoxQuestion.standardButton( messageBoxQuestion.clickedButton() );
+					}
+
+					switch(ret) {
+					case QMessageBox::Yes: 	
+						// Replace chaine
+						m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
+		
+						continuer = true;
+						break;
+					case QMessageBox::YesToAll: 	
+						m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
+						m_yesToAllReplace = true;
+						continuer = true;
+						break;
+					case QMessageBox::No: 	
+						continuer = true;
+						break;
+					default : // Do nothing else
+						;
+					}
+				}
+			}
+			if( ! m_cursorStart.isNull() )
+				textEdit->setTextCursor( m_cursorStart );
+		}
+	}
+	m_yesToAllReplace = false;
+}
+
+void XMLVisualStudio::on_m_searchPreviousAct_triggered() {
+	m_searchInverse = true;
+	on_m_searchNextAct_triggered();
+	m_searchInverse = false;
+}
+
+void XMLVisualStudio::findFirst(const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options) {
+	if( ! TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) 
+		return; // TODO : Error
+
+	m_findExpression    = chaine;
+	m_replaceExpression = dest;
+	m_findOptions       = options;
+	m_yesToAllReplace   = false;
+	m_nbFindedText		= 0;
+	m_searchInverse		= false;
+
+	bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
+	bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP );
+
+	TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+
+	m_cursorStart = textEdit->textCursor();
+	m_cursorEnd   = QTextCursor();
+
+	int selectionStart = m_cursorStart.selectionStart(),
+	    selectionEnd = m_cursorStart.selectionEnd();
+
+	if( m_findOptions.searchFromStart ) {
+		m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+		m_findOptions.searchFromStart = false;
+	} else 
+	if( selectionOnly && ! backwardSearch ) {
+		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+		m_cursorEnd   = m_cursorStart;
+		m_cursorEnd.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+	} else
+	if( selectionOnly && backwardSearch ) {
+		m_cursorStart.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+		m_cursorEnd   = m_cursorStart;
+		m_cursorEnd.setPosition( selectionStart, QTextCursor::MoveAnchor );
+	} else
+	if( backwardSearch ) {
+		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+	}
+	
+	textEdit->setTextCursor( m_cursorStart );
+	
+	on_m_searchNextAct_triggered();
+}
+
+void XMLVisualStudio::on_m_searchAct_triggered() {
+	TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	if( ! textEdit->textCursor().selectedText().isEmpty() ){
+		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	}
+	m_findDialog->initialize();
+	m_findDialog->setReplace(false);
+	m_findDialog->exec();
+}
+
+void XMLVisualStudio::on_m_replaceAct_triggered() {
+	TextEditor * textEdit = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	if( ! textEdit->textCursor().selectedText().isEmpty() ){
+		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	}
+	m_findDialog->initialize();
+	m_findDialog->setReplace(true);
+	m_findDialog->exec();
+}
+
+/****************************************************************************************/
+/* WEBSERVICES */
+
+#include <QMessageBox>
+
+#include <assert.h>
+
+#include "globals.h"
+#include "xmlvisualstudio.h" 
+#include "texteditor.h"
+#include "fileeditor.h"
+#include "xslproject.h"
+#include "webservices.h"
+#include "serviceresultdialogimpl.h"
+#include "webserviceseditor.h"
+
+void XMLVisualStudio::createWebServicesPart() {
+	global.m_webServices = new WebServicesList();	
+}
+
+void XMLVisualStudio::setWebServicesView( bool enabled ) {
+	if( enabled ) {
+		refreshWebServicesList();
+	} else {
+		qDeleteAll( *(global.m_webServices) );
+		global.m_webServices->clear();
+	}
+		
+	m_webServicesMenu->setEnabled( enabled );
+	m_refreshWebServicesListAct->setEnabled( enabled );
+	m_callWebServicesAct->setEnabled( enabled );
+}
+
+void XMLVisualStudio::on_m_refreshWebServicesListAct_triggered() {
+	refreshWebServicesList();
+}
+
+void XMLVisualStudio::refreshWebServicesList() {
+	qDeleteAll( *(global.m_webServices) );
+	global.m_webServices->clear();
+
+	if( global.m_project ) {
+		foreach( QString link, global.m_project->serveurWeb() ) {
+			WebServices * ws = new WebServices( link, this );
+			global.m_webServices->append( ws );
+			ws->askWSDL( this );
+			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), this, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
+		}
+		global.emitWebServicesChanged();
+	}
+}
+
+void XMLVisualStudio::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
+	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
+		QMessageBox::warning( this, tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
+	} else {
+		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( this );
+		dlg->setInputStreamText( query );
+		dlg->setOutputStreamText( response );
+		dlg->show();
+	}
+}
+
+void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
+	assert( m_tabEditors->currentEditor() != NULL );
+	assert( global.m_project );
+	
+	WebServicesEditor * editor = dynamic_cast<WebServicesEditor*>(m_tabEditors->currentEditor());
+	if( editor ) {
+		editor->service()->call( editor->operation(), editor->values() );
+	}
+}
+
+#include "xmlvisualstudio.moc"

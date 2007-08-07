@@ -33,7 +33,7 @@
         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;span style=" font-size:12pt; font-weight:600;">XINX&lt;/span>&lt;span style=" font-size:12pt;"> is Not XDME&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;span style=" font-size:12pt; font-weight:600;">XINX&lt;/span>&lt;span style=" font-size:12pt;"> Is Not XML&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
        </property>
       </widget>
      </item>
@@ -51,8 +51,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal; text-decoration:none;">
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;span style=" font-style:italic;">This software is under the &lt;/span>&lt;a href="http://www.gnu.org/licenses/gpl.html">&lt;span style=" font-style:italic; text-decoration: underline; color:#0000ff;">GPL&lt;/span>&lt;/a>&lt;span style=" font-style:italic;"> Public Licence. Please read the software licence before use it.&lt;/span>&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;">Icon and Logo are under the &lt;a href="http://www.gnu.org/licenses/gpl.html">&lt;span style=" text-decoration: underline; color:#0000ff;">GPL&lt;/span>&lt;/a> Public Licence and comes from K-Desktop Environment, Cervesia, KDevelop.&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;">This software must be only use by Generix Group.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;">Icon and Logo are under the &lt;a href="http://www.gnu.org/licenses/gpl.html">&lt;span style=" text-decoration: underline; color:#0000ff;">GPL&lt;/span>&lt;/a> Public Licence and comes from K-Desktop Environment, Cervesia, KDevelop.&lt;/p>&lt;/body>&lt;/html></string>
        </property>
        <property name="wordWrap" >
         <bool>true</bool>
@@ -63,7 +62,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_5" >
        <property name="text" >
         <string>Main Author : Ulrich VANDENHEKKE
-Reporter : Mickaël BERTELOOT, Kamal B.         
+Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBOUT
 </string>
        </property>
       </widget>

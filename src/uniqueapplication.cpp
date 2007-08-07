@@ -67,7 +67,7 @@ public:
 	char* m_fileView;
 	void openSharedMem();
 #else
-	ComGenerixXinxInterface * m_interface;
+	ComEditorXinxInterface * m_interface;
 #endif
 	void start();
 
@@ -133,7 +133,7 @@ void PrivateUniqueApplication::saveAllFile() {
 
 #ifdef DBUS
 void PrivateUniqueApplication::start() {
-	QString appName = "com.generix.xinx";
+	QString appName = "com.editor.xinx";
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
 	if ( dbusService && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
@@ -145,7 +145,7 @@ void PrivateUniqueApplication::start() {
 		} else {
 //			new XinxAdaptor( this );
 //			QDBusConnection::sessionBus().registerObject( "/", this );
-			m_interface = new ComGenerixXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
+			m_interface = new ComEditorXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 		}
 		
 		m_isUnique = false;
@@ -155,7 +155,7 @@ void PrivateUniqueApplication::start() {
 	new XinxAdaptor( this );
 	QDBusConnection::sessionBus().registerObject( "/", this );
 
-	m_interface = new ComGenerixXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
+	m_interface = new ComEditorXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 
 	m_isUnique = true;
 } 
@@ -172,10 +172,10 @@ void PrivateUniqueApplication::start() {
 	securityAttr.lpSecurityDescriptor = &securityDesc;
 	securityAttr.bInheritHandle = false;
 
-	m_handleMutex = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"com.generix.xmlstudio.mutex" );
+	m_handleMutex = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"com.editor.xinx.mutex" );
 	int error = GetLastError();
 	if( ! m_handleMutex ) perror( "CreateMutex" );
-	m_handleMutexGbl = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"Global\\com.generix.xmlstudio.mutex" );
+	m_handleMutexGbl = (HWND)CreateMutex( &securityAttr, false, (WCHAR*)"Global\\com.editor.xinx.mutex" );
 	if( ! m_handleMutexGbl ) perror( "CreateMutex" );
 
 	if( m_handleMutex == 0 ) {
@@ -205,7 +205,7 @@ void PrivateUniqueApplication::openSharedMem() {
 
 	// Mapping
 
-	m_handle = (HWND)CreateFileMapping( (void*)(0xFFFFFFFF), NULL, PAGE_READWRITE, 0, SIZE, (WCHAR*)"com.generix.xmlstudio.mapping" );
+	m_handle = (HWND)CreateFileMapping( (void*)(0xFFFFFFFF), NULL, PAGE_READWRITE, 0, SIZE, (WCHAR*)"com.editor.xinx.mapping" );
 	if( m_handle == 0 ) {
 		std::cout << QCoreApplication::translate("UniqueApplication", "UniqueApplication: Error creating shared memory.").toStdString();
 		return;
@@ -220,7 +220,7 @@ void PrivateUniqueApplication::openSharedMem() {
 	m_fileView[0] = '\0';
 	
 	// Event
-	m_handleEvent = (HWND)CreateEvent( NULL, false, false, (WCHAR*)"com.generix.xmlstudio.event" );
+	m_handleEvent = (HWND)CreateEvent( NULL, false, false, (WCHAR*)"com.editor.xinx.event" );
 	
 }
 

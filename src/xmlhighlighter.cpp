@@ -313,7 +313,6 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			}
 		}
 		break;
-
 	default:
 		setFormat(i, 1, m_syntaxFormats["Other"]);
 		break;

@@ -3,7 +3,8 @@ CONFIG +=   debug \
   qt \
   thread \
   warn_on \
-  x86
+  x86 \
+  qdbus
 DESTDIR +=   bin
 DISTFILES +=   CHANGELOG \
   COPYING \
@@ -13,7 +14,7 @@ DISTFILES +=   CHANGELOG \
   application.qrc \
   rc/xinx.rc \
   setup/xinx-setup.iss \
-  src/com.generix.xmlstudio.xml \
+  src/com.editor.xmlstudio.xml \
   src/genxml.sh \
   ui/*.ui \
   xml/completion.xnx \
@@ -105,14 +106,12 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/numberbar.cpp \
   src/objectview.cpp \
   src/p_rcs_cvs.cpp \
-  src/projectmainform.cpp \
   src/projectpropertyimpl.cpp \
   src/rcs.cpp \
   src/rcs_cvs.cpp \
   src/rcslogdialogimpl.cpp \
   src/replacedialogimpl.cpp \
   src/runsnipetdialogimpl.cpp \
-  src/searchmainform.cpp \
   src/serviceresultdialogimpl.cpp \
   src/snipet.cpp \
   src/snipetdialog.cpp \
@@ -125,7 +124,6 @@ SOURCES +=   src/aboutdialogimpl.cpp \
   src/uniqueapplication.cpp \
   src/webservices.cpp \
   src/webserviceseditor.cpp \
-  src/webservicesmainform.cpp \
   src/wsdl.cpp \
   src/xinxconfig.cpp \
   src/xmleditor.cpp \
@@ -140,10 +138,9 @@ TARGET =   xinx
 TEMPLATE =   app
 TRANSLATIONS +=   translations/xinx_fr.ts
 UI_DIR +=   build
-CONFIG +=     qdbus
 unix {
-  QMAKE_CC =   "ccache gcc"
-  QMAKE_CXX =   "ccache gcc"
+  QMAKE_CC +=     "ccache gcc"
+  QMAKE_CXX +=     "ccache gcc"
 }
 win32 {
   RC_FILE +=     rc/xinx.rc

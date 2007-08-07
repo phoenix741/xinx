@@ -16,7 +16,7 @@ BEGIN
       BLOCK "040904b0"
       BEGIN
 		VALUE "Comments", "\0"
-		VALUE "CompanyName", "Generix"
+		VALUE "CompanyName", "Ulrich Van Den Hekke"
 		VALUE "FileDescription", "XINX is not XDME"
         VALUE "FileVersion", "0, 6, 8, 0"
         VALUE "InternalName", "xinx"

@@ -4,6 +4,8 @@
 #define AppName "XINX"
 #define AppVersion GetFileVersion("..\bin\xinx.exe")
 #define QTDIR GetEnv("QTDIR")
+#define DBUSDIR GetEnv("DBUS_DIR")
+#define QtVersion GetFileVersion( GetEnv("QTDIR") + "\bin\QtCore4.dll" );
 
 [Setup]
 AppName={#AppName}
@@ -16,13 +18,12 @@ Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 AppID={{AB2A9C86-AD08-4373-98FD-6A9AA8496AEE}
-AppCopyright=Generix
+AppCopyright=Ulrich Van Den Hekke
 UserInfoPage=true
 UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
 VersionInfoVersion={#AppVersion}
-VersionInfoCompany=Generix
-AppMutex=com.generix.xmlstudio.mutex,Global\com.generix.xmlstudio.mutex
+VersionInfoCompany=Ulrich Van Den Hekke
 VersionInfoDescription=XSL / Javascript editor
 ChangesAssociations=true
 AppVersion={#AppVersion}
@@ -41,47 +42,83 @@ Name: remplace_template; Description: Replace template.xnx file
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
-Source: ..\bin\xinx.exe; DestDir: {app}; Components: application; Flags: replacesameversion
-Source: ..\bin\xinx_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion
-Source: ..\bin\qt_fr.qm; DestDir: {app}; Components: application; Flags: ignoreversion
-Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}; Components: application; Flags: sharedfile
-Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}; Components: application; Flags: sharedfile
+Source: ..\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\bin\xinx_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
+Source: ..\bin\qt_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
+Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {cf}\MinGW; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile; Tasks: ; Languages: 
+Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile
 Source: ..\xml\completion.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_completion
 Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template
 ;Source: ..\xml\*.xml; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: objects
 ;Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
-Source: ..\xinx-doc.zip; DestDir: {app}; Components: documentation; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: doc.zip
-Source: dbus-1.1.2-win32.exe; DestDir: {tmp}; Flags: deleteafterinstall
-DestDir: {app}; Source: {#QTDIR}\bin\qdbusviewer.exe; Flags: sharedfile; Components: dbus
+Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
+Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile; Components: dbus qt
+Source: {#DBUSDIR}\bin\dbus-daemon.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\dbus-env.bat; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\dbus-launch.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\dbus-monitor.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\dbus-send.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\libdbus-1.dll; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\libexpat.dll; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\etc\session.conf; DestDir: {pf}\dbus\etc; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\etc\system.conf; DestDir: {pf}\dbus\etc; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-address.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-arch-deps.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-bus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-connection.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-errors.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-macros.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-memory.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-message.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-misc.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-pending-call.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-protocol.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-server.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-shared.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-signature.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-threads.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus-types.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\include\dbus\dbus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\lib\libdbus-1.dll.a; DestDir: {pf}\dbus\lib; Components: dbus; Flags: sharedfile
 
 [Icons]
-Name: {group}\{#AppName}; Filename: {app}\xinx.exe; IconIndex: 0; Components: application; Tasks: ; Languages: 
+Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; IconIndex: 0; Components: application; Tasks: ; Languages: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
-Name: {userdesktop}\{#AppName}; Filename: {app}\xinx.exe; Tasks: desktopicon; IconIndex: 0; Components: application
-Name: {group}\D-BUS Viewer; Filename: {app}\qdbusviewer.exe; Components: dbus; Tasks: ; Languages: 
+Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon; IconIndex: 0; Components: application
+Name: {group}\dbus\D-BUS Viewer; Filename: {pf}\dbus\bin\qdbusviewer.exe; Components: dbus; Tasks: ; Languages: 
+Name: {group}\dbus\D-BUS Launcher; Filename: {pf}\dbus\bin\dbus-launch.exe; Components: dbus
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: {app}; Tasks: assoxml
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\xinx.exe; Tasks: assoxml
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: "{app};{cf}\Qt\{#QtVersion};{cf}\MinGW\;{pf}\dbus\bin"; Tasks: assoxml
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe; Tasks: assoxml
 Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey; Tasks: assoxml
-Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Fichier de présentation; Flags: uninsdeletekey; Tasks: assoxml
-Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData: """{app}\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assoxml
+Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Feuille de style XML; Flags: uninsdeletekey; Tasks: assoxml
+Root: HKCR; SubKey: Fichier XSL\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assoxml
+Root: HKCR; Subkey: Fichier XSL\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue
+Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags: uninsdeletekey
+Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey
+Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue
+Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
 ;Name: objects; Description: Java Objects File
 Name: source; Description: Source de l'Application; Types: full; Languages: 
 Name: documentation; Description: Technical documentation of XINX; Types: full
-Name: dbus; Description: D-Bus support; Types: full
+Name: dbus; Description: D-Bus support; Types: full custom compact; Flags: fixed
+Name: qt; Description: Qt Library; Flags: fixed; Types: custom compact full
 
 [InstallDelete]
 Name: {app}\xmlvisualstudio.exe; Type: files; Components: application
 Name: {app}\src; Type: filesandordirs
 Name: {app}\source; Type: filesandordirs
-[Run]
-Filename: {tmp}\dbus-1.1.2-win32.exe; Parameters: /S; Components: dbus; Tasks: 
+
+[_ISToolPreCompile]
+Name: clean.bat; Parameters: 
+Name: sources.bat; Parameters: 
+Name: compiler.bat; Parameters: 
