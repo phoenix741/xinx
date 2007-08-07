@@ -313,9 +313,14 @@ void TabEditor::slotCursorPositionChanged() {
 void TabEditor::slotCurrentTabChanged( int index ) {
 	Q_UNUSED( index );
 	
-	if( previous ) previous->disconnect();
+	if( previous ) {
+		previous->disconnect();
+		if( isFileEditor( previous ) )
+			qobject_cast<FileEditor*>( previous )->textEdit()->disconnect( this );
+	}
 	
 	Editor * editor = currentEditor();
+	previous = editor;
 	
 	emit copyAvailable( editor->canCopy() );
 	emit pasteAvailable( editor->canPaste() );
