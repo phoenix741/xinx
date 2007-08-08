@@ -23,6 +23,7 @@
 #include <QDragEnterEvent>
 #include <QUrl>
 #include <QMenu>
+#include <QMessageBox>
 
 #include <typeinfo>
 #include "tabeditor.h"
@@ -296,6 +297,13 @@ void TabEditor::tabRemoved ( int index ) {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
 	}
+	
+	if( previous ) {
+		previous->disconnect();
+		if( isFileEditor( previous ) )
+			qobject_cast<FileEditor*>( previous )->textEdit()->disconnect( this );
+		previous = NULL;
+	}
 }
 
 void TabEditor::slotModifiedChange( bool changed ) {
@@ -351,12 +359,13 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
 	Snipet * s = global.m_snipetList->indexOf( snipet );
-	if( ! s ) return ;
+	if( ! s ) 
+		return ;
 	RunSnipetDialogImpl dlg( s );
-	if( dlg.exec() ) {
+	if( ( s->params().count() == 0 ) || dlg.exec() ) {
 		QTextEdit * textEdit = qobject_cast<QTextEdit*>( sender() );
 		QTextCursor cursor = textEdit->textCursor();
-		cursor.insertText( dlg.getResult() );
+		cursor.insertText( dlg.getResult() + " "  );
 		textEdit->setTextCursor( cursor );
 	}		
 }

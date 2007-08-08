@@ -92,6 +92,9 @@ RunSnipetDialogImpl::RunSnipetDialogImpl( Snipet * snipet, QWidget * parent, Qt:
 	}
 	
 	m_paramGroupBox->setVisible( d->m_paramList.size() > 0 );
+	if( d->m_paramList.size() > 0 ) {
+		d->m_paramList.at( 0 ).second->setFocus( Qt::OtherFocusReason );
+	}
 }
 
 RunSnipetDialogImpl::~RunSnipetDialogImpl() {

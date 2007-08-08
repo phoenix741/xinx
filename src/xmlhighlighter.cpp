@@ -26,14 +26,14 @@ static const QColor DEFAULT_XPATH_VALUE		= Qt::darkMagenta;
 // Regular expressions for parsing XML borrowed from:
 // http://www.cs.sfu.ca/~cameron/REX.html
 static const QString EXPR_COMMENT_BEGIN		= "<!--";
-//static const QString EXPR_COMMENT			= "<!--[^-]*-([^-][^-]*-)*->";
-//static const QString EXPR_COMMENT_END		= "[^-]*-([^-][^-]*-)*->";
 static const QString EXPR_COMMENT_TEXT		= "([^-]|(-(?!->)))*";
 static const QString EXPR_COMMENT_END		= "-->";
 static const QString EXPR_COMMENT			= EXPR_COMMENT_BEGIN + EXPR_COMMENT_TEXT + EXPR_COMMENT_END;
-static const QString EXPR_ATTRIBUTE_VALUE	= "\"[^<\"]*\"|'[^<']*'";
+
 static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
-static const QString EXPR_XPATH_VALUE       = "\\{[^\\{]*\\}";
+
+static const QString EXPR_ATTRIBUTE_VALUE	= "[^<%1{]*[%1{]";
+static const QString EXPR_XPATH_VALUE       = "[^<%1}]*[%1}]";
 
 void XmlHighlighter::init( bool useConfig ) {
 	SyntaxHighlighter::init( useConfig );
@@ -103,7 +103,7 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 	}
 
 	for (; i < text.length(); i++)
-	{
+	{	
 		switch (text.at(i).toAscii())
 		{
 		case '<':
@@ -167,46 +167,31 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 
 		case '\'':
 		case '\"':
-			if (state == ExpectAttributeValue)
-			{
-				// search attribute value
-				QRegExp expression(EXPR_ATTRIBUTE_VALUE);
-				pos = expression.indexIn(text, i);
-
-				if (pos == i) // attribute value found ?
-				{
-					const int iLength = expression.matchedLength();
-
-					setFormat(i, 1, m_syntaxFormats["Other"]);
-					setFormat(i + 1, iLength - 2, m_syntaxFormats["AttributeValue"]);
-					setFormat(i + iLength - 1, 1, m_syntaxFormats["Other"]);
-					
-					/* Le XPATH d'une autre couleur */ /// \todo parse this better
-					QRegExp xpath( EXPR_XPATH_VALUE );
-					int xpathPos = xpath.indexIn( text, i );
-					int xpathLen;
-					if( ( xpathPos < i + iLength ) && ( xpathPos != -1 ) )
-						do {
-							xpathLen = xpath.matchedLength();
-							setFormat(xpathPos, 1, m_syntaxFormats["AttributeValue"]);
-							setFormat(xpathPos + 1, xpathLen - 2, m_syntaxFormats["XPathValue"]);
-							setFormat(xpathPos + xpathLen - 1, 1, m_syntaxFormats["AttributeValue"]);
-						} while( ( ( xpathPos = xpath.indexIn( text, xpathPos + xpathLen ) ) < ( i + iLength ) ) && ( xpathPos != -1 ) );
-
-					i += iLength - 1; // skip attribute value
-					state = ExpectAttributeOrEndOfElement;
-				}
-				else
-				{
-					processDefaultText(i, text);
-				}
-			}
-			else
-			{
+			if (state == ExpectAttributeValue) {
+				m_quoteType = text.at(i);
+				state = ExpectAttributeTextOrPath;
+				setFormat(i, 1, m_syntaxFormats["SyntaxChar"]);
+			} else if( ( state == ExpectAttributeTextOrPath ) && ( m_quoteType == text.at(i) ) ) {
+				state = ExpectAttributeOrEndOfElement;
+				setFormat(i, 1, m_syntaxFormats["SyntaxChar"]);
+			} else {
 				processDefaultText(i, text);
 			}
 			break;
-
+		case '{' :
+			if( state == ExpectAttributeTextOrPath ) {
+				state = ExpectPathTextOrEndOfPath;
+				setFormat(i, 1, m_syntaxFormats["AttributeValue"]);
+			} else
+				processDefaultText(i, text);
+			break;
+		case '}' :
+			if( state == ExpectPathTextOrEndOfPath ) {
+				state = ExpectAttributeTextOrPath;
+				setFormat(i, 1, m_syntaxFormats["AttributeValue"]);
+			} else
+				processDefaultText(i, text);
+			break;
 		case '!':
 			if (state == ExpectElementNameOrSlash)
 			{
@@ -313,8 +298,30 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			}
 		}
 		break;
+	case ExpectAttributeTextOrPath: {
+			QRegExp expression( EXPR_ATTRIBUTE_VALUE.arg( m_quoteType ) );
+			const int pos = expression.indexIn( text, i );
+			
+			if( pos == i ) {
+				iLength = expression.matchedLength() - 1;
+				setFormat( pos, iLength, m_syntaxFormats["AttributeValue"]);
+			} else
+				setFormat( i, 1, m_syntaxFormats["Other"] );
+		}
+		break;
+	case ExpectPathTextOrEndOfPath: {
+			QRegExp expression( EXPR_XPATH_VALUE.arg( m_quoteType ) );
+			const int pos = expression.indexIn( text, i );
+			
+			if( pos == i ) {
+				iLength = expression.matchedLength() - 1;
+				setFormat( pos, iLength, m_syntaxFormats["XPathValue"]);
+			} else
+				setFormat( i, 1, m_syntaxFormats["Other"] );
+		}
+		break;
 	default:
-		setFormat(i, 1, m_syntaxFormats["Other"]);
+		setFormat( i, 1, m_syntaxFormats["Other"] );
 		break;
 	}
 	return iLength;

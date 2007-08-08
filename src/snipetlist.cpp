@@ -206,7 +206,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 	}
 
 	QFile file( filename );
-	if ( ! file.open( QFile::WriteOnly | QFile::Text ) )
+	if ( ! file.open( QFile::WriteOnly ) )
 		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(filename).arg(file.errorString()) );
 	QTextStream out( &file );
 	document.save( out, IndentSize );
@@ -222,7 +222,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 	d->m_list.clear();
 	
 	QFile file( filename );
-	if( ! file.open( QFile::ReadOnly | QFile::Text ) )
+	if( ! file.open( QFile::ReadOnly ) )
 		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(filename).arg(file.errorString()) ); 
 		
 	QDomDocument document( "SnipetList" );

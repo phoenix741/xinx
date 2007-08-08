@@ -45,7 +45,9 @@ private:
 		ExpectElementName,
 		ExpectAttributeOrEndOfElement,
 		ExpectEqual,
-		ExpectAttributeValue
+		ExpectAttributeValue,
+		ExpectAttributeTextOrPath,
+		ExpectPathTextOrEndOfPath
 	};
 
 	enum BlockState
@@ -56,6 +58,7 @@ private:
 	};
 
 	ParsingState state;
+	QChar m_quoteType;
 };
 
 #endif // XMLHIGHLIGHTER_H

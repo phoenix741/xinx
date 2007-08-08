@@ -76,13 +76,12 @@ void TextEditor::keyPressEvent( QKeyEvent *e ) {
 		QTextEdit::keyPressEvent( e );
 		key_enter();
 		e->accept();
+	} else if( isShortcut ) {
+		QString snipet = textUnderCursor( textCursor(), true );
+		emit needInsertSnipet( snipet );
+		e->accept();
 	} else
 		QTextEdit::keyPressEvent( e );
-
-	if( isShortcut ) {
-		emit needInsertSnipet( textUnderCursor( textCursor(), true ) );
-		e->accept();
-	}
 }
 
 void TextEditor::key_enter() {
@@ -128,7 +127,7 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
     setTextCursor( cursor );
 }
 
-QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool select ) {
+QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord ) {
 	Q_ASSERT( ! cursor.isNull() );
 
 	QTextCursor before ( document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
@@ -141,13 +140,17 @@ QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool select ) {
 	else
 		tc.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor ) ;
 		
-	if( ! after.isNull() )
+	if( ( ! after.isNull() ) && ( after.block() == tc.block() ) )
 		tc.setPosition( after.position() - 1, QTextCursor::KeepAnchor ) ;
 	else
 		tc.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor ) ;
+	
+	QString selection = tc.selectedText().trimmed();
 		
-	if( select )
+	if( ( ! tc.selectedText().trimmed().isEmpty() ) && deleteWord ) {
+		tc.removeSelectedText();
 		setTextCursor( tc );
+	}
 		
-	return tc.selectedText().trimmed();
+	return selection;
 }

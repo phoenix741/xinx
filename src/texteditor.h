@@ -53,7 +53,7 @@ signals:
 protected:
 	void keyPressEvent(QKeyEvent *e);
     void mouseDoubleClickEvent( QMouseEvent * event );
-	QString textUnderCursor( const QTextCursor & cursor, bool select = false );
+	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
 
 private:
 	void key_home( bool );

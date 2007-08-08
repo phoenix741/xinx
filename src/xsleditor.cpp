@@ -574,7 +574,7 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 		
 					int position = textCursor().position();
 	         	
-					/*textCursor().insertText( QString("</%1>").arg(name) );*/
+					//textCursor().insertText( QString("</%1>").arg(name) );
 					int newPosition = insertCompletionBalises( tc, name );
 					if( newPosition == -1 ) 
 						tc.setPosition(position);

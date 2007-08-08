@@ -187,6 +187,7 @@ Snipet * SnipetDialogImpl::getSnipet() {
 	d->m_snipet->setText( d->m_textEdit->toPlainText() );
 		
 	QListIterator< QPair<QLabel*,QLineEdit*> > i( d->m_paramList );
+	d->m_snipet->params().clear();
 	while( i.hasNext() ) {
 		QPair<QLabel*,QLineEdit*> pair = i.next();
 		d->m_snipet->params().append( (pair.second)->text() );
