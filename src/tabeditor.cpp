@@ -363,10 +363,8 @@ void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
 		return ;
 	RunSnipetDialogImpl dlg( s );
 	if( ( s->params().count() == 0 ) || dlg.exec() ) {
-		QTextEdit * textEdit = qobject_cast<QTextEdit*>( sender() );
-		QTextCursor cursor = textEdit->textCursor();
-		cursor.insertText( dlg.getResult() + " "  );
-		textEdit->setTextCursor( cursor );
+		TextEditor * textEdit = qobject_cast<TextEditor	*>( sender() );
+		textEdit->insertText( dlg.getResult() );
 	}		
 }
 

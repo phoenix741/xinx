@@ -471,9 +471,8 @@ void CVSRemoveThread::run() {
 CVSCommitThread::CVSCommitThread( PrivateRCS_CVS * parent, RCS::FilesOperation paths, QString message, bool terminate ) : CVSThread( parent, QStringList(), terminate ) {
 	m_message = message;
 	m_message += "\n";
-	m_message += tr("==================") + "\n";
-	m_message += tr("| Files commited |") + "\n";
-	m_message += tr("==================") + "\n";
+	m_message += "\n";
+	m_message += tr("Files commited :") + "\n";
 	m_message += "\n";
 	foreach( RCS::FileOperation file, paths ) {
 		if( file.second != RCS::Nothing ) {

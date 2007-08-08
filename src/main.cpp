@@ -69,9 +69,9 @@ int main(int argc, char *argv[]) {
 	global.m_xinxConfig->load();
 
 	QTranslator translator_xinx, translator_qt;
-	translator_qt.load(QString("qt_") + global.m_xinxConfig->lang(), app.applicationDirPath());
+	translator_qt.load( QString("../translations/qt_") + global.m_xinxConfig->lang(), app.applicationDirPath());
 	app.installTranslator(&translator_qt);
-	translator_xinx.load(QString("xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
+	translator_xinx.load(QString("../translations/xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
 	app.installTranslator(&translator_xinx);
 	
 	if( app.isUnique() ) {

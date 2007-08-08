@@ -744,10 +744,8 @@ void XMLVisualStudio::callSnipetMenu() {
 		
 		RunSnipetDialogImpl dlg( snipet );
 		if( dlg.exec() ) {
-			QTextEdit * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-			QTextCursor cursor = editor->textCursor();
-			cursor.insertText( dlg.getResult() );
-			editor->setTextCursor( cursor );
+			TextEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+			editor->insertText( dlg.getResult() );
 		}		
 	}
 }

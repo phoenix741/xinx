@@ -40,6 +40,8 @@ public:
 	
 	int currentColumn();
 	int currentRow();
+	
+	void insertText( const QString & text );
 
 public slots:
 	virtual void updateModel();

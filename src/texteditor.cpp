@@ -154,3 +154,24 @@ QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord
 		
 	return selection;
 }
+
+void TextEditor::insertText( const QString & text ) {
+	QString txt = text, left, right;
+	QTextCursor cursor = textCursor();
+	QTextBlock previous = cursor.block().previous();	
+	QString indent = previous.text();
+	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) ) + "\t";
+
+	while( txt.contains( "\n" ) ) {
+		int index  = txt.indexOf( "\n" );
+		QString left = txt.left( index ),
+				rigth = txt.mid( index + 1 );
+		cursor.insertText( left );
+		txt = rigth;
+		cursor.insertText( "\n" + indent );
+	}
+	cursor.insertText( txt + " " );
+	setTextCursor( cursor );
+}
+
+
