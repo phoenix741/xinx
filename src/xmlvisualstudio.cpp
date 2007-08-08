@@ -317,6 +317,10 @@ void XMLVisualStudio::updateActions() {
 	m_printAct->setEnabled( m_tabEditors->count() );
 	m_previousTabAct->setEnabled( m_tabEditors->count() );
 	m_nextTabAct->setEnabled( m_tabEditors->count() );
+	m_createTemplate->setEnabled( m_tabEditors->count() );
+	foreach( QAction * act, m_snipetActs ) {
+		act->setEnabled( m_tabEditors->count() );
+	}
 	
 	if( m_tabEditors->count() == 0 ) {
 		if( m_sortXslModel ) delete m_sortXslModel;
@@ -711,8 +715,8 @@ void XMLVisualStudio::on_m_createTemplate_triggered() {
 Q_DECLARE_METATYPE(Snipet*);
 
 void XMLVisualStudio::refreshSnipetMenu() {
-	qDeleteAll( m_snipetActs ); m_snipetActs.clear();
-	qDeleteAll( m_snipetCategoryActs.values() ); m_snipetCategoryActs.clear();
+	qDeleteAllLater( m_snipetActs ); m_snipetActs.clear();
+	qDeleteAllLater( m_snipetCategoryActs.values() ); m_snipetCategoryActs.clear();
 	if( global.m_snipetList->count() > 0 ) {
 		foreach( QString category, global.m_snipetList->categories() ) {
 			QAction * act = new QAction( category, this );

@@ -116,4 +116,21 @@ extern Globals global;
  */
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
 
+template <typename ForwardIterator>
+void qDeleteAllLater(ForwardIterator begin, ForwardIterator end) {
+	while (begin != end) {
+		if( dynamic_cast<QObject*>( *begin ) ) 
+			dynamic_cast<QObject*>( *begin )->deleteLater();
+		else
+			delete *begin;
+		++begin;
+	}
+}
+
+template <typename Container>
+inline void qDeleteAllLater(const Container &c) {
+	qDeleteAllLater(c.begin(), c.end());
+}
+
+
 #endif // __GLOBALS_H__

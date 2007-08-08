@@ -110,6 +110,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>m_detailPushButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../application.qrc" />
  </resources>

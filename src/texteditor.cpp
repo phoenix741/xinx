@@ -135,7 +135,7 @@ QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord
 
 	QTextCursor tc = cursor;
 	
-	if( ! before.isNull() )
+	if( ( ! before.isNull() ) && ( before.block() == tc.block() ) )
 		tc.setPosition( before.position(), QTextCursor::MoveAnchor );
 	else
 		tc.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor ) ;
