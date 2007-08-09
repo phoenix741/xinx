@@ -85,6 +85,8 @@ Source: {#DBUSDIR}\include\dbus\dbus-threads.h; DestDir: {pf}\dbus\include\dbus;
 Source: {#DBUSDIR}\include\dbus\dbus-types.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
 Source: {#DBUSDIR}\include\dbus\dbus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
 Source: {#DBUSDIR}\lib\libdbus-1.dll.a; DestDir: {pf}\dbus\lib; Components: dbus; Flags: sharedfile
+DestDir: {pf}\dbus\bin; Source: srvany.exe; Flags: sharedfile
+DestDir: {tmp}; Source: instsrv.exe; Flags: deleteafterinstall
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; IconIndex: 0; Components: application; Tasks: ; Languages: 
@@ -104,6 +106,8 @@ Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags
 Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Services\DBusService\Parameters; ValueType: string; ValueName: Application; ValueData: {app}\dbus\bin\dbus-launch.exe
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Services\DBusService; ValueType: none; ValueData: {app}\dbus\bin\dbus-launch.exe; Flags: uninsdeletekey
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -122,3 +126,5 @@ Name: {app}\source; Type: filesandordirs
 Name: clean.bat; Parameters: 
 Name: sources.bat; Parameters: 
 Name: compiler.bat; Parameters: 
+[Run]
+Filename: {tmp}\instsrv.exe; Parameters: "DBusService ""{pf}\dbus\srvany.exe"""; StatusMsg: Install D-BUS service; Flags: nowait runhidden
