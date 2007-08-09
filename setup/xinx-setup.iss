@@ -29,6 +29,10 @@ ChangesAssociations=true
 AppVersion={#AppVersion}
 UninstallDisplayName={#AppName}
 TerminalServicesAware=false
+MinVersion=0,5.0.2195
+;PrivilegesRequired=poweruser
+AllowUNCPath=false
+;UninstallRestartComputer=true
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -43,8 +47,8 @@ Name: remplace_template; Description: Replace template.xnx file
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\bin\xinx_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
-Source: ..\bin\qt_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
+Source: ..\translations\xinx_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
+Source: ..\translations\qt_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {cf}\MinGW; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {cf}\Qt\{#QtVersion}; Components: qt; Flags: sharedfile
@@ -57,14 +61,14 @@ Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks:
 ;Source: ..\xml\*.xsd; DestDir: {app}\xml; Flags: onlyifdoesntexist; Components: webservices
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
-Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile; Components: dbus qt
-Source: {#DBUSDIR}\bin\dbus-daemon.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
-Source: {#DBUSDIR}\bin\dbus-env.bat; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
-Source: {#DBUSDIR}\bin\dbus-launch.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
-Source: {#DBUSDIR}\bin\dbus-monitor.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete; Components: dbus qt
+Source: {#DBUSDIR}\bin\dbus-daemon.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile uninsrestartdelete
+Source: {#DBUSDIR}\bin\dbus-env.bat; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile uninsrestartdelete
+Source: {#DBUSDIR}\bin\dbus-launch.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile uninsrestartdelete
+Source: {#DBUSDIR}\bin\dbus-monitor.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile uninsrestartdelete
 Source: {#DBUSDIR}\bin\dbus-send.exe; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
-Source: {#DBUSDIR}\bin\libdbus-1.dll; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
-Source: {#DBUSDIR}\bin\libexpat.dll; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile
+Source: {#DBUSDIR}\bin\libdbus-1.dll; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile uninsrestartdelete
+Source: {#DBUSDIR}\bin\libexpat.dll; DestDir: {pf}\dbus\bin; Components: dbus; Flags: sharedfile uninsrestartdelete
 Source: {#DBUSDIR}\etc\session.conf; DestDir: {pf}\dbus\etc; Components: dbus; Flags: sharedfile
 Source: {#DBUSDIR}\etc\system.conf; DestDir: {pf}\dbus\etc; Components: dbus; Flags: sharedfile
 Source: {#DBUSDIR}\include\dbus\dbus-address.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
@@ -85,8 +89,8 @@ Source: {#DBUSDIR}\include\dbus\dbus-threads.h; DestDir: {pf}\dbus\include\dbus;
 Source: {#DBUSDIR}\include\dbus\dbus-types.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
 Source: {#DBUSDIR}\include\dbus\dbus.h; DestDir: {pf}\dbus\include\dbus; Components: dbus; Flags: sharedfile
 Source: {#DBUSDIR}\lib\libdbus-1.dll.a; DestDir: {pf}\dbus\lib; Components: dbus; Flags: sharedfile
-DestDir: {pf}\dbus\bin; Source: srvany.exe; Flags: sharedfile
-DestDir: {tmp}; Source: instsrv.exe; Flags: deleteafterinstall
+;DestDir: {pf}\dbus\bin; Source: srvany.exe; Flags: sharedfile uninsrestartdelete
+;DestDir: {app}\bin; Source: instsrv.exe
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; IconIndex: 0; Components: application; Tasks: ; Languages: 
@@ -96,7 +100,7 @@ Name: {group}\dbus\D-BUS Viewer; Filename: {pf}\dbus\bin\qdbusviewer.exe; Compon
 Name: {group}\dbus\D-BUS Launcher; Filename: {pf}\dbus\bin\dbus-launch.exe; Components: dbus
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: "{app};{cf}\Qt\{#QtVersion};{cf}\MinGW\;{pf}\dbus\bin"; Tasks: assoxml
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"; Components: ; Languages: 
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe; Tasks: assoxml
 Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey; Tasks: assoxml
 Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Feuille de style XML; Flags: uninsdeletekey; Tasks: assoxml
@@ -106,8 +110,8 @@ Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags
 Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Services\DBusService\Parameters; ValueType: string; ValueName: Application; ValueData: {app}\dbus\bin\dbus-launch.exe
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Services\DBusService; ValueType: none; ValueData: {app}\dbus\bin\dbus-launch.exe; Flags: uninsdeletekey
+;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Services\DBusService\Parameters; ValueType: string; ValueName: Application; ValueData: {pf}\dbus\bin\dbus-launch.exe
+;Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Services\DBusService; ValueType: none; Flags: uninsdeletekey
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -126,6 +130,11 @@ Name: {app}\source; Type: filesandordirs
 Name: clean.bat; Parameters: 
 Name: sources.bat; Parameters: 
 Name: compiler.bat; Parameters: 
+
 [Run]
-Filename: {tmp}\instsrv.exe; Parameters: "DBusService ""{pf}\dbus\srvany.exe"""; StatusMsg: Install D-BUS service; Flags: nowait runhidden
-Filename: net; Parameters: start DBusService; StatusMsg: Lancement de D-BUS
+;Filename: {app}\bin\instsrv.exe; Parameters: "DBusService ""{pf}\dbus\bin\srvany.exe"""; StatusMsg: Install D-BUS service; Flags: nowait runhidden; Components: dbus
+;Filename: net; Parameters: start DBusService; StatusMsg: Lancement de D-BUS; Components: dbus; Flags: runhidden
+
+[UninstallRun]
+;Filename: net; Parameters: stop DBusService; Flags: nowait runhidden; Components: dbus
+;Filename: {app}\bin\instsrv.exe; Parameters: DBusService remove; Flags: nowait runhidden; Components: dbus

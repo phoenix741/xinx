@@ -94,7 +94,7 @@ XINXConfig::XINXConfig(  ) {
 	d->m_saveSessionByDefault = true;	
 	d->m_popupWhenFileModified = true;
 	d->m_xinxProjectPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
-	d->m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "xml" );
+	d->m_objectDescriptionPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
 	d->m_defaultProjectPathName = "projet";
 	
 	d->m_xinxPosition = QPoint(200, 200);

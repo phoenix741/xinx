@@ -1042,7 +1042,7 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../ui/mainform.ui" line="726"/>
         <source>Tab</source>
-        <translation>Onglet</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="731"/>

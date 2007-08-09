@@ -6,7 +6,7 @@ CONFIG +=   debug \
   x86 \
   qdbus
 DESTDIR +=   bin
-DISTFILES =	  CHANGELOG \
+DISTFILES =   CHANGELOG \
   COPYING \
   TODO \
   INSTALL \
@@ -18,7 +18,7 @@ DISTFILES =	  CHANGELOG \
   src/*.* \
   translations/*.ts \
   ui/*.ui \
-  xml/*.xnx 
+  xml/*.xnx
 FORMS +=   ui/about.ui \
   ui/commitmessages.ui \
   ui/custom.ui \
