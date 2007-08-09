@@ -74,7 +74,8 @@ RCS::rcsState RCS_CVSEntry::status() {
 	if( ! m_fileInfo.isDir() ) {
 		if( m_hasConflict )
 			return RCS::FileHadConflictsOnMerge;
-		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) ) )  /// \todo Find a way to correct this line correctly
+		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) ) )  /// \todo Find a better way to correct this line.
+//		else if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) )  
 			return RCS::LocallyModified;
 		else		
 			return RCS::Updated;

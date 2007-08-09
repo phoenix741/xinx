@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -1491,148 +1492,148 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/javascriptparser.cpp" line="461"/>
         <source>End of file is prematured</source>
-        <translation type="unfinished"></translation>
+        <translation>La fin de fichier est prématurée</translation>
     </message>
     <message>
         <location filename="../src/javascriptparser.cpp" line="361"/>
         <source>I wait an identifier</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend un identificateur</translation>
     </message>
     <message>
         <location filename="../src/javascriptparser.cpp" line="392"/>
         <source>I wait an identifier.</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend un identificateur.</translation>
     </message>
     <message>
         <location filename="../src/javascriptparser.cpp" line="398"/>
         <source>I wait a &apos;(&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend une parenthèse ouvrante</translation>
     </message>
     <message>
         <location filename="../src/javascriptparser.cpp" line="472"/>
         <source>Too many &apos;}&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Trop d&apos;accolade fermante &apos;}&apos;</translation>
     </message>
     <message>
         <location filename="../src/javascriptparser.cpp" line="476"/>
         <source>I wait something but i don&apos;t know what !</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;attend quelque chose, mais je ne sais pas quoi !</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="59"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="60"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="61"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="62"/>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu ciel</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="63"/>
         <source>Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="64"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="65"/>
         <source>Dark Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="66"/>
         <source>Dark Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="67"/>
         <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="68"/>
         <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Bleu ciel foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="69"/>
         <source>Dark Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Magenta foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="70"/>
         <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="71"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Blanc</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="72"/>
         <source>Light Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris clair</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="73"/>
         <source>Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="74"/>
         <source>Dark Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Gris foncé</translation>
     </message>
     <message>
         <location filename="../src/kcolorcombo.cpp" line="75"/>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Noir</translation>
     </message>
     <message>
         <location filename="../src/uniqueapplication.cpp" line="48"/>
         <source>UniqueApplication: Cannot find the D-Bus session server</source>
-        <translation type="unfinished"></translation>
+        <translation>UniqueApplication: Ne peux trouver la session sur le serveur D-BUS</translation>
     </message>
     <message>
         <location filename="../src/uniqueapplication.cpp" line="140"/>
         <source>UniqueApplication: Can&apos;t setup D-Bus service. Probably already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>UniqueApplication: Ne peux configurer le service D-BUS. L&apos;application est probablement déjà en cours d&apos;éxecution.</translation>
     </message>
     <message>
         <location filename="../src/uniqueapplication.cpp" line="144"/>
         <source>UniqueApplication: Can&apos;t really create D-Bus service.</source>
-        <translation type="unfinished"></translation>
+        <translation>UniqueApplication: Ne peux vraiment pas créer de service D-BUS.</translation>
     </message>
     <message>
         <location filename="../src/webservices.cpp" line="253"/>
         <source>WSDL WebServices file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier de description de service internet WSDL</translation>
     </message>
     <message>
         <location filename="../src/webservices.cpp" line="298"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
     </message>
     <message>
         <location filename="../src/webservices.cpp" line="297"/>
         <source>Invok WebServices file</source>
-        <translation type="unfinished"></translation>
+        <translation>Invoquer le service internet</translation>
     </message>
     <message>
         <location filename="../src/xinxconfig.cpp" line="109"/>
@@ -1657,39 +1658,39 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/xinxconfig.cpp" line="133"/>
         <source>All XML File</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers de description XML</translation>
     </message>
     <message>
         <location filename="../src/xinxconfig.cpp" line="140"/>
         <source>All Stylesheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Toutes les feuilles de styles XSLT</translation>
     </message>
     <message>
         <location filename="../src/xinxconfig.cpp" line="147"/>
         <source>All XINX Webservices</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout les fichiers de description de service internet XINX</translation>
     </message>
     <message>
         <location filename="../src/xinxconfig.cpp" line="154"/>
         <source>All JavaScript</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout les fichiers JavaScript</translation>
     </message>
     <message>
         <location filename="../src/xinxconfig.cpp" line="176"/>
         <source>All Managed file</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout les fichiers gérés</translation>
     </message>
     <message>
         <location filename="../src/xsllistview.cpp" line="151"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le fichier %1 :%2.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="332"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux écrire le fichier %1 :%2.</translation>
     </message>
 </context>
 <context>
@@ -1697,17 +1698,17 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../ui/rcslogform.ui" line="25"/>
         <source>RCS Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Journal de système de gestion de version</translation>
     </message>
     <message>
         <location filename="../ui/rcslogform.ui" line="64"/>
         <source>&amp;Abort</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../ui/rcslogform.ui" line="74"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
 </context>
 <context>
@@ -1715,82 +1716,82 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../ui/replace.ui" line="13"/>
         <source>Find or Replace a text</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher ou Remplacer un texte</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="33"/>
         <source>&amp;Replace by :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Remplacer par :</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="61"/>
         <source>Find &amp;what :</source>
-        <translation type="unfinished"></translation>
+        <translation>R&amp;echercher :</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="107"/>
         <source>Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Sens</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="119"/>
         <source>Go up</source>
-        <translation type="unfinished"></translation>
+        <translation>Vers le haut</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="126"/>
         <source>Go down</source>
-        <translation type="unfinished"></translation>
+        <translation>Vers le bas</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="152"/>
         <source>Extend</source>
-        <translation type="unfinished"></translation>
+        <translation>Etendue</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="164"/>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="174"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="184"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="196"/>
         <source>Match c&amp;ase</source>
-        <translation type="unfinished"></translation>
+        <translation>Sensible à la c&amp;asse</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="203"/>
         <source>Search from &amp;start</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher depuis le &amp;début</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="210"/>
         <source>&amp;Whole words</source>
-        <translation type="unfinished"></translation>
+        <translation>To&amp;ut les mots</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="217"/>
         <source>&amp;Use regular expression</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Utiliser une expression régulière</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="250"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Trouver</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="260"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1798,12 +1799,12 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/replacedialogimpl.cpp" line="35"/>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer</translation>
     </message>
     <message>
         <location filename="../src/replacedialogimpl.cpp" line="37"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Trouver</translation>
     </message>
 </context>
 <context>
@@ -1811,42 +1812,42 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../ui/runsnipet.ui" line="13"/>
         <source>Use the template</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser un template</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="25"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="37"/>
         <source>&lt;b&gt;This is the name&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Ceci est le nom&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="44"/>
         <source>This is a long description of the template. This description explain how to use, or why, and all the possible parameter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceci est une longue description du template. On y explique comment l&apos;utiliser, pourquoi et les paramêtres possible.</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="57"/>
         <source>&amp;Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paramêtre</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="72"/>
         <source>&amp;Detail ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Détail ...</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="92"/>
         <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valider</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="102"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Annuler</translation>
     </message>
 </context>
 <context>
@@ -1854,22 +1855,22 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../ui/resultatServices.ui" line="13"/>
         <source>Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Résultat</translation>
     </message>
     <message>
         <location filename="../ui/resultatServices.ui" line="29"/>
         <source>Input Stream</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux d&apos;entré</translation>
     </message>
     <message>
         <location filename="../ui/resultatServices.ui" line="52"/>
         <source>Output Stream</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de sortie</translation>
     </message>
     <message>
         <location filename="../ui/resultatServices.ui" line="99"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
 </context>
 <context>
@@ -1877,62 +1878,62 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../ui/snipetproperty.ui" line="13"/>
         <source>Template property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriété du template</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="25"/>
         <source>&amp;Template text :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Texte du template : </translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="53"/>
         <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valide</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="63"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="75"/>
         <source>&amp;Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paramêtre</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="82"/>
         <source>&amp;Description</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Description</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="94"/>
         <source>&amp;Category :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Catégorie :</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="104"/>
         <source>&amp;Icon :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Image :</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="114"/>
         <source>&amp;Name :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nom : </translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="134"/>
         <source>Others</source>
-        <translation type="unfinished"></translation>
+        <translation>Autres</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="142"/>
         <source>&amp;Description :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Description :</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="158"/>
         <source>&amp;Snipet key :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Clé du snipet :</translation>
     </message>
 </context>
 <context>
@@ -1940,7 +1941,7 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/snipetdialog.cpp" line="117"/>
         <source>Param &amp;%1 : </source>
-        <translation type="unfinished"></translation>
+        <translation>Paramêtre &amp;%1 : </translation>
     </message>
 </context>
 <context>
@@ -1949,18 +1950,18 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/snipetlist.cpp" line="210"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux écrire le fichier %1 :%2.</translation>
     </message>
     <message>
         <location filename="../src/snipetlist.cpp" line="226"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le fichier %1 :%2.</translation>
     </message>
     <message>
         <location filename="../src/snipetlist.cpp" line="234"/>
         <source>Parse error exception.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exception sur l&apos;erreur de parsing.</translation>
     </message>
 </context>
 <context>
@@ -1978,22 +1979,22 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/tabeditor.cpp" line="386"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Recharger</translation>
     </message>
     <message>
         <location filename="../src/tabeditor.cpp" line="388"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver</translation>
     </message>
     <message>
         <location filename="../src/tabeditor.cpp" line="389"/>
         <source>Save As ....</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver sous ....</translation>
     </message>
     <message>
         <location filename="../src/tabeditor.cpp" line="391"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -2001,17 +2002,17 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/uniqueapplication.cpp" line="182"/>
         <source>UniqueApplication: Can&apos;t create mutex.</source>
-        <translation type="unfinished"></translation>
+        <translation>UniqueApplication: Ne peux créer le mutex.</translation>
     </message>
     <message>
         <location filename="../src/uniqueapplication.cpp" line="210"/>
         <source>UniqueApplication: Error creating shared memory.</source>
-        <translation type="unfinished"></translation>
+        <translation>UniqueApplication: Erreur lors de la création de la mémoire partagée.</translation>
     </message>
     <message>
         <location filename="../src/uniqueapplication.cpp" line="216"/>
         <source>UniqueApplication: Error can&apos;t map file</source>
-        <translation type="unfinished"></translation>
+        <translation>UniqueApplication: Erreur ne peux créer un fichier de corrélation</translation>
     </message>
 </context>
 <context>
@@ -2019,17 +2020,17 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/webserviceseditor.cpp" line="180"/>
         <source>WebServices : </source>
-        <translation type="unfinished"></translation>
+        <translation>Service internet : </translation>
     </message>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="183"/>
         <source>Action : </source>
-        <translation type="unfinished"></translation>
+        <translation>Action : </translation>
     </message>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="186"/>
         <source>Parameter : </source>
-        <translation type="unfinished"></translation>
+        <translation>Paramêtre : </translation>
     </message>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="330"/>
@@ -2040,13 +2041,13 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/webserviceseditor.cpp" line="253"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le fichier %1 :%2.</translation>
     </message>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="331"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux écrire le fichier %1 :%2.</translation>
     </message>
 </context>
 <context>
@@ -2069,79 +2070,79 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="344"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Prêt</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="379"/>
         <source>WebServices</source>
-        <translation type="unfinished"></translation>
+        <translation>Service internet</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="379"/>
         <source>No WebServices can be found. Please update WebServices list to continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="387"/>
         <source>Open text file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="427"/>
         <source>Printed</source>
-        <translation type="unfinished"></translation>
+        <translation>Impression</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="532"/>
         <source>File loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier chargé</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1448"/>
         <source>Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Application</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="584"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document %1 a été modifié.Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="603"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document %1 a été modifié.Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="622"/>
         <source>Save standard XSL</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver une feuille de style standard</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="622"/>
         <source>You&apos;re being to save standard file, do you whant make it specifique</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous êtes sur le point de sauver un fichier standard, voulez-vous en faire une feuille spécifique</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="687"/>
         <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="671"/>
         <source>Save text file</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver le fichier texte</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="682"/>
         <source>Add file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter le fichier</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="682"/>
         <source>Do you want add this file to the repository ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous ajouter ce fichier au référenciel ?</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="695"/>
@@ -2156,17 +2157,17 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="948"/>
         <source>Save a project</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver un projet</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="975"/>
         <source>Open a project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un projet</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1028"/>
         <source>Can&apos;t open project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux ouvrir le projet</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1124"/>
@@ -2176,42 +2177,42 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1421"/>
         <source>Search/Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher/Remplacer</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1417"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 occurences de la chaine &apos;%2&apos; remplacés.</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1422"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1422"/>
         <source>replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>remplacés</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1422"/>
         <source>finded</source>
-        <translation type="unfinished"></translation>
+        <translation>trouvés</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1448"/>
         <source>Replace this occurence</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer cette occurence</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1607"/>
         <source>WebServices Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur du service internet</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="1607"/>
         <source>Web services has error code %1 : %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Le service internet a retourné le code erreur suivante %1 : %2</translation>
     </message>
 </context>
 <context>
@@ -2219,7 +2220,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../src/xsleditor.cpp" line="587"/>
         <source>Error %1 at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur %1 à %2</translation>
     </message>
 </context>
 <context>
@@ -2227,12 +2228,12 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../src/xsllistview.cpp" line="198"/>
         <source>Parse error column %1:%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de parsing à la colonne %1 : %2</translation>
     </message>
     <message>
         <location filename="../src/xsllistview.cpp" line="222"/>
         <source>Error %1 at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur %1 à %2</translation>
     </message>
 </context>
 <context>
@@ -2240,50 +2241,50 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../src/xslproject.cpp" line="123"/>
         <source>Can&apos;t open session file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux ouvrir le fichier de session.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="263"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="136"/>
         <source>The file isn&apos;t a XINX Project Session file</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier n&apos;est pas la session d&apos;un projet XINX</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="181"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux écrire le fichier %1 :%2.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="256"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux lire le fichier %1 :%2.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="269"/>
         <source>The file isn&apos;t a XINX Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier n&apos;est pas un projet XINX</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="273"/>
         <source>The file is a too recent XINX Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier appartient à une version plus récente de XINX</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="301"/>
         <source>Project path (%1) don&apos;t exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le chemin du projet (%1) n&apos;existe pas.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="303"/>
         <source>Specifique path (%1) don&apos;t exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le chemin des fichiers spécifique (%1) n&apos;existe pas.</translation>
     </message>
 </context>
 </TS>
