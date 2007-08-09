@@ -6,7 +6,7 @@ CONFIG +=   debug \
   x86 \
   qdbus
 DESTDIR +=   bin
-DISTFILES +=   CHANGELOG \
+DISTFILES =	  CHANGELOG \
   COPYING \
   TODO \
   INSTALL \
@@ -14,11 +14,11 @@ DISTFILES +=   CHANGELOG \
   application.qrc \
   rc/xinx.rc \
   setup/xinx-setup.iss \
-  src/com.editor.xmlstudio.xml \
-  src/genxml.sh \
+  setup/*.bat \
+  src/*.* \
+  translations/*.ts \
   ui/*.ui \
-  xml/completion.xnx \
-  xml/template.xnx
+  xml/*.xnx 
 FORMS +=   ui/about.ui \
   ui/commitmessages.ui \
   ui/custom.ui \

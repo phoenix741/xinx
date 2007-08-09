@@ -128,3 +128,4 @@ Name: sources.bat; Parameters:
 Name: compiler.bat; Parameters: 
 [Run]
 Filename: {tmp}\instsrv.exe; Parameters: "DBusService ""{pf}\dbus\srvany.exe"""; StatusMsg: Install D-BUS service; Flags: nowait runhidden
+Filename: net; Parameters: start DBusService; StatusMsg: Lancement de D-BUS
