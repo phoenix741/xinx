@@ -53,7 +53,9 @@ p, li { white-space: pre-wrap; }
         <source>Main Author : Ulrich VANDENHEKKE
 Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBOUT
 </source>
-        <translation>Auteur principal : Ulrich VANDENHEKKETesteur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBOUT</translation>
+        <translation>Auteur principal : Ulrich VANDENHEKKE
+Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBOUT
+</translation>
     </message>
     <message>
         <location filename="../ui/about.ui" line="146"/>
@@ -173,7 +175,8 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/editorcompletion.cpp" line="48"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/editorcompletion.cpp" line="49"/>
@@ -184,7 +187,8 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/editorcompletion.cpp" line="61"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :
+%3</translation>
     </message>
     <message>
         <location filename="../src/editorcompletion.cpp" line="64"/>
@@ -542,13 +546,15 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/fileeditor.cpp" line="393"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/fileeditor.cpp" line="416"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :%2.</translation>
+        <translation>Ne peux écrire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/fileeditor.cpp" line="485"/>
@@ -1156,13 +1162,15 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/objectview.cpp" line="71"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/objectview.cpp" line="78"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :
+%3</translation>
     </message>
     <message>
         <location filename="../src/objectview.cpp" line="84"/>
@@ -1628,7 +1636,8 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/webservices.cpp" line="298"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :
+%3</translation>
     </message>
     <message>
         <location filename="../src/webservices.cpp" line="297"/>
@@ -1684,13 +1693,15 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/xsllistview.cpp" line="151"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="332"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :%2.</translation>
+        <translation>Ne peux écrire le fichier %1 :
+%2.</translation>
     </message>
 </context>
 <context>
@@ -1950,13 +1961,15 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/snipetlist.cpp" line="210"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :%2.</translation>
+        <translation>Ne peux écrire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/snipetlist.cpp" line="226"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/snipetlist.cpp" line="234"/>
@@ -2041,13 +2054,15 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/webserviceseditor.cpp" line="253"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="331"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :%2.</translation>
+        <translation>Ne peux écrire le fichier %1 :
+%2.</translation>
     </message>
 </context>
 <context>
@@ -2106,13 +2121,15 @@ Reporter : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUB
         <location filename="../src/xmlvisualstudio.cpp" line="584"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
-        <translation>Le document %1 a été modifié.Voulez-vous vraiment l&apos;actualiser ?</translation>
+        <translation>Le document %1 a été modifié.
+Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="603"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
-        <translation>Le document %1 a été modifié.Voulez-vous sauver les changements ?</translation>
+        <translation>Le document %1 a été modifié.
+Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
         <location filename="../src/xmlvisualstudio.cpp" line="622"/>
@@ -2247,7 +2264,8 @@ Do you want to save your changes?</source>
         <location filename="../src/xslproject.cpp" line="263"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :
+%3</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="136"/>
@@ -2258,13 +2276,15 @@ Do you want to save your changes?</source>
         <location filename="../src/xslproject.cpp" line="181"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :%2.</translation>
+        <translation>Ne peux écrire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="256"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :%2.</translation>
+        <translation>Ne peux lire le fichier %1 :
+%2.</translation>
     </message>
     <message>
         <location filename="../src/xslproject.cpp" line="269"/>
