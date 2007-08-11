@@ -28,8 +28,8 @@
 
 #include "uniqueapplication.h"
 #include <iostream>
-#include <unistd.h>
 #include <QString>
+#include <QMessageBox>
 #ifdef DBUS
 	#include <QtDBus>
 	#include "studioadaptor.h"
@@ -39,6 +39,9 @@
 	#include <QTimer>
 	#include <QtGui>
 #endif
+#include "xmlvisualstudio.h"
+
+extern XMLVisualStudio * mainWin;
 
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
@@ -257,6 +260,23 @@ UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QA
 UniqueApplication::~UniqueApplication() {
 	delete d;
 }
+
+bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
+	try {
+		return QApplication::notify( receiver, event );
+	} catch( ... ) {
+		notifyError();
+		return false;
+	}
+}
+
+void UniqueApplication::notifyError() {
+	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
+	if( mainWin )
+		mainWin->closeProject( false, true );
+	exit(1);
+}
+
 
 bool UniqueApplication::isUnique() { 
 	return d->m_isUnique; 
