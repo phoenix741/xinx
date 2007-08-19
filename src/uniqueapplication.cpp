@@ -31,6 +31,7 @@
 #include <QString>
 #include <QMessageBox>
 #ifdef DBUS
+	#include <unistd.h>
 	#include <QtDBus>
 	#include "studioadaptor.h"
 	#include "studiointerface.h"

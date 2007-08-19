@@ -12,10 +12,14 @@ DISTFILES =   CHANGELOG \
   INSTALL \
   Doxyfile \
   application.qrc \
-  rc/xinx.rc \
-  setup/xinx-setup.iss \
+  rc/*.rc \
+  setup/*.iss \
   setup/*.bat \
-  src/*.* \
+  src/*.h \
+  src/*.cpp \
+  src/*.bat \
+  src/*.sh \
+  src/*.xml \
   translations/*.ts \
   ui/*.ui \
   xml/*.xnx
