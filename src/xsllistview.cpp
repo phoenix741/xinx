@@ -141,6 +141,7 @@ void XSLModelData::loadFromXML( const QDomElement& element ) {
 	emit childReseted();
 }
 
+
 void XSLModelData::loadFromFile( const QString& filename ) {
 	QFile file( filename );
 	QDomDocument xsl;
@@ -151,31 +152,18 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 		throw XMLParserException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0 );
 	    return;
 	}
-	
-	// Load XML Document
-	QString errorStr;
-	int errorLine;
-	int errorColumn;  
-	if (xsl.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
-		QDomElement root = xsl.documentElement();
-		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
-			loadFromXML( root );
-	} else {
-		emit childAboutToBeReset();
-		qDeleteAll( m_child );
-		m_child.clear();		
-		emit childReseted();
-		throw XMLParserException( tr("Parse error column %1:%2").arg(errorColumn).arg(errorStr), errorLine );
-	}
+	QTextStream text( &file );
+	QString content = text.readAll();
+	loadFromContent( content );
 }
 
-void XSLModelData::loadFromContent( const QString& content ) {
+QDomElement XSLModelData::loadFromContent( const QString& content ) {
 	if( content.trimmed().isEmpty() ) {
 		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
-		return;		
+		return QDomElement();		
 	}
 	
 	QDomDocument xsl;
@@ -190,13 +178,15 @@ void XSLModelData::loadFromContent( const QString& content ) {
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
 		emit hasError( "" );
+		return root;
 	} else {
 		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
 		throw XMLParserException( tr("Parse error column %1:%2").arg(errorColumn).arg(errorStr), errorLine );
-	}  
+	}
+	return QDomElement();
 }
 
 int XSLModelData::childCount() { 

@@ -193,6 +193,9 @@ QHash<QString,RCS_CVSEntry> PrivateRCS_CVS::loadEntryDir( const QString & dir ) 
 	QString entries = QDir( dir ).absoluteFilePath( "CVS/Entries" );
 	if( ! QFileInfo( entries ).exists() ) 
 		entries = QDir( dir ).absoluteFilePath( ".cvs/Entries" );
+	if( ! QFileInfo( entries ).exists() ) {
+		return QHash<QString,RCS_CVSEntry>();	
+	}
 	
 	return loadEntryFile( entries );
 }
@@ -232,8 +235,8 @@ void PrivateRCS_CVS::reloadDir( const QString & dir ) {
 	QString entries = QDir( dir ).absoluteFilePath( "CVS/Entries" );
 	if( ! QFileInfo( entries ).exists() ) 
 		entries = QDir( dir ).absoluteFilePath( ".cvs/Entries" );
-	
-	reloadEntriesFile( entries );
+	if( QFileInfo( entries ).exists() ) 
+		reloadEntriesFile( entries );
 }
 
 void PrivateRCS_CVS::reloadEntriesFiles() {

@@ -56,60 +56,60 @@ int main(int argc, char *argv[]) {
 	
 	UniqueApplication app(argc, argv);
 	try {
-	global.m_xinxConfig = new XINXConfig();
-	global.m_xinxConfig->load();
+		global.m_xinxConfig = new XINXConfig();
+		global.m_xinxConfig->load();
 
-	QTranslator translator_xinx, translator_qt;
-	translator_qt.load( QString("../translations/qt_") + global.m_xinxConfig->lang(), app.applicationDirPath());
-	app.installTranslator(&translator_qt);
-	translator_xinx.load(QString("../translations/xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
-	app.installTranslator(&translator_xinx);
+		QTranslator translator_xinx, translator_qt;
+		translator_qt.load( QString("../translations/qt_") + global.m_xinxConfig->lang(), app.applicationDirPath());
+		app.installTranslator(&translator_qt);
+		translator_xinx.load(QString("../translations/xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
+		app.installTranslator(&translator_xinx);
 	
-	if( app.isUnique() ) {
-		QPixmap pixmap(":/images/splash.png");
-		QSplashScreen splash(pixmap);
-		splash.show();
-  		app.processEvents();
-
-  		splash.showMessage( splash.tr("Load objects file ...") );
-  		app.processEvents();
-		global.m_javaObjects = new ObjectsView();
-		global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
-		global.m_javaObjects->loadFiles();
-
-  		splash.showMessage( splash.tr("Load main window ...") );
-  		app.processEvents();
-		mainWin = new XMLVisualStudio();
-		mainWin->show();
-  
-  		splash.showMessage( splash.tr("Load arguments ...") );
-  		app.processEvents();
-		QStringList args = app.arguments();
-		if(args.count() > 0) {
-			QStringList::iterator it = args.begin();
-			it++;
-			while (it != args.end()) {
-				if(QFile(*it).exists()) mainWin->open(*it);
+		if( app.isUnique() ) {
+			QPixmap pixmap(":/images/splash.png");
+			QSplashScreen splash(pixmap);
+			splash.show();
+	  		app.processEvents();
+	
+	  		splash.showMessage( splash.tr("Load objects file ...") );
+	  		app.processEvents();
+			global.m_javaObjects = new ObjectsView();
+			global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
+			global.m_javaObjects->loadFiles();
+	
+	  		splash.showMessage( splash.tr("Load main window ...") );
+	  		app.processEvents();
+			mainWin = new XMLVisualStudio();
+			mainWin->show();
+	  
+	  		splash.showMessage( splash.tr("Load arguments ...") );
+	  		app.processEvents();
+			QStringList args = app.arguments();
+			if(args.count() > 0) {
+				QStringList::iterator it = args.begin();
 				it++;
+				while (it != args.end()) {
+					if(QFile(*it).exists()) mainWin->open(*it);
+					it++;
+				}
 			}
-		}
-
-		splash.finish(mainWin);
-
-		return app.exec();
- 	} else {
-		// Send Parameter to open
-		QStringList args = app.arguments();
-		if(args.count() > 0) {
-			QStringList::iterator it = args.begin();
-			it++;
-			while (it != args.end()) {
-				if(QFile(*it).exists()) app.callOpenFile(*it);
+	
+			splash.finish(mainWin);
+	
+			return app.exec();
+	 	} else {
+			// Send Parameter to open
+			QStringList args = app.arguments();
+			if(args.count() > 0) {
+				QStringList::iterator it = args.begin();
 				it++;
+				while (it != args.end()) {
+					if(QFile(*it).exists()) app.callOpenFile(*it);
+					it++;
+				}
 			}
+	 		return 255;
 		}
- 		return 255;
-	}
 	} catch( ... ) {
 		app.notifyError();
 	}

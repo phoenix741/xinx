@@ -71,7 +71,7 @@ public:
 	
 	void loadFromXML( const QDomElement& );
 	void loadFromFile( const QString& );
-	void loadFromContent( const QString& );
+	QDomElement loadFromContent( const QString& );
 	void loadFromElement( const QDomElement& );
 	
 	bool operator< ( const XSLModelData & cmp ) const { return m_name < cmp.m_name; };
