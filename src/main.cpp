@@ -18,6 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
+#include "uniqueapplication.h"
+#include "xmlvisualstudio.h"
+#include "mainformimpl.h"
+#include "xinxconfig.h"
+#include "globals.h"
+#include "objectview.h"
+#include "editorcompletion.h"
+#include "snipetlist.h"
+
+// Qt header
 #include <QApplication>
 #include <QSplashScreen>
 #include <QStringList>
@@ -25,12 +36,9 @@
 #include <QMessageBox>
 #include <QLocale>
 #include <QTranslator>
-#include <QPlastiqueStyle>
-#include "uniqueapplication.h"
-#include "xmlvisualstudio.h"
-#include "xinxconfig.h"
-#include "globals.h"
-#include "objectview.h"
+#include <QDir>
+
+// C++ header
 #include <csignal>
 #include <iostream>
 
@@ -71,6 +79,22 @@ int main(int argc, char *argv[]) {
 			splash.show();
 	  		app.processEvents();
 	
+	  		splash.showMessage( splash.tr("Create completion and snipet object ...") );
+			global.m_completionContents = new Completion();
+			global.m_snipetList = new SnipetList();
+			try {
+				global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+			} catch( ENotCompletionFile ) {
+				splash.showMessage( splash.tr("Can't load completion file.") );
+				sleep( 1 );
+			}
+			try {
+				global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+			} catch( SnipetListException ) {
+				splash.showMessage( splash.tr("Can't load snipet file.") );
+				sleep( 1 );
+			}
+	
 	  		splash.showMessage( splash.tr("Load objects file ...") );
 	  		app.processEvents();
 			global.m_javaObjects = new ObjectsView();
@@ -79,8 +103,9 @@ int main(int argc, char *argv[]) {
 	
 	  		splash.showMessage( splash.tr("Load main window ...") );
 	  		app.processEvents();
+	  		(new MainformImpl() )->show();
 			mainWin = new XMLVisualStudio();
-			mainWin->show();
+			//mainWin->show();
 	  
 	  		splash.showMessage( splash.tr("Load arguments ...") );
 	  		app.processEvents();

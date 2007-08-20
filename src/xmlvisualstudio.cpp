@@ -779,94 +779,8 @@ void XMLVisualStudio::callSnipetMenu() {
 #include "commitmessagedialogimpl.h"
 
 #include "flattreeview.h"
-
-/* DirRCSModel */
-
-class DirRCSModel : public QDirModel {
-	Q_OBJECT
-public:
-	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );
-	DirRCSModel( QObject *parent = 0 );
-	virtual ~DirRCSModel();
-	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
-	RCS * rcs();
-private:
-	RCS * m_rcs;
-};
-
-DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
-	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) ) 
-		m_rcs = new RCS_CVS();
-	else
-		m_rcs = NULL;
-}
-
-DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
-	
-}
-
-DirRCSModel::~DirRCSModel() {
-	delete m_rcs;
-}
-
-RCS * DirRCSModel::rcs() { 
-	return m_rcs;
-}
-
-QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
-	if (m_rcs && ( role == Qt::BackgroundRole && index.column() == 0 ) ) {
-   		RCS::rcsState state = m_rcs->status( filePath(index) );
-   		if( state == RCS::Unknown )
-			return QBrush( Qt::gray );
-   		if( state == RCS::LocallyModified )
-			return QBrush( Qt::yellow );
-   		if( state == RCS::LocallyAdded )
-			return QBrush( Qt::green );
-		if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
-			return QBrush( Qt::red );
-			
-		return QDirModel::data(index, role);
-	}
-	/* else if( role == Qt::SizeHintRole ) {
-		return QSize( 9999, 10 );
-	}*/
-
-	return QDirModel::data(index, role);
-}
-
-/* IconProvider */
-
-class IconProjectProvider : public QFileIconProvider {
-public:
-	IconProjectProvider();
-	~IconProjectProvider();
-	
-	QIcon icon( const QFileInfo & info ) const;
-};
-
-IconProjectProvider::IconProjectProvider() : QFileIconProvider() {
-	
-}
-
-IconProjectProvider::~IconProjectProvider() {
-	
-}
-	
-QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
-	if( info.suffix() == "xsl" ) {
-		return QIcon( ":/images/typexsl.png" );
-	} else
-	if( info.suffix() == "xml" ) {
-		return QIcon( ":/images/typexml.png" );
-	} else
-	if( info.suffix() == "js" ) {
-		return QIcon( ":/images/typejs.png" );
-	} else
-	if( info.suffix() == "fws" ) {
-		return QIcon( ":/images/typefws.png" );
-	} else
-		return QFileIconProvider::icon( info );
-}
+#include "dirrcsmodel.h"
+#include "iconprojectprovider.h"
 
 /* XMLVisualStudio */
 
@@ -1623,4 +1537,3 @@ void XMLVisualStudio::on_m_callWebServicesAct_triggered() {
 	}
 }
 
-#include "xmlvisualstudio.moc"

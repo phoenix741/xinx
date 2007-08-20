@@ -37,12 +37,15 @@
      <height>29</height>
     </rect>
    </property>
-   <widget class="QMenu" name="m_helpMenu" >
+   <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
-     <string>&amp;Help</string>
+     <string>&amp;Search</string>
     </property>
-    <addaction name="m_aboutAct" />
-    <addaction name="m_aboutQtAct" />
+    <addaction name="m_searchAct" />
+    <addaction name="m_searchNextAct" />
+    <addaction name="m_searchPreviousAct" />
+    <addaction name="separator" />
+    <addaction name="m_replaceAct" />
    </widget>
    <widget class="QMenu" name="m_fileMenu" >
     <property name="title" >
@@ -60,56 +63,6 @@
     <addaction name="m_printAct" />
     <addaction name="separator" />
     <addaction name="m_exitAct" />
-   </widget>
-   <widget class="QMenu" name="m_windowsMenu" >
-    <property name="title" >
-     <string>&amp;Windows</string>
-    </property>
-    <addaction name="m_nextTabAct" />
-    <addaction name="m_previousTabAct" />
-    <addaction name="separator" />
-    <addaction name="m_toggledFlatView" />
-    <addaction name="separator" />
-   </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
-    <property name="title" >
-     <string>WebServices</string>
-    </property>
-    <addaction name="m_refreshWebServicesListAct" />
-    <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
-   </widget>
-   <widget class="QMenu" name="m_projectMenu" >
-    <property name="title" >
-     <string>&amp;Project</string>
-    </property>
-    <widget class="QMenu" name="menu_Close_project_2" >
-     <property name="title" >
-      <string>&amp;Close project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
-     </property>
-     <addaction name="m_closeProjectSessionAct" />
-     <addaction name="m_closeProjectAct" />
-    </widget>
-    <addaction name="m_newProjectAct" />
-    <addaction name="m_recentProjectAct" />
-    <addaction name="menu_Close_project_2" />
-    <addaction name="m_projectPropertyAct" />
-    <addaction name="separator" />
-    <addaction name="m_globalUpdateFromRCSAct" />
-    <addaction name="m_globalCommitToRCSAct" />
-   </widget>
-   <widget class="QMenu" name="m_searchMenu" >
-    <property name="title" >
-     <string>&amp;Search</string>
-    </property>
-    <addaction name="m_searchAct" />
-    <addaction name="m_searchNextAct" />
-    <addaction name="m_searchPreviousAct" />
-    <addaction name="separator" />
-    <addaction name="m_replaceAct" />
    </widget>
    <widget class="QMenu" name="m_editMenu" >
     <property name="title" >
@@ -137,6 +90,46 @@
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_completeAct" />
    </widget>
+   <widget class="QMenu" name="m_projectMenu" >
+    <property name="title" >
+     <string>&amp;Project</string>
+    </property>
+    <widget class="QMenu" name="menu_Close_project_2" >
+     <property name="title" >
+      <string>&amp;Close project</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
+     </property>
+     <addaction name="m_closeProjectSessionAct" />
+     <addaction name="m_closeProjectAct" />
+    </widget>
+    <addaction name="m_newProjectAct" />
+    <addaction name="m_recentProjectAct" />
+    <addaction name="menu_Close_project_2" />
+    <addaction name="m_projectPropertyAct" />
+    <addaction name="separator" />
+    <addaction name="m_globalUpdateFromRCSAct" />
+    <addaction name="m_globalCommitToRCSAct" />
+   </widget>
+   <widget class="QMenu" name="m_webServicesMenu" >
+    <property name="title" >
+     <string>WebServices</string>
+    </property>
+    <addaction name="m_refreshWebServicesListAct" />
+    <addaction name="separator" />
+    <addaction name="m_callWebServicesAct" />
+   </widget>
+   <widget class="QMenu" name="m_windowsMenu" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <addaction name="m_nextTabAct" />
+    <addaction name="m_previousTabAct" />
+    <addaction name="separator" />
+    <addaction name="m_toggledFlatView" />
+    <addaction name="separator" />
+   </widget>
    <widget class="QMenu" name="m_toolsMenu" >
     <property name="title" >
      <string>&amp;Tools</string>
@@ -144,6 +137,13 @@
     <addaction name="m_createTemplate" />
     <addaction name="separator" />
     <addaction name="m_customApplicationAct" />
+   </widget>
+   <widget class="QMenu" name="m_helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="m_aboutAct" />
+    <addaction name="m_aboutQtAct" />
    </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
@@ -373,9 +373,6 @@
    <property name="statusTip" >
     <string>Create a new text file</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+N</string>
-   </property>
   </action>
   <action name="m_openAct" >
    <property name="icon" >
@@ -397,9 +394,6 @@
    </property>
    <property name="statusTip" >
     <string>Save the document to disk</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="m_saveAsAct" >
@@ -434,9 +428,6 @@
    <property name="statusTip" >
     <string>Print the current document</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+P</string>
-   </property>
   </action>
   <action name="m_closeAct" >
    <property name="icon" >
@@ -447,9 +438,6 @@
    </property>
    <property name="statusTip" >
     <string>Close the current document</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="m_closeAllAct" >
@@ -470,9 +458,6 @@
    <property name="statusTip" >
     <string>Quit XINX</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+Q</string>
-   </property>
   </action>
   <action name="m_undoAct" >
    <property name="icon" >
@@ -483,9 +468,6 @@
    </property>
    <property name="statusTip" >
     <string>Undo the last action</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+Z</string>
    </property>
   </action>
   <action name="m_redoAct" >
@@ -498,9 +480,6 @@
    <property name="statusTip" >
     <string>Redo the next action</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+Shift+Z</string>
-   </property>
   </action>
   <action name="m_cutAct" >
    <property name="icon" >
@@ -511,9 +490,6 @@
    </property>
    <property name="statusTip" >
     <string>Cut the selection to the clipboard</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+X</string>
    </property>
   </action>
   <action name="m_copyAct" >
@@ -526,9 +502,6 @@
    <property name="statusTip" >
     <string>Copy the selection to the clipboard</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+C</string>
-   </property>
   </action>
   <action name="m_pasteAct" >
    <property name="icon" >
@@ -540,9 +513,6 @@
    <property name="statusTip" >
     <string>Paste the clipboard's contents</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+V</string>
-   </property>
   </action>
   <action name="m_selectAllAct" >
    <property name="text" >
@@ -551,16 +521,10 @@
    <property name="statusTip" >
     <string>Select all the text of the current editor</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+A</string>
-   </property>
   </action>
   <action name="m_duplicateLineAct" >
    <property name="text" >
     <string>&amp;Duplicate current line</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+D</string>
    </property>
   </action>
   <action name="m_moveUpLineAct" >
@@ -570,9 +534,6 @@
    <property name="text" >
     <string>&amp;Move line up</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+Alt+P</string>
-   </property>
   </action>
   <action name="m_moveDownLineAct" >
    <property name="icon" >
@@ -580,9 +541,6 @@
    </property>
    <property name="text" >
     <string>&amp;Move line down</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+Alt+M</string>
    </property>
   </action>
   <action name="m_upperTextAct" >
@@ -605,16 +563,10 @@
    <property name="text" >
     <string>&amp;Comment</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+Shift+C</string>
-   </property>
   </action>
   <action name="m_uncommentLineAct" >
    <property name="text" >
     <string>&amp;Uncomment</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+Shift+D</string>
    </property>
   </action>
   <action name="m_completeAct" >
@@ -629,9 +581,6 @@
    <property name="text" >
     <string>&amp;Search ...</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+F</string>
-   </property>
   </action>
   <action name="m_searchNextAct" >
    <property name="text" >
@@ -643,16 +592,10 @@
    <property name="toolTip" >
     <string>Search next</string>
    </property>
-   <property name="shortcut" >
-    <string>F3</string>
-   </property>
   </action>
   <action name="m_replaceAct" >
    <property name="text" >
     <string>&amp;Replace ...</string>
-   </property>
-   <property name="shortcut" >
-    <string>Ctrl+H</string>
    </property>
   </action>
   <action name="m_newProjectAct" >
@@ -722,16 +665,10 @@
    <property name="text" >
     <string>Indent Code</string>
    </property>
-   <property name="shortcut" >
-    <string>Tab</string>
-   </property>
   </action>
   <action name="m_unindentAct" >
    <property name="text" >
     <string>Unindent code</string>
-   </property>
-   <property name="shortcut" >
-    <string>Shift+Tab</string>
    </property>
   </action>
   <action name="m_customApplicationAct" >
@@ -748,9 +685,6 @@
    </property>
    <property name="toolTip" >
     <string>Search previous</string>
-   </property>
-   <property name="shortcut" >
-    <string>Shift+F3</string>
    </property>
   </action>
   <action name="m_refreshWebServicesListAct" >
@@ -830,9 +764,6 @@
    <property name="text" >
     <string>&amp;Recent file</string>
    </property>
-   <property name="shortcut" >
-    <string>Ctrl+O</string>
-   </property>
   </action>
   <action name="m_globalUpdateFromRCSAct" >
    <property name="icon" >
@@ -841,9 +772,6 @@
    <property name="text" >
     <string>Update project</string>
    </property>
-   <property name="shortcut" >
-    <string>F5</string>
-   </property>
   </action>
   <action name="m_globalCommitToRCSAct" >
    <property name="icon" >
@@ -851,9 +779,6 @@
    </property>
    <property name="text" >
     <string>Commit project</string>
-   </property>
-   <property name="shortcut" >
-    <string>F6</string>
    </property>
   </action>
   <action name="m_selectedUpdateFromRCSAct" >
