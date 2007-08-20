@@ -40,7 +40,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QLabel" name="m_versionLabel" >
        <property name="text" >
-        <string>Version 0.6.8</string>
+        <string>Version 0.6.9</string>
        </property>
       </widget>
      </item>
