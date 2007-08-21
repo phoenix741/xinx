@@ -48,6 +48,13 @@ void PrivateMainformImpl::createDockWidget() {
 	m_parent->m_windowsMenu->addAction( action ); 
 	
 	m_projectDock = new ProjectDirectoryDockWidget( "Project Directory", m_parent );
+	m_projectDock->setGlobalUpdateAction( m_parent->m_globalUpdateFromRCSAct );
+	m_projectDock->setGlobalCommitAction( m_parent->m_globalCommitToRCSAct );
+	m_projectDock->setSelectedUpdateAction( m_parent->m_selectedUpdateFromRCSAct );
+	m_projectDock->setSelectedCommitAction( m_parent->m_selectedCommitToRCSAct );
+	m_projectDock->setSelectedAddAction( m_parent->m_selectedAddToRCSAct );
+	m_projectDock->setSelectedRemoveAction( m_parent->m_selectedRemoveFromRCSAct );
+	m_projectDock->setToggledViewAction( m_parent->m_toggledFlatView );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
 	action = m_projectDock->toggleViewAction();
 	action->setShortcut( tr("Ctrl+2") );

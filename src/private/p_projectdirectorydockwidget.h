@@ -18,43 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __PROJECTDIRECTORYDOCKWIDGET_H__
-#define __PROJECTDIRECTORYDOCKWIDGET_H__
+#ifndef __P_PROJECTDIRECTORYDOCKWIDGET_H__
+#define __P_PROJECTDIRECTORYDOCKWIDGET_H__
 
-#include <QDockWidget>
-#include <QString>
+// Xinx header
+#include "../projectdirectorydockwidget.h"
+#include "ui_projectdirectorywidget.h"
+#include "../iconprojectprovider.h"
+#include "../xslproject.h"
 
-class PrivateProjectDirectoryDockWidget;
-class QAbstractItemModel;
-class QAction;
-class XSLProject;
+// Qt header
+#include <QObject>
+#include <QTimer>
+#include <QDirModel>
+#include <QAbstractItemModel>
 
-class ProjectDirectoryDockWidget : public QDockWidget {
+class PrivateProjectDirectoryDockWidget : public QObject {
 	Q_OBJECT
 public:
-	ProjectDirectoryDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	ProjectDirectoryDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	virtual ~ProjectDirectoryDockWidget();
+	PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent );
+	~PrivateProjectDirectoryDockWidget();
+
+	Ui::ProjectDirectoryWidget * m_projectDirWidget;
+	QAction * m_selectedUpdateAction;
+	QAction * m_selectedCommitAction;
+	QAction * m_selectedAddAction;
+	QAction * m_selectedRemoveAction;
+
+	QTimer * m_modelTimer;
+	QDirModel * m_dirModel;
+	QAbstractItemModel * m_flatModel;
+	IconProjectProvider * m_iconProvider;
 	
-	void setGlobalUpdateAction( QAction * action );
-	void setGlobalCommitAction( QAction * action );
-	void setSelectedUpdateAction( QAction * action );
-	void setSelectedCommitAction( QAction * action );
-	void setSelectedAddAction( QAction * action );
-	void setSelectedRemoveAction( QAction * action );
-	void setToggledViewAction( QAction * action );
-	
-	bool isViewFlat();
-	QStringList selectedFiles();
-	void setProjectPath( XSLProject * project );
+	XSLProject * m_project;
+
+	bool eventFilter( QObject *obj, QEvent *event );
 public slots:
-	void toggledView();
-	void toggledView( bool flat );
-signals:
-	void open( const QString & name );
+	void filtreChange();
+	void on_m_filtreLineEdit_textChanged( QString filtre );
+	void on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index );
 private:
-	PrivateProjectDirectoryDockWidget * d;
-	friend class PrivateProjectDirectoryDockWidget;
+	ProjectDirectoryDockWidget * m_parent;
 };
 
-#endif // __PROJECTDIRECTORYDOCKWIDGET_H__
+#endif // __P_PROJECTDIRECTORYDOCKWIDGET_H__
