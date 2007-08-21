@@ -1,0 +1,92 @@
+<ui version="4.0" >
+ <class>ProjectDirectoryWidget</class>
+ <widget class="QWidget" name="ProjectDirectoryWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>245</width>
+    <height>284</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <property name="spacing" >
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QToolButton" name="m_updateProjectBtn" >
+       <property name="toolTip" >
+        <string>Update project</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../application.qrc" >:/images/kdesvnupdate.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="m_commitProjectBtn" >
+       <property name="toolTip" >
+        <string>Commit project</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../application.qrc" >:/images/kdesvncommit.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>141</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="m_flatListBtn" >
+       <property name="icon" >
+        <iconset resource="../application.qrc" >:/images/flatlist.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>Filtre :</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="m_filtreLineEdit" />
+   </item>
+   <item>
+    <widget class="QTreeView" name="m_projectDirectoryTreeView" >
+     <property name="selectionMode" >
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../application.qrc" />
+ </resources>
+ <connections/>
+</ui>

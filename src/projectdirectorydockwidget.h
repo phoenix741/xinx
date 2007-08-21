@@ -18,45 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_MAINFORMIMPL_H__
-#define __P_MAINFORMIMPL_H__
+#ifndef __PROJECTDIRECTORYDOCKWIDGET_H__
+#define __PROJECTDIRECTORYDOCKWIDGET_H__
 
-// Xinx header
-#include "../mainformimpl.h"
-#include "../filecontentdockwidget.h"
-#include "../projectdirectorydockwidget.h"
+#include <QDockWidget>
+#include <QString>
 
-// Qt header
-#include <QObject>
+class PrivateProjectDirectoryDockWidget;
+class QAbstractItemModel;
+class QAction;
 
-#define MAXRECENTFILES 10
-
-class PrivateMainformImpl : public QObject {
+class ProjectDirectoryDockWidget : public QDockWidget {
 	Q_OBJECT
 public:
-	PrivateMainformImpl( MainformImpl * parent );
-	~PrivateMainformImpl();
+	ProjectDirectoryDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	ProjectDirectoryDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	virtual ~ProjectDirectoryDockWidget();
 	
-	void updateShortcut();
-	void createSubMenu();
-	void createStatusBar();
-	void createDockWidget();
+	void setGlobalUpdateAction( QAction * action );
+	void setGlobalCommitAction( QAction * action );
+	void setSelectedUpdateAction( QAction * action );
+	void setSelectedCommitAction( QAction * action );
+	void setSelectedAddAction( QAction * action );
+	void setSelectedRemoveAction( QAction * action );
+	void setToggledViewAction( QAction * action );
 	
-	FileContentDockWidget * m_contentDock;
-	ProjectDirectoryDockWidget * m_projectDock;
+	bool isViewFlat();
 	
-	// Label text
-	QLabel * m_editorPosition;
-
-	// Recent action
-	QAction * m_recentProjectActs[ MAXRECENTFILES ]; 
-	QAction * m_recentSeparator;
-	QAction * m_recentFileActs[ MAXRECENTFILES ]; 
-	QAction * m_recentFileSeparator;
-
-	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
-private:	
-	MainformImpl * m_parent;
+public slots:
+	void toggledView();
+	void toggledView( bool flat );
+	
+private:
+	PrivateProjectDirectoryDockWidget * d;
+	friend class PrivateProjectDirectoryDockWidget;
 };
 
-#endif // __P_MAINFORMIMPL_H__
+#endif // __PROJECTDIRECTORYDOCKWIDGET_H__

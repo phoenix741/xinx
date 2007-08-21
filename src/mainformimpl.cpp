@@ -31,12 +31,27 @@
 
 PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_parent( parent ) {
 	createSubMenu();
+	createDockWidget();
 	createStatusBar();
 	updateShortcut();
 }
 
 PrivateMainformImpl::~PrivateMainformImpl() {
 	
+}
+
+void PrivateMainformImpl::createDockWidget() {
+	m_contentDock = new FileContentDockWidget( "File Content", m_parent );
+	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
+	QAction * action = m_contentDock->toggleViewAction();
+	action->setShortcut( tr("Ctrl+1") );
+	m_parent->m_windowsMenu->addAction( action ); 
+	
+	m_projectDock = new ProjectDirectoryDockWidget( "Project Directory", m_parent );
+	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
+	action = m_projectDock->toggleViewAction();
+	action->setShortcut( tr("Ctrl+2") );
+	m_parent->m_windowsMenu->addAction( action ); 
 }
 
 void PrivateMainformImpl::createSubMenu() {
@@ -117,6 +132,8 @@ void PrivateMainformImpl::updateShortcut() {
 	m_parent->m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
 	m_parent->m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
 	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
+	
+	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+C" ) );	
 
 	// Search menu
 	m_parent->m_searchAct->setShortcut( QKeySequence::Find );

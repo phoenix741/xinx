@@ -33,7 +33,8 @@ FORMS += ui/about.ui \
  ui/resultatServices.ui \
  ui/runsnipet.ui \
  ui/servicesconnection.ui \
- ui/snipetproperty.ui
+ ui/snipetproperty.ui \
+ ui/projectdirectorywidget.ui
 HEADERS += src/aboutdialogimpl.h \
  src/commitmessagedialogimpl.h \
  src/connectionwebservicesdialogimpl.h \
@@ -86,7 +87,9 @@ HEADERS += src/aboutdialogimpl.h \
  src/dirrcsmodel.h \
  src/iconprojectprovider.h \
  src/mainformimpl.h \
- src/private/p_mainformimpl.h
+ src/private/p_mainformimpl.h \
+ src/filecontentdockwidget.h \
+ src/projectdirectorydockwidget.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
@@ -143,7 +146,9 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xslproject.cpp \
  src/dirrcsmodel.cpp \
  src/iconprojectprovider.cpp \
- src/mainformimpl.cpp
+ src/mainformimpl.cpp \
+ src/filecontentdockwidget.cpp \
+ src/projectdirectorydockwidget.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts

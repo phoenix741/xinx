@@ -18,45 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_MAINFORMIMPL_H__
-#define __P_MAINFORMIMPL_H__
-
 // Xinx header
-#include "../mainformimpl.h"
-#include "../filecontentdockwidget.h"
-#include "../projectdirectorydockwidget.h"
+#include "projectdirectorydockwidget.h"
+#include "ui_projectdirectorywidget.h"
 
-// Qt header
-#include <QObject>
+/* PrivateProjectDirectoryDockWidget */
 
-#define MAXRECENTFILES 10
-
-class PrivateMainformImpl : public QObject {
-	Q_OBJECT
+class PrivateProjectDirectoryDockWidget {
 public:
-	PrivateMainformImpl( MainformImpl * parent );
-	~PrivateMainformImpl();
-	
-	void updateShortcut();
-	void createSubMenu();
-	void createStatusBar();
-	void createDockWidget();
-	
-	FileContentDockWidget * m_contentDock;
-	ProjectDirectoryDockWidget * m_projectDock;
-	
-	// Label text
-	QLabel * m_editorPosition;
+	PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent );
+	~PrivateProjectDirectoryDockWidget();
 
-	// Recent action
-	QAction * m_recentProjectActs[ MAXRECENTFILES ]; 
-	QAction * m_recentSeparator;
-	QAction * m_recentFileActs[ MAXRECENTFILES ]; 
-	QAction * m_recentFileSeparator;
-
-	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
-private:	
-	MainformImpl * m_parent;
+	Ui::ProjectDirectoryWidget * m_projectDirWidget;
+private:
+	ProjectDirectoryDockWidget * m_parent;
 };
 
-#endif // __P_MAINFORMIMPL_H__
+PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) : m_parent( parent ) {
+	QWidget * contentWidget = new QWidget( m_parent );
+	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
+	m_projectDirWidget->setupUi( contentWidget );
+	m_parent->setWidget( contentWidget );
+}
+
+PrivateProjectDirectoryDockWidget::~PrivateProjectDirectoryDockWidget() {
+	
+}
+
+/* ContentDockWidget */
+	
+ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
+	d = new PrivateProjectDirectoryDockWidget( this );
+}
+
+ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ) {
+	d = new PrivateProjectDirectoryDockWidget( this );	
+}
+
+ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget() {
+	delete d;
+}
+

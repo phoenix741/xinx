@@ -18,45 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_MAINFORMIMPL_H__
-#define __P_MAINFORMIMPL_H__
+#ifndef __FILECONTENTDOCKWIDGET_H__
+#define __FILECONTENTDOCKWIDGET_H__
 
-// Xinx header
-#include "../mainformimpl.h"
-#include "../filecontentdockwidget.h"
-#include "../projectdirectorydockwidget.h"
+#include <QDockWidget>
+#include <QString>
 
-// Qt header
-#include <QObject>
+class PrivateFileContentDockWidget;
+class QAbstractItemModel;
 
-#define MAXRECENTFILES 10
-
-class PrivateMainformImpl : public QObject {
+class FileContentDockWidget : public QDockWidget {
 	Q_OBJECT
 public:
-	PrivateMainformImpl( MainformImpl * parent );
-	~PrivateMainformImpl();
-	
-	void updateShortcut();
-	void createSubMenu();
-	void createStatusBar();
-	void createDockWidget();
-	
-	FileContentDockWidget * m_contentDock;
-	ProjectDirectoryDockWidget * m_projectDock;
-	
-	// Label text
-	QLabel * m_editorPosition;
-
-	// Recent action
-	QAction * m_recentProjectActs[ MAXRECENTFILES ]; 
-	QAction * m_recentSeparator;
-	QAction * m_recentFileActs[ MAXRECENTFILES ]; 
-	QAction * m_recentFileSeparator;
-
-	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
-private:	
-	MainformImpl * m_parent;
+	FileContentDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	FileContentDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	virtual ~FileContentDockWidget();
+public slots:
+	void updateModel( QAbstractItemModel * model );
+signals:
+	void open( const QString & name, int line );
+private:
+	PrivateFileContentDockWidget * d;
+	friend class PrivateFileContentDockWidget;
 };
 
-#endif // __P_MAINFORMIMPL_H__
+#endif // __FILECONTENTDOCKWIDGET_H__
