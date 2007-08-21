@@ -41,6 +41,8 @@ public:
 	void createSubMenu();
 	void createStatusBar();
 	void createDockWidget();
+	void readWindowSettings();
+	void storeWindowSettings();
 	
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;

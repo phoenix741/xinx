@@ -21,11 +21,14 @@
 // Xinx header
 #include "mainformimpl.h"
 #include "private/p_mainformimpl.h"
+#include "globals.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QKeySequence>
 #include <QMenu>
 #include <QAction>
+#include <QCloseEvent>
 
 /* PrivateMainformImpl */
 
@@ -42,12 +45,14 @@ PrivateMainformImpl::~PrivateMainformImpl() {
 
 void PrivateMainformImpl::createDockWidget() {
 	m_contentDock = new FileContentDockWidget( "File Content", m_parent );
+	m_contentDock->setObjectName( "m_contentDock" );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
 	QAction * action = m_contentDock->toggleViewAction();
 	action->setShortcut( tr("Ctrl+1") );
 	m_parent->m_windowsMenu->addAction( action ); 
 	
 	m_projectDock = new ProjectDirectoryDockWidget( "Project Directory", m_parent );
+	m_projectDock->setObjectName( "m_projectDock" );
 	m_projectDock->setGlobalUpdateAction( m_parent->m_globalUpdateFromRCSAct );
 	m_projectDock->setGlobalCommitAction( m_parent->m_globalCommitToRCSAct );
 	m_projectDock->setSelectedUpdateAction( m_parent->m_selectedUpdateFromRCSAct );
@@ -160,6 +165,24 @@ void PrivateMainformImpl::updateShortcut() {
 	m_parent->m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
 }
 
+void PrivateMainformImpl::readWindowSettings() {
+	m_parent->resize( global.m_xinxConfig->size() );
+	m_parent->move( global.m_xinxConfig->position() );
+  
+	if( ! global.m_xinxConfig->storedMainWindowState().isEmpty() ) {
+		m_parent->restoreState( global.m_xinxConfig->storedMainWindowState() );
+	}
+}
+
+void PrivateMainformImpl::storeWindowSettings() {
+	global.m_xinxConfig->storeMainWindowState( m_parent->saveState() );
+	
+	global.m_xinxConfig->setPosition( m_parent->pos() );
+	global.m_xinxConfig->setSize( m_parent->size() );
+	
+	global.m_xinxConfig->save();
+}
+
 
 /* MainformImpl */
 
@@ -169,6 +192,9 @@ MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent
 
 	// Update the status bar position
 	setEditorPosition( 1, 1 );
+	
+	// Restore windows property
+	d->readWindowSettings();
 }
 
 MainformImpl::~MainformImpl() {
@@ -179,4 +205,7 @@ void MainformImpl::setEditorPosition( int line, int column ) {
 	d->m_editorPosition->setText( QString("   %1 x %2   ").arg( line, 3, 10, QLatin1Char('0') ).arg( column, 3, 10, QLatin1Char('0') ) );
 }
 
-
+void MainformImpl::closeEvent( QCloseEvent *event ) {
+	d->storeWindowSettings();
+	event->accept();
+}

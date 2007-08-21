@@ -33,6 +33,8 @@ public:
 	virtual ~MainformImpl();
 public slots:
 	void setEditorPosition( int line, int column );
+protected: 
+	void closeEvent( QCloseEvent *event );
 private:
 	PrivateMainformImpl * d;
 	friend class PrivateMainformImpl;
