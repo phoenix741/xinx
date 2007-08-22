@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 				QStringList::iterator it = args.begin();
 				it++;
 				while (it != args.end()) {
-					if(QFile(*it).exists()) mainWin->open(*it);
+					if(QFile(*it).exists()) mainWin->openFile( *it );
 					it++;
 				}
 			}

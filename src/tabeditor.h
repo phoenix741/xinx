@@ -95,9 +95,9 @@ Q_SIGNALS:
 
 protected:
     bool eventFilter( QObject *obj, QEvent *event );
-	void dragEnterEvent( QDragEnterEvent *event );
-	void dropEvent( QDropEvent *event );
-	void tabRemoved ( int index );
+	virtual void dragEnterEvent( QDragEnterEvent *event );
+	virtual void dropEvent( QDropEvent *event );
+	virtual void tabRemoved ( int index );
 	
 private slots:
 	void slotCurrentTabChanged( int );

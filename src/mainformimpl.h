@@ -43,11 +43,11 @@ public slots:
 	void newWebservicesFile();
 	void newDefaultFile();
 	void newTemplate();
-	void open( const QString & filename );
-	void saveAs( const QString & filename = QString() );
-	void saveAll();
-	void close();
-	void closeAll();
+	void openFile( const QString & filename );
+	void saveFileAs( const QString & filename = QString() );
+	void saveAllFile();
+	void closeFile();
+	void closeAllFile();
 	
 	void newProject();
 	void openProject( const QString & filename );

@@ -42,7 +42,7 @@ private:
 	FileContentDockWidget * m_parent;
 };
 
-PrivateFileContentDockWidget::PrivateFileContentDockWidget( FileContentDockWidget * parent ) : m_parent( parent ) {
+PrivateFileContentDockWidget::PrivateFileContentDockWidget( FileContentDockWidget * parent ) : m_model(0), m_sortModel(0), m_parent( parent ) {
 	m_contentTreeView = new QTreeView( m_parent );
 	m_contentTreeView->setSortingEnabled( true );
 	m_parent->setWidget( m_contentTreeView );
@@ -77,14 +77,15 @@ FileContentDockWidget::~FileContentDockWidget() {
 }
 
 void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
-	d->m_model = model;
 	if( model ) {
+		if( d->m_sortModel ) delete d->m_sortModel;
 		d->m_sortModel = new QSortFilterProxyModel( this );
-		d->m_sortModel->setSourceModel( d->m_model );
+		d->m_sortModel->setSourceModel( model );
 		d->m_contentTreeView->setModel( d->m_sortModel );
 	} else {
 		d->m_contentTreeView->setModel( NULL );
 		delete d->m_sortModel;
 		d->m_sortModel = NULL;
 	}
+	d->m_model = model;
 }

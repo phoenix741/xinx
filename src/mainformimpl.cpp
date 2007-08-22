@@ -42,10 +42,12 @@
 /* PrivateMainformImpl */
 
 PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastPlace( QDir::currentPath() ), m_parent( parent ) {
+	createTabEditorButton();
 	createSubMenu();
 	createDockWidget();
 	createStatusBar();
 	createShortcut();
+	createActions();
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
@@ -108,6 +110,195 @@ void PrivateMainformImpl::createSubMenu() {
 	btn = qobject_cast<QToolButton*>( m_parent->m_fileToolBar->widgetForAction( m_parent->m_recentFileAct ) );
 	if( btn )
 		btn->setPopupMode( QToolButton::MenuButtonPopup );
+}
+
+void PrivateMainformImpl::createActions() {
+	/* FILE */
+	void on_m_newStylesheetFileAct_triggered();
+	void on_m_newXMLFileAct_triggered();
+	void on_m_newJavascriptFileAct_triggered();
+	void on_m_newWebServicesFileAct_triggered();
+	void on_m_newAct_triggered();
+
+	// New
+	connect( m_parent->m_newAct, SIGNAL(triggered()), m_parent, SLOT(newDefaultFile()) );
+	connect( m_parent->m_newStylesheetFileAct, SIGNAL(triggered()), m_parent, SLOT(newStylesheetFile()) );
+	connect( m_parent->m_newXMLFileAct, SIGNAL(triggered()), m_parent, SLOT(newXmlDataFile()) );
+	connect( m_parent->m_newWebServicesFileAct, SIGNAL(triggered()), m_parent, SLOT(newWebservicesFile()) );
+	connect( m_parent->m_newJavascriptFileAct, SIGNAL(triggered()), m_parent, SLOT(newJavascriptFile()) );
+	
+	// Open
+	connect( m_parent->m_openAct, SIGNAL(triggered()), this, SLOT(openFile()) );
+	connect( m_parent->m_recentFileAct, SIGNAL(triggered()), this, SLOT(openFile()) );
+
+	// Recent open action
+	for(int i = 0; i < MAXRECENTFILES; i++) {
+		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
+		connect( m_recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()) );
+	}
+		
+	// Save
+	connect( m_parent->m_saveAct, SIGNAL(triggered()), this, SLOT(saveFile()) );
+	connect( m_parent->m_saveAsAct, SIGNAL(triggered()), this, SLOT(saveAsFile()) );
+	connect( m_parent->m_saveAllAct, SIGNAL(triggered()), m_parent, SLOT(saveAllFile()) );
+	
+	// Print
+	void on_m_printAct_triggered();
+	
+	// Close
+	connect( m_parent->m_closeAct, SIGNAL(triggered()), m_parent, SLOT(closeFile()) );
+	connect( m_parent->m_closeAllAct, SIGNAL(triggered()), m_parent, SLOT(closeAllFile()) );
+	
+	// Model
+	//connect( m_tabEditors, SIGNAL(modelCreated()), this, SLOT(slotModelCreated()) );
+	//connect( m_tabEditors, SIGNAL(modelDeleted()), this, SLOT(slotModelDeleted()) );
+	connect( m_parent->m_tabEditors, SIGNAL(setEditorPosition(int,int)), m_parent, SLOT(setEditorPosition(int,int)) );	
+
+	/* EDIT */
+	// Undo
+	connect( m_parent->m_undoAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(undo()) );
+	m_parent->m_undoAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(undoAvailable(bool)), m_parent->m_undoAct, SLOT(setEnabled(bool)) );	
+
+	// Redo
+	connect( m_parent->m_redoAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(redo()) );
+	m_parent->m_redoAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(redoAvailable(bool)), m_parent->m_redoAct, SLOT(setEnabled(bool)) );	
+
+	// Cut
+	connect( m_parent->m_cutAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(cut()) );
+	m_parent->m_cutAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(copyAvailable(bool)), m_parent->m_cutAct, SLOT(setEnabled(bool)) );
+	
+	// Copy
+	connect( m_parent->m_copyAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(copy()) );
+	m_parent->m_copyAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(copyAvailable(bool)), m_parent->m_copyAct, SLOT(setEnabled(bool)) );	
+
+	// Paste
+	connect( m_parent->m_pasteAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(paste()) );
+	m_parent->m_pasteAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(pasteAvailable(bool)), m_parent->m_pasteAct, SLOT(setEnabled(bool)) );	
+  
+	// Select All
+	connect( m_parent->m_selectAllAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(selectAll()) );
+	m_parent->m_selectAllAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_selectAllAct, SLOT(setEnabled(bool)) );	
+  
+	// Duplicate Line
+	connect( m_parent->m_duplicateLineAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(duplicateCurrentLine()) );
+	m_parent->m_duplicateLineAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_duplicateLineAct, SLOT(setEnabled(bool)) );
+  
+	// Move Line Up
+	connect( m_parent->m_moveUpLineAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(moveLineUp()) );
+	m_parent->m_moveUpLineAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_moveUpLineAct, SLOT(setEnabled(bool)) );
+  
+	// Move Line Down
+	connect( m_parent->m_moveDownLineAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(moveLineDown()) );
+	m_parent->m_moveDownLineAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_moveDownLineAct, SLOT(setEnabled(bool)) );	
+
+	// Upper Case
+	connect( m_parent->m_upperTextAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(upperSelectedText()) );
+	m_parent->m_upperTextAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(hasTextSelection(bool)), m_parent->m_upperTextAct, SLOT(setEnabled(bool)) );
+
+	// Lower Case
+	connect( m_parent->m_lowerTextAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(lowerSelectedText()) );
+	m_parent->m_lowerTextAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(hasTextSelection(bool)), m_parent->m_lowerTextAct, SLOT(setEnabled(bool)) );
+
+	// Comment
+	connect( m_parent->m_commentLineAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(commentSelectedText()) );
+	m_parent->m_commentLineAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(hasTextSelection(bool)), m_parent->m_commentLineAct, SLOT(setEnabled(bool)) );
+
+	// Uncomment
+	connect( m_parent->m_uncommentLineAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(uncommentSelectedText()) );
+	m_parent->m_uncommentLineAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(hasTextSelection(bool)), m_parent->m_uncommentLineAct, SLOT(setEnabled(bool)) );
+
+	// Complete, Don't need, process by the editor directly
+	connect( m_parent->m_completeAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(complete()) );
+	m_parent->m_completeAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_completeAct, SLOT(setEnabled(bool)) );
+	
+	// Search 
+	m_parent->m_searchAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_searchAct, SLOT(setEnabled(bool)) );
+	
+	// Search next/previous
+	m_parent->m_searchNextAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_searchNextAct, SLOT(setEnabled(bool)));	
+	m_parent->m_searchPreviousAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_searchPreviousAct, SLOT(setEnabled(bool)));	
+
+	// Replace
+	m_parent->m_replaceAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_replaceAct, SLOT(setEnabled(bool)) );
+	
+	// Indent	
+	connect( m_parent->m_indentAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(indent()) );
+	m_parent->m_indentAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_indentAct, SLOT(setEnabled(bool)) );	
+
+	// Unindent	
+	connect( m_parent->m_unindentAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(unindent()) );
+	m_parent->m_unindentAct->setEnabled(false);
+	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_unindentAct, SLOT(setEnabled(bool)) );	
+	
+	/* PROJECT */
+	connect( m_parent->m_globalUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(globalUpdateFromVersionManager()) );
+	connect( m_parent->m_globalCommitToRCSAct, SIGNAL(triggered()), this, SLOT(globalCommitToVersionManager()) );
+	connect( m_parent->m_selectedUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedUpdateFromVersionManager()) );
+	connect( m_parent->m_selectedCommitToRCSAct, SIGNAL(triggered()), this, SLOT(selectedCommitToVersionManager()) );
+	connect( m_parent->m_selectedAddToRCSAct, SIGNAL(triggered()), this, SLOT(selectedAddToVersionManager()) );
+	connect( m_parent->m_selectedRemoveFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedRemoveFromVersionManager()) );
+	
+	/* WINDOWS */
+	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
+
+	/* TEMPLATE */
+	// Create Template
+	connect( m_parent->m_createTemplate, SIGNAL(triggered()), m_parent, SLOT(newTemplate()) );
+	  
+  	// About Qt
+	connect( m_parent->m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+}
+
+void PrivateMainformImpl::openRecentProject() {
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action )
+		m_parent->openProject( action->data().toString() );	
+}
+
+void PrivateMainformImpl::openRecentFile() {
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action )
+		m_parent->openFile( action->data().toString() );	
+}
+
+void PrivateMainformImpl::openFile() {
+	Q_ASSERT( global.m_xinxConfig );
+	
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), m_lastPlace, global.m_xinxConfig->dialogFilters().join(";;") );
+	
+	m_parent->m_tabEditors->setUpdatesEnabled( false );
+	foreach( QString filename, selectedFiles ) {
+		m_lastPlace = QFileInfo( filename ).absolutePath();
+		m_parent->openFile( filename );
+	}
+	m_parent->m_tabEditors->setUpdatesEnabled( true );
+}
+
+void PrivateMainformImpl::saveFile() {
+	fileEditorSave( m_parent->m_tabEditors->currentIndex() );
+}
+
+void PrivateMainformImpl::saveAsFile() {
+	fileEditorSaveAs( m_parent->m_tabEditors->currentIndex() );
 }
 
 void PrivateMainformImpl::setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] ) {
@@ -408,6 +599,48 @@ void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 	m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 }
 
+void PrivateMainformImpl::fileEditorClose( int index ) {
+	if( fileEditorMayBeSave( index ) ) {
+		m_contentDock->updateModel( NULL );
+		m_parent->m_tabEditors->removeTab( index ); // Delete is in tabDelete
+	}
+	
+	updateActions();
+}
+
+void PrivateMainformImpl::globalUpdateFromVersionManager() {
+	m_parent->updateFromVersionManager();
+}
+
+void PrivateMainformImpl::globalCommitToVersionManager() {
+	m_parent->commitToVersionManager();	
+}
+
+void PrivateMainformImpl::selectedUpdateFromVersionManager() {
+	QStringList list = m_projectDock->selectedFiles();
+	if( list.count() > 0 )
+		m_parent->updateFromVersionManager( list );
+}
+
+void PrivateMainformImpl::selectedCommitToVersionManager() {
+	QStringList list = m_projectDock->selectedFiles();
+	if( list.count() > 0 )
+		m_parent->commitToVersionManager( list );
+}
+
+void PrivateMainformImpl::selectedAddToVersionManager() {
+	QStringList list = m_projectDock->selectedFiles();
+	if( list.count() > 0 )
+		m_parent->addFilesToVersionManager( list );
+}
+
+void PrivateMainformImpl::selectedRemoveFromVersionManager() {
+	QStringList list = m_projectDock->selectedFiles();
+	if( list.count() > 0 )
+		m_parent->removeFilesFromVersionManager( list );
+}
+
+
 /* MainformImpl */
 
 MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ) {
@@ -481,7 +714,7 @@ void MainformImpl::newTemplate() {
 	}
 }
 
-void MainformImpl::open( const QString & filename ) {
+void MainformImpl::openFile( const QString & filename ) {
 	Q_ASSERT( ! filename.isEmpty() );
 
 	// Add recent action
@@ -500,20 +733,30 @@ void MainformImpl::open( const QString & filename ) {
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
-void MainformImpl::saveAs( const QString & name ) {
-	
+void MainformImpl::saveFileAs( const QString & name ) {
+	qobject_cast<FileEditor*>( m_tabEditors->currentEditor() )->saveFile( name );
 }
 
-void MainformImpl::saveAll() {
-	
+void MainformImpl::saveAllFile() {
+	for( int i = 0; i < m_tabEditors->count(); i++ ) {
+		d->fileEditorSave( i ); 	
+	}
 }
 
-void MainformImpl::close() {
-	
+void MainformImpl::closeFile() {
+	d->fileEditorClose( m_tabEditors->currentIndex() );
 }
 
-void MainformImpl::closeAll() {
+void MainformImpl::closeAllFile() {
+	for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) {
+		if ( d->fileEditorMayBeSave( i ) ) {
+			d->m_contentDock->updateModel( NULL );
+			m_tabEditors->removeTab( i );	
+		} else 
+			return ;
+	}
 	
+	d->updateActions();
 }
 
 void MainformImpl::newProject() {

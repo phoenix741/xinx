@@ -302,6 +302,7 @@ void TabEditor::tabRemoved ( int index ) {
 		previous->disconnect();
 		if( isFileEditor( previous ) )
 			qobject_cast<FileEditor*>( previous )->textEdit()->disconnect( this );
+		delete previous;
 		previous = NULL;
 	}
 }

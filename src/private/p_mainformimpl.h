@@ -46,6 +46,7 @@ public:
 	void createSubMenu();
 	void createStatusBar();
 	void createDockWidget();
+	void createActions();
 
 	// Actions
 	void updateActions();
@@ -59,7 +60,8 @@ public:
 	bool fileEditorMayBeSave( int index );
 	void fileEditorSave( int index );
 	void fileEditorSaveAs( int index );
-
+	void fileEditorClose( int index );
+	
 	// Settings
 	void readWindowSettings();
 	void storeWindowSettings();
@@ -80,10 +82,27 @@ public:
 	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
 	void updateRecentFiles();
 	void updateRecentProjects();
-
+	
 	// Snipet
 	QHash<QString,QAction*> m_snipetCategoryActs;
 	QList<QAction*> m_snipetActs;
+public slots:
+	// File
+	void openFile();
+	void saveFile();
+	void saveAsFile();
+
+	// Project
+	void globalUpdateFromVersionManager();
+	void globalCommitToVersionManager();
+	void selectedUpdateFromVersionManager();
+	void selectedCommitToVersionManager();
+	void selectedAddToVersionManager();
+	void selectedRemoveFromVersionManager();
+
+	// Recent action
+	void openRecentProject();
+	void openRecentFile();
 private:	
 	MainformImpl * m_parent;
 };
