@@ -27,6 +27,7 @@
 
 // Qt header
 #include <QFileInfo>
+#include <QFile>
 #include <QHeaderView>
 #include <QMenu>
 #include <QContextMenuEvent>
@@ -217,4 +218,19 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 			d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( d->m_dirModel->index( d->m_project->projectPath() ) );
 	}
+}
+
+void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
+	if( d->m_dirModel ) {
+		QModelIndex index = d->m_dirModel->index( path );
+		d->m_dirModel->refresh( index );
+	}
+}
+
+bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
+	if( d->m_dirModel ) {
+		QModelIndex index = d->m_dirModel->index( path );
+		return d->m_dirModel->remove( index );
+	} else
+		return QFile::remove( path );
 }

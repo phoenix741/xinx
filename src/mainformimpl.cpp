@@ -21,7 +21,6 @@
 // Xinx header
 #include "mainformimpl.h"
 #include "private/p_mainformimpl.h"
-#include "globals.h"
 #include "xinxconfig.h"
 #include "xslproject.h"
 #include "snipet.h"
@@ -37,10 +36,12 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QDir>
+#include <QFileDialog>
 
 /* PrivateMainformImpl */
 
-PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_parent( parent ) {
+PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastPlace( QDir::currentPath() ), m_parent( parent ) {
 	createSubMenu();
 	createDockWidget();
 	createStatusBar();
@@ -268,6 +269,145 @@ void PrivateMainformImpl::updateActions() {
 	}
 }
 
+bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
+	Q_ASSERT( index >= 0 );
+	Q_ASSERT( index < m_parent->m_tabEditors->count() );
+	Q_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	
+	if ( m_parent->m_tabEditors->editor( index )->isModified() ) {
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::warning( m_parent, tr("Application"),
+									tr("The document %1 has been modified.\n"
+									"Do you want to save your changes?").arg( m_parent->m_tabEditors->editor(index)->getTitle() ),
+									QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+		if ( ret == QMessageBox::Save ) {
+			fileEditorSave( index );
+		} else if (ret == QMessageBox::Cancel)
+			return false;
+	}
+	return true;
+}
+
+QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname ) {
+	Q_ASSERT( global.m_xinxConfig );
+	
+	QString prefix = global.m_project ? global.m_project->specifPrefix() + "_" : "" ;
+	QString filename = QFileInfo( pathname ).fileName();
+	bool hasSpecifiqueName = global.m_project && 
+							 ( filename.startsWith( prefix.toLower() ) || filename.startsWith( prefix.toUpper() ) );
+	bool canBeCustomize = global.m_xinxConfig->managedFile4Name( filename ).canBeCustomize;
+	
+	if( global.m_xinxConfig->isAlertWhenStdFile() && canBeCustomize && !hasSpecifiqueName ) {
+		QMessageBox::StandardButton res = QMessageBox::warning( m_parent, tr( "Save standard XSL" ), tr( "You're being to save standard file, do you whant make it specifique ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
+		if( res == QMessageBox::Cancel )
+			return QString();
+		if( res == QMessageBox::Yes )
+			return getUserPathName( pathname );
+		return pathname;
+	} else
+		return pathname;
+}
+
+QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QString & suffix ) {
+	Q_ASSERT( global.m_xinxConfig );
+	Q_ASSERT( ! ( pathname.isEmpty() && suffix.isEmpty() ) );
+	
+	QString fileName    = pathname,
+			fileSuffix  = suffix.isEmpty() ? QFileInfo( pathname ).completeSuffix() : suffix,
+			specifPath,
+			filter = global.m_xinxConfig->dialogFilter( fileSuffix ),
+			newFileName;
+	struct XINXConfig::managedFile customFile = global.m_xinxConfig->managedFile4Suffix( fileSuffix );
+
+	if( global.m_project ) 
+		specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( customFile.customPath );
+	else
+	 	specifPath = m_lastPlace;
+
+	if( fileName.isEmpty() ) {
+		if( global.m_project ) 
+			newFileName = QDir( specifPath ).absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" );
+		else
+			newFileName = specifPath;
+	} else {
+		bool isCustomized = 
+			global.m_project && (
+			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() ) ||
+			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toUpper() ) );
+			
+		if( customFile.canBeCustomize && (!isCustomized) ) {
+			newFileName = QDir( specifPath ).
+				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
+		} else {
+			newFileName = fileName;
+		}
+	}
+	
+	fileName = QFileDialog::getSaveFileName( m_parent, tr("Save text file"), newFileName, global.m_xinxConfig->dialogFilters().join(";;"), &filter );
+	
+	if( !fileName.isEmpty() ) {
+		m_lastPlace = QFileInfo( fileName ).absolutePath();
+		if( global.m_project && ( global.m_project->projectRCS() != XSLProject::NORCS ) ) {
+			QMessageBox::StandardButton res = QMessageBox::question( m_parent, tr("Add file"), tr("Do you want add file %1 to the repository ?").arg( QFileInfo( fileName ).fileName() ), QMessageBox::Yes | QMessageBox::No );
+			if( res == QMessageBox::Yes ) {
+				QString backup = fileEditorStandardBackup( pathname, fileName );
+				if( backup.isEmpty() )
+					m_parent->addFilesToVersionManager( QStringList() << fileName );
+				else
+					m_parent->addFilesToVersionManager( QStringList() << fileName << backup );
+			}
+		}
+	}
+		
+	return fileName;
+}
+
+QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, const QString & newname ) {
+	if( ! global.m_project ) return QString();
+		
+	QString prefix = global.m_project->specifPrefix() + "_";
+	QString oldfilename = QFileInfo( oldname ).fileName();
+	QString newfilename = QFileInfo( newname ).fileName();
+	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix.toLower() ) || oldfilename.startsWith( prefix.toUpper() );
+	bool isNewSpecifiqueFile = newfilename.startsWith( prefix.toLower() ) || newfilename.startsWith( prefix.toUpper() );
+	QString specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( global.m_xinxConfig->managedFile4Name( oldfilename ).customPath );
+	QString destname = QDir( specifPath ).absoluteFilePath( newfilename );
+
+	if( ( ! isOldSpecifiqueFile ) && isNewSpecifiqueFile ) {
+		QFile::copy( oldname, destname );
+		m_projectDock->refreshPath( specifPath );
+		return destname;
+	}
+	return QString();
+}
+
+void PrivateMainformImpl::fileEditorSave( int index ) {
+	Q_ASSERT( index >= 0 );
+	Q_ASSERT( index < m_parent->m_tabEditors->count() );
+	Q_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	
+	if ( ! m_parent->m_tabEditors->editor( index )->hasName() ) {
+		fileEditorSaveAs( index );
+	} else {
+		QString fileName = fileEditorCheckPathName( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName() );
+		if( ! fileName.isEmpty() ) {
+			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
+			m_parent->m_tabEditors->editor( index )->setModified( false );
+			m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
+		}
+	}
+}
+
+void PrivateMainformImpl::fileEditorSaveAs( int index ) {
+	QString fileName = getUserPathName( 
+		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getFileName(), 
+		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getSuffix() );
+
+	qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
+	m_parent->m_tabEditors->editor( index )->setModified( false );
+	m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
+}
+
 /* MainformImpl */
 
 MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ) {
@@ -344,6 +484,7 @@ void MainformImpl::newTemplate() {
 void MainformImpl::open( const QString & filename ) {
 	Q_ASSERT( ! filename.isEmpty() );
 
+	// Add recent action
 	if( global.m_project ) {
 		global.m_project->lastOpenedFile().removeAll( filename );
 		global.m_project->lastOpenedFile().prepend( filename );
@@ -352,6 +493,7 @@ void MainformImpl::open( const QString & filename ) {
 			global.m_project->lastOpenedFile().removeLast();
 	}
 
+	// Load the file in the editor
 	m_tabEditors->loadFileEditor( filename );
 	d->updateRecentFiles();
 	d->updateActions();
@@ -395,5 +537,21 @@ void MainformImpl::callWebservices() {
 }
 
 void MainformImpl::refreshWebservices() {
+	
+}
+
+void MainformImpl::updateFromVersionManager( const QStringList & list ) {
+	
+}
+
+void MainformImpl::commitToVersionManager( const QStringList & list ) {
+	
+}
+
+void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
+	
+}
+
+void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 	
 }

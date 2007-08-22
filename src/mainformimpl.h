@@ -24,6 +24,11 @@
 // Xinx header
 #include "ui_mainform.h"
 
+// Qt header
+#include <QMainWindow>
+#include <QString>
+#include <QStringList>
+
 class PrivateMainformImpl;
 
 class MainformImpl : public QMainWindow, public Ui::MainForm {
@@ -51,6 +56,11 @@ public slots:
 
 	void callWebservices();
 	void refreshWebservices();
+
+	void updateFromVersionManager( const QStringList & list = QStringList() );
+	void commitToVersionManager( const QStringList & list = QStringList() );
+	void addFilesToVersionManager( const QStringList & list );
+	void removeFilesFromVersionManager( const QStringList & list );
 
 	void setEditorPosition( int line, int column );
 protected: 

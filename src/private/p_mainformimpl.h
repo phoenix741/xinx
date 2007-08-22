@@ -25,6 +25,7 @@
 #include "../mainformimpl.h"
 #include "../filecontentdockwidget.h"
 #include "../projectdirectorydockwidget.h"
+#include "../globals.h"
 
 // Qt header
 #include <QObject>
@@ -32,8 +33,6 @@
 #include <QToolButton>
 #include <QAction>
 #include <QHash>
-
-#define MAXRECENTFILES 10
 
 class PrivateMainformImpl : public QObject {
 	Q_OBJECT
@@ -50,6 +49,16 @@ public:
 
 	// Actions
 	void updateActions();
+	
+	// Editor
+	QString m_lastPlace;
+	
+	QString fileEditorCheckPathName( const QString & pathname );
+	QString getUserPathName( const QString & pathname, const QString & suffix = QString() );
+	QString fileEditorStandardBackup( const QString & oldname, const QString & newname );
+	bool fileEditorMayBeSave( int index );
+	void fileEditorSave( int index );
+	void fileEditorSaveAs( int index );
 
 	// Settings
 	void readWindowSettings();

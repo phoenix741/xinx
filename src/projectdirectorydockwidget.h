@@ -47,6 +47,9 @@ public:
 	bool isViewFlat();
 	QStringList selectedFiles();
 	void setProjectPath( XSLProject * project );
+	
+	void refreshPath( const QString & path );
+	bool removeFile( const QString & path );
 public slots:
 	void toggledView();
 	void toggledView( bool flat );

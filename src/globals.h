@@ -108,6 +108,11 @@ Q_SIGNALS:
 extern Globals global;
 
 /*!
+ * Numbre of maximum recent file that can be opened
+ */
+#define MAXRECENTFILES 10
+
+/*!
  * Default extention filtre 
  */
 #define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"

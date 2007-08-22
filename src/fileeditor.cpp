@@ -350,18 +350,6 @@ QString FileEditor::getSuffix() const {
 
 
 void FileEditor::setFileName( const QString & fileName ) {
-	if( ! ( m_fileName.isEmpty() || fileName.isEmpty() ) ) {
-		QString prefix = global.m_project->specifPrefix().toLower() + "_";
-		bool isOldSpecifiqueFile = QFileInfo( m_fileName ).fileName().startsWith( prefix );
-		bool isNewSpecifiqueFile = QFileInfo( fileName ).fileName().startsWith( prefix );
-
-		QString infoFileName = QFileInfo( m_fileName ).fileName();
-		QString destName = QDir( QDir( global.m_project->specifPath() ).absoluteFilePath( global.m_xinxConfig->managedFile4Name( infoFileName ).customPath ) ).absoluteFilePath( infoFileName );
-
-		if( (!isOldSpecifiqueFile) && isNewSpecifiqueFile )
-			QFile::copy( m_fileName, destName );
-	}
-
 	if( ! fileName.isEmpty() ) {
 		m_fileName = fileName;
 		d->setWatcher( m_fileName );
