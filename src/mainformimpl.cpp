@@ -23,12 +23,20 @@
 #include "private/p_mainformimpl.h"
 #include "globals.h"
 #include "xinxconfig.h"
+#include "xslproject.h"
+#include "snipet.h"
+#include "snipetlist.h"
+#include "snipetdialog.h"
+#include "fileeditor.h"
+#include "texteditor.h"
 
 // Qt header
 #include <QKeySequence>
 #include <QMenu>
 #include <QAction>
 #include <QCloseEvent>
+#include <QMessageBox>
+#include <QFileInfo>
 
 /* PrivateMainformImpl */
 
@@ -36,7 +44,10 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_parent( pa
 	createSubMenu();
 	createDockWidget();
 	createStatusBar();
-	updateShortcut();
+	createShortcut();
+	updateActions();
+	updateRecentFiles();
+	updateRecentProjects();
 }
 
 PrivateMainformImpl::~PrivateMainformImpl() {
@@ -108,13 +119,49 @@ void PrivateMainformImpl::setupRecentMenu( QMenu * menu, QAction * & seperator, 
 	}
 }
 
+void PrivateMainformImpl::updateRecentFiles() {
+	int numRecentFiles;
+	if( global.m_project ) {
+		numRecentFiles = qMin( global.m_project->lastOpenedFile().size(), MAXRECENTFILES );
+
+		for( int i = 0; i < numRecentFiles; i++ ) {
+			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->lastOpenedFile()[i] ).fileName() );
+			m_recentFileActs[i]->setText( text );
+			m_recentFileActs[i]->setData( global.m_project->lastOpenedFile()[i] );
+			m_recentFileActs[i]->setVisible( true );
+		}
+	} else 
+		numRecentFiles = 0;
+	
+	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
+		m_recentFileActs[j]->setVisible(false);
+
+	m_recentFileSeparator->setVisible( numRecentFiles > 0 );
+}
+
+void PrivateMainformImpl::updateRecentProjects() {
+	int numRecentFiles = qMin( global.m_xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
+
+	for( int i = 0; i < numRecentFiles; i++ ) {
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_xinxConfig->recentProjectFiles()[i] ).fileName() );
+		m_recentProjectActs[i]->setText( text );
+		m_recentProjectActs[i]->setData( global.m_xinxConfig->recentProjectFiles()[i] );
+		m_recentProjectActs[i]->setVisible( true );
+	}
+	
+	for( int j = numRecentFiles; j < MAXRECENTFILES; j++ )
+		m_recentProjectActs[j]->setVisible(false);
+
+	m_recentSeparator->setVisible( numRecentFiles > 0 );
+}
+
 void PrivateMainformImpl::createStatusBar() {
 	m_editorPosition = new QLabel( "000x000" );
 	m_parent->statusBar()->addPermanentWidget( m_editorPosition );
 	m_parent->statusBar()->showMessage( tr("Ready"), 2000 );
 }
 
-void PrivateMainformImpl::updateShortcut() {
+void PrivateMainformImpl::createShortcut() {
 	// File menu
 	m_parent->m_newAct->setShortcut( QKeySequence::New );
 	m_parent->m_recentFileAct->setShortcut( QKeySequence::Open );
@@ -183,10 +230,47 @@ void PrivateMainformImpl::storeWindowSettings() {
 	global.m_xinxConfig->save();
 }
 
+void PrivateMainformImpl::createTabEditorButton() {
+	QToolButton * closeTab = new QToolButton( m_parent->m_tabEditors );
+	closeTab->setDefaultAction( m_parent->m_closeAct );
+	m_parent->m_tabEditors->setCornerWidget( closeTab );
+}
+
+void PrivateMainformImpl::updateActions() {
+	/* Project action */
+	m_parent->m_saveProjectAct->setEnabled( global.m_project != NULL );
+	m_parent->m_closeProjectAct->setEnabled( global.m_project != NULL );
+	m_parent->m_closeProjectSessionAct->setEnabled( global.m_project != NULL );
+	m_parent->m_projectPropertyAct->setEnabled( global.m_project != NULL );
+	
+	m_parent->m_globalUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_parent->m_globalCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	
+	m_parent->m_toggledFlatView->setEnabled( global.m_project != NULL );
+	m_projectDock->setEnabled( global.m_project != NULL );
+
+	/* Files */
+	m_parent->m_saveAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_saveAsAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_saveAllAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_closeAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_closeAllAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_printAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_previousTabAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_nextTabAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_createTemplate->setEnabled( m_parent->m_tabEditors->count() );
+	foreach( QAction * act, m_snipetActs ) {
+		act->setEnabled( m_parent->m_tabEditors->count() );
+	}
+	
+	if( m_parent->m_tabEditors->count() == 0 ) {
+		m_contentDock->updateModel( NULL );
+	}
+}
 
 /* MainformImpl */
 
-MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
+MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ) {
 	setupUi(this);
 	d = new PrivateMainformImpl( this );
 
@@ -208,4 +292,108 @@ void MainformImpl::setEditorPosition( int line, int column ) {
 void MainformImpl::closeEvent( QCloseEvent *event ) {
 	d->storeWindowSettings();
 	event->accept();
+}
+
+void MainformImpl::newStylesheetFile() {
+	m_tabEditors->newFileEditorXSL();
+	d->updateActions();
+}
+
+void MainformImpl::newXmlDataFile() {
+	m_tabEditors->newFileEditorXML();
+	d->updateActions();
+}
+
+void MainformImpl::newJavascriptFile() {
+	m_tabEditors->newFileEditorJS();
+	d->updateActions();
+}
+
+void MainformImpl::newWebservicesFile() {
+	if( global.m_webServices->size() == 0 ) {
+		QMessageBox::warning( this, tr("WebServices"), tr("No WebServices can be found. Please update WebServices list to continue.") );
+		return;
+	}
+	m_tabEditors->newFileEditorWS();
+	d->updateActions();
+}
+
+void MainformImpl::newDefaultFile() {
+	if( global.m_project && ( global.m_project->projectType() == XSLProject::SERVICES ) ) 
+		newWebservicesFile();
+	else
+		newStylesheetFile();
+}
+
+void MainformImpl::newTemplate() {
+	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
+	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
+		QString selectedText = editor->textEdit()->textCursor().selectedText();
+		
+		Snipet * newSnipet;
+		SnipetDialogImpl dlg( selectedText );
+		if( dlg.exec() == QDialog::Accepted ) {
+			newSnipet = dlg.getSnipet();
+			global.m_snipetList->add( newSnipet );
+		}
+		
+	}
+}
+
+void MainformImpl::open( const QString & filename ) {
+	Q_ASSERT( ! filename.isEmpty() );
+
+	if( global.m_project ) {
+		global.m_project->lastOpenedFile().removeAll( filename );
+		global.m_project->lastOpenedFile().prepend( filename );
+     
+		while( global.m_project->lastOpenedFile().size() > MAXRECENTFILES )
+			global.m_project->lastOpenedFile().removeLast();
+	}
+
+	m_tabEditors->loadFileEditor( filename );
+	d->updateRecentFiles();
+	d->updateActions();
+	statusBar()->showMessage(tr("File loaded"), 2000);
+}
+
+void MainformImpl::saveAs( const QString & name ) {
+	
+}
+
+void MainformImpl::saveAll() {
+	
+}
+
+void MainformImpl::close() {
+	
+}
+
+void MainformImpl::closeAll() {
+	
+}
+
+void MainformImpl::newProject() {
+	
+}
+
+void MainformImpl::openProject( const QString & name ) {
+	
+}
+
+void MainformImpl::closeProject() {
+	
+}
+
+void MainformImpl::closeProjectWithSessionData() {
+	
+}
+
+void MainformImpl::callWebservices() {
+	
+}
+
+void MainformImpl::refreshWebservices() {
+	
 }

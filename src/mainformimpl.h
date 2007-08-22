@@ -32,6 +32,26 @@ public:
 	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 	virtual ~MainformImpl();
 public slots:
+	void newStylesheetFile();
+	void newXmlDataFile();
+	void newJavascriptFile();
+	void newWebservicesFile();
+	void newDefaultFile();
+	void newTemplate();
+	void open( const QString & filename );
+	void saveAs( const QString & filename = QString() );
+	void saveAll();
+	void close();
+	void closeAll();
+	
+	void newProject();
+	void openProject( const QString & filename );
+	void closeProject();
+	void closeProjectWithSessionData();
+
+	void callWebservices();
+	void refreshWebservices();
+
 	void setEditorPosition( int line, int column );
 protected: 
 	void closeEvent( QCloseEvent *event );

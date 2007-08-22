@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_searchMenu" >
@@ -216,116 +216,6 @@
    </attribute>
    <addaction name="m_searchAct" />
   </widget>
-  <widget class="QDockWidget" name="m_xslContentDock" >
-   <property name="windowTitle" >
-    <string>File Content</string>
-   </property>
-   <attribute name="dockWidgetArea" >
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="0" column="0" >
-      <widget class="QTreeView" name="m_xslContentTreeView" >
-       <property name="sortingEnabled" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="m_projectDirectoryDock" >
-   <property name="windowTitle" >
-    <string>Project Directory</string>
-   </property>
-   <attribute name="dockWidgetArea" >
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2" >
-    <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>0</number>
-     </property>
-     <item>
-      <layout class="QHBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QToolButton" name="m_updateProjectBtn" >
-         <property name="toolTip" >
-          <string>Update project</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/kdesvnupdate.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="m_commitProjectBtn" >
-         <property name="toolTip" >
-          <string>Commit project</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/kdesvncommit.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>141</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QToolButton" name="m_flatListBtn" >
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/flatlist.png</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="label" >
-       <property name="text" >
-        <string>Filtre :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="m_filtreLineEdit" />
-     </item>
-     <item>
-      <widget class="QTreeView" name="m_projectDirectoryTreeView" >
-       <property name="selectionMode" >
-        <enum>QAbstractItemView::ExtendedSelection</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QToolBar" name="m_webServicesToolBar" >
    <property name="windowTitle" >
     <string>WebServices Tool Bar</string>
@@ -338,27 +228,6 @@
    </attribute>
    <addaction name="m_refreshWebServicesListAct" />
    <addaction name="m_callWebServicesAct" />
-  </widget>
-  <widget class="QDockWidget" name="m_snipetDock" >
-   <property name="windowTitle" >
-    <string>Template</string>
-   </property>
-   <attribute name="dockWidgetArea" >
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="0" column="0" >
-      <widget class="QListView" name="m_TemplateListView" />
-     </item>
-    </layout>
-   </widget>
   </widget>
   <action name="m_newAct" >
    <property name="icon" >

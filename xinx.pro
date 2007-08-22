@@ -86,7 +86,6 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmleditor.h \
  src/xmlfileeditor.h \
  src/xmlhighlighter.h \
- src/xmlvisualstudio.h \
  src/xsleditor.h \
  src/xsllistview.h \
  src/xslproject.h
@@ -144,7 +143,6 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xmleditor.cpp \
  src/xmlfileeditor.cpp \
  src/xmlhighlighter.cpp \
- src/xmlvisualstudio.cpp \
  src/xsleditor.cpp \
  src/xsllistview.cpp \
  src/xslproject.cpp

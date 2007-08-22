@@ -40,9 +40,9 @@
 	#include <QTimer>
 	#include <QtGui>
 #endif
-#include "xmlvisualstudio.h"
+#include "mainformimpl.h"
 
-extern XMLVisualStudio * mainWin;
+extern MainformImpl * mainWin;
 
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
@@ -274,7 +274,7 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 void UniqueApplication::notifyError() {
 	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
 	if( mainWin )
-		mainWin->closeProject( false, true );
+		mainWin->closeProjectWithSessionData();
 	exit(1);
 }
 

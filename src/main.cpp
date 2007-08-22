@@ -42,7 +42,7 @@
 #include <csignal>
 #include <iostream>
 
-XMLVisualStudio * mainWin = NULL;
+MainformImpl * mainWin = NULL;
 
 class SignalSegFaultException {};
 
@@ -103,9 +103,9 @@ int main(int argc, char *argv[]) {
 	
 	  		splash.showMessage( splash.tr("Load main window ...") );
 	  		app.processEvents();
-	  		(new MainformImpl() )->show();
-			mainWin = new XMLVisualStudio();
-			//mainWin->show();
+	  		//(new MainformImpl() )->show();
+			mainWin = new MainformImpl();
+			mainWin->show();
 	  
 	  		splash.showMessage( splash.tr("Load arguments ...") );
 	  		app.processEvents();

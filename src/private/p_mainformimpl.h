@@ -28,6 +28,10 @@
 
 // Qt header
 #include <QObject>
+#include <QLabel>
+#include <QToolButton>
+#include <QAction>
+#include <QHash>
 
 #define MAXRECENTFILES 10
 
@@ -37,13 +41,21 @@ public:
 	PrivateMainformImpl( MainformImpl * parent );
 	~PrivateMainformImpl();
 	
-	void updateShortcut();
+	// Creation
+	void createShortcut();
+	void createTabEditorButton();
 	void createSubMenu();
 	void createStatusBar();
 	void createDockWidget();
+
+	// Actions
+	void updateActions();
+
+	// Settings
 	void readWindowSettings();
 	void storeWindowSettings();
 	
+	// Dock
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
 	
@@ -57,6 +69,12 @@ public:
 	QAction * m_recentFileSeparator;
 
 	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
+	void updateRecentFiles();
+	void updateRecentProjects();
+
+	// Snipet
+	QHash<QString,QAction*> m_snipetCategoryActs;
+	QList<QAction*> m_snipetActs;
 private:	
 	MainformImpl * m_parent;
 };
