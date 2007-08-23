@@ -41,6 +41,7 @@ void PrivateFileContentDockWidget::contentTreeViewDblClick( QModelIndex index ) 
 		
 	struct FileContentItemModel::struct_file_content data = m_model->data( mappingIndex, Qt::UserRole ).value<FileContentItemModel::struct_file_content>();
 	int line = data.line;
+	QString name = data.filename;
 
 	emit m_parent->open( data.filename, line );
 }

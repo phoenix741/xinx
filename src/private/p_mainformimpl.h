@@ -27,6 +27,7 @@
 #include "../projectdirectorydockwidget.h"
 #include "../globals.h"
 #include "../replacedialogimpl.h"
+#include "../rcslogdialogimpl.h"
 
 // Qt header
 #include <QObject>
@@ -50,6 +51,7 @@ public:
 	void createDockWidget();
 	void createActions();
 	void createFindReplace();
+	void createDialogs();
 
 	// Actions
 	void updateActions();
@@ -102,6 +104,10 @@ public:
 	bool m_yesToAllReplace, m_searchInverse;
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
+	
+	// RCS
+	RCSLogDialogImpl * m_rcslogDialog;
+	
 public slots:
 	// File
 	void openFile();
@@ -131,6 +137,7 @@ public slots:
 	void selectedCommitToVersionManager();
 	void selectedAddToVersionManager();
 	void selectedRemoveFromVersionManager();
+	void rcsLogTerminated();
 	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 
 	// Windows

@@ -241,3 +241,10 @@ bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
 	} else
 		return QFile::remove( path );
 }
+
+RCS * ProjectDirectoryDockWidget::rcs() {
+	if( qobject_cast<DirRCSModel*>( d->m_dirModel ) )
+		return qobject_cast<DirRCSModel*>( d->m_dirModel )->rcs();
+	else
+		return NULL;
+}

@@ -28,6 +28,7 @@ class PrivateProjectDirectoryDockWidget;
 class QAbstractItemModel;
 class QAction;
 class XSLProject;
+class RCS;
 
 class ProjectDirectoryDockWidget : public QDockWidget {
 	Q_OBJECT
@@ -50,6 +51,8 @@ public:
 	
 	void refreshPath( const QString & path );
 	bool removeFile( const QString & path );
+	
+	RCS * rcs();
 public slots:
 	void toggledView();
 	void toggledView( bool flat );

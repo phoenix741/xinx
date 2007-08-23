@@ -167,7 +167,7 @@ QDomElement XSLModelData::loadFromContent( const QString& content ) {
 	}
 	
 	QDomDocument xsl;
-	m_fileName = QString();
+	//m_fileName = QString();
 
 	// Load XML Document
 	QString errorStr;

@@ -35,6 +35,8 @@
 #include "webservices.h"
 #include "serviceresultdialogimpl.h"
 #include "webserviceseditor.h"
+#include "rcs.h"
+#include "commitmessagedialogimpl.h"
 
 // Qt header
 #include <QKeySequence>
@@ -58,6 +60,7 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 	createShortcut();
 	createActions();
 	createFindReplace();
+	createDialogs();
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
@@ -303,6 +306,10 @@ void PrivateMainformImpl::createActions() {
 	
 	// About
 	connect( m_parent->m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+}
+
+void PrivateMainformImpl::createDialogs() {
+	m_rcslogDialog = new RCSLogDialogImpl( m_parent );
 }
 
 void PrivateMainformImpl::openRecentProject() {
@@ -1047,6 +1054,12 @@ void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHas
 	}
 }
 
+void PrivateMainformImpl::rcsLogTerminated() {
+	RCS * rcs = m_projectDock->rcs();
+	if( rcs )
+		rcs->disconnect();
+}
+
 /* MainformImpl */
 
 MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ) {
@@ -1285,17 +1298,74 @@ void MainformImpl::updateWebServicesList() {
 }
 
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
-	
+	RCS * rcs = d->m_projectDock->rcs();
+	if( rcs ) {
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
+		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		d->m_rcslogDialog->init();
+
+		if( list.count() == 0 )
+			rcs->update( QStringList() << global.m_project->projectPath() );
+		else
+			rcs->update( list );
+
+		d->m_rcslogDialog->exec();
+	}
 }
 
 void MainformImpl::commitToVersionManager( const QStringList & list ) {
-	
+	RCS * rcs = d->m_projectDock->rcs();
+	if( rcs ) {
+		CommitMessageDialogImpl dlg;
+
+		if( list.count() == 0 ) 
+			dlg.setFilesOperation( rcs->operations( QStringList() << global.m_project->projectPath() ) );
+		else
+			dlg.setFilesOperation( rcs->operations( list ) );
+			
+		if( ! dlg.exec() ) return ;
+		QString message = dlg.messages();
+
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
+		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		d->m_rcslogDialog->init();
+
+		rcs->commit( dlg.filesOperation(), message );
+
+		d->m_rcslogDialog->exec();
+	}
 }
 
 void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
-	
+	RCS * rcs = d->m_projectDock->rcs();
+	if( rcs ) {
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
+		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		d->m_rcslogDialog->init();
+
+		rcs->add( list );
+
+		d->m_rcslogDialog->exec();
+	}
 }
 
 void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
-	
+	RCS * rcs = d->m_projectDock->rcs();
+	if( rcs ) {
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
+		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
+		d->m_rcslogDialog->init();
+
+		rcs->remove( list );
+
+		d->m_rcslogDialog->exec();
+	}
 }
