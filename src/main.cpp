@@ -86,24 +86,29 @@ int main(int argc, char *argv[]) {
 				global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
 			} catch( ENotCompletionFile ) {
 				splash.showMessage( splash.tr("Can't load completion file.") );
+			app.processEvents();
 				sleep( 1 );
 			}
 			try {
 				global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {
 				splash.showMessage( splash.tr("Can't load snipet file.") );
+				app.processEvents();
 				sleep( 1 );
 			}
+			
+			splash.showMessage( splash.tr("Create Web Services list ...") );
+			app.processEvents();
+			global.m_webServices = new WebServicesList();	
 	
-	  		splash.showMessage( splash.tr("Load objects file ...") );
-	  		app.processEvents();
+			splash.showMessage( splash.tr("Load objects file ...") );
+			app.processEvents();
 			global.m_javaObjects = new ObjectsView();
 			global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
 			global.m_javaObjects->loadFiles();
 	
 	  		splash.showMessage( splash.tr("Load main window ...") );
 	  		app.processEvents();
-	  		//(new MainformImpl() )->show();
 			mainWin = new MainformImpl();
 			mainWin->show();
 	  

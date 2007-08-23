@@ -88,7 +88,8 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h
+ src/xslproject.h \
+ src/private/p_filecontentdockwidget.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml

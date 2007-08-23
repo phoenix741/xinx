@@ -18,60 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINFORMIMPL_H
-#define MAINFORMIMPL_H
+#ifndef __P_FILECONTENTDOCKWIDGET_H__
+#define __P_FILECONTENTDOCKWIDGET_H__
 
 // Xinx header
-#include "ui_mainform.h"
+#include "../filecontentdockwidget.h"
 
 // Qt header
-#include <QMainWindow>
-#include <QString>
-#include <QStringList>
+#include <QTreeView>
+#include <QAbstractItemModel>
+#include <QSortFilterProxyModel>
 
-class PrivateMainformImpl;
-
-class MainformImpl : public QMainWindow, public Ui::MainForm {
+class PrivateFileContentDockWidget : public QObject {
 	Q_OBJECT
 public:
-	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
-	virtual ~MainformImpl();
-public slots:
-	void newStylesheetFile();
-	void newXmlDataFile();
-	void newJavascriptFile();
-	void newWebservicesFile();
-	void newDefaultFile();
-	void newTemplate();
-	void openFile( const QString & filename );
-	void saveFileAs( const QString & filename = QString() );
-	void saveAllFile();
-	void closeFile();
-	bool closeAllFile();
+	PrivateFileContentDockWidget( FileContentDockWidget * parent );
+	~PrivateFileContentDockWidget();
 	
-	void newProject();
-	void openProject( const QString & filename );
-	void closeProject();
-	void closeProjectWithSessionData();
-
-	void callWebservices();
-	void updateWebServicesList();
-
-	void updateFromVersionManager( const QStringList & list = QStringList() );
-	void commitToVersionManager( const QStringList & list = QStringList() );
-	void addFilesToVersionManager( const QStringList & list );
-	void removeFilesFromVersionManager( const QStringList & list );
-
-	void setEditorPosition( int line, int column );
-protected: 
-	void closeEvent( QCloseEvent *event );
+	QTreeView * m_contentTreeView;
+	QAbstractItemModel * m_model;
+	QSortFilterProxyModel * m_sortModel;
+public slots:
+	void contentTreeViewDblClick( QModelIndex index );
 private:
-	PrivateMainformImpl * d;
-	friend class PrivateMainformImpl;
+	FileContentDockWidget * m_parent;
 };
-#endif
 
-
-
-
-
+#endif // __P_FILECONTENTDOCKWIDGET_H__

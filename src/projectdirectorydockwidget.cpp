@@ -66,7 +66,8 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 	QString filtre = m_projectDirWidget->m_filtreLineEdit->text();
 	if( filtre.isEmpty() ) {
 		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
-		m_projectDirWidget->m_flatListBtn->setChecked( false );
+		if( m_projectDirWidget->m_flatListBtn->isChecked() )
+			m_projectDirWidget->m_flatListBtn->click();
 	} else {
 		QString extention = QFileInfo( filtre ).suffix();
 		QString filename = QFileInfo( filtre ).fileName();
@@ -80,7 +81,8 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 				);
 		else
 			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
-		m_projectDirWidget->m_flatListBtn->setChecked( true );
+		if( ! m_projectDirWidget->m_flatListBtn->isChecked() )
+			m_projectDirWidget->m_flatListBtn->click();
 	}
 }
 
@@ -199,9 +201,14 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 
 void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 	if( isViewFlat() )
-		d->m_projectDirWidget->m_flatListBtn->setChecked( false );
+		d->m_projectDirWidget->m_flatListBtn->toggle();
 	d->m_projectDirWidget->m_filtreLineEdit->setText( "" );
 	d->m_modelTimer->stop();
+	d->m_projectDirWidget->m_projectDirectoryTreeView->setModel( NULL );
+	delete d->m_dirModel;
+	d->m_dirModel = NULL;
+	delete d->m_iconProvider;
+	d->m_iconProvider = NULL;
 		
 	d->m_project = project;
 	

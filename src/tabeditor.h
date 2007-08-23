@@ -24,6 +24,7 @@
 #include <QTabWidget>
 //
 class Editor;
+class QAbstractItemModel;
 
 class TabEditor : public QTabWidget {
 	Q_OBJECT
@@ -47,6 +48,12 @@ public:
 	Editor * newFileEditorWS();
 	Editor * loadFileEditor( const QString & fileName );
 
+	int getClickedTab();
+	
+	void setRefreshAction( QAction * action );
+	void setSaveAction( QAction * action );
+	void setSaveAsAction( QAction * action );
+	void setCloseAction( QAction * action );
 public slots:
 	void copy();
 	void cut();
@@ -81,18 +88,11 @@ Q_SIGNALS:
 	void textAvailable( bool available ); // For move, duplicate line, complete and select all
 	void hasTextSelection( bool selection ); // For Upper/Lower Case ; Comment/Uncomment
 	
-	void modelCreated();
-	void modelDeleted();
+	void modelChanged( QAbstractItemModel * model );
 	
 	void fileDragged();
 	
-	void closeTab( int );
-	void refreshTab( int );
-	void saveTab( int );
-	void saveAsTab( int );
-	
 	void setEditorPosition( int, int );
-
 protected:
     bool eventFilter( QObject *obj, QEvent *event );
 	virtual void dragEnterEvent( QDragEnterEvent *event );
@@ -100,22 +100,24 @@ protected:
 	virtual void tabRemoved ( int index );
 	
 private slots:
+	void modelCreated();
+	void modelDeleted();
+
 	void slotCurrentTabChanged( int );
 	void slotModifiedChange( bool );
-	
-	void slotCloseAsked();
-	void slotRefreshAsked();
-	void slotSaveAsked();
-	void slotSaveAsAsked();
 	
 	void slotCursorPositionChanged();
 	
 	void slotNeedInsertSnipet( const QString & snipet );
 	
 private:
+	QAction * m_refreshAction;
+	QAction * m_saveAction;
+	QAction * m_saveAsAction;
+	QAction * m_closeAction;
+	
 	int m_clickedItem;
-
-	Editor * previous;
+	Editor * m_previous;
 };
 
 #endif

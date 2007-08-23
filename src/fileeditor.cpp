@@ -87,13 +87,13 @@ void PrivateFileEditor::setWatcher( const QString & path ) {
 void PrivateFileEditor::activateWatcher() {
 	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
 	m_watcher->addPath( m_path );
-//	qApp->processEvents();
+	qApp->processEvents();
 }
 
 void PrivateFileEditor::desactivateWatcher() {
 	disconnect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
 	m_watcher->removePath( m_path );
-//	qApp->processEvents();
+	qApp->processEvents();
 }
 
 void PrivateFileEditor::fileChanged( const QString & path ) {

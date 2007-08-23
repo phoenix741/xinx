@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_searchMenu" >
@@ -696,6 +696,14 @@
   <action name="m_createTemplate" >
    <property name="text" >
     <string>Create &amp;template</string>
+   </property>
+  </action>
+  <action name="m_refreshFileAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/reload.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Refresh</string>
    </property>
   </action>
  </widget>

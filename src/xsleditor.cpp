@@ -359,7 +359,7 @@ XSLEditor::XSLEditor( QWidget * parent ) : XMLEditor( parent ) {
 }
 
 XSLEditor::~XSLEditor() {
-	
+	emit deleteModel();
 }
 	
 

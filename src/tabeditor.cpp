@@ -41,10 +41,9 @@
 #include "snipetlist.h"
 
 //
-TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), previous(NULL) {
+TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), 
+	m_clickedItem( -1 ), m_previous(NULL) {
 	setAcceptDrops(true);
-//	setContextMenuPolicy( Qt::CustomContextMenu );
-//	setContextMenuPolicy( Qt::ActionsContextMenu );
 
     tabBar()->installEventFilter(this);
        
@@ -298,11 +297,12 @@ void TabEditor::tabRemoved ( int index ) {
 		emit hasTextSelection( false );
 	}
 	
-	if( previous ) {
-		previous->disconnect();
-		if( isFileEditor( previous ) )
-			qobject_cast<FileEditor*>( previous )->textEdit()->disconnect( this );
-		previous = NULL;
+	if( m_previous ) {
+		emit modelChanged( NULL );
+		m_previous->disconnect();
+		if( isFileEditor( m_previous ) )
+			qobject_cast<FileEditor*>( m_previous )->textEdit()->disconnect( this );
+		m_previous = NULL;
 	}
 }
 
@@ -321,14 +321,15 @@ void TabEditor::slotCursorPositionChanged() {
 void TabEditor::slotCurrentTabChanged( int index ) {
 	Q_UNUSED( index );
 	
-	if( previous ) {
-		previous->disconnect();
-		if( isFileEditor( previous ) )
-			qobject_cast<FileEditor*>( previous )->textEdit()->disconnect( this );
+	if( m_previous ) {
+		m_previous->disconnect();
+		if( isFileEditor( m_previous ) )
+			qobject_cast<FileEditor*>( m_previous )->textEdit()->disconnect( this );
+		emit modelChanged( NULL );
 	}
 	
 	Editor * editor = currentEditor();
-	previous = editor;
+	m_previous = editor;
 	
 	emit copyAvailable( editor->canCopy() );
 	emit pasteAvailable( editor->canPaste() );
@@ -341,8 +342,8 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	connect( editor, SIGNAL( undoAvailable(bool) ), this, SIGNAL( undoAvailable(bool) ) );	
 	connect( editor, SIGNAL( redoAvailable(bool) ), this, SIGNAL( redoAvailable(bool) ) );	
 
-	connect( editor, SIGNAL( createModel() ), this, SIGNAL( modelCreated() ) );	
-	connect( editor, SIGNAL( deleteModel() ), this, SIGNAL( modelDeleted() ) );	
+	connect( editor, SIGNAL( createModel() ), this, SLOT( modelCreated() ) );	
+	connect( editor, SIGNAL( deleteModel() ), this, SLOT( modelDeleted() ) );	
 	
 	if( isFileEditor( editor ) ) {
 		emit textAvailable( true );
@@ -351,10 +352,20 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
 		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
 		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
+		
+		emit modelChanged( editor->model() );
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
 	}
+}
+
+void TabEditor::modelCreated() {
+	emit modelChanged( qobject_cast<FileEditor*>( sender() )->model() );
+}
+
+void TabEditor::modelDeleted() {
+	emit modelChanged( NULL );
 }
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
@@ -366,6 +377,28 @@ void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
 		TextEditor * textEdit = qobject_cast<TextEditor	*>( sender() );
 		textEdit->insertText( dlg.getResult() );
 	}		
+}
+
+int TabEditor::getClickedTab() {
+	int item = m_clickedItem;
+	m_clickedItem = -1;
+	return item;
+}
+
+void TabEditor::setRefreshAction( QAction * action ) {
+	m_refreshAction = action;
+}
+
+void TabEditor::setSaveAction( QAction * action ) {
+	m_saveAction = action;
+}
+
+void TabEditor::setSaveAsAction( QAction * action ) {
+	m_saveAsAction = action;
+}
+
+void TabEditor::setCloseAction( QAction * action ) {
+	m_closeAction = action;
 }
 
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
@@ -383,36 +416,20 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			if ( ( event->type() == QEvent::MouseButtonPress ) && ( mouseEvent->button() == Qt::RightButton ) ) {
 				QMenu *menu = new QMenu( this );
-				connect( menu->addAction(QIcon(":/images/reload.png"), tr("Refresh")), SIGNAL(triggered()), this, SLOT(slotRefreshAsked()) );
+				menu->addAction( m_refreshAction );
 				menu->addSeparator();
-				connect( menu->addAction(QIcon(":/images/filesave.png"), tr("Save")), SIGNAL(triggered()), this, SLOT(slotSaveAsked()) );
-				connect( menu->addAction(QIcon(":/images/filesaveas.png"), tr("Save As ....")), SIGNAL(triggered()), this, SLOT(slotSaveAsAsked()) );
+				menu->addAction( m_saveAction );
+				menu->addAction( m_saveAsAction );
 				menu->addSeparator();
-				connect( menu->addAction(QIcon(":/images/fileclose.png"), tr("Close")), SIGNAL(triggered()), this, SLOT(slotCloseAsked()) );
+				menu->addAction( m_closeAction );
 				menu->exec(mouseEvent->globalPos());
 				delete menu;
 			} else
 			if ( ( event->type() == QEvent::MouseButtonDblClick ) && ( mouseEvent->button() == Qt::LeftButton ) ) {
-				emit closeTab( m_clickedItem );	
+				m_closeAction->trigger();	
 			}
 			return true;
 		}
 	}
 	return QTabWidget::eventFilter( obj, event );
-}
-
-void TabEditor::slotCloseAsked() {
-	emit closeTab( m_clickedItem );	
-}
-
-void TabEditor::slotRefreshAsked() {
-	emit refreshTab( m_clickedItem );	
-}
-
-void TabEditor::slotSaveAsked() {
-	emit saveTab( m_clickedItem );	
-}
-
-void TabEditor::slotSaveAsAsked() {
-	emit saveAsTab( m_clickedItem );	
 }

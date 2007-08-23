@@ -29,6 +29,12 @@
 #include "fileeditor.h"
 #include "texteditor.h"
 #include "aboutdialogimpl.h"
+#include "customdialogimpl.h"
+#include "editorcompletion.h"
+#include "projectpropertyimpl.h"
+#include "webservices.h"
+#include "serviceresultdialogimpl.h"
+#include "webserviceseditor.h"
 
 // Qt header
 #include <QKeySequence>
@@ -44,13 +50,14 @@
 
 /* PrivateMainformImpl */
 
-PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastPlace( QDir::currentPath() ), m_parent( parent ) {
+PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_parent( parent ) {
 	createTabEditorButton();
 	createSubMenu();
 	createDockWidget();
 	createStatusBar();
 	createShortcut();
 	createActions();
+	createFindReplace();
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
@@ -108,7 +115,7 @@ void PrivateMainformImpl::createSubMenu() {
 	// Recent file menu
 	QMenu * recentFileMenu = new QMenu( m_parent );
 	recentFileMenu->addAction( m_parent->m_openAct );
-	setupRecentMenu( recentProjectMenu, m_recentFileSeparator, m_recentFileActs );
+	setupRecentMenu( recentFileMenu, m_recentFileSeparator, m_recentFileActs );
 	m_parent->m_recentFileAct->setMenu( recentFileMenu );
 	btn = qobject_cast<QToolButton*>( m_parent->m_fileToolBar->widgetForAction( m_parent->m_recentFileAct ) );
 	if( btn )
@@ -117,11 +124,6 @@ void PrivateMainformImpl::createSubMenu() {
 
 void PrivateMainformImpl::createActions() {
 	/* FILE */
-	void on_m_newStylesheetFileAct_triggered();
-	void on_m_newXMLFileAct_triggered();
-	void on_m_newJavascriptFileAct_triggered();
-	void on_m_newWebServicesFileAct_triggered();
-	void on_m_newAct_triggered();
 
 	// New
 	connect( m_parent->m_newAct, SIGNAL(triggered()), m_parent, SLOT(newDefaultFile()) );
@@ -133,14 +135,23 @@ void PrivateMainformImpl::createActions() {
 	// Open
 	connect( m_parent->m_openAct, SIGNAL(triggered()), this, SLOT(openFile()) );
 	connect( m_parent->m_recentFileAct, SIGNAL(triggered()), this, SLOT(openFile()) );
+	connect( m_contentDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
+	connect( m_projectDock, SIGNAL(open(QString)), m_parent, SLOT(openFile(QString)) );
+	connect( m_parent->m_tabEditors, SIGNAL(modelChanged(QAbstractItemModel*)), m_contentDock, SLOT(updateModel(QAbstractItemModel*)) );
 
 	// Recent open action
 	for(int i = 0; i < MAXRECENTFILES; i++) {
 		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
 		connect( m_recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()) );
 	}
+	
+	// Refresh
+	m_parent->m_tabEditors->setRefreshAction( m_parent->m_refreshFileAct );
+	connect( m_parent->m_refreshFileAct, SIGNAL(triggered()), this, SLOT(refreshFile()) );
 		
 	// Save
+	m_parent->m_tabEditors->setSaveAction( m_parent->m_saveAct );
+	m_parent->m_tabEditors->setSaveAsAction( m_parent->m_saveAsAct );
 	connect( m_parent->m_saveAct, SIGNAL(triggered()), this, SLOT(saveFile()) );
 	connect( m_parent->m_saveAsAct, SIGNAL(triggered()), this, SLOT(saveAsFile()) );
 	connect( m_parent->m_saveAllAct, SIGNAL(triggered()), m_parent, SLOT(saveAllFile()) );
@@ -149,12 +160,11 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_printAct, SIGNAL(triggered()), this, SLOT(printFile()) );
 	
 	// Close
+	m_parent->m_tabEditors->setCloseAction( m_parent->m_closeAct );
 	connect( m_parent->m_closeAct, SIGNAL(triggered()), m_parent, SLOT(closeFile()) );
 	connect( m_parent->m_closeAllAct, SIGNAL(triggered()), m_parent, SLOT(closeAllFile()) );
 	
 	// Model
-	//connect( m_tabEditors, SIGNAL(modelCreated()), this, SLOT(slotModelCreated()) );
-	//connect( m_tabEditors, SIGNAL(modelDeleted()), this, SLOT(slotModelDeleted()) );
 	connect( m_parent->m_tabEditors, SIGNAL(setEditorPosition(int,int)), m_parent, SLOT(setEditorPosition(int,int)) );	
 
 	/* EDIT */
@@ -229,16 +239,20 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_completeAct, SLOT(setEnabled(bool)) );
 	
 	// Search 
+	connect( m_parent->m_searchAct, SIGNAL(triggered()), this, SLOT(find()) );
 	m_parent->m_searchAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_searchAct, SLOT(setEnabled(bool)) );
 	
 	// Search next/previous
+	connect( m_parent->m_searchNextAct, SIGNAL(triggered()), this, SLOT(findNext()) );
 	m_parent->m_searchNextAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_searchNextAct, SLOT(setEnabled(bool)));	
+	connect( m_parent->m_searchPreviousAct, SIGNAL(triggered()), this, SLOT(findPrevious()) );
 	m_parent->m_searchPreviousAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_searchPreviousAct, SLOT(setEnabled(bool)));	
 
 	// Replace
+	connect( m_parent->m_replaceAct, SIGNAL(triggered()), this, SLOT(replace()) );
 	m_parent->m_replaceAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_replaceAct, SLOT(setEnabled(bool)) );
 	
@@ -259,13 +273,30 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_selectedCommitToRCSAct, SIGNAL(triggered()), this, SLOT(selectedCommitToVersionManager()) );
 	connect( m_parent->m_selectedAddToRCSAct, SIGNAL(triggered()), this, SLOT(selectedAddToVersionManager()) );
 	connect( m_parent->m_selectedRemoveFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedRemoveFromVersionManager()) );
+
+	connect( m_parent->m_newProjectAct, SIGNAL(triggered()), m_parent, SLOT(newProject()) );
+	connect( m_parent->m_openProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
+	connect( m_parent->m_recentProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
+	connect( m_parent->m_projectPropertyAct, SIGNAL(triggered()), this, SLOT(projectProperty()) );
+	connect( m_parent->m_closeProjectAct, SIGNAL(triggered()), m_parent, SLOT(closeProject()) );
+	connect( m_parent->m_closeProjectSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectWithSessionData()) );
+	
+	/* SERVICES */
+	connect( m_parent->m_refreshWebServicesListAct, SIGNAL(triggered()), this, SLOT(updateWebServicesList()) );
+	connect( m_parent->m_callWebServicesAct, SIGNAL(triggered()), this, SLOT(callServices()) );
 	
 	/* WINDOWS */
 	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
+	connect( m_parent->m_nextTabAct, SIGNAL(triggered()), this, SLOT(nextTab()) );
+	connect( m_parent->m_previousTabAct, SIGNAL(triggered()), this, SLOT(previousTab()) );
+	
 
-	/* TEMPLATE */
+	/* Tools */
 	// Create Template
 	connect( m_parent->m_createTemplate, SIGNAL(triggered()), m_parent, SLOT(newTemplate()) );
+
+	// Customize
+	connect( m_parent->m_customApplicationAct, SIGNAL(triggered()), this, SLOT(customize()) );
 	  
   	// About Qt
 	connect( m_parent->m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -286,6 +317,19 @@ void PrivateMainformImpl::openRecentFile() {
 		m_parent->openFile( action->data().toString() );	
 }
 
+void PrivateMainformImpl::openFile( const QString & name, int line ) {
+	if( !name.isEmpty() )
+		m_parent->openFile( name );
+	
+	// Deplace to rigth line.
+	QTextEdit * ed = qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
+	QTextCursor cursor = ed->textCursor();
+	cursor.movePosition( QTextCursor::Start );
+	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line - 1 );
+	ed->setTextCursor( cursor );
+	ed->setFocus( Qt::OtherFocusReason );
+}
+
 void PrivateMainformImpl::openFile() {
 	Q_ASSERT( global.m_xinxConfig );
 	
@@ -299,17 +343,72 @@ void PrivateMainformImpl::openFile() {
 	m_parent->m_tabEditors->setUpdatesEnabled( true );
 }
 
+void PrivateMainformImpl::fileEditorRefreshFile( int index ) {
+	Q_ASSERT( index >= 0 );
+	Q_ASSERT( index < m_parent->m_tabEditors->count() );
+	Q_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	
+	if( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) ) {
+		FileEditor * ed = static_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) );
+		bool act = ! ed->isModified();
+		
+		if( ! act ) {
+			QMessageBox::StandardButton ret;
+			ret = QMessageBox::question( m_parent, tr("Application"),
+										tr("The document %1 has been modified.\n"
+										"Do you really want refresh this?").arg( ed->getTitle() ),
+										QMessageBox::Yes | QMessageBox::No);
+			act = ( ret == QMessageBox::Yes );
+		}
+		if( act ) {
+			ed->loadFile();
+			ed->setModified( false );
+		}
+	}	
+}
+
+void PrivateMainformImpl::refreshFile() {
+	int item = m_parent->m_tabEditors->getClickedTab();
+	if( item == -1 ) item = m_parent->m_tabEditors->currentIndex();
+	fileEditorRefreshFile( item );
+}
+
 void PrivateMainformImpl::saveFile() {
-	fileEditorSave( m_parent->m_tabEditors->currentIndex() );
+	int item = m_parent->m_tabEditors->getClickedTab();
+	if( item == -1 ) item = m_parent->m_tabEditors->currentIndex();
+	fileEditorSave( item );
 }
 
 void PrivateMainformImpl::saveAsFile() {
-	fileEditorSaveAs( m_parent->m_tabEditors->currentIndex() );
+	int item = m_parent->m_tabEditors->getClickedTab();
+	if( item == -1 ) item = m_parent->m_tabEditors->currentIndex();
+	fileEditorSaveAs( item );
 }
 
 void PrivateMainformImpl::about() {
 	AboutDialogImpl about( m_parent );
 	about.exec();
+}
+
+void PrivateMainformImpl::customize() {
+	CustomDialogImpl custom( m_parent );
+	custom.loadFromConfig( global.m_xinxConfig );
+	
+	if( custom.exec() ) {
+		custom.saveToConfig( global.m_xinxConfig );
+		global.m_xinxConfig->save();	
+
+		try {
+			global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+		} catch( ENotCompletionFile ) {
+			QMessageBox::warning( m_parent, tr("Load completion"), tr("Can't load completion file.") );
+		}
+		try {
+			global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+		} catch( SnipetListException ) {
+			QMessageBox::warning( m_parent, tr("Load snipet"), tr("Can't load snipet file.") );
+		}
+	}
 }
 
 void PrivateMainformImpl::setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] ) {
@@ -499,7 +598,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 							 ( filename.startsWith( prefix.toLower() ) || filename.startsWith( prefix.toUpper() ) );
 	bool canBeCustomize = global.m_xinxConfig->managedFile4Name( filename ).canBeCustomize;
 	
-	if( global.m_xinxConfig->isAlertWhenStdFile() && canBeCustomize && !hasSpecifiqueName ) {
+	if( global.m_project && global.m_xinxConfig->isAlertWhenStdFile() && canBeCustomize && !hasSpecifiqueName ) {
 		QMessageBox::StandardButton res = QMessageBox::warning( m_parent, tr( "Save standard XSL" ), tr( "You're being to save standard file, do you whant make it specifique ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
 		if( res == QMessageBox::Cancel )
 			return QString();
@@ -605,9 +704,11 @@ void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getFileName(), 
 		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getSuffix() );
 
-	qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-	m_parent->m_tabEditors->editor( index )->setModified( false );
-	m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
+	if( ! fileName.isEmpty() ) {
+		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
+		m_parent->m_tabEditors->editor( index )->setModified( false );
+		m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
+	}
 }
 
 void PrivateMainformImpl::fileEditorClose( int index ) {
@@ -672,6 +773,279 @@ void PrivateMainformImpl::selectedRemoveFromVersionManager() {
 		m_parent->removeFilesFromVersionManager( list );
 }
 
+void PrivateMainformImpl::nextTab() {
+	m_parent->m_tabEditors->setCurrentIndex( ( m_parent->m_tabEditors->currentIndex() + 1 ) % m_parent->m_tabEditors->count() );
+}
+
+void PrivateMainformImpl::previousTab() {
+	m_parent->m_tabEditors->setCurrentIndex( ( m_parent->m_tabEditors->currentIndex() - 1 + m_parent->m_tabEditors->count() ) % m_parent->m_tabEditors->count() );
+}
+
+void PrivateMainformImpl::createFindReplace() {
+	m_cursorStart 	   = QTextCursor();
+	m_cursorEnd		   = QTextCursor();
+	m_findDialog       = new ReplaceDialogImpl( m_parent );
+	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
+}
+
+void PrivateMainformImpl::findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options ) {
+	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+
+	m_findExpression    = chaine;
+	m_replaceExpression = dest;
+	m_findOptions       = options;
+	m_yesToAllReplace   = false;
+	m_nbFindedText		= 0;
+	m_searchInverse		= false;
+
+	bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
+	bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP );
+
+	TextEditor * textEdit = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
+
+	m_cursorStart = textEdit->textCursor();
+	m_cursorEnd   = QTextCursor();
+
+	int selectionStart = m_cursorStart.selectionStart(),
+	    selectionEnd = m_cursorStart.selectionEnd();
+
+	if( m_findOptions.searchFromStart ) {
+		m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+		m_findOptions.searchFromStart = false;
+	} else 
+	if( selectionOnly && ! backwardSearch ) {
+		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+		m_cursorEnd   = m_cursorStart;
+		m_cursorEnd.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+	} else
+	if( selectionOnly && backwardSearch ) {
+		m_cursorStart.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+		m_cursorEnd   = m_cursorStart;
+		m_cursorEnd.setPosition( selectionStart, QTextCursor::MoveAnchor );
+	} else
+	if( backwardSearch ) {
+		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+	}
+	
+	textEdit->setTextCursor( m_cursorStart );
+	
+	findNext();
+}
+	
+void PrivateMainformImpl::findNext() {
+	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+	
+	TextEditor * textEdit = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
+	QTextDocument * document = textEdit->document();
+	
+	bool continuer = true;
+	
+	while( continuer ) {
+		continuer = false;
+
+		m_cursorStart = textEdit->textCursor();
+		
+		bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
+		bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP ) || m_searchInverse;
+			
+		if( backwardSearch ) 
+			m_cursorStart.setPosition( m_cursorStart.selectionStart() );
+		else
+			m_cursorStart.setPosition( m_cursorStart.selectionEnd() );
+	
+		QTextDocument::FindFlags flags;
+		if( backwardSearch ) flags ^= QTextDocument::FindBackward;
+		if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;	
+		if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
+		
+		if( ! m_cursorStart.isNull() ) {
+			if( m_findOptions.regularExpression ) {
+				m_cursorStart = document->find( QRegExp( m_findExpression ), m_cursorStart, flags );
+			} else {
+				m_cursorStart = document->find( m_findExpression, m_cursorStart, flags );
+			}
+		}
+	
+		if( m_cursorStart.isNull() || ( selectionOnly && ( ( !backwardSearch && m_cursorEnd < m_cursorStart ) || ( backwardSearch && m_cursorStart < m_cursorEnd ) ) ) ) {
+			if( m_findOptions.toReplace && m_yesToAllReplace ) {
+				QMessageBox::information( m_parent, 
+							tr("Search/Replace"), 
+							tr("%1 occurences of '%2' replaced.").arg( m_nbFindedText ).arg( m_findExpression ), 
+							QMessageBox::Ok);
+			} else {
+				QMessageBox::StandardButton ret = QMessageBox::warning( m_parent, 
+							tr("Search/Replace"), 
+							tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg( m_nbFindedText ).arg( m_findExpression ).arg( m_findOptions.toReplace ? tr("replaced") : tr("finded") ), 
+							QMessageBox::Yes | QMessageBox::No);
+						
+				if( ret == QMessageBox::Yes ) {
+					m_findOptions.searchExtend = ReplaceDialogImpl::FindOptions::SEARCHALL;
+					m_cursorStart = textEdit->textCursor();
+					if( ! backwardSearch ) 
+						m_cursorStart.movePosition( QTextCursor::Start );
+					else
+						m_cursorStart.movePosition( QTextCursor::End );
+					m_cursorEnd = QTextCursor();
+					
+					continuer = true;
+				}
+			}
+			m_nbFindedText = 0;
+		} else {
+			m_nbFindedText++;
+		
+			textEdit->setTextCursor( m_cursorStart );
+
+			if( m_findOptions.toReplace ) {
+				QMessageBox::StandardButton ret = QMessageBox::Yes;
+		
+				if(! m_yesToAllReplace) {
+ 					QMessageBox messageBoxQuestion( QMessageBox::Question, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, m_parent );
+					messageBoxQuestion.setWindowModality( Qt::NonModal );
+					messageBoxQuestion.show();
+					while( messageBoxQuestion.isVisible() ) qApp->processEvents();
+					ret = messageBoxQuestion.standardButton( messageBoxQuestion.clickedButton() );
+				}
+
+				switch(ret) {
+				case QMessageBox::Yes: 	
+					// Replace chaine
+					m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
+					continuer = true;
+					break;
+				case QMessageBox::YesToAll: 	
+					m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
+					m_yesToAllReplace = true;
+					continuer = true;
+					break;
+				case QMessageBox::No: 	
+					continuer = true;
+					break;
+				default : // Do nothing else
+					;
+				}
+			}
+		}
+		if( ! m_cursorStart.isNull() )
+			textEdit->setTextCursor( m_cursorStart );
+	}
+	m_yesToAllReplace = false;
+}
+
+void PrivateMainformImpl::findPrevious() {
+	m_searchInverse = true;
+	findNext();
+	m_searchInverse = false;
+}
+
+void PrivateMainformImpl::find() {
+	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+	
+	TextEditor * textEdit = qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
+	if( ! textEdit->textCursor().selectedText().isEmpty() ){
+		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	}
+	m_findDialog->initialize();
+	m_findDialog->setReplace(false);
+	m_findDialog->exec();
+}
+
+void PrivateMainformImpl::replace() {
+	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+
+	TextEditor * textEdit = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
+	if( ! textEdit->textCursor().selectedText().isEmpty() ){
+		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	}
+	m_findDialog->initialize();
+	m_findDialog->setReplace(true);
+	m_findDialog->exec();
+}
+
+void PrivateMainformImpl::closeProject( bool session ) {
+	if( ! global.m_project ) return;		
+		
+	global.m_project->clearSessionNode();
+	for( int i = 0; i < m_parent->m_tabEditors->count(); i++ ) {
+		QDomElement node = global.m_project->sessionDocument().createElement( "editor" );
+		m_parent->m_tabEditors->editor( i )->serializeEditor( node, session );
+		global.m_project->sessionNode().appendChild( node );
+	}
+	global.m_project->saveToFile();
+
+	m_projectDock->setProjectPath( NULL );
+
+	if( ! session )
+		m_parent->closeAllFile(); 
+	else {
+		m_parent->m_tabEditors->setUpdatesEnabled( false );
+		for( int i = m_parent->m_tabEditors->count() - 1; i >= 0; i-- ) {
+			Editor * ed = m_parent->m_tabEditors->editor( i );
+			m_parent->m_tabEditors->removeTab( i );	
+			delete ed;
+		}
+		m_parent->m_tabEditors->setUpdatesEnabled( true );
+	}
+	m_contentDock->updateModel( NULL );
+
+	qDeleteAll( *(global.m_webServices) );
+	global.m_webServices->clear();
+	
+	delete global.m_project;
+	global.m_project = NULL;
+
+	m_parent->updateWebServicesList();
+	updateActions();
+	updateRecentFiles();
+	updateTitle();
+	
+	global.emitProjectChanged();
+}
+
+void PrivateMainformImpl::updateTitle() {
+	if( ! global.m_project )
+		m_parent->setWindowTitle( tr("XINX") );
+	else {
+		m_parent->setWindowTitle( tr("%1 - %2").arg( global.m_project->projectName() ).arg( tr("XINX") ) );
+	}
+}
+
+void PrivateMainformImpl::openProject() {
+	QString fileName = QFileDialog::getOpenFileName( m_parent, tr("Open a project"), global.m_xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
+	if( ! fileName.isEmpty() )
+		m_parent->openProject( fileName );
+}
+
+void PrivateMainformImpl::projectProperty() {
+	Q_ASSERT( global.m_project != NULL );
+	
+	ProjectPropertyImpl property ( m_parent );
+	property.loadFromProject( global.m_project );
+	
+	if( property.exec() ) {
+		property.saveToProject( global.m_project );
+
+		m_parent->updateWebServicesList();
+		global.m_project->saveToFile();
+		
+		global.emitProjectChanged();
+	}
+}
+
+void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
+	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
+		QMessageBox::warning( m_parent, tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
+	} else {
+		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( m_parent );
+		dlg->setInputStreamText( query );
+		dlg->setOutputStreamText( response );
+		dlg->show();
+	}
+}
 
 /* MainformImpl */
 
@@ -695,8 +1069,14 @@ void MainformImpl::setEditorPosition( int line, int column ) {
 }
 
 void MainformImpl::closeEvent( QCloseEvent *event ) {
-	d->storeWindowSettings();
-	event->accept();
+	if( global.m_project ) {
+		d->closeProject( global.m_xinxConfig->saveSessionByDefault() );
+	} else if( ! closeAllFile() ) {
+		event->ignore();
+	} else {
+		d->storeWindowSettings();
+		event->accept();
+	}
 }
 
 void MainformImpl::newStylesheetFile() {
@@ -776,45 +1156,132 @@ void MainformImpl::saveAllFile() {
 }
 
 void MainformImpl::closeFile() {
-	d->fileEditorClose( m_tabEditors->currentIndex() );
+	int item = m_tabEditors->getClickedTab();
+	if( item == -1 ) item = m_tabEditors->currentIndex();
+	d->fileEditorClose( item );
 }
 
-void MainformImpl::closeAllFile() {
+bool MainformImpl::closeAllFile() {
+	m_tabEditors->setUpdatesEnabled( false );
 	for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) {
 		if ( d->fileEditorMayBeSave( i ) ) {
 			d->m_contentDock->updateModel( NULL );
 			Editor * editor = m_tabEditors->editor( i );
 			m_tabEditors->removeTab( i ); 
 			delete editor;
-		} else 
-			return ;
+		} else {
+			m_tabEditors->setUpdatesEnabled( true );
+			return false;
+		}
 	}
+	m_tabEditors->setUpdatesEnabled( true );
 	
 	d->updateActions();
+	return true;
 }
 
 void MainformImpl::newProject() {
+	ProjectPropertyImpl property ( this );
+	if( ! property.exec() ) return;
+		
+	XSLProject * project = new XSLProject();
+	property.saveToProject( project );
+
+	QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
+	if( filename.isEmpty() ) {
+		delete project;
+		return;
+	}
+	d->m_lastProjectOpenedPlace = project->projectPath();
+
+	project->saveToFile( filename );
+	delete project;
 	
+	openProject( filename );
 }
 
-void MainformImpl::openProject( const QString & name ) {
+void MainformImpl::openProject( const QString & filename ) {
+	Q_ASSERT( ! filename.isEmpty() );
+
+	if( global.m_project ) 
+		d->closeProject( global.m_xinxConfig->saveSessionByDefault() );
+	else 
+		closeAllFile();
+		
+	global.m_xinxConfig->recentProjectFiles().removeAll( filename );
+
+	global.m_project = NULL;
+	try {
+		global.m_project      		= new XSLProject( filename );
+		d->m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
+		d->m_lastPlace              = global.m_project->projectPath();
+
+		updateWebServicesList();
+
+		global.m_xinxConfig->recentProjectFiles().prepend( filename );
+		while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
+			global.m_xinxConfig->recentProjectFiles().removeLast();
+
+		m_tabEditors->setUpdatesEnabled( false );
+		QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
+		while( ! element.isNull() ) {
+			Editor * editor = m_tabEditors->newFileEditor( element.attribute( "filename" ) );
+			editor->deserializeEditor( element );
+			element = element.nextSiblingElement( "editor" );
+		}
+		m_tabEditors->setUpdatesEnabled( true );
+
+		d->m_projectDock->setProjectPath( global.m_project );
+
+		d->updateTitle();
+		d->updateActions();
+		d->updateRecentProjects();
+		d->updateRecentFiles();
+	} catch( XSLProjectException e ) {
+		delete global.m_project;
+		global.m_project = NULL;
+		QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
+	}
 	
+	global.emitProjectChanged();
 }
 
 void MainformImpl::closeProject() {
-	
+	d->closeProject( false );
 }
 
 void MainformImpl::closeProjectWithSessionData() {
-	
+	d->closeProject( true );
 }
 
 void MainformImpl::callWebservices() {
+	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
+	Q_ASSERT( global.m_project );
 	
+	WebServicesEditor * editor = qobject_cast<WebServicesEditor*>( m_tabEditors->currentEditor() );
+	if( editor ) 
+		editor->service()->call( editor->operation(), editor->values() );
 }
 
-void MainformImpl::refreshWebservices() {
-	
+void MainformImpl::updateWebServicesList() {
+	bool enabled = global.m_project && ( global.m_project->projectType() == XSLProject::SERVICES );
+	qDeleteAll( *(global.m_webServices) );
+	global.m_webServices->clear();
+
+	if( enabled ) {
+		foreach( QString link, global.m_project->serveurWeb() ) {
+			WebServices * ws = new WebServices( link, this );
+			global.m_webServices->append( ws );
+			ws->askWSDL( this );
+			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), d, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
+		}
+	}
+		
+	m_webServicesMenu->setEnabled( enabled );
+	m_refreshWebServicesListAct->setEnabled( enabled );
+	m_callWebServicesAct->setEnabled( enabled );
+
+	global.emitWebServicesChanged();
 }
 
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {

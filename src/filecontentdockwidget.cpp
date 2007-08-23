@@ -20,32 +20,16 @@
 
 // Xinx header
 #include "filecontentdockwidget.h"
+#include "private/p_filecontentdockwidget.h"
 #include "filecontentitemmodel.h"
 
-// Qt header
-#include <QTreeView>
-#include <QSortFilterProxyModel>
-
 /* PrivateContentDockWidget */
-
-class PrivateFileContentDockWidget {
-public:
-	PrivateFileContentDockWidget( FileContentDockWidget * parent );
-	~PrivateFileContentDockWidget();
-	
-	QTreeView * m_contentTreeView;
-	QAbstractItemModel * m_model;
-	QSortFilterProxyModel * m_sortModel;
-public slots:
-	void contentTreeViewDblClick( QModelIndex index );
-private:
-	FileContentDockWidget * m_parent;
-};
 
 PrivateFileContentDockWidget::PrivateFileContentDockWidget( FileContentDockWidget * parent ) : m_model(0), m_sortModel(0), m_parent( parent ) {
 	m_contentTreeView = new QTreeView( m_parent );
 	m_contentTreeView->setSortingEnabled( true );
 	m_parent->setWidget( m_contentTreeView );
+	connect( m_contentTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(contentTreeViewDblClick(QModelIndex)) );
 }
 
 PrivateFileContentDockWidget::~PrivateFileContentDockWidget() {
@@ -58,8 +42,7 @@ void PrivateFileContentDockWidget::contentTreeViewDblClick( QModelIndex index ) 
 	struct FileContentItemModel::struct_file_content data = m_model->data( mappingIndex, Qt::UserRole ).value<FileContentItemModel::struct_file_content>();
 	int line = data.line;
 
-	if( ! data.filename.isEmpty() )
-		emit m_parent->open( data.filename, line );
+	emit m_parent->open( data.filename, line );
 }
 
 /* ContentDockWidget */
@@ -77,6 +60,7 @@ FileContentDockWidget::~FileContentDockWidget() {
 }
 
 void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
+	if( model == d->m_model ) return;
 	if( model ) {
 		if( d->m_sortModel ) delete d->m_sortModel;
 		d->m_sortModel = new QSortFilterProxyModel( this );

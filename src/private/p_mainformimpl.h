@@ -26,6 +26,7 @@
 #include "../filecontentdockwidget.h"
 #include "../projectdirectorydockwidget.h"
 #include "../globals.h"
+#include "../replacedialogimpl.h"
 
 // Qt header
 #include <QObject>
@@ -33,6 +34,7 @@
 #include <QToolButton>
 #include <QAction>
 #include <QHash>
+#include <QTextCursor>
 
 class PrivateMainformImpl : public QObject {
 	Q_OBJECT
@@ -47,12 +49,13 @@ public:
 	void createStatusBar();
 	void createDockWidget();
 	void createActions();
+	void createFindReplace();
 
 	// Actions
 	void updateActions();
 	
 	// Editor
-	QString m_lastPlace;
+	QString m_lastProjectOpenedPlace, m_lastPlace;
 	
 	QString fileEditorCheckPathName( const QString & pathname );
 	QString getUserPathName( const QString & pathname, const QString & suffix = QString() );
@@ -61,6 +64,11 @@ public:
 	void fileEditorSave( int index );
 	void fileEditorSaveAs( int index );
 	void fileEditorClose( int index );
+	void fileEditorRefreshFile( int index );
+	
+	// Project
+	void closeProject( bool session );
+	void updateTitle();
 	
 	// Settings
 	void readWindowSettings();
@@ -86,25 +94,52 @@ public:
 	// Snipet
 	QHash<QString,QAction*> m_snipetCategoryActs;
 	QList<QAction*> m_snipetActs;
+	
+	// Find/Replace
+	ReplaceDialogImpl * m_findDialog;
+	QString m_findExpression, m_replaceExpression;
+	struct ReplaceDialogImpl::FindOptions m_findOptions;
+	bool m_yesToAllReplace, m_searchInverse;
+	QTextCursor m_cursorStart, m_cursorEnd;
+	int m_nbFindedText;
 public slots:
 	// File
 	void openFile();
+	void openFile( const QString & name, int line );
+	void refreshFile();
 	void saveFile();
 	void saveAsFile();
 	void printFile();
 
+	// Recent action
+	void openRecentProject();
+	void openRecentFile();
+	
+	// Search
+	void findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options );
+	void find();
+	void findNext();
+	void findPrevious();
+	void replace();
+
 	// Project
+	void openProject();
+	void projectProperty();
 	void globalUpdateFromVersionManager();
 	void globalCommitToVersionManager();
 	void selectedUpdateFromVersionManager();
 	void selectedCommitToVersionManager();
 	void selectedAddToVersionManager();
 	void selectedRemoveFromVersionManager();
+	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 
-	// Recent action
-	void openRecentProject();
-	void openRecentFile();
+	// Windows
+	void nextTab();
+	void previousTab();
 	
+	// Tools
+	void customize();
+
 	// About
 	void about();
 private:	
