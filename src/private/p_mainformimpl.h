@@ -91,6 +91,7 @@ public slots:
 	void openFile();
 	void saveFile();
 	void saveAsFile();
+	void printFile();
 
 	// Project
 	void globalUpdateFromVersionManager();
@@ -103,6 +104,9 @@ public slots:
 	// Recent action
 	void openRecentProject();
 	void openRecentFile();
+	
+	// About
+	void about();
 private:	
 	MainformImpl * m_parent;
 };

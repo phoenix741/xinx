@@ -28,6 +28,7 @@
 #include "snipetdialog.h"
 #include "fileeditor.h"
 #include "texteditor.h"
+#include "aboutdialogimpl.h"
 
 // Qt header
 #include <QKeySequence>
@@ -38,6 +39,8 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QFileDialog>
+#include <QPrinter>
+#include <QPrintDialog>
 
 /* PrivateMainformImpl */
 
@@ -143,7 +146,7 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_saveAllAct, SIGNAL(triggered()), m_parent, SLOT(saveAllFile()) );
 	
 	// Print
-	void on_m_printAct_triggered();
+	connect( m_parent->m_printAct, SIGNAL(triggered()), this, SLOT(printFile()) );
 	
 	// Close
 	connect( m_parent->m_closeAct, SIGNAL(triggered()), m_parent, SLOT(closeFile()) );
@@ -266,6 +269,9 @@ void PrivateMainformImpl::createActions() {
 	  
   	// About Qt
 	connect( m_parent->m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+	
+	// About
+	connect( m_parent->m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 void PrivateMainformImpl::openRecentProject() {
@@ -299,6 +305,11 @@ void PrivateMainformImpl::saveFile() {
 
 void PrivateMainformImpl::saveAsFile() {
 	fileEditorSaveAs( m_parent->m_tabEditors->currentIndex() );
+}
+
+void PrivateMainformImpl::about() {
+	AboutDialogImpl about( m_parent );
+	about.exec();
 }
 
 void PrivateMainformImpl::setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] ) {
@@ -602,10 +613,31 @@ void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 void PrivateMainformImpl::fileEditorClose( int index ) {
 	if( fileEditorMayBeSave( index ) ) {
 		m_contentDock->updateModel( NULL );
-		m_parent->m_tabEditors->removeTab( index ); // Delete is in tabDelete
+		Editor * editor = m_parent->m_tabEditors->editor( index );
+		m_parent->m_tabEditors->removeTab( index ); 
+		delete editor;
 	}
 	
 	updateActions();
+}
+
+void PrivateMainformImpl::printFile() {
+	Q_ASSERT( m_parent->m_tabEditors->currentEditor() != NULL );
+	
+	if( TabEditor::isFileEditor( m_parent->m_tabEditors->currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() );
+		QTextDocument *document = editor->textEdit()->document();
+		QPrinter printer;
+
+		QPrintDialog *dlg = new QPrintDialog( &printer, m_parent );
+		if ( dlg->exec() != QDialog::Accepted ) return;
+
+		document->print( &printer );
+  
+		delete dlg;
+
+		m_parent->statusBar()->showMessage( tr("Printed"), 2000 );
+	}
 }
 
 void PrivateMainformImpl::globalUpdateFromVersionManager() {
@@ -751,7 +783,9 @@ void MainformImpl::closeAllFile() {
 	for( int i = m_tabEditors->count() - 1; i >= 0; i-- ) {
 		if ( d->fileEditorMayBeSave( i ) ) {
 			d->m_contentDock->updateModel( NULL );
-			m_tabEditors->removeTab( i );	
+			Editor * editor = m_tabEditors->editor( i );
+			m_tabEditors->removeTab( i ); 
+			delete editor;
 		} else 
 			return ;
 	}
