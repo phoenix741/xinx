@@ -1,6 +1,11 @@
 <config>
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
+	<type name="extentions">
+		<value name="customPath" type="string"/>
+		<value name="canBeSpecifique" type="bool"/>
+	</type>
+	<type name="formats" type="hash" typecle="string" typevalue="textcharformat"/>
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
 	<value name="Create Backup File" type="bool" default="yes"/>
 	<value name="Save Session By Default" type="bool" default="no"/>
@@ -28,8 +33,14 @@
 		<value name="cvs" default="/usr/bin/cvs"/>
 		<value name="diff" default="/usr/bin/kompare"/>
 	</context>
-	<!-- 
-	     Que faire pour le type très complexe ? Modifier la structure ? Rendre plus statique mais avec un fichier de conf ? 
-	     Attention tout de même à la boite de personnalisation (Les Listes boxes ...)
-	  -->
+	<context name="Files" type="hash" typecle="string" typevalue="complex:extentions">
+		<value name="xml" default="customPath:;canBeSpecifique:yes"/>
+		<value name="xsl" default="customPath:;canBeSpecifique:yes"/>
+		<value name="fws" default="customPath:;canBeSpecifique:no"/>
+		<value name="js" default="customPath:js/;canBeSpecifique:yes"/>
+	</context>
+	<context name="Formats" type="hash" typecle="string" typevalue="complex:formats">
+		<value name="xml"/>
+		<value name="js"/>
+	</context>
 </config>
