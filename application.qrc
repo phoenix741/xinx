@@ -80,6 +80,9 @@
         <file>images/radiobutton.png</file>
         <file>images/textedit.png</file>
  
+		<file>translations/xinx_fr.qm</file>
+		<file>translations/qt_fr.qm</file>
+ 
 		<file>qss/coffee.qss</file>
     </qresource>
 </RCC>

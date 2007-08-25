@@ -359,7 +359,7 @@ XSLEditor::XSLEditor( QWidget * parent ) : XMLEditor( parent ) {
 }
 
 XSLEditor::~XSLEditor() {
-	emit deleteModel();
+	emit modelUpdated( NULL );
 }
 	
 
@@ -679,8 +679,7 @@ void XSLEditor::updateModel() {
 		datas = new XSLModelData();
 		datas->loadFromContent( toPlainText() );	
 	
-		emit deleteModel();
-	
+		emit modelUpdated( NULL );
 		m_completerValue->setModel( NULL );
 	
 		delete m_contentModel; m_contentModel = NULL;
@@ -691,8 +690,7 @@ void XSLEditor::updateModel() {
 		m_contentModel  = new XSLItemModel( m_modelData, this );
 		m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
 	
-		emit createModel();
-
+		emit modelUpdated( m_contentModel );
 		m_completerValue->setModel( m_completionValueModel );
 	} catch( XMLParserException e ) {
 		delete datas;

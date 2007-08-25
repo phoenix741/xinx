@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef STUDIOINTERFACE_H_1186480975
-#define STUDIOINTERFACE_H_1186480975
+#ifndef STUDIOINTERFACE_H_1188025414
+#define STUDIOINTERFACE_H_1188025414
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -36,10 +36,22 @@ public:
     ~ComEditorXinxInterface();
 
 public Q_SLOTS: // METHODS
+    inline QDBusReply<void> callWebservices()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("callWebservices"), argumentList);
+    }
+
     inline QDBusReply<void> closeAllFile()
     {
         QList<QVariant> argumentList;
         return callWithArgumentList(QDBus::Block, QLatin1String("closeAllFile"), argumentList);
+    }
+
+    inline QDBusReply<void> closeFile()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("closeFile"), argumentList);
     }
 
     inline QDBusReply<void> closeProject()
@@ -48,10 +60,52 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("closeProject"), argumentList);
     }
 
-    inline QDBusReply<void> newFile()
+    inline QDBusReply<void> closeProjectWithSessionData()
     {
         QList<QVariant> argumentList;
-        return callWithArgumentList(QDBus::Block, QLatin1String("newFile"), argumentList);
+        return callWithArgumentList(QDBus::Block, QLatin1String("closeProjectWithSessionData"), argumentList);
+    }
+
+    inline QDBusReply<void> newDefaultFile()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newDefaultFile"), argumentList);
+    }
+
+    inline QDBusReply<void> newJavascriptFile()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newJavascriptFile"), argumentList);
+    }
+
+    inline QDBusReply<void> newProject()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newProject"), argumentList);
+    }
+
+    inline QDBusReply<void> newStylesheetFile()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newStylesheetFile"), argumentList);
+    }
+
+    inline QDBusReply<void> newTemplate()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newTemplate"), argumentList);
+    }
+
+    inline QDBusReply<void> newWebservicesFile()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newWebservicesFile"), argumentList);
+    }
+
+    inline QDBusReply<void> newXmlDataFile()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("newXmlDataFile"), argumentList);
     }
 
     inline QDBusReply<void> openFile(const QString &filename)
@@ -72,6 +126,19 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         return callWithArgumentList(QDBus::Block, QLatin1String("saveAllFile"), argumentList);
+    }
+
+    inline QDBusReply<void> saveFileAs(const QString &filename)
+    {
+        QList<QVariant> argumentList;
+        argumentList << qVariantFromValue(filename);
+        return callWithArgumentList(QDBus::Block, QLatin1String("saveFileAs"), argumentList);
+    }
+
+    inline QDBusReply<void> updateWebServicesList()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("updateWebServicesList"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS

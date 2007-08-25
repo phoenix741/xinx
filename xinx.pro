@@ -1,10 +1,10 @@
-CONFIG += debug \
- exceptions \
- qdbus \
+CONFIG += exceptions \
  qt \
  thread \
  warn_on \
- x86
+ x86 \
+ debug \
+ qdbus
 DESTDIR += bin
 DISTFILES = CHANGELOG \
  COPYING \
@@ -59,8 +59,10 @@ HEADERS += src/aboutdialogimpl.h \
  src/numberbar.h \
  src/objectview.h \
  src/p_rcs_cvs.h \
+ src/private/p_filecontentdockwidget.h \
  src/private/p_mainformimpl.h \
  src/private/p_projectdirectorydockwidget.h \
+ src/private/p_uniqueapplication.h \
  src/projectdirectorydockwidget.h \
  src/projectpropertyimpl.h \
  src/rcs.h \
@@ -88,8 +90,7 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h \
- src/private/p_filecontentdockwidget.h
+ src/xslproject.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml

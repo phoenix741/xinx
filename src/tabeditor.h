@@ -79,7 +79,7 @@ public slots:
 	void unindent();
 
 	void complete();	
-Q_SIGNALS:
+signals:
 	void undoAvailable( bool available );
 	void redoAvailable( bool available );
 	void copyAvailable( bool available );
@@ -100,9 +100,6 @@ protected:
 	virtual void tabRemoved ( int index );
 	
 private slots:
-	void modelCreated();
-	void modelDeleted();
-
 	void slotCurrentTabChanged( int );
 	void slotModifiedChange( bool );
 	

@@ -200,14 +200,10 @@ signals:
 	void modificationChanged( bool changed );
 
 	/*!
-	 * Signal emited before the model is deleted and becomes NULL.
-	 * \sa model(), updateModel(), createModel()
+	 * Signal emited when the model is changed. The model is NULL when he is deleted.
+	 * \param model The model that changed
+	 * \sa model()
 	 */
-	void deleteModel();
-	/*!
-	 * Signal emitted after the model is created and can be used.
-	 * \sa model(), updateModel(), deleteModel()
-	 */
-	void createModel();
+	void modelUpdated( QAbstractItemModel * model );
 };
 #endif

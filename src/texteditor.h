@@ -47,11 +47,8 @@ public slots:
 	virtual void updateModel();
 	
 signals:
-	void deleteModel();
-	void createModel();
-	
+	void modelUpdated( QAbstractItemModel *  model );
 	void needInsertSnipet( QString snipet );
-
 protected:
 	void keyPressEvent(QKeyEvent *e);
     void mouseDoubleClickEvent( QMouseEvent * event );

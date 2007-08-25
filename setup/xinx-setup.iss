@@ -44,8 +44,6 @@ Name: remplace_template; Description: Replace template.xnx file
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\translations\xinx_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
-Source: ..\translations\qt_fr.qm; DestDir: {app}\translations; Components: application; Flags: ignoreversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
@@ -94,6 +92,7 @@ Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- 
 Name: {app}\xmlvisualstudio.exe; Type: files; Components: application
 Name: {app}\src; Type: filesandordirs
 Name: {app}\source; Type: filesandordirs
+Name: {app}\translations; Type: filesandordirs
 
 [_ISToolPreCompile]
 Name: clean.bat; Parameters: ; Flags: abortonerror

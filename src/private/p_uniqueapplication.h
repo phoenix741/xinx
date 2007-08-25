@@ -17,34 +17,66 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef _UNIQUEAPPLICATION_H_
-#define _UNIQUEAPPLICATION_H_
 
-#include <QApplication>
+#ifndef __P_UNIQUEAPPLICATION_H__
+#define __P_UNIQUEAPPLICATION_H__
 
-class PrivateUniqueApplication;
-class MainformImpl;
+// Define
+#ifdef Q_WS_WIN
+	#ifndef QT_QTDBUS
+		#define DBUS
+	#endif
+#else
+	#define DBUS
+#endif
 
-class UniqueApplication : public QApplication {
+// Xinx header
+#include "../uniqueapplication.h"
+#include "../mainformimpl.h"
+#ifdef DBUS
+	#include "../studioadaptor.h"
+	#include "../studiointerface.h"
+#endif
+
+// Qt header
+#include <QObject>
+#ifdef DBUS
+	#include <QtDBus>
+#else
+	#include <QTimer>
+	#include <QtGui>
+#endif
+
+// Standard header
+#ifdef DBUS
+	#include <unistd.h>
+#else
+	#include <windows.h>
+#endif
+
+class PrivateUniqueApplication : public QObject {
 	Q_OBJECT
 public:
-	UniqueApplication ( int & argc, char ** argv );
-	UniqueApplication ( int & argc, char ** argv, bool GUIenabled );
-	UniqueApplication ( int & argc, char ** argv, Type type );
+	PrivateUniqueApplication( UniqueApplication * parent );
+	virtual ~PrivateUniqueApplication();
 	
-	virtual ~UniqueApplication ();
-	
-	virtual bool notify ( QObject * receiver, QEvent * event );
-	void notifyError();
-	
-	bool isUnique();
-	void callOpenFile( const QString & fileName );
-	
-	void attachMainWindow( MainformImpl * mainform );
+	bool m_isUnique;
+	MainformImpl * m_mainform;
+#ifndef DBUS
+	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
+	char* m_fileView;
+	void openSharedMem();
+#else
+	ComEditorXinxInterface * m_interface;
+#endif
+	void start();
+
+public slots:
+#ifndef DBUS
+	void timerApplicationEvent();
+#endif
 private:
-	PrivateUniqueApplication * d;
-	friend class PrivateUniqueApplication;
+	UniqueApplication * m_parent;
 };
 
-#endif
+#endif // __P_UNIQUEAPPLICATION_H__

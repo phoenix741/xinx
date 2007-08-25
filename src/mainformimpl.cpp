@@ -37,6 +37,7 @@
 #include "webserviceseditor.h"
 #include "rcs.h"
 #include "commitmessagedialogimpl.h"
+#include "uniqueapplication.h"
 
 // Qt header
 #include <QKeySequence>
@@ -61,6 +62,7 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 	createActions();
 	createFindReplace();
 	createDialogs();
+	connectDbus();
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
@@ -285,8 +287,8 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_closeProjectSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectWithSessionData()) );
 	
 	/* SERVICES */
-	connect( m_parent->m_refreshWebServicesListAct, SIGNAL(triggered()), this, SLOT(updateWebServicesList()) );
-	connect( m_parent->m_callWebServicesAct, SIGNAL(triggered()), this, SLOT(callServices()) );
+	connect( m_parent->m_refreshWebServicesListAct, SIGNAL(triggered()), m_parent, SLOT(updateWebServicesList()) );
+	connect( m_parent->m_callWebServicesAct, SIGNAL(triggered()), m_parent, SLOT(callWebservices()) );
 	
 	/* WINDOWS */
 	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
@@ -310,6 +312,22 @@ void PrivateMainformImpl::createActions() {
 
 void PrivateMainformImpl::createDialogs() {
 	m_rcslogDialog = new RCSLogDialogImpl( m_parent );
+}
+
+void PrivateMainformImpl::connectDbus() {
+	qobject_cast<UniqueApplication*>(qApp)->attachMainWindow( m_parent );
+	// Connection for auto open
+	/*connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(newFile()), 				m_parent, SLOT(newDefaultFile()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(openFile(QString)),			m_parent, SLOT(openFile(QString)) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(saveFileAs(QString)),		m_parent, SLOT(saveFileAs(QString)) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(saveAllFile()), 			m_parent, SLOT(saveAllFile()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(closeFile()), 				m_parent, SLOT(closeFile()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(closeAllFile()), 			m_parent, SLOT(closeAllFile()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(newProject()), 				m_parent, SLOT(newProject()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(openProject(QString))	, 	m_parent, SLOT(openProject(QString)) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(closeProject()), 			m_parent, SLOT(closeProject()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(callWebservices()), 		m_parent, SLOT(callWebservices()) );
+	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(updateWebServicesList()), 	m_parent, SLOT(updateWebServicesList()) );*/
 }
 
 void PrivateMainformImpl::openRecentProject() {
@@ -496,8 +514,8 @@ void PrivateMainformImpl::createShortcut() {
 	m_parent->m_duplicateLineAct->setShortcut( QKeySequence( "Ctrl+D" ) );
 	m_parent->m_indentAct->setShortcut( QKeySequence( "Tab" ) );
 	m_parent->m_unindentAct->setShortcut( QKeySequence( "Shift+Tab" ) );
-	m_parent->m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
-	m_parent->m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
+	m_parent->m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
+	m_parent->m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
 	m_parent->m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
 	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
 	

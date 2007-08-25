@@ -1,17 +1,30 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-  <interface name="com.editor.xinx">
-    <method name="newFile"/>
-    <method name="openFile">
-      <arg name="filename" type="s" direction="in"/>
-    </method>
-    <method name="saveAllFile"/>
-    <method name="closeAllFile"/>
-    <method name="openProject">
-      <arg name="filename" type="s" direction="in"/>
-    </method>
-	<method name="closeProject"/>
+	<interface name="com.editor.xinx">
+		<method name="newStylesheetFile"/>
+		<method name="newXmlDataFile"/>
+		<method name="newJavascriptFile"/>
+		<method name="newWebservicesFile"/>
+		<method name="newTemplate"/>
+		<method name="newDefaultFile"/>
+		<method name="openFile">
+			<arg name="filename" type="s" direction="in"/>
+		</method>
+		<method name="saveFileAs">
+			<arg name="filename" type="s" direction="in"/>
+		</method>
+		<method name="saveAllFile"/>
+		<method name="closeFile"/>
+		<method name="closeAllFile"/>
+		<method name="newProject"/>
+		<method name="openProject">
+			<arg name="filename" type="s" direction="in"/>
+		</method>
+		<method name="closeProject"/>
+		<method name="closeProjectWithSessionData"/>
+		<method name="callWebservices"/>
+		<method name="updateWebServicesList"/>
   </interface>
 </node>
 

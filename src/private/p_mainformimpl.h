@@ -52,6 +52,7 @@ public:
 	void createActions();
 	void createFindReplace();
 	void createDialogs();
+	void connectDbus();
 
 	// Actions
 	void updateActions();

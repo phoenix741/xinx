@@ -18,31 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifdef Q_WS_WIN
-	#ifndef QT_QTDBUS
-		#define DBUS
-	#endif
-#else
-	#define DBUS
-#endif
-
+// Xinx header
 #include "uniqueapplication.h"
-#include <iostream>
-#include <QString>
-#include <QMessageBox>
-#ifdef DBUS
-	#include <unistd.h>
-	#include <QtDBus>
-	#include "studioadaptor.h"
-	#include "studiointerface.h"
-#else
-	#include <windows.h>
-	#include <QTimer>
-	#include <QtGui>
-#endif
+#include "private/p_uniqueapplication.h"
 #include "mainformimpl.h"
 
-extern MainformImpl * mainWin;
+// Qt header
+#include <QString>
+#include <QMessageBox>
+
+// Standard header
+#include <iostream>
 
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
@@ -58,38 +44,7 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 
 /* PrivateUniqueApplication */
 
-class PrivateUniqueApplication : public QObject {
-	Q_OBJECT
-public:
-	PrivateUniqueApplication( UniqueApplication * parent );
-	virtual ~PrivateUniqueApplication();
-	
-	bool m_isUnique;
-
-#ifndef DBUS
-	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
-	char* m_fileView;
-	void openSharedMem();
-#else
-	ComEditorXinxInterface * m_interface;
-#endif
-	void start();
-
-public slots:
-    void closeAllFile();
-    void closeProject();
-    void newFile();
-    void openFile( const QString & filename );
-    void openProject( const QString & filename );
-    void saveAllFile();
-#ifndef DBUS
-	void timerApplicationEvent();
-#endif
-private:
-	UniqueApplication * m_parent;
-};
-
-PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent ) : m_parent( parent ) {
+PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent ) : m_mainform(0), m_parent( parent ) {
 #ifndef DBUS
 	m_handle = 0;
 	m_handleMutex = 0;
@@ -109,30 +64,6 @@ PrivateUniqueApplication::~PrivateUniqueApplication() {
 	if( m_handleMutex ) CloseHandle( m_handleMutex );
 	if( m_handleMutexGbl ) CloseHandle( m_handleMutexGbl );
 #endif	
-}
-
-void PrivateUniqueApplication::closeAllFile() {
-	emit m_parent->closeAllFile();	
-}
-
-void PrivateUniqueApplication::closeProject() {
-	emit m_parent->closeProject();		
-}
-
-void PrivateUniqueApplication::newFile() {
-	emit m_parent->newFile();		
-}
-
-void PrivateUniqueApplication::openFile( const QString & filename ) {
-	emit m_parent->openFile( filename );
-}
-
-void PrivateUniqueApplication::openProject( const QString & filename ) {
-	emit m_parent->openProject( filename );
-}
-
-void PrivateUniqueApplication::saveAllFile() {
-	emit m_parent->saveAllFile();		
 }
 
 #ifdef DBUS
@@ -156,9 +87,6 @@ void PrivateUniqueApplication::start() {
 		return;
 	}
 	
-	new XinxAdaptor( this );
-	QDBusConnection::sessionBus().registerObject( "/", this );
-
 	m_interface = new ComEditorXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 
 	m_isUnique = true;
@@ -231,7 +159,7 @@ void PrivateUniqueApplication::openSharedMem() {
 void PrivateUniqueApplication::timerApplicationEvent() {
 	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {
 		if( strlen( m_fileView ) > 0 ) {
-			openFile( QString(m_fileView) );
+			d->m_mainform->openFile( QString(m_fileView) );
 			m_fileView[0] = '\0';
 		}
 		ReleaseMutex( m_handleMutex );
@@ -273,14 +201,22 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 
 void UniqueApplication::notifyError() {
 	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
-	if( mainWin )
-		mainWin->closeProjectWithSessionData();
+	if( d->m_mainform )
+		d->m_mainform->closeProjectWithSessionData();
 	exit(1);
 }
 
 
 bool UniqueApplication::isUnique() { 
 	return d->m_isUnique; 
+}
+
+void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
+	d->m_mainform = mainform;
+#ifdef DBUS
+	new XinxAdaptor( mainform );
+	QDBusConnection::sessionBus().registerObject( "/", mainform );
+#endif
 }
 
 void UniqueApplication::callOpenFile(const QString &fileName) {
@@ -295,5 +231,3 @@ void UniqueApplication::callOpenFile(const QString &fileName) {
 	d->m_interface->openFile( fileName );
 #endif
 }
-
-#include "uniqueapplication.moc"

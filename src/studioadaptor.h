@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef STUDIOADAPTOR_H_1186480975
-#define STUDIOADAPTOR_H_1186480975
+#ifndef STUDIOADAPTOR_H_1188025414
+#define STUDIOADAPTOR_H_1188025414
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -30,16 +30,29 @@ class XinxAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "com.editor.xinx")
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.editor.xinx\" >\n"
-"    <method name=\"newFile\" />\n"
+"    <method name=\"newStylesheetFile\" />\n"
+"    <method name=\"newXmlDataFile\" />\n"
+"    <method name=\"newJavascriptFile\" />\n"
+"    <method name=\"newWebservicesFile\" />\n"
+"    <method name=\"newTemplate\" />\n"
+"    <method name=\"newDefaultFile\" />\n"
 "    <method name=\"openFile\" >\n"
 "      <arg direction=\"in\" type=\"s\" name=\"filename\" />\n"
 "    </method>\n"
+"    <method name=\"saveFileAs\" >\n"
+"      <arg direction=\"in\" type=\"s\" name=\"filename\" />\n"
+"    </method>\n"
 "    <method name=\"saveAllFile\" />\n"
+"    <method name=\"closeFile\" />\n"
 "    <method name=\"closeAllFile\" />\n"
+"    <method name=\"newProject\" />\n"
 "    <method name=\"openProject\" >\n"
 "      <arg direction=\"in\" type=\"s\" name=\"filename\" />\n"
 "    </method>\n"
 "    <method name=\"closeProject\" />\n"
+"    <method name=\"closeProjectWithSessionData\" />\n"
+"    <method name=\"callWebservices\" />\n"
+"    <method name=\"updateWebServicesList\" />\n"
 "  </interface>\n"
         "")
 public:
@@ -48,12 +61,23 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
+    void callWebservices();
     void closeAllFile();
+    void closeFile();
     void closeProject();
-    void newFile();
+    void closeProjectWithSessionData();
+    void newDefaultFile();
+    void newJavascriptFile();
+    void newProject();
+    void newStylesheetFile();
+    void newTemplate();
+    void newWebservicesFile();
+    void newXmlDataFile();
     void openFile(const QString &filename);
     void openProject(const QString &filename);
     void saveAllFile();
+    void saveFileAs(const QString &filename);
+    void updateWebServicesList();
 Q_SIGNALS: // SIGNALS
 };
 

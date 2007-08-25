@@ -1,0 +1,35 @@
+<config>
+	<include>#include &lt;QLocale&gt;</include>
+	<include>#include &lt;QDir&gt;</include>
+	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
+	<value name="Create Backup File" type="bool" default="yes"/>
+	<value name="Save Session By Default" type="bool" default="no"/>
+	<value name="Popup When File Modified" type="bool" default="yes"/>
+	<value name="Position" type="point" default="200,200"/>
+	<value name="Size" type="size" default="400,400"/>
+	<value name="State" type="blob"/>
+	<context name="Descriptions">
+		<value name="Object" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quote;../xml&quote; )"/>
+		<value name="Completion" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quote;../xml&quote; )"/>
+	</context>
+	<context name="Project">
+		<value name="Default Path" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quote;project&quote; )"/>
+		<value name="Alert when saving Standard File" type="string" default="yes"/>
+		<value name="Recent Project Files" type="stringlist"/>
+		<value name="Default Project Path Name" type="string" default="projet"/>
+	</context>
+	<context name="CVS"> 
+		<value name="Progress Messages" type="string" default="-q"/>
+		<value name="Comression Level" type="int" default="9"/>
+		<value name="Prune Empty Directories" type="bool" default="no"/>
+		<value name="Create Directories" type="bool" default="yes"/>
+	</context>
+	<context name="Tools" type="hash" typecle="string" typevalue="string">
+		<value name="cvs" default="/usr/bin/cvs"/>
+		<value name="diff" default="/usr/bin/kompare"/>
+	</context>
+	<!-- 
+	     Que faire pour le type très complexe ? Modifier la structure ? Rendre plus statique mais avec un fichier de conf ? 
+	     Attention tout de même à la boite de personnalisation (Les Listes boxes ...)
+	  -->
+</config>

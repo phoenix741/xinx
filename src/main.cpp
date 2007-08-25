@@ -64,29 +64,34 @@ int main(int argc, char *argv[]) {
 	
 	UniqueApplication app(argc, argv);
 	try {
-		global.m_xinxConfig = new XINXConfig();
-		global.m_xinxConfig->load();
-
-		QTranslator translator_xinx, translator_qt;
-		translator_qt.load( QString("../translations/qt_") + global.m_xinxConfig->lang(), app.applicationDirPath());
-		app.installTranslator(&translator_qt);
-		translator_xinx.load(QString("../translations/xinx_") + global.m_xinxConfig->lang(), app.applicationDirPath());
-		app.installTranslator(&translator_xinx);
-	
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);
 			splash.show();
 	  		app.processEvents();
 	
+	  		splash.showMessage( splash.tr("Load configuration ...") );
+			app.processEvents();
+			global.m_xinxConfig = new XINXConfig();
+			global.m_xinxConfig->load();
+
+	  		splash.showMessage( splash.tr("Load translations ...") );
+			app.processEvents();
+			QTranslator translator_xinx, translator_qt;
+			translator_qt.load( QString(":/translations/qt_%1").arg( global.m_xinxConfig->lang() ) );
+			app.installTranslator(&translator_qt);
+			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_xinxConfig->lang() ) );
+			app.installTranslator(&translator_xinx);
+	
 	  		splash.showMessage( splash.tr("Create completion and snipet object ...") );
+			app.processEvents();
 			global.m_completionContents = new Completion();
 			global.m_snipetList = new SnipetList();
 			try {
 				global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
 			} catch( ENotCompletionFile ) {
 				splash.showMessage( splash.tr("Can't load completion file.") );
-			app.processEvents();
+				app.processEvents();
 				sleep( 1 );
 			}
 			try {

@@ -33,10 +33,22 @@ XinxAdaptor::~XinxAdaptor()
     // destructor
 }
 
+void XinxAdaptor::callWebservices()
+{
+    // handle method call com.editor.xinx.callWebservices
+    QMetaObject::invokeMethod(parent(), "callWebservices");
+}
+
 void XinxAdaptor::closeAllFile()
 {
     // handle method call com.editor.xinx.closeAllFile
     QMetaObject::invokeMethod(parent(), "closeAllFile");
+}
+
+void XinxAdaptor::closeFile()
+{
+    // handle method call com.editor.xinx.closeFile
+    QMetaObject::invokeMethod(parent(), "closeFile");
 }
 
 void XinxAdaptor::closeProject()
@@ -45,10 +57,52 @@ void XinxAdaptor::closeProject()
     QMetaObject::invokeMethod(parent(), "closeProject");
 }
 
-void XinxAdaptor::newFile()
+void XinxAdaptor::closeProjectWithSessionData()
 {
-    // handle method call com.editor.xinx.newFile
-    QMetaObject::invokeMethod(parent(), "newFile");
+    // handle method call com.editor.xinx.closeProjectWithSessionData
+    QMetaObject::invokeMethod(parent(), "closeProjectWithSessionData");
+}
+
+void XinxAdaptor::newDefaultFile()
+{
+    // handle method call com.editor.xinx.newDefaultFile
+    QMetaObject::invokeMethod(parent(), "newDefaultFile");
+}
+
+void XinxAdaptor::newJavascriptFile()
+{
+    // handle method call com.editor.xinx.newJavascriptFile
+    QMetaObject::invokeMethod(parent(), "newJavascriptFile");
+}
+
+void XinxAdaptor::newProject()
+{
+    // handle method call com.editor.xinx.newProject
+    QMetaObject::invokeMethod(parent(), "newProject");
+}
+
+void XinxAdaptor::newStylesheetFile()
+{
+    // handle method call com.editor.xinx.newStylesheetFile
+    QMetaObject::invokeMethod(parent(), "newStylesheetFile");
+}
+
+void XinxAdaptor::newTemplate()
+{
+    // handle method call com.editor.xinx.newTemplate
+    QMetaObject::invokeMethod(parent(), "newTemplate");
+}
+
+void XinxAdaptor::newWebservicesFile()
+{
+    // handle method call com.editor.xinx.newWebservicesFile
+    QMetaObject::invokeMethod(parent(), "newWebservicesFile");
+}
+
+void XinxAdaptor::newXmlDataFile()
+{
+    // handle method call com.editor.xinx.newXmlDataFile
+    QMetaObject::invokeMethod(parent(), "newXmlDataFile");
 }
 
 void XinxAdaptor::openFile(const QString &filename)
@@ -67,5 +121,17 @@ void XinxAdaptor::saveAllFile()
 {
     // handle method call com.editor.xinx.saveAllFile
     QMetaObject::invokeMethod(parent(), "saveAllFile");
+}
+
+void XinxAdaptor::saveFileAs(const QString &filename)
+{
+    // handle method call com.editor.xinx.saveFileAs
+    QMetaObject::invokeMethod(parent(), "saveFileAs", Q_ARG(QString, filename));
+}
+
+void XinxAdaptor::updateWebServicesList()
+{
+    // handle method call com.editor.xinx.updateWebServicesList
+    QMetaObject::invokeMethod(parent(), "updateWebServicesList");
 }
 

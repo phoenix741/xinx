@@ -86,7 +86,7 @@ QString PrivateJSEditor::currentFunction() {
 	QString name;
 	int bloc = 0;
 	bool finded = false;
-	// Recherche le début du document ou le mot function (compte le nombre d'accollade en passant)
+	// Recherche le dï¿½but du document ou le mot function (compte le nombre d'accollade en passant)
 	if( ! tc.atStart() )
 	while( true ) {
 		QTextCursor selectedCursor = tc;
@@ -131,14 +131,14 @@ void JSEditor::updateModel() {
 	JavaScriptParser * parser = NULL;
 	try {
 		parser = new JavaScriptParser( toPlainText() );
-		emit deleteModel();
+		emit modelUpdated( NULL );
 		d->m_completer->setModel( NULL );
 		delete d->m_model; d->m_model = NULL;
 		delete d->m_parser; d->m_parser = NULL;
 		d->m_parser = parser;
 		d->m_model  = new JavascriptFileContent( d->m_parser, this );
 		d->m_modelCompleter = new JavascriptModelCompleter( d->m_parser, this );
-		emit createModel();
+		emit modelUpdated( d->m_model );
 		d->m_completer->setModel( d->m_modelCompleter );
 	} catch( JavaScriptParserException e ) {
 		delete parser;

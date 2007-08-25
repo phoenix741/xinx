@@ -156,8 +156,7 @@ FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( par
 
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
 	
-	connect( m_view, SIGNAL(deleteModel()), this, SIGNAL(deleteModel()) );
-	connect( m_view, SIGNAL(createModel()), this, SIGNAL(createModel()) );
+	connect( m_view, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelUpdated(QAbstractItemModel*)) );
 
 	m_messageBox->hide();
 }
@@ -451,6 +450,7 @@ void FileEditor::deserializeEditor( const QDomElement & element ) {
 		m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
 	
 		d->setWatcher( m_fileName );
+		updateModel();
 	} else {
 		if( !m_fileName.isEmpty() )
 			loadFile( m_fileName );
