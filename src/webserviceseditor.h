@@ -49,6 +49,9 @@ public:
 
 	virtual void serializeEditor( QDomElement & element, bool content );
 	virtual void deserializeEditor( const QDomElement & element );
+
+	virtual void setModified( bool modified );
+	virtual bool isModified();
 private:
 	PrivateWebServicesEditor * d;
 	friend class PrivateWebServicesEditor;

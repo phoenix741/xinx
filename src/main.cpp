@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "uniqueapplication.h"
-#include "xmlvisualstudio.h"
 #include "mainformimpl.h"
 #include "xinxconfig.h"
 #include "globals.h"

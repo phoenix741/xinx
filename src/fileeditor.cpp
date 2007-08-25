@@ -387,7 +387,8 @@ void FileEditor::loadFile( const QString & fileName ){
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
 	updateModel();
-
+	
+	setModified( false );
 	QApplication::restoreOverrideCursor();
 }
 
@@ -416,6 +417,8 @@ bool FileEditor::saveFile( const QString & fileName ){
 
 	d->activateWatcher();
 
+	setModified( false );
+	emit modificationChanged( false );
 	QApplication::restoreOverrideCursor();
 
 	return true;	

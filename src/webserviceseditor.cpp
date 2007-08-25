@@ -143,13 +143,13 @@ void PrivateWebServicesEditor::webServicesChanged() {
 }
 
 void PrivateWebServicesEditor::webServicesActivated( int index ) {
-	m_isModified = true;	
+	m_parent->setModified( true );	
 	loadActionsList( index );
 	loadValuesList( m_actionList->currentIndex() );
 }
 
 void PrivateWebServicesEditor::webServicesParamActivated( int index ) {
-	m_isModified = true;
+	m_parent->setModified( true );	
 	loadValuesList( index );
 }
 
@@ -161,12 +161,11 @@ void PrivateWebServicesEditor::webServicesValueActivated() {
 
 void PrivateWebServicesEditor::store( const QString & paramStr ) {
 	m_paramValues[ paramStr ] = m_parent->textEdit()->toPlainText();
-	m_isModified = m_isModified || m_parent->textEdit()->document()->isModified();
+	m_parent->setModified( m_parent->isModified() );	
 }
 
 void PrivateWebServicesEditor::restore( const QString & paramStr ) {
 	m_parent->textEdit()->setPlainText( m_paramValues[ paramStr ] );
-	m_parent->textEdit()->document()->setModified( m_isModified );
 	m_parent->m_view->updateModel();
 }
 
@@ -208,7 +207,7 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( new XMLEdi
 	d->loadActionsList( d->m_servicesList->currentIndex() );
 	d->loadValuesList( d->m_actionList->currentIndex() );
 
-	d->m_isModified = false;
+	setModified( false );
 }
 
 WebServicesEditor::~WebServicesEditor() {
@@ -296,7 +295,7 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 		m_view->updateModel();
 	}
 
-	d->m_isModified = false;
+	setModified( false );
 	
 	QApplication::restoreOverrideCursor();
 }
@@ -339,7 +338,8 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	file.flush();
 	file.close();
 	
-	d->m_isModified = false;
+	emit modificationChanged( false );
+	setModified( false );
 	
 	activateWatcher();
 
@@ -359,8 +359,8 @@ void WebServicesEditor::serializeEditor( QDomElement & element, bool content ) {
 	element.setAttribute( "action", d->m_actionList->currentText() );
 	element.setAttribute( "param", d->m_paramList->currentText() );
 
-	if( content && m_view->document()->isModified() ) {
-		element.setAttribute( "ismodified", d->m_isModified );
+	if( content && isModified() ) {
+		element.setAttribute( "ismodified", isModified() );
 
 		foreach( QString param, d->m_paramValues.keys() ) {
 			QDomElement paramElement = global.m_project->sessionDocument().createElement( param ) ;
@@ -411,13 +411,27 @@ void WebServicesEditor::deserializeEditor( const QDomElement & element ) {
 	d->restore( d->m_paramList->currentText() );
 
 	if( content ) 
-		d->m_isModified = (bool)(element.attribute( "ismodified" ).toInt());
+		setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
 	else 
-		d->m_isModified = false;
+		setModified( false );
 
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( element.attribute( "position" ).toInt() );
 	m_view->setTextCursor( tc );
+}
+
+void WebServicesEditor::setModified( bool modified ) {
+	bool needEmit = modified != isModified();
+
+	d->m_isModified = modified;
+	m_view->document()->setModified( modified );
+	
+	if( needEmit )
+		emit modificationChanged( modified );
+}
+
+bool WebServicesEditor::isModified() {
+	return d->m_isModified || m_view->document()->isModified();
 }
 
 #include "webserviceseditor.moc"

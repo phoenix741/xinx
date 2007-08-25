@@ -28,6 +28,7 @@
 #include "../globals.h"
 #include "../replacedialogimpl.h"
 #include "../rcslogdialogimpl.h"
+#include "../snipet.h"
 
 // Qt header
 #include <QObject>
@@ -53,12 +54,14 @@ public:
 	void createFindReplace();
 	void createDialogs();
 	void connectDbus();
+	void createSnipet();
 
 	// Actions
 	void updateActions();
 	
 	// Editor
 	QString m_lastProjectOpenedPlace, m_lastPlace;
+	QStringList m_fileToAdd;
 	
 	QString fileEditorCheckPathName( const QString & pathname );
 	QString getUserPathName( const QString & pathname, const QString & suffix = QString() );
@@ -146,6 +149,8 @@ public slots:
 	void previousTab();
 	
 	// Tools
+	void callSnipetMenu();
+	void updateSnipetMenu();
 	void customize();
 
 	// About
@@ -153,5 +158,7 @@ public slots:
 private:	
 	MainformImpl * m_parent;
 };
+
+Q_DECLARE_METATYPE(Snipet*);
 
 #endif // __P_MAINFORMIMPL_H__

@@ -38,6 +38,7 @@
 #include "rcs.h"
 #include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
+#include "runsnipetdialogimpl.h"
 
 // Qt header
 #include <QKeySequence>
@@ -62,6 +63,7 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 	createActions();
 	createFindReplace();
 	createDialogs();
+	createSnipet();
 	connectDbus();
 	updateActions();
 	updateRecentFiles();
@@ -308,6 +310,9 @@ void PrivateMainformImpl::createActions() {
 	
 	// About
 	connect( m_parent->m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+
+	// Drag & Drop
+	connect( m_parent->m_tabEditors, SIGNAL(fileDragged()), this, SLOT(updateActions()) );
 }
 
 void PrivateMainformImpl::createDialogs() {
@@ -316,18 +321,51 @@ void PrivateMainformImpl::createDialogs() {
 
 void PrivateMainformImpl::connectDbus() {
 	qobject_cast<UniqueApplication*>(qApp)->attachMainWindow( m_parent );
-	// Connection for auto open
-	/*connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(newFile()), 				m_parent, SLOT(newDefaultFile()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(openFile(QString)),			m_parent, SLOT(openFile(QString)) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(saveFileAs(QString)),		m_parent, SLOT(saveFileAs(QString)) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(saveAllFile()), 			m_parent, SLOT(saveAllFile()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(closeFile()), 				m_parent, SLOT(closeFile()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(closeAllFile()), 			m_parent, SLOT(closeAllFile()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(newProject()), 				m_parent, SLOT(newProject()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(openProject(QString))	, 	m_parent, SLOT(openProject(QString)) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(closeProject()), 			m_parent, SLOT(closeProject()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(callWebservices()), 		m_parent, SLOT(callWebservices()) );
-	connect( qobject_cast<UniqueApplication*>(qApp), SIGNAL(updateWebServicesList()), 	m_parent, SLOT(updateWebServicesList()) );*/
+}
+
+void PrivateMainformImpl::createSnipet() {
+	connect( global.m_snipetList, SIGNAL(listChanged()), this, SLOT(updateSnipetMenu()) );
+	updateSnipetMenu();
+}
+
+void PrivateMainformImpl::callSnipetMenu() {
+	Q_ASSERT( m_parent->m_tabEditors->currentEditor() != NULL );
+
+	QAction * action = qobject_cast<QAction*>( sender() );
+	if( action && TabEditor::isFileEditor( m_parent->m_tabEditors->currentEditor() ) ) {
+		Snipet * snipet = action->data().value<Snipet*>();
+		
+		RunSnipetDialogImpl dlg( snipet );
+		if( dlg.exec() ) {
+			TextEditor * editor = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
+			editor->insertText( dlg.getResult() );
+		}		
+	}
+}
+
+void PrivateMainformImpl::updateSnipetMenu() {
+	qDeleteAllLater( m_snipetActs ); 
+	m_snipetActs.clear();
+	
+	qDeleteAllLater( m_snipetCategoryActs.values() ); 
+	m_snipetCategoryActs.clear();
+	
+	if( global.m_snipetList->count() > 0 ) {
+		foreach( QString category, global.m_snipetList->categories() ) {
+			QAction * act = new QAction( category, m_parent );
+			m_snipetCategoryActs[ category ] = act;
+			act->setMenu( new QMenu( m_parent ) );
+		}
+		for( int i = 0 ; i < global.m_snipetList->count() ; i++ ) {
+			Snipet * snipet = global.m_snipetList->at( i );
+			QAction * act = new QAction( QIcon( snipet->icon() ), snipet->name(), m_parent );
+			m_snipetActs.append( act );
+			m_snipetCategoryActs[ snipet->category() ]->menu()->addAction( act );
+			act->setData( QVariant::fromValue( snipet ) );
+			connect( act, SIGNAL(triggered()), this, SLOT(callSnipetMenu()) );
+		}
+		m_parent->m_toolsMenu->insertActions( m_parent->m_createTemplate, m_snipetCategoryActs.values() );
+	}
 }
 
 void PrivateMainformImpl::openRecentProject() {
@@ -677,10 +715,11 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			QMessageBox::StandardButton res = QMessageBox::question( m_parent, tr("Add file"), tr("Do you want add file %1 to the repository ?").arg( QFileInfo( fileName ).fileName() ), QMessageBox::Yes | QMessageBox::No );
 			if( res == QMessageBox::Yes ) {
 				QString backup = fileEditorStandardBackup( pathname, fileName );
+				m_fileToAdd.clear();
 				if( backup.isEmpty() )
-					m_parent->addFilesToVersionManager( QStringList() << fileName );
+					m_fileToAdd << fileName;
 				else
-					m_parent->addFilesToVersionManager( QStringList() << fileName << backup );
+					m_fileToAdd << fileName << backup;
 			}
 		}
 	}
@@ -697,7 +736,7 @@ QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, 
 	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix.toLower() ) || oldfilename.startsWith( prefix.toUpper() );
 	bool isNewSpecifiqueFile = newfilename.startsWith( prefix.toLower() ) || newfilename.startsWith( prefix.toUpper() );
 	QString specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( global.m_xinxConfig->managedFile4Name( oldfilename ).customPath );
-	QString destname = QDir( specifPath ).absoluteFilePath( newfilename );
+	QString destname = QDir( specifPath ).absoluteFilePath( oldfilename );
 
 	if( ( ! isOldSpecifiqueFile ) && isNewSpecifiqueFile ) {
 		QFile::copy( oldname, destname );
@@ -718,7 +757,8 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 		QString fileName = fileEditorCheckPathName( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName() );
 		if( ! fileName.isEmpty() ) {
 			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-			m_parent->m_tabEditors->editor( index )->setModified( false );
+			if( m_fileToAdd.count() > 0 )
+				m_parent->addFilesToVersionManager( m_fileToAdd );
 			m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 		}
 	}
@@ -731,7 +771,8 @@ void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 
 	if( ! fileName.isEmpty() ) {
 		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-		m_parent->m_tabEditors->editor( index )->setModified( false );
+		if( m_fileToAdd.count() > 0 )
+			m_parent->addFilesToVersionManager( m_fileToAdd );
 		m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 	}
 }
@@ -1104,10 +1145,10 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 		d->closeProject( global.m_xinxConfig->saveSessionByDefault() );
 	} else if( ! closeAllFile() ) {
 		event->ignore();
-	} else {
-		d->storeWindowSettings();
-		event->accept();
+		return;
 	}
+	d->storeWindowSettings();
+	event->accept();
 }
 
 void MainformImpl::newStylesheetFile() {
@@ -1265,14 +1306,14 @@ void MainformImpl::openProject( const QString & filename ) {
 		d->m_projectDock->setProjectPath( global.m_project );
 
 		d->updateTitle();
-		d->updateActions();
-		d->updateRecentProjects();
-		d->updateRecentFiles();
 	} catch( XSLProjectException e ) {
 		delete global.m_project;
 		global.m_project = NULL;
 		QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}
+	d->updateActions();
+	d->updateRecentProjects();
+	d->updateRecentFiles();
 	
 	global.emitProjectChanged();
 }
