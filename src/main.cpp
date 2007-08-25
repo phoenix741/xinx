@@ -69,12 +69,12 @@ int main(int argc, char *argv[]) {
 			splash.show();
 	  		app.processEvents();
 	
-	  		splash.showMessage( splash.tr("Load configuration ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
 			global.m_xinxConfig = new XINXConfig();
 			global.m_xinxConfig->load();
 
-	  		splash.showMessage( splash.tr("Load translations ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();
 			QTranslator translator_xinx, translator_qt;
 			translator_qt.load( QString(":/translations/qt_%1").arg( global.m_xinxConfig->lang() ) );
@@ -82,41 +82,41 @@ int main(int argc, char *argv[]) {
 			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_xinxConfig->lang() ) );
 			app.installTranslator(&translator_xinx);
 	
-	  		splash.showMessage( splash.tr("Create completion and snipet object ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
 			global.m_completionContents = new Completion();
 			global.m_snipetList = new SnipetList();
 			try {
 				global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
 			} catch( ENotCompletionFile ) {
-				splash.showMessage( splash.tr("Can't load completion file.") );
+				splash.showMessage( QApplication::translate("SplashScreen", "Can't load completion file.") );
 				app.processEvents();
 				sleep( 1 );
 			}
 			try {
 				global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {
-				splash.showMessage( splash.tr("Can't load snipet file.") );
+				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();
 				sleep( 1 );
 			}
 			
-			splash.showMessage( splash.tr("Create Web Services list ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Create Web Services list ...") );
 			app.processEvents();
 			global.m_webServices = new WebServicesList();	
 	
-			splash.showMessage( splash.tr("Load objects file ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Load objects file ...") );
 			app.processEvents();
 			global.m_javaObjects = new ObjectsView();
 			global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
 			global.m_javaObjects->loadFiles();
 	
-	  		splash.showMessage( splash.tr("Load main window ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
 	  		app.processEvents();
 			mainWin = new MainformImpl();
 			mainWin->show();
 	  
-	  		splash.showMessage( splash.tr("Load arguments ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load arguments ...") );
 	  		app.processEvents();
 			QStringList args = app.arguments();
 			if(args.count() > 0) {

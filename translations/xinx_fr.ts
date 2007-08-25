@@ -1,44 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
 <context>
-    <name>@default</name>
-    <message>
-        <location filename="../src/main.cpp" line="104"/>
-        <source>Load objects file ...</source>
-        <translation>Chargement des fichiers objets ...</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="110"/>
-        <source>Load main window ...</source>
-        <translation>Chargement de la fenêtre principale ....</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="115"/>
-        <source>Load arguments ...</source>
-        <translation>Chargement des arguments ...</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="82"/>
-        <source>Create completion and snipet object ...</source>
-        <translation>Création des objets internes de complétion et des templates ...</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="88"/>
-        <source>Can&apos;t load completion file.</source>
-        <translation>Ne peux charger le fichier de complétion.</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="95"/>
-        <source>Can&apos;t load snipet file.</source>
-        <translation>Ne peux charger le fichier de template.</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="100"/>
-        <source>Create Web Services list ...</source>
-        <translation>Création de la liste des services internets ...</translation>
-    </message>
-</context>
-<context>
     <name>AboutDialog</name>
     <message>
         <location filename="../ui/about.ui" line="13"/>
@@ -557,7 +519,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
         <translation>sansnom</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="402"/>
+        <location filename="../src/fileeditor.cpp" line="403"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
@@ -569,14 +531,14 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="403"/>
+        <location filename="../src/fileeditor.cpp" line="404"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="473"/>
+        <location filename="../src/fileeditor.cpp" line="476"/>
         <source>%1 at %2</source>
         <translation>%1 à %2</translation>
     </message>
@@ -1038,27 +1000,27 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>MainformImpl</name>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1112"/>
+        <location filename="../src/mainformimpl.cpp" line="1171"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1112"/>
+        <location filename="../src/mainformimpl.cpp" line="1171"/>
         <source>No WebServices can be found. Please update WebServices list to continue.</source>
         <translation>Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1158"/>
+        <location filename="../src/mainformimpl.cpp" line="1217"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1203"/>
+        <location filename="../src/mainformimpl.cpp" line="1262"/>
         <source>Save a project</source>
         <translation>Sauver un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1256"/>
+        <location filename="../src/mainformimpl.cpp" line="1312"/>
         <source>Can&apos;t open project</source>
         <translation>Ne peux ouvrir le projet</translation>
     </message>
@@ -1184,156 +1146,156 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>PrivateMainformImpl</name>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="78"/>
+        <location filename="../src/mainformimpl.cpp" line="82"/>
         <source>Ctrl+1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="92"/>
+        <location filename="../src/mainformimpl.cpp" line="96"/>
         <source>Ctrl+2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="343"/>
+        <location filename="../src/mainformimpl.cpp" line="399"/>
         <source>Open text file</source>
         <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="912"/>
+        <location filename="../src/mainformimpl.cpp" line="971"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="366"/>
+        <location filename="../src/mainformimpl.cpp" line="422"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="411"/>
+        <location filename="../src/mainformimpl.cpp" line="467"/>
         <source>Load completion</source>
         <translation>Chargement du fichier de compétion</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="411"/>
+        <location filename="../src/mainformimpl.cpp" line="467"/>
         <source>Can&apos;t load completion file.</source>
         <translation>Ne peux charger le fichier de complétion.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="416"/>
+        <location filename="../src/mainformimpl.cpp" line="472"/>
         <source>Load snipet</source>
         <translation>Chargement du template</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="416"/>
+        <location filename="../src/mainformimpl.cpp" line="472"/>
         <source>Can&apos;t load snipet file.</source>
         <translation>Ne peux charger le fichier de template.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="455"/>
+        <location filename="../src/mainformimpl.cpp" line="511"/>
         <source>&amp;%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="470"/>
+        <location filename="../src/mainformimpl.cpp" line="526"/>
         <source>Ready</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="589"/>
+        <location filename="../src/mainformimpl.cpp" line="645"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="609"/>
+        <location filename="../src/mainformimpl.cpp" line="665"/>
         <source>Save standard XSL</source>
         <translation>Sauver une feuille de style standard</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="609"/>
+        <location filename="../src/mainformimpl.cpp" line="665"/>
         <source>You&apos;re being to save standard file, do you whant make it specifique ?</source>
         <translation>Vous êtes sur le point de sauvegarder un fichier standard, voulez-vous le sauvegarder dans le dossier spécifique ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="654"/>
+        <location filename="../src/mainformimpl.cpp" line="710"/>
         <source>Save text file</source>
         <translation>Sauver le fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="659"/>
+        <location filename="../src/mainformimpl.cpp" line="715"/>
         <source>Add file</source>
         <translation>Ajouter le fichier</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="659"/>
+        <location filename="../src/mainformimpl.cpp" line="715"/>
         <source>Do you want add file %1 to the repository ?</source>
         <translation>Voulez-vous ajouter le fichier %1 au référenciel ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="717"/>
+        <location filename="../src/mainformimpl.cpp" line="776"/>
         <source>File %1 saved</source>
         <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="747"/>
+        <location filename="../src/mainformimpl.cpp" line="806"/>
         <source>Printed</source>
         <translation>Impression</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="886"/>
+        <location filename="../src/mainformimpl.cpp" line="945"/>
         <source>Search/Replace</source>
         <translation>Chercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="882"/>
+        <location filename="../src/mainformimpl.cpp" line="941"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; remplacés.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="887"/>
+        <location filename="../src/mainformimpl.cpp" line="946"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="887"/>
+        <location filename="../src/mainformimpl.cpp" line="946"/>
         <source>replaced</source>
         <translation>remplacés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="887"/>
+        <location filename="../src/mainformimpl.cpp" line="946"/>
         <source>finded</source>
         <translation>trouvés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="912"/>
+        <location filename="../src/mainformimpl.cpp" line="971"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1020"/>
+        <location filename="../src/mainformimpl.cpp" line="1079"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1020"/>
+        <location filename="../src/mainformimpl.cpp" line="1079"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1025"/>
+        <location filename="../src/mainformimpl.cpp" line="1084"/>
         <source>Open a project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1048"/>
+        <location filename="../src/mainformimpl.cpp" line="1107"/>
         <source>WebServices Error</source>
         <translation>Erreur du service internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1048"/>
+        <location filename="../src/mainformimpl.cpp" line="1107"/>
         <source>Web services has error code %1 : %2</source>
         <translation>Le service internet a retourné le code erreur suivante %1 : %2</translation>
     </message>
@@ -1695,17 +1657,17 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Noir</translation>
     </message>
     <message>
-        <location filename="../src/uniqueapplication.cpp" line="52"/>
+        <location filename="../src/uniqueapplication.cpp" line="38"/>
         <source>UniqueApplication: Cannot find the D-Bus session server</source>
         <translation>UniqueApplication: Ne peux trouver la session sur le serveur D-BUS</translation>
     </message>
     <message>
-        <location filename="../src/uniqueapplication.cpp" line="144"/>
+        <location filename="../src/uniqueapplication.cpp" line="75"/>
         <source>UniqueApplication: Can&apos;t setup D-Bus service. Probably already running.</source>
         <translation>UniqueApplication: Ne peux configurer le service D-BUS. L&apos;application est probablement déjà en cours d&apos;éxecution.</translation>
     </message>
     <message>
-        <location filename="../src/uniqueapplication.cpp" line="148"/>
+        <location filename="../src/uniqueapplication.cpp" line="79"/>
         <source>UniqueApplication: Can&apos;t really create D-Bus service.</source>
         <translation>UniqueApplication: Ne peux vraiment pas créer de service D-BUS.</translation>
     </message>
@@ -2060,6 +2022,54 @@ Voulez-vous sauver les changements ?</translation>
     </message>
 </context>
 <context>
+    <name>SplashScreen</name>
+    <message>
+        <location filename="../src/main.cpp" line="108"/>
+        <source>Load objects file ...</source>
+        <translation>Chargement des fichiers objets ...</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="72"/>
+        <source>Load configuration ...</source>
+        <translation>Chargement de la configuration ...</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="77"/>
+        <source>Load translations ...</source>
+        <translation>Chargement des traductions ...</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="85"/>
+        <source>Create completion and snipet object ...</source>
+        <translation>Création des objets internes de complétion et des templates ...</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="92"/>
+        <source>Can&apos;t load completion file.</source>
+        <translation>Ne peux charger le fichier de complétion.</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="99"/>
+        <source>Can&apos;t load snipet file.</source>
+        <translation>Ne peux charger le fichier de template.</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="104"/>
+        <source>Create Web Services list ...</source>
+        <translation>Création de la liste des services internets ...</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="114"/>
+        <source>Load main window ...</source>
+        <translation>Chargement de la fenêtre principale ....</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="119"/>
+        <source>Load arguments ...</source>
+        <translation>Chargement des arguments ...</translation>
+    </message>
+</context>
+<context>
     <name>TabEditor</name>
     <message>
         <location filename="../src/tabeditor.cpp" line="311"/>
@@ -2075,17 +2085,17 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>UniqueApplication</name>
     <message>
-        <location filename="../src/uniqueapplication.cpp" line="186"/>
+        <location filename="../src/uniqueapplication.cpp" line="114"/>
         <source>UniqueApplication: Can&apos;t create mutex.</source>
         <translation>UniqueApplication: Ne peux créer le mutex.</translation>
     </message>
     <message>
-        <location filename="../src/uniqueapplication.cpp" line="214"/>
+        <location filename="../src/uniqueapplication.cpp" line="142"/>
         <source>UniqueApplication: Error creating shared memory.</source>
         <translation>UniqueApplication: Erreur lors de la création de la mémoire partagée.</translation>
     </message>
     <message>
-        <location filename="../src/uniqueapplication.cpp" line="220"/>
+        <location filename="../src/uniqueapplication.cpp" line="148"/>
         <source>UniqueApplication: Error can&apos;t map file</source>
         <translation>UniqueApplication: Erreur ne peux créer un fichier de corrélation</translation>
     </message>
@@ -2093,34 +2103,34 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>WebServicesEditor</name>
     <message>
-        <location filename="../src/webserviceseditor.cpp" line="180"/>
+        <location filename="../src/webserviceseditor.cpp" line="179"/>
         <source>WebServices : </source>
         <translation>Service internet : </translation>
     </message>
     <message>
-        <location filename="../src/webserviceseditor.cpp" line="183"/>
+        <location filename="../src/webserviceseditor.cpp" line="182"/>
         <source>Action : </source>
         <translation>Action : </translation>
     </message>
     <message>
-        <location filename="../src/webserviceseditor.cpp" line="186"/>
+        <location filename="../src/webserviceseditor.cpp" line="185"/>
         <source>Parameter : </source>
         <translation>Paramêtre : </translation>
     </message>
     <message>
-        <location filename="../src/webserviceseditor.cpp" line="330"/>
+        <location filename="../src/webserviceseditor.cpp" line="329"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/webserviceseditor.cpp" line="253"/>
+        <location filename="../src/webserviceseditor.cpp" line="252"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Ne peux lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/webserviceseditor.cpp" line="331"/>
+        <location filename="../src/webserviceseditor.cpp" line="330"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :

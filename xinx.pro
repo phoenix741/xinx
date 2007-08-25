@@ -18,6 +18,7 @@ DISTFILES = CHANGELOG \
  src/*.bat \
  src/*.cpp \
  src/*.h \
+ src/private/*.h \
  src/*.sh \
  src/*.xml \
  translations/*.ts \
