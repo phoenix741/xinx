@@ -296,6 +296,10 @@ void FileEditor::indent( bool unindent ) {
 	tc.endEditBlock();
 }
 
+void FileEditor::autoIndent() {
+	setMessage( tr("Can't indent this type of document") );
+}
+
 void FileEditor::commentSelectedText( bool uncomment ) {
 	m_view->commentSelectedText( uncomment );
 }

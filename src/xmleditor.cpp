@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <assert.h>
-
+// Xinx header
 #include "xmleditor.h"
 #include "xmlhighlighter.h"
+
 
 #define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
 
@@ -36,7 +36,7 @@ XMLEditor::~XMLEditor() {
 }
 	
 XMLEditor::cursorPosition XMLEditor::editPosition( const QTextCursor & cursor ) {
-	assert( ! cursor.isNull() );
+	Q_ASSERT( ! cursor.isNull() );
 	
 	cursorPosition cPosition = cpNone;
 	m_nodeName = QString();
@@ -180,4 +180,3 @@ void XMLEditor::commentSelectedText( bool uncomment ) {
 
 	cursor.endEditBlock();
 }
-

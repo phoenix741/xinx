@@ -30,6 +30,7 @@ public:
 	virtual ~XMLFileEditor();
 	
 	virtual QString getSuffix() const;
+	virtual void autoIndent();
 };
 
 class XSLFileEditor : public XMLFileEditor {

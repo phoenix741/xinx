@@ -157,6 +157,10 @@ public Q_SLOTS :
 	 */
 	virtual void indent( bool unindent = false );
 	/*!
+	 * Auto indent all the document.
+	 */
+	virtual void autoIndent();
+	/*!
 	 * Call the completer of the text on the current position of the cursor, if possible.
 	 */
 	virtual void complete();

@@ -56,9 +56,6 @@ public:
 	void connectDbus();
 	void createSnipet();
 
-	// Actions
-	void updateActions();
-	
 	// Editor
 	QString m_lastProjectOpenedPlace, m_lastPlace;
 	QStringList m_fileToAdd;
@@ -113,6 +110,9 @@ public:
 	RCSLogDialogImpl * m_rcslogDialog;
 	
 public slots:
+	// Actions
+	void updateActions();
+
 	// File
 	void openFile();
 	void openFile( const QString & name, int line );
@@ -124,7 +124,7 @@ public slots:
 	// Recent action
 	void openRecentProject();
 	void openRecentFile();
-	
+
 	// Search
 	void findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options );
 	void find();

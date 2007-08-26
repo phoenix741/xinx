@@ -255,6 +255,14 @@ void TabEditor::unindent() {
 	}
 }
 
+void TabEditor::autoindent() {
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->autoIndent();
+	}
+}
+
+
 void TabEditor::complete() {
 	if( currentEditor() && isFileEditor( currentEditor() ) ) {
 		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );

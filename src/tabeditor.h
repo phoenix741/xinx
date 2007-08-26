@@ -77,6 +77,7 @@ public slots:
 	
 	void indent();
 	void unindent();
+	void autoindent();
 
 	void complete();	
 signals:
