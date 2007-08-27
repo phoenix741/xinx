@@ -90,8 +90,10 @@ void FileWatcherManager::addFile( const QString & filename ) {
 		FileWatched * file = new FileWatched( filename );
 		m_watchedfiles.append( file );
 	} else
-		qDebug() << QString("Duplicate entry for file %s").arg( filename );
+		qDebug() << QString("Duplicate entry for file %1").arg( filename );
 	m_watchedFilesMutex.unlock();
+	if( ( m_watchedfiles.count() > 0 ) && !isRunning() )
+		start();
 }
 
 void FileWatcherManager::removeFile( const QString & filename ) {
@@ -102,10 +104,8 @@ void FileWatcherManager::removeFile( const QString & filename ) {
 }
 
 FileWatcherManager * FileWatcherManager::instance() {
-	if( ! fileWatcherManager ) {
+	if( ! fileWatcherManager ) 
 		fileWatcherManager = new FileWatcherManager();
-		fileWatcherManager->start();
-	}
 	return fileWatcherManager;
 }
 
@@ -113,8 +113,10 @@ void FileWatcherManager::deleteIfPossible() {
 	if( fileWatcherManager && ( fileWatcherManager->m_watchedfiles.count() == 0 ) ) {
 		FileWatcherManager * manager = fileWatcherManager;
 		fileWatcherManager = NULL;
-		manager->quit();
-		manager->wait();
+		if( manager->isRunning() ) {
+			manager->quit();
+			manager->wait();
+		}
 		delete manager;
 	}
 }

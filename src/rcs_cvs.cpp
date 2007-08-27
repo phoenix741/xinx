@@ -36,6 +36,25 @@ RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 	return d->operationsOfRecursivePath( path );
 }
 
+QVariant RCS_CVS::infos( const QString & path, enum RCS::rcsInfos info ) {
+	QString localPath = QDir::fromNativeSeparators( path );
+	if( d->m_entries.count( localPath ) == 0 ) 
+		d->reloadDir( QFileInfo( localPath ).absolutePath() );
+		
+	if( d->m_entries.count( localPath ) > 0 ) {
+		if( info == RCS::rcsVersions ) {
+			return d->m_entries[ localPath ].m_cvsVersion;
+		} else
+		if( info == RCS::rcsDate ) {
+			return d->m_entries[ localPath ].m_cvsDate;
+		} else
+		if( info == RCS::rcsFileDate ) {
+			return d->m_entries[ localPath ].m_fileDate;
+		} 
+	}
+	return QVariant();
+}
+
 RCS::rcsState RCS_CVS::status( const QString & path ) {
 	QString localPath = QDir::fromNativeSeparators( path );
 	if( d->m_entries.count( localPath ) == 0 ) 

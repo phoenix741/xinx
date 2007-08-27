@@ -40,6 +40,7 @@ public:
 	virtual ~RCS_CVS();
 
 	rcsState status( const QString & path );
+	virtual QVariant infos( const QString & path, enum RCS::rcsInfos info );
 	virtual RCS::FilesOperation operations( const QStringList & path );
 	virtual void update( const QStringList & path );
 	virtual void commit( const FilesOperation & path, const QString & message );

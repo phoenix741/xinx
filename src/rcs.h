@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QPair>
 #include <QList>
+#include <QVariant>
 
 class RCS : public QObject {
 	Q_OBJECT
@@ -41,11 +42,16 @@ public:
 	enum rcsOperation {
 		RemoveAndCommit, AddAndCommit, Commit, Nothing
 	};
+	enum rcsInfos {
+		rcsVersions, rcsDate, rcsFileDate
+	};
+	
 	
 	typedef QPair<QString,rcsOperation> FileOperation;
 	typedef QList<FileOperation> FilesOperation;
 	
 	virtual rcsState status( const QString & path ) = 0;
+	virtual QVariant infos( const QString & path, enum rcsInfos info ) = 0;
 	virtual FilesOperation operations( const QStringList & path ) = 0;
 	virtual void update( const QStringList & path ) = 0;
 	virtual void commit( const FilesOperation & path, const QString & message ) = 0;
