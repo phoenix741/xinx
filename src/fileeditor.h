@@ -189,15 +189,21 @@ protected:
 	/*!
 	 * Desactivate the watcher of the file. If the file is modified in an external editor, a popup is show
 	 * asking if the user want to reload the file.
-	 * \sa activateWatcher()
+	 * \sa activateWatcher(), setIsSaving()
 	 */
 	void desactivateWatcher();
 	/*!
 	 * Activate the watcher of the file. If the file is modified in an external editor, a popup is show
 	 * asking if the user want to reload the file.
-	 * \sa activateWatcher()
+	 * \sa activateWatcher(), setIsSaving()
 	 */
 	void activateWatcher();
+	/*! 
+	 * Modify the state of isSaving
+	 * \param value If true, the watcher is desactivate.
+	 * \sa activateWatcher(), desactivateWatcher()
+	 */
+	void setIsSaving( bool value );
 
 	/*!
 	 * Set the file name in the editor (in case of load or save). If the file name is modified and 

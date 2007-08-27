@@ -57,6 +57,7 @@ public:
 	QStringList m_categories;
 	
 	QList<Snipet*> m_list;
+	QString m_filename;
 public slots:
 	void addCategory( QString newCategory );
 private:
@@ -172,6 +173,7 @@ Snipet * SnipetList::indexOf( const QString & key ) {
  * \throw SnipetListException
  */
 void SnipetList::saveToFile( const QString & filename ) {
+	QString usedFilename = filename.isEmpty() ? d->m_filename : filename;
 	const int IndentSize = 2;
 
 	QDomDocument document( "SnipetList" );
@@ -205,9 +207,9 @@ void SnipetList::saveToFile( const QString & filename ) {
 		}
 	}
 
-	QFile file( filename );
+	QFile file( usedFilename );
 	if ( ! file.open( QFile::WriteOnly ) )
-		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(filename).arg(file.errorString()) );
+		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(usedFilename).arg(file.errorString()) );
 	QTextStream out( &file );
 	document.save( out, IndentSize );
 }
@@ -217,6 +219,8 @@ void SnipetList::saveToFile( const QString & filename ) {
  * \param filename The filename used to load snipet.
  */
 void SnipetList::loadFromFile( const QString & filename ) {
+	d->m_filename = filename;
+	
 	d->m_categories.clear();
 	qDeleteAll( d->m_list );
 	d->m_list.clear();

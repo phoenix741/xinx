@@ -306,7 +306,7 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	
-	desactivateWatcher();
+	setIsSaving( true );
 	
 	d->store( d->m_paramList->currentText() );
 	
@@ -341,7 +341,7 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	emit modificationChanged( false );
 	setModified( false );
 	
-	activateWatcher();
+	setIsSaving( false );
 
 	QApplication::restoreOverrideCursor();
 

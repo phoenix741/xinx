@@ -91,14 +91,12 @@ int main(int argc, char *argv[]) {
 			} catch( ENotCompletionFile ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load completion file.") );
 				app.processEvents();
-				sleep( 1 );
 			}
 			try {
 				global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();
-				sleep( 1 );
 			}
 			
 			splash.showMessage( QApplication::translate("SplashScreen", "Create Web Services list ...") );
@@ -146,6 +144,7 @@ int main(int argc, char *argv[]) {
 		}
 	} catch( ... ) {
 		app.notifyError();
+		return 1;
 	}
 }
 

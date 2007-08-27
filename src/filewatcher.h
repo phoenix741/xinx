@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
- *   ulrich.vdh@free.fr                                                    *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke   *
+ *   ulrich.vdh@gmail.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,48 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __SNIPETLIST_H__
-#define __SNIPETLIST_H__
+#ifndef _FILEWATCHER_H_
+#define _FILEWATCHER_H_
 
-#include <QObject>
-#include <QString>
+#include <qobject.h>
 
-class QMenu;
+class PrivateWatcher;
 
-class SnipetListException {
-public:
-	SnipetListException( const QString & message );
-	const QString & getMessage() const;
-private:
-	QString m_message;
-};
-
-class Snipet;
-class PrivateSnipetList;
-
-class SnipetList : public QObject {
+class Watcher : public QObject {
 	Q_OBJECT
 public:
-	SnipetList();
-	virtual ~SnipetList();
+	Watcher( const QString & filename );
+	virtual ~Watcher();
 	
-	void add( Snipet * snipet );
-	void remove( int index );
-	Snipet * replace( int index, Snipet * snipet );
-	Snipet * at( int index );
-	int count();
-	
-	Snipet * indexOf( const QString & key );
-	
-	void saveToFile( const QString & filename = QString() );
-	void loadFromFile( const QString & filename );
-	
-	const QStringList & categories() const;
+	void desactivate();
+	void activate();
 signals:
-	void listChanged();
-private:
-	PrivateSnipetList * d;
-	friend class PrivateSnipetList;
+	void fileChanged();
+protected:
+	PrivateWatcher * d;
+	friend class PrivateWatcher;
 };
 
-#endif // __SNIPETLIST_H__
+class FileWatcher : public Watcher {
+	Q_OBJECT
+public:
+	FileWatcher( const QString & filename );
+	virtual ~FileWatcher();
+};
+
+#endif // _FILEWATCHER_H_

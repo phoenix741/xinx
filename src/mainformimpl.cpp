@@ -75,14 +75,14 @@ PrivateMainformImpl::~PrivateMainformImpl() {
 }
 
 void PrivateMainformImpl::createDockWidget() {
-	m_contentDock = new FileContentDockWidget( "File Content", m_parent );
+	m_contentDock = new FileContentDockWidget( tr("File Content"), m_parent );
 	m_contentDock->setObjectName( "m_contentDock" );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
 	QAction * action = m_contentDock->toggleViewAction();
 	action->setShortcut( tr("Ctrl+1") );
 	m_parent->m_windowsMenu->addAction( action ); 
 	
-	m_projectDock = new ProjectDirectoryDockWidget( "Project Directory", m_parent );
+	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), m_parent );
 	m_projectDock->setObjectName( "m_projectDock" );
 	m_projectDock->setGlobalUpdateAction( m_parent->m_globalUpdateFromRCSAct );
 	m_projectDock->setGlobalCommitAction( m_parent->m_globalCommitToRCSAct );
@@ -562,7 +562,7 @@ void PrivateMainformImpl::createShortcut() {
 	m_parent->m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
 	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
 	
-	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+C" ) );	
+	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );	
 
 	// Search menu
 	m_parent->m_searchAct->setShortcut( QKeySequence::Find );
@@ -762,8 +762,10 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 		QString fileName = fileEditorCheckPathName( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName() );
 		if( ! fileName.isEmpty() ) {
 			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-			if( m_fileToAdd.count() > 0 )
+			if( m_fileToAdd.count() > 0 ) {
 				m_parent->addFilesToVersionManager( m_fileToAdd );
+				m_fileToAdd.clear();
+			}
 			m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 		}
 	}
@@ -776,8 +778,10 @@ void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 
 	if( ! fileName.isEmpty() ) {
 		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-		if( m_fileToAdd.count() > 0 )
+		if( m_fileToAdd.count() > 0 ) {
 			m_parent->addFilesToVersionManager( m_fileToAdd );
+			m_fileToAdd.clear();
+		}
 		m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 	}
 }
@@ -1198,6 +1202,8 @@ void MainformImpl::newTemplate() {
 		if( dlg.exec() == QDialog::Accepted ) {
 			newSnipet = dlg.getSnipet();
 			global.m_snipetList->add( newSnipet );
+			
+			global.m_snipetList->saveToFile();
 		}
 		
 	}

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// xinx header
 #include "globals.h"
 #include "fileeditor.h"
 #include "xmlhighlighter.h"
@@ -29,7 +30,9 @@
 #include "texteditor.h"
 #include "numberbar.h"
 #include "filecontentitemmodel.h"
+#include "filewatcher.h"
 
+// Qt header
 #include <QTextEdit>
 #include <QAbstractTextDocumentLayout>
 #include <QScrollBar>
@@ -43,9 +46,7 @@
 #include <QTextDocumentFragment>
 #include <QLabel>
 #include <QPushButton>
-
 #include <QMessageBox>
-#include <QFileSystemWatcher>
 
 /* PrivateFileEditor */
 
@@ -55,59 +56,65 @@ public:
 	PrivateFileEditor( FileEditor * parent );
 	~PrivateFileEditor();
 	
+	bool m_isSaving;
 	bool hasWatcher(); 
 	void setWatcher( const QString & path );
 	void activateWatcher();
 	void desactivateWatcher();
 public slots:
-	void fileChanged ( const QString & path );
+	void fileChanged ();
 private:
-	QFileSystemWatcher * m_watcher;
+	FileWatcher * m_watcher;
 	FileEditor * m_parent;
 	QString m_path;
 };
 
 PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) {
 	m_parent = parent;
-	m_watcher = new QFileSystemWatcher( this );
+	m_isSaving = false;
+	m_watcher = NULL;
 }
 
 PrivateFileEditor::~PrivateFileEditor() {
-	desactivateWatcher();
 	delete m_watcher;
 }
 
 void PrivateFileEditor::setWatcher( const QString & path ) {
-	if( ( m_path != path ) && ( ! m_path.isEmpty() ) )
-		desactivateWatcher();
-	m_path = path;
-	activateWatcher();
+	if( m_path != path ) {
+		delete m_watcher;
+		m_path = path;
+		m_watcher = new FileWatcher( path );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
+	}
 }
 
 void PrivateFileEditor::activateWatcher() {
-	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
-	m_watcher->addPath( m_path );
-	qApp->processEvents();
+	if( ! m_watcher ) {
+		m_watcher = new FileWatcher( m_path );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
+	} else
+		m_watcher->activate();
 }
 
 void PrivateFileEditor::desactivateWatcher() {
-	disconnect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
-	m_watcher->removePath( m_path );
-	qApp->processEvents();
+	m_watcher->desactivate();
 }
 
-void PrivateFileEditor::fileChanged( const QString & path ) {
-	desactivateWatcher(); // Pour éviter d'être appeler plusieurs fois.
-	if( global.m_xinxConfig->popupWhenFileModified() && QFile( path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
+void PrivateFileEditor::fileChanged() {
+	if( m_isSaving ) return;
+	if( ! global.m_xinxConfig->popupWhenFileModified() ) return ;
+
+	m_watcher->desactivate();
+	if( QFile( m_path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( m_path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
 		m_parent->loadFile();
 	else
 		m_parent->setModified( true );
 		
-	if( global.m_xinxConfig->popupWhenFileModified() && ( ! QFile( path ).exists() ) ) {
-		QMessageBox::warning( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was removed.").arg( QFileInfo( path ).fileName() ) );
+	if( ! QFile( m_path ).exists() ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was removed.").arg( QFileInfo( m_path ).fileName() ) );
 		m_parent->setModified( true );		
 	}
-	activateWatcher();
+	m_watcher->activate();
 }
 
 /* FileEditor */
@@ -375,6 +382,17 @@ void FileEditor::activateWatcher() {
 	d->activateWatcher();
 }
 
+void FileEditor::setIsSaving( bool value ) {
+	d->m_isSaving = value;
+	if( value ) {
+		d->desactivateWatcher();
+	} else {
+		d->activateWatcher();
+	}
+	qApp->processEvents();
+}
+
+
 void FileEditor::loadFile( const QString & fileName ){
 	if( ! fileName.isEmpty() ) setFileName( fileName );
 
@@ -397,7 +415,7 @@ void FileEditor::loadFile( const QString & fileName ){
 }
 
 bool FileEditor::saveFile( const QString & fileName ){
-	d->desactivateWatcher();
+	setIsSaving( true );
 
 	if( ( fileName == m_fileName ) || fileName.isEmpty() ) createBackup( m_fileName ); 
 	if( ! fileName.isEmpty() ) setFileName( fileName );
@@ -419,10 +437,11 @@ bool FileEditor::saveFile( const QString & fileName ){
 
 	updateModel();
 
-	d->activateWatcher();
 
 	setModified( false );
 	emit modificationChanged( false );
+
+	setIsSaving( false );
 	QApplication::restoreOverrideCursor();
 
 	return true;	
