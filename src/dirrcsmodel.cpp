@@ -47,8 +47,9 @@ RCS * DirRCSModel::rcs() {
 }
 
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
-	if (m_rcs && ( role == Qt::BackgroundRole && index.column() == 0 ) ) {
-   		RCS::rcsState state = m_rcs->status( filePath(index) );
+	QString path = filePath(index);
+	RCS::rcsState state = m_rcs->status( path );
+	if ( m_rcs && ( role == Qt::BackgroundRole && index.column() == 0 ) ) {
    		if( state == RCS::Unknown )
 			return QBrush( Qt::gray );
    		if( state == RCS::LocallyModified )
@@ -59,6 +60,28 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 			return QBrush( Qt::red );
 			
 		return QDirModel::data(index, role);
+	} else
+	if( m_rcs && ( role == Qt::ToolTipRole && index.column() == 0 ) ) {
+		QString filedate = m_rcs->infos( path, RCS::rcsFileDate ).toString(),
+				date     = m_rcs->infos( path, RCS::rcsDate ).toString(),
+				version  = m_rcs->infos( path, RCS::rcsVersions ).toString(),
+				status;
+   		if( state == RCS::Unknown )
+			status = tr("Unknown");
+		else if( state == RCS::LocallyModified )
+			status = tr("Locally modified");
+   		else if( state == RCS::LocallyAdded )
+			status = tr("Locally added");
+		else if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
+			status = tr("Has conflict");
+		else 
+			status = tr("No modified");
+		
+		QString tips = tr("Status : %1\n"
+		                  "Date of file : %2\n"
+		                  "Date in CVS : %3\n"
+		                  "Version : %4").arg( status ).arg( filedate ).arg( date ).arg( version );
+		return tips;
 	}
 
 	return QDirModel::data(index, role);
