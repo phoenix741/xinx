@@ -304,7 +304,13 @@ void XSLProject::loadFromFile( const QString & filename ) {
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
-	if( ! filename.isEmpty() ) d->m_fileName = filename;
+	if( ! filename.isEmpty() ) {
+		QString ppath = projectPath(),
+				spath = specifPath();		
+		d->m_fileName = filename;
+		setProjectPath( ppath );
+		setSpecifPath( spath );
+	}
 	if( d->m_fileName.isEmpty() ) return;
 	
 	d->saveSessionFile( d->m_fileName + ".session" );

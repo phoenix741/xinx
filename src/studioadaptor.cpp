@@ -51,10 +51,10 @@ void XinxAdaptor::closeFile()
     QMetaObject::invokeMethod(parent(), "closeFile");
 }
 
-void XinxAdaptor::closeProject()
+void XinxAdaptor::closeProjectNoSessionData()
 {
-    // handle method call com.editor.xinx.closeProject
-    QMetaObject::invokeMethod(parent(), "closeProject");
+    // handle method call com.editor.xinx.closeProjectNoSessionData
+    QMetaObject::invokeMethod(parent(), "closeProjectNoSessionData");
 }
 
 void XinxAdaptor::closeProjectWithSessionData()

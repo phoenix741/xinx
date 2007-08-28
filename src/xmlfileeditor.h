@@ -23,6 +23,8 @@
 
 #include "fileeditor.h"
 
+class PrivateXMLFileEditor;
+
 class XMLFileEditor : public FileEditor {
 	Q_OBJECT
 public:
@@ -31,6 +33,9 @@ public:
 	
 	virtual QString getSuffix() const;
 	virtual void autoIndent();
+private:
+	friend class PrivateXMLFileEditor;
+	PrivateXMLFileEditor * d;
 };
 
 class XSLFileEditor : public XMLFileEditor {

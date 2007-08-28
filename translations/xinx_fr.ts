@@ -48,7 +48,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>CVSAddThread</name>
     <message>
-        <location filename="../src/p_rcs_cvs.cpp" line="443"/>
+        <location filename="../src/p_rcs_cvs.cpp" line="446"/>
         <source>Add terminated</source>
         <translation>Ajout terminé</translation>
     </message>
@@ -56,12 +56,12 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>CVSCommitThread</name>
     <message>
-        <location filename="../src/p_rcs_cvs.cpp" line="527"/>
+        <location filename="../src/p_rcs_cvs.cpp" line="530"/>
         <source>Commit terminated</source>
         <translation>Validation terminé</translation>
     </message>
     <message>
-        <location filename="../src/p_rcs_cvs.cpp" line="479"/>
+        <location filename="../src/p_rcs_cvs.cpp" line="482"/>
         <source>Files commited :</source>
         <translation>Fichiers validés :</translation>
     </message>
@@ -69,7 +69,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>CVSRemoveThread</name>
     <message>
-        <location filename="../src/p_rcs_cvs.cpp" line="468"/>
+        <location filename="../src/p_rcs_cvs.cpp" line="471"/>
         <source>Remove terminated</source>
         <translation>Suppression terminée</translation>
     </message>
@@ -77,7 +77,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>CVSThread</name>
     <message>
-        <location filename="../src/p_rcs_cvs.cpp" line="357"/>
+        <location filename="../src/p_rcs_cvs.cpp" line="360"/>
         <source>I&apos;M A PROCESS KILLER</source>
         <translation>LE PROGRAMME VIENT D&apos;ÊTRE TUER</translation>
     </message>
@@ -85,7 +85,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>CVSUpdateThread</name>
     <message>
-        <location filename="../src/p_rcs_cvs.cpp" line="418"/>
+        <location filename="../src/p_rcs_cvs.cpp" line="421"/>
         <source>Update terminated</source>
         <translation>Mise à jours terminée</translation>
     </message>
@@ -508,43 +508,82 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
     </message>
 </context>
 <context>
+    <name>DirRCSModel</name>
+    <message>
+        <location filename="../src/dirrcsmodel.cpp" line="71"/>
+        <source>Unknown</source>
+        <translation>Inconnu</translation>
+    </message>
+    <message>
+        <location filename="../src/dirrcsmodel.cpp" line="73"/>
+        <source>Locally modified</source>
+        <translation>Modifié localement</translation>
+    </message>
+    <message>
+        <location filename="../src/dirrcsmodel.cpp" line="75"/>
+        <source>Locally added</source>
+        <translation>Ajouté localement</translation>
+    </message>
+    <message>
+        <location filename="../src/dirrcsmodel.cpp" line="77"/>
+        <source>Has conflict</source>
+        <translation>En conflit</translation>
+    </message>
+    <message>
+        <location filename="../src/dirrcsmodel.cpp" line="79"/>
+        <source>No modified</source>
+        <translation>Pas modifié</translation>
+    </message>
+    <message>
+        <location filename="../src/dirrcsmodel.cpp" line="84"/>
+        <source>Status : %1
+Date of file : %2
+Date in CVS : %3
+Version : %4</source>
+        <translation>Status : %1
+Date du fichier : %2
+Date dans CVS : %3
+Version : %4</translation>
+    </message>
+</context>
+<context>
     <name>FileEditor</name>
     <message>
-        <location filename="../src/fileeditor.cpp" line="137"/>
+        <location filename="../src/fileeditor.cpp" line="144"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="336"/>
+        <location filename="../src/fileeditor.cpp" line="343"/>
         <source>noname</source>
         <translation>sansnom</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="407"/>
+        <location filename="../src/fileeditor.cpp" line="425"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="384"/>
+        <location filename="../src/fileeditor.cpp" line="402"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Ne peux lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="408"/>
+        <location filename="../src/fileeditor.cpp" line="426"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="480"/>
+        <location filename="../src/fileeditor.cpp" line="499"/>
         <source>%1 at %2</source>
         <translation>%1 à %2</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="300"/>
+        <location filename="../src/fileeditor.cpp" line="307"/>
         <source>Can&apos;t indent this type of document</source>
         <translation>Ne peux identer ce type de document</translation>
     </message>
@@ -1011,27 +1050,27 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>MainformImpl</name>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1176"/>
+        <location filename="../src/mainformimpl.cpp" line="1180"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1176"/>
+        <location filename="../src/mainformimpl.cpp" line="1180"/>
         <source>No WebServices can be found. Please update WebServices list to continue.</source>
         <translation>Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1222"/>
+        <location filename="../src/mainformimpl.cpp" line="1228"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1267"/>
+        <location filename="../src/mainformimpl.cpp" line="1273"/>
         <source>Save a project</source>
         <translation>Sauver un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1317"/>
+        <location filename="../src/mainformimpl.cpp" line="1323"/>
         <source>Can&apos;t open project</source>
         <translation>Ne peux ouvrir le projet</translation>
     </message>
@@ -1139,17 +1178,17 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
 <context>
     <name>PrivateFileEditor</name>
     <message>
-        <location filename="../src/fileeditor.cpp" line="107"/>
+        <location filename="../src/fileeditor.cpp" line="114"/>
         <source>Reload page</source>
         <translation>Recharger la page</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="101"/>
+        <location filename="../src/fileeditor.cpp" line="108"/>
         <source>The file %1 was modified. Reload the page ?</source>
         <translation>Le fichier %1 a été modifié. Rechager la page ?</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="107"/>
+        <location filename="../src/fileeditor.cpp" line="114"/>
         <source>The file %1 was removed.</source>
         <translation>Le fichier %1 a été supprimé.</translation>
     </message>
@@ -1172,7 +1211,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
         <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="976"/>
+        <location filename="../src/mainformimpl.cpp" line="980"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
@@ -1246,67 +1285,67 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Voulez-vous ajouter le fichier %1 au référenciel ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="781"/>
+        <location filename="../src/mainformimpl.cpp" line="785"/>
         <source>File %1 saved</source>
         <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="811"/>
+        <location filename="../src/mainformimpl.cpp" line="815"/>
         <source>Printed</source>
         <translation>Impression</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="950"/>
+        <location filename="../src/mainformimpl.cpp" line="954"/>
         <source>Search/Replace</source>
         <translation>Chercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="946"/>
+        <location filename="../src/mainformimpl.cpp" line="950"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; remplacés.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="951"/>
+        <location filename="../src/mainformimpl.cpp" line="955"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="951"/>
+        <location filename="../src/mainformimpl.cpp" line="955"/>
         <source>replaced</source>
         <translation>remplacés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="951"/>
+        <location filename="../src/mainformimpl.cpp" line="955"/>
         <source>finded</source>
         <translation>trouvés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="976"/>
+        <location filename="../src/mainformimpl.cpp" line="980"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1084"/>
+        <location filename="../src/mainformimpl.cpp" line="1088"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1084"/>
+        <location filename="../src/mainformimpl.cpp" line="1088"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1089"/>
+        <location filename="../src/mainformimpl.cpp" line="1093"/>
         <source>Open a project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1112"/>
+        <location filename="../src/mainformimpl.cpp" line="1116"/>
         <source>WebServices Error</source>
         <translation>Erreur du service internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1112"/>
+        <location filename="../src/mainformimpl.cpp" line="1116"/>
         <source>Web services has error code %1 : %2</source>
         <translation>Le service internet a retourné le code erreur suivante %1 : %2</translation>
     </message>
@@ -1762,7 +1801,7 @@ Voulez-vous sauver les changements ?</translation>
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/xslproject.cpp" line="332"/>
+        <location filename="../src/xslproject.cpp" line="338"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
@@ -1964,7 +2003,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="53"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Valider</translation>
+        <translation>&amp;Valider</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="63"/>
@@ -2023,21 +2062,21 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>SnipetList</name>
     <message>
-        <location filename="../src/snipetlist.cpp" line="210"/>
+        <location filename="../src/snipetlist.cpp" line="212"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/snipetlist.cpp" line="226"/>
+        <location filename="../src/snipetlist.cpp" line="230"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Ne peux lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/snipetlist.cpp" line="234"/>
+        <location filename="../src/snipetlist.cpp" line="238"/>
         <source>Parse error exception.</source>
         <translation>Erreur de parsing.</translation>
     </message>

@@ -109,14 +109,17 @@ RCS::FilesOperation PrivateRCS_CVS::operationsOfRecursivePath( const QStringList
 
 RCS::FilesOperation PrivateRCS_CVS::operationsOfRecursivePath( const QString & path ) {
 	if( QFileInfo( path ).isDir() ) {
-		RCS::FilesOperation files = operationsOfPath( path );
-		QStringList infolist = QDir( path ).entryList( QDir::Dirs | QDir::NoDotAndDotDot );
-		foreach( QString fileName, infolist ) 	
-			if( fileName != "CVS" ) {
-				QString file = QDir( path ).absoluteFilePath ( fileName );
-				files += operationsOfRecursivePath( file );
-			}
-		return files;
+		if( QDir( QDir( path ).absoluteFilePath( "CVS" ) ).exists() ) {
+			RCS::FilesOperation files = operationsOfPath( path );
+			QStringList infolist = QDir( path ).entryList( QDir::Dirs | QDir::NoDotAndDotDot );
+			foreach( QString fileName, infolist ) 	
+				if( fileName != "CVS" ) {
+					QString file = QDir( path ).absoluteFilePath ( fileName );
+					files += operationsOfRecursivePath( file );
+				}
+			return files;
+		} else 
+			return RCS::FilesOperation();
 	} else {
 		RCS::FilesOperation files = operationsOfPath( QFileInfo( path ).absolutePath() );
 		foreach( RCS::FileOperation file, files ) {

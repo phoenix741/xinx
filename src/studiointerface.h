@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef STUDIOINTERFACE_H_1188025414
-#define STUDIOINTERFACE_H_1188025414
+#ifndef STUDIOINTERFACE_H_1188293920
+#define STUDIOINTERFACE_H_1188293920
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -54,10 +54,10 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("closeFile"), argumentList);
     }
 
-    inline QDBusReply<void> closeProject()
+    inline QDBusReply<void> closeProjectNoSessionData()
     {
         QList<QVariant> argumentList;
-        return callWithArgumentList(QDBus::Block, QLatin1String("closeProject"), argumentList);
+        return callWithArgumentList(QDBus::Block, QLatin1String("closeProjectNoSessionData"), argumentList);
     }
 
     inline QDBusReply<void> closeProjectWithSessionData()

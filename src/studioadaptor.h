@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef STUDIOADAPTOR_H_1188025414
-#define STUDIOADAPTOR_H_1188025414
+#ifndef STUDIOADAPTOR_H_1188293920
+#define STUDIOADAPTOR_H_1188293920
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -49,7 +49,7 @@ class XinxAdaptor: public QDBusAbstractAdaptor
 "    <method name=\"openProject\" >\n"
 "      <arg direction=\"in\" type=\"s\" name=\"filename\" />\n"
 "    </method>\n"
-"    <method name=\"closeProject\" />\n"
+"    <method name=\"closeProjectNoSessionData\" />\n"
 "    <method name=\"closeProjectWithSessionData\" />\n"
 "    <method name=\"callWebservices\" />\n"
 "    <method name=\"updateWebServicesList\" />\n"
@@ -64,7 +64,7 @@ public Q_SLOTS: // METHODS
     void callWebservices();
     void closeAllFile();
     void closeFile();
-    void closeProject();
+    void closeProjectNoSessionData();
     void closeProjectWithSessionData();
     void newDefaultFile();
     void newJavascriptFile();

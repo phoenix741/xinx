@@ -25,13 +25,100 @@
 
 // Qt header
 #include <QDomDocument>
+#include <QTextStream>
 
-XMLFileEditor::XMLFileEditor( QWidget *parent, TextEditor * textEditor ) : FileEditor( textEditor ? textEditor : new XMLEditor( parent ), parent ) {
+/* PrivateXMLFileEditor */
+
+class PrivateXMLFileEditor {
+public:
+	PrivateXMLFileEditor( XMLFileEditor * parent );
+	~PrivateXMLFileEditor();
+	
+	static void constructXML( int level, QString & result, QDomNode n );
+	static QString constructAttributes( QDomNode node );
+private:
+	XMLFileEditor * m_parent;
+};
+
+PrivateXMLFileEditor::PrivateXMLFileEditor( XMLFileEditor * parent ) : m_parent( parent ) {
 	
 }
 
-XMLFileEditor::~XMLFileEditor() {
+PrivateXMLFileEditor::~PrivateXMLFileEditor() {
 	
+}
+
+void PrivateXMLFileEditor::constructXML( int level, QString & result, QDomNode n ) {
+	QDomNode node = n;
+	while( ! node.isNull() ) {
+		if( node.isElement() ) {
+			for ( int i = 0 ; i < level ; i++)
+				result.append( '\t' );
+			result.append( '<' );
+			result.append( node.nodeName() );
+
+			if( node.hasAttributes() )
+				result.append( constructAttributes( node ) );
+
+			if( node.hasChildNodes() ) {
+				result.append( '>' );
+				if( node.firstChild().isCDATASection() || node.firstChild().isText() ) {
+					QTextStream text( &result );
+					node.firstChild().save( text, 0 );
+				} else {
+					result.append('\n');
+					constructXML( level + 1, result, node.firstChild() );
+					for ( int i = 0; i < level; i++ )
+						result.append( '\t' );
+				}
+
+				result.append( "</" );
+				result.append( node.nodeName() );
+				result.append( ">" );
+			} else {
+				result.append( "/>" );
+			}
+			result.append( '\n' );
+		} else if( node.isCDATASection() || node.isText() ) {
+			if( ! node.nodeValue().simplified().isEmpty() ) {
+				QTextStream text( &result );
+				node.save( text, 0 );
+			}
+		} else {
+			for ( int i = 0 ; i < level ; i++)
+				result.append( '\t' );
+			QTextStream text( &result );
+			node.save( text, 0 );
+			if( node.hasChildNodes() ) {
+				constructXML( level + 1, result, node.firstChild() );
+			}
+		}
+		
+		node = node.nextSibling();
+	}
+}
+
+QString PrivateXMLFileEditor::constructAttributes( QDomNode node ) {
+	QString result;
+	QTextStream text( &result );
+	QDomNamedNodeMap nnm = node.attributes();
+	
+	for( unsigned int i = 0; i < nnm.length() ; i++ ) {
+		text << " ";
+		nnm.item( i ).save( text, 0 );
+	}
+	
+	return result;
+}
+
+/* XMLFileEditor */
+
+XMLFileEditor::XMLFileEditor( QWidget *parent, TextEditor * textEditor ) : FileEditor( textEditor ? textEditor : new XMLEditor( parent ), parent ) {
+	d = new PrivateXMLFileEditor( this );
+}
+
+XMLFileEditor::~XMLFileEditor() {
+	delete d;
 }
 
 QString XMLFileEditor::getSuffix() const {
@@ -47,143 +134,14 @@ void XMLFileEditor::autoIndent() {
 	int errorLine = 0, errorColumn = 0;  
 	
 	if ( document.setContent(textEdit()->toPlainText(), true, &errorStr, &errorLine, &errorColumn) ) {
-		// TODO : Use Alex algo
-		textEdit()->setPlainText( document.toString() );
+		QString result;
+		d->constructXML( 0, result, document.documentElement() );
+		textEdit()->setPlainText( result );
 		setModified( true );
 	} else {
-		setMessage( tr("Parse error column %1:%2").arg(errorColumn).arg(errorStr).arg(errorLine) );
+		setMessage( tr("Parse error line %1 column %2 : %3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	}
 }
-/*
-        /**
-         * @param level Niveau utilisé pour le pretty-print
-         * @param result Le StringBuilder qui contient la chaîne finale
-         * @param n Le noeud à écrire
-         *
-        private void constructXML(int level, StringBuilder result, Node n)
-        {
-                Node node = n;
-
-                while (node != null)
-                {
-                        // Traitement d'un élément
-                        if (node.getNodeType() == Node.ELEMENT_NODE)
-                        {
-                                // Les tabulations de départ
-                                for (int i = 0; i < level; i++)
-                                        result.append('\t');
-                                result.append("<");
-                                result.append(node.getNodeName());
-
-                                if (node.hasAttributes())
-                                        result.append(constructAttributes(node));
-
-                                if (node.hasChildNodes())
-                                {
-                                        result.append(">");
-                                        // Si c'est un noeud texte, il ne faut pas faire de saut de ligne
-                                        if (node.getFirstChild().getNodeType() == Node.TEXT_NODE)
-                                        {
-                                                result.append(node.getFirstChild().getNodeValue());
-                                        }
-                                        else
-                                        {
-                                                result.append('\r');
-                                                result.append('\n');
-
-                                                constructXML(level + 1, result, node.getFirstChild());
-
-                                                for (int i = 0; i < level; i++)
-                                                        result.append('\t');
-                                        }
-
-                                        result.append("</");
-                                        result.append(node.getNodeName());
-                                        result.append(">");
-                                }
-                                else
-                                {
-                                        result.append("/>");
-                                }
-
-                                result.append('\r');
-                                result.append('\n');
-                        }
-                        // Elément contenant une valeur texte
-                        else if (node.getNodeType() == Node.TEXT_NODE)
-                        {
-                                if (!empty(node.getNodeValue()))
-                                        result.append(normalize(node.getNodeValue()));
-                        }
-
-                        // Noeud suivant
-                        node = node.getNextSibling();
-                }
-        }
-
-        /**
-         * @param node
-         * @return
-         *
-        private String constructAttributes(Node node)
-        {
-                StringBuilder result = new StringBuilder();
-                NamedNodeMap nnm = node.getAttributes();
-
-                for (int i = 0; i < nnm.getLength(); i++)
-                {
-                        result.append(" ");
-                        result.append(nnm.item(i).getNodeName());
-                        result.append("=\"");
-                        result.append(normalize(nnm.item(i).getNodeValue()));
-                        result.append("\"");
-                }
-
-                return result.toString();
-        }
-
-        /**
-         * Normalisation de la chaîne passée en paramètre. On ne transforme que les caractères "<" en
-         * leur entité html
-         *
-         * @param value
-         * @return
-         *
-        private String normalize(String value)
-        {
-                StringBuilder sb = new StringBuilder(value.length());
-
-                for (int i = 0; i < value.length(); i++)
-                {
-                        if (value.charAt(i) == '<')
-                                sb.append("&lt;");
-                        // else if (value.charAt(i) == '>')
-                        // sb.append("&gt;");
-                        // else if (value.charAt(i) == '"')
-                        // sb.append("&quot;");
-                        else
-                                sb.append(value.charAt(i));
-                }
-
-                return sb.toString();
-        }
-
-        /**
-         * @param value
-         * @return
-         *
-        private boolean empty(String value)
-        {
-                boolean ret = true;
-
-                for (int i = 0; i < value.length(); i++)
-                {
-                        ret = ret && (value.charAt(i) == ' ' || value.charAt(i) == '\t' || value.charAt(i) == '\r' || value.charAt(i) == '\n');
-                }
-
-                return ret;
-        }
-*/
 
 XSLFileEditor::XSLFileEditor( QWidget *parent ) : XMLFileEditor( parent, new XSLEditor( parent ) ) {
 	connect( m_view, SIGNAL(hasError(QString)), this, SLOT(setMessage(QString)) );

@@ -127,6 +127,16 @@ void PrivateMainformImpl::createSubMenu() {
 	btn = qobject_cast<QToolButton*>( m_parent->m_fileToolBar->widgetForAction( m_parent->m_recentFileAct ) );
 	if( btn )
 		btn->setPopupMode( QToolButton::MenuButtonPopup );
+		
+	// Close project sub menu
+	QMenu * closeProjectMenu = new QMenu( m_parent );
+	closeProjectMenu->addAction( m_parent->m_closeProjectWithSessionAct );
+	closeProjectMenu->addAction( m_parent->m_closeProjectNoSessionAct );
+	
+	m_parent->m_closeProjectAct->setMenu( closeProjectMenu );
+	btn = qobject_cast<QToolButton*>( m_parent->m_projectToolBar->widgetForAction( m_parent->m_closeProjectAct ) );
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
 }
 
 void PrivateMainformImpl::createActions() {
@@ -290,8 +300,9 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_openProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
 	connect( m_parent->m_recentProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
 	connect( m_parent->m_projectPropertyAct, SIGNAL(triggered()), this, SLOT(projectProperty()) );
-	connect( m_parent->m_closeProjectAct, SIGNAL(triggered()), m_parent, SLOT(closeProject()) );
-	connect( m_parent->m_closeProjectSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectWithSessionData()) );
+	connect( m_parent->m_closeProjectAct, SIGNAL(triggered()), this, SLOT(closeProject()) );
+	connect( m_parent->m_closeProjectNoSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectNoSessionData()) );
+	connect( m_parent->m_closeProjectWithSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectWithSessionData()) );
 	
 	/* SERVICES */
 	connect( m_parent->m_refreshWebServicesListAct, SIGNAL(triggered()), m_parent, SLOT(updateWebServicesList()) );
@@ -562,6 +573,7 @@ void PrivateMainformImpl::createShortcut() {
 	m_parent->m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
 	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
 	
+	m_parent->m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
 	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );	
 
 	// Search menu
@@ -610,7 +622,8 @@ void PrivateMainformImpl::updateActions() {
 	/* Project action */
 	m_parent->m_saveProjectAct->setEnabled( global.m_project != NULL );
 	m_parent->m_closeProjectAct->setEnabled( global.m_project != NULL );
-	m_parent->m_closeProjectSessionAct->setEnabled( global.m_project != NULL );
+	m_parent->m_closeProjectWithSessionAct->setEnabled( global.m_project != NULL );
+	m_parent->m_closeProjectNoSessionAct->setEnabled( global.m_project != NULL );
 	m_parent->m_projectPropertyAct->setEnabled( global.m_project != NULL );
 	
 	m_parent->m_globalUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
@@ -1111,6 +1124,10 @@ void PrivateMainformImpl::projectProperty() {
 	}
 }
 
+void PrivateMainformImpl::closeProject() {
+	closeProject( global.m_xinxConfig->saveSessionByDefault() );
+}
+
 void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
 	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
 		QMessageBox::warning( m_parent, tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
@@ -1287,7 +1304,7 @@ void MainformImpl::openProject( const QString & filename ) {
 	Q_ASSERT( ! filename.isEmpty() );
 
 	if( global.m_project ) 
-		d->closeProject( global.m_xinxConfig->saveSessionByDefault() );
+		d->closeProject();
 	else 
 		closeAllFile();
 		
@@ -1329,7 +1346,7 @@ void MainformImpl::openProject( const QString & filename ) {
 	global.emitProjectChanged();
 }
 
-void MainformImpl::closeProject() {
+void MainformImpl::closeProjectNoSessionData() {
 	d->closeProject( false );
 }
 

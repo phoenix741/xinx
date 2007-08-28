@@ -135,6 +135,7 @@ public slots:
 	// Project
 	void openProject();
 	void projectProperty();
+	void closeProject();
 	void globalUpdateFromVersionManager();
 	void globalCommitToVersionManager();
 	void selectedUpdateFromVersionManager();

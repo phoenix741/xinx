@@ -17,10 +17,22 @@
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
-    <property name="margin" >
+    <property name="leftMargin" >
      <number>0</number>
     </property>
-    <property name="spacing" >
+    <property name="topMargin" >
+     <number>0</number>
+    </property>
+    <property name="rightMargin" >
+     <number>0</number>
+    </property>
+    <property name="bottomMargin" >
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing" >
+     <number>6</number>
+    </property>
+    <property name="verticalSpacing" >
      <number>6</number>
     </property>
     <item row="0" column="0" >
@@ -34,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>668</width>
-     <height>29</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -58,19 +70,9 @@
     <property name="title" >
      <string>&amp;Project</string>
     </property>
-    <widget class="QMenu" name="menu_Close_project_2" >
-     <property name="title" >
-      <string>&amp;Close project</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
-     </property>
-     <addaction name="m_closeProjectSessionAct" />
-     <addaction name="m_closeProjectAct" />
-    </widget>
     <addaction name="m_newProjectAct" />
     <addaction name="m_recentProjectAct" />
-    <addaction name="menu_Close_project_2" />
+    <addaction name="m_closeProjectAct" />
     <addaction name="m_projectPropertyAct" />
     <addaction name="separator" />
     <addaction name="m_globalUpdateFromRCSAct" />
@@ -161,10 +163,13 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="m_recentProjectAct" />
-   <addaction name="m_closeProjectSessionAct" />
+   <addaction name="m_closeProjectAct" />
   </widget>
   <widget class="QToolBar" name="m_fileToolBar" >
    <property name="windowTitle" >
@@ -174,7 +179,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="m_newAct" />
    <addaction name="m_recentFileAct" />
@@ -191,7 +199,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="m_undoAct" />
    <addaction name="separator" />
@@ -213,7 +224,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="m_searchAct" />
   </widget>
@@ -225,7 +239,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="m_refreshWebServicesListAct" />
    <addaction name="m_callWebServicesAct" />
@@ -508,7 +525,7 @@
     <string>&amp;Save project</string>
    </property>
   </action>
-  <action name="m_closeProjectAct" >
+  <action name="m_closeProjectNoSessionAct" >
    <property name="text" >
     <string>&amp;Close Project (no session)</string>
    </property>
@@ -611,10 +628,7 @@
     <string>New WebServices file</string>
    </property>
   </action>
-  <action name="m_closeProjectSessionAct" >
-   <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
-   </property>
+  <action name="m_closeProjectWithSessionAct" >
    <property name="text" >
     <string>Close Project (session)</string>
    </property>
@@ -712,12 +726,21 @@
     <string>Pretty print</string>
    </property>
   </action>
+  <action name="m_closeProjectAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Close project</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>TabEditor</class>
    <extends>QTabWidget</extends>
    <header>../src/tabeditor.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

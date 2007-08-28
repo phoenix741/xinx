@@ -51,7 +51,7 @@ public slots:
 	
 	void newProject();
 	void openProject( const QString & filename );
-	void closeProject();
+	void closeProjectNoSessionData();
 	void closeProjectWithSessionData();
 
 	void callWebservices();

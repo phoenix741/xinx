@@ -200,8 +200,8 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 }
 
 void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
-	if( isViewFlat() )
-		d->m_projectDirWidget->m_flatListBtn->toggle();
+	if( d->m_projectDirWidget->m_flatListBtn->isChecked() )
+		d->m_projectDirWidget->m_flatListBtn->click();
 	d->m_projectDirWidget->m_filtreLineEdit->setText( "" );
 	d->m_modelTimer->stop();
 	d->m_projectDirWidget->m_projectDirectoryTreeView->setModel( NULL );

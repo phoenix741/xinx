@@ -21,7 +21,7 @@
 		<method name="openProject">
 			<arg name="filename" type="s" direction="in"/>
 		</method>
-		<method name="closeProject"/>
+		<method name="closeProjectNoSessionData"/>
 		<method name="closeProjectWithSessionData"/>
 		<method name="callWebservices"/>
 		<method name="updateWebServicesList"/>
