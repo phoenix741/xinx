@@ -34,7 +34,8 @@ public:
 	PrivateXMLFileEditor( XMLFileEditor * parent );
 	~PrivateXMLFileEditor();
 	
-	static void constructXML( int level, QString & result, QDomNode n );
+	static void constructXML( int level, QString & result, const QDomNode & n, bool insertTab );
+	static void constructXMLText( QString & result, const QDomNode & n );
 	static QString constructAttributes( QDomNode node );
 private:
 	XMLFileEditor * m_parent;
@@ -48,12 +49,13 @@ PrivateXMLFileEditor::~PrivateXMLFileEditor() {
 	
 }
 
-void PrivateXMLFileEditor::constructXML( int level, QString & result, QDomNode n ) {
+void PrivateXMLFileEditor::constructXML( int level, QString & result, const QDomNode & n, bool insertTab ) {
 	QDomNode node = n;
 	while( ! node.isNull() ) {
 		if( node.isElement() ) {
-			for ( int i = 0 ; i < level ; i++)
-				result.append( '\t' );
+			if( insertTab )
+				for ( int i = 0 ; i < level ; i++)
+					result.append( '\t' );
 			result.append( '<' );
 			result.append( node.nodeName() );
 
@@ -63,11 +65,10 @@ void PrivateXMLFileEditor::constructXML( int level, QString & result, QDomNode n
 			if( node.hasChildNodes() ) {
 				result.append( '>' );
 				if( node.firstChild().isCDATASection() || node.firstChild().isText() ) {
-					QTextStream text( &result );
-					node.firstChild().save( text, 0 );
+					constructXML( level + 1, result, node.firstChild(), false );
 				} else {
 					result.append('\n');
-					constructXML( level + 1, result, node.firstChild() );
+					constructXML( level + 1, result, node.firstChild(), true );
 					for ( int i = 0; i < level; i++ )
 						result.append( '\t' );
 				}
@@ -78,24 +79,32 @@ void PrivateXMLFileEditor::constructXML( int level, QString & result, QDomNode n
 			} else {
 				result.append( "/>" );
 			}
-			result.append( '\n' );
+			if( insertTab )
+				result.append( '\n' );
 		} else if( node.isCDATASection() || node.isText() ) {
-			if( ! node.nodeValue().simplified().isEmpty() ) {
+			constructXMLText( result, node );
+		} else {
+			if( ! node.isDocument() ) {
+				for ( int i = 0 ; i < level ; i++)
+					result.append( '\t' );
 				QTextStream text( &result );
 				node.save( text, 0 );
 			}
-		} else {
-			for ( int i = 0 ; i < level ; i++)
-				result.append( '\t' );
-			QTextStream text( &result );
-			node.save( text, 0 );
 			if( node.hasChildNodes() ) {
-				constructXML( level + 1, result, node.firstChild() );
+				constructXML( level + 1, result, node.firstChild(), true );
 			}
 		}
 		
 		node = node.nextSibling();
 	}
+}
+
+void PrivateXMLFileEditor::constructXMLText( QString & result, const QDomNode & node ) {
+	QString toStore;
+	QTextStream text( &toStore );
+	node.save( text, 0 );
+	if( ! toStore.simplified().isEmpty() )
+		result += toStore.trimmed();
 }
 
 QString PrivateXMLFileEditor::constructAttributes( QDomNode node ) {
@@ -134,10 +143,17 @@ void XMLFileEditor::autoIndent() {
 	int errorLine = 0, errorColumn = 0;  
 	
 	if ( document.setContent(textEdit()->toPlainText(), true, &errorStr, &errorLine, &errorColumn) ) {
+		document.normalize();
 		QString result;
-		d->constructXML( 0, result, document.documentElement() );
-		textEdit()->setPlainText( result );
-		setModified( true );
+		d->constructXML( -1, result, document, true );
+
+		textEdit()->selectAll();
+		QTextCursor cursor = textEdit()->textCursor();
+		cursor.beginEditBlock();
+		cursor.removeSelectedText();
+		cursor.insertText( result );
+		cursor.endEditBlock();
+		textEdit()->setTextCursor( cursor );
 	} else {
 		setMessage( tr("Parse error line %1 column %2 : %3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	}

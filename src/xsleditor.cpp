@@ -614,7 +614,7 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 		return;
 
      static QString eow(EOW); // end of word
-     bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+     bool hasModifier = (e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ));// && !ctrlOrShift;
      QString completionPrefix = textUnderCursor( textCursor() );
 
      if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {

@@ -1056,15 +1056,9 @@ void PrivateMainformImpl::replace() {
 
 void PrivateMainformImpl::closeProject( bool session ) {
 	if( ! global.m_project ) return;		
-		
-	global.m_project->clearSessionNode();
-	for( int i = 0; i < m_parent->m_tabEditors->count(); i++ ) {
-		QDomElement node = global.m_project->sessionDocument().createElement( "editor" );
-		m_parent->m_tabEditors->editor( i )->serializeEditor( node, session );
-		global.m_project->sessionNode().appendChild( node );
-	}
-	global.m_project->saveToFile();
 
+	m_parent->saveProject( session );
+		
 	m_projectDock->setProjectPath( NULL );
 
 	if( ! session )
@@ -1352,6 +1346,18 @@ void MainformImpl::closeProjectNoSessionData() {
 
 void MainformImpl::closeProjectWithSessionData() {
 	d->closeProject( true );
+}
+
+void MainformImpl::saveProject( bool withSessionData ) {
+	Q_ASSERT( global.m_project );
+	
+	global.m_project->clearSessionNode();
+	for( int i = 0; i < m_tabEditors->count(); i++ ) {
+		QDomElement node = global.m_project->sessionDocument().createElement( "editor" );
+		m_tabEditors->editor( i )->serializeEditor( node, withSessionData );
+		global.m_project->sessionNode().appendChild( node );
+	}
+	global.m_project->saveToFile();
 }
 
 void MainformImpl::callWebservices() {

@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>668</width>
+    <width>748</width>
     <height>385</height>
    </rect>
   </property>
@@ -17,23 +17,11 @@
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
-    <property name="leftMargin" >
+    <property name="margin" >
      <number>0</number>
     </property>
-    <property name="topMargin" >
+    <property name="spacing" >
      <number>0</number>
-    </property>
-    <property name="rightMargin" >
-     <number>0</number>
-    </property>
-    <property name="bottomMargin" >
-     <number>0</number>
-    </property>
-    <property name="horizontalSpacing" >
-     <number>6</number>
-    </property>
-    <property name="verticalSpacing" >
-     <number>6</number>
     </property>
     <item row="0" column="0" >
      <widget class="TabEditor" name="m_tabEditors" />
@@ -45,8 +33,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>668</width>
-     <height>21</height>
+     <width>748</width>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -163,10 +151,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
+    <number>4</number>
    </attribute>
    <addaction name="m_recentProjectAct" />
    <addaction name="m_closeProjectAct" />
@@ -179,10 +164,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
+    <number>4</number>
    </attribute>
    <addaction name="m_newAct" />
    <addaction name="m_recentFileAct" />
@@ -199,10 +181,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
+    <number>4</number>
    </attribute>
    <addaction name="m_undoAct" />
    <addaction name="separator" />
@@ -224,10 +203,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
+    <number>4</number>
    </attribute>
    <addaction name="m_searchAct" />
   </widget>
@@ -239,10 +215,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
+    <number>4</number>
    </attribute>
    <addaction name="m_refreshWebServicesListAct" />
    <addaction name="m_callWebServicesAct" />

@@ -202,7 +202,7 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 void UniqueApplication::notifyError() {
 	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
 	if( d->m_mainform )
-		d->m_mainform->closeProjectWithSessionData();
+		d->m_mainform->saveProject( true );
 	exit(1);
 }
 
