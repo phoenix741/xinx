@@ -76,6 +76,8 @@ Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags
 Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue
+Root: HKCU; Subkey: Software\Generix\XINX\Tools; ValueType: string; ValueName: cvs; ValueData: {code:GetCVSPath}; Components: ; Tasks: ; Languages: 
+Root: HKCU; Subkey: Software\Generix\XINX\Tools; ValueType: string; ValueName: merge; ValueData: {code:GetWinmergePath}; Components: ; Tasks: ; Languages: 
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -94,10 +96,10 @@ Name: {app}\src; Type: filesandordirs
 Name: {app}\source; Type: filesandordirs
 Name: {app}\translations; Type: filesandordirs
 
-[_ISToolPreCompile]
-Name: clean.bat; Parameters: ; Flags: abortonerror
-Name: sources.bat; Parameters: ; Flags: abortonerror
-Name: compiler.bat; Parameters: ; Flags: abortonerror
+;[_ISToolPreCompile]
+;Name: clean.bat; Parameters: ; Flags: abortonerror
+;Name: sources.bat; Parameters: ; Flags: abortonerror
+;Name: compiler.bat; Parameters: ; Flags: abortonerror
 
 ;[Files]
 ;DestDir: {pf}\dbus\bin; Source: srvany.exe; Flags: sharedfile uninsrestartdelete
@@ -114,3 +116,59 @@ Name: compiler.bat; Parameters: ; Flags: abortonerror
 ;[UninstallRun]
 ;Filename: net; Parameters: stop DBusService; Flags: nowait runhidden; Components: dbus
 ;Filename: {app}\bin\instsrv.exe; Parameters: DBusService remove; Flags: nowait runhidden; Components: dbus
+[Code]
+var
+	FilesWizardPage: TInputFileWizardPage;
+
+
+procedure Replace( var Chaine: String; c1, c2: Char );
+var I: Integer;
+begin
+  for I := 1 to Length( Chaine ) do
+    if( Chaine[I] = c1 ) then
+		Chaine[I] := c2;
+end;
+
+procedure InitializeWizard;
+var DefaultCVSPath,
+    DefaultMergePath: String;
+begin
+  { Create the pages }
+
+  FilesWizardPage := CreateInputFilePage(wpSelectComponents,
+    'Select tools locations', 'Where is located your tools?',
+    'Select where CVS and Winmerge is located then click Next.');
+
+  FilesWizardPage.Add('Location of cvs.exe',
+    'Executable files|*.exe|All files|*.*',
+    '.exe');
+  FilesWizardPage.Add('Location of winmerge.exe',
+    'Executable files|*.exe|All files|*.*',
+    '.exe');
+
+  RegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Tools', 'cvs', DefaultCVSPath );
+  RegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Tools', 'merge', DefaultMergePath );
+  if( DefaultCVSPath = '' ) then
+	DefaultCVSPath := ExpandConstant('{pf}\TortoiseCVS\cvs.exe')
+  else
+    Replace( DefaultCVSPath, '/', '\' );
+
+  if( DefaultMergePath = '' ) then
+	DefaultMergePath := ExpandConstant('{pf}\WinMerge\winmerge.exe')
+  else
+    Replace( DefaultMergePath, '/', '\' );
+
+  FilesWizardPage.Values[0] := DefaultCVSPath;
+  FilesWizardPage.Values[1] := DefaultMergePath;
+end;
+
+function GetCVSPath( Param: String ): String;
+begin
+  Result := FilesWizardPage.Values[0];
+end;
+
+function GetWinmergePath( Param: String ): String;
+begin
+  Result := FilesWizardPage.Values[1];
+end;
+
