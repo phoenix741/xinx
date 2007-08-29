@@ -50,8 +50,8 @@ Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: shar
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
-Source: ..\xml\completion.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_completion
-Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template
+Source: ..\xml\completion.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeCompletionFile('{app}\xml'); DestName: completion.xnx.new; BeforeInstall: CompareCompletionFile('{app}\xml')
+Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template; AfterInstall: MergeTemplateFile('{app}\xml'); DestName: template.xnx.new; BeforeInstall: CompareTemplateFile('{app}\xml')
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete; Components: dbus qt
@@ -119,7 +119,10 @@ Name: {app}\translations; Type: filesandordirs
 [Code]
 var
 	FilesWizardPage: TInputFileWizardPage;
+	InstallationTypePage: TInputOptionWizardPage;
+	DeveloppementMsgPage: TOutputMsgWizardPage;
 
+	CompletionResult, TemplateResult: boolean;
 
 procedure Replace( var Chaine: String; c1, c2: Char );
 var I: Integer;
@@ -134,6 +137,27 @@ var DefaultCVSPath,
     DefaultMergePath: String;
 begin
   { Create the pages }
+
+  InstallationTypePage := CreateInputOptionPage(wpWelcome,
+    'Type of Installation', 'What do you want install ?',
+    'Please specify how you want install the logiciel.',
+    True, False);
+  InstallationTypePage.Add('Download and install developpement environment.');
+  InstallationTypePage.Add('Install the application with embedded library');
+  InstallationTypePage.SelectedValueIndex := 1;
+
+  DeveloppementMsgPage := CreateOutputMsgPage(InstallationTypePage.ID,
+    'Type of Installation', 'What is done to install developpement environment?',
+    'Note: To install the developement environment of XINX, the installer will ' +
+    'make this step:'#10#13 +
+    '- Download and Install MinGW'#10#13 +
+    '- Download and Install expat xml library'#10#13 +
+    '- Download and Install cmake'#10#13 +
+    '- Download and Install win32libs'#10#13
+    '- Download (by svn), compile, and install windbus (patched for windows)'#10#13 +
+    '- Download, and Compile Qt with QtDbus support'#10#13 +
+    '- Compile Xinx'#10#13 +
+    '- Install optional program as Doxygen, QDevelop, ...');
 
   FilesWizardPage := CreateInputFilePage(wpSelectComponents,
     'Select tools locations', 'Where is located your tools?',
@@ -162,6 +186,36 @@ begin
   FilesWizardPage.Values[1] := DefaultMergePath;
 end;
 
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  { Skip pages that shouldn't be shown }
+  if (PageID = DeveloppementMsgPage.ID) and (InstallationTypePage.SelectedValueIndex <> 0) then
+    Result := True
+  else
+    Result := False;
+end;
+
+function NextButtonClick( CurPageID: Integer ): Boolean;
+begin
+  { Validate certain pages before allowing the user to proceed }
+  if CurPageID = FilesWizardPage.ID then begin
+    if not FileExists( FilesWizardPage.Values[0] ) then begin
+      MsgBox('You must enter a correct CVS path', mbError, MB_OK);
+      Result := False;
+    end else
+    if not FileExists( FilesWizardPage.Values[1] ) then begin
+      MsgBox('You must enter a correct WinMerge path', mbError, MB_OK);
+      Result := False;
+    end else
+      Result := True;
+  end else
+  if CurPageId = DeveloppementMsgPage.ID then begin
+    MsgBox('Not yet implemented.', mbInformation, MB_OK);
+    Result := False;
+  end else
+    Result := True;
+end;
+
 function GetCVSPath( Param: String ): String;
 begin
   Result := FilesWizardPage.Values[0];
@@ -172,3 +226,42 @@ begin
   Result := FilesWizardPage.Values[1];
 end;
 
+procedure MergeFile( Param: String; isComparer: boolean );
+var WinMergeApp: String;
+    ResultCode : Integer;
+begin
+  if( FileExists( Param ) and not isComparer ) then begin
+	WinMergeApp := GetWinmergePath( '' );
+	Exec( WinMergeApp, Param + ' ' + Param + '.new', '', SW_SHOW, ewWaitUntilTerminated, ResultCode );
+  end;
+end;
+
+procedure MergeCompletionFile( Param: String );
+begin
+  MergeFile( Param + '\completion.xnx', CompletionResult );
+end;
+
+procedure MergeTemplateFile( Param: String );
+begin
+  MergeFile( Param + '\template.xnx', TemplateResult );
+end;
+
+function CompareFile( Param: String ) : Boolean;
+var SizeOld, SizeNew: Integer;
+begin
+  Result := True;
+  FileSize( Param, SizeOld );
+  FileSize( Param + '.new', SizeNew );
+  if( SizeOld <> SizeNew ) then
+    Result := False;
+end;
+
+procedure CompareCompletionFile( Param: String );
+begin
+  CompletionResult := CompareFile( Param + '\completion.xnx' );
+end;
+
+procedure CompareTemplateFile( Param: String );
+begin
+  TemplateResult := CompareFile( Param + '\template.xnx' );
+end;
