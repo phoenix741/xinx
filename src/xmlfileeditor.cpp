@@ -113,8 +113,17 @@ void PrivateXMLFileEditor::constructXML( int level, QString & result, const QDom
 }
 
 void PrivateXMLFileEditor::constructXMLText( QString & result, const QDomNode & node ) {
+	//QString xmltext;
 	QTextStream text( &result );
 	node.save( text, 0 );
+	/*
+	for( int i = 0; i < xmltext.length(); i++ ) {
+		if( xmltext.at( i ).isPrint() )
+			result.append( xmltext.at( i ) );
+		else
+			result.append( QString("&#%1;").arg( xmltext.at( i ).unicode() ) );
+	}
+	*/
 }
 
 void PrivateXMLFileEditor::constructXMLComment( int level, QString & result, const QDomNode & node ) {
@@ -181,7 +190,7 @@ void XMLFileEditor::autoIndent() {
 //		document.normalize();
 		QString result;
 		d->constructXML( -1, result, document );
-		result = result.replace( "&nbsp;", "&#160;" );
+		result = result.replace( "&nbsp;", "&#160;" ); // Hack (Create a function that replace all chars by entity reference ?)
 
 		textEdit()->selectAll();
 		QTextCursor cursor = textEdit()->textCursor();
