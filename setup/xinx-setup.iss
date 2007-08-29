@@ -96,10 +96,10 @@ Name: {app}\src; Type: filesandordirs
 Name: {app}\source; Type: filesandordirs
 Name: {app}\translations; Type: filesandordirs
 
-;[_ISToolPreCompile]
-;Name: clean.bat; Parameters: ; Flags: abortonerror
-;Name: sources.bat; Parameters: ; Flags: abortonerror
-;Name: compiler.bat; Parameters: ; Flags: abortonerror
+[_ISToolPreCompile]
+Name: clean.bat; Parameters: ; Flags: abortonerror
+Name: sources.bat; Parameters: ; Flags: abortonerror
+Name: compiler.bat; Parameters: ; Flags: abortonerror
 
 ;[Files]
 ;DestDir: {pf}\dbus\bin; Source: srvany.exe; Flags: sharedfile uninsrestartdelete
