@@ -38,8 +38,8 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
-Name: remplace_completion; Description: Replace completion.xnx file; Components: 
-Name: remplace_template; Description: Replace template.xnx file
+Name: remplace_completion; Description: Replace completion.xnx file; GroupDescription: Data files; Components: 
+Name: remplace_template; Description: Replace template.xnx file; GroupDescription: Data files
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -227,12 +227,14 @@ begin
 end;
 
 procedure MergeFile( Param: String; isComparer: boolean );
-var WinMergeApp: String;
+var WinMergeApp, Exp: String;
     ResultCode : Integer;
 begin
-  if( FileExists( Param ) and not isComparer ) then begin
+  Exp := ExpandConstant( Param );
+  FileCopy( Exp + '.new', Exp, False );
+  if( not isComparer ) then begin
 	WinMergeApp := GetWinmergePath( '' );
-	Exec( WinMergeApp, Param + ' ' + Param + '.new', '', SW_SHOW, ewWaitUntilTerminated, ResultCode );
+	Exec( WinMergeApp, '"' + Exp + '" "' + Exp + '.old"', '', SW_SHOW, ewWaitUntilTerminated, ResultCode );
   end;
 end;
 
@@ -248,12 +250,15 @@ end;
 
 function CompareFile( Param: String ) : Boolean;
 var SizeOld, SizeNew: Integer;
+    Exp: String;
 begin
+  Exp := ExpandConstant( Param );
   Result := True;
-  FileSize( Param, SizeOld );
-  FileSize( Param + '.new', SizeNew );
+  FileSize( Exp, SizeOld );
+  FileSize( Exp + '.new', SizeNew );
   if( SizeOld <> SizeNew ) then
     Result := False;
+  FileCopy( Exp, Exp + '.old', False );
 end;
 
 procedure CompareCompletionFile( Param: String );
@@ -265,3 +270,39 @@ procedure CompareTemplateFile( Param: String );
 begin
   TemplateResult := CompareFile( Param + '\template.xnx' );
 end;
+
+function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
+  MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
+var
+  S: String;
+begin
+  { Fill the 'Ready Memo' with the normal settings and the custom settings }
+  S := '';
+  S := S + 'Type of Installation:' + NewLine;
+  if( InstallationTypePage.SelectedValueIndex = 0 ) then
+    S := S + Space + 'Install developement environment' + NewLine
+  else
+    S := S + Space + 'Install XINX and embedded library' + NewLine;
+  S := S + NewLine;
+
+  S := S + MemoUserInfoInfo + NewLine;
+  S := S + NewLine;
+  S := S + MemoDirInfo + NewLine;
+  S := S + NewLine;
+  S := S + 'Tools:' + NewLine;
+  S := S + Space + 'CVS: ' + FilesWizardPage.Values[0] + NewLine;
+  S := S + Space + 'WinMerge: ' + FilesWizardPage.Values[1] + NewLine;
+  S := S + NewLine;
+  S := S + MemoTypeInfo + NewLine;
+  S := S + NewLine;
+  S := S + MemoComponentsInfo + NewLine;
+  S := S + NewLine;
+  S := S + MemoGroupInfo + NewLine;
+  S := S + NewLine;
+  S := S + MemoTasksInfo + NewLine;
+  S := S + NewLine;
+
+  Result := S;
+end;
+
+
