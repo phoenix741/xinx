@@ -97,7 +97,8 @@ void PrivateFileEditor::activateWatcher() {
 }
 
 void PrivateFileEditor::desactivateWatcher() {
-	m_watcher->desactivate();
+	if( m_watcher )
+		m_watcher->desactivate();
 }
 
 void PrivateFileEditor::fileChanged() {
