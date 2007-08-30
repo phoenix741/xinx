@@ -363,20 +363,6 @@ void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
 	}
 }
 
-XSLProject::enumProjectVersion XSLProject::projectVersion() const {
-	bool ok;
-	int version = d->getValue( "version" ).toInt( &ok );
-	
-	if( ok )
-		return (enumProjectVersion)version;
-	else
-		return GCE120;
-}
-
-void XSLProject::setProjectVersion( const XSLProject::enumProjectVersion & value ) {
-	d->setValue( "version", QString::number( (int)value ) );
-}	
-
 XSLProject::enumProjectRCS XSLProject::projectRCS() const {
 	QString value = d->getValue( "rcs" );
 	if( value == "cvs" ) 

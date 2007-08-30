@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
-<defaultcodec></defaultcodec>
 <context>
     <name>AboutDialog</name>
     <message>
@@ -1408,7 +1407,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/projectproperty.ui" line="56"/>
         <source>Project &amp;RCS :</source>
-        <translation>Système de &amp;gestion de version du projet :</translation>
+        <translation>&amp;Gestionnaire de version:</translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="70"/>

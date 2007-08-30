@@ -93,7 +93,11 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h
+ src/xslproject.h \
+ src/configurationfile.h \
+ src/private/p_configurationfile.h \
+ src/threadedconfigurationfile.h \
+ src/private/p_threadedconfigurationfile.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
@@ -151,7 +155,9 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xmlhighlighter.cpp \
  src/xsleditor.cpp \
  src/xsllistview.cpp \
- src/xslproject.cpp
+ src/xslproject.cpp \
+ src/configurationfile.cpp \
+ src/threadedconfigurationfile.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts

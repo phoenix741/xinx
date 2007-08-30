@@ -79,15 +79,6 @@ public:
 		SERVICES = 1 
 	} ;
 	/*!
-	 * This is the different version managed by XINX. 
-	 * At this time the version don't change anything in the application. All is version
-	 * independant.
-	 * \todo Read the version from the Generix configuration.
-	 * \todo The version musn't be constant, but must be more flexible.
-	 * \sa projectVersion(), setProjectVersion()
-	 */
-	enum enumProjectVersion { EGX500ES1 = 100, EGX500ES2 = 101, GCE110 = 110, GCE120 = 120, GCE130 = 130, GCE140 = 140 };
-	/*!
 	 * The different Concurent file repository managed by XINX. 
 	 * At this time only CVS is partially managed.
 	 */
@@ -165,20 +156,6 @@ public:
 	 * \sa setProjectType()
 	 */
 	void setProjectType( const enumProjectType & value );
-	
-	/*!
-	 * Get the project version used by XINX. In the moment it's just for information.
-	 * The information isn't used by XINX.
-	 * \return The project version.
-	 * \sa setProjectVersion()
-	 */
-	enumProjectVersion projectVersion() const;
-	/*!
-	 * Set the project version used by XINX.
-	 * \param value The new version.
-	 * \sa projectVersion()
-	 */
-	void setProjectVersion( const enumProjectVersion & value );
 	
 	/*!
 	 * The concurent file system used by XINX (only CVS can be used).

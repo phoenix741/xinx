@@ -28,10 +28,14 @@
 #include "xinxconfig.h"
 #include "globals.h"
 
-ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
+ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
 	setupUi(this);
 }
 
+ProjectPropertyImpl::~ProjectPropertyImpl() {
+	if( m_versionInstance ) 
+		delete m_versionInstance;
+}
 
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
 	QString value = m_projectLineEdit->text();
@@ -80,21 +84,49 @@ void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
 	updateOkButton();
 }
 
-
-
 void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	QDir dir (text);
-	QPalette palette( m_projectLineEdit->palette() );
+	QPalette paletteProject( m_projectLineEdit->palette() );
+	QPalette paletteVerion( m_configurationVersionLabel->palette() );
+	
+	if( m_versionInstance ) {
+		delete m_versionInstance;
+		m_versionInstance = NULL;
+	}
 	
 	if( dir.exists() ) {
-		palette.setColor( QPalette::Text, QColor() );
+		paletteProject.setColor( QPalette::Text, QColor() );
+		paletteVerion.setColor( QPalette::WindowText, Qt::red );
+
+		if( ConfigurationFile::exists( text ) ) {
+			m_configurationVersionLabel->setText( tr("Search version of file ...") );
+			m_versionInstance = ThreadedConfigurationFile::version( text );
+			connect( m_versionInstance, SIGNAL(versionFinded(ConfigurationVersion)), this, SLOT(versionFinded(ConfigurationVersion)) );
+			m_versionInstance->start();
+		} else
+			m_configurationVersionLabel->setText( tr("warning: The configuration file is not in this directory.") );
 	} else {
-		palette.setColor( QPalette::Text, Qt::red );
+		paletteProject.setColor( QPalette::Text, Qt::red );
+		paletteVerion.setColor( QPalette::WindowText, QColor() );
+		m_configurationVersionLabel->setText( QString() );
 	}
-	m_projectLineEdit->setPalette( palette );
+	m_projectLineEdit->setPalette( paletteProject );
+	m_configurationVersionLabel->setPalette( paletteVerion );
 
 	updateOkButton();
 	updateSpecifiquePath();
+}
+
+void ProjectPropertyImpl::versionFinded( ConfigurationVersion version ) {
+	QPalette paletteVerion( m_configurationVersionLabel->palette() );
+	if( version.isValid() ) {
+		paletteVerion.setColor( QPalette::WindowText, QColor() );
+		m_configurationVersionLabel->setText( version.toString() );
+	} else {
+		paletteVerion.setColor( QPalette::WindowText, Qt::red );
+		m_configurationVersionLabel->setText( tr("warning: A valid version cannot be found in the configuration file.") );
+	}
+	m_configurationVersionLabel->setPalette( paletteVerion );
 }
 
 void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
@@ -105,27 +137,6 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
 	m_projectTypeCombo->setCurrentIndex( (int)project->projectType() );
-	
-	switch( project->projectVersion() ) {
-	case XSLProject::EGX500ES1 :
-		m_projectVersionCombo->setCurrentIndex( 0 );
-		break;
-	case XSLProject::EGX500ES2 :
-		m_projectVersionCombo->setCurrentIndex( 1 );
-		break;
-	case XSLProject::GCE110 :
-		m_projectVersionCombo->setCurrentIndex( 2 );
-		break;
-	case XSLProject::GCE120 :
-		m_projectVersionCombo->setCurrentIndex( 3 );
-		break;
-	case XSLProject::GCE130 :
-		m_projectVersionCombo->setCurrentIndex( 4 );
-		break;
-	case XSLProject::GCE140 :
-		m_projectVersionCombo->setCurrentIndex( 5 );
-		break;
-	}
 	
 	switch( project->projectRCS() ) {
 	case XSLProject::NORCS :
@@ -156,15 +167,6 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
 	project->setProjectType( (XSLProject::enumProjectType)m_projectTypeCombo->currentIndex() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
-	
-	switch( m_projectVersionCombo->currentIndex() ) {
-	case 0 : project->setProjectVersion( XSLProject::EGX500ES1 ); break;
-	case 1 : project->setProjectVersion( XSLProject::EGX500ES2 ); break;
-	case 2 : project->setProjectVersion( XSLProject::GCE110 ); break;
-	case 3 : project->setProjectVersion( XSLProject::GCE120 ); break;
-	case 4 : project->setProjectVersion( XSLProject::GCE130 ); break;
-	case 5 : project->setProjectVersion( XSLProject::GCE140 ); break;
-	}
 	
 	project->serveurWeb().clear();
 	for( int i = 0; i < m_webServiceList->count(); i++ ) {

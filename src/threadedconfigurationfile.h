@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,46 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __THREADEDCONFIGURATIONFILE_H__
+#define __THREADEDCONFIGURATIONFILE_H__
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+// Xinx header
+#include "configurationfile.h"
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+// Qt header
+#include <QThread>
 
-class XSLProject;
+class PrivateThreadedConfigurationFile;
 
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
-Q_OBJECT
+class ThreadedConfigurationFile : public QThread {
+	Q_OBJECT
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
-	
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateSpecifiquePath();
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-private slots:
-	void on_m_webServiceBtnDel_clicked();
-	void on_m_webServiceBtnAdd_clicked();
-	void on_m_langComboBox_currentIndexChanged( QString );
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_specifiquePathButton_clicked();
-	void on_m_specifiquePathLineEdit_textChanged( QString );
-	void on_m_prefixLineEdit_textChanged( QString );
-	void on_m_projectTypeCombo_currentIndexChanged( int );
-
+	virtual ~ThreadedConfigurationFile();
+	static ThreadedConfigurationFile * version( const QString & pathname );
+signals:
 	void versionFinded( ConfigurationVersion version );
+protected:
+	ThreadedConfigurationFile();
+	virtual void run();
+private:
+	PrivateThreadedConfigurationFile * d;
+	friend class PrivateThreadedConfigurationFile;
 };
-#endif
 
-
-
-
-
-
-
-
+#endif // __THREADEDCONFIGURATIONFILE_H__

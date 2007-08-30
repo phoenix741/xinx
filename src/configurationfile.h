@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,46 +17,48 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __CONFIGURATIONFILE_H__
+#define __CONFIGURATIONFILE_H__
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+#include <QString>
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
-
-class XSLProject;
-
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
-Q_OBJECT
-public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
-	
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateSpecifiquePath();
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-private slots:
-	void on_m_webServiceBtnDel_clicked();
-	void on_m_webServiceBtnAdd_clicked();
-	void on_m_langComboBox_currentIndexChanged( QString );
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_specifiquePathButton_clicked();
-	void on_m_specifiquePathLineEdit_textChanged( QString );
-	void on_m_prefixLineEdit_textChanged( QString );
-	void on_m_projectTypeCombo_currentIndexChanged( int );
-
-	void versionFinded( ConfigurationVersion version );
+class ConfigurationVerstionIncorectException {	
 };
-#endif
 
+class PrivateConfigurationVersion;
 
+class ConfigurationVersion {
+public:
+	ConfigurationVersion( int major = -1, int minor = -1, int release = -1, int build = -1 );
+	ConfigurationVersion( const QString & version, int build = 0 );
+	virtual ~ConfigurationVersion();
 
+	int major() const;
+	int minor() const;
+	int release() const;
+	int build() const;
+	
+	QString toString() const;
+	bool isValid();
+	
+	bool operator== ( ConfigurationVersion version ) const;
+	bool operator>  ( ConfigurationVersion version ) const;
+	bool operator>= ( ConfigurationVersion version ) const;
+	bool operator<  ( ConfigurationVersion version ) const;
+	bool operator<= ( ConfigurationVersion version ) const;
+private:
+	int m_major;
+	int m_minor;
+	int m_release;
+	int m_build;
+};
 
+class ConfigurationFile {
+public:
+	static bool exists( const QString & DirectoryPath );
+	static ConfigurationVersion version( const QString & DirectoryPath );
+private:	
+};
 
-
-
-
+#endif // __CONFIGURATIONFILE_H__

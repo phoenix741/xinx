@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,46 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __P_CONFIGURATIONFILE_H__
+#define __P_CONFIGURATIONFILE_H__
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+#include <QXmlDefaultHandler>
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
-
-class XSLProject;
-
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
-Q_OBJECT
+class ParseVersionHandler : public QXmlDefaultHandler {
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+	enum ParseVersionState { STATE_START, STATE_CONFIG, STATE_VERSION, STATE_NUMERO, STATE_EDITIONSPECIAL };
+
+	ParseVersionHandler();
+	virtual ~ParseVersionHandler();
 	
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateSpecifiquePath();
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-private slots:
-	void on_m_webServiceBtnDel_clicked();
-	void on_m_webServiceBtnAdd_clicked();
-	void on_m_langComboBox_currentIndexChanged( QString );
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_specifiquePathButton_clicked();
-	void on_m_specifiquePathLineEdit_textChanged( QString );
-	void on_m_prefixLineEdit_textChanged( QString );
-	void on_m_projectTypeCombo_currentIndexChanged( int );
-
-	void versionFinded( ConfigurationVersion version );
+	bool startElement(const QString &namespaceURI, const QString &localName, 
+					  const QString &qName, const QXmlAttributes &attributes);
+	bool endElement(const QString &namespaceURI, const QString &localName,
+					const QString &qName);
+	bool characters(const QString &str);
+	bool fatalError(const QXmlParseException &exception);
+	
+	QString m_errorStr;
+	enum ParseVersionState m_parserState;
+	
+	QString m_text, m_version;
+	int m_build;
 };
-#endif
 
-
-
-
-
-
-
-
+#endif // __P_CONFIGURATIONFILE_H__

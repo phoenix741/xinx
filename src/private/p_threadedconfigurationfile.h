@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,46 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __P_THREADEDCONFIGURATIONFILE_H__
+#define __P_THREADEDCONFIGURATIONFILE_H__
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+// Xinx header
+#include "../threadedconfigurationfile.h"
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+// Qt header
+#include <QObject>
 
-class XSLProject;
-
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
-Q_OBJECT
-public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+class PrivateThreadedConfigurationFile : public QObject {
+	Q_OBJECT
+public: 
+	PrivateThreadedConfigurationFile( ThreadedConfigurationFile * parent );
+	~PrivateThreadedConfigurationFile();
 	
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
+	enum state { GETVERSION } m_state;
+	QString m_pathname;
+	ConfigurationVersion m_versionConfiguration;
+public slots:
+	void threadFinished();
 private:
-	void updateSpecifiquePath();
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-private slots:
-	void on_m_webServiceBtnDel_clicked();
-	void on_m_webServiceBtnAdd_clicked();
-	void on_m_langComboBox_currentIndexChanged( QString );
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_specifiquePathButton_clicked();
-	void on_m_specifiquePathLineEdit_textChanged( QString );
-	void on_m_prefixLineEdit_textChanged( QString );
-	void on_m_projectTypeCombo_currentIndexChanged( int );
-
-	void versionFinded( ConfigurationVersion version );
+	ThreadedConfigurationFile * m_parent;
 };
-#endif
 
-
-
-
-
-
-
-
+#endif // __P_THREADEDCONFIGURATIONFILE_H__
