@@ -38,6 +38,7 @@ FORMS += ui/about.ui \
  ui/snipetproperty.ui
 HEADERS += src/aboutdialogimpl.h \
  src/commitmessagedialogimpl.h \
+ src/configurationfile.h \
  src/connectionwebservicesdialogimpl.h \
  src/customdialogimpl.h \
  src/dirrcsmodel.h \
@@ -61,10 +62,12 @@ HEADERS += src/aboutdialogimpl.h \
  src/numberbar.h \
  src/objectview.h \
  src/p_rcs_cvs.h \
+ src/private/p_configurationfile.h \
  src/private/p_filecontentdockwidget.h \
  src/private/p_filewatcher.h \
  src/private/p_mainformimpl.h \
  src/private/p_projectdirectorydockwidget.h \
+ src/private/p_threadedconfigurationfile.h \
  src/private/p_uniqueapplication.h \
  src/projectdirectorydockwidget.h \
  src/projectpropertyimpl.h \
@@ -83,6 +86,7 @@ HEADERS += src/aboutdialogimpl.h \
  src/syntaxhighlighter.h \
  src/tabeditor.h \
  src/texteditor.h \
+ src/threadedconfigurationfile.h \
  src/uniqueapplication.h \
  src/webservices.h \
  src/webserviceseditor.h \
@@ -93,11 +97,7 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h \
- src/configurationfile.h \
- src/private/p_configurationfile.h \
- src/threadedconfigurationfile.h \
- src/private/p_threadedconfigurationfile.h
+ src/xslproject.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
@@ -105,6 +105,7 @@ RCC_DIR += build
 RESOURCES += application.qrc
 SOURCES += src/aboutdialogimpl.cpp \
  src/commitmessagedialogimpl.cpp \
+ src/configurationfile.cpp \
  src/connectionwebservicesdialogimpl.cpp \
  src/customdialogimpl.cpp \
  src/dirrcsmodel.cpp \
@@ -145,6 +146,7 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/syntaxhighlighter.cpp \
  src/tabeditor.cpp \
  src/texteditor.cpp \
+ src/threadedconfigurationfile.cpp \
  src/uniqueapplication.cpp \
  src/webservices.cpp \
  src/webserviceseditor.cpp \
@@ -155,9 +157,7 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xmlhighlighter.cpp \
  src/xsleditor.cpp \
  src/xsllistview.cpp \
- src/xslproject.cpp \
- src/configurationfile.cpp \
- src/threadedconfigurationfile.cpp
+ src/xslproject.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts
