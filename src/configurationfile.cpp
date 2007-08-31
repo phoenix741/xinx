@@ -80,7 +80,7 @@ QString ConfigurationVersion::toString() const {
 	QString version = QString( "V%1.%2-%3" ).arg( m_major, 2, 10, QLatin1Char('0') )
 											.arg( m_minor, 2, 10, QLatin1Char('0') )
 								 			.arg( m_release, 2, 10, QLatin1Char('0') );
-	if( m_build >= 0 )
+	if( m_build > 0 )
 		version += QString( " (%1)" )		.arg( m_build, 2, 10, QLatin1Char('0') );
 		
 	return version;
@@ -188,7 +188,11 @@ ConfigurationVersion ConfigurationFile::version( const QString & DirectoryPath )
 	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
 		QXmlInputSource xmlInputSource( &file );
 		reader.parse( xmlInputSource );
-		return ConfigurationVersion( handler.m_version, handler.m_build );
+		try {
+			return ConfigurationVersion( handler.m_version, handler.m_build );
+		} catch( ConfigurationVerstionIncorectException ) {
+			return ConfigurationVersion();
+		}
 	}
 	return ConfigurationVersion();
 }

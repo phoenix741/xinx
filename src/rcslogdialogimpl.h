@@ -20,10 +20,14 @@
  
 #ifndef RCSLOGDIALOGIMPL_H
 #define RCSLOGDIALOGIMPL_H
-//
+
+// Xinx header
 #include "ui_rcslogform.h"
 #include "rcs.h"
-//
+
+// Qt header
+#include <QDialog>
+
 class RCSLogDialogImpl : public QDialog, public Ui::RCSLogDialog {
 	Q_OBJECT
 public:
