@@ -22,23 +22,26 @@
 #define RCSLOGDIALOGIMPL_H
 
 // Xinx header
-#include "ui_rcslogform.h"
 #include "rcs.h"
 
 // Qt header
-#include <QDialog>
+#include <QDockWidget>
 
-class RCSLogDialogImpl : public QDialog, public Ui::RCSLogDialog {
+class PrivateRCSLogDockWidget;
+
+class RCSLogDockWidget : public QDockWidget {
 	Q_OBJECT
 public:
-	RCSLogDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	RCSLogDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	RCSLogDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	virtual ~RCSLogDockWidget();
+	
 	void init();
-signals:
-	void abort();
 public slots:
 	void log( RCS::rcsLog niveau, const QString & info );
-	void logTerminated();	
-private slots:
+private:
+	PrivateRCSLogDockWidget * d;
+	friend class PrivateRCSLogDockWidget;
 };
 #endif
 

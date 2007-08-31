@@ -65,6 +65,7 @@
     <addaction name="separator" />
     <addaction name="m_globalUpdateFromRCSAct" />
     <addaction name="m_globalCommitToRCSAct" />
+    <addaction name="m_cancelRCSOperationAct" />
    </widget>
    <widget class="QMenu" name="m_webServicesMenu" >
     <property name="title" >
@@ -636,6 +637,11 @@
    </property>
    <property name="text" >
     <string>Commit project</string>
+   </property>
+  </action>
+  <action name="m_cancelRCSOperationAct" >
+   <property name="text" >
+    <string>Cancel RCS operation</string>
    </property>
   </action>
   <action name="m_selectedUpdateFromRCSAct" >

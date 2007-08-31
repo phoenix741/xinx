@@ -54,7 +54,7 @@
 
 /* PrivateMainformImpl */
 
-PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_parent( parent ) {
+PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_rcsExecute( false ), m_parent( parent ) {
 	createTabEditorButton();
 	createSubMenu();
 	createDockWidget();
@@ -94,6 +94,13 @@ void PrivateMainformImpl::createDockWidget() {
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
 	action = m_projectDock->toggleViewAction();
 	action->setShortcut( tr("Ctrl+2") );
+	m_parent->m_windowsMenu->addAction( action ); 
+
+	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
+	m_rcslogDock->setObjectName( "m_rcslogDock" );
+	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
+	action = m_rcslogDock->toggleViewAction();
+	action->setShortcut( tr("Ctrl+3") );
 	m_parent->m_windowsMenu->addAction( action ); 
 }
 
@@ -332,7 +339,6 @@ void PrivateMainformImpl::createActions() {
 }
 
 void PrivateMainformImpl::createDialogs() {
-	m_rcslogDialog = new RCSLogDialogImpl( m_parent );
 }
 
 void PrivateMainformImpl::connectDbus() {
@@ -585,6 +591,7 @@ void PrivateMainformImpl::createShortcut() {
 	// Project menu
 	m_parent->m_globalUpdateFromRCSAct->setShortcut( QKeySequence::Refresh );
 	m_parent->m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
+	m_parent->m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
 	
 	// Webservices menu
 	m_parent->m_callWebServicesAct->setShortcut( QKeySequence( "F9" ) );
@@ -626,8 +633,15 @@ void PrivateMainformImpl::updateActions() {
 	m_parent->m_closeProjectNoSessionAct->setEnabled( global.m_project != NULL );
 	m_parent->m_projectPropertyAct->setEnabled( global.m_project != NULL );
 	
-	m_parent->m_globalUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
-	m_parent->m_globalCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) );
+	m_parent->m_globalUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute ) );
+	m_parent->m_globalCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+
+	m_parent->m_selectedUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedAddToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedRemoveFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	
+	m_parent->m_cancelRCSOperationAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && m_rcsExecute );
 	
 	m_parent->m_toggledFlatView->setEnabled( global.m_project != NULL );
 	m_projectDock->setEnabled( global.m_project != NULL );
@@ -1134,9 +1148,11 @@ void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHas
 }
 
 void PrivateMainformImpl::rcsLogTerminated() {
+	m_rcsExecute = false;
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs )
 		rcs->disconnect();
+	updateActions();
 }
 
 /* MainformImpl */
@@ -1393,18 +1409,17 @@ void MainformImpl::updateWebServicesList() {
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
-		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
-		d->m_rcslogDialog->init();
-
+		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
+		d->m_rcslogDock->init();
+		d->m_rcsExecute = true;
 		if( list.count() == 0 )
 			rcs->update( QStringList() << global.m_project->projectPath() );
 		else
 			rcs->update( list );
-
-		d->m_rcslogDialog->exec();
+		d->updateActions();
+		d->m_rcslogDock->show();
 	}
 }
 
@@ -1421,44 +1436,41 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		if( ! dlg.exec() ) return ;
 		QString message = dlg.messages();
 
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
-		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
-		d->m_rcslogDialog->init();
-
+		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
+		d->m_rcslogDock->init();
+		d->m_rcsExecute = true;
 		rcs->commit( dlg.filesOperation(), message );
-
-		d->m_rcslogDialog->exec();
+		d->updateActions();
+		d->m_rcslogDock->show();
 	}
 }
 
 void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
-		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
-		d->m_rcslogDialog->init();
-
+		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
+		d->m_rcslogDock->init();
+		d->m_rcsExecute = true;
 		rcs->add( list );
-
-		d->m_rcslogDialog->exec();
+		d->updateActions();
+		d->m_rcslogDock->show();
 	}
 }
 
 void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDialog, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), d->m_rcslogDialog, SLOT(logTerminated()) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
-		connect( d->m_rcslogDialog, SIGNAL(abort()), rcs, SLOT(abort()) );
-		d->m_rcslogDialog->init();
-
+		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
+		d->m_rcslogDock->init();
+		d->m_rcsExecute = true;
 		rcs->remove( list );
-
-		d->m_rcslogDialog->exec();
+		d->updateActions();
+		d->m_rcslogDock->show();
 	}
 }

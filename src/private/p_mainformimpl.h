@@ -80,6 +80,10 @@ public:
 	// Dock
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
+	RCSLogDockWidget * m_rcslogDock;
+	
+	// RCS
+	bool m_rcsExecute;
 	
 	// Label text
 	QLabel * m_editorPosition;
@@ -105,10 +109,7 @@ public:
 	bool m_yesToAllReplace, m_searchInverse;
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
-	
-	// RCS
-	RCSLogDialogImpl * m_rcslogDialog;
-	
+
 public slots:
 	// Actions
 	void updateActions();

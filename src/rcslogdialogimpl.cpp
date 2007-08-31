@@ -17,24 +17,54 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
+// Xinx header
 #include "rcslogdialogimpl.h"
+#include "ui_rcslogform.h"
 
-//
-RCSLogDialogImpl::RCSLogDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
-	setupUi(this);
-	connect( m_abortButton, SIGNAL(clicked()), this, SIGNAL(abort()) );
+/* PrivateRCSLogDockWidget */
+
+class PrivateRCSLogDockWidget {
+public:
+	PrivateRCSLogDockWidget( RCSLogDockWidget * parent );
+	~PrivateRCSLogDockWidget();
+	
+	Ui::RCSLogWidget * m_logwidget;
+private:
+	RCSLogDockWidget * m_parent;
+};
+
+PrivateRCSLogDockWidget::PrivateRCSLogDockWidget( RCSLogDockWidget * parent ) : m_parent( parent ) {
+	QWidget * contentWidget = new QWidget( m_parent );
+	m_logwidget = new Ui::RCSLogWidget();
+	m_logwidget->setupUi( contentWidget );
+	m_parent->setWidget( contentWidget );
 }
-//
 
-void RCSLogDialogImpl::init() {
-	m_abortButton->setEnabled( true );
-	m_closeButton->setEnabled( false );
-	m_rcsLogListWidget->clear();
+PrivateRCSLogDockWidget::~PrivateRCSLogDockWidget() {
+	
 }
 
-void RCSLogDialogImpl::log( RCS::rcsLog niveau, const QString & info ) {
-	QListWidgetItem * item = new QListWidgetItem(info, m_rcsLogListWidget);
+/* RCSLogDockWidget */
+
+RCSLogDockWidget::RCSLogDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
+	d = new PrivateRCSLogDockWidget( this );
+}
+
+RCSLogDockWidget::RCSLogDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ) {
+	d = new PrivateRCSLogDockWidget( this );
+}
+
+RCSLogDockWidget::~RCSLogDockWidget() {
+	delete d;	
+}
+
+void RCSLogDockWidget::init() {
+	d->m_logwidget->m_rcsLogListWidget->clear();
+}
+
+void RCSLogDockWidget::log( RCS::rcsLog niveau, const QString & info ) {
+	QListWidgetItem * item = new QListWidgetItem( info, d->m_logwidget->m_rcsLogListWidget );
 	switch( niveau ) {
 	case RCS::LogError :
 	case RCS::LogConflict :
@@ -54,10 +84,5 @@ void RCSLogDialogImpl::log( RCS::rcsLog niveau, const QString & info ) {
 	default:
 		;
 	}
-	m_rcsLogListWidget->scrollToItem( item );
-}
-
-void RCSLogDialogImpl::logTerminated() {
-	m_closeButton->setEnabled( true );
-	m_abortButton->setEnabled( false );
+	d->m_logwidget->m_rcsLogListWidget->scrollToItem( item );
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>AboutDialog</name>
     <message>
@@ -40,7 +41,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
     </message>
     <message>
         <location filename="../ui/about.ui" line="43"/>
-        <source>Version 0.6.9</source>
+        <source>Version 0.6.10</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -548,41 +549,41 @@ Version : %4</translation>
 <context>
     <name>FileEditor</name>
     <message>
-        <location filename="../src/fileeditor.cpp" line="144"/>
+        <location filename="../src/fileeditor.cpp" line="145"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="343"/>
+        <location filename="../src/fileeditor.cpp" line="344"/>
         <source>noname</source>
         <translation>sansnom</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="425"/>
+        <location filename="../src/fileeditor.cpp" line="426"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="402"/>
+        <location filename="../src/fileeditor.cpp" line="403"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Ne peux lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="426"/>
+        <location filename="../src/fileeditor.cpp" line="427"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="499"/>
+        <location filename="../src/fileeditor.cpp" line="500"/>
         <source>%1 at %2</source>
         <translation>%1 à %2</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="307"/>
+        <location filename="../src/fileeditor.cpp" line="308"/>
         <source>Can&apos;t indent this type of document</source>
         <translation>Ne peux identer ce type de document</translation>
     </message>
@@ -611,7 +612,7 @@ Version : %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="107"/>
+        <location filename="../ui/mainform.ui" line="97"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
@@ -621,12 +622,12 @@ Version : %4</translation>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="89"/>
+        <location filename="../ui/mainform.ui" line="79"/>
         <source>&amp;Windows</source>
         <translation>&amp;Affichage</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="81"/>
+        <location filename="../ui/mainform.ui" line="71"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
@@ -636,440 +637,440 @@ Version : %4</translation>
         <translation>&amp;Projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="63"/>
-        <source>&amp;Close project</source>
-        <translation>&amp;Fermer le projet</translation>
-    </message>
-    <message>
-        <location filename="../ui/mainform.ui" line="114"/>
+        <location filename="../ui/mainform.ui" line="104"/>
         <source>&amp;Search</source>
         <translation>&amp;Chercher</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="124"/>
+        <location filename="../ui/mainform.ui" line="114"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editer</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="99"/>
+        <location filename="../ui/mainform.ui" line="89"/>
         <source>&amp;Tools</source>
         <translation>&amp;Outils</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="171"/>
+        <location filename="../ui/mainform.ui" line="161"/>
         <source>File Tool Bar</source>
         <translation>Barre d&apos;outil fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="188"/>
+        <location filename="../ui/mainform.ui" line="178"/>
         <source>Edit Tool Bar</source>
         <translation>Barre d&apos;outil Edition</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="210"/>
+        <location filename="../ui/mainform.ui" line="200"/>
         <source>Search Tool Bar</source>
         <translation>Barre d&apos;outil de recherche</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="659"/>
+        <location filename="../ui/mainform.ui" line="646"/>
         <source>Update project</source>
         <translation>Mise à jours du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="667"/>
+        <location filename="../ui/mainform.ui" line="654"/>
         <source>Commit project</source>
         <translation>Validation du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="222"/>
+        <location filename="../ui/mainform.ui" line="212"/>
         <source>WebServices Tool Bar</source>
         <translation>Barre d&apos;outil des services internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="238"/>
+        <location filename="../ui/mainform.ui" line="228"/>
         <source>&amp;New</source>
         <translation>&amp;Nouveau</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="241"/>
+        <location filename="../ui/mainform.ui" line="231"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="244"/>
+        <location filename="../ui/mainform.ui" line="234"/>
         <source>Create a new text file</source>
         <translation>Créer un nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="252"/>
+        <location filename="../ui/mainform.ui" line="242"/>
         <source>&amp;Open ...</source>
         <translation>&amp;Ouvrir ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="255"/>
+        <location filename="../ui/mainform.ui" line="245"/>
         <source>Open an existing file</source>
         <translation>Ouvrir un fichier existant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="263"/>
+        <location filename="../ui/mainform.ui" line="253"/>
         <source>&amp;Save</source>
         <translation>&amp;Sauver</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="266"/>
+        <location filename="../ui/mainform.ui" line="256"/>
         <source>Save the document to disk</source>
         <translation>Sauver le document sur le disque</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="274"/>
+        <location filename="../ui/mainform.ui" line="264"/>
         <source>Save &amp;As...</source>
         <translation>Sauver s&amp;ous ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="277"/>
+        <location filename="../ui/mainform.ui" line="267"/>
         <source>Save the document with a new name</source>
         <translation>Sauve le document sous un nouveau nom</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="285"/>
+        <location filename="../ui/mainform.ui" line="275"/>
         <source>Save A&amp;ll...</source>
         <translation>Sauver &amp;Tout ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="288"/>
+        <location filename="../ui/mainform.ui" line="278"/>
         <source>Save all documents to disk</source>
         <translation>Sauver tout les documents sur le disque</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="296"/>
+        <location filename="../ui/mainform.ui" line="286"/>
         <source>&amp;Print ...</source>
         <translation>&amp;Imprimer ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="299"/>
+        <location filename="../ui/mainform.ui" line="289"/>
         <source>Print the current document</source>
         <translation>Imprimer le document courrant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="307"/>
+        <location filename="../ui/mainform.ui" line="297"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="310"/>
+        <location filename="../ui/mainform.ui" line="300"/>
         <source>Close the current document</source>
         <translation>Fermer le document courrant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="315"/>
+        <location filename="../ui/mainform.ui" line="305"/>
         <source>&amp;Close All</source>
         <translation>F&amp;ermer tout</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="318"/>
+        <location filename="../ui/mainform.ui" line="308"/>
         <source>Close all document</source>
         <translation>Fermer tout les documents</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="326"/>
+        <location filename="../ui/mainform.ui" line="316"/>
         <source>E&amp;xit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="329"/>
+        <location filename="../ui/mainform.ui" line="319"/>
         <source>Quit XINX</source>
         <translation>Quitter XINX</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="337"/>
+        <location filename="../ui/mainform.ui" line="327"/>
         <source>&amp;Undo</source>
         <translation>&amp;Défaire</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="340"/>
+        <location filename="../ui/mainform.ui" line="330"/>
         <source>Undo the last action</source>
         <translation>Défait la dernière opération</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="348"/>
+        <location filename="../ui/mainform.ui" line="338"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refaire</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="351"/>
+        <location filename="../ui/mainform.ui" line="341"/>
         <source>Redo the next action</source>
         <translation>Refaire la dernière action</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="359"/>
+        <location filename="../ui/mainform.ui" line="349"/>
         <source>Cu&amp;t</source>
         <translation>Co&amp;uper</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="362"/>
+        <location filename="../ui/mainform.ui" line="352"/>
         <source>Cut the selection to the clipboard</source>
         <translation>Couper la séléction vers le presse papier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="370"/>
+        <location filename="../ui/mainform.ui" line="360"/>
         <source>&amp;Copy</source>
         <translation>Cop&amp;ier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="373"/>
+        <location filename="../ui/mainform.ui" line="363"/>
         <source>Copy the selection to the clipboard</source>
         <translation>Copier la séléction vers le presse papier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="381"/>
+        <location filename="../ui/mainform.ui" line="371"/>
         <source>&amp;Paste</source>
         <translation>Co&amp;ller</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="384"/>
+        <location filename="../ui/mainform.ui" line="374"/>
         <source>Paste the clipboard&apos;s contents</source>
         <translation>Coller le contenu du presse papier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="389"/>
+        <location filename="../ui/mainform.ui" line="379"/>
         <source>&amp;Select All</source>
         <translation>Tout séléction&amp;ner</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="392"/>
+        <location filename="../ui/mainform.ui" line="382"/>
         <source>Select all the text of the current editor</source>
         <translation>Séléctionner tout le contenu de l&apos;éditeur</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="397"/>
+        <location filename="../ui/mainform.ui" line="387"/>
         <source>&amp;Duplicate current line</source>
         <translation>&amp;Dupliquer la ligne courrante</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="405"/>
+        <location filename="../ui/mainform.ui" line="395"/>
         <source>&amp;Move line up</source>
         <translation>Déplacer à la ligne s&amp;uivante</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="413"/>
+        <location filename="../ui/mainform.ui" line="403"/>
         <source>&amp;Move line down</source>
         <translation>Déplacer à la ligne pré&amp;cédente</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="421"/>
+        <location filename="../ui/mainform.ui" line="411"/>
         <source>&amp;Upper Case</source>
         <translation>Ma&amp;juscule</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="429"/>
+        <location filename="../ui/mainform.ui" line="419"/>
         <source>&amp;Lower Case</source>
         <translation>M&amp;inuscule</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="434"/>
+        <location filename="../ui/mainform.ui" line="424"/>
         <source>&amp;Comment</source>
         <translation>&amp;Commentaire</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="439"/>
+        <location filename="../ui/mainform.ui" line="429"/>
         <source>&amp;Uncomment</source>
         <translation>&amp;Décommenter</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="444"/>
+        <location filename="../ui/mainform.ui" line="434"/>
         <source>Completer</source>
         <translation>Compléter</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="452"/>
+        <location filename="../ui/mainform.ui" line="442"/>
         <source>&amp;Search ...</source>
         <translation>&amp;Rechercher ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="463"/>
+        <location filename="../ui/mainform.ui" line="453"/>
         <source>Search next</source>
         <translation>Recherche suivante</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="468"/>
+        <location filename="../ui/mainform.ui" line="458"/>
         <source>&amp;Replace ...</source>
         <translation>Re&amp;mplacer ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="476"/>
+        <location filename="../ui/mainform.ui" line="466"/>
         <source>&amp;New project ...</source>
         <translation>&amp;Nouveau projet ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="481"/>
+        <location filename="../ui/mainform.ui" line="471"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="484"/>
+        <location filename="../ui/mainform.ui" line="474"/>
         <source>Show the application&apos;s About box</source>
         <translation>Afficher les informations de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="489"/>
+        <location filename="../ui/mainform.ui" line="479"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="492"/>
+        <location filename="../ui/mainform.ui" line="482"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Affiche les informations à propos de Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="500"/>
+        <location filename="../ui/mainform.ui" line="490"/>
         <source>&amp;Choose file ...</source>
         <translation>&amp;Choisir un fichier ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="508"/>
+        <location filename="../ui/mainform.ui" line="498"/>
         <source>&amp;Save project</source>
         <translation>&amp;Sauver le projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="513"/>
+        <location filename="../ui/mainform.ui" line="503"/>
         <source>&amp;Close Project (no session)</source>
         <translation>&amp;Fermer le projet (sans session)</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="518"/>
+        <location filename="../ui/mainform.ui" line="508"/>
         <source>Project &amp;property</source>
         <translation>&amp;Propriété du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="526"/>
+        <location filename="../ui/mainform.ui" line="516"/>
         <source>Next tab</source>
         <translation>Onglet suivant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="531"/>
+        <location filename="../ui/mainform.ui" line="521"/>
         <source>Previous Tab</source>
         <translation>Onglet précédent</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="536"/>
+        <location filename="../ui/mainform.ui" line="526"/>
         <source>Indent Code</source>
         <translation>Indenter le code</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="541"/>
+        <location filename="../ui/mainform.ui" line="531"/>
         <source>Unindent code</source>
         <translation>Désindenter le code</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="546"/>
+        <location filename="../ui/mainform.ui" line="536"/>
         <source>Customize ...</source>
         <translation>Personnaliser ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="557"/>
+        <location filename="../ui/mainform.ui" line="547"/>
         <source>Search previous</source>
         <translation>Recherche précédente</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="568"/>
+        <location filename="../ui/mainform.ui" line="558"/>
         <source>Refresh WebServices List</source>
         <translation>Rafraichir la liste des services internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="579"/>
+        <location filename="../ui/mainform.ui" line="569"/>
         <source>Call WebServices</source>
         <translation>Appeler les services internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="587"/>
+        <location filename="../ui/mainform.ui" line="577"/>
         <source>New Stylesheet file</source>
         <translation>Nouvelle feuille de style</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="595"/>
+        <location filename="../ui/mainform.ui" line="585"/>
         <source>New XML file</source>
         <translation>Nouveau fichier de description XML</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="603"/>
+        <location filename="../ui/mainform.ui" line="593"/>
         <source>New JavaScript file</source>
         <translation>Nouveau fichier JavaScript</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="611"/>
+        <location filename="../ui/mainform.ui" line="601"/>
         <source>New WebServices file</source>
         <translation>Nouveau service internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="619"/>
+        <location filename="../ui/mainform.ui" line="606"/>
         <source>Close Project (session)</source>
         <translation>Fermer le projet (session)</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="627"/>
+        <location filename="../ui/mainform.ui" line="614"/>
         <source>&amp;Recent Project</source>
         <translation>Projet &amp;récent</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="635"/>
+        <location filename="../ui/mainform.ui" line="622"/>
         <source>&amp;Recent file</source>
         <translation>Fichier &amp;récent</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="675"/>
+        <location filename="../ui/mainform.ui" line="662"/>
         <source>Add file(s) to project</source>
         <translation>Ajouter un/des fichier(s) au projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="683"/>
+        <location filename="../ui/mainform.ui" line="670"/>
         <source>Delete file(s) from project</source>
         <translation>Supprimer un/des fichier(s) du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="694"/>
+        <location filename="../ui/mainform.ui" line="681"/>
         <source>Toggled Flat View</source>
         <translation>Inverser le modèle vue plate/hiérarchique</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="699"/>
+        <location filename="../ui/mainform.ui" line="686"/>
         <source>Create &amp;template</source>
         <translation>Créer un &amp;template</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="707"/>
+        <location filename="../ui/mainform.ui" line="694"/>
         <source>&amp;Refresh</source>
         <translation>&amp;Actualiser</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="712"/>
+        <location filename="../ui/mainform.ui" line="699"/>
         <source>Pretty print</source>
         <translation>Indentation automatique</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainform.ui" line="707"/>
+        <source>Close project</source>
+        <translation>Fermer le projet</translation>
     </message>
 </context>
 <context>
     <name>MainformImpl</name>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1180"/>
+        <location filename="../src/mainformimpl.cpp" line="1197"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1180"/>
+        <location filename="../src/mainformimpl.cpp" line="1197"/>
         <source>No WebServices can be found. Please update WebServices list to continue.</source>
         <translation>Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1228"/>
+        <location filename="../src/mainformimpl.cpp" line="1245"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1273"/>
+        <location filename="../src/mainformimpl.cpp" line="1290"/>
         <source>Save a project</source>
         <translation>Sauver un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1323"/>
+        <location filename="../src/mainformimpl.cpp" line="1340"/>
         <source>Can&apos;t open project</source>
         <translation>Ne peux ouvrir le projet</translation>
     </message>
@@ -1177,17 +1178,17 @@ Version : %4</translation>
 <context>
     <name>PrivateFileEditor</name>
     <message>
-        <location filename="../src/fileeditor.cpp" line="114"/>
+        <location filename="../src/fileeditor.cpp" line="115"/>
         <source>Reload page</source>
         <translation>Recharger la page</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="108"/>
+        <location filename="../src/fileeditor.cpp" line="109"/>
         <source>The file %1 was modified. Reload the page ?</source>
         <translation>Le fichier %1 a été modifié. Rechager la page ?</translation>
     </message>
     <message>
-        <location filename="../src/fileeditor.cpp" line="114"/>
+        <location filename="../src/fileeditor.cpp" line="115"/>
         <source>The file %1 was removed.</source>
         <translation>Le fichier %1 a été supprimé.</translation>
     </message>
@@ -1205,146 +1206,146 @@ Version : %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="404"/>
+        <location filename="../src/mainformimpl.cpp" line="421"/>
         <source>Open text file</source>
         <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="980"/>
+        <location filename="../src/mainformimpl.cpp" line="999"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="427"/>
+        <location filename="../src/mainformimpl.cpp" line="444"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="472"/>
+        <location filename="../src/mainformimpl.cpp" line="489"/>
         <source>Load completion</source>
         <translation>Chargement du fichier de compétion</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="472"/>
+        <location filename="../src/mainformimpl.cpp" line="489"/>
         <source>Can&apos;t load completion file.</source>
         <translation>Ne peux charger le fichier de complétion.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="477"/>
+        <location filename="../src/mainformimpl.cpp" line="494"/>
         <source>Load snipet</source>
         <translation>Chargement du template</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="477"/>
+        <location filename="../src/mainformimpl.cpp" line="494"/>
         <source>Can&apos;t load snipet file.</source>
         <translation>Ne peux charger le fichier de template.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="516"/>
+        <location filename="../src/mainformimpl.cpp" line="533"/>
         <source>&amp;%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="531"/>
+        <location filename="../src/mainformimpl.cpp" line="548"/>
         <source>Ready</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="650"/>
+        <location filename="../src/mainformimpl.cpp" line="669"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="670"/>
+        <location filename="../src/mainformimpl.cpp" line="689"/>
         <source>Save standard XSL</source>
         <translation>Sauver une feuille de style standard</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="670"/>
+        <location filename="../src/mainformimpl.cpp" line="689"/>
         <source>You&apos;re being to save standard file, do you whant make it specifique ?</source>
         <translation>Vous êtes sur le point de sauvegarder un fichier standard, voulez-vous le sauvegarder dans le dossier spécifique ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="715"/>
+        <location filename="../src/mainformimpl.cpp" line="734"/>
         <source>Save text file</source>
         <translation>Sauver le fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="720"/>
+        <location filename="../src/mainformimpl.cpp" line="739"/>
         <source>Add file</source>
         <translation>Ajouter le fichier</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="720"/>
+        <location filename="../src/mainformimpl.cpp" line="739"/>
         <source>Do you want add file %1 to the repository ?</source>
         <translation>Voulez-vous ajouter le fichier %1 au référenciel ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="785"/>
+        <location filename="../src/mainformimpl.cpp" line="804"/>
         <source>File %1 saved</source>
         <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="815"/>
+        <location filename="../src/mainformimpl.cpp" line="834"/>
         <source>Printed</source>
         <translation>Impression</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="954"/>
+        <location filename="../src/mainformimpl.cpp" line="973"/>
         <source>Search/Replace</source>
         <translation>Chercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="950"/>
+        <location filename="../src/mainformimpl.cpp" line="969"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; remplacés.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="955"/>
+        <location filename="../src/mainformimpl.cpp" line="974"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="955"/>
+        <location filename="../src/mainformimpl.cpp" line="974"/>
         <source>replaced</source>
         <translation>remplacés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="955"/>
+        <location filename="../src/mainformimpl.cpp" line="974"/>
         <source>finded</source>
         <translation>trouvés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="980"/>
+        <location filename="../src/mainformimpl.cpp" line="999"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1088"/>
+        <location filename="../src/mainformimpl.cpp" line="1101"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1088"/>
+        <location filename="../src/mainformimpl.cpp" line="1101"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1093"/>
+        <location filename="../src/mainformimpl.cpp" line="1106"/>
         <source>Open a project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1116"/>
+        <location filename="../src/mainformimpl.cpp" line="1133"/>
         <source>WebServices Error</source>
         <translation>Erreur du service internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1116"/>
+        <location filename="../src/mainformimpl.cpp" line="1133"/>
         <source>Web services has error code %1 : %2</source>
         <translation>Le service internet a retourné le code erreur suivante %1 : %2</translation>
     </message>
@@ -1357,6 +1358,16 @@ Voulez-vous sauver les changements ?</translation>
         <location filename="../src/mainformimpl.cpp" line="85"/>
         <source>Project Directory</source>
         <translation>Dossier projet</translation>
+    </message>
+    <message>
+        <location filename="../src/mainformimpl.cpp" line="99"/>
+        <source>RCS Log</source>
+        <translation>Journal du système de gestion de version</translation>
+    </message>
+    <message>
+        <location filename="../src/mainformimpl.cpp" line="103"/>
+        <source>Ctrl+3</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1390,207 +1401,192 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Projet</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="38"/>
+        <location filename="../ui/projectproperty.ui" line="81"/>
         <source>&lt;No RCS&gt;</source>
         <translation>&lt;Pas de gestion de version&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="43"/>
+        <location filename="../ui/projectproperty.ui" line="86"/>
         <source>CVS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="48"/>
+        <location filename="../ui/projectproperty.ui" line="91"/>
         <source>SubVersion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="56"/>
+        <location filename="../ui/projectproperty.ui" line="60"/>
         <source>Project &amp;RCS :</source>
         <translation>&amp;Gestionnaire de version:</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="70"/>
-        <source>Egx 500 ES1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="75"/>
-        <source>Egx 500 ES2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="80"/>
-        <source>GCE 110</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="85"/>
-        <source>GCE 120</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="90"/>
-        <source>GCE 130</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="95"/>
-        <source>GCE 140</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="103"/>
+        <location filename="../ui/projectproperty.ui" line="37"/>
         <source>Project &amp;Type :</source>
         <translation>&amp;Type de projet :</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="113"/>
+        <location filename="../ui/projectproperty.ui" line="106"/>
         <source>Project &amp;Directory :</source>
         <translation>&amp;Dossier projet :</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="126"/>
+        <location filename="../ui/projectproperty.ui" line="47"/>
         <source>Project &amp;Name :</source>
         <translation>&amp;Nom du projet :</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="367"/>
+        <location filename="../ui/projectproperty.ui" line="334"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="147"/>
+        <location filename="../ui/projectproperty.ui" line="117"/>
         <source>Module WEB</source>
         <translation>Module internet</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="152"/>
+        <location filename="../ui/projectproperty.ui" line="122"/>
         <source>Module Services</source>
         <translation>Module services</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="160"/>
-        <source>Project &amp;Version :</source>
-        <translation>&amp;Version du projet :</translation>
-    </message>
-    <message>
-        <location filename="../ui/projectproperty.ui" line="173"/>
+        <location filename="../ui/projectproperty.ui" line="140"/>
         <source>Default Value</source>
         <translation>Valeur par défaut</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="185"/>
+        <location filename="../ui/projectproperty.ui" line="152"/>
         <source>&amp;Lang</source>
         <translation>&amp;Langue</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="196"/>
+        <location filename="../ui/projectproperty.ui" line="163"/>
         <source>FRA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="204"/>
+        <location filename="../ui/projectproperty.ui" line="171"/>
         <source>ENG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="212"/>
+        <location filename="../ui/projectproperty.ui" line="179"/>
         <source>DEU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="220"/>
+        <location filename="../ui/projectproperty.ui" line="187"/>
         <source>ITA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="228"/>
+        <location filename="../ui/projectproperty.ui" line="195"/>
         <source>ESP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="236"/>
+        <location filename="../ui/projectproperty.ui" line="203"/>
         <source>POR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="247"/>
+        <location filename="../ui/projectproperty.ui" line="214"/>
         <source>N&amp;avigator</source>
         <translation>N&amp;avigateur</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="258"/>
+        <location filename="../ui/projectproperty.ui" line="225"/>
         <source>NAV/MIC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="266"/>
+        <location filename="../ui/projectproperty.ui" line="233"/>
         <source>NAV/NET</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="283"/>
+        <location filename="../ui/projectproperty.ui" line="250"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="295"/>
+        <location filename="../ui/projectproperty.ui" line="262"/>
         <source>Delete link</source>
         <translation>Suppression du lien</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="313"/>
+        <location filename="../ui/projectproperty.ui" line="280"/>
         <source>Add link</source>
         <translation>Ajout d&apos;un lien</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="329"/>
+        <location filename="../ui/projectproperty.ui" line="296"/>
         <source>Custom files</source>
         <translation>Fichiers personnalisés</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="344"/>
+        <location filename="../ui/projectproperty.ui" line="311"/>
         <source>Custom p&amp;refix :</source>
         <translation>P&amp;refixe personnalisé :</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="357"/>
+        <location filename="../ui/projectproperty.ui" line="324"/>
         <source>Custom d&amp;irectory :</source>
         <translation>D&amp;ossier personnalisé :</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="401"/>
+        <location filename="../ui/projectproperty.ui" line="368"/>
         <source>OK</source>
         <translation>Valider</translation>
     </message>
     <message>
-        <location filename="../ui/projectproperty.ui" line="411"/>
+        <location filename="../ui/projectproperty.ui" line="378"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
+    </message>
+    <message>
+        <location filename="../ui/projectproperty.ui" line="99"/>
+        <source>Project Version :</source>
+        <translation>Version du projet :</translation>
     </message>
 </context>
 <context>
     <name>ProjectPropertyImpl</name>
     <message>
-        <location filename="../src/projectpropertyimpl.cpp" line="41"/>
+        <location filename="../src/projectpropertyimpl.cpp" line="45"/>
         <source>Project path</source>
         <translation>Dossier projet</translation>
     </message>
     <message>
-        <location filename="../src/projectpropertyimpl.cpp" line="52"/>
+        <location filename="../src/projectpropertyimpl.cpp" line="56"/>
         <source>Specifique path</source>
         <translation>Dossier spécifique</translation>
     </message>
     <message>
-        <location filename="../src/projectpropertyimpl.cpp" line="206"/>
+        <location filename="../src/projectpropertyimpl.cpp" line="208"/>
         <source>Add WebService</source>
         <translation>Ajoute un service internet</translation>
     </message>
     <message>
-        <location filename="../src/projectpropertyimpl.cpp" line="206"/>
+        <location filename="../src/projectpropertyimpl.cpp" line="208"/>
         <source>URL of the WebServices</source>
         <translation>Lien du service internet</translation>
+    </message>
+    <message>
+        <location filename="../src/projectpropertyimpl.cpp" line="102"/>
+        <source>Search version of file ...</source>
+        <translation>Recherche de la version ...</translation>
+    </message>
+    <message>
+        <location filename="../src/projectpropertyimpl.cpp" line="107"/>
+        <source>warning: The configuration file is not in this directory.</source>
+        <translation>Attention: Le fichier de configuration n&apos;est pas dans ce dossier.</translation>
+    </message>
+    <message>
+        <location filename="../src/projectpropertyimpl.cpp" line="127"/>
+        <source>warning: A valid version cannot be found in the configuration file.</source>
+        <translation>Attention: Une version valide ne peux être trouvé dans le fichier de configuration.</translation>
     </message>
 </context>
 <context>
@@ -1808,21 +1804,11 @@ Voulez-vous sauver les changements ?</translation>
     </message>
 </context>
 <context>
-    <name>RCSLogDialog</name>
+    <name>RCSLogWidget</name>
     <message>
-        <location filename="../ui/rcslogform.ui" line="25"/>
+        <location filename="../ui/rcslogform.ui" line="13"/>
         <source>RCS Log</source>
-        <translation>Journal de système de gestion de version</translation>
-    </message>
-    <message>
-        <location filename="../ui/rcslogform.ui" line="64"/>
-        <source>&amp;Abort</source>
-        <translation>&amp;Annuler</translation>
-    </message>
-    <message>
-        <location filename="../ui/rcslogform.ui" line="74"/>
-        <source>&amp;Close</source>
-        <translation>&amp;Fermer</translation>
+        <translation>Journal du système de gestion de version</translation>
     </message>
 </context>
 <context>
@@ -2199,9 +2185,9 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>XMLFileEditor</name>
     <message>
-        <location filename="../src/xmlfileeditor.cpp" line="54"/>
-        <source>Parse error column %1:%2</source>
-        <translation>Erreur de parsing à la colonne %1 : %2</translation>
+        <location filename="../src/xmlfileeditor.cpp" line="204"/>
+        <source>Parse error line %1 column %2 : %3</source>
+        <translation>Erreur de parsing à la ligne %1, et colonne %2 :%3</translation>
     </message>
 </context>
 <context>
