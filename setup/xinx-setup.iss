@@ -178,7 +178,7 @@ begin
     Replace( DefaultCVSPath, '/', '\' );
 
   if( DefaultMergePath = '' ) then
-	DefaultMergePath := ExpandConstant('{pf}\WinMerge\winmerge.exe')
+	DefaultMergePath := ExpandConstant('{pf}\WinMerge\WinmergeU.exe')
   else
     Replace( DefaultMergePath, '/', '\' );
 
@@ -304,5 +304,4 @@ begin
 
   Result := S;
 end;
-
 
