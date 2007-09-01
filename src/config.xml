@@ -1,46 +1,58 @@
-<config>
+<config classname="AppSettings" organization="Generix" application="XINX">
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
-	<type name="extentions">
-		<value name="customPath" type="string"/>
-		<value name="canBeSpecifique" type="bool"/>
+	<include>#include &lt;QApplication&gt;</include>
+	<type name="Extentions">
+		<value name="Custom Path" type="string"/>
+		<value name="Can Be Sepcifique" type="bool" default="yes"/>
 	</type>
-	<type name="formats" type="hash" typecle="string" typevalue="textcharformat"/>
-	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
-	<value name="Create Backup File" type="bool" default="yes"/>
-	<value name="Save Session By Default" type="bool" default="no"/>
-	<value name="Popup When File Modified" type="bool" default="yes"/>
-	<value name="Position" type="point" default="200,200"/>
-	<value name="Size" type="size" default="400,400"/>
-	<value name="State" type="blob"/>
-	<context name="Descriptions">
-		<value name="Object" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quote;../xml&quote; )"/>
-		<value name="Completion" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quote;../xml&quote; )"/>
-	</context>
-	<context name="Project">
-		<value name="Default Path" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quote;project&quote; )"/>
-		<value name="Alert when saving Standard File" type="string" default="yes"/>
+	<type name="Descriptions">
+		<value name="Object" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
+		<value name="Completion" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
+	</type>
+	<type name="Project">
+		<value name="Save With Session By Default" type="bool" default="no"/>
+		<value name="Default Path" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;project&quot; )"/>
+		<value name="Alert when saving Standard File" type="bool" default="yes"/>
 		<value name="Recent Project Files" type="stringlist"/>
 		<value name="Default Project Path Name" type="string" default="projet"/>
-	</context>
-	<context name="CVS"> 
+	</type>
+	<type name="CVS"> 
 		<value name="Progress Messages" type="string" default="-q"/>
 		<value name="Comression Level" type="int" default="9"/>
 		<value name="Prune Empty Directories" type="bool" default="no"/>
 		<value name="Create Directories" type="bool" default="yes"/>
-	</context>
-	<context name="Tools" type="hash" typecle="string" typevalue="string">
-		<value name="cvs" default="/usr/bin/cvs"/>
-		<value name="diff" default="/usr/bin/kompare"/>
-	</context>
-	<context name="Files" type="hash" typecle="string" typevalue="complex:extentions">
-		<value name="xml" default="customPath:;canBeSpecifique:yes"/>
-		<value name="xsl" default="customPath:;canBeSpecifique:yes"/>
-		<value name="fws" default="customPath:;canBeSpecifique:no"/>
-		<value name="js" default="customPath:js/;canBeSpecifique:yes"/>
-	</context>
-	<context name="Formats" type="hash" typecle="string" typevalue="complex:formats">
-		<value name="xml"/>
-		<value name="js"/>
-	</context>
+	</type>
+	<type name="Editor">
+		<value name="Autoindent On Pretty Print" type="bool" default="no"/>
+		<value name="Popup When File Modified" type="bool" default="yes"/>
+		<value name="Create Backup File" type="bool" default="yes"/>
+		<value name="Completion Level" type="int" default="0"/>
+        <value name="Tabulation Size" type="int" default="4"/>
+        <value name="Show Tabulation and space" type="bool" default="false"/>
+        <value name="Default format" type="textformat"/>
+	</type>
+	
+	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
+	
+	<value name="Position" type="point" default="200,200"/>
+	<value name="Size" type="size" default="400,400"/>
+	<value name="State" type="blob"/>
+	
+	<value name="Descriptions" type="complex:Descriptions"/>
+	<value name="Project" type="complex:Project"/>
+	<value name="CVS" type="complex:CVS"/>
+	<value name="Editor" type="complex:Editor"/>
+	
+	<value name="Tools" type="hash" typevalue="string">
+		<default name="cvs" default="/usr/bin/cvs"/>
+		<default name="diff" default="/usr/bin/kompare"/>
+	</value>
+	<value name="Files" type="hash" typevalue="complex:Extentions">
+		<default name="xml"/>
+		<default name="xsl"/>
+		<default name="fws" default="Can Be Sepcifique:no"/>
+		<default name="js" default="Custom Path:js/"/>
+	</value>
+	<value name="Formats" type="hash" typevalue="textformat"/>
 </config>

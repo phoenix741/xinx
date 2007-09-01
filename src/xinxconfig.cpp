@@ -21,7 +21,6 @@
 #include <QApplication>
 #include <QDir>
 #include <QLocale>
-#include <QSettings>
 
 #include "xinxconfig.h"
 #include "jshighlighter.h"
@@ -34,35 +33,10 @@ public:
 	PrivateXINXConfig( XINXConfig * parent );
 
 	QSettings * m_settings;
-
-	QPoint m_xinxPosition;
-	QSize m_xinxSize;
-	
-	QByteArray m_mainWindowState;
-	
-	QString m_lang;
-	bool m_createBackupFile;
-	bool m_alertWhenStdFile;
-	bool m_saveSessionByDefault;
-	bool m_popupWhenFileModified;
-	QString m_xinxProjectPath;
-	QString m_objectDescriptionPath;
-	QString m_defaultProjectPathName;
-	
-	QStringList m_recentProjectFiles;
-	
-	QList<struct XINXConfig::managedFile> m_managedFileList;
-	QHash<QString, struct XINXConfig::managedStructure> m_managedStrucureList;
-	
-	QHash<QString,QString> m_toolsPath;
-	
-	QString m_cvsProgressMessages;
-	int m_cvsCompressionLevel;
-	bool m_cvsPruneEmptyDirectories;
-	bool m_cvsCreateDirectories;
-	
 	void createSettings();
 	void deleteSettings();
+	
+	struct_globals m_globals;
 private:
 	XINXConfig * m_parent;
 };
@@ -83,6 +57,354 @@ void PrivateXINXConfig::deleteSettings() {
 
 /* XINXConfig */
 
+XinxAppSettings::XinxAppSettings() {
+	d = new PrivateXINXConfig( this );
+	
+	setDefault();
+}
+
+XinxAppSettings::~XinxAppSettings() {
+	delete d;
+}
+	
+struct_globals & XinxAppSettings::config() {
+	return d->m_globals;
+}
+
+void XinxAppSettings::setDefault() {
+	m_globals = getDefaultGlobals();
+}
+
+void XinxAppSettings::save() {
+	setSettingsGlobals( settings, "", d->m_globals );
+}
+
+void XinxAppSettings::load() {
+	m_globals = getSettingsGlobals( settings, "", getDefaultGlobals() );
+}
+
+struct_globals XinxAppSettings::getDefaultGlobals() {
+	struct_globals value;
+
+	value.size = QSize(400,400);
+	value.position = QPoint(200,200);
+	value.language = QLocale::system().name();
+
+	value.tools[ "cvs"  ] = "/usr/bin/cvs";
+	value.tools[ "diff" ] = "/usr/bin/kompare";
+
+	value.project = getDefaultProject();
+	value.descriptions = getDefaultDescriptions();
+	value.editor = getDefaultEditor();
+	value.cvs = getDefaultCvs();
+
+	value.files["xml"] = getDefaultExtentions();
+	value.files["xsl"] = getDefaultExtentions();
+	value.files["fws"] = getDefaultExtentions();
+	value.files["fws"].canBeSepcifique = false;
+	value.files["js"] = getDefaultExtentions();
+	value.files["js"].customPath = "js/";
+	
+	return value;
+}
+
+struct_project XinxAppSettings::getDefaultProject() {
+	struct_project value; 
+	
+	value.saveWithSessionByDefault = false; 
+	value.defaultPath = QDir( qApp.applicationDirPath() ).absoluteFilePath( "project" ); 
+	value.alertWhenSavingStandardFile = true; 
+	value.defaultProjectPathName = "projet"; 
+	
+	return value;
+}
+
+struct_descriptions XinxAppSettings::getDefaultDescriptions() {
+	struct_descriptions value; 
+	
+	value.object = QDir( qApp.applicationDirPath() ).absoluteFilePath( "../xml" ); 
+	value.completion = QDir( qApp.applicationDirPath() ).absoluteFilePath( "../xml" );
+	
+	return value;
+}
+
+struct_editor XinxAppSettings::getDefaultEditor() {
+	struct_editor value;
+
+	value.autoindentOnPrettyPrint = false;
+	value.popupWhenFileModified = true; 
+	value.createBackupFile = true; 
+	value.completionLevel = 0;
+	value.tabulationSize = 4; 
+	value.showTabulationAndSpace = false; 
+
+	return value;
+}
+
+struct_cvs XinxAppSettings::getDefaultCvs() {
+	struct_cvs value; 
+
+	value.progressMessages = "-q";
+	value.comressionLevel = 9; 
+	value.pruneEmptyDirectories = false; 
+	value.createDirectories = true;
+
+	return value;
+}
+
+struct_extentions XinxAppSettings::getDefaultExtentions() {
+	struct_extentions value; 
+
+	value.canBeSepcifique = true; 
+
+	return value;
+}
+
+
+struct_globals XinxAppSettings::getSettingsGlobals( QSettings * settings, const QString & path, struct_globals defaultValue ) {
+	struct_globals value;
+	
+	settings->beginGroup( path );
+
+	value.size = settings->value( "Size", defaultValue.size ).toSize();
+	value.position = settings->value( "Position", defaultValue.position ).toPoint();
+	value.language = settings->value( "Language", defaultValue.size ).toSize();
+
+	value.project = getSettingsProject( settings, "Project", getDefaultProject() );
+	value.descriptions = getSettingsDescriptions( settings, "Descriptions", getDefaultDescriptions() );
+	value.editor = getSettingsEditor( settings, "Editor", getDefaultEditor() );
+	value.cvs = getSettingsCvs( settings, "Cvs", getDefaultCvs() );
+
+	value.tools = getSettingsHash_QString( settings, "Tools", defaultValue.tools );
+	value.files = getSettingsHash_Extentions( settings, "Files", defaultValue.files );
+	value.formats = getSettingsHash_QTextCharFormat( settings, "Formats", defaultValue.formats );
+
+	settings->endGroup();
+
+	return value;
+}
+
+void XinxAppSettings::setSettingsGlobals( QSettings * settings, const QString & path, struct_globals value ) {
+	settings->beginGroup( path );
+
+	settings->setValue( "Size", value.size );
+	settings->setValue( "Position", value.position );
+	settings->setValue( "Language", value.size );
+
+	setSettingsProject( settings, "Project", value.project );
+	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
+	setSettingsEditor( settings, "Editor", value.editor );
+	setSettingsCvs( settings, "Cvs", value.cvs );
+
+	setSettingsHash_QString( settings, "Tools", value.tools );
+	setSettingsHash_Extentions( settings, "Files", value.files );
+	setSettingsHash_QTextCharFormat( settings, "Formats", value.formats );
+
+	settings->endGroup();
+}
+
+struct_project XinxAppSettings::getSettingsProject( QSettings * settings, const QString & path, struct_project defaultValue ) {
+	struct_project value; 
+	
+	settings->beginGroup( path );
+
+	value.saveWithSessionByDefault = settings->value( "Save With Session By Default", defaultValue.saveWithSessionByDefault ).toBool();
+	value.defaultPath = settings->value( "Default Path", defaultValue.defaultPath ).toString();
+	value.alertWhenSavingStandardFile = settings->value( "Alert when saving Standard File", defaultValue.alertWhenSavingStandardFile ).toBool();
+	value.recentProjectFiles = settings->value( "Recent Project Files", defaultValue.recentProjectFiles ).toStringList();
+	value.defaultProjectPathName = settings->value( "Default Project Path Name", defaultValue.defaultProjectPathName ).toString();
+
+	settings->endGroup();
+	
+	return value;
+}
+
+void XinxAppSettings::setSettingsProject( QSettings * settings, const QString & path, struct_project value ) {
+	
+}
+
+struct_descriptions XinxAppSettings::getSettingsDescriptions( QSettings * settings, const QString & path, struct_descriptions defaultValue ) {
+	struct_descriptions value; 
+	
+	settings->beginGroup( path );
+
+	value.object = settings->value( "Object", defaultValue.object ).toString();
+	value.completion = settings->value( "Completion", defaultValue.completion ).toString();
+
+	settings->endGroup();
+	
+	return value;
+}
+
+void XinxAppSettings::setSettingsDescriptions( QSettings * settings, const QString & path, struct_descriptions value ) {
+	
+}
+
+struct_editor XinxAppSettings::getSettingsEditor( QSettings * settings, const QString & path, struct_editor defaultValue ) {
+	struct_editor value; 
+	
+	settings->beginGroup( path );
+
+	value.autoindentOnPrettyPrint = settings->value( "Autoindent On Pretty Print", defaultValue.autoindentOnPrettyPrint ).toBool();
+	value.popupWhenFileModified = settings->value( "Popup When File Modified", defaultValue.popupWhenFileModified ).toBool();
+	value.createBackupFile = settings->value( "Create Backup File", defaultValue.createBackupFile ).toBool();
+	value.completionLevel = settings->value( "Completion Level", defaultValue.completionLevel ).toInt();
+	value.tabulationSize = settings->value( "Tabulation Size", defaultValue.tabulationSize ).toInt();
+	value.showTabulationAndSpace = settings->value( "Show Tabulation and space", defaultValue.showTabulationAndSpace ).toBool();
+	value.defaultFormat = getTextFormatFromSettings( settings, "Default Format", defaultValue.defaultFormat );
+
+	settings->endGroup();
+	
+	return value;
+}
+
+void XinxAppSettings::setSettingsEditor( QSettings * settings, const QString & path, struct_editor value ) {
+	
+}
+
+struct_cvs XinxAppSettings::getSettingsCvs( QSettings * settings, const QString & path, struct_cvs defaultValue ) {
+	struct_cvs value; 
+	
+	settings->beginGroup( path );
+
+	value.progressMessages = settings->value( "Progress Messages", defaultValue.progressMessages ).toString();
+	value.comressionLevel = settings->value( "Comression Level", defaultValue.comressionLevel ).toInt();
+	value.pruneEmptyDirectories = settings->value( "Prune Empty Directories", defaultValue.pruneEmptyDirectories ).toBool();
+	value.createDirectories = settings->value( "Create Directories", defaultValue.createDirectories ).toBool();
+
+	settings->endGroup();
+	
+	return value;
+}
+
+void XinxAppSettings::setSettingsCvs( QSettings * settings, const QString & path, struct_cvs value ) {
+	
+}
+
+struct_extentions XinxAppSettings::getSettingsExtentions( QSettings * settings, const QString & path, struct_extentions defaultValue ) {
+	struct_extentions value; 
+	
+	settings->beginGroup( path );
+
+	value.customPath = settings->value( "Custom Path", defaultValue.customPath ).toString();
+	value.canBeSepcifique = settings->value( "Can Be Sepcifique", defaultValue.canBeSepcifique ).toBool();
+	
+	settings->endGroup();
+
+	return value;
+}
+
+void XinxAppSettings::setSettingsExtentions( QSettings * settings, const QString & path, struct_extentions value ) {
+	
+}
+
+
+QTextCharFormat XinxAppSettings::getTextFormatFromSettings( QSettings * settings, const QString & path, QTextCharFormat defaultValue ) {
+	QTextCharFormat format;
+	settings->beginGroup( path );
+	
+	format.setFontFamily( settings->value( "family", defaultValue.fontFamily() ).toString() );
+	format.setFontItalic( settings->value( "italic", defaultValue.fontItalic() ).toBool() );
+	format.setFontOverline( settings->value( "overline", defaultValue.fontOverline() ).toBool() );
+	format.setFontStrikeOut( settings->value( "strikeOut", defaultValue.fontStrikeOut() ).toBool() );
+	format.setFontUnderline( settings->value( "underline", defaultValue.fontUnderline() ).toBool() );
+	format.setFontPointSize( settings->value( "size", defaultValue.fontPointSize() ).toDouble() );
+	format.setFontWeight( settings->value( "weight", defaultValue.fontWeight() ).toInt() );
+	format.setForeground( settings->value( "color", defaultValue.foreground() ).value<QColor>() );
+
+	settings->endGroup();
+	return format;
+}
+
+void XinxAppSettings::setTextFormatFromSettings( QSettings * settings, const QString & path, QTextCharFormat value ) {
+	settings->beginGroup( path );
+
+	settings->setValue( "family", value.fontFamily() );
+	settings->setValue( "italic", value.fontItalic() );
+	settings->setValue( "overline", value.fontOverline() );
+	settings->setValue( "strikeOut", value.fontStrikeOut() );
+	settings->setValue( "underline", value.fontUnderline() );
+	if( value.fontPointSize() > 0 )
+		settings->setValue( "size", value.fontPointSize() );
+	else
+		settings->remove( "size" );
+	settings->setValue( "weight", value.fontWeight() );
+	settings->setValue( "color", value.foreground() );
+
+	settings->endGroup();
+}
+
+QHash<QString,QString> XinxAppSettings::getSettingsHash_QString( QSettings * settings, const QString & path, QHash<QString,QString> defaultValue ) {
+	QHash<QString,QString> value;
+	settings->beginGroup( path );
+	
+	QStringList keys = settings->allKeys();
+	foreach( QString key, keys ) {
+		value[ key ] = settings->value( key, defaultValue[ key ] ).toString();		
+	}	
+	
+	settings->endGroup();
+	return value;
+}
+
+void XinxAppSettings::setSettingsHash_QString( QSettings * settings, const QString & path, QHash<QString,QString> value ) {
+	settings->beginGroup( path );
+	
+	foreach( QString key, value.keys() ) {
+		settings->setValue( key, value[ key ] );		
+	}	
+	
+	settings->endGroup();
+}
+
+QHash<QString,struct_extentions> XinxAppSettings::getSettingsHash_Extentions( QSettings * settings, const QString & path, QHash<QString,struct_extentions> defaultValue ) {
+	QHash<QString,QString> value;
+	settings->beginGroup( path );
+	
+	QStringList keys = settings->allKeys();
+	foreach( QString key, keys ) {
+		value[ key ] = getSettingsExtentions( settings, key, defaultValue[ key ] );		
+	}	
+	
+	settings->endGroup();
+	return value;
+}
+
+void XinxAppSettings::setSettingsHash_Extentions( QSettings * settings, const QString & path, QHash<QString,struct_extentions> value ) {
+	settings->beginGroup( path );
+	
+	foreach( QString key, value.keys() ) {
+		setSettingsExtentions( settings, key, value[ key ] );
+	}	
+	
+	settings->endGroup();
+}
+
+QHash<QString,QTextCharFormat> XinxAppSettings::getSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue ) {
+	QHash<QString,QString> value;
+	settings->beginGroup( path );
+	
+	QStringList keys = settings->allKeys();
+	foreach( QString key, keys ) {
+		value[ key ] = getTextFormatFromSettings( settings, key, defaultValue[ key ] );		
+	}	
+	
+	settings->endGroup();
+	return value;
+}
+
+void XinxAppSettings::setSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value ) {
+	settings->beginGroup( path );
+	
+	foreach( QString key, value.keys() ) {
+		setTextFormatFromSettings( settings, key, value[ key ] );
+	}	
+	
+	settings->endGroup();
+}
+
+
+/*
 XINXConfig::XINXConfig(  ) {
 	d = new PrivateXINXConfig( this );
 	
@@ -103,7 +425,7 @@ XINXConfig::XINXConfig(  ) {
 	structure.example = QObject::tr(
 								"<library name=\"xinx\">\n"
 								"	<book name=\"noname\">This is a description</book>\n"
-								"	<!--This is a comment ;) -->\n"
+								"	<!--This is a comment ;) -.\n"
 								"	<<book name=\"with error\">\n"
 								"</library>\n"
 								);
@@ -482,3 +804,4 @@ void XINXConfig::setCVSPruneEmptyDirectories( bool value ) {
 void XINXConfig::setCVSCreateDirectories( bool value ) {
 	d->m_cvsCreateDirectories = value;
 }
+*/
