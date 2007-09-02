@@ -52,9 +52,9 @@ public:
 	QHash<QString,QString> m_extentions;
 private:
 	XINXConfig * m_parent;
-}
+};
 
-PrivateXINXConfig::PrivateXINXConfig( XINXConfig * parent ) {
+PrivateXINXConfig::PrivateXINXConfig( XINXConfig * parent ) : m_parent( parent ) {
 	m_extentions[ "xsl" ] = QApplication::translate( "XINXConfig", "All XSL Stylesheet" );
 	m_extentions[ "js" ]  = QApplication::translate( "XINXConfig", "All JavaScript" );
 	m_extentions[ "fws" ] = QApplication::translate( "XINXConfig", "All Webservices input stream" );
@@ -119,21 +119,21 @@ struct_editor XINXConfig::getDefaultEditor() {
 }
 
 QString XINXConfig::filter( const QString & suffix ) {
-	return d->m_extentions[ suffix ] + " (*." + suffix + ")"
+	return d->m_extentions[ suffix ] + " (*." + suffix + ")";
 }
 
 QStringList XINXConfig::filters() {
 	QStringList result;
 	QString allExtentions;
 	
-	foreach( QString suffix, d->m_extentions->keys() ) {
+	foreach( QString suffix, d->m_extentions.keys() ) {
 		result << filter( suffix );
-		if( suffix != d->m_extentions->keys().last() )
+		if( suffix != d->m_extentions.keys().last() )
 			allExtentions += "*." + suffix + ";";
 		else
 			allExtentions += "*." + suffix;
 	}
-	result.insert( 0, tr("All managed file") + " (" + allExtentions + ")" );
+	result.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + allExtentions + ")" );
 	
 	return result;
 }

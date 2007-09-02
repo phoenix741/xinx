@@ -46,7 +46,7 @@ PrivateAppSettings::PrivateAppSettings( AppSettings * parent ) {
 }
 
 void PrivateAppSettings::createSettings() {
-	m_settings = new QSettings("Generix", "XINX");
+	m_settings = new QSettings("Editor", "XINX");
 }
 
 void PrivateAppSettings::deleteSettings() {
@@ -140,7 +140,7 @@ struct_descriptions AppSettings::getDefaultDescriptions() {
 struct_editor AppSettings::getDefaultEditor() {
 	struct_editor value;
 
-	value.autoindentOnPrettyPrint = false;
+	value.autoindentOnSaving = false;
 	value.popupWhenFileModified = true; 
 	value.createBackupFile = true; 
 	value.completionLevel = 0;
@@ -270,7 +270,7 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 	
 	settings->beginGroup( path );
 
-	value.autoindentOnPrettyPrint = settings->value( "Autoindent On Pretty Print", defaultValue.autoindentOnPrettyPrint ).toBool();
+	value.autoindentOnSaving = settings->value( "Autoindent On Saving", defaultValue.autoindentOnSaving ).toBool();
 	value.popupWhenFileModified = settings->value( "Popup When File Modified", defaultValue.popupWhenFileModified ).toBool();
 	value.createBackupFile = settings->value( "Create Backup File", defaultValue.createBackupFile ).toBool();
 	value.completionLevel = settings->value( "Completion Level", defaultValue.completionLevel ).toInt();
@@ -286,7 +286,7 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 void AppSettings::setSettingsEditor( QSettings * settings, const QString & path, struct_editor value ) {
 	settings->beginGroup( path );
 
-	settings->setValue( "Autoindent On Pretty Print", value.autoindentOnPrettyPrint );
+	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving );
 	settings->setValue( "Popup When File Modified", value.popupWhenFileModified );
 	settings->setValue( "Create Backup File", value.createBackupFile );
 	settings->setValue( "Completion Level", value.completionLevel );
@@ -389,6 +389,11 @@ QHash<QString,QString> AppSettings::getSettingsHash_QString( QSettings * setting
 	foreach( QString key, keys ) {
 		value[ key ] = settings->value( key, defaultValue[ key ] ).toString();		
 	}	
+	foreach( QString defaultValueKey, defaultValue.keys() ) {
+		if( ! value.contains( defaultValueKey ) ) {
+			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
+		}
+	}
 	
 	settings->endGroup();
 	return value;
@@ -412,6 +417,11 @@ QHash<QString,struct_extentions> AppSettings::getSettingsHash_Extentions( QSetti
 	foreach( QString key, keys ) {
 		value[ key ] = 	getSettingsExtentions( settings, key, defaultValue[ key ] );		
 	}	
+	foreach( QString defaultValueKey, defaultValue.keys() ) {
+		if( ! value.contains( defaultValueKey ) ) {
+			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
+		}
+	}
 	
 	settings->endGroup();
 	return value;
@@ -434,7 +444,12 @@ QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( QSe
 	QStringList keys = settings->allKeys();
 	foreach( QString key, keys ) {
 		value[ key ] = getTextFormatFromSettings( settings, key, defaultValue[ key ] );		
-	}	
+	}
+	foreach( QString defaultValueKey, defaultValue.keys() ) {
+		if( ! value.contains( defaultValueKey ) ) {
+			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
+		}
+	}
 	
 	settings->endGroup();
 	return value;

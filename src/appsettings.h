@@ -57,7 +57,7 @@ struct struct_cvs {
 };
 
 struct struct_editor {
-	bool autoindentOnPrettyPrint;
+	bool autoindentOnSaving;
 	bool popupWhenFileModified;
 	bool createBackupFile;
 	int completionLevel;

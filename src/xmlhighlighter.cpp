@@ -158,7 +158,7 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 					if (pos >= i - 1)
 					{
 						setFormat(i, 3, global.m_config->config().formats["xml_syntaxchar"]);
-						setFormat(i + 3, text.length() - i - 3, global.m_config->config().formats["comment"]);
+						setFormat(i + 3, text.length() - i - 3, global.m_config->config().formats["xml_comment"]);
 						setCurrentBlockState(InComment);
 						return;
 					}

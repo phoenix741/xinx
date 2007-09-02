@@ -29,6 +29,7 @@
 #include "../replacedialogimpl.h"
 #include "../rcslogdialogimpl.h"
 #include "../snipet.h"
+#include "../xinxconfig.h"
 
 // Qt header
 #include <QObject>
@@ -109,6 +110,9 @@ public:
 	bool m_yesToAllReplace, m_searchInverse;
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
+	
+	// Customize
+	struct_extentions extentionOfFileName( const QString & name );
 
 public slots:
 	// Actions

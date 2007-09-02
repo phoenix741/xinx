@@ -21,7 +21,6 @@
 // Xinx header
 #include "mainformimpl.h"
 #include "private/p_mainformimpl.h"
-#include "xinxconfig.h"
 #include "xslproject.h"
 #include "snipet.h"
 #include "snipetlist.h"
@@ -418,7 +417,7 @@ void PrivateMainformImpl::openFile( const QString & name, int line ) {
 void PrivateMainformImpl::openFile() {
 	Q_ASSERT( global.m_config );
 	
-	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), m_lastPlace, global.m_xinxConfig->dialogFilters().join(";;") );
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), m_lastPlace, global.m_config->filters().join(";;") );
 	
 	m_parent->m_tabEditors->setUpdatesEnabled( false );
 	foreach( QString filename, selectedFiles ) {
@@ -694,7 +693,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 	QString filename = QFileInfo( pathname ).fileName();
 	bool hasSpecifiqueName = global.m_project && 
 							 ( filename.startsWith( prefix.toLower() ) || filename.startsWith( prefix.toUpper() ) );
-	bool canBeCustomize = global.m_xinxConfig->managedFile4Name( filename ).canBeCustomize;
+	bool canBeCustomize = extentionOfFileName( filename ).canBeSpecifique;
 	
 	if( global.m_project && global.m_config->config().project.alertWhenSavingStandardFile && canBeCustomize && !hasSpecifiqueName ) {
 		QMessageBox::StandardButton res = QMessageBox::warning( m_parent, tr( "Save standard XSL" ), tr( "You're being to save standard file, do you whant make it specifique ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
@@ -714,9 +713,9 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 	QString fileName    = pathname,
 			fileSuffix  = suffix.isEmpty() ? QFileInfo( pathname ).completeSuffix() : suffix,
 			specifPath,
-			filter = global.m_xinxConfig->dialogFilter( fileSuffix ),
+			filter = global.m_config->filter( fileSuffix ),
 			newFileName;
-	struct XINXConfig::managedFile customFile = global.m_xinxConfig->managedFile4Suffix( fileSuffix );
+	struct_extentions customFile = extentionOfFileName( fileSuffix );
 
 	if( global.m_project ) 
 		specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( customFile.customPath );
@@ -734,7 +733,7 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() ) ||
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toUpper() ) );
 			
-		if( customFile.canBeCustomize && (!isCustomized) ) {
+		if( customFile.canBeSpecifique && (!isCustomized) ) {
 			newFileName = QDir( specifPath ).
 				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 		} else {
@@ -742,7 +741,7 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 		}
 	}
 	
-	fileName = QFileDialog::getSaveFileName( m_parent, tr("Save text file"), newFileName, global.m_xinxConfig->dialogFilters().join(";;"), &filter );
+	fileName = QFileDialog::getSaveFileName( m_parent, tr("Save text file"), newFileName, global.m_config->filters().join(";;"), &filter );
 	
 	if( !fileName.isEmpty() ) {
 		m_lastPlace = QFileInfo( fileName ).absolutePath();
@@ -770,7 +769,7 @@ QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, 
 	QString newfilename = QFileInfo( newname ).fileName();
 	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix.toLower() ) || oldfilename.startsWith( prefix.toUpper() );
 	bool isNewSpecifiqueFile = newfilename.startsWith( prefix.toLower() ) || newfilename.startsWith( prefix.toUpper() );
-	QString specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( global.m_xinxConfig->managedFile4Name( oldfilename ).customPath );
+	QString specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( extentionOfFileName( oldfilename ).customPath );
 	QString destname = QDir( specifPath ).absoluteFilePath( oldfilename );
 
 	if( ( ! isOldSpecifiqueFile ) && isNewSpecifiqueFile ) {
@@ -1157,6 +1156,15 @@ void PrivateMainformImpl::rcsLogTerminated() {
 		rcs->disconnect();
 	updateActions();
 }
+
+struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name ) {
+	int dotPosition = name.lastIndexOf( name );
+	QString suffix = name.toLower();
+	if( dotPosition >= 0 )
+		suffix = suffix.mid( dotPosition + 1 );
+	return global.m_config->config().files[ suffix ];
+}
+
 
 /* MainformImpl */
 

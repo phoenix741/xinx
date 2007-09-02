@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "texteditor.h"
 
+// Qt header
 #include <QSyntaxHighlighter>
 #include <QKeyEvent>
 
@@ -27,6 +29,7 @@
 
 TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) { 
 	// Setup the main view
+	
 	QFont font;
 	font.setFamily( "Monospace" );
 	font.setFixedPitch( true );
