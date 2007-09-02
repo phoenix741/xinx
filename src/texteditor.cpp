@@ -20,6 +20,8 @@
 
 // Xinx header
 #include "texteditor.h"
+#include "globals.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QSyntaxHighlighter>
@@ -30,18 +32,18 @@
 TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) { 
 	// Setup the main view
 	
-	QFont font;
-	font.setFamily( "Monospace" );
-	font.setFixedPitch( true );
-	font.setPointSize( 8 );
-  
 	setAcceptRichText(false);
-
-	setFont( font );
-	setTabStopWidth( 15 );
+	updateFont();
 }
 
 TextEditor::~TextEditor() {
+}
+
+void TextEditor::updateFont() {
+	QFont font = global.m_config->config().editor.defaultFormat;
+	QFontMetrics fm( font );
+	setFont( font );
+	setTabStopWidth( fm.width("M") * global.m_config->config().editor.tabulationSize );
 }
 
 QAbstractItemModel * TextEditor::model() {

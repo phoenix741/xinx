@@ -127,6 +127,13 @@ void PrivateCustomDialogImpl::showConfig() {
 		m_parent->m_formatsListView->addItem( key );
 	}
 	m_parent->m_formatsListView->setCurrentRow( 0 );
+	
+	// Extetions
+	m_parent->m_extentionsListWidget->clear();
+	foreach( QString key, m_config.config().files.keys() ) {
+		m_parent->m_extentionsListWidget->addItem( m_config.filter( key ) );
+	}
+	m_parent->m_extentionsListWidget->setCurrentRow( 0 );
 }
 
 void PrivateCustomDialogImpl::storeConfig() {
@@ -554,6 +561,7 @@ void CustomDialogImpl::on_m_changeApplicationDescriptionPathBtn_clicked() {
 }
 
 void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) {
+	if( currentRow < 0 ) return ;
 	QString token = m_formatsListView->item( currentRow )->text(), format;
 	int posUnderline = token.indexOf( "_" );
 	format = token.left( posUnderline );
@@ -648,4 +656,44 @@ void CustomDialogImpl::on_m_underlineCheckBox_toggled(bool checked) {
 	d->m_config.config().formats[ token ].setFontUnderline( checked );
 	if( d->m_highlighter )
 		d->m_highlighter->rehighlight();
+}
+
+void CustomDialogImpl::on_m_extentionsListWidget_currentRowChanged(int currentRow) {
+	if( currentRow < 0 ) return ;
+	QRegExp exp("^.*\\(\\*\\.(.*)\\).*$");
+	QString suffix, currentText = m_extentionsListWidget->item( currentRow )->text();
+	int index = exp.indexIn( currentText );
+
+	if( index >= 0 ) {
+		suffix = exp.cap( 1 );
+		m_canBeSpecifiqueCheckBox->setChecked( d->m_config.config().files[ suffix ].canBeSpecifique );
+		m_subDirectoryLineEdit->setText( d->m_config.config().files[ suffix ].customPath );
+	}
+}
+
+void CustomDialogImpl::on_m_canBeSpecifiqueCheckBox_toggled(bool checked) {
+	QRegExp exp("^.*\\(\\*\\.(.*)\\).*$");
+	QString suffix, currentText = m_extentionsListWidget->item( m_extentionsListWidget->currentRow() )->text();
+	int index = exp.indexIn( currentText );
+
+	if( index >= 0 ) {
+		suffix = exp.cap( 1 );
+		d->m_config.config().files[ suffix ].canBeSpecifique = checked;
+	}
+}
+
+void CustomDialogImpl::on_m_subDirectoryLineEdit_textChanged(QString text) {
+	QRegExp exp("^.*\\(\\*\\.(.*)\\).*$");
+	QString suffix, currentText = m_extentionsListWidget->item( m_extentionsListWidget->currentRow() )->text();
+	int index = exp.indexIn( currentText );
+
+	if( index >= 0 ) {
+		suffix = exp.cap( 1 );
+		d->m_config.config().files[ suffix ].customPath = text;
+	}
+}
+
+void CustomDialogImpl::on_m_defaultPushButton_clicked() {
+	d->m_config.setDefault();
+	d->showConfig();
 }

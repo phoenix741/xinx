@@ -699,7 +699,7 @@ p, li { white-space: pre-wrap; }
            <number>6</number>
           </property>
           <item row="0" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_CanBeSpecifiqueCcheckBox" >
+           <widget class="QCheckBox" name="m_canBeSpecifiqueCheckBox" >
             <property name="whatsThis" >
              <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
@@ -997,7 +997,7 @@ p, li { white-space: pre-wrap; }
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton" >
+      <widget class="QPushButton" name="m_defaultPushButton" >
        <property name="text" >
         <string>&amp;Default</string>
        </property>
@@ -1041,7 +1041,7 @@ p, li { white-space: pre-wrap; }
  </customwidgets>
  <tabstops>
   <tabstop>okButton</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>m_defaultPushButton</tabstop>
   <tabstop>m_tabWidget</tabstop>
   <tabstop>m_descriptionPathLineEdit</tabstop>
   <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
@@ -1067,7 +1067,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>m_changeProjectPathBtn</tabstop>
   <tabstop>m_lineEditDefaultProjectPathName</tabstop>
   <tabstop>m_extentionsListWidget</tabstop>
-  <tabstop>m_CanBeSpecifiqueCcheckBox</tabstop>
+  <tabstop>m_canBeSpecifiqueCheckBox</tabstop>
   <tabstop>m_subDirectoryLineEdit</tabstop>
   <tabstop>m_CVSToolsLineEdit</tabstop>
   <tabstop>m_cvsToolBtn</tabstop>
@@ -1116,7 +1116,7 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>m_CanBeSpecifiqueCcheckBox</sender>
+   <sender>m_canBeSpecifiqueCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>m_subDirectoryLineEdit</receiver>
    <slot>setEnabled(bool)</slot>

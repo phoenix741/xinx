@@ -430,7 +430,9 @@ bool FileEditor::saveFile( const QString & fileName ){
 		return false;
 	}
 	QApplication::setOverrideCursor(Qt::WaitCursor);
-
+	
+	if( global.m_config->config().editor.autoindentOnSaving )
+		autoIndent();
 	QTextStream out ( &file );
 	out << m_view->toPlainText();
 	file.flush();

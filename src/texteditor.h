@@ -42,9 +42,9 @@ public:
 	int currentRow();
 	
 	void insertText( const QString & text );
-
 public slots:
 	virtual void updateModel();
+	virtual void updateFont();
 	
 signals:
 	void modelUpdated( QAbstractItemModel *  model );

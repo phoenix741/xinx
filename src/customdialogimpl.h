@@ -52,39 +52,11 @@ public:
 	 * \param config The config file where to store options
 	 */
 	void saveToConfig( XINXConfig * config );
-private slots:/*
-	void on_m_lineEditDefaultProjectPathName_textChanged(QString );
-	void on_m_cvsCompressionComboBox_currentIndexChanged(int index);
-	void on_m_cvsPruneCheckBox_toggled(bool checked);
-	void on_m_cvsVerboseComboBox_currentIndexChanged(int index);
-	void on_m_cvsCreateDirCheckBox_toggled(bool checked);
-	void on_m_cvsToolButton_clicked();
-	void on_m_CVSToolsLineEdit_textChanged(QString );
-	void on_m_mergeToolLineEdit_textChanged( QString );
-	void on_m_mergeToolButton_clicked();
-	void on_m_saveSessionCheckBox_toggled(bool checked);
-	void on_m_popupWhenFileModifiedCheckBox_toggled(bool checked);
-	void on_m_changeObjectPathBtn_clicked();
-	void on_m_changeProjectPathBtn_clicked();
-	void on_m_objectDescriptionPathLineEdit_textChanged(QString );
-	void on_m_underlineCheckBox_toggled(bool checked);
-	void on_m_StrikeoutCheckBox_toggled(bool checked);
-	void on_m_italicCheckBox_toggled(bool checked);
-	void on_m_boldCheckBox_toggled(bool checked);
-	void on_m_fontComboBox_currentFontChanged(QFont f);
-	void on_m_projectPathLineEdit_textChanged(QString );
-	void on_m_fileTypePath_textChanged(QString );
-	void on_m_specifiqueCheckBox_toggled(bool checked);
-	void on_m_createBakCheckBox_toggled(bool checked);
-	void on_m_alertStandardCheckBox_toggled(bool checked);
-	void on_m_langComboBox_currentIndexChanged(QString );
-	void on_m_fileTypeComboBox_currentIndexChanged(int);
-	void on_m_syntaxFileTypeComboBox_currentIndexChanged(QString);
-	void on_m_syntaxTypeComboBox_currentIndexChanged(QString);
-	void on_m_colorComboBox_activated( QColor c );
-	void on_m_fontSizeSpinBox_valueChanged( double value );*/
-
 private slots:
+	void on_m_defaultPushButton_clicked();
+	void on_m_canBeSpecifiqueCheckBox_toggled(bool checked);
+	void on_m_subDirectoryLineEdit_textChanged(QString );
+	void on_m_extentionsListWidget_currentRowChanged(int currentRow);
 	void on_m_colorComboBox_activated(QColor color);
 	void on_m_boldCheckBox_toggled(bool checked);
 	void on_m_italicCheckBox_toggled(bool checked);
