@@ -527,12 +527,12 @@ void PrivateMainformImpl::updateRecentFiles() {
 }
 
 void PrivateMainformImpl::updateRecentProjects() {
-	int numRecentFiles = qMin( global.m_xinxConfig->recentProjectFiles().size(), MAXRECENTFILES );
+	int numRecentFiles = qMin( global.m_config->config().project.recentProjectFiles.size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_xinxConfig->recentProjectFiles()[i] ).fileName() );
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_config->config().project.recentProjectFiles[i] ).fileName() );
 		m_recentProjectActs[i]->setText( text );
-		m_recentProjectActs[i]->setData( global.m_xinxConfig->recentProjectFiles()[i] );
+		m_recentProjectActs[i]->setData( global.m_config->config().project.recentProjectFiles[i] );
 		m_recentProjectActs[i]->setVisible( true );
 	}
 	
@@ -602,21 +602,24 @@ void PrivateMainformImpl::createShortcut() {
 }
 
 void PrivateMainformImpl::readWindowSettings() {
-	m_parent->resize( global.m_xinxConfig->size() );
-	m_parent->move( global.m_xinxConfig->position() );
+	m_parent->resize( global.m_config->config().size );
+	m_parent->move( global.m_config->config().position );
+	if( global.m_config->config().maximized )
+		m_parent->setWindowState( m_parent->windowState() ^ Qt::WindowMaximized );
   
-	if( ! global.m_xinxConfig->storedMainWindowState().isEmpty() ) {
-		m_parent->restoreState( global.m_xinxConfig->storedMainWindowState() );
+	if( ! global.m_config->config().state.isEmpty() ) {
+		m_parent->restoreState( global.m_config->config().state );
 	}
 }
 
 void PrivateMainformImpl::storeWindowSettings() {
-	global.m_xinxConfig->storeMainWindowState( m_parent->saveState() );
+	global.m_config->config().state = m_parent->saveState();
 	
-	global.m_xinxConfig->setPosition( m_parent->pos() );
-	global.m_xinxConfig->setSize( m_parent->size() );
+	global.m_config->config().position = m_parent->pos();
+	global.m_config->config().size = m_parent->size();
+	global.m_config->config().maximized = m_parent->isMaximized();
 	
-	global.m_xinxConfig->save();
+	global.m_config->save();
 }
 
 void PrivateMainformImpl::createTabEditorButton() {
@@ -685,7 +688,7 @@ bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
 }
 
 QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname ) {
-	Q_ASSERT( global.m_xinxConfig );
+	Q_ASSERT( global.m_config );
 	
 	QString prefix = global.m_project ? global.m_project->specifPrefix() + "_" : "" ;
 	QString filename = QFileInfo( pathname ).fileName();
@@ -693,7 +696,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 							 ( filename.startsWith( prefix.toLower() ) || filename.startsWith( prefix.toUpper() ) );
 	bool canBeCustomize = global.m_xinxConfig->managedFile4Name( filename ).canBeCustomize;
 	
-	if( global.m_project && global.m_xinxConfig->isAlertWhenStdFile() && canBeCustomize && !hasSpecifiqueName ) {
+	if( global.m_project && global.m_config->config().project.alertWhenSavingStandardFile && canBeCustomize && !hasSpecifiqueName ) {
 		QMessageBox::StandardButton res = QMessageBox::warning( m_parent, tr( "Save standard XSL" ), tr( "You're being to save standard file, do you whant make it specifique ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
 		if( res == QMessageBox::Cancel )
 			return QString();
@@ -705,7 +708,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 }
 
 QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QString & suffix ) {
-	Q_ASSERT( global.m_xinxConfig );
+	Q_ASSERT( global.m_config );
 	Q_ASSERT( ! ( pathname.isEmpty() && suffix.isEmpty() ) );
 	
 	QString fileName    = pathname,
@@ -1111,7 +1114,7 @@ void PrivateMainformImpl::updateTitle() {
 }
 
 void PrivateMainformImpl::openProject() {
-	QString fileName = QFileDialog::getOpenFileName( m_parent, tr("Open a project"), global.m_xinxConfig->xinxProjectPath(), "Projet (*.prj)" );
+	QString fileName = QFileDialog::getOpenFileName( m_parent, tr("Open a project"), global.m_config->config().project.defaultPath, "Projet (*.prj)" );
 	if( ! fileName.isEmpty() )
 		m_parent->openProject( fileName );
 }
@@ -1133,7 +1136,7 @@ void PrivateMainformImpl::projectProperty() {
 }
 
 void PrivateMainformImpl::closeProject() {
-	closeProject( global.m_xinxConfig->saveSessionByDefault() );
+	closeProject( global.m_config->config().project.saveWithSessionByDefault );
 }
 
 void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {

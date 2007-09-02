@@ -47,12 +47,12 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 		if (pos >= 0) {
 			// end comment found
 //			const int iLength = expression.matchedLength();
-			setFormat(0, pos, globals.m_config.config().globals.formats["xml_comment"]);
-			setFormat(pos, 3, globals.m_config.config().globals.formats["xml_syntaxchar"]);
+			setFormat(0, pos, global.m_config->config().formats["xml_comment"]);
+			setFormat(pos, 3, global.m_config->config().formats["xml_syntaxchar"]);
 			i += pos + 3; // skip comment
 		} else {
 			// in comment
-			setFormat(0, text.length(), globals.m_config.config().globals.formats["xml_comment"]);
+			setFormat(0, text.length(), global.m_config->config().formats["xml_comment"]);
 			setCurrentBlockState(InComment);
 			return;
 		}
@@ -63,21 +63,21 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 		case '<':
 			brackets++;
 			if (brackets == 1) {
-				setFormat(i, 1, globals.m_config.config().globals.formats[ "xml_syntaxchar" ]);
+				setFormat(i, 1, global.m_config->config().formats[ "xml_syntaxchar" ]);
 				state = ExpectElementNameOrSlash;
 			} else {
 				// wrong bracket nesting
-				setFormat(i, 1, globals.m_config.config().globals.formats[ "xml_error" ]);
+				setFormat(i, 1, global.m_config->config().formats[ "xml_error" ]);
 			}
 			break;
 
 		case '>':
 			brackets--;
 			if (brackets == 0) {
-				setFormat(i, 1, globals.m_config.config().globals.formats[ "xml_syntaxchar" ]);
+				setFormat(i, 1, global.m_config->config().formats[ "xml_syntaxchar" ]);
 			} else {
 				// wrong bracket nesting
-				setFormat( i, 1, globals.m_config.config().globals.formats["xml_error"] );
+				setFormat( i, 1, global.m_config->config().formats["xml_error"] );
 			}
 			state = NoState;
 			break;
@@ -85,10 +85,10 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 		case '/':
 			if (state == ExpectElementNameOrSlash) {
 				state = ExpectElementName;
-				setFormat(i, 1, globals.m_config.config().globals.formats[ "xml_syntaxchar" ]);
+				setFormat(i, 1, global.m_config->config().formats[ "xml_syntaxchar" ]);
 			} else {
 				if (state == ExpectAttributeOrEndOfElement) {
-					setFormat(i, 1, globals.m_config.config().globals.formats[ "xml_syntaxchar" ]);
+					setFormat(i, 1, global.m_config->config().formats[ "xml_syntaxchar" ]);
 				} else {
 					processDefaultText(i, text);
 				}
@@ -98,7 +98,7 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 		case '=':
 			if (state == ExpectEqual) {
 				state = ExpectAttributeValue;
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_other"]);
+				setFormat(i, 1, global.m_config->config().formats["xml_other"]);
 			} else {
 				processDefaultText(i, text);  
 			}
@@ -109,10 +109,10 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 			if (state == ExpectAttributeValue) {
 				m_quoteType = text.at(i);
 				state = ExpectAttributeTextOrPath;
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_syntaxchar"]);
+				setFormat(i, 1, global.m_config->config().formats["xml_syntaxchar"]);
 			} else if( ( state == ExpectAttributeTextOrPath ) && ( m_quoteType == text.at(i) ) ) {
 				state = ExpectAttributeOrEndOfElement;
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_syntaxchar"]);
+				setFormat(i, 1, global.m_config->config().formats["xml_syntaxchar"]);
 			} else {
 				processDefaultText(i, text);
 			}
@@ -120,14 +120,14 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 		case '{' :
 			if( state == ExpectAttributeTextOrPath ) {
 				state = ExpectPathTextOrEndOfPath;
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_attributevalue" ] );
+				setFormat(i, 1, global.m_config->config().formats["xml_attributevalue" ] );
 			} else
 				processDefaultText(i, text);
 			break;
 		case '}' :
 			if( state == ExpectPathTextOrEndOfPath ) {
 				state = ExpectAttributeTextOrPath;
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_attributevalue"]);
+				setFormat(i, 1, global.m_config->config().formats["xml_attributevalue"]);
 			} else
 				processDefaultText(i, text);
 			break;
@@ -141,9 +141,9 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 				{
 					const int iLength = expression.matchedLength();
 
-					setFormat(pos, 4, globals.m_config.config().globals.formats["xml_syntaxchar"]);
-					setFormat(pos + 4, iLength - 7, globals.m_config.config().globals.formats["xml_comment"]);
-					setFormat(pos + iLength - 3, 3, globals.m_config.config().globals.formats["xml_syntaxchar"]);
+					setFormat(pos, 4, global.m_config->config().formats["xml_syntaxchar"]);
+					setFormat(pos + 4, iLength - 7, global.m_config->config().formats["xml_comment"]);
+					setFormat(pos + iLength - 3, 3, global.m_config->config().formats["xml_syntaxchar"]);
 					i += iLength - 2; // skip comment
 					state = NoState;
 					brackets--;
@@ -157,8 +157,8 @@ void XmlHighlighter::highlightBlock( const QString& text ) {
 					//if (pos == i - 1) // comment found ?
 					if (pos >= i - 1)
 					{
-						setFormat(i, 3, globals.m_config.config().globals.formats["xml_syntaxchar"]);
-						setFormat(i + 3, text.length() - i - 3, globals.m_config.config().globals.formats["comment"]);
+						setFormat(i, 3, global.m_config->config().formats["xml_syntaxchar"]);
+						setFormat(i + 3, text.length() - i - 3, global.m_config->config().formats["comment"]);
 						setCurrentBlockState(InComment);
 						return;
 					}
@@ -207,12 +207,12 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			{
 				iLength = expression.matchedLength();
 
-				setFormat(pos, iLength, globals.m_config.config().globals.formats["xml_elementname"]);
+				setFormat(pos, iLength, global.m_config->config().formats["xml_elementname"]);
 				state = ExpectAttributeOrEndOfElement;
 			}
 			else
 			{
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_other"]);
+				setFormat(i, 1, global.m_config->config().formats["xml_other"]);
 			}
 		}  
 		break;
@@ -227,12 +227,12 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			{
 				iLength = expression.matchedLength();
 
-				setFormat(pos, iLength, globals.m_config.config().globals.formats["xml_attributename"]);
+				setFormat(pos, iLength, global.m_config->config().formats["xml_attributename"]);
 				state = ExpectEqual;
 			}
 			else
 			{
-				setFormat(i, 1, globals.m_config.config().globals.formats["xml_other"]);
+				setFormat(i, 1, global.m_config->config().formats["xml_other"]);
 			}
 		}
 		break;
@@ -242,9 +242,9 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			
 			if( pos == i ) {
 				iLength = expression.matchedLength() - 1;
-				setFormat( pos, iLength, globals.m_config.config().globals.formats["xml_attributevalue"]);
+				setFormat( pos, iLength, global.m_config->config().formats["xml_attributevalue"]);
 			} else
-				setFormat( i, 1, globals.m_config.config().globals.formats["xml_other"] );
+				setFormat( i, 1, global.m_config->config().formats["xml_other"] );
 		}
 		break;
 	case ExpectPathTextOrEndOfPath: {
@@ -253,13 +253,13 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			
 			if( pos == i ) {
 				iLength = expression.matchedLength() - 1;
-				setFormat( pos, iLength, globals.m_config.config().globals.formats["xml_xpathvalue"]);
+				setFormat( pos, iLength, global.m_config->config().formats["xml_xpathvalue"]);
 			} else
-				setFormat( i, 1, globals.m_config.config().globals.formats["xml_other"] );
+				setFormat( i, 1, global.m_config->config().formats["xml_other"] );
 		}
 		break;
 	default:
-		setFormat( i, 1, globals.m_config.config().globals.formats["xml_other"] );
+		setFormat( i, 1, global.m_config->config().formats["xml_other"] );
 		break;
 	}
 	return iLength;

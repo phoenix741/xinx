@@ -4,7 +4,7 @@
 	<include>#include &lt;QApplication&gt;</include>
 	<type name="Extentions">
 		<value name="Custom Path" type="string"/>
-		<value name="Can Be Sepcifique" type="bool" default="yes"/>
+		<value name="Can Be Specifique" type="bool" default="yes"/>
 	</type>
 	<type name="Descriptions">
 		<value name="Object" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
@@ -19,7 +19,7 @@
 	</type>
 	<type name="CVS"> 
 		<value name="Progress Messages" type="string" default="-q"/>
-		<value name="Comression Level" type="int" default="9"/>
+		<value name="Compression Level" type="int" default="9"/>
 		<value name="Prune Empty Directories" type="bool" default="no"/>
 		<value name="Create Directories" type="bool" default="yes"/>
 	</type>
@@ -37,6 +37,7 @@
 	
 	<value name="Position" type="point" default="200,200"/>
 	<value name="Size" type="size" default="400,400"/>
+    <value name="Maximized" type="bool" default="no"/>
 	<value name="State" type="blob"/>
 	
 	<value name="Descriptions" type="complex:Descriptions"/>

@@ -22,7 +22,7 @@
 #include <QDir>
 #include <QLocale>
 
-#include "xinxconfig.h"
+#include "appsettings.h"
 #include "jshighlighter.h"
 #include "xmlhighlighter.h"
 
@@ -38,7 +38,7 @@ public:
 	
 	struct_globals m_globals;
 private:
-	XINXConfig * m_parent;
+	AppSettings * m_parent;
 };
 
 PrivateAppSettings::PrivateAppSettings( AppSettings * parent ) {
@@ -58,13 +58,13 @@ void PrivateAppSettings::deleteSettings() {
 /* XINXConfig */
 
 AppSettings::AppSettings( const AppSettings & origine ) {
-	d = new PrivateXINXConfig( this );
+	d = new PrivateAppSettings( this );
 	d->m_globals = origine.d->m_globals;
 }
 
 
 AppSettings::AppSettings() {
-	d = new PrivateXINXConfig( this );
+	d = new PrivateAppSettings( this );
 }
 
 AppSettings::~AppSettings() {
@@ -76,24 +76,25 @@ struct_globals & AppSettings::config() {
 }
 
 void AppSettings::setDefault() {
-	m_globals = getDefaultGlobals();
+	d->m_globals = getDefaultGlobals();
 }
 
 void AppSettings::save() {
-	createSettings();
-	setSettingsGlobals( settings, "", d->m_globals );
-	deleteSettings();
+	d->createSettings();
+	setSettingsGlobals( d->m_settings, "", d->m_globals );
+	d->deleteSettings();
 }
 
 void AppSettings::load() {
-	createSettings();
-	m_globals = getSettingsGlobals( settings, "", getDefaultGlobals() );
-	deleteSettings();
+	d->createSettings();
+	d->m_globals = getSettingsGlobals( d->m_settings, "", getDefaultGlobals() );
+	d->deleteSettings();
 }
 
 struct_globals AppSettings::getDefaultGlobals() {
 	struct_globals value;
 
+	value.maximized = false;
 	value.size = QSize(400,400);
 	value.position = QPoint(200,200);
 	value.language = QLocale::system().name();
@@ -109,7 +110,7 @@ struct_globals AppSettings::getDefaultGlobals() {
 	value.files["xml"] = getDefaultExtentions();
 	value.files["xsl"] = getDefaultExtentions();
 	value.files["fws"] = getDefaultExtentions();
-	value.files["fws"].canBeSepcifique = false;
+	value.files["fws"].canBeSpecifique = false;
 	value.files["js"] = getDefaultExtentions();
 	value.files["js"].customPath = "js/";
 	
@@ -120,7 +121,7 @@ struct_project AppSettings::getDefaultProject() {
 	struct_project value; 
 	
 	value.saveWithSessionByDefault = false; 
-	value.defaultPath = QDir( qApp.applicationDirPath() ).absoluteFilePath( "project" ); 
+	value.defaultPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" ); 
 	value.alertWhenSavingStandardFile = true; 
 	value.defaultProjectPathName = "projet"; 
 	
@@ -130,8 +131,8 @@ struct_project AppSettings::getDefaultProject() {
 struct_descriptions AppSettings::getDefaultDescriptions() {
 	struct_descriptions value; 
 	
-	value.object = QDir( qApp.applicationDirPath() ).absoluteFilePath( "../xml" ); 
-	value.completion = QDir( qApp.applicationDirPath() ).absoluteFilePath( "../xml" );
+	value.object = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" ); 
+	value.completion = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
 	
 	return value;
 }
@@ -153,7 +154,7 @@ struct_cvs AppSettings::getDefaultCvs() {
 	struct_cvs value; 
 
 	value.progressMessages = "-q";
-	value.comressionLevel = 9; 
+	value.compressionLevel = 9; 
 	value.pruneEmptyDirectories = false; 
 	value.createDirectories = true;
 
@@ -163,7 +164,7 @@ struct_cvs AppSettings::getDefaultCvs() {
 struct_extentions AppSettings::getDefaultExtentions() {
 	struct_extentions value; 
 
-	value.canBeSepcifique = true; 
+	value.canBeSpecifique = true; 
 
 	return value;
 }
@@ -174,9 +175,10 @@ struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QStr
 	
 	settings->beginGroup( path );
 
+	value.maximized = settings->value( "Maximized", defaultValue.maximized ).toBool();
 	value.size = settings->value( "Size", defaultValue.size ).toSize();
 	value.position = settings->value( "Position", defaultValue.position ).toPoint();
-	value.language = settings->value( "Language", defaultValue.size ).toSize();
+	value.language = settings->value( "Language", defaultValue.size ).toString();
 
 	value.project = getSettingsProject( settings, "Project", getDefaultProject() );
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", getDefaultDescriptions() );
@@ -195,6 +197,7 @@ struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QStr
 void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path, struct_globals value ) {
 	settings->beginGroup( path );
 
+	settings->setValue( "Maximized", value.maximized );
 	settings->setValue( "Size", value.size );
 	settings->setValue( "Position", value.position );
 	settings->setValue( "Language", value.size );
@@ -228,7 +231,16 @@ struct_project AppSettings::getSettingsProject( QSettings * settings, const QStr
 }
 
 void AppSettings::setSettingsProject( QSettings * settings, const QString & path, struct_project value ) {
-	
+	settings->beginGroup( path );
+
+	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault );
+	settings->setValue( "Default Path", value.defaultPath );
+	settings->setValue( "Alert when saving Standard File", value.alertWhenSavingStandardFile );
+	settings->setValue( "Recent Project Files", value.recentProjectFiles );
+	settings->setValue( "Default Project Path Name", value.defaultProjectPathName );
+
+	settings->endGroup();
+
 }
 
 struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, const QString & path, struct_descriptions defaultValue ) {
@@ -291,7 +303,7 @@ struct_cvs AppSettings::getSettingsCvs( QSettings * settings, const QString & pa
 	settings->beginGroup( path );
 
 	value.progressMessages = settings->value( "Progress Messages", defaultValue.progressMessages ).toString();
-	value.comressionLevel = settings->value( "Comression Level", defaultValue.comressionLevel ).toInt();
+	value.compressionLevel = settings->value( "Comression Level", defaultValue.compressionLevel ).toInt();
 	value.pruneEmptyDirectories = settings->value( "Prune Empty Directories", defaultValue.pruneEmptyDirectories ).toBool();
 	value.createDirectories = settings->value( "Create Directories", defaultValue.createDirectories ).toBool();
 
@@ -304,7 +316,7 @@ void AppSettings::setSettingsCvs( QSettings * settings, const QString & path, st
 	settings->beginGroup( path );
 
 	settings->setValue( "Progress Messages", value.progressMessages );
-	settings->setValue( "Comression Level", value.comressionLevel );
+	settings->setValue( "Comression Level", value.compressionLevel );
 	settings->setValue( "Prune Empty Directories", value.pruneEmptyDirectories );
 	settings->setValue( "Create Directories", value.createDirectories );
 
@@ -317,7 +329,7 @@ struct_extentions AppSettings::getSettingsExtentions( QSettings * settings, cons
 	settings->beginGroup( path );
 
 	value.customPath = settings->value( "Custom Path", defaultValue.customPath ).toString();
-	value.canBeSepcifique = settings->value( "Can Be Sepcifique", defaultValue.canBeSepcifique ).toBool();
+	value.canBeSpecifique = settings->value( "Can Be Specifique", defaultValue.canBeSpecifique ).toBool();
 	
 	settings->endGroup();
 
@@ -328,7 +340,7 @@ void AppSettings::setSettingsExtentions( QSettings * settings, const QString & p
 	settings->beginGroup( path );
 
 	settings->setValue( "Custom Path", value.customPath );
-	settings->setValue( "Can Be Sepcifique", value.canBeSepcifique );
+	settings->setValue( "Can Be Specifique", value.canBeSpecifique );
 	
 	settings->endGroup();
 }
@@ -393,12 +405,12 @@ void AppSettings::setSettingsHash_QString( QSettings * settings, const QString &
 }
 
 QHash<QString,struct_extentions> AppSettings::getSettingsHash_Extentions( QSettings * settings, const QString & path, QHash<QString,struct_extentions> defaultValue ) {
-	QHash<QString,QString> value;
+	QHash<QString,struct_extentions> value;
 	settings->beginGroup( path );
 	
 	QStringList keys = settings->allKeys();
 	foreach( QString key, keys ) {
-		value[ key ] = getSettingsExtentions( settings, key, defaultValue[ key ] );		
+		value[ key ] = 	getSettingsExtentions( settings, key, defaultValue[ key ] );		
 	}	
 	
 	settings->endGroup();
@@ -416,7 +428,7 @@ void AppSettings::setSettingsHash_Extentions( QSettings * settings, const QStrin
 }
 
 QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue ) {
-	QHash<QString,QString> value;
+	QHash<QString,QTextCharFormat> value;
 	settings->beginGroup( path );
 	
 	QStringList keys = settings->allKeys();

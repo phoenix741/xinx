@@ -20,18 +20,25 @@
  
 #ifndef XINXCONFIG_H
 #define XINXCONFIG_H
-//
 
 #include "appsettings.h"
+
+class PrivateXINXConfig;
 
 class XINXConfig : public AppSettings {
 public:
 	XINXConfig( const XINXConfig & origine );
 	XINXConfig();
 	virtual ~XINXConfig();
+	
+	virtual QString filter( const QString & suffix );
+	virtual QStringList filters();
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();
+private:
+	friend class PrivateXINXConfig;
+	PrivateXINXConfig * d;
 };
 
 #endif

@@ -40,7 +40,7 @@ ProjectPropertyImpl::~ProjectPropertyImpl() {
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
 	QString value = m_projectLineEdit->text();
 	if( value.isEmpty() ) 
-		value = global.m_xinxConfig->xinxProjectPath();
+		value = global.m_config->config().project.defaultPath;
 		
 	value = QFileDialog::getExistingDirectory( this, tr("Project path"), value );
 	if( ! value.isEmpty() ) {
@@ -51,7 +51,7 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
 	QString value = m_specifiquePathLineEdit->text();
 	if( value.isEmpty() ) 
-		value = global.m_xinxConfig->xinxProjectPath();
+		value = global.m_config->config().project.defaultPath;
 		
 	value = QFileDialog::getExistingDirectory( this, tr("Specifique path"), value );
 	if( ! value.isEmpty() ) {
@@ -175,7 +175,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 }
 
 void ProjectPropertyImpl::updateSpecifiquePath() {
-	QString path = QString("%1/langue/%2/nav/%3").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() ).arg( global.m_xinxConfig->getDefaultProjectPathName() );
+	QString path = QString("%1/langue/%2/nav/%3").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() ).arg( global.m_config->config().project.defaultProjectPathName );
 	
 	m_specifiquePathLineEdit->setText( QDir::cleanPath( path ) );
 }

@@ -37,6 +37,7 @@ FORMS += ui/about.ui \
  ui/servicesconnection.ui \
  ui/snipetproperty.ui
 HEADERS += src/aboutdialogimpl.h \
+ src/appsettings.h \
  src/commitmessagedialogimpl.h \
  src/configurationfile.h \
  src/connectionwebservicesdialogimpl.h \
@@ -97,14 +98,14 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h \
- src/appsettings.h
+ src/xslproject.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
 RCC_DIR += build
 RESOURCES += application.qrc
 SOURCES += src/aboutdialogimpl.cpp \
+ src/appsettings.cpp \
  src/commitmessagedialogimpl.cpp \
  src/configurationfile.cpp \
  src/connectionwebservicesdialogimpl.cpp \
@@ -158,8 +159,7 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xmlhighlighter.cpp \
  src/xsleditor.cpp \
  src/xsllistview.cpp \
- src/xslproject.cpp \
- src/appsettings.cpp
+ src/xslproject.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts

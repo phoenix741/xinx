@@ -42,26 +42,65 @@ static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
 static const QColor DEFAULT_NUMBER			= Qt::blue;
 static const QColor DEFAULT_STRING			= Qt::red;
 
+/* PrivateXINXConfig */
+
+class PrivateXINXConfig {
+public:
+	PrivateXINXConfig( XINXConfig * parent );
+	~PrivateXINXConfig();
+	
+	QHash<QString,QString> m_extentions;
+private:
+	XINXConfig * m_parent;
+}
+
+PrivateXINXConfig::PrivateXINXConfig( XINXConfig * parent ) {
+	m_extentions[ "xsl" ] = QApplication::translate( "XINXConfig", "All XSL Stylesheet" );
+	m_extentions[ "js" ]  = QApplication::translate( "XINXConfig", "All JavaScript" );
+	m_extentions[ "fws" ] = QApplication::translate( "XINXConfig", "All Webservices input stream" );
+	m_extentions[ "xml" ] = QApplication::translate( "XINXConfig", "All XML File" );
+	m_extentions[ "css" ] = QApplication::translate( "XINXConfig", "All HTML Stylesheet" );
+	m_extentions[ "sql" ] = QApplication::translate( "XINXConfig", "All SQL file" );
+}
+
+PrivateXINXConfig::~PrivateXINXConfig() {
+	
+}
+
+
 /* XINXConfig */
 
 XINXConfig::XINXConfig( const XINXConfig & origine ) : AppSettings( origine ) {
+	d = new PrivateXINXConfig( this );
 }
 
 XINXConfig::XINXConfig() : AppSettings() {
+	d = new PrivateXINXConfig( this );
 }
 
 XINXConfig::~XINXConfig() {
+	delete d;
 }
 	
 struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 
-	QFont font;
-	font.setFamily( "Monospace" );
-	font.setFixedPitch( true );
-	font.setPointSize( 8 );
+	value.formats[ "xml_comment"        ].setForeground( DEFAULT_COMMENT );
+	value.formats[ "xml_error"          ].setForeground( DEFAULT_ERROR );
+	value.formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
+	value.formats[ "xml_syntaxchar"     ].setForeground( DEFAULT_SYNTAX_CHAR );
+	value.formats[ "xml_elementname"    ].setForeground( DEFAULT_ELEMENT_NAME );
+	value.formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );	
+	value.formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
+	value.formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );	
 
-	value.defaultFormat.setFont( font );
+	value.formats[ "js_comment"         ].setForeground( DEFAULT_COMMENT );
+	value.formats[ "js_error"           ].setForeground( DEFAULT_ERROR );
+	value.formats[ "js_other"           ].setForeground( DEFAULT_OTHER );
+	value.formats[ "js_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
+	value.formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
+	value.formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
+	value.formats[ "js_string"          ].setForeground( DEFAULT_STRING );	
 	
 	return value;
 }
@@ -69,22 +108,33 @@ struct_globals XINXConfig::getDefaultGlobals() {
 struct_editor XINXConfig::getDefaultEditor() {
 	struct_editor value = AppSettings::getDefaultEditor();
 
-	formats[ "xml_comment"        ].setForeground( DEFAULT_COMMENT );
-	formats[ "xml_error"          ].setForeground( DEFAULT_ERROR );
-	formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
-	formats[ "xml_syntaxchar"     ].setForeground( DEFAULT_SYNTAX_CHAR );
-	formats[ "xml_elementname"    ].setForeground( DEFAULT_ELEMENT_NAME );
-	formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );	
-	formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
-	formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );	
+	QFont font;
+	font.setFamily( "Monospace" );
+	font.setFixedPitch( true );
+	font.setPointSize( 8 );
 
-	formats[ "js_comment"         ].setForeground( DEFAULT_COMMENT );
-	formats[ "js_error"           ].setForeground( DEFAULT_ERROR );
-	formats[ "js_other"           ].setForeground( DEFAULT_OTHER );
-	formats[ "js_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
-	formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
-	formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
-	formats[ "js_string"          ].setForeground( DEFAULT_STRING );	
-	
+	value.defaultFormat.setFont( font );
+
 	return value;
 }
+
+QString XINXConfig::filter( const QString & suffix ) {
+	return d->m_extentions[ suffix ] + " (*." + suffix + ")"
+}
+
+QStringList XINXConfig::filters() {
+	QStringList result;
+	QString allExtentions;
+	
+	foreach( QString suffix, d->m_extentions->keys() ) {
+		result << filter( suffix );
+		if( suffix != d->m_extentions->keys().last() )
+			allExtentions += "*." + suffix + ";";
+		else
+			allExtentions += "*." + suffix;
+	}
+	result.insert( 0, tr("All managed file") + " (" + allExtentions + ")" );
+	
+	return result;
+}
+

@@ -70,6 +70,7 @@ struct struct_globals {
 	QString language;
 	QPoint position;
 	QSize size;
+	bool maximized;
 	QByteArray state;
 	
 	struct_descriptions descriptions;
