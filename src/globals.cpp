@@ -27,7 +27,7 @@
 
 Globals global;
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_xinxConfig(0), m_snipetList(0), m_completionContents(0) {
+Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_completionContents(0) {
 	
 }
 

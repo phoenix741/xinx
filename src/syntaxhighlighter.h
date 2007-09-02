@@ -28,19 +28,9 @@
 class SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( QObject* parent = NULL, bool useConfig = true );
-	SyntaxHighlighter( QTextDocument* parent, bool useConfig = true );
-	SyntaxHighlighter( QTextEdit* parent, bool useConfig = true );
+	SyntaxHighlighter( QObject* parent = NULL );
+	SyntaxHighlighter( QTextDocument* parent );
+	SyntaxHighlighter( QTextEdit* parent );
 	virtual ~SyntaxHighlighter();
-
-	virtual void setHighlightColor( QString type, QColor color, bool foreground = true );
-	virtual void setHighlightFormat( QString type, QTextCharFormat format );
-	
-	virtual bool isFormat( QString type );
-	
-	const QHash<QString,QTextCharFormat> & formats() const { return m_syntaxFormats; };
-protected:
-	virtual void init( bool useConfig );
-	QHash<QString,QTextCharFormat> m_syntaxFormats;
 };
 #endif

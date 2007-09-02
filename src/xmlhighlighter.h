@@ -23,23 +23,15 @@
 class XmlHighlighter : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	XmlHighlighter( QObject* parent = NULL, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
-	XmlHighlighter( QTextDocument* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
-	XmlHighlighter( QTextEdit* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	XmlHighlighter( QObject* parent = NULL ) : SyntaxHighlighter( parent ) { };
+	XmlHighlighter( QTextDocument* parent ) : SyntaxHighlighter( parent ) { };
+	XmlHighlighter( QTextEdit* parent ) : SyntaxHighlighter( parent ) { };
 	virtual ~XmlHighlighter() {};
-
-	virtual bool isFormat( QString type );
-
 protected:
-	virtual void init( bool useConfig );
-
 	void highlightBlock(const QString& rstrText);
 	int  processDefaultText(int i, const QString& rstrText);
-
 private:
-
-	enum ParsingState
-	{
+	enum ParsingState {
 		NoState = 0,
 		ExpectElementNameOrSlash,
 		ExpectElementName,
@@ -50,8 +42,7 @@ private:
 		ExpectPathTextOrEndOfPath
 	};
 
-	enum BlockState
-	{
+	enum BlockState {
 		NoBlock = -1,
 		InComment,
 		InElement

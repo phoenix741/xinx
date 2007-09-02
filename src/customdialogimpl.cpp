@@ -56,33 +56,32 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog(p
 	m_exempleTextEdit->setFont( font );
 }
 //
-
-void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
+/*
+void CustomDialogImpl::loadFromConfig( XinxAppSettings * config ) {
 	Q_ASSERT( config );
 	
 	d->m_config = *config;
 
-	m_alertStandardCheckBox->setChecked( d->m_config.isAlertWhenStdFile() );
-	m_createBakCheckBox->setChecked( d->m_config.isCreateBackupFile() );
-	m_saveSessionCheckBox->setChecked( d->m_config.saveSessionByDefault() );
-	m_popupWhenFileModifiedCheckBox->setChecked( d->m_config.popupWhenFileModified() );
+	m_alertStandardCheckBox->setChecked( d->m_config.config().editor.alertWhenSavingStandardFile );
+	m_createBakCheckBox->setChecked( d->m_config.config().editor.createBackupFile );
+	m_saveSessionCheckBox->setChecked( d->m_config.config().project.saveWithSessionByDefault );
+	m_popupWhenFileModifiedCheckBox->setChecked( d->m_config.config().editor.popupWhenFileModified );
 
-	m_cvsCompressionComboBox->setCurrentIndex( d->m_config.cvsCompressionLevel() );
-	m_cvsPruneCheckBox->setChecked( d->m_config.cvsPruneEmptyDirectories() );
-	if( d->m_config.cvsProgressMessages().isEmpty() ) 
+	m_cvsCompressionComboBox->setCurrentIndex( d->m_config.config().cvs.compressionLevel );
+	m_cvsPruneCheckBox->setChecked( d->m_config.config().cvs.pruneEmptyDirectories );
+	if( d->m_config.config().cvs.progressMessages.isEmpty() ) 
 		m_cvsVerboseComboBox->setCurrentIndex( 0 );
 	else
-	if( d->m_config.cvsProgressMessages() == "-q" ) 
+	if( d->m_config.config().cvs.progressMessages == "-q" ) 
 		m_cvsVerboseComboBox->setCurrentIndex( 1 );
 	else
-	if( d->m_config.cvsProgressMessages() == "-Q" ) 
+	if( d->m_config.config().cvs.progressMessages == "-Q" ) 
 		m_cvsVerboseComboBox->setCurrentIndex( 2 );
-	m_cvsCreateDirCheckBox->setChecked( d->m_config.cvsCreateDirectories() );
-
+	m_cvsCreateDirCheckBox->setChecked( d->m_config.config().cvs.createDirectories );
 
 	int index = -1;
 	for( int i = 0; i < m_langComboBox->count(); i++ ) {
-		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( d->m_config.lang() ) ) )
+		if( m_langComboBox->itemText( i ).contains( QString("(%1)").arg( d->m_config.config().language ) ) )
 			index = i;
 	}
 	if( index == -1 ) 
@@ -90,8 +89,8 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	else
 		m_langComboBox->setCurrentIndex( index );
 	
-	m_projectPathLineEdit->setText( d->m_config.xinxProjectPath() );
-	m_objectDescriptionPathLineEdit->setText( d->m_config.objectDescriptionPath() );
+	m_projectPathLineEdit->setText( d->m_config.config().project.defaultPath );
+	m_objectDescriptionPathLineEdit->setText( d->m_config.config().descriptions.completion );
 	
 	m_fileTypeComboBox->clear();
 	foreach( struct XINXConfig::managedFile file, d->m_config.managedFile() ) {
@@ -109,7 +108,7 @@ void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	m_lineEditDefaultProjectPathName->setText( d->m_config.getDefaultProjectPathName() );
 }
 
-void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
+void CustomDialogImpl::saveToConfig( XinxAppSettings * config ) {
 	Q_ASSERT( config );
 	
 	*config = d->m_config;
@@ -350,4 +349,4 @@ void CustomDialogImpl::on_m_cvsVerboseComboBox_currentIndexChanged(int index) {
 void CustomDialogImpl::on_m_cvsCreateDirCheckBox_toggled(bool checked) {
 	d->m_config.setCVSCreateDirectories( checked );
 }
-
+*/

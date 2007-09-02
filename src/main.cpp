@@ -71,15 +71,15 @@ int main(int argc, char *argv[]) {
 	
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
-			global.m_xinxConfig = new XINXConfig();
-			global.m_xinxConfig->load();
+			global.m_config = new XINXConfig();
+			global.m_config->load();
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();
 			QTranslator translator_xinx, translator_qt;
-			translator_qt.load( QString(":/translations/qt_%1").arg( global.m_xinxConfig->lang() ) );
+			translator_qt.load( QString(":/translations/qt_%1").arg( global.m_config->config().language ) );
 			app.installTranslator(&translator_qt);
-			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_xinxConfig->lang() ) );
+			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_config->config().language ) );
 			app.installTranslator(&translator_xinx);
 	
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
@@ -87,13 +87,13 @@ int main(int argc, char *argv[]) {
 			global.m_completionContents = new Completion();
 			global.m_snipetList = new SnipetList();
 			try {
-				global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+				global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );
 			} catch( ENotCompletionFile ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load completion file.") );
 				app.processEvents();
 			}
 			try {
-				global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+				global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 			splash.showMessage( QApplication::translate("SplashScreen", "Load objects file ...") );
 			app.processEvents();
 			global.m_javaObjects = new ObjectsView();
-			global.m_javaObjects->setPath( global.m_xinxConfig->objectDescriptionPath() );
+			global.m_javaObjects->setPath( global.m_config->config().descriptions.object );
 			global.m_javaObjects->loadFiles();
 	
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );

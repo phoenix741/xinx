@@ -67,7 +67,7 @@ public:
 	/*!
 	 * XINX Config file.
 	 */
-	XINXConfig * m_xinxConfig;
+	XINXConfig * m_config;
 	
 	/*!
 	 * List of snipet.

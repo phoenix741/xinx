@@ -21,26 +21,8 @@
 #include "jshighlighter.h"
 #include "xinxconfig.h"
 #include "globals.h"
-//
 
-static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
-static const QColor DEFAULT_NUMBER			= Qt::blue;
-static const QColor DEFAULT_STRING			= Qt::red;
-
-void JsHighlighter::init( bool useConfig ) {
-	SyntaxHighlighter::init( useConfig );
-	
-	if( ! useConfig ) {
-		m_syntaxFormats["ReservedWord"].setForeground( DEFAULT_RESERVEDWORD );
-		m_syntaxFormats["ReservedWord"].setFontWeight(QFont::Bold);
-		m_syntaxFormats["Number"].setForeground( DEFAULT_NUMBER );
-		m_syntaxFormats["String"].setForeground( DEFAULT_STRING );	
-	} else {
-		foreach( QString key, global.m_xinxConfig->managedStructure()["js"].color.keys() ) {
-			m_syntaxFormats[ key ] = global.m_xinxConfig->managedStructure()["js"].color[ key ];
-		}
-	}
-	
+void JsHighlighter::init() {
 	keywordPatterns.clear();
 	keywordPatterns << "abstract" << "boolean" << "break" 
 					<< "byte" << "case" << "catch" << "char" 
@@ -60,20 +42,6 @@ void JsHighlighter::init( bool useConfig ) {
 					<< "void" << "volatile" << "while" << "with";
 	keywordPatterns.sort();
 }
-
-bool JsHighlighter::isFormat( QString type ) {
-	if( type == "ReservedWord" ) 
-		return true;
-	else 	
-	if( type == "Number" ) 
-		return true;
-	else
-	if( type == "String" ) 
-		return true;
-
-	return SyntaxHighlighter::isFormat( type );
-}
-
 
 void JsHighlighter::highlightBlock( const QString & text ) {
 	int i = 0;
@@ -96,11 +64,11 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 		if (pos >= 0) {
 			// end comment found
 			const int iLength = commentEndExpression.matchedLength();
-			setFormat( 0, pos + iLength, m_syntaxFormats["Comment"] );
+			setFormat( 0, pos + iLength, global.m_config->config().formats[ "js_comment" ] );
 			i += pos + iLength; // skip comment
 		} else {
 			// in comment
-			setFormat( 0, text.length(), m_syntaxFormats["Comment"] );
+			setFormat( 0, text.length(), global.m_config->config().formats["js_comment"] );
 			setCurrentBlockState( InComment );
 			return;
 		}
@@ -113,7 +81,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			
 			if( pos == i ) {
 				const int iLength = numberExpression.matchedLength();
-				setFormat( pos, iLength, m_syntaxFormats["Number"] );
+				setFormat( pos, iLength, global.m_config->config().formats["js_number"] );
 				i += iLength;
 			}
 		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
@@ -121,7 +89,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			if( pos == i ) {
 				const int iLength = motExpression.matchedLength();
 				if( keywordPatterns.contains( text.mid( i, iLength ) ) ) {
-					setFormat( pos, iLength, m_syntaxFormats["ReservedWord"] );
+					setFormat( pos, iLength, global.m_config->config().formats["js_reservedword"] );
 				}
 				i += iLength;
 			}
@@ -132,7 +100,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				int posEnd = commentEndExpression.indexIn( text, i + 2 );
  				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
 
-				setFormat( pos, length, m_syntaxFormats["Comment"] );
+				setFormat( pos, length, global.m_config->config().formats["js_comment"] );
 				i += length;
 				if( posEnd == -1 ) {
 					setCurrentBlockState( InComment );
@@ -143,7 +111,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				if( pos == i ) {
 					const int iLength = commentExpression.matchedLength() + 2;
 					i += iLength;
-					setFormat( pos, iLength, m_syntaxFormats["Comment"] );
+					setFormat( pos, iLength, global.m_config->config().formats["js_comment"] );
 				}
 			}
 		} else if ( c == '\'' ) {
@@ -151,7 +119,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			
 			if( pos == i ) {
 				const int iLength = string1Expression.matchedLength();
-				setFormat( pos, iLength, m_syntaxFormats["String"] );
+				setFormat( pos, iLength, global.m_config->config().formats["js_string"] );
 				i += iLength;
 			}
 		} else if ( c == '\"' ) {
@@ -159,7 +127,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			
 			if( pos == i ) {
 				const int iLength = string2Expression.matchedLength();
-				setFormat( pos, iLength, m_syntaxFormats["String"] );
+				setFormat( pos, iLength, global.m_config->config().formats["js_string"] );
 				i += iLength;
 			}
 		}

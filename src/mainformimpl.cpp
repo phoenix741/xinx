@@ -416,7 +416,7 @@ void PrivateMainformImpl::openFile( const QString & name, int line ) {
 }
 
 void PrivateMainformImpl::openFile() {
-	Q_ASSERT( global.m_xinxConfig );
+	Q_ASSERT( global.m_config );
 	
 	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), m_lastPlace, global.m_xinxConfig->dialogFilters().join(";;") );
 	
@@ -476,7 +476,7 @@ void PrivateMainformImpl::about() {
 }
 
 void PrivateMainformImpl::customize() {
-	CustomDialogImpl custom( m_parent );
+/*	CustomDialogImpl custom( m_parent );
 	custom.loadFromConfig( global.m_xinxConfig );
 	
 	if( custom.exec() ) {
@@ -493,7 +493,7 @@ void PrivateMainformImpl::customize() {
 		} catch( SnipetListException ) {
 			QMessageBox::warning( m_parent, tr("Load snipet"), tr("Can't load snipet file.") );
 		}
-	}
+	}*/
 }
 
 void PrivateMainformImpl::setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] ) {
@@ -1178,7 +1178,7 @@ void MainformImpl::setEditorPosition( int line, int column ) {
 
 void MainformImpl::closeEvent( QCloseEvent *event ) {
 	if( global.m_project ) {
-		d->closeProject( global.m_xinxConfig->saveSessionByDefault() );
+		d->closeProject( global.m_config->config().project.saveWithSessionByDefault );
 	} else if( ! closeAllFile() ) {
 		event->ignore();
 		return;
@@ -1318,7 +1318,7 @@ void MainformImpl::openProject( const QString & filename ) {
 	else 
 		closeAllFile();
 		
-	global.m_xinxConfig->recentProjectFiles().removeAll( filename );
+	global.m_config->config().project.recentProjectFiles.removeAll( filename );
 
 	global.m_project = NULL;
 	try {
@@ -1328,9 +1328,9 @@ void MainformImpl::openProject( const QString & filename ) {
 
 		updateWebServicesList();
 
-		global.m_xinxConfig->recentProjectFiles().prepend( filename );
-		while( global.m_xinxConfig->recentProjectFiles().size() > MAXRECENTFILES )
-			global.m_xinxConfig->recentProjectFiles().removeLast();
+		global.m_config->config().project.recentProjectFiles.prepend( filename );
+		while( global.m_config->config().project.recentProjectFiles.size() > MAXRECENTFILES )
+			global.m_config->config().project.recentProjectFiles.removeLast();
 
 		m_tabEditors->setUpdatesEnabled( false );
 		QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );

@@ -29,25 +29,19 @@
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	JsHighlighter( QObject* parent = NULL, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
-	JsHighlighter( QTextDocument* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
-	JsHighlighter( QTextEdit* parent, bool useConfig = true ) : SyntaxHighlighter( parent, useConfig ) { init( useConfig ); };
+	JsHighlighter( QObject* parent = NULL ) : SyntaxHighlighter( parent ) { init(); };
+	JsHighlighter( QTextDocument* parent ) : SyntaxHighlighter( parent ) { init(); };
+	JsHighlighter( QTextEdit* parent ) : SyntaxHighlighter( parent ) { init(); };
 	virtual ~JsHighlighter() {};
-
-	virtual bool isFormat( QString type );
 protected:
 	void highlightBlock( const QString& rstrText );
-
+	virtual void init();
 private:
-	enum BlockState
-	{
+	enum BlockState {
 		NoBlock = -1,
 		InComment
 	};
 	
-	virtual void init( bool useConfig );
-
 	QStringList keywordPatterns;
-
 };
 #endif

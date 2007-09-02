@@ -379,12 +379,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2" colspan="2" >
-           <widget class="QComboBox" name="m_syntaxTypeComboBox" />
-          </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QComboBox" name="m_syntaxFileTypeComboBox" />
-          </item>
           <item row="2" column="3" >
            <widget class="QCheckBox" name="m_StrikeoutCheckBox" >
             <property name="font" >
@@ -437,6 +431,9 @@
           </item>
           <item row="3" column="1" colspan="3" >
            <widget class="QDoubleSpinBox" name="m_fontSizeSpinBox" />
+          </item>
+          <item row="0" column="0" colspan="4" >
+           <widget class="QComboBox" name="m_syntaxComboBox" />
           </item>
          </layout>
         </widget>
@@ -670,8 +667,7 @@
   <tabstop>m_specifiqueCheckBox</tabstop>
   <tabstop>m_CVSToolsLineEdit</tabstop>
   <tabstop>m_cvsToolButton</tabstop>
-  <tabstop>m_syntaxFileTypeComboBox</tabstop>
-  <tabstop>m_syntaxTypeComboBox</tabstop>
+  <tabstop>m_syntaxComboBox</tabstop>
   <tabstop>m_boldCheckBox</tabstop>
   <tabstop>m_italicCheckBox</tabstop>
   <tabstop>m_underlineCheckBox</tabstop>

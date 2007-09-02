@@ -103,7 +103,7 @@ void PrivateFileEditor::desactivateWatcher() {
 
 void PrivateFileEditor::fileChanged() {
 	if( m_isSaving ) return;
-	if( ! global.m_xinxConfig->popupWhenFileModified() ) return ;
+	if( ! global.m_config->config().editor.popupWhenFileModified ) return ;
 
 	m_watcher->desactivate();
 	if( QFile( m_path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( m_path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
@@ -368,7 +368,7 @@ void FileEditor::setFileName( const QString & fileName ) {
 }
 
 void FileEditor::createBackup( const QString & filename ) {
-	if( global.m_xinxConfig->isCreateBackupFile() ){
+	if( global.m_config->config().editor.createBackupFile ){
 		if( QFile::exists( filename + ".bak" ) ) 
 			QFile::remove( filename + ".bak" );
 		QFile::copy( filename, filename + ".bak" );
