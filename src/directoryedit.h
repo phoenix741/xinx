@@ -18,23 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SYNTAXHIGHLIGHTER_H
-#define SYNTAXHIGHLIGHTER_H
-//
-#include <QSyntaxHighlighter>
-#include <QHash>
-//
+#ifndef __DIRECTORYEDIT_H__
+#define __DIRECTORYEDIT_H__
 
-class XINXConfig;
+// Qt header
+#include <QLineEdit>
+#include <QDirModel>
 
-class SyntaxHighlighter : public QSyntaxHighlighter {
+class CompleterDirModel : public QDirModel {
+public:
+	CompleterDirModel(QObject *parent = 0);
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+};
+
+class DirectoryEdit : public QLineEdit {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
-	virtual ~SyntaxHighlighter();
-protected:
-	XINXConfig * m_config;
+	DirectoryEdit( QWidget * parent = 0 );
+	DirectoryEdit( const QString & contents, QWidget * parent = 0 );
+protected slots:
+	void slotTextChanged( QString text );
 };
-#endif
+
+#endif // __DIRECTORYEDIT_H__

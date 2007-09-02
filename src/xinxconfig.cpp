@@ -108,12 +108,9 @@ struct_globals XINXConfig::getDefaultGlobals() {
 struct_editor XINXConfig::getDefaultEditor() {
 	struct_editor value = AppSettings::getDefaultEditor();
 
-	QFont font;
-	font.setFamily( "Monospace" );
-	font.setFixedPitch( true );
-	font.setPointSize( 8 );
-
-	value.defaultFormat.setFont( font );
+	value.defaultFormat.setFamily( "Monospace" );
+	value.defaultFormat.setFixedPitch( true );
+	value.defaultFormat.setPointSize( 8 );
 
 	return value;
 }

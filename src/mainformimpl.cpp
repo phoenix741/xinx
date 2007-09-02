@@ -475,24 +475,24 @@ void PrivateMainformImpl::about() {
 }
 
 void PrivateMainformImpl::customize() {
-/*	CustomDialogImpl custom( m_parent );
-	custom.loadFromConfig( global.m_xinxConfig );
+	CustomDialogImpl custom( m_parent );
+	custom.loadFromConfig( global.m_config );
 	
 	if( custom.exec() ) {
-		custom.saveToConfig( global.m_xinxConfig );
-		global.m_xinxConfig->save();	
+		custom.saveToConfig( global.m_config );
+		global.m_config->save();	
 
 		try {
-			global.m_completionContents->setPath( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "completion.xnx" ) );
+			global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );
 		} catch( ENotCompletionFile ) {
 			QMessageBox::warning( m_parent, tr("Load completion"), tr("Can't load completion file.") );
 		}
 		try {
-			global.m_snipetList->loadFromFile( QDir( global.m_xinxConfig->completionFilesPath() ).filePath( "template.xnx" ) );
+			global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
 		} catch( SnipetListException ) {
 			QMessageBox::warning( m_parent, tr("Load snipet"), tr("Can't load snipet file.") );
 		}
-	}*/
+	}
 }
 
 void PrivateMainformImpl::setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] ) {

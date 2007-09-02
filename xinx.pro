@@ -42,6 +42,7 @@ HEADERS += src/aboutdialogimpl.h \
  src/configurationfile.h \
  src/connectionwebservicesdialogimpl.h \
  src/customdialogimpl.h \
+ src/directoryedit.h \
  src/dirrcsmodel.h \
  src/editor.h \
  src/editorcompletion.h \
@@ -110,6 +111,7 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/configurationfile.cpp \
  src/connectionwebservicesdialogimpl.cpp \
  src/customdialogimpl.cpp \
+ src/directoryedit.cpp \
  src/dirrcsmodel.cpp \
  src/editor.cpp \
  src/editorcompletion.cpp \

@@ -46,7 +46,7 @@ PrivateAppSettings::PrivateAppSettings( AppSettings * parent ) {
 }
 
 void PrivateAppSettings::createSettings() {
-	m_settings = new QSettings("Editor", "XINX");
+	m_settings = new QSettings("XINX Software", "XINX");
 }
 
 void PrivateAppSettings::deleteSettings() {
@@ -71,6 +71,11 @@ AppSettings::~AppSettings() {
 	delete d;
 }
 	
+AppSettings& AppSettings::operator=(const AppSettings& p) {
+	d->m_globals = p.d->m_globals;
+	return *this;
+}
+
 struct_globals & AppSettings::config() {
 	return d->m_globals;
 }
@@ -200,7 +205,7 @@ void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path
 	settings->setValue( "Maximized", value.maximized );
 	settings->setValue( "Size", value.size );
 	settings->setValue( "Position", value.position );
-	settings->setValue( "Language", value.size );
+	settings->setValue( "Language", value.language );
 
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
@@ -276,7 +281,7 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 	value.completionLevel = settings->value( "Completion Level", defaultValue.completionLevel ).toInt();
 	value.tabulationSize = settings->value( "Tabulation Size", defaultValue.tabulationSize ).toInt();
 	value.showTabulationAndSpace = settings->value( "Show Tabulation and space", defaultValue.showTabulationAndSpace ).toBool();
-	value.defaultFormat = getTextFormatFromSettings( settings, "Default Format", defaultValue.defaultFormat );
+	value.defaultFormat = settings->value( "Default Format", defaultValue.defaultFormat ).value<QFont>();
 
 	settings->endGroup();
 	
@@ -292,7 +297,7 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->setValue( "Completion Level", value.completionLevel );
 	settings->setValue( "Tabulation Size", value.tabulationSize );
 	settings->setValue( "Show Tabulation and space", value.showTabulationAndSpace );
-	setTextFormatFromSettings( settings, "Default Format", value.defaultFormat );
+	settings->setValue( "Default Format", value.defaultFormat );
 
 	settings->endGroup();
 }
@@ -350,12 +355,10 @@ QTextCharFormat AppSettings::getTextFormatFromSettings( QSettings * settings, co
 	QTextCharFormat format;
 	settings->beginGroup( path );
 	
-	format.setFontFamily( settings->value( "family", defaultValue.fontFamily() ).toString() );
 	format.setFontItalic( settings->value( "italic", defaultValue.fontItalic() ).toBool() );
 	format.setFontOverline( settings->value( "overline", defaultValue.fontOverline() ).toBool() );
 	format.setFontStrikeOut( settings->value( "strikeOut", defaultValue.fontStrikeOut() ).toBool() );
 	format.setFontUnderline( settings->value( "underline", defaultValue.fontUnderline() ).toBool() );
-	format.setFontPointSize( settings->value( "size", defaultValue.fontPointSize() ).toDouble() );
 	format.setFontWeight( settings->value( "weight", defaultValue.fontWeight() ).toInt() );
 	format.setForeground( settings->value( "color", defaultValue.foreground() ).value<QColor>() );
 
@@ -366,15 +369,10 @@ QTextCharFormat AppSettings::getTextFormatFromSettings( QSettings * settings, co
 void AppSettings::setTextFormatFromSettings( QSettings * settings, const QString & path, QTextCharFormat value ) {
 	settings->beginGroup( path );
 
-	settings->setValue( "family", value.fontFamily() );
 	settings->setValue( "italic", value.fontItalic() );
 	settings->setValue( "overline", value.fontOverline() );
 	settings->setValue( "strikeOut", value.fontStrikeOut() );
 	settings->setValue( "underline", value.fontUnderline() );
-	if( value.fontPointSize() > 0 )
-		settings->setValue( "size", value.fontPointSize() );
-	else
-		settings->remove( "size" );
 	settings->setValue( "weight", value.fontWeight() );
 	settings->setValue( "color", value.foreground() );
 
@@ -385,7 +383,7 @@ QHash<QString,QString> AppSettings::getSettingsHash_QString( QSettings * setting
 	QHash<QString,QString> value;
 	settings->beginGroup( path );
 	
-	QStringList keys = settings->allKeys();
+	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( QString key, keys ) {
 		value[ key ] = settings->value( key, defaultValue[ key ] ).toString();		
 	}	
@@ -413,7 +411,7 @@ QHash<QString,struct_extentions> AppSettings::getSettingsHash_Extentions( QSetti
 	QHash<QString,struct_extentions> value;
 	settings->beginGroup( path );
 	
-	QStringList keys = settings->allKeys();
+	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( QString key, keys ) {
 		value[ key ] = 	getSettingsExtentions( settings, key, defaultValue[ key ] );		
 	}	
@@ -441,7 +439,7 @@ QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( QSe
 	QHash<QString,QTextCharFormat> value;
 	settings->beginGroup( path );
 	
-	QStringList keys = settings->allKeys();
+	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( QString key, keys ) {
 		value[ key ] = getTextFormatFromSettings( settings, key, defaultValue[ key ] );		
 	}

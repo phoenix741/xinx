@@ -24,7 +24,7 @@
 		<value name="Create Directories" type="bool" default="yes"/>
 	</type>
 	<type name="Editor">
-		<value name="Autoindent On Pretty Print" type="bool" default="no"/>
+		<value name="Autoindent On Saving" type="bool" default="no"/>
 		<value name="Popup When File Modified" type="bool" default="yes"/>
 		<value name="Create Backup File" type="bool" default="yes"/>
 		<value name="Completion Level" type="int" default="0"/>

@@ -25,6 +25,7 @@
 #include <QHash>
 #include <QString>
 #include <QTextCharFormat>
+#include <QFont>
 #include <QPoint>
 #include <QSize>
 #include <QByteArray>
@@ -63,7 +64,7 @@ struct struct_editor {
 	int completionLevel;
 	int tabulationSize;
 	bool showTabulationAndSpace;
-	QTextCharFormat defaultFormat;
+	QFont defaultFormat;
 };
 
 struct struct_globals {
@@ -93,7 +94,8 @@ public:
 	virtual void setDefault();
 
 	struct_globals & config();
-	
+
+	AppSettings& operator=(const AppSettings& p);
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_project getDefaultProject();

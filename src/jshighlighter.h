@@ -29,9 +29,9 @@
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	JsHighlighter( QObject* parent = NULL ) : SyntaxHighlighter( parent ) { init(); };
-	JsHighlighter( QTextDocument* parent ) : SyntaxHighlighter( parent ) { init(); };
-	JsHighlighter( QTextEdit* parent ) : SyntaxHighlighter( parent ) { init(); };
+	JsHighlighter( QObject* parent = NULL, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { init(); };
+	JsHighlighter( QTextDocument* parent, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { init(); };
+	JsHighlighter( QTextEdit* parent, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { init(); };
 	virtual ~JsHighlighter() {};
 protected:
 	void highlightBlock( const QString& rstrText );

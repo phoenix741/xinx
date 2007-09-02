@@ -46,12 +46,12 @@ public:
 	 * Restore the XINXConfig class in the custom dialog to reflect the configuration of application.
 	 * \param config The config file used to load options.
 	 */
-	//void loadFromConfig( XinxAppSettings * config );
+	void loadFromConfig( XINXConfig * config );
 	/*!
 	 * Store the modification of options in a XINXConfig class.
 	 * \param config The config file where to store options
 	 */
-	//void saveToConfig( XinxAppSettings * config );
+	void saveToConfig( XINXConfig * config );
 private slots:/*
 	void on_m_lineEditDefaultProjectPathName_textChanged(QString );
 	void on_m_cvsCompressionComboBox_currentIndexChanged(int index);
@@ -83,6 +83,18 @@ private slots:/*
 	void on_m_syntaxTypeComboBox_currentIndexChanged(QString);
 	void on_m_colorComboBox_activated( QColor c );
 	void on_m_fontSizeSpinBox_valueChanged( double value );*/
+
+private slots:
+	void on_m_colorComboBox_activated(QColor color);
+	void on_m_boldCheckBox_toggled(bool checked);
+	void on_m_italicCheckBox_toggled(bool checked);
+	void on_m_StrikeoutCheckBox_toggled(bool checked);
+	void on_m_underlineCheckBox_toggled(bool checked);
+	void on_m_formatsListView_currentRowChanged(int currentRow);
+	void on_m_mergeToolBtn_clicked();
+	void on_m_cvsToolBtn_clicked();
+	void on_m_changeProjectPathBtn_clicked();
+	void on_m_changeApplicationDescriptionPathBtn_clicked();
 private:
 	PrivateCustomDialogImpl * d;
 	friend class PrivateCustomDialogImpl;

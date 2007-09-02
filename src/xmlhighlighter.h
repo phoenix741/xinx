@@ -23,9 +23,9 @@
 class XmlHighlighter : public SyntaxHighlighter {
 	Q_OBJECT
 public:
-	XmlHighlighter( QObject* parent = NULL ) : SyntaxHighlighter( parent ) { };
-	XmlHighlighter( QTextDocument* parent ) : SyntaxHighlighter( parent ) { };
-	XmlHighlighter( QTextEdit* parent ) : SyntaxHighlighter( parent ) { };
+	XmlHighlighter( QObject* parent = NULL, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { };
+	XmlHighlighter( QTextDocument* parent, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { };
+	XmlHighlighter( QTextEdit* parent, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { };
 	virtual ~XmlHighlighter() {};
 protected:
 	void highlightBlock(const QString& rstrText);

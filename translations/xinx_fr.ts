@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
-<defaultcodec></defaultcodec>
 <context>
     <name>AboutDialog</name>
     <message>
@@ -219,292 +218,524 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
         <translation>Personnaliser</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="32"/>
-        <source>Preference</source>
-        <translation>Préférence</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="47"/>
+        <location filename="../ui/custom.ui" line="44"/>
         <source>Application preference</source>
         <translation>Préférence de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="60"/>
+        <location filename="../ui/custom.ui" line="100"/>
         <source>(en) English</source>
         <translation>(en) Anglais</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="68"/>
+        <location filename="../ui/custom.ui" line="108"/>
         <source>(fr_FR) French</source>
         <translation>(fr_FR) Français</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="79"/>
-        <source>XINX Lang :</source>
-        <translation>Langue de XINX :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="89"/>
+        <location filename="../ui/custom.ui" line="258"/>
         <source>&amp;Popup when file modifed</source>
         <translation>&amp;Avertir lors de la modification d&apos;un fichier</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="96"/>
-        <source>Save session by default</source>
-        <translation>Sauver en mode session par défaut</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="103"/>
-        <source>Create backup file (.bak)</source>
-        <translation>Créer un fichier de sauvegarde (.bak)</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="110"/>
-        <source>Alert user when file is standard (project mode only)</source>
-        <translation>Avertir l&apos;utilisateur quand le fichier est standard (mode projet uniquement)</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="134"/>
-        <source>Path</source>
-        <translation>Chemin</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="149"/>
+        <location filename="../ui/custom.ui" line="750"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="169"/>
-        <source>&amp;CVS : </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="304"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="186"/>
-        <source>&amp;Merge :</source>
-        <translation>&amp;Fusion :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="227"/>
-        <source>Project files path</source>
-        <translation>Chemin du fichier projet</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="239"/>
-        <source>Path :</source>
-        <translation>Chemin :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="250"/>
-        <source>Stylesheet (*.xsl)</source>
-        <translation>Feuille de style XSLT (*.xsl)</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="255"/>
-        <source>JavaScript (*.js)</source>
-        <translation>JavaScript (*.js)</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="260"/>
-        <source>Configuration file (configuration.xml)</source>
-        <translation>Fichier de configuration (configuration.xml)</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="268"/>
-        <source>Can be specifique</source>
-        <translation>Peut être spécifique</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="278"/>
-        <source>Custom path</source>
-        <translation>Chemin personalisé</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="297"/>
-        <source>Business object description :</source>
-        <translation>Description des objets métiers :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="314"/>
-        <source>XINX project directory :</source>
-        <translation>Dossier project XINX :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="324"/>
-        <source>Default p&amp;roject path name :</source>
-        <translation>Chemin par défaut des p&amp;rojets :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="341"/>
+        <location filename="../ui/custom.ui" line="148"/>
         <source>Editor</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="356"/>
+        <location filename="../ui/custom.ui" line="378"/>
         <source>Customize syntax</source>
         <translation>Coloration syntaxique</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="368"/>
-        <source>Font :</source>
-        <translation>Police de caractère :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="378"/>
-        <source>Underline</source>
-        <translation>Souligné</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="394"/>
-        <source>Strikeout</source>
-        <translation>Barré</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="404"/>
-        <source>Italic</source>
-        <translation>Italique</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="414"/>
-        <source>Bold</source>
-        <translation>Gras</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="421"/>
-        <source>Color :</source>
-        <translation>Couleur :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="434"/>
-        <source>Font size :</source>
-        <translation>Taille de la police :</translation>
-    </message>
-    <message>
-        <location filename="../ui/custom.ui" line="464"/>
+        <location filename="../ui/custom.ui" line="845"/>
         <source>CVS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="488"/>
+        <location filename="../ui/custom.ui" line="872"/>
         <source>-z0 Disabled </source>
         <translation>-z0 Désactivé </translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="493"/>
+        <location filename="../ui/custom.ui" line="877"/>
         <source>-z1 Low level</source>
         <translation>-z1 Faible</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="498"/>
+        <location filename="../ui/custom.ui" line="882"/>
         <source>-z2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="503"/>
+        <location filename="../ui/custom.ui" line="887"/>
         <source>-z3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="508"/>
+        <location filename="../ui/custom.ui" line="892"/>
         <source>-z4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="513"/>
+        <location filename="../ui/custom.ui" line="897"/>
         <source>-z5 Medium Level</source>
         <translation>-z5 Moyen</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="518"/>
+        <location filename="../ui/custom.ui" line="902"/>
         <source>-z6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="523"/>
+        <location filename="../ui/custom.ui" line="907"/>
         <source>-z7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="528"/>
+        <location filename="../ui/custom.ui" line="912"/>
         <source>-z8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="533"/>
+        <location filename="../ui/custom.ui" line="917"/>
         <source>-z9 High level</source>
         <translation>-z9 Haute</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="541"/>
+        <location filename="../ui/custom.ui" line="925"/>
         <source>Compression:</source>
         <translation>Compression:</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="548"/>
+        <location filename="../ui/custom.ui" line="864"/>
         <source>Prune empty directories. (-P)</source>
         <translation>Supprimer les dossiers vide. (-P)</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="556"/>
+        <location filename="../ui/custom.ui" line="933"/>
         <source>Very Quiet (-Q)</source>
         <translation>Très silencieux (-Q)</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="561"/>
+        <location filename="../ui/custom.ui" line="938"/>
         <source>Discret (-q)</source>
         <translation>Silencieux (-q)</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="566"/>
+        <location filename="../ui/custom.ui" line="943"/>
         <source>Verbose</source>
         <translation>Détaillé</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="574"/>
+        <location filename="../ui/custom.ui" line="857"/>
         <source>Create any directories that exist in the repository if they&apos;re missing from the working directory. (-d)</source>
         <translation>Créer tous les dossiers existants dans le référenciel s&apos;ils n&apos;existent pas dans la copie de travail. (-d)</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="581"/>
+        <location filename="../ui/custom.ui" line="951"/>
         <source>Progress message: </source>
         <translation>Message de progression: </translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="628"/>
+        <location filename="../ui/custom.ui" line="1006"/>
         <source>OK</source>
         <translation>Valider</translation>
     </message>
     <message>
-        <location filename="../ui/custom.ui" line="638"/>
+        <location filename="../ui/custom.ui" line="1016"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
-</context>
-<context>
-    <name>CustomDialogImpl</name>
     <message>
-        <location filename="../src/customdialogimpl.cpp" line="283"/>
-        <source>Object path</source>
-        <translation>Chemin des objets</translation>
+        <location filename="../ui/custom.ui" line="32"/>
+        <source>&amp;Application</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customdialogimpl.cpp" line="290"/>
-        <source>XINX Project path</source>
-        <translation>Chemin du projet XINX</translation>
+        <location filename="../ui/custom.ui" line="56"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is the path where XNX files is stored as the stored snipet file or the completion file. This is also the directory where is stored the business object description is stored (maybe used in the future).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customdialogimpl.cpp" line="306"/>
-        <source>Merge path</source>
-        <translation>Chemin du logiciel de fusion</translation>
+        <location filename="../ui/custom.ui" line="66"/>
+        <source>Application &amp;description path :</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customdialogimpl.cpp" line="318"/>
-        <source>CVS path</source>
-        <translation>Chemin CVS</translation>
+        <location filename="../ui/custom.ui" line="83"/>
+        <source>&amp;Language :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="93"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Langue in which XINX must be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="136"/>
+        <source>&amp;Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="160"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Name of the font to use in all editors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="170"/>
+        <source>Font &amp;size :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="180"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Size of the font in the editor. The value is a global value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="190"/>
+        <source>&amp;Font name :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="216"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Show tabulation and space in the editor. This can be used to see, if tabulation or space is written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="222"/>
+        <source>&amp;Show tabulation and space in the editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="229"/>
+        <source>&amp;Completion level :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="239"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the box is checked, when saving the file, XINX apply the pretty print function on the text. This format the code on saving file. Saving file can be slower.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="245"/>
+        <source>P&amp;retty print on saving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="252"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file or keep current file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="265"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the orignal file. The backup is created by copy before the file is overwritten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="271"/>
+        <source>&amp;Create backup file when saving (.bak)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="278"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Level of the completion. The completion can be :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Desactivated&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Activated but only with an help on tapping&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Fully activated with the help on tapping, and the adding code (as configured on completion file)&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="289"/>
+        <source>Active automatique code writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="294"/>
+        <source>Active popup completion dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="299"/>
+        <source>Desactivate completion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="307"/>
+        <source>Size of a &amp;tabulation :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="317"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Size of the tabulation in number of character. This is the number of character that a tabulation replace.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="344"/>
+        <source>&amp;Syntax highlighter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="356"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is an example of how is showed the text in the editor after the change that are been made.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="390"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Color used in the text for the selected token.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="400"/>
+        <source>&amp;Color :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="413"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wrote the text in bold&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="419"/>
+        <source>&amp;Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="429"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Wrote the text in italic&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="435"/>
+        <source>&amp;Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="445"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;strike&gt;Strikeout the text&lt;/strike&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="451"/>
+        <source>&amp;Strikeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="461"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Underline the text&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="467"/>
+        <source>&amp;Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="485"/>
+        <source>&amp;Token of syntax highlighter :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="507"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;List of token what can be modified. Tokens are used to colorize the document. All supported token are showed here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="520"/>
+        <source>&amp;Project</source>
+        <translation type="unfinished">&amp;Projet</translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="532"/>
+        <source>Project options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="551"/>
+        <source>This is the path where specifique is stored in client project mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="558"/>
+        <source>Default &amp;specifique path name :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="568"/>
+        <source>&amp;Default project directory :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="578"/>
+        <source>This the path where the save dialog must be opened when you create a new project.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="585"/>
+        <source>In client project mode only, when a standard file (with no prefix) is saving, XINX ask you to save the file with a new name as a client file. The new file name will be prefixed by the project prefix specified in the project property.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="588"/>
+        <source>&amp;Alert user when file is standard (project mode only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="595"/>
+        <source>This is the default method to close the project. If checked, when the project, or the application is closed informations about non saved files are stored in a session file. Else, the XINX ask the user about unsaved file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="598"/>
+        <source>&amp;Save project with session information by default (content of modified file)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="622"/>
+        <source>&amp;Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="642"/>
+        <source>Managed &amp;extentions :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="664"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;List of all managed extentions. In this list we can specify extentions that can be specifique and what are not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="689"/>
+        <source>Files informations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="701"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the file can be specifique, the file is stored in the project directory or a sub-directory. Moreover, when the user save a file of this type the soft ask the user to save as specifique file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="707"/>
+        <source>The file can be specifique</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="714"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the file must be stored in a sub-directory. It can be specified there. It can be used to specify a per extention directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="724"/>
+        <source>Specifique sub-directory :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="738"/>
+        <source>&amp;Tools</source>
+        <translation type="unfinished">&amp;Outils</translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="769"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is the path of tool for the comparaison of files. On Windows, this is the path of &lt;span style=&quot; font-style:italic;&quot;&gt;WinmergeU.exe&lt;/span&gt;, and on UNIX system, it is the path of &lt;span style=&quot; font-style:italic;&quot;&gt;KDiff&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Kompare &lt;/span&gt;by example.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="786"/>
+        <source>Compare &amp;Diiference :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="796"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Path of the CVS executable comonly called &lt;span style=&quot; font-style:italic;&quot;&gt;cvs.exe&lt;/span&gt;. It can be find in UNIX in &lt;span style=&quot; font-style:italic;&quot;&gt;/usr/bin&lt;/span&gt;, and on Windows in the directory where &lt;span style=&quot; font-style:italic;&quot;&gt;CVSNT&lt;/span&gt; or &lt;span style=&quot; font-style:italic;&quot;&gt;TortoiseCVS&lt;/span&gt; is installed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="806"/>
+        <source>&amp;Concurent Version System (CVS) : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="833"/>
+        <source>&amp;CVS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/custom.ui" line="999"/>
+        <source>&amp;Default</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -612,7 +843,7 @@ Version : %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="97"/>
+        <location filename="../ui/mainform.ui" line="98"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
@@ -622,12 +853,12 @@ Version : %4</translation>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="79"/>
+        <location filename="../ui/mainform.ui" line="80"/>
         <source>&amp;Windows</source>
         <translation>&amp;Affichage</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="71"/>
+        <location filename="../ui/mainform.ui" line="72"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
@@ -637,440 +868,445 @@ Version : %4</translation>
         <translation>&amp;Projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="104"/>
+        <location filename="../ui/mainform.ui" line="105"/>
         <source>&amp;Search</source>
         <translation>&amp;Chercher</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="114"/>
+        <location filename="../ui/mainform.ui" line="115"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editer</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="89"/>
+        <location filename="../ui/mainform.ui" line="90"/>
         <source>&amp;Tools</source>
         <translation>&amp;Outils</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="161"/>
+        <location filename="../ui/mainform.ui" line="162"/>
         <source>File Tool Bar</source>
         <translation>Barre d&apos;outil fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="178"/>
+        <location filename="../ui/mainform.ui" line="179"/>
         <source>Edit Tool Bar</source>
         <translation>Barre d&apos;outil Edition</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="200"/>
+        <location filename="../ui/mainform.ui" line="201"/>
         <source>Search Tool Bar</source>
         <translation>Barre d&apos;outil de recherche</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="646"/>
+        <location filename="../ui/mainform.ui" line="652"/>
         <source>Update project</source>
         <translation>Mise à jours du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="654"/>
+        <location filename="../ui/mainform.ui" line="660"/>
         <source>Commit project</source>
         <translation>Validation du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="212"/>
+        <location filename="../ui/mainform.ui" line="213"/>
         <source>WebServices Tool Bar</source>
         <translation>Barre d&apos;outil des services internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="228"/>
+        <location filename="../ui/mainform.ui" line="229"/>
         <source>&amp;New</source>
         <translation>&amp;Nouveau</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="231"/>
+        <location filename="../ui/mainform.ui" line="232"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="234"/>
+        <location filename="../ui/mainform.ui" line="235"/>
         <source>Create a new text file</source>
         <translation>Créer un nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="242"/>
+        <location filename="../ui/mainform.ui" line="243"/>
         <source>&amp;Open ...</source>
         <translation>&amp;Ouvrir ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="245"/>
+        <location filename="../ui/mainform.ui" line="246"/>
         <source>Open an existing file</source>
         <translation>Ouvrir un fichier existant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="253"/>
+        <location filename="../ui/mainform.ui" line="254"/>
         <source>&amp;Save</source>
         <translation>&amp;Sauver</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="256"/>
+        <location filename="../ui/mainform.ui" line="257"/>
         <source>Save the document to disk</source>
         <translation>Sauver le document sur le disque</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="264"/>
+        <location filename="../ui/mainform.ui" line="265"/>
         <source>Save &amp;As...</source>
         <translation>Sauver s&amp;ous ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="267"/>
+        <location filename="../ui/mainform.ui" line="268"/>
         <source>Save the document with a new name</source>
         <translation>Sauve le document sous un nouveau nom</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="275"/>
+        <location filename="../ui/mainform.ui" line="276"/>
         <source>Save A&amp;ll...</source>
         <translation>Sauver &amp;Tout ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="278"/>
+        <location filename="../ui/mainform.ui" line="279"/>
         <source>Save all documents to disk</source>
         <translation>Sauver tout les documents sur le disque</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="286"/>
+        <location filename="../ui/mainform.ui" line="287"/>
         <source>&amp;Print ...</source>
         <translation>&amp;Imprimer ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="289"/>
+        <location filename="../ui/mainform.ui" line="290"/>
         <source>Print the current document</source>
         <translation>Imprimer le document courrant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="297"/>
+        <location filename="../ui/mainform.ui" line="298"/>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="300"/>
+        <location filename="../ui/mainform.ui" line="301"/>
         <source>Close the current document</source>
         <translation>Fermer le document courrant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="305"/>
+        <location filename="../ui/mainform.ui" line="306"/>
         <source>&amp;Close All</source>
         <translation>F&amp;ermer tout</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="308"/>
+        <location filename="../ui/mainform.ui" line="309"/>
         <source>Close all document</source>
         <translation>Fermer tout les documents</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="316"/>
+        <location filename="../ui/mainform.ui" line="317"/>
         <source>E&amp;xit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="319"/>
+        <location filename="../ui/mainform.ui" line="320"/>
         <source>Quit XINX</source>
         <translation>Quitter XINX</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="327"/>
+        <location filename="../ui/mainform.ui" line="328"/>
         <source>&amp;Undo</source>
         <translation>&amp;Défaire</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="330"/>
+        <location filename="../ui/mainform.ui" line="331"/>
         <source>Undo the last action</source>
         <translation>Défait la dernière opération</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="338"/>
+        <location filename="../ui/mainform.ui" line="339"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refaire</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="341"/>
+        <location filename="../ui/mainform.ui" line="342"/>
         <source>Redo the next action</source>
         <translation>Refaire la dernière action</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="349"/>
+        <location filename="../ui/mainform.ui" line="350"/>
         <source>Cu&amp;t</source>
         <translation>Co&amp;uper</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="352"/>
+        <location filename="../ui/mainform.ui" line="353"/>
         <source>Cut the selection to the clipboard</source>
         <translation>Couper la séléction vers le presse papier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="360"/>
+        <location filename="../ui/mainform.ui" line="361"/>
         <source>&amp;Copy</source>
         <translation>Cop&amp;ier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="363"/>
+        <location filename="../ui/mainform.ui" line="364"/>
         <source>Copy the selection to the clipboard</source>
         <translation>Copier la séléction vers le presse papier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="371"/>
+        <location filename="../ui/mainform.ui" line="372"/>
         <source>&amp;Paste</source>
         <translation>Co&amp;ller</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="374"/>
+        <location filename="../ui/mainform.ui" line="375"/>
         <source>Paste the clipboard&apos;s contents</source>
         <translation>Coller le contenu du presse papier</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="379"/>
+        <location filename="../ui/mainform.ui" line="380"/>
         <source>&amp;Select All</source>
         <translation>Tout séléction&amp;ner</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="382"/>
+        <location filename="../ui/mainform.ui" line="383"/>
         <source>Select all the text of the current editor</source>
         <translation>Séléctionner tout le contenu de l&apos;éditeur</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="387"/>
+        <location filename="../ui/mainform.ui" line="388"/>
         <source>&amp;Duplicate current line</source>
         <translation>&amp;Dupliquer la ligne courrante</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="395"/>
+        <location filename="../ui/mainform.ui" line="396"/>
         <source>&amp;Move line up</source>
         <translation>Déplacer à la ligne s&amp;uivante</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="403"/>
+        <location filename="../ui/mainform.ui" line="404"/>
         <source>&amp;Move line down</source>
         <translation>Déplacer à la ligne pré&amp;cédente</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="411"/>
+        <location filename="../ui/mainform.ui" line="412"/>
         <source>&amp;Upper Case</source>
         <translation>Ma&amp;juscule</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="419"/>
+        <location filename="../ui/mainform.ui" line="420"/>
         <source>&amp;Lower Case</source>
         <translation>M&amp;inuscule</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="424"/>
+        <location filename="../ui/mainform.ui" line="425"/>
         <source>&amp;Comment</source>
         <translation>&amp;Commentaire</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="429"/>
+        <location filename="../ui/mainform.ui" line="430"/>
         <source>&amp;Uncomment</source>
         <translation>&amp;Décommenter</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="434"/>
+        <location filename="../ui/mainform.ui" line="435"/>
         <source>Completer</source>
         <translation>Compléter</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="442"/>
+        <location filename="../ui/mainform.ui" line="443"/>
         <source>&amp;Search ...</source>
         <translation>&amp;Rechercher ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="453"/>
+        <location filename="../ui/mainform.ui" line="454"/>
         <source>Search next</source>
         <translation>Recherche suivante</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="458"/>
+        <location filename="../ui/mainform.ui" line="459"/>
         <source>&amp;Replace ...</source>
         <translation>Re&amp;mplacer ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="466"/>
+        <location filename="../ui/mainform.ui" line="467"/>
         <source>&amp;New project ...</source>
         <translation>&amp;Nouveau projet ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="471"/>
+        <location filename="../ui/mainform.ui" line="472"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="474"/>
+        <location filename="../ui/mainform.ui" line="475"/>
         <source>Show the application&apos;s About box</source>
         <translation>Afficher les informations de l&apos;application</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="479"/>
+        <location filename="../ui/mainform.ui" line="480"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="482"/>
+        <location filename="../ui/mainform.ui" line="483"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Affiche les informations à propos de Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="490"/>
+        <location filename="../ui/mainform.ui" line="491"/>
         <source>&amp;Choose file ...</source>
         <translation>&amp;Choisir un fichier ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="498"/>
+        <location filename="../ui/mainform.ui" line="499"/>
         <source>&amp;Save project</source>
         <translation>&amp;Sauver le projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="503"/>
+        <location filename="../ui/mainform.ui" line="504"/>
         <source>&amp;Close Project (no session)</source>
         <translation>&amp;Fermer le projet (sans session)</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="508"/>
+        <location filename="../ui/mainform.ui" line="509"/>
         <source>Project &amp;property</source>
         <translation>&amp;Propriété du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="516"/>
+        <location filename="../ui/mainform.ui" line="517"/>
         <source>Next tab</source>
         <translation>Onglet suivant</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="521"/>
+        <location filename="../ui/mainform.ui" line="522"/>
         <source>Previous Tab</source>
         <translation>Onglet précédent</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="526"/>
+        <location filename="../ui/mainform.ui" line="527"/>
         <source>Indent Code</source>
         <translation>Indenter le code</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="531"/>
+        <location filename="../ui/mainform.ui" line="532"/>
         <source>Unindent code</source>
         <translation>Désindenter le code</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="536"/>
+        <location filename="../ui/mainform.ui" line="537"/>
         <source>Customize ...</source>
         <translation>Personnaliser ...</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="547"/>
+        <location filename="../ui/mainform.ui" line="548"/>
         <source>Search previous</source>
         <translation>Recherche précédente</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="558"/>
+        <location filename="../ui/mainform.ui" line="559"/>
         <source>Refresh WebServices List</source>
         <translation>Rafraichir la liste des services internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="569"/>
+        <location filename="../ui/mainform.ui" line="570"/>
         <source>Call WebServices</source>
         <translation>Appeler les services internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="577"/>
+        <location filename="../ui/mainform.ui" line="578"/>
         <source>New Stylesheet file</source>
         <translation>Nouvelle feuille de style</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="585"/>
+        <location filename="../ui/mainform.ui" line="586"/>
         <source>New XML file</source>
         <translation>Nouveau fichier de description XML</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="593"/>
+        <location filename="../ui/mainform.ui" line="594"/>
         <source>New JavaScript file</source>
         <translation>Nouveau fichier JavaScript</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="601"/>
+        <location filename="../ui/mainform.ui" line="602"/>
         <source>New WebServices file</source>
         <translation>Nouveau service internet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="606"/>
+        <location filename="../ui/mainform.ui" line="607"/>
         <source>Close Project (session)</source>
         <translation>Fermer le projet (session)</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="614"/>
+        <location filename="../ui/mainform.ui" line="615"/>
         <source>&amp;Recent Project</source>
         <translation>Projet &amp;récent</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="622"/>
+        <location filename="../ui/mainform.ui" line="623"/>
         <source>&amp;Recent file</source>
         <translation>Fichier &amp;récent</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="662"/>
+        <location filename="../ui/mainform.ui" line="668"/>
         <source>Add file(s) to project</source>
         <translation>Ajouter un/des fichier(s) au projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="670"/>
+        <location filename="../ui/mainform.ui" line="676"/>
         <source>Delete file(s) from project</source>
         <translation>Supprimer un/des fichier(s) du projet</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="681"/>
+        <location filename="../ui/mainform.ui" line="687"/>
         <source>Toggled Flat View</source>
         <translation>Inverser le modèle vue plate/hiérarchique</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="686"/>
+        <location filename="../ui/mainform.ui" line="692"/>
         <source>Create &amp;template</source>
         <translation>Créer un &amp;template</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="694"/>
+        <location filename="../ui/mainform.ui" line="700"/>
         <source>&amp;Refresh</source>
         <translation>&amp;Actualiser</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="699"/>
+        <location filename="../ui/mainform.ui" line="705"/>
         <source>Pretty print</source>
         <translation>Indentation automatique</translation>
     </message>
     <message>
-        <location filename="../ui/mainform.ui" line="707"/>
+        <location filename="../ui/mainform.ui" line="713"/>
         <source>Close project</source>
         <translation>Fermer le projet</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainform.ui" line="644"/>
+        <source>Cancel RCS operation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainformImpl</name>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1197"/>
+        <location filename="../src/mainformimpl.cpp" line="1218"/>
         <source>WebServices</source>
         <translation>Services internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1197"/>
+        <location filename="../src/mainformimpl.cpp" line="1218"/>
         <source>No WebServices can be found. Please update WebServices list to continue.</source>
         <translation>Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1245"/>
+        <location filename="../src/mainformimpl.cpp" line="1266"/>
         <source>File loaded</source>
         <translation>Fichier chargé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1290"/>
+        <location filename="../src/mainformimpl.cpp" line="1311"/>
         <source>Save a project</source>
         <translation>Sauver un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1340"/>
+        <location filename="../src/mainformimpl.cpp" line="1361"/>
         <source>Can&apos;t open project</source>
         <translation>Ne peux ouvrir le projet</translation>
     </message>
@@ -1196,176 +1432,176 @@ Version : %4</translation>
 <context>
     <name>PrivateMainformImpl</name>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="82"/>
+        <location filename="../src/mainformimpl.cpp" line="81"/>
         <source>Ctrl+1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="96"/>
+        <location filename="../src/mainformimpl.cpp" line="95"/>
         <source>Ctrl+2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="421"/>
+        <location filename="../src/mainformimpl.cpp" line="420"/>
         <source>Open text file</source>
         <translation>Ouvrir un fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="999"/>
+        <location filename="../src/mainformimpl.cpp" line="1009"/>
         <source>Application</source>
         <translation>Application</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="444"/>
+        <location filename="../src/mainformimpl.cpp" line="443"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="489"/>
+        <location filename="../src/mainformimpl.cpp" line="488"/>
         <source>Load completion</source>
         <translation>Chargement du fichier de compétion</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="489"/>
+        <location filename="../src/mainformimpl.cpp" line="488"/>
         <source>Can&apos;t load completion file.</source>
         <translation>Ne peux charger le fichier de complétion.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="494"/>
+        <location filename="../src/mainformimpl.cpp" line="493"/>
         <source>Load snipet</source>
         <translation>Chargement du template</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="494"/>
+        <location filename="../src/mainformimpl.cpp" line="493"/>
         <source>Can&apos;t load snipet file.</source>
         <translation>Ne peux charger le fichier de template.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="533"/>
+        <location filename="../src/mainformimpl.cpp" line="532"/>
         <source>&amp;%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="548"/>
+        <location filename="../src/mainformimpl.cpp" line="547"/>
         <source>Ready</source>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="669"/>
+        <location filename="../src/mainformimpl.cpp" line="679"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
         <translation>Le document %1 a été modifié.
 Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="689"/>
+        <location filename="../src/mainformimpl.cpp" line="699"/>
         <source>Save standard XSL</source>
         <translation>Sauver une feuille de style standard</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="689"/>
+        <location filename="../src/mainformimpl.cpp" line="699"/>
         <source>You&apos;re being to save standard file, do you whant make it specifique ?</source>
         <translation>Vous êtes sur le point de sauvegarder un fichier standard, voulez-vous le sauvegarder dans le dossier spécifique ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="734"/>
+        <location filename="../src/mainformimpl.cpp" line="744"/>
         <source>Save text file</source>
         <translation>Sauver le fichier texte</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="739"/>
+        <location filename="../src/mainformimpl.cpp" line="749"/>
         <source>Add file</source>
         <translation>Ajouter le fichier</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="739"/>
+        <location filename="../src/mainformimpl.cpp" line="749"/>
         <source>Do you want add file %1 to the repository ?</source>
         <translation>Voulez-vous ajouter le fichier %1 au référenciel ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="804"/>
+        <location filename="../src/mainformimpl.cpp" line="814"/>
         <source>File %1 saved</source>
         <translation>Fichier %1 sauvé</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="834"/>
+        <location filename="../src/mainformimpl.cpp" line="844"/>
         <source>Printed</source>
         <translation>Impression</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="973"/>
+        <location filename="../src/mainformimpl.cpp" line="983"/>
         <source>Search/Replace</source>
         <translation>Chercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="969"/>
+        <location filename="../src/mainformimpl.cpp" line="979"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; remplacés.</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="974"/>
+        <location filename="../src/mainformimpl.cpp" line="984"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation>%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="974"/>
+        <location filename="../src/mainformimpl.cpp" line="984"/>
         <source>replaced</source>
         <translation>remplacés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="974"/>
+        <location filename="../src/mainformimpl.cpp" line="984"/>
         <source>finded</source>
         <translation>trouvés</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="999"/>
+        <location filename="../src/mainformimpl.cpp" line="1009"/>
         <source>Replace this occurence</source>
         <translation>Remplacer cette occurence</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1101"/>
+        <location filename="../src/mainformimpl.cpp" line="1111"/>
         <source>XINX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1101"/>
+        <location filename="../src/mainformimpl.cpp" line="1111"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1106"/>
+        <location filename="../src/mainformimpl.cpp" line="1116"/>
         <source>Open a project</source>
         <translation>Ouvrir un projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1133"/>
+        <location filename="../src/mainformimpl.cpp" line="1143"/>
         <source>WebServices Error</source>
         <translation>Erreur du service internet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="1133"/>
+        <location filename="../src/mainformimpl.cpp" line="1143"/>
         <source>Web services has error code %1 : %2</source>
         <translation>Le service internet a retourné le code erreur suivante %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="78"/>
+        <location filename="../src/mainformimpl.cpp" line="77"/>
         <source>File Content</source>
         <translation>Contenu du document</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="85"/>
+        <location filename="../src/mainformimpl.cpp" line="84"/>
         <source>Project Directory</source>
         <translation>Dossier projet</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="99"/>
+        <location filename="../src/mainformimpl.cpp" line="98"/>
         <source>RCS Log</source>
         <translation>Journal du système de gestion de version</translation>
     </message>
     <message>
-        <location filename="../src/mainformimpl.cpp" line="103"/>
+        <location filename="../src/mainformimpl.cpp" line="102"/>
         <source>Ctrl+3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1744,51 +1980,6 @@ Voulez-vous sauver les changements ?</translation>
         <translation>Invoquer le service internet</translation>
     </message>
     <message>
-        <location filename="../src/xinxconfig.cpp" line="109"/>
-        <source>&lt;library name=&quot;xinx&quot;&gt;
-<byte value="x9"/>&lt;book name=&quot;noname&quot;&gt;This is a description&lt;/book&gt;
-<byte value="x9"/>&lt;!--This is a comment ;) --&gt;
-<byte value="x9"/>&lt;&lt;book name=&quot;with error&quot;&gt;
-&lt;/library&gt;
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xinxconfig.cpp" line="123"/>
-        <source>function xxx( a, b, c ) {
-<byte value="x9"/>var xyz;
-<byte value="x9"/>xyz = &apos;this is a text&apos;;
-<byte value="x9"/>xyz = 123; // no a number
-}
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/xinxconfig.cpp" line="133"/>
-        <source>All XML File</source>
-        <translation>Tous les fichiers de description XML</translation>
-    </message>
-    <message>
-        <location filename="../src/xinxconfig.cpp" line="140"/>
-        <source>All Stylesheet</source>
-        <translation>Toutes les feuilles de styles XSLT</translation>
-    </message>
-    <message>
-        <location filename="../src/xinxconfig.cpp" line="147"/>
-        <source>All XINX Webservices</source>
-        <translation>Tout les fichiers de description de service internet XINX</translation>
-    </message>
-    <message>
-        <location filename="../src/xinxconfig.cpp" line="154"/>
-        <source>All JavaScript</source>
-        <translation>Tout les fichiers JavaScript</translation>
-    </message>
-    <message>
-        <location filename="../src/xinxconfig.cpp" line="176"/>
-        <source>All Managed file</source>
-        <translation>Tout les fichiers gérés</translation>
-    </message>
-    <message>
         <location filename="../src/xsllistview.cpp" line="152"/>
         <source>Cannot read file %1:
 %2.</source>
@@ -1801,14 +1992,6 @@ Voulez-vous sauver les changements ?</translation>
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
 %2.</translation>
-    </message>
-</context>
-<context>
-    <name>RCSLogWidget</name>
-    <message>
-        <location filename="../ui/rcslogform.ui" line="13"/>
-        <source>RCS Log</source>
-        <translation>Journal du système de gestion de version</translation>
     </message>
 </context>
 <context>
@@ -2180,6 +2363,44 @@ Voulez-vous sauver les changements ?</translation>
 %2.</source>
         <translation>Ne peux écrire le fichier %1 :
 %2.</translation>
+    </message>
+</context>
+<context>
+    <name>XINXConfig</name>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="58"/>
+        <source>All XSL Stylesheet</source>
+        <translation>Toutes les feuilles de styles XSL</translation>
+    </message>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="59"/>
+        <source>All JavaScript</source>
+        <translation>Tout les fichiers JavaScript</translation>
+    </message>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="60"/>
+        <source>All Webservices input stream</source>
+        <translation>Tout les flux d&apos;entrée de service internet</translation>
+    </message>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="61"/>
+        <source>All XML File</source>
+        <translation>Tous les fichiers de description XML</translation>
+    </message>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="62"/>
+        <source>All HTML Stylesheet</source>
+        <translation>Toutes les feuilles de styles HTML</translation>
+    </message>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="63"/>
+        <source>All SQL file</source>
+        <translation>Tout les fichiers SQL</translation>
+    </message>
+    <message>
+        <location filename="../src/xinxconfig.cpp" line="133"/>
+        <source>All managed file</source>
+        <translation>Tout les fichiers gérés</translation>
     </message>
 </context>
 <context>

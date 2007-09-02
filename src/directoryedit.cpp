@@ -18,23 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SYNTAXHIGHLIGHTER_H
-#define SYNTAXHIGHLIGHTER_H
-//
-#include <QSyntaxHighlighter>
-#include <QHash>
-//
+// Xinx header
+#include "directoryedit.h"
 
-class XINXConfig;
+// Qt header
+#include <QFile>
+#include <QPalette>
+#include <QCompleter>
 
-class SyntaxHighlighter : public QSyntaxHighlighter {
-	Q_OBJECT
-public:
-	SyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
-	virtual ~SyntaxHighlighter();
-protected:
-	XINXConfig * m_config;
-};
-#endif
+/* CompleterDirModel */
+
+CompleterDirModel::CompleterDirModel( QObject *parent ) : QDirModel( parent ) {
+}
+
+QVariant CompleterDirModel::data( const QModelIndex &index, int role ) const {
+	if( role == Qt::DisplayRole && index.column() == 0 ) {
+		QString path = QDir::toNativeSeparators( filePath(index) );
+		if( path.endsWith(QDir::separator()) )
+			path.chop(1);
+		return path;
+	}
+
+	return QDirModel::data(index, role);
+}
+ 
+/* DirectoryEdit */
+
+DirectoryEdit::DirectoryEdit( QWidget * parent ) : QLineEdit( parent ) {
+	connect( this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)) );
+	QCompleter * completer = new QCompleter( this );
+	this->setCompleter( completer );
+	completer->setModel( new CompleterDirModel( completer ) );
+}
+
+DirectoryEdit::DirectoryEdit( const QString & contents, QWidget * parent ) : QLineEdit( contents, parent ) {
+	connect( this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)) );
+}
+
+void DirectoryEdit::slotTextChanged( QString text ) {
+	QFile file ( text );
+	QPalette palette( this->palette() );
+	
+	if( file.exists() ) {
+		palette.setColor( QPalette::Text, QColor() );
+	} else {
+		palette.setColor( QPalette::Text, Qt::red );
+	}
+	setPalette( palette );
+}
+

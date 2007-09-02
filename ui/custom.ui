@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
-    <height>411</height>
+    <width>782</width>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -20,7 +20,7 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QTabWidget" name="tabWidget" >
+    <widget class="QTabWidget" name="m_tabWidget" >
      <property name="enabled" >
       <bool>true</bool>
      </property>
@@ -29,10 +29,7 @@
      </property>
      <widget class="QWidget" name="page" >
       <attribute name="title" >
-       <string>Preference</string>
-      </attribute>
-      <attribute name="icon" >
-       <iconset resource="../application.qrc" >:/images/desktop.png</iconset>
+       <string>&amp;Application</string>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -53,8 +50,41 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="4" column="1" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>Application &amp;description path :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_descriptionPathLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" >
+           <widget class="QToolButton" name="m_changeApplicationDescriptionPathBtn" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label" >
+            <property name="text" >
+             <string>&amp;Language :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_langComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="3" >
            <widget class="QComboBox" name="m_langComboBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Langue in which XINX must be used.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
             <item>
              <property name="text" >
               <string>(en) English</string>
@@ -73,41 +103,13 @@
             </item>
            </widget>
           </item>
-          <item row="4" column="0" >
-           <widget class="QLabel" name="label" >
-            <property name="text" >
-             <string>XINX Lang :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_langComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox" >
-            <property name="text" >
-             <string>&amp;Popup when file modifed</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_saveSessionCheckBox" >
-            <property name="text" >
-             <string>Save session by default</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_createBakCheckBox" >
-            <property name="text" >
-             <string>Create backup file (.bak)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_alertStandardCheckBox" >
-            <property name="text" >
-             <string>Alert user when file is standard (project mode only)</string>
+          <item row="0" column="1" colspan="2" >
+           <widget class="DirectoryEdit" name="m_descriptionPathLineEdit" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the path where XNX files is stored as the stored snipet file or the completion file. This is also the directory where is stored the business object description is stored (maybe used in the future).&lt;/p>&lt;/body>&lt;/html></string>
             </property>
            </widget>
           </item>
@@ -129,219 +131,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2" >
+     <widget class="QWidget" name="tab_3" >
       <attribute name="title" >
-       <string>Path</string>
-      </attribute>
-      <attribute name="icon" >
-       <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item row="2" column="0" >
-        <widget class="QGroupBox" name="groupBox_5" >
-         <property name="title" >
-          <string>Tools</string>
-         </property>
-         <layout class="QVBoxLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item>
-           <layout class="QGridLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <item row="0" column="0" >
-             <widget class="QLabel" name="label_7" >
-              <property name="text" >
-               <string>&amp;CVS : </string>
-              </property>
-              <property name="buddy" >
-               <cstring>m_CVSToolsLineEdit</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="3" >
-             <widget class="QToolButton" name="m_mergeToolButton" >
-              <property name="text" >
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" colspan="2" >
-             <widget class="QLabel" name="label_12" >
-              <property name="text" >
-               <string>&amp;Merge :</string>
-              </property>
-              <property name="buddy" >
-               <cstring>m_mergeToolLineEdit</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2" >
-             <widget class="QLineEdit" name="m_mergeToolLineEdit" />
-            </item>
-            <item row="0" column="1" colspan="2" >
-             <widget class="QLineEdit" name="m_CVSToolsLineEdit" />
-            </item>
-            <item row="0" column="3" >
-             <widget class="QToolButton" name="m_cvsToolButton" >
-              <property name="text" >
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QGroupBox" name="groupBox_3" >
-         <property name="title" >
-          <string>Project files path</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_4" >
-            <property name="text" >
-             <string>Path :</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="m_fileTypePath" />
-          </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QComboBox" name="m_fileTypeComboBox" >
-            <item>
-             <property name="text" >
-              <string>Stylesheet (*.xsl)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>JavaScript (*.js)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>Configuration file (configuration.xml)</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_specifiqueCheckBox" >
-            <property name="text" >
-             <string>Can be specifique</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="groupBox_2" >
-         <property name="title" >
-          <string>Custom path</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item row="0" column="3" >
-           <widget class="QToolButton" name="m_changeProjectPathBtn" >
-            <property name="text" >
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2" >
-           <widget class="QLabel" name="label_3" >
-            <property name="text" >
-             <string>Business object description :</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3" >
-           <widget class="QToolButton" name="m_changeObjectPathBtn" >
-            <property name="text" >
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2" >
-           <widget class="QLineEdit" name="m_objectDescriptionPathLineEdit" />
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label_2" >
-            <property name="text" >
-             <string>XINX project directory :</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" colspan="2" >
-           <widget class="QLineEdit" name="m_projectPathLineEdit" />
-          </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_11" >
-            <property name="text" >
-             <string>Default p&amp;roject path name :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_lineEditDefaultProjectPathName</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" colspan="2" >
-           <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" />
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="page_3" >
-      <attribute name="title" >
-       <string>Editor</string>
-      </attribute>
-      <attribute name="icon" >
-       <iconset resource="../application.qrc" >:/images/style.png</iconset>
+       <string>&amp;Editor</string>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -351,9 +143,9 @@
         <number>6</number>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox_4" >
+        <widget class="QGroupBox" name="groupBox_7" >
          <property name="title" >
-          <string>Customize syntax</string>
+          <string>Editor</string>
          </property>
          <layout class="QGridLayout" >
           <property name="margin" >
@@ -362,84 +154,210 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="5" column="0" >
+          <item row="7" column="2" colspan="3" >
+           <widget class="QFontComboBox" name="m_fontComboBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Name of the font to use in all editors&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" colspan="2" >
+           <widget class="QLabel" name="label_10" >
+            <property name="text" >
+             <string>Font &amp;size :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_fontSizeSpinBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2" colspan="3" >
+           <widget class="QSpinBox" name="m_fontSizeSpinBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the font in the editor. The value is a global value.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="2" >
            <widget class="QLabel" name="label_6" >
             <property name="text" >
-             <string>Font :</string>
+             <string>&amp;Font name :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_fontComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="0" colspan="5" >
+           <widget class="QCheckBox" name="m_showTabulationCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Show tabulation and space in the editor. This can be used to see, if tabulation or space is written.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Show tabulation and space in the editor</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2" >
+           <widget class="QLabel" name="label_13" >
+            <property name="text" >
+             <string>&amp;Completion level :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_completionLevelComboBox</cstring>
             </property>
            </widget>
           </item>
           <item row="2" column="0" colspan="3" >
-           <widget class="QCheckBox" name="m_underlineCheckBox" >
-            <property name="font" >
-             <font/>
+           <widget class="QCheckBox" name="m_prettyPrintOnSavingCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If the box is checked, when saving the file, XINX apply the pretty print function on the text. This format the code on saving file. Saving file can be slower.&lt;/p>&lt;/body>&lt;/html></string>
             </property>
             <property name="text" >
-             <string>Underline</string>
+             <string>P&amp;retty print on saving</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="3" >
-           <widget class="QCheckBox" name="m_StrikeoutCheckBox" >
-            <property name="font" >
-             <font/>
+          <item row="1" column="0" colspan="5" >
+           <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Alert user when the file is modified by an extern application. The user has the choice to open the new file or keep current file.&lt;/p>&lt;/body>&lt;/html></string>
             </property>
             <property name="text" >
-             <string>Strikeout</string>
+             <string>&amp;Popup when file modifed</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="3" >
-           <widget class="QCheckBox" name="m_italicCheckBox" >
-            <property name="font" >
-             <font/>
+          <item row="0" column="0" colspan="5" >
+           <widget class="QCheckBox" name="m_createBakCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Create a backup file before saving the file. The backup file is stored in the same directory that the orignal file. The backup is created by copy before the file is overwritten.&lt;/p>&lt;/body>&lt;/html></string>
             </property>
             <property name="text" >
-             <string>Italic</string>
+             <string>&amp;Create backup file when saving (.bak)</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="3" >
-           <widget class="QCheckBox" name="m_boldCheckBox" >
-            <property name="font" >
-             <font/>
+          <item row="3" column="2" colspan="3" >
+           <widget class="QComboBox" name="m_completionLevelComboBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Level of the completion. The completion can be :&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Desactivated&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Activated but only with an help on tapping&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Fully activated with the help on tapping, and the adding code (as configured on completion file)&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
             </property>
+            <item>
+             <property name="text" >
+              <string>Active automatique code writing</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Active popup completion dialog</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Desactivate completion</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="5" column="1" >
+           <widget class="QLabel" name="label_14" >
             <property name="text" >
-             <string>Bold</string>
+             <string>Size of a &amp;tabulation :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_sizeOfTabSpinBox</cstring>
             </property>
            </widget>
           </item>
-          <item row="4" column="0" >
-           <widget class="QLabel" name="label_5" >
-            <property name="text" >
-             <string>Color :</string>
+          <item row="5" column="2" colspan="3" >
+           <widget class="QSpinBox" name="m_sizeOfTabSpinBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the tabulation in number of character. This is the number of character that a tabulation replace.&lt;/p>&lt;/body>&lt;/html></string>
             </property>
            </widget>
-          </item>
-          <item row="5" column="1" colspan="3" >
-           <widget class="QFontComboBox" name="m_fontComboBox" />
-          </item>
-          <item row="4" column="1" colspan="3" >
-           <widget class="KColorCombo" name="m_colorComboBox" />
-          </item>
-          <item row="3" column="0" >
-           <widget class="QLabel" name="label_10" >
-            <property name="text" >
-             <string>Font size :</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1" colspan="3" >
-           <widget class="QDoubleSpinBox" name="m_fontSizeSpinBox" />
-          </item>
-          <item row="0" column="0" colspan="4" >
-           <widget class="QComboBox" name="m_syntaxComboBox" />
           </item>
          </layout>
         </widget>
        </item>
        <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_3" >
+      <attribute name="title" >
+       <string>&amp;Syntax highlighter</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="1" >
         <widget class="QTextEdit" name="m_exempleTextEdit" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is an example of how is showed the text in the editor after the change that are been made.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
          <property name="lineWrapMode" >
           <enum>QTextEdit::NoWrap</enum>
          </property>
@@ -454,14 +372,155 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="1" >
+        <widget class="QGroupBox" name="groupBox_4" >
+         <property name="title" >
+          <string>Customize syntax</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="2" column="1" colspan="2" >
+           <widget class="KColorCombo" name="m_colorComboBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Color used in the text for the selected token.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>&amp;Color :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_colorComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2" >
+           <widget class="QCheckBox" name="m_boldCheckBox" >
+            <property name="font" >
+             <font/>
+            </property>
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600;">Wrote the text in bold&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Bold</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" >
+           <widget class="QCheckBox" name="m_italicCheckBox" >
+            <property name="font" >
+             <font/>
+            </property>
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Wrote the text in italic&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Italic</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2" >
+           <widget class="QCheckBox" name="m_StrikeoutCheckBox" >
+            <property name="font" >
+             <font/>
+            </property>
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;strike>Strikeout the text&lt;/strike>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Strikeout</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2" >
+           <widget class="QCheckBox" name="m_underlineCheckBox" >
+            <property name="font" >
+             <font/>
+            </property>
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" text-decoration: underline;">Underline the text&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Underline</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item rowspan="2" row="0" column="0" >
+        <layout class="QVBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_16" >
+           <property name="text" >
+            <string>&amp;Token of syntax highlighter :</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_formatsListView</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListWidget" name="m_formatsListView" >
+           <property name="minimumSize" >
+            <size>
+             <width>175</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>175</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="whatsThis" >
+            <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of token what can be modified. Tokens are used to colorize the document. All supported token are showed here.&lt;/p>&lt;/body>&lt;/html></string>
+           </property>
+           <property name="sortingEnabled" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab" >
+     <widget class="QWidget" name="tab_2" >
       <attribute name="title" >
-       <string>CVS</string>
-      </attribute>
-      <attribute name="icon" >
-       <iconset resource="../application.qrc" >:/images/cervisia.png</iconset>
+       <string>&amp;Project</string>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -471,115 +530,433 @@
         <number>6</number>
        </property>
        <item>
-        <layout class="QGridLayout" >
+        <widget class="QGroupBox" name="groupBox_6" >
+         <property name="title" >
+          <string>Project options</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="2" column="2" >
+           <widget class="QToolButton" name="m_changeProjectPathBtn" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
+            <property name="whatsThis" >
+             <string>This is the path where specifique is stored in client project mode.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_11" >
+            <property name="text" >
+             <string>Default &amp;specifique path name :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_lineEditDefaultProjectPathName</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>&amp;Default project directory :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_projectPathLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3" >
+           <widget class="QCheckBox" name="m_alertStandardCheckBox" >
+            <property name="whatsThis" >
+             <string>In client project mode only, when a standard file (with no prefix) is saving, XINX ask you to save the file with a new name as a client file. The new file name will be prefixed by the project prefix specified in the project property.</string>
+            </property>
+            <property name="text" >
+             <string>&amp;Alert user when file is standard (project mode only)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3" >
+           <widget class="QCheckBox" name="m_saveSessionCheckBox" >
+            <property name="whatsThis" >
+             <string>This is the default method to close the project. If checked, when the project, or the application is closed informations about non saved files are stored in a session file. Else, the XINX ask the user about unsaved file.</string>
+            </property>
+            <property name="text" >
+             <string>&amp;Save project with session information by default (content of modified file)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
+            <property name="whatsThis" >
+             <string>This the path where the save dialog must be opened when you create a new project.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5" >
+      <attribute name="title" >
+       <string>&amp;Files</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item rowspan="2" row="0" column="0" >
+        <layout class="QVBoxLayout" >
          <property name="margin" >
           <number>0</number>
          </property>
          <property name="spacing" >
           <number>6</number>
          </property>
-         <item row="1" column="1" >
-          <widget class="QComboBox" name="m_cvsCompressionComboBox" >
-           <item>
-            <property name="text" >
-             <string>-z0 Disabled </string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z1 Low level</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z5 Medium Level</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z6</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z7</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z8</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>-z9 High level</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="label_9" >
+         <item>
+          <widget class="QLabel" name="label_4" >
            <property name="text" >
-            <string>Compression:</string>
+            <string>Managed &amp;extentions :</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_extentionsListWidget</cstring>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2" >
-          <widget class="QCheckBox" name="m_cvsPruneCheckBox" >
-           <property name="text" >
-            <string>Prune empty directories. (-P)</string>
+         <item>
+          <widget class="QListWidget" name="m_extentionsListWidget" >
+           <property name="minimumSize" >
+            <size>
+             <width>175</width>
+             <height>0</height>
+            </size>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QComboBox" name="m_cvsVerboseComboBox" >
-           <item>
-            <property name="text" >
-             <string>Very Quiet (-Q)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>Discret (-q)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text" >
-             <string>Verbose</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="2" >
-          <widget class="QCheckBox" name="m_cvsCreateDirCheckBox" >
-           <property name="text" >
-            <string>Create any directories that exist in the repository if they're missing from the working directory. (-d)</string>
+           <property name="maximumSize" >
+            <size>
+             <width>175</width>
+             <height>16777215</height>
+            </size>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="label_8" >
-           <property name="text" >
-            <string>Progress message: </string>
+           <property name="whatsThis" >
+            <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of all managed extentions. In this list we can specify extentions that can be specifique and what are not.&lt;/p>&lt;/body>&lt;/html></string>
            </property>
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="1" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>251</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QGroupBox" name="groupBox_2" >
+         <property name="title" >
+          <string>Files informations</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="0" column="0" colspan="2" >
+           <widget class="QCheckBox" name="m_CanBeSpecifiqueCcheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If the file can be specifique, the file is stored in the project directory or a sub-directory. Moreover, when the user save a file of this type the soft ask the user to save as specifique file.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>The file can be specifique</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="m_subDirectoryLineEdit" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If the file must be stored in a sub-directory. It can be specified there. It can be used to specify a per extention directory.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_15" >
+            <property name="text" >
+             <string>Specifique sub-directory :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_subDirectoryLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4" >
+      <attribute name="title" >
+       <string>&amp;Tools</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="groupBox_5" >
+         <property name="title" >
+          <string>Tools</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="1" column="2" >
+           <widget class="QToolButton" name="m_mergeToolBtn" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" >
+           <widget class="QToolButton" name="m_cvsToolBtn" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_12" >
+            <property name="text" >
+             <string>Compare &amp;Diiference :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_mergeToolLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_7" >
+            <property name="text" >
+             <string>&amp;Concurent Version System (CVS) : </string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_CVSToolsLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="DirectoryEdit" name="m_CVSToolsLineEdit" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Path of the CVS executable comonly called &lt;span style=" font-style:italic;">cvs.exe&lt;/span>. It can be find in UNIX in &lt;span style=" font-style:italic;">/usr/bin&lt;/span>, and on Windows in the directory where &lt;span style=" font-style:italic;">CVSNT&lt;/span> or &lt;span style=" font-style:italic;">TortoiseCVS&lt;/span> is installed.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="DirectoryEdit" name="m_mergeToolLineEdit" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the path of tool for the comparaison of files. On Windows, this is the path of &lt;span style=" font-style:italic;">WinmergeU.exe&lt;/span>, and on UNIX system, it is the path of &lt;span style=" font-style:italic;">KDiff&lt;/span>, or &lt;span style=" font-style:italic;">Kompare &lt;/span>by example.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>&amp;CVS</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3" >
+         <property name="title" >
+          <string>CVS</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="3" column="0" colspan="2" >
+           <widget class="QCheckBox" name="m_cvsCreateDirCheckBox" >
+            <property name="text" >
+             <string>Create any directories that exist in the repository if they're missing from the working directory. (-d)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2" >
+           <widget class="QCheckBox" name="m_cvsPruneCheckBox" >
+            <property name="text" >
+             <string>Prune empty directories. (-P)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QComboBox" name="m_cvsCompressionComboBox" >
+            <item>
+             <property name="text" >
+              <string>-z0 Disabled </string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z1 Low level</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z2</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z3</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z4</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z5 Medium Level</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z6</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z7</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z8</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>-z9 High level</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_9" >
+            <property name="text" >
+             <string>Compression:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QComboBox" name="m_cvsVerboseComboBox" >
+            <item>
+             <property name="text" >
+              <string>Very Quiet (-Q)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Discret (-q)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Verbose</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_8" >
+            <property name="text" >
+             <string>Progress message: </string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <spacer>
@@ -620,6 +997,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton" >
+       <property name="text" >
+        <string>&amp;Default</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="okButton" >
        <property name="text" >
         <string>OK</string>
@@ -645,42 +1029,54 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>DirectoryEdit</class>
+   <extends>QLineEdit</extends>
+   <header>../src/directoryedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>KColorCombo</class>
    <extends>QComboBox</extends>
    <header>../src/kcolorcombo.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>m_alertStandardCheckBox</tabstop>
-  <tabstop>m_createBakCheckBox</tabstop>
-  <tabstop>m_saveSessionCheckBox</tabstop>
-  <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>m_tabWidget</tabstop>
+  <tabstop>m_descriptionPathLineEdit</tabstop>
+  <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
   <tabstop>m_langComboBox</tabstop>
+  <tabstop>m_createBakCheckBox</tabstop>
+  <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
+  <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>
+  <tabstop>m_completionLevelComboBox</tabstop>
+  <tabstop>m_showTabulationCheckBox</tabstop>
+  <tabstop>m_sizeOfTabSpinBox</tabstop>
+  <tabstop>m_fontSizeSpinBox</tabstop>
+  <tabstop>m_fontComboBox</tabstop>
+  <tabstop>m_formatsListView</tabstop>
+  <tabstop>m_boldCheckBox</tabstop>
+  <tabstop>m_underlineCheckBox</tabstop>
+  <tabstop>m_italicCheckBox</tabstop>
+  <tabstop>m_StrikeoutCheckBox</tabstop>
+  <tabstop>m_colorComboBox</tabstop>
+  <tabstop>m_exempleTextEdit</tabstop>
+  <tabstop>m_alertStandardCheckBox</tabstop>
+  <tabstop>m_saveSessionCheckBox</tabstop>
   <tabstop>m_projectPathLineEdit</tabstop>
   <tabstop>m_changeProjectPathBtn</tabstop>
-  <tabstop>m_objectDescriptionPathLineEdit</tabstop>
-  <tabstop>m_changeObjectPathBtn</tabstop>
   <tabstop>m_lineEditDefaultProjectPathName</tabstop>
-  <tabstop>m_fileTypeComboBox</tabstop>
-  <tabstop>m_fileTypePath</tabstop>
-  <tabstop>m_specifiqueCheckBox</tabstop>
+  <tabstop>m_extentionsListWidget</tabstop>
+  <tabstop>m_CanBeSpecifiqueCcheckBox</tabstop>
+  <tabstop>m_subDirectoryLineEdit</tabstop>
   <tabstop>m_CVSToolsLineEdit</tabstop>
-  <tabstop>m_cvsToolButton</tabstop>
-  <tabstop>m_syntaxComboBox</tabstop>
-  <tabstop>m_boldCheckBox</tabstop>
-  <tabstop>m_italicCheckBox</tabstop>
-  <tabstop>m_underlineCheckBox</tabstop>
-  <tabstop>m_StrikeoutCheckBox</tabstop>
-  <tabstop>m_fontSizeSpinBox</tabstop>
-  <tabstop>m_colorComboBox</tabstop>
-  <tabstop>m_fontComboBox</tabstop>
-  <tabstop>m_exempleTextEdit</tabstop>
+  <tabstop>m_cvsToolBtn</tabstop>
+  <tabstop>m_mergeToolLineEdit</tabstop>
+  <tabstop>m_mergeToolBtn</tabstop>
   <tabstop>m_cvsVerboseComboBox</tabstop>
   <tabstop>m_cvsCompressionComboBox</tabstop>
   <tabstop>m_cvsPruneCheckBox</tabstop>
   <tabstop>m_cvsCreateDirCheckBox</tabstop>
-  <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
@@ -694,8 +1090,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>296</x>
-     <y>374</y>
+     <x>592</x>
+     <y>549</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -710,12 +1106,28 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>379</x>
-     <y>374</y>
+     <x>670</x>
+     <y>549</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
      <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_CanBeSpecifiqueCcheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_subDirectoryLineEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>301</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>107</y>
     </hint>
    </hints>
   </connection>

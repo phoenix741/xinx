@@ -19,14 +19,27 @@
  ***************************************************************************/
 
 #include "syntaxhighlighter.h"
+#include "globals.h"
 
-SyntaxHighlighter::SyntaxHighlighter( QObject* parent ) : QSyntaxHighlighter( parent ) {
+SyntaxHighlighter::SyntaxHighlighter( QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+	if( config )
+		m_config = config;
+	else
+		m_config = global.m_config;
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent ) : QSyntaxHighlighter( parent ) {
+SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+	if( config )
+		m_config = config;
+	else
+		m_config = global.m_config;
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent ) : QSyntaxHighlighter( parent ) {
+SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+	if( config )
+		m_config = config;
+	else
+		m_config = global.m_config;
 }
 
 SyntaxHighlighter::~SyntaxHighlighter() {
