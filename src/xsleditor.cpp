@@ -18,6 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
+#include "globals.h"
+#include "xsleditor.h"
+#include "editorcompletion.h"
+#include "xsllistview.h"
+#include "xinxconfig.h"
+
+// Qt header
 #include <QIcon>
 #include <QTextEdit>
 #include <QStringListModel>
@@ -28,11 +36,6 @@
 #include <QCompleter>
 #include <QDomElement>
 #include <assert.h>
-
-#include "globals.h"
-#include "xsleditor.h"
-#include "editorcompletion.h"
-#include "xsllistview.h"
 
 /* XSLEditor */
 
@@ -346,6 +349,7 @@ XSLEditor::XSLEditor( QWidget * parent ) : XMLEditor( parent ) {
 	
 	m_contentModel = new XSLItemModel( m_modelData, this );
 
+	m_completionValueModel = NULL;
 	m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
 	m_completerValue->setModel( m_completionValueModel );
 
@@ -403,7 +407,7 @@ int XSLEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 
 	int position = -1, cnt = 0;
 	
-	if( global.m_completionContents && global.m_completionContents->balise( node ) ) {
+	if( global.m_config->config().editor.completionLevel == 3 && global.m_completionContents && global.m_completionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = global.m_completionContents->balise( node );
 		foreach( CompletionXMLBalise* b, balise->balises() ) {
 			if( b->isDefault() ) {
@@ -418,11 +422,13 @@ int XSLEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 		}
 	}
 	
-	if( cnt > 0 )
-		tc.insertText( "\n" + indent );
-	tc.insertText( QString("</%1>").arg( node ) );
-	if( position != -1 )
-		tc.setPosition( position );
+	if( global.m_config->config().editor.completionLevel >= 2 ) {
+		if( cnt > 0 )
+			tc.insertText( "\n" + indent );
+		tc.insertText( QString("</%1>").arg( node ) );
+		if( position != -1 )
+			tc.setPosition( position );
+	}
 		
 	return position;
 } 
@@ -491,7 +497,8 @@ void XSLEditor::insertCompletion( const QModelIndex& index ) {
 
 QCompleter * XSLEditor::currentCompleter( const QTextCursor & cursor ) {
 	assert( ! cursor.isNull() );
-
+	if( global.m_config->config().editor.completionLevel == 0 ) 
+		return NULL;
 	XSLEditor::cursorPosition position = editPosition( cursor );
 	switch( position ) {
 		case XSLEditor::cpEditNodeName:
@@ -505,7 +512,7 @@ QCompleter * XSLEditor::currentCompleter( const QTextCursor & cursor ) {
 		
 			return m_completerParam;
 		case XSLEditor::cpEditParamValue: 
-			if( ( m_nodeName != m_completerParamNodeName ) || ( m_paramName != m_completerValueParamName ) ) {
+			if( m_completionValueModel && ( ( m_nodeName != m_completerParamNodeName ) || ( m_paramName != m_completerValueParamName ) ) ) {
 				m_completionParamModel->setBaliseName( m_nodeName );
 				m_completionValueModel->setBaliseName( m_nodeName, m_paramName );
 				m_completerParamNodeName = m_nodeName;
@@ -536,6 +543,11 @@ void XSLEditor::complete() {
 }
 
 void XSLEditor::keyPressEvent( QKeyEvent *e ) {
+	if( ( global.m_config->config().editor.completionLevel == 0 ) ) {
+		// Don't process completion
+		TextEditor::keyPressEvent( e );
+		return;
+	}
 	QCompleter * c = currentCompleter( textCursor() );
 	
 	if (c && c->popup()->isVisible()) {
@@ -558,7 +570,7 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 		TextEditor::keyPressEvent( e );
 		
 	if(!e->text().isEmpty()) {
-		if(e->text().right(1) == ">") {
+		if( e->text().right(1) == ">" && global.m_config->config().editor.completionLevel >= 2 ) {
 			QTextCursor tc( textCursor() );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
@@ -586,7 +598,7 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 			} catch( XMLParserException e ) {
 				emit hasError( tr( "Error %1 at %2" ).arg( e.getMessage() ).arg( e.getLine() ) );
 			}
-		} else if( e->text().right(1) == "=" ) { 
+		} else if( e->text().right(1) == "=" && global.m_config->config().editor.completionLevel >= 2 ) { 
 			QTextCursor tc( textCursor() );
 			QTextCursor tc2( textCursor() );
 			tc2.movePosition( QTextCursor::PreviousCharacter );
@@ -595,7 +607,7 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 				insertCompletionValue( tc, m_nodeName, m_paramName );
 				setTextCursor( tc );
 			}
-		} else if( e->text().right(1) == " " ) { 
+		} else if( e->text().right(1) == " " && global.m_config->config().editor.completionLevel >= 3 ) { 
 			QTextCursor tc( textCursor() );
 			QTextCursor tc2( textCursor() );
 			tc2.movePosition( QTextCursor::PreviousCharacter );

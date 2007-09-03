@@ -18,8 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "jseditor.h"
+#include "jshighlighter.h"
+#include "javascriptparser.h"
+#include "javascriptfilecontent.h"
+#include "javascriptmodelcompleter.h"
+#include "globals.h"
+#include "xinxconfig.h"
 
+// Qt header
 #include <QCompleter>
 #include <QDomElement>
 #include <QKeyEvent>
@@ -27,11 +35,6 @@
 #include <QTextBlock>
 #include <QAbstractItemView>
 #include <QScrollBar>
-
-#include "jshighlighter.h"
-#include "javascriptparser.h"
-#include "javascriptfilecontent.h"
-#include "javascriptmodelcompleter.h"
 
 #define EOW			"~!@$#%^&*()+{}|\"<>?,/;'[]\\="
 
@@ -134,6 +137,7 @@ void JSEditor::updateModel() {
 		emit modelUpdated( NULL );
 		d->m_completer->setModel( NULL );
 		delete d->m_model; d->m_model = NULL;
+		delete d->m_modelCompleter; d->m_modelCompleter = NULL; 
 		delete d->m_parser; d->m_parser = NULL;
 		d->m_parser = parser;
 		d->m_model  = new JavascriptFileContent( d->m_parser, this );
@@ -171,7 +175,7 @@ void JSEditor::complete() {
 }
 
 void JSEditor::keyPressEvent( QKeyEvent * e ) {
-	if( ! d->m_modelCompleter ) {
+	if( ( global.m_config->config().editor.completionLevel == 0 ) || (! d->m_modelCompleter) ) {
 		TextEditor::keyPressEvent( e );
 		return ;	
 	}

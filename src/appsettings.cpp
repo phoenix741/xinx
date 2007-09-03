@@ -148,7 +148,7 @@ struct_editor AppSettings::getDefaultEditor() {
 	value.autoindentOnSaving = false;
 	value.popupWhenFileModified = true; 
 	value.createBackupFile = true; 
-	value.completionLevel = 0;
+	value.completionLevel = 3; // 0 .. 3
 	value.tabulationSize = 4; 
 	value.showTabulationAndSpace = false; 
 

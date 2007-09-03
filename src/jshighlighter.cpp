@@ -83,16 +83,18 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				const int iLength = numberExpression.matchedLength();
 				setFormat( pos, iLength, m_config->config().formats["js_number"] );
 				i += iLength;
-			}
+			} 
 		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
 			pos = motExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			if( pos == i ) {
 				const int iLength = motExpression.matchedLength();
 				if( keywordPatterns.contains( text.mid( i, iLength ) ) ) {
 					setFormat( pos, iLength, m_config->config().formats["js_reservedword"] );
+				} else {
+					setFormat( pos, iLength, m_config->config().formats["js_other"] );
 				}
 				i += iLength;
-			}
+			} 
 		} else if ( c == '/' ) {
 			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			
@@ -121,7 +123,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				const int iLength = string1Expression.matchedLength();
 				setFormat( pos, iLength, m_config->config().formats["js_string"] );
 				i += iLength;
-			}
+			} 
 		} else if ( c == '\"' ) {
 			pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
 			
@@ -129,7 +131,9 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 				const int iLength = string2Expression.matchedLength();
 				setFormat( pos, iLength, m_config->config().formats["js_string"] );
 				i += iLength;
-			}
+			} 
+		} else {
+			setFormat( i, 1, m_config->config().formats["js_other"] );
 		}
 	}	
 }
