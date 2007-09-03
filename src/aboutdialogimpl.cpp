@@ -18,8 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "aboutdialogimpl.h"
-//
+
+/* AboutDialogImpl */
+
+/*!
+ * \class AboutDialogImpl
+ * 
+ * Implementation of about dialog containts informations as the version, the licence,
+ * the logo, and authors.
+ * The implementation containts only a constructor who defines default dialog 
+ * presentation : Windows Style Dialog.
+ */
+ 
+/*!
+ * Constructor of The about dialog implementation. We defines a default windows flags.
+ * The windows can be resize.
+ * \param parent The parent of the dialog
+ * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+ */
 AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
 	setupUi(this);

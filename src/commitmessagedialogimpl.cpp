@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "commitmessagedialogimpl.h"
-
 #include "globals.h"
 #include "xslproject.h"
 
+// Qt header
 #include <QMessageBox>
 #include <QDir>
 
@@ -48,23 +49,54 @@ PrivateCommitMessageDialogImpl::~PrivateCommitMessageDialogImpl() {
 
 /* CommitMessageDialogImpl */
 
+/*!
+ * \class CommitMessageDialogImpl
+ * 
+ * Implementation of the commit dialog. This dialog is used to choose file to be commited
+ * and message to be assigned at the operations.
+ */
+
+/*!
+ * Constructor of the commit dialog. The dialog as a windows flag who said the flag is not
+ * resizable.
+ * \param parent Parent of the dialog
+ * \param f Flags to use on Windows. By default, the dialog have a fixed size.
+ */
 CommitMessageDialogImpl::CommitMessageDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
 	d = new PrivateCommitMessageDialogImpl( this );
 }
 
+/*!
+ * Destructor of commit dialog.
+ */
 CommitMessageDialogImpl::~CommitMessageDialogImpl() {
 	delete d;
 }
 
+/*!
+ * Defines the default message to be commited. The message is show in the dialog.
+ * The user can change the message.
+ * \param message Message to be stocked when commit is called.
+ */
 void CommitMessageDialogImpl::setMessages( const QString & message ) {
 	m_textEditMessages->setText( message );
 }
 
+/*!
+ * Return the message define by the user.
+ * \return The message to be sent to CVS.
+ */
 QString CommitMessageDialogImpl::messages() {
 	return m_textEditMessages->toPlainText();
 }
 
+/*!
+ * Set the list of file to be commited. If the file as mode RCS::RemoveAndCommit 
+ * or AddAndCommit the file is not checked in the list. If the mode is RCS::Commit
+ * the file is checked.
+ * \param files List of files who ca be add/remove and commited
+ */
 void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 	Q_ASSERT( global.m_project != NULL );
 	
@@ -92,6 +124,11 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 	}
 }
 
+/*!
+ * Return the file list.
+ * If file is unchecked then the mode RCS::Nothing is set.
+ * \return Return the list of files the user whant to commit.
+ */
 RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
 	for( int i = 0 ; i < m_fileListWidget->count(); i++ ) {
 		RCS::FileOperation op;
@@ -102,6 +139,10 @@ RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
 	return d->m_files;
 }
 
+/*!
+ * Redefine the exec function. When this function is called if the function 
+ * setFilesOperation aren't called then a message is popup (There is nothing to do).
+ */
 int CommitMessageDialogImpl::exec() {
 	if( d->m_files.size() == 0 ) {
 		QMessageBox::information( this, tr("Commit"), tr("Nothing to do.") );
