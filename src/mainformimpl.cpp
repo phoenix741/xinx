@@ -733,7 +733,7 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() ) ||
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toUpper() ) );
 			
-		if( customFile.canBeSpecifique && (!isCustomized) ) {
+		if( global.m_project && (!isCustomized) && customFile.canBeSpecifique) {
 			newFileName = QDir( specifPath ).
 				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 		} else {
@@ -1158,11 +1158,14 @@ void PrivateMainformImpl::rcsLogTerminated() {
 }
 
 struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name ) {
+	struct_extentions result;
 	int dotPosition = name.lastIndexOf( name );
 	QString suffix = name.toLower();
 	if( dotPosition >= 0 )
-		suffix = suffix.mid( dotPosition + 1 );
-	return global.m_config->config().files[ suffix ];
+		suffix = suffix.mid( dotPosition );
+	if( global.m_config->config().files.count( suffix ) > 0 )
+		result = global.m_config->config().files[ suffix ];
+	return result;
 }
 
 

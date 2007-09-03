@@ -184,6 +184,7 @@ struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QStr
 	value.size = settings->value( "Size", defaultValue.size ).toSize();
 	value.position = settings->value( "Position", defaultValue.position ).toPoint();
 	value.language = settings->value( "Language", defaultValue.size ).toString();
+	value.state = settings->value( "State", defaultValue.state ).toByteArray();
 
 	value.project = getSettingsProject( settings, "Project", getDefaultProject() );
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", getDefaultDescriptions() );
@@ -206,6 +207,7 @@ void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path
 	settings->setValue( "Size", value.size );
 	settings->setValue( "Position", value.position );
 	settings->setValue( "Language", value.language );
+	settings->setValue( "State", value.state );
 
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );

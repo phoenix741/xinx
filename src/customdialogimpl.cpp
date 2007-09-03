@@ -48,7 +48,7 @@ PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
 
 void PrivateCustomDialogImpl::showConfig() {
 	// Application description path
-	m_parent->m_descriptionPathLineEdit->setText( m_config.config().descriptions.completion );
+	m_parent->m_descriptionPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().descriptions.completion ) );
 
 	// Language
 	m_parent->m_langComboBox->setCurrentIndex( 0 );
@@ -90,16 +90,16 @@ void PrivateCustomDialogImpl::showConfig() {
 	m_parent->m_saveSessionCheckBox->setChecked( m_config.config().project.saveWithSessionByDefault );
 	
 	// Default project directory
-	m_parent->m_projectPathLineEdit->setText( m_config.config().project.defaultPath );
+	m_parent->m_projectPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().project.defaultPath ) );
 	
 	// Default specifique path name
-	m_parent->m_lineEditDefaultProjectPathName->setText( m_config.config().project.defaultProjectPathName );
+	m_parent->m_lineEditDefaultProjectPathName->setText( QDir::toNativeSeparators( m_config.config().project.defaultProjectPathName ) );
 	
 	// CVS Tools
-	m_parent->m_CVSToolsLineEdit->setText( m_config.config().tools[ "cvs" ] );
+	m_parent->m_CVSToolsLineEdit->setText( QDir::toNativeSeparators( m_config.config().tools[ "cvs" ] ) );
 	
 	// Diff Tools
-	m_parent->m_mergeToolLineEdit->setText( m_config.config().tools[ "diff" ] );
+	m_parent->m_mergeToolLineEdit->setText( QDir::toNativeSeparators( m_config.config().tools[ "diff" ] ) );
 	
 	// CVS: Progress message
 	if( m_config.config().cvs.progressMessages.isEmpty() ) 
@@ -138,7 +138,7 @@ void PrivateCustomDialogImpl::showConfig() {
 
 void PrivateCustomDialogImpl::storeConfig() {
 	// Application description path
-	m_config.config().descriptions.completion = m_parent->m_descriptionPathLineEdit->text();
+	m_config.config().descriptions.completion = QDir::fromNativeSeparators( m_parent->m_descriptionPathLineEdit->text() );
 	
 	// Language
 	QRegExp exp("^\\((.*)\\).*$");
@@ -176,16 +176,16 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().project.saveWithSessionByDefault = m_parent->m_saveSessionCheckBox->isChecked();
 	
 	// Default project directory
-	m_config.config().project.defaultPath = m_parent->m_projectPathLineEdit->text();
+	m_config.config().project.defaultPath = QDir::fromNativeSeparators( m_parent->m_projectPathLineEdit->text() );
 	
 	// Default specifique path name
-	m_config.config().project.defaultProjectPathName = m_parent->m_lineEditDefaultProjectPathName->text();
+	m_config.config().project.defaultProjectPathName = QDir::fromNativeSeparators( m_parent->m_lineEditDefaultProjectPathName->text() );
 
 	// CVS Tools
-	m_config.config().tools[ "cvs" ] = m_parent->m_CVSToolsLineEdit->text();
+	m_config.config().tools[ "cvs" ] = QDir::fromNativeSeparators( m_parent->m_CVSToolsLineEdit->text() );
 	
 	// Diff Tools
-	m_config.config().tools[ "diff" ] = m_parent->m_mergeToolLineEdit->text();
+	m_config.config().tools[ "diff" ] = QDir::fromNativeSeparators( m_parent->m_mergeToolLineEdit->text() );
 	
 	// CVS: Progress message
 	switch( m_parent->m_cvsVerboseComboBox->currentIndex() ) {
@@ -667,7 +667,7 @@ void CustomDialogImpl::on_m_extentionsListWidget_currentRowChanged(int currentRo
 	if( index >= 0 ) {
 		suffix = exp.cap( 1 );
 		m_canBeSpecifiqueCheckBox->setChecked( d->m_config.config().files[ suffix ].canBeSpecifique );
-		m_subDirectoryLineEdit->setText( d->m_config.config().files[ suffix ].customPath );
+		m_subDirectoryLineEdit->setText( QDir::toNativeSeparators( d->m_config.config().files[ suffix ].customPath ) );
 	}
 }
 
@@ -689,7 +689,7 @@ void CustomDialogImpl::on_m_subDirectoryLineEdit_textChanged(QString text) {
 
 	if( index >= 0 ) {
 		suffix = exp.cap( 1 );
-		d->m_config.config().files[ suffix ].customPath = text;
+		d->m_config.config().files[ suffix ].customPath = QDir::fromNativeSeparators( text );
 	}
 }
 
