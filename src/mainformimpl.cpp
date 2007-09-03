@@ -717,7 +717,7 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() ) ||
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toUpper() ) );
 			
-		if( customFile.canBeCustomize && (!isCustomized) ) {
+		if( global.m_project && customFile.canBeCustomize && (!isCustomized) ) {
 			newFileName = QDir( specifPath ).
 				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 		} else {

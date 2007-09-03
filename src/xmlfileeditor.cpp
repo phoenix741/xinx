@@ -186,7 +186,7 @@ void XMLFileEditor::autoIndent() {
 	int errorLine = 0, errorColumn = 0;  
 	content = textEdit()->toPlainText();
 	content = content.replace( "&#160;", "&nbsp;" );
-	if ( document.setContent(content, true, &errorStr, &errorLine, &errorColumn) ) {
+	if ( document.setContent(content, false, &errorStr, &errorLine, &errorColumn) ) {
 //		document.normalize();
 		QString result;
 		d->constructXML( -1, result, document );
