@@ -186,7 +186,7 @@ inline bool ConfigurationVersion::operator>  ( ConfigurationVersion version ) co
  * \return Return true if the first is greater or equal than the second
  */
 inline bool ConfigurationVersion::operator>= ( ConfigurationVersion version ) const {
-	return ( *this > version ) || ( *this == version );
+	return ( *this > version ) || ( *this == version );
 }
 
 /*!
