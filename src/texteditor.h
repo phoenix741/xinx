@@ -21,7 +21,9 @@
 #ifndef __TEXTEDITOR_H__
 #define __TEXTEDITOR_H__
 
+// Qt header
 #include <QTextEdit>
+#include <QPixmap>
 
 class QAbstractItemModel;
 class TextProcessor;
@@ -50,12 +52,19 @@ signals:
 	void modelUpdated( QAbstractItemModel *  model );
 	void needInsertSnipet( QString snipet );
 protected:
-	void keyPressEvent(QKeyEvent *e);
-    void mouseDoubleClickEvent( QMouseEvent * event );
+    virtual void paintEvent ( QPaintEvent * event );
+	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void mouseDoubleClickEvent( QMouseEvent * event );
 	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
-
+	virtual void printWhiteSpaces( QPainter &p );
+private slots:
+	void slotCursorPositionChanged();
 private:
 	void key_home( bool );
 	void key_enter();
+
+    QPixmap m_tabPixmap; 
+	QPixmap m_spacePixmap; 	
+	QColor m_currentLineColor;
 };
 #endif // __TEXTEDITOR_H__

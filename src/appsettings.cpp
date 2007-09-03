@@ -151,6 +151,7 @@ struct_editor AppSettings::getDefaultEditor() {
 	value.completionLevel = 3; // 0 .. 3
 	value.tabulationSize = 4; 
 	value.showTabulationAndSpace = false; 
+	value.highlightCurrentLine = true;
 
 	return value;
 }
@@ -283,6 +284,7 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 	value.completionLevel = settings->value( "Completion Level", defaultValue.completionLevel ).toInt();
 	value.tabulationSize = settings->value( "Tabulation Size", defaultValue.tabulationSize ).toInt();
 	value.showTabulationAndSpace = settings->value( "Show Tabulation and space", defaultValue.showTabulationAndSpace ).toBool();
+	value.highlightCurrentLine = settings->value( "Highlight Current Line", defaultValue.highlightCurrentLine ).toBool();
 	value.defaultFormat = settings->value( "Default Format", defaultValue.defaultFormat ).value<QFont>();
 
 	settings->endGroup();
@@ -299,6 +301,7 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->setValue( "Completion Level", value.completionLevel );
 	settings->setValue( "Tabulation Size", value.tabulationSize );
 	settings->setValue( "Show Tabulation and space", value.showTabulationAndSpace );
+	settings->setValue( "Highlight Current Line", value.highlightCurrentLine );
 	settings->setValue( "Default Format", value.defaultFormat );
 
 	settings->endGroup();

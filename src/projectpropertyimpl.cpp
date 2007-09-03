@@ -64,15 +64,7 @@ void ProjectPropertyImpl::on_m_projectTypeCombo_currentIndexChanged( int index )
 }
 
 void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text ) {
-	QDir dir (text);
-	QPalette palette( m_specifiquePathLineEdit->palette() );
-	
-	if( dir.exists() ) {
-		palette.setColor( QPalette::Text, QColor() );
-	} else {
-		palette.setColor( QPalette::Text, Qt::red );
-	}
-	m_specifiquePathLineEdit->setPalette( palette );
+	Q_UNUSED( text );
 	
 	updateOkButton();
 }
@@ -86,7 +78,6 @@ void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
 
 void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	QDir dir (text);
-	QPalette paletteProject( m_projectLineEdit->palette() );
 	QPalette paletteVerion( m_configurationVersionLabel->palette() );
 	
 	if( m_versionInstance ) {
@@ -95,7 +86,6 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	}
 	
 	if( dir.exists() ) {
-		paletteProject.setColor( QPalette::Text, QColor() );
 		paletteVerion.setColor( QPalette::WindowText, Qt::red );
 
 		if( ConfigurationFile::exists( text ) ) {
@@ -106,11 +96,9 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 		} else
 			m_configurationVersionLabel->setText( tr("warning: The configuration file is not in this directory.") );
 	} else {
-		paletteProject.setColor( QPalette::Text, Qt::red );
 		paletteVerion.setColor( QPalette::WindowText, QColor() );
 		m_configurationVersionLabel->setText( QString() );
 	}
-	m_projectLineEdit->setPalette( paletteProject );
 	m_configurationVersionLabel->setPalette( paletteVerion );
 
 	updateOkButton();

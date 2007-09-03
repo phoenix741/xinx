@@ -74,6 +74,9 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Show tabulation and space in the editor
 	m_parent->m_showTabulationCheckBox->setChecked( m_config.config().editor.showTabulationAndSpace );
 	
+	// Show current line
+	m_parent->m_showCurrentLineCheckBox->setChecked( m_config.config().editor.highlightCurrentLine );
+	
 	// Size of tabulation
 	m_parent->m_sizeOfTabSpinBox->setValue( m_config.config().editor.tabulationSize );
 	
@@ -160,6 +163,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Show tabulation and space in the editor
 	m_config.config().editor.showTabulationAndSpace = m_parent->m_showTabulationCheckBox->isChecked();
 	
+	// Show current line
+	m_config.config().editor.highlightCurrentLine = m_parent->m_showCurrentLineCheckBox->isChecked();
+
 	// Size of tabulation
 	m_config.config().editor.tabulationSize = m_parent->m_sizeOfTabSpinBox->value();
 	

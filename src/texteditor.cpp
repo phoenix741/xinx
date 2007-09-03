@@ -26,12 +26,70 @@
 // Qt header
 #include <QSyntaxHighlighter>
 #include <QKeyEvent>
+#include <QFontMetrics>
+#include <QScrollBar>
+#include <QTextLayout>
+#include <QPainter>
+#include <QPixmap> 
 
+/*!
+ * Definition of the characters that can't be in a word.
+ */
 #define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
+
+/*!
+ * Pixmap used to represent the tabulation
+ */
+static const char * tabPixmap_img[] = {
+/* width height ncolors cpp [x_hot y_hot] */
+	"8 8 3 2 0 0",
+/* colors */
+	"  s none       m none  c none",
+	"O s iconColor1 m black c black",
+	"X s iconColor2 m black c #D0D0D0",
+/* pixels */
+	"  X     X       ",
+	"    X     X     ",
+	"      X     X   ",
+	"        X     X ",
+	"      X     X   ",
+	"    X     X     ",
+	"  X     X       ",
+	"                ",
+};
+
+/*!
+ * Pixmap used to represent a space
+ */
+static const char * spacePixmap_img[] = {
+/* width height ncolors cpp [x_hot y_hot] */
+	"8 8 3 2 0 0",
+/* colors */
+	"  s none       m none  c none",
+	"O s iconColor1 m black c black",
+	"X s iconColor2 m black c #D0D0D0",
+/* pixels */
+	"                ",
+	"                ",
+ 	"                ",
+	"                ",
+	"                ",
+	"      X         ",
+	"      X X       ",
+	"                ",
+};
+
+/* TextEditor */
 
 TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) { 
 	// Setup the main view
 	
+    m_tabPixmap = QPixmap( tabPixmap_img ); 
+	m_spacePixmap = QPixmap( spacePixmap_img ); 
+	m_currentLineColor = QColor( 234, 234, 234 );	
+
+    connect( this, SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged()));
+
 	setAcceptRichText(false);
 	updateFont();
 }
@@ -179,4 +237,63 @@ void TextEditor::insertText( const QString & text ) {
 	setTextCursor( cursor );
 }
 
+void TextEditor::printWhiteSpaces( QPainter &p ) {		
+	const int contentsY = verticalScrollBar()->value();
+	const qreal pageBottom = contentsY + viewport()->height();
+	const QFontMetrics fm = QFontMetrics( currentFont() );
+	
+	for ( QTextBlock block = document()->begin(); block.isValid(); block = block.next() ) {
+		QTextLayout* layout = block.layout();
+		const QRectF boundingRect = layout->boundingRect();
+		QPointF position = layout->position();
+		
+		if ( position.y() +boundingRect.height() < contentsY )
+			continue;
+		if ( position.y() > pageBottom )
+			break;
+		
+		const QString txt = block.text();
+		const int len = txt.length();
+		
+		for ( int i=0; i<len; i++) {
+			QPixmap *p1 = 0;
+			
+			if (txt[i] == ' ' )
+				p1 = &m_spacePixmap;
+			else if (txt[i] == '\t' )
+				p1 = &m_tabPixmap;
+			else 
+				continue;
+			
+			// pixmaps are of size 8x8 pixels
+			QTextCursor cursor = textCursor();
+			cursor.setPosition( block.position() + i, QTextCursor::MoveAnchor);
+			
+			QRect r = cursorRect( cursor );
+			int x = r.x() + 4;
+			int y = r.y() + fm.height() / 2 - 5;
+			p.drawPixmap( x, y, *p1 );
+		}
+	}
+}
 
+void TextEditor::slotCursorPositionChanged() {
+    if ( m_currentLineColor.isValid() )
+        viewport()->update();	
+}
+
+void TextEditor::paintEvent ( QPaintEvent * event ) {
+    QPainter painter( viewport() );
+
+    if ( global.m_config->config().editor.highlightCurrentLine && m_currentLineColor.isValid() )     {
+        QRect r = cursorRect();
+        r.setX( 0 );
+        r.setWidth( viewport()->width() );
+        painter.fillRect( r, QBrush( m_currentLineColor ) );
+    }
+
+	if( global.m_config->config().editor.showTabulationAndSpace )
+		printWhiteSpaces( painter );
+		
+    QTextEdit::paintEvent( event );
+}

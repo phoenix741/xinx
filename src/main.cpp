@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 	std::signal(SIGABRT, backup_appli_signal);
 	std::signal(SIGINT, backup_appli_signal);
 	std::signal(SIGTERM, backup_appli_signal);
-	
+	    
 	UniqueApplication app(argc, argv);
 	try {
 		if( app.isUnique() ) {

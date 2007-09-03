@@ -64,6 +64,7 @@ struct struct_editor {
 	int completionLevel;
 	int tabulationSize;
 	bool showTabulationAndSpace;
+	bool highlightCurrentLine;
 	QFont defaultFormat;
 };
 

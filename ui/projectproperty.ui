@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>568</width>
-    <height>542</height>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -51,9 +51,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2" >
-       <widget class="QLineEdit" name="m_projectLineEdit" />
-      </item>
       <item row="4" column="0" >
        <widget class="QLabel" name="label_9" >
         <property name="text" >
@@ -69,8 +66,8 @@
       </item>
       <item row="1" column="3" >
        <widget class="QToolButton" name="m_projectButton" >
-        <property name="text" >
-         <string>...</string>
+        <property name="icon" >
+         <iconset resource="../application.qrc" >:/images/folder.png</iconset>
         </property>
        </widget>
       </item>
@@ -130,6 +127,9 @@
          <string/>
         </property>
        </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="DirectoryEdit" name="m_projectLineEdit" />
       </item>
      </layout>
     </widget>
@@ -315,9 +315,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="QLineEdit" name="m_specifiquePathLineEdit" />
-      </item>
       <item row="0" column="0" >
        <widget class="QLabel" name="label_4" >
         <property name="text" >
@@ -330,10 +327,13 @@
       </item>
       <item row="0" column="2" >
        <widget class="QToolButton" name="m_specifiquePathButton" >
-        <property name="text" >
-         <string>...</string>
+        <property name="icon" >
+         <iconset resource="../application.qrc" >:/images/folder.png</iconset>
         </property>
        </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="DirectoryEdit" name="m_specifiquePathLineEdit" />
       </item>
      </layout>
     </widget>
@@ -386,6 +386,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DirectoryEdit</class>
+   <extends>QLineEdit</extends>
+   <header>../src/directoryedit.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>m_nameLineEdit</tabstop>
   <tabstop>m_projectLineEdit</tabstop>
