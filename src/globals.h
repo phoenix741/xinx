@@ -89,6 +89,11 @@ public:
 	 * \sa webServicesChanged()
 	 */
 	void emitWebServicesChanged();
+	/*!
+	 * Call this function when you want emit signal \e emitConfigChanged().
+	 * \sa configChanged();
+	 */
+	void emitConfigChanged();
 Q_SIGNALS:
 	/*!
 	 * Signal emited when the project has changed
@@ -100,6 +105,11 @@ Q_SIGNALS:
 	 * \sa emitWebServicesChanged() 
 	 */
 	void webServicesChanged();
+	/*!
+	 * Signal emited when the configuration of XINX is modified
+	 * \sa emitConfigChanged()
+	 */
+	void configChanged();
 };
 
 /*!

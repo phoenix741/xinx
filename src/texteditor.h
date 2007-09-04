@@ -46,8 +46,8 @@ public:
 	void insertText( const QString & text );
 public slots:
 	virtual void updateModel();
-	virtual void updateFont();
-	
+	void updateFont();
+	void updateHighlighter();
 signals:
 	void modelUpdated( QAbstractItemModel *  model );
 	void needInsertSnipet( QString snipet );
@@ -55,8 +55,9 @@ protected:
     virtual void paintEvent ( QPaintEvent * event );
 	virtual void keyPressEvent(QKeyEvent *e);
     virtual void mouseDoubleClickEvent( QMouseEvent * event );
-	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
 	virtual void printWhiteSpaces( QPainter &p );
+	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
+	void setTextHighlighter( QSyntaxHighlighter * highlighter );	
 private slots:
 	void slotCursorPositionChanged();
 private:
@@ -66,5 +67,7 @@ private:
     QPixmap m_tabPixmap; 
 	QPixmap m_spacePixmap; 	
 	QColor m_currentLineColor;
+	
+	QSyntaxHighlighter * m_highlighter;
 };
 #endif // __TEXTEDITOR_H__

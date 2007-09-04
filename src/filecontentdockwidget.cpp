@@ -23,12 +23,28 @@
 #include "private/p_filecontentdockwidget.h"
 #include "filecontentitemmodel.h"
 
+// Qt header
+#include <QVBoxLayout>
+
 /* PrivateContentDockWidget */
 
 PrivateFileContentDockWidget::PrivateFileContentDockWidget( FileContentDockWidget * parent ) : m_model(0), m_sortModel(0), m_parent( parent ) {
+	m_presentationCombo = new QComboBox( m_parent );
+	m_presentationCombo->addItem( tr("<Don't change>") );
+	m_presentationCombo->addItem( tr("<Choose a presentation file ...>") );
 	m_contentTreeView = new QTreeView( m_parent );
 	m_contentTreeView->setSortingEnabled( true );
-	m_parent->setWidget( m_contentTreeView );
+
+	QVBoxLayout * vlayout = new QVBoxLayout();
+	vlayout->setSpacing( 0 );
+	vlayout->setMargin( 0 );
+	vlayout->addWidget( m_presentationCombo );
+	vlayout->addWidget( m_contentTreeView );
+
+	QWidget * m_contentWidget = new QWidget( parent );
+	m_contentWidget->setLayout( vlayout );
+
+	m_parent->setWidget( m_contentWidget );
 	connect( m_contentTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(contentTreeViewDblClick(QModelIndex)) );
 }
 

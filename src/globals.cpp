@@ -48,3 +48,7 @@ void Globals::emitProjectChanged() {
 void Globals::emitWebServicesChanged() {
 	emit webServicesChanged();
 }
+
+void Globals::emitConfigChanged() {
+	emit configChanged();
+}

@@ -81,7 +81,7 @@ static const char * spacePixmap_img[] = {
 
 /* TextEditor */
 
-TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) { 
+TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ), m_highlighter( 0 ) { 
 	// Setup the main view
 	
     m_tabPixmap = QPixmap( tabPixmap_img ); 
@@ -89,6 +89,8 @@ TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) {
 	m_currentLineColor = QColor( 234, 234, 234 );	
 
     connect( this, SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged()));
+    connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
+    connect( &global, SIGNAL( configChanged() ), this, SLOT( updateFont() ) );
 
 	setAcceptRichText(false);
 	updateFont();
@@ -296,4 +298,13 @@ void TextEditor::paintEvent ( QPaintEvent * event ) {
 		printWhiteSpaces( painter );
 		
     QTextEdit::paintEvent( event );
+}
+
+void TextEditor::setTextHighlighter( QSyntaxHighlighter * highlighter ) {
+	m_highlighter = highlighter;
+}
+
+void TextEditor::updateHighlighter() {
+	if( m_highlighter )
+		m_highlighter->rehighlight();
 }

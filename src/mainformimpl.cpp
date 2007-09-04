@@ -548,7 +548,8 @@ void PrivateMainformImpl::customize() {
 	
 	if( custom.exec() ) {
 		custom.saveToConfig( global.m_config );
-		global.m_config->save();	
+		global.m_config->save();
+		global.emitConfigChanged();	
 
 		try {
 			global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );

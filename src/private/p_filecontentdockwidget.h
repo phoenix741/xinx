@@ -28,6 +28,7 @@
 #include <QTreeView>
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
+#include <QComboBox>
 
 class PrivateFileContentDockWidget : public QObject {
 	Q_OBJECT
@@ -35,6 +36,7 @@ public:
 	PrivateFileContentDockWidget( FileContentDockWidget * parent );
 	~PrivateFileContentDockWidget();
 	
+	QComboBox * m_presentationCombo;
 	QTreeView * m_contentTreeView;
 	QAbstractItemModel * m_model;
 	QSortFilterProxyModel * m_sortModel;

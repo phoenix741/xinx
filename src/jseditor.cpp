@@ -89,7 +89,7 @@ QString PrivateJSEditor::currentFunction() {
 	QString name;
 	int bloc = 0;
 	bool finded = false;
-	// Recherche le d�but du document ou le mot function (compte le nombre d'accollade en passant)
+	// Recherche le debut du document ou le mot function (compte le nombre d'accollade en passant)
 	if( ! tc.atStart() )
 	while( true ) {
 		QTextCursor selectedCursor = tc;
@@ -116,7 +116,7 @@ QString PrivateJSEditor::currentFunction() {
 
 JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
 	d = new PrivateJSEditor( this );
-	new JsHighlighter( document() );
+	setTextHighlighter( new JsHighlighter( document() ) );
 
 	d->m_completer = new QCompleter( this );
 	d->m_completer->setWidget( this );

@@ -28,7 +28,7 @@
 /* XMLEditor */
 
 XMLEditor::XMLEditor( QWidget * parent ) : TextEditor( parent ) {
-	new XmlHighlighter( document() );
+	setTextHighlighter( new XmlHighlighter( document() ) );
 }
 
 XMLEditor::~XMLEditor() {
