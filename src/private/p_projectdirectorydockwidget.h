@@ -44,6 +44,9 @@ public:
 	QAction * m_selectedCommitAction;
 	QAction * m_selectedAddAction;
 	QAction * m_selectedRemoveAction;
+	QAction * m_selectedCompareWithHeadAction;
+	QAction * m_selectedCompareWithStdAction;
+	QAction * m_selectedCompareAction;
 
 	QTimer * m_modelTimer;
 	QDirModel * m_dirModel;

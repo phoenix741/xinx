@@ -43,6 +43,9 @@ public:
 	void setSelectedCommitAction( QAction * action );
 	void setSelectedAddAction( QAction * action );
 	void setSelectedRemoveAction( QAction * action );
+	void setSelectedCompareWithHeadAction( QAction * action );
+	void setSelectedCompareWithStdAction( QAction * action );
+	void setSelectedCompareAction( QAction * action );
 	void setToggledViewAction( QAction * action );
 	
 	bool isViewFlat();

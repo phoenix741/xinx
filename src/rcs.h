@@ -57,6 +57,7 @@ public:
 	virtual void commit( const FilesOperation & path, const QString & message ) = 0;
 	virtual void add( const QStringList & path ) = 0;
 	virtual void remove( const QStringList & path ) = 0;
+	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 ) = 0;
 public slots:
 	virtual void abort() = 0;
 signals: 

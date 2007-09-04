@@ -570,7 +570,7 @@ void XSLEditor::keyPressEvent( QKeyEvent *e ) {
 		TextEditor::keyPressEvent( e );
 		
 	if(!e->text().isEmpty()) {
-		if( e->text().right(1) == ">" && global.m_config->config().editor.completionLevel >= 2 ) {
+		if( ( e->text().right(1) == ">" ) && ( global.m_config->config().editor.completionLevel >= 2 ) ) {
 			QTextCursor tc( textCursor() );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );

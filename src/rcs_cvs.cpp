@@ -99,4 +99,9 @@ void RCS_CVS::abort() {
 		qobject_cast<CVSThread*>(d->m_thread)->abort();
 }
 
-
+void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
+	if( d->m_thread && d->m_thread->isRunning() ) {
+		throw ProcessExecutedException();
+	} else
+		d->callUpdateToRevision( path, revision, content );
+}

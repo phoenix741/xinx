@@ -271,6 +271,13 @@ void PrivateRCS_CVS::callCommit( const RCS::FilesOperation & path, const QString
 	m_thread->start();
 }
 
+void PrivateRCS_CVS::callUpdateToRevision( const QString & path, const QString & revision, QString * content ) {
+	if( m_thread ) delete m_thread;
+	m_thread = new CVSUpdateRevisionThread( this, path, revision, content );
+	m_thread->start();
+}
+
+
 void PrivateRCS_CVS::callAdd( const QStringList & path ) {
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSAddThread( this, path );
@@ -419,6 +426,54 @@ void CVSUpdateThread::run() {
 	CVSThread::run();
 		
 	emit m_parent->log( RCS::LogApplication, tr("Update terminated") );
+	if( m_terminate )
+		emit m_parent->operationTerminated();
+}
+
+/* CVSUpdateRevisionThread */
+
+CVSUpdateRevisionThread::CVSUpdateRevisionThread( PrivateRCS_CVS * parent, const QString & path, const QString & revision, QString * content, bool terminate ) : CVSThread( parent, QStringList() << path, terminate ), m_content( content ), m_revision( revision )  {
+	
+}
+CVSUpdateRevisionThread::~CVSUpdateRevisionThread() {
+	
+}
+
+void CVSUpdateRevisionThread::processReadOutput() {
+	if( ! m_content )
+		CVSThread::processReadOutput();
+	else {
+		m_process->setReadChannel( QProcess::StandardOutput );
+		while( m_process->canReadLine() ) { 
+			m_content->append( m_process->readLine() );
+		}
+			
+		/* Process error */
+		m_process->setReadChannel( QProcess::StandardError );
+		while( m_process->canReadLine() )
+			emit m_parent->log( RCS::LogError, m_process->readLine().simplified() );
+	}
+}
+
+void CVSUpdateRevisionThread::callCVS( const QString & path, const QStringList & files ) {
+	QStringList parameters;
+	if( ! global.m_config->config().cvs.progressMessages.isEmpty() )
+		parameters << global.m_config->config().cvs.progressMessages;
+	parameters << QString("-z%1").arg( global.m_config->config().cvs.compressionLevel ) << "update";
+	if( m_content != NULL )
+		parameters << "-p";
+	parameters << "-r" << m_revision; 
+
+	parameters << files;
+
+	CVSThread::callCVS( path, parameters );
+}
+
+void CVSUpdateRevisionThread::run() {
+	if( m_paths.size() == 1 && QFileInfo( m_paths[ 0 ] ).exists() && !QFileInfo( m_paths[ 0 ] ).isDir() ) 
+		CVSThread::run();
+		
+	emit m_parent->log( RCS::LogApplication, tr("Update to revision %1 terminated").arg( m_revision ) );
 	if( m_terminate )
 		emit m_parent->operationTerminated();
 }

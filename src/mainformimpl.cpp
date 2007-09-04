@@ -50,10 +50,13 @@
 #include <QFileDialog>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QTemporaryFile>
+#include <QProcess>
+#include <QTextStream>
 
 /* PrivateMainformImpl */
 
-PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_rcsExecute( false ), m_parent( parent ) {
+PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_parent( parent ) {
 	createTabEditorButton();
 	createSubMenu();
 	createDockWidget();
@@ -89,6 +92,9 @@ void PrivateMainformImpl::createDockWidget() {
 	m_projectDock->setSelectedCommitAction( m_parent->m_selectedCommitToRCSAct );
 	m_projectDock->setSelectedAddAction( m_parent->m_selectedAddToRCSAct );
 	m_projectDock->setSelectedRemoveAction( m_parent->m_selectedRemoveFromRCSAct );
+	m_projectDock->setSelectedCompareWithHeadAction( m_parent->m_compareWithHeadAct );
+	m_projectDock->setSelectedCompareWithStdAction( m_parent->m_compareWithStdAct );
+	m_projectDock->setSelectedCompareAction( m_parent->m_compareTwoFileAct );
 	m_projectDock->setToggledViewAction( m_parent->m_toggledFlatView );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
 	action = m_projectDock->toggleViewAction();
@@ -143,6 +149,65 @@ void PrivateMainformImpl::createSubMenu() {
 	btn = qobject_cast<QToolButton*>( m_parent->m_projectToolBar->widgetForAction( m_parent->m_closeProjectAct ) );
 	if( btn )
 		btn->setPopupMode( QToolButton::MenuButtonPopup );
+}
+
+void PrivateMainformImpl::createStatusBar() {
+	m_editorPosition = new QLabel( "000x000" );
+	m_parent->statusBar()->addPermanentWidget( m_editorPosition );
+	m_parent->statusBar()->showMessage( tr("Ready"), 2000 );
+}
+
+void PrivateMainformImpl::createShortcut() {
+	// File menu
+	m_parent->m_newAct->setShortcut( QKeySequence::New );
+	m_parent->m_recentFileAct->setShortcut( QKeySequence::Open );
+	m_parent->m_saveAct->setShortcut( QKeySequence::Save );
+	m_parent->m_closeAct->setShortcut( QKeySequence::Close );
+	m_parent->m_printAct->setShortcut( QKeySequence::Print );
+	
+	m_parent->m_exitAct->setShortcut( QKeySequence::mnemonic( m_parent->m_exitAct->text() ) );
+	
+	// Edit menu
+	m_parent->m_undoAct->setShortcut( QKeySequence::Undo );
+	m_parent->m_redoAct->setShortcut( QKeySequence::Redo );
+	
+	m_parent->m_cutAct->setShortcut( QKeySequence::Cut );
+	m_parent->m_copyAct->setShortcut( QKeySequence::Copy );
+	m_parent->m_pasteAct->setShortcut( QKeySequence::Paste );
+	
+	m_parent->m_selectAllAct->setShortcut( QKeySequence::SelectAll );
+	
+	m_parent->m_upperTextAct->setShortcut( QKeySequence::mnemonic( m_parent->m_upperTextAct->text() ) );
+	m_parent->m_lowerTextAct->setShortcut( QKeySequence::mnemonic( m_parent->m_lowerTextAct->text() ) );
+
+	m_parent->m_duplicateLineAct->setShortcut( QKeySequence( "Ctrl+D" ) );
+	m_parent->m_indentAct->setShortcut( QKeySequence( "Tab" ) );
+	m_parent->m_unindentAct->setShortcut( QKeySequence( "Shift+Tab" ) );
+	m_parent->m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
+	m_parent->m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
+	m_parent->m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
+	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
+	
+	m_parent->m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
+	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );	
+
+	// Search menu
+	m_parent->m_searchAct->setShortcut( QKeySequence::Find );
+	m_parent->m_searchNextAct->setShortcut( QKeySequence::FindNext );
+	m_parent->m_searchPreviousAct->setShortcut( QKeySequence::FindPrevious );
+	m_parent->m_replaceAct->setShortcut( QKeySequence::Replace );
+	
+	// Project menu
+	m_parent->m_globalUpdateFromRCSAct->setShortcut( QKeySequence::Refresh );
+	m_parent->m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
+	m_parent->m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
+	
+	// Webservices menu
+	m_parent->m_callWebServicesAct->setShortcut( QKeySequence( "F9" ) );
+		
+	// Windows menu
+	m_parent->m_nextTabAct->setShortcut( QKeySequence::NextChild );
+	m_parent->m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
 }
 
 void PrivateMainformImpl::createActions() {
@@ -301,6 +366,9 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_selectedCommitToRCSAct, SIGNAL(triggered()), this, SLOT(selectedCommitToVersionManager()) );
 	connect( m_parent->m_selectedAddToRCSAct, SIGNAL(triggered()), this, SLOT(selectedAddToVersionManager()) );
 	connect( m_parent->m_selectedRemoveFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedRemoveFromVersionManager()) );
+	connect( m_parent->m_compareWithHeadAct, SIGNAL(triggered()), this, SLOT(selectedCompareWithVersionManager()) );
+	connect( m_parent->m_compareWithStdAct, SIGNAL(triggered()), this, SLOT(selectedCompareWithStd()) );
+	connect( m_parent->m_compareTwoFileAct, SIGNAL(triggered()), this, SLOT(selectedCompare()) );
 
 	connect( m_parent->m_newProjectAct, SIGNAL(triggered()), m_parent, SLOT(newProject()) );
 	connect( m_parent->m_openProjectAct, SIGNAL(triggered()), this, SLOT(openProject()) );
@@ -541,65 +609,6 @@ void PrivateMainformImpl::updateRecentProjects() {
 	m_recentSeparator->setVisible( numRecentFiles > 0 );
 }
 
-void PrivateMainformImpl::createStatusBar() {
-	m_editorPosition = new QLabel( "000x000" );
-	m_parent->statusBar()->addPermanentWidget( m_editorPosition );
-	m_parent->statusBar()->showMessage( tr("Ready"), 2000 );
-}
-
-void PrivateMainformImpl::createShortcut() {
-	// File menu
-	m_parent->m_newAct->setShortcut( QKeySequence::New );
-	m_parent->m_recentFileAct->setShortcut( QKeySequence::Open );
-	m_parent->m_saveAct->setShortcut( QKeySequence::Save );
-	m_parent->m_closeAct->setShortcut( QKeySequence::Close );
-	m_parent->m_printAct->setShortcut( QKeySequence::Print );
-	
-	m_parent->m_exitAct->setShortcut( QKeySequence::mnemonic( m_parent->m_exitAct->text() ) );
-	
-	// Edit menu
-	m_parent->m_undoAct->setShortcut( QKeySequence::Undo );
-	m_parent->m_redoAct->setShortcut( QKeySequence::Redo );
-	
-	m_parent->m_cutAct->setShortcut( QKeySequence::Cut );
-	m_parent->m_copyAct->setShortcut( QKeySequence::Copy );
-	m_parent->m_pasteAct->setShortcut( QKeySequence::Paste );
-	
-	m_parent->m_selectAllAct->setShortcut( QKeySequence::SelectAll );
-	
-	m_parent->m_upperTextAct->setShortcut( QKeySequence::mnemonic( m_parent->m_upperTextAct->text() ) );
-	m_parent->m_lowerTextAct->setShortcut( QKeySequence::mnemonic( m_parent->m_lowerTextAct->text() ) );
-
-	m_parent->m_duplicateLineAct->setShortcut( QKeySequence( "Ctrl+D" ) );
-	m_parent->m_indentAct->setShortcut( QKeySequence( "Tab" ) );
-	m_parent->m_unindentAct->setShortcut( QKeySequence( "Shift+Tab" ) );
-	m_parent->m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
-	m_parent->m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
-	m_parent->m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
-	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
-	
-	m_parent->m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
-	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );	
-
-	// Search menu
-	m_parent->m_searchAct->setShortcut( QKeySequence::Find );
-	m_parent->m_searchNextAct->setShortcut( QKeySequence::FindNext );
-	m_parent->m_searchPreviousAct->setShortcut( QKeySequence::FindPrevious );
-	m_parent->m_replaceAct->setShortcut( QKeySequence::Replace );
-	
-	// Project menu
-	m_parent->m_globalUpdateFromRCSAct->setShortcut( QKeySequence::Refresh );
-	m_parent->m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
-	m_parent->m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
-	
-	// Webservices menu
-	m_parent->m_callWebServicesAct->setShortcut( QKeySequence( "F9" ) );
-		
-	// Windows menu
-	m_parent->m_nextTabAct->setShortcut( QKeySequence::NextChild );
-	m_parent->m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
-}
-
 void PrivateMainformImpl::readWindowSettings() {
 	m_parent->resize( global.m_config->config().size );
 	m_parent->move( global.m_config->config().position );
@@ -691,8 +700,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 	
 	QString prefix = global.m_project ? global.m_project->specifPrefix() + "_" : "" ;
 	QString filename = QFileInfo( pathname ).fileName();
-	bool hasSpecifiqueName = global.m_project && 
-							 ( filename.startsWith( prefix.toLower() ) || filename.startsWith( prefix.toUpper() ) );
+	bool hasSpecifiqueName = global.m_project && filename.startsWith( prefix, Qt::CaseInsensitive );
 	bool canBeCustomize = extentionOfFileName( filename ).canBeSpecifique;
 	
 	if( global.m_project && global.m_config->config().project.alertWhenSavingStandardFile && canBeCustomize && !hasSpecifiqueName ) {
@@ -729,9 +737,8 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			newFileName = specifPath;
 	} else {
 		bool isCustomized = 
-			global.m_project && (
-			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toLower() ) ||
-			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix().toUpper() ) );
+			global.m_project && 
+			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix(), Qt::CaseInsensitive );
 			
 		if( global.m_project && (!isCustomized) && customFile.canBeSpecifique) {
 			newFileName = QDir( specifPath ).
@@ -767,8 +774,8 @@ QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, 
 	QString prefix = global.m_project->specifPrefix() + "_";
 	QString oldfilename = QFileInfo( oldname ).fileName();
 	QString newfilename = QFileInfo( newname ).fileName();
-	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix.toLower() ) || oldfilename.startsWith( prefix.toUpper() );
-	bool isNewSpecifiqueFile = newfilename.startsWith( prefix.toLower() ) || newfilename.startsWith( prefix.toUpper() );
+	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix, Qt::CaseInsensitive );
+	bool isNewSpecifiqueFile = newfilename.startsWith( prefix, Qt::CaseInsensitive );
 	QString specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( extentionOfFileName( oldfilename ).customPath );
 	QString destname = QDir( specifPath ).absoluteFilePath( oldfilename );
 
@@ -876,6 +883,81 @@ void PrivateMainformImpl::selectedRemoveFromVersionManager() {
 	if( list.count() > 0 )
 		m_parent->removeFilesFromVersionManager( list );
 }
+
+void PrivateMainformImpl::selectedCompareWithVersionManager() {
+	QStringList list = m_projectDock->selectedFiles();
+	Q_ASSERT( list.size() == 1 );
+	
+	QString revision;
+	m_compareFileName = list.at( 0 );
+	m_headContent = QString();
+	
+	RCS * rcs = m_projectDock->rcs();
+	if( rcs ) {
+		revision = rcs->infos( m_compareFileName, RCS::rcsVersions ).toString();
+		
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+		connect( m_parent->m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
+		
+		m_rcslogDock->init();
+		m_rcsExecute = true;
+		rcs->updateToRevision( m_compareFileName, revision, &m_headContent );
+		
+		updateActions();
+		m_rcslogDock->show();
+	}
+}
+
+void PrivateMainformImpl::rcsLogTerminated() {
+	Q_ASSERT( m_projectDock->rcs() );
+	
+	if( ! m_headContent.isEmpty() ) {
+		QTemporaryFile headContentFile;
+		if( headContentFile.open() ) {
+			QTextStream out(&headContentFile);
+			out << m_headContent;
+		}
+		QProcess::execute( global.m_config->config().tools["diff"], QStringList() << m_compareFileName << headContentFile.fileName() );
+		m_headContent = QString();
+	}
+
+	m_rcsExecute = false;
+	RCS * rcs = m_projectDock->rcs();
+	if( rcs )
+		rcs->disconnect();
+	updateActions();
+}
+#include <QDebug>
+void PrivateMainformImpl::selectedCompareWithStd() {
+	QStringList list = m_projectDock->selectedFiles();
+	Q_ASSERT( list.size() == 1 && global.m_project );
+	
+	QString customFilename = list.at( 0 ), stdFilename, path, filename, 
+			prefix = global.m_project->specifPrefix() + "_";
+	
+	path = QFileInfo( customFilename ).absolutePath();
+	filename = QFileInfo( customFilename ).fileName();
+	
+	if( filename.startsWith( prefix, Qt::CaseInsensitive ) ) {
+		filename.remove( 0, prefix.size() );
+		
+		stdFilename = QDir( path ).absoluteFilePath( filename );
+		
+		if( QFileInfo( stdFilename ).exists() )
+			QProcess::execute( global.m_config->config().tools["diff"], QStringList() << customFilename << stdFilename );
+		else 
+			QMessageBox::information( m_parent, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
+	} else
+		QMessageBox::information( m_parent, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
+}
+
+void PrivateMainformImpl::selectedCompare() {
+	QStringList list = m_projectDock->selectedFiles();
+	Q_ASSERT( list.size() == 2 );
+	QProcess::execute( global.m_config->config().tools["diff"], QStringList() << list.at( 0 ) << list.at( 1 ) );
+}
+
 
 void PrivateMainformImpl::nextTab() {
 	m_parent->m_tabEditors->setCurrentIndex( ( m_parent->m_tabEditors->currentIndex() + 1 ) % m_parent->m_tabEditors->count() );
@@ -1149,20 +1231,12 @@ void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHas
 	}
 }
 
-void PrivateMainformImpl::rcsLogTerminated() {
-	m_rcsExecute = false;
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs )
-		rcs->disconnect();
-	updateActions();
-}
-
 struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name ) {
 	struct_extentions result;
-	int dotPosition = name.lastIndexOf( name );
+	int dotPosition = name.lastIndexOf( "." );
 	QString suffix = name.toLower();
 	if( dotPosition >= 0 )
-		suffix = suffix.mid( dotPosition );
+		suffix = suffix.mid( dotPosition + 1 );
 	if( global.m_config->config().files.count( suffix ) > 0 )
 		result = global.m_config->config().files[ suffix ];
 	return result;

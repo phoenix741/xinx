@@ -87,7 +87,8 @@ public:
 	void callCommit( const RCS::FilesOperation & path, const QString & message );
 	void callAdd( const QStringList & path );
 	void callRemove( const QStringList & path );
-
+	void callUpdateToRevision( const QString & path, const QString & revision, QString * content );
+	
 	RCS::FilesOperation operationsOfPath( const QString & path );
 	RCS::FilesOperation operationsOfRecursivePath( const QString & path );
 	RCS::FilesOperation operationsOfRecursivePath( const QStringList & path );
@@ -128,6 +129,23 @@ public:
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
 	virtual void run();
+};
+
+/* CVSUpdateRevisionThread */
+
+class CVSUpdateRevisionThread : public CVSThread {
+	Q_OBJECT
+public:
+	CVSUpdateRevisionThread( PrivateRCS_CVS * parent, const QString & path, const QString & revision, QString * content, bool terminate = true );
+	virtual ~CVSUpdateRevisionThread();
+public slots:
+	virtual void processReadOutput();
+protected:
+	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void run();
+private:
+	QString * m_content;
+	QString m_revision;
 };
 
 /* CVSAddThread */

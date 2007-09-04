@@ -85,6 +85,7 @@ public:
 	
 	// RCS
 	bool m_rcsExecute;
+	QString m_headContent, m_compareFileName;
 	
 	// Label text
 	QLabel * m_editorPosition;
@@ -147,6 +148,9 @@ public slots:
 	void selectedCommitToVersionManager();
 	void selectedAddToVersionManager();
 	void selectedRemoveFromVersionManager();
+	void selectedCompareWithVersionManager();
+	void selectedCompareWithStd();
+	void selectedCompare();
 	void rcsLogTerminated();
 	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 

@@ -29,6 +29,7 @@ class CVSUpdateThread;
 class CVSAddThread;
 class CVSRemoveThread;
 class CVSCommitThread;
+class CVSUpdateRevisionThread;
 
 class ProcessExecutedException {	
 };
@@ -46,6 +47,7 @@ public:
 	virtual void commit( const FilesOperation & path, const QString & message );
 	virtual void add( const QStringList & path );
 	virtual void remove( const QStringList & path );
+	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
 public slots:
 	virtual void abort();
 private:
@@ -56,6 +58,7 @@ private:
 	friend class CVSAddThread;
 	friend class CVSRemoveThread;
 	friend class CVSCommitThread;
+	friend class CVSUpdateRevisionThread;
 };
 
 #endif // __RCS_CVS_H__

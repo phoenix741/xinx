@@ -644,6 +644,21 @@
     <string>Cancel RCS operation</string>
    </property>
   </action>
+  <action name="m_compareWithHeadAct" >
+   <property name="text" >
+    <string>Compare with the version management</string>
+   </property>
+  </action>
+  <action name="m_compareTwoFileAct" >
+   <property name="text" >
+    <string>Compare files</string>
+   </property>
+  </action>
+  <action name="m_compareWithStdAct" >
+   <property name="text" >
+    <string>Compare with standard</string>
+   </property>
+  </action>
   <action name="m_selectedUpdateFromRCSAct" >
    <property name="icon" >
     <iconset resource="../application.qrc" >:/images/kdesvnupdate.png</iconset>

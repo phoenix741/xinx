@@ -36,8 +36,8 @@
 
 PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) : 
 	m_selectedUpdateAction(0), m_selectedCommitAction(0), m_selectedAddAction(0), m_selectedRemoveAction(0),
-	m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0),
-	m_parent( parent ) {
+	m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0), m_selectedCompareAction(0), 
+	m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {
 			
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
@@ -88,11 +88,28 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 
 bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event ) {
 	if ( ( obj == m_projectDirWidget->m_projectDirectoryTreeView ) && ( event->type() == QEvent::ContextMenu ) ) {
+		int nbSelected = m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size(); 
 		QMenu *menu = new QMenu( m_projectDirWidget->m_projectDirectoryTreeView );
-		menu->addAction( m_selectedUpdateAction );
-		menu->addAction( m_selectedCommitAction );
-		menu->addAction( m_selectedAddAction );
-		menu->addAction( m_selectedRemoveAction );
+
+		if( nbSelected == 1 ) {
+			menu->addAction( m_selectedCompareWithStdAction );
+		} else
+		if( nbSelected == 2 ) {
+			menu->addAction( m_selectedCompareAction );
+			if( m_parent->rcs() )
+				menu->addSeparator();
+		}
+			
+		if( m_parent->rcs() ) {
+			if( m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size() == 1 ) {
+				menu->addAction( m_selectedCompareWithHeadAction );
+				menu->addSeparator();
+			}
+			menu->addAction( m_selectedUpdateAction );
+			menu->addAction( m_selectedCommitAction );
+			menu->addAction( m_selectedAddAction );
+			menu->addAction( m_selectedRemoveAction );
+		}
 		menu->exec( static_cast<QContextMenuEvent*>( event )->globalPos() );
 		delete menu;
 	}
@@ -151,6 +168,18 @@ void ProjectDirectoryDockWidget::setSelectedAddAction( QAction * action ) {
 
 void ProjectDirectoryDockWidget::setSelectedRemoveAction( QAction * action ) {
 	d->m_selectedRemoveAction = action;
+}
+
+void ProjectDirectoryDockWidget::setSelectedCompareWithHeadAction( QAction * action ) {
+	d->m_selectedCompareWithHeadAction = action;
+}
+
+void ProjectDirectoryDockWidget::setSelectedCompareWithStdAction( QAction * action ) {
+	d->m_selectedCompareWithStdAction = action;
+}
+
+void ProjectDirectoryDockWidget::setSelectedCompareAction( QAction * action ) {
+	d->m_selectedCompareAction = action;
 }
 
 void ProjectDirectoryDockWidget::setToggledViewAction( QAction * action ) {
