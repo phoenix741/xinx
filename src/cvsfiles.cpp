@@ -18,30 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "cvsfiles.h"
 
-CVSFileEntry::CVSFileEntry() {
-	m_path = QString();
+// Qt header
+#include <QDir>
+#include <QFileSystemWatcher>
+
+/* CVSFileEntry */
+
+CVSFileEntry::CVSFileEntry() : m_fileName( QString() ), m_watcher(0) {
 }
 
-CVSFileEntry::CVSFileEntry( const QString & filename, const QString & version ) {
+CVSFileEntry::CVSFileEntry( const QString & filename, const QString & version ) : m_watcher(0) {
 	setFileName( filename );
 	setVersion( version );
 }
 
-CVSFileEntry::CVSFileEntry( const QString & path, const QString & filename, const QString & version ) {
+CVSFileEntry::CVSFileEntry( const QString & path, const QString & filename, const QString & version ) : m_watcher(0) {
 	setFileName( path, filename );
 	setVersion( version );
 }
 
+CVSFileEntry::~CVSFileEntry() {
+	delete m_watcher;
+}
+
+
 void CVSFileEntry::setFileName( const QString & path, const QString & filename ) {
 	m_fileName = QDir( path ).absoluteFilePath( filename );
-	init();
-	getFileDate();
+	setFileName( m_fileName );
 }
 
 void CVSFileEntry::setFileName( const QString & filename ) {
 	m_fileName = filename;
+
+	delete m_watcher;
+	m_watcher = new QFileSystemWatcher( this );
+	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SIGNAL(fileChanged()) );
+	m_watcher->addPath( m_fileName );
+
 	init();
 	getFileDate();
 }

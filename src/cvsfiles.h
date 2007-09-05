@@ -26,21 +26,79 @@
 
 // Qt header
 #include <QString>
-#include <QDateTime>f
+#include <QDateTime>
+#include <QFileInfo>
+#include <QHash>
 
-class CVSFileEntry {
+class QFileSystemWatcher;
+
+/* CVSFileEntry */
+
+/*!
+ * Represent an cvs entry in file Entries.
+ */
+class CVSFileEntry : public QObject {
+	Q_OBJECT
 public:
+	/*!
+	 * Create a CVS File Entry
+	 */
 	CVSFileEntry();
+	/*!
+	 * Create a CVS File Entry. 
+	 * \param filename The file name to used in the entry file.
+	 * \param version The version of the entry in the file.
+	 */
 	CVSFileEntry( const QString & filename, const QString & version = QString() );
+	/*!
+	 * Create a CVS File Entry
+	 * \param path The path where the file is.
+	 * \param filename The file name in the entry.
+	 * \param version The version number of the entry.
+	 */
 	CVSFileEntry( const QString & path, const QString & filename, const QString & version = QString() );
+	/*!
+	 * Delete the entry file.
+	 */
+	virtual ~CVSFileEntry();
 	
+	/*!
+	 * Set the file name of the object. This file is watched for change.
+	 * \param filename The file name to use with the object. 
+	 */
 	void setFileName( const QString & filename );
+	/*!
+	 * Set the file name and the path of the object. The file is watched for change.
+	 * \param path The path where the file is.
+	 * \param filename The filename to watch, in this path.
+	 */
 	void setFileName( const QString & path, const QString & filename );
+	/*!
+	 * Set the version to change.
+	 * \param version The version to store in the object.
+	 */
 	void setVersion( const QString & version );
-	void setCVSFileDate( QString date );
-	void getFileDate();
-	RCS::rcsState status();
 	
+	/*!
+	 * Return the status of the file.
+	 * \return the status of the file.
+	 */
+	RCS::rcsState status();
+public slots:
+	/*!
+	 * Set the date of the CVS file 
+	 * \param date The date of the file.
+	 */
+	void setCVSFileDate( QString date );
+	/*!
+	 * Read the file date from entry.
+	 */ 
+	void getFileDate();
+signals:
+	/*!
+	 * Signal emited when the file is changed.
+	 */
+	void fileChanged();
 private:
 	void init();
 	
@@ -51,7 +109,15 @@ private:
 	bool m_hasConflict;
 	
 	QFileInfo m_fileInfo;
-	QDateTime m_fileDate;	
+	QDateTime m_fileDate;
+	
+	QFileSystemWatcher * m_watcher;
+};
+
+/* CVSFileEntryList */
+
+class CVSFileEntryList : public QHash<QString,CVSFileEntry> {
+	
 };
 
 #endif // __CVSFILES_H__
