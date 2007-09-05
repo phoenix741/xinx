@@ -20,17 +20,16 @@
 
 #ifndef CUSTOMDIALOGIMPL_H
 #define CUSTOMDIALOGIMPL_H
-//
+
+// Xinx header
 #include "ui_custom.h"
 #include "xinxconfig.h"
-//
+
 class PrivateCustomDialogImpl;
 
 /*!
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
  * This dialog save and restore modification in a XINXConfig class.
- * 
- * \todo Dialog maybe evoluate to be more dynamic
  */
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT

@@ -128,7 +128,7 @@ FileWatched * FileWatcherManager::watchedFileAt( int index ) {
 
 /* PrivateFileWatcher */
 
-PrivateWatcher::PrivateWatcher( Watcher * parent ) : m_isActivated( true ), m_parent( parent ) {
+PrivateWatcher::PrivateWatcher( FileWatcher * parent ) : m_isActivated( true ), m_parent( parent ) {
 }
 
 PrivateWatcher::~PrivateWatcher() {
@@ -141,35 +141,28 @@ void PrivateWatcher::fileChanged( QString filename ) {
 		emit m_parent->fileChanged();
 }
 
-/* Watcher */
+/* FileWatcher */
 
-Watcher::Watcher( const QString & filename ) {
+FileWatcher::FileWatcher( const QString & filename ) {
 	d = new PrivateWatcher( this );
 	d->m_filename = filename;
 
 	connect( FileWatcherManager::instance(), SIGNAL(fileChanged(QString)), d, SLOT(fileChanged(QString)), Qt::QueuedConnection );
+	FileWatcherManager::instance()->addFile( filename );
 }
 
-Watcher::~Watcher() {
+FileWatcher::~FileWatcher() {
 	delete d;
 }
 
-void Watcher::desactivate() {
+void FileWatcher::desactivate() {
 	d->m_isActivated = false;
 }
 
-void Watcher::activate() {
+void FileWatcher::activate() {
 	int index = FileWatcherManager::instance()->indexOfWatchedFile( d->m_filename );
 	FileWatcherManager::instance()->watchedFileAt( index )->initializeDate();
 	d->m_isActivated = true;
 }
 
-/* FileWatcher */
-
-FileWatcher::FileWatcher( const QString & filename ) : Watcher( filename ) {
-	FileWatcherManager::instance()->addFile( filename );
-}
-
-FileWatcher::~FileWatcher() {
-}
 

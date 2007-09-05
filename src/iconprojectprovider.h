@@ -21,10 +21,16 @@
 #ifndef __ICONPROJECTPROVIDER_H__
 #define __ICONPROJECTPROVIDER_H__
 
+// Qt header
 #include <QFileIconProvider>
 #include <QIcon>
 #include <QFileInfo>
 
+/*!
+ * Provide special icon for XSL, XML, JS extentions.
+ * This Icon provider is used by \e ProjectDirectoryDockWidget to show the tree
+ * project with custom icons.
+ */
 class IconProjectProvider : public QFileIconProvider {
 public:
 	IconProjectProvider();

@@ -21,14 +21,12 @@
 #ifndef __P_RCS_CVS_H__
 #define __P_RCS_CVS_H__
 
+// Xinx header
 #include "rcs_cvs.h"
 #include "globals.h"
 #include "xinxconfig.h"
 
-#ifdef Q_WS_WIN
-	#include <windows.h>
-#endif
-
+// Qt header
 #include <QFileSystemWatcher>
 #include <QHash>
 #include <QDateTime>
@@ -37,10 +35,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#include <QProcess>
 #include <QThread>
-
-Q_DECLARE_METATYPE( QProcess::ExitStatus )
 
 /* RCS_CVSEntry */
 
@@ -96,96 +91,6 @@ public:
 	QHash<QString,RCS_CVSEntry> loadEntryDir( const QString & dir );
 public slots:
 	void watcherFileChanged ( const QString & path );
-};
-
-/* CVSThread */
-
-class CVSThread : public QThread {
-	Q_OBJECT
-public:
-	CVSThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
-	virtual ~CVSThread();
-public slots:
-	virtual void processReadOutput();
-	void abort();
-protected:
-	virtual void run();
-	virtual void callCVS( const QString & path, const QStringList & options );
-	void processLine( const QString & line );
-	PrivateRCS_CVS * m_privateParent;
-	RCS_CVS * m_parent;
-	QProcess * m_process;
-	QStringList m_paths;
-	bool m_terminate;
-};
-
-/* CVSUpdateThread */
-
-class CVSUpdateThread : public CVSThread {
-	Q_OBJECT
-public:
-	CVSUpdateThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
-	virtual ~CVSUpdateThread();
-protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
-};
-
-/* CVSUpdateRevisionThread */
-
-class CVSUpdateRevisionThread : public CVSThread {
-	Q_OBJECT
-public:
-	CVSUpdateRevisionThread( PrivateRCS_CVS * parent, const QString & path, const QString & revision, QString * content, bool terminate = true );
-	virtual ~CVSUpdateRevisionThread();
-public slots:
-	virtual void processReadOutput();
-protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
-private:
-	QString * m_content;
-	QString m_revision;
-};
-
-/* CVSAddThread */
-
-class CVSAddThread : public CVSThread {
-	Q_OBJECT
-public:
-	CVSAddThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
-	virtual ~CVSAddThread();
-protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
-};
-
-/* CVSRemoveThread */
-
-class CVSRemoveThread : public CVSThread {
-	Q_OBJECT
-public:
-	CVSRemoveThread( PrivateRCS_CVS * parent, QStringList paths, bool terminate = true );
-	virtual ~CVSRemoveThread();
-protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
-};
-
-/* CVSCommitThread */
-
-class CVSCommitThread : public CVSThread {
-	Q_OBJECT
-public:
-	CVSCommitThread( PrivateRCS_CVS * parent, RCS::FilesOperation paths, QString message, bool terminate = true );
-	virtual ~CVSCommitThread();
-protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
-private:
-	QString m_message;
-	QStringList m_addList;
-	QStringList m_removeList;
 };
 
 #endif // __P_RCS_CVS_H__

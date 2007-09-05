@@ -28,24 +28,92 @@ class ConfigurationVerstionIncorectException {
 
 class PrivateConfigurationVersion;
 
+/*!
+ * Represent a version of a XML Configuration file. The file version has
+ * the form VXX.XX-XX. The version can also have a special edition number.
+ */
 class ConfigurationVersion {
 public:
+	/*!
+	 * Construct a configuration version object
+	 * \param major The major number of the version.
+	 * \param minor The minor number of the version.
+	 * \param release The release number of the version
+	 * \param build The build number (or special edition number) of the version
+	 */ 
 	ConfigurationVersion( int major = -1, int minor = -1, int release = -1, int build = -1 );
+	/*!
+	 * Construct a configuration version as input a strint. The number version translate
+	 * the string into a version object. The special number is outside
+	 * \param version The version string used to construct the object
+	 * \param build The build number (or special edition number) of the version.
+	 */
 	ConfigurationVersion( const QString & version, int build = 0 );
+	/*!
+	 * Destroy the configuration version object.
+	 */
 	virtual ~ConfigurationVersion();
 
+	/*!
+	 * Return the major part of the version
+	 * \return An integer represents the major parts
+	 */
 	int major() const;
+	/*! 
+	 * Return the minor part of the version
+	 * \return An integer represents the minor parts
+	 */
 	int minor() const;
+	/*!
+	 * Return the release part of the version
+	 * \return An integer represents the release parts
+	 */
 	int release() const;
+	/*!
+	 * Return the build part of the version (or called special edition).
+	 * \return An integer represents the special edition number
+	 */
 	int build() const;
 	
+	/*!
+	 * Return a string a representation of the version. The string has the form :
+	 * VXX.XX-XX (XX) where the number in bracket is the special edition number. This
+	 * is not necessary and can be omited, if not specified.
+	 * \return A string representation of the version.
+	 */	
 	QString toString() const;
+	/*!
+	 * Test if a version is valid.
+	 * A version is valid only if major, minor, and release number are greater than
+	 * zero.
+	 * \return true if the version is valid, else return false. 
+	 */
 	bool isValid();
 	
+	/*!
+	 * Compare two version number.
+	 * \return Return true if the two version are equal
+	 */
 	bool operator== ( ConfigurationVersion version ) const;
+	/*!
+	 * Compare two version number.
+	 * \return Return true if the first is greater than the second
+	 */
 	bool operator>  ( ConfigurationVersion version ) const;
+	/*!
+	 * Compare two version number.
+	 * \return Return true if the first is greater or equal than the second
+	 */
 	bool operator>= ( ConfigurationVersion version ) const;
+	/*!
+	 * Compare two version number.
+	 * \return Return true if the first is lesser than the second
+	 */
 	bool operator<  ( ConfigurationVersion version ) const;
+	/*!
+	 * Compare two version number.
+	 * \return Return true if the first is lesser or equal than the second
+	 */
 	bool operator<= ( ConfigurationVersion version ) const;
 private:
 	int m_major;
@@ -54,9 +122,28 @@ private:
 	int m_build;
 };
 
+/*!
+ * Class represente a configuration file. This class contais method checking the
+ * version number of a configuration file, testing if the file exists in the path
+ * or other usuable functionnality.
+ */
 class ConfigurationFile {
 public:
+	/*!
+	 * Test if the configuration file exists in the directory path.
+	 * The conifuration file has the name configuration.xml
+	 * \param DirectoryPath The path of the directory where we check if a configuration file exists.
+	 * \return True if the configuration file exist, else return false.
+	 */
 	static bool exists( const QString & DirectoryPath );
+	/*!
+	 * Return the version of the configuration file (only if the file exists and the version
+	 * can be found.
+	 * This method parse the configuration file to find the version number. If he find him, 
+	 * the parser stop immediatly to not read the entierly.
+	 * \param DirectoryPath the path where the configuration file is.
+	 * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
+	 */
 	static ConfigurationVersion version( const QString & DirectoryPath );
 private:	
 };

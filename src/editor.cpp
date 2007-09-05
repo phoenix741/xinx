@@ -18,13 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "editor.h"
-//
+
+/* Editor */
+
 Editor::Editor( QWidget * parent )  : QFrame( parent ) {
 	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
 	setLineWidth( 2 );
 }
-//
+
 Editor::~Editor() {
 }
-//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

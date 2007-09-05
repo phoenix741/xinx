@@ -20,9 +20,11 @@
 
 #ifndef CONNECTIONWEBSERVICESDIALOGIMPL_H
 #define CONNECTIONWEBSERVICESDIALOGIMPL_H
-//
+
+// Xinx header
 #include "ui_servicesconnection.h"
-//
+
+// Qt header
 class QHttp;
 class QIODevice;
 class QHttpRequestHeader;

@@ -31,39 +31,134 @@
 
 class PrivateMainformImpl;
 
+/*!
+ * This is the implementation of the MAIN FORM of XINX. This Windows allow the user to edit file, 
+ * create new project, open it. It show also dock for file content, and project content. It is 
+ * the main part of the project to interact with the user.
+ * 
+ * This form contains also some function that can be call with D-BUS. This functionnality is defined 
+ * slots.
+ */
 class MainformImpl : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
 public:
+	/*!
+	 * Create the main form. 
+	 * Theres is normally no parent widget, and no specifique flags for the user interface.
+	 */
 	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+	/*!
+	 * Destroy the main form, and consequently quit the application.
+	 */
 	virtual ~MainformImpl();
 public slots:
+	/*! 
+	 * Create a new xsl stylesheet empty page in the Tab editor.
+	 */
 	void newStylesheetFile();
+	/*!
+	 * Create a new xml empty page in the Tab editor.
+	 */
 	void newXmlDataFile();
+	/*!
+	 * Create a new Javascript empty page in the Tab editor.
+	 */
 	void newJavascriptFile();
+	/*!
+	 * Create a new WebServices empty page in the Tab editor.
+	 */
 	void newWebservicesFile();
+	/*!
+	 * Create a new empty page in the Tab editor. The type of the empty page depends of 
+	 * type of project. If the project is an WebServices project, the page is an Webservice
+	 * stream file, else, it's an XSL stylesheet.
+	 */ 
 	void newDefaultFile();
+	/*!
+	 * Open a dialog to create a new template (snipet).
+	 * To create a template, a text must be selected.
+	 * The dialog interact with the user to choose the information.
+	 * \todo Propose some options, to create the a snipet without user interaction.
+	 */
 	void newTemplate();
+	/*!
+	 * Open the file \e filename in the tab editor
+	 */
 	void openFile( const QString & filename );
+	/*!
+	 * Save the current selected editor, in the file defined by \e filename. If
+	 * no filename is specified, the current name is used.
+	 */
 	void saveFileAs( const QString & filename = QString() );
+	/*!
+	 * Save all opened files.
+	 */
 	void saveAllFile();
+	/*!
+	 * Close the current file. Ask to user to save it, if the file is modified.
+	 */
 	void closeFile();
+	/*!
+	 * Close all files of the editor. If some file are modified, XINX ask the user
+	 * to save it.
+	 */
 	bool closeAllFile();
 	
+	/*!
+	 * Create a new project. A dialog is opened and ask some question to the user.
+	 * \todo Add some options to create a project without user interaciton.
+	 */
 	void newProject();
+	/*!
+	 * Open a project defined by the param \e filename. If project is already open, 
+	 * the project is closed.
+	 */
 	void openProject( const QString & filename );
+	/*!
+	 * Save(flush) the project. 
+	 * \param withSessionData If true, the project is saved with session data. It's used
+	 * in case XINX stop with error.
+	 */
 	void saveProject( bool withSessionData );
+	/*!
+	 * Close the project with no session data.
+	 */
 	void closeProjectNoSessionData();
+	/*!
+	 * Close the project with session data. The session data saved is content of non-saved
+	 * files.
+	 */
 	void closeProjectWithSessionData();
 
+	/*!
+	 * Call a WebServices. The webservices called is defined in the editor.
+	 * \todo Permit to call another webservices.
+	 */
 	void callWebservices();
+	/*!
+	 * Update the list of WebServices, and connect to them to obtains WSDL.
+	 */
 	void updateWebServicesList();
 
+	/*!
+	 * Update the project from Version management. If more one file is specified
+	 * this method update only choose file.
+	 */
 	void updateFromVersionManager( const QStringList & list = QStringList() );
+	/*!
+	 * Commit the project from Version managerment. If more one file is specified
+	 * this method update only choose file.
+	 */
 	void commitToVersionManager( const QStringList & list = QStringList() );
+	/*!
+	 * Add some files to version management.
+	 */
 	void addFilesToVersionManager( const QStringList & list );
+	/*!
+	 * Remove some file from version management. 
+	 * \warning Files are also delete from disk.
+	 */
 	void removeFilesFromVersionManager( const QStringList & list );
-
-	void setEditorPosition( int line, int column );
 protected: 
 	void closeEvent( QCloseEvent *event );
 private:

@@ -27,6 +27,10 @@
 class PrivateFileContentDockWidget;
 class QAbstractItemModel;
 
+/*!
+ * This dock contains the content of the current file editor in a tree.
+ * This dock permit the user to brownse the content of the file, and go inside import.
+ */
 class FileContentDockWidget : public QDockWidget {
 	Q_OBJECT
 public:
@@ -34,8 +38,18 @@ public:
 	FileContentDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
 	virtual ~FileContentDockWidget();
 public slots:
+	/*!
+	 * Update the tree with this model. The model comes from the editor
+	 * \param model Model contains the content of the editor. If NULL, the editor is deleted.
+	 */
 	void updateModel( QAbstractItemModel * model );
 signals:
+	/*!
+	 * Signal emited when the user double-click on the editor. The goal is open the file 
+	 * if necessary, and change the line.
+	 * \param name Name of the file to open
+	 * \param line Line to change.
+	 */
 	void open( const QString & name, int line );
 private:
 	PrivateFileContentDockWidget * d;

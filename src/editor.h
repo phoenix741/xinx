@@ -20,10 +20,10 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
-//
+
+// Qt header
 #include <QFrame>
 #include <QDomElement>
-//
 
 class QAbstractItemModel;
 

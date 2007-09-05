@@ -28,6 +28,18 @@
 #include <QDirModel>
 #include <QStringList>
 
+/*!
+ * The goal of this class is to store the Version Manager Information \e RCS and show
+ * to user information of this Version Manager Information.
+ * 
+ * At construction of the object, the object create a \e RCS object if a project exists
+ * and manage the RCS.
+ * The currently version manager supported is CVS.
+ * 
+ * The item model show in a different color files modified, added, removed, or not in the 
+ * repository.
+ * A tool tip show some information that the information manager supporte. 
+ */
 class DirRCSModel : public QDirModel {
 	Q_OBJECT
 public:
@@ -35,6 +47,12 @@ public:
 	DirRCSModel( QObject *parent = 0 );
 	virtual ~DirRCSModel();
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
+
+	/*!
+	 * Return the rcs associate with the model. If RCS is not managed, this
+	 * function return NULL
+	 * \return The rcs object.
+	 */
 	RCS * rcs();
 private:
 	RCS * m_rcs;

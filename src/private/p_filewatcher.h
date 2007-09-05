@@ -79,7 +79,7 @@ private:
 class PrivateWatcher : public QObject {
 	Q_OBJECT
 public:
-	PrivateWatcher( Watcher * parent );
+	PrivateWatcher( FileWatcher * parent );
 	~PrivateWatcher();
 
 	QString m_filename;
@@ -87,7 +87,7 @@ public:
 public slots:
 	void fileChanged( QString filename );
 private:
-	Watcher * m_parent;
+	FileWatcher * m_parent;
 };
 
 extern FileWatcherManager * fileWatcherManager;

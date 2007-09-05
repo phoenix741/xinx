@@ -31,29 +31,55 @@
 #define _KCOLORCOMBO_H__
 
 #include <qcombobox.h>
-//#include <kcolordialog.h>
-//#include "kselect.h"
-
 
 class KColorComboInternal;
 
-class KColorCombo : public QComboBox
-{
+/*!
+ * Combo box to choose a color. The combo box show you the color
+ * and an associate text to the color. The showed color, is standard Qt color.
+ * The user can also change, and use a custom color. In this case a dialog
+ * is open to allow the user to make his choice.
+ * 
+ * This component is originally written for KDE3. He was adapt to turn on Qt4.
+ */ 
+class KColorCombo : public QComboBox {
     Q_OBJECT
     Q_PROPERTY( QColor color READ color WRITE setColor )
-
 public:
+	/*!
+	 * Create a color combo box
+	 * \param parent The parent widget of the color combo box.
+	 */
     KColorCombo( QWidget *parent );
+    /*!
+     * Destroy the ColorComboBox
+     */
     ~KColorCombo();
 
+    /*!
+     * Change the value of the ComboBox to the color define in bracket.
+     * \param col The new color to use. 
+     */
     void setColor( const QColor &col );
+    /*!
+     * Return the color selected in the ComboBox.
+     * \return The color selected
+     */
     QColor color() const;
 
-
-     void showEmptyList();
+    /*!
+     * Show an empty color combo box.
+     */
+    void showEmptyList();
 
 signals:
+	/*!
+	 * Signal emited when a color is activated by the user.
+	 */
     void activated( const QColor &col );
+    /*!
+     * Signal emited when a color is highlighted by the user.
+     */
     void highlighted( const QColor &col );
 
 protected:

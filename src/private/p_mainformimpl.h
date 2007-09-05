@@ -157,6 +157,7 @@ public slots:
 	// Windows
 	void nextTab();
 	void previousTab();
+	void setEditorPosition( int line, int column );
 	
 	// Tools
 	void callSnipetMenu();

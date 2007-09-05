@@ -27,6 +27,8 @@
 // Qt header
 #include <QBrush>
 
+/* DirRCSModel */
+
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
 	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) ) 
 		m_rcs = new RCS_CVS();
@@ -85,5 +87,5 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 			return tips;
 		}
 	}
-		return QDirModel::data(index, role);
+	return QDirModel::data(index, role);
 }

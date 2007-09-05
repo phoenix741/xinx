@@ -18,29 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "connectionwebservicesdialogimpl.h"
-
-#include <QHttp>
+#include "private/p_connectionwebservicesdialogimpl.h"
 
 /* PrivateConnectionWebServicesDialogImpl */
-
-class PrivateConnectionWebServicesDialogImpl : public QObject {
-	Q_OBJECT
-public:
-	PrivateConnectionWebServicesDialogImpl( ConnectionWebServicesDialogImpl * parent );
-	~PrivateConnectionWebServicesDialogImpl();
-public slots:
-	void requestFinished( int id, bool error );
-	void stateChanged( int state );
-	void setSendProgress( int value, int max );
-	void setReadProgress( int value, int max );
-public:
-	int m_requestId;
-	QHttp * m_http;
-	bool m_hasResult;
-private:
-	ConnectionWebServicesDialogImpl * m_parent;
-};
 
 PrivateConnectionWebServicesDialogImpl::PrivateConnectionWebServicesDialogImpl( ConnectionWebServicesDialogImpl * parent ) {
 	m_parent = parent;
@@ -177,4 +159,3 @@ bool ConnectionWebServicesDialogImpl::request( QHttpRequestHeader * header, QByt
 	return d->m_hasResult;
 }
 
-#include "connectionwebservicesdialogimpl.moc"

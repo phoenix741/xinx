@@ -157,7 +157,7 @@ public Q_SLOTS :
 	 */
 	virtual void indent( bool unindent = false );
 	/*!
-	 * Auto indent all the document.
+	 * Auto indent all the document (named Pretty Print).
 	 */
 	virtual void autoIndent();
 	/*!

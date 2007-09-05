@@ -24,12 +24,6 @@
 #include "rcs.h"
 
 class PrivateRCS_CVS;
-class CVSThread;
-class CVSUpdateThread;
-class CVSAddThread;
-class CVSRemoveThread;
-class CVSCommitThread;
-class CVSUpdateRevisionThread;
 
 class ProcessExecutedException {	
 };
@@ -53,12 +47,6 @@ public slots:
 private:
 	PrivateRCS_CVS * d;
 	friend class PrivateRCS_CVS;
-	friend class CVSThread;
-	friend class CVSUpdateThread;
-	friend class CVSAddThread;
-	friend class CVSRemoveThread;
-	friend class CVSCommitThread;
-	friend class CVSUpdateRevisionThread;
 };
 
 #endif // __RCS_CVS_H__

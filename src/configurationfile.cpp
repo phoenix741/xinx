@@ -30,20 +30,6 @@
 
 /* ConfigurationVersion */
 
-/*!
- * \class ConfigurationVersion
- * 
- * Represent a version of a XML Configuration file. The file version has
- * the form VXX.XX-XX. The version can also have a special edition number.
- */
-
-/*!
- * Construct a configuration version object
- * \param major The major number of the version.
- * \param minor The minor number of the version.
- * \param release The release number of the version
- * \param build The build number (or special edition number) of the version
- */ 
 ConfigurationVersion::ConfigurationVersion( int major, int minor, int release, int build ) {
 	m_major = major;
 	m_minor = minor;
@@ -51,12 +37,6 @@ ConfigurationVersion::ConfigurationVersion( int major, int minor, int release, i
 	m_build = build;
 }
 
-/*!
- * Construct a configuration version as input a strint. The number version translate
- * the string into a version object. The special number is outside
- * \param version The version string used to construct the object
- * \param build The build number (or special edition number) of the version.
- */
 ConfigurationVersion::ConfigurationVersion( const QString & version, int build ) {
 	QString major, minor, release;
 
@@ -77,50 +57,25 @@ ConfigurationVersion::ConfigurationVersion( const QString & version, int build )
 	m_release = release.toInt();
 }
 
-/*!
- * Destroy the configuration version object.
- */
 ConfigurationVersion::~ConfigurationVersion() {
 }
 
-/*!
- * Return the major part of the version
- * \return An integer represents the major parts
- */
 int ConfigurationVersion::major() const {
 	return m_major;
 }
 
-/*! 
- * Return the minor part of the version
- * \return An integer represents the minor parts
- */
 int ConfigurationVersion::minor() const {
 	return m_minor;
 }
 
-/*!
- * Return the release part of the version
- * \return An integer represents the release parts
- */
 int ConfigurationVersion::release() const {
 	return m_release;
 }
 
-/*!
- * Return the build part of the version (or called special edition).
- * \return An integer represents the special edition number
- */
 int ConfigurationVersion::build() const {
 	return m_build;
 }
 
-/*!
- * Return a string a representation of the version. The string has the form :
- * VXX.XX-XX (XX) where the number in bracket is the special edition number. This
- * is not necessary and can be omited, if not specified.
- * \return A string representation of the version.
- */	
 QString ConfigurationVersion::toString() const {
 	QString version = QString( "V%1.%2-%3" ).arg( m_major, 2, 10, QLatin1Char('0') )
 											.arg( m_minor, 2, 10, QLatin1Char('0') )
@@ -131,20 +86,10 @@ QString ConfigurationVersion::toString() const {
 	return version;
 }
 
-/*!
- * Test if a version is valid.
- * A version is valid only if major, minor, and release number are greater than
- * zero.
- * \return true if the version is valid, else return false. 
- */
 bool ConfigurationVersion::isValid() {
 	return ( m_major >= 0 ) && ( m_minor >= 0 ) && ( m_release >= 0 );
 }
 	
-/*!
- * Compare two version number.
- * \return Return true if the two version are equal
- */
 inline bool ConfigurationVersion::operator== ( ConfigurationVersion version ) const {
 	if( m_major == version.m_major ) {
 		if( m_minor == version.m_minor ) {
@@ -161,10 +106,6 @@ inline bool ConfigurationVersion::operator== ( ConfigurationVersion version ) co
 		return false;
 }
 
-/*!
- * Compare two version number.
- * \return Return true if the first is greater than the second
- */
 inline bool ConfigurationVersion::operator>  ( ConfigurationVersion version ) const {
 	if( m_major == version.m_major ) {
 		if( m_minor == version.m_minor ) {
@@ -181,58 +122,25 @@ inline bool ConfigurationVersion::operator>  ( ConfigurationVersion version ) co
 		return m_major > version.m_major;
 }
 
-/*!
- * Compare two version number.
- * \return Return true if the first is greater or equal than the second
- */
 inline bool ConfigurationVersion::operator>= ( ConfigurationVersion version ) const {
 	return ( *this > version ) || ( *this == version );
 }
 
-/*!
- * Compare two version number.
- * \return Return true if the first is lesser than the second
- */
 inline bool ConfigurationVersion::operator<  ( ConfigurationVersion version ) const {
 	return ! ( *this >= version );
 }
 
-/*!
- * Compare two version number.
- * \return Return true if the first is lesser or equal than the second
- */
 inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) const {
 	return ! ( *this > version );
 }
 
 /* ConfigurationFile */
 
-/*!
- * \class ConfigurationFile
- * 
- * Class represente a configuration file. This class contais method checking the
- * version number of a configuration file, testing if the file exists in the path
- * or other usuable functionnality.
- */
 
-/*!
- * Test if the configuration file exists in the directory path.
- * The conifuration file has the name configuration.xml
- * \param DirectoryPath The path of the directory where we check if a configuration file exists.
- * \return True if the configuration file exist, else return false.
- */
 bool ConfigurationFile::exists( const QString & DirectoryPath ) {
 	return QFile::exists( QDir( DirectoryPath ).absoluteFilePath( "configuration.xml" ) );
 }
 
-/*!
- * Return the version of the configuration file (only if the file exists and the version
- * can be found.
- * This method parse the configuration file to find the version number. If he find him, 
- * the parser stop immediatly to not read the entierly.
- * \param DirectoryPath the path where the configuration file is.
- * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
- */
 ConfigurationVersion ConfigurationFile::version( const QString & DirectoryPath ) {
 	QString fileName = QDir( DirectoryPath ).absoluteFilePath( "configuration.xml" );
 	

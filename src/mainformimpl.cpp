@@ -253,7 +253,7 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_closeAllAct, SIGNAL(triggered()), m_parent, SLOT(closeAllFile()) );
 	
 	// Model
-	connect( m_parent->m_tabEditors, SIGNAL(setEditorPosition(int,int)), m_parent, SLOT(setEditorPosition(int,int)) );	
+	connect( m_parent->m_tabEditors, SIGNAL(setEditorPosition(int,int)), this, SLOT(setEditorPosition(int,int)) );	
 
 	/* EDIT */
 	// Undo
@@ -1243,6 +1243,9 @@ struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name
 	return result;
 }
 
+void PrivateMainformImpl::setEditorPosition( int line, int column ) {
+	m_editorPosition->setText( QString("   %1 x %2   ").arg( line, 3, 10, QLatin1Char('0') ).arg( column, 3, 10, QLatin1Char('0') ) );
+}
 
 /* MainformImpl */
 
@@ -1251,7 +1254,7 @@ MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( pare
 	d = new PrivateMainformImpl( this );
 
 	// Update the status bar position
-	setEditorPosition( 1, 1 );
+	d->setEditorPosition( 1, 1 );
 	
 	// Restore windows property
 	d->readWindowSettings();
@@ -1259,10 +1262,6 @@ MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( pare
 
 MainformImpl::~MainformImpl() {
 	delete d;
-}
-
-void MainformImpl::setEditorPosition( int line, int column ) {
-	d->m_editorPosition->setText( QString("   %1 x %2   ").arg( line, 3, 10, QLatin1Char('0') ).arg( column, 3, 10, QLatin1Char('0') ) );
 }
 
 void MainformImpl::closeEvent( QCloseEvent *event ) {

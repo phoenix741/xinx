@@ -30,7 +30,6 @@ class PrivateJSEditor;
 /*!
  * Editor based on a TextEditor (from a QTextEdit) who have JavaScript syntaxique 
  * coloration.
- * \todo Make completion on javascript.
  */
 class JSEditor : public TextEditor {
 	Q_OBJECT

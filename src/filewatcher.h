@@ -21,30 +21,50 @@
 #ifndef _FILEWATCHER_H_
 #define _FILEWATCHER_H_
 
+// Qt header
 #include <qobject.h>
 
 class PrivateWatcher;
 
-class Watcher : public QObject {
+/*!
+ * Class used to watch the modification of a file. The file is periodically watched
+ * and if the date of the file is modified, the user is alerted by a signal.
+ * 
+ * Behind the FileWatcher, a thread watch modifications of all files referenced by a
+ * FileWatcher. The watcher can be desactivate and reactivate without delete the object.
+ * When the object is reactivated, the file date, in memory, is updated.
+ */
+class FileWatcher : public QObject {
 	Q_OBJECT
 public:
-	Watcher( const QString & filename );
-	virtual ~Watcher();
+	/*!
+	 * Create a FileWatcher with a file name
+	 * \param filename The file name to watch.
+	 */
+	FileWatcher( const QString & filename );
+	/*!
+	 * Destroy the FileWatcher
+	 */
+	virtual ~FileWatcher();
 	
+	/*!
+	 * Desactivate the watcher. You must called the \e activate method to reactivate
+	 * the watcher.
+	 */
 	void desactivate();
+	/*!
+	 * Activate the watcher. The watcher is created activated. Use \e desactivate to 
+	 * desactivate.
+	 */
 	void activate();
 signals:
+	/*!
+	 * The signal is emited when the watched file is modified.
+	 */
 	void fileChanged();
 protected:
 	PrivateWatcher * d;
 	friend class PrivateWatcher;
-};
-
-class FileWatcher : public Watcher {
-	Q_OBJECT
-public:
-	FileWatcher( const QString & filename );
-	virtual ~FileWatcher();
 };
 
 #endif // _FILEWATCHER_H_

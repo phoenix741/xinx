@@ -131,6 +131,15 @@ extern Globals global;
  */
 #define DEFAULT_PROJECT_FILTRE_OPTIONS QDir::AllDirs | QDir::Files | QDir::Readable | QDir::NoDotAndDotDot
 
+/*!
+ * Template used to delete all the object of list with an iterator. Instead of using C++ 
+ * delete, this method called the deleteLater method of the QObject class, if the object 
+ * is a QObject.
+ * Objects are delete when application process messages.
+ * \param begin First iterator to delete
+ * \param end Last iterator to delete
+ * \sa qDeleteAllLater(const Container &c)
+ */
 template <typename ForwardIterator>
 void qDeleteAllLater(ForwardIterator begin, ForwardIterator end) {
 	while (begin != end) {
@@ -142,6 +151,11 @@ void qDeleteAllLater(ForwardIterator begin, ForwardIterator end) {
 	}
 }
 
+/*!
+ * Delete all the object of a list later
+ * \param c Container where we must delete all object.
+ * \sa qDeleteAllLater(ForwardIterator begin, ForwardIterator end)
+ */
 template <typename Container>
 inline void qDeleteAllLater(const Container &c) {
 	qDeleteAllLater(c.begin(), c.end());

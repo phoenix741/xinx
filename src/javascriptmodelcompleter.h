@@ -28,16 +28,33 @@ class JavaScriptParser;
 
 /* JavascriptModelCompleter */
 
+/*!
+ * Class provide completion on JavaScript editor.
+ * This class based on a parser show all variables, params, and function name, 
+ * that could be used in the JavaScript file.
+ */
 class JavascriptModelCompleter : public QAbstractListModel {
 	Q_OBJECT
 public:
+	/*!
+	 * Create a Javascript model for completion, with the help of a javascript parser.
+	 * \param parser The parser used to parse the javascript text
+	 * \param parent Parent object used to create this object.
+	 */
 	JavascriptModelCompleter( JavaScriptParser * parser, QObject *parent = 0 );
+	/*!
+	 * Destroy the Javascript model.
+	 */
 	virtual ~JavascriptModelCompleter();
 	
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 public slots:
+	/*!
+	 * Set the filter used to define the scope of the function.
+	 * If the function is NULL, the scope is global.
+	 */
 	void setFilter( const QString functionName = QString() );
 private:
 	void refreshList( JavaScriptElement * element );

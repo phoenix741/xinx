@@ -25,18 +25,51 @@
 #include <QLineEdit>
 #include <QDirModel>
 
+/*!
+ * Completer model class based on a QDirModel which permit to propose a completion on
+ * the path. 
+ */
 class CompleterDirModel : public QDirModel {
 public:
+	/*!
+	 * Construct a CompleterDirModel. The QDir model convert the slash on native separtor.
+	 * If the path end with a separator, the separator is deleted.
+	 * \param parent The parent of the object.
+	 */
 	CompleterDirModel(QObject *parent = 0);
+	/*!
+	 * Return the data to change in the completion dir model. This model show the good
+	 * separator (with the \e QDir::toNativeSepartors() function).
+	 * \param index The model index, represents a path in the tree.
+	 * \param role Only the role Qt::DisplayRole is modified in this object.
+	 */
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 };
 
+/*!
+ * A text edit using the QCompleter \e CompleterDirModel to simplify the editing of 
+ * the path.
+ * If the path is wrong, he's writing in red.
+ */
 class DirectoryEdit : public QLineEdit {
 	Q_OBJECT
 public:
+	/*!
+	 * Construct a DirectoryEdit object.
+	 * \param parent The parent widget of the object.
+	 */
 	DirectoryEdit( QWidget * parent = 0 );
+	/*!
+	 * Construct a DirectoryEdit object and change the content of the text at the creation.
+	 * \param contents Content of the Line edit.
+	 * \param parent The parent widget of the object.
+	 */
 	DirectoryEdit( const QString & contents, QWidget * parent = 0 );
 protected slots:
+	/*!
+	 * Slot called when the text changed. This method change the color of the text to 
+	 * show user quickly if the directory exists or not.
+	 */
 	void slotTextChanged( QString text );
 };
 

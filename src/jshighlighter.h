@@ -29,8 +29,26 @@
 class JsHighlighter  : public SyntaxHighlighter {
 	Q_OBJECT
 public:
+	/*!
+	 * Create a SyntaxHighlighter used to customize color on JavaScript.
+	 * If the config is not defined, the config use a global scope.
+	 * \param parent The parent of the object
+	 * \param config The config to use.
+	 */
 	JsHighlighter( QObject* parent = NULL, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { init(); };
+	/*!
+	 * Create a SyntaxHighlighter used to customize color on JavaScript.
+	 * If the config is not defined, the config use a global scope.
+	 * \param parent The parent of the object
+	 * \param config The config to use.
+	 */
 	JsHighlighter( QTextDocument* parent, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { init(); };
+	/*!
+	 * Create a SyntaxHighlighter used to customize color on JavaScript.
+	 * If the config is not defined, the config use a global scope.
+	 * \param parent The parent of the object
+	 * \param config The config to use.
+	 */
 	JsHighlighter( QTextEdit* parent, XINXConfig * config = NULL ) : SyntaxHighlighter( parent, config ) { init(); };
 	virtual ~JsHighlighter() {};
 protected:
