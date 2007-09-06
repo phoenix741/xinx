@@ -67,7 +67,8 @@ void CVSFileEntry::setFileName( const QString & filename ) {
 	init(); 
 	getFileDate();
 
-	watcher->addPath( filename );
+	if( QDir( filename ).exists() )
+		watcher->addPath( filename );
 	connect( watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChanged(QString)) );
 }
 
@@ -207,28 +208,41 @@ void CVSFileEntryList::directoryChanged( const QString & filename ) {
 }
 
 CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
+	if( ! QDir( filename ).exists() ) return NULL;
+
 	CVSFileEntryList * list = NULL;
-	QString rel = QDir( m_path ).relativeFilePath( filename );
-	if( rel.contains( '/' ) ) 
-		rel = rel.left( rel.indexOf( '/' ) );
-	if( m_directoryList.count( rel ) == 0 ) {
-		list = new CVSFileEntryList( QDir( m_path ).absoluteFilePath( rel ) );
-		m_directoryList[rel] = list; 
+	QString rel = QDir( m_path ).relativeFilePath( filename ), dir = rel;
+	if( dir.contains( '/' ) ) 
+		dir = dir.left( dir.indexOf( '/' ) );
+	if( dir.isEmpty() ) 
+		return this;
+	if( m_directoryList.count( dir ) == 0 ) {
+		list = new CVSFileEntryList( QDir( m_path ).absoluteFilePath( dir ) );
+		m_directoryList[ dir ] = list; 
 		connect( list, SIGNAL(fileChanged(QString)), this, SIGNAL(fileChanged(QString)) );
 	} else
-		list = m_directoryList[rel];
-	return list;
+		list = m_directoryList[ dir ];
+	
+	if( dir == rel )
+		return list;
+	else
+		return list->path( filename );
 }
 
 CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
-	QString rel = QDir( m_path ).relativeFilePath( filename );
-	if( rel.contains('/') ) {
-		CVSFileEntryList * list = path( filename );
-		return list->object( filename );
-	} else if( count( rel ) == 0 ) {
+	QFileInfo info = QFileInfo( filename );
+	QString path = info.absolutePath(), basename = info.fileName();
+	QString rel = QDir( m_path ).relativeFilePath( path );
+	CVSFileEntryList * list = NULL;
+	if( ! rel.isEmpty() ) {
+		list = this->path( path );
+	} else {
+		list = this;
+	}
+	if( list->count( basename ) == 0 ) {
 		return NULL;
 	} else {
-		return (*this)[ rel ];
+		return list->value( basename );
 	}
 }
 

@@ -52,13 +52,13 @@ RCS * DirRCSModel::rcs() {
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	QString path = filePath(index);
 	if( m_rcs ) {
-		RCS::rcsState state = m_rcs->status( path );
 		if ( role == Qt::BackgroundRole && index.column() == 0 ) {
-   			if( state == RCS::Unknown )
+			RCS::rcsState state = m_rcs->status( path );
+			if( state == RCS::Unknown )
 				return QBrush( Qt::gray );
-   			if( state == RCS::LocallyModified )
+			if( state == RCS::LocallyModified )
 				return QBrush( Qt::yellow );
-   			if( state == RCS::LocallyAdded )
+			if( state == RCS::LocallyAdded )
 				return QBrush( Qt::green );
 			if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
 				return QBrush( Qt::red );
@@ -66,6 +66,7 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 			return QDirModel::data(index, role);
 		} else
 		if( role == Qt::ToolTipRole && index.column() == 0 ) {
+			RCS::rcsState state = m_rcs->status( path );
 			QString filedate = m_rcs->infos( path, RCS::rcsFileDate ).toString(),
 					date     = m_rcs->infos( path, RCS::rcsDate ).toString(),
 					version  = m_rcs->infos( path, RCS::rcsVersions ).toString(),

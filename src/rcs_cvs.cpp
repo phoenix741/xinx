@@ -118,7 +118,7 @@ RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
 			}
 		}
 	}
-	CVSFileEntryList * entrie = m_entries->path( QDir( path ).absoluteFilePath( "entries" ) );
+	CVSFileEntryList * entrie = m_entries->path( path );
 	foreach( CVSFileEntry * file, entrie->values() ) {
 		if( file->status() == RCS::NeedsCheckout ) {
 			RCS::FileOperation op;
