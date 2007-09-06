@@ -30,9 +30,10 @@
 /* DirRCSModel */
 
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
-	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) ) 
+	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) )  {
 		m_rcs = new RCS_CVS( global.m_project->projectPath() );
-	else
+		connect( m_rcs, SIGNAL(stateChanged(QString)), this, SLOT(refresh(QString)) );
+	} else
 		m_rcs = NULL;
 }
 
@@ -88,4 +89,8 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 		}
 	}
 	return QDirModel::data(index, role);
+}
+
+void DirRCSModel::refresh( const QString & path ) {
+	QDirModel::refresh( index( path ) );
 }

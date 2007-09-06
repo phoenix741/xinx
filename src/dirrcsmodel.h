@@ -54,6 +54,9 @@ public:
 	 * \return The rcs object.
 	 */
 	RCS * rcs();
+	
+public slots:
+	void refresh( const QString & path );
 private:
 	RCS * m_rcs;
 };

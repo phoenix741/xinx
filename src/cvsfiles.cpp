@@ -47,27 +47,6 @@ CVSFileEntry::CVSFileEntry( const QString & path, const QString & filename, cons
 	setVersion( version );
 }
 
-CVSFileEntry::CVSFileEntry( const CVSFileEntry & copy ) {
-	m_fileName    = copy.m_fileName;
-	m_cvsVersion  = copy.m_cvsVersion;
-	m_cvsDate     = copy.m_cvsDate;
-	m_hasConflict = copy.m_hasConflict;
-	m_status      = copy.m_status; 
-	m_fileInfo    = copy.m_fileInfo;
-	m_fileDate    = copy.m_fileDate;
-}
-
-CVSFileEntry& CVSFileEntry::operator=( const CVSFileEntry& copy ) {
-	m_fileName    = copy.m_fileName;
-	m_cvsVersion  = copy.m_cvsVersion;
-	m_cvsDate     = copy.m_cvsDate;
-	m_hasConflict = copy.m_hasConflict;
-	m_status      = copy.m_status; 
-	m_fileInfo    = copy.m_fileInfo;
-	m_fileDate    = copy.m_fileDate;
-	return *this;
-}
-
 CVSFileEntry::~CVSFileEntry() {
 	if( ! m_fileName.isEmpty() )
 		watcherInstance()->removePath( m_fileName );
@@ -83,11 +62,13 @@ void CVSFileEntry::setFileName( const QString & filename ) {
 	QFileSystemWatcher * watcher = watcherInstance();
 	if( ! m_fileName.isEmpty() )
 		watcher->removePath( m_fileName );
-	watcher->addPath( m_fileName );
 	m_fileName = filename;
+
 	init(); 
 	getFileDate();
-	connect( watcher, SIGNAL(fileChanged(QString)), this, SIGNAL(fileChanged(QString)) );
+
+	watcher->addPath( filename );
+	connect( watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChanged(QString)) );
 }
 
 void CVSFileEntry::slotFileChanged( const QString & file ) {
@@ -196,11 +177,11 @@ CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( path ) {
 	m_entries = QDir( m_path ).absoluteFilePath( "CVS/Entries" );
 
 	loadEntriesFile();
-/*	QFileSystemWatcher * instance = CVSFileEntry::watcherInstance();
+	QFileSystemWatcher * instance = CVSFileEntry::watcherInstance();
 	instance->addPath( m_entries );
 	instance->addPath( m_path );
 	connect( instance, SIGNAL(fileChanged(QString)), this, SLOT(entriesChanged(QString)) );
-	connect( instance, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)) );*/
+	connect( instance, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)) );
 }
 
 CVSFileEntryList::~CVSFileEntryList() {

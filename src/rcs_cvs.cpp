@@ -30,6 +30,7 @@
 
 PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) : m_thread( 0 ), m_parent( parent ) {
 	m_entries = new CVSFileEntryList( m_parent->getBasePath() );
+	connect( m_entries, SIGNAL(fileChanged(QString)), m_parent, SIGNAL(stateChanged(QString)) );
 }
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {

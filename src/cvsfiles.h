@@ -46,10 +46,6 @@ public:
 	 */
 	CVSFileEntry();
 	/*!
-	 * Copy constructor
-	 */
-	CVSFileEntry( const CVSFileEntry & copy );
-	/*!
 	 * Create a CVS File Entry. 
 	 * \param filename The file name to used in the entry file.
 	 * \param version The version of the entry in the file.
@@ -110,10 +106,6 @@ public:
 	 */
 	const QString & getFileName() const;
 
-	/*!
-	 * Assignation operator
-	 */
-	CVSFileEntry& operator=( const CVSFileEntry& p );
 public slots:
 	/*!
 	 * Set the date of the CVS file 
