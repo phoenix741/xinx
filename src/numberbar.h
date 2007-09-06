@@ -26,18 +26,57 @@
 class QTextEdit;
 class QPaintEvent;
 
+/*!
+ * Represent the bar used in a text editor and contains line number. The bar must be associate with
+ * the QTextEdit to be used.
+ * When we refresh the QTextEdit (i.e. scroll) the number bar must be repain. The number bar use the
+ * block of the QTextEdit. He considere that one block is equal to one line. It's rigth in plain text
+ * document, but not in rich edit document.
+ */
 class NumberBar : public QWidget {
 	Q_OBJECT
 public:
-	enum BarDirection { VerticalBar, HorizontalBar } ;
+	/*!
+	 * Define the direction of the bar.
+	 * Currently only the VerticalBar can be used. The HorizontalBar is not functional.
+	 */
+	enum BarDirection { 
+		VerticalBar, ///< The bar must be vertical
+		HorizontalBar ///< The bar must be horizontal.
+	} ;
 
+	/*!
+	 * Create a bar, with a parent widget and a direction. the direction is Vertical
+	 * by default, and is the only current value.
+	 */
 	NumberBar( QWidget *parent, enum BarDirection direction = VerticalBar );
+	/*!
+	 * Destroy the number bar.
+	 */
 	virtual ~NumberBar();
  
+ 	/*!
+ 	 * Define the text edit used with the number bar. The Text Edit will be used to count the 
+ 	 * number block and known where ths start of the document is show.
+ 	 * \param edit the text edit associate with the number bar.
+ 	 */
 	void setTextEdit( QTextEdit *edit );
+	/*!
+	 * Redfine the paint event of the number bar. The paint event write the line number in 
+	 * the number bar.
+	 */
 	void paintEvent( QPaintEvent *ev );
 
+	/*!
+	 * Change the direction of the number bar.
+	 * Currently, change the direction is are your risk.
+	 * \param the new direction to use.
+	 */
 	void setDirection( enum BarDirection direction );
+	/*!
+	 * Get the direction of the number Bar.
+	 * \return the direction of the number bar.
+	 */
 	enum BarDirection getDirection() { return m_direction; };
 private:
 	enum BarDirection m_direction;

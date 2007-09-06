@@ -21,11 +21,26 @@
 #ifndef _OBJECTVIEW_H_
 #define _OBJECTVIEW_H_
 
+/*!
+ * \file objectview.h
+ *
+ * This file contains class used to load java object description of Generix. This description contains,
+ * part of SQL, name of field in a ViewObject, and some other information to use (is updateable, not null,
+ * queriable, ....).
+ *
+ * This objects is not yet used in XINX but will be used when XINX will load configuration file to determine
+ * XPATH of a ViewStruct.
+ 
+ * This class is compiled and used in the main function, to load object. But not used in the rest of the
+ * software.
+ */
+
+// Qt header
 #include <QObject>
 #include <QHash>
 
 class QDomElement;
-  
+
 class ObjectFields : public QObject {
   Q_OBJECT
 public:
