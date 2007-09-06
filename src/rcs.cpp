@@ -20,7 +20,7 @@
 
 #include "rcs.h"
 
-RCS::RCS() {
+RCS::RCS( const QString & base ) : m_base( base ) {
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
@@ -28,3 +28,6 @@ RCS::~RCS() {
 	
 }
 
+const QString & RCS::getBasePath() const {
+	return m_base;
+}

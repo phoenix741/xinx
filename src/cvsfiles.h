@@ -31,6 +31,7 @@
 #include <QHash>
 
 class QFileSystemWatcher;
+class CVSFileEntryList;
 
 /* CVSFileEntry */
 
@@ -44,6 +45,10 @@ public:
 	 * Create a CVS File Entry
 	 */
 	CVSFileEntry();
+	/*!
+	 * Copy constructor
+	 */
+	CVSFileEntry( const CVSFileEntry & copy );
 	/*!
 	 * Create a CVS File Entry. 
 	 * \param filename The file name to used in the entry file.
@@ -84,40 +89,126 @@ public:
 	 * \return the status of the file.
 	 */
 	RCS::rcsState status();
+	
+	/*!
+	 * Read the file date from entry.
+	 */ 
+	const QDateTime & getFileDate();
+	
+	/*!
+	 * Read the CVS version stored in the object.
+	 */
+	const QString & getVersion() const;
+	
+	/*!
+	 * Read the CVS Date stored in the object.
+	 */
+	const QDateTime & getCVSDate() const;
+	
+	/*!
+	 * Read the file name from the object. 
+	 */
+	const QString & getFileName() const;
+
+	/*!
+	 * Assignation operator
+	 */
+	CVSFileEntry& operator=( const CVSFileEntry& p );
 public slots:
 	/*!
 	 * Set the date of the CVS file 
 	 * \param date The date of the file.
 	 */
 	void setCVSFileDate( QString date );
-	/*!
-	 * Read the file date from entry.
-	 */ 
-	void getFileDate();
 signals:
 	/*!
 	 * Signal emited when the file is changed.
 	 */
-	void fileChanged();
+	void fileChanged( const QString & filename );
+private slots:
+	void slotFileChanged( const QString & file );
 private:
+	static QFileSystemWatcher * watcherInstance();
+	static void deleteInstance();
+	
 	void init();
+	void refreshStatus();
 	
 	QString m_fileName;
 
 	QString m_cvsVersion;
 	QDateTime m_cvsDate;
 	bool m_hasConflict;
+	RCS::rcsState m_status; 
 	
 	QFileInfo m_fileInfo;
 	QDateTime m_fileDate;
 	
-	QFileSystemWatcher * m_watcher;
+	friend class CVSFileEntryList;
 };
 
 /* CVSFileEntryList */
 
-class CVSFileEntryList : public QHash<QString,CVSFileEntry> {
+/*!
+ * Watch the CVS Entries file and the directory contains files. If a file is added or removed
+ * a signal can be emited to refresh the project repository. If a file is modified, a signal is 
+ * propaged from CVSFileEntry to CVSFileEntryList.
+ * 
+ * This object is a Hashtable of path. This object propose method to search a path and check it's 
+ * status.
+ * 
+ * This class contains also a list of directory. This directory are also a CVSFileEntryList. At a request
+ * of a sub-directory, the object refere to another object. If the object isn't created, he create it.
+ */
+class CVSFileEntryList : public QObject, public QHash<QString,CVSFileEntry*> {
+	Q_OBJECT
+public:
+	/*!
+	 * Create a cvs file entry list contains all the entries from path \e path.
+	 */
+	CVSFileEntryList( const QString & path );
+	/*!
+	 * Destroy a CVS.
+	 */
+	virtual ~CVSFileEntryList();
+
+	/*!
+	 * Return the status of a file \e filename. If CVSFileEntryList don't find the file in himself
+	 * he return Unknown.
+	 * 
+	 * If \e filename is just a filename, he search in himself the file, else, he search in a child directory
+	 * object the status of the file.
+	 * 
+	 * \return the status of the file.
+	 */
+	CVSFileEntry * object( const QString & filename );
 	
+	/*! 
+	 * Return CVS informations of the file \e filename.
+	 * 
+	 * \return CVSFileEntry for the file \e filename
+	 */
+	RCS::rcsState status( const QString & filename );
+	
+	/*!
+	 * Return the entriesList for the path \e path.
+	 * 
+	 * \return list of entries file
+	 */
+	CVSFileEntryList * path( const QString & filename );
+signals:
+	/*!
+	 * Signal is emitted when a file or a directory \e filename is modified.
+	 */
+	void fileChanged( const QString & filename );
+private slots:
+	void entriesChanged( const QString & filename );
+	void directoryChanged( const QString & filename );
+private:
+	void loadEntriesFile();
+
+	QString m_path, m_entries;
+	QHash<QString,CVSFileEntryList*> m_directoryList;
 };
 
 #endif // __CVSFILES_H__

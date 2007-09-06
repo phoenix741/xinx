@@ -30,7 +30,7 @@
 class RCS : public QObject {
 	Q_OBJECT
 public:
-	RCS();
+	RCS( const QString & basePath );
 	virtual ~RCS();
 
 	enum rcsState {
@@ -58,12 +58,16 @@ public:
 	virtual void add( const QStringList & path ) = 0;
 	virtual void remove( const QStringList & path ) = 0;
 	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 ) = 0;
+	
+	const QString & getBasePath() const;
 public slots:
 	virtual void abort() = 0;
 signals: 
 	void stateChanged( const QString & fileName );
 	void log( RCS::rcsLog niveau, const QString & info );
 	void operationTerminated();
+private:
+	QString m_base;
 };
 
 Q_DECLARE_METATYPE( RCS::rcsLog )

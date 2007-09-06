@@ -31,7 +31,7 @@ class ProcessExecutedException {
 class RCS_CVS : public RCS {
 	Q_OBJECT
 public:
-	RCS_CVS();
+	RCS_CVS( const QString & base );
 	virtual ~RCS_CVS();
 
 	rcsState status( const QString & path );

@@ -31,7 +31,7 @@
 
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
 	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) ) 
-		m_rcs = new RCS_CVS();
+		m_rcs = new RCS_CVS( global.m_project->projectPath() );
 	else
 		m_rcs = NULL;
 }

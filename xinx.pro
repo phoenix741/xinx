@@ -36,14 +36,14 @@ FORMS += ui/about.ui \
  ui/runsnipet.ui \
  ui/servicesconnection.ui \
  ui/snipetproperty.ui
-HEADERS += src/cvsthread.h \
- src/private/p_connectionwebservicesdialogimpl.h \
- src/aboutdialogimpl.h \
+HEADERS += src/aboutdialogimpl.h \
  src/appsettings.h \
  src/commitmessagedialogimpl.h \
  src/configurationfile.h \
  src/connectionwebservicesdialogimpl.h \
  src/customdialogimpl.h \
+ src/cvsfiles.h \
+ src/cvsthread.h \
  src/directoryedit.h \
  src/dirrcsmodel.h \
  src/editor.h \
@@ -65,12 +65,13 @@ HEADERS += src/cvsthread.h \
  src/mainformimpl.h \
  src/numberbar.h \
  src/objectview.h \
- src/p_rcs_cvs.h \
  src/private/p_configurationfile.h \
+ src/private/p_connectionwebservicesdialogimpl.h \
  src/private/p_filecontentdockwidget.h \
  src/private/p_filewatcher.h \
  src/private/p_mainformimpl.h \
  src/private/p_projectdirectorydockwidget.h \
+ src/private/p_rcs_cvs.h \
  src/private/p_threadedconfigurationfile.h \
  src/private/p_uniqueapplication.h \
  src/projectdirectorydockwidget.h \
@@ -100,20 +101,20 @@ HEADERS += src/cvsthread.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h \
- src/cvsfiles.h
+ src/xslproject.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
 RCC_DIR += build
 RESOURCES += application.qrc
-SOURCES += src/cvsthread.cpp \
- src/aboutdialogimpl.cpp \
+SOURCES += src/aboutdialogimpl.cpp \
  src/appsettings.cpp \
  src/commitmessagedialogimpl.cpp \
  src/configurationfile.cpp \
  src/connectionwebservicesdialogimpl.cpp \
  src/customdialogimpl.cpp \
+ src/cvsfiles.cpp \
+ src/cvsthread.cpp \
  src/directoryedit.cpp \
  src/dirrcsmodel.cpp \
  src/editor.cpp \
@@ -136,7 +137,6 @@ SOURCES += src/cvsthread.cpp \
  src/mainformimpl.cpp \
  src/numberbar.cpp \
  src/objectview.cpp \
- src/p_rcs_cvs.cpp \
  src/projectdirectorydockwidget.cpp \
  src/projectpropertyimpl.cpp \
  src/rcs.cpp \
@@ -164,8 +164,7 @@ SOURCES += src/cvsthread.cpp \
  src/xmlhighlighter.cpp \
  src/xsleditor.cpp \
  src/xsllistview.cpp \
- src/xslproject.cpp \
- src/cvsfiles.cpp
+ src/xslproject.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts
