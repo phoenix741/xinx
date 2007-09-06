@@ -753,17 +753,17 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 	
 	if( !fileName.isEmpty() ) {
 		m_lastPlace = QFileInfo( fileName ).absolutePath();
+		QString backup = fileEditorStandardBackup( pathname, fileName );
 		if( global.m_project && ( global.m_project->projectRCS() != XSLProject::NORCS ) ) {
 			QMessageBox::StandardButton res = QMessageBox::question( m_parent, tr("Add file"), tr("Do you want add file %1 to the repository ?").arg( QFileInfo( fileName ).fileName() ), QMessageBox::Yes | QMessageBox::No );
 			if( res == QMessageBox::Yes ) {
-				QString backup = fileEditorStandardBackup( pathname, fileName );
 				m_fileToAdd.clear();
 				if( backup.isEmpty() )
 					m_fileToAdd << fileName;
 				else
 					m_fileToAdd << fileName << backup;
-			}
-		}
+			} 
+		} 
 	}
 		
 	return fileName;

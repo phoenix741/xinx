@@ -126,7 +126,7 @@ QStringList XINXConfig::filters() {
 	foreach( QString suffix, d->m_extentions.keys() ) {
 		result << filter( suffix );
 		if( suffix != d->m_extentions.keys().last() )
-			allExtentions += "*." + suffix + ";";
+			allExtentions += "*." + suffix + " ";
 		else
 			allExtentions += "*." + suffix;
 	}
