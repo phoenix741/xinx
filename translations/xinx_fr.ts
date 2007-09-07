@@ -14,7 +14,7 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;XINX&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; Is Not XML&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/about.ui" line="50"/>
@@ -42,7 +42,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
     <message>
         <location filename="../ui/about.ui" line="43"/>
         <source>Version 0.6.10</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
     <message>
         <location filename="../ui/custom.ui" line="860"/>
         <source>CVS</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="887"/>
@@ -279,17 +279,17 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
     <message>
         <location filename="../ui/custom.ui" line="897"/>
         <source>-z2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="902"/>
         <source>-z3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="907"/>
         <source>-z4</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="912"/>
@@ -299,17 +299,17 @@ Testeur : Mickaël BERTELOOT, Kamal B.         , Alexandre ROCHER, Matthieu DUBO
     <message>
         <location filename="../ui/custom.ui" line="917"/>
         <source>-z6</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="922"/>
         <source>-z7</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="927"/>
         <source>-z8</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="932"/>
@@ -408,7 +408,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="199"/>
         <source>Font &amp;size :</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de la &amp;police :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="189"/>
@@ -416,12 +416,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Size of the font in the editor. The value is a global value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Taille de la police de caractère de l&apos;éditeur. La valeur est positioné globalement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="222"/>
         <source>&amp;Font name :</source>
-        <translation type="unfinished"></translation>
+        <translation>Police de &amp;Caractère :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="209"/>
@@ -429,17 +429,17 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Show tabulation and space in the editor. This can be used to see, if tabulation or space is written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Affiche les tabulations et les espaces dans l&apos;éditeur à l&apos;aide de petit dessins : une quote fermante pour la tabulation, et un point pour les espaces.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="215"/>
         <source>&amp;Show tabulation and space in the editor</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Affiche les tabulations et les espaces dans l&apos;éditeur</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="232"/>
         <source>&amp;Completion level :</source>
-        <translation type="unfinished"></translation>
+        <translation>Level de &amp;Complétion :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="242"/>
@@ -447,12 +447,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the box is checked, when saving the file, XINX apply the pretty print function on the text. This format the code on saving file. Saving file can be slower.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si la case est coché, XINX applique une indentation automatique du text à la sauvegarde du fichier. La sauvegarde du fichier est par contre ralentis par l&apos;indentation automatique.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="248"/>
         <source>P&amp;retty print on saving</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Indentation automatique à la sauvegarde</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="176"/>
@@ -460,7 +460,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file or keep current file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Alerte l&apos;utilisateur de la modification des fichiers par un outil externe à XINX. L&apos;utilisateur a alors le choix d&apos;ouvrir le fichier de l&apos;autre éditeur, ou de garder le fichier courrant.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="265"/>
@@ -468,12 +468,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the orignal file. The backup is created by copy before the file is overwritten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Créé une sauvegarde du fichier avant de sauvegarder le fichier. Ce fichier de sauvegarde est garder dans le dossier d&apos;origine du fichier. La sauvegarde est créé en copiant le fichier avant que ce dernier soit écrasé.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="271"/>
         <source>&amp;Create backup file when saving (.bak)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="278"/>
@@ -485,22 +485,23 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Activated but only with an help on tapping&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Fully activated with the help on tapping, and the adding code (as configured on completion file)&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Le niveau de complétion peut être défini sur l&apos;une de ces valeurs :&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Désactivé - L&apos;application de complétera plus la frappe de l&apos;utilisateur.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Active seulement la partie aide à la saisie par popup.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Active le popup ainsi que le fermeture des balises automatique&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* Active le popup, la fermeture de balise, ainsi que l&apos;ajout des attributs comme indiqué dans le fichier de completion.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="294"/>
         <source>Active popup completion dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Active le popup de complétion</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="289"/>
         <source>Desactivate completion</source>
-        <translation type="unfinished"></translation>
+        <translation>Désactive la complétion</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="312"/>
         <source>Size of a &amp;tabulation :</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de la &amp;tabulation :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="322"/>
@@ -508,12 +509,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Size of the tabulation in number of character. This is the number of character that a tabulation replace.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Taille de la tabulation en nombre de caractère. Cela représente le nombre de caractère (espace) à afficher pour remplacer le caractère tabulation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="356"/>
         <source>&amp;Syntax highlighter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Coloration syntaxique</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="368"/>
@@ -521,7 +522,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is an example of how is showed the text in the editor after the change that are been made.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ceci est un exemple des modifications appliqué à l&apos;éditeur après l&apos;application des paramêtres.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="402"/>
@@ -529,12 +530,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Color used in the text for the selected token.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Couleur utilisé dans le text pour l&apos;élément choisis&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="412"/>
         <source>&amp;Color :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Couleur :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="425"/>
@@ -542,12 +543,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wrote the text in bold&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ecris le text en gras&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="431"/>
         <source>&amp;Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Gras</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="441"/>
@@ -555,12 +556,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Wrote the text in italic&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ecris le text en italique&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="447"/>
         <source>&amp;Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Italique</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="457"/>
@@ -568,12 +569,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;strike&gt;Strikeout the text&lt;/strike&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;strike&gt;Barre le texte&lt;/strike&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="463"/>
         <source>&amp;Strikeout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Barré</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="473"/>
@@ -581,17 +582,17 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Underline the text&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Souligne le texte&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="479"/>
         <source>&amp;Underline</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Souligner</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="497"/>
         <source>&amp;Token of syntax highlighter :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Element à colorer :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="519"/>
@@ -599,67 +600,67 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;List of token what can be modified. Tokens are used to colorize the document. All supported token are showed here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Liste des éléments de la coloration syntaxique pouvant être personalisé. Ces éléments peuvent être utilisé pour colorer le document. Tous les éléments supportés sont affiché ici.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="535"/>
         <source>&amp;Project</source>
-        <translation type="unfinished">&amp;Projet</translation>
+        <translation>&amp;Projet</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="547"/>
         <source>Project options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options du projet</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="566"/>
         <source>This is the path where specifique is stored in client project mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin où les fichiers spécifiques sont stocké en mode projet client.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="573"/>
         <source>Default &amp;specifique path name :</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom par défaut du dossier des &amp;spécifiques :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="583"/>
         <source>&amp;Default project directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dossier projet par défaut :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="613"/>
         <source>This the path where the save dialog must be opened when you create a new project.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le chemin où la boite de dialogue de sauvegarde sera ouverte lors de la création d&apos;un nouveau projet.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="593"/>
         <source>In client project mode only, when a standard file (with no prefix) is saving, XINX ask you to save the file with a new name as a client file. The new file name will be prefixed by the project prefix specified in the project property.</source>
-        <translation type="unfinished"></translation>
+        <translation>En mode projet client seulement, quand un fichier standard (sans préfix) est sauvegardé, XINX vous demande de de sauvegarder le fichier sous un nom spécifique. Ce nouveau fichier sera préfixé par le préfix projet spécifié dans les propriétés du projet.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="596"/>
         <source>&amp;Alert user when file is standard (project mode only)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Alerter l&apos;utilisateur quand le fichier est standard (mode projet seulement)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="603"/>
         <source>This is the default method to close the project. If checked, when the project, or the application is closed informations about non saved files are stored in a session file. Else, the XINX ask the user about unsaved file.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est la méthod par défaut utilisé pour fermer le projet. Si coché, en mode projet, et que l&apos;application est fermé avec des fichiers non sauvegardés, le contenue des fichiers modifié est sauvé dans une fichier session. Sinon XINX demande à l&apos;utilisateur pour sauvegarde les fichiers modifié.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="606"/>
         <source>&amp;Save project with session information by default (content of modified file)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sauvegarde le project avec les informations de session par défaut (contenue des fichiers modifié)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="637"/>
         <source>&amp;Files</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fichiers</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="657"/>
         <source>Managed &amp;extentions :</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Extentions gérées :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="679"/>
@@ -667,12 +668,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;List of all managed extentions. In this list we can specify extentions that can be specifique and what are not.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Liste de toutes les extentions gérées par XINX. Dans cette liste il est possible de spécifié quels fichiers pourront être spécifique et quels fichiers ne devront pas l&apos;être.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="704"/>
         <source>Files informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations fichiers</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="716"/>
@@ -680,12 +681,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the file can be specifique, the file is stored in the project directory or a sub-directory. Moreover, when the user save a file of this type the soft ask the user to save as specifique file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si le fichier peut-être spécifique, le fichier sera sauvegardé dans le dossier projet ou un sous-dossier. De plus si l&apos;utilisateur sauvegarde un fichier standard de ce type, XINX demandera à l&apos;utilisateur de sauver le fichier avec un prefix.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="722"/>
         <source>The file can be specifique</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier peut-être spécifique</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="729"/>
@@ -693,17 +694,17 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If the file must be stored in a sub-directory. It can be specified there. It can be used to specify a per extention directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si le fichier doit être sauvegarder dans un sous-dossier, il peut-être spécifié ici. Ca peut-être utilisé pour définir un dossier par extention.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="739"/>
         <source>Specifique sub-directory :</source>
-        <translation type="unfinished"></translation>
+        <translation>Sous-dossier des spécifiques :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="753"/>
         <source>&amp;Tools</source>
-        <translation type="unfinished">&amp;Outils</translation>
+        <translation>&amp;Outils</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="821"/>
@@ -711,12 +712,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is the path of tool for the comparaison of files. On Windows, this is the path of &lt;span style=&quot; font-style:italic;&quot;&gt;WinmergeU.exe&lt;/span&gt;, and on UNIX system, it is the path of &lt;span style=&quot; font-style:italic;&quot;&gt;KDiff&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Kompare &lt;/span&gt;by example.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;C&apos;est le chemin d&apos;un outil permettant la comparaison des fichiers. Sous Windows, cet outil peut-être &lt;span style=&quot; font-style:italic;&quot;&gt;WinmergeU.exe&lt;/span&gt;, et sous les systèmes UNIX, &lt;span style=&quot; font-style:italic;&quot;&gt;KDiff&lt;/span&gt;, ou&lt;span style=&quot; font-style:italic;&quot;&gt;Kompare &lt;/span&gt;par exemple.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="791"/>
         <source>Compare &amp;Diiference :</source>
-        <translation type="unfinished"></translation>
+        <translation>Compare les &amp;différence :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="811"/>
@@ -724,37 +725,37 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Path of the CVS executable comonly called &lt;span style=&quot; font-style:italic;&quot;&gt;cvs.exe&lt;/span&gt;. It can be find in UNIX in &lt;span style=&quot; font-style:italic;&quot;&gt;/usr/bin&lt;/span&gt;, and on Windows in the directory where &lt;span style=&quot; font-style:italic;&quot;&gt;CVSNT&lt;/span&gt; or &lt;span style=&quot; font-style:italic;&quot;&gt;TortoiseCVS&lt;/span&gt; is installed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Chemin du logiciel CVS souvent nommé &lt;span style=&quot; font-style:italic;&quot;&gt;cvs.exe&lt;/span&gt; sous Windows. Il peut être trouvé dans le dossier &lt;span style=&quot; font-style:italic;&quot;&gt;/usr/bin&lt;/span&gt; sous UNIX , et sous Windows, il peut-être trouvé dans le dossier de &lt;span style=&quot; font-style:italic;&quot;&gt;CVSNT&lt;/span&gt; ou où &lt;span style=&quot; font-style:italic;&quot;&gt;TortoiseCVS&lt;/span&gt; est installé.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="801"/>
         <source>&amp;Concurent Version System (CVS) : </source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Concurent Version System (CVS) : </translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="848"/>
         <source>&amp;CVS</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;CVS</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="1014"/>
         <source>&amp;Default</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Défaut</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="299"/>
         <source>Active automatique code writing (Niveau 1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Active l&apos;écriture de code automatique (Niveau 1)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="304"/>
         <source>Active automatique code writing (Niveau 2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Active l&apos;écriture de code automatique (Niveau 2)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="332"/>
         <source>Show current &amp;line</source>
-        <translation type="unfinished"></translation>
+        <translation>Affiche la &amp;ligne courrant</translation>
     </message>
 </context>
 <context>
@@ -762,22 +763,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customdialogimpl.cpp" line="247"/>
         <source>Diff path</source>
-        <translation type="unfinished"></translation>
+        <translation>Outil de comparaison</translation>
     </message>
     <message>
         <location filename="../src/customdialogimpl.cpp" line="254"/>
         <source>CVS Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin de CVS</translation>
     </message>
     <message>
         <location filename="../src/customdialogimpl.cpp" line="261"/>
         <source>Project path</source>
-        <translation type="unfinished">Dossier projet</translation>
+        <translation>Dossier projet</translation>
     </message>
     <message>
         <location filename="../src/customdialogimpl.cpp" line="268"/>
         <source>Descriptions path</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier de descriptions</translation>
     </message>
 </context>
 <context>
@@ -834,7 +835,7 @@ Version : %4</translation>
     <message>
         <location filename="../src/fileeditor.cpp" line="426"/>
         <source>XINX</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/fileeditor.cpp" line="403"/>
@@ -882,7 +883,7 @@ Version : %4</translation>
     <message>
         <location filename="../ui/mainform.ui" line="13"/>
         <source>XINX</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="98"/>
@@ -1322,22 +1323,22 @@ Version : %4</translation>
     <message>
         <location filename="../ui/mainform.ui" line="644"/>
         <source>Cancel RCS operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Annule l&apos;opération</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="649"/>
         <source>Compare with the version management</source>
-        <translation type="unfinished"></translation>
+        <translation>Compare avec le gestionnaire de version</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="654"/>
         <source>Compare files</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparer les fichiers</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="659"/>
         <source>Compare with standard</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparer avec le standard</translation>
     </message>
 </context>
 <context>
@@ -1473,12 +1474,12 @@ Version : %4</translation>
     <message>
         <location filename="../src/filecontentdockwidget.cpp" line="33"/>
         <source>&lt;Don&apos;t change&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Ne pas modifier&gt;</translation>
     </message>
     <message>
         <location filename="../src/filecontentdockwidget.cpp" line="34"/>
         <source>&lt;Choose a presentation file ...&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Choisir le fichier de présentation ...&gt;</translation>
     </message>
 </context>
 <context>
@@ -1504,12 +1505,12 @@ Version : %4</translation>
     <message>
         <location filename="../src/mainformimpl.cpp" line="84"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="101"/>
         <source>Ctrl+2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="488"/>
@@ -1551,7 +1552,7 @@ Voulez-vous vraiment l&apos;actualiser ?</translation>
     <message>
         <location filename="../src/mainformimpl.cpp" line="601"/>
         <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="157"/>
@@ -1633,12 +1634,12 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../src/mainformimpl.cpp" line="1194"/>
         <source>XINX</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="1194"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="1199"/>
@@ -1673,22 +1674,22 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../src/mainformimpl.cpp" line="108"/>
         <source>Ctrl+3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="953"/>
         <source>Compare</source>
-        <translation type="unfinished"></translation>
+        <translation>Comparer</translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="951"/>
         <source>Standard file %1 not found or not in specifique directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier standard %1 n&apos;a pas été trouvé ou n&apos;est pas dans le dossier spécifique.</translation>
     </message>
     <message>
         <location filename="../src/mainformimpl.cpp" line="953"/>
         <source>Not a specifique file</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier n&apos;est pas spécifique</translation>
     </message>
 </context>
 <context>
@@ -1729,12 +1730,12 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/projectproperty.ui" line="83"/>
         <source>CVS</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="88"/>
         <source>SubVersion</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="57"/>
@@ -1779,32 +1780,32 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/projectproperty.ui" line="163"/>
         <source>FRA</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="171"/>
         <source>ENG</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="179"/>
         <source>DEU</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="187"/>
         <source>ITA</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="195"/>
         <source>ESP</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="203"/>
         <source>POR</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="214"/>
@@ -1814,12 +1815,12 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../ui/projectproperty.ui" line="225"/>
         <source>NAV/MIC</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="233"/>
         <source>NAV/NET</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="250"/>
@@ -2382,12 +2383,12 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../src/tabeditor.cpp" line="319"/>
         <source>%1*</source>
-        <translation type="unfinished"></translation>
+        <translation>%1*</translation>
     </message>
     <message>
         <location filename="../src/tabeditor.cpp" line="321"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
 </context>
 <context>
@@ -2428,7 +2429,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="329"/>
         <source>XINX</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/webserviceseditor.cpp" line="252"/>
