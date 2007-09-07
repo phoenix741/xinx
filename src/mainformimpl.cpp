@@ -1557,6 +1557,9 @@ void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
 		d->m_rcslogDock->init();
 		d->m_rcsExecute = true;
+		foreach( QString file, list ) {
+			d->m_projectDock->removeFile( file );
+		}
 		rcs->remove( list );
 		d->updateActions();
 		d->m_rcslogDock->show();

@@ -245,6 +245,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 		d->m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
 		d->m_iconProvider = new IconProjectProvider();
 		d->m_dirModel->setIconProvider( d->m_iconProvider );
+		d->m_dirModel->setReadOnly( false );
 
 		d->m_projectDirWidget->m_projectDirectoryTreeView->setModel( d->m_dirModel );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
@@ -266,7 +267,10 @@ void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
 bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );
-		return d->m_dirModel->remove( index );
+		if( index.isValid() ) {
+			return d->m_dirModel->remove( index );
+		} else
+			return false;
 	} else
 		return QFile::remove( path );
 }

@@ -1,3 +1,38 @@
+XINX - 0.6.10.0
+===============
+- Changement de la taille d'une tabulation
+- Pretty print optionel à la sauvegarde
+- Affichage des tabulations et des espaces.
+- Affichage de la ligne courrante d'une autre couleur.
+- Une refonte compète de la boite de dialogue à options (la taille et le nom de la police est géré en global)
+- Le log du CVS s'affiche désormé dans un Dock et non plus dans une fenêtre.
+- 0000103: [Autres Modules] Refaire la boite de dialogue des options (phoenix)
+- 0000088: [Editeur] Ajuster la taille d'une tabulation (phoenix)
+- 0000079: [Interface graphique] Valeur par défaut à la création d'un projet (phoenix)
+- 0000104: [Autres Modules] Winmerge en mode projet (phoenix)
+- 0000107: [Editeur] Taille de police des fichiers JS (phoenix)
+- 0000109: [Editeur] Pretty Print à la sauvegarde (phoenix)
+
+XINX - 0.6.9.0
+==============
+- 0000034: [Interface graphique] Texte / Raccourci (phoenix)
+- 0000084: [Interface graphique] Ascenseur horizontal sur l'affichage du dossier projet (phoenix)
+- 0000087: [Editeur] Pretty Print (phoenix)
+- 0000099: [Autres Modules] Préfixe de projet en majuscule (phoenix)
+
+XINX - 0.6.8.0
+==============
+- 0000038: [Interface graphique] Fichier javascript d'une page XSL (phoenix)
+- 0000092: [Editeur] Ajouter la gestion de Template (snipets) (phoenix)
+- 0000040: [Completion] Completion sur le JavaScript (phoenix)
+- 0000093: [Completion] Fichier de completion (phoenix)
+- 0000096: [Editeur] Plantage lorsque les dossiers du projets n'existes pas (phoenix)
+- 0000059: [Divers] Mettre en place un système de trace (phoenix)
+- 0000017: [Autres Modules] Implémenter un module d'intérogation des WS (phoenix)
+- 0000085: [Interface graphique] Double clique sur l'onglet ferme l'onglet (phoenix)
+- 0000094: [Divers] Fermeture de XINX sans projet (phoenix)
+- 0000086: [Editeur] Pouvoir modifier la taille de la police (phoenix)
+
 XINX - 0.6.7
 ============
 - Amélioration des WebServices
