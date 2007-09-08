@@ -106,13 +106,13 @@ void PrivateCustomDialogImpl::showConfig() {
 	
 	// CVS: Progress message
 	if( m_config.config().cvs.progressMessages.isEmpty() ) 
-		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 0 );
+		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 2 );
 	else
 	if( m_config.config().cvs.progressMessages == "-q" ) 
 		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 1 );
 	else
 	if( m_config.config().cvs.progressMessages == "-Q" ) 
-		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 2 );
+		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 0 );
 	
 	// CVS: Compression
 	m_parent->m_cvsCompressionComboBox->setCurrentIndex( m_config.config().cvs.compressionLevel );
@@ -195,13 +195,13 @@ void PrivateCustomDialogImpl::storeConfig() {
 	
 	// CVS: Progress message
 	switch( m_parent->m_cvsVerboseComboBox->currentIndex() ) {
-	case 0: 
+	case 2: 
 		m_config.config().cvs.progressMessages = "";
 		break;
 	case 1: 
 		m_config.config().cvs.progressMessages = "-q";
 		break;
-	case 2: 
+	case 0: 
 		m_config.config().cvs.progressMessages = "-Q";
 		break;
 	}
