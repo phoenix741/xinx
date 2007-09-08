@@ -1,0 +1,73 @@
+<!DOCTYPE SnipetList>
+<SnipetList>
+  <Snipet category="Displays Widgets" key="variable" icon=":/images/label.png" type="0" name="Label" >
+    <Description>Create a variable in a XSL stylesheet. This variable is a label show in the page. To call this variable use the balise &lt;i>xsl:value-of&lt;/i> and select the variable which the name is &lt;i>LBL.NAME&lt;/i>.</Description>
+    <Text>&lt;xsl:variable name="LBL.%1">%2&lt;/xsl:variable></Text>
+    <Param name="Name" />
+    <Param name="Caption" />
+  </Snipet>
+  <Snipet category="Displays Widgets" key="href" icon="" type="0" name="Popup" >
+    <Description>Display a link to another page.</Description>
+    <Text>&lt;td align="right" class="pop1">&amp;#160;
+    &lt;a href="?sourceview=%1&amp;amp;cinematic=%2&amp;amp;%3&amp;amp;frame=%4" target="%4" title="{$%5}">
+        &lt;xsl:call-template name="GnxPopup">
+            &lt;xsl:with-param name="Name">
+                &lt;xsl:value-of select="$%6"/>
+            &lt;/xsl:with-param>
+        &lt;/xsl:call-template>
+    &lt;/a>
+&lt;/td></Text>
+    <Param name="Sourceview" />
+    <Param name="Cinematic" />
+    <Param name="Fields" />
+    <Param name="Frame" />
+    <Param name="Title" />
+    <Param name="Caption" />
+  </Snipet>
+  <Snipet category="Input Widgets" key="text" icon=":/images/lineedit.png" type="0" name="Input text" >
+    <Description>Enter text into a line</Description>
+    <Text>&lt;input name="chp:%1" size="%4" maxlength="%3" class="%2">
+	&lt;xsl:call-template name="ChpModif">
+		&lt;xsl:with-param name="Node" select="%1"/>
+	&lt;/xsl:call-template>
+&lt;/input></Text>
+    <Param name="Field" />
+    <Param name="Class" />
+    <Param name="Size" />
+    <Param name="Max length" />
+  </Snipet>
+  <Snipet category="Input Widgets" key="select" icon=":/images/combobox.png" type="0" name="Select box (LibOnly)" >
+    <Description>Present a select box with differente choice.</Description>
+    <Text>&lt;select name="chp:%1" size="1">
+	&lt;xsl:call-template name="ChpModifSelect">
+		&lt;xsl:with-param name="Node" select="%1"/>
+		&lt;xsl:with-param name="NodeLib" select="%2"/>
+		&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
+	&lt;/xsl:call-template>
+	&lt;option/>
+	&lt;xsl:apply-templates select="%3"/>
+&lt;/select></Text>
+    <Param name="Field" />
+    <Param name="Label" />
+    <Param name="List" />
+  </Snipet>
+  <Snipet category="Buttons Widgets" key="modif" icon=":/images/pushbutton.png" type="0" name="Modifier" >
+    <Description>Sumbit a form. Show the label 'LBL.MODIFIER'</Description>
+    <Text>&lt;input class="bouton" type="submit" value="{$LBL.MODIFIER}"/></Text>
+  </Snipet>
+  <Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="0" name="Delete button" >
+    <Description>Show a delete button in a table.</Description>
+    <Text>&lt;td class="supprimer">
+	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}" onFocus="this.form['chp:SupprimerTyptie'].value='{Typtie}',this.form['supprimer'].value='O'"/>
+&lt;/td></Text>
+  </Snipet>
+  <Snipet category="Input Widgets" key="upper" icon="" type="0" name="Uppercase" >
+    <Description>Add attribute on an input to be Uppercase</Description>
+    <Text>style="text-transform:uppercase;" onchange="this.value=this.value.toUpperCase()"</Text>
+  </Snipet>
+  <Snipet category="Global Input" key="param" icon="" type="0" name="Url Parameter" >
+    <Description>Param passed by Url (post and get)</Description>
+    <Text>key('url-param', '%1')/@value</Text>
+    <Param name="Param" />
+  </Snipet>
+</SnipetList>
