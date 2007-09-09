@@ -67,28 +67,25 @@ class XSLProject : public QObject {
 	Q_OBJECT
 public:
 	/*!
-	 * XINX can manage two type of project, WebServices project and Web application.
-	 * In case of WebServices, the function serveurWeb() returns WSDL files, else she
-	 * must return null.
-	 * \sa projectType(), setProjectType()
+	 * This enumeration is a list of options that can be used by a project. This options active 
+	 * some functionnalities in XINX has the customization of stylesheet (make it specifique) and 
+	 * usability of webservices.
 	 */
-	enum enumProjectType { 
-		/// Type used when the file is a web application (like btoe, btob, ...)
-		WEB = 0, 
-		/// Type used when the file is a web services.
-		SERVICES = 1 
-	} ;
+	enum ProjectOption {
+		NoOptions = 0x0, ///< No options are defined.
+		hasSpecifique = 0x1, ///< The project can have specifique stylesheet
+		hasWebServices = 0x2 ///< The project can connect to WebServices
+	};
+	Q_DECLARE_FLAGS( ProjectOptions, ProjectOption );
+	
 	/*!
 	 * The different Concurent file repository managed by XINX. 
 	 * At this time only CVS is partially managed.
 	 */
 	enum enumProjectRCS { 
-		/// The Concurent file repository is not managed.
-		NORCS = 0, 
-		/// CVS is used.
-		CVS = 1, 
-		/// Subversion is used (XINX don't care at the moment of this choice).
-		SUBVERSION = 2
+		NORCS = 0, ///< The Concurent file repository is not managed.
+		CVS = 1, ///< CVS is used.
+		SUBVERSION = 2 ///< Subversion is used (XINX don't care at the moment of this choice).
 	};
 
 	/*!
@@ -131,6 +128,13 @@ public:
 	void saveToFile( const QString & filename = QString() );
 	
 	/*!
+	 * Save the session in the file. 
+	 * \throw XSLProjectException when the application can't save the session file.
+	 * \sa loadFromFile(), saveToFile()
+	 */
+	void saveOnlySession();
+	
+	/*!
 	 * Name of the project. The name is just an information, nothing else.
 	 * \return The name of the project.
 	 * \sa setProjectName();
@@ -142,21 +146,20 @@ public:
 	 * \sa projectName()
 	 */
 	void setProjectName( const QString & value );
-
-	/*!
-	 * Get the project type ported by the XSLProject. The project can be 
-	 * a WebServices project or a Web project.
-	 * \return the project type.
-	 * \sa projectType();
-	 */
-	enumProjectType projectType() const;
-	/*!
-	 * Set the project type.
-	 * \param value The new type.
-	 * \sa setProjectType()
-	 */
-	void setProjectType( const enumProjectType & value );
 	
+	/*!
+	 * Return the options of the project.
+	 * \return The options of the project.
+	 * \sa setOptions()
+	 */
+	ProjectOptions options() const;
+	/*!
+	 * Set the options of the project
+	 * \param options The new options of the project.
+	 * \sa options()
+	 */
+	void setOptions( ProjectOptions options );
+
 	/*!
 	 * The concurent file system used by XINX (only CVS can be used).
 	 * \return Return the number version. 
@@ -263,6 +266,12 @@ public:
 	 * \return list of WSDL link.
 	 */
 	QStringList & serveurWeb();
+	
+	/*!
+	 * List of path where the application must search. This list is used in importations.
+	 * \return List of search path
+	 */
+	QStringList & searchPathList();
 
 	/*!
 	 * The session document is an XML document contains the sessions.
@@ -286,6 +295,7 @@ public:
 	 * \return the list of the last opend file.
 	 */
 	QStringList & lastOpenedFile();
+	
 	/*!
 	 * Return the file name where the project is stored.
 	 * \return the file name.
@@ -295,5 +305,7 @@ private:
 	PrivateXSLProject * d;
 	friend class PrivateXSLProject;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(XSLProject::ProjectOptions);
 
 #endif

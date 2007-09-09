@@ -699,12 +699,17 @@ bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
 QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname ) {
 	Q_ASSERT( global.m_config );
 	
-	QString prefix = global.m_project ? global.m_project->specifPrefix() + "_" : "" ;
+	QString prefix = ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ?
+							 global.m_project->specifPrefix() + "_" : 
+							 "" ;
 	QString filename = QFileInfo( pathname ).fileName();
-	bool hasSpecifiqueName = global.m_project && filename.startsWith( prefix, Qt::CaseInsensitive );
-	bool canBeCustomize = extentionOfFileName( filename ).canBeSpecifique;
+	bool hasSpecifiqueName = filename.startsWith( prefix, Qt::CaseInsensitive );
+	bool canBeCustomize = global.m_project 
+						&& global.m_project->options().testFlag( XSLProject::hasSpecifique ) 
+						&& extentionOfFileName( filename ).canBeSpecifique
+						&& global.m_config->config().project.alertWhenSavingStandardFile;
 	
-	if( global.m_project && global.m_config->config().project.alertWhenSavingStandardFile && canBeCustomize && !hasSpecifiqueName ) {
+	if( canBeCustomize && !hasSpecifiqueName ) {
 		QMessageBox::StandardButton res = QMessageBox::warning( m_parent, tr( "Save standard XSL" ), tr( "You're being to save standard file, do you whant make it specifique ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
 		if( res == QMessageBox::Cancel )
 			return QString();
@@ -726,13 +731,13 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			newFileName;
 	struct_extentions customFile = extentionOfFileName( fileSuffix );
 
-	if( global.m_project ) 
+	if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique )  ) 
 		specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( customFile.customPath );
 	else
 	 	specifPath = m_lastPlace;
 
 	if( fileName.isEmpty() ) {
-		if( global.m_project ) 
+		if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) 
 			newFileName = QDir( specifPath ).absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" );
 		else
 			newFileName = specifPath;
@@ -741,7 +746,7 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 			global.m_project && 
 			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix(), Qt::CaseInsensitive );
 			
-		if( global.m_project && (!isCustomized) && customFile.canBeSpecifique) {
+		if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) && (!isCustomized) && customFile.canBeSpecifique) {
 			newFileName = QDir( specifPath ).
 				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 		} else {
@@ -770,7 +775,7 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 }
 
 QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, const QString & newname ) {
-	if( ! global.m_project ) return QString();
+	if( ! ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ) return QString();
 		
 	QString prefix = global.m_project->specifPrefix() + "_";
 	QString oldfilename = QFileInfo( oldname ).fileName();
@@ -1300,10 +1305,7 @@ void MainformImpl::newWebservicesFile() {
 }
 
 void MainformImpl::newDefaultFile() {
-	if( global.m_project && ( global.m_project->projectType() == XSLProject::SERVICES ) ) 
-		newWebservicesFile();
-	else
-		newStylesheetFile();
+	newStylesheetFile();
 }
 
 void MainformImpl::newTemplate() {
@@ -1461,7 +1463,7 @@ void MainformImpl::saveProject( bool withSessionData ) {
 		m_tabEditors->editor( i )->serializeEditor( node, withSessionData );
 		global.m_project->sessionNode().appendChild( node );
 	}
-	global.m_project->saveToFile();
+	global.m_project->saveOnlySession();
 }
 
 void MainformImpl::callWebservices() {
@@ -1474,7 +1476,7 @@ void MainformImpl::callWebservices() {
 }
 
 void MainformImpl::updateWebServicesList() {
-	bool enabled = global.m_project && ( global.m_project->projectType() == XSLProject::SERVICES );
+	bool enabled = global.m_project && ( global.m_project->options().testFlag( XSLProject::hasWebServices ) );
 	qDeleteAll( *(global.m_webServices) );
 	global.m_webServices->clear();
 

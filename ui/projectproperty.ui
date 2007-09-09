@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>568</width>
-    <height>568</height>
+    <width>621</width>
+    <height>328</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -20,322 +20,556 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox_3" >
-     <property name="title" >
-      <string>Project</string>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_7" >
-        <property name="text" >
-         <string>Project &amp;Type :</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_projectTypeCombo</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label_6" >
-        <property name="text" >
-         <string>Project &amp;Name :</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_nameLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" >
-       <widget class="QLabel" name="label_9" >
-        <property name="text" >
-         <string>Project &amp;RCS :</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_projectRCSComboBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" >
-       <widget class="QLineEdit" name="m_nameLineEdit" />
-      </item>
-      <item row="1" column="3" >
-       <widget class="QToolButton" name="m_projectButton" >
-        <property name="icon" >
-         <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2" >
-       <widget class="QComboBox" name="m_projectRCSComboBox" >
-        <item>
-         <property name="text" >
-          <string>&lt;No RCS></string>
+     <widget class="QWidget" name="tabProjectDefinition" >
+      <attribute name="title" >
+       <string>&amp;Project Definition</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3" >
+         <property name="title" >
+          <string>Project</string>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>CVS</string>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="2" column="1" >
+           <widget class="QComboBox" name="m_projectRCSComboBox" >
+            <item>
+             <property name="text" >
+              <string>&lt;No RCS></string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>CVS</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>SubVersion</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="DirectoryEdit" name="m_projectLineEdit" />
+          </item>
+          <item row="1" column="2" >
+           <widget class="QToolButton" name="m_projectButton" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLineEdit" name="m_nameLineEdit" />
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>Project &amp;Name :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_nameLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_9" >
+            <property name="text" >
+             <string>Project &amp;RCS :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_projectRCSComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>Project &amp;Directory :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_projectLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_5" >
+         <property name="title" >
+          <string>&amp;Options</string>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>SubVersion</string>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="1" column="0" >
+           <widget class="QCheckBox" name="m_webServicesCheckBox" >
+            <property name="text" >
+             <string>Project has Web&amp;Services</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QCheckBox" name="m_standardProjectCheckBox" >
+            <property name="text" >
+             <string>&amp;Project is standard</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
          </property>
-        </item>
-       </widget>
-      </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_8" >
-        <property name="text" >
-         <string>Project Version :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_3" >
-        <property name="text" >
-         <string>Project &amp;Directory :</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_projectLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2" >
-       <widget class="QComboBox" name="m_projectTypeCombo" >
-        <item>
-         <property name="text" >
-          <string>Module WEB</string>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Module Services</string>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabDefaultValue" >
+      <attribute name="title" >
+       <string>&amp;Default value</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="groupBox" >
+         <property name="title" >
+          <string>Default Value</string>
          </property>
-        </item>
-       </widget>
-      </item>
-      <item row="3" column="2" >
-       <widget class="QLabel" name="m_configurationVersionLabel" >
-        <property name="text" >
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2" >
-       <widget class="DirectoryEdit" name="m_projectLineEdit" />
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
-      <string>Default Value</string>
-     </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
-         <string>&amp;Lang</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_langComboBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" >
-       <widget class="QComboBox" name="m_langComboBox" >
-        <item>
-         <property name="text" >
-          <string>FRA</string>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="2" column="1" colspan="2" >
+           <widget class="QLabel" name="m_configurationVersionLabel" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_8" >
+            <property name="text" >
+             <string>Version :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label" >
+            <property name="text" >
+             <string>&amp;Lang</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_langComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="2" >
+           <widget class="QComboBox" name="m_langComboBox" >
+            <item>
+             <property name="text" >
+              <string>FRA</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/france.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>ENG</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/usa.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>DEU</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/germany.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>ITA</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/italy.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>ESP</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/spain.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>POR</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/portugal.png</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>N&amp;avigator</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_navigatorComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="2" >
+           <widget class="QComboBox" name="m_navigatorComboBox" >
+            <item>
+             <property name="text" >
+              <string>NAV/MIC</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/ie_logo.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>NAV/NET</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="../application.qrc" >:/images/firefox_logo.png</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/france.png</iconset>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>ENG</string>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabWebServices" >
+      <attribute name="title" >
+       <string>&amp;WebServices</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="m_webServiceGroupBox" >
+         <property name="enabled" >
+          <bool>false</bool>
          </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/usa.png</iconset>
+         <property name="title" >
+          <string>WebServices</string>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>DEU</string>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QListWidget" name="m_webServiceList" />
+          </item>
+          <item>
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QToolButton" name="m_webServiceBtnAdd" >
+              <property name="sizePolicy" >
+               <sizepolicy>
+                <hsizetype>5</hsizetype>
+                <vsizetype>0</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Add link</string>
+              </property>
+              <property name="icon" >
+               <iconset resource="../application.qrc" >:/images/add.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="m_webServiceBtnDel" >
+              <property name="text" >
+               <string>Delete link</string>
+              </property>
+              <property name="icon" >
+               <iconset resource="../application.qrc" >:/images/remove.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabCustomFiles" >
+      <attribute name="title" >
+       <string>&amp;Custom files</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/germany.png</iconset>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>ITA</string>
+        </spacer>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="m_customFileGroupBox" >
+         <property name="title" >
+          <string>Custom files</string>
          </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/italy.png</iconset>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="0" column="1" >
+           <widget class="DirectoryEdit" name="m_specifiquePathLineEdit" />
+          </item>
+          <item row="0" column="2" >
+           <widget class="QToolButton" name="m_specifiquePathButton" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Custom d&amp;irectory :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_specifiquePathLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>Custom p&amp;refix :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_prefixLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="m_prefixLineEdit" />
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSearchPath" >
+      <attribute name="title" >
+       <string>&amp;Search path</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="m_searchPathGroupBox" >
+         <property name="title" >
+          <string>&amp;Search path</string>
          </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>ESP</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/spain.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>POR</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/portugal.png</iconset>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_2" >
-        <property name="text" >
-         <string>N&amp;avigator</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_navigatorComboBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" >
-       <widget class="QComboBox" name="m_navigatorComboBox" >
-        <item>
-         <property name="text" >
-          <string>NAV/MIC</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/ie_logo.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>NAV/NET</string>
-         </property>
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/firefox_logo.png</iconset>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="m_webServiceGroupBox" >
-     <property name="enabled" >
-      <bool>false</bool>
-     </property>
-     <property name="title" >
-      <string>WebServices</string>
-     </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="1" column="1" >
-       <widget class="QToolButton" name="m_webServiceBtnDel" >
-        <property name="text" >
-         <string>Delete link</string>
-        </property>
-        <property name="icon" >
-         <iconset resource="../application.qrc" >:/images/remove.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" >
-       <widget class="QToolButton" name="m_webServiceBtnAdd" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>5</hsizetype>
-          <vsizetype>0</vsizetype>
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text" >
-         <string>Add link</string>
-        </property>
-        <property name="icon" >
-         <iconset resource="../application.qrc" >:/images/add.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item rowspan="2" row="0" column="0" >
-       <widget class="QListWidget" name="m_webServiceList" />
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
-      <string>Custom files</string>
-     </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="1" column="1" >
-       <widget class="QLineEdit" name="m_prefixLineEdit" />
-      </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_5" >
-        <property name="text" >
-         <string>Custom p&amp;refix :</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_prefixLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label_4" >
-        <property name="text" >
-         <string>Custom d&amp;irectory :</string>
-        </property>
-        <property name="buddy" >
-         <cstring>m_specifiquePathLineEdit</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" >
-       <widget class="QToolButton" name="m_specifiquePathButton" >
-        <property name="icon" >
-         <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" >
-       <widget class="DirectoryEdit" name="m_specifiquePathLineEdit" />
-      </item>
-     </layout>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QListWidget" name="m_searchPathList" >
+            <item>
+             <property name="text" >
+              <string>./langues/&lt;lang>/nav/&lt;project></string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./langues/&lt;lang>/nav</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./langues/&lt;lang></string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./langues</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QToolButton" name="m_searchPathBtnAdd" >
+              <property name="sizePolicy" >
+               <sizepolicy>
+                <hsizetype>5</hsizetype>
+                <vsizetype>0</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Add link</string>
+              </property>
+              <property name="icon" >
+               <iconset resource="../application.qrc" >:/images/add.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="m_searchPathBtnDel" >
+              <property name="text" >
+               <string>Delete link</string>
+              </property>
+              <property name="icon" >
+               <iconset resource="../application.qrc" >:/images/remove.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -397,7 +631,6 @@
   <tabstop>m_nameLineEdit</tabstop>
   <tabstop>m_projectLineEdit</tabstop>
   <tabstop>m_projectButton</tabstop>
-  <tabstop>m_projectTypeCombo</tabstop>
   <tabstop>m_langComboBox</tabstop>
   <tabstop>m_navigatorComboBox</tabstop>
   <tabstop>m_webServiceList</tabstop>
@@ -420,8 +653,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>476</x>
-     <y>527</y>
+     <x>532</x>
+     <y>315</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -436,12 +669,44 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>557</x>
-     <y>527</y>
+     <x>610</x>
+     <y>315</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
      <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_webServicesCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_webServiceGroupBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>310</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>310</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_standardProjectCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_customFileGroupBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>146</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>310</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>

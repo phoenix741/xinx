@@ -26,7 +26,8 @@
 #include "webservices.h"
 
 #define XINX_PROJECT_VERSION_1 1
-#define XINX_PROJECT_VERSION 1
+#define XINX_PROJECT_VERSION_2 2
+#define XINX_PROJECT_VERSION 2
 
 /* XSLProjectException */
 
@@ -53,6 +54,9 @@ public:
 	void loadWebServicesLink();
 	void saveWebServicesLink();
 
+	void loadSearchPath();
+	void saveSearchPath();
+
 	QString m_fileName;
 	int m_version;
 	
@@ -60,7 +64,7 @@ public:
 	QDomDocument m_sessionDocument;
 	QDomElement m_sessionNode, m_rootSession;
 	
-	QStringList m_webServiceLink, m_lastOpenedFile;
+	QStringList m_searchPathList, m_webServiceLink, m_lastOpenedFile;
 private:
 	XSLProject * m_parent;
 };
@@ -76,6 +80,12 @@ PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 	
 	m_sessionNode = m_sessionDocument.createElement( "Opened" );
 	m_rootSession.appendChild( m_sessionNode );
+	
+	m_searchPathList.append( "./langues/<lang>/nav/<project>" );
+	m_searchPathList.append( "./langues/<lang>/nav" );
+	m_searchPathList.append( "./" );
+	m_searchPathList.append( "./langues/<lang>" );
+	m_searchPathList.append( "./langues" );
 }
 
 QString PrivateXSLProject::getValue( const QString & node ) const {
@@ -221,6 +231,42 @@ void PrivateXSLProject::saveWebServicesLink() {
 	}
 }
 
+void PrivateXSLProject::loadSearchPath() {
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement elt  = root.firstChildElement( "searchPath" );
+	
+	m_searchPathList.clear();
+	
+	if( elt.isNull() ) return;
+		
+	QDomElement file = elt.firstChildElement( "path" );
+	
+	while ( ! file.isNull() ) {
+		m_searchPathList.append( file.firstChild().toText().nodeValue() );	
+		
+		file = file.nextSiblingElement( "path" );
+	}
+}
+
+void PrivateXSLProject::saveSearchPath() {
+	QDomElement root = m_projectDocument.documentElement();
+	QDomElement elt  = root.firstChildElement( "searchPath" );
+	
+	if( ! elt.isNull() )
+		root.removeChild( elt );
+
+	elt = m_projectDocument.createElement( "searchPath" );
+	root.appendChild( elt );
+	
+	foreach( QString filename, m_searchPathList ) {
+		QDomElement file = m_projectDocument.createElement( "path" );
+		elt.appendChild( file );
+		
+		QDomText text = m_projectDocument.createTextNode( filename );
+		file.appendChild( text );
+	}
+}
+
 /* XSLProject */
 
 XSLProject::XSLProject() : QObject() {
@@ -243,8 +289,6 @@ XSLProject::XSLProject( const QString & project ) : QObject() {
 }
 
 XSLProject::~XSLProject() {
-	saveToFile();
-	
 	delete d;
 }
 	
@@ -274,6 +318,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	
 	d->m_fileName = filename;
 	d->loadWebServicesLink();
+	d->loadSearchPath();
 
 	if( d->m_version < XINX_PROJECT_VERSION_1 ) {
 		clearSessionNode();
@@ -294,6 +339,11 @@ void XSLProject::loadFromFile( const QString & filename ) {
 				file = file.nextSiblingElement( "file" );
 			}
 		}
+	} if( d->m_version < XINX_PROJECT_VERSION_2 ) {
+		if( d->getValue( "type" ) == "services" )
+			d->setValue( "options", QString("%1").arg( XSLProject::hasSpecifique | XSLProject::hasWebServices ) );
+		else
+			d->setValue( "options", QString("%1").arg( XSLProject::hasSpecifique ) );
 	} else 
 		d->loadSessionFile( d->m_fileName + ".session" );
 	
@@ -313,9 +363,9 @@ void XSLProject::saveToFile( const QString & filename ) {
 	}
 	if( d->m_fileName.isEmpty() ) return;
 	
-	d->saveSessionFile( d->m_fileName + ".session" );
+	saveOnlySession();
 	
-	if( d->m_version != XINX_PROJECT_VERSION_1 ) {
+	if( d->m_version != XINX_PROJECT_VERSION_2 ) {
 		d->setValue( "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
 	}
 	if( d->m_version < XINX_PROJECT_VERSION_1 ) {
@@ -323,11 +373,19 @@ void XSLProject::saveToFile( const QString & filename ) {
 		QDomElement oldSession = root.firstChildElement( "openedElementCount" );
 		root.removeChild( oldSession );
 	} 
+	if( d->m_version < XINX_PROJECT_VERSION_2 ) {
+		QDomElement root = d->m_projectDocument.documentElement();
+		QDomElement oldType = root.firstChildElement( "type" );
+		root.removeChild( oldType );
+		QDomElement oldVersion = root.firstChildElement( "version" );
+		root.removeChild( oldVersion );
+	}
 	
 	setProjectPath( projectPath() );
 	setSpecifPrefix( specifPrefix() );
 
 	d->saveWebServicesLink();
+	d->saveSearchPath();
 	
 	static const int IndentSize = 3;
 
@@ -342,27 +400,21 @@ void XSLProject::saveToFile( const QString & filename ) {
 	
 	d->m_projectDocument.save( text, IndentSize );
 }
+
+void XSLProject::saveOnlySession() {
+	if( d->m_fileName.isEmpty() ) return;
+	d->saveSessionFile( d->m_fileName + ".session" );
+}
 	
-XSLProject::enumProjectType XSLProject::projectType() const {
-	if( d->getValue( "type" ) == "services" ) 
-		return SERVICES; 	
-	else
-		return WEB;
+XSLProject::ProjectOptions XSLProject::options() const {
+	QString value = d->getValue( "options" );
+	return ProjectOptions( value.toInt() );
 }
 
-void XSLProject::setProjectType( const XSLProject::enumProjectType & value ) {
-	switch( value ) {
-	case SERVICES:
-		d->setValue( "type", "services" );	
-		break;
-	case WEB:
-		d->setValue( "type", "web" );	
-		break;
-	default:
-		d->setValue( "type", "default" );	
-	}
+void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
+	d->setValue( "options", QString( "%1" ).arg( options ) );
 }
-
+	
 XSLProject::enumProjectRCS XSLProject::projectRCS() const {
 	QString value = d->getValue( "rcs" );
 	if( value == "cvs" ) 
@@ -470,6 +522,10 @@ const QString & XSLProject::fileName() const {
 
 QStringList & XSLProject::serveurWeb() { 
 	return d->m_webServiceLink; 
+}
+
+QStringList & XSLProject::searchPathList() {
+	return d->m_searchPathList;
 }
 
 QDomDocument & XSLProject::sessionDocument() { 

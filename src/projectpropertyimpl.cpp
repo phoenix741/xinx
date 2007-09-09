@@ -59,10 +59,6 @@ void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
 	}
 }
 
-void ProjectPropertyImpl::on_m_projectTypeCombo_currentIndexChanged( int index ) {
-	m_webServiceGroupBox->setEnabled( (XSLProject::enumProjectType)index == XSLProject::SERVICES );
-}
-
 void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text ) {
 	Q_UNUSED( text );
 	
@@ -124,7 +120,8 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
-	m_projectTypeCombo->setCurrentIndex( (int)project->projectType() );
+	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
+	m_webServicesCheckBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
 	
 	switch( project->projectRCS() ) {
 	case XSLProject::NORCS :
@@ -142,8 +139,13 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	foreach( QString link, project->serveurWeb() ) {
 		m_webServiceList->addItem( link );
 	}
-
 	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
+
+	m_searchPathList->clear();
+	foreach( QString link, project->searchPathList() ) {
+		m_searchPathList->addItem( link );
+	}
+	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
@@ -153,12 +155,21 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
 	project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
-	project->setProjectType( (XSLProject::enumProjectType)m_projectTypeCombo->currentIndex() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
-	
+	XSLProject::ProjectOptions options;
+	if( ! m_standardProjectCheckBox->isChecked() )
+		options |= XSLProject::hasSpecifique;
+	if( m_webServicesCheckBox->isChecked() )
+		options |= XSLProject::hasWebServices;
+	project->setOptions( options );
+
 	project->serveurWeb().clear();
 	for( int i = 0; i < m_webServiceList->count(); i++ ) {
 		project->serveurWeb().append( m_webServiceList->item( i )->text() );
+	}
+	project->searchPathList().clear();
+	for( int i = 0; i < m_searchPathList->count(); i++ ) {
+		project->searchPathList().append( m_searchPathList->item( i )->text() );
 	}
 }
 
@@ -169,10 +180,11 @@ void ProjectPropertyImpl::updateSpecifiquePath() {
 }
 
 void ProjectPropertyImpl::updateOkButton() {
-	bool okButtonEnabled = ! (
-		( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ) ||
-		( m_projectLineEdit->text().isEmpty() || !QDir( m_projectLineEdit->text() ).exists() ) ||
-		m_prefixLineEdit->text().isEmpty() );
+	bool projectLineOk = ! ( m_projectLineEdit->text().isEmpty() || !QDir( m_projectLineEdit->text() ).exists() ),
+	     hasSpecif     = ! m_standardProjectCheckBox->isChecked(),
+	     specifLineOk  = ! ( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ),
+	     prefixLineOk  = ! m_prefixLineEdit->text().isEmpty(),
+	     okButtonEnabled = projectLineOk && ( (!hasSpecif) || ( specifLineOk && prefixLineOk ) );
 
 	okButton->setEnabled( okButtonEnabled );
 }
@@ -200,3 +212,24 @@ void ProjectPropertyImpl::on_m_webServiceBtnAdd_clicked() {
 	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
 }
 
+
+void ProjectPropertyImpl::on_m_searchPathBtnAdd_clicked() {
+	QString text = QInputDialog::getText( this, tr("Add Search Path"), tr("Search Path"), QLineEdit::Normal, "langues/<lang>/nav/<project>" );
+	if( ! text.isEmpty() )
+		m_searchPathList->addItem( text );
+
+	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
+}
+
+void ProjectPropertyImpl::on_m_searchPathBtnDel_clicked() {
+	assert( m_searchPathList->currentRow() >= 0 );
+	
+	delete m_searchPathList->currentItem();
+	
+	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
+}
+
+
+void ProjectPropertyImpl::on_m_standardProjectCheckBox_clicked() {
+	updateOkButton();
+}

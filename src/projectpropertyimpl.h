@@ -39,6 +39,9 @@ private:
 	void updateOkButton();
 	ThreadedConfigurationFile * m_versionInstance;
 private slots:
+	void on_m_standardProjectCheckBox_clicked();
+	void on_m_searchPathBtnAdd_clicked();
+	void on_m_searchPathBtnDel_clicked();
 	void on_m_webServiceBtnDel_clicked();
 	void on_m_webServiceBtnAdd_clicked();
 	void on_m_langComboBox_currentIndexChanged( QString );
@@ -47,11 +50,11 @@ private slots:
 	void on_m_specifiquePathButton_clicked();
 	void on_m_specifiquePathLineEdit_textChanged( QString );
 	void on_m_prefixLineEdit_textChanged( QString );
-	void on_m_projectTypeCombo_currentIndexChanged( int );
 
 	void versionFinded( ConfigurationVersion version );
 };
 #endif
+
 
 
 
