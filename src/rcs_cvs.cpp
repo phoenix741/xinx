@@ -34,6 +34,7 @@ PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) : m_thread( 0 ), m_parent( pa
 }
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {
+	delete m_entries;
 }
 
 void PrivateRCS_CVS::callUpdate( const QStringList & path ) {

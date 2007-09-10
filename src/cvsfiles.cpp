@@ -67,8 +67,8 @@ void CVSFileEntry::setFileName( const QString & filename ) {
 	init(); 
 	getFileDate();
 
-	if( QDir( filename ).exists() )
-		watcher->addPath( filename );
+	if( m_fileInfo.exists() )
+		watcher->addPath( m_fileName );
 	connect( watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChanged(QString)) );
 }
 
@@ -168,8 +168,10 @@ QFileSystemWatcher * CVSFileEntry::watcherInstance() {
 }
 
 void CVSFileEntry::deleteInstance() {
-	if( watcher->files().size() == 0 )
+	if( watcher && ( watcher->files().size() == 0 ) && ( watcher->directories().size() == 0 ) ) {
 		delete watcher;
+		watcher = NULL;
+	}
 }
 
 /* CVSFileEntryList */
