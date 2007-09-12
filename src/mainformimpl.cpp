@@ -81,7 +81,7 @@ void PrivateMainformImpl::createDockWidget() {
 	m_contentDock->setObjectName( "m_contentDock" );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
 	QAction * action = m_contentDock->toggleViewAction();
-	action->setShortcut( tr("Ctrl+1") );
+	action->setShortcut( tr("Alt+1") );
 	m_parent->m_windowsMenu->addAction( action ); 
 	
 	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), m_parent );
@@ -98,14 +98,14 @@ void PrivateMainformImpl::createDockWidget() {
 	m_projectDock->setToggledViewAction( m_parent->m_toggledFlatView );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
 	action = m_projectDock->toggleViewAction();
-	action->setShortcut( tr("Ctrl+2") );
-	m_parent->m_windowsMenu->addAction( action ); 
+	action->setShortcut( tr("Alt+2") );
+	m_parent->m_windowsMenu->addAction( action );
 
 	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
 	m_rcslogDock->setObjectName( "m_rcslogDock" );
 	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
 	action = m_rcslogDock->toggleViewAction();
-	action->setShortcut( tr("Ctrl+3") );
+	action->setShortcut( tr("Alt+3") );
 	m_parent->m_windowsMenu->addAction( action ); 
 }
 
@@ -1158,15 +1158,15 @@ void PrivateMainformImpl::replace() {
 	m_findDialog->exec();
 }
 
-void PrivateMainformImpl::closeProject( bool session ) {
-	if( ! global.m_project ) return;		
+bool PrivateMainformImpl::closeProject( bool session ) {
+	if( ! global.m_project ) return false;		
 
 	m_parent->saveProject( session );
 		
-	m_projectDock->setProjectPath( NULL );
-
 	if( ! session )
-		m_parent->closeAllFile(); 
+		if( ! m_parent->closeAllFile() ) {
+			return false;
+		}
 	else {
 		m_parent->m_tabEditors->setUpdatesEnabled( false );
 		for( int i = m_parent->m_tabEditors->count() - 1; i >= 0; i-- ) {
@@ -1176,6 +1176,7 @@ void PrivateMainformImpl::closeProject( bool session ) {
 		}
 		m_parent->m_tabEditors->setUpdatesEnabled( true );
 	}
+	m_projectDock->setProjectPath( NULL );
 	m_contentDock->updateModel( NULL );
 
 	qDeleteAll( *(global.m_webServices) );
@@ -1190,6 +1191,7 @@ void PrivateMainformImpl::closeProject( bool session ) {
 	updateTitle();
 	
 	global.emitProjectChanged();
+	return true;
 }
 
 void PrivateMainformImpl::updateTitle() {
@@ -1271,7 +1273,10 @@ MainformImpl::~MainformImpl() {
 
 void MainformImpl::closeEvent( QCloseEvent *event ) {
 	if( global.m_project ) {
-		d->closeProject( global.m_config->config().project.saveWithSessionByDefault );
+		if( ! d->closeProject( global.m_config->config().project.saveWithSessionByDefault ) ) {
+			event->ignore();
+			return;
+		}
 	} else if( ! closeAllFile() ) {
 		event->ignore();
 		return;

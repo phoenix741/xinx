@@ -71,7 +71,7 @@ public:
 	void fileEditorRefreshFile( int index );
 	
 	// Project
-	void closeProject( bool session );
+	bool closeProject( bool session );
 	void updateTitle();
 	
 	// Settings
