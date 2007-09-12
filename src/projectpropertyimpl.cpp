@@ -48,23 +48,6 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 	}
 }
 
-void ProjectPropertyImpl::on_m_specifiquePathButton_clicked() {
-	QString value = m_specifiquePathLineEdit->text();
-	if( value.isEmpty() ) 
-		value = global.m_config->config().project.defaultPath;
-		
-	value = QFileDialog::getExistingDirectory( this, tr("Specifique path"), value );
-	if( ! value.isEmpty() ) {
-		m_specifiquePathLineEdit->setText( value );		
-	}
-}
-
-void ProjectPropertyImpl::on_m_specifiquePathLineEdit_textChanged( QString text ) {
-	Q_UNUSED( text );
-	
-	updateOkButton();
-}
-
 void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
 	Q_UNUSED( text );
 	
@@ -118,7 +101,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_projectLineEdit->setText( project->projectPath() );
 	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
-	m_specifiquePathLineEdit->setText( project->specifPath() );
+	//m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
 	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
 	m_webServicesCheckBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
@@ -145,6 +128,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	foreach( QString link, project->searchPathList() ) {
 		m_searchPathList->addItem( link );
 	}
+	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
 	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
 }
 
@@ -153,7 +137,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setProjectPath( m_projectLineEdit->text() );
 	project->setDefaultLang( m_langComboBox->currentText() );
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
-	project->setSpecifPath( m_specifiquePathLineEdit->text() );
+	//project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
 	XSLProject::ProjectOptions options;
@@ -176,13 +160,13 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 void ProjectPropertyImpl::updateSpecifiquePath() {
 	QString path = QString("%1/langue/%2/nav/%3").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() ).arg( global.m_config->config().project.defaultProjectPathName );
 	
-	m_specifiquePathLineEdit->setText( QDir::cleanPath( path ) );
+	m_specifiquePathLabel->setText( QDir::cleanPath( path ) );
 }
 
 void ProjectPropertyImpl::updateOkButton() {
 	bool projectLineOk = ! ( m_projectLineEdit->text().isEmpty() || !QDir( m_projectLineEdit->text() ).exists() ),
 	     hasSpecif     = ! m_standardProjectCheckBox->isChecked(),
-	     specifLineOk  = ! ( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ),
+	     specifLineOk  = true,//! ( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ),
 	     prefixLineOk  = ! m_prefixLineEdit->text().isEmpty(),
 	     okButtonEnabled = projectLineOk && ( (!hasSpecif) || ( specifLineOk && prefixLineOk ) );
 
@@ -219,6 +203,7 @@ void ProjectPropertyImpl::on_m_searchPathBtnAdd_clicked() {
 		m_searchPathList->addItem( text );
 
 	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
+	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
 }
 
 void ProjectPropertyImpl::on_m_searchPathBtnDel_clicked() {
@@ -227,9 +212,32 @@ void ProjectPropertyImpl::on_m_searchPathBtnDel_clicked() {
 	delete m_searchPathList->currentItem();
 	
 	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
+	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
 }
 
 
 void ProjectPropertyImpl::on_m_standardProjectCheckBox_clicked() {
 	updateOkButton();
+}
+
+void ProjectPropertyImpl::on_m_relativeLineEditPath_textChanged( QString text ) {
+	QListWidgetItem * item = m_searchPathList->currentItem();
+	if( item ) 
+		item->setText( text );
+}
+
+void ProjectPropertyImpl::on_m_searchPathBtnDef_clicked() {
+	QListWidgetItem * item = m_searchPathList->currentItem();
+	if( item ) {
+		for( int i = 0; i < m_searchPathList->count() ; i++ ) {
+			QListWidgetItem * item = m_searchPathList->item( i );
+			QFont font = item->font();
+			font.setBold( false );
+			item->setFont( font );
+		}
+		defaultSearchPath = item->text();
+		QFont font = item->font();
+		font.setBold( true );
+		item->setFont( font );
+	}
 }

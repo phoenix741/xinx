@@ -38,7 +38,10 @@ private:
 	void updateSpecifiquePath();
 	void updateOkButton();
 	ThreadedConfigurationFile * m_versionInstance;
+	QString defaultSearchPath;
 private slots:
+	void on_m_searchPathBtnDef_clicked();
+	void on_m_relativeLineEditPath_textChanged(QString );
 	void on_m_standardProjectCheckBox_clicked();
 	void on_m_searchPathBtnAdd_clicked();
 	void on_m_searchPathBtnDel_clicked();
@@ -47,8 +50,6 @@ private slots:
 	void on_m_langComboBox_currentIndexChanged( QString );
 	void on_m_projectLineEdit_textChanged( QString );
 	void on_m_projectButton_clicked();
-	void on_m_specifiquePathButton_clicked();
-	void on_m_specifiquePathLineEdit_textChanged( QString );
 	void on_m_prefixLineEdit_textChanged( QString );
 
 	void versionFinded( ConfigurationVersion version );

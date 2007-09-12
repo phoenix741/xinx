@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>328</height>
+    <width>629</width>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -392,30 +392,17 @@
       <attribute name="title" >
        <string>&amp;Custom files</string>
       </attribute>
-      <layout class="QGridLayout" >
+      <layout class="QVBoxLayout" >
        <property name="margin" >
         <number>9</number>
        </property>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <item row="1" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="m_customFileGroupBox" >
+       <item>
+        <widget class="QGroupBox" name="m_searchPathGroupBox" >
          <property name="title" >
-          <string>Custom files</string>
+          <string>&amp;Search path</string>
          </property>
          <layout class="QGridLayout" >
           <property name="margin" >
@@ -424,97 +411,7 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="0" column="1" >
-           <widget class="DirectoryEdit" name="m_specifiquePathLineEdit" />
-          </item>
-          <item row="0" column="2" >
-           <widget class="QToolButton" name="m_specifiquePathButton" >
-            <property name="icon" >
-             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label_4" >
-            <property name="text" >
-             <string>Custom d&amp;irectory :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_specifiquePathLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_5" >
-            <property name="text" >
-             <string>Custom p&amp;refix :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_prefixLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="m_prefixLineEdit" />
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabSearchPath" >
-      <attribute name="title" >
-       <string>&amp;Search path</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="m_searchPathGroupBox" >
-         <property name="title" >
-          <string>&amp;Search path</string>
-         </property>
-         <layout class="QHBoxLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item>
-           <widget class="QListWidget" name="m_searchPathList" >
-            <item>
-             <property name="text" >
-              <string>./langues/&lt;lang>/nav/&lt;project></string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./langues/&lt;lang>/nav</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./langues/&lt;lang></string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./langues</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item>
+          <item rowspan="2" row="0" column="2" >
            <layout class="QVBoxLayout" >
             <property name="margin" >
              <number>0</number>
@@ -551,6 +448,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QToolButton" name="m_searchPathBtnDef" >
+              <property name="icon" >
+               <iconset resource="../application.qrc" >:/images/checkbox.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
@@ -564,6 +468,90 @@
              </spacer>
             </item>
            </layout>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="m_relativeLineEditPath" />
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_7" >
+            <property name="text" >
+             <string>&amp;Relative path :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_relativeLineEditPath</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2" >
+           <widget class="QListWidget" name="m_searchPathList" >
+            <item>
+             <property name="text" >
+              <string>./langues/&lt;lang>/nav/&lt;project></string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./langues/&lt;lang>/nav</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./langues/&lt;lang></string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>./langues</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="m_customFileGroupBox" >
+         <property name="title" >
+          <string>Custom files</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="m_prefixLineEdit" />
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLabel" name="m_specifiquePathLabel" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>Custom p&amp;refix :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_prefixLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Custom directory :</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -636,8 +624,6 @@
   <tabstop>m_webServiceList</tabstop>
   <tabstop>m_webServiceBtnAdd</tabstop>
   <tabstop>m_webServiceBtnDel</tabstop>
-  <tabstop>m_specifiquePathLineEdit</tabstop>
-  <tabstop>m_specifiquePathButton</tabstop>
   <tabstop>m_prefixLineEdit</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
@@ -653,8 +639,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>532</x>
-     <y>315</y>
+     <x>540</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -669,8 +655,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>610</x>
-     <y>315</y>
+     <x>618</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
@@ -705,8 +691,24 @@
      <y>207</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>310</x>
-     <y>90</y>
+     <x>330</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_searchPathList</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>m_relativeLineEditPath</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>199</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>204</x>
+     <y>263</y>
     </hint>
    </hints>
   </connection>
