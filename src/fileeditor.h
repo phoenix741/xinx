@@ -98,6 +98,21 @@ public:
  	 */
 	TextEditor * textEdit() const;
  
+	/*!
+	 * Return the action used to comment text in the editor. This action call the \e commentSelectedText() with 
+	 * no parameters.
+	 * \return Return the action to comment.
+	 * \sa commentSelectedText()  
+	 */
+	QAction * commentAction();
+	/*!
+	 * Return the action used to uncomment text in the editor. This action call the \e commentSelectedText().with 
+	 * true in the parameters
+	 * \return Return the action to uncomment.
+	 * \sa uncommentSelectedText()  
+	 */
+	QAction * uncommentAction();
+
 	virtual bool canCopy();
 	virtual bool canPaste();
 	virtual bool canUndo();

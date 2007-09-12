@@ -26,6 +26,8 @@
 #include <QDomElement>
 
 class QAbstractItemModel;
+class QAction;
+class PrivateEditor;
 
 /*!
  * Base class for construct editor for XINX. This base class contains minimum method
@@ -70,12 +72,34 @@ public:
 	 */
 	virtual bool canCopy() = 0;
 	/*!
+	 * Return the action used to cut a selected text in the editor. This action call the \e cut().
+	 * \return Return the action to cut.
+	 * \sa cut(), copyAvailable(), canCopy()  
+	 */
+	QAction * cutAction();
+	/*!
+	 * Return the action used to copy a selected text in the editor. This action call the \e copy().
+	 * \return Return the action to copy.
+	 * \sa copy(), copyAvailable(), canCopy()  
+	 */
+	QAction * copyAction();
+
+	/*!
 	 * Check if the editor can accept paste data from clipboard. 
 	 * A signal is emmited when this value change.
 	 * \return true if the editor can past data from clipboard.
 	 * \sa paste(), pasteAvailable()
 	 */
 	virtual bool canPaste() = 0;
+	
+	/*!
+	 * Return the action used to past a text in the editor. This action call the \e paste().
+	 * \return Return the action to paste.
+	 * \sa copy(), pasteAvailable(), canPaste()  
+	 */
+	QAction * pasteAction();
+	
+	
 	/*!
 	 * Check if the editor can undo last command.
 	 * A signal is emmited when this value change.
@@ -83,11 +107,25 @@ public:
 	 * \sa undo(), undoAvailable()
 	 */
 	virtual bool canUndo() = 0;
+	/*!
+	 * Return the action used to undo operations in the editor. This action call the \e undo().
+	 * \return Return the action to undo.
+	 * \sa undo(), undoAvailable()  
+	 */
+	QAction * undoAction();
+	
+	/*!
+	 * Return the action used to redo operations in the editor. This action call the \e redo().
+	 * \return Return the action to redo.
+	 * \sa redo(), redoAvailable()  
+	 */
+	QAction * redoAction();
+	
 	/*! 
 	 * Check if the editor can redo change made by undo.
 	 * A signal is emmited when this value change.
 	 * \return true if the editor can redo last change, else return false.
-	 * \sa redo(); redoAvailable()
+	 * \sa redo(), redoAvailable()
 	 */
 	virtual bool canRedo() = 0;
 	/*!
@@ -205,5 +243,8 @@ signals:
 	 * \sa model()
 	 */
 	void modelUpdated( QAbstractItemModel * model );
+private:
+	PrivateEditor * d;
+	friend class PrivateEditor;
 };
 #endif

@@ -19,8 +19,9 @@
  ***************************************************************************/
 
 // xinx header
-#include "globals.h"
 #include "fileeditor.h"
+#include "private/p_fileeditor.h"
+#include "globals.h"
 #include "xmlhighlighter.h"
 #include "jshighlighter.h"
 #include "xmleditor.h"
@@ -30,7 +31,6 @@
 #include "texteditor.h"
 #include "numberbar.h"
 #include "filecontentitemmodel.h"
-#include "filewatcher.h"
 
 // Qt header
 #include <QTextEdit>
@@ -47,32 +47,21 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QAction>
+#include <QContextMenuEvent>
+#include <QMenu>
 
 /* PrivateFileEditor */
 
-class PrivateFileEditor : QObject {
-	Q_OBJECT
-public:
-	PrivateFileEditor( FileEditor * parent );
-	~PrivateFileEditor();
-	
-	bool m_isSaving;
-	bool hasWatcher(); 
-	void setWatcher( const QString & path );
-	void activateWatcher();
-	void desactivateWatcher();
-public slots:
-	void fileChanged ();
-private:
-	FileWatcher * m_watcher;
-	FileEditor * m_parent;
-	QString m_path;
-};
-
-PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) {
-	m_parent = parent;
-	m_isSaving = false;
-	m_watcher = NULL;
+PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
+	m_commentAction = new QAction( tr("Comment"), m_parent );
+	m_commentAction->setEnabled( false );
+	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
+	connect( m_parent, SIGNAL(copyAvailable(bool)), m_commentAction, SLOT(setEnabled(bool)) );
+	m_uncommentAction = new QAction( tr("Uncomment"), m_parent );
+	m_uncommentAction->setEnabled( false );
+	connect( m_uncommentAction, SIGNAL(triggered()), this, SLOT(uncomment()) );
+	connect( m_parent, SIGNAL(copyAvailable(bool)), m_uncommentAction, SLOT(setEnabled(bool)) );
 }
 
 PrivateFileEditor::~PrivateFileEditor() {
@@ -118,6 +107,14 @@ void PrivateFileEditor::fileChanged() {
 	m_watcher->activate();
 }
 
+void PrivateFileEditor::comment() {
+	m_parent->commentSelectedText();
+}
+
+void PrivateFileEditor::uncomment() {
+	m_parent->commentSelectedText( true );
+}
+
 /* FileEditor */
 
 FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( parent ) {
@@ -128,6 +125,7 @@ FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( par
 	m_view->setFrameStyle( QFrame::NoFrame );
 	m_view->setLineWrapMode(QTextEdit::NoWrap);
 	m_view->installEventFilter( this );
+	m_view->setContextMenuPolicy( Qt::NoContextMenu );
   
 	// Setup the line number pane
 	m_numbers = new NumberBar( this );
@@ -320,7 +318,7 @@ bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj != m_view )
 		return QFrame::eventFilter( obj, event );
 
-	if ( event->type() == QEvent::ToolTip ) {
+	/*if ( event->type() == QEvent::ToolTip ) {
 		QHelpEvent *helpEvent = static_cast<QHelpEvent *>( event );
 
 		QTextCursor cursor = m_view->cursorForPosition( helpEvent->pos() );
@@ -331,7 +329,24 @@ bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 		emit mouseHover( word );
 		emit mouseHover( helpEvent->pos(), word );
 
-		// QToolTip::showText( helpEvent->globalPos(), word ); // For testing
+		//QToolTip::showText( helpEvent->globalPos(), word ); // For testing
+	}*/
+	if( event->type() == QEvent::ContextMenu ) {
+		QContextMenuEvent * contextMenuEvent = static_cast<QContextMenuEvent*>( event );
+		QMenu * menu = new QMenu( m_view );
+
+		menu->addAction( d->m_commentAction );
+		menu->addAction( d->m_uncommentAction );
+		menu->addSeparator();
+		menu->addAction( undoAction() );
+		menu->addAction( redoAction() );
+		menu->addSeparator();
+		menu->addAction( cutAction() );
+		menu->addAction( copyAction() );
+		menu->addAction( pasteAction() );
+
+		menu->exec( contextMenuEvent->globalPos() );
+		delete menu;
 	}
 
 	return false;
@@ -547,4 +562,10 @@ void FileEditor::paste() {
 	textEdit()->paste();
 }
 
-#include "fileeditor.moc"
+QAction * FileEditor::commentAction() {
+	return d->m_commentAction;
+}
+
+QAction * FileEditor::uncommentAction() {
+	return d->m_uncommentAction;
+}
