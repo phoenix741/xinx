@@ -192,21 +192,12 @@ QDomElement XSLModelData::loadFromContent( const QString& content ) {
 int XSLModelData::childCount() { 
 	try {
 		if( global.m_project && ( m_child.size() == 0 ) && ( ( m_type == etImport ) || ( m_type == etJavascript ) ) ) {
-			if( QFile::exists( QDir( global.m_project->specifPath() ).absoluteFilePath( m_name ) ) ) {
-				loadFromFile( QDir( global.m_project->specifPath() ).absoluteFilePath( m_name ) );
-			} else
-			if( QFile::exists( QDir( global.m_project->navPath() ).absoluteFilePath( m_name ) ) ) {
-				loadFromFile( QDir( global.m_project->navPath() ).absoluteFilePath( m_name ) );
-			} else
-			if( QFile::exists( QDir( global.m_project->projectPath() ).absoluteFilePath( m_name ) ) ) {
-				loadFromFile( QDir( global.m_project->projectPath() ).absoluteFilePath( m_name ) );
-			} else 
-			if( QFile::exists( QDir( global.m_project->languePath() ).absoluteFilePath( m_name ) ) ) {
-				loadFromFile( QDir( global.m_project->languePath() ).absoluteFilePath( m_name ) );
-			} else 
-			if( QFile::exists( QDir( global.m_project->languesPath() ).absoluteFilePath( m_name ) ) ) {
-				loadFromFile( QDir( global.m_project->languesPath() ).absoluteFilePath( m_name ) );
-			} 
+			foreach( QString path, global.m_project->processedSearchPathList() ) {
+				if( QFile::exists( QDir( path ).absoluteFilePath( m_name ) ) ) {
+					loadFromFile( QDir( path ).absoluteFilePath( m_name ) );
+					break;
+				}
+			}
 		}
 	} catch( XMLParserException e ) {
 		emit hasError( tr( "Error %1 at %2" ).arg( e.getMessage() ).arg( e.getLine() ) );

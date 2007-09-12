@@ -22,7 +22,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabProjectDefinition" >
       <attribute name="title" >
@@ -526,8 +526,12 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="m_prefixLineEdit" />
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Custom directory :</string>
+            </property>
+           </widget>
           </item>
           <item row="0" column="1" >
            <widget class="QLabel" name="m_specifiquePathLabel" >
@@ -535,6 +539,9 @@
              <string/>
             </property>
            </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="m_prefixLineEdit" />
           </item>
           <item row="1" column="0" >
            <widget class="QLabel" name="label_5" >
@@ -546,12 +553,18 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label_4" >
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_10" >
             <property name="text" >
-             <string>Custom directory :</string>
+             <string>&amp;Specifique project path name :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_specifiqueProjectPathLineEdit</cstring>
             </property>
            </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="m_specifiqueProjectPathLineEdit" />
           </item>
          </layout>
         </widget>

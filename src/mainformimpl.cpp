@@ -700,7 +700,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 	Q_ASSERT( global.m_config );
 	
 	QString prefix = ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ?
-							 global.m_project->specifPrefix() + "_" : 
+							 global.m_project->processedSpecifPath() + "_" : 
 							 "" ;
 	QString filename = QFileInfo( pathname ).fileName();
 	bool hasSpecifiqueName = filename.startsWith( prefix, Qt::CaseInsensitive );

@@ -217,32 +217,32 @@ public:
 	void setProjectPath( const QString & value );
 	
 	/*!
-	 * Get the project path with the langues directory (as <project>/langue).
-	 * \return the path
-	 * \sa projectPath(), setProjectPath(), navPath(), languePath(), specifPath(), setSpecifPath()
+	 * Set the specifique project path name with the value stored in \e value. The specifique project
+	 * path name is the project that must be replaced by <project>
 	 */
-	QString languesPath() const;
+	void setSpecifiqueProjectPathName( const QString & value );
 	/*!
-	 * Get the project path with the langue directory (as <project>/langue/<langue>)
-	 * \return the path
-	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), specifPath(), setSpecifPath()
+	 * Return the specifique project path name.
+	 * \return specifique project path name
 	 */
-	QString languePath() const;
-	/*!
-	 * Get the project path with the langue directory and nav directory (as <project>/langue/<langue>/nav)
-	 * \return the path
-	 * \sa projectPath(), setProjectPath(), languePath(), languesPath(), specifPath(), setSpecifPath()
-	 */
-	QString navPath() const;
+	QString specifiqueProjectPathName(); 
+	
 
 	/*!
-	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet)
+	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet). The specifique 
+	 * project path is in the QStringList.
 	 * \return the path
-	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), setSpecifPath()
+	 * \sa projectPath(), setProjectPath(), setSpecifPath()
 	 */
 	QString specifPath() const;
 	/*!
-	 * Set the specifique project path (as <project>/langue/<langue>)
+	 * Get the specifique project path but replace <lang>, <nav>, and <project> pattern.
+	 * \return the pattern modified path
+	 * \sa specifPath(), setSpecifPath()
+	 */
+	QString processedSpecifPath() const;
+	/*!
+	 * Set the specifique project path (as <project>/langue/<langue>/nav/projet)
 	 * \param value The specifique path
 	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), specifPath()
 	 */
@@ -272,6 +272,11 @@ public:
 	 * \return List of search path
 	 */
 	QStringList & searchPathList();
+	
+	/*!
+	 * List of processed path where the application must searh.
+	 */
+	QStringList processedSearchPathList();
 
 	/*!
 	 * The session document is an XML document contains the sessions.

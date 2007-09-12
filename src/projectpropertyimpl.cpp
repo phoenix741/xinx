@@ -101,6 +101,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_projectLineEdit->setText( project->projectPath() );
 	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
+	m_specifiqueProjectPathLineEdit->setText( project->specifiqueProjectPathName() );
 	//m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifPrefix() );
 	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
@@ -137,6 +138,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setProjectPath( m_projectLineEdit->text() );
 	project->setDefaultLang( m_langComboBox->currentText() );
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
+	project->setSpecifiqueProjectPathName( m_specifiqueProjectPathLineEdit->text() );
 	//project->setSpecifPath( m_specifiquePathLineEdit->text() );
 	project->setSpecifPrefix( m_prefixLineEdit->text() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );

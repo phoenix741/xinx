@@ -18,12 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
+// Qt header
 #include <QFile>
 #include <QTextStream>
 #include <QFileInfo>
 #include <QDir>
+
+// Xinx header
 #include "xslproject.h"
 #include "webservices.h"
+#include "globals.h"
+#include "xinxconfig.h"
 
 #define XINX_PROJECT_VERSION_1 1
 #define XINX_PROJECT_VERSION_2 2
@@ -57,6 +62,8 @@ public:
 	void loadSearchPath();
 	void saveSearchPath();
 
+	QString processPath( QString path );
+
 	QString m_fileName;
 	int m_version;
 	
@@ -86,6 +93,8 @@ PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 	m_searchPathList.append( "./" );
 	m_searchPathList.append( "./langues/<lang>" );
 	m_searchPathList.append( "./langues" );
+
+	setValue( "specifiqueProjectPathName", global.m_config->config().project.defaultProjectPathName );
 }
 
 QString PrivateXSLProject::getValue( const QString & node ) const {
@@ -267,6 +276,16 @@ void PrivateXSLProject::saveSearchPath() {
 	}
 }
 
+QString PrivateXSLProject::processPath( QString path ) {
+	path.replace( '<lang>', m_parent->defaultLang().toLower() );
+	path.replace( '<LANG>', m_parent->defaultLang().toUpper() );
+	path.replace( '<nav>', m_parent->defaultNav().toLower() );
+	path.replace( '<NAV>', m_parent->defaultNav().toUpper() );
+	path.replace( '<project>', m_parent->specifiqueProjectPathName().toLower() );
+	path.replace( '<PROJECT>', m_parent->specifiqueProjectPathName().toUpper() );
+	return path;
+}
+
 /* XSLProject */
 
 XSLProject::XSLProject() : QObject() {
@@ -344,13 +363,21 @@ void XSLProject::loadFromFile( const QString & filename ) {
 			d->setValue( "options", QString("%1").arg( XSLProject::hasSpecifique | XSLProject::hasWebServices ) );
 		else
 			d->setValue( "options", QString("%1").arg( XSLProject::hasSpecifique ) );
+			
+		QString path = QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->getValue( "specifique" ) );
+		d->setValue( "specifique", path );		
+		d->setValue( "specifiqueProjectPathName", global.m_config->config().project.defaultProjectPathName );
+
+		d->m_searchPathList.append( path );
+		d->m_searchPathList.append( "./langues/<lang>/nav" );
+		d->m_searchPathList.append( "./" );
+		d->m_searchPathList.append( "./langues/<lang>" );
+		d->m_searchPathList.append( "./langues" );
 	} else 
 		d->loadSessionFile( d->m_fileName + ".session" );
 	
 	if( ! QDir( projectPath() ).exists() )
 		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
-	if( ! QDir( specifPath() ).exists() )
-		throw XSLProjectException( tr( "Specifique path (%1) don't exists." ).arg( specifPath() ) );
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -383,6 +410,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	
 	setProjectPath( projectPath() );
 	setSpecifPrefix( specifPrefix() );
+
 
 	d->saveWebServicesLink();
 	d->saveSearchPath();
@@ -476,30 +504,25 @@ void XSLProject::setProjectPath( const QString & value ) {
 	d->setValue( "project", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( value ) );
 }
 	
-QString XSLProject::specifPath() const {
-	QString path = d->getValue( "specifique" );
+QString XSLProject::processedSpecifPath() const {
+	return d->processPath( specifPath() );
+}
 
-	if( QDir( path ).isAbsolute() )
-		return path;
-	else
-		return QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( path );
+QString XSLProject::specifPath() const {
+	return d->getValue( "specifique" );
 }
 
 void XSLProject::setSpecifPath( const QString & value ) {
-	d->setValue( "specifique", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( value ) );
+	d->setValue( "specifique", value );
 }
 
-QString XSLProject::languePath() const { 
-	return QDir( languesPath() ).absoluteFilePath( defaultLang().toLower() ); 
+void XSLProject::setSpecifiqueProjectPathName( const QString & value ) {
+	d->setValue( "specifiqueProjectPathName", value );
 }
 
-QString XSLProject::languesPath() const { 
-	return QDir( projectPath() ).absoluteFilePath( "langue" ); 
-}
-
-QString XSLProject::navPath() const { 
-	return QDir( languePath() ).absoluteFilePath( "nav" ); 
-}
+QString XSLProject::specifiqueProjectPathName() {
+	return d->getValue( "specifiqueProjectPathName" );
+} 
 
 QString XSLProject::specifPrefix() const {
 	return d->getValue( "prefix" );
@@ -519,13 +542,20 @@ const QString & XSLProject::fileName() const {
 	return d->m_fileName;
 }
 
-
 QStringList & XSLProject::serveurWeb() { 
 	return d->m_webServiceLink; 
 }
 
 QStringList & XSLProject::searchPathList() {
 	return d->m_searchPathList;
+}
+
+QStringList XSLProject::processedSearchPathList() {
+	QStringList list;
+	foreach( QString path, searchPathList() ) {
+		list << d->processPath( path );
+	}
+	return list;
 }
 
 QDomDocument & XSLProject::sessionDocument() { 
