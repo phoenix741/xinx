@@ -105,5 +105,12 @@ QAction * Editor::pasteAction() {
 	return d->m_pasteAction;
 }
 
+QByteArray Editor::serializeEditor( bool content ) {
+
+}
+
+Editor * Editor::deserializeEditor( const QByteArray & array ) {
+	
+}
 
 

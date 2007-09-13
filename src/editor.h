@@ -147,21 +147,20 @@ public:
 	virtual QAbstractItemModel * model() = 0;
 	
 	/*!
-	 * Serialize the editor and backup it to a XML file. The serialization save internal data of
+	 * Serialize the editor and return the value in a byte array. The serialization save internal data of
 	 * the editor (modified, content, position of cursor, ...).
-	 * \param element XML document where internal data must be save.
 	 * \param content If true, the editor save the modifed content, else the editor must save only
 	 * the state.
 	 * \sa deserialzeEditor()
 	 */
-	virtual void serializeEditor( QDomElement & element, bool content ) = 0;
+	virtual QByteArray serializeEditor( bool content );
 	/*!
 	 * Restore the editor with the content of the XML document. The deserialization restore the
 	 * maximum of information of the document.
 	 * \param element XML document where internal data is stored and must be read.
 	 * \sa serializeEditor()
 	 */
-	virtual void deserializeEditor( const QDomElement & element ) = 0;	
+	static Editor * deserializeEditor( const QByteArray & array );	
 public slots : 
 	/*!
 	 * Update the model.

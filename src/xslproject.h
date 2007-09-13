@@ -89,11 +89,10 @@ public:
 	};
 	
 	/*!
-	 * Used to store the session in the session file. It's contains filename, and the storedSession, in a 
+	 * Used to store the session in the session file. It's contains the storedSession, in a 
 	 * binary form.
 	 */
 	struct structSession { 
-		QString filename; ///< Filename used by the editor.
 		QByteArray storedSession; ///< Stored session.
 	};
 	
@@ -159,7 +158,7 @@ public:
 	 * easily.
 	 * \return list of structSessions;
 	 */
-	QList<structSessions> & sessionsEditor();
+	QList<structSession> & sessionsEditor();
 	
 	/*!
 	 * Save the session in the file. 
