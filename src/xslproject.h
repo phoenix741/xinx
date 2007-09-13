@@ -87,7 +87,16 @@ public:
 		CVS = 1, ///< CVS is used.
 		SUBVERSION = 2 ///< Subversion is used (XINX don't care at the moment of this choice).
 	};
-
+	
+	/*!
+	 * Used to store the session in the session file. It's contains filename, and the storedSession, in a 
+	 * binary form.
+	 */
+	struct structSession { 
+		QString filename; ///< Filename used by the editor.
+		QByteArray storedSession; ///< Stored session.
+	};
+	
 	/*!
 	 * Create an empty project.
 	 */
@@ -108,6 +117,11 @@ public:
 	 * Destroy the project
 	 */
 	~XSLProject();
+
+	/*!
+	 * Assigned operator to copy object contents at assignation
+	 */ 
+	XSLProject& operator=( const XSLProject& p );
 	
 	/*!
 	 * Read the content of the file in the XSLProject structure.
@@ -126,6 +140,26 @@ public:
 	 * \throw XSLProjectException When the application can't save the project file.
 	 */
 	void saveToFile( const QString & filename = QString() );
+	
+	/*!
+	 * Return the file name where the project is stored.
+	 * \return the file name.
+	 */
+	const QString & fileName() const;
+
+	/*!
+	 * List all the last opend files in the project.
+	 * \return the list of the last opend file.
+	 */
+	QStringList & lastOpenedFile();
+	
+	/*!
+	 * List of all saved sessions editors. All informations about sessions are stored in a QByteArray.
+	 * This to made more flexible the deserialization. The file name is stored in the editor to get it
+	 * easily.
+	 * \return list of structSessions;
+	 */
+	QList<structSessions> & sessionsEditor();
 	
 	/*!
 	 * Save the session in the file. 
@@ -152,7 +186,7 @@ public:
 	 * \return The options of the project.
 	 * \sa setOptions()
 	 */
-	ProjectOptions options() const;
+	ProjectOptions & options();
 	/*!
 	 * Set the options of the project
 	 * \param options The new options of the project.
@@ -220,53 +254,26 @@ public:
 	 * Set the specifique project path name with the value stored in \e value. The specifique project
 	 * path name is the project that must be replaced by <project>
 	 */
-	void setSpecifiqueProjectPathName( const QString & value );
+	void setSpecifiquePathName( const QString & value );
 	/*!
 	 * Return the specifique project path name.
 	 * \return specifique project path name
 	 */
-	QString specifiqueProjectPathName(); 
-	
-
-	/*!
-	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet). The specifique 
-	 * project path is in the QStringList.
-	 * \return the path
-	 * \sa projectPath(), setProjectPath(), setSpecifPath()
-	 */
-	QString specifPath() const;
-	/*!
-	 * Get the specifique project path but replace <lang>, <nav>, and <project> pattern.
-	 * \return the pattern modified path
-	 * \sa specifPath(), setSpecifPath()
-	 */
-	QString processedSpecifPath() const;
-	/*!
-	 * Set the specifique project path (as <project>/langue/<langue>/nav/projet)
-	 * \param value The specifique path
-	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), specifPath()
-	 */
-	void setSpecifPath( const QString & value );
+	QString specifiquePathName(); 
 	
 	/*!
 	 * Get the specifique prefix.
 	 * \return the specifique prefix.
 	 * \sa setSpecifPrefix()
 	 */
-	QString specifPrefix() const;
+	QString specifiquePrefix() const;
 	/*!
 	 * Set the specifique prefix.
 	 * \param value Value of prefix.
 	 * \sa setSpecifPrefix()
 	 */
-	void setSpecifPrefix( const QString & value );
-	
-	/*!
-	 * List of Web services link. The link must point to the WSDL.
-	 * \return list of WSDL link.
-	 */
-	QStringList & serveurWeb();
-	
+	void setSpecifiquePrefix( const QString & value );
+
 	/*!
 	 * List of path where the application must search. This list is used in importations.
 	 * \return List of search path
@@ -279,33 +286,30 @@ public:
 	QStringList processedSearchPathList();
 
 	/*!
-	 * The session document is an XML document contains the sessions.
-	 * \return the XML document.
-	 * \sa sessionNode(), clearSessionNode()
+	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet). The specifique 
+	 * project path is in the QStringList.
+	 * \return the path
+	 * \sa projectPath(), setProjectPath(), setSpecifPath()
 	 */
-	QDomDocument & sessionDocument();
+	int indexOfSpecifiquePath() const;
 	/*!
-	 * The session node is the node where the session is stored.
-	 * \return the node where the session is stored.
-	 * \sa sessionDocument(), clearSessionNode()
+	 * Set the specifique project path (as <project>/langue/<langue>/nav/projet)
+	 * \param value The specifique path
+	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), specifPath()
 	 */
-	QDomElement & sessionNode();
+	void setIndexOfSpecifiquePath( int value );
 	/*!
-	 * Clear all sessions.
-	 * \sa sessionDocument(), sessionNode()
+	 * Get the specifique project path but replace <lang>, <nav>, and <project> pattern.
+	 * \return the pattern modified path
+	 * \sa specifPath(), setSpecifPath()
 	 */
-	void clearSessionNode();
-	/*!
-	 * List all the last opend files in the project.
-	 * \return the list of the last opend file.
-	 */
-	QStringList & lastOpenedFile();
+	QString processedSpecifiquePath() const;
 	
 	/*!
-	 * Return the file name where the project is stored.
-	 * \return the file name.
+	 * List of Web services link. The link must point to the WSDL.
+	 * \return list of WSDL link.
 	 */
-	const QString & fileName() const;
+	QStringList & serveurWeb();
 private:
 	PrivateXSLProject * d;
 	friend class PrivateXSLProject;
