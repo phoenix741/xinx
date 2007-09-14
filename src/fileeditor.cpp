@@ -119,11 +119,11 @@ void PrivateFileEditor::uncomment() {
 
 Q_DECLARE_METATYPE( FileEditor );
 
-FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( parent ) {
+FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	d = new PrivateFileEditor( this );
 	
 	// Set filter event layout.
-	m_view = textEditor;
+	m_view = new TextEditor( this );
 	m_view->setFrameStyle( QFrame::NoFrame );
 	m_view->setLineWrapMode(QTextEdit::NoWrap);
 	m_view->installEventFilter( this );

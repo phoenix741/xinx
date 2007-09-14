@@ -171,7 +171,7 @@ void PrivateWebServicesEditor::restore( const QString & paramStr ) {
 
 /* WebServicesEditor */
 
-WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( new XMLEditor( parent ), parent ) {
+WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateWebServicesEditor( this );
 	
 	d->m_oldParamValue = QString();
@@ -348,60 +348,62 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	return true;	
 }
 
-void WebServicesEditor::serializeEditor( QDomElement & element, bool content ) {
+void WebServicesEditor::serialize( QDataStream & stream, bool content ) {
+	Editor::serialize( stream, content );
 	d->store( d->m_paramList->currentText() );
 
-	element.setAttribute( "class", metaObject()->className() );
-	element.setAttribute( "filename", m_fileName );
-	element.setAttribute( "position", m_view->textCursor().position() );
+	stream << m_fileName;
+	stream << (int)m_view->textCursor().position();
 
-	element.setAttribute( "service", d->m_servicesList->currentText() );
-	element.setAttribute( "action", d->m_actionList->currentText() );
-	element.setAttribute( "param", d->m_paramList->currentText() );
+	stream << d->m_servicesList->currentText();
+	stream << d->m_actionList->currentText();
+	stream << d->m_paramList->currentText();
+	
+	stream << (bool)isModified();
+	stream << (bool)( content && isModified() );
 
 	if( content && isModified() ) {
-		element.setAttribute( "ismodified", isModified() );
-
+		stream << (int) d->m_paramValues.keys().size();
 		foreach( QString param, d->m_paramValues.keys() ) {
-			QDomElement paramElement = global.m_project->sessionDocument().createElement( param ) ;
-			element.appendChild( paramElement );
-				
-			QDomText text = global.m_project->sessionDocument().createTextNode( d->m_paramValues[param] );
-			paramElement.appendChild( text );
+			stream << param;
+			stream << d->m_paramValues[param];
 		}
 	}
 }
 
-void WebServicesEditor::deserializeEditor( const QDomElement & element ) {
-	m_fileName = element.attribute( "filename" );
+void WebServicesEditor::deserialize( QDataStream & stream ) {
+	int position;
+	int content, isModified;
+	QString param;
 	
 	d->m_paramValues.clear(); d->m_oldParamValue = QString();
-	bool content = false;
-	QDomElement params = element.firstChildElement();
-	while( !params.isNull() ) {
-		content = true;
-		QString name = params.tagName();
-		
-		QString plainText;
-		QDomNode node = params.firstChild();
-		while( ! node.isNull() ) {
-			if( node.isText() ) {
-				plainText += node.toText().data();
-			}				
-			node = node.nextSibling();
-		}
-		
-		d->m_paramValues[ name ] = plainText;
-		
-		params = params.nextSiblingElement();
-	}
-		
-	if( ( ! content ) && ( !m_fileName.isEmpty() ) ) 
-		loadFile( m_fileName );
 
-	d->m_serviceName = element.attribute( "service" );
-	d->m_operationName = element.attribute( "action" );
-	QString param = element.attribute( "param" );
+	Editor::deserialize( stream );
+	
+	stream >> m_fileName;
+	stream >> position;
+	
+	stream >> d->m_serviceName;
+	stream >> d->m_operationName;
+	stream >> param;
+	
+	stream >> isModified;
+	stream >> content;
+	if( content ) {
+		int size;
+		QString key, param;
+		
+		stream >> size;
+		for( int i = 0 ; i < size ; i++ ) {
+			stream >> key;
+			stream >> param;
+			
+			d->m_paramValues[ key ] = param;
+		}
+	} else {
+		if( ! m_fileName.isEmpty() )
+			loadFile( m_fileName );
+	}
 	
 	d->loadServicesList();
 	d->loadActionsList( d->m_servicesList->currentIndex() );
@@ -409,14 +411,11 @@ void WebServicesEditor::deserializeEditor( const QDomElement & element ) {
 	if( ! param.isEmpty() ) 
 		d->m_paramList->setCurrentIndex( d->m_paramList->findText( param ) );
 	d->restore( d->m_paramList->currentText() );
-
-	if( content ) 
-		setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
-	else 
-		setModified( false );
+	
+	m_view->document()->setModified( isModified );
 
 	QTextCursor tc = m_view->textCursor();
-	tc.setPosition( element.attribute( "position" ).toInt() );
+	tc.setPosition( position );
 	m_view->setTextCursor( tc );
 }
 

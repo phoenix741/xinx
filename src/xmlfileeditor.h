@@ -28,7 +28,7 @@ class PrivateXMLFileEditor;
 class XMLFileEditor : public FileEditor {
 	Q_OBJECT
 public:
-	XMLFileEditor( QWidget *parent = 0, TextEditor * textEditor = NULL );
+	XMLFileEditor( QWidget *parent = 0 );
 	virtual ~XMLFileEditor();
 	
 	virtual QString getSuffix() const;

@@ -102,7 +102,7 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 		ed = new JSFileEditor( this );
 		icon = ":/images/typejs.png";
 	} else {
-		ed = new FileEditor( new TextEditor( this ), this );	
+		ed = new FileEditor( this );	
 		icon = ":/images/typeunknown.png";
 	}
 	newFileEditor( ed, icon );
@@ -111,7 +111,7 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 
 
 Editor * TabEditor::newFileEditorTxt() {
-	Editor * editor = new FileEditor( new TextEditor( this ), this );
+	Editor * editor = new FileEditor( this );
 	newFileEditor( editor );
 	return editor;
 }

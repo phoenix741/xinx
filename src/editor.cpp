@@ -81,6 +81,13 @@ Editor::Editor( QWidget * parent )  : QFrame( parent ) {
 	setLineWidth( 2 );
 }
 
+Editor::Editor( const Editor & editor ) : QFrame( qobject_cast<QWidget*>( editor.parent() ) ) {
+	d = new PrivateEditor( this );
+
+	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+	setLineWidth( 2 );
+}
+
 Editor::~Editor() {
 	delete d;
 }
@@ -106,10 +113,12 @@ QAction * Editor::pasteAction() {
 }
 
 void Editor::serialize( QDataStream & stream, bool content ) {
+	Q_UNUSED( content );
 	stream << QString( metaObject()->className() ); // Store the class name
 }
 
 void Editor::deserialize( QDataStream & stream ) {
+	Q_UNUSED( stream );
 	// Dont't read the class name, already read.
 }
 

@@ -46,6 +46,11 @@ public:
 	 */
 	Editor( QWidget * parent = 0 );
 	/*!
+	 * The copy constructor used in case of serialization and deserialization.
+	 * \param the editor to copy.
+	 */
+	Editor( const Editor & editor );
+	/*!
 	 * Destroy the created frame editor.
 	 */
 	virtual ~Editor();

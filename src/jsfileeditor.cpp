@@ -45,7 +45,9 @@ PrivateJSFileEditor::~PrivateJSFileEditor() {
 
 /* JSFileEditor */
 
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( new JSEditor( parent ), parent ) {
+Q_DECLARE_METATYPE( JSFileEditor );
+
+JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateJSFileEditor( this );
 }
 

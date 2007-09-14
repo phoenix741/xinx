@@ -47,8 +47,8 @@ public:
 	virtual void loadFile( const QString &fileName = "" );
 	virtual bool saveFile( const QString &fileName = "" );
 
-	virtual void serializeEditor( QDomElement & element, bool content );
-	virtual void deserializeEditor( const QDomElement & element );
+	virtual void serialize( QDataStream & stream, bool content );
+	virtual void deserialize( QDataStream & stream );
 
 	virtual void setModified( bool modified );
 	virtual bool isModified();

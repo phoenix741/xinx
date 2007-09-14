@@ -53,6 +53,7 @@
 #include <QTemporaryFile>
 #include <QProcess>
 #include <QTextStream>
+#include <QDataStream>
 
 /* PrivateMainformImpl */
 
@@ -700,7 +701,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 	Q_ASSERT( global.m_config );
 	
 	QString prefix = ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ?
-							 global.m_project->processedSpecifPath() + "_" : 
+							 global.m_project->processedSpecifiquePath() + "_" : 
 							 "" ;
 	QString filename = QFileInfo( pathname ).fileName();
 	bool hasSpecifiqueName = filename.startsWith( prefix, Qt::CaseInsensitive );
@@ -732,23 +733,23 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 	struct_extentions customFile = extentionOfFileName( fileSuffix );
 
 	if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique )  ) 
-		specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( customFile.customPath );
+		specifPath = QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
 	else
 	 	specifPath = m_lastPlace;
 
 	if( fileName.isEmpty() ) {
 		if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) 
-			newFileName = QDir( specifPath ).absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" );
+			newFileName = QDir( specifPath ).absoluteFilePath( global.m_project->specifiquePrefix().toLower() + "_" );
 		else
 			newFileName = specifPath;
 	} else {
 		bool isCustomized = 
 			global.m_project && 
-			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifPrefix(), Qt::CaseInsensitive );
+			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifiquePrefix(), Qt::CaseInsensitive );
 			
 		if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) && (!isCustomized) && customFile.canBeSpecifique) {
 			newFileName = QDir( specifPath ).
-				absoluteFilePath( global.m_project->specifPrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
+				absoluteFilePath( global.m_project->specifiquePrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
 		} else {
 			newFileName = fileName;
 		}
@@ -777,12 +778,12 @@ QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QS
 QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, const QString & newname ) {
 	if( ! ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ) return QString();
 		
-	QString prefix = global.m_project->specifPrefix() + "_";
+	QString prefix = global.m_project->specifiquePrefix() + "_";
 	QString oldfilename = QFileInfo( oldname ).fileName();
 	QString newfilename = QFileInfo( newname ).fileName();
 	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix, Qt::CaseInsensitive );
 	bool isNewSpecifiqueFile = newfilename.startsWith( prefix, Qt::CaseInsensitive );
-	QString specifPath = QDir( global.m_project->specifPath() ).absoluteFilePath( extentionOfFileName( oldfilename ).customPath );
+	QString specifPath = QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( extentionOfFileName( oldfilename ).customPath );
 	QString destname = QDir( specifPath ).absoluteFilePath( oldfilename );
 
 	if( ( ! isOldSpecifiqueFile ) && isNewSpecifiqueFile ) {
@@ -940,7 +941,7 @@ void PrivateMainformImpl::selectedCompareWithStd() {
 	Q_ASSERT( list.size() == 1 && global.m_project );
 	
 	QString customFilename = list.at( 0 ), stdFilename, path, filename, 
-			prefix = global.m_project->specifPrefix() + "_";
+			prefix = global.m_project->specifiquePrefix() + "_";
 	
 	path = QFileInfo( customFilename ).absolutePath();
 	filename = QFileInfo( customFilename ).fileName();
@@ -1429,8 +1430,9 @@ void MainformImpl::openProject( const QString & filename ) {
 
 		m_tabEditors->setUpdatesEnabled( false );
 		foreach( QByteArray data, global.m_project->sessionsEditor() ) {
-			QDataStream stream( &data );
+			QDataStream stream( &data, QIODevice::ReadOnly );
 			Editor * editor = Editor::deserializeEditor( stream );
+			m_tabEditors->newFileEditor( editor );
 		}
 		m_tabEditors->setUpdatesEnabled( true );
 
@@ -1463,7 +1465,7 @@ void MainformImpl::saveProject( bool withSessionData ) {
 	global.m_project->sessionsEditor().clear();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
 		QByteArray datas;
-		QDataStream stream( &datas );
+		QDataStream stream( &datas, QIODevice::WriteOnly );
 		m_tabEditors->editor( i )->serialize( stream, withSessionData );
 		global.m_project->sessionsEditor().append( datas );
 	}

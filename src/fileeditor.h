@@ -50,7 +50,7 @@ public:
 	 * \param textEditor TextEditor to use to print file to screen
 	 * \param parent Parent of the editor.
 	 */
-	FileEditor( TextEditor * textEditor = NULL, QWidget *parent = 0 );
+	FileEditor( QWidget *parent = 0 );
 	/*!
 	 * Destructor of the FileEditor.
 	 */

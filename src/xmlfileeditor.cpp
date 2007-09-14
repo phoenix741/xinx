@@ -167,7 +167,7 @@ QString PrivateXMLFileEditor::constructAttributes( QDomNode node ) {
 
 Q_DECLARE_METATYPE( XMLFileEditor );
 
-XMLFileEditor::XMLFileEditor( QWidget *parent, TextEditor * textEditor ) : FileEditor( textEditor ? textEditor : new XMLEditor( parent ), parent ) {
+XMLFileEditor::XMLFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateXMLFileEditor( this );
 }
 
@@ -211,7 +211,7 @@ void XMLFileEditor::autoIndent() {
 
 Q_DECLARE_METATYPE( XSLFileEditor );
 
-XSLFileEditor::XSLFileEditor( QWidget *parent ) : XMLFileEditor( parent, new XSLEditor( parent ) ) {
+XSLFileEditor::XSLFileEditor( QWidget *parent ) : XMLFileEditor( parent ) {
 	connect( m_view, SIGNAL(hasError(QString)), this, SLOT(setMessage(QString)) );
 }
 
