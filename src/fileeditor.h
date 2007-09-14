@@ -46,6 +46,27 @@ class FileEditor : public Editor {
 	Q_OBJECT
 public:
 	/*!
+	 * Different highlighter that can be used by a file editor. 
+	 */
+	enum enumHighlighter {
+		NoHighlighter,  ///< No Highlighter is used.
+		XMLHighlighter, ///< Highlighter used for XML file type (this can be XHTML, XSL, XML, ...)
+		JSHighlighter,  ///< Highlighter used for JS file type (this can be used only for JS)
+		CSSHighlighter, ///< Highlighter used for CSS file type.
+		SQLHighlighter  ///< Highlighter used for SQL file type.
+	};
+	
+	/*!
+	 * Different file completer that ca be used with the file editor. This completer is used to help
+	 * user to write files. Completer can be plugged on the QTextEditor.
+	 */
+	enum enumCompleter {
+		NoCompleter,  ///< No completer is used.
+		XSLCompleter, ///< Completer used for complete XSL file type
+		JSCompleter   ///< Completer used for complete JS file type
+	};
+
+	/*!
 	 * Construct a FileEditor with the help of a TextEditor and a parent.
 	 * \param textEditor TextEditor to use to print file to screen
 	 * \param parent Parent of the editor.
