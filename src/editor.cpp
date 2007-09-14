@@ -105,12 +105,26 @@ QAction * Editor::pasteAction() {
 	return d->m_pasteAction;
 }
 
-QByteArray Editor::serializeEditor( bool content ) {
-
+void Editor::serialize( QDataStream & stream, bool content ) {
+	stream << QString( metaObject()->className() ); // Store the class name
 }
 
-Editor * Editor::deserializeEditor( const QByteArray & array ) {
-	
+void Editor::deserialize( QDataStream & stream ) {
+	// Dont't read the class name, already read.
+}
+
+Editor * Editor::deserializeEditor( QDataStream & stream ) {
+	QString name;
+	stream >> name;
+
+	int id = QMetaType::type( name.toAscii() );
+	if( id != -1 ) {
+		void * editorPtr = QMetaType::construct( id );
+		Editor * editor = static_cast<Editor*>( editorPtr );
+		editor->deserialize( stream );
+		return editor;
+	} else
+		return NULL;
 }
 
 

@@ -71,7 +71,7 @@ public:
 				m_webServiceLink, 
 				m_lastOpenedFile;
 	int m_indexOfSpecifiquePath;
-	QList<XSLProject::structSession> m_sessions;
+	QList<QByteArray> m_sessions;
 	QString m_projectName, m_defaultLang, m_defaultNav;
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
 	XSLProject::ProjectOptions m_projectOptions;
@@ -181,11 +181,9 @@ void PrivateXSLProject::loadSessionFile( const QString & fileName ) {
 				while( ! ( node.isNull() || node.isText() ) ) node = node.nextSibling();
 				QDomText text = node.toText();
 				if( ! text.isNull() ) sessionText += text.data();
-				
-				XSLProject::structSession session;
-				session.storedSession = QByteArray::fromBase64( sessionText.toUtf8() );
+
+				m_sessions.append( QByteArray::fromBase64( sessionText.toUtf8() ) );
 				editor = editor.nextSiblingElement( "Editor" );
-				m_sessions.append( session );
 			}
 		}
 	
@@ -211,11 +209,11 @@ void PrivateXSLProject::saveSessionFile( const QString & fileName ) {
 	QDomElement sessions = document.createElement( "Opened" );
 	root.appendChild( sessions );
 	
-	foreach( XSLProject::structSession session, m_sessions ) {
+	foreach( QByteArray session, m_sessions ) {
 		QDomElement editor = document.createElement( "Editor" );
 		sessions.appendChild( editor );
 		
-		QDomText text = document.createTextNode( session.storedSession.toBase64() );
+		QDomText text = document.createTextNode( session.toBase64() );
 		editor.appendChild( text );
 	}
 
@@ -523,6 +521,6 @@ QStringList & XSLProject::lastOpenedFile() {
 	return d->m_lastOpenedFile; 
 }
 
-QList<XSLProject::structSession> & XSLProject::sessionsEditor() {
+QList<QByteArray> & XSLProject::sessionsEditor() {
 	return d->m_sessions;
 }

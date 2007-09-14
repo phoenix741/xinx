@@ -89,14 +89,6 @@ public:
 	};
 	
 	/*!
-	 * Used to store the session in the session file. It's contains the storedSession, in a 
-	 * binary form.
-	 */
-	struct structSession { 
-		QByteArray storedSession; ///< Stored session.
-	};
-	
-	/*!
 	 * Create an empty project.
 	 */
 	XSLProject();
@@ -158,7 +150,7 @@ public:
 	 * easily.
 	 * \return list of structSessions;
 	 */
-	QList<structSession> & sessionsEditor();
+	QList<QByteArray> & sessionsEditor();
 	
 	/*!
 	 * Save the session in the file. 

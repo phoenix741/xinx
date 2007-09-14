@@ -1428,11 +1428,9 @@ void MainformImpl::openProject( const QString & filename ) {
 			global.m_config->config().project.recentProjectFiles.removeLast();
 
 		m_tabEditors->setUpdatesEnabled( false );
-		QDomElement element = global.m_project->sessionNode().firstChildElement( "editor" );
-		while( ! element.isNull() ) {
-			Editor * editor = m_tabEditors->newFileEditor( element.attribute( "filename" ) );
-			editor->deserializeEditor( element );
-			element = element.nextSiblingElement( "editor" );
+		foreach( QByteArray data, global.m_project->sessionsEditor() ) {
+			QDataStream stream( &data );
+			Editor * editor = Editor::deserializeEditor( stream );
 		}
 		m_tabEditors->setUpdatesEnabled( true );
 
@@ -1462,11 +1460,12 @@ void MainformImpl::closeProjectWithSessionData() {
 void MainformImpl::saveProject( bool withSessionData ) {
 	Q_ASSERT( global.m_project );
 	
-	global.m_project->clearSessionNode();
+	global.m_project->sessionsEditor().clear();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		QDomElement node = global.m_project->sessionDocument().createElement( "editor" );
-		m_tabEditors->editor( i )->serializeEditor( node, withSessionData );
-		global.m_project->sessionNode().appendChild( node );
+		QByteArray datas;
+		QDataStream stream( &datas );
+		m_tabEditors->editor( i )->serialize( stream, withSessionData );
+		global.m_project->sessionsEditor().append( datas );
 	}
 	global.m_project->saveOnlySession();
 }

@@ -117,6 +117,8 @@ void PrivateFileEditor::uncomment() {
 
 /* FileEditor */
 
+Q_DECLARE_METATYPE( FileEditor );
+
 FileEditor::FileEditor( TextEditor * textEditor, QWidget *parent ) : Editor( parent ) {
 	d = new PrivateFileEditor( this );
 	
@@ -465,43 +467,41 @@ bool FileEditor::saveFile( const QString & fileName ){
 	return true;	
 }
 
-void FileEditor::serializeEditor( QDomElement & element, bool content ) {
-	element.setAttribute( "class", metaObject()->className() );
-	element.setAttribute( "filename", m_fileName );
-	element.setAttribute( "position", m_view->textCursor().position() );
-
+void FileEditor::serialize( QDataStream & stream, bool content ) {
+	Editor::serialize( stream, content );
+	stream << m_fileName;
+	stream << (int)m_view->textCursor().position();
+	stream << (int)m_view->document()->isModified();
+	stream << (int)(content && m_view->document()->isModified());
 	if( content && m_view->document()->isModified() ) {
-		element.setAttribute( "ismodified", m_view->document()->isModified() );
-		QDomText text = global.m_project->sessionDocument().createTextNode( m_view->toPlainText() );
-		element.appendChild( text );
+		stream << m_view->toPlainText();
 	}
 }
 
-void FileEditor::deserializeEditor( const QDomElement & element ) {
-	m_fileName = element.attribute( "filename" );
+void FileEditor::deserialize( QDataStream & stream ) {
+	int position;
+	int content, isModified;
+	QString text;
 	
-	QString plainText;
-	QDomNode node = element.firstChild();
-	while( ! node.isNull() ) {
-		if( node.isText() ) {
-			plainText += node.toText().data();
-		}
-				
-		node = node.nextSibling();
-	}
-	if( ! plainText.isEmpty() ) {
-		m_view->setPlainText( plainText );
-		m_view->document()->setModified( (bool)(element.attribute( "ismodified" ).toInt()) );
-	
+	Editor::deserialize( stream );
+	stream >> m_fileName;
+	stream >> position;
+	stream >> isModified;
+	stream >> content;
+	if( content ) {
+		stream >> text;
+		m_view->setPlainText( text );
+
 		d->setWatcher( m_fileName );
 		updateModel();
 	} else {
-		if( !m_fileName.isEmpty() )
+		if( ! m_fileName.isEmpty() )
 			loadFile( m_fileName );
 	}
+	m_view->document()->setModified( isModified );
 
 	QTextCursor tc = m_view->textCursor();
-	tc.setPosition( element.attribute( "position" ).toInt() );
+	tc.setPosition( position );
 	m_view->setTextCursor( tc );
 }
 

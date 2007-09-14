@@ -165,6 +165,8 @@ QString PrivateXMLFileEditor::constructAttributes( QDomNode node ) {
 
 /* XMLFileEditor */
 
+Q_DECLARE_METATYPE( XMLFileEditor );
+
 XMLFileEditor::XMLFileEditor( QWidget *parent, TextEditor * textEditor ) : FileEditor( textEditor ? textEditor : new XMLEditor( parent ), parent ) {
 	d = new PrivateXMLFileEditor( this );
 }
@@ -204,6 +206,10 @@ void XMLFileEditor::autoIndent() {
 		setMessage( tr("Parse error line %1 column %2 : %3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	}
 }
+
+/* XSLFileEditor */
+
+Q_DECLARE_METATYPE( XSLFileEditor );
 
 XSLFileEditor::XSLFileEditor( QWidget *parent ) : XMLFileEditor( parent, new XSLEditor( parent ) ) {
 	connect( m_view, SIGNAL(hasError(QString)), this, SLOT(setMessage(QString)) );

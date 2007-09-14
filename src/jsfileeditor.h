@@ -48,4 +48,6 @@ private:
 	friend class PrivateJSFileEditor;
 };
 
+Q_DECLARE_METATYPE( JSFileEditor );
+
 #endif // __JSFILEEDITOR_H__

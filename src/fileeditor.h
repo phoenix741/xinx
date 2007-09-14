@@ -50,7 +50,7 @@ public:
 	 * \param textEditor TextEditor to use to print file to screen
 	 * \param parent Parent of the editor.
 	 */
-	FileEditor( TextEditor * textEditor, QWidget *parent = 0 );
+	FileEditor( TextEditor * textEditor = NULL, QWidget *parent = 0 );
 	/*!
 	 * Destructor of the FileEditor.
 	 */
@@ -122,8 +122,8 @@ public:
 	virtual QAbstractItemModel * model();
 	virtual void updateModel();
 
-	virtual void serializeEditor( QDomElement & element, bool content );
-	virtual void deserializeEditor( const QDomElement & element );
+	virtual void serialize( QDataStream & stream, bool content );
+	virtual void deserialize( QDataStream & stream );
 public Q_SLOTS : 
 	virtual void undo();
 	virtual void redo();
@@ -246,6 +246,5 @@ private:
 	PrivateFileEditor * d;
 	friend class PrivateFileEditor;
 };
-
 
 #endif // __FILEEDITOR_H__

@@ -24,6 +24,7 @@
 // Qt header
 #include <QFrame>
 #include <QDomElement>
+#include <QDataStream>
 
 class QAbstractItemModel;
 class QAction;
@@ -149,18 +150,27 @@ public:
 	/*!
 	 * Serialize the editor and return the value in a byte array. The serialization save internal data of
 	 * the editor (modified, content, position of cursor, ...).
+	 * \param stream where datas must be stored.
 	 * \param content If true, the editor save the modifed content, else the editor must save only
 	 * the state.
-	 * \sa deserialzeEditor()
+	 * \sa deserialze(), deserialzeEditor()
 	 */
-	virtual QByteArray serializeEditor( bool content );
+	virtual void serialize( QDataStream & stream, bool content );
+	
 	/*!
 	 * Restore the editor with the content of the XML document. The deserialization restore the
 	 * maximum of information of the document.
-	 * \param element XML document where internal data is stored and must be read.
-	 * \sa serializeEditor()
+	 * \param stream from what the data must be read
+	 * \sa serialize(), deserializeEditor()
 	 */
-	static Editor * deserializeEditor( const QByteArray & array );	
+	virtual void deserialize( QDataStream & stream );
+	/*!
+	 * Create the right editor and deserualize it.
+	 * \param stream from what the data must be read
+	 * \return An editor
+	 * \sa serialize(), deserialize()
+	 */
+	static Editor * deserializeEditor( QDataStream & stream );	
 public slots : 
 	/*!
 	 * Update the model.
@@ -246,4 +256,5 @@ private:
 	PrivateEditor * d;
 	friend class PrivateEditor;
 };
+
 #endif
