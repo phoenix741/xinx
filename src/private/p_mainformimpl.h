@@ -56,6 +56,7 @@ public:
 	void createDialogs();
 	void connectDbus();
 	void createSnipet();
+	void registerTypes();
 
 	// Editor
 	QString m_lastProjectOpenedPlace, m_lastPlace;

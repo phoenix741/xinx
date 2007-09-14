@@ -26,6 +26,8 @@
 #include "snipetlist.h"
 #include "snipetdialog.h"
 #include "fileeditor.h"
+#include "xmlfileeditor.h"
+#include "webserviceseditor.h"
 #include "texteditor.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
@@ -58,6 +60,7 @@
 /* PrivateMainformImpl */
 
 PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_parent( parent ) {
+	registerTypes();
 	createTabEditorButton();
 	createSubMenu();
 	createDockWidget();
@@ -75,6 +78,13 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 
 PrivateMainformImpl::~PrivateMainformImpl() {
 	
+}
+
+void PrivateMainformImpl::registerTypes() {
+	qRegisterMetaType<FileEditor>( "FileEditor" );
+	qRegisterMetaType<XMLFileEditor>( "XMLFileEditor" );
+	qRegisterMetaType<XSLFileEditor>( "XSLFileEditor" );
+	qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
 }
 
 void PrivateMainformImpl::createDockWidget() {
@@ -701,7 +711,7 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 	Q_ASSERT( global.m_config );
 	
 	QString prefix = ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ?
-							 global.m_project->processedSpecifiquePath() + "_" : 
+							 global.m_project->specifiquePrefix() + "_" : 
 							 "" ;
 	QString filename = QFileInfo( pathname ).fileName();
 	bool hasSpecifiqueName = filename.startsWith( prefix, Qt::CaseInsensitive );

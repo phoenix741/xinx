@@ -274,7 +274,7 @@ QString PrivateXSLProject::processPath( QString path ) {
 	path.replace( "<NAV>", m_defaultNav.toUpper() );
 	path.replace( "<project>", m_specifiquePathName.toLower() );
 	path.replace( "<PROJECT>", m_specifiquePathName.toUpper() );
-	return path;
+	return QFileInfo( m_fileName ).absoluteDir().absoluteFilePath( path );
 }
 
 /* XSLProject */

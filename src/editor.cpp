@@ -129,9 +129,12 @@ Editor * Editor::deserializeEditor( QDataStream & stream ) {
 	int id = QMetaType::type( name.toAscii() );
 	if( id != -1 ) {
 		void * editorPtr = QMetaType::construct( id );
-		Editor * editor = static_cast<Editor*>( editorPtr );
-		editor->deserialize( stream );
-		return editor;
+		if( editorPtr ) {
+			Editor * editor = static_cast<Editor*>( editorPtr );
+			editor->deserialize( stream );
+			return editor;
+		} else
+			return NULL;
 	} else
 		return NULL;
 }
