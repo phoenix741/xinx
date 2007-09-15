@@ -17,39 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef __FILETYPEXML_H__
-#define __FILETYPEXML_H__
+
+#ifndef __P_FILETYPEXSL_H__
+#define __P_FILETYPEXSL_H__
 
 // Xinx header
-#include "filetypeinterface.h"
+#include "../filetypexsl.h"
 
 // Qt header
-#include <QTextCursor>
+#include <QObject>
 
-class FileTypeXml : public FileTypeInterface {
+class PrivateFileTypeXsl : public QObject {
+	Q_OBJECT
 public:
-	FileTypeXml( TextEditor * parent );
-	virtual ~FileTypeXml();
-	
-	void commentSelectedText( bool uncomment );
-
-	virtual void updateModel();
-	virtual QAbstractItemModel * model();
-	virtual void complete();
-protected:
-	enum cursorPosition {
-		cpEditComment, // <!-- XXXXX  -->
-		cpEditNodeName, // <XXXXX>
-		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
-		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
-		cpNone
-	};
-	
-	cursorPosition editPosition( const QTextCursor & cursor );
-	QString m_nodeName;
-	QString m_paramName;
-
+	PrivateFileTypeXsl( FileTypeXsl * parent );
+	~PrivateFileTypeXsl();
+private:
+	FileTypeXsl * m_parent;
 };
 
-#endif // __FILETYPEXML_H__
+#endif // __P_FILETYPEXSL_H__

@@ -74,6 +74,8 @@ HEADERS += src/aboutdialogimpl.h \
  src/private/p_filecontentdockwidget.h \
  src/private/p_fileeditor.h \
  src/private/p_filetypeinterface.h \
+ src/private/p_filetypejs.h \
+ src/private/p_filetypexsl.h \
  src/private/p_filewatcher.h \
  src/private/p_mainformimpl.h \
  src/private/p_projectdirectorydockwidget.h \
@@ -107,7 +109,8 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlhighlighter.h \
  src/xsleditor.h \
  src/xsllistview.h \
- src/xslproject.h
+ src/xslproject.h \
+ src/xslmodelcompleter.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
@@ -174,7 +177,8 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xmlhighlighter.cpp \
  src/xsleditor.cpp \
  src/xsllistview.cpp \
- src/xslproject.cpp
+ src/xslproject.cpp \
+ src/xslmodelcompleter.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts

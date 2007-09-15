@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,39 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef __FILETYPEXML_H__
-#define __FILETYPEXML_H__
+
+#ifndef __P_FILETYPEJS_H__
+#define __P_FILETYPEJS_H__
 
 // Xinx header
-#include "filetypeinterface.h"
+#include "../filetypejs.h"
+#include "../javascriptparser.h"
+#include "../javascriptfilecontent.h"
+#include "../javascriptmodelcompleter.h"
 
 // Qt header
-#include <QTextCursor>
+#include <QString>
+#include <QCompleter>
+#include <QModelIndex>
 
-class FileTypeXml : public FileTypeInterface {
+class PrivateFileTypeJs : public QObject {
+	Q_OBJECT
 public:
-	FileTypeXml( TextEditor * parent );
-	virtual ~FileTypeXml();
+	PrivateFileTypeJs( FileTypeJs * parent );
+	virtual ~PrivateFileTypeJs();
 	
-	void commentSelectedText( bool uncomment );
-
-	virtual void updateModel();
-	virtual QAbstractItemModel * model();
-	virtual void complete();
-protected:
-	enum cursorPosition {
-		cpEditComment, // <!-- XXXXX  -->
-		cpEditNodeName, // <XXXXX>
-		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
-		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
-		cpNone
-	};
+	JavaScriptParser * m_parser;
+	JavascriptFileContent * m_model;
+	JavascriptModelCompleter * m_modelCompleter;
+	QCompleter * m_completer;
 	
-	cursorPosition editPosition( const QTextCursor & cursor );
-	QString m_nodeName;
-	QString m_paramName;
+	QString currentFunction();
 
+	virtual bool eventFilter( QObject *obj, QEvent *event );
+public slots:
+	void insertCompletion( const QModelIndex& index );
+private:
+	FileTypeJs * m_parent;
 };
 
-#endif // __FILETYPEXML_H__
+#endif // __P_FILETYPEJS_H__

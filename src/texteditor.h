@@ -39,17 +39,18 @@ public:
 	int currentRow();
 	
 	void insertText( const QString & text );
+
+	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
 public slots:
 	void updateFont();
 signals:
-	void modelUpdated( QAbstractItemModel *  model );
 	void needInsertSnipet( QString snipet );
+	void modelUpdated( QAbstractItemModel * model );
 protected:
     virtual void paintEvent ( QPaintEvent * event );
 	virtual void keyPressEvent(QKeyEvent *e);
     virtual void mouseDoubleClickEvent( QMouseEvent * event );
 	virtual void printWhiteSpaces( QPainter &p );
-	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
 private slots:
 	void slotCursorPositionChanged();
 private:

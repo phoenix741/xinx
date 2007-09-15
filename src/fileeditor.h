@@ -235,9 +235,10 @@ public Q_SLOTS :
 
 	virtual void setModified( bool modified );
 Q_SIGNALS:
+signals:
 	void mouseHover( const QString &word );
 	void mouseHover( const QPoint &pos, const QString &word );
-	
+
 	/*!
 	 * Signal emitted when a text is selected or deselected.
 	 * \param yes The value is true if a part of the text is selected, else the value is false.
@@ -254,11 +255,6 @@ protected slots:
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 
-	/*!
-	 * Update the model internally. Don't change information in case of error.
-	 */
-	virtual void updateModelEvent();
-	
 	/*!
 	 * Desactivate the watcher of the file. If the file is modified in an external editor, a popup is show
 	 * asking if the user want to reload the file.

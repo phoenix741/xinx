@@ -27,14 +27,24 @@
 // Qt header
 #include <QTextCursor>
 
+class PrivateFileTypeJs;
+
 class FileTypeJs : public FileTypeInterface {
 public:
-	FileTypeJs( QTextEdit * parent );
+	FileTypeJs( TextEditor * parent );
 	virtual ~FileTypeJs();
 	
 	void commentSelectedText( bool uncomment );
+
+	virtual void updateModel();
+	virtual QAbstractItemModel * model();
+	
+	virtual void complete();
 protected:
 
+private:
+	PrivateFileTypeJs * d;
+	friend class PrivateFileTypeJs;
 };
 
 #endif // __FILETYPEJS_H__

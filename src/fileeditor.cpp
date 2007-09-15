@@ -168,7 +168,6 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
-	connect( m_view, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelUpdated(QAbstractItemModel*)) );
 
     connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
 
@@ -320,8 +319,8 @@ void FileEditor::commentSelectedText( bool uncomment ) {
 }
 
 void FileEditor::complete() {
-// TODO:
-//	m_view->complete();
+	if( d->m_interface )
+		d->m_interface->complete();
 }
 
 bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
@@ -507,20 +506,20 @@ void FileEditor::deserialize( QDataStream & stream ) {
 }
 
 QAbstractItemModel * FileEditor::model() {
-	return NULL;
+	if( d->m_interface )
+		return d->m_interface->model();
+	else 
+		return NULL;
 }
 
 void FileEditor::updateModel() {
 	try {
-		/* emitEvent */ updateModelEvent();
+		if( d->m_interface )
+			d->m_interface->updateModel();
 		setMessage("");
 	} catch( FileContentException e ) {
 		setMessage( tr("%1 at %2").arg( e.getMessage() ).arg( e.getLine() ) );
 	}
-}
-
-void FileEditor::updateModelEvent() {
-	
 }
 
 bool FileEditor::canCopy() {
@@ -626,6 +625,9 @@ void FileEditor::setFileType( FileEditor::enumFileType type ) {
 	default:
 		d->m_interface = NULL;
 	}
+	
+	if( d->m_interface )
+		connect( d->m_interface, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelUpdated(QAbstractItemModel*)) );
 }
 
 FileEditor::enumFileType FileEditor::fileType() {

@@ -24,10 +24,19 @@
 // Xinx header
 #include "filetypexml.h"
 
+class PrivateFileTypeXsl;
+
 class FileTypeXsl : public FileTypeXml {
 public:
-	FileTypeXsl( QTextEdit * parent );
+	FileTypeXsl( TextEditor * parent );
 	virtual ~FileTypeXsl();
+
+	virtual void updateModel();
+	virtual QAbstractItemModel * model();
+	virtual void complete();
+private:
+	PrivateFileTypeXsl * d;
+	friend class PrivateFileTypeXsl;
 };
 
 #endif // __FILETYPEXSL_H__

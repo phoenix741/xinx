@@ -21,18 +21,29 @@
 #ifndef __FILETYPEINTERFACE_H__
 #define __FILETYPEINTERFACE_H__
 
-class QTextEdit;
+// Qt header
+#include <QObject>
 
+class TextEditor;
 class PrivateFileTypeInterface;
+class QAbstractItemModel;
 
-class FileTypeInterface {
+class FileTypeInterface : public QObject {
+	Q_OBJECT
 public:
-	FileTypeInterface( QTextEdit * parent );
+	FileTypeInterface( TextEditor * parent );
 	virtual ~FileTypeInterface();
 	
 	virtual void commentSelectedText( bool uncomment ) = 0;
+	
+	virtual void updateModel() = 0;
+	virtual QAbstractItemModel * model() = 0;
+	
+	virtual void complete() = 0;
+signals:
+	void modelUpdated( QAbstractItemModel * model );
 protected:
-	QTextEdit * textEdit();
+	TextEditor * textEdit();
 private:
 	PrivateFileTypeInterface * d;
 	friend class PrivateFileTypeInterface;

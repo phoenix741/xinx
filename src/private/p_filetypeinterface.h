@@ -28,7 +28,7 @@ public:
 	PrivateFileTypeInterface( FileTypeInterface * parent );
 	~PrivateFileTypeInterface();
 	
-	QTextEdit * m_textEdit;
+	TextEditor * m_textEdit;
 private:
 	FileTypeInterface * m_parent;
 };

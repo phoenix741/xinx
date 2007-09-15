@@ -20,14 +20,12 @@
 
 // Xinx header 
 #include "filetypexml.h"
-
-// Qt header
-#include <QTextEdit>
+#include "texteditor.h"
 
 // Define
 #define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
 
-FileTypeXml::FileTypeXml( QTextEdit * parent ) : FileTypeInterface( parent ) {
+FileTypeXml::FileTypeXml( TextEditor * parent ) : FileTypeInterface( parent ) {
 	
 }
 
@@ -180,4 +178,17 @@ void FileTypeXml::commentSelectedText( bool uncomment ) {
 
 	cursor.endEditBlock();
 }
+
+void FileTypeXml::updateModel() {
+	
+}
+
+QAbstractItemModel * FileTypeXml::model() {
+	return NULL;
+}
+
+void FileTypeXml::complete() {
+	
+}
+
 

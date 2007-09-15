@@ -35,7 +35,7 @@ PrivateFileTypeInterface::~PrivateFileTypeInterface() {
 /* FileTypeInterface */
 
 
-FileTypeInterface::FileTypeInterface( QTextEdit * parent ) {
+FileTypeInterface::FileTypeInterface( TextEditor * parent ) {
 	d = new PrivateFileTypeInterface( this );
 	d->m_textEdit = parent;
 }
@@ -44,7 +44,7 @@ FileTypeInterface::~FileTypeInterface() {
 	delete d;
 }
 
-QTextEdit * FileTypeInterface::textEdit() {
+TextEditor * FileTypeInterface::textEdit() {
 	return d->m_textEdit;
 }
 
