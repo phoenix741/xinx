@@ -116,7 +116,6 @@ QString PrivateJSEditor::currentFunction() {
 
 JSEditor::JSEditor( QWidget * parent ) : TextEditor( parent ) {
 	d = new PrivateJSEditor( this );
-	setTextHighlighter( new JsHighlighter( document() ) );
 
 	d->m_completer = new QCompleter( this );
 	d->m_completer->setWidget( this );

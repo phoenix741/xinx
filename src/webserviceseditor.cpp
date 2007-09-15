@@ -433,4 +433,7 @@ bool WebServicesEditor::isModified() {
 	return d->m_isModified || m_view->document()->isModified();
 }
 
+QIcon WebServicesEditor::icon() {
+	return QIcon( ":/images/typefws.png" );
+}
 #include "webserviceseditor.moc"

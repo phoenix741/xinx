@@ -112,6 +112,10 @@ QAction * Editor::pasteAction() {
 	return d->m_pasteAction;
 }
 
+QIcon Editor::icon() {
+	return QIcon( ":/images/typeunknown.png" );
+}
+
 void Editor::serialize( QDataStream & stream, bool content ) {
 	Q_UNUSED( content );
 	stream << QString( metaObject()->className() ); // Store the class name

@@ -74,41 +74,36 @@ Editor * TabEditor::editor( const QString & filename ) {
 	return NULL;
 }
 
-void TabEditor::newFileEditor( Editor * editor, const QString & icon ) {
-	int index = addTab( editor, editor->getTitle() );
-	
-	setTabIcon( index, QIcon(icon) );
+void TabEditor::newFileEditor( Editor * editor ) {
+	QString title = editor->getTitle();
+	if( editor->isModified() )
+		title += "*";
+		
+	int index = addTab( editor, title );
+	setTabIcon( index, editor->icon() );
 	setCurrentIndex( index );
-
 	emit currentChanged( currentIndex() );  
 }
 
 Editor * TabEditor::newFileEditor( const QString & fileName ) {
 	Editor * ed;
-	QString icon;
 	if( QDir::match( "*.fws", fileName ) ) {
 		ed = new WebServicesEditor( this );
-		icon = ":/images/typefws.png";
 	} else
 	if( QDir::match( "*.xsl;*.xslt", fileName ) ) {
 		ed = new XSLFileEditor( this );
-		icon = ":/images/typexsl.png";
 	} else
 	if( QDir::match( "*.xml", fileName ) ) {
 		ed = new XSLFileEditor( this );
-		icon = ":/images/typexml.png";
 	} else
 	if( QDir::match( "*.js", fileName ) ) {
 		ed = new JSFileEditor( this );
-		icon = ":/images/typejs.png";
 	} else {
 		ed = new FileEditor( this );	
-		icon = ":/images/typeunknown.png";
 	}
-	newFileEditor( ed, icon );
+	newFileEditor( ed );
 	return ed;
 }
-
 
 Editor * TabEditor::newFileEditorTxt() {
 	Editor * editor = new FileEditor( this );
@@ -118,25 +113,25 @@ Editor * TabEditor::newFileEditorTxt() {
 
 Editor * TabEditor::newFileEditorXSL() {
 	Editor * editor = new XSLFileEditor( this );
-	newFileEditor( editor, ":/images/typexsl.png" );
+	newFileEditor( editor );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorXML() {
 	Editor * editor = new XMLFileEditor( this );
-	newFileEditor( editor, ":/images/typexml.png" );
+	newFileEditor( editor );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorJS() {
 	Editor * editor = new JSFileEditor( this );
-	newFileEditor( editor, ":/images/typejs.png" );
+	newFileEditor( editor );
 	return editor;
 }
 
 Editor * TabEditor::newFileEditorWS() {
 	Editor * editor = new WebServicesEditor( this );
-	newFileEditor( editor, ":/images/typefws.png" );
+	newFileEditor( editor );
 	return editor;
 }
 

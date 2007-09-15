@@ -43,6 +43,7 @@ public:
 	virtual ~JSFileEditor();
 	
 	virtual QString getSuffix() const;
+	virtual QIcon icon();
 private:
 	PrivateJSFileEditor * d;
 	friend class PrivateJSFileEditor;

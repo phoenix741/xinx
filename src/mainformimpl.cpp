@@ -27,6 +27,7 @@
 #include "snipetdialog.h"
 #include "fileeditor.h"
 #include "xmlfileeditor.h"
+#include "jsfileeditor.h"
 #include "webserviceseditor.h"
 #include "texteditor.h"
 #include "aboutdialogimpl.h"
@@ -84,6 +85,7 @@ void PrivateMainformImpl::registerTypes() {
 	qRegisterMetaType<FileEditor>( "FileEditor" );
 	qRegisterMetaType<XMLFileEditor>( "XMLFileEditor" );
 	qRegisterMetaType<XSLFileEditor>( "XSLFileEditor" );
+	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );
 	qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
 }
 
@@ -1174,11 +1176,11 @@ bool PrivateMainformImpl::closeProject( bool session ) {
 
 	m_parent->saveProject( session );
 		
-	if( ! session )
+	if( ! session ) {
 		if( ! m_parent->closeAllFile() ) {
 			return false;
 		}
-	else {
+	} else {
 		m_parent->m_tabEditors->setUpdatesEnabled( false );
 		for( int i = m_parent->m_tabEditors->count() - 1; i >= 0; i-- ) {
 			Editor * ed = m_parent->m_tabEditors->editor( i );

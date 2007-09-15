@@ -243,3 +243,9 @@ void ProjectPropertyImpl::on_m_searchPathBtnDef_clicked() {
 		item->setFont( font );
 	}
 }
+
+void ProjectPropertyImpl::on_m_servicesLineEdit_textChanged( QString text ) {
+	QListWidgetItem * item = m_webServiceList->currentItem();
+	if( item ) 
+		item->setText( text );
+}

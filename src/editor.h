@@ -25,6 +25,7 @@
 #include <QFrame>
 #include <QDomElement>
 #include <QDataStream>
+#include <QIcon>
 
 class QAbstractItemModel;
 class QAction;
@@ -151,6 +152,12 @@ public:
 	 * \sa deleteModel(), createModel(), updateModel()
 	 */
 	virtual QAbstractItemModel * model() = 0;
+	
+	/*!
+	 * Return an icon that represent the editor.
+	 * \return an icon for the editor.
+	 */
+	virtual QIcon icon();
 	
 	/*!
 	 * Serialize the editor and return the value in a byte array. The serialization save internal data of

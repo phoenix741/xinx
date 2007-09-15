@@ -49,6 +49,7 @@ Q_DECLARE_METATYPE( JSFileEditor );
 
 JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateJSFileEditor( this );
+	setSyntaxHighlighterType( FileEditor::JSHighlighter );
 }
 
 JSFileEditor::~JSFileEditor() {
@@ -60,4 +61,8 @@ QString JSFileEditor::getSuffix() const {
 		return "js";
 	else
 		return FileEditor::getSuffix();
+}
+
+QIcon JSFileEditor::icon() {
+	return QIcon( ":/images/typejs.png" );
 }

@@ -113,17 +113,8 @@ void PrivateXMLFileEditor::constructXML( int level, QString & result, const QDom
 }
 
 void PrivateXMLFileEditor::constructXMLText( QString & result, const QDomNode & node ) {
-	//QString xmltext;
 	QTextStream text( &result );
 	node.save( text, 0 );
-	/*
-	for( int i = 0; i < xmltext.length(); i++ ) {
-		if( xmltext.at( i ).isPrint() )
-			result.append( xmltext.at( i ) );
-		else
-			result.append( QString("&#%1;").arg( xmltext.at( i ).unicode() ) );
-	}
-	*/
 }
 
 void PrivateXMLFileEditor::constructXMLComment( int level, QString & result, const QDomNode & node ) {
@@ -169,6 +160,7 @@ Q_DECLARE_METATYPE( XMLFileEditor );
 
 XMLFileEditor::XMLFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateXMLFileEditor( this );
+	setSyntaxHighlighterType( FileEditor::XMLHighlighter );
 }
 
 XMLFileEditor::~XMLFileEditor() {
@@ -207,6 +199,10 @@ void XMLFileEditor::autoIndent() {
 	}
 }
 
+QIcon XMLFileEditor::icon() {
+	return QIcon( ":/images/typexml.png" );
+}
+
 /* XSLFileEditor */
 
 Q_DECLARE_METATYPE( XSLFileEditor );
@@ -224,4 +220,8 @@ QString XSLFileEditor::getSuffix() const {
 		return "xsl";
 	else
 		return XMLFileEditor::getSuffix();
+}
+
+QIcon XSLFileEditor::icon() {
+	return QIcon( ":/images/typexsl.png" );
 }

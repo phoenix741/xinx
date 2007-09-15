@@ -33,6 +33,8 @@ public:
 	
 	virtual QString getSuffix() const;
 	virtual void autoIndent();
+
+	virtual QIcon icon();
 private:
 	friend class PrivateXMLFileEditor;
 	PrivateXMLFileEditor * d;
@@ -45,6 +47,8 @@ public:
 	virtual ~XSLFileEditor();
 	
 	virtual QString getSuffix() const;
+
+	virtual QIcon icon();
 };
 
 #endif // __XMLFILEEDITOR_H__

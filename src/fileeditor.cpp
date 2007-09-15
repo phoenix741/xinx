@@ -53,7 +53,9 @@
 
 /* PrivateFileEditor */
 
-PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
+PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_syntaxhighlighter( NULL ), m_highlighterType( FileEditor::NoHighlighter ), 
+	m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
+		
 	m_commentAction = new QAction( tr("Comment"), m_parent );
 	m_commentAction->setEnabled( false );
 	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
@@ -163,8 +165,9 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
-	
 	connect( m_view, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelUpdated(QAbstractItemModel*)) );
+
+    connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
 
 	m_messageBox->hide();
 }
@@ -320,19 +323,6 @@ bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj != m_view )
 		return QFrame::eventFilter( obj, event );
 
-	/*if ( event->type() == QEvent::ToolTip ) {
-		QHelpEvent *helpEvent = static_cast<QHelpEvent *>( event );
-
-		QTextCursor cursor = m_view->cursorForPosition( helpEvent->pos() );
-		cursor.movePosition( QTextCursor::StartOfWord, QTextCursor::MoveAnchor );
-		cursor.movePosition( QTextCursor::EndOfWord, QTextCursor::KeepAnchor );
-
-		QString word = cursor.selectedText();
-		emit mouseHover( word );
-		emit mouseHover( helpEvent->pos(), word );
-
-		//QToolTip::showText( helpEvent->globalPos(), word ); // For testing
-	}*/
 	if( event->type() == QEvent::ContextMenu ) {
 		QContextMenuEvent * contextMenuEvent = static_cast<QContextMenuEvent*>( event );
 		QMenu * menu = new QMenu( m_view );
@@ -470,8 +460,9 @@ bool FileEditor::saveFile( const QString & fileName ){
 void FileEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
 	stream << m_fileName;
+	stream << (int)( d->m_highlighterType );
 	stream << (int)m_view->textCursor().position();
-	stream << (int)m_view->document()->isModified();
+	stream << (int)( isModified() );
 	stream << (int)(content && m_view->document()->isModified());
 	if( content && m_view->document()->isModified() ) {
 		stream << m_view->toPlainText();
@@ -479,18 +470,21 @@ void FileEditor::serialize( QDataStream & stream, bool content ) {
 }
 
 void FileEditor::deserialize( QDataStream & stream ) {
-	int position;
+	int position, highlighterType;
 	int content, isModified;
 	QString text;
 	
 	Editor::deserialize( stream );
 	stream >> m_fileName;
+	stream >> highlighterType;
+	setSyntaxHighlighterType( (FileEditor::enumHighlighter)highlighterType );
 	stream >> position;
 	stream >> isModified;
 	stream >> content;
 	if( content ) {
 		stream >> text;
 		m_view->setPlainText( text );
+		setModified( isModified );
 
 		d->setWatcher( m_fileName );
 		updateModel();
@@ -498,7 +492,6 @@ void FileEditor::deserialize( QDataStream & stream ) {
 		if( ! m_fileName.isEmpty() )
 			loadFile( m_fileName );
 	}
-	m_view->document()->setModified( isModified );
 
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( position );
@@ -539,7 +532,12 @@ bool FileEditor::isModified() {
 }
 
 void FileEditor::setModified( bool modified ) {
-	textEdit()->document()->setModified( modified );
+	bool needEmit = modified != isModified();
+
+	m_view->document()->setModified( modified );
+	
+	if( needEmit )
+		emit modificationChanged( modified );
 }
 
 void FileEditor::undo() {
@@ -568,4 +566,31 @@ QAction * FileEditor::commentAction() {
 
 QAction * FileEditor::uncommentAction() {
 	return d->m_uncommentAction;
+}
+
+void FileEditor::updateHighlighter() {
+	if( d->m_syntaxhighlighter )
+		d->m_syntaxhighlighter->rehighlight();
+}
+
+void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {
+	if( d->m_highlighterType == type ) return;
+
+	d->m_highlighterType = type;
+	delete d->m_syntaxhighlighter;
+	
+	switch( type ) {
+	case FileEditor::XMLHighlighter:
+		d->m_syntaxhighlighter = new XmlHighlighter( m_view->document() );
+		break;
+	case FileEditor::JSHighlighter:
+		d->m_syntaxhighlighter = new JsHighlighter( m_view->document() );
+		break;
+	default:
+		d->m_syntaxhighlighter = NULL;
+	}
+}
+	
+FileEditor::enumHighlighter FileEditor::syntaxHighlighterType() {
+	return d->m_highlighterType;
 }

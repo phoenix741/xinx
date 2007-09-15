@@ -52,6 +52,8 @@ public:
 
 	virtual void setModified( bool modified );
 	virtual bool isModified();
+
+	virtual QIcon icon();
 private:
 	PrivateWebServicesEditor * d;
 	friend class PrivateWebServicesEditor;

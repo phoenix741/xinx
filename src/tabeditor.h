@@ -38,8 +38,7 @@ public:
 	
 	static bool isFileEditor( Editor * editor );
 
-	void newFileEditor( Editor * editor, const QString & icon = ":/images/typeunknown.png" );
-	Editor * newFileEditor( const QString & fileName );
+	void newFileEditor( Editor * editor );
 
 	Editor * newFileEditorTxt();
 	Editor * newFileEditorXML();
@@ -109,6 +108,8 @@ private slots:
 	void slotNeedInsertSnipet( const QString & snipet );
 	
 private:
+	Editor * newFileEditor( const QString & fileName );
+
 	QAction * m_refreshAction;
 	QAction * m_saveAction;
 	QAction * m_saveAsAction;

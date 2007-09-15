@@ -133,6 +133,18 @@ public:
 	 * \sa uncommentSelectedText()  
 	 */
 	QAction * uncommentAction();
+	
+	/*!
+	 * Set the type of the highlighter. Highlighter color the text, this method can be used to change the coloration
+	 * in the same editor.
+	 * \param type the new type to use.
+	 */
+	virtual void setSyntaxHighlighterType( enumHighlighter type );
+	
+	/*!
+	 * Get the current used syntax highlighter.
+	 */
+	virtual enumHighlighter syntaxHighlighterType();
 
 	virtual bool canCopy();
 	virtual bool canPaste();
@@ -200,6 +212,12 @@ public Q_SLOTS :
 	 * Call the completer of the text on the current position of the cursor, if possible.
 	 */
 	virtual void complete();
+
+	/*!
+	 * Called when the configuration change and it's necessary to update the highlighter.
+	 * If no highlighter is used, this function do nothing.
+	 */
+	void updateHighlighter();
 
 	virtual void setModified( bool modified );
 Q_SIGNALS:

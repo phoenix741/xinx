@@ -40,6 +40,7 @@ private:
 	ThreadedConfigurationFile * m_versionInstance;
 	QString defaultSearchPath;
 private slots:
+	void on_m_servicesLineEdit_textChanged(QString );
 	void on_m_searchPathBtnDef_clicked();
 	void on_m_relativeLineEditPath_textChanged(QString );
 	void on_m_standardProjectCheckBox_clicked();

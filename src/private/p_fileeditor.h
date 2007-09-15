@@ -28,7 +28,7 @@
 // Qt header
 #include <QObject>
 #include <QAction>
-
+#include <QSyntaxHighlighter>
 
 class PrivateFileEditor : public QObject {
 	Q_OBJECT
@@ -36,6 +36,9 @@ public:
 	PrivateFileEditor( FileEditor * parent );
 	~PrivateFileEditor();
 	
+	QSyntaxHighlighter * m_syntaxhighlighter;
+	FileEditor::enumHighlighter m_highlighterType;
+
 	QAction * m_commentAction;
 	QAction * m_uncommentAction;
 	FileWatcher * m_watcher;
