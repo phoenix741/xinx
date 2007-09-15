@@ -24,7 +24,7 @@
 #include "xinxconfig.h"
 
 // Qt header
-#include <QSyntaxHighlighter>
+#include <QTextBlock>
 #include <QKeyEvent>
 #include <QFontMetrics>
 #include <QScrollBar>
@@ -105,10 +105,6 @@ void TextEditor::updateFont() {
 	setTabStopWidth( fm.width("M") * global.m_config->config().editor.tabulationSize );
 }
 
-QAbstractItemModel * TextEditor::model() {
-	return NULL;
-}
-
 int TextEditor::currentColumn() {
 	QTextCursor tc( textCursor() );
 	return tc.columnNumber() + 1;
@@ -117,17 +113,6 @@ int TextEditor::currentColumn() {
 int TextEditor::currentRow() {
 	QTextCursor tc( textCursor() );
 	return tc.blockNumber() + 1;
-}
-
-void TextEditor::updateModel() {
-	
-}
-
-void TextEditor::commentSelectedText( bool uncomment ) {
-	Q_UNUSED( uncomment );
-}
-
-void TextEditor::complete() {
 }
 
 void TextEditor::keyPressEvent( QKeyEvent *e ) {

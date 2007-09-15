@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,52 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
+#ifndef __FILETYPEJS_H__
+#define __FILETYPEJS_H__
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
+// Xinx header
+#include "filetypeinterface.h"
 
-/* PrivateJSFileEditor */
+// Qt header
+#include <QTextCursor>
 
-class PrivateJSFileEditor {
+class FileTypeJs : public FileTypeInterface {
 public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+	FileTypeJs( QTextEdit * parent );
+	virtual ~FileTypeJs();
 	
-private:
-	JSFileEditor * m_parent;
+	void commentSelectedText( bool uncomment );
+protected:
+
 };
 
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-}
-
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-}
-
-/* JSFileEditor */
-
-Q_DECLARE_METATYPE( JSFileEditor );
-
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
-	d = new PrivateJSFileEditor( this );
-	setSyntaxHighlighterType( FileEditor::JSHighlighter );
-	setFileType( FileEditor::JSFileType );
-}
-
-JSFileEditor::~JSFileEditor() {
-	delete d;
-}
-
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QIcon JSFileEditor::icon() {
-	return QIcon( ":/images/typejs.png" );
-}
+#endif // __FILETYPEJS_H__

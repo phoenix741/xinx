@@ -60,10 +60,12 @@ public:
 	 * Different file completer that ca be used with the file editor. This completer is used to help
 	 * user to write files. Completer can be plugged on the QTextEditor.
 	 */
-	enum enumCompleter {
-		NoCompleter,  ///< No completer is used.
-		XSLCompleter, ///< Completer used for complete XSL file type
-		JSCompleter   ///< Completer used for complete JS file type
+	enum enumFileType {
+		NoFileType,   ///< No completer is used.
+		XMLFileType,  ///< Completer used for complete XML file type
+		HTMLFileType, ///< Completer used for complete HTML file type
+		XSLFileType,  ///< Completer used for complete XSL file type
+		JSFileType    ///< Completer used for complete JS file type
 	};
 
 	/*!
@@ -145,6 +147,18 @@ public:
 	 * Get the current used syntax highlighter.
 	 */
 	virtual enumHighlighter syntaxHighlighterType();
+	
+	/*!
+	 * Set the file type. There is different kind of file type (XML, JS). A file type contains comment/uncomment,
+	 * completer, models, ...
+	 * \param type The new type to use.
+	 */
+	virtual void setFileType( enumFileType type );
+	/*!
+	 * Return the current file type.
+	 * \return the file type.
+	 */
+	virtual enumFileType fileType();
 
 	virtual bool canCopy();
 	virtual bool canPaste();
@@ -152,8 +166,8 @@ public:
 	virtual bool canRedo();
 	virtual bool isModified();
 
+	void updateModel();
 	virtual QAbstractItemModel * model();
-	virtual void updateModel();
 
 	virtual void serialize( QDataStream & stream, bool content );
 	virtual void deserialize( QDataStream & stream );
@@ -240,6 +254,11 @@ protected slots:
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );
 
+	/*!
+	 * Update the model internally. Don't change information in case of error.
+	 */
+	virtual void updateModelEvent();
+	
 	/*!
 	 * Desactivate the watcher of the file. If the file is modified in an external editor, a popup is show
 	 * asking if the user want to reload the file.

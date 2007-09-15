@@ -94,7 +94,7 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 		ed = new XSLFileEditor( this );
 	} else
 	if( QDir::match( "*.xml", fileName ) ) {
-		ed = new XSLFileEditor( this );
+		ed = new XMLFileEditor( this );
 	} else
 	if( QDir::match( "*.js", fileName ) ) {
 		ed = new JSFileEditor( this );
@@ -302,7 +302,7 @@ void TabEditor::tabRemoved ( int index ) {
 	}
 	
 	if( m_previous ) {
-		m_previous->disconnect();
+		m_previous->disconnect( this );
 		if( isFileEditor( m_previous ) )
 			qobject_cast<FileEditor*>( m_previous )->textEdit()->disconnect( this );
 		m_previous = NULL;
@@ -325,7 +325,7 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	Q_UNUSED( index );
 	
 	if( m_previous ) {
-		m_previous->disconnect();
+		m_previous->disconnect( this );
 		if( isFileEditor( m_previous ) )
 			qobject_cast<FileEditor*>( m_previous )->textEdit()->disconnect( this );
 	}

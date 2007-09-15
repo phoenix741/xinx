@@ -54,12 +54,13 @@
 /* PrivateFileEditor */
 
 PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_syntaxhighlighter( NULL ), m_highlighterType( FileEditor::NoHighlighter ), 
-	m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
+	m_interface( NULL ), m_fileType( FileEditor::NoFileType ), m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
 		
 	m_commentAction = new QAction( tr("Comment"), m_parent );
 	m_commentAction->setEnabled( false );
 	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
 	connect( m_parent, SIGNAL(copyAvailable(bool)), m_commentAction, SLOT(setEnabled(bool)) );
+	
 	m_uncommentAction = new QAction( tr("Uncomment"), m_parent );
 	m_uncommentAction->setEnabled( false );
 	connect( m_uncommentAction, SIGNAL(triggered()), this, SLOT(uncomment()) );
@@ -68,6 +69,8 @@ PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_syntaxhighlighte
 
 PrivateFileEditor::~PrivateFileEditor() {
 	delete m_watcher;
+	delete m_interface;
+	delete m_syntaxhighlighter;
 }
 
 void PrivateFileEditor::setWatcher( const QString & path ) {
@@ -312,11 +315,13 @@ void FileEditor::autoIndent() {
 }
 
 void FileEditor::commentSelectedText( bool uncomment ) {
-	m_view->commentSelectedText( uncomment );
+	if( d->m_interface )
+		d->m_interface->commentSelectedText( uncomment );
 }
 
 void FileEditor::complete() {
-	m_view->complete();
+// TODO:
+//	m_view->complete();
 }
 
 bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
@@ -461,6 +466,7 @@ void FileEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
 	stream << m_fileName;
 	stream << (int)( d->m_highlighterType );
+	stream << (int)( d->m_fileType );
 	stream << (int)m_view->textCursor().position();
 	stream << (int)( isModified() );
 	stream << (int)(content && m_view->document()->isModified());
@@ -470,14 +476,16 @@ void FileEditor::serialize( QDataStream & stream, bool content ) {
 }
 
 void FileEditor::deserialize( QDataStream & stream ) {
-	int position, highlighterType;
+	int position, highlighterType, fileType;
 	int content, isModified;
 	QString text;
 	
 	Editor::deserialize( stream );
 	stream >> m_fileName;
 	stream >> highlighterType;
+	stream >> fileType;
 	setSyntaxHighlighterType( (FileEditor::enumHighlighter)highlighterType );
+	setFileType( (FileEditor::enumFileType)fileType );
 	stream >> position;
 	stream >> isModified;
 	stream >> content;
@@ -499,16 +507,20 @@ void FileEditor::deserialize( QDataStream & stream ) {
 }
 
 QAbstractItemModel * FileEditor::model() {
-	return m_view->model();
+	return NULL;
 }
 
 void FileEditor::updateModel() {
 	try {
-		m_view->updateModel();
+		/* emitEvent */ updateModelEvent();
 		setMessage("");
 	} catch( FileContentException e ) {
 		setMessage( tr("%1 at %2").arg( e.getMessage() ).arg( e.getLine() ) );
 	}
+}
+
+void FileEditor::updateModelEvent() {
+	
 }
 
 bool FileEditor::canCopy() {
@@ -593,4 +605,29 @@ void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {
 	
 FileEditor::enumHighlighter FileEditor::syntaxHighlighterType() {
 	return d->m_highlighterType;
+}
+
+void FileEditor::setFileType( FileEditor::enumFileType type ) {
+	if( d->m_fileType == type ) return;
+	
+	d->m_fileType = type;
+	delete d->m_interface;
+	
+	switch( type ) {
+	case FileEditor::XMLFileType:
+		d->m_interface = new FileTypeXml( m_view );
+		break;
+	case FileEditor::XSLFileType:
+		d->m_interface = new FileTypeXsl( m_view );
+		break;
+	case FileEditor::JSFileType:
+		d->m_interface = new FileTypeJs( m_view );
+		break;
+	default:
+		d->m_interface = NULL;
+	}
+}
+
+FileEditor::enumFileType FileEditor::fileType() {
+	return d->m_fileType;
 }

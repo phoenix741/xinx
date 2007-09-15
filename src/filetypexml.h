@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,53 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __FILETYPEXML_H__
+#define __FILETYPEXML_H__
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
+// Xinx header
+#include "filetypeinterface.h"
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
+// Qt header
+#include <QTextCursor>
 
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
+class FileTypeXml : public FileTypeInterface {
 public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+	FileTypeXml( QTextEdit * parent );
+	virtual ~FileTypeXml();
 	
-private:
-	JSFileEditor * m_parent;
+	void commentSelectedText( bool uncomment );
+protected:
+	enum cursorPosition {
+		cpEditComment, // <!-- XXXXX  -->
+		cpEditNodeName, // <XXXXX>
+		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
+		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
+		cpNone
+	};
+	
+	cursorPosition editPosition( const QTextCursor & cursor );
+	QString m_nodeName;
+	QString m_paramName;
+
 };
 
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-}
-
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-}
-
-/* JSFileEditor */
-
-Q_DECLARE_METATYPE( JSFileEditor );
-
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
-	d = new PrivateJSFileEditor( this );
-	setSyntaxHighlighterType( FileEditor::JSHighlighter );
-	setFileType( FileEditor::JSFileType );
-}
-
-JSFileEditor::~JSFileEditor() {
-	delete d;
-}
-
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QIcon JSFileEditor::icon() {
-	return QIcon( ":/images/typejs.png" );
-}
+#endif // __FILETYPEXML_H__

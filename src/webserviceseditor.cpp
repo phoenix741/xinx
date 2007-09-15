@@ -166,7 +166,7 @@ void PrivateWebServicesEditor::store( const QString & paramStr ) {
 
 void PrivateWebServicesEditor::restore( const QString & paramStr ) {
 	m_parent->textEdit()->setPlainText( m_paramValues[ paramStr ] );
-	m_parent->m_view->updateModel();
+	m_parent->updateModel();
 }
 
 /* WebServicesEditor */
@@ -292,7 +292,7 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 		QTextStream in( &file );
 		QApplication::setOverrideCursor( Qt::WaitCursor );
 		m_view->setPlainText( in.readAll() );
-		m_view->updateModel();
+		updateModel();
 	}
 
 	setModified( false );

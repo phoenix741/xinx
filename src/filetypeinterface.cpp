@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,52 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
+// Xinx header
+#include "filetypeinterface.h"
+#include "private/p_filetypeinterface.h"
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
+/* PrivateFileTypeInterface */
 
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
-public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+PrivateFileTypeInterface::PrivateFileTypeInterface( FileTypeInterface * parent ) : m_textEdit( 0 ), m_parent( parent ) {
 	
-private:
-	JSFileEditor * m_parent;
-};
-
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
 }
 
-PrivateJSFileEditor::~PrivateJSFileEditor() {
+PrivateFileTypeInterface::~PrivateFileTypeInterface() {
+	
 }
 
-/* JSFileEditor */
+/* FileTypeInterface */
 
-Q_DECLARE_METATYPE( JSFileEditor );
 
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
-	d = new PrivateJSFileEditor( this );
-	setSyntaxHighlighterType( FileEditor::JSHighlighter );
-	setFileType( FileEditor::JSFileType );
+FileTypeInterface::FileTypeInterface( QTextEdit * parent ) {
+	d = new PrivateFileTypeInterface( this );
+	d->m_textEdit = parent;
 }
 
-JSFileEditor::~JSFileEditor() {
+FileTypeInterface::~FileTypeInterface() {
 	delete d;
 }
 
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
+QTextEdit * FileTypeInterface::textEdit() {
+	return d->m_textEdit;
 }
 
-QIcon JSFileEditor::icon() {
-	return QIcon( ":/images/typejs.png" );
-}

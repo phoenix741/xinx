@@ -35,17 +35,11 @@ public:
 	TextEditor( QWidget * parent = 0 );
 	virtual ~TextEditor();
 
-	virtual void commentSelectedText( bool uncomment = false );
-	virtual void complete();
-
-	virtual QAbstractItemModel * model();
-	
 	int currentColumn();
 	int currentRow();
 	
 	void insertText( const QString & text );
 public slots:
-	virtual void updateModel();
 	void updateFont();
 signals:
 	void modelUpdated( QAbstractItemModel *  model );

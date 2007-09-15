@@ -36,8 +36,7 @@ FORMS += ui/about.ui \
  ui/runsnipet.ui \
  ui/servicesconnection.ui \
  ui/snipetproperty.ui
-HEADERS += src/private/p_fileeditor.h \
- src/aboutdialogimpl.h \
+HEADERS += src/aboutdialogimpl.h \
  src/appsettings.h \
  src/commitmessagedialogimpl.h \
  src/configurationfile.h \
@@ -52,6 +51,10 @@ HEADERS += src/private/p_fileeditor.h \
  src/filecontentdockwidget.h \
  src/filecontentitemmodel.h \
  src/fileeditor.h \
+ src/filetypeinterface.h \
+ src/filetypejs.h \
+ src/filetypexml.h \
+ src/filetypexsl.h \
  src/filewatcher.h \
  src/flattreeview.h \
  src/globals.h \
@@ -69,6 +72,8 @@ HEADERS += src/private/p_fileeditor.h \
  src/private/p_configurationfile.h \
  src/private/p_connectionwebservicesdialogimpl.h \
  src/private/p_filecontentdockwidget.h \
+ src/private/p_fileeditor.h \
+ src/private/p_filetypeinterface.h \
  src/private/p_filewatcher.h \
  src/private/p_mainformimpl.h \
  src/private/p_projectdirectorydockwidget.h \
@@ -123,6 +128,10 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/filecontentdockwidget.cpp \
  src/filecontentitemmodel.cpp \
  src/fileeditor.cpp \
+ src/filetypeinterface.cpp \
+ src/filetypejs.cpp \
+ src/filetypexml.cpp \
+ src/filetypexsl.cpp \
  src/filewatcher.cpp \
  src/flattreeview.cpp \
  src/globals.cpp \

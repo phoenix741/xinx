@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,53 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __P_FILETYPEINTERFACE_H__
+#define __P_FILETYPEINTERFACE_H__
 
-#include "jseditor.h"
-#include "jsfileeditor.h"
+#include "../filetypeinterface.h"
 
-#include <QAbstractItemModel>
-#include <QApplication>
-#include <QMessageBox>
-
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
+class PrivateFileTypeInterface {
 public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
+	PrivateFileTypeInterface( FileTypeInterface * parent );
+	~PrivateFileTypeInterface();
 	
+	QTextEdit * m_textEdit;
 private:
-	JSFileEditor * m_parent;
+	FileTypeInterface * m_parent;
 };
 
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-}
-
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-}
-
-/* JSFileEditor */
-
-Q_DECLARE_METATYPE( JSFileEditor );
-
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
-	d = new PrivateJSFileEditor( this );
-	setSyntaxHighlighterType( FileEditor::JSHighlighter );
-	setFileType( FileEditor::JSFileType );
-}
-
-JSFileEditor::~JSFileEditor() {
-	delete d;
-}
-
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QIcon JSFileEditor::icon() {
-	return QIcon( ":/images/typejs.png" );
-}
+#endif // __P_FILETYPEINTERFACE_H__

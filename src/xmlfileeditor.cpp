@@ -161,6 +161,7 @@ Q_DECLARE_METATYPE( XMLFileEditor );
 XMLFileEditor::XMLFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateXMLFileEditor( this );
 	setSyntaxHighlighterType( FileEditor::XMLHighlighter );
+	setFileType( FileEditor::XMLFileType );
 }
 
 XMLFileEditor::~XMLFileEditor() {
@@ -208,7 +209,7 @@ QIcon XMLFileEditor::icon() {
 Q_DECLARE_METATYPE( XSLFileEditor );
 
 XSLFileEditor::XSLFileEditor( QWidget *parent ) : XMLFileEditor( parent ) {
-	connect( m_view, SIGNAL(hasError(QString)), this, SLOT(setMessage(QString)) );
+	setFileType( FileEditor::XSLFileType );
 }
 
 XSLFileEditor::~XSLFileEditor() {

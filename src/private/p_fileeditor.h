@@ -24,6 +24,10 @@
 // Xinx header
 #include "../fileeditor.h"
 #include "../filewatcher.h"
+#include "../filetypeinterface.h"
+#include "../filetypejs.h"
+#include "../filetypexml.h"
+#include "../filetypexsl.h"
 
 // Qt header
 #include <QObject>
@@ -38,6 +42,9 @@ public:
 	
 	QSyntaxHighlighter * m_syntaxhighlighter;
 	FileEditor::enumHighlighter m_highlighterType;
+	
+	FileTypeInterface * m_interface;
+	FileEditor::enumFileType m_fileType;
 
 	QAction * m_commentAction;
 	QAction * m_uncommentAction;
