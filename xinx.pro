@@ -62,7 +62,6 @@ HEADERS += src/aboutdialogimpl.h \
  src/javascriptfilecontent.h \
  src/javascriptmodelcompleter.h \
  src/javascriptparser.h \
- src/jseditor.h \
  src/jsfileeditor.h \
  src/jshighlighter.h \
  src/kcolorcombo.h \
@@ -104,10 +103,8 @@ HEADERS += src/aboutdialogimpl.h \
  src/webserviceseditor.h \
  src/wsdl.h \
  src/xinxconfig.h \
- src/xmleditor.h \
  src/xmlfileeditor.h \
  src/xmlhighlighter.h \
- src/xsleditor.h \
  src/xsllistview.h \
  src/xslproject.h \
  src/xslmodelcompleter.h
@@ -142,7 +139,6 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/javascriptfilecontent.cpp \
  src/javascriptmodelcompleter.cpp \
  src/javascriptparser.cpp \
- src/jseditor.cpp \
  src/jsfileeditor.cpp \
  src/jshighlighter.cpp \
  src/kcolorcombo.cpp \
@@ -172,10 +168,8 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/webserviceseditor.cpp \
  src/wsdl.cpp \
  src/xinxconfig.cpp \
- src/xmleditor.cpp \
  src/xmlfileeditor.cpp \
  src/xmlhighlighter.cpp \
- src/xsleditor.cpp \
  src/xsllistview.cpp \
  src/xslproject.cpp \
  src/xslmodelcompleter.cpp

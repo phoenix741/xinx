@@ -20,8 +20,7 @@
 
 // Xinx header
 #include "xmlfileeditor.h"
-#include "xmleditor.h"
-#include "xsleditor.h"
+#include "texteditor.h"
 
 // Qt header
 #include <QDomDocument>

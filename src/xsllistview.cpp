@@ -30,7 +30,7 @@
 #include <QIcon>
 #include <QDir>
 
-/* 	JavaScriptParserException */
+/* XMLParserException */
 
 XMLParserException::XMLParserException( const QString & message, int line ) : FileContentException( message, line ) {
 	qDebug() << QObject::tr("Error %1 at line %2").arg( message ).arg( line ) << endl;
@@ -177,7 +177,6 @@ QDomElement XSLModelData::loadFromContent( const QString& content ) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
-		emit hasError( "" );
 		return root;
 	} else {
 		emit childAboutToBeReset();
@@ -200,7 +199,6 @@ int XSLModelData::childCount() {
 			}
 		}
 	} catch( XMLParserException e ) {
-		emit hasError( tr( "Error %1 at %2" ).arg( e.getMessage() ).arg( e.getLine() ) );
 	}
 	return m_child.size();
 };

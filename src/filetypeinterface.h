@@ -42,6 +42,7 @@ public:
 	virtual void complete() = 0;
 signals:
 	void modelUpdated( QAbstractItemModel * model );
+	void canUpdateModel();
 protected:
 	TextEditor * textEdit();
 private:

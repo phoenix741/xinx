@@ -118,7 +118,6 @@ bool PrivateFileTypeJs::eventFilter( QObject *obj, QEvent *event ) {
 		}
 
 		bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
-	
 		const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 
 		if (!c || (ctrlOrShift && e->text().isEmpty()))
@@ -149,9 +148,8 @@ bool PrivateFileTypeJs::eventFilter( QObject *obj, QEvent *event ) {
 		QRect cr = m_parent->textEdit()->cursorRect();
 		cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
 		c->complete(cr); // popup it up!
-		return false;
-	} else
-		return false;
+	}
+	return false;
 }
 
 /* FileTypeJs */

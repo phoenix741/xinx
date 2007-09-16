@@ -81,8 +81,6 @@ public:
 signals:
 	void childReseted();
 	void childAboutToBeReset();
-	void hasError( QString );
-	
 private:
 	XSLModelData * m_parent;
 	enum ElementType m_type;

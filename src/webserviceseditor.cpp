@@ -18,13 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
+#include "texteditor.h"
 #include "globals.h"
 #include "webserviceseditor.h"
-#include "xmleditor.h"
 #include "webservices.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
 
+// Qt header
 #include <QLabel>
 #include <QComboBox>
 #include <QVBoxLayout>
@@ -173,6 +175,8 @@ void PrivateWebServicesEditor::restore( const QString & paramStr ) {
 
 WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateWebServicesEditor( this );
+	setSyntaxHighlighterType( FileEditor::XMLHighlighter );
+	setFileType( FileEditor::XMLFileType );
 	
 	d->m_oldParamValue = QString();
 	

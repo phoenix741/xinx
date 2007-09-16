@@ -18,18 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "globals.h"
 #include "snipetdialog.h"
-#include "xmleditor.h"
-#include "jseditor.h"
 #include "snipetlist.h"
+#include "xmlhighlighter.h"
+#include "jshighlighter.h"
 
+// Qt header
 #include <QApplication>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTextEdit>
 
 /* PrivateSnipetDialogImpl */
 
@@ -69,13 +72,14 @@ void PrivateSnipetDialogImpl::setupUi() {
 	m_parent->m_categoryComboBox->addItems( global.m_snipetList->categories() );
 	
 	QGridLayout * grid1 = new QGridLayout( m_parent->m_templateGroupBox );
+	m_textEdit = new QTextEdit( m_parent->m_templateGroupBox );
 
 	switch( m_snipetType ) {
 	case Snipet::SNIPET_XSL:
-		m_textEdit = new XMLEditor( m_parent->m_templateGroupBox );
+		new XmlHighlighter( m_textEdit );
 		break;
 	case Snipet::SNIPET_JAVASCRIPT:
-		m_textEdit = new JSEditor( m_parent->m_templateGroupBox );
+		new JsHighlighter( m_textEdit );
 		break;
 	}
 	

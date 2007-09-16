@@ -24,8 +24,6 @@
 #include "globals.h"
 #include "xmlhighlighter.h"
 #include "jshighlighter.h"
-#include "xmleditor.h"
-#include "jseditor.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
 #include "texteditor.h"
@@ -166,9 +164,7 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)) );
 	connect( m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
-
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
-
     connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
 
 	m_messageBox->hide();
@@ -626,8 +622,10 @@ void FileEditor::setFileType( FileEditor::enumFileType type ) {
 		d->m_interface = NULL;
 	}
 	
-	if( d->m_interface )
+	if( d->m_interface ) {
 		connect( d->m_interface, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelUpdated(QAbstractItemModel*)) );
+		connect( d->m_interface, SIGNAL(canUpdateModel()), this, SLOT(updateModel()) );
+	}
 }
 
 FileEditor::enumFileType FileEditor::fileType() {

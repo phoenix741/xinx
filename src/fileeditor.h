@@ -166,12 +166,11 @@ public:
 	virtual bool canRedo();
 	virtual bool isModified();
 
-	void updateModel();
 	virtual QAbstractItemModel * model();
 
 	virtual void serialize( QDataStream & stream, bool content );
 	virtual void deserialize( QDataStream & stream );
-public Q_SLOTS : 
+public slots : 
 	virtual void undo();
 	virtual void redo();
 
@@ -234,7 +233,8 @@ public Q_SLOTS :
 	void updateHighlighter();
 
 	virtual void setModified( bool modified );
-Q_SIGNALS:
+
+	void updateModel();
 signals:
 	void mouseHover( const QString &word );
 	void mouseHover( const QPoint &pos, const QString &word );
