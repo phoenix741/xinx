@@ -363,8 +363,8 @@ void WebServicesEditor::serialize( QDataStream & stream, bool content ) {
 	stream << d->m_actionList->currentText();
 	stream << d->m_paramList->currentText();
 	
-	stream << (bool)isModified();
-	stream << (bool)( content && isModified() );
+	stream << (int)isModified();
+	stream << (int)( content && isModified() );
 
 	if( content && isModified() ) {
 		stream << (int) d->m_paramValues.keys().size();

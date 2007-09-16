@@ -84,11 +84,15 @@ private:
 PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 	m_parent = parent;
 
+	m_defaultLang = "FRA";
+	m_defaultNav  = "NAV/MIC";
+
 	m_searchPathList.append( "langue/<lang>/nav/<project>" );
 	m_searchPathList.append( "langue/<lang>/nav" );
 	m_searchPathList.append( "." );
 	m_searchPathList.append( "langue/<lang>" );
 	m_searchPathList.append( "langue" );
+	m_indexOfSpecifiquePath = 0;
 
 	m_specifiquePathName = global.m_config->config().project.defaultProjectPathName;
 	m_projectOptions |= XSLProject::hasSpecifique;

@@ -102,7 +102,6 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiqueProjectPathLineEdit->setText( project->specifiquePathName() );
-	//m_specifiquePathLineEdit->setText( project->specifPath() );
 	m_prefixLineEdit->setText( project->specifiquePrefix() );
 	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
 	m_webServicesCheckBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
@@ -125,12 +124,21 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	}
 	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
 
+	indexDefaultSearchPath = project->indexOfSpecifiquePath();
+	QString defSearchPath = project->searchPathList().at( indexDefaultSearchPath );
 	m_searchPathList->clear();
 	foreach( QString link, project->searchPathList() ) {
-		m_searchPathList->addItem( link );
+		QListWidgetItem * item = new QListWidgetItem( link );
+		if( link == defSearchPath ) {
+			QFont font = item->font();
+			font.setBold( true );
+			item->setFont( font );
+		}
+		m_searchPathList->addItem( item );
 	}
 	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
 	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
+	m_specifiquePathLabel->setText( defSearchPath );
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
@@ -139,7 +147,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setDefaultLang( m_langComboBox->currentText() );
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
 	project->setSpecifiquePathName( m_specifiqueProjectPathLineEdit->text() );
-	//project->setSpecifPath( m_specifiquePathLineEdit->text() );
+	project->setIndexOfSpecifiquePath( indexDefaultSearchPath );
 	project->setSpecifiquePrefix( m_prefixLineEdit->text() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
 	XSLProject::ProjectOptions options;
@@ -237,10 +245,11 @@ void ProjectPropertyImpl::on_m_searchPathBtnDef_clicked() {
 			font.setBold( false );
 			item->setFont( font );
 		}
-		defaultSearchPath = item->text();
+		indexDefaultSearchPath = m_searchPathList->row( item );
 		QFont font = item->font();
 		font.setBold( true );
 		item->setFont( font );
+		m_specifiquePathLabel->setText( item->text() );
 	}
 }
 

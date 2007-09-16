@@ -38,7 +38,7 @@ private:
 	void updateSpecifiquePath();
 	void updateOkButton();
 	ThreadedConfigurationFile * m_versionInstance;
-	QString defaultSearchPath;
+	int indexDefaultSearchPath;
 private slots:
 	void on_m_servicesLineEdit_textChanged(QString );
 	void on_m_searchPathBtnDef_clicked();

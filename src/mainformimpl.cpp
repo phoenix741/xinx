@@ -1399,10 +1399,11 @@ bool MainformImpl::closeAllFile() {
 }
 
 void MainformImpl::newProject() {
+	XSLProject * project = new XSLProject();
 	ProjectPropertyImpl property ( this );
+	property.loadFromProject( project ); // Load an empty project;	
 	if( ! property.exec() ) return;
 		
-	XSLProject * project = new XSLProject();
 	property.saveToProject( project );
 
 	QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
