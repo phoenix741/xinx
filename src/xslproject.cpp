@@ -84,11 +84,11 @@ private:
 PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 	m_parent = parent;
 
-	m_searchPathList.append( "./langues/<lang>/nav/<project>" );
-	m_searchPathList.append( "./langues/<lang>/nav" );
-	m_searchPathList.append( "./" );
-	m_searchPathList.append( "./langues/<lang>" );
-	m_searchPathList.append( "./langues" );
+	m_searchPathList.append( "langue/<lang>/nav/<project>" );
+	m_searchPathList.append( "langue/<lang>/nav" );
+	m_searchPathList.append( "." );
+	m_searchPathList.append( "langue/<lang>" );
+	m_searchPathList.append( "langue" );
 
 	m_specifiquePathName = global.m_config->config().project.defaultProjectPathName;
 	m_projectOptions |= XSLProject::hasSpecifique;
