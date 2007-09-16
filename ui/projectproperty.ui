@@ -47,7 +47,67 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="2" column="1" >
+          <item row="2" column="2" >
+           <widget class="QToolButton" name="m_logButton" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_12" >
+            <property name="text" >
+             <string>Project &amp;Log :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_logLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>Project &amp;Directory :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_projectLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_9" >
+            <property name="text" >
+             <string>Project &amp;RCS :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_projectRCSComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>Project &amp;Name :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_nameLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLineEdit" name="m_nameLineEdit" />
+          </item>
+          <item row="1" column="2" >
+           <widget class="QToolButton" name="m_projectButton" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="DirectoryEdit" name="m_projectLineEdit" />
+          </item>
+          <item row="3" column="1" >
            <widget class="QComboBox" name="m_projectRCSComboBox" >
             <item>
              <property name="text" >
@@ -66,48 +126,8 @@
             </item>
            </widget>
           </item>
-          <item row="1" column="1" >
-           <widget class="DirectoryEdit" name="m_projectLineEdit" />
-          </item>
-          <item row="1" column="2" >
-           <widget class="QToolButton" name="m_projectButton" >
-            <property name="icon" >
-             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="m_nameLineEdit" />
-          </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label_6" >
-            <property name="text" >
-             <string>Project &amp;Name :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_nameLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_9" >
-            <property name="text" >
-             <string>Project &amp;RCS :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_projectRCSComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_3" >
-            <property name="text" >
-             <string>Project &amp;Directory :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_projectLineEdit</cstring>
-            </property>
-           </widget>
+          <item row="2" column="1" >
+           <widget class="DirectoryEdit" name="m_logLineEdit" />
           </item>
          </layout>
         </widget>

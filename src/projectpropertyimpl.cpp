@@ -105,6 +105,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_prefixLineEdit->setText( project->specifiquePrefix() );
 	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
 	m_webServicesCheckBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
+	m_logLineEdit->setText( project->logProjectDirectory() );
 	
 	switch( project->projectRCS() ) {
 	case XSLProject::NORCS :
@@ -150,6 +151,8 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setIndexOfSpecifiquePath( indexDefaultSearchPath );
 	project->setSpecifiquePrefix( m_prefixLineEdit->text() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
+	project->setLogProjectDirectory( m_logLineEdit->text() );
+
 	XSLProject::ProjectOptions options;
 	if( ! m_standardProjectCheckBox->isChecked() )
 		options |= XSLProject::hasSpecifique;
@@ -257,4 +260,15 @@ void ProjectPropertyImpl::on_m_servicesLineEdit_textChanged( QString text ) {
 	QListWidgetItem * item = m_webServiceList->currentItem();
 	if( item ) 
 		item->setText( text );
+}
+
+void ProjectPropertyImpl::on_m_logButton_clicked() {
+	QString value = m_logLineEdit->text();
+	if( value.isEmpty() ) 
+		value = global.m_config->config().project.defaultPath;
+		
+	value = QFileDialog::getExistingDirectory( this, tr("Log path"), value );
+	if( ! value.isEmpty() ) {
+		m_logLineEdit->setText( value );		
+	}
 }

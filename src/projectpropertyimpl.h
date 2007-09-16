@@ -40,6 +40,7 @@ private:
 	ThreadedConfigurationFile * m_versionInstance;
 	int indexDefaultSearchPath;
 private slots:
+	void on_m_logButton_clicked();
 	void on_m_servicesLineEdit_textChanged(QString );
 	void on_m_searchPathBtnDef_clicked();
 	void on_m_relativeLineEditPath_textChanged(QString );

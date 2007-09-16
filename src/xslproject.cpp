@@ -74,6 +74,7 @@ public:
 	QList<QByteArray> m_sessions;
 	QString m_projectName, m_defaultLang, m_defaultNav;
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
+	QString m_logProjectDirectory;
 	XSLProject::ProjectOptions m_projectOptions;
 	XSLProject::enumProjectRCS m_projectRCS;
 	
@@ -112,6 +113,7 @@ PrivateXSLProject& PrivateXSLProject::operator=( const PrivateXSLProject& p ) {
 	m_specifiquePrefix		= p.m_specifiquePrefix;
 	m_projectOptions		= p.m_projectOptions;
 	m_projectRCS			= p.m_projectRCS;
+	m_logProjectDirectory   = p.m_logProjectDirectory;
 	
 	return *this;
 }
@@ -366,6 +368,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
 		d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
 		d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
+		d->m_logProjectDirectory = PrivateXSLProject::getValue( document, "logProjectDirectory" );
 		break;
 	}
 
@@ -409,6 +412,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	PrivateXSLProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
 	PrivateXSLProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
 	PrivateXSLProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
+	PrivateXSLProject::setValue( document, "logProjectDirectory", d->m_logProjectDirectory );
 
 	// Open the file
 	static const int IndentSize = 3;
@@ -527,4 +531,12 @@ QStringList & XSLProject::lastOpenedFile() {
 
 QList<QByteArray> & XSLProject::sessionsEditor() {
 	return d->m_sessions;
+}
+
+void XSLProject::setLogProjectDirectory( const QString & value ) {
+	d->m_logProjectDirectory = value;
+}
+
+const QString & XSLProject::logProjectDirectory() {
+	return d->m_logProjectDirectory;
 }

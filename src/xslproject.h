@@ -253,6 +253,15 @@ public:
 	QString specifiquePathName(); 
 	
 	/*!
+	 * Set the log projet directory with the new \e value.
+	 */
+	void setLogProjectDirectory( const QString & value );
+	/*!
+	 * Return the log project directory.
+	 */
+	const QString & logProjectDirectory();
+	
+	/*!
 	 * Get the specifique prefix.
 	 * \return the specifique prefix.
 	 * \sa setSpecifPrefix()
