@@ -29,7 +29,6 @@
 #include <QRect>
 #include <QAbstractItemView>
 #include <QScrollBar>
-#include <QKeyEvent>
 
 // Define
 #define EOW "~!@$#%^&*()+{}|\"<>?,/;'[]\\="
@@ -93,63 +92,61 @@ QString PrivateFileTypeJs::currentFunction() {
 		return QString();
 }
 
-bool PrivateFileTypeJs::eventFilter( QObject *obj, QEvent *event ) {
-	if( ( obj == m_parent->textEdit() ) && ( event->type() == QEvent::KeyPress ) ) {
-		QKeyEvent * e = static_cast<QKeyEvent*>( event );
-		
-		if( ( global.m_config->config().editor.completionLevel == 0 ) || (! m_modelCompleter) ) 
-			return false;
-
-		QCompleter * c = m_completer;
-
-		if ( c && c->popup()->isVisible() ) {
-			// The following keys are forwarded by the completer to the widget
-			switch (e->key()) {
-			case Qt::Key_Enter:
-			case Qt::Key_Return:
-			case Qt::Key_Escape:
-			case Qt::Key_Tab:
-			case Qt::Key_Backtab:
-				e->ignore();
-				return true; // let the completer do default behavior
-			default:
-				break;
-			}
-		}
-
-		bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
-		const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-
-		if (!c || (ctrlOrShift && e->text().isEmpty()))
-			return false;
-
-		static QString eow(EOW); // end of word
-		bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-		QString completionPrefix = m_parent->textEdit()->textUnderCursor( m_parent->textEdit()->textCursor() );
-		if( ( e->text().size() > 0 ) && e->text().at( 0 ).isLetter() ) {
-			completionPrefix += e->text();
-		} else if ( e->key() == Qt::Key_Backspace ) {
-			completionPrefix = completionPrefix.left( completionPrefix.length() - 1 );
-		}
-
-		if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-			c->popup()->hide();
-			return false;
-		}
-
-		if ( completionPrefix != c->completionPrefix() ) {
-			QString fct = currentFunction();
-				if( m_modelCompleter )
-				m_modelCompleter->setFilter( fct );
-			c->setCompletionPrefix( completionPrefix );
-			c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
-		}
-
-		QRect cr = m_parent->textEdit()->cursorRect();
-		cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-		c->complete(cr); // popup it up!
+void PrivateFileTypeJs::keyPressEvent( QKeyEvent * e ) {
+	if( ( global.m_config->config().editor.completionLevel == 0 ) || (! m_modelCompleter) ) {
+		m_parent->textEdit()->keyPressExecute( e );
+		return;
 	}
-	return false;
+
+	QCompleter * c = m_completer;
+
+	if ( c && c->popup()->isVisible() ) {
+		// The following keys are forwarded by the completer to the widget
+		switch (e->key()) {
+		case Qt::Key_Enter:
+		case Qt::Key_Return:
+		case Qt::Key_Escape:
+		case Qt::Key_Tab:
+		case Qt::Key_Backtab:
+			e->ignore();
+			m_parent->textEdit()->keyPressSkip( e );
+			return; // let the completer do default behavior
+		default:
+			break;
+		}
+	}
+
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+	if( !c || !isShortcut )
+		m_parent->textEdit()->keyPressExecute( e );
+	else
+		m_parent->textEdit()->keyPressSkip( e );
+	
+	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+
+	if (!c || (ctrlOrShift && e->text().isEmpty()))
+		return;
+
+	static QString eow(EOW); // end of word
+	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+	QString completionPrefix = m_parent->textEdit()->textUnderCursor( m_parent->textEdit()->textCursor() );
+
+	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
+		c->popup()->hide();
+		return;
+	}
+
+	if ( completionPrefix != c->completionPrefix() ) {
+		QString fct = currentFunction();
+			if( m_modelCompleter )
+			m_modelCompleter->setFilter( fct );
+		c->setCompletionPrefix( completionPrefix );
+		c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
+	}
+
+	QRect cr = m_parent->textEdit()->cursorRect();
+	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+	c->complete(cr); // popup it up!
 }
 
 /* FileTypeJs */
@@ -163,8 +160,7 @@ FileTypeJs::FileTypeJs( TextEditor * parent ) : FileTypeInterface( parent ) {
 	d->m_completer->setCaseSensitivity( Qt::CaseInsensitive );
 	d->m_completer->setCompletionRole( Qt::DisplayRole );
 	connect( d->m_completer, SIGNAL(activated(const QModelIndex&)), d, SLOT(insertCompletion(const QModelIndex&)) );
-	
-	parent->installEventFilter( d );
+	connect( parent, SIGNAL(execKeyPressEvent(QKeyEvent*)), d, SLOT(keyPressEvent(QKeyEvent*)) );
 }
 
 FileTypeJs::~FileTypeJs() {

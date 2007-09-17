@@ -31,6 +31,7 @@
 #include <QString>
 #include <QCompleter>
 #include <QModelIndex>
+#include <QKeyEvent>
 
 class PrivateFileTypeJs : public QObject {
 	Q_OBJECT
@@ -45,8 +46,8 @@ public:
 	
 	QString currentFunction();
 
-	virtual bool eventFilter( QObject *obj, QEvent *event );
 public slots:
+	void keyPressEvent( QKeyEvent *event );
 	void insertCompletion( const QModelIndex& index );
 private:
 	FileTypeJs * m_parent;

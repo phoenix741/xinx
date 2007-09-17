@@ -41,11 +41,22 @@ public:
 	void insertText( const QString & text );
 
 	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
+	
+	void keyPressExecute( QKeyEvent * e );
+	void keyPressSkip( QKeyEvent * e );
 public slots:
 	void updateFont();
 signals:
 	void needInsertSnipet( QString snipet );
 	void modelUpdated( QAbstractItemModel * model );
+	
+	/*!
+	 * Signal emited when the key press event is emited (used instead of installEvent because compatibility
+	 * problemes between Qt4.2 and Qt4.3.
+	 * If the keyPressEvent musn't be executed, the flag keyPressExecute must be set to false.
+	 */
+	void execKeyPressEvent( QKeyEvent * e );
+	
 protected:
     virtual void paintEvent ( QPaintEvent * event );
 	virtual void keyPressEvent(QKeyEvent *e);
@@ -60,5 +71,6 @@ private:
     QPixmap m_tabPixmap; 
 	QPixmap m_spacePixmap; 	
 	QColor m_currentLineColor;
+	bool m_keyPressExecute;
 };
 #endif // __TEXTEDITOR_H__

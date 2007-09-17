@@ -27,7 +27,6 @@
 #include "xinxconfig.h"
 
 // Qt header
-#include <QKeyEvent>
 #include <QDomElement>
 #include <QTextBlock>
 #include <QAbstractItemView>
@@ -86,113 +85,109 @@ PrivateFileTypeXsl::~PrivateFileTypeXsl() {
 	emit m_parent->modelUpdated( NULL );
 }
 
-bool PrivateFileTypeXsl::eventFilter( QObject *obj, QEvent *event ) {
-	if( ( obj == m_parent->textEdit() ) && ( event->type() == QEvent::KeyPress ) ) {
-		QKeyEvent * e = static_cast<QKeyEvent*>( event );
-
-		if( ( global.m_config->config().editor.completionLevel == 0 ) ) 
-			return false;
-			
-		QCompleter * c = currentCompleter( m_parent->textEdit()->textCursor() );
-		
-		if (c && c->popup()->isVisible()) {
-			// The following keys are forwarded by the completer to the widget
-			switch (e->key()) {
-			case Qt::Key_Enter:
-	        case Qt::Key_Return:
-	        case Qt::Key_Escape:
-	        case Qt::Key_Tab:
-	        case Qt::Key_Backtab:
-				e->ignore();
-				return true; // let the completer do default behavior
-			default:
-	            break;
-	        }
-	     }
-	
-		bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
-			
-		if(!e->text().isEmpty()) {
-			if( ( e->text().right(1) == ">" ) && ( global.m_config->config().editor.completionLevel >= 2 ) ) {
-				QTextCursor tc( m_parent->textEdit()->textCursor() );
-				tc.insertText( ">" );
-				tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
-				tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
-			
-				QString selected = tc.selectedText();
-	
-				tc.movePosition( QTextCursor::NextCharacter );
-		
-				if( isEditBalise( m_parent->editPosition( tc ) ) && selected != "/>" ){
-					QString name = m_parent->m_nodeName;
-					if( ( ! name.isEmpty() ) && ( name.at(0) != '/' ) ) {
-						tc.movePosition( QTextCursor::NextCharacter );
-						int position = m_parent->textEdit()->textCursor().position();
-						int newPosition = insertCompletionBalises( tc, name );
-						if( newPosition == -1 ) 
-							tc.setPosition(position);
-						m_parent->textEdit()->setTextCursor( tc );
-					}
-				}
-				c->popup()->hide();
-				emit m_parent->canUpdateModel();
-				return true;
-			} else if( e->text().right(1) == "=" && global.m_config->config().editor.completionLevel >= 2 ) { 
-				m_parent->textEdit()->textCursor().insertText( "=" );
-				QTextCursor tc( m_parent->textEdit()->textCursor() );
-				QTextCursor tc2( m_parent->textEdit()->textCursor() );
-				tc2.movePosition( QTextCursor::PreviousCharacter );
-				if( m_parent->editPosition( tc2 ) == FileTypeXsl::cpEditParamName ) {
-					tc.deletePreviousChar();
-					insertCompletionValue( tc, m_parent->m_nodeName, m_parent->m_paramName );
-					m_parent->textEdit()->setTextCursor( tc );
-				}
-				c->popup()->hide();
-				return true;
-			} else if( e->text().right(1) == " " && global.m_config->config().editor.completionLevel >= 3 ) { 
-				m_parent->textEdit()->textCursor().insertText( " " );
-				QTextCursor tc( m_parent->textEdit()->textCursor() );
-				QTextCursor tc2( m_parent->textEdit()->textCursor() );
-				tc2.movePosition( QTextCursor::PreviousCharacter );
-				if( m_parent->editPosition( tc2 ) == FileTypeXsl::cpEditNodeName ) {
-					tc.deletePreviousChar();
-					if( insertCompletionParam( tc, m_parent->m_nodeName ) == -1 )
-						tc.insertText( " " );
-					m_parent->textEdit()->setTextCursor( tc );
-				}
-				c->popup()->hide();
-				return true;
-			}
-		}
-	
-		const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-		if (!c || (ctrlOrShift && e->text().isEmpty()))
-			return false;
-	
-		static QString eow(EOW); // end of word
-		bool hasModifier = (e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ));// && !ctrlOrShift;
-		QString completionPrefix = m_parent->textEdit()->textUnderCursor( m_parent->textEdit()->textCursor() );
-		if( ( e->text().size() > 0 ) && e->text().at( 0 ).isLetter() ) {
-			completionPrefix += e->text();
-		} else if ( e->key() == Qt::Key_Backspace ) {
-			completionPrefix = completionPrefix.left( completionPrefix.length() - 1 );
-		}
-	
-		if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
-			c->popup()->hide();
-			return false;
-		}
-	
-		if (completionPrefix != c->completionPrefix()) {
-			c->setCompletionPrefix(completionPrefix);
-			c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
-		}
-	
-		QRect cr = m_parent->textEdit()->cursorRect();
-		cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-		c->complete(cr); // popup it up!
+void PrivateFileTypeXsl::keyPressEvent( QKeyEvent *e ) {
+	if( ( global.m_config->config().editor.completionLevel == 0 ) ) {
+		m_parent->textEdit()->keyPressExecute( e );
+		return;
 	}
-	return false;
+		
+	QCompleter * c = currentCompleter( m_parent->textEdit()->textCursor() );
+	
+	if (c && c->popup()->isVisible()) {
+		// The following keys are forwarded by the completer to the widget
+		switch (e->key()) {
+		case Qt::Key_Enter:
+        case Qt::Key_Return:
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+        case Qt::Key_Backtab:
+			e->ignore();
+			m_parent->textEdit()->keyPressSkip( e );
+			return; // let the completer do default behavior
+		default:
+            break;
+        }
+     }
+
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+	if( !c || !isShortcut )
+		m_parent->textEdit()->keyPressExecute( e );
+	else
+		m_parent->textEdit()->keyPressSkip( e );
+				
+	if(!e->text().isEmpty()) {
+		if( ( e->text().right(1) == ">" ) && ( global.m_config->config().editor.completionLevel >= 2 ) ) {
+			QTextCursor tc( m_parent->textEdit()->textCursor() );
+			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
+			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
+		
+			QString selected = tc.selectedText();
+
+			tc.movePosition( QTextCursor::NextCharacter );
+	
+			if( isEditBalise( m_parent->editPosition( tc ) ) && selected != "/>" ){
+				QString name = m_parent->m_nodeName;
+				if( ( ! name.isEmpty() ) && ( name.at(0) != '/' ) ) {
+					tc.movePosition( QTextCursor::NextCharacter );
+					int position = m_parent->textEdit()->textCursor().position();
+					int newPosition = insertCompletionBalises( tc, name );
+					if( newPosition == -1 ) 
+						tc.setPosition(position);
+					m_parent->textEdit()->setTextCursor( tc );
+				}
+			}
+			c->popup()->hide();
+			emit m_parent->canUpdateModel();
+			return;
+		} else if( e->text().right(1) == "=" && global.m_config->config().editor.completionLevel >= 2 ) { 
+			QTextCursor tc( m_parent->textEdit()->textCursor() );
+			QTextCursor tc2( m_parent->textEdit()->textCursor() );
+			tc2.movePosition( QTextCursor::PreviousCharacter );
+			if( m_parent->editPosition( tc2 ) == FileTypeXsl::cpEditParamName ) {
+				tc.deletePreviousChar();
+				insertCompletionValue( tc, m_parent->m_nodeName, m_parent->m_paramName );
+				m_parent->textEdit()->setTextCursor( tc );
+			}
+			if( c )
+				c->popup()->hide();
+			return;
+		} else if( e->text().right(1) == " " && global.m_config->config().editor.completionLevel >= 3 ) { 
+			QTextCursor tc( m_parent->textEdit()->textCursor() );
+			QTextCursor tc2( m_parent->textEdit()->textCursor() );
+			tc2.movePosition( QTextCursor::PreviousCharacter );
+			if( m_parent->editPosition( tc2 ) == FileTypeXsl::cpEditNodeName ) {
+				tc.deletePreviousChar();
+				if( insertCompletionParam( tc, m_parent->m_nodeName ) == -1 )
+					tc.insertText( " " );
+				m_parent->textEdit()->setTextCursor( tc );
+			}
+			if( c )
+				c->popup()->hide();
+			return;
+		}
+	}
+
+	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+	if (!c || (ctrlOrShift && e->text().isEmpty()))
+		return;
+
+	static QString eow(EOW); // end of word
+	bool hasModifier = (e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ));// && !ctrlOrShift;
+	QString completionPrefix = m_parent->textEdit()->textUnderCursor( m_parent->textEdit()->textCursor() );
+
+	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
+		c->popup()->hide();
+		return;
+	}
+
+	if (completionPrefix != c->completionPrefix()) {
+		c->setCompletionPrefix(completionPrefix);
+		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+	}
+
+	QRect cr = m_parent->textEdit()->cursorRect();
+	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+	c->complete(cr); // popup it up!
 }
 
 void PrivateFileTypeXsl::insertCompletion( const QModelIndex& index ) {
@@ -360,7 +355,7 @@ QCompleter * PrivateFileTypeXsl::currentCompleter( const QTextCursor & cursor ) 
 FileTypeXsl::FileTypeXsl( TextEditor * parent ) : FileTypeXml( parent ) {
 	d = new PrivateFileTypeXsl( this );
 
-	parent->installEventFilter( d );
+	connect( parent, SIGNAL(execKeyPressEvent(QKeyEvent*)), d, SLOT(keyPressEvent(QKeyEvent*)) );
 }
 
 FileTypeXsl::~FileTypeXsl() {

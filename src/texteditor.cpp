@@ -115,9 +115,9 @@ int TextEditor::currentRow() {
 	return tc.blockNumber() + 1;
 }
 
-void TextEditor::keyPressEvent( QKeyEvent *e ) {
+void TextEditor::keyPressExecute( QKeyEvent * e ) {
 	bool isShortcut = ( (e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space ); // CTRL+Space
-		
+	
 	if ( ( e->key() == Qt::Key_Home ) && ( e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::NoModifier ) ) {
 		key_home( e->modifiers() == Qt::ShiftModifier );
 		e->accept();
@@ -131,6 +131,21 @@ void TextEditor::keyPressEvent( QKeyEvent *e ) {
 		e->accept();
 	} else
 		QTextEdit::keyPressEvent( e );
+	m_keyPressExecute = false;
+}
+
+void TextEditor::keyPressSkip( QKeyEvent * e ) {
+	Q_UNUSED( e );
+	m_keyPressExecute = false;
+}
+
+void TextEditor::keyPressEvent( QKeyEvent * e ) {
+	m_keyPressExecute = true;
+	emit execKeyPressEvent( e );
+	
+	if( m_keyPressExecute ) {
+		keyPressExecute( e );
+	}
 }
 
 void TextEditor::key_enter() {
