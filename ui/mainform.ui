@@ -148,6 +148,9 @@
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="m_projectToolBar" >
+   <property name="windowTitle" >
+    <string>Project Tool Bar</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>

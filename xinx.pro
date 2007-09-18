@@ -35,7 +35,8 @@ FORMS += ui/about.ui \
  ui/resultatServices.ui \
  ui/runsnipet.ui \
  ui/servicesconnection.ui \
- ui/snipetproperty.ui
+ ui/snipetproperty.ui \
+ ui/xmlpresentationwidget.ui
 HEADERS += src/aboutdialogimpl.h \
  src/appsettings.h \
  src/commitmessagedialogimpl.h \
@@ -81,6 +82,7 @@ HEADERS += src/aboutdialogimpl.h \
  src/private/p_rcs_cvs.h \
  src/private/p_threadedconfigurationfile.h \
  src/private/p_uniqueapplication.h \
+ src/private/p_xmlpresentationdockwidget.h \
  src/projectdirectorydockwidget.h \
  src/projectpropertyimpl.h \
  src/rcs.h \
@@ -105,6 +107,7 @@ HEADERS += src/aboutdialogimpl.h \
  src/xinxconfig.h \
  src/xmlfileeditor.h \
  src/xmlhighlighter.h \
+ src/xmlpresentationdockwidget.h \
  src/xsllistview.h \
  src/xslmodelcompleter.h \
  src/xslproject.h
@@ -170,6 +173,7 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xinxconfig.cpp \
  src/xmlfileeditor.cpp \
  src/xmlhighlighter.cpp \
+ src/xmlpresentationdockwidget.cpp \
  src/xsllistview.cpp \
  src/xslmodelcompleter.cpp \
  src/xslproject.cpp

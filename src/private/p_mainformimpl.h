@@ -25,6 +25,7 @@
 #include "../mainformimpl.h"
 #include "../filecontentdockwidget.h"
 #include "../projectdirectorydockwidget.h"
+#include "../xmlpresentationdockwidget.h"
 #include "../globals.h"
 #include "../replacedialogimpl.h"
 #include "../rcslogdialogimpl.h"
@@ -84,6 +85,7 @@ public:
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
 	RCSLogDockWidget * m_rcslogDock;
+	XmlPresentationDockWidget * m_xmlpresentationdock;
 	
 	// RCS
 	bool m_rcsExecute, m_rcsVisible;

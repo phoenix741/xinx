@@ -18,30 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_FILECONTENTDOCKWIDGET_H__
-#define __P_FILECONTENTDOCKWIDGET_H__
+#ifndef __P_XMLPRESENTATIONDOCKWIDGET_H__
+#define __P_XMLPRESENTATIONDOCKWIDGET_H__
 
 // Xinx header
-#include "../filecontentdockwidget.h"
+#include "../xmlpresentationdockwidget.h"
+#include "ui_xmlpresentationwidget.h"
 
 // Qt header
-#include <QTreeView>
-#include <QAbstractItemModel>
-#include <QSortFilterProxyModel>
 
-class PrivateFileContentDockWidget : public QObject {
+class PrivateXmlPresentationDockWidget : public QObject {
 	Q_OBJECT
 public:
-	PrivateFileContentDockWidget( FileContentDockWidget * parent );
-	~PrivateFileContentDockWidget();
+	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
+	~PrivateXmlPresentationDockWidget();
 	
-	QTreeView * m_contentTreeView;
-	QAbstractItemModel * m_model;
-	QSortFilterProxyModel * m_sortModel;
+	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
+	QString m_logPath;
+	
+	void open( const QString& filename );
 public slots:
-	void contentTreeViewDblClick( QModelIndex index );
+	void initXmlPresentationCombo();
+	void presentationActivated( int index );
 private:
-	FileContentDockWidget * m_parent;
+	XmlPresentationDockWidget * m_parent;
 };
 
-#endif // __P_FILECONTENTDOCKWIDGET_H__
+#endif // __P_XMLPRESENTATIONDOCKWIDGET_H__

@@ -18,30 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_FILECONTENTDOCKWIDGET_H__
-#define __P_FILECONTENTDOCKWIDGET_H__
+#ifndef __XMLPRESENTATIONDOCKWIDGET_H__
+#define __XMLPRESENTATIONDOCKWIDGET_H__
 
-// Xinx header
-#include "../filecontentdockwidget.h"
+#include <QDockWidget>
+#include <QString>
 
-// Qt header
-#include <QTreeView>
-#include <QAbstractItemModel>
-#include <QSortFilterProxyModel>
+class PrivateXmlPresentationDockWidget;
 
-class PrivateFileContentDockWidget : public QObject {
+/*!
+ * This dock contains a list of XMLPresentationFile founded in the log directory.
+ * The log directory can be modified, and the presentation file can be choosen.
+ * Some feature as drag & drop must be added in future.
+ */
+class XmlPresentationDockWidget : public QDockWidget {
 	Q_OBJECT
 public:
-	PrivateFileContentDockWidget( FileContentDockWidget * parent );
-	~PrivateFileContentDockWidget();
-	
-	QTreeView * m_contentTreeView;
-	QAbstractItemModel * m_model;
-	QSortFilterProxyModel * m_sortModel;
-public slots:
-	void contentTreeViewDblClick( QModelIndex index );
+	XmlPresentationDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	XmlPresentationDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	virtual ~XmlPresentationDockWidget();
 private:
-	FileContentDockWidget * m_parent;
+	PrivateXmlPresentationDockWidget * d;
+	friend class PrivateXmlPresentationDockWidget;
 };
 
-#endif // __P_FILECONTENTDOCKWIDGET_H__
+
+#endif // __XMLPRESENTATIONDOCKWIDGET_H__

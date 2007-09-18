@@ -121,6 +121,13 @@ void PrivateMainformImpl::createDockWidget() {
 	action = m_rcslogDock->toggleViewAction();
 	action->setShortcut( tr("Alt+3") );
 	m_parent->m_windowsMenu->addAction( action ); 
+	
+	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), m_parent );
+	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
+	m_parent->addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
+	action = m_xmlpresentationdock->toggleViewAction();
+	action->setShortcut( tr("Alt+4") );
+	m_parent->m_windowsMenu->addAction( action );
 }
 
 void PrivateMainformImpl::createSubMenu() {
