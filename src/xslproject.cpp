@@ -362,6 +362,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 			
 		path = QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( PrivateXSLProject::getValue( document, "specifique" ) );
 		d->m_searchPathList.append( path );
+		d->m_indexOfSpecifiquePath = d->m_searchPathList.size() - 1;
 		break;
 	case XINX_PROJECT_VERSION_2:
 		d->m_searchPathList = PrivateXSLProject::loadList( document, "paths", "path" );

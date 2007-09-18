@@ -34,7 +34,6 @@ PrivateFileTypeInterface::~PrivateFileTypeInterface() {
 
 /* FileTypeInterface */
 
-
 FileTypeInterface::FileTypeInterface( TextEditor * parent ) {
 	d = new PrivateFileTypeInterface( this );
 	d->m_textEdit = parent;

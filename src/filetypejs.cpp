@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 // Xinx header 
-#include "texteditor.h"
 #include "filetypejs.h"
 #include "private/p_filetypejs.h"
+#include "texteditor.h"
 #include "globals.h"
 #include "xinxconfig.h"
 
@@ -57,8 +57,9 @@ void PrivateFileTypeJs::insertCompletion( const QModelIndex& index ) {
 	QString completion = c->completionModel()->data( index ).toString(),
 			prefix     = c->completionPrefix();
 	
-	tc.movePosition( QTextCursor::EndOfWord );
-	for( int i = 0 ; i < prefix.length() ; i++ ) tc.deletePreviousChar();
+	m_parent->textEdit()->textUnderCursor( tc, true );
+	//tc.movePosition( QTextCursor::EndOfWord );
+	//for( int i = 0 ; i < prefix.length() ; i++ ) tc.deletePreviousChar();
 	tc.insertText( completion );
 
 	m_parent->textEdit()->setTextCursor( tc );
