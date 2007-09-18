@@ -92,6 +92,9 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Save project with session
 	m_parent->m_saveSessionCheckBox->setChecked( m_config.config().project.saveWithSessionByDefault );
 	
+	// Close the version management log automaticaly.
+	m_parent->m_closeLogCheckBox->setChecked( m_config.config().project.closeVersionManagementLog );
+	
 	// Default project directory
 	m_parent->m_projectPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().project.defaultPath ) );
 	
@@ -181,6 +184,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Save project with session
 	m_config.config().project.saveWithSessionByDefault = m_parent->m_saveSessionCheckBox->isChecked();
 	
+	// Close the version management log automaticaly.
+	m_config.config().project.closeVersionManagementLog = m_parent->m_closeLogCheckBox->isChecked();
+
 	// Default project directory
 	m_config.config().project.defaultPath = QDir::fromNativeSeparators( m_parent->m_projectPathLineEdit->text() );
 	

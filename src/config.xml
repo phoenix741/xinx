@@ -16,6 +16,7 @@
 		<value name="Alert when saving Standard File" type="bool" default="yes"/>
 		<value name="Recent Project Files" type="stringlist"/>
 		<value name="Default Project Path Name" type="string" default="projet"/>
+		<value name="Close Version Management Log" type="bool" default="true"/>
 	</type>
 	<type name="CVS"> 
 		<value name="Progress Messages" type="string" default="-q"/>

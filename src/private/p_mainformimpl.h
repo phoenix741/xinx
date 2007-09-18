@@ -38,6 +38,7 @@
 #include <QAction>
 #include <QHash>
 #include <QTextCursor>
+#include <QTimer>
 
 class PrivateMainformImpl : public QObject {
 	Q_OBJECT
@@ -85,8 +86,9 @@ public:
 	RCSLogDockWidget * m_rcslogDock;
 	
 	// RCS
-	bool m_rcsExecute;
+	bool m_rcsExecute, m_rcsVisible;
 	QString m_headContent, m_compareFileName;
+	QTimer * m_timer;
 	
 	// Label text
 	QLabel * m_editorPosition;
@@ -154,6 +156,9 @@ public slots:
 	void selectedCompare();
 	void rcsLogTerminated();
 	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
+	
+	// Log timer
+	void logTimeout();
 
 	// Windows
 	void nextTab();

@@ -553,47 +553,10 @@ p, li { white-space: pre-wrap; }
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item row="2" column="2" >
-           <widget class="QToolButton" name="m_changeProjectPathBtn" >
-            <property name="icon" >
-             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="1" >
-           <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
+           <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
             <property name="whatsThis" >
-             <string>This is the path where specifique is stored in client project mode.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" >
-           <widget class="QLabel" name="label_11" >
-            <property name="text" >
-             <string>Default &amp;specifique path name :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_lineEditDefaultProjectPathName</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_2" >
-            <property name="text" >
-             <string>&amp;Default project directory :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_projectPathLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="3" >
-           <widget class="QCheckBox" name="m_alertStandardCheckBox" >
-            <property name="whatsThis" >
-             <string>In client project mode only, when a standard file (with no prefix) is saving, XINX ask you to save the file with a new name as a client file. The new file name will be prefixed by the project prefix specified in the project property.</string>
-            </property>
-            <property name="text" >
-             <string>&amp;Alert user when file is standard (project mode only)</string>
+             <string>This the path where the save dialog must be opened when you create a new project.</string>
             </property>
            </widget>
           </item>
@@ -607,10 +570,54 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
+          <item row="4" column="1" >
+           <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
             <property name="whatsThis" >
-             <string>This the path where the save dialog must be opened when you create a new project.</string>
+             <string>This is the path where specifique is stored in client project mode.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3" >
+           <widget class="QCheckBox" name="m_alertStandardCheckBox" >
+            <property name="whatsThis" >
+             <string>In client project mode only, when a standard file (with no prefix) is saving, XINX ask you to save the file with a new name as a client file. The new file name will be prefixed by the project prefix specified in the project property.</string>
+            </property>
+            <property name="text" >
+             <string>&amp;Alert user when file is standard (project mode only)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>&amp;Default project directory :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_projectPathLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2" >
+           <widget class="QToolButton" name="m_changeProjectPathBtn" >
+            <property name="icon" >
+             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" >
+           <widget class="QLabel" name="label_11" >
+            <property name="text" >
+             <string>Default &amp;specifique path name :</string>
+            </property>
+            <property name="buddy" >
+             <cstring>m_lineEditDefaultProjectPathName</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2" >
+           <widget class="QCheckBox" name="m_closeLogCheckBox" >
+            <property name="text" >
+             <string>&amp;Close the Version management Log automaticaly.</string>
             </property>
            </widget>
           </item>

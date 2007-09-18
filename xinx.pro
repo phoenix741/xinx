@@ -106,8 +106,8 @@ HEADERS += src/aboutdialogimpl.h \
  src/xmlfileeditor.h \
  src/xmlhighlighter.h \
  src/xsllistview.h \
- src/xslproject.h \
- src/xslmodelcompleter.h
+ src/xslmodelcompleter.h \
+ src/xslproject.h
 MOC_DIR += build
 OBJECTS_DIR += build
 QT += network xml
@@ -171,8 +171,8 @@ SOURCES += src/aboutdialogimpl.cpp \
  src/xmlfileeditor.cpp \
  src/xmlhighlighter.cpp \
  src/xsllistview.cpp \
- src/xslproject.cpp \
- src/xslmodelcompleter.cpp
+ src/xslmodelcompleter.cpp \
+ src/xslproject.cpp
 TARGET = xinx
 TEMPLATE = app
 TRANSLATIONS += translations/xinx_fr.ts

@@ -129,6 +129,7 @@ struct_project AppSettings::getDefaultProject() {
 	value.defaultPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" ); 
 	value.alertWhenSavingStandardFile = true; 
 	value.defaultProjectPathName = "projet"; 
+	value.closeVersionManagementLog = true;
 	
 	return value;
 }
@@ -232,6 +233,7 @@ struct_project AppSettings::getSettingsProject( QSettings * settings, const QStr
 	value.alertWhenSavingStandardFile = settings->value( "Alert when saving Standard File", defaultValue.alertWhenSavingStandardFile ).toBool();
 	value.recentProjectFiles = settings->value( "Recent Project Files", defaultValue.recentProjectFiles ).toStringList();
 	value.defaultProjectPathName = settings->value( "Default Project Path Name", defaultValue.defaultProjectPathName ).toString();
+	value.closeVersionManagementLog = settings->value( "Close Version Management Log", defaultValue.closeVersionManagementLog ).toBool();
 
 	settings->endGroup();
 	
@@ -246,6 +248,7 @@ void AppSettings::setSettingsProject( QSettings * settings, const QString & path
 	settings->setValue( "Alert when saving Standard File", value.alertWhenSavingStandardFile );
 	settings->setValue( "Recent Project Files", value.recentProjectFiles );
 	settings->setValue( "Default Project Path Name", value.defaultProjectPathName );
+	settings->setValue( "Close Version Management Log", value.closeVersionManagementLog );
 
 	settings->endGroup();
 

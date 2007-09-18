@@ -48,6 +48,7 @@ struct struct_project {
 	bool alertWhenSavingStandardFile;
 	QStringList recentProjectFiles;
 	QString defaultProjectPathName;
+	bool closeVersionManagementLog;
 };
 
 struct struct_cvs {

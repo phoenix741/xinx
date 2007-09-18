@@ -57,6 +57,7 @@
 #include <QProcess>
 #include <QTextStream>
 #include <QDataStream>
+#include <QDebug>
 
 /* PrivateMainformImpl */
 
@@ -91,14 +92,14 @@ void PrivateMainformImpl::registerTypes() {
 
 void PrivateMainformImpl::createDockWidget() {
 	m_contentDock = new FileContentDockWidget( tr("File Content"), m_parent );
-	m_contentDock->setObjectName( "m_contentDock" );
+	m_contentDock->setObjectName( QString::fromUtf8("m_contentDock") );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
 	QAction * action = m_contentDock->toggleViewAction();
 	action->setShortcut( tr("Alt+1") );
 	m_parent->m_windowsMenu->addAction( action ); 
 	
 	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), m_parent );
-	m_projectDock->setObjectName( "m_projectDock" );
+	m_projectDock->setObjectName( QString::fromUtf8("m_projectDock") );
 	m_projectDock->setGlobalUpdateAction( m_parent->m_globalUpdateFromRCSAct );
 	m_projectDock->setGlobalCommitAction( m_parent->m_globalCommitToRCSAct );
 	m_projectDock->setSelectedUpdateAction( m_parent->m_selectedUpdateFromRCSAct );
@@ -115,7 +116,7 @@ void PrivateMainformImpl::createDockWidget() {
 	m_parent->m_windowsMenu->addAction( action );
 
 	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
-	m_rcslogDock->setObjectName( "m_rcslogDock" );
+	m_rcslogDock->setObjectName( QString::fromUtf8("m_rcslogDock") );
 	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
 	action = m_rcslogDock->toggleViewAction();
 	action->setShortcut( tr("Alt+3") );
@@ -400,7 +401,6 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_nextTabAct, SIGNAL(triggered()), this, SLOT(nextTab()) );
 	connect( m_parent->m_previousTabAct, SIGNAL(triggered()), this, SLOT(previousTab()) );
 	
-
 	/* Tools */
 	// Create Template
 	connect( m_parent->m_createTemplate, SIGNAL(triggered()), m_parent, SLOT(newTemplate()) );
@@ -416,6 +416,10 @@ void PrivateMainformImpl::createActions() {
 
 	// Drag & Drop
 	connect( m_parent->m_tabEditors, SIGNAL(fileDragged()), this, SLOT(updateActions()) );
+
+	// Timer LOG
+	m_timer = new QTimer( this );
+	connect( m_timer, SIGNAL(timeout()), this, SLOT(logTimeout()) );
 }
 
 void PrivateMainformImpl::createDialogs() {
@@ -630,7 +634,8 @@ void PrivateMainformImpl::readWindowSettings() {
 		m_parent->setWindowState( m_parent->windowState() ^ Qt::WindowMaximized );
   
 	if( ! global.m_config->config().state.isEmpty() ) {
-		m_parent->restoreState( global.m_config->config().state );
+		if( ! m_parent->restoreState( global.m_config->config().state ) )
+			qWarning( "Can't restore windows state.\n" );
 	}
 }
 
@@ -928,6 +933,10 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 	}
 }
 
+void PrivateMainformImpl::logTimeout() {
+	m_rcslogDock->setVisible( false );
+}
+
 void PrivateMainformImpl::rcsLogTerminated() {
 	Q_ASSERT( m_projectDock->rcs() );
 	
@@ -946,8 +955,11 @@ void PrivateMainformImpl::rcsLogTerminated() {
 	if( rcs )
 		rcs->disconnect();
 	updateActions();
+
+	if( (!m_rcsVisible) && m_rcslogDock->isVisible() && global.m_config->config().project.closeVersionManagementLog )
+		m_timer->start( 5000 );
 }
-#include <QDebug>
+
 void PrivateMainformImpl::selectedCompareWithStd() {
 	QStringList list = m_projectDock->selectedFiles();
 	Q_ASSERT( list.size() == 1 && global.m_project );
@@ -1528,6 +1540,7 @@ void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 		else
 			rcs->update( list );
 		d->updateActions();
+		d->m_rcsVisible = d->m_rcslogDock->isVisible();
 		d->m_rcslogDock->show();
 	}
 }
@@ -1552,6 +1565,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		d->m_rcsExecute = true;
 		rcs->commit( dlg.filesOperation(), message );
 		d->updateActions();
+		d->m_rcsVisible = d->m_rcslogDock->isVisible();
 		d->m_rcslogDock->show();
 	}
 }
@@ -1566,6 +1580,7 @@ void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
 		d->m_rcsExecute = true;
 		rcs->add( list );
 		d->updateActions();
+		d->m_rcsVisible = d->m_rcslogDock->isVisible();
 		d->m_rcslogDock->show();
 	}
 }
@@ -1583,6 +1598,7 @@ void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 		}
 		rcs->remove( list );
 		d->updateActions();
+		d->m_rcsVisible = d->m_rcslogDock->isVisible();
 		d->m_rcslogDock->show();
 	}
 }
