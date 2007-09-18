@@ -225,7 +225,7 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 	}
 	
 	QAbstractItemModel * model = d->m_projectDirWidget->m_projectDirectoryTreeView->model();
-	for( int i = 1; i < model->columnCount(); i++ )
+	for( int i = 2; i < model->columnCount(); i++ )
 		d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
 }
 
@@ -258,6 +258,8 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 }
 
 void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
+	Q_ASSERT( path.contains( d->m_project->projectPath() ) );
+
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );
 		d->m_dirModel->refresh( index );
@@ -265,6 +267,8 @@ void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
 }
 
 bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
+	Q_ASSERT( path.contains( d->m_project->projectPath() ) );
+	
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );
 		if( index.isValid() ) {

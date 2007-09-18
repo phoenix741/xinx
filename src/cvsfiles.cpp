@@ -27,6 +27,7 @@
 #include <QFileSystemWatcher>
 #include <QTextStream>
 #include <QStringList>
+#include <QDebug>
 
 /* File Watcher */
 
@@ -198,18 +199,21 @@ CVSFileEntryList::~CVSFileEntryList() {
 
 void CVSFileEntryList::entriesChanged( const QString & filename ) {
 	if( filename == m_entries ) {
+		qDebug() << "Entries " << filename << " changed";
 		loadEntriesFile();
 	}
 }
 
 void CVSFileEntryList::directoryChanged( const QString & filename ) {
 	if( filename == m_path ) {
+		qDebug() << "Directory " << filename << " changed";
 		loadEntriesFile();
 		emit fileChanged( filename );
 	}
 }
 
 CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
+	qDebug() << "path : " << filename << endl;
 	if( ! QDir( filename ).exists() ) return NULL;
 
 	CVSFileEntryList * list = NULL;
@@ -218,6 +222,9 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 		dir = dir.left( dir.indexOf( '/' ) );
 	if( dir.isEmpty() ) 
 		return this;
+	if( ( dir == "." ) || (dir == ".." ) )
+		return NULL;
+	else
 	if( m_directoryList.count( dir ) == 0 ) {
 		list = new CVSFileEntryList( QDir( m_path ).absoluteFilePath( dir ) );
 		m_directoryList[ dir ] = list; 
@@ -232,6 +239,7 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 }
 
 CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
+	qDebug() << "object : " << filename << endl;
 	QFileInfo info = QFileInfo( filename );
 	QString path = info.absolutePath(), basename = info.fileName();
 	QString rel = QDir( m_path ).relativeFilePath( path );
@@ -241,17 +249,26 @@ CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 	} else {
 		list = this;
 	}
+	if( ! list ) {
+		qDebug() << "object : " << filename << " null because no dir" << endl;
+		return NULL;
+	} else
 	if( list->count( basename ) == 0 ) {
+		qDebug() << "object : " << filename << " null because no count" << endl;
 		return NULL;
 	} else {
+		qDebug() << "object : " << filename << " not null " << endl;
 		return list->value( basename );
 	}
 }
 
 RCS::rcsState CVSFileEntryList::status( const QString & filename ) {
+	qDebug() << "status : " << filename << endl;
 	CVSFileEntry * entry = object( filename );
-	if( entry )
+	if( entry ) {
+		qDebug() << "status : " << filename << " entry " << entry->status() << endl;
 		return entry->status();
+	}
 	return RCS::Unknown;
 }
 
