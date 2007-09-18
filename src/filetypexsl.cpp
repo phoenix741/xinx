@@ -197,8 +197,9 @@ void PrivateFileTypeXsl::insertCompletion( const QModelIndex& index ) {
 	QString completion = c->completionModel()->data( index ).toString(),
 			prefix     = c->completionPrefix();
 	
-	tc.movePosition( QTextCursor::EndOfWord );
-	for( int i = 0 ; i < prefix.length() ; i++ ) tc.deletePreviousChar();
+	m_parent->textEdit()->textUnderCursor( tc, true );
+	//tc.movePosition( QTextCursor::EndOfWord );
+	//for( int i = 0 ; i < prefix.length() ; i++ ) tc.deletePreviousChar();
 	tc.insertText( completion );
 
 	FileTypeXsl::cursorPosition pos = m_parent->editPosition( tc );

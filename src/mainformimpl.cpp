@@ -934,6 +934,7 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 }
 
 void PrivateMainformImpl::logTimeout() {
+	m_timer->stop();
 	m_rcslogDock->setVisible( false );
 }
 
