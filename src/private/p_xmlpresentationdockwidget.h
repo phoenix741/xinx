@@ -24,22 +24,31 @@
 // Xinx header
 #include "../xmlpresentationdockwidget.h"
 #include "ui_xmlpresentationwidget.h"
+#include "../xmlpresentationitem.h"
+#include "../filewatcher.h"
 
 // Qt header
+#include <QThread>
 
-class PrivateXmlPresentationDockWidget : public QObject {
+class PrivateXmlPresentationDockWidget : public QThread {
 	Q_OBJECT
 public:
 	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
 	~PrivateXmlPresentationDockWidget();
 	
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
-	QString m_logPath;
+	QString m_logPath, m_openingFile;
+	XmlPresentationModel * m_model;
+	FileWatcher * m_watcher;
 	
 	void open( const QString& filename );
 public slots:
+	void open();
 	void initXmlPresentationCombo();
 	void presentationActivated( int index );
+	void threadTerminated();
+protected:
+	virtual void run();
 private:
 	XmlPresentationDockWidget * m_parent;
 };

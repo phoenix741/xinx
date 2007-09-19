@@ -30,7 +30,7 @@
 
 /* PrivateXmlPresentationDockWidget */
 
-PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_parent( parent ) {
+PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_watcher(0), m_parent( parent ) {
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
 	m_xmlPresentationWidget->setupUi( contentWidget );
@@ -39,14 +39,17 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 	initXmlPresentationCombo();
 	connect( &global, SIGNAL(projectChanged()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
+	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
 }
 
 PrivateXmlPresentationDockWidget::~PrivateXmlPresentationDockWidget() {
+	presentationActivated( 0 );
 	delete m_xmlPresentationWidget;
 }
 
 void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 	m_xmlPresentationWidget->m_presentationComboBox->clear();
+	presentationActivated( 0 );
 	
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<No presentation file>") );
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<Choose an XML file ...>") );
@@ -65,6 +68,12 @@ void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 
 void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
 	if( index == 0 ) {
+		delete m_watcher;
+		m_watcher = NULL;
+		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+		delete m_model;
+		m_model = NULL;
+		m_openingFile = QString();
 		// Clean the tree
 	} else if( index == 1 ) {
 		// Open a file
@@ -81,8 +90,43 @@ void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
 }
 
 void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
-	
+	if( m_watcher ) m_watcher->desactivate();
+
+	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 0 );
+	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
+	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
+	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+
+	m_openingFile = filename;
+
+	start( QThread::IdlePriority );
 }
+
+void PrivateXmlPresentationDockWidget::open() {
+	if( isRunning() ) return;
+	open( m_openingFile );
+}
+
+void PrivateXmlPresentationDockWidget::run() {
+	QFile presentation( m_openingFile );
+	QDomDocument document;
+	if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {
+		delete m_model; delete m_watcher;
+		m_model = NULL; m_watcher = NULL;
+		
+		m_model = new XmlPresentationModel( document );
+	}
+}
+
+void PrivateXmlPresentationDockWidget::threadTerminated() {
+	m_watcher = new FileWatcher( m_openingFile );
+	connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
+	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_model );
+	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
+	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 1 );
+	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 1 );
+}
+
 
 /* XmlPresentationDockWidget */
 

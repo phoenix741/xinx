@@ -137,7 +137,7 @@ PrivateWatcher::~PrivateWatcher() {
 }
 
 void PrivateWatcher::fileChanged( QString filename ) {
-	if( m_isActivated && m_filename == filename )
+	if( m_isActivated && ( m_filename == filename ) )
 		emit m_parent->fileChanged();
 }
 

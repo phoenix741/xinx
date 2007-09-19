@@ -18,15 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
-#include <QFileDialog>
-#include <QInputDialog>
-#include <assert.h>
-
+// Xinx header
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
 #include "globals.h"
+
+// Qt header
+#include <QDir>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <assert.h>
 
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
 	setupUi(this);
@@ -98,14 +100,14 @@ void ProjectPropertyImpl::versionFinded( ConfigurationVersion version ) {
 
 void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_nameLineEdit->setText( project->projectName() );
-	m_projectLineEdit->setText( project->projectPath() );
+	m_projectLineEdit->setText( QDir::toNativeSeparators( project->projectPath() ) );
 	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiqueProjectPathLineEdit->setText( project->specifiquePathName() );
 	m_prefixLineEdit->setText( project->specifiquePrefix() );
 	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
 	m_webServicesCheckBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
-	m_logLineEdit->setText( project->logProjectDirectory() );
+	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
 	
 	switch( project->projectRCS() ) {
 	case XSLProject::NORCS :
@@ -144,14 +146,14 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setProjectName( m_nameLineEdit->text() );
-	project->setProjectPath( m_projectLineEdit->text() );
+	project->setProjectPath( QDir::fromNativeSeparators( m_projectLineEdit->text() ) );
 	project->setDefaultLang( m_langComboBox->currentText() );
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
 	project->setSpecifiquePathName( m_specifiqueProjectPathLineEdit->text() );
 	project->setIndexOfSpecifiquePath( indexDefaultSearchPath );
 	project->setSpecifiquePrefix( m_prefixLineEdit->text() );
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
-	project->setLogProjectDirectory( m_logLineEdit->text() );
+	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
 
 	XSLProject::ProjectOptions options;
 	if( ! m_standardProjectCheckBox->isChecked() )
