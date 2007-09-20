@@ -24,6 +24,7 @@
 // Qt header
 #include <QStringList>
 #include <QMimeData>
+#include <QIcon>
 
 /* XmlPresentationItem */
 
@@ -135,10 +136,10 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 	if (!index.isValid())
 		return QVariant();
 
-	if( role == Qt::DisplayRole ) {
-		XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
-		QDomNode node = item->node();
+	XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
+	QDomNode node = item->node();
 
+	if( role == Qt::DisplayRole ) {
 		switch (index.column()) {
 		case 0:
 			return node.nodeName();
@@ -148,8 +149,6 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 			return QVariant();
 		} 
 	} else if( role == Qt::UserRole ) {
-		XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
-		QDomNode node = item->node();
 		switch( index.column() ) {
 		case 0:
 			return item->xpath();
@@ -158,6 +157,21 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		default:
 			return QVariant();
 		}
+	} else if( ( role == Qt::DecorationRole ) && ( index.column() == 0 ) ) {
+		if( dynamic_cast<XmlPresentationNodeItem*>( item ) ) 
+			return QIcon( ":/images/balise.png" );
+		else
+			return QIcon( ":/images/variable.png" );
+	} else if( role == Qt::ToolTipRole ) {
+		QString params;
+
+		for( int i = 0 ; i < node.attributes().count() ; i++ ) {
+			QDomNode attribute = node.attributes().item( i );
+			params += "@" + attribute.nodeName() + "=" + attribute.nodeValue();
+			if( i < node.attributes().count() - 1 )
+				params += "\n";
+		}
+		return params;
 	}
 
 	return QVariant();
