@@ -23,7 +23,14 @@
     <widget class="QComboBox" name="m_presentationComboBox" />
    </item>
    <item>
-    <widget class="QTreeView" name="m_presentationTreeView" />
+    <widget class="QTreeView" name="m_presentationTreeView" >
+     <property name="dragEnabled" >
+      <bool>true</bool>
+     </property>
+     <property name="selectionBehavior" >
+      <enum>QAbstractItemView::SelectItems</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QProgressBar" name="m_presentationProgressBar" >

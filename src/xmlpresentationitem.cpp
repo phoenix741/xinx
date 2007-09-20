@@ -23,6 +23,7 @@
 
 // Qt header
 #include <QStringList>
+#include <QMimeData>
 
 /* XmlPresentationItem */
 
@@ -71,6 +72,18 @@ int XmlPresentationItem::row() {
 	return m_rowNumber;
 } 
 
+QString XmlPresentationItem::xpath() const {
+	if( m_parentItem )
+		return m_parentItem->xpath() + "/" + xpathName();
+	else
+		return "/" + xpathName();
+}
+
+QString XmlPresentationItem::xpathName() const {
+	return m_domNode.nodeName();
+}
+
+
 /* XmlPresentationNodeItem */
 
 XmlPresentationNodeItem::XmlPresentationNodeItem( QDomNode & node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
@@ -79,6 +92,13 @@ XmlPresentationNodeItem::XmlPresentationNodeItem( QDomNode & node, int row, XmlP
 
 XmlPresentationNodeItem::~XmlPresentationNodeItem() {
 	
+}
+
+QString XmlPresentationNodeItem::xpathName() const {
+	QString name = XmlPresentationItem::xpathName();
+	if( ! m_domNode.attributes().namedItem( "name" ).nodeValue().isEmpty() )
+		name += "[@name='" + m_domNode.attributes().namedItem( "name" ).nodeValue() + "']";
+	return name;
 }
 
 /* XmlPresentationParamItem */
@@ -91,10 +111,16 @@ XmlPresentationParamItem::~XmlPresentationParamItem() {
 	
 }
 
+QString XmlPresentationParamItem::xpathName() const {
+	return "@" + XmlPresentationItem::xpathName();
+}
+
+
 /* XmlPresentationModel */
 
-XmlPresentationModel::XmlPresentationModel( QDomDocument document, QObject *parent ) : QAbstractItemModel(parent), m_domDocument(document) {
-	m_rootItem = new XmlPresentationItem( m_domDocument, 0 );
+XmlPresentationModel::XmlPresentationModel( QDomDocument document, QObject *parent ) : QAbstractItemModel(parent) {
+	m_rootElement = document.documentElement();
+	m_rootItem = new XmlPresentationItem( m_rootElement, 0 );
 }
 
 XmlPresentationModel::~XmlPresentationModel() {
@@ -109,21 +135,32 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 	if (!index.isValid())
 		return QVariant();
 
-	if (role != Qt::DisplayRole)
-		return QVariant();
+	if( role == Qt::DisplayRole ) {
+		XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
+		QDomNode node = item->node();
 
-	XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
-
-	QDomNode node = item->node();
-
-	switch (index.column()) {
-	case 0:
-		return node.nodeName();
-	case 1:
-		return node.nodeValue().split("\n").join(" ");
-	default:
-		return QVariant();
+		switch (index.column()) {
+		case 0:
+			return node.nodeName();
+		case 1:
+			return node.nodeValue().split("\n").join(" ");
+		default:
+			return QVariant();
+		} 
+	} else if( role == Qt::UserRole ) {
+		XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
+		QDomNode node = item->node();
+		switch( index.column() ) {
+		case 0:
+			return item->xpath();
+		case 1:
+			return item->xpath() + "=" + node.nodeValue().split("\n").join(" ");
+		default:
+			return QVariant();
+		}
 	}
+
+	return QVariant();
 }
 
 Qt::ItemFlags XmlPresentationModel::flags(const QModelIndex &index) const {
@@ -194,4 +231,22 @@ int XmlPresentationModel::rowCount(const QModelIndex &parent) const {
 		return 0;
 	else
 		return parentItem->node().childNodes().count() + parentItem->node().attributes().count();
+} 
+
+QStringList XmlPresentationModel::mimeTypes() const {
+	return QStringList() << "text/plain";
+}
+
+QMimeData * XmlPresentationModel::mimeData( const QModelIndexList &indexes ) const {
+	QMimeData *mimeData = new QMimeData();
+	QString text;
+
+	foreach( QModelIndex index, indexes ) {
+		if ( index.isValid() ) {
+			text += data( index, Qt::UserRole ).toString();
+		}
+	}
+
+	mimeData->setText( text );
+	return mimeData;
 } 

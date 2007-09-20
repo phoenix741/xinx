@@ -37,6 +37,9 @@ public:
 	XmlPresentationItem * child( int i );
 	XmlPresentationItem * parent();
 	
+	QString xpath() const;
+	virtual QString xpathName() const;
+	
 	QDomNode node() const;
 	
 	int row();
@@ -51,12 +54,14 @@ class XmlPresentationNodeItem : public XmlPresentationItem {
 public:
 	XmlPresentationNodeItem( QDomNode & node, int row, XmlPresentationItem * parent = 0 );
 	virtual ~XmlPresentationNodeItem();
+	virtual QString xpathName() const;
 };
 
 class XmlPresentationParamItem : public XmlPresentationItem {
 public:
 	XmlPresentationParamItem( QDomNode & node, int row, XmlPresentationItem * parent = 0 );
 	virtual ~XmlPresentationParamItem();
+	virtual QString xpathName() const;
 };
 
 class XmlPresentationModel : public QAbstractItemModel {
@@ -74,8 +79,11 @@ public:
 	QModelIndex parent( const QModelIndex &child ) const;
 	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 	int columnCount( const QModelIndex &parent = QModelIndex() ) const;
+
+	QStringList mimeTypes() const;
+	QMimeData * mimeData( const QModelIndexList &indexes ) const;
 private:
-	QDomDocument m_domDocument;
+	QDomNode m_rootElement;
 	XmlPresentationItem * m_rootItem;
 };
 
