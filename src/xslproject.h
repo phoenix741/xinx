@@ -25,6 +25,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QStringList>
+#include <QPair>
 
 /*!
  * Exception throw by XSLProject when the project can't be opened or saved.
@@ -53,6 +54,11 @@ private:
 class WebServices;
 class WebServicesModel;
 class PrivateXSLProject;
+
+/*!
+ * Define a Bookmark used in a project.
+ */
+typedef QPair<QString,int> Bookmark;
 
 /*!
  * Represent a project in XINX.
@@ -151,6 +157,12 @@ public:
 	 * \return list of structSessions;
 	 */
 	QList<QByteArray> & sessionsEditor();
+	
+	/*!
+	 * List of signets stored in the session file.
+	 * \return The list of signet used  in the application.
+	 */
+	QList<Bookmark> & signets();
 	
 	/*!
 	 * Save the session in the file. 
