@@ -92,6 +92,7 @@ int main(int argc, char *argv[]) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load completion file.") );
 				app.processEvents();
 			}
+			
 			try {
 				global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {

@@ -193,5 +193,6 @@ contains( CONFIG, qdbus ) {
 unix { 
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
+    QMAKE_LFLAGS = -rdynamic
 }
 win32:RC_FILE += rc/xinx.rc

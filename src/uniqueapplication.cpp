@@ -29,6 +29,14 @@
 
 // Standard header
 #include <iostream>
+#ifndef WIN32
+#include <execinfo.h>
+#include <stdio.h>
+#include <stdlib.h>
+#else
+#include <windows.h>
+#include <dbghelp.h>
+#endif
 
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
@@ -200,7 +208,100 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 }
 
 void UniqueApplication::notifyError() {
-	QMessageBox::critical( NULL, "Error", "Shit ! How can it be happen ? What's the hell Ulrich !\nOk. I try to repair that, and you, send me a detailled report (Where ? When ? Who ? How ? Why ?)." );
+#ifndef WIN32
+	void * array[10];
+	size_t size, i;
+	char ** strings;
+	FILE * file = NULL;
+	
+	size = backtrace( array, 10 );
+	strings = backtrace_symbols( array, size );
+	file = fopen( "/tmp/xinx_trace.log", "w+" );
+	if( file ) {
+		fprintf( file, "Obtained %zd stack frames.\n", size );
+		for( i = 0; i < size; i++ ) {
+			fprintf( file, "%s\n", strings[i] );
+		}
+		fclose( file );
+	}
+	free( strings );
+	QMessageBox::critical( NULL, "XINX Crash", "XINX is unstable and is crashing. Send the file /tmp/xinx_trace.log at Ulrich Van Den Hekke" );
+#else
+	HANDLE hProcess = GetCurrentProcess();
+	
+	FILE * file = NULL;
+	file = fopen( "c:\\xinx_trace.log", "w+" );
+	if( file ) {
+		STACKFRAME64 tempStackFrame;
+		memset( &tempStackFrame, 0, sizeof(STACKFRAME64) );
+		CONTEXT context;
+		GetThreadContext( GetCurrentThread(), &context );
+		DWORD machineType;
+
+#ifdef _M_IX86
+		machineType = IMAGE_FILE_MACHINE_I386;
+		tempStackFrame.AddrPC.Offset       = context.Eip;
+		tempStackFrame.AddrPC.Mode         = AddrModeFlat;
+		tempStackFrame.AddrStack.Offset    = context.Esp;
+		tempStackFrame.AddrStack.Mode      = AddrModeFlat;
+		tempStackFrame.AddrFrame.Offset    = context.Ebp;
+		tempStackFrame.AddrFrame.Mode      = AddrModeFlat;
+#elif _M_X64
+		machineType = IMAGE_FILE_MACHINE_AMD64;
+		tempStackFrame.AddrPC.Offset = context.Rip;
+		tempStackFrame.AddrPC.Mode = AddrModeFlat;
+		tempStackFrame.AddrFrame.Offset = context.Rsp;
+		tempStackFrame.AddrFrame.Mode = AddrModeFlat;
+		tempStackFrame.AddrStack.Offset = context.Rsp;
+		tempStackFrame.AddrStack.Mode = AddrModeFlat;
+#elif _M_IA64
+		machineType = IMAGE_FILE_MACHINE_IA64;
+		tempStackFrame.AddrPC.Offset = context.StIIP;
+		tempStackFrame.AddrPC.Mode = AddrModeFlat;
+		tempStackFrame.AddrFrame.Offset = context.IntSp;
+		tempStackFrame.AddrFrame.Mode = AddrModeFlat;
+		tempStackFrame.AddrBStore.Offset = context.RsBSP;
+		tempStackFrame.AddrBStore.Mode = AddrModeFlat;
+		tempStackFrame.AddrStack.Offset = context.IntSp;
+		tempStackFrame.AddrStack.Mode = AddrModeFlat;
+#else
+#error "Platform not supported!"
+#endif
+
+		ULONG64 buffer[(sizeof(SYMBOL_INFO) + nbChar*sizeof(TCHAR) + sizeof(ULONG64) + 1) / sizeof(ULONG64)];
+		PSYMBOL_INFO pSymbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
+		PTSTR undecoratedName = (PTSTR)malloc(sizeof(TCHAR) * nbChar);
+
+		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+		pSymbol->MaxNameLen = nbChar;
+		DWORD lineDisplacement;
+		IMAGEHLP_LINE64 lineInfo = sizeof( IMAGEHLP_LINE64 );
+
+		while( StackWalk64(machineType, hProcess, GetCurrentThread(), &tempStackFrame, &context, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL) ) {
+			// Sanity stack check
+			if( tempStackFrame.AddrPC.Offset == 0 )
+				break;
+
+			DWORD64 symDisplacement = 0;
+			// Try to get the symbol name
+			if( SymFromAddr( hProcess, tempStackFrame.AddrPC.Offset, &symDisplacement, pSymbol ) ) {
+				UnDecorateSymbolName(pSymbol->Name, undecoratedName, MAX_SYM_NAME, UNDNAME_COMPLETE);
+				callStack.push_back(std::string(undecoratedName) + "+" + boost::lexical_cast<std::string>(symDisplacement));
+
+				if(SymGetLineFromAddr64(hProcess, tempStackFrame.AddrPC.Offset, &lineDisplacement, &lineInfo)) {
+					fprintf( file, "%s\tl:%d\n", lineInfo.FileName, lineInfo.LineNumber );
+				} else {
+					fprintf( file, "No info\n" );
+				}
+			} else {
+			}
+		}
+		free(undecoratedName);
+
+		fileclose( file );
+	}
+	QMessageBox::critical( NULL, "XINX Crash", "XINX is unstable and is crashing. Send the file c:\\xinx_trace.log at Ulrich Van Den Hekke" );
+#endif
 	if( d->m_mainform )
 		d->m_mainform->saveProject( true );
 	exit(1);
