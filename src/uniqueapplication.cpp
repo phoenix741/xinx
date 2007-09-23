@@ -29,14 +29,6 @@
 
 // Standard header
 #include <iostream>
-#ifndef WIN32
-#include <execinfo.h>
-#include <stdio.h>
-#include <stdlib.h>
-#else
-#include <windows.h>
-#include <dbghelp.h>
-#endif
 
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
@@ -207,8 +199,23 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	}
 }
 
+// Include for exception
+#ifndef Q_WS_WIN
+	#include <execinfo.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+#else
+	#include <windows.h>
+	#include <dbghelp.h>
+#endif
+
+// Constant for exception
+#ifdef Q_WS_WIN
+	const size_t nbChar = 100;
+#endif
+
 void UniqueApplication::notifyError() {
-#ifndef WIN32
+#ifndef Q_WS_WIN
 	void * array[10];
 	size_t size, i;
 	char ** strings;
@@ -227,13 +234,13 @@ void UniqueApplication::notifyError() {
 	free( strings );
 	QMessageBox::critical( NULL, "XINX Crash", "XINX is unstable and is crashing. Send the file /tmp/xinx_trace.log at Ulrich Van Den Hekke" );
 #else
-	HANDLE hProcess = GetCurrentProcess();
-	
 	FILE * file = NULL;
 	file = fopen( "c:\\xinx_trace.log", "w+" );
 	if( file ) {
-		STACKFRAME64 tempStackFrame;
-		memset( &tempStackFrame, 0, sizeof(STACKFRAME64) );
+		/*
+		HANDLE hProcess = GetCurrentProcess();
+		STACKFRAME tempStackFrame;
+		memset( &tempStackFrame, 0, sizeof(STACKFRAME) );
 		CONTEXT context;
 		GetThreadContext( GetCurrentThread(), &context );
 		DWORD machineType;
@@ -268,27 +275,27 @@ void UniqueApplication::notifyError() {
 #error "Platform not supported!"
 #endif
 
-		ULONG64 buffer[(sizeof(SYMBOL_INFO) + nbChar*sizeof(TCHAR) + sizeof(ULONG64) + 1) / sizeof(ULONG64)];
-		PSYMBOL_INFO pSymbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
-		PTSTR undecoratedName = (PTSTR)malloc(sizeof(TCHAR) * nbChar);
+		ULONG buffer[(sizeof(IMAGEHLP_SYMBOL) + nbChar*sizeof(CHAR) + sizeof(ULONG) + 1) / sizeof(ULONG)];
+		PIMAGEHLP_SYMBOL pSymbol = reinterpret_cast<PIMAGEHLP_SYMBOL>(buffer);
+		PSTR undecoratedName = (PSTR)malloc(sizeof(CHAR) * nbChar);
 
-		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-		pSymbol->MaxNameLen = nbChar;
+		pSymbol->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL);
+		pSymbol->MaxNameLength = nbChar;
 		DWORD lineDisplacement;
-		IMAGEHLP_LINE64 lineInfo = sizeof( IMAGEHLP_LINE64 );
+		IMAGEHLP_LINE lineInfo = { sizeof( IMAGEHLP_LINE ) };
 
-		while( StackWalk64(machineType, hProcess, GetCurrentThread(), &tempStackFrame, &context, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL) ) {
+		while( StackWalk(machineType, hProcess, GetCurrentThread(), &tempStackFrame, &context, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL) ) {
 			// Sanity stack check
 			if( tempStackFrame.AddrPC.Offset == 0 )
 				break;
 
-			DWORD64 symDisplacement = 0;
+			DWORD symDisplacement = 0;
 			// Try to get the symbol name
-			if( SymFromAddr( hProcess, tempStackFrame.AddrPC.Offset, &symDisplacement, pSymbol ) ) {
-				UnDecorateSymbolName(pSymbol->Name, undecoratedName, MAX_SYM_NAME, UNDNAME_COMPLETE);
-				callStack.push_back(std::string(undecoratedName) + "+" + boost::lexical_cast<std::string>(symDisplacement));
+			if( SymGetSymFromAddr( hProcess, tempStackFrame.AddrPC.Offset, &symDisplacement, pSymbol ) ) {
+				UnDecorateSymbolName(pSymbol->Name, undecoratedName, sizeof(CHAR) * nbChar, UNDNAME_COMPLETE);
+				fprintf( file, "%s+%s\n", undecoratedName, symDisplacement );
 
-				if(SymGetLineFromAddr64(hProcess, tempStackFrame.AddrPC.Offset, &lineDisplacement, &lineInfo)) {
+				if(SymGetLineFromAddr(hProcess, tempStackFrame.AddrPC.Offset, &lineDisplacement, &lineInfo)) {
 					fprintf( file, "%s\tl:%d\n", lineInfo.FileName, lineInfo.LineNumber );
 				} else {
 					fprintf( file, "No info\n" );
@@ -297,8 +304,11 @@ void UniqueApplication::notifyError() {
 			}
 		}
 		free(undecoratedName);
+		*/
 
-		fileclose( file );
+		fprintf( file, "UNAVALAIBLE ON WINDOWS :(\n" );			
+
+		fclose( file );
 	}
 	QMessageBox::critical( NULL, "XINX Crash", "XINX is unstable and is crashing. Send the file c:\\xinx_trace.log at Ulrich Van Den Hekke" );
 #endif

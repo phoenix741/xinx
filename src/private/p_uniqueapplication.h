@@ -50,8 +50,6 @@
 // Standard header
 #ifdef DBUS
 	#include <unistd.h>
-#else
-	#include <windows.h>
 #endif
 
 class PrivateUniqueApplication : public QObject {
