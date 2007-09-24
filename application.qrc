@@ -79,6 +79,8 @@
         <file>images/pushbutton.png</file>
         <file>images/radiobutton.png</file>
         <file>images/textedit.png</file>
+        
+        <file>images/bookmark.png</file>
  
 		<file>translations/xinx_fr.qm</file>
 		<file>translations/qt_fr.qm</file>

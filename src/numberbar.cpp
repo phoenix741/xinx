@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "numberbar.h"
 
+// Qt header
 #include <QAbstractTextDocumentLayout>
 #include <QTextEdit>
 #include <QPaintEvent>
@@ -71,8 +73,38 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
  	
 			const QString txt = QString::number( lineCount );
 			p.drawText( width() - fm.width(txt), qRound( position.y() ) - contentsY + ascent, txt );
+
+			if( m_lineBookmark.contains( lineCount ) ) {
+				p.drawPixmap( 3, qRound( position.y() ) -contentsY-6,QPixmap(":/images/bookmark.png")/*.scaled(20,20)*/);
+			}
 		}
 	} else {
 	}
 }
 
+void NumberBar::mousePressEvent ( QMouseEvent * event ) {
+	QTextCursor cursor = m_edit->cursorForPosition( event->pos() );
+	if( cursor.isNull() ) return;
+
+	int currentLine = 1;
+	for ( QTextBlock block = m_edit->document()->begin(); block.isValid() && block != cursor.block(); block = block.next(), currentLine++ ) ;
+
+	if( event->button() == Qt::LeftButton )	{
+		setBookmark( currentLine, !m_lineBookmark.contains( currentLine ) );
+	}
+}
+
+void NumberBar::setBookmark( int line, bool enabled ) {
+	int index = m_lineBookmark.indexOf( line );
+	if( enabled && index < 0  ) {
+		m_lineBookmark.append( line );
+	} else if( !enabled && index >= 0 ) {
+		m_lineBookmark.removeAt( index );
+	}
+	repaint();
+	emit bookmarkToggled( line, enabled );
+}
+
+QList<int> & NumberBar::listOfBookmark() {
+	return m_lineBookmark;
+}

@@ -65,7 +65,12 @@ public:
 	 * Redfine the paint event of the number bar. The paint event write the line number in 
 	 * the number bar.
 	 */
-	void paintEvent( QPaintEvent *ev );
+	virtual void paintEvent( QPaintEvent *ev );
+	/*!
+	 * Redefine the mouse event of the number bar. The mouse event show a popup to toggled a 
+	 * Bookmark.
+	 */
+	virtual void mousePressEvent ( QMouseEvent * event );
 
 	/*!
 	 * Change the direction of the number bar.
@@ -78,9 +83,27 @@ public:
 	 * \return the direction of the number bar.
 	 */
 	enum BarDirection getDirection() { return m_direction; };
+	
+	/*!
+	 * Show icon bookmark at line \e line.
+	 */
+	void setBookmark( int line, bool enabled );
+	
+	/*!
+	 * List of bookmark of the editor.
+	 */
+	QList<int> & listOfBookmark();
+signals:
+	/*!
+	 * Signal is emitted when a bookmark is toogled.
+	 * \param line Line of the bookmark
+	 * \param enabled If enabled, the bookmark is added.
+	 */
+	void bookmarkToggled( int line, bool enabled );
 private:
 	enum BarDirection m_direction;
 	QTextEdit *m_edit;
+	QList<int> m_lineBookmark;
 };
 
 #endif // __NUMBERBAR_H__

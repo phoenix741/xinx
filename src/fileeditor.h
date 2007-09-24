@@ -159,6 +159,11 @@ public:
 	 * \return the file type.
 	 */
 	virtual enumFileType fileType();
+	
+	/*!
+	 * List of bookmarks of the editor
+	 */
+	virtual QList<int> & bookmarks() const;
 
 	virtual bool canCopy();
 	virtual bool canPaste();
@@ -251,6 +256,11 @@ protected slots:
 	 * \param message When the message is set, the message is show on the screen. If the message is blank, the popup is hidden.
 	 */
 	void setMessage( QString message );
+	
+	/*!
+	 * Slot called when the bookmark is toogled on a line. This slot change the project settings.
+	 */
+	void slotBookmarkToggled( int line, bool enabled );
 
 protected:
 	virtual bool eventFilter( QObject *obj, QEvent *event );

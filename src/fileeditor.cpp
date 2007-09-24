@@ -182,6 +182,19 @@ void FileEditor::setMessage( QString message ) {
 		m_messageBox->show();
 }
 
+void FileEditor::slotBookmarkToggled( int line, bool enabled ) {
+	if( global.m_project ) {
+		if( enabled )
+			global.m_project->signets().append( qMakePair( m_fileName, line ) );
+		else
+			global.m_project->signets().removeAll( qMakePair( m_fileName, line ) );
+	}
+}
+
+QList<int> & FileEditor::bookmarks() const {
+	return m_numbers->listOfBookmark(); 
+}
+
 
 TextEditor * FileEditor::textEdit() const { 
 	return static_cast<TextEditor*>( m_view );
