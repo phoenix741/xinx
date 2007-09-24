@@ -60,6 +60,8 @@ void CVSFileEntry::setFileName( const QString & path, const QString & filename )
 }
 
 void CVSFileEntry::setFileName( const QString & filename ) {
+	Q_ASSERT( ! filename.isEmpty() );
+	
 	QFileSystemWatcher * watcher = watcherInstance();
 	if( ! m_fileName.isEmpty() )
 		watcher->removePath( m_fileName );
@@ -126,6 +128,7 @@ void CVSFileEntry::setCVSFileDate( QString date ) {
 		}
 	} else
 		m_cvsDate = QDateTime();
+	
 	refreshStatus();
 }
 
@@ -178,9 +181,13 @@ void CVSFileEntry::deleteInstance() {
 /* CVSFileEntryList */
 
 CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( path ) {
+	Q_ASSERT( QFileInfo( path ).isDir() );
+	Q_ASSERT( QDir( path ).exists() );
+	
 	m_entries = QDir( m_path ).absoluteFilePath( "CVS/Entries" );
 
 	loadEntriesFile();
+	
 	QFileSystemWatcher * instance = CVSFileEntry::watcherInstance();
 	instance->addPath( m_entries );
 	instance->addPath( m_path );
@@ -199,14 +206,14 @@ CVSFileEntryList::~CVSFileEntryList() {
 
 void CVSFileEntryList::entriesChanged( const QString & filename ) {
 	if( filename == m_entries ) {
-		qDebug() << "Entries " << filename << " changed";
+		qDebug() << "Entries " << filename << " changed" << endl;
 		loadEntriesFile();
 	}
 }
 
 void CVSFileEntryList::directoryChanged( const QString & filename ) {
 	if( filename == m_path ) {
-		qDebug() << "Directory " << filename << " changed";
+		qDebug() << "Directory " << filename << " changed" << endl;
 		loadEntriesFile();
 		emit fileChanged( filename );
 	}
@@ -214,7 +221,9 @@ void CVSFileEntryList::directoryChanged( const QString & filename ) {
 
 CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 	qDebug() << "path : " << filename << endl;
-	if( ! QDir( filename ).exists() ) return NULL;
+
+	Q_ASSERT( QDir( filename ).exists() );
+	Q_ASSERT( filename.contains( m_path ) );
 
 	CVSFileEntryList * list = NULL;
 	QString rel = QDir( m_path ).relativeFilePath( filename ), dir = rel;
@@ -222,9 +231,12 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 		dir = dir.left( dir.indexOf( '/' ) );
 	if( dir.isEmpty() ) 
 		return this;
-	if( ( dir == "." ) || (dir == ".." ) )
+	
+	Q_ASSERT( dir != "." );
+	Q_ASSERT( dir != ".." );
+	/*if( ( dir == "." ) || (dir == ".." ) )
 		return NULL;
-	else
+	else*/
 	if( m_directoryList.count( dir ) == 0 ) {
 		list = new CVSFileEntryList( QDir( m_path ).absoluteFilePath( dir ) );
 		m_directoryList[ dir ] = list; 
@@ -240,6 +252,8 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 
 CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 	qDebug() << "object : " << filename << endl;
+	Q_ASSERT( filename.contains( m_path ) );
+
 	QFileInfo info = QFileInfo( filename );
 	QString path = info.absolutePath(), basename = info.fileName();
 	QString rel = QDir( m_path ).relativeFilePath( path );
@@ -249,10 +263,12 @@ CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 	} else {
 		list = this;
 	}
-	if( ! list ) {
+	/*if( ! list ) {
 		qDebug() << "object : " << filename << " null because no dir" << endl;
 		return NULL;
-	} else
+	} else*/
+	Q_ASSERT( list );
+
 	if( list->count( basename ) == 0 ) {
 		qDebug() << "object : " << filename << " null because no count" << endl;
 		return NULL;
@@ -264,6 +280,8 @@ CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 
 RCS::rcsState CVSFileEntryList::status( const QString & filename ) {
 	qDebug() << "status : " << filename << endl;
+	Q_ASSERT( filename.contains( m_path ) );
+
 	CVSFileEntry * entry = object( filename );
 	if( entry ) {
 		qDebug() << "status : " << filename << " entry " << entry->status() << endl;

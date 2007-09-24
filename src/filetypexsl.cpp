@@ -136,7 +136,8 @@ void PrivateFileTypeXsl::keyPressEvent( QKeyEvent *e ) {
 					m_parent->textEdit()->setTextCursor( tc );
 				}
 			}
-			c->popup()->hide();
+			if( c )
+				c->popup()->hide();
 			emit m_parent->canUpdateModel();
 			return;
 		} else if( e->text().right(1) == "=" && global.m_config->config().editor.completionLevel >= 2 ) { 

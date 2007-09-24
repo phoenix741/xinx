@@ -35,7 +35,6 @@ public:
 	void loadFromProject( XSLProject * );
 	void saveToProject( XSLProject * );
 private:
-	void updateSpecifiquePath();
 	void updateOkButton();
 	ThreadedConfigurationFile * m_versionInstance;
 	int indexDefaultSearchPath;
@@ -49,7 +48,6 @@ private slots:
 	void on_m_searchPathBtnDel_clicked();
 	void on_m_webServiceBtnDel_clicked();
 	void on_m_webServiceBtnAdd_clicked();
-	void on_m_langComboBox_currentIndexChanged( QString );
 	void on_m_projectLineEdit_textChanged( QString );
 	void on_m_projectButton_clicked();
 	void on_m_prefixLineEdit_textChanged( QString );

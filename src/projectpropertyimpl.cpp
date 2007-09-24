@@ -46,7 +46,7 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 		
 	value = QFileDialog::getExistingDirectory( this, tr("Project path"), value );
 	if( ! value.isEmpty() ) {
-		m_projectLineEdit->setText( value );		
+		m_projectLineEdit->setText( QDir::toNativeSeparators( value ) );		
 	}
 }
 
@@ -83,7 +83,6 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	m_configurationVersionLabel->setPalette( paletteVerion );
 
 	updateOkButton();
-	updateSpecifiquePath();
 }
 
 void ProjectPropertyImpl::versionFinded( ConfigurationVersion version ) {
@@ -131,7 +130,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	QString defSearchPath = project->searchPathList().at( indexDefaultSearchPath );
 	m_searchPathList->clear();
 	foreach( QString link, project->searchPathList() ) {
-		QListWidgetItem * item = new QListWidgetItem( link );
+		QListWidgetItem * item = new QListWidgetItem( QDir::toNativeSeparators( link ) );
 		if( link == defSearchPath ) {
 			QFont font = item->font();
 			font.setBold( true );
@@ -141,7 +140,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	}
 	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
 	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
-	m_specifiquePathLabel->setText( defSearchPath );
+	m_specifiquePathLabel->setText( QDir::toNativeSeparators( defSearchPath ) );
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
@@ -168,14 +167,8 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	}
 	project->searchPathList().clear();
 	for( int i = 0; i < m_searchPathList->count(); i++ ) {
-		project->searchPathList().append( m_searchPathList->item( i )->text() );
+		project->searchPathList().append( QDir::fromNativeSeparators( m_searchPathList->item( i )->text() ) );
 	}
-}
-
-void ProjectPropertyImpl::updateSpecifiquePath() {
-	QString path = QString("%1/langue/%2/nav/%3").arg( m_projectLineEdit->text() ).arg( m_langComboBox->currentText().toLower() ).arg( global.m_config->config().project.defaultProjectPathName );
-	
-	m_specifiquePathLabel->setText( QDir::cleanPath( path ) );
 }
 
 void ProjectPropertyImpl::updateOkButton() {
@@ -187,13 +180,6 @@ void ProjectPropertyImpl::updateOkButton() {
 
 	okButton->setEnabled( okButtonEnabled );
 }
-
-void ProjectPropertyImpl::on_m_langComboBox_currentIndexChanged( QString str ) {
-	Q_UNUSED( str );
-	
-	updateSpecifiquePath();
-}
-
 
 void ProjectPropertyImpl::on_m_webServiceBtnDel_clicked() {
 	assert( m_webServiceList->currentRow() >= 0 );
@@ -254,7 +240,7 @@ void ProjectPropertyImpl::on_m_searchPathBtnDef_clicked() {
 		QFont font = item->font();
 		font.setBold( true );
 		item->setFont( font );
-		m_specifiquePathLabel->setText( item->text() );
+		m_specifiquePathLabel->setText( item->text()  );
 	}
 }
 
@@ -271,6 +257,6 @@ void ProjectPropertyImpl::on_m_logButton_clicked() {
 		
 	value = QFileDialog::getExistingDirectory( this, tr("Log path"), value );
 	if( ! value.isEmpty() ) {
-		m_logLineEdit->setText( value );		
+		m_logLineEdit->setText( QDir::toNativeSeparators( value ) );		
 	}
 }
