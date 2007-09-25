@@ -21,6 +21,7 @@
 // Xinx header 
 #include "filetypexml.h"
 #include "texteditor.h"
+#include "exceptions.h"
 
 // Define
 #define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
@@ -34,7 +35,7 @@ FileTypeXml::~FileTypeXml() {
 }
 	
 FileTypeXml::cursorPosition FileTypeXml::editPosition( const QTextCursor & cursor ) {
-	Q_ASSERT( ! cursor.isNull() );
+	XINX_ASSERT( ! cursor.isNull() );
 	
 	FileTypeXml::cursorPosition cPosition = cpNone;
 	m_nodeName = QString();

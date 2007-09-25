@@ -24,6 +24,7 @@
 #include "globals.h"
 #include "flattreeview.h"
 #include "dirrcsmodel.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QFileInfo>
@@ -61,7 +62,7 @@ PrivateProjectDirectoryDockWidget::~PrivateProjectDirectoryDockWidget() {
 }
 
 void PrivateProjectDirectoryDockWidget::filtreChange() {
-	Q_ASSERT( m_dirModel );
+	XINX_ASSERT( m_dirModel );
 	m_modelTimer->stop();
 	
 	QString filtre = m_projectDirWidget->m_filtreLineEdit->text();
@@ -119,7 +120,7 @@ bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event
 
 void PrivateProjectDirectoryDockWidget::on_m_filtreLineEdit_textChanged( QString filtre ) {
 	Q_UNUSED( filtre );
-	Q_ASSERT( m_dirModel );
+	XINX_ASSERT( m_dirModel );
 
 	m_modelTimer->stop();
 	m_modelTimer->start();
@@ -258,7 +259,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 }
 
 void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
-	Q_ASSERT( path.contains( d->m_project->projectPath() ) );
+	XINX_ASSERT( path.contains( d->m_project->projectPath() ) );
 
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );
@@ -267,7 +268,7 @@ void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
 }
 
 bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
-	Q_ASSERT( path.contains( d->m_project->projectPath() ) );
+	XINX_ASSERT( path.contains( d->m_project->projectPath() ) );
 	
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );

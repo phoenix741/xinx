@@ -18,12 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
-#include <QFileDialog>
-
+// Xinx header
 #include "customdialogimpl.h"
 #include "jshighlighter.h"
 #include "xmlhighlighter.h"
+#include "exceptions.h"
+
+// Qt header
+#include <QDir>
+#include <QFileDialog>
 
 /* PrivateCustomDialogImpl */
 
@@ -236,14 +239,14 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 }
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
-	Q_ASSERT( config );
+	XINX_ASSERT( config );
 	
 	d->m_config = *config;
 	d->showConfig();
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
-	Q_ASSERT( config );
+	XINX_ASSERT( config );
 	
 	d->storeConfig();
 	*config = d->m_config;

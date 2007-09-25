@@ -22,6 +22,7 @@
 #include "uniqueapplication.h"
 #include "private/p_uniqueapplication.h"
 #include "mainformimpl.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QString>
@@ -193,8 +194,11 @@ UniqueApplication::~UniqueApplication() {
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	try {
 		return QApplication::notify( receiver, event );
+	} catch( XinxException e ) {
+		notifyError( e.getMessage() );
+		return false;
 	} catch( ... ) {
-		notifyError();
+		notifyError( "Generix Exception" );
 		return false;
 	}
 }
@@ -214,29 +218,30 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	const size_t nbChar = 100;
 #endif
 
-void UniqueApplication::notifyError() {
-#ifndef Q_WS_WIN
-	void * array[10];
-	size_t size, i;
-	char ** strings;
+void UniqueApplication::notifyError( QString error ) {
 	FILE * file = NULL;
+#ifndef Q_WS_WIN
+	char * filename = "/tmp/xinx_trace.log";
+#else
+	char * filename = "c:\\xinx_trace.log";
+#endif
 	
-	size = backtrace( array, 10 );
-	strings = backtrace_symbols( array, size );
-	file = fopen( "/tmp/xinx_trace.log", "w+" );
+	file = fopen( filename, "w+" );
 	if( file ) {
+#ifndef Q_WS_WIN
+		void * array[10];
+		size_t size, i;
+		char ** strings;
+		FILE * file = NULL;
+	
+		size = backtrace( array, 10 );
+		strings = backtrace_symbols( array, size );
 		fprintf( file, "Obtained %zd stack frames.\n", size );
 		for( i = 0; i < size; i++ ) {
 			fprintf( file, "%s\n", strings[i] );
 		}
-		fclose( file );
-	}
-	free( strings );
-	QMessageBox::critical( NULL, "XINX Crash", "XINX is unstable and is crashing. Send the file /tmp/xinx_trace.log at Ulrich Van Den Hekke" );
+		free( strings );
 #else
-	FILE * file = NULL;
-	file = fopen( "c:\\xinx_trace.log", "w+" );
-	if( file ) {
 		/*
 		HANDLE hProcess = GetCurrentProcess();
 		STACKFRAME tempStackFrame;
@@ -306,12 +311,15 @@ void UniqueApplication::notifyError() {
 		free(undecoratedName);
 		*/
 
-		fprintf( file, "UNAVALAIBLE ON WINDOWS :(\n" );			
-
+		fprintf( file, "BACKTRACE UNAVALAIBLE ON WINDOWS :(, PLEASE USE GNU/LINUX :)\n" );			
+#endif
+		fprintf( file, error.toAscii() );
 		fclose( file );
 	}
-	QMessageBox::critical( NULL, "XINX Crash", "XINX is unstable and is crashing. Send the file c:\\xinx_trace.log at Ulrich Van Den Hekke" );
-#endif
+	QMessageBox::critical( NULL, "XINX Crash", 
+			QString( "XINX Crash with the following error : \n%2\n"
+					 "Send the file %1 at XINX project leader" ).arg( filename ).arg( error ) );
+	
 	if( d->m_mainform )
 		d->m_mainform->saveProject( true );
 	exit(1);

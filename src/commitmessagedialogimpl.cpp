@@ -22,6 +22,7 @@
 #include "commitmessagedialogimpl.h"
 #include "globals.h"
 #include "xslproject.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QMessageBox>
@@ -67,7 +68,7 @@ QString CommitMessageDialogImpl::messages() {
 }
 
 void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
-	Q_ASSERT( global.m_project != NULL );
+	XINX_ASSERT( global.m_project != NULL );
 	
 	m_fileListWidget->clear();
 	d->m_files = files;

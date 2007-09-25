@@ -25,6 +25,7 @@
 #include "globals.h"
 #include "editorcompletion.h"
 #include "xinxconfig.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QDomElement>
@@ -324,7 +325,7 @@ void PrivateFileTypeXsl::insertCompletionAccolade( QTextCursor & tc, QString nod
 }
 	
 QCompleter * PrivateFileTypeXsl::currentCompleter( const QTextCursor & cursor ) {
-	Q_ASSERT( ! cursor.isNull() );
+	XINX_ASSERT( ! cursor.isNull() );
 	if( global.m_config->config().editor.completionLevel == 0 ) 
 		return NULL;
 	FileTypeXsl::cursorPosition position = m_parent->editPosition( cursor );

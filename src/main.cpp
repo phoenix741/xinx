@@ -26,6 +26,7 @@
 #include "objectview.h"
 #include "editorcompletion.h"
 #include "snipetlist.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QApplication>
@@ -143,8 +144,11 @@ int main(int argc, char *argv[]) {
 			}
 	 		return 255;
 		}
+	} catch( XinxException e ) {
+		app.notifyError( "In main : " + e.getMessage() );
+		return false;
 	} catch( ... ) {
-		app.notifyError();
+		app.notifyError( "In main : Generic Exception" );
 		return 1;
 	}
 }

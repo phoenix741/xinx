@@ -41,6 +41,7 @@
 #include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
 #include "runsnipetdialogimpl.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QKeySequence>
@@ -442,7 +443,7 @@ void PrivateMainformImpl::createSnipet() {
 }
 
 void PrivateMainformImpl::callSnipetMenu() {
-	Q_ASSERT( m_parent->m_tabEditors->currentEditor() != NULL );
+	XINX_ASSERT( m_parent->m_tabEditors->currentEditor() != NULL );
 
 	QAction * action = qobject_cast<QAction*>( sender() );
 	if( action && TabEditor::isFileEditor( m_parent->m_tabEditors->currentEditor() ) ) {
@@ -507,7 +508,7 @@ void PrivateMainformImpl::openFile( const QString & name, int line ) {
 }
 
 void PrivateMainformImpl::openFile() {
-	Q_ASSERT( global.m_config );
+	XINX_ASSERT( global.m_config );
 	
 	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), m_lastPlace, global.m_config->filters().join(";;") );
 	
@@ -520,9 +521,9 @@ void PrivateMainformImpl::openFile() {
 }
 
 void PrivateMainformImpl::fileEditorRefreshFile( int index ) {
-	Q_ASSERT( index >= 0 );
-	Q_ASSERT( index < m_parent->m_tabEditors->count() );
-	Q_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	XINX_ASSERT( index >= 0 );
+	XINX_ASSERT( index < m_parent->m_tabEditors->count() );
+	XINX_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
 	
 	if( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) ) {
 		FileEditor * ed = static_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) );
@@ -703,9 +704,9 @@ void PrivateMainformImpl::updateActions() {
 }
 
 bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
-	Q_ASSERT( index >= 0 );
-	Q_ASSERT( index < m_parent->m_tabEditors->count() );
-	Q_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	XINX_ASSERT( index >= 0 );
+	XINX_ASSERT( index < m_parent->m_tabEditors->count() );
+	XINX_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
 	
 	if ( m_parent->m_tabEditors->editor( index )->isModified() ) {
 		QMessageBox::StandardButton ret;
@@ -722,7 +723,7 @@ bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
 }
 
 QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname ) {
-	Q_ASSERT( global.m_config );
+	XINX_ASSERT( global.m_config );
 	
 	QString prefix = ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ?
 							 global.m_project->specifiquePrefix() + "_" : 
@@ -746,8 +747,8 @@ QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname )
 }
 
 QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QString & suffix ) {
-	Q_ASSERT( global.m_config );
-	Q_ASSERT( ! ( pathname.isEmpty() && suffix.isEmpty() ) );
+	XINX_ASSERT( global.m_config );
+	XINX_ASSERT( ! ( pathname.isEmpty() && suffix.isEmpty() ) );
 	
 	QString fileName    = pathname,
 			fileSuffix  = suffix.isEmpty() ? QFileInfo( pathname ).completeSuffix() : suffix,
@@ -819,9 +820,9 @@ QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, 
 }
 
 void PrivateMainformImpl::fileEditorSave( int index ) {
-	Q_ASSERT( index >= 0 );
-	Q_ASSERT( index < m_parent->m_tabEditors->count() );
-	Q_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	XINX_ASSERT( index >= 0 );
+	XINX_ASSERT( index < m_parent->m_tabEditors->count() );
+	XINX_ASSERT( TabEditor::isFileEditor( m_parent->m_tabEditors->editor( index ) ) );
 	
 	if ( ! m_parent->m_tabEditors->editor( index )->hasName() ) {
 		fileEditorSaveAs( index );
@@ -865,7 +866,7 @@ void PrivateMainformImpl::fileEditorClose( int index ) {
 }
 
 void PrivateMainformImpl::printFile() {
-	Q_ASSERT( m_parent->m_tabEditors->currentEditor() != NULL );
+	XINX_ASSERT( m_parent->m_tabEditors->currentEditor() != NULL );
 	
 	if( TabEditor::isFileEditor( m_parent->m_tabEditors->currentEditor() ) ) {
 		FileEditor * editor = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() );
@@ -917,7 +918,7 @@ void PrivateMainformImpl::selectedRemoveFromVersionManager() {
 
 void PrivateMainformImpl::selectedCompareWithVersionManager() {
 	QStringList list = m_projectDock->selectedFiles();
-	Q_ASSERT( list.size() == 1 );
+	XINX_ASSERT( list.size() == 1 );
 	
 	QString revision;
 	m_compareFileName = list.at( 0 );
@@ -946,7 +947,7 @@ void PrivateMainformImpl::logTimeout() {
 }
 
 void PrivateMainformImpl::rcsLogTerminated() {
-	Q_ASSERT( m_projectDock->rcs() );
+	XINX_ASSERT( m_projectDock->rcs() );
 	
 	if( ! m_headContent.isEmpty() ) {
 		QTemporaryFile headContentFile;
@@ -970,7 +971,7 @@ void PrivateMainformImpl::rcsLogTerminated() {
 
 void PrivateMainformImpl::selectedCompareWithStd() {
 	QStringList list = m_projectDock->selectedFiles();
-	Q_ASSERT( list.size() == 1 && global.m_project );
+	XINX_ASSERT( list.size() == 1 && global.m_project );
 	
 	QString customFilename = list.at( 0 ), stdFilename, path, filename, 
 			prefix = global.m_project->specifiquePrefix() + "_";
@@ -993,7 +994,7 @@ void PrivateMainformImpl::selectedCompareWithStd() {
 
 void PrivateMainformImpl::selectedCompare() {
 	QStringList list = m_projectDock->selectedFiles();
-	Q_ASSERT( list.size() == 2 );
+	XINX_ASSERT( list.size() == 2 );
 	QProcess::execute( global.m_config->config().tools["diff"], QStringList() << list.at( 0 ) << list.at( 1 ) );
 }
 
@@ -1014,8 +1015,8 @@ void PrivateMainformImpl::createFindReplace() {
 }
 
 void PrivateMainformImpl::findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options ) {
-	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+	XINX_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	XINX_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
 
 	m_findExpression    = chaine;
 	m_replaceExpression = dest;
@@ -1059,8 +1060,8 @@ void PrivateMainformImpl::findFirst( const QString & chaine, const QString & des
 }
 	
 void PrivateMainformImpl::findNext() {
-	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+	XINX_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	XINX_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
 	
 	TextEditor * textEdit = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
 	QTextDocument * document = textEdit->document();
@@ -1166,8 +1167,8 @@ void PrivateMainformImpl::findPrevious() {
 }
 
 void PrivateMainformImpl::find() {
-	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+	XINX_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	XINX_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
 	
 	TextEditor * textEdit = qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
@@ -1179,8 +1180,8 @@ void PrivateMainformImpl::find() {
 }
 
 void PrivateMainformImpl::replace() {
-	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+	XINX_ASSERT( m_parent->m_tabEditors->currentEditor() );
+	XINX_ASSERT( qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
 
 	TextEditor * textEdit = static_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
@@ -1242,7 +1243,7 @@ void PrivateMainformImpl::openProject() {
 }
 
 void PrivateMainformImpl::projectProperty() {
-	Q_ASSERT( global.m_project != NULL );
+	XINX_ASSERT( global.m_project != NULL );
 	
 	ProjectPropertyImpl property ( m_parent );
 	property.loadFromProject( global.m_project );
@@ -1347,7 +1348,7 @@ void MainformImpl::newDefaultFile() {
 }
 
 void MainformImpl::newTemplate() {
-	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
+	XINX_ASSERT( m_tabEditors->currentEditor() != NULL );
 	if( TabEditor::isFileEditor( m_tabEditors->currentEditor() ) ) {
 		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
 		QString selectedText = editor->textEdit()->textCursor().selectedText();
@@ -1365,7 +1366,7 @@ void MainformImpl::newTemplate() {
 }
 
 void MainformImpl::openFile( const QString & filename ) {
-	Q_ASSERT( ! filename.isEmpty() );
+	XINX_ASSERT( ! filename.isEmpty() );
 
 	// Add recent action
 	if( global.m_project ) {
@@ -1440,7 +1441,7 @@ void MainformImpl::newProject() {
 }
 
 void MainformImpl::openProject( const QString & filename ) {
-	Q_ASSERT( ! filename.isEmpty() );
+	XINX_ASSERT( ! filename.isEmpty() );
 
 	if( global.m_project ) 
 		d->closeProject();
@@ -1493,7 +1494,7 @@ void MainformImpl::closeProjectWithSessionData() {
 }
 
 void MainformImpl::saveProject( bool withSessionData ) {
-	Q_ASSERT( global.m_project );
+	XINX_ASSERT( global.m_project );
 	
 	global.m_project->sessionsEditor().clear();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
@@ -1506,8 +1507,8 @@ void MainformImpl::saveProject( bool withSessionData ) {
 }
 
 void MainformImpl::callWebservices() {
-	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
-	Q_ASSERT( global.m_project );
+	XINX_ASSERT( m_tabEditors->currentEditor() != NULL );
+	XINX_ASSERT( global.m_project );
 	
 	WebServicesEditor * editor = qobject_cast<WebServicesEditor*>( m_tabEditors->currentEditor() );
 	if( editor ) 

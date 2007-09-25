@@ -29,8 +29,6 @@
 #include <QDomElement>
 #include <QPair>
 
-#include <assert.h>
-
 #include "webservices.h"
 #include "xslproject.h"
 #include "wsdl.h"

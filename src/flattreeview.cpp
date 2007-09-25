@@ -18,9 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "flattreeview.h"
-#include <assert.h>
+#include "exceptions.h"
 
+// Qt header
 #include <QHash>
 #include <QDirModel>
 

@@ -23,12 +23,12 @@
 #include "xslproject.h"
 #include "xinxconfig.h"
 #include "globals.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QDir>
 #include <QFileDialog>
 #include <QInputDialog>
-#include <assert.h>
 
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
 	setupUi(this);
@@ -182,7 +182,7 @@ void ProjectPropertyImpl::updateOkButton() {
 }
 
 void ProjectPropertyImpl::on_m_webServiceBtnDel_clicked() {
-	assert( m_webServiceList->currentRow() >= 0 );
+	XINX_ASSERT( m_webServiceList->currentRow() >= 0 );
 	
 	delete m_webServiceList->currentItem();
 	
@@ -208,7 +208,7 @@ void ProjectPropertyImpl::on_m_searchPathBtnAdd_clicked() {
 }
 
 void ProjectPropertyImpl::on_m_searchPathBtnDel_clicked() {
-	assert( m_searchPathList->currentRow() >= 0 );
+	XINX_ASSERT( m_searchPathList->currentRow() >= 0 );
 	
 	delete m_searchPathList->currentItem();
 	

@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "cvsfiles.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QDir>
@@ -60,7 +61,7 @@ void CVSFileEntry::setFileName( const QString & path, const QString & filename )
 }
 
 void CVSFileEntry::setFileName( const QString & filename ) {
-	Q_ASSERT( ! filename.isEmpty() );
+	XINX_ASSERT( ! filename.isEmpty() );
 	
 	QFileSystemWatcher * watcher = watcherInstance();
 	if( ! m_fileName.isEmpty() )
@@ -181,8 +182,8 @@ void CVSFileEntry::deleteInstance() {
 /* CVSFileEntryList */
 
 CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( path ) {
-	Q_ASSERT( QFileInfo( path ).isDir() );
-	Q_ASSERT( QDir( path ).exists() );
+	XINX_ASSERT( QFileInfo( path ).isDir() );
+	XINX_ASSERT( QDir( path ).exists() );
 	
 	m_entries = QDir( m_path ).absoluteFilePath( "CVS/Entries" );
 
@@ -222,8 +223,9 @@ void CVSFileEntryList::directoryChanged( const QString & filename ) {
 CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 	qDebug() << "path : " << filename << endl;
 
-	Q_ASSERT( QDir( filename ).exists() );
-	Q_ASSERT( filename.contains( m_path ) );
+	XINX_ASSERT( QDir( filename ).exists() );
+	XINX_ASSERT( filename.contains( m_path ) ); 
+	// 1. Quand clique sur bouton filtre
 
 	CVSFileEntryList * list = NULL;
 	QString rel = QDir( m_path ).relativeFilePath( filename ), dir = rel;
@@ -232,8 +234,8 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 	if( dir.isEmpty() ) 
 		return this;
 	
-	Q_ASSERT( dir != "." );
-	Q_ASSERT( dir != ".." );
+	XINX_ASSERT( dir != "." );
+	XINX_ASSERT( dir != ".." );
 	/*if( ( dir == "." ) || (dir == ".." ) )
 		return NULL;
 	else*/
@@ -252,22 +254,29 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 
 CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 	qDebug() << "object : " << filename << endl;
-	Q_ASSERT( filename.contains( m_path ) );
+	XINX_ASSERT( filename.contains( m_path ) );
 
-	QFileInfo info = QFileInfo( filename );
+	// The object can't know if itself is managed by CVS.
+	if( filename == m_path ) return NULL; 
+
+	// Split name to search basename in path.
+	QFileInfo info = QFileInfo( filename ); 
 	QString path = info.absolutePath(), basename = info.fileName();
+	
+	// To know if there are subdirectories
 	QString rel = QDir( m_path ).relativeFilePath( path );
 	CVSFileEntryList * list = NULL;
-	if( ! rel.isEmpty() ) {
+	
+	if( ! rel.isEmpty() ) { // If we ask a sub directory
 		list = this->path( path );
-	} else {
+	} else { // If we ask it-self as directory.
 		list = this;
 	}
 	/*if( ! list ) {
 		qDebug() << "object : " << filename << " null because no dir" << endl;
 		return NULL;
 	} else*/
-	Q_ASSERT( list );
+	XINX_ASSERT( list );
 
 	if( list->count( basename ) == 0 ) {
 		qDebug() << "object : " << filename << " null because no count" << endl;
@@ -280,7 +289,7 @@ CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 
 RCS::rcsState CVSFileEntryList::status( const QString & filename ) {
 	qDebug() << "status : " << filename << endl;
-	Q_ASSERT( filename.contains( m_path ) );
+	XINX_ASSERT( filename.contains( m_path ) );
 
 	CVSFileEntry * entry = object( filename );
 	if( entry ) {

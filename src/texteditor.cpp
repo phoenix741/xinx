@@ -22,6 +22,7 @@
 #include "texteditor.h"
 #include "globals.h"
 #include "xinxconfig.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QTextBlock>
@@ -192,7 +193,7 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 }
 
 QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord ) {
-	Q_ASSERT( ! cursor.isNull() );
+	XINX_ASSERT( ! cursor.isNull() );
 
 	QTextCursor before ( document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
 	QTextCursor after ( document()->find ( QRegExp( EOWREGEXP ), cursor ) );
