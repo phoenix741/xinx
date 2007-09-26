@@ -25,6 +25,7 @@
 #include "webservices.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QLabel>
@@ -245,7 +246,11 @@ Operation * WebServicesEditor::operation() {
 		return NULL;
 }
 
-class WrongFwsFormatException {};
+class WrongFwsFormatException : public XinxException {
+public:
+	WrongFwsFormatException( const QString & message ) : XinxException( message ) {
+	}
+};
 
 void WebServicesEditor::loadFile( const QString & fileName ){
 	if( ! fileName.isEmpty() ) m_fileName = fileName;
@@ -261,10 +266,10 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 	d->m_paramValues.clear(); d->m_oldParamValue = QString();
 	try {
 		QDomDocument document;
-		if( ! document.setContent( &file, false ) ) throw WrongFwsFormatException();
+		if( ! document.setContent( &file, false ) ) throw WrongFwsFormatException( "Can't read content of file" );
 			
 		QDomElement element = document.documentElement();
-		if( element.tagName() != "webservice" ) throw WrongFwsFormatException();
+		if( element.tagName() != "webservice" ) throw WrongFwsFormatException( "Not a WebServices file" );
 		
 		d->m_serviceName = element.attribute( "service" );
 		d->m_operationName = element.attribute( "action" );

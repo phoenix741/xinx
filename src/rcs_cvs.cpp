@@ -26,6 +26,12 @@
 // Qt header
 #include <QDir>
 
+/* ProcessExecutedException */
+
+ProcessExecutedException::ProcessExecutedException( QString message ) : XinxException( message ) {
+	
+}
+
 /* PrivateRCS_CVS */
 
 PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) : m_thread( 0 ), m_parent( parent ) {
@@ -198,28 +204,28 @@ RCS::rcsState RCS_CVS::status( const QString & path ) {
 
 void RCS_CVS::update( const QStringList & path ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException();
+		throw ProcessExecutedException( "Can't update" );
 	} else
 		d->callUpdate( path );
 }
 
 void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException();
+		throw ProcessExecutedException( "Can't commit" );
 	} else
 		d->callCommit( path, message );
 }
 
 void RCS_CVS::add( const QStringList & path ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException();
+		throw ProcessExecutedException( "Can't add" );
 	} else
 		d->callAdd( path );
 }
 
 void RCS_CVS::remove( const QStringList & path ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException();
+		throw ProcessExecutedException( "Can't remove" );
 	} else
 		d->callRemove( path );
 }
@@ -231,7 +237,7 @@ void RCS_CVS::abort() {
 
 void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
 	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException();
+		throw ProcessExecutedException( "Can't update to revision" );
 	} else
 		d->callUpdateToRevision( path, revision, content );
 }

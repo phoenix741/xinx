@@ -46,7 +46,7 @@ void Completion::load() {
 			qApp->activeWindow(), 
 			QApplication::translate("Completion", "Completion"), 
 			QApplication::translate("Completion", "Cannot read file %1:\n%2.").arg( m_name ).arg( file.errorString() ) );
-		throw ENotCompletionFile( QApplication::translate("Completion", "Can't open or read the file %1.").arg( m_name ) );
+		throw NotCompletionFileException( QApplication::translate("Completion", "Can't open or read the file %1.").arg( m_name ) );
 	}
 
 	// Load XML Document
@@ -61,14 +61,14 @@ void Completion::load() {
 				.arg(errorLine)
 				.arg(errorColumn)
 				.arg(errorStr) );
-		throw ENotCompletionFile( QApplication::translate("Completion", "Can't parse the file %1.").arg( m_name ) );
+		throw NotCompletionFileException( QApplication::translate("Completion", "Can't parse the file %1.").arg( m_name ) );
 	}  
   
 	QDomElement root = objectFile.documentElement();
   
 	// Test if Completion
 	if( root.tagName() != "completion" ) 
-		throw ENotCompletionFile( QApplication::translate("Completion", "%1 is not auto completion file").arg( m_name ) );
+		throw NotCompletionFileException( QApplication::translate("Completion", "%1 is not auto completion file").arg( m_name ) );
   	
 	// Read the XML part of the completion
 	QDomElement xml = root.firstChildElement( "xml" );

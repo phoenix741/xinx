@@ -28,6 +28,13 @@
 #include <QXmlSimpleReader>
 #include <QDebug>
 
+/* 	ConfigurationVerstionIncorectException */
+
+ConfigurationVersionIncorectException::ConfigurationVersionIncorectException( QString version ) : XinxException( QString("Wrong version number %1").arg( version ) ) {
+	
+}
+
+
 /* ConfigurationVersion */
 
 ConfigurationVersion::ConfigurationVersion( int major, int minor, int release, int build ) {
@@ -42,13 +49,13 @@ ConfigurationVersion::ConfigurationVersion( const QString & version, int build )
 
 	m_build = build;
 	if( ! version.length() )
-		throw ConfigurationVerstionIncorectException();
+		throw ConfigurationVersionIncorectException( version );
 	if( version.at( 0 ) != 'V' )
-		throw ConfigurationVerstionIncorectException();
+		throw ConfigurationVersionIncorectException( version );
 	int posDot = version.indexOf( "." ),
 	    posLine = version.indexOf( "-", posDot );
 	if( ( posDot < 0 ) || ( posLine < 0 ) )
-		throw ConfigurationVerstionIncorectException();
+		throw ConfigurationVersionIncorectException( version );
 	major = version.mid( 1, posDot - 1 );
 	minor = version.mid( posDot + 1, posLine - posDot - 1 );
 	release = version.mid( posLine + 1 );
@@ -155,7 +162,7 @@ ConfigurationVersion ConfigurationFile::version( const QString & DirectoryPath )
 		reader.parse( xmlInputSource );
 		try {
 			return ConfigurationVersion( handler.m_version, handler.m_build );
-		} catch( ConfigurationVerstionIncorectException ) {
+		} catch( ConfigurationVersionIncorectException ) {
 			return ConfigurationVersion();
 		}
 	}

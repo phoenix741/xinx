@@ -26,6 +26,10 @@
 class XinxException {
 public:
 	XinxException( QString message );
+	/*!
+	 * Return the message.
+	 * \return The message of the error.
+	 */
 	const QString & getMessage() const;
 private:
 	QString m_message;

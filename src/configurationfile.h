@@ -21,9 +21,15 @@
 #ifndef __CONFIGURATIONFILE_H__
 #define __CONFIGURATIONFILE_H__
 
+// Xinx header
+#include "exceptions.h"
+
+// Qt header
 #include <QString>
 
-class ConfigurationVerstionIncorectException {	
+class ConfigurationVersionIncorectException : public XinxException {
+public:
+	ConfigurationVersionIncorectException( QString version );
 };
 
 class PrivateConfigurationVersion;

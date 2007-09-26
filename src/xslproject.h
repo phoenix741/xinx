@@ -21,6 +21,10 @@
 #ifndef _XSLPROJECT_H_
 #define _XSLPROJECT_H_
 
+// Xinx header
+#include "exceptions.h"
+
+// Qt header
 #include <QString>
 #include <QDomDocument>
 #include <QDomElement>
@@ -35,20 +39,13 @@
  * read, the exception is catched and the application continue. The project is
  * opened. 
  */ 
-class XSLProjectException {
+class XSLProjectException : public XinxException {
 public:
 	/*!
 	 * Constructor of the exception.
 	 * \param message Message for the user.
 	 */
 	XSLProjectException( const QString & message );
-	/*!
-	 * Method to read the message in the exception.
-	 * \return a string contains the error.
-	 */
-	const QString & getMessage() const; 
-private:
-	QString m_message;
 };
 
 class WebServices;

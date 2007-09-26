@@ -25,8 +25,7 @@
 
 /* 	JavaScriptParserException */
 
-JavaScriptParserException::JavaScriptParserException( const QString & message, int line ) : FileContentException( message, line ) {
-	qDebug() << QObject::tr("Error %1 at line %2").arg( message ).arg( line ) << endl;
+JavaScriptParserException::JavaScriptParserException( const QString & message, int line, int column ) : FileContentException( message, line, column ) {
 }
 
 /* PrivateJavaScriptElement */

@@ -37,12 +37,7 @@
 
 /* XSLProjectException */
 
-XSLProjectException::XSLProjectException( const QString & message ) {
-	m_message = message;
-}
-
-const QString & XSLProjectException::getMessage() const {
-	return m_message;
+XSLProjectException::XSLProjectException( const QString & message ) : XinxException( message ) {
 }
 
 /* PrivateXSLProject */

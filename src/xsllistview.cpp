@@ -32,8 +32,7 @@
 
 /* XMLParserException */
 
-XMLParserException::XMLParserException( const QString & message, int line ) : FileContentException( message, line ) {
-	qDebug() << QObject::tr("Error %1 at line %2").arg( message ).arg( line ) << endl;
+XMLParserException::XMLParserException( const QString & message, int line, int column ) : FileContentException( message, line, column ) {
 }
 
 /* XSLModelData */
@@ -149,7 +148,7 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 	
 	// Open the file
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		throw XMLParserException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0 );
+		throw XMLParserException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
 	    return;
 	}
 	QTextStream text( &file );
@@ -183,7 +182,7 @@ QDomElement XSLModelData::loadFromContent( const QString& content ) {
 		qDeleteAll( m_child );
 		m_child.clear();		
 		emit childReseted();
-		throw XMLParserException( tr("Parse error column %1:%2").arg(errorColumn).arg(errorStr), errorLine );
+		throw XMLParserException( errorStr, errorLine, errorColumn );
 	}
 	return QDomElement();
 }

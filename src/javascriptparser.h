@@ -39,7 +39,7 @@ public:
 	 * Create the exception
 	 * \param line Line where the exception is throw
 	 */
-	JavaScriptParserException( const QString & message, int line );
+	JavaScriptParserException( const QString & message, int line, int column = 0 );
 };
 
 /*!

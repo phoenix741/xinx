@@ -33,7 +33,7 @@ public:
 	 * \param message The message to show.
 	 * \param line Line where the exception is throw
 	 */
-	XMLParserException( const QString & message, int line );
+	XMLParserException( const QString & message, int line, int column );
 };
 
 class QDomElement;

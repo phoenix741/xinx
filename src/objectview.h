@@ -35,6 +35,9 @@
  * software.
  */
 
+// Xinx header
+#include "exceptions.h"
+
 // Qt header
 #include <QObject>
 #include <QHash>
@@ -73,11 +76,10 @@ private:
   QString m_name;
 };
 
-class ENotViewObject {
+class NotViewObjectException : public XinxException {
 public:
-  ENotViewObject(const QString & message) {
-    qDebug(message.toLatin1());
-  }
+	NotViewObjectException( QString message ) : XinxException( message ) {
+	}
 };
 
 class ObjectsView : public QObject {

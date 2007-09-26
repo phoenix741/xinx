@@ -21,32 +21,37 @@
 #ifndef __FILECONTENTITEMMODEL_H__
 #define __FILECONTENTITEMMODEL_H__
 
+// Xinx header
+#include "exceptions.h"
+
+// Qt header
 #include <QAbstractItemModel>
 
 /*!
  * Exception throw when the model can't be updated.
  */
-class FileContentException {
+class FileContentException : public XinxException {
 public:
 	/*!
 	 * Create the exception with a message and a line.
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	FileContentException( const QString & message, int line );
-	/*!
-	 * Return the message.
-	 * \return The message of the error.
-	 */
-	const QString & getMessage() const;
+	FileContentException( QString message, int line, int column );
+
 	/*!
 	 * Return the line where the error is.
 	 * \return The line of the error.
 	 */
 	int getLine() const;
+	
+	/*! 
+	 * Return the column where the error is.
+	 * \return the column of the error.
+	 */
+	int getColumn() const;
 private:
-	int m_line;
-	QString m_message;
+	int m_line, m_column;
 };
 
 /*!

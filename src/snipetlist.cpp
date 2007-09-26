@@ -37,15 +37,9 @@
  * Exception throw by the Snipet list.
  * \param message Message of the error.
  */
-SnipetListException::SnipetListException( const QString & message ) {
-	m_message = message;
+SnipetListException::SnipetListException( const QString & message ) : XinxException( message ) {
 }
 	
-const QString & SnipetListException::getMessage() const {
-	return m_message;
-}
-
-
 /* PrivateSnipetList */
 
 class PrivateSnipetList : public QObject {

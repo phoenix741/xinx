@@ -21,6 +21,10 @@
 #ifndef _EDITORCOMPLETION_H_
 #define _EDITORCOMPLETION_H_
 
+// Xinx header
+#include "exceptions.h"
+
+// Qt header
 #include <QList>
 #include <QStringList>
 
@@ -30,15 +34,14 @@ class QDomElement;
  * Exception created when the file loaded isn't a Completion File (not a XML file
  * or have a wrong format).
  */
-class ENotCompletionFile {
+class NotCompletionFileException : public XinxException {
 public:
   /*!
    * Constructor of the exception, show a message on the console, when exception is
    * declanched.
    * \param message Message to be show on the console.
    */
-  ENotCompletionFile(const QString & message) {
-    qDebug(message.toLatin1());
+  NotCompletionFileException( const QString & message ) : XinxException( message ) {
   }
 };
 

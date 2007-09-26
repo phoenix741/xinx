@@ -44,14 +44,19 @@
 
 MainformImpl * mainWin = NULL;
 
-class SignalSegFaultException {};
+class SignalSegFaultException : public XinxException {
+public:
+	SignalSegFaultException( int signal ) : XinxException( QString("Signal emited : %1").arg( signal ) ) {
+		
+	}
+};
 
-void backup_appli_signal( int ) {
+void backup_appli_signal( int signal ) {
 	std::signal(SIGSEGV, SIG_DFL);
 	std::signal(SIGABRT, SIG_DFL);
 	std::signal(SIGINT, SIG_DFL);
 	std::signal(SIGTERM, SIG_DFL);
-	throw SignalSegFaultException();
+	throw SignalSegFaultException( signal );
 }
 
 int main(int argc, char *argv[]) {
@@ -89,7 +94,7 @@ int main(int argc, char *argv[]) {
 			global.m_snipetList = new SnipetList();
 			try {
 				global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );
-			} catch( ENotCompletionFile ) {
+			} catch( NotCompletionFileException ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load completion file.") );
 				app.processEvents();
 			}

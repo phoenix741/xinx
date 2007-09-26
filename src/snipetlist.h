@@ -21,17 +21,18 @@
 #ifndef __SNIPETLIST_H__
 #define __SNIPETLIST_H__
 
+// Xinx header
+#include "exceptions.h"
+
+// Qt header
 #include <QObject>
 #include <QString>
 
 class QMenu;
 
-class SnipetListException {
+class SnipetListException : public XinxException {
 public:
 	SnipetListException( const QString & message );
-	const QString & getMessage() const;
-private:
-	QString m_message;
 };
 
 class Snipet;

@@ -578,7 +578,7 @@ void PrivateMainformImpl::customize() {
 
 		try {
 			global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );
-		} catch( ENotCompletionFile ) {
+		} catch( NotCompletionFileException ) {
 			QMessageBox::warning( m_parent, tr("Load completion"), tr("Can't load completion file.") );
 		}
 		try {

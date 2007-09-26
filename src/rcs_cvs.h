@@ -21,11 +21,15 @@
 #ifndef __RCS_CVS_H__
 #define __RCS_CVS_H__
 
+// Xinx header
 #include "rcs.h"
+#include "exceptions.h"
 
 class PrivateRCS_CVS;
 
-class ProcessExecutedException {	
+class ProcessExecutedException : public XinxException {
+public:
+	ProcessExecutedException( QString message );
 };
 
 class RCS_CVS : public RCS {

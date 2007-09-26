@@ -22,16 +22,17 @@
 
 /* FileContentException */
 
-FileContentException::FileContentException( const QString & message, int line ) : m_line( line ), m_message( message ) {
+FileContentException::FileContentException( QString message, int line, int column ) 
+	: XinxException( QString("Error : %1 at line %2:%3").arg( message ).arg( line ).arg( column ) ), m_line( line ), m_column( column ) {
 	
-}
-
-const QString & FileContentException::getMessage() const {
-	return m_message;
 }
 
 int FileContentException::getLine() const {
 	return m_line;
+}
+
+int FileContentException::getColumn() const {
+	return m_column;
 }
 
 /* FileContentItemModel */

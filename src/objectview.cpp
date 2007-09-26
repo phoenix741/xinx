@@ -68,20 +68,20 @@ ObjectView::ObjectView( QObject* parent, const QString & fileName ) : QObject(pa
   
 	// Open the file
 	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) 
-		throw ENotViewObject( tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()) );
+		throw NotViewObjectException( tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()) );
 
 	// Load XML Document
 	QString errorStr;
 	int errorLine = 0;
 	int errorColumn = 0;  
 	if (!objectFile.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) 
-		throw ENotViewObject( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
+		throw NotViewObjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 	
   
 	QDomElement root = objectFile.documentElement();
   
 	// Test if ViewObject
-	if(root.tagName() != "ViewObject") throw ENotViewObject(tr("%1 not a ViewObject").arg(fileName));
+	if(root.tagName() != "ViewObject") throw NotViewObjectException(tr("%1 not a ViewObject").arg(fileName));
 
 	// Update attribute  	
 	m_name = root.attribute("Name");
@@ -135,7 +135,7 @@ void ObjectsView::loadFiles() {
 			ObjectView * o = new ObjectView(this, path.absoluteFilePath(fileInfo));
 			m_objectsview.insert(o->name(), o);
 			emit objectLoaded(o->name());
-		} catch(ENotViewObject) { /* Continue */ }
+		} catch( NotViewObjectException ) { /* Continue */ }
 	}
 }
   
