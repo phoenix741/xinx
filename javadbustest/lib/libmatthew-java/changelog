@@ -1,0 +1,14 @@
+Version 0.2:
+
+	* Fix Unix Sockets not to lose reference if IO streams are still
+	referenced.
+	* Add methods to Debug to set the config manually
+	* update Debug defaults
+	* add ALL as a class name to Debug
+	* write installation guide
+	* fix UnixSocket.setBlocking
+	* add UnixSocket.setSoTimeout
+
+Version 0.1:
+
+	* Initial code and packaging.
