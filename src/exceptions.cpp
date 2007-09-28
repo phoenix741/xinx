@@ -55,7 +55,7 @@ void Trace::LogMsg( int depth, const char * filename, int line, const QString & 
 	
 	stackTrace.append( s );
 
-	qDebug() << s;
+//	qDebug() << s;
 }
 /* XinxException */
 

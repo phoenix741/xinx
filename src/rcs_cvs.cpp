@@ -36,7 +36,7 @@ ProcessExecutedException::ProcessExecutedException( QString message ) : XinxExce
 /* PrivateRCS_CVS */
 
 PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) : m_thread( 0 ), m_parent( parent ) {
-	XINX_TRACE( "PrivateRCS_CVS", QString( "( 0x%1 )" ).arg( (int)parent, 0, 16 ) );
+	XINX_TRACE( "PrivateRCS_CVS", QString( "( 0x%1 )" ).arg( (unsigned long)parent, 0, 16 ) );
 
 	m_entries = new CVSFileEntryList( m_parent->getBasePath() );
 	connect( m_entries, SIGNAL(fileChanged(QString)), m_parent, SIGNAL(stateChanged(QString)) );
@@ -58,7 +58,7 @@ void PrivateRCS_CVS::callUpdate( const QStringList & path ) {
 }
 
 void PrivateRCS_CVS::callUpdateToRevision( const QString & path, const QString & revision, QString * content ) {
-	XINX_TRACE( "PrivateRCS_CVS::callUpdateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (int)content, 0, 16 ) );
+	XINX_TRACE( "PrivateRCS_CVS::callUpdateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (unsigned long)content, 0, 16 ) );
 
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSUpdateRevisionThread( path, revision, content );
@@ -275,7 +275,7 @@ void RCS_CVS::abort() {
 }
 
 void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
-	XINX_TRACE( "RCS_CVS::updateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (int)content ) );
+	XINX_TRACE( "RCS_CVS::updateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (unsigned long)content ) );
 
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException( "Can't update to revision" );

@@ -39,7 +39,7 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	m_selectedUpdateAction(0), m_selectedCommitAction(0), m_selectedAddAction(0), m_selectedRemoveAction(0),
 	m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0), m_selectedCompareAction(0), 
 	m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {
-	XINX_TRACE( "PrivateProjectDirectoryDockWidget", QString( "( %1 )" ).arg( (int)parent, 0, 16 ) );
+	XINX_TRACE( "PrivateProjectDirectoryDockWidget", QString( "( %1 )" ).arg( (unsigned long)parent, 0, 16 ) );
 			
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
@@ -93,7 +93,7 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 }
 
 bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event ) {
-	XINX_TRACE( "PrivateProjectDirectoryDockWidget::eventFilter", QString( "( %1, %2 )" ).arg( (int)obj, 0, 16 ).arg( (int)event, 0, 16 ) );
+	XINX_TRACE( "PrivateProjectDirectoryDockWidget::eventFilter", QString( "( %1, %2 )" ).arg( (unsigned long)obj, 0, 16 ).arg( (unsigned long)event, 0, 16 ) );
 
 	if ( ( obj == m_projectDirWidget->m_projectDirectoryTreeView ) && ( event->type() == QEvent::ContextMenu ) ) {
 		int nbSelected = m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size(); 
@@ -147,13 +147,13 @@ void PrivateProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClic
 /* ProjectDirectoryDockWidget */
 	
 ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget", QString( "( %1, %2, flags )" ).arg( title ).arg( (int)parent, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget", QString( "( %1, %2, flags )" ).arg( title ).arg( (unsigned long)parent, 0, 16 ) );
 
 	d = new PrivateProjectDirectoryDockWidget( this );
 }
 
 ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget", QString( "( %1, flags )" ).arg( (int)parent, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget", QString( "( %1, flags )" ).arg( (unsigned long)parent, 0, 16 ) );
 
 	d = new PrivateProjectDirectoryDockWidget( this );	
 }
@@ -165,61 +165,61 @@ ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget() {
 }
 
 void ProjectDirectoryDockWidget::setGlobalUpdateAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setGlobalUpdateAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setGlobalUpdateAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_projectDirWidget->m_updateProjectBtn->setDefaultAction( action );
 }
 
 void ProjectDirectoryDockWidget::setGlobalCommitAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setGlobalCommitAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setGlobalCommitAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_projectDirWidget->m_commitProjectBtn->setDefaultAction( action );
 }
 
 void ProjectDirectoryDockWidget::setSelectedUpdateAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedUpdateAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedUpdateAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedUpdateAction = action;
 }
 
 void ProjectDirectoryDockWidget::setSelectedCommitAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCommitAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCommitAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedCommitAction = action;
 }
 
 void ProjectDirectoryDockWidget::setSelectedAddAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedAddAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedAddAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedAddAction = action;
 }
 
 void ProjectDirectoryDockWidget::setSelectedRemoveAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedRemoveAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedRemoveAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedRemoveAction = action;
 }
 
 void ProjectDirectoryDockWidget::setSelectedCompareWithHeadAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCompareWithHeadAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCompareWithHeadAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedCompareWithHeadAction = action;
 }
 
 void ProjectDirectoryDockWidget::setSelectedCompareWithStdAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCompareWithStdAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCompareWithStdAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedCompareWithStdAction = action;
 }
 
 void ProjectDirectoryDockWidget::setSelectedCompareAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCompareAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setSelectedCompareAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_selectedCompareAction = action;
 }
 
 void ProjectDirectoryDockWidget::setToggledViewAction( QAction * action ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setToggledViewAction", QString( "( %1 )" ).arg( (int)action, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setToggledViewAction", QString( "( %1 )" ).arg( (unsigned long)action, 0, 16 ) );
 
 	d->m_projectDirWidget->m_flatListBtn->setDefaultAction( action );
 }
@@ -275,7 +275,7 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 }
 
 void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
-	XINX_TRACE( "ProjectDirectoryDockWidget::setProjectPath", QString( "( %1 )" ).arg( (int)project, 0, 16 ) );
+	XINX_TRACE( "ProjectDirectoryDockWidget::setProjectPath", QString( "( %1 )" ).arg( (unsigned long)project, 0, 16 ) );
 
 	if( d->m_projectDirWidget->m_flatListBtn->isChecked() )
 		d->m_projectDirWidget->m_flatListBtn->click();

@@ -40,7 +40,7 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
-	XINX_TRACE( "DirRCSModel", QString( "( %1 )" ).arg( (int)parent, 0, 16 ) );
+	XINX_TRACE( "DirRCSModel", QString( "( %1 )" ).arg( (unsigned long)parent, 0, 16 ) );
 	
 }
 
