@@ -23,12 +23,46 @@
 
 // Qt header
 #include <QDebug>
+#include <QDateTime>
 
+/* Log Variable */
+
+QStringList stackTrace;
+
+/* Trace */
+
+int Trace::m_depth = 0;
+
+Trace::Trace( char* filename, int line, const QString & func_name, const QString & args ) {
+    LogMsg( m_depth, filename, line, QString( "%1%2" ).arg( func_name ).arg( args ) );
+	m_depth++;		
+}
+
+Trace::~Trace() {
+	m_depth--;
+	if( m_depth == 0 )
+		stackTrace.clear();
+}
+
+void Trace::LogMsg( int depth, const char * filename, int line, const QString & fonction ) {
+	QString s;
+	s += QDateTime::currentDateTime().toString() + " ";
+	for( int i = 0; i < depth; i++ )
+		s += " ";
+	s += QString("> (%1)").arg( depth );
+	s += QString( fonction );
+	s += QString( " on %1 at line %2." ).arg( filename ).arg( line );
+	
+	stackTrace.append( s );
+
+	qDebug() << s;
+}
 /* XinxException */
 
 XinxException::XinxException( QString message ) {
 	m_message = message;
 	qDebug() << message << endl;
+	stackTrace.append( "message" );
 }
 
 const QString & XinxException::getMessage() const {

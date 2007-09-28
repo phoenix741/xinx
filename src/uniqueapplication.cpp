@@ -313,6 +313,8 @@ void UniqueApplication::notifyError( QString error ) {
 
 		fprintf( file, "BACKTRACE UNAVALAIBLE ON WINDOWS :(, PLEASE USE GNU/LINUX :)\n" );			
 #endif
+		fprintf( file, stackTrace.join( "\n" ).toAscii() );
+		
 		fprintf( file, error.toAscii() );
 		fclose( file );
 	}

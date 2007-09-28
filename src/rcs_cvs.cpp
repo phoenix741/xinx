@@ -22,6 +22,7 @@
 #include "private/p_rcs_cvs.h"
 #include "cvsthread.h"
 #include "cvsfiles.h"
+#include "exceptions.h"
 
 // Qt header
 #include <QDir>
@@ -35,15 +36,20 @@ ProcessExecutedException::ProcessExecutedException( QString message ) : XinxExce
 /* PrivateRCS_CVS */
 
 PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) : m_thread( 0 ), m_parent( parent ) {
+	XINX_TRACE( "PrivateRCS_CVS", QString( "( 0x%1 )" ).arg( (int)parent, 0, 16 ) );
+
 	m_entries = new CVSFileEntryList( m_parent->getBasePath() );
 	connect( m_entries, SIGNAL(fileChanged(QString)), m_parent, SIGNAL(stateChanged(QString)) );
 }
 
 PrivateRCS_CVS::~PrivateRCS_CVS() {
+	XINX_TRACE( "~PrivateRCS_CVS", "()" );
 	delete m_entries;
 }
 
 void PrivateRCS_CVS::callUpdate( const QStringList & path ) {
+	XINX_TRACE( "PrivateRCS_CVS::callUpdate", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSUpdateThread( path );
 	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
@@ -52,6 +58,8 @@ void PrivateRCS_CVS::callUpdate( const QStringList & path ) {
 }
 
 void PrivateRCS_CVS::callUpdateToRevision( const QString & path, const QString & revision, QString * content ) {
+	XINX_TRACE( "PrivateRCS_CVS::callUpdateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (int)content, 0, 16 ) );
+
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSUpdateRevisionThread( path, revision, content );
 	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
@@ -60,6 +68,8 @@ void PrivateRCS_CVS::callUpdateToRevision( const QString & path, const QString &
 }
 
 void PrivateRCS_CVS::callCommit( const RCS::FilesOperation & path, const QString & message ) {
+	XINX_TRACE( "PrivateRCS_CVS::callCommit", QString( "( path, %1 )" ).arg( message ) );
+
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSCommitThread( path, message );
 	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
@@ -68,6 +78,8 @@ void PrivateRCS_CVS::callCommit( const RCS::FilesOperation & path, const QString
 }
 
 void PrivateRCS_CVS::callAdd( const QStringList & path ) {
+	XINX_TRACE( "PrivateRCS_CVS::callAdd", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSAddThread( path );
 	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
@@ -76,6 +88,8 @@ void PrivateRCS_CVS::callAdd( const QStringList & path ) {
 }
 
 void PrivateRCS_CVS::callRemove( const QStringList & path ) {
+	XINX_TRACE( "PrivateRCS_CVS::callRemove", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	if( m_thread ) delete m_thread;
 	m_thread = new CVSRemoveThread( path );
 	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
@@ -84,6 +98,8 @@ void PrivateRCS_CVS::callRemove( const QStringList & path ) {
 }
 	
 RCS::rcsOperation PrivateRCS_CVS::operationOfState( RCS::rcsState state ) {
+	XINX_TRACE( "PrivateRCS_CVS::operationOfState", QString( "( %1 )" ).arg( (int)state ) );
+
 	RCS::rcsOperation operation;
 	switch( state ) {
 	case RCS::LocallyModified:
@@ -108,6 +124,8 @@ RCS::rcsOperation PrivateRCS_CVS::operationOfState( RCS::rcsState state ) {
 }
 
 RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
+	XINX_TRACE( "PrivateRCS_CVS::operationOf", QString( "( %1 )" ).arg( path ) );
+
 	RCS::FilesOperation operations;
 	
 	QStringList files = QDir( path ).entryList( DEFAULT_PROJECT_FILTRE, QDir::Files );
@@ -138,6 +156,8 @@ RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
 }
 
 RCS::FilesOperation PrivateRCS_CVS::recursiveOperationOf( const QString & path ) {
+	XINX_TRACE( "PrivateRCS_CVS::recursiveOperationOf", QString( "( %1 )" ).arg( path ) );
+
 	RCS::FilesOperation operations;
 	if( QFileInfo( path ).isDir() ) {
 		if( QFileInfo( QDir( path ).absoluteFilePath( "CVS/Entries" ) ).exists() ) {
@@ -165,14 +185,19 @@ RCS::FilesOperation PrivateRCS_CVS::recursiveOperationOf( const QString & path )
 /* RCS_CVS */
 
 RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
+	XINX_TRACE( "RCS_CVS", QString( "( %1 )" ).arg( base ) );
+
 	d = new PrivateRCS_CVS( this );
 }
 
 RCS_CVS::~RCS_CVS() {
+	XINX_TRACE( "~RCS_CVS", "()" );
 	delete d;
 }
 
 RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
+	XINX_TRACE( "RCS_CVS::operations", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	RCS::FilesOperation files;
 	foreach( QString p, path ) {
 		files += d->recursiveOperationOf( p );
@@ -181,6 +206,8 @@ RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 }
 
 QVariant RCS_CVS::infos( const QString & path, enum RCS::rcsInfos info ) {
+	XINX_TRACE( "RCS_CVS::infos", QString( "( %1, %2 )" ).arg( path ).arg( (int)info ) );
+
 	QString localPath = QDir::fromNativeSeparators( path );
 	CVSFileEntry * o = d->m_entries->object( localPath );
 	if( o ) {
@@ -198,11 +225,15 @@ QVariant RCS_CVS::infos( const QString & path, enum RCS::rcsInfos info ) {
 }
 
 RCS::rcsState RCS_CVS::status( const QString & path ) {
+	XINX_TRACE( "RCS_CVS::status", QString( "( %1 )" ).arg( path ) );
+
 	QString localPath = QDir::fromNativeSeparators( path );
 	return d->m_entries->status( localPath );
 }
 
 void RCS_CVS::update( const QStringList & path ) {
+	XINX_TRACE( "RCS_CVS::update", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException( "Can't update" );
 	} else
@@ -210,6 +241,8 @@ void RCS_CVS::update( const QStringList & path ) {
 }
 
 void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
+	XINX_TRACE( "RCS_CVS::commit", QString( "( %1 )" ).arg( message ) );
+
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException( "Can't commit" );
 	} else
@@ -217,6 +250,8 @@ void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
 }
 
 void RCS_CVS::add( const QStringList & path ) {
+	XINX_TRACE( "RCS_CVS::add", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException( "Can't add" );
 	} else
@@ -224,6 +259,8 @@ void RCS_CVS::add( const QStringList & path ) {
 }
 
 void RCS_CVS::remove( const QStringList & path ) {
+	XINX_TRACE( "RCS_CVS::remove", QString( "( %1 )" ).arg( path.join(";") ) );
+
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException( "Can't remove" );
 	} else
@@ -231,11 +268,15 @@ void RCS_CVS::remove( const QStringList & path ) {
 }
 
 void RCS_CVS::abort() {
+	XINX_TRACE( "RCS_CVS::abort", "()" );
+
 	if( d->m_thread )
 		qobject_cast<CVSThread*>(d->m_thread)->abort();
 }
 
 void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
+	XINX_TRACE( "RCS_CVS::updateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (int)content ) );
+
 	if( d->m_thread && d->m_thread->isRunning() ) {
 		throw ProcessExecutedException( "Can't update to revision" );
 	} else

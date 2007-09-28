@@ -30,6 +30,8 @@
 /* DirRCSModel */
 
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
+	XINX_TRACE( "DirRCSModel", QString( "( %1, ... )" ).arg( nameFilters.join(";") ) );
+
 	if( global.m_project && ( global.m_project->projectRCS() == XSLProject::CVS ) )  {
 		m_rcs = new RCS_CVS( global.m_project->projectPath() );
 		connect( m_rcs, SIGNAL(stateChanged(QString)), this, SLOT(refresh(QString)) );
@@ -38,18 +40,25 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
+	XINX_TRACE( "DirRCSModel", QString( "( %1 )" ).arg( (int)parent, 0, 16 ) );
 	
 }
 
 DirRCSModel::~DirRCSModel() {
+	XINX_TRACE( "~DirRCSModel", "()" );
+
 	delete m_rcs;
 }
 
 RCS * DirRCSModel::rcs() { 
+	XINX_TRACE( "DirRCSModel::rcs", "()" );
+
 	return m_rcs;
 }
 
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
+	XINX_TRACE( "DirRCSModel::data", QString( "( index, %1 )" ).arg( role ) );
+
 	QString path = filePath(index);
 	if( m_rcs ) {
 		if ( role == Qt::BackgroundRole && index.column() == 0 ) {
@@ -93,5 +102,7 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 }
 
 void DirRCSModel::refresh( const QString & path ) {
+	XINX_TRACE( "DirRCSModel::refresh", QString( "( %1 )" ).arg( path ) );
+
 	QDirModel::refresh( index( path ) );
 }

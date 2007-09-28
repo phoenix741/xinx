@@ -21,7 +21,8 @@
 #ifndef __EXCEPTIONS_H__
 #define __EXCEPTIONS_H__
 
-#include <QString>
+// Qt header
+#include <QStringList>
 
 class XinxException {
 public:
@@ -47,6 +48,26 @@ public:
 #    define XINX_ASSERT(cond) do{}while(0)
 #  endif
 #endif
+
+class Trace {
+public:
+	explicit Trace( char* filename, int line, const QString& func_name, const QString & args );	
+	~Trace();
+private:
+	void LogMsg( int depth, const char * filename, int line, const QString & fonction );
+	
+	static int m_depth;
+};
+
+#if !defined( XINX_TRACE )
+#  ifndef QT_NO_DEBUG
+#    define XINX_TRACE( fct, args ) Trace __XINX_TRACE__ ( __FILE__, __LINE__, fct, args )
+#  else
+#    define XINX_TRACE( fct, args ) do{}while(0)
+#  endif
+#endif
+
+extern QStringList stackTrace;
 
 
 #endif /* __EXCEPTIONS_H__ */
