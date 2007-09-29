@@ -135,7 +135,7 @@ void CVSFileEntry::setCVSFileDate( QString date ) {
 	XINX_TRACE( "CVSFileEntry::setCVSFileDate", QString( "( %1 )" ).arg( date ) );
 	if( ! m_fileInfo.isDir() ) {
 		if( date.contains( "+" ) ) {
-			m_cvsDate = QDateTime();
+			m_cvsDate = QDateTime::fromString( date.section( '+', -1, -1 ).simplified() );
 			m_hasConflict = true;
 		} else {
 			m_hasConflict = false;

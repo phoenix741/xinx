@@ -136,7 +136,7 @@ int FlatModel::columnCount ( const QModelIndex & parent ) const {
 QVariant FlatModel::data ( const QModelIndex & index, int role ) const {
 	if( index.isValid() ) {
 		QString path = d->m_pathList.at( index.row() );
-		QModelIndex converti = d->m_model->index( path );
+		QModelIndex converti = d->m_model->index( path, index.column() );
 		if( ( role == Qt::DisplayRole ) && ( d->m_model->isDir( converti ) ) ) {
 			QDir dir = d->m_model->fileInfo( d->m_root ).absoluteDir();
 			return dir.relativeFilePath( path );

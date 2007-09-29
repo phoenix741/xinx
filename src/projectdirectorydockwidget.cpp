@@ -272,6 +272,8 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 	QAbstractItemModel * model = d->m_projectDirWidget->m_projectDirectoryTreeView->model();
 	for( int i = 2; i < model->columnCount(); i++ )
 		d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
+	d->m_projectDirWidget->m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
+	d->m_projectDirWidget->m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
 }
 
 void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
@@ -297,7 +299,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 		d->m_projectDirWidget->m_projectDirectoryTreeView->setModel( d->m_dirModel );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
-		
+
 		for(int i = 2; i < d->m_dirModel->columnCount(); i++ )
 			d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( d->m_dirModel->index( d->m_project->projectPath() ) );
