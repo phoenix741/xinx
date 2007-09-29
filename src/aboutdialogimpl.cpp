@@ -26,6 +26,32 @@
 AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
 	setupUi(this);
+	
+	m_aboutLabel->setText( 	"<b>XINX</b> Is Not only XML<br/>"
+							"(c) 2006-2007, Ulrich Van Den Hekke<br/>"
+							"<a href=\"http://ks351557.kimsufi.com/xinx/\">http://ks351557.kimsufi.com/xinx/</a><br/>"
+							"<br/>"
+							"<i>This software is under the GPL Public Licence. Please read the software licence <br/>"
+							"before use it. Icon and Logo are under the GPL Public Licence and comes from <br/>"
+							"K-Desktop Environment, Cervesia, KDevelop.</i>"
+						);
+						
+	m_authorText->setHtml( 	"Please use <a href=\"http://ks351557.kimsufi.com/xinx/\" target=\"_new\">http://ks351557.kimsufi.com/xinx/</a><br/>"
+							"<br/>"
+							"<b>Ulrich Van Den Hekke</b><br/>"
+							"Mail: <a href=\"mailto:ulrich.vdh@free.fr\">ulrich.vdh@free.fr</a><br/>"
+							"Home page: <a href=\"http://ks351557.kimsufi.com/\" target=\"_new\">http://ks351557.kimsufi.com/</a><br/>"
+							"Project leader"
+						);
+							
+	m_thanksText->setHtml(	"<b>Mickael BERTELOOT</b>,<br/>"
+							"<b>Kamal B.         </b>,<br/>"
+							"<b>Alexandre ROCHER</b>,<br/>"
+							"<b>Matthieu DUBOUT</b>,<br/>"
+							"For good idea and bug report<br/>"
+							"<br/>"
+							"And all people who help me in some ways and i have forgotten to mention"
+						);
 }
 
 
