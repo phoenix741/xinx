@@ -28,6 +28,7 @@
 #include <QFileSystemWatcher>
 #include <QTextStream>
 #include <QStringList>
+#include <QTimer>
 
 /* File Watcher */
 
@@ -215,6 +216,10 @@ CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( path ) {
 	instance->addPath( m_path );
 	connect( instance, SIGNAL(fileChanged(QString)), this, SLOT(entriesChanged(QString)) );
 	connect( instance, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)) );
+	
+	m_refreshTimer = new QTimer( this );
+	m_refreshTimer->setSingleShot( true );
+	connect( m_refreshTimer, SIGNAL(timeout()), this, SLOT(loadEntriesFile()) );
 }
 
 CVSFileEntryList::~CVSFileEntryList() {
@@ -231,15 +236,14 @@ CVSFileEntryList::~CVSFileEntryList() {
 void CVSFileEntryList::entriesChanged( const QString & filename ) {
 	XINX_TRACE( "CVSFileEntryList::entriesChanged", QString( "( %1 )" ).arg( filename ) );
 	if( filename == m_entries ) {
-		loadEntriesFile();
+		m_refreshTimer->start( 1000 );
 	}
 }
 
 void CVSFileEntryList::directoryChanged( const QString & filename ) {
 	XINX_TRACE( "CVSFileEntryList::directoryChanged", QString( "( %1 )" ).arg( filename ) );
 	if( filename == m_path ) {
-		loadEntriesFile();
-		emit fileChanged( filename );
+		m_refreshTimer->start( 1000 );
 	}
 }
 

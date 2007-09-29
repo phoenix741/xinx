@@ -31,6 +31,7 @@
 #include <QHash>
 
 class QFileSystemWatcher;
+class QTimer;
 class CVSFileEntryList;
 
 /* CVSFileEntry */
@@ -196,11 +197,11 @@ signals:
 private slots:
 	void entriesChanged( const QString & filename );
 	void directoryChanged( const QString & filename );
-private:
 	void loadEntriesFile();
-
+private:
 	QString m_path, m_entries;
 	QHash<QString,CVSFileEntryList*> m_directoryList;
+	QTimer * m_refreshTimer;
 };
 
 #endif // __CVSFILES_H__
