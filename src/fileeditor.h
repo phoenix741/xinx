@@ -172,6 +172,19 @@ public:
 	virtual bool isModified();
 
 	virtual QAbstractItemModel * model();
+	
+	/*!
+	 * Enumeration of datas who can be serialised
+	 */ 
+	enum serializedDatas {
+		SERIALIZED_FILENAME         = 1001, ///< The serialized filename
+		SERIALIZED_HIGHLIGHTER_TYPE = 1002, ///< The highlighter type
+		SERIALIZED_FILE_TYPE        = 1003, ///< The file type
+		SERIALIZED_POSITION         = 1004, ///< The position of the text
+		SERIALIZED_MODIFIED         = 1005, ///< The state of the editor : Is it modified ?
+		SERIALIZED_CONTENT          = 1006, ///< The saved content.
+		SERIALIZED_ENDOFFILEEDITOR  = 1999  ///< The last element;
+	};
 
 	virtual void serialize( QDataStream & stream, bool content );
 	virtual void deserialize( QDataStream & stream );

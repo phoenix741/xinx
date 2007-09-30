@@ -220,6 +220,8 @@ WebServicesEditor::~WebServicesEditor() {
 }
 
 const QHash<QString,QString> & WebServicesEditor::values() const { 
+	d->store( d->m_paramList->currentText() );
+
 	return d->m_paramValues; 
 }
 
@@ -361,55 +363,73 @@ void WebServicesEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
 	d->store( d->m_paramList->currentText() );
 
-	stream << m_fileName;
-	stream << (int)m_view->textCursor().position();
-
-	stream << d->m_servicesList->currentText();
-	stream << d->m_actionList->currentText();
-	stream << d->m_paramList->currentText();
-	
-	stream << (int)isModified();
-	stream << (int)( content && isModified() );
-
-	if( content && isModified() ) {
-		stream << (int) d->m_paramValues.keys().size();
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,     	        QVariant( m_fileName ) );
+	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_SERVICES,         QVariant( d->m_servicesList->currentText() ) );
+	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_ACTIONS,          QVariant( d->m_actionList->currentText() ) );
+	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_PARAMS,           QVariant( d->m_paramList->currentText() ) );
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         		QVariant( m_view->textCursor().position() ) );
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         		QVariant( isModified() ) );
+	if( content && m_view->document()->isModified() ) {
 		foreach( QString param, d->m_paramValues.keys() ) {
-			stream << param;
-			stream << d->m_paramValues[param];
+			setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_KEY, 	 	QVariant( param ) );
+			setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_VALUE, 	QVariant( d->m_paramValues[ param ] ) );
 		}
 	}
+	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_ENDOFWSEDITOR,  QVariant() );
 }
 
 void WebServicesEditor::deserialize( QDataStream & stream ) {
+	int type;
+	QVariant variant;
+	
 	int position;
-	int content, isModified;
-	QString param;
+	bool isModified;
+	QString key, value, param;
 	
 	d->m_paramValues.clear(); d->m_oldParamValue = QString();
 
 	Editor::deserialize( stream );
 	
-	stream >> m_fileName;
-	stream >> position;
-	
-	stream >> d->m_serviceName;
-	stream >> d->m_operationName;
-	stream >> param;
-	
-	stream >> isModified;
-	stream >> content;
-	if( content ) {
-		int size;
-		QString key, param;
-		
-		stream >> size;
-		for( int i = 0 ; i < size ; i++ ) {
-			stream >> key;
-			stream >> param;
-			
-			d->m_paramValues[ key ] = param;
+	do {
+		getSerializedData( stream, type, variant );
+		if( (enum FileEditor::serializedDatas)type != WebServicesEditor::SERIALIZED_ENDOFFILEEDITOR )
+		switch( (enum FileEditor::serializedDatas)type ) {
+		case FileEditor::SERIALIZED_FILENAME:
+			m_fileName = variant.toString();
+			break;
+		case FileEditor::SERIALIZED_POSITION:
+			position = variant.toInt();
+			break;
+		case FileEditor::SERIALIZED_MODIFIED:
+			isModified = variant.toBool();
+			break;
+		default:
+			;
 		}
-	} else {
+		switch( (enum WebServicesEditor::serializedDatas)type ) {
+		case WebServicesEditor::SERIALIZED_SERVICES:
+			d->m_serviceName = variant.toString();
+			break;
+		case WebServicesEditor::SERIALIZED_ACTIONS:
+			d->m_operationName = variant.toString();
+			break;
+		case WebServicesEditor::SERIALIZED_PARAMS:
+			param = variant.toString();
+			break;
+		case WebServicesEditor::SERIALIZED_KEY:
+			key = variant.toString();
+			break;
+		case WebServicesEditor::SERIALIZED_VALUE:
+			value = variant.toString();
+			d->m_paramValues[ key ] = value;
+			break;
+		case WebServicesEditor::SERIALIZED_ENDOFWSEDITOR:
+			;
+		}
+	} while( (enum WebServicesEditor::serializedDatas)type != WebServicesEditor::SERIALIZED_ENDOFWSEDITOR );
+
+	
+	if( d->m_paramValues.keys().count() == 0 ) {
 		if( ! m_fileName.isEmpty() )
 			loadFile( m_fileName );
 	}
@@ -420,8 +440,9 @@ void WebServicesEditor::deserialize( QDataStream & stream ) {
 	if( ! param.isEmpty() ) 
 		d->m_paramList->setCurrentIndex( d->m_paramList->findText( param ) );
 	d->restore( d->m_paramList->currentText() );
-	
-	m_view->document()->setModified( isModified );
+
+	if( d->m_paramValues.keys().count() > 0 )
+		m_view->document()->setModified( isModified );
 
 	QTextCursor tc = m_view->textCursor();
 	tc.setPosition( position );

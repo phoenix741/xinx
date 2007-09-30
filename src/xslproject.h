@@ -53,11 +53,6 @@ class WebServicesModel;
 class PrivateXSLProject;
 
 /*!
- * Define a Bookmark used in a project.
- */
-typedef QPair<QString,int> Bookmark;
-
-/*!
  * Represent a project in XINX.
  * A project specify where the user can find path to stylesheet, and javascript,
  * and where the application must store project file.
@@ -154,12 +149,6 @@ public:
 	 * \return list of structSessions;
 	 */
 	QList<QByteArray> & sessionsEditor();
-	
-	/*!
-	 * List of signets stored in the session file.
-	 * \return The list of signet used  in the application.
-	 */
-	QList<Bookmark> & signets();
 	
 	/*!
 	 * Save the session in the file. 

@@ -116,6 +116,17 @@ QIcon Editor::icon() {
 	return QIcon( ":/images/typeunknown.png" );
 }
 
+void Editor::getSerializedData( QDataStream & stream, int & type, QVariant & data ) {
+	stream >> type;
+	stream >> data;
+}
+
+void Editor::setSerializedData( QDataStream & stream, int type, QVariant data ) {
+	stream << type;
+	stream << data;
+}
+
+
 void Editor::serialize( QDataStream & stream, bool content ) {
 	Q_UNUSED( content );
 	stream << QString( metaObject()->className() ); // Store the class name

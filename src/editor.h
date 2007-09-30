@@ -160,6 +160,18 @@ public:
 	virtual QIcon icon();
 	
 	/*!
+	 * Get a serialized data of type QVariant. Do no process the type.
+	 * Store in \e type the type of the data, and in \e data the content, of the 
+	 * data. If an old version can't read datas, ingored.
+	 */
+	virtual void getSerializedData( QDataStream & stream, int & type, QVariant & data );
+	
+	/*!
+	 * Serialize data \e data with a type \e type.
+	 */  
+	virtual void setSerializedData( QDataStream & stream, int type, QVariant data );
+	
+	/*!
 	 * Serialize the editor and return the value in a byte array. The serialization save internal data of
 	 * the editor (modified, content, position of cursor, ...).
 	 * \param stream where datas must be stored.

@@ -183,12 +183,7 @@ void FileEditor::setMessage( QString message ) {
 }
 
 void FileEditor::slotBookmarkToggled( int line, bool enabled ) {
-	if( global.m_project ) {
-		if( enabled )
-			global.m_project->signets().append( qMakePair( m_fileName, line ) );
-		else
-			global.m_project->signets().removeAll( qMakePair( m_fileName, line ) );
-	}
+
 }
 
 QList<int> & FileEditor::bookmarks() const {
@@ -472,33 +467,57 @@ bool FileEditor::saveFile( const QString & fileName ){
 
 void FileEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
-	stream << m_fileName;
-	stream << (int)( d->m_highlighterType );
-	stream << (int)( d->m_fileType );
-	stream << (int)m_view->textCursor().position();
-	stream << (int)( isModified() );
-	stream << (int)(content && m_view->document()->isModified());
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,         QVariant( m_fileName ) );
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_HIGHLIGHTER_TYPE, QVariant( (int)d->m_highlighterType ) );
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILE_TYPE,        QVariant( (int)d->m_fileType ) );
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         QVariant( m_view->textCursor().position() ) );
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         QVariant( isModified() ) );
 	if( content && m_view->document()->isModified() ) {
-		stream << m_view->toPlainText();
+		setSerializedData( stream, (int)FileEditor::SERIALIZED_CONTENT, 	 QVariant( m_view->toPlainText() ) );
 	}
+	setSerializedData( stream, (int)FileEditor::SERIALIZED_ENDOFFILEEDITOR,  QVariant() );
 }
 
 void FileEditor::deserialize( QDataStream & stream ) {
+	int type;
+	QVariant variant;
+	
 	int position, highlighterType, fileType;
-	int content, isModified;
+	bool isModified;
 	QString text;
 	
 	Editor::deserialize( stream );
-	stream >> m_fileName;
-	stream >> highlighterType;
-	stream >> fileType;
-	setSyntaxHighlighterType( (FileEditor::enumHighlighter)highlighterType );
-	setFileType( (FileEditor::enumFileType)fileType );
-	stream >> position;
-	stream >> isModified;
-	stream >> content;
-	if( content ) {
-		stream >> text;
+	
+	do {
+		getSerializedData( stream, type, variant );
+		if( (enum FileEditor::serializedDatas)type != FileEditor::SERIALIZED_ENDOFFILEEDITOR )
+		switch( (enum FileEditor::serializedDatas)type ) {
+		case FileEditor::SERIALIZED_FILENAME:
+			m_fileName = variant.toString();
+			break;
+		case FileEditor::SERIALIZED_HIGHLIGHTER_TYPE:
+			highlighterType = variant.toInt();
+			setSyntaxHighlighterType( (FileEditor::enumHighlighter)highlighterType );
+			break;
+		case FileEditor::SERIALIZED_FILE_TYPE:
+			fileType = variant.toInt();
+			setFileType( (FileEditor::enumFileType)fileType );
+			break;
+		case FileEditor::SERIALIZED_POSITION:
+			position = variant.toInt();
+			break;
+		case FileEditor::SERIALIZED_MODIFIED:
+			isModified = variant.toBool();
+			break;
+		case FileEditor::SERIALIZED_CONTENT:
+			text = variant.toString();
+			break;
+		case FileEditor::SERIALIZED_ENDOFFILEEDITOR:
+			;
+		}
+	} while( (enum FileEditor::serializedDatas)type != FileEditor::SERIALIZED_ENDOFFILEEDITOR );
+
+	if( ! text.isEmpty() ) {
 		m_view->setPlainText( text );
 		setModified( isModified );
 

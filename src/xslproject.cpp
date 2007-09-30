@@ -72,7 +72,6 @@ public:
 	QString m_logProjectDirectory;
 	XSLProject::ProjectOptions m_projectOptions;
 	XSLProject::enumProjectRCS m_projectRCS;
-	QList< Bookmark > m_signets;
 private:
 	XSLProject * m_parent;
 };
@@ -197,16 +196,6 @@ void PrivateXSLProject::loadSessionFile( const QString & fileName ) {
 				file = file.nextSiblingElement( "File" );
 			}
 		}
-		
-		QDomElement signets = rootSession.firstChildElement( "bookmarks" );
-		if( ! signets.isNull() ) {
-			QDomElement signet = signets.firstChildElement( "bookmark" );
-			while( ! signet.isNull() ) {
-				m_signets.append( qMakePair( signet.attribute( "name" ), signet.attribute( "line" ).toInt() ) );
-				
-				signet = signet.nextSiblingElement( "bookmark" );
-			}
-		}
 	} catch( XSLProjectException ) {
 	}
 }
@@ -239,13 +228,6 @@ void PrivateXSLProject::saveSessionFile( const QString & fileName ) {
 	
 	QDomElement signets = document.createElement( "bookmarks" );
 	root.appendChild( signets );
-	
-	foreach( Bookmark p, m_signets ) {
-		QDomElement signet = document.createElement( "bookmark" );
-		signet.setAttribute( "name", p.first );
-		signet.setAttribute( "line", p.second );
-		signets.appendChild( signet );
-	}
 	
 	static const int IndentSize = 3;
 	QFile file( fileName );
@@ -445,10 +427,6 @@ void XSLProject::saveOnlySession() {
 	d->saveSessionFile( d->m_fileName + ".session" );
 }
 	
-QList< QPair<QString,int> > & XSLProject::signets() {
-	return d->m_signets;
-}
-
 XSLProject::ProjectOptions & XSLProject::options() {
 	return d->m_projectOptions;
 }
