@@ -36,11 +36,13 @@ public:
 	        * m_cutAction,
 	        * m_copyAction,
 	        * m_pasteAction;
+	
+	int m_bookmarkNumber;
 private:
 	Editor * m_parent;
 };
 
-PrivateEditor::PrivateEditor( Editor * parent ) : m_parent( parent ) {
+PrivateEditor::PrivateEditor( Editor * parent ) : m_bookmarkNumber( 0 ), m_parent( parent ) {
 	m_undoAction = new QAction( QIcon(":/images/undo.png"), Editor::tr("&Undo"), m_parent );
 	m_undoAction->setEnabled( false );
 	QObject::connect( m_undoAction, SIGNAL(triggered()), m_parent, SLOT(undo()) );
@@ -90,6 +92,34 @@ Editor::Editor( const Editor & editor ) : QFrame( qobject_cast<QWidget*>( editor
 
 Editor::~Editor() {
 	delete d;
+}
+
+void Editor::firstBookmark() {
+	if( bookmarkCount() > 0 )
+		gotoBookmarkAt( 0 );
+}
+
+bool Editor::previousBookmark() {
+	if( d->m_bookmarkNumber == 0 )
+		return false;
+	gotoBookmarkAt( d->m_bookmarkNumber - 1 );
+	return true;
+}
+
+bool Editor::nextBookmark() {
+	if( d->m_bookmarkNumber == bookmarkCount() - 1 )
+		return false;
+	gotoBookmarkAt( d->m_bookmarkNumber + 1 );
+	return true;
+}
+
+void Editor::lastBookmark() {
+	if( bookmarkCount() > 0 )
+		gotoBookmarkAt( bookmarkCount() - 1 );
+}
+
+void Editor::gotoBookmarkAt( int i ) {
+	d->m_bookmarkNumber = i;
 }
 
 QAction * Editor::undoAction() {

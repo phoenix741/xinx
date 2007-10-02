@@ -237,6 +237,34 @@ public slots :
 	 */
 	virtual void setModified( bool modified ) = 0;
 	
+	/*!
+	 * Go to the first Bookmark of the editor, if the editor have one bookmark. 
+	 */
+	virtual void firstBookmark();
+	/*!
+	 * Go to the previous bookmark or return false if there is no more bookmark.
+	 */
+	virtual bool previousBookmark();
+	/*!
+	 * Go to the next bookmark or return false if ther is no more bookmark.
+	 */
+	virtual bool nextBookmark();
+	/*!
+	 * Go to the last bookmark of the editor, if possible.
+	 */
+	virtual void lastBookmark();
+	/*!
+	 * Go to the \em i Bookmark of the editor.
+	 */
+	virtual void gotoBookmarkAt( int i );
+	/*!
+	 * Return a string reprensents the content of the \em i bookmark.
+	 */
+	virtual QString bookmarkAt( int i ) = 0;
+	/*!
+	 * Return the number of bookmark.
+	 */
+	virtual int bookmarkCount();
 signals:
 	/*!
 	 * Signal emitted when the undo state change.
