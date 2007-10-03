@@ -18,14 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
-#include <QTabBar>
-#include <QDragEnterEvent>
-#include <QUrl>
-#include <QMenu>
-#include <QMessageBox>
-
-#include <typeinfo>
+// Xinx header
 #include "tabeditor.h"
 #include "editor.h"
 #include "xmlfileeditor.h"
@@ -34,11 +27,21 @@
 #include "fileeditor.h"
 #include "webserviceseditor.h"
 #include "xslproject.h"
-
 #include "runsnipetdialogimpl.h"
 #include "globals.h"
 #include "snipet.h"
 #include "snipetlist.h"
+
+// Qt header
+#include <QDir>
+#include <QTabBar>
+#include <QDragEnterEvent>
+#include <QUrl>
+#include <QMenu>
+#include <QMessageBox>
+
+// Std header
+#include <typeinfo>
 
 //
 TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), 
@@ -426,3 +429,26 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 	}
 	return QTabWidget::eventFilter( obj, event );
 }
+
+void TabEditor::bookmark() {
+	currentEditor()->toogledBookmark();
+}
+
+void TabEditor::nextBookmark() {
+	if( ( ! currentEditor()->nextBookmark() ) && ( currentIndex() < count() ) ) {
+		setCurrentIndex( currentIndex() + 1 );
+		currentEditor()->firstBookmark();
+	}
+}
+
+void TabEditor::previousBookmark() {
+	if( ( ! currentEditor()->previousBookmark() ) && ( currentIndex() > 0 ) ) {
+		setCurrentIndex( currentIndex() - 1 );
+		currentEditor()->lastBookmark();
+	}
+}
+
+void TabEditor::clearAllBookmark() {
+//	currentEditor()->toogledBookmark();
+}
+

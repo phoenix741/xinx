@@ -189,6 +189,7 @@ public:
 	virtual void serialize( QDataStream & stream, bool content );
 	virtual void deserialize( QDataStream & stream );
 
+	virtual void toogledBookmark();
 	virtual void gotoBookmarkAt( int i );
 	virtual QString bookmarkAt( int i );
 	virtual int bookmarkCount();

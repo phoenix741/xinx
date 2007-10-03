@@ -54,6 +54,11 @@ public:
 	void setSaveAsAction( QAction * action );
 	void setCloseAction( QAction * action );
 public slots:
+	void bookmark();
+	void nextBookmark();
+	void previousBookmark();
+	void clearAllBookmark();
+
 	void copy();
 	void cut();
 	void paste();
@@ -98,15 +103,13 @@ protected:
 	virtual void dragEnterEvent( QDragEnterEvent *event );
 	virtual void dropEvent( QDropEvent *event );
 	virtual void tabRemoved ( int index );
-	
 private slots:
 	void slotCurrentTabChanged( int );
 	void slotModifiedChange( bool );
 	
 	void slotCursorPositionChanged();
 	
-	void slotNeedInsertSnipet( const QString & snipet );
-	
+	void slotNeedInsertSnipet( const QString & snipet );	
 private:
 	Editor * newFileEditor( const QString & fileName );
 

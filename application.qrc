@@ -1,14 +1,22 @@
-<RCC> 
+<RCC>
     <qresource prefix="/" >
         <file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
         <file>images/action.png</file>
         <file>images/add.png</file>
         <file>images/balise.png</file>
+        <file>images/bookmark.png</file>
+        <file>images/bookmarknext.png</file>
+        <file>images/bookmarkprevious.png</file>
         <file>images/button_cancel.png</file>
         <file>images/button_ok.png</file>
+        <file>images/calendarwidget.png</file>
         <file>images/cervisia.png</file>
+        <file>images/checkbox.png</file>
+        <file>images/clearallbookmarks.png</file>
         <file>images/colors.png</file>
+        <file>images/combobox.png</file>
+        <file>images/datetimeedit.png</file>
         <file>images/desktop.png</file>
         <file>images/down.png</file>
         <file>images/edit.png</file>
@@ -40,13 +48,18 @@
         <file>images/kdesvncommit.png</file>
         <file>images/kdesvndelete.png</file>
         <file>images/kdesvnupdate.png</file>
+        <file>images/label.png</file>
+        <file>images/lineedit.png</file>
+        <file>images/listbox.png</file>
         <file>images/network_connected_lan.png</file>
         <file>images/network_disconnected_lan.png</file>
         <file>images/network_incoming_lan.png</file>
         <file>images/network_outgoing_lan.png</file>
         <file>images/noeud.png</file>
-        <file>images/portugal.png</file>  
+        <file>images/portugal.png</file>
         <file>images/project_open.png</file>
+        <file>images/pushbutton.png</file>
+        <file>images/radiobutton.png</file>
         <file>images/redo.png</file>
         <file>images/reload.png</file>
         <file>images/remove.png</file>
@@ -57,6 +70,7 @@
         <file>images/splash.png</file>
         <file>images/style.png</file>
         <file>images/template.png</file>
+        <file>images/textedit.png</file>
         <file>images/typefws.png</file>
         <file>images/typejs.png</file>
         <file>images/typeunknown.png</file>
@@ -68,23 +82,8 @@
         <file>images/variable.png</file>
         <file>images/warning.png</file>
         <file>images/window_new.png</file>
-        
-        <file>images/calendarwidget.png</file>
-        <file>images/checkbox.png</file>
-        <file>images/combobox.png</file>
-        <file>images/datetimeedit.png</file>
-        <file>images/label.png</file>
-        <file>images/lineedit.png</file>
-        <file>images/listbox.png</file>
-        <file>images/pushbutton.png</file>
-        <file>images/radiobutton.png</file>
-        <file>images/textedit.png</file>
-        
-        <file>images/bookmark.png</file>
- 
-		<file>translations/xinx_fr.qm</file>
-		<file>translations/qt_fr.qm</file>
- 
-		<file>qss/coffee.qss</file>
+        <file>qss/coffee.qss</file>
+        <file>translations/qt_fr.qm</file>
+        <file>translations/xinx_fr.qm</file>
     </qresource>
 </RCC>

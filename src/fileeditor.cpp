@@ -183,7 +183,10 @@ void FileEditor::setMessage( QString message ) {
 }
 
 void FileEditor::slotBookmarkToggled( int line, bool enabled ) {
-
+	Q_UNUSED( enabled );
+	Q_UNUSED( line );
+	
+	emit bookmarkModified( 0, bookmarkCount() );
 }
 
 QList<int> & FileEditor::bookmarks() const {
@@ -669,6 +672,10 @@ void FileEditor::gotoLine( int line ) {
 	cursor.movePosition( QTextCursor::Start );
 	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line - 1 );
 	m_view->setTextCursor( cursor );
+}
+
+void FileEditor::toogledBookmark() {
+	m_numbers->setBookmark( m_view->currentRow(), !m_numbers->listOfBookmark().contains( m_view->currentRow() ) );
 }
 
 void FileEditor::gotoBookmarkAt( int i ) {

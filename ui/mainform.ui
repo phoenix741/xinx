@@ -21,7 +21,7 @@
      <number>0</number>
     </property>
     <property name="spacing" >
-     <number>0</number>
+     <number>6</number>
     </property>
     <item row="0" column="0" >
      <widget class="TabEditor" name="m_tabEditors" />
@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -137,9 +137,20 @@
     <addaction name="m_prettyPrintAct" />
     <addaction name="m_completeAct" />
    </widget>
+   <widget class="QMenu" name="menu_Bookmark" >
+    <property name="title" >
+     <string>&amp;Bookmark</string>
+    </property>
+    <addaction name="m_bookmarkAct" />
+    <addaction name="m_previousBookmarkAct" />
+    <addaction name="m_nextBookmarkAct" />
+    <addaction name="separator" />
+    <addaction name="m_clearAllBookmarkAct" />
+   </widget>
    <addaction name="m_fileMenu" />
    <addaction name="m_editMenu" />
    <addaction name="m_searchMenu" />
+   <addaction name="menu_Bookmark" />
    <addaction name="m_projectMenu" />
    <addaction name="m_webServicesMenu" />
    <addaction name="m_windowsMenu" />
@@ -729,6 +740,38 @@
    </property>
    <property name="text" >
     <string>Close project</string>
+   </property>
+  </action>
+  <action name="m_nextBookmarkAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/bookmarknext.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Next bookmark</string>
+   </property>
+  </action>
+  <action name="m_bookmarkAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/bookmark.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Bookmark</string>
+   </property>
+  </action>
+  <action name="m_previousBookmarkAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/bookmarkprevious.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Previous bookmark</string>
+   </property>
+  </action>
+  <action name="m_clearAllBookmarkAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/clearallbookmarks.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Clear all bookmark</string>
    </property>
   </action>
  </widget>

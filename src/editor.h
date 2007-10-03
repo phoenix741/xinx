@@ -238,6 +238,10 @@ public slots :
 	virtual void setModified( bool modified ) = 0;
 	
 	/*!
+	 * Toogled a bookmark on the selected element.
+	 */
+	virtual void toogledBookmark() = 0;
+	/*!
 	 * Go to the first Bookmark of the editor, if the editor have one bookmark. 
 	 */
 	virtual void firstBookmark();
@@ -304,6 +308,14 @@ signals:
 	 * \sa model()
 	 */
 	void modelUpdated( QAbstractItemModel * model );
+	
+	/*!
+	 * Signal emited when the list of bookmark is updated. When the signal is emited 
+	 * a range is gived to tell which row is modified.
+	 * \param minValue The first bound
+	 * \param maxValue The second bound
+	 */
+	void bookmarkModified( int minValue, int maxValue );
 private:
 	PrivateEditor * d;
 	friend class PrivateEditor;
