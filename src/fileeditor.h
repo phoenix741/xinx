@@ -188,6 +188,10 @@ public:
 
 	virtual void serialize( QDataStream & stream, bool content );
 	virtual void deserialize( QDataStream & stream );
+
+	virtual void gotoBookmarkAt( int i );
+	virtual QString bookmarkAt( int i );
+	virtual int bookmarkCount();
 public slots : 
 	virtual void undo();
 	virtual void redo();
@@ -253,6 +257,11 @@ public slots :
 	virtual void setModified( bool modified );
 
 	void updateModel();
+	
+	/*!
+	 * In the editor go to the line \e line.
+	 */
+	void gotoLine( int line );
 signals:
 	void mouseHover( const QString &word );
 	void mouseHover( const QPoint &pos, const QString &word );

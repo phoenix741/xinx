@@ -663,3 +663,27 @@ void FileEditor::setFileType( FileEditor::enumFileType type ) {
 FileEditor::enumFileType FileEditor::fileType() {
 	return d->m_fileType;
 }
+
+void FileEditor::gotoLine( int line ) {
+	QTextCursor cursor = m_view->textCursor();
+	cursor.movePosition( QTextCursor::Start );
+	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line - 1 );
+	m_view->setTextCursor( cursor );
+}
+
+void FileEditor::gotoBookmarkAt( int i ) {
+	gotoLine( m_numbers->listOfBookmark().at( i ) );
+}
+
+QString FileEditor::bookmarkAt( int i ) {
+	QString description = tr( "In editor '%1' at line %2" );
+	description = description
+					.arg( getTitle() )
+					.arg( m_numbers->listOfBookmark().at( i ) );
+	return description;
+}
+
+int FileEditor::bookmarkCount() {
+	return m_numbers->listOfBookmark().count();
+}
+

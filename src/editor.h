@@ -264,7 +264,7 @@ public slots :
 	/*!
 	 * Return the number of bookmark.
 	 */
-	virtual int bookmarkCount();
+	virtual int bookmarkCount() = 0;
 signals:
 	/*!
 	 * Signal emitted when the undo state change.

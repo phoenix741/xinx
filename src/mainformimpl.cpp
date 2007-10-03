@@ -499,12 +499,9 @@ void PrivateMainformImpl::openFile( const QString & name, int line ) {
 		m_parent->openFile( name );
 	
 	// Deplace to rigth line.
-	QTextEdit * ed = qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
-	QTextCursor cursor = ed->textCursor();
-	cursor.movePosition( QTextCursor::Start );
-	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line - 1 );
-	ed->setTextCursor( cursor );
-	ed->setFocus( Qt::OtherFocusReason );
+	FileEditor * ed = qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() );
+	ed->gotoLine( line );
+	ed->textEdit()->setFocus( Qt::OtherFocusReason );
 }
 
 void PrivateMainformImpl::openFile() {
