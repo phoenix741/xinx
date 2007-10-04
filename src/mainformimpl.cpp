@@ -381,6 +381,12 @@ void PrivateMainformImpl::createActions() {
 	m_parent->m_prettyPrintAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_prettyPrintAct, SLOT(setEnabled(bool)) );	
 	
+	/* Bookmark */ 
+	connect( m_parent->m_bookmarkAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(bookmark()) );
+	connect( m_parent->m_nextBookmarkAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(nextBookmark()) );
+	connect( m_parent->m_previousBookmarkAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(previousBookmark()) );
+	connect( m_parent->m_clearAllBookmarkAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(clearAllBookmark()) );
+	
 	/* PROJECT */
 	connect( m_parent->m_globalUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(globalUpdateFromVersionManager()) );
 	connect( m_parent->m_globalCommitToRCSAct, SIGNAL(triggered()), this, SLOT(globalCommitToVersionManager()) );

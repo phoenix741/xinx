@@ -195,6 +195,15 @@ public:
 	 * \sa serialize(), deserialize()
 	 */
 	static Editor * deserializeEditor( QDataStream & stream );	
+
+	/*!
+	 * Return a string reprensents the content of the \em i bookmark.
+	 */
+	virtual QString bookmarkAt( int i ) = 0;
+	/*!
+	 * Return the number of bookmark.
+	 */
+	virtual int bookmarkCount() = 0;
 public slots : 
 	/*!
 	 * Update the model.
@@ -261,14 +270,6 @@ public slots :
 	 * Go to the \em i Bookmark of the editor.
 	 */
 	virtual void gotoBookmarkAt( int i );
-	/*!
-	 * Return a string reprensents the content of the \em i bookmark.
-	 */
-	virtual QString bookmarkAt( int i ) = 0;
-	/*!
-	 * Return the number of bookmark.
-	 */
-	virtual int bookmarkCount() = 0;
 signals:
 	/*!
 	 * Signal emitted when the undo state change.

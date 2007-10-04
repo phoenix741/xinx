@@ -98,6 +98,7 @@ void NumberBar::setBookmark( int line, bool enabled ) {
 	int index = m_lineBookmark.indexOf( line );
 	if( enabled && index < 0  ) {
 		m_lineBookmark.append( line );
+		qSort( m_lineBookmark );
 	} else if( !enabled && index >= 0 ) {
 		m_lineBookmark.removeAt( index );
 	}

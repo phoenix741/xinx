@@ -330,6 +330,8 @@ protected:
 	QLabel * m_messageErreur;
 	QWidget * m_messageBox;
 private:
+	void updateBookmarkLineValue( int line );
+	
 	PrivateFileEditor * d;
 	friend class PrivateFileEditor;
 };

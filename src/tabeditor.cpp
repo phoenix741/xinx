@@ -436,15 +436,23 @@ void TabEditor::bookmark() {
 
 void TabEditor::nextBookmark() {
 	if( ( ! currentEditor()->nextBookmark() ) && ( currentIndex() < count() ) ) {
-		setCurrentIndex( currentIndex() + 1 );
-		currentEditor()->firstBookmark();
+		int index = currentIndex();
+		do { index ++ ; } while( ( index < count() ) && ( editor( index )->bookmarkCount() == 0 ) );
+		if( index < count() ) {
+			setCurrentIndex( index );
+			currentEditor()->firstBookmark();
+		}
 	}
 }
 
 void TabEditor::previousBookmark() {
 	if( ( ! currentEditor()->previousBookmark() ) && ( currentIndex() > 0 ) ) {
-		setCurrentIndex( currentIndex() - 1 );
-		currentEditor()->lastBookmark();
+		int index = currentIndex();
+		do { index -- ; } while( ( index >= 0 ) && ( editor( index )->bookmarkCount() == 0 ) );
+		if( index >= 0 ) {
+			setCurrentIndex( index );
+			currentEditor()->lastBookmark();
+		}
 	}
 }
 

@@ -118,6 +118,13 @@ void PrivateFileEditor::uncomment() {
 	m_parent->commentSelectedText( true );
 }
 
+void PrivateFileEditor::cursorPositionChanged() {
+	int index = qLowerBound( m_parent->m_numbers->listOfBookmark(), m_parent->m_view->currentRow() ) - m_parent->m_numbers->listOfBookmark().begin();
+	if( index >= 0 && m_parent->bookmarkCount() ) {
+		m_parent->updateBookmarkLineValue( index );
+	}
+}
+
 /* FileEditor */
 
 Q_DECLARE_METATYPE( FileEditor );
@@ -167,6 +174,8 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
     connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
 
+	connect( m_view, SIGNAL( cursorPositionChanged() ), d, SLOT( cursorPositionChanged() ) );
+
 	m_messageBox->hide();
 }
 
@@ -186,6 +195,9 @@ void FileEditor::slotBookmarkToggled( int line, bool enabled ) {
 	Q_UNUSED( enabled );
 	Q_UNUSED( line );
 	
+	if( enabled ) {
+		gotoBookmarkAt( m_numbers->listOfBookmark().indexOf( line ) );
+	}
 	emit bookmarkModified( 0, bookmarkCount() );
 }
 
@@ -193,6 +205,31 @@ QList<int> & FileEditor::bookmarks() const {
 	return m_numbers->listOfBookmark(); 
 }
 
+
+void FileEditor::toogledBookmark() {
+	m_numbers->setBookmark( m_view->currentRow(), !m_numbers->listOfBookmark().contains( m_view->currentRow() ) );
+}
+
+void FileEditor::updateBookmarkLineValue( int line ) {
+	Editor::gotoBookmarkAt( line );
+}
+
+void FileEditor::gotoBookmarkAt( int i ) {
+	Editor::gotoBookmarkAt( i );
+	gotoLine( m_numbers->listOfBookmark().at( i ) );
+}
+
+QString FileEditor::bookmarkAt( int i ) {
+	QString description = tr( "In editor '%1' at line %2" );
+	description = description
+					.arg( getTitle() )
+					.arg( m_numbers->listOfBookmark().at( i ) );
+	return description;
+}
+
+int FileEditor::bookmarkCount() {
+	return m_numbers->listOfBookmark().count();
+}
 
 TextEditor * FileEditor::textEdit() const { 
 	return static_cast<TextEditor*>( m_view );
@@ -668,29 +705,10 @@ FileEditor::enumFileType FileEditor::fileType() {
 }
 
 void FileEditor::gotoLine( int line ) {
+	if( line == m_view->currentRow() ) return;
 	QTextCursor cursor = m_view->textCursor();
 	cursor.movePosition( QTextCursor::Start );
 	cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, line - 1 );
 	m_view->setTextCursor( cursor );
-}
-
-void FileEditor::toogledBookmark() {
-	m_numbers->setBookmark( m_view->currentRow(), !m_numbers->listOfBookmark().contains( m_view->currentRow() ) );
-}
-
-void FileEditor::gotoBookmarkAt( int i ) {
-	gotoLine( m_numbers->listOfBookmark().at( i ) );
-}
-
-QString FileEditor::bookmarkAt( int i ) {
-	QString description = tr( "In editor '%1' at line %2" );
-	description = description
-					.arg( getTitle() )
-					.arg( m_numbers->listOfBookmark().at( i ) );
-	return description;
-}
-
-int FileEditor::bookmarkCount() {
-	return m_numbers->listOfBookmark().count();
 }
 

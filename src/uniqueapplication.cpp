@@ -319,8 +319,9 @@ void UniqueApplication::notifyError( QString error ) {
 		fclose( file );
 	}
 	QMessageBox::critical( NULL, "XINX Crash", 
-			QString( "XINX Crash with the following error : \n%2\n"
-					 "Send the file %1 at XINX project leader" ).arg( filename ).arg( error ) );
+			QString( "Oh shit ! I'm very confuse but XINX Crash with the following error : \n%2\n"
+					 "Send the file %1 at XINX project leader (me of course, and send only the error, not insult) and he shake his brain for you.\n"
+					 "If you have a opened project, i saved it with session information for recover." ).arg( filename ).arg( error ) );
 	
 	if( d->m_mainform )
 		d->m_mainform->saveProject( true );

@@ -62,6 +62,8 @@ public slots:
 
 	void comment();
 	void uncomment();
+
+	void cursorPositionChanged();
 private:
 	FileEditor * m_parent;
 };
