@@ -119,10 +119,10 @@ void PrivateFileEditor::uncomment() {
 }
 
 void PrivateFileEditor::cursorPositionChanged() {
-	int index = qLowerBound( m_parent->m_numbers->listOfBookmark(), m_parent->m_view->currentRow() ) - m_parent->m_numbers->listOfBookmark().begin();
-	if( index >= 0 && m_parent->bookmarkCount() ) {
-		m_parent->updateBookmarkLineValue( index );
-	}
+	int index = 
+		qLowerBound( m_parent->m_numbers->listOfBookmark(), m_parent->m_view->currentRow() ) - 
+		m_parent->m_numbers->listOfBookmark().begin() - 1;
+	m_parent->updateBookmarkLineValue( index );
 }
 
 /* FileEditor */
