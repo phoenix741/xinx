@@ -270,6 +270,10 @@ public slots :
 	 * Go to the \em i Bookmark of the editor.
 	 */
 	virtual void gotoBookmarkAt( int i );
+	/*!
+	 * Delete all existing bookmark
+	 */
+	virtual void clearAllBookmark() = 0;
 signals:
 	/*!
 	 * Signal emitted when the undo state change.

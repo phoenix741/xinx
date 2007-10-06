@@ -50,7 +50,7 @@ public:
 	QAction * m_uncommentAction;
 	FileWatcher * m_watcher;
 	QString m_path;
-
+	
 	bool m_isSaving;
 
 	bool hasWatcher(); 
@@ -62,8 +62,6 @@ public slots:
 
 	void comment();
 	void uncomment();
-
-	void cursorPositionChanged();
 private:
 	FileEditor * m_parent;
 };

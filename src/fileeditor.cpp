@@ -118,13 +118,6 @@ void PrivateFileEditor::uncomment() {
 	m_parent->commentSelectedText( true );
 }
 
-void PrivateFileEditor::cursorPositionChanged() {
-	int index = 
-		qLowerBound( m_parent->m_numbers->listOfBookmark(), m_parent->m_view->currentRow() ) - 
-		m_parent->m_numbers->listOfBookmark().begin() - 1;
-	m_parent->updateBookmarkLineValue( index );
-}
-
 /* FileEditor */
 
 Q_DECLARE_METATYPE( FileEditor );
@@ -174,8 +167,6 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
     connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
 
-	connect( m_view, SIGNAL( cursorPositionChanged() ), d, SLOT( cursorPositionChanged() ) );
-
 	m_messageBox->hide();
 }
 
@@ -205,13 +196,12 @@ QList<int> & FileEditor::bookmarks() const {
 	return m_numbers->listOfBookmark(); 
 }
 
+void FileEditor::setBookmark( int line, bool enabled ) {
+	m_numbers->setBookmark( line, enabled );
+}
 
 void FileEditor::toogledBookmark() {
 	m_numbers->setBookmark( m_view->currentRow(), !m_numbers->listOfBookmark().contains( m_view->currentRow() ) );
-}
-
-void FileEditor::updateBookmarkLineValue( int line ) {
-	Editor::gotoBookmarkAt( line );
 }
 
 void FileEditor::gotoBookmarkAt( int i ) {
@@ -229,6 +219,34 @@ QString FileEditor::bookmarkAt( int i ) {
 
 int FileEditor::bookmarkCount() {
 	return m_numbers->listOfBookmark().count();
+}
+
+bool FileEditor::previousBookmark() {
+	int line = m_view->currentRow();
+	for ( QList<int>::iterator i = m_numbers->listOfBookmark().end() - 1 ; i != m_numbers->listOfBookmark().begin() - 1; i-- ) {
+		if( line > *i ) {
+			int bookmark = i - m_numbers->listOfBookmark().begin();
+			gotoBookmarkAt( bookmark );
+			return true;
+		}
+	}
+	return false;
+}
+
+bool FileEditor::nextBookmark() {
+	int line = m_view->currentRow();
+	for( QList<int>::iterator i = m_numbers->listOfBookmark().begin(); i != m_numbers->listOfBookmark().end() ; i++ ) {
+		if( line < *i ) {
+			int bookmark = i - m_numbers->listOfBookmark().begin();
+			gotoBookmarkAt( bookmark );
+			return true;
+		}
+	}
+	return false;
+}
+
+void FileEditor::clearAllBookmark() {
+	m_numbers->listOfBookmark().clear();
 }
 
 TextEditor * FileEditor::textEdit() const { 
@@ -515,6 +533,9 @@ void FileEditor::serialize( QDataStream & stream, bool content ) {
 	if( content && m_view->document()->isModified() ) {
 		setSerializedData( stream, (int)FileEditor::SERIALIZED_CONTENT, 	 QVariant( m_view->toPlainText() ) );
 	}
+	foreach( int line, m_numbers->listOfBookmark() ) {
+		setSerializedData( stream, (int)FileEditor::SERIALIZED_BOOKMARK,	 QVariant( line ) );
+	}
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_ENDOFFILEEDITOR,  QVariant() );
 }
 
@@ -551,6 +572,9 @@ void FileEditor::deserialize( QDataStream & stream ) {
 			break;
 		case FileEditor::SERIALIZED_CONTENT:
 			text = variant.toString();
+			break;
+		case FileEditor::SERIALIZED_BOOKMARK:
+			setBookmark( variant.toInt(), true );
 			break;
 		case FileEditor::SERIALIZED_ENDOFFILEEDITOR:
 			;

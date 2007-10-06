@@ -375,6 +375,9 @@ void WebServicesEditor::serialize( QDataStream & stream, bool content ) {
 			setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_VALUE, 	QVariant( d->m_paramValues[ param ] ) );
 		}
 	}
+	foreach( int line, bookmarks() ) {
+		setSerializedData( stream, (int)FileEditor::SERIALIZED_BOOKMARK,			QVariant( line ) );
+	}
 	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_ENDOFWSEDITOR,  QVariant() );
 }
 
@@ -402,6 +405,9 @@ void WebServicesEditor::deserialize( QDataStream & stream ) {
 			break;
 		case FileEditor::SERIALIZED_MODIFIED:
 			isModified = variant.toBool();
+			break;
+		case FileEditor::SERIALIZED_BOOKMARK:
+			setBookmark( variant.toInt(), true );
 			break;
 		default:
 			;

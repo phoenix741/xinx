@@ -103,7 +103,7 @@ bool Editor::previousBookmark() {
 	if( d->m_bookmarkNumber == 0 )
 		return false;
 	if( d->m_bookmarkNumber >= bookmarkCount() )
-		d->m_bookmarkNumber = d->m_bookmarkNumber;
+		d->m_bookmarkNumber = bookmarkCount();
 	gotoBookmarkAt( d->m_bookmarkNumber - 1 );
 	return true;
 }
@@ -112,7 +112,7 @@ bool Editor::nextBookmark() {
 	if( d->m_bookmarkNumber == bookmarkCount() - 1 )
 		return false;
 	if( d->m_bookmarkNumber < 0 )
-		d->m_bookmarkNumber = 0;
+		d->m_bookmarkNumber = -1;
 	gotoBookmarkAt( d->m_bookmarkNumber + 1 );
 	return true;
 }

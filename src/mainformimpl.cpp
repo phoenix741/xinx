@@ -212,6 +212,12 @@ void PrivateMainformImpl::createShortcut() {
 	
 	m_parent->m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
 	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );	
+	
+	// Bookmark menu
+	m_parent->m_bookmarkAct->setShortcut( QKeySequence( "Ctrl+B" ) );
+	m_parent->m_nextBookmarkAct->setShortcut( QKeySequence( "F2" ) );
+	m_parent->m_previousBookmarkAct->setShortcut( QKeySequence( "Shift+F2" ) );
+	m_parent->m_clearAllBookmarkAct->setShortcut( QKeySequence( "Ctrl+F2" ) );
 
 	// Search menu
 	m_parent->m_searchAct->setShortcut( QKeySequence::Find );
@@ -700,7 +706,10 @@ void PrivateMainformImpl::updateActions() {
 	foreach( QAction * act, m_snipetActs ) {
 		act->setEnabled( m_parent->m_tabEditors->count() );
 	}
-	
+	m_parent->m_bookmarkAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_nextBookmarkAct->setEnabled( m_parent->m_tabEditors->count() );
+	m_parent->m_previousBookmarkAct->setEnabled( m_parent->m_tabEditors->count() );
+
 	if( m_parent->m_tabEditors->count() == 0 ) {
 		m_contentDock->updateModel( NULL );
 	}

@@ -457,6 +457,8 @@ void TabEditor::previousBookmark() {
 }
 
 void TabEditor::clearAllBookmark() {
-//	currentEditor()->toogledBookmark();
+	for( int i = 0; i < count() ; i++ ) {
+		editor( i )->clearAllBookmark();
+	}
 }
 

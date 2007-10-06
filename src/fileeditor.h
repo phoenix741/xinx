@@ -183,16 +183,21 @@ public:
 		SERIALIZED_POSITION         = 1004, ///< The position of the text
 		SERIALIZED_MODIFIED         = 1005, ///< The state of the editor : Is it modified ?
 		SERIALIZED_CONTENT          = 1006, ///< The saved content.
+		SERIALIZED_BOOKMARK         = 1007, ///< The bookmark
 		SERIALIZED_ENDOFFILEEDITOR  = 1999  ///< The last element;
 	};
 
 	virtual void serialize( QDataStream & stream, bool content );
 	virtual void deserialize( QDataStream & stream );
 
+	void setBookmark( int line, bool enabled );
 	virtual void toogledBookmark();
 	virtual void gotoBookmarkAt( int i );
 	virtual QString bookmarkAt( int i );
 	virtual int bookmarkCount();
+	virtual bool previousBookmark();
+	virtual bool nextBookmark();
+	virtual void clearAllBookmark();
 public slots : 
 	virtual void undo();
 	virtual void redo();
@@ -330,8 +335,6 @@ protected:
 	QLabel * m_messageErreur;
 	QWidget * m_messageBox;
 private:
-	void updateBookmarkLineValue( int line );
-	
 	PrivateFileEditor * d;
 	friend class PrivateFileEditor;
 };
