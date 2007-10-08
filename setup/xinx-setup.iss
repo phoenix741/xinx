@@ -38,9 +38,9 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
-Name: remplace_completion; Description: Replace completion.xnx file; GroupDescription: Data files; Components: 
-Name: remplace_template; Description: Replace template.xnx file; GroupDescription: Data files
 Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
+Name: remplace_completion; Description: Replace completion.xnx file; GroupDescription: Data files; Components:
+Name: remplace_template; Description: Replace template.xnx file; GroupDescription: Data files
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -121,7 +121,6 @@ Name: compiler.bat; Parameters: ; Flags: abortonerror
 [Code]
 var
 	FilesWizardPage: TInputFileWizardPage;
-	InstallationTypePage: TInputOptionWizardPage;
 	DeveloppementMsgPage: TOutputMsgWizardPage;
 
 	CompletionResult, TemplateResult: boolean;
@@ -140,15 +139,7 @@ var DefaultCVSPath,
 begin
   { Create the pages }
 
-  InstallationTypePage := CreateInputOptionPage(wpWelcome,
-    'Type of Installation', 'What do you want install ?',
-    'Please specify how you want install the logiciel.',
-    True, False);
-  InstallationTypePage.Add('Download and install developpement environment.');
-  InstallationTypePage.Add('Install the application with embedded library');
-  InstallationTypePage.SelectedValueIndex := 1;
-
-  DeveloppementMsgPage := CreateOutputMsgPage(InstallationTypePage.ID,
+  DeveloppementMsgPage := CreateOutputMsgPage(wpWelcome,
     'Type of Installation', 'What is done to install developpement environment?',
     'Note: To install the developement environment of XINX, the installer will ' +
     'make this step:'#10#13 +
@@ -191,7 +182,7 @@ end;
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   { Skip pages that shouldn't be shown }
-  if (PageID = DeveloppementMsgPage.ID) and (InstallationTypePage.SelectedValueIndex <> 0) then
+  if PageID = DeveloppementMsgPage.ID then
     Result := True
   else
     Result := False;
@@ -210,10 +201,6 @@ begin
       Result := False;
     end else
       Result := True;
-  end else
-  if CurPageId = DeveloppementMsgPage.ID then begin
-    MsgBox('Not yet implemented.', mbInformation, MB_OK);
-    Result := False;
   end else
     Result := True;
 end;
@@ -280,13 +267,6 @@ var
 begin
   { Fill the 'Ready Memo' with the normal settings and the custom settings }
   S := '';
-  S := S + 'Type of Installation:' + NewLine;
-  if( InstallationTypePage.SelectedValueIndex = 0 ) then
-    S := S + Space + 'Install developement environment' + NewLine
-  else
-    S := S + Space + 'Install XINX and embedded library' + NewLine;
-  S := S + NewLine;
-
   S := S + MemoUserInfoInfo + NewLine;
   S := S + NewLine;
   S := S + MemoDirInfo + NewLine;
@@ -306,4 +286,3 @@ begin
 
   Result := S;
 end;
-
