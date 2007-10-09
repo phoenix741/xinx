@@ -46,7 +46,7 @@ PrivateAppSettings::PrivateAppSettings( AppSettings * parent ) {
 }
 
 void PrivateAppSettings::createSettings() {
-	m_settings = new QSettings("Hermisoft", "XINX");
+	m_settings = new QSettings("Shadoware.Org", "XINX");
 }
 
 void PrivateAppSettings::deleteSettings() {

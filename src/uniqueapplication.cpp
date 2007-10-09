@@ -81,14 +81,14 @@ void PrivateUniqueApplication::start() {
 		} else {
 //			new XinxAdaptor( this );
 //			QDBusConnection::sessionBus().registerObject( "/", this );
-			m_interface = new ComEditorXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
+			m_interface = new OrgShadowareXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 		}
 		
 		m_isUnique = false;
 		return;
 	}
 	
-	m_interface = new ComEditorXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
+	m_interface = new OrgShadowareXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
 
 	m_isUnique = true;
 } 

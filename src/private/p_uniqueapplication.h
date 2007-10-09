@@ -65,7 +65,7 @@ public:
 	char* m_fileView;
 	void openSharedMem();
 #else
-	ComEditorXinxInterface * m_interface;
+	OrgShadowareXinxInterface * m_interface;
 #endif
 	void start();
 
