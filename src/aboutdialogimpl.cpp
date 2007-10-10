@@ -47,8 +47,9 @@ AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f)
 	m_thanksText->setHtml(	"<b>Mickael BERTELOOT</b>,<br/>"
 							"<b>Kamal B.         </b>,<br/>"
 							"<b>Alexandre ROCHER</b>,<br/>"
-							"<b>Matthieu DUBOUT</b>,<br/>"
 							"For ideas and bug reports and more<br/>"
+							"<b>Matthieu DUBOUT</b>,<br/>"
+							"For ideas, bug reports, some snipets, and more<br/>"
 							"<br/>"
 							"And all people who help me in some ways and i have forgotten to mention"
 						);
