@@ -177,6 +177,11 @@ signals:
 	 */
 	void categoryChange( QString newValue );
 	
+	/*!
+	 * Signal emitted by the object when a property is modified. This signal is used to save the list
+	 * if a property is modified
+	 */ 
+	void propertyChange();
 private:
 	PrivateSnipet * d;
 	friend class PrivateSnipet;

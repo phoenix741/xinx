@@ -366,7 +366,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
 		d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
 		d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
-		d->m_logProjectDirectory = PrivateXSLProject::getValue( document, "logProjectDirectory" );
+		d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "logProjectDirectory" ) );
 		break;
 	}
 
@@ -410,7 +410,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	PrivateXSLProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
 	PrivateXSLProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
 	PrivateXSLProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
-	PrivateXSLProject::setValue( document, "logProjectDirectory", d->m_logProjectDirectory );
+	PrivateXSLProject::setValue( document, "logProjectDirectory", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_logProjectDirectory ) );
 
 	// Open the file
 	static const int IndentSize = 3;

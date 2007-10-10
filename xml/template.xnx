@@ -70,4 +70,117 @@
     <Text>key('url-param', '%1')/@value</Text>
     <Param name="Param" />
   </Snipet>
+  <Snipet category="Webservices" key="createtim" icon="" type="0" name="Créer une action TIM" >
+    <Description>Création d'une action</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+	&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+	&lt;row num="1">
+		&lt;field name="Codsoc1" value="%1"/>
+		&lt;field name="Typtie" value="%2"/>
+		&lt;field name="Sigtie" value="%3"/>
+		&lt;field name="Typact" value="%4"/>
+		&lt;field name="Dat1" value="%5"/>
+	&lt;/row>
+&lt;/CRUDManagercreateIn>
+&lt;/bean_in>
+&lt;/egx_ws></Text>
+    <Param name="Codsoc" />
+    <Param name="Type de tiers" />
+    <Param name="Sigle du tiers" />
+    <Param name="Type action" />
+    <Param name="Date de réalisation (format YYYYMMJJ)" />
+  </Snipet>
+  <Snipet category="Webservices" key="createeve" icon="" type="0" name="Créer un évènement" >
+    <Description>Créer un évènement avec un seul poste
+(possibiliter d'en rajouter)
+La valorisation est incluse.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common">
+	&lt;transaction>
+		&lt;context>
+			&lt;entity>%1&lt;/entity>
+			&lt;identification>
+				&lt;code>DEMO&lt;/code>
+			&lt;/identification>
+			&lt;target>%2&lt;/target>
+		&lt;/context>
+		&lt;businessEvent>
+			&lt;header>
+				&lt;info>
+					&lt;thirdparty>
+						&lt;key>
+							&lt;type>%3&lt;/type>
+							&lt;identifier>%4&lt;/identifier>
+						&lt;/key>
+					&lt;/thirdparty>
+					&lt;depot>%5&lt;/depot>
+					&lt;item>
+						&lt;info>
+							&lt;product>
+								&lt;key>
+									&lt;code>%6&lt;/code>
+								&lt;/key>
+							&lt;/product>
+							&lt;quantity>%7&lt;/quantity>
+						&lt;/info>
+					&lt;/item>
+				&lt;/info>
+			&lt;/header>
+			&lt;services service="valueAmount"/>
+			&lt;services service="validate"/>
+			&lt;services service="edit"/>
+		&lt;/businessEvent>
+	&lt;/transaction>
+&lt;/GCEServiceassimilateIn>
+&lt;/bean_in>
+&lt;/egx_ws></Text>
+    <Param name="Code soci�t� (exemple : 1221)" />
+    <Param name="Target : code pev (exemple : ACDA)" />
+    <Param name="Type tiers (exemple : FOU)" />
+    <Param name="Sigle du tiers (exemple : BRFOU101)" />
+    <Param name="D�pot (exemple : ROISSY)" />
+    <Param name="Code produit (exemple : AG101)" />
+    <Param name="Quantit� (exemple : 3)" />
+  </Snipet>
+  <Snipet category="Webservices" key="stock" icon="" type="0" name="Interroger le stock" >
+    <Description>Permet d'interroger le stock pour un produit.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn viewObjectName="JDskAskView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd">
+	&lt;retrieve key="ONE">
+	  &lt;param num="1" value="%1"/>
+		&lt;param num="2" value="%2"/>
+		&lt;param num="3" value="%3"/>
+		&lt;param num="4" value="%4"/>
+	&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws></Text>
+    <Param name="Code société (exemple : 1)" />
+    <Param name="Code produit (exemple : AG101)" />
+    <Param name="Code dépôt (exemple : LILLE)" />
+    <Param name="Code affichage ask  (exemple : TOUS)" />
+  </Snipet>
+  <Snipet category="Webservices" key="ajoutmvt" icon="" type="0" name="Ajouter un movement de stock" >
+    <Description>Ajouter un mouvement de stock a un contexte déjà créé.</Description>
+    <Text>		&lt;inventoryTurnover>
+			&lt;movement>%1&lt;/movement>
+			&lt;depot>%2&lt;/depot>
+			&lt;product>
+				&lt;key>
+					&lt;code>%3&lt;/code>
+				&lt;/key>
+			&lt;/product>
+			&lt;quantity>%4&lt;/quantity>
+			&lt;price>%5&lt;/price>
+		&lt;/inventoryTurnover>
+</Text>
+    <Param name="Code mouvement de stock (exemple : ENTREE)" />
+    <Param name="Sigle du d�p�t (exemple : LILLE)" />
+    <Param name="Code produit (exemple : BR101)" />
+    <Param name="Quantit� (exemple : 3)" />
+    <Param name="Prix (exemple : 12)" />
+  </Snipet>
 </SnipetList>

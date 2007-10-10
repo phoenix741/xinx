@@ -141,6 +141,8 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
 	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
 	m_specifiquePathLabel->setText( QDir::toNativeSeparators( defSearchPath ) );
+
+	updateOkButton();
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {

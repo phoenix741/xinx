@@ -66,6 +66,7 @@ const QString & Snipet::name() const {
 
 void Snipet::setName( const QString & name ) {
 	d->m_name = name;
+	emit propertyChange();
 }
 
 const QString & Snipet::key() const {
@@ -74,6 +75,7 @@ const QString & Snipet::key() const {
 	 
 void Snipet::setKey( const QString & key ) {
 	d->m_key = key;
+	emit propertyChange();
 }
 
 enum Snipet::SnipetType Snipet::type() const {
@@ -82,6 +84,7 @@ enum Snipet::SnipetType Snipet::type() const {
 	 
 void Snipet::setType( enum Snipet::SnipetType type ) {
 	d->m_type = type;
+	emit propertyChange();
 }
 	
 const QString & Snipet::description() const {
@@ -90,6 +93,7 @@ const QString & Snipet::description() const {
 
 void Snipet::setDescription( const QString & description ) {
 	d->m_description = description;
+	emit propertyChange();
 }
 	
 const QString & Snipet::icon() const {
@@ -98,6 +102,7 @@ const QString & Snipet::icon() const {
 
 void Snipet::setIcon( const QString & icon ) {
 	d->m_icon = icon;
+	emit propertyChange();
 }
 
 const QString & Snipet::category() const {
@@ -107,6 +112,7 @@ const QString & Snipet::category() const {
 void Snipet::setCategory( const QString & category ) {
 	d->m_category = category;
 	emit categoryChange( category );
+	emit propertyChange();
 }
 
 const QString & Snipet::text() const {
@@ -115,6 +121,7 @@ const QString & Snipet::text() const {
 	
 void Snipet::setText( const QString & value ) {
 	d->m_text = value;
+	emit propertyChange();
 }
 	
 QStringList & Snipet::params() {

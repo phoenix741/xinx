@@ -54,6 +54,7 @@ public:
 	QString m_filename;
 public slots:
 	void addCategory( QString newCategory );
+	void snipetPropertyChange();
 private:
 	SnipetList * m_parent;
 };
@@ -71,6 +72,12 @@ void PrivateSnipetList::addCategory( QString newCategory ) {
 		m_categories.append( newCategory );
 	emit m_parent->listChanged();
 }
+
+void PrivateSnipetList::snipetPropertyChange() {
+	if( ! m_filename.isEmpty() )
+		m_parent->saveToFile();
+}
+
 
 
 /* SnipetList */
@@ -103,6 +110,7 @@ void SnipetList::add( Snipet * snipet ) {
 	d->m_list.append( snipet );
 	d->addCategory( snipet->category() );
 	connect( snipet, SIGNAL(categoryChange(QString)), d, SLOT(addCategory(QString)) );
+	connect( snipet, SIGNAL(propertyChange()), d, SLOT(snipetPropertyChange()) );
 }
 
 /*!
