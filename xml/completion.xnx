@@ -1618,6 +1618,33 @@
         <attribute name="lang" />
         <attribute name="onkeydown" />
       </balise>
+	  <balise name="frameset">
+		<attribute name="cols"/>
+		<attribute name="onload"/>
+		<attribute name="onunload"/>
+		<attribute name="rows"/>
+		
+		<attribute name="class"/>
+		<attribute name="id"/>
+		<attribute name="style"/>
+		<attribute name="title"/>
+		<balise name="frame">
+			<attribute name="src"/>
+			<attribute name="name"/>
+			<attribute name="frameborder"/>
+			<attribute name="longdesc"/>
+			<attribute name="marginwidth"/>
+			<attribute name="marginheight"/>
+			<attribute name="scrolling">
+				<value>yes</value>
+				<value>no</value>
+				<value>auto</value>
+			</attribute>
+			<attribute name="noresize">
+				<value default="true">noresize</value>
+			</attribute>
+		</balise>
+	  </balise>
       <balise name="noscript" >
         <attribute name="title" />
         <attribute name="onkeypress" />
