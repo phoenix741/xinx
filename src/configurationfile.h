@@ -26,13 +26,25 @@
 
 // Qt header
 #include <QString>
+#include <QList>
 
 class ConfigurationVersionIncorectException : public XinxException {
 public:
 	ConfigurationVersionIncorectException( QString version );
 };
 
-class PrivateConfigurationVersion;
+class MetaConfigurationException : public XinxException {
+public:
+	MetaConfigurationException( QString message );
+};
+
+class MetaConfigurationNotExistException : public MetaConfigurationException {
+public:
+	MetaConfigurationNotExistException( QString filename );
+};
+
+
+class PrivateMetaConfigurationFile;
 
 /*!
  * Represent a version of a XML Configuration file. The file version has
@@ -137,21 +149,55 @@ class ConfigurationFile {
 public:
 	/*!
 	 * Test if the configuration file exists in the directory path.
-	 * The conifuration file has the name configuration.xml
+	 * The configuration file has the name configuration.xml
 	 * \param DirectoryPath The path of the directory where we check if a configuration file exists.
 	 * \return True if the configuration file exist, else return false.
 	 */
-	static bool exists( const QString & DirectoryPath );
+	static bool exists( const QString & directoryPath );
 	/*!
 	 * Return the version of the configuration file (only if the file exists and the version
-	 * can be found.
+	 * can be found).
 	 * This method parse the configuration file to find the version number. If he find him, 
 	 * the parser stop immediatly to not read the entierly.
 	 * \param DirectoryPath the path where the configuration file is.
 	 * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
 	 */
-	static ConfigurationVersion version( const QString & DirectoryPath );
+	static ConfigurationVersion version( const QString & directoryPath );
 private:	
+};
+
+/*!
+ * Definition of a meta configuration file defined in file configurationdef.xml. The meta file defined 
+ * one or more configuration file. This file define dictionary too.
+ */
+class MetaConfigurationFile {
+public:
+	/*! 
+	 * Create a meta configuration file object an load configuration in memory.
+	 * \param The file name of the meta configuration file.
+	 */
+	MetaConfigurationFile( const QString & filename );
+	/*!
+	 * Destroy the meta configuration file 
+	 */
+	virtual ~MetaConfigurationFile();
+	
+	/*!
+	 * Test if the meta configuration file exists in the path \e DirectoryPath 
+	 * and return true if the file exist
+	 */
+	static bool exists( const QString & directoryPath );
+	/*!
+	 * Return the version of one of the configuration file (only if the file exists and the
+	 * version can be found).
+	 * This method parse configurations file to find the version number. If a version is founded, 
+	 * this not parse the next files.
+	 * \param DirectoryPath path of the meta configuration file.
+	 */
+	static ConfigurationVersion version( const QString & directoryPath );
+private:
+	PrivateMetaConfigurationFile * d;
+	friend class PrivateMetaConfigurationFile;
 };
 
 #endif // __CONFIGURATIONFILE_H__

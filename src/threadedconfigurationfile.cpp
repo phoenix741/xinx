@@ -68,6 +68,6 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::version( const QString & 
 
 void ThreadedConfigurationFile::run() {
 	if( d->m_state == PrivateThreadedConfigurationFile::GETVERSION ) {
-		d->m_versionConfiguration = ConfigurationFile::version( d->m_pathname );
+		d->m_versionConfiguration = MetaConfigurationFile::version( d->m_pathname );
 	}
 }

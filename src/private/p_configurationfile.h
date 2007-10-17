@@ -21,7 +21,9 @@
 #ifndef __P_CONFIGURATIONFILE_H__
 #define __P_CONFIGURATIONFILE_H__
 
+// Qt header
 #include <QXmlDefaultHandler>
+#include <QDomDocument>
 
 class ParseVersionHandler : public QXmlDefaultHandler {
 public:
@@ -43,5 +45,11 @@ public:
 	QString m_text, m_version;
 	int m_build;
 };
+
+class PrivateMetaConfigurationFile {
+public:
+	QStringList m_files;
+};
+
 
 #endif // __P_CONFIGURATIONFILE_H__

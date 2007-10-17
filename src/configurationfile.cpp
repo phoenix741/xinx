@@ -34,6 +34,17 @@ ConfigurationVersionIncorectException::ConfigurationVersionIncorectException( QS
 	
 }
 
+/* MetaConfigurationException */
+
+MetaConfigurationException::MetaConfigurationException( QString message ) : XinxException( message ) {
+	
+}
+
+/* MetaConfigurationNotExistException */
+
+MetaConfigurationNotExistException::MetaConfigurationNotExistException( QString filename ) : MetaConfigurationException( QString( "Meta configuration \"%1\" not found" ).arg( filename ) ) {
+	
+}
 
 /* ConfigurationVersion */
 
@@ -144,12 +155,14 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 /* ConfigurationFile */
 
 
-bool ConfigurationFile::exists( const QString & DirectoryPath ) {
-	return QFile::exists( QDir( DirectoryPath ).absoluteFilePath( "configuration.xml" ) );
+bool ConfigurationFile::exists( const QString & directoryPath ) {
+	return QFile::exists( QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) );
 }
 
-ConfigurationVersion ConfigurationFile::version( const QString & DirectoryPath ) {
-	QString fileName = QDir( DirectoryPath ).absoluteFilePath( "configuration.xml" );
+ConfigurationVersion ConfigurationFile::version( const QString & directoryPath ) {
+	QString fileName = QFileInfo( directoryPath ).isDir() ?
+			QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) : 
+			directoryPath;
 	
 	ParseVersionHandler handler;
 	QXmlSimpleReader reader;
@@ -167,6 +180,64 @@ ConfigurationVersion ConfigurationFile::version( const QString & DirectoryPath )
 		}
 	}
 	return ConfigurationVersion();
+}
+
+/* MetaConfigurationFile */
+
+MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
+	d = new PrivateMetaConfigurationFile();
+	
+	QDomDocument document( "configurationdef.xml" );
+	QFile file( filename );
+	if( ! file.open( QIODevice::ReadOnly ) ) 
+		throw MetaConfigurationNotExistException( filename );
+	
+	if( ! document.setContent( &file ) ) {
+		file.close();
+		throw MetaConfigurationException( QString( "I can't read \"%1\" as XML Document." ).arg( filename ) );
+	}
+	
+	QDomElement root = document.documentElement();
+	
+	QDomElement configuration = root.firstChildElement( "configuration" );
+	if( ! configuration.isNull() ) {
+		QDomElement conffile = configuration.firstChildElement( "file" );
+		while( ! conffile.isNull() ) {
+			d->m_files.insert( 0, conffile.attribute( "name" ) );
+			conffile = conffile.nextSiblingElement( "file" );
+		}
+	}
+	
+	if( d->m_files.count() == 0 )
+		throw MetaConfigurationException( QString( "No configuration file found in \"%1\"" ).arg( filename ) );
+}
+
+MetaConfigurationFile::~MetaConfigurationFile() {
+	delete d;
+}
+
+bool MetaConfigurationFile::exists( const QString & directoryPath ) {
+	return QFile::exists( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
+}
+
+ConfigurationVersion MetaConfigurationFile::version( const QString & directoryPath ) {
+	try {
+		MetaConfigurationFile meta( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
+		foreach( QString file, meta.d->m_files ) {
+			try {
+				QString path = QDir( directoryPath ).absoluteFilePath( file );
+				ConfigurationVersion version = ConfigurationFile::version( path );
+				if( version.isValid() ) {
+					return version;
+				}
+			} catch( ConfigurationVersionIncorectException ) {
+			
+			}
+		}
+		return ConfigurationFile::version( directoryPath ); 
+	} catch( MetaConfigurationException ) {
+		return ConfigurationFile::version( directoryPath ); 
+	}
 }
 
 /* ParseVersionHandler */

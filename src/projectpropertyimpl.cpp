@@ -69,7 +69,7 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	if( dir.exists() ) {
 		paletteVerion.setColor( QPalette::WindowText, Qt::red );
 
-		if( ConfigurationFile::exists( text ) ) {
+		if( ConfigurationFile::exists( text ) || MetaConfigurationFile::exists( text ) ) {
 			m_configurationVersionLabel->setText( tr("Search version of file ...") );
 			m_versionInstance = ThreadedConfigurationFile::version( text );
 			connect( m_versionInstance, SIGNAL(versionFinded(ConfigurationVersion)), this, SLOT(versionFinded(ConfigurationVersion)) );
