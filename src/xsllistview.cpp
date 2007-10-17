@@ -104,8 +104,8 @@ void XSLModelData::loadFromXML( const QDomElement& element ) {
 	QDomElement child = element.firstChildElement();
   
 	while (! child.isNull()) {
-		if( child.prefix() == "xsl" && ( child.tagName() == "import" || child.tagName() == "variable" || child.tagName() == "template" || child.tagName() == "param" ) ) {
-  			if( child.tagName() == "import" ) {
+		if( child.prefix() == "xsl" && ( child.tagName() == "include" || child.tagName() == "import" || child.tagName() == "variable" || child.tagName() == "template" || child.tagName() == "param" ) ) {
+  			if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) {
 				XSLModelData * data = new XSLModelData( this );
 				data->setType( etImport );
 	  			data->setName( child.attribute( "href" ) );
