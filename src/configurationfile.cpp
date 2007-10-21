@@ -104,7 +104,7 @@ QString ConfigurationVersion::toString() const {
 	return version;
 }
 
-bool ConfigurationVersion::isValid() {
+bool ConfigurationVersion::isValid() const {
 	return ( m_major >= 0 ) && ( m_minor >= 0 ) && ( m_release >= 0 );
 }
 	
@@ -152,14 +152,23 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 	return ! ( *this > version );
 }
 
-/* ConfigurationFile */
+/* SimpleConfigurationFile */
 
+const ConfigurationVersion & SimpleConfigurationFile::version() const {
+	return m_version;
+}
+
+const QString & SimpleConfigurationFile::xmlPresentationFile() const {
+	return m_xmlPresentationFile;
+}
+
+/* ConfigurationFile */
 
 bool ConfigurationFile::exists( const QString & directoryPath ) {
 	return QFile::exists( QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) );
 }
 
-ConfigurationVersion ConfigurationFile::version( const QString & directoryPath ) {
+SimpleConfigurationFile ConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	QString fileName = QFileInfo( directoryPath ).isDir() ?
 			QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) : 
 			directoryPath;
@@ -169,17 +178,20 @@ ConfigurationVersion ConfigurationFile::version( const QString & directoryPath )
 	reader.setContentHandler( &handler );
 	reader.setErrorHandler( &handler );
 	
+	SimpleConfigurationFile configuration;
+	
 	QFile file( fileName );
 	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
 		QXmlInputSource xmlInputSource( &file );
 		reader.parse( xmlInputSource );
+		configuration.m_xmlPresentationFile = handler.m_xmlPresentationFile;
 		try {
-			return ConfigurationVersion( handler.m_version, handler.m_build );
+			configuration.m_version = ConfigurationVersion( handler.m_version, handler.m_build );
 		} catch( ConfigurationVersionIncorectException ) {
-			return ConfigurationVersion();
+			configuration.m_version = ConfigurationVersion();
 		}
 	}
-	return ConfigurationVersion();
+	return configuration;
 }
 
 /* MetaConfigurationFile */
@@ -220,23 +232,19 @@ bool MetaConfigurationFile::exists( const QString & directoryPath ) {
 	return QFile::exists( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
 }
 
-ConfigurationVersion MetaConfigurationFile::version( const QString & directoryPath ) {
+SimpleConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	try {
 		MetaConfigurationFile meta( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
 		foreach( QString file, meta.d->m_files ) {
-			try {
-				QString path = QDir( directoryPath ).absoluteFilePath( file );
-				ConfigurationVersion version = ConfigurationFile::version( path );
-				if( version.isValid() ) {
-					return version;
-				}
-			} catch( ConfigurationVersionIncorectException ) {
-			
+			QString path = QDir( directoryPath ).absoluteFilePath( file );
+			SimpleConfigurationFile configuration = ConfigurationFile::simpleConfigurationFile( path );
+			if( configuration.version().isValid() ) {
+				return configuration;
 			}
 		}
-		return ConfigurationFile::version( directoryPath ); 
+		return ConfigurationFile::simpleConfigurationFile( directoryPath ); 
 	} catch( MetaConfigurationException ) {
-		return ConfigurationFile::version( directoryPath ); 
+		return ConfigurationFile::simpleConfigurationFile( directoryPath ); 
 	}
 }
 
@@ -245,6 +253,8 @@ ConfigurationVersion MetaConfigurationFile::version( const QString & directoryPa
 ParseVersionHandler::ParseVersionHandler() {
 	m_parserState = STATE_START;
 	m_build = -1;
+	m_elementToRead = 2;
+	m_xmlPresentationFile = "Presentation.xml";
 }
 
 ParseVersionHandler::~ParseVersionHandler() {
@@ -267,6 +277,12 @@ bool ParseVersionHandler::startElement(const QString &namespaceURI, const QStrin
 	if( m_parserState == ParseVersionHandler::STATE_CONFIG && qName == "version" ) {
 		m_parserState = ParseVersionHandler::STATE_VERSION;
 	} else
+	if( m_parserState == ParseVersionHandler::STATE_CONFIG && qName == "application" ) {
+		m_parserState = ParseVersionHandler::STATE_APPLICATION;
+	} else
+	if( m_parserState == ParseVersionHandler::STATE_APPLICATION && qName == "properties" ) {
+		m_xmlPresentationFile = attributes.value( "xmlPresentationFile" );
+	} else
 	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "numero" ) {
 		m_parserState = ParseVersionHandler::STATE_NUMERO;
 	} else
@@ -274,6 +290,8 @@ bool ParseVersionHandler::startElement(const QString &namespaceURI, const QStrin
 		m_parserState = ParseVersionHandler::STATE_EDITIONSPECIAL;
 	}
 	m_text = "";
+	if( m_elementToRead <= 0 )
+		return false;
 	return true;
 }
 
@@ -285,10 +303,13 @@ bool ParseVersionHandler::endElement(const QString &namespaceURI, const QString 
 	if( m_parserState == ParseVersionHandler::STATE_CONFIG && qName == "config" ) {
 		m_parserState = ParseVersionHandler::STATE_START;
 	} else
+	if( m_parserState == ParseVersionHandler::STATE_APPLICATION && qName == "application" ) {
+		m_parserState = ParseVersionHandler::STATE_CONFIG;
+		m_elementToRead--;
+	} else
 	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "version" ) {
 		m_parserState = ParseVersionHandler::STATE_CONFIG;
-		m_errorStr = "Version founded";
-		return false;
+		m_elementToRead--;
 	} else
 	if( m_parserState == ParseVersionHandler::STATE_NUMERO && qName == "numero" ) {
 		m_version = m_text;
@@ -298,6 +319,8 @@ bool ParseVersionHandler::endElement(const QString &namespaceURI, const QString 
 		m_build = m_text.toInt();
 		m_parserState = ParseVersionHandler::STATE_VERSION;
 	}
+	if( m_elementToRead <= 0 )
+		return false;
 	return true;
 }
 

@@ -33,9 +33,9 @@ class ThreadedConfigurationFile : public QThread {
 	Q_OBJECT
 public:
 	virtual ~ThreadedConfigurationFile();
-	static ThreadedConfigurationFile * version( const QString & pathname );
+	static ThreadedConfigurationFile * simpleConfigurationFile( const QString & pathname );
 signals:
-	void versionFinded( ConfigurationVersion version );
+	void versionFinded( SimpleConfigurationFile configuration );
 protected:
 	ThreadedConfigurationFile();
 	virtual void run();

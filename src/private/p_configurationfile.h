@@ -27,7 +27,7 @@
 
 class ParseVersionHandler : public QXmlDefaultHandler {
 public:
-	enum ParseVersionState { STATE_START, STATE_CONFIG, STATE_VERSION, STATE_NUMERO, STATE_EDITIONSPECIAL };
+	enum ParseVersionState { STATE_START, STATE_CONFIG, STATE_APPLICATION, STATE_VERSION, STATE_NUMERO, STATE_EDITIONSPECIAL };
 
 	ParseVersionHandler();
 	virtual ~ParseVersionHandler();
@@ -42,8 +42,10 @@ public:
 	QString m_errorStr;
 	enum ParseVersionState m_parserState;
 	
-	QString m_text, m_version;
+	QString m_text, m_version, m_xmlPresentationFile;
 	int m_build;
+	
+	int m_elementToRead;
 };
 
 class PrivateMetaConfigurationFile {

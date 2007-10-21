@@ -232,7 +232,6 @@ void UniqueApplication::notifyError( QString error ) {
 		void * array[10];
 		size_t size, i;
 		char ** strings;
-		FILE * file = NULL;
 	
 		size = backtrace( array, 10 );
 		strings = backtrace_symbols( array, size );

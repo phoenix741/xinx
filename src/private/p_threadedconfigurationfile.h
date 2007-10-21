@@ -35,7 +35,7 @@ public:
 	
 	enum state { GETVERSION } m_state;
 	QString m_pathname;
-	ConfigurationVersion m_versionConfiguration;
+	SimpleConfigurationFile m_configuration;
 public slots:
 	void threadFinished();
 private:

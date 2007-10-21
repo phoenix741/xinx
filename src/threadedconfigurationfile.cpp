@@ -37,7 +37,7 @@ PrivateThreadedConfigurationFile::~PrivateThreadedConfigurationFile() {
 
 void PrivateThreadedConfigurationFile::threadFinished() {
 	if( m_state == GETVERSION ) {
-		emit m_parent->versionFinded( m_versionConfiguration );
+		emit m_parent->versionFinded( m_configuration );
 	}
 }
 
@@ -56,8 +56,8 @@ ThreadedConfigurationFile::~ThreadedConfigurationFile() {
 	delete d;
 }
 
-ThreadedConfigurationFile * ThreadedConfigurationFile::version( const QString & pathname ) {
-	qRegisterMetaType<ConfigurationVersion>("ConfigurationVersion");
+ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( const QString & pathname ) {
+	qRegisterMetaType<SimpleConfigurationFile>("SimpleConfigurationFile");
 	
 	ThreadedConfigurationFile * instance = new ThreadedConfigurationFile();
 	instance->d->m_state = PrivateThreadedConfigurationFile::GETVERSION;
@@ -68,6 +68,6 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::version( const QString & 
 
 void ThreadedConfigurationFile::run() {
 	if( d->m_state == PrivateThreadedConfigurationFile::GETVERSION ) {
-		d->m_versionConfiguration = MetaConfigurationFile::version( d->m_pathname );
+		d->m_configuration = MetaConfigurationFile::simpleConfigurationFile( d->m_pathname );
 	}
 }

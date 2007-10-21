@@ -40,8 +40,8 @@ Trace::Trace( char* filename, int line, const QString & func_name, const QString
 
 Trace::~Trace() {
 	m_depth--;
-	if( m_depth == 0 )
-		stackTrace.clear();
+//	if( m_depth == 0 )
+//		stackTrace.clear();
 }
 
 void Trace::LogMsg( int depth, const char * filename, int line, const QString & fonction ) {

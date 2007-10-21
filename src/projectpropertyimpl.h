@@ -52,7 +52,7 @@ private slots:
 	void on_m_projectButton_clicked();
 	void on_m_prefixLineEdit_textChanged( QString );
 
-	void versionFinded( ConfigurationVersion version );
+	void versionFinded( SimpleConfigurationFile configuration );
 };
 #endif
 

@@ -34,6 +34,11 @@
         <value name="Highlight Current Line" type="bool" default="true"/>
         <value name="Default format" type="textformat"/>
 	</type>
+    <type name="ConfEditor">
+        <value name="Activate Configuration Editor" type="bool" default="no"/>
+        <value name="Auto load configuration file" type="bool" default="true"/>
+        <value name="Auto save configuration file" type="bool" default="false"/>
+    </type>
 	
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
 	
@@ -46,7 +51,8 @@
 	<value name="Project" type="complex:Project"/>
 	<value name="CVS" type="complex:CVS"/>
 	<value name="Editor" type="complex:Editor"/>
-	
+	<value name="ConfEditor" type="complex:ConfEditor"/>
+    
 	<value name="Tools" type="hash" typevalue="string">
 		<default name="cvs" default="/usr/bin/cvs"/>
 		<default name="diff" default="/usr/bin/kompare"/>

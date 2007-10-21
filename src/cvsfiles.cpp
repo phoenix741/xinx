@@ -201,7 +201,7 @@ void CVSFileEntry::deleteInstance() {
 
 /* CVSFileEntryList */
 
-CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( path ) {
+CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( QFileInfo( path ).absoluteFilePath() ) {
 	XINX_TRACE( "CVSFileEntryList", QString( "( %1 )" ).arg( path ) );
 
 	XINX_ASSERT( QFileInfo( path ).isDir() );

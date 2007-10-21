@@ -71,11 +71,14 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 
 		if( ConfigurationFile::exists( text ) || MetaConfigurationFile::exists( text ) ) {
 			m_configurationVersionLabel->setText( tr("Search version of file ...") );
-			m_versionInstance = ThreadedConfigurationFile::version( text );
-			connect( m_versionInstance, SIGNAL(versionFinded(ConfigurationVersion)), this, SLOT(versionFinded(ConfigurationVersion)) );
+			m_presentationLabel->setText( "" );
+			m_versionInstance = ThreadedConfigurationFile::simpleConfigurationFile( text );
+			connect( m_versionInstance, SIGNAL(versionFinded(SimpleConfigurationFile)), this, SLOT(versionFinded(SimpleConfigurationFile)) );
 			m_versionInstance->start();
-		} else
+		} else {
 			m_configurationVersionLabel->setText( tr("warning: The configuration file is not in this directory.") );
+			m_presentationLabel->setText( "" );
+		}
 	} else {
 		paletteVerion.setColor( QPalette::WindowText, QColor() );
 		m_configurationVersionLabel->setText( QString() );
@@ -85,14 +88,16 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	updateOkButton();
 }
 
-void ProjectPropertyImpl::versionFinded( ConfigurationVersion version ) {
+void ProjectPropertyImpl::versionFinded( SimpleConfigurationFile configuration ) {
 	QPalette paletteVerion( m_configurationVersionLabel->palette() );
-	if( version.isValid() ) {
+	if( configuration.version().isValid() ) {
 		paletteVerion.setColor( QPalette::WindowText, QColor() );
-		m_configurationVersionLabel->setText( version.toString() );
+		m_configurationVersionLabel->setText( configuration.version().toString() );
+		m_presentationLabel->setText( configuration.xmlPresentationFile() );
 	} else {
 		paletteVerion.setColor( QPalette::WindowText, Qt::red );
-		m_configurationVersionLabel->setText( tr("warning: A valid version cannot be found in the configuration file.") );
+		m_configurationVersionLabel->setText( tr("warning: A valid version cannot be found in the configuration file (may be 4xx).") );
+		m_presentationLabel->setText( configuration.xmlPresentationFile() );
 	}
 	m_configurationVersionLabel->setPalette( paletteVerion );
 }
