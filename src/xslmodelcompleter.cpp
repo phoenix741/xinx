@@ -54,9 +54,13 @@ void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
 	for( int i = 0; i < data->childCount(); i++ ) {
 		if( data->child( i )->type() != XSLModelData::etImport ) {
 			if( ! contains( data->child( i ) ) )
-			m_objList.append( data->child( i ) );
+				m_objList.append( data->child( i ) );
 		} else {
-			refreshRecursive( data->child( i ) );
+			QString name = data->child( i )->name();
+			if( ! m_files.contains( name ) ) { 
+				m_files.append( name );
+				refreshRecursive( data->child( i ) );
+			}
 		}
 	}
 }
