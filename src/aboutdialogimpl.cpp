@@ -20,11 +20,13 @@
 
 // Xinx header
 #include "aboutdialogimpl.h"
+#include "exceptions.h"
 
 /* AboutDialogImpl */
 
 AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f) 
 	: QDialog(parent, f) {
+	XINX_TRACE( "AboutDialogImpl", QString("( parent, flags )") );
 	setupUi(this);
 	
 	m_aboutLabel->setText( 	"<b>XINX</b> Is Not only XML<br/>"

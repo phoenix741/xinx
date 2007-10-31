@@ -195,10 +195,10 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	try {
 		return QApplication::notify( receiver, event );
 	} catch( XinxException e ) {
-		notifyError( e.getMessage() );
+		notifyError( e.getMessage(), e.getStack() );
 		return false;
 	} catch( ... ) {
-		notifyError( "Generix Exception" );
+		notifyError( "Generic Exception", stackTrace );
 		return false;
 	}
 }
@@ -218,7 +218,7 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	const size_t nbChar = 100;
 #endif
 
-void UniqueApplication::notifyError( QString error ) {
+void UniqueApplication::notifyError( QString error, QStringList stack ) {
 	FILE * file = NULL;
 #ifndef Q_WS_WIN
 	char * filename = "/tmp/xinx_trace.log";
@@ -312,7 +312,7 @@ void UniqueApplication::notifyError( QString error ) {
 
 		fprintf( file, "BACKTRACE UNAVALAIBLE ON WINDOWS :(, PLEASE USE GNU/LINUX :)\n" );			
 #endif
-		fprintf( file, stackTrace.join( "\n" ).toAscii() );
+		fprintf( file, stack.join( "\n" ).toAscii() );
 		
 		fprintf( file, error.toAscii() );
 		fclose( file );

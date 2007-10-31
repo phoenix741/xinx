@@ -24,6 +24,7 @@
 // Qt header
 #include <QDebug>
 #include <QDateTime>
+#include <QFile>
 
 /* Log Variable */
 
@@ -40,8 +41,8 @@ Trace::Trace( char* filename, int line, const QString & func_name, const QString
 
 Trace::~Trace() {
 	m_depth--;
-//	if( m_depth == 0 )
-//		stackTrace.clear();
+	if( m_depth == 0 )
+		stackTrace.clear();
 }
 
 void Trace::LogMsg( int depth, const char * filename, int line, const QString & fonction ) {
@@ -55,23 +56,45 @@ void Trace::LogMsg( int depth, const char * filename, int line, const QString & 
 	
 	stackTrace.append( s );
 
-//	qDebug() << s;
+/*
+#ifndef QT_NO_DEBUG
+#	ifdef Q_WS_WIN
+		QFile logfile( "c:\\xinx_debug.log" );
+#	else 
+		QFile logfile( "/tmp/xinx_debug.log" );
+#	endif
+	if( logfile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
+		QTextStream logfileStream( &logfile );
+		logfileStream << s << endl;
+	}
+#endif
+*/
 }
 /* XinxException */
 
 XinxException::XinxException( QString message ) {
+	XINX_TRACE( "XinxException", QString("(%1)").arg( message ) );
+	
 	m_message = message;
-	qDebug() << message << endl;
-	stackTrace.append( "message" );
+	m_stack = stackTrace;
 }
 
 const QString & XinxException::getMessage() const {
+	XINX_TRACE( "XinxException::getMessage", "()" );
+
 	return m_message;
 }
+
+const QStringList & XinxException::getStack() const {
+	XINX_TRACE( "XinxException::getStack", "()" );
+
+	return m_stack;
+}
+
 
 /* XinxAssertException */
 
 XinxAssertException::XinxAssertException( const char *assertion, const char *file, int line ) : XinxException( QString( "ASSERT: \"%1\" in file %2, line %3" ).arg( assertion ).arg( file ).arg( line ) ) {
-	
+	XINX_TRACE( "XinxAssertException", QString( "(%1, %2, %3)" ).arg( assertion ).arg( file ).arg( line ) );
 }
 
