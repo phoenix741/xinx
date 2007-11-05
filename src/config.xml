@@ -1,4 +1,4 @@
-<config classname="AppSettings" organization="Shadoware.Org" application="XINX">
+<config classname="App Settings" organization="Shadoware.Org" application="XINX">
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>
@@ -32,9 +32,9 @@
         <value name="Tabulation Size" type="int" default="4"/>
         <value name="Show Tabulation and space" type="bool" default="false"/>
         <value name="Highlight Current Line" type="bool" default="true"/>
-        <value name="Default format" type="textformat"/>
+        <value name="Default format" type="font"/>
 	</type>
-    <type name="ConfEditor">
+    <type name="Configuration Editor">
         <value name="Activate Configuration Editor" type="bool" default="no"/>
         <value name="Auto load configuration file" type="bool" default="true"/>
         <value name="Auto save configuration file" type="bool" default="false"/>
@@ -47,21 +47,21 @@
     <value name="Maximized" type="bool" default="no"/>
 	<value name="State" type="blob"/>
 	
-	<value name="Descriptions" type="complex:Descriptions"/>
-	<value name="Project" type="complex:Project"/>
-	<value name="CVS" type="complex:CVS"/>
-	<value name="Editor" type="complex:Editor"/>
-	<value name="ConfEditor" type="complex:ConfEditor"/>
+	<value name="Descriptions" type="Descriptions"/>
+	<value name="Project" type="Project"/>
+	<value name="CVS" type="CVS"/>
+	<value name="Editor" type="Editor"/>
+	<value name="Configuration Editor" type="Configuration Editor"/>
     
-	<value name="Tools" type="hash" typevalue="string">
+	<value name="Tools" type="hash:string">
 		<default name="cvs" default="/usr/bin/cvs"/>
 		<default name="diff" default="/usr/bin/kompare"/>
 	</value>
-	<value name="Files" type="hash" typevalue="complex:Extentions">
+	<value name="Files" type="hash:Extentions">
 		<default name="xml"/>
 		<default name="xsl"/>
-		<default name="fws" default="Can Be Sepcifique:no"/>
+		<default name="fws" default="Can Be Specifique:no"/>
 		<default name="js" default="Custom Path:js/"/>
 	</value>
-	<value name="Formats" type="hash" typevalue="textformat"/>
+	<value name="Formats" type="hash:textformat"/>
 </config>
