@@ -23,6 +23,7 @@
 
 // Qt header
 #include <QAbstractListModel>
+#include <QStringList>
 
 class XSLModelData;
 
@@ -48,6 +49,8 @@ private:
 	
 	QString m_baliseName;
 	QString m_attributeName;
+	
+	QStringList m_files;
 };
 
 class XSLParamCompletionModel : public QAbstractListModel {

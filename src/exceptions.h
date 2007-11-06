@@ -32,8 +32,14 @@ public:
 	 * \return The message of the error.
 	 */
 	const QString & getMessage() const;
+	/*!
+	 * Return the stack trace.
+	 * \return The stack trace
+	 */
+	const QStringList & getStack() const;
 private:
 	QString m_message;
+	QStringList m_stack;
 };
 
 class XinxAssertException : public XinxException {

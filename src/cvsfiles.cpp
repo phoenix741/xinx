@@ -167,7 +167,7 @@ void CVSFileEntry::refreshStatus() {
 	} else if( ! m_fileInfo.isDir() ) {
 		if( m_hasConflict )
 			m_status = RCS::FileHadConflictsOnMerge;
-		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) ) )  /// \todo Find a better way to correct this line.
+		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) && ( m_cvsDate.addSecs( -3600 ) != m_fileDate ) ) )  /// \todo Find a better way to correct this line.
 //		else if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) )  
 			m_status = RCS::LocallyModified;
 		else		
@@ -201,7 +201,7 @@ void CVSFileEntry::deleteInstance() {
 
 /* CVSFileEntryList */
 
-CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( path ) {
+CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( QFileInfo( path ).absoluteFilePath() ) {
 	XINX_TRACE( "CVSFileEntryList", QString( "( %1 )" ).arg( path ) );
 
 	XINX_ASSERT( QFileInfo( path ).isDir() );

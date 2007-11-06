@@ -56,7 +56,11 @@ void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
 			if( ! contains( data->child( i ) ) )
 			m_objList.append( data->child( i ) );
 		} else {
+			QString name = data->child( i )->name();
+			if( ! m_files.contains( name ) ) { 
+				m_files.append( name );
 			refreshRecursive( data->child( i ) );
+			}
 		}
 	}
 }

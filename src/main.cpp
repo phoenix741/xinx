@@ -150,10 +150,10 @@ int main(int argc, char *argv[]) {
 	 		return 255;
 		}
 	} catch( XinxException e ) {
-		app.notifyError( "In main : " + e.getMessage() );
+		app.notifyError( "In main : " + e.getMessage(), e.getStack() );
 		return false;
 	} catch( ... ) {
-		app.notifyError( "In main : Generic Exception" );
+		app.notifyError( "In main : Generic Exception", stackTrace );
 		return 1;
 	}
 }
