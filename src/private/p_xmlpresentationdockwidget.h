@@ -26,11 +26,12 @@
 #include "ui_xmlpresentationwidget.h"
 #include "../xmlpresentationitem.h"
 #include "../filewatcher.h"
+#include "../xinxthread.h"
 
 // Qt header
 #include <QThread>
 
-class PrivateXmlPresentationDockWidget : public QThread {
+class PrivateXmlPresentationDockWidget : public XinxThread {
 	Q_OBJECT
 public:
 	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
@@ -48,7 +49,7 @@ public slots:
 	void presentationActivated( int index );
 	void threadTerminated();
 protected:
-	virtual void run();
+	virtual void threadrun();
 private:
 	XmlPresentationDockWidget * m_parent;
 };

@@ -69,7 +69,7 @@ void FileWatcherManager::watch() {
 	m_watchedFilesMutex.unlock();
 }
 
-void FileWatcherManager::run() {
+void FileWatcherManager::threadrun() {
 	QTimer timer;
 	connect( &timer, SIGNAL(timeout()), this, SLOT(watch()) );
 	timer.start( 1000 );

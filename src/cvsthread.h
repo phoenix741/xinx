@@ -23,10 +23,10 @@
 
 // Xinx header
 #include "rcs.h"
+#include "xinxthread.h"
 
 // Qt header
 #include <QProcess>
-#include <QThread>
 #include <QStringList>
 
 /* CVSThread */
@@ -40,7 +40,7 @@
  * To implement a call of CVS, you must redefine callCVS and transform the list
  * of parameters in a list of options, and the path of the executable. 
  */ 
-class CVSThread : public QThread {
+class CVSThread : public XinxThread {
 	Q_OBJECT
 public:
 	/*!
@@ -83,7 +83,7 @@ protected:
 	 * Process the thread.
 	 * In this base class, the process is to split the thread.
 	 */
-	virtual void run();
+	virtual void threadrun();
 	/*!
 	 * Call the CVS process.
 	 * The process is executed and the thread wait output from CVS.
@@ -116,7 +116,7 @@ public:
 	CVSUpdateThread( QStringList paths, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
+	virtual void threadrun();
 };
 
 /* CVSUpdateRevisionThread */
@@ -140,7 +140,7 @@ public slots:
 	virtual void processReadOutput();
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
+	virtual void threadrun();
 private:
 	QString * m_content;
 	QString m_revision;
@@ -162,7 +162,7 @@ public:
 	CVSAddThread( QStringList paths, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
+	virtual void threadrun();
 };
 
 /* CVSRemoveThread */
@@ -181,7 +181,7 @@ public:
 	CVSRemoveThread( QStringList paths, bool terminate = true );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
+	virtual void threadrun();
 };
 
 /* CVSCommitThread */
@@ -204,7 +204,7 @@ public:
 	CVSCommitThread( RCS::FilesOperation paths, QString message );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );	
-	virtual void run();
+	virtual void threadrun();
 private:
 	QString m_message;
 	QStringList m_addList;

@@ -94,6 +94,7 @@ public:
 	
 	// Label text
 	QLabel * m_editorPosition;
+	QLabel * m_threadCount;
 
 	// Recent action
 	QAction * m_recentProjectActs[ MAXRECENTFILES ]; 
@@ -166,6 +167,7 @@ public slots:
 	void nextTab();
 	void previousTab();
 	void setEditorPosition( int line, int column );
+	void setThreadCountChange( int threadCount );
 	
 	// Tools
 	void callSnipetMenu();

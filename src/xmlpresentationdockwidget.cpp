@@ -107,7 +107,7 @@ void PrivateXmlPresentationDockWidget::open() {
 	open( m_openingFile );
 }
 
-void PrivateXmlPresentationDockWidget::run() {
+void PrivateXmlPresentationDockWidget::threadrun() {
 	QFile presentation( m_openingFile );
 	QDomDocument document;
 	if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {

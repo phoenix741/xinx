@@ -42,6 +42,7 @@
 #include "uniqueapplication.h"
 #include "runsnipetdialogimpl.h"
 #include "exceptions.h"
+#include "xinxthread.h"
 
 // Qt header
 #include <QKeySequence>
@@ -175,7 +176,10 @@ void PrivateMainformImpl::createSubMenu() {
 
 void PrivateMainformImpl::createStatusBar() {
 	m_editorPosition = new QLabel( "000x000" );
+	m_threadCount = new QLabel( "000" );
 	m_parent->statusBar()->addPermanentWidget( m_editorPosition );
+	m_parent->statusBar()->addPermanentWidget( m_threadCount );
+	connect( MetaXinxThread::getMetaThread(), SIGNAL(threadCountChange(int)), this, SLOT(setThreadCountChange(int)) );	
 	m_parent->statusBar()->showMessage( tr("Ready"), 2000 );
 }
 
@@ -1299,6 +1303,11 @@ struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name
 void PrivateMainformImpl::setEditorPosition( int line, int column ) {
 	m_editorPosition->setText( QString("   %1 x %2   ").arg( line, 3, 10, QLatin1Char('0') ).arg( column, 3, 10, QLatin1Char('0') ) );
 }
+
+void PrivateMainformImpl::setThreadCountChange( int threadCount ) {
+	m_threadCount->setText( QString( "%1" ).arg( threadCount, 3, 10, QLatin1Char('0') ) );
+}
+
 
 /* MainformImpl */
 

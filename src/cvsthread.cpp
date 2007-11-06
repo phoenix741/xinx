@@ -33,7 +33,7 @@
 
 /* CVSThread */
 
-CVSThread::CVSThread( QStringList paths, bool terminate ) : QThread() {
+CVSThread::CVSThread( QStringList paths, bool terminate ) : XinxThread() {
 	m_process = NULL;
 	m_paths = paths;
 	m_terminate = terminate;
@@ -109,7 +109,7 @@ void CVSThread::abort() {
 #endif
 }
 
-void CVSThread::run() {
+void CVSThread::threadrun() {
 	if( m_paths.size() <= 0 ) return;
 	if( m_paths.size() > 1 )
 		m_paths.sort();
@@ -157,8 +157,8 @@ void CVSUpdateThread::callCVS( const QString & path, const QStringList & files )
 	CVSThread::callCVS( path, parameters );
 }
 
-void CVSUpdateThread::run() {
-	CVSThread::run();
+void CVSUpdateThread::threadrun() {
+	CVSThread::threadrun();
 		
 	emit log( RCS::LogApplication, tr("Update terminated") );
 	if( m_terminate )
@@ -201,9 +201,9 @@ void CVSUpdateRevisionThread::callCVS( const QString & path, const QStringList &
 	CVSThread::callCVS( path, parameters );
 }
 
-void CVSUpdateRevisionThread::run() {
+void CVSUpdateRevisionThread::threadrun() {
 	if( m_paths.size() == 1 && QFileInfo( m_paths[ 0 ] ).exists() && !QFileInfo( m_paths[ 0 ] ).isDir() ) 
-		CVSThread::run();
+		CVSThread::threadrun();
 		
 	emit log( RCS::LogApplication, tr("Update to revision %1 terminated").arg( m_revision ) );
 	if( m_terminate )
@@ -224,8 +224,8 @@ void CVSAddThread::callCVS( const QString & path, const QStringList & files ) {
 	CVSThread::callCVS( path, parameters );
 }
 
-void CVSAddThread::run() {
-	CVSThread::run();
+void CVSAddThread::threadrun() {
+	CVSThread::threadrun();
 	
 	emit log( RCS::LogApplication, tr("Add terminated") );
 	if( m_terminate )
@@ -246,8 +246,8 @@ void CVSRemoveThread::callCVS( const QString & path, const QStringList & files )
 	CVSThread::callCVS( path, parameters );
 }
 
-void CVSRemoveThread::run() {
-	CVSThread::run();
+void CVSRemoveThread::threadrun() {
+	CVSThread::threadrun();
 	
 	emit log( RCS::LogApplication, tr("Remove terminated") );
 	if( m_terminate )
@@ -285,7 +285,7 @@ void CVSCommitThread::callCVS( const QString & path, const QStringList & files )
 	CVSThread::callCVS( path, parameters );
 }
 
-void CVSCommitThread::run() {
+void CVSCommitThread::threadrun() {
 	if( m_addList.size() > 0 ) {
 		CVSThread * thread = new CVSAddThread( m_addList, false );
 		connect( thread, SIGNAL(log()), this, SLOT(log()) );
@@ -301,7 +301,7 @@ void CVSCommitThread::run() {
 		delete thread;
 	}
 
-	CVSThread::run();
+	CVSThread::threadrun();
 
 	
 	emit log( RCS::LogApplication, tr("Commit terminated") );

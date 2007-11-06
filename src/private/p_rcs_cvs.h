@@ -26,6 +26,7 @@
 #include "../globals.h"
 #include "../xinxconfig.h"
 #include "../cvsfiles.h"
+#include "../xinxthread.h"
 
 // Qt header
 #include <QStringList>
@@ -49,7 +50,7 @@ public:
 	RCS::FilesOperation operationOf( const QString & path );
 	RCS::FilesOperation recursiveOperationOf( const QString & path );
 	
-	QThread * m_thread;
+	XinxThread * m_thread;
 	CVSFileEntryList * m_entries;
 private:
 	RCS_CVS * m_parent;

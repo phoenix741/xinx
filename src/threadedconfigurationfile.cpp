@@ -66,7 +66,7 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( 
 	return instance;
 }
 
-void ThreadedConfigurationFile::run() {
+void ThreadedConfigurationFile::threadrun() {
 	if( d->m_state == PrivateThreadedConfigurationFile::GETVERSION ) {
 		d->m_configuration = MetaConfigurationFile::simpleConfigurationFile( d->m_pathname );
 	}

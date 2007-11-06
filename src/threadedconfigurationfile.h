@@ -23,13 +23,11 @@
 
 // Xinx header
 #include "configurationfile.h"
-
-// Qt header
-#include <QThread>
+#include "xinxthread.h"
 
 class PrivateThreadedConfigurationFile;
 
-class ThreadedConfigurationFile : public QThread {
+class ThreadedConfigurationFile : public XinxThread {
 	Q_OBJECT
 public:
 	virtual ~ThreadedConfigurationFile();
@@ -38,7 +36,7 @@ signals:
 	void versionFinded( SimpleConfigurationFile configuration );
 protected:
 	ThreadedConfigurationFile();
-	virtual void run();
+	virtual void threadrun();
 private:
 	PrivateThreadedConfigurationFile * d;
 	friend class PrivateThreadedConfigurationFile;

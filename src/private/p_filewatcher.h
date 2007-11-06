@@ -23,6 +23,7 @@
 
 // kmdalert watcher
 #include "../filewatcher.h"
+#include "../xinxthread.h"
 
 // Qt header
 #include <QString>
@@ -50,13 +51,13 @@ private:
 	QDateTime m_date;
 };
 
-class FileWatcherManager : public QThread {
+class FileWatcherManager : public XinxThread {
 	Q_OBJECT
 public:
 	FileWatcherManager();
 	virtual ~FileWatcherManager();
 
-	virtual void run();
+	virtual void threadrun();
 
 	void addFile( const QString & filename );
 	void removeFile( const QString & filename );
