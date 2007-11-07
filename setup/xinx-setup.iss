@@ -75,8 +75,8 @@ Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags
 Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey; Tasks: assojs
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assojs
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assojs
-Root: HKCU; Subkey: Software\Generix\XINX\Tools; ValueType: string; ValueName: cvs; ValueData: {code:GetCVSPath}; Components: ; Tasks: ; Languages: 
-Root: HKCU; Subkey: Software\Generix\XINX\Tools; ValueType: string; ValueName: diff; ValueData: {code:GetWinmergePath}; Components: ; Tasks: ; Languages:
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX\Tools; ValueType: string; ValueName: cvs; ValueData: {code:GetCVSPath}; Components: ; Tasks: ; Languages:
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX\Tools; ValueType: string; ValueName: diff; ValueData: {code:GetWinmergePath}; Components: ; Tasks: ; Languages:
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -107,84 +107,6 @@ var
 
 	CompletionResult, TemplateResult: boolean;
 
-function MyRegQueryStringValue( const RootKey: Integer; const SubKeyName, ValueName: String ) : String;
-begin
-  RegQueryStringValue( RootKey, SubKeyName, ValueName, Result );
-end;
-
-function MyRegQueryDWordValue( const RootKey: Integer; const SubKeyName, ValueName: String ) : Cardinal;
-begin
-  RegQueryDWordValue( RootKey, SubKeyName, ValueName, Result );
-end;
-
-procedure MigrateRegistry;
-begin
-  if RegKeyExists( HKEY_CURRENT_USER, 'Software\Generix\XINX' ) then
-  begin
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Language',
-      MyRegQueryStringValue( HKEY_CURRENT_USER, 'Software\Generix\XINX', 'Language' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Position',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX', 'Position' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX', 'Size',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX', 'Size' ) );
-      
-    RegWriteDWordValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Cvs', 'Comression Level',
-      MyRegQueryDWordValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\CVS', 'Comression Level' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Cvs', 'Create Directories',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\CVS', 'Create Directories' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Cvs', 'Progress Messages',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\CVS', 'Progress Messages' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Cvs', 'Prune Empty Directories',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\CVS', 'Prune Empty Directories' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Descriptions', 'Completion',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Descriptions', 'Completion' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Descriptions', 'Object',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Descriptions', 'Object' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Editor', 'Create Backup File',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX', 'Create Backup File' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Editor', 'Popup When File Modified',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX', 'Popup When File Modified' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\fws', 'Can Be Specifique',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All XINX Webservices', 'canBeCustomize' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\fws', 'Custom Path',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All XINX Webservices', 'customPath' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\js', 'Can Be Specifique',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All JavaScript', 'canBeCustomize' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\js', 'Custom Path',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All JavaScript', 'customPath' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\xml', 'Can Be Specifique',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All XML File', 'canBeCustomize' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\xml', 'Custom Path',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All XML File', 'customPath' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\xsl', 'Can Be Specifique',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All Stylesheet', 'canBeCustomize' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Files\xsl', 'Custom Path',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Files\All Stylesheet', 'customPath' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Project', 'Alert when saving Standard File',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Project', 'Alert when saving Standard File' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Project', 'Default Path',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Project', 'Default Path' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Project', 'Default Project Path Name',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Project', 'Default Project Path Name' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Project', 'Recent Project Files',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Project', 'Recent Project Files' ) );
-
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Tools', 'cvs',
-      MyRegQueryStringValue(HKEY_CURRENT_USER, 'Software\Generix\XINX\Tools', 'cvs' ) );
-    RegWriteStringValue( HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Tools', 'merge',
-      MyRegQueryStringValue( HKEY_CURRENT_USER, 'Software\Generix\XINX\Tools', 'diff' ) );
-
-    RegDeleteKeyIncludingSubkeys( HKEY_CURRENT_USER, 'Software\Generix\XINX\' );
-  end;
-end;
-	
 procedure Replace( var Chaine: String; c1, c2: Char );
 var I: Integer;
 begin
@@ -197,7 +119,6 @@ procedure InitializeWizard;
 var DefaultCVSPath,
     DefaultMergePath: String;
 begin
-  MigrateRegistry;
   { Create the pages }
 
   DeveloppementMsgPage := CreateOutputMsgPage(wpWelcome,
