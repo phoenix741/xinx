@@ -33,12 +33,13 @@ public:
 	MetaXinxThread();
 	virtual ~MetaXinxThread();
 	
-	int getThreadCount();
+	static int getThreadCount();
+	static int getThreadClassCount();
 	static MetaXinxThread * getMetaThread();
 signals:
-	void threadCountChange( int count );
+	void threadCountChange();
 private:
-	static MetaXinxThread m_metaXinxThread;
+	static MetaXinxThread * m_metaXinxThread;
 	
 	friend class XinxThread;
 };
@@ -54,7 +55,7 @@ protected:
 	virtual void threadrun() = 0;
 	
 private:
-	static int m_threadCount;
+	static int m_threadCount, m_threadClassCount;
 	static QMutex m_mutex;
 	
 	friend class MetaXinxThread;

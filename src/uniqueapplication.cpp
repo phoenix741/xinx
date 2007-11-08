@@ -33,6 +33,8 @@
 
 #ifdef DBUS
 static QDBusConnectionInterface *tryToInitDBusConnection() {
+	XINX_TRACE( "tryToInitDBusConnection", "()" );
+	
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
 	if (!QDBusConnection::sessionBus().isConnected() || !(dbusService = QDBusConnection::sessionBus().interface())) {
@@ -46,6 +48,8 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 /* PrivateUniqueApplication */
 
 PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent ) : m_mainform(0), m_parent( parent ) {
+	XINX_TRACE( "PrivateUniqueApplication", QString( "( 0x%1 )" ).arg( (unsigned int)parent, 0, 16 ) );
+
 #ifndef DBUS
 	m_handle = 0;
 	m_handleMutex = 0;
@@ -58,6 +62,8 @@ PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent )
 }
 
 PrivateUniqueApplication::~PrivateUniqueApplication() {
+	XINX_TRACE( "~PrivateUniqueApplication", "()" );
+
 #ifndef DBUS
 	if( m_fileView ) UnmapViewOfFile( m_fileView );
 	if( m_handle ) CloseHandle( m_handle );
@@ -69,6 +75,8 @@ PrivateUniqueApplication::~PrivateUniqueApplication() {
 
 #ifdef DBUS
 void PrivateUniqueApplication::start() {
+	XINX_TRACE( "PrivateUniqueApplication::start", "()" );
+
 	QString appName = "com.editor.xinx";
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
@@ -95,6 +103,8 @@ void PrivateUniqueApplication::start() {
 #else
 
 void PrivateUniqueApplication::start() {
+	XINX_TRACE( "PrivateUniqueApplication::start", "()" );
+
 	SECURITY_DESCRIPTOR securityDesc;
 	SECURITY_ATTRIBUTES securityAttr;
 
@@ -134,6 +144,8 @@ void PrivateUniqueApplication::start() {
 }
 
 void PrivateUniqueApplication::openSharedMem() {
+	XINX_TRACE( "PrivateUniqueApplication::openSharedMem", "()" );
+
 	#define SIZE 4096
 
 	// Mapping
@@ -173,25 +185,35 @@ void PrivateUniqueApplication::timerApplicationEvent() {
 /* UniqueApplication */
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
+	XINX_TRACE( "UniqueApplication", QString( "( %1, argv )" ).arg( argc ) );
+
 	d = new PrivateUniqueApplication( this );
 	d->start();
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
+	XINX_TRACE( "UniqueApplication", QString( "( %1, argv, %2 )" ).arg( argc ).arg( GUIenabled ) );
+
 	d = new PrivateUniqueApplication( this );
 	d->start();
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
+	XINX_TRACE( "UniqueApplication", QString( "( %1, argv, type )" ).arg( argc ) );
+
 	d = new PrivateUniqueApplication( this );
 	d->start();
 }
 
 UniqueApplication::~UniqueApplication() {
+	XINX_TRACE( "~UniqueApplication", "()" );
+
 	delete d;
 }
 
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
+	XINX_TRACE( "UniqueApplication::notify", QString( "( 0x%1 )" ).arg( (unsigned int)receiver, 0, 16 ).arg( (unsigned int)event, 0, 16 ) );
+
 	try {
 		return QApplication::notify( receiver, event );
 	} catch( XinxException e ) {
@@ -235,83 +257,14 @@ void UniqueApplication::notifyError( QString error, QStringList stack ) {
 	
 		size = backtrace( array, 10 );
 		strings = backtrace_symbols( array, size );
+		fprintf( file, "* GNU/Linux backtrace ...\n" );
 		fprintf( file, "Obtained %zd stack frames.\n", size );
 		for( i = 0; i < size; i++ ) {
 			fprintf( file, "%s\n", strings[i] );
 		}
 		free( strings );
-#else
-		/*
-		HANDLE hProcess = GetCurrentProcess();
-		STACKFRAME tempStackFrame;
-		memset( &tempStackFrame, 0, sizeof(STACKFRAME) );
-		CONTEXT context;
-		GetThreadContext( GetCurrentThread(), &context );
-		DWORD machineType;
-
-#ifdef _M_IX86
-		machineType = IMAGE_FILE_MACHINE_I386;
-		tempStackFrame.AddrPC.Offset       = context.Eip;
-		tempStackFrame.AddrPC.Mode         = AddrModeFlat;
-		tempStackFrame.AddrStack.Offset    = context.Esp;
-		tempStackFrame.AddrStack.Mode      = AddrModeFlat;
-		tempStackFrame.AddrFrame.Offset    = context.Ebp;
-		tempStackFrame.AddrFrame.Mode      = AddrModeFlat;
-#elif _M_X64
-		machineType = IMAGE_FILE_MACHINE_AMD64;
-		tempStackFrame.AddrPC.Offset = context.Rip;
-		tempStackFrame.AddrPC.Mode = AddrModeFlat;
-		tempStackFrame.AddrFrame.Offset = context.Rsp;
-		tempStackFrame.AddrFrame.Mode = AddrModeFlat;
-		tempStackFrame.AddrStack.Offset = context.Rsp;
-		tempStackFrame.AddrStack.Mode = AddrModeFlat;
-#elif _M_IA64
-		machineType = IMAGE_FILE_MACHINE_IA64;
-		tempStackFrame.AddrPC.Offset = context.StIIP;
-		tempStackFrame.AddrPC.Mode = AddrModeFlat;
-		tempStackFrame.AddrFrame.Offset = context.IntSp;
-		tempStackFrame.AddrFrame.Mode = AddrModeFlat;
-		tempStackFrame.AddrBStore.Offset = context.RsBSP;
-		tempStackFrame.AddrBStore.Mode = AddrModeFlat;
-		tempStackFrame.AddrStack.Offset = context.IntSp;
-		tempStackFrame.AddrStack.Mode = AddrModeFlat;
-#else
-#error "Platform not supported!"
 #endif
-
-		ULONG buffer[(sizeof(IMAGEHLP_SYMBOL) + nbChar*sizeof(CHAR) + sizeof(ULONG) + 1) / sizeof(ULONG)];
-		PIMAGEHLP_SYMBOL pSymbol = reinterpret_cast<PIMAGEHLP_SYMBOL>(buffer);
-		PSTR undecoratedName = (PSTR)malloc(sizeof(CHAR) * nbChar);
-
-		pSymbol->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL);
-		pSymbol->MaxNameLength = nbChar;
-		DWORD lineDisplacement;
-		IMAGEHLP_LINE lineInfo = { sizeof( IMAGEHLP_LINE ) };
-
-		while( StackWalk(machineType, hProcess, GetCurrentThread(), &tempStackFrame, &context, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL) ) {
-			// Sanity stack check
-			if( tempStackFrame.AddrPC.Offset == 0 )
-				break;
-
-			DWORD symDisplacement = 0;
-			// Try to get the symbol name
-			if( SymGetSymFromAddr( hProcess, tempStackFrame.AddrPC.Offset, &symDisplacement, pSymbol ) ) {
-				UnDecorateSymbolName(pSymbol->Name, undecoratedName, sizeof(CHAR) * nbChar, UNDNAME_COMPLETE);
-				fprintf( file, "%s+%s\n", undecoratedName, symDisplacement );
-
-				if(SymGetLineFromAddr(hProcess, tempStackFrame.AddrPC.Offset, &lineDisplacement, &lineInfo)) {
-					fprintf( file, "%s\tl:%d\n", lineInfo.FileName, lineInfo.LineNumber );
-				} else {
-					fprintf( file, "No info\n" );
-				}
-			} else {
-			}
-		}
-		free(undecoratedName);
-		*/
-
-		fprintf( file, "BACKTRACE UNAVALAIBLE ON WINDOWS :(, PLEASE USE GNU/LINUX :)\n" );			
-#endif
+		fprintf( file, "* XINX backtrace ...\n" );
 		fprintf( file, stack.join( "\n" ).toAscii() );
 		
 		fprintf( file, error.toAscii() );
@@ -320,7 +273,7 @@ void UniqueApplication::notifyError( QString error, QStringList stack ) {
 	QMessageBox::critical( NULL, "XINX Crash", 
 			QString( "Oh shit ! I'm very confuse but XINX Crash with the following error : \n%2\n"
 					 "Send the file %1 at XINX project leader (me of course, and send only the error, not insult) and he shake his brain for you.\n"
-					 "If you have a opened project, i saved it with session information for recover." ).arg( filename ).arg( error ) );
+					 "If you have a opened project, i saved it with session information for recover (only if the crash isn't in saving project ...)." ).arg( filename ).arg( error ) );
 	
 	if( d->m_mainform )
 		d->m_mainform->saveProject( true );
@@ -329,10 +282,14 @@ void UniqueApplication::notifyError( QString error, QStringList stack ) {
 
 
 bool UniqueApplication::isUnique() { 
+	XINX_TRACE( "UniqueApplication::isUnique", "()" );
+
 	return d->m_isUnique; 
 }
 
 void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
+	XINX_TRACE( "UniqueApplication::attachMainWindow", QString( "( 0x%1 )" ).arg( (unsigned int)mainform, 0, 16 ) );
+
 	d->m_mainform = mainform;
 #ifdef DBUS
 	new XinxAdaptor( mainform );
@@ -341,6 +298,8 @@ void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
 }
 
 void UniqueApplication::callOpenFile(const QString &fileName) {
+	XINX_TRACE( "UniqueApplication::callOpenFile", QString( "( %1 )" ).arg( fileName ) );
+
 #ifndef DBUS
 	while( strlen( d->m_fileView ) > 0 ) Sleep( 250 );
 	if( WaitForSingleObject( m_handleMutex, INFINITE ) == WAIT_OBJECT_0 ) {

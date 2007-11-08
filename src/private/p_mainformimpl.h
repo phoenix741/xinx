@@ -167,7 +167,7 @@ public slots:
 	void nextTab();
 	void previousTab();
 	void setEditorPosition( int line, int column );
-	void setThreadCountChange( int threadCount );
+	void setThreadCountChange();
 	
 	// Tools
 	void callSnipetMenu();

@@ -20,46 +20,67 @@
 
 // Xinx header
 #include "xinxthread.h"
+#include "exceptions.h"
 
 int XinxThread::m_threadCount = 0;
+int XinxThread::m_threadClassCount = 0;
 QMutex XinxThread::m_mutex;
-MetaXinxThread MetaXinxThread::m_metaXinxThread;
+MetaXinxThread * MetaXinxThread::m_metaXinxThread = NULL;
 
 /* MetaXinxThread */
 
 MetaXinxThread::MetaXinxThread() {
-	
+	XINX_TRACE( "MetaXinxThread", "()" );
 }
 
 MetaXinxThread::~MetaXinxThread() {
-	
+	XINX_TRACE( "~MetaXinxThread", "()" );
 }
 
 int MetaXinxThread::getThreadCount() {
-	QMutexLocker locker( &XinxThread::m_mutex );
+	XINX_TRACE( "MetaXinxThread::getThreadCount", "()" );
+	
 	return XinxThread::m_threadCount;
 }
 
+int MetaXinxThread::getThreadClassCount() {
+	XINX_TRACE( "MetaXinxThread::getThreadClassCount", "()" );
+
+	return XinxThread::m_threadClassCount;
+}
+
 MetaXinxThread * MetaXinxThread::getMetaThread() {
-	return &( m_metaXinxThread );
+	XINX_TRACE( "MetaXinxThread::getMetaThread", "()" );
+	if( ! m_metaXinxThread )
+		m_metaXinxThread = new MetaXinxThread();
+	
+	return m_metaXinxThread;
 }
 
 
 /* XinxThread */
 
 XinxThread::XinxThread( QObject * parent ) : QThread( parent ) {
-	
+	XINX_TRACE( "XinxThread", QString( "( 0x%1 )" ).arg( (unsigned int)parent, 0, 16 ) );
+
+	m_threadClassCount++;
+	emit MetaXinxThread::m_metaXinxThread->threadCountChange();
 }
 
 XinxThread::~XinxThread() {
-	
+	XINX_TRACE( "~XinxThread", "()" );
+
+	m_threadClassCount--;
+	emit MetaXinxThread::m_metaXinxThread->threadCountChange();
 }
 	
 void XinxThread::run() {
+	XINX_TRACE( "XinxThread::run", "()" );
+
 	{
 		QMutexLocker locker( &m_mutex );
 		m_threadCount++;
-		emit MetaXinxThread::m_metaXinxThread.threadCountChange( m_threadCount );
+		emit MetaXinxThread::m_metaXinxThread->threadCountChange();
 	}
 	
 	threadrun();
@@ -67,6 +88,6 @@ void XinxThread::run() {
 	{
 		QMutexLocker locker( &m_mutex );
 		m_threadCount--;
-		emit MetaXinxThread::m_metaXinxThread.threadCountChange( m_threadCount );
+		emit MetaXinxThread::m_metaXinxThread->threadCountChange();
 	}
 }
