@@ -71,10 +71,9 @@ void Trace::LogMsg( int depth, const char * filename, int line, const QString & 
 }
 /* XinxException */
 
-XinxException::XinxException( QString message ) {
+XinxException::XinxException( QString message ) : m_message( message ) {
 	XINX_TRACE( "XinxException", QString("(%1)").arg( message ) );
 	
-	m_message = message;
 	m_stack = stackTrace;
 }
 
