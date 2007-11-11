@@ -22,6 +22,10 @@
 #ifndef _EDITORTHREAD_H_
 #define _EDITORTHREAD_H_
 
+// Qt header
+#include <QAbstractItemModel>
+
+// Xinx header
 #include "xinxthread.h"
 
 class PrivateEditorThread;
@@ -33,10 +37,12 @@ public:
 	virtual ~EditorThread();	
 	
 	void reloadEditorContent( const QString & content );
+	virtual QAbstractItemModel * model() = 0;
 protected:
 	virtual void threadrun();
+	virtual void generateModel() = 0;
 private:
-	PrivateEditorThread * p;
+	PrivateEditorThread * d;
 };
 
 #endif /* _EDITORTHREAD_H_ */

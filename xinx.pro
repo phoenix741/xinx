@@ -37,7 +37,8 @@ FORMS += ui/about.ui \
     ui/servicesconnection.ui \
     ui/snipetproperty.ui \
     ui/xmlpresentationwidget.ui
-HEADERS += src/editorthread.h \
+HEADERS += src/editorthreadxsl.h \
+    src/editorthread.h \
     src/xinxthread.h \
     src/aboutdialogimpl.h \
     src/appsettings.h \
@@ -121,7 +122,8 @@ QT += network \
     xml
 RCC_DIR += build
 RESOURCES += application.qrc
-SOURCES += src/editorthread.cpp \
+SOURCES += src/editorthreadxsl.cpp \
+    src/editorthread.cpp \
     src/aboutdialogimpl.cpp \
     src/appsettings.cpp \
     src/commitmessagedialogimpl.cpp \

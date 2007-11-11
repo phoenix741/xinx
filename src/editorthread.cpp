@@ -24,6 +24,7 @@
 // Qt header
 #include <QMutex>
 #include <QWaitCondition>
+#include <QAbstractItemModel>
 
 /* PrivateEditorThread */
 
@@ -39,29 +40,37 @@ private:
 	EditorThread * m_parent;
 };
 
-/* EditorThread */
-
-EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
+PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_parent( parent ) {
 	
 }
 
-EditorThread::~EditorThread() {
+PrivateEditorThread::~PrivateEditorThread() {
 	
+}
+
+/* EditorThread */
+
+EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
+	d = new PrivateEditorThread( this );
+}
+
+EditorThread::~EditorThread() {
+	delete d;
 }
 	
 void EditorThread::threadrun() {
 	forever {
-		m_contentMutex.lock();
-		m_waitCondition.wait( &m_contentMutex );
+		d->m_contentMutex.lock();
+		d->m_waitCondition.wait( &d->m_contentMutex );
 		
-		// ICI AJOUTER TRAITEMENT
+		generateModel();
 		
-		m_contentMutex.unlock();
+		d->m_contentMutex.unlock();
 	}
 }
 
 void EditorThread::reloadEditorContent( const QString & content ) {
-	QMutexLocker( &m_contentMutex );
-	m_content = content;
-	m_waitCondition.wakeAll();
+	QMutexLocker( &d->m_contentMutex );
+	d->m_content = content;
+	d->m_waitCondition.wakeAll();
 }

@@ -57,6 +57,28 @@ bool XSLModelData::contains( XSLModelData * data ) {
 	return false;
 }
 
+bool XSLModelData::operator< ( const XSLModelData & cmp ) const { 
+	return m_name < cmp.m_name; 
+}
+
+bool XSLModelData::operator== ( const XSLModelData & cmp ) const { 
+	return m_name == cmp.m_name; 
+}
+
+XSLModelData * XSLModelData::addXSLModelData( XSLModelData * data ) {
+	m_child.append( data );
+	return data;
+}
+
+XSLModelData * XSLModelData::createVariable( const QDomElement & element ) {
+	XSLModelData * data = new XSLModelData( this );
+	data->setType( etVariable );
+	data->setName( element.attribute( "name" ) );
+	data->setValue( element.attribute( "select", element.text() ) );
+	data->setLine( element.lineNumber() );
+	return data;
+}
+
 void XSLModelData::loadFromElement( const QDomElement& element ) {
 	QDomNodeList list = element.elementsByTagName( "script" );
 	for( int i = 0 ; i < list.count(); i++ ) {
@@ -66,82 +88,57 @@ void XSLModelData::loadFromElement( const QDomElement& element ) {
 			data->setType( etJavascript );   				
 			data->setName( child.attribute( "src" ) );
 			data->setLine( child.lineNumber() );
-			m_child.append( data );
+			addXSLModelData( data );
 		}
 	}
 	
 	list = element.elementsByTagName( "variable" );
-	for( int i = 0 ; i < list.count(); i++ ) {
-		QDomElement child = list.at( i ).toElement();
-
-		XSLModelData * data = new XSLModelData( this );
-		data->setType( etVariable );
-		data->setName( child.attribute( "name" ) );
-		data->setValue( child.attribute( "select", child.text() ) );
-		data->setLine( child.lineNumber() );
-		m_child.append( data );
-	}
+	for( int i = 0 ; i < list.count(); i++ ) 
+		addXSLModelData( createVariable( list.at( i ).toElement() ) );
 
 	list = element.elementsByTagName( "param" );
-	for( int i = 0 ; i < list.count(); i++ ) {
-		QDomElement child = list.at( i ).toElement();
-
-		XSLModelData * data = new XSLModelData( this );
-		data->setType( etVariable );
-		data->setName( child.attribute( "name" ) );
-		data->setValue( child.attribute( "select", child.text() ) );
-		data->setLine( child.lineNumber() );
-		m_child.append( data );
-	}
+	for( int i = 0 ; i < list.count(); i++ ) 
+		addXSLModelData( createVariable( list.at( i ).toElement() ) );
 }
 
 void XSLModelData::loadFromXML( const QDomElement& element ) {
-	emit childAboutToBeReset();
-	
 	qDeleteAll( m_child );
-	m_child.clear();
-	
+	m_child.clear();		
+
 	QDomElement child = element.firstChildElement();
   
 	while (! child.isNull()) {
-		if( child.prefix() == "xsl" && ( child.tagName() == "include" || child.tagName() == "import" || child.tagName() == "variable" || child.tagName() == "template" || child.tagName() == "param" ) ) {
-  			if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) {
-				XSLModelData * data = new XSLModelData( this );
-				data->setType( etImport );
-	  			data->setName( child.attribute( "href" ) );
-				data->setLine( child.lineNumber() );
-				m_child.append( data );
-			} else
-  			if( ( child.tagName() == "variable" ) || ( child.tagName() == "param" ) )  {
-				XSLModelData * data = new XSLModelData( this );
-  				data->setType( etVariable );
-	  			data->setName( child.attribute( "name" ) );
-	  			data->setValue( child.attribute( "select", child.text() ) );
-				data->setLine( child.lineNumber() );
-	  			m_child.append( data );
-			} else
-  			if( child.tagName() == "template" ) {
-  				QStringList list = child.attribute( "name", child.attribute( "match" ) ).split( "|", QString::SkipEmptyParts );
+		if( child.prefix() != "xsl" ) continue;
+		
+		if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) {
+			XSLModelData * data = new XSLModelData( this );
+			data->setType( etImport );
+  			data->setName( child.attribute( "href" ) );
+			data->setLine( child.lineNumber() );
+			addXSLModelData( data );
+		} else
+		if( ( child.tagName() == "variable" ) || ( child.tagName() == "param" ) )  {
+			addXSLModelData( createVariable( child ) );
+		} else
+		if( child.tagName() == "template" ) {
+			QStringList list = child.attribute( "name", child.attribute( "match" ) ).split( "|", QString::SkipEmptyParts );
 
-				foreach( QString template_name, list ) {
-					XSLModelData * data = new XSLModelData( this );
-					data->setType( etTemplate );   				
-		  			data->setName( template_name.trimmed() );
-		  			data->setValue( child.attribute( "mode" ) );
-					data->setLine( child.lineNumber() );
-					data->loadFromElement( child );
-		  			m_child.append( data );
-				}
+			foreach( QString template_name, list ) {
+				XSLModelData * data = new XSLModelData( this );
+				data->setType( etTemplate );   				
+	  			data->setName( template_name.trimmed() );
+	  			data->setValue( child.attribute( "mode" ) );
+				data->setLine( child.lineNumber() );
+				data = addXSLModelData( data );
+				data->loadFromElement( child );
 			}
- 		}
+		}
+		
 		child = child.nextSiblingElement();
 	} 
-	
-	emit childReseted();
 }
 
-
-void XSLModelData::loadFromFile( const QString& filename ) {
+void XSLModelData::loadFromFile( const QString & filename ) {
 	QFile file( filename );
 	QDomDocument xsl;
 	m_fileName = filename;
@@ -156,13 +153,11 @@ void XSLModelData::loadFromFile( const QString& filename ) {
 	loadFromContent( content );
 }
 
-QDomElement XSLModelData::loadFromContent( const QString& content ) {
+void XSLModelData::loadFromContent( const QString & content ) {
 	if( content.trimmed().isEmpty() ) {
-		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
-		emit childReseted();
-		return QDomElement();		
+		return;		
 	}
 	
 	QDomDocument xsl;
@@ -176,15 +171,11 @@ QDomElement XSLModelData::loadFromContent( const QString& content ) {
 		QDomElement root = xsl.documentElement();
 		if( root.prefix() == "xsl" && root.tagName() == "stylesheet" )	
 			loadFromXML( root );
-		return root;
 	} else {
-		emit childAboutToBeReset();
 		qDeleteAll( m_child );
 		m_child.clear();		
-		emit childReseted();
 		throw XMLParserException( errorStr, errorLine, errorColumn );
 	}
-	return QDomElement();
 }
 
 int XSLModelData::childCount() { 
@@ -202,25 +193,19 @@ int XSLModelData::childCount() {
 	return m_child.size();
 };
 
-
+/* XSLItemModel */
 
 XSLItemModel::XSLItemModel( QObject *parent ) : FileContentItemModel( parent ) {
 	rootItem = new XSLModelData( NULL );
-	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	toDelete = true;
 }
 
 XSLItemModel::XSLItemModel( XSLModelData * data, QObject *parent ) : FileContentItemModel( parent ) {
 	rootItem = data;
-	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	toDelete = false;
 }
 
 XSLItemModel::~XSLItemModel() {
-	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( slotReset() ) );
 	if( toDelete )
 		delete rootItem;
 }
@@ -337,3 +322,4 @@ int XSLItemModel::columnCount(const QModelIndex &parent) const {
 	
 	return 2; // Name & Value
 }
+

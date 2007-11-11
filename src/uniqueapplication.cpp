@@ -212,7 +212,7 @@ UniqueApplication::~UniqueApplication() {
 }
 
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
-	XINX_TRACE( "UniqueApplication::notify", QString( "( 0x%1 )" ).arg( (unsigned int)receiver, 0, 16 ).arg( (unsigned int)event, 0, 16 ) );
+	XINX_TRACE( "UniqueApplication::notify", QString( "( 0x%1, 0x%2 )" ).arg( (unsigned int)receiver, 0, 16 ).arg( (unsigned int)event, 0, 16 ) );
 
 	try {
 		return QApplication::notify( receiver, event );

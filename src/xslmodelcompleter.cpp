@@ -32,14 +32,9 @@
 XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *parent ) : QAbstractListModel( parent ) {
 	rootItem = data;
 	refreshList();
-	
-	connect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	connect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
-	disconnect( rootItem, SIGNAL( childAboutToBeReset() ), this, SIGNAL( modelAboutToBeReset() ) );
-	disconnect( rootItem, SIGNAL( childReseted() ), this, SLOT( refreshList() ) );
 }
 
 bool XSLValueCompletionModel::contains( XSLModelData * data ) {

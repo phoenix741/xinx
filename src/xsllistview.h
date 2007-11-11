@@ -69,18 +69,17 @@ public:
 	int childCount();
 	void appendChild(XSLModelData * child) { m_child.append( child ); };
 	
-	void loadFromXML( const QDomElement& );
-	void loadFromFile( const QString& );
-	QDomElement loadFromContent( const QString& );
-	void loadFromElement( const QDomElement& );
+	void loadFromFile( const QString & file );
+	void loadFromContent( const QString & content );
+	void loadFromXML( const QDomElement& element );
+	void loadFromElement( const QDomElement& element );
 	
-	bool operator< ( const XSLModelData & cmp ) const { return m_name < cmp.m_name; };
-	bool operator== ( const XSLModelData & cmp ) const { return m_name == cmp.m_name; };
+	XSLModelData * createVariable( const QDomElement & element );
+	XSLModelData * addXSLModelData( XSLModelData * data );
+	
+	bool operator< ( const XSLModelData & cmp ) const;
+	bool operator== ( const XSLModelData & cmp ) const;
 	bool contains( XSLModelData * data );
-	
-signals:
-	void childReseted();
-	void childAboutToBeReset();
 private:
 	XSLModelData * m_parent;
 	enum ElementType m_type;
@@ -88,7 +87,7 @@ private:
 	
 	int m_documentLine;
 	QString m_fileName;
-
+	
 	QList<XSLModelData*> m_child;
 
 friend class XSLItemModel;
@@ -110,8 +109,6 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
 	
 	XSLModelData* modelData() { return rootItem; };
-protected slots:
-	void slotReset() { reset(); };
 private:
 	XSLModelData* rootItem;
 	bool toDelete;
