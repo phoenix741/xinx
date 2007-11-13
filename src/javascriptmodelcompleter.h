@@ -23,7 +23,7 @@
 
 #include <QAbstractListModel>
 
-class JavaScriptElement;
+class FileContentElement;
 class JavaScriptParser;
 
 /* JavascriptModelCompleter */
@@ -57,8 +57,8 @@ public slots:
 	 */
 	void setFilter( const QString functionName = QString() );
 private:
-	void refreshList( JavaScriptElement * element );
-	QList<JavaScriptElement*> m_objList;
+	void refreshList( FileContentElement * element );
+	QList<FileContentElement*> m_objList;
 	
 	JavaScriptParser * m_parser;
 	QString m_functionFiltre;

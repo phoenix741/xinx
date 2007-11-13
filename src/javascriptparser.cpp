@@ -28,77 +28,11 @@
 JavaScriptParserException::JavaScriptParserException( const QString & message, int line, int column ) : FileContentException( message, line, column ) {
 }
 
-/* PrivateJavaScriptElement */
-
-class PrivateJavaScriptElement {
-public:
-	PrivateJavaScriptElement( JavaScriptElement * parent );
-	
-	int m_line;
-	QString m_name;
-	JavaScriptElement * m_parentElement;
-private:
-	JavaScriptElement * m_parent;
-};
-
-PrivateJavaScriptElement::PrivateJavaScriptElement( JavaScriptElement * parent ) {
-	m_parent = parent;
-	m_line   = -1;
-	m_name   = QString();
-	m_parentElement = NULL;
-}
-
 /* JavaScriptElement */
 
-JavaScriptElement::JavaScriptElement( JavaScriptElement * parent, const QString & name, int line ) {
-	d = new PrivateJavaScriptElement( this );
-	d->m_line = line;
-	d->m_name = name;
-	d->m_parentElement = parent;
-}
-
-JavaScriptElement::~JavaScriptElement() {
-	delete d;
-}
+JavaScriptElement::JavaScriptElement( JavaScriptElement * parent, const QString & name, int line ) : FileContentElement( parent, name, line ) {
 	
-const QString & JavaScriptElement::name() {
-	return d->m_name;
 }
-	
-int JavaScriptElement::line() {
-	return d->m_line;
-}
-
-void JavaScriptElement::setName( const QString & name ) {
-	d->m_name = name;
-}
-	
-void JavaScriptElement::setLine( int line ) {
-	d->m_line = line;
-}
-
-int JavaScriptElement::rowCount() {
-	return 0;
-}
-
-JavaScriptElement * JavaScriptElement::element( int index ) {
-	Q_UNUSED( index );
-	return NULL;
-}
-
-JavaScriptElement * JavaScriptElement::parent() {
-	return d->m_parentElement;
-}
-
-int JavaScriptElement::row() {
-	if( parent() )
-		for( int i = 0 ; i < parent()->rowCount(); i++ ) {
-			if( this == parent()->element( i ) ) 
-				return i;
-		}
-	return -1;
-}
-
 
 /* JavaScriptParams */
 
@@ -157,7 +91,7 @@ int JavaScriptFunction::rowCount() {
 	return d->m_params.size() + d->m_variables.size();
 }
 
-JavaScriptElement * JavaScriptFunction::element( int index ) {
+FileContentElement * JavaScriptFunction::element( int index ) {
 	if( index < d->m_params.size() ) 
 		return d->m_params.at( index );
 	else
@@ -489,7 +423,7 @@ int JavaScriptParser::rowCount() {
 	return d->m_variables.size() + d->m_functions.size();
 }
 
-JavaScriptElement * JavaScriptParser::element( int index ) {
+FileContentElement * JavaScriptParser::element( int index ) {
 	if( index < d->m_variables.size() ) 
 		return d->m_variables.at( index );
 	else

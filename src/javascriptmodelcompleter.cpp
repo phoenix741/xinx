@@ -38,7 +38,7 @@ JavascriptModelCompleter::~JavascriptModelCompleter() {
 QVariant JavascriptModelCompleter::data( const QModelIndex &index, int role ) const {
 	if ( ! index.isValid() ) return QVariant();
 
-	JavaScriptElement * e = m_objList.at( index.row() );
+	FileContentElement * e = m_objList.at( index.row() );
 	
 	if( role == Qt::DecorationRole ) {
 		if( dynamic_cast<JavaScriptFunction*>( e ) ) {
@@ -72,8 +72,8 @@ int JavascriptModelCompleter::rowCount( const QModelIndex &parent ) const {
 		return 0;
 }
 
-void JavascriptModelCompleter::refreshList( JavaScriptElement * element ) {
-	JavaScriptElement * e = element;
+void JavascriptModelCompleter::refreshList( FileContentElement * element ) {
+	FileContentElement * e = element;
 	for( int i = 0 ; i < e->rowCount() ; i++ ) {
 		m_objList.append( e->element( i ) );
 		refreshList( e->element( i ) );

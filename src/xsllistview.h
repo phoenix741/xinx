@@ -22,6 +22,7 @@
 #define _XSLLISTVIEW_H_
 
 #include "filecontentitemmodel.h"
+#include "filecontentstructure.h"
 
 /*!
  * This exception is launch when the file can't be parsed.
@@ -38,6 +39,85 @@ public:
 
 class QDomElement;
 class XSLProject;
+
+class XSLFileContentImport;
+class PrivateXSLFileContentParser;
+class PrivateXSLFileContentImport;
+class PrivateXSLFileContentImportJavaScript;
+class PrivateXSLFileContentParams;
+class PrivateXSLFileContentTemplate;
+
+class XSLFileContentParams : public FileContentElement {
+public:
+	XSLFileContentParams( FileContentElement * parent, const QDomElement & node );
+	virtual ~XSLFileContentParams();
+	
+	const QString & value() const;
+private:
+	PrivateXSLFileContentParams * d;
+	friend class PrivateXSLFileContentParams;
+};
+
+class XSLFileContentVariable : public XSLFileContentParams {
+public:
+	XSLFileContentVariable( FileContentElement * parent, const QDomElement & node );
+	virtual ~XSLFileContentVariable();
+};
+
+
+class XSLFileContentTemplate : public FileContentElement {
+public:
+	XSLFileContentTemplate( FileContentElement * parent, const QDomElement & node, const QString & name );
+	virtual ~XSLFileContentTemplate();
+
+	QList<XSLFileContentParams*> & variables();
+	QList<FileContentElement*> & imports();
+
+	const QString & mode() const;
+
+	virtual int rowCount();
+	virtual FileContentElement * element( int index );
+private:
+	PrivateXSLFileContentTemplate * d;
+	friend class PrivateXSLFileContentTemplate;
+};
+
+class XSLFileContentParser : public FileContentElement {
+public:
+	XSLFileContentParser( const QString & content );
+	virtual ~XSLFileContentParser();
+
+	QList<XSLFileContentTemplate*> & templates();
+	QList<XSLFileContentParams*> & variables();
+	QList<FileContentElement*> & imports();
+
+	virtual int rowCount();
+	virtual FileContentElement * element( int index );
+protected:
+	XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber );
+	
+	void loadFromFile( const QString & filename );
+	void loadFromContent( const QString & content );
+	void loadFromXML( const QDomElement& element );
+private:
+	PrivateXSLFileContentParser * d;
+	friend class PrivateXSLFileContentParser;
+};
+
+class XSLFileContentImport : public XSLFileContentParser {
+public:
+	virtual ~XSLFileContentImport();
+	
+	const QString & filename() const;
+	
+	static XSLFileContentImport * createImportFromLocation( FileContentElement * parent, const QDomElement & node );
+	virtual int rowCount();
+protected:
+	XSLFileContentImport( FileContentElement * parent, const QString & filename, const QDomElement & node );
+private:
+	PrivateXSLFileContentImport * d;
+	friend class PrivateXSLFileContentImport;
+};
 
 class XSLModelData : public QObject {
 	Q_OBJECT

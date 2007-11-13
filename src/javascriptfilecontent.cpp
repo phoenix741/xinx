@@ -93,7 +93,7 @@ Qt::ItemFlags JavascriptFileContent::flags( const QModelIndex &index ) const {
 }
 
 QModelIndex JavascriptFileContent::index( int row, int column, const QModelIndex &parent ) const {
-	JavaScriptElement * parentElement = d->m_parser, * currentElement;
+	FileContentElement * parentElement = d->m_parser, * currentElement;
 	if( parent.isValid() ) {
 		parentElement = static_cast<JavaScriptElement*>( parent.internalPointer() );
 	}
@@ -109,8 +109,8 @@ QModelIndex JavascriptFileContent::parent( const QModelIndex &index ) const {
 	if( !index.isValid() )
 		return QModelIndex();
 	
-	JavaScriptElement * element = static_cast<JavaScriptElement*>( index.internalPointer() ),
-					  * parent  = element->parent();
+	FileContentElement * element = static_cast<JavaScriptElement*>( index.internalPointer() ),
+					   * parent  = element->parent();
 	
 	if( element == d->m_parser )
 		return QModelIndex();
