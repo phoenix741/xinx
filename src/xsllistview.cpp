@@ -103,6 +103,14 @@ private:
 	XSLFileContentParams * m_parent;
 };
 
+PrivateXSLFileContentParams::PrivateXSLFileContentParams( XSLFileContentParams * parent ) : m_parent( parent ) {
+	
+}
+
+PrivateXSLFileContentParams::~PrivateXSLFileContentParams() {
+	
+}
+
 /* XSLFileContentParams */
 
 XSLFileContentParams::XSLFileContentParams( FileContentElement * parent, const QDomElement & node )
@@ -280,7 +288,10 @@ void XSLFileContentParser::loadFromContent( const QString & content ) {
 void XSLFileContentParser::loadFromXML( const QDomElement & element ) {
 	QDomElement child = element.firstChildElement();
 	while (! child.isNull()) {
-		if( child.prefix() != "xsl" ) continue;
+		if( child.prefix() != "xsl" ) { 
+			child = child.nextSiblingElement();
+			continue;
+		}
 		
 		if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) 
 			d->m_imports.append( XSLFileContentImport::createImportFromLocation( this, child ) );
@@ -400,7 +411,10 @@ void XSLModelData::loadFromXML( const QDomElement& element ) {
 	QDomElement child = element.firstChildElement();
   
 	while (! child.isNull()) {
-		if( child.prefix() != "xsl" ) continue;
+		if( child.prefix() != "xsl" ) { 
+			child = child.nextSiblingElement();
+			continue;
+		}
 		
 		if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) {
 			XSLModelData * data = new XSLModelData( this );
