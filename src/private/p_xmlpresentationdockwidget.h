@@ -43,6 +43,7 @@ public:
 	FileWatcher * m_watcher;
 	
 	void open( const QString& filename );
+	void setComboToolTip( const QString & filename );
 public slots:
 	void open();
 	void initXmlPresentationCombo();

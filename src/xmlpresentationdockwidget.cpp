@@ -27,6 +27,8 @@
 // Qt header
 #include <QDir>
 #include <QFileDialog>
+#include <QFileInfo>
+#include <QDateTime>
 
 /* PrivateXmlPresentationDockWidget */
 
@@ -75,18 +77,45 @@ void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
 		m_model = NULL;
 		m_openingFile = QString();
 		// Clean the tree
+		m_xmlPresentationWidget->m_presentationComboBox->setToolTip( QString() );
 	} else if( index == 1 ) {
 		// Open a file
 		QString name = QFileDialog::getOpenFileName( m_parent, 
 			tr("Open a presentation file"),
 			m_logPath,
 			tr("Presentation XML File (*.xml)") );
+		setComboToolTip( name );
 		open( name );
 	} else {
 		// Open the file
 		QString name = QDir( m_logPath ).absoluteFilePath( m_xmlPresentationWidget->m_presentationComboBox->itemText( index ) );
+		setComboToolTip( name );
 		open( name );
 	}
+}
+
+void PrivateXmlPresentationDockWidget::setComboToolTip( const QString & filename ) {
+	QFileInfo file( filename );
+	char unite = ' ';
+	double filesize = file.size();
+	while ( filesize > 1024 ) {
+		filesize /= 1024;
+		switch( unite ) {
+		case ' ' : unite = 'k'; break;
+		case 'k' : unite = 'm'; break;
+		case 'm' : unite = 'g'; break;
+		case 'g' : unite = 't'; break;
+		default: break;
+		}
+	}
+	
+	m_xmlPresentationWidget->m_presentationComboBox->setToolTip( 
+			tr( "File name : %1\n"
+				"Size : %2 %3b\n"
+				"File date : %4" )	.arg( file.canonicalFilePath() )
+									.arg( filesize, 0, 'f', 2 ).arg( unite )
+									.arg( file.lastModified().toString() )
+			);
 }
 
 void PrivateXmlPresentationDockWidget::open( const QString& filename ) {

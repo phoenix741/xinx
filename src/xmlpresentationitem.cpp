@@ -129,7 +129,7 @@ XmlPresentationModel::~XmlPresentationModel() {
 }
 
 int XmlPresentationModel::columnCount(const QModelIndex &/*parent*/) const {
-	return 2;
+	return 1;
 }
 
 QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
@@ -143,8 +143,6 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		switch (index.column()) {
 		case 0:
 			return node.nodeName();
-		case 1:
-			return node.nodeValue().split("\n").join(" ");
 		default:
 			return QVariant();
 		} 
@@ -152,8 +150,6 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		switch( index.column() ) {
 		case 0:
 			return item->xpath();
-		case 1:
-			return item->xpath() + "=" + node.nodeValue().split("\n").join(" ");
 		default:
 			return QVariant();
 		}
@@ -171,6 +167,8 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 			if( i < node.attributes().count() - 1 )
 				params += "\n";
 		}
+		params += node.nodeValue().split("\n").join(" ");
+		
 		return params;
 	}
 
@@ -188,9 +186,7 @@ QVariant XmlPresentationModel::headerData(int section, Qt::Orientation orientati
 	if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
 		switch (section) {
 		case 0:
-			return tr("Name");
-		case 1:
-			return tr("Value");
+			return tr( "Node" );
 		default:
 			return QVariant();
 		}
