@@ -27,7 +27,7 @@ public:
 	PrivateFileContentElement( FileContentElement * parent );
 	
 	int m_line;
-	QString m_name;
+	QString m_name, m_filename;
 	FileContentElement * m_parentElement;
 private:
 	FileContentElement * m_parent;
@@ -38,6 +38,8 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 	m_line   = -1;
 	m_name   = QString();
 	m_parentElement = NULL;
+	if( m_parent )
+		m_filename = parent->d->m_filename;
 }
 
 /* FileContentElement */
@@ -61,12 +63,20 @@ int FileContentElement::line() {
 	return d->m_line;
 }
 
+const QString & FileContentElement::filename() const {
+	return d->m_filename;
+}
+
 void FileContentElement::setName( const QString & name ) {
 	d->m_name = name;
 }
 	
 void FileContentElement::setLine( int line ) {
 	d->m_line = line;
+}
+
+void FileContentElement::setFilename( const QString & filename ) {
+	d->m_filename = filename;
 }
 
 int FileContentElement::rowCount() {

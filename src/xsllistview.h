@@ -42,7 +42,6 @@ class XSLProject;
 
 class XSLFileContentImport;
 class PrivateXSLFileContentParser;
-class PrivateXSLFileContentImport;
 class PrivateXSLFileContentImportJavaScript;
 class PrivateXSLFileContentParams;
 class PrivateXSLFileContentTemplate;
@@ -108,15 +107,10 @@ class XSLFileContentImport : public XSLFileContentParser {
 public:
 	virtual ~XSLFileContentImport();
 	
-	const QString & filename() const;
-	
 	static XSLFileContentImport * createImportFromLocation( FileContentElement * parent, const QDomElement & node );
 	virtual int rowCount();
 protected:
 	XSLFileContentImport( FileContentElement * parent, const QString & filename, const QDomElement & node );
-private:
-	PrivateXSLFileContentImport * d;
-	friend class PrivateXSLFileContentImport;
 };
 
 class XSLModelData : public QObject {

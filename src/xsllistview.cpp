@@ -38,56 +38,36 @@
 XMLParserException::XMLParserException( const QString & message, int line, int column ) : FileContentException( message, line, column ) {
 }
 
-/* PrivateXSLFileContentImport */
-
-class PrivateXSLFileContentImport {
-public:
-	PrivateXSLFileContentImport( XSLFileContentImport * parent );
-	~PrivateXSLFileContentImport();
-	
-	QString m_filename;
-private:
-	XSLFileContentImport * m_parent;
-};
-
-PrivateXSLFileContentImport::PrivateXSLFileContentImport( XSLFileContentImport * parent ) : m_parent( parent ) {
-	
-}
-
-PrivateXSLFileContentImport::~PrivateXSLFileContentImport() {
-	
-}
-
 /* XSLFileContentImport */
 
 XSLFileContentImport::XSLFileContentImport( FileContentElement * parent, const QString & filename, const QDomElement & node ) : XSLFileContentParser( parent, filename, node.lineNumber() ) {
-	d = new PrivateXSLFileContentImport( this );
-	d->m_filename = filename;
+	setFilename( filename );
 }
 
 XSLFileContentImport::~XSLFileContentImport() {
-	delete d;
-}
 
-const QString & XSLFileContentImport::filename() const {
-	return d->m_filename;
 }
 
 XSLFileContentImport * XSLFileContentImport::createImportFromLocation( FileContentElement * parent, const QDomElement & node ) {
-	if( ! global.m_project ) return NULL; 
+	QStringList searchList;
+	if( ! parent->filename().isEmpty() )
+		searchList << QFileInfo( parent->filename() ).absolutePath();
 	
+	if( global.m_project ) 
+		searchList += global.m_project->processedSearchPathList(); 
+
 	QString name = node.attribute( "href" );
-	
-	foreach( QString path, global.m_project->processedSearchPathList() ) {
+	foreach( QString path, searchList ) {
 		if( QFile::exists( QDir( path ).absoluteFilePath( name ) ) )
 			return new XSLFileContentImport( parent, QDir( path ).absoluteFilePath( name ), node );
 	}
+	
 	return NULL;
 }
 
 int XSLFileContentImport::rowCount() {
 	if( XSLFileContentParser::rowCount() == 0 )
-		loadFromFile( d->m_filename );
+		loadFromFile( filename() );
 	return XSLFileContentParser::rowCount();
 }
 
@@ -248,7 +228,6 @@ XSLFileContentParser::XSLFileContentParser( const QString & content ) : FileCont
 
 XSLFileContentParser::XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ) {
 	d = new PrivateXSLFileContentParser( this );
-	loadFromFile( filename );
 }
 
 
@@ -486,8 +465,13 @@ void XSLModelData::loadFromContent( const QString & content ) {
 
 int XSLModelData::childCount() { 
 	try {
-		if( global.m_project && ( m_child.size() == 0 ) && ( ( m_type == etImport ) || ( m_type == etJavascript ) ) ) {
-			foreach( QString path, global.m_project->processedSearchPathList() ) {
+		if( ( m_child.size() == 0 ) && ( m_type == etImport ) ) {
+			QStringList searchList;
+			searchList += QFileInfo( m_fileName ).absolutePath() ;
+			if( global.m_project ) {
+				searchList += global.m_project->processedSearchPathList();
+			}
+			foreach( QString path, searchList ) {
 				if( QFile::exists( QDir( path ).absoluteFilePath( m_name ) ) ) {
 					loadFromFile( QDir( path ).absoluteFilePath( m_name ) );
 					break;

@@ -275,8 +275,10 @@ void UniqueApplication::notifyError( QString error, QStringList stack ) {
 					 "Send the file %1 at XINX project leader (me of course, and send only the error, not insult) and he shake his brain for you.\n"
 					 "If you have a opened project, i saved it with session information for recover (only if the crash isn't in saving project ...)." ).arg( filename ).arg( error ) );
 	
-	if( d->m_mainform )
+	if( d->m_mainform ) {
 		d->m_mainform->saveProject( true );
+		QMessageBox::information( NULL, "XINX Crash", "Project is saved !" );
+	}
 	exit(1);
 }
 

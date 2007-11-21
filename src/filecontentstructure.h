@@ -53,6 +53,10 @@ public:
 	 * \return the line of the element.
 	 */
 	int line();
+	/*!
+	 * File name where is the element. If the file is unknown, Null string is returned.
+	 */
+	const QString & filename() const;
 	
 	/*!
 	 * Count the number of child of the element.
@@ -86,10 +90,15 @@ protected:
 	void setName( const QString & name );
 	/*!
 	 * Function to change the line of the element. This function is only accessible
-	 * by childre of the class.
+	 * by children of the class.
 	 * \param line Line of an element.
 	 */
 	void setLine( int line );
+	/*!
+	 * Function to change the filename of the element. This function is only accessible by
+	 * children of the class.
+	 */
+	void setFilename( const QString & filename );
 private:
 	PrivateFileContentElement * d;
 	friend class PrivateFileContentElement;
