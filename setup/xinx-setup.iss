@@ -36,7 +36,7 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
 Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
-Name: remplace_completion; Description: Replace completion.xnx file; GroupDescription: Data files; Components:
+Name: remplace_completion; Description: Replace completion.xnx file; GroupDescription: Data files; Components: 
 Name: remplace_template; Description: Replace template.xnx file; GroupDescription: Data files
 
 [Files]
@@ -75,8 +75,8 @@ Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags
 Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey; Tasks: assojs
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assojs
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assojs
-Root: HKCU; Subkey: Software\Shadoware.Org\XINX\Tools; ValueType: string; ValueName: cvs; ValueData: {code:GetCVSPath}; Components: ; Tasks: ; Languages:
-Root: HKCU; Subkey: Software\Shadoware.Org\XINX\Tools; ValueType: string; ValueName: diff; ValueData: {code:GetWinmergePath}; Components: ; Tasks: ; Languages:
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX\Tools; ValueType: string; ValueName: cvs; ValueData: {code:GetCVSPath}; Components: ; Tasks: ; Languages: 
+Root: HKCU; Subkey: Software\Shadoware.Org\XINX\Tools; ValueType: string; ValueName: diff; ValueData: {code:GetWinmergePath}; Components: ; Tasks: ; Languages: 
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -98,6 +98,7 @@ Name: {app}\translations; Type: filesandordirs
 [_ISToolPreCompile]
 Name: clean.bat; Parameters: ; Flags: abortonerror
 Name: sources.bat; Parameters: ; Flags: abortonerror
+Name: doc.bat; Parameters: ; Flags: abortonerror
 Name: compiler.bat; Parameters: ; Flags: abortonerror
 
 [Code]

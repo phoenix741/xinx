@@ -38,8 +38,6 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 	m_line   = -1;
 	m_name   = QString();
 	m_parentElement = NULL;
-	if( m_parent )
-		m_filename = parent->d->m_filename;
 }
 
 /* FileContentElement */
@@ -49,6 +47,8 @@ FileContentElement::FileContentElement( FileContentElement * parent, const QStri
 	d->m_line = line;
 	d->m_name = name;
 	d->m_parentElement = parent;
+	if( parent )
+		d->m_filename = parent->d->m_filename;
 }
 
 FileContentElement::~FileContentElement() {
