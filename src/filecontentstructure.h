@@ -104,4 +104,41 @@ private:
 	friend class PrivateFileContentElement;
 };
 
+/*!
+ * Model to show the file content of file. The file is showed in a tree.
+ * The globals variables and function in the root, and parameter and variables of functions in
+ * the child.
+ */
+class FileContentModel : public FileContentItemModel {
+	Q_OBJECT
+public:
+	/*!
+	 * Construct the file content model.
+	 * \param parser The simple javascript parser.
+	 * \param parent The parent of the object parent.
+	 */
+	FileContentModel( QObject *parent = 0 );
+	/*!
+	 * Destroy the file content object
+	 */
+	virtual ~FileContentModel();
+	
+	/*!
+	 * Load from file content element. Change the tree structure according to this structure.
+	 */
+	void loadFromFileContentElement( FileContentElement * element );
+	
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex parent(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
+private:
+	PrivateFileContentModel * d;
+	friend class PrivateFileContentModel;
+};
+
+
 #endif /*FILECONTENTSTRUCTURE_H_*/

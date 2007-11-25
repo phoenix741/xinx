@@ -63,7 +63,6 @@ public:
 	virtual ~XSLFileContentVariable();
 };
 
-
 class XSLFileContentTemplate : public FileContentElement {
 public:
 	XSLFileContentTemplate( FileContentElement * parent, const QDomElement & node, const QString & name );
