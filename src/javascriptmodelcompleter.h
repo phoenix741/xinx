@@ -56,6 +56,9 @@ public slots:
 	 * If the function is NULL, the scope is global.
 	 */
 	void setFilter( const QString functionName = QString() );
+
+	void addElement( FileContentElement*, int );
+	void removeElement( FileContentElement* );
 private:
 	void refreshList( FileContentElement * element );
 	QList<FileContentElement*> m_objList;

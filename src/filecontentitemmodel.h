@@ -23,9 +23,12 @@
 
 // Xinx header
 #include "exceptions.h"
+#include "filecontentstructure.h"
 
 // Qt header
 #include <QAbstractItemModel>
+
+class PrivateFileContentModel;
 
 /*!
  * Exception throw when the model can't be updated.
@@ -66,7 +69,7 @@ public:
 	 * Construct a file content model.
 	 * \param parent Parent of the file content model.
 	 */
-	FileContentItemModel( QObject *parent = 0 );
+	FileContentItemModel( FileContentElement * root, QObject *parent = 0 );
 	/*!
 	 * Destroy the model.
 	 */
@@ -87,6 +90,24 @@ public:
 		 */
 		QString filename;
 	};
+
+	QVariant data( const QModelIndex &index, int role ) const;
+	Qt::ItemFlags flags( const QModelIndex &index ) const;
+	QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
+	QModelIndex index( FileContentElement * element ) const;
+	QModelIndex parent( const QModelIndex &index ) const;
+	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+	QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	int columnCount( const QModelIndex &parent = QModelIndex() ) const;	
+public slots:
+	void update( FileContentElement * element );
+	void beginInsertRow( FileContentElement * element, int row );
+	void endInsertRow();
+	void beginRemoveRow( FileContentElement * element );
+	void endRemoveRow();
+private:
+	PrivateFileContentModel * d;
+	friend class PrivateFileContentModel;
 };
 
 Q_DECLARE_METATYPE ( FileContentItemModel::struct_file_content )

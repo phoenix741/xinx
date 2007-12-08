@@ -17,18 +17,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
+// Xinx header
 #include "filecontentstructure.h"
+#include "exceptions.h"
 
 /* PrivateFileContentElement */
 
 class PrivateFileContentElement {
 public:
 	PrivateFileContentElement( FileContentElement * parent );
+	~PrivateFileContentElement();
+	
+	bool m_flagDelete, m_flagEmit;
 	
 	int m_line;
 	QString m_name, m_filename;
 	FileContentElement * m_parentElement;
+	
+	QList<FileContentElement*> m_elements;
 private:
 	FileContentElement * m_parent;
 };
@@ -38,6 +45,13 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 	m_line   = -1;
 	m_name   = QString();
 	m_parentElement = NULL;
+	m_flagDelete = false;
+	m_flagEmit = true;
+}
+
+PrivateFileContentElement::~PrivateFileContentElement() {
+	//qDeleteAll( m_elements );
+	// Can cause some problem. Don't forget to clean memory
 }
 
 /* FileContentElement */
@@ -47,18 +61,57 @@ FileContentElement::FileContentElement( FileContentElement * parent, const QStri
 	d->m_line = line;
 	d->m_name = name;
 	d->m_parentElement = parent;
-	if( parent )
+	if( parent ) { 
 		d->m_filename = parent->d->m_filename;
+		setFlagEmit( true );
+	}
 }
 
 FileContentElement::~FileContentElement() {
 	delete d;
 }
-	
-const QString & FileContentElement::name() {
+
+void FileContentElement::setFlagEmit( bool value ) {
+	d->m_flagEmit = value;
+	if( value && d->m_parentElement ) {
+		connect( this, SIGNAL(aboutToRemove(FileContentElement*)), d->m_parentElement, SIGNAL(aboutToRemove(FileContentElement*)) );
+		connect( this, SIGNAL(aboutToAdd(FileContentElement*,int)), d->m_parentElement, SIGNAL(aboutToAdd(FileContentElement*,int)) );
+		connect( this, SIGNAL(removed()), d->m_parentElement, SIGNAL(removed()) );
+		connect( this, SIGNAL(added()), d->m_parentElement, SIGNAL(added()) );
+	} else if( d->m_parentElement ) {
+		this->disconnect( d->m_parentElement );
+	}
+}
+
+bool FileContentElement::equals( FileContentElement * element ) {
+	return ( ( typeid( *element ) == typeid( *this ) )
+		  && ( d->m_name == element->d->m_name ) 
+		  && ( d->m_filename == element->d->m_filename )
+		   );
+}
+
+void FileContentElement::copyFrom( FileContentElement * element ) {
+	d->m_filename = element->d->m_filename;
+	d->m_line = element->d->m_line;
+	d->m_name = element->d->m_name;
+}
+
+QIcon FileContentElement::icon() const {
+	return QIcon("images/warning.png");
+}
+
+const QString & FileContentElement::name() const {
 	return d->m_name;
 }
-	
+
+QString FileContentElement::displayName() const {
+	return name();
+}
+
+QString FileContentElement::displayTips() const {
+	return tr( "Element at line : %1" ).arg( d->m_line );
+}
+
 int FileContentElement::line() {
 	return d->m_line;
 }
@@ -79,141 +132,88 @@ void FileContentElement::setFilename( const QString & filename ) {
 	d->m_filename = filename;
 }
 
-int FileContentElement::rowCount() {
-	return 0;
-}
-
-FileContentElement * FileContentElement::element( int index ) {
-	Q_UNUSED( index );
-	return NULL;
-}
-
 FileContentElement * FileContentElement::parent() {
 	return d->m_parentElement;
 }
 
 int FileContentElement::row() {
-	if( parent() )
-		for( int i = 0 ; i < parent()->rowCount(); i++ ) {
-			if( this == parent()->element( i ) ) 
+	if( d->m_parentElement )
+		for( int i = 0 ; i < d->m_parentElement->rowCount(); i++ ) {
+			if( this == d->m_parentElement->element( i ) ) 
 				return i;
 		}
-	return -1;
+	return 0;
 }
 
-/* FileContentElementProxy */
-
-class FileContentElementProxy {
-public:
-	FileContentElement * m_element;
-	QString m_tips;
-	QIcon m_icon;
-	
-	QList<FileContentElementProxy*> m_list;
-	
-	int m_row;
-	FileContentElementProxy * m_parent;
-};
-
-
-/* PrivateFileContentModel */
-
-class PrivateFileContentModel {
-public:
-	PrivateFileContentModel( FileContentModel * parent );
-	~PrivateFileContentModel();
-	
-	FileContentElementProxy * m_root;
-private:
-	FileContentModel * m_parent;
-};
-
-/* FileContentModel */
-
-FileContentModel::FileContentModel( QObject *parent ) {
-	d = new PrivateFileContentModel( this );
+int FileContentElement::rowCount() {
+	return d->m_elements.size();
 }
 
-FileContentModel::~FileContentModel() {
-	delete d;
-}
-	
-void FileContentModel::loadFromFileContentElement( FileContentElement * element ) {
-	
+FileContentElement * FileContentElement::element( int index ) {
+	return d->m_elements.at( index );
 }
 
-QVariant FileContentModel::data( const QModelIndex &index, int role ) const {
-	if( !index.isValid() ) 
-		return QVariant();
-		
-	FileContentItemModel::struct_file_content data;
-	FileContentElementProxy * element = static_cast<FileContentElementProxy*>( index.internalPointer() );
-		
-	switch( role ) {
-	case Qt::DisplayRole:
-		return element->m_element->name();
-	case Qt::DecorationRole:
-		return element->m_icon;
-	case Qt::UserRole:
-		data.line = element->m_element->line();
-		data.filename = element->m_element->filename();
-		return QVariant::fromValue( data );
-	default:
-		return QVariant();
-	}
+void FileContentElement::remove( int index ) {
+	emit aboutToRemove( d->m_elements.at( index ) );
+	delete d->m_elements.at( index );
+	d->m_elements.removeAt( index );
+	emit removed();
 }
 
-Qt::ItemFlags flags( const QModelIndex &index ) const {
-	if (!index.isValid())
-		return Qt::ItemIsEnabled;
-
-	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;	
-}
-
-QModelIndex FileContentModel::index( int row, int column, const QModelIndex &parent ) const {
-	FileContentElementProxy * parentElement = d->m_root, * currentElement;
-	if( parent.isValid() ) {
-		parentElement = static_cast<FileContentElementProxy*>( parent.internalPointer() );
-	}
-	currentElement = parentElement->m_element->at( row );
-	
-	if( currentElement )
-		return createIndex( row, column, currentElement );
-	else 
-		return QModelIndex();
-}
-
-QModelIndex FileContentModel::parent( const QModelIndex &index ) const {
-	if( !index.isValid() )
-		return QModelIndex();
-	
-	FileContentElementProxy * element = static_cast<FileContentElementProxy*>( index.internalPointer() ),
-					   * parent  = element->m_parent;
-	
-	if( element == d->m_root )
-		return QModelIndex();
-	
-	return createIndex( parent->m_row, 0, parent );
-}
-
-int FileContentModel::rowCount( const QModelIndex &parent ) const {
-	if( parent.isValid() ) {
-		FileContentElementProxy * element = static_cast<FileContentElementProxy*>( parent.internalPointer() );
-		return element->m_element->rowCount();		
+FileContentElement * FileContentElement::append( FileContentElement * element ) {
+	FileContentElement * old = contains( element ); 
+	if( old ) {
+		old->copyFrom( element );
+		old->d->m_flagDelete = false;
+		delete element;
+		emit updated( old );
+		return old;
 	} else {
-		return d->m_root->rowCount();
+		element->d->m_parentElement = this; // Appropriation
+		emit aboutToAdd( element, d->m_elements.size() );
+		d->m_elements.append( element );
+		emit added();
+		return element;
 	}
 }
 
-QVariant FileContentModel::headerData( int section, Qt::Orientation orientation, int role ) const {
-	if( ( orientation == Qt::Horizontal ) && ( role == Qt::DisplayRole ) && ( section == 0 ) )
-		return tr("Content Name");
-		
-	return QVariant();
+
+void FileContentElement::clear() {
+	for( int i = d->m_elements.size() - 1; i >= 0; i-- )
+		remove( i );
 }
 
-int FileContentModel::columnCount( const QModelIndex &parent ) const {
-	Q_UNUSED( parent );
-	return 1;
+FileContentElement * FileContentElement::contains( FileContentElement * element ) {
+	foreach( FileContentElement * e, d->m_elements ) {
+		if( element->equals( e ) ) 
+			return e;
+	}
+	return NULL;
+}
+
+void FileContentElement::markDeleted() {
+	d->m_flagDelete = true;
+}
+
+void FileContentElement::markKeeped() {
+	d->m_flagDelete = false;
+}
+
+void FileContentElement::markAllDeleted() {
+	foreach( FileContentElement * e, d->m_elements ) {
+		e->markDeleted();
+	}
+}
+
+void FileContentElement::removeMarkedDeleted() {
+	for( int i = d->m_elements.size() - 1 ; i >= 0 ; i-- ) {
+		if( d->m_elements.at( i )->d->m_flagDelete ) {
+			remove( i );
+		}
+	}
+}
+
+bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 ) {
+	return d1->name() < d2->name();
 }
 

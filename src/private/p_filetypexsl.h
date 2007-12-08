@@ -24,6 +24,7 @@
 // Xinx header
 #include "../filetypexsl.h"
 #include "../xsllistview.h"
+#include "../filecontentitemmodel.h"
 #include "../xslmodelcompleter.h"
 
 // Qt header
@@ -40,7 +41,7 @@ public:
 	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
 	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
 	int insertCompletionBalises( QTextCursor & tc, QString node );
-	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type );
+	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type );
 	
 	QCompleter * currentCompleter(const QTextCursor & cursor);
 
@@ -49,8 +50,8 @@ public:
 	QCompleter * m_completerParam;
 	QCompleter * m_completerValue;
 	
-	XSLModelData * m_modelData;
-	XSLItemModel * m_contentModel;
+	XSLFileContentParser * m_modelData;
+	FileContentItemModel * m_contentModel;
 	XSLValueCompletionModel * m_completionValueModel;
 	XSLParamCompletionModel * m_completionParamModel;
 	XSLBaliseCompletionModel * m_completionBaliseModel;

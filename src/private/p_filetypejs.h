@@ -24,8 +24,8 @@
 // Xinx header
 #include "../filetypejs.h"
 #include "../javascriptparser.h"
-#include "../javascriptfilecontent.h"
 #include "../javascriptmodelcompleter.h"
+#include "../filecontentitemmodel.h"
 
 // Qt header
 #include <QString>
@@ -40,7 +40,7 @@ public:
 	virtual ~PrivateFileTypeJs();
 	
 	JavaScriptParser * m_parser;
-	JavascriptFileContent * m_model;
+	FileContentItemModel * m_model;
 	JavascriptModelCompleter * m_modelCompleter;
 	QCompleter * m_completer;
 	

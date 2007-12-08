@@ -29,6 +29,8 @@ JavascriptModelCompleter::JavascriptModelCompleter( JavaScriptParser * parser, Q
 	m_functionFiltre = QString();
 	m_parser = parser;
 	refreshList( m_parser );
+	connect( m_parser, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
+	connect( m_parser, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
 }
 
 JavascriptModelCompleter::~JavascriptModelCompleter() {
@@ -41,16 +43,7 @@ QVariant JavascriptModelCompleter::data( const QModelIndex &index, int role ) co
 	FileContentElement * e = m_objList.at( index.row() );
 	
 	if( role == Qt::DecorationRole ) {
-		if( dynamic_cast<JavaScriptFunction*>( e ) ) {
-			return QIcon( ":/images/noeud.png" );			
-		} else
-		if( dynamic_cast<JavaScriptVariables*>( e ) ) {
-			return QIcon( ":/images/variable.png" );			
-		} else
-		if( dynamic_cast<JavaScriptParams*>( e ) ) {
-			return QIcon( ":/images/html_value.png" );			
-		} else
-			return QVariant();
+		return e->icon();
 	} else
 	if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
 		return e->name();
@@ -72,12 +65,35 @@ int JavascriptModelCompleter::rowCount( const QModelIndex &parent ) const {
 		return 0;
 }
 
+void JavascriptModelCompleter::addElement( FileContentElement* element, int row ) {
+	Q_UNUSED( row );
+	
+	if( (!m_functionFiltre.isEmpty()) && element->parent() && ( element->parent()->name() == m_functionFiltre ) ) {
+		QList<FileContentElement*>::iterator i = qLowerBound( m_objList.begin(), m_objList.end(), element, FileContentElementModelObjListSort );
+		int index = i - m_objList.begin();
+		beginInsertRows( QModelIndex(), index, index );
+		m_objList.insert( i, element );
+		endInsertRows();
+	}
+}
+
+void JavascriptModelCompleter::removeElement( FileContentElement* element ) {
+	int index = m_objList.indexOf( element );
+	if( index >= 0 ) {
+		beginRemoveRows( QModelIndex(), index, index );
+		m_objList.removeAt( index );
+		endRemoveRows();
+	}
+}
+
+
 void JavascriptModelCompleter::refreshList( FileContentElement * element ) {
 	FileContentElement * e = element;
 	for( int i = 0 ; i < e->rowCount() ; i++ ) {
 		m_objList.append( e->element( i ) );
-		refreshList( e->element( i ) );
+		//refreshList( e->element( i ) ); // Pas de recursivite pour ne pas acceder au variables des functions.
 	}
+	qSort( m_objList.begin(), m_objList.end(), FileContentElementModelObjListSort );
 }
 
 void JavascriptModelCompleter::setFilter( const QString functionName ) {
@@ -90,13 +106,12 @@ void JavascriptModelCompleter::setFilter( const QString functionName ) {
 	if( functionName.isEmpty() ) 
 		refreshList( m_parser );
 	else {
-		foreach( JavaScriptFunction* function, m_parser->functions() ) {
-			m_objList.append( function );
-			if( function->name() == functionName ) 
-				refreshList( function );
-		}	
-		foreach( JavaScriptVariables* variable, m_parser->variables() ) {
-			m_objList.append( variable );
+		for( int i = 0 ; i < m_parser->rowCount() ; i++ ) {
+			FileContentElement * element = m_parser->element( i );
+			JavaScriptFunction * function = dynamic_cast<JavaScriptFunction*>( element );
+			m_objList.append( element );
+			if( function && function->name() == functionName )
+				refreshList( element );
 		}
 	}
 			

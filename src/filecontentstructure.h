@@ -22,7 +22,9 @@
 #define FILECONTENTSTRUCTURE_H_
 
 // Qt header
+#include <QObject>
 #include <QString>
+#include <QIcon>
 
 class PrivateFileContentElement;
 
@@ -30,7 +32,8 @@ class PrivateFileContentElement;
  * The file content element is the base element of a file content structure. Javascript file content and
  * XSL file content is based on a structure file content.
  */
-class FileContentElement {
+class FileContentElement : public QObject {
+	Q_OBJECT
 public:
 	/*!
 	 * Create an element with a name and the line where the element is.
@@ -47,7 +50,9 @@ public:
 	 * Name of the element.
 	 * \return Return the name of the element.
 	 */
-	virtual const QString & name();
+	virtual const QString & name() const;
+	virtual QString displayName() const;
+	virtual QString displayTips() const;
 	/*!
 	 * Return the line where the element is.
 	 * \return the line of the element.
@@ -81,6 +86,22 @@ public:
 	 * \return The index of the element
 	 */ 
 	virtual int row();
+	
+	/*!
+	 * Test if an element is equals to another FileContentElement \e element. If the element is equals 
+	 * the method return \e true.
+	 */
+	virtual bool equals( FileContentElement * element );
+	
+	/*!
+	 * Copy the contents of an FileContentElement \e element to this.
+	 */
+	virtual void copyFrom( FileContentElement * element );
+	
+	/*!
+	 * Icon used for show how the element must be.
+	 */
+	virtual QIcon icon() const;
 protected:
 	/*!
 	 * Function to change the name of the element. This function is only accessible
@@ -99,46 +120,61 @@ protected:
 	 * children of the class.
 	 */
 	void setFilename( const QString & filename );
+	
+	/*!
+	 * Remove an element from the child list. The signal \e aboutToRemove() and \e removed() is emited
+	 * while deleting the line \e index.
+	 */
+	void remove( int index );
+	/*!
+	 * Append an element at the end of the list. Signals, \e aboutToAdd() and \e added() is emited while
+	 * adding the element \e element. If the element is already in the list, the elements is not added but 
+	 * updated and the signal \e updated() is emited.
+	 */
+	FileContentElement * append( FileContentElement * element );
+	/*!
+	 * Remove all elements from the list.
+	 */
+	void clear();
+	
+	/*!
+	 * Search if the list contains the element \e element. The test is made using method \e equals().
+	 * If the list contains the element, a pointer to the element is returned, else NULL, is returned.
+	 */
+	FileContentElement * contains( FileContentElement * element );
+	
+	/*!
+	 * Mark this element to be deleted by method \e removeMarkedDeleted().
+	 */
+	void markDeleted();
+	/*!
+	 * Mark the element to be keeped and ignored by \e removeMarkedDeleted().
+	 */
+	void markKeeped();
+	/*!
+	 * Mark all child element to be deleted by method \e removeMarkedDeleted().
+	 */
+	void markAllDeleted();
+	/*!
+	 * Remove from the child list all elements marked to be deleted by \e markDeleted().
+	 */
+	void removeMarkedDeleted();
+
+	/*!
+	 * Change \e value to false if append and remove don't emit signals
+	 */
+	void setFlagEmit( bool value );
+signals:
+	void updated( FileContentElement * element );
+	void aboutToRemove( FileContentElement * element );
+	void removed();
+	void aboutToAdd( FileContentElement * element, int row );
+	void added();
 private:
 	PrivateFileContentElement * d;
 	friend class PrivateFileContentElement;
 };
 
-/*!
- * Model to show the file content of file. The file is showed in a tree.
- * The globals variables and function in the root, and parameter and variables of functions in
- * the child.
- */
-class FileContentModel : public FileContentItemModel {
-	Q_OBJECT
-public:
-	/*!
-	 * Construct the file content model.
-	 * \param parser The simple javascript parser.
-	 * \param parent The parent of the object parent.
-	 */
-	FileContentModel( QObject *parent = 0 );
-	/*!
-	 * Destroy the file content object
-	 */
-	virtual ~FileContentModel();
-	
-	/*!
-	 * Load from file content element. Change the tree structure according to this structure.
-	 */
-	void loadFromFileContentElement( FileContentElement * element );
-	
-	QVariant data(const QModelIndex &index, int role) const;
-	Qt::ItemFlags flags(const QModelIndex &index) const;
-	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-	QModelIndex parent(const QModelIndex &index) const;
-	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	int columnCount(const QModelIndex &parent = QModelIndex()) const;	
-private:
-	PrivateFileContentModel * d;
-	friend class PrivateFileContentModel;
-};
-
+bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );
 
 #endif /*FILECONTENTSTRUCTURE_H_*/

@@ -65,11 +65,13 @@ private:
 	static int m_depth;
 };
 
+// Trop lent
+#define XINX_TRACE( fct, args ) 
 #if !defined( XINX_TRACE )
 #  ifndef QT_NO_DEBUG
 #    define XINX_TRACE( fct, args ) Trace __XINX_TRACE__ ( __FILE__, __LINE__, fct, args )
 #  else
-#    define XINX_TRACE( fct, args ) do{}while(0)
+#    define XINX_TRACE( fct, args ) 
 #  endif
 #endif
 

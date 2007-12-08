@@ -36,11 +36,11 @@
 /* PrivateFileTypeJs */
 
 PrivateFileTypeJs::PrivateFileTypeJs( FileTypeJs * parent ) {
-	m_parent    = parent;
-	m_parser    = NULL;
-	m_model     = NULL;
+	m_parent    	 = parent;
 	m_modelCompleter = NULL;
-	m_completer = NULL;
+	m_completer 	 = NULL;
+	m_parser		 = NULL;
+	m_model			 = NULL;
 }
 
 PrivateFileTypeJs::~PrivateFileTypeJs() {
@@ -87,7 +87,7 @@ QString PrivateFileTypeJs::currentFunction() {
 //		tc.movePosition( QTextCursor::PreviousCharacter );
 		tc.movePosition( QTextCursor::PreviousWord );
 	}
-	if( finded && ( bloc >= 0 ) )
+	if( finded && ( bloc > 0 ) )
 		return name;
 	else
 		return QString();
@@ -162,6 +162,7 @@ FileTypeJs::FileTypeJs( TextEditor * parent ) : FileTypeInterface( parent ) {
 	d->m_completer->setCompletionRole( Qt::DisplayRole );
 	connect( d->m_completer, SIGNAL(activated(const QModelIndex&)), d, SLOT(insertCompletion(const QModelIndex&)) );
 	connect( parent, SIGNAL(execKeyPressEvent(QKeyEvent*)), d, SLOT(keyPressEvent(QKeyEvent*)) );
+
 }
 
 FileTypeJs::~FileTypeJs() {
@@ -174,22 +175,14 @@ void FileTypeJs::commentSelectedText( bool uncomment ) {
 }
 
 void FileTypeJs::updateModel() {
-	JavaScriptParser * parser = NULL;
-	try {
-		parser = new JavaScriptParser( textEdit()->toPlainText() );
-		emit modelUpdated( NULL );
-		d->m_completer->setModel( NULL );
-		delete d->m_model; d->m_model = NULL;
-		delete d->m_modelCompleter; d->m_modelCompleter = NULL; 
-		delete d->m_parser; d->m_parser = NULL;
-		d->m_parser = parser;
-		d->m_model  = new JavascriptFileContent( d->m_parser, this );
+	if( d->m_model ) {
+		d->m_parser->loadFromContent( textEdit()->toPlainText() );
+	} else {
+		d->m_parser = new JavaScriptParser();
+		d->m_model  = new FileContentItemModel( d->m_parser, this );
+		d->m_parser->loadFromContent( textEdit()->toPlainText() );
 		d->m_modelCompleter = new JavascriptModelCompleter( d->m_parser, this );
-		emit modelUpdated( d->m_model );
 		d->m_completer->setModel( d->m_modelCompleter );
-	} catch( JavaScriptParserException e ) {
-		delete parser;
-		throw e;
 	}
 }
 

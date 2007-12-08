@@ -65,7 +65,6 @@ HEADERS += src/filecontentstructure.h \
     src/flattreeview.h \
     src/globals.h \
     src/iconprojectprovider.h \
-    src/javascriptfilecontent.h \
     src/javascriptmodelcompleter.h \
     src/javascriptparser.h \
     src/jsfileeditor.h \
@@ -150,7 +149,6 @@ SOURCES += src/filecontentstructure.cpp \
     src/flattreeview.cpp \
     src/globals.cpp \
     src/iconprojectprovider.cpp \
-    src/javascriptfilecontent.cpp \
     src/javascriptmodelcompleter.cpp \
     src/javascriptparser.cpp \
     src/jsfileeditor.cpp \

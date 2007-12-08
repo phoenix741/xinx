@@ -29,8 +29,6 @@ public:
 	PrivateEditorThreadXSL( EditorThreadXSL * parent );
 	~PrivateEditorThreadXSL();
 	
-	XSLModelData * m_data;
-	XSLItemModel * m_model;
 private:
 	EditorThreadXSL * m_parent;
 };

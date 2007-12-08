@@ -27,8 +27,6 @@
 #include <QStringList>
 #include <QList>
 
-class PrivateJavaScriptElement;
-class PrivateJavaScriptFunction;
 class PrivateJavaScriptParser;
 
 /*!
@@ -44,73 +42,53 @@ public:
 };
 
 /*!
- * Javascript element of the file. It represent the file himself, the functions, the params, the variables,
- * or other element.
- */
-class JavaScriptElement : public FileContentElement {
-public:
-	JavaScriptElement( JavaScriptElement * parent, const QString & name, int line );
-};
-
-/*!
  * Class represent params in a Javascript's function.
  */
-class JavaScriptParams : public JavaScriptElement {
+class JavaScriptParams : public FileContentElement {
+	Q_OBJECT
 public:
 	/*!
 	 * Create a param of a JavaScript Function
 	 * \param name Name of the parameter.
 	 * \param line Line of the parameter.
 	 */
-	JavaScriptParams( JavaScriptElement * parent, const QString & name, int line );
+	JavaScriptParams( FileContentElement * parent, const QString & name, int line );
+
+	virtual QIcon icon() const;
 };
 
 /*!
  * Class represent a variable in a Javascript's function or in a global definition.
  */
 class JavaScriptVariables : public JavaScriptParams {
+	Q_OBJECT
 public:
 	/*!
 	 * Create a variables.
 	 * \param name Name of the variable
 	 * \param line Line of the parameter.
 	 */
-	JavaScriptVariables( JavaScriptElement * parent, const QString & name, int line );
+	JavaScriptVariables( FileContentElement * parent, const QString & name, int line );
+
+	virtual QIcon icon() const;
 };
 
 /*!
  * Class represent a function in the Javascript file.
  * A class can have parameter and variables.
  */
-class JavaScriptFunction : public JavaScriptElement {
+class JavaScriptFunction : public FileContentElement {
+	Q_OBJECT
 public:
 	/*!
 	 * Create a function.
 	 * \param name Name of the function.
 	 * \param line Line of the function.
 	 */
-	JavaScriptFunction( JavaScriptElement * parent, const QString & name, int line );
-	/*!
-	 * Detele the function
-	 */
-	virtual ~JavaScriptFunction();
+	JavaScriptFunction( FileContentElement * parent, const QString & name, int line );
 
-	/*!
-	 * List of the params of the function
-	 * \return The list of the params.
-	 */
-	const QList<JavaScriptParams*> & params();
-	/*!
-	 * List of the variables of the function
-	 * \return The list of the variables.
-	 */
-	const QList<JavaScriptVariables*> & variables();
-	
-	virtual int rowCount();
-	virtual FileContentElement * element( int index );
+	virtual QIcon icon() const;
 private:
-	PrivateJavaScriptFunction * d;
-	friend class PrivateJavaScriptFunction;
 	friend class PrivateJavaScriptParser;
 	friend class JavaScriptParser;
 };
@@ -120,37 +98,28 @@ private:
  * \todo Detect non declared variable.
  * \todo Make the parser more complexe ;)
  */
-class JavaScriptParser : public JavaScriptElement {
+class JavaScriptParser : public FileContentElement {
+	Q_OBJECT
 public:
 	/*!
 	 * Create the parser with the content of a Javascript file.
 	 * \param content Content of the Javascript file.
 	 */
-	JavaScriptParser( const QString & content );
+	JavaScriptParser();
+	JavaScriptParser( FileContentElement * parent, const QString & filename, int lineNumber );
 	/*!
 	 * Delete the parser
 	 */
 	virtual ~JavaScriptParser();
 	
 	/*!
-	 * List all globals variables.
-	 * \return list of variables.
-	 */
-	const QList<JavaScriptVariables*> & variables();
-	/*! 
-	 * List the function in the file.
-	 * \return list of functions.
-	 */
-	const QList<JavaScriptFunction*> & functions();
-
-	virtual int rowCount();
-	virtual FileContentElement * element( int index );
-protected:
-	/*!
 	 * Load and parse the content of the file.
 	 * \param content Content of the file
 	 */
-	void load( const QString & content );
+	void loadFromContent( const QString & content );
+	void loadFromFile( const QString & filename );
+
+	virtual QIcon icon() const;
 private:
 	PrivateJavaScriptParser * d;
 	friend class PrivateJavaScriptParser;

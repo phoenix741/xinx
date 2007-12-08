@@ -44,6 +44,8 @@ PrivateFileTypeXsl::PrivateFileTypeXsl( FileTypeXsl * parent ) : m_parent( paren
 	m_completerValueParamName = "";
 	m_completerParamNodeName  = "";
 	m_completerValue 		  = 0;
+	m_modelData 			  = NULL;
+	m_contentModel 			  = NULL;
 
 	m_completerNode = new QCompleter( this );
 	m_completerNode->setWidget( m_parent->textEdit() );
@@ -66,14 +68,7 @@ PrivateFileTypeXsl::PrivateFileTypeXsl( FileTypeXsl * parent ) : m_parent( paren
 	m_completerValue->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerValue, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
 	
-	m_modelData = new XSLModelData( NULL );
-	m_modelData->loadFromContent( m_parent->textEdit()->toPlainText() );
-	
-	m_contentModel = new XSLItemModel( m_modelData, this );
-
 	m_completionValueModel = NULL;
-	m_completionValueModel = new XSLValueCompletionModel( m_modelData, this );
-	m_completerValue->setModel( m_completionValueModel );
 
 	m_completionParamModel = new XSLParamCompletionModel( this );
 	m_completerParam->setModel( m_completionParamModel );
@@ -215,7 +210,7 @@ void PrivateFileTypeXsl::insertCompletion( const QModelIndex& index ) {
 			tc.insertText( ">" );
 	} else
 	if( pos == FileTypeXsl::cpEditParamValue ) {
-		int type = c->completionModel()->data( index, Qt::UserRole ).toInt();
+		QString type = c->completionModel()->data( index, Qt::UserRole ).toString();
 		insertCompletionAccolade( tc, m_parent->m_nodeName, m_parent->m_paramName, completion, type );
 	}
 
@@ -288,7 +283,7 @@ int PrivateFileTypeXsl::insertCompletionBalises( QTextCursor & tc, QString node 
 	return position;
 }
 
-void PrivateFileTypeXsl::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, int type ) {
+void PrivateFileTypeXsl::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type ) {
 	Q_UNUSED( param );	
 	
 	QTextCursor tc2( tc );
@@ -310,15 +305,15 @@ void PrivateFileTypeXsl::insertCompletionAccolade( QTextCursor & tc, QString nod
 
 	if( global.m_completionContents && global.m_completionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = global.m_completionContents->balise( node );
-		if( insertAccolade && (balise->category() != "stylesheet") && ( ( type == (int)XSLModelData::etVariable ) || ( type == (int)XSLModelData::etTemplate ) )) {
+		if( insertAccolade && (balise->category() != "stylesheet") && ( ( type == "XSLFileContentParams" ) || ( type == "XSLFileContentVariable" ) || ( type == "XSLFileContentTemplate" ) )) {
 //			QMessageBox::warning(qApp->activeWindow(), "", "");
-			if( insertDollard && ( type == (int)XSLModelData::etVariable ) ) 
+			if( insertDollard && ( ( type == "XSLFileContentParams" ) || ( type == "XSLFileContentVariable" ) ) ) 
 				tc2.insertText( "{$" );
 			else
 				tc2.insertText( "{" );
 			tc.insertText( "}" );
 		} else
-		if( insertDollard && ( type == (int)XSLModelData::etVariable ) ) {
+		if( insertDollard && ( ( type == "XSLFileContentParams" ) || ( type == "XSLFileContentVariable" ) ) ) {
 			tc2.insertText( "$" );
 		}
 	}
@@ -366,27 +361,15 @@ FileTypeXsl::~FileTypeXsl() {
 }
 
 void FileTypeXsl::updateModel() {
-	XSLModelData * datas = NULL;
-	try {
-		datas = new XSLModelData();
-		datas->loadFromContent( textEdit()->toPlainText() );	
-	
-		emit modelUpdated( NULL );
-		d->m_completerValue->setModel( NULL );
-	
-		delete d->m_contentModel; d->m_contentModel = NULL;
-		delete d->m_completionValueModel; d->m_completionValueModel = NULL;
-		delete d->m_modelData; d->m_modelData = NULL;
-	
-		d->m_modelData = datas;
-		d->m_contentModel  = new XSLItemModel( d->m_modelData, this );
+	if( d->m_contentModel ) {
+		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
+	} else {
+		d->m_modelData = new XSLFileContentParser();
+		d->m_contentModel = new FileContentItemModel( d->m_modelData, this );
+		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
+
 		d->m_completionValueModel = new XSLValueCompletionModel( d->m_modelData, this );
-	
-		emit modelUpdated( d->m_contentModel );
 		d->m_completerValue->setModel( d->m_completionValueModel );
-	} catch( XMLParserException e ) {
-		delete datas;
-		throw e;
 	}
 }
 

@@ -35,12 +35,133 @@ int FileContentException::getColumn() const {
 	return m_column;
 }
 
+/* PrivateFileContentModel */
+
+class PrivateFileContentModel {
+public:
+	FileContentElement * m_root;
+};
+
 /* FileContentItemModel */
 
-FileContentItemModel::FileContentItemModel( QObject * parent ) : QAbstractItemModel( parent ) {
+FileContentItemModel::FileContentItemModel( FileContentElement * root, QObject *parent ) : QAbstractItemModel( parent ) {
+	d = new PrivateFileContentModel();
+	d->m_root = root;
 	
+	connect( d->m_root, SIGNAL(updated(FileContentElement*)), this, SLOT(update(FileContentElement*)) );
+	connect( d->m_root, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(beginRemoveRow(FileContentElement*)) );
+	connect( d->m_root, SIGNAL(removed()), this, SLOT(endRemoveRow()) );
+	connect( d->m_root, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(beginInsertRow(FileContentElement*,int)) );
+	connect( d->m_root, SIGNAL(added()), this, SLOT(endInsertRow()) );
 }
 
 FileContentItemModel::~FileContentItemModel() {
+	d->m_root->disconnect( this );
+	delete d;
+}
 	
+QVariant FileContentItemModel::data( const QModelIndex &index, int role ) const {
+	if( !index.isValid() ) 
+		return QVariant();
+		
+	FileContentItemModel::struct_file_content data;
+	FileContentElement * element = static_cast<FileContentElement*>( index.internalPointer() );
+		
+	switch( role ) {
+	case Qt::DisplayRole:
+		return element->displayName();
+	case Qt::DecorationRole:
+		return element->icon();
+	case Qt::ToolTipRole:
+		return element->displayTips();
+	case Qt::UserRole:
+		data.line = element->line();
+		data.filename = element->filename();
+		return QVariant::fromValue( data );
+	default:
+		return QVariant();
+	}
+}
+
+Qt::ItemFlags FileContentItemModel::flags( const QModelIndex &index ) const {
+	if (!index.isValid())
+		return Qt::ItemIsEnabled;
+
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;	
+}
+
+QModelIndex FileContentItemModel::index( int row, int column, const QModelIndex &parent ) const {
+	FileContentElement * parentElement = d->m_root, * currentElement = NULL;
+	if( parent.isValid() ) {
+		parentElement = static_cast<FileContentElement*>( parent.internalPointer() );
+	}
+	currentElement = parentElement->element( row );
+	
+	if( currentElement )
+		return createIndex( row, column, currentElement );
+	else 
+		return QModelIndex();
+}
+
+QModelIndex FileContentItemModel::index( FileContentElement * element ) const {
+	if( element == d->m_root )
+		return QModelIndex();
+	else
+		return createIndex( element->row(), 0, element );
+}
+
+QModelIndex FileContentItemModel::parent( const QModelIndex &index ) const {
+	if( !index.isValid() )
+		return QModelIndex();
+	
+	FileContentElement * element = static_cast<FileContentElement*>( index.internalPointer() ),
+					   * parent  = element->parent();
+	
+	if( ( parent == d->m_root ) || ( parent == NULL ) )
+		return QModelIndex();
+	
+	return createIndex( parent->row(), 0, parent );
+}
+
+int FileContentItemModel::rowCount( const QModelIndex &parent ) const {
+	if( parent.isValid() ) {
+		FileContentElement * element = static_cast<FileContentElement*>( parent.internalPointer() );
+		return element->rowCount();		
+	} else {
+		return d->m_root->rowCount();
+	}
+}
+
+QVariant FileContentItemModel::headerData( int section, Qt::Orientation orientation, int role ) const {
+	if( ( orientation == Qt::Horizontal ) && ( role == Qt::DisplayRole ) && ( section == 0 ) )
+		return tr("Name");
+		
+	return QVariant();
+}
+
+int FileContentItemModel::columnCount( const QModelIndex &parent ) const {
+	Q_UNUSED( parent );
+	return 1;
+}
+
+void FileContentItemModel::beginInsertRow( FileContentElement * element, int row ) {
+	QModelIndex idx = index( element->parent() );
+	beginInsertRows( idx, row, row );
+}
+
+void FileContentItemModel::endInsertRow() {
+	endInsertRows();
+}
+
+void FileContentItemModel::beginRemoveRow( FileContentElement * element ) {
+	QModelIndex idx = index( element->parent() );
+	beginRemoveRows( idx, element->row(), element->row() );
+}
+
+void FileContentItemModel::endRemoveRow() {
+	endRemoveRows();
+}
+
+void FileContentItemModel::update( FileContentElement * element ) {
+	emit dataChanged( index( element ), index( element ) );
 }

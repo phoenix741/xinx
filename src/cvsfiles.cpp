@@ -167,8 +167,8 @@ void CVSFileEntry::refreshStatus() {
 	} else if( ! m_fileInfo.isDir() ) {
 		if( m_hasConflict )
 			m_status = RCS::FileHadConflictsOnMerge;
-		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) && ( m_cvsDate.addSecs( -3600 ) != m_fileDate ) ) )  /// \todo Find a better way to correct this line.
-//		else if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) )  
+//		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) && ( m_cvsDate.addSecs( -3600 ) != m_fileDate ) ) )  /// \todo Find a better way to correct this line.
+		else if( m_cvsDate.isNull() || ( m_cvsDate != m_fileDate ) )  
 			m_status = RCS::LocallyModified;
 		else		
 			m_status = RCS::Updated;

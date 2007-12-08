@@ -29,46 +29,63 @@
 
 /* XSLValueCompletionModel */
 
-XSLValueCompletionModel::XSLValueCompletionModel( XSLModelData * data, QObject *parent ) : QAbstractListModel( parent ) {
+XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QObject *parent ) : QAbstractListModel( parent ) {
 	rootItem = data;
 	refreshList();
+	connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
+	connect( rootItem, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
 }
 
-bool XSLValueCompletionModel::contains( XSLModelData * data ) {
+bool XSLValueCompletionModel::contains( FileContentElement * data ) {
 	for( int i = 0; i < m_objList.count(); i++ ) {
-		if( *(m_objList.at( i )) == *data ) 
+		if( m_objList.at( i )->equals( data ) ) 
 			return true;
 	}
 	return false;
 }
 
-void XSLValueCompletionModel::refreshRecursive(XSLModelData * data) {
-	for( int i = 0; i < data->childCount(); i++ ) {
-		if( data->child( i )->type() != XSLModelData::etImport ) {
-			if( ! contains( data->child( i ) ) )
-				m_objList.append( data->child( i ) );
+void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
+	for( int i = 0; i < data->rowCount(); i++ ) {
+		if( ! dynamic_cast<XSLFileContentImport*>( data->element( i ) ) ) {
+			if( ! contains( data->element( i ) ) )
+				m_objList.append( data->element( i ) );
 		} else {
-			QString name = data->child( i )->name();
+			QString name = data->element( i )->name();
 			if( ! m_files.contains( name ) ) { 
 				m_files.append( name );
-				refreshRecursive( data->child( i ) );
+				refreshRecursive( data->element( i ) );
 			}
 		}
 	}
 }
 
-bool XSLValueCompletionModelObjListSort( XSLModelData * d1, XSLModelData * d2 ) {
-	return d1->name() < d2->name();
-}
-
 void XSLValueCompletionModel::refreshList() {
 	m_objList.clear();
 	refreshRecursive( rootItem );
-	qSort( m_objList.begin(), m_objList.end(), XSLValueCompletionModelObjListSort );
+	qSort( m_objList.begin(), m_objList.end(), FileContentElementModelObjListSort );
 	reset();
+}
+
+void XSLValueCompletionModel::addElement( FileContentElement* element, int row ) {
+	Q_UNUSED( row );
+	
+	QList<FileContentElement*>::iterator i = qLowerBound( m_objList.begin(), m_objList.end(), element, FileContentElementModelObjListSort );
+	int index = i - m_objList.begin();
+	beginInsertRows( QModelIndex(), index, index );
+	m_objList.insert( i, element );
+	endInsertRows();
+}
+
+void XSLValueCompletionModel::removeElement( FileContentElement* element ) {
+	int index = m_objList.indexOf( element );
+	if( index >= 0 ) {
+		beginRemoveRows( QModelIndex(), index, index );
+		m_objList.removeAt( index );
+		endRemoveRows();
+	}
 }
 
 void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
@@ -104,26 +121,16 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 	if (!index.isValid()) return QVariant();
 
 	if( index.row() < m_objList.count() ) {
-		XSLModelData * data = m_objList[ index.row() ];
+		FileContentElement * data = m_objList[ index.row() ];
 	
 		if( role == Qt::DecorationRole ) {
-			switch( data->type() ) {
-			case XSLModelData::etVariable:
-				return QIcon(":/images/variable.png");
-				break;
-			case XSLModelData::etTemplate:
-				return QIcon(":/images/template.png");
-				break;
-			default:
-				return QVariant();
-			}
-		} 
-	
+			return data->icon();
+		} else
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return data->name();
-		
+			return data->displayName();
+		else
 		if( role == Qt::UserRole ) {
-			return (int)data->type();
+			return data->metaObject()->className();
 		}
 	} else {
 		int value_row = index.row() - m_objList.count(); 

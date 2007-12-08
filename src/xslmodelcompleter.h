@@ -21,16 +21,17 @@
 #ifndef __XSLMODELCOMPLETER_H__
 #define __XSLMODELCOMPLETER_H__
 
+// Xinx header
+#include "filecontentstructure.h"
+
 // Qt header
 #include <QAbstractListModel>
 #include <QStringList>
 
-class XSLModelData;
-
 class XSLValueCompletionModel : public QAbstractListModel {
 	Q_OBJECT
 public:
-	XSLValueCompletionModel( XSLModelData * data, QObject *parent = 0 );
+	XSLValueCompletionModel( FileContentElement * data, QObject *parent = 0 );
 	virtual ~XSLValueCompletionModel();
 	
 	void setBaliseName( const QString & name, const QString & attribute );
@@ -40,12 +41,14 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 public slots:
 	void refreshList();
+	void addElement( FileContentElement*, int );
+	void removeElement( FileContentElement* );
 private:
-	bool contains( XSLModelData * data );
-	void refreshRecursive(XSLModelData * data);
+	bool contains( FileContentElement * data );
+	void refreshRecursive( FileContentElement * data );
 
-	QList<XSLModelData*> m_objList;
-	XSLModelData* rootItem;
+	QList<FileContentElement*> m_objList;
+	FileContentElement* rootItem;
 	
 	QString m_baliseName;
 	QString m_attributeName;
