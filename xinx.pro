@@ -24,7 +24,8 @@ DISTFILES = CHANGELOG \
     translations/*.ts \
     ui/*.ui \
     xml/*.xnx
-FORMS += ui/about.ui \
+FORMS += ui/specifiquedlg.ui \
+    ui/about.ui \
     ui/commitmessages.ui \
     ui/custom.ui \
     ui/mainform.ui \
