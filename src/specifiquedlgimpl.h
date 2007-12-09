@@ -22,14 +22,26 @@
 #define SPECIFIQUEDLGIMPL_H_
 
 // Xinx header
-#include "ui_specifquedlg.h"
+#include "ui_specifiquedlg.h"
 #include "globals.h"
+#include "xinxconfig.h"
 
 class SpecifiqueDialogImpl : public QDialog, public Ui::SpecifiqueDialog {
 	Q_OBJECT
 public:
 	SpecifiqueDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	
+	static bool isSpecifique( const QString & filename );
+	static bool canBeSaveAsSpecifique( const QString & filename );
+	static bool canBeAddedToRepository( const QString & filename );
+	
+	void setFileName( const QString & filename );
+	
+	static QString saveFileAs( const QString & filename, QStringList & filesForRepository );
+	static QString saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository );
 private slots:
+private:
+	static struct_extentions extentionOfFileName( const QString & name );
 };
 
 #endif /*SPECIFIQUEDLGIMPL_H_*/
