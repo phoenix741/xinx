@@ -34,8 +34,10 @@ public:
 	~PrivateEditorThread();
 	
 	QString m_content;
-	QMutex m_contentMutex;
-	QWaitCondition m_waitCondition;
+	mutable QMutex m_contentMutex;
+	mutable QWaitCondition m_waitCondition;
+	
+	FileContentParser * m_element;
 private:
 	EditorThread * m_parent;
 };
@@ -52,18 +54,22 @@ PrivateEditorThread::~PrivateEditorThread() {
 
 EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
 	d = new PrivateEditorThread( this );
+	d->m_element = NULL;
 }
 
 EditorThread::~EditorThread() {
 	delete d;
 }
-	
+
 void EditorThread::threadrun() {
 	forever {
 		d->m_contentMutex.lock();
 		d->m_waitCondition.wait( &d->m_contentMutex );
-		
-		generateModel();
+		try {
+			d->m_element->loadFromContent( d->m_content );
+		} catch( ... ) {
+			
+		}
 		
 		d->m_contentMutex.unlock();
 	}
@@ -73,4 +79,8 @@ void EditorThread::reloadEditorContent( const QString & content ) {
 	QMutexLocker( &d->m_contentMutex );
 	d->m_content = content;
 	d->m_waitCondition.wakeAll();
+}
+
+FileContentParser* & EditorThread::parser() {
+	return d->m_element;
 }

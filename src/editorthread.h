@@ -27,6 +27,7 @@
 
 // Xinx header
 #include "xinxthread.h"
+#include "filecontentstructure.h"
 
 class PrivateEditorThread;
 
@@ -37,10 +38,9 @@ public:
 	virtual ~EditorThread();	
 	
 	void reloadEditorContent( const QString & content );
-	virtual QAbstractItemModel * model() = 0;
 protected:
 	virtual void threadrun();
-	virtual void generateModel() = 0;
+	FileContentParser* & parser();
 private:
 	PrivateEditorThread * d;
 };

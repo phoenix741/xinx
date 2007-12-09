@@ -28,6 +28,14 @@
 
 class PrivateFileContentElement;
 
+class FileContentParser {
+public:
+	virtual ~FileContentParser();
+	
+	virtual void loadFromContent( const QString & content ) = 0;
+	virtual void loadFromFile( const QString & filename ) = 0;
+};
+
 /*!
  * The file content element is the base element of a file content structure. Javascript file content and
  * XSL file content is based on a structure file content.

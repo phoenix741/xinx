@@ -46,6 +46,7 @@ PrivateFileTypeXsl::PrivateFileTypeXsl( FileTypeXsl * parent ) : m_parent( paren
 	m_completerValue 		  = 0;
 	m_modelData 			  = NULL;
 	m_contentModel 			  = NULL;
+	m_thread 				  = NULL;
 
 	m_completerNode = new QCompleter( this );
 	m_completerNode->setWidget( m_parent->textEdit() );
@@ -79,6 +80,7 @@ PrivateFileTypeXsl::PrivateFileTypeXsl( FileTypeXsl * parent ) : m_parent( paren
 
 PrivateFileTypeXsl::~PrivateFileTypeXsl() {
 	emit m_parent->modelUpdated( NULL );
+	delete m_thread; // KILL
 }
 
 void PrivateFileTypeXsl::keyPressEvent( QKeyEvent *e ) {
@@ -361,15 +363,20 @@ FileTypeXsl::~FileTypeXsl() {
 }
 
 void FileTypeXsl::updateModel() {
-	if( d->m_contentModel ) {
+	if( d->m_thread ) {
 		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
+//		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
 	} else {
+//		d->m_thread = new EditorThreadXSL( this );
+//		d->m_thread->start();
+
 		d->m_modelData = new XSLFileContentParser();
 		d->m_contentModel = new FileContentItemModel( d->m_modelData, this );
-		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
-
 		d->m_completionValueModel = new XSLValueCompletionModel( d->m_modelData, this );
 		d->m_completerValue->setModel( d->m_completionValueModel );
+		
+		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
+//		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
 	}
 }
 

@@ -98,7 +98,7 @@ private:
  * \todo Detect non declared variable.
  * \todo Make the parser more complexe ;)
  */
-class JavaScriptParser : public FileContentElement {
+class JavaScriptParser : public FileContentElement, public FileContentParser {
 	Q_OBJECT
 public:
 	/*!
@@ -116,8 +116,8 @@ public:
 	 * Load and parse the content of the file.
 	 * \param content Content of the file
 	 */
-	void loadFromContent( const QString & content );
-	void loadFromFile( const QString & filename );
+	virtual void loadFromContent( const QString & content );
+	virtual void loadFromFile( const QString & filename );
 
 	virtual QIcon icon() const;
 private:

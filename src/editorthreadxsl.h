@@ -30,10 +30,8 @@ class EditorThreadXSL : public EditorThread {
 public:
 	EditorThreadXSL( QObject * parent = NULL );
 	virtual ~EditorThreadXSL();
-	
-	virtual QAbstractItemModel * model();
 protected:
-	virtual void generateModel();
+	virtual void threadrun();
 private:
 	PrivateEditorThreadXSL * d;
 };

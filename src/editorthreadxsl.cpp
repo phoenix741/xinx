@@ -51,10 +51,10 @@ EditorThreadXSL::~EditorThreadXSL() {
 	delete d;
 }
 
-QAbstractItemModel * EditorThreadXSL::model() {
+void EditorThreadXSL::threadrun() {
+	parser() = new XSLFileContentParser();
 	
-}
-
-void EditorThreadXSL::generateModel() {
+	EditorThread::threadrun();
 	
+	delete parser(); parser() = 0;
 }

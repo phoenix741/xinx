@@ -22,6 +22,12 @@
 #include "filecontentstructure.h"
 #include "exceptions.h"
 
+
+FileContentParser::~FileContentParser() {
+	
+}
+	
+
 /* PrivateFileContentElement */
 
 class PrivateFileContentElement {

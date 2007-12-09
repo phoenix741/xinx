@@ -94,19 +94,19 @@ private:
 	friend class PrivateXSLFileContentTemplate;
 };
 
-class XSLFileContentParser : public FileContentElement {
+class XSLFileContentParser : public FileContentElement, public FileContentParser {
 	Q_OBJECT
 public:
 	XSLFileContentParser();
 	virtual ~XSLFileContentParser();
 
-	void loadFromContent( const QString & content );
+	virtual void loadFromContent( const QString & content );
+	virtual void loadFromFile( const QString & filename );
 
 	virtual QIcon icon() const;
 protected:
 	XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber );
 	
-	void loadFromFile( const QString & filename );
 	void loadFromXML( const QDomElement& element );
 };
 
