@@ -38,7 +38,8 @@ FORMS += ui/specifiquedlg.ui \
     ui/servicesconnection.ui \
     ui/snipetproperty.ui \
     ui/xmlpresentationwidget.ui
-HEADERS += src/filecontentstructure.h \
+HEADERS += src/specifiquedlgimpl.h \
+    src/filecontentstructure.h \
     src/editorthreadxsl.h \
     src/editorthread.h \
     src/xinxthread.h \
@@ -123,7 +124,8 @@ QT += network \
     xml
 RCC_DIR += build
 RESOURCES += application.qrc
-SOURCES += src/filecontentstructure.cpp \
+SOURCES += src/specifiquedlgimpl.cpp \
+    src/filecontentstructure.cpp \
     src/editorthreadxsl.cpp \
     src/editorthread.cpp \
     src/aboutdialogimpl.cpp \
