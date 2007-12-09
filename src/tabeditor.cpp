@@ -397,6 +397,15 @@ void TabEditor::setCloseAction( QAction * action ) {
 	m_closeAction = action;
 }
 
+void TabEditor::setCopyFileNameAction( QAction * action ) {
+	m_copyFilenameAction = action;
+}
+
+void TabEditor::setCopyPathAction( QAction * action ) {
+	m_copyPathAction = action;
+}
+
+
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj==tabBar() ) {
 		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
@@ -418,6 +427,9 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 				menu->addAction( m_saveAsAction );
 				menu->addSeparator();
 				menu->addAction( m_closeAction );
+				menu->addSeparator();
+				menu->addAction( m_copyFilenameAction );
+				menu->addAction( m_copyPathAction );
 				menu->exec(mouseEvent->globalPos());
 				delete menu;
 			} else

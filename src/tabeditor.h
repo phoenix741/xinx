@@ -53,6 +53,8 @@ public:
 	void setSaveAction( QAction * action );
 	void setSaveAsAction( QAction * action );
 	void setCloseAction( QAction * action );
+	void setCopyFileNameAction( QAction * action );
+	void setCopyPathAction( QAction * action );
 public slots:
 	void bookmark();
 	void nextBookmark();
@@ -117,6 +119,8 @@ private:
 	QAction * m_saveAction;
 	QAction * m_saveAsAction;
 	QAction * m_closeAction;
+	QAction * m_copyFilenameAction;
+	QAction * m_copyPathAction;
 	
 	int m_clickedItem;
 	Editor * m_previous;

@@ -59,7 +59,7 @@
 #include <QProcess>
 #include <QTextStream>
 #include <QDataStream>
-#include <QDebug>
+#include <QClipboard>
 
 /* PrivateMainformImpl */
 
@@ -321,6 +321,11 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_copyAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(copy()) );
 	m_parent->m_copyAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(copyAvailable(bool)), m_parent->m_copyAct, SLOT(setEnabled(bool)) );	
+
+	connect( m_parent->m_copyFileNameAct, SIGNAL(triggered()), this, SLOT(copyFileName()) );	
+	m_parent->m_tabEditors->setCopyFileNameAction( m_parent->m_copyFileNameAct );
+	connect( m_parent->m_copyPathAct, SIGNAL(triggered()), this, SLOT(copyPath()) );	
+	m_parent->m_tabEditors->setCopyPathAction( m_parent->m_copyPathAct );
 
 	// Paste
 	connect( m_parent->m_pasteAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(paste()) );
@@ -1121,6 +1126,23 @@ void PrivateMainformImpl::previousTab() {
 	XINX_TRACE( "PrivateMainformImpl::previousTab", "()" );
 
 	m_parent->m_tabEditors->setCurrentIndex( ( m_parent->m_tabEditors->currentIndex() - 1 + m_parent->m_tabEditors->count() ) % m_parent->m_tabEditors->count() );
+}
+
+void PrivateMainformImpl::copyFileName() {
+	int item = m_parent->m_tabEditors->getClickedTab();
+	if( item == -1 ) item = m_parent->m_tabEditors->currentIndex();
+	QString name = m_parent->m_tabEditors->editor( item )->getTitle();
+	qApp->clipboard()->setText( name );
+}
+
+void PrivateMainformImpl::copyPath() {
+	int item = m_parent->m_tabEditors->getClickedTab();
+	if( item == -1 ) item = m_parent->m_tabEditors->currentIndex();
+	FileEditor * feditor;
+	if( ( feditor = dynamic_cast<FileEditor*>( m_parent->m_tabEditors->editor( item ) ) ) ) {
+		QString name = feditor->getFileName();
+		qApp->clipboard()->setText( name );
+	}
 }
 
 void PrivateMainformImpl::createFindReplace() {

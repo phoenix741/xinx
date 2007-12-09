@@ -137,6 +137,10 @@ public slots:
 	void openRecentProject();
 	void openRecentFile();
 
+	// Edit
+	void copyFileName();
+	void copyPath();
+	
 	// Search
 	void findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options );
 	void find();
