@@ -24,7 +24,7 @@
 
 /* AboutDialogImpl */
 
-AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f) 
+AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f ) 
 	: QDialog(parent, f) {
 	XINX_TRACE( "AboutDialogImpl", QString("( parent, flags )") );
 	setupUi(this);

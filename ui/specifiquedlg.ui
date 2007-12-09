@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog" >
+ <class>SpecifiqueDialog</class>
+ <widget class="QDialog" name="SpecifiqueDialog" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -30,14 +30,14 @@
      </property>
      <layout class="QVBoxLayout" >
       <item>
-       <widget class="QCheckBox" name="checkBox" >
+       <widget class="QCheckBox" name="m_specifiqueCheckBox" >
         <property name="text" >
          <string>Do you want make it &amp;specifique ?</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_2" >
+       <widget class="QCheckBox" name="m_repositoryCheckBox" >
         <property name="text" >
          <string>Do you want add it to &amp;repository ?</string>
         </property>
@@ -53,7 +53,7 @@
      </property>
      <layout class="QGridLayout" >
       <item row="0" column="0" >
-       <widget class="QListWidget" name="listWidget" />
+       <widget class="QListWidget" name="m_impactedListWidget" />
       </item>
      </layout>
     </widget>
@@ -111,7 +111,7 @@
   <connection>
    <sender>okButton</sender>
    <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>SpecifiqueDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -127,7 +127,7 @@
   <connection>
    <sender>cancelButton</sender>
    <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>SpecifiqueDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

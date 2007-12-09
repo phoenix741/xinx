@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,34 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ABOUTDIALOGIMPL_H
-#define ABOUTDIALOGIMPL_H
+#ifndef SPECIFIQUEDLGIMPL_H_
+#define SPECIFIQUEDLGIMPL_H_
 
 // Xinx header
-#include "ui_about.h"
+#include "ui_specifquedlg.h"
+#include "globals.h"
 
-/*!
- * Implementation of about dialog containts informations as the version, the licence,
- * the logo, and authors.
- * The implementation containts only a constructor who defines default dialog 
- * presentation : Windows Style Dialog.
- */
-class AboutDialogImpl : public QDialog, public Ui::AboutDialog {
+class SpecifiqueDialogImpl : public QDialog, public Ui::SpecifiqueDialog {
 	Q_OBJECT
 public:
-	/*!
-	 * Constructor of The about dialog implementation. We defines a default windows flags.
-	 * The windows can be resize.
-	 * \param parent The parent of the dialog
-	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
-	 */
-	AboutDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SpecifiqueDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 private slots:
 };
 
-#endif
-
-
-
-
-
+#endif /*SPECIFIQUEDLGIMPL_H_*/
