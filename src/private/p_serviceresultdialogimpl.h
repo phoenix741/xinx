@@ -18,69 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef __P_SERVICERESULTDIALOGIMPL_H__
+#define __P_SERVICERESULTDIALOGIMPL_H__
+
 // Xinx header
-#include "editorthread.h"
+#include "serviceresultdialogimpl.h"
+#include "xmlhighlighter.h"
 
-// Qt header
-#include <QMutex>
-#include <QWaitCondition>
-#include <QAbstractItemModel>
-
-/* PrivateEditorThread */
-
-class PrivateEditorThread {
+class PrivateServiceResultDialogImpl : public QObject {
+	Q_OBJECT
 public:
-	PrivateEditorThread( EditorThread * parent );
-	~PrivateEditorThread();
+	PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent );
 	
-	QString m_content;
-	mutable QMutex m_contentMutex;
-	mutable QWaitCondition m_waitCondition;
+	QHash<QString,QString> m_input;
+	QHash<QString,QString> m_output;
 	
-	FileContentParser * m_element;
+public slots:
+	void inputComboChanged( QString value );
+	void outputComboChanged( QString value );
+	
 private:
-	EditorThread * m_parent;
+	ServiceResultDialogImpl * m_parent;	
 };
 
-PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_parent( parent ) {
-	
-}
-
-PrivateEditorThread::~PrivateEditorThread() {
-	
-}
-
-/* EditorThread */
-
-EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
-	d = new PrivateEditorThread( this );
-	d->m_element = NULL;
-}
-
-EditorThread::~EditorThread() {
-	delete d;
-}
-
-void EditorThread::threadrun() {
-	forever {
-		d->m_contentMutex.lock();
-		d->m_waitCondition.wait( &d->m_contentMutex );
-		try {
-			d->m_element->loadFromContent( d->m_content );
-		} catch( ... ) {
-			
-		}
-		
-		d->m_contentMutex.unlock();
-	}
-}
-
-void EditorThread::reloadEditorContent( const QString & content ) {
-	QMutexLocker( &d->m_contentMutex );
-	d->m_content = content;
-	d->m_waitCondition.wakeAll();
-}
-
-FileContentParser* & EditorThread::parser() {
-	return d->m_element;
-}
+#endif // __P_SERVICERESULTDIALOGIMPL_H__

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,69 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef __P_RUNSNIPETDIALOGIMPL_H__
+#define __P_RUNSNIPETDIALOGIMPL_H__
+
 // Xinx header
-#include "editorthread.h"
+#include "runsnipetdialogimpl.h"
+#include "snipetdialog.h"
 
 // Qt header
-#include <QMutex>
-#include <QWaitCondition>
-#include <QAbstractItemModel>
+#include <QLabel>
+#include <QLineEdit>
 
-/* PrivateEditorThread */
-
-class PrivateEditorThread {
+class PrivateRunSnipetDialogImpl : public QObject {
+	Q_OBJECT
 public:
-	PrivateEditorThread( EditorThread * parent );
-	~PrivateEditorThread();
+	PrivateRunSnipetDialogImpl( RunSnipetDialogImpl * parent );
+	virtual ~PrivateRunSnipetDialogImpl();
 	
-	QString m_content;
-	mutable QMutex m_contentMutex;
-	mutable QWaitCondition m_waitCondition;
+	QGridLayout * m_paramGrid;
+	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
+	QString m_text;
+	Snipet * m_snipet;
 	
-	FileContentParser * m_element;
+	void setupUi();
+	
+public slots:
+	void changeSnipet();
 private:
-	EditorThread * m_parent;
+	RunSnipetDialogImpl * m_parent;
 };
 
-PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_parent( parent ) {
-	
-}
+#endif // __P_RUNSNIPETDIALOGIMPL_H__
 
-PrivateEditorThread::~PrivateEditorThread() {
-	
-}
-
-/* EditorThread */
-
-EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
-	d = new PrivateEditorThread( this );
-	d->m_element = NULL;
-}
-
-EditorThread::~EditorThread() {
-	delete d;
-}
-
-void EditorThread::threadrun() {
-	forever {
-		d->m_contentMutex.lock();
-		d->m_waitCondition.wait( &d->m_contentMutex );
-		try {
-			d->m_element->loadFromContent( d->m_content );
-		} catch( ... ) {
-			
-		}
-		
-		d->m_contentMutex.unlock();
-	}
-}
-
-void EditorThread::reloadEditorContent( const QString & content ) {
-	QMutexLocker( &d->m_contentMutex );
-	d->m_content = content;
-	d->m_waitCondition.wakeAll();
-}
-
-FileContentParser* & EditorThread::parser() {
-	return d->m_element;
-}

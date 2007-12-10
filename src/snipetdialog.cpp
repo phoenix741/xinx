@@ -19,45 +19,9 @@
  ***************************************************************************/
 
 // Xinx header
-#include "globals.h"
-#include "snipetdialog.h"
-#include "snipetlist.h"
-#include "xmlhighlighter.h"
-#include "jshighlighter.h"
-
-// Qt header
-#include <QApplication>
-#include <QGroupBox>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QTextEdit>
+#include "private/p_snipetdialog.h"
 
 /* PrivateSnipetDialogImpl */
-
-class PrivateSnipetDialogImpl : public QObject {
-	Q_OBJECT
-public:
-	PrivateSnipetDialogImpl( SnipetDialogImpl * parent );
-	virtual ~PrivateSnipetDialogImpl();
-	
-	void setupUi();
-
-	void addParamLine();
-
-	QTextEdit * m_textEdit;
-	QGridLayout * m_paramGrid;
-	
-	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
-	
-	enum Snipet::SnipetType m_snipetType;
-	Snipet * m_snipet;
-public slots:
-	void textChanged();
-private:
-	SnipetDialogImpl * m_parent;
-};
 
 PrivateSnipetDialogImpl::PrivateSnipetDialogImpl( SnipetDialogImpl * parent ) : m_parent( parent ) {
 	m_snipet = NULL;
@@ -198,5 +162,3 @@ Snipet * SnipetDialogImpl::getSnipet() {
 	}
 	return d->m_snipet ;
 }
-
-#include "snipetdialog.moc"

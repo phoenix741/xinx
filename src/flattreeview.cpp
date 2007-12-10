@@ -19,33 +19,10 @@
  ***************************************************************************/
 
 // Xinx header
-#include "flattreeview.h"
-#include "exceptions.h"
-
-// Qt header
-#include <QHash>
-#include <QDirModel>
-
-class PrivateFlatModel : public QObject {
-	Q_OBJECT
-public:
-	PrivateFlatModel( FlatModel * parent );
-	virtual ~PrivateFlatModel();
-	
-	QDirModel * m_model;
-	QPersistentModelIndex m_root;
-	QStringList m_pathList;
-		
-public slots:
-	void recalcPathList();
-	void rowsInserted ( const QModelIndex & parent, int start, int end );
-	void rowsRemoved ( const QModelIndex & parent, int start, int end );	
-private:
-	void insertIntoPathList( QModelIndex index );
-
-	FlatModel * m_parent;
-};
-
+#include "private/p_flattreeview.h"
+ 
+/* PrivateFlatModel */
+ 
 PrivateFlatModel::PrivateFlatModel( FlatModel * parent ) {
 	m_parent = parent;
 }
@@ -177,5 +154,4 @@ int FlatModel::rowCount ( const QModelIndex & parent ) const {
 	}
 }
 
-#include "flattreeview.moc"
 

@@ -18,69 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef __P_SNIPETLIST_H__
+#define __P_SNIPETLIST_H__
+ 
 // Xinx header
-#include "editorthread.h"
+#include "snipetlist.h"
+#include "snipet.h"
 
 // Qt header
-#include <QMutex>
-#include <QWaitCondition>
-#include <QAbstractItemModel>
+#include <QApplication>
+#include <QDomDocument>
+#include <QFile>
+#include <QTextStream>
 
-/* PrivateEditorThread */
-
-class PrivateEditorThread {
+class PrivateSnipetList : public QObject {
+	Q_OBJECT
 public:
-	PrivateEditorThread( EditorThread * parent );
-	~PrivateEditorThread();
+	PrivateSnipetList( SnipetList * parent );
+	virtual ~PrivateSnipetList();
 	
-	QString m_content;
-	mutable QMutex m_contentMutex;
-	mutable QWaitCondition m_waitCondition;
+	QStringList m_categories;
 	
-	FileContentParser * m_element;
+	QList<Snipet*> m_list;
+	QString m_filename;
+public slots:
+	void addCategory( QString newCategory );
+	void snipetPropertyChange();
 private:
-	EditorThread * m_parent;
+	SnipetList * m_parent;
 };
 
-PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_parent( parent ) {
-	
-}
-
-PrivateEditorThread::~PrivateEditorThread() {
-	
-}
-
-/* EditorThread */
-
-EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
-	d = new PrivateEditorThread( this );
-	d->m_element = NULL;
-}
-
-EditorThread::~EditorThread() {
-	delete d;
-}
-
-void EditorThread::threadrun() {
-	forever {
-		d->m_contentMutex.lock();
-		d->m_waitCondition.wait( &d->m_contentMutex );
-		try {
-			d->m_element->loadFromContent( d->m_content );
-		} catch( ... ) {
-			
-		}
-		
-		d->m_contentMutex.unlock();
-	}
-}
-
-void EditorThread::reloadEditorContent( const QString & content ) {
-	QMutexLocker( &d->m_contentMutex );
-	d->m_content = content;
-	d->m_waitCondition.wakeAll();
-}
-
-FileContentParser* & EditorThread::parser() {
-	return d->m_element;
-}
+#endif // __P_SNIPETLIST_H__

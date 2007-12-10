@@ -672,7 +672,7 @@
   <customwidget>
    <class>DirectoryEdit</class>
    <extends>QLineEdit</extends>
-   <header>../src/directoryedit.h</header>
+   <header>directoryedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -18,69 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef __P_SNIPETDIALOG_H__
+#define __P_SNIPETDIALOG_H__
+
 // Xinx header
-#include "editorthread.h"
+#include "globals.h"
+#include "snipetdialog.h"
+#include "snipetlist.h"
+#include "xmlhighlighter.h"
+#include "jshighlighter.h"
 
 // Qt header
-#include <QMutex>
-#include <QWaitCondition>
-#include <QAbstractItemModel>
+#include <QApplication>
+#include <QGroupBox>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
 
-/* PrivateEditorThread */
-
-class PrivateEditorThread {
+class PrivateSnipetDialogImpl : public QObject {
+	Q_OBJECT
 public:
-	PrivateEditorThread( EditorThread * parent );
-	~PrivateEditorThread();
+	PrivateSnipetDialogImpl( SnipetDialogImpl * parent );
+	virtual ~PrivateSnipetDialogImpl();
 	
-	QString m_content;
-	mutable QMutex m_contentMutex;
-	mutable QWaitCondition m_waitCondition;
+	void setupUi();
+
+	void addParamLine();
+
+	QTextEdit * m_textEdit;
+	QGridLayout * m_paramGrid;
 	
-	FileContentParser * m_element;
+	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
+	
+	enum Snipet::SnipetType m_snipetType;
+	Snipet * m_snipet;
+public slots:
+	void textChanged();
 private:
-	EditorThread * m_parent;
+	SnipetDialogImpl * m_parent;
 };
 
-PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_parent( parent ) {
-	
-}
-
-PrivateEditorThread::~PrivateEditorThread() {
-	
-}
-
-/* EditorThread */
-
-EditorThread::EditorThread( QObject * parent ) : XinxThread( parent ) {
-	d = new PrivateEditorThread( this );
-	d->m_element = NULL;
-}
-
-EditorThread::~EditorThread() {
-	delete d;
-}
-
-void EditorThread::threadrun() {
-	forever {
-		d->m_contentMutex.lock();
-		d->m_waitCondition.wait( &d->m_contentMutex );
-		try {
-			d->m_element->loadFromContent( d->m_content );
-		} catch( ... ) {
-			
-		}
-		
-		d->m_contentMutex.unlock();
-	}
-}
-
-void EditorThread::reloadEditorContent( const QString & content ) {
-	QMutexLocker( &d->m_contentMutex );
-	d->m_content = content;
-	d->m_waitCondition.wakeAll();
-}
-
-FileContentParser* & EditorThread::parser() {
-	return d->m_element;
-}
+#endif // __P_SNIPETDIALOG_H__

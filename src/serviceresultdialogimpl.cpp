@@ -18,27 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "serviceresultdialogimpl.h"
-
-#include "xmlhighlighter.h"
+// Xinx header
+#include "private/p_serviceresultdialogimpl.h"
 
 /* PrivateServiceResultDialogImpl */
-
-class PrivateServiceResultDialogImpl : public QObject {
-	Q_OBJECT
-public:
-	PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent );
-	
-	QHash<QString,QString> m_input;
-	QHash<QString,QString> m_output;
-	
-public slots:
-	void inputComboChanged( QString value );
-	void outputComboChanged( QString value );
-	
-private:
-	ServiceResultDialogImpl * m_parent;	
-};
 
 PrivateServiceResultDialogImpl::PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent ) {
 	m_parent = parent;
@@ -82,4 +65,3 @@ void ServiceResultDialogImpl::setOutputStreamText( const QHash<QString,QString> 
 	m_outputStreamTextEdit->setText( text.values().at( 0 ) );
 }
 
-#include "serviceresultdialogimpl.moc"

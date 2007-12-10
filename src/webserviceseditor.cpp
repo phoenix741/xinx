@@ -19,56 +19,9 @@
  ***************************************************************************/
 
 // Xinx header
-#include "texteditor.h"
-#include "globals.h"
-#include "webserviceseditor.h"
-#include "webservices.h"
-#include "xslproject.h"
-#include "xinxconfig.h"
-#include "exceptions.h"
-
-// Qt header
-#include <QLabel>
-#include <QComboBox>
-#include <QVBoxLayout>
-#include <QFile>
-#include <QMessageBox>
-#include <QTextStream>
-#include <QApplication>
-#include <QFileInfo>
-#include <QDir>
-#include <QDomDocument>
+#include "private/p_webserviceseditor.h"
 
 /* PrivateWebServicesEditor */
-
-class PrivateWebServicesEditor : public QObject {
-	Q_OBJECT
-public:
-	PrivateWebServicesEditor( WebServicesEditor * parent );
-	~PrivateWebServicesEditor();
-	
-	void store( const QString & );
-	void restore( const QString & );
-
-	QString m_serviceName, m_operationName, m_oldParamValue;
-	QComboBox * m_servicesList, * m_paramList, * m_actionList;
-	QHash<QString,QString> m_paramValues;
-	bool m_isModified;
-
-public slots:
-	void webServicesChanged();
-	void webServicesActivated( int );
-	void webServicesParamActivated( int );
-	void webServicesValueActivated();
-
-public:
-	void loadServicesList();
-	void loadActionsList( int index );
-	void loadValuesList( int index );
-
-private:
-	WebServicesEditor * m_parent;
-};
 
 PrivateWebServicesEditor::PrivateWebServicesEditor( WebServicesEditor * parent ) {
 	m_parent = parent;
@@ -472,4 +425,4 @@ bool WebServicesEditor::isModified() {
 QIcon WebServicesEditor::icon() {
 	return QIcon( ":/images/typefws.png" );
 }
-#include "webserviceseditor.moc"
+

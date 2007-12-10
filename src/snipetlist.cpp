@@ -18,13 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "snipetlist.h"
-#include "snipet.h"
-
-#include <QApplication>
-#include <QDomDocument>
-#include <QFile>
-#include <QTextStream>
+// Xinx header
+#include "private/p_snipetlist.h"
 
 /* SnipetListException */
 
@@ -41,23 +36,6 @@ SnipetListException::SnipetListException( const QString & message ) : XinxExcept
 }
 	
 /* PrivateSnipetList */
-
-class PrivateSnipetList : public QObject {
-	Q_OBJECT
-public:
-	PrivateSnipetList( SnipetList * parent );
-	virtual ~PrivateSnipetList();
-	
-	QStringList m_categories;
-	
-	QList<Snipet*> m_list;
-	QString m_filename;
-public slots:
-	void addCategory( QString newCategory );
-	void snipetPropertyChange();
-private:
-	SnipetList * m_parent;
-};
 
 PrivateSnipetList::PrivateSnipetList( SnipetList * parent ) : m_parent( parent ) {
 	
@@ -281,4 +259,3 @@ void SnipetList::loadFromFile( const QString & filename ) {
 	emit listChanged();
 }
 
-#include "snipetlist.moc"

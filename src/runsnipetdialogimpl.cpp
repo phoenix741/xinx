@@ -18,33 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "runsnipetdialogimpl.h"
-
-#include <QLabel>
-#include <QLineEdit>
-
-#include "snipetdialog.h"
+// Xinx header
+#include "private/p_runsnipetdialogimpl.h"
 
 /* PrivateRunSnipetDialogImpl */
-
-class PrivateRunSnipetDialogImpl : public QObject {
-	Q_OBJECT
-public:
-	PrivateRunSnipetDialogImpl( RunSnipetDialogImpl * parent );
-	virtual ~PrivateRunSnipetDialogImpl();
-	
-	QGridLayout * m_paramGrid;
-	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
-	QString m_text;
-	Snipet * m_snipet;
-	
-	void setupUi();
-	
-public slots:
-	void changeSnipet();
-private:
-	RunSnipetDialogImpl * m_parent;
-};
 
 PrivateRunSnipetDialogImpl::PrivateRunSnipetDialogImpl( RunSnipetDialogImpl * parent ) : m_parent( parent ) {
 	
@@ -109,5 +86,3 @@ QString RunSnipetDialogImpl::getResult() {
 	}
 	return text;
 }
-
-#include "runsnipetdialogimpl.moc"

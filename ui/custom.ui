@@ -1050,12 +1050,12 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>DirectoryEdit</class>
    <extends>QLineEdit</extends>
-   <header>../src/directoryedit.h</header>
+   <header>directoryedit.h</header>
   </customwidget>
   <customwidget>
    <class>KColorCombo</class>
    <extends>QComboBox</extends>
-   <header>../src/kcolorcombo.h</header>
+   <header>kcolorcombo.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
