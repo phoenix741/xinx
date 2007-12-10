@@ -363,7 +363,7 @@ FileTypeXsl::~FileTypeXsl() {
 }
 
 void FileTypeXsl::updateModel() {
-	if( d->m_thread ) {
+	if( d->m_modelData ) {
 		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
 //		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
 	} else {
