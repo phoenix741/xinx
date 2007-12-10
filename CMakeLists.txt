@@ -196,10 +196,14 @@ QT4_WRAP_CPP(xinx_MOC_SRCS ${xinx_MOC_HDRS})
 QT4_WRAP_UI(xinx_UIS_H ${xinx_UIS})
 QT4_ADD_RESOURCES(xinx_QRC_H application.qrc)
 
-
+if(WIN32)
 add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xinx_ico.obj
 	COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -o ${CMAKE_CURRENT_BINARY_DIR}/xinx_ico.obj -i${CMAKE_CURRENT_SOURCE_DIR}/${xinx_RCS}
 )
+set(xinx_RESS
+	${CMAKE_CURRENT_BINARY_DIR}/xinx_ico.obj
+)
+endif(WIN32)
 
 add_definitions(-Wall ${QT_DEFINITIONS})
 
@@ -208,6 +212,6 @@ include_directories(
 	${CMAKE_CURRENT_BINARY_DIR}
 	${QT_INCLUDE_DIR}
 )
-add_executable(xinx WIN32 ${xinx_SRCS} ${xinx_MOC_SRCS} ${xinx_UIS_H} ${xinx_QRC_H} ${CMAKE_CURRENT_BINARY_DIR}/xinx_ico.obj)
+add_executable(xinx WIN32 ${xinx_SRCS} ${xinx_MOC_SRCS} ${xinx_UIS_H} ${xinx_QRC_H} ${xinx_RESS})
 target_link_libraries(xinx ${QT_LIBRARIES})
 install(TARGETS xinx DESTINATION bin)
