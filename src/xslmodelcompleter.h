@@ -44,6 +44,7 @@ public slots:
 	void addElement( FileContentElement*, int );
 	void removeElement( FileContentElement* );
 private:
+	void addElement( FileContentElement* element );
 	bool contains( FileContentElement * data );
 	void refreshRecursive( FileContentElement * data );
 

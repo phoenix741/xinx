@@ -49,15 +49,16 @@ bool XSLValueCompletionModel::contains( FileContentElement * data ) {
 
 void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
 	for( int i = 0; i < data->rowCount(); i++ ) {
-		if( ! dynamic_cast<XSLFileContentImport*>( data->element( i ) ) ) {
-			if( ! contains( data->element( i ) ) )
-				m_objList.append( data->element( i ) );
-		} else {
-			QString name = data->element( i )->name();
+		FileContentElement * e = data->element( i );
+		if( dynamic_cast<XSLFileContentImport*>( e ) ) {
+			QString name = e->name();
 			if( ! m_files.contains( name ) ) { 
 				m_files.append( name );
-				refreshRecursive( data->element( i ) );
+				refreshRecursive( e );
 			}
+		} else {
+			if( ( dynamic_cast<XSLFileContentParams*>( e ) || dynamic_cast<XSLFileContentTemplate*>( e ) ) && ( ! contains( e ) ) )
+				addElement( e );
 		}
 	}
 }
@@ -69,14 +70,22 @@ void XSLValueCompletionModel::refreshList() {
 	reset();
 }
 
-void XSLValueCompletionModel::addElement( FileContentElement* element, int row ) {
-	Q_UNUSED( row );
-	
+void XSLValueCompletionModel::addElement( FileContentElement* element ) {
 	QList<FileContentElement*>::iterator i = qLowerBound( m_objList.begin(), m_objList.end(), element, FileContentElementModelObjListSort );
 	int index = i - m_objList.begin();
 	beginInsertRows( QModelIndex(), index, index );
 	m_objList.insert( i, element );
 	endInsertRows();
+}
+
+void XSLValueCompletionModel::addElement( FileContentElement* element, int row ) {
+	Q_UNUSED( row );
+	if( ( dynamic_cast<XSLFileContentParams*>( element ) || dynamic_cast<XSLFileContentTemplate*>( element ) ) && ( ! contains( element ) ) ) {
+		addElement( element );
+	}
+	if( dynamic_cast<XSLFileContentImport*>( element ) ) {
+		refreshRecursive( element );
+	}
 }
 
 void XSLValueCompletionModel::removeElement( FileContentElement* element ) {
