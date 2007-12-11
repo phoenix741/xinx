@@ -211,3 +211,4 @@ win32 {
         -lpsapi
     RC_FILE += rc/xinx.rc
 }
+INCLUDEPATH += src/
