@@ -36,12 +36,16 @@ public:
 	static bool canBeAddedToRepository( const QString & filename );
 	
 	void setFileName( const QString & filename );
+	QString path() const;
+	QString filename() const; 
 	
-	static QString saveFileAs( const QString & filename, QStringList & filesForRepository );
+	static QString saveFileAs( const QString & filename, const QString & suffix, QStringList & filesForRepository );
 	static QString saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository );
 private slots:
 private:
 	static struct_extentions extentionOfFileName( const QString & name );
+	
+	QString m_filename, m_lastPlace, m_suffix;
 };
 
 #endif /*SPECIFIQUEDLGIMPL_H_*/

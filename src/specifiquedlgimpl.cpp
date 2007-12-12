@@ -68,30 +68,49 @@ bool SpecifiqueDialogImpl::canBeAddedToRepository( const QString & filename ) {
 
 void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
 	XINX_ASSERT( global.m_project );
-	
+
+	m_filename = filename;
 	m_specifiqueCheckBox->setEnabled( (!isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) );
 	m_repositoryCheckBox->setEnabled( canBeAddedToRepository( filename ) );
 }
 
-QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, QStringList & filesForRepository ) {
+QString SpecifiqueDialogImpl::path() const {
+	if( m_specifiqueCheckBox->enabled() && m_specifiqueCheckBox->checked() ) { 
+		QString fileSuffix = suffix.isEmpty() ? QFileInfo( m_filename ).completeSuffix() : suffix;
+		struct_extentions customFile = extentionOfFileName( fileSuffix );
+		return QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
+	} else
+	 	return m_lastPlace;
+}
+
+QString SpecifiqueDialogImpl::filename() const {
+	QString newFileName = QString();
+	
+	newFileName = QFileInfo( fileName ).fileName();
+	if( m_specifiqueCheckBox->enabled() && m_specifiqueCheckBox->checked() ) 
+		newFileName = global.m_project->specifiquePrefix().toLower() + "_" + newFileName;
+	
+	return newFileName;
+}
+
+QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QString & suffix, QStringList & filesForRepository ) {
 	QString newFilename = filename;
 	
 	SpecifiqueDialogImpl dlg;
 	dlg.setFileName( filename );
-	if( ( canBeAddedToRepository( filename ) || ( (!isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) ) ) && dlg.exec() ) {
-		if( dlg.m_specifiqueCheckBox->isChecked() && canBeSaveAsSpecifique( filename ) ) {
-			
-		}
-		if( dlg.m_repositoryCheckBox->isChecked() && canBeAddedToRepository( filename ) ) {
+	dlg.m_suffix = suffix;
+	if( ( canBeAddedToRepository( filename ) || ( (!isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) ) ) && dlg.exec() ) 
+		if( (!filename.isEmpty()) && dlg.m_repositoryCheckBox->isChecked() && dlg.m_repositoryCheckBox->isEnabled() ) 
 			filesForRepository << filename;
-		}
-	}
+
+	if( filename != newFilename )
+		filesForRepository << newFilename;
 	return newFilename;
 }
 
 QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository ) {
 	if( (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) )
-		return saveFileAs( filename, filesForRepository );
+		return saveFileAs( filename, QString(), filesForRepository );
 	return filename;
 }
 
