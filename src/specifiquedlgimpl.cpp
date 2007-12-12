@@ -26,6 +26,7 @@
 
 // Qt header
 #include <QFileInfo>
+#include <QDir>
 
 SpecifiqueDialogImpl::SpecifiqueDialogImpl( QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
@@ -75,8 +76,8 @@ void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
 }
 
 QString SpecifiqueDialogImpl::path() const {
-	if( m_specifiqueCheckBox->enabled() && m_specifiqueCheckBox->checked() ) { 
-		QString fileSuffix = suffix.isEmpty() ? QFileInfo( m_filename ).completeSuffix() : suffix;
+	if( m_specifiqueCheckBox->isEnabled() && m_specifiqueCheckBox->isChecked() ) { 
+		QString fileSuffix = m_suffix.isEmpty() ? QFileInfo( m_filename ).completeSuffix() : m_suffix;
 		struct_extentions customFile = extentionOfFileName( fileSuffix );
 		return QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
 	} else
@@ -86,8 +87,8 @@ QString SpecifiqueDialogImpl::path() const {
 QString SpecifiqueDialogImpl::filename() const {
 	QString newFileName = QString();
 	
-	newFileName = QFileInfo( fileName ).fileName();
-	if( m_specifiqueCheckBox->enabled() && m_specifiqueCheckBox->checked() ) 
+	newFileName = QFileInfo( m_filename ).fileName();
+	if( m_specifiqueCheckBox->isEnabled() && m_specifiqueCheckBox->isChecked() ) 
 		newFileName = global.m_project->specifiquePrefix().toLower() + "_" + newFileName;
 	
 	return newFileName;
