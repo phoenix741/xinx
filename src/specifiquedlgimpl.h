@@ -36,6 +36,9 @@ public:
 	static bool canBeAddedToRepository( const QString & filename );
 	
 	void setFileName( const QString & filename );
+	static void setLastPlace( const QString & pathname );
+	static QString lastPlace(); 
+	
 	QString path() const;
 	QString filename() const; 
 	
@@ -45,7 +48,8 @@ private slots:
 private:
 	static struct_extentions extentionOfFileName( const QString & name );
 	
-	QString m_filename, m_lastPlace, m_suffix;
+	static QString m_lastPlace;
+	QString m_filename, m_suffix;
 };
 
 #endif /*SPECIFIQUEDLGIMPL_H_*/

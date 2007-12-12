@@ -61,12 +61,9 @@ public:
 	void registerTypes();
 
 	// Editor
-	QString m_lastProjectOpenedPlace, m_lastPlace;
+	QString m_lastProjectOpenedPlace;
 	QStringList m_fileToAdd;
 	
-	QString fileEditorCheckPathName( const QString & pathname );
-	QString getUserPathName( const QString & pathname, const QString & suffix = QString() );
-	QString fileEditorStandardBackup( const QString & oldname, const QString & newname );
 	bool fileEditorMayBeSave( int index );
 	void fileEditorSave( int index );
 	void fileEditorSaveAs( int index );

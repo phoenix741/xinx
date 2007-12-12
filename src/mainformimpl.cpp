@@ -64,7 +64,7 @@
 
 /* PrivateMainformImpl */
 
-PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_lastPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_parent( parent ) {
+PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_parent( parent ) {
 	XINX_TRACE( "PrivateMainformImpl", QString( "( 0x%1 )" ).arg( (unsigned int)parent, 0, 16 ) );
 	
 	registerTypes();
@@ -561,11 +561,11 @@ void PrivateMainformImpl::openFile() {
 
 	XINX_ASSERT( global.m_config );
 	
-	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), m_lastPlace, global.m_config->filters().join(";;") );
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), global.m_config->filters().join(";;") );
 	
 	m_parent->m_tabEditors->setUpdatesEnabled( false );
 	foreach( QString filename, selectedFiles ) {
-		m_lastPlace = QFileInfo( filename ).absolutePath();
+		SpecifiqueDialogImpl::setLastPlace( QFileInfo( filename ).absolutePath() );
 		m_parent->openFile( filename );
 	}
 	m_parent->m_tabEditors->setUpdatesEnabled( true );
@@ -804,109 +804,6 @@ bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
 	return true;
 }
 
-QString PrivateMainformImpl::fileEditorCheckPathName( const QString & pathname ) {
-	XINX_TRACE( "PrivateMainformImpl::fileEditorCheckPathName", QString( "( %1 )" ).arg( pathname ) );
-
-	XINX_ASSERT( global.m_config );
-	
-	QString prefix = ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ?
-							 global.m_project->specifiquePrefix() + "_" : 
-							 "" ;
-	QString filename = QFileInfo( pathname ).fileName();
-	bool hasSpecifiqueName = filename.startsWith( prefix, Qt::CaseInsensitive );
-	bool canBeCustomize = global.m_project 
-						&& global.m_project->options().testFlag( XSLProject::hasSpecifique ) 
-						&& extentionOfFileName( filename ).canBeSpecifique
-						&& global.m_config->config().project.alertWhenSavingStandardFile;
-	
-	if( canBeCustomize && !hasSpecifiqueName ) {
-		QMessageBox::StandardButton res = QMessageBox::warning( m_parent, tr( "Save standard XSL" ), tr( "You're being to save standard file, do you whant make it specifique ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
-		if( res == QMessageBox::Cancel )
-			return QString();
-		if( res == QMessageBox::Yes )
-			return getUserPathName( pathname );
-		return pathname;
-	} else
-		return pathname;
-}
-
-QString PrivateMainformImpl::getUserPathName( const QString & pathname, const QString & suffix ) {
-	XINX_TRACE( "PrivateMainformImpl::getUserPathName", QString( "( %1, %2 )" ).arg( pathname ).arg( suffix ) );
-
-	XINX_ASSERT( global.m_config );
-	XINX_ASSERT( ! ( pathname.isEmpty() && suffix.isEmpty() ) );
-	
-	QString fileName    = pathname,
-			fileSuffix  = suffix.isEmpty() ? QFileInfo( pathname ).completeSuffix() : suffix,
-			specifPath,
-			filter = global.m_config->filter( fileSuffix ),
-			newFileName;
-	struct_extentions customFile = extentionOfFileName( fileSuffix );
-
-	if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique )  ) 
-		specifPath = QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
-	else
-	 	specifPath = m_lastPlace;
-
-	if( fileName.isEmpty() ) {
-		if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) 
-			newFileName = QDir( specifPath ).absoluteFilePath( global.m_project->specifiquePrefix().toLower() + "_" );
-		else
-			newFileName = specifPath;
-	} else {
-		bool isCustomized = 
-			global.m_project && 
-			QFileInfo( fileName ).fileName().startsWith( global.m_project->specifiquePrefix(), Qt::CaseInsensitive );
-			
-		if( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) && (!isCustomized) && customFile.canBeSpecifique) {
-			newFileName = QDir( specifPath ).
-				absoluteFilePath( global.m_project->specifiquePrefix().toLower() + "_" + QFileInfo( fileName ).fileName() );
-		} else {
-			newFileName = fileName;
-		}
-	}
-	
-	fileName = QFileDialog::getSaveFileName( m_parent, tr("Save text file"), newFileName, global.m_config->filters().join(";;"), &filter );
-	
-	if( !fileName.isEmpty() ) {
-		m_lastPlace = QFileInfo( fileName ).absolutePath();
-		QString backup = fileEditorStandardBackup( pathname, fileName );
-		if( global.m_project && ( global.m_project->projectRCS() != XSLProject::NORCS ) ) {
-			QMessageBox::StandardButton res = QMessageBox::question( m_parent, tr("Add file"), tr("Do you want add file %1 to the repository ?").arg( QFileInfo( fileName ).fileName() ), QMessageBox::Yes | QMessageBox::No );
-			if( res == QMessageBox::Yes ) {
-				m_fileToAdd.clear();
-				if( backup.isEmpty() )
-					m_fileToAdd << fileName;
-				else
-					m_fileToAdd << fileName << backup;
-			} 
-		} 
-	}
-		
-	return fileName;
-}
-
-QString PrivateMainformImpl::fileEditorStandardBackup( const QString & oldname, const QString & newname ) {
-	XINX_TRACE( "PrivateMainformImpl::fileEditorStandardBackup", QString( "( %1, %2 )" ).arg( oldname ).arg( newname ) );
-
-	if( ! ( global.m_project && global.m_project->options().testFlag( XSLProject::hasSpecifique ) ) ) return QString();
-		
-	QString prefix = global.m_project->specifiquePrefix() + "_";
-	QString oldfilename = QFileInfo( oldname ).fileName();
-	QString newfilename = QFileInfo( newname ).fileName();
-	bool isOldSpecifiqueFile = oldfilename.startsWith( prefix, Qt::CaseInsensitive );
-	bool isNewSpecifiqueFile = newfilename.startsWith( prefix, Qt::CaseInsensitive );
-	QString specifPath = QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( extentionOfFileName( oldfilename ).customPath );
-	QString destname = QDir( specifPath ).absoluteFilePath( oldfilename );
-
-	if( ( ! isOldSpecifiqueFile ) && isNewSpecifiqueFile ) {
-		QFile::copy( oldname, destname );
-		m_projectDock->refreshPath( specifPath );
-		return destname;
-	}
-	return QString();
-}
-
 void PrivateMainformImpl::fileEditorSave( int index ) {
 	XINX_TRACE( "PrivateMainformImpl::fileEditorSave", QString( "( %1 )" ).arg( index ) );
 
@@ -918,35 +815,31 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 		fileEditorSaveAs( index );
 	} else {
 		QString fileName = SpecifiqueDialogImpl::saveFileAsIfStandard( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName(), m_fileToAdd );
-		/*
-		QString fileName = fileEditorCheckPathName( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName() );
-		*/
 		if( ! fileName.isEmpty() ) {
 			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-			if( m_fileToAdd.count() > 0 ) {
+			if( m_fileToAdd.count() > 0 ) 
 				m_parent->addFilesToVersionManager( m_fileToAdd );
-				m_fileToAdd.clear();
-			}
 			m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 		}
+		m_fileToAdd.clear();
 	}
 }
 
 void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 	XINX_TRACE( "PrivateMainformImpl::fileEditorSaveAs", QString( "( %1 )" ).arg( index ) );
 
-	QString fileName = getUserPathName( 
-		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getFileName(), 
-		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getSuffix() );
+	QString fileName = SpecifiqueDialogImpl::saveFileAs( 
+			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getFileName(),
+			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->getSuffix(),
+			m_fileToAdd );
 
 	if( ! fileName.isEmpty() ) {
 		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
-		if( m_fileToAdd.count() > 0 ) {
+		if( m_fileToAdd.count() > 0 ) 
 			m_parent->addFilesToVersionManager( m_fileToAdd );
-			m_fileToAdd.clear();
-		}
 		m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 	}
+	m_fileToAdd.clear();
 }
 
 void PrivateMainformImpl::fileEditorClose( int index ) {
@@ -1665,7 +1558,7 @@ void MainformImpl::openProject( const QString & filename ) {
 	try {
 		global.m_project      		= new XSLProject( filename );
 		d->m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
-		d->m_lastPlace              = global.m_project->projectPath();
+		SpecifiqueDialogImpl::setLastPlace( global.m_project->projectPath() );
 
 		updateWebServicesList();
 
