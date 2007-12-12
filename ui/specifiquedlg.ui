@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Dialog</string>
+   <string>Saving options</string>
   </property>
   <layout class="QVBoxLayout" >
    <item>
@@ -115,8 +115,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>278</x>
-     <y>253</y>
+     <x>359</x>
+     <y>303</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -131,12 +131,44 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>369</x>
-     <y>253</y>
+     <x>440</x>
+     <y>303</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
      <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_specifiqueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_repositoryCheckBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>124</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>126</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_specifiqueCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>196</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>207</x>
+     <y>160</y>
     </hint>
    </hints>
   </connection>

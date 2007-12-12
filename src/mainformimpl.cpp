@@ -43,6 +43,7 @@
 #include "runsnipetdialogimpl.h"
 #include "exceptions.h"
 #include "xinxthread.h"
+#include "specifiquedlgimpl.h"
 
 // Qt header
 #include <QKeySequence>
@@ -916,7 +917,10 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 	if ( ! m_parent->m_tabEditors->editor( index )->hasName() ) {
 		fileEditorSaveAs( index );
 	} else {
+		QString fileName = SpecifiqueDialogImpl::saveFileAsIfStandard( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName(), m_fileToAdd );
+		/*
 		QString fileName = fileEditorCheckPathName( qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor(index) )->getFileName() );
+		*/
 		if( ! fileName.isEmpty() ) {
 			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
 			if( m_fileToAdd.count() > 0 ) {

@@ -27,6 +27,7 @@
 // Qt header
 #include <QFileInfo>
 #include <QDir>
+#include <QFileDialog>
 
 SpecifiqueDialogImpl::SpecifiqueDialogImpl( QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
@@ -104,14 +105,34 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 		if( (!filename.isEmpty()) && dlg.m_repositoryCheckBox->isChecked() && dlg.m_repositoryCheckBox->isEnabled() ) 
 			filesForRepository << filename;
 
+	
 	if( filename != newFilename )
 		filesForRepository << newFilename;
 	return newFilename;
 }
 
 QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository ) {
-	if( (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) )
-		return saveFileAs( filename, QString(), filesForRepository );
-	return filename;
+	XINX_ASSERT( ! filename.isEmpty() );
+	if( (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) ) {
+		SpecifiqueDialogImpl dlg;
+		dlg.setFileName( filename );
+		dlg.m_lastPlace = QString();
+		if( dlg.exec() ) {
+			QString path 	= QDir( dlg.path() ).absoluteFilePath( dlg.filename() ),
+					filter	= global.m_config->filter( QFileInfo( filename ).completeSuffix() );
+			
+			if( dlg.m_specifiqueCheckBox->isEnabled() && dlg.m_specifiqueCheckBox->isChecked() )
+				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, global.m_config->filters().join(";;"), &filter );
+			
+			if( dlg.m_repositoryCheckBox->isChecked() && dlg.m_repositoryCheckBox->isEnabled() ) {
+				filesForRepository << filename;
+				if( filename != path )
+					filesForRepository << path;
+			}
+			return path;
+		} else
+			return QString(); // Annulation
+	} else
+		return filename;
 }
 

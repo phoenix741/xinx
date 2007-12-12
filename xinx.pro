@@ -89,6 +89,12 @@ HEADERS += src/specifiquedlgimpl.h \
     src/private/p_threadedconfigurationfile.h \
     src/private/p_uniqueapplication.h \
     src/private/p_xmlpresentationdockwidget.h \
+	src/private/p_flattreeview.h \
+	src/private/p_runsnipetdialogimpl.h \
+	src/private/p_serviceresultdialogimpl.h \
+	src/private/p_snipetdialog.h \
+	src/private/p_snipetlist.h \
+	src/private/p_webserviceseditor.h \
     src/projectdirectorydockwidget.h \
     src/projectpropertyimpl.h \
     src/rcs.h \
