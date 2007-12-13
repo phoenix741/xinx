@@ -217,7 +217,7 @@ QString XSLFileContentTemplate::displayName() const {
 	if( d->m_mode.isEmpty() )
 		return name();
 	else
-		return QString( "%1 [%2]" ).arg( name() ).arg( d->m_mode );
+		return QString( "%1 [%2]" ).arg( name() ).arg( mode() );
 }
 
 
@@ -226,11 +226,16 @@ XSLFileContentTemplate::~XSLFileContentTemplate() {
 }
 
 bool XSLFileContentTemplate::equals( FileContentElement * element ) {
+	QReadLocker l( &locker() );
+	
 	return FileContentElement::equals( element ) 
 		&& ( d->m_mode == dynamic_cast<XSLFileContentTemplate*>( element )->d->m_mode );
 }
 
 void XSLFileContentTemplate::copyFrom( FileContentElement * element ) {
+	QWriteLocker l( &locker() );
+	QReadLocker l2( &(element->locker()) );
+
 	FileContentElement::copyFrom( element );
 	if( dynamic_cast<XSLFileContentTemplate*>( element ) )
 		d->m_mode = dynamic_cast<XSLFileContentTemplate*>( element )->d->m_mode;

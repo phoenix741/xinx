@@ -22,11 +22,9 @@
 #include "filecontentstructure.h"
 #include "exceptions.h"
 
-
 FileContentParser::~FileContentParser() {
 	
 }
-	
 
 /* PrivateFileContentElement */
 
@@ -42,6 +40,8 @@ public:
 	FileContentElement * m_parentElement;
 	
 	QList<FileContentElement*> m_elements;
+	
+	QReadWriteLock m_locker;
 private:
 	FileContentElement * m_parent;
 };
@@ -75,6 +75,10 @@ FileContentElement::FileContentElement( FileContentElement * parent, const QStri
 
 FileContentElement::~FileContentElement() {
 	delete d;
+}
+
+QReadWriteLock & FileContentElement::locker() {
+	return d->m_locker;
 }
 
 void FileContentElement::setFlagEmit( bool value ) {
@@ -161,8 +165,12 @@ FileContentElement * FileContentElement::element( int index ) {
 
 void FileContentElement::remove( int index ) {
 	emit aboutToRemove( d->m_elements.at( index ) );
+
+	QWriteLocker locker( &(d->m_locker) );
 	delete d->m_elements.at( index );
 	d->m_elements.removeAt( index );
+	locker.unlock();
+
 	emit removed();
 }
 
@@ -177,7 +185,11 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 	} else {
 		element->d->m_parentElement = this; // Appropriation
 		emit aboutToAdd( element, d->m_elements.size() );
+
+		QWriteLocker locker( &(d->m_locker) );
 		d->m_elements.append( element );
+		locker.unlock();
+
 		emit added();
 		return element;
 	}
@@ -185,11 +197,13 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 
 
 void FileContentElement::clear() {
+	QWriteLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1; i >= 0; i-- )
 		remove( i );
 }
 
 FileContentElement * FileContentElement::contains( FileContentElement * element ) {
+	QReadLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		if( element->equals( e ) ) 
 			return e;
@@ -206,12 +220,14 @@ void FileContentElement::markKeeped() {
 }
 
 void FileContentElement::markAllDeleted() {
+	QWriteLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		e->markDeleted();
 	}
 }
 
 void FileContentElement::removeMarkedDeleted() {
+	QWriteLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1 ; i >= 0 ; i-- ) {
 		if( d->m_elements.at( i )->d->m_flagDelete ) {
 			remove( i );

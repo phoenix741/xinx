@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QString>
 #include <QIcon>
+#include <QReadWriteLock>
 
 class PrivateFileContentElement;
 
@@ -110,6 +111,8 @@ public:
 	 * Icon used for show how the element must be.
 	 */
 	virtual QIcon icon() const;
+
+	QReadWriteLock & locker();
 protected:
 	/*!
 	 * Function to change the name of the element. This function is only accessible

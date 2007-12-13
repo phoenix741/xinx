@@ -38,9 +38,10 @@ public:
 	virtual ~EditorThread();	
 	
 	void reloadEditorContent( const QString & content );
+
+	FileContentParser* & parser();
 protected:
 	virtual void threadrun();
-	FileContentParser* & parser();
 private:
 	PrivateEditorThread * d;
 };
