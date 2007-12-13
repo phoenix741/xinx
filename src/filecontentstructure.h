@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QString>
 #include <QIcon>
-#include <QReadWriteLock>
+#include <QMutex>
 
 class PrivateFileContentElement;
 
@@ -112,7 +112,7 @@ public:
 	 */
 	virtual QIcon icon() const;
 
-	QReadWriteLock & locker();
+	QMutex & locker();
 protected:
 	/*!
 	 * Function to change the name of the element. This function is only accessible

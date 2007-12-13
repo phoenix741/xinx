@@ -373,8 +373,8 @@ void FileTypeXsl::updateModel() {
 		
 		d->m_modelData = new XSLFileContentParser();
 		d->m_contentModel = new FileContentItemModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser()), this );
-		d->m_completionValueModel = new XSLValueCompletionModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser() ), this );
-		d->m_completerValue->setModel( d->m_completionValueModel );
+//		d->m_completionValueModel = new XSLValueCompletionModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser() ), this );
+//		d->m_completerValue->setModel( d->m_completionValueModel );
 		
 //		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
 		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );

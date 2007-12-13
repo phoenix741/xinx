@@ -22,6 +22,7 @@
 #include "filecontentstructure.h"
 #include "exceptions.h"
 
+
 FileContentParser::~FileContentParser() {
 	
 }
@@ -41,12 +42,12 @@ public:
 	
 	QList<FileContentElement*> m_elements;
 	
-	QReadWriteLock m_locker;
+	QMutex m_locker;
 private:
 	FileContentElement * m_parent;
 };
 
-PrivateFileContentElement::PrivateFileContentElement( FileContentElement * parent ) {
+PrivateFileContentElement::PrivateFileContentElement( FileContentElement * parent ) : m_locker( QMutex::Recursive ) {
 	m_parent = parent;
 	m_line   = -1;
 	m_name   = QString();
@@ -77,7 +78,7 @@ FileContentElement::~FileContentElement() {
 	delete d;
 }
 
-QReadWriteLock & FileContentElement::locker() {
+QMutex & FileContentElement::locker() {
 	return d->m_locker;
 }
 
@@ -166,7 +167,7 @@ FileContentElement * FileContentElement::element( int index ) {
 void FileContentElement::remove( int index ) {
 	emit aboutToRemove( d->m_elements.at( index ) );
 
-	QWriteLocker locker( &(d->m_locker) );
+	QMutexLocker locker( &(d->m_locker) );
 	delete d->m_elements.at( index );
 	d->m_elements.removeAt( index );
 	locker.unlock();
@@ -186,7 +187,7 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 		element->d->m_parentElement = this; // Appropriation
 		emit aboutToAdd( element, d->m_elements.size() );
 
-		QWriteLocker locker( &(d->m_locker) );
+		QMutexLocker locker( &(d->m_locker) );
 		d->m_elements.append( element );
 		locker.unlock();
 
@@ -197,13 +198,13 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 
 
 void FileContentElement::clear() {
-	QWriteLocker locker( &(d->m_locker) );
+	QMutexLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1; i >= 0; i-- )
 		remove( i );
 }
 
 FileContentElement * FileContentElement::contains( FileContentElement * element ) {
-	QReadLocker locker( &(d->m_locker) );
+	QMutexLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		if( element->equals( e ) ) 
 			return e;
@@ -220,14 +221,14 @@ void FileContentElement::markKeeped() {
 }
 
 void FileContentElement::markAllDeleted() {
-	QWriteLocker locker( &(d->m_locker) );
+	QMutexLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		e->markDeleted();
 	}
 }
 
 void FileContentElement::removeMarkedDeleted() {
-	QWriteLocker locker( &(d->m_locker) );
+	QMutexLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1 ; i >= 0 ; i-- ) {
 		if( d->m_elements.at( i )->d->m_flagDelete ) {
 			remove( i );
