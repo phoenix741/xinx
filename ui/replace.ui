@@ -247,7 +247,7 @@
      <item>
       <widget class="QPushButton" name="m_findButton" >
        <property name="text" >
-        <string>Find</string>
+        <string>&amp;Find</string>
        </property>
        <property name="icon" >
         <iconset resource="../application.qrc" >:/images/find.png</iconset>
@@ -257,7 +257,7 @@
      <item>
       <widget class="QPushButton" name="m_closeButton" >
        <property name="text" >
-        <string>Close</string>
+        <string>&amp;Close</string>
        </property>
        <property name="icon" >
         <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>

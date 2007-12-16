@@ -52,7 +52,7 @@
    <item row="3" column="3" >
     <widget class="QPushButton" name="m_abortPushButton" >
      <property name="text" >
-      <string>Abort</string>
+      <string>&amp;Abort</string>
      </property>
      <property name="icon" >
       <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>

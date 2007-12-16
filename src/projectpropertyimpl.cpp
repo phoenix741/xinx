@@ -35,8 +35,11 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 }
 
 ProjectPropertyImpl::~ProjectPropertyImpl() {
-	if( m_versionInstance ) 
+	if( m_versionInstance ) {
+		m_versionInstance->terminate();
+		m_versionInstance->wait();
 		delete m_versionInstance;
+	}
 }
 
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
@@ -62,6 +65,8 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	QPalette paletteVerion( m_configurationVersionLabel->palette() );
 	
 	if( m_versionInstance ) {
+		m_versionInstance->terminate();
+		m_versionInstance->wait();
 		delete m_versionInstance;
 		m_versionInstance = NULL;
 	}
