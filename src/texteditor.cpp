@@ -260,9 +260,9 @@ void TextEditor::printWhiteSpaces( QPainter &p ) {
 		for ( int i=0; i<len; i++) {
 			QPixmap *p1 = 0;
 			
-			if (txt[i] == ' ' )
+			if ( txt[i] == ' ' )
 				p1 = &m_spacePixmap;
-			else if (txt[i] == '\t' )
+			else if ( txt[i] == '\t' )
 				p1 = &m_tabPixmap;
 			else 
 				continue;

@@ -166,7 +166,9 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
     connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
-
+    
+    connect( m_view, SIGNAL( cursorPositionChanged() ), this, SLOT( refreshTextHighlighter() ));
+  
 	m_messageBox->hide();
 }
 
@@ -672,8 +674,14 @@ QAction * FileEditor::uncommentAction() {
 }
 
 void FileEditor::updateHighlighter() {
-	if( d->m_syntaxhighlighter )
+	if( d->m_syntaxhighlighter ) 
 		d->m_syntaxhighlighter->rehighlight();
+	
+}
+
+void FileEditor::refreshTextHighlighter() {
+	if( d->m_syntaxhighlighter ) 
+		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor() ) );
 }
 
 void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {

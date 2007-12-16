@@ -14,6 +14,7 @@
 **
 ****************************************************************************/
 
+// Xinx header
 #include "xmlhighlighter.h"
 #include "xinxconfig.h"
 #include "globals.h"
@@ -25,7 +26,7 @@ static const QString EXPR_COMMENT_TEXT		= "([^-]|(-(?!->)))*";
 static const QString EXPR_COMMENT_END		= "-->";
 static const QString EXPR_COMMENT			= EXPR_COMMENT_BEGIN + EXPR_COMMENT_TEXT + EXPR_COMMENT_END;
 
-static const QString EXPR_NAME				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
+static const QString EXPR_NAME 				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*";
 
 static const QString EXPR_ATTRIBUTE_VALUE	= "[^<%1{]*[%1{]";
 static const QString EXPR_XPATH_VALUE       = "[^<%1}]*[%1}]";
@@ -243,6 +244,7 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			if( pos == i ) {
 				iLength = expression.matchedLength() - 1;
 				setFormat( pos, iLength, m_config->config().formats["xml_attributevalue"]);
+				processText( i, text.mid( pos, iLength ) );
 			} else
 				setFormat( i, 1, m_config->config().formats["xml_other"] );
 		}
@@ -254,12 +256,23 @@ int XmlHighlighter::processDefaultText(int i, const QString& text)
 			if( pos == i ) {
 				iLength = expression.matchedLength() - 1;
 				setFormat( pos, iLength, m_config->config().formats["xml_xpathvalue"]);
+				processText( i, text.mid( pos, iLength ) );
 			} else
 				setFormat( i, 1, m_config->config().formats["xml_other"] );
 		}
 		break;
 	default:
-		setFormat( i, 1, m_config->config().formats["xml_other"] );
+		QRegExp expression( EXPR_TEXT );
+		const int pos = expression.indexIn( text, i );
+
+		if (pos == i) { // found ?
+			iLength = expression.matchedLength();
+
+			setFormat( pos, iLength, m_config->config().formats["xml_other"] );
+			processText( i, text.mid( pos, iLength ) );
+		} else {
+			setFormat( i, 1, m_config->config().formats["xml_other"] );
+		}
 		break;
 	}
 	return iLength;

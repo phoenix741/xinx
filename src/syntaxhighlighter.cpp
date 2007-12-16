@@ -18,8 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "syntaxhighlighter.h"
 #include "globals.h"
+
+const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
+
+/* SyntaxHighlighter */
 
 SyntaxHighlighter::SyntaxHighlighter( QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
 	if( config )
@@ -43,5 +48,27 @@ SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) :
 }
 
 SyntaxHighlighter::~SyntaxHighlighter() {
+}
+
+void SyntaxHighlighter::setHighlightText( const QString & text ) {
+	m_text = text;
+	rehighlight();
+}
+
+void SyntaxHighlighter::processText( int pos, const QString& text ) {
+	if( ! m_text.isEmpty() ) {
+		QRegExp expression( "\\b" + m_text + "\\b" );
+		int i = 0;
+		do {
+			i = expression.indexIn( text, i );
+			if( i >= 0 ) {
+				const int iLength = expression.matchedLength();
+				QTextCharFormat f = format( i );
+				f.setBackground( Qt::yellow );
+				setFormat( pos + i, iLength, f );
+				i += iLength;
+			}
+		} while( i >= 0 );
+	}
 }
 

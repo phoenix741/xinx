@@ -29,7 +29,7 @@ public:
 	virtual ~XmlHighlighter() {};
 protected:
 	void highlightBlock(const QString& rstrText);
-	int  processDefaultText(int i, const QString& rstrText);
+	virtual int processDefaultText(int i, const QString& rstrText);
 private:
 	enum ParsingState {
 		NoState = 0,

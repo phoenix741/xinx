@@ -259,7 +259,8 @@ public slots :
 	 * If no highlighter is used, this function do nothing.
 	 */
 	void updateHighlighter();
-
+	void refreshTextHighlighter();
+	
 	virtual void setModified( bool modified );
 
 	void updateModel();

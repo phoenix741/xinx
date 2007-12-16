@@ -34,7 +34,16 @@ public:
 	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
 	SyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
 	virtual ~SyntaxHighlighter();
+	
+	void setHighlightText( const QString & text );
 protected:
+	void processText( int pos, const QString& text );
+	
 	XINXConfig * m_config;
+	QString m_text;
 };
+
+extern const QString EXPR_TEXT;
+
+
 #endif
