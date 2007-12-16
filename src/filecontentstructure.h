@@ -25,7 +25,6 @@
 #include <QObject>
 #include <QString>
 #include <QIcon>
-#include <QMutex>
 
 class PrivateFileContentElement;
 

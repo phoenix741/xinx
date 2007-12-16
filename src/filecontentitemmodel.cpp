@@ -169,7 +169,7 @@ int FileContentItemModel::columnCount( const QModelIndex &parent ) const {
 void FileContentItemModel::beginInsertRow( FileContentElement * element, int row ) {
 	XINX_TRACE( "FileContentItemModel::beginInsertRow", QString( "( %1, %2 )").arg( (unsigned int)element, 0, 16 ).arg( row ) );
 
-	QModelIndex idx = index( element );
+	QModelIndex idx = index( element->parent() );
 	beginInsertRows( idx, row, row );
 }
 
