@@ -46,8 +46,7 @@ PrivateFileTypeXsl::PrivateFileTypeXsl( FileTypeXsl * parent ) : m_parent( paren
 	m_completerValue 		  = 0;
 	m_modelData 			  = NULL;
 	m_contentModel 			  = NULL;
-	m_thread 				  = NULL;
-
+	
 	m_completerNode = new QCompleter( this );
 	m_completerNode->setWidget( m_parent->textEdit() );
 	m_completerNode->setCompletionMode( QCompleter::PopupCompletion );
@@ -80,7 +79,6 @@ PrivateFileTypeXsl::PrivateFileTypeXsl( FileTypeXsl * parent ) : m_parent( paren
 
 PrivateFileTypeXsl::~PrivateFileTypeXsl() {
 	emit m_parent->modelUpdated( NULL );
-	delete m_thread; // KILL
 }
 
 void PrivateFileTypeXsl::keyPressEvent( QKeyEvent *e ) {

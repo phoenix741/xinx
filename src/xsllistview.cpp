@@ -267,18 +267,12 @@ XSLFileContentTemplate::~XSLFileContentTemplate() {
 bool XSLFileContentTemplate::equals( FileContentElement * element ) {
 	XINX_TRACE( "XSLFileContentTemplate::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
-	QMutexLocker l( &locker() );
-	QMutexLocker l2( &element->locker() );
-	
 	return FileContentElement::equals( element ) 
 		&& ( d->m_mode == dynamic_cast<XSLFileContentTemplate*>( element )->d->m_mode );
 }
 
 void XSLFileContentTemplate::copyFrom( FileContentElement * element ) {
 	XINX_TRACE( "XSLFileContentTemplate::copyFrom", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
-
-	QMutexLocker l( &locker() );
-	QMutexLocker l2( &(element->locker()) );
 
 	FileContentElement::copyFrom( element );
 	if( dynamic_cast<XSLFileContentTemplate*>( element ) )

@@ -55,7 +55,6 @@ bool XSLValueCompletionModel::contains( FileContentElement * data ) {
 void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
 	XINX_TRACE( "XSLValueCompletionModel::refreshRecursive", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
 
-	QMutexLocker locker( &data->locker() );
 	for( int i = 0; i < data->rowCount(); i++ ) {
 		FileContentElement * e = data->element( i );
 		if( dynamic_cast<XSLFileContentImport*>( e ) ) {
@@ -151,7 +150,6 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 
 	if( index.row() < m_objList.count() ) {
 		FileContentElement * data = m_objList[ index.row() ];
-		QMutexLocker locker( &data->locker() );
 
 		if( role == Qt::DecorationRole ) {
 			return data->icon();

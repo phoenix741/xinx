@@ -26,7 +26,6 @@
 #include "../xsllistview.h"
 #include "../filecontentitemmodel.h"
 #include "../xslmodelcompleter.h"
-#include "../editorthreadxsl.h"
 
 // Qt header
 #include <QObject>
@@ -56,9 +55,6 @@ public:
 	XSLValueCompletionModel * m_completionValueModel;
 	XSLParamCompletionModel * m_completionParamModel;
 	XSLBaliseCompletionModel * m_completionBaliseModel;
-	
-	EditorThreadXSL * m_thread;
-
 public slots:
 	void keyPressEvent( QKeyEvent *event );
 	void insertCompletion( const QModelIndex& index );

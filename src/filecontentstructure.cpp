@@ -42,13 +42,11 @@ public:
 	FileContentElement * m_parentElement;
 	
 	QList<FileContentElement*> m_elements;
-	
-	QMutex m_locker;
 private:
 	FileContentElement * m_parent;
 };
 
-PrivateFileContentElement::PrivateFileContentElement( FileContentElement * parent ) : m_locker( QMutex::Recursive ) {
+PrivateFileContentElement::PrivateFileContentElement( FileContentElement * parent ) {
 	XINX_TRACE( "PrivateFileContentElement", "( parent )" );
 
 	m_parent = parent;
@@ -84,12 +82,6 @@ FileContentElement::~FileContentElement() {
 	XINX_TRACE( "~FileContentElement", "()" );
 	
 	delete d;
-}
-
-QMutex & FileContentElement::locker() {
-	XINX_TRACE( "FileContentElement::locker", "()" );
-	
-	return d->m_locker;
 }
 
 void FileContentElement::setFlagEmit( bool value ) {
@@ -211,10 +203,8 @@ void FileContentElement::remove( int index ) {
 
 	emit aboutToRemove( d->m_elements.at( index ) );
 
-	QMutexLocker locker( &(d->m_locker) );
 	delete d->m_elements.at( index );
 	d->m_elements.removeAt( index );
-	locker.unlock();
 
 	emit removed();
 }
@@ -233,10 +223,8 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 		element->d->m_parentElement = this; // Appropriation
 		emit aboutToAdd( element, d->m_elements.size() );
 
-		QMutexLocker locker( &(d->m_locker) );
 		d->m_elements.append( element );
-		locker.unlock();
-
+		
 		emit added();
 		return element;
 	}
@@ -246,7 +234,6 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 void FileContentElement::clear() {
 	XINX_TRACE( "FileContentElement::clear", "()" );
 
-	QMutexLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1; i >= 0; i-- )
 		remove( i );
 }
@@ -254,7 +241,6 @@ void FileContentElement::clear() {
 FileContentElement * FileContentElement::contains( FileContentElement * element ) {
 	XINX_TRACE( "FileContentElement::contains", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
-	QMutexLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		if( element->equals( e ) ) 
 			return e;
@@ -277,7 +263,6 @@ void FileContentElement::markKeeped() {
 void FileContentElement::markAllDeleted() {
 	XINX_TRACE( "FileContentElement::markAllDeleted", "()" );
 
-	QMutexLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		e->markDeleted();
 	}
@@ -286,7 +271,6 @@ void FileContentElement::markAllDeleted() {
 void FileContentElement::removeMarkedDeleted() {
 	XINX_TRACE( "FileContentElement::removeMarkedDeleted", "()" );
 
-	QMutexLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1 ; i >= 0 ; i-- ) {
 		if( d->m_elements.at( i )->d->m_flagDelete ) {
 			remove( i );

@@ -39,7 +39,7 @@ int FileContentException::getColumn() const {
 
 class PrivateFileContentModel {
 public:
-	FileContentElement * m_root, *m_cur;
+	FileContentElement * m_root;
 };
 
 /* FileContentItemModel */
@@ -72,8 +72,6 @@ QVariant FileContentItemModel::data( const QModelIndex &index, int role ) const 
 		
 	FileContentItemModel::struct_file_content data;
 	FileContentElement * element = static_cast<FileContentElement*>( index.internalPointer() );
-
-	QMutexLocker locker( &element->locker() );
 
 	switch( role ) {
 	case Qt::DisplayRole:
@@ -108,9 +106,7 @@ QModelIndex FileContentItemModel::index( int row, int column, const QModelIndex 
 		parentElement = static_cast<FileContentElement*>( parent.internalPointer() );
 	}
 
-	QMutexLocker locker( &parentElement->locker() );
 	currentElement = parentElement->element( row );
-	QMutexLocker locker2( &currentElement->locker() );
 	
 	if( currentElement )
 		return createIndex( row, column, currentElement );
@@ -121,7 +117,6 @@ QModelIndex FileContentItemModel::index( int row, int column, const QModelIndex 
 QModelIndex FileContentItemModel::index( FileContentElement * element ) const {
 	XINX_TRACE( "FileContentItemModel::index", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
-	QMutexLocker locker( &element->locker() );
 	if( element == d->m_root )
 		return QModelIndex();
 	else
@@ -136,8 +131,6 @@ QModelIndex FileContentItemModel::parent( const QModelIndex &index ) const {
 	
 	FileContentElement * element = static_cast<FileContentElement*>( index.internalPointer() ),
 					   * parent  = element->parent();
-
-	QMutexLocker locker( &element->locker() );
 
 	if( ( parent == d->m_root ) || ( parent == NULL ) )
 		return QModelIndex();
@@ -154,7 +147,6 @@ int FileContentItemModel::rowCount( const QModelIndex &parent ) const {
 	else 
 		element = d->m_root;
 	
-	QMutexLocker locker( &element->locker() );
 	return element->rowCount();		
 }
 
@@ -177,14 +169,12 @@ int FileContentItemModel::columnCount( const QModelIndex &parent ) const {
 void FileContentItemModel::beginInsertRow( FileContentElement * element, int row ) {
 	XINX_TRACE( "FileContentItemModel::beginInsertRow", QString( "( %1, %2 )").arg( (unsigned int)element, 0, 16 ).arg( row ) );
 
-	d->m_cur = element->parent();
 	QModelIndex idx = index( element );
 	beginInsertRows( idx, row, row );
 }
 
 void FileContentItemModel::endInsertRow() {
 	XINX_TRACE( "FileContentItemModel::endInsertRow", "()" );
-	QMutexLocker locker( &(d->m_cur->locker()) );
 	endInsertRows();
 }
 

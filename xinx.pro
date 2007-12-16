@@ -40,8 +40,6 @@ FORMS += ui/specifiquedlg.ui \
     ui/xmlpresentationwidget.ui
 HEADERS += src/specifiquedlgimpl.h \
     src/filecontentstructure.h \
-    src/editorthreadxsl.h \
-    src/editorthread.h \
     src/xinxthread.h \
     src/aboutdialogimpl.h \
     src/appsettings.h \
@@ -89,12 +87,12 @@ HEADERS += src/specifiquedlgimpl.h \
     src/private/p_threadedconfigurationfile.h \
     src/private/p_uniqueapplication.h \
     src/private/p_xmlpresentationdockwidget.h \
-	src/private/p_flattreeview.h \
-	src/private/p_runsnipetdialogimpl.h \
-	src/private/p_serviceresultdialogimpl.h \
-	src/private/p_snipetdialog.h \
-	src/private/p_snipetlist.h \
-	src/private/p_webserviceseditor.h \
+    src/private/p_flattreeview.h \
+    src/private/p_runsnipetdialogimpl.h \
+    src/private/p_serviceresultdialogimpl.h \
+    src/private/p_snipetdialog.h \
+    src/private/p_snipetlist.h \
+    src/private/p_webserviceseditor.h \
     src/projectdirectorydockwidget.h \
     src/projectpropertyimpl.h \
     src/rcs.h \
@@ -132,8 +130,6 @@ RCC_DIR += build
 RESOURCES += application.qrc
 SOURCES += src/specifiquedlgimpl.cpp \
     src/filecontentstructure.cpp \
-    src/editorthreadxsl.cpp \
-    src/editorthread.cpp \
     src/aboutdialogimpl.cpp \
     src/appsettings.cpp \
     src/commitmessagedialogimpl.cpp \
