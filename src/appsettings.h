@@ -8,6 +8,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFont>
+#include <QColor>
 #include <QPoint>
 #include <QSize>
 #include <QByteArray>
@@ -33,6 +34,8 @@ struct struct_editor {
 	bool showTabulationAndSpace;
 	bool highlightCurrentLine;
 	QFont defaultFormat;
+	QColor highlightWord;
+	bool autoHighlight;
 };
 
 struct struct_cvs {

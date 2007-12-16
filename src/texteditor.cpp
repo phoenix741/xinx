@@ -36,7 +36,7 @@
 /*!
  * Definition of the characters that can't be in a word.
  */
-#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
+#define EOWREGEXP	"[^A-Za-z0-9_:-]"
 
 /*!
  * Pixmap used to represent the tabulation

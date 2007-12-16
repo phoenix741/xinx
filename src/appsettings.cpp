@@ -118,6 +118,8 @@ struct_editor AppSettings::getDefaultEditor() {
 	value.tabulationSize = 4;
 	value.showTabulationAndSpace = false;
 	value.highlightCurrentLine = true;
+	value.highlightWord = Qt::yellow;
+	value.autoHighlight = false;
 
 	return value;
 }
@@ -134,6 +136,8 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 	value.showTabulationAndSpace = settings->value( "Show Tabulation and space", defaultValue.showTabulationAndSpace ).toBool();
 	value.highlightCurrentLine = settings->value( "Highlight Current Line", defaultValue.highlightCurrentLine ).toBool();
 	value.defaultFormat = settings->value( "Default format", defaultValue.defaultFormat ).value<QFont>();
+	value.highlightWord = settings->value( "Highlight word", defaultValue.highlightWord ).value<QColor>();
+	value.autoHighlight = settings->value( "Auto Highlight", defaultValue.autoHighlight ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -150,6 +154,8 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->setValue( "Show Tabulation and space", value.showTabulationAndSpace );
 	settings->setValue( "Highlight Current Line", value.highlightCurrentLine );
 	settings->setValue( "Default format", value.defaultFormat );
+	settings->setValue( "Highlight word", value.highlightWord );
+	settings->setValue( "Auto Highlight", value.autoHighlight );
 
 	settings->endGroup();
 }

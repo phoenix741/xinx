@@ -74,6 +74,12 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Compression level
 	m_parent->m_completionLevelComboBox->setCurrentIndex( m_config.config().editor.completionLevel );
 	
+	// Auto highlight text
+	m_parent->m_autoHighlightCheckBox->setChecked( m_config.config().editor.autoHighlight );
+
+	// Color of highlighted text
+	m_parent->m_highlightTextColorComboBox->setColor( m_config.config().editor.highlightWord );
+
 	// Show tabulation and space in the editor
 	m_parent->m_showTabulationCheckBox->setChecked( m_config.config().editor.showTabulationAndSpace );
 	
@@ -166,6 +172,12 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Compression level
 	m_config.config().editor.completionLevel = m_parent->m_completionLevelComboBox->currentIndex();
 	
+	// Auto highlight text
+	m_config.config().editor.autoHighlight = m_parent->m_autoHighlightCheckBox->isChecked();
+
+	// Color of highlighted text
+	m_config.config().editor.highlightWord = m_parent->m_highlightTextColorComboBox->color();
+
 	// Show tabulation and space in the editor
 	m_config.config().editor.showTabulationAndSpace = m_parent->m_showTabulationCheckBox->isChecked();
 	

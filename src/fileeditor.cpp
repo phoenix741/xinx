@@ -676,11 +676,10 @@ QAction * FileEditor::uncommentAction() {
 void FileEditor::updateHighlighter() {
 	if( d->m_syntaxhighlighter ) 
 		d->m_syntaxhighlighter->rehighlight();
-	
 }
 
 void FileEditor::refreshTextHighlighter() {
-	if( d->m_syntaxhighlighter ) 
+	if( d->m_syntaxhighlighter && global.m_config->config().editor.autoHighlight ) 
 		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor() ) );
 }
 

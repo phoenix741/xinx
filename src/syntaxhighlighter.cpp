@@ -21,6 +21,7 @@
 // Xinx header
 #include "syntaxhighlighter.h"
 #include "globals.h"
+#include "xinxconfig.h"
 
 const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
 
@@ -57,14 +58,14 @@ void SyntaxHighlighter::setHighlightText( const QString & text ) {
 
 void SyntaxHighlighter::processText( int pos, const QString& text ) {
 	if( ! m_text.isEmpty() ) {
-		QRegExp expression( "\\b" + m_text + "\\b" );
+		QRegExp expression( m_text );
 		int i = 0;
 		do {
 			i = expression.indexIn( text, i );
 			if( i >= 0 ) {
 				const int iLength = expression.matchedLength();
-				QTextCharFormat f = format( i );
-				f.setBackground( Qt::yellow );
+				QTextCharFormat f = format( pos + i );
+				f.setBackground( m_config->config().editor.highlightWord );
 				setFormat( pos + i, iLength, f );
 				i += iLength;
 			}

@@ -64,7 +64,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 		if (pos >= 0) {
 			// end comment found
 			const int iLength = commentEndExpression.matchedLength();
-			setFormat( 0, pos + iLength, m_config->config().formats[ "js_comment" ] );
+			setFormat( 0, pos + iLength, m_config->config().formats["js_comment"] );
 			i += pos + iLength; // skip comment
 		} else {
 			// in comment
@@ -92,6 +92,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 					setFormat( pos, iLength, m_config->config().formats["js_reservedword"] );
 				} else {
 					setFormat( pos, iLength, m_config->config().formats["js_other"] );
+					processText( i, text.mid( pos, iLength ) );
 				}
 				i += iLength;
 			} 
@@ -122,6 +123,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			if( pos == i ) {
 				const int iLength = string1Expression.matchedLength();
 				setFormat( pos, iLength, m_config->config().formats["js_string"] );
+				processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			} 
 		} else if ( c == '\"' ) {
@@ -130,6 +132,7 @@ void JsHighlighter::highlightBlock( const QString & text ) {
 			if( pos == i ) {
 				const int iLength = string2Expression.matchedLength();
 				setFormat( pos, iLength, m_config->config().formats["js_string"] );
+				processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			} 
 		} else {
