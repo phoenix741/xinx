@@ -37,6 +37,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDir>
+#include <QThread>
 
 // C++ header
 #include <csignal>
@@ -153,7 +154,7 @@ int main(int argc, char *argv[]) {
 		app.notifyError( "In main : " + e.getMessage(), e.getStack() );
 		return false;
 	} catch( ... ) {
-		app.notifyError( "In main : Generic Exception", stackTrace );
+		app.notifyError( "In main : Generic Exception", stackTrace[(unsigned long)QThread::currentThreadId()] );
 		return 1;
 	}
 }

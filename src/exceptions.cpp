@@ -25,23 +25,26 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QFile>
+#include <QThread>
 
 /* Log Variable */
 
-QStringList stackTrace;
+QHash<unsigned long,QStringList> stackTrace;
 
 /* Trace */
 
-int Trace::m_depth = 0;
+QHash<unsigned long,int> Trace::m_depth;
 
 Trace::Trace( char* filename, int line, const QString & func_name, const QString & args ) {
-    LogMsg( m_depth, filename, line, QString( "%1%2" ).arg( func_name ).arg( args ) );
-	m_depth++;		
+	m_handle = (unsigned long)QThread::currentThreadId();
+	
+    LogMsg( m_depth[m_handle], filename, line, QString( "%1%2" ).arg( func_name ).arg( args ) );
+	m_depth[m_handle]++;		
 }
 
 Trace::~Trace() {
-	m_depth--;
-	stackTrace.removeLast();
+	m_depth[m_handle]--;		
+	stackTrace[m_handle].removeLast();
 }
 
 void Trace::LogMsg( int depth, const char * filename, int line, const QString & fonction ) {
@@ -51,30 +54,26 @@ void Trace::LogMsg( int depth, const char * filename, int line, const QString & 
 		s += " ";
 	s += QString("> (%1)").arg( depth );
 	s += QString( fonction );
-	s += QString( " on %1 at line %2." ).arg( filename ).arg( line );
+	s += QString( " on %1 at line %2 (thread %3)." ).arg( filename ).arg( line ).arg( m_handle );
 	
-	stackTrace.append( s );
+	stackTrace[m_handle].append( s );
 
-/*
-#ifndef QT_NO_DEBUG
-#	ifdef Q_WS_WIN
-		QFile logfile( "c:\\xinx_debug.log" );
-#	else 
-		QFile logfile( "/tmp/xinx_debug.log" );
-#	endif
+#ifdef Q_WS_WIN
+	QFile logfile( QString( "c:\\xinx_debug_%1.log" ).arg( m_handle ) );
+#else 
+	QFile logfile( QString( "/tmp/xinx_debug_%1.log" ).arg( m_handle ) );
+#endif
 	if( logfile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
 		QTextStream logfileStream( &logfile );
 		logfileStream << s << endl;
 	}
-#endif
-*/
 }
 /* XinxException */
 
 XinxException::XinxException( QString message ) : m_message( message ) {
 	XINX_TRACE( "XinxException", QString("( %1 )").arg( message ) );
 	
-	m_stack = stackTrace;
+	m_stack = stackTrace[ (unsigned long)QThread::currentThreadId() ];
 }
 
 const QString & XinxException::getMessage() const {

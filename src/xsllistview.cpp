@@ -41,14 +41,18 @@ XMLParserException::XMLParserException( const QString & message, int line, int c
 /* XSLFileContentImportJS */
 
 XSLFileContentImportJS::XSLFileContentImportJS( FileContentElement * parent, const QString & filename, const QDomElement & node ) : JavaScriptParser( parent, filename, node.lineNumber() ) {
+	XINX_TRACE( "XSLFileContentImportJS", QString( "( %1, %2, node )" ).arg( (unsigned int)parent, 0, 16 ).arg( filename ) );
+
 	setFilename( filename );
 }
 
 XSLFileContentImportJS::~XSLFileContentImportJS() {
-	
+	XINX_TRACE( "~XSLFileContentImportJS", "()" );
 }
 	
 XSLFileContentImportJS * XSLFileContentImportJS::createImportFromLocation( FileContentElement * parent, const QDomElement & node ) {
+	XINX_TRACE( "XSLFileContentImportJS::createImportFromLocation", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
+
 	QStringList searchList;
 	
 	if( global.m_project ) 
@@ -64,6 +68,8 @@ XSLFileContentImportJS * XSLFileContentImportJS::createImportFromLocation( FileC
 }
 
 int XSLFileContentImportJS::rowCount() {
+	XINX_TRACE( "XSLFileContentImportJS::rowCount", "()" );
+
 	if( JavaScriptParser::rowCount() == 0 ) {
 		setFlagEmit( false );
 		try {
@@ -78,15 +84,20 @@ int XSLFileContentImportJS::rowCount() {
 /* XSLFileContentImport */
 
 XSLFileContentImport::XSLFileContentImport( FileContentElement * parent, const QString & filename, const QDomElement & node ) : XSLFileContentParser( parent, filename, node.lineNumber() ) {
+	XINX_TRACE( "XSLFileContentImport", QString( "( %1, %2, node )" ).arg( (unsigned int)parent, 0, 16 ).arg( filename ) );
+
 	setFilename( filename );
 	m_loadFlag = false;
 }
 
 XSLFileContentImport::~XSLFileContentImport() {
+	XINX_TRACE( "~XSLFileContentImport", "()" );
 
 }
 
 XSLFileContentImport * XSLFileContentImport::createImportFromLocation( FileContentElement * parent, const QDomElement & node ) {
+	XINX_TRACE( "XSLFileContentImport::createImportFromLocation", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
+
 	QStringList searchList;
 	if( ! parent->filename().isEmpty() )
 		searchList << QFileInfo( parent->filename() ).absolutePath();
@@ -104,6 +115,8 @@ XSLFileContentImport * XSLFileContentImport::createImportFromLocation( FileConte
 }
 
 int XSLFileContentImport::rowCount() {
+	XINX_TRACE( "XSLFileContentImport::rowCount", "()" );
+
 	if( ! m_loadFlag ) {
 		setFlagEmit( false );
 		try {
@@ -127,29 +140,41 @@ public:
 
 XSLFileContentParams::XSLFileContentParams( FileContentElement * parent, const QDomElement & node )
 					 : FileContentElement( parent, node.attribute( "name" ), node.lineNumber() ) {
+	XINX_TRACE( "XSLFileContentParams", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
+
 	d = new PrivateXSLFileContentParams();
 	d->m_value = node.attribute( "select", node.text() );
 }
 
 XSLFileContentParams::~XSLFileContentParams() {
+	XINX_TRACE( "~XSLFileContentParams", "()" );
+
 	delete d;
 }
 
 const QString & XSLFileContentParams::value() const {
+	XINX_TRACE( "XSLFileContentParams::value", "()" );
+
 	return d->m_value;
 }
 
 QString XSLFileContentParams::displayTips() const {
+	XINX_TRACE( "XSLFileContentParams::displayTips", "()" );
+
 	return FileContentElement::displayTips() + tr( "\nValue : %2" ).arg( d->m_value );
 }
 
 void XSLFileContentParams::copyFrom( FileContentElement * element ) {
+	XINX_TRACE( "XSLFileContentParams::copyFrom", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	FileContentElement::copyFrom( element );
 	if( dynamic_cast<XSLFileContentParams*>( element ) )
 		d->m_value = dynamic_cast<XSLFileContentParams*>( element )->d->m_value;
 }
 
 QIcon XSLFileContentParams::icon() const {
+	XINX_TRACE( "XSLFileContentParams::icon", "()" );
+
 	return QIcon( ":/images/html_value.png" );
 }
 
@@ -157,13 +182,17 @@ QIcon XSLFileContentParams::icon() const {
 
 XSLFileContentVariable::XSLFileContentVariable( FileContentElement * parent, const QDomElement & node )
 					   : XSLFileContentParams( parent, node ) {
+	XINX_TRACE( "XSLFileContentVariable", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
 }
 
 XSLFileContentVariable::~XSLFileContentVariable() {
-	
+	XINX_TRACE( "~XSLFileContentVariable::icon", "()" );
+
 }
 
 QIcon XSLFileContentVariable::icon() const {
+	XINX_TRACE( "XSLFileContentVariable::icon", "()" );
+
 	return QIcon(":/images/variable.png");
 }
 
@@ -179,12 +208,16 @@ public:
 
 XSLFileContentTemplate::XSLFileContentTemplate( FileContentElement * parent, const QDomElement & node, const QString & name )
 					   : FileContentElement( parent, name, node.lineNumber() ) {
+	XINX_TRACE( "XSLFileContentTemplate", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
+
 	d = new PrivateXSLFileContentTemplate();
 	d->m_mode = node.attribute( "mode" ).trimmed();
 }
 
 
 void XSLFileContentTemplate::loadFromXML( const QDomElement& node ) {
+	XINX_TRACE( "XSLFileContentTemplate::loadFromXML", "( node )" );
+
 	markAllDeleted();
 	
 	QDomNodeList list = node.elementsByTagName( "script" );
@@ -210,10 +243,14 @@ void XSLFileContentTemplate::loadFromXML( const QDomElement& node ) {
 
 
 const QString & XSLFileContentTemplate::mode() const {
+	XINX_TRACE( "XSLFileContentTemplate::mode", "()" );
+
 	return d->m_mode;
 }
 
 QString XSLFileContentTemplate::displayName() const {
+	XINX_TRACE( "XSLFileContentTemplate::displayName", "()" );
+
 	if( d->m_mode.isEmpty() )
 		return name();
 	else
@@ -222,10 +259,14 @@ QString XSLFileContentTemplate::displayName() const {
 
 
 XSLFileContentTemplate::~XSLFileContentTemplate() {
+	XINX_TRACE( "~XSLFileContentTemplate", "()" );
+
 	delete d;
 }
 
 bool XSLFileContentTemplate::equals( FileContentElement * element ) {
+	XINX_TRACE( "XSLFileContentTemplate::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	QMutexLocker l( &locker() );
 	QMutexLocker l2( &element->locker() );
 	
@@ -234,6 +275,8 @@ bool XSLFileContentTemplate::equals( FileContentElement * element ) {
 }
 
 void XSLFileContentTemplate::copyFrom( FileContentElement * element ) {
+	XINX_TRACE( "XSLFileContentTemplate::copyFrom", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	QMutexLocker l( &locker() );
 	QMutexLocker l2( &(element->locker()) );
 
@@ -243,28 +286,35 @@ void XSLFileContentTemplate::copyFrom( FileContentElement * element ) {
 }
 
 QIcon XSLFileContentTemplate::icon() const {
+	XINX_TRACE( "XSLFileContentTemplate::icon", "()" );
+
 	return QIcon(":/images/template.png");
 }
 
 /* XSLFileContentParser */
 
 XSLFileContentParser::XSLFileContentParser() : FileContentElement( NULL, QString(), 0 ) {
+	XINX_TRACE( "XSLFileContentParser", "()" );
 }
 
 XSLFileContentParser::XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ) {
-
+	XINX_TRACE( "XSLFileContentParser", QString( "( %1, %2, %3 )" ).arg( (unsigned int)parent, 0, 16 ).arg( filename ).arg( lineNumber ) );
 }
 
 
 XSLFileContentParser::~XSLFileContentParser() {
-
+	XINX_TRACE( "~XSLFileContentParser", "()" );
 }
 
 QIcon XSLFileContentParser::icon() const {
+	XINX_TRACE( "XSLFileContentParser::icon", "()" );
+
 	return QIcon(":/images/import.png");
 }
 
 void XSLFileContentParser::loadFromFile( const QString & filename ) {
+	XINX_TRACE( "XSLFileContentParser::loadFromFile", QString( "( %1 )" ).arg( filename ) );
+
 	QFile file( filename );
 	QDomDocument xsl;
 
@@ -278,6 +328,8 @@ void XSLFileContentParser::loadFromFile( const QString & filename ) {
 }
 
 void XSLFileContentParser::loadFromContent( const QString & content ) {
+	XINX_TRACE( "XSLFileContentParser::loadFromContent", QString( "( %1 )" ).arg( content ) );
+
 	if( content.isEmpty() ) {
 		clear();
 		return;
@@ -301,6 +353,8 @@ void XSLFileContentParser::loadFromContent( const QString & content ) {
 }
 
 void XSLFileContentParser::loadFromXML( const QDomElement & element ) {
+	XINX_TRACE( "XSLFileContentParser::loadFromXML", "( element )" );
+
 	markAllDeleted();
 	
 	QDomElement child = element.firstChildElement();

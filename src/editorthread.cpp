@@ -38,11 +38,12 @@ public:
 	mutable QWaitCondition m_waitCondition;
 	
 	FileContentParser * m_element;
+	bool m_charged;
 private:
 	EditorThread * m_parent;
 };
 
-PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_parent( parent ) {
+PrivateEditorThread::PrivateEditorThread( EditorThread * parent ) : m_charged( true ), m_parent( parent ) {
 	
 }
 
@@ -61,18 +62,23 @@ EditorThread::~EditorThread() {
 	delete d;
 }
 
+bool EditorThread::charged() const {
+	return d->m_charged;
+}
+
 void EditorThread::threadrun() {
+	d->m_charged = false;
+	d->m_contentMutex.lock();
 	forever {
-		d->m_contentMutex.lock();
 		d->m_waitCondition.wait( &d->m_contentMutex );
 		try {
 			d->m_element->loadFromContent( d->m_content );
 		} catch( ... ) {
 			
 		}
-		
-		d->m_contentMutex.unlock();
+		d->m_charged = true;		
 	}
+	d->m_contentMutex.unlock();
 }
 
 void EditorThread::reloadEditorContent( const QString & content ) {

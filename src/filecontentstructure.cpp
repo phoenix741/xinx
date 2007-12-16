@@ -22,9 +22,10 @@
 #include "filecontentstructure.h"
 #include "exceptions.h"
 
+/* FileContentParser */
 
 FileContentParser::~FileContentParser() {
-	
+	XINX_TRACE( "~FileContentParser", "()" );
 }
 
 /* PrivateFileContentElement */
@@ -48,6 +49,8 @@ private:
 };
 
 PrivateFileContentElement::PrivateFileContentElement( FileContentElement * parent ) : m_locker( QMutex::Recursive ) {
+	XINX_TRACE( "PrivateFileContentElement", "( parent )" );
+
 	m_parent = parent;
 	m_line   = -1;
 	m_name   = QString();
@@ -57,6 +60,7 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 }
 
 PrivateFileContentElement::~PrivateFileContentElement() {
+	XINX_TRACE( "~PrivateFileContentElement", "()" );
 	//qDeleteAll( m_elements );
 	// Can cause some problem. Don't forget to clean memory
 }
@@ -64,6 +68,8 @@ PrivateFileContentElement::~PrivateFileContentElement() {
 /* FileContentElement */
 
 FileContentElement::FileContentElement( FileContentElement * parent, const QString & name, int line ) {
+	XINX_TRACE( "FileContentElement", QString( "( %1, %2, %3 )" ).arg( (unsigned int)parent, 0, 16 ).arg( name ).arg( line ) );
+
 	d = new PrivateFileContentElement( this );
 	d->m_line = line;
 	d->m_name = name;
@@ -75,14 +81,20 @@ FileContentElement::FileContentElement( FileContentElement * parent, const QStri
 }
 
 FileContentElement::~FileContentElement() {
+	XINX_TRACE( "~FileContentElement", "()" );
+	
 	delete d;
 }
 
 QMutex & FileContentElement::locker() {
+	XINX_TRACE( "FileContentElement::locker", "()" );
+	
 	return d->m_locker;
 }
 
 void FileContentElement::setFlagEmit( bool value ) {
+	XINX_TRACE( "FileContentElement::setFlagEmit", QString( "( %1 )" ).arg( value ) );
+	
 	d->m_flagEmit = value;
 	if( value && d->m_parentElement ) {
 		connect( this, SIGNAL(aboutToRemove(FileContentElement*)), d->m_parentElement, SIGNAL(aboutToRemove(FileContentElement*)) );
@@ -95,6 +107,8 @@ void FileContentElement::setFlagEmit( bool value ) {
 }
 
 bool FileContentElement::equals( FileContentElement * element ) {
+	XINX_TRACE( "FileContentElement::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	return ( ( typeid( *element ) == typeid( *this ) )
 		  && ( d->m_name == element->d->m_name ) 
 		  && ( d->m_filename == element->d->m_filename )
@@ -102,52 +116,76 @@ bool FileContentElement::equals( FileContentElement * element ) {
 }
 
 void FileContentElement::copyFrom( FileContentElement * element ) {
+	XINX_TRACE( "FileContentElement::copyFrom", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	d->m_filename = element->d->m_filename;
 	d->m_line = element->d->m_line;
 	d->m_name = element->d->m_name;
 }
 
 QIcon FileContentElement::icon() const {
+	XINX_TRACE( "FileContentElement::icon", "()" );
+
 	return QIcon("images/warning.png");
 }
 
 const QString & FileContentElement::name() const {
+	XINX_TRACE( "FileContentElement::name", "()" );
+
 	return d->m_name;
 }
 
 QString FileContentElement::displayName() const {
+	XINX_TRACE( "FileContentElement::displayName", "()" );
+
 	return name();
 }
 
 QString FileContentElement::displayTips() const {
+	XINX_TRACE( "FileContentElement::displayTips", "()" );
+
 	return tr( "Element at line : %1" ).arg( d->m_line );
 }
 
 int FileContentElement::line() {
+	XINX_TRACE( "FileContentElement::line", "()" );
+
 	return d->m_line;
 }
 
 const QString & FileContentElement::filename() const {
+	XINX_TRACE( "FileContentElement::filename", "()" );
+
 	return d->m_filename;
 }
 
 void FileContentElement::setName( const QString & name ) {
+	XINX_TRACE( "FileContentElement::setName", QString( "( %1 )" ).arg( name ) );
+
 	d->m_name = name;
 }
 	
 void FileContentElement::setLine( int line ) {
+	XINX_TRACE( "FileContentElement::setLine", QString( "( %1 )" ).arg( line ) );
+
 	d->m_line = line;
 }
 
 void FileContentElement::setFilename( const QString & filename ) {
+	XINX_TRACE( "FileContentElement::setFilename", QString( "( %1 )" ).arg( filename ) );
+
 	d->m_filename = filename;
 }
 
 FileContentElement * FileContentElement::parent() {
+	XINX_TRACE( "FileContentElement::parent", "()" );
+
 	return d->m_parentElement;
 }
 
 int FileContentElement::row() {
+	XINX_TRACE( "FileContentElement::row", "()" );
+
 	if( d->m_parentElement )
 		for( int i = 0 ; i < d->m_parentElement->rowCount(); i++ ) {
 			if( this == d->m_parentElement->element( i ) ) 
@@ -157,14 +195,20 @@ int FileContentElement::row() {
 }
 
 int FileContentElement::rowCount() {
+	XINX_TRACE( "FileContentElement::rowCount", "()" );
+
 	return d->m_elements.size();
 }
 
 FileContentElement * FileContentElement::element( int index ) {
+	XINX_TRACE( "FileContentElement::element", QString( "( %1 )" ).arg( index ) );
+
 	return d->m_elements.at( index );
 }
 
 void FileContentElement::remove( int index ) {
+	XINX_TRACE( "FileContentElement::remove", QString( "( %1 )" ).arg( index ) );
+
 	emit aboutToRemove( d->m_elements.at( index ) );
 
 	QMutexLocker locker( &(d->m_locker) );
@@ -176,6 +220,8 @@ void FileContentElement::remove( int index ) {
 }
 
 FileContentElement * FileContentElement::append( FileContentElement * element ) {
+	XINX_TRACE( "FileContentElement::append", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	FileContentElement * old = contains( element ); 
 	if( old ) {
 		old->copyFrom( element );
@@ -198,12 +244,16 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 
 
 void FileContentElement::clear() {
+	XINX_TRACE( "FileContentElement::clear", "()" );
+
 	QMutexLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1; i >= 0; i-- )
 		remove( i );
 }
 
 FileContentElement * FileContentElement::contains( FileContentElement * element ) {
+	XINX_TRACE( "FileContentElement::contains", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	QMutexLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		if( element->equals( e ) ) 
@@ -213,14 +263,20 @@ FileContentElement * FileContentElement::contains( FileContentElement * element 
 }
 
 void FileContentElement::markDeleted() {
+	XINX_TRACE( "FileContentElement::markDeleted", "()" );
+
 	d->m_flagDelete = true;
 }
 
 void FileContentElement::markKeeped() {
+	XINX_TRACE( "FileContentElement::markKeeped", "()" );
+
 	d->m_flagDelete = false;
 }
 
 void FileContentElement::markAllDeleted() {
+	XINX_TRACE( "FileContentElement::markAllDeleted", "()" );
+
 	QMutexLocker locker( &(d->m_locker) );
 	foreach( FileContentElement * e, d->m_elements ) {
 		e->markDeleted();
@@ -228,6 +284,8 @@ void FileContentElement::markAllDeleted() {
 }
 
 void FileContentElement::removeMarkedDeleted() {
+	XINX_TRACE( "FileContentElement::removeMarkedDeleted", "()" );
+
 	QMutexLocker locker( &(d->m_locker) );
 	for( int i = d->m_elements.size() - 1 ; i >= 0 ; i-- ) {
 		if( d->m_elements.at( i )->d->m_flagDelete ) {
@@ -237,6 +295,8 @@ void FileContentElement::removeMarkedDeleted() {
 }
 
 bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 ) {
+	XINX_TRACE( "FileContentElementModelObjListSort", QString( "( %1, %2 )" ).arg( d1->name() ).arg( d2->name() ) );
+
 	return d1->name() < d2->name();
 }
 

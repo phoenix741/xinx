@@ -27,6 +27,7 @@
 // Qt header
 #include <QString>
 #include <QMessageBox>
+#include <QThread>
 
 // Standard header
 #include <iostream>
@@ -212,7 +213,8 @@ UniqueApplication::~UniqueApplication() {
 }
 
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
-	XINX_TRACE( "UniqueApplication::notify", QString( "( 0x%1, 0x%2 )" ).arg( (unsigned int)receiver, 0, 16 ).arg( (unsigned int)event, 0, 16 ) );
+	// Too verbose
+	//XINX_TRACE( "UniqueApplication::notify", QString( "( 0x%1, 0x%2 )" ).arg( (unsigned int)receiver, 0, 16 ).arg( (unsigned int)event, 0, 16 ) );
 
 	try {
 		return QApplication::notify( receiver, event );
@@ -220,7 +222,7 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 		notifyError( e.getMessage(), e.getStack() );
 		return false;
 	} catch( ... ) {
-		notifyError( "Generic Exception", stackTrace );
+		notifyError( "Generic Exception", stackTrace[(unsigned long)QThread::currentThreadId()] );
 		return false;
 	}
 }

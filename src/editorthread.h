@@ -40,6 +40,7 @@ public:
 	void reloadEditorContent( const QString & content );
 
 	FileContentParser* & parser();
+	bool charged() const;
 protected:
 	virtual void threadrun();
 private:

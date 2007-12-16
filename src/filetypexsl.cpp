@@ -364,20 +364,24 @@ FileTypeXsl::~FileTypeXsl() {
 
 void FileTypeXsl::updateModel() {
 	if( d->m_modelData ) {
-//		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
-		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
-	} else {
+		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
+//		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
+	} else {/*
 		d->m_thread = new EditorThreadXSL( this );
 		d->m_thread->start();
-		while( ! d->m_thread->parser() ) ;
-		
-		d->m_modelData = new XSLFileContentParser();
-		d->m_contentModel = new FileContentItemModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser()), this );
-//		d->m_completionValueModel = new XSLValueCompletionModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser() ), this );
-//		d->m_completerValue->setModel( d->m_completionValueModel );
-		
-//		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
+		while( d->m_thread->charged() ) ;
 		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
+		while( ! d->m_thread->charged() ) ;
+		d->m_contentModel = new FileContentItemModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser()), this );
+		d->m_completionValueModel = new XSLValueCompletionModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser() ), this );
+		d->m_completerValue->setModel( d->m_completionValueModel );
+		*/
+
+		d->m_modelData = new XSLFileContentParser();
+		d->m_contentModel = new FileContentItemModel( d->m_modelData, this );
+		d->m_completionValueModel = new XSLValueCompletionModel( d->m_modelData, this );
+		d->m_completerValue->setModel( d->m_completionValueModel );
+		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
 	}
 }
 

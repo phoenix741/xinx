@@ -23,6 +23,7 @@
 
 // Qt header
 #include <QStringList>
+#include <QHash>
 
 class XinxException {
 public:
@@ -62,20 +63,20 @@ public:
 private:
 	void LogMsg( int depth, const char * filename, int line, const QString & fonction );
 	
-	static int m_depth;
+	unsigned long m_handle;
+	
+	static QHash<unsigned long,int> m_depth;
 };
 
-// Trop lent
-#define XINX_TRACE( fct, args ) 
-#if !defined( XINX_TRACE )
-#  ifndef QT_NO_DEBUG
-#    define XINX_TRACE( fct, args ) Trace __XINX_TRACE__ ( __FILE__, __LINE__, fct, args )
-#  else
-#    define XINX_TRACE( fct, args ) 
-#  endif
+//#define XINX_DEBUG
+// Attention : Trop lent
+#ifdef XINX_DEBUG
+#  define XINX_TRACE( fct, args ) Trace __XINX_TRACE__ ( __FILE__, __LINE__, fct, args )
+#else
+#  define XINX_TRACE( fct, args ) 
 #endif
 
-extern QStringList stackTrace;
+extern QHash<unsigned long,QStringList> stackTrace;
 
 
 #endif /* __EXCEPTIONS_H__ */

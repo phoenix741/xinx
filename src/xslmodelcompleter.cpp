@@ -30,6 +30,8 @@
 /* XSLValueCompletionModel */
 
 XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QObject *parent ) : QAbstractListModel( parent ) {
+	XINX_TRACE( "XSLValueCompletionModel", QString( "( %1, %2 )" ).arg( (unsigned int)data, 0, 16 ).arg( (unsigned int)parent, 0, 16 ) );
+
 	rootItem = data;
 	refreshList();
 	connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
@@ -37,9 +39,12 @@ XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QOb
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
+	XINX_TRACE( "~XSLValueCompletionModel", "()" );
 }
 
 bool XSLValueCompletionModel::contains( FileContentElement * data ) {
+	XINX_TRACE( "XSLValueCompletionModel::contains", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
+
 	for( int i = 0; i < m_objList.count(); i++ ) {
 		if( m_objList.at( i )->equals( data ) ) 
 			return true;
@@ -48,6 +53,8 @@ bool XSLValueCompletionModel::contains( FileContentElement * data ) {
 }
 
 void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
+	XINX_TRACE( "XSLValueCompletionModel::refreshRecursive", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
+
 	QMutexLocker locker( &data->locker() );
 	for( int i = 0; i < data->rowCount(); i++ ) {
 		FileContentElement * e = data->element( i );
@@ -65,6 +72,8 @@ void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
 }
 
 void XSLValueCompletionModel::refreshList() {
+	XINX_TRACE( "XSLValueCompletionModel::refreshList", "()" );
+
 	m_objList.clear();
 	refreshRecursive( rootItem );
 	qSort( m_objList.begin(), m_objList.end(), FileContentElementModelObjListSort );
@@ -72,6 +81,8 @@ void XSLValueCompletionModel::refreshList() {
 }
 
 void XSLValueCompletionModel::addElement( FileContentElement* element ) {
+	XINX_TRACE( "XSLValueCompletionModel::addElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	QList<FileContentElement*>::iterator i = qLowerBound( m_objList.begin(), m_objList.end(), element, FileContentElementModelObjListSort );
 	int index = i - m_objList.begin();
 	beginInsertRows( QModelIndex(), index, index );
@@ -80,6 +91,8 @@ void XSLValueCompletionModel::addElement( FileContentElement* element ) {
 }
 
 void XSLValueCompletionModel::addElement( FileContentElement* element, int row ) {
+	XINX_TRACE( "XSLValueCompletionModel::addElement", QString( "( %1, %2 )" ).arg( (unsigned int)element, 0, 16 ).arg( row ) );
+
 	Q_UNUSED( row );
 	if( ( dynamic_cast<XSLFileContentParams*>( element ) || dynamic_cast<XSLFileContentTemplate*>( element ) ) && ( ! contains( element ) ) ) {
 		addElement( element );
@@ -90,6 +103,8 @@ void XSLValueCompletionModel::addElement( FileContentElement* element, int row )
 }
 
 void XSLValueCompletionModel::removeElement( FileContentElement* element ) {
+	XINX_TRACE( "XSLValueCompletionModel::removeElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
 	int index = m_objList.indexOf( element );
 	if( index >= 0 ) {
 		beginRemoveRows( QModelIndex(), index, index );
@@ -99,6 +114,8 @@ void XSLValueCompletionModel::removeElement( FileContentElement* element ) {
 }
 
 void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
+	XINX_TRACE( "XSLValueCompletionModel::setBaliseName", QString( "( %1, %2 )" ).arg( name ).arg( attribute ) );
+
 	int before = m_objList.count(), after  = m_objList.count();
 	
 	if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) && global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
@@ -128,6 +145,8 @@ void XSLValueCompletionModel::setBaliseName( const QString & name, const QString
 
 	
 QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) const {
+	XINX_TRACE( "XSLValueCompletionModel::data", QString( "( index, %1 )" ).arg( role ) );
+
 	if (!index.isValid()) return QVariant();
 
 	if( index.row() < m_objList.count() ) {
@@ -160,6 +179,8 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 }
 
 Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
+	XINX_TRACE( "XSLValueCompletionModel::flags", "( index )" );
+
 	if ( index.isValid() )
 		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
@@ -167,6 +188,8 @@ Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
 }
 
 int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
+	XINX_TRACE( "XSLValueCompletionModel::rowCount", "( index )" );
+
 	if ( ! parent.isValid() ) {
 		int size = m_objList.count();	
 		if( global.m_completionContents ) {
