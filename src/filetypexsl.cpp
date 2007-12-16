@@ -134,7 +134,7 @@ void PrivateFileTypeXsl::keyPressEvent( QKeyEvent *e ) {
 			}
 			if( c )
 				c->popup()->hide();
-			emit m_parent->canUpdateModel();
+			//emit m_parent->canUpdateModel();
 			return;
 		} else if( e->text().right(1) == "=" && global.m_config->config().editor.completionLevel >= 2 ) { 
 			QTextCursor tc( m_parent->textEdit()->textCursor() );
@@ -363,18 +363,7 @@ FileTypeXsl::~FileTypeXsl() {
 void FileTypeXsl::updateModel() {
 	if( d->m_modelData ) {
 		d->m_modelData->loadFromContent( textEdit()->toPlainText() );
-//		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
-	} else {/*
-		d->m_thread = new EditorThreadXSL( this );
-		d->m_thread->start();
-		while( d->m_thread->charged() ) ;
-		d->m_thread->reloadEditorContent( textEdit()->toPlainText() );
-		while( ! d->m_thread->charged() ) ;
-		d->m_contentModel = new FileContentItemModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser()), this );
-		d->m_completionValueModel = new XSLValueCompletionModel( dynamic_cast<XSLFileContentParser*>( d->m_thread->parser() ), this );
-		d->m_completerValue->setModel( d->m_completionValueModel );
-		*/
-
+	} else {
 		d->m_modelData = new XSLFileContentParser();
 		d->m_contentModel = new FileContentItemModel( d->m_modelData, this );
 		d->m_completionValueModel = new XSLValueCompletionModel( d->m_modelData, this );

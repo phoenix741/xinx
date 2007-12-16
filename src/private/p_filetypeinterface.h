@@ -21,14 +21,26 @@
 #ifndef __P_FILETYPEINTERFACE_H__
 #define __P_FILETYPEINTERFACE_H__
 
+// Xinx header
 #include "../filetypeinterface.h"
 
-class PrivateFileTypeInterface {
+// Qt header
+#include <QTimer>
+#include <QKeyEvent>
+
+/* PrivateFileTypeInterface */
+
+class PrivateFileTypeInterface : public QObject {
+	Q_OBJECT
 public:
 	PrivateFileTypeInterface( FileTypeInterface * parent );
 	~PrivateFileTypeInterface();
 	
 	TextEditor * m_textEdit;
+	QTimer m_keyTimer;
+public slots:
+	void keyPressEvent( QKeyEvent *event );
+	void keyUpdated();
 private:
 	FileTypeInterface * m_parent;
 };

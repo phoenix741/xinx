@@ -79,6 +79,7 @@ void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
 		d->m_sortModel = new QSortFilterProxyModel( this );
 		d->m_sortModel->setSourceModel( model );
 		d->m_contentTreeView->setModel( d->m_sortModel );
+		d->m_contentTreeView->sortByColumn( 0, Qt::AscendingOrder );
 	} else {
 		d->m_contentTreeView->setModel( NULL );
 		delete d->m_sortModel;

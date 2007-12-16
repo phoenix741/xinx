@@ -19,17 +19,30 @@
  ***************************************************************************/
 
 // Xinx header
+#include "texteditor.h"
 #include "filetypeinterface.h"
 #include "private/p_filetypeinterface.h"
 
 /* PrivateFileTypeInterface */
 
 PrivateFileTypeInterface::PrivateFileTypeInterface( FileTypeInterface * parent ) : m_textEdit( 0 ), m_parent( parent ) {
-	
+	m_keyTimer.setSingleShot( true );
+	m_keyTimer.setInterval( 1000 );
+	connect( &m_keyTimer, SIGNAL(timeout()), this, SLOT(keyUpdated()) );
 }
 
 PrivateFileTypeInterface::~PrivateFileTypeInterface() {
 	
+}
+
+void PrivateFileTypeInterface::keyUpdated() {
+	emit m_parent->canUpdateModel();
+}
+
+void PrivateFileTypeInterface::keyPressEvent( QKeyEvent *e ) {
+	if(!e->text().isEmpty()) {
+		m_keyTimer.start();
+	}
 }
 
 /* FileTypeInterface */
@@ -37,6 +50,8 @@ PrivateFileTypeInterface::~PrivateFileTypeInterface() {
 FileTypeInterface::FileTypeInterface( TextEditor * parent ) {
 	d = new PrivateFileTypeInterface( this );
 	d->m_textEdit = parent;
+
+	connect( parent, SIGNAL(execKeyPressEvent(QKeyEvent*)), d, SLOT(keyPressEvent(QKeyEvent*)) );
 }
 
 FileTypeInterface::~FileTypeInterface() {
