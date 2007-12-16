@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -147,6 +147,7 @@
     <addaction name="m_commentLineAct" />
     <addaction name="m_uncommentLineAct" />
     <addaction name="m_prettyPrintAct" />
+    <addaction name="m_highlightWord" />
     <addaction name="m_completeAct" />
    </widget>
    <widget class="QMenu" name="menu_Bookmark" >
@@ -809,6 +810,11 @@
   <action name="m_copyPathAct" >
    <property name="text" >
     <string>C&amp;opy path to clipboard</string>
+   </property>
+  </action>
+  <action name="m_highlightWord" >
+   <property name="text" >
+    <string>Highlight same word</string>
    </property>
   </action>
  </widget>

@@ -268,6 +268,13 @@ void TabEditor::complete() {
 	}
 }
 
+void TabEditor::highlightWord() {
+	if( currentEditor() && isFileEditor( currentEditor() ) ) {
+		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+		editor->callTextHighlighter();
+	}
+}
+
 void TabEditor::dragEnterEvent( QDragEnterEvent *event ) {
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasUrls()) {

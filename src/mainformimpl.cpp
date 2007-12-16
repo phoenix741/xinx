@@ -228,7 +228,8 @@ void PrivateMainformImpl::createShortcut() {
 	m_parent->m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );	
 	
 	m_parent->m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
-	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );	
+	m_parent->m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );
+	m_parent->m_highlightWord->setShortcut( QKeySequence( "Ctrl+U" ) );
 	
 	// Bookmark menu
 	m_parent->m_bookmarkAct->setShortcut( QKeySequence( "Ctrl+B" ) );
@@ -377,6 +378,9 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_completeAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(complete()) );
 	m_parent->m_completeAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(textAvailable(bool)), m_parent->m_completeAct, SLOT(setEnabled(bool)) );
+	
+	// Highlight Same Word
+	connect( m_parent->m_highlightWord, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(highlightWord()) );
 	
 	// Search 
 	connect( m_parent->m_searchAct, SIGNAL(triggered()), this, SLOT(find()) );

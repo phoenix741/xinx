@@ -86,6 +86,7 @@ public slots:
 	void autoindent();
 
 	void complete();	
+	void highlightWord();
 signals:
 	void undoAvailable( bool available );
 	void redoAvailable( bool available );

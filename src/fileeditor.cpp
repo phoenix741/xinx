@@ -683,6 +683,11 @@ void FileEditor::refreshTextHighlighter() {
 		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor() ) );
 }
 
+void FileEditor::callTextHighlighter() {
+	if( d->m_syntaxhighlighter ) 
+		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor() ) );
+}
+
 void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {
 	if( d->m_highlighterType == type ) return;
 

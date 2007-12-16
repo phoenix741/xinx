@@ -260,6 +260,7 @@ public slots :
 	 */
 	void updateHighlighter();
 	void refreshTextHighlighter();
+	void callTextHighlighter();
 	
 	virtual void setModified( bool modified );
 
