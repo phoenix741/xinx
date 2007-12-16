@@ -258,7 +258,7 @@ p, li { white-space: pre-wrap; }
           <item row="4" column="0" colspan="2" >
            <widget class="QCheckBox" name="m_autoHighlightCheckBox" >
             <property name="text" >
-             <string>Auto highlight current word</string>
+             <string>Auto highlight same word</string>
             </property>
            </widget>
           </item>
