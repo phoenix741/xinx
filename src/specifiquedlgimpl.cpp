@@ -98,10 +98,10 @@ QString SpecifiqueDialogImpl::path() const {
 }
 
 QString SpecifiqueDialogImpl::filename() const {
-	QString newFileName = QString();
+	QString newFileName;
 	
 	newFileName = QFileInfo( m_filename ).fileName();
-	if( m_specifiqueCheckBox->isChecked() ) 
+	if( m_specifiqueCheckBox->isChecked() && (! isSpecifique( m_filename ) ) ) 
 		newFileName = global.m_project->specifiquePrefix().toLower() + "_" + newFileName;
 	
 	return newFileName;
