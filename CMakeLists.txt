@@ -11,8 +11,6 @@ include(${QT_USE_FILE})
 set(xinx_SRCS
 	src/specifiquedlgimpl.cpp
 	src/filecontentstructure.cpp
-	src/editorthreadxsl.cpp
-	src/editorthread.cpp
 	src/aboutdialogimpl.cpp
 	src/appsettings.cpp
 	src/commitmessagedialogimpl.cpp
@@ -83,8 +81,6 @@ set(xinx_SRCS
 SET(xinx_MOC_HDRS
 	src/specifiquedlgimpl.h
 	src/filecontentstructure.h
-	src/editorthreadxsl.h
-	src/editorthread.h
 	src/xinxthread.h
 	src/aboutdialogimpl.h
 	src/appsettings.h
@@ -214,4 +210,7 @@ include_directories(
 )
 add_executable(xinx WIN32 ${xinx_SRCS} ${xinx_MOC_SRCS} ${xinx_UIS_H} ${xinx_QRC_H} ${xinx_RESS})
 target_link_libraries(xinx ${QT_LIBRARIES})
+
 install(TARGETS xinx DESTINATION bin)
+install(FILES xml/completion.xnx DESTINATION xml)
+install(FILES xml/template.xnx DESTINATION xml)
