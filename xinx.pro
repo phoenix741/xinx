@@ -1,3 +1,4 @@
+SUBDIRS = plugins
 CONFIG += debug \
     exceptions \
     qdbus \
@@ -24,7 +25,8 @@ DISTFILES = CHANGELOG \
     translations/*.ts \
     ui/*.ui \
     xml/*.xnx
-FORMS += ui/specifiquedlg.ui \
+FORMS += ui/plugindialog.ui \
+    ui/specifiquedlg.ui \
     ui/about.ui \
     ui/commitmessages.ui \
     ui/custom.ui \
@@ -38,7 +40,10 @@ FORMS += ui/specifiquedlg.ui \
     ui/servicesconnection.ui \
     ui/snipetproperty.ui \
     ui/xmlpresentationwidget.ui
-HEADERS += src/specifiquedlgimpl.h \
+HEADERS += src/plugindialog.h \
+    src/xinxpluginsloader.h \
+    src/interfaces.h \
+    src/specifiquedlgimpl.h \
     src/filecontentstructure.h \
     src/xinxthread.h \
     src/aboutdialogimpl.h \
@@ -128,7 +133,9 @@ QT += network \
     xml
 RCC_DIR += build
 RESOURCES += application.qrc
-SOURCES += src/specifiquedlgimpl.cpp \
+SOURCES += src/plugindialog.cpp \
+    src/xinxpluginsloader.cpp \
+    src/specifiquedlgimpl.cpp \
     src/filecontentstructure.cpp \
     src/aboutdialogimpl.cpp \
     src/appsettings.cpp \

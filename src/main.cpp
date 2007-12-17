@@ -27,6 +27,7 @@
 #include "editorcompletion.h"
 #include "snipetlist.h"
 #include "exceptions.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QApplication>
@@ -89,6 +90,11 @@ int main(int argc, char *argv[]) {
 			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_config->config().language ) );
 			app.installTranslator(&translator_xinx);
 	
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
+			app.processEvents();
+			global.m_pluginsLoader = new XinxPluginsLoader();
+			global.m_pluginsLoader->loadPlugins();
+			
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
 			global.m_completionContents = new Completion();

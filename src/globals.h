@@ -30,6 +30,7 @@ class ObjectsView;
 class XINXConfig;
 class SnipetList;
 class Completion;
+class XinxPluginsLoader;
 
 /*!
  * List of WebServices object.
@@ -78,6 +79,11 @@ public:
 	 * Completion content.
 	 */
 	Completion * m_completionContents;
+	
+	/*!
+	 * Xinx Plugins loader
+	 */
+	XinxPluginsLoader * m_pluginsLoader;
 	
 	/*!
 	 * Call this function when you want emit signals \e projectChanged().

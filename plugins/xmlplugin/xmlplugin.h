@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,41 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef XMLPLUGIN_H_
+#define XMLPLUGIN_H_
+
 // Xinx header
-#include "globals.h"
-#include "xslproject.h"
-#include "webservices.h"
-#include "editorcompletion.h"
-#include "snipetlist.h"
-#include "xinxpluginsloader.h"
+#include <interfaces.h>
 
-/* Globals */
-
-Globals global;
-
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_completionContents(0), m_pluginsLoader(0) {
+class XmlPlugin : public QObject, public SyntaxHighlighterInterface {
+	Q_OBJECT
+	Q_INTERFACES(SyntaxHighlighterInterface)
 	
-}
+	virtual QStringList highlighters();
+	virtual QString filterOf( const QString & highlighter );
+	virtual SyntaxHighlighter * newSyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
+	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
+	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
+};
 
-Globals::~Globals() {
-	delete m_pluginsLoader;
-	delete m_completionContents;
-	delete m_snipetList;
-	delete m_project;
-	if( m_webServices ) {
-		qDeleteAll( *m_webServices );
-		delete m_webServices;	
-	}
-}
-
-void Globals::emitProjectChanged() {
-	emit projectChanged();
-}
-
-void Globals::emitWebServicesChanged() {
-	emit webServicesChanged();
-}
-
-void Globals::emitConfigChanged() {
-	emit configChanged();
-}
+#endif /*XMLPLUGIN_H_*/

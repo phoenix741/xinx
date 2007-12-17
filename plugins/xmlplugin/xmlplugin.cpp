@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,40 +19,31 @@
  ***************************************************************************/
 
 // Xinx header
-#include "globals.h"
-#include "xslproject.h"
-#include "webservices.h"
-#include "editorcompletion.h"
-#include "snipetlist.h"
-#include "xinxpluginsloader.h"
+#include "xmlplugin.h"
 
-/* Globals */
+// Qt header
+#include <QStringList>
 
-Globals global;
+/* XmlPlugin */
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_completionContents(0), m_pluginsLoader(0) {
-	
+QStringList XmlPlugin::highlighters() {
+	return QStringList() << tr("XML Highlighter");
 }
 
-Globals::~Globals() {
-	delete m_pluginsLoader;
-	delete m_completionContents;
-	delete m_snipetList;
-	delete m_project;
-	if( m_webServices ) {
-		qDeleteAll( *m_webServices );
-		delete m_webServices;	
-	}
+QString XmlPlugin::filterOf( const QString & highlighter ) {
+	return QString();
 }
 
-void Globals::emitProjectChanged() {
-	emit projectChanged();
+SyntaxHighlighter * XmlPlugin::newSyntaxHighlighter( QObject* parent, XINXConfig * config ) {
+	return NULL;
 }
 
-void Globals::emitWebServicesChanged() {
-	emit webServicesChanged();
+SyntaxHighlighter * XmlPlugin::newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config ) {
+	return NULL;
 }
 
-void Globals::emitConfigChanged() {
-	emit configChanged();
+SyntaxHighlighter * XmlPlugin::newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) {
+	return NULL;
 }
+
+Q_EXPORT_PLUGIN2(xinx_xmlplugin, XmlPlugin)

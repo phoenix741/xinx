@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,41 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// Xinx header
-#include "globals.h"
-#include "xslproject.h"
-#include "webservices.h"
-#include "editorcompletion.h"
-#include "snipetlist.h"
-#include "xinxpluginsloader.h"
+#ifndef INTERFACES_H_
+#define INTERFACES_H_
 
-/* Globals */
+#include <QtPlugin>
 
-Globals global;
+class SyntaxHighlighter;
+class XINXConfig;
+class QObject;
+class QTextDocument;
+class QTextEdit;
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_completionContents(0), m_pluginsLoader(0) {
+class SyntaxHighlighterInterface {
+public:
+	virtual ~SyntaxHighlighterInterface() {};
 	
-}
+	virtual QStringList highlighters() = 0;
+	virtual QString filterOf( const QString & highlighter ) = 0;
+	virtual SyntaxHighlighter * newSyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL ) = 0;
+	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL ) = 0;
+	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL ) = 0;
+};
 
-Globals::~Globals() {
-	delete m_pluginsLoader;
-	delete m_completionContents;
-	delete m_snipetList;
-	delete m_project;
-	if( m_webServices ) {
-		qDeleteAll( *m_webServices );
-		delete m_webServices;	
-	}
-}
+Q_DECLARE_INTERFACE(SyntaxHighlighterInterface, "org.shadoware.xinx.SyntaxHighlighterInterface/1.0")
 
-void Globals::emitProjectChanged() {
-	emit projectChanged();
-}
-
-void Globals::emitWebServicesChanged() {
-	emit webServicesChanged();
-}
-
-void Globals::emitConfigChanged() {
-	emit configChanged();
-}
+#endif /*INTERFACES_H_*/

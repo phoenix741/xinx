@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,40 +19,49 @@
  ***************************************************************************/
 
 // Xinx header
-#include "globals.h"
-#include "xslproject.h"
-#include "webservices.h"
-#include "editorcompletion.h"
-#include "snipetlist.h"
 #include "xinxpluginsloader.h"
 
-/* Globals */
+// Qt header
+#include <QPluginLoader>
+#include <QApplication>
 
-Globals global;
+/* XinxPluginsLoader */
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_completionContents(0), m_pluginsLoader(0) {
+XinxPluginsLoader::XinxPluginsLoader() {
 	
 }
 
-Globals::~Globals() {
-	delete m_pluginsLoader;
-	delete m_completionContents;
-	delete m_snipetList;
-	delete m_project;
-	if( m_webServices ) {
-		qDeleteAll( *m_webServices );
-		delete m_webServices;	
-	}
+XinxPluginsLoader::~XinxPluginsLoader() {
+	
 }
 
-void Globals::emitProjectChanged() {
-	emit projectChanged();
+const QDir & XinxPluginsLoader::pluginsDir() const {
+	return m_pluginsDir;
 }
 
-void Globals::emitWebServicesChanged() {
-	emit webServicesChanged();
+const QStringList & XinxPluginsLoader::pluginFileNames() const {
+	return m_pluginFileNames;
+}
+	
+void XinxPluginsLoader::addPlugin( QObject * plugin ) {
+	SyntaxHighlighterInterface * iSyntaxHighlighter = qobject_cast<SyntaxHighlighterInterface*>( plugin );
+	if( iSyntaxHighlighter )
+		m_syntaxPlugins.append( iSyntaxHighlighter );
 }
 
-void Globals::emitConfigChanged() {
-	emit configChanged();
+void XinxPluginsLoader::loadPlugins() {
+	foreach( QObject * plugin, QPluginLoader::staticInstances() )
+		addPlugin( plugin );
+	
+	m_pluginsDir = QDir( qApp->applicationDirPath() );
+	m_pluginsDir.cd( "plugins" );
+	
+    foreach( QString fileName, m_pluginsDir.entryList( QDir::Files ) ) {
+        QPluginLoader loader( m_pluginsDir.absoluteFilePath( fileName ) );
+        QObject * plugin = loader.instance();
+        if ( plugin ) {
+        	addPlugin(plugin);
+        	m_pluginFileNames += fileName;
+        }
+    }
 }
