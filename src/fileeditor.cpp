@@ -680,12 +680,12 @@ void FileEditor::updateHighlighter() {
 
 void FileEditor::refreshTextHighlighter() {
 	if( d->m_syntaxhighlighter && global.m_config->config().editor.autoHighlight ) 
-		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor() ) );
+		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 
 void FileEditor::callTextHighlighter() {
 	if( d->m_syntaxhighlighter ) 
-		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor() ) );
+		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 
 void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {

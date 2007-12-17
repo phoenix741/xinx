@@ -40,7 +40,7 @@ public:
 	
 	void insertText( const QString & text );
 
-	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
+	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false, bool dot = true );
 	
 	void keyPressExecute( QKeyEvent * e );
 	void keyPressSkip( QKeyEvent * e );

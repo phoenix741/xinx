@@ -54,6 +54,7 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	m_projectDirWidget->m_projectDirectoryTreeView->installEventFilter( this );
 	
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()) );
+	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
 	connect( m_projectDirWidget->m_projectDirectoryTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_projectDirectoryTreeView_doubleClicked(QModelIndex)) );
 }

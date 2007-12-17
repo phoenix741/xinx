@@ -36,7 +36,8 @@
 /*!
  * Definition of the characters that can't be in a word.
  */
-#define EOWREGEXP	"[^A-Za-z0-9_:-]"
+#define EOWREGEXP		"[^A-Za-z0-9_:-]"
+#define EOWREGEXPDOT	"[^A-Za-z0-9_:-.]"
 
 /*!
  * Pixmap used to represent the tabulation
@@ -192,11 +193,14 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
     setTextCursor( cursor );
 }
 
-QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord ) {
+QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord, bool dot ) {
 	XINX_ASSERT( ! cursor.isNull() );
-
-	QTextCursor before ( document()->find ( QRegExp( EOWREGEXP ), cursor, QTextDocument::FindBackward ) );
-	QTextCursor after ( document()->find ( QRegExp( EOWREGEXP ), cursor ) );
+	QString expr = EOWREGEXPDOT;
+	if( ! dot ) 
+		expr = EOWREGEXP;
+	
+	QTextCursor before ( document()->find ( QRegExp( expr ), cursor, QTextDocument::FindBackward ) );
+	QTextCursor after ( document()->find ( QRegExp( expr ), cursor ) );
 
 	QTextCursor tc = cursor;
 	
