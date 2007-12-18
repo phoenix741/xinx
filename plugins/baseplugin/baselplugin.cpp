@@ -18,21 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XMLPLUGIN_H_
-#define XMLPLUGIN_H_
-
 // Xinx header
-#include <interfaces.h>
+#include "baseplugin.h"
 
-class XmlPlugin : public QObject, public SyntaxHighlighterInterface {
-	Q_OBJECT
-	Q_INTERFACES(SyntaxHighlighterInterface)
-	
-	virtual QStringList highlighters();
-	virtual QString filterOf( const QString & highlighter );
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
-};
+// Qt header
+#include <QStringList>
 
-#endif /*XMLPLUGIN_H_*/
+/* XmlPlugin */
+
+QStringList BasePlugin::highlighters() {
+	return QStringList() << tr("XML Highlighter") << tr("JS Highlighter") << tr("CSS Highlighter");
+}
+
+QString BasePlugin::filterOf( const QString & highlighter ) {
+	return QString();
+}
+
+SyntaxHighlighter * BasePlugin::newSyntaxHighlighter( QObject* parent, XINXConfig * config ) {
+	return NULL;
+}
+
+SyntaxHighlighter * BasePlugin::newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config ) {
+	return NULL;
+}
+
+SyntaxHighlighter * BasePlugin::newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) {
+	return NULL;
+}
+
+Q_EXPORT_PLUGIN2(xinx_baseplugin, BasePlugin)
