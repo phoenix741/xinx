@@ -1,1 +1,1 @@
-SUBDIRS = xmlplugin
+SUBDIRS = baseplugin
