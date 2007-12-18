@@ -16,5 +16,9 @@ INCLUDEPATH += ../../include
 
 CONFIG       += plugin
 
-HEADERS       = baseplugin.h 
-SOURCES       = baseplugin.cpp
+HEADERS       = baseplugin.h \
+	xmlhighlighter.h \
+	jshighlighter.h
+SOURCES       = baseplugin.cpp \
+	xmlhighlighter.cpp \
+	jshighlighter.cpp

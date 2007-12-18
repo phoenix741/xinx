@@ -18,28 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ISYNTAXHIGHLIGHTER_H_
-#define ISYNTAXHIGHLIGHTER_H_
+#ifndef XMLHIGHLIGHTER_H_
+#define XMLHIGHLIGHTER_H_
+
+// Xinx header
+#include <isyntaxhighlighter.h>
 
 // Qt header
+#include <QHash>
+#include <QString>
 #include <QTextCharFormat>
-#include <QColor>
-#include <QFont>
 
-class IXinxSyntaxHighlighter {
-public:
-	int currentBlockState () const;
-	int previousBlockState () const;
-	void setCurrentBlockState ( int newState );
-	
-	QTextCharFormat format ( int position ) const;
-	void setFormat ( int start, int count, const QTextCharFormat & format );
-	void setFormat ( int start, int count, const QColor & color );
-	void setFormat ( int start, int count, const QFont & font );
+namespace baseplugin_xml {
+	enum ParsingState {
+		NoState = 0,
+		ExpectElementNameOrSlash,
+		ExpectElementName,
+		ExpectAttributeOrEndOfElement,
+		ExpectEqual,
+		ExpectAttributeValue,
+		ExpectAttributeTextOrPath,
+		ExpectPathTextOrEndOfPath
+	};
 
-	void processText( int pos, const QString& text );
+	enum BlockState {
+		NoBlock = -1,
+		InComment,
+		InElement
+	};
+
+	extern void highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text );
+	extern int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, ParsingState state, const QChar & quoteType, int i, const QString& text );
 };
 
-static const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
-
-#endif /*ISYNTAXHIGHLIGHTER_H_*/
+#endif /*XMLHIGHLIGHTER_H_*/

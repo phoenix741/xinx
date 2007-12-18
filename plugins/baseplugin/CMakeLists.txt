@@ -2,10 +2,14 @@ include(${QT_USE_FILE})
 
 set(baseplugin_SRCS
 	baseplugin.cpp
+	xmlhighlighter.cpp
+	jshighlighter.cpp
 )
 
 SET(baseplugin_MOC_HDRS
 	baseplugin.h
+	xmlhighlighter.h
+	jshighlighter.h
 )
 
 include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})

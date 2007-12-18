@@ -20,6 +20,8 @@
 
 // Xinx header
 #include "baseplugin.h"
+#include "xmlhighlighter.h"
+#include "jshighlighter.h"
 
 // Qt header
 #include <QStringList>
@@ -44,6 +46,7 @@ static const QColor DEFAULT_STRING			= Qt::red;
 /* BasePlugin */
 
 QStringList BasePlugin::highlighters() {
+	baseplugin_js::init();
 	return QStringList() << "XML" << "JS" << "CSS";
 }
 
@@ -129,7 +132,11 @@ QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 }
 
 void BasePlugin::highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) {
-	
+	if( highlighter == "XML" ) {
+		baseplugin_xml::highlightBlock( formats, i, text );
+	} else if( highlighter == "JS" ) {
+		baseplugin_js::highlightBlock( formats, i, text );
+	}
 }
 
 
