@@ -8,7 +8,7 @@ SET(baseplugin_MOC_HDRS
 	baseplugin.h
 )
 
-include_directories(../../src ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
+include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
 QT4_WRAP_CPP(baseplugin_MOC_SRCS ${baseplugin_MOC_HDRS})
 

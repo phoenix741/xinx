@@ -128,4 +128,9 @@ QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 	return example;
 }
 
+void BasePlugin::highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) {
+	
+}
+
+
 Q_EXPORT_PLUGIN2(xinx_baseplugin, BasePlugin)

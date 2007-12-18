@@ -12,7 +12,7 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-INCLUDEPATH += ../../src/
+INCLUDEPATH += ../../include
 
 CONFIG       += plugin
 

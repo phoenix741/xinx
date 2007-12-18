@@ -18,21 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BASEPLUGIN_H_
-#define BASEPLUGIN_H_
+#ifndef ISYNTAXHIGHLIGHTER_H_
+#define ISYNTAXHIGHLIGHTER_H_
 
-// Xinx header
-#include <interfaces.h>
+// Qt header
+#include <QTextCharFormat>
+#include <QColor>
+#include <QFont>
 
-class BasePlugin : public QObject, public SyntaxHighlighterInterface {
-	Q_OBJECT
-	Q_INTERFACES(SyntaxHighlighterInterface)
-	
-	virtual QStringList highlighters();
-	virtual QHash<QString,QString> filterOfHighlighter( const QString & highlighter );
-	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
-	virtual QString exampleOfHighlighter( const QString & highlighter );
-	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text );
+class IXinxSyntaxHighlighter {
+public:
+	int currentBlockState () const;
+	int previousBlockState () const;
+	void setCurrentBlockState ( int newState );
+	QTextCharFormat format ( int position ) const;
+	void setFormat ( int start, int count, const QTextCharFormat & format );
+	void setFormat ( int start, int count, const QColor & color );
+	void setFormat ( int start, int count, const QFont & font );
 };
 
-#endif /* BASEPLUGIN_H_*/
+#endif /*ISYNTAXHIGHLIGHTER_H_*/

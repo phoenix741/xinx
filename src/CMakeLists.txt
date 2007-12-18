@@ -7,7 +7,7 @@ include(${QT_USE_FILE})
 add_definitions(-O2)
 add_definitions(-Wall)
 add_definitions(${QT_DEFINITIONS})
-include_directories(./ ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
+include_directories(./ ../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
 set(xinx_SRCS
 	specifiquedlgimpl.cpp

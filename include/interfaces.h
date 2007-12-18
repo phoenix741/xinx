@@ -27,6 +27,9 @@
 #include <QStringList>
 #include <QTextCharFormat>
 
+// Xinx header
+#include <isyntaxhighlighter.h>
+
 class SyntaxHighlighter;
 class XINXConfig;
 class QObject;
@@ -41,6 +44,7 @@ public:
 	virtual QHash<QString,QString> filterOfHighlighter( const QString & highlighter ) = 0;
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter ) = 0;
 	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
+	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) = 0;
 };
 
 Q_DECLARE_INTERFACE(SyntaxHighlighterInterface, "org.shadoware.xinx.SyntaxHighlighterInterface/1.0")

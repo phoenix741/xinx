@@ -11,7 +11,7 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-INCLUDEPATH += ../src/
+INCLUDEPATH += ../src/ ../include
 
 CONFIG += debug \
     exceptions \
