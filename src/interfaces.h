@@ -21,7 +21,11 @@
 #ifndef INTERFACES_H_
 #define INTERFACES_H_
 
+// Qt header
 #include <QtPlugin>
+#include <QHash>
+#include <QStringList>
+#include <QTextCharFormat>
 
 class SyntaxHighlighter;
 class XINXConfig;
@@ -34,10 +38,9 @@ public:
 	virtual ~SyntaxHighlighterInterface() {};
 	
 	virtual QStringList highlighters() = 0;
-	virtual QString filterOf( const QString & highlighter ) = 0;
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL ) = 0;
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL ) = 0;
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL ) = 0;
+	virtual QHash<QString,QString> filterOfHighlighter( const QString & highlighter ) = 0;
+	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter ) = 0;
+	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
 };
 
 Q_DECLARE_INTERFACE(SyntaxHighlighterInterface, "org.shadoware.xinx.SyntaxHighlighterInterface/1.0")

@@ -29,10 +29,9 @@ class BasePlugin : public QObject, public SyntaxHighlighterInterface {
 	Q_INTERFACES(SyntaxHighlighterInterface)
 	
 	virtual QStringList highlighters();
-	virtual QString filterOf( const QString & highlighter );
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
-	virtual SyntaxHighlighter * newSyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
+	virtual QHash<QString,QString> filterOfHighlighter( const QString & highlighter );
+	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
+	virtual QString exampleOfHighlighter( const QString & highlighter );
 };
 
 #endif /* BASEPLUGIN_H_*/
