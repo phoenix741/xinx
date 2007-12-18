@@ -1,1 +1,1 @@
-add_subdirectory(xmlplugin .)
+add_subdirectory(baseplugin .)
