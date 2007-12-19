@@ -834,6 +834,7 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 			qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
 			if( m_fileToAdd.count() > 0 ) 
 				m_parent->addFilesToVersionManager( m_fileToAdd );
+			m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
 			m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 		}
 		m_fileToAdd.clear();
@@ -852,6 +853,7 @@ void PrivateMainformImpl::fileEditorSaveAs( int index ) {
 		qobject_cast<FileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveFile( fileName );
 		if( m_fileToAdd.count() > 0 ) 
 			m_parent->addFilesToVersionManager( m_fileToAdd );
+		m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
 		m_parent->statusBar()->showMessage( tr("File %1 saved").arg( m_parent->m_tabEditors->editor(index)->getTitle() ), 2000 );
 	}
 	m_fileToAdd.clear();

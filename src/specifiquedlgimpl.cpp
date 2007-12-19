@@ -133,10 +133,13 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 	m_lastPlace = QFileInfo( newFilename ).absolutePath();
 
 	if( saveToRepository ) {
-		if( !filename.isEmpty() ) 
-			filesForRepository << filename;
+		filesForRepository << QDir( dlg.path() ).absoluteFilePath( QFileInfo( filename ).fileName() );
 		if( filename != newFilename )
 			filesForRepository << newFilename;
+	}
+	
+	if( ( filename != newFilename ) && (!isSpecifique( filename )) && isSpecifique( newFilename ) ) {
+		QFile::copy( filename, QDir( dlg.path() ).absoluteFilePath( QFileInfo( filename ).fileName() ) );
 	}
 	
 	return newFilename;
@@ -158,7 +161,7 @@ QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QS
 			}
 			
 			if( dlg.m_repositoryCheckBox->isChecked() && dlg.m_repositoryCheckBox->isEnabled() ) {
-				filesForRepository << filename;
+				filesForRepository << QDir( dlg.path() ).absoluteFilePath( QFileInfo( filename ).fileName() );
 				if( filename != path )
 					filesForRepository << path;
 			}
