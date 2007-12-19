@@ -23,6 +23,7 @@
 #include "globals.h"
 #include "exceptions.h"
 #include "xslproject.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QFileInfo>
@@ -110,7 +111,7 @@ QString SpecifiqueDialogImpl::filename() const {
 QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QString & suffix, QStringList & filesForRepository ) {
 	QString newFilename = filename,
 			usedSuffix  = suffix.isEmpty() ? QFileInfo( filename ).completeSuffix() : suffix,
-			filter 		= global.m_config->filter( usedSuffix );
+			filter 		= global.m_pluginsLoader->filter( usedSuffix );
 			
 	bool saveToRepository = false;
 	
@@ -126,7 +127,7 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 			return QString();
 	}
 	
-	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, global.m_config->filters().join(";;"), &filter );
+	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, global.m_pluginsLoader->filters().join(";;"), &filter );
 	if( newFilename.isEmpty() )
 		return QString();
 
@@ -152,10 +153,10 @@ QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QS
 		dlg.setFileName( filename );
 		if( dlg.exec() ) {
 			QString path 	= QDir( dlg.path() ).absoluteFilePath( dlg.filename() ),
-					filter	= global.m_config->filter( QFileInfo( filename ).completeSuffix() );
+					filter	= global.m_pluginsLoader->filter( QFileInfo( filename ).completeSuffix() );
 			
 			if( dlg.m_specifiqueCheckBox->isEnabled() && dlg.m_specifiqueCheckBox->isChecked() ) {
-				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, global.m_config->filters().join(";;"), &filter );
+				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, global.m_pluginsLoader->filters().join(";;"), &filter );
 				if( ! path.isEmpty() )
 					m_lastPlace = QFileInfo( path ).absolutePath();
 			}

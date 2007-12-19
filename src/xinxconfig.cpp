@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
+// Qt header
 #include <QApplication>
 #include <QDir>
 #include <QLocale>
 
+// Xinx header
 #include "xinxconfig.h"
 #include "jshighlighter.h"
 #include "xmlhighlighter.h"
@@ -48,19 +50,12 @@ class PrivateXINXConfig {
 public:
 	PrivateXINXConfig( XINXConfig * parent );
 	~PrivateXINXConfig();
-	
-	QHash<QString,QString> m_extentions;
 private:
 	XINXConfig * m_parent;
 };
 
 PrivateXINXConfig::PrivateXINXConfig( XINXConfig * parent ) : m_parent( parent ) {
-	m_extentions[ "xsl" ] = QApplication::translate( "XINXConfig", "All XSL Stylesheet" );
-	m_extentions[ "js" ]  = QApplication::translate( "XINXConfig", "All JavaScript" );
-	m_extentions[ "fws" ] = QApplication::translate( "XINXConfig", "All Webservices input stream" );
-	m_extentions[ "xml" ] = QApplication::translate( "XINXConfig", "All XML File" );
-	m_extentions[ "css" ] = QApplication::translate( "XINXConfig", "All HTML Stylesheet" );
-	m_extentions[ "sql" ] = QApplication::translate( "XINXConfig", "All SQL file" );
+
 }
 
 PrivateXINXConfig::~PrivateXINXConfig() {
@@ -115,23 +110,4 @@ struct_editor XINXConfig::getDefaultEditor() {
 	return value;
 }
 
-QString XINXConfig::filter( const QString & suffix ) {
-	return d->m_extentions[ suffix ] + " (*." + suffix + ")";
-}
-
-QStringList XINXConfig::filters() {
-	QStringList result;
-	QString allExtentions;
-	
-	foreach( QString suffix, d->m_extentions.keys() ) {
-		result << filter( suffix );
-		if( suffix != d->m_extentions.keys().last() )
-			allExtentions += "*." + suffix + " ";
-		else
-			allExtentions += "*." + suffix;
-	}
-	result.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + allExtentions + ")" );
-	
-	return result;
-}
 

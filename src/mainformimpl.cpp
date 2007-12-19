@@ -45,6 +45,7 @@
 #include "xinxthread.h"
 #include "specifiquedlgimpl.h"
 #include "plugindialog.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QKeySequence>
@@ -569,7 +570,7 @@ void PrivateMainformImpl::openFile() {
 
 	XINX_ASSERT( global.m_config );
 	
-	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), global.m_config->filters().join(";;") );
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), global.m_pluginsLoader->filters().join(";;") );
 	
 	m_parent->m_tabEditors->setUpdatesEnabled( false );
 	foreach( QString filename, selectedFiles ) {

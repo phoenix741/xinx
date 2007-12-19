@@ -41,7 +41,8 @@ public:
 	virtual ~SyntaxHighlighterInterface() {};
 	
 	virtual QStringList highlighters() = 0;
-	virtual QHash<QString,QString> filterOfHighlighter( const QString & highlighter ) = 0;
+	virtual QHash<QString,QString> highlighterFilters() = 0;
+	virtual QString highlighterOfExtention( const QString & extention ) = 0;
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter ) = 0;
 	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
 	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) = 0;

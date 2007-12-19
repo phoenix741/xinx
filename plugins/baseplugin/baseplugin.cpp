@@ -50,21 +50,29 @@ QStringList BasePlugin::highlighters() {
 	return QStringList() << "XML" << "JS" << "CSS";
 }
 
-QHash<QString,QString> BasePlugin::filterOfHighlighter( const QString & highlighter ) {
+QHash<QString,QString> BasePlugin::highlighterFilters() {
 	QHash<QString,QString> extentions;
-	if( highlighter == "XML" ) {
-		extentions[ "xsl" ] = tr( "All XSL Stylesheet" );
-		extentions[ "fws" ] = tr( "All Webservices input stream" );
-		extentions[ "xml" ] = tr( "All XML File" );
-		extentions[ "html" ] = tr( "All HTML File" );
-		extentions[ "htm" ] = tr( "All HTML File" );
-		extentions[ "xhtml" ] = tr( "All HTML File" );
-	} else if( highlighter == "JS" ) {
-		extentions[ "js" ]  = tr( "All JavaScript" );
-	} else if( highlighter == "CSS" )  {
-		extentions[ "css" ] = tr( "All HTML Stylesheet" );
-	} 
+	extentions[ "xsl" ]   = tr( "All XSL Stylesheet" );
+	extentions[ "fws" ]   = tr( "All Webservices input stream" );
+	extentions[ "xml" ]   = tr( "All XML File" );
+	extentions[ "html" ]  = tr( "All HTML File" );
+	extentions[ "htm" ]   = tr( "All HTML File" );
+	extentions[ "js" ]    = tr( "All JavaScript" );
+	extentions[ "css" ]   = tr( "All HTML Stylesheet" );
 	return extentions;
+}
+
+QString BasePlugin::highlighterOfExtention( const QString & extention ) {
+	QHash<QString,QString> extentions;
+	extentions[ "xsl" ]   = "XML";
+	extentions[ "fws" ]   = "XML";
+	extentions[ "xml" ]   = "XML";
+	extentions[ "html" ]  = "XML";
+	extentions[ "htm" ]   = "XML";
+	extentions[ "xhtml" ] = "XML";
+	extentions[ "js" ]    = "JS";
+	extentions[ "css" ]   = "CSS";
+	return extentions[ extention ];
 }
 
 QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & highlighter ) {
@@ -86,6 +94,10 @@ QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & 
 		formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
 		formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
 		formats[ "js_string"          ].setForeground( DEFAULT_STRING );	
+	} else if( highlighter == "CSS" ) {
+		formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
+		formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
+		formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
 	}
 	
 	return formats;

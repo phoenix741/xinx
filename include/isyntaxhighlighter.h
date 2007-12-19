@@ -28,6 +28,8 @@
 
 class IXinxSyntaxHighlighter {
 public:
+	virtual ~IXinxSyntaxHighlighter() {};
+	
 	virtual int currentBlockState () const = 0;
 	virtual int previousBlockState () const = 0;
 	virtual void setCurrentBlockState ( int newState ) = 0;

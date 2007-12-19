@@ -23,8 +23,6 @@
 #include "globals.h"
 #include "xinxconfig.h"
 
-const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
-
 /* SyntaxHighlighter */
 
 SyntaxHighlighter::SyntaxHighlighter( QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {

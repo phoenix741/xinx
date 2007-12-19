@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "xinxpluginsloader.h"
+#include "interfaces.h"
 
 // Qt header
 #include <QPluginLoader>
@@ -65,3 +66,33 @@ void XinxPluginsLoader::loadPlugins() {
         }
     }
 }
+
+const QList<SyntaxHighlighterInterface*> & XinxPluginsLoader::syntaxPlugins() const {
+	return m_syntaxPlugins;
+}
+
+QString XinxPluginsLoader::filter( const QString & suffix ) {
+	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
+		QString libelle = interface->highlighterFilters()[ suffix ];
+		if( ! libelle.isEmpty() )
+			return QString( "%1 (*.%2)" ).arg( libelle ).arg( suffix );
+	}
+	return QString();
+}
+
+QStringList XinxPluginsLoader::filters() {
+	QStringList result;
+	QStringList allExtentions;
+	
+	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
+		foreach( QString suffix, interface->highlighterFilters().keys() ) {
+			QString libelle = interface->highlighterFilters()[ suffix ];
+			result << QString( "%1 (*.%2)" ).arg( libelle ).arg( suffix );
+			allExtentions << QString( "*.%1" ).arg( suffix );
+		}
+	}
+	result << QApplication::translate( "XINXConfig", "All managed file") + " (" + allExtentions.join( " " ) + ")";
+	
+	return result;
+}
+

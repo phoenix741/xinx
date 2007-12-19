@@ -20,10 +20,13 @@
 
 #ifndef SYNTAXHIGHLIGHTER_H
 #define SYNTAXHIGHLIGHTER_H
-//
+
+// Qt header
 #include <QSyntaxHighlighter>
 #include <QHash>
-//
+
+// Xinx header
+#include "isyntaxhighlighter.h"
 
 class XINXConfig;
 
@@ -42,8 +45,5 @@ protected:
 	XINXConfig * m_config;
 	QString m_text;
 };
-
-extern const QString EXPR_TEXT;
-
 
 #endif

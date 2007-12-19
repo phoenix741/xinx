@@ -29,7 +29,8 @@ class BasePlugin : public QObject, public SyntaxHighlighterInterface {
 	Q_INTERFACES(SyntaxHighlighterInterface)
 	
 	virtual QStringList highlighters();
-	virtual QHash<QString,QString> filterOfHighlighter( const QString & highlighter );
+	virtual QHash<QString,QString> highlighterFilters();
+	virtual QString highlighterOfExtention( const QString & extention );
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
 	virtual QString exampleOfHighlighter( const QString & highlighter );
 	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text );

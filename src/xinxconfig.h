@@ -30,9 +30,6 @@ public:
 	XINXConfig( const XINXConfig & origine );
 	XINXConfig();
 	virtual ~XINXConfig();
-	
-	virtual QString filter( const QString & suffix );
-	virtual QStringList filters();
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();

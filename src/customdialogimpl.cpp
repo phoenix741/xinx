@@ -23,6 +23,8 @@
 #include "jshighlighter.h"
 #include "xmlhighlighter.h"
 #include "exceptions.h"
+#include "globals.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QDir>
@@ -146,7 +148,7 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Extetions
 	m_parent->m_extentionsListWidget->clear();
 	foreach( QString key, m_config.config().files.keys() ) {
-		m_parent->m_extentionsListWidget->addItem( m_config.filter( key ) );
+		m_parent->m_extentionsListWidget->addItem( global.m_pluginsLoader->filter( key ) );
 	}
 	m_parent->m_extentionsListWidget->setCurrentRow( 0 );
 }
