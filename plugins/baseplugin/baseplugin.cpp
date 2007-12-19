@@ -77,7 +77,7 @@ QString BasePlugin::highlighterOfExtention( const QString & extention ) {
 
 QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & highlighter ) {
 	QHash<QString,QTextCharFormat> formats;
-	if( highlighter == "XML" )  {
+	if( highlighter.toUpper() == "XML" )  {
 		formats[ "xml_comment"        ].setForeground( DEFAULT_COMMENT );
 		formats[ "xml_error"          ].setForeground( DEFAULT_ERROR );
 		formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
@@ -86,7 +86,7 @@ QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & 
 		formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );	
 		formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
 		formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );	
-	} else if( highlighter == "JS" ) {
+	} else if( highlighter.toUpper() == "JS" ) {
 		formats[ "js_comment"         ].setForeground( DEFAULT_COMMENT );
 		formats[ "js_error"           ].setForeground( DEFAULT_ERROR );
 		formats[ "js_other"           ].setForeground( DEFAULT_OTHER );
@@ -94,7 +94,7 @@ QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & 
 		formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
 		formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
 		formats[ "js_string"          ].setForeground( DEFAULT_STRING );	
-	} else if( highlighter == "CSS" ) {
+	} else if( highlighter.toUpper() == "CSS" ) {
 		formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
 		formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
 		formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
@@ -105,7 +105,7 @@ QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & 
 
 QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 	QString example;
-	if( highlighter == "XML" ) {
+	if( highlighter.toUpper() == "XML" ) {
 		example =
 				"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
 				"<!-- This is a comment -->\n"
@@ -123,7 +123,7 @@ QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 				"\t\t</xsl:choose>\n"
 				"\t</xsl:template>\n"
 				"</xsl:stylesheet>\n";		
-	} else if( highlighter == "JS" ) {
+	} else if( highlighter.toUpper() == "JS" ) {
 		example = 
 				"/**\n"
 				" * This is a comment\n"
@@ -134,7 +134,7 @@ QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 				"	alert( param& );\n"
 				"	variable.close();\n"
 				"}\n";
-	} else if( highlighter == "CSS" )  {
+	} else if( highlighter.toUpper() == "CSS" )  {
 		example =
 				".test, #td {\n"
 				"\tbackground-color: red;\n"
@@ -144,9 +144,9 @@ QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 }
 
 void BasePlugin::highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) {
-	if( highlighter == "XML" ) {
+	if( highlighter.toUpper() == "XML" ) {
 		baseplugin_xml::highlightBlock( formats, i, text );
-	} else if( highlighter == "JS" ) {
+	} else if( highlighter.toUpper() == "JS" ) {
 		baseplugin_js::highlightBlock( formats, i, text );
 	}
 }

@@ -30,14 +30,12 @@ class IXinxSyntaxHighlighter {
 public:
 	virtual ~IXinxSyntaxHighlighter() {};
 	
-	virtual int currentBlockState () const = 0;
-	virtual int previousBlockState () const = 0;
-	virtual void setCurrentBlockState ( int newState ) = 0;
+	virtual int xinxCurrentBlockState () const = 0;
+	virtual int xinxPreviousBlockState () const = 0;
+	virtual void setXinxCurrentBlockState ( int newState ) = 0;
 	
-	virtual QTextCharFormat format ( int position ) const = 0; 
-	virtual void setFormat ( int start, int count, const QTextCharFormat & format ) = 0;
-	virtual void setFormat ( int start, int count, const QColor & color ) = 0;
-	virtual void setFormat ( int start, int count, const QFont & font ) = 0;
+	virtual QTextCharFormat xinxFormat ( int position ) const = 0; 
+	virtual void setXinxFormat ( int start, int count, const QTextCharFormat & format ) = 0;
 
 	virtual void processText( int pos, const QString& text ) = 0;
 };

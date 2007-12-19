@@ -22,8 +22,7 @@
 #include "fileeditor.h"
 #include "private/p_fileeditor.h"
 #include "globals.h"
-#include "xmlhighlighter.h"
-#include "jshighlighter.h"
+#include "syntaxhighlighter.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
 #include "texteditor.h"
@@ -696,10 +695,10 @@ void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {
 	
 	switch( type ) {
 	case FileEditor::XMLHighlighter:
-		d->m_syntaxhighlighter = new XmlHighlighter( m_view->document() );
+		d->m_syntaxhighlighter = new SyntaxHighlighter( m_view->document(), "XML" );
 		break;
 	case FileEditor::JSHighlighter:
-		d->m_syntaxhighlighter = new JsHighlighter( m_view->document() );
+		d->m_syntaxhighlighter = new SyntaxHighlighter( m_view->document(), "JS" );
 		break;
 	default:
 		d->m_syntaxhighlighter = NULL;

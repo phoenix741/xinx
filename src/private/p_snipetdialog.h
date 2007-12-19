@@ -25,8 +25,7 @@
 #include "globals.h"
 #include "snipetdialog.h"
 #include "snipetlist.h"
-#include "xmlhighlighter.h"
-#include "jshighlighter.h"
+#include "syntaxhighlighter.h"
 
 // Qt header
 #include <QApplication>

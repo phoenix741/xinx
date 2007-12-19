@@ -40,7 +40,6 @@ public:
 	const QStringList & pluginFileNames() const;
 	
 	const QList<SyntaxHighlighterInterface*> & syntaxPlugins() const; 
-
 	
 	QString filter( const QString & suffix );
 	QStringList filters();

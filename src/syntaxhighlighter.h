@@ -29,21 +29,33 @@
 #include "isyntaxhighlighter.h"
 
 class XINXConfig;
+class SyntaxHighlighterInterface;
 
-class SyntaxHighlighter : public QSyntaxHighlighter {
+class SyntaxHighlighter : public QSyntaxHighlighter, protected IXinxSyntaxHighlighter {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
+	SyntaxHighlighter( QObject* parent = NULL, const QString & highlighter = QString(), XINXConfig * config = NULL );
+	SyntaxHighlighter( QTextDocument* parent, const QString & highlighter, XINXConfig * config = NULL );
+	SyntaxHighlighter( QTextEdit* parent, const QString & highlighter, XINXConfig * config = NULL );
 	virtual ~SyntaxHighlighter();
 	
 	void setHighlightText( const QString & text );
+	void setHighlighter( const QString & highlighter );
 protected:
+	virtual void highlightBlock( const QString& text );
+
+	virtual int xinxCurrentBlockState () const;
+	virtual int xinxPreviousBlockState () const;
+	virtual void setXinxCurrentBlockState ( int newState );
+	
+	virtual QTextCharFormat xinxFormat ( int position ) const; 
+	virtual void setXinxFormat ( int start, int count, const QTextCharFormat & format );
+
 	void processText( int pos, const QString& text );
 	
+	SyntaxHighlighterInterface * m_interface;
 	XINXConfig * m_config;
-	QString m_text;
+	QString m_text, m_highlighter;
 };
 
 #endif

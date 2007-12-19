@@ -58,20 +58,20 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 	QRegExp string1Expression("^'[^\']*'");
 	QRegExp string2Expression("^\"[^\"]*\"");
 		
-	interface->setCurrentBlockState( NoBlock );
+	interface->setXinxCurrentBlockState( NoBlock );
 	
-	if ( interface->previousBlockState() == InComment ) {
+	if ( interface->xinxPreviousBlockState() == InComment ) {
 		pos = commentEndExpression.indexIn( text, i );
 
 		if (pos >= 0) {
 			// end comment found
 			const int iLength = commentEndExpression.matchedLength();
-			interface->setFormat( 0, pos + iLength, formats["js_comment"] );
+			interface->setXinxFormat( 0, pos + iLength, formats["js_comment"] );
 			i += pos + iLength; // skip comment
 		} else {
 			// in comment
-			interface->setFormat( 0, text.length(), formats["js_comment"] );
-			interface->setCurrentBlockState( InComment );
+			interface->setXinxFormat( 0, text.length(), formats["js_comment"] );
+			interface->setXinxCurrentBlockState( InComment );
 			return;
 		}
 	}
@@ -83,7 +83,7 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			
 			if( pos == i ) {
 				const int iLength = numberExpression.matchedLength();
-				interface->setFormat( pos, iLength, formats["js_number"] );
+				interface->setXinxFormat( pos, iLength, formats["js_number"] );
 				i += iLength;
 			} 
 		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
@@ -91,9 +91,9 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			if( pos == i ) {
 				const int iLength = motExpression.matchedLength();
 				if( keywordPatterns.contains( text.mid( i, iLength ) ) ) {
-					interface->setFormat( pos, iLength, formats["js_reservedword"] );
+					interface->setXinxFormat( pos, iLength, formats["js_reservedword"] );
 				} else {
-					interface->setFormat( pos, iLength, formats["js_other"] );
+					interface->setXinxFormat( pos, iLength, formats["js_other"] );
 					interface->processText( i, text.mid( pos, iLength ) );
 				}
 				i += iLength;
@@ -105,10 +105,10 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 				int posEnd = commentEndExpression.indexIn( text, i + 2 );
  				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
 
- 				interface->setFormat( pos, length, formats["js_comment"] );
+ 				interface->setXinxFormat( pos, length, formats["js_comment"] );
 				i += length;
 				if( posEnd == -1 ) {
-					interface->setCurrentBlockState( InComment );
+					interface->setXinxCurrentBlockState( InComment );
 					return;
 				}
 			} else {
@@ -116,7 +116,7 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 				if( pos == i ) {
 					const int iLength = commentExpression.matchedLength() + 2;
 					i += iLength;
-					interface->setFormat( pos, iLength, formats["js_comment"] );
+					interface->setXinxFormat( pos, iLength, formats["js_comment"] );
 				}
 			}
 		} else if ( c == '\'' ) {
@@ -124,7 +124,7 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			
 			if( pos == i ) {
 				const int iLength = string1Expression.matchedLength();
-				interface->setFormat( pos, iLength, formats["js_string"] );
+				interface->setXinxFormat( pos, iLength, formats["js_string"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			} 
@@ -133,12 +133,12 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			
 			if( pos == i ) {
 				const int iLength = string2Expression.matchedLength();
-				interface->setFormat( pos, iLength, formats["js_string"] );
+				interface->setXinxFormat( pos, iLength, formats["js_string"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			} 
 		} else {
-			interface->setFormat( i, 1, formats["js_other"] );
+			interface->setXinxFormat( i, 1, formats["js_other"] );
 		}
 	}	
 }

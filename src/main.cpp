@@ -77,6 +77,11 @@ int main(int argc, char *argv[]) {
 			splash.show();
 	  		app.processEvents();
 	
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
+			app.processEvents();
+			global.m_pluginsLoader = new XinxPluginsLoader();
+			global.m_pluginsLoader->loadPlugins();
+			
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
 			global.m_config = new XINXConfig();
@@ -90,11 +95,6 @@ int main(int argc, char *argv[]) {
 			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_config->config().language ) );
 			app.installTranslator(&translator_xinx);
 	
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
-			app.processEvents();
-			global.m_pluginsLoader = new XinxPluginsLoader();
-			global.m_pluginsLoader->loadPlugins();
-			
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
 			global.m_completionContents = new Completion();

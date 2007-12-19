@@ -25,24 +25,8 @@
 
 // Xinx header
 #include "xinxconfig.h"
-#include "jshighlighter.h"
-#include "xmlhighlighter.h"
-
-/* Define */
-
-static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
-static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
-static const QColor DEFAULT_OTHER			= Qt::black;
-
-static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
-static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
-static const QColor DEFAULT_ATTRIBUTE_NAME	= Qt::red;
-static const QColor DEFAULT_ATTRIBUTE_VALUE	= Qt::blue;
-static const QColor DEFAULT_XPATH_VALUE		= Qt::darkMagenta;
-
-static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
-static const QColor DEFAULT_NUMBER			= Qt::blue;
-static const QColor DEFAULT_STRING			= Qt::red;
+#include "globals.h"
+#include "xinxpluginsloader.h"
 
 /* PrivateXINXConfig */
 
@@ -80,22 +64,13 @@ XINXConfig::~XINXConfig() {
 struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 
-	value.formats[ "xml_comment"        ].setForeground( DEFAULT_COMMENT );
-	value.formats[ "xml_error"          ].setForeground( DEFAULT_ERROR );
-	value.formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
-	value.formats[ "xml_syntaxchar"     ].setForeground( DEFAULT_SYNTAX_CHAR );
-	value.formats[ "xml_elementname"    ].setForeground( DEFAULT_ELEMENT_NAME );
-	value.formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );	
-	value.formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
-	value.formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );	
-
-	value.formats[ "js_comment"         ].setForeground( DEFAULT_COMMENT );
-	value.formats[ "js_error"           ].setForeground( DEFAULT_ERROR );
-	value.formats[ "js_other"           ].setForeground( DEFAULT_OTHER );
-	value.formats[ "js_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
-	value.formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
-	value.formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
-	value.formats[ "js_string"          ].setForeground( DEFAULT_STRING );	
+	foreach( SyntaxHighlighterInterface * interface, global.m_pluginsLoader->syntaxPlugins() ) {
+		foreach( QString highlighter, interface->highlighters() ) {
+			QHash<QString,QTextCharFormat> formats = interface->formatOfHighlighter( highlighter );
+			foreach( QString key, formats.keys() )
+			value.formats[ key ] = formats[ key ];
+		}
+	}
 	
 	return value;
 }

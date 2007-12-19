@@ -40,10 +40,10 @@ void PrivateSnipetDialogImpl::setupUi() {
 
 	switch( m_snipetType ) {
 	case Snipet::SNIPET_XSL:
-		new XmlHighlighter( m_textEdit );
+		new SyntaxHighlighter( m_textEdit, "XML" );
 		break;
 	case Snipet::SNIPET_JAVASCRIPT:
-		new JsHighlighter( m_textEdit );
+		new SyntaxHighlighter( m_textEdit, "JS" );
 		break;
 	}
 	

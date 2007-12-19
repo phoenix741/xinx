@@ -39,7 +39,6 @@ set(xinx_SRCS
 	javascriptmodelcompleter.cpp
 	javascriptparser.cpp
 	jsfileeditor.cpp
-	jshighlighter.cpp
 	kcolorcombo.cpp
 	main.cpp
 	mainformimpl.cpp
@@ -68,7 +67,6 @@ set(xinx_SRCS
 	wsdl.cpp
 	xinxconfig.cpp
 	xmlfileeditor.cpp
-	xmlhighlighter.cpp
 	xmlpresentationdockwidget.cpp
 	xmlpresentationitem.cpp
 	xsllistview.cpp
@@ -114,7 +112,6 @@ SET(xinx_MOC_HDRS
 	javascriptmodelcompleter.h
 	javascriptparser.h
 	jsfileeditor.h
-	jshighlighter.h
 	kcolorcombo.h
 	mainformimpl.h
 	numberbar.h
@@ -162,7 +159,6 @@ SET(xinx_MOC_HDRS
 	wsdl.h
 	xinxconfig.h
 	xmlfileeditor.h
-	xmlhighlighter.h
 	xmlpresentationdockwidget.h
 	xmlpresentationitem.h
 	xsllistview.h

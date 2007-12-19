@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "serviceresultdialogimpl.h"
-#include "xmlhighlighter.h"
+#include "syntaxhighlighter.h"
 
 class PrivateServiceResultDialogImpl : public QObject {
 	Q_OBJECT

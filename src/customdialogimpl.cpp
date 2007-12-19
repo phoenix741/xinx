@@ -20,8 +20,7 @@
 
 // Xinx header
 #include "customdialogimpl.h"
-#include "jshighlighter.h"
-#include "xmlhighlighter.h"
+#include "syntaxhighlighter.h"
 #include "exceptions.h"
 #include "globals.h"
 #include "xinxpluginsloader.h"
@@ -302,41 +301,19 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 	// Example
 	if( format != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
+		QString example;
+		foreach( SyntaxHighlighterInterface * interface, global.m_pluginsLoader->syntaxPlugins() ) {
+			example = interface->exampleOfHighlighter( format );
+			if( ! example.isEmpty() )
+				break;
+		}
 		if( format == "js" ) {
-			d->m_highlighter = new JsHighlighter( m_exempleTextEdit->document(), &(d->m_config) );
-			m_exempleTextEdit->setText(
-				"/**\n"
-				" * This is a comment\n"
-				"**/\n"
-				"\n"
-				"function myfunction( param1, param2, param3 ) {\n"
-				"	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
-				"	alert( param& );\n"
-				"	variable.close();\n"
-				"}\n"
-				);
+			d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), "JS", &(d->m_config) );
 		} else 
 		if( format == "xml" ) {
-			d->m_highlighter = new XmlHighlighter( m_exempleTextEdit->document(), &(d->m_config) );
-			m_exempleTextEdit->setText(
-				"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-				"<!-- This is a comment -->\n"
-				"<xsl:stylesheet version=\"1.0\">\n"
-				"\t<xsl:import href=\"myimport.xsl\"/>\n"
-				"\t<xsl:variable name=\"MYVARIABLE\"/>\n"
-				"\t<xsl:template match=\"/\">\n"
-				"\t\t<xsl:comment> This is a text </xsl:comment>>>>>>>\n"
-				"\n"
-				"\t\t<xsl:choose>\n"
-				"\t\t\t<xsl:when test=\"test\">\n"
-				"\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
-				"\t\t\t</xsl:when>\n"
-				"\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
-				"\t\t</xsl:choose>\n"
-				"\t</xsl:template>\n"
-				"</xsl:stylesheet>\n"
-				);
+			d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), "XML", &(d->m_config) );
 		}
+		m_exempleTextEdit->setText( example );
 	}
 
 	// Bold

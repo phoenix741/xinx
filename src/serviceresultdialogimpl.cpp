@@ -42,8 +42,8 @@ ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f
 	setupUi(this);	
 	d = new PrivateServiceResultDialogImpl( this );
 	
-	new XmlHighlighter( m_inputStreamTextEdit->document() );
-	new XmlHighlighter( m_outputStreamTextEdit->document() );
+	new SyntaxHighlighter( m_inputStreamTextEdit->document(), "XML" );
+	new SyntaxHighlighter( m_outputStreamTextEdit->document(), "XML" );
 
 	connect( m_inputComboBox, SIGNAL(activated(QString)), d, SLOT(inputComboChanged(QString)) );
 	connect( m_outputComboBox, SIGNAL(activated(QString)), d, SLOT(outputComboChanged(QString)) );

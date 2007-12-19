@@ -21,29 +21,33 @@
 // Xinx header
 #include "syntaxhighlighter.h"
 #include "globals.h"
+#include "xinxpluginsloader.h"
 #include "xinxconfig.h"
 
 /* SyntaxHighlighter */
 
-SyntaxHighlighter::SyntaxHighlighter( QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
-	if( config )
+SyntaxHighlighter::SyntaxHighlighter( QObject* parent, const QString & highlighter, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_interface( 0 ) {
+	if( config ) 
 		m_config = config;
 	else
 		m_config = global.m_config;
+	setHighlighter( highlighter );
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, const QString & highlighter, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_interface( 0 ) {
 	if( config )
 		m_config = config;
 	else
 		m_config = global.m_config;
+	setHighlighter( highlighter );
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, const QString & highlighter, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_interface( 0 ) {
 	if( config )
 		m_config = config;
 	else
 		m_config = global.m_config;
+	setHighlighter( highlighter );
 }
 
 SyntaxHighlighter::~SyntaxHighlighter() {
@@ -52,6 +56,43 @@ SyntaxHighlighter::~SyntaxHighlighter() {
 void SyntaxHighlighter::setHighlightText( const QString & text ) {
 	m_text = text;
 	rehighlight();
+}
+
+void SyntaxHighlighter::setHighlighter( const QString & highlighter ) {
+	m_highlighter = highlighter;
+	m_interface   = NULL;
+	foreach( SyntaxHighlighterInterface * interface, global.m_pluginsLoader->syntaxPlugins() ) 
+		if( interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) ) 
+			m_interface = interface;
+	rehighlight();
+}
+
+void SyntaxHighlighter::highlightBlock( const QString& text ) {
+	if( m_interface )
+		m_interface->highlightBlock( m_highlighter, m_config->config().formats, this, text );
+	else  {
+		
+	}
+}
+
+int SyntaxHighlighter::xinxCurrentBlockState () const {
+	return currentBlockState();
+}
+
+int SyntaxHighlighter::xinxPreviousBlockState () const {
+	return previousBlockState();
+}
+
+void SyntaxHighlighter::setXinxCurrentBlockState ( int newState ) {
+	setCurrentBlockState( newState );
+}
+
+QTextCharFormat SyntaxHighlighter::xinxFormat ( int position ) const {
+	return format( position );
+}
+
+void SyntaxHighlighter::setXinxFormat ( int start, int count, const QTextCharFormat & format ) {
+	setFormat( start, count, format );
 }
 
 void SyntaxHighlighter::processText( int pos, const QString& text ) {

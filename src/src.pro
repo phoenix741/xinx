@@ -96,7 +96,6 @@ HEADERS += plugindialog.h \
     javascriptmodelcompleter.h \
     javascriptparser.h \
     jsfileeditor.h \
-    jshighlighter.h \
     kcolorcombo.h \
     mainformimpl.h \
     numberbar.h \
@@ -144,7 +143,6 @@ HEADERS += plugindialog.h \
     wsdl.h \
     xinxconfig.h \
     xmlfileeditor.h \
-    xmlhighlighter.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     xsllistview.h \
@@ -181,7 +179,6 @@ SOURCES += plugindialog.cpp \
     javascriptmodelcompleter.cpp \
     javascriptparser.cpp \
     jsfileeditor.cpp \
-    jshighlighter.cpp \
     kcolorcombo.cpp \
     main.cpp \
     mainformimpl.cpp \
@@ -210,7 +207,6 @@ SOURCES += plugindialog.cpp \
     wsdl.cpp \
     xinxconfig.cpp \
     xmlfileeditor.cpp \
-    xmlhighlighter.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     xsllistview.cpp \
