@@ -28,16 +28,16 @@
 
 class IXinxSyntaxHighlighter {
 public:
-	int currentBlockState () const;
-	int previousBlockState () const;
-	void setCurrentBlockState ( int newState );
+	virtual int currentBlockState () const = 0;
+	virtual int previousBlockState () const = 0;
+	virtual void setCurrentBlockState ( int newState ) = 0;
 	
-	QTextCharFormat format ( int position ) const;
-	void setFormat ( int start, int count, const QTextCharFormat & format );
-	void setFormat ( int start, int count, const QColor & color );
-	void setFormat ( int start, int count, const QFont & font );
+	virtual QTextCharFormat format ( int position ) const = 0; 
+	virtual void setFormat ( int start, int count, const QTextCharFormat & format ) = 0;
+	virtual void setFormat ( int start, int count, const QColor & color ) = 0;
+	virtual void setFormat ( int start, int count, const QFont & font ) = 0;
 
-	void processText( int pos, const QString& text );
+	virtual void processText( int pos, const QString& text ) = 0;
 };
 
 static const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
