@@ -129,7 +129,6 @@ void PrivateWebServicesEditor::restore( const QString & paramStr ) {
 
 WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateWebServicesEditor( this );
-	setSyntaxHighlighterType( FileEditor::XMLHighlighter );
 	setFileType( FileEditor::XMLFileType );
 	
 	d->m_oldParamValue = QString();

@@ -67,11 +67,15 @@ void SyntaxHighlighter::setHighlighter( const QString & highlighter ) {
 	rehighlight();
 }
 
+const QString & SyntaxHighlighter::highlighter() const {
+	return m_highlighter;
+}
+
 void SyntaxHighlighter::highlightBlock( const QString& text ) {
 	if( m_interface )
 		m_interface->highlightBlock( m_highlighter, m_config->config().formats, this, text );
 	else  {
-		
+		processText( 0, text );
 	}
 }
 

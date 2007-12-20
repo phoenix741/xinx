@@ -43,6 +43,7 @@ public:
 	
 	QString filter( const QString & suffix );
 	QStringList filters();
+	QString highlighterOfSuffix( const QString & suffix );
 private:
 	void addPlugin( QObject * plugin );
 	

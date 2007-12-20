@@ -307,12 +307,7 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 			if( ! example.isEmpty() )
 				break;
 		}
-		if( format == "js" ) {
-			d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), "JS", &(d->m_config) );
-		} else 
-		if( format == "xml" ) {
-			d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), "XML", &(d->m_config) );
-		}
+		d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), format, &(d->m_config) );
 		m_exempleTextEdit->setText( example );
 	}
 

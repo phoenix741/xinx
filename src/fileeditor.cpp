@@ -28,6 +28,7 @@
 #include "texteditor.h"
 #include "numberbar.h"
 #include "filecontentitemmodel.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QTextEdit>
@@ -50,8 +51,8 @@
 
 /* PrivateFileEditor */
 
-PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_syntaxhighlighter( NULL ), m_highlighterType( FileEditor::NoHighlighter ), 
-	m_interface( NULL ), m_fileType( FileEditor::NoFileType ), m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
+PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_syntaxhighlighter( NULL ), m_interface( NULL ), 
+	m_fileType( FileEditor::NoFileType ), m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
 		
 	m_commentAction = new QAction( tr("Comment"), m_parent );
 	m_commentAction->setEnabled( false );
@@ -436,7 +437,11 @@ QString FileEditor::getSuffix() const {
 
 void FileEditor::setFileName( const QString & fileName ) {
 	if( ! fileName.isEmpty() ) {
+		delete d->m_syntaxhighlighter;
 		m_fileName = fileName;
+		d->m_syntaxhighlighter = new SyntaxHighlighter( 
+				m_view->document(), 
+				global.m_pluginsLoader->highlighterOfSuffix( QFileInfo( m_fileName ).suffix() ) );
 		d->setWatcher( m_fileName );
 	}
 }
@@ -527,7 +532,8 @@ bool FileEditor::saveFile( const QString & fileName ){
 void FileEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,         QVariant( m_fileName ) );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_HIGHLIGHTER_TYPE, QVariant( (int)d->m_highlighterType ) );
+	if( d->m_syntaxhighlighter )
+		setSerializedData( stream, (int)FileEditor::SERIALIZED_HIGHLIGHTER_TYPE, QVariant( d->m_syntaxhighlighter->highlighter() ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILE_TYPE,        QVariant( (int)d->m_fileType ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         QVariant( m_view->textCursor().position() ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         QVariant( isModified() ) );
@@ -544,7 +550,7 @@ void FileEditor::deserialize( QDataStream & stream ) {
 	int type;
 	QVariant variant;
 	
-	int position = 0, highlighterType, fileType;
+	int position = 0, fileType;
 	bool isModified = false;
 	QString text;
 	
@@ -558,8 +564,8 @@ void FileEditor::deserialize( QDataStream & stream ) {
 			m_fileName = variant.toString();
 			break;
 		case FileEditor::SERIALIZED_HIGHLIGHTER_TYPE:
-			highlighterType = variant.toInt();
-			setSyntaxHighlighterType( (FileEditor::enumHighlighter)highlighterType );
+			if( d->m_syntaxhighlighter )
+				d->m_syntaxhighlighter->setHighlighter( variant.toString() );
 			break;
 		case FileEditor::SERIALIZED_FILE_TYPE:
 			fileType = variant.toInt();
@@ -685,28 +691,6 @@ void FileEditor::refreshTextHighlighter() {
 void FileEditor::callTextHighlighter() {
 	if( d->m_syntaxhighlighter ) 
 		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
-}
-
-void FileEditor::setSyntaxHighlighterType( FileEditor::enumHighlighter type ) {
-	if( d->m_highlighterType == type ) return;
-
-	d->m_highlighterType = type;
-	delete d->m_syntaxhighlighter;
-	
-	switch( type ) {
-	case FileEditor::XMLHighlighter:
-		d->m_syntaxhighlighter = new SyntaxHighlighter( m_view->document(), "XML" );
-		break;
-	case FileEditor::JSHighlighter:
-		d->m_syntaxhighlighter = new SyntaxHighlighter( m_view->document(), "JS" );
-		break;
-	default:
-		d->m_syntaxhighlighter = NULL;
-	}
-}
-	
-FileEditor::enumHighlighter FileEditor::syntaxHighlighterType() {
-	return d->m_highlighterType;
 }
 
 void FileEditor::setFileType( FileEditor::enumFileType type ) {

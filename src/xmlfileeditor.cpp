@@ -159,7 +159,6 @@ Q_DECLARE_METATYPE( XMLFileEditor );
 
 XMLFileEditor::XMLFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateXMLFileEditor( this );
-	setSyntaxHighlighterType( FileEditor::XMLHighlighter );
 	setFileType( FileEditor::XMLFileType );
 }
 

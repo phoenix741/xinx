@@ -41,6 +41,7 @@ public:
 	
 	void setHighlightText( const QString & text );
 	void setHighlighter( const QString & highlighter );
+	const QString & highlighter() const;
 protected:
 	virtual void highlightBlock( const QString& text );
 

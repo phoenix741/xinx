@@ -46,17 +46,6 @@ class FileEditor : public Editor {
 	Q_OBJECT
 public:
 	/*!
-	 * Different highlighter that can be used by a file editor. 
-	 */
-	enum enumHighlighter {
-		NoHighlighter,  ///< No Highlighter is used.
-		XMLHighlighter, ///< Highlighter used for XML file type (this can be XHTML, XSL, XML, ...)
-		JSHighlighter,  ///< Highlighter used for JS file type (this can be used only for JS)
-		CSSHighlighter, ///< Highlighter used for CSS file type.
-		SQLHighlighter  ///< Highlighter used for SQL file type.
-	};
-	
-	/*!
 	 * Different file completer that ca be used with the file editor. This completer is used to help
 	 * user to write files. Completer can be plugged on the QTextEditor.
 	 */
@@ -135,18 +124,6 @@ public:
 	 * \sa uncommentSelectedText()  
 	 */
 	QAction * uncommentAction();
-	
-	/*!
-	 * Set the type of the highlighter. Highlighter color the text, this method can be used to change the coloration
-	 * in the same editor.
-	 * \param type the new type to use.
-	 */
-	virtual void setSyntaxHighlighterType( enumHighlighter type );
-	
-	/*!
-	 * Get the current used syntax highlighter.
-	 */
-	virtual enumHighlighter syntaxHighlighterType();
 	
 	/*!
 	 * Set the file type. There is different kind of file type (XML, JS). A file type contains comment/uncomment,

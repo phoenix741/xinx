@@ -48,7 +48,6 @@ Q_DECLARE_METATYPE( JSFileEditor );
 
 JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
 	d = new PrivateJSFileEditor( this );
-	setSyntaxHighlighterType( FileEditor::JSHighlighter );
 	setFileType( FileEditor::JSFileType );
 }
 

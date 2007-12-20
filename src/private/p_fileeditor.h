@@ -41,7 +41,6 @@ public:
 	~PrivateFileEditor();
 	
 	SyntaxHighlighter * m_syntaxhighlighter;
-	FileEditor::enumHighlighter m_highlighterType;
 	
 	FileTypeInterface * m_interface;
 	FileEditor::enumFileType m_fileType;

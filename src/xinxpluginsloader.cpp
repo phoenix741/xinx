@@ -71,6 +71,15 @@ const QList<SyntaxHighlighterInterface*> & XinxPluginsLoader::syntaxPlugins() co
 	return m_syntaxPlugins;
 }
 
+QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) {
+	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
+		QString h = interface->highlighterOfExtention( suffix );
+		if( ! h.isEmpty() )
+			return h;
+	}
+	return QString();
+}
+
 QString XinxPluginsLoader::filter( const QString & suffix ) {
 	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
 		QString libelle = interface->highlighterFilters()[ suffix ];
