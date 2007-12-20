@@ -48,7 +48,6 @@ namespace baseplugin_xml {
 	};
 
 	extern void highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text );
-	extern int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, ParsingState state, const QChar & quoteType, int i, const QString& text );
 };
 
 #endif /*XMLHIGHLIGHTER_H_*/

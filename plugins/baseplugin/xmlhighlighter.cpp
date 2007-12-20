@@ -32,6 +32,83 @@ static const QString EXPR_NAME 				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-
 static const QString EXPR_ATTRIBUTE_VALUE	= "[^<%1{]*[%1{]";
 static const QString EXPR_XPATH_VALUE       = "[^<%1}]*[%1}]";
 
+int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, baseplugin_xml::ParsingState & state, const QChar & quoteType, int i, const QString& text ) {
+	// length of matched text
+	int iLength = 0;
+
+	switch(state) {
+	case baseplugin_xml::ExpectElementNameOrSlash:
+	case baseplugin_xml::ExpectElementName: {
+			// search element name
+			QRegExp expression(EXPR_NAME);
+			const int pos = expression.indexIn(text, i);
+
+			if (pos == i) { // found ?
+				iLength = expression.matchedLength();
+
+				interface->setXinxFormat( pos, iLength, formats["xml_elementname"] );
+				state = baseplugin_xml::ExpectAttributeOrEndOfElement;
+			} else {
+				interface->setXinxFormat( i, 1, formats["xml_other"] );
+			}
+		}  
+		break;
+	case baseplugin_xml::ExpectAttributeOrEndOfElement: {
+			// search attribute name
+			QRegExp expression(EXPR_NAME);
+			const int pos = expression.indexIn(text, i);
+
+			if (pos == i) { // found ?
+				iLength = expression.matchedLength();
+
+				interface->setXinxFormat( pos, iLength, formats["xml_attributename"] );
+				state = baseplugin_xml::ExpectEqual;
+			} else {
+				interface->setXinxFormat( i, 1, formats["xml_other"] );
+			}
+		}
+		break;
+	case baseplugin_xml::ExpectAttributeTextOrPath: {
+			QRegExp expression( EXPR_ATTRIBUTE_VALUE.arg( quoteType ) );
+			const int pos = expression.indexIn( text, i );
+			
+			if( pos == i ) {
+				iLength = expression.matchedLength() - 1;
+				interface->setXinxFormat( pos, iLength, formats["xml_attributevalue"] );
+				interface->processText( i, text.mid( pos, iLength ) );
+			} else
+				interface->setXinxFormat( i, 1, formats["xml_other"] );
+		}
+		break;
+	case baseplugin_xml::ExpectPathTextOrEndOfPath: {
+			QRegExp expression( EXPR_XPATH_VALUE.arg( quoteType ) );
+			const int pos = expression.indexIn( text, i );
+			
+			if( pos == i ) {
+				iLength = expression.matchedLength() - 1;
+				interface->setXinxFormat( pos, iLength, formats["xml_xpathvalue"] );
+				interface->processText( i, text.mid( pos, iLength ) );
+			} else
+				interface->setXinxFormat( i, 1, formats["xml_other"] );
+		}
+		break;
+	default:
+		QRegExp expression( EXPR_TEXT );
+		const int pos = expression.indexIn( text, i );
+
+		if (pos == i) { // found ?
+			iLength = expression.matchedLength();
+
+			interface->setXinxFormat( pos, iLength, formats["xml_other"] );
+			interface->processText( i, text.mid( pos, iLength ) );
+		} else {
+			interface->setXinxFormat( i, 1, formats["xml_other"] );
+		}
+		break;
+	}
+	return iLength;
+}
+
 void baseplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text ) {
 	int i = 0;
 	int pos = 0;
@@ -179,82 +256,5 @@ void baseplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & form
 	if( state == ExpectAttributeOrEndOfElement ) {
 		interface->setXinxCurrentBlockState( InElement );
 	}
-}
-
-int baseplugin_xml::processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, ParsingState state, const QChar & quoteType, int i, const QString& text ) {
-	// length of matched text
-	int iLength = 0;
-
-	switch(state) {
-	case ExpectElementNameOrSlash:
-	case ExpectElementName: {
-			// search element name
-			QRegExp expression(EXPR_NAME);
-			const int pos = expression.indexIn(text, i);
-
-			if (pos == i) { // found ?
-				iLength = expression.matchedLength();
-
-				interface->setXinxFormat( pos, iLength, formats["xml_elementname"] );
-				state = ExpectAttributeOrEndOfElement;
-			} else {
-				interface->setXinxFormat( i, 1, formats["xml_other"] );
-			}
-		}  
-		break;
-	case ExpectAttributeOrEndOfElement: {
-			// search attribute name
-			QRegExp expression(EXPR_NAME);
-			const int pos = expression.indexIn(text, i);
-
-			if (pos == i) { // found ?
-				iLength = expression.matchedLength();
-
-				interface->setXinxFormat( pos, iLength, formats["xml_attributename"] );
-				state = ExpectEqual;
-			} else {
-				interface->setXinxFormat( i, 1, formats["xml_other"] );
-			}
-		}
-		break;
-	case ExpectAttributeTextOrPath: {
-			QRegExp expression( EXPR_ATTRIBUTE_VALUE.arg( quoteType ) );
-			const int pos = expression.indexIn( text, i );
-			
-			if( pos == i ) {
-				iLength = expression.matchedLength() - 1;
-				interface->setXinxFormat( pos, iLength, formats["xml_attributevalue"] );
-				interface->processText( i, text.mid( pos, iLength ) );
-			} else
-				interface->setXinxFormat( i, 1, formats["xml_other"] );
-		}
-		break;
-	case ExpectPathTextOrEndOfPath: {
-			QRegExp expression( EXPR_XPATH_VALUE.arg( quoteType ) );
-			const int pos = expression.indexIn( text, i );
-			
-			if( pos == i ) {
-				iLength = expression.matchedLength() - 1;
-				interface->setXinxFormat( pos, iLength, formats["xml_xpathvalue"] );
-				interface->processText( i, text.mid( pos, iLength ) );
-			} else
-				interface->setXinxFormat( i, 1, formats["xml_other"] );
-		}
-		break;
-	default:
-		QRegExp expression( EXPR_TEXT );
-		const int pos = expression.indexIn( text, i );
-
-		if (pos == i) { // found ?
-			iLength = expression.matchedLength();
-
-			interface->setXinxFormat( pos, iLength, formats["xml_other"] );
-			interface->processText( i, text.mid( pos, iLength ) );
-		} else {
-			interface->setXinxFormat( i, 1, formats["xml_other"] );
-		}
-		break;
-	}
-	return iLength;
 }
 

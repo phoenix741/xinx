@@ -91,7 +91,7 @@ QStringList XinxPluginsLoader::filters() {
 			allExtentions << QString( "*.%1" ).arg( suffix );
 		}
 	}
-	result << QApplication::translate( "XINXConfig", "All managed file") + " (" + allExtentions.join( " " ) + ")";
+	result.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + allExtentions.join( " " ) + ")" );
 	
 	return result;
 }
