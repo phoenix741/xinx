@@ -338,8 +338,8 @@ void WebServicesEditor::deserialize( QDataStream & stream ) {
 	int type;
 	QVariant variant;
 	
-	int position;
-	bool isModified;
+	int position = 0;
+	bool isModified = false;
 	QString key, value, param;
 	
 	d->m_paramValues.clear(); d->m_oldParamValue = QString();

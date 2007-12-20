@@ -85,9 +85,7 @@ SET(xinx_MOC_HDRS
 	filecontentstructure.h
 	xinxthread.h
 	aboutdialogimpl.h
-	appsettings.h
 	commitmessagedialogimpl.h
-	configurationfile.h
 	connectionwebservicesdialogimpl.h
 	customdialogimpl.h
 	cvsfiles.h
@@ -95,19 +93,13 @@ SET(xinx_MOC_HDRS
 	directoryedit.h
 	dirrcsmodel.h
 	editor.h
-	editorcompletion.h
-	exceptions.h
 	filecontentdockwidget.h
 	filecontentitemmodel.h
 	fileeditor.h
 	filetypeinterface.h
-	filetypejs.h
-	filetypexml.h
-	filetypexsl.h
 	filewatcher.h
 	flattreeview.h
 	globals.h
-	iconprojectprovider.h
 	javascriptmodelcompleter.h
 	javascriptparser.h
 	jsfileeditor.h
@@ -115,7 +107,6 @@ SET(xinx_MOC_HDRS
 	mainformimpl.h
 	numberbar.h
 	objectview.h
-	private/p_configurationfile.h
 	private/p_connectionwebservicesdialogimpl.h
 	private/p_filecontentdockwidget.h
 	private/p_fileeditor.h
@@ -146,8 +137,6 @@ SET(xinx_MOC_HDRS
 	snipet.h
 	snipetdialog.h
 	snipetlist.h
-	snipetmodel.h
-	soap.h
 	syntaxhighlighter.h
 	tabeditor.h
 	texteditor.h
@@ -155,7 +144,6 @@ SET(xinx_MOC_HDRS
 	uniqueapplication.h
 	webservices.h
 	webserviceseditor.h
-	wsdl.h
 	xmlfileeditor.h
 	xmlpresentationdockwidget.h
 	xmlpresentationitem.h

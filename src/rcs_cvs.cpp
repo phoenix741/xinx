@@ -117,8 +117,8 @@ RCS::rcsOperation PrivateRCS_CVS::operationOfState( RCS::rcsState state ) {
 	case RCS::UnresolvedConflict:
 	case RCS::FileHadConflictsOnMerge:
 	case RCS::Updated:
+	default:
 		operation = RCS::Nothing;
-		break;
 	}
 	return operation;
 }

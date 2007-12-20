@@ -544,8 +544,8 @@ void FileEditor::deserialize( QDataStream & stream ) {
 	int type;
 	QVariant variant;
 	
-	int position, highlighterType, fileType;
-	bool isModified;
+	int position = 0, highlighterType, fileType;
+	bool isModified = false;
 	QString text;
 	
 	Editor::deserialize( stream );
