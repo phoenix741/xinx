@@ -22,6 +22,7 @@
 #include "baseplugin.h"
 #include "xmlhighlighter.h"
 #include "jshighlighter.h"
+#include "csshighlighter.h"
 
 // Qt header
 #include <QStringList>
@@ -148,6 +149,8 @@ void BasePlugin::highlightBlock( const QString & highlighter, const QHash<QStrin
 		baseplugin_xml::highlightBlock( formats, i, text );
 	} else if( highlighter.toUpper() == "JS" ) {
 		baseplugin_js::highlightBlock( formats, i, text );
+	} else if( highlighter.toUpper() == "CSS" ) {
+		baseplugin_css::highlightBlock( formats, i, text );
 	}
 }
 

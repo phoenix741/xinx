@@ -4,6 +4,7 @@ set(baseplugin_SRCS
 	baseplugin.cpp
 	xmlhighlighter.cpp
 	jshighlighter.cpp
+	csshighlighter.cpp
 )
 
 SET(baseplugin_MOC_HDRS

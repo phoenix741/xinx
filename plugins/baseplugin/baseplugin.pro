@@ -18,7 +18,9 @@ CONFIG       += plugin
 
 HEADERS       = baseplugin.h \
 	xmlhighlighter.h \
-	jshighlighter.h
+	jshighlighter.h \
+	csshighlighter.h
 SOURCES       = baseplugin.cpp \
 	xmlhighlighter.cpp \
-	jshighlighter.cpp
+	jshighlighter.cpp \
+	csshighlighter.cpp
