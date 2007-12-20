@@ -81,7 +81,6 @@ set(xinx_SRCS
 
 SET(xinx_MOC_HDRS
 	plugindialog.h
-	xinxpluginsloader.h
 	specifiquedlgimpl.h
 	filecontentstructure.h
 	xinxthread.h
@@ -157,7 +156,6 @@ SET(xinx_MOC_HDRS
 	webservices.h
 	webserviceseditor.h
 	wsdl.h
-	xinxconfig.h
 	xmlfileeditor.h
 	xmlpresentationdockwidget.h
 	xmlpresentationitem.h

@@ -8,8 +8,6 @@ set(baseplugin_SRCS
 
 SET(baseplugin_MOC_HDRS
 	baseplugin.h
-	xmlhighlighter.h
-	jshighlighter.h
 )
 
 include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
