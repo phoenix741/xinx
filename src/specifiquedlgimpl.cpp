@@ -116,15 +116,18 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 	bool saveToRepository = false;
 	
 	SpecifiqueDialogImpl dlg;
-	dlg.setFileName( filename );
-	dlg.m_suffix = suffix;
-	
+
 	if( ( canBeAddedToRepository( filename ) || ( (!isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) ) ) ) {
+		dlg.setFileName( filename );
+		dlg.m_suffix = suffix;
+	
 		if( dlg.exec() ) {
 			newFilename = QDir( dlg.path() ).absoluteFilePath( dlg.filename() );
 			saveToRepository = dlg.m_repositoryCheckBox->isChecked() && dlg.m_repositoryCheckBox->isEnabled();
 		} else
 			return QString();
+	} else {
+		newFilename = QDir( m_lastPlace ).absoluteFilePath( QFileInfo( filename ).fileName() );
 	}
 	
 	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, global.m_pluginsLoader->filters().join(";;"), &filter );
@@ -166,6 +169,11 @@ QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QS
 				if( filename != path )
 					filesForRepository << path;
 			}
+			
+			if( ( filename != path ) && (!isSpecifique( filename )) && isSpecifique( path ) ) {
+				QFile::copy( filename, QDir( dlg.path() ).absoluteFilePath( QFileInfo( filename ).fileName() ) );
+			}
+	
 			return path;
 		} else
 			return QString(); // Annulation
