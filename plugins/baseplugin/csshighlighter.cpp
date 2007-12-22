@@ -21,308 +21,265 @@
 // Xinx header
 #include "csshighlighter.h"
 
-void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
-	
-}
+// Qt header
+#include <QStringList>
 
-/* 
- 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <stdarg.h>
-
-#include "Platform.h"
-
-#include "PropSet.h"
-#include "Accessor.h"
-#include "StyleContext.h"
-#include "KeyWords.h"
-#include "Scintilla.h"
-#include "SciLexer.h"
-
-#ifdef SCI_NAMESPACE
-using namespace Scintilla;
-#endif
-
-
-static inline bool IsAWordChar(const unsigned int ch) {
-	return (isalnum(ch) || ch == '-' || ch == '_' || ch >= 161); // _ is not in fact correct CSS word-character
-}
-
-inline bool IsCssOperator(const char ch) {
-	if (!isalnum(ch) &&
-		(ch == '{' || ch == '}' || ch == ':' || ch == ',' || ch == ';' ||
-		 ch == '.' || ch == '#' || ch == '!' || ch == '@' ||
-		 // CSS2
-		 ch == '*' || ch == '>' || ch == '+' || ch == '=' || ch == '~' || ch == '|' ||
-		 ch == '[' || ch == ']' || ch == '(' || ch == ')')) {
-		return true;
-	}
-	return false;
-}
-
-static void ColouriseCssDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler) {
-	WordList &keywords = *keywordlists[0];
-	WordList &pseudoClasses = *keywordlists[1];
-	WordList &keywords2 = *keywordlists[2];
-
-	StyleContext sc(startPos, length, initStyle, styler);
-
-	int lastState = -1; // before operator
-	int lastStateC = -1; // before comment
-	int op = ' '; // last operator
-
-	for (; sc.More(); sc.Forward()) {
-		if (sc.state == SCE_CSS_COMMENT && sc.Match('*', '/')) {
-			if (lastStateC == -1) {
-				// backtrack to get last state:
-				// comments are like whitespace, so we must return to the previous state
-				unsigned int i = startPos;
-				for (; i > 0; i--) {
-					if ((lastStateC = styler.StyleAt(i-1)) != SCE_CSS_COMMENT) {
-						if (lastStateC == SCE_CSS_OPERATOR) {
-							op = styler.SafeGetCharAt(i-1);
-							while (--i) {
-								lastState = styler.StyleAt(i-1);
-								if (lastState != SCE_CSS_OPERATOR && lastState != SCE_CSS_COMMENT)
-									break;
-							}
-							if (i == 0)
-								lastState = SCE_CSS_DEFAULT;
-						}
-						break;
-					}
-				}
-				if (i == 0)
-					lastStateC = SCE_CSS_DEFAULT;
-			}
-			sc.Forward();
-			sc.ForwardSetState(lastStateC);
-		}
-
-		if (sc.state == SCE_CSS_COMMENT)
-			continue;
-
-		if (sc.state == SCE_CSS_DOUBLESTRING || sc.state == SCE_CSS_SINGLESTRING) {
-			if (sc.ch != (sc.state == SCE_CSS_DOUBLESTRING ? '\"' : '\''))
-				continue;
-			unsigned int i = sc.currentPos;
-			while (i && styler[i-1] == '\\')
-				i--;
-			if ((sc.currentPos - i) % 2 == 1)
-				continue;
-			sc.ForwardSetState(SCE_CSS_VALUE);
-		}
-
-		if (sc.state == SCE_CSS_OPERATOR) {
-			if (op == ' ') {
-				unsigned int i = startPos;
-				op = styler.SafeGetCharAt(i-1);
-				while (--i) {
-					lastState = styler.StyleAt(i-1);
-					if (lastState != SCE_CSS_OPERATOR && lastState != SCE_CSS_COMMENT)
-						break;
-				}
-			}
-			switch (op) {
-			case '@':
-				if (lastState == SCE_CSS_DEFAULT)
-					sc.SetState(SCE_CSS_DIRECTIVE);
-				break;
-			case '*':
-				if (lastState == SCE_CSS_DEFAULT)
-					sc.SetState(SCE_CSS_TAG);
-				break;
-			case '>':
-			case '+':
-				if (lastState == SCE_CSS_TAG || lastState == SCE_CSS_PSEUDOCLASS || lastState == SCE_CSS_CLASS
-					|| lastState == SCE_CSS_ID || lastState == SCE_CSS_UNKNOWN_PSEUDOCLASS)
-					sc.SetState(SCE_CSS_DEFAULT);
-				break;
-			case '[':
-				if (lastState == SCE_CSS_TAG || lastState == SCE_CSS_PSEUDOCLASS || lastState == SCE_CSS_DEFAULT ||
-					lastState == SCE_CSS_CLASS || lastState == SCE_CSS_ID || lastState == SCE_CSS_UNKNOWN_PSEUDOCLASS)
-					sc.SetState(SCE_CSS_ATTRIBUTE);
-				break;
-			case ']':
-				if (lastState == SCE_CSS_ATTRIBUTE)
-					sc.SetState(SCE_CSS_TAG);
-				break;
-			case '{':
-				if (lastState == SCE_CSS_DIRECTIVE)
-					sc.SetState(SCE_CSS_DEFAULT);
-				else if (lastState == SCE_CSS_TAG)
-					sc.SetState(SCE_CSS_IDENTIFIER);
-				break;
-			case '}':
-				if (lastState == SCE_CSS_DEFAULT || lastState == SCE_CSS_VALUE || lastState == SCE_CSS_IMPORTANT ||
-					lastState == SCE_CSS_IDENTIFIER || lastState == SCE_CSS_IDENTIFIER2)
-					sc.SetState(SCE_CSS_DEFAULT);
-				break;
-			case ':':
-				if (lastState == SCE_CSS_TAG || lastState == SCE_CSS_PSEUDOCLASS || lastState == SCE_CSS_DEFAULT ||
-					lastState == SCE_CSS_CLASS || lastState == SCE_CSS_ID || lastState == SCE_CSS_UNKNOWN_PSEUDOCLASS)
-					sc.SetState(SCE_CSS_PSEUDOCLASS);
-				else if (lastState == SCE_CSS_IDENTIFIER || lastState == SCE_CSS_IDENTIFIER2 || lastState == SCE_CSS_UNKNOWN_IDENTIFIER)
-					sc.SetState(SCE_CSS_VALUE);
-				break;
-			case '.':
-				if (lastState == SCE_CSS_TAG || lastState == SCE_CSS_PSEUDOCLASS || lastState == SCE_CSS_DEFAULT ||
-					lastState == SCE_CSS_CLASS || lastState == SCE_CSS_ID || lastState == SCE_CSS_UNKNOWN_PSEUDOCLASS)
-					sc.SetState(SCE_CSS_CLASS);
-				break;
-			case '#':
-				if (lastState == SCE_CSS_TAG || lastState == SCE_CSS_PSEUDOCLASS || lastState == SCE_CSS_DEFAULT ||
-					lastState == SCE_CSS_CLASS || lastState == SCE_CSS_ID || lastState == SCE_CSS_UNKNOWN_PSEUDOCLASS)
-					sc.SetState(SCE_CSS_ID);
-				break;
-			case ',':
-				if (lastState == SCE_CSS_TAG)
-					sc.SetState(SCE_CSS_DEFAULT);
-				break;
-			case ';':
-				if (lastState == SCE_CSS_DIRECTIVE)
-					sc.SetState(SCE_CSS_DEFAULT);
-				else if (lastState == SCE_CSS_VALUE || lastState == SCE_CSS_IMPORTANT)
-					sc.SetState(SCE_CSS_IDENTIFIER);
-				break;
-			case '!':
-				if (lastState == SCE_CSS_VALUE)
-					sc.SetState(SCE_CSS_IMPORTANT);
-				break;
-			}
-		}
-
-		if (IsAWordChar(sc.ch)) {
-			if (sc.state == SCE_CSS_DEFAULT)
-				sc.SetState(SCE_CSS_TAG);
-			continue;
-		}
-
-		if (IsAWordChar(sc.chPrev) && (
-			sc.state == SCE_CSS_IDENTIFIER || sc.state == SCE_CSS_IDENTIFIER2
-			|| sc.state == SCE_CSS_UNKNOWN_IDENTIFIER
-			|| sc.state == SCE_CSS_PSEUDOCLASS || sc.state == SCE_CSS_UNKNOWN_PSEUDOCLASS
-			|| sc.state == SCE_CSS_IMPORTANT
-		)) {
-			char s[100];
-			sc.GetCurrentLowered(s, sizeof(s));
-			char *s2 = s;
-			while (*s2 && !IsAWordChar(*s2))
-				s2++;
-			switch (sc.state) {
-			case SCE_CSS_IDENTIFIER:
-				if (!keywords.InList(s2)) {
-					if (keywords2.InList(s2)) {
-						sc.ChangeState(SCE_CSS_IDENTIFIER2);
-					} else {
-						sc.ChangeState(SCE_CSS_UNKNOWN_IDENTIFIER);
-					}
-				}
-				break;
-			case SCE_CSS_UNKNOWN_IDENTIFIER:
-				if (keywords.InList(s2))
-					sc.ChangeState(SCE_CSS_IDENTIFIER);
-				else if (keywords2.InList(s2))
-					sc.ChangeState(SCE_CSS_IDENTIFIER2);
-				break;
-			case SCE_CSS_PSEUDOCLASS:
-				if (!pseudoClasses.InList(s2))
-					sc.ChangeState(SCE_CSS_UNKNOWN_PSEUDOCLASS);
-				break;
-			case SCE_CSS_UNKNOWN_PSEUDOCLASS:
-				if (pseudoClasses.InList(s2))
-					sc.ChangeState(SCE_CSS_PSEUDOCLASS);
-				break;
-			case SCE_CSS_IMPORTANT:
-				if (strcmp(s2, "important") != 0)
-					sc.ChangeState(SCE_CSS_VALUE);
-				break;
-			}
-		}
-
-		if (sc.ch != '.' && sc.ch != ':' && sc.ch != '#' && (sc.state == SCE_CSS_CLASS || sc.state == SCE_CSS_PSEUDOCLASS || sc.state == SCE_CSS_UNKNOWN_PSEUDOCLASS || sc.state == SCE_CSS_ID))
-			sc.SetState(SCE_CSS_TAG);
-
-		if (sc.Match('/', '*')) {
-			lastStateC = sc.state;
-			sc.SetState(SCE_CSS_COMMENT);
-			sc.Forward();
-		} else if (sc.state == SCE_CSS_VALUE && (sc.ch == '\"' || sc.ch == '\'')) {
-			sc.SetState((sc.ch == '\"' ? SCE_CSS_DOUBLESTRING : SCE_CSS_SINGLESTRING));
-		} else if (IsCssOperator(static_cast<char>(sc.ch))
-			&& (sc.state != SCE_CSS_ATTRIBUTE || sc.ch == ']')
-			&& (sc.state != SCE_CSS_VALUE || sc.ch == ';' || sc.ch == '}' || sc.ch == '!')
-			&& (sc.state != SCE_CSS_DIRECTIVE || sc.ch == ';' || sc.ch == '{')
-		) {
-			if (sc.state != SCE_CSS_OPERATOR)
-				lastState = sc.state;
-			sc.SetState(SCE_CSS_OPERATOR);
-			op = sc.ch;
-		}
-	}
-
-	sc.Complete();
-}
-
-static void FoldCSSDoc(unsigned int startPos, int length, int, WordList *[], Accessor &styler) {
-	bool foldComment = styler.GetPropertyInt("fold.comment") != 0;
-	bool foldCompact = styler.GetPropertyInt("fold.compact", 1) != 0;
-	unsigned int endPos = startPos + length;
-	int visibleChars = 0;
-	int lineCurrent = styler.GetLine(startPos);
-	int levelPrev = styler.LevelAt(lineCurrent) & SC_FOLDLEVELNUMBERMASK;
-	int levelCurrent = levelPrev;
-	char chNext = styler[startPos];
-	bool inComment = (styler.StyleAt(startPos-1) == SCE_CSS_COMMENT);
-	for (unsigned int i = startPos; i < endPos; i++) {
-		char ch = chNext;
-		chNext = styler.SafeGetCharAt(i + 1);
-		int style = styler.StyleAt(i);
-		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
-		if (foldComment) {
-			if (!inComment && (style == SCE_CSS_COMMENT))
-				levelCurrent++;
-			else if (inComment && (style != SCE_CSS_COMMENT))
-				levelCurrent--;
-			inComment = (style == SCE_CSS_COMMENT);
-		}
-		if (style == SCE_CSS_OPERATOR) {
-			if (ch == '{') {
-				levelCurrent++;
-			} else if (ch == '}') {
-				levelCurrent--;
-			}
-		}
-		if (atEOL) {
-			int lev = levelPrev;
-			if (visibleChars == 0 && foldCompact)
-				lev |= SC_FOLDLEVELWHITEFLAG;
-			if ((levelCurrent > levelPrev) && (visibleChars > 0))
-				lev |= SC_FOLDLEVELHEADERFLAG;
-			if (lev != styler.LevelAt(lineCurrent)) {
-				styler.SetLevel(lineCurrent, lev);
-			}
-			lineCurrent++;
-			levelPrev = levelCurrent;
-			visibleChars = 0;
-		}
-		if (!isspacechar(ch))
-			visibleChars++;
-	}
-	// Fill in the real level of the next line, keeping the current flags as they will be filled in later
-	int flagsNext = styler.LevelAt(lineCurrent) & ~SC_FOLDLEVELNUMBERMASK;
-	styler.SetLevel(lineCurrent, levelPrev | flagsNext);
-}
-
-static const char * const cssWordListDesc[] = {
-	"CSS1 Keywords",
-	"Pseudo classes",
-	"CSS2 Keywords",
-	0
+namespace baseplugin_css {
+	QStringList cssKey, 
+				cssValues, 
+				css2Key, 
+				css2Values;
 };
 
-LexerModule lmCss(SCLEX_CSS, ColouriseCssDoc, "css", FoldCSSDoc, cssWordListDesc);
- * /
+void baseplugin_css::init() {
+	baseplugin_css::cssKey << "color" << "background-color" << "background-image" 
+		<< "background-repeat" << "background-attachment" << "background-position" 
+		<< "background" << "font-family" << "font-style" << "font-variant" 
+		<< "font-weight" << "font-size" << "font" << "word-spacing" 
+		<< "letter-spacing" << "text-decoration" << "vertical-align" 
+		<< "text-transform" << "text-align" << "text-indent" << "line-height" 
+		<< "margin-top" << "margin-right" << "margin-bottom" << "margin-left" << "margin" 
+		<< "padding-top" << "padding-right" << "padding-bottom" << "padding-left"
+		<< "padding" << "border-top-width" << "border-right-width" 
+		<< "border-bottom-width" << "border-left-width" << "border-width" 
+		<< "border-top" << "border-right" << "border-bottom" << "border-left" << "border" 
+		<< "border-color" << "border-style" << "width" << "height" << "float" << "clear" 
+		<< "display" << "white-space" << "list-style-type" << "list-style-image" 
+		<< "list-style-position" << "list-style";
+	baseplugin_css::cssValues << "auto" << "none" << "normal" << "italic" << "oblique" 
+		<< "small-caps" << "bold" << "bolder" << "lighter" << "xx-small" << "x-small" 
+		<< "small" << "medium" << "large" << "x-large" << "xx-large" << "larger" 
+		<< "smaller" << "transparent" << "repeat" << "repeat-x" << "repeat-y" 
+		<< "no-repeat" << "scroll" << "fixed" << "top" << "bottom" << "left" 
+		<< "center" << "right" << "justify" << "both" << "underline" << "overline" 
+		<< "line-through" << "blink" << "baseline" << "sub" << "super" << "text-top" 
+		<< "middle" << "text-bottom" << "capitalize" << "uppercase" << "lowercase" 
+		<< "thin" << "medium" << "thick" << "dotted" << "dashed" << "solid" << "double" 
+		<< "groove" << "ridge" << "inset" << "outset" << "block" << "inline" 
+		<< "list-item" << "pre" << "no-wrap" << "inside" << "outside" << "disc" 
+		<< "circle" << "square" << "decimal" << "lower-roman" << "upper-roman" 
+		<< "lower-alpha" << "upper-alpha" << "aqua" << "black" << "blue" << "fuchsia" 
+		<< "gray" << "green" << "lime" << "maroon" << "navy" << "olive" << "purple" 
+		<< "red" << "silver" << "teal" << "white" << "yellow";
+	baseplugin_css::css2Key << "border-top-color" << "border-right-color" 
+		<< "border-bottom-color" << "border-left-color" << "border-color" << "border-top-style" 
+		<< "border-right-style" << "border-bottom-style" << "border-left-style" << "border-style" 
+		<< "top" << "right" << "bottom" << "left" << "position" << "z-index" << "direction" 
+		<< "unicode-bidi" << "min-width" << "max-width" << "min-height" << "max-height" 
+		<< "overflow" << "clip" << "visibility" << "content" << "quotes" << "counter-reset" 
+		<< "counter-increment" << "marker-offset" << "size" << "marks" << "page-break-before" 
+		<< "page-break-after" << "page-break-inside" << "page" << "orphans" << "widows" 
+		<< "font-stretch" << "font-size-adjust" << "unicode-range" << "units-per-em" << "src" 
+		<< "panose-1" << "stemv" << "stemh" << "slope" << "cap-height" << "x-height" 
+		<< "ascent" << "descent" << "widths" << "bbox" << "definition-src" << "baseline" 
+		<< "centerline" << "mathline" << "topline" << "text-shadow" << "caption-side" 
+		<< "table-layout" << "border-collapse" << "border-spacing" << "empty-cells" 
+		<< "speak-header" << "cursor" << "outline" << "outline-width" << "outline-style" 
+		<< "outline-color" << "volume" << "speak" << "pause-before" << "pause-after" 
+		<< "pause" << "cue-before" << "cue-after" << "cue" << "play-during" << "azimuth" 
+		<< "elevation" << "speech-rate" << "voice-family" << "pitch" << "pitch-range" 
+		<< "stress" << "richness" << "speak-punctuation" << "speak-numeral";
+	baseplugin_css::css2Values << "inherit" << "run-in" << "compact" << "marker" 
+		<< "table" << "inline-table" << "table-row-group" << "table-header-group" 
+		<< "table-footer-group" << "table-row" << "table-column-group" << "table-column" 
+		<< "table-cell" << "table-caption" << "static" << "relative" << "absolute" 
+		<< "fixed" << "ltr" << "rtl" << "embed" << "bidi-override" << "visible" << "hidden" 
+		<< "scroll" << "collapse" << "open-quote" << "close-quote" << "no-open-quote" 
+		<< "no-close-quote" << "decimal-leading-zero" << "lower-greek" << "lower-latin" 
+		<< "upper-latin" << "hebrew" << "armenian" << "georgian" << "cjk-ideographic" 
+		<< "hiragana" << "katakana" << "hiragana-iroha" << "katakana-iroha" << "landscape" 
+		<< "portrait" << "crop" << "cross" << "always" << "avoid" << "wider" << "narrower" 
+		<< "ultra-condensed" << "extra-condensed" << "condensed" << "semi-condensed" 
+		<< "semi-expanded" << "expanded" << "extra-expanded" << "ultra-expanded" << "caption" 
+		<< "icon" << "menu" << "message-box" << "small-caption" << "status-bar" << "separate" 
+		<< "show" << "hide" << "once" << "crosshair" << "default" << "pointer" << "move" 
+		<< "text" << "wait" << "help" << "e-resize" << "ne-resize" << "nw-resize" << "n-resize" 
+		<< "se-resize" << "sw-resize" << "s-resize" << "w-resize" << "ActiveBorder" 
+		<< "ActiveCaption" << "AppWorkspace" << "Background" << "ButtonFace" << "ButtonHighlight" 
+		<< "ButtonShadow" << "InactiveCaptionText" << "ButtonText" << "CaptionText" << "GrayText" 
+		<< "Highlight" << "HighlightText" << "InactiveBorder" << "InactiveCaption" << "InfoBackground" 
+		<< "InfoText" << "Menu" << "MenuText" << "Scrollbar" << "ThreeDDarkShadow" << "ThreeDFace" 
+		<< "ThreeDHighlight" << "ThreeDLightShadow" << "ThreeDShadow" << "Window" << "WindowFrame" 
+		<< "WindowText" << "silent" << "x-soft" << "soft" << "medium" << "loud" 
+		<< "x-loud" << "spell-out" << "mix" << "left-side" << "far-left" << "center-left" 
+		<< "center-right" << "far-right" << "right-side" << "behind" << "leftwards" << "rightwards" 
+		<< "below" << "level" << "above" << "higher" << "lower" << "x-slow" << "slow" 
+		<< "medium" << "fast" << "x-fast" << "faster" << "slower" << "male" << "female" 
+		<< "child" << "x-low" << "low" << "high" << "x-high" << "code" << "digits" << "continous";
+}
+
+void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
+	int i = 0, pos = 0;
+
+	QRegExp commentStartExpression("^/\\*");
+	QRegExp commentEndExpression("\\*/");
+	QRegExp string1Expression("^'[^\']*'");
+	QRegExp string2Expression("^\"[^\"]*\"");
+	QRegExp directiveExpression("^@.*[{;]");
+	QRegExp numberExpression("^\\b[\\-\\+]?[0-9]+(\\.[0-9]+)?\\b");
+	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-]*");
+	QRegExp attributeExpression("\\[.*\\]");
+	
+	ParsingState state = interface->xinxPreviousBlockState() == InBracket ? CssIdentifier : CssDefault;
+
+	interface->setXinxCurrentBlockState( NoBlock );
+	
+	if ( interface->xinxPreviousBlockState() == InComment ) {
+		pos = commentEndExpression.indexIn( text, i );
+
+		if (pos >= 0) {
+			// end comment found
+			const int iLength = commentEndExpression.matchedLength();
+			interface->setXinxFormat( 0, pos + iLength, formats["css_comment"] );
+			i += pos + iLength; // skip comment
+		} else {
+			// in comment
+			interface->setXinxFormat( 0, text.length(), formats["css_comment"] );
+			interface->setXinxCurrentBlockState( InComment );
+			return;
+		}
+	}
+
+	for(; i < text.length(); i++ ) {
+		char c = text.at(i).toLower().toAscii();
+		if( ( c >= 'a' ) && ( c <= 'z' ) ) {
+			pos = keywordExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				const int iLength = keywordExpression.matchedLength();
+				if( state == CssDefault ) {
+					interface->setXinxFormat( pos, iLength, formats["css_tag"] );
+				} else if( state == CssValue ) {
+					if( cssValues.contains( keywordExpression.cap() ) )
+						interface->setXinxFormat( pos, iLength, formats["css_value1"] );
+					else if( css2Values.contains( keywordExpression.cap() ) )
+						interface->setXinxFormat( pos, iLength, formats["css_value2"] );
+					else
+						interface->setXinxFormat( pos, iLength, formats["css_value"] );
+				} else if( state == CssIdentifier ) {
+					if( cssKey.contains( keywordExpression.cap() ) )
+						interface->setXinxFormat( pos, iLength, formats["css_identifier1"] );
+					else if( css2Key.contains( keywordExpression.cap() ) )
+						interface->setXinxFormat( pos, iLength, formats["css_identifier2"] );
+					else
+						interface->setXinxFormat( pos, iLength, formats["css_identifier"] );
+				}
+				i += iLength;
+			}
+		} else if( ( c >= '0' ) && ( c <= '9' ) ) {
+			pos = numberExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+		
+			if( pos == i ) {
+				const int iLength = numberExpression.matchedLength();
+				if( state == CssValue )
+					interface->setXinxFormat( pos, iLength, formats["css_number"] );
+				i += iLength;
+			}
+		} else if( c == '/' ) {
+			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				int posEnd = commentEndExpression.indexIn( text, i + 2 );
+				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
+	
+				interface->setXinxFormat( pos, length, formats["css_comment"] );
+				i += length;
+				if( posEnd == -1 ) {
+					interface->setXinxCurrentBlockState( InComment );
+					return;
+				}
+			} else {
+				interface->setXinxFormat( i, 1, formats["css_other"] );
+			}
+		} else if( ( c == '\'' ) || ( c == '"' ) ) {
+			if( c == '\'' )
+				pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+			else 
+				pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+			if( pos == i ) {
+				const int iLength = string1Expression.matchedLength();
+				interface->setXinxFormat( pos, iLength, formats["css_string"] );
+				interface->processText( i, text.mid( pos, iLength ) );
+				i += iLength;
+			}
+		} else if( c == '@' ) { // CSS Directive
+			pos = directiveExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			if( pos == i ) {
+				const int iLength = directiveExpression.matchedLength();
+				interface->setXinxFormat( pos, 1, formats["css_operator"] );
+				interface->setXinxFormat( pos + 1, iLength - 2, formats["css_directive"] );
+				interface->setXinxFormat( pos + iLength - 1, 1, formats["css_operator"] );
+				interface->processText( i, text.mid( pos, iLength ) );
+				i += iLength;
+			}
+		} else if( c == ':' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			if( state == CssIdentifier )
+				state = CssValue;
+
+			pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
+			if( pos == ( i + 1 ) ) {
+				const int iLength = keywordExpression.matchedLength();
+				interface->setXinxFormat( pos, iLength, formats["css_pseudoclass"] );
+				interface->processText( pos, text.mid( pos + 1, iLength ) );
+				i += iLength + 1;
+			}
+		} else if( c == '.' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+
+			pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
+			if( pos == ( i + 1 ) ) {
+				const int iLength = keywordExpression.matchedLength();
+				interface->setXinxFormat( pos, iLength, formats["css_class"] );
+				interface->processText( pos, text.mid( pos, iLength ) );
+				i += iLength + 1;
+			}
+		} else if( c == '#' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+
+			pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
+			if( pos == ( i + 1 ) ) {
+				const int iLength = keywordExpression.matchedLength();
+				interface->setXinxFormat( pos, iLength, formats["css_id"] );
+				interface->processText( pos, text.mid( pos, iLength ) );
+				i += iLength + 1;
+			}
+		} else if( c == ';' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			if( state == CssValue )
+				state = CssIdentifier;
+		} else if( c == '*' ) {
+			if( state == CssDefault )
+				interface->setXinxFormat( i, 1, formats["css_tag"] );
+			else
+				interface->setXinxFormat( i, 1, formats["css_operator"] );
+		} else if( c == '[' ) {
+			pos = attributeExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			if( pos == i ) {
+				const int iLength = attributeExpression.matchedLength();
+				interface->setXinxFormat( pos, 1, formats["css_operator"] );
+				interface->setXinxFormat( pos + 1, iLength - 2, formats["css_attribute"] );
+				interface->setXinxFormat( pos + iLength - 1, 1, formats["css_operator"] );
+				interface->processText( i, text.mid( pos, iLength ) );
+				i += iLength;
+			}
+		} else if( c == '{' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			if( state == CssDefault )
+				state = CssIdentifier;
+		} else if( c == '}' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			state = CssDefault;
+		} else if( c == '.' ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+		} else if( ( c == '>' ) || ( c == '+' ) || ( c == ',' ) || ( c == '!' ) ) {
+			interface->setXinxFormat( i, 1, formats["css_operator"] );
+		}
+			
+	}
+	
+	if( state == CssIdentifier ) {
+		interface->setXinxCurrentBlockState( InBracket );
+	}
+}

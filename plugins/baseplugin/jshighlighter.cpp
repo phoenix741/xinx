@@ -119,20 +119,14 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 					interface->setXinxFormat( pos, iLength, formats["js_comment"] );
 				}
 			}
-		} else if ( c == '\'' ) {
-			pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+		} else if ( ( c == '\'' ) || ( c == '"' ) ) {
+			if( c == '\'' )
+				pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+			else 
+				pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
 			
 			if( pos == i ) {
 				const int iLength = string1Expression.matchedLength();
-				interface->setXinxFormat( pos, iLength, formats["js_string"] );
-				interface->processText( i, text.mid( pos, iLength ) );
-				i += iLength;
-			} 
-		} else if ( c == '\"' ) {
-			pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
-			
-			if( pos == i ) {
-				const int iLength = string2Expression.matchedLength();
 				interface->setXinxFormat( pos, iLength, formats["js_string"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;

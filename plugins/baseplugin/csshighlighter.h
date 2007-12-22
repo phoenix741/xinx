@@ -30,35 +30,19 @@
 #include <QTextCharFormat>
 
 namespace baseplugin_css {
-/*
-#define SCE_CSS_DEFAULT 0
-#define SCE_CSS_TAG 1
-#define SCE_CSS_CLASS 2
-#define SCE_CSS_PSEUDOCLASS 3
-#define SCE_CSS_UNKNOWN_PSEUDOCLASS 4
-#define SCE_CSS_OPERATOR 5
-#define SCE_CSS_IDENTIFIER 6
-#define SCE_CSS_UNKNOWN_IDENTIFIER 7
-#define SCE_CSS_VALUE 8
-#define SCE_CSS_COMMENT 9
-#define SCE_CSS_ID 10
-#define SCE_CSS_IMPORTANT 11
-#define SCE_CSS_DIRECTIVE 12
-#define SCE_CSS_DOUBLESTRING 13
-#define SCE_CSS_SINGLESTRING 14
-#define SCE_CSS_IDENTIFIER2 15
-#define SCE_CSS_ATTRIBUTE 16
-*/
 	enum ParsingState {
-		Default = 0
+		CssDefault,
+		CssIdentifier,
+		CssValue
 	};
-
+	
 	enum BlockState {
-		NoBlock = -1,
+		NoBlock = 0,
 		InComment,
-		InElement
+		InBracket
 	};
 
+	extern void init();
 	extern void highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text );
 };
 

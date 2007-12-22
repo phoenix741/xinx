@@ -99,6 +99,28 @@ QHash<QString,QTextCharFormat> BasePlugin::formatOfHighlighter( const QString & 
 		formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
 		formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
 		formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
+		formats[ "css_string"         ].setForeground( DEFAULT_STRING );	
+		formats[ "css_operator"       ].setForeground( DEFAULT_SYNTAX_CHAR );
+		formats[ "css_directive"      ].setForeground( DEFAULT_NUMBER );
+		formats[ "css_number"         ].setForeground( DEFAULT_NUMBER );
+		formats[ "css_pseudoclass"	  ].setForeground( DEFAULT_NUMBER );
+		formats[ "css_class"		  ].setForeground( DEFAULT_XPATH_VALUE );
+		formats[ "css_class"          ].setFontWeight( QFont::Bold );
+		formats[ "css_id"		      ].setForeground( DEFAULT_XPATH_VALUE );
+		formats[ "css_tag"		      ].setForeground( DEFAULT_RESERVEDWORD );
+		formats[ "css_attribute"      ].setForeground( DEFAULT_NUMBER );
+		formats[ "css_identifier"     ].setForeground( DEFAULT_RESERVEDWORD );
+		formats[ "css_identifier"     ].setFontWeight( QFont::Bold );
+		formats[ "css_identifier1"    ].setForeground( DEFAULT_RESERVEDWORD );
+		formats[ "css_identifier1"    ].setFontWeight( QFont::Bold );
+		formats[ "css_identifier2"    ].setForeground( DEFAULT_RESERVEDWORD );
+		formats[ "css_identifier2"    ].setFontWeight( QFont::Bold );
+		formats[ "css_value"		  ].setForeground( DEFAULT_ELEMENT_NAME );
+		formats[ "css_value"		  ].setFontItalic( true );
+		formats[ "css_value1"		  ].setForeground( DEFAULT_ELEMENT_NAME );
+		formats[ "css_value1"		  ].setFontItalic( true );
+		formats[ "css_value2"		  ].setForeground( DEFAULT_ELEMENT_NAME );
+		formats[ "css_value2"		  ].setFontItalic( true );
 	}
 	
 	return formats;
