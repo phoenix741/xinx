@@ -307,8 +307,8 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 			if( ! example.isEmpty() )
 				break;
 		}
-		d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), format, &(d->m_config) );
 		m_exempleTextEdit->setText( example );
+		d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), format, &(d->m_config) );
 	}
 
 	// Bold

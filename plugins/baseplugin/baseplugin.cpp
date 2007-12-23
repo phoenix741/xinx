@@ -159,8 +159,9 @@ QString BasePlugin::exampleOfHighlighter( const QString & highlighter ) {
 				"}\n";
 	} else if( highlighter.toUpper() == "CSS" )  {
 		example =
-				".test, #td {\n"
-				"\tbackground-color: red;\n"
+				".test, #td, test2 {\n"
+				"\tbackground-color: red; /* Commentaire */\n"
+				"\tmargin: 8pt;\n"
 				"}\n";
 	} 
 	return example;
