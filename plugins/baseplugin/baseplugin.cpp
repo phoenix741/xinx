@@ -46,12 +46,20 @@ static const QColor DEFAULT_STRING			= Qt::red;
 
 /* BasePlugin */
 
-QStringList BasePlugin::highlighters() {
+QStringList BasePlugin::plugins() {
 	baseplugin_js::init();
 	return QStringList() << "XML" << "JS" << "CSS";
 }
 
-QHash<QString,QString> BasePlugin::highlighterFilters() {
+QHash<QString,QString> BasePlugin::descriptionOfPlugins() {
+	QHash<QString,QString> descriptions;
+	descriptions[ "XML" ] = tr( "Process XML files (like HTML, XSL, ...)" );
+	descriptions[ "JS" ]  = tr( "Process JavaScript files" );
+	descriptions[ "CSS" ] = tr( "Process Cascading Style Sheet files" );
+	return descriptions;
+}
+
+QHash<QString,QString> BasePlugin::filters() {
 	QHash<QString,QString> extentions;
 	extentions[ "xsl" ]   = tr( "All XSL Stylesheet" );
 	extentions[ "fws" ]   = tr( "All Webservices input stream" );
@@ -59,7 +67,7 @@ QHash<QString,QString> BasePlugin::highlighterFilters() {
 	extentions[ "html" ]  = tr( "All HTML File" );
 	extentions[ "htm" ]   = tr( "All HTML File" );
 	extentions[ "js" ]    = tr( "All JavaScript" );
-	extentions[ "css" ]   = tr( "All HTML Stylesheet" );
+	extentions[ "css" ]   = tr( "All Cascading Style Sheet" );
 	return extentions;
 }
 

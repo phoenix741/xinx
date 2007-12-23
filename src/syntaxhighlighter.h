@@ -29,7 +29,7 @@
 #include "isyntaxhighlighter.h"
 
 class XINXConfig;
-class SyntaxHighlighterInterface;
+class IPluginSyntaxHighlighter;
 
 class SyntaxHighlighter : public QSyntaxHighlighter, protected IXinxSyntaxHighlighter {
 	Q_OBJECT
@@ -54,7 +54,7 @@ protected:
 
 	void processText( int pos, const QString& text );
 	
-	SyntaxHighlighterInterface * m_interface;
+	IPluginSyntaxHighlighter * m_interface;
 	XINXConfig * m_config;
 	QString m_text, m_highlighter;
 };

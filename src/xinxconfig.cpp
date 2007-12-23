@@ -64,11 +64,11 @@ XINXConfig::~XINXConfig() {
 struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 
-	foreach( SyntaxHighlighterInterface * interface, global.m_pluginsLoader->syntaxPlugins() ) {
-		foreach( QString highlighter, interface->highlighters() ) {
+	foreach( IPluginSyntaxHighlighter * interface, global.m_pluginsLoader->syntaxPlugins() ) {
+		foreach( QString highlighter, interface->plugins() ) {
 			QHash<QString,QTextCharFormat> formats = interface->formatOfHighlighter( highlighter );
 			foreach( QString key, formats.keys() )
-			value.formats[ key ] = formats[ key ];
+				value.formats[ key ] = formats[ key ];
 		}
 	}
 	

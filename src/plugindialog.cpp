@@ -67,9 +67,9 @@ void PluginDialogImpl::populateTreeWidget( QObject *plugin, const QString &text 
 	pluginItem->setFont( 0, boldFont );
 	
 	if( plugin ) {
-		SyntaxHighlighterInterface * iSyntaxHighlighter = qobject_cast<SyntaxHighlighterInterface*>( plugin );
+		IPluginSyntaxHighlighter * iSyntaxHighlighter = qobject_cast<IPluginSyntaxHighlighter*>( plugin );
 		if( iSyntaxHighlighter )
-			addItems( pluginItem, tr("SyntaxHighlighterInterface"), iSyntaxHighlighter->highlighters() );
+			addItems( pluginItem, tr("IPluginSyntaxHighlighter"), iSyntaxHighlighter->descriptionOfPlugins().values() );
 	}
 }
 

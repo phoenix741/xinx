@@ -302,7 +302,7 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 	if( format != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
-		foreach( SyntaxHighlighterInterface * interface, global.m_pluginsLoader->syntaxPlugins() ) {
+		foreach( IPluginSyntaxHighlighter * interface, global.m_pluginsLoader->syntaxPlugins() ) {
 			example = interface->exampleOfHighlighter( format );
 			if( ! example.isEmpty() )
 				break;

@@ -22,14 +22,15 @@
 #define BASEPLUGIN_H_
 
 // Xinx header
-#include <interfaces.h>
+#include <plugininterfaces.h>
 
-class BasePlugin : public QObject, public SyntaxHighlighterInterface {
+class BasePlugin : public QObject, public IPluginSyntaxHighlighter {
 	Q_OBJECT
-	Q_INTERFACES(SyntaxHighlighterInterface)
+	Q_INTERFACES(IPluginSyntaxHighlighter)
 	
-	virtual QStringList highlighters();
-	virtual QHash<QString,QString> highlighterFilters();
+	virtual QStringList plugins();
+	virtual QHash<QString,QString> descriptionOfPlugins();
+	virtual QHash<QString,QString> filters();
 	virtual QString highlighterOfExtention( const QString & extention );
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
 	virtual QString exampleOfHighlighter( const QString & highlighter );

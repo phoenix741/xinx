@@ -164,6 +164,7 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 					else
 						interface->setXinxFormat( pos, iLength, formats["css_identifier"] );
 				}
+				interface->processText( pos, text.mid( pos, iLength ) );
 				i += iLength - 1;
 			}
 		} else if( ( c >= '0' ) && ( c <= '9' ) ) {
@@ -173,7 +174,7 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 				const int iLength = numberExpression.matchedLength();
 				if( state == CssValue )
 					interface->setXinxFormat( pos, iLength, formats["css_number"] );
-				i += iLength;
+				i += iLength - 1;
 			}
 		} else if( c == '/' ) {
 			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );

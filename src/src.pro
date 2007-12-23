@@ -22,6 +22,8 @@ CONFIG += debug \
     x86
 QT += network \
     xml
+    
+LIBS = -L../bin/plugins -lxinx_baseplugin
 
 DISTFILES = ../CHANGELOG \
     ../COPYING \

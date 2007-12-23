@@ -22,7 +22,7 @@
 #define XINXPLUGINSLOADER_H_
 
 // Xinx header
-#include "interfaces.h"
+#include <plugininterfaces.h>
 
 // Qt header
 #include <QList>
@@ -39,7 +39,7 @@ public:
 	const QDir & pluginsDir() const;
 	const QStringList & pluginFileNames() const;
 	
-	const QList<SyntaxHighlighterInterface*> & syntaxPlugins() const; 
+	const QList<IPluginSyntaxHighlighter*> & syntaxPlugins() const; 
 	
 	QString filter( const QString & suffix );
 	QStringList filters();
@@ -47,7 +47,7 @@ public:
 private:
 	void addPlugin( QObject * plugin );
 	
-	QList<SyntaxHighlighterInterface*> m_syntaxPlugins;
+	QList<IPluginSyntaxHighlighter*> m_syntaxPlugins;
 	
 	QDir m_pluginsDir;
 	QStringList m_pluginFileNames;

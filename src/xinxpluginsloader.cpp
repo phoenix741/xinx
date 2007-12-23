@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "xinxpluginsloader.h"
-#include "interfaces.h"
 
 // Qt header
 #include <QPluginLoader>
@@ -45,7 +44,7 @@ const QStringList & XinxPluginsLoader::pluginFileNames() const {
 }
 	
 void XinxPluginsLoader::addPlugin( QObject * plugin ) {
-	SyntaxHighlighterInterface * iSyntaxHighlighter = qobject_cast<SyntaxHighlighterInterface*>( plugin );
+	IPluginSyntaxHighlighter * iSyntaxHighlighter = qobject_cast<IPluginSyntaxHighlighter*>( plugin );
 	if( iSyntaxHighlighter )
 		m_syntaxPlugins.append( iSyntaxHighlighter );
 }
@@ -67,12 +66,12 @@ void XinxPluginsLoader::loadPlugins() {
     }
 }
 
-const QList<SyntaxHighlighterInterface*> & XinxPluginsLoader::syntaxPlugins() const {
+const QList<IPluginSyntaxHighlighter*> & XinxPluginsLoader::syntaxPlugins() const {
 	return m_syntaxPlugins;
 }
 
 QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) {
-	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
+	foreach( IPluginSyntaxHighlighter* interface, m_syntaxPlugins ) {
 		QString h = interface->highlighterOfExtention( suffix );
 		if( ! h.isEmpty() )
 			return h;
@@ -81,8 +80,8 @@ QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) {
 }
 
 QString XinxPluginsLoader::filter( const QString & suffix ) {
-	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
-		QString libelle = interface->highlighterFilters()[ suffix ];
+	foreach( IPluginSyntaxHighlighter* interface, m_syntaxPlugins ) {
+		QString libelle = interface->filters()[ suffix ];
 		if( ! libelle.isEmpty() )
 			return QString( "%1 (*.%2)" ).arg( libelle ).arg( suffix );
 	}
@@ -93,9 +92,9 @@ QStringList XinxPluginsLoader::filters() {
 	QStringList result;
 	QStringList allExtentions;
 	
-	foreach( SyntaxHighlighterInterface* interface, m_syntaxPlugins ) {
-		foreach( QString suffix, interface->highlighterFilters().keys() ) {
-			QString libelle = interface->highlighterFilters()[ suffix ];
+	foreach( IPluginSyntaxHighlighter* interface, m_syntaxPlugins ) {
+		foreach( QString suffix, interface->filters().keys() ) {
+			QString libelle = interface->filters()[ suffix ];
 			result << QString( "%1 (*.%2)" ).arg( libelle ).arg( suffix );
 			allExtentions << QString( "*.%1" ).arg( suffix );
 		}

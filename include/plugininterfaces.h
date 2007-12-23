@@ -36,18 +36,19 @@ class QObject;
 class QTextDocument;
 class QTextEdit;
 
-class SyntaxHighlighterInterface {
+class IPluginSyntaxHighlighter {
 public:
-	virtual ~SyntaxHighlighterInterface() {};
+	virtual ~IPluginSyntaxHighlighter() {};
 	
-	virtual QStringList highlighters() = 0;
-	virtual QHash<QString,QString> highlighterFilters() = 0;
+	virtual QStringList plugins() = 0;
+	virtual QHash<QString,QString> descriptionOfPlugins() = 0;
+	virtual QHash<QString,QString> filters() = 0;
 	virtual QString highlighterOfExtention( const QString & extention ) = 0;
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter ) = 0;
 	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
 	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) = 0;
 };
 
-Q_DECLARE_INTERFACE(SyntaxHighlighterInterface, "org.shadoware.xinx.SyntaxHighlighterInterface/1.0")
+Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
 
 #endif /*INTERFACES_H_*/

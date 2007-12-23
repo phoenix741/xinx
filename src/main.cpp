@@ -40,6 +40,8 @@
 #include <QDir>
 #include <QThread>
 
+Q_IMPORT_PLUGIN(xinx_baseplugin)
+
 // C++ header
 #include <csignal>
 #include <iostream>

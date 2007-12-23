@@ -14,7 +14,7 @@ unix {
 }
 INCLUDEPATH += ../../include
 
-CONFIG       += plugin
+CONFIG       += plugin static
 
 HEADERS       = baseplugin.h \
 	xmlhighlighter.h \
