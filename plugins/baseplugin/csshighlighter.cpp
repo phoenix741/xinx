@@ -120,22 +120,22 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-]*");
 	QRegExp attributeExpression("\\[.*\\]");
 	
-	ParsingState state = interface->xinxPreviousBlockState() == InBracket ? CssIdentifier : CssDefault;
+	ParsingState state = interface->previousBlockState() == InBracket ? CssIdentifier : CssDefault;
 
-	interface->setXinxCurrentBlockState( NoBlock );
+	interface->setCurrentBlockState( NoBlock );
 	
-	if ( interface->xinxPreviousBlockState() == InComment ) {
+	if ( interface->previousBlockState() == InComment ) {
 		pos = commentEndExpression.indexIn( text, i );
 
 		if (pos >= 0) {
 			// end comment found
 			const int iLength = commentEndExpression.matchedLength();
-			interface->setXinxFormat( 0, pos + iLength, formats["css_comment"] );
+			interface->setFormat( 0, pos + iLength, formats["css_comment"] );
 			i += pos + iLength; // skip comment
 		} else {
 			// in comment
-			interface->setXinxFormat( 0, text.length(), formats["css_comment"] );
-			interface->setXinxCurrentBlockState( InComment );
+			interface->setFormat( 0, text.length(), formats["css_comment"] );
+			interface->setCurrentBlockState( InComment );
 			return;
 		}
 	}
@@ -148,21 +148,21 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 			if( pos == i ) {
 				const int iLength = keywordExpression.matchedLength();
 				if( state == CssDefault ) {
-					interface->setXinxFormat( pos, iLength, formats["css_tag"] );
+					interface->setFormat( pos, iLength, formats["css_tag"] );
 				} else if( state == CssValue ) {
 					if( cssValues.contains( keywordExpression.cap() ) )
-						interface->setXinxFormat( pos, iLength, formats["css_value1"] );
+						interface->setFormat( pos, iLength, formats["css_value1"] );
 					else if( css2Values.contains( keywordExpression.cap() ) )
-						interface->setXinxFormat( pos, iLength, formats["css_value2"] );
+						interface->setFormat( pos, iLength, formats["css_value2"] );
 					else
-						interface->setXinxFormat( pos, iLength, formats["css_value"] );
+						interface->setFormat( pos, iLength, formats["css_value"] );
 				} else if( state == CssIdentifier ) {
 					if( cssKey.contains( keywordExpression.cap() ) )
-						interface->setXinxFormat( pos, iLength, formats["css_identifier1"] );
+						interface->setFormat( pos, iLength, formats["css_identifier1"] );
 					else if( css2Key.contains( keywordExpression.cap() ) )
-						interface->setXinxFormat( pos, iLength, formats["css_identifier2"] );
+						interface->setFormat( pos, iLength, formats["css_identifier2"] );
 					else
-						interface->setXinxFormat( pos, iLength, formats["css_identifier"] );
+						interface->setFormat( pos, iLength, formats["css_identifier"] );
 				}
 				interface->processText( pos, text.mid( pos, iLength ) );
 				i += iLength - 1;
@@ -173,7 +173,7 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 			if( pos == i ) {
 				const int iLength = numberExpression.matchedLength();
 				if( state == CssValue )
-					interface->setXinxFormat( pos, iLength, formats["css_number"] );
+					interface->setFormat( pos, iLength, formats["css_number"] );
 				i += iLength - 1;
 			}
 		} else if( c == '/' ) {
@@ -183,14 +183,14 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 				int posEnd = commentEndExpression.indexIn( text, i + 2 );
 				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
 	
-				interface->setXinxFormat( pos, length, formats["css_comment"] );
+				interface->setFormat( pos, length, formats["css_comment"] );
 				i += length;
 				if( posEnd == -1 ) {
-					interface->setXinxCurrentBlockState( InComment );
+					interface->setCurrentBlockState( InComment );
 					return;
 				}
 			} else {
-				interface->setXinxFormat( i, 1, formats["css_other"] );
+				interface->setFormat( i, 1, formats["css_other"] );
 			}
 		} else if( ( c == '\'' ) || ( c == '"' ) ) {
 			if( c == '\'' )
@@ -200,7 +200,7 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 			
 			if( pos == i ) {
 				const int iLength = string1Expression.matchedLength();
-				interface->setXinxFormat( pos, iLength, formats["css_string"] );
+				interface->setFormat( pos, iLength, formats["css_string"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			}
@@ -208,82 +208,82 @@ void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & form
 			pos = directiveExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			if( pos == i ) {
 				const int iLength = directiveExpression.matchedLength();
-				interface->setXinxFormat( pos, 1, formats["css_operator"] );
-				interface->setXinxFormat( pos + 1, iLength - 2, formats["css_directive"] );
-				interface->setXinxFormat( pos + iLength - 1, 1, formats["css_operator"] );
+				interface->setFormat( pos, 1, formats["css_operator"] );
+				interface->setFormat( pos + 1, iLength - 2, formats["css_directive"] );
+				interface->setFormat( pos + iLength - 1, 1, formats["css_operator"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			}
 		} else if( c == ':' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 			if( state == CssIdentifier ) {
 				state = CssValue;
 			} else if( state != CssValue ){
 				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
-					interface->setXinxFormat( pos, iLength, formats["css_pseudoclass"] );
+					interface->setFormat( pos, iLength, formats["css_pseudoclass"] );
 					interface->processText( pos, text.mid( pos + 1, iLength ) );
 					i += iLength;
 				}
 			}
 		} else if( c == '.' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 			if( ( state != CssIdentifier ) && ( state != CssValue ) ) {
 				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
-					interface->setXinxFormat( pos, iLength, formats["css_class"] );
+					interface->setFormat( pos, iLength, formats["css_class"] );
 					interface->processText( pos, text.mid( pos, iLength ) );
 					i += iLength;
 				}
 			}
 		} else if( c == '#' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 			if( ( state != CssIdentifier ) && ( state != CssValue ) ) {
 				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
-					interface->setXinxFormat( pos, iLength, formats["css_id"] );
+					interface->setFormat( pos, iLength, formats["css_id"] );
 					interface->processText( pos, text.mid( pos, iLength ) );
 					i += iLength;
 				}
 			}
 		} else if( c == ';' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 			if( state == CssValue )
 				state = CssIdentifier;
 		} else if( c == '*' ) {
 			if( state == CssDefault )
-				interface->setXinxFormat( i, 1, formats["css_tag"] );
+				interface->setFormat( i, 1, formats["css_tag"] );
 			else
-				interface->setXinxFormat( i, 1, formats["css_operator"] );
+				interface->setFormat( i, 1, formats["css_operator"] );
 		} else if( c == '[' ) {
 			pos = attributeExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			if( pos == i ) {
 				const int iLength = attributeExpression.matchedLength();
-				interface->setXinxFormat( pos, 1, formats["css_operator"] );
-				interface->setXinxFormat( pos + 1, iLength - 2, formats["css_attribute"] );
-				interface->setXinxFormat( pos + iLength - 1, 1, formats["css_operator"] );
+				interface->setFormat( pos, 1, formats["css_operator"] );
+				interface->setFormat( pos + 1, iLength - 2, formats["css_attribute"] );
+				interface->setFormat( pos + iLength - 1, 1, formats["css_operator"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;
 			}
 		} else if( c == '{' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 			if( state == CssDefault )
 				state = CssIdentifier;
 		} else if( c == '}' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 			state = CssDefault;
 		} else if( c == '.' ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 		} else if( ( c == '>' ) || ( c == '+' ) || ( c == ',' ) || ( c == '!' ) ) {
-			interface->setXinxFormat( i, 1, formats["css_operator"] );
+			interface->setFormat( i, 1, formats["css_operator"] );
 		}
 			
 	}
 	
 	if( ( state == CssIdentifier ) || ( state == CssValue ) ) {
-		interface->setXinxCurrentBlockState( InBracket );
+		interface->setCurrentBlockState( InBracket );
 	}
 }

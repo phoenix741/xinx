@@ -79,24 +79,24 @@ void SyntaxHighlighter::highlightBlock( const QString& text ) {
 	}
 }
 
-int SyntaxHighlighter::xinxCurrentBlockState () const {
-	return currentBlockState();
+int SyntaxHighlighter::currentBlockState () const {
+	return QSyntaxHighlighter::currentBlockState();
 }
 
-int SyntaxHighlighter::xinxPreviousBlockState () const {
-	return previousBlockState();
+int SyntaxHighlighter::previousBlockState () const {
+	return QSyntaxHighlighter::previousBlockState();
 }
 
-void SyntaxHighlighter::setXinxCurrentBlockState ( int newState ) {
-	setCurrentBlockState( newState );
+void SyntaxHighlighter::setCurrentBlockState ( int newState ) {
+	QSyntaxHighlighter::setCurrentBlockState( newState );
 }
 
-QTextCharFormat SyntaxHighlighter::xinxFormat ( int position ) const {
-	return format( position );
+QTextCharFormat SyntaxHighlighter::format ( int position ) const {
+	return QSyntaxHighlighter::format( position );
 }
 
-void SyntaxHighlighter::setXinxFormat ( int start, int count, const QTextCharFormat & format ) {
-	setFormat( start, count, format );
+void SyntaxHighlighter::setFormat ( int start, int count, const QTextCharFormat & format ) {
+	QSyntaxHighlighter::setFormat( start, count, format );
 }
 
 void SyntaxHighlighter::processText( int pos, const QString& text ) {

@@ -26,17 +26,28 @@
 #include <QColor>
 #include <QFont>
 
+/*!
+ * Interface used by plugins to communicate with XINX for the syntax higlighter.
+ * The interface is similare to QSyntaxHighlighter of Qt. 
+ */
 class IXinxSyntaxHighlighter {
 public:
+	//! Destroy the interface. Used to hide warning when using the interface. 
 	virtual ~IXinxSyntaxHighlighter() {};
 	
-	virtual int xinxCurrentBlockState () const = 0;
-	virtual int xinxPreviousBlockState () const = 0;
-	virtual void setXinxCurrentBlockState ( int newState ) = 0;
+	//! Return the state of the current block state.
+	virtual int currentBlockState () const = 0;
+	//! Return the state of the previous block state.
+	virtual int previousBlockState () const = 0;
+	//! Set the current state of the block.
+	virtual void setCurrentBlockState ( int newState ) = 0;
 	
-	virtual QTextCharFormat xinxFormat ( int position ) const = 0; 
-	virtual void setXinxFormat ( int start, int count, const QTextCharFormat & format ) = 0;
+	//! Return the format for the position \e position of the text.
+	virtual QTextCharFormat format ( int position ) const = 0; 
+	//! Set the format \e format, from \e start to \e start + \e count
+	virtual void setFormat ( int start, int count, const QTextCharFormat & format ) = 0;
 
+	//! Call this method to highlight in yellow a word in the text.
 	virtual void processText( int pos, const QString& text ) = 0;
 };
 

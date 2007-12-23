@@ -45,12 +45,12 @@ public:
 protected:
 	virtual void highlightBlock( const QString& text );
 
-	virtual int xinxCurrentBlockState () const;
-	virtual int xinxPreviousBlockState () const;
-	virtual void setXinxCurrentBlockState ( int newState );
+	virtual int currentBlockState () const;
+	virtual int previousBlockState () const;
+	virtual void setCurrentBlockState ( int newState );
 	
-	virtual QTextCharFormat xinxFormat ( int position ) const; 
-	virtual void setXinxFormat ( int start, int count, const QTextCharFormat & format );
+	virtual QTextCharFormat format ( int position ) const; 
+	virtual void setFormat ( int start, int count, const QTextCharFormat & format );
 
 	void processText( int pos, const QString& text );
 	
