@@ -157,7 +157,7 @@ public:
 	 * Return an icon that represent the editor.
 	 * \return an icon for the editor.
 	 */
-	virtual QIcon icon();
+	virtual QIcon icon() const;
 	
 	/*!
 	 * Get a serialized data of type QVariant. Do no process the type.

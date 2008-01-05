@@ -28,6 +28,7 @@
 #include <QList>
 #include <QDir>
 #include <QObject>
+#include <QIcon>
 
 class XinxPluginsLoader {
 public:
@@ -39,18 +40,29 @@ public:
 	const QDir & pluginsDir() const;
 	const QStringList & pluginFileNames() const;
 	
-	const QList<IPluginSyntaxHighlighter*> & syntaxPlugins() const; 
+	const QList<IPluginSyntaxHighlighter*> & syntaxPlugins() const;
+	const QList<IPluginPrettyPrint*> & prettyPlugins() const;
+	const QList<IPluginExtendedEditor*> & extendedEditorPlugins() const;
 	
-	QString filter( const QString & suffix );
-	QStringList filters();
-	QString highlighterOfSuffix( const QString & suffix );
+	QString filter( const QString & suffix ) const;
+	const QStringList & filters() const;
+	const QStringList & defaultProjectFilter() const;
+	QString highlighterOfSuffix( const QString & suffix ) const;
+	
+	QIcon iconOfSuffix( const QString & suffix ) const;
 private:
 	void addPlugin( QObject * plugin );
 	
 	QList<IPluginSyntaxHighlighter*> m_syntaxPlugins;
+	QList<IPluginPrettyPrint*> m_prettyPlugins;
+	QList<IPluginExtendedEditor*> m_extendedEditorPlugins;
 	
 	QDir m_pluginsDir;
 	QStringList m_pluginFileNames;
+
+	QHash<QString,QIcon> m_icons;
+	QHash<QString,int> m_filterIndex;
+	QStringList m_filters, m_defaultProjectFilter;
 };
 
 #endif /*XINXPLUGINSLOADER_H_*/

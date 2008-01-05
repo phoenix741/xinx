@@ -24,17 +24,39 @@
 // Xinx header
 #include <plugininterfaces.h>
 
-class BasePlugin : public QObject, public IPluginSyntaxHighlighter {
+class BasePlugin : public QObject, public IPluginSyntaxHighlighter, public IPluginPrettyPrint, public IPluginExtendedEditor {
 	Q_OBJECT
+	Q_INTERFACES(IPlugin)
 	Q_INTERFACES(IPluginSyntaxHighlighter)
+	Q_INTERFACES(IPluginPrettyPrint)
+	Q_INTERFACES(IPluginExtendedEditor)
+public:
+	BasePlugin();
 	
-	virtual QStringList plugins();
-	virtual QHash<QString,QString> descriptionOfPlugins();
-	virtual QHash<QString,QString> filters();
+	virtual QStringList extentions();
+	virtual QHash<QString,QString> extentionsDescription();
+	virtual QIcon icon( const QString & extention );
+	
+	virtual QStringList highlighters();
+	virtual QHash<QString,QString> descriptionOfHighlighters();
 	virtual QString highlighterOfExtention( const QString & extention );
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
 	virtual QString exampleOfHighlighter( const QString & highlighter );
 	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text );
+
+	virtual QStringList prettyPrinters();
+	virtual QHash<QString,QString> descriptionOfPrettyPrinters();
+	virtual QString prettyPrinterOfExtention( const QString & extention );
+	virtual QString prettyPrint( const QString & plugin, const QString & text, QString * errorStr, int * line, int * column );
+	
+	virtual QStringList extendedEditors();
+	virtual QHash<QString,QString> descriptionOfExtendedEditors();
+	virtual QString extendedEditorOfExtention( const QString & extention );
+	virtual void commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment );
+	virtual FileContentElement * createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int line );
+	virtual void createCompleter( const QString & plugin, IXinxExtendedEditor * editor );
+	virtual QCompleter * completer( const QString & plugin, IXinxExtendedEditor * editor );
+	virtual bool keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event );
 };
 
 #endif /* BASEPLUGIN_H_*/

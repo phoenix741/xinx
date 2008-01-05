@@ -29,7 +29,6 @@ class WebServices;
 class ObjectsView;
 class XINXConfig;
 class SnipetList;
-class Completion;
 class XinxPluginsLoader;
 
 /*!
@@ -74,11 +73,6 @@ public:
 	 * List of snipet.
 	 */
 	SnipetList * m_snipetList;
-	
-	/*!
-	 * Completion content.
-	 */
-	Completion * m_completionContents;
 	
 	/*!
 	 * Xinx Plugins loader
@@ -128,10 +122,6 @@ extern Globals global;
  */
 #define MAXRECENTFILES 10
 
-/*!
- * Default extention filtre 
- */
-#define DEFAULT_PROJECT_FILTRE QStringList() << "*.xml" << "*.xsl" << "*.js" << "*.fws"
 /*!
  * Default project options filtre
  */

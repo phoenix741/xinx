@@ -18,6 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// xinx header
+#include "globals.h"
+#include "xinxpluginsloader.h"
 #include "iconprojectprovider.h"
 
 IconProjectProvider::IconProjectProvider() : QFileIconProvider() {
@@ -29,18 +32,10 @@ IconProjectProvider::~IconProjectProvider() {
 }
 	
 QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
-	if( info.suffix() == "xsl" ) {
-		return QIcon( ":/images/typexsl.png" );
-	} else
-	if( info.suffix() == "xml" ) {
-		return QIcon( ":/images/typexml.png" );
-	} else
-	if( info.suffix() == "js" ) {
-		return QIcon( ":/images/typejs.png" );
-	} else
-	if( info.suffix() == "fws" ) {
-		return QIcon( ":/images/typefws.png" );
-	} else
+	QIcon icon = global.m_pluginsLoader->iconOfSuffix( info.suffix() );
+	if( ! icon.isNull() )
+		return icon;
+	else
 		return QFileIconProvider::icon( info );
 }
 

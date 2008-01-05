@@ -24,6 +24,7 @@
 // Qt header
 #include <QPluginLoader>
 #include <QApplication>
+#include <QDebug>
 
 /* XinxPluginsLoader */
 
@@ -44,9 +45,37 @@ const QStringList & XinxPluginsLoader::pluginFileNames() const {
 }
 	
 void XinxPluginsLoader::addPlugin( QObject * plugin ) {
+	IPlugin * iPlugin = qobject_cast<IPlugin*>( plugin );
+	if( iPlugin ) {
+		QHash<QString,QString> libelles = iPlugin->extentionsDescription();
+		
+		foreach( QString extentions, iPlugin->extentions() ) {
+			QString libelle = libelles[ extentions.section( ' ', 0, 0 ) ];
+			QStringList suffixes = extentions.split( ' ' );
+			foreach( QString suffix, suffixes ) {
+				m_filterIndex[ suffix ] = m_filters.count();
+				m_icons[ suffix ] = iPlugin->icon( suffix );
+			}
+			
+			suffixes = suffixes.replaceInStrings( QRegExp( "^" ), "*." );
+			m_defaultProjectFilter << suffixes;
+			
+			m_filters.append( QString( "%1 (%2)" ).arg( libelle ).arg( suffixes.join( " " ) ) );			
+		}
+		m_filters.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + m_defaultProjectFilter.join( " " ) + ")" );
+	}
+	
 	IPluginSyntaxHighlighter * iSyntaxHighlighter = qobject_cast<IPluginSyntaxHighlighter*>( plugin );
 	if( iSyntaxHighlighter )
 		m_syntaxPlugins.append( iSyntaxHighlighter );
+
+	IPluginPrettyPrint * iPrettyPrinter = qobject_cast<IPluginPrettyPrint*>( plugin );
+	if( iPrettyPrinter )
+		m_prettyPlugins.append( iPrettyPrinter );
+
+	IPluginExtendedEditor * iExtendedEditor = qobject_cast<IPluginExtendedEditor*>( plugin );
+	if( iExtendedEditor )
+		m_extendedEditorPlugins.append( iExtendedEditor );
 }
 
 void XinxPluginsLoader::loadPlugins() {
@@ -62,7 +91,8 @@ void XinxPluginsLoader::loadPlugins() {
         if ( plugin ) {
         	addPlugin(plugin);
         	m_pluginFileNames += fileName;
-        }
+        } else
+        	qDebug() << loader.errorString();
     }
 }
 
@@ -70,7 +100,15 @@ const QList<IPluginSyntaxHighlighter*> & XinxPluginsLoader::syntaxPlugins() cons
 	return m_syntaxPlugins;
 }
 
-QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) {
+const QList<IPluginPrettyPrint*> & XinxPluginsLoader::prettyPlugins() const {
+	return m_prettyPlugins;
+}
+
+const QList<IPluginExtendedEditor*> & XinxPluginsLoader::extendedEditorPlugins() const {
+	return m_extendedEditorPlugins;
+}
+
+QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
 	foreach( IPluginSyntaxHighlighter* interface, m_syntaxPlugins ) {
 		QString h = interface->highlighterOfExtention( suffix );
 		if( ! h.isEmpty() )
@@ -79,28 +117,18 @@ QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) {
 	return QString();
 }
 
-QString XinxPluginsLoader::filter( const QString & suffix ) {
-	foreach( IPluginSyntaxHighlighter* interface, m_syntaxPlugins ) {
-		QString libelle = interface->filters()[ suffix ];
-		if( ! libelle.isEmpty() )
-			return QString( "%1 (*.%2)" ).arg( libelle ).arg( suffix );
-	}
-	return QString();
+QString XinxPluginsLoader::filter( const QString & suffix ) const {
+	return m_filters[ m_filterIndex[ suffix ] + 1 ];
 }
 
-QStringList XinxPluginsLoader::filters() {
-	QStringList result;
-	QStringList allExtentions;
-	
-	foreach( IPluginSyntaxHighlighter* interface, m_syntaxPlugins ) {
-		foreach( QString suffix, interface->filters().keys() ) {
-			QString libelle = interface->filters()[ suffix ];
-			result << QString( "%1 (*.%2)" ).arg( libelle ).arg( suffix );
-			allExtentions << QString( "*.%1" ).arg( suffix );
-		}
-	}
-	result.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + allExtentions.join( " " ) + ")" );
-	
-	return result;
+const QStringList & XinxPluginsLoader::filters() const {
+	return m_filters;
 }
 
+const QStringList & XinxPluginsLoader::defaultProjectFilter() const {
+	return m_defaultProjectFilter;
+}
+
+QIcon XinxPluginsLoader::iconOfSuffix( const QString & suffix ) const {
+	return m_icons.value( suffix );
+}

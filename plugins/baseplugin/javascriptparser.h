@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,13 +21,14 @@
 #ifndef __JAVASCRIPTPARSER_H__
 #define __JAVASCRIPTPARSER_H__
 
-#include "filecontentitemmodel.h"
+// Xinx header
 #include "filecontentstructure.h"
 
+// Qt header
 #include <QStringList>
 #include <QList>
 
-class PrivateJavaScriptParser;
+class JavaScriptParser;
 
 /*!
  * This exception is launch when the file can't be parsed.
@@ -89,7 +90,6 @@ public:
 
 	virtual QIcon icon() const;
 private:
-	friend class PrivateJavaScriptParser;
 	friend class JavaScriptParser;
 };
 
@@ -118,13 +118,21 @@ public:
 	 */
 	virtual void loadFromContent( const QString & content );
 	virtual void loadFromFile( const QString & filename );
-
+	virtual void loadFromFileDelayed( const QString & filename );
+	virtual bool isLoaded();
+	
+	virtual int rowCount();
 	virtual QIcon icon() const;
 private:
-	PrivateJavaScriptParser * d;
-	friend class PrivateJavaScriptParser;
-	friend class PrivateJavaScriptFunction;
-	friend class JavaScriptFunction;
+	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION, TOKEN_EOF };
+
+	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
+	QList<JavaScriptVariables*> loadVariables( QIODevice * device );
+	JavaScriptFunction * loadFunction( QIODevice * device, QList<JavaScriptParams*> * params );
+	void loadInstruction( QIODevice * buffer, JavaScriptFunction * function, QString & name, JAVASCRIPT_TOKEN & type );
+
+	int m_line;
+	bool m_isLoaded;
 };
 
 #endif // __JAVASCRIPTPARSER_H__

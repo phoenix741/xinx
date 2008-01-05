@@ -17,34 +17,54 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef __JAVASCRIPTMODELCOMPETER_H__
+#define __JAVASCRIPTMODELCOMPETER_H__
 
-#ifndef __FILETYPEJS_H__
-#define __FILETYPEJS_H__
+#include <QAbstractListModel>
 
-// Xinx header
-#include "filetypeinterface.h"
+class FileContentElement;
+class JavaScriptParser;
 
-// Qt header
-#include <QTextCursor>
+/* JavascriptModelCompleter */
 
-class PrivateFileTypeJs;
-
-class FileTypeJs : public FileTypeInterface {
+/*!
+ * Class provide completion on JavaScript editor.
+ * This class based on a parser show all variables, params, and function name, 
+ * that could be used in the JavaScript file.
+ */
+class JavascriptModelCompleter : public QAbstractListModel {
+	Q_OBJECT
 public:
-	FileTypeJs( TextEditor * parent );
-	virtual ~FileTypeJs();
+	/*!
+	 * Create a Javascript model for completion, with the help of a javascript parser.
+	 * \param parser The parser used to parse the javascript text
+	 * \param parent Parent object used to create this object.
+	 */
+	JavascriptModelCompleter( FileContentElement * parser, QObject *parent = 0 );
+	/*!
+	 * Destroy the Javascript model.
+	 */
+	virtual ~JavascriptModelCompleter();
 	
-	void commentSelectedText( bool uncomment );
+	QVariant data(const QModelIndex &index, int role) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+public slots:
+	/*!
+	 * Set the filter used to define the scope of the function.
+	 * If the function is NULL, the scope is global.
+	 */
+	void setFilter( const QString functionName = QString() );
 
-	virtual void updateModel();
-	virtual QAbstractItemModel * model();
-	
-	virtual void complete();
-protected:
-
+	void addElement( FileContentElement*, int );
+	void removeElement( FileContentElement* );
 private:
-	PrivateFileTypeJs * d;
-	friend class PrivateFileTypeJs;
+	void refreshList( FileContentElement * element );
+	QList<FileContentElement*> m_objList;
+	
+	FileContentElement * m_parser;
+	QString m_functionFiltre;
 };
 
-#endif // __FILETYPEJS_H__
+#endif // __JAVASCRIPTMODELCOMPETER_H__

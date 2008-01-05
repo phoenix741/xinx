@@ -22,40 +22,12 @@
 #define __FILECONTENTITEMMODEL_H__
 
 // Xinx header
-#include "exceptions.h"
-#include "filecontentstructure.h"
+#include <filecontentstructure.h>
 
 // Qt header
 #include <QAbstractItemModel>
 
 class PrivateFileContentModel;
-
-/*!
- * Exception throw when the model can't be updated.
- */
-class FileContentException : public XinxException {
-public:
-	/*!
-	 * Create the exception with a message and a line.
-	 * \param message Error of the exception.
-	 * \param line Line where the error is.
-	 */
-	FileContentException( QString message, int line, int column );
-
-	/*!
-	 * Return the line where the error is.
-	 * \return The line of the error.
-	 */
-	int getLine() const;
-	
-	/*! 
-	 * Return the column where the error is.
-	 * \return the column of the error.
-	 */
-	int getColumn() const;
-private:
-	int m_line, m_column;
-};
 
 /*!
  * Model of data used in the content tree view. Represent the content of a file
@@ -91,14 +63,15 @@ public:
 		QString filename;
 	};
 
-	QVariant data( const QModelIndex &index, int role ) const;
-	Qt::ItemFlags flags( const QModelIndex &index ) const;
-	QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
+	virtual QVariant data( const QModelIndex &index, int role ) const;
+	virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
+	virtual QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
 	QModelIndex index( FileContentElement * element ) const;
-	QModelIndex parent( const QModelIndex &index ) const;
-	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
-	QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-	int columnCount( const QModelIndex &parent = QModelIndex() ) const;	
+	virtual QModelIndex parent( const QModelIndex &index ) const;
+	virtual bool hasChildren( const QModelIndex & parent = QModelIndex() ) const;
+	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;	
 public slots:
 	void update( FileContentElement * element );
 	void beginInsertRow( FileContentElement * element, int row );

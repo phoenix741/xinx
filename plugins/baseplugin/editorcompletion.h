@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,7 @@
 #define _EDITORCOMPLETION_H_
 
 // Xinx header
-#include "exceptions.h"
+#include <exceptions.h>
 
 // Qt header
 #include <QList>
@@ -201,18 +201,18 @@ private:
  * This class containts a list of balise from which the user can complete.
  * \todo Read completion on JavaScript.
  */
-class Completion {
+class CompletionXML {
 public:
 	/*! 
 	 * Create a Completion structure.
 	 * \param name File name to use to read the document.
 	 * \throw ENotCompletionFile if the document isn't valid
 	 */
-	Completion( const QString & name = QString() );
+	CompletionXML( const QString & name = QString() );
 	/*!
 	 * Destructor of the completion structure.
 	 */
-	virtual ~Completion();
+	virtual ~CompletionXML();
 
 	/*!
 	 * List of all balise from which the user can complete (include children balise).
@@ -250,5 +250,7 @@ private:
 	QList<CompletionXMLBalise*> m_xmlBalises;
 	QString m_name;
 };
+
+extern CompletionXML * xmlCompletionContents;
 
 #endif

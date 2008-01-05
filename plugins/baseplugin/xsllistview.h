@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,9 @@
 #ifndef _XSLLISTVIEW_H_
 #define _XSLLISTVIEW_H_
 
-#include "filecontentitemmodel.h"
-#include "filecontentstructure.h"
-#include "javascriptparser.h"
+// Xinx header
+#include <exceptions.h>
+#include <filecontentstructure.h>
 
 /*!
  * This exception is launch when the file can't be parsed.
@@ -39,13 +39,7 @@ public:
 };
 
 class QDomElement;
-class XSLProject;
-
-class XSLFileContentImport;
-class PrivateXSLFileContentParser;
-class PrivateXSLFileContentImportJavaScript;
-class PrivateXSLFileContentParams;
-class PrivateXSLFileContentTemplate;
+class IXinxExtendedEditor;
 
 class XSLFileContentParams : public FileContentElement {
 	Q_OBJECT
@@ -60,8 +54,7 @@ public:
 
 	virtual QIcon icon() const;
 private:
-	PrivateXSLFileContentParams * d;
-	friend class PrivateXSLFileContentParams;
+	QString m_value;
 };
 
 class XSLFileContentVariable : public XSLFileContentParams {
@@ -76,7 +69,7 @@ public:
 class XSLFileContentTemplate : public FileContentElement {
 	Q_OBJECT
 public:
-	XSLFileContentTemplate( FileContentElement * parent, const QDomElement & node, const QString & name );
+	XSLFileContentTemplate( IXinxExtendedEditor * editor, FileContentElement * parent, const QDomElement & node, const QString & name );
 	virtual ~XSLFileContentTemplate();
 
 	const QString & mode() const;
@@ -90,48 +83,29 @@ public:
 
 	void loadFromXML( const QDomElement& node );
 private:
-	PrivateXSLFileContentTemplate * d;
-	friend class PrivateXSLFileContentTemplate;
+	QString m_mode;
+	IXinxExtendedEditor * m_editor;
 };
 
 class XSLFileContentParser : public FileContentElement, public FileContentParser {
 	Q_OBJECT
 public:
-	XSLFileContentParser();
+	XSLFileContentParser( IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int lineNumber );
+	XSLFileContentParser( IXinxExtendedEditor * editor );
 	virtual ~XSLFileContentParser();
 
 	virtual void loadFromContent( const QString & content );
 	virtual void loadFromFile( const QString & filename );
-
+	virtual void loadFromFileDelayed( const QString & filename );
+	virtual bool isLoaded();
+	
+	virtual int rowCount();
 	virtual QIcon icon() const;
 protected:
-	XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber );
-	
 	void loadFromXML( const QDomElement& element );
-};
-
-class XSLFileContentImport : public XSLFileContentParser {
-	Q_OBJECT
-public:
-	virtual ~XSLFileContentImport();
-	
-	static XSLFileContentImport * createImportFromLocation( FileContentElement * parent, const QDomElement & node );
-	virtual int rowCount();
-protected:
-	XSLFileContentImport( FileContentElement * parent, const QString & filename, const QDomElement & node );
 private:
-	bool m_loadFlag;
-};
-
-class XSLFileContentImportJS : public JavaScriptParser {
-	Q_OBJECT
-public:
-	virtual ~XSLFileContentImportJS();
-	
-	static XSLFileContentImportJS * createImportFromLocation( FileContentElement * parent, const QDomElement & node );
-	virtual int rowCount();
-protected:
-	XSLFileContentImportJS( FileContentElement * parent, const QString & filename, const QDomElement & node );
+	IXinxExtendedEditor * m_editor;
+	bool m_isLoaded;
 };
 
 #endif

@@ -21,6 +21,9 @@
 #ifndef FILECONTENTSTRUCTURE_H_
 #define FILECONTENTSTRUCTURE_H_
 
+// Xinx header
+#include <exceptions.h>
+
 // Qt header
 #include <QObject>
 #include <QString>
@@ -28,12 +31,54 @@
 
 class PrivateFileContentElement;
 
+/*!
+ * Exception throw when the model can't be updated.
+ */
+class FileContentException : public XinxException {
+public:
+	/*!
+	 * Create the exception with a message and a line.
+	 * \param message Error of the exception.
+	 * \param line Line where the error is.
+	 */
+	FileContentException( QString message, int line, int column );
+
+	/*!
+	 * Return the line where the error is.
+	 * \return The line of the error.
+	 */
+	int getLine() const;
+	
+	/*! 
+	 * Return the column where the error is.
+	 * \return the column of the error.
+	 */
+	int getColumn() const;
+private:
+	int m_line, m_column;
+};
+
+/*!
+ * The file content parser is an interface for the parser.
+ */
 class FileContentParser {
 public:
-	virtual ~FileContentParser();
+	virtual ~FileContentParser() {};
 	
+	/*!
+	 * Construct elements from \e content.
+	 */
 	virtual void loadFromContent( const QString & content ) = 0;
+	/*!
+	 * Construct elements from \e filename.
+	 */
 	virtual void loadFromFile( const QString & filename ) = 0;
+	
+	//! Load from file \e filename but really charged it when needed.
+	virtual void loadFromFileDelayed( const QString & filename ) = 0;
+	
+	//! Tell if the file is loaded or not.
+	virtual bool isLoaded() = 0;
 };
 
 /*!
@@ -167,11 +212,6 @@ protected:
 	 * Remove from the child list all elements marked to be deleted by \e markDeleted().
 	 */
 	void removeMarkedDeleted();
-
-	/*!
-	 * Change \e value to false if append and remove don't emit signals
-	 */
-	void setFlagEmit( bool value );
 signals:
 	void updated( FileContentElement * element );
 	void aboutToRemove( FileContentElement * element );

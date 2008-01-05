@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,51 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _P_FILEEDITOR_H_
-#define _P_FILEEDITOR_H_
+#ifndef JSCOMPLETER_H_
+#define JSCOMPLETER_H_
 
 // Xinx header
-#include "../fileeditor.h"
-#include "../filewatcher.h"
-#include "../filetypeinterface.h"
-#include "../filetypejs.h"
-#include "../filetypexml.h"
-#include "../filetypexsl.h"
-#include "../syntaxhighlighter.h"
+#include "iextendededitor.h"
 
 // Qt header
-#include <QObject>
-#include <QAction>
+#include <QTextCursor>
+#include <QString>
+#include <QTextCursor>
+#include <QModelIndex>
 
-class PrivateFileEditor : public QObject {
+class QCompleter;
+class QKeyEvent;
+class JavascriptModelCompleter;
+
+class JsCompleter : public QObject {
 	Q_OBJECT
 public:
-	PrivateFileEditor( FileEditor * parent );
-	~PrivateFileEditor();
+	JsCompleter( IXinxExtendedEditor * editor );
+	~JsCompleter();
 	
-	SyntaxHighlighter * m_syntaxhighlighter;
-	
-	FileTypeInterface * m_interface;
-	FileEditor::enumFileType m_fileType;
+	static void commentSelectedText( IXinxExtendedEditor * editor, bool uncomment );
 
-	QAction * m_commentAction;
-	QAction * m_uncommentAction;
-	FileWatcher * m_watcher;
-	QString m_path;
-	
-	bool m_isSaving;
-
-	bool hasWatcher(); 
-	void setWatcher( const QString & path );
-	void activateWatcher();
-	void desactivateWatcher();
-public slots:
-	void fileChanged ();
-
-	void comment();
-	void uncomment();
+	bool keyPressEvent( QKeyEvent *e );
+	QCompleter * currentCompleter( const QTextCursor & cursor );
+private slots:
+	void insertCompletion( const QModelIndex& index );
 private:
-	FileEditor * m_parent;
+	QString currentFunction();
+
+	JavascriptModelCompleter * m_modelCompleter;
+	QCompleter * m_completer;
+	
+	IXinxExtendedEditor * m_editor;
 };
 
-#endif /* _P_FILEEDITOR_H_ */
+
+#endif /*JSCOMPLETER_H_*/

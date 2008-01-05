@@ -23,6 +23,7 @@
 #include "cvsthread.h"
 #include "cvsfiles.h"
 #include "exceptions.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QDir>
@@ -128,7 +129,7 @@ RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
 
 	RCS::FilesOperation operations;
 	
-	QStringList files = QDir( path ).entryList( DEFAULT_PROJECT_FILTRE, QDir::Files );
+	QStringList files = QDir( path ).entryList( global.m_pluginsLoader->defaultProjectFilter(), QDir::Files );
 	
 	foreach( QString filename, files ) {
 		QString filepath = QDir( path ).absoluteFilePath ( filename );

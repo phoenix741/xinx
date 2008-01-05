@@ -1,0 +1,503 @@
+<js>
+	<keyword>
+		<word name="break" />
+		<word name="else" />
+		<word name="new" />
+		<word name="var" />
+		<word name="case" />
+		<word name="finally" />
+		<word name="return" />
+		<word name="void" />
+		<word name="catch" />
+		<word name="for" />
+		<word name="switch" />
+		<word name="while" />
+		<word name="continue" />
+		<word name="function" />
+		<word name="this" />
+		<word name="with" />
+		<word name="default" />
+		<word name="if" />
+		<word name="throw" />
+		<word name="delete" />
+		<word name="in" />
+		<word name="try" />
+		<word name="do" />
+		<word name="instanceof" />
+		<word name="typeof" />
+
+		<word name="abstract" />
+		<word name="enum" />
+		<word name="int" />
+		<word name="short" />
+		<word name="boolean" />
+		<word name="export" />
+		<word name="interface" />
+		<word name="static" />
+		<word name="byte" />
+		<word name="extends" />
+		<word name="long" />
+		<word name="super" />
+		<word name="char" />
+		<word name="final" />
+		<word name="native" />
+		<word name="synchronized" />
+		<word name="class" />
+		<word name="float" />
+		<word name="package" />
+		<word name="throws" />
+		<word name="const" />
+		<word name="goto" />
+		<word name="private" />
+		<word name="transient" />
+		<word name="debugger" />
+		<word name="implements" />
+		<word name="protected" />
+		<word name="volatile" />
+		<word name="double" />
+		<word name="import" />
+		<word name="public" />
+	</keyword>
+	<objects>
+		<object name="global">
+			<variable name="NaN" />
+			<variable name="Infinity" />
+			<function name="eval">
+				<param name="value" type="String" />
+			</function>
+			<function name="parseInt">
+				<param name="string" type="String" />
+				<param name="radix" type="Number" />
+			</function>
+			<function name="parseFloat">
+				<param name="string" type="String" />
+			</function>
+			<function name="escape">
+				<param name="string" type="String" />
+			</function>
+			<function name="unescape">
+				<param name="string" type="String" />
+			</function>
+			<function name="isNaN">
+				<param name="number" type="Number" />
+			</function>
+			<function name="isFinite">
+				<param name="number" type="Number" />
+			</function>
+			<variable name="navigator" type="Navigator" />
+			<variable name="window" type="Window" />
+			<variable name="location" type="Location" />
+			<variable name="history" type="History" />
+			<variable name="document" type="Document" />
+		</object>
+		<object name="Object">
+			<constructor name="Object" />
+			<constructor name="Object">
+				<param name="value" />
+			</constructor>
+			<variable name="length" />
+			<variable name="prototype">
+				<function name="toString" />
+				<function name="valueOf" />
+			</variable>
+		</object>
+		<object name="Function" inherited="Object">
+			<constructor name="Function">
+				<param name="p" num="Infinite" />
+				<param name="body" />
+			</constructor>
+			<variable name="prototype">
+				<variable name="arguments" />
+			</variable>
+			<instances>
+				<variable name="length" />
+				<variable name="prototype" />
+				<variable name="arguments" />
+			</instances>
+		</object>
+		<object name="Array" inherited="Object">
+			<constructor name="Array">
+				<param name="item" num="Infinite" />
+			</constructor>
+			<constructor name="Array">
+				<param name="len" type="Number" />
+			</constructor>
+			<constructor name="Array" />
+			<variable name="prototype">
+				<function name="join">
+					<param name="separator" type="Char" />
+				</function>
+				<function name="reverse" />
+				<function name="sort">
+					<param name="comparefn" type="Function" />
+				</function>
+			</variable>
+			<instances>
+				<function operator="[]" />
+				<variable name="length" />
+			</instances>
+		</object>
+		<object name="String" inherited="Object">
+			<constructor name="String" />
+			<constructor name="String">
+				<param name="value" />
+			</constructor>
+			<function name="fromCharCode">
+				<param name="char" num="Infinite" />
+			</function>
+			<variable name="prototype">
+				<function name="toString" />
+				<function name="valueOf" />
+				<function name="charAt">
+					<param name="pos" type="Number" />
+				</function>
+				<function name="charCodeAt">
+					<param name="pos" type="Number" />
+				</function>
+				<function name="indexOf">
+					<param name="searchString" type="String" />
+					<param name="position" type="Number" />
+				</function>
+				<function name="lastIndexOf">
+					<param name="searchString" type="String" />
+					<param name="position" type="Number" />
+				</function>
+				<function name="split">
+					<param name="separator" type="String" />
+				</function>
+				<function name="substring">
+					<param name="start" type="Number" />
+				</function>
+				<function name="substring">
+					<param name="start" type="Number" />
+					<param name="end" type="Number" />
+				</function>
+				<function name="toLowerCase" />
+				<function name="toUpperCase" />
+
+				<function name="anchor">
+					<param name="name" type="String" />
+				</function>
+				<function name="big" />
+				<function name="blink" />
+				<function name="bold" />
+				<function name="fixed" />
+				<function name="fontcolor">
+					<param name="color" type="String" />
+				</function>
+				<function name="fontsize">
+					<param name="size" type="Number" />
+				</function>
+				<function name="italics" />
+				<function name="link">
+					<param name="url" type="String" />
+				</function>
+				<function name="small" />
+				<function name="strike" />
+				<function name="sub" />
+				<function name="sup" />
+			</variable>
+			<instances>
+				<function operator="[]" />
+				<variable name="length" />
+			</instances>
+		</object>
+		<object name="Boolean" inherited="Object">
+			<constructor name="Boolean" />
+			<constructor name="Boolean">
+				<param name="value" />
+			</constructor>
+		</object>
+		<object name="Number" inherited="Object">
+			<constructor name="Number" />
+			<constructor name="Number">
+				<param name="value" />
+			</constructor>
+			<variable name="MAX_VALUE" type="Number" />
+			<variable name="MIN_VALUE" type="Number" />
+			<variable name="NaN" type="Number" />
+			<variable name="NEGATIVE_INFINITY" type="Number" />
+			<variable name="POSITIVE_INFINITY" type="Number" />
+			<variable name="prototype">
+				<function name="toString">
+					<param name="radix" type="Number" />
+				</function>
+			</variable>
+		</object>
+		<object name="Math" inherited="Object">
+			<variable name="E" type="Number" />
+			<variable name="LN10" type="Number" />
+			<variable name="LN2" type="Number" />
+			<variable name="LOG2E" type="Number" />
+			<variable name="LOG10E" type="Number" />
+			<variable name="PI" type="Number" />
+			<variable name="SQRT1_2" type="Number" />
+			<variable name="SQRT2" type="Number" />
+			<variable name="prototype">
+				<function name="abs">
+					<param name="x" type="Number" />
+				</function>
+				<function name="acos">
+					<param name="x" type="Number" />
+				</function>
+				<function name="asin">
+					<param name="x" type="Number" />
+				</function>
+				<function name="atan">
+					<param name="x" type="Number" />
+				</function>
+				<function name="atan2">
+					<param name="x" type="Number" />
+					<param name="y" type="Number" />
+				</function>
+				<function name="ceil">
+					<param name="x" type="Number" />
+				</function>
+				<function name="cos">
+					<param name="x" type="Number" />
+				</function>
+				<function name="exp">
+					<param name="x" type="Number" />
+				</function>
+				<function name="floor">
+					<param name="x" type="Number" />
+				</function>
+				<function name="log">
+					<param name="x" type="Number" />
+				</function>
+				<function name="max">
+					<param name="x" type="Number" />
+					<param name="y" type="Number" />
+				</function>
+				<function name="min">
+					<param name="x" type="Number" />
+					<param name="y" type="Number" />
+				</function>
+				<function name="pow">
+					<param name="x" type="Number" />
+					<param name="y" type="Number" />
+				</function>
+				<function name="random" />
+				<function name="round">
+					<param name="x" type="Number" />
+				</function>
+				<function name="sin">
+					<param name="x" type="Number" />
+				</function>
+				<function name="sqrt">
+					<param name="x" type="Number" />
+				</function>
+				<function name="tan">
+					<param name="x" type="Number" />
+				</function>
+			</variable>
+		</object>
+		<object name="Date" inherited="Object">
+			<constructor name="Date">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+				<param name="minutes" type="Number" />
+				<param name="seconds" type="Number" />
+				<param name="ms" type="Number" />
+			</constructor>
+			<constructor name="Date">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+				<param name="minutes" type="Number" />
+				<param name="seconds" type="Number" />
+			</constructor>
+			<constructor name="Date">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+				<param name="minutes" type="Number" />
+			</constructor>
+			<constructor name="Date">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+			</constructor>
+			<constructor name="Date">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+			</constructor>
+			<constructor name="Date">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+			</constructor>
+			<constructor name="Date">
+				<param name="value" type="Number" />
+			</constructor>
+			<constructor name="Date" />
+			<function name="parse">
+				<param name="string" type="String" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+				<param name="minutes" type="Number" />
+				<param name="seconds" type="Number" />
+				<param name="ms" type="Number" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+				<param name="minutes" type="Number" />
+				<param name="seconds" type="Number" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+				<param name="minutes" type="Number" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+				<param name="hours" type="Number" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+				<param name="date" type="Number" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+				<param name="month" type="Number" />
+			</function>
+			<function name="UTC">
+				<param name="year" type="Number" />
+			</function>
+			<function name="UTC" />
+			<variable name="prototype">
+				<function name="getTime" />
+				<function name="getYear" />
+				<function name="getFullYear" />
+				<function name="getUTCFullYear" />
+				<function name="getMonth" />
+				<function name="getUTCMonth" />
+				<function name="getDate" />
+				<function name="getUTCDate" />
+				<function name="getDay" />
+				<function name="getUTCDay" />
+				<function name="getHours" />
+				<function name="getUTCHours" />
+				<function name="getMinutes" />
+				<function name="getUTCMinutes" />
+				<function name="getSeconds" />
+				<function name="getUTCSeconds" />
+				<function name="getMilliseconds" />
+				<function name="getUTCMilliseconds" />
+				<function name="getTimezonOffsets" />
+
+				<function name="setTime">
+					<param name="time" type="Number" />
+				</function>
+				<function name="setYear">
+					<param name="year" type="Number" />
+				</function>
+				<function name="setFullYear">
+					<param name="year" type="Number" />
+					<param name="mon" type="Number" optional="optional" />
+					<param name="date" type="Number"
+						optional="optional" />
+				</function>
+				<function name="setUTCFullYear">
+					<param name="year" type="Number" />
+					<param name="mon" type="Number" optional="optional" />
+					<param name="date" type="Number"
+						optional="optional" />
+				</function>
+				<function name="setMonth">
+					<param name="mon" type="Number" />
+					<param name="date" type="Number"
+						optional="optional" />
+				</function>
+				<function name="setUTCMonth">
+					<param name="mon" type="Number" />
+					<param name="date" type="Number"
+						optional="optional" />
+				</function>
+				<function name="setDate">
+					<param name="date" type="Number" />
+				</function>
+				<function name="setUTCDate">
+					<param name="date" type="Number" />
+				</function>
+				<function name="setHours">
+					<param name="hour" type="Number" />
+					<param name="min" type="Number" optional="optional" />
+					<param name="sec" type="Number" optional="optional" />
+					<param name="ms" type="Number" optional="optional" />
+				</function>
+				<function name="setUTCHours">
+					<param name="hour" type="Number" />
+					<param name="min" type="Number" optional="optional" />
+					<param name="sec" type="Number" optional="optional" />
+					<param name="ms" type="Number" optional="optional" />
+				</function>
+				<function name="setMinutes">
+					<param name="min" type="Number" />
+					<param name="sec" type="Number" optional="optional" />
+					<param name="ms" type="Number" optional="optional" />
+				</function>
+				<function name="setUTCMinutes">
+					<param name="min" type="Number" />
+					<param name="sec" type="Number" optional="optional" />
+					<param name="ms" type="Number" optional="optional" />
+				</function>
+				<function name="setSeconds">
+					<param name="sec" type="Number" />
+					<param name="ms" type="Number" optional="optional" />
+				</function>
+				<function name="setUTCSeconds">
+					<param name="sec" type="Number" />
+					<param name="ms" type="Number" optional="optional" />
+				</function>
+				<function name="setMilliseconds">
+					<param name="ms" type="Number" />
+				</function>
+				<function name="setUTCMilliseconds">
+					<param name="ms" type="Number" />
+				</function>
+
+				<function name="toLocaleString" />
+				<function name="toUTCString" />
+				<function name="toGMTString" />
+			</variable>
+		</object>
+		<object name="Navigator" inherited="Object"></object>
+		<object name="Window" inherited="Object">
+			<variable name="location" type="Location" />
+			<variable name="history" type="History" />
+			<variable name="document" type="Document" />
+
+			<variable name="parent" type="Window" />
+			<variable name="frames" type="Array" />
+			<variable name="self" type="Window" />
+			<variable name="top" type="Window" />
+		</object>
+		<object name="Location" inherited="Object"></object>
+		<object name="History" inherited="Object"></object>
+		<object name="Document" inherited="Object">
+			<variable name="images" type="Array" />
+			<variable name="forms" type="Array" />
+			<variable name="links" type="Array" />
+			<variable name="anchors" type="Array" />
+		</object>
+
+	</objects>
+</js>

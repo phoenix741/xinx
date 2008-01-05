@@ -24,9 +24,21 @@
 #include "jshighlighter.h"
 #include "csshighlighter.h"
 
+#include "xmlprettyprinter.h"
+
+#include "xsllistview.h"
+#include "javascriptparser.h"
+
+#include "editorcompletion.h"
+#include "xmlcompleter.h"
+#include "jscompleter.h"
+
 // Qt header
 #include <QStringList>
 #include <QHash>
+#include <QDir>
+#include <QApplication>
+#include <QTextEdit>
 
 /* Constantes */
 
@@ -46,35 +58,60 @@ static const QColor DEFAULT_STRING			= Qt::red;
 
 /* BasePlugin */
 
-QStringList BasePlugin::plugins() {
+BasePlugin::BasePlugin() {
 	baseplugin_js::init();
-	return QStringList() << "XML" << "JS" << "CSS";
+	baseplugin_css::init();
+	
+	xmlCompletionContents = new CompletionXML();
+	try {
+		xmlCompletionContents->setPath( QDir( QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" )  ).filePath( "baseplugin_xml.xml" ) );
+	} catch( NotCompletionFileException ) {
+	}
 }
 
-QHash<QString,QString> BasePlugin::descriptionOfPlugins() {
-	QHash<QString,QString> descriptions;
-	descriptions[ "XML" ] = tr( "Process XML files (like HTML, XSL, ...)" );
-	descriptions[ "JS" ]  = tr( "Process JavaScript files" );
-	descriptions[ "CSS" ] = tr( "Process Cascading Style Sheet files" );
-	return descriptions;
+QStringList BasePlugin::extentions() {
+	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css"; 
 }
 
-QHash<QString,QString> BasePlugin::filters() {
+QHash<QString,QString> BasePlugin::extentionsDescription() {
 	QHash<QString,QString> extentions;
 	extentions[ "xsl" ]   = tr( "All XSL Stylesheet" );
 	extentions[ "fws" ]   = tr( "All Webservices input stream" );
 	extentions[ "xml" ]   = tr( "All XML File" );
 	extentions[ "html" ]  = tr( "All HTML File" );
 	extentions[ "htm" ]   = tr( "All HTML File" );
+	extentions[ "xhtml" ] = tr( "All HTML File" );
 	extentions[ "js" ]    = tr( "All JavaScript" );
 	extentions[ "css" ]   = tr( "All Cascading Style Sheet" );
 	return extentions;
 }
 
+QIcon BasePlugin::icon( const QString & extention ) {
+	if( extention == "xml" ) {
+		return QIcon( ":/images/typexml.png" );
+	} else if( extention == "xsl" ) {
+		return QIcon( ":/images/typexsl.png" );
+	} else if( extention == "js" ) {
+		return QIcon( ":/images/typejs.png" );
+	} else
+		return QIcon( ":/images/typeunknown.png" );
+}
+
+QStringList BasePlugin::highlighters() {
+	return QStringList() << "XML" << "JS" << "CSS";
+}
+
+QHash<QString,QString> BasePlugin::descriptionOfHighlighters() {
+	QHash<QString,QString> descriptions;
+	descriptions[ "XML" ]  = tr( "Process XML like files" );
+	descriptions[ "JS" ]   = tr( "Process JavaScript files" );
+	descriptions[ "CSS" ]  = tr( "Process Cascading Style Sheet files" );
+	return descriptions;
+}
+
 QString BasePlugin::highlighterOfExtention( const QString & extention ) {
 	QHash<QString,QString> extentions;
 	extentions[ "xsl" ]   = "XML";
-	extentions[ "fws" ]   = "XML";
 	extentions[ "xml" ]   = "XML";
 	extentions[ "html" ]  = "XML";
 	extentions[ "htm" ]   = "XML";
@@ -185,5 +222,117 @@ void BasePlugin::highlightBlock( const QString & highlighter, const QHash<QStrin
 	}
 }
 
+
+QStringList BasePlugin::prettyPrinters() {
+	return QStringList() << "XML";
+}
+
+QHash<QString,QString> BasePlugin::descriptionOfPrettyPrinters() {
+	QHash<QString,QString> descriptions;
+	descriptions[ "XML" ]  = tr( "Process XML like files" );
+	return descriptions;
+}
+
+QString BasePlugin::prettyPrinterOfExtention( const QString & extention ) {
+	QHash<QString,QString> extentions;
+	extentions[ "xsl" ]   = "XML";
+	extentions[ "xml" ]   = "XML";
+	extentions[ "xhtml" ] = "XML";
+	return extentions[ extention ];
+}
+
+QString BasePlugin::prettyPrint( const QString & plugin, const QString & text, QString * errorStr, int * line, int * column  ) {
+	if( plugin == "XML" ) {
+		try {
+			if( errorStr ) *errorStr = QString();
+			XMLPrettyPrinter prettyPrinter;
+			prettyPrinter.setText( text );
+			prettyPrinter.process();
+			return prettyPrinter.getResult();
+		} catch( XMLPrettyPrinterException e ) {
+			if( errorStr ) *errorStr = e.m_message;
+			if( line )     *line     = e.m_line;
+			if( column )   *column   = e.m_column;
+			return text;
+		}
+	} else
+		return text;
+}
+
+QStringList BasePlugin::extendedEditors() {
+	return QStringList() << "HTML" << "XSL" << "JS";
+}
+
+QHash<QString,QString> BasePlugin::descriptionOfExtendedEditors() {
+	QHash<QString,QString> descriptions;
+	descriptions[ "HTML" ] = tr( "Process HTML like files" );
+	descriptions[ "XSL" ]  = tr( "Process XSL like files" );
+	descriptions[ "JS" ]   = tr( "Process JavaScript files" );
+	return descriptions;
+}
+
+QString BasePlugin::extendedEditorOfExtention( const QString & extention ) {
+	QHash<QString,QString> extentions;
+	extentions[ "xsl" ]   = "XSL";
+	extentions[ "html" ]  = "HTML";
+	extentions[ "htm" ]   = "HTML";
+	extentions[ "xhtml" ] = "HTML";
+	extentions[ "js" ]    = "JS";
+	return extentions[ extention ];
+}
+
+void BasePlugin::commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment ) {
+	if( ( plugin == "XML" ) && ( plugin == "HTML" ) )
+		XmlCompleter::commentSelectedText( editor, uncomment );
+	else if( plugin == "JS" )
+		JsCompleter::commentSelectedText( editor, uncomment );
+}
+
+FileContentElement * BasePlugin::createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int line ) {
+	if( plugin == "XSL" ) {
+		if( ! parent )
+			return new XSLFileContentParser( editor );
+		else
+			return new XSLFileContentParser( editor, parent, filename, line );
+	} else if( plugin == "JS" ) {
+		if( ! parent )
+			return new JavaScriptParser();
+		else
+			return new JavaScriptParser( parent, filename, line );
+	} else
+		return NULL;
+}
+
+void BasePlugin::createCompleter( const QString & plugin, IXinxExtendedEditor * editor ) {
+	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
+		XmlCompleter * c = new XmlCompleter( editor );
+		editor->setObject( c );
+	} else if( plugin == "JS" ) {
+		JsCompleter * c = new JsCompleter( editor );
+		editor->setObject( c );
+	}
+}
+
+QCompleter * BasePlugin::completer( const QString & plugin, IXinxExtendedEditor * editor ) {
+	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
+		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
+		return c->currentCompleter( editor->qTextEdit()->textCursor() );
+	} else if( plugin == "JS" ) {
+		JsCompleter * c = dynamic_cast<JsCompleter*>( editor->object() );
+		return c->currentCompleter( editor->qTextEdit()->textCursor() );
+	} else
+		return NULL;
+}
+
+bool BasePlugin::keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event ) {
+	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
+		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
+		return c->keyPressEvent( event );
+	} else {
+		JsCompleter * c = dynamic_cast<JsCompleter*>( editor->object() );
+		return c->keyPressEvent( event );
+	}
+	return false;
+}
 
 Q_EXPORT_PLUGIN2(xinx_baseplugin, BasePlugin)

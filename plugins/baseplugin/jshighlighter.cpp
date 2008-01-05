@@ -120,13 +120,16 @@ void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 				}
 			}
 		} else if ( ( c == '\'' ) || ( c == '"' ) ) {
-			if( c == '\'' )
+			int iLength;
+			if( c == '\'' ) {
 				pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
-			else 
+				iLength = string1Expression.matchedLength();
+			} else { 
 				pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
+				iLength = string2Expression.matchedLength();
+			}
 			
 			if( pos == i ) {
-				const int iLength = string1Expression.matchedLength();
 				interface->setFormat( pos, iLength, formats["js_string"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;

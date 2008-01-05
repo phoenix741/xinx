@@ -22,7 +22,6 @@
 #include "globals.h"
 #include "xslproject.h"
 #include "webservices.h"
-#include "editorcompletion.h"
 #include "snipetlist.h"
 #include "xinxpluginsloader.h"
 
@@ -30,13 +29,12 @@
 
 Globals global;
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_completionContents(0), m_pluginsLoader(0) {
+Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_pluginsLoader(0) {
 	
 }
 
 Globals::~Globals() {
 	delete m_pluginsLoader;
-	delete m_completionContents;
 	delete m_snipetList;
 	delete m_project;
 	if( m_webServices ) {

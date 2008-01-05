@@ -25,7 +25,7 @@
 
 /* JavascriptModelCompleter */
 
-JavascriptModelCompleter::JavascriptModelCompleter( JavaScriptParser * parser, QObject *parent ) : QAbstractListModel( parent ) {
+JavascriptModelCompleter::JavascriptModelCompleter( FileContentElement * parser, QObject *parent ) : QAbstractListModel( parent ) {
 	m_functionFiltre = QString();
 	m_parser = parser;
 	refreshList( m_parser );

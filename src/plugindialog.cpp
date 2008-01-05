@@ -69,7 +69,15 @@ void PluginDialogImpl::populateTreeWidget( QObject *plugin, const QString &text 
 	if( plugin ) {
 		IPluginSyntaxHighlighter * iSyntaxHighlighter = qobject_cast<IPluginSyntaxHighlighter*>( plugin );
 		if( iSyntaxHighlighter )
-			addItems( pluginItem, tr("IPluginSyntaxHighlighter"), iSyntaxHighlighter->descriptionOfPlugins().values() );
+			addItems( pluginItem, tr("IPluginSyntaxHighlighter"), iSyntaxHighlighter->descriptionOfHighlighters().values() );
+		
+		IPluginPrettyPrint * iPrettyPrint = qobject_cast<IPluginPrettyPrint*>( plugin );
+		if( iPrettyPrint )
+			addItems( pluginItem, tr("IPluginPrettyPrint"), iPrettyPrint->descriptionOfPrettyPrinters().values() );
+
+		IPluginExtendedEditor * iExtendedEditor = qobject_cast<IPluginExtendedEditor*>( plugin );
+		if( iExtendedEditor )
+			addItems( pluginItem, tr("IPluginExtendedEditor"), iExtendedEditor->descriptionOfExtendedEditors().values() );
 	}
 }
 

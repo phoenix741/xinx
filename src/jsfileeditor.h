@@ -23,8 +23,6 @@
 
 #include "fileeditor.h"
 
-class PrivateJSFileEditor;
-
 /*!
  * Editor for file of type JavaScript. This editor use the JSEditor text editor
  * to edit files.
@@ -41,12 +39,6 @@ public:
 	 * Destroy the javascript file editor.
 	 */
 	virtual ~JSFileEditor();
-	
-	virtual QString getSuffix() const;
-	virtual QIcon icon();
-private:
-	PrivateJSFileEditor * d;
-	friend class PrivateJSFileEditor;
 };
 
 #endif // __JSFILEEDITOR_H__

@@ -22,6 +22,7 @@
 #include "projectdirectorydockwidget.h"
 #include "private/p_projectdirectorydockwidget.h"
 #include "globals.h"
+#include "xinxpluginsloader.h"
 #include "flattreeview.h"
 #include "dirrcsmodel.h"
 #include "exceptions.h"
@@ -72,7 +73,7 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 	
 	QString filtre = m_projectDirWidget->m_filtreLineEdit->text();
 	if( filtre.isEmpty() ) {
-		m_dirModel->setNameFilters( DEFAULT_PROJECT_FILTRE );
+		m_dirModel->setNameFilters( global.m_pluginsLoader->defaultProjectFilter() );
 		if( m_projectDirWidget->m_flatListBtn->isChecked() )
 			m_projectDirWidget->m_flatListBtn->click();
 	} else {
@@ -293,7 +294,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 	d->m_project = project;
 	
 	if( project ) {
-		d->m_dirModel = new DirRCSModel( DEFAULT_PROJECT_FILTRE, DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
+		d->m_dirModel = new DirRCSModel( global.m_pluginsLoader->defaultProjectFilter(), DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
 		d->m_iconProvider = new IconProjectProvider();
 		d->m_dirModel->setIconProvider( d->m_iconProvider );
 

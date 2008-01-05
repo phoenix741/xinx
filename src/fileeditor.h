@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,13 @@
 #ifndef __FILEEDITOR_H__
 #define __FILEEDITOR_H__
 
+// Xinx headeur
 #include "editor.h"
+#include "filecontentitemmodel.h"
+#include "plugininterfaces.h"
+
+// Qt header
+#include <QTimer>
 
 class NumberBar;
 class TextEditor;
@@ -29,8 +35,10 @@ class QTextEdit;
 class QHBoxLayout;
 class QVBoxLayout;
 class QLabel;
+class QAction;
+class FileWatcher;
+class SyntaxHighlighter;
 
-class PrivateFileEditor;
 
 /*!
  * Class used to represent a file editor. A file editor have a TextEditor class (subclassing of QTextEdit) and a NumberBar,
@@ -42,27 +50,15 @@ class PrivateFileEditor;
  *
  * FileEditor has also two methode for load and save file.
  */
-class FileEditor : public Editor {
+class FileEditor : public Editor, public IXinxExtendedEditor {
 	Q_OBJECT
 public:
-	/*!
-	 * Different file completer that ca be used with the file editor. This completer is used to help
-	 * user to write files. Completer can be plugged on the QTextEditor.
-	 */
-	enum enumFileType {
-		NoFileType,   ///< No completer is used.
-		XMLFileType,  ///< Completer used for complete XML file type
-		HTMLFileType, ///< Completer used for complete HTML file type
-		XSLFileType,  ///< Completer used for complete XSL file type
-		JSFileType    ///< Completer used for complete JS file type
-	};
-
 	/*!
 	 * Construct a FileEditor with the help of a TextEditor and a parent.
 	 * \param textEditor TextEditor to use to print file to screen
 	 * \param parent Parent of the editor.
 	 */
-	FileEditor( QWidget *parent = 0 );
+	FileEditor( QWidget *parent = 0, const QString & suffix = "txt" );
 	/*!
 	 * Destructor of the FileEditor.
 	 */
@@ -78,7 +74,8 @@ public:
 	 * Return the default suffix to use with the editor. (e.g. : txt, xsl, ...)
 	 * \return The default suffix to use
 	 */
-	virtual QString getSuffix() const;
+	virtual QString getSuffix() const;	
+	virtual QIcon icon() const;
 	/*! 
 	 * Return the title of the FileEditor. The title is \e noname if \e getFileName() is Empty
 	 * else return the File name (without the path).
@@ -108,8 +105,8 @@ public:
  	 * Return the text editor corresponding on the file editor. This editor can't be null.
  	 * \return The text editor widget used by the file editor.
  	 */
-	TextEditor * textEdit() const;
- 
+	virtual TextEditor * textEdit() const;
+
 	/*!
 	 * Return the action used to comment text in the editor. This action call the \e commentSelectedText() with 
 	 * no parameters.
@@ -124,18 +121,6 @@ public:
 	 * \sa uncommentSelectedText()  
 	 */
 	QAction * uncommentAction();
-	
-	/*!
-	 * Set the file type. There is different kind of file type (XML, JS). A file type contains comment/uncomment,
-	 * completer, models, ...
-	 * \param type The new type to use.
-	 */
-	virtual void setFileType( enumFileType type );
-	/*!
-	 * Return the current file type.
-	 * \return the file type.
-	 */
-	virtual enumFileType fileType();
 	
 	/*!
 	 * List of bookmarks of the editor
@@ -313,9 +298,45 @@ protected:
 	TextEditor * m_view;
 	QLabel * m_messageErreur;
 	QWidget * m_messageBox;
+	
+private slots:
+	void fileChanged ();
+
+	void comment();
+	void uncomment();
+
+	void keyPressEvent( QKeyEvent * e );
 private:
-	PrivateFileEditor * d;
-	friend class PrivateFileEditor;
+	virtual FileContentElement * importModelData( FileContentElement * parent, QString & filename, int line );
+	virtual FileContentElement * modelData() const; 
+
+	virtual int level() const;
+	virtual QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false );
+	
+	virtual QTextEdit * qTextEdit() const;
+	virtual QObject * object() const;
+	virtual void setObject( QObject * object );
+
+	bool hasWatcher(); 
+	void setWatcher( const QString & path );
+
+	void clearSuffix();
+	void setSuffix( const QString & suffix );
+	
+	SyntaxHighlighter * m_syntaxhighlighter;
+	
+	QAction * m_commentAction, * m_uncommentAction;
+	FileWatcher * m_watcher;
+	QString m_path, m_suffix, m_prettyPrinterPluginStr, m_extendedEditorPluginStr;
+	IPluginPrettyPrint * m_prettyPrinterPlugin;
+	IPluginExtendedEditor * m_extendedEditorPlugin;
+	QTimer * m_keyTimer;
+	
+	bool m_isSaving;
+	
+	QObject * m_object;
+	FileContentElement * m_element;
+	FileContentItemModel * m_model;
 };
 
 #endif // __FILEEDITOR_H__

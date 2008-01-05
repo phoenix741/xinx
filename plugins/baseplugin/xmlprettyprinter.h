@@ -17,39 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef __FILETYPEXML_H__
-#define __FILETYPEXML_H__
+
+#ifndef XMLPRETTYPRINTER_H_
+#define XMLPRETTYPRINTER_H_
 
 // Xinx header
-#include "filetypeinterface.h"
+#include <exceptions.h>
 
 // Qt header
-#include <QTextCursor>
+#include <QString>
+#include <QDomDocument>
 
-class FileTypeXml : public FileTypeInterface {
+class XMLPrettyPrinterException {
 public:
-	FileTypeXml( TextEditor * parent );
-	virtual ~FileTypeXml();
-	
-	void commentSelectedText( bool uncomment );
-
-	virtual void updateModel();
-	virtual QAbstractItemModel * model();
-	virtual void complete();
-protected:
-	enum cursorPosition {
-		cpEditComment, // <!-- XXXXX  -->
-		cpEditNodeName, // <XXXXX>
-		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
-		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
-		cpNone
-	};
-	
-	cursorPosition editPosition( const QTextCursor & cursor );
-	QString m_nodeName;
-	QString m_paramName;
-
+	XMLPrettyPrinterException( const QString & message, int line, int column ) : m_message( message ), m_line( line ), m_column( column ) {}
+	QString m_message;
+	int m_line, m_column;
 };
 
-#endif // __FILETYPEXML_H__
+class XMLPrettyPrinter {
+public:
+	XMLPrettyPrinter();
+	virtual ~XMLPrettyPrinter();
+	
+	void setText( const QString & text );
+	void process();
+	const QString & getResult();
+private:
+	static void constructXML( int level, QString & result, const QDomNode & n );
+	static void constructXMLText( QString & result, const QDomNode & n );
+	static void constructXMLComment( int level, QString & result, const QDomNode & n );
+	static QString constructAttributes( QDomNode node );
+
+	QDomDocument m_document;
+	QString m_result;
+};
+
+#endif /*XMLPRETTYPRINTER_H_*/

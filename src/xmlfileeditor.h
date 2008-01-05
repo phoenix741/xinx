@@ -23,21 +23,11 @@
 
 #include "fileeditor.h"
 
-class PrivateXMLFileEditor;
-
 class XMLFileEditor : public FileEditor {
 	Q_OBJECT
 public:
-	XMLFileEditor( QWidget *parent = 0 );
+	XMLFileEditor( QWidget *parent = 0, const QString & suffix = "xml" );
 	virtual ~XMLFileEditor();
-	
-	virtual QString getSuffix() const;
-	virtual void autoIndent();
-
-	virtual QIcon icon();
-private:
-	friend class PrivateXMLFileEditor;
-	PrivateXMLFileEditor * d;
 };
 
 class XSLFileEditor : public XMLFileEditor {
@@ -45,10 +35,6 @@ class XSLFileEditor : public XMLFileEditor {
 public:
 	XSLFileEditor( QWidget *parent = 0 );
 	virtual ~XSLFileEditor();
-	
-	virtual QString getSuffix() const;
-
-	virtual QIcon icon();
 };
 
 #endif // __XMLFILEEDITOR_H__

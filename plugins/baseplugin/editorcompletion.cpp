@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,25 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
+// Xinx header
 #include "editorcompletion.h"
 
+// Qt header
 #include <QDomElement>
 #include <QFile>
 #include <QMessageBox>
 #include <QApplication>
 
-/* Completion */
+/* Variables */
 
-Completion::Completion( const QString & name ) : m_name( name ) {
+CompletionXML * xmlCompletionContents = NULL;
+
+/* CompletionXML */
+
+CompletionXML::CompletionXML( const QString & name ) : m_name( name ) {
 	if( ! m_name.isEmpty() )
 		load();
 }
 
-Completion::~Completion() {
+CompletionXML::~CompletionXML() {
 	qDeleteAll( m_xmlBalises );
 }
 
-void Completion::load() {
+void CompletionXML::load() {
 	QFile file( m_name );
 	QDomDocument objectFile;
   
@@ -67,28 +73,25 @@ void Completion::load() {
 	QDomElement root = objectFile.documentElement();
   
 	// Test if Completion
-	if( root.tagName() != "completion" ) 
+	if( root.tagName() != "xml" ) 
 		throw NotCompletionFileException( QApplication::translate("Completion", "%1 is not auto completion file").arg( m_name ) );
   	
 	// Read the XML part of the completion
-	QDomElement xml = root.firstChildElement( "xml" );
-	if( ! xml.isNull() ) {
-		QDomElement type = xml.firstChildElement( "type" ); // Read the category to use. (html, stylesheet)
-		while( !type.isNull() ) {
-			QString typeName = type.attribute( "name", "other" ); // If no category, use "other"
+	QDomElement type = root.firstChildElement( "type" ); // Read the category to use. (html, stylesheet)
+	while( !type.isNull() ) {
+		QString typeName = type.attribute( "name", "other" ); // If no category, use "other"
+		
+		QDomNodeList balises = type.elementsByTagName( "balise" ); // Search ALL the children balise (balise, and children of balise
+		for( int i = 0; i < balises.count(); i++ ) // For each append to list
+			if( balises.at( i ).isElement() ) 
+				m_xmlBalises.append( new CompletionXMLBalise( typeName, balises.at( i ).toElement() ) );
 			
-			QDomNodeList balises = type.elementsByTagName( "balise" ); // Search ALL the children balise (balise, and children of balise
-			for( int i = 0; i < balises.count(); i++ ) // For each append to list
-				if( balises.at( i ).isElement() ) 
-					m_xmlBalises.append( new CompletionXMLBalise( typeName, balises.at( i ).toElement() ) );
-				
-			
-			type = type.nextSiblingElement( "type" );
-		};
+		
+		type = type.nextSiblingElement( "type" );
 	}
 }
 
-CompletionXMLBalise* Completion::balise( const QString & name ) const {
+CompletionXMLBalise* CompletionXML::balise( const QString & name ) const {
 	foreach( CompletionXMLBalise* b, m_xmlBalises ) { // Search the balise with the name ...
 		if( b->name() == name ) 
 			return b;
@@ -96,11 +99,11 @@ CompletionXMLBalise* Completion::balise( const QString & name ) const {
 	return NULL;
 }
 
-const QList<CompletionXMLBalise*> Completion::xmlBalises() { 
+const QList<CompletionXMLBalise*> CompletionXML::xmlBalises() { 
 	return m_xmlBalises;
 }
 
-void Completion::setPath( const QString & name ) { 
+void CompletionXML::setPath( const QString & name ) { 
 	qDeleteAll( m_xmlBalises );
 	m_xmlBalises.clear();
 	m_name = name; 
@@ -108,7 +111,7 @@ void Completion::setPath( const QString & name ) {
 		load(); 
 }
 
-const QString & Completion::path() const { 
+const QString & CompletionXML::path() const { 
 	return m_name; 
 }
 

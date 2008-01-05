@@ -32,7 +32,6 @@
 #include "texteditor.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
-#include "editorcompletion.h"
 #include "projectpropertyimpl.h"
 #include "webservices.h"
 #include "serviceresultdialogimpl.h"
@@ -655,11 +654,6 @@ void PrivateMainformImpl::customize() {
 		global.m_config->save();
 		global.emitConfigChanged();	
 
-		try {
-			global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );
-		} catch( NotCompletionFileException ) {
-			QMessageBox::warning( m_parent, tr("Load completion"), tr("Can't load completion file.") );
-		}
 		try {
 			global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
 		} catch( SnipetListException ) {

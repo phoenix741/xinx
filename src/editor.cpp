@@ -146,7 +146,7 @@ QAction * Editor::pasteAction() {
 	return d->m_pasteAction;
 }
 
-QIcon Editor::icon() {
+QIcon Editor::icon() const {
 	return QIcon( ":/images/typeunknown.png" );
 }
 

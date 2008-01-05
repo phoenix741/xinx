@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,48 +18,65 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_FILETYPEXSL_H__
-#define __P_FILETYPEXSL_H__
+#ifndef XMLCOMPLETER_H_
+#define XMLCOMPLETER_H_
 
 // Xinx header
-#include "../filetypexsl.h"
-#include "../xsllistview.h"
-#include "../filecontentitemmodel.h"
-#include "../xslmodelcompleter.h"
+#include "iextendededitor.h"
 
 // Qt header
-#include <QObject>
-#include <QCompleter>
-#include <QKeyEvent>
+#include <QTextCursor>
+#include <QString>
+#include <QTextCursor>
+#include <QModelIndex>
 
-class PrivateFileTypeXsl : public QObject {
+class QCompleter;
+class QKeyEvent;
+class XSLValueCompletionModel;
+class XSLParamCompletionModel;
+class XSLBaliseCompletionModel;
+
+class XmlCompleter : public QObject {
 	Q_OBJECT
 public:
-	PrivateFileTypeXsl( FileTypeXsl * parent );
-	~PrivateFileTypeXsl();
+	XmlCompleter( IXinxExtendedEditor * editor );
+	~XmlCompleter();
+	
+	static void commentSelectedText( IXinxExtendedEditor * editor, bool uncomment );
+
+	bool keyPressEvent( QKeyEvent *e );
+	QCompleter * currentCompleter( const QTextCursor & cursor );
+private slots:
+	void insertCompletion( const QModelIndex& index );
+private:
+	enum cursorPosition {
+		cpEditComment, // <!-- XXXXX  -->
+		cpEditNodeName, // <XXXXX>
+		cpEditParamName, // <..... XXXXX=".." XXXX=.. XXXX/>
+		cpEditParamValue, // <..... ....=XXXXX ....="XXXXX XXXXX=XXXX"
+		cpNone
+	};
+	
+	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & nodeName, QString & paramName );
+	cursorPosition editPosition( const QTextCursor & cursor );
+
 	
 	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
 	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
 	int insertCompletionBalises( QTextCursor & tc, QString node );
 	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type );
 	
-	QCompleter * currentCompleter(const QTextCursor & cursor);
-
 	QCompleter * m_completerNode;
 	QString m_completerParamNodeName, m_completerValueParamName;
 	QCompleter * m_completerParam;
 	QCompleter * m_completerValue;
-	
-	XSLFileContentParser * m_modelData;
-	FileContentItemModel * m_contentModel;
+
 	XSLValueCompletionModel * m_completionValueModel;
 	XSLParamCompletionModel * m_completionParamModel;
 	XSLBaliseCompletionModel * m_completionBaliseModel;
-public slots:
-	void keyPressEvent( QKeyEvent *event );
-	void insertCompletion( const QModelIndex& index );
-private:
-	FileTypeXsl * m_parent;
+
+	QString m_nodeName, m_paramName;
+	IXinxExtendedEditor * m_editor;
 };
 
-#endif // __P_FILETYPEXSL_H__
+#endif /*XMLCOMPLETER_H_*/

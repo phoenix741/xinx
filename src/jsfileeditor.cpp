@@ -24,44 +24,14 @@
 #include <QApplication>
 #include <QMessageBox>
 
-/* PrivateJSFileEditor */
-
-class PrivateJSFileEditor {
-public:
-	PrivateJSFileEditor( JSFileEditor * parent );
-	virtual ~PrivateJSFileEditor();
-	
-private:
-	JSFileEditor * m_parent;
-};
-
-PrivateJSFileEditor::PrivateJSFileEditor( JSFileEditor * parent ) {
-	m_parent = parent;
-}
-
-PrivateJSFileEditor::~PrivateJSFileEditor() {
-}
-
 /* JSFileEditor */
 
 Q_DECLARE_METATYPE( JSFileEditor );
 
-JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent ) {
-	d = new PrivateJSFileEditor( this );
-	setFileType( FileEditor::JSFileType );
+JSFileEditor::JSFileEditor( QWidget *parent ) : FileEditor( parent, "js" ) {
 }
 
 JSFileEditor::~JSFileEditor() {
-	delete d;
+
 }
 
-QString JSFileEditor::getSuffix() const {
-	if( getFileName().isEmpty() ) 
-		return "js";
-	else
-		return FileEditor::getSuffix();
-}
-
-QIcon JSFileEditor::icon() {
-	return QIcon( ":/images/typejs.png" );
-}

@@ -127,9 +127,8 @@ void PrivateWebServicesEditor::restore( const QString & paramStr ) {
 
 /* WebServicesEditor */
 
-WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( parent ) {
+WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( parent, "fws" ) {
 	d = new PrivateWebServicesEditor( this );
-	setFileType( FileEditor::XMLFileType );
 	
 	d->m_oldParamValue = QString();
 	

@@ -20,21 +20,6 @@
 
 #include "filecontentitemmodel.h"
 
-/* FileContentException */
-
-FileContentException::FileContentException( QString message, int line, int column ) 
-	: XinxException( QString("Error : %1 at line %2:%3").arg( message ).arg( line ).arg( column ) ), m_line( line ), m_column( column ) {
-	
-}
-
-int FileContentException::getLine() const {
-	return m_line;
-}
-
-int FileContentException::getColumn() const {
-	return m_column;
-}
-
 /* PrivateFileContentModel */
 
 class PrivateFileContentModel {
@@ -136,6 +121,22 @@ QModelIndex FileContentItemModel::parent( const QModelIndex &index ) const {
 		return QModelIndex();
 	
 	return createIndex( parent->row(), 0, parent );
+}
+
+bool FileContentItemModel::hasChildren( const QModelIndex & parent ) const {
+	XINX_TRACE( "FileContentItemModel::hasChildren", "( parent )" );
+	
+	FileContentElement * element;
+	if( parent.isValid() ) 
+		element = static_cast<FileContentElement*>( parent.internalPointer() );
+	else 
+		element = d->m_root;
+	FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
+	
+	if( parser && (!parser->isLoaded()) )
+		return true;
+	else
+		return QAbstractItemModel::hasChildren( parent );
 }
 
 int FileContentItemModel::rowCount( const QModelIndex &parent ) const {

@@ -22,10 +22,19 @@
 #include "filecontentstructure.h"
 #include "exceptions.h"
 
-/* FileContentParser */
+/* FileContentException */
 
-FileContentParser::~FileContentParser() {
-	XINX_TRACE( "~FileContentParser", "()" );
+FileContentException::FileContentException( QString message, int line, int column ) 
+	: XinxException( QString("Error : %1 at line %2:%3").arg( message ).arg( line ).arg( column ) ), m_line( line ), m_column( column ) {
+	
+}
+
+int FileContentException::getLine() const {
+	return m_line;
+}
+
+int FileContentException::getColumn() const {
+	return m_column;
 }
 
 /* PrivateFileContentElement */
@@ -35,7 +44,7 @@ public:
 	PrivateFileContentElement( FileContentElement * parent );
 	~PrivateFileContentElement();
 	
-	bool m_flagDelete, m_flagEmit;
+	bool m_flagDelete;
 	
 	int m_line;
 	QString m_name, m_filename;
@@ -54,7 +63,6 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 	m_name   = QString();
 	m_parentElement = NULL;
 	m_flagDelete = false;
-	m_flagEmit = true;
 }
 
 PrivateFileContentElement::~PrivateFileContentElement() {
@@ -74,28 +82,20 @@ FileContentElement::FileContentElement( FileContentElement * parent, const QStri
 	d->m_parentElement = parent;
 	if( parent ) { 
 		d->m_filename = parent->d->m_filename;
-		setFlagEmit( true );
+		connect( this, SIGNAL(aboutToRemove(FileContentElement*)), d->m_parentElement, SIGNAL(aboutToRemove(FileContentElement*)) );
+		connect( this, SIGNAL(aboutToAdd(FileContentElement*,int)), d->m_parentElement, SIGNAL(aboutToAdd(FileContentElement*,int)) );
+		connect( this, SIGNAL(removed()), d->m_parentElement, SIGNAL(removed()) );
+		connect( this, SIGNAL(added()), d->m_parentElement, SIGNAL(added()) );
 	}
+
 }
 
 FileContentElement::~FileContentElement() {
 	XINX_TRACE( "~FileContentElement", "()" );
 	
-	delete d;
-}
+	this->disconnect( d->m_parentElement );
 
-void FileContentElement::setFlagEmit( bool value ) {
-	XINX_TRACE( "FileContentElement::setFlagEmit", QString( "( %1 )" ).arg( value ) );
-	
-	d->m_flagEmit = value;
-	if( value && d->m_parentElement ) {
-		connect( this, SIGNAL(aboutToRemove(FileContentElement*)), d->m_parentElement, SIGNAL(aboutToRemove(FileContentElement*)) );
-		connect( this, SIGNAL(aboutToAdd(FileContentElement*,int)), d->m_parentElement, SIGNAL(aboutToAdd(FileContentElement*,int)) );
-		connect( this, SIGNAL(removed()), d->m_parentElement, SIGNAL(removed()) );
-		connect( this, SIGNAL(added()), d->m_parentElement, SIGNAL(added()) );
-	} else if( d->m_parentElement ) {
-		this->disconnect( d->m_parentElement );
-	}
+	delete d;
 }
 
 bool FileContentElement::equals( FileContentElement * element ) {

@@ -10,8 +10,9 @@ add_definitions(${QT_DEFINITIONS})
 include_directories(./ ../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
 set(xinx_SRCS
+	plugindialog.cpp
+	xinxpluginsloader.cpp
 	specifiquedlgimpl.cpp
-	filecontentstructure.cpp
 	aboutdialogimpl.cpp
 	appsettings.cpp
 	commitmessagedialogimpl.cpp
@@ -23,21 +24,13 @@ set(xinx_SRCS
 	directoryedit.cpp
 	dirrcsmodel.cpp
 	editor.cpp
-	editorcompletion.cpp
-	exceptions.cpp
 	filecontentdockwidget.cpp
 	filecontentitemmodel.cpp
 	fileeditor.cpp
-	filetypeinterface.cpp
-	filetypejs.cpp
-	filetypexml.cpp
-	filetypexsl.cpp
 	filewatcher.cpp
 	flattreeview.cpp
 	globals.cpp
 	iconprojectprovider.cpp
-	javascriptmodelcompleter.cpp
-	javascriptparser.cpp
 	jsfileeditor.cpp
 	kcolorcombo.cpp
 	main.cpp
@@ -69,20 +62,15 @@ set(xinx_SRCS
 	xmlfileeditor.cpp
 	xmlpresentationdockwidget.cpp
 	xmlpresentationitem.cpp
-	xsllistview.cpp
-	xslmodelcompleter.cpp
 	xslproject.cpp
 	xinxthread.cpp
 	studioadaptor.cpp
 	studiointerface.cpp
-	xinxpluginsloader.cpp
-	plugindialog.cpp
 )
 
 SET(xinx_MOC_HDRS
 	plugindialog.h
 	specifiquedlgimpl.h
-	filecontentstructure.h
 	xinxthread.h
 	aboutdialogimpl.h
 	commitmessagedialogimpl.h
@@ -96,12 +84,9 @@ SET(xinx_MOC_HDRS
 	filecontentdockwidget.h
 	filecontentitemmodel.h
 	fileeditor.h
-	filetypeinterface.h
 	filewatcher.h
 	flattreeview.h
 	globals.h
-	javascriptmodelcompleter.h
-	javascriptparser.h
 	jsfileeditor.h
 	kcolorcombo.h
 	mainformimpl.h
@@ -109,10 +94,6 @@ SET(xinx_MOC_HDRS
 	objectview.h
 	private/p_connectionwebservicesdialogimpl.h
 	private/p_filecontentdockwidget.h
-	private/p_fileeditor.h
-	private/p_filetypeinterface.h
-	private/p_filetypejs.h
-	private/p_filetypexsl.h
 	private/p_filewatcher.h
 	private/p_mainformimpl.h
 	private/p_projectdirectorydockwidget.h
@@ -147,8 +128,6 @@ SET(xinx_MOC_HDRS
 	xmlfileeditor.h
 	xmlpresentationdockwidget.h
 	xmlpresentationitem.h
-	xsllistview.h
-	xslmodelcompleter.h
 	xslproject.h
 	studioadaptor.h
 	studiointerface.h
@@ -188,8 +167,8 @@ if(WIN32)
 endif(WIN32)
 
 add_executable(xinx WIN32 ${xinx_SRCS} ${xinx_MOC_SRCS} ${xinx_UIS_H} ${xinx_QRC_H} ${xinx_RESS})
-target_link_libraries(xinx ${QT_LIBRARIES})
+link_directories(bin)
+target_link_libraries(xinx ${QT_LIBRARIES} xinxplugins)
 
 install(TARGETS xinx DESTINATION bin)
-install(FILES ../xml/completion.xnx DESTINATION xml)
 install(FILES ../xml/template.xnx DESTINATION xml)

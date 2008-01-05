@@ -20,7 +20,6 @@
 
 // xinx header
 #include "fileeditor.h"
-#include "private/p_fileeditor.h"
 #include "globals.h"
 #include "syntaxhighlighter.h"
 #include "xslproject.h"
@@ -29,6 +28,7 @@
 #include "numberbar.h"
 #include "filecontentitemmodel.h"
 #include "xinxpluginsloader.h"
+#include "filewatcher.h"
 
 // Qt header
 #include <QTextEdit>
@@ -48,83 +48,31 @@
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QMenu>
+#include <QCompleter>
+#include <QAbstractItemView>
 
-/* PrivateFileEditor */
+/* Define */
 
-PrivateFileEditor::PrivateFileEditor( FileEditor * parent ) : m_syntaxhighlighter( NULL ), m_interface( NULL ), 
-	m_fileType( FileEditor::NoFileType ), m_watcher( NULL ), m_isSaving( false ), m_parent( parent ) {
-		
-	m_commentAction = new QAction( tr("Comment"), m_parent );
-	m_commentAction->setEnabled( false );
-	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
-	connect( m_parent, SIGNAL(copyAvailable(bool)), m_commentAction, SLOT(setEnabled(bool)) );
-	
-	m_uncommentAction = new QAction( tr("Uncomment"), m_parent );
-	m_uncommentAction->setEnabled( false );
-	connect( m_uncommentAction, SIGNAL(triggered()), this, SLOT(uncomment()) );
-	connect( m_parent, SIGNAL(copyAvailable(bool)), m_uncommentAction, SLOT(setEnabled(bool)) );
-}
-
-PrivateFileEditor::~PrivateFileEditor() {
-	delete m_watcher;
-	delete m_interface;
-	delete m_syntaxhighlighter;
-}
-
-void PrivateFileEditor::setWatcher( const QString & path ) {
-	if( m_path != path ) {
-		delete m_watcher;
-		m_path = path;
-		m_watcher = new FileWatcher( path );
-		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
-	}
-}
-
-void PrivateFileEditor::activateWatcher() {
-	if( ! m_watcher ) {
-		m_watcher = new FileWatcher( m_path );
-		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
-	} else
-		m_watcher->activate();
-}
-
-void PrivateFileEditor::desactivateWatcher() {
-	if( m_watcher )
-		m_watcher->desactivate();
-}
-
-void PrivateFileEditor::fileChanged() {
-	if( m_isSaving ) return;
-	if( ! global.m_config->config().editor.popupWhenFileModified ) return ;
-
-	m_watcher->desactivate();
-	if( QFile( m_path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( m_path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
-		m_parent->loadFile();
-	else
-		m_parent->setModified( true );
-		
-	if( ! QFile( m_path ).exists() ) {
-		QMessageBox::warning( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was removed.").arg( QFileInfo( m_path ).fileName() ) );
-		m_parent->setModified( true );		
-	}
-	m_watcher->activate();
-}
-
-void PrivateFileEditor::comment() {
-	m_parent->commentSelectedText();
-}
-
-void PrivateFileEditor::uncomment() {
-	m_parent->commentSelectedText( true );
-}
+#define EOW			"~!@$#%^&*()+{}|\"<>?,/;'[]\\="
 
 /* FileEditor */
 
 Q_DECLARE_METATYPE( FileEditor );
 
-FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
-	d = new PrivateFileEditor( this );
+FileEditor::FileEditor( QWidget *parent, const QString & suffix ) : Editor( parent ), m_syntaxhighlighter( NULL ), m_watcher( NULL ), 
+	m_prettyPrinterPluginStr( QString() ), m_extendedEditorPluginStr( QString() ),	m_prettyPrinterPlugin( NULL ), 
+	m_extendedEditorPlugin( NULL ), m_isSaving( false ), m_object( NULL ), m_element( NULL ), m_model( NULL ) {
+
+	m_commentAction = new QAction( tr("Comment"), this );
+	m_commentAction->setEnabled( false );
+	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
+	connect( this, SIGNAL(copyAvailable(bool)), m_commentAction, SLOT(setEnabled(bool)) );
 	
+	m_uncommentAction = new QAction( tr("Uncomment"), this );
+	m_uncommentAction->setEnabled( false );
+	connect( m_uncommentAction, SIGNAL(triggered()), this, SLOT(uncomment()) );
+	connect( this, SIGNAL(copyAvailable(bool)), m_uncommentAction, SLOT(setEnabled(bool)) );
+
 	// Set filter event layout.
 	m_view = new TextEditor( this );
 	m_view->setFrameStyle( QFrame::NoFrame );
@@ -153,7 +101,6 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
 
 	connect( btnClose, SIGNAL(clicked()), m_messageBox, SLOT(hide()) );
 
-
  	m_vbox = new QVBoxLayout( this );
 	m_vbox->setSpacing( 0 );
 	m_vbox->setMargin( 0 );
@@ -168,12 +115,25 @@ FileEditor::FileEditor( QWidget *parent ) : Editor( parent ) {
     connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
     
     connect( m_view, SIGNAL( cursorPositionChanged() ), this, SLOT( refreshTextHighlighter() ));
-  
+	connect( m_view, SIGNAL( execKeyPressEvent(QKeyEvent*) ), this, SLOT(keyPressEvent(QKeyEvent*)) );
+
 	m_messageBox->hide();
+	
+	setSuffix( suffix );
+
+	m_keyTimer = new QTimer();
+	m_keyTimer->setSingleShot( true );
+	m_keyTimer->setInterval( 1000 );
+	connect( m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()) );
 }
 
 FileEditor::~FileEditor() {
-	delete d;
+	clearSuffix();
+	delete m_object;
+	delete m_model; 
+	delete m_element; 
+	delete m_watcher;
+	delete m_syntaxhighlighter;
 }
 
 void FileEditor::setMessage( QString message ) {
@@ -252,7 +212,11 @@ void FileEditor::clearAllBookmark() {
 }
 
 TextEditor * FileEditor::textEdit() const { 
-	return static_cast<TextEditor*>( m_view );
+	return m_view;
+}
+
+QTextEdit * FileEditor::qTextEdit() const {
+	return m_view;
 }
 
 void FileEditor::selectAll() {
@@ -374,17 +338,115 @@ void FileEditor::indent( bool unindent ) {
 }
 
 void FileEditor::autoIndent() {
-	setMessage( tr("Can't indent this type of document") );
+	if( ! m_prettyPrinterPlugin ) {
+		QString message; // For error
+		int line, column;
+		int position = textEdit()->textCursor().position();
+		QString result = m_prettyPrinterPlugin->prettyPrint( m_prettyPrinterPluginStr, textEdit()->toPlainText(), &message, &line, &column );
+		
+		if( message.isEmpty() ) {
+			textEdit()->selectAll();
+			QTextCursor cursor = textEdit()->textCursor();
+			cursor.beginEditBlock();
+			cursor.removeSelectedText();
+			cursor.insertText( result );
+			cursor.endEditBlock();
+
+			cursor = textEdit()->textCursor();
+			cursor.setPosition( position );
+			textEdit()->setTextCursor( cursor );
+		} else {
+			setMessage( tr("Parse error line %1 column %2 : %3").arg( line ).arg( column ).arg( message ) );
+		}
+	} else {
+		setMessage( tr("Can't indent this type of document") );
+	}
 }
 
 void FileEditor::commentSelectedText( bool uncomment ) {
-	if( d->m_interface )
-		d->m_interface->commentSelectedText( uncomment );
+	if( m_extendedEditorPlugin ) {
+		m_extendedEditorPlugin->commentSelectedText( m_extendedEditorPluginStr, this, uncomment );
+	} else
+		setMessage( tr("Can't comment this type of document") );
 }
 
 void FileEditor::complete() {
-	if( d->m_interface )
-		d->m_interface->complete();
+	if( m_extendedEditorPlugin ) {	
+		QTextCursor cursor = textEdit()->textCursor();
+		
+		QRect cr = textEdit()->cursorRect();
+		QString completionPrefix = textEdit()->textUnderCursor(cursor);
+	
+		QCompleter * c = m_extendedEditorPlugin->completer( m_extendedEditorPluginStr, this );
+	
+		if( c ) {
+			if( completionPrefix != c->completionPrefix() ) {
+			    c->setCompletionPrefix( completionPrefix );
+				c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
+			}
+			cr.setWidth( c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width() );
+			c->complete( cr );
+		}
+	}
+}
+
+void FileEditor::keyPressEvent( QKeyEvent * e ) {
+	if(!e->text().isEmpty()) {
+		m_keyTimer->start();
+	}
+	
+	if( ( !m_extendedEditorPlugin ) || ( global.m_config->config().editor.completionLevel == 0 ) ) {
+		textEdit()->keyPressExecute( e );
+		return;
+	}
+		
+	QCompleter * c = m_extendedEditorPlugin->completer( m_extendedEditorPluginStr, this );
+	
+	if (c && c->popup()->isVisible()) {
+		// The following keys are forwarded by the completer to the widget
+		switch (e->key()) {
+		case Qt::Key_Enter:
+        case Qt::Key_Return:
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+        case Qt::Key_Backtab:
+			e->ignore();
+			textEdit()->keyPressSkip( e );
+			return; // let the completer do default behavior
+		default:
+            break;
+        }
+     }
+
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+	if( !c || !isShortcut )
+		textEdit()->keyPressExecute( e );
+	else
+		textEdit()->keyPressSkip( e );
+				
+	m_extendedEditorPlugin->keyPress( m_extendedEditorPluginStr, this, e );
+	
+	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+	if (!c || (ctrlOrShift && e->text().isEmpty()))
+		return;
+
+	static QString eow( EOW ); // end of word
+	bool hasModifier = (e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ));// && !ctrlOrShift;
+	QString completionPrefix = textEdit()->textUnderCursor( textEdit()->textCursor() );
+
+	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains(e->text().right(1)))) {
+		c->popup()->hide();
+		return;
+	}
+
+	if (completionPrefix != c->completionPrefix()) {
+		c->setCompletionPrefix(completionPrefix);
+		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+	}
+
+	QRect cr = textEdit()->cursorRect();
+	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+	c->complete(cr); // popup it up!
 }
 
 bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
@@ -395,8 +457,8 @@ bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 		QContextMenuEvent * contextMenuEvent = static_cast<QContextMenuEvent*>( event );
 		QMenu * menu = new QMenu( m_view );
 
-		menu->addAction( d->m_commentAction );
-		menu->addAction( d->m_uncommentAction );
+		menu->addAction( m_commentAction );
+		menu->addAction( m_uncommentAction );
 		menu->addSeparator();
 		menu->addAction( undoAction() );
 		menu->addAction( redoAction() );
@@ -429,21 +491,74 @@ const QString & FileEditor::getFileName() const {
 
 QString FileEditor::getSuffix() const { 
 	if( m_fileName.isEmpty() )
-		return "txt";
+		return m_suffix;
 	else
 		return QFileInfo( m_fileName ).suffix();
 }
 
+QIcon FileEditor::icon() const {
+	QIcon icon = global.m_pluginsLoader->iconOfSuffix( getSuffix() );
+	if( ! icon.isNull() )
+		return icon;
+	else
+		return Editor::icon();
+}
+
+void FileEditor::clearSuffix() {
+	delete m_syntaxhighlighter; m_syntaxhighlighter = NULL;
+	m_prettyPrinterPlugin  = NULL; m_prettyPrinterPluginStr  = QString();
+	m_extendedEditorPlugin = NULL; m_extendedEditorPluginStr = QString();
+	delete m_object; m_object = NULL;
+	delete m_model; m_model = NULL;
+	delete m_element; m_element = NULL;
+}
+
+void FileEditor::setSuffix( const QString & suffix ) {
+	if( ( suffix != m_suffix ) && !suffix.isEmpty() ) {
+		m_syntaxhighlighter = new SyntaxHighlighter( m_view->document(), global.m_pluginsLoader->highlighterOfSuffix( suffix ) );
+
+		foreach( IPluginPrettyPrint * p, global.m_pluginsLoader->prettyPlugins() ) {
+			QString plugin = p->prettyPrinterOfExtention( suffix );
+			if( ! plugin.isEmpty() ) {
+				m_prettyPrinterPluginStr = plugin;
+				m_prettyPrinterPlugin    = p;
+			} 
+		}
+		
+		foreach( IPluginExtendedEditor * p, global.m_pluginsLoader->extendedEditorPlugins() ) {
+			QString plugin = p->extendedEditorOfExtention( suffix );
+			if( ! plugin.isEmpty() ) {
+				m_extendedEditorPluginStr = plugin;
+				m_extendedEditorPlugin    = p;
+				
+				m_element = m_extendedEditorPlugin->createModelData( plugin, this );
+				m_model = new FileContentItemModel( m_element, this );
+				m_extendedEditorPlugin->createCompleter( m_extendedEditorPluginStr, this );
+
+				Q_ASSERT( dynamic_cast<FileContentParser*>( m_element ) );
+				dynamic_cast<FileContentParser*>( m_element )->loadFromContent( textEdit()->toPlainText() );
+			} 
+		}
+
+		m_suffix = suffix;
+	} else if( suffix.isEmpty() ) {
+		clearSuffix();
+	}
+}
 
 void FileEditor::setFileName( const QString & fileName ) {
-	if( ! fileName.isEmpty() ) {
-		delete d->m_syntaxhighlighter;
-		m_fileName = fileName;
-		d->m_syntaxhighlighter = new SyntaxHighlighter( 
-				m_view->document(), 
-				global.m_pluginsLoader->highlighterOfSuffix( QFileInfo( m_fileName ).suffix() ) );
-		d->setWatcher( m_fileName );
+	QString suffix = QFileInfo( fileName ).suffix();
+	
+	if( ( suffix != m_suffix ) && !suffix.isEmpty() ) {
+		clearSuffix();
 	}
+	
+	if( ! fileName.isEmpty() ) {
+		m_fileName = fileName;
+		setWatcher( m_fileName );
+	}
+	
+	setSuffix( suffix );
 }
 
 void FileEditor::createBackup( const QString & filename ) {
@@ -455,23 +570,61 @@ void FileEditor::createBackup( const QString & filename ) {
 }
 
 void FileEditor::desactivateWatcher() {
-	d->desactivateWatcher();
+	if( m_watcher )
+		m_watcher->desactivate();
 }
 
 void FileEditor::activateWatcher() {
-	d->activateWatcher();
+	if( ! m_watcher ) {
+		m_watcher = new FileWatcher( m_path );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
+	} else
+		m_watcher->activate();
+}
+
+void FileEditor::setWatcher( const QString & path ) {
+	if( m_path != path ) {
+		delete m_watcher;
+		m_path = path;
+		m_watcher = new FileWatcher( path );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
+	}
+}
+
+void FileEditor::fileChanged() {
+	if( m_isSaving ) return;
+	if( ! global.m_config->config().editor.popupWhenFileModified ) return ;
+
+	m_watcher->desactivate();
+	if( QFile( m_path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( m_path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
+		loadFile();
+	else
+		setModified( true );
+		
+	if( ! QFile( m_path ).exists() ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was removed.").arg( QFileInfo( m_path ).fileName() ) );
+		setModified( true );		
+	}
+	m_watcher->activate();
+}
+
+void FileEditor::comment() {
+	commentSelectedText();
+}
+
+void FileEditor::uncomment() {
+	commentSelectedText( true );
 }
 
 void FileEditor::setIsSaving( bool value ) {
-	d->m_isSaving = value;
+	m_isSaving = value;
 	if( value ) {
-		d->desactivateWatcher();
+		desactivateWatcher();
 	} else {
-		d->activateWatcher();
+		activateWatcher();
 	}
 	qApp->processEvents();
 }
-
 
 void FileEditor::loadFile( const QString & fileName ){
 	if( ! fileName.isEmpty() ) setFileName( fileName );
@@ -505,7 +658,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot write file %1:\n%2." )
 																.arg( fileName )
 																.arg( file.errorString() ) );
-		d->activateWatcher();
+		activateWatcher();
 		return false;
 	}
 	QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -519,7 +672,6 @@ bool FileEditor::saveFile( const QString & fileName ){
 
 	updateModel();
 
-
 	setModified( false );
 	emit modificationChanged( false );
 
@@ -532,9 +684,8 @@ bool FileEditor::saveFile( const QString & fileName ){
 void FileEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,         QVariant( m_fileName ) );
-	if( d->m_syntaxhighlighter )
-		setSerializedData( stream, (int)FileEditor::SERIALIZED_HIGHLIGHTER_TYPE, QVariant( d->m_syntaxhighlighter->highlighter() ) );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILE_TYPE,        QVariant( (int)d->m_fileType ) );
+	if( m_syntaxhighlighter )
+		setSerializedData( stream, (int)FileEditor::SERIALIZED_HIGHLIGHTER_TYPE, QVariant( m_syntaxhighlighter->highlighter() ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         QVariant( m_view->textCursor().position() ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         QVariant( isModified() ) );
 	if( content && m_view->document()->isModified() ) {
@@ -550,7 +701,7 @@ void FileEditor::deserialize( QDataStream & stream ) {
 	int type;
 	QVariant variant;
 	
-	int position = 0, fileType;
+	int position = 0;
 	bool isModified = false;
 	QString text;
 	
@@ -564,12 +715,8 @@ void FileEditor::deserialize( QDataStream & stream ) {
 			m_fileName = variant.toString();
 			break;
 		case FileEditor::SERIALIZED_HIGHLIGHTER_TYPE:
-			if( d->m_syntaxhighlighter )
-				d->m_syntaxhighlighter->setHighlighter( variant.toString() );
-			break;
-		case FileEditor::SERIALIZED_FILE_TYPE:
-			fileType = variant.toInt();
-			setFileType( (FileEditor::enumFileType)fileType );
+			if( m_syntaxhighlighter )
+				m_syntaxhighlighter->setHighlighter( variant.toString() );
 			break;
 		case FileEditor::SERIALIZED_POSITION:
 			position = variant.toInt();
@@ -592,7 +739,7 @@ void FileEditor::deserialize( QDataStream & stream ) {
 		m_view->setPlainText( text );
 		setModified( isModified );
 
-		d->setWatcher( m_fileName );
+		setWatcher( m_fileName );
 		updateModel();
 	} else {
 		if( ! m_fileName.isEmpty() )
@@ -605,21 +752,78 @@ void FileEditor::deserialize( QDataStream & stream ) {
 }
 
 QAbstractItemModel * FileEditor::model() {
-	if( d->m_interface )
-		return d->m_interface->model();
-	else 
-		return NULL;
+	return m_model;
 }
 
 void FileEditor::updateModel() {
+	FileContentParser * parser = dynamic_cast<FileContentParser*>( m_element );
+	if( ! parser ) return;
 	try {
-		if( d->m_interface )
-			d->m_interface->updateModel();
+		parser->loadFromContent( textEdit()->toPlainText() ); 
 		setMessage("");
 	} catch( FileContentException e ) {
 		setMessage( tr("%1 at %2").arg( e.getMessage() ).arg( e.getLine() ) );
 	}
 }
+
+FileContentElement * FileEditor::importModelData( FileContentElement * parent, QString & filename, int line ) {
+	QString suffix = QFileInfo( filename ).suffix();
+	QString absPath = QString();
+	bool finded = false;
+	QStringList searchList;
+	
+	if( ! parent->filename().isEmpty() )
+		searchList << QFileInfo( parent->filename() ).absolutePath();
+	
+	if( global.m_project )
+		searchList += global.m_project->processedSearchPathList();
+	
+	foreach( QString path, searchList ) {
+		absPath = QDir( path ).absoluteFilePath( filename );
+		if( QFile::exists( absPath ) ) {
+			finded = true;
+			break;
+		}
+	}
+
+	if( finded )
+		filename = absPath;
+	
+	foreach( IPluginExtendedEditor * p, global.m_pluginsLoader->extendedEditorPlugins() ) {
+		QString plugin = p->extendedEditorOfExtention( suffix );
+		if( ! plugin.isEmpty() ) {
+			FileContentElement * element = m_extendedEditorPlugin->createModelData( plugin, this, parent, filename, line );
+			Q_ASSERT( dynamic_cast<FileContentParser*>( element ) );
+			if( !finded ) filename = QString();
+			return element;
+		} 
+	}
+	FileContentElement * element = new FileContentElement( parent, filename, line );
+	if( !finded ) filename = QString();
+
+	return element;
+}
+
+FileContentElement * FileEditor::modelData() const {
+	return m_element;
+}
+
+int FileEditor::level() const {
+	return global.m_config->config().editor.completionLevel;
+}
+
+QString FileEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord ) {
+	return textEdit()->textUnderCursor( cursor, deleteWord, true );
+}
+
+QObject * FileEditor::object() const {
+	return m_object;
+}
+
+void FileEditor::setObject( QObject * object ) {
+	m_object = object;
+}
+
 
 bool FileEditor::canCopy() {
 	return ! textEdit()->textCursor().selection().isEmpty();
@@ -671,56 +875,26 @@ void FileEditor::paste() {
 }
 
 QAction * FileEditor::commentAction() {
-	return d->m_commentAction;
+	return m_commentAction;
 }
 
 QAction * FileEditor::uncommentAction() {
-	return d->m_uncommentAction;
+	return m_uncommentAction;
 }
 
 void FileEditor::updateHighlighter() {
-	if( d->m_syntaxhighlighter ) 
-		d->m_syntaxhighlighter->rehighlight();
+	if( m_syntaxhighlighter ) 
+		m_syntaxhighlighter->rehighlight();
 }
 
 void FileEditor::refreshTextHighlighter() {
-	if( d->m_syntaxhighlighter && global.m_config->config().editor.autoHighlight ) 
-		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
+	if( m_syntaxhighlighter && global.m_config->config().editor.autoHighlight ) 
+		m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 
 void FileEditor::callTextHighlighter() {
-	if( d->m_syntaxhighlighter ) 
-		d->m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
-}
-
-void FileEditor::setFileType( FileEditor::enumFileType type ) {
-	if( d->m_fileType == type ) return;
-	
-	d->m_fileType = type;
-	delete d->m_interface;
-	
-	switch( type ) {
-	case FileEditor::XMLFileType:
-		d->m_interface = new FileTypeXml( m_view );
-		break;
-	case FileEditor::XSLFileType:
-		d->m_interface = new FileTypeXsl( m_view );
-		break;
-	case FileEditor::JSFileType:
-		d->m_interface = new FileTypeJs( m_view );
-		break;
-	default:
-		d->m_interface = NULL;
-	}
-	
-	if( d->m_interface ) {
-		connect( d->m_interface, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelUpdated(QAbstractItemModel*)) );
-		connect( d->m_interface, SIGNAL(canUpdateModel()), this, SLOT(updateModel()) );
-	}
-}
-
-FileEditor::enumFileType FileEditor::fileType() {
-	return d->m_fileType;
+	if( m_syntaxhighlighter ) 
+		m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 
 void FileEditor::gotoLine( int line ) {

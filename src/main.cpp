@@ -24,7 +24,6 @@
 #include "xinxconfig.h"
 #include "globals.h"
 #include "objectview.h"
-#include "editorcompletion.h"
 #include "snipetlist.h"
 #include "exceptions.h"
 #include "xinxpluginsloader.h"
@@ -40,11 +39,12 @@
 #include <QDir>
 #include <QThread>
 
-Q_IMPORT_PLUGIN(xinx_baseplugin)
-
 // C++ header
 #include <csignal>
 #include <iostream>
+
+// Import plugins
+//Q_IMPORT_PLUGIN(xinx_baseplugin)
 
 MainformImpl * mainWin = NULL;
 
@@ -103,15 +103,8 @@ int main(int argc, char *argv[]) {
 	
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
-			global.m_completionContents = new Completion();
 			global.m_snipetList = new SnipetList();
-			try {
-				global.m_completionContents->setPath( QDir( global.m_config->config().descriptions.completion ).filePath( "completion.xnx" ) );
-			} catch( NotCompletionFileException ) {
-				splash.showMessage( QApplication::translate("SplashScreen", "Can't load completion file.") );
-				app.processEvents();
-			}
-			
+	
 			try {
 				global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -62,35 +62,124 @@ QIcon JavaScriptFunction::icon() const {
 	return QIcon( ":/images/noeud.png" );
 }
 
-/* PrivateJavaScriptParser */
+/* JavaScriptParser */
 
-class PrivateJavaScriptParser {
-public:
-	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION, TOKEN_EOF };
-
-	PrivateJavaScriptParser( JavaScriptParser * parent );
-	virtual ~PrivateJavaScriptParser();
-	
-	int m_line;
-		
-	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
-	QList<JavaScriptVariables*> loadVariables( QIODevice * device );
-	JavaScriptFunction * loadFunction( QIODevice * device, QList<JavaScriptParams*> * params );
-	void loadInstruction( QIODevice * buffer, JavaScriptFunction * function, QString & name, PrivateJavaScriptParser::JAVASCRIPT_TOKEN & type );
-private:
-	JavaScriptParser * m_parent;
-};
-
-PrivateJavaScriptParser::PrivateJavaScriptParser( JavaScriptParser * parent ) {
-	m_parent = parent;
+JavaScriptParser::JavaScriptParser() : FileContentElement( NULL, QString(), -1 ), m_isLoaded( true ) {
 	m_line = 1;
 }
 
-PrivateJavaScriptParser::~PrivateJavaScriptParser() {
-
+JavaScriptParser::JavaScriptParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ), m_isLoaded( true ) {
+	m_line = 1;
 }
 
-void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName ) {
+JavaScriptParser::~JavaScriptParser() {
+}
+
+QIcon JavaScriptParser::icon() const {
+	return QIcon( ":/images/typejs.png" );
+}
+
+void JavaScriptParser::loadFromFileDelayed( const QString & filename ) {
+	XINX_TRACE( "JavaScriptParser::loadFromFileDelayed", QString( "( %1 )" ).arg( filename ) );
+
+	setFilename( filename );
+	setName( QFileInfo( filename ).fileName() );
+	
+	m_isLoaded = false;
+}
+
+bool JavaScriptParser::isLoaded() {
+	return m_isLoaded;
+}
+
+void JavaScriptParser::loadFromContent( const QString & content ) {
+	m_isLoaded = true;
+
+	markAllDeleted();
+	
+	m_line = 1;
+	
+	enum JAVASCRIPT_TOKEN type;
+	QString name;
+
+	QByteArray array = content.toAscii();
+	QBuffer buffer ( &array );
+	buffer.open( QIODevice::ReadWrite | QIODevice::Text );	
+	buffer.seek( 0 );
+	
+	JavaScriptFunction * function = NULL;
+	int bloc = 0;
+	
+	do {
+		nextIdentifier( &buffer, type, name );
+		switch( type ) {
+		case TOKEN_IDENTIFIER:
+			if( name == "var" ) { // variable
+				if( bloc == 0 )
+					foreach( JavaScriptVariables * variable, loadVariables( &buffer ) )
+						append( variable );
+				else 
+					foreach( JavaScriptVariables * variable, loadVariables( &buffer ) )
+						function->append( variable );
+			} else
+			if( name == "function" ) {
+				QList<JavaScriptParams*> params;
+				JavaScriptFunction * newFunction = loadFunction( &buffer, &params );
+				function = static_cast<JavaScriptFunction*>( append( newFunction ) );
+				function->markAllDeleted();
+				foreach( JavaScriptParams * param, params ) {
+					function->append( param );
+				}
+			} else
+			do {
+				nextIdentifier( &buffer, type, name );
+				if( type == TOKEN_EOF ) 
+					throw JavaScriptParserException( QObject::tr("End of file is prematured"), m_line );
+			} while( ( type != TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) && ( name != "}" ) ) );
+			
+			if( ( type == TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
+			if( ( type == TOKEN_PONCTUATION ) && ( name == "}" ) ) {
+				if( ( bloc == 1 ) && function )
+					function->removeMarkedDeleted();
+				bloc --;
+			}
+			break;
+		case TOKEN_PONCTUATION:
+			if( name == "{" ) 
+				bloc++;
+			if( name == "}" ) {
+				if( ( bloc == 1 ) && function )
+					function->removeMarkedDeleted();
+				bloc--;
+			}
+			if( bloc < 0 ) 
+				throw JavaScriptParserException( QObject::tr("Too many '}'"), m_line );
+		case TOKEN_EOF:
+			break;
+		default:
+			throw JavaScriptParserException( QObject::tr("I wait something but i don't know what !"), m_line );
+		}
+	} while( ! buffer.atEnd() );
+	
+	removeMarkedDeleted();
+}
+	
+void JavaScriptParser::loadFromFile( const QString & filename ) {
+	QFile file( filename );
+
+	setFilename( filename );
+	setName( QFileInfo( filename ).fileName() );
+
+	// Open the file
+	if (!file.open(QFile::ReadOnly | QFile::Text)) 
+		throw JavaScriptParserException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
+
+	QTextStream text( &file );
+	QString content = text.readAll();
+	loadFromContent( content );
+}
+
+void JavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName ) {
 	char ch, c;
 	QString st;
 	enum { STATE_START, STATE_IDENTIFIER, STATE_STRING1, STATE_STRING2, STATE_NUMBER, STATE_STARTCOMMENT, STATE_COMMENT1, STATE_COMMENT2, STATE_EOCOMMENT1, STATE_END } state;
@@ -221,7 +310,7 @@ void PrivateJavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIP
 	} while( state != STATE_END );
 }
 
-void PrivateJavaScriptParser::loadInstruction( QIODevice * buffer, JavaScriptFunction * function, QString & name, PrivateJavaScriptParser::JAVASCRIPT_TOKEN & type ) {
+void JavaScriptParser::loadInstruction( QIODevice * buffer, JavaScriptFunction * function, QString & name, JAVASCRIPT_TOKEN & type ) {
 	Q_UNUSED( function );
 	// Compter les parantheses. Aller jusqu'au point virgule.
 	// Si Identifier suivis de paranthese alors appel (1er = identifier).
@@ -241,16 +330,16 @@ void PrivateJavaScriptParser::loadInstruction( QIODevice * buffer, JavaScriptFun
 }
 
 
-QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * buffer ) {
+QList<JavaScriptVariables*> JavaScriptParser::loadVariables( QIODevice * buffer ) {
 	QList<JavaScriptVariables*> variables;
-	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
+	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
 		throw JavaScriptParserException( QObject::tr("I wait an identifier"), m_line );
 
-	variables << new JavaScriptVariables( this->m_parent, name, m_line );
+	variables << new JavaScriptVariables( this, name, m_line );
 	bool cont = true, loadIdentifier = true;
 	do {
 		if( loadIdentifier )
@@ -264,7 +353,7 @@ QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * 
 			nextIdentifier( buffer, type, name );
 			if( type != TOKEN_IDENTIFIER )
 				throw JavaScriptParserException( QObject::tr("I wait an identifier."), m_line );
-			variables << new JavaScriptVariables( this->m_parent, name, m_line );
+			variables << new JavaScriptVariables( this, name, m_line );
 		} else if ( ( type == TOKEN_PONCTUATION ) && ( name == "=" ) ) {
 			loadInstruction( buffer, NULL, name, type );
 			loadIdentifier = false;
@@ -273,15 +362,15 @@ QList<JavaScriptVariables*> PrivateJavaScriptParser::loadVariables( QIODevice * 
 	return variables;
 }
 
-JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer, QList<JavaScriptParams*> * params ) {
-	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
+JavaScriptFunction * JavaScriptParser::loadFunction( QIODevice * buffer, QList<JavaScriptParams*> * params ) {
+	enum JAVASCRIPT_TOKEN type;
 	QString name;
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
 		throw JavaScriptParserException( QObject::tr("I wait an identifier."), m_line );
 
-	JavaScriptFunction * function = new JavaScriptFunction( this->m_parent, name, m_line );
+	JavaScriptFunction * function = new JavaScriptFunction( this, name, m_line );
 
 	nextIdentifier( buffer, type, name );
 	if( ! ( ( type == TOKEN_PONCTUATION ) && ( name == "(" ) ) ) 
@@ -302,103 +391,8 @@ JavaScriptFunction * PrivateJavaScriptParser::loadFunction( QIODevice * buffer, 
 	return function;	
 }
 
-
-/* JavaScriptParser */
-
-JavaScriptParser::JavaScriptParser() : FileContentElement( NULL, QString(), -1 ) {
-	d = new PrivateJavaScriptParser( this );
-}
-
-JavaScriptParser::JavaScriptParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ) {
-	d = new PrivateJavaScriptParser( this );
-}
-
-JavaScriptParser::~JavaScriptParser() {
-	delete d;
-}
-
-QIcon JavaScriptParser::icon() const {
-	return QIcon( ":/images/typejs.png" );
-}
-
-void JavaScriptParser::loadFromContent( const QString & content ) {
-	markAllDeleted();
-	
-	d->m_line = 1;
-	
-	enum PrivateJavaScriptParser::JAVASCRIPT_TOKEN type;
-	QString name;
-
-	QByteArray array = content.toAscii();
-	QBuffer buffer ( &array );
-	buffer.open( QIODevice::ReadWrite | QIODevice::Text );	
-	buffer.seek( 0 );
-	
-	JavaScriptFunction * function = NULL;
-	int bloc = 0;
-	
-	do {
-		d->nextIdentifier( &buffer, type, name );
-		switch( type ) {
-		case PrivateJavaScriptParser::TOKEN_IDENTIFIER:
-			if( name == "var" ) { // variable
-				if( bloc == 0 )
-					foreach( JavaScriptVariables * variable, d->loadVariables( &buffer ) )
-						append( variable );
-				else 
-					foreach( JavaScriptVariables * variable, d->loadVariables( &buffer ) )
-						function->append( variable );
-			} else
-			if( name == "function" ) {
-				QList<JavaScriptParams*> params;
-				JavaScriptFunction * newFunction = d->loadFunction( &buffer, &params );
-				function = static_cast<JavaScriptFunction*>( append( newFunction ) );
-				function->markAllDeleted();
-				foreach( JavaScriptParams * param, params ) {
-					function->append( param );
-				}
-			} else
-			do {
-				d->nextIdentifier( &buffer, type, name );
-				if( type == PrivateJavaScriptParser::TOKEN_EOF ) 
-					throw JavaScriptParserException( QObject::tr("End of file is prematured"), d->m_line );
-			} while( ( type != PrivateJavaScriptParser::TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) && ( name != "}" ) ) );
-			
-			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
-			if( ( type == PrivateJavaScriptParser::TOKEN_PONCTUATION ) && ( name == "}" ) ) {
-				if( ( bloc == 1 ) && function )
-					function->removeMarkedDeleted();
-				bloc --;
-			}
-			break;
-		case PrivateJavaScriptParser::TOKEN_PONCTUATION:
-			if( name == "{" ) 
-				bloc++;
-			if( name == "}" ) {
-				if( ( bloc == 1 ) && function )
-					function->removeMarkedDeleted();
-				bloc--;
-			}
-			if( bloc < 0 ) 
-				throw JavaScriptParserException( QObject::tr("Too many '}'"), d->m_line );
-		case PrivateJavaScriptParser::TOKEN_EOF:
-			break;
-		default:
-			throw JavaScriptParserException( QObject::tr("I wait something but i don't know what !"), d->m_line );
-		}
-	} while( ! buffer.atEnd() );
-	
-	removeMarkedDeleted();
-}
-	
-void JavaScriptParser::loadFromFile( const QString & filename ) {
-	QFile file( filename );
-
-	// Open the file
-	if (!file.open(QFile::ReadOnly | QFile::Text)) 
-		throw JavaScriptParserException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
-
-	QTextStream text( &file );
-	QString content = text.readAll();
-	loadFromContent( content );
+int JavaScriptParser::rowCount() {
+	if( ! m_isLoaded )
+		loadFromFile( filename() );
+	return FileContentElement::rowCount();
 }

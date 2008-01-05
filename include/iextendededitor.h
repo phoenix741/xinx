@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,47 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef IEXTENDEDEDITOR_H_
+#define IEXTENDEDEDITOR_H_
+
 // Xinx header
-#include "texteditor.h"
-#include "filetypeinterface.h"
-#include "private/p_filetypeinterface.h"
+#include <filecontentstructure.h>
 
-/* PrivateFileTypeInterface */
+class QTextEdit;
+class QObject;
+class QTextCursor;
 
-PrivateFileTypeInterface::PrivateFileTypeInterface( FileTypeInterface * parent ) : m_textEdit( 0 ), m_parent( parent ) {
-	m_keyTimer.setSingleShot( true );
-	m_keyTimer.setInterval( 1000 );
-	connect( &m_keyTimer, SIGNAL(timeout()), this, SLOT(keyUpdated()) );
-}
-
-PrivateFileTypeInterface::~PrivateFileTypeInterface() {
+class IXinxExtendedEditor {
+public:
+	virtual ~IXinxExtendedEditor() {}; 
 	
-}
+	virtual FileContentElement * importModelData( FileContentElement * parent, QString & filename, int line ) = 0;
+	virtual FileContentElement * modelData() const = 0; 
 
-void PrivateFileTypeInterface::keyUpdated() {
-	emit m_parent->canUpdateModel();
-}
+	virtual int level() const = 0;
+	virtual QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false ) = 0;
+	
+	virtual QTextEdit * qTextEdit() const = 0;
+	virtual QObject * object() const = 0;
+	virtual void setObject( QObject * object ) = 0;
+};
 
-void PrivateFileTypeInterface::keyPressEvent( QKeyEvent *e ) {
-	if(!e->text().isEmpty()) {
-		m_keyTimer.start();
-	}
-}
-
-/* FileTypeInterface */
-
-FileTypeInterface::FileTypeInterface( TextEditor * parent ) {
-	d = new PrivateFileTypeInterface( this );
-	d->m_textEdit = parent;
-
-	connect( parent, SIGNAL(execKeyPressEvent(QKeyEvent*)), d, SLOT(keyPressEvent(QKeyEvent*)) );
-}
-
-FileTypeInterface::~FileTypeInterface() {
-	delete d;
-}
-
-TextEditor * FileTypeInterface::textEdit() {
-	return d->m_textEdit;
-}
-
+#endif /*IEXTENDEDEDITOR_H_*/

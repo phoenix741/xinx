@@ -1,14 +1,30 @@
+set(QT_USE_QTXML TRUE)
+
 include(${QT_USE_FILE})
 
 set(baseplugin_SRCS
-	baseplugin.cpp
-	xmlhighlighter.cpp
-	jshighlighter.cpp
-	csshighlighter.cpp
+    xmlprettyprinter.cpp 
+    baseplugin.cpp 
+    xmlhighlighter.cpp 
+    jshighlighter.cpp 
+    csshighlighter.cpp 
+    xsllistview.cpp 
+    javascriptparser.cpp 
+    editorcompletion.cpp 
+    xmlcompleter.cpp 
+    xslmodelcompleter.cpp 
+    javascriptmodelcompleter.cpp 
+    jscompleter.cpp 
 )
 
 SET(baseplugin_MOC_HDRS
-	baseplugin.h
+    baseplugin.h 
+    xsllistview.h 
+    javascriptparser.h 
+    xmlcompleter.h 
+    xslmodelcompleter.h 
+    javascriptmodelcompleter.h 
+    jscompleter.h 
 )
 
 include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})

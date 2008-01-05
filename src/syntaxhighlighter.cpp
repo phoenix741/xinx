@@ -62,7 +62,7 @@ void SyntaxHighlighter::setHighlighter( const QString & highlighter ) {
 	m_highlighter = highlighter;
 	m_interface   = NULL;
 	foreach( IPluginSyntaxHighlighter * interface, global.m_pluginsLoader->syntaxPlugins() ) 
-		if( interface->plugins().contains( highlighter, Qt::CaseInsensitive ) ) 
+		if( interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) ) 
 			m_interface = interface;
 	rehighlight();
 }

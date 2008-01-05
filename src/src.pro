@@ -23,7 +23,9 @@ CONFIG += debug \
 QT += network \
     xml
     
-LIBS = -L../bin/plugins -lxinx_baseplugin
+LIBS = -L../bin/plugins -L../bin/ -lxinxplugins
+#POST_TARGETDEPS = ../bin/plugins/libxinx_baseplugin.a \
+#	../bin/libxinxplugins.a
 
 DISTFILES = ../CHANGELOG \
     ../COPYING \
@@ -67,9 +69,7 @@ FORMS += ../ui/plugindialog.ui \
     ../ui/xmlpresentationwidget.ui
 HEADERS += plugindialog.h \
     xinxpluginsloader.h \
-    interfaces.h \
     specifiquedlgimpl.h \
-    filecontentstructure.h \
     xinxthread.h \
     aboutdialogimpl.h \
     appsettings.h \
@@ -82,21 +82,13 @@ HEADERS += plugindialog.h \
     directoryedit.h \
     dirrcsmodel.h \
     editor.h \
-    editorcompletion.h \
-    exceptions.h \
     filecontentdockwidget.h \
     filecontentitemmodel.h \
     fileeditor.h \
-    filetypeinterface.h \
-    filetypejs.h \
-    filetypexml.h \
-    filetypexsl.h \
     filewatcher.h \
     flattreeview.h \
     globals.h \
     iconprojectprovider.h \
-    javascriptmodelcompleter.h \
-    javascriptparser.h \
     jsfileeditor.h \
     kcolorcombo.h \
     mainformimpl.h \
@@ -105,10 +97,6 @@ HEADERS += plugindialog.h \
     private/p_configurationfile.h \
     private/p_connectionwebservicesdialogimpl.h \
     private/p_filecontentdockwidget.h \
-    private/p_fileeditor.h \
-    private/p_filetypeinterface.h \
-    private/p_filetypejs.h \
-    private/p_filetypexsl.h \
     private/p_filewatcher.h \
     private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \
@@ -147,13 +135,10 @@ HEADERS += plugindialog.h \
     xmlfileeditor.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
-    xsllistview.h \
-    xslmodelcompleter.h \
     xslproject.h
 SOURCES += plugindialog.cpp \
     xinxpluginsloader.cpp \
     specifiquedlgimpl.cpp \
-    filecontentstructure.cpp \
     aboutdialogimpl.cpp \
     appsettings.cpp \
     commitmessagedialogimpl.cpp \
@@ -165,21 +150,13 @@ SOURCES += plugindialog.cpp \
     directoryedit.cpp \
     dirrcsmodel.cpp \
     editor.cpp \
-    editorcompletion.cpp \
-    exceptions.cpp \
     filecontentdockwidget.cpp \
     filecontentitemmodel.cpp \
     fileeditor.cpp \
-    filetypeinterface.cpp \
-    filetypejs.cpp \
-    filetypexml.cpp \
-    filetypexsl.cpp \
     filewatcher.cpp \
     flattreeview.cpp \
     globals.cpp \
     iconprojectprovider.cpp \
-    javascriptmodelcompleter.cpp \
-    javascriptparser.cpp \
     jsfileeditor.cpp \
     kcolorcombo.cpp \
     main.cpp \
@@ -211,8 +188,6 @@ SOURCES += plugindialog.cpp \
     xmlfileeditor.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
-    xsllistview.cpp \
-    xslmodelcompleter.cpp \
     xslproject.cpp \
     xinxthread.cpp
 TRANSLATIONS += ../translations/xinx_fr.ts

@@ -21,7 +21,6 @@
 // Xinx header
 #include "xslmodelcompleter.h"
 #include "xsllistview.h"
-#include "globals.h"
 #include "editorcompletion.h"
 
 // Qt header
@@ -57,7 +56,7 @@ void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
 
 	for( int i = 0; i < data->rowCount(); i++ ) {
 		FileContentElement * e = data->element( i );
-		if( dynamic_cast<XSLFileContentImport*>( e ) ) {
+		if( dynamic_cast<XSLFileContentParser*>( e ) ) {
 			QString name = e->name();
 			if( ! m_files.contains( name ) ) { 
 				m_files.append( name );
@@ -96,7 +95,7 @@ void XSLValueCompletionModel::addElement( FileContentElement* element, int row )
 	if( ( dynamic_cast<XSLFileContentParams*>( element ) || dynamic_cast<XSLFileContentTemplate*>( element ) ) && ( ! contains( element ) ) ) {
 		addElement( element );
 	}
-	if( dynamic_cast<XSLFileContentImport*>( element ) ) {
+	if( dynamic_cast<XSLFileContentParser*>( element ) ) {
 		refreshRecursive( element );
 	}
 }
@@ -117,11 +116,11 @@ void XSLValueCompletionModel::setBaliseName( const QString & name, const QString
 
 	int before = m_objList.count(), after  = m_objList.count();
 	
-	if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) && global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
-		before += global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
+	if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) )
+		before += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
 		
-	if( global.m_completionContents && global.m_completionContents->balise( name ) && global.m_completionContents->balise( name )->attribute( attribute ) )
-		after += global.m_completionContents->balise( name )->attribute( attribute )->values().count();
+	if( xmlCompletionContents && xmlCompletionContents->balise( name ) && xmlCompletionContents->balise( name )->attribute( attribute ) )
+		after += xmlCompletionContents->balise( name )->attribute( attribute )->values().count();
 		
 	int diff = after - before;
 
@@ -162,11 +161,11 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 		}
 	} else {
 		int value_row = index.row() - m_objList.count(); 
-		if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) && global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
+		if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 			if( role == Qt::DecorationRole ) 
 				return QIcon(":/images/html_value.png");
 			if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-				return global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
+				return xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
 			if( role == Qt::UserRole ) {
 				return -1;
 			}
@@ -190,10 +189,10 @@ int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
 
 	if ( ! parent.isValid() ) {
 		int size = m_objList.count();	
-		if( global.m_completionContents ) {
-			if( global.m_completionContents->balise( m_baliseName ) ) {
-				if( global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName ) )
-					size += global.m_completionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
+		if( xmlCompletionContents ) {
+			if( xmlCompletionContents->balise( m_baliseName ) ) {
+				if( xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) )
+					size += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
 			}
 		}
 		return size;
@@ -220,11 +219,11 @@ QVariant XSLParamCompletionModel::data( const QModelIndex &index, int role ) con
 	if (!index.isValid()) return QVariant();
 
 	int value_row = index.row(); 
-	if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) ) {
+	if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) ) {
 		if( role == Qt::DecorationRole ) 
 			return QIcon(":/images/noeud.png");
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return global.m_completionContents->balise( m_baliseName )->attributes().at( value_row )->name();
+			return xmlCompletionContents->balise( m_baliseName )->attributes().at( value_row )->name();
 	}
 	
 	return QVariant();
@@ -240,8 +239,8 @@ Qt::ItemFlags XSLParamCompletionModel::flags(const QModelIndex &index) const {
 int XSLParamCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() ) {
 		int size = 0;	
-		if( global.m_completionContents && global.m_completionContents->balise( m_baliseName ) ) 
-			size += global.m_completionContents->balise( m_baliseName )->attributes().count();
+		if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) ) 
+			size += xmlCompletionContents->balise( m_baliseName )->attributes().count();
 		return size;
 	} else
 		return 0;
@@ -259,11 +258,11 @@ QVariant XSLBaliseCompletionModel::data( const QModelIndex &index, int role ) co
 	if (!index.isValid()) return QVariant();
 
 	int value_row = index.row(); 
-	if( global.m_completionContents ) {
+	if( xmlCompletionContents ) {
 		if( role == Qt::DecorationRole ) 
 			return QIcon(":/images/balise.png");
 		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return global.m_completionContents->xmlBalises().at( value_row )->name();
+			return xmlCompletionContents->xmlBalises().at( value_row )->name();
 	}
 	
 	return QVariant();
@@ -279,8 +278,8 @@ Qt::ItemFlags XSLBaliseCompletionModel::flags(const QModelIndex &index) const {
 int XSLBaliseCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() ) {
 		int size = 0;	
-		if( global.m_completionContents ) 
-			size += global.m_completionContents->xmlBalises().count();
+		if( xmlCompletionContents ) 
+			size += xmlCompletionContents->xmlBalises().count();
 		return size;
 	} else
 		return 0;

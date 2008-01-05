@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 INCLUDEPATH += src include
-SUBDIRS += plugins src
+SUBDIRS += plugins src 
 
