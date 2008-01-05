@@ -75,14 +75,14 @@ QStringList BasePlugin::extentions() {
 
 QHash<QString,QString> BasePlugin::extentionsDescription() {
 	QHash<QString,QString> extentions;
-	extentions[ "xsl" ]   = tr( "All XSL Stylesheet" );
-	extentions[ "fws" ]   = tr( "All Webservices input stream" );
-	extentions[ "xml" ]   = tr( "All XML File" );
-	extentions[ "html" ]  = tr( "All HTML File" );
-	extentions[ "htm" ]   = tr( "All HTML File" );
-	extentions[ "xhtml" ] = tr( "All HTML File" );
-	extentions[ "js" ]    = tr( "All JavaScript" );
-	extentions[ "css" ]   = tr( "All Cascading Style Sheet" );
+	extentions[ "xsl" ]   = tr( "XSL Stylesheet" );
+	extentions[ "fws" ]   = tr( "Webservices input stream" );
+	extentions[ "xml" ]   = tr( "XML File" );
+	extentions[ "html" ]  = tr( "HTML File" );
+	extentions[ "htm" ]   = tr( "HTML File" );
+	extentions[ "xhtml" ] = tr( "HTML File" );
+	extentions[ "js" ]    = tr( "JavaScript" );
+	extentions[ "css" ]   = tr( "Cascading Style Sheet" );
 	return extentions;
 }
 
@@ -304,8 +304,11 @@ FileContentElement * BasePlugin::createModelData( const QString & plugin, IXinxE
 }
 
 void BasePlugin::createCompleter( const QString & plugin, IXinxExtendedEditor * editor ) {
-	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
+	if( plugin == "XSL" ) {
 		XmlCompleter * c = new XmlCompleter( editor );
+		editor->setObject( c );
+	} else if( plugin == "HTML" ) {
+		XmlCompleter * c = new XmlCompleter( editor, true );
 		editor->setObject( c );
 	} else if( plugin == "JS" ) {
 		JsCompleter * c = new JsCompleter( editor );

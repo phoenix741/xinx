@@ -34,14 +34,15 @@ class IPluginSyntaxHighlighter;
 class SyntaxHighlighter : public QSyntaxHighlighter, protected IXinxSyntaxHighlighter {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( QObject* parent = NULL, const QString & highlighter = QString(), XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextDocument* parent, const QString & highlighter, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextEdit* parent, const QString & highlighter, XINXConfig * config = NULL );
+	SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QObject* parent = NULL, XINXConfig * config = NULL );
+	SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextDocument* parent, XINXConfig * config = NULL );
+	SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextEdit* parent, XINXConfig * config = NULL );
 	virtual ~SyntaxHighlighter();
 	
 	void setHighlightText( const QString & text );
-	void setHighlighter( const QString & highlighter );
-	const QString & highlighter() const;
+
+	void setHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter );
+	const QPair<IPluginSyntaxHighlighter*,QString> & highlighter() const;
 protected:
 	virtual void highlightBlock( const QString& text );
 
@@ -54,9 +55,10 @@ protected:
 
 	void processText( int pos, const QString& text );
 	
-	IPluginSyntaxHighlighter * m_interface;
+	QPair<IPluginSyntaxHighlighter*,QString> m_highlighter;
+	
 	XINXConfig * m_config;
-	QString m_text, m_highlighter;
+	QString m_text;
 };
 
 #endif

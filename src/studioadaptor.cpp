@@ -69,22 +69,16 @@ void XinxAdaptor::newDefaultFile()
     QMetaObject::invokeMethod(parent(), "newDefaultFile");
 }
 
-void XinxAdaptor::newJavascriptFile()
+void XinxAdaptor::newFile(const QString &suffix)
 {
-    // handle method call org.shadoware.xinx.newJavascriptFile
-    QMetaObject::invokeMethod(parent(), "newJavascriptFile");
+    // handle method call org.shadoware.xinx.newFile
+    QMetaObject::invokeMethod(parent(), "newFile", Q_ARG(QString, suffix));
 }
 
 void XinxAdaptor::newProject()
 {
     // handle method call org.shadoware.xinx.newProject
     QMetaObject::invokeMethod(parent(), "newProject");
-}
-
-void XinxAdaptor::newStylesheetFile()
-{
-    // handle method call org.shadoware.xinx.newStylesheetFile
-    QMetaObject::invokeMethod(parent(), "newStylesheetFile");
 }
 
 void XinxAdaptor::newTemplate()
@@ -97,12 +91,6 @@ void XinxAdaptor::newWebservicesFile()
 {
     // handle method call org.shadoware.xinx.newWebservicesFile
     QMetaObject::invokeMethod(parent(), "newWebservicesFile");
-}
-
-void XinxAdaptor::newXmlDataFile()
-{
-    // handle method call org.shadoware.xinx.newXmlDataFile
-    QMetaObject::invokeMethod(parent(), "newXmlDataFile");
 }
 
 void XinxAdaptor::openFile(const QString &filename)

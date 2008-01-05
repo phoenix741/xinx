@@ -327,10 +327,11 @@ private:
 	
 	QAction * m_commentAction, * m_uncommentAction;
 	FileWatcher * m_watcher;
-	QString m_path, m_suffix, m_prettyPrinterPluginStr, m_extendedEditorPluginStr;
-	IPluginPrettyPrint * m_prettyPrinterPlugin;
-	IPluginExtendedEditor * m_extendedEditorPlugin;
+	QString m_path, m_suffix;
+	QPair<IPluginPrettyPrint*,QString> m_prettyPrinterPlugin;
+	QPair<IPluginExtendedEditor*,QString> m_extendedEditorPlugin;
 	QTimer * m_keyTimer;
+
 	
 	bool m_isSaving;
 	

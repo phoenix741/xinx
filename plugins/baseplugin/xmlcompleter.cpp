@@ -36,7 +36,7 @@
 
 /* XmlCompleter */
 
-XmlCompleter::XmlCompleter( IXinxExtendedEditor * editor ) : m_editor( editor ) {
+XmlCompleter::XmlCompleter( IXinxExtendedEditor * editor, bool onlyHtml ) : m_editor( editor ) {
 	m_completerValueParamName = "";
 	m_completerParamNodeName  = "";
 	m_completerValue 		  = 0;
@@ -48,7 +48,7 @@ XmlCompleter::XmlCompleter( IXinxExtendedEditor * editor ) : m_editor( editor ) 
 	m_completerNode->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerNode, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
 
-	m_completionBaliseModel = new XSLBaliseCompletionModel( this );
+	m_completionBaliseModel = new XSLBaliseCompletionModel( this, onlyHtml );
 	m_completerNode->setModel( m_completionBaliseModel );
 
 	m_completerParam = new QCompleter( this );

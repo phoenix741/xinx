@@ -20,6 +20,8 @@
 
 // Xinx header
 #include "private/p_serviceresultdialogimpl.h"
+#include "globals.h"
+#include "xinxpluginsloader.h"
 
 /* PrivateServiceResultDialogImpl */
 
@@ -42,8 +44,8 @@ ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f
 	setupUi(this);	
 	d = new PrivateServiceResultDialogImpl( this );
 	
-	new SyntaxHighlighter( m_inputStreamTextEdit->document(), "XML" );
-	new SyntaxHighlighter( m_outputStreamTextEdit->document(), "XML" );
+	new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( "xml" ), m_inputStreamTextEdit->document() );
+	new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( "xml" ), m_outputStreamTextEdit->document() );
 
 	connect( m_inputComboBox, SIGNAL(activated(QString)), d, SLOT(inputComboChanged(QString)) );
 	connect( m_outputComboBox, SIGNAL(activated(QString)), d, SLOT(outputComboChanged(QString)) );

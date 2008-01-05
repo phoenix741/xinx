@@ -39,7 +39,7 @@ class XSLBaliseCompletionModel;
 class XmlCompleter : public QObject {
 	Q_OBJECT
 public:
-	XmlCompleter( IXinxExtendedEditor * editor );
+	XmlCompleter( IXinxExtendedEditor * editor, bool onlyHtml = false );
 	~XmlCompleter();
 	
 	static void commentSelectedText( IXinxExtendedEditor * editor, bool uncomment );

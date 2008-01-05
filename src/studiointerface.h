@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef STUDIOINTERFACE_H_1191946698
-#define STUDIOINTERFACE_H_1191946698
+#ifndef STUDIOINTERFACE_H_1199554548
+#define STUDIOINTERFACE_H_1199554548
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -72,22 +72,17 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("newDefaultFile"), argumentList);
     }
 
-    inline QDBusReply<void> newJavascriptFile()
+    inline QDBusReply<void> newFile(const QString &suffix)
     {
         QList<QVariant> argumentList;
-        return callWithArgumentList(QDBus::Block, QLatin1String("newJavascriptFile"), argumentList);
+        argumentList << qVariantFromValue(suffix);
+        return callWithArgumentList(QDBus::Block, QLatin1String("newFile"), argumentList);
     }
 
     inline QDBusReply<void> newProject()
     {
         QList<QVariant> argumentList;
         return callWithArgumentList(QDBus::Block, QLatin1String("newProject"), argumentList);
-    }
-
-    inline QDBusReply<void> newStylesheetFile()
-    {
-        QList<QVariant> argumentList;
-        return callWithArgumentList(QDBus::Block, QLatin1String("newStylesheetFile"), argumentList);
     }
 
     inline QDBusReply<void> newTemplate()
@@ -100,12 +95,6 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         return callWithArgumentList(QDBus::Block, QLatin1String("newWebservicesFile"), argumentList);
-    }
-
-    inline QDBusReply<void> newXmlDataFile()
-    {
-        QList<QVariant> argumentList;
-        return callWithArgumentList(QDBus::Block, QLatin1String("newXmlDataFile"), argumentList);
     }
 
     inline QDBusReply<void> openFile(const QString &filename)

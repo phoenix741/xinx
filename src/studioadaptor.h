@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef STUDIOADAPTOR_H_1191946698
-#define STUDIOADAPTOR_H_1191946698
+#ifndef STUDIOADAPTOR_H_1199554548
+#define STUDIOADAPTOR_H_1199554548
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -30,9 +30,9 @@ class XinxAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.shadoware.xinx")
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"org.shadoware.xinx\" >\n"
-"    <method name=\"newStylesheetFile\" />\n"
-"    <method name=\"newXmlDataFile\" />\n"
-"    <method name=\"newJavascriptFile\" />\n"
+"    <method name=\"newFile\" >\n"
+"      <arg direction=\"in\" type=\"s\" name=\"suffix\" />\n"
+"    </method>\n"
 "    <method name=\"newWebservicesFile\" />\n"
 "    <method name=\"newTemplate\" />\n"
 "    <method name=\"newDefaultFile\" />\n"
@@ -67,12 +67,10 @@ public Q_SLOTS: // METHODS
     void closeProjectNoSessionData();
     void closeProjectWithSessionData();
     void newDefaultFile();
-    void newJavascriptFile();
+    void newFile(const QString &suffix);
     void newProject();
-    void newStylesheetFile();
     void newTemplate();
     void newWebservicesFile();
-    void newXmlDataFile();
     void openFile(const QString &filename);
     void openProject(const QString &filename);
     void saveAllFile();

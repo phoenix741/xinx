@@ -20,6 +20,8 @@
 
 // Xinx header
 #include "private/p_snipetdialog.h"
+#include "globals.h"
+#include "xinxpluginsloader.h"
 
 /* PrivateSnipetDialogImpl */
 
@@ -40,10 +42,10 @@ void PrivateSnipetDialogImpl::setupUi() {
 
 	switch( m_snipetType ) {
 	case Snipet::SNIPET_XSL:
-		new SyntaxHighlighter( m_textEdit, "XML" );
+		new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( "xml" ), m_textEdit );
 		break;
 	case Snipet::SNIPET_JAVASCRIPT:
-		new SyntaxHighlighter( m_textEdit, "JS" );
+		new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( "js" ), m_textEdit );
 		break;
 	}
 	

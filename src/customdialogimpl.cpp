@@ -302,13 +302,11 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 	if( format != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
-		foreach( IPluginSyntaxHighlighter * interface, global.m_pluginsLoader->syntaxPlugins() ) {
-			example = interface->exampleOfHighlighter( format );
-			if( ! example.isEmpty() )
-				break;
-		}
+		IPluginSyntaxHighlighter* plugin = global.m_pluginsLoader->highlighterOfPlugin( format );
+		if( plugin )
+			example = plugin->exampleOfHighlighter( format );
 		m_exempleTextEdit->setText( example );
-		d->m_highlighter = new SyntaxHighlighter( m_exempleTextEdit->document(), format, &(d->m_config) );
+		d->m_highlighter = new SyntaxHighlighter( qMakePair( plugin, format ), m_exempleTextEdit, &(d->m_config) );
 	}
 
 	// Bold

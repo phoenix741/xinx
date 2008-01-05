@@ -60,8 +60,8 @@
 Q_DECLARE_METATYPE( FileEditor );
 
 FileEditor::FileEditor( QWidget *parent, const QString & suffix ) : Editor( parent ), m_syntaxhighlighter( NULL ), m_watcher( NULL ), 
-	m_prettyPrinterPluginStr( QString() ), m_extendedEditorPluginStr( QString() ),	m_prettyPrinterPlugin( NULL ), 
-	m_extendedEditorPlugin( NULL ), m_isSaving( false ), m_object( NULL ), m_element( NULL ), m_model( NULL ) {
+	m_prettyPrinterPlugin( qMakePair( (IPluginPrettyPrint*)NULL, QString() ) ), m_extendedEditorPlugin( qMakePair( (IPluginExtendedEditor*)NULL, QString() ) ), m_isSaving( false ), 
+	m_object( NULL ), m_element( NULL ), m_model( NULL ) {
 
 	m_commentAction = new QAction( tr("Comment"), this );
 	m_commentAction->setEnabled( false );
@@ -338,11 +338,11 @@ void FileEditor::indent( bool unindent ) {
 }
 
 void FileEditor::autoIndent() {
-	if( ! m_prettyPrinterPlugin ) {
+	if( ! m_prettyPrinterPlugin.first ) {
 		QString message; // For error
 		int line, column;
 		int position = textEdit()->textCursor().position();
-		QString result = m_prettyPrinterPlugin->prettyPrint( m_prettyPrinterPluginStr, textEdit()->toPlainText(), &message, &line, &column );
+		QString result = m_prettyPrinterPlugin.first->prettyPrint( m_prettyPrinterPlugin.second, textEdit()->toPlainText(), &message, &line, &column );
 		
 		if( message.isEmpty() ) {
 			textEdit()->selectAll();
@@ -364,20 +364,20 @@ void FileEditor::autoIndent() {
 }
 
 void FileEditor::commentSelectedText( bool uncomment ) {
-	if( m_extendedEditorPlugin ) {
-		m_extendedEditorPlugin->commentSelectedText( m_extendedEditorPluginStr, this, uncomment );
+	if( m_extendedEditorPlugin.first ) {
+		m_extendedEditorPlugin.first->commentSelectedText( m_extendedEditorPlugin.second, this, uncomment );
 	} else
 		setMessage( tr("Can't comment this type of document") );
 }
 
 void FileEditor::complete() {
-	if( m_extendedEditorPlugin ) {	
+	if( m_extendedEditorPlugin.first ) {	
 		QTextCursor cursor = textEdit()->textCursor();
 		
 		QRect cr = textEdit()->cursorRect();
 		QString completionPrefix = textEdit()->textUnderCursor(cursor);
 	
-		QCompleter * c = m_extendedEditorPlugin->completer( m_extendedEditorPluginStr, this );
+		QCompleter * c = m_extendedEditorPlugin.first->completer( m_extendedEditorPlugin.second, this );
 	
 		if( c ) {
 			if( completionPrefix != c->completionPrefix() ) {
@@ -395,12 +395,12 @@ void FileEditor::keyPressEvent( QKeyEvent * e ) {
 		m_keyTimer->start();
 	}
 	
-	if( ( !m_extendedEditorPlugin ) || ( global.m_config->config().editor.completionLevel == 0 ) ) {
+	if( ( !m_extendedEditorPlugin.first ) || ( global.m_config->config().editor.completionLevel == 0 ) ) {
 		textEdit()->keyPressExecute( e );
 		return;
 	}
 		
-	QCompleter * c = m_extendedEditorPlugin->completer( m_extendedEditorPluginStr, this );
+	QCompleter * c = m_extendedEditorPlugin.first->completer( m_extendedEditorPlugin.second, this );
 	
 	if (c && c->popup()->isVisible()) {
 		// The following keys are forwarded by the completer to the widget
@@ -424,7 +424,7 @@ void FileEditor::keyPressEvent( QKeyEvent * e ) {
 	else
 		textEdit()->keyPressSkip( e );
 				
-	m_extendedEditorPlugin->keyPress( m_extendedEditorPluginStr, this, e );
+	m_extendedEditorPlugin.first->keyPress( m_extendedEditorPlugin.second, this, e );
 	
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
@@ -506,8 +506,8 @@ QIcon FileEditor::icon() const {
 
 void FileEditor::clearSuffix() {
 	delete m_syntaxhighlighter; m_syntaxhighlighter = NULL;
-	m_prettyPrinterPlugin  = NULL; m_prettyPrinterPluginStr  = QString();
-	m_extendedEditorPlugin = NULL; m_extendedEditorPluginStr = QString();
+	m_prettyPrinterPlugin  = qMakePair( (IPluginPrettyPrint*)NULL, QString() );
+	m_extendedEditorPlugin = qMakePair( (IPluginExtendedEditor*)NULL, QString() );
 	delete m_object; m_object = NULL;
 	delete m_model; m_model = NULL;
 	delete m_element; m_element = NULL;
@@ -515,30 +515,21 @@ void FileEditor::clearSuffix() {
 
 void FileEditor::setSuffix( const QString & suffix ) {
 	if( ( suffix != m_suffix ) && !suffix.isEmpty() ) {
-		m_syntaxhighlighter = new SyntaxHighlighter( m_view->document(), global.m_pluginsLoader->highlighterOfSuffix( suffix ) );
-
-		foreach( IPluginPrettyPrint * p, global.m_pluginsLoader->prettyPlugins() ) {
-			QString plugin = p->prettyPrinterOfExtention( suffix );
-			if( ! plugin.isEmpty() ) {
-				m_prettyPrinterPluginStr = plugin;
-				m_prettyPrinterPlugin    = p;
-			} 
-		}
+		clearSuffix();
 		
-		foreach( IPluginExtendedEditor * p, global.m_pluginsLoader->extendedEditorPlugins() ) {
-			QString plugin = p->extendedEditorOfExtention( suffix );
-			if( ! plugin.isEmpty() ) {
-				m_extendedEditorPluginStr = plugin;
-				m_extendedEditorPlugin    = p;
-				
-				m_element = m_extendedEditorPlugin->createModelData( plugin, this );
+		m_syntaxhighlighter = new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( suffix ), m_view );
+		m_prettyPrinterPlugin = global.m_pluginsLoader->prettyPrinterOfSuffix( suffix );
+		m_extendedEditorPlugin = global.m_pluginsLoader->extendedEditorOfSuffix( suffix );
+		
+		if( m_extendedEditorPlugin.first ) {
+			m_element = m_extendedEditorPlugin.first->createModelData( m_extendedEditorPlugin.second, this );
+			m_extendedEditorPlugin.first->createCompleter( m_extendedEditorPlugin.second, this );
+			if( m_element ) {
 				m_model = new FileContentItemModel( m_element, this );
-				m_extendedEditorPlugin->createCompleter( m_extendedEditorPluginStr, this );
-
 				Q_ASSERT( dynamic_cast<FileContentParser*>( m_element ) );
 				dynamic_cast<FileContentParser*>( m_element )->loadFromContent( textEdit()->toPlainText() );
-			} 
-		}
+			}
+		} 
 
 		m_suffix = suffix;
 	} else if( suffix.isEmpty() ) {
@@ -684,8 +675,6 @@ bool FileEditor::saveFile( const QString & fileName ){
 void FileEditor::serialize( QDataStream & stream, bool content ) {
 	Editor::serialize( stream, content );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,         QVariant( m_fileName ) );
-	if( m_syntaxhighlighter )
-		setSerializedData( stream, (int)FileEditor::SERIALIZED_HIGHLIGHTER_TYPE, QVariant( m_syntaxhighlighter->highlighter() ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         QVariant( m_view->textCursor().position() ) );
 	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         QVariant( isModified() ) );
 	if( content && m_view->document()->isModified() ) {
@@ -713,10 +702,7 @@ void FileEditor::deserialize( QDataStream & stream ) {
 		switch( (enum FileEditor::serializedDatas)type ) {
 		case FileEditor::SERIALIZED_FILENAME:
 			m_fileName = variant.toString();
-			break;
-		case FileEditor::SERIALIZED_HIGHLIGHTER_TYPE:
-			if( m_syntaxhighlighter )
-				m_syntaxhighlighter->setHighlighter( variant.toString() );
+			setSuffix( QFileInfo( m_fileName ).suffix() );
 			break;
 		case FileEditor::SERIALIZED_POSITION:
 			position = variant.toInt();
@@ -789,19 +775,17 @@ FileContentElement * FileEditor::importModelData( FileContentElement * parent, Q
 	if( finded )
 		filename = absPath;
 	
-	foreach( IPluginExtendedEditor * p, global.m_pluginsLoader->extendedEditorPlugins() ) {
-		QString plugin = p->extendedEditorOfExtention( suffix );
-		if( ! plugin.isEmpty() ) {
-			FileContentElement * element = m_extendedEditorPlugin->createModelData( plugin, this, parent, filename, line );
-			Q_ASSERT( dynamic_cast<FileContentParser*>( element ) );
-			if( !finded ) filename = QString();
-			return element;
-		} 
+	QPair<IPluginExtendedEditor*,QString> plugin = global.m_pluginsLoader->extendedEditorOfSuffix( suffix );
+	if( plugin.first ) {
+		FileContentElement * element = plugin.first->createModelData( plugin.second, this, parent, filename, line );
+		Q_ASSERT( dynamic_cast<FileContentParser*>( element ) );
+		if( !finded ) filename = QString();
+		return element;
+	} else {
+		FileContentElement * element = new FileContentElement( parent, filename, line );
+		if( !finded ) filename = QString();
+		return element;
 	}
-	FileContentElement * element = new FileContentElement( parent, filename, line );
-	if( !finded ) filename = QString();
-
-	return element;
 }
 
 FileContentElement * FileEditor::modelData() const {

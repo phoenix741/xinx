@@ -123,6 +123,7 @@ public slots:
 	void updateActions();
 
 	// File
+	void newFile();
 	void openFile();
 	void openFile( const QString & name, int line );
 	void refreshFile();

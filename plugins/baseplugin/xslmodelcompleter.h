@@ -75,12 +75,14 @@ private:
 class XSLBaliseCompletionModel : public QAbstractListModel {
 	Q_OBJECT
 public:
-	XSLBaliseCompletionModel( QObject *parent = 0 );
+	XSLBaliseCompletionModel( QObject *parent = 0, bool onlyHtml = false );
 	virtual ~XSLBaliseCompletionModel();
 	
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+private:
+	bool m_onlyHtml;
 };
 
 #endif // __XSLMODELCOMPLETER_H__

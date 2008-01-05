@@ -53,17 +53,9 @@ public:
 	virtual ~MainformImpl();
 public slots:
 	/*! 
-	 * Create a new xsl stylesheet empty page in the Tab editor.
+	 * Create a new empty page in the Tab editor for a file of extention \e suffix.
 	 */
-	void newStylesheetFile();
-	/*!
-	 * Create a new xml empty page in the Tab editor.
-	 */
-	void newXmlDataFile();
-	/*!
-	 * Create a new Javascript empty page in the Tab editor.
-	 */
-	void newJavascriptFile();
+	void newFile( const QString & suffix );
 	/*!
 	 * Create a new WebServices empty page in the Tab editor.
 	 */

@@ -219,6 +219,11 @@ public:
 	 * \return A list of balise
 	 */
 	const QList<CompletionXMLBalise*> xmlBalises();
+
+	/*! 
+	 * List of all HTML balise only
+	 */
+	const QList<CompletionXMLBalise*> htmlBalises();
 	/*! 
 	 * Return a balise class corresponding on name in parameters.
 	 * \param name Name used to find the balise
@@ -248,6 +253,7 @@ protected:
 	void load();
 private:
 	QList<CompletionXMLBalise*> m_xmlBalises;
+	QList<CompletionXMLBalise*> m_htmlBalises;
 	QString m_name;
 };
 

@@ -25,10 +25,12 @@
 #include <plugininterfaces.h>
 
 // Qt header
-#include <QList>
+#include <QHash>
 #include <QDir>
 #include <QObject>
 #include <QIcon>
+#include <QPair>
+
 
 class XinxPluginsLoader {
 public:
@@ -40,29 +42,45 @@ public:
 	const QDir & pluginsDir() const;
 	const QStringList & pluginFileNames() const;
 	
-	const QList<IPluginSyntaxHighlighter*> & syntaxPlugins() const;
-	const QList<IPluginPrettyPrint*> & prettyPlugins() const;
-	const QList<IPluginExtendedEditor*> & extendedEditorPlugins() const;
-	
+	QIcon iconOfSuffix( const QString & suffix ) const;
+
+	const QHash<QString,QString> & extentions() const;
 	QString filter( const QString & suffix ) const;
 	const QStringList & filters() const;
 	const QStringList & defaultProjectFilter() const;
-	QString highlighterOfSuffix( const QString & suffix ) const;
+
+	QPair<IPluginSyntaxHighlighter*,QString> highlighterOfSuffix( const QString & suffix ) const;
+	QPair<IPluginPrettyPrint*,QString> prettyPrinterOfSuffix( const QString & suffix ) const;
+	QPair<IPluginExtendedEditor*,QString> extendedEditorOfSuffix( const QString & suffix ) const;
+
+	QStringList highlighterOfPlugins() const;
+	QStringList prettyPrinterOfPlugins() const;
+	QStringList extendedEditorOfPlugins() const;
 	
-	QIcon iconOfSuffix( const QString & suffix ) const;
+	IPluginSyntaxHighlighter* highlighterOfPlugin( const QString & suffix ) const;
+	IPluginPrettyPrint* prettyPrinterOfPlugin( const QString & suffix ) const;
+	IPluginExtendedEditor* extendedEditorOfPlugin( const QString & suffix ) const;
 private:
 	void addPlugin( QObject * plugin );
-	
-	QList<IPluginSyntaxHighlighter*> m_syntaxPlugins;
-	QList<IPluginPrettyPrint*> m_prettyPlugins;
-	QList<IPluginExtendedEditor*> m_extendedEditorPlugins;
+	void addPlugin( QString extention, QObject * plugin );
 	
 	QDir m_pluginsDir;
 	QStringList m_pluginFileNames;
 
 	QHash<QString,QIcon> m_icons;
+
 	QHash<QString,int> m_filterIndex;
 	QStringList m_filters, m_defaultProjectFilter;
+	
+	QHash<QString,QString> m_libelles;
+	
+	QHash< QString,QPair<IPluginSyntaxHighlighter*,QString> > m_syntaxPlugins;
+	QHash< QString,QPair<IPluginPrettyPrint*,QString> > m_prettyPlugins;
+	QHash< QString,QPair<IPluginExtendedEditor*,QString> > m_extendedEditorPlugins;
+	
+	QHash< QString,IPluginSyntaxHighlighter* > m_directSyntaxPlugins;
+	QHash< QString,IPluginPrettyPrint* > m_directPrettyPlugins;
+	QHash< QString,IPluginExtendedEditor* > m_directExtendedEditorPlugins;
 };
 
 #endif /*XINXPLUGINSLOADER_H_*/

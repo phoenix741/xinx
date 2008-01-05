@@ -26,28 +26,25 @@
 
 /* SyntaxHighlighter */
 
-SyntaxHighlighter::SyntaxHighlighter( QObject* parent, const QString & highlighter, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_interface( 0 ) {
+SyntaxHighlighter::SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_highlighter( highlighter ) {
 	if( config ) 
 		m_config = config;
 	else
 		m_config = global.m_config;
-	setHighlighter( highlighter );
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, const QString & highlighter, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_interface( 0 ) {
+SyntaxHighlighter::SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextDocument* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_highlighter( highlighter ) {
 	if( config )
 		m_config = config;
 	else
 		m_config = global.m_config;
-	setHighlighter( highlighter );
 }
 
-SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, const QString & highlighter, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_interface( 0 ) {
+SyntaxHighlighter::SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextEdit* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_highlighter( highlighter ) {
 	if( config )
 		m_config = config;
 	else
 		m_config = global.m_config;
-	setHighlighter( highlighter );
 }
 
 SyntaxHighlighter::~SyntaxHighlighter() {
@@ -58,22 +55,18 @@ void SyntaxHighlighter::setHighlightText( const QString & text ) {
 	rehighlight();
 }
 
-void SyntaxHighlighter::setHighlighter( const QString & highlighter ) {
+void SyntaxHighlighter::setHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter ) {
 	m_highlighter = highlighter;
-	m_interface   = NULL;
-	foreach( IPluginSyntaxHighlighter * interface, global.m_pluginsLoader->syntaxPlugins() ) 
-		if( interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) ) 
-			m_interface = interface;
 	rehighlight();
 }
 
-const QString & SyntaxHighlighter::highlighter() const {
+const QPair<IPluginSyntaxHighlighter*,QString> & SyntaxHighlighter::highlighter() const {
 	return m_highlighter;
 }
 
 void SyntaxHighlighter::highlightBlock( const QString& text ) {
-	if( m_interface )
-		m_interface->highlightBlock( m_highlighter, m_config->config().formats, this, text );
+	if( m_highlighter.first )
+		m_highlighter.first->highlightBlock( m_highlighter.second, m_config->config().formats, this, text );
 	else  {
 		processText( 0, text );
 	}

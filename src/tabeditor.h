@@ -40,10 +40,7 @@ public:
 
 	void newFileEditor( Editor * editor );
 
-	Editor * newFileEditorTxt();
-	Editor * newFileEditorXML();
-	Editor * newFileEditorXSL();
-	Editor * newFileEditorJS();
+	Editor * newFileEditorTxt( const QString & suffix );
 	Editor * newFileEditorWS();
 	Editor * loadFileEditor( const QString & fileName );
 

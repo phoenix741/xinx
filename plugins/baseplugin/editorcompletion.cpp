@@ -83,8 +83,12 @@ void CompletionXML::load() {
 		
 		QDomNodeList balises = type.elementsByTagName( "balise" ); // Search ALL the children balise (balise, and children of balise
 		for( int i = 0; i < balises.count(); i++ ) // For each append to list
-			if( balises.at( i ).isElement() ) 
-				m_xmlBalises.append( new CompletionXMLBalise( typeName, balises.at( i ).toElement() ) );
+			if( balises.at( i ).isElement() ) {
+				CompletionXMLBalise * balise = new CompletionXMLBalise( typeName, balises.at( i ).toElement() );
+				m_xmlBalises.append( balise );
+				if( balise->category() == "html" )
+					m_htmlBalises.append( balise );
+			}
 			
 		
 		type = type.nextSiblingElement( "type" );
@@ -103,9 +107,14 @@ const QList<CompletionXMLBalise*> CompletionXML::xmlBalises() {
 	return m_xmlBalises;
 }
 
+const QList<CompletionXMLBalise*> CompletionXML::htmlBalises() {
+	return m_htmlBalises;
+}
+
 void CompletionXML::setPath( const QString & name ) { 
 	qDeleteAll( m_xmlBalises );
 	m_xmlBalises.clear();
+	m_htmlBalises.clear();
 	m_name = name; 
 	if( ! m_name.isEmpty() ) 
 		load(); 

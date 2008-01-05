@@ -21,8 +21,6 @@
 // Xinx header
 #include "tabeditor.h"
 #include "editor.h"
-#include "xmlfileeditor.h"
-#include "jsfileeditor.h"
 #include "texteditor.h"
 #include "fileeditor.h"
 #include "webserviceseditor.h"
@@ -92,15 +90,6 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 	Editor * ed;
 	if( QDir::match( "*.fws", fileName ) ) {
 		ed = new WebServicesEditor( this );
-	} else
-	if( QDir::match( "*.xsl;*.xslt", fileName ) ) {
-		ed = new XSLFileEditor( this );
-	} else
-	if( QDir::match( "*.xml", fileName ) ) {
-		ed = new XMLFileEditor( this );
-	} else
-	if( QDir::match( "*.js", fileName ) ) {
-		ed = new JSFileEditor( this );
 	} else {
 		ed = new FileEditor( this );	
 	}
@@ -108,26 +97,8 @@ Editor * TabEditor::newFileEditor( const QString & fileName ) {
 	return ed;
 }
 
-Editor * TabEditor::newFileEditorTxt() {
-	Editor * editor = new FileEditor( this );
-	newFileEditor( editor );
-	return editor;
-}
-
-Editor * TabEditor::newFileEditorXSL() {
-	Editor * editor = new XSLFileEditor( this );
-	newFileEditor( editor );
-	return editor;
-}
-
-Editor * TabEditor::newFileEditorXML() {
-	Editor * editor = new XMLFileEditor( this );
-	newFileEditor( editor );
-	return editor;
-}
-
-Editor * TabEditor::newFileEditorJS() {
-	Editor * editor = new JSFileEditor( this );
+Editor * TabEditor::newFileEditorTxt( const QString & suffix ) {
+	Editor * editor = new FileEditor( this, suffix );
 	newFileEditor( editor );
 	return editor;
 }

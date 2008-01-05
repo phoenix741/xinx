@@ -31,7 +31,6 @@ set(xinx_SRCS
 	flattreeview.cpp
 	globals.cpp
 	iconprojectprovider.cpp
-	jsfileeditor.cpp
 	kcolorcombo.cpp
 	main.cpp
 	mainformimpl.cpp
@@ -59,7 +58,6 @@ set(xinx_SRCS
 	webserviceseditor.cpp
 	wsdl.cpp
 	xinxconfig.cpp
-	xmlfileeditor.cpp
 	xmlpresentationdockwidget.cpp
 	xmlpresentationitem.cpp
 	xslproject.cpp
@@ -87,7 +85,6 @@ SET(xinx_MOC_HDRS
 	filewatcher.h
 	flattreeview.h
 	globals.h
-	jsfileeditor.h
 	kcolorcombo.h
 	mainformimpl.h
 	numberbar.h
@@ -125,7 +122,6 @@ SET(xinx_MOC_HDRS
 	uniqueapplication.h
 	webservices.h
 	webserviceseditor.h
-	xmlfileeditor.h
 	xmlpresentationdockwidget.h
 	xmlpresentationitem.h
 	xslproject.h

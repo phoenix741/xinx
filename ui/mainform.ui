@@ -613,30 +613,6 @@
     <string>Call WebServices</string>
    </property>
   </action>
-  <action name="m_newStylesheetFileAct" >
-   <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/typexsl.png</iconset>
-   </property>
-   <property name="text" >
-    <string>New Stylesheet file</string>
-   </property>
-  </action>
-  <action name="m_newXMLFileAct" >
-   <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/typexml.png</iconset>
-   </property>
-   <property name="text" >
-    <string>New XML file</string>
-   </property>
-  </action>
-  <action name="m_newJavascriptFileAct" >
-   <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/typejs.png</iconset>
-   </property>
-   <property name="text" >
-    <string>New JavaScript file</string>
-   </property>
-  </action>
   <action name="m_newWebServicesFileAct" >
    <property name="icon" >
     <iconset resource="../application.qrc" >:/images/typefws.png</iconset>

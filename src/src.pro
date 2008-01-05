@@ -89,7 +89,6 @@ HEADERS += plugindialog.h \
     flattreeview.h \
     globals.h \
     iconprojectprovider.h \
-    jsfileeditor.h \
     kcolorcombo.h \
     mainformimpl.h \
     numberbar.h \
@@ -132,7 +131,6 @@ HEADERS += plugindialog.h \
     webserviceseditor.h \
     wsdl.h \
     xinxconfig.h \
-    xmlfileeditor.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     xslproject.h
@@ -157,7 +155,6 @@ SOURCES += plugindialog.cpp \
     flattreeview.cpp \
     globals.cpp \
     iconprojectprovider.cpp \
-    jsfileeditor.cpp \
     kcolorcombo.cpp \
     main.cpp \
     mainformimpl.cpp \
@@ -185,7 +182,6 @@ SOURCES += plugindialog.cpp \
     webserviceseditor.cpp \
     wsdl.cpp \
     xinxconfig.cpp \
-    xmlfileeditor.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \

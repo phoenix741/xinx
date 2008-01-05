@@ -33,8 +33,10 @@ XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QOb
 
 	rootItem = data;
 	refreshList();
-	connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
-	connect( rootItem, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
+	if( rootItem ) {
+		connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
+		connect( rootItem, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
+	}
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
@@ -52,6 +54,7 @@ bool XSLValueCompletionModel::contains( FileContentElement * data ) {
 }
 
 void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
+	XINX_ASSERT( data );
 	XINX_TRACE( "XSLValueCompletionModel::refreshRecursive", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
 
 	for( int i = 0; i < data->rowCount(); i++ ) {
@@ -73,8 +76,10 @@ void XSLValueCompletionModel::refreshList() {
 	XINX_TRACE( "XSLValueCompletionModel::refreshList", "()" );
 
 	m_objList.clear();
-	refreshRecursive( rootItem );
-	qSort( m_objList.begin(), m_objList.end(), FileContentElementModelObjListSort );
+	if( rootItem ) {
+		refreshRecursive( rootItem );
+		qSort( m_objList.begin(), m_objList.end(), FileContentElementModelObjListSort );
+	}
 	reset();
 }
 
@@ -248,7 +253,7 @@ int XSLParamCompletionModel::rowCount(const QModelIndex &parent) const {
 
 /* XSLBaliseCompletionModel */
 
-XSLBaliseCompletionModel::XSLBaliseCompletionModel( QObject *parent ) : QAbstractListModel( parent ) {
+XSLBaliseCompletionModel::XSLBaliseCompletionModel( QObject *parent, bool onlyHtml ) : QAbstractListModel( parent ), m_onlyHtml( onlyHtml ) {
 }
 
 XSLBaliseCompletionModel::~XSLBaliseCompletionModel() {
@@ -261,8 +266,12 @@ QVariant XSLBaliseCompletionModel::data( const QModelIndex &index, int role ) co
 	if( xmlCompletionContents ) {
 		if( role == Qt::DecorationRole ) 
 			return QIcon(":/images/balise.png");
-		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) ) 
-			return xmlCompletionContents->xmlBalises().at( value_row )->name();
+		if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) )  {
+			if( m_onlyHtml )
+				return xmlCompletionContents->htmlBalises().at( value_row )->name();
+			else
+				return xmlCompletionContents->xmlBalises().at( value_row )->name();
+		}
 	}
 	
 	return QVariant();
@@ -278,8 +287,12 @@ Qt::ItemFlags XSLBaliseCompletionModel::flags(const QModelIndex &index) const {
 int XSLBaliseCompletionModel::rowCount(const QModelIndex &parent) const {
 	if ( ! parent.isValid() ) {
 		int size = 0;	
-		if( xmlCompletionContents ) 
-			size += xmlCompletionContents->xmlBalises().count();
+		if( xmlCompletionContents ) {
+			if( m_onlyHtml )
+				size += xmlCompletionContents->htmlBalises().count();
+			else
+				size += xmlCompletionContents->xmlBalises().count();
+		}
 		return size;
 	} else
 		return 0;

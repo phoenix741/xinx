@@ -26,8 +26,6 @@
 #include "snipetlist.h"
 #include "snipetdialog.h"
 #include "fileeditor.h"
-#include "xmlfileeditor.h"
-#include "jsfileeditor.h"
 #include "webserviceseditor.h"
 #include "texteditor.h"
 #include "aboutdialogimpl.h"
@@ -92,9 +90,6 @@ void PrivateMainformImpl::registerTypes() {
 	XINX_TRACE( "PrivateMainformImpl::registerTypes", "()" );
 	
 	qRegisterMetaType<FileEditor>( "FileEditor" );
-	qRegisterMetaType<XMLFileEditor>( "XMLFileEditor" );
-	qRegisterMetaType<XSLFileEditor>( "XSLFileEditor" );
-	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );
 	qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
 }
 
@@ -145,9 +140,18 @@ void PrivateMainformImpl::createSubMenu() {
 
 	// New sub menu
 	QMenu * newMenu = new QMenu( m_parent );
-	newMenu->addAction( m_parent->m_newStylesheetFileAct );
-	newMenu->addAction( m_parent->m_newXMLFileAct );
-	newMenu->addAction( m_parent->m_newJavascriptFileAct );
+	foreach( QString extention, global.m_pluginsLoader->extentions().keys() ) {
+		QAction * action = new QAction( 
+				global.m_pluginsLoader->iconOfSuffix( extention ),
+				tr( "New %1" ).arg( global.m_pluginsLoader->extentions().value( extention ) ),
+				this
+				);
+		action->setData( extention );
+		newMenu->addAction( action );
+
+		connect( action, SIGNAL(triggered()), this, SLOT(newFile()) );
+	}
+	newMenu->addSeparator();
 	newMenu->addAction( m_parent->m_newWebServicesFileAct );
 	
 	m_parent->m_newAct->setMenu( newMenu );
@@ -264,11 +268,8 @@ void PrivateMainformImpl::createActions() {
 
 	// New
 	connect( m_parent->m_newAct, SIGNAL(triggered()), m_parent, SLOT(newDefaultFile()) );
-	connect( m_parent->m_newStylesheetFileAct, SIGNAL(triggered()), m_parent, SLOT(newStylesheetFile()) );
-	connect( m_parent->m_newXMLFileAct, SIGNAL(triggered()), m_parent, SLOT(newXmlDataFile()) );
 	connect( m_parent->m_newWebServicesFileAct, SIGNAL(triggered()), m_parent, SLOT(newWebservicesFile()) );
-	connect( m_parent->m_newJavascriptFileAct, SIGNAL(triggered()), m_parent, SLOT(newJavascriptFile()) );
-	
+
 	// Open
 	connect( m_parent->m_openAct, SIGNAL(triggered()), this, SLOT(openFile()) );
 	connect( m_parent->m_recentFileAct, SIGNAL(triggered()), this, SLOT(openFile()) );
@@ -533,6 +534,12 @@ void PrivateMainformImpl::updateSnipetMenu() {
 			connect( act, SIGNAL(triggered()), this, SLOT(callSnipetMenu()) );
 		}
 		m_parent->m_toolsMenu->insertActions( m_parent->m_createTemplate, m_snipetCategoryActs.values() );
+	}
+}
+
+void PrivateMainformImpl::newFile() {
+	if( qobject_cast<QAction*>( sender() ) ) {
+		m_parent->newFile( qobject_cast<QAction*>( sender() )->data().toString() );
 	}
 }
 
@@ -1409,24 +1416,10 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 	event->accept();
 }
 
-void MainformImpl::newStylesheetFile() {
-	XINX_TRACE ( "MainformImpl::newStylesheetFile", "()" );
+void MainformImpl::newFile( const QString & suffix ) {
+	XINX_TRACE ( "MainformImpl::newFile", QString( "( %1 )" ).arg( suffix ) );
 
-	m_tabEditors->newFileEditorXSL();
-	d->updateActions();
-}
-
-void MainformImpl::newXmlDataFile() {
-	XINX_TRACE ( "MainformImpl::newXmlDataFile", "()" );
-
-	m_tabEditors->newFileEditorXML();
-	d->updateActions();
-}
-
-void MainformImpl::newJavascriptFile() {
-	XINX_TRACE ( "MainformImpl::newJavascriptFile", "()" );
-
-	m_tabEditors->newFileEditorJS();
+	m_tabEditors->newFileEditorTxt( suffix );
 	d->updateActions();
 }
 
@@ -1444,7 +1437,7 @@ void MainformImpl::newWebservicesFile() {
 void MainformImpl::newDefaultFile() {
 	XINX_TRACE ( "MainformImpl::newDefaultFile", "()" );
 
-	newStylesheetFile();
+	newFile( "xsl" );
 }
 
 void MainformImpl::newTemplate() {
@@ -1582,7 +1575,10 @@ void MainformImpl::openProject( const QString & filename ) {
 		foreach( QByteArray data, global.m_project->sessionsEditor() ) {
 			QDataStream stream( &data, QIODevice::ReadOnly );
 			Editor * editor = Editor::deserializeEditor( stream );
-			m_tabEditors->newFileEditor( editor );
+			if( editor )
+				m_tabEditors->newFileEditor( editor );
+			else
+				QMessageBox::critical( this, tr("Deserialization"), tr("Error when restoring editor") );
 		}
 		m_tabEditors->setUpdatesEnabled( true );
 
