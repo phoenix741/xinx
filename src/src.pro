@@ -186,7 +186,6 @@ SOURCES += plugindialog.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \
     xinxthread.cpp
-TRANSLATIONS += ../translations/xinx_fr.ts
 contains( CONFIG, qdbus ) { 
     HEADERS += studioadaptor.h \
         studiointerface.h
