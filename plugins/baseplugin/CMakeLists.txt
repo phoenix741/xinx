@@ -39,7 +39,8 @@ add_definitions(-DQT_NO_DEBUG)
 add_definitions(-DQT_SHARED)
 
 add_library(xinx_baseplugin SHARED ${baseplugin_SRCS} ${baseplugin_MOC_SRCS})
-target_link_libraries(xinx_baseplugin ${QT_LIBRARIES})
+link_directories(bin)
+target_link_libraries(xinx_baseplugin ${QT_LIBRARIES} xinxplugins)
 
 install(TARGETS xinx_baseplugin DESTINATION bin/plugins)
 
