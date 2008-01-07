@@ -23,9 +23,9 @@ CONFIG += debug \
 QT += network \
     xml
     
-LIBS = -L../bin/plugins -L../bin/ -lxinxplugins -lwebplugin
-POST_TARGETDEPS = ../bin/plugins/libwebplugin.a \
-	../bin/libxinxplugins.a
+LIBS = -L../bin/plugins -L../bin/ -lxinxplugins 
+#POST_TARGETDEPS = ../bin/plugins/libwebplugin.a \
+#	../bin/libxinxplugins.a
 
 DISTFILES = ../CHANGELOG \
     ../COPYING \

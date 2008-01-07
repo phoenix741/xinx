@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += debug plugin static
+CONFIG += debug plugin
 QT += xml
 LIBS=-L../../bin -lxinxplugins
 
