@@ -94,7 +94,9 @@ QString SpecifiqueDialogImpl::path() const {
 		QString fileSuffix = m_suffix.isEmpty() ? QFileInfo( m_filename ).completeSuffix() : m_suffix;
 		struct_extentions customFile = extentionOfFileName( fileSuffix );
 		return QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
-	} else
+	} else if( !m_filename.isEmpty() )
+		return QFileInfo( m_filename ).absolutePath();
+	else
 	 	return m_lastPlace;
 }
 
