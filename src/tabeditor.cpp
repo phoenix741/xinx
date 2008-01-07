@@ -87,12 +87,13 @@ void TabEditor::newFileEditor( Editor * editor ) {
 }
 
 Editor * TabEditor::newFileEditor( const QString & fileName ) {
-	Editor * ed;
+	FileEditor * ed;
 	if( QDir::match( "*.fws", fileName ) ) {
 		ed = new WebServicesEditor( this );
 	} else {
 		ed = new FileEditor( this );	
 	}
+	ed->loadFile( fileName );
 	newFileEditor( ed );
 	return ed;
 }
@@ -112,7 +113,6 @@ Editor * TabEditor::newFileEditorWS() {
 Editor * TabEditor::loadFileEditor( const QString & fileName ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
-		static_cast<FileEditor*>( ed )->loadFile( fileName );
 		ed = newFileEditor( fileName );	
 		setTabText( currentIndex(), ed->getTitle() );
 	}

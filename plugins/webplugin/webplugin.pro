@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += debug plugin 
+CONFIG += debug plugin static
 QT += xml
 LIBS=-L../../bin -lxinxplugins
 
@@ -11,7 +11,7 @@ OBJECTS_DIR += ../../build/plugins
 RCC_DIR += ../../build/plugins
 UI_DIR += ../../build/plugins
 
-RESOURCES += baseplugin.qrc
+RESOURCES += webplugin.qrc
 
 unix { 
     QMAKE_CC = "ccache gcc"
@@ -21,7 +21,7 @@ unix {
 
 INCLUDEPATH += ../../include
 HEADERS = xmlprettyprinter.h \
-    baseplugin.h \
+    webplugin.h \
     xmlhighlighter.h \
     jshighlighter.h \
     csshighlighter.h \
@@ -33,7 +33,7 @@ HEADERS = xmlprettyprinter.h \
     javascriptmodelcompleter.h \
     jscompleter.h 
 SOURCES = xmlprettyprinter.cpp \
-    baseplugin.cpp \
+    webplugin.cpp \
     xmlhighlighter.cpp \
     jshighlighter.cpp \
     csshighlighter.cpp \

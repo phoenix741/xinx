@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 // Xinx header
-#include "baseplugin.h"
+#include "webplugin.h"
 #include "xmlhighlighter.h"
 #include "jshighlighter.h"
 #include "csshighlighter.h"
@@ -103,9 +103,9 @@ QStringList WebPlugin::highlighters() {
 
 QHash<QString,QString> WebPlugin::descriptionOfHighlighters() {
 	QHash<QString,QString> descriptions;
-	descriptions[ "XML" ]  = tr( "Process XML like files" );
-	descriptions[ "JS" ]   = tr( "Process JavaScript files" );
-	descriptions[ "CSS" ]  = tr( "Process Cascading Style Sheet files" );
+	descriptions[ "XML" ]  = tr( "XML, XSL, HTML" );
+	descriptions[ "JS" ]   = tr( "JavaScript" );
+	descriptions[ "CSS" ]  = tr( "Cascading Style Sheet" );
 	return descriptions;
 }
 
@@ -229,7 +229,7 @@ QStringList WebPlugin::prettyPrinters() {
 
 QHash<QString,QString> WebPlugin::descriptionOfPrettyPrinters() {
 	QHash<QString,QString> descriptions;
-	descriptions[ "XML" ]  = tr( "Process XML like files" );
+	descriptions[ "XML" ]  = tr( "XML, XSL, XHTML" );
 	return descriptions;
 }
 
@@ -260,19 +260,21 @@ QString WebPlugin::prettyPrint( const QString & plugin, const QString & text, QS
 }
 
 QStringList WebPlugin::extendedEditors() {
-	return QStringList() << "HTML" << "XSL" << "JS";
+	return QStringList() << "HTML" << "XML" << "XSL" << "JS";
 }
 
 QHash<QString,QString> WebPlugin::descriptionOfExtendedEditors() {
 	QHash<QString,QString> descriptions;
-	descriptions[ "HTML" ] = tr( "Process HTML like files" );
-	descriptions[ "XSL" ]  = tr( "Process XSL like files" );
-	descriptions[ "JS" ]   = tr( "Process JavaScript files" );
+	descriptions[ "HTML" ] = tr( "HTML" );
+	descriptions[ "XML" ]  = tr( "XML" );
+	descriptions[ "XSL" ]  = tr( "XSL" );
+	descriptions[ "JS" ]   = tr( "JavaScript" );
 	return descriptions;
 }
 
 QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {
 	QHash<QString,QString> extentions;
+	extentions[ "xml" ]   = "XML";
 	extentions[ "xsl" ]   = "XSL";
 	extentions[ "html" ]  = "HTML";
 	extentions[ "htm" ]   = "HTML";
@@ -282,7 +284,7 @@ QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {
 }
 
 void WebPlugin::commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment ) {
-	if( ( plugin == "XML" ) && ( plugin == "HTML" ) )
+	if( ( plugin == "XML" ) || ( plugin == "XSL" ) || ( plugin == "HTML" ) )
 		XmlCompleter::commentSelectedText( editor, uncomment );
 	else if( plugin == "JS" )
 		JsCompleter::commentSelectedText( editor, uncomment );
@@ -313,7 +315,8 @@ void WebPlugin::createCompleter( const QString & plugin, IXinxExtendedEditor * e
 	} else if( plugin == "JS" ) {
 		JsCompleter * c = new JsCompleter( editor );
 		editor->setObject( c );
-	}
+	} else 
+		editor->setObject( NULL );
 }
 
 QCompleter * WebPlugin::completer( const QString & plugin, IXinxExtendedEditor * editor ) {
@@ -331,7 +334,7 @@ bool WebPlugin::keyPress( const QString & plugin, IXinxExtendedEditor * editor, 
 	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
 		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
 		return c->keyPressEvent( event );
-	} else {
+	} else if( plugin == "JS" ){
 		JsCompleter * c = dynamic_cast<JsCompleter*>( editor->object() );
 		return c->keyPressEvent( event );
 	}

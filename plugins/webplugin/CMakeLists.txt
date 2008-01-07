@@ -2,9 +2,9 @@ set(QT_USE_QTXML TRUE)
 
 include(${QT_USE_FILE})
 
-set(baseplugin_SRCS
+set(webplugin_SRCS
     xmlprettyprinter.cpp 
-    baseplugin.cpp 
+    webplugin.cpp 
     xmlhighlighter.cpp 
     jshighlighter.cpp 
     csshighlighter.cpp 
@@ -17,8 +17,8 @@ set(baseplugin_SRCS
     jscompleter.cpp 
 )
 
-SET(baseplugin_MOC_HDRS
-    baseplugin.h 
+SET(webplugin_MOC_HDRS
+    webplugin.h 
     xsllistview.h 
     javascriptparser.h 
     xmlcompleter.h 
@@ -29,7 +29,7 @@ SET(baseplugin_MOC_HDRS
 
 include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
-QT4_WRAP_CPP(baseplugin_MOC_SRCS ${baseplugin_MOC_HDRS})
+QT4_WRAP_CPP(webplugin_MOC_SRCS ${baseplugin_MOC_HDRS})
 
 add_definitions(-O2)
 add_definitions(-Wall)
@@ -38,9 +38,9 @@ add_definitions(-DQT_PLUGIN)
 add_definitions(-DQT_NO_DEBUG)
 add_definitions(-DQT_SHARED)
 
-add_library(xinx_baseplugin SHARED ${baseplugin_SRCS} ${baseplugin_MOC_SRCS})
+add_library(webplugin SHARED ${baseplugin_SRCS} ${baseplugin_MOC_SRCS})
 link_directories(bin)
-target_link_libraries(xinx_baseplugin ${QT_LIBRARIES} xinxplugins)
+target_link_libraries(webplugin ${QT_LIBRARIES} xinxplugins)
 
-install(TARGETS xinx_baseplugin DESTINATION bin/plugins)
+install(TARGETS webplugin DESTINATION bin/plugins)
 

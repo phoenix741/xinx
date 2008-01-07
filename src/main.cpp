@@ -44,7 +44,7 @@
 #include <iostream>
 
 // Import plugins
-//Q_IMPORT_PLUGIN(xinx_baseplugin)
+Q_IMPORT_PLUGIN(webplugin)
 
 MainformImpl * mainWin = NULL;
 
