@@ -29,7 +29,7 @@ SET(webplugin_MOC_HDRS
 
 include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
-QT4_WRAP_CPP(webplugin_MOC_SRCS ${baseplugin_MOC_HDRS})
+QT4_WRAP_CPP(webplugin_MOC_SRCS ${webplugin_MOC_HDRS})
 
 add_definitions(-O2)
 add_definitions(-Wall)
@@ -38,7 +38,7 @@ add_definitions(-DQT_PLUGIN)
 add_definitions(-DQT_NO_DEBUG)
 add_definitions(-DQT_SHARED)
 
-add_library(webplugin SHARED ${baseplugin_SRCS} ${baseplugin_MOC_SRCS})
+add_library(webplugin SHARED ${webplugin_SRCS} ${webplugin_MOC_SRCS})
 link_directories(bin)
 target_link_libraries(webplugin ${QT_LIBRARIES} xinxplugins)
 
