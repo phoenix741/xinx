@@ -3,7 +3,7 @@ CONFIG += debug plugin
 QT += xml
 LIBS=-L../../bin -lxinxplugins
 
-TARGET = $$qtLibraryTarget(xinx_baseplugin)
+TARGET = $$qtLibraryTarget(webplugin)
 
 DESTDIR = ../../bin/plugins
 MOC_DIR = ../../build/plugins

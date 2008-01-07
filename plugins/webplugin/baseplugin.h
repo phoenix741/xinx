@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,20 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BASEPLUGIN_H_
-#define BASEPLUGIN_H_
+#ifndef WEBPLUGIN_H_
+#define WEBPLUGIN_H_
 
 // Xinx header
 #include <plugininterfaces.h>
 
-class BasePlugin : public QObject, public IPluginSyntaxHighlighter, public IPluginPrettyPrint, public IPluginExtendedEditor {
+class WebPlugin : public QObject, public IPluginSyntaxHighlighter, public IPluginPrettyPrint, public IPluginExtendedEditor {
 	Q_OBJECT
 	Q_INTERFACES(IPlugin)
 	Q_INTERFACES(IPluginSyntaxHighlighter)
 	Q_INTERFACES(IPluginPrettyPrint)
 	Q_INTERFACES(IPluginExtendedEditor)
 public:
-	BasePlugin();
+	WebPlugin();
 	
 	virtual QStringList extentions();
 	virtual QHash<QString,QString> extentionsDescription();
@@ -59,4 +59,4 @@ public:
 	virtual bool keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event );
 };
 
-#endif /* BASEPLUGIN_H_*/
+#endif /* WEBPLUGIN_H_*/

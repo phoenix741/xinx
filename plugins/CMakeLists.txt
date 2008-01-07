@@ -1,2 +1,2 @@
 add_subdirectory(libplugins .) 
-add_subdirectory(baseplugin plugins)
+add_subdirectory(webplugin plugins)

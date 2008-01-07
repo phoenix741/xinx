@@ -112,10 +112,8 @@ Editor * TabEditor::newFileEditorWS() {
 Editor * TabEditor::loadFileEditor( const QString & fileName ) {
 	Editor * ed = editor( fileName );
 	if( ! ed ) {
-		ed = newFileEditor( fileName );	
-		
 		static_cast<FileEditor*>( ed )->loadFile( fileName );
-		
+		ed = newFileEditor( fileName );	
 		setTabText( currentIndex(), ed->getTitle() );
 	}
 	setCurrentWidget( ed );
