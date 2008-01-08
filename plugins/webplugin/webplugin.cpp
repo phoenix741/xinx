@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,6 +28,7 @@
 
 #include "xsllistview.h"
 #include "javascriptparser.h"
+#include "cssmodeldata.h"
 
 #include "editorcompletion.h"
 #include "xmlcompleter.h"
@@ -260,15 +261,16 @@ QString WebPlugin::prettyPrint( const QString & plugin, const QString & text, QS
 }
 
 QStringList WebPlugin::extendedEditors() {
-	return QStringList() << "HTML" << "XML" << "XSL" << "JS";
+	return QStringList() << "HTML" << "XML" << "XSL" << "JS" << "CSS";
 }
 
 QHash<QString,QString> WebPlugin::descriptionOfExtendedEditors() {
 	QHash<QString,QString> descriptions;
 	descriptions[ "HTML" ] = tr( "HTML" );
-	descriptions[ "XML" ]  = tr( "XML" );
-	descriptions[ "XSL" ]  = tr( "XSL" );
-	descriptions[ "JS" ]   = tr( "JavaScript" );
+	descriptions[ "XML"  ] = tr( "XML" );
+	descriptions[ "XSL"  ] = tr( "XSL" );
+	descriptions[ "JS"   ] = tr( "JavaScript" );
+	descriptions[ "CSS"  ] = tr( "Cascading Style Sheet" );
 	return descriptions;
 }
 
@@ -280,6 +282,7 @@ QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {
 	extentions[ "htm" ]   = "HTML";
 	extentions[ "xhtml" ] = "HTML";
 	extentions[ "js" ]    = "JS";
+	extentions[ "css" ]   = "CSS";
 	return extentions[ extention ];
 }
 
@@ -301,6 +304,8 @@ FileContentElement * WebPlugin::createModelData( const QString & plugin, IXinxEx
 			return new JavaScriptParser();
 		else
 			return new JavaScriptParser( parent, filename, line );
+	} else if( plugin == "CSS" ) {
+		return new CSSFileContentParser( editor, parent, filename, line );
 	} else
 		return NULL;
 }

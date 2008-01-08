@@ -15,6 +15,8 @@ set(webplugin_SRCS
     xslmodelcompleter.cpp 
     javascriptmodelcompleter.cpp 
     jscompleter.cpp 
+    csscompleter.cpp
+    cssmodeldata.cpp
 )
 
 SET(webplugin_MOC_HDRS
@@ -25,6 +27,8 @@ SET(webplugin_MOC_HDRS
     xslmodelcompleter.h 
     javascriptmodelcompleter.h 
     jscompleter.h 
+    csscompleter.h
+    cssmodeldata.h
 )
 
 include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})

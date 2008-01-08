@@ -31,7 +31,9 @@ HEADERS = xmlprettyprinter.h \
     xmlcompleter.h \
     xslmodelcompleter.h \
     javascriptmodelcompleter.h \
-    jscompleter.h 
+    jscompleter.h \
+    csscompleter.h \
+    cssmodeldata.h
 SOURCES = xmlprettyprinter.cpp \
     webplugin.cpp \
     xmlhighlighter.cpp \
@@ -43,4 +45,6 @@ SOURCES = xmlprettyprinter.cpp \
     xmlcompleter.cpp \
     xslmodelcompleter.cpp \
     javascriptmodelcompleter.cpp \
-    jscompleter.cpp 
+    jscompleter.cpp \
+    csscompleter.cpp \
+    cssmodeldata.cpp

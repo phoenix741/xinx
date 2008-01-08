@@ -218,7 +218,6 @@ void XSLFileContentParser::loadFromFile( const QString & filename ) {
 	setName( QFileInfo( filename ).fileName() );
 	
 	QFile file( filename );
-	QDomDocument xsl;
 
 	// Open the file
 	if (!file.open(QFile::ReadOnly | QFile::Text)) 
