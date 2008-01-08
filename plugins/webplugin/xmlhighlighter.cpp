@@ -32,13 +32,13 @@ static const QString EXPR_NAME 				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-
 static const QString EXPR_ATTRIBUTE_VALUE	= "[^<%1{]*[%1{]";
 static const QString EXPR_XPATH_VALUE       = "[^<%1}]*[%1}]";
 
-int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, baseplugin_xml::ParsingState & state, const QChar & quoteType, int i, const QString& text ) {
+int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, webplugin_xml::ParsingState & state, const QChar & quoteType, int i, const QString& text ) {
 	// length of matched text
 	int iLength = 0;
 
 	switch(state) {
-	case baseplugin_xml::ExpectElementNameOrSlash:
-	case baseplugin_xml::ExpectElementName: {
+	case webplugin_xml::ExpectElementNameOrSlash:
+	case webplugin_xml::ExpectElementName: {
 			// search element name
 			QRegExp expression(EXPR_NAME);
 			const int pos = expression.indexIn(text, i);
@@ -47,13 +47,13 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 				iLength = expression.matchedLength();
 
 				interface->setFormat( pos, iLength, formats["xml_elementname"] );
-				state = baseplugin_xml::ExpectAttributeOrEndOfElement;
+				state = webplugin_xml::ExpectAttributeOrEndOfElement;
 			} else {
 				interface->setFormat( i, 1, formats["xml_other"] );
 			}
 		}  
 		break;
-	case baseplugin_xml::ExpectAttributeOrEndOfElement: {
+	case webplugin_xml::ExpectAttributeOrEndOfElement: {
 			// search attribute name
 			QRegExp expression(EXPR_NAME);
 			const int pos = expression.indexIn(text, i);
@@ -62,13 +62,13 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 				iLength = expression.matchedLength();
 
 				interface->setFormat( pos, iLength, formats["xml_attributename"] );
-				state = baseplugin_xml::ExpectEqual;
+				state = webplugin_xml::ExpectEqual;
 			} else {
 				interface->setFormat( i, 1, formats["xml_other"] );
 			}
 		}
 		break;
-	case baseplugin_xml::ExpectAttributeTextOrPath: {
+	case webplugin_xml::ExpectAttributeTextOrPath: {
 			QRegExp expression( EXPR_ATTRIBUTE_VALUE.arg( quoteType ) );
 			const int pos = expression.indexIn( text, i );
 			
@@ -80,7 +80,7 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 				interface->setFormat( i, 1, formats["xml_other"] );
 		}
 		break;
-	case baseplugin_xml::ExpectPathTextOrEndOfPath: {
+	case webplugin_xml::ExpectPathTextOrEndOfPath: {
 			QRegExp expression( EXPR_XPATH_VALUE.arg( quoteType ) );
 			const int pos = expression.indexIn( text, i );
 			
@@ -109,7 +109,7 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 	return iLength;
 }
 
-void baseplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text ) {
+void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text ) {
 	int i = 0;
 	int pos = 0;
 	int brackets = 0;

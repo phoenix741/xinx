@@ -22,6 +22,7 @@
 #include "xslmodelcompleter.h"
 #include "xsllistview.h"
 #include "editorcompletion.h"
+#include "javascriptparser.h"
 
 // Qt header
 #include <QIcon>
@@ -66,7 +67,7 @@ void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
 				refreshRecursive( e );
 			}
 		} else {
-			if( ( dynamic_cast<XSLFileContentParams*>( e ) || dynamic_cast<XSLFileContentTemplate*>( e ) ) && ( ! contains( e ) ) )
+			if( ( dynamic_cast<JavaScriptFunction*>( e ) || dynamic_cast<XSLFileContentParams*>( e ) || dynamic_cast<XSLFileContentTemplate*>( e ) ) && ( ! contains( e ) ) )
 				addElement( e );
 		}
 	}
@@ -97,7 +98,7 @@ void XSLValueCompletionModel::addElement( FileContentElement* element, int row )
 	XINX_TRACE( "XSLValueCompletionModel::addElement", QString( "( %1, %2 )" ).arg( (unsigned int)element, 0, 16 ).arg( row ) );
 
 	Q_UNUSED( row );
-	if( ( dynamic_cast<XSLFileContentParams*>( element ) || dynamic_cast<XSLFileContentTemplate*>( element ) ) && ( ! contains( element ) ) ) {
+	if( ( dynamic_cast<JavaScriptFunction*>( element ) || dynamic_cast<XSLFileContentParams*>( element ) || dynamic_cast<XSLFileContentTemplate*>( element ) ) && ( ! contains( element ) ) ) {
 		addElement( element );
 	}
 	if( dynamic_cast<XSLFileContentParser*>( element ) ) {

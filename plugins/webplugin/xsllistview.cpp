@@ -255,7 +255,7 @@ void XSLFileContentParser::loadFromContent( const QString & content ) {
 		throw XMLParserException( errorStr, errorLine, errorColumn );
 	
 }
-
+#include <QDebug>
 void XSLFileContentParser::loadFromXML( const QDomElement & element ) {	
 	XINX_TRACE( "XSLFileContentParser::loadFromXML", "( element )" );
 
@@ -267,7 +267,6 @@ void XSLFileContentParser::loadFromXML( const QDomElement & element ) {
 			child = child.nextSiblingElement();
 			continue;
 		}
-		
 		if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) {
 			QString src = child.attribute( "href" );
 			FileContentElement * element = m_editor->importModelData( this, src, child.lineNumber() );
@@ -280,11 +279,11 @@ void XSLFileContentParser::loadFromXML( const QDomElement & element ) {
 					} catch( FileContentException e ) {
 					}
 			}
-		} else if( child.tagName() == "variable" ) 
+		} else if( child.tagName() == "variable" ) {
 			append( new XSLFileContentVariable( this, child ) );
-		else if( child.tagName() == "params" )
+		} else if( child.tagName() == "param" ) {
 			append( new XSLFileContentParams( this, child ) );
-		else if( child.tagName() == "template" ) {
+		} else if( child.tagName() == "template" ) {
 			QStringList list = child.attribute( "name", child.attribute( "match" ) ).split( "|", QString::SkipEmptyParts );
 			foreach( QString template_name, list ) {
 				XSLFileContentTemplate * template_object = new XSLFileContentTemplate( m_editor, this, child, template_name.trimmed() );

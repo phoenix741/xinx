@@ -24,15 +24,15 @@
 // Qt header
 #include <QStringList>
 
-namespace baseplugin_css {
+namespace webplugin_css {
 	QStringList cssKey, 
 				cssValues, 
 				css2Key, 
 				css2Values;
 };
 
-void baseplugin_css::init() {
-	baseplugin_css::cssKey << "color" << "background-color" << "background-image" 
+void webplugin_css::init() {
+	webplugin_css::cssKey << "color" << "background-color" << "background-image" 
 		<< "background-repeat" << "background-attachment" << "background-position" 
 		<< "background" << "font-family" << "font-style" << "font-variant" 
 		<< "font-weight" << "font-size" << "font" << "word-spacing" 
@@ -46,7 +46,7 @@ void baseplugin_css::init() {
 		<< "border-color" << "border-style" << "width" << "height" << "float" << "clear" 
 		<< "display" << "white-space" << "list-style-type" << "list-style-image" 
 		<< "list-style-position" << "list-style";
-	baseplugin_css::cssValues << "auto" << "none" << "normal" << "italic" << "oblique" 
+	webplugin_css::cssValues << "auto" << "none" << "normal" << "italic" << "oblique" 
 		<< "small-caps" << "bold" << "bolder" << "lighter" << "xx-small" << "x-small" 
 		<< "small" << "medium" << "large" << "x-large" << "xx-large" << "larger" 
 		<< "smaller" << "transparent" << "repeat" << "repeat-x" << "repeat-y" 
@@ -61,7 +61,7 @@ void baseplugin_css::init() {
 		<< "lower-alpha" << "upper-alpha" << "aqua" << "black" << "blue" << "fuchsia" 
 		<< "gray" << "green" << "lime" << "maroon" << "navy" << "olive" << "purple" 
 		<< "red" << "silver" << "teal" << "white" << "yellow";
-	baseplugin_css::css2Key << "border-top-color" << "border-right-color" 
+	webplugin_css::css2Key << "border-top-color" << "border-right-color" 
 		<< "border-bottom-color" << "border-left-color" << "border-color" << "border-top-style" 
 		<< "border-right-style" << "border-bottom-style" << "border-left-style" << "border-style" 
 		<< "top" << "right" << "bottom" << "left" << "position" << "z-index" << "direction" 
@@ -79,7 +79,7 @@ void baseplugin_css::init() {
 		<< "pause" << "cue-before" << "cue-after" << "cue" << "play-during" << "azimuth" 
 		<< "elevation" << "speech-rate" << "voice-family" << "pitch" << "pitch-range" 
 		<< "stress" << "richness" << "speak-punctuation" << "speak-numeral";
-	baseplugin_css::css2Values << "inherit" << "run-in" << "compact" << "marker" 
+	webplugin_css::css2Values << "inherit" << "run-in" << "compact" << "marker" 
 		<< "table" << "inline-table" << "table-row-group" << "table-header-group" 
 		<< "table-footer-group" << "table-row" << "table-column-group" << "table-column" 
 		<< "table-cell" << "table-caption" << "static" << "relative" << "absolute" 
@@ -108,7 +108,7 @@ void baseplugin_css::init() {
 		<< "child" << "x-low" << "low" << "high" << "x-high" << "code" << "digits" << "continous";
 }
 
-void baseplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
+void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
 	int i = 0, pos = 0;
 
 	QRegExp commentStartExpression("^/\\*");

@@ -29,7 +29,7 @@
 #include <QString>
 #include <QTextCharFormat>
 
-namespace baseplugin_css {
+namespace webplugin_css {
 	enum ParsingState {
 		CssDefault,
 		CssIdentifier,

@@ -29,7 +29,7 @@
 #include <QString>
 #include <QTextCharFormat>
 
-namespace baseplugin_xml {
+namespace webplugin_xml {
 	enum ParsingState {
 		NoState = 0,
 		ExpectElementNameOrSlash,

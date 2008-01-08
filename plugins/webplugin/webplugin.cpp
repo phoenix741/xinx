@@ -59,8 +59,8 @@ static const QColor DEFAULT_STRING			= Qt::red;
 /* BasePlugin */
 
 WebPlugin::WebPlugin() {
-	baseplugin_js::init();
-	baseplugin_css::init();
+	webplugin_js::init();
+	webplugin_css::init();
 	
 	xmlCompletionContents = new CompletionXML();
 	try {
@@ -214,11 +214,11 @@ QString WebPlugin::exampleOfHighlighter( const QString & highlighter ) {
 
 void WebPlugin::highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) {
 	if( highlighter.toUpper() == "XML" ) {
-		baseplugin_xml::highlightBlock( formats, i, text );
+		webplugin_xml::highlightBlock( formats, i, text );
 	} else if( highlighter.toUpper() == "JS" ) {
-		baseplugin_js::highlightBlock( formats, i, text );
+		webplugin_js::highlightBlock( formats, i, text );
 	} else if( highlighter.toUpper() == "CSS" ) {
-		baseplugin_css::highlightBlock( formats, i, text );
+		webplugin_css::highlightBlock( formats, i, text );
 	}
 }
 

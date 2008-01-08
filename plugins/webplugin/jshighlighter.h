@@ -29,7 +29,7 @@
 #include <QString>
 #include <QTextCharFormat>
 
-namespace baseplugin_js {
+namespace webplugin_js {
 	enum BlockState {
 		NoBlock = -1,
 		InComment

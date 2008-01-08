@@ -24,7 +24,7 @@
 /* Constante */
 static QStringList keywordPatterns;
 
-void baseplugin_js::init() {
+void webplugin_js::init() {
 	keywordPatterns.clear();
 	keywordPatterns << "abstract" << "boolean" << "break" 
 					<< "byte" << "case" << "catch" << "char" 
@@ -45,7 +45,7 @@ void baseplugin_js::init() {
 	keywordPatterns.sort();
 }
 
-void baseplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
+void webplugin_js::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
 	int i = 0;
 	int pos = 0;
 
