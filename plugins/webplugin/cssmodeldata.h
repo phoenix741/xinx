@@ -41,19 +41,34 @@ public:
 };
 
 class CssFileContentProperty : public FileContentElement {
-	
+	Q_OBJECT
+public:
+	CssFileContentProperty( FileContentElement * parent, const QString & name, int line );
 };
 
 class CssFileContentIdentifier : public FileContentElement {
-	
+	Q_OBJECT
+public:
+	CssFileContentIdentifier( FileContentElement * parent, const QString & name, int line );
+	FileContentElement * append( FileContentElement * element );
+};
+
+class CssFileContentClass : public CssFileContentIdentifier {
+	Q_OBJECT
+public:
+	CssFileContentClass( FileContentElement * parent, const QString & name, int line );
 };
 
 class CssFileContentTag : public CssFileContentIdentifier {
-	
+	Q_OBJECT
+public:
+	CssFileContentTag( FileContentElement * parent, const QString & name, int line );
 };
 
 class CssFileContentId : public CssFileContentIdentifier {
-	
+	Q_OBJECT
+public:
+	CssFileContentId( FileContentElement * parent, const QString & name, int line );
 };
 
 class CSSFileContentParser : public FileContentElement, public FileContentParser {
@@ -71,13 +86,12 @@ public:
 private:
 	enum ParsingState {
 		CssDefault,
-		CssIdentifier,
-		CssValue
+		CssIdentifier
 	};
 	
 	IXinxExtendedEditor * m_editor;
 	bool m_isLoaded;
-	QString m_line;
+	int m_line;
 };
 
 #endif /*CSSMODELDATA_H_*/

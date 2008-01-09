@@ -193,13 +193,16 @@ void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 				interface->setFormat( i, 1, formats["css_other"] );
 			}
 		} else if( ( c == '\'' ) || ( c == '"' ) ) {
-			if( c == '\'' )
+			int iLength;
+			if( c == '\'' ) {
 				pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
-			else 
+				iLength = string1Expression.matchedLength();
+			} else { 
 				pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
-			
+				iLength = string2Expression.matchedLength();
+			}
+
 			if( pos == i ) {
-				const int iLength = string1Expression.matchedLength();
 				interface->setFormat( pos, iLength, formats["css_string"] );
 				interface->processText( i, text.mid( pos, iLength ) );
 				i += iLength;

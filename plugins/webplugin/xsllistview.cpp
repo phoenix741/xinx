@@ -109,21 +109,66 @@ void XSLFileContentTemplate::loadFromXML( const QDomElement& node ) {
 	QDomNodeList list = node.elementsByTagName( "script" );
 	for( int i = 0 ; i < list.count(); i++ ) {
 		QDomElement child = list.at( i ).toElement();
-		if( child.attribute( "type" ).toLower().contains( "javascript" ) && (!child.attribute( "src" ).isEmpty()) ) {
-			QString src = child.attribute( "src" );
-			FileContentElement * element = m_editor->importModelData( this, src, child.lineNumber() );
+		QString src;
+		if( !child.attribute( "src" ).isEmpty() ) 
+			src = child.attribute( "src" );
+		else
+			src = "this.js";
+		
+		FileContentElement * element = m_editor->importModelData( this, src, child.lineNumber() );
+		if( child.attribute( "src" ).isEmpty() ) {
+			element->setFilename( this->filename() );
+			element->setName( "JavaScript" );
+		}
+		if( element ) {
+			element = append( element );
 			FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
-			if( element ) {
-				append( element );
-				if( ( ! src.isEmpty() ) && parser )
-					try {
+			if( parser )
+				try {
+					if( child.attribute( "src" ).isEmpty() ) {
+						QString text = child.text();
+						parser->loadFromContent( text );
+					} else 
 						parser->loadFromFileDelayed( src );
-					} catch( FileContentException e ) {
-					}
-			}
+				} catch( FileContentException e ) {
+				}
 		}
 	}
 	
+	list = node.elementsByTagName( "style" );
+	for( int i = 0 ; i < list.count(); i++ ) {
+		QDomElement child = list.at( i ).toElement();
+		QString src = "this.css";
+		FileContentElement * element = m_editor->importModelData( this, src, child.lineNumber() );
+		element->setFilename( this->filename() );
+		element->setName( "CascadingStyleSheet" );
+		if( element ) {
+			element = append( element );
+			FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
+			if( parser )
+				try {
+					parser->loadFromContent( child.text() );
+				} catch( FileContentException e ) {
+				}
+		}
+	}
+
+	list = node.elementsByTagName( "link" );
+	for( int i = 0 ; i < list.count(); i++ ) {
+		QDomElement child = list.at( i ).toElement();
+		QString src = child.attribute( "href" );
+		FileContentElement * element = m_editor->importModelData( this, src, child.lineNumber() );
+		if( element ) {
+			element = append( element );
+			FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
+			if( parser )
+				try {
+					parser->loadFromFileDelayed( src );
+				} catch( FileContentException e ) {
+				}
+		}
+	}
+
 	list = node.elementsByTagName( "variable" );
 	for( int i = 0 ; i < list.count(); i++ ) 
 		append( new XSLFileContentVariable( this, list.at( i ).toElement() ) );
@@ -254,7 +299,7 @@ void XSLFileContentParser::loadFromContent( const QString & content ) {
 		throw XMLParserException( errorStr, errorLine, errorColumn );
 	
 }
-#include <QDebug>
+
 void XSLFileContentParser::loadFromXML( const QDomElement & element ) {	
 	XINX_TRACE( "XSLFileContentParser::loadFromXML", "( element )" );
 
@@ -299,6 +344,9 @@ void XSLFileContentParser::loadFromXML( const QDomElement & element ) {
 
 int XSLFileContentParser::rowCount() {
 	if( ! m_isLoaded )
-		loadFromFile( filename() );
+		try {
+			loadFromFile( filename() );
+		} catch( FileContentException e ) {
+		}
 	return FileContentElement::rowCount();
 }

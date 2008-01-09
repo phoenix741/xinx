@@ -25,10 +25,36 @@
 // Qt header
 #include <QFileInfo>
 #include <QTextStream>
+#include <QRegExp>
 
 /* CssParserException */
 
 CssParserException::CssParserException( const QString & message, int line, int column ) : FileContentException( message, line, column ) {
+}
+
+
+CssFileContentProperty::CssFileContentProperty( FileContentElement * parent, const QString & name, int line )  : FileContentElement( parent, name, line ) {
+	
+}
+
+CssFileContentIdentifier::CssFileContentIdentifier( FileContentElement * parent, const QString & name, int line ) : FileContentElement( parent, name, line ) {
+	
+}
+
+FileContentElement * CssFileContentIdentifier::append( FileContentElement * element ) {
+	return FileContentElement::append( element );
+}
+
+CssFileContentClass::CssFileContentClass( FileContentElement * parent, const QString & name, int line ) : CssFileContentIdentifier( parent, name, line ) {
+	
+}
+
+CssFileContentTag::CssFileContentTag( FileContentElement * parent, const QString & name, int line ) : CssFileContentIdentifier( parent, name, line ) {
+	
+}
+
+CssFileContentId::CssFileContentId( FileContentElement * parent, const QString & name, int line ) : CssFileContentIdentifier( parent, name, line ) {
+	
 }
 
 /* CSSFileContentParser */
@@ -41,18 +67,88 @@ CSSFileContentParser::~CSSFileContentParser() {
 	
 }
 
-void CSSFileContentParser::loadFromContent( const QString & content ) {
+void CSSFileContentParser::loadFromContent( const QString & text ) {
 	m_isLoaded = true;
 
-	if( content.isEmpty() ) {
+	if( text.isEmpty() ) {
 		clear();
 		return;
 	}
 
+	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-:.]*");
+	QRegExp indentifierExpression("[^\n]*;");
+	FileContentElement * element = NULL;
+	int pos;
+	ParsingState state = CssDefault;
+
 	markAllDeleted();
 	m_line = 1;
 
-	
+	for( int i = 0; i < text.length(); i++ ) {
+		char c = text.at(i).toLower().toAscii();
+		if( ( c >= 'a' ) && ( c <= 'z' ) ) {
+			if( state == CssDefault ) {
+				// TAG
+				pos = keywordExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+				if( pos == i ) {
+					const int iLength = keywordExpression.matchedLength();
+					append( element = new CssFileContentTag( this, keywordExpression.cap(), m_line ) );
+					i += iLength - 1;
+				}
+			} else if( state == CssIdentifier ) {
+				// Identifier
+/*				pos = indentifierExpression.indexIn( text, i, QRegExp::CaretAtOffset );
+			
+				if( pos == i ) {
+					const int iLength = indentifierExpression.matchedLength();
+					if( element )
+						dynamic_cast<CssFileContentIdentifier*>( element )->append( new CssFileContentProperty( element, indentifierExpression.cap(), m_line ) );
+					i += iLength - 1;
+				}*/
+			}
+
+		} else if( c == ':' ) {
+			if( state != CssIdentifier ){
+				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
+				if( pos == ( i + 1 ) ) {
+					const int iLength = keywordExpression.matchedLength();
+					// Pseudo class
+					append( element = new CssFileContentClass( this, ":" + keywordExpression.cap(), m_line ) );
+					i += iLength;
+				}
+			}
+		} else if( c == '.' ) {
+			if( state != CssIdentifier ) {
+				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
+				if( pos == ( i + 1 ) ) {
+					const int iLength = keywordExpression.matchedLength();
+					// Class
+					append( element = new CssFileContentClass( this, "." + keywordExpression.cap(), m_line ) );
+					i += iLength;
+				}
+			}
+		} else if( c == '#' ) {
+			if( state != CssIdentifier ) {
+				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
+				if( pos == ( i + 1 ) ) {
+					const int iLength = keywordExpression.matchedLength();
+					// ID
+					append( element = new CssFileContentId( this, "#" + keywordExpression.cap(), m_line ) );
+					i += iLength;
+				}
+			}
+		} else if( c == '*' ) {
+			if( state == CssDefault )
+				append( element = new CssFileContentTag( this, "*", m_line ) );
+		} else if( c == '{' ) {
+			if( state == CssDefault )
+				state = CssIdentifier;
+		} else if( c == '}' ) {
+			state = CssDefault;
+			element = NULL;
+		}
+	}
 	
 	removeMarkedDeleted();
 }
@@ -85,6 +181,9 @@ bool CSSFileContentParser::isLoaded() {
 	
 int CSSFileContentParser::rowCount() {
 	if( ! m_isLoaded )
-		loadFromFile( filename() );
+		try {
+			loadFromFile( filename() );
+		} catch( FileContentException e ) {
+		}
 	return FileContentElement::rowCount();
 }

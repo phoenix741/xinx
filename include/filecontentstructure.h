@@ -155,25 +155,23 @@ public:
 	 * Icon used for show how the element must be.
 	 */
 	virtual QIcon icon() const;
-protected:
+
 	/*!
-	 * Function to change the name of the element. This function is only accessible
-	 * by children.
+	 * Function to change the name of the element. 
 	 * \param name New name of the element.
 	 */
 	void setName( const QString & name );
 	/*!
-	 * Function to change the line of the element. This function is only accessible
-	 * by children of the class.
+	 * Function to change the line of the element. 
 	 * \param line Line of an element.
 	 */
 	void setLine( int line );
 	/*!
-	 * Function to change the filename of the element. This function is only accessible by
-	 * children of the class.
+	 * Function to change the filename of the element.
 	 */
 	void setFilename( const QString & filename );
 	
+protected:
 	/*!
 	 * Remove an element from the child list. The signal \e aboutToRemove() and \e removed() is emited
 	 * while deleting the line \e index.

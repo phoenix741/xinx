@@ -393,6 +393,9 @@ JavaScriptFunction * JavaScriptParser::loadFunction( QIODevice * buffer, QList<J
 
 int JavaScriptParser::rowCount() {
 	if( ! m_isLoaded )
-		loadFromFile( filename() );
+		try {
+			loadFromFile( filename() );
+		} catch( FileContentException e ) {
+		}
 	return FileContentElement::rowCount();
 }
