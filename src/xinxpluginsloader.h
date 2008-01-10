@@ -48,6 +48,7 @@ public:
 	QString filter( const QString & suffix ) const;
 	const QStringList & filters() const;
 	const QStringList & defaultProjectFilter() const;
+	QStringList defaultProjectFilter( const QString & name ) const;
 
 	QPair<IPluginSyntaxHighlighter*,QString> highlighterOfSuffix( const QString & suffix ) const;
 	QPair<IPluginPrettyPrint*,QString> prettyPrinterOfSuffix( const QString & suffix ) const;

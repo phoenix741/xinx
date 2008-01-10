@@ -80,13 +80,7 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 		QString extention = QFileInfo( filtre ).suffix();
 		QString filename = QFileInfo( filtre ).fileName();
 		if( extention.isEmpty() )
-			m_dirModel->setNameFilters( 
-				QStringList() 
-					<< QString("*%1*.xsl").arg( filtre )
-					<< QString("*%1*.js").arg( filtre )
-					<< QString("*%1*.xml").arg( filtre )
-					<< QString("*%1*.fws").arg( filtre )
-				);
+			m_dirModel->setNameFilters( global.m_pluginsLoader->defaultProjectFilter( filtre ) );
 		else
 			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
 		if( ! m_projectDirWidget->m_flatListBtn->isChecked() )

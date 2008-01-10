@@ -156,6 +156,13 @@ const QStringList & XinxPluginsLoader::defaultProjectFilter() const {
 	return m_defaultProjectFilter;
 }
 
+QStringList XinxPluginsLoader::defaultProjectFilter( const QString & name ) const {
+	QStringList result;
+	foreach( QString t, m_defaultProjectFilter )
+		result << t.replace( "*", name );
+	return result;
+}
+
 QPair<IPluginSyntaxHighlighter*,QString> XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
 	return m_syntaxPlugins.value( suffix.toLower() );
 }
