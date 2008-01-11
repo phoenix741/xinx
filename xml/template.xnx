@@ -183,4 +183,37 @@ La valorisation est incluse.</Description>
     <Param name="Quantit� (exemple : 3)" />
     <Param name="Prix (exemple : 12)" />
   </Snipet>
+  <Snipet category="Input Widgets" key="cine" icon="" type="0" name="Cinematique" >
+    <Description>Champ pour générix</Description>
+    <Text>&lt;input type="hidden" name="sourceview" value="%1"/>
+&lt;input type="hidden" name="cinematic" value="%2"/>
+&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+&lt;input type="hidden" name="id" value="{$ID}"/>
+&lt;input type="hidden" name="frame" value="{$FRAME}"/></Text>
+    <Param name="Sourceview" />
+    <Param name="Cinematic" />
+  </Snipet>
+  <Snipet category="XSL" key="basexsl" icon="" type="0" name="Base of XSL" >
+    <Description></Description>
+    <Text>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
+
+	&lt;xsl:template match="/">
+		&lt;html>
+			&lt;xsl:call-template name="GnxHead"/>
+			&lt;body>
+				&lt;xsl:choose>
+					&lt;xsl:when test="//VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+					&lt;/xsl:when>
+					&lt;xsl:otherwise>
+						&lt;xsl:call-template name="GnxHabilitation"/>
+					&lt;/xsl:otherwise>
+				&lt;/xsl:choose>
+			&lt;/body>
+		&lt;/html>
+	&lt;/xsl:template>
+&lt;/xsl:stylesheet>
+</Text>
+  </Snipet>
 </SnipetList>

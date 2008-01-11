@@ -42,14 +42,17 @@ Name: remplace_template; Description: Replace template.xnx file; GroupDescriptio
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\bin\plugins\libwebplugin.dll; DestDir: {app}\plugins; Components: webplugin; Flags: replacesameversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
-Source: ..\xml\completion.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeCompletionFile('{app}\xml'); DestName: completion.xnx.new; BeforeInstall: CompareCompletionFile('{app}\xml')
-Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template; AfterInstall: MergeTemplateFile('{app}\xml'); DestName: template.xnx.new; BeforeInstall: CompareTemplateFile('{app}\xml')
+Source: ..\xml\webplugin_xml.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\webplugin_xml.xml'); DestName: webplugin_xml.xml.new
+Source: ..\xml\webplugin_js.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\webplugin_js.xml'); DestName: webplugin_js.xml.new
+Source: ..\xml\webplugin_css.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\webplugin_css.xml'); DestName: webplugin_css.xml.new
+Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template; AfterInstall: MergeFile('{app}\xml\template.xnx'); DestName: template.xnx.new
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete; Components: dbus qt
@@ -85,28 +88,21 @@ Name: documentation; Description: Technical documentation of XINX; Types: full
 Name: dbus; Description: D-Bus support; Types: full custom compact; Flags: fixed
 Name: qt; Description: Qt Library; Flags: fixed; Types: custom compact full
 Name: mingw; Description: MinGW Library; Flags: fixed; Types: custom compact full
+Name: webplugin; Description: Plugin for XML, XSL, HTML, CSS, JS; Flags: fixed; Types: custom compact full
 
 [Run]
 Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- /SILENT /NOCANCEL /NORESTART"; StatusMsg: Installation de D-BUS; Flags: hidewizard; Components: dbus
 
-[InstallDelete]
-Name: {app}\xmlvisualstudio.exe; Type: files; Components: application
-Name: {app}\src; Type: filesandordirs
-Name: {app}\source; Type: filesandordirs
-Name: {app}\translations; Type: filesandordirs
-
-[_ISToolPreCompile]
-Name: clean.bat; Parameters: ; Flags: abortonerror
-Name: sources.bat; Parameters: ; Flags: abortonerror
-Name: doc.bat; Parameters: ; Flags: abortonerror
-Name: compiler.bat; Parameters: ; Flags: abortonerror
+;[_ISToolPreCompile]
+;Name: clean.bat; Parameters: ; Flags: abortonerror
+;Name: sources.bat; Parameters: ; Flags: abortonerror
+;Name: doc.bat; Parameters: ; Flags: abortonerror
+;Name: compiler.bat; Parameters: ; Flags: abortonerror
 
 [Code]
 var
 	FilesWizardPage: TInputFileWizardPage;
 	DeveloppementMsgPage: TOutputMsgWizardPage;
-
-	CompletionResult, TemplateResult: boolean;
 
 procedure Replace( var Chaine: String; c1, c2: Char );
 var I: Integer;
@@ -198,49 +194,26 @@ begin
   Result := FilesWizardPage.Values[1];
 end;
 
-procedure MergeFile( Param: String; isComparer: boolean );
-var WinMergeApp, Exp: String;
-    ResultCode : Integer;
+procedure MergeFile( Param: String );
+var SizeOld, SizeNew, ResultCode: Integer;
+    WinMergeApp, Exp: String;
+    Diff : bool
 begin
+  Diff  := False;
   Exp := ExpandConstant( Param );
+
+  FileSize( Exp, SizeOld ); FileSize( Exp + '.new', SizeNew );
+
+  if( SizeOld <> SizeNew ) then
+    Diff := True;
+
+  FileCopy( Exp, Exp + '.old', False );
   FileCopy( Exp + '.new', Exp, False );
-  if( not isComparer ) then begin
+
+  if( Diff ) the begin
 	WinMergeApp := GetWinmergePath( '' );
 	Exec( WinMergeApp, '"' + Exp + '" "' + Exp + '.old"', '', SW_SHOW, ewWaitUntilTerminated, ResultCode );
   end;
-end;
-
-procedure MergeCompletionFile( Param: String );
-begin
-  MergeFile( Param + '\completion.xnx', CompletionResult );
-end;
-
-procedure MergeTemplateFile( Param: String );
-begin
-  MergeFile( Param + '\template.xnx', TemplateResult );
-end;
-
-function CompareFile( Param: String ) : Boolean;
-var SizeOld, SizeNew: Integer;
-    Exp: String;
-begin
-  Exp := ExpandConstant( Param );
-  Result := True;
-  FileSize( Exp, SizeOld );
-  FileSize( Exp + '.new', SizeNew );
-  if( SizeOld <> SizeNew ) then
-    Result := False;
-  FileCopy( Exp, Exp + '.old', False );
-end;
-
-procedure CompareCompletionFile( Param: String );
-begin
-  CompletionResult := CompareFile( Param + '\completion.xnx' );
-end;
-
-procedure CompareTemplateFile( Param: String );
-begin
-  TemplateResult := CompareFile( Param + '\template.xnx' );
 end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
