@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -690,6 +690,7 @@ void PrivateMainformImpl::updateRecentFiles() {
 
 		for( int i = 0; i < numRecentFiles; i++ ) {
 			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->lastOpenedFile()[i] ).fileName() );
+			m_recentFileActs[i]->setIcon( global.m_pluginsLoader->iconOfSuffix( QFileInfo( text ).suffix() ) );
 			m_recentFileActs[i]->setText( text );
 			m_recentFileActs[i]->setData( global.m_project->lastOpenedFile()[i] );
 			m_recentFileActs[i]->setVisible( true );

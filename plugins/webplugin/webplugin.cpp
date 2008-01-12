@@ -94,6 +94,10 @@ QIcon WebPlugin::icon( const QString & extention ) {
 		return QIcon( ":/images/typexsl.png" );
 	} else if( extention == "js" ) {
 		return QIcon( ":/images/typejs.png" );
+	} else if( ( extention == "html" ) || ( extention == "htm" ) || ( extention == "xhtml" ) ) {
+		return QIcon( ":/images/typehtml.png" );
+	} else if( extention == "css" ) {
+		return QIcon( ":/images/typecss.png" );
 	} else
 		return QIcon( ":/images/typeunknown.png" );
 }

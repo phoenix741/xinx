@@ -741,7 +741,7 @@
   </action>
   <action name="m_closeProjectAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
+    <iconset resource="../application.qrc" >:/images/project_close.png</iconset>
    </property>
    <property name="text" >
     <string>Close project</string>

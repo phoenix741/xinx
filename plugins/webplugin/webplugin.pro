@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += debug plugin
+CONFIG += debug plugin static
 QT += xml
 LIBS=-L../../bin -lxinxplugins
 
@@ -10,8 +10,6 @@ MOC_DIR = ../../build/plugins
 OBJECTS_DIR += ../../build/plugins
 RCC_DIR += ../../build/plugins
 UI_DIR += ../../build/plugins
-
-RESOURCES += webplugin.qrc
 
 unix { 
     QMAKE_CC = "ccache gcc"

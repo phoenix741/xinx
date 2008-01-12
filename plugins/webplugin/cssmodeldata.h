@@ -25,6 +25,9 @@
 #include <exceptions.h>
 #include <filecontentstructure.h>
 
+// Qt header
+#include <QIcon>
+
 class IXinxExtendedEditor;
 
 /*!
@@ -44,6 +47,15 @@ class CssFileContentProperty : public FileContentElement {
 	Q_OBJECT
 public:
 	CssFileContentProperty( FileContentElement * parent, const QString & name, int line );
+	
+	const QString & value() const;
+	virtual QString displayTips() const;
+
+	virtual void copyFrom( FileContentElement * element );
+	
+	virtual QIcon icon() const;
+private:
+	QString m_value;
 };
 
 class CssFileContentIdentifier : public FileContentElement {
@@ -51,6 +63,8 @@ class CssFileContentIdentifier : public FileContentElement {
 public:
 	CssFileContentIdentifier( FileContentElement * parent, const QString & name, int line );
 	FileContentElement * append( FileContentElement * element );
+
+	virtual QIcon icon() const;
 };
 
 class CssFileContentClass : public CssFileContentIdentifier {

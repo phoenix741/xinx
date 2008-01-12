@@ -44,7 +44,7 @@
 #include <iostream>
 
 // Import plugins
-//Q_IMPORT_PLUGIN(webplugin)
+Q_IMPORT_PLUGIN(webplugin)
 
 MainformImpl * mainWin = NULL;
 

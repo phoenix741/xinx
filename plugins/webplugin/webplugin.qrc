@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="../../" >
-        <file>../../images/typejs.png</file>
-        <file>../../images/typeunknown.png</file>
-        <file>../../images/typexml.png</file>
-        <file>../../images/typexsl.png</file>
-    </qresource>
-</RCC>
