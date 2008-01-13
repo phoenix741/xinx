@@ -47,10 +47,20 @@ public:
 private slots:
 	void insertCompletion( const QModelIndex& index );
 private:
-	QString currentFunction();
+	enum cursorPosition {
+		cpEditLongComment, // in /* ... */ 
+		cpEditSimpleComment, // in // ...
+		cpEditFunction, // in function ....() { .... }
+		cpEditParams, // in function .... ( .... )
+		cpEditGlobal
+	};
+	
+	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & functionName );
+	cursorPosition editPosition( const QTextCursor & cursor );
 
 	JavascriptModelCompleter * m_modelCompleter;
 	QCompleter * m_completer;
+	QString m_functionName;
 	
 	IXinxExtendedEditor * m_editor;
 };

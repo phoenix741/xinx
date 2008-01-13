@@ -38,6 +38,7 @@
 #include <QTranslator>
 #include <QDir>
 #include <QThread>
+#include <QBitmap>
 
 // C++ header
 #include <csignal>
@@ -80,6 +81,7 @@ int main(int argc, char *argv[]) {
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);
+			splash.setMask(pixmap.mask());
 			splash.show();
 	  		app.processEvents();
 	
@@ -125,7 +127,6 @@ int main(int argc, char *argv[]) {
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
 	  		app.processEvents();
 			mainWin = new MainformImpl();
-			mainWin->show();
 	  
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load arguments ...") );
 	  		app.processEvents();
@@ -140,6 +141,8 @@ int main(int argc, char *argv[]) {
 			}
 	
 			splash.finish(mainWin);
+			
+			mainWin->show();
 	
 			return app.exec();
 	 	} else {

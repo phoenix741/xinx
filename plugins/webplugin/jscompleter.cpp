@@ -25,6 +25,7 @@
 // Qt header
 #include <QCompleter>
 #include <QTextEdit>
+#include <QRegExp>
 
 /* JsCompleter */
 
@@ -49,16 +50,49 @@ JsCompleter::~JsCompleter() {
 }
 
 void JsCompleter::commentSelectedText( IXinxExtendedEditor * editor, bool uncomment ) {
-	Q_UNUSED( editor );
-	Q_UNUSED( uncomment );
-	// TODO: Comment JavaScript
+	QString functionName;
+	
+	QTextCursor cursor( editor->qTextEdit()->textCursor() );
+ 
+	QTextCursor cursorStart( editor->qTextEdit()->textCursor() );
+	cursorStart.setPosition( cursor.selectionStart() );
+	bool isStartCommented = editPosition( editor->qTextEdit(), cursorStart, functionName ) == cpEditLongComment;
+
+	QTextCursor cursorEnd( editor->qTextEdit()->textCursor() );
+	cursorEnd.setPosition( cursor.selectionEnd() );
+	bool isEndCommented =  editPosition( editor->qTextEdit(), cursorEnd, functionName ) == cpEditLongComment;
+
+	QString text = cursor.selectedText();
+	text = text.replace( "/*", "" );
+	text = text.replace( "*/", "" );
+  
+	cursor.beginEditBlock();
+
+	cursor.removeSelectedText();
+	if(! ( isStartCommented ^ uncomment ) ) {
+		// Comment  	
+		if(! uncomment)
+			cursor.insertText("/*");  
+		else
+			cursor.insertText("*/");  
+	}
+	cursor.insertText(text);  
+	if(! ( isEndCommented ^ uncomment )) {
+		// End the comment  	
+		if(! uncomment)
+			cursor.insertText("*/");  
+		else
+			cursor.insertText("/*");  
+	}
+
+	cursor.endEditBlock();
 }
 
 bool JsCompleter::keyPressEvent( QKeyEvent *e ) {
 	Q_UNUSED( e );
-	QString fct = currentFunction();
+	editPosition( m_editor->qTextEdit()->textCursor() );
 	if( m_modelCompleter )
-		m_modelCompleter->setFilter( fct );
+		m_modelCompleter->setFilter( m_functionName );
 	return false;
 }
 
@@ -80,30 +114,55 @@ void JsCompleter::insertCompletion( const QModelIndex& index ) {
 	m_editor->qTextEdit()->setTextCursor( tc );
 }
 
-QString JsCompleter::currentFunction() {
-	QTextCursor tc = m_editor->qTextEdit()->textCursor();
-	QString name;
-	int bloc = 0;
-	bool finded = false;
-	// Recherche le debut du document ou le mot function (compte le nombre d'accollade en passant)
-	if( ! tc.atStart() )
-		while( true ) {
-			QTextCursor selectedCursor = tc;
-			selectedCursor.select( QTextCursor::WordUnderCursor );
-			if( ( selectedCursor.selectedText() == "function" ) && ( name != "{" ) && ( name != "function" ) ) {
-				finded = true;
-				break;
-			} else if( tc.atStart() ) break;
-			name = selectedCursor.selectedText();
-			if( name == "{" )
-				bloc++;
-			else if( name == "}" )
-				bloc--;
-			tc.movePosition( QTextCursor::PreviousWord );
-		}
+JsCompleter::cursorPosition JsCompleter::editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & functionName ) {
+	QTextCursor cursorStartOfComment = textEdit->document()->find( "/*", cursor, QTextDocument::FindBackward );
+	QTextCursor cursorEndOfComment   = textEdit->document()->find( "*/", cursor, QTextDocument::FindBackward );
+	QTextCursor cursorLineCommented  = textEdit->document()->find( "//", cursor, QTextDocument::FindBackward );
+	
+	functionName = QString();
 
-	if( finded && ( bloc > 0 ) )
-		return name;
-	else
-		return QString();
+	if(! ( cursorStartOfComment.isNull() || ( !cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment ) ) ))
+		return cpEditLongComment;
+	if(! cursorLineCommented.isNull() && ( cursorLineCommented.blockNumber() == cursor.blockNumber() ) )
+		return cpEditSimpleComment;
+	
+	QRegExp function( "function[\\s]*([a-zA-Z_][a-zA-Z0-9_]*)[\\s]*\\(" );	
+	QTextCursor cursorFunction = textEdit->document()->find( function, cursor, QTextDocument::FindBackward );
+	QTextCursor endOfParam     = textEdit->document()->find( ")", cursor, QTextDocument::FindBackward );
+	
+	if( cursorFunction.isNull() )
+		return cpEditGlobal;
+	
+	QTextCursor cursorOfFunctionName = cursorFunction;
+	functionName = cursorOfFunctionName.selectedText();
+	function.indexIn( functionName, 0 );
+	functionName = function.cap(1);
+
+	if( endOfParam.isNull() || ( endOfParam < cursorFunction ) ) {
+		return cpEditParams;
+	}
+	
+	int bloc = 0;
+	QTextCursor c = textEdit->document()->find( ")", cursorFunction );
+	while( c < cursor ) {
+		QString text = c.selectedText();
+		if( text.contains( '{' ) )
+			bloc++;
+		else if( text.contains( '}' ) )
+			bloc--;
+		
+		c = textEdit->document()->find( QRegExp("[\\S]+"), c );
+	}
+	
+	if( bloc > 0 )
+		return cpEditFunction;
+	else {
+		functionName = QString();
+		return cpEditGlobal;
+	}
 }
+
+JsCompleter::cursorPosition JsCompleter::editPosition( const QTextCursor & cursor ) {
+	return editPosition( m_editor->qTextEdit(), cursor, m_functionName );
+}
+

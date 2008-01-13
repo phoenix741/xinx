@@ -33,6 +33,7 @@
 #include "editorcompletion.h"
 #include "xmlcompleter.h"
 #include "jscompleter.h"
+#include "csscompleter.h"
 
 // Qt header
 #include <QStringList>
@@ -295,6 +296,8 @@ void WebPlugin::commentSelectedText( const QString & plugin, IXinxExtendedEditor
 		XmlCompleter::commentSelectedText( editor, uncomment );
 	else if( plugin == "JS" )
 		JsCompleter::commentSelectedText( editor, uncomment );
+	else if( plugin == "CSS" )
+		CssCompleter::commentSelectedText( editor, uncomment );
 }
 
 FileContentElement * WebPlugin::createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int line ) {

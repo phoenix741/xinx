@@ -21,8 +21,14 @@
 #ifndef CSSCOMPLETER_H_
 #define CSSCOMPLETER_H_
 
+// Xinx header
+#include "iextendededitor.h"
+
 // Qt object
-#include <QObject>
+#include <QTextCursor>
+#include <QString>
+#include <QTextCursor>
+#include <QModelIndex>
 
 class IXinxExtendedEditor;
 
@@ -34,6 +40,15 @@ public:
 	
 	static void commentSelectedText( IXinxExtendedEditor * editor, bool uncomment );
 private:
+	enum cursorPosition {
+		cpEditComment, // in /* ... */ 
+		cpEditTag, // ... { ... }
+		cpEditGlobal
+	};
+	
+	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor );
+	cursorPosition editPosition( const QTextCursor & cursor );
+
 	IXinxExtendedEditor * m_editor;
 };
 

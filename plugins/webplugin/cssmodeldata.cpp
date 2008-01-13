@@ -119,7 +119,9 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 	QRegExp commentEndExpression("\\*/");
 	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-:.]*");
 	QRegExp indentifierExpression("[^\n]*;");
-	FileContentElement * element = NULL;
+	
+	QList<FileContentElement*> elements;
+	
 	int pos;
 	ParsingState state = CssDefault;
 
@@ -135,7 +137,10 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 				const int posEnd = commentEndExpression.indexIn( text, pos + 2, QRegExp::CaretAtOffset );
 				if( posEnd == -1 )
 					break;
-				i = posEnd + 2;
+				
+				m_line += text.mid( pos, posEnd - pos ).count( QRegExp( "\\n" ) );
+				
+				i = posEnd;
 			} 
 		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
 			if( state == CssDefault ) {
@@ -144,7 +149,7 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 			
 				if( pos == i ) {
 					const int iLength = keywordExpression.matchedLength();
-					element = append( new CssFileContentTag( this, keywordExpression.cap(), m_line ) );
+					elements.append( append( new CssFileContentTag( this, keywordExpression.cap(), m_line ) ) );
 					i += iLength - 1;
 				}
 			} else if( state == CssIdentifier ) {
@@ -153,7 +158,7 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 			
 				if( pos == i ) {
 					const int iLength = indentifierExpression.matchedLength();
-					if( element )
+					foreach( FileContentElement* element, elements )
 						dynamic_cast<CssFileContentIdentifier*>( element )->append( new CssFileContentProperty( element, indentifierExpression.cap(), m_line ) );
 					i += iLength - 1;
 				}
@@ -164,7 +169,7 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
 					// Pseudo class
-					element = append( new CssFileContentClass( this, ":" + keywordExpression.cap(), m_line ) );
+					elements.append( append( new CssFileContentClass( this, ":" + keywordExpression.cap(), m_line ) ) );
 					i += iLength;
 				}
 			}
@@ -174,7 +179,7 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
 					// Class
-					element = append( new CssFileContentClass( this, "." + keywordExpression.cap(), m_line ) );
+					elements.append( append( new CssFileContentClass( this, "." + keywordExpression.cap(), m_line ) ) );
 					i += iLength;
 				}
 			}
@@ -184,19 +189,19 @@ void CSSFileContentParser::loadFromContent( const QString & text ) {
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
 					// ID
-					element = append( new CssFileContentId( this, "#" + keywordExpression.cap(), m_line ) );
+					elements.append( append( new CssFileContentId( this, "#" + keywordExpression.cap(), m_line ) ) );
 					i += iLength;
 				}
 			}
 		} else if( c == '*' ) {
 			if( state == CssDefault )
-				element = append( new CssFileContentTag( this, "*", m_line ) );
+				elements.append( append( new CssFileContentTag( this, "*", m_line ) ) );
 		} else if( c == '{' ) {
 			if( state == CssDefault )
 				state = CssIdentifier;
 		} else if( c == '}' ) {
 			state = CssDefault;
-			element = NULL;
+			elements.clear();
 		} else if( c == '\n' ) {
 			m_line++;
 		}
