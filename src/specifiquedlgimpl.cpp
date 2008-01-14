@@ -63,7 +63,8 @@ bool SpecifiqueDialogImpl::canBeSaveAsSpecifique( const QString & filename ) {
 	return 	global.m_project &&
 			global.m_project->options().testFlag( XSLProject::hasSpecifique ) &&
 			extentionOfFileName( filename ).canBeSpecifique &&
-			global.m_config->config().project.alertWhenSavingStandardFile;
+			global.m_config->config().project.alertWhenSavingStandardFile &&
+			QFileInfo( filename ).absolutePath().contains( global.m_project->projectPath() );
 }
 
 bool SpecifiqueDialogImpl::canBeAddedToRepository( const QString & filename ) {
