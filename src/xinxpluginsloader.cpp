@@ -159,7 +159,7 @@ const QStringList & XinxPluginsLoader::defaultProjectFilter() const {
 QStringList XinxPluginsLoader::defaultProjectFilter( const QString & name ) const {
 	QStringList result;
 	foreach( QString t, m_defaultProjectFilter )
-		result << t.replace( "*", name );
+		result << t.replace( "*", QString( "*%1*" ).arg( name ) );
 	return result;
 }
 
