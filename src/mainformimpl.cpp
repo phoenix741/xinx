@@ -74,7 +74,6 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 	createShortcut();
 	createActions();
 	createFindReplace();
-	createDialogs();
 	createSnipet();
 	connectDbus();
 	updateActions();
@@ -84,6 +83,7 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 
 PrivateMainformImpl::~PrivateMainformImpl() {
 	XINX_TRACE( "~PrivateMainformImpl", "()" );
+	
 }
 
 void PrivateMainformImpl::registerTypes() {
@@ -473,11 +473,6 @@ void PrivateMainformImpl::createActions() {
 	// Timer LOG
 	m_timer = new QTimer( this );
 	connect( m_timer, SIGNAL(timeout()), this, SLOT(logTimeout()) );
-}
-
-void PrivateMainformImpl::createDialogs() {
-	XINX_TRACE( "PrivateMainformImpl::createDialogs", "()" );
-
 }
 
 void PrivateMainformImpl::connectDbus() {
@@ -1069,6 +1064,9 @@ void PrivateMainformImpl::createFindReplace() {
 	m_cursorEnd		   = QTextCursor();
 	m_findDialog       = new ReplaceDialogImpl( m_parent );
 	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
+	
+	m_replaceNextDlg   = new QMessageBox( QMessageBox::Question, tr("Replace text"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, m_parent, Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint );
+	m_replaceNextDlg->setWindowModality( Qt::NonModal );
 }
 
 void PrivateMainformImpl::findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options ) {
@@ -1189,11 +1187,12 @@ void PrivateMainformImpl::findNext() {
 				QMessageBox::StandardButton ret = QMessageBox::Yes;
 		
 				if(! m_yesToAllReplace) {
- 					QMessageBox messageBoxQuestion( QMessageBox::Question, tr("Application"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, m_parent );
-					messageBoxQuestion.setWindowModality( Qt::NonModal );
-					messageBoxQuestion.show();
-					while( messageBoxQuestion.isVisible() ) qApp->processEvents();
-					ret = messageBoxQuestion.standardButton( messageBoxQuestion.clickedButton() );
+					if( m_nbFindedText == 1 )
+						m_replaceNextDlg->setAttribute( Qt::WA_Moved, false );
+					m_replaceNextDlg->show();
+					m_replaceNextDlg->setAttribute( Qt::WA_Moved );
+					while( m_replaceNextDlg->isVisible() ) qApp->processEvents();
+					ret = m_replaceNextDlg->standardButton( m_replaceNextDlg->clickedButton() );
 				}
 
 				switch(ret) {

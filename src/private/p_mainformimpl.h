@@ -40,6 +40,7 @@
 #include <QHash>
 #include <QTextCursor>
 #include <QTimer>
+#include <QMessageBox>
 
 class PrivateMainformImpl : public QObject {
 	Q_OBJECT
@@ -55,7 +56,6 @@ public:
 	void createDockWidget();
 	void createActions();
 	void createFindReplace();
-	void createDialogs();
 	void connectDbus();
 	void createSnipet();
 	void registerTypes();
@@ -114,6 +114,7 @@ public:
 	bool m_yesToAllReplace, m_searchInverse;
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
+	QMessageBox * m_replaceNextDlg;
 	
 	// Customize
 	struct_extentions extentionOfFileName( const QString & name );
