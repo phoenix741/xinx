@@ -58,7 +58,8 @@ RCS * DirRCSModel::rcs() {
 
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	XINX_TRACE( "DirRCSModel::data", QString( "( index, %1 )" ).arg( role ) );
-
+	if( ! index.isValid() ) return QVariant();
+	
 	QString path = filePath(index);
 	if( m_rcs ) {
 		if ( role == Qt::BackgroundRole && index.column() == 0 ) {
