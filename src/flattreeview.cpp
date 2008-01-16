@@ -38,7 +38,7 @@ void PrivateFlatModel::recalcPathList() {
 }
 
 void PrivateFlatModel::insertIntoPathList( QModelIndex index ) {
-	if( m_model->isDir( index ) ) {
+	if( index.isValid() && m_model->isDir( index ) ) {
 		int size = m_model->rowCount( index ), position = m_pathList.count();
 
 		bool hasFile = false;
@@ -114,12 +114,15 @@ QVariant FlatModel::data ( const QModelIndex & index, int role ) const {
 	if( index.isValid() ) {
 		QString path = d->m_pathList.at( index.row() );
 		QModelIndex converti = d->m_model->index( path, index.column() );
-		if( ( role == Qt::DisplayRole ) && ( d->m_model->isDir( converti ) ) ) {
-			QDir dir = d->m_model->fileInfo( d->m_root ).absoluteDir();
-			return dir.relativeFilePath( path );
-		} else {
-			return d->m_model->data( converti, role );
-		}
+		if( converti.isValid() ) {
+			if( ( role == Qt::DisplayRole ) && ( d->m_model->isDir( converti ) ) ) {
+				QDir dir = d->m_model->fileInfo( d->m_root ).absoluteDir();
+				return dir.relativeFilePath( path );
+			} else {
+				return d->m_model->data( converti, role );
+			}
+		} else
+			return QVariant();
 	} else
 		return QVariant();
 }
@@ -128,7 +131,10 @@ Qt::ItemFlags FlatModel::flags ( const QModelIndex & index ) const {
 	if( index.isValid() ) {
 		QString path = d->m_pathList.at( index.row() );
 		QModelIndex converti = d->m_model->index( path );
-		return d->m_model->flags( converti );
+		if( converti.isValid() )
+			return d->m_model->flags( converti );
+		else
+			return Qt::ItemIsSelectable;
 	} else
 		return Qt::ItemIsSelectable;
 }

@@ -136,7 +136,7 @@ void PrivateProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClic
 	QModelIndex idx = index;
 	if( m_flatModel ) 
 		idx = qobject_cast<FlatModel*>( m_flatModel )->mappingToSource( index );
-	if( ! m_dirModel->fileInfo( idx ).isDir() )
+	if( idx.isValid() && (! m_dirModel->isDir( idx )) )
 		emit m_parent->open( m_dirModel->filePath( idx ) );
 }
 
