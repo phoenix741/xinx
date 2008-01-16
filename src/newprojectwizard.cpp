@@ -28,15 +28,12 @@
 
 /* NewProjectWizard */
 
-NewProjectWizard::NewProjectWizard( QWidget * widget ) : QWizard( widget ) {
-	setButtonText( QWizard::CustomButton1, tr("&Expert ...") );
-	setOption( QWizard::HaveCustomButton1, true );
-	
-    setPage( Page_Projet, new ProjectPageImpl );
-    setPage( Page_Specifique, new SpecifiquePageImpl );
-    setPage( Page_Services, new ServicesPageImpl );
-    setPage( Page_ServicesList, new ServicesListPageImpl );
-    setPage( Page_Versions, new VersionsPageImpl );
+NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( widget, f ) {
+    setPage( Page_Projet, new ProjectPageImpl( this ) );
+    setPage( Page_Specifique, new SpecifiquePageImpl( this ) );
+    setPage( Page_Services, new ServicesPageImpl( this ) );
+    setPage( Page_ServicesList, new ServicesListPageImpl( this ) );
+    setPage( Page_Versions, new VersionsPageImpl( this ) );
 
     setStartId( Page_Projet );
 
@@ -65,9 +62,6 @@ ProjectPageImpl::ProjectPageImpl( QWidget * parent ) : QWizardPage( parent ) {
     registerField( "project.log*",     m_logPathEdit );
     registerField( "project.project*", m_projectPathEdit );
     
-    connect( m_projectNameEdit, SIGNAL(textChanged(QString)), this, SLOT(changeProjectName(QString)) );
-    connect( m_ASPathEdit, SIGNAL(textChanged(QString)), this, SLOT(changeASPath(QString)) );
-
 	m_ASPathEdit->setText( global.m_config->config().project.defaultPath );
 }
 
@@ -76,6 +70,16 @@ int ProjectPageImpl::nextId() const {
 		return NewProjectWizard::Page_Specifique;
 	else
 		return NewProjectWizard::Page_Services;
+}
+
+void ProjectPageImpl::setVisible( bool visible ) {
+	QWizardPage::setVisible( visible );
+	
+	if( visible ) {
+		wizard()->setButtonText( QWizard::CustomButton1, tr("&Expert ...") );
+		wizard()->setOption( QWizard::HaveCustomButton1, true );
+	} else
+		wizard()->setOption( QWizard::HaveCustomButton1, false );
 }
 
 void ProjectPageImpl::on_m_ASPathBtn_clicked() {
@@ -90,7 +94,7 @@ void ProjectPageImpl::on_m_projectPathBtn_clicked() {
 	m_projectPathEdit->changePath( this, global.m_config->config().project.defaultPath );
 }
 
-void ProjectPageImpl::changeProjectName( const QString & text ) {
+void ProjectPageImpl::on_m_projectNameEdit_textChanged( const QString & text ) {
 	m_projectPathEdit->setText( 
 			QDir( m_ASPathEdit->text() ).absoluteFilePath( 
 					QString( "j2ee/home/applications/%1/btoe" ).arg( text ) 
@@ -98,7 +102,7 @@ void ProjectPageImpl::changeProjectName( const QString & text ) {
 	);
 }
 
-void ProjectPageImpl::changeASPath( const QString & text ) {
+void ProjectPageImpl::on_m_ASPathEdit_textChanged( const QString & text ) {
 	m_projectPathEdit->setText( 
 			QDir( text ).absoluteFilePath( 
 					QString( "j2ee/home/applications/%1/btoe" ).arg( m_projectNameEdit->text() ) 
@@ -120,6 +124,8 @@ SpecifiquePageImpl::SpecifiquePageImpl( QWidget * parent ) : QWizardPage( parent
 
     registerField( "specifique.prefix*",    m_prefixEdit );
     registerField( "specifique.path*",      m_specifiquePathNameEdit );
+
+    wizard()->setOption( QWizard::HaveCustomButton1, false );
 }
 
 int SpecifiquePageImpl::nextId() const {
@@ -134,6 +140,7 @@ ServicesPageImpl::ServicesPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 	setSubTitle( tr("Define if the project contains WebServices. WebServices can be used to "
 					"query database.") );
 
+    wizard()->setOption( QWizard::HaveCustomButton1, false );
 }
 
 int ServicesPageImpl::nextId() const {

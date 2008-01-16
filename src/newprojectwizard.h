@@ -30,12 +30,19 @@
 #include "ui_newprojectwizard_services.h"
 #include "ui_newprojectwizard_serviceslist.h"
 
+class XSLProject;
+
 class NewProjectWizard : public QWizard {
 	Q_OBJECT
 public:
 	enum { Page_Projet, Page_Specifique, Page_Services, Page_ServicesList, Page_Versions };
 	
-	NewProjectWizard( QWidget * widget = 0 );
+	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+
+	void loadFromProject( XSLProject * project );
+	void saveToProject( XSLProject * project );
+private:
+	XSLProject * m_project;
 };
 
 class ProjectPageImpl : public QWizardPage, private Ui::ProjectPage {
@@ -44,13 +51,15 @@ public:
 	ProjectPageImpl( QWidget * parent = 0 );
 	
 	int nextId() const;
+
+    void setVisible( bool visible );
 private slots:
-	void changeProjectName( const QString & text );
-	void changeASPath( const QString & text );
-	
     void on_m_ASPathBtn_clicked();
     void on_m_logPathBtn_clicked();
     void on_m_projectPathBtn_clicked();
+
+    void on_m_projectNameEdit_textChanged( const QString & value );
+    void on_m_ASPathEdit_textChanged( const QString & value );
 };
 
 class SpecifiquePageImpl : public QWizardPage, private Ui::SpecifiquePage {
