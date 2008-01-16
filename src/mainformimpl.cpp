@@ -43,6 +43,7 @@
 #include "specifiquedlgimpl.h"
 #include "plugindialog.h"
 #include "xinxpluginsloader.h"
+#include "newprojectwizard.h"
 
 // Qt header
 #include <QKeySequence>
@@ -1527,6 +1528,9 @@ bool MainformImpl::closeAllFile() {
 void MainformImpl::newProject() {
 	XINX_TRACE ( "MainformImpl::newProject", "()" );
 
+	NewProjectWizard wizard;
+	wizard.exec();
+	
 	XSLProject * project = new XSLProject();
 	ProjectPropertyImpl property ( this );
 	property.loadFromProject( project ); // Load an empty project;	

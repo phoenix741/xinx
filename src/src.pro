@@ -66,7 +66,11 @@ FORMS += ../ui/plugindialog.ui \
     ../ui/runsnipet.ui \
     ../ui/servicesconnection.ui \
     ../ui/snipetproperty.ui \
-    ../ui/xmlpresentationwidget.ui
+    ../ui/xmlpresentationwidget.ui \
+    ../ui/newprojectwizard_project.ui \
+	../ui/newprojectwizard_specifique.ui \
+	../ui/newprojectwizard_services.ui \
+	../ui/newprojectwizard_serviceslist.ui
 HEADERS += plugindialog.h \
     xinxpluginsloader.h \
     specifiquedlgimpl.h \
@@ -93,6 +97,7 @@ HEADERS += plugindialog.h \
     mainformimpl.h \
     numberbar.h \
     objectview.h \
+    newprojectwizard.h \
     private/p_configurationfile.h \
     private/p_connectionwebservicesdialogimpl.h \
     private/p_filecontentdockwidget.h \
@@ -185,7 +190,8 @@ SOURCES += plugindialog.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \
-    xinxthread.cpp
+    xinxthread.cpp \
+    newprojectwizard.cpp
 contains( CONFIG, qdbus ) { 
     HEADERS += studioadaptor.h \
         studiointerface.h

@@ -64,6 +64,7 @@ set(xinx_SRCS
 	xinxthread.cpp
 	studioadaptor.cpp
 	studiointerface.cpp
+	newprojectwizard.cpp
 )
 
 SET(xinx_MOC_HDRS
@@ -127,6 +128,7 @@ SET(xinx_MOC_HDRS
 	xslproject.h
 	studioadaptor.h
 	studiointerface.h
+	newprojectwizard.h
 )
 
 SET(xinx_UIS
@@ -145,6 +147,10 @@ SET(xinx_UIS
 	../ui/snipetproperty.ui
 	../ui/xmlpresentationwidget.ui
 	../ui/plugindialog.ui
+	../ui/newprojectwizard_project.ui 
+	../ui/newprojectwizard_specifique.ui 
+	../ui/newprojectwizard_services.ui 
+	../ui/newprojectwizard_serviceslist.ui
 )
 
 SET(xinx_RCS

@@ -25,6 +25,7 @@
 #include <QFile>
 #include <QPalette>
 #include <QCompleter>
+#include <QFileDialog>
 
 /* CompleterDirModel */
 
@@ -67,3 +68,13 @@ void DirectoryEdit::slotTextChanged( QString text ) {
 	setPalette( palette );
 }
 
+
+void DirectoryEdit::changePath( QWidget * parent, const QString & defaultValue ) {
+	QString value = this->text();
+	if( value.isEmpty() ) value = defaultValue;
+		
+	value = QFileDialog::getExistingDirectory( parent, tr("Change the path"), value );
+	if( ! value.isEmpty() ) {
+		this->setText( QDir::toNativeSeparators( value ) );		
+	}
+}

@@ -280,17 +280,11 @@ void CustomDialogImpl::on_m_cvsToolBtn_clicked() {
 }
 
 void CustomDialogImpl::on_m_changeProjectPathBtn_clicked() {
-	QString value = QFileDialog::getExistingDirectory( this, tr("Project path"), m_projectPathLineEdit->text() );
-	if( ! value.isEmpty() ) {
-		m_projectPathLineEdit->setText( value );		
-	}
+	m_projectPathLineEdit->changePath( this );
 }
 
 void CustomDialogImpl::on_m_changeApplicationDescriptionPathBtn_clicked() {
-	QString value = QFileDialog::getExistingDirectory( this, tr("Descriptions path"), m_descriptionPathLineEdit->text() );
-	if( ! value.isEmpty() ) {
-		m_descriptionPathLineEdit->setText( value );		
-	}
+	m_descriptionPathLineEdit->changePath( this );
 }
 
 void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) {

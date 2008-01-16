@@ -8,6 +8,7 @@
         <file>images/bookmark.png</file>
         <file>images/bookmarknext.png</file>
         <file>images/bookmarkprevious.png</file>
+        <file>images/button_apply.png</file>
         <file>images/button_cancel.png</file>
         <file>images/button_ok.png</file>
         <file>images/calendarwidget.png</file>
@@ -15,8 +16,10 @@
         <file>images/clearallbookmarks.png</file>
         <file>images/colors.png</file>
         <file>images/combobox.png</file>
+        <file>images/configure.png</file>
         <file>images/datetimeedit.png</file>
         <file>images/down.png</file>
+        <file>images/edit-select-all.png</file>
         <file>images/edit.png</file>
         <file>images/editcopy.png</file>
         <file>images/editcut.png</file>
@@ -36,8 +39,14 @@
         <file>images/folder.png</file>
         <file>images/fontsizedown.png</file>
         <file>images/fontsizeup.png</file>
+        <file>images/format-indent-less.png</file>
+        <file>images/format-indent-more.png</file>
         <file>images/france.png</file>
         <file>images/germany.png</file>
+        <file>images/help-about.png</file>
+        <file>images/help-contents.png</file>
+        <file>images/help-contextual.png</file>
+        <file>images/help-hint.png</file>
         <file>images/html_value.png</file>
         <file>images/ie_logo.png</file>
         <file>images/import.png</file>
@@ -70,7 +79,9 @@
         <file>images/style.png</file>
         <file>images/template.png</file>
         <file>images/textedit.png</file>
+        <file>images/typecss.png</file>
         <file>images/typefws.png</file>
+        <file>images/typehtml.png</file>
         <file>images/typejs.png</file>
         <file>images/typeunknown.png</file>
         <file>images/typexml.png</file>
@@ -81,8 +92,6 @@
         <file>images/variable.png</file>
         <file>images/warning.png</file>
         <file>images/window_new.png</file>
-        <file>images/typecss.png</file>
-        <file>images/typehtml.png</file>
         <file>qss/coffee.qss</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>

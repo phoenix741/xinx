@@ -27,7 +27,6 @@
 
 // Qt header
 #include <QDir>
-#include <QFileDialog>
 #include <QInputDialog>
 
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
@@ -42,14 +41,7 @@ ProjectPropertyImpl::~ProjectPropertyImpl() {
 }
 
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
-	QString value = m_projectLineEdit->text();
-	if( value.isEmpty() ) 
-		value = global.m_config->config().project.defaultPath;
-		
-	value = QFileDialog::getExistingDirectory( this, tr("Project path"), value );
-	if( ! value.isEmpty() ) {
-		m_projectLineEdit->setText( QDir::toNativeSeparators( value ) );		
-	}
+	m_projectLineEdit->changePath( this, global.m_config->config().project.defaultPath );
 }
 
 void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
@@ -261,12 +253,5 @@ void ProjectPropertyImpl::on_m_servicesLineEdit_textChanged( QString text ) {
 }
 
 void ProjectPropertyImpl::on_m_logButton_clicked() {
-	QString value = m_logLineEdit->text();
-	if( value.isEmpty() ) 
-		value = global.m_config->config().project.defaultPath;
-		
-	value = QFileDialog::getExistingDirectory( this, tr("Log path"), value );
-	if( ! value.isEmpty() ) {
-		m_logLineEdit->setText( QDir::toNativeSeparators( value ) );		
-	}
+	m_logLineEdit->changePath( this, global.m_config->config().project.defaultPath );
 }

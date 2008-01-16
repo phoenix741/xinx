@@ -65,6 +65,11 @@ public:
 	 * \param parent The parent widget of the object.
 	 */
 	DirectoryEdit( const QString & contents, QWidget * parent = 0 );
+public slots:
+	/*!
+	 * Call a dialog to change the path.
+	 */
+	void changePath( QWidget * parent = NULL, const QString & defaultValue = QString() );
 protected slots:
 	/*!
 	 * Slot called when the text changed. This method change the color of the text to 

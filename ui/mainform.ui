@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -419,6 +419,9 @@
    </property>
   </action>
   <action name="m_selectAllAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/edit-select-all.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Select All</string>
    </property>
@@ -498,6 +501,9 @@
    </property>
   </action>
   <action name="m_replaceAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/find.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Replace ...</string>
    </property>
@@ -511,6 +517,9 @@
    </property>
   </action>
   <action name="m_aboutAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/help-about.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;About</string>
    </property>
@@ -519,6 +528,9 @@
    </property>
   </action>
   <action name="m_aboutQtAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/help-hint.png</iconset>
+   </property>
    <property name="text" >
     <string>About &amp;Qt</string>
    </property>
@@ -566,16 +578,25 @@
    </property>
   </action>
   <action name="m_indentAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/format-indent-more.png</iconset>
+   </property>
    <property name="text" >
     <string>Indent Code</string>
    </property>
   </action>
   <action name="m_unindentAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/format-indent-less.png</iconset>
+   </property>
    <property name="text" >
     <string>Unindent code</string>
    </property>
   </action>
   <action name="m_customApplicationAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/configure.png</iconset>
+   </property>
    <property name="text" >
     <string>Customize ...</string>
    </property>
