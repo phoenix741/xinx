@@ -31,19 +31,7 @@
 #include "ui_newprojectwizard_serviceslist.h"
 
 class XSLProject;
-
-class NewProjectWizard : public QWizard {
-	Q_OBJECT
-public:
-	enum { Page_Projet, Page_Specifique, Page_Services, Page_ServicesList, Page_Versions };
-	
-	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-
-	void loadFromProject( XSLProject * project );
-	void saveToProject( XSLProject * project );
-private:
-	XSLProject * m_project;
-};
+class NewProjectWizard;
 
 class ProjectPageImpl : public QWizardPage, private Ui::ProjectPage {
 	Q_OBJECT
@@ -52,7 +40,9 @@ public:
 	
 	int nextId() const;
 
-    void setVisible( bool visible );
+    virtual void setVisible( bool visible );
+	virtual void initializePage();
+	virtual bool isComplete () const;
 private slots:
     void on_m_ASPathBtn_clicked();
     void on_m_logPathBtn_clicked();
@@ -68,7 +58,9 @@ public:
 	SpecifiquePageImpl( QWidget * parent = 0 );
 
 	int nextId() const;
-private:
+	virtual void initializePage();
+private slots:
+	void on_m_prefixEdit_textChanged( QString text );
 };
 
 class ServicesPageImpl : public QWizardPage, private Ui::ServicesPage {
@@ -86,7 +78,12 @@ public:
 	ServicesListPageImpl( QWidget * parent = 0 );
 	
 	int nextId() const;
-private:
+private slots:
+	void on_m_webServiceBtnDel_clicked();
+	void on_m_webServiceBtnAdd_clicked();
+	void on_m_servicesLineEdit_textChanged( QString text );
+
+	friend class NewProjectWizard;
 };
 
 class VersionsPageImpl : public QWizardPage {
@@ -98,6 +95,27 @@ public:
 private:
 	QRadioButton * m_noRevisionControl;
 	QList<QRadioButton*> m_revisionBtn;
+	
+	friend class NewProjectWizard;
 };
+
+class NewProjectWizard : public QWizard {
+	Q_OBJECT
+public:
+	enum { Page_Projet, Page_Specifique, Page_Services, Page_ServicesList, Page_Versions };
+	
+	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+
+	XSLProject * createProject();
+private slots:
+	void on_customButton1_clicked();
+private:
+	XSLProject * m_project;
+	
+	ServicesListPageImpl * m_listPage;
+	VersionsPageImpl * m_versions;
+};
+
+
 
 #endif

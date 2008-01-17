@@ -72,7 +72,7 @@ WebPlugin::WebPlugin() {
 }
 
 QStringList WebPlugin::extentions() {
-	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css"; 
+	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css" << "fws"; 
 }
 
 QHash<QString,QString> WebPlugin::extentionsDescription() {
@@ -99,6 +99,8 @@ QIcon WebPlugin::icon( const QString & extention ) {
 		return QIcon( ":/images/typehtml.png" );
 	} else if( extention == "css" ) {
 		return QIcon( ":/images/typecss.png" );
+	} else if( extention == "fws" ) {
+		return QIcon( ":/images/typefws.png" );
 	} else
 		return QIcon( ":/images/typeunknown.png" );
 }

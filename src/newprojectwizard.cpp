@@ -22,24 +22,28 @@
 #include "newprojectwizard.h"
 #include "globals.h"
 #include "xinxconfig.h"
+#include "xslproject.h"
+#include "projectpropertyimpl.h"
 
 // Qt header
 #include <QDir>
+#include <QRegExpValidator>
+#include <QInputDialog>
 
 /* NewProjectWizard */
 
-NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( widget, f ) {
-    setPage( Page_Projet, new ProjectPageImpl( this ) );
-    setPage( Page_Specifique, new SpecifiquePageImpl( this ) );
-    setPage( Page_Services, new ServicesPageImpl( this ) );
-    setPage( Page_ServicesList, new ServicesListPageImpl( this ) );
-    setPage( Page_Versions, new VersionsPageImpl( this ) );
+NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( widget, f ), m_project( 0 ) {
+	setButtonText( QWizard::CustomButton1, tr("&Expert ...") );
+	connect( this, SIGNAL(customButtonClicked(int)), this, SLOT(on_customButton1_clicked()) );
+
+	setPage( Page_Projet, new ProjectPageImpl );
+    setPage( Page_Specifique, new SpecifiquePageImpl );
+    setPage( Page_Services, new ServicesPageImpl );
+    setPage( Page_ServicesList, m_listPage = new ServicesListPageImpl );
+    setPage( Page_Versions, m_versions = new VersionsPageImpl );
 
     setStartId( Page_Projet );
 
-#ifndef Q_WS_MAC
-	setWizardStyle( ModernStyle );
-#endif
 	setPixmap( QWizard::LogoPixmap, QPixmap(":/images/splash.png").scaled( QSize( 48, 48 ) ) );
 	
 	button( QWizard::CancelButton )->setIcon( QPixmap( ":/images/button_cancel.png" ) );
@@ -51,18 +55,74 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
 	setWindowTitle( tr("New Project Wizard") );
 }
 
+XSLProject * NewProjectWizard::createProject() {
+	if( ! m_project ) {
+		m_project = new XSLProject();
+
+		XSLProject::ProjectOptions options;
+
+		m_project->setProjectName( field( "project.name" ).toString() );
+		m_project->setProjectPath( QDir::fromNativeSeparators( field( "project.path" ).toString() ) );
+		m_project->setLogProjectDirectory( QDir::fromNativeSeparators( field( "project.log" ).toString() ) );
+
+		if( field( "project.derivated" ).toBool() ) {
+			m_project->setSpecifiquePrefix( field( "specifique.prefix" ).toString() );
+			m_project->setSpecifiquePathName( field( "specifique.path" ).toString() );
+			options |= XSLProject::hasSpecifique;
+		}
+		
+		int control = 0;
+		if( ! m_versions->m_noRevisionControl->isChecked() ) {
+			foreach( QRadioButton * btn, m_versions->m_revisionBtn ) {
+				control++;
+				if( btn->isChecked() )
+					break;
+			}
+		}
+		m_project->setProjectRCS( (XSLProject::enumProjectRCS)control );
+
+		if( field( "project.services" ).toBool() ) {
+			options |= XSLProject::hasWebServices;
+			QStringList & services = m_project->serveurWeb();
+			for( int i = 0; i < m_listPage->m_webServiceList->count(); i++ ) 
+				services.append( m_listPage->m_webServiceList->item( i )->text() );
+		}
+
+		m_project->setOptions( options );
+	}
+	return m_project;
+}
+
+void NewProjectWizard::on_customButton1_clicked() {
+	hide();
+	m_project = new XSLProject();
+	ProjectPropertyImpl property ( this );
+	property.loadFromProject( m_project ); // Load an empty project;	
+	if( ! property.exec() ) {
+		delete m_project; m_project = NULL;
+		reject();
+		return;
+	}
+	property.saveToProject( m_project );
+	accept();
+}
+
 /* ProjectPageImpl */
 
 ProjectPageImpl::ProjectPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 	setupUi( this );
 	setTitle( windowTitle() );
 
-	registerField( "project.name*",    m_projectNameEdit );
-    registerField( "project.as*",      m_ASPathEdit );
-    registerField( "project.log*",     m_logPathEdit );
-    registerField( "project.project*", m_projectPathEdit );
-    
-	m_ASPathEdit->setText( global.m_config->config().project.defaultPath );
+	registerField( "project.derivated", m_derivatedRadio );
+
+	registerField( "project.name*",     m_projectNameEdit );
+    registerField( "project.as",        m_ASPathEdit );
+    registerField( "project.log*",      m_logPathEdit );
+    registerField( "project.path*",     m_projectPathEdit );
+}
+
+void ProjectPageImpl::initializePage() {
+	m_ASPathEdit->setText( QDir::toNativeSeparators( global.m_config->config().project.defaultPath ) );
 }
 
 int ProjectPageImpl::nextId() const {
@@ -76,10 +136,15 @@ void ProjectPageImpl::setVisible( bool visible ) {
 	QWizardPage::setVisible( visible );
 	
 	if( visible ) {
-		wizard()->setButtonText( QWizard::CustomButton1, tr("&Expert ...") );
 		wizard()->setOption( QWizard::HaveCustomButton1, true );
 	} else
 		wizard()->setOption( QWizard::HaveCustomButton1, false );
+}
+
+bool ProjectPageImpl::isComplete () const {
+	if( ! QWizardPage::isComplete() ) return false;
+	if( ! QDir( QDir::fromNativeSeparators( m_projectPathEdit->text() ) ).exists() ) return false;
+	return true;
 }
 
 void ProjectPageImpl::on_m_ASPathBtn_clicked() {
@@ -95,24 +160,23 @@ void ProjectPageImpl::on_m_projectPathBtn_clicked() {
 }
 
 void ProjectPageImpl::on_m_projectNameEdit_textChanged( const QString & text ) {
-	m_projectPathEdit->setText( 
-			QDir( m_ASPathEdit->text() ).absoluteFilePath( 
-					QString( "j2ee/home/applications/%1/btoe" ).arg( text ) 
-			) 
+	m_projectPathEdit->setText( QDir::toNativeSeparators( 
+			QDir( QDir::fromNativeSeparators( m_ASPathEdit->text() ) ).absoluteFilePath( 
+					QString( "j2ee/home/applications/%1" ).arg( text ) 
+			) )
 	);
 }
 
 void ProjectPageImpl::on_m_ASPathEdit_textChanged( const QString & text ) {
-	m_projectPathEdit->setText( 
-			QDir( text ).absoluteFilePath( 
-					QString( "j2ee/home/applications/%1/btoe" ).arg( m_projectNameEdit->text() ) 
-			) 
+	m_projectPathEdit->setText( QDir::toNativeSeparators( 
+			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath( 
+					QString( "j2ee/home/applications/%1" ).arg( m_projectNameEdit->text() ) 
+			) )
 	);
-	m_logPathEdit->setText( 
-			QDir( text ).absoluteFilePath( "j2ee/home/applications/log" ) 
-	);
+	m_logPathEdit->setText( QDir::toNativeSeparators( 
+			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath( "j2ee/home/log" ) 
+	) );
 }
-
 
 /* SpecifiquePageImpl */
 
@@ -122,14 +186,23 @@ SpecifiquePageImpl::SpecifiquePageImpl( QWidget * parent ) : QWizardPage( parent
 	setSubTitle( tr("Define if the project is specifique or not. A specifique (derivated) project "
 					"is used when original's file can't be modified.") );
 
+	m_specifiquePathNameEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiquePathNameEdit ) );
+					
     registerField( "specifique.prefix*",    m_prefixEdit );
     registerField( "specifique.path*",      m_specifiquePathNameEdit );
+}
 
-    wizard()->setOption( QWizard::HaveCustomButton1, false );
+void SpecifiquePageImpl::initializePage() {
+	m_prefixEdit->setText( QString("P%1").arg( field("project.name").toString().left( 2 ) ).toUpper() );
+	m_specifiquePathNameEdit->setText( global.m_config->config().project.defaultProjectPathName );
 }
 
 int SpecifiquePageImpl::nextId() const {
 	return NewProjectWizard::Page_Services;
+}
+
+void SpecifiquePageImpl::on_m_prefixEdit_textChanged( QString text ) {
+	m_prefixEdit->setText( text.toUpper() );
 }
 
 /* ServicesPageImpl */
@@ -140,7 +213,7 @@ ServicesPageImpl::ServicesPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 	setSubTitle( tr("Define if the project contains WebServices. WebServices can be used to "
 					"query database.") );
 
-    wizard()->setOption( QWizard::HaveCustomButton1, false );
+	registerField( "project.services", m_addWebServicesButton );
 }
 
 int ServicesPageImpl::nextId() const {
@@ -157,6 +230,27 @@ ServicesListPageImpl::ServicesListPageImpl( QWidget * parent ) : QWizardPage( pa
 	setTitle( windowTitle() );
 	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
 					"list contains link to WSDL.") );
+	
+	registerField( "services.list", m_webServiceList );
+}
+
+void ServicesListPageImpl::on_m_webServiceBtnDel_clicked() {
+	delete m_webServiceList->currentItem();
+	
+	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
+}
+
+void ServicesListPageImpl::on_m_webServiceBtnAdd_clicked() {
+	QString text = QInputDialog::getText( this, tr("Add WebService"), tr("URL of the WebServices"), QLineEdit::Normal, "http://localhost:8888/gce/services/?WSDL" );
+	if( ! text.isEmpty() )
+		m_webServiceList->addItem( text );
+
+	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
+}
+
+void ServicesListPageImpl::on_m_servicesLineEdit_textChanged( QString text ) {
+	QListWidgetItem * item = m_webServiceList->currentItem();
+	if( item ) item->setText( text );
 }
 
 int ServicesListPageImpl::nextId() const {
@@ -181,6 +275,7 @@ VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 		layout->addWidget( button );
 	}
 	setLayout( layout );
+
 }
 
 int VersionsPageImpl::nextId() const {

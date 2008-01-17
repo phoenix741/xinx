@@ -142,6 +142,7 @@ void PrivateMainformImpl::createSubMenu() {
 	// New sub menu
 	QMenu * newMenu = new QMenu( m_parent );
 	foreach( QString extention, global.m_pluginsLoader->extentions().keys() ) {
+		if( extention == "fws" ) continue; // TODO: Make a plugins
 		QAction * action = new QAction( 
 				global.m_pluginsLoader->iconOfSuffix( extention ),
 				tr( "New %1" ).arg( global.m_pluginsLoader->extentions().value( extention ) ),
@@ -1529,26 +1530,21 @@ void MainformImpl::newProject() {
 	XINX_TRACE ( "MainformImpl::newProject", "()" );
 
 	NewProjectWizard wizard;
-	wizard.exec();
-	
-	XSLProject * project = new XSLProject();
-	ProjectPropertyImpl property ( this );
-	property.loadFromProject( project ); // Load an empty project;	
-	if( ! property.exec() ) return;
+	if( wizard.exec() ) {
+		XSLProject * project = wizard.createProject();
 		
-	property.saveToProject( project );
+		QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
+		if( filename.isEmpty() ) {
+			delete project;
+			return;
+		}
+		d->m_lastProjectOpenedPlace = project->projectPath();
 
-	QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
-	if( filename.isEmpty() ) {
+		project->saveToFile( filename );
 		delete project;
-		return;
+		
+		openProject( filename );
 	}
-	d->m_lastProjectOpenedPlace = project->projectPath();
-
-	project->saveToFile( filename );
-	delete project;
-	
-	openProject( filename );
 }
 
 void MainformImpl::openProject( const QString & filename ) {

@@ -90,5 +90,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>m_webServiceList</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>m_servicesLineEdit</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>194</x>
+     <y>156</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>196</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
