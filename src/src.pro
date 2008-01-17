@@ -1,6 +1,5 @@
 TEMPLATE = app
 TARGET = xinx
-
 DESTDIR += ../bin
 MOC_DIR += ../build
 OBJECTS_DIR += ../build
@@ -11,8 +10,8 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-INCLUDEPATH += ../src/ ../include
-
+INCLUDEPATH += ../src/ \
+    ../include
 CONFIG += debug \
     exceptions \
     qdbus \
@@ -22,11 +21,20 @@ CONFIG += debug \
     x86
 QT += network \
     xml
-    
-LIBS = -L../bin/plugins -L../bin/ -lxinxplugins -lwebplugin
-POST_TARGETDEPS = ../bin/plugins/libwebplugin.a \
-	../bin/libxinxplugins.a
 
+LIBS = -L../bin/plugins \
+    -L../bin/ 
+CONFIG(debug) {
+	LIBS += -lxinxpluginsd \
+    	-lwebplugind
+	POST_TARGETDEPS = ../bin/plugins/libwebplugind.a \
+    	../bin/libxinxpluginsd.a
+} else {
+	LIBS += -lxinxplugins \
+	    -lwebplugin
+	POST_TARGETDEPS = ../bin/plugins/libwebplugin.a \
+    	../bin/libxinxplugins.a
+}
 DISTFILES = ../CHANGELOG \
     ../COPYING \
     ../Doxyfile \
@@ -45,7 +53,6 @@ DISTFILES = ../CHANGELOG \
     ../translations/*.ts \
     ../ui/*.ui \
     ../xml/*.xnx
-
 win32 { 
     QMAKE_LFLAGS = -limagehlp \
         -lpsapi
@@ -198,4 +205,3 @@ contains( CONFIG, qdbus ) {
     SOURCES += studioadaptor.cpp \
         studiointerface.cpp
 }
-
