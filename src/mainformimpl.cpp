@@ -1684,7 +1684,15 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
 		CommitMessageDialogImpl dlg;
-
+/*
+		QString changeLog = QDir( global.m_project->projectPath() ).absoluteFilePath( "changelog" );
+		QFile changelogFile( changelog );
+		if( changelogFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+			QTextStream stream( changelogFile );
+			stream << QDateTime::currentDateTime().toString() << endl;
+			stream << message << endl;
+		}		
+*/
 		if( list.count() == 0 ) 
 			dlg.setFilesOperation( rcs->operations( QStringList() << global.m_project->projectPath() ) );
 		else
@@ -1698,6 +1706,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
 		d->m_rcslogDock->init();
 		d->m_rcsExecute = true;
+		
 		rcs->commit( dlg.filesOperation(), message );
 		d->updateActions();
 		d->m_rcsVisible = d->m_rcslogDock->isVisible();

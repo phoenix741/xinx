@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -136,6 +136,9 @@ void PrivateCustomDialogImpl::showConfig() {
 	// CVS: Create any directories that exist in the repository
 	m_parent->m_cvsCreateDirCheckBox->setChecked( m_config.config().cvs.createDirectories );
 	
+	// CVS : Create Change Log automatically
+	m_parent->m_changeLogCheckBox->setChecked( m_config.config().cvs.createChangelog );
+
 	// Syntax highlighter
 	m_previousFormat = QString();
 	m_parent->m_formatsListView->clear();
@@ -236,6 +239,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	
 	// CVS: Create any directories that exist in the repository
 	m_config.config().cvs.createDirectories = m_parent->m_cvsCreateDirCheckBox->isChecked();
+
+	// CVS : Create Change Log automatically
+	m_config.config().cvs.createChangelog = m_parent->m_changeLogCheckBox->isChecked();
 }
 
 /* CustomDialogImpl */

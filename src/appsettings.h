@@ -43,6 +43,7 @@ struct struct_cvs {
 	int compressionLevel;
 	bool pruneEmptyDirectories;
 	bool createDirectories;
+	bool createChangelog;
 };
 
 struct struct_project {

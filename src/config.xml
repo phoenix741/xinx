@@ -23,6 +23,7 @@
 		<value name="Compression Level" type="int" default="9"/>
 		<value name="Prune Empty Directories" type="bool" default="no"/>
 		<value name="Create Directories" type="bool" default="yes"/>
+		<value name="Create ChangeLog" type="bool" default="no"/>
 	</type>
 	<type name="Editor">
 		<value name="Autoindent On Saving" type="bool" default="no"/>

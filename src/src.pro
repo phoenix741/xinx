@@ -24,7 +24,7 @@ QT += network \
 
 LIBS = -L../bin/plugins \
     -L../bin/ 
-CONFIG(debug) {
+win32:CONFIG(debug) {
 	LIBS += -lxinxpluginsd \
     	-lwebplugind
 	POST_TARGETDEPS = ../bin/plugins/libwebplugind.a \

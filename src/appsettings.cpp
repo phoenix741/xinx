@@ -167,6 +167,7 @@ struct_cvs AppSettings::getDefaultCvs() {
 	value.compressionLevel = 9;
 	value.pruneEmptyDirectories = false;
 	value.createDirectories = true;
+	value.createChangelog = false;
 
 	return value;
 }
@@ -179,6 +180,7 @@ struct_cvs AppSettings::getSettingsCvs( QSettings * settings, const QString & pa
 	value.compressionLevel = settings->value( "Compression Level", defaultValue.compressionLevel ).toInt();
 	value.pruneEmptyDirectories = settings->value( "Prune Empty Directories", defaultValue.pruneEmptyDirectories ).toBool();
 	value.createDirectories = settings->value( "Create Directories", defaultValue.createDirectories ).toBool();
+	value.createChangelog = settings->value( "Create ChangeLog", defaultValue.createChangelog ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -191,6 +193,7 @@ void AppSettings::setSettingsCvs( QSettings * settings, const QString & path, st
 	settings->setValue( "Compression Level", value.compressionLevel );
 	settings->setValue( "Prune Empty Directories", value.pruneEmptyDirectories );
 	settings->setValue( "Create Directories", value.createDirectories );
+	settings->setValue( "Create ChangeLog", value.createChangelog );
 
 	settings->endGroup();
 }

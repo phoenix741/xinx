@@ -70,6 +70,7 @@ private:
 	PrivateCustomDialogImpl * d;
 	friend class PrivateCustomDialogImpl;
 };
+
 #endif
 
 
