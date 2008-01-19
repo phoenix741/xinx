@@ -1702,9 +1702,14 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 
 		if( global.m_config->config().cvs.createChangelog ) {
 			QFile changeLogFile( changeLog );
-			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
 				QTextStream stream( &changeLogFile );
-				stream << QDateTime::currentDateTime().toString() << " : " << message << endl;
+				stream << QDate::currentDate().toString( Qt::ISODate ) << " " << QTime::currentTime().toString( Qt::ISODate ) << " : ";
+				if( message.isEmpty() )
+					stream << tr( "<Pas de message>" );
+				else
+					stream << message;
+				stream << endl;
 			}
 		}
 
