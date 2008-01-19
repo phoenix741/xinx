@@ -33,6 +33,7 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QContextMenuEvent>
+#include <QMetaObject>
 
 /* PrivateProjectDirectoryDockWidget */
 
@@ -139,6 +140,7 @@ void PrivateProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClic
 	if( idx.isValid() && (! m_dirModel->isDir( idx )) )
 		emit m_parent->open( m_dirModel->filePath( idx ) );
 }
+
 
 /* ProjectDirectoryDockWidget */
 	

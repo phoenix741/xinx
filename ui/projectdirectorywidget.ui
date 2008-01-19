@@ -9,20 +9,41 @@
     <height>284</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout" >
+   <property name="leftMargin" >
     <number>0</number>
    </property>
-   <property name="spacing" >
+   <property name="topMargin" >
     <number>0</number>
    </property>
-   <item>
+   <property name="rightMargin" >
+    <number>0</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>0</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>0</number>
+   </property>
+   <property name="verticalSpacing" >
+    <number>3</number>
+   </property>
+   <item row="0" column="0" colspan="2" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QToolButton" name="m_updateProjectBtn" >
@@ -66,17 +87,27 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0" colspan="2" >
     <widget class="QLabel" name="label" >
      <property name="text" >
       <string>Filtre :</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0" >
+    <widget class="QToolButton" name="m_clearToolButton" >
+     <property name="text" >
+      <string>Clear</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../application.qrc" >:/images/edit-clear-locationbar-ltr.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" >
     <widget class="QLineEdit" name="m_filtreLineEdit" />
    </item>
-   <item>
+   <item row="3" column="0" colspan="2" >
     <widget class="QTreeView" name="m_projectDirectoryTreeView" >
      <property name="selectionMode" >
       <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -88,5 +119,22 @@
  <resources>
   <include location="../application.qrc" />
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>m_clearToolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>m_filtreLineEdit</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>12</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>75</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

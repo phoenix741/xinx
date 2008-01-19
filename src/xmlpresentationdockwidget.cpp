@@ -32,17 +32,23 @@
 
 /* PrivateXmlPresentationDockWidget */
 
-PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_watcher(0), m_parent( parent ) {
+PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
 	m_xmlPresentationWidget->setupUi( contentWidget );
 	m_parent->setWidget( contentWidget );
 	
+	m_timerTextChanged.setSingleShot( true );
+	m_timerTextChanged.setInterval( 500 );
+	
 	initXmlPresentationCombo();
 	connect( &global, SIGNAL(projectChanged()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
 	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
+	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
+	connect( &m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()) );
 }
+
 
 PrivateXmlPresentationDockWidget::~PrivateXmlPresentationDockWidget() {
 	presentationActivated( 0 );
@@ -73,6 +79,8 @@ void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
 		delete m_watcher;
 		m_watcher = NULL;
 		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+		delete m_sortFilterModel;
+		m_sortFilterModel = NULL;
 		delete m_model;
 		m_model = NULL;
 		m_openingFile = QString();
@@ -140,8 +148,8 @@ void PrivateXmlPresentationDockWidget::threadrun() {
 	QFile presentation( m_openingFile );
 	QDomDocument document;
 	if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {
-		delete m_model; delete m_watcher;
-		m_model = NULL; m_watcher = NULL;
+		delete m_sortFilterModel; delete m_model; delete m_watcher;
+		m_sortFilterModel = NULL; m_model = NULL; m_watcher = NULL;
 		
 		m_model = new XmlPresentationModel( document );
 	}
@@ -150,12 +158,58 @@ void PrivateXmlPresentationDockWidget::threadrun() {
 void PrivateXmlPresentationDockWidget::threadTerminated() {
 	m_watcher = new FileWatcher( m_openingFile );
 	connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
-	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_model );
+	m_sortFilterModel = new RecursiveFilterProxyModel( this );
+	m_sortFilterModel->setSourceModel( m_model );
+	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 1 );
 	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 1 );
 }
 
+void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text ) {
+	Q_UNUSED( text );
+	m_timerTextChanged.start();
+}
+
+void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
+	QString text = m_xmlPresentationWidget->m_filtreLineEdit->text();
+	if( m_sortFilterModel ) {
+		m_sortFilterModel->setFilterRegExp( text );
+		if( text.isEmpty() ) {
+			m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
+		} else
+			m_xmlPresentationWidget->m_presentationTreeView->expandAll();
+	}
+}
+
+
+/* RecursiveFilterProxyModel */
+
+PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::RecursiveFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ) {
+	
+}
+
+bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::canBeShow( const QModelIndex & index ) const {
+	bool show = sourceModel()->data( index ).toString().contains( filterRegExp() );
+	
+	if( ! show ) {
+		int r = sourceModel()->rowCount( index );
+		for( int i = 0; i < r; i++ ) {
+			QModelIndex child = sourceModel()->index( i, filterKeyColumn(), index );
+			if( canBeShow( child ) )
+				return true;
+		}
+		return false;
+	} else 
+		return true;
+}
+
+bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const {
+	XINX_ASSERT( filterKeyColumn() != -1 );
+	
+	QModelIndex index = sourceModel()->index( source_row, filterKeyColumn(), source_parent );
+	return canBeShow( index );
+}
 
 /* XmlPresentationDockWidget */
 

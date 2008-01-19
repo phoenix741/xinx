@@ -30,17 +30,30 @@
 
 // Qt header
 #include <QThread>
+#include <QSortFilterProxyModel>
+#include <QTimer>
 
 class PrivateXmlPresentationDockWidget : public XinxThread {
 	Q_OBJECT
 public:
+	
+	class RecursiveFilterProxyModel : public QSortFilterProxyModel {
+	public:
+		RecursiveFilterProxyModel( QObject * parent = 0 );
+	protected:
+		virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
+		bool canBeShow( const QModelIndex & index ) const;
+	};
+	
 	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
 	~PrivateXmlPresentationDockWidget();
 	
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
 	QString m_logPath, m_openingFile;
 	XmlPresentationModel * m_model;
+	QSortFilterProxyModel * m_sortFilterModel;
 	FileWatcher * m_watcher;
+	QTimer m_timerTextChanged;
 	
 	void open( const QString& filename );
 	void setComboToolTip( const QString & filename );
@@ -49,6 +62,9 @@ public slots:
 	void initXmlPresentationCombo();
 	void presentationActivated( int index );
 	void threadTerminated();
+	
+	void filterTextChanged( const QString & text );
+	void filterTextChangedTimer();
 protected:
 	virtual void threadrun();
 private:
