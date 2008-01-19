@@ -61,6 +61,7 @@
 #include <QTextStream>
 #include <QDataStream>
 #include <QClipboard>
+#include <QDateTime>
 
 /* PrivateMainformImpl */
 
@@ -1683,23 +1684,29 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
+		QString changeLog;
 		CommitMessageDialogImpl dlg;
-/*
-		QString changeLog = QDir( global.m_project->projectPath() ).absoluteFilePath( "changelog" );
-		QFile changelogFile( changelog );
-		if( changelogFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-			QTextStream stream( changelogFile );
-			stream << QDateTime::currentDateTime().toString() << endl;
-			stream << message << endl;
-		}		
-*/
-		if( list.count() == 0 ) 
-			dlg.setFilesOperation( rcs->operations( QStringList() << global.m_project->projectPath() ) );
-		else
-			dlg.setFilesOperation( rcs->operations( list ) );
+		QStringList listOfFile = list;
+		if( listOfFile.count() == 0 ) 
+			listOfFile << global.m_project->projectPath();
+
+		if( global.m_config->config().cvs.createChangelog ) {
+			changeLog = QDir( global.m_project->projectPath() ).absoluteFilePath( "changelog" );
+			listOfFile << changeLog;
+		}
+
+		dlg.setFilesOperation( rcs->operations( listOfFile ) );
 			
 		if( ! dlg.exec() ) return ;
 		QString message = dlg.messages();
+
+		if( global.m_config->config().cvs.createChangelog ) {
+			QFile changeLogFile( changeLog );
+			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+				QTextStream stream( &changeLogFile );
+				stream << QDateTime::currentDateTime().toString() << " : " << message << endl;
+			}
+		}
 
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
