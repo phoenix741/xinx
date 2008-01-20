@@ -310,81 +310,64 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 	return true;	
 }
 
-void WebServicesEditor::serialize( QDataStream & stream, bool content ) {
-	Editor::serialize( stream, content );
+void WebServicesEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
+	Editor::serialize( data, content );
 	d->store( d->m_paramList->currentText() );
 
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,     	        QVariant( m_fileName ) );
-	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_SERVICES,         QVariant( d->m_servicesList->currentText() ) );
-	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_ACTIONS,          QVariant( d->m_actionList->currentText() ) );
-	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_PARAMS,           QVariant( d->m_paramList->currentText() ) );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         		QVariant( m_view->textCursor().position() ) );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         		QVariant( isModified() ) );
+	data->writeProperty( "FileName", QVariant( m_fileName ) );
+	data->writeProperty( "Service", QVariant( d->m_servicesList->currentText() ) );
+	data->writeProperty( "Action", QVariant( d->m_actionList->currentText() ) );
+	data->writeProperty( "Param", QVariant( d->m_paramList->currentText() ) );
+	data->writeProperty( "Position", QVariant( m_view->textCursor().position() ) );
+	data->writeProperty( "Modified", QVariant( isModified() ) );
+
+	int i = 0;
 	if( content && m_view->document()->isModified() ) {
 		foreach( QString param, d->m_paramValues.keys() ) {
-			setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_KEY, 	 	QVariant( param ) );
-			setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_VALUE, 	QVariant( d->m_paramValues[ param ] ) );
+			data->writeProperty( QString( "Key_%1" ).arg( i ), QVariant( param ) );
+			data->writeProperty( QString( "Value_%1" ).arg( i++ ), QVariant( d->m_paramValues[ param ] ) );
 		}
+		data->writeProperty( "KeyCount", QVariant( i ) );
 	}
+
+	i = 0;
 	foreach( int line, bookmarks() ) {
-		setSerializedData( stream, (int)FileEditor::SERIALIZED_BOOKMARK,			QVariant( line ) );
+		data->writeProperty( QString( "Bookmark_%1" ).arg( i++ ), QVariant( line ) );
 	}
-	setSerializedData( stream, (int)WebServicesEditor::SERIALIZED_ENDOFWSEDITOR,  QVariant() );
+	data->writeProperty( "BookmarkCount", QVariant( i ) );
 }
 
-void WebServicesEditor::deserialize( QDataStream & stream ) {
-	int type;
-	QVariant variant;
-	
+void WebServicesEditor::deserialize( XSLProjectSessionEditor * data ) {
 	int position = 0;
 	bool isModified = false;
 	QString key, value, param;
 	
 	d->m_paramValues.clear(); d->m_oldParamValue = QString();
 
-	Editor::deserialize( stream );
+	Editor::deserialize( data );
 	
-	do {
-		getSerializedData( stream, type, variant );
-		if( (enum FileEditor::serializedDatas)type != WebServicesEditor::SERIALIZED_ENDOFFILEEDITOR )
-		switch( (enum FileEditor::serializedDatas)type ) {
-		case FileEditor::SERIALIZED_FILENAME:
-			m_fileName = variant.toString();
-			break;
-		case FileEditor::SERIALIZED_POSITION:
-			position = variant.toInt();
-			break;
-		case FileEditor::SERIALIZED_MODIFIED:
-			isModified = variant.toBool();
-			break;
-		case FileEditor::SERIALIZED_BOOKMARK:
-			setBookmark( variant.toInt(), true );
-			break;
-		default:
-			;
-		}
-		switch( (enum WebServicesEditor::serializedDatas)type ) {
-		case WebServicesEditor::SERIALIZED_SERVICES:
-			d->m_serviceName = variant.toString();
-			break;
-		case WebServicesEditor::SERIALIZED_ACTIONS:
-			d->m_operationName = variant.toString();
-			break;
-		case WebServicesEditor::SERIALIZED_PARAMS:
-			param = variant.toString();
-			break;
-		case WebServicesEditor::SERIALIZED_KEY:
-			key = variant.toString();
-			break;
-		case WebServicesEditor::SERIALIZED_VALUE:
-			value = variant.toString();
-			d->m_paramValues[ key ] = value;
-			break;
-		case WebServicesEditor::SERIALIZED_ENDOFWSEDITOR:
-			;
-		}
-	} while( (enum WebServicesEditor::serializedDatas)type != WebServicesEditor::SERIALIZED_ENDOFWSEDITOR );
+	m_fileName = data->readProperty( "FileName" ).toString();
+	setSuffix( QFileInfo( m_fileName ).suffix() );
 
+	position  = data->readProperty( "Position" ) .toInt();
+	isModified = data->readProperty( "Modified" ).toBool();
+
+	int bc = data->readProperty( "BookmarkCount" ).toInt();
+	for( int i = 0 ; i < bc; i++ ) {	
+		setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
+	}
+
+	d->m_serviceName = data->readProperty( "Service" ).toString();
+	d->m_operationName = data->readProperty( "Action" ).toString();
+	param = data->readProperty( "Param" ).toString();
+	
+	int pc = data->readProperty( "KeyCount" ).toInt();
+	for( int i = 0 ; i < pc; i++ ) {	
+		QString name  = data->readProperty( QString( "Key_%1" ).arg( i ) ).toString(),
+				value = data->readProperty( QString( "Value_%1" ).arg( i ) ).toString();
+		
+		d->m_paramValues[ name ] = value;
+	}
 	
 	if( d->m_paramValues.keys().count() == 0 ) {
 		if( ! m_fileName.isEmpty() )

@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "editor.h"
+#include "xslproject.h"
 
 // Qt header
 #include <QAction>
@@ -150,37 +151,25 @@ QIcon Editor::icon() const {
 	return QIcon( ":/images/typeunknown.png" );
 }
 
-void Editor::getSerializedData( QDataStream & stream, int & type, QVariant & data ) {
-	stream >> type;
-	stream >> data;
-}
-
-void Editor::setSerializedData( QDataStream & stream, int type, QVariant data ) {
-	stream << type;
-	stream << data;
-}
-
-
-void Editor::serialize( QDataStream & stream, bool content ) {
+void Editor::serialize( XSLProjectSessionEditor * data, bool content ) {
 	Q_UNUSED( content );
-	stream << QString( metaObject()->className() ); // Store the class name
+	data->writeProperty( "ClassName", metaObject()->className() ); // Store the class name
 }
 
-void Editor::deserialize( QDataStream & stream ) {
-	Q_UNUSED( stream );
+void Editor::deserialize( XSLProjectSessionEditor * data ) {
+	Q_UNUSED( data );
 	// Dont't read the class name, already read.
 }
 
-Editor * Editor::deserializeEditor( QDataStream & stream ) {
-	QString name;
-	stream >> name;
+Editor * Editor::deserializeEditor( XSLProjectSessionEditor * data ) {
+	QString name = data->readProperty( "ClassName" ).toString();
 
 	int id = QMetaType::type( name.toAscii() );
 	if( id != -1 ) {
 		void * editorPtr = QMetaType::construct( id );
 		if( editorPtr ) {
 			Editor * editor = static_cast<Editor*>( editorPtr );
-			editor->deserialize( stream );
+			editor->deserialize( data );
 			return editor;
 		} else
 			return NULL;

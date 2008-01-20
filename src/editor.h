@@ -30,6 +30,7 @@
 class QAbstractItemModel;
 class QAction;
 class PrivateEditor;
+class XSLProjectSessionEditor;
 
 /*!
  * Base class for construct editor for XINX. This base class contains minimum method
@@ -160,18 +161,6 @@ public:
 	virtual QIcon icon() const;
 	
 	/*!
-	 * Get a serialized data of type QVariant. Do no process the type.
-	 * Store in \e type the type of the data, and in \e data the content, of the 
-	 * data. If an old version can't read datas, ingored.
-	 */
-	virtual void getSerializedData( QDataStream & stream, int & type, QVariant & data );
-	
-	/*!
-	 * Serialize data \e data with a type \e type.
-	 */  
-	virtual void setSerializedData( QDataStream & stream, int type, QVariant data );
-	
-	/*!
 	 * Serialize the editor and return the value in a byte array. The serialization save internal data of
 	 * the editor (modified, content, position of cursor, ...).
 	 * \param stream where datas must be stored.
@@ -179,7 +168,7 @@ public:
 	 * the state.
 	 * \sa deserialze(), deserialzeEditor()
 	 */
-	virtual void serialize( QDataStream & stream, bool content );
+	virtual void serialize( XSLProjectSessionEditor * data, bool content );
 	
 	/*!
 	 * Restore the editor with the content of the XML document. The deserialization restore the
@@ -187,14 +176,14 @@ public:
 	 * \param stream from what the data must be read
 	 * \sa serialize(), deserializeEditor()
 	 */
-	virtual void deserialize( QDataStream & stream );
+	virtual void deserialize( XSLProjectSessionEditor * data );
 	/*!
 	 * Create the right editor and deserualize it.
 	 * \param stream from what the data must be read
 	 * \return An editor
 	 * \sa serialize(), deserialize()
 	 */
-	static Editor * deserializeEditor( QDataStream & stream );	
+	static Editor * deserializeEditor( XSLProjectSessionEditor * data );	
 
 	/*!
 	 * Return a string reprensents the content of the \em i bookmark.

@@ -53,13 +53,16 @@ class XSLProjectSession;
 class XSLProjectSessionEditor : public QObject {
 	Q_OBJECT
 public:
-	XSLProjectSessionEditor( QDomElement node, XSLProjectSession * parent = 0 );
-	virtual ~XSLProjectSessionEditor();
+	XSLProjectSessionEditor( XSLProjectSession * parent = 0 );
+	~XSLProjectSessionEditor();
+	
+	void loadFromNode( const QDomElement & element );
+	void saveToNode( QDomDocument & document, QDomElement & element );
 	
 	void writeProperty( const QString & key, QVariant value );
 	QVariant readProperty( const QString & key );
 private:
-	QDomElement m_node;
+	QHash<QString,QVariant> m_properties;
 	XSLProjectSession * m_parent;
 };
 
@@ -102,10 +105,9 @@ public:
 	 */
 	QStringList & lastOpenedFile();
 	
-	/* Le XSLProjectEditor s'auto enregistre et s'auto désenregistre */
 	const QList<XSLProjectSessionEditor*> & serializedEditors() const;
 private:
-	QDomDocument m_document;
+	QString m_filename;
 	QStringList m_lastOpenedFile;
 	QList<XSLProjectSessionEditor*> m_sessions;
 	
@@ -201,18 +203,9 @@ public:
 	const QString & fileName() const;
 
 	/*!
-	 * List all the last opend files in the project.
-	 * \return the list of the last opend file.
+	 * Return the session object used to store session information.
 	 */
-	QStringList & lastOpenedFile();
-	
-	/*!
-	 * List of all saved sessions editors. All informations about sessions are stored in a QByteArray.
-	 * This to made more flexible the deserialization. The file name is stored in the editor to get it
-	 * easily.
-	 * \return list of structSessions;
-	 */
-	QList<QByteArray> & sessionsEditor();
+	XSLProjectSession * session() const;
 	
 	/*!
 	 * Save the session in the file. 

@@ -684,13 +684,13 @@ void PrivateMainformImpl::updateRecentFiles() {
 
 	int numRecentFiles;
 	if( global.m_project ) {
-		numRecentFiles = qMin( global.m_project->lastOpenedFile().size(), MAXRECENTFILES );
+		numRecentFiles = qMin( global.m_project->session()->lastOpenedFile().size(), MAXRECENTFILES );
 
 		for( int i = 0; i < numRecentFiles; i++ ) {
-			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->lastOpenedFile()[i] ).fileName() );
+			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->session()->lastOpenedFile()[i] ).fileName() );
 			m_recentFileActs[i]->setIcon( global.m_pluginsLoader->iconOfSuffix( QFileInfo( text ).suffix() ) );
 			m_recentFileActs[i]->setText( text );
-			m_recentFileActs[i]->setData( global.m_project->lastOpenedFile()[i] );
+			m_recentFileActs[i]->setData( global.m_project->session()->lastOpenedFile()[i] );
 			m_recentFileActs[i]->setVisible( true );
 		}
 	} else 
@@ -1470,11 +1470,11 @@ void MainformImpl::openFile( const QString & filename ) {
 
 	// Add recent action
 	if( global.m_project ) {
-		global.m_project->lastOpenedFile().removeAll( filename );
-		global.m_project->lastOpenedFile().prepend( filename );
+		global.m_project->session()->lastOpenedFile().removeAll( filename );
+		global.m_project->session()->lastOpenedFile().prepend( filename );
      
-		while( global.m_project->lastOpenedFile().size() > MAXRECENTFILES )
-			global.m_project->lastOpenedFile().removeLast();
+		while( global.m_project->session()->lastOpenedFile().size() > MAXRECENTFILES )
+			global.m_project->session()->lastOpenedFile().removeLast();
 	}
 
 	// Load the file in the editor
@@ -1573,9 +1573,8 @@ void MainformImpl::openProject( const QString & filename ) {
 			global.m_config->config().project.recentProjectFiles.removeLast();
 
 		m_tabEditors->setUpdatesEnabled( false );
-		foreach( QByteArray data, global.m_project->sessionsEditor() ) {
-			QDataStream stream( &data, QIODevice::ReadOnly );
-			Editor * editor = Editor::deserializeEditor( stream );
+		foreach( XSLProjectSessionEditor * data, global.m_project->session()->serializedEditors() ) {
+			Editor * editor = Editor::deserializeEditor( data );
 			if( editor )
 				m_tabEditors->newFileEditor( editor );
 			else
@@ -1615,12 +1614,9 @@ void MainformImpl::saveProject( bool withSessionData ) {
 
 	XINX_ASSERT( global.m_project );
 	
-	global.m_project->sessionsEditor().clear();
+	qDeleteAll( global.m_project->session()->serializedEditors() );
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		QByteArray datas;
-		QDataStream stream( &datas, QIODevice::WriteOnly );
-		m_tabEditors->editor( i )->serialize( stream, withSessionData );
-		global.m_project->sessionsEditor().append( datas );
+		m_tabEditors->editor( i )->serialize( new XSLProjectSessionEditor( global.m_project->session() ), withSessionData );
 	}
 	global.m_project->saveOnlySession();
 }

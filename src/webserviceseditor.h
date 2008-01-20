@@ -47,20 +47,8 @@ public:
 	virtual void loadFile( const QString &fileName = "" );
 	virtual bool saveFile( const QString &fileName = "" );
 
-	/*!
-	 * Enumeration of datas who can be serialised
-	 */ 
-	enum serializedDatas {
-		SERIALIZED_SERVICES       = 2001, ///< The serialized services name
-		SERIALIZED_ACTIONS        = 2002, ///< The serialized actions name
-		SERIALIZED_PARAMS         = 2003, ///< The serialized params name
-		SERIALIZED_KEY            = 2004, ///< The serialized params name
-		SERIALIZED_VALUE          = 2005, ///< The serialized params name
-		SERIALIZED_ENDOFWSEDITOR  = 2999  ///< The last element;
-	};
-
-	virtual void serialize( QDataStream & stream, bool content );
-	virtual void deserialize( QDataStream & stream );
+	virtual void serialize( XSLProjectSessionEditor * data, bool content );
+	virtual void deserialize( XSLProjectSessionEditor * data );
 
 	virtual void setModified( bool modified );
 	virtual bool isModified();

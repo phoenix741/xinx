@@ -672,54 +672,41 @@ bool FileEditor::saveFile( const QString & fileName ){
 	return true;	
 }
 
-void FileEditor::serialize( QDataStream & stream, bool content ) {
-	Editor::serialize( stream, content );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_FILENAME,         QVariant( m_fileName ) );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_POSITION,         QVariant( m_view->textCursor().position() ) );
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_MODIFIED,         QVariant( isModified() ) );
+void FileEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
+	Editor::serialize( data, content );
+	data->writeProperty( "FileName", QVariant( m_fileName ) );
+	data->writeProperty( "Position", QVariant( m_view->textCursor().position() ) );
+	data->writeProperty( "Modified", QVariant( isModified() ) );
+	
 	if( content && m_view->document()->isModified() ) {
-		setSerializedData( stream, (int)FileEditor::SERIALIZED_CONTENT, 	 QVariant( m_view->toPlainText() ) );
+		data->writeProperty( "Content", QVariant( m_view->toPlainText() ) );
 	}
+	
+	int i = 0;
 	foreach( int line, m_numbers->listOfBookmark() ) {
-		setSerializedData( stream, (int)FileEditor::SERIALIZED_BOOKMARK,	 QVariant( line ) );
+		data->writeProperty( QString( "Bookmark_%1" ).arg( i++ ), QVariant( line ) );
 	}
-	setSerializedData( stream, (int)FileEditor::SERIALIZED_ENDOFFILEEDITOR,  QVariant() );
+	data->writeProperty( "BookmarkCount", QVariant( i ) );
 }
 
-void FileEditor::deserialize( QDataStream & stream ) {
-	int type;
-	QVariant variant;
-	
+void FileEditor::deserialize( XSLProjectSessionEditor * data ) {
 	int position = 0;
 	bool isModified = false;
 	QString text;
 	
-	Editor::deserialize( stream );
+	Editor::deserialize( data );
 	
-	do {
-		getSerializedData( stream, type, variant );
-		if( (enum FileEditor::serializedDatas)type != FileEditor::SERIALIZED_ENDOFFILEEDITOR )
-		switch( (enum FileEditor::serializedDatas)type ) {
-		case FileEditor::SERIALIZED_FILENAME:
-			m_fileName = variant.toString();
-			setSuffix( QFileInfo( m_fileName ).suffix() );
-			break;
-		case FileEditor::SERIALIZED_POSITION:
-			position = variant.toInt();
-			break;
-		case FileEditor::SERIALIZED_MODIFIED:
-			isModified = variant.toBool();
-			break;
-		case FileEditor::SERIALIZED_CONTENT:
-			text = variant.toString();
-			break;
-		case FileEditor::SERIALIZED_BOOKMARK:
-			setBookmark( variant.toInt(), true );
-			break;
-		case FileEditor::SERIALIZED_ENDOFFILEEDITOR:
-			;
-		}
-	} while( (enum FileEditor::serializedDatas)type != FileEditor::SERIALIZED_ENDOFFILEEDITOR );
+	m_fileName = data->readProperty( "FileName" ).toString();
+	setSuffix( QFileInfo( m_fileName ).suffix() );
+
+	position  = data->readProperty( "Position" ) .toInt();
+	isModified = data->readProperty( "Modified" ).toBool();
+	text = data->readProperty( "Content" ).toString();
+
+	int bc = data->readProperty( "BookmarkCount" ).toInt();
+	for( int i = 0 ; i < bc; i++ ) {	
+		setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
+	}
 
 	if( ! text.isEmpty() ) {
 		m_view->setPlainText( text );

@@ -135,22 +135,8 @@ public:
 
 	virtual QAbstractItemModel * model();
 	
-	/*!
-	 * Enumeration of datas who can be serialised
-	 */ 
-	enum serializedDatas {
-		SERIALIZED_FILENAME         = 1001, ///< The serialized filename
-		SERIALIZED_HIGHLIGHTER_TYPE = 1002, ///< The highlighter type
-		SERIALIZED_FILE_TYPE        = 1003, ///< The file type
-		SERIALIZED_POSITION         = 1004, ///< The position of the text
-		SERIALIZED_MODIFIED         = 1005, ///< The state of the editor : Is it modified ?
-		SERIALIZED_CONTENT          = 1006, ///< The saved content.
-		SERIALIZED_BOOKMARK         = 1007, ///< The bookmark
-		SERIALIZED_ENDOFFILEEDITOR  = 1999  ///< The last element;
-	};
-
-	virtual void serialize( QDataStream & stream, bool content );
-	virtual void deserialize( QDataStream & stream );
+	virtual void serialize( XSLProjectSessionEditor * data, bool content );
+	virtual void deserialize( XSLProjectSessionEditor * data );
 
 	void setBookmark( int line, bool enabled );
 	virtual void toogledBookmark();
@@ -290,6 +276,9 @@ protected:
 	 */
 	static void createBackup( const QString & filename );
   
+	void clearSuffix();
+	void setSuffix( const QString & suffix );
+
 	QString m_fileName;
 
 	QVBoxLayout * m_vbox;
@@ -320,9 +309,6 @@ private:
 	bool hasWatcher(); 
 	void setWatcher( const QString & path );
 
-	void clearSuffix();
-	void setSuffix( const QString & suffix );
-	
 	SyntaxHighlighter * m_syntaxhighlighter;
 	
 	QAction * m_commentAction, * m_uncommentAction;

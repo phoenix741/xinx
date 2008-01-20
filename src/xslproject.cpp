@@ -42,8 +42,7 @@ XSLProjectException::XSLProjectException( const QString & message ) : XinxExcept
 
 /* XSLProjectSessionEditor */
 
-XSLProjectSessionEditor::XSLProjectSessionEditor( QDomElement node, XSLProjectSession * parent ) : QObject( parent ), m_node( node ), m_parent( parent ) {
-	Q_ASSERT( node.tagName() == "Editor" );
+XSLProjectSessionEditor::XSLProjectSessionEditor( XSLProjectSession * parent ) : QObject( parent ), m_parent( parent ) {
 	parent->m_sessions.append( this );
 }
 
@@ -51,34 +50,153 @@ XSLProjectSessionEditor::~XSLProjectSessionEditor() {
 	m_parent->m_sessions.removeAll( this );
 }
 
+void XSLProjectSessionEditor::loadFromNode( const QDomElement & element ) {
+	m_properties.clear();
+	QDomElement node = element.firstChildElement();
+	while( ! node.isNull() ) {
+		QString name  = node.tagName(),
+				value = node.text();
+		
+		if( ! value.isEmpty() )
+			m_properties[ name ] = value;
+		
+		node = node.nextSiblingElement();
+	}
+}
+
+void XSLProjectSessionEditor::saveToNode( QDomDocument & document, QDomElement & element ) {
+	foreach( QString key, m_properties.keys() ) {
+		QDomElement propertyElement = element.firstChildElement( key );
+		if( ! propertyElement.isNull() ) element.removeChild( propertyElement );
+
+		QDomText text = document.createTextNode( m_properties[ key ].toString() );
+		
+		propertyElement = document.createElement( key );
+		propertyElement.appendChild( text );
+		propertyElement.setAttribute( "type", m_properties[ key ].typeName() );
+		element.appendChild( propertyElement );
+	}
+}
+
 void XSLProjectSessionEditor::writeProperty( const QString & key, QVariant value ) {
-	QDomElement propertyElement = m_node.firstChildElement( key );
-	if( ! propertyElement.isNull() )
-		m_node.removeChild( propertyElement );
-	QDomText text;
-	text.appendData( value.toString() );
-	
-	propertyElement = QDomElement();
-	propertyElement.setTagName( key );
-	propertyElement.appendChild( text );
-	propertyElement.setAttribute( "type", value.typeName() );
-	m_node.appendChild( propertyElement );
+	m_properties[ key ] = value;
 }
 
 QVariant XSLProjectSessionEditor::readProperty( const QString & key ) {
-	QDomElement propertyElement = m_node.firstChildElement( key );
-	if( propertyElement.isNull() ) return QVariant();
-	QVariant result;
-	result.setValue( propertyElement.text() );
-	return result;
+	return m_properties.value( key );
 }
 
+/* XSLProjectSession */
+
+XSLProjectSession::XSLProjectSession() {
+
+}
+
+XSLProjectSession::XSLProjectSession( const QString & filename ) {
+	loadFromFile( filename );
+}
+
+void XSLProjectSession::loadFromFile( const QString & filename ) {
+	m_filename = filename;
+	QFile file( filename );
+	
+	m_lastOpenedFile.clear();
+	qDeleteAll( m_sessions );
+	
+	QDomDocument document;
+
+	// Open the file
+	if ( ! file.open(QFile::ReadOnly | QFile::Text) ) 
+		throw XSLProjectException( tr("Can't open session file." ) );
+
+	// Load XML Document
+	QString errorStr;
+	int errorLine;
+	int errorColumn;  
+	if ( ! document.setContent(&file, true, &errorStr, &errorLine, &errorColumn) ) 
+		throw XSLProjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
+
+	QDomElement rootSession = document.documentElement();
+  
+	// Test if Project File
+	if( rootSession.tagName() != "Session" ) 
+		throw XSLProjectException( tr("The file isn't a XINX Project Session file") );
+
+	QDomElement sessionNode = rootSession.firstChildElement( "Opened" );
+	if( ! sessionNode.isNull() ) {
+		QDomElement editor = sessionNode.firstChildElement( "Editor" );
+		while( ! editor.isNull() ) {
+			(new XSLProjectSessionEditor( this ))->loadFromNode( editor );
+			editor = editor.nextSiblingElement( "Editor" );
+		}
+	}
+
+	QDomElement lastOpenedFile = rootSession.firstChildElement( "LastOpenedFile" );
+	if( ! lastOpenedFile.isNull() ) {
+		QDomElement file = lastOpenedFile.firstChildElement( "File" );
+		while( ! file.isNull() ) {
+			m_lastOpenedFile.append( file.attribute( "name" ) );
+			
+			file = file.nextSiblingElement( "File" );
+		}
+	}
+}
+
+void XSLProjectSession::saveToFile( const QString & filename ) {
+	QDomDocument document( "Session" );
+	
+	QDomElement root = document.createElement( "Session" );
+	document.appendChild( root );
+	
+	QDomElement sessions = document.createElement( "Opened" );
+	root.appendChild( sessions );
+	
+	foreach( XSLProjectSessionEditor* session, m_sessions ) {
+		QDomElement editor = document.createElement( "Editor" );
+		sessions.appendChild( editor );
+		
+		session->saveToNode( document, editor );
+	}
+
+	QDomElement lastOpenedFile = document.createElement( "LastOpenedFile" );
+	root.appendChild( lastOpenedFile );	
+
+	foreach( QString name, m_lastOpenedFile ) {
+		QDomElement file = document.createElement( "File" );
+		file.setAttribute( "name", name );
+		lastOpenedFile.appendChild( file );
+	}
+	
+	QDomElement signets = document.createElement( "bookmarks" );
+	root.appendChild( signets );
+	
+	static const int IndentSize = 3;
+	if( ! filename.isEmpty() ) m_filename = filename;
+	QFile file( m_filename );
+	
+	// Open the file
+	if ( ! file.open(QFile::WriteOnly | QFile::Text) ) 
+		throw XSLProjectException( tr("Cannot write file %1:\n%2.").arg( m_filename ).arg( file.errorString()) );
+		
+	// Save the content
+	QTextStream text( &file );
+	document.save( text, IndentSize );
+}
+
+QStringList & XSLProjectSession::lastOpenedFile() {
+	return m_lastOpenedFile;
+}
+
+const QList<XSLProjectSessionEditor*> & XSLProjectSession::serializedEditors() const {
+	return m_sessions;
+}
 
 /* PrivateXSLProject */
 
 class PrivateXSLProject {
 public:
 	PrivateXSLProject( XSLProject * parent );
+	~PrivateXSLProject();
 	
 	static QString getValue( const QDomDocument & document, const QString & node );
 	static void setValue( QDomDocument & document, const QString & node, const QString & value );
@@ -86,21 +204,18 @@ public:
 	static QStringList loadList( QDomDocument document, const QString & list, const QString & element );
 	static void saveList( QDomDocument & document, const QString & list, const QString & element, const QStringList & slist );
 
-	void loadSessionFile( const QString & fileName );
-	void saveSessionFile( const QString & fileName );
-	
 	QString processPath( QString path );
 
 	PrivateXSLProject& operator=( const PrivateXSLProject& p );
 
+	XSLProjectSession * m_session;
+	
 	QString m_fileName;
 	int m_version;
 	
 	QStringList m_searchPathList, 
-				m_webServiceLink, 
-				m_lastOpenedFile;
+				m_webServiceLink; 
 	int m_indexOfSpecifiquePath;
-	QList<QByteArray> m_sessions;
 	QString m_projectName, m_defaultLang, m_defaultNav;
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
 	QString m_logProjectDirectory;
@@ -125,14 +240,18 @@ PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 
 	m_specifiquePathName = global.m_config->config().project.defaultProjectPathName;
 	m_projectOptions |= XSLProject::hasSpecifique;
+
+	m_session = new XSLProjectSession();
+}
+
+PrivateXSLProject::~PrivateXSLProject() {
+	delete m_session;
 }
 
 PrivateXSLProject& PrivateXSLProject::operator=( const PrivateXSLProject& p ) {
 	m_searchPathList        = p.m_searchPathList; 
 	m_webServiceLink 		= p.m_webServiceLink; 
-	m_lastOpenedFile 		= p.m_lastOpenedFile;
 	m_indexOfSpecifiquePath = p.m_indexOfSpecifiquePath;
-	m_sessions				= p.m_sessions;
 	m_projectName			= p.m_projectName;
 	m_defaultLang			= p.m_defaultLang;
 	m_defaultNav			= p.m_defaultNav;
@@ -149,14 +268,7 @@ PrivateXSLProject& PrivateXSLProject::operator=( const PrivateXSLProject& p ) {
 QString PrivateXSLProject::getValue( const QDomDocument & document, const QString & node ) {
 	QDomElement root = document.documentElement();
 	QDomElement elt  = root.firstChildElement( node );
-
-	if( ! elt.isNull() ){
-		QDomNode node = elt.firstChild();
-		while( ! ( node.isNull() || node.isText() ) ) node = node.nextSibling();
-		QDomText text = node.toText();
-		return text.nodeValue();
-	} else
-		return QString();
+	return elt.text();
 }
 
 void PrivateXSLProject::setValue( QDomDocument & document, const QString & node, const QString & value ) {
@@ -178,101 +290,6 @@ void PrivateXSLProject::setValue( QDomDocument & document, const QString & node,
 		elt.appendChild( text );
 	} else
 		text.setData( value );
-}
-
-void PrivateXSLProject::loadSessionFile( const QString & fileName ) {
-	QFile file( fileName );
-	
-	try {
-		m_lastOpenedFile.clear();
-		m_sessions.clear();
-
-		QDomDocument sessionDocument;
-
-		// Open the file
-		if ( ! file.open(QFile::ReadOnly | QFile::Text) ) 
-			throw XSLProjectException( XSLProject::tr("Can't open session file." ) );
-
-		// Load XML Document
-		QString errorStr;
-		int errorLine;
-		int errorColumn;  
-		if ( !sessionDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn) ) 
-			throw XSLProjectException( XSLProject::tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr));
-
-		QDomElement rootSession = sessionDocument.documentElement();
-  
-		// Test if Project File
-		if( rootSession.tagName() != "Session" ) 
-			throw XSLProjectException( XSLProject::tr("The file isn't a XINX Project Session file") );
-	
-		QDomElement sessionNode = rootSession.firstChildElement( "Opened" );
-		if( ! sessionNode.isNull() ) {
-			QDomElement editor = sessionNode.firstChildElement( "Editor" );
-			while( ! editor.isNull() ) {
-				QString sessionText;
-				QDomNode node = editor.firstChild();
-				while( ! ( node.isNull() || node.isText() ) ) node = node.nextSibling();
-				QDomText text = node.toText();
-				if( ! text.isNull() ) sessionText += text.data();
-
-				m_sessions.append( QByteArray::fromBase64( sessionText.toUtf8() ) );
-				editor = editor.nextSiblingElement( "Editor" );
-			}
-		}
-	
-		QDomElement lastOpenedFile = rootSession.firstChildElement( "LastOpenedFile" );
-		if( ! lastOpenedFile.isNull() ) {
-			QDomElement file = lastOpenedFile.firstChildElement( "File" );
-			while( ! file.isNull() ) {
-				m_lastOpenedFile.append( file.attribute( "name" ) );
-				
-				file = file.nextSiblingElement( "File" );
-			}
-		}
-	} catch( XSLProjectException ) {
-	}
-}
-
-void PrivateXSLProject::saveSessionFile( const QString & fileName ) {
-	QDomDocument document( "Session" );
-	
-	QDomElement root = document.createElement( "Session" );
-	document.appendChild( root );
-	
-	QDomElement sessions = document.createElement( "Opened" );
-	root.appendChild( sessions );
-	
-	foreach( QByteArray session, m_sessions ) {
-		QDomElement editor = document.createElement( "Editor" );
-		sessions.appendChild( editor );
-		
-		QDomText text = document.createTextNode( session.toBase64() );
-		editor.appendChild( text );
-	}
-
-	QDomElement lastOpenedFile = document.createElement( "LastOpenedFile" );
-	root.appendChild( lastOpenedFile );	
-
-	foreach( QString name, m_lastOpenedFile ) {
-		QDomElement file = document.createElement( "File" );
-		file.setAttribute( "name", name );
-		lastOpenedFile.appendChild( file );
-	}
-	
-	QDomElement signets = document.createElement( "bookmarks" );
-	root.appendChild( signets );
-	
-	static const int IndentSize = 3;
-	QFile file( fileName );
-	
-	// Open the file
-	if ( ! file.open(QFile::WriteOnly | QFile::Text) ) 
-		throw XSLProjectException( XSLProject::tr("Cannot write file %1:\n%2.").arg( m_fileName ).arg( file.errorString()) );
-		
-	// Save the content
-	QTextStream text( &file );
-	document.save( text, IndentSize );
 }
 
 QStringList PrivateXSLProject::loadList( QDomDocument document, const QString & list, const QString & element ) {
@@ -407,7 +424,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	if( ! QDir( d->m_projectPath ).exists() )
 		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 
-	d->loadSessionFile( d->m_fileName + ".session" );
+	d->m_session->loadFromFile( d->m_fileName + ".session" );
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -415,7 +432,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	if( d->m_fileName.isEmpty() ) return;
 	
 	// Save the session file
-	saveOnlySession();
+	d->m_session->saveToFile();
 	
 	// Save attributes
 	QDomDocument document( "XSLProject" );
@@ -458,7 +475,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 
 void XSLProject::saveOnlySession() {
 	if( d->m_fileName.isEmpty() ) return;
-	d->saveSessionFile( d->m_fileName + ".session" );
+	d->m_session->saveToFile();
 }
 	
 XSLProject::ProjectOptions & XSLProject::options() {
@@ -557,14 +574,6 @@ QStringList & XSLProject::serveurWeb() {
 	return d->m_webServiceLink; 
 }
 
-QStringList & XSLProject::lastOpenedFile() { 
-	return d->m_lastOpenedFile; 
-}
-
-QList<QByteArray> & XSLProject::sessionsEditor() {
-	return d->m_sessions;
-}
-
 void XSLProject::setLogProjectDirectory( const QString & value ) {
 	d->m_logProjectDirectory = value;
 }
@@ -572,3 +581,8 @@ void XSLProject::setLogProjectDirectory( const QString & value ) {
 const QString & XSLProject::logProjectDirectory() {
 	return d->m_logProjectDirectory;
 }
+
+XSLProjectSession * XSLProject::session() const {
+	return d->m_session;
+}
+
