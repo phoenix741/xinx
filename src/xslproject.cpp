@@ -40,6 +40,40 @@
 XSLProjectException::XSLProjectException( const QString & message ) : XinxException( message ) {
 }
 
+/* XSLProjectSessionEditor */
+
+XSLProjectSessionEditor::XSLProjectSessionEditor( QDomElement node, XSLProjectSession * parent ) : QObject( parent ), m_node( node ), m_parent( parent ) {
+	Q_ASSERT( node.tagName() == "Editor" );
+	parent->m_sessions.append( this );
+}
+
+XSLProjectSessionEditor::~XSLProjectSessionEditor() {
+	m_parent->m_sessions.removeAll( this );
+}
+
+void XSLProjectSessionEditor::writeProperty( const QString & key, QVariant value ) {
+	QDomElement propertyElement = m_node.firstChildElement( key );
+	if( ! propertyElement.isNull() )
+		m_node.removeChild( propertyElement );
+	QDomText text;
+	text.appendData( value.toString() );
+	
+	propertyElement = QDomElement();
+	propertyElement.setTagName( key );
+	propertyElement.appendChild( text );
+	propertyElement.setAttribute( "type", value.typeName() );
+	m_node.appendChild( propertyElement );
+}
+
+QVariant XSLProjectSessionEditor::readProperty( const QString & key ) {
+	QDomElement propertyElement = m_node.firstChildElement( key );
+	if( propertyElement.isNull() ) return QVariant();
+	QVariant result;
+	result.setValue( propertyElement.text() );
+	return result;
+}
+
+
 /* PrivateXSLProject */
 
 class PrivateXSLProject {

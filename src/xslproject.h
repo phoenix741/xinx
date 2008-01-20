@@ -48,6 +48,70 @@ public:
 	XSLProjectException( const QString & message );
 };
 
+class XSLProjectSession;
+
+class XSLProjectSessionEditor : public QObject {
+	Q_OBJECT
+public:
+	XSLProjectSessionEditor( QDomElement node, XSLProjectSession * parent = 0 );
+	virtual ~XSLProjectSessionEditor();
+	
+	void writeProperty( const QString & key, QVariant value );
+	QVariant readProperty( const QString & key );
+private:
+	QDomElement m_node;
+	XSLProjectSession * m_parent;
+};
+
+/*!
+ * An XSLProjectSession represents the .session file associate to the project and who contains 
+ * tempory data as last opened file, current opened file. This file is extern of project file, 
+ * to permit project file to be saved in Revision Control System.
+ */
+class XSLProjectSession : public QObject {
+	Q_OBJECT
+public:
+	/*!
+	 * Create an empty session
+	 */
+	XSLProjectSession();
+	/*!
+	 * Create a session object and load the file \e filename
+	 * \throw XSLProjectException When the application can't read the session file.
+	 * \sa loadFromFile
+	 */
+	XSLProjectSession( const QString & filename );
+
+	/*!
+	 * Load the file \e filename
+	 * \sa saveToFile
+	 * \throw XSLProjectException When the application can't read the session file.
+	 */
+	void loadFromFile( const QString & filename );
+	
+	/*! 
+	 * Save the session in the file \e filename, or in the loaded file if possible
+	 * \sa loadFromFile
+	 * \throw XSLProjectException When the application can't save the session file.
+	 */
+	void saveToFile( const QString & filename = QString() );
+	
+	/*!
+	 * List all the last opend files in the project.
+	 * \return the list of the last opend file.
+	 */
+	QStringList & lastOpenedFile();
+	
+	/* Le XSLProjectEditor s'auto enregistre et s'auto désenregistre */
+	const QList<XSLProjectSessionEditor*> & serializedEditors() const;
+private:
+	QDomDocument m_document;
+	QStringList m_lastOpenedFile;
+	QList<XSLProjectSessionEditor*> m_sessions;
+	
+	friend class XSLProjectSessionEditor;
+};
+
 class WebServices;
 class WebServicesModel;
 class PrivateXSLProject;
