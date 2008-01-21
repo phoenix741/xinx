@@ -133,6 +133,7 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
 	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+	delete m_sortFilterModel; m_sortFilterModel = NULL;
 
 	m_openingFile = filename;
 
@@ -168,12 +169,13 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 
 void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text ) {
 	Q_UNUSED( text );
-	m_timerTextChanged.start();
+	if( m_sortFilterModel ) 
+		m_timerTextChanged.start();
 }
 
 void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
-	QString text = m_xmlPresentationWidget->m_filtreLineEdit->text();
 	if( m_sortFilterModel ) {
+		QString text = m_xmlPresentationWidget->m_filtreLineEdit->text();
 		m_sortFilterModel->setFilterRegExp( text );
 		if( text.isEmpty() ) {
 			m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
