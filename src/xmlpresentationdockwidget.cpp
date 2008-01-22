@@ -171,9 +171,7 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
 		m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
 	} else if( m_threadAct == THREAD_FILTERED ) {
-		if( m_filteredText.isEmpty() ) {
-			m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
-		} else
+		if( !m_filteredText.isEmpty() ) 
 			m_xmlPresentationWidget->m_presentationTreeView->expandAll();
 	}
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
@@ -196,7 +194,8 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
-//		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+
+		m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
 
 		m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
 
