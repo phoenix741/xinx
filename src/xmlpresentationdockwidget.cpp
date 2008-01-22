@@ -33,6 +33,8 @@
 /* PrivateXmlPresentationDockWidget */
 
 PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
+	qRegisterMetaType<QModelIndex>( "QModelIndex" );
+	
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
 	m_xmlPresentationWidget->setupUi( contentWidget );
@@ -132,11 +134,12 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 0 );
 	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
+	m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
+	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
 	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
-	delete m_sortFilterModel; m_sortFilterModel = NULL;
 
 	m_openingFile = filename;
-
+	m_threadAct = THREAD_OPENING;
 	start( QThread::IdlePriority );
 }
 
@@ -146,23 +149,36 @@ void PrivateXmlPresentationDockWidget::open() {
 }
 
 void PrivateXmlPresentationDockWidget::threadrun() {
-	QFile presentation( m_openingFile );
-	QDomDocument document;
-	if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {
-		delete m_sortFilterModel; delete m_model; delete m_watcher;
-		m_sortFilterModel = NULL; m_model = NULL; m_watcher = NULL;
-		
-		m_model = new XmlPresentationModel( document );
+	if( m_threadAct == THREAD_OPENING ) {
+		QFile presentation( m_openingFile );
+		QDomDocument document;
+		if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {
+			delete m_sortFilterModel; delete m_model; delete m_watcher;
+			m_sortFilterModel = NULL; m_model = NULL; m_watcher = NULL;
+			
+			m_model = new XmlPresentationModel( document );
+			m_sortFilterModel = new RecursiveFilterProxyModel( m_model );
+			m_sortFilterModel->setSourceModel( m_model );
+		}
+	} else if( m_threadAct == THREAD_FILTERED ) {
+		m_sortFilterModel->setFilterRegExp( m_filteredText );
 	}
 }
 
 void PrivateXmlPresentationDockWidget::threadTerminated() {
-	m_watcher = new FileWatcher( m_openingFile );
-	connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
-	m_sortFilterModel = new RecursiveFilterProxyModel( this );
-	m_sortFilterModel->setSourceModel( m_model );
-	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
+	if( m_threadAct == THREAD_OPENING ) {
+		m_watcher = new FileWatcher( m_openingFile );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
+		m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
+	} else if( m_threadAct == THREAD_FILTERED ) {
+		if( m_filteredText.isEmpty() ) {
+			m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
+		} else
+			m_xmlPresentationWidget->m_presentationTreeView->expandAll();
+	}
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
+	m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
+	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 1 );
 	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 1 );
 }
@@ -175,12 +191,17 @@ void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text )
 
 void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 	if( m_sortFilterModel ) {
-		QString text = m_xmlPresentationWidget->m_filtreLineEdit->text();
-		m_sortFilterModel->setFilterRegExp( text );
-		if( text.isEmpty() ) {
-			m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
-		} else
-			m_xmlPresentationWidget->m_presentationTreeView->expandAll();
+		m_xmlPresentationWidget->m_presentationProgressBar->setValue( 0 );
+		m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
+		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
+		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
+		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
+//		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
+
+		m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
+
+		m_threadAct = THREAD_FILTERED;
+		start( QThread::IdlePriority );
 	}
 }
 

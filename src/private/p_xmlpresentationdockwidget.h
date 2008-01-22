@@ -49,11 +49,13 @@ public:
 	~PrivateXmlPresentationDockWidget();
 	
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
-	QString m_logPath, m_openingFile;
+	QString m_logPath, m_openingFile, m_filteredText;
 	XmlPresentationModel * m_model;
 	QSortFilterProxyModel * m_sortFilterModel;
 	FileWatcher * m_watcher;
 	QTimer m_timerTextChanged;
+	
+	enum { THREAD_OPENING, THREAD_FILTERED } m_threadAct;
 	
 	void open( const QString& filename );
 	void setComboToolTip( const QString & filename );
