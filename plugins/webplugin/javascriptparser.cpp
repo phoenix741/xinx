@@ -25,7 +25,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QBuffer>
-#include <QDebug>
+#include <QTextStream>
 
 /* 	JavaScriptParserException */
 
@@ -201,7 +201,8 @@ void JavaScriptParser::nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN
 			else if( c == 10 ) 
 				m_line++; 
 			else if( ( c == '{' ) || ( c == '}' ) || ( c == '&' ) || ( c == '|' ) || ( c == '*' ) || 
-			         ( c == ';' ) || ( c == '=' ) || ( c == '(' ) || ( c == ')' ) || ( c == ',' ) ) {
+			         ( c == ';' ) || ( c == '=' ) || ( c == '(' ) || ( c == ')' ) || ( c == ',' ) ||
+			         ( c == '[' ) || ( c == ']' ) ) {
 				symbType = TOKEN_PONCTUATION;
 				st = c;
 				symbName = st;
@@ -316,14 +317,20 @@ void JavaScriptParser::loadInstruction( QIODevice * buffer, JavaScriptFunction *
 	// Si Identifier suivis de paranthese alors appel (1er = identifier).
 	// Sinon constante, operation, ...
 	
-	int bloc = 0;
+	int bloc = 0, crochet = 0;
 	
-	while( ( bloc > 0 ) || ( TOKEN_PONCTUATION != type ) || ( ( name != "," ) && ( name != ";" ) ) ) {
+	while( ( bloc > 0 ) || ( crochet > 0 ) || ( TOKEN_PONCTUATION != type ) || ( ( name != "," ) && ( name != ";" ) ) ) {
 		if( ( TOKEN_PONCTUATION == type ) && ( name == "(" ) )
 			bloc++;
 		else
 		if( ( TOKEN_PONCTUATION == type ) && ( name == ")" ) )
 			bloc--;
+		else
+		if( ( TOKEN_PONCTUATION == type ) && ( name == "[" ) )
+			crochet++;
+		else
+		if( ( TOKEN_PONCTUATION == type ) && ( name == "]" ) )
+			crochet--;
 		nextIdentifier( buffer, type, name );
 		if( type == TOKEN_EOF ) throw JavaScriptParserException( QObject::tr("End of file is prematured"), m_line );
 	};

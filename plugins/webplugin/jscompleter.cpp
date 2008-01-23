@@ -144,7 +144,7 @@ JsCompleter::cursorPosition JsCompleter::editPosition( const QTextEdit * textEdi
 	
 	int bloc = 0;
 	QTextCursor c = textEdit->document()->find( ")", cursorFunction );
-	while( c < cursor ) {
+	while( ( c < cursor ) && ( c.position() > 0 ) ) {
 		QString text = c.selectedText();
 		if( text.contains( '{' ) )
 			bloc++;
