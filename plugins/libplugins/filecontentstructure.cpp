@@ -99,7 +99,7 @@ FileContentElement::~FileContentElement() {
 }
 
 bool FileContentElement::equals( FileContentElement * element ) {
-	XINX_TRACE( "FileContentElement::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+	//XINX_TRACE( "FileContentElement::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
 	return ( ( typeid( *element ) == typeid( *this ) )
 		  && ( d->m_name == element->d->m_name ) 

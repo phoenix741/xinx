@@ -4,8 +4,8 @@ DESTDIR += ../bin
 MOC_DIR += ../build
 OBJECTS_DIR += ../build
 RCC_DIR += ../build
-UI_DIR += ../build
 unix { 
+	UI_DIR += ../build
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
@@ -35,6 +35,9 @@ win32:CONFIG(debug) {
 	POST_TARGETDEPS = ../bin/plugins/libwebplugin.a \
     	../bin/libxinxplugins.a
 }
+win32 { 
+    RC_FILE += ../rc/xinx.rc
+}
 DISTFILES = ../CHANGELOG \
     ../COPYING \
     ../Doxyfile \
@@ -53,11 +56,6 @@ DISTFILES = ../CHANGELOG \
     ../translations/*.ts \
     ../ui/*.ui \
     ../xml/*.xnx
-win32 { 
-    QMAKE_LFLAGS = -limagehlp \
-        -lpsapi
-    RC_FILE += ../rc/xinx.rc
-}
 RESOURCES += ../application.qrc
 FORMS += ../ui/plugindialog.ui \
     ../ui/specifiquedlg.ui \

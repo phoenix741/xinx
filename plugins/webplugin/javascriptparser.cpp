@@ -118,9 +118,11 @@ void JavaScriptParser::loadFromContent( const QString & content ) {
 				if( bloc == 0 )
 					foreach( JavaScriptVariables * variable, loadVariables( &buffer ) )
 						append( variable );
-				else 
+				else if( function )
 					foreach( JavaScriptVariables * variable, loadVariables( &buffer ) )
 						function->append( variable );
+				else
+					throw JavaScriptParserException( QObject::tr("Can't attach variable to function ?"), m_line );
 			} else
 			if( name == "function" ) {
 				QList<JavaScriptParams*> params;

@@ -52,10 +52,6 @@
         <file>images/ie_logo.png</file>
         <file>images/import.png</file>
         <file>images/italy.png</file>
-        <file>images/kdesvnadd.png</file>
-        <file>images/kdesvncommit.png</file>
-        <file>images/kdesvndelete.png</file>
-        <file>images/kdesvnupdate.png</file>
         <file>images/label.png</file>
         <file>images/lineedit.png</file>
         <file>images/listbox.png</file>
@@ -91,6 +87,12 @@
         <file>images/up.png</file>
         <file>images/usa.png</file>
         <file>images/variable.png</file>
+        <file>images/vcs_add.png</file>
+        <file>images/vcs_commit.png</file>
+        <file>images/vcs_diff.png</file>
+        <file>images/vcs_remove.png</file>
+        <file>images/vcs_status.png</file>
+        <file>images/vcs_update.png</file>
         <file>images/warning.png</file>
         <file>images/window_new.png</file>
         <file>qss/coffee.qss</file>

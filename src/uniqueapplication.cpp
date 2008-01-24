@@ -229,12 +229,10 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 
 // Include for exception
 #ifndef Q_WS_WIN
-	#include <execinfo.h>
-	#include <stdio.h>
-	#include <stdlib.h>
-#else
-	#include <windows.h>
-	#include <dbghelp.h>
+#	include <execinfo.h>
+#	include <stdio.h>
+#	include <stdlib.h>
+#	include <cxxabi.h>
 #endif
 
 // Constant for exception
@@ -243,6 +241,8 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 #endif
 
 void UniqueApplication::notifyError( QString error, QStringList stack ) {
+	d->m_mainform->hide();
+	
 	FILE * file = NULL;
 #ifndef Q_WS_WIN
 	char * filename = "/tmp/xinx_trace.log";

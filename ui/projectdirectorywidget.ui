@@ -51,7 +51,7 @@
         <string>Update project</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/kdesvnupdate.png</iconset>
+        <iconset resource="../application.qrc" >:/images/vcs_update.png</iconset>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
         <string>Commit project</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/kdesvncommit.png</iconset>
+        <iconset resource="../application.qrc" >:/images/vcs_commit.png</iconset>
        </property>
       </widget>
      </item>

@@ -202,7 +202,7 @@ XSLFileContentTemplate::~XSLFileContentTemplate() {
 }
 
 bool XSLFileContentTemplate::equals( FileContentElement * element ) {
-	XINX_TRACE( "XSLFileContentTemplate::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+	//XINX_TRACE( "XSLFileContentTemplate::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
 	return FileContentElement::equals( element ) 
 		&& ( m_mode == dynamic_cast<XSLFileContentTemplate*>( element )->m_mode );

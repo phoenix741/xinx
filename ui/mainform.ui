@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>26</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -665,7 +665,7 @@
   </action>
   <action name="m_globalUpdateFromRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/kdesvnupdate.png</iconset>
+    <iconset resource="../application.qrc" >:/images/vcs_update.png</iconset>
    </property>
    <property name="text" >
     <string>Update project</string>
@@ -673,18 +673,24 @@
   </action>
   <action name="m_globalCommitToRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/kdesvncommit.png</iconset>
+    <iconset resource="../application.qrc" >:/images/vcs_commit.png</iconset>
    </property>
    <property name="text" >
     <string>Commit project</string>
    </property>
   </action>
   <action name="m_cancelRCSOperationAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
+   </property>
    <property name="text" >
     <string>Cancel RCS operation</string>
    </property>
   </action>
   <action name="m_compareWithHeadAct" >
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/vcs_diff.png</iconset>
+   </property>
    <property name="text" >
     <string>Compare with the version management</string>
    </property>
@@ -701,7 +707,7 @@
   </action>
   <action name="m_selectedUpdateFromRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/kdesvnupdate.png</iconset>
+    <iconset resource="../application.qrc" >:/images/vcs_update.png</iconset>
    </property>
    <property name="text" >
     <string>Update project</string>
@@ -709,7 +715,7 @@
   </action>
   <action name="m_selectedCommitToRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/kdesvncommit.png</iconset>
+    <iconset resource="../application.qrc" >:/images/vcs_commit.png</iconset>
    </property>
    <property name="text" >
     <string>Commit project</string>
@@ -717,7 +723,7 @@
   </action>
   <action name="m_selectedAddToRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/kdesvnadd.png</iconset>
+    <iconset resource="../application.qrc" >:/images/vcs_add.png</iconset>
    </property>
    <property name="text" >
     <string>Add file(s) to project</string>
@@ -725,7 +731,7 @@
   </action>
   <action name="m_selectedRemoveFromRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/kdesvndelete.png</iconset>
+    <iconset resource="../application.qrc" >:/images/vcs_remove.png</iconset>
    </property>
    <property name="text" >
     <string>Delete file(s) from project</string>
