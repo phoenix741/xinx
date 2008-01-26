@@ -314,9 +314,9 @@ void XSLFileContentParser::loadFromXML( const QDomElement & element ) {
 		if( ( child.tagName() == "import" ) || ( child.tagName() == "include" ) ) {
 			QString src = child.attribute( "href" );
 			FileContentElement * element = m_editor->importModelData( this, src, child.lineNumber() );
-			FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
 			if( element ) {
-				append( element );
+				element = append( element );
+				FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
 				if( ( ! src.isEmpty() ) && parser )
 					try {
 						parser->loadFromFileDelayed( src );
