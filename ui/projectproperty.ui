@@ -5,21 +5,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>438</height>
+    <width>613</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Project property</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <item>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
@@ -29,11 +23,20 @@
        <string>&amp;Project Definition</string>
       </attribute>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="leftMargin" >
+        <number>9</number>
+       </property>
+       <property name="topMargin" >
+        <number>9</number>
+       </property>
+       <property name="rightMargin" >
+        <number>9</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>9</number>
        </property>
        <item>
         <widget class="QGroupBox" name="groupBox_3" >
@@ -41,10 +44,22 @@
           <string>Project</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>9</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>9</number>
+          </property>
+          <property name="rightMargin" >
+           <number>9</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>9</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="2" column="2" >
@@ -133,35 +148,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_5" >
-         <property name="title" >
-          <string>&amp;Options</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="m_webServicesCheckBox" >
-            <property name="text" >
-             <string>Project has Web&amp;Services</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" >
-           <widget class="QCheckBox" name="m_standardProjectCheckBox" >
-            <property name="text" >
-             <string>&amp;Project is standard</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -181,11 +167,20 @@
        <string>&amp;Default value</string>
       </attribute>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="leftMargin" >
+        <number>9</number>
+       </property>
+       <property name="topMargin" >
+        <number>9</number>
+       </property>
+       <property name="rightMargin" >
+        <number>9</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>9</number>
        </property>
        <item>
         <widget class="QGroupBox" name="groupBox" >
@@ -193,10 +188,22 @@
           <string>Default Value</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
+          <property name="leftMargin" >
            <number>9</number>
           </property>
-          <property name="spacing" >
+          <property name="topMargin" >
+           <number>9</number>
+          </property>
+          <property name="rightMargin" >
+           <number>9</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>9</number>
+          </property>
+          <property name="horizontalSpacing" >
+           <number>6</number>
+          </property>
+          <property name="verticalSpacing" >
            <number>6</number>
           </property>
           <item row="2" column="0" >
@@ -342,93 +349,38 @@
        <string>&amp;WebServices</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>9</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>9</number>
+       </property>
+       <property name="rightMargin" >
+        <number>9</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>9</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="0" column="0" >
         <widget class="QGroupBox" name="m_webServiceGroupBox" >
-         <property name="enabled" >
+         <property name="title" >
+          <string>Project has WebServices</string>
+         </property>
+         <property name="checkable" >
+          <bool>true</bool>
+         </property>
+         <property name="checked" >
           <bool>false</bool>
          </property>
-         <property name="title" >
-          <string>WebServices</string>
-         </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_11" >
-            <property name="text" >
-             <string>&amp;Webservices WSDL</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_servicesLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="m_servicesLineEdit" />
-          </item>
-          <item rowspan="2" row="0" column="2" >
-           <layout class="QVBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <item>
-             <widget class="QToolButton" name="m_webServiceBtnAdd" >
-              <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>5</hsizetype>
-                <vsizetype>0</vsizetype>
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text" >
-               <string>Add link</string>
-              </property>
-              <property name="icon" >
-               <iconset resource="../application.qrc" >:/images/add.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="m_webServiceBtnDel" >
-              <property name="text" >
-               <string>Delete link</string>
-              </property>
-              <property name="icon" >
-               <iconset resource="../application.qrc" >:/images/remove.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QListWidget" name="m_webServiceList" />
+          <item row="0" column="0" >
+           <widget class="XinxListWidgetImpl" native="1" name="m_servicesList" />
           </item>
          </layout>
         </widget>
@@ -439,168 +391,49 @@
       <attribute name="title" >
        <string>&amp;Custom files</string>
       </attribute>
-      <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QGroupBox" name="m_searchPathGroupBox" >
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="m_specifiqueGroupBox" >
          <property name="title" >
-          <string>&amp;Search path</string>
+          <string>&amp;Project is derivated from standard</string>
+         </property>
+         <property name="checkable" >
+          <bool>true</bool>
          </property>
          <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item rowspan="2" row="0" column="2" >
-           <layout class="QVBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <item>
-             <widget class="QToolButton" name="m_searchPathBtnAdd" >
-              <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>5</hsizetype>
-                <vsizetype>0</vsizetype>
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text" >
-               <string>Add link</string>
-              </property>
-              <property name="icon" >
-               <iconset resource="../application.qrc" >:/images/add.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="m_searchPathBtnDel" >
-              <property name="text" >
-               <string>Delete link</string>
-              </property>
-              <property name="icon" >
-               <iconset resource="../application.qrc" >:/images/remove.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="m_searchPathBtnDef" >
-              <property name="icon" >
-               <iconset resource="../application.qrc" >:/images/checkbox.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer>
-              <property name="orientation" >
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" >
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="m_relativeLineEditPath" />
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_7" >
-            <property name="text" >
-             <string>&amp;Relative path :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_relativeLineEditPath</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QListWidget" name="m_searchPathList" >
-            <item>
-             <property name="text" >
-              <string>./langues/&lt;lang>/nav/&lt;project></string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./langues/&lt;lang>/nav</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./langues/&lt;lang></string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>./langues</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="m_customFileGroupBox" >
-         <property name="title" >
-          <string>Custom files</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
           <item row="0" column="0" >
-           <widget class="QLabel" name="label_4" >
+           <widget class="QLabel" name="m_pathListLabel" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text" >
-             <string>Custom directory :</string>
+             <string>&amp;Search path list :</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" >
-           <widget class="QLabel" name="m_specifiquePathLabel" >
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QLineEdit" name="m_prefixLineEdit" />
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_5" >
-            <property name="text" >
-             <string>Custom p&amp;refix :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_prefixLineEdit</cstring>
-            </property>
-           </widget>
+          <item row="1" column="0" colspan="2" >
+           <widget class="XinxListWidgetImpl" native="1" name="m_searchPathList" />
           </item>
           <item row="2" column="0" >
+           <widget class="QLabel" name="m_prefixLabel" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>Project p&amp;refix :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2" >
+           <widget class="XinxListWidgetImpl" native="1" name="m_prefixList" />
+          </item>
+          <item row="4" column="0" >
            <widget class="QLabel" name="label_10" >
             <property name="text" >
              <string>&amp;Specifique project path name :</string>
@@ -610,7 +443,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
+          <item row="4" column="1" >
            <widget class="QLineEdit" name="m_specifiqueProjectPathLineEdit" />
           </item>
          </layout>
@@ -620,13 +453,22 @@
      </widget>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <spacer>
@@ -674,6 +516,12 @@
    <extends>QLineEdit</extends>
    <header>directoryedit.h</header>
   </customwidget>
+  <customwidget>
+   <class>XinxListWidgetImpl</class>
+   <extends>QWidget</extends>
+   <header>xinxlistwidgetimpl.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>m_nameLineEdit</tabstop>
@@ -681,10 +529,6 @@
   <tabstop>m_projectButton</tabstop>
   <tabstop>m_langComboBox</tabstop>
   <tabstop>m_navigatorComboBox</tabstop>
-  <tabstop>m_webServiceList</tabstop>
-  <tabstop>m_webServiceBtnAdd</tabstop>
-  <tabstop>m_webServiceBtnDel</tabstop>
-  <tabstop>m_prefixLineEdit</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
@@ -699,8 +543,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>540</x>
-     <y>425</y>
+     <x>466</x>
+     <y>458</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -715,76 +559,12 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>618</x>
-     <y>425</y>
+     <x>547</x>
+     <y>458</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
      <y>282</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_webServicesCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_webServiceGroupBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>310</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>310</x>
-     <y>155</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_standardProjectCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_customFileGroupBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>146</x>
-     <y>207</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>110</x>
-     <y>63</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_searchPathList</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>m_relativeLineEditPath</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>110</x>
-     <y>63</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>110</x>
-     <y>63</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_webServiceList</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>m_servicesLineEdit</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>247</x>
-     <y>151</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>265</x>
-     <y>353</y>
     </hint>
    </hints>
   </connection>

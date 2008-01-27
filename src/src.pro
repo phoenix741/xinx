@@ -57,7 +57,8 @@ DISTFILES = ../CHANGELOG \
     ../ui/*.ui \
     ../xml/*.xnx
 RESOURCES += ../application.qrc
-FORMS += ../ui/plugindialog.ui \
+FORMS += ../ui/xinxlistwidget.ui \ 
+	../ui/plugindialog.ui \
     ../ui/specifiquedlg.ui \
     ../ui/about.ui \
     ../ui/commitmessages.ui \
@@ -76,7 +77,8 @@ FORMS += ../ui/plugindialog.ui \
 	../ui/newprojectwizard_specifique.ui \
 	../ui/newprojectwizard_services.ui \
 	../ui/newprojectwizard_serviceslist.ui
-HEADERS += plugindialog.h \
+HEADERS += xinxlistwidgetimpl.h \
+    plugindialog.h \
     xinxpluginsloader.h \
     specifiquedlgimpl.h \
     xinxthread.h \
@@ -144,7 +146,8 @@ HEADERS += plugindialog.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     xslproject.h
-SOURCES += plugindialog.cpp \
+SOURCES += xinxlistwidgetimpl.cpp \
+	plugindialog.cpp \
     xinxpluginsloader.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -196,7 +199,7 @@ SOURCES += plugindialog.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \
     xinxthread.cpp \
-    newprojectwizard.cpp
+    newprojectwizard.cpp 
 contains( CONFIG, qdbus ) { 
     HEADERS += studioadaptor.h \
         studiointerface.h

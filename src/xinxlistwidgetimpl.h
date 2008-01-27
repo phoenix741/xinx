@@ -18,41 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+#ifndef XINXLISTWIDGET_H_
+#define XINXLISTWIDGET_H_
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+// Xinx header
+#include "ui_xinxlistwidget.h"
 
-class XSLProject;
-
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
+class XinxListWidgetImpl : public QWidget, public Ui::XinxListWidget {
 	Q_OBJECT
+	Q_PROPERTY( bool defaultVisible READ defaultVisible WRITE setDefaultVisible )
+	Q_PROPERTY( QString defaultValue READ defaultValue WRITE setDefaultValue )
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+	XinxListWidgetImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+	virtual ~XinxListWidgetImpl();
 	
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
+	QString defaultValue() const;
+	void setDefaultValue( const QString & value );
+	
+	bool defaultVisible() const;
+	void setDefaultVisible( bool visible );
+
+	QStringList values() const;
+	void setValues( const QStringList & values );
+	
+	QString valueName() const;
+	void setValueName( const QString & value );
+	
+	QString defaultProposedValue() const;
+	void setDefaultProposedValue( const QString & value );
+signals:
+	void defaultValueChanged( QString value );
 private slots:
-	void on_m_logButton_clicked();
-	void on_m_specifiqueGroupBox_clicked();
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_prefixLineEdit_textChanged( QString );
-
-	void versionFinded( SimpleConfigurationFile configuration );
+	void on_m_lineEdit_textChanged( QString text );
+	void on_m_btnDef_clicked();
+	void on_m_btnAdd_clicked();
+	void on_m_btnDel_clicked();
+private:
+	void updateDefault();
+	QString m_defaultValue, m_valueName, m_defaultProposedValue;
 };
-#endif
 
-
-
-
-
-
-
-
-
+#endif /*XINXLISTXIDGET_H_*/

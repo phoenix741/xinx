@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,6 +32,8 @@
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
 	setupUi(this);
 
+	m_pathListLabel->setBuddy( m_searchPathList );
+	m_prefixLabel->setBuddy( m_prefixList );
 	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
 }
 
@@ -49,7 +51,7 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
 	Q_UNUSED( text );
 	
-	m_prefixLineEdit->setText( text.toUpper() );
+//	m_prefixLineEdit->setText( text.toUpper() );
 	updateOkButton();
 }
 
@@ -105,9 +107,12 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiqueProjectPathLineEdit->setText( project->specifiquePathName() );
-	m_prefixLineEdit->setText( project->specifiquePrefix() );
-	m_standardProjectCheckBox->setChecked( ! project->options().testFlag( XSLProject::hasSpecifique ) );
-	m_webServicesCheckBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
+	
+	m_prefixList->setDefaultValue( project->specifiquePrefix() );
+	m_prefixList->setValues( QStringList() << project->specifiquePrefix() );
+
+	m_specifiqueGroupBox->setChecked( project->options().testFlag( XSLProject::hasSpecifique ) );
+	m_webServiceGroupBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
 	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
 	
 	switch( project->projectRCS() ) {
@@ -122,27 +127,12 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 		break;
 	}
 	
-	m_webServiceList->clear();
-	foreach( QString link, project->serveurWeb() ) {
-		m_webServiceList->addItem( link );
-	}
-	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
+	m_servicesList->setValues( project->serveurWeb() );
 
-	indexDefaultSearchPath = project->indexOfSpecifiquePath();
-	QString defSearchPath = project->searchPathList().at( indexDefaultSearchPath );
-	m_searchPathList->clear();
-	foreach( QString link, project->searchPathList() ) {
-		QListWidgetItem * item = new QListWidgetItem( QDir::toNativeSeparators( link ) );
-		if( link == defSearchPath ) {
-			QFont font = item->font();
-			font.setBold( true );
-			item->setFont( font );
-		}
-		m_searchPathList->addItem( item );
-	}
-	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
-	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
-	m_specifiquePathLabel->setText( QDir::toNativeSeparators( defSearchPath ) );
+	QString defSearchPath = project->searchPathList().at( project->indexOfSpecifiquePath() );
+
+	m_searchPathList->setDefaultValue( defSearchPath );
+	m_searchPathList->setValues( project->searchPathList() ); // fromNativeSeparators
 
 	updateOkButton();
 }
@@ -153,105 +143,37 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setDefaultLang( m_langComboBox->currentText() );
 	project->setDefaultNav( m_navigatorComboBox->currentText() );
 	project->setSpecifiquePathName( m_specifiqueProjectPathLineEdit->text() );
-	project->setIndexOfSpecifiquePath( indexDefaultSearchPath );
-	project->setSpecifiquePrefix( m_prefixLineEdit->text() );
+
+	project->searchPathList() = m_searchPathList->values(); // toNativeSeparators
+	project->setIndexOfSpecifiquePath( project->searchPathList().indexOf( m_searchPathList->defaultValue() ) );
+
+	project->setSpecifiquePrefix( m_prefixList->defaultValue() );
+	
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
 	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
 
 	XSLProject::ProjectOptions options;
-	if( ! m_standardProjectCheckBox->isChecked() )
+	if( m_specifiqueGroupBox->isChecked() )
 		options |= XSLProject::hasSpecifique;
-	if( m_webServicesCheckBox->isChecked() )
+	if( m_webServiceGroupBox->isChecked() )
 		options |= XSLProject::hasWebServices;
 	project->setOptions( options );
 
-	project->serveurWeb().clear();
-	for( int i = 0; i < m_webServiceList->count(); i++ ) {
-		project->serveurWeb().append( m_webServiceList->item( i )->text() );
-	}
-	project->searchPathList().clear();
-	for( int i = 0; i < m_searchPathList->count(); i++ ) {
-		project->searchPathList().append( QDir::fromNativeSeparators( m_searchPathList->item( i )->text() ) );
-	}
+	project->serveurWeb() = m_servicesList->values();
 }
 
 void ProjectPropertyImpl::updateOkButton() {
 	bool projectLineOk = ! ( m_projectLineEdit->text().isEmpty() || !QDir( m_projectLineEdit->text() ).exists() ),
-	     hasSpecif     = ! m_standardProjectCheckBox->isChecked(),
+	     hasSpecif     = m_specifiqueGroupBox->isChecked(),
 	     specifLineOk  = true,//! ( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ),
-	     prefixLineOk  = ! m_prefixLineEdit->text().isEmpty(),
+	     prefixLineOk  = ! m_prefixList->defaultValue().isEmpty(),
 	     okButtonEnabled = projectLineOk && ( (!hasSpecif) || ( specifLineOk && prefixLineOk ) );
 
 	okButton->setEnabled( okButtonEnabled );
 }
 
-void ProjectPropertyImpl::on_m_webServiceBtnDel_clicked() {
-	XINX_ASSERT( m_webServiceList->currentRow() >= 0 );
-	
-	delete m_webServiceList->currentItem();
-	
-	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
-}
-
-void ProjectPropertyImpl::on_m_webServiceBtnAdd_clicked() {
-	QString text = QInputDialog::getText( this, tr("Add WebService"), tr("URL of the WebServices"), QLineEdit::Normal, "http://localhost:8888/gce120/services/" );
-	if( ! text.isEmpty() )
-		m_webServiceList->addItem( text );
-
-	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
-}
-
-
-void ProjectPropertyImpl::on_m_searchPathBtnAdd_clicked() {
-	QString text = QInputDialog::getText( this, tr("Add Search Path"), tr("Search Path"), QLineEdit::Normal, "langues/<lang>/nav/<project>" );
-	if( ! text.isEmpty() )
-		m_searchPathList->addItem( text );
-
-	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
-	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
-}
-
-void ProjectPropertyImpl::on_m_searchPathBtnDel_clicked() {
-	XINX_ASSERT( m_searchPathList->currentRow() >= 0 );
-	
-	delete m_searchPathList->currentItem();
-	
-	m_searchPathBtnDel->setEnabled( m_searchPathList->count() > 0 );
-	m_searchPathBtnDef->setEnabled( m_searchPathList->count() > 0 );
-}
-
-
-void ProjectPropertyImpl::on_m_standardProjectCheckBox_clicked() {
+void ProjectPropertyImpl::on_m_specifiqueGroupBox_clicked() {
 	updateOkButton();
-}
-
-void ProjectPropertyImpl::on_m_relativeLineEditPath_textChanged( QString text ) {
-	QListWidgetItem * item = m_searchPathList->currentItem();
-	if( item ) 
-		item->setText( text );
-}
-
-void ProjectPropertyImpl::on_m_searchPathBtnDef_clicked() {
-	QListWidgetItem * item = m_searchPathList->currentItem();
-	if( item ) {
-		for( int i = 0; i < m_searchPathList->count() ; i++ ) {
-			QListWidgetItem * item = m_searchPathList->item( i );
-			QFont font = item->font();
-			font.setBold( false );
-			item->setFont( font );
-		}
-		indexDefaultSearchPath = m_searchPathList->row( item );
-		QFont font = item->font();
-		font.setBold( true );
-		item->setFont( font );
-		m_specifiquePathLabel->setText( item->text()  );
-	}
-}
-
-void ProjectPropertyImpl::on_m_servicesLineEdit_textChanged( QString text ) {
-	QListWidgetItem * item = m_webServiceList->currentItem();
-	if( item ) 
-		item->setText( text );
 }
 
 void ProjectPropertyImpl::on_m_logButton_clicked() {
