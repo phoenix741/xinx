@@ -330,6 +330,11 @@ public:
 	void setSpecifiquePrefix( const QString & value );
 
 	/*!
+	 * List of all specifique prefix.
+	 */
+	QStringList & specifiquePrefixes();
+
+	/*!
 	 * List of path where the application must search. This list is used in importations.
 	 * \return List of search path
 	 */

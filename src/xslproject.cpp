@@ -214,7 +214,8 @@ public:
 	int m_version;
 	
 	QStringList m_searchPathList, 
-				m_webServiceLink; 
+				m_webServiceLink,
+				m_specifiquePrefixes; 
 	int m_indexOfSpecifiquePath;
 	QString m_projectName, m_defaultLang, m_defaultNav;
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
@@ -418,8 +419,12 @@ void XSLProject::loadFromFile( const QString & filename ) {
 		d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
 		d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
 		d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "logProjectDirectory" ) );
+		d->m_specifiquePrefixes = PrivateXSLProject::loadList( document, "prefixes", "prefix" );
 		break;
 	}
+
+	if( d->m_specifiquePrefixes.size() == 0 )
+		d->m_specifiquePrefixes.append( d->m_specifiquePrefix );
 
 	if( ! QDir( d->m_projectPath ).exists() )
 		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
@@ -456,6 +461,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 		PrivateXSLProject::setValue( document, "rcs", "subversion" );
 		break;
 	}
+	PrivateXSLProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
 	PrivateXSLProject::saveList( document, "webServiceLink", "link", d->m_webServiceLink );
 	PrivateXSLProject::saveList( document, "paths", "path", d->m_searchPathList );
 	PrivateXSLProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
@@ -540,6 +546,12 @@ QString XSLProject::specifiquePrefix() const {
 	
 void XSLProject::setSpecifiquePrefix( const QString & value ) {
 	d->m_specifiquePrefix = value;
+	if( ! d->m_specifiquePrefixes.contains( value ) )
+		d->m_specifiquePrefixes.append( value );
+}
+
+QStringList & XSLProject::specifiquePrefixes() {
+	return d->m_specifiquePrefixes;
 }
 
 QStringList & XSLProject::searchPathList() {

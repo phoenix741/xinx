@@ -35,6 +35,7 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 	m_pathListLabel->setBuddy( m_searchPathList );
 	m_prefixLabel->setBuddy( m_prefixList );
 	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
+	m_servicesList->setDefaultVisible( false );
 }
 
 ProjectPropertyImpl::~ProjectPropertyImpl() {
@@ -48,10 +49,9 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 	m_projectLineEdit->changePath( this, global.m_config->config().project.defaultPath );
 }
 
-void ProjectPropertyImpl::on_m_prefixLineEdit_textChanged( QString text ) {
+void ProjectPropertyImpl::on_m_prefixList_defaultValueChanged( QString text ) {
 	Q_UNUSED( text );
 	
-//	m_prefixLineEdit->setText( text.toUpper() );
 	updateOkButton();
 }
 
@@ -109,7 +109,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_specifiqueProjectPathLineEdit->setText( project->specifiquePathName() );
 	
 	m_prefixList->setDefaultValue( project->specifiquePrefix() );
-	m_prefixList->setValues( QStringList() << project->specifiquePrefix() );
+	m_prefixList->setValues( project->specifiquePrefixes() );
 
 	m_specifiqueGroupBox->setChecked( project->options().testFlag( XSLProject::hasSpecifique ) );
 	m_webServiceGroupBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
@@ -148,6 +148,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setIndexOfSpecifiquePath( project->searchPathList().indexOf( m_searchPathList->defaultValue() ) );
 
 	project->setSpecifiquePrefix( m_prefixList->defaultValue() );
+	project->specifiquePrefixes() = m_prefixList->values();
 	
 	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
 	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );

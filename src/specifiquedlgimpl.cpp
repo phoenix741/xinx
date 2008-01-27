@@ -55,8 +55,13 @@ struct_extentions SpecifiqueDialogImpl::extentionOfFileName( const QString & nam
 }
 
 bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
-	return 	global.m_project && 
-			QFileInfo( filename ).fileName().startsWith( global.m_project->specifiquePrefix(), Qt::CaseInsensitive );
+	if( ! global.m_project ) return false;
+	
+	foreach( QString prefix, global.m_project->specifiquePrefixes() ) {
+		if( QFileInfo( filename ).fileName().startsWith( prefix + "_", Qt::CaseInsensitive ) )
+			return true;
+	}
+	return false;
 }
 
 bool SpecifiqueDialogImpl::canBeSaveAsSpecifique( const QString & filename ) {
@@ -106,7 +111,7 @@ QString SpecifiqueDialogImpl::filename() const {
 	
 	newFileName = QFileInfo( m_filename ).fileName();
 	if( m_specifiqueCheckBox->isChecked() && (! isSpecifique( m_filename ) ) ) 
-		newFileName = global.m_project->specifiquePrefix().toLower() + "_" + newFileName;
+		newFileName = global.m_project->specifiquePrefix() + "_" + newFileName;
 	
 	return newFileName;
 }

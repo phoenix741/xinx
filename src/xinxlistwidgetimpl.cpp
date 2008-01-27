@@ -22,9 +22,6 @@
 #include "xinxlistwidgetimpl.h"
 #include "exceptions.h"
 
-// Qt header
-#include <QInputDialog>
-
 /* XinxListWidgetImpl */
 
 XinxListWidgetImpl::XinxListWidgetImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
@@ -112,9 +109,10 @@ void XinxListWidgetImpl::on_m_btnDef_clicked() {
 }
 
 void XinxListWidgetImpl::on_m_btnAdd_clicked() {
-	QString text = QInputDialog::getText( this, tr("Add %1 to list").arg( m_valueName ), m_valueName, QLineEdit::Normal, m_defaultProposedValue );
-	if( ! text.isEmpty() )
-		m_list->addItem( text );
+	QListWidgetItem * item = new QListWidgetItem( m_list );
+	m_list->addItem( item );
+	m_list->setCurrentItem( item );
+	m_lineEdit->setFocus();
 
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );

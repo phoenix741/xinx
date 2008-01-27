@@ -42,10 +42,11 @@ private slots:
 	void on_m_specifiqueGroupBox_clicked();
 	void on_m_projectLineEdit_textChanged( QString );
 	void on_m_projectButton_clicked();
-	void on_m_prefixLineEdit_textChanged( QString );
+	void on_m_prefixList_defaultValueChanged( QString );
 
 	void versionFinded( SimpleConfigurationFile configuration );
 };
+
 #endif
 
 

@@ -59,11 +59,27 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
 	connect( m_projectDirWidget->m_projectDirectoryTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_projectDirectoryTreeView_doubleClicked(QModelIndex)) );
+	connect( m_projectDirWidget->m_prefixComboBox, SIGNAL(activated(QString)), this, SLOT(on_m_prefixComboBox_activated(QString)) );
+	connect( &global, SIGNAL(projectChanged()), this, SLOT(projectChange()) );
 }
 
 PrivateProjectDirectoryDockWidget::~PrivateProjectDirectoryDockWidget() {
 	XINX_TRACE( "~PrivateProjectDirectoryDockWidget", "()" );
 	
+}
+
+void PrivateProjectDirectoryDockWidget::projectChange() {
+	m_projectDirWidget->m_prefixComboBox->clear();
+	if( m_project ) {
+		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
+		m_projectDirWidget->m_prefixComboBox->addItems( m_project->specifiquePrefixes() );
+		m_projectDirWidget->m_prefixComboBox->setCurrentIndex( 
+				m_projectDirWidget->m_prefixComboBox->findText( m_project->specifiquePrefix() ) );
+	}
+}
+
+void PrivateProjectDirectoryDockWidget::on_m_prefixComboBox_activated( QString prefix ) {
+	m_project->setSpecifiquePrefix( prefix );
 }
 
 void PrivateProjectDirectoryDockWidget::filtreChange() {
@@ -286,6 +302,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 	d->m_dirModel = NULL;
 	delete d->m_iconProvider;
 	d->m_iconProvider = NULL;
+	d->m_projectDirWidget->m_prefixComboBox->clear();
 		
 	d->m_project = project;
 	
@@ -301,6 +318,8 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 		for(int i = 2; i < d->m_dirModel->columnCount(); i++ )
 			d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( d->m_dirModel->index( d->m_project->projectPath() ) );
+		
+		d->m_projectDirWidget->m_prefixComboBox->addItems( project->specifiquePrefixes() );
 	}
 }
 

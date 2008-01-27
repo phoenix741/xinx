@@ -57,9 +57,11 @@ public:
 
 	bool eventFilter( QObject *obj, QEvent *event );
 public slots:
+	void projectChange();
 	void filtreChange();
 	void on_m_filtreLineEdit_textChanged( QString filtre );
 	void on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index );
+	void on_m_prefixComboBox_activated( QString prefix );
 private:
 	ProjectDirectoryDockWidget * m_parent;
 };

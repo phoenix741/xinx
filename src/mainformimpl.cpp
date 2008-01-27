@@ -1003,23 +1003,26 @@ void PrivateMainformImpl::selectedCompareWithStd() {
 	QStringList list = m_projectDock->selectedFiles();
 	XINX_ASSERT( list.size() == 1 && global.m_project );
 	
-	QString customFilename = list.at( 0 ), stdFilename, path, filename, 
-			prefix = global.m_project->specifiquePrefix() + "_";
+	QString customFilename = list.at( 0 ), stdFilename, path, filename;
 	
 	path = QFileInfo( customFilename ).absolutePath();
 	filename = QFileInfo( customFilename ).fileName();
 	
-	if( filename.startsWith( prefix, Qt::CaseInsensitive ) ) {
-		filename.remove( 0, prefix.size() );
-		
-		stdFilename = QDir( path ).absoluteFilePath( filename );
-		
-		if( QFileInfo( stdFilename ).exists() )
-			QProcess::execute( global.m_config->config().tools["diff"], QStringList() << customFilename << stdFilename );
-		else 
-			QMessageBox::information( m_parent, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
-	} else
-		QMessageBox::information( m_parent, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
+	foreach( QString prefix, global.m_project->specifiquePrefixes() ) {
+		if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
+			filename.remove( 0, prefix.size() + 1 );
+			stdFilename = QDir( path ).absoluteFilePath( filename );
+
+			if( QFileInfo( stdFilename ).exists() )
+				QProcess::execute( global.m_config->config().tools["diff"], QStringList() << customFilename << stdFilename );
+			else 
+				QMessageBox::information( m_parent, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
+			
+			return;
+		}
+	}
+	
+	QMessageBox::information( m_parent, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
 }
 
 void PrivateMainformImpl::selectedCompare() {
