@@ -381,18 +381,65 @@ void TabEditor::setCopyPathAction( QAction * action ) {
 	m_copyPathAction = action;
 }
 
+int TabEditor::tabPositionIcon( QPoint point ) {
+	int clickedItem = -1;
+
+	for ( int i = 0; i < tabBar()->count(); i++ ) {
+		QRect rect = tabBar()->tabRect( i );
+		rect.moveTo( QPoint( 5 + rect.left(), 5 + rect.top() ) );
+		rect.setSize( tabBar()->iconSize() );
+		if ( rect.contains( point ) ) {
+			clickedItem = i;
+			break;
+		}
+	}
+
+	return clickedItem;
+}
+
+int TabEditor::tabPosition( QPoint point ) {
+	int clickedItem = -1;
+
+	for ( int i = 0; i < tabBar()->count(); i++ ) {
+		if ( tabBar()->tabRect( i ).contains( point ) ) {
+			clickedItem = i;
+			break;
+		}
+	}
+
+	return clickedItem;
+}
 
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj==tabBar() ) {
-		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
-			m_clickedItem = -1;
+        if( event->type() == QEvent::Leave ) {
+        	for( int i = 0 ; i < tabBar()->count(); i++ )
+        		setTabIcon( i, editor( i )->icon() );
+			
+			return true;
+		} else
+		if( event->type() == QEvent::HoverMove ) {
+        	for( int i = 0 ; i < tabBar()->count(); i++ )
+        		setTabIcon( i, editor( i )->icon() );
+
+			QHoverEvent *mouseEvent = static_cast<QHoverEvent *>(event);
+        	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
+			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
+
+			setTabIcon( m_clickedItem, QIcon( ":/images/fileclose.png" ) );
+			
+			return true;
+		} else
+		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) ) {
+        	QMouseEvent * mouseEvent = static_cast<QMouseEvent *>( event );
+        	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
+			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
+						
+			m_closeAction->trigger();	
+		} else
+ 		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-			for (int i=0; i<tabBar()->count(); i++) {
-				if ( tabBar()->tabRect(i).contains( mouseEvent->pos() ) ) {
-					m_clickedItem = i;
-					break;
-				}
-			}
+			m_clickedItem = tabPosition( mouseEvent->pos() );
 			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
 			
 			if ( ( event->type() == QEvent::MouseButtonPress ) && ( mouseEvent->button() == Qt::RightButton ) ) {

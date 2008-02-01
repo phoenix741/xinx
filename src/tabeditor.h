@@ -109,8 +109,10 @@ private slots:
 	
 	void slotCursorPositionChanged();
 	
-	void slotNeedInsertSnipet( const QString & snipet );	
+	void slotNeedInsertSnipet( const QString & snipet );
 private:
+	int tabPositionIcon( QPoint point );
+	int tabPosition( QPoint point );
 	Editor * newFileEditor( const QString & fileName );
 
 	QAction * m_refreshAction;

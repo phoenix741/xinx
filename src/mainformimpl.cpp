@@ -584,6 +584,12 @@ void PrivateMainformImpl::openFile() {
 	m_parent->m_tabEditors->setUpdatesEnabled( true );
 }
 
+void PrivateMainformImpl::currentCloseFile() {
+	XINX_TRACE ( "PrivateMainformImpl::currentCloseFile", "()" );
+
+	fileEditorClose( m_parent->m_tabEditors->currentIndex() );
+}
+
 void PrivateMainformImpl::fileEditorRefreshFile( int index ) {
 	XINX_TRACE( "PrivateMainformImpl::fileEditorRefreshFile", QString( "( %1 )" ).arg( index ) );
 
@@ -750,7 +756,8 @@ void PrivateMainformImpl::createTabEditorButton() {
 	XINX_TRACE( "PrivateMainformImpl::createTabEditorButton", "()" );
 
 	QToolButton * closeTab = new QToolButton( m_parent->m_tabEditors );
-	closeTab->setDefaultAction( m_parent->m_closeAct );
+	closeTab->setIcon( QIcon( ":/images/tabclose.png" ) );
+	connect( closeTab, SIGNAL(clicked()), this, SLOT(currentCloseFile()) );
 	m_parent->m_tabEditors->setCornerWidget( closeTab );
 }
 

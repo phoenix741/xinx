@@ -131,7 +131,8 @@ public slots:
 	void saveFile();
 	void saveAsFile();
 	void printFile();
-
+	void currentCloseFile();
+	
 	// Recent action
 	void openRecentProject();
 	void openRecentFile();
