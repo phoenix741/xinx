@@ -355,4 +355,8 @@ bool WebPlugin::keyPress( const QString & plugin, IXinxExtendedEditor * editor, 
 	return false;
 }
 
+QPair<QString,int> WebPlugin::searchWord( const QString & word ) {
+	
+}
+
 Q_EXPORT_PLUGIN2(webplugin, WebPlugin)

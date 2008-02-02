@@ -221,6 +221,26 @@ private:
 	friend class PrivateFileContentElement;
 };
 
+class FileContentElementList : public QObject {
+	Q_OBJECT
+public:
+signals:
+	void aboutToAdd( int row );
+	void added();
+	void aboutToRemove( int row );
+	void removed();
+private slots:
+	void addElement( FileContentElement * element, int row );
+	void removeElement( FileContentElement * element );
+private:
+	void addElement( FileContentElement * element );
+	bool contains( FileContentElement * data );
+	void refreshRecursive( FileContentElement * data );
+	
+	QHash<QString,FileContentElement*> m_hash;
+	QStringList m_files;
+};
+
 bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );
 
 #endif /*FILECONTENTSTRUCTURE_H_*/

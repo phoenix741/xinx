@@ -282,3 +282,66 @@ bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentEle
 	return d1->name() < d2->name();
 }
 
+/* FileContentElementList */
+
+void FileContentElementList::addElement( FileContentElement * element, int row ) {
+	XINX_TRACE( "FileContentElementList::addElement", QString( "( %1, %2 )" ).arg( (unsigned int)element, 0, 16 ).arg( row ) );
+
+	Q_UNUSED( row );
+	if( dynamic_cast<XSLFileContentParser*>( element ) ) 
+		refreshRecursive( element );
+	else
+		addElement( element );
+}
+
+bool FileContentElementList::contains( FileContentElement * data ) {
+	XINX_TRACE( "FileContentElementList::contains", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
+
+	foreach( FileContentElement * element, m_hash ) {
+		if( element->equals( data ) ) 
+			return true;
+	}
+	return false;
+}
+
+void FileContentElementList::refreshRecursive( FileContentElement * data ) {
+	XINX_ASSERT( data );
+	XINX_TRACE( "FileContentElementList::refreshRecursive", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
+
+	for( int i = 0; i < data->rowCount(); i++ ) {
+		FileContentElement * e = data->element( i );
+		if( dynamic_cast<XSLFileContentParser*>( e ) ) {
+			QString name = e->name();
+			if( ! m_files.contains( name ) ) { 
+				m_files.append( name );
+				refreshRecursive( e );
+			}
+		} else {
+			if( ! contains( e ) )
+				addElement( e );
+		}
+	}
+}
+
+void FileContentElementList::addElement( FileContentElement* element ) {
+	XINX_TRACE( "FileContentElementList::addElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
+	QList<FileContentElement*>::iterator i = qLowerBound( m_hash.begin(), m_hash.end(), element, FileContentElementModelObjListSort );
+	int index = i - m_hash.begin();
+	emit aboutToAdd( index );
+	m_hash.insert( i, element );
+	emit added();
+}
+
+void FileContentElementList::removeElement( FileContentElement* element ) {
+	XINX_TRACE( "FileContentElementList::removeElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+
+	int index = m_hash.indexOf( element );
+	if( index >= 0 ) {
+		emit aboutToRemove( index );
+		m_hash.removeAt( index );
+		emit removed();
+	}
+}
+
+
