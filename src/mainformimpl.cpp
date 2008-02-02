@@ -65,7 +65,7 @@
 
 /* PrivateMainformImpl */
 
-PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_parent( parent ) {
+PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_closeTabBtn(0), m_parent( parent ) {
 	XINX_TRACE( "PrivateMainformImpl", QString( "( 0x%1 )" ).arg( (unsigned int)parent, 0, 16 ) );
 	
 	registerTypes();
@@ -755,10 +755,17 @@ void PrivateMainformImpl::storeWindowSettings() {
 void PrivateMainformImpl::createTabEditorButton() {
 	XINX_TRACE( "PrivateMainformImpl::createTabEditorButton", "()" );
 
-	QToolButton * closeTab = new QToolButton( m_parent->m_tabEditors );
-	closeTab->setIcon( QIcon( ":/images/tabclose.png" ) );
-	connect( closeTab, SIGNAL(clicked()), this, SLOT(currentCloseFile()) );
-	m_parent->m_tabEditors->setCornerWidget( closeTab );
+	m_closeTabBtn = new QToolButton( m_parent->m_tabEditors );
+	m_closeTabBtn->setIcon( QIcon( ":/images/tabclose.png" ) );
+	connect( m_closeTabBtn, SIGNAL(clicked()), this, SLOT(currentCloseFile()) );
+	if( ! global.m_config->config().editor.hideCloseTab )
+		m_parent->m_tabEditors->setCornerWidget( m_closeTabBtn );
+
+	connect( &global, SIGNAL(configChanged()), this, SLOT(updateConfigElement()) );
+}
+
+void PrivateMainformImpl::updateConfigElement() {
+	m_closeTabBtn->setVisible( ! global.m_config->config().editor.hideCloseTab );
 }
 
 void PrivateMainformImpl::updateActions() {

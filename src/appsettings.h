@@ -36,6 +36,8 @@ struct struct_editor {
 	QFont defaultFormat;
 	QColor highlightWord;
 	bool autoHighlight;
+	bool hideCloseTab;
+	bool closeButtonOnEachTab;
 };
 
 struct struct_cvs {

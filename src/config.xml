@@ -36,6 +36,8 @@
         <value name="Default format" type="font"/>
         <value name="Highlight word" type="color" default="yellow"/> 
         <value name="Auto Highlight" type="bool" default="false"/>
+        <value name="Hide Close Tab" type="bool" default="false"/>
+        <value name="Close Button on each Tab" type="bool" default="false"/>
 	</type>
     <type name="Configuration Editor">
         <value name="Activate Configuration Editor" type="bool" default="no"/>

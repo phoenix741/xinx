@@ -72,8 +72,17 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Pretty print on saving
 	m_parent->m_prettyPrintOnSavingCheckBox->setChecked( m_config.config().editor.autoindentOnSaving );
 	
-	// Compression level
+	// Complession level
 	m_parent->m_completionLevelComboBox->setCurrentIndex( m_config.config().editor.completionLevel );
+	
+	// Tab close button
+	if( m_config.config().editor.closeButtonOnEachTab ) {
+		if( m_config.config().editor.hideCloseTab )
+			m_parent->m_closeBtnRadioButton->setChecked( true );
+		else
+			m_parent->m_closeAndCornerBtnRadioButton->setChecked( true );
+	} else
+		m_parent->m_cornerBtnRadioButton->setChecked( true );
 	
 	// Auto highlight text
 	m_parent->m_autoHighlightCheckBox->setChecked( m_config.config().editor.autoHighlight );
@@ -147,7 +156,7 @@ void PrivateCustomDialogImpl::showConfig() {
 	}
 	m_parent->m_formatsListView->setCurrentRow( 0 );
 	
-	// Extetions
+	// Extentions
 	m_parent->m_extentionsListWidget->clear();
 	foreach( QString key, m_config.config().files.keys() ) {
 		m_parent->m_extentionsListWidget->addItem( global.m_pluginsLoader->filter( key ) );
@@ -173,9 +182,22 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Pretty print on saving
 	m_config.config().editor.autoindentOnSaving = m_parent->m_prettyPrintOnSavingCheckBox->isChecked();
 	
-	// Compression level
+	// Complession level
 	m_config.config().editor.completionLevel = m_parent->m_completionLevelComboBox->currentIndex();
-	
+
+	// Tab close button
+	if( m_parent->m_closeBtnRadioButton->isChecked() ) {
+		m_config.config().editor.closeButtonOnEachTab = true;
+		m_config.config().editor.hideCloseTab = true;
+	} else
+	if( m_parent->m_cornerBtnRadioButton->isChecked() ) {
+		m_config.config().editor.closeButtonOnEachTab = false;
+		m_config.config().editor.hideCloseTab = false;
+	} else {
+		m_config.config().editor.closeButtonOnEachTab = true;
+		m_config.config().editor.hideCloseTab = false;
+	}
+
 	// Auto highlight text
 	m_config.config().editor.autoHighlight = m_parent->m_autoHighlightCheckBox->isChecked();
 

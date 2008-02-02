@@ -29,6 +29,7 @@
 #include "globals.h"
 #include "snipet.h"
 #include "snipetlist.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QDir>
@@ -418,7 +419,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			return true;
 		} else
-		if( event->type() == QEvent::HoverMove ) {
+		if( ( event->type() == QEvent::HoverMove ) && global.m_config->config().editor.closeButtonOnEachTab ) {
         	for( int i = 0 ; i < tabBar()->count(); i++ )
         		setTabIcon( i, editor( i )->icon() );
 
@@ -430,7 +431,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			return true;
 		} else
-		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) ) {
+		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) && global.m_config->config().editor.closeButtonOnEachTab ) {
         	QMouseEvent * mouseEvent = static_cast<QMouseEvent *>( event );
         	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
 			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>776</width>
-    <height>509</height>
+    <width>792</width>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -165,27 +165,249 @@ p, li { white-space: pre-wrap; }
       <attribute name="title" >
        <string>&amp;Editor</string>
       </attribute>
-      <layout class="QVBoxLayout" >
-       <item>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" colspan="2" >
         <widget class="QGroupBox" name="groupBox_7" >
          <property name="title" >
-          <string>Editor</string>
+          <string>Display</string>
          </property>
-         <layout class="QGridLayout" >
-          <item row="0" column="0" colspan="4" >
-           <widget class="QCheckBox" name="m_createBakCheckBox" >
-            <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+         <layout class="QHBoxLayout" >
+          <item>
+           <layout class="QGridLayout" >
+            <item row="0" column="0" colspan="4" >
+             <widget class="QCheckBox" name="m_autoHighlightCheckBox" >
+              <property name="text" >
+               <string>Auto highlight same word</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLabel" name="label_17" >
+              <property name="text" >
+               <string>&amp;Color :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_highlightTextColorComboBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2" colspan="2" >
+             <widget class="KColorCombo" name="m_highlightTextColorComboBox" />
+            </item>
+            <item row="2" column="0" colspan="4" >
+             <widget class="QCheckBox" name="m_showCurrentLineCheckBox" >
+              <property name="text" >
+               <string>Show current &amp;line</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2" >
+             <widget class="QLabel" name="label_10" >
+              <property name="text" >
+               <string>Font &amp;size :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_fontSizeSpinBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2" colspan="2" >
+             <widget class="QSpinBox" name="m_fontSizeSpinBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Create a backup file before saving the file. The backup file is stored in the same directory that the orignal file. The backup is created by copy before the file is overwritten.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the font in the editor. The value is a global value.&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="2" >
+             <widget class="QLabel" name="label_6" >
+              <property name="text" >
+               <string>&amp;Font name :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_fontComboBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2" colspan="2" >
+             <widget class="QFontComboBox" name="m_fontComboBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Name of the font to use in all editors&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Minimum" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <property name="text" >
-             <string>&amp;Create backup file when saving (.bak)</string>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="4" >
+          <item>
+           <layout class="QGridLayout" >
+            <item row="0" column="0" colspan="2" >
+             <widget class="QLabel" name="label_13" >
+              <property name="text" >
+               <string>&amp;Completion level :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_completionLevelComboBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1" colspan="2" >
+             <widget class="QComboBox" name="m_completionLevelComboBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Level of the completion. The completion can be :&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Desactivated&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Activated but only with an help on tapping&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Fully activated with the help on tapping, and the adding code (as configured on completion file)&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+              <item>
+               <property name="text" >
+                <string>Desactivate completion</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Active popup completion dialog</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Active automatique code writing (Niveau 1)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Active automatique code writing (Niveau 2)</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="3" >
+             <widget class="QCheckBox" name="m_showTabulationCheckBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Show tabulation and space in the editor. This can be used to see, if tabulation or space is written.&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+              <property name="text" >
+               <string>&amp;Show tabulation and space in the editor</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType" >
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="3" column="1" >
+             <widget class="QLabel" name="label_14" >
+              <property name="text" >
+               <string>Size of a &amp;tabulation :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_sizeOfTabSpinBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2" >
+             <widget class="QSpinBox" name="m_sizeOfTabSpinBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the tabulation in number of character. This is the number of character that a tabulation replace.&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="2" >
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>41</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QGroupBox" name="groupBox_9" >
+         <property name="title" >
+          <string>File</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <item>
            <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox" >
             <property name="whatsThis" >
              <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -198,7 +420,20 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="4" >
+          <item>
+           <widget class="QCheckBox" name="m_createBakCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Create a backup file before saving the file. The backup file is stored in the same directory that the orignal file. The backup is created by copy before the file is overwritten.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Create backup file when saving (.bak)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="m_prettyPrintOnSavingCheckBox" >
             <property name="whatsThis" >
              <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -211,186 +446,43 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="3" column="0" colspan="2" >
-           <widget class="QLabel" name="label_13" >
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QGroupBox" name="groupBox_8" >
+         <property name="title" >
+          <string>Close Tab Button</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QRadioButton" name="m_closeBtnRadioButton" >
             <property name="text" >
-             <string>&amp;Completion level :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_completionLevelComboBox</cstring>
+             <string>Close button on the &amp;tab widget</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="2" colspan="2" >
-           <widget class="QComboBox" name="m_completionLevelComboBox" >
-            <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Level of the completion. The completion can be :&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Desactivated&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Activated but only with an help on tapping&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Fully activated with the help on tapping, and the adding code (as configured on completion file)&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
-            </property>
-            <item>
-             <property name="text" >
-              <string>Desactivate completion</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>Active popup completion dialog</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>Active automatique code writing (Niveau 1)</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>Active automatique code writing (Niveau 2)</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_autoHighlightCheckBox" >
+          <item>
+           <widget class="QRadioButton" name="m_cornerBtnRadioButton" >
             <property name="text" >
-             <string>Auto highlight same word</string>
+             <string>Close button on right &amp;corner</string>
+            </property>
+            <property name="checked" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="5" column="0" >
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="5" column="1" >
-           <widget class="QLabel" name="label_17" >
+          <item>
+           <widget class="QRadioButton" name="m_closeAndCornerBtnRadioButton" >
             <property name="text" >
-             <string>Color of the highlighted &amp;word :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_highlightTextColorComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2" colspan="2" >
-           <widget class="KColorCombo" name="m_highlightTextColorComboBox" />
-          </item>
-          <item row="6" column="0" colspan="4" >
-           <widget class="QCheckBox" name="m_showCurrentLineCheckBox" >
-            <property name="text" >
-             <string>Show current &amp;line</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0" colspan="4" >
-           <widget class="QCheckBox" name="m_showTabulationCheckBox" >
-            <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Show tabulation and space in the editor. This can be used to see, if tabulation or space is written.&lt;/p>&lt;/body>&lt;/html></string>
-            </property>
-            <property name="text" >
-             <string>&amp;Show tabulation and space in the editor</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0" >
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" >
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="8" column="1" >
-           <widget class="QLabel" name="label_14" >
-            <property name="text" >
-             <string>Size of a &amp;tabulation :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_sizeOfTabSpinBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2" colspan="2" >
-           <widget class="QSpinBox" name="m_sizeOfTabSpinBox" >
-            <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the tabulation in number of character. This is the number of character that a tabulation replace.&lt;/p>&lt;/body>&lt;/html></string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0" colspan="2" >
-           <widget class="QLabel" name="label_10" >
-            <property name="text" >
-             <string>Font &amp;size :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_fontSizeSpinBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="2" colspan="2" >
-           <widget class="QSpinBox" name="m_fontSizeSpinBox" >
-            <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the font in the editor. The value is a global value.&lt;/p>&lt;/body>&lt;/html></string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0" colspan="2" >
-           <widget class="QLabel" name="label_6" >
-            <property name="text" >
-             <string>&amp;Font name :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_fontComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="2" colspan="2" >
-           <widget class="QFontComboBox" name="m_fontComboBox" >
-            <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Name of the font to use in all editors&lt;/p>&lt;/body>&lt;/html></string>
+             <string>Close button on the tab widget &amp;and the corner</string>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="2" column="0" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -398,7 +490,7 @@ p, li { white-space: pre-wrap; }
          <property name="sizeHint" >
           <size>
            <width>736</width>
-           <height>41</height>
+           <height>31</height>
           </size>
          </property>
         </spacer>
@@ -1222,24 +1314,24 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>okButton</tabstop>
-  <tabstop>m_defaultPushButton</tabstop>
   <tabstop>m_tabWidget</tabstop>
-  <tabstop>m_descriptionPathLineEdit</tabstop>
-  <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
-  <tabstop>m_langComboBox</tabstop>
-  <tabstop>m_createBakCheckBox</tabstop>
-  <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
-  <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>
+  <tabstop>m_autoHighlightCheckBox</tabstop>
+  <tabstop>m_highlightTextColorComboBox</tabstop>
+  <tabstop>m_showCurrentLineCheckBox</tabstop>
+  <tabstop>m_fontSizeSpinBox</tabstop>
+  <tabstop>m_fontComboBox</tabstop>
   <tabstop>m_completionLevelComboBox</tabstop>
   <tabstop>m_showTabulationCheckBox</tabstop>
   <tabstop>m_sizeOfTabSpinBox</tabstop>
-  <tabstop>m_fontSizeSpinBox</tabstop>
-  <tabstop>m_fontComboBox</tabstop>
-  <tabstop>m_formatsListView</tabstop>
-  <tabstop>m_boldCheckBox</tabstop>
-  <tabstop>m_underlineCheckBox</tabstop>
-  <tabstop>m_italicCheckBox</tabstop>
+  <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
+  <tabstop>m_createBakCheckBox</tabstop>
+  <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>
+  <tabstop>m_closeBtnRadioButton</tabstop>
+  <tabstop>m_cornerBtnRadioButton</tabstop>
+  <tabstop>m_closeAndCornerBtnRadioButton</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>m_defaultPushButton</tabstop>
   <tabstop>m_StrikeoutCheckBox</tabstop>
   <tabstop>m_colorComboBox</tabstop>
   <tabstop>m_exempleTextEdit</tabstop>
@@ -1259,7 +1351,15 @@ p, li { white-space: pre-wrap; }
   <tabstop>m_cvsCompressionComboBox</tabstop>
   <tabstop>m_cvsPruneCheckBox</tabstop>
   <tabstop>m_cvsCreateDirCheckBox</tabstop>
-  <tabstop>cancelButton</tabstop>
+  <tabstop>m_underlineCheckBox</tabstop>
+  <tabstop>m_italicCheckBox</tabstop>
+  <tabstop>m_boldCheckBox</tabstop>
+  <tabstop>m_descriptionPathLineEdit</tabstop>
+  <tabstop>m_closeLogCheckBox</tabstop>
+  <tabstop>m_changeLogCheckBox</tabstop>
+  <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
+  <tabstop>m_langComboBox</tabstop>
+  <tabstop>m_formatsListView</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />
@@ -1272,8 +1372,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>592</x>
-     <y>549</y>
+     <x>700</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -1288,8 +1388,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>670</x>
-     <y>549</y>
+     <x>781</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
@@ -1304,12 +1404,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>301</x>
-     <y>80</y>
+     <x>110</x>
+     <y>63</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>409</x>
-     <y>107</y>
+     <x>110</x>
+     <y>63</y>
     </hint>
    </hints>
   </connection>

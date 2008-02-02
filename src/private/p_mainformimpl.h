@@ -49,8 +49,8 @@ public:
 	~PrivateMainformImpl();
 	
 	// Creation
-	void createShortcut();
 	void createTabEditorButton();
+	void createShortcut();
 	void createSubMenu();
 	void createStatusBar();
 	void createDockWidget();
@@ -118,10 +118,11 @@ public:
 	
 	// Customize
 	struct_extentions extentionOfFileName( const QString & name );
-
+	QToolButton * m_closeTabBtn;
 public slots:
 	// Actions
 	void updateActions();
+	void updateConfigElement();
 
 	// File
 	void newFile();

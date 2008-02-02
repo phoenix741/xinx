@@ -120,6 +120,8 @@ struct_editor AppSettings::getDefaultEditor() {
 	value.highlightCurrentLine = true;
 	value.highlightWord = Qt::yellow;
 	value.autoHighlight = false;
+	value.hideCloseTab = false;
+	value.closeButtonOnEachTab = false;
 
 	return value;
 }
@@ -138,6 +140,8 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 	value.defaultFormat = settings->value( "Default format", defaultValue.defaultFormat ).value<QFont>();
 	value.highlightWord = settings->value( "Highlight word", defaultValue.highlightWord ).value<QColor>();
 	value.autoHighlight = settings->value( "Auto Highlight", defaultValue.autoHighlight ).toBool();
+	value.hideCloseTab = settings->value( "Hide Close Tab", defaultValue.hideCloseTab ).toBool();
+	value.closeButtonOnEachTab = settings->value( "Close Button on each Tab", defaultValue.closeButtonOnEachTab ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -156,6 +160,8 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->setValue( "Default format", value.defaultFormat );
 	settings->setValue( "Highlight word", value.highlightWord );
 	settings->setValue( "Auto Highlight", value.autoHighlight );
+	settings->setValue( "Hide Close Tab", value.hideCloseTab );
+	settings->setValue( "Close Button on each Tab", value.closeButtonOnEachTab );
 
 	settings->endGroup();
 }
