@@ -38,12 +38,6 @@ XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QOb
 	connect( m_list, SIGNAL(aboutToRemove(int)), this, SLOT(beginRemoveRows(int)) );
 	connect( m_list, SIGNAL(removed()), this, SLOT(endRemoveRows()) );
 	connect( m_list, SIGNAL(reset()), this, SLOT(reset()) );
-//	rootItem = data;
-//	refreshList();
-//	if( rootItem ) {
-//		connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
-//		connect( rootItem, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
-//	}
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
