@@ -224,12 +224,18 @@ private:
 class FileContentElementList : public QObject {
 	Q_OBJECT
 public:
+	FileContentElementList( FileContentElement * root );
+	virtual ~FileContentElementList();
+	
+	const QList<FileContentElement*> & list() const;
 signals:
 	void aboutToAdd( int row );
 	void added();
 	void aboutToRemove( int row );
 	void removed();
+	void reset();
 private slots:
+	void refreshList();
 	void addElement( FileContentElement * element, int row );
 	void removeElement( FileContentElement * element );
 private:
@@ -237,8 +243,10 @@ private:
 	bool contains( FileContentElement * data );
 	void refreshRecursive( FileContentElement * data );
 	
-	QHash<QString,FileContentElement*> m_hash;
+	QList<FileContentElement*> m_list;
 	QStringList m_files;
+	
+	FileContentElement * m_root;
 };
 
 bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );

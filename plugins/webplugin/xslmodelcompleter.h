@@ -40,21 +40,28 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 public slots:
-	void refreshList();
-	void addElement( FileContentElement*, int );
-	void removeElement( FileContentElement* );
+//	void refreshList();
+//	void addElement( FileContentElement*, int );
+//	void removeElement( FileContentElement* );
+protected slots:
+	virtual void beginInsertRows( int row );
+	virtual void endInsertRows();
+	virtual void beginRemoveRows( int row );
+	virtual void endRemoveRows();
+	virtual void reset();
 private:
-	void addElement( FileContentElement* element );
-	bool contains( FileContentElement * data );
-	void refreshRecursive( FileContentElement * data );
+//	void addElement( FileContentElement* element );
+//	bool contains( FileContentElement * data );
+//	void refreshRecursive( FileContentElement * data );
 
-	QList<FileContentElement*> m_objList;
-	FileContentElement* rootItem;
+//	QList<FileContentElement*> m_objList;
+//	FileContentElement* rootItem;
+	FileContentElementList * m_list;
 	
 	QString m_baliseName;
 	QString m_attributeName;
 	
-	QStringList m_files;
+//	QStringList m_files;
 };
 
 class XSLParamCompletionModel : public QAbstractListModel {

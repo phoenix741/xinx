@@ -276,6 +276,8 @@ void FileContentElement::removeMarkedDeleted() {
 	}
 }
 
+/* FileContentElementModelObjListSort */
+
 bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 ) {
 	XINX_TRACE( "FileContentElementModelObjListSort", QString( "( %1, %2 )" ).arg( d1->name() ).arg( d2->name() ) );
 
@@ -284,33 +286,60 @@ bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentEle
 
 /* FileContentElementList */
 
+FileContentElementList::FileContentElementList( FileContentElement * root ) : m_root( root ) {
+	refreshList();
+	if( m_root ) {
+		connect( m_root, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
+		connect( m_root, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
+	}
+}
+
+FileContentElementList::~FileContentElementList() {
+	
+}
+
+const QList<FileContentElement*> & FileContentElementList::list() const {
+	return m_list;
+}
+
+void FileContentElementList::refreshList() {
+	XINX_TRACE( "FileContentElementList::refreshList", "()" );
+
+	m_list.clear();
+	if( m_root ) {
+		refreshRecursive( m_root );
+		qSort( m_list.begin(), m_list.end(), FileContentElementModelObjListSort );
+	}
+	emit reset();
+}
+
 void FileContentElementList::addElement( FileContentElement * element, int row ) {
 	XINX_TRACE( "FileContentElementList::addElement", QString( "( %1, %2 )" ).arg( (unsigned int)element, 0, 16 ).arg( row ) );
 
 	Q_UNUSED( row );
-	if( dynamic_cast<XSLFileContentParser*>( element ) ) 
+	if( dynamic_cast<FileContentParser*>( element ) ) 
 		refreshRecursive( element );
-	else
+	else if( ! contains( element ) )
 		addElement( element );
 }
 
 bool FileContentElementList::contains( FileContentElement * data ) {
 	XINX_TRACE( "FileContentElementList::contains", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
 
-	foreach( FileContentElement * element, m_hash ) {
+	foreach( FileContentElement * element, m_list ) {
 		if( element->equals( data ) ) 
 			return true;
 	}
 	return false;
 }
 
-void FileContentElementList::refreshRecursive( FileContentElement * data ) {
+void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 	XINX_ASSERT( data );
 	XINX_TRACE( "FileContentElementList::refreshRecursive", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
 
 	for( int i = 0; i < data->rowCount(); i++ ) {
 		FileContentElement * e = data->element( i );
-		if( dynamic_cast<XSLFileContentParser*>( e ) ) {
+		if( dynamic_cast<FileContentParser*>( e ) ) {
 			QString name = e->name();
 			if( ! m_files.contains( name ) ) { 
 				m_files.append( name );
@@ -326,20 +355,20 @@ void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 void FileContentElementList::addElement( FileContentElement* element ) {
 	XINX_TRACE( "FileContentElementList::addElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
-	QList<FileContentElement*>::iterator i = qLowerBound( m_hash.begin(), m_hash.end(), element, FileContentElementModelObjListSort );
-	int index = i - m_hash.begin();
+	QList<FileContentElement*>::iterator i = qLowerBound( m_list.begin(), m_list.end(), element, FileContentElementModelObjListSort );
+	int index = i - m_list.begin();
 	emit aboutToAdd( index );
-	m_hash.insert( i, element );
+	m_list.insert( i, element );
 	emit added();
 }
 
 void FileContentElementList::removeElement( FileContentElement* element ) {
 	XINX_TRACE( "FileContentElementList::removeElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
 
-	int index = m_hash.indexOf( element );
+	int index = m_list.indexOf( element );
 	if( index >= 0 ) {
 		emit aboutToRemove( index );
-		m_hash.removeAt( index );
+		m_list.removeAt( index );
 		emit removed();
 	}
 }

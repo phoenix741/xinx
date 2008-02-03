@@ -32,95 +32,50 @@
 XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QObject *parent ) : QAbstractListModel( parent ) {
 	XINX_TRACE( "XSLValueCompletionModel", QString( "( %1, %2 )" ).arg( (unsigned int)data, 0, 16 ).arg( (unsigned int)parent, 0, 16 ) );
 
-	rootItem = data;
-	refreshList();
-	if( rootItem ) {
-		connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
-		connect( rootItem, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
-	}
+	m_list = new FileContentElementList( data );
+	connect( m_list, SIGNAL(aboutToAdd(int)), this, SLOT(beginInsertRows(int)) );
+	connect( m_list, SIGNAL(added()), this, SLOT(endInsertRows()) );
+	connect( m_list, SIGNAL(aboutToRemove(int)), this, SLOT(beginRemoveRows(int)) );
+	connect( m_list, SIGNAL(removed()), this, SLOT(endRemoveRows()) );
+	connect( m_list, SIGNAL(reset()), this, SLOT(reset()) );
+//	rootItem = data;
+//	refreshList();
+//	if( rootItem ) {
+//		connect( rootItem, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
+//		connect( rootItem, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
+//	}
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
 	XINX_TRACE( "~XSLValueCompletionModel", "()" );
+	
+	delete m_list;
 }
 
-bool XSLValueCompletionModel::contains( FileContentElement * data ) {
-	XINX_TRACE( "XSLValueCompletionModel::contains", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
-
-	for( int i = 0; i < m_objList.count(); i++ ) {
-		if( m_objList.at( i )->equals( data ) ) 
-			return true;
-	}
-	return false;
+void XSLValueCompletionModel::beginInsertRows( int row ) {
+	QAbstractListModel::beginInsertRows( QModelIndex(), row, row );
 }
 
-void XSLValueCompletionModel::refreshRecursive( FileContentElement * data ) {
-	XINX_ASSERT( data );
-	XINX_TRACE( "XSLValueCompletionModel::refreshRecursive", QString( "( %1 )" ).arg( (unsigned int)data, 0, 16 ) );
-
-	for( int i = 0; i < data->rowCount(); i++ ) {
-		FileContentElement * e = data->element( i );
-		if( dynamic_cast<XSLFileContentParser*>( e ) ) {
-			QString name = e->name();
-			if( ! m_files.contains( name ) ) { 
-				m_files.append( name );
-				refreshRecursive( e );
-			}
-		} else {
-			if( ( dynamic_cast<JavaScriptFunction*>( e ) || dynamic_cast<XSLFileContentParams*>( e ) || dynamic_cast<XSLFileContentTemplate*>( e ) ) && ( ! contains( e ) ) )
-				addElement( e );
-		}
-	}
+void XSLValueCompletionModel::endInsertRows() {
+	QAbstractListModel::endInsertRows();
 }
 
-void XSLValueCompletionModel::refreshList() {
-	XINX_TRACE( "XSLValueCompletionModel::refreshList", "()" );
-
-	m_objList.clear();
-	if( rootItem ) {
-		refreshRecursive( rootItem );
-		qSort( m_objList.begin(), m_objList.end(), FileContentElementModelObjListSort );
-	}
-	reset();
+void XSLValueCompletionModel::beginRemoveRows( int row ) {
+	QAbstractListModel::beginRemoveRows( QModelIndex(), row, row );
 }
 
-void XSLValueCompletionModel::addElement( FileContentElement* element ) {
-	XINX_TRACE( "XSLValueCompletionModel::addElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
-
-	QList<FileContentElement*>::iterator i = qLowerBound( m_objList.begin(), m_objList.end(), element, FileContentElementModelObjListSort );
-	int index = i - m_objList.begin();
-	beginInsertRows( QModelIndex(), index, index );
-	m_objList.insert( i, element );
-	endInsertRows();
+void XSLValueCompletionModel::endRemoveRows() {
+	QAbstractListModel::endRemoveRows();	
 }
 
-void XSLValueCompletionModel::addElement( FileContentElement* element, int row ) {
-	XINX_TRACE( "XSLValueCompletionModel::addElement", QString( "( %1, %2 )" ).arg( (unsigned int)element, 0, 16 ).arg( row ) );
-
-	Q_UNUSED( row );
-	if( ( dynamic_cast<JavaScriptFunction*>( element ) || dynamic_cast<XSLFileContentParams*>( element ) || dynamic_cast<XSLFileContentTemplate*>( element ) ) && ( ! contains( element ) ) ) {
-		addElement( element );
-	}
-	if( dynamic_cast<XSLFileContentParser*>( element ) ) {
-		refreshRecursive( element );
-	}
-}
-
-void XSLValueCompletionModel::removeElement( FileContentElement* element ) {
-	XINX_TRACE( "XSLValueCompletionModel::removeElement", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
-
-	int index = m_objList.indexOf( element );
-	if( index >= 0 ) {
-		beginRemoveRows( QModelIndex(), index, index );
-		m_objList.removeAt( index );
-		endRemoveRows();
-	}
+void XSLValueCompletionModel::reset() {
+	QAbstractListModel::reset();
 }
 
 void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
 	XINX_TRACE( "XSLValueCompletionModel::setBaliseName", QString( "( %1, %2 )" ).arg( name ).arg( attribute ) );
 
-	int before = m_objList.count(), after  = m_objList.count();
+	int before = m_list->list().count(), after  = m_list->list().count();
 	
 	if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) )
 		before += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
@@ -131,19 +86,19 @@ void XSLValueCompletionModel::setBaliseName( const QString & name, const QString
 	int diff = after - before;
 
 	if( diff > 0 ) 
-		beginInsertRows( QModelIndex(), before + 1, after );
+		QAbstractListModel::beginInsertRows( QModelIndex(), before + 1, after );
 	else if( diff < 0 )
-		beginRemoveRows( QModelIndex(), after + 1, before );
+		QAbstractListModel::beginRemoveRows( QModelIndex(), after + 1, before );
 
 	m_baliseName = name; 
 	m_attributeName = attribute; 
 
 	if( diff > 0 ) {
-		emit dataChanged( index( m_objList.count() ), index( before ) );
-		endInsertRows();
+		emit dataChanged( index( m_list->list().count() ), index( before ) );
+		QAbstractListModel::endInsertRows();
 	} else  if( diff < 0 ) {
-		emit dataChanged( index( m_objList.count() ), index( after ) );
-		endRemoveRows();
+		emit dataChanged( index( m_list->list().count() ), index( after ) );
+		QAbstractListModel::endRemoveRows();
 	}
 }
 
@@ -153,8 +108,8 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 
 	if (!index.isValid()) return QVariant();
 
-	if( index.row() < m_objList.count() ) {
-		FileContentElement * data = m_objList[ index.row() ];
+	if( index.row() < m_list->list().count() ) {
+		FileContentElement * data = m_list->list().at( index.row() );
 
 		if( role == Qt::DecorationRole ) {
 			return data->icon();
@@ -166,7 +121,7 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 			return data->metaObject()->className();
 		}
 	} else {
-		int value_row = index.row() - m_objList.count(); 
+		int value_row = index.row() - m_list->list().count(); 
 		if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 			if( role == Qt::DecorationRole ) 
 				return QIcon(":/images/html_value.png");
@@ -194,7 +149,7 @@ int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
 	XINX_TRACE( "XSLValueCompletionModel::rowCount", "( index )" );
 
 	if ( ! parent.isValid() ) {
-		int size = m_objList.count();	
+		int size = m_list->list().count();	
 		if( xmlCompletionContents ) {
 			if( xmlCompletionContents->balise( m_baliseName ) ) {
 				if( xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) )
