@@ -29,10 +29,9 @@
 
 /* XSLValueCompletionModel */
 
-XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QObject *parent ) : QAbstractListModel( parent ) {
+XSLValueCompletionModel::XSLValueCompletionModel( FileContentElementList * data, QObject *parent ) : QAbstractListModel( parent ), m_list( data ) {
 	XINX_TRACE( "XSLValueCompletionModel", QString( "( %1, %2 )" ).arg( (unsigned int)data, 0, 16 ).arg( (unsigned int)parent, 0, 16 ) );
 
-	m_list = new FileContentElementList( data );
 	connect( m_list, SIGNAL(aboutToAdd(int)), this, SLOT(beginInsertRows(int)) );
 	connect( m_list, SIGNAL(added()), this, SLOT(endInsertRows()) );
 	connect( m_list, SIGNAL(aboutToRemove(int)), this, SLOT(beginRemoveRows(int)) );
@@ -42,8 +41,6 @@ XSLValueCompletionModel::XSLValueCompletionModel( FileContentElement * data, QOb
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
 	XINX_TRACE( "~XSLValueCompletionModel", "()" );
-	
-	delete m_list;
 }
 
 void XSLValueCompletionModel::beginInsertRows( int row ) {

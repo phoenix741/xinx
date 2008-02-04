@@ -218,6 +218,8 @@ public slots :
 	 * In the editor go to the line \e line.
 	 */
 	void gotoLine( int line );
+	
+	void searchWord( const QString & word );
 signals:
 	void mouseHover( const QString &word );
 	void mouseHover( const QPoint &pos, const QString &word );

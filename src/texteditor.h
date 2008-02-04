@@ -56,12 +56,13 @@ signals:
 	 * If the keyPressEvent musn't be executed, the flag keyPressExecute must be set to false.
 	 */
 	void execKeyPressEvent( QKeyEvent * e );
-	
+	void searchWord( const QString & word );
 protected:
     virtual void paintEvent ( QPaintEvent * event );
 	virtual void keyPressEvent(QKeyEvent *e);
     virtual void mouseDoubleClickEvent( QMouseEvent * event );
 	virtual void printWhiteSpaces( QPainter &p );
+	virtual void mousePressEvent ( QMouseEvent * e );
 private slots:
 	void slotCursorPositionChanged();
 private:

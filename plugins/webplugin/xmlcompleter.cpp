@@ -68,7 +68,8 @@ XmlCompleter::XmlCompleter( IXinxExtendedEditor * editor, bool onlyHtml ) : m_ed
 	m_completerValue->setCompletionRole( Qt::DisplayRole );
 	connect( m_completerValue, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
 	
-	m_completionValueModel = new XSLValueCompletionModel( editor->modelData(), this );
+	m_list = new FileContentElementList( editor->modelData() );
+	m_completionValueModel = new XSLValueCompletionModel( m_list, this );
 	m_completerValue->setModel( m_completionValueModel );
 }
 
@@ -80,6 +81,21 @@ XmlCompleter::~XmlCompleter() {
 	delete m_completionBaliseModel;
 	delete m_completionParamModel;
 	delete m_completionValueModel;
+
+	delete m_list;
+}
+
+FileContentElementList * XmlCompleter::list() {
+	return m_list;
+}
+
+QPair<QString,int> XmlCompleter::searchWord( const QString & word ) {
+	foreach( FileContentElement * element, m_list->list() ) {
+		if( element->name() == word ) {
+			return qMakePair( element->filename(), element->line() );
+		}
+	}
+	return qMakePair( QString(), -1 );
 }
 
 void XmlCompleter::commentSelectedText( IXinxExtendedEditor * editor, bool uncomment ) {

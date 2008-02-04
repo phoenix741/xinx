@@ -118,7 +118,7 @@ public:
 	virtual void createCompleter( const QString & plugin, IXinxExtendedEditor * editor ) = 0;
 	virtual QCompleter * completer( const QString & plugin, IXinxExtendedEditor * editor ) = 0;
 	virtual bool keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event ) = 0;
-	virtual QPair<QString,int> searchWord( const QString & word ) = 0;
+	virtual QPair<QString,int> searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word ) = 0;
 };
 
 Q_DECLARE_INTERFACE(IPlugin, "org.shadoware.xinx.IPlugin/1.0")

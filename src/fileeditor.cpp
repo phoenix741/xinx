@@ -116,6 +116,8 @@ FileEditor::FileEditor( QWidget *parent, const QString & suffix ) : Editor( pare
     
     connect( m_view, SIGNAL( cursorPositionChanged() ), this, SLOT( refreshTextHighlighter() ));
 	connect( m_view, SIGNAL( execKeyPressEvent(QKeyEvent*) ), this, SLOT(keyPressEvent(QKeyEvent*)) );
+	
+	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );
 
 	m_messageBox->hide();
 	
@@ -452,7 +454,7 @@ void FileEditor::keyPressEvent( QKeyEvent * e ) {
 bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj != m_view )
 		return QFrame::eventFilter( obj, event );
-
+	
 	if( event->type() == QEvent::ContextMenu ) {
 		QContextMenuEvent * contextMenuEvent = static_cast<QContextMenuEvent*>( event );
 		QMenu * menu = new QMenu( m_view );
@@ -469,9 +471,14 @@ bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 
 		menu->exec( contextMenuEvent->globalPos() );
 		delete menu;
-	}
+	} 
 
 	return false;
+}
+
+void FileEditor::searchWord( const QString & word ) {
+	QPair<QString,int> pair = m_extendedEditorPlugin.first->searchWord( m_extendedEditorPlugin.second, this, word );
+	QMessageBox::information( this, tr("test"), QString( "%1, at line %2" ).arg( pair.first ).arg( pair.second ) );
 }
 
 QString FileEditor::getTitle() const {

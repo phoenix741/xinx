@@ -193,6 +193,15 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
     setTextCursor( cursor );
 }
 
+void TextEditor::mousePressEvent ( QMouseEvent * event ) {
+	if( ( event->type() == QEvent::MouseButtonPress ) && ( dynamic_cast<QMouseEvent*>( event )->button() == Qt::LeftButton ) && ( event->modifiers() == Qt::ControlModifier ) ) {
+		QTextEdit::mousePressEvent( event );
+		emit searchWord( textUnderCursor( textCursor() ) );
+	} else
+		QTextEdit::mousePressEvent( event );
+}
+
+
 QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord, bool dot ) {
 	XINX_ASSERT( ! cursor.isNull() );
 	QString expr = EOWREGEXPDOT;

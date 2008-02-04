@@ -355,8 +355,12 @@ bool WebPlugin::keyPress( const QString & plugin, IXinxExtendedEditor * editor, 
 	return false;
 }
 
-QPair<QString,int> WebPlugin::searchWord( const QString & word ) {
-	
+QPair<QString,int> WebPlugin::searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word ) {
+	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
+		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
+		return c->searchWord( word );
+	}
+	return qMakePair( QString(), -1 );
 }
 
 Q_EXPORT_PLUGIN2(webplugin, WebPlugin)

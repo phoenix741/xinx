@@ -31,7 +31,7 @@
 class XSLValueCompletionModel : public QAbstractListModel {
 	Q_OBJECT
 public:
-	XSLValueCompletionModel( FileContentElement * data, QObject *parent = 0 );
+	XSLValueCompletionModel( FileContentElementList * data, QObject *parent = 0 );
 	virtual ~XSLValueCompletionModel();
 	
 	void setBaliseName( const QString & name, const QString & attribute );
@@ -39,10 +39,6 @@ public:
 	QVariant data(const QModelIndex &index, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-public slots:
-//	void refreshList();
-//	void addElement( FileContentElement*, int );
-//	void removeElement( FileContentElement* );
 protected slots:
 	virtual void beginInsertRows( int row );
 	virtual void endInsertRows();
@@ -50,18 +46,10 @@ protected slots:
 	virtual void endRemoveRows();
 	virtual void reset();
 private:
-//	void addElement( FileContentElement* element );
-//	bool contains( FileContentElement * data );
-//	void refreshRecursive( FileContentElement * data );
-
-//	QList<FileContentElement*> m_objList;
-//	FileContentElement* rootItem;
 	FileContentElementList * m_list;
 	
 	QString m_baliseName;
 	QString m_attributeName;
-	
-//	QStringList m_files;
 };
 
 class XSLParamCompletionModel : public QAbstractListModel {

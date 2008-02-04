@@ -57,7 +57,7 @@ public:
 	virtual void createCompleter( const QString & plugin, IXinxExtendedEditor * editor );
 	virtual QCompleter * completer( const QString & plugin, IXinxExtendedEditor * editor );
 	virtual bool keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event );
-	virtual QPair<QString,int> searchWord( const QString & word );
+	virtual QPair<QString,int> searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word );
 };
 
 #endif /* WEBPLUGIN_H_*/

@@ -46,6 +46,10 @@ public:
 
 	bool keyPressEvent( QKeyEvent *e );
 	QCompleter * currentCompleter( const QTextCursor & cursor );
+	
+	QPair<QString,int> searchWord( const QString & word );
+
+	FileContentElementList * list();
 private slots:
 	void insertCompletion( const QModelIndex& index );
 private:
@@ -59,7 +63,6 @@ private:
 	
 	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & nodeName, QString & paramName );
 	cursorPosition editPosition( const QTextCursor & cursor );
-
 	
 	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
 	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
@@ -74,6 +77,8 @@ private:
 	XSLValueCompletionModel * m_completionValueModel;
 	XSLParamCompletionModel * m_completionParamModel;
 	XSLBaliseCompletionModel * m_completionBaliseModel;
+	
+	FileContentElementList * m_list;
 
 	QString m_nodeName, m_paramName;
 	IXinxExtendedEditor * m_editor;
