@@ -471,7 +471,7 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_aboutPluginsAct, SIGNAL(triggered()), this, SLOT(aboutPlugins()));	
 
 	// Drag & Drop
-	connect( m_parent->m_tabEditors, SIGNAL(fileDragged()), this, SLOT(updateActions()) );
+	connect( m_parent->m_tabEditors, SIGNAL(fileOpened(QString)), this, SLOT(updateActions()) );
 
 	// Timer LOG
 	m_timer = new QTimer( this );

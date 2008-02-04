@@ -95,8 +95,7 @@ signals:
 	
 	void modelChanged( QAbstractItemModel * model );
 	
-	void fileDragged();
-	
+	void fileOpened( const QString & filename );
 	void setEditorPosition( int, int );
 protected:
     bool eventFilter( QObject *obj, QEvent *event );
@@ -110,6 +109,7 @@ private slots:
 	void slotCursorPositionChanged();
 	
 	void slotNeedInsertSnipet( const QString & snipet );
+	void fileEditorOpen( const QString & name, int line );
 private:
 	int tabPositionIcon( QPoint point );
 	int tabPosition( QPoint point );

@@ -123,6 +123,18 @@ Editor * TabEditor::loadFileEditor( const QString & fileName ) {
 	return ed;
 }
 
+void TabEditor::fileEditorOpen( const QString & name, int line ) {
+	if( !name.isEmpty() )
+		loadFileEditor( name );
+
+	emit fileOpened( name );
+	
+	// Deplace to rigth line.
+	FileEditor * ed = qobject_cast<FileEditor*>( currentEditor() );
+	ed->gotoLine( line );
+	ed->textEdit()->setFocus( Qt::OtherFocusReason );
+}
+
 void TabEditor::copy() {
 	Editor * editor = currentEditor();
 	if( editor && editor->canCopy() ) 
@@ -260,12 +272,12 @@ void TabEditor::dropEvent( QDropEvent *event ) {
 		for(int i = 0; i < urls.size(); i++) {
 			if((!urls.at(i).toLocalFile().isEmpty()))
 				loadFileEditor( urls.at(i).toLocalFile() );
+				emit fileOpened( urls.at(i).toLocalFile() );
 		}
 	 
 		setBackgroundRole(QPalette::NoRole);
 		event->acceptProposedAction(); 
 	}
-	emit fileDragged();
 }
 
 void TabEditor::tabRemoved ( int index ) {
@@ -317,6 +329,8 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	emit pasteAvailable( editor->canPaste() );
 	emit undoAvailable( editor->canUndo() );
 	emit redoAvailable( editor->canRedo() );
+	
+	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
 	
 	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange(bool)) );
 	connect( editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );

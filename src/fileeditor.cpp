@@ -478,7 +478,8 @@ bool FileEditor::eventFilter( QObject *obj, QEvent *event ) {
 
 void FileEditor::searchWord( const QString & word ) {
 	QPair<QString,int> pair = m_extendedEditorPlugin.first->searchWord( m_extendedEditorPlugin.second, this, word );
-	QMessageBox::information( this, tr("test"), QString( "%1, at line %2" ).arg( pair.first ).arg( pair.second ) );
+	if( pair.second >= 0 )
+		emit open( pair.first, pair.second );
 }
 
 QString FileEditor::getTitle() const {

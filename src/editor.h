@@ -310,6 +310,13 @@ signals:
 	 * \param maxValue The second bound
 	 */
 	void bookmarkModified( int minValue, int maxValue );
+	
+	/*!
+	 * Signal emited when a request to open a file is made.
+	 * \param name file name of the file to open
+	 * \param line line of the file to open
+	 */
+	void open( const QString & filename, int line );
 private:
 	PrivateEditor * d;
 	friend class PrivateEditor;

@@ -287,11 +287,11 @@ bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentEle
 /* FileContentElementList */
 
 FileContentElementList::FileContentElementList( FileContentElement * root ) : m_root( root ) {
-	refreshList();
 	if( m_root ) {
 		connect( m_root, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(addElement(FileContentElement*,int)) );
 		connect( m_root, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(removeElement(FileContentElement*)) );
 	}
+	refreshList();
 }
 
 FileContentElementList::~FileContentElementList() {
