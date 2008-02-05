@@ -1,0 +1,17 @@
+-release 
+-fast
+-no-qt3support
+-qt-libpng
+-qt-libjpeg
+-no-libmng
+-no-gif
+-no-libtiff
+-qdbus 
+-no-dsp 
+-no-vcproj 
+-I
+X:\usr_win32\dbus\install\include
+-L
+X:\usr_win32\dbus\install\lib
+-saveconfig 
+xinx 
