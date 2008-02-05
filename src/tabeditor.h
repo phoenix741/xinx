@@ -123,7 +123,7 @@ private:
 	QAction * m_copyPathAction;
 	
 	int m_clickedItem;
-	Editor * m_previous;
+	//Editor * m_previous;
 };
 
 #endif
