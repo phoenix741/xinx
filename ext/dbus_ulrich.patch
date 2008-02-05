@@ -9,9 +9,9 @@ Index: build-mingw.bat
 -set CMAKE=\cmake-2.4.4-win32-x86\bin\cmake.exe
 -set MINGW=\mingw
 -set PATH=%MINGW%\bin;%ProgramFILES%\gnuwin32\bin;%PATH%
-+set CMAKE=\Qt\CMake\bin\cmake.exe
-+set MINGW=\Qt\mingw
-+set PATH=%MINGW%\bin;C:\Qt\gnuwin32\bin;C:\Qt\win32libs\bin;%PATH%
++set CMAKE=\usr_win32\cmake\bin\cmake.exe
++set MINGW=\usr_win32\MinGW\bin
++set PATH=%MINGW%\bin;\usr_win32\win32libs\bin;%PATH%
  set SOURCE_DIR=%CD%
  
  if not exist ..\windbus-build (
@@ -24,20 +24,20 @@ Index: build-mingw.bat
  mingw32-make
  bin\dbus-test test\data
  ::bin\bus-test test\data
-Index: bus/main.c
+Index: cmake/bus/CMakeLists.txt
 ===================================================================
---- bus/main.c	(revision 760)
-+++ bus/main.c	(working copy)
-@@ -241,9 +241,12 @@
-     reload_pipe[RELOAD_WRITE_END] = -1;
- }
+--- cmake/bus/CMakeLists.txt	(revision 760)
++++ cmake/bus/CMakeLists.txt	(working copy)
+@@ -80,10 +80,10 @@
  
-+#include <windows.h>
-+
- int
- main (int argc, char **argv)
- {
-+  FreeConsole();
-   DBusError error;
-   DBusString config_file;
-   DBusString addr_fd;
+ if(splitlib AND MSVC)
+ 	add_library(bus-lib STATIC ${BUS_SOURCES})
+-	add_executable(dbus-daemon${CMAKE_EXE_POSTFIX} ${BUS_DIR}/main.c)
++	add_executable(dbus-daemon${CMAKE_EXE_POSTFIX} WIN32 ${BUS_DIR}/main.c)
+ 	target_link_libraries(dbus-daemon${CMAKE_EXE_POSTFIX} ${DBUS_1} ${LIBS} bus-lib)
+ else(splitlib AND MSVC)
+-	add_executable(dbus-daemon${CMAKE_EXE_POSTFIX} ${BUS_SOURCES} ${BUS_DIR}/main.c)
++	add_executable(dbus-daemon${CMAKE_EXE_POSTFIX} WIN32 ${BUS_SOURCES} ${BUS_DIR}/main.c)
+ 	target_link_libraries(dbus-daemon${CMAKE_EXE_POSTFIX} ${DBUS_1} ${LIBS})
+ endif(splitlib AND MSVC)
+ 
