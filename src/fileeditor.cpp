@@ -480,6 +480,8 @@ void FileEditor::searchWord( const QString & word ) {
 	QPair<QString,int> pair = m_extendedEditorPlugin.first->searchWord( m_extendedEditorPlugin.second, this, word );
 	if( pair.second >= 0 )
 		emit open( pair.first, pair.second );
+	else
+		QMessageBox::information( this, tr("Search Word"), tr("Word %1 not found").arg( word ) );
 }
 
 QString FileEditor::getTitle() const {

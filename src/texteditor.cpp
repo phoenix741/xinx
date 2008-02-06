@@ -36,8 +36,8 @@
 /*!
  * Definition of the characters that can't be in a word.
  */
-#define EOWREGEXP		"[^A-Za-z0-9_:-]"
-#define EOWREGEXPDOT	"[^A-Za-z0-9_:-.]"
+#define EOWREGEXP		"[^A-Za-z0-9_:\\-]"
+#define EOWREGEXPDOT	"[^A-Za-z0-9_:\\-\\.]"
 
 /*!
  * Pixmap used to represent the tabulation
@@ -196,11 +196,10 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 void TextEditor::mousePressEvent ( QMouseEvent * event ) {
 	if( ( event->type() == QEvent::MouseButtonPress ) && ( dynamic_cast<QMouseEvent*>( event )->button() == Qt::LeftButton ) && ( event->modifiers() == Qt::ControlModifier ) ) {
 		QTextEdit::mousePressEvent( event );
-		emit searchWord( textUnderCursor( textCursor() ) );
+		emit searchWord( textUnderCursor( textCursor(), false ) );
 	} else
 		QTextEdit::mousePressEvent( event );
 }
-
 
 QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord, bool dot ) {
 	XINX_ASSERT( ! cursor.isNull() );
@@ -212,7 +211,7 @@ QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord
 	QTextCursor after ( document()->find ( QRegExp( expr ), cursor ) );
 
 	QTextCursor tc = cursor;
-	
+
 	if( ( ! before.isNull() ) && ( before.block() == tc.block() ) )
 		tc.setPosition( before.position(), QTextCursor::MoveAnchor );
 	else
@@ -229,7 +228,7 @@ QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord
 		tc.removeSelectedText();
 		setTextCursor( tc );
 	}
-		
+
 	return selection;
 }
 
