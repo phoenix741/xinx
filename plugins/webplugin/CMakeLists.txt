@@ -43,7 +43,7 @@ add_definitions(-DQT_NO_DEBUG)
 add_definitions(-DQT_SHARED)
 
 add_library(webplugin SHARED ${webplugin_SRCS} ${webplugin_MOC_SRCS})
-link_directories(bin)
+link_directories(../libxinx)
 target_link_libraries(webplugin ${QT_LIBRARIES} xinxplugins)
 
 install(TARGETS webplugin DESTINATION bin/plugins)

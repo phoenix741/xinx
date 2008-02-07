@@ -1,1 +1,1 @@
-add_subdirectory(webplugin plugins)
+add_subdirectory(webplugin)

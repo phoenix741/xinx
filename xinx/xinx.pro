@@ -23,7 +23,7 @@ win32:CONFIG(debug) {
 	POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a ../libxinx/libsharedxinxd.a
 } else {
 	LIBS += -lsharedxinx -lwebplugin
-	POST_TARGETDEPS = ../bin/plugins/libwebplugin.a ../bin/libsharedxinx.a
+	POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a ../libxinx/libsharedxinx.a
 }
 win32 { 
     RC_FILE += rc/xinx.rc

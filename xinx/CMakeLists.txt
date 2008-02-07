@@ -169,7 +169,7 @@ if(WIN32)
 endif(WIN32)
 
 add_executable(xinx WIN32 ${xinx_SRCS} ${xinx_MOC_SRCS} ${xinx_UIS_H} ${xinx_QRC_H} ${xinx_RESS})
-link_directories(bin)
+link_directories(../libxinx)
 target_link_libraries(xinx ${QT_LIBRARIES} xinxplugins)
 
 install(TARGETS xinx DESTINATION bin)

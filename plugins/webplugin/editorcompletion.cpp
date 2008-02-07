@@ -48,10 +48,10 @@ void CompletionXML::load() {
   
 	// Open the file
 	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) {
-		QMessageBox::warning( 
-			qApp->activeWindow(), 
+/*QMessageBox::warning( 
+			NULL, 
 			QApplication::translate("Completion", "Completion"), 
-			QApplication::translate("Completion", "Cannot read file %1:\n%2.").arg( m_name ).arg( file.errorString() ) );
+			QApplication::translate("Completion", "Cannot read file %1:\n%2.").arg( m_name ).arg( file.errorString() ) );*/
 		throw NotCompletionFileException( QApplication::translate("Completion", "Can't open or read the file %1.").arg( m_name ) );
 	}
 
