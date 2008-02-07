@@ -1,17 +1,11 @@
 TEMPLATE = app
 TARGET = xinx
-DESTDIR += ../bin
-MOC_DIR += ../build
-OBJECTS_DIR += ../build
-RCC_DIR += ../build
 unix { 
-	UI_DIR += ../build
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-INCLUDEPATH += ../src/ \
-    ../include
+INCLUDEPATH += ../xinx/ ../libxinx
 CONFIG += debug \
     exceptions \
     qdbus \
@@ -22,61 +16,57 @@ CONFIG += debug \
 QT += network \
     xml
 
-LIBS = -L../bin/plugins \
-    -L../bin/ 
+LIBS = -L../plugins/webplugin -L../libxinx
+
 win32:CONFIG(debug) {
-	LIBS += -lxinxpluginsd \
-    	-lwebplugind
-	POST_TARGETDEPS = ../bin/plugins/libwebplugind.a \
-    	../bin/libxinxpluginsd.a
+	LIBS += -lsharedxinxd -lwebplugind
+	POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a ../libxinx/libsharedxinxd.a
 } else {
-	LIBS += -lxinxplugins \
-	    -lwebplugin
-	POST_TARGETDEPS = ../bin/plugins/libwebplugin.a \
-    	../bin/libxinxplugins.a
+	LIBS += -lsharedxinx -lwebplugin
+	POST_TARGETDEPS = ../bin/plugins/libwebplugin.a ../bin/libsharedxinx.a
 }
 win32 { 
-    RC_FILE += ../rc/xinx.rc
+    RC_FILE += rc/xinx.rc
 }
 DISTFILES = ../CHANGELOG \
     ../COPYING \
     ../Doxyfile \
     ../INSTALL \
     ../TODO \
-    ../application.qrc \
-    ../rc/*.rc \
-    ../setup/*.bat \
-    ../setup/*.iss \
+    application.qrc \
+    rc/*.rc \
+    setup/*.bat \
+    setup/*.iss \
     *.bat \
     *.cpp \
     *.h \
     *.sh \
     *.xml \
     private/*.h \
-    ../translations/*.ts \
-    ../ui/*.ui \
-    ../xml/*.xnx
-RESOURCES += ../application.qrc
-FORMS += ../ui/xinxlistwidget.ui \ 
-	../ui/plugindialog.ui \
-    ../ui/specifiquedlg.ui \
-    ../ui/about.ui \
-    ../ui/commitmessages.ui \
-    ../ui/custom.ui \
-    ../ui/mainform.ui \
-    ../ui/projectdirectorywidget.ui \
-    ../ui/projectproperty.ui \
-    ../ui/rcslogform.ui \
-    ../ui/replace.ui \
-    ../ui/resultatServices.ui \
-    ../ui/runsnipet.ui \
-    ../ui/servicesconnection.ui \
-    ../ui/snipetproperty.ui \
-    ../ui/xmlpresentationwidget.ui \
-    ../ui/newprojectwizard_project.ui \
-	../ui/newprojectwizard_specifique.ui \
-	../ui/newprojectwizard_services.ui \
-	../ui/newprojectwizard_serviceslist.ui
+    translations/*.ts \
+    ui/*.ui \
+    xml/*.xnx
+RESOURCES += application.qrc
+FORMS += ui/xinxlistwidget.ui \ 
+    ui/plugindialog.ui \
+    ui/specifiquedlg.ui \
+    ui/about.ui \
+    ui/commitmessages.ui \
+    ui/custom.ui \
+    ui/mainform.ui \
+    ui/projectdirectorywidget.ui \
+    ui/projectproperty.ui \
+    ui/rcslogform.ui \
+    ui/replace.ui \
+    ui/resultatServices.ui \
+    ui/runsnipet.ui \
+    ui/servicesconnection.ui \
+    ui/snipetproperty.ui \
+    ui/xmlpresentationwidget.ui \
+    ui/newprojectwizard_project.ui \
+    ui/newprojectwizard_specifique.ui \
+    ui/newprojectwizard_services.ui \
+    ui/newprojectwizard_serviceslist.ui
 HEADERS += xinxlistwidgetimpl.h \
     plugindialog.h \
     xinxpluginsloader.h \
@@ -147,7 +137,7 @@ HEADERS += xinxlistwidgetimpl.h \
     xmlpresentationitem.h \
     xslproject.h
 SOURCES += xinxlistwidgetimpl.cpp \
-	plugindialog.cpp \
+    plugindialog.cpp \
     xinxpluginsloader.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \

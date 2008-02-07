@@ -6,10 +6,10 @@ set(xinxplugins_SRCS
 )
 
 SET(xinxplugins_MOC_HDRS
-    ../../include/filecontentstructure.h
+    filecontentstructure.h
 )
 
-include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR} )
 
 QT4_WRAP_CPP(xinxplugins_MOC_SRCS ${xinxplugins_MOC_HDRS})
 
@@ -19,8 +19,8 @@ add_definitions(${QT_DEFINITIONS})
 add_definitions(-DQT_NO_DEBUG)
 add_definitions(-DQT_SHARED)
 
-add_library(xinxplugins STATIC ${xinxplugins_SRCS} ${xinxplugins_MOC_SRCS})
-target_link_libraries(xinxplugins ${QT_LIBRARIES})
+add_library(xinx STATIC ${xinxplugins_SRCS} ${xinxplugins_MOC_SRCS})
+target_link_libraries(xinx ${QT_LIBRARIES})
 
-install(TARGETS xinxplugins DESTINATION bin/plugins)
+install(TARGETS xinx DESTINATION bin/plugins)
 

@@ -31,7 +31,7 @@ SET(webplugin_MOC_HDRS
     cssmodeldata.h
 )
 
-include_directories(../../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
+include_directories(../../libxinx ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
 QT4_WRAP_CPP(webplugin_MOC_SRCS ${webplugin_MOC_HDRS})
 

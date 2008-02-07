@@ -1,15 +1,11 @@
 TEMPLATE = lib
 CONFIG += debug plugin static
 QT += xml
-LIBS=-L../../bin -lxinxplugins
+LIBS=-L../../libxinx -lsharedxinx
+
+RESOURCES += webplugin.qrc
 
 TARGET = $$qtLibraryTarget(webplugin)
-
-DESTDIR = ../../bin/plugins
-MOC_DIR = ../../build/plugins
-OBJECTS_DIR += ../../build/plugins
-RCC_DIR += ../../build/plugins
-UI_DIR += ../../build/plugins
 
 unix { 
     QMAKE_CC = "ccache gcc"
@@ -17,7 +13,7 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 
-INCLUDEPATH += ../../include
+INCLUDEPATH += ../../libxinx
 HEADERS = xmlprettyprinter.h \
     webplugin.h \
     xmlhighlighter.h \

@@ -7,7 +7,7 @@ include(${QT_USE_FILE})
 add_definitions(-O2)
 add_definitions(-Wall)
 add_definitions(${QT_DEFINITIONS})
-include_directories(./ ../include ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
+include_directories(./ ../libxinx ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
 set(xinx_SRCS
 	plugindialog.cpp
@@ -132,34 +132,34 @@ SET(xinx_MOC_HDRS
 )
 
 SET(xinx_UIS
-	../ui/specifiquedlg.ui
-	../ui/about.ui
-	../ui/commitmessages.ui
-	../ui/custom.ui
-	../ui/mainform.ui
-	../ui/projectdirectorywidget.ui
-	../ui/projectproperty.ui
-	../ui/rcslogform.ui
-	../ui/replace.ui
-	../ui/resultatServices.ui
-	../ui/runsnipet.ui
-	../ui/servicesconnection.ui
-	../ui/snipetproperty.ui
-	../ui/xmlpresentationwidget.ui
-	../ui/plugindialog.ui
-	../ui/newprojectwizard_project.ui 
-	../ui/newprojectwizard_specifique.ui 
-	../ui/newprojectwizard_services.ui 
-	../ui/newprojectwizard_serviceslist.ui
+	ui/specifiquedlg.ui
+	ui/about.ui
+	ui/commitmessages.ui
+	ui/custom.ui
+	ui/mainform.ui
+	ui/projectdirectorywidget.ui
+	ui/projectproperty.ui
+	ui/rcslogform.ui
+	ui/replace.ui
+	ui/resultatServices.ui
+	ui/runsnipet.ui
+	ui/servicesconnection.ui
+	ui/snipetproperty.ui
+	ui/xmlpresentationwidget.ui
+	ui/plugindialog.ui
+	ui/newprojectwizard_project.ui 
+	ui/newprojectwizard_specifique.ui 
+	ui/newprojectwizard_services.ui 
+	ui/newprojectwizard_serviceslist.ui
 )
 
 SET(xinx_RCS
-	../rc/xinx.rc
+	rc/xinx.rc
 )
 
 QT4_WRAP_CPP(xinx_MOC_SRCS ${xinx_MOC_HDRS})
 QT4_WRAP_UI(xinx_UIS_H ${xinx_UIS})
-QT4_ADD_RESOURCES(xinx_QRC_H ../application.qrc)
+QT4_ADD_RESOURCES(xinx_QRC_H application.qrc)
 
 if(WIN32)
 	add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xinx_ico.obj
@@ -173,4 +173,4 @@ link_directories(bin)
 target_link_libraries(xinx ${QT_LIBRARIES} xinxplugins)
 
 install(TARGETS xinx DESTINATION bin)
-install(FILES ../xml/template.xnx DESTINATION xml)
+install(FILES xml/template.xnx DESTINATION xml)

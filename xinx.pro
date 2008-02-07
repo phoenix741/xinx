@@ -1,4 +1,3 @@
 TEMPLATE = subdirs
-INCLUDEPATH += src include
-SUBDIRS += plugins src 
-TRANSLATIONS += translations/xinx_fr.ts
+INCLUDEPATH += libxinx xinx 
+SUBDIRS += libxinx plugins xinx

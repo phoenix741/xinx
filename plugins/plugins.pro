@@ -1,3 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = libplugins \ 
-	webplugin
+SUBDIRS = webplugin
