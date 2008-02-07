@@ -61,6 +61,8 @@ static const QColor DEFAULT_STRING			= Qt::red;
 /* BasePlugin */
 
 WebPlugin::WebPlugin() {
+	Q_INIT_RESOURCE(webplugin);
+
 	webplugin_js::init();
 	webplugin_css::init();
 	
