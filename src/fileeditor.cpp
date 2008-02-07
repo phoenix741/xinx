@@ -340,7 +340,7 @@ void FileEditor::indent( bool unindent ) {
 }
 
 void FileEditor::autoIndent() {
-	if( ! m_prettyPrinterPlugin.first ) {
+	if( m_prettyPrinterPlugin.first ) {
 		QString message; // For error
 		int line, column;
 		int position = textEdit()->textCursor().position();
