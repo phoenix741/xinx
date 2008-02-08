@@ -60,6 +60,7 @@ public:
 	void open( const QString& filename );
 	void setComboToolTip( const QString & filename );
 public slots:
+	void adaptColumns();
 	void open();
 	void initXmlPresentationCombo();
 	void presentationActivated( int index );

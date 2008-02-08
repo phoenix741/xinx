@@ -33,7 +33,7 @@
 /* PrivateXmlPresentationDockWidget */
 
 PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
-	qRegisterMetaType<QModelIndex>( "QModelIndex" );
+	qRegisterMetaType<QModelIndex>( "" );
 	
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
@@ -49,6 +49,7 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
 	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
 	connect( &m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()) );
+	connect( m_xmlPresentationWidget->m_presentationTreeView, SIGNAL(expanded(QModelIndex)), this, SLOT(adaptColumns()));
 }
 
 
@@ -56,6 +57,11 @@ PrivateXmlPresentationDockWidget::~PrivateXmlPresentationDockWidget() {
 	presentationActivated( 0 );
 	delete m_xmlPresentationWidget;
 }
+
+void PrivateXmlPresentationDockWidget::adaptColumns() {
+  	m_xmlPresentationWidget->m_presentationTreeView->resizeColumnToContents(0);
+}
+
 
 void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 	m_xmlPresentationWidget->m_presentationComboBox->clear();
