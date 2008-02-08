@@ -7,9 +7,10 @@ include(${QT_USE_FILE})
 add_definitions(-O2)
 add_definitions(-Wall)
 add_definitions(${QT_DEFINITIONS})
-include_directories(./ ../libxinx ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
+include_directories( ./ ../libxinx ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR})
 
 set(xinx_SRCS
+	xinxlistwidgetimpl.cpp
 	plugindialog.cpp
 	xinxpluginsloader.cpp
 	specifiquedlgimpl.cpp
@@ -68,6 +69,7 @@ set(xinx_SRCS
 )
 
 SET(xinx_MOC_HDRS
+	xinxlistwidgetimpl.h
 	plugindialog.h
 	specifiquedlgimpl.h
 	xinxthread.h
@@ -151,6 +153,7 @@ SET(xinx_UIS
 	ui/newprojectwizard_specifique.ui 
 	ui/newprojectwizard_services.ui 
 	ui/newprojectwizard_serviceslist.ui
+	ui/xinxlistwidget.ui
 )
 
 SET(xinx_RCS
@@ -170,7 +173,7 @@ endif(WIN32)
 
 add_executable(xinx WIN32 ${xinx_SRCS} ${xinx_MOC_SRCS} ${xinx_UIS_H} ${xinx_QRC_H} ${xinx_RESS})
 link_directories(../libxinx)
-target_link_libraries(xinx ${QT_LIBRARIES} xinxplugins)
+target_link_libraries(xinx ${QT_LIBRARIES} sharedxinx)
 
 install(TARGETS xinx DESTINATION bin)
 install(FILES xml/template.xnx DESTINATION xml)
