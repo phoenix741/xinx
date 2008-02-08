@@ -48,6 +48,7 @@ TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction
 	setAcceptDrops(true);
 
     tabBar()->installEventFilter(this);
+    tabBar()->setAttribute( Qt::WA_Hover );
        
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
@@ -306,13 +307,6 @@ void TabEditor::tabRemoved ( int index ) {
 		emit hasTextSelection( false );
 		emit modelChanged( NULL );
 	}
-	/*
-	if( m_previous ) {
-		m_previous->disconnect( this );
-		if( isFileEditor( m_previous ) )
-			qobject_cast<FileEditor*>( m_previous )->textEdit()->disconnect( this );
-		m_previous = NULL;
-	}*/
 }
 
 void TabEditor::slotModifiedChange( bool changed ) {
@@ -329,40 +323,16 @@ void TabEditor::slotCursorPositionChanged() {
 
 void TabEditor::slotCurrentTabChanged( int index ) {
 	Q_UNUSED( index );
-	/*
-	if( m_previous ) {
-		m_previous->disconnect( this );
-		if( isFileEditor( m_previous ) )
-			qobject_cast<FileEditor*>( m_previous )->textEdit()->disconnect( this );
-	}
-	*/
 	Editor * editor = currentEditor();
-	//m_previous = editor;
 	
 	emit copyAvailable( editor->canCopy() );
 	emit pasteAvailable( editor->canPaste() );
 	emit undoAvailable( editor->canUndo() );
 	emit redoAvailable( editor->canRedo() );
 	
-	/*
-	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
-	
-	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange(bool)) );
-	connect( editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
-	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );	
-	connect( editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );	
-	connect( editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );	
-
-	connect( editor, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelChanged(QAbstractItemModel*)) );
-	*/
 	if( isFileEditor( editor ) ) {
 		emit textAvailable( true );
 		emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<FileEditor*>( editor )->textEdit()->currentColumn() );
-		/*
-		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
-		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
-		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
-		*/
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
