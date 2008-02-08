@@ -1,6 +1,12 @@
 TEMPLATE = lib
 CONFIG += debug plugin static
 QT += xml
+
+DESTDIR += ./
+MOC_DIR += ./
+OBJECTS_DIR += ./
+RCC_DIR += ./
+
 LIBS=-L../../libxinx -lsharedxinx
 
 RESOURCES += webplugin.qrc
