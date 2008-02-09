@@ -26,7 +26,6 @@
 #include "webserviceseditor.h"
 #include "xslproject.h"
 #include "runsnipetdialogimpl.h"
-#include "globals.h"
 #include "snipet.h"
 #include "snipetlist.h"
 #include "xinxconfig.h"
@@ -341,7 +340,7 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 }
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
-	Snipet * s = global.m_snipetList->indexOf( snipet );
+	Snipet * s = SnipetList::self()->indexOf( snipet );
 	if( ! s ) 
 		return ;
 	RunSnipetDialogImpl dlg( s );
@@ -418,7 +417,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			return true;
 		} else
-		if( ( event->type() == QEvent::HoverMove ) && global.m_config->config().editor.closeButtonOnEachTab ) {
+		if( ( event->type() == QEvent::HoverMove ) && XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
         	for( int i = 0 ; i < tabBar()->count(); i++ )
         		setTabIcon( i, editor( i )->icon() );
 
@@ -430,7 +429,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			
 			return true;
 		} else
-		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) && global.m_config->config().editor.closeButtonOnEachTab ) {
+		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) && XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
         	QMouseEvent * mouseEvent = static_cast<QMouseEvent *>( event );
         	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
 			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );

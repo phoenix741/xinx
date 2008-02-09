@@ -21,7 +21,7 @@
 // Xinx header
 #include "projectdirectorydockwidget.h"
 #include "private/p_projectdirectorydockwidget.h"
-#include "globals.h"
+#include "xinxcore.h"
 #include "xinxpluginsloader.h"
 #include "flattreeview.h"
 #include "dirrcsmodel.h"
@@ -60,7 +60,7 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
 	connect( m_projectDirWidget->m_projectDirectoryTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_projectDirectoryTreeView_doubleClicked(QModelIndex)) );
 	connect( m_projectDirWidget->m_prefixComboBox, SIGNAL(activated(QString)), this, SLOT(on_m_prefixComboBox_activated(QString)) );
-	connect( &global, SIGNAL(projectChanged()), this, SLOT(projectChange()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChange()) );
 }
 
 PrivateProjectDirectoryDockWidget::~PrivateProjectDirectoryDockWidget() {
@@ -90,14 +90,14 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 	
 	QString filtre = m_projectDirWidget->m_filtreLineEdit->text();
 	if( filtre.isEmpty() ) {
-		m_dirModel->setNameFilters( global.m_pluginsLoader->defaultProjectFilter() );
+		m_dirModel->setNameFilters( XinxPluginsLoader::self()->defaultProjectFilter() );
 		if( m_projectDirWidget->m_flatListBtn->isChecked() )
 			m_projectDirWidget->m_flatListBtn->click();
 	} else {
 		QString extention = QFileInfo( filtre ).suffix();
 		QString filename = QFileInfo( filtre ).fileName();
 		if( extention.isEmpty() )
-			m_dirModel->setNameFilters( global.m_pluginsLoader->defaultProjectFilter( filtre ) );
+			m_dirModel->setNameFilters( XinxPluginsLoader::self()->defaultProjectFilter( filtre ) );
 		else
 			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
 		if( ! m_projectDirWidget->m_flatListBtn->isChecked() )
@@ -307,7 +307,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 	d->m_project = project;
 	
 	if( project ) {
-		d->m_dirModel = new DirRCSModel( global.m_pluginsLoader->defaultProjectFilter(), DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
+		d->m_dirModel = new DirRCSModel( XinxPluginsLoader::self()->defaultProjectFilter(), DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
 		d->m_iconProvider = new IconProjectProvider();
 		d->m_dirModel->setIconProvider( d->m_iconProvider );
 

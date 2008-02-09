@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -87,5 +87,21 @@ private:
 };
 
 typedef QList<WebServices*> WebServicesList;
+
+class WebServicesManager : public QObject, public WebServicesList {
+	Q_OBJECT
+public:
+	WebServicesManager( const WebServicesManager & manager );
+	WebServicesManager();
+	virtual ~WebServicesManager();
+	
+	static WebServicesManager * self();
+	
+	void listUpdated();
+signals:
+	void changed();
+private:
+	static WebServicesManager * s_self;
+};
 
 #endif // __WEBSERVICES_H__

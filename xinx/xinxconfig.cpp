@@ -25,8 +25,12 @@
 
 // Xinx header
 #include "xinxconfig.h"
-#include "globals.h"
+#include "xinxcore.h"
 #include "xinxpluginsloader.h"
+
+/* Static member */
+
+XINXConfig * XINXConfig::s_self = 0;
 
 /* PrivateXINXConfig */
 
@@ -49,7 +53,7 @@ PrivateXINXConfig::~PrivateXINXConfig() {
 
 /* XINXConfig */
 
-XINXConfig::XINXConfig( const XINXConfig & origine ) : AppSettings( origine ) {
+XINXConfig::XINXConfig( const XINXConfig & origine ) : QObject(), AppSettings( origine ) {
 	d = new PrivateXINXConfig( this );
 }
 
@@ -58,15 +62,35 @@ XINXConfig::XINXConfig() : AppSettings() {
 }
 
 XINXConfig::~XINXConfig() {
+	if( this == s_self )
+		s_self = NULL;
 	delete d;
+}
+
+XINXConfig& XINXConfig::operator=(const XINXConfig& p) {
+	AppSettings::operator=( p );
+	return *this;
+}
+
+void XINXConfig::save() {
+	AppSettings::save();
+	
+	emit changed();
+}
+
+XINXConfig * XINXConfig::self() {
+	if( s_self == 0 ) {
+		s_self = new XINXConfig();
+		XINXStaticDeleter::self()->addObject( s_self );
+	}
+	return s_self;
 }
 	
 struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 	
-	if( global.m_pluginsLoader )
-	foreach( QString highlighter, global.m_pluginsLoader->highlighterOfPlugins() ) {
-		IPluginSyntaxHighlighter * interface = global.m_pluginsLoader->highlighterOfPlugin( highlighter );
+	foreach( QString highlighter, XinxPluginsLoader::self()->highlighterOfPlugins() ) {
+		IPluginSyntaxHighlighter * interface = XinxPluginsLoader::self()->highlighterOfPlugin( highlighter );
 
 		QHash<QString,QTextCharFormat> formats = interface->formatOfHighlighter( highlighter );
 		foreach( QString key, formats.keys() )

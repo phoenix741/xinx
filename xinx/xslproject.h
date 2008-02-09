@@ -370,11 +370,33 @@ public:
 	 * \return list of WSDL link.
 	 */
 	QStringList & serveurWeb();
+signals:
+	void changed();
 private:
 	PrivateXSLProject * d;
 	friend class PrivateXSLProject;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(XSLProject::ProjectOptions);
+
+class XINXProjectManager : public QObject {
+	Q_OBJECT
+public:
+	XINXProjectManager();
+	virtual ~XINXProjectManager();
+	
+	static XINXProjectManager * self();
+	
+	void setCurrentProject( XSLProject * project );
+	XSLProject * project() const;
+	
+	void deleteProject();
+signals:
+	void changed();
+private:
+	XSLProject * m_project;
+	
+	static XINXProjectManager * s_self;
+};
 
 #endif

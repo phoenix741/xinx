@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "private/p_snipetdialog.h"
-#include "globals.h"
 #include "xinxpluginsloader.h"
 
 /* PrivateSnipetDialogImpl */
@@ -35,17 +34,17 @@ PrivateSnipetDialogImpl::~PrivateSnipetDialogImpl() {
 	
 void PrivateSnipetDialogImpl::setupUi() {
 	m_parent->m_categoryComboBox->clear();
-	m_parent->m_categoryComboBox->addItems( global.m_snipetList->categories() );
+	m_parent->m_categoryComboBox->addItems( SnipetList::self()->categories() );
 	
 	QGridLayout * grid1 = new QGridLayout( m_parent->m_templateGroupBox );
 	m_textEdit = new QTextEdit( m_parent->m_templateGroupBox );
 
 	switch( m_snipetType ) {
 	case Snipet::SNIPET_XSL:
-		new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( "xml" ), m_textEdit );
+		new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_textEdit );
 		break;
 	case Snipet::SNIPET_JAVASCRIPT:
-		new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( "js" ), m_textEdit );
+		new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "js" ), m_textEdit );
 		break;
 	}
 	

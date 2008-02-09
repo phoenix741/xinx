@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "specifiquedlgimpl.h"
-#include "globals.h"
 #include "exceptions.h"
 #include "xslproject.h"
 #include "xinxpluginsloader.h"
@@ -49,15 +48,15 @@ struct_extentions SpecifiqueDialogImpl::extentionOfFileName( const QString & nam
 	QString suffix = name.toLower();
 	if( dotPosition >= 0 )
 		suffix = suffix.mid( dotPosition + 1 );
-	if( global.m_config->config().files.count( suffix ) > 0 )
-		result = global.m_config->config().files[ suffix ];
+	if( XINXConfig::self()->config().files.count( suffix ) > 0 )
+		result = XINXConfig::self()->config().files[ suffix ];
 	return result;
 }
 
 bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
-	if( ! global.m_project ) return false;
+	if( ! XINXProjectManager::self()->project() ) return false;
 	
-	foreach( QString prefix, global.m_project->specifiquePrefixes() ) {
+	foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
 		if( QFileInfo( filename ).fileName().startsWith( prefix + "_", Qt::CaseInsensitive ) )
 			return true;
 	}
@@ -65,18 +64,18 @@ bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
 }
 
 bool SpecifiqueDialogImpl::canBeSaveAsSpecifique( const QString & filename ) {
-	return 	global.m_project &&
-			global.m_project->options().testFlag( XSLProject::hasSpecifique ) &&
+	return 	XINXProjectManager::self()->project() &&
+	XINXProjectManager::self()->project()->options().testFlag( XSLProject::hasSpecifique ) &&
 			extentionOfFileName( filename ).canBeSpecifique &&
-			global.m_config->config().project.alertWhenSavingStandardFile &&
-			QFileInfo( filename ).absolutePath().contains( global.m_project->projectPath() );
+			XINXConfig::self()->config().project.alertWhenSavingStandardFile &&
+			QFileInfo( filename ).absolutePath().contains( XINXProjectManager::self()->project()->projectPath() );
 }
 
 bool SpecifiqueDialogImpl::canBeAddedToRepository( const QString & filename ) {
 	Q_UNUSED( filename );
 	
-	return 	global.m_project &&
-			( global.m_project->projectRCS() != XSLProject::NORCS );
+	return 	XINXProjectManager::self()->project() &&
+		  ( XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS );
 }
 
 void SpecifiqueDialogImpl::setLastPlace( const QString & pathname ) {
@@ -88,7 +87,7 @@ QString SpecifiqueDialogImpl::lastPlace() {
 }
 
 void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
-	XINX_ASSERT( global.m_project );
+	XINX_ASSERT( XINXProjectManager::self()->project() );
 
 	m_filename = filename;
 	m_specifiqueCheckBox->setEnabled( (!filename.isEmpty()) && (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) );
@@ -99,7 +98,7 @@ QString SpecifiqueDialogImpl::path() const {
 	if( m_specifiqueCheckBox->isChecked() ) { 
 		QString fileSuffix = m_suffix.isEmpty() ? QFileInfo( m_filename ).completeSuffix() : m_suffix;
 		struct_extentions customFile = extentionOfFileName( fileSuffix );
-		return QDir( global.m_project->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
+		return QDir( XINXProjectManager::self()->project()->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
 	} else if( !m_filename.isEmpty() )
 		return QFileInfo( m_filename ).absolutePath();
 	else
@@ -111,7 +110,7 @@ QString SpecifiqueDialogImpl::filename() const {
 	
 	newFileName = QFileInfo( m_filename ).fileName();
 	if( m_specifiqueCheckBox->isChecked() && (! isSpecifique( m_filename ) ) ) 
-		newFileName = global.m_project->specifiquePrefix() + "_" + newFileName;
+		newFileName = XINXProjectManager::self()->project()->specifiquePrefix() + "_" + newFileName;
 	
 	return newFileName;
 }
@@ -119,7 +118,7 @@ QString SpecifiqueDialogImpl::filename() const {
 QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QString & suffix, QStringList & filesForRepository ) {
 	QString newFilename = filename,
 			usedSuffix  = suffix.isEmpty() ? QFileInfo( filename ).completeSuffix() : suffix,
-			filter 		= global.m_pluginsLoader->filter( usedSuffix );
+			filter 		= XinxPluginsLoader::self()->filter( usedSuffix );
 			
 	bool saveToRepository = false;
 	
@@ -138,7 +137,7 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 		newFilename = QDir( m_lastPlace ).absoluteFilePath( QFileInfo( filename ).fileName() );
 	}
 	
-	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, global.m_pluginsLoader->filters().join(";;"), &filter );
+	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, XinxPluginsLoader::self()->filters().join(";;"), &filter );
 	if( newFilename.isEmpty() )
 		return QString();
 
@@ -164,10 +163,10 @@ QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QS
 		dlg.setFileName( filename );
 		if( dlg.exec() ) {
 			QString path 	= QDir( dlg.path() ).absoluteFilePath( dlg.filename() ),
-					filter	= global.m_pluginsLoader->filter( QFileInfo( filename ).completeSuffix() );
+					filter	= XinxPluginsLoader::self()->filter( QFileInfo( filename ).completeSuffix() );
 			
 			if( dlg.m_specifiqueCheckBox->isEnabled() && dlg.m_specifiqueCheckBox->isChecked() ) {
-				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, global.m_pluginsLoader->filters().join(";;"), &filter );
+				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, XinxPluginsLoader::self()->filters().join(";;"), &filter );
 				if( ! path.isEmpty() )
 					m_lastPlace = QFileInfo( path ).absolutePath();
 			}

@@ -19,38 +19,34 @@
  ***************************************************************************/
 
 // Xinx header
-#include "globals.h"
+#include "xinxcore.h"
 #include "xslproject.h"
 #include "webservices.h"
 #include "snipetlist.h"
 #include "xinxpluginsloader.h"
 
-/* Globals */
+/* XINXStaticDeleter */
 
-Globals global;
+XINXStaticDeleter * XINXStaticDeleter::s_self = 0;
 
-Globals::Globals() : m_javaObjects(0), m_webServices(0), m_project(0), m_config(0), m_snipetList(0), m_pluginsLoader(0) {
+XINXStaticDeleter::XINXStaticDeleter() {
 	
 }
 
-Globals::~Globals() {
-	delete m_pluginsLoader;
-	delete m_snipetList;
-	delete m_project;
-	if( m_webServices ) {
-		qDeleteAll( *m_webServices );
-		delete m_webServices;	
+XINXStaticDeleter::~XINXStaticDeleter() {
+	s_self = 0;
+	qDeleteAll( m_objectList );
+	m_objectList.clear();
+}
+
+XINXStaticDeleter * XINXStaticDeleter::self() {
+	if( s_self == 0 ) {
+		s_self = new XINXStaticDeleter();
 	}
+	return s_self;
 }
 
-void Globals::emitProjectChanged() {
-	emit projectChanged();
+void XINXStaticDeleter::addObject( QObject * o ) {
+	m_objectList.append( o );
 }
 
-void Globals::emitWebServicesChanged() {
-	emit webServicesChanged();
-}
-
-void Globals::emitConfigChanged() {
-	emit configChanged();
-}

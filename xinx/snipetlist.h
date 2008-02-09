@@ -44,6 +44,8 @@ public:
 	SnipetList();
 	virtual ~SnipetList();
 	
+	static SnipetList * self();
+	
 	void add( Snipet * snipet );
 	void remove( int index );
 	Snipet * replace( int index, Snipet * snipet );
@@ -59,6 +61,8 @@ public:
 signals:
 	void listChanged();
 private:
+	static SnipetList * s_self;
+	
 	PrivateSnipetList * d;
 	friend class PrivateSnipetList;
 };

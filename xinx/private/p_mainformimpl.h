@@ -26,7 +26,7 @@
 #include "../filecontentdockwidget.h"
 #include "../projectdirectorydockwidget.h"
 #include "../xmlpresentationdockwidget.h"
-#include "../globals.h"
+#include "../xinxcore.h"
 #include "../replacedialogimpl.h"
 #include "../rcslogdialogimpl.h"
 #include "../snipet.h"

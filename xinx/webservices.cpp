@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
+// Qt header
 #include <QBuffer>
 #include <QFile>
 #include <QIODevice>
@@ -29,11 +30,17 @@
 #include <QDomElement>
 #include <QPair>
 
+// Xinx header
+#include "xinxcore.h"
 #include "webservices.h"
 #include "xslproject.h"
 #include "wsdl.h"
 #include "soap.h"
 #include "connectionwebservicesdialogimpl.h"
+
+/* Static member */
+
+WebServicesManager * WebServicesManager::s_self = 0;
 
 /* Parameter */
 
@@ -309,6 +316,33 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 		
 		emit soapResponse( param, response, soapResult.getErrorCode(), soapResult.getErrorString() );
 	}
+}
+
+/* WebServicesManager */
+
+WebServicesManager::WebServicesManager() : QObject(), WebServicesList() {
+	
+}
+
+WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : QObject(), WebServicesList( manager ) {
+	
+}
+
+WebServicesManager::~WebServicesManager() {
+	s_self = 0;
+	qDeleteAll( *this );
+}
+
+WebServicesManager * WebServicesManager::self() {
+	if( s_self == 0 ) {
+		s_self = new WebServicesManager();
+		XINXStaticDeleter::self()->addObject( s_self );
+	}
+	return s_self;
+}
+
+void WebServicesManager::listUpdated() {
+	emit changed();
 }
 
 

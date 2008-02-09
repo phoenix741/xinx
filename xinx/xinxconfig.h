@@ -25,15 +25,26 @@
 
 class PrivateXINXConfig;
 
-class XINXConfig : public AppSettings {
+class XINXConfig : public QObject, public AppSettings {
+	Q_OBJECT
 public:
 	XINXConfig( const XINXConfig & origine );
 	XINXConfig();
 	virtual ~XINXConfig();
+	
+	static XINXConfig * self();
+
+	virtual void save();
+
+	XINXConfig& operator=(const XINXConfig& p);
+signals:
+	void changed();
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();
 private:
+	static XINXConfig * s_self;
+	
 	friend class PrivateXINXConfig;
 	PrivateXINXConfig * d;
 };

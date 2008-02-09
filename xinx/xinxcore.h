@@ -18,104 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __GLOBALS_H__
-#define __GLOBALS_H__
+#ifndef __XINXCORE_H__
+#define __XINXCORE_H__
 
 #include <QObject>
 #include <QList>
 
-class XSLProject;
-class WebServices;
-class ObjectsView;
-class XINXConfig;
-class SnipetList;
-class XinxPluginsLoader;
-
-/*!
- * List of WebServices object.
- */
-typedef QList<WebServices*> WebServicesList;
-
 /*!
  * Create globals class contains global definition.
  */
-class Globals : public QObject {
+class XINXStaticDeleter : public QObject {
 	Q_OBJECT
 public:
 	/*!
 	 * Intialize default value of object.
 	 */ 
-	Globals();
+	XINXStaticDeleter();
 	/*!
 	 * Destruct the global object.
 	 */
-	~Globals();
+	~XINXStaticDeleter();
 
-	/*!
-	 * List all XML Java View Object File.
-	 */
-	ObjectsView * m_javaObjects;
-	/*!
-	 * List all WebServices in coordination with the project.
-	 */
-	WebServicesList*  m_webServices;
-	/*!
-	 * Opened project.
-	 */
-	XSLProject * m_project;
+	void addObject( QObject * o );
 	
-	/*!
-	 * XINX Config file.
-	 */
-	XINXConfig * m_config;
-	
-	/*!
-	 * List of snipet.
-	 */
-	SnipetList * m_snipetList;
-	
-	/*!
-	 * Xinx Plugins loader
-	 */
-	XinxPluginsLoader * m_pluginsLoader;
-	
-	/*!
-	 * Call this function when you want emit signals \e projectChanged().
-	 * \sa projectChanged()
-	 */
-	void emitProjectChanged();
-	/*!
-	 * Call this function when you want emit signals \e webServicesChanged().
-	 * \sa webServicesChanged()
-	 */
-	void emitWebServicesChanged();
-	/*!
-	 * Call this function when you want emit signal \e emitConfigChanged().
-	 * \sa configChanged();
-	 */
-	void emitConfigChanged();
-Q_SIGNALS:
-	/*!
-	 * Signal emited when the project has changed
-	 * \sa emitProjectChanged()
-	 */
-	void projectChanged();
-	/*!
-	 * Signal emited when webservices list has changed
-	 * \sa emitWebServicesChanged() 
-	 */
-	void webServicesChanged();
-	/*!
-	 * Signal emited when the configuration of XINX is modified
-	 * \sa emitConfigChanged()
-	 */
-	void configChanged();
+	static XINXStaticDeleter * self();
+private:
+	static XINXStaticDeleter * s_self;
+	QList<QObject*> m_objectList;
 };
-
-/*!
- * Global defintion of global
- */
-extern Globals global;
 
 /*!
  * Numbre of maximum recent file that can be opened
@@ -158,4 +88,4 @@ inline void qDeleteAllLater(const Container &c) {
 }
 
 
-#endif // __GLOBALS_H__
+#endif // __XINXCORE_H__

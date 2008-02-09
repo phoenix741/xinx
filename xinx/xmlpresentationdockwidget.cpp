@@ -21,7 +21,6 @@
 // Xinx header
 #include "xmlpresentationdockwidget.h"
 #include "private/p_xmlpresentationdockwidget.h"
-#include "globals.h"
 #include "xslproject.h"
 
 // Qt header
@@ -44,7 +43,7 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 	m_timerTextChanged.setInterval( 500 );
 	
 	initXmlPresentationCombo();
-	connect( &global, SIGNAL(projectChanged()), this, SLOT(initXmlPresentationCombo()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
 	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
 	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
@@ -70,8 +69,8 @@ void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<No presentation file>") );
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<Choose an XML file ...>") );
 	
-	if( global.m_project ) {
-		m_logPath = global.m_project->logProjectDirectory();
+	if( XINXProjectManager::self()->project() ) {
+		m_logPath = XINXProjectManager::self()->project()->logProjectDirectory();
 		QDir logDir( m_logPath );
 		if( logDir.exists() ) {
 			QStringList files = logDir.entryList( QStringList() << "Presentation_*.xml", QDir::Files | QDir::Readable );

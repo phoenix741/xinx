@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "plugindialog.h"
-#include "globals.h"
 #include "xinxpluginsloader.h"
 
 // Qt header
@@ -36,7 +35,7 @@ PluginDialogImpl::PluginDialogImpl(QWidget *parent) : QDialog(parent) {
     interfaceIcon.addPixmap( style()->standardPixmap(QStyle::SP_DirClosedIcon), QIcon::Normal, QIcon::Off);
     featureIcon.addPixmap( style()->standardPixmap(QStyle::SP_FileIcon) );
 	
-	findPlugins( global.m_pluginsLoader->pluginsDir().absolutePath(), global.m_pluginsLoader->pluginFileNames() );
+	findPlugins( XinxPluginsLoader::self()->pluginsDir().absolutePath(), XinxPluginsLoader::self()->pluginFileNames() );
 }
 
 PluginDialogImpl::~PluginDialogImpl() {

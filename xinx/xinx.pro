@@ -1,17 +1,16 @@
 TEMPLATE = app
 TARGET = xinx
-
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-
 unix { 
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-INCLUDEPATH += ../xinx/ ../libxinx
+INCLUDEPATH += ../xinx/ \
+    ../libxinx
 CONFIG += debug \
     exceptions \
     qdbus \
@@ -21,19 +20,21 @@ CONFIG += debug \
     x86
 QT += network \
     xml
-
-LIBS = -L../plugins/webplugin -L../libxinx
-
-win32:CONFIG(debug) {
-	LIBS += -lsharedxinxd -lwebplugind
-	POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a ../libxinx/libsharedxinxd.a
-} else {
-	LIBS += -lsharedxinx -lwebplugin
-	POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a ../libxinx/libsharedxinx.a
+LIBS = -L../plugins/webplugin \
+    -L../libxinx
+win32:CONFIG(debug) { 
+    LIBS += -lsharedxinxd \
+        -lwebplugind
+    POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
+        ../libxinx/libsharedxinxd.a
 }
-win32 { 
-    RC_FILE += rc/xinx.rc
+else { 
+    LIBS += -lsharedxinx \
+        -lwebplugin
+    POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
+        ../libxinx/libsharedxinx.a
 }
+win32:RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
     ../COPYING \
     ../Doxyfile \
@@ -53,7 +54,7 @@ DISTFILES = ../CHANGELOG \
     ui/*.ui \
     xml/*.xnx
 RESOURCES += application.qrc
-FORMS += ui/xinxlistwidget.ui \ 
+FORMS += ui/xinxlistwidget.ui \
     ui/plugindialog.ui \
     ui/specifiquedlg.ui \
     ui/about.ui \
@@ -73,7 +74,8 @@ FORMS += ui/xinxlistwidget.ui \
     ui/newprojectwizard_specifique.ui \
     ui/newprojectwizard_services.ui \
     ui/newprojectwizard_serviceslist.ui
-HEADERS += xinxlistwidgetimpl.h \
+HEADERS += xinxcore.h \
+    xinxlistwidgetimpl.h \
     plugindialog.h \
     xinxpluginsloader.h \
     specifiquedlgimpl.h \
@@ -94,12 +96,10 @@ HEADERS += xinxlistwidgetimpl.h \
     fileeditor.h \
     filewatcher.h \
     flattreeview.h \
-    globals.h \
     iconprojectprovider.h \
     kcolorcombo.h \
     mainformimpl.h \
     numberbar.h \
-    objectview.h \
     newprojectwizard.h \
     private/p_configurationfile.h \
     private/p_connectionwebservicesdialogimpl.h \
@@ -142,7 +142,8 @@ HEADERS += xinxlistwidgetimpl.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     xslproject.h
-SOURCES += xinxlistwidgetimpl.cpp \
+SOURCES += xinxcore.cpp \
+    xinxlistwidgetimpl.cpp \
     plugindialog.cpp \
     xinxpluginsloader.cpp \
     specifiquedlgimpl.cpp \
@@ -162,13 +163,11 @@ SOURCES += xinxlistwidgetimpl.cpp \
     fileeditor.cpp \
     filewatcher.cpp \
     flattreeview.cpp \
-    globals.cpp \
     iconprojectprovider.cpp \
     kcolorcombo.cpp \
     main.cpp \
     mainformimpl.cpp \
     numberbar.cpp \
-    objectview.cpp \
     projectdirectorydockwidget.cpp \
     projectpropertyimpl.cpp \
     rcs.cpp \
@@ -195,7 +194,7 @@ SOURCES += xinxlistwidgetimpl.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \
     xinxthread.cpp \
-    newprojectwizard.cpp 
+    newprojectwizard.cpp
 contains( CONFIG, qdbus ) { 
     HEADERS += studioadaptor.h \
         studiointerface.h

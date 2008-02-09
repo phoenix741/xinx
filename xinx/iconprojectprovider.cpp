@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 // xinx header
-#include "globals.h"
 #include "xinxpluginsloader.h"
 #include "iconprojectprovider.h"
 
@@ -32,7 +31,7 @@ IconProjectProvider::~IconProjectProvider() {
 }
 	
 QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
-	QIcon icon = global.m_pluginsLoader->iconOfSuffix( info.suffix() );
+	QIcon icon = XinxPluginsLoader::self()->iconOfSuffix( info.suffix() );
 	if( ! icon.isNull() )
 		return icon;
 	else

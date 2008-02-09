@@ -23,7 +23,6 @@
 
 // Xinx header
 #include "ui_specifiquedlg.h"
-#include "globals.h"
 #include "xinxconfig.h"
 
 class SpecifiqueDialogImpl : public QDialog, public Ui::SpecifiqueDialog {

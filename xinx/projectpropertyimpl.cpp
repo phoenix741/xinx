@@ -22,7 +22,6 @@
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
-#include "globals.h"
 #include "exceptions.h"
 
 // Qt header
@@ -46,7 +45,7 @@ ProjectPropertyImpl::~ProjectPropertyImpl() {
 }
 
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
-	m_projectLineEdit->changePath( this, global.m_config->config().project.defaultPath );
+	m_projectLineEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
 }
 
 void ProjectPropertyImpl::on_m_prefixList_defaultValueChanged( QString text ) {
@@ -178,5 +177,5 @@ void ProjectPropertyImpl::on_m_specifiqueGroupBox_clicked() {
 }
 
 void ProjectPropertyImpl::on_m_logButton_clicked() {
-	m_logLineEdit->changePath( this, global.m_config->config().project.defaultPath );
+	m_logLineEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
 }

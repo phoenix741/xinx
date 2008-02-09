@@ -129,7 +129,7 @@ RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
 
 	RCS::FilesOperation operations;
 	
-	QStringList files = QDir( path ).entryList( global.m_pluginsLoader->defaultProjectFilter(), QDir::Files );
+	QStringList files = QDir( path ).entryList( XinxPluginsLoader::self()->defaultProjectFilter(), QDir::Files );
 	
 	foreach( QString filename, files ) {
 		QString filepath = QDir( path ).absoluteFilePath ( filename );

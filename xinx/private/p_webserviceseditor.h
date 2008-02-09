@@ -23,7 +23,6 @@
  
 // Xinx header
 #include "texteditor.h"
-#include "globals.h"
 #include "webserviceseditor.h"
 #include "webservices.h"
 #include "xslproject.h"

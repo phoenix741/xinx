@@ -22,8 +22,6 @@
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
 #include "xinxconfig.h"
-#include "globals.h"
-#include "objectview.h"
 #include "snipetlist.h"
 #include "exceptions.h"
 #include "xinxpluginsloader.h"
@@ -103,48 +101,34 @@ int main(int argc, char *argv[]) {
 	  		/* Must load to have traductions in plugins */
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
-			global.m_config = new XINXConfig();
-			global.m_config->load();
+			XINXConfig::self()->load();
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();
 			QTranslator translator_xinx, translator_qt;
-			translator_qt.load( QString(":/translations/qt_%1").arg( global.m_config->config().language ) );
+			translator_qt.load( QString(":/translations/qt_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_qt);
-			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_config->config().language ) );
+			translator_xinx.load( QString(":/translations/xinx_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_xinx);
 	
 			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
 			app.processEvents();
-			global.m_pluginsLoader = new XinxPluginsLoader();
-			global.m_pluginsLoader->loadPlugins();
+			XinxPluginsLoader::self()->loadPlugins();
 
 			/* Reload to have options in plugins */
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
-			global.m_config->load();
+			XINXConfig::self()->load();
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
-			global.m_snipetList = new SnipetList();
-	
 			try {
-				global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
+				SnipetList::self()->loadFromFile( QDir( XINXConfig::self()->config().descriptions.completion ).filePath( "template.xnx" ) );
 			} catch( SnipetListException ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();
 			}
 			
-			splash.showMessage( QApplication::translate("SplashScreen", "Create Web Services list ...") );
-			app.processEvents();
-			global.m_webServices = new WebServicesList();	
-	
-			splash.showMessage( QApplication::translate("SplashScreen", "Load objects file ...") );
-			app.processEvents();
-			global.m_javaObjects = new ObjectsView();
-			global.m_javaObjects->setPath( global.m_config->config().descriptions.object );
-			global.m_javaObjects->loadFiles();
-	
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
 	  		app.processEvents();
 			mainWin = new MainformImpl();

@@ -22,7 +22,6 @@
 #include "customdialogimpl.h"
 #include "syntaxhighlighter.h"
 #include "exceptions.h"
-#include "globals.h"
 #include "xinxpluginsloader.h"
 
 // Qt header
@@ -159,7 +158,7 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Extentions
 	m_parent->m_extentionsListWidget->clear();
 	foreach( QString key, m_config.config().files.keys() ) {
-		m_parent->m_extentionsListWidget->addItem( global.m_pluginsLoader->filter( key ) );
+		m_parent->m_extentionsListWidget->addItem( XinxPluginsLoader::self()->filter( key ) );
 	}
 	m_parent->m_extentionsListWidget->setCurrentRow( 0 );
 }
@@ -324,7 +323,7 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 	if( format != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
-		IPluginSyntaxHighlighter* plugin = global.m_pluginsLoader->highlighterOfPlugin( format );
+		IPluginSyntaxHighlighter* plugin = XinxPluginsLoader::self()->highlighterOfPlugin( format );
 		if( plugin )
 			example = plugin->exampleOfHighlighter( format );
 		m_exempleTextEdit->setText( example );

@@ -142,11 +142,11 @@ void PrivateMainformImpl::createSubMenu() {
 
 	// New sub menu
 	QMenu * newMenu = new QMenu( m_parent );
-	foreach( QString extention, global.m_pluginsLoader->extentions().keys() ) {
+	foreach( QString extention, XinxPluginsLoader::self()->extentions().keys() ) {
 		if( extention == "fws" ) continue; // TODO: Make a plugins
 		QAction * action = new QAction( 
-				global.m_pluginsLoader->iconOfSuffix( extention ),
-				tr( "New %1" ).arg( global.m_pluginsLoader->extentions().value( extention ) ),
+				XinxPluginsLoader::self()->iconOfSuffix( extention ),
+				tr( "New %1" ).arg( XinxPluginsLoader::self()->extentions().value( extention ) ),
 				this
 				);
 		action->setData( extention );
@@ -487,7 +487,7 @@ void PrivateMainformImpl::connectDbus() {
 void PrivateMainformImpl::createSnipet() {
 	XINX_TRACE( "PrivateMainformImpl::createSnipet", "()" );
 
-	connect( global.m_snipetList, SIGNAL(listChanged()), this, SLOT(updateSnipetMenu()) );
+	connect( SnipetList::self(), SIGNAL(listChanged()), this, SLOT(updateSnipetMenu()) );
 	updateSnipetMenu();
 }
 
@@ -517,14 +517,14 @@ void PrivateMainformImpl::updateSnipetMenu() {
 	qDeleteAllLater( m_snipetCategoryActs.values() ); 
 	m_snipetCategoryActs.clear();
 	
-	if( global.m_snipetList->count() > 0 ) {
-		foreach( QString category, global.m_snipetList->categories() ) {
+	if( SnipetList::self()->count() > 0 ) {
+		foreach( QString category, SnipetList::self()->categories() ) {
 			QAction * act = new QAction( category, m_parent );
 			m_snipetCategoryActs[ category ] = act;
 			act->setMenu( new QMenu( m_parent ) );
 		}
-		for( int i = 0 ; i < global.m_snipetList->count() ; i++ ) {
-			Snipet * snipet = global.m_snipetList->at( i );
+		for( int i = 0 ; i < SnipetList::self()->count() ; i++ ) {
+			Snipet * snipet = SnipetList::self()->at( i );
 			QAction * act = new QAction( QIcon( snipet->icon() ), snipet->name(), m_parent );
 			m_snipetActs.append( act );
 			m_snipetCategoryActs[ snipet->category() ]->menu()->addAction( act );
@@ -572,9 +572,9 @@ void PrivateMainformImpl::openFile( const QString & name, int line ) {
 void PrivateMainformImpl::openFile() {
 	XINX_TRACE( "PrivateMainformImpl::openFile", "()" );
 
-	XINX_ASSERT( global.m_config );
+	XINX_ASSERT( XINXConfig::self() );
 	
-	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), global.m_pluginsLoader->filters().join(";;") );
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( m_parent, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), XinxPluginsLoader::self()->filters().join(";;") );
 	
 	m_parent->m_tabEditors->setUpdatesEnabled( false );
 	foreach( QString filename, selectedFiles ) {
@@ -658,15 +658,14 @@ void PrivateMainformImpl::customize() {
 	XINX_TRACE( "PrivateMainformImpl::customize", "()" );
 
 	CustomDialogImpl custom( m_parent );
-	custom.loadFromConfig( global.m_config );
+	custom.loadFromConfig( XINXConfig::self() );
 	
 	if( custom.exec() ) {
-		custom.saveToConfig( global.m_config );
-		global.m_config->save();
-		global.emitConfigChanged();	
+		custom.saveToConfig( XINXConfig::self() );
+		XINXConfig::self()->save();
 
 		try {
-			global.m_snipetList->loadFromFile( QDir( global.m_config->config().descriptions.completion ).filePath( "template.xnx" ) );
+			SnipetList::self()->loadFromFile( QDir( XINXConfig::self()->config().descriptions.completion ).filePath( "template.xnx" ) );
 		} catch( SnipetListException ) {
 			QMessageBox::warning( m_parent, tr("Load snipet"), tr("Can't load snipet file.") );
 		}
@@ -689,14 +688,14 @@ void PrivateMainformImpl::updateRecentFiles() {
 	XINX_TRACE( "PrivateMainformImpl::updateRecentFiles", "()" );
 
 	int numRecentFiles;
-	if( global.m_project ) {
-		numRecentFiles = qMin( global.m_project->session()->lastOpenedFile().size(), MAXRECENTFILES );
+	if( XINXProjectManager::self()->project() ) {
+		numRecentFiles = qMin( XINXProjectManager::self()->project()->session()->lastOpenedFile().size(), MAXRECENTFILES );
 
 		for( int i = 0; i < numRecentFiles; i++ ) {
-			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_project->session()->lastOpenedFile()[i] ).fileName() );
-			m_recentFileActs[i]->setIcon( global.m_pluginsLoader->iconOfSuffix( QFileInfo( text ).suffix() ) );
+			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( XINXProjectManager::self()->project()->session()->lastOpenedFile()[i] ).fileName() );
+			m_recentFileActs[i]->setIcon( XinxPluginsLoader::self()->iconOfSuffix( QFileInfo( text ).suffix() ) );
 			m_recentFileActs[i]->setText( text );
-			m_recentFileActs[i]->setData( global.m_project->session()->lastOpenedFile()[i] );
+			m_recentFileActs[i]->setData( XINXProjectManager::self()->project()->session()->lastOpenedFile()[i] );
 			m_recentFileActs[i]->setVisible( true );
 		}
 	} else 
@@ -711,12 +710,12 @@ void PrivateMainformImpl::updateRecentFiles() {
 void PrivateMainformImpl::updateRecentProjects() {
 	XINX_TRACE( "PrivateMainformImpl::updateRecentProjects", "()" );
 
-	int numRecentFiles = qMin( global.m_config->config().project.recentProjectFiles.size(), MAXRECENTFILES );
+	int numRecentFiles = qMin( XINXConfig::self()->config().project.recentProjectFiles.size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( global.m_config->config().project.recentProjectFiles[i] ).fileName() );
+		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( XINXConfig::self()->config().project.recentProjectFiles[i] ).fileName() );
 		m_recentProjectActs[i]->setText( text );
-		m_recentProjectActs[i]->setData( global.m_config->config().project.recentProjectFiles[i] );
+		m_recentProjectActs[i]->setData( XINXConfig::self()->config().project.recentProjectFiles[i] );
 		m_recentProjectActs[i]->setVisible( true );
 	}
 	
@@ -729,13 +728,13 @@ void PrivateMainformImpl::updateRecentProjects() {
 void PrivateMainformImpl::readWindowSettings() {
 	XINX_TRACE( "PrivateMainformImpl::readWindowSettings", "()" );
 
-	m_parent->resize( global.m_config->config().size );
-	m_parent->move( global.m_config->config().position );
-	if( global.m_config->config().maximized )
+	m_parent->resize( XINXConfig::self()->config().size );
+	m_parent->move( XINXConfig::self()->config().position );
+	if( XINXConfig::self()->config().maximized )
 		m_parent->setWindowState( m_parent->windowState() ^ Qt::WindowMaximized );
   
-	if( ! global.m_config->config().state.isEmpty() ) {
-		if( ! m_parent->restoreState( global.m_config->config().state ) )
+	if( ! XINXConfig::self()->config().state.isEmpty() ) {
+		if( ! m_parent->restoreState( XINXConfig::self()->config().state ) )
 			qWarning( "Can't restore windows state.\n" );
 	}
 }
@@ -743,13 +742,13 @@ void PrivateMainformImpl::readWindowSettings() {
 void PrivateMainformImpl::storeWindowSettings() {
 	XINX_TRACE( "PrivateMainformImpl::storeWindowSettings", "()" );
 
-	global.m_config->config().state = m_parent->saveState();
+	XINXConfig::self()->config().state = m_parent->saveState();
 	
-	global.m_config->config().position = m_parent->pos();
-	global.m_config->config().size = m_parent->size();
-	global.m_config->config().maximized = m_parent->isMaximized();
+	XINXConfig::self()->config().position = m_parent->pos();
+	XINXConfig::self()->config().size = m_parent->size();
+	XINXConfig::self()->config().maximized = m_parent->isMaximized();
 	
-	global.m_config->save();
+	XINXConfig::self()->save();
 }
 
 void PrivateMainformImpl::createTabEditorButton() {
@@ -758,38 +757,38 @@ void PrivateMainformImpl::createTabEditorButton() {
 	m_closeTabBtn = new QToolButton( m_parent->m_tabEditors );
 	m_closeTabBtn->setIcon( QIcon( ":/images/tabclose.png" ) );
 	connect( m_closeTabBtn, SIGNAL(clicked()), this, SLOT(currentCloseFile()) );
-	if( ! global.m_config->config().editor.hideCloseTab )
+	if( ! XINXConfig::self()->config().editor.hideCloseTab )
 		m_parent->m_tabEditors->setCornerWidget( m_closeTabBtn );
 
-	connect( &global, SIGNAL(configChanged()), this, SLOT(updateConfigElement()) );
+	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateConfigElement()) );
 }
 
 void PrivateMainformImpl::updateConfigElement() {
-	m_closeTabBtn->setVisible( ! global.m_config->config().editor.hideCloseTab );
+	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
 }
 
 void PrivateMainformImpl::updateActions() {
 	XINX_TRACE( "PrivateMainformImpl::updateActions", "()" );
 
 	/* Project action */
-	m_parent->m_saveProjectAct->setEnabled( global.m_project != NULL );
-	m_parent->m_closeProjectAct->setEnabled( global.m_project != NULL );
-	m_parent->m_closeProjectWithSessionAct->setEnabled( global.m_project != NULL );
-	m_parent->m_closeProjectNoSessionAct->setEnabled( global.m_project != NULL );
-	m_parent->m_projectPropertyAct->setEnabled( global.m_project != NULL );
+	m_parent->m_saveProjectAct->setEnabled( XINXProjectManager::self()->project() != NULL );
+	m_parent->m_closeProjectAct->setEnabled( XINXProjectManager::self()->project() != NULL );
+	m_parent->m_closeProjectWithSessionAct->setEnabled( XINXProjectManager::self()->project() != NULL );
+	m_parent->m_closeProjectNoSessionAct->setEnabled( XINXProjectManager::self()->project() != NULL );
+	m_parent->m_projectPropertyAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 	
-	m_parent->m_globalUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute ) );
-	m_parent->m_globalCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_globalUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute ) );
+	m_parent->m_globalCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
 
-	m_parent->m_selectedUpdateFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
-	m_parent->m_selectedCommitToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
-	m_parent->m_selectedAddToRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
-	m_parent->m_selectedRemoveFromRCSAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedAddToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedRemoveFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
 	
-	m_parent->m_cancelRCSOperationAct->setEnabled( (global.m_project != NULL) && (global.m_project->projectRCS() != XSLProject::NORCS) && m_rcsExecute );
+	m_parent->m_cancelRCSOperationAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && m_rcsExecute );
 	
-	m_parent->m_toggledFlatView->setEnabled( global.m_project != NULL );
-	m_projectDock->setEnabled( global.m_project != NULL );
+	m_parent->m_toggledFlatView->setEnabled( XINXProjectManager::self()->project() != NULL );
+	m_projectDock->setEnabled( XINXProjectManager::self()->project() != NULL );
 
 	/* Files */
 	m_parent->m_saveAct->setEnabled( m_parent->m_tabEditors->count() );
@@ -997,7 +996,7 @@ void PrivateMainformImpl::rcsLogTerminated() {
 			QTextStream out(&headContentFile);
 			out << m_headContent;
 		}
-		QProcess::execute( global.m_config->config().tools["diff"], QStringList() << m_compareFileName << headContentFile.fileName() );
+		QProcess::execute( XINXConfig::self()->config().tools["diff"], QStringList() << m_compareFileName << headContentFile.fileName() );
 		m_headContent = QString();
 	}
 
@@ -1007,7 +1006,7 @@ void PrivateMainformImpl::rcsLogTerminated() {
 		rcs->disconnect();
 	updateActions();
 
-	if( (!m_rcsVisible) && m_rcslogDock->isVisible() && global.m_config->config().project.closeVersionManagementLog )
+	if( (!m_rcsVisible) && m_rcslogDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
 		m_timer->start( 5000 );
 }
 
@@ -1015,20 +1014,20 @@ void PrivateMainformImpl::selectedCompareWithStd() {
 	XINX_TRACE( "PrivateMainformImpl::selectedCompareWithStd", "()" );
 
 	QStringList list = m_projectDock->selectedFiles();
-	XINX_ASSERT( list.size() == 1 && global.m_project );
+	XINX_ASSERT( list.size() == 1 && XINXProjectManager::self()->project() );
 	
 	QString customFilename = list.at( 0 ), stdFilename, path, filename;
 	
 	path = QFileInfo( customFilename ).absolutePath();
 	filename = QFileInfo( customFilename ).fileName();
 	
-	foreach( QString prefix, global.m_project->specifiquePrefixes() ) {
+	foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
 		if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
 			filename.remove( 0, prefix.size() + 1 );
 			stdFilename = QDir( path ).absoluteFilePath( filename );
 
 			if( QFileInfo( stdFilename ).exists() )
-				QProcess::execute( global.m_config->config().tools["diff"], QStringList() << customFilename << stdFilename );
+				QProcess::execute( XINXConfig::self()->config().tools["diff"], QStringList() << customFilename << stdFilename );
 			else 
 				QMessageBox::information( m_parent, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
 			
@@ -1044,7 +1043,7 @@ void PrivateMainformImpl::selectedCompare() {
 
 	QStringList list = m_projectDock->selectedFiles();
 	XINX_ASSERT( list.size() == 2 );
-	QProcess::execute( global.m_config->config().tools["diff"], QStringList() << list.at( 0 ) << list.at( 1 ) );
+	QProcess::execute( XINXConfig::self()->config().tools["diff"], QStringList() << list.at( 0 ) << list.at( 1 ) );
 }
 
 
@@ -1281,7 +1280,7 @@ void PrivateMainformImpl::replace() {
 bool PrivateMainformImpl::closeProject( bool session ) {
 	XINX_TRACE( "PrivateMainformImpl::closeProject", QString( "( %1 )" ).arg( session ) );
 
-	if( ! global.m_project ) return false;		
+	if( ! XINXProjectManager::self()->project() ) return false;		
 
 	m_parent->saveProject( session );
 		
@@ -1301,35 +1300,33 @@ bool PrivateMainformImpl::closeProject( bool session ) {
 	m_projectDock->setProjectPath( NULL );
 	m_contentDock->updateModel( NULL );
 
-	qDeleteAll( *(global.m_webServices) );
-	global.m_webServices->clear();
+	qDeleteAll( *(WebServicesManager::self()) );
+	WebServicesManager::self()->clear();
 	
-	delete global.m_project;
-	global.m_project = NULL;
+	XINXProjectManager::self()->deleteProject();
 
 	m_parent->updateWebServicesList();
 	updateActions();
 	updateRecentFiles();
 	updateTitle();
 	
-	global.emitProjectChanged();
 	return true;
 }
 
 void PrivateMainformImpl::updateTitle() {
 	XINX_TRACE( "PrivateMainformImpl::updateTitle", "()" );
 
-	if( ! global.m_project )
+	if( ! XINXProjectManager::self()->project() )
 		m_parent->setWindowTitle( tr("XINX") );
 	else {
-		m_parent->setWindowTitle( tr("%1 - %2").arg( global.m_project->projectName() ).arg( tr("XINX") ) );
+		m_parent->setWindowTitle( tr("%1 - %2").arg( XINXProjectManager::self()->project()->projectName() ).arg( tr("XINX") ) );
 	}
 }
 
 void PrivateMainformImpl::openProject() {
 	XINX_TRACE( "PrivateMainformImpl::openProject", "()" );
 
-	QString fileName = QFileDialog::getOpenFileName( m_parent, tr("Open a project"), global.m_config->config().project.defaultPath, "Projet (*.prj)" );
+	QString fileName = QFileDialog::getOpenFileName( m_parent, tr("Open a project"), XINXConfig::self()->config().project.defaultPath, "Projet (*.prj)" );
 	if( ! fileName.isEmpty() )
 		m_parent->openProject( fileName );
 }
@@ -1337,25 +1334,23 @@ void PrivateMainformImpl::openProject() {
 void PrivateMainformImpl::projectProperty() {
 	XINX_TRACE( "PrivateMainformImpl::projectProperty", "()" );
 
-	XINX_ASSERT( global.m_project != NULL );
+	XINX_ASSERT( XINXProjectManager::self()->project() != NULL );
 	
 	ProjectPropertyImpl property ( m_parent );
-	property.loadFromProject( global.m_project );
+	property.loadFromProject( XINXProjectManager::self()->project() );
 	
 	if( property.exec() ) {
-		property.saveToProject( global.m_project );
+		property.saveToProject( XINXProjectManager::self()->project() );
 
 		m_parent->updateWebServicesList();
-		global.m_project->saveToFile();
-		
-		global.emitProjectChanged();
+		XINXProjectManager::self()->project()->saveToFile();
 	}
 }
 
 void PrivateMainformImpl::closeProject() {
 	XINX_TRACE( "PrivateMainformImpl::closeProject", "()" );
 
-	closeProject( global.m_config->config().project.saveWithSessionByDefault );
+	closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault );
 }
 
 void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
@@ -1379,8 +1374,8 @@ struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name
 	QString suffix = name.toLower();
 	if( dotPosition >= 0 )
 		suffix = suffix.mid( dotPosition + 1 );
-	if( global.m_config->config().files.count( suffix ) > 0 )
-		result = global.m_config->config().files[ suffix ];
+	if( XINXConfig::self()->config().files.count( suffix ) > 0 )
+		result = XINXConfig::self()->config().files[ suffix ];
 	return result;
 }
 
@@ -1423,8 +1418,8 @@ MainformImpl::~MainformImpl() {
 void MainformImpl::closeEvent( QCloseEvent *event ) {
 	XINX_TRACE ( "MainformImpl::closeEvent", QString( "( %1 )" ).arg( (unsigned int)event, 0, 16 ) );
 	
-	if( global.m_project ) {
-		if( ! d->closeProject( global.m_config->config().project.saveWithSessionByDefault ) ) {
+	if( XINXProjectManager::self()->project() ) {
+		if( ! d->closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault ) ) {
 			event->ignore();
 			return;
 		}
@@ -1446,7 +1441,7 @@ void MainformImpl::newFile( const QString & suffix ) {
 void MainformImpl::newWebservicesFile() {
 	XINX_TRACE ( "MainformImpl::newWebservicesFile", "()" );
 
-	if( global.m_webServices->size() == 0 ) {
+	if( WebServicesManager::self()->size() == 0 ) {
 		QMessageBox::warning( this, tr("WebServices"), tr("No WebServices can be found. Please update WebServices list to continue.") );
 		return;
 	}
@@ -1472,9 +1467,9 @@ void MainformImpl::newTemplate() {
 		SnipetDialogImpl dlg( selectedText );
 		if( dlg.exec() == QDialog::Accepted ) {
 			newSnipet = dlg.getSnipet();
-			global.m_snipetList->add( newSnipet );
+			SnipetList::self()->add( newSnipet );
 			
-			global.m_snipetList->saveToFile();
+			SnipetList::self()->saveToFile();
 		}
 		
 	}
@@ -1486,12 +1481,12 @@ void MainformImpl::openFile( const QString & filename ) {
 	XINX_ASSERT( ! filename.isEmpty() );
 
 	// Add recent action
-	if( global.m_project ) {
-		global.m_project->session()->lastOpenedFile().removeAll( filename );
-		global.m_project->session()->lastOpenedFile().prepend( filename );
+	if( XINXProjectManager::self()->project() ) {
+		XINXProjectManager::self()->project()->session()->lastOpenedFile().removeAll( filename );
+		XINXProjectManager::self()->project()->session()->lastOpenedFile().prepend( filename );
      
-		while( global.m_project->session()->lastOpenedFile().size() > MAXRECENTFILES )
-			global.m_project->session()->lastOpenedFile().removeLast();
+		while( XINXProjectManager::self()->project()->session()->lastOpenedFile().size() > MAXRECENTFILES )
+			XINXProjectManager::self()->project()->session()->lastOpenedFile().removeLast();
 	}
 
 	// Load the file in the editor
@@ -1570,27 +1565,27 @@ void MainformImpl::openProject( const QString & filename ) {
 
 	XINX_ASSERT( ! filename.isEmpty() );
 
-	if( global.m_project ) 
+	if( XINXProjectManager::self()->project() ) 
 		d->closeProject();
 	else 
 		closeAllFile();
 		
-	global.m_config->config().project.recentProjectFiles.removeAll( filename );
+	XINXConfig::self()->config().project.recentProjectFiles.removeAll( filename );
 
-	global.m_project = NULL;
+	XINXProjectManager::self()->deleteProject();
 	try {
-		global.m_project      		= new XSLProject( filename );
+		XINXProjectManager::self()->setCurrentProject( new XSLProject( filename ) );
 		d->m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
-		SpecifiqueDialogImpl::setLastPlace( global.m_project->projectPath() );
+		SpecifiqueDialogImpl::setLastPlace( XINXProjectManager::self()->project()->projectPath() );
 
 		updateWebServicesList();
 
-		global.m_config->config().project.recentProjectFiles.prepend( filename );
-		while( global.m_config->config().project.recentProjectFiles.size() > MAXRECENTFILES )
-			global.m_config->config().project.recentProjectFiles.removeLast();
+		XINXConfig::self()->config().project.recentProjectFiles.prepend( filename );
+		while( XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES )
+			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
 		m_tabEditors->setUpdatesEnabled( false );
-		foreach( XSLProjectSessionEditor * data, global.m_project->session()->serializedEditors() ) {
+		foreach( XSLProjectSessionEditor * data, XINXProjectManager::self()->project()->session()->serializedEditors() ) {
 			Editor * editor = Editor::deserializeEditor( data );
 			if( editor )
 				m_tabEditors->newFileEditor( editor );
@@ -1599,19 +1594,16 @@ void MainformImpl::openProject( const QString & filename ) {
 		}
 		m_tabEditors->setUpdatesEnabled( true );
 
-		d->m_projectDock->setProjectPath( global.m_project );
+		d->m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
 
 		d->updateTitle();
 	} catch( XSLProjectException e ) {
-		delete global.m_project;
-		global.m_project = NULL;
+		XINXProjectManager::self()->deleteProject();
 		QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}
 	d->updateActions();
 	d->updateRecentProjects();
 	d->updateRecentFiles();
-	
-	global.emitProjectChanged();
 }
 
 void MainformImpl::closeProjectNoSessionData() {
@@ -1629,20 +1621,20 @@ void MainformImpl::closeProjectWithSessionData() {
 void MainformImpl::saveProject( bool withSessionData ) {
 	XINX_TRACE ( "MainformImpl::saveProject", QString( "( %1 )" ).arg( withSessionData ) );
 
-	XINX_ASSERT( global.m_project );
+	XINX_ASSERT( XINXProjectManager::self()->project() );
 	
-	qDeleteAll( global.m_project->session()->serializedEditors() );
+	qDeleteAll( XINXProjectManager::self()->project()->session()->serializedEditors() );
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		m_tabEditors->editor( i )->serialize( new XSLProjectSessionEditor( global.m_project->session() ), withSessionData );
+		m_tabEditors->editor( i )->serialize( new XSLProjectSessionEditor( XINXProjectManager::self()->project()->session() ), withSessionData );
 	}
-	global.m_project->saveOnlySession();
+	XINXProjectManager::self()->project()->saveOnlySession();
 }
 
 void MainformImpl::callWebservices() {
 	XINX_TRACE ( "MainformImpl::callWebservices", "()" );
 
 	XINX_ASSERT( m_tabEditors->currentEditor() != NULL );
-	XINX_ASSERT( global.m_project );
+	XINX_ASSERT( XINXProjectManager::self()->project() );
 	
 	WebServicesEditor * editor = qobject_cast<WebServicesEditor*>( m_tabEditors->currentEditor() );
 	if( editor ) 
@@ -1652,14 +1644,14 @@ void MainformImpl::callWebservices() {
 void MainformImpl::updateWebServicesList() {
 	XINX_TRACE ( "MainformImpl::updateWebServicesList", "()" );
 
-	bool enabled = global.m_project && ( global.m_project->options().testFlag( XSLProject::hasWebServices ) );
-	qDeleteAll( *(global.m_webServices) );
-	global.m_webServices->clear();
+	bool enabled = XINXProjectManager::self()->project() && ( XINXProjectManager::self()->project()->options().testFlag( XSLProject::hasWebServices ) );
+	qDeleteAll( *(WebServicesManager::self()) );
+	WebServicesManager::self()->clear();
 
 	if( enabled ) {
-		foreach( QString link, global.m_project->serveurWeb() ) {
+		foreach( QString link, XINXProjectManager::self()->project()->serveurWeb() ) {
 			WebServices * ws = new WebServices( link, this );
-			global.m_webServices->append( ws );
+			WebServicesManager::self()->append( ws );
 			ws->askWSDL( this );
 			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), d, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
 		}
@@ -1669,7 +1661,7 @@ void MainformImpl::updateWebServicesList() {
 	m_refreshWebServicesListAct->setEnabled( enabled );
 	m_callWebServicesAct->setEnabled( enabled );
 
-	global.emitWebServicesChanged();
+	WebServicesManager::self()->listUpdated();
 }
 
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
@@ -1683,7 +1675,7 @@ void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 		d->m_rcslogDock->init();
 		d->m_rcsExecute = true;
 		if( list.count() == 0 )
-			rcs->update( QStringList() << global.m_project->projectPath() );
+			rcs->update( QStringList() << XINXProjectManager::self()->project()->projectPath() );
 		else
 			rcs->update( list );
 		d->updateActions();
@@ -1701,10 +1693,10 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		CommitMessageDialogImpl dlg;
 		QStringList listOfFile = list;
 		if( listOfFile.count() == 0 ) 
-			listOfFile << global.m_project->projectPath();
+			listOfFile << XINXProjectManager::self()->project()->projectPath();
 
-		if( global.m_config->config().cvs.createChangelog ) {
-			changeLog = QDir( global.m_project->projectPath() ).absoluteFilePath( "changelog" );
+		if( XINXConfig::self()->config().cvs.createChangelog ) {
+			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
 			listOfFile << changeLog;
 		}
 
@@ -1713,7 +1705,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		if( ! dlg.exec() ) return ;
 		QString message = dlg.messages();
 
-		if( global.m_config->config().cvs.createChangelog ) {
+		if( XINXConfig::self()->config().cvs.createChangelog ) {
 			QFile changeLogFile( changeLog );
 			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
 				QTextStream stream( &changeLogFile );

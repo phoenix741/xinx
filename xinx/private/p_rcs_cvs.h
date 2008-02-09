@@ -23,7 +23,6 @@
 
 // Xinx header
 #include "../rcs_cvs.h"
-#include "../globals.h"
 #include "../xinxconfig.h"
 #include "../cvsfiles.h"
 #include "../xinxthread.h"

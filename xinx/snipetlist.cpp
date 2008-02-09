@@ -21,6 +21,10 @@
 // Xinx header
 #include "private/p_snipetlist.h"
 
+/* Static member */
+
+SnipetList * SnipetList::s_self = 0;
+
 /* SnipetListException */
 
 /*!
@@ -56,8 +60,6 @@ void PrivateSnipetList::snipetPropertyChange() {
 		m_parent->saveToFile();
 }
 
-
-
 /* SnipetList */
 
 /*!
@@ -79,6 +81,15 @@ SnipetList::SnipetList() {
 SnipetList::~SnipetList() {
 	delete d;
 }
+
+SnipetList * SnipetList::self() {
+	if( s_self == 0 ) {
+		s_self = new SnipetList();
+		XINXStaticDeleter::self()->addObject( s_self );
+	}
+	return s_self;
+}
+
 
 /*!
  * Add a snipet to the list.

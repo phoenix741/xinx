@@ -33,7 +33,7 @@ PrivateWebServicesEditor::~PrivateWebServicesEditor() {
 
 void PrivateWebServicesEditor::loadServicesList() {
 	m_servicesList->clear();
-	foreach( WebServices * ed, *(global.m_webServices) ) 
+	foreach( WebServices * ed, *(WebServicesManager::self()) ) 
 		if( ! ed->name().isEmpty() ) 
 			m_servicesList->addItem( QIcon(":/images/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
 
@@ -154,7 +154,7 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : FileEditor( parent, "f
 	
 	m_vbox->insertLayout( 0, hbox );
 	
-	connect( &global, SIGNAL(webServicesChanged()), d, SLOT(webServicesChanged()) );
+	connect( WebServicesManager::self(), SIGNAL(changed()), d, SLOT(webServicesChanged()) );
 	connect( d->m_servicesList, SIGNAL(activated(int)), d, SLOT(webServicesActivated(int)) );
 	connect( d->m_actionList, SIGNAL(activated(int)), d, SLOT(webServicesParamActivated(int)) );
 	connect( d->m_paramList, SIGNAL(activated(int)), d, SLOT(webServicesValueActivated()) );

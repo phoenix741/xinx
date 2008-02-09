@@ -22,6 +22,7 @@
 #define __P_SNIPETLIST_H__
  
 // Xinx header
+#include "xinxcore.h"
 #include "snipetlist.h"
 #include "snipet.h"
 

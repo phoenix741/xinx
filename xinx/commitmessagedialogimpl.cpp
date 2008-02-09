@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "commitmessagedialogimpl.h"
-#include "globals.h"
 #include "xslproject.h"
 #include "exceptions.h"
 
@@ -80,12 +79,12 @@ QString CommitMessageDialogImpl::messages() {
 void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 	XINX_TRACE( "CommitMessageDialogImpl::setFilesOperation", "( files )" );
 
-	XINX_ASSERT( global.m_project != NULL );
+	XINX_ASSERT( XINXProjectManager::self()->project() != NULL );
 	
 	m_fileListWidget->clear();
 	d->m_files = files;
 	foreach( RCS::FileOperation file, d->m_files ) {
-		QString fileName = QDir( global.m_project->projectPath() ).relativeFilePath( file.first );
+		QString fileName = QDir( XINXProjectManager::self()->project()->projectPath() ).relativeFilePath( file.first );
 		switch( file.second ) {
 		case RCS::Commit: 
 			fileName += tr( " ( Commit )" );

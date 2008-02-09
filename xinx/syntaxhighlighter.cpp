@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "syntaxhighlighter.h"
-#include "globals.h"
 #include "xinxpluginsloader.h"
 #include "xinxconfig.h"
 
@@ -30,21 +29,21 @@ SyntaxHighlighter::SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QStr
 	if( config ) 
 		m_config = config;
 	else
-		m_config = global.m_config;
+		m_config = XINXConfig::self();
 }
 
 SyntaxHighlighter::SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextDocument* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_highlighter( highlighter ) {
 	if( config )
 		m_config = config;
 	else
-		m_config = global.m_config;
+		m_config = XINXConfig::self();
 }
 
 SyntaxHighlighter::SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextEdit* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ), m_highlighter( highlighter ) {
 	if( config )
 		m_config = config;
 	else
-		m_config = global.m_config;
+		m_config = XINXConfig::self();
 }
 
 SyntaxHighlighter::~SyntaxHighlighter() {

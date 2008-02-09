@@ -32,10 +32,13 @@
 #include <QPair>
 
 
-class XinxPluginsLoader {
+class XinxPluginsLoader : public QObject {
+	Q_OBJECT
 public:
 	XinxPluginsLoader();
 	~XinxPluginsLoader();
+	
+	static XinxPluginsLoader * self();
 	
 	void loadPlugins();
 	
@@ -82,6 +85,8 @@ private:
 	QHash< QString,IPluginSyntaxHighlighter* > m_directSyntaxPlugins;
 	QHash< QString,IPluginPrettyPrint* > m_directPrettyPlugins;
 	QHash< QString,IPluginExtendedEditor* > m_directExtendedEditorPlugins;
+	
+	static XinxPluginsLoader * s_self;
 };
 
 #endif /*XINXPLUGINSLOADER_H_*/

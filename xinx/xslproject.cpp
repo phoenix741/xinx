@@ -27,13 +27,17 @@
 // Xinx header
 #include "xslproject.h"
 #include "webservices.h"
-#include "globals.h"
+#include "xinxcore.h"
 #include "xinxconfig.h"
 
 #define XINX_PROJECT_VERSION_0 0
 #define XINX_PROJECT_VERSION_1 1
 #define XINX_PROJECT_VERSION_2 2
 #define XINX_PROJECT_VERSION 2
+
+/* Static member */
+
+XINXProjectManager * XINXProjectManager::s_self = 0;
 
 /* XSLProjectException */
 
@@ -239,7 +243,7 @@ PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 	m_searchPathList.append( "langue" );
 	m_indexOfSpecifiquePath = 0;
 
-	m_specifiquePathName = global.m_config->config().project.defaultProjectPathName;
+	m_specifiquePathName = XINXConfig::self()->config().project.defaultProjectPathName;
 	m_projectOptions |= XSLProject::hasSpecifique;
 
 	m_session = new XSLProjectSession();
@@ -430,6 +434,8 @@ void XSLProject::loadFromFile( const QString & filename ) {
 		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 
 	d->m_session->loadFromFile( d->m_fileName + ".session" );
+	
+	emit changed();
 }
 
 void XSLProject::saveToFile( const QString & filename ) {
@@ -490,6 +496,7 @@ XSLProject::ProjectOptions & XSLProject::options() {
 
 void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
 	d->m_projectOptions = options;
+	emit changed();
 }
 	
 XSLProject::enumProjectRCS XSLProject::projectRCS() const {
@@ -498,6 +505,7 @@ XSLProject::enumProjectRCS XSLProject::projectRCS() const {
 
 void XSLProject::setProjectRCS( const XSLProject::enumProjectRCS & value ) {
 	d->m_projectRCS = value;
+	emit changed();
 }
 
 QString XSLProject::projectName() const {
@@ -506,6 +514,7 @@ QString XSLProject::projectName() const {
 
 void XSLProject::setProjectName( const QString & value ) {
 	d->m_projectName = value;	
+	emit changed();
 }
 	
 QString XSLProject::defaultLang() const {
@@ -514,6 +523,7 @@ QString XSLProject::defaultLang() const {
 
 void XSLProject::setDefaultLang( const QString & value ) {
 	d->m_defaultLang = value;
+	emit changed();
 }
 	
 QString XSLProject::defaultNav() const {
@@ -522,6 +532,7 @@ QString XSLProject::defaultNav() const {
 
 void XSLProject::setDefaultNav( const QString & value ) {
 	d->m_defaultNav = value;
+	emit changed();
 }
 	
 QString XSLProject::projectPath() const {
@@ -530,10 +541,12 @@ QString XSLProject::projectPath() const {
 
 void XSLProject::setProjectPath( const QString & value ) {
 	d->m_projectPath = value;
+	emit changed();
 }
 
 void XSLProject::setSpecifiquePathName( const QString & value ) {
 	d->m_specifiquePathName = value;
+	emit changed();
 }
 
 QString XSLProject::specifiquePathName() {
@@ -548,6 +561,7 @@ void XSLProject::setSpecifiquePrefix( const QString & value ) {
 	d->m_specifiquePrefix = value;
 	if( ! d->m_specifiquePrefixes.contains( value ) )
 		d->m_specifiquePrefixes.append( value );
+	emit changed();
 }
 
 QStringList & XSLProject::specifiquePrefixes() {
@@ -588,6 +602,7 @@ QStringList & XSLProject::serveurWeb() {
 
 void XSLProject::setLogProjectDirectory( const QString & value ) {
 	d->m_logProjectDirectory = value;
+	emit changed();
 }
 
 const QString & XSLProject::logProjectDirectory() {
@@ -598,3 +613,39 @@ XSLProjectSession * XSLProject::session() const {
 	return d->m_session;
 }
 
+/* XINXProjectManager */
+
+XINXProjectManager::XINXProjectManager() : m_project(0) {
+	
+}
+
+XINXProjectManager::~XINXProjectManager() {
+	s_self = 0;
+	delete m_project;
+}
+
+XINXProjectManager * XINXProjectManager::self() {
+	if( s_self == 0 ) {
+		s_self = new XINXProjectManager();
+		XINXStaticDeleter::self()->addObject( s_self );
+	}
+	return s_self;
+}
+
+void XINXProjectManager::setCurrentProject( XSLProject * project ) {
+	if( m_project )
+		m_project->disconnect( this );
+	m_project = project;
+	connect( m_project, SIGNAL(changed()), this, SIGNAL(changed()) );
+	emit changed();
+}
+
+XSLProject * XINXProjectManager::project() const {
+	return m_project;
+}
+
+void XINXProjectManager::deleteProject() {
+	delete m_project;
+	m_project = NULL;
+	emit changed();
+}

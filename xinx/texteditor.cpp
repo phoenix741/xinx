@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "texteditor.h"
-#include "globals.h"
 #include "xinxconfig.h"
 #include "exceptions.h"
 
@@ -91,7 +90,7 @@ TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) {
 	m_currentLineColor = QColor( 234, 234, 234 );	
 
     connect( this, SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged()));
-    connect( &global, SIGNAL( configChanged() ), this, SLOT( updateFont() ) );
+    connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateFont() ) );
 
 	setAcceptRichText(false);
 	updateFont();
@@ -101,10 +100,10 @@ TextEditor::~TextEditor() {
 }
 
 void TextEditor::updateFont() {
-	QFont font = global.m_config->config().editor.defaultFormat;
+	QFont font = XINXConfig::self()->config().editor.defaultFormat;
 	QFontMetrics fm( font );
 	setFont( font );
-	setTabStopWidth( fm.width("M") * global.m_config->config().editor.tabulationSize );
+	setTabStopWidth( fm.width("M") * XINXConfig::self()->config().editor.tabulationSize );
 }
 
 int TextEditor::currentColumn() {
@@ -299,14 +298,14 @@ void TextEditor::slotCursorPositionChanged() {
 void TextEditor::paintEvent ( QPaintEvent * event ) {
     QPainter painter( viewport() );
 
-    if ( global.m_config->config().editor.highlightCurrentLine && m_currentLineColor.isValid() )     {
+    if ( XINXConfig::self()->config().editor.highlightCurrentLine && m_currentLineColor.isValid() )     {
         QRect r = cursorRect();
         r.setX( 0 );
         r.setWidth( viewport()->width() );
         painter.fillRect( r, QBrush( m_currentLineColor ) );
     }
 
-	if( global.m_config->config().editor.showTabulationAndSpace )
+	if( XINXConfig::self()->config().editor.showTabulationAndSpace )
 		printWhiteSpaces( painter );
 		
     QTextEdit::paintEvent( event );

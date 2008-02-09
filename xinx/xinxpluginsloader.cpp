@@ -20,11 +20,16 @@
 
 // Xinx header
 #include "xinxpluginsloader.h"
+#include "xinxcore.h"
 
 // Qt header
 #include <QPluginLoader>
 #include <QApplication>
 #include <QDebug>
+
+/* Static member */
+
+XinxPluginsLoader * XinxPluginsLoader::s_self = 0;
 
 /* XinxPluginsLoader */
 
@@ -33,7 +38,15 @@ XinxPluginsLoader::XinxPluginsLoader() {
 }
 
 XinxPluginsLoader::~XinxPluginsLoader() {
-	
+	s_self = NULL;
+}
+
+XinxPluginsLoader * XinxPluginsLoader::self() {
+	if( s_self == 0 ) {
+		s_self = new XinxPluginsLoader();
+		XINXStaticDeleter::self()->addObject( s_self );
+	}
+	return s_self;
 }
 
 const QDir & XinxPluginsLoader::pluginsDir() const {

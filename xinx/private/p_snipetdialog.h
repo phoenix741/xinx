@@ -22,7 +22,6 @@
 #define __P_SNIPETDIALOG_H__
 
 // Xinx header
-#include "globals.h"
 #include "snipetdialog.h"
 #include "snipetlist.h"
 #include "syntaxhighlighter.h"

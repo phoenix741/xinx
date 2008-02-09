@@ -20,7 +20,6 @@
 
 // xinx header
 #include "fileeditor.h"
-#include "globals.h"
 #include "syntaxhighlighter.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
@@ -112,7 +111,7 @@ FileEditor::FileEditor( QWidget *parent, const QString & suffix ) : Editor( pare
 	connect( m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
-    connect( &global, SIGNAL( configChanged() ), this, SLOT( updateHighlighter() ) );
+    connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateHighlighter() ) );
     
     connect( m_view, SIGNAL( cursorPositionChanged() ), this, SLOT( refreshTextHighlighter() ));
 	connect( m_view, SIGNAL( execKeyPressEvent(QKeyEvent*) ), this, SLOT(keyPressEvent(QKeyEvent*)) );
@@ -397,7 +396,7 @@ void FileEditor::keyPressEvent( QKeyEvent * e ) {
 		m_keyTimer->start();
 	}
 	
-	if( ( !m_extendedEditorPlugin.first ) || ( global.m_config->config().editor.completionLevel == 0 ) ) {
+	if( ( !m_extendedEditorPlugin.first ) || ( XINXConfig::self()->config().editor.completionLevel == 0 ) ) {
 		textEdit()->keyPressExecute( e );
 		return;
 	}
@@ -507,7 +506,7 @@ QString FileEditor::getSuffix() const {
 }
 
 QIcon FileEditor::icon() const {
-	QIcon icon = global.m_pluginsLoader->iconOfSuffix( getSuffix() );
+	QIcon icon = XinxPluginsLoader::self()->iconOfSuffix( getSuffix() );
 	if( ! icon.isNull() )
 		return icon;
 	else
@@ -527,9 +526,9 @@ void FileEditor::setSuffix( const QString & suffix ) {
 	if( ( suffix != m_suffix ) && !suffix.isEmpty() ) {
 		clearSuffix();
 		
-		m_syntaxhighlighter = new SyntaxHighlighter( global.m_pluginsLoader->highlighterOfSuffix( suffix ), m_view );
-		m_prettyPrinterPlugin = global.m_pluginsLoader->prettyPrinterOfSuffix( suffix );
-		m_extendedEditorPlugin = global.m_pluginsLoader->extendedEditorOfSuffix( suffix );
+		m_syntaxhighlighter = new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( suffix ), m_view );
+		m_prettyPrinterPlugin = XinxPluginsLoader::self()->prettyPrinterOfSuffix( suffix );
+		m_extendedEditorPlugin = XinxPluginsLoader::self()->extendedEditorOfSuffix( suffix );
 		
 		if( m_extendedEditorPlugin.first ) {
 			m_element = m_extendedEditorPlugin.first->createModelData( m_extendedEditorPlugin.second, this );
@@ -563,7 +562,7 @@ void FileEditor::setFileName( const QString & fileName ) {
 }
 
 void FileEditor::createBackup( const QString & filename ) {
-	if( global.m_config->config().editor.createBackupFile ){
+	if( XINXConfig::self()->config().editor.createBackupFile ){
 		if( QFile::exists( filename + ".bak" ) ) 
 			QFile::remove( filename + ".bak" );
 		QFile::copy( filename, filename + ".bak" );
@@ -594,7 +593,7 @@ void FileEditor::setWatcher( const QString & path ) {
 
 void FileEditor::fileChanged() {
 	if( m_isSaving ) return;
-	if( ! global.m_config->config().editor.popupWhenFileModified ) return ;
+	if( ! XINXConfig::self()->config().editor.popupWhenFileModified ) return ;
 
 	m_watcher->desactivate();
 	if( QFile( m_path ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( m_path ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
@@ -664,7 +663,7 @@ bool FileEditor::saveFile( const QString & fileName ){
 	}
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	
-	if( global.m_config->config().editor.autoindentOnSaving )
+	if( XINXConfig::self()->config().editor.autoindentOnSaving )
 		autoIndent();
 	QTextStream out ( &file );
 	out << m_view->toPlainText();
@@ -758,8 +757,8 @@ FileContentElement * FileEditor::importModelData( FileContentElement * parent, Q
 	if( ! parent->filename().isEmpty() )
 		searchList << QFileInfo( parent->filename() ).absolutePath();
 	
-	if( global.m_project )
-		searchList += global.m_project->processedSearchPathList();
+	if( XINXProjectManager::self()->project() )
+		searchList += XINXProjectManager::self()->project()->processedSearchPathList();
 	
 	foreach( QString path, searchList ) {
 		absPath = QDir( path ).absoluteFilePath( filename );
@@ -772,7 +771,7 @@ FileContentElement * FileEditor::importModelData( FileContentElement * parent, Q
 	if( finded )
 		filename = absPath;
 	
-	QPair<IPluginExtendedEditor*,QString> plugin = global.m_pluginsLoader->extendedEditorOfSuffix( suffix );
+	QPair<IPluginExtendedEditor*,QString> plugin = XinxPluginsLoader::self()->extendedEditorOfSuffix( suffix );
 	if( plugin.first ) {
 		FileContentElement * element = plugin.first->createModelData( plugin.second, this, parent, filename, line );
 		Q_ASSERT( dynamic_cast<FileContentParser*>( element ) );
@@ -790,7 +789,7 @@ FileContentElement * FileEditor::modelData() const {
 }
 
 int FileEditor::level() const {
-	return global.m_config->config().editor.completionLevel;
+	return XINXConfig::self()->config().editor.completionLevel;
 }
 
 QString FileEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord ) {
@@ -869,7 +868,7 @@ void FileEditor::updateHighlighter() {
 }
 
 void FileEditor::refreshTextHighlighter() {
-	if( m_syntaxhighlighter && global.m_config->config().editor.autoHighlight ) 
+	if( m_syntaxhighlighter && XINXConfig::self()->config().editor.autoHighlight ) 
 		m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 

@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "newprojectwizard.h"
-#include "globals.h"
 #include "xinxconfig.h"
 #include "xslproject.h"
 #include "projectpropertyimpl.h"
@@ -122,7 +121,7 @@ ProjectPageImpl::ProjectPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 }
 
 void ProjectPageImpl::initializePage() {
-	m_ASPathEdit->setText( QDir::toNativeSeparators( global.m_config->config().project.defaultPath ) );
+	m_ASPathEdit->setText( QDir::toNativeSeparators( XINXConfig::self()->config().project.defaultPath ) );
 }
 
 int ProjectPageImpl::nextId() const {
@@ -148,15 +147,15 @@ bool ProjectPageImpl::isComplete () const {
 }
 
 void ProjectPageImpl::on_m_ASPathBtn_clicked() {
-	m_ASPathEdit->changePath( this, global.m_config->config().project.defaultPath );
+	m_ASPathEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
 }
 
 void ProjectPageImpl::on_m_logPathBtn_clicked() {
-	m_logPathEdit->changePath( this, global.m_config->config().project.defaultPath );
+	m_logPathEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
 }
 
 void ProjectPageImpl::on_m_projectPathBtn_clicked() {
-	m_projectPathEdit->changePath( this, global.m_config->config().project.defaultPath );
+	m_projectPathEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
 }
 
 void ProjectPageImpl::on_m_projectNameEdit_textChanged( const QString & text ) {
@@ -194,7 +193,7 @@ SpecifiquePageImpl::SpecifiquePageImpl( QWidget * parent ) : QWizardPage( parent
 
 void SpecifiquePageImpl::initializePage() {
 	m_prefixEdit->setText( QString("P%1").arg( field("project.name").toString().left( 2 ) ).toUpper() );
-	m_specifiquePathNameEdit->setText( global.m_config->config().project.defaultProjectPathName );
+	m_specifiquePathNameEdit->setText( XINXConfig::self()->config().project.defaultProjectPathName );
 }
 
 int SpecifiquePageImpl::nextId() const {
