@@ -73,11 +73,11 @@ void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 }
 
 void XinxPluginsLoader::addPlugin( QObject * plugin ) {
-	IPlugin * iPlugin = qobject_cast<IPlugin*>( plugin );
-	if( iPlugin ) {
-		QHash<QString,QString> libelles = iPlugin->extentionsDescription();
+	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
+	if( iFilePlugin ) {
+		QHash<QString,QString> libelles = iFilePlugin->extentionsDescription();
 		
-		foreach( QString extentions, iPlugin->extentions() ) {
+		foreach( QString extentions, iFilePlugin->extentions() ) {
 			QString libelle = libelles[ extentions.section( ' ', 0, 0 ) ];
 			QStringList suffixes = extentions.split( ' ' );
 			
@@ -87,7 +87,7 @@ void XinxPluginsLoader::addPlugin( QObject * plugin ) {
 			
 			foreach( QString suffix, suffixes ) {
 				m_filterIndex[ suffix ] = m_filters.count();
-				m_icons[ suffix ] = iPlugin->icon( suffix );
+				m_icons[ suffix ] = iFilePlugin->icon( suffix );
 
 				addPlugin( suffix, plugin );
 			}
@@ -116,7 +116,8 @@ void XinxPluginsLoader::addPlugin( QObject * plugin ) {
 	if( iExtendedEditor ) {
 		foreach( QString p, iExtendedEditor->extendedEditors() )
 			m_directExtendedEditorPlugins.insert( p.toUpper(), iExtendedEditor );
-	}}
+	}
+}
 
 void XinxPluginsLoader::loadPlugins() {
 	foreach( QObject * plugin, QPluginLoader::staticInstances() )

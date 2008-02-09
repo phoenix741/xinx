@@ -41,10 +41,23 @@ class QTextEdit;
 class QKeyEvent;
 class QCompleter;
 
-class IPlugin {
+class IXinxPlugin {
+public:
+	enum PluginAttribute { PLG_NAME, PLG_DESCRIPTION, PLG_ICON, PLG_AUTHOR, PLG_EMAIL, PLG_WEBSITE, PLG_VERSION, PLG_LICENCE };
+	
+	virtual ~IXinxPlugin() {};
+
+	virtual bool initializePlugin() = 0;
+	
+	virtual QString getPluginAttribute( enum IXinxPlugin::PluginAttribute & attr ) = 0;
+	
+	/// Dialog
+};
+
+class IFilePlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
-	virtual ~IPlugin() {};
+	virtual ~IFilePlugin() {};
 	
 	//! List of extentions that can manage the plugins.
 	virtual QStringList extentions() = 0;
@@ -58,7 +71,7 @@ public:
 /*!
  * This interface represents a plugins. The plugins is used to highlight the text.
  */
-class IPluginSyntaxHighlighter : virtual public IPlugin {
+class IPluginSyntaxHighlighter : virtual public IFilePlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
 	virtual ~IPluginSyntaxHighlighter() {};
@@ -87,7 +100,7 @@ public:
 /*!
  * This interface represents a plugins used to auto-indent text.
  */
-class IPluginPrettyPrint : virtual public IPlugin {
+class IPluginPrettyPrint : virtual public IFilePlugin {
 public:
 	virtual ~IPluginPrettyPrint() {};
 
@@ -102,7 +115,7 @@ public:
 	virtual QString prettyPrint( const QString & plugin, const QString & text, QString * errorStr = NULL, int * line = 0, int * column = 0 ) = 0;
 };
 
-class IPluginExtendedEditor : virtual public IPlugin {
+class IPluginExtendedEditor : virtual public IFilePlugin {
 public:
 	virtual ~IPluginExtendedEditor() {};
 	
@@ -121,7 +134,7 @@ public:
 	virtual QPair<QString,int> searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word ) = 0;
 };
 
-Q_DECLARE_INTERFACE(IPlugin, "org.shadoware.xinx.IPlugin/1.0")
+Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
 Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
 Q_DECLARE_INTERFACE(IPluginPrettyPrint, "org.shadoware.xinx.IPluginPrettyPrint/1.0")
 Q_DECLARE_INTERFACE(IPluginExtendedEditor, "org.shadoware.xinx.IPluginExtendedEditor/1.0")

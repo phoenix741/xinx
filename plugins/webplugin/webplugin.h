@@ -26,7 +26,7 @@
 
 class WebPlugin : public QObject, public IPluginSyntaxHighlighter, public IPluginPrettyPrint, public IPluginExtendedEditor {
 	Q_OBJECT
-	Q_INTERFACES(IPlugin)
+	Q_INTERFACES(IFilePlugin)
 	Q_INTERFACES(IPluginSyntaxHighlighter)
 	Q_INTERFACES(IPluginPrettyPrint)
 	Q_INTERFACES(IPluginExtendedEditor)

@@ -63,7 +63,8 @@ XINXConfig::~XINXConfig() {
 	
 struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
-
+	
+	if( global.m_pluginsLoader )
 	foreach( QString highlighter, global.m_pluginsLoader->highlighterOfPlugins() ) {
 		IPluginSyntaxHighlighter * interface = global.m_pluginsLoader->highlighterOfPlugin( highlighter );
 

@@ -64,9 +64,24 @@ void backup_appli_signal( int signal ) {
 	throw SignalSegFaultException( signal );
 }
 
+void xinxMessageHandler( QtMsgType type, const char * msg ) {
+	switch( type ) {
+	case QtDebugMsg:
+		fprintf( stderr, "Debug: %s\n", msg );
+		break;
+	case QtWarningMsg:
+		QMessageBox::warning( NULL, "Warning", QString("Just a warning to say : %1").arg( msg ) );
+		break;
+	case QtCriticalMsg:
+	case QtFatalMsg:
+		qobject_cast<UniqueApplication*>( qApp )->notifyError( QString( "Fatal : %1" ).arg( msg ), stackTrace[(unsigned long)QThread::currentThreadId()] );
+	}
+}
+
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
-
+	
+	qInstallMsgHandler(xinxMessageHandler);
 	std::signal(SIGSEGV, backup_appli_signal);
 	std::signal(SIGABRT, backup_appli_signal);
 	std::signal(SIGINT, backup_appli_signal);
@@ -85,11 +100,7 @@ int main(int argc, char *argv[]) {
 			splash.show();
 	  		app.processEvents();
 	
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
-			app.processEvents();
-			global.m_pluginsLoader = new XinxPluginsLoader();
-			global.m_pluginsLoader->loadPlugins();
-			
+	  		/* Must load to have traductions in plugins */
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
 			global.m_config = new XINXConfig();
@@ -103,6 +114,16 @@ int main(int argc, char *argv[]) {
 			translator_xinx.load( QString(":/translations/xinx_%1").arg( global.m_config->config().language ) );
 			app.installTranslator(&translator_xinx);
 	
+			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
+			app.processEvents();
+			global.m_pluginsLoader = new XinxPluginsLoader();
+			global.m_pluginsLoader->loadPlugins();
+
+			/* Reload to have options in plugins */
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
+			app.processEvents();
+			global.m_config->load();
+
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
 			global.m_snipetList = new SnipetList();
