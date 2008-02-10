@@ -1,3 +1,6 @@
 TEMPLATE = subdirs
-INCLUDEPATH += libxinx xinx 
-SUBDIRS += libxinx plugins xinx
+INCLUDEPATH += libxinx \
+    xinx
+SUBDIRS += libxinx \
+    plugins \
+    xinx

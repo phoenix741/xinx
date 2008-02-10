@@ -141,7 +141,8 @@ HEADERS += xinxcore.h \
     xinxconfig.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
-    xslproject.h
+    xslproject.h \
+    private/p_customdialogimpl.h
 SOURCES += xinxcore.cpp \
     xinxlistwidgetimpl.cpp \
     plugindialog.cpp \

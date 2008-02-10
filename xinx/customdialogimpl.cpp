@@ -19,37 +19,234 @@
  ***************************************************************************/
 
 // Xinx header
-#include "customdialogimpl.h"
-#include "syntaxhighlighter.h"
 #include "exceptions.h"
 #include "xinxpluginsloader.h"
+#include "private/p_customdialogimpl.h"
 
 // Qt header
 #include <QDir>
 #include <QFileDialog>
+#include <QPainter>
+
+/* ToolsModelIndex */
+
+ToolsModelIndex::ToolsModelIndex( QHash<QString,QString> * tools, QObject * parent ) : QAbstractTableModel( parent ) {
+	m_tools = tools;
+}
+
+ToolsModelIndex::~ToolsModelIndex() {
+	
+}
+
+void ToolsModelIndex::setTools( QHash<QString,QString> * tools ) {
+	emit layoutAboutToBeChanged();
+	m_tools = tools;
+	emit layoutChanged();
+}
+
+int ToolsModelIndex::rowCount( const QModelIndex & parent ) const {
+	Q_UNUSED( parent );
+
+	return m_tools->count();
+}
+
+int ToolsModelIndex::columnCount( const QModelIndex & parent ) const {
+	Q_UNUSED( parent );
+
+	return 2;
+}
+
+bool ToolsModelIndex::setData ( const QModelIndex & index, const QVariant & value, int role ) {
+	if( index.isValid() && ( role == Qt::EditRole ) ) {
+		m_tools->insert( m_tools->keys().at( index.row() ), value.toString() ); 
+		emit dataChanged( index, index );
+		return true;
+	}
+	return false;
+}
+
+QVariant ToolsModelIndex::data( const QModelIndex & index, int role ) const {
+	if( index.isValid() && ( ( role == Qt::DisplayRole ) || ( role == Qt::EditRole ) ) ) {
+		QString key;
+		switch( index.column() ) {
+		case 0:
+			key = m_tools->keys().at( index.row() );
+			return key.at(0).toUpper() + key.mid( 1 );
+		case 1:
+			return m_tools->values().at( index.row() );
+		}
+	}
+		
+	return QVariant();
+}
+
+QVariant ToolsModelIndex::headerData ( int section, Qt::Orientation orientation, int role ) const {
+	if( ( role == Qt::DisplayRole ) && ( orientation == Qt::Horizontal ) )
+		switch( section ) {
+		case 0:
+			return tr( "Tool name" );
+		case 1:
+			return tr( "Tool path" );
+		}
+	return QVariant();
+}
+
+Qt::ItemFlags ToolsModelIndex::flags( const QModelIndex & index ) const {
+	if( index.isValid() && ( index.column() == 1 ) )
+		return QAbstractTableModel::flags( index ) | Qt::ItemIsEditable;
+	return QAbstractTableModel::flags( index );
+}
+
+/* DirectoryEditDelegate */
+
+DirectoryEditDelegate::DirectoryEditDelegate( QObject *parent ) : QItemDelegate( parent ) {
+}
+
+QWidget * DirectoryEditDelegate::createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
+	Q_UNUSED( option );
+	Q_UNUSED( index );
+	DirectoryEdit * editor = new DirectoryEdit( parent );
+    return editor;	
+}
+
+void DirectoryEditDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const {
+    QString value = index.model()->data( index, Qt::EditRole ).toString();
+    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEdit*>( editor );
+    directoryEdit->setText( value );
+}
+
+void DirectoryEditDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const {
+    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEdit*>( editor );
+    QString value = directoryEdit->text();
+
+    model->setData( index, value, Qt::EditRole );	
+}
+
+void DirectoryEditDelegate::updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
+	Q_UNUSED( index );
+	editor->setGeometry( option.rect );
+}
+
+void DirectoryEditDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
+	if( index.column() == 1 ) {
+		QString value = index.model()->data( index, Qt::EditRole ).toString();
+		
+		painter->save();
+		QStyleOptionViewItem o = option;
+		if( ! QFile( value ).exists() ) 
+			o.palette.setColor( QPalette::Text, Qt::red );
+		drawDisplay( painter, o, option.rect, value );
+		painter->restore();
+	} else
+		QItemDelegate::paint( painter, option, index );
+}
+
+/* SpecifiqueModelIndex */
+
+SpecifiqueModelIndex::SpecifiqueModelIndex( QHash<QString,struct_extentions> * extentions, QObject * parent ) : QAbstractTableModel( parent ) {
+	foreach( QString key, XinxPluginsLoader::self()->extentions().keys() ) {
+		m_extentions.insert( key, extentions->value( key ) );
+	}
+}
+
+SpecifiqueModelIndex::~SpecifiqueModelIndex() {
+	
+}
+
+void SpecifiqueModelIndex::setExtentions( QHash<QString,struct_extentions> * extentions ) {
+	emit layoutAboutToBeChanged();
+	m_extentions.clear();
+	foreach( QString key, XinxPluginsLoader::self()->extentions().keys() ) {
+		m_extentions.insert( key, extentions->value( key ) );
+	}
+	emit layoutChanged();
+}
+
+const QHash<QString,struct_extentions> & SpecifiqueModelIndex::extentions() const {
+	return m_extentions;
+}
+
+int SpecifiqueModelIndex::rowCount( const QModelIndex & parent ) const {
+	Q_UNUSED( parent );
+	return m_extentions.count();
+}
+
+int SpecifiqueModelIndex::columnCount( const QModelIndex & parent ) const {
+	Q_UNUSED( parent );
+	return 3;
+}
+
+QVariant SpecifiqueModelIndex::headerData ( int section, Qt::Orientation orientation, int role ) const {
+	if( ( orientation == Qt::Horizontal ) && ( role == Qt::DisplayRole ) )
+		switch( section ) {
+		case 0 :
+			return tr( "File type" );
+		case 1 :
+			return tr( "Can be specifique" );
+		case 2 :
+			return tr( "Sub-directory" );
+		}
+	return QVariant();
+}
+
+bool SpecifiqueModelIndex::setData ( const QModelIndex & index, const QVariant & value, int role ) {
+	if( index.isValid() && ( role == Qt::EditRole ) ) {
+		QString key = m_extentions.keys().at( index.row() );
+		struct_extentions ext = m_extentions.value( key );
+		switch( index.column() ) {
+		case 1:
+			ext.canBeSpecifique = value.toBool();
+			break;
+		case 2:
+			ext.customPath = value.toString();
+			break;
+		}
+		m_extentions.insert( key, ext ); 
+		emit dataChanged( index, index );
+		return true;
+	}
+	return false;
+}
+
+QVariant SpecifiqueModelIndex::data ( const QModelIndex & index, int role ) const {
+	if( index.isValid() && ( role == Qt::DisplayRole ) ) {
+		switch( index.column() ) {
+		case 0 :
+			return XinxPluginsLoader::self()->filter( m_extentions.keys().at( index.row() ) );
+		case 1 :
+			return m_extentions.values().at( index.row() ).canBeSpecifique;
+		case 2 : 
+			return m_extentions.values().at( index.row() ).customPath;
+		}
+	}
+	if( index.isValid() && ( role == Qt::EditRole ) ) {
+		switch( index.column() ) {
+		case 0 :
+			return m_extentions.keys().at( index.row() );
+		case 1 :
+			return m_extentions.values().at( index.row() ).canBeSpecifique;
+		case 2 : 
+			return m_extentions.values().at( index.row() ).customPath;
+		}
+	}
+	
+	return QVariant();
+}
+
+Qt::ItemFlags SpecifiqueModelIndex::flags ( const QModelIndex & index ) const {
+	if( index.isValid() && ( index.column() >= 1 ) )
+		return QAbstractTableModel::flags( index ) | Qt::ItemIsEditable;
+	return QAbstractTableModel::flags( index );
+}
 
 /* PrivateCustomDialogImpl */
-
-class PrivateCustomDialogImpl {
-public:
-	PrivateCustomDialogImpl( CustomDialogImpl * parent );
-
-	XINXConfig m_config;
-	QString m_previousFormat;
-	SyntaxHighlighter * m_highlighter;
-	
-	void showConfig();
-	void storeConfig();
-private:
-	CustomDialogImpl * m_parent;
-};
 
 PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
 	m_highlighter = 0;
 	m_parent = parent;
 }
 
-void PrivateCustomDialogImpl::showConfig() {
+void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Application description path
 	m_parent->m_descriptionPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().descriptions.completion ) );
 
@@ -119,11 +316,12 @@ void PrivateCustomDialogImpl::showConfig() {
 	// Default specifique path name
 	m_parent->m_lineEditDefaultProjectPathName->setText( QDir::toNativeSeparators( m_config.config().project.defaultProjectPathName ) );
 	
-	// CVS Tools
-	m_parent->m_CVSToolsLineEdit->setText( QDir::toNativeSeparators( m_config.config().tools[ "cvs" ] ) );
-	
-	// Diff Tools
-	m_parent->m_mergeToolLineEdit->setText( QDir::toNativeSeparators( m_config.config().tools[ "diff" ] ) );
+	// Tools
+	ToolsModelIndex * toolsModel = new ToolsModelIndex( &(m_config.config().tools), m_parent->m_toolsTable );
+	m_parent->m_toolsTable->setModel( toolsModel );
+	m_parent->m_toolsTable->setItemDelegate( new DirectoryEditDelegate( m_parent->m_toolsTable ) );
+	m_parent->m_toolsTable->resizeColumnsToContents();
+	QObject::connect( toolsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_toolsTable, SLOT(resizeColumnsToContents()) );
 	
 	// CVS: Progress message
 	if( m_config.config().cvs.progressMessages.isEmpty() ) 
@@ -149,18 +347,16 @@ void PrivateCustomDialogImpl::showConfig() {
 
 	// Syntax highlighter
 	m_previousFormat = QString();
-	m_parent->m_formatsListView->clear();
-	foreach( QString key, m_config.config().formats.keys() ) {
-		m_parent->m_formatsListView->addItem( key );
-	}
-	m_parent->m_formatsListView->setCurrentRow( 0 );
+	m_parent->m_highlighterComboBox->clear();
+	m_parent->m_highlighterComboBox->addItems( XinxPluginsLoader::self()->highlighterOfPlugins() );
+	m_parent->m_highlighterComboBox->setCurrentIndex( 0 );
+	m_parent->on_m_highlighterComboBox_activated( m_parent->m_highlighterComboBox->currentText() );
 	
 	// Extentions
-	m_parent->m_extentionsListWidget->clear();
-	foreach( QString key, m_config.config().files.keys() ) {
-		m_parent->m_extentionsListWidget->addItem( XinxPluginsLoader::self()->filter( key ) );
-	}
-	m_parent->m_extentionsListWidget->setCurrentRow( 0 );
+	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex( &(m_config.config().files) , m_parent->m_specifiqueTableView );
+	m_parent->m_specifiqueTableView->setModel( specifiqueModel );
+	m_parent->m_specifiqueTableView->resizeColumnsToContents();
+	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
 }
 
 void PrivateCustomDialogImpl::storeConfig() {
@@ -233,12 +429,6 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Default specifique path name
 	m_config.config().project.defaultProjectPathName = QDir::fromNativeSeparators( m_parent->m_lineEditDefaultProjectPathName->text() );
 
-	// CVS Tools
-	m_config.config().tools[ "cvs" ] = QDir::fromNativeSeparators( m_parent->m_CVSToolsLineEdit->text() );
-	
-	// Diff Tools
-	m_config.config().tools[ "diff" ] = QDir::fromNativeSeparators( m_parent->m_mergeToolLineEdit->text() );
-	
 	// CVS: Progress message
 	switch( m_parent->m_cvsVerboseComboBox->currentIndex() ) {
 	case 2: 
@@ -263,6 +453,11 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// CVS : Create Change Log automatically
 	m_config.config().cvs.createChangelog = m_parent->m_changeLogCheckBox->isChecked();
+	
+	// Extentions
+	SpecifiqueModelIndex * specifiqueModel = qobject_cast<SpecifiqueModelIndex*>( m_parent->m_specifiqueTableView->model() );
+	m_config.config().files.clear();
+	m_config.config().files = specifiqueModel->extentions();
 }
 
 /* CustomDialogImpl */
@@ -292,20 +487,6 @@ void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 	*config = d->m_config;
 }
 
-void CustomDialogImpl::on_m_mergeToolBtn_clicked() {
-	QString value = QFileDialog::getOpenFileName( this, tr("Diff path"), m_mergeToolLineEdit->text() );
-	if( ! value.isEmpty() ) {
-		m_mergeToolLineEdit->setText( value );		
-	}
-}
-
-void CustomDialogImpl::on_m_cvsToolBtn_clicked() {
-	QString value = QFileDialog::getOpenFileName( this, tr("CVS Path"), m_CVSToolsLineEdit->text() );
-	if( ! value.isEmpty() ) {
-		m_CVSToolsLineEdit->setText( value );		
-	}
-}
-
 void CustomDialogImpl::on_m_changeProjectPathBtn_clicked() {
 	m_projectPathLineEdit->changePath( this );
 }
@@ -314,22 +495,35 @@ void CustomDialogImpl::on_m_changeApplicationDescriptionPathBtn_clicked() {
 	m_descriptionPathLineEdit->changePath( this );
 }
 
-void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) {
-	if( currentRow < 0 ) return ;
-	QString token = m_formatsListView->item( currentRow )->text(), format;
-	int posUnderline = token.indexOf( "_" );
-	format = token.left( posUnderline );
+void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
+	m_formatsListView->clear();
+	QStringList filtered = d->m_config.config().formats.keys();
+	filtered = filtered.filter( text, Qt::CaseInsensitive );
+	foreach( QString key, filtered ) {
+		m_formatsListView->addItem( key.remove( text + "_", Qt::CaseInsensitive ) );
+	}
+	m_formatsListView->setCurrentRow( 0 );
+	 
 	// Example
-	if( format != d->m_previousFormat ) {
+	if( text != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
-		IPluginSyntaxHighlighter* plugin = XinxPluginsLoader::self()->highlighterOfPlugin( format );
+		IPluginSyntaxHighlighter* plugin = XinxPluginsLoader::self()->highlighterOfPlugin( text );
 		if( plugin )
-			example = plugin->exampleOfHighlighter( format );
+			example = plugin->exampleOfHighlighter( text );
 		m_exempleTextEdit->setText( example );
-		d->m_highlighter = new SyntaxHighlighter( qMakePair( plugin, format ), m_exempleTextEdit, &(d->m_config) );
+		d->m_highlighter = new SyntaxHighlighter( qMakePair( plugin, text ), m_exempleTextEdit, &(d->m_config) );
 	}
 
+	d->m_previousFormat = text;
+}
+
+void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) {
+	if( currentRow < 0 ) return ;
+	QString format = m_highlighterComboBox->currentText(),
+			token = format + "_" + m_formatsListView->item( currentRow )->text();
+	token = token.toLower();
+	
 	// Bold
 	m_boldCheckBox->setChecked( d->m_config.config().formats[ token ].fontWeight() != QFont::Normal );
 	
@@ -344,78 +538,56 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 	
 	// Color
 	m_colorComboBox->setColor( d->m_config.config().formats[ token ].foreground().color() );
-	
-	d->m_previousFormat = format;
 }
 
 void CustomDialogImpl::on_m_colorComboBox_activated(QColor color) {
-	QString token = m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	QString format = m_highlighterComboBox->currentText(),
+			token = format + "_" + m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	token = token.toLower();
+
 	d->m_config.config().formats[ token ].setForeground( color );
 	if( d->m_highlighter )
 		d->m_highlighter->rehighlight();
 }
 
 void CustomDialogImpl::on_m_boldCheckBox_toggled(bool checked) {
-	QString token = m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	QString format = m_highlighterComboBox->currentText(),
+			token = format + "_" + m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	token = token.toLower();
+
 	d->m_config.config().formats[ token ].setFontWeight( checked ? QFont::Bold : QFont::Normal );
 	if( d->m_highlighter )
 		d->m_highlighter->rehighlight();
 }
 
 void CustomDialogImpl::on_m_italicCheckBox_toggled(bool checked) {
-	QString token = m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	QString format = m_highlighterComboBox->currentText(),
+			token = format + "_" + m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	token = token.toLower();
+
 	d->m_config.config().formats[ token ].setFontItalic( checked );
 	if( d->m_highlighter )
 		d->m_highlighter->rehighlight();
 }
 
 void CustomDialogImpl::on_m_StrikeoutCheckBox_toggled(bool checked) {
-	QString token = m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	QString format = m_highlighterComboBox->currentText(),
+			token = format + "_" + m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	token = token.toLower();
+
 	d->m_config.config().formats[ token ].setFontStrikeOut( checked );
 	if( d->m_highlighter )
 		d->m_highlighter->rehighlight();
 }
 
 void CustomDialogImpl::on_m_underlineCheckBox_toggled(bool checked) {
-	QString token = m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	QString format = m_highlighterComboBox->currentText(),
+			token = format + "_" + m_formatsListView->item( m_formatsListView->currentRow() )->text();
+	token = token.toLower();
+
 	d->m_config.config().formats[ token ].setFontUnderline( checked );
 	if( d->m_highlighter )
 		d->m_highlighter->rehighlight();
-}
-
-void CustomDialogImpl::on_m_extentionsListWidget_currentRowChanged(int currentRow) {
-	if( currentRow < 0 ) return ;
-	QRegExp exp("^.*\\(\\*\\.(.*)\\).*$");
-	QString suffix, currentText = m_extentionsListWidget->item( currentRow )->text();
-	int index = exp.indexIn( currentText );
-
-	if( index >= 0 ) {
-		suffix = exp.cap( 1 );
-		m_canBeSpecifiqueCheckBox->setChecked( d->m_config.config().files[ suffix ].canBeSpecifique );
-		m_subDirectoryLineEdit->setText( QDir::toNativeSeparators( d->m_config.config().files[ suffix ].customPath ) );
-	}
-}
-
-void CustomDialogImpl::on_m_canBeSpecifiqueCheckBox_toggled(bool checked) {
-	QRegExp exp("^.*\\(\\*\\.(.*)\\).*$");
-	QString suffix, currentText = m_extentionsListWidget->item( m_extentionsListWidget->currentRow() )->text();
-	int index = exp.indexIn( currentText );
-
-	if( index >= 0 ) {
-		suffix = exp.cap( 1 );
-		d->m_config.config().files[ suffix ].canBeSpecifique = checked;
-	}
-}
-
-void CustomDialogImpl::on_m_subDirectoryLineEdit_textChanged(QString text) {
-	QRegExp exp("^.*\\(\\*\\.(.*)\\).*$");
-	QString suffix, currentText = m_extentionsListWidget->item( m_extentionsListWidget->currentRow() )->text();
-	int index = exp.indexIn( currentText );
-
-	if( index >= 0 ) {
-		suffix = exp.cap( 1 );
-		d->m_config.config().files[ suffix ].customPath = QDir::fromNativeSeparators( text );
-	}
 }
 
 void CustomDialogImpl::on_m_defaultPushButton_clicked() {
