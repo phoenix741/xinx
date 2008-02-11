@@ -47,7 +47,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2" >
+    <widget class="QGroupBox" name="m_impactedBVGroupBox" >
      <property name="title" >
       <string>&amp;Impacted BusinessView</string>
      </property>
@@ -167,7 +167,7 @@
   <connection>
    <sender>m_specifiqueCheckBox</sender>
    <signal>toggled(bool)</signal>
-   <receiver>groupBox_2</receiver>
+   <receiver>m_impactedBVGroupBox</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
