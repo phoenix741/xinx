@@ -94,7 +94,7 @@ protected:
 	 * This, determine the niveau of the log and send the signal \e log.
 	 */
 	void processLine( const QString & line );
-
+	
 	QProcess * m_process; ///< The CVS process executed.
 	QStringList m_paths; ///< List of path to pass in parameters.
 	bool m_terminate; ///< Determine if we want called \e operationTerminated().

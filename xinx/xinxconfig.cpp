@@ -78,6 +78,13 @@ void XINXConfig::save() {
 	emit changed();
 }
 
+QString XINXConfig::getTools( const QString & tool ) {
+	QString t = config().tools.value( tool );
+	if( ! QFile( t ).exists() )
+		throw ToolsNotDefinedException( t );
+	return t;
+}
+
 XINXConfig * XINXConfig::self() {
 	if( s_self == 0 ) {
 		s_self = new XINXConfig();

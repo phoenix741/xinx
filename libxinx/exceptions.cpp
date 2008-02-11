@@ -95,3 +95,8 @@ XinxAssertException::XinxAssertException( const char *assertion, const char *fil
 	XINX_TRACE( "XinxAssertException", QString( "(%1, %2, %3)" ).arg( assertion ).arg( file ).arg( line ) );
 }
 
+/* ToolsNotDefinedException */
+
+ToolsNotDefinedException::ToolsNotDefinedException( const QString & tool ) : XinxException( QString( "Tool %1 not correctly defined." ).arg( tool ) ) {
+	
+}

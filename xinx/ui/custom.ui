@@ -760,13 +760,13 @@ p, li { white-space: pre-wrap; }
         <widget class="QListWidget" name="m_formatsListView" >
          <property name="minimumSize" >
           <size>
-           <width>175</width>
+           <width>125</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize" >
           <size>
-           <width>175</width>
+           <width>125</width>
            <height>16777215</height>
           </size>
          </property>

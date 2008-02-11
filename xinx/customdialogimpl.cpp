@@ -66,12 +66,22 @@ bool ToolsModelIndex::setData ( const QModelIndex & index, const QVariant & valu
 }
 
 QVariant ToolsModelIndex::data( const QModelIndex & index, int role ) const {
-	if( index.isValid() && ( ( role == Qt::DisplayRole ) || ( role == Qt::EditRole ) ) ) {
+	if( ! index.isValid() ) return QVariant();
+	if( role == Qt::DisplayRole ) {
 		QString key;
 		switch( index.column() ) {
 		case 0:
 			key = m_tools->keys().at( index.row() );
 			return key.at(0).toUpper() + key.mid( 1 );
+		case 1:
+			return QDir::toNativeSeparators( m_tools->values().at( index.row() ) );
+		}
+	} else
+	if( role == Qt::EditRole ) {
+		QString key;
+		switch( index.column() ) {
+		case 0:
+			return m_tools->keys().at( index.row() );
 		case 1:
 			return m_tools->values().at( index.row() );
 		}
@@ -112,14 +122,14 @@ QWidget * DirectoryEditDelegate::createEditor( QWidget *parent, const QStyleOpti
 void DirectoryEditDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const {
     QString value = index.model()->data( index, Qt::EditRole ).toString();
     DirectoryEdit * directoryEdit = qobject_cast<DirectoryEdit*>( editor );
-    directoryEdit->setText( value );
+    directoryEdit->setText( QDir::toNativeSeparators( value ) );
 }
 
 void DirectoryEditDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const {
     DirectoryEdit * directoryEdit = qobject_cast<DirectoryEdit*>( editor );
     QString value = directoryEdit->text();
 
-    model->setData( index, value, Qt::EditRole );	
+    model->setData( index, QDir::fromNativeSeparators( value ), Qt::EditRole );	
 }
 
 void DirectoryEditDelegate::updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const {

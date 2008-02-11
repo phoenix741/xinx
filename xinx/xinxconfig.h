@@ -33,8 +33,8 @@ public:
 	virtual ~XINXConfig();
 	
 	static XINXConfig * self();
-
 	virtual void save();
+	QString getTools( const QString & tool );
 
 	XINXConfig& operator=(const XINXConfig& p);
 signals:

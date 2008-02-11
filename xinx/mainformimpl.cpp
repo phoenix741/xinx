@@ -991,13 +991,17 @@ void PrivateMainformImpl::rcsLogTerminated() {
 	XINX_ASSERT( m_projectDock->rcs() );
 	
 	if( ! m_headContent.isEmpty() ) {
-		QTemporaryFile headContentFile;
-		if( headContentFile.open() ) {
-			QTextStream out(&headContentFile);
-			out << m_headContent;
+		try {
+			QTemporaryFile headContentFile;
+			if( headContentFile.open() ) {
+				QTextStream out(&headContentFile);
+				out << m_headContent;
+			}
+			QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << m_compareFileName << headContentFile.fileName() );
+			m_headContent = QString();
+		} catch( ToolsNotDefinedException e ) {
+			QMessageBox::warning( m_parent, tr( "Tools" ), e.getMessage() );
 		}
-		QProcess::execute( XINXConfig::self()->config().tools["diff"], QStringList() << m_compareFileName << headContentFile.fileName() );
-		m_headContent = QString();
 	}
 
 	m_rcsExecute = false;
@@ -1013,37 +1017,45 @@ void PrivateMainformImpl::rcsLogTerminated() {
 void PrivateMainformImpl::selectedCompareWithStd() {
 	XINX_TRACE( "PrivateMainformImpl::selectedCompareWithStd", "()" );
 
-	QStringList list = m_projectDock->selectedFiles();
-	XINX_ASSERT( list.size() == 1 && XINXProjectManager::self()->project() );
+	try {
+		QStringList list = m_projectDock->selectedFiles();
+		XINX_ASSERT( list.size() == 1 && XINXProjectManager::self()->project() );
+		
+		QString customFilename = list.at( 0 ), stdFilename, path, filename;
+		
+		path = QFileInfo( customFilename ).absolutePath();
+		filename = QFileInfo( customFilename ).fileName();
+		
+		foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
+			if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
+				filename.remove( 0, prefix.size() + 1 );
+				stdFilename = QDir( path ).absoluteFilePath( filename );
 	
-	QString customFilename = list.at( 0 ), stdFilename, path, filename;
-	
-	path = QFileInfo( customFilename ).absolutePath();
-	filename = QFileInfo( customFilename ).fileName();
-	
-	foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
-		if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
-			filename.remove( 0, prefix.size() + 1 );
-			stdFilename = QDir( path ).absoluteFilePath( filename );
-
-			if( QFileInfo( stdFilename ).exists() )
-				QProcess::execute( XINXConfig::self()->config().tools["diff"], QStringList() << customFilename << stdFilename );
-			else 
-				QMessageBox::information( m_parent, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
-			
-			return;
+				if( QFileInfo( stdFilename ).exists() )
+					QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << customFilename << stdFilename );
+				else 
+					QMessageBox::information( m_parent, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
+				
+				return;
+			}
 		}
+		
+		QMessageBox::information( m_parent, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
+	} catch( ToolsNotDefinedException e ) {
+		QMessageBox::warning( m_parent, tr( "Tools" ), e.getMessage() );
 	}
-	
-	QMessageBox::information( m_parent, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
 }
 
 void PrivateMainformImpl::selectedCompare() {
 	XINX_TRACE( "PrivateMainformImpl::selectedCompare", "()" );
 
-	QStringList list = m_projectDock->selectedFiles();
-	XINX_ASSERT( list.size() == 2 );
-	QProcess::execute( XINXConfig::self()->config().tools["diff"], QStringList() << list.at( 0 ) << list.at( 1 ) );
+	try {
+		QStringList list = m_projectDock->selectedFiles();
+		XINX_ASSERT( list.size() == 2 );
+		QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << list.at( 0 ) << list.at( 1 ) );
+	} catch( ToolsNotDefinedException e ) {
+		QMessageBox::warning( m_parent, tr( "Tools" ), e.getMessage() );
+	}
 }
 
 

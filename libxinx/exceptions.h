@@ -48,6 +48,11 @@ public:
 	XinxAssertException( const char *assertion, const char *file, int line );
 };
 
+class ToolsNotDefinedException : public XinxException {
+public:
+	ToolsNotDefinedException( const QString & tool );
+};
+
 #if !defined( XINX_ASSERT )
 #  ifndef QT_NO_DEBUG
 #    define XINX_ASSERT(cond) do{if(!(cond)) throw XinxAssertException(#cond,__FILE__,__LINE__);} while (0)

@@ -68,7 +68,7 @@ void xinxMessageHandler( QtMsgType type, const char * msg ) {
 		fprintf( stderr, "Debug: %s\n", msg );
 		break;
 	case QtWarningMsg:
-		QMessageBox::warning( NULL, "Warning", QString("Just a warning to say : %1").arg( msg ) );
+		fprintf( stderr, "Warning: %s\n", msg );
 		break;
 	case QtCriticalMsg:
 	case QtFatalMsg:
