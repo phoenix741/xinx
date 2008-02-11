@@ -258,7 +258,7 @@ PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
 
 void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Application description path
-	m_parent->m_descriptionPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().descriptions.completion ) );
+	m_parent->m_descriptionPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().descriptions.datas ) );
 
 	// Language
 	m_parent->m_langComboBox->setCurrentIndex( 0 );
@@ -371,7 +371,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 void PrivateCustomDialogImpl::storeConfig() {
 	// Application description path
-	m_config.config().descriptions.completion = QDir::fromNativeSeparators( m_parent->m_descriptionPathLineEdit->text() );
+	m_config.setXinxDataFiles( QDir::fromNativeSeparators( m_parent->m_descriptionPathLineEdit->text() ) );
 	
 	// Language
 	QRegExp exp("^\\((.*)\\).*$");

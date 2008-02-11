@@ -48,12 +48,12 @@ public:
 	virtual ~IXinxPlugin() {};
 
 	virtual bool initializePlugin() = 0;
-	virtual QString getPluginAttribute( enum IXinxPlugin::PluginAttribute & attr ) = 0;
+//	virtual QString getPluginAttribute( enum IXinxPlugin::PluginAttribute & attr ) = 0;
 	
 	/* TODO: Pour la boite de dialogue, il faudra utiliser un objet spécialisé qui sait faire load an save */
 };
 
-class IFilePlugin {
+class IFilePlugin : public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
 	virtual ~IFilePlugin() {};
@@ -133,6 +133,7 @@ public:
 	virtual QPair<QString,int> searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word ) = 0;
 };
 
+Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0")
 Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
 Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
 Q_DECLARE_INTERFACE(IPluginPrettyPrint, "org.shadoware.xinx.IPluginPrettyPrint/1.0")

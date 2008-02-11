@@ -7,8 +7,7 @@
 		<value name="Can Be Specifique" type="bool" default="yes"/>
 	</type>
 	<type name="Descriptions">
-		<value name="Object" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
-		<value name="Completion" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
+		<value name="Datas" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
 	</type>
 	<type name="Project">
 		<value name="Save With Session By Default" type="bool" default="no"/>

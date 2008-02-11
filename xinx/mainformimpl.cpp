@@ -665,7 +665,7 @@ void PrivateMainformImpl::customize() {
 		XINXConfig::self()->save();
 
 		try {
-			SnipetList::self()->loadFromFile( QDir( XINXConfig::self()->config().descriptions.completion ).filePath( "template.xnx" ) );
+			SnipetList::self()->loadFromFile( "datas:template.xnx" );
 		} catch( SnipetListException ) {
 			QMessageBox::warning( m_parent, tr("Load snipet"), tr("Can't load snipet file.") );
 		}

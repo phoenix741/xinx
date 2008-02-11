@@ -72,6 +72,12 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p) {
 	return *this;
 }
 
+void XINXConfig::load() {
+	AppSettings::load();
+	
+	setXinxDataFiles( config().descriptions.datas );
+}
+
 void XINXConfig::save() {
 	AppSettings::save();
 	
@@ -83,6 +89,11 @@ QString XINXConfig::getTools( const QString & tool ) {
 	if( ! QFile( t ).exists() )
 		throw ToolsNotDefinedException( t );
 	return t;
+}
+
+void XINXConfig::setXinxDataFiles( const QString & path ) {
+	config().descriptions.datas = path;
+	QDir::setSearchPaths( "datas", QStringList() << path );
 }
 
 XINXConfig * XINXConfig::self() {

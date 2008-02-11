@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
 			app.processEvents();
 			try {
-				SnipetList::self()->loadFromFile( QDir( XINXConfig::self()->config().descriptions.completion ).filePath( "template.xnx" ) );
+				SnipetList::self()->loadFromFile( "datas:template.xnx" );
 			} catch( SnipetListException ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();

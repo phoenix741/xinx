@@ -62,13 +62,15 @@ static const QColor DEFAULT_STRING			= Qt::red;
 
 WebPlugin::WebPlugin() {
 	Q_INIT_RESOURCE(webplugin);
+}
 
+bool WebPlugin::initializePlugin() {
 	webplugin_js::init();
 	webplugin_css::init();
 	
 	xmlCompletionContents = new CompletionXML();
 	try {
-		xmlCompletionContents->setPath( QDir( QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" )  ).filePath( "baseplugin_xml.xml" ) );
+		xmlCompletionContents->setPath( "datas:baseplugin_xml.xml" );
 	} catch( NotCompletionFileException ) {
 	}
 }

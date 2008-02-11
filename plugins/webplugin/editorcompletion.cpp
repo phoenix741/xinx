@@ -22,9 +22,10 @@
 #include "editorcompletion.h"
 
 // Qt header
+#include <QDir>
 #include <QDomElement>
 #include <QFile>
-#include <QMessageBox>
+#include <QDebug>
 #include <QApplication>
 
 /* Variables */
@@ -48,10 +49,11 @@ void CompletionXML::load() {
   
 	// Open the file
 	if ( !file.open( QFile::ReadOnly | QFile::Text ) ) {
-/*QMessageBox::warning( 
+		qDebug() << QString("Cannot read file %1 (%3):\n%2.").arg( m_name ).arg( file.errorString() ).arg( QDir::searchPaths( "datas" ).join( ";" ) ); 
+		/*QMessageBox::warning( 
 			NULL, 
 			QApplication::translate("Completion", "Completion"), 
-			QApplication::translate("Completion", "Cannot read file %1:\n%2.").arg( m_name ).arg( file.errorString() ) );*/
+			QApplication::translate("Completion", "Cannot read file %1 (%3):\n%2.").arg( m_name ).arg( file.errorString() ).arg( QDir::searchPaths( "datas" ).join( ";" ) ) );*/
 		throw NotCompletionFileException( QApplication::translate("Completion", "Can't open or read the file %1.").arg( m_name ) );
 	}
 
@@ -60,13 +62,13 @@ void CompletionXML::load() {
 	int errorLine;
 	int errorColumn;  
 	if ( !objectFile.setContent(&file, false, &errorStr, &errorLine, &errorColumn) ) {
-		QMessageBox::information(
+		/*QMessageBox::information(
 			qApp->activeWindow(), 
 			QApplication::translate("Completion", "Completion"), 
 			QApplication::translate("Completion", "Parse error at line %1, column %2:\n%3")
 				.arg(errorLine)
 				.arg(errorColumn)
-				.arg(errorStr) );
+				.arg(errorStr) );*/
 		throw NotCompletionFileException( QApplication::translate("Completion", "Can't parse the file %1.").arg( m_name ) );
 	}  
   

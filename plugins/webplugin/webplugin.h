@@ -26,6 +26,7 @@
 
 class WebPlugin : public QObject, public IPluginSyntaxHighlighter, public IPluginPrettyPrint, public IPluginExtendedEditor {
 	Q_OBJECT
+	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IFilePlugin)
 	Q_INTERFACES(IPluginSyntaxHighlighter)
 	Q_INTERFACES(IPluginPrettyPrint)
@@ -33,6 +34,8 @@ class WebPlugin : public QObject, public IPluginSyntaxHighlighter, public IPlugi
 public:
 	WebPlugin();
 	
+	virtual bool initializePlugin();
+
 	virtual QStringList extentions();
 	virtual QHash<QString,QString> extentionsDescription();
 	virtual QIcon icon( const QString & extention );

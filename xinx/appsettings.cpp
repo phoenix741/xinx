@@ -247,8 +247,7 @@ void AppSettings::setSettingsProject( QSettings * settings, const QString & path
 struct_descriptions AppSettings::getDefaultDescriptions() {
 	struct_descriptions value;
 
-	value.object = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
-	value.completion = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
+	value.datas = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
 
 	return value;
 }
@@ -257,8 +256,7 @@ struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, 
 	struct_descriptions value;
 	settings->beginGroup( path );
 
-	value.object = settings->value( "Object", defaultValue.object ).toString();
-	value.completion = settings->value( "Completion", defaultValue.completion ).toString();
+	value.datas = settings->value( "Datas", defaultValue.datas ).toString();
 
 	settings->endGroup();
 	return value;
@@ -267,8 +265,7 @@ struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, 
 void AppSettings::setSettingsDescriptions( QSettings * settings, const QString & path, struct_descriptions value ) {
 	settings->beginGroup( path );
 
-	settings->setValue( "Object", value.object );
-	settings->setValue( "Completion", value.completion );
+	settings->setValue( "Datas", value.datas );
 
 	settings->endGroup();
 }

@@ -33,7 +33,10 @@ public:
 	virtual ~XINXConfig();
 	
 	static XINXConfig * self();
+	virtual void load();
 	virtual void save();
+
+	void setXinxDataFiles( const QString & path );
 	QString getTools( const QString & tool );
 
 	XINXConfig& operator=(const XINXConfig& p);

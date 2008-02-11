@@ -58,8 +58,7 @@ struct struct_project {
 };
 
 struct struct_descriptions {
-	QString object;
-	QString completion;
+	QString datas;
 };
 
 struct struct_extentions {

@@ -88,6 +88,8 @@ void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 void XinxPluginsLoader::addPlugin( QObject * plugin ) {
 	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
 	if( iFilePlugin ) {
+		iFilePlugin->initializePlugin();
+		
 		QHash<QString,QString> libelles = iFilePlugin->extentionsDescription();
 		
 		foreach( QString extentions, iFilePlugin->extentions() ) {
