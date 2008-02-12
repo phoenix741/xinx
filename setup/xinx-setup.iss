@@ -1,5 +1,5 @@
 #define AppName "XINX"
-#define AppVersion GetFileVersion("..\bin\xinx.exe")
+#define AppVersion GetFileVersion("..\xinx\xinx.exe")
 #define QTDIR GetEnv("QTDIR")
 #define QtVersion GetFileVersion( GetEnv("QTDIR") + "\bin\QtCore4.dll" );
 
@@ -41,22 +41,21 @@ Name: remplace_template; Description: Replace template.xnx file; GroupDescriptio
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
-Source: ..\bin\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
-Source: ..\bin\plugins\libwebplugin.dll; DestDir: {app}\plugins; Components: webplugin; Flags: replacesameversion
+Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
-Source: ..\xml\webplugin_xml.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\webplugin_xml.xml'); DestName: webplugin_xml.xml.new
-Source: ..\xml\webplugin_js.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\webplugin_js.xml'); DestName: webplugin_js.xml.new
-Source: ..\xml\webplugin_css.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\webplugin_css.xml'); DestName: webplugin_css.xml.new
-Source: ..\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template; AfterInstall: MergeFile('{app}\xml\template.xnx'); DestName: template.xnx.new
+Source: ..\xinx\xml\baseplugin_xml.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\baseplugin_xml.xml'); DestName: baseplugin_xml.xml.new; Flags: skipifsourcedoesntexist
+Source: ..\xinx\xml\baseplugin_js.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\baseplugin_js.xml'); DestName: baseplugin_js.xml.new; Flags: skipifsourcedoesntexist
+Source: ..\xinx\xml\baseplugin_css.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_completion; AfterInstall: MergeFile('{app}\xml\baseplugin_css.xml'); DestName: baseplugin_css.xml.new; Flags: skipifsourcedoesntexist; Languages: 
+Source: ..\xinx\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template; AfterInstall: MergeFile('{app}\xml\template.xnx'); DestName: template.xnx.new
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
-Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete; Components: dbus qt
-Source: dbus-pre-1.0.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
+Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete skipifsourcedoesntexist; Components: dbus qt
+Source: dbus-pre-1.0.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
@@ -197,7 +196,7 @@ end;
 procedure MergeFile( Param: String );
 var SizeOld, SizeNew, ResultCode: Integer;
     WinMergeApp, Exp: String;
-    Diff : bool
+    Diff : bool;
 begin
   Diff  := False;
   Exp := ExpandConstant( Param );
@@ -210,7 +209,7 @@ begin
   FileCopy( Exp, Exp + '.old', False );
   FileCopy( Exp + '.new', Exp, False );
 
-  if( Diff ) the begin
+  if( Diff ) then begin
 	WinMergeApp := GetWinmergePath( '' );
 	Exec( WinMergeApp, '"' + Exp + '" "' + Exp + '.old"', '', SW_SHOW, ewWaitUntilTerminated, ResultCode );
   end;
