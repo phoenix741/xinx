@@ -139,7 +139,7 @@ void DirectoryEditDelegate::updateEditorGeometry( QWidget *editor, const QStyleO
 
 void DirectoryEditDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
 	if( index.column() == 1 ) {
-		QString value = index.model()->data( index, Qt::EditRole ).toString();
+		QString value = index.model()->data( index, Qt::DisplayRole ).toString();
 		
 		painter->save();
 		QStyleOptionViewItem o = option;
