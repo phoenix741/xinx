@@ -532,12 +532,12 @@ void FileEditor::setSuffix( const QString & suffix ) {
 		
 		if( m_extendedEditorPlugin.first ) {
 			m_element = m_extendedEditorPlugin.first->createModelData( m_extendedEditorPlugin.second, this );
-			m_extendedEditorPlugin.first->createCompleter( m_extendedEditorPlugin.second, this );
 			if( m_element ) {
 				m_model = new FileContentItemModel( m_element, this );
 				Q_ASSERT( dynamic_cast<FileContentParser*>( m_element ) );
 				dynamic_cast<FileContentParser*>( m_element )->loadFromContent( textEdit()->toPlainText() );
 			}
+			m_extendedEditorPlugin.first->createCompleter( m_extendedEditorPlugin.second, this );
 		} 
 
 		m_suffix = suffix;
@@ -627,22 +627,23 @@ void FileEditor::setIsSaving( bool value ) {
 }
 
 void FileEditor::loadFile( const QString & fileName ){
-	if( ! fileName.isEmpty() ) setFileName( fileName );
-
-	QFile file( getFileName() );
+	QString f = fileName.isEmpty() ? getFileName() : fileName;
+	
+	QFile file( f );
 	if ( ! file.open( QFile::ReadOnly | QFile::Text ) ) {
 		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot read file %1:\n%2." )
-																.arg( getFileName() )
+																.arg( f )
 																.arg( file.errorString() ) );
 		return;
 	}
 
-
 	QTextStream in( &file );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	m_view->setPlainText( in.readAll() );
-	updateModel();
+
+	//updateModel();
 	
+	if( ! fileName.isEmpty() ) setFileName( fileName );
 	setModified( false );
 	QApplication::restoreOverrideCursor();
 }
@@ -706,7 +707,6 @@ void FileEditor::deserialize( XSLProjectSessionEditor * data ) {
 	Editor::deserialize( data );
 	
 	m_fileName = data->readProperty( "FileName" ).toString();
-	setSuffix( QFileInfo( m_fileName ).suffix() );
 
 	position  = data->readProperty( "Position" ) .toInt();
 	isModified = data->readProperty( "Modified" ).toBool();
@@ -721,8 +721,8 @@ void FileEditor::deserialize( XSLProjectSessionEditor * data ) {
 		m_view->setPlainText( text );
 		setModified( isModified );
 
+		setSuffix( QFileInfo( m_fileName ).suffix() );
 		setWatcher( m_fileName );
-		updateModel();
 	} else {
 		if( ! m_fileName.isEmpty() )
 			loadFile( m_fileName );
