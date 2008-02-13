@@ -886,7 +886,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QWidget" name="m_modules" >
       <layout class="QGridLayout" >
        <item row="0" column="0" >
-        <widget class="QListView" name="m_pluginListView" />
+        <widget class="XinxPluginSelector" name="m_pluginListView" />
        </item>
       </layout>
      </widget>
@@ -948,6 +948,11 @@ p, li { white-space: pre-wrap; }
    <class>KColorCombo</class>
    <extends>QComboBox</extends>
    <header>kcolorcombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XinxPluginSelector</class>
+   <extends>QListView</extends>
+   <header>xinxpluginselector.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

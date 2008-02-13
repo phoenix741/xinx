@@ -10,7 +10,8 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../xinx/ \
-    ../libxinx
+    ../libxinx \
+    ../components
 CONFIG += debug \
     exceptions \
     qdbus \
@@ -21,18 +22,23 @@ CONFIG += debug \
 QT += network \
     xml
 LIBS = -L../plugins/webplugin \
-    -L../libxinx
+    -L../libxinx \
+    -L../components
 win32:CONFIG(debug) { 
     LIBS += -lsharedxinxd \
+        -lxinxcmp \
         -lwebplugind
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
-        ../libxinx/libsharedxinxd.a
+        ../libxinx/libsharedxinxd.a \
+        ../components/libxinxcmp.a
 }
 else { 
     LIBS += -lsharedxinx \
-        -lwebplugin
+        -lxinxcmp \
+        -lwebplugin 
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
-        ../libxinx/libsharedxinx.a
+        ../libxinx/libsharedxinx.a \
+        ../components/libxinxcmp.a
 }
 win32:RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
@@ -88,7 +94,6 @@ HEADERS += xinxcore.h \
     customdialogimpl.h \
     cvsfiles.h \
     cvsthread.h \
-    directoryedit.h \
     dirrcsmodel.h \
     editor.h \
     filecontentdockwidget.h \
@@ -97,7 +102,6 @@ HEADERS += xinxcore.h \
     filewatcher.h \
     flattreeview.h \
     iconprojectprovider.h \
-    kcolorcombo.h \
     mainformimpl.h \
     numberbar.h \
     newprojectwizard.h \
@@ -156,7 +160,6 @@ SOURCES += xinxcore.cpp \
     customdialogimpl.cpp \
     cvsfiles.cpp \
     cvsthread.cpp \
-    directoryedit.cpp \
     dirrcsmodel.cpp \
     editor.cpp \
     filecontentdockwidget.cpp \
@@ -165,7 +168,6 @@ SOURCES += xinxcore.cpp \
     filewatcher.cpp \
     flattreeview.cpp \
     iconprojectprovider.cpp \
-    kcolorcombo.cpp \
     main.cpp \
     mainformimpl.cpp \
     numberbar.cpp \
