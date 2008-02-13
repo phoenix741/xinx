@@ -44,6 +44,7 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 	
 	initXmlPresentationCombo();
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(initXmlPresentationCombo()) );
+	connect( m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
 	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
 	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
@@ -63,8 +64,11 @@ void PrivateXmlPresentationDockWidget::adaptColumns() {
 
 
 void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
+	int index;
+	QString filename = m_openingFile;
+	
+	m_xmlPresentationWidget->m_presentationComboBox->blockSignals( true );
 	m_xmlPresentationWidget->m_presentationComboBox->clear();
-	presentationActivated( 0 );
 	
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<No presentation file>") );
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<Choose an XML file ...>") );
@@ -74,11 +78,24 @@ void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 		QDir logDir( m_logPath );
 		if( logDir.exists() ) {
 			QStringList files = logDir.entryList( QStringList() << "Presentation_*.xml", QDir::Files | QDir::Readable );
-			foreach( QString file, files ) {
+			foreach( QString file, files ) 
 				m_xmlPresentationWidget->m_presentationComboBox->addItem( file );
-			}
 		}
 	}
+	
+	if( filename.isEmpty() ) {
+		m_xmlPresentationWidget->m_presentationComboBox->blockSignals( false );
+		presentationActivated( 0 );
+		return;
+	}
+
+	if( ( index = m_xmlPresentationWidget->m_presentationComboBox->findText( QFileInfo( filename ).fileName() ) ) >= 0 ) {
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( index );
+	} else if( QFileInfo( filename ).exists() ) {
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 1 );
+	} else
+		presentationActivated( 0 );
+	m_xmlPresentationWidget->m_presentationComboBox->blockSignals( false );
 }
 
 void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
