@@ -26,7 +26,7 @@ LIBS = -L../plugins/webplugin \
     -L../components
 win32:CONFIG(debug) { 
     LIBS += -lsharedxinxd \
-        -lxinxcmp \
+        -lxinxcmpd \
         -lwebplugind
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
         ../libxinx/libsharedxinxd.a \
