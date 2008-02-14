@@ -533,9 +533,14 @@ void FileEditor::setSuffix( const QString & suffix ) {
 		if( m_extendedEditorPlugin.first ) {
 			m_element = m_extendedEditorPlugin.first->createModelData( m_extendedEditorPlugin.second, this );
 			if( m_element ) {
-				m_model = new FileContentItemModel( m_element, this );
-				Q_ASSERT( dynamic_cast<FileContentParser*>( m_element ) );
-				dynamic_cast<FileContentParser*>( m_element )->loadFromContent( textEdit()->toPlainText() );
+				try {
+					m_model = new FileContentItemModel( m_element, this );
+					Q_ASSERT( dynamic_cast<FileContentParser*>( m_element ) );
+					dynamic_cast<FileContentParser*>( m_element )->loadFromContent( textEdit()->toPlainText() );
+					setMessage("");
+				} catch( FileContentException e ) {
+					setMessage( tr("%1 at %2").arg( e.getMessage() ).arg( e.getLine() ) );
+				}
 			}
 			m_extendedEditorPlugin.first->createCompleter( m_extendedEditorPlugin.second, this );
 		} 

@@ -992,12 +992,12 @@ void PrivateMainformImpl::rcsLogTerminated() {
 	
 	if( ! m_headContent.isEmpty() ) {
 		try {
-			QTemporaryFile headContentFile;
-			if( headContentFile.open() ) {
-				QTextStream out(&headContentFile);
+			QTemporaryFile * headContentFile = new QTemporaryFile( m_parent ); // Delete when the main windows is destroyed
+			if( headContentFile->open() ) {
+				QTextStream out(headContentFile);
 				out << m_headContent;
 			}
-			QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << m_compareFileName << headContentFile.fileName() );
+			QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << m_compareFileName << headContentFile->fileName() );
 			m_headContent = QString();
 		} catch( ToolsNotDefinedException e ) {
 			QMessageBox::warning( m_parent, tr( "Tools" ), e.getMessage() );

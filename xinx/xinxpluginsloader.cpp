@@ -139,7 +139,7 @@ void XinxPluginsLoader::loadPlugins() {
 		addPlugin( plugin );
 	
 	m_pluginsDir = QDir( qApp->applicationDirPath() );
-	m_pluginsDir.cd( "plugins" );
+	m_pluginsDir.cd( "../plugins" );
 	
     foreach( QString fileName, m_pluginsDir.entryList( QDir::Files ) ) {
         QPluginLoader loader( m_pluginsDir.absoluteFilePath( fileName ) );
