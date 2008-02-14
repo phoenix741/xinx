@@ -30,7 +30,7 @@ win32:CONFIG(debug) {
         -lwebplugind
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
         ../libxinx/libsharedxinxd.a \
-        ../components/libxinxcmp.a
+        ../components/libxinxcmpd.a
 }
 else { 
     LIBS += -lsharedxinx \
