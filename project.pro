@@ -4,4 +4,5 @@ INCLUDEPATH += libxinx \
 SUBDIRS += libxinx \
     components \
     plugins \
-    xinx
+    xinx \
+    xinxprojectwizard
