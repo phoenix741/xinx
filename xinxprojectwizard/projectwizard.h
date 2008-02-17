@@ -21,33 +21,51 @@
 #ifndef PROJECTWIZARD_H_
 #define PROJECTWIZARD_H_
 
+// Qt header
 #include <QWizard>
+
+class QLabel;
+class QProgressBar;
+class QCheckBox;
+class DirectoryEditWidget;
 
 class ProjectWizard : public QWizard {
 	Q_OBJECT
 public:
 	ProjectWizard( QWidget * parent = 0 );
+private:
 };
 
 class FileWizardPage : public QWizardPage {
 	Q_OBJECT
 public:
 	FileWizardPage( QWidget * parent = 0 );
+
+	virtual void initializePage();
 private:
+	DirectoryEditWidget * m_projectEdit;
 };
 
 class VersionWizardPage : public QWizardPage {
 	Q_OBJECT
 public:
 	VersionWizardPage( QWidget * parent = 0 );
+
+	virtual void initializePage();
 private:
+	QLabel * m_currentVersion;
+	QLabel * m_destVersion;
+	QLabel * m_fileType;
 };
 
 class ProgressWizardPage : public QWizardPage {
 	Q_OBJECT
 public:
 	ProgressWizardPage( QWidget * parent = 0 );
+	
+	virtual void initializePage ();
 private:
+	QProgressBar * m_progressBar;
 };
 
 class ConclusionWizardPage : public QWizardPage {
@@ -55,6 +73,7 @@ class ConclusionWizardPage : public QWizardPage {
 public:
 	ConclusionWizardPage( QWidget * parent = 0 );
 private:
+	QCheckBox * m_openCheck;
 };
 
 #endif /*PROJECTWIZARD_H_*/

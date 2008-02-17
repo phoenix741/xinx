@@ -69,13 +69,36 @@ public slots:
 	/*!
 	 * Call a dialog to change the path.
 	 */
-	void changePath( QWidget * parent = NULL, const QString & defaultValue = QString() );
+	void changePath( QWidget * parent = NULL, const QString & defaultValue = QString(), bool directory = true );
 protected slots:
 	/*!
 	 * Slot called when the text changed. This method change the color of the text to 
 	 * show user quickly if the directory exists or not.
 	 */
 	void slotTextChanged( QString text );
+};
+
+class PrivateDirectoryEditWidget;
+
+class DirectoryEditWidget : public QWidget {
+	Q_OBJECT
+public:
+	DirectoryEditWidget( QWidget * parent = 0 );
+	DirectoryEditWidget( bool isDirectory, QWidget * parent = 0 );
+	virtual ~DirectoryEditWidget();
+	
+	DirectoryEdit * lineEdit() const;
+	
+	bool isDirectory() const;
+	void setDirectory( bool value );
+	
+	QString defaultValue() const;
+	void setDefaultValue( const QString & value );
+public slots:
+	void changePath();
+private:
+	PrivateDirectoryEditWidget * d;
+	friend class PrivateDirectoryEditWidget;
 };
 
 #endif // __DIRECTORYEDIT_H__

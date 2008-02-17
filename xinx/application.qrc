@@ -99,6 +99,7 @@
         <file>images/vcs_update.png</file>
         <file>images/warning.png</file>
         <file>images/window_new.png</file>
+        <file>images/banner_wizard.png</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>
     </qresource>

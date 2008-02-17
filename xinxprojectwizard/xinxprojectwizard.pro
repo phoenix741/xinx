@@ -20,3 +20,13 @@ SOURCES = projectwizard.cpp \
     main.cpp
 HEADERS = projectwizard.h
 RESOURCES = xinxprojectwizard.qrc
+INCLUDEPATH += ../components
+LIBS = -L../components
+win32:CONFIG(debug) { 
+    LIBS += -lxinxcmpd
+    POST_TARGETDEPS = ../components/libxinxcmpd.a
+}
+else { 
+    LIBS += -lxinxcmp
+    POST_TARGETDEPS = ../components/libxinxcmp.a
+}

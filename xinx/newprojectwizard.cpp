@@ -44,12 +44,13 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
     setStartId( Page_Projet );
 
 	setPixmap( QWizard::LogoPixmap, QPixmap(":/images/splash.png").scaled( QSize( 48, 48 ) ) );
+	setPixmap( QWizard::BannerPixmap, QPixmap(":/images/banner_wizard.png") );
 	
 	button( QWizard::CancelButton )->setIcon( QPixmap( ":/images/button_cancel.png" ) );
 	button( QWizard::BackButton )->setIcon( QPixmap( ":/images/bookmarkprevious.png" ) );
 	button( QWizard::NextButton )->setIcon( QPixmap( ":/images/bookmarknext.png" ) );
 	button( QWizard::FinishButton )->setIcon( QPixmap( ":/images/button_apply.png" ) );
-	button( QWizard::CommitButton )->setIcon( QPixmap( ":/images/button_apply.png" ) );
+	button( QWizard::CommitButton )->setIcon( QPixmap( ":/images/button_ok.png" ) );
 
 	setWindowTitle( tr("New Project Wizard") );
 }

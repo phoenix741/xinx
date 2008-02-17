@@ -26,6 +26,9 @@
 #include <QPalette>
 #include <QCompleter>
 #include <QFileDialog>
+#include <QToolButton>
+#include <QHBoxLayout>
+#include <QToolButton>
 
 /* CompleterDirModel */
 
@@ -69,12 +72,84 @@ void DirectoryEdit::slotTextChanged( QString text ) {
 }
 
 
-void DirectoryEdit::changePath( QWidget * parent, const QString & defaultValue ) {
+void DirectoryEdit::changePath( QWidget * parent, const QString & defaultValue, bool directory ) {
 	QString value = this->text();
 	if( value.isEmpty() ) value = defaultValue;
 		
-	value = QFileDialog::getExistingDirectory( parent, tr("Change the path"), value );
+	if( directory )
+		value = QFileDialog::getExistingDirectory( parent, tr("Change the path"), value );
+	else
+		value = QFileDialog::getOpenFileName( parent, tr("Change the file"), value );
+	
 	if( ! value.isEmpty() ) {
 		this->setText( QDir::toNativeSeparators( value ) );		
 	}
+}
+
+/* PrivateDirectoryEditWidget */
+
+class PrivateDirectoryEditWidget {
+public:
+	PrivateDirectoryEditWidget( QWidget * o );
+	
+	DirectoryEdit * m_lineEdit;
+	QToolButton * m_button;
+	bool m_directory;
+	QString m_default;
+private:
+};
+
+PrivateDirectoryEditWidget::PrivateDirectoryEditWidget( QWidget * o ) {
+	QHBoxLayout * layout = new QHBoxLayout( o );
+	
+	m_lineEdit = new DirectoryEdit( o );
+	m_button   = new QToolButton( o );
+	m_button->setIcon( QIcon(":/images/folder.png") );
+	
+	layout->addWidget( m_lineEdit );
+	layout->addWidget( m_button );
+	
+	layout->setMargin( 0 );
+}
+
+/* DirectoryEditWidget */
+
+DirectoryEditWidget::DirectoryEditWidget( bool isDirectory, QWidget * parent ) : QWidget( parent ) {
+	d = new PrivateDirectoryEditWidget( this );
+	d->m_directory = isDirectory;
+	connect( d->m_button, SIGNAL(clicked()), this, SLOT(changePath()) );
+}
+
+DirectoryEditWidget::DirectoryEditWidget( QWidget * parent ) : QWidget( parent ) {
+	d = new PrivateDirectoryEditWidget( this );
+	d->m_directory = true;
+	connect( d->m_button, SIGNAL(clicked()), this, SLOT(changePath()) );
+}
+
+DirectoryEditWidget::~DirectoryEditWidget() {
+	delete d;
+}
+
+bool DirectoryEditWidget::isDirectory() const {
+	return d->m_directory;
+}
+
+void DirectoryEditWidget::setDirectory( bool value ) {
+	d->m_directory = value;
+}
+
+QString DirectoryEditWidget::defaultValue() const {
+	return d->m_default;
+}
+
+void DirectoryEditWidget::setDefaultValue( const QString & value ) {
+	d->m_default = value;
+}
+
+void DirectoryEditWidget::changePath() {
+	d->m_lineEdit->changePath( parentWidget(), d->m_default, d->m_directory );
+}
+
+DirectoryEdit * DirectoryEditWidget::lineEdit() const {
+	return d->m_lineEdit;
 }

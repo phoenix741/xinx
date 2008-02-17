@@ -6,5 +6,7 @@
         <file alias="button_cancel.png">../xinx/images/button_cancel.png</file>
         <file alias="button_ok.png">../xinx/images/button_ok.png</file>
         <file alias="splash.png">../xinx/images/splash.png</file>
+        <file alias="banner.png">../xinx/images/banner_wizard.png</file>
+        <file alias="folder.png">../xinx/images/folder.png</file>
     </qresource>
 </RCC>
