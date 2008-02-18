@@ -16,17 +16,21 @@ CONFIG += debug \
     thread \
     warn_on \
     x86
-SOURCES = projectwizard.cpp \
+SOURCES = projectconverter.cpp \
+    projectwizard.cpp \
     main.cpp
-HEADERS = projectwizard.h
+HEADERS = projectconverter.h \
+    projectwizard.h
 RESOURCES = xinxprojectwizard.qrc
-INCLUDEPATH += ../components
-LIBS = -L../components
+INCLUDEPATH += ../components \
+    ../libxinx
+LIBS = -L../components \
+    -L../libxinx
 win32:CONFIG(debug) { 
-    LIBS += -lxinxcmpd
-    POST_TARGETDEPS = ../components/libxinxcmpd.a
+    LIBS += -lxinxcmpd -lsharedxinxd
+    POST_TARGETDEPS = ../components/libxinxcmpd.a ../libxinx/libsharedxinxd.a
 }
 else { 
-    LIBS += -lxinxcmp
-    POST_TARGETDEPS = ../components/libxinxcmp.a
+    LIBS += -lxinxcmp -lsharedxinx
+    POST_TARGETDEPS = ../components/libxinxcmp.a ../libxinx/libsharedxinx.a
 }

@@ -18,68 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTWIZARD_H_
-#define PROJECTWIZARD_H_
+#ifndef PROJECTCONVERTER_H_
+#define PROJECTCONVERTER_H_
 
 // Qt header
-#include <QWizard>
+#include <QObject>
 
-class QLabel;
-class QProgressBar;
-class QCheckBox;
-class DirectoryEditWidget;
-class ProjectConverter;
+// Xinx header
+#include "exceptions.h"
 
-class ProjectWizard : public QWizard {
+#define XINX_PROJECT_VERSION_0 0
+#define XINX_PROJECT_VERSION_1 1
+#define XINX_PROJECT_VERSION_2 2
+#define XINX_PROJECT_VERSION_3 3
+#define XINX_PROJECT_VERSION 3
+
+class ProjectConverter : public QObject {
 	Q_OBJECT
 public:
-	ProjectWizard( QWidget * parent = 0 );
+	ProjectConverter( const QString & filename );
+	virtual ~ProjectConverter();
 	
-	ProjectConverter * converter() const;
-	void setConverter( ProjectConverter * c );
+	int version() const;
+	QString type() const;
 private:
-	ProjectConverter * m_converter;
+	QString m_filename, m_type;
+	int m_version;
 };
 
-class FileWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	FileWizardPage( QWidget * parent = 0 );
-
-	virtual void initializePage();
-	virtual bool validatePage();
-private:
-	DirectoryEditWidget * m_projectEdit;
-};
-
-class VersionWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	VersionWizardPage( QWidget * parent = 0 );
-
-	virtual void initializePage();
-private:
-	QLabel * m_currentVersion;
-	QLabel * m_destVersion;
-	QLabel * m_fileType;
-};
-
-class ProgressWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	ProgressWizardPage( QWidget * parent = 0 );
-	
-	virtual void initializePage ();
-private:
-	QProgressBar * m_progressBar;
-};
-
-class ConclusionWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	ConclusionWizardPage( QWidget * parent = 0 );
-private:
-	QCheckBox * m_openCheck;
-};
-
-#endif /*PROJECTWIZARD_H_*/
+#endif /*PROJECTCONVERTER_H_*/

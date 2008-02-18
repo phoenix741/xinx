@@ -18,68 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTWIZARD_H_
-#define PROJECTWIZARD_H_
+// Xinx header
+#include "projectconverter.h"
 
 // Qt header
-#include <QWizard>
+#include <QFile>
+#include <QDomDocument>
 
-class QLabel;
-class QProgressBar;
-class QCheckBox;
-class DirectoryEditWidget;
-class ProjectConverter;
+/* ProjectConverter */
 
-class ProjectWizard : public QWizard {
-	Q_OBJECT
-public:
-	ProjectWizard( QWidget * parent = 0 );
+ProjectConverter::ProjectConverter( const QString & filename ) : m_filename( filename ), m_version( XINX_PROJECT_VERSION_0 ) {
+	m_type = tr("XINX Project file");
 	
-	ProjectConverter * converter() const;
-	void setConverter( ProjectConverter * c );
-private:
-	ProjectConverter * m_converter;
-};
-
-class FileWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	FileWizardPage( QWidget * parent = 0 );
-
-	virtual void initializePage();
-	virtual bool validatePage();
-private:
-	DirectoryEditWidget * m_projectEdit;
-};
-
-class VersionWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	VersionWizardPage( QWidget * parent = 0 );
-
-	virtual void initializePage();
-private:
-	QLabel * m_currentVersion;
-	QLabel * m_destVersion;
-	QLabel * m_fileType;
-};
-
-class ProgressWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	ProgressWizardPage( QWidget * parent = 0 );
+	QFile file( filename );
 	
-	virtual void initializePage ();
-private:
-	QProgressBar * m_progressBar;
-};
+	if( file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+		QDomDocument document;
+		if(! document.setContent( &file ) ) throw XinxException( "Not an xml file." );
+		QDomElement rootElement = document.documentElement();
+		if( rootElement.tagName() != "XSLProject" ) throw XinxException( "Not a managed project file." );
+		
+		QDomElement version = rootElement.firstChildElement( "xinx_version" );
+		if( ! version.isNull() )
+			m_version = version.text().toInt();
+	}
+}
 
-class ConclusionWizardPage : public QWizardPage {
-	Q_OBJECT
-public:
-	ConclusionWizardPage( QWidget * parent = 0 );
-private:
-	QCheckBox * m_openCheck;
-};
+ProjectConverter::~ProjectConverter() {
+	
+}
+	
+int ProjectConverter::version() const {
+	return m_version;
+}
 
-#endif /*PROJECTWIZARD_H_*/
+QString ProjectConverter::type() const {
+	return m_type;
+}

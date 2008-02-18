@@ -21,6 +21,7 @@
 // Xinx header
 #include "projectwizard.h"
 #include "directoryedit.h"
+#include "projectconverter.h"
 
 // Qt header
 #include <QApplication>
@@ -29,8 +30,11 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QCheckBox>
+#include <QMessageBox>
 
-ProjectWizard::ProjectWizard( QWidget * parent ) : QWizard( parent ) {
+/* ProjectWizard */
+
+ProjectWizard::ProjectWizard( QWidget * parent ) : QWizard( parent ), m_converter( 0 ) {
 	addPage( new FileWizardPage );
 	addPage( new VersionWizardPage );
 	addPage( new ProgressWizardPage );
@@ -47,6 +51,16 @@ ProjectWizard::ProjectWizard( QWidget * parent ) : QWizard( parent ) {
 
 	setWindowTitle( tr( "Project wizard" ) );
 }
+
+ProjectConverter * ProjectWizard::converter() const {
+	return m_converter;
+}
+
+void ProjectWizard::setConverter( ProjectConverter * c ) {
+	m_converter  = c;
+}
+
+/* FileWizardPage */
 
 FileWizardPage::FileWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Project file selection") );
@@ -67,13 +81,28 @@ void FileWizardPage::initializePage() {
 		m_projectEdit->lineEdit()->setText( qApp->arguments().at( 1 ) );
 }
 
+bool FileWizardPage::validatePage() {
+	try {
+		ProjectConverter * converter = dynamic_cast<ProjectWizard*>( wizard() )->converter();
+		delete converter;
+		converter = new ProjectConverter( field( "project.name" ).toString() );
+		dynamic_cast<ProjectWizard*>( wizard() )->setConverter( converter );
+	} catch( XinxException & e ) {
+		QMessageBox::critical( this, tr("Project Wizard"), e.getMessage() );
+		return false;
+	}
+	return true;
+}
+
+/* VersionWizardPage */
+
 VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Version informations") );
 	setSubTitle( tr("This page show you some informations about the selected project file") );
 	setCommitPage( true );
 
 	QVBoxLayout * layout = new QVBoxLayout( this );
-	m_fileType       = new QLabel( tr("Project file type : %1").arg( tr("XINX Project file") ), this );
+	m_fileType       = new QLabel( this );
 	m_currentVersion = new QLabel( this );
 	m_destVersion    = new QLabel( this );
 	
@@ -83,9 +112,14 @@ VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent )
 }
 
 void VersionWizardPage::initializePage() {
-	m_currentVersion->setText( tr("Current version : %1").arg( 1 ) );
-	m_destVersion->setText( tr("To version : %1").arg( 3 ) );
+	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
+		m_fileType->setText( tr("Project file type : %1").arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() ) );
+		m_currentVersion->setText( tr("Current version : %1").arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() ) );
+		m_destVersion->setText( tr("To version : %1").arg( XINX_PROJECT_VERSION ) );
+	}
 }
+
+/* ProgressWizardPage */
 
 ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Progress of the conversion") );
@@ -99,6 +133,8 @@ ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent
 void ProgressWizardPage::initializePage() {
 	m_progressBar->setValue(50);
 }
+
+/* ConclusionWizardPage */
 
 ConclusionWizardPage::ConclusionWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Conversion finished") );
