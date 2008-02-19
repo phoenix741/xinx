@@ -122,19 +122,19 @@ void PrivateMainformImpl::createDockWidget() {
 	action->setShortcut( tr("Alt+2") );
 	m_parent->m_windowsMenu->addAction( action );
 
-	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
-	m_rcslogDock->setObjectName( QString::fromUtf8("m_rcslogDock") );
-	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
-	action = m_rcslogDock->toggleViewAction();
-	action->setShortcut( tr("Alt+3") );
-	m_parent->m_windowsMenu->addAction( action ); 
-	
 	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), m_parent );
 	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
 	m_parent->addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
 	action = m_xmlpresentationdock->toggleViewAction();
-	action->setShortcut( tr("Alt+4") );
+	action->setShortcut( tr("Alt+3") );
 	m_parent->m_windowsMenu->addAction( action );
+
+	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
+	m_rcslogDock->setObjectName( QString::fromUtf8("m_rcslogDock") );
+	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
+	action = m_rcslogDock->toggleViewAction();
+	action->setShortcut( tr("Alt+9") );
+	m_parent->m_windowsMenu->addAction( action ); 
 }
 
 void PrivateMainformImpl::createSubMenu() {
