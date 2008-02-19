@@ -41,6 +41,8 @@
 #include <QDir>
 #include <QApplication>
 #include <QTextEdit>
+#include <QTranslator>
+#include <QApplication>
 
 /* Constantes */
 
@@ -64,7 +66,11 @@ WebPlugin::WebPlugin() {
 	Q_INIT_RESOURCE(webplugin);
 }
 
-bool WebPlugin::initializePlugin() {
+bool WebPlugin::initializePlugin( const QString & lang ) {
+	QTranslator * tranlator = new QTranslator( this );
+	tranlator->load( QString(":/translations/webplugin_%1").arg( lang ) );
+	qApp->installTranslator(tranlator);
+
 	webplugin_js::init();
 	webplugin_css::init();
 	
@@ -72,7 +78,9 @@ bool WebPlugin::initializePlugin() {
 	try {
 		xmlCompletionContents->setPath( "datas:baseplugin_xml.xml" );
 	} catch( NotCompletionFileException ) {
+		return false;
 	}
+	return true;
 }
 
 QStringList WebPlugin::extentions() {

@@ -47,7 +47,7 @@ public:
 	
 	virtual ~IXinxPlugin() {};
 
-	virtual bool initializePlugin() = 0;
+	virtual bool initializePlugin( const QString & lang ) = 0;
 //	virtual QString getPluginAttribute( enum IXinxPlugin::PluginAttribute & attr ) = 0;
 	
 	/* TODO: Pour la boite de dialogue, il faudra utiliser un objet spécialisé qui sait faire load an save */

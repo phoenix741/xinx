@@ -105,11 +105,15 @@ int main(int argc, char *argv[]) {
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();
-			QTranslator translator_xinx, translator_qt;
+			QTranslator translator_xinx, translator_qt, translator_libxinx, tranlator_components;
 			translator_qt.load( QString(":/translations/qt_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_qt);
 			translator_xinx.load( QString(":/translations/xinx_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_xinx);
+			translator_libxinx.load( QString(":/translations/libxinx_%1").arg( XINXConfig::self()->config().language ) );
+			app.installTranslator(&translator_libxinx);
+			tranlator_components.load( QString(":/translations/xinxcomponents_%1").arg( XINXConfig::self()->config().language ) );
+			app.installTranslator(&tranlator_components);
 	
 			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
 			app.processEvents();

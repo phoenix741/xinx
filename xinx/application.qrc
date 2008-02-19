@@ -102,5 +102,7 @@
         <file>images/banner_wizard.png</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>
+        <file>../libxinx/translations/libxinx_fr.qm</file>
+        <file>../components/translations/xinxcomponents_fr.qm</file>
     </qresource>
 </RCC>

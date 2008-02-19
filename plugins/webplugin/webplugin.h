@@ -34,7 +34,7 @@ class WebPlugin : public QObject, public IPluginSyntaxHighlighter, public IPlugi
 public:
 	WebPlugin();
 	
-	virtual bool initializePlugin();
+	virtual bool initializePlugin( const QString & lang );
 
 	virtual QStringList extentions();
 	virtual QHash<QString,QString> extentionsDescription();

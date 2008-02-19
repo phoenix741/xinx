@@ -21,6 +21,7 @@
 // Xinx header
 #include "xinxpluginsloader.h"
 #include "xinxcore.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QPluginLoader>
@@ -88,7 +89,7 @@ void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 void XinxPluginsLoader::addPlugin( QObject * plugin ) {
 	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
 	if( iFilePlugin ) {
-		iFilePlugin->initializePlugin();
+		iFilePlugin->initializePlugin( XINXConfig::self()->config().language );
 		
 		QHash<QString,QString> libelles = iFilePlugin->extentionsDescription();
 		
