@@ -34,3 +34,4 @@ else {
     LIBS += -lxinxcmp -lsharedxinx
     POST_TARGETDEPS = ../components/libxinxcmp.a ../libxinx/libsharedxinx.a
 }
+TRANSLATIONS += translations/xinxprojectwizard_fr.ts

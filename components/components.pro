@@ -20,3 +20,4 @@ HEADERS = p_xinxpluginselector.h \
 SOURCES = directoryedit.cpp \
     kcolorcombo.cpp \
     xinxpluginselector.cpp
+TRANSLATIONS += translations/xinxcomponents_fr.ts

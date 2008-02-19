@@ -204,3 +204,4 @@ contains( CONFIG, qdbus ) {
     SOURCES += studioadaptor.cpp \
         studiointerface.cpp
 }
+TRANSLATIONS += translations/xinx_fr.ts

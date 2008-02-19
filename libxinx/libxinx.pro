@@ -17,3 +17,4 @@ HEADERS = exceptions.h \
 SOURCES = exceptions.cpp \
     filecontentstructure.cpp
 
+TRANSLATIONS += translations/libxinx_fr.ts

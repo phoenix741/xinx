@@ -48,3 +48,4 @@ SOURCES = xmlprettyprinter.cpp \
     jscompleter.cpp \
     csscompleter.cpp \
     cssmodeldata.cpp
+TRANSLATIONS += translations/webplugin_fr.ts
