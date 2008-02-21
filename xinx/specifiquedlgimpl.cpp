@@ -38,7 +38,6 @@ SpecifiqueDialogImpl::SpecifiqueDialogImpl( QWidget * parent, Qt::WFlags f ) : Q
 	
 	m_specifiqueCheckBox->setChecked( true );
 	m_repositoryCheckBox->setChecked( true );
-	m_impactedBVGroupBox->setVisible( false );
 }
 
 struct_extentions SpecifiqueDialogImpl::extentionOfFileName( const QString & name ) {
