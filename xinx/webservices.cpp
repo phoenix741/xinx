@@ -329,8 +329,10 @@ WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : Q
 }
 
 WebServicesManager::~WebServicesManager() {
-	s_self = 0;
-	qDeleteAll( *this );
+	if( this == s_self ) {
+		s_self = 0;
+		qDeleteAll( *this );
+	}
 }
 
 WebServicesManager * WebServicesManager::self() {

@@ -98,13 +98,6 @@ void PrivateMainformImpl::registerTypes() {
 void PrivateMainformImpl::createDockWidget() {
 	XINX_TRACE( "PrivateMainformImpl::createDockWidget", "()" );
 
-	m_contentDock = new FileContentDockWidget( tr("File Content"), m_parent );
-	m_contentDock->setObjectName( QString::fromUtf8("m_contentDock") );
-	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
-	QAction * action = m_contentDock->toggleViewAction();
-	action->setShortcut( tr("Alt+1") );
-	m_parent->m_windowsMenu->addAction( action ); 
-	
 	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), m_parent );
 	m_projectDock->setObjectName( QString::fromUtf8("m_projectDock") );
 	m_projectDock->setGlobalUpdateAction( m_parent->m_globalUpdateFromRCSAct );
@@ -118,10 +111,17 @@ void PrivateMainformImpl::createDockWidget() {
 	m_projectDock->setSelectedCompareAction( m_parent->m_compareTwoFileAct );
 	m_projectDock->setToggledViewAction( m_parent->m_toggledFlatView );
 	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
-	action = m_projectDock->toggleViewAction();
-	action->setShortcut( tr("Alt+2") );
+	QAction * action = m_projectDock->toggleViewAction();
+	action->setShortcut( tr("Alt+1") );
 	m_parent->m_windowsMenu->addAction( action );
 
+	m_contentDock = new FileContentDockWidget( tr("File Content"), m_parent );
+	m_contentDock->setObjectName( QString::fromUtf8("m_contentDock") );
+	m_parent->addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
+	action = m_contentDock->toggleViewAction();
+	action->setShortcut( tr("Alt+2") );
+	m_parent->m_windowsMenu->addAction( action ); 
+	
 	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), m_parent );
 	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
 	m_parent->addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
@@ -1659,10 +1659,11 @@ void MainformImpl::updateWebServicesList() {
 	bool enabled = XINXProjectManager::self()->project() && ( XINXProjectManager::self()->project()->options().testFlag( XSLProject::hasWebServices ) );
 	qDeleteAll( *(WebServicesManager::self()) );
 	WebServicesManager::self()->clear();
+	WebServicesManager::self()->listUpdated();
 
 	if( enabled ) {
 		foreach( QString link, XINXProjectManager::self()->project()->serveurWeb() ) {
-			WebServices * ws = new WebServices( link, this );
+			WebServices * ws = new WebServices( link, WebServicesManager::self() );
 			WebServicesManager::self()->append( ws );
 			ws->askWSDL( this );
 			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), d, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
