@@ -106,14 +106,6 @@
        <iconset resource="../application.qrc" >:/images/preferences-project.png</iconset>
       </property>
      </item>
-     <item>
-      <property name="text" >
-       <string>Modules</string>
-      </property>
-      <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-plugin.png</iconset>
-      </property>
-     </item>
     </widget>
    </item>
    <item row="0" column="1" >
@@ -883,13 +875,6 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="m_modules" >
-      <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="XinxPluginSelector" name="m_pluginListView" />
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item row="3" column="1" >
@@ -948,11 +933,6 @@ p, li { white-space: pre-wrap; }
    <class>KColorCombo</class>
    <extends>QComboBox</extends>
    <header>kcolorcombo.h</header>
-  </customwidget>
-  <customwidget>
-   <class>XinxPluginSelector</class>
-   <extends>QListView</extends>
-   <header>xinxpluginselector.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

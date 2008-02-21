@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
-    <height>316</height>
+    <width>385</width>
+    <height>155</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -42,18 +42,6 @@
          <string>Do you want add it to &amp;repository ?</string>
         </property>
        </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="m_impactedBVGroupBox" >
-     <property name="title" >
-      <string>&amp;Impacted BusinessView</string>
-     </property>
-     <layout class="QGridLayout" >
-      <item row="0" column="0" >
-       <widget class="QListWidget" name="m_impactedListWidget" />
       </item>
      </layout>
     </widget>
@@ -161,22 +149,6 @@
     <hint type="destinationlabel" >
      <x>126</x>
      <y>105</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_specifiqueCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>m_impactedBVGroupBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>196</x>
-     <y>92</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>207</x>
-     <y>160</y>
     </hint>
    </hints>
   </connection>

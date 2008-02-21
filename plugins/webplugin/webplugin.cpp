@@ -131,6 +131,7 @@ QHash<QString,QString> WebPlugin::descriptionOfHighlighters() {
 
 QString WebPlugin::highlighterOfExtention( const QString & extention ) {
 	QHash<QString,QString> extentions;
+	extentions[ "fws" ]   = "XML";
 	extentions[ "xsl" ]   = "XML";
 	extentions[ "xml" ]   = "XML";
 	extentions[ "html" ]  = "XML";
