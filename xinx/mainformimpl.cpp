@@ -1704,15 +1704,22 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		QString changeLog;
 		CommitMessageDialogImpl dlg;
 		QStringList listOfFile = list;
+		RCS::FilesOperation operations;
+
 		if( listOfFile.count() == 0 ) 
 			listOfFile << XINXProjectManager::self()->project()->projectPath();
+		
+		operations = rcs->operations( listOfFile );
 
 		if( XINXConfig::self()->config().cvs.createChangelog ) {
 			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
-			listOfFile << changeLog;
+			if( QFile::exists( changeLog ) )
+				operations << qMakePair(changeLog, RCS::Commit);
+			else
+				operations << qMakePair(changeLog, RCS::AddAndCommit);
 		}
 
-		dlg.setFilesOperation( rcs->operations( listOfFile ) );
+		dlg.setFilesOperation( operations );
 			
 		if( ! dlg.exec() ) return ;
 		QString message = dlg.messages();
@@ -1723,7 +1730,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 				QTextStream stream( &changeLogFile );
 				stream << QDate::currentDate().toString( Qt::ISODate ) << " " << QTime::currentTime().toString( Qt::ISODate ) << " : ";
 				if( message.isEmpty() )
-					stream << tr( "<Pas de message>" );
+					stream << tr( "<Commit with no text>" );
 				else
 					stream << message;
 				stream << endl;
