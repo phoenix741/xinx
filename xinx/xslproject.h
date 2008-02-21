@@ -148,8 +148,7 @@ public:
 	 */
 	enum enumProjectRCS { 
 		NORCS = 0, ///< The Concurent file repository is not managed.
-		CVS = 1, ///< CVS is used.
-		SUBVERSION = 2 ///< Subversion is used (XINX don't care at the moment of this choice).
+		CVS = 1 ///< CVS is used.
 	};
 	
 	/*!

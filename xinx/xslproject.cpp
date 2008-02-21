@@ -398,8 +398,6 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	QString projectRCSString = PrivateXSLProject::getValue( document, "rcs" );
 	if( projectRCSString == "cvs" ) {
 		d->m_projectRCS      = XSLProject::CVS;
-	} else if( projectRCSString == "subversion" ) {
-		d->m_projectRCS      = XSLProject::SUBVERSION;
 	} else { // In case it's no or a previous version
 		d->m_projectRCS      = XSLProject::NORCS;
 	} 
@@ -463,9 +461,6 @@ void XSLProject::saveToFile( const QString & filename ) {
 		break;
 	case XSLProject::CVS:
 		PrivateXSLProject::setValue( document, "rcs", "cvs" );
-		break;
-	case XSLProject::SUBVERSION:
-		PrivateXSLProject::setValue( document, "rcs", "subversion" );
 		break;
 	}
 	PrivateXSLProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );

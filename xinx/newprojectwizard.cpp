@@ -267,7 +267,7 @@ VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 	m_noRevisionControl->setChecked( true );
 	
 	m_revisionBtn.append( new QRadioButton( tr("CVS Revision Control System") ) );
-	m_revisionBtn.append( new QRadioButton( tr("SubVersion Revision Control System") ) );
+	//m_revisionBtn.append( new QRadioButton( tr("SubVersion Revision Control System") ) );
 	
 	QVBoxLayout * layout = new QVBoxLayout;
 	layout->addWidget( m_noRevisionControl );

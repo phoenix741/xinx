@@ -121,9 +121,6 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	case XSLProject::CVS :
 		m_projectRCSComboBox->setCurrentIndex( 1 );
 		break;
-	case XSLProject::SUBVERSION :
-		m_projectRCSComboBox->setCurrentIndex( 2 );
-		break;
 	}
 	
 	m_servicesList->setValues( project->serveurWeb() );
