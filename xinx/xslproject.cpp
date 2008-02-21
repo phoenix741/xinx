@@ -416,6 +416,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 		d->m_searchPathList.append( path );
 		d->m_indexOfSpecifiquePath = d->m_searchPathList.size() - 1;
 		break;
+	case XINX_PROJECT_VERSION_3:
 	case XINX_PROJECT_VERSION_2:
 		d->m_searchPathList = PrivateXSLProject::loadList( document, "paths", "path" );
 		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
