@@ -102,20 +102,21 @@ VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent )
 	setCommitPage( true );
 
 	QVBoxLayout * layout = new QVBoxLayout( this );
-	m_fileType       = new QLabel( this );
-	m_currentVersion = new QLabel( this );
-	m_destVersion    = new QLabel( this );
+	m_resume = new QLabel( this );
 	
-	layout->addWidget( m_fileType );
-	layout->addWidget( m_currentVersion );
-	layout->addWidget( m_destVersion );
+	layout->addWidget( m_resume );
 }
 
 void VersionWizardPage::initializePage() {
 	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
-		m_fileType->setText( tr("Project file type : %1").arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() ) );
-		m_currentVersion->setText( tr("Current version : %1").arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() ) );
-		m_destVersion->setText( tr("To version : %1").arg( XINX_PROJECT_VERSION ) );
+		m_resume->setText( 
+				tr("The selected project to convert is a %1 at the version %2.\nThis wizard will convert the project to the version %3. There is %4 opened file to convert")
+					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() )
+					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() )
+					.arg( XINX_PROJECT_VERSION )
+					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->nbSession() )
+		);
+		
 	}
 }
 

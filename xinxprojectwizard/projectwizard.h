@@ -59,9 +59,7 @@ public:
 
 	virtual void initializePage();
 private:
-	QLabel * m_currentVersion;
-	QLabel * m_destVersion;
-	QLabel * m_fileType;
+	QLabel * m_resume;
 };
 
 class ProgressWizardPage : public QWizardPage {

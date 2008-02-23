@@ -23,6 +23,7 @@
 
 // Qt header
 #include <QObject>
+#include <QDomDocument>
 
 // Xinx header
 #include "exceptions.h"
@@ -40,10 +41,19 @@ public:
 	virtual ~ProjectConverter();
 	
 	int version() const;
+	int nbSession() const;
 	QString type() const;
+	
+	void process();
+signals:
+	void setMaximum( int value );
+	void setValue( int value );
 private:
+	QDomDocument m_projectDocument;
+	QDomDocument m_sessionDocument;
+
 	QString m_filename, m_type;
-	int m_version;
+	int m_version, m_nbSession;
 };
 
 #endif /*PROJECTCONVERTER_H_*/
