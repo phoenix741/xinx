@@ -132,7 +132,12 @@ ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent
 }
 
 void ProgressWizardPage::initializePage() {
-	m_progressBar->setValue(50);
+	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
+		ProjectConverter * converter = dynamic_cast<ProjectWizard*>( wizard() )->converter();
+		connect( converter, SIGNAL(setValue(int)), m_progressBar, SLOT(setValue(int)) );
+		connect( converter, SIGNAL(setMaximum(int)), m_progressBar, SLOT(setMaximum(int)) );
+		converter->process();
+	}
 }
 
 /* ConclusionWizardPage */
