@@ -65,7 +65,7 @@ void ProjectWizard::setConverter( ProjectConverter * c ) {
 FileWizardPage::FileWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Project file selection") );
 	setSubTitle( tr("This wizard will help you to migrate your project file to "
-					"the current version of XINX. Please fill all fields") );
+					"the current version of XINX. Please fill all fields.") );
 	
 	QLabel * directoryLabel;
 	QVBoxLayout * layout = new QVBoxLayout( this );
@@ -98,7 +98,7 @@ bool FileWizardPage::validatePage() {
 
 VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Version informations") );
-	setSubTitle( tr("This page show you some informations about the selected project file") );
+	setSubTitle( tr("This page show you some informations about the selected project file.") );
 	setCommitPage( true );
 
 	QVBoxLayout * layout = new QVBoxLayout( this );
@@ -110,7 +110,7 @@ VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent )
 void VersionWizardPage::initializePage() {
 	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
 		m_resume->setText( 
-				tr("The selected project to convert is a %1 at the version %2.\nThis wizard will convert the project to the version %3. There is %4 opened file to convert")
+				tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %4 opened file.")
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() )
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() )
 					.arg( XINX_PROJECT_VERSION )
@@ -124,7 +124,7 @@ void VersionWizardPage::initializePage() {
 
 ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Progress of the conversion") );
-	setSubTitle( tr("Please waite ...") );
+	setSubTitle( tr("Please wait ...") );
 	
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	m_progressBar = new QProgressBar( this );
@@ -137,6 +137,7 @@ void ProgressWizardPage::initializePage() {
 		connect( converter, SIGNAL(setValue(int)), m_progressBar, SLOT(setValue(int)) );
 		connect( converter, SIGNAL(setMaximum(int)), m_progressBar, SLOT(setMaximum(int)) );
 		converter->process();
+		m_progressBar->setMaximum( converter->nbSession() + XINX_PROJECT_VERSION - converter->version() );
 	}
 }
 
@@ -150,5 +151,7 @@ ConclusionWizardPage::ConclusionWizardPage( QWidget * parent ) : QWizardPage( pa
 	layout->addWidget( new QLabel( tr("The project is now converted. XINX can now open the project file normally."), this ) );	
 	layout->addWidget( m_openCheck = new QCheckBox( tr("Re-open the project with XINX automatically"), this ) );
 
+	m_openCheck->setChecked( true );
+	
 	registerField( "project.open", m_openCheck );
 }

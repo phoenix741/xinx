@@ -77,7 +77,7 @@ void Editor::getSerializedData( QDataStream & stream, int & type, QVariant & dat
 void Editor::loadFromVersion1( QDomElement & element ) {
 	m_position = element.attribute( "position" ).toInt();
 	m_fileName = element.attribute( "filename" );
-	m_isModified = (bool)element.attribute( "isModified" ).toInt();
+	m_isModified = (bool)element.attribute( "ismodified" ).toInt();
 	
 	if( element.attribute( "class" ) == "WebServicesEditor" ) {
 		m_isServices = true;
@@ -103,7 +103,6 @@ void Editor::loadFromVersion2( QDomElement & element ) {
 	QDataStream stream( datas ); 
 	QString className;
 	stream >> className;
-	
 	m_isServices = className == "WebServicesEditor";
 	int type;
 	QVariant value;
@@ -162,6 +161,7 @@ void Editor::saveField( QDomDocument & document, QDomElement & element, QString 
 }
 
 void Editor::saveToCurrentVersion( QDomDocument & document, QDomElement & element ) {
+	element.setTagName( "Editor" );
 	saveField( document, element, "FileName", m_fileName );
 	saveField( document, element, "Position", m_position );
 	saveField( document, element, "Modified", m_isModified );
@@ -214,10 +214,12 @@ ProjectConverter::ProjectConverter( const QString & filename ) : m_filename( fil
 				QDomElement sessionRootElement = m_sessionDocument.documentElement();
 				QDomElement session = sessionRootElement.firstChildElement( "Opened" );
 				if( sessionRootElement.tagName() != "Session" ) return;
-				session = session.firstChildElement( "Editor" );
+				QString ed = m_version == XINX_PROJECT_VERSION_1 ? "editor" : "Editor";
+				
+				session = session.firstChildElement( ed );
 				while( ! session.isNull() ) {
 					m_nbSession++;
-					session = session.nextSiblingElement( "Editor" );
+					session = session.nextSiblingElement( ed );
 				}
 			}
 			emit setMaximum( m_nbSession + m_version - XINX_PROJECT_VERSION );
@@ -284,13 +286,15 @@ void ProjectConverter::process() {
 		emit setValue( process++ );
 	}
 	case XINX_PROJECT_VERSION_1: {
-		QDomElement editor = m_sessionDocument.documentElement().firstChildElement( "Opened" ).firstChildElement( "Editor" );
+		QDomElement editor = m_sessionDocument.documentElement().firstChildElement( "Opened" ).firstChildElement( "editor" );
 		
 		while( ! editor.isNull() ) {
 			Editor e;
 			e.loadFromVersion1( editor );
 			e.saveToCurrentVersion( m_sessionDocument, editor );
 			emit setValue( process++ );
+
+			editor = editor.nextSiblingElement( "editor" );
 		}
 		
 		emit setValue( process++ );
@@ -304,6 +308,8 @@ void ProjectConverter::process() {
 				e.loadFromVersion2( editor );
 				e.saveToCurrentVersion( m_sessionDocument, editor );
 				emit setValue( process++ );
+				
+				editor = editor.nextSiblingElement( "Editor" );
 			}
 		}
 		
@@ -318,5 +324,15 @@ void ProjectConverter::process() {
 		emit setValue( process++ );
 	}
 	}
+	
+	QDomElement version_xml = m_projectDocument.documentElement().firstChildElement( "xinx_version" );
+	m_projectDocument.documentElement().removeChild( version_xml );
+	
+	version_xml = m_projectDocument.createElement( "xinx_version" );
+	QDomText version_text = m_projectDocument.createTextNode( QString(XINX_PROJECT_VERSION) );
+	m_projectDocument.documentElement().appendChild( version_xml );
+	version_xml.appendChild( version_text );
+
+	emit setValue( process++ );
 }
 
