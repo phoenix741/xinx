@@ -45,7 +45,11 @@ public:
 	 * Constructor of the exception.
 	 * \param message Message for the user.
 	 */
-	XSLProjectException( const QString & message );
+	XSLProjectException( const QString & message, bool wizard = false );
+	
+	bool startWizard() const;
+private:
+	bool m_wizard;
 };
 
 class XSLProjectSession;

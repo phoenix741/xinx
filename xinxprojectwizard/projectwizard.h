@@ -37,6 +37,8 @@ public:
 	
 	ProjectConverter * converter() const;
 	void setConverter( ProjectConverter * c );
+	
+	virtual void accept();
 private:
 	ProjectConverter * m_converter;
 };

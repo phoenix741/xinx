@@ -27,6 +27,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QVariant>
+#include <QTextStream>
 
 /* Editor */
 
@@ -162,6 +163,7 @@ void Editor::saveField( QDomDocument & document, QDomElement & element, QString 
 
 void Editor::saveToCurrentVersion( QDomDocument & document, QDomElement & element ) {
 	element.setTagName( "Editor" );
+	
 	saveField( document, element, "FileName", m_fileName );
 	saveField( document, element, "Position", m_position );
 	saveField( document, element, "Modified", m_isModified );
@@ -224,6 +226,19 @@ ProjectConverter::ProjectConverter( const QString & filename ) : m_filename( fil
 			}
 			emit setMaximum( m_nbSession + m_version - XINX_PROJECT_VERSION );
 		}
+	}
+}
+
+void ProjectConverter::save() {
+	QFile file( m_filename );
+	if( file.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+		QTextStream text( &file );
+		m_projectDocument.save( text, 2 );
+	}
+	QFile session( m_filename + ".session" );
+	if( session.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+		QTextStream text( &session );
+		m_sessionDocument.save( text, 2 );
 	}
 }
 
@@ -329,7 +344,7 @@ void ProjectConverter::process() {
 	m_projectDocument.documentElement().removeChild( version_xml );
 	
 	version_xml = m_projectDocument.createElement( "xinx_version" );
-	QDomText version_text = m_projectDocument.createTextNode( QString(XINX_PROJECT_VERSION) );
+	QDomText version_text = m_projectDocument.createTextNode( QString("%1").arg(XINX_PROJECT_VERSION) );
 	m_projectDocument.documentElement().appendChild( version_xml );
 	version_xml.appendChild( version_text );
 

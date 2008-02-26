@@ -22,6 +22,7 @@
 #include "projectwizard.h"
 #include "directoryedit.h"
 #include "projectconverter.h"
+#include "../xinx/studiointerface.h"
 
 // Qt header
 #include <QApplication>
@@ -58,6 +59,17 @@ ProjectConverter * ProjectWizard::converter() const {
 
 void ProjectWizard::setConverter( ProjectConverter * c ) {
 	m_converter  = c;
+}
+
+void ProjectWizard::accept() {
+	if( m_converter )
+		m_converter->save();
+	if( field( "project.open" ).toBool() ) {
+		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "com.editor.xinx", "/", QDBusConnection::sessionBus(), this );
+		interface->openProject( field( "project.name" ).toString() );
+	}
+	
+	QWizard::accept();
 }
 
 /* FileWizardPage */
@@ -103,6 +115,7 @@ VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent )
 
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	m_resume = new QLabel( this );
+	m_resume->setWordWrap( true );
 	
 	layout->addWidget( m_resume );
 }
@@ -110,10 +123,9 @@ VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent )
 void VersionWizardPage::initializePage() {
 	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
 		m_resume->setText( 
-				tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %4 opened file.")
+				tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.")
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() )
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() )
-					.arg( XINX_PROJECT_VERSION )
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->nbSession() )
 		);
 		

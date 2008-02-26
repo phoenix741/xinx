@@ -45,6 +45,7 @@ public:
 	QString type() const;
 	
 	void process();
+	void save();
 signals:
 	void setMaximum( int value );
 	void setValue( int value );
