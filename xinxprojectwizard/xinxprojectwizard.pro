@@ -13,6 +13,7 @@ QT += xml
 CONFIG += debug \
     exceptions \
     qt \
+    qdbus \
     thread \
     warn_on \
     x86
@@ -35,3 +36,9 @@ else {
     POST_TARGETDEPS = ../components/libxinxcmp.a ../libxinx/libsharedxinx.a
 }
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
+contains( CONFIG, qdbus ) { 
+    HEADERS += ../xinx/studioadaptor.h \
+        ../xinx/studiointerface.h
+    SOURCES += ../xinx/studioadaptor.cpp \
+        ../xinx/studiointerface.cpp
+}

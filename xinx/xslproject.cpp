@@ -42,7 +42,11 @@ XINXProjectManager * XINXProjectManager::s_self = 0;
 
 /* XSLProjectException */
 
-XSLProjectException::XSLProjectException( const QString & message ) : XinxException( message ) {
+XSLProjectException::XSLProjectException( const QString & message, bool wizard ) : XinxException( message ), m_wizard( wizard ) {
+}
+
+bool XSLProjectException::startWizard() const {
+	return m_wizard;
 }
 
 /* XSLProjectSessionEditor */
@@ -386,6 +390,9 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	d->m_version = PrivateXSLProject::getValue( document, "xinx_version" ).isEmpty() ? 0 : PrivateXSLProject::getValue( document, "xinx_version" ).toInt();
 	if( d->m_version > XINX_PROJECT_VERSION ) 
 		throw XSLProjectException( tr("The file is a too recent XINX Project") );
+	if( d->m_version < XINX_PROJECT_VERSION ) 
+		throw XSLProjectException( tr("The project can't be opened. Please use the XINX Project Wizard."), true );
+	
 	
 	d->m_fileName = filename;
 
@@ -405,28 +412,13 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	} 
 	d->m_webServiceLink = PrivateXSLProject::loadList( document, "webServiceLink", "link" );
 	QString path;
-	switch( d->m_version ) {
-	case XINX_PROJECT_VERSION_0:
-		// Warning : Informations about session is destroyed.
-	case XINX_PROJECT_VERSION_1:
-		if( PrivateXSLProject::getValue( document, "type" ) == "services" )
-			d->m_projectOptions = XSLProject::hasSpecifique | XSLProject::hasWebServices;
-		else
-			d->m_projectOptions = XSLProject::hasSpecifique;
-			
-		path = QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( PrivateXSLProject::getValue( document, "specifique" ) );
-		d->m_searchPathList.append( path );
-		d->m_indexOfSpecifiquePath = d->m_searchPathList.size() - 1;
-		break;
-	case XINX_PROJECT_VERSION_2:
-		d->m_searchPathList = PrivateXSLProject::loadList( document, "paths", "path" );
-		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
-		d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
-		d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
-		d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "logProjectDirectory" ) );
-		d->m_specifiquePrefixes = PrivateXSLProject::loadList( document, "prefixes", "prefix" );
-		break;
-	}
+
+	d->m_searchPathList = PrivateXSLProject::loadList( document, "paths", "path" );
+	d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
+	d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
+	d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
+	d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "logProjectDirectory" ) );
+	d->m_specifiquePrefixes = PrivateXSLProject::loadList( document, "prefixes", "prefix" );
 
 	if( d->m_specifiquePrefixes.size() == 0 )
 		d->m_specifiquePrefixes.append( d->m_specifiquePrefix );

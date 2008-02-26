@@ -1611,7 +1611,8 @@ void MainformImpl::openProject( const QString & filename ) {
 		d->updateTitle();
 	} catch( XSLProjectException e ) {
 		XINXProjectManager::self()->deleteProject();
-		QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
+		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << filename ) ) )
+			QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}
 	d->updateActions();
 	d->updateRecentProjects();

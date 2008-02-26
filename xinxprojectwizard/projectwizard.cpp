@@ -22,6 +22,7 @@
 #include "projectwizard.h"
 #include "directoryedit.h"
 #include "projectconverter.h"
+#include "../xinx/studiointerface.h"
 
 // Qt header
 #include <QApplication>
@@ -60,12 +61,23 @@ void ProjectWizard::setConverter( ProjectConverter * c ) {
 	m_converter  = c;
 }
 
+void ProjectWizard::accept() {
+	if( m_converter )
+		m_converter->save();
+	if( field( "project.open" ).toBool() ) {
+		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "com.editor.xinx", "/", QDBusConnection::sessionBus(), this );
+		interface->openProject( field( "project.name" ).toString() );
+	}
+	
+	QWizard::accept();
+}
+
 /* FileWizardPage */
 
 FileWizardPage::FileWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Project file selection") );
 	setSubTitle( tr("This wizard will help you to migrate your project file to "
-					"the current version of XINX. Please fill all fields") );
+					"the current version of XINX. Please fill all fields.") );
 	
 	QLabel * directoryLabel;
 	QVBoxLayout * layout = new QVBoxLayout( this );
@@ -98,24 +110,25 @@ bool FileWizardPage::validatePage() {
 
 VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Version informations") );
-	setSubTitle( tr("This page show you some informations about the selected project file") );
+	setSubTitle( tr("This page show you some informations about the selected project file.") );
 	setCommitPage( true );
 
 	QVBoxLayout * layout = new QVBoxLayout( this );
-	m_fileType       = new QLabel( this );
-	m_currentVersion = new QLabel( this );
-	m_destVersion    = new QLabel( this );
+	m_resume = new QLabel( this );
+	m_resume->setWordWrap( true );
 	
-	layout->addWidget( m_fileType );
-	layout->addWidget( m_currentVersion );
-	layout->addWidget( m_destVersion );
+	layout->addWidget( m_resume );
 }
 
 void VersionWizardPage::initializePage() {
 	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
-		m_fileType->setText( tr("Project file type : %1").arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() ) );
-		m_currentVersion->setText( tr("Current version : %1").arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() ) );
-		m_destVersion->setText( tr("To version : %1").arg( XINX_PROJECT_VERSION ) );
+		m_resume->setText( 
+				tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.")
+					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() )
+					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() )
+					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->nbSession() )
+		);
+		
 	}
 }
 
@@ -123,7 +136,7 @@ void VersionWizardPage::initializePage() {
 
 ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Progress of the conversion") );
-	setSubTitle( tr("Please waite ...") );
+	setSubTitle( tr("Please wait ...") );
 	
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	m_progressBar = new QProgressBar( this );
@@ -131,7 +144,13 @@ ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent
 }
 
 void ProgressWizardPage::initializePage() {
-	m_progressBar->setValue(50);
+	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
+		ProjectConverter * converter = dynamic_cast<ProjectWizard*>( wizard() )->converter();
+		connect( converter, SIGNAL(setValue(int)), m_progressBar, SLOT(setValue(int)) );
+		connect( converter, SIGNAL(setMaximum(int)), m_progressBar, SLOT(setMaximum(int)) );
+		converter->process();
+		m_progressBar->setMaximum( converter->nbSession() + XINX_PROJECT_VERSION - converter->version() );
+	}
 }
 
 /* ConclusionWizardPage */
@@ -144,5 +163,7 @@ ConclusionWizardPage::ConclusionWizardPage( QWidget * parent ) : QWizardPage( pa
 	layout->addWidget( new QLabel( tr("The project is now converted. XINX can now open the project file normally."), this ) );	
 	layout->addWidget( m_openCheck = new QCheckBox( tr("Re-open the project with XINX automatically"), this ) );
 
+	m_openCheck->setChecked( true );
+	
 	registerField( "project.open", m_openCheck );
 }
