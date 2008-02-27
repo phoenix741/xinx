@@ -42,6 +42,7 @@ Name: remplace_template; Description: Replace template.xnx file; GroupDescriptio
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\xinxprojectwizard\xinxprojectwizard.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
@@ -59,12 +60,15 @@ Source: dbus-pre-1.0.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompressio
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
+Name: {group}\{#AppName} Project Wizard; Filename: {app}\bin\xinxprojectwizard.exe; Components: application; Tasks: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
 Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon; Components: application
 Name: {group}\dbus\D-BUS Viewer; Filename: {pf}\dbus\bin\qdbusviewer.exe; Components: dbus
 Name: {group}\Documentation (API); Filename: {app}\doc\api\index.html; Comment: Documentation API de XINX; Components: documentation
 
 [Registry]
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueData: {app}\bin\xinxprojectwizard.exe
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\qdbusviewer.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"; Components: dbus
@@ -101,7 +105,6 @@ Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- 
 [Code]
 var
 	FilesWizardPage: TInputFileWizardPage;
-	DeveloppementMsgPage: TOutputMsgWizardPage;
 
 procedure Replace( var Chaine: String; c1, c2: Char );
 var I: Integer;
@@ -117,19 +120,6 @@ var DefaultCVSPath,
 begin
   { Create the pages }
 
-  DeveloppementMsgPage := CreateOutputMsgPage(wpWelcome,
-    'Type of Installation', 'What is done to install developpement environment?',
-    'Note: To install the developement environment of XINX, the installer will ' +
-    'make this step:'#10#13 +
-    '- Download and Install MinGW'#10#13 +
-    '- Download and Install expat xml library'#10#13 +
-    '- Download and Install cmake'#10#13 +
-    '- Download and Install win32libs'#10#13
-    '- Download (by svn), compile, and install windbus (patched for windows)'#10#13 +
-    '- Download, and Compile Qt with QtDbus support'#10#13 +
-    '- Compile Xinx'#10#13 +
-    '- Install optional program as Doxygen, QDevelop, ...');
-
   FilesWizardPage := CreateInputFilePage(wpSelectComponents,
     'Select tools locations', 'Where is located your tools?',
     'Select where CVS and Winmerge is located then click Next.');
@@ -144,7 +134,7 @@ begin
   RegQueryStringValue(HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Tools', 'cvs', DefaultCVSPath );
   RegQueryStringValue(HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Tools', 'diff', DefaultMergePath );
   if( DefaultCVSPath = '' ) then
-	DefaultCVSPath := ExpandConstant('{pf}\TortoiseCVS\cvs.exe')
+	DefaultCVSPath := ExpandConstant('{pf}\CVSNT\cvs.exe')
   else
     Replace( DefaultCVSPath, '/', '\' );
 
@@ -155,15 +145,6 @@ begin
 
   FilesWizardPage.Values[0] := DefaultCVSPath;
   FilesWizardPage.Values[1] := DefaultMergePath;
-end;
-
-function ShouldSkipPage(PageID: Integer): Boolean;
-begin
-  { Skip pages that shouldn't be shown }
-  if PageID = DeveloppementMsgPage.ID then
-    Result := True
-  else
-    Result := False;
 end;
 
 function NextButtonClick( CurPageID: Integer ): Boolean;

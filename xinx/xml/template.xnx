@@ -136,13 +136,13 @@ La valorisation est incluse.</Description>
 &lt;/GCEServiceassimilateIn>
 &lt;/bean_in>
 &lt;/egx_ws></Text>
-    <Param name="Code soci�t� (exemple : 1221)" />
+    <Param name="Code societe (exemple : 1221)" />
     <Param name="Target : code pev (exemple : ACDA)" />
     <Param name="Type tiers (exemple : FOU)" />
     <Param name="Sigle du tiers (exemple : BRFOU101)" />
-    <Param name="D�pot (exemple : ROISSY)" />
+    <Param name="Depot (exemple : ROISSY)" />
     <Param name="Code produit (exemple : AG101)" />
-    <Param name="Quantit� (exemple : 3)" />
+    <Param name="Quantite (exemple : 3)" />
   </Snipet>
   <Snipet category="Webservices" key="stock" icon="" type="0" name="Interroger le stock" >
     <Description>Permet d'interroger le stock pour un produit.</Description>
@@ -183,8 +183,8 @@ La valorisation est incluse.</Description>
     <Param name="Quantit� (exemple : 3)" />
     <Param name="Prix (exemple : 12)" />
   </Snipet>
-  <Snipet category="Input Widgets" key="cine" icon="" type="0" name="Cinematique" >
-    <Description>Champ pour générix</Description>
+  <Snipet category="Input Widgets" key="cine" icon="" type="0" name="Hidden fields" >
+    <Description>Hidden fields for Generix forms</Description>
     <Text>&lt;input type="hidden" name="sourceview" value="%1"/>
 &lt;input type="hidden" name="cinematic" value="%2"/>
 &lt;input type="hidden" name="entity" value="{$ENTITY}"/>
@@ -204,7 +204,8 @@ La valorisation est incluse.</Description>
 			&lt;xsl:call-template name="GnxHead"/>
 			&lt;body>
 				&lt;xsl:choose>
-					&lt;xsl:when test="//VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
 					&lt;/xsl:when>
 					&lt;xsl:otherwise>
 						&lt;xsl:call-template name="GnxHabilitation"/>
@@ -213,7 +214,21 @@ La valorisation est incluse.</Description>
 			&lt;/body>
 		&lt;/html>
 	&lt;/xsl:template>
+	
+	&lt;xsl:template match="JUt_UtiViewRow">
+	&lt;/xsl:template>
 &lt;/xsl:stylesheet>
 </Text>
+  </Snipet>
+  <Snipet category="Displays Widgets" key="sort" icon="" type="0" name="Sort" >
+    <Description></Description>
+    <Text>&lt;xsl:call-template name="GnxSort">
+	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
+	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
+	&lt;xsl:with-param name="sortkey_desc">%3&lt;/xsl:with-param>
+&lt;/xsl:call-template></Text>
+    <Param name="Title" />
+    <Param name="Asc key sort" />
+    <Param name="Desc key sort" />
   </Snipet>
 </SnipetList>
