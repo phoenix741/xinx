@@ -134,7 +134,7 @@ begin
   RegQueryStringValue(HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Tools', 'cvs', DefaultCVSPath );
   RegQueryStringValue(HKEY_CURRENT_USER, 'Software\Shadoware.Org\XINX\Tools', 'diff', DefaultMergePath );
   if( DefaultCVSPath = '' ) then
-	DefaultCVSPath := ExpandConstant('{pf}\TortoiseCVS\cvs.exe')
+	DefaultCVSPath := ExpandConstant('{pf}\CVSNT\cvs.exe')
   else
     Replace( DefaultCVSPath, '/', '\' );
 
@@ -222,4 +222,3 @@ begin
 
   Result := S;
 end;
-
