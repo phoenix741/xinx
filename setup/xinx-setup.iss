@@ -60,6 +60,7 @@ Source: dbus-pre-1.0.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompressio
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
+Name: {group}\{#AppName} Project Wizard; Filename: {app}\bin\xinxprojectwizard.exe; Components: application; Tasks: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
 Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon; Components: application
 Name: {group}\dbus\D-BUS Viewer; Filename: {pf}\dbus\bin\qdbusviewer.exe; Components: dbus
@@ -104,7 +105,6 @@ Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- 
 [Code]
 var
 	FilesWizardPage: TInputFileWizardPage;
-	DeveloppementMsgPage: TOutputMsgWizardPage;
 
 procedure Replace( var Chaine: String; c1, c2: Char );
 var I: Integer;
@@ -119,19 +119,6 @@ var DefaultCVSPath,
     DefaultMergePath: String;
 begin
   { Create the pages }
-
-  DeveloppementMsgPage := CreateOutputMsgPage(wpWelcome,
-    'Type of Installation', 'What is done to install developpement environment?',
-    'Note: To install the developement environment of XINX, the installer will ' +
-    'make this step:'#10#13 +
-    '- Download and Install MinGW'#10#13 +
-    '- Download and Install expat xml library'#10#13 +
-    '- Download and Install cmake'#10#13 +
-    '- Download and Install win32libs'#10#13
-    '- Download (by svn), compile, and install windbus (patched for windows)'#10#13 +
-    '- Download, and Compile Qt with QtDbus support'#10#13 +
-    '- Compile Xinx'#10#13 +
-    '- Install optional program as Doxygen, QDevelop, ...');
 
   FilesWizardPage := CreateInputFilePage(wpSelectComponents,
     'Select tools locations', 'Where is located your tools?',
@@ -158,15 +145,6 @@ begin
 
   FilesWizardPage.Values[0] := DefaultCVSPath;
   FilesWizardPage.Values[1] := DefaultMergePath;
-end;
-
-function ShouldSkipPage(PageID: Integer): Boolean;
-begin
-  { Skip pages that shouldn't be shown }
-  if PageID = DeveloppementMsgPage.ID then
-    Result := True
-  else
-    Result := False;
 end;
 
 function NextButtonClick( CurPageID: Integer ): Boolean;
@@ -244,3 +222,4 @@ begin
 
   Result := S;
 end;
+
