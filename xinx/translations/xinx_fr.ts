@@ -1480,7 +1480,7 @@ Version : %4</translation>
     <message>
         <location filename="../ui/mainform.ui" line="434"/>
         <source>&amp;Duplicate current line</source>
-        <translation>&amp;Dupliquer la ligne courrante</translation>
+        <translation>&amp;Dupliquer la ligne courante</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="442"/>
