@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr_FR">
-<defaultcodec></defaultcodec>
 <context>
     <name>Completion</name>
     <message>
@@ -82,57 +81,57 @@ Valeur : %2</translation>
 <context>
     <name>WebPlugin</name>
     <message>
-        <location filename="../webplugin.cpp" line="84"/>
+        <location filename="../webplugin.cpp" line="92"/>
         <source>XSL Stylesheet</source>
         <translation>Feuille de style XSL</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="85"/>
+        <location filename="../webplugin.cpp" line="93"/>
         <source>Webservices input stream</source>
         <translation>Flux d&apos;entrée pour WebServices</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="86"/>
+        <location filename="../webplugin.cpp" line="94"/>
         <source>XML File</source>
         <translation>Fichier XML</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="89"/>
+        <location filename="../webplugin.cpp" line="97"/>
         <source>HTML File</source>
         <translation>Fichier HTML</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="283"/>
+        <location filename="../webplugin.cpp" line="292"/>
         <source>JavaScript</source>
         <translation>JavaScript</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="284"/>
+        <location filename="../webplugin.cpp" line="293"/>
         <source>Cascading Style Sheet</source>
         <translation>Feuille de style en cascade CSS</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="118"/>
+        <location filename="../webplugin.cpp" line="126"/>
         <source>XML, XSL, HTML</source>
         <translation>XML, XSL, HTML</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="244"/>
+        <location filename="../webplugin.cpp" line="253"/>
         <source>XML, XSL, XHTML</source>
         <translation>XML, XSL, XHTML</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="280"/>
+        <location filename="../webplugin.cpp" line="289"/>
         <source>HTML</source>
         <translation>HTML</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="281"/>
+        <location filename="../webplugin.cpp" line="290"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../webplugin.cpp" line="282"/>
+        <location filename="../webplugin.cpp" line="291"/>
         <source>XSL</source>
         <translation>XSL</translation>
     </message>
