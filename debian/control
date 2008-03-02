@@ -1,6 +1,6 @@
 Source: xinx
-Section: unknown
-Priority: extra
+Section: devel
+Priority: optional
 Maintainer: Ulrich Van Den Hekke <xinx@shadoware.org>
 Build-Depends: debhelper (>= 5)
 Standards-Version: 3.7.2
