@@ -1,0 +1,17 @@
+Source: xinx
+Section: unknown
+Priority: extra
+Maintainer: Ulrich Van Den Hekke <xinx@shadoware.org>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: xinx
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: xinx-doc
+Architecture: all
+Description: Documentation for xinx
+ <insert long description, indented with spaces>
