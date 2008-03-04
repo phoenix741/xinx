@@ -326,7 +326,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
 	XINX_TRACE( "ProjectDirectoryDockWidget::refreshPath", QString( "( %1 )" ).arg( path ) );
 
-	if( ! path.contains( d->m_project->projectPath() ) ) return;
+	if( ! ( d->m_project && path.contains( d->m_project->projectPath() )) ) return;
 
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );
