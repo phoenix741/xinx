@@ -436,7 +436,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	if( d->m_fileName.isEmpty() ) return;
 	
 	// Save the session file
-	d->m_session->saveToFile();
+	d->m_session->saveToFile( d->m_fileName + ".session" );
 	
 	// Save attributes
 	QDomDocument document( "XSLProject" );
