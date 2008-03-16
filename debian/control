@@ -8,8 +8,18 @@ Standards-Version: 3.7.2
 Package: xinx
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: XSL/JS/HTML editor for Generix
+ XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet
+ 
+ This editor is used with egx.
+
+Package: xinxprojectwizard
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: XSL/JS/HTML editor for Generix
+ XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet
+ 
+ This editor is used with egx.
 
 Package: xinx-doc
 Architecture: all
