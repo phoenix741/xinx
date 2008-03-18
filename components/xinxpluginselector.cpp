@@ -37,19 +37,19 @@ XinxPluginModel::~XinxPluginModel() {
 }
 
 bool XinxPluginModel::setData( const QModelIndex &index, const QVariant &value, int role ) {
-	
+	return false;
 }
 
 QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
-	
+	return QVariant();
 }
 
 Qt::ItemFlags XinxPluginModel::flags( const QModelIndex &index ) const {
-	
+	return QAbstractListModel::flags( index );
 }
 
 QModelIndex XinxPluginModel::index( int row, int column, const QModelIndex &parent ) const {
-	
+	return QModelIndex();
 }
 
 int XinxPluginModel::rowCount( const QModelIndex &parent ) const {

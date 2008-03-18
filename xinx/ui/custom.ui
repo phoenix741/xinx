@@ -886,7 +886,31 @@ p, li { white-space: pre-wrap; }
      <widget class="QWidget" name="m_modules" >
       <layout class="QGridLayout" >
        <item row="0" column="0" >
-        <widget class="XinxPluginSelector" name="m_pluginListView" />
+        <widget class="QTabWidget" name="tabWidget" >
+         <property name="currentIndex" >
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab" >
+          <attribute name="title" >
+           <string>Plugins</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <item row="0" column="0" >
+            <widget class="XinxPluginSelector" name="m_pluginListView" />
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="Tab_2" >
+          <attribute name="title" >
+           <string>Script</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <item row="0" column="0" >
+            <widget class="QListView" name="m_scriptListView" />
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </item>
       </layout>
      </widget>
