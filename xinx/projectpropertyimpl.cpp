@@ -35,6 +35,7 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 	m_prefixLabel->setBuddy( m_prefixList );
 	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
 	m_servicesList->setDefaultVisible( false );
+	m_servicesList->setDefaultProposedValue( "http://localhost" );
 }
 
 ProjectPropertyImpl::~ProjectPropertyImpl() {

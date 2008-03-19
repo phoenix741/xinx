@@ -49,13 +49,13 @@ public:
 signals:
 	void defaultValueChanged( QString value );
 private slots:
-	void on_m_lineEdit_textChanged( QString text );
 	void on_m_btnDef_clicked();
 	void on_m_btnAdd_clicked();
 	void on_m_btnDel_clicked();
 private:
-	void updateDefault();
-	QString m_defaultValue, m_valueName, m_defaultProposedValue;
+	void updateDefault( const QString & def );
+	int m_defaultValue;
+	QString m_valueName, m_defaultProposedValue;
 };
 
 #endif /*XINXLISTXIDGET_H_*/
