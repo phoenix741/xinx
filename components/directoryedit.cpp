@@ -150,6 +150,10 @@ void DirectoryEditWidget::changePath() {
 	d->m_lineEdit->changePath( parentWidget(), d->m_default, d->m_directory );
 }
 
+void DirectoryEditWidget::focusInEvent( QFocusEvent * event ) {
+	d->m_lineEdit->setFocus();
+}
+
 DirectoryEdit * DirectoryEditWidget::lineEdit() const {
 	return d->m_lineEdit;
 }

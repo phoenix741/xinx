@@ -96,6 +96,8 @@ public:
 	void setDefaultValue( const QString & value );
 public slots:
 	void changePath();
+protected:
+	virtual void focusInEvent( QFocusEvent * event ); 
 private:
 	PrivateDirectoryEditWidget * d;
 	friend class PrivateDirectoryEditWidget;

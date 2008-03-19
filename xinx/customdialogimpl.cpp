@@ -115,18 +115,21 @@ DirectoryEditDelegate::DirectoryEditDelegate( QObject *parent ) : QItemDelegate(
 QWidget * DirectoryEditDelegate::createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
 	Q_UNUSED( option );
 	Q_UNUSED( index );
-	DirectoryEdit * editor = new DirectoryEdit( parent );
+	DirectoryEditWidget * editor = new DirectoryEditWidget( parent );
+	editor->setDirectory( false );
+	editor->layout()->setSpacing(0);
     return editor;	
 }
 
 void DirectoryEditDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const {
     QString value = index.model()->data( index, Qt::EditRole ).toString();
-    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEdit*>( editor );
+    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>( editor )->lineEdit();
     directoryEdit->setText( QDir::toNativeSeparators( value ) );
+    directoryEdit->setFocus();
 }
 
 void DirectoryEditDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const {
-    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEdit*>( editor );
+    DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>( editor )->lineEdit();
     QString value = directoryEdit->text();
 
     model->setData( index, QDir::fromNativeSeparators( value ), Qt::EditRole );	
