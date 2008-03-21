@@ -60,8 +60,7 @@ DISTFILES = ../CHANGELOG \
     ui/*.ui \
     xml/*.xnx
 RESOURCES += application.qrc
-FORMS += ui/xinxlistwidget.ui \
-    ui/plugindialog.ui \
+FORMS += ui/plugindialog.ui \
     ui/specifiquedlg.ui \
     ui/about.ui \
     ui/commitmessages.ui \
@@ -81,7 +80,6 @@ FORMS += ui/xinxlistwidget.ui \
     ui/newprojectwizard_services.ui \
     ui/newprojectwizard_serviceslist.ui
 HEADERS += xinxcore.h \
-    xinxlistwidgetimpl.h \
     plugindialog.h \
     xinxpluginsloader.h \
     specifiquedlgimpl.h \
@@ -148,7 +146,6 @@ HEADERS += xinxcore.h \
     xslproject.h \
     private/p_customdialogimpl.h
 SOURCES += xinxcore.cpp \
-    xinxlistwidgetimpl.cpp \
     plugindialog.cpp \
     xinxpluginsloader.cpp \
     specifiquedlgimpl.cpp \

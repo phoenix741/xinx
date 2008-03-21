@@ -13,11 +13,14 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
+FORMS = ui/xinxlistwidget.ui
 HEADERS = p_xinxpluginselector.h \
     xinxpluginselector.h \
     directoryedit.h \
-    kcolorcombo.h
+    kcolorcombo.h \
+    xinxlistwidgetimpl.h     
 SOURCES = directoryedit.cpp \
     kcolorcombo.cpp \
-    xinxpluginselector.cpp
+    xinxpluginselector.cpp \ 
+    xinxlistwidgetimpl.cpp 
 TRANSLATIONS += translations/xinxcomponents_fr.ts
