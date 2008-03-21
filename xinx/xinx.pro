@@ -1,5 +1,7 @@
 TEMPLATE = app
 TARGET = xinx
+xinx.path = /usr/local/xinx
+INSTALLS += xinx
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
