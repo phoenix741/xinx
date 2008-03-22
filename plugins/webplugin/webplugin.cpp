@@ -83,6 +83,27 @@ bool WebPlugin::initializePlugin( const QString & lang ) {
 	return true;
 }
 
+QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
+	switch( attr ) {
+	case PLG_NAME:
+		return tr("WebPlugin");
+	case PLG_DESCRIPTION:
+		return tr("Editor helper for HTML, XSL, XML, JS, CSS files.");
+	case PLG_ICON:
+		return QIcon();
+	case PLG_AUTHOR:
+		return "Ulrich Van Den Hekke";
+	case PLG_EMAIL:
+		return "ulrich.vdh@shadoware.org";
+	case PLG_WEBSITE:
+		return "http://www.shadoware.org";
+	case PLG_VERSION:
+		return "0.1";
+	case PLG_LICENCE:
+		return "GPL v2.0 or later";
+	}
+}
+
 QStringList WebPlugin::extentions() {
 	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css" << "fws"; 
 }

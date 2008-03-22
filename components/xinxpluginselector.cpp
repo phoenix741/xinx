@@ -18,7 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// Xinx header
 #include "p_xinxpluginselector.h"
+#include "plugininterfaces.h"
 
 /* PrivateXinxPluginSelector */
 
@@ -41,19 +43,35 @@ bool XinxPluginModel::setData( const QModelIndex &index, const QVariant &value, 
 }
 
 QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
-	return QVariant();
+	if( ! index.isValid() ) 
+		return QVariant();
+	
+	int i = index.row();
+	QVariant result = m_plugins.at( i )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
+	if( ! result.isValid() )
+	switch( role ) {
+	case Qt::DisplayRole:
+		return m_plugins.at( i )->getPluginAttribute( IXinxPlugin::PLG_NAME );
+	}
+	
+	return QVariant();	
 }
 
 Qt::ItemFlags XinxPluginModel::flags( const QModelIndex &index ) const {
-	return QAbstractListModel::flags( index );
+	if( ! index.isValid() )
+        return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	else
+		return QAbstractListModel::flags( index );
 }
 
 QModelIndex XinxPluginModel::index( int row, int column, const QModelIndex &parent ) const {
-	return QModelIndex();
+	Q_UNUSED( parent );
+	return createIndex( row, column );
 }
 
 int XinxPluginModel::rowCount( const QModelIndex &parent ) const {
-	return 0;
+	Q_UNUSED( parent );
+	return m_plugins.count();
 }
 
 

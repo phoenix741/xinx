@@ -35,6 +35,7 @@ public:
 	WebPlugin();
 	
 	virtual bool initializePlugin( const QString & lang );
+	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
 	virtual QStringList extentions();
 	virtual QHash<QString,QString> extentionsDescription();
