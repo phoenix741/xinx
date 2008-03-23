@@ -24,3 +24,4 @@ SOURCES = directoryedit.cpp \
     xinxpluginselector.cpp \ 
     xinxlistwidgetimpl.cpp 
 TRANSLATIONS += translations/xinxcomponents_fr.ts
+RESOURCES = xinxpluginselector.qrc
