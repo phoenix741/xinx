@@ -38,6 +38,13 @@ XinxPluginModel::~XinxPluginModel() {
 	
 }
 
+void XinxPluginModel::addPlugin( IXinxPlugin * plugin ) {
+	beginInsertRows( QModelIndex(), m_plugins.count(), m_plugins.count() );
+	m_plugins.append( plugin );
+	endInsertRows();
+}
+
+
 bool XinxPluginModel::setData( const QModelIndex &index, const QVariant &value, int role ) {
 	return false;
 }
@@ -47,8 +54,7 @@ QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
 		return QVariant();
 	
 	int i = index.row();
-	QVariant result = m_plugins.at( i )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
-	if( ! result.isValid() )
+//	QVariant result = m_plugins.at( i )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
 	switch( role ) {
 	case Qt::DisplayRole:
 		return m_plugins.at( i )->getPluginAttribute( IXinxPlugin::PLG_NAME );
@@ -87,5 +93,5 @@ XinxPluginSelector::~XinxPluginSelector() {
 }
     
 void XinxPluginSelector::addPlugin( IXinxPlugin * plugin ) {
-	
+	d->m_model->addPlugin( plugin );
 }

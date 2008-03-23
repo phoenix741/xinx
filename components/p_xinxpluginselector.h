@@ -34,6 +34,8 @@ public:
 	XinxPluginModel( QWidget * parent );
 	virtual ~XinxPluginModel();
 
+	void addPlugin( IXinxPlugin * plugin );
+	
     bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
     QVariant data( const QModelIndex &index, int role ) const;
     Qt::ItemFlags flags( const QModelIndex &index ) const;

@@ -57,6 +57,11 @@ const QDir & XinxPluginsLoader::pluginsDir() const {
 const QStringList & XinxPluginsLoader::pluginFileNames() const {
 	return m_pluginFileNames;
 }
+
+const QList<IXinxPlugin*> & XinxPluginsLoader::plugins() const {
+	return m_plugins;
+}
+
 	
 void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 	QString subplugin;
@@ -87,10 +92,14 @@ void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 }
 
 void XinxPluginsLoader::addPlugin( QObject * plugin ) {
+	IXinxPlugin * iXinxPlugin = qobject_cast<IXinxPlugin*>( plugin );
+	if( ! iXinxPlugin ) return;
+
+	m_plugins.append( iXinxPlugin );
+	iXinxPlugin->initializePlugin( XINXConfig::self()->config().language );
+	
 	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
-	if( iFilePlugin ) {
-		iFilePlugin->initializePlugin( XINXConfig::self()->config().language );
-		
+	if( iFilePlugin ) {	
 		QHash<QString,QString> libelles = iFilePlugin->extentionsDescription();
 		
 		foreach( QString extentions, iFilePlugin->extentions() ) {

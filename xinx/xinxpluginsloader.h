@@ -44,6 +44,7 @@ public:
 	
 	const QDir & pluginsDir() const;
 	const QStringList & pluginFileNames() const;
+	const QList<IXinxPlugin*> & plugins() const;
 	
 	QIcon iconOfSuffix( const QString & suffix ) const;
 
@@ -85,6 +86,8 @@ private:
 	QHash< QString,IPluginSyntaxHighlighter* > m_directSyntaxPlugins;
 	QHash< QString,IPluginPrettyPrint* > m_directPrettyPlugins;
 	QHash< QString,IPluginExtendedEditor* > m_directExtendedEditorPlugins;
+	
+	QList< IXinxPlugin* > m_plugins;
 	
 	static XinxPluginsLoader * s_self;
 };
