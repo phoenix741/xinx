@@ -22,10 +22,17 @@
 #include "p_xinxpluginselector.h"
 #include "plugininterfaces.h"
 
+// Qt header
+#include <QApplication>
+#include <QPainter>
+#include <QFont>
+
 /* PrivateXinxPluginSelector */
 
 PrivateXinxPluginSelector::PrivateXinxPluginSelector( XinxPluginSelector * parent ) : m_parent( parent ) {
 	m_model = new XinxPluginModel( parent );
+	m_delegate = new XinxPluginDelegate( parent );
+	parent->setItemDelegate( m_delegate );
 }
 
 /* XinxPluginModel */
@@ -54,11 +61,13 @@ QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
 		return QVariant();
 	
 	int i = index.row();
-//	QVariant result = m_plugins.at( i )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
-	switch( role ) {
+	QVariant result = m_plugins.at( i )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
+	if( result.isValid() )
+		return result;
+/*	switch( role ) {
 	case Qt::DisplayRole:
 		return m_plugins.at( i )->getPluginAttribute( IXinxPlugin::PLG_NAME );
-	}
+	}*/
 	
 	return QVariant();	
 }
@@ -78,6 +87,84 @@ QModelIndex XinxPluginModel::index( int row, int column, const QModelIndex &pare
 int XinxPluginModel::rowCount( const QModelIndex &parent ) const {
 	Q_UNUSED( parent );
 	return m_plugins.count();
+}
+
+
+XinxPluginDelegate::XinxPluginDelegate( QObject * parent ) : QItemDelegate( parent ) {
+	m_separatorPixels = 8;
+	m_rightMargin = 0;
+	m_leftMargin = 0;
+}
+
+XinxPluginDelegate::~XinxPluginDelegate() {
+	
+}
+
+void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
+	painter->save();
+	
+	QFont title( painter->font() );
+	title.setBold( true );
+	
+	if( option.state & QStyle::State_Selected ) {
+		painter->fillRect( option.rect, option.palette.color( QPalette::Highlight ) );
+	} else {
+		if( index.row() % 2 != 0 )
+			painter->fillRect( option.rect, option.palette.color( QPalette::AlternateBase ) );
+		else
+			painter->fillRect( option.rect, option.palette.color( QPalette::Base ) );
+	}
+	
+	QString display = index.model()->data( index, IXinxPlugin::PLG_NAME ).toString();
+	QString description = index.model()->data( index, IXinxPlugin::PLG_DESCRIPTION ).toString(); 
+	
+	// Draw about button 
+	QStyleOptionButton optAbout;
+	{
+		optAbout.state |= QStyle::State_Enabled;
+		//opt.icon =
+		//opt.iconSize =
+		optAbout.text = tr("About ...");
+		optAbout.fontMetrics = option.fontMetrics;
+		optAbout.rect.setTop( option.rect.top() + m_separatorPixels );
+		optAbout.rect.setSize( QApplication::style()->sizeFromContents( QStyle::CT_PushButton, &option, QSize( optAbout.fontMetrics.width( optAbout.text ) + optAbout.iconSize.width() + m_separatorPixels, qMax( optAbout.fontMetrics.height(), optAbout.iconSize.height() + m_separatorPixels ) ) ) );
+		if( optAbout.direction == Qt::LeftToRight )
+			optAbout.rect.setLeft( option.rect.right() - m_rightMargin - m_separatorPixels - optAbout.rect.width() );
+		else
+			optAbout.rect.setLeft( m_leftMargin + m_separatorPixels );
+		optAbout.rect.setSize( QApplication::style()->sizeFromContents( QStyle::CT_PushButton, &option, QSize( optAbout.fontMetrics.width( optAbout.text ) + optAbout.iconSize.width() + m_separatorPixels, qMax( optAbout.fontMetrics.height(), optAbout.iconSize.height() + m_separatorPixels ) ) ) );
+		
+		QApplication::style()->drawControl( QStyle::CE_PushButton, &optAbout, painter );
+	}
+
+	// Draw settings button 
+	{
+		QStyleOptionButton opt;
+		opt.state |= QStyle::State_Enabled;
+		//opt.icon =
+		//opt.iconSize =
+		opt.text = tr("Configure ...");
+		opt.fontMetrics = option.fontMetrics;
+		opt.rect.setTop( option.rect.top() + m_separatorPixels );
+		opt.rect.setSize( QApplication::style()->sizeFromContents( QStyle::CT_PushButton, &option, QSize( opt.fontMetrics.width( opt.text ) + opt.iconSize.width() + m_separatorPixels, qMax( opt.fontMetrics.height(), opt.iconSize.height() + m_separatorPixels ) ) ) );
+		if( opt.direction == Qt::LeftToRight )
+			opt.rect.setLeft( option.rect.right() - m_rightMargin - m_separatorPixels - opt.rect.width() - m_separatorPixels - optAbout.rect.width() );
+		else
+			opt.rect.setLeft( m_leftMargin + m_separatorPixels );
+		opt.rect.setSize( QApplication::style()->sizeFromContents( QStyle::CT_PushButton, &option, QSize( opt.fontMetrics.width( opt.text ) + opt.iconSize.width() + m_separatorPixels, qMax( opt.fontMetrics.height(), opt.iconSize.height() + m_separatorPixels ) ) ) );
+		
+		QApplication::style()->drawControl( QStyle::CE_PushButton, &opt, painter );
+	}
+	
+	painter->setFont( title );
+	painter->drawText( m_leftMargin + m_separatorPixels * 2, m_separatorPixels + option.rect.top(), painter->fontMetrics().width( display ), painter->fontMetrics().height(), Qt::AlignLeft, display );
+	
+	painter->restore();
+}
+
+QSize XinxPluginDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const {
+	return QSize( 200, 100 );
+	//return QItemDelegate::sizeHint( option, index );
 }
 
 

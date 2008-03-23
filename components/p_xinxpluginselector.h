@@ -27,6 +27,7 @@
 
 // Qt header
 #include <QAbstractListModel>
+#include <QItemDelegate>
 
 class XinxPluginModel : public QAbstractListModel {
 	Q_OBJECT
@@ -45,15 +46,27 @@ private:
 	QList<IXinxPlugin*> m_plugins;
 };
 
+class XinxPluginDelegate : public QItemDelegate {
+	Q_OBJECT
+public:
+	XinxPluginDelegate( QObject * parent );
+	virtual ~XinxPluginDelegate();
+	
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+	int m_separatorPixels, m_rightMargin, m_leftMargin;
+};
+
 class PrivateXinxPluginSelector : public QObject {
 	Q_OBJECT
 public:
 	PrivateXinxPluginSelector( XinxPluginSelector * parent );
 	
 	XinxPluginModel * m_model;
+	XinxPluginDelegate * m_delegate;
 private:
 	XinxPluginSelector * m_parent;
 };
-
 
 #endif /*P_XINXPLUGINSELECTOR_H_*/
