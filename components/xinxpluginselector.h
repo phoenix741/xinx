@@ -28,6 +28,7 @@
 #include <QListView>
 
 class PrivateXinxPluginSelector;
+class XinxPluginDelegate;
 
 class XinxPluginSelector : public QListView {
 	Q_OBJECT
@@ -36,6 +37,7 @@ public:
     virtual ~XinxPluginSelector();
     
     void addPlugin( XinxPluginElement plugin );
+    QStyleOptionViewItem viewOptions() const;
 private:
 	PrivateXinxPluginSelector * d;
 	friend class PrivateXinxPluginSelector;

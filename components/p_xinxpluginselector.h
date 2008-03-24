@@ -77,6 +77,14 @@ private:
 	 */
 	QStyleOptionButton drawButton( QPainter * painter, const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0 ) const;
 	
+	QStyleOptionViewItem calculateCheckbox( const QStyleOptionViewItem & option, QRect & rect, int decalage = 0 ) const;
+	
+	QStyleOptionButton calculateButtonAbout( const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	QStyleOptionButton drawButtonAbout( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	
+	QStyleOptionButton calculateButtonConfigure( const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	QStyleOptionButton drawButtonConfigure( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+		
 	int m_separatorPixels, m_rightMargin, m_leftMargin;
 	QPoint m_cursorPosition;
 	bool m_buttonPressed;

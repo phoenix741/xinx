@@ -118,13 +118,34 @@ XinxPluginDelegate::~XinxPluginDelegate() {
 
 bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 	QWidget * viewport = qobject_cast<QWidget*>( watched );
-	QListView * listView  = qobject_cast<QListView*>( viewport->parent() );
+	XinxPluginSelector * listView  = qobject_cast<XinxPluginSelector*>( viewport->parent() );
 	if( ! listView )  
-		listView = qobject_cast<QListView*>( viewport );
+		listView = qobject_cast<XinxPluginSelector*>( viewport );
+	if( ! ( listView && viewport ) ) return false;
+	
+	m_cursorPosition = viewport->mapFromGlobal( QCursor::pos() );
+	
+	QModelIndex currentIndex;
+	if( listView )
+		currentIndex = listView->indexAt( m_cursorPosition );
 
-	if( viewport ) 
-		m_cursorPosition = viewport->mapFromGlobal( QCursor::pos() );
-		
+	if( ! currentIndex.isValid() ) return false;
+
+	QStyleOptionViewItem option;
+	option.fontMetrics = listView->viewOptions().fontMetrics;
+	option.direction = listView->layoutDirection();
+	option.rect = listView->visualRect( currentIndex );
+	
+	QStyleOptionButton optAbout, optConfigure;
+	optAbout = calculateButtonAbout( option );
+	optConfigure = calculateButtonConfigure( option, m_separatorPixels + optAbout.rect.width() );
+	
+	QRect rectCheck;
+	QStyleOptionViewItem optCheck = calculateCheckbox( option, rectCheck );
+	
+	if( ! ( optAbout.rect.contains( m_cursorPosition ) || optConfigure.rect.contains( m_cursorPosition ) || rectCheck.contains( m_cursorPosition ) ) )
+		return false;
+	
 	if( viewport && ( event->type() == QEvent::MouseMove ) ) {
 		viewport->update();
 		return true;
@@ -161,18 +182,10 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
 	}
 	
 	// Draw checkbox
-	QStyleOptionViewItem checkOpt( option );
-	QRect checkRect = QApplication::style()->subElementRect( QStyle::SE_ViewItemCheckIndicator, &option );
-	QSize checkSize = checkRect.size();
-	checkRect.setTopLeft( QPoint( 
-			option.direction == Qt::LeftToRight ? option.rect.left() + m_leftMargin + m_separatorPixels
-											    : option.rect.right() - m_rightMargin -  m_separatorPixels - checkSize.width(),
-			( option.rect.height() - checkSize.height() ) / 2 + option.rect.top()
-			));
-	checkRect.setSize( checkSize );
+	QRect checkRect;
+	QStyleOptionViewItem checkOpt = calculateCheckbox( option, checkRect );
 	if( ! ( index.model()->flags( index ) & Qt::ItemIsEnabled ) )
-		checkOpt.state ^= ~ QFlags<QStyle::StateFlag>( QStyle::State_Enabled );
-	
+		checkOpt.state ^= ~ QFlags<QStyle::StateFlag>( QStyle::State_Enabled );	
 	drawCheck( painter, checkOpt, checkRect, (Qt::CheckState)index.model()->data( index, Qt::CheckStateRole ).toInt() );
 	
     // Draw icon
@@ -189,11 +202,11 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
     painter->drawPixmap( pixmapLeftPosition, ( option.rect.height() - iconPixmap.height() ) / 2 + option.rect.top(), iconPixmap );
 
     // Draw buttons 
-	QStyleOptionButton optAbout = drawButton( painter, QIcon( ":/images/help-about.png" ), tr("About ..."), option );
-	QStyleOptionButton optConfigure = drawButton( painter, QIcon( ":/images/configure.png" ), tr("Configure ..."), option, m_separatorPixels + optAbout.rect.width() );
+	QStyleOptionButton optAbout = drawButtonAbout( painter, option );
+	QStyleOptionButton optConfigure = drawButtonConfigure( painter, option, m_separatorPixels + optAbout.rect.width() );
 
-	// Draw text
-	int maxTextLength = option.rect.width() - checkRect.width() - iconPixmap.width() - m_leftMargin - m_rightMargin - m_separatorPixels * 3 - optAbout.rect.width() - optConfigure.rect.width();
+	// Draw text 
+	int maxTextLength = option.rect.width() - checkRect.width() - iconPixmap.width() - m_leftMargin - m_rightMargin - m_separatorPixels * 7 - optAbout.rect.width() - optConfigure.rect.width();
 	
 	QString display = index.model()->data( index, IXinxPlugin::PLG_NAME ).toString();
 	QString description = index.model()->data( index, IXinxPlugin::PLG_DESCRIPTION ).toString(); 
@@ -226,6 +239,26 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
     		description );
 
 	painter->restore();
+}
+
+QStyleOptionButton XinxPluginDelegate::calculateButtonAbout( const QStyleOptionViewItem & option, int decalage ) const {
+	return calculateButton( QIcon( ":/images/help-about.png" ), tr("About ..."), option, decalage );
+}
+
+QStyleOptionButton XinxPluginDelegate::drawButtonAbout( QPainter * painter, const QStyleOptionViewItem & option, int decalage ) const {
+	QStyleOptionButton o = calculateButtonAbout( option, decalage );
+	QApplication::style()->drawControl( QStyle::CE_PushButton, &o, painter );
+	return o;
+}
+
+QStyleOptionButton XinxPluginDelegate::calculateButtonConfigure( const QStyleOptionViewItem & option, int decalage ) const {
+	return calculateButton( QIcon( ":/images/configure.png" ), tr("Configure ..."), option, decalage );
+}
+
+QStyleOptionButton XinxPluginDelegate::drawButtonConfigure( QPainter * painter, const QStyleOptionViewItem & option, int decalage ) const {
+	QStyleOptionButton o = calculateButtonConfigure( option, decalage );
+	QApplication::style()->drawControl( QStyle::CE_PushButton, &o, painter );
+	return o;
 }
 
 QStyleOptionButton XinxPluginDelegate::calculateButton( const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage ) const {
@@ -269,6 +302,19 @@ QStyleOptionButton XinxPluginDelegate::drawButton( QPainter * painter, const QIc
 	return o;
 }
 
+QStyleOptionViewItem XinxPluginDelegate::calculateCheckbox( const QStyleOptionViewItem & option, QRect & rect, int decalage ) const {
+	QStyleOptionViewItem checkOpt( option );
+	rect = QApplication::style()->subElementRect( QStyle::SE_ViewItemCheckIndicator, &option );
+	QSize checkSize = rect.size();
+	rect.setTopLeft( QPoint( 
+			option.direction == Qt::LeftToRight ? option.rect.left() + m_leftMargin + m_separatorPixels + decalage
+											    : option.rect.right() - m_rightMargin -  m_separatorPixels - checkSize.width() - decalage,
+			( option.rect.height() - checkSize.height() ) / 2 + option.rect.top()
+			));
+	rect.setSize( checkSize );
+	return checkOpt;
+}
+
 QSize XinxPluginDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const {
 	return QSize( 200, 50 );
 	//return QItemDelegate::sizeHint( option, index );
@@ -294,4 +340,8 @@ XinxPluginSelector::~XinxPluginSelector() {
     
 void XinxPluginSelector::addPlugin( XinxPluginElement plugin ) {
 	d->m_model->addPlugin( plugin );
+}
+
+QStyleOptionViewItem XinxPluginSelector::viewOptions() const {
+    return QListView::viewOptions();
 }
