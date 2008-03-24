@@ -28,6 +28,8 @@
 // Qt header
 #include <QAbstractListModel>
 #include <QItemDelegate>
+#include <QPainter>
+
 
 class XinxPluginModel : public QAbstractListModel {
 	Q_OBJECT
@@ -54,8 +56,29 @@ public:
 	
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+protected:
+    virtual bool eventFilter( QObject *watched, QEvent *event );
 private:
+	/*!
+	 * Prerpare a button to be designed. \e decalage define the distance from the border (left or right), and ca be used
+	 * when another button is designed.
+	 * \param icon    The icon to use to design the button.
+	 * \param caption The text to show on the button.
+	 * \param option  The option used to design the view item.
+	 */
+	QStyleOptionButton calculateButton( const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	/*!
+	 * Draw a button on the line. \e decalage define the distance from the border (left or right), and ca be used
+	 * when another button is designed.
+	 * \param painter The painter where designe the button.
+	 * \param icon    The icon to use to design the button.
+	 * \param caption The text to show on the button.
+	 * \param option  The option used to design the view item.
+	 */
+	QStyleOptionButton drawButton( QPainter * painter, const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0 ) const;
+	
 	int m_separatorPixels, m_rightMargin, m_leftMargin;
+	QPoint m_cursorPosition;
 };
 
 class PrivateXinxPluginSelector : public QObject {
