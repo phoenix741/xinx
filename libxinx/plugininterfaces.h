@@ -61,6 +61,12 @@ public:
 	/* TODO: Pour la boite de dialogue, il faudra utiliser un objet spécialisé qui sait faire load an save */
 };
 
+struct XinxPluginElement {
+	bool isStatic;
+	bool isActivated;
+	IXinxPlugin * plugin;
+};
+
 class IFilePlugin : public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.

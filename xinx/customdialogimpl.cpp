@@ -372,7 +372,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
 	
 	// Plugins
-	foreach( IXinxPlugin * plugin, XinxPluginsLoader::self()->plugins() )
+	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() )
 		m_parent->m_pluginListView->addPlugin( plugin );
 }
 

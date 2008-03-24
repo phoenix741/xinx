@@ -28,10 +28,11 @@
 /* SVNPlugin */
 
 SVNPlugin::SVNPlugin() {
+    Q_INIT_RESOURCE(svnplugin);
 }
 
 bool SVNPlugin::initializePlugin( const QString & lang ) {
-
+    return true;
 }
 
 QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
@@ -40,10 +41,10 @@ QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 		return tr("SubVersion Plugin");
 	case PLG_DESCRIPTION:
 		return tr("Enable using Subversion versionned file system.");
-	case PLG_ICON:
-		return QIcon();
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
+    case PLG_ICON:
+        return QPixmap( ":/images/repos_svn.png" );
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:

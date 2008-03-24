@@ -37,7 +37,7 @@ public:
 	XinxPluginModel( QWidget * parent );
 	virtual ~XinxPluginModel();
 
-	void addPlugin( IXinxPlugin * plugin );
+	void addPlugin( XinxPluginElement plugin );
 	
     bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
     QVariant data( const QModelIndex &index, int role ) const;
@@ -45,7 +45,7 @@ public:
     QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
     int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 private:
-	QList<IXinxPlugin*> m_plugins;
+	QList<XinxPluginElement> m_plugins;
 };
 
 class XinxPluginDelegate : public QItemDelegate {
@@ -79,6 +79,7 @@ private:
 	
 	int m_separatorPixels, m_rightMargin, m_leftMargin;
 	QPoint m_cursorPosition;
+	bool m_buttonPressed;
 };
 
 class PrivateXinxPluginSelector : public QObject {

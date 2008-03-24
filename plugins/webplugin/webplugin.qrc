@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/" >
+        <file>images/planet.png</file>
         <file>images/typecss.png</file>
         <file>images/typefws.png</file>
         <file>images/typehtml.png</file>

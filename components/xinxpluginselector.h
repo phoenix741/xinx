@@ -21,9 +21,12 @@
 #ifndef XINXPLUGINSELECTOR_H_
 #define XINXPLUGINSELECTOR_H_
 
+// Xinx header
+#include <plugininterfaces.h>
+
+// Qt header
 #include <QListView>
 
-class IXinxPlugin;
 class PrivateXinxPluginSelector;
 
 class XinxPluginSelector : public QListView {
@@ -32,7 +35,7 @@ public:
 	XinxPluginSelector( QWidget *parent = 0 );
     virtual ~XinxPluginSelector();
     
-    void addPlugin( IXinxPlugin * plugin );
+    void addPlugin( XinxPluginElement plugin );
 private:
 	PrivateXinxPluginSelector * d;
 	friend class PrivateXinxPluginSelector;

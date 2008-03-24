@@ -58,7 +58,7 @@ const QStringList & XinxPluginsLoader::pluginFileNames() const {
 	return m_pluginFileNames;
 }
 
-const QList<IXinxPlugin*> & XinxPluginsLoader::plugins() const {
+const QList<XinxPluginElement> & XinxPluginsLoader::plugins() const {
 	return m_plugins;
 }
 
@@ -91,11 +91,15 @@ void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 	}
 }
 
-void XinxPluginsLoader::addPlugin( QObject * plugin ) {
+void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	IXinxPlugin * iXinxPlugin = qobject_cast<IXinxPlugin*>( plugin );
 	if( ! iXinxPlugin ) return;
 
-	m_plugins.append( iXinxPlugin );
+	struct XinxPluginElement element;
+	element.plugin = iXinxPlugin;
+	element.isActivated = true;
+	element.isStatic = staticLoaded;
+	m_plugins.append( element );
 	iXinxPlugin->initializePlugin( XINXConfig::self()->config().language );
 	
 	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
@@ -146,7 +150,7 @@ void XinxPluginsLoader::addPlugin( QObject * plugin ) {
 
 void XinxPluginsLoader::loadPlugins() {
 	foreach( QObject * plugin, QPluginLoader::staticInstances() )
-		addPlugin( plugin );
+		addPlugin( plugin, true );
 	
 	m_pluginsDir = QDir( qApp->applicationDirPath() );
 	m_pluginsDir.cd( "../plugins" );

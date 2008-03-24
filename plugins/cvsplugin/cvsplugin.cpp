@@ -31,7 +31,7 @@ CVSPlugin::CVSPlugin() {
 }
 
 bool CVSPlugin::initializePlugin( const QString & lang ) {
-
+    return true;
 }
 
 QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
@@ -40,8 +40,6 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 		return tr("CVS Plugin");
 	case PLG_DESCRIPTION:
 		return tr("Enable using CVS versionned file system.");
-	case PLG_ICON:
-		return QIcon();
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_EMAIL:

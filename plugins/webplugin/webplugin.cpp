@@ -90,7 +90,7 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	case PLG_DESCRIPTION:
 		return tr("Editor helper for HTML, XSL, XML, JS, CSS files.");
 	case PLG_ICON:
-		return QIcon();
+		return QPixmap( ":/images/planet.png" );
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_EMAIL:
