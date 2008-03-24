@@ -43,7 +43,15 @@ class QCompleter;
 
 class IXinxPlugin {
 public:
-	enum PluginAttribute { PLG_NAME, PLG_DESCRIPTION, PLG_ICON, PLG_AUTHOR, PLG_EMAIL, PLG_WEBSITE, PLG_VERSION, PLG_LICENCE };
+	enum PluginAttribute { 
+		PLG_NAME        = 1001, 
+		PLG_DESCRIPTION = 1002, 
+		PLG_ICON        = 1003, 
+		PLG_AUTHOR      = 1004, 
+		PLG_EMAIL       = 1005, 
+		PLG_WEBSITE     = 1006, 
+		PLG_VERSION     = 1007, 
+		PLG_LICENCE     = 1008 };
 	
 	virtual ~IXinxPlugin() {};
 

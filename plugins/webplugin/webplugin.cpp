@@ -86,7 +86,7 @@ bool WebPlugin::initializePlugin( const QString & lang ) {
 QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("WebPlugin");
+		return tr("Web Plugin");
 	case PLG_DESCRIPTION:
 		return tr("Editor helper for HTML, XSL, XML, JS, CSS files.");
 	case PLG_ICON:
@@ -102,6 +102,7 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	case PLG_LICENCE:
 		return "GPL v2.0 or later";
 	}
+	return QVariant();
 }
 
 QStringList WebPlugin::extentions() {

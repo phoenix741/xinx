@@ -61,15 +61,17 @@ QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
 		return QVariant();
 	
 	int i = index.row();
+	if( ( i < 0 ) || ( i >= m_plugins.count() ) ) return QVariant();
+	
 	QVariant result = m_plugins.at( i )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
-	if( result.isValid() )
-		return result;
-/*	switch( role ) {
+	if( result.isValid() ) return result;
+
+	switch( role ) {
 	case Qt::DisplayRole:
 		return m_plugins.at( i )->getPluginAttribute( IXinxPlugin::PLG_NAME );
-	}*/
-	
-	return QVariant();	
+	default:
+		return QVariant();
+	}	
 }
 
 Qt::ItemFlags XinxPluginModel::flags( const QModelIndex &index ) const {

@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = webplugin
+SUBDIRS = webplugin cvsplugin svnplugin

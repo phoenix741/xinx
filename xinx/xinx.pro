@@ -23,22 +23,27 @@ CONFIG += debug \
     x86
 QT += network \
     xml
-LIBS = -L../plugins/webplugin \
+LIBS = -L../plugins/cvsplugin \
+    -L../plugins/webplugin \
     -L../libxinx \
     -L../components
 win32:CONFIG(debug) { 
     LIBS += -lsharedxinxd \
         -lxinxcmpd \
-        -lwebplugind
-    POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
+        -lwebplugind \
+        -lcvsplugind
+    POST_TARGETDEPS = ../plugins/cvsplugin/libcvsplugind.a \
+        ../plugins/webplugin/libwebplugind.a \
         ../libxinx/libsharedxinxd.a \
         ../components/libxinxcmpd.a
 }
 else { 
     LIBS += -lsharedxinx \
         -lxinxcmp \
-        -lwebplugin 
-    POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
+        -lwebplugin \
+        -lcvsplugin
+    POST_TARGETDEPS = ../plugins/cvsplugin/libcvsplugin.a \
+        ../plugins/webplugin/libwebplugin.a \
         ../libxinx/libsharedxinx.a \
         ../components/libxinxcmp.a
 }
