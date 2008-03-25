@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/" >
+        <file>images/dialog-information.png</file>
         <file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
         <file>images/action.png</file>

@@ -29,7 +29,6 @@
 #include <QString>
 #include <QMessageBox>
 #include <QThread>
-#include <QErrorMessage>
 
 // Standard header
 #include <iostream>
@@ -274,9 +273,9 @@ void UniqueApplication::notifyError( QString error, QStringList stack ) {
 		fprintf( file, error.toAscii() );
 		fclose( file );
 	}
-	QErrorMessage errorMessage;
-	errorMessage.showMessage( QString( "<b>Error %2</b><br/>"
-									   "Please send %1 at XINX project leader, i attempt to save the project (if possible)" ).arg( filename ).arg( error ) );
+	QMessageBox::critical( NULL, "XINX Crash", 
+		QString( "<b>Error %2</b>\n"
+			     "Please send %1 at XINX project leader, i attempt to save the project (if possible)" ).arg( filename ).arg( error ) );
 	
 	if( d->m_mainform && XINXProjectManager::self()->project() ) {
 		d->m_mainform->saveProject( true );

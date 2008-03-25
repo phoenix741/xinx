@@ -27,6 +27,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QPainter>
+#include <QMessageBox>
 
 /* ToolsModelIndex */
 
@@ -473,6 +474,87 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().files = specifiqueModel->extentions();
 }
 
+void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
+	QMessageBox::information( m_parent, tr("XINX Plugin Configuration"), tr("Not yet implemented") );
+}
+
+void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
+	XINX_ASSERT( plugin );
+	
+	QDialog informationDialog;
+	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
+	
+	QLabel * informations = new QLabel( &informationDialog );
+	informations->setWordWrap( true );
+	informations->setOpenExternalLinks( true );
+	informations->setText(
+			tr( "<table>"
+					"<tr>"
+						"<td rowspan=\"2\" align=\"center\"><img src=\":/images/dialog-information.png\"/></td>"
+						"<td colspan=\"2\"><b>%1</b></td>"
+					"</tr>"
+					"<tr>"
+						"<td colspan=\"2\">%2</td>"
+					"</tr>"
+					"<tr>"
+						"<td><b>Author</b></td>"
+						"<td width=\"0\">:</td>"
+						"<td>%3</td>"
+					"</tr>"
+					"<tr>"
+						"<td><b>E-Mail</b></td>"
+						"<td width=\"0\">:</td>"
+						"<td><a href=\"mailto:%4\">%4</a></td>"
+					"</tr>"
+					"<tr>"
+						"<td><b>Web site</b></td>"
+						"<td width=\"0\">:</td>"
+						"<td><a href=\"%5\">%5</a></td>"
+					"</tr>"
+					"<tr>"
+						"<td><b>Version</b></td>"
+						"<td width=\"0\">:</td>"
+						"<td>%6</td>"
+					"</tr>"
+					"<tr>"
+						"<td><b>Licence</b></td>"
+						"<td width=\"0\">:</td>"
+						"<td>%7</td>"
+					"</tr>"
+				"</table>" )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString() )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_AUTHOR ).toString() )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_EMAIL ).toString() )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_WEBSITE ).toString() )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
+				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
+			);
+	
+	QVBoxLayout * labelLayout = new QVBoxLayout;
+	labelLayout->addWidget( informations );
+	
+	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
+	grp->setLayout( labelLayout );
+	
+	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &informationDialog );
+	
+	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addStretch();
+	hbox->addWidget( okButton );
+	hbox->addStretch();
+	
+	QVBoxLayout * vbox = new QVBoxLayout;
+	vbox->addWidget( grp );
+	vbox->addLayout( hbox );
+	
+	informationDialog.setLayout( vbox );
+	
+	connect( okButton, SIGNAL(clicked()), &informationDialog, SLOT(accept()) );
+	
+	informationDialog.exec();
+}
+
 /* CustomDialogImpl */
 
 CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( parent, f ) {
@@ -486,6 +568,8 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	m_exempleTextEdit->setFont( font );
 
 	// Plugins
+	connect( m_pluginListView, SIGNAL(configurePlugin(XinxPluginElement*)), d, SLOT(configurePlugin(XinxPluginElement*)) );
+	connect( m_pluginListView, SIGNAL(aboutPlugin(XinxPluginElement*)), d, SLOT(aboutPlugin(XinxPluginElement*)) );
 	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
 		XinxPluginElement * e = new XinxPluginElement();
 		*e = plugin; 

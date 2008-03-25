@@ -31,9 +31,11 @@
 #include "../customdialogimpl.h"
 #include "../syntaxhighlighter.h"
 
-class PrivateCustomDialogImpl {
+class PrivateCustomDialogImpl : public QObject {
+	Q_OBJECT
 public:
 	PrivateCustomDialogImpl( CustomDialogImpl * parent );
+	virtual ~PrivateCustomDialogImpl() {};
 
 	XINXConfig m_config;
 	QString m_previousFormat;
@@ -41,6 +43,9 @@ public:
 	
 	void showConfig();
 	void storeConfig();
+public slots:
+	void configurePlugin( XinxPluginElement * plugin );
+	void aboutPlugin( XinxPluginElement * plugin );
 private:
 	CustomDialogImpl * m_parent;
 };
