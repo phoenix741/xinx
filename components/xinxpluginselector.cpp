@@ -24,6 +24,7 @@
 
 // Qt header
 #include <QApplication>
+#include <QMessageBox>
 #include <QFont>
 
 /* PrivateXinxPluginSelector */
@@ -51,6 +52,24 @@ void XinxPluginModel::addPlugin( XinxPluginElement plugin ) {
 
 
 bool XinxPluginModel::setData( const QModelIndex &index, const QVariant &value, int role ) {
+	if( ! ( index.isValid() && value.isValid() ) ) return false;
+
+	int i = index.row();
+	if( ( i < 0 ) || ( i >= m_plugins.count() ) ) return false;
+	
+	XinxPluginElement element;
+	switch( role ) {
+	case Qt::CheckStateRole:
+		element = m_plugins.at( i );
+		if( element.isStatic ) return false;
+		element.isActivated = value.toBool();
+		m_plugins.replace( i, element );
+		emit dataChanged( index, index );
+		return true;
+	default:
+		return false;
+	}
+	
 	return false;
 }
 
@@ -156,6 +175,17 @@ bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 	} else if( viewport && ( event->type() == QEvent::MouseButtonRelease ) ) {
 		m_buttonPressed  = false;
 		viewport->update();
+		
+		if( optAbout.rect.contains( m_cursorPosition ) )
+			QMessageBox::critical( 0, "test", "about" );
+		if( optConfigure.rect.contains( m_cursorPosition ) )
+			QMessageBox::critical( 0, "test", "configure" );
+		if( rectCheck.contains( m_cursorPosition ) ) {
+			QAbstractItemModel * model = listView->model(); 
+			bool value = model->data( currentIndex, Qt::CheckStateRole ).toBool();
+			model->setData( currentIndex, ! value, Qt::CheckStateRole );
+		}
+
 		return true;
 	}
 	return false;
