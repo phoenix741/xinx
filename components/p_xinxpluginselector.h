@@ -37,7 +37,7 @@ public:
 	XinxPluginModel( QWidget * parent );
 	virtual ~XinxPluginModel();
 
-	void addPlugin( XinxPluginElement plugin );
+	void addPlugin( XinxPluginElement * plugin );
 	
     bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
     QVariant data( const QModelIndex &index, int role ) const;
@@ -45,7 +45,7 @@ public:
     QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
     int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 private:
-	QList<XinxPluginElement> m_plugins;
+	QList<XinxPluginElement*> m_plugins;
 };
 
 class XinxPluginDelegate : public QItemDelegate {
@@ -56,6 +56,28 @@ public:
 	
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    
+    int separtorPixels() const { return m_separatorPixels; };
+    void setSepartorPixels( int value ) { m_separatorPixels = value; };
+    
+    int rightMargin() const { return m_rightMargin; };
+    void setRightMargin( int value ) { m_rightMargin = value; };
+    
+    int leftMargin() const { return m_leftMargin; };
+    void setLeftMargin( int value ) { m_leftMargin = value; };
+    
+    int iconHeight() const { return m_iconHeight; };
+    void setIconHeight( int value ) { m_iconHeight = value; };
+    
+    int iconWidth() const { return m_iconWidth; };
+    void setIconWidth( int value ) { m_iconWidth = value; };
+    
+    QSize iconSize() const { return QSize( m_iconWidth, m_iconHeight ); };
+    void setIconSize( QSize value ) { m_iconWidth = value.width(); m_iconHeight = value.height(); };
+    void setIconSize( int width, int height ) { m_iconWidth = width; m_iconHeight = height; };
+signals:
+	void configurePlugin( XinxPluginElement * plugin );
+	void aboutPlugin( XinxPluginElement * plugin );
 protected:
     virtual bool eventFilter( QObject *watched, QEvent *event );
 private:
@@ -85,7 +107,7 @@ private:
 	QStyleOptionButton calculateButtonConfigure( const QStyleOptionViewItem & option, int decalage = 0 ) const;
 	QStyleOptionButton drawButtonConfigure( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
 		
-	int m_separatorPixels, m_rightMargin, m_leftMargin;
+	int m_separatorPixels, m_rightMargin, m_leftMargin, m_iconHeight, m_iconWidth, m_minimumItemWidth;
 	QPoint m_cursorPosition;
 	bool m_buttonPressed;
 };

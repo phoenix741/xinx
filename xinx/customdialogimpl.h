@@ -40,6 +40,7 @@ public:
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	~CustomDialogImpl();
 	
 	/*!
 	 * Restore the XINXConfig class in the custom dialog to reflect the configuration of application.

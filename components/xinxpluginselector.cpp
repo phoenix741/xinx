@@ -20,12 +20,14 @@
 
 // Xinx header
 #include "p_xinxpluginselector.h"
-#include "plugininterfaces.h"
+#include <plugininterfaces.h>
 
 // Qt header
 #include <QApplication>
 #include <QMessageBox>
 #include <QFont>
+
+Q_DECLARE_METATYPE(XinxPluginElement*);
 
 /* PrivateXinxPluginSelector */
 
@@ -44,7 +46,7 @@ XinxPluginModel::~XinxPluginModel() {
 	
 }
 
-void XinxPluginModel::addPlugin( XinxPluginElement plugin ) {
+void XinxPluginModel::addPlugin( XinxPluginElement * plugin ) {
 	beginInsertRows( QModelIndex(), m_plugins.count(), m_plugins.count() );
 	m_plugins.append( plugin );
 	endInsertRows();
@@ -57,13 +59,12 @@ bool XinxPluginModel::setData( const QModelIndex &index, const QVariant &value, 
 	int i = index.row();
 	if( ( i < 0 ) || ( i >= m_plugins.count() ) ) return false;
 	
-	XinxPluginElement element;
+	XinxPluginElement * element;
 	switch( role ) {
 	case Qt::CheckStateRole:
 		element = m_plugins.at( i );
-		if( element.isStatic ) return false;
-		element.isActivated = value.toBool();
-		m_plugins.replace( i, element );
+		if( element->isStatic ) return false;
+		element->isActivated = value.toBool();
 		emit dataChanged( index, index );
 		return true;
 	default:
@@ -80,16 +81,16 @@ QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
 	int i = index.row();
 	if( ( i < 0 ) || ( i >= m_plugins.count() ) ) return QVariant();
 	
-	QVariant result = m_plugins.at( i ).plugin->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
-	if( ( (IXinxPlugin::PluginAttribute)role == IXinxPlugin::PLG_NAME ) && m_plugins.at( i ).isStatic )
-		result = result.toString() + " (Static loaded)";
+	QVariant result = m_plugins.at( i )->plugin->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
 	if( result.isValid() ) return result;
 
 	switch( role ) {
 	case Qt::DisplayRole:
-		return m_plugins.at( i ).plugin->getPluginAttribute( IXinxPlugin::PLG_NAME );
+		return m_plugins.at( i )->plugin->getPluginAttribute( IXinxPlugin::PLG_NAME );
+	case Qt::UserRole:
+		return m_plugins.at( i );
 	case Qt::CheckStateRole:
-		if( m_plugins.at( i ).isActivated )
+		if( m_plugins.at( i )->isActivated )
 			return Qt::Checked;
 		else
 			return Qt::Unchecked;
@@ -99,13 +100,13 @@ QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
 }
 
 Qt::ItemFlags XinxPluginModel::flags( const QModelIndex &index ) const {
-	if( ! index.isValid() ) {
+	if( index.isValid() ) {
 		int i = index.row();
 		if( ( i < 0 ) || ( i >= m_plugins.count() ) ) 
 			return QAbstractListModel::flags( index );
 
-		if( m_plugins.at( i ).isStatic )
-			return Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
+		if( m_plugins.at( i )->isStatic )
+			return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 		else
 			return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 	} else
@@ -124,11 +125,8 @@ int XinxPluginModel::rowCount( const QModelIndex &parent ) const {
 
 /* XinxPluginDelegate */
 
-XinxPluginDelegate::XinxPluginDelegate( QObject * parent ) : QItemDelegate( parent ) {
-	m_separatorPixels = 8;
-	m_rightMargin = 0;
-	m_leftMargin = 0;
-	m_buttonPressed = false;
+XinxPluginDelegate::XinxPluginDelegate( QObject * parent ) : QItemDelegate( parent ), m_separatorPixels( 8 ), m_rightMargin( 0 ), m_leftMargin( 0 ), 
+		m_iconHeight( 32 ), m_iconWidth( 32 ), m_minimumItemWidth( 200 ), m_buttonPressed( false ) {
 }
 
 XinxPluginDelegate::~XinxPluginDelegate() {
@@ -157,7 +155,7 @@ bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 	
 	QStyleOptionButton optAbout, optConfigure;
 	optAbout = calculateButtonAbout( option );
-	optConfigure = calculateButtonConfigure( option, m_separatorPixels + optAbout.rect.width() );
+	//optConfigure = calculateButtonConfigure( option, m_separatorPixels + optAbout.rect.width() );
 	
 	QRect rectCheck;
 	QStyleOptionViewItem optCheck = calculateCheckbox( option, rectCheck );
@@ -176,12 +174,12 @@ bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 		m_buttonPressed  = false;
 		viewport->update();
 		
+		QAbstractItemModel * model = listView->model(); 
 		if( optAbout.rect.contains( m_cursorPosition ) )
-			QMessageBox::critical( 0, "test", "about" );
+			emit aboutPlugin( model->data( currentIndex, Qt::UserRole ).value<XinxPluginElement*>() );
 		if( optConfigure.rect.contains( m_cursorPosition ) )
-			QMessageBox::critical( 0, "test", "configure" );
+			emit configurePlugin( model->data( currentIndex, Qt::UserRole ).value<XinxPluginElement*>() );
 		if( rectCheck.contains( m_cursorPosition ) ) {
-			QAbstractItemModel * model = listView->model(); 
 			bool value = model->data( currentIndex, Qt::CheckStateRole ).toBool();
 			model->setData( currentIndex, ! value, Qt::CheckStateRole );
 		}
@@ -214,9 +212,8 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
 	// Draw checkbox
 	QRect checkRect;
 	QStyleOptionViewItem checkOpt = calculateCheckbox( option, checkRect );
-	if( ! ( index.model()->flags( index ) & Qt::ItemIsEnabled ) )
-		checkOpt.state ^= ~ QFlags<QStyle::StateFlag>( QStyle::State_Enabled );	
-	drawCheck( painter, checkOpt, checkRect, (Qt::CheckState)index.model()->data( index, Qt::CheckStateRole ).toInt() );
+	if( index.model()->flags( index ) & Qt::ItemIsUserCheckable ) 
+		drawCheck( painter, checkOpt, checkRect, (Qt::CheckState)index.model()->data( index, Qt::CheckStateRole ).toInt() );
 	
     // Draw icon
 	QPixmap iconPixmap;
@@ -224,7 +221,7 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
 		iconPixmap = index.model()->data( index, IXinxPlugin::PLG_ICON ).value<QPixmap>();
 	else
 		iconPixmap = QPixmap( ":/images/unknown.png" );
-	iconPixmap = iconPixmap.scaled( QSize( 32, 32 ) );
+	iconPixmap = iconPixmap.scaled( iconSize() );
 	int pixmapLeftPosition = option.direction == Qt::LeftToRight ? 
 								checkRect.right() + m_separatorPixels 
 							:   checkRect.left() - m_separatorPixels - iconPixmap.width();
@@ -233,7 +230,7 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
 
     // Draw buttons 
 	QStyleOptionButton optAbout = drawButtonAbout( painter, option );
-	QStyleOptionButton optConfigure = drawButtonConfigure( painter, option, m_separatorPixels + optAbout.rect.width() );
+	QStyleOptionButton optConfigure;// = drawButtonConfigure( painter, option, m_separatorPixels + optAbout.rect.width() );
 
 	// Draw text 
 	int maxTextLength = option.rect.width() - checkRect.width() - iconPixmap.width() - m_leftMargin - m_rightMargin - m_separatorPixels * 7 - optAbout.rect.width() - optConfigure.rect.width();
@@ -309,7 +306,7 @@ QStyleOptionButton XinxPluginDelegate::calculateButton( const QIcon & icon, cons
 					) 
 				 );
 	
-	o.rect.setTop( option.rect.top() + m_separatorPixels );
+	o.rect.setTop( ( option.rect.height() - buttonSize.height() ) / 2 + option.rect.top() );
 	o.rect.setSize( buttonSize );
 	if( option.direction == Qt::LeftToRight )
 		o.rect.setLeft( option.rect.right() - m_rightMargin - m_separatorPixels - decalage - o.rect.width() );
@@ -346,8 +343,21 @@ QStyleOptionViewItem XinxPluginDelegate::calculateCheckbox( const QStyleOptionVi
 }
 
 QSize XinxPluginDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const {
-	return QSize( 200, 50 );
-	//return QItemDelegate::sizeHint( option, index );
+	Q_UNUSED( index );
+	
+    QFont title( option.font );
+    title.setBold( true );
+
+    QFontMetrics titleMetrics( title );
+    QFontMetrics currentMetrics( option.font );
+
+	QStyleOptionButton optAbout = calculateButtonAbout( option );
+	
+    int height = qMax( m_iconHeight, titleMetrics.height() + currentMetrics.height() + m_separatorPixels );
+    height = qMax( optAbout.rect.height(), height );
+    height += m_separatorPixels * 2;
+	
+	return QSize( m_minimumItemWidth, height );
 }
 
 
@@ -355,8 +365,11 @@ QSize XinxPluginDelegate::sizeHint( const QStyleOptionViewItem &option, const QM
 
 XinxPluginSelector::XinxPluginSelector( QWidget *parent ) : QListView( parent ) {
 	Q_INIT_RESOURCE( xinxpluginselector );
+	qRegisterMetaType<XinxPluginElement*>();
 	
 	d = new PrivateXinxPluginSelector( this );
+	connect( d->m_delegate, SIGNAL(aboutPlugin(XinxPluginElement*)), this, SIGNAL(aboutPlugin(XinxPluginElement*)) );
+	connect( d->m_delegate, SIGNAL(configurePlugin(XinxPluginElement*)), this, SIGNAL(configurePlugin(XinxPluginElement*)) );
 	setModel( d->m_model );
 	setItemDelegate( d->m_delegate );
     viewport()->installEventFilter( d->m_delegate );
@@ -368,7 +381,7 @@ XinxPluginSelector::~XinxPluginSelector() {
 	delete d;
 }
     
-void XinxPluginSelector::addPlugin( XinxPluginElement plugin ) {
+void XinxPluginSelector::addPlugin( XinxPluginElement * plugin ) {
 	d->m_model->addPlugin( plugin );
 }
 

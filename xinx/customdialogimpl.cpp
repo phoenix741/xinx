@@ -370,10 +370,6 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_specifiqueTableView->setModel( specifiqueModel );
 	m_parent->m_specifiqueTableView->resizeColumnsToContents();
 	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
-	
-	// Plugins
-	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() )
-		m_parent->m_pluginListView->addPlugin( plugin );
 }
 
 void PrivateCustomDialogImpl::storeConfig() {
@@ -488,7 +484,20 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	font.setFixedPitch( true );
   
 	m_exempleTextEdit->setFont( font );
+
+	// Plugins
+	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
+		XinxPluginElement * e = new XinxPluginElement();
+		*e = plugin; 
+		m_pluginListView->addPlugin( e );
+	}
 }
+
+CustomDialogImpl::~CustomDialogImpl() {
+	// TODO : Delete plugin selector element
+	delete d;
+}
+
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	XINX_ASSERT( config );
