@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>19</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -111,7 +111,6 @@
     </property>
     <addaction name="m_aboutAct" />
     <addaction name="m_aboutQtAct" />
-    <addaction name="m_aboutPluginsAct" />
    </widget>
    <widget class="QMenu" name="m_searchMenu" >
     <property name="title" >
@@ -636,7 +635,7 @@
   </action>
   <action name="m_newWebServicesFileAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/typefws.png</iconset>
+    <iconset/>
    </property>
    <property name="text" >
     <string>New WebServices file</string>
@@ -819,11 +818,6 @@
   <action name="m_highlightWord" >
    <property name="text" >
     <string>Highlight same word</string>
-   </property>
-  </action>
-  <action name="m_aboutPluginsAct" >
-   <property name="text" >
-    <string>About Plugins</string>
    </property>
   </action>
  </widget>

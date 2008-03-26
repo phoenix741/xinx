@@ -42,19 +42,16 @@ public:
 	virtual QIcon icon( const QString & extention );
 	
 	virtual QStringList highlighters();
-	virtual QHash<QString,QString> descriptionOfHighlighters();
 	virtual QString highlighterOfExtention( const QString & extention );
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
 	virtual QString exampleOfHighlighter( const QString & highlighter );
 	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text );
 
 	virtual QStringList prettyPrinters();
-	virtual QHash<QString,QString> descriptionOfPrettyPrinters();
 	virtual QString prettyPrinterOfExtention( const QString & extention );
 	virtual QString prettyPrint( const QString & plugin, const QString & text, QString * errorStr, int * line, int * column );
 	
 	virtual QStringList extendedEditors();
-	virtual QHash<QString,QString> descriptionOfExtendedEditors();
 	virtual QString extendedEditorOfExtention( const QString & extention );
 	virtual void commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment );
 	virtual FileContentElement * createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int line );

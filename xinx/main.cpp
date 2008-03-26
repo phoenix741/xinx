@@ -63,29 +63,15 @@ void backup_appli_signal( int signal ) {
 	throw SignalSegFaultException( signal );
 }
 
-void xinxMessageHandler( QtMsgType type, const char * msg ) {
-	switch( type ) {
-	case QtDebugMsg:
-		fprintf( stderr, "Debug: %s\n", msg );
-		break;
-	case QtWarningMsg:
-		fprintf( stderr, "Warning: %s\n", msg );
-		break;
-	case QtCriticalMsg:
-	case QtFatalMsg:
-		qobject_cast<UniqueApplication*>( qApp )->notifyError( QString( "Fatal : %1" ).arg( msg ), stackTrace[(unsigned long)QThread::currentThreadId()] );
-	}
-}
-
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
 	
-	qInstallMsgHandler(xinxMessageHandler);
 	std::signal(SIGSEGV, backup_appli_signal);
 	std::signal(SIGABRT, backup_appli_signal);
 	std::signal(SIGINT, backup_appli_signal);
 	std::signal(SIGTERM, backup_appli_signal);
 	    
+	
 	UniqueApplication app(argc, argv);
 	try {
 		app.setOrganizationName( "Shadoware" );
@@ -149,7 +135,6 @@ int main(int argc, char *argv[]) {
 					it++;
 				}
 			}
-	
 			splash.finish(mainWin);
 			
 			mainWin->show();
@@ -169,10 +154,10 @@ int main(int argc, char *argv[]) {
 	 		return 255;
 		}
 	} catch( XinxException e ) {
-		app.notifyError( "In main : " + e.getMessage(), e.getStack() );
+		qFatal( "In main : %s", e.getMessage().toAscii().constData() );
 		return false;
 	} catch( ... ) {
-		app.notifyError( "In main : Generic Exception", stackTrace[(unsigned long)QThread::currentThreadId()] );
+		qFatal( "In main : Generic Exception" );
 		return 1;
 	}
 }

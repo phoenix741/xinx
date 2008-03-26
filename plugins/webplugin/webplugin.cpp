@@ -143,14 +143,6 @@ QStringList WebPlugin::highlighters() {
 	return QStringList() << "XML" << "JS" << "CSS";
 }
 
-QHash<QString,QString> WebPlugin::descriptionOfHighlighters() {
-	QHash<QString,QString> descriptions;
-	descriptions[ "XML" ]  = tr( "XML, XSL, HTML" );
-	descriptions[ "JS" ]   = tr( "JavaScript" );
-	descriptions[ "CSS" ]  = tr( "Cascading Style Sheet" );
-	return descriptions;
-}
-
 QString WebPlugin::highlighterOfExtention( const QString & extention ) {
 	QHash<QString,QString> extentions;
 	extentions[ "fws" ]   = "XML";
@@ -270,12 +262,6 @@ QStringList WebPlugin::prettyPrinters() {
 	return QStringList() << "XML";
 }
 
-QHash<QString,QString> WebPlugin::descriptionOfPrettyPrinters() {
-	QHash<QString,QString> descriptions;
-	descriptions[ "XML" ]  = tr( "XML, XSL, XHTML" );
-	return descriptions;
-}
-
 QString WebPlugin::prettyPrinterOfExtention( const QString & extention ) {
 	QHash<QString,QString> extentions;
 	extentions[ "xsl" ]   = "XML";
@@ -304,16 +290,6 @@ QString WebPlugin::prettyPrint( const QString & plugin, const QString & text, QS
 
 QStringList WebPlugin::extendedEditors() {
 	return QStringList() << "HTML" << "XML" << "XSL" << "JS" << "CSS";
-}
-
-QHash<QString,QString> WebPlugin::descriptionOfExtendedEditors() {
-	QHash<QString,QString> descriptions;
-	descriptions[ "HTML" ] = tr( "HTML" );
-	descriptions[ "XML"  ] = tr( "XML" );
-	descriptions[ "XSL"  ] = tr( "XSL" );
-	descriptions[ "JS"   ] = tr( "JavaScript" );
-	descriptions[ "CSS"  ] = tr( "Cascading Style Sheet" );
-	return descriptions;
 }
 
 QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {

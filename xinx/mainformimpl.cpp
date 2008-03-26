@@ -41,7 +41,6 @@
 #include "exceptions.h"
 #include "xinxthread.h"
 #include "specifiquedlgimpl.h"
-#include "plugindialog.h"
 #include "xinxpluginsloader.h"
 #include "newprojectwizard.h"
 
@@ -467,9 +466,6 @@ void PrivateMainformImpl::createActions() {
 	// About
 	connect( m_parent->m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 	
-	// About Plugins
-	connect( m_parent->m_aboutPluginsAct, SIGNAL(triggered()), this, SLOT(aboutPlugins()));	
-
 	// Drag & Drop
 	connect( m_parent->m_tabEditors, SIGNAL(fileOpened(QString)), this, SLOT(updateActions()) );
 
@@ -645,13 +641,6 @@ void PrivateMainformImpl::about() {
 
 	AboutDialogImpl about( m_parent );
 	about.exec();
-}
-
-void PrivateMainformImpl::aboutPlugins() {
-	XINX_TRACE( "PrivateMainformImpl::aboutPlugins", "()" );
-
-	PluginDialogImpl dialog( this->m_parent );
-	dialog.exec();
 }
 
 void PrivateMainformImpl::customize() {

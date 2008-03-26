@@ -36,7 +36,6 @@ public:
 	virtual ~UniqueApplication ();
 	
 	virtual bool notify ( QObject * receiver, QEvent * event );
-	void notifyError( QString error, QStringList stack );
 	
 	bool isUnique();
 	void callOpenFile( const QString & fileName );

@@ -91,8 +91,6 @@ public:
 
 	//! Return the list of plugins what can process the file for syntax highlighter.
 	virtual QStringList highlighters() = 0;
-	//! Return the description of each plugins
-	virtual QHash<QString,QString> descriptionOfHighlighters() = 0;
 
 	//! Return the highlighter that can manage the extention.
 	virtual QString highlighterOfExtention( const QString & extention ) = 0;
@@ -119,8 +117,6 @@ public:
 
 	//! Return the list of pretty printers
 	virtual QStringList prettyPrinters() = 0;
-	//! Description of a pretty printer.
-	virtual QHash<QString,QString> descriptionOfPrettyPrinters() = 0;
 	//! Give the pretty printer for an extention
 	virtual QString prettyPrinterOfExtention( const QString & extention ) = 0;
 	
@@ -134,8 +130,6 @@ public:
 	
 	//! Return possibles extended editor.
 	virtual QStringList extendedEditors() = 0;
-	//! Description of extended editor.
-	virtual QHash<QString,QString> descriptionOfExtendedEditors() = 0;
 	//! Give the extended editor to use for this extentions
 	virtual QString extendedEditorOfExtention( const QString & extention ) = 0;
 	

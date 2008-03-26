@@ -25,6 +25,10 @@
 #include <QStringList>
 #include <QHash>
 
+class QErrorMessage;
+class QWidget;
+class XinxErrorMessage;
+
 class XinxException {
 public:
 	XinxException( QString message );
@@ -48,11 +52,6 @@ public:
 	XinxAssertException( const char *assertion, const char *file, int line );
 };
 
-class ToolsNotDefinedException : public XinxException {
-public:
-	ToolsNotDefinedException( const QString & tool );
-};
-
 #if !defined( XINX_ASSERT )
 #  ifndef QT_NO_DEBUG
 #    define XINX_ASSERT(cond) do{if(!(cond)) throw XinxAssertException(#cond,__FILE__,__LINE__);} while (0)
@@ -60,6 +59,38 @@ public:
 #    define XINX_ASSERT(cond) do{}while(0)
 #  endif
 #endif
+
+class ToolsNotDefinedException : public XinxException {
+public:
+	ToolsNotDefinedException( const QString & tool );
+};
+
+class ExceptionManager : public QObject {
+	Q_OBJECT
+public:
+	virtual ~ExceptionManager();
+	
+	QHash<unsigned long,QStringList> & xinxStackTrace();
+	QStringList stackTrace() const;
+	
+	QErrorMessage * errorDialog() const;
+
+	void setFatal( bool value );
+	bool fatal() const;
+
+	static ExceptionManager * self();
+
+	void notifyError( QString error, QStringList stack = QStringList() );
+signals:
+	void errorTriggered();
+private:
+	ExceptionManager();
+	
+	static ExceptionManager * s_self;
+	QHash<unsigned long,QStringList> m_stackTrace;
+	QErrorMessage * m_dialog;
+	bool m_fatal;
+};
 
 class Trace {
 public:

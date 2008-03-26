@@ -21,58 +21,31 @@
 #ifndef __P_UNIQUEAPPLICATION_H__
 #define __P_UNIQUEAPPLICATION_H__
 
-// Define
-#ifdef Q_WS_WIN
-	#ifndef QT_QTDBUS
-		#define DBUS
-	#endif
-#else
-	#define DBUS
-#endif
-
 // Xinx header
 #include "../uniqueapplication.h"
 #include "../mainformimpl.h"
-#ifdef DBUS
-	#include "../studioadaptor.h"
-	#include "../studiointerface.h"
-#endif
+#include "../studioadaptor.h"
+#include "../studiointerface.h"
 
 // Qt header
 #include <QObject>
-#ifdef DBUS
-	#include <QtDBus>
-#else
-	#include <QTimer>
-	#include <QtGui>
-#endif
+#include <QtDBus>
 
 // Standard header
-#ifdef DBUS
-	#include <unistd.h>
-#endif
+#include <unistd.h>
 
 class PrivateUniqueApplication : public QObject {
 	Q_OBJECT
 public:
 	PrivateUniqueApplication( UniqueApplication * parent );
-	virtual ~PrivateUniqueApplication();
 	
 	bool m_isUnique;
 	MainformImpl * m_mainform;
-#ifndef DBUS
-	HWND m_handle, m_handleMutex, m_handleMutexGbl, m_handleEvent;
-	char* m_fileView;
-	void openSharedMem();
-#else
 	OrgShadowareXinxInterface * m_interface;
-#endif
 	void start();
 
 public slots:
-#ifndef DBUS
-	void timerApplicationEvent();
-#endif
+	void slotErrorTriggered();
 private:
 	UniqueApplication * m_parent;
 };

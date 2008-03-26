@@ -26,10 +26,21 @@
 #include <QDateTime>
 #include <QFile>
 #include <QThread>
+#include <QApplication>
+#include <QErrorMessage>
+
+// Std header for exception
+#include <iostream>
+#ifndef Q_WS_WIN
+#	include <execinfo.h>
+#	include <stdio.h>
+#	include <stdlib.h>
+#	include <cxxabi.h>
+#endif
 
 /* Log Variable */
 
-QHash<unsigned long,QStringList> stackTrace;
+ExceptionManager * ExceptionManager::s_self = 0;
 
 /* Trace */
 
@@ -44,7 +55,7 @@ Trace::Trace( char* filename, int line, const QString & func_name, const QString
 
 Trace::~Trace() {
 	m_depth[m_handle]--;		
-	stackTrace[m_handle].removeLast();
+	ExceptionManager::self()->xinxStackTrace()[m_handle].removeLast();
 }
 
 void Trace::LogMsg( int depth, const char * filename, int line, const QString & fonction ) {
@@ -56,7 +67,7 @@ void Trace::LogMsg( int depth, const char * filename, int line, const QString & 
 	s += QString( fonction );
 	s += QString( " on %1 at line %2 (thread %3)." ).arg( filename ).arg( line ).arg( m_handle );
 	
-	stackTrace[m_handle].append( s );
+	ExceptionManager::self()->xinxStackTrace()[m_handle].append( s );
 
 #ifdef Q_WS_WIN
 	QFile logfile( QString( "c:\\xinx_debug_%1.log" ).arg( m_handle ) );
@@ -68,12 +79,125 @@ void Trace::LogMsg( int depth, const char * filename, int line, const QString & 
 		logfileStream << s << endl;
 	}
 }
+
+/* Message Handler */
+
+static void xinxMessageHandler( QtMsgType t, const char * m ) {
+    QString rich;
+
+    switch (t) {
+    case QtDebugMsg:
+    default:
+        rich = QErrorMessage::tr("Debug Message:");
+        break;
+    case QtWarningMsg:
+        rich = QErrorMessage::tr("Warning:");
+        break;
+    case QtFatalMsg:
+        rich = QErrorMessage::tr("Fatal Error:");
+        ExceptionManager::self()->setFatal( true );
+    }
+    rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
+    rich += QLatin1String( m );
+
+    // ### work around text engine quirk
+    if (rich.endsWith(QLatin1String("</p>")))
+        rich.chop(4);
+
+    ExceptionManager::self()->notifyError( rich );
+}
+
+/* ExceptionManager */
+
+ExceptionManager::ExceptionManager() : m_fatal( false ) {
+	m_dialog = new QErrorMessage(0);
+	m_dialog->setWindowTitle( qApp->applicationName() );
+	qInstallMsgHandler( xinxMessageHandler );
+}
+
+ExceptionManager::~ExceptionManager() {
+	delete m_dialog;
+}
+
+void ExceptionManager::setFatal( bool value ) { 
+	m_fatal = value; 
+}
+
+bool ExceptionManager::fatal() const { 
+	return m_fatal; 
+}
+
+QHash<unsigned long,QStringList> & ExceptionManager::xinxStackTrace() {
+	return m_stackTrace;
+}
+
+QStringList ExceptionManager::stackTrace() const {
+	QStringList stack;
+
+#ifndef Q_WS_WIN
+	void * array[10];
+	size_t size, i;
+	char ** strings;
+
+	size = backtrace( array, 10 );
+	strings = backtrace_symbols( array, size );
+	for( i = 0; i < size; i++ ) {
+		stack << strings[i];
+	}
+	free( strings );
+#endif
+	return stack;
+}
+
+QErrorMessage * ExceptionManager::errorDialog() const {
+	return m_dialog;
+}	
+
+void ExceptionManager::notifyError( QString error, QStringList stack ) {
+	if( m_fatal ) emit errorTriggered();
+
+	if (stack.isEmpty())
+		stack << stackTrace();
+	
+	// Create a file where write error
+	FILE * file = NULL;
+#ifndef Q_WS_WIN
+	char * filename = "/tmp/xinx_trace.log";
+#else
+	char * filename = "c:\\xinx_trace.log";
+#endif
+		
+	file = fopen( filename, "w+" );
+	if( file ) {
+		fprintf( file, "* Backtrace ...\n" );
+		fprintf( file, stack.join( "\n" ).toAscii() );
+		fprintf( file, "* Error ...\n" );
+		fprintf( file, error.toAscii() );
+		fclose( file );
+	}
+
+    if( QThread::currentThread() == qApp->thread() ) 
+    	m_dialog->showMessage( error );
+    else 
+        QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+
+    if( m_fatal ) m_dialog->exec(); // Pour ne pas quitter de suite
+}
+
+ExceptionManager * ExceptionManager::self() {
+	if( ! s_self ) {
+		s_self = new ExceptionManager();
+	}
+	return s_self;
+}
+	
+
 /* XinxException */
 
 XinxException::XinxException( QString message ) : m_message( message ) {
 	XINX_TRACE( "XinxException", QString("( %1 )").arg( message ) );
 	
-	m_stack = stackTrace[ (unsigned long)QThread::currentThreadId() ];
+	m_stack = ExceptionManager::self()->stackTrace(); //[ (unsigned long)QThread::currentThreadId() ];
 }
 
 const QString & XinxException::getMessage() const {

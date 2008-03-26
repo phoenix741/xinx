@@ -93,6 +93,7 @@ TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ) {
     connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateFont() ) );
 
 	setAcceptRichText(false);
+	//setAcceptDrops(false);
 	updateFont();
 }
 

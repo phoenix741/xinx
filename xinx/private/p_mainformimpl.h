@@ -181,7 +181,6 @@ public slots:
 
 	// About
 	void about();
-	void aboutPlugins();
 private:	
 	MainformImpl * m_parent;
 };
