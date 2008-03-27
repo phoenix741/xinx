@@ -18,23 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TOOLSMANAGER_H_
-#define TOOLSMANAGER_H_
+#ifndef CUSTOMIZEPLUGIN_H_
+#define CUSTOMIZEPLUGIN_H_
 
-// Qt header
-#include <QString>
-#include <QWidget>
+// Xinx header
+#include "ui_customize.h"
 
-class ToolsManager : public QObject {
-	Q_OBJECT
+class CustomizePlugin : public QWidget, public Ui::CustomizePlugin {
 public:
-	QString toolNameOf( const QString & tool, QWidget * parentWindow = 0 );
-
-	static ToolsManager * self();
+	CustomizePlugin( QWidget * parent = 0 );
+	virtual ~CustomizePlugin();
 private:
-	ToolsManager();
-	
-	static ToolsManager * s_self;
 };
 
-#endif /*TOOLSMANAGER_H_*/
+#endif /*CUSTOMIZEPLUGIN_H_*/

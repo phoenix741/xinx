@@ -151,6 +151,8 @@ void DirectoryEditWidget::changePath() {
 }
 
 void DirectoryEditWidget::focusInEvent( QFocusEvent * event ) {
+	Q_UNUSED( event );
+	
 	d->m_lineEdit->setFocus();
 }
 

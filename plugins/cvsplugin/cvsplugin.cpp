@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "cvsplugin.h"
+#include "customizeplugin.h"
 
 // Qt header
 #include <QString>
@@ -31,6 +32,7 @@ CVSPlugin::CVSPlugin() {
 }
 
 bool CVSPlugin::initializePlugin( const QString & lang ) {
+	Q_UNUSED( lang );
     return true;
 }
 
@@ -50,8 +52,35 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 		return "0.1";
 	case PLG_LICENCE:
 		return "GPL v2.0 or later";
+	default:
+		;
 	}
 	return QVariant();
 }
+
+QWidget * CVSPlugin::createSettingsDialog() {
+	return new CustomizePlugin();
+}
+
+bool CVSPlugin::loadSettingsDialog( QWidget * widget ) {
+	Q_UNUSED( widget );
+	return false;
+}
+
+bool CVSPlugin::saveSettingsDialog( QWidget * widget ) {
+	Q_UNUSED( widget );
+	return false;
+}
+
+QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
+	QList< QPair<QString,QString> > tools;
+#ifdef Q_WS_WIN
+	tools.append( qMakePair( QString("cvs"), QString("%1/CVSNT/cvs.exe").arg( "C:/Program Files" ) );
+#else
+	tools.append( qMakePair( QString("cvs"), QString("/usr/bin/cvs") ) );
+#endif // Q_WS_WIN
+	return tools;
+}
+
 
 Q_EXPORT_PLUGIN2(cvsplugin, CVSPlugin)

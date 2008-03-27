@@ -1,0 +1,149 @@
+<ui version="4.0" >
+ <class>CustomizePlugin</class>
+ <widget class="QWidget" name="CustomizePlugin" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>304</width>
+    <height>211</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <widget class="QGroupBox" name="groupBox_3" >
+     <property name="title" >
+      <string>CVS</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QLabel" name="label_8" >
+        <property name="text" >
+         <string>Progress message: </string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_cvsVerboseComboBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="m_cvsVerboseComboBox" >
+        <item>
+         <property name="text" >
+          <string>Very Quiet (-Q)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Discret (-q)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Verbose</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_9" >
+        <property name="text" >
+         <string>Compression:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>m_cvsCompressionComboBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="m_cvsCompressionComboBox" >
+        <item>
+         <property name="text" >
+          <string>-z0 Disabled </string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z1 Low level</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z5 Medium Level</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z7</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>-z9 High level</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="m_cvsPruneCheckBox" >
+        <property name="text" >
+         <string>Prune empty directories. (-P)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="m_cvsCreateDirCheckBox" >
+        <property name="text" >
+         <string>Create missing directories. (-d)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

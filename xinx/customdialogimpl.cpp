@@ -475,6 +475,7 @@ void PrivateCustomDialogImpl::storeConfig() {
 }
 
 void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
+	Q_UNUSED( plugin );
 	QMessageBox::information( m_parent, tr("XINX Plugin Configuration"), tr("Not yet implemented") );
 }
 

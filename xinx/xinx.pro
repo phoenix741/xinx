@@ -85,8 +85,7 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_specifique.ui \
     ui/newprojectwizard_services.ui \
     ui/newprojectwizard_serviceslist.ui
-HEADERS += toolsmanager.h \
-    xinxcore.h \
+HEADERS += xinxcore.h \
     xinxpluginsloader.h \
     specifiquedlgimpl.h \
     xinxthread.h \
@@ -151,8 +150,7 @@ HEADERS += toolsmanager.h \
     xmlpresentationitem.h \
     xslproject.h \
     private/p_customdialogimpl.h
-SOURCES += toolsmanager.cpp \
-    xinxcore.cpp \
+SOURCES += xinxcore.cpp \
     xinxpluginsloader.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \

@@ -24,14 +24,21 @@
 // Xinx header
 #include <plugininterfaces.h>
 
-class CVSPlugin : public QObject, public IXinxPlugin {
+class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfiguration {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
+	Q_INTERFACES(IXinxPluginConfiguration)
 public:
 	CVSPlugin();
 	
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+
+	virtual QList< QPair<QString,QString> > pluginTools();
+
+	virtual QWidget * createSettingsDialog();
+	virtual bool loadSettingsDialog( QWidget * widget );
+	virtual bool saveSettingsDialog( QWidget * widget );
 };
 
 #endif /* CVSPLUGIN_H_*/

@@ -58,7 +58,16 @@ public:
 	virtual bool initializePlugin( const QString & lang ) = 0;
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
 	
-	/* TODO: Pour la boite de dialogue, il faudra utiliser un objet spécialisé qui sait faire load an save */
+	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
+};
+
+class IXinxPluginConfiguration {
+public:
+	virtual ~IXinxPluginConfiguration() {};
+	
+	virtual QWidget * createSettingsDialog() = 0;
+	virtual bool loadSettingsDialog( QWidget * widget ) = 0;
+	virtual bool saveSettingsDialog( QWidget * widget ) = 0;
 };
 
 struct XinxPluginElement {
@@ -142,6 +151,7 @@ public:
 };
 
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0")
+Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0")
 Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
 Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
 Q_DECLARE_INTERFACE(IPluginPrettyPrint, "org.shadoware.xinx.IPluginPrettyPrint/1.0")

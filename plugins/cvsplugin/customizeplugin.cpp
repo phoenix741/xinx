@@ -19,36 +19,12 @@
  ***************************************************************************/
 
 // Xinx header
-#include "toolsmanager.h"
-#include "xinxconfig.h"
+#include "customizeplugin.h"
 
-// Qt header
-#include <QFileDialog>
-#include <QFile>
+CustomizePlugin::CustomizePlugin( QWidget * parent ) : QWidget( parent ) {
+	setupUi( this );
+}
 
-/* ToolsManager */
-
-ToolsManager * ToolsManager::s_self = 0;
-
-ToolsManager::ToolsManager() {
+CustomizePlugin::~CustomizePlugin() {
 	
 }
-
-QString ToolsManager::toolNameOf( const QString & tool, QWidget * parentWindow ) {
-	QString toolsPath = XINXConfig::self()->config().tools[ tool ];
-	if( toolsPath.isEmpty() && QFile::exists( toolsPath ) ) {
-		toolsPath = QFileDialog::getOpenFileName( parentWindow, tr("Select the %1 tool").arg( tool ), toolsPath );
-		if( ! toolsPath.isEmpty() && QFile::exists( toolsPath ) )
-			XINXConfig::self()->config().tools[ tool ] = toolsPath;
-	}
-	return toolsPath;
-}
-
-ToolsManager * ToolsManager::self() {
-	if( ! s_self ) {
-		s_self = new ToolsManager();
-	}
-	return s_self;
-}
-
-

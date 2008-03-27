@@ -21,9 +21,11 @@
 #ifndef XINXCONFIG_H
 #define XINXCONFIG_H
 
+// Xinx header
 #include "appsettings.h"
 
 class PrivateXINXConfig;
+class QWidget;
 
 class XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
@@ -37,7 +39,8 @@ public:
 	virtual void save();
 
 	void setXinxDataFiles( const QString & path );
-	QString getTools( const QString & tool );
+	QString getTools( const QString & tool, QWidget * parentWindow = 0 );
+	void addDefaultTool( const QString & tool, const QString & defaultValue );
 
 	XINXConfig& operator=(const XINXConfig& p);
 signals:

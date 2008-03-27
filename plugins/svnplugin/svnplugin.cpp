@@ -32,6 +32,7 @@ SVNPlugin::SVNPlugin() {
 }
 
 bool SVNPlugin::initializePlugin( const QString & lang ) {
+	Q_UNUSED( lang );
     return true;
 }
 

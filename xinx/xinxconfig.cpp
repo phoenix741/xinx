@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QLocale>
+#include <QFileDialog>
 
 // Xinx header
 #include "xinxconfig.h"
@@ -84,11 +85,22 @@ void XINXConfig::save() {
 	emit changed();
 }
 
-QString XINXConfig::getTools( const QString & tool ) {
-	QString t = config().tools.value( tool );
-	if( ! QFile( t ).exists() )
-		throw ToolsNotDefinedException( t );
-	return t;
+QString XINXConfig::getTools( const QString & tool, QWidget * parentWindow ) {
+	QString toolsPath = config().tools.value( tool );
+	if( toolsPath.isEmpty() && QFile::exists( toolsPath ) ) {
+		toolsPath = QFileDialog::getOpenFileName( parentWindow, tr("Select the %1 tool").arg( tool ), toolsPath );
+		if( ! toolsPath.isEmpty() && QFile::exists( toolsPath ) )
+			config().tools[ tool ] = toolsPath;
+		else
+			throw ToolsNotDefinedException( toolsPath );
+	}
+	return toolsPath;
+}
+
+void XINXConfig::addDefaultTool( const QString & tool, const QString & defaultValue ) {
+	if( config().tools.value( tool ).isEmpty() ) {
+		config().tools[ tool ] = defaultValue;
+	}
 }
 
 void XINXConfig::setXinxDataFiles( const QString & path ) {
