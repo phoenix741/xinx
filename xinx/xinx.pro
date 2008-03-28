@@ -126,7 +126,6 @@ HEADERS += xinxcore.h \
     private/p_webserviceseditor.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
-    rcs.h \
     rcs_cvs.h \
     rcslogdialogimpl.h \
     replacedialogimpl.h \
@@ -174,7 +173,6 @@ SOURCES += xinxcore.cpp \
     numberbar.cpp \
     projectdirectorydockwidget.cpp \
     projectpropertyimpl.cpp \
-    rcs.cpp \
     rcs_cvs.cpp \
     rcslogdialogimpl.cpp \
     replacedialogimpl.cpp \
