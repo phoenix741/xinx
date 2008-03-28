@@ -45,7 +45,7 @@ public:
 	static QString saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository );
 private slots:
 private:
-	static struct_extentions extentionOfFileName( const QString & name );
+	static AppSettings::struct_extentions extentionOfFileName( const QString & name );
 	
 	static QString m_lastPlace;
 	QString m_filename, m_suffix;

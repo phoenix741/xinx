@@ -1367,10 +1367,10 @@ void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHas
 	}
 }
 
-struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name ) {
+AppSettings::struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name ) {
 	XINX_TRACE( "PrivateMainformImpl::extentionOfFileName", QString( "( %1 )" ).arg( name ) );
 
-	struct_extentions result;
+	AppSettings::struct_extentions result;
 	int dotPosition = name.lastIndexOf( "." );
 	QString suffix = name.toLower();
 	if( dotPosition >= 0 )

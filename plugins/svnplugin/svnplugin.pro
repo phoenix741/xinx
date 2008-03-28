@@ -1,7 +1,6 @@
 TEMPLATE = lib
 CONFIG += debug \
-    plugin \
-    shared
+    plugin
 QT += xml
 DESTDIR += ../
 MOC_DIR += ./

@@ -32,6 +32,7 @@ public:
 	
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual QList< QPair<QString,QString> > pluginTools();
 };
 
 #endif /* SVNPLUGIN_H_*/

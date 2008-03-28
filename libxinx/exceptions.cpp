@@ -170,9 +170,9 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 	file = fopen( filename, "w+" );
 	if( file ) {
 		fprintf( file, "* Backtrace ...\n" );
-		fprintf( file, stack.join( "\n" ).toAscii() );
+		fprintf( file, qPrintable( stack.join( "\n" ) ) );
 		fprintf( file, "* Error ...\n" );
-		fprintf( file, error.toAscii() );
+		fprintf( file, qPrintable( error ) );
 		fclose( file );
 	}
 

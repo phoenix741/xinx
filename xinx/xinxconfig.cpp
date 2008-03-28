@@ -119,7 +119,7 @@ XINXConfig * XINXConfig::self() {
 	return s_self;
 }
 	
-struct_globals XINXConfig::getDefaultGlobals() {
+AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 	
 	foreach( QString highlighter, XinxPluginsLoader::self()->highlighterOfPlugins() ) {
@@ -133,7 +133,7 @@ struct_globals XINXConfig::getDefaultGlobals() {
 	return value;
 }
 
-struct_editor XINXConfig::getDefaultEditor() {
+AppSettings::struct_editor XINXConfig::getDefaultEditor() {
 	struct_editor value = AppSettings::getDefaultEditor();
 
 	value.defaultFormat.setFamily( "Monospace" );

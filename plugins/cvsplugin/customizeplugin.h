@@ -25,6 +25,7 @@
 #include "ui_customize.h"
 
 class CustomizePlugin : public QWidget, public Ui::CustomizePlugin {
+	Q_OBJECT
 public:
 	CustomizePlugin( QWidget * parent = 0 );
 	virtual ~CustomizePlugin();

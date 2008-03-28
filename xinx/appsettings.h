@@ -19,71 +19,72 @@
 
 class PrivateAppSettings;
 
-struct struct_configurationEditor {
-	bool activateConfigurationEditor;
-	bool autoLoadConfigurationFile;
-	bool autoSaveConfigurationFile;
-};
-
-struct struct_editor {
-	bool autoindentOnSaving;
-	bool popupWhenFileModified;
-	bool createBackupFile;
-	int completionLevel;
-	int tabulationSize;
-	bool showTabulationAndSpace;
-	bool highlightCurrentLine;
-	QFont defaultFormat;
-	QColor highlightWord;
-	bool autoHighlight;
-	bool hideCloseTab;
-	bool closeButtonOnEachTab;
-};
-
-struct struct_cvs {
-	QString progressMessages;
-	int compressionLevel;
-	bool pruneEmptyDirectories;
-	bool createDirectories;
-	bool createChangelog;
-};
-
-struct struct_project {
-	bool saveWithSessionByDefault;
-	QString defaultPath;
-	bool alertWhenSavingStandardFile;
-	QStringList recentProjectFiles;
-	QString defaultProjectPathName;
-	bool closeVersionManagementLog;
-};
-
-struct struct_descriptions {
-	QString datas;
-};
-
-struct struct_extentions {
-	QString customPath;
-	bool canBeSpecifique;
-};
-
-struct struct_globals {
-	QString language;
-	QPoint position;
-	QSize size;
-	bool maximized;
-	QByteArray state;
-	struct_descriptions descriptions;
-	struct_project project;
-	struct_cvs cvs;
-	struct_editor editor;
-	struct_configurationEditor configurationEditor;
-	QHash<QString,QString> tools;
-	QHash<QString,struct_extentions> files;
-	QHash<QString,QTextCharFormat> formats;
-};
-
 class AppSettings {
 public:
+	struct struct_configurationEditor {
+		bool activateConfigurationEditor;
+		bool autoLoadConfigurationFile;
+		bool autoSaveConfigurationFile;
+	};
+
+	struct struct_editor {
+		bool autoindentOnSaving;
+		bool popupWhenFileModified;
+		bool createBackupFile;
+		int completionLevel;
+		int tabulationSize;
+		bool showTabulationAndSpace;
+		bool highlightCurrentLine;
+		QFont defaultFormat;
+		QColor highlightWord;
+		bool autoHighlight;
+		bool hideCloseTab;
+		bool closeButtonOnEachTab;
+	};
+
+	struct struct_cvs {
+		QString progressMessages;
+		int compressionLevel;
+		bool pruneEmptyDirectories;
+		bool createDirectories;
+		bool createChangelog;
+	};
+
+	struct struct_project {
+		bool saveWithSessionByDefault;
+		QString defaultPath;
+		bool alertWhenSavingStandardFile;
+		QStringList recentProjectFiles;
+		QString defaultProjectPathName;
+		bool closeVersionManagementLog;
+	};
+
+	struct struct_descriptions {
+		QString datas;
+	};
+
+	struct struct_extentions {
+		QString customPath;
+		bool canBeSpecifique;
+	};
+
+	struct struct_globals {
+		QString language;
+		QPoint position;
+		QSize size;
+		bool maximized;
+		QByteArray state;
+		struct_descriptions descriptions;
+		struct_project project;
+		struct_cvs cvs;
+		struct_editor editor;
+		struct_configurationEditor configurationEditor;
+		QHash<QString,QString> tools;
+		QHash<QString,struct_extentions> files;
+		QHash<QString,QTextCharFormat> formats;
+	};
+
+
 	AppSettings( const AppSettings & origine );
 	AppSettings();
 	virtual ~AppSettings();

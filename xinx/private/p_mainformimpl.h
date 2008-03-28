@@ -117,7 +117,7 @@ public:
 	QMessageBox * m_replaceNextDlg;
 	
 	// Customize
-	struct_extentions extentionOfFileName( const QString & name );
+	AppSettings::struct_extentions extentionOfFileName( const QString & name );
 	QToolButton * m_closeTabBtn;
 public slots:
 	// Actions

@@ -58,4 +58,8 @@ QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
+QList< QPair<QString,QString> > SVNPlugin::pluginTools() { 
+	return QList< QPair<QString,QString> >(); 
+}
+
 Q_EXPORT_PLUGIN2(svnplugin, SVNPlugin)

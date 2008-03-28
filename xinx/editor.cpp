@@ -164,7 +164,7 @@ void Editor::deserialize( XSLProjectSessionEditor * data ) {
 Editor * Editor::deserializeEditor( XSLProjectSessionEditor * data ) {
 	QString name = data->readProperty( "ClassName" ).toString();
 
-	int id = QMetaType::type( name.toAscii() );
+	int id = QMetaType::type( qPrintable( name ) );
 	if( id != -1 ) {
 		void * editorPtr = QMetaType::construct( id );
 		if( editorPtr ) {

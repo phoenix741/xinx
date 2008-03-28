@@ -96,13 +96,18 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	IXinxPlugin * iXinxPlugin = qobject_cast<IXinxPlugin*>( plugin );
 	if( ! iXinxPlugin ) return;
 
+	if(! iXinxPlugin->initializePlugin( XINXConfig::self()->config().language ) ) {
+		qCritical() << "Can't load " << plugin->metaObject()->className() << " plugin.";
+		return;
+	}
+
 	struct XinxPluginElement element;
 	element.plugin = iXinxPlugin;
 	element.isActivated = true;
 	element.isStatic = staticLoaded;
 	m_plugins.append( element );
-	iXinxPlugin->initializePlugin( XINXConfig::self()->config().language );
-	foreach( IXinxPlugin::XinxTool tools, iXinxPlugin->pluginTools() )
+	QPair<QString,QString> tools;
+	foreach( tools, iXinxPlugin->pluginTools() )
 		XINXConfig::self()->addDefaultTool( tools.first, tools.second );
 	
 	/* Manage all XINX file Plugin */

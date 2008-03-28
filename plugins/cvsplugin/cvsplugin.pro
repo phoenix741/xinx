@@ -2,7 +2,6 @@ TEMPLATE = lib
 CONFIG += debug \
     plugin \
     static
-QT += xml
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
@@ -16,8 +15,10 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../../libxinx
-HEADERS = customizeplugin.h \
+HEADERS = pluginsettings.h \
+    customizeplugin.h \
     cvsplugin.h
-SOURCES = customizeplugin.cpp \
+SOURCES = pluginsettings.cpp \
+    customizeplugin.cpp \
     cvsplugin.cpp
 FORMS += ui/customize.ui

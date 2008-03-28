@@ -17,7 +17,7 @@ public:
 	void createSettings();
 	void deleteSettings();
 
-	struct_globals m_globals;
+	AppSettings::struct_globals m_globals;
 private:
 	AppSettings * m_parent;
 };
@@ -56,7 +56,7 @@ AppSettings&AppSettings::operator=( const AppSettings& p ) {
 	return *this;
 }
 
-struct_globals & AppSettings::config() {
+AppSettings::struct_globals & AppSettings::config() {
 	return d->m_globals;
 }
 
@@ -76,7 +76,7 @@ void AppSettings::load() {
 	d->deleteSettings();
 }
 
-struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
+AppSettings::struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
 	struct_configurationEditor value;
 
 	value.activateConfigurationEditor = false;
@@ -86,7 +86,7 @@ struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
 	return value;
 }
 
-struct_configurationEditor AppSettings::getSettingsConfigurationEditor( QSettings * settings, const QString & path, struct_configurationEditor defaultValue ) {
+AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEditor( QSettings * settings, const QString & path, AppSettings::struct_configurationEditor defaultValue ) {
 	struct_configurationEditor value;
 	settings->beginGroup( path );
 
@@ -98,7 +98,7 @@ struct_configurationEditor AppSettings::getSettingsConfigurationEditor( QSetting
 	return value;
 }
 
-void AppSettings::setSettingsConfigurationEditor( QSettings * settings, const QString & path, struct_configurationEditor value ) {
+void AppSettings::setSettingsConfigurationEditor( QSettings * settings, const QString & path, AppSettings::struct_configurationEditor value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Activate Configuration Editor", value.activateConfigurationEditor );
@@ -108,7 +108,7 @@ void AppSettings::setSettingsConfigurationEditor( QSettings * settings, const QS
 	settings->endGroup();
 }
 
-struct_editor AppSettings::getDefaultEditor() {
+AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	struct_editor value;
 
 	value.autoindentOnSaving = false;
@@ -126,7 +126,7 @@ struct_editor AppSettings::getDefaultEditor() {
 	return value;
 }
 
-struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QString & path, struct_editor defaultValue ) {
+AppSettings::struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QString & path, AppSettings::struct_editor defaultValue ) {
 	struct_editor value;
 	settings->beginGroup( path );
 
@@ -147,7 +147,7 @@ struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QStrin
 	return value;
 }
 
-void AppSettings::setSettingsEditor( QSettings * settings, const QString & path, struct_editor value ) {
+void AppSettings::setSettingsEditor( QSettings * settings, const QString & path, AppSettings::struct_editor value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving );
@@ -166,7 +166,7 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->endGroup();
 }
 
-struct_cvs AppSettings::getDefaultCvs() {
+AppSettings::struct_cvs AppSettings::getDefaultCvs() {
 	struct_cvs value;
 
 	value.progressMessages = "-q";
@@ -178,7 +178,7 @@ struct_cvs AppSettings::getDefaultCvs() {
 	return value;
 }
 
-struct_cvs AppSettings::getSettingsCvs( QSettings * settings, const QString & path, struct_cvs defaultValue ) {
+AppSettings::struct_cvs AppSettings::getSettingsCvs( QSettings * settings, const QString & path, AppSettings::struct_cvs defaultValue ) {
 	struct_cvs value;
 	settings->beginGroup( path );
 
@@ -192,7 +192,7 @@ struct_cvs AppSettings::getSettingsCvs( QSettings * settings, const QString & pa
 	return value;
 }
 
-void AppSettings::setSettingsCvs( QSettings * settings, const QString & path, struct_cvs value ) {
+void AppSettings::setSettingsCvs( QSettings * settings, const QString & path, AppSettings::struct_cvs value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Progress Messages", value.progressMessages );
@@ -204,7 +204,7 @@ void AppSettings::setSettingsCvs( QSettings * settings, const QString & path, st
 	settings->endGroup();
 }
 
-struct_project AppSettings::getDefaultProject() {
+AppSettings::struct_project AppSettings::getDefaultProject() {
 	struct_project value;
 
 	value.saveWithSessionByDefault = false;
@@ -216,7 +216,7 @@ struct_project AppSettings::getDefaultProject() {
 	return value;
 }
 
-struct_project AppSettings::getSettingsProject( QSettings * settings, const QString & path, struct_project defaultValue ) {
+AppSettings::struct_project AppSettings::getSettingsProject( QSettings * settings, const QString & path, AppSettings::struct_project defaultValue ) {
 	struct_project value;
 	settings->beginGroup( path );
 
@@ -231,7 +231,7 @@ struct_project AppSettings::getSettingsProject( QSettings * settings, const QStr
 	return value;
 }
 
-void AppSettings::setSettingsProject( QSettings * settings, const QString & path, struct_project value ) {
+void AppSettings::setSettingsProject( QSettings * settings, const QString & path, AppSettings::struct_project value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault );
@@ -244,7 +244,7 @@ void AppSettings::setSettingsProject( QSettings * settings, const QString & path
 	settings->endGroup();
 }
 
-struct_descriptions AppSettings::getDefaultDescriptions() {
+AppSettings::struct_descriptions AppSettings::getDefaultDescriptions() {
 	struct_descriptions value;
 
 	value.datas = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
@@ -252,7 +252,7 @@ struct_descriptions AppSettings::getDefaultDescriptions() {
 	return value;
 }
 
-struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, const QString & path, struct_descriptions defaultValue ) {
+AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, const QString & path, AppSettings::struct_descriptions defaultValue ) {
 	struct_descriptions value;
 	settings->beginGroup( path );
 
@@ -262,7 +262,7 @@ struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, 
 	return value;
 }
 
-void AppSettings::setSettingsDescriptions( QSettings * settings, const QString & path, struct_descriptions value ) {
+void AppSettings::setSettingsDescriptions( QSettings * settings, const QString & path, AppSettings::struct_descriptions value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Datas", value.datas );
@@ -270,7 +270,7 @@ void AppSettings::setSettingsDescriptions( QSettings * settings, const QString &
 	settings->endGroup();
 }
 
-struct_extentions AppSettings::getDefaultExtentions() {
+AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
 	struct_extentions value;
 
 	value.canBeSpecifique = true;
@@ -278,7 +278,7 @@ struct_extentions AppSettings::getDefaultExtentions() {
 	return value;
 }
 
-struct_extentions AppSettings::getSettingsExtentions( QSettings * settings, const QString & path, struct_extentions defaultValue ) {
+AppSettings::struct_extentions AppSettings::getSettingsExtentions( QSettings * settings, const QString & path, AppSettings::struct_extentions defaultValue ) {
 	struct_extentions value;
 	settings->beginGroup( path );
 
@@ -289,7 +289,7 @@ struct_extentions AppSettings::getSettingsExtentions( QSettings * settings, cons
 	return value;
 }
 
-void AppSettings::setSettingsExtentions( QSettings * settings, const QString & path, struct_extentions value ) {
+void AppSettings::setSettingsExtentions( QSettings * settings, const QString & path, AppSettings::struct_extentions value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Custom Path", value.customPath );
@@ -298,7 +298,7 @@ void AppSettings::setSettingsExtentions( QSettings * settings, const QString & p
 	settings->endGroup();
 }
 
-struct_globals AppSettings::getDefaultGlobals() {
+AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	struct_globals value;
 
 	value.language = QLocale::system().name();
@@ -317,7 +317,7 @@ struct_globals AppSettings::getDefaultGlobals() {
 	return value;
 }
 
-struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QString & path, struct_globals defaultValue ) {
+AppSettings::struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QString & path, AppSettings::struct_globals defaultValue ) {
 	struct_globals value;
 	settings->beginGroup( path );
 
@@ -339,7 +339,7 @@ struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QStr
 	return value;
 }
 
-void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path, struct_globals value ) {
+void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path, AppSettings::struct_globals value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "Language", value.language );
@@ -395,7 +395,7 @@ void AppSettings::setSettingsHash_QString( QSettings * settings, const QString &
 	settings->endGroup();
 }
 
-QHash<QString,struct_extentions> AppSettings::getDefaultHash_struct_extentions() {
+QHash<QString,AppSettings::struct_extentions> AppSettings::getDefaultHash_struct_extentions() {
 	QHash<QString,struct_extentions> value;
 
 	value[ "xml" ] = getDefaultExtentions();
@@ -408,7 +408,7 @@ QHash<QString,struct_extentions> AppSettings::getDefaultHash_struct_extentions()
 	return value;
 }
 
-QHash<QString,struct_extentions> AppSettings::getSettingsHash_struct_extentions( QSettings * settings, const QString & path, QHash<QString,struct_extentions> defaultValue ) {
+QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struct_extentions( QSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> defaultValue ) {
 	QHash<QString,struct_extentions> value;
 	settings->beginGroup( path );
 

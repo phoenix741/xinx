@@ -122,7 +122,7 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	try {
 		return QApplication::notify( receiver, event );
 	} catch( XinxException e ) {
-		qFatal( e.getMessage().toAscii().constData() );
+		qFatal( qPrintable( e.getMessage() ) );
 		return true;
 	} catch( ... ) {
 		qFatal( "Generic Exception" );

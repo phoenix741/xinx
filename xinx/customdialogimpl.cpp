@@ -157,7 +157,7 @@ void DirectoryEditDelegate::paint( QPainter *painter, const QStyleOptionViewItem
 
 /* SpecifiqueModelIndex */
 
-SpecifiqueModelIndex::SpecifiqueModelIndex( QHash<QString,struct_extentions> * extentions, QObject * parent ) : QAbstractTableModel( parent ) {
+SpecifiqueModelIndex::SpecifiqueModelIndex( QHash<QString,AppSettings::struct_extentions> * extentions, QObject * parent ) : QAbstractTableModel( parent ) {
 	foreach( QString key, XinxPluginsLoader::self()->extentions().keys() ) {
 		m_extentions.insert( key, extentions->value( key ) );
 	}
@@ -167,7 +167,7 @@ SpecifiqueModelIndex::~SpecifiqueModelIndex() {
 	
 }
 
-void SpecifiqueModelIndex::setExtentions( QHash<QString,struct_extentions> * extentions ) {
+void SpecifiqueModelIndex::setExtentions( QHash<QString,AppSettings::struct_extentions> * extentions ) {
 	emit layoutAboutToBeChanged();
 	m_extentions.clear();
 	foreach( QString key, XinxPluginsLoader::self()->extentions().keys() ) {
@@ -176,7 +176,7 @@ void SpecifiqueModelIndex::setExtentions( QHash<QString,struct_extentions> * ext
 	emit layoutChanged();
 }
 
-const QHash<QString,struct_extentions> & SpecifiqueModelIndex::extentions() const {
+const QHash<QString,AppSettings::struct_extentions> & SpecifiqueModelIndex::extentions() const {
 	return m_extentions;
 }
 
@@ -206,7 +206,7 @@ QVariant SpecifiqueModelIndex::headerData ( int section, Qt::Orientation orienta
 bool SpecifiqueModelIndex::setData ( const QModelIndex & index, const QVariant & value, int role ) {
 	if( index.isValid() && ( role == Qt::EditRole ) ) {
 		QString key = m_extentions.keys().at( index.row() );
-		struct_extentions ext = m_extentions.value( key );
+		AppSettings::struct_extentions ext = m_extentions.value( key );
 		switch( index.column() ) {
 		case 1:
 			ext.canBeSpecifique = value.toBool();
@@ -484,13 +484,16 @@ void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
 	configureDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
 	
 	QWidget * settings = p->createSettingsDialog();
+	if( ! p->loadSettingsDialog( settings ) ) 
+		QMessageBox::warning( m_parent, tr("Plugin Customization"), tr("Can't load the plugin configuration") );
 	
 	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &configureDialog );
+	QPushButton *cancelButton = new QPushButton( QIcon(":/images/button_cancel.png"), tr("&Cancel"), &configureDialog );
 	
 	QHBoxLayout * hbox = new QHBoxLayout;
 	hbox->addStretch();
 	hbox->addWidget( okButton );
-	hbox->addStretch();
+	hbox->addWidget( cancelButton );
 	
 	QVBoxLayout * vbox = new QVBoxLayout;
 	vbox->addWidget( settings );
@@ -499,8 +502,12 @@ void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
 	configureDialog.setLayout( vbox );
 	
 	connect( okButton, SIGNAL(clicked()), &configureDialog, SLOT(accept()) );
+	connect( cancelButton, SIGNAL(clicked()), &configureDialog, SLOT(reject()) );
 	
-	configureDialog.exec();
+	if( configureDialog.exec() == QDialog::Accepted ) {
+		if( ! p->saveSettingsDialog( settings ) )
+			QMessageBox::warning( m_parent, tr("Plugin Customization"), tr("Can't save the plugin configuration") );
+	}
 }
 
 void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {

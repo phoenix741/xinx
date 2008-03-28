@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
 	 		return 255;
 		}
 	} catch( XinxException e ) {
-		qFatal( "In main : %s", e.getMessage().toAscii().constData() );
+		qFatal( "In main : %s", qPrintable( e.getMessage() ) );
 		return false;
 	} catch( ... ) {
 		qFatal( "In main : Generic Exception" );

@@ -78,7 +78,7 @@ bool WebPlugin::initializePlugin( const QString & lang ) {
 	try {
 		xmlCompletionContents->setPath( "datas:baseplugin_xml.xml" );
 	} catch( NotCompletionFileException ) {
-		return false;
+		qWarning( qPrintable( tr("Can't read baseplugin_xml file") ) );
 	}
 	return true;
 }
@@ -104,6 +104,11 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	}
 	return QVariant();
 }
+
+QList< QPair<QString,QString> > WebPlugin::pluginTools() { 
+	return QList< QPair<QString,QString> >(); 
+}
+
 
 QStringList WebPlugin::extentions() {
 	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css" << "fws"; 

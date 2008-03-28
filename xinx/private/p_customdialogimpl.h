@@ -84,11 +84,11 @@ public:
 class SpecifiqueModelIndex : public QAbstractTableModel {
 	Q_OBJECT
 public:
-	SpecifiqueModelIndex( QHash<QString,struct_extentions> * extentions, QObject * parent = 0 );
+	SpecifiqueModelIndex( QHash<QString,AppSettings::struct_extentions> * extentions, QObject * parent = 0 );
 	virtual ~SpecifiqueModelIndex();
 	
-	void setExtentions( QHash<QString,struct_extentions> * extentions );
-	const QHash<QString,struct_extentions> & extentions() const;
+	void setExtentions( QHash<QString,AppSettings::struct_extentions> * extentions );
+	const QHash<QString,AppSettings::struct_extentions> & extentions() const;
 
 	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
@@ -97,7 +97,7 @@ public:
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 private:
-	QHash<QString,struct_extentions> m_extentions;
+	QHash<QString,AppSettings::struct_extentions> m_extentions;
 };
 
 

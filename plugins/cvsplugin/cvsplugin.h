@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <plugininterfaces.h>
+#include "pluginsettings.h"
 
 class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfiguration {
 	Q_OBJECT
@@ -30,6 +31,7 @@ class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfigur
 	Q_INTERFACES(IXinxPluginConfiguration)
 public:
 	CVSPlugin();
+	virtual ~CVSPlugin();
 	
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
@@ -39,6 +41,8 @@ public:
 	virtual QWidget * createSettingsDialog();
 	virtual bool loadSettingsDialog( QWidget * widget );
 	virtual bool saveSettingsDialog( QWidget * widget );
+private:
+	PluginSettings * m_settings;
 };
 
 #endif /* CVSPLUGIN_H_*/
