@@ -53,12 +53,14 @@ public:
 		PLG_VERSION     = 1007, 
 		PLG_LICENCE     = 1008 };
 	
+	typedef QPair<QString,QString> XinxTool;
+	
 	virtual ~IXinxPlugin() {};
 
 	virtual bool initializePlugin( const QString & lang ) = 0;
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
 	
-	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
+	virtual QList< XinxTool > pluginTools() { return QList< XinxTool >(); };
 };
 
 class IXinxPluginConfiguration {

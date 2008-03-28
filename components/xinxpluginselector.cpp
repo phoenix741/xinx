@@ -150,6 +150,9 @@ bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 
 	if( ! currentIndex.isValid() ) return false;
 
+	QAbstractItemModel * model = listView->model(); 
+	XinxPluginElement* element = model->data( currentIndex, Qt::UserRole ).value<XinxPluginElement*>(); 
+	
 	QStyleOptionViewItem option;
 	option.fontMetrics = listView->viewOptions().fontMetrics;
 	option.direction = listView->layoutDirection();
@@ -157,7 +160,8 @@ bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 	
 	QStyleOptionButton optAbout, optConfigure;
 	optAbout = calculateButtonAbout( option );
-	//optConfigure = calculateButtonConfigure( option, m_separatorPixels + optAbout.rect.width() );
+	if( dynamic_cast<IXinxPluginConfiguration*>( element->plugin ) )
+		optConfigure = calculateButtonConfigure( option, m_separatorPixels + optAbout.rect.width() );
 	
 	QRect rectCheck;
 	QStyleOptionViewItem optCheck = calculateCheckbox( option, rectCheck );
@@ -176,7 +180,6 @@ bool XinxPluginDelegate::eventFilter( QObject *watched, QEvent *event ) {
 		m_buttonPressed  = false;
 		viewport->update();
 		
-		QAbstractItemModel * model = listView->model(); 
 		if( optAbout.rect.contains( m_cursorPosition ) )
 			emit aboutPlugin( model->data( currentIndex, Qt::UserRole ).value<XinxPluginElement*>() );
 		if( optConfigure.rect.contains( m_cursorPosition ) )
@@ -231,8 +234,13 @@ void XinxPluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &o
     painter->drawPixmap( pixmapLeftPosition, ( option.rect.height() - iconPixmap.height() ) / 2 + option.rect.top(), iconPixmap );
 
     // Draw buttons 
+	const QAbstractItemModel * model = index.model(); 
+	XinxPluginElement* element = model->data( index, Qt::UserRole ).value<XinxPluginElement*>();
+	
 	QStyleOptionButton optAbout = drawButtonAbout( painter, option );
-	QStyleOptionButton optConfigure;// = drawButtonConfigure( painter, option, m_separatorPixels + optAbout.rect.width() );
+	QStyleOptionButton optConfigure;
+	if( dynamic_cast<IXinxPluginConfiguration*>( element->plugin ) )
+		optConfigure = drawButtonConfigure( painter, option, m_separatorPixels + optAbout.rect.width() );
 
 	// Draw text 
 	int maxTextLength = option.rect.width() - checkRect.width() - iconPixmap.width() - m_leftMargin - m_rightMargin - m_separatorPixels * 7 - optAbout.rect.width() - optConfigure.rect.width();

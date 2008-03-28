@@ -58,7 +58,6 @@
 	<value name="Configuration Editor" type="Configuration Editor"/>
     
 	<value name="Tools" type="hash:string">
-		<default name="cvs" default="/usr/bin/cvs"/>
 		<default name="diff" default="/usr/bin/kompare"/>
 	</value>
 	<value name="Files" type="hash:Extentions">

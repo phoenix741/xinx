@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 			XinxPluginsLoader::self()->loadPlugins();
 
 			/* Reload to have options in plugins */
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Reload configuration ...") );
 			app.processEvents();
 			XINXConfig::self()->load();
 

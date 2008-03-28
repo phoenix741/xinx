@@ -92,6 +92,7 @@ void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 }
 
 void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
+	/* Manage all XINX Plugin */
 	IXinxPlugin * iXinxPlugin = qobject_cast<IXinxPlugin*>( plugin );
 	if( ! iXinxPlugin ) return;
 
@@ -101,7 +102,10 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	element.isStatic = staticLoaded;
 	m_plugins.append( element );
 	iXinxPlugin->initializePlugin( XINXConfig::self()->config().language );
+	foreach( IXinxPlugin::XinxTool tools, iXinxPlugin->pluginTools() )
+		XINXConfig::self()->addDefaultTool( tools.first, tools.second );
 	
+	/* Manage all XINX file Plugin */
 	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
 	if( iFilePlugin ) {	
 		QHash<QString,QString> libelles = iFilePlugin->extentionsDescription();

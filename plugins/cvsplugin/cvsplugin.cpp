@@ -72,8 +72,8 @@ bool CVSPlugin::saveSettingsDialog( QWidget * widget ) {
 	return false;
 }
 
-QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
-	QList< QPair<QString,QString> > tools;
+QList< IXinxPlugin::XinxTool > CVSPlugin::pluginTools() {
+	QList< IXinxPlugin::XinxTool > tools;
 #ifdef Q_WS_WIN
 	tools.append( qMakePair( QString("cvs"), QString("%1/CVSNT/cvs.exe").arg( "C:/Program Files" ) );
 #else

@@ -31,7 +31,6 @@
 #include <QIcon>
 #include <QPair>
 
-
 class XinxPluginsLoader : public QObject {
 	Q_OBJECT
 public:

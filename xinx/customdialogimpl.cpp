@@ -475,8 +475,32 @@ void PrivateCustomDialogImpl::storeConfig() {
 }
 
 void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
-	Q_UNUSED( plugin );
-	QMessageBox::information( m_parent, tr("XINX Plugin Configuration"), tr("Not yet implemented") );
+	XINX_ASSERT( plugin );
+	XINX_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin ) );
+	
+	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin );
+	
+	QDialog configureDialog;
+	configureDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
+	
+	QWidget * settings = p->createSettingsDialog();
+	
+	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &configureDialog );
+	
+	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addStretch();
+	hbox->addWidget( okButton );
+	hbox->addStretch();
+	
+	QVBoxLayout * vbox = new QVBoxLayout;
+	vbox->addWidget( settings );
+	vbox->addLayout( hbox );
+	
+	configureDialog.setLayout( vbox );
+	
+	connect( okButton, SIGNAL(clicked()), &configureDialog, SLOT(accept()) );
+	
+	configureDialog.exec();
 }
 
 void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
@@ -491,7 +515,7 @@ void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
 	informations->setText(
 			tr( "<table>"
 					"<tr>"
-						"<td rowspan=\"2\" align=\"center\"><img src=\":/images/dialog-information.png\"/></td>"
+						"<td rowspan=\"2\"><img src=\":/images/dialog-information.png\"/></td>"
 						"<td colspan=\"2\"><b>%1</b></td>"
 					"</tr>"
 					"<tr>"

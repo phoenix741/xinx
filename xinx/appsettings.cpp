@@ -362,7 +362,6 @@ void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path
 QHash<QString,QString> AppSettings::getDefaultHash_QString() {
 	QHash<QString,QString> value;
 
-	value[ "cvs" ] = "/usr/bin/cvs";
 	value[ "diff" ] = "/usr/bin/kompare";
 
 	return value;
