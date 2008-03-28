@@ -25,10 +25,11 @@
 #include <plugininterfaces.h>
 #include "pluginsettings.h"
 
-class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfiguration {
+class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfiguration, public IRCSPlugin {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
+	Q_INTERFACES(IRCSPlugin)
 public:
 	CVSPlugin();
 	virtual ~CVSPlugin();
@@ -41,6 +42,10 @@ public:
 	virtual QWidget * createSettingsDialog();
 	virtual bool loadSettingsDialog( QWidget * widget );
 	virtual bool saveSettingsDialog( QWidget * widget );
+	
+	virtual QStringList rcs();
+	virtual QString descriptionOfRCS( const QString & rcs );
+	virtual RCS * createRCS( const QString & rcs, const QString & basePath );
 private:
 	PluginSettings * m_settings;
 };

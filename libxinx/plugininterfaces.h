@@ -40,6 +40,7 @@ class QTextDocument;
 class QTextEdit;
 class QKeyEvent;
 class QCompleter;
+class RCS;
 
 class IXinxPlugin {
 public:
@@ -76,6 +77,18 @@ struct XinxPluginElement {
 	IXinxPlugin * plugin;
 };
 
+class IRCSPlugin : public IXinxPlugin {
+public:
+	virtual ~IRCSPlugin() {};
+	
+	virtual QStringList rcs() = 0;
+	virtual QString descriptionOfRCS( const QString & rcs ) = 0;
+	virtual RCS * createRCS( const QString & rcs, const QString & basePath ) = 0;
+};
+
+/*! 
+ * This interface represents a plugins used for show manage an extention 
+ */
 class IFilePlugin : public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
@@ -152,6 +165,7 @@ public:
 
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0")
 Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0")
+Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0")
 Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
 Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
 Q_DECLARE_INTERFACE(IPluginPrettyPrint, "org.shadoware.xinx.IPluginPrettyPrint/1.0")

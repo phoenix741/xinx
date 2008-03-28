@@ -21,6 +21,7 @@
 // Xinx header
 #include "cvsplugin.h"
 #include "customizeplugin.h"
+#include "rcs_cvs.h"
 
 // Qt header
 #include <QString>
@@ -138,5 +139,20 @@ QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
 	return tools;
 }
 
+QStringList CVSPlugin::rcs() {
+	return QStringList() << "cvs";
+}
+
+QString CVSPlugin::descriptionOfRCS( const QString & rcs ) {
+	if( rcs.toLower() == "cvs" )
+		return tr( "Concurent Version System" );
+	return QString();
+}
+
+RCS * CVSPlugin::createRCS( const QString & rcs, const QString & basePath ) {
+	if( rcs.toLower() == "cvs" ) 
+		return RCS_CVS( basePath );
+	return NULL;
+}
 
 Q_EXPORT_PLUGIN2(cvsplugin, CVSPlugin)

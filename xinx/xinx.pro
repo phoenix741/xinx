@@ -88,15 +88,12 @@ FORMS += ui/specifiquedlg.ui \
 HEADERS += xinxcore.h \
     xinxpluginsloader.h \
     specifiquedlgimpl.h \
-    xinxthread.h \
     aboutdialogimpl.h \
     appsettings.h \
     commitmessagedialogimpl.h \
     configurationfile.h \
     connectionwebservicesdialogimpl.h \
     customdialogimpl.h \
-    cvsfiles.h \
-    cvsthread.h \
     dirrcsmodel.h \
     editor.h \
     filecontentdockwidget.h \
@@ -126,7 +123,6 @@ HEADERS += xinxcore.h \
     private/p_webserviceseditor.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
-    rcs_cvs.h \
     rcslogdialogimpl.h \
     replacedialogimpl.h \
     runsnipetdialogimpl.h \
@@ -158,8 +154,6 @@ SOURCES += xinxcore.cpp \
     configurationfile.cpp \
     connectionwebservicesdialogimpl.cpp \
     customdialogimpl.cpp \
-    cvsfiles.cpp \
-    cvsthread.cpp \
     dirrcsmodel.cpp \
     editor.cpp \
     filecontentdockwidget.cpp \
@@ -173,7 +167,6 @@ SOURCES += xinxcore.cpp \
     numberbar.cpp \
     projectdirectorydockwidget.cpp \
     projectpropertyimpl.cpp \
-    rcs_cvs.cpp \
     rcslogdialogimpl.cpp \
     replacedialogimpl.cpp \
     runsnipetdialogimpl.cpp \
@@ -195,7 +188,6 @@ SOURCES += xinxcore.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \
-    xinxthread.cpp \
     newprojectwizard.cpp
 contains( CONFIG, qdbus ) { 
     HEADERS += studioadaptor.h \

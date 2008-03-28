@@ -15,10 +15,16 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../../libxinx
-HEADERS = pluginsettings.h \
+HEADERS = cvsfiles.h \
+    cvsthread.h \
+    rcs_cvs.h \
+    pluginsettings.h \
     customizeplugin.h \
     cvsplugin.h
-SOURCES = pluginsettings.cpp \
+SOURCES = cvsfiles.cpp \
+    cvsthread.cpp \
+    rcs_cvs.cpp \
+    pluginsettings.cpp \
     customizeplugin.cpp \
     cvsplugin.cpp
 FORMS += ui/customize.ui

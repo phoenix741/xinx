@@ -21,7 +21,7 @@
 // Xinx header
 #include "exceptions.h"
 #include "cvsthread.h"
-#include "xinxconfig.h"
+#include "pluginsettings.h"
 
 // Qt header
 #include <QFileInfo>

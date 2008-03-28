@@ -11,10 +11,12 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-HEADERS = rcs.h \
+HEADERS = xinxthread.h \
+    rcs.h \
     exceptions.h \
     filecontentstructure.h
-SOURCES = rcs.cpp \
+SOURCES = xinxthread.cpp \
+    rcs.cpp \
     exceptions.cpp \
     filecontentstructure.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
