@@ -105,11 +105,6 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
-QList< QPair<QString,QString> > WebPlugin::pluginTools() { 
-	return QList< QPair<QString,QString> >(); 
-}
-
-
 QStringList WebPlugin::extentions() {
 	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css" << "fws"; 
 }

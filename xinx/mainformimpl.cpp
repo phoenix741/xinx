@@ -1702,7 +1702,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		
 		operations = rcs->operations( listOfFile );
 
-		if( XINXConfig::self()->config().cvs.createChangelog ) {
+		if( XINXConfig::self()->config().rcs.createChangelog ) {
 			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
 			if( QFile::exists( changeLog ) )
 				operations << qMakePair(changeLog, RCS::Commit);
@@ -1715,7 +1715,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 		if( ! dlg.exec() ) return ;
 		QString message = dlg.messages();
 
-		if( XINXConfig::self()->config().cvs.createChangelog ) {
+		if( XINXConfig::self()->config().rcs.createChangelog ) {
 			QFile changeLogFile( changeLog );
 			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
 				QTextStream stream( &changeLogFile );

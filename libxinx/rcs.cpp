@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "rcs.h"
-#include "exceptions.h"
+#include <rcs.h>
+#include <exceptions.h>
+
+/* RCS */
 
 RCS::RCS( const QString & base ) : m_base( base ) {
 	XINX_TRACE( "RCS", QString( "( %1 )" ).arg( base ) );

@@ -19,10 +19,9 @@
  ***************************************************************************/
 
 // Xinx header
-#include "private/p_rcs_cvs.h"
+#include "p_rcs_cvs.h"
 #include "cvsthread.h"
 #include "cvsfiles.h"
-#include "exceptions.h"
 #include "xinxpluginsloader.h"
 
 // Qt header

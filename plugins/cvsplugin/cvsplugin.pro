@@ -1,13 +1,10 @@
 TEMPLATE = lib
-CONFIG += debug \
-    plugin \
-    static
+CONFIG += debug plugin static
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-LIBS = -L../../libxinx \
-    -lsharedxinx
+LIBS = -L../../libxinx -lsharedxinx
 TARGET = $$qtLibraryTarget(cvsplugin)
 unix { 
     QMAKE_CC = "ccache gcc"
@@ -15,7 +12,8 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../../libxinx
-HEADERS = cvsfiles.h \
+HEADERS = p_rcs_cvs.h \
+    cvsfiles.h \
     cvsthread.h \
     rcs_cvs.h \
     pluginsettings.h \

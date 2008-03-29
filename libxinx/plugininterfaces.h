@@ -59,7 +59,7 @@ public:
 	virtual bool initializePlugin( const QString & lang ) = 0;
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
 	
-	virtual QList< QPair<QString,QString> > pluginTools() = 0;
+	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
 };
 
 class IXinxPluginConfiguration {
@@ -77,7 +77,7 @@ struct XinxPluginElement {
 	IXinxPlugin * plugin;
 };
 
-class IRCSPlugin : public IXinxPlugin {
+class IRCSPlugin : virtual public IXinxPlugin {
 public:
 	virtual ~IRCSPlugin() {};
 	
@@ -89,7 +89,7 @@ public:
 /*! 
  * This interface represents a plugins used for show manage an extention 
  */
-class IFilePlugin : public IXinxPlugin {
+class IFilePlugin : virtual public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
 	virtual ~IFilePlugin() {};

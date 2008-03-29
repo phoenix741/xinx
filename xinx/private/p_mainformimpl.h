@@ -26,11 +26,11 @@
 #include "../filecontentdockwidget.h"
 #include "../projectdirectorydockwidget.h"
 #include "../xmlpresentationdockwidget.h"
-#include "../xinxcore.h"
+#include "xinxcore.h"
 #include "../replacedialogimpl.h"
 #include "../rcslogdialogimpl.h"
 #include "../snipet.h"
-#include "../xinxconfig.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QObject>

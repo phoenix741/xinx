@@ -166,39 +166,27 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->endGroup();
 }
 
-AppSettings::struct_cvs AppSettings::getDefaultCvs() {
-	struct_cvs value;
+AppSettings::struct_rcs AppSettings::getDefaultRcs() {
+	struct_rcs value;
 
-	value.progressMessages = "-q";
-	value.compressionLevel = 9;
-	value.pruneEmptyDirectories = false;
-	value.createDirectories = true;
 	value.createChangelog = false;
 
 	return value;
 }
 
-AppSettings::struct_cvs AppSettings::getSettingsCvs( QSettings * settings, const QString & path, AppSettings::struct_cvs defaultValue ) {
-	struct_cvs value;
+AppSettings::struct_rcs AppSettings::getSettingsRcs( QSettings * settings, const QString & path, AppSettings::struct_rcs defaultValue ) {
+	struct_rcs value;
 	settings->beginGroup( path );
 
-	value.progressMessages = settings->value( "Progress Messages", defaultValue.progressMessages ).toString();
-	value.compressionLevel = settings->value( "Compression Level", defaultValue.compressionLevel ).toInt();
-	value.pruneEmptyDirectories = settings->value( "Prune Empty Directories", defaultValue.pruneEmptyDirectories ).toBool();
-	value.createDirectories = settings->value( "Create Directories", defaultValue.createDirectories ).toBool();
 	value.createChangelog = settings->value( "Create ChangeLog", defaultValue.createChangelog ).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void AppSettings::setSettingsCvs( QSettings * settings, const QString & path, AppSettings::struct_cvs value ) {
+void AppSettings::setSettingsRcs( QSettings * settings, const QString & path, AppSettings::struct_rcs value ) {
 	settings->beginGroup( path );
 
-	settings->setValue( "Progress Messages", value.progressMessages );
-	settings->setValue( "Compression Level", value.compressionLevel );
-	settings->setValue( "Prune Empty Directories", value.pruneEmptyDirectories );
-	settings->setValue( "Create Directories", value.createDirectories );
 	settings->setValue( "Create ChangeLog", value.createChangelog );
 
 	settings->endGroup();
@@ -307,7 +295,7 @@ AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.maximized = false;
 	value.descriptions = getDefaultDescriptions();
 	value.project = getDefaultProject();
-	value.cvs = getDefaultCvs();
+	value.rcs = getDefaultRcs();
 	value.editor = getDefaultEditor();
 	value.configurationEditor = getDefaultConfigurationEditor();
 	value.tools = getDefaultHash_QString();
@@ -328,7 +316,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals( QSettings * setting
 	value.state = settings->value( "State", defaultValue.state ).toByteArray();
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", defaultValue.descriptions );
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
-	value.cvs = getSettingsCvs( settings, "CVS", defaultValue.cvs );
+	value.rcs = getSettingsRcs( settings, "RCS", defaultValue.rcs );
 	value.editor = getSettingsEditor( settings, "Editor", defaultValue.editor );
 	value.configurationEditor = getSettingsConfigurationEditor( settings, "Configuration Editor", defaultValue.configurationEditor );
 	value.tools = getSettingsHash_QString( settings, "Tools", defaultValue.tools );
@@ -349,7 +337,7 @@ void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path
 	settings->setValue( "State", value.state );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );
-	setSettingsCvs( settings, "CVS", value.cvs );
+	setSettingsRcs( settings, "RCS", value.rcs );
 	setSettingsEditor( settings, "Editor", value.editor );
 	setSettingsConfigurationEditor( settings, "Configuration Editor", value.configurationEditor );
 	setSettingsHash_QString( settings, "Tools", value.tools );

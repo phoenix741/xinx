@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "dirrcsmodel.h"
-#include "rcs_cvs.h"
 #include "xslproject.h"
 
 // Qt header
@@ -32,7 +31,7 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 	XINX_TRACE( "DirRCSModel", QString( "( %1, ... )" ).arg( nameFilters.join(";") ) );
 
 	if( XINXProjectManager::self()->project() && ( XINXProjectManager::self()->project()->projectRCS() == XSLProject::CVS ) )  {
-		m_rcs = new RCS_CVS( XINXProjectManager::self()->project()->projectPath() );
+// TODO:		m_rcs = new RCS_CVS( XINXProjectManager::self()->project()->projectPath() );
 		connect( m_rcs, SIGNAL(stateChanged(QString)), this, SLOT(refresh(QString)) );
 	} else
 		m_rcs = NULL;

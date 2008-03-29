@@ -42,11 +42,7 @@ public:
 		bool closeButtonOnEachTab;
 	};
 
-	struct struct_cvs {
-		QString progressMessages;
-		int compressionLevel;
-		bool pruneEmptyDirectories;
-		bool createDirectories;
+	struct struct_rcs {
 		bool createChangelog;
 	};
 
@@ -76,7 +72,7 @@ public:
 		QByteArray state;
 		struct_descriptions descriptions;
 		struct_project project;
-		struct_cvs cvs;
+		struct_rcs rcs;
 		struct_editor editor;
 		struct_configurationEditor configurationEditor;
 		QHash<QString,QString> tools;
@@ -105,9 +101,9 @@ protected:
 	virtual struct_editor getSettingsEditor( QSettings * settings, const QString & path, struct_editor defaultValue );
 	virtual void setSettingsEditor( QSettings * settings, const QString & path, struct_editor value );
 
-	virtual struct_cvs getDefaultCvs();
-	virtual struct_cvs getSettingsCvs( QSettings * settings, const QString & path, struct_cvs defaultValue );
-	virtual void setSettingsCvs( QSettings * settings, const QString & path, struct_cvs value );
+	virtual struct_rcs getDefaultRcs();
+	virtual struct_rcs getSettingsRcs( QSettings * settings, const QString & path, struct_rcs defaultValue );
+	virtual void setSettingsRcs( QSettings * settings, const QString & path, struct_rcs value );
 
 	virtual struct_project getDefaultProject();
 	virtual struct_project getSettingsProject( QSettings * settings, const QString & path, struct_project defaultValue );

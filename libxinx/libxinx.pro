@@ -11,11 +11,19 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-HEADERS = xinxthread.h \
+HEADERS = appsettings.h \
+    xinxconfig.h \
+    xinxpluginsloader.h \
+    xinxcore.h \
+    xinxthread.h \
     rcs.h \
     exceptions.h \
     filecontentstructure.h
-SOURCES = xinxthread.cpp \
+SOURCES = appsettings.cpp \
+    xinxconfig.cpp \
+    xinxpluginsloader.cpp \
+    xinxcore.cpp \
+    xinxthread.cpp \
     rcs.cpp \
     exceptions.cpp \
     filecontentstructure.cpp

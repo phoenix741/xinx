@@ -23,7 +23,7 @@
 
 // kmdalert watcher
 #include "../filewatcher.h"
-#include "../xinxthread.h"
+#include "xinxthread.h"
 
 // Qt header
 #include <QString>

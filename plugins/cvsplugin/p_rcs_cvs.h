@@ -22,10 +22,10 @@
 #define __P_RCS_CVS_H__
 
 // Xinx header
-#include "../rcs_cvs.h"
-#include "../xinxconfig.h"
-#include "../cvsfiles.h"
-#include "../xinxthread.h"
+#include "rcs_cvs.h"
+#include "cvsfiles.h"
+#include "xinxthread.h"
+#include "pluginsettings.h"
 
 // Qt header
 #include <QStringList>
@@ -51,6 +51,8 @@ public:
 	
 	XinxThread * m_thread;
 	CVSFileEntryList * m_entries;
+	PluginSettings * m_settings;
+	QHash<QString,QString> * m_tools;
 private:
 	RCS_CVS * m_parent;
 };

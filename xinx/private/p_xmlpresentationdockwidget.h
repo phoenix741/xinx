@@ -26,7 +26,7 @@
 #include "ui_xmlpresentationwidget.h"
 #include "../xmlpresentationitem.h"
 #include "../filewatcher.h"
-#include "../xinxthread.h"
+#include "xinxthread.h"
 
 // Qt header
 #include <QThread>

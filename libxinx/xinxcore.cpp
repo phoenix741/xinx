@@ -20,10 +20,6 @@
 
 // Xinx header
 #include "xinxcore.h"
-#include "xslproject.h"
-#include "webservices.h"
-#include "snipetlist.h"
-#include "xinxpluginsloader.h"
 
 /* XINXStaticDeleter */
 

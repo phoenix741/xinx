@@ -337,27 +337,8 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_toolsTable->resizeColumnsToContents();
 	QObject::connect( toolsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_toolsTable, SLOT(resizeColumnsToContents()) );
 	
-	// CVS: Progress message
-	if( m_config.config().cvs.progressMessages.isEmpty() ) 
-		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 2 );
-	else
-	if( m_config.config().cvs.progressMessages == "-q" ) 
-		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 1 );
-	else
-	if( m_config.config().cvs.progressMessages == "-Q" ) 
-		m_parent->m_cvsVerboseComboBox->setCurrentIndex( 0 );
-	
-	// CVS: Compression
-	m_parent->m_cvsCompressionComboBox->setCurrentIndex( m_config.config().cvs.compressionLevel );
-	
-	// CVS: Prune empty directories
-	m_parent->m_cvsPruneCheckBox->setChecked( m_config.config().cvs.pruneEmptyDirectories );
-	
-	// CVS: Create any directories that exist in the repository
-	m_parent->m_cvsCreateDirCheckBox->setChecked( m_config.config().cvs.createDirectories );
-	
 	// CVS : Create Change Log automatically
-	m_parent->m_changeLogCheckBox->setChecked( m_config.config().cvs.createChangelog );
+	m_parent->m_changeLogCheckBox->setChecked( m_config.config().rcs.createChangelog );
 
 	// Syntax highlighter
 	m_previousFormat = QString();
@@ -443,30 +424,8 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Default specifique path name
 	m_config.config().project.defaultProjectPathName = QDir::fromNativeSeparators( m_parent->m_lineEditDefaultProjectPathName->text() );
 
-	// CVS: Progress message
-	switch( m_parent->m_cvsVerboseComboBox->currentIndex() ) {
-	case 2: 
-		m_config.config().cvs.progressMessages = "";
-		break;
-	case 1: 
-		m_config.config().cvs.progressMessages = "-q";
-		break;
-	case 0: 
-		m_config.config().cvs.progressMessages = "-Q";
-		break;
-	}
-
-	// CVS: Compression
-	m_config.config().cvs.compressionLevel = m_parent->m_cvsCompressionComboBox->currentIndex();
-	
-	// CVS: Prune empty directories
-	m_config.config().cvs.pruneEmptyDirectories = m_parent->m_cvsPruneCheckBox->isChecked();
-	
-	// CVS: Create any directories that exist in the repository
-	m_config.config().cvs.createDirectories = m_parent->m_cvsCreateDirCheckBox->isChecked();
-
 	// CVS : Create Change Log automatically
-	m_config.config().cvs.createChangelog = m_parent->m_changeLogCheckBox->isChecked();
+	m_config.config().rcs.createChangelog = m_parent->m_changeLogCheckBox->isChecked();
 	
 	// Extentions
 	SpecifiqueModelIndex * specifiqueModel = qobject_cast<SpecifiqueModelIndex*>( m_parent->m_specifiqueTableView->model() );

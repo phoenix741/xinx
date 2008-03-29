@@ -22,6 +22,7 @@
 #include "exceptions.h"
 #include "cvsthread.h"
 #include "pluginsettings.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QFileInfo>
@@ -30,6 +31,8 @@
 #ifdef Q_WS_WIN
 	#include <windows.h>
 #endif
+
+PluginSettings * m_settings = 0;
 
 /* CVSThread */
 
@@ -150,12 +153,12 @@ CVSUpdateThread::CVSUpdateThread( QStringList paths, bool terminate ) : CVSThrea
 
 void CVSUpdateThread::callCVS( const QString & path, const QStringList & files ) {
 	QStringList parameters;
-	if( ! XINXConfig::self()->config().cvs.progressMessages.isEmpty() )
-		parameters << XINXConfig::self()->config().cvs.progressMessages;
-	parameters << QString("-z%1").arg( XINXConfig::self()->config().cvs.compressionLevel ) << "update";
-	if( XINXConfig::self()->config().cvs.pruneEmptyDirectories )
+	if( ! m_settings->config().progressMessages.isEmpty() )
+		parameters << m_settings->config().progressMessages;
+	parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "update";
+	if( m_settings->config().pruneEmptyDirectories )
 		parameters << "-P";
-	if( XINXConfig::self()->config().cvs.createDirectories )
+	if( m_settings->config().createDirectories )
 		parameters << "-d";
 
 	parameters << files;
@@ -195,9 +198,9 @@ void CVSUpdateRevisionThread::processReadOutput() {
 
 void CVSUpdateRevisionThread::callCVS( const QString & path, const QStringList & files ) {
 	QStringList parameters;
-	if( ! XINXConfig::self()->config().cvs.progressMessages.isEmpty() )
-		parameters << XINXConfig::self()->config().cvs.progressMessages;
-	parameters << QString("-z%1").arg( XINXConfig::self()->config().cvs.compressionLevel ) << "update";
+	if( ! m_settings->config().progressMessages.isEmpty() )
+		parameters << m_settings->config().progressMessages;
+	parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "update";
 	if( m_content != NULL )
 		parameters << "-p";
 	parameters << "-r" << m_revision; 
@@ -282,9 +285,9 @@ CVSCommitThread::CVSCommitThread( RCS::FilesOperation paths, QString message ) :
 
 void CVSCommitThread::callCVS( const QString & path, const QStringList & files ) {
 	QStringList parameters;
-	if( ! XINXConfig::self()->config().cvs.progressMessages.isEmpty() )
-		parameters << XINXConfig::self()->config().cvs.progressMessages;
-	parameters << QString("-z%1").arg( XINXConfig::self()->config().cvs.compressionLevel ) << "commit" << "-m" << m_message;
+	if( ! m_settings->config().progressMessages.isEmpty() )
+		parameters << m_settings->config().progressMessages;
+	parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "commit" << "-m" << m_message;
 
 	parameters << files;
 	

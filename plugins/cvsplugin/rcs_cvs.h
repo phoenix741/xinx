@@ -22,10 +22,11 @@
 #define __RCS_CVS_H__
 
 // Xinx header
-#include "rcs.h"
-#include "exceptions.h"
+#include <rcs.h>
+#include <exceptions.h>
 
 class PrivateRCS_CVS;
+class PluginSettings;
 
 class ProcessExecutedException : public XinxException {
 public:

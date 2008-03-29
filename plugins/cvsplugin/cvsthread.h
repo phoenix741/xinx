@@ -24,6 +24,7 @@
 // Xinx header
 #include "rcs.h"
 #include "xinxthread.h"
+#include "pluginsettings.h"
 
 // Qt header
 #include <QProcess>

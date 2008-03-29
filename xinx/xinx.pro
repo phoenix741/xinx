@@ -28,24 +28,24 @@ LIBS = -L../plugins/cvsplugin \
     -L../libxinx \
     -L../components
 win32:CONFIG(debug) { 
-    LIBS += -lsharedxinxd \
-        -lxinxcmpd \
-        -lwebplugind \
-        -lcvsplugind
-    POST_TARGETDEPS = ../plugins/cvsplugin/libcvsplugind.a \
-        ../plugins/webplugin/libwebplugind.a \
+    LIBS += -lwebplugind \
+	-lcvsplugind \
+	-lsharedxinxd \
+        -lxinxcmpd 
+    POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
         ../libxinx/libsharedxinxd.a \
-        ../components/libxinxcmpd.a
+        ../components/libxinxcmpd.a \
+	../plugins/cvsplugin/libcvsplugind.a
 }
 else { 
-    LIBS += -lsharedxinx \
-        -lxinxcmp \
-        -lwebplugin \
-        -lcvsplugin
-    POST_TARGETDEPS = ../plugins/cvsplugin/libcvsplugin.a \
-        ../plugins/webplugin/libwebplugin.a \
+    LIBS += -lwebplugin \
+        -lcvsplugin \
+	-lsharedxinx \
+        -lxinxcmp
+    POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
         ../libxinx/libsharedxinx.a \
-        ../components/libxinxcmp.a
+        ../components/libxinxcmp.a \
+	../plugins/cvsplugin/libcvsplugin.a
 }
 win32:RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
@@ -85,11 +85,8 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_specifique.ui \
     ui/newprojectwizard_services.ui \
     ui/newprojectwizard_serviceslist.ui
-HEADERS += xinxcore.h \
-    xinxpluginsloader.h \
-    specifiquedlgimpl.h \
+HEADERS += specifiquedlgimpl.h \
     aboutdialogimpl.h \
-    appsettings.h \
     commitmessagedialogimpl.h \
     configurationfile.h \
     connectionwebservicesdialogimpl.h \
@@ -111,7 +108,6 @@ HEADERS += xinxcore.h \
     private/p_filewatcher.h \
     private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \
-    private/p_rcs_cvs.h \
     private/p_threadedconfigurationfile.h \
     private/p_uniqueapplication.h \
     private/p_xmlpresentationdockwidget.h \
@@ -140,16 +136,12 @@ HEADERS += xinxcore.h \
     webservices.h \
     webserviceseditor.h \
     wsdl.h \
-    xinxconfig.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     xslproject.h \
     private/p_customdialogimpl.h
-SOURCES += xinxcore.cpp \
-    xinxpluginsloader.cpp \
-    specifiquedlgimpl.cpp \
+SOURCES += specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
-    appsettings.cpp \
     commitmessagedialogimpl.cpp \
     configurationfile.cpp \
     connectionwebservicesdialogimpl.cpp \
@@ -184,7 +176,6 @@ SOURCES += xinxcore.cpp \
     webservices.cpp \
     webserviceseditor.cpp \
     wsdl.cpp \
-    xinxconfig.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \

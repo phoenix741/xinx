@@ -151,7 +151,7 @@ QString CVSPlugin::descriptionOfRCS( const QString & rcs ) {
 
 RCS * CVSPlugin::createRCS( const QString & rcs, const QString & basePath ) {
 	if( rcs.toLower() == "cvs" ) 
-		return RCS_CVS( basePath );
+		return new RCS_CVS( basePath );
 	return NULL;
 }
 

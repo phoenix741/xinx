@@ -25,7 +25,7 @@
 #include <plugininterfaces.h>
 #include "pluginsettings.h"
 
-class CVSPlugin : public QObject, public IXinxPlugin, public IXinxPluginConfiguration, public IRCSPlugin {
+class CVSPlugin : public QObject, public IXinxPluginConfiguration, public IRCSPlugin {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
