@@ -766,15 +766,15 @@ void PrivateMainformImpl::updateActions() {
 	m_parent->m_closeProjectNoSessionAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 	m_parent->m_projectPropertyAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 	
-	m_parent->m_globalUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute ) );
-	m_parent->m_globalCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_globalUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute ) );
+	m_parent->m_globalCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
 
-	m_parent->m_selectedUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
-	m_parent->m_selectedCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
-	m_parent->m_selectedAddToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
-	m_parent->m_selectedRemoveFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedAddToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
+	m_parent->m_selectedRemoveFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
 	
-	m_parent->m_cancelRCSOperationAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS) && m_rcsExecute );
+	m_parent->m_cancelRCSOperationAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && m_rcsExecute );
 	
 	m_parent->m_toggledFlatView->setEnabled( XINXProjectManager::self()->project() != NULL );
 	m_projectDock->setEnabled( XINXProjectManager::self()->project() != NULL );

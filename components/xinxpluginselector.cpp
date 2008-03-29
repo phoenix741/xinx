@@ -82,12 +82,12 @@ QVariant XinxPluginModel::data( const QModelIndex &index, int role ) const {
 	if( ( i < 0 ) || ( i >= m_plugins.count() ) ) return QVariant();
 	XinxPluginElement * e = m_plugins.at( i ); 
 	
-	QVariant result = e->plugin->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
+	QVariant result = qobject_cast<IXinxPlugin*>( e->plugin )->getPluginAttribute( (IXinxPlugin::PluginAttribute)role );
 	if( result.isValid() ) return result;
 
 	switch( role ) {
 	case Qt::DisplayRole:
-		return e->plugin->getPluginAttribute( IXinxPlugin::PLG_NAME );
+		return qobject_cast<IXinxPlugin*>( e->plugin )->getPluginAttribute( IXinxPlugin::PLG_NAME );
 	case Qt::UserRole:
 		result.setValue( e ); 
 		return result;

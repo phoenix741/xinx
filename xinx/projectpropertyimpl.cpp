@@ -21,8 +21,9 @@
 // Xinx header
 #include "projectpropertyimpl.h"
 #include "xslproject.h"
-#include "xinxconfig.h"
-#include "exceptions.h"
+#include <xinxconfig.h>
+#include <exceptions.h>
+#include <xinxpluginsloader.h>
 
 // Qt header
 #include <QDir>
@@ -36,6 +37,11 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
 	m_servicesList->setDefaultVisible( false );
 	m_servicesList->setDefaultProposedValue( "http://localhost" );
+	
+	m_projectRCSComboBox->addItem( tr("<No Revision Control System>") );
+	QPair<QString,QString> revisionControl;
+	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() ) 
+		m_projectRCSComboBox->addItem( revisionControl.second, revisionControl.first );
 }
 
 ProjectPropertyImpl::~ProjectPropertyImpl() {
@@ -115,17 +121,9 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_webServiceGroupBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
 	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
 	
-	switch( project->projectRCS() ) {
-	case XSLProject::NORCS :
-		m_projectRCSComboBox->setCurrentIndex( 0 );
-		break;
-	case XSLProject::CVS :
-		m_projectRCSComboBox->setCurrentIndex( 1 );
-		break;
-	case XSLProject::SUBVERSION :
-		m_projectRCSComboBox->setCurrentIndex( 2 );
-		break;
-	}
+	int index = m_projectRCSComboBox->findData( project->projectRCS() );
+	if( index < 0 ) index = 0;
+	m_projectRCSComboBox->setCurrentIndex( index );
 	
 	m_servicesList->setValues( project->serveurWeb() );
 
@@ -150,7 +148,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setSpecifiquePrefix( m_prefixList->defaultValue() );
 	project->specifiquePrefixes() = m_prefixList->values();
 	
-	project->setProjectRCS( (XSLProject::enumProjectRCS)m_projectRCSComboBox->currentIndex() );
+	project->setProjectRCS( m_projectRCSComboBox->itemData( m_projectRCSComboBox->currentIndex() ).toString() );
 	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
 
 	XSLProject::ProjectOptions options;

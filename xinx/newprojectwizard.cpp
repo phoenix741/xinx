@@ -20,9 +20,10 @@
 
 // Xinx header
 #include "newprojectwizard.h"
-#include "xinxconfig.h"
+#include <xinxconfig.h>
 #include "xslproject.h"
 #include "projectpropertyimpl.h"
+#include <xinxpluginsloader.h>
 
 // Qt header
 #include <QDir>
@@ -71,15 +72,17 @@ XSLProject * NewProjectWizard::createProject() {
 			options |= XSLProject::hasSpecifique;
 		}
 		
-		int control = 0;
+		QString rcs = QString();
 		if( ! m_versions->m_noRevisionControl->isChecked() ) {
-			foreach( QRadioButton * btn, m_versions->m_revisionBtn ) {
-				control++;
-				if( btn->isChecked() )
+			QPair<QRadioButton*,QString> btn;
+			foreach( btn, m_versions->m_revisionBtn ) {
+				if( btn.first->isChecked() ) {
+					rcs = btn.second;
 					break;
+				}
 			}
 		}
-		m_project->setProjectRCS( (XSLProject::enumProjectRCS)control );
+		m_project->setProjectRCS( rcs );
 
 		if( field( "project.services" ).toBool() ) {
 			options |= XSLProject::hasWebServices;
@@ -263,16 +266,19 @@ VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Define Revision Control") );
 	setSubTitle( tr("Define the revision control used for the project if you want to used one.") );
 	
-	m_noRevisionControl = new QRadioButton( tr("No revision control system.") );
+	m_noRevisionControl = new QRadioButton( tr("No revision control system."), this );
 	m_noRevisionControl->setChecked( true );
 	
-	m_revisionBtn.append( new QRadioButton( tr("CVS Revision Control System") ) );
-	m_revisionBtn.append( new QRadioButton( tr("SubVersion Revision Control System") ) );
-	
+	QPair<QString,QString> revisionControl;
+	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() ) {
+		m_revisionBtn.append( qMakePair( new QRadioButton( revisionControl.second, this ), revisionControl.first) );
+	}
+
 	QVBoxLayout * layout = new QVBoxLayout;
 	layout->addWidget( m_noRevisionControl );
-	foreach( QRadioButton * button, m_revisionBtn ) {
-		layout->addWidget( button );
+	QPair<QRadioButton*,QString> button;
+	foreach( button, m_revisionBtn ) {
+		layout->addWidget( button.first );
 	}
 	setLayout( layout );
 

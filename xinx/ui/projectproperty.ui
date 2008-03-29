@@ -123,23 +123,7 @@
            <widget class="DirectoryEdit" name="m_projectLineEdit" />
           </item>
           <item row="3" column="1" >
-           <widget class="QComboBox" name="m_projectRCSComboBox" >
-            <item>
-             <property name="text" >
-              <string>&lt;No RCS></string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>CVS</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>SubVersion</string>
-             </property>
-            </item>
-           </widget>
+           <widget class="QComboBox" name="m_projectRCSComboBox" />
           </item>
           <item row="2" column="1" >
            <widget class="DirectoryEdit" name="m_logLineEdit" />

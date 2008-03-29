@@ -50,14 +50,6 @@ XinxPluginsLoader * XinxPluginsLoader::self() {
 	return s_self;
 }
 
-const QDir & XinxPluginsLoader::pluginsDir() const {
-	return m_pluginsDir;
-}
-
-const QStringList & XinxPluginsLoader::pluginFileNames() const {
-	return m_pluginFileNames;
-}
-
 const QList<XinxPluginElement> & XinxPluginsLoader::plugins() const {
 	return m_plugins;
 }
@@ -102,7 +94,7 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	}
 
 	struct XinxPluginElement element;
-	element.plugin = iXinxPlugin;
+	element.plugin = plugin;
 	element.isActivated = true;
 	element.isStatic = staticLoaded;
 	m_plugins.append( element );
@@ -169,11 +161,36 @@ void XinxPluginsLoader::loadPlugins() {
         QObject * plugin = loader.instance();
         if ( plugin ) {
         	addPlugin(plugin);
-        	m_pluginFileNames += fileName;
         } else
         	qDebug() << loader.errorString();
     }
 }
+
+QList< QPair<QString,QString> > XinxPluginsLoader::revisionsControls() const {
+	QList< QPair<QString,QString> > result;
+	foreach( XinxPluginElement element, m_plugins ) {
+		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin );
+		if( interface ) {
+			foreach( QString rcsKey, interface->rcs() ) {
+				result << qMakePair( rcsKey, interface->descriptionOfRCS( rcsKey ) );
+			}
+		}
+	}
+	return result;
+}
+
+RCS * XinxPluginsLoader::createRevisionControl( QString revision, QString basePath ) const {
+	RCS * rcs = NULL;
+	foreach( XinxPluginElement element, m_plugins ) {
+		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin );
+		if( interface ) {
+			rcs = interface->createRCS( revision, basePath );
+			if( rcs ) break;
+		}
+	}
+	return rcs;
+}
+
 
 QIcon XinxPluginsLoader::iconOfSuffix( const QString & suffix ) const {
 	return m_icons.value( suffix );

@@ -74,7 +74,7 @@ public:
 struct XinxPluginElement {
 	bool isStatic;
 	bool isActivated;
-	IXinxPlugin * plugin;
+	QObject * plugin;
 };
 
 class IRCSPlugin : virtual public IXinxPlugin {

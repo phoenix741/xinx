@@ -31,19 +31,32 @@
 #include <QIcon>
 #include <QPair>
 
+class RCS;
+
+/*!
+ * The class XINX Plugins Loader is used to load all plugins and proposed some facilities method.
+ */
 class XinxPluginsLoader : public QObject {
 	Q_OBJECT
 public:
 	XinxPluginsLoader();
 	~XinxPluginsLoader();
 	
-	static XinxPluginsLoader * self();
-	
+	/*!
+	 * Load the plugins
+	 */
 	void loadPlugins();
-	
-	const QDir & pluginsDir() const;
-	const QStringList & pluginFileNames() const;
+	/*! 
+	 * List all the loaded plugins
+	 */
 	const QList<XinxPluginElement> & plugins() const;
+	/*! 
+	 * List all the revision control that can be used. The Result is a list of
+	 * QPair. The first element is the key and the second element is the description.
+	 */
+	QList< QPair<QString,QString> > revisionsControls() const;
+	RCS * createRevisionControl( QString revision, QString basePath ) const;
+	
 	
 	QIcon iconOfSuffix( const QString & suffix ) const;
 
@@ -64,12 +77,14 @@ public:
 	IPluginSyntaxHighlighter* highlighterOfPlugin( const QString & suffix ) const;
 	IPluginPrettyPrint* prettyPrinterOfPlugin( const QString & suffix ) const;
 	IPluginExtendedEditor* extendedEditorOfPlugin( const QString & suffix ) const;
+
+	static XinxPluginsLoader * self();
 private:
 	void addPlugin( QObject * plugin, bool staticLoaded = false );
 	void addPlugin( QString extention, QObject * plugin );
 	
 	QDir m_pluginsDir;
-	QStringList m_pluginFileNames;
+	QList< XinxPluginElement > m_plugins;
 
 	QHash<QString,QIcon> m_icons;
 
@@ -85,8 +100,6 @@ private:
 	QHash< QString,IPluginSyntaxHighlighter* > m_directSyntaxPlugins;
 	QHash< QString,IPluginPrettyPrint* > m_directPrettyPlugins;
 	QHash< QString,IPluginExtendedEditor* > m_directExtendedEditorPlugins;
-	
-	QList< XinxPluginElement > m_plugins;
 	
 	static XinxPluginsLoader * s_self;
 };

@@ -21,6 +21,7 @@
 // Xinx header
 #include "dirrcsmodel.h"
 #include "xslproject.h"
+#include <xinxpluginsloader.h>
 
 // Qt header
 #include <QBrush>
@@ -30,8 +31,9 @@
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
 	XINX_TRACE( "DirRCSModel", QString( "( %1, ... )" ).arg( nameFilters.join(";") ) );
 
-	if( XINXProjectManager::self()->project() && ( XINXProjectManager::self()->project()->projectRCS() == XSLProject::CVS ) )  {
-// TODO:		m_rcs = new RCS_CVS( XINXProjectManager::self()->project()->projectPath() );
+	if( XINXProjectManager::self()->project() && ( !XINXProjectManager::self()->project()->projectRCS().isEmpty() ) )  {
+		QString rcsKey = XINXProjectManager::self()->project()->projectRCS();
+		m_rcs = XinxPluginsLoader::self()->createRevisionControl( rcsKey, XINXProjectManager::self()->project()->projectPath() );
 		connect( m_rcs, SIGNAL(stateChanged(QString)), this, SLOT(refresh(QString)) );
 	} else
 		m_rcs = NULL;

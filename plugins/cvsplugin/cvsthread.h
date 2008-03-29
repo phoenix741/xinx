@@ -57,6 +57,9 @@ public:
 	 * Destroy the thread.
 	 */
 	virtual ~CVSThread();
+	
+	static PluginSettings * pluginSettings(); 
+	static void setPluginSettings( PluginSettings * settings ); 
 public slots:
 	/*!
 	 * Abort the thread. If called, the signal is sending to CVS application.
@@ -99,6 +102,8 @@ protected:
 	QProcess * m_process; ///< The CVS process executed.
 	QStringList m_paths; ///< List of path to pass in parameters.
 	bool m_terminate; ///< Determine if we want called \e operationTerminated().
+
+	static PluginSettings * m_settings;
 };
 
 /* CVSUpdateThread */

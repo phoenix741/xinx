@@ -230,7 +230,7 @@ public:
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
 	QString m_logProjectDirectory;
 	XSLProject::ProjectOptions m_projectOptions;
-	XSLProject::enumProjectRCS m_projectRCS;
+	QString m_projectRCS;
 private:
 	XSLProject * m_parent;
 };
@@ -402,14 +402,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	d->m_defaultNav          = PrivateXSLProject::getValue( document, "nav" );
 	d->m_projectPath         = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "project" ) );
 	d->m_specifiquePrefix    = PrivateXSLProject::getValue( document, "prefix" );
-	QString projectRCSString = PrivateXSLProject::getValue( document, "rcs" );
-	if( projectRCSString == "cvs" ) {
-		d->m_projectRCS      = XSLProject::CVS;
-	} else if( projectRCSString == "subversion" ) {
-		d->m_projectRCS      = XSLProject::SUBVERSION;
-	} else { // In case it's no or a previous version
-		d->m_projectRCS      = XSLProject::NORCS;
-	} 
+	d->m_projectRCS 		 = PrivateXSLProject::getValue( document, "rcs" );
 	d->m_webServiceLink = PrivateXSLProject::loadList( document, "webServiceLink", "link" );
 	QString path;
 
@@ -449,17 +442,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	PrivateXSLProject::setValue( document, "nav", d->m_defaultNav );
 	PrivateXSLProject::setValue( document, "project", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_projectPath ) );
 	PrivateXSLProject::setValue( document, "prefix", d->m_specifiquePrefix );
-	switch( d->m_projectRCS ) {
-	case XSLProject::NORCS:
-		PrivateXSLProject::setValue( document, "rcs", "no" );
-		break;
-	case XSLProject::CVS:
-		PrivateXSLProject::setValue( document, "rcs", "cvs" );
-		break;
-	case XSLProject::SUBVERSION:
-		PrivateXSLProject::setValue( document, "rcs", "subversion" );
-		break;
-	}
+	PrivateXSLProject::setValue( document, "rcs", d->m_projectRCS );
 	PrivateXSLProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
 	PrivateXSLProject::saveList( document, "webServiceLink", "link", d->m_webServiceLink );
 	PrivateXSLProject::saveList( document, "paths", "path", d->m_searchPathList );
@@ -492,11 +475,11 @@ void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
 	emit changed();
 }
 	
-XSLProject::enumProjectRCS XSLProject::projectRCS() const {
+const QString & XSLProject::projectRCS() const {
 	return d->m_projectRCS;
 }
 
-void XSLProject::setProjectRCS( const XSLProject::enumProjectRCS & value ) {
+void XSLProject::setProjectRCS( const QString & value ) {
 	d->m_projectRCS = value;
 	emit changed();
 }

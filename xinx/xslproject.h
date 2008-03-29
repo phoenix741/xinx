@@ -147,16 +147,6 @@ public:
 	Q_DECLARE_FLAGS( ProjectOptions, ProjectOption );
 	
 	/*!
-	 * The different Concurent file repository managed by XINX. 
-	 * At this time only CVS is partially managed.
-	 */
-	enum enumProjectRCS { 
-		NORCS = 0, ///< The Concurent file repository is not managed.
-		CVS = 1, ///< CVS is used.
-		SUBVERSION = 2 ///< Subversion is used (XINX don't care at the moment of this choice).
-	};
-	
-	/*!
 	 * Create an empty project.
 	 */
 	XSLProject();
@@ -249,13 +239,13 @@ public:
 	 * \return Return the number version. 
 	 * \sa setProjectRCS()
 	 */
-	enumProjectRCS projectRCS() const;
+	const QString & projectRCS() const;
 	/*!
 	 * Set the concurent file system used by XINX.
 	 * \param value The new system used.
 	 * \sa projectRCS()
 	 */
-	void setProjectRCS( const enumProjectRCS & value );
+	void setProjectRCS( const QString & value );
 	
 	/*!
 	 * Langue used by Generix. Used to determine the project path.

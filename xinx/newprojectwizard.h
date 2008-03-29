@@ -94,7 +94,7 @@ public:
 	int nextId() const;
 private:
 	QRadioButton * m_noRevisionControl;
-	QList<QRadioButton*> m_revisionBtn;
+	QList< QPair<QRadioButton*, QString> > m_revisionBtn;
 	
 	friend class NewProjectWizard;
 };

@@ -22,6 +22,7 @@
 #include "cvsplugin.h"
 #include "customizeplugin.h"
 #include "rcs_cvs.h"
+#include "cvsthread.h"
 
 // Qt header
 #include <QString>
@@ -150,8 +151,10 @@ QString CVSPlugin::descriptionOfRCS( const QString & rcs ) {
 }
 
 RCS * CVSPlugin::createRCS( const QString & rcs, const QString & basePath ) {
-	if( rcs.toLower() == "cvs" ) 
+	if( rcs.toLower() == "cvs" ) {
+		CVSThread::setPluginSettings( m_settings );
 		return new RCS_CVS( basePath );
+	}
 	return NULL;
 }
 

@@ -75,7 +75,7 @@ bool SpecifiqueDialogImpl::canBeAddedToRepository( const QString & filename ) {
 	Q_UNUSED( filename );
 	
 	return 	XINXProjectManager::self()->project() &&
-		  ( XINXProjectManager::self()->project()->projectRCS() != XSLProject::NORCS );
+		  ( ! XINXProjectManager::self()->project()->projectRCS().isEmpty() );
 }
 
 void SpecifiqueDialogImpl::setLastPlace( const QString & pathname ) {

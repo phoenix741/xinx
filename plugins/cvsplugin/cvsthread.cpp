@@ -32,7 +32,7 @@
 	#include <windows.h>
 #endif
 
-PluginSettings * m_settings = 0;
+PluginSettings * CVSThread::m_settings = 0;
 
 /* CVSThread */
 
@@ -145,6 +145,15 @@ void CVSThread::threadrun() {
 		callCVS( path, files );
 	} while( i < m_paths.size() );
 }
+
+PluginSettings * CVSThread::pluginSettings() {
+	return m_settings;
+}
+
+void CVSThread::setPluginSettings( PluginSettings * settings ) {
+	m_settings = settings;
+}
+
 
 /* CVSUpdateThread */
 

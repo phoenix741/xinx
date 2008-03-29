@@ -513,13 +513,13 @@ void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
 						"<td>%7</td>"
 					"</tr>"
 				"</table>" )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString() )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_AUTHOR ).toString() )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_EMAIL ).toString() )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_WEBSITE ).toString() )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
-				.arg( plugin->plugin->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_AUTHOR ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_EMAIL ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_WEBSITE ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
+				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
 			);
 	
 	QVBoxLayout * labelLayout = new QVBoxLayout;
