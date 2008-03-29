@@ -403,7 +403,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	d->m_projectPath         = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "project" ) );
 	d->m_specifiquePrefix    = PrivateXSLProject::getValue( document, "prefix" );
 	d->m_projectRCS 		 = PrivateXSLProject::getValue( document, "rcs" );
-	d->m_webServiceLink = PrivateXSLProject::loadList( document, "webServiceLink", "link" );
+	d->m_webServiceLink      = PrivateXSLProject::loadList( document, "webServiceLink", "link" );
 	QString path;
 
 	d->m_searchPathList = PrivateXSLProject::loadList( document, "paths", "path" );
@@ -476,7 +476,7 @@ void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
 }
 	
 const QString & XSLProject::projectRCS() const {
-	return d->m_projectRCS;
+	return d->m_projectRCS == "no" ? "" : d->m_projectRCS;
 }
 
 void XSLProject::setProjectRCS( const QString & value ) {

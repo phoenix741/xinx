@@ -282,6 +282,7 @@ bool ParseVersionHandler::startElement(const QString &namespaceURI, const QStrin
 	} else
 	if( m_parserState == ParseVersionHandler::STATE_APPLICATION && qName == "properties" ) {
 		m_xmlPresentationFile = attributes.value( "xmlPresentationFile" );
+		m_elementToRead--;
 	} else
 	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "numero" ) {
 		m_parserState = ParseVersionHandler::STATE_NUMERO;
@@ -305,7 +306,6 @@ bool ParseVersionHandler::endElement(const QString &namespaceURI, const QString 
 	} else
 	if( m_parserState == ParseVersionHandler::STATE_APPLICATION && qName == "application" ) {
 		m_parserState = ParseVersionHandler::STATE_CONFIG;
-		m_elementToRead--;
 	} else
 	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "version" ) {
 		m_parserState = ParseVersionHandler::STATE_CONFIG;
@@ -330,6 +330,7 @@ bool ParseVersionHandler::characters(const QString &str) {
 }
 
 bool ParseVersionHandler::fatalError(const QXmlParseException &exception) {
-	qDebug() << "Parse error at line " << exception.lineNumber() << ", column " << exception.columnNumber() << ": " << exception.message();
+	if( m_elementToRead )
+		qDebug() << "Parse error in configuration file at line " << exception.lineNumber() << ", column " << exception.columnNumber() << ": " << exception.message();
 	return false;	
 }
