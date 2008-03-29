@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>images/hi32-app-cervisia.png</file>
+    </qresource>
+</RCC>

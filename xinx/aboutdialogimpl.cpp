@@ -37,7 +37,7 @@ AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f )
 							"<br/>"
 							"<i>This software is under the GPL Public Licence. Please read the software licence <br/>"
 							"before use it. Icon and Logo are under the GPL Public Licence and comes from <br/>"
-							"K-Desktop Environment, Cervesia, KDevelop.</i>"
+							"K-Desktop Environment, KDevelop.</i>"
 						);
 						
 	m_authorText->setHtml( 	"Please use <a href=\"http://xinx.shadoware.org/\" target=\"_new\">http://xinx.shadoware.org/</a> to report bug<br/>"

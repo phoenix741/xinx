@@ -26,3 +26,4 @@ SOURCES = cvsfiles.cpp \
     customizeplugin.cpp \
     cvsplugin.cpp
 FORMS += ui/customize.ui
+RESOURCES = cvsplugin.qrc

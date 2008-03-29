@@ -32,6 +32,7 @@
 /* CVSPlugin */
 
 CVSPlugin::CVSPlugin() {
+    Q_INIT_RESOURCE(cvsplugin);
 	m_settings = new PluginSettings();
 }
 
@@ -64,6 +65,8 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 		return "0.1";
 	case PLG_LICENCE:
 		return "GPL v2.0 or later";
+	case PLG_ICON:
+		return QPixmap(":/images/hi32-app-cervisia.png");
 	default:
 		;
 	}
