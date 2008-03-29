@@ -476,7 +476,7 @@ void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
 }
 	
 const QString & XSLProject::projectRCS() const {
-	return d->m_projectRCS == "no" ? "" : d->m_projectRCS;
+	return d->m_projectRCS == "no" ? d->m_projectRCS = QString() : d->m_projectRCS;
 }
 
 void XSLProject::setProjectRCS( const QString & value ) {

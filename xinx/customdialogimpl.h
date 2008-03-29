@@ -63,6 +63,7 @@ private slots:
 	void on_m_changeProjectPathBtn_clicked();
 	void on_m_changeApplicationDescriptionPathBtn_clicked();
 	void on_m_highlighterComboBox_activated( QString text );
+	void on_m_labelLink_linkActivated( const QString & link );
 private:
 	PrivateCustomDialogImpl * d;
 	friend class PrivateCustomDialogImpl;

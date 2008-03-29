@@ -695,3 +695,8 @@ void CustomDialogImpl::on_m_defaultPushButton_clicked() {
 	d->m_config.setDefault();
 	d->showConfig();
 }
+
+void CustomDialogImpl::on_m_labelLink_linkActivated( const QString & link ) {
+	if( link == "#modules" )
+		m_listWidget->setCurrentRow( 8 );
+}
