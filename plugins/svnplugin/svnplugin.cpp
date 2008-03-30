@@ -62,7 +62,7 @@ QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 QList< QPair<QString,QString> > SVNPlugin::pluginTools() {
 	QList< QPair<QString,QString> > tools;
 #ifdef Q_WS_WIN
-	tools.append( qMakePair( QString("svn"), QString("%1/Subversion/cvs.exe").arg( "C:/Program Files" ) );
+	tools.append( qMakePair( QString("svn"), QString("%1/Subversion/bin/cvs.exe").arg( "C:/Program Files" ) ) );
 #else
 	tools.append( qMakePair( QString("svn"), QString("/usr/bin/svn") ) );
 #endif // Q_WS_WIN

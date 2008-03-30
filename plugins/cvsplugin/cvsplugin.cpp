@@ -136,7 +136,7 @@ bool CVSPlugin::saveSettingsDialog( QWidget * widget ) {
 QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
 	QList< QPair<QString,QString> > tools;
 #ifdef Q_WS_WIN
-	tools.append( qMakePair( QString("cvs"), QString("%1/CVSNT/cvs.exe").arg( "C:/Program Files" ) );
+	tools.append( qMakePair( QString("cvs"), QString("%1/CVSNT/cvs.exe").arg( "C:/Program Files" ) ) );
 #else
 	tools.append( qMakePair( QString("cvs"), QString("/usr/bin/cvs") ) );
 #endif // Q_WS_WIN
