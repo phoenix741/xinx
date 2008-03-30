@@ -18,27 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SVNPLUGIN_H_
-#define SVNPLUGIN_H_
+#ifndef RCS_SVN_H_
+#define RCS_SVN_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <rcs.h>
 
-class SVNPlugin : public QObject, public IRCSPlugin {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IRCSPlugin)
+class RCS_SVN : public RCS {
 public:
-	SVNPlugin();
+	RCS_SVN( const QString & basePath );
+	virtual ~RCS_SVN();
 	
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
-
-	virtual QList< QPair<QString,QString> > pluginTools();
-
-	virtual QStringList rcs();
-	virtual QString descriptionOfRCS( const QString & rcs );
-	virtual RCS * createRCS( const QString & rcs, const QString & basePath );
+	virtual rcsState status( const QString & path );
+	virtual QVariant infos( const QString & path, enum rcsInfos info );
+	virtual FilesOperation operations( const QStringList & path );
+	virtual void update( const QStringList & path );
+	virtual void commit( const FilesOperation & path, const QString & message );
+	virtual void add( const QStringList & path );
+	virtual void remove( const QStringList & path );
+	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
+	
+public slots:
+	virtual void abort();
+private:
 };
 
-#endif /* SVNPLUGIN_H_*/
+#endif /*RCS_SVN_H_*/

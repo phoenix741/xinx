@@ -1,8 +1,9 @@
 TEMPLATE = lib
 CONFIG += debug \
-    plugin
+    plugin \
+    static
 QT += xml
-DESTDIR += ../
+DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
@@ -15,6 +16,8 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../../libxinx
-HEADERS = svnplugin.h
-SOURCES = svnplugin.cpp
+HEADERS = rcs_svn.h \
+    svnplugin.h
+SOURCES = rcs_svn.cpp \
+    svnplugin.cpp
 RESOURCES = svnplugin.qrc

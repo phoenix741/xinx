@@ -60,11 +60,6 @@ public:
 #  endif
 #endif
 
-class ToolsNotDefinedException : public XinxException {
-public:
-	ToolsNotDefinedException( const QString & tool );
-};
-
 class ExceptionManager : public QObject {
 	Q_OBJECT
 public:

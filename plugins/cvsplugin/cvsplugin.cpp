@@ -52,7 +52,7 @@ bool CVSPlugin::initializePlugin( const QString & lang ) {
 QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("CVS Plugin");
+		return tr("Plugin for CVS");
 	case PLG_DESCRIPTION:
 		return tr("Enable using CVS versionned file system.");
 	case PLG_AUTHOR:
@@ -149,7 +149,7 @@ QStringList CVSPlugin::rcs() {
 
 QString CVSPlugin::descriptionOfRCS( const QString & rcs ) {
 	if( rcs.toLower() == "cvs" )
-		return tr( "Concurent Version System" );
+		return tr( "CVS - Concurent Version System" );
 	return QString();
 }
 

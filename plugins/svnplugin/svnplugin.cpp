@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "svnplugin.h"
+#include "rcs_svn.h"
 
 // Qt header
 #include <QString>
@@ -39,9 +40,9 @@ bool SVNPlugin::initializePlugin( const QString & lang ) {
 QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("SubVersion Plugin");
+		return tr("Plugin for SubVersion");
 	case PLG_DESCRIPTION:
-		return tr("Enable using Subversion versionned file system.");
+		return tr("Enable using SubVersion versionned file system.");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
     case PLG_ICON:
@@ -56,6 +57,33 @@ QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 		return "GPL v2.0 or later";
 	}
 	return QVariant();
+}
+
+QList< QPair<QString,QString> > SVNPlugin::pluginTools() {
+	QList< QPair<QString,QString> > tools;
+#ifdef Q_WS_WIN
+	tools.append( qMakePair( QString("svn"), QString("%1/Subversion/cvs.exe").arg( "C:/Program Files" ) );
+#else
+	tools.append( qMakePair( QString("svn"), QString("/usr/bin/svn") ) );
+#endif // Q_WS_WIN
+	return tools;
+}
+
+QStringList SVNPlugin::rcs() {
+	return QStringList() << "svn";
+}
+
+QString SVNPlugin::descriptionOfRCS( const QString & rcs ) {
+	if( rcs.toLower() == "svn" )
+		return tr( "SVN - Subversion" );
+	return QString();
+}
+
+RCS * SVNPlugin::createRCS( const QString & rcs, const QString & basePath ) {
+	if( rcs.toLower() == "svn" ) { 
+		return new RCS_SVN( basePath );
+	}
+	return NULL;
 }
 
 Q_EXPORT_PLUGIN2(svnplugin, SVNPlugin)

@@ -22,6 +22,7 @@
 #include "exceptions.h"
 
 // Qt header
+#include <QTextDocument>
 #include <QDebug>
 #include <QDateTime>
 #include <QFile>
@@ -98,7 +99,7 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
         ExceptionManager::self()->setFatal( true );
     }
     rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
-    rich += QLatin1String( m );
+    rich += Qt::escape(QLatin1String( m ));
 
     // ### work around text engine quirk
     if (rich.endsWith(QLatin1String("</p>")))
@@ -217,10 +218,4 @@ const QStringList & XinxException::getStack() const {
 
 XinxAssertException::XinxAssertException( const char *assertion, const char *file, int line ) : XinxException( QString( "ASSERT: \"%1\" in file %2, line %3" ).arg( assertion ).arg( file ).arg( line ) ) {
 	XINX_TRACE( "XinxAssertException", QString( "(%1, %2, %3)" ).arg( assertion ).arg( file ).arg( line ) );
-}
-
-/* ToolsNotDefinedException */
-
-ToolsNotDefinedException::ToolsNotDefinedException( const QString & tool ) : XinxException( QString( "Tool %1 not correctly defined." ).arg( tool ) ) {
-	
 }

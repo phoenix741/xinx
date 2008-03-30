@@ -45,6 +45,7 @@
 // Import plugins
 Q_IMPORT_PLUGIN(webplugin)
 Q_IMPORT_PLUGIN(cvsplugin)
+Q_IMPORT_PLUGIN(svnplugin)
 
 MainformImpl * mainWin = NULL;
 

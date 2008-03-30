@@ -23,9 +23,15 @@
 
 // Xinx header
 #include "appsettings.h"
+#include "exceptions.h"
 
 class PrivateXINXConfig;
 class QWidget;
+
+class ToolsNotDefinedException : public XinxException {
+public:
+	ToolsNotDefinedException( const QString & tool );
+};
 
 class XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
@@ -39,7 +45,7 @@ public:
 	virtual void save();
 
 	void setXinxDataFiles( const QString & path );
-	QString getTools( const QString & tool, QWidget * parentWindow = 0 );
+	QString getTools( const QString & tool, bool showDialog = true, QWidget * parentWindow = 0 );
 	void addDefaultTool( const QString & tool, const QString & defaultValue );
 
 	XINXConfig& operator=(const XINXConfig& p);

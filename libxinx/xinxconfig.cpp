@@ -29,6 +29,12 @@
 #include "xinxcore.h"
 #include "xinxpluginsloader.h"
 
+/* ToolsNotDefinedException */
+
+ToolsNotDefinedException::ToolsNotDefinedException( const QString & tool ) : XinxException( QString( "Tool %1 not correctly defined." ).arg( tool ) ) {
+	
+}
+
 /* Static member */
 
 XINXConfig * XINXConfig::s_self = 0;
@@ -85,11 +91,14 @@ void XINXConfig::save() {
 	emit changed();
 }
 
-QString XINXConfig::getTools( const QString & tool, QWidget * parentWindow ) {
+QString XINXConfig::getTools( const QString & tool, bool showDialog, QWidget * parentWindow ) {
 	QString toolsPath = config().tools.value( tool );
-	if( toolsPath.isEmpty() && QFile::exists( toolsPath ) ) {
+	if( toolsPath.isEmpty() || (! QFile::exists( toolsPath ) ) ) {
+		if( ! showDialog )
+			throw ToolsNotDefinedException( toolsPath );
+
 		toolsPath = QFileDialog::getOpenFileName( parentWindow, tr("Select the %1 tool").arg( tool ), toolsPath );
-		if( ! toolsPath.isEmpty() && QFile::exists( toolsPath ) )
+		if( (!toolsPath.isEmpty()) && QFile::exists( toolsPath ) )
 			config().tools[ tool ] = toolsPath;
 		else
 			throw ToolsNotDefinedException( toolsPath );

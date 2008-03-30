@@ -40,6 +40,7 @@ CVSThread::CVSThread( QStringList paths, bool terminate ) : XinxThread() {
 	m_process = NULL;
 	m_paths = paths;
 	m_terminate = terminate;
+	m_cvs = XINXConfig::self()->getTools( "cvs" );
 }
 
 CVSThread::~CVSThread() {
@@ -81,28 +82,22 @@ void CVSThread::processReadOutput() {
 }
 
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
-	try {
-		QString cvs = XINXConfig::self()->getTools( "cvs" );
-		
-		/* Create process */
-		m_process = new QProcess( this );
-	
-		emit log( RCS::LogApplication, QString("Working dir : %1").arg( path ) );
-		m_process->setWorkingDirectory( path );
-		emit log( RCS::LogApplication, QString("%1 %2").arg( cvs ).arg( options.join( " " ) ).simplified() );
-		m_process->start( cvs, options, QIODevice::ReadWrite | QIODevice::Text );
-	
-		while( m_process->state() != QProcess::NotRunning ) {
-			if( m_process->waitForReadyRead( 100 ) )
-				processReadOutput();
-		}
-		processReadOutput();
-	
-		delete m_process;
-		m_process = NULL;
-	} catch( ToolsNotDefinedException e ) {
-		emit log( RCS::LogError, e.getMessage() );		
+	/* Create process */
+	m_process = new QProcess( this );
+
+	emit log( RCS::LogApplication, QString("Working dir : %1").arg( path ) );
+	m_process->setWorkingDirectory( path );
+	emit log( RCS::LogApplication, QString("%1 %2").arg( m_cvs ).arg( options.join( " " ) ).simplified() );
+	m_process->start( m_cvs, options, QIODevice::ReadWrite | QIODevice::Text );
+
+	while( m_process->state() != QProcess::NotRunning ) {
+		if( m_process->waitForReadyRead( 100 ) )
+			processReadOutput();
 	}
+	processReadOutput();
+
+	delete m_process;
+	m_process = NULL;
 }
 
 void CVSThread::abort() {

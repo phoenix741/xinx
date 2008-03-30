@@ -102,6 +102,7 @@ protected:
 	QProcess * m_process; ///< The CVS process executed.
 	QStringList m_paths; ///< List of path to pass in parameters.
 	bool m_terminate; ///< Determine if we want called \e operationTerminated().
+	QString m_cvs;
 
 	static PluginSettings * m_settings;
 };

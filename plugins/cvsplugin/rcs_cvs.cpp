@@ -23,6 +23,7 @@
 #include "cvsthread.h"
 #include "cvsfiles.h"
 #include "xinxpluginsloader.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QDir>
@@ -50,51 +51,71 @@ PrivateRCS_CVS::~PrivateRCS_CVS() {
 void PrivateRCS_CVS::callUpdate( const QStringList & path ) {
 	XINX_TRACE( "PrivateRCS_CVS::callUpdate", QString( "( %1 )" ).arg( path.join(";") ) );
 
-	if( m_thread ) delete m_thread;
-	m_thread = new CVSUpdateThread( path );
-	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-	connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
-	m_thread->start();
+	try {
+		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		m_thread = new CVSUpdateThread( path );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		m_thread->start();
+	} catch( ToolsNotDefinedException e ) {
+		emit m_parent->log( RCS::LogError, e.getMessage() );		
+	}
 }
 
 void PrivateRCS_CVS::callUpdateToRevision( const QString & path, const QString & revision, QString * content ) {
 	XINX_TRACE( "PrivateRCS_CVS::callUpdateToRevision", QString( "( %1, %2, %3 )" ).arg( path ).arg( revision ).arg( (unsigned long)content, 0, 16 ) );
 
-	if( m_thread ) delete m_thread;
-	m_thread = new CVSUpdateRevisionThread( path, revision, content );
-	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-	connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
-	m_thread->start();
+	try {
+		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		m_thread = new CVSUpdateRevisionThread( path, revision, content );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		m_thread->start();
+	} catch( ToolsNotDefinedException e ) {
+		emit m_parent->log( RCS::LogError, e.getMessage() );		
+	}
 }
 
 void PrivateRCS_CVS::callCommit( const RCS::FilesOperation & path, const QString & message ) {
 	XINX_TRACE( "PrivateRCS_CVS::callCommit", QString( "( path, %1 )" ).arg( message ) );
 
-	if( m_thread ) delete m_thread;
-	m_thread = new CVSCommitThread( path, message );
-	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-	connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
-	m_thread->start();
+	try {
+		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		m_thread = new CVSCommitThread( path, message );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		m_thread->start();
+	} catch( ToolsNotDefinedException e ) {
+		emit m_parent->log( RCS::LogError, e.getMessage() );		
+	}
 }
 
 void PrivateRCS_CVS::callAdd( const QStringList & path ) {
 	XINX_TRACE( "PrivateRCS_CVS::callAdd", QString( "( %1 )" ).arg( path.join(";") ) );
 
-	if( m_thread ) delete m_thread;
-	m_thread = new CVSAddThread( path );
-	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-	connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
-	m_thread->start();
+	try {
+		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		m_thread = new CVSAddThread( path );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		m_thread->start();
+	} catch( ToolsNotDefinedException e ) {
+		emit m_parent->log( RCS::LogError, e.getMessage() );		
+	}
 }
 
 void PrivateRCS_CVS::callRemove( const QStringList & path ) {
 	XINX_TRACE( "PrivateRCS_CVS::callRemove", QString( "( %1 )" ).arg( path.join(";") ) );
 
-	if( m_thread ) delete m_thread;
-	m_thread = new CVSRemoveThread( path );
-	connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-	connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
-	m_thread->start();
+	try {
+		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		m_thread = new CVSRemoveThread( path );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		m_thread->start();
+	} catch( ToolsNotDefinedException e ) {
+		emit m_parent->log( RCS::LogError, e.getMessage() );		
+	}
 }
 	
 RCS::rcsOperation PrivateRCS_CVS::operationOfState( RCS::rcsState state ) {
