@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QPair>
 #include <QList>
-#include <QVariant>
+#include <QDateTime>
 
 class RCS : public QObject {
 	Q_OBJECT
@@ -46,12 +46,16 @@ public:
 		rcsVersions, rcsDate, rcsFileDate
 	};
 	
+	struct struct_rcs_infos {
+		rcsState state;
+		QString version;
+		QDateTime rcsDate;
+	};
 	
 	typedef QPair<QString,rcsOperation> FileOperation;
 	typedef QList<FileOperation> FilesOperation;
 	
-	virtual rcsState status( const QString & path ) = 0;
-	virtual QVariant infos( const QString & path, enum rcsInfos info ) = 0;
+	virtual struct_rcs_infos infos( const QString & path ) = 0; 
 	virtual FilesOperation operations( const QStringList & path ) = 0;
 	virtual void update( const QStringList & path ) = 0;
 	virtual void commit( const FilesOperation & path, const QString & message ) = 0;

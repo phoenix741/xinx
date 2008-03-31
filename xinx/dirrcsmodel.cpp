@@ -91,13 +91,13 @@ RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
 	}
 	
 	value = new RCSCachedElement;
-	QDateTime rcsdate  = m_rcs->infos( path, RCS::rcsDate ).toDateTime();
+	RCS::struct_rcs_infos infos = m_rcs->infos( path );
 
 	value->fileName = path;
-	value->state    = m_rcs->status( path );
+	value->state    = infos.state;
 	value->filedate = QFileInfo( path ).lastModified();
-	value->rcsdate  = rcsdate.toLocalTime();
-	value->version  = m_rcs->infos( path, RCS::rcsVersions ).toString();
+	value->rcsdate  = infos.rcsDate.toLocalTime();
+	value->version  = infos.version;
 	m_cache.insert( path, value );
 	return *value;
 }

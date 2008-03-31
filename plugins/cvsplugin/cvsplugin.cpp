@@ -52,9 +52,9 @@ bool CVSPlugin::initializePlugin( const QString & lang ) {
 QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("Plugin for CVS");
+		return tr("Wrapper of CVS");
 	case PLG_DESCRIPTION:
-		return tr("Enable using CVS versionned file system.");
+		return tr("Enable using CVS as a wrapper of the cvs commande.");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_EMAIL:

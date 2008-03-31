@@ -226,30 +226,18 @@ RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 	return files;
 }
 
-QVariant RCS_CVS::infos( const QString & path, enum RCS::rcsInfos info ) {
-	XINX_TRACE( "RCS_CVS::infos", QString( "( %1, %2 )" ).arg( path ).arg( (int)info ) );
-
+RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
+	XINX_TRACE( "RCS_CVS::infos", QString( "( %1 )" ).arg( path ) );
+	
+	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
 	QString localPath = QDir::fromNativeSeparators( path );
 	CVSFileEntry * o = d->m_entries->object( localPath );
 	if( o ) {
-		if( info == RCS::rcsVersions ) {
-			return o->getVersion();
-		} else
-		if( info == RCS::rcsDate ) {
-			return o->getCVSDate();
-		} else
-		if( info == RCS::rcsFileDate ) {
-			return o->getFileDate();
-		} 
+		rcsInfos.state   = d->m_entries->status( localPath );
+		rcsInfos.rcsDate = o->getCVSDate();
+		rcsInfos.version = o->getVersion();
 	}
-	return QVariant();
-}
-
-RCS::rcsState RCS_CVS::status( const QString & path ) {
-	XINX_TRACE( "RCS_CVS::status", QString( "( %1 )" ).arg( path ) );
-
-	QString localPath = QDir::fromNativeSeparators( path );
-	return d->m_entries->status( localPath );
+	return rcsInfos;
 }
 
 void RCS_CVS::update( const QStringList & path ) {

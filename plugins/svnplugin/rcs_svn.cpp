@@ -37,54 +37,53 @@ RCS_SVN::~RCS_SVN() {
 	
 }
 	
-RCS::rcsState RCS_SVN::status( const QString & path ) {
+RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) { 
+	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
 	try {
 		QProcess process;
 		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "-vuN" << path );
 		process.waitForStarted();
 		if( process.error() == QProcess::FailedToStart ) {
-			return RCS::Unknown;
+			return rcsInfos;
 		}
 		process.waitForFinished();
 		QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
-		if( processResult.count() == 0 ) return RCS::Unknown;
+		if( processResult.count() == 0 ) return rcsInfos;
 		QString statutFile = processResult.at(0);
-		if( statutFile.length() < 8 ) return RCS::Unknown;
+		if( statutFile.length() < 8 ) return rcsInfos;
 		
-		RCS::rcsState state = RCS::Updated;
+		rcsInfos.state = RCS::Updated;
 		switch( statutFile.at( 0 ).toAscii() ) {
 		case 'A' :
-			state = RCS::LocallyAdded;
+			rcsInfos.state = RCS::LocallyAdded;
 			break;
 		case 'D' :
-			state = RCS::LocallyRemoved;
+			rcsInfos.state = RCS::LocallyRemoved;
 			break;
 		case 'C' :
-			state = RCS::UnresolvedConflict;
+			rcsInfos.state = RCS::UnresolvedConflict;
 			break;
 		case 'M' :
 		case 'R' : 
-			state = RCS::LocallyModified;
+			rcsInfos.state = RCS::LocallyModified;
 			break;
 		case 'X' :
 		case '?' :
 		case '~' :
 		case '!' :
-			state = RCS::Unknown;
+			rcsInfos.state = RCS::Unknown;
 			break;
 		default:
 			;
 		}
-		if( ( state == RCS::Updated ) && ( statutFile.at( 7 ) == '*' ) )
-			state = RCS::NeedsCheckout;
-		return state;
+		if( ( rcsInfos.state == RCS::Updated ) && ( statutFile.at( 7 ) == '*' ) )
+			rcsInfos.state = RCS::NeedsCheckout;
+		QStringList eol = statutFile.mid( 8 ).simplified().split( " " );
+		if( eol.size() > 1 ) rcsInfos.version = eol.at( 0 );
+		
 	} catch( ToolsNotDefinedException e ) {
-		return RCS::Unknown;
 	}
-}
-
-QVariant RCS_SVN::infos( const QString & path, enum RCS::rcsInfos info ) {
-	return QVariant();
+	return rcsInfos;
 }
 
 RCS::FilesOperation RCS_SVN::operations( const QStringList & path ) {

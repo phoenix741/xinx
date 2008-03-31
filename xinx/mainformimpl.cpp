@@ -952,7 +952,7 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 	
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs ) {
-		revision = rcs->infos( m_compareFileName, RCS::rcsVersions ).toString();
+		revision = rcs->infos( m_compareFileName ).version;
 		
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
