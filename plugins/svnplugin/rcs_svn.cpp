@@ -87,7 +87,40 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 }
 
 RCS::FilesOperation RCS_SVN::operations( const QStringList & path ) {
-	return QList<FileOperation>();
+	QList<FileOperation> result;
+	try {
+		QProcess process;
+		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << path );
+		process.waitForStarted();
+		if( process.error() == QProcess::FailedToStart ) return result;
+		process.waitForFinished();
+		QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
+		if( processResult.count() == 0 ) return result;
+		
+		foreach( QString pr, processResult ) {
+			if( pr.isEmpty() ) continue;
+			QString filename = pr.mid(8).trimmed();
+			switch( pr.at( 0 ).toAscii() ) {
+			case 'A' :
+			case 'D' :
+			case 'M' :
+			case 'R' : 
+				result.append( qMakePair( filename, RCS::Commit ) );
+				break;
+			case 'X' :
+			case '?' :
+				result.append( qMakePair( filename, RCS::AddAndCommit ) );
+				break;
+			case '!' :
+				result.append( qMakePair( filename, RCS::RemoveAndCommit ) );
+				break;
+			default:
+				;
+			}
+		}
+	} catch( ToolsNotDefinedException e ) {
+	}
+	return result;
 }
 
 void RCS_SVN::update( const QStringList & path ) {
