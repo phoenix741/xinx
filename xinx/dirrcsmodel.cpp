@@ -25,10 +25,34 @@
 
 // Qt header
 #include <QBrush>
+#include <QDateTime>
+
+/* RCSCachedElement */
+
+class RCSCachedElement {
+public:
+	QString fileName, version;
+	RCS::rcsState state;
+	QDateTime filedate, rcsdate;
+	
+	QString stringState() const;
+};
+
+QString RCSCachedElement::stringState() const {
+	if( state == RCS::Unknown )
+		return DirRCSModel::tr("Unknown");
+	if( state == RCS::LocallyModified )
+		return DirRCSModel::tr("Locally modified");
+	if( state == RCS::LocallyAdded )
+		return DirRCSModel::tr("Locally added");
+	if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
+		return DirRCSModel::tr("Has conflict");
+	return DirRCSModel::tr("No modified");
+}
 
 /* DirRCSModel */
 
-DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ) {
+DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ), m_cache( 500 ) {
 	XINX_TRACE( "DirRCSModel", QString( "( %1, ... )" ).arg( nameFilters.join(";") ) );
 
 	if( XINXProjectManager::self()->project() && ( !XINXProjectManager::self()->project()->projectRCS().isEmpty() ) )  {
@@ -56,6 +80,28 @@ RCS * DirRCSModel::rcs() {
 	return m_rcs;
 }
 
+RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
+	QString path = QFileInfo( key ).absoluteFilePath();
+	RCSCachedElement * value = m_cache.object( path );
+	if( value ) {
+		if( value->filedate == QFileInfo( path ).lastModified() )
+			return *value;
+		else
+			m_cache.remove( path );
+	}
+	
+	value = new RCSCachedElement;
+	QDateTime rcsdate  = m_rcs->infos( path, RCS::rcsDate ).toDateTime();
+
+	value->fileName = path;
+	value->state    = m_rcs->status( path );
+	value->filedate = QFileInfo( path ).lastModified();
+	value->rcsdate  = rcsdate.toLocalTime();
+	value->version  = m_rcs->infos( path, RCS::rcsVersions ).toString();
+	m_cache.insert( path, value );
+	return *value;
+}
+
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	XINX_TRACE( "DirRCSModel::data", QString( "( index, %1 )" ).arg( role ) );
 	if( ! index.isValid() ) return QVariant();
@@ -63,7 +109,8 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	QString path = filePath(index);
 	if( m_rcs ) {
 		if ( role == Qt::BackgroundRole && index.column() == 0 ) {
-			RCS::rcsState state = m_rcs->status( path );
+			RCSCachedElement element = cachedValue( path );
+			RCS::rcsState state = element.state;
 			if( state == RCS::Unknown )
 				return QBrush( Qt::gray );
 			if( state == RCS::LocallyModified )
@@ -76,26 +123,18 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 			return QDirModel::data(index, role);
 		} else
 		if( role == Qt::ToolTipRole && index.column() == 0 ) {
-			RCS::rcsState state = m_rcs->status( path );
-			QString filedate = m_rcs->infos( path, RCS::rcsFileDate ).toString(),
-					date     = m_rcs->infos( path, RCS::rcsDate ).toString(),
-					version  = m_rcs->infos( path, RCS::rcsVersions ).toString(),
-					status;
-   			if( state == RCS::Unknown )
-				status = tr("Unknown");
-			else if( state == RCS::LocallyModified )
-				status = tr("Locally modified");
-   			else if( state == RCS::LocallyAdded )
-				status = tr("Locally added");
-			else if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
-				status = tr("Has conflict");
-			else 
-				status = tr("No modified");
+			RCSCachedElement element = cachedValue( path );
+			QString filedate = element.filedate.toString(),
+					date     = element.rcsdate.toString(),
+					version  = element.version,
+					status   = element.stringState();
 		
-			QString tips = tr("Status : %1\n"
-		                  	  "Date of file : %2\n"
-		                  	  "Date in CVS : %3\n"
-		                  	  "Version : %4").arg( status ).arg( filedate ).arg( date ).arg( version );
+			QString tips = tr("Filename : %1\n"
+							  "Status : %2\n"
+		                  	  "Date of file : %3\n"
+		                  	  "Date in CVS : %4\n"
+		                  	  "Version : %5\n\n"
+		                  	  "Cache size : %6/%7").arg( QFileInfo( path ).fileName() ).arg( status ).arg( filedate ).arg( date ).arg( version ).arg( m_cache.totalCost() ).arg( m_cache.maxCost() );
 			return tips;
 		}
 	}

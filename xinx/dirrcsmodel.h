@@ -27,6 +27,9 @@
 // Qt header
 #include <QDirModel>
 #include <QStringList>
+#include <QCache>
+
+class RCSCachedElement;
 
 /*!
  * The goal of this class is to store the Version Manager Information \e RCS and show
@@ -58,7 +61,10 @@ public:
 public slots:
 	void refresh( const QString & path );
 private:
+	RCSCachedElement cachedValue( const QString & key ) const;
+	
 	RCS * m_rcs;
+	mutable QCache<QString,RCSCachedElement> m_cache;
 };
 
 #endif // __DIRRCSMODEL_H__
