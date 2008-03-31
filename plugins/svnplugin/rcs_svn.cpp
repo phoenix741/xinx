@@ -21,11 +21,13 @@
 // Xinx header
 #include "rcs_svn.h"
 #include <xinxconfig.h>
+#include <xinxpluginsloader.h>
 
 // Qt header
 #include <QProcess>
 #include <QTextStream>
-#include <QDebug>
+#include <QRegExp>
+#include <QDir>
 
 /* RCS_SVN */
 
@@ -99,7 +101,14 @@ RCS::FilesOperation RCS_SVN::operations( const QStringList & path ) {
 		
 		foreach( QString pr, processResult ) {
 			if( pr.isEmpty() ) continue;
-			QString filename = pr.mid(8).trimmed();
+			// TODO : path is a list
+			QString filename = QDir( path ).absoluteFilePath ( pr.mid(8).trimmed() );
+			bool hasWilcard = false; 
+			foreach( QString wilcard, XinxPluginsLoader::self()->defaultProjectFilter() ) {
+				QRegExp projectWilcard( wilcard, Qt::CaseInsensitive, QRegExp::Wildcard );
+				if( projectWilcard.exactMatch( filename ) ) { hasWilcard = true; break; }
+			}
+			if( !hasWilcard ) continue;
 			switch( pr.at( 0 ).toAscii() ) {
 			case 'A' :
 			case 'D' :
