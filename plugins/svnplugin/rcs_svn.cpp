@@ -24,14 +24,18 @@
 #include <xinxpluginsloader.h>
 
 // Qt header
-#include <QProcess>
 #include <QTextStream>
 #include <QRegExp>
 #include <QDir>
 
+// Std header
+#ifdef Q_WS_WIN
+	#include <windows.h>
+#endif
+
 /* RCS_SVN */
 
-RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ) {
+RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_content(0) {
 	
 }
 
@@ -44,7 +48,7 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 	try {
 		QProcess process;
 		process.setWorkingDirectory( QFileInfo( path ).absolutePath() ); 
-		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "-vuN" << path );
+		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "--non-interactive" << "-vuN" << path );
 		process.waitForStarted();
 		if( process.error() == QProcess::FailedToStart ) {
 			return rcsInfos;
@@ -141,8 +145,45 @@ RCS::FilesOperation RCS_SVN::operations( const QStringList & paths ) {
 	return result;
 }
 
+void RCS_SVN::logMessages() {
+	QStringList errors = QString( m_process->readAllStandardError() ).split( "\n" );
+	foreach( QString error, errors ) {
+		if( ! error.trimmed().isEmpty() )
+			emit log( RCS::LogError, error.trimmed() );
+	}		
+	QStringList infos = QString( m_process->readAllStandardOutput() ).split( "\n" );
+	foreach( QString info, infos ) {
+		if( ! info.trimmed().isEmpty() )
+			emit log( RCS::LogNormal, info.trimmed() );
+	}
+}
+
+void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
+	emit log( RCS::LogApplication, tr("Process terminated") );
+	emit operationTerminated();
+	m_process->deleteLater();
+}
+
 void RCS_SVN::update( const QStringList & path ) {
+	XINX_ASSERT( !m_process );
 	
+	try {
+		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QStringList args = QStringList() << "update" << "--non-interactive" << path;
+		m_process = new QProcess;
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)) );
+		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
+		m_process->start( tool, args );
+		m_process->waitForStarted();
+		if( m_process->error() == QProcess::FailedToStart ) {
+			emit log( RCS::LogError, tr("Can't start svn program.") );
+			delete m_process;
+		}
+	} catch( ToolsNotDefinedException e ) {
+		emit log( RCS::LogError, tr("Can't find the svn program.") );
+	}
 } 
 
 void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message ) {
@@ -157,10 +198,41 @@ void RCS_SVN::remove( const QStringList & path ) {
 	
 }
 
+void RCS_SVN::updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
+	m_temporaryFile->reset();
+	*m_content = QString( temporyFile.readAll() );
+	emit log( RCS::LogApplication, tr("Process terminated") );
+	emit operationTerminated();
+	m_process->deleteLater();
+	m_temporaryFile->deleteLater();
+}
+
 void RCS_SVN::updateToRevision( const QString & path, const QString & revision, QString * content ) {
-	
+	// svn export -r rev path temporyfile
+	m_temporaryFile = new QTemporaryFile;
+	m_content     = content;
+	if( !m_temporaryFile->open() ) return;
+	try {
+		QProcess process;
+		process.setWorkingDirectory( QFileInfo( path ).absolutePath() ); 
+		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "export" << "--non-interactive" << "-r" << revision << path << temporaryFile.fileName() );
+		process.waitForStarted();
+		if( process.error() == QProcess::FailedToStart ) return;
+		process.waitForFinished();
+		
+		// TODO: process with log, and finished
+	} catch( ToolsNotDefinedException e ) {
+	}
 }
 	
 void RCS_SVN::abort() {
-	
+	if( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) ) return ;
+	m_process->terminate();
+#ifdef Q_WS_WIN
+	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, m_process->pid()->dwThreadId ) != 0 )
+		perror( "GenerateConsoleCtrlEvent" );
+	if( GenerateConsoleCtrlEvent( CTRL_C_EVENT, m_process->pid()->dwThreadId ) != 0 )
+		perror( "GenerateConsoleCtrlEvent" );
+	emit log( RCS::LogError, tr("Can't stop the process on windows.") );
+#endif
 }

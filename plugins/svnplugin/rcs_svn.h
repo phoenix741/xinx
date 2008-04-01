@@ -24,7 +24,13 @@
 // Xinx header
 #include <rcs.h>
 
+// Qt header
+#include <QProcess>
+#include <QPointer>
+#include <QTemporaryFile>
+
 class RCS_SVN : public RCS {
+	Q_OBJECT
 public:
 	RCS_SVN( const QString & basePath );
 	virtual ~RCS_SVN();
@@ -39,8 +45,16 @@ public:
 	
 public slots:
 	virtual void abort();
+private slots:
+	void logMessages();
+	void finished( int exitCode, QProcess::ExitStatus exitStatus ); 
+	void updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitStatus ); 
 private:
 	virtual FilesOperation operations( const QString & path );
+	
+	QPointer<QProcess> m_process;
+	QPointer<QTemporaryFile> m_temporaryFile;
+	QString * m_content;
 };
 
 #endif /*RCS_SVN_H_*/
