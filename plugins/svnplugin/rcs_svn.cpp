@@ -43,6 +43,7 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
 	try {
 		QProcess process;
+		process.setWorkingDirectory( QFileInfo( path ).absolutePath() ); 
 		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "-vuN" << path );
 		process.waitForStarted();
 		if( process.error() == QProcess::FailedToStart ) {
@@ -80,7 +81,7 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 		}
 		if( ( rcsInfos.state == RCS::Updated ) && ( statutFile.at( 7 ) == '*' ) )
 			rcsInfos.state = RCS::NeedsCheckout;
-		QStringList eol = statutFile.mid( 8 ).simplified().split( " " );
+		QStringList eol = statutFile.mid( 7 ).simplified().split( " " );
 		if( eol.size() > 1 ) rcsInfos.version = eol.at( 0 );
 		
 	} catch( ToolsNotDefinedException e ) {
@@ -88,44 +89,52 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 	return rcsInfos;
 }
 
-RCS::FilesOperation RCS_SVN::operations( const QStringList & path ) {
+RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
+	QList<FileOperation> result;
+	QProcess process;
+	process.setWorkingDirectory( QFileInfo( path ).absolutePath() ); 
+	process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << path );
+	process.waitForStarted();
+	if( process.error() == QProcess::FailedToStart ) return result;
+	process.waitForFinished();
+	QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
+	if( processResult.count() == 0 ) return result;
+	
+	foreach( QString pr, processResult ) {
+		if( pr.isEmpty() ) continue;
+		QString filename = QDir( path ).absoluteFilePath ( pr.mid(7).trimmed() );
+		bool hasWilcard = false; 
+		foreach( QString wilcard, XinxPluginsLoader::self()->defaultProjectFilter() ) {
+			QRegExp projectWilcard( wilcard, Qt::CaseInsensitive, QRegExp::Wildcard );
+			if( projectWilcard.exactMatch( filename ) ) { hasWilcard = true; break; }
+		}
+		if( !hasWilcard ) continue;
+		switch( pr.at( 0 ).toAscii() ) {
+		case 'A' :
+		case 'D' :
+		case 'M' :
+		case 'R' : 
+			result.append( qMakePair( filename, RCS::Commit ) );
+			break;
+		case 'X' :
+		case '?' :
+			result.append( qMakePair( filename, RCS::AddAndCommit ) );
+			break;
+		case '!' :
+			result.append( qMakePair( filename, RCS::RemoveAndCommit ) );
+			break;
+		default:
+			;
+		}
+	}
+	return result;
+}
+
+RCS::FilesOperation RCS_SVN::operations( const QStringList & paths ) {
 	QList<FileOperation> result;
 	try {
-		QProcess process;
-		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << path );
-		process.waitForStarted();
-		if( process.error() == QProcess::FailedToStart ) return result;
-		process.waitForFinished();
-		QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
-		if( processResult.count() == 0 ) return result;
-		
-		foreach( QString pr, processResult ) {
-			if( pr.isEmpty() ) continue;
-			// TODO : path is a list
-			QString filename = QDir( path ).absoluteFilePath ( pr.mid(8).trimmed() );
-			bool hasWilcard = false; 
-			foreach( QString wilcard, XinxPluginsLoader::self()->defaultProjectFilter() ) {
-				QRegExp projectWilcard( wilcard, Qt::CaseInsensitive, QRegExp::Wildcard );
-				if( projectWilcard.exactMatch( filename ) ) { hasWilcard = true; break; }
-			}
-			if( !hasWilcard ) continue;
-			switch( pr.at( 0 ).toAscii() ) {
-			case 'A' :
-			case 'D' :
-			case 'M' :
-			case 'R' : 
-				result.append( qMakePair( filename, RCS::Commit ) );
-				break;
-			case 'X' :
-			case '?' :
-				result.append( qMakePair( filename, RCS::AddAndCommit ) );
-				break;
-			case '!' :
-				result.append( qMakePair( filename, RCS::RemoveAndCommit ) );
-				break;
-			default:
-				;
-			}
+		foreach( QString p, paths ) {
+			result += operations( p );
 		}
 	} catch( ToolsNotDefinedException e ) {
 	}

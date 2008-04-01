@@ -30,7 +30,7 @@ public:
 	virtual ~RCS_SVN();
 	
 	virtual struct_rcs_infos infos( const QString & path ); 
-	virtual FilesOperation operations( const QStringList & path );
+	virtual FilesOperation operations( const QStringList & paths );
 	virtual void update( const QStringList & path );
 	virtual void commit( const FilesOperation & path, const QString & message );
 	virtual void add( const QStringList & path );
@@ -40,6 +40,7 @@ public:
 public slots:
 	virtual void abort();
 private:
+	virtual FilesOperation operations( const QString & path );
 };
 
 #endif /*RCS_SVN_H_*/
