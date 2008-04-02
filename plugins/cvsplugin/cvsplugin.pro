@@ -1,10 +1,12 @@
 TEMPLATE = lib
-CONFIG += debug plugin static
-DESTDIR += ./
+CONFIG += debug \
+    plugin
+DESTDIR += ../
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-LIBS = -L../../libxinx -lsharedxinx
+LIBS = -L../../libxinx \
+    -lsharedxinx
 TARGET = $$qtLibraryTarget(cvsplugin)
 unix { 
     QMAKE_CC = "ccache gcc"

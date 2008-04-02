@@ -23,34 +23,24 @@ CONFIG += debug \
     x86
 QT += network \
     xml
-LIBS = -L../plugins/cvsplugin \
-    -L../plugins/webplugin \
-    -L../plugins/svnplugin \
+LIBS = -L../plugins/webplugin \
     -L../libxinx \
     -L../components
 win32:CONFIG(debug) { 
     LIBS += -lwebplugind \
-    -lcvsplugind \
-    -lsvnplugind \
 	-lsharedxinxd \
         -lxinxcmpd 
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
         ../libxinx/libsharedxinxd.a \
-        ../components/libxinxcmpd.a \
-    ../plugins/cvsplugin/libcvsplugind.a \
-    ../plugins/svnplugin/libsvnplugind.a
+        ../components/libxinxcmpd.a 
 }
 else { 
     LIBS += -lwebplugin \
-        -lcvsplugin \
-        -lsvnplugin \
-	-lsharedxinx \
+		-lsharedxinx \
         -lxinxcmp
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
         ../libxinx/libsharedxinx.a \
-        ../components/libxinxcmp.a \
-    ../plugins/cvsplugin/libcvsplugin.a \
-    ../plugins/svnplugin/libsvnplugin.a
+        ../components/libxinxcmp.a 
 }
 win32:RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
