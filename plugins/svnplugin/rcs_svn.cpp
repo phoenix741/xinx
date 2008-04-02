@@ -27,6 +27,7 @@
 #include <QTextStream>
 #include <QRegExp>
 #include <QDir>
+#include <QApplication>
 
 // Std header
 #ifdef Q_WS_WIN
@@ -195,7 +196,50 @@ void RCS_SVN::update( const QStringList & path ) {
 } 
 
 void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message ) {
+	XINX_ASSERT( !m_process );
+
+	QStringList addedFiles, removedFiles, commitedFiles;
+	foreach( RCS::FileOperation operation, path ) {
+		if( operation.second == RCS::Nothing ) continue;
+		
+		if( operation.second == RCS::AddAndCommit ) 
+			addedFiles += operation.first;
+		if( operation.second == RCS::RemoveAndCommit ) 
+			removedFiles += operation.first;
+
+		commitedFiles += operation.first;
+	}
 	
+	if( ! addedFiles.isEmpty() ) {
+		add( addedFiles );
+		while( m_process ) qApp->processEvents();
+	}
+	if( ! removedFiles.isEmpty() ) {
+		remove( removedFiles );
+		while( m_process ) qApp->processEvents();
+	}
+
+	try {
+		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QStringList args = QStringList() << "commit";
+		if( ! message.isEmpty() )
+			args << "-m" << message;
+		args << commitedFiles;
+		m_fileChanged = commitedFiles;
+		m_process = new QProcess;
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)) );
+		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
+		m_process->start( tool, args );
+		m_process->waitForStarted();
+		if( m_process->error() == QProcess::FailedToStart ) {
+			emit log( RCS::LogError, tr("Can't start svn program.") );
+			delete m_process;
+		}
+	} catch( ToolsNotDefinedException e ) {
+		emit log( RCS::LogError, tr("Can't find the svn program.") );
+	}
 }
 
 void RCS_SVN::add( const QStringList & path ) {
