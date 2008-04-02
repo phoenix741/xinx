@@ -199,28 +199,36 @@ void RCS_SVN::remove( const QStringList & path ) {
 }
 
 void RCS_SVN::updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
-	m_temporaryFile->reset();
-	*m_content = QString( temporyFile.readAll() );
+	QFile temporaryFile( m_tmpfilename );
+	if( temporaryFile.open( QIODevice::ReadOnly ) ) {
+		*m_content = QString( temporaryFile.readAll() );
+	}
+	temporaryFile.remove();
+
 	emit log( RCS::LogApplication, tr("Process terminated") );
 	emit operationTerminated();
+	
 	m_process->deleteLater();
-	m_temporaryFile->deleteLater();
 }
 
 void RCS_SVN::updateToRevision( const QString & path, const QString & revision, QString * content ) {
 	// svn export -r rev path temporyfile
-	m_temporaryFile = new QTemporaryFile;
 	m_content     = content;
-	if( !m_temporaryFile->open() ) return;
+	m_tmpfilename =  QDir( QDir::tempPath() ).absoluteFilePath( QFileInfo( path ).fileName() + "." + revision );
 	try {
-		QProcess process;
-		process.setWorkingDirectory( QFileInfo( path ).absolutePath() ); 
-		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "export" << "--non-interactive" << "-r" << revision << path << temporaryFile.fileName() );
-		process.waitForStarted();
-		if( process.error() == QProcess::FailedToStart ) return;
-		process.waitForFinished();
-		
-		// TODO: process with log, and finished
+		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QStringList args = QStringList() << "export" << "--non-interactive" << "-r" << revision << path << m_tmpfilename;
+		m_process = new QProcess;
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(updateToRevisionFinished(int,QProcess::ExitStatus)) );
+		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
+
+		m_process->setWorkingDirectory( QFileInfo( path ).absolutePath() ); 
+		m_process->start( tool, args );
+		m_process->waitForStarted();
+		if( m_process->error() == QProcess::FailedToStart ) return;
+		m_process->waitForFinished();
 	} catch( ToolsNotDefinedException e ) {
 	}
 }

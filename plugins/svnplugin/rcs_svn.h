@@ -27,7 +27,6 @@
 // Qt header
 #include <QProcess>
 #include <QPointer>
-#include <QTemporaryFile>
 
 class RCS_SVN : public RCS {
 	Q_OBJECT
@@ -53,8 +52,7 @@ private:
 	virtual FilesOperation operations( const QString & path );
 	
 	QPointer<QProcess> m_process;
-	QPointer<QTemporaryFile> m_temporaryFile;
-	QString * m_content;
+	QString * m_content, m_tmpfilename;
 };
 
 #endif /*RCS_SVN_H_*/

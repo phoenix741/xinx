@@ -952,6 +952,7 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 	
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs ) {
+		m_rcsVisible = m_rcslogDock->isVisible();
 		revision = rcs->infos( m_compareFileName ).version;
 		
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
