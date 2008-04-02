@@ -53,6 +53,7 @@ private:
 	
 	QPointer<QProcess> m_process;
 	QString * m_content, m_tmpfilename;
+	QStringList m_fileChanged;
 };
 
 #endif /*RCS_SVN_H_*/

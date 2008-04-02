@@ -159,8 +159,15 @@ void RCS_SVN::logMessages() {
 }
 
 void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
+	Q_UNUSED( exitCode );
+	Q_UNUSED( exitStatus );
+	
 	emit log( RCS::LogApplication, tr("Process terminated") );
 	emit operationTerminated();
+	
+	foreach( QString file,  m_fileChanged )
+		emit stateChanged( file );
+	
 	m_process->deleteLater();
 }
 
@@ -170,6 +177,7 @@ void RCS_SVN::update( const QStringList & path ) {
 	try {
 		QString tool = XINXConfig::self()->getTools( "svn", false );
 		QStringList args = QStringList() << "update" << "--non-interactive" << path;
+		m_fileChanged = path;
 		m_process = new QProcess;
 		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
 		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
@@ -191,14 +199,55 @@ void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message 
 }
 
 void RCS_SVN::add( const QStringList & path ) {
+	XINX_ASSERT( !m_process );
 	
+	try {
+		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QStringList args = QStringList() << "add" << path;
+		m_fileChanged = path;
+		m_process = new QProcess;
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)) );
+		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
+		m_process->start( tool, args );
+		m_process->waitForStarted();
+		if( m_process->error() == QProcess::FailedToStart ) {
+			emit log( RCS::LogError, tr("Can't start svn program.") );
+			delete m_process;
+		}
+	} catch( ToolsNotDefinedException e ) {
+		emit log( RCS::LogError, tr("Can't find the svn program.") );
+	}
 }
 
 void RCS_SVN::remove( const QStringList & path ) {
+	XINX_ASSERT( !m_process );
 	
+	try {
+		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QStringList args = QStringList() << "remove" << "--non-interactive" << path;
+		m_fileChanged = path;
+		m_process = new QProcess;
+		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
+		connect( m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(finished(int,QProcess::ExitStatus)) );
+		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
+		m_process->start( tool, args );
+		m_process->waitForStarted();
+		if( m_process->error() == QProcess::FailedToStart ) {
+			emit log( RCS::LogError, tr("Can't start svn program.") );
+			delete m_process;
+		}
+	} catch( ToolsNotDefinedException e ) {
+		emit log( RCS::LogError, tr("Can't find the svn program.") );
+	}
 }
 
 void RCS_SVN::updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitStatus ) {
+	Q_UNUSED( exitCode );
+	Q_UNUSED( exitStatus );
+	
 	QFile temporaryFile( m_tmpfilename );
 	if( temporaryFile.open( QIODevice::ReadOnly ) ) {
 		*m_content = QString( temporaryFile.readAll() );

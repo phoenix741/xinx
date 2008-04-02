@@ -952,7 +952,6 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 	
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs ) {
-		m_rcsVisible = m_rcslogDock->isVisible();
 		revision = rcs->infos( m_compareFileName ).version;
 		
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
@@ -961,10 +960,11 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 		
 		m_rcslogDock->init();
 		m_rcsExecute = true;
-		rcs->updateToRevision( m_compareFileName, revision, &m_headContent );
-		
+	
 		updateActions();
+		m_rcsVisible = m_rcslogDock->isVisible();
 		m_rcslogDock->show();
+		rcs->updateToRevision( m_compareFileName, revision, &m_headContent );
 	}
 }
 
