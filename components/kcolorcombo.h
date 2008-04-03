@@ -44,6 +44,10 @@ class KColorComboInternal;
  */ 
 class KColorCombo : public QComboBox {
     Q_OBJECT
+	Q_CLASSINFO("Author", "Martin Jones")
+	Q_CLASSINFO("Author", "Mario Weilguni")
+	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("Licence", "GPL v2 or later")
     Q_PROPERTY( QColor color READ color WRITE setColor )
 public:
 	/*!

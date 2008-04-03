@@ -22,21 +22,17 @@ CONFIG += exceptions \
     x86
 QT += network \
     xml
-LIBS = -L../plugins/webplugin \
-    -L../libxinx \
-    -L../components
-win32:CONFIG(debug) { 
-    LIBS += -lwebplugind \
-	-lsharedxinxd \
-        -lxinxcmpd 
+LIBS = -L../plugins/webplugin -L../libxinx -L../components -lwebplugin -lsharedxinx -lxinxcmp
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+   mac:LIBS = $$member(LIBS, 0) $$member(LIBS, 1) $$member(LIBS, 2) $$member(LIBS, 3)_debug $$member(LIBS, 4)_debug $$member(LIBS, 5)_debug
+   win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1) $$member(LIBS, 2) $$member(LIBS, 3)d $$member(LIBS, 4)d $$member(LIBS, 5)d
+}
+win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
         ../libxinx/libsharedxinxd.a \
         ../components/libxinxcmpd.a 
 }
 else { 
-    LIBS += -lwebplugin \
-		-lsharedxinx \
-        -lxinxcmp
     POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
         ../libxinx/libsharedxinx.a \
         ../components/libxinxcmp.a 

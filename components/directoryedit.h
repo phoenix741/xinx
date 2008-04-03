@@ -30,13 +30,16 @@
  * the path. 
  */
 class CompleterDirModel : public QDirModel {
+	Q_OBJECT
+	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("Licence", "GPL v2 or later")
 public:
 	/*!
 	 * Construct a CompleterDirModel. The QDir model convert the slash on native separtor.
 	 * If the path end with a separator, the separator is deleted.
 	 * \param parent The parent of the object.
 	 */
-	CompleterDirModel(QObject *parent = 0);
+	CompleterDirModel( QObject *parent = 0 );
 	/*!
 	 * Return the data to change in the completion dir model. This model show the good
 	 * separator (with the \e QDir::toNativeSepartors() function).
@@ -47,12 +50,14 @@ public:
 };
 
 /*!
- * A text edit using the QCompleter \e CompleterDirModel to simplify the editing of 
+ * A line editor using the QCompleter \e CompleterDirModel to simplify the editing of 
  * the path.
  * If the path is wrong, he's writing in red.
  */
 class DirectoryEdit : public QLineEdit {
 	Q_OBJECT
+	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("Licence", "GPL v2 or later")
 public:
 	/*!
 	 * Construct a DirectoryEdit object.
@@ -67,34 +72,79 @@ public:
 	DirectoryEdit( const QString & contents, QWidget * parent = 0 );
 public slots:
 	/*!
-	 * Call a dialog to change the path.
+	 * Open a dialog to change the path in the line editor.
+	 * \param parent The parent windows of the dialog to open
+	 * \param defaultValue The value to propose, if there is no value in the editor.
+	 * \param directory If \e true, user must choose a directory, else a file 
 	 */
 	void changePath( QWidget * parent = NULL, const QString & defaultValue = QString(), bool directory = true );
 protected slots:
 	/*!
-	 * Slot called when the text changed. This method change the color of the text to 
-	 * show user quickly if the directory exists or not.
+	 * Slot called when the text changed. This method change the color of the text if the 
+	 * directory \e text not exist.
 	 */
 	void slotTextChanged( QString text );
 };
 
 class PrivateDirectoryEditWidget;
 
+/*!
+ * This class is an association of a Directory Line editor and a button.
+ * The button call the \e changePath slot from the \e DirectoryEdit class.
+ */
 class DirectoryEditWidget : public QWidget {
 	Q_OBJECT
+	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("Licence", "GPL v2 or later")
+	Q_PROPERTY( bool directory READ isDirectory WRITE setDirectory )
+	Q_PROPERTY( QString defaultValue READ defaultValue WRITE setDefaultValue )
 public:
+	/*!
+	 * Construct the directory edit widget.
+	 * \param parent The parent of the object.
+	 */
 	DirectoryEditWidget( QWidget * parent = 0 );
+	/*!
+	 * Construct the directory edit widget and tell if the widget is used
+	 * to edit directory or file.
+	 * \param isDirectory If \e true, the widget edit directory, otherwise file.
+	 * \param parent The parent of the widget. 
+	 */
 	DirectoryEditWidget( bool isDirectory, QWidget * parent = 0 );
+	/*!
+	 * Destroy the widget
+	 */
 	virtual ~DirectoryEditWidget();
 	
+	/*!
+	 * Return the DirectoryEdit created by this widget.
+	 */
 	DirectoryEdit * lineEdit() const;
 	
+	/*!
+	 * Return true if the widget is used to edit directory, or false if the widget is used
+	 * to edit file.
+	 */
 	bool isDirectory() const;
+	/*!
+	 * Change the directory/files goal of the widget.
+	 * \param value If \e true, the widget is used for edit directory, otherwise files.
+	 */ 
 	void setDirectory( bool value );
 	
+	/*!
+	 * Return the default value used by the widget when the user click on the open button
+	 */
 	QString defaultValue() const;
+	/*! 
+	 * Used to change the default value to use, when no text is in the editor.
+	 * \param value The new default value to use when the user click on the button.
+	 */
 	void setDefaultValue( const QString & value );
 public slots:
+	/*!
+	 * This slot is called to open a dialog to edit the new path.
+	 */
 	void changePath();
 protected:
 	virtual void focusInEvent( QFocusEvent * event ); 

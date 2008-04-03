@@ -155,14 +155,14 @@ void XinxPluginsLoader::loadPlugins() {
 	
 	m_pluginsDir = QDir( qApp->applicationDirPath() );
 	m_pluginsDir.cd( "../plugins" );
-	
     foreach( QString fileName, m_pluginsDir.entryList( QDir::Files ) ) {
         QPluginLoader loader( m_pluginsDir.absoluteFilePath( fileName ) );
         QObject * plugin = loader.instance();
         if ( plugin ) {
         	addPlugin(plugin);
-        } else
+        } else {
         	qDebug() << loader.errorString();
+        }
     }
 }
 

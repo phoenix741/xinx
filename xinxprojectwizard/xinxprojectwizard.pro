@@ -24,15 +24,16 @@ HEADERS = projectconverter.h \
 RESOURCES = xinxprojectwizard.qrc
 INCLUDEPATH += ../components \
     ../libxinx
-LIBS = -L../components \
-    -L../libxinx
-win32:CONFIG(debug) { 
-    LIBS += -lxinxcmpd -lsharedxinxd
-    POST_TARGETDEPS = ../components/libxinxcmpd.a ../libxinx/libsharedxinxd.a
+LIBS = -L../libxinx -L../components -lsharedxinx -lxinxcmp
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+   mac:LIBS = $$member(LIBS, 0) $$member(LIBS, 1) $$member(LIBS, 2)_debug $$member(LIBS, 3)_debug 
+   win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1) $$member(LIBS, 2)d $$member(LIBS, 3)d
+}
+win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+    POST_TARGETDEPS = ../libxinx/libsharedxinxd.a ../components/libxinxcmpd.a 
 }
 else { 
-    LIBS += -lxinxcmp -lsharedxinx
-    POST_TARGETDEPS = ../components/libxinxcmp.a ../libxinx/libsharedxinx.a
+    POST_TARGETDEPS = ../libxinx/libsharedxinx.a ../components/libxinxcmp.a 
 }
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
 contains( CONFIG, qdbus ) { 

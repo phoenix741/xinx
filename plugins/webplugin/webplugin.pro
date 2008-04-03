@@ -7,8 +7,6 @@ MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
 
-LIBS=-L../../libxinx -lsharedxinx
-
 RESOURCES += webplugin.qrc
 
 TARGET = $$qtLibraryTarget(webplugin)
