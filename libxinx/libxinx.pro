@@ -1,5 +1,4 @@
 TEMPLATE = lib
-CONFIG += static
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
