@@ -1,6 +1,5 @@
 TEMPLATE = lib
-CONFIG += debug \
-    plugin
+CONFIG += plugin
 DESTDIR += ../
 MOC_DIR += ./
 OBJECTS_DIR += ./

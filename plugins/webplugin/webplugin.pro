@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += debug plugin static
+CONFIG += plugin static
 QT += xml
 
 DESTDIR += ./

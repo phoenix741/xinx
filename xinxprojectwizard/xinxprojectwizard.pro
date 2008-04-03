@@ -10,8 +10,7 @@ unix {
     QMAKE_LFLAGS = -rdynamic
 }
 QT += xml
-CONFIG += debug \
-    exceptions \
+CONFIG += exceptions \
     qt \
     qdbus \
     thread \

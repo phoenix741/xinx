@@ -14,8 +14,7 @@ unix {
 INCLUDEPATH += ../xinx/ \
     ../libxinx \
     ../components
-CONFIG += debug \
-    exceptions \
+CONFIG += exceptions \
     qdbus \
     qt \
     thread \
