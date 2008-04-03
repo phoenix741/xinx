@@ -367,6 +367,10 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_lowerTextAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(lowerSelectedText()) );
 	m_parent->m_lowerTextAct->setEnabled(false);
 	connect( m_parent->m_tabEditors, SIGNAL(hasTextSelection(bool)), m_parent->m_lowerTextAct, SLOT(setEnabled(bool)) );
+	
+	// Show space and Tabulation
+	m_parent->m_showSpaceAndTabAct->setChecked( XINXConfig::self()->config().editor.showTabulationAndSpace );
+	connect( m_parent->m_showSpaceAndTabAct, SIGNAL(triggered()), this, SLOT(updateSpaceAndTab()) );
 
 	// Comment
 	connect( m_parent->m_commentLineAct, SIGNAL(triggered()), m_parent->m_tabEditors, SLOT(commentSelectedText()) );
@@ -1076,6 +1080,11 @@ void PrivateMainformImpl::copyPath() {
 		QString name = feditor->getFileName();
 		qApp->clipboard()->setText( name );
 	}
+}
+
+void PrivateMainformImpl::updateSpaceAndTab() {
+	XINXConfig::self()->config().editor.showTabulationAndSpace = m_parent->m_showSpaceAndTabAct->isChecked();
+	XINXConfig::self()->save();
 }
 
 void PrivateMainformImpl::createFindReplace() {

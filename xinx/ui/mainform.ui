@@ -140,6 +140,7 @@
     <addaction name="separator" />
     <addaction name="m_upperTextAct" />
     <addaction name="m_lowerTextAct" />
+    <addaction name="m_showSpaceAndTabAct" />
     <addaction name="separator" />
     <addaction name="m_indentAct" />
     <addaction name="m_unindentAct" />
@@ -231,6 +232,7 @@
    <addaction name="separator" />
    <addaction name="m_lowerTextAct" />
    <addaction name="m_upperTextAct" />
+   <addaction name="m_showSpaceAndTabAct" />
   </widget>
   <widget class="QToolBar" name="m_searchToolBar" >
    <property name="windowTitle" >
@@ -818,6 +820,17 @@
   <action name="m_highlightWord" >
    <property name="text" >
     <string>Highlight same word</string>
+   </property>
+  </action>
+  <action name="m_showSpaceAndTabAct" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../application.qrc" >:/images/draw-text.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show space and &amp;Tabulation</string>
    </property>
   </action>
  </widget>

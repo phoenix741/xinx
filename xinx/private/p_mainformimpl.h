@@ -141,6 +141,7 @@ public slots:
 	// Edit
 	void copyFileName();
 	void copyPath();
+	void updateSpaceAndTab();
 	
 	// Search
 	void findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options );
