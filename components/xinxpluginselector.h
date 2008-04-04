@@ -28,16 +28,41 @@ class PrivateXinxPluginSelector;
 class XinxPluginDelegate;
 class XinxPluginElement;
 
+/*! 
+ * This class show to the user the list of plugins with foreach
+ * plugins a configure button and a about button.
+ * 
+ * If the plugins propose one, the list can also show an icon.
+ */
 class XinxPluginSelector : public QListView {
 	Q_OBJECT
+	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("Licence", "GPL v2 or later")
 public:
+	/*!
+	 * Create the plugin selector widget.
+	 * \param parent The parent widget.
+	 */
 	XinxPluginSelector( QWidget *parent = 0 );
+	/*!
+	 * Destroy the plugin selector.
+	 */
     virtual ~XinxPluginSelector();
     
+    /*!
+     * Add a plugin to the list. The plugin must be a \e XinxPluginElement.
+     */
     void addPlugin( XinxPluginElement * plugin );
+    
     QStyleOptionViewItem viewOptions() const;
 signals:
+	/*!
+	 * This signal is emited when the plugin request to be configured.
+	 */
 	void configurePlugin( XinxPluginElement * plugin );
+	/*!
+	 * The signal is emited when the plugin request to show a description.
+	 */
 	void aboutPlugin( XinxPluginElement * plugin );
 private:
 	PrivateXinxPluginSelector * d;

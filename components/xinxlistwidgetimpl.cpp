@@ -102,14 +102,6 @@ void XinxListWidgetImpl::setValues( const QStringList & values ) {
 	updateDefault( def );
 }
 
-QString XinxListWidgetImpl::valueName() const {
-	return m_valueName;
-}
-
-void XinxListWidgetImpl::setValueName( const QString & value ) {
-	m_valueName = value; 
-}
-
 QString XinxListWidgetImpl::defaultProposedValue() const {
 	return m_defaultProposedValue;
 }

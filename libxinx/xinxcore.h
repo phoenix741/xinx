@@ -24,11 +24,16 @@
 #include <QObject>
 #include <QList>
 
-#ifdef XINX_DLL
-#	define XINX_EXPORT __declspec (dllexport)
-#else
-#	define XINX_EXPORT __declspec (dllimport)
+#ifndef Q_WS_WIN
+#	define XINX_EXPORT
 #endif
+#ifndef XINX_EXPORT
+#	ifdef XINX_DLL
+#		define XINX_EXPORT __declspec (dllexport)
+#	else
+#		define XINX_EXPORT __declspec (dllimport)
+#	endif // XINX_DLL
+#endif // XINX_EXPORT
 
 /*!
  * Create globals class contains global definition.

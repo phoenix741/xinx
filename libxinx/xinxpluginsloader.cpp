@@ -39,7 +39,8 @@ XinxPluginsLoader::XinxPluginsLoader() {
 }
 
 XinxPluginsLoader::~XinxPluginsLoader() {
-	s_self = NULL;
+	if( s_self == this )
+		s_self = NULL;
 }
 
 XinxPluginsLoader * XinxPluginsLoader::self() {

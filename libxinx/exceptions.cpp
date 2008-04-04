@@ -118,6 +118,8 @@ ExceptionManager::ExceptionManager() : m_fatal( false ) {
 
 ExceptionManager::~ExceptionManager() {
 	delete m_dialog;
+	if( s_self == this )
+		s_self = 0;
 }
 
 void ExceptionManager::setFatal( bool value ) { 
@@ -188,6 +190,7 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 ExceptionManager * ExceptionManager::self() {
 	if( ! s_self ) {
 		s_self = new ExceptionManager();
+		XINXStaticDeleter::self()->addObject( s_self );
 	}
 	return s_self;
 }

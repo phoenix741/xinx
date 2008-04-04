@@ -596,7 +596,8 @@ XINXProjectManager::XINXProjectManager() : m_project(0) {
 }
 
 XINXProjectManager::~XINXProjectManager() {
-	s_self = 0;
+	if( s_self == this )
+		s_self = 0;
 	delete m_project;
 }
 

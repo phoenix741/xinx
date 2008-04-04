@@ -80,6 +80,8 @@ SnipetList::SnipetList() {
  */
 SnipetList::~SnipetList() {
 	delete d;
+	if( s_self == this )
+		s_self = 0;
 }
 
 SnipetList * SnipetList::self() {

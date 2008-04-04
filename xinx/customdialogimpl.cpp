@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 // Xinx header
-#include "exceptions.h"
-#include "xinxpluginsloader.h"
+#include <exceptions.h>
+#include <xinxpluginsloader.h>
 #include "private/p_customdialogimpl.h"
 
 // Qt header
