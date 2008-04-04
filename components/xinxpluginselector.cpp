@@ -375,7 +375,7 @@ QSize XinxPluginDelegate::sizeHint( const QStyleOptionViewItem &option, const QM
 
 XinxPluginSelector::XinxPluginSelector( QWidget *parent ) : QListView( parent ) {
 	Q_INIT_RESOURCE( xinxpluginselector );
-	qRegisterMetaType<XinxPluginElement*>();
+	qRegisterMetaType<XinxPluginElement*>( "XinxPluginElement*" );
 	
 	d = new PrivateXinxPluginSelector( this );
 	connect( d->m_delegate, SIGNAL(aboutPlugin(XinxPluginElement*)), this, SIGNAL(aboutPlugin(XinxPluginElement*)) );

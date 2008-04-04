@@ -32,7 +32,7 @@
 /* PrivateXmlPresentationDockWidget */
 
 PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
-	qRegisterMetaType<QModelIndex>( "" );
+	qRegisterMetaType<QModelIndex>( "QModelIndex" );
 	
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
@@ -215,6 +215,8 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
 		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
+		// TODO: Delete this line in 4.4
+		m_xmlPresentationWidget->m_filtreLineEdit->clearFocus();
 		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
 
 		m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
