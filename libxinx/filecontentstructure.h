@@ -22,6 +22,7 @@
 #define FILECONTENTSTRUCTURE_H_
 
 // Xinx header
+#include "xinxcore.h"
 #include <exceptions.h>
 
 // Qt header
@@ -34,7 +35,7 @@ class PrivateFileContentElement;
 /*!
  * Exception throw when the model can't be updated.
  */
-class FileContentException : public XinxException {
+class XINX_EXPORT FileContentException : public XinxException {
 public:
 	/*!
 	 * Create the exception with a message and a line.
@@ -61,7 +62,7 @@ private:
 /*!
  * The file content parser is an interface for the parser.
  */
-class FileContentParser {
+class XINX_EXPORT FileContentParser {
 public:
 	virtual ~FileContentParser() {};
 	
@@ -85,7 +86,7 @@ public:
  * The file content element is the base element of a file content structure. Javascript file content and
  * XSL file content is based on a structure file content.
  */
-class FileContentElement : public QObject {
+class XINX_EXPORT FileContentElement : public QObject {
 	Q_OBJECT
 public:
 	/*!
@@ -221,7 +222,7 @@ private:
 	friend class PrivateFileContentElement;
 };
 
-class FileContentElementList : public QObject {
+class XINX_EXPORT FileContentElementList : public QObject {
 	Q_OBJECT
 public:
 	FileContentElementList( FileContentElement * root );
@@ -249,6 +250,6 @@ private:
 	FileContentElement * m_root;
 };
 
-bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );
+XINX_EXPORT bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );
 
 #endif /*FILECONTENTSTRUCTURE_H_*/

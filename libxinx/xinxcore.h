@@ -24,10 +24,16 @@
 #include <QObject>
 #include <QList>
 
+#ifdef XINX_DLL
+#	define XINX_EXPORT __declspec (dllexport)
+#else
+#	define XINX_EXPORT __declspec (dllimport)
+#endif
+
 /*!
  * Create globals class contains global definition.
  */
-class XINXStaticDeleter : public QObject {
+class XINX_EXPORT XINXStaticDeleter : public QObject {
 	Q_OBJECT
 public:
 	/*!

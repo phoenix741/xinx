@@ -22,18 +22,19 @@
 #define XINXCONFIG_H
 
 // Xinx header
+#include "xinxcore.h"
 #include "appsettings.h"
 #include "exceptions.h"
 
 class PrivateXINXConfig;
 class QWidget;
 
-class ToolsNotDefinedException : public XinxException {
+class XINX_EXPORT ToolsNotDefinedException : public XinxException {
 public:
 	ToolsNotDefinedException( const QString & tool );
 };
 
-class XINXConfig : public QObject, public AppSettings {
+class XINX_EXPORT XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
 public:
 	XINXConfig( const XINXConfig & origine );

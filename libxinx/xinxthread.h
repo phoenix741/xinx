@@ -21,13 +21,16 @@
 #ifndef _XINXTHREAD_H_
 #define _XINXTHREAD_H_
 
+// Xinx header
+#include "xinxcore.h"
+
 // Qt header
 #include <QThread>
 #include <QMutex>
 
 class XinxThread;
 
-class MetaXinxThread : public QObject {
+class XINX_EXPORT MetaXinxThread : public QObject {
 	Q_OBJECT
 public:
 	MetaXinxThread();
@@ -44,7 +47,7 @@ private:
 	friend class XinxThread;
 };
 
-class XinxThread : public QThread {
+class XINX_EXPORT XinxThread : public QThread {
 	Q_OBJECT
 public:
 	XinxThread( QObject * parent = 0 );

@@ -26,3 +26,4 @@ SOURCES = appsettings.cpp \
     exceptions.cpp \
     filecontentstructure.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
+DEFINES += XINX_DLL

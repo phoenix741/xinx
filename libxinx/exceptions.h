@@ -21,6 +21,9 @@
 #ifndef __EXCEPTIONS_H__
 #define __EXCEPTIONS_H__
 
+// Xinx header
+#include "xinxcore.h"
+
 // Qt header
 #include <QStringList>
 #include <QHash>
@@ -29,7 +32,7 @@ class QErrorMessage;
 class QWidget;
 class XinxErrorMessage;
 
-class XinxException {
+class XINX_EXPORT XinxException {
 public:
 	XinxException( QString message );
 	/*!
@@ -47,7 +50,7 @@ private:
 	QStringList m_stack;
 };
 
-class XinxAssertException : public XinxException {
+class XINX_EXPORT XinxAssertException : public XinxException {
 public:
 	XinxAssertException( const char *assertion, const char *file, int line );
 };
@@ -60,7 +63,7 @@ public:
 #  endif
 #endif
 
-class ExceptionManager : public QObject {
+class XINX_EXPORT ExceptionManager : public QObject {
 	Q_OBJECT
 public:
 	virtual ~ExceptionManager();
@@ -87,7 +90,7 @@ private:
 	bool m_fatal;
 };
 
-class Trace {
+class XINX_EXPORT Trace {
 public:
 	explicit Trace( char* filename, int line, const QString& func_name, const QString & args );	
 	~Trace();

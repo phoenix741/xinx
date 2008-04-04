@@ -21,13 +21,17 @@
 #ifndef __RCS_H__
 #define __RCS_H__
 
+// Xinx header
+#include "xinxcore.h"
+
+// Qt header
 #include <QMetaType>
 #include <QObject>
 #include <QPair>
 #include <QList>
 #include <QDateTime>
 
-class RCS : public QObject {
+class XINX_EXPORT RCS : public QObject {
 	Q_OBJECT
 public:
 	RCS( const QString & basePath );

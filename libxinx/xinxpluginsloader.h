@@ -22,6 +22,7 @@
 #define XINXPLUGINSLOADER_H_
 
 // Xinx header
+#include "xinxcore.h"
 #include <plugininterfaces.h>
 
 // Qt header
@@ -36,7 +37,7 @@ class RCS;
 /*!
  * The class XINX Plugins Loader is used to load all plugins and proposed some facilities method.
  */
-class XinxPluginsLoader : public QObject {
+class XINX_EXPORT XinxPluginsLoader : public QObject {
 	Q_OBJECT
 public:
 	XinxPluginsLoader();
