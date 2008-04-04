@@ -13,6 +13,9 @@ if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
 win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
     POST_TARGETDEPS = ../../libxinx/libsharedxinxd.a
 }
+else {
+    POST_TARGETDEPS = ../../libxinx/libsharedxinx.a
+}
 
 TARGET = $$qtLibraryTarget(cvsplugin)
 unix { 
