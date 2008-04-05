@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "xmlpresentationitem.h"
+#include <exceptions.h>
 
 // Qt header
 #include <QStringList>
@@ -28,45 +29,47 @@
 
 /* XmlPresentationItem */
 
-XmlPresentationItem::XmlPresentationItem( QDomNode &node, int row, XmlPresentationItem * parent ) {
-	m_domNode = node;
-	m_rowNumber = row;
-	m_parentItem = parent;
- }
+XmlPresentationItem::XmlPresentationItem( QDomNode node, int row, XmlPresentationItem * parent ) 
+	: m_domNode( node ), m_parentItem( parent ), m_rowNumber( row ) {
+}
 
 XmlPresentationItem::~XmlPresentationItem() {
-	QHash<int,XmlPresentationItem*>::iterator it;
-	for( it = m_childItems.begin(); it != m_childItems.end(); ++it )
-		delete it.value();
+	qDeleteAll( m_childItems );
 }
 
 QDomNode XmlPresentationItem::node() const {
 	return m_domNode;
 }
 
-XmlPresentationItem *XmlPresentationItem::parent() {
+XmlPresentationItem * XmlPresentationItem::parent() {
 	return m_parentItem;
 }
 
-XmlPresentationItem *XmlPresentationItem::child(int i) {
-	if( m_childItems.contains( i ) )
-		return m_childItems[i];
+int XmlPresentationItem::count() {
+	if( m_childItems.count() == 0 ) {
+		QDomNamedNodeMap attributes = m_domNode.attributes();
+		for( int i = 0; i < attributes.count(); i++ ) {
+			m_childItems.append( new XmlPresentationParamItem( attributes.item( i ), i, this ) );
+		}
+		int countAttribute = attributes.count();
+		
+		QDomElement node = m_domNode.firstChildElement();
+		int index = 0;
+		while( ! node.isNull() ) {
+			m_childItems.append( new XmlPresentationNodeItem( node, index + countAttribute, this ) );
+			if( node.nodeName() == "business_data" )
+				m_businessData = node.toElement().text(); 
+			if( node.nodeName() == "screen_data" )
+				m_screenData = node.toElement().text(); 
+			node = node.nextSiblingElement(); index++;
+		}
+	}
+	
+	return m_childItems.count();
+}
 
-	if( i >= 0 && i < m_domNode.attributes().count() ) {
-		QDomNode attribute = m_domNode.attributes().item( i );
-		XmlPresentationItem * childItem = new XmlPresentationParamItem( attribute, i, this );
-		m_childItems[i] = childItem;
-		return childItem;
-	}
-	
-	if( i >= m_domNode.attributes().count() && i < m_domNode.childNodes().count() + m_domNode.attributes().count() ) {
-		QDomNode childNode = m_domNode.childNodes().item( i - m_domNode.attributes().count() );
-		XmlPresentationItem *childItem = new XmlPresentationNodeItem( childNode, i, this );
-		m_childItems[i] = childItem;
-		return childItem;
-	}
-	
-	return 0;
+XmlPresentationItem * XmlPresentationItem::child( int i ) {
+	return m_childItems.value( i, NULL );
 }
 
 int XmlPresentationItem::row() {
@@ -84,15 +87,40 @@ QString XmlPresentationItem::xpathName() const {
 	return m_domNode.nodeName();
 }
 
+QString XmlPresentationItem::tipsText() const {
+	return QString();
+}
 
 /* XmlPresentationNodeItem */
 
-XmlPresentationNodeItem::XmlPresentationNodeItem( QDomNode & node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
+XmlPresentationNodeItem::XmlPresentationNodeItem( QDomNode node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
 	
 }
 
 XmlPresentationNodeItem::~XmlPresentationNodeItem() {
 	
+}
+
+QString XmlPresentationNodeItem::tipsText() const {
+	QString result;
+	foreach( XmlPresentationItem * item, m_childItems ) {
+		XmlPresentationParamItem * param = dynamic_cast<XmlPresentationParamItem*>( item );
+		if( param )
+			result += item->xpathName() + "=" + param->value() + "\n"; 
+	}
+	QDomNode node = m_domNode.firstChild();
+	while( ! node.isNull() ) {
+		if( node.isText() )
+			result += node.toText().data().simplified();
+		node = node.nextSibling();
+	}
+	if( ! m_businessData.isEmpty() )
+		result += "Business data = " + m_businessData.simplified() + "\n";
+	if( ! m_screenData.isEmpty() )
+		result += "Screen data = " + m_screenData.simplified() + "\n";
+	if( result.simplified().isEmpty() ) 
+		result = XmlPresentationModel::tr( "(empty)" );
+	return result;
 }
 
 QString XmlPresentationNodeItem::xpathName() const {
@@ -102,14 +130,26 @@ QString XmlPresentationNodeItem::xpathName() const {
 	return name;
 }
 
+bool XmlPresentationNodeItem::isView() const {
+	return !m_domNode.attributes().namedItem( "name" ).nodeValue().isEmpty();
+}
+
 /* XmlPresentationParamItem */
 
-XmlPresentationParamItem::XmlPresentationParamItem( QDomNode & node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
-	
+XmlPresentationParamItem::XmlPresentationParamItem( QDomNode node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
+	XINX_ASSERT( ! m_domNode.toAttr().isNull() );
 }
 
 XmlPresentationParamItem::~XmlPresentationParamItem() {
 	
+}
+
+QString XmlPresentationParamItem::value() const {
+	return m_domNode.toAttr().nodeValue().simplified();
+}
+
+QString XmlPresentationParamItem::tipsText() const {
+	return value();
 }
 
 QString XmlPresentationParamItem::xpathName() const {
@@ -159,17 +199,11 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		else
 			return QIcon( ":/images/variable.png" );
 	} else if( role == Qt::ToolTipRole ) {
-		QString params;
-
-		for( int i = 0 ; i < node.attributes().count() ; i++ ) {
-			QDomNode attribute = node.attributes().item( i );
-			params += "@" + attribute.nodeName() + "=" + attribute.nodeValue();
-			if( i < node.attributes().count() - 1 )
-				params += "\n";
-		}
-		params += node.nodeValue().split("\n").join(" ");
-		
-		return params;
+		return item->tipsText();
+	} else if( role == Qt::BackgroundColorRole ) {
+		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
+		if( node && node->isView() ) 
+			return Qt::lightGray;
 	}
 
 	return QVariant();
@@ -240,7 +274,7 @@ int XmlPresentationModel::rowCount(const QModelIndex &parent) const {
 	if( dynamic_cast<XmlPresentationParamItem*>(parentItem) )
 		return 0;
 	else
-		return parentItem->node().childNodes().count() + parentItem->node().attributes().count();
+		return parentItem->count();
 } 
 
 QStringList XmlPresentationModel::mimeTypes() const {

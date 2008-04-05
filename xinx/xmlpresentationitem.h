@@ -31,37 +31,45 @@
 
 class XmlPresentationItem {
 public:
-	XmlPresentationItem( QDomNode & node, int row, XmlPresentationItem * parent = 0 );
+	XmlPresentationItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
 	virtual ~XmlPresentationItem();
 	
+	int count();
 	XmlPresentationItem * child( int i );
 	XmlPresentationItem * parent();
+	int row();
 	
 	QString xpath() const;
+	virtual QString tipsText() const;
 	virtual QString xpathName() const;
-	
+
 	QDomNode node() const;
-	
-	int row();
 protected:
+	QString m_businessData, m_screenData;
 	QDomNode m_domNode;
-	QHash<int,XmlPresentationItem*> m_childItems;
+	QList<XmlPresentationItem*> m_childItems;
 	XmlPresentationItem * m_parentItem;
 	int m_rowNumber;
 };
 
 class XmlPresentationNodeItem : public XmlPresentationItem {
 public:
-	XmlPresentationNodeItem( QDomNode & node, int row, XmlPresentationItem * parent = 0 );
+	XmlPresentationNodeItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
 	virtual ~XmlPresentationNodeItem();
+
+	virtual QString tipsText() const;
 	virtual QString xpathName() const;
+	bool isView() const;
 };
 
 class XmlPresentationParamItem : public XmlPresentationItem {
 public:
-	XmlPresentationParamItem( QDomNode & node, int row, XmlPresentationItem * parent = 0 );
+	XmlPresentationParamItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
 	virtual ~XmlPresentationParamItem();
+
 	virtual QString xpathName() const;
+	virtual QString tipsText() const;
+	QString value() const;
 };
 
 class XmlPresentationModel : public QAbstractItemModel {

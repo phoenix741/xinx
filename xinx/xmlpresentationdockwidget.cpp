@@ -38,9 +38,11 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
 	m_xmlPresentationWidget->setupUi( contentWidget );
 	m_parent->setWidget( contentWidget );
+
+	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 	
 	m_timerTextChanged.setSingleShot( true );
-	m_timerTextChanged.setInterval( 500 );
+	m_timerTextChanged.setInterval( 1000 );
 	
 	initXmlPresentationCombo();
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(initXmlPresentationCombo()) );
@@ -198,9 +200,9 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 	}
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
+	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
-	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 1 );
-	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 1 );
+	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 }
 
 void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text ) {
@@ -211,13 +213,13 @@ void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text )
 
 void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 	if( m_sortFilterModel ) {
-		m_xmlPresentationWidget->m_presentationProgressBar->setValue( 0 );
-		m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
-		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
-		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 		// TODO: Delete this line in 4.4
 		m_xmlPresentationWidget->m_filtreLineEdit->clearFocus();
 		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
+
+		m_xmlPresentationWidget->m_presentationProgressBar->show();
+		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
+		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 
 		m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
 

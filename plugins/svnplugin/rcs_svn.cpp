@@ -147,12 +147,12 @@ RCS::FilesOperation RCS_SVN::operations( const QStringList & paths ) {
 }
 
 void RCS_SVN::logMessages() {
-	QStringList errors = QString( m_process->readAllStandardError() ).split( "\n" );
+	QStringList errors = QString::fromLocal8Bit( m_process->readAllStandardError() ).split( "\n" );
 	foreach( QString error, errors ) {
 		if( ! error.trimmed().isEmpty() )
 			emit log( RCS::LogError, error.trimmed() );
 	}		
-	QStringList infos = QString( m_process->readAllStandardOutput() ).split( "\n" );
+	QStringList infos = QString::fromLocal8Bit( m_process->readAllStandardOutput() ).split( "\n" );
 	foreach( QString info, infos ) {
 		if( ! info.trimmed().isEmpty() )
 			emit log( RCS::LogNormal, info.trimmed() );
