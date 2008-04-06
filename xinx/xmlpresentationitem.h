@@ -43,9 +43,13 @@ public:
 	virtual QString tipsText() const;
 	virtual QString xpathName( bool unique = true ) const;
 
+	QString businessData() const;
+	QString screenData() const;
+	QString errorData() const;
+	
 	QDomNode node() const;
 protected:
-	QString m_businessData, m_screenData;
+	QString m_businessData, m_screenData, m_error;
 	QDomNode m_domNode;
 	QList<XmlPresentationItem*> m_childItems;
 	XmlPresentationItem * m_parentItem;

@@ -60,7 +60,9 @@ int XmlPresentationItem::count() {
 			if( node.nodeName() == "business_data" )
 				m_businessData = node.toElement().text(); 
 			if( node.nodeName() == "screen_data" )
-				m_screenData = node.toElement().text(); 
+				m_screenData = node.toElement().text();
+			if( node.nodeName() == "error" )
+				m_error = node.toElement().text();
 			node = node.nextSiblingElement(); index++;
 		}
 	}
@@ -90,6 +92,19 @@ QString XmlPresentationItem::xpathName( bool /* unique */ ) const {
 QString XmlPresentationItem::tipsText() const {
 	return QString();
 }
+
+QString XmlPresentationItem::businessData() const {
+	return m_businessData;
+}
+
+QString XmlPresentationItem::screenData() const {
+	return m_screenData;
+}
+
+QString XmlPresentationItem::errorData() const {
+	return m_error;
+}
+
 
 /* XmlPresentationNodeItem */
 
@@ -198,6 +213,10 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
 		if( node && node->isView() ) 
 			return Qt::blue;
+		else if( ! item->screenData().isEmpty() )
+			return Qt::darkRed;
+		else if( ! item->errorData().isEmpty() )
+			return Qt::red;
 	}
 
 	return QVariant();
