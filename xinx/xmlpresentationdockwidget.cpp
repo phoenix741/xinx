@@ -164,6 +164,8 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
 	m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
+	m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
+	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
 	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
 
 	m_openingFile = filename;
@@ -221,6 +223,8 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 	}
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
+	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
+	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
 	m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
@@ -239,6 +243,8 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
 		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
+		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
+		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
 
 		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
 
