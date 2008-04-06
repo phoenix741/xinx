@@ -76,14 +76,14 @@ int XmlPresentationItem::row() {
 	return m_rowNumber;
 } 
 
-QString XmlPresentationItem::xpath() const {
+QString XmlPresentationItem::xpath( bool unique ) const {
 	if( m_parentItem )
-		return m_parentItem->xpath() + "/" + xpathName();
+		return m_parentItem->xpath() + "/" + xpathName( unique );
 	else
-		return "/" + xpathName();
+		return "/" + xpathName( unique );
 }
 
-QString XmlPresentationItem::xpathName() const {
+QString XmlPresentationItem::xpathName( bool /* unique */ ) const {
 	return m_domNode.nodeName();
 }
 
@@ -115,17 +115,17 @@ QString XmlPresentationNodeItem::tipsText() const {
 		node = node.nextSibling();
 	}
 	if( ! m_businessData.isEmpty() )
-		result += "Business data = " + m_businessData.simplified() + "\n";
+		result += "Business=" + m_businessData.simplified() + "\n";
 	if( ! m_screenData.isEmpty() )
-		result += "Screen data = " + m_screenData.simplified() + "\n";
+		result += "Screen=" + m_screenData.simplified() + "\n";
 	if( result.simplified().isEmpty() ) 
 		result = XmlPresentationModel::tr( "(empty)" );
 	return result;
 }
 
-QString XmlPresentationNodeItem::xpathName() const {
+QString XmlPresentationNodeItem::xpathName( bool unique ) const {
 	QString name = XmlPresentationItem::xpathName();
-	if( ! m_domNode.attributes().namedItem( "name" ).nodeValue().isEmpty() )
+	if( unique && (! m_domNode.attributes().namedItem( "name" ).nodeValue().isEmpty() ) )
 		name += "[@name='" + m_domNode.attributes().namedItem( "name" ).nodeValue() + "']";
 	return name;
 }
@@ -152,7 +152,7 @@ QString XmlPresentationParamItem::tipsText() const {
 	return value();
 }
 
-QString XmlPresentationParamItem::xpathName() const {
+QString XmlPresentationParamItem::xpathName( bool /* unique */ ) const {
 	return "@" + XmlPresentationItem::xpathName();
 }
 
@@ -173,26 +173,20 @@ int XmlPresentationModel::columnCount(const QModelIndex &/*parent*/) const {
 }
 
 QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
-	if (!index.isValid())
+	if((!index.isValid()) || (index.column() > 0))
 		return QVariant();
 
 	XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
 	QDomNode node = item->node();
-
+	
 	if( role == Qt::DisplayRole ) {
-		switch (index.column()) {
-		case 0:
-			return node.nodeName();
-		default:
-			return QVariant();
-		} 
-	} else if( role == Qt::UserRole ) {
-		switch( index.column() ) {
-		case 0:
-			return item->xpath();
-		default:
-			return QVariant();
-		}
+		return node.nodeName();
+	} else if( role == XmlPresentationModel::XNamedPathRole ) {
+		return item->xpath();
+	} else if( role == XmlPresentationModel::XPathRole ) {
+		return item->xpath( false );
+	} else if( role == XmlPresentationModel::NamedViewRole ) {
+		return item->xpathName();
 	} else if( ( role == Qt::DecorationRole ) && ( index.column() == 0 ) ) {
 		if( dynamic_cast<XmlPresentationNodeItem*>( item ) ) 
 			return QIcon( ":/images/balise.png" );
@@ -200,10 +194,10 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 			return QIcon( ":/images/variable.png" );
 	} else if( role == Qt::ToolTipRole ) {
 		return item->tipsText();
-	} else if( role == Qt::BackgroundColorRole ) {
+	} else if( role == Qt::ForegroundRole ) {
 		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
 		if( node && node->isView() ) 
-			return Qt::lightGray;
+			return Qt::blue;
 	}
 
 	return QVariant();

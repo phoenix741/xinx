@@ -40,19 +40,28 @@ public:
 	class RecursiveFilterProxyModel : public QSortFilterProxyModel {
 	public:
 		RecursiveFilterProxyModel( QObject * parent = 0 );
+		
+		bool showAllChild() const { return m_showAllChild; } ;
+		void setShowAllChild( bool value ) { m_showAllChild = value; };
 	protected:
 		virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
 		bool canBeShow( const QModelIndex & index ) const;
+		bool mustBeShow( const QModelIndex & index ) const; // true if a parent is equals
+	private:
+		bool m_showAllChild;
 	};
 	
 	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
 	~PrivateXmlPresentationDockWidget();
 	
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
-	QString m_logPath, m_openingFile, m_filteredText;
+	QString m_logPath, m_openingFile;
 	XmlPresentationModel * m_model;
-	QSortFilterProxyModel * m_sortFilterModel;
+	RecursiveFilterProxyModel * m_sortFilterModel;
 	FileWatcher * m_watcher;
+	
+	QString m_filteredText, m_currentXpath;
+	bool m_filteredElement;
 	QTimer m_timerTextChanged;
 	
 	enum { THREAD_OPENING, THREAD_FILTERED } m_threadAct;
@@ -68,6 +77,8 @@ public slots:
 	
 	void filterTextChanged( const QString & text );
 	void filterTextChangedTimer();
+	
+	//void 
 protected:
 	virtual void threadrun();
 private:

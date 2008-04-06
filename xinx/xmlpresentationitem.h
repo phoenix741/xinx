@@ -39,9 +39,9 @@ public:
 	XmlPresentationItem * parent();
 	int row();
 	
-	QString xpath() const;
+	QString xpath( bool unique = true ) const;
 	virtual QString tipsText() const;
-	virtual QString xpathName() const;
+	virtual QString xpathName( bool unique = true ) const;
 
 	QDomNode node() const;
 protected:
@@ -58,7 +58,7 @@ public:
 	virtual ~XmlPresentationNodeItem();
 
 	virtual QString tipsText() const;
-	virtual QString xpathName() const;
+	virtual QString xpathName( bool unique = true ) const;
 	bool isView() const;
 };
 
@@ -67,7 +67,7 @@ public:
 	XmlPresentationParamItem( QDomNode node, int row, XmlPresentationItem * parent = 0 );
 	virtual ~XmlPresentationParamItem();
 
-	virtual QString xpathName() const;
+	virtual QString xpathName( bool unique = true ) const;
 	virtual QString tipsText() const;
 	QString value() const;
 };
@@ -75,6 +75,12 @@ public:
 class XmlPresentationModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
+	enum PresentationRole {
+		XNamedPathRole = 32,
+		XPathRole = 33,
+		NamedViewRole = 34
+	};
+	
 	XmlPresentationModel( QDomDocument document, QObject *parent = 0 );
 	~XmlPresentationModel();
 

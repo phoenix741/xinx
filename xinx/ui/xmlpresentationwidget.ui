@@ -71,12 +71,12 @@
     <widget class="QComboBox" name="m_filterComboBox" >
      <item>
       <property name="text" >
-       <string>None</string>
+       <string>Sub-element</string>
       </property>
      </item>
      <item>
       <property name="text" >
-       <string>Sub-element</string>
+       <string>None</string>
       </property>
      </item>
     </widget>
