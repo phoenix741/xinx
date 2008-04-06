@@ -273,10 +273,10 @@
     <string>&amp;New</string>
    </property>
    <property name="toolTip" >
-    <string>New</string>
+    <string>New document</string>
    </property>
    <property name="statusTip" >
-    <string>Create a new text file</string>
+    <string>Create a new document</string>
    </property>
   </action>
   <action name="m_openAct" >
@@ -286,8 +286,11 @@
    <property name="text" >
     <string>&amp;Open ...</string>
    </property>
+   <property name="toolTip" >
+    <string>Open a file on the disk</string>
+   </property>
    <property name="statusTip" >
-    <string>Open an existing file</string>
+    <string>Open an existing file on the disk</string>
    </property>
   </action>
   <action name="m_saveAct" >
@@ -296,6 +299,9 @@
    </property>
    <property name="text" >
     <string>&amp;Save</string>
+   </property>
+   <property name="toolTip" >
+    <string>Save the document</string>
    </property>
    <property name="statusTip" >
     <string>Save the document to disk</string>
@@ -308,8 +314,11 @@
    <property name="text" >
     <string>Save &amp;As...</string>
    </property>
+   <property name="toolTip" >
+    <string>Save the document As</string>
+   </property>
    <property name="statusTip" >
-    <string>Save the document with a new name</string>
+    <string>Save the document with a new name to the disk</string>
    </property>
   </action>
   <action name="m_saveAllAct" >
@@ -318,6 +327,9 @@
    </property>
    <property name="text" >
     <string>Save A&amp;ll...</string>
+   </property>
+   <property name="toolTip" >
+    <string>Save all documents</string>
    </property>
    <property name="statusTip" >
     <string>Save all documents to disk</string>
@@ -330,6 +342,9 @@
    <property name="text" >
     <string>&amp;Print ...</string>
    </property>
+   <property name="toolTip" >
+    <string>Print the document</string>
+   </property>
    <property name="statusTip" >
     <string>Print the current document</string>
    </property>
@@ -341,6 +356,9 @@
    <property name="text" >
     <string>&amp;Close</string>
    </property>
+   <property name="toolTip" >
+    <string>Close document</string>
+   </property>
    <property name="statusTip" >
     <string>Close the current document</string>
    </property>
@@ -349,8 +367,11 @@
    <property name="text" >
     <string>&amp;Close All</string>
    </property>
+   <property name="toolTip" >
+    <string>Close All document</string>
+   </property>
    <property name="statusTip" >
-    <string>Close all document</string>
+    <string>Close All document</string>
    </property>
   </action>
   <action name="m_exitAct" >
@@ -362,6 +383,9 @@
    </property>
    <property name="statusTip" >
     <string>Quit XINX</string>
+   </property>
+   <property name="menuRole" >
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="m_undoAct" >
@@ -434,6 +458,9 @@
    <property name="text" >
     <string>&amp;Duplicate current line</string>
    </property>
+   <property name="statusTip" >
+    <string>Duplicate the current line</string>
+   </property>
   </action>
   <action name="m_moveUpLineAct" >
    <property name="icon" >
@@ -441,6 +468,9 @@
    </property>
    <property name="text" >
     <string>&amp;Move line up</string>
+   </property>
+   <property name="statusTip" >
+    <string>Move the current line up</string>
    </property>
   </action>
   <action name="m_moveDownLineAct" >
@@ -450,6 +480,9 @@
    <property name="text" >
     <string>&amp;Move line down</string>
    </property>
+   <property name="statusTip" >
+    <string>Move the current line down</string>
+   </property>
   </action>
   <action name="m_upperTextAct" >
    <property name="icon" >
@@ -457,6 +490,9 @@
    </property>
    <property name="text" >
     <string>&amp;Upper Case</string>
+   </property>
+   <property name="statusTip" >
+    <string>Make the selected character upper case</string>
    </property>
   </action>
   <action name="m_lowerTextAct" >
@@ -466,15 +502,30 @@
    <property name="text" >
     <string>&amp;Lower Case</string>
    </property>
+   <property name="statusTip" >
+    <string>Make the selected character lower case</string>
+   </property>
   </action>
   <action name="m_commentLineAct" >
    <property name="text" >
     <string>&amp;Comment</string>
    </property>
+   <property name="statusTip" >
+    <string>Comment the selected text</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Comment the selected text with the specifique guidelines of the language. &lt;ul>&lt;li>In &lt;b>XML&lt;/b> like format &lt;i>&amp;lt;!-- comment --&amp;gt;&lt;/i>&lt;/li> &lt;li>In &lt;b>Javascript&lt;/b> : &lt;i>/* comment */&lt;/i> &lt;/li>&lt;/ul></string>
+   </property>
   </action>
   <action name="m_uncommentLineAct" >
    <property name="text" >
     <string>&amp;Uncomment</string>
+   </property>
+   <property name="statusTip" >
+    <string>Uncomment the selected text if commented</string>
+   </property>
+   <property name="whatsThis" >
+    <string>See the comment helper function</string>
    </property>
   </action>
   <action name="m_completeAct" >
@@ -489,6 +540,9 @@
    <property name="text" >
     <string>&amp;Search ...</string>
    </property>
+   <property name="statusTip" >
+    <string>Search a text in the current editor</string>
+   </property>
   </action>
   <action name="m_searchNextAct" >
    <property name="text" >
@@ -500,6 +554,9 @@
    <property name="toolTip" >
     <string>Search next</string>
    </property>
+   <property name="statusTip" >
+    <string>Search the next element in the current editor</string>
+   </property>
   </action>
   <action name="m_replaceAct" >
    <property name="icon" >
@@ -508,6 +565,9 @@
    <property name="text" >
     <string>&amp;Replace ...</string>
    </property>
+   <property name="statusTip" >
+    <string>Replace a text in the current editor</string>
+   </property>
   </action>
   <action name="m_newProjectAct" >
    <property name="icon" >
@@ -515,6 +575,9 @@
    </property>
    <property name="text" >
     <string>&amp;New project ...</string>
+   </property>
+   <property name="statusTip" >
+    <string>Create a new project</string>
    </property>
   </action>
   <action name="m_aboutAct" >
@@ -527,6 +590,9 @@
    <property name="statusTip" >
     <string>Show the application's About box</string>
    </property>
+   <property name="menuRole" >
+    <enum>QAction::AboutRole</enum>
+   </property>
   </action>
   <action name="m_aboutQtAct" >
    <property name="icon" >
@@ -538,6 +604,9 @@
    <property name="statusTip" >
     <string>Show the Qt library's About box</string>
    </property>
+   <property name="menuRole" >
+    <enum>QAction::AboutQtRole</enum>
+   </property>
   </action>
   <action name="m_openProjectAct" >
    <property name="icon" >
@@ -546,6 +615,12 @@
    <property name="text" >
     <string>&amp;Choose file ...</string>
    </property>
+   <property name="toolTip" >
+    <string>Choose a project file</string>
+   </property>
+   <property name="statusTip" >
+    <string>Choose a project file on the disk</string>
+   </property>
   </action>
   <action name="m_saveProjectAct" >
    <property name="icon" >
@@ -553,6 +628,9 @@
    </property>
    <property name="text" >
     <string>&amp;Save project</string>
+   </property>
+   <property name="toolTip" >
+    <string>Save the project</string>
    </property>
   </action>
   <action name="m_closeProjectNoSessionAct" >
@@ -563,6 +641,9 @@
   <action name="m_projectPropertyAct" >
    <property name="text" >
     <string>Project &amp;property</string>
+   </property>
+   <property name="statusTip" >
+    <string>Show/Modify the property of the project</string>
    </property>
   </action>
   <action name="m_nextTabAct" >
@@ -600,6 +681,9 @@
    </property>
    <property name="text" >
     <string>Customize ...</string>
+   </property>
+   <property name="menuRole" >
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="m_searchPreviousAct" >
