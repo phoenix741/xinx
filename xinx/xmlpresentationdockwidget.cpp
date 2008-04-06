@@ -160,8 +160,7 @@ void PrivateXmlPresentationDockWidget::setComboToolTip( const QString & filename
 void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	if( m_watcher ) m_watcher->desactivate();
 
-	m_xmlPresentationWidget->m_presentationProgressBar->setValue( 0 );
-	m_xmlPresentationWidget->m_presentationProgressBar->setRange( 0, 0 );
+	m_xmlPresentationWidget->m_presentationProgressBar->show();
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
 	m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
