@@ -79,10 +79,6 @@ public:
 	
 	int nextId() const;
 private slots:
-	void on_m_webServiceBtnDel_clicked();
-	void on_m_webServiceBtnAdd_clicked();
-	void on_m_servicesLineEdit_textChanged( QString text );
-
 	friend class NewProjectWizard;
 };
 

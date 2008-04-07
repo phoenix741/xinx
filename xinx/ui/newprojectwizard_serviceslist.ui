@@ -13,99 +13,19 @@
    <string>Define WebServices List</string>
   </property>
   <layout class="QGridLayout" >
-   <item row="0" column="0" colspan="2" >
-    <widget class="QListWidget" name="m_webServiceList" />
-   </item>
-   <item rowspan="2" row="0" column="2" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QToolButton" name="m_webServiceBtnAdd" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>Add link</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/add.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_webServiceBtnDel" >
-       <property name="text" >
-        <string>Delete link</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/remove.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label_11" >
-     <property name="text" >
-      <string>&amp;Webservices WSDL</string>
-     </property>
-     <property name="buddy" >
-      <cstring>m_servicesLineEdit</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" >
-    <widget class="QLineEdit" name="m_servicesLineEdit" />
+   <item row="0" column="0" >
+    <widget class="XinxListWidgetImpl" native="1" name="m_webServicesWidget" />
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxListWidgetImpl</class>
+   <extends>QWidget</extends>
+   <header location="global" >xinxlistwidgetimpl.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>m_webServiceList</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>m_servicesLineEdit</receiver>
-   <slot>setText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>194</x>
-     <y>156</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>196</x>
-     <y>283</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

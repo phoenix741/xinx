@@ -87,8 +87,8 @@ XSLProject * NewProjectWizard::createProject() {
 		if( field( "project.services" ).toBool() ) {
 			options |= XSLProject::hasWebServices;
 			QStringList & services = m_project->serveurWeb();
-			for( int i = 0; i < m_listPage->m_webServiceList->count(); i++ ) 
-				services.append( m_listPage->m_webServiceList->item( i )->text() );
+			foreach( QString value, m_listPage->m_webServicesWidget->values() )
+				services += value;
 		}
 
 		m_project->setOptions( options );
@@ -234,26 +234,10 @@ ServicesListPageImpl::ServicesListPageImpl( QWidget * parent ) : QWizardPage( pa
 	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
 					"list contains link to WSDL.") );
 	
-	registerField( "services.list", m_webServiceList );
-}
+	registerField( "services.list", m_webServicesWidget );
 
-void ServicesListPageImpl::on_m_webServiceBtnDel_clicked() {
-	delete m_webServiceList->currentItem();
-	
-	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
-}
-
-void ServicesListPageImpl::on_m_webServiceBtnAdd_clicked() {
-	QString text = QInputDialog::getText( this, tr("Add WebService"), tr("URL of the WebServices"), QLineEdit::Normal, "http://localhost:8888/gce/services/?WSDL" );
-	if( ! text.isEmpty() )
-		m_webServiceList->addItem( text );
-
-	m_webServiceBtnDel->setEnabled( m_webServiceList->count() > 0 );
-}
-
-void ServicesListPageImpl::on_m_servicesLineEdit_textChanged( QString text ) {
-	QListWidgetItem * item = m_webServiceList->currentItem();
-	if( item ) item->setText( text );
+	m_webServicesWidget->setDefaultProposedValue( "http://localhost:8888/gce/services/?WSDL" );
+	m_webServicesWidget->setDefaultVisible( false );
 }
 
 int ServicesListPageImpl::nextId() const {
