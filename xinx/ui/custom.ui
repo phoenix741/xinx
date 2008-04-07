@@ -158,8 +158,9 @@
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the path where XNX files is stored as the stored snipet file or the completion file. This is also the directory where is stored the business object description is stored (maybe used in the future).&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This is the path where &lt;span style=" font-weight:600;">XINX&lt;/span> data files are stored (as snipet or completion file). &lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Normally the directory is stored in the xml sub-directory of &lt;span style=" font-weight:600;">XINX&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
         </widget>
        </item>
@@ -185,8 +186,10 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Langue in which XINX must be used.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Langue in which &lt;span style=" font-weight:600;">XINX&lt;/span> must be used.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-style:italic;">Modification take effect at restart.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <item>
           <property name="text" >
@@ -225,15 +228,28 @@ p, li { white-space: pre-wrap; }
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QCheckBox" name="m_closeLogCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">When an action with the revision control system is made, a log window isopen and show information about the progress.&lt;/p>
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
          <property name="text" >
-          <string>&amp;Close the Version management Log automaticaly.</string>
+          <string>&amp;Close the Version management Log automatically.</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0" >
         <widget class="QCheckBox" name="m_changeLogCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">When checked, a &lt;span style=" font-style:italic;">ChangeLog&lt;/span> file is created/appended at each commit with date, hour, and the commit messages.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
          <property name="text" >
-          <string>Update ChangeLog automatically</string>
+          <string>&amp;Update "ChangeLog" automatically.</string>
          </property>
         </widget>
        </item>
@@ -253,7 +269,7 @@ p, li { white-space: pre-wrap; }
        <item row="2" column="0" >
         <widget class="QLabel" name="m_labelLink" >
          <property name="text" >
-          <string>&lt;i>Options related to a specifique revision manager (such as CVS or Subversion) must be changed in the &lt;a href="#modules">Modules&lt;/a> section.&lt;/i></string>
+          <string>&lt;i>Options related to a named revision manager (such as CVS or Subversion) must be changed in the &lt;a href="#modules">Modules&lt;/a> section.&lt;/i></string>
          </property>
          <property name="wordWrap" >
           <bool>true</bool>
@@ -266,6 +282,16 @@ p, li { white-space: pre-wrap; }
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QTableView" name="m_toolsTable" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of tools used by &lt;span style=" font-weight:600;">XINX&lt;/span> and all plugins. Tools are external application called by this application.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If the tool can't be find, the text color will be &lt;span style=" color:#ff0000;">red&lt;/span>. &lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
          <property name="alternatingRowColors" >
           <bool>true</bool>
          </property>
@@ -283,6 +309,12 @@ p, li { white-space: pre-wrap; }
          <layout class="QGridLayout" >
           <item row="0" column="0" >
            <widget class="QRadioButton" name="m_closeBtnRadioButton" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;img src=":/images/tabclose.png"/>Show a button on the right corner of &lt;span style=" font-weight:600;">XINX&lt;/span>.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
             <property name="text" >
              <string>Close button on the &amp;tab widget</string>
             </property>
@@ -290,6 +322,12 @@ p, li { white-space: pre-wrap; }
           </item>
           <item row="1" column="0" >
            <widget class="QRadioButton" name="m_cornerBtnRadioButton" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;img src=":/images/fileclose.png"/>Show a close button on each tab.&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
             <property name="text" >
              <string>Close button on right &amp;corner</string>
             </property>
@@ -300,6 +338,12 @@ p, li { white-space: pre-wrap; }
           </item>
           <item row="2" column="0" >
            <widget class="QRadioButton" name="m_closeAndCornerBtnRadioButton" >
+            <property name="whatsThis" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;img src=":/images/tabclose.png" />&lt;img src=":/images/fileclose.png" />Show a button on the right corner of &lt;span style=" font-weight:600;">XINX&lt;/span> and another on each tab. This option is the concatenation of the two other options&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
             <property name="text" >
              <string>Close button on the tab widget &amp;and the corner</string>
             </property>
@@ -330,8 +374,8 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Alert user when the file is modified by an extern application. The user has the choice to open the new file or keep current file.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;span style=" text-decoration: underline;">and loose his change&lt;/span>) or keep current file.&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="text" >
           <string>&amp;Popup when file modifed</string>
@@ -343,8 +387,10 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Create a backup file before saving the file. The backup file is stored in the same directory that the orignal file. The backup is created by copy before the file is overwritten.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">The backup is created by copy the modified file before he his saved.&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="text" >
           <string>&amp;Create backup file when saving (.bak)</string>
@@ -356,8 +402,10 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If the box is checked, when saving the file, XINX apply the pretty print function on the text. This format the code on saving file. Saving file can be slower.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">If the box is checked, when saving the file, &lt;span style=" font-weight:600;">XINX &lt;/span>apply the pretty print function on the text. This format the code on saving file. &lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-style:italic;">Saving file can be slower.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="text" >
           <string>P&amp;retty print on saving</string>
@@ -379,8 +427,8 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the tabulation in number of character. This is the number of character that a tabulation replace.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Sans Serif'; font-size:9pt;">Size of tabulation in number of character. This is thenumber of character that tabulation replaces.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
         </widget>
        </item>
@@ -399,12 +447,12 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Level of the completion. The completion can be :&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Desactivated&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Activated but only with an help on tapping&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">* Fully activated with the help on tapping, and the adding code (as configured on completion file)&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Level of the completion. The completion can be :&lt;/p>
+&lt;ul style="-qt-list-indent: 1;">&lt;li style=" font-family:'Sans Serif'; font-size:9pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Desactivated&lt;/li>
+&lt;li style=" font-family:'Sans Serif'; font-size:9pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Activated but only with an help on tapping&lt;/li>
+&lt;li style=" font-family:'Sans Serif'; font-size:9pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Fully activated with the help on tapping and the adding code (as configured on completion file)&lt;/li>&lt;/ul>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <item>
           <property name="text" >
@@ -460,8 +508,8 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Name of the font to use in all editors&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Name of the font to use in all editors.&lt;/p>&lt;/body>&lt;/html></string>
          </property>
         </widget>
        </item>
@@ -480,13 +528,19 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Size of the font in the editor. The value is a global value.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Size of the font in the editor. The value is a global value.&lt;/p>&lt;/body>&lt;/html></string>
          </property>
         </widget>
        </item>
        <item row="2" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_showCurrentLineCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Show the current line in a different color. Usually a blue-gray.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
          <property name="text" >
           <string>Show current &amp;line</string>
          </property>
@@ -494,8 +548,15 @@ p, li { white-space: pre-wrap; }
        </item>
        <item row="3" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_autoHighlightCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Highlight automatically all same word in the editor in the same color.&lt;/p>
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">This can be slow down the edition mode.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
          <property name="text" >
-          <string>Auto highlight same word</string>
+          <string>Auto highlight same &amp;word</string>
          </property>
         </widget>
        </item>
@@ -510,18 +571,25 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="4" column="1" colspan="2" >
-        <widget class="KColorCombo" name="m_highlightTextColorComboBox" />
+        <widget class="KColorCombo" name="m_highlightTextColorComboBox" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Color used for highlight same word&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
+        </widget>
        </item>
        <item row="5" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_showTabulationCheckBox" >
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Show tabulation and space in the editor. This can be used to see, if tabulation or space is written.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Sans Serif'; font-size:9pt;">Show tabulation and space in the editor with specialcharacter (in greyed colour).&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="text" >
-          <string>&amp;Show tabulation and space in the editor</string>
+          <string>Show &amp;tabulation and space in the editor</string>
          </property>
         </widget>
        </item>
@@ -543,7 +611,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QWidget" name="m_syntax" >
       <layout class="QGridLayout" >
        <item row="0" column="0" >
-        <widget class="QComboBox" name="m_highlighterComboBox" />
+        <widget class="QComboBox" name="m_highlighterComboBox" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of highlighter. Highlighter is used to color a text in an editor. &lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">To add new highlighter, you must add the corresponding plugin.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
+        </widget>
        </item>
        <item rowspan="2" row="0" column="1" >
         <widget class="QGroupBox" name="groupBox_4" >
@@ -673,8 +750,8 @@ p, li { white-space: pre-wrap; }
          <property name="whatsThis" >
           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of token what can be modified. Tokens are used to colorize the document. All supported token are showed here.&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">List of token that can be modified on the highlighter. Each token is a part of a document (an XML node, an attribute, a reserved word, ...)&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="sortingEnabled" >
           <bool>true</bool>
@@ -710,7 +787,12 @@ p, li { white-space: pre-wrap; }
        <item row="0" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_alertStandardCheckBox" >
          <property name="whatsThis" >
-          <string>In client project mode only, when a standard file (with no prefix) is saving, XINX ask you to save the file with a new name as a client file. The new file name will be prefixed by the project prefix specified in the project property.</string>
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:8pt;">In derivated project mode only, when a standard file (with no prefix) is saving, &lt;/span>&lt;span style=" font-size:8pt; font-weight:600;">XINX&lt;/span>&lt;span style=" font-size:8pt;"> ask you to save the file with a new prefixed name. &lt;/span>&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">The prefix must be specified in the project property.&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="text" >
           <string>&amp;Alert user when file is standard (project mode only)</string>
@@ -720,7 +802,16 @@ p, li { white-space: pre-wrap; }
        <item row="1" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_saveSessionCheckBox" >
          <property name="whatsThis" >
-          <string>This is the default method to close the project. If checked, when the project, or the application is closed informations about non saved files are stored in a session file. Else, the XINX ask the user about unsaved file.</string>
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:8pt;">This is the default method to close the project. &lt;/span>&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">If checked, when the project, or the application is closed informations about non saved files are stored in a session file. &lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Else, the XINX ask the user about unsaved file.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;span style=" font-style:italic;">In case of crash &lt;/span>&lt;span style=" font-weight:600; font-style:italic;">XINX&lt;/span>&lt;span style=" font-style:italic;"> save the project in session mode automatically.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
          <property name="text" >
           <string>&amp;Save project with session information by default (content of modified file)</string>
@@ -740,7 +831,12 @@ p, li { white-space: pre-wrap; }
        <item row="2" column="1" >
         <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
          <property name="whatsThis" >
-          <string>This the path where the save dialog must be opened when you create a new project.</string>
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:8pt;">This the path where the save dialog must be opened when you create a new project.&lt;/span>&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;span style=" font-style:italic;">As the author set the project path to the AS path, this path is now the project path. You can safely use another path, but in New Project Wizard, the AS path would be wrong.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
         </widget>
        </item>
@@ -764,7 +860,12 @@ p, li { white-space: pre-wrap; }
        <item row="3" column="1" >
         <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
          <property name="whatsThis" >
-          <string>This is the path where specifique is stored in client project mode.</string>
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:8pt;">This is the path where derivated files are stored in derivated project mode. &lt;/span>&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;span style=" font-style:italic;">In &lt;/span>&lt;span style=" font-weight:600; font-style:italic;">Generix&lt;/span>&lt;span style=" font-style:italic;">, this is a sub-directory of langue/fra/nav/&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
          </property>
         </widget>
        </item>
@@ -779,7 +880,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="5" column="0" colspan="2" >
-        <widget class="QTableView" name="m_specifiqueTableView" />
+        <widget class="QTableView" name="m_specifiqueTableView" >
+         <property name="whatsThis" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;span style=" font-style:italic;">langue/fra/nav/projet/js&lt;/span>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -796,7 +904,17 @@ p, li { white-space: pre-wrap; }
           </attribute>
           <layout class="QGridLayout" >
            <item row="0" column="0" >
-            <widget class="XinxPluginSelector" name="m_pluginListView" />
+            <widget class="XinxPluginSelector" name="m_pluginListView" >
+             <property name="whatsThis" >
+              <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of plugins of &lt;span style=" font-weight:600;">XINX&lt;/span>. Plugins are piece of software that can be added without reinstall &lt;span style=" font-weight:600;">XINX&lt;/span>.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600;">XINX&lt;/span> is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;span style=" font-style:italic;">C++, &lt;/span>use &lt;span style=" font-style:italic;">Qt, &lt;/span>and must be in licence accepted by &lt;span style=" font-style:italic;">Qt&lt;/span>.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
