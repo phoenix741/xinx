@@ -308,7 +308,8 @@ void TextEditor::paintEvent ( QPaintEvent * event ) {
 
 	if( XINXConfig::self()->config().editor.showTabulationAndSpace )
 		printWhiteSpaces( painter );
-		
+	
+	painter.end();
     QTextEdit::paintEvent( event );
 }
 
