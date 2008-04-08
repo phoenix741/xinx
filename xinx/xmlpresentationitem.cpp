@@ -213,10 +213,10 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
 		if( node && node->isView() ) 
 			return Qt::blue;
-		else if( ! item->screenData().isEmpty() )
-			return Qt::darkRed;
 		else if( ! item->errorData().isEmpty() )
 			return Qt::red;
+		else if( ! item->screenData().isEmpty() )
+			return Qt::darkRed;
 	}
 
 	return QVariant();

@@ -118,27 +118,11 @@
    <hints>
     <hint type="sourcelabel" >
      <x>17</x>
-     <y>40</y>
+     <y>57</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>55</x>
-     <y>40</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_presentationComboBox</sender>
-   <signal>activated(int)</signal>
-   <receiver>m_filtreLineEdit</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>102</x>
-     <y>15</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>101</x>
-     <y>44</y>
+     <x>78</x>
+     <y>56</y>
     </hint>
    </hints>
   </connection>

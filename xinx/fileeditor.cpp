@@ -446,7 +446,7 @@ void FileEditor::keyPressEvent( QKeyEvent * e ) {
 	}
 
 	QRect cr = textEdit()->cursorRect();
-	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
+	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width() );
 	c->complete(cr); // popup it up!
 }
 

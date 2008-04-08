@@ -83,7 +83,7 @@ void CVSThread::processReadOutput() {
 
 void CVSThread::callCVS( const QString & path, const QStringList & options ) {
 	/* Create process */
-	m_process = new QProcess( this );
+	m_process = new QProcess;
 
 	emit log( RCS::LogApplication, QString("Working dir : %1").arg( path ) );
 	m_process->setWorkingDirectory( path );

@@ -169,6 +169,10 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
 
 	m_openingFile = filename;
+
+	m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
+	m_filteredElement = m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0;
+
 	m_threadAct = THREAD_OPENING;
 	start( QThread::IdlePriority );
 }
@@ -189,6 +193,10 @@ void PrivateXmlPresentationDockWidget::threadrun() {
 			m_model = new XmlPresentationModel( document );
 			m_sortFilterModel = new RecursiveFilterProxyModel( m_model );
 			m_sortFilterModel->setSourceModel( m_model );
+			if( ! m_filteredText.isEmpty() ) {
+				m_sortFilterModel->setShowAllChild( m_filteredElement );
+				m_sortFilterModel->setFilterRegExp( m_filteredText );
+			}
 		}
 	} else if( m_threadAct == THREAD_FILTERED ) {
 		m_sortFilterModel->setShowAllChild( m_filteredElement );
@@ -202,25 +210,29 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
 		m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
 	} else if( m_threadAct == THREAD_FILTERED ) {
-		QModelIndex expandIndex = QModelIndex();
-		if( !m_filteredText.isEmpty() ) {
-			while( m_sortFilterModel->rowCount( expandIndex ) > 0 ) {
-				m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-				expandIndex = m_sortFilterModel->index( 0, 0, expandIndex );
-			}
-		} else {
-			QStringList xpath = m_currentXpath.split( '/' );
-			foreach( QString path, xpath ) {
-				m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-				if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
-					QModelIndexList matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly );
-					if( matchedIndex.count() > 0 )
-						expandIndex = matchedIndex.at( 0 );
-				}
+	}
+
+	/* Filter part */
+	QModelIndex expandIndex = QModelIndex();
+	if( !m_filteredText.isEmpty() ) {
+		while( m_sortFilterModel->rowCount( expandIndex ) > 0 ) {
+			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
+			expandIndex = m_sortFilterModel->index( 0, 0, expandIndex );
+		}
+	} else {
+		QStringList xpath = m_currentXpath.split( '/' );
+		foreach( QString path, xpath ) {
+			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
+			if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
+				QModelIndexList matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly );
+				if( matchedIndex.count() > 0 )
+					expandIndex = matchedIndex.at( 0 );
 			}
 		}
-		m_xmlPresentationWidget->m_presentationTreeView->setCurrentIndex( expandIndex );		
 	}
+	m_xmlPresentationWidget->m_presentationTreeView->setCurrentIndex( expandIndex );		
+	/* End of filter part */
+	
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );

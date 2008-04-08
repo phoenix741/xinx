@@ -133,17 +133,21 @@ const QString & CVSFileEntry::getFileName() const {
 
 void CVSFileEntry::setCVSFileDate( QString date ) {
 	XINX_TRACE( "CVSFileEntry::setCVSFileDate", QString( "( %1 )" ).arg( date ) );
-	if( ! m_fileInfo.isDir() ) {
+	try {
+		if( ( m_cvsVersion == "0" ) || m_fileInfo.isDir() ) throw "Directory";
 		if( date.contains( "+" ) ) {
-			m_cvsDate = QDateTime::fromString( date.section( '+', -1, -1 ).simplified() );
 			m_hasConflict = true;
+			if( date.isEmpty() ) throw "Empty date";
+			m_cvsDate = QDateTime::fromString( date.section( '+', -1, -1 ).simplified() );
 		} else {
 			m_hasConflict = false;
+			if( date.isEmpty() ) throw "Empty date";
 			m_cvsDate = QDateTime::fromString( date.simplified() ); // , "ddd MMM d hh:mm:ss yyyy"
 			m_cvsDate.setTimeSpec( Qt::UTC );
 		}
-	} else
+	} catch(...) {
 		m_cvsDate = QDateTime();
+	}
 	
 	refreshStatus();
 }

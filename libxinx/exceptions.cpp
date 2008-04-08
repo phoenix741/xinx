@@ -157,7 +157,10 @@ QErrorMessage * ExceptionManager::errorDialog() const {
 }	
 
 void ExceptionManager::notifyError( QString error, QStringList stack ) {
-	if( m_fatal ) emit errorTriggered();
+	if( m_fatal ) { 
+		//((ExceptionManager*)0)->m_fatal = 1; 
+		emit errorTriggered(); 
+	}
 
 	if (stack.isEmpty())
 		stack << stackTrace();
