@@ -108,6 +108,14 @@
      </item>
      <item>
       <property name="text" >
+       <string>XML Pres.</string>
+      </property>
+      <property name="icon" >
+       <iconset resource="../application.qrc" >:/images/preferences-xmlpres.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
        <string>Modules</string>
       </property>
       <property name="icon" >
@@ -140,6 +148,13 @@
     <widget class="QStackedWidget" name="stackedWidget" >
      <property name="currentIndex" >
       <number>0</number>
+     </property>
+     <property name="color" stdset="0" >
+      <color>
+       <red>0</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
      </property>
      <widget class="QWidget" name="m_general" >
       <layout class="QGridLayout" >
@@ -891,6 +906,172 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="page" >
+      <layout class="QVBoxLayout" >
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="label_4" >
+           <property name="text" >
+            <string>&amp;Root path :</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_rootPathLineEdit</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_rootPathLineEdit" >
+           <property name="whatsThis" >
+            <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the path where the view must begin. Generally the first node is the root path (ie. &lt;span style=" font-style:italic;">/layout_data&lt;/span>)&lt;/p>&lt;/body>&lt;/html></string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7" >
+         <property name="text" >
+          <string>&amp;Element to hide :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_hideElementList</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="XinxListWidgetImpl" native="1" name="m_hideElementList" >
+         <property name="focusPolicy" >
+          <enum>Qt::TabFocus</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QGroupBox" name="groupBox_2" >
+           <property name="title" >
+            <string>&amp;Option</string>
+           </property>
+           <layout class="QVBoxLayout" >
+            <item>
+             <widget class="QCheckBox" name="m_showSubEltCheckBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked, when you filter the text, the list show sub-element of node where the filter verify the text.&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+              <property name="text" >
+               <string>&amp;Show sub-element of a corresponding node</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox" >
+           <property name="title" >
+            <string>&amp;Color</string>
+           </property>
+           <layout class="QGridLayout" >
+            <item row="0" column="0" >
+             <widget class="QLabel" name="label_8" >
+              <property name="text" >
+               <string>&amp;View color :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_viewColorBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" >
+             <widget class="KColorCombo" name="m_viewColorBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Color of the node of view type (Generally begins by &lt;span style=" font-style:italic;">Vue...&lt;/span>)&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <widget class="QLabel" name="label_9" >
+              <property name="text" >
+               <string>&amp;Error color :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_errorColorBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" >
+             <widget class="KColorCombo" name="m_errorColorBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Color of a node with a sub-element of name error.&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" >
+             <widget class="QLabel" name="label_12" >
+              <property name="text" >
+               <string>&amp;Screen data color :</string>
+              </property>
+              <property name="buddy" >
+               <cstring>m_screenColorBox</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1" >
+             <widget class="KColorCombo" name="m_screenColorBox" >
+              <property name="whatsThis" >
+               <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Color of a balise with a &lt;span style=" font-style:italic;">screen_data&lt;/span> node.&lt;/p>&lt;/body>&lt;/html></string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>31</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="m_modules" >
       <layout class="QGridLayout" >
        <item row="0" column="0" >
@@ -984,17 +1165,23 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>DirectoryEdit</class>
    <extends>QLineEdit</extends>
-   <header>directoryedit.h</header>
+   <header location="global" >directoryedit.h</header>
   </customwidget>
   <customwidget>
    <class>KColorCombo</class>
    <extends>QComboBox</extends>
-   <header>kcolorcombo.h</header>
+   <header location="global" >kcolorcombo.h</header>
   </customwidget>
   <customwidget>
    <class>XinxPluginSelector</class>
    <extends>QListView</extends>
-   <header>xinxpluginselector.h</header>
+   <header location="global" >xinxpluginselector.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XinxListWidgetImpl</class>
+   <extends>QWidget</extends>
+   <header location="global" >xinxlistwidgetimpl.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -1044,8 +1231,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>684</x>
-     <y>453</y>
+     <x>583</x>
+     <y>470</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -1060,8 +1247,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>765</x>
-     <y>453</y>
+     <x>668</x>
+     <y>470</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>
