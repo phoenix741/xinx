@@ -2,6 +2,14 @@
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>
+	<type name="XmlPres">
+		<value name="Root path" type="string"/>
+		<value name="Hide path" type="stringlist"/>
+		<value name="Show filtered sub-tree" type="bool" default="true"/>
+		<value name="View Color" type="color" default="blue"/>
+		<value name="Error Color" type="color" default="red"/>
+		<value name="Screen data Color" type="color" default="darkRed"/>
+	</type>
 	<type name="Extentions">
 		<value name="Custom Path" type="string"/>
 		<value name="Can Be Specifique" type="bool" default="yes"/>
@@ -52,6 +60,8 @@
 	<value name="RCS" type="RCS"/>
 	<value name="Editor" type="Editor"/>
 	<value name="Configuration Editor" type="Configuration Editor"/>
+	
+	<value name="Xml Pres" type="XmlPres"/>
     
 	<value name="Tools" type="hash:string">
 		<default name="diff" default="/usr/bin/kompare"/>

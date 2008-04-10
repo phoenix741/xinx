@@ -352,6 +352,14 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_specifiqueTableView->setModel( specifiqueModel );
 	m_parent->m_specifiqueTableView->resizeColumnsToContents();
 	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
+	
+	// Xml pres
+	m_parent->m_rootPathLineEdit->setText( m_config.config().xmlPres.rootPath );
+	m_parent->m_hideElementList->setValues( m_config.config().xmlPres.hidePath );
+	m_parent->m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
+	m_parent->m_viewColorBox->setColor( m_config.config().xmlPres.viewColor ); 
+	m_parent->m_errorColorBox->setColor( m_config.config().xmlPres.errorColor ); 
+	m_parent->m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor ); 
 }
 
 void PrivateCustomDialogImpl::storeConfig() {
@@ -431,6 +439,14 @@ void PrivateCustomDialogImpl::storeConfig() {
 	SpecifiqueModelIndex * specifiqueModel = qobject_cast<SpecifiqueModelIndex*>( m_parent->m_specifiqueTableView->model() );
 	m_config.config().files.clear();
 	m_config.config().files = specifiqueModel->extentions();
+
+	// Xml pres
+	m_config.config().xmlPres.rootPath = m_parent->m_rootPathLineEdit->text();
+	m_config.config().xmlPres.hidePath = m_parent->m_hideElementList->values();
+	m_config.config().xmlPres.showFilteredSubTree = m_parent->m_showSubEltCheckBox->isChecked();
+	m_config.config().xmlPres.viewColor = m_parent->m_viewColorBox->color(); 
+	m_config.config().xmlPres.errorColor = m_parent->m_errorColorBox->color(); 
+	m_config.config().xmlPres.screenDataColor = m_parent->m_screenColorBox->color(); 
 }
 
 void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
@@ -552,6 +568,8 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	d = new PrivateCustomDialogImpl( this );
 
 	setupUi( this );
+	
+	m_hideElementList->setDefaultVisible( false );
 	
 	QFont font( "Monospace", 8 );
 	font.setFixedPitch( true );
