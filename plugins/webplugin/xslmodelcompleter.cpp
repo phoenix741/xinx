@@ -207,7 +207,7 @@ XSLBaliseCompletionModel::~XSLBaliseCompletionModel() {
 }
 
 QVariant XSLBaliseCompletionModel::data( const QModelIndex &index, int role ) const {
-	if (!index.isValid()) return QVariant();
+	if( !( index.isValid() && index.column() == 0 )) return QVariant();
 
 	int value_row = index.row(); 
 	if( xmlCompletionContents ) {
