@@ -289,6 +289,8 @@ void AppSettings::setSettingsExtentions( QSettings * settings, const QString & p
 AppSettings::AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
 	struct_xmlpres value;
 
+	value.autoExpandedPath = "/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow";
+	value.hidePath = QString("debug,application_data").split(",");
 	value.showFilteredSubTree = true;
 	value.viewColor = Qt::blue;
 	value.errorColor = Qt::red;
@@ -301,7 +303,7 @@ AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( QSetti
 	struct_xmlpres value;
 	settings->beginGroup( path );
 
-	value.rootPath = settings->value( "Root path", defaultValue.rootPath ).toString();
+	value.autoExpandedPath = settings->value( "Auto expanded path", defaultValue.autoExpandedPath ).toString();
 	value.hidePath = settings->value( "Hide path", defaultValue.hidePath ).toStringList();
 	value.showFilteredSubTree = settings->value( "Show filtered sub-tree", defaultValue.showFilteredSubTree ).toBool();
 	value.viewColor = settings->value( "View Color", defaultValue.viewColor ).value<QColor>();
@@ -315,7 +317,7 @@ AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( QSetti
 void AppSettings::setSettingsXmlpres( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres value ) {
 	settings->beginGroup( path );
 
-	settings->setValue( "Root path", value.rootPath );
+	settings->setValue( "Auto expanded path", value.autoExpandedPath );
 	settings->setValue( "Hide path", value.hidePath );
 	settings->setValue( "Show filtered sub-tree", value.showFilteredSubTree );
 	settings->setValue( "View Color", value.viewColor );

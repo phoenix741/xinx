@@ -354,7 +354,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
 	
 	// Xml pres
-	m_parent->m_rootPathLineEdit->setText( m_config.config().xmlPres.rootPath );
+	m_parent->m_expandPathLineEdit->setText( m_config.config().xmlPres.autoExpandedPath );
 	m_parent->m_hideElementList->setValues( m_config.config().xmlPres.hidePath );
 	m_parent->m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
 	m_parent->m_viewColorBox->setColor( m_config.config().xmlPres.viewColor ); 
@@ -441,7 +441,7 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().files = specifiqueModel->extentions();
 
 	// Xml pres
-	m_config.config().xmlPres.rootPath = m_parent->m_rootPathLineEdit->text();
+	m_config.config().xmlPres.autoExpandedPath = m_parent->m_expandPathLineEdit->text();
 	m_config.config().xmlPres.hidePath = m_parent->m_hideElementList->values();
 	m_config.config().xmlPres.showFilteredSubTree = m_parent->m_showSubEltCheckBox->isChecked();
 	m_config.config().xmlPres.viewColor = m_parent->m_viewColorBox->color(); 

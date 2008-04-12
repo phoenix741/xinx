@@ -757,6 +757,8 @@ void PrivateMainformImpl::createTabEditorButton() {
 }
 
 void PrivateMainformImpl::updateConfigElement() {
+	if( m_parent->m_showSpaceAndTabAct->isChecked() != XINXConfig::self()->config().editor.showTabulationAndSpace )
+		m_parent->m_showSpaceAndTabAct->setChecked( XINXConfig::self()->config().editor.showTabulationAndSpace ); 
 	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
 }
 
@@ -1083,8 +1085,10 @@ void PrivateMainformImpl::copyPath() {
 }
 
 void PrivateMainformImpl::updateSpaceAndTab() {
-	XINXConfig::self()->config().editor.showTabulationAndSpace = m_parent->m_showSpaceAndTabAct->isChecked();
-	XINXConfig::self()->save();
+	if( XINXConfig::self()->config().editor.showTabulationAndSpace != m_parent->m_showSpaceAndTabAct->isChecked() ) {
+		XINXConfig::self()->config().editor.showTabulationAndSpace = m_parent->m_showSpaceAndTabAct->isChecked();
+		XINXConfig::self()->save();
+	}
 }
 
 void PrivateMainformImpl::createFindReplace() {

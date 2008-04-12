@@ -3,8 +3,8 @@
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>
 	<type name="XmlPres">
-		<value name="Root path" type="string"/>
-		<value name="Hide path" type="stringlist"/>
+		<value name="Auto expanded path" type="string" default="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
+		<value name="Hide path" type="stringlist" default="debug,application_data"/>
 		<value name="Show filtered sub-tree" type="bool" default="true"/>
 		<value name="View Color" type="color" default="blue"/>
 		<value name="Error Color" type="color" default="red"/>

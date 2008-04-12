@@ -21,6 +21,7 @@
 // Xinx header
 #include "xmlpresentationitem.h"
 #include <exceptions.h>
+#include <xinxconfig.h>
 
 // Qt header
 #include <QStringList>
@@ -212,11 +213,11 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 	} else if( role == Qt::ForegroundRole ) {
 		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
 		if( node && node->isView() ) 
-			return Qt::blue;
+			return XINXConfig::self()->config().xmlPres.viewColor;
 		else if( ! item->errorData().isEmpty() )
-			return Qt::red;
+			return XINXConfig::self()->config().xmlPres.errorColor;
 		else if( ! item->screenData().isEmpty() )
-			return Qt::darkRed;
+			return XINXConfig::self()->config().xmlPres.screenDataColor;
 	}
 
 	return QVariant();

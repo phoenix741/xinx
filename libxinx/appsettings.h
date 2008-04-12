@@ -69,7 +69,7 @@ public:
 	};
 
 	struct struct_xmlpres {
-		QString rootPath;
+		QString autoExpandedPath;
 		QStringList hidePath;
 		bool showFilteredSubTree;
 		QColor viewColor;
