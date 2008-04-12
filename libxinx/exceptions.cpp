@@ -181,12 +181,13 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 		fprintf( file, qPrintable( error ) );
 		fclose( file );
 	}
-
+/*
     if( QThread::currentThread() == qApp->thread() ) 
     	m_dialog->showMessage( error );
-    else 
-        QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
-
+    else */ 
+	QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+	std::cerr << qPrintable( error ) << std::endl;
+	
     if( m_fatal ) m_dialog->exec(); // Pour ne pas quitter de suite
 }
 
