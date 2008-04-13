@@ -33,6 +33,12 @@
    </property>
    <item row="0" column="0" >
     <widget class="QToolButton" name="m_refreshToolButton" >
+     <property name="whatsThis" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Refresh the list of file present in the &lt;span style=" font-style:italic;">log&lt;/span> directory.&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
      <property name="text" >
       <string>...</string>
      </property>
@@ -42,7 +48,16 @@
     </widget>
    </item>
    <item row="0" column="1" colspan="2" >
-    <widget class="QComboBox" name="m_presentationComboBox" />
+    <widget class="QComboBox" name="m_presentationComboBox" >
+     <property name="whatsThis" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of file in the &lt;span style=" font-style:italic;">log&lt;/span> directory. If you select a file the view is updated with the content of the file.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">You can open a file of the list, or a file in another directory.&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0" colspan="3" >
     <widget class="QLabel" name="label" >
@@ -56,6 +71,12 @@
    </item>
    <item row="2" column="0" >
     <widget class="QToolButton" name="m_clearToolButton" >
+     <property name="whatsThis" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Clear the text filter at right.&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
      <property name="text" >
       <string>...</string>
      </property>
@@ -65,10 +86,25 @@
     </widget>
    </item>
    <item row="2" column="1" >
-    <widget class="QLineEdit" name="m_filtreLineEdit" />
+    <widget class="QLineEdit" name="m_filtreLineEdit" >
+     <property name="whatsThis" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Filter to use in the view. &lt;span style=" font-weight:600;">XINX&lt;/span> search node where name match the filter (literal or regular expression).&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
+    </widget>
    </item>
    <item row="2" column="2" >
     <widget class="QComboBox" name="m_filterComboBox" >
+     <property name="whatsThis" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If &lt;span style=" font-style:italic;">Sub-element&lt;/span> is selected when an element is finded, all sub-element is showed. &lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If &lt;span style=" font-style:italic;">None&lt;/span> is selected only matched element is showed.&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
      <item>
       <property name="text" >
        <string>Sub-element</string>

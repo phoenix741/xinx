@@ -1,12 +1,13 @@
 <ui version="4.0" >
+ <author>Ulrich Van Den Hekke</author>
  <class>MainForm</class>
  <widget class="QMainWindow" name="MainForm" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>385</height>
+    <width>661</width>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -45,7 +46,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>748</width>
+     <width>661</width>
      <height>29</height>
     </rect>
    </property>
@@ -731,6 +732,9 @@
    <property name="text" >
     <string>Close Project (session)</string>
    </property>
+   <property name="whatsThis" >
+    <string>Save and Close project with session information (the content of file editor is saved too).</string>
+   </property>
   </action>
   <action name="m_recentProjectAct" >
    <property name="icon" >
@@ -755,6 +759,12 @@
    <property name="text" >
     <string>Update project</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Call the update fonction of your &lt;span style=" font-style:italic;">revision control system&lt;/span> for all the project directory.&lt;/p>&lt;/body>&lt;/html></string>
+   </property>
   </action>
   <action name="m_globalCommitToRCSAct" >
    <property name="icon" >
@@ -762,6 +772,14 @@
    </property>
    <property name="text" >
     <string>Commit project</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Call the commit method of your &lt;span style=" font-style:italic;">revision control sytem&lt;/span> for all the project directory. An optional message can be added.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Only &lt;/span>&lt;span style=" font-weight:600; font-style:italic;">XINX&lt;/span>&lt;span style=" font-style:italic;"> managed files are commited to the repository.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
    </property>
   </action>
   <action name="m_cancelRCSOperationAct" >
@@ -831,6 +849,12 @@
    </property>
    <property name="text" >
     <string>Toggled Flat View</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.&lt;/p>&lt;/body>&lt;/html></string>
    </property>
   </action>
   <action name="m_createTemplate" >
@@ -926,6 +950,7 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <includes/>
  <resources>
   <include location="../application.qrc" />
  </resources>

@@ -61,6 +61,7 @@
 #include <QDataStream>
 #include <QClipboard>
 #include <QDateTime>
+#include <QWhatsThis>
 
 /* PrivateMainformImpl */
 
@@ -469,6 +470,9 @@ void PrivateMainformImpl::createActions() {
 	
 	// About
 	connect( m_parent->m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+	
+	// What's This ?
+	m_parent->m_helpMenu->addAction( QWhatsThis::createAction() );
 	
 	// Drag & Drop
 	connect( m_parent->m_tabEditors, SIGNAL(fileOpened(QString)), this, SLOT(updateActions()) );
