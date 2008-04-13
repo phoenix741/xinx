@@ -25,6 +25,9 @@
 #include "serviceresultdialogimpl.h"
 #include "syntaxhighlighter.h"
 
+// Qt header
+#include <QHash>
+
 class PrivateServiceResultDialogImpl : public QObject {
 	Q_OBJECT
 public:

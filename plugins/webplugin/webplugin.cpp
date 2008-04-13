@@ -247,16 +247,35 @@ QString WebPlugin::exampleOfHighlighter( const QString & highlighter ) {
 	return example;
 }
 
-void WebPlugin::highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) {
-	if( highlighter.toUpper() == "XML" ) {
-		webplugin_xml::highlightBlock( formats, i, text );
-	} else if( highlighter.toUpper() == "JS" ) {
-		webplugin_js::highlightBlock( formats, i, text );
-	} else if( highlighter.toUpper() == "CSS" ) {
-		webplugin_css::highlightBlock( formats, i, text );
-	}
+SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QObject* parent, XINXConfig * config ) {
+	if( highlighter.toUpper() == "XML" ) 
+		return new webplugin_xml( parent, config );
+	if( highlighter.toUpper() == "JS" ) 
+		return new webplugin_js( parent, config );
+	if( highlighter.toUpper() == "CSS" ) 
+		return new webplugin_css( parent, config );
+	return 0;
 }
 
+SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
+	if( highlighter.toUpper() == "XML" ) 
+		return new webplugin_xml( parent, config );
+	if( highlighter.toUpper() == "JS" ) 
+		return new webplugin_js( parent, config );
+	if( highlighter.toUpper() == "CSS" ) 
+		return new webplugin_css( parent, config );
+	return 0;
+}
+
+SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config ) {
+	if( highlighter.toUpper() == "XML" ) 
+		return new webplugin_xml( parent, config );
+	if( highlighter.toUpper() == "JS" ) 
+		return new webplugin_js( parent, config );
+	if( highlighter.toUpper() == "CSS" ) 
+		return new webplugin_css( parent, config );
+	return 0;
+}
 
 QStringList WebPlugin::prettyPrinters() {
 	return QStringList() << "XML";

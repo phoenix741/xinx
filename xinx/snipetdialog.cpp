@@ -41,10 +41,10 @@ void PrivateSnipetDialogImpl::setupUi() {
 
 	switch( m_snipetType ) {
 	case Snipet::SNIPET_XSL:
-		new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_textEdit );
+		XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_textEdit );
 		break;
 	case Snipet::SNIPET_JAVASCRIPT:
-		new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "js" ), m_textEdit );
+		XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "js" ), m_textEdit );
 		break;
 	}
 	

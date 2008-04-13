@@ -131,12 +131,10 @@ XINXConfig * XINXConfig::self() {
 AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 	
-	foreach( QString highlighter, XinxPluginsLoader::self()->highlighterOfPlugins() ) {
-		IPluginSyntaxHighlighter * interface = XinxPluginsLoader::self()->highlighterOfPlugin( highlighter );
-
-		QHash<QString,QTextCharFormat> formats = interface->formatOfHighlighter( highlighter );
+	foreach( QString highlighter, XinxPluginsLoader::self()->highlighters() ) {
+		const QHash<QString,QTextCharFormat> formats = XinxPluginsLoader::self()->formatOfHighlighter( highlighter );
 		foreach( QString key, formats.keys() )
-			value.formats[ key ] = formats[ key ];
+			value.formats[ key ] = formats.value( key );
 	}
 	
 	return value;

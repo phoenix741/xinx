@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,39 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ISYNTAXHIGHLIGHTER_H_
-#define ISYNTAXHIGHLIGHTER_H_
+// Xinx header
+#include "syntaxhighlighter.h"
+#include "xinxpluginsloader.h"
+#include "xinxconfig.h"
 
-// Qt header
-#include <QTextCharFormat>
-#include <QColor>
-#include <QFont>
+/* SyntaxHighlighter */
 
-/*!
- * Interface used by plugins to communicate with XINX for the syntax higlighter.
- * The interface is similare to QSyntaxHighlighter of Qt. 
- */
-class IXinxSyntaxHighlighter {
-public:
-	//! Destroy the interface. Used to hide warning when using the interface. 
-	virtual ~IXinxSyntaxHighlighter() {};
-	
-	//! Return the state of the current block state.
-	virtual int currentBlockState () const = 0;
-	//! Return the state of the previous block state.
-	virtual int previousBlockState () const = 0;
-	//! Set the current state of the block.
-	virtual void setCurrentBlockState ( int newState ) = 0;
-	
-	//! Return the format for the position \e position of the text.
-	virtual QTextCharFormat format ( int position ) const = 0; 
-	//! Set the format \e format, from \e start to \e start + \e count
-	virtual void setFormat ( int start, int count, const QTextCharFormat & format ) = 0;
+SyntaxHighlighter::SyntaxHighlighter( QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+	if( config ) 
+		m_config = config;
+	else
+		m_config = XINXConfig::self();
+}
 
-	//! Call this method to highlight in yellow a word in the text.
-	virtual void processText( int pos, const QString& text ) = 0;
-};
+SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+	if( config )
+		m_config = config;
+	else
+		m_config = XINXConfig::self();
+}
 
-static const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
+SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
+	if( config )
+		m_config = config;
+	else
+		m_config = XINXConfig::self();
+}
 
-#endif /*ISYNTAXHIGHLIGHTER_H_*/
+SyntaxHighlighter::~SyntaxHighlighter() {
+}
+
+

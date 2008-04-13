@@ -22,21 +22,29 @@
 #define JSHIGHLIGHTER_H_
 
 // Xinx header
-#include <isyntaxhighlighter.h>
+#include <syntaxhighlighter.h>
 
 // Qt header
 #include <QHash>
 #include <QString>
 #include <QTextCharFormat>
 
-namespace webplugin_js {
+class webplugin_js : public SyntaxHighlighter {
+public:
+	webplugin_js( QObject* parent, XINXConfig * config );
+	webplugin_js( QTextDocument* parent, XINXConfig * config );
+	webplugin_js( QTextEdit* parent, XINXConfig * config );
+
 	enum BlockState {
 		NoBlock = -1,
 		InComment
 	};
 
-	extern void init();
-	extern void highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text );
+	static void init();
+protected:
+	virtual void highlightBlock( const QString& text );
+private:
+	static QStringList keywordPatterns;
 };
 
 #endif /*JSHIGHLIGHTER_H_*/

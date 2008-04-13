@@ -22,14 +22,19 @@
 #define CSSHIGHLIGHTER_H_
 
 // Xinx header
-#include <isyntaxhighlighter.h>
+#include <syntaxhighlighter.h>
 
 // Qt header
 #include <QHash>
 #include <QString>
 #include <QTextCharFormat>
 
-namespace webplugin_css {
+class webplugin_css : public SyntaxHighlighter {
+public:
+	webplugin_css( QObject* parent, XINXConfig * config );
+	webplugin_css( QTextDocument* parent, XINXConfig * config );
+	webplugin_css( QTextEdit* parent, XINXConfig * config );
+
 	enum ParsingState {
 		CssDefault,
 		CssIdentifier,
@@ -42,8 +47,11 @@ namespace webplugin_css {
 		InBracket
 	};
 
-	extern void init();
-	extern void highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text );
+	static void init();
+protected:
+	virtual void highlightBlock( const QString& text );
+private:
+	static QStringList cssKey, cssValues, css2Key, css2Values;
 };
 
 #endif /*CSSHIGHLIGHTER_H_*/

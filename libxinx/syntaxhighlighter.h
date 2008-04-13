@@ -23,42 +23,25 @@
 
 // Qt header
 #include <QSyntaxHighlighter>
-#include <QHash>
 
 // Xinx header
-#include "isyntaxhighlighter.h"
+#include <xinxcore.h>
 
 class XINXConfig;
 class IPluginSyntaxHighlighter;
 
-class SyntaxHighlighter : public QSyntaxHighlighter, protected IXinxSyntaxHighlighter {
+class XINX_EXPORT SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QObject* parent = NULL, XINXConfig * config = NULL );
-	SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextDocument* parent, XINXConfig * config = NULL );
-	SyntaxHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter, QTextEdit* parent, XINXConfig * config = NULL );
+	SyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
+	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
+	SyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
 	virtual ~SyntaxHighlighter();
 	
-	void setHighlightText( const QString & text );
-
-	void setHighlighter( const QPair<IPluginSyntaxHighlighter*,QString> & highlighter );
-	const QPair<IPluginSyntaxHighlighter*,QString> & highlighter() const;
 protected:
-	virtual void highlightBlock( const QString& text );
-
-	virtual int currentBlockState () const;
-	virtual int previousBlockState () const;
-	virtual void setCurrentBlockState ( int newState );
-	
-	virtual QTextCharFormat format ( int position ) const; 
-	virtual void setFormat ( int start, int count, const QTextCharFormat & format );
-
-	void processText( int pos, const QString& text );
-	
-	QPair<IPluginSyntaxHighlighter*,QString> m_highlighter;
-	
 	XINXConfig * m_config;
-	QString m_text;
 };
+
+static const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
 
 #endif

@@ -251,10 +251,16 @@ void TextEditor::insertText( const QString & text ) {
 	setTextCursor( cursor );
 }
 
-void TextEditor::printWhiteSpaces( QPainter &p ) {		
+void TextEditor::setMatchingText( QString text ) {
+	if( text != m_matchedText ) {
+		m_matchedText = text;
+		viewport()->update();
+	}
+}
+
+void TextEditor::printWhiteSpaces( QPainter &p ) {
 	const int contentsY = verticalScrollBar()->value();
 	const qreal pageBottom = contentsY + viewport()->height();
-	const QFontMetrics fm = QFontMetrics( currentFont() );
 	
 	for ( QTextBlock block = document()->begin(); block.isValid(); block = block.next() ) {
 		QTextLayout* layout = block.layout();
@@ -270,23 +276,35 @@ void TextEditor::printWhiteSpaces( QPainter &p ) {
 		const int len = txt.length();
 		
 		for ( int i=0; i<len; i++) {
-			QPixmap *p1 = 0;
-			
-			if ( txt[i] == ' ' )
-				p1 = &m_spacePixmap;
-			else if ( txt[i] == '\t' )
-				p1 = &m_tabPixmap;
-			else 
-				continue;
-			
-			// pixmaps are of size 8x8 pixels
 			QTextCursor cursor = textCursor();
-			cursor.setPosition( block.position() + i, QTextCursor::MoveAnchor);
-			
+			cursor.setPosition( block.position() + i, QTextCursor::MoveAnchor );
+			const QFontMetrics fm = QFontMetrics( cursor.blockCharFormat().font() );
 			QRect r = cursorRect( cursor );
-			int x = r.x() + 4;
-			int y = r.y() + fm.height() / 2 - 5;
-			p.drawPixmap( x, y, *p1 );
+			
+			/* Highlight text */ 
+			if( (!m_matchedText.isEmpty() ) && ( txt[i] == m_matchedText[0] ) && ( txt.mid( i, m_matchedText.length() ) == m_matchedText ) ){
+				QRect highlightZone = r;
+				highlightZone.setLeft( highlightZone.left() + highlightZone.width() / 2 );
+				highlightZone.setWidth( fm.width( m_matchedText ) );
+				p.fillRect( highlightZone, XINXConfig::self()->config().editor.highlightWord );
+			}
+
+			if( XINXConfig::self()->config().editor.showTabulationAndSpace ) {
+				QPixmap *p1 = 0;
+				
+				if ( txt[i] == ' ' )
+					p1 = &m_spacePixmap;
+				else if ( txt[i] == '\t' )
+					p1 = &m_tabPixmap;
+				else 
+					continue;
+				
+				// pixmaps are of size 8x8 pixels
+			
+				int x = r.x() + 4;
+				int y = r.y() + fm.height() / 2 - 5;
+				p.drawPixmap( x, y, *p1 );
+			}
 		}
 	}
 }
@@ -306,7 +324,7 @@ void TextEditor::paintEvent ( QPaintEvent * event ) {
         painter.fillRect( r, QBrush( m_currentLineColor ) );
     }
 
-	if( XINXConfig::self()->config().editor.showTabulationAndSpace )
+	if( XINXConfig::self()->config().editor.showTabulationAndSpace || (! m_matchedText.isEmpty() ) )
 		printWhiteSpaces( painter );
 	
 	painter.end();

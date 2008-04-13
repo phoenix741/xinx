@@ -170,6 +170,8 @@ void SnipetList::saveToFile( const QString & filename ) {
 	const int IndentSize = 2;
 
 	QDomDocument document( "SnipetList" );
+	QDomNode xmlCodec = document.createProcessingInstruction( "xml", "version=\"1.0\" encoding=\"UTF-8\"" );
+	document.appendChild( xmlCodec );
 	QDomElement root = document.createElement( "SnipetList" );
 	document.appendChild( root );
 	
@@ -220,15 +222,15 @@ void SnipetList::loadFromFile( const QString & filename ) {
 	
 	QFile file( filename );
 	if( ! file.open( QFile::ReadOnly ) )
-		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(filename).arg(file.errorString()) ); 
+		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()) ); 
 		
 	QDomDocument document( "SnipetList" );
 	if( ! document.setContent( &file ) )
-		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.", 0, QApplication::UnicodeUTF8) );
+		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.") );
 	
 	QDomElement root = document.documentElement();
 	if( root.tagName() != "SnipetList" ) 
-		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.", 0, QApplication::UnicodeUTF8) );
+		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.") );
 
 	Snipet *  newSnipet;
 	QDomElement snipet = root.firstChildElement( "Snipet" );

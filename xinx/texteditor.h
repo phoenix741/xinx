@@ -46,6 +46,7 @@ public:
 	void keyPressSkip( QKeyEvent * e );
 public slots:
 	void updateFont();
+	void setMatchingText( QString text );
 signals:
 	void needInsertSnipet( QString snipet );
 	void modelUpdated( QAbstractItemModel * model );
@@ -69,9 +70,10 @@ private:
 	void key_home( bool );
 	void key_enter();
 
-    QPixmap m_tabPixmap; 
-	QPixmap m_spacePixmap; 	
+	QString m_matchedText;
+    QPixmap m_tabPixmap, m_spacePixmap;
 	QColor m_currentLineColor;
 	bool m_keyPressExecute;
 };
+
 #endif // __TEXTEDITOR_H__

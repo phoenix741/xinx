@@ -59,14 +59,6 @@ const QList<XinxPluginElement> & XinxPluginsLoader::plugins() const {
 void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
 	QString subplugin;
 	
-	IPluginSyntaxHighlighter * iSyntaxHighlighter = qobject_cast<IPluginSyntaxHighlighter*>( plugin );
-	if( iSyntaxHighlighter ) {
-		subplugin = iSyntaxHighlighter->highlighterOfExtention( extention ).toUpper();
-		if( ! subplugin.isEmpty() ) {
-			m_syntaxPlugins.insert( extention.toLower(), qMakePair( iSyntaxHighlighter, subplugin ) );
-		}
-	}
-
 	IPluginPrettyPrint * iPrettyPrinter = qobject_cast<IPluginPrettyPrint*>( plugin );
 	if( iPrettyPrinter ) {
 		subplugin = iPrettyPrinter->prettyPrinterOfExtention( extention ).toUpper();
@@ -131,12 +123,6 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 		m_filters.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + m_defaultProjectFilter.join( " " ) + ")" );
 	}
 
-	IPluginSyntaxHighlighter * iSyntaxHighlighter = qobject_cast<IPluginSyntaxHighlighter*>( plugin );
-	if( iSyntaxHighlighter ) {
-		foreach( QString p, iSyntaxHighlighter->highlighters() )
-			m_directSyntaxPlugins.insert( p.toUpper(), iSyntaxHighlighter );
-	}
-
 	IPluginPrettyPrint * iPrettyPrinter = qobject_cast<IPluginPrettyPrint*>( plugin );
 	if( iPrettyPrinter ) {
 		foreach( QString p, iPrettyPrinter->prettyPrinters() )
@@ -192,6 +178,84 @@ RCS * XinxPluginsLoader::createRevisionControl( QString revision, QString basePa
 	return rcs;
 }
 
+QStringList XinxPluginsLoader::highlighters() const {
+	QStringList result;
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface ) 
+			result += interface->highlighters();
+	}
+	return result;
+}
+
+QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface ) {
+			QString value = interface->highlighterOfExtention( suffix );
+			if( ! value.isEmpty() )
+				return value;
+		}
+	}
+	return QString();
+}
+
+SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QObject* parent, XINXConfig * config ) {
+	SyntaxHighlighter * h = NULL;
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface ) {
+			h = interface->createHighlighter( highlighter, parent, config );
+			if( h ) break;
+		}
+	}
+	return h;
+}
+
+SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
+	SyntaxHighlighter * h = NULL;
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface ) {
+			h = interface->createHighlighter( highlighter, parent, config );
+			if( h ) break;
+		}
+	}
+	return h;
+}
+
+SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config ) {
+	SyntaxHighlighter * h = NULL;
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface ) {
+			h = interface->createHighlighter( highlighter, parent, config );
+			if( h ) break;
+		}
+	}
+	return h;
+}
+
+QHash<QString,QTextCharFormat> XinxPluginsLoader::formatOfHighlighter( const QString & highlighter ) {
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface && interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) ) 
+			return interface->formatOfHighlighter( highlighter );
+	}
+	return QHash<QString,QTextCharFormat>();
+}
+
+QString XinxPluginsLoader::exampleOfHighlighter( const QString & highlighter ) {
+	foreach( XinxPluginElement element, m_plugins ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
+		if( interface ) {
+			QString value = interface->exampleOfHighlighter( highlighter );
+			if( ! value.isEmpty() )
+				return value;
+		}
+	}
+	return QString();
+}
 
 QIcon XinxPluginsLoader::iconOfSuffix( const QString & suffix ) const {
 	return m_icons.value( suffix );
@@ -220,10 +284,6 @@ QStringList XinxPluginsLoader::defaultProjectFilter( const QString & name ) cons
 	return result;
 }
 
-QPair<IPluginSyntaxHighlighter*,QString> XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
-	return m_syntaxPlugins.value( suffix.toLower() );
-}
-
 QPair<IPluginPrettyPrint*,QString> XinxPluginsLoader::prettyPrinterOfSuffix( const QString & suffix ) const {
 	return m_prettyPlugins.value( suffix.toLower() );
 }
@@ -232,20 +292,12 @@ QPair<IPluginExtendedEditor*,QString> XinxPluginsLoader::extendedEditorOfSuffix(
 	return m_extendedEditorPlugins.value( suffix.toLower() );
 }
 
-QStringList XinxPluginsLoader::highlighterOfPlugins() const {
-	return m_directSyntaxPlugins.keys();
-}
-
 QStringList XinxPluginsLoader::prettyPrinterOfPlugins() const {
 	return m_directPrettyPlugins.keys();
 }
 
 QStringList XinxPluginsLoader::extendedEditorOfPlugins() const {
 	return m_directExtendedEditorPlugins.keys();
-}
-
-IPluginSyntaxHighlighter* XinxPluginsLoader::highlighterOfPlugin( const QString & suffix ) const {
-	return m_directSyntaxPlugins.value( suffix.toUpper() );
 }
 
 IPluginPrettyPrint* XinxPluginsLoader::prettyPrinterOfPlugin( const QString & suffix ) const {

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 // Xinx header
+#include <xinxconfig.h>
 #include "xmlhighlighter.h"
 
 /* Constante */
@@ -32,7 +33,23 @@ static const QString EXPR_NAME 				= "([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-
 static const QString EXPR_ATTRIBUTE_VALUE	= "[^<%1{]*[%1{]";
 static const QString EXPR_XPATH_VALUE       = "[^<%1}]*[%1}]";
 
-int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, webplugin_xml::ParsingState & state, const QChar & quoteType, int i, const QString& text ) {
+/* webplugin_xml */
+
+webplugin_xml::webplugin_xml( QObject* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
+	
+}
+
+webplugin_xml::webplugin_xml( QTextDocument* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
+	
+}
+
+webplugin_xml::webplugin_xml( QTextEdit* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
+	
+}
+
+int webplugin_xml::processDefaultText( ParsingState & state, const QChar & quoteType, int i, const QString& text ) {
+	const QHash<QString,QTextCharFormat> & formats = m_config->config().formats;
+	
 	// length of matched text
 	int iLength = 0;
 
@@ -46,10 +63,10 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 			if (pos == i) { // found ?
 				iLength = expression.matchedLength();
 
-				interface->setFormat( pos, iLength, formats["xml_elementname"] );
+				setFormat( pos, iLength, formats["xml_elementname"] );
 				state = webplugin_xml::ExpectAttributeOrEndOfElement;
 			} else {
-				interface->setFormat( i, 1, formats["xml_other"] );
+				setFormat( i, 1, formats["xml_other"] );
 			}
 		}  
 		break;
@@ -61,10 +78,10 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 			if (pos == i) { // found ?
 				iLength = expression.matchedLength();
 
-				interface->setFormat( pos, iLength, formats["xml_attributename"] );
+				setFormat( pos, iLength, formats["xml_attributename"] );
 				state = webplugin_xml::ExpectEqual;
 			} else {
-				interface->setFormat( i, 1, formats["xml_other"] );
+				setFormat( i, 1, formats["xml_other"] );
 			}
 		}
 		break;
@@ -74,10 +91,9 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 			
 			if( pos == i ) {
 				iLength = expression.matchedLength() - 1;
-				interface->setFormat( pos, iLength, formats["xml_attributevalue"] );
-				interface->processText( i, text.mid( pos, iLength ) );
+				setFormat( pos, iLength, formats["xml_attributevalue"] );
 			} else
-				interface->setFormat( i, 1, formats["xml_other"] );
+				setFormat( i, 1, formats["xml_other"] );
 		}
 		break;
 	case webplugin_xml::ExpectPathTextOrEndOfPath: {
@@ -86,10 +102,9 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 			
 			if( pos == i ) {
 				iLength = expression.matchedLength() - 1;
-				interface->setFormat( pos, iLength, formats["xml_xpathvalue"] );
-				interface->processText( i, text.mid( pos, iLength ) );
+				setFormat( pos, iLength, formats["xml_xpathvalue"] );
 			} else
-				interface->setFormat( i, 1, formats["xml_other"] );
+				setFormat( i, 1, formats["xml_other"] );
 		}
 		break;
 	default:
@@ -99,40 +114,41 @@ int processDefaultText( const QHash<QString,QTextCharFormat> & formats, IXinxSyn
 		if (pos == i) { // found ?
 			iLength = expression.matchedLength();
 
-			interface->setFormat( pos, iLength, formats["xml_other"] );
-			interface->processText( i, text.mid( pos, iLength ) );
+			setFormat( pos, iLength, formats["xml_other"] );
 		} else {
-			interface->setFormat( i, 1, formats["xml_other"] );
+			setFormat( i, 1, formats["xml_other"] );
 		}
 		break;
 	}
 	return iLength;
 }
 
-void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text ) {
+void webplugin_xml::highlightBlock( const QString& text ) {
+	const QHash<QString,QTextCharFormat> & formats = m_config->config().formats;
+	
 	int i = 0;
 	int pos = 0;
 	int brackets = 0;
 	QChar quoteType;
 	
-	ParsingState state = ( interface->previousBlockState() == InElement ? ExpectAttributeOrEndOfElement : NoState );
+	ParsingState state = ( previousBlockState() == InElement ? ExpectAttributeOrEndOfElement : NoState );
 	
-	interface->setCurrentBlockState( NoBlock );
+	setCurrentBlockState( NoBlock );
 
-	if( interface->previousBlockState() == InComment ) {
+	if( previousBlockState() == InComment ) {
 		// search for the end of the comment
 		QRegExp expression( EXPR_COMMENT_END );
 		pos = expression.indexIn(text, i);
 
 		if (pos >= 0) {
 			// end comment found
-			interface->setFormat( 0, pos, formats["xml_comment"] );
-			interface->setFormat( pos, 3, formats["xml_syntaxchar"] );
+			setFormat( 0, pos, formats["xml_comment"] );
+			setFormat( pos, 3, formats["xml_syntaxchar"] );
 			i += pos + 3; // skip comment
 		} else {
 			// in comment
-			interface->setFormat( 0, text.length(), formats["xml_comment"] );
-			interface->setCurrentBlockState( InComment );
+			setFormat( 0, text.length(), formats["xml_comment"] );
+			setCurrentBlockState( InComment );
 			return;
 		}
 	}
@@ -142,21 +158,21 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 		case '<':
 			brackets++;
 			if( brackets == 1 ) {
-				interface->setFormat( i, 1, formats[ "xml_syntaxchar" ] );
+				setFormat( i, 1, formats[ "xml_syntaxchar" ] );
 				state = ExpectElementNameOrSlash;
 			} else {
 				// wrong bracket nesting
-				interface->setFormat( i, 1, formats[ "xml_error" ] );
+				setFormat( i, 1, formats[ "xml_error" ] );
 			}
 			break;
 
 		case '>':
 			brackets--;
 			if( brackets == 0 ) {
-				interface->setFormat( i, 1, formats[ "xml_syntaxchar" ] );
+				setFormat( i, 1, formats[ "xml_syntaxchar" ] );
 			} else {
 				// wrong bracket nesting
-				interface->setFormat( i, 1, formats["xml_error"] );
+				setFormat( i, 1, formats["xml_error"] );
 			}
 			state = NoState;
 			break;
@@ -164,12 +180,12 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 		case '/':
 			if( state == ExpectElementNameOrSlash ) {
 				state = ExpectElementName;
-				interface->setFormat( i, 1, formats[ "xml_syntaxchar" ] );
+				setFormat( i, 1, formats[ "xml_syntaxchar" ] );
 			} else {
 				if( state == ExpectAttributeOrEndOfElement ) {
-					interface->setFormat( i, 1, formats[ "xml_syntaxchar" ] );
+					setFormat( i, 1, formats[ "xml_syntaxchar" ] );
 				} else {
-					processDefaultText( formats, interface, state, quoteType, i, text );
+					processDefaultText( state, quoteType, i, text );
 				}
 			}
 			break;
@@ -177,9 +193,9 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 		case '=':
 			if( state == ExpectEqual ) {
 				state = ExpectAttributeValue;
-				interface->setFormat( i, 1, formats["xml_other"] );
+				setFormat( i, 1, formats["xml_other"] );
 			} else {
-				processDefaultText( formats, interface, state, quoteType, i, text );  
+				processDefaultText( state, quoteType, i, text );  
 			}
 			break;
 
@@ -188,27 +204,27 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			if (state == ExpectAttributeValue) {
 				quoteType = text.at(i);
 				state = ExpectAttributeTextOrPath;
-				interface->setFormat( i, 1, formats["xml_syntaxchar"] );
+				setFormat( i, 1, formats["xml_syntaxchar"] );
 			} else if( ( state == ExpectAttributeTextOrPath ) && ( quoteType == text.at(i) ) ) {
 				state = ExpectAttributeOrEndOfElement;
-				interface->setFormat( i, 1, formats["xml_syntaxchar"] );
+				setFormat( i, 1, formats["xml_syntaxchar"] );
 			} else {
-				processDefaultText( formats, interface, state, quoteType, i, text );
+				processDefaultText( state, quoteType, i, text );
 			}
 			break;
 		case '{' :
 			if( state == ExpectAttributeTextOrPath ) {
 				state = ExpectPathTextOrEndOfPath;
-				interface->setFormat(i, 1, formats["xml_attributevalue" ] );
+				setFormat(i, 1, formats["xml_attributevalue" ] );
 			} else
-				processDefaultText( formats, interface, state, quoteType, i, text );
+				processDefaultText( state, quoteType, i, text );
 			break;
 		case '}' :
 			if( state == ExpectPathTextOrEndOfPath ) {
 				state = ExpectAttributeTextOrPath;
-				interface->setFormat( i, 1, formats["xml_attributevalue"] );
+				setFormat( i, 1, formats["xml_attributevalue"] );
 			} else
-				processDefaultText( formats, interface, state, quoteType, i, text );
+				processDefaultText( state, quoteType, i, text );
 			break;
 		case '!':
 			if( state == ExpectElementNameOrSlash ) {
@@ -219,9 +235,9 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 				if( pos == i - 1 ) { // comment found ?
 					const int iLength = expression.matchedLength();
 
-					interface->setFormat( pos, 4, formats["xml_syntaxchar"] );
-					interface->setFormat( pos + 4, iLength - 7, formats["xml_comment"] );
-					interface->setFormat( pos + iLength - 3, 3, formats["xml_syntaxchar"] );
+					setFormat( pos, 4, formats["xml_syntaxchar"] );
+					setFormat( pos + 4, iLength - 7, formats["xml_comment"] );
+					setFormat( pos + iLength - 3, 3, formats["xml_syntaxchar"] );
 					i += iLength - 2; // skip comment
 					state = NoState;
 					brackets--;
@@ -232,21 +248,21 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 
 					//if (pos == i - 1) // comment found ?
 					if (pos >= i - 1) {
-						interface->setFormat( i, 3, formats["xml_syntaxchar"] );
-						interface->setFormat( i + 3, text.length() - i - 3, formats["xml_comment"] );
-						interface->setCurrentBlockState( InComment );
+						setFormat( i, 3, formats["xml_syntaxchar"] );
+						setFormat( i + 3, text.length() - i - 3, formats["xml_comment"] );
+						setCurrentBlockState( InComment );
 						return;
 					} else {
-						processDefaultText( formats, interface, state, quoteType, i, text );
+						processDefaultText( state, quoteType, i, text );
 					}
 				}
 			} else {
-				processDefaultText( formats, interface, state, quoteType, i, text );
+				processDefaultText( state, quoteType, i, text );
 			}
 			break;  
 
 		default:
-			const int iLength = processDefaultText( formats, interface, state, quoteType, i, text );
+			const int iLength = processDefaultText( state, quoteType, i, text );
 			if( iLength > 0 )
 				i += iLength - 1;
 			break;
@@ -254,7 +270,7 @@ void webplugin_xml::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 	}
 
 	if( state == ExpectAttributeOrEndOfElement ) {
-		interface->setCurrentBlockState( InElement );
+		setCurrentBlockState( InElement );
 	}
 }
 

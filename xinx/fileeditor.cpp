@@ -526,7 +526,7 @@ void FileEditor::setSuffix( const QString & suffix ) {
 	if( ( suffix != m_suffix ) && !suffix.isEmpty() ) {
 		clearSuffix();
 		
-		m_syntaxhighlighter = new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( suffix ), m_view );
+		m_syntaxhighlighter = XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( suffix ), m_view );
 		m_prettyPrinterPlugin = XinxPluginsLoader::self()->prettyPrinterOfSuffix( suffix );
 		m_extendedEditorPlugin = XinxPluginsLoader::self()->extendedEditorOfSuffix( suffix );
 		
@@ -873,13 +873,12 @@ void FileEditor::updateHighlighter() {
 }
 
 void FileEditor::refreshTextHighlighter() {
-	if( m_syntaxhighlighter && XINXConfig::self()->config().editor.autoHighlight ) 
-		m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
+	if( XINXConfig::self()->config().editor.autoHighlight ) 
+		m_view->setMatchingText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 
 void FileEditor::callTextHighlighter() {
-	if( m_syntaxhighlighter ) 
-		m_syntaxhighlighter->setHighlightText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
+	m_view->setMatchingText( m_view->textUnderCursor( m_view->textCursor(), false, false ) );
 }
 
 void FileEditor::gotoLine( int line ) {

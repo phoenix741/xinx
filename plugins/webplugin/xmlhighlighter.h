@@ -22,14 +22,19 @@
 #define XMLHIGHLIGHTER_H_
 
 // Xinx header
-#include <isyntaxhighlighter.h>
+#include <syntaxhighlighter.h>
 
 // Qt header
 #include <QHash>
 #include <QString>
 #include <QTextCharFormat>
 
-namespace webplugin_xml {
+class webplugin_xml : public SyntaxHighlighter {
+public:
+	webplugin_xml( QObject* parent, XINXConfig * config );
+	webplugin_xml( QTextDocument* parent, XINXConfig * config );
+	webplugin_xml( QTextEdit* parent, XINXConfig * config );
+
 	enum ParsingState {
 		NoState = 0,
 		ExpectElementNameOrSlash,
@@ -46,8 +51,11 @@ namespace webplugin_xml {
 		InComment,
 		InElement
 	};
-
-	extern void highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString& text );
+	
+protected:
+	virtual void highlightBlock( const QString& text );
+	int processDefaultText( ParsingState & state, const QChar & quoteType, int i, const QString& text );
+private:
 };
 
 #endif /*XMLHIGHLIGHTER_H_*/

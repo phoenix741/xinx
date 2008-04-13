@@ -343,7 +343,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Syntax highlighter
 	m_previousFormat = QString();
 	m_parent->m_highlighterComboBox->clear();
-	m_parent->m_highlighterComboBox->addItems( XinxPluginsLoader::self()->highlighterOfPlugins() );
+	m_parent->m_highlighterComboBox->addItems( XinxPluginsLoader::self()->highlighters() );
 	m_parent->m_highlighterComboBox->setCurrentIndex( 0 );
 	m_parent->on_m_highlighterComboBox_activated( m_parent->m_highlighterComboBox->currentText() );
 	
@@ -627,11 +627,9 @@ void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 	if( text != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
-		IPluginSyntaxHighlighter* plugin = XinxPluginsLoader::self()->highlighterOfPlugin( text );
-		if( plugin )
-			example = plugin->exampleOfHighlighter( text );
+		example = XinxPluginsLoader::self()->exampleOfHighlighter( text );
 		m_exempleTextEdit->setText( example );
-		d->m_highlighter = new SyntaxHighlighter( qMakePair( plugin, text ), m_exempleTextEdit, &(d->m_config) );
+		d->m_highlighter = XinxPluginsLoader::self()->createHighlighter( text, m_exempleTextEdit, &(d->m_config) );
 	}
 
 	d->m_previousFormat = text;

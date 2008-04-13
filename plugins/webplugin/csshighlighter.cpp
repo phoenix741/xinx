@@ -19,20 +19,31 @@
  ***************************************************************************/
 
 // Xinx header
+#include <xinxconfig.h>
 #include "csshighlighter.h"
 
 // Qt header
 #include <QStringList>
 
-namespace webplugin_css {
-	QStringList cssKey, 
-				cssValues, 
-				css2Key, 
-				css2Values;
-};
+/* Static member */
+QStringList webplugin_css::cssKey, webplugin_css::cssValues, webplugin_css::css2Key, webplugin_css::css2Values;
+
+/* webplugin_css */
+
+webplugin_css::webplugin_css( QObject* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
+	
+}
+
+webplugin_css::webplugin_css( QTextDocument* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
+	
+}
+
+webplugin_css::webplugin_css( QTextEdit* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
+	
+}
 
 void webplugin_css::init() {
-	webplugin_css::cssKey << "color" << "background-color" << "background-image" 
+	cssKey << "color" << "background-color" << "background-image" 
 		<< "background-repeat" << "background-attachment" << "background-position" 
 		<< "background" << "font-family" << "font-style" << "font-variant" 
 		<< "font-weight" << "font-size" << "font" << "word-spacing" 
@@ -46,7 +57,7 @@ void webplugin_css::init() {
 		<< "border-color" << "border-style" << "width" << "height" << "float" << "clear" 
 		<< "display" << "white-space" << "list-style-type" << "list-style-image" 
 		<< "list-style-position" << "list-style";
-	webplugin_css::cssValues << "auto" << "none" << "normal" << "italic" << "oblique" 
+	cssValues << "auto" << "none" << "normal" << "italic" << "oblique" 
 		<< "small-caps" << "bold" << "bolder" << "lighter" << "xx-small" << "x-small" 
 		<< "small" << "medium" << "large" << "x-large" << "xx-large" << "larger" 
 		<< "smaller" << "transparent" << "repeat" << "repeat-x" << "repeat-y" 
@@ -61,7 +72,7 @@ void webplugin_css::init() {
 		<< "lower-alpha" << "upper-alpha" << "aqua" << "black" << "blue" << "fuchsia" 
 		<< "gray" << "green" << "lime" << "maroon" << "navy" << "olive" << "purple" 
 		<< "red" << "silver" << "teal" << "white" << "yellow";
-	webplugin_css::css2Key << "border-top-color" << "border-right-color" 
+	css2Key << "border-top-color" << "border-right-color" 
 		<< "border-bottom-color" << "border-left-color" << "border-color" << "border-top-style" 
 		<< "border-right-style" << "border-bottom-style" << "border-left-style" << "border-style" 
 		<< "top" << "right" << "bottom" << "left" << "position" << "z-index" << "direction" 
@@ -79,7 +90,7 @@ void webplugin_css::init() {
 		<< "pause" << "cue-before" << "cue-after" << "cue" << "play-during" << "azimuth" 
 		<< "elevation" << "speech-rate" << "voice-family" << "pitch" << "pitch-range" 
 		<< "stress" << "richness" << "speak-punctuation" << "speak-numeral";
-	webplugin_css::css2Values << "inherit" << "run-in" << "compact" << "marker" 
+	css2Values << "inherit" << "run-in" << "compact" << "marker" 
 		<< "table" << "inline-table" << "table-row-group" << "table-header-group" 
 		<< "table-footer-group" << "table-row" << "table-column-group" << "table-column" 
 		<< "table-cell" << "table-caption" << "static" << "relative" << "absolute" 
@@ -108,7 +119,9 @@ void webplugin_css::init() {
 		<< "child" << "x-low" << "low" << "high" << "x-high" << "code" << "digits" << "continous";
 }
 
-void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * interface, const QString & text ) {
+void webplugin_css::highlightBlock( const QString & text ) {
+	const QHash<QString,QTextCharFormat> & formats = m_config->config().formats;
+	
 	int i = 0, pos = 0;
 
 	QRegExp commentStartExpression("^/\\*");
@@ -120,22 +133,22 @@ void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-]*");
 	QRegExp attributeExpression("\\[.*\\]");
 	
-	ParsingState state = interface->previousBlockState() == InBracket ? CssIdentifier : CssDefault;
+	ParsingState state = previousBlockState() == InBracket ? CssIdentifier : CssDefault;
 
-	interface->setCurrentBlockState( NoBlock );
+	setCurrentBlockState( NoBlock );
 	
-	if ( interface->previousBlockState() == InComment ) {
+	if ( previousBlockState() == InComment ) {
 		pos = commentEndExpression.indexIn( text, i );
 
 		if (pos >= 0) {
 			// end comment found
 			const int iLength = commentEndExpression.matchedLength();
-			interface->setFormat( 0, pos + iLength, formats["css_comment"] );
+			setFormat( 0, pos + iLength, formats["css_comment"] );
 			i += pos + iLength; // skip comment
 		} else {
 			// in comment
-			interface->setFormat( 0, text.length(), formats["css_comment"] );
-			interface->setCurrentBlockState( InComment );
+			setFormat( 0, text.length(), formats["css_comment"] );
+			setCurrentBlockState( InComment );
 			return;
 		}
 	}
@@ -148,23 +161,22 @@ void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			if( pos == i ) {
 				const int iLength = keywordExpression.matchedLength();
 				if( state == CssDefault ) {
-					interface->setFormat( pos, iLength, formats["css_tag"] );
+					setFormat( pos, iLength, formats["css_tag"] );
 				} else if( state == CssValue ) {
 					if( cssValues.contains( keywordExpression.cap() ) )
-						interface->setFormat( pos, iLength, formats["css_value1"] );
+						setFormat( pos, iLength, formats["css_value1"] );
 					else if( css2Values.contains( keywordExpression.cap() ) )
-						interface->setFormat( pos, iLength, formats["css_value2"] );
+						setFormat( pos, iLength, formats["css_value2"] );
 					else
-						interface->setFormat( pos, iLength, formats["css_value"] );
+						setFormat( pos, iLength, formats["css_value"] );
 				} else if( state == CssIdentifier ) {
 					if( cssKey.contains( keywordExpression.cap() ) )
-						interface->setFormat( pos, iLength, formats["css_identifier1"] );
+						setFormat( pos, iLength, formats["css_identifier1"] );
 					else if( css2Key.contains( keywordExpression.cap() ) )
-						interface->setFormat( pos, iLength, formats["css_identifier2"] );
+						setFormat( pos, iLength, formats["css_identifier2"] );
 					else
-						interface->setFormat( pos, iLength, formats["css_identifier"] );
+						setFormat( pos, iLength, formats["css_identifier"] );
 				}
-				interface->processText( pos, text.mid( pos, iLength ) );
 				i += iLength - 1;
 			}
 		} else if( ( c >= '0' ) && ( c <= '9' ) ) {
@@ -173,7 +185,7 @@ void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			if( pos == i ) {
 				const int iLength = numberExpression.matchedLength();
 				if( state == CssValue )
-					interface->setFormat( pos, iLength, formats["css_number"] );
+					setFormat( pos, iLength, formats["css_number"] );
 				i += iLength - 1;
 			}
 		} else if( c == '/' ) {
@@ -183,14 +195,14 @@ void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 				int posEnd = commentEndExpression.indexIn( text, i + 2 );
 				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
 	
-				interface->setFormat( pos, length, formats["css_comment"] );
+				setFormat( pos, length, formats["css_comment"] );
 				i += length;
 				if( posEnd == -1 ) {
-					interface->setCurrentBlockState( InComment );
+					setCurrentBlockState( InComment );
 					return;
 				}
 			} else {
-				interface->setFormat( i, 1, formats["css_other"] );
+				setFormat( i, 1, formats["css_other"] );
 			}
 		} else if( ( c == '\'' ) || ( c == '"' ) ) {
 			int iLength;
@@ -203,90 +215,84 @@ void webplugin_css::highlightBlock( const QHash<QString,QTextCharFormat> & forma
 			}
 
 			if( pos == i ) {
-				interface->setFormat( pos, iLength, formats["css_string"] );
-				interface->processText( i, text.mid( pos, iLength ) );
+				setFormat( pos, iLength, formats["css_string"] );
 				i += iLength;
 			}
 		} else if( c == '@' ) { // CSS Directive
 			pos = directiveExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			if( pos == i ) {
 				const int iLength = directiveExpression.matchedLength();
-				interface->setFormat( pos, 1, formats["css_operator"] );
-				interface->setFormat( pos + 1, iLength - 2, formats["css_directive"] );
-				interface->setFormat( pos + iLength - 1, 1, formats["css_operator"] );
-				interface->processText( i, text.mid( pos, iLength ) );
+				setFormat( pos, 1, formats["css_operator"] );
+				setFormat( pos + 1, iLength - 2, formats["css_directive"] );
+				setFormat( pos + iLength - 1, 1, formats["css_operator"] );
 				i += iLength;
 			}
 		} else if( c == ':' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 			if( state == CssIdentifier ) {
 				state = CssValue;
 			} else if( state != CssValue ){
 				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
-					interface->setFormat( pos, iLength, formats["css_pseudoclass"] );
-					interface->processText( pos, text.mid( pos + 1, iLength ) );
+					setFormat( pos, iLength, formats["css_pseudoclass"] );
 					i += iLength;
 				}
 			}
 		} else if( c == '.' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 			if( ( state != CssIdentifier ) && ( state != CssValue ) ) {
 				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
-					interface->setFormat( pos, iLength, formats["css_class"] );
-					interface->processText( pos, text.mid( pos, iLength ) );
+					setFormat( pos, iLength, formats["css_class"] );
 					i += iLength;
 				}
 			}
 		} else if( c == '#' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 			if( ( state != CssIdentifier ) && ( state != CssValue ) ) {
 				pos = keywordExpression.indexIn( text, i + 1, QRegExp::CaretAtOffset );
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
-					interface->setFormat( pos, iLength, formats["css_id"] );
-					interface->processText( pos, text.mid( pos, iLength ) );
+					setFormat( pos, iLength, formats["css_id"] );
 					i += iLength;
 				}
 			}
 		} else if( c == ';' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 			if( state == CssValue )
 				state = CssIdentifier;
 		} else if( c == '*' ) {
 			if( state == CssDefault )
-				interface->setFormat( i, 1, formats["css_tag"] );
+				setFormat( i, 1, formats["css_tag"] );
 			else
-				interface->setFormat( i, 1, formats["css_operator"] );
+				setFormat( i, 1, formats["css_operator"] );
 		} else if( c == '[' ) {
 			pos = attributeExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			if( pos == i ) {
 				const int iLength = attributeExpression.matchedLength();
-				interface->setFormat( pos, 1, formats["css_operator"] );
-				interface->setFormat( pos + 1, iLength - 2, formats["css_attribute"] );
-				interface->setFormat( pos + iLength - 1, 1, formats["css_operator"] );
-				interface->processText( i, text.mid( pos, iLength ) );
+				setFormat( pos, 1, formats["css_operator"] );
+				setFormat( pos + 1, iLength - 2, formats["css_attribute"] );
+				setFormat( pos + iLength - 1, 1, formats["css_operator"] );
 				i += iLength;
 			}
 		} else if( c == '{' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 			if( state == CssDefault )
 				state = CssIdentifier;
 		} else if( c == '}' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 			state = CssDefault;
 		} else if( c == '.' ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 		} else if( ( c == '>' ) || ( c == '+' ) || ( c == ',' ) || ( c == '!' ) ) {
-			interface->setFormat( i, 1, formats["css_operator"] );
+			setFormat( i, 1, formats["css_operator"] );
 		}
 			
 	}
 	
 	if( ( state == CssIdentifier ) || ( state == CssValue ) ) {
-		interface->setCurrentBlockState( InBracket );
+		setCurrentBlockState( InBracket );
 	}
 }

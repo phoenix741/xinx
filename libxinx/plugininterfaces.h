@@ -29,7 +29,7 @@
 #include <QIcon>
 
 // Xinx header
-#include <isyntaxhighlighter.h>
+#include <syntaxhighlighter.h>
 #include <filecontentstructure.h>
 #include <iextendededitor.h>
 
@@ -120,14 +120,10 @@ public:
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter ) = 0;
 	//! Return an example of highlighter.
 	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
-	/*!
-	 * Process a block
-	 * \param highlighter The highlighter to used
-	 * \param formats Formats to used for the coloration.
-	 * \param i The interface with the application.
-	 * \param text The text to process.
-	 */
-	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text ) = 0;
+
+	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QObject* parent = NULL, XINXConfig * config = NULL ) = 0;
+	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config = NULL ) = 0;
+	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config = NULL ) = 0;
 };
 
 /*!

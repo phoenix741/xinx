@@ -43,8 +43,8 @@ ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f
 	setupUi(this);	
 	d = new PrivateServiceResultDialogImpl( this );
 	
-	new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_inputStreamTextEdit->document() );
-	new SyntaxHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_outputStreamTextEdit->document() );
+	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_inputStreamTextEdit->document() );
+	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_outputStreamTextEdit->document() );
 
 	connect( m_inputComboBox, SIGNAL(activated(QString)), d, SLOT(inputComboChanged(QString)) );
 	connect( m_outputComboBox, SIGNAL(activated(QString)), d, SLOT(outputComboChanged(QString)) );

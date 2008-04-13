@@ -45,7 +45,9 @@ public:
 	virtual QString highlighterOfExtention( const QString & extention );
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
 	virtual QString exampleOfHighlighter( const QString & highlighter );
-	virtual void highlightBlock( const QString & highlighter, const QHash<QString,QTextCharFormat> & formats, IXinxSyntaxHighlighter * i, const QString& text );
+	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QObject* parent, XINXConfig * config );
+	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config );
+	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config );
 
 	virtual QStringList prettyPrinters();
 	virtual QString prettyPrinterOfExtention( const QString & extention );

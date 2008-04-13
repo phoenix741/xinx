@@ -9,7 +9,8 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-HEADERS = appsettings.h \
+HEADERS = syntaxhighlighter.h \
+    appsettings.h \
     xinxconfig.h \
     xinxpluginsloader.h \
     xinxcore.h \
@@ -17,7 +18,8 @@ HEADERS = appsettings.h \
     rcs.h \
     exceptions.h \
     filecontentstructure.h
-SOURCES = appsettings.cpp \
+SOURCES = syntaxhighlighter.cpp \
+    appsettings.cpp \
     xinxconfig.cpp \
     xinxpluginsloader.cpp \
     xinxcore.cpp \

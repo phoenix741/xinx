@@ -29,7 +29,7 @@
 
 // Xinx header
 #include "../customdialogimpl.h"
-#include "../syntaxhighlighter.h"
+#include <syntaxhighlighter.h>
 
 class PrivateCustomDialogImpl : public QObject {
 	Q_OBJECT

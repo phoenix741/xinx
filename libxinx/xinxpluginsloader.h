@@ -58,6 +58,16 @@ public:
 	QList< QPair<QString,QString> > revisionsControls() const;
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 	
+	/*!
+	 * List all highlighter that can be used.
+	 */
+	QStringList highlighters() const;
+	QString highlighterOfSuffix( const QString & suffix ) const;
+	QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
+	QString exampleOfHighlighter( const QString & highlighter );
+	SyntaxHighlighter * createHighlighter( const QString & highlighter, QObject* parent = NULL, XINXConfig * config = NULL );
+	SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config = NULL );
+	SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config = NULL );
 	
 	QIcon iconOfSuffix( const QString & suffix ) const;
 
@@ -67,15 +77,12 @@ public:
 	const QStringList & defaultProjectFilter() const;
 	QStringList defaultProjectFilter( const QString & name ) const;
 
-	QPair<IPluginSyntaxHighlighter*,QString> highlighterOfSuffix( const QString & suffix ) const;
 	QPair<IPluginPrettyPrint*,QString> prettyPrinterOfSuffix( const QString & suffix ) const;
 	QPair<IPluginExtendedEditor*,QString> extendedEditorOfSuffix( const QString & suffix ) const;
 
-	QStringList highlighterOfPlugins() const;
 	QStringList prettyPrinterOfPlugins() const;
 	QStringList extendedEditorOfPlugins() const;
 	
-	IPluginSyntaxHighlighter* highlighterOfPlugin( const QString & suffix ) const;
 	IPluginPrettyPrint* prettyPrinterOfPlugin( const QString & suffix ) const;
 	IPluginExtendedEditor* extendedEditorOfPlugin( const QString & suffix ) const;
 
@@ -94,11 +101,9 @@ private:
 	
 	QHash<QString,QString> m_libelles;
 	
-	QHash< QString,QPair<IPluginSyntaxHighlighter*,QString> > m_syntaxPlugins;
 	QHash< QString,QPair<IPluginPrettyPrint*,QString> > m_prettyPlugins;
 	QHash< QString,QPair<IPluginExtendedEditor*,QString> > m_extendedEditorPlugins;
 	
-	QHash< QString,IPluginSyntaxHighlighter* > m_directSyntaxPlugins;
 	QHash< QString,IPluginPrettyPrint* > m_directPrettyPlugins;
 	QHash< QString,IPluginExtendedEditor* > m_directExtendedEditorPlugins;
 	
