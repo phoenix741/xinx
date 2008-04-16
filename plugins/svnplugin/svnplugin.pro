@@ -28,3 +28,4 @@ HEADERS = rcs_svn.h \
 SOURCES = rcs_svn.cpp \
     svnplugin.cpp
 RESOURCES = svnplugin.qrc
+TRANSLATIONS += translations/svnplugin_fr.ts

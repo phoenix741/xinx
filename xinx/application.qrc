@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/" >
-        <file>../components/translations/xinxcomponents_fr.qm</file>
-        <file>../libxinx/translations/libxinx_fr.qm</file>
+        <file alias="translations/xinxcomponents_fr.qm">../components/translations/xinxcomponents_fr.qm</file>
+        <file alias="translations/libxinx_fr.qm">../libxinx/translations/libxinx_fr.qm</file>
         <file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
         <file>images/action.png</file>

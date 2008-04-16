@@ -25,6 +25,8 @@
 // Qt header
 #include <QString>
 #include <QVariant>
+#include <QTranslator>
+#include <QApplication>
 
 /* SVNPlugin */
 
@@ -33,8 +35,11 @@ SVNPlugin::SVNPlugin() {
 }
 
 bool SVNPlugin::initializePlugin( const QString & lang ) {
-	Q_UNUSED( lang );
-    return true;
+	QTranslator * tranlator = new QTranslator( this );
+	tranlator->load( QString(":/translations/svnplugin_%1").arg( lang ) );
+	qApp->installTranslator(tranlator);
+
+	return true;
 }
 
 QVariant SVNPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {

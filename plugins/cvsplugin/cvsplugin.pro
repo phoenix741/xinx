@@ -39,3 +39,4 @@ SOURCES = cvsfiles.cpp \
     cvsplugin.cpp
 FORMS += ui/customize.ui
 RESOURCES = cvsplugin.qrc
+TRANSLATIONS += translations/cvsplugin_fr.ts

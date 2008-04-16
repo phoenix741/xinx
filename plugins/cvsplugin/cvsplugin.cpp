@@ -28,6 +28,7 @@
 #include <QString>
 #include <QVariant>
 #include <QSettings>
+#include <QTranslator>
 
 /* CVSPlugin */
 
@@ -41,7 +42,9 @@ CVSPlugin::~CVSPlugin() {
 }
 
 bool CVSPlugin::initializePlugin( const QString & lang ) {
-	Q_UNUSED( lang );
+	QTranslator * tranlator = new QTranslator( this );
+	tranlator->load( QString(":/translations/cvsplugin_%1").arg( lang ) );
+	qApp->installTranslator(tranlator);
 	
 	XINX_ASSERT( m_settings );
 	m_settings->load();
