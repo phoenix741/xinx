@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details. 
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * To Contact the author, please email src@matthew.ath.cx
  *
@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import cx.ath.matthew.debug.Debug;
+
 /**
  * Represents a UnixSocket.
  */
@@ -32,6 +34,11 @@ public class UnixSocket
    private native void native_set_pass_cred(int sock, boolean passcred) throws IOException;
    private native int native_connect(String address, boolean abs) throws IOException;
    private native void native_close(int sock) throws IOException;
+   private native int native_getPID(int sock);
+   private native int native_getUID(int sock);
+   private native int native_getGID(int sock);
+   private native void native_send_creds(int sock, byte data) throws IOException;
+   private native byte native_recv_creds(int sock, int[] creds) throws IOException;
 
    private UnixSocketAddress address = null;
    private USOutputStream os = null;
@@ -41,6 +48,9 @@ public class UnixSocket
    private boolean passcred = false;
    private int sock = 0;
    private boolean blocking = true;
+   private int uid = -1;
+   private int pid = -1;
+   private int gid = -1;
    UnixSocket(int sock, UnixSocketAddress address)
    {
       this.sock = sock;
@@ -105,6 +115,7 @@ public class UnixSocket
     */
    public void close() throws IOException
    {
+      if (Debug.debug) Debug.print(Debug.INFO, "Closing socket");
       native_close(sock);
       this.closed = true;
       this.connected = false;
@@ -137,7 +148,36 @@ public class UnixSocket
       return address;
    }
    /**
+    * Send a single byte of data with credentials.
+    * (Works on BSDs)
+    * @param data The byte of data to send.
+    */
+   public void sendCredentialByte(byte data) throws IOException
+   {
+      if (!connected) throw new NotConnectedException();
+      native_send_creds(sock, data);
+   }
+   /**
+    * Receive a single byte of data, with credentials.
+    * (Works on BSDs)
+    * @see getPeerUID
+    * @see getPeerPID
+    * @see getPeerGID
+    * @param data The byte of data to send.
+    */
+   public byte recvCredentialByte() throws IOException
+   {
+      if (!connected) throw new NotConnectedException();
+      int[] creds = new int[] { -1, -1, -1 };
+      byte data = native_recv_creds(sock, creds);
+      pid = creds[0];
+      uid = creds[1];
+      gid = creds[2];
+      return data;
+   }
+   /**
     * Get the credential passing status.
+    * (only effective on linux)
     * @return The current status of credential passing.
     * @see setPassCred
     */
@@ -146,7 +186,48 @@ public class UnixSocket
       return passcred;
    }
    /**
+    * Return the uid of the remote process.
+    * Some data must have been received on the socket to do this.
+    * Either setPassCred must be called on Linux first, or recvCredentialByte
+    * on BSD.
+    * @return the UID or -1 if it is not available
+    */
+   public int getPeerUID()
+   {
+      if (-1 == uid)
+         uid = native_getUID(sock);
+      return uid;
+   }
+   /**
+    * Return the gid of the remote process.
+    * Some data must have been received on the socket to do this.
+    * Either setPassCred must be called on Linux first, or recvCredentialByte
+    * on BSD.
+    * @return the GID or -1 if it is not available
+    */
+   public int getPeerGID()
+   {
+      if (-1 == gid)
+         gid = native_getGID(sock);
+      return gid;
+   }
+   /**
+    * Return the pid of the remote process.
+    * Some data must have been received on the socket to do this.
+    * Either setPassCred must be called on Linux first, or recvCredentialByte
+    * on BSD.
+    * @return the PID or -1 if it is not available
+    */
+   public int getPeerPID()
+   {
+      if (-1 == pid)
+         pid = native_getPID(sock);
+      return pid;
+   }
+   /**
     * Set the credential passing status.
+    * (Only does anything on linux, for other OS, you need
+    * to use send/recv credentials)
     * @param enable Set to true for credentials to be passed.
     */
    public void setPassCred(boolean enable) throws IOException

@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details. 
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * To Contact the author, please email src@matthew.ath.cx
  *
@@ -103,5 +103,40 @@ public class Hexdump
    public static void print(byte[] buf, PrintStream out)
    {
       out.print(format(buf));
+   }
+   /**
+    * Returns a string which can be written to a Java source file as part
+    * of a static initializer for a byte array. 
+    * Returns data in the format 0xAB, 0xCD, ....
+    * use like:
+    * javafile.print("byte[] data = {")
+    * javafile.print(Hexdump.toByteArray(data));
+    * javafile.println("};");
+    */
+   public static String toByteArray(byte[] buf)
+   {
+      return toByteArray(buf, 0, buf.length);
+   }
+   /**
+    * Returns a string which can be written to a Java source file as part
+    * of a static initializer for a byte array. 
+    * Returns data in the format 0xAB, 0xCD, ....
+    * use like:
+    * javafile.print("byte[] data = {")
+    * javafile.print(Hexdump.toByteArray(data));
+    * javafile.println("};");
+    */
+   public static String toByteArray(byte[] buf, int ofs, int len)
+   {
+      StringBuffer sb = new StringBuffer();
+      for (int i = ofs; i < len && i < buf.length; i++) {
+         sb.append('0');
+         sb.append('x');
+         sb.append(hexchars[(buf[i] & 0xF0) >> 4]);
+         sb.append(hexchars[buf[i] & 0x0F]);
+         if ((i+1) < len && (i+1) < buf.length)
+            sb.append(',');
+      }
+      return sb.toString();
    }
 }

@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details. 
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * To Contact the author, please email src@matthew.ath.cx
  *
@@ -22,7 +22,7 @@ package cx.ath.matthew.unix;
 import java.io.InputStream;
 import java.io.IOException;
 
-class USInputStream extends InputStream
+public class USInputStream extends InputStream
 { 
    public static final int MSG_DONTWAIT = 0x40;
    private native int native_recv(int sock, byte[] b, int off, int len, int flags, int timeout) throws IOException;

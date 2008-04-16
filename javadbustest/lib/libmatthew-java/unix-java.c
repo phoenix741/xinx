@@ -12,13 +12,14 @@
  * GNU Lesser General Public License for more details. 
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * To Contact the author, please email src@matthew.ath.cx
  *
  */
 
 #include "unix-java.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -27,8 +28,11 @@
 #include <sys/select.h>
 #include <errno.h>
 #include <string.h>
-#include <malloc.h>
 #include <sys/un.h>
+
+#ifndef IOV_MAX
+#define IOV_MAX 1024
+#endif
 
 
 #ifdef __cplusplus
@@ -115,9 +119,11 @@ JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixServerSocket_native_1accept
 JNIEXPORT void JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1set_1pass_1cred
   (JNIEnv *env, jobject o, jint sock, jboolean enable)
 {
+#ifdef SO_PASSCRED
    int opt = enable;
    int rv = setsockopt(sock, SOL_SOCKET, SO_PASSCRED, &opt, sizeof(int));
    if (-1 == rv) { handleerrno(env);}
+#endif
 }
 
 /*
@@ -155,7 +161,9 @@ JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1connect
 JNIEXPORT void JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1close
   (JNIEnv *env, jobject o, jint sock)
 {
-   int rv = close(sock);
+   int rv = shutdown(sock, SHUT_RDWR);
+   if (-1 == rv) { handleerrno(env); }
+   rv = close(sock);
    if (-1 == rv) { handleerrno(env); }
 }
 
@@ -179,8 +187,7 @@ JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USInputStream_native_1recv
       tv.tv_sec = 0;
       tv.tv_usec = timeout;
       rv = select(sock+1, &rfds, NULL, NULL, &tv);
-      if (1 == rv) 
-         rv = recv(sock, recvb, len, flags);
+      rv = recv(sock, recvb, len, flags);
       if (-1 == rv) { handleerrno(env); return -1; }
       if (0 == rv) rv = -1;
       (*env)->ReleaseByteArrayElements(env, buf, cbuf, 0);
@@ -196,9 +203,9 @@ JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USInputStream_native_1recv
 /*
  * Class:     cx_ath_matthew_unix_USOutputStream
  * Method:    native_send
- * Signature: ([BII)V
+ * Signature: (I[BII)I
  */
-JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send__I_3BII
   (JNIEnv *env, jobject o, jint sock, jbyteArray buf, jint offs, jint len)
 {
    jbyte* cbuf = (*env)->GetByteArrayElements(env, buf, NULL);
@@ -208,6 +215,224 @@ JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send
    if (-1 == rv) { handleerrno(env); return -1; }
    return rv;
 }
+
+/*
+ * Class:     cx_ath_matthew_unix_USOutputStream
+ * Method:    native_send
+ * Signature: (I[[B)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_USOutputStream_native_1send__I_3_3B
+  (JNIEnv *env, jobject o, jint sock, jobjectArray bufs)
+{
+   size_t sblen = 1;
+   socklen_t sblen_size = sizeof(sblen);
+   getsockopt(sock, SOL_SOCKET, SO_SNDBUF, &sblen, &sblen_size);
+
+   struct msghdr msg;
+   struct iovec *iov;
+   msg.msg_name = NULL;
+   msg.msg_namelen = 0;
+   msg.msg_control = NULL;
+   msg.msg_controllen = 0;
+   msg.msg_flags = 0;
+   size_t els = (*env)->GetArrayLength(env, bufs);
+   iov = (struct iovec*) malloc((els<IOV_MAX?els:IOV_MAX) * sizeof(struct iovec));
+   msg.msg_iov = iov;
+   jbyteArray *b = (jbyteArray*) malloc(els * sizeof(jbyteArray));
+   int rv = 0;
+   
+   for (int i = 0, j = 0, s = 0; i <= els; i++, j++) {
+      if (i == els) {
+         msg.msg_iovlen = j;
+         rv = sendmsg(sock, &msg, 0);
+         for (int k = i-1, l = j-1; l >= 0; k--, l--)
+            (*env)->ReleaseByteArrayElements(env, b[k], iov[l].iov_base, 0);
+         if (-1 == rv) { handleerrno(env); return -1; }
+         break;
+      }
+      b[i] = (*env)->GetObjectArrayElement(env, bufs, i);
+      if (NULL == b[i]) {
+         msg.msg_iovlen = j;
+         rv = sendmsg(sock, &msg, 0);
+         for (int k = i-1, l = j-1; l >= 0; k--, l--)
+            (*env)->ReleaseByteArrayElements(env, b[k], iov[l].iov_base, 0);
+         if (-1 == rv) { handleerrno(env); return -1; }
+         break;
+      }
+      size_t l = (*env)->GetArrayLength(env, b[i]);
+      if (s+l > sblen || j == IOV_MAX) {
+         msg.msg_iovlen = j;
+         rv = sendmsg(sock, &msg, 0);
+         j = 0;
+         s = 0;
+         for (int k = i-1, l = j-1; l >= 0; k--, l--)
+            (*env)->ReleaseByteArrayElements(env, b[k], iov[l].iov_base, 0);
+         if (-1 == rv) { handleerrno(env); return -1; }
+      }
+      iov[j].iov_base = (*env)->GetByteArrayElements(env, b[i], NULL);
+      iov[j].iov_len = l;
+      s += l;
+   }
+   
+   free(iov);
+   free(b);
+   return rv;
+}
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_getPID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1getPID
+  (JNIEnv * env, jobject o, jint sock)
+{
+#ifdef SO_PEERCRED
+   struct ucred cr;
+   size_t cl=sizeof(cr);
+
+   if (getsockopt(sock, SOL_SOCKET, SO_PEERCRED, &cr, &cl)==0) 
+      return cr.pid;
+   else
+      return -1;
+#else
+   return -1;
+#endif
+}
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_getUID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1getUID
+  (JNIEnv * env, jobject o, jint sock)
+{
+#ifdef SO_PEERCRED
+   struct ucred cr;
+   size_t cl=sizeof(cr);
+
+   if (getsockopt(sock, SOL_SOCKET, SO_PEERCRED, &cr, &cl)==0) 
+      return cr.uid;
+   else
+      return -1;
+#else
+   return -1;
+#endif
+}
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_getGID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1getGID
+  (JNIEnv * env, jobject o, jint sock)
+{
+#ifdef SO_PEERCRED
+   struct ucred cr;
+   size_t cl=sizeof(cr);
+
+   if (getsockopt(sock, SOL_SOCKET, SO_PEERCRED, &cr, &cl)==0) 
+      return cr.gid;
+   else
+      return -1;
+#else
+   return -1;
+#endif
+}
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_send_creds
+ * Signature: (B)V
+ */
+JNIEXPORT void JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1send_1creds
+  (JNIEnv * env, jobject o, jint sock, jbyte data)
+{
+   struct msghdr msg;
+   struct iovec iov;
+   msg.msg_name = NULL;
+   msg.msg_namelen = 0;
+   msg.msg_flags = 0;
+   msg.msg_iov = &iov;
+   msg.msg_iovlen = 1;
+   msg.msg_control = NULL;
+   msg.msg_controllen = 0;
+   iov.iov_base = &data;
+   iov.iov_len = 1;
+
+#ifdef SCM_CREDENTIALS
+   char buf[CMSG_SPACE(sizeof(struct ucred))];
+   msg.msg_control = buf;
+   msg.msg_controllen = sizeof buf;
+   struct cmsghdr *cmsg;
+   struct ucred *creds;
+
+   cmsg = CMSG_FIRSTHDR(&msg);
+   cmsg->cmsg_level = SOL_SOCKET;
+   cmsg->cmsg_type = SCM_CREDENTIALS;
+   cmsg->cmsg_len = CMSG_LEN(sizeof(struct ucred));
+   /* Initialize the payload: */
+   creds = (struct ucred *)CMSG_DATA(cmsg);
+   creds.pid = getpid();
+   creds.uid = getuid();
+   creds.gid = getgid();
+#endif
+
+   int rv = sendmsg(sock, &msg, 0);
+   if (-1 == rv) { handleerrno(env); }
+}
+
+/*
+ * Class:     cx_ath_matthew_unix_UnixSocket
+ * Method:    native_recv_creds
+ * Signature: ([I)B
+ */
+JNIEXPORT jbyte JNICALL Java_cx_ath_matthew_unix_UnixSocket_native_1recv_1creds
+  (JNIEnv *env, jobject o, jint sock, jintArray jcreds)
+{
+   struct msghdr msg;
+   char buf = 0;
+   struct iovec iov;
+   msg.msg_name = NULL;
+   msg.msg_namelen = 0;
+   msg.msg_flags = 0;
+   msg.msg_iov = &iov;
+   msg.msg_iovlen = 1;
+   msg.msg_control = NULL;
+   msg.msg_controllen = 0;
+   iov.iov_base = &buf;
+   iov.iov_len = 1;
+
+#ifdef SCM_CREDENTIALS
+   char buf[CMSG_SPACE(sizeof(struct ucred))];
+   msg.msg_control = buf;
+   msg.msg_controllen = sizeof buf;
+   struct cmsghdr *cmsg;
+   struct ucred *creds = NULL;
+#endif
+
+   recvmsg(sock, &msg, 0);
+
+#ifdef SCM_CREDENTIALS
+   for (cmsg = CMSG_FIRSTHDR(&msgh);
+         cmsg != NULL;
+         cmsg = CMSG_NXTHDR(&msgh,cmsg)) {
+      if (cmsg->cmsg_level == SOL_SOCKET
+            && cmsg->cmsg_type == SCM_CREDENTIALS) {
+         creds = (struct ucred *) CMSG_DATA(cmsg);        
+         break;
+      }
+   }
+   if (NULL != creds) {
+      (*env)->SetIntArrayRegion(env, jcreds, 0, 3, creds);
+   }
+#endif
+
+   return buf;
+}
+
 
 #ifdef __cplusplus
 }

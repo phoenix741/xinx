@@ -1,3 +1,24 @@
+Version 0.6:
+
+	* Add toByteArray to Hexdump for creating byte-array-literals in
+	  generated code.
+	* UnixSocket output streams can now send multiple byte[] at once
+	  to use scatter-gather for efficiency
+	* Add fuctions to get peer credentials
+	* Work on BSD
+
+Version 0.5:
+
+	* Add licence headers to files which are missing
+	* fix javadoc calls so that -link is replacable with local docs
+	* add .NOPARALLEL: to disable parallel building. Fails to get debugging
+	right
+
+Version 0.4:
+	
+	* Add javadoc target
+	* Add Manifest with Class-Path to relevant jars
+
 Version 0.2:
 
 	* Fix Unix Sockets not to lose reference if IO streams are still
