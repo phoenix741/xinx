@@ -10,9 +10,12 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -231,6 +234,21 @@ public class Message
       paofs = 0;
    }
    /**
+    * Ensures there are enough free buffers.
+    * @param num number of free buffers to create.
+    */
+   private void ensureBuffers(int num)
+   {
+      int increase = num - wiredata.length + bufferuse;
+      if (increase > 0) {
+         if (increase < BUFFERINCREMENT) increase = BUFFERINCREMENT;
+         if (Debug.debug) Debug.print(Debug.VERBOSE, "Resizing "+bufferuse);
+         byte[][] temp = new byte[wiredata.length+increase][];
+         System.arraycopy(wiredata, 0, temp, 0, wiredata.length);
+         wiredata = temp;
+      }
+   }
+   /**
     * Appends a buffer to the buffer list.
     */
    protected void appendBytes(byte[] buf) 
@@ -238,7 +256,7 @@ public class Message
       if (null == buf) return;
       if (preallocated > 0) {
          if (paofs+buf.length > pabuf.length)
-            throw new RuntimeException("Array index out of bounds, paofs="+paofs+", pabuf.length="+pabuf.length+", buf.length="+buf.length);
+            throw new ArrayIndexOutOfBoundsException(MessageFormat.format(_("Array index out of bounds, paofs={0}, pabuf.length={1}, buf.length={2}."), new Object[] { paofs, pabuf.length, buf.length }));
          System.arraycopy(buf, 0, pabuf, paofs, buf.length);
          paofs += buf.length;
          preallocated -= buf.length;
@@ -465,7 +483,7 @@ public class Message
    {
       try {
          int i = sigofs;
-         if (Debug.debug) Debug.print((int) Debug.VERBOSE, (Object) bytecounter);
+         if (Debug.debug) Debug.print(Debug.VERBOSE, (Object) bytecounter);
          if (Debug.debug) Debug.print(Debug.VERBOSE, "Appending type: "+((char)sigb[i])+" value: "+data);
 
          // pad to the alignment of this type.
@@ -519,7 +537,7 @@ public class Message
                   payloadbytes = payload.getBytes("UTF-8");
                } catch (UnsupportedEncodingException UEe) {
                   if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(UEe);
-                  throw new DBusException("System does not support UTF-8 encoding");
+                  throw new DBusException(_("System does not support UTF-8 encoding"));
                }
                if (Debug.debug) Debug.print(Debug.VERBOSE, "Appending String of length "+payloadbytes.length);
                appendint(payloadbytes.length, 4);
@@ -598,18 +616,20 @@ public class Message
                                  primbuf, k, algn);
                         break;
                      default:
-                        throw new MarshallingException("Primative array being sent as non-primative array.");
+                        throw new MarshallingException(_("Primative array being sent as non-primative array."));
                   }
                   appendBytes(primbuf);
                   i++;
                } else if (data instanceof List) {
                   Object[] contents = ((List) data).toArray();
                   int diff = i;
+                  ensureBuffers(contents.length*4);
                   for (Object o: contents) 
                      diff = appendone(sigb, i, o);
                   i = diff;
                } else if (data instanceof Map) {
                   int diff = i;
+                  ensureBuffers(((Map) data).size()*6);
                   for (Map.Entry<Object,Object> o: ((Map<Object,Object>) data).entrySet())
                      diff = appendone(sigb, i, o);
                   if (i == diff) {
@@ -624,6 +644,7 @@ public class Message
                   i = diff;
                } else {
                   Object[] contents = (Object[]) data;
+                  ensureBuffers(contents.length*4);
                   int diff = i;
                   for (Object o: contents) 
                      diff = appendone(sigb, i, o);
@@ -640,6 +661,7 @@ public class Message
                   contents = ((Container) data).getParameters();
                else
                   contents = (Object[]) data;
+               ensureBuffers(contents.length*4);
                int j = 0;
                for (i++; sigb[i] != ArgumentType.STRUCT2; i++)
                   i = appendone(sigb, i, contents[j++]);
@@ -680,7 +702,7 @@ public class Message
          return i;
       } catch (ClassCastException CCe) {
          if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, CCe);
-         throw new MarshallingException("Trying to marshall to unconvertable type (from "+data.getClass().getName()+" to "+sigb[sigofs]+")");
+         throw new MarshallingException(MessageFormat.format(_("Trying to marshall to unconvertable type (from {0} to {1})."), new Object[] { data.getClass().getName(), sigb[sigofs] }));
       }
    }
    /**
@@ -844,7 +866,7 @@ public class Message
             ofs[1] = align(ofs[1], sigb[ofs[0]]);
             int length = (int) (size / algn);
             if (length > DBusConnection.MAX_ARRAY_LENGTH)
-               throw new MarshallingException("Arrays must not exceed "+DBusConnection.MAX_ARRAY_LENGTH);
+               throw new MarshallingException(_("Arrays must not exceed ")+DBusConnection.MAX_ARRAY_LENGTH);
             // optimise primatives
             switch (sigb[ofs[0]]) {
                case ArgumentType.BYTE:
@@ -865,7 +887,7 @@ public class Message
                case ArgumentType.INT64:
                   rv = new long[length];
                   for (int j = 0; j < length; j++, ofs[1] += algn) 
-                     ((long[]) rv)[j] = (long) demarshallint(buf, ofs[1], algn);
+                     ((long[]) rv)[j] = demarshallint(buf, ofs[1], algn);
                   break;
                case ArgumentType.BOOLEAN:
                   rv = new boolean[length];
@@ -891,7 +913,8 @@ public class Message
                      byte[] temp2 = new byte[sigb.length-ofs[0]];
                      System.arraycopy(sigb, ofs[0], temp2, 0, temp2.length);
                      String temp3 = new String(temp2);
-                     int temp4 = Marshalling.getJavaType(temp3, temp, 1);
+                     // ofs[0] gets incremented anyway. Leave one character on the stack
+                     int temp4 = Marshalling.getJavaType(temp3, temp, 1) - 1;
                      ofs[0] += temp4;
                      if (Debug.debug) Debug.print(Debug.VERBOSE, "Aligned type: "+temp3+" "+temp4+" "+ofs[0]);
                   }
@@ -902,7 +925,7 @@ public class Message
                      ofs[0] = ofssave;
                      entries.add((Object[]) extractone(sigb, buf, ofs, true));
                   }
-                  rv = new DBusMap(entries.toArray(new Object[0][]));
+                  rv = new DBusMap<Object, Object>(entries.toArray(new Object[0][]));
                   break;
                default:
                   if (0 == size) {
@@ -911,7 +934,8 @@ public class Message
                      byte[] temp2 = new byte[sigb.length-ofs[0]];
                      System.arraycopy(sigb, ofs[0], temp2, 0, temp2.length);
                      String temp3 = new String(temp2);
-                     int temp4 = Marshalling.getJavaType(temp3, temp, 1);
+                     // ofs[0] gets incremented anyway. Leave one character on the stack
+                     int temp4 = Marshalling.getJavaType(temp3, temp, 1) - 1;
                      ofs[0] += temp4;
                      if (Debug.debug) Debug.print(Debug.VERBOSE, "Aligned type: "+temp3+" "+temp4+" "+ofs[0]);
                   }
@@ -931,7 +955,6 @@ public class Message
             Vector<Object> contents = new Vector<Object>();
             while (sigb[++ofs[0]] != ArgumentType.STRUCT2)
                contents.add(extractone(sigb, buf, ofs, true));
-            ofs[0]++;
             rv = contents.toArray();
             break;
          case ArgumentType.DICT_ENTRY1:
@@ -958,7 +981,7 @@ public class Message
                rv = new String(buf, ofs[1], length, "UTF-8");
             } catch (UnsupportedEncodingException UEe) {
                if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(UEe);
-               throw new DBusException("System does not support UTF-8 encoding");
+               throw new DBusException(_("System does not support UTF-8 encoding"));
             }
             ofs[1] += length + 1;
             break;
@@ -970,13 +993,16 @@ public class Message
             break;
          case ArgumentType.SIGNATURE:
             length = (buf[ofs[1]++] & 0xFF);
-            rv = new String(buf, ofs[1], (int)length);
+            rv = new String(buf, ofs[1], length);
             ofs[1] += length + 1;
             break;
          default: 
             throw new UnknownTypeCodeException(sigb[ofs[0]]);
       }
-      if (Debug.debug) Debug.print(Debug.VERBOSE, "Extracted: "+rv+" (now at "+ofs[1]+")");
+      if (Debug.debug) if (rv instanceof Object[])
+         Debug.print(Debug.VERBOSE, "Extracted: "+Arrays.deepToString((Object[]) rv)+" (now at "+ofs[1]+")");
+      else
+         Debug.print(Debug.VERBOSE, "Extracted: "+rv+" (now at "+ofs[1]+")");
       return rv;
    }
    /** 

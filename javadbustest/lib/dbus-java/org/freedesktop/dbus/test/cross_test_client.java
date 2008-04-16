@@ -26,7 +26,6 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import org.freedesktop.DBus;
-import org.freedesktop.dbus.DBusCallInfo;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.DBusSigHandler;
@@ -37,7 +36,6 @@ import org.freedesktop.dbus.UInt64;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
-import org.freedesktop.dbus.types.DBusListType;
 import org.freedesktop.dbus.types.DBusMapType;
 
 import cx.ath.matthew.debug.Debug;
@@ -93,7 +91,8 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
       }
       reasons.add(reason);
    }
-   public static void test(Class iface, Object proxy, String method, Object rv, Object... parameters)
+   @SuppressWarnings("unchecked")
+   public static void test(Class<? extends DBusInterface> iface, Object proxy, String method, Object rv, Object... parameters)
    {
       try {
          Method[] ms = iface.getMethods();
@@ -116,14 +115,14 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
             compareArray(iface.getName()+"."+method, rv,o); 
          } else if (rv instanceof Map) {
             if (o instanceof Map) {
-               Map a = (Map) o;
-               Map b = (Map) rv;
+               Map<Object,Object> a = (Map<Object,Object>) o;
+               Map<Object,Object> b = (Map<Object,Object>) rv;
                if (a.keySet().size() != b.keySet().size()) {
                   fail(iface.getName()+"."+method, msg);
                } else for (Object k: a.keySet())
                   if (a.get(k) instanceof List) {
                      if (b.get(k) instanceof List)
-                        if (setCompareLists((List) a.get(k), (List) b.get(k)))
+                        if (setCompareLists((List<Object>) a.get(k), (List<Object>) b.get(k)))
                            ;
                         else
                            fail(iface.getName()+"."+method, msg);
@@ -153,6 +152,7 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
          fail(iface.getName()+"."+method, "Error occurred during execution: "+e.getClass().getName()+" "+e.getMessage());
       }
    }
+   @SuppressWarnings("unchecked")
    public static String collapseArray(Object array)
    {
       if (null == array) return "null";
@@ -164,19 +164,19 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
          return s;
       } else if (array instanceof List) {
          String s = "{ ";
-         for (Object o: (List) array)
+         for (Object o: (List<Object>) array)
             s += collapseArray(o)+",";
          s = s.replaceAll(".$"," }");
          return s;
       } else if (array instanceof Map) {
          String s = "{ ";
-         for (Object o: ((Map) array).keySet())
-            s += collapseArray(o)+" => "+collapseArray(((Map) array).get(o))+",";
+         for (Object o: ((Map<Object,Object>) array).keySet())
+            s += collapseArray(o)+" => "+collapseArray(((Map<Object,Object>) array).get(o))+",";
          s = s.replaceAll(".$"," }");
          return s;
       } else return array.toString();
    }
-   public static boolean setCompareLists(List a, List b)
+   public static <T> boolean setCompareLists(List<T> a, List<T> b)
    {
       if (a.size() != b.size()) return false;
       for (Object v: a)
@@ -184,15 +184,15 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
       return true;
    }
    @SuppressWarnings("unchecked")
-   public static List<Variant> PrimitizeRecurse(Object a, Type t)
+   public static List<Variant<Object>> PrimitizeRecurse(Object a, Type t)
    {
-      List<Variant> vs = new Vector<Variant>();
+      List<Variant<Object>> vs = new Vector<Variant<Object>>();
       if (t instanceof ParameterizedType) {
-         Class c = (Class) ((ParameterizedType) t).getRawType();
+         Class<Object> c = (Class<Object>) ((ParameterizedType) t).getRawType();
          if (List.class.isAssignableFrom(c)) {
             Object os;
             if (a instanceof List)
-               os = ((List) a).toArray();
+               os = ((List<Object>) a).toArray();
             else 
                os = a;
             Type[] ts = ((ParameterizedType) t).getActualTypeArguments();
@@ -228,7 +228,7 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
    }
 
    @SuppressWarnings("unchecked")
-   public static List<Variant> Primitize(Variant a)
+   public static List<Variant<Object>> Primitize(Variant<Object> a)
    {
       return PrimitizeRecurse(a.getValue(), a.getType());
    }
@@ -236,9 +236,9 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
    @SuppressWarnings("unchecked")
    public static void primitizeTest(DBus.Binding.Tests tests, Object input)
    {
-      Variant in = new Variant(input);      
-      List<Variant> vs = Primitize(in);
-      List<Variant> res;
+      Variant<Object> in = new Variant<Object>(input);      
+      List<Variant<Object>> vs = Primitize(in);
+      List<Variant<Object>> res;
 
       try {
       
@@ -285,33 +285,33 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
       test(DBus.Binding.Tests.class, tests, "IdentityByte", (byte) 0, (byte) 0); 
       test(DBus.Binding.Tests.class, tests, "IdentityByte", (byte) 1, (byte) 1); 
       test(DBus.Binding.Tests.class, tests, "IdentityByte", (byte) -1, (byte) -1); 
-      test(DBus.Binding.Tests.class, tests, "IdentityByte", (byte) Byte.MAX_VALUE, (byte) Byte.MAX_VALUE); 
-      test(DBus.Binding.Tests.class, tests, "IdentityByte", (byte) Byte.MIN_VALUE, (byte) Byte.MIN_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityByte", Byte.MAX_VALUE, Byte.MAX_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityByte", Byte.MIN_VALUE, Byte.MIN_VALUE); 
       i = r.nextInt();
       test(DBus.Binding.Tests.class, tests, "IdentityByte", (byte) i, (byte) i); 
       
       test(DBus.Binding.Tests.class, tests, "IdentityInt16", (short) 0, (short) 0); 
       test(DBus.Binding.Tests.class, tests, "IdentityInt16", (short) 1, (short) 1); 
       test(DBus.Binding.Tests.class, tests, "IdentityInt16", (short) -1, (short) -1); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt16", (short) Short.MAX_VALUE, (short) Short.MAX_VALUE); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt16", (short) Short.MIN_VALUE, (short) Short.MIN_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt16", Short.MAX_VALUE, Short.MAX_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt16", Short.MIN_VALUE, Short.MIN_VALUE); 
       i = r.nextInt();
       test(DBus.Binding.Tests.class, tests, "IdentityInt16", (short) i, (short) i); 
       
-      test(DBus.Binding.Tests.class, tests, "IdentityInt32", (int) 0, (int) 0); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt32", (int) 1, (int) 1); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt32", (int) -1, (int) -1); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt32", (int) Integer.MAX_VALUE, (int) Integer.MAX_VALUE); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt32", (int) Integer.MIN_VALUE, (int) Integer.MIN_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt32", 0, 0); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt32", 1, 1); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt32", -1, -1); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt32", Integer.MAX_VALUE, Integer.MAX_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt32", Integer.MIN_VALUE, Integer.MIN_VALUE); 
       i = r.nextInt();
-      test(DBus.Binding.Tests.class, tests, "IdentityInt32", (int) i, (int) i); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt32", i, i); 
 
       
       test(DBus.Binding.Tests.class, tests, "IdentityInt64", (long) 0, (long) 0); 
       test(DBus.Binding.Tests.class, tests, "IdentityInt64", (long) 1, (long) 1); 
       test(DBus.Binding.Tests.class, tests, "IdentityInt64", (long) -1, (long) -1); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt64", (long) Long.MAX_VALUE, (long) Long.MAX_VALUE); 
-      test(DBus.Binding.Tests.class, tests, "IdentityInt64", (long) Long.MIN_VALUE, (long) Long.MIN_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt64", Long.MAX_VALUE, Long.MAX_VALUE); 
+      test(DBus.Binding.Tests.class, tests, "IdentityInt64", Long.MIN_VALUE, Long.MIN_VALUE); 
       i = r.nextInt();
       test(DBus.Binding.Tests.class, tests, "IdentityInt64", (long) i, (long) i); 
 
@@ -433,7 +433,7 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
 
       test(DBus.Binding.Tests.class, tests, "Exit", null);
    }
-   public static void testArray(Class iface, Object proxy, String method, Class arrayType, Object content)
+   public static void testArray(Class<? extends DBusInterface> iface, Object proxy, String method, Class<? extends Object> arrayType, Object content)
    {
       Object array = Array.newInstance(arrayType, 0);
       test(iface, proxy, method, array, array);
@@ -485,12 +485,12 @@ public class cross_test_client implements DBus.Binding.TestClient, DBusSigHandle
       ctc = new cross_test_client(conn);
       conn.exportObject("/Test", ctc);
       conn.addSigHandler(DBus.Binding.TestSignals.Triggered.class, ctc);
-      DBus.Binding.Tests tests = (DBus.Binding.Tests) conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Binding.Tests.class);
-      DBus.Binding.SingleTests singletests = (DBus.Binding.SingleTests) conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Binding.SingleTests.class);
-      DBus.Peer peer = (DBus.Peer) conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Peer.class);
-      DBus.Introspectable intro = (DBus.Introspectable) conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Introspectable.class);
+      DBus.Binding.Tests tests = conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Binding.Tests.class);
+      DBus.Binding.SingleTests singletests = conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Binding.SingleTests.class);
+      DBus.Peer peer = conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Peer.class);
+      DBus.Introspectable intro = conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/Test", DBus.Introspectable.class);
 
-      DBus.Introspectable rootintro = (DBus.Introspectable) conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/", DBus.Introspectable.class);
+      DBus.Introspectable rootintro = conn.getRemoteObject("org.freedesktop.DBus.Binding.TestServer", "/", DBus.Introspectable.class);
 
       doTests(peer, intro, rootintro, tests, singletests);
 

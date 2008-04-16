@@ -1,7 +1,51 @@
+Version 2.4:
+
+	* Add DBusMemberName to force method names or signal names to something
+	  other than the Java name (suggested byaViktar Vauchkevich <vctr -at-
+	  yandex -dot- ru>)
+	* Don't respond to Introspect/Ping except on the right interface 
+	  (pointed out by Serkan Kaba <serkan_kaba -at- yahoo -dot- com>)
+	* Automatically unexport objects which go out of scope in the 
+	  parent program (don't hold a strong reference). This is now
+	  optional and not the default for 1. sanity and 2. a possible
+	  bug in the WeakReference workings in Sun.
+	* Add fallback objects---a single object can be called for any
+	  object under a given path prefix.
+	* Add support for localization of strings via gettext.
+	* Throw a nicer error when signals are not declared as part of an
+	  interface.
+	* .viewerclasses needs to depend on .binclasses
+	* Use libunixsocket-java support for writing multiple byte arrays at 
+	  once to write message vectors
+	* check that the unix-socket-received uid matches for connections to 
+	  DBusDaemon
+	* Update to use libunixsocket-java syntax which works on BSDs
+	* Fix utf-8 characters used in test to actually be the same character...
+	* Add code to preallocate the buffer array array (Suggested by Adam
+	  Bennett <cruxic -at- gmail -dot- com>)
+	* Fix warnings when building with gcj (fixes a bug in Peer handling and
+	  DBusSerializable handling)
+
+Version 2.3.2:
+
+	* Fix empty array/map bug (reported by	Jan Kümmel
+	  <freedesktop -at- snorc -dot- org>)
+	* Add licence headers to files missing them
+	* Fix minor bug in AbstractConnection.java (reported by Frank Benoit
+	  <benoit -at- tionex -dot- de>
+	* Make Marshalling more verbose and descriptive in the presence of
+	  mismatched parameter lists (suggested by Anibal Sanchez
+	  <anibal -dot- sanchez -at- sunya -dot- com -dot- ar>)
+	* Fix struct type parsing error (spotted by Gunnar Aastrand Grimnes
+	  <gunnar -dot- grimnes -at- dfki -dot- de> and Frank Benoit 
+	  <keinfarbton -at- googlemail -dot- com>)
+	* Fix parsing of serializable classes
+	* Anonymous SASL (needs testing)
+
 Version 2.3.1:
 	
 	* Fix regression in normal array handling (spotted by Anibal Sanchez
-	  <anibal -dot- sanchez -at- sunya -dot- com -dot- ar>
+	  <anibal -dot- sanchez -at- sunya -dot- com -dot- ar>)
 
 Version 2.3:
 

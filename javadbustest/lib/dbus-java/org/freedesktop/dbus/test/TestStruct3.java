@@ -8,13 +8,23 @@
 
    Full licence texts are included in the COPYING file with this program.
 */
-package org.freedesktop.dbus;
+package org.freedesktop.dbus.test;
+
+import org.freedesktop.dbus.Position;
+import org.freedesktop.dbus.Struct;
 import org.freedesktop.dbus.exceptions.DBusException;
-class InternalSignal extends DBusSignal
+
+import java.util.List;
+
+public final class TestStruct3 extends Struct
 {
-   public InternalSignal(String source, String objectpath, String name, String iface, String sig, long serial, Object... parameters) throws DBusException
+   @Position(0)
+   public final TestStruct2 a;
+   @Position(1)
+   public final List<List<Integer>> b;
+   public TestStruct3(TestStruct2 a, List<List<Integer>> b) throws DBusException
    {
-      super(objectpath, iface, name, sig, parameters);
-      this.serial = serial;
+      this.a = a;
+      this.b = b;
    }
 }

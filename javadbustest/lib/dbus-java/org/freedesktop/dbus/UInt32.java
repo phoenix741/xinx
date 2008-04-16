@@ -10,6 +10,10 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
+import java.text.MessageFormat;
+
 /**
  * Class to represent unsigned 32-bit numbers.
  */
@@ -28,7 +32,7 @@ public class UInt32 extends Number implements Comparable<UInt32>
    public UInt32(long value)
    {
       if (value < MIN_VALUE || value > MAX_VALUE)
-         throw new NumberFormatException(value +" is not between "+ MIN_VALUE +" and "+ MAX_VALUE);
+         throw new NumberFormatException(MessageFormat.format(_("{0} is not between {1} and {2}."), new Object[] { value, MIN_VALUE, MAX_VALUE}));
       this.value = value;
    }
    /** Create a UInt32 from a String.
@@ -48,7 +52,7 @@ public class UInt32 extends Number implements Comparable<UInt32>
    /** The value of this as a int. */
    public int intValue() { return (int) value; }
    /** The value of this as a long. */
-   public long longValue() { return (long) value; }
+   public long longValue() { return /*(long)*/ value; }
    /** The value of this as a short. */
    public short shortValue(){ return (short) value; }
    /** Test two UInt32s for equality. */

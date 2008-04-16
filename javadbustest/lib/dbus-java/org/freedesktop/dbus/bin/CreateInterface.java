@@ -10,6 +10,8 @@
 */
 package org.freedesktop.dbus.bin;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +38,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.freedesktop.DBus.Introspectable;
 import org.freedesktop.dbus.DBusConnection;
-import org.freedesktop.dbus.Marshalling;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
 import org.freedesktop.dbus.types.DBusStructType;
@@ -51,11 +53,12 @@ import org.xml.sax.SAXException;
  */
 public class CreateInterface
 {
+   @SuppressWarnings("unchecked")
    private static String collapseType(Type t, Set<String> imports, Map<StructStruct, Type[]> structs, boolean container, boolean fullnames) throws DBusException
    {
       if (t instanceof ParameterizedType) {
          String s;
-         Class c = (Class) ((ParameterizedType) t).getRawType();
+         Class<? extends Object> c = (Class<? extends Object>) ((ParameterizedType) t).getRawType();
          if (null != structs && t instanceof DBusStructType) {
             int num = 1;
             String name = "Struct";
@@ -74,7 +77,7 @@ public class CreateInterface
          s = s.replaceAll(",$", ">");
          return s;
       } else if (t instanceof Class) {
-         Class c = (Class) t;
+         Class<? extends Object> c = (Class<? extends Object>) t;
          if (c.isArray()) {
             return collapseType(c.getComponentType(), imports, structs, container, fullnames)+"[]";
          } else {
@@ -87,7 +90,7 @@ public class CreateInterface
             } else {
                try {
                   Field f = c.getField("TYPE");
-                  Class d = (Class) f.get(c);
+                  Class<? extends Object> d = (Class<? extends Object>) f.get(c);
                   return d.getSimpleName();
                } catch (Exception e) {
                   return c.getSimpleName();
@@ -100,7 +103,7 @@ public class CreateInterface
    {
       if (null == dbus || "".equals(dbus)) return "";
       Vector<Type> v = new Vector<Type>();
-      int c = Marshalling.getJavaType(dbus, v, 1);
+      /* UNNECCESSARY?? int c = Marshalling.getJavaType(dbus, v, 1);*/
       Type t = v.get(0);
       return collapseType(t, imports, structs, container, fullnames);
    }
@@ -151,7 +154,7 @@ public class CreateInterface
       Vector<Element> out = new Vector<Element>();
       if (null == meth.getAttribute("name") ||
             "".equals(meth.getAttribute("name"))) {
-         System.err.println("ERROR: Interface name was blank, failed");
+         System.err.println(_("ERROR: Interface name was blank, failed"));
          System.exit(1);
       }
       String annotations = "";
@@ -266,7 +269,7 @@ public class CreateInterface
    {
       if (null == iface.getAttribute("name") ||
             "".equals(iface.getAttribute("name"))) {
-         System.err.println("ERROR: Interface name was blank, failed");
+         System.err.println(_("ERROR: Interface name was blank, failed"));
          System.exit(1);
       }
 
@@ -435,7 +438,7 @@ public class CreateInterface
          else if ("node".equals(iface.getNodeName())) 
             parseRoot((Element) iface);
          else {
-            System.err.println("ERROR: Unknown node: "+iface.getNodeName()+".");
+            System.err.println(_("ERROR: Unknown node: ")+iface.getNodeName());
             System.exit(1);
          }
       }
@@ -568,7 +571,7 @@ public class CreateInterface
          if (name.equals(n.getNodeName())) return;
          expected += name + " or ";
       }
-      System.err.println("ERROR: Expected "+expected.replaceAll("....$", "")+", got "+n.getNodeName()+", failed.");
+      System.err.println(MessageFormat.format(_("ERROR: Expected {0}, got {1}, failed."), new Object[] { expected.replaceAll("....$", ""), n.getNodeName() }));
       System.exit(1);
    }
 
@@ -621,7 +624,7 @@ public class CreateInterface
             version();
             System.exit(0);
          } else if (p.startsWith("-")) {
-            System.err.println("ERROR: Unknown option: "+p);
+            System.err.println(_("ERROR: Unknown option: ")+p);
             printSyntax();
             System.exit(1);
          }
@@ -653,25 +656,25 @@ public class CreateInterface
 
       if (null != config.busname) try {
          DBusConnection conn = DBusConnection.getConnection(config.bus);
-         Introspectable in = (Introspectable) conn.getRemoteObject(config.busname, config.object, Introspectable.class);
+         Introspectable in = conn.getRemoteObject(config.busname, config.object, Introspectable.class);
          String id = in.Introspect();
          if (null == id) {
-            System.err.println("ERROR: Failed to get introspection data");
+            System.err.println(_("ERROR: Failed to get introspection data"));
             System.exit(1);
          }
          introspectdata = new StringReader(id);
          conn.disconnect();
       } catch (DBusException DBe) {
-         System.err.println("ERROR: Failure in DBus Communications: "+DBe.getMessage());
+         System.err.println(_("ERROR: Failure in DBus Communications: ")+DBe.getMessage());
          System.exit(1);
       } catch (DBusExecutionException DEe) {
-         System.err.println("ERROR: Failure in DBus Communications: "+DEe.getMessage());
+         System.err.println(_("ERROR: Failure in DBus Communications: ")+DEe.getMessage());
          System.exit(1);
 
       } else if (null != config.datafile) try {
          introspectdata = new InputStreamReader(new FileInputStream(config.datafile));
       } catch (FileNotFoundException FNFe) {
-         System.err.println("ERROR: Could not find introspection file: "+FNFe.getMessage());
+         System.err.println(_("ERROR: Could not find introspection file: ")+FNFe.getMessage());
          System.exit(1);
       }
       try {

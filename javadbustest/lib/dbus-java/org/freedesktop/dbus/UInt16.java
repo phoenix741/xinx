@@ -10,6 +10,10 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
+import java.text.MessageFormat;
+
 /**
  * Class to represent 16-bit unsigned integers.
  */
@@ -28,7 +32,7 @@ public class UInt16 extends Number implements Comparable<UInt16>
    public UInt16(int value)
    {
       if (value < MIN_VALUE || value > MAX_VALUE)
-         throw new NumberFormatException(value +" is not between "+ MIN_VALUE +" and "+ MAX_VALUE);
+         throw new NumberFormatException(MessageFormat.format(_("{0} is not between {1} and {2}."), new Object[] { value, MIN_VALUE, MAX_VALUE}));
       this.value = value;
    }
    /** Create a UInt16 from a String.
@@ -46,7 +50,7 @@ public class UInt16 extends Number implements Comparable<UInt16>
    /** The value of this as a float. */
    public float floatValue() { return (float) value; }
    /** The value of this as a int. */
-   public int intValue() { return (int) value; }
+   public int intValue() { return /*(int)*/ value; }
    /** The value of this as a long. */
    public long longValue() { return (long) value; }
    /** The value of this as a short. */
@@ -58,14 +62,14 @@ public class UInt16 extends Number implements Comparable<UInt16>
    }
    public int hashCode()
    {
-      return (int) value;
+      return /*(int)*/ value;
    }
    /** Compare two UInt16s. 
     * @return 0 if equal, -ve or +ve if they are different. 
     */
    public int compareTo(UInt16 other)
    {
-      return (int) (this.value - other.value);
+      return /*(int)*/ (this.value - other.value);
    }
    /** The value of this as a string. */
    public String toString()

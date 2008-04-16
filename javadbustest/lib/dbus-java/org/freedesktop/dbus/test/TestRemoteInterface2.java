@@ -12,6 +12,7 @@ package org.freedesktop.dbus.test;
 
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.DBusInterfaceName;
+import org.freedesktop.dbus.DBusMemberName;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.DBus.Description;
 
@@ -30,9 +31,10 @@ public interface TestRemoteInterface2 extends DBusInterface
    @Description("Test passing objects as object paths.")
    public DBusInterface getThis(DBusInterface t);
    @Description("Test bools work")
+   @DBusMemberName("checkbool")
    public boolean check();
    @Description("Test Serializable Object")
-   public void testSerializable(byte b, TestSerializable s, int i);
+   public void testSerializable(byte b, TestSerializable<String> s, int i);
    @Description("Call another method on itself from within a call")
    public String recursionTest();
    @Description("Parameter-overloaded method (string)")
@@ -46,5 +48,7 @@ public interface TestRemoteInterface2 extends DBusInterface
    @Description("Get new objects as object paths.")
    public TestNewInterface getNew();
    @Description("Test Complex Variants")
-   public void complexv(Variant v);
+   public void complexv(Variant<? extends Object> v);
+   @Description("Test Introspect on a different interface")
+   public String Introspect();
 }

@@ -10,8 +10,9 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import java.io.BufferedReader;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,6 +25,7 @@ import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.ParseException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -63,6 +65,8 @@ public class Transport
                      mechs = AUTH_EXTERNAL;
                   else if (0 == col.compare(ss[1], "DBUS_COOKIE_SHA1"))
                      mechs = AUTH_SHA;
+                  else if (0 == col.compare(ss[1], "ANONYMOUS"))
+                     mechs = AUTH_ANON;
                }
                if (ss.length > 2)
                   data = ss[2];
@@ -76,6 +80,8 @@ public class Transport
                      mechs |= AUTH_EXTERNAL;
                   else if (0 == col.compare(ss[i], "DBUS_COOKIE_SHA1"))
                      mechs |= AUTH_SHA;
+                  else if (0 == col.compare(ss[i], "ANONYMOUS"))
+                     mechs |= AUTH_ANON;
             } else if (0 == col.compare(ss[0], "BEGIN")) {
                command = COMMAND_BEGIN;
             } else if (0 == col.compare(ss[0], "CANCEL")) {
@@ -84,7 +90,7 @@ public class Transport
                command = COMMAND_ERROR;
                data = ss[1];
             } else {
-               throw new IOException("Invalid Command "+ss[0]);
+               throw new IOException(_("Invalid Command ")+ss[0]);
             }
             if (Debug.debug) Debug.print(Debug.VERBOSE, "Created command: "+this);
          }
@@ -236,6 +242,7 @@ public class Transport
       public static final int AUTH_NONE=0;
       public static final int AUTH_EXTERNAL=1;
       public static final int AUTH_SHA=2;
+      public static final int AUTH_ANON=4;
       
       public static final int COMMAND_AUTH=1;
       public static final int COMMAND_DATA=2;
@@ -364,7 +371,7 @@ public class Transport
       }
       public String challenge = "";
       public String cookie = "";
-      public int do_response(int auth, String Uid, Command c)
+      public int do_response(int auth, String Uid, String kernelUid, Command c)
       {
          MessageDigest md = null;
          try {
@@ -376,8 +383,11 @@ public class Transport
          switch (auth) {
             case AUTH_NONE:
                switch (c.getMechs()) {
+                  case AUTH_ANON:
+                     return OK;
                   case AUTH_EXTERNAL:
-                     if (0 == col.compare(Uid, c.getData()))
+                     if (0 == col.compare(Uid, c.getData()) &&
+                        (null == kernelUid || 0 == col.compare(Uid, kernelUid)))
                         return OK;
                      else
                         return ERROR;
@@ -424,8 +434,16 @@ public class Transport
                return new String[] { "EXTERNAL" };
             case AUTH_SHA:
                return new String[] { "DBUS_COOKIE_SHA1" };
+            case AUTH_ANON:
+               return new String[] { "ANONYMOUS" };
             case AUTH_SHA+AUTH_EXTERNAL:
                return new String[] { "EXTERNAL", "DBUS_COOKIE_SHA1" };
+            case AUTH_SHA+AUTH_ANON:
+               return new String[] { "ANONYMOUS", "DBUS_COOKIE_SHA1" };
+            case AUTH_EXTERNAL+AUTH_ANON:
+               return new String[] { "ANONYMOUS", "EXTERNAL" };
+            case AUTH_EXTERNAL+AUTH_ANON+AUTH_SHA:
+               return new String[] { "ANONYMOUS", "EXTERNAL", "DBUS_COOKIE_SHA1" };
             default:
                return new String[] { };
          }
@@ -436,10 +454,12 @@ public class Transport
        * Types is a bitmask of the available auth types.
        * Returns true if the auth was successful and false if it failed.
        */
-      public boolean auth(int mode, int types, String guid, OutputStream out, InputStream in) throws IOException
+      @SuppressWarnings("unchecked")
+      public boolean auth(int mode, int types, String guid, OutputStream out, InputStream in, UnixSocket us) throws IOException
       {
          String username = System.getProperty("user.name");
          String Uid = null;
+         String kernelUid = null;
          try {
             Class c = Class.forName("com.sun.security.auth.module.UnixSystem");
             Method m = c.getMethod("getUid");
@@ -460,7 +480,10 @@ public class Transport
                case MODE_CLIENT:
                   switch (state) {
                      case INITIAL_STATE:
-                        out.write(new byte[] { 0 });
+                        if (null == us)
+                           out.write(new byte[] { 0 });
+                        else 
+                           us.sendCredentialByte((byte) 0);
                         send(out, COMMAND_AUTH);
                         state = WAIT_DATA;
                         break;
@@ -490,6 +513,9 @@ public class Transport
                            } else if (0 != (available & AUTH_SHA)) {
                               send(out, COMMAND_AUTH, "DBUS_COOKIE_SHA1", Uid);
                               current = AUTH_SHA;
+                           } else if (0 != (available & AUTH_ANON)) {
+                              send(out, COMMAND_AUTH, "ANONYMOUS");
+                              current = AUTH_ANON;
                            }
                            else state = FAILED;
                            break;
@@ -528,6 +554,9 @@ public class Transport
                               } else if (0 != (available & AUTH_SHA)) {
                                  send(out, COMMAND_AUTH, "DBUS_COOKIE_SHA1", Uid);
                                  current = AUTH_SHA;
+                              } else if (0 != (available & AUTH_ANON)) {
+                                 send(out, COMMAND_AUTH, "ANONYMOUS");
+                                 current = AUTH_ANON;
                               }
                               else state = FAILED;
                               break;
@@ -548,6 +577,9 @@ public class Transport
                               } else if (0 != (available & AUTH_SHA)) {
                                  send(out, COMMAND_AUTH, "DBUS_COOKIE_SHA1", Uid);
                                  current = AUTH_SHA;
+                              } else if (0 != (available & AUTH_ANON)) {
+                                 send(out, COMMAND_AUTH, "ANONYMOUS");
+                                 current = AUTH_ANON;
                               }
                               else state = FAILED;
                               break;
@@ -564,7 +596,14 @@ public class Transport
                   switch (state) {
                      case INITIAL_STATE:
                         byte[] buf = new byte[1];
-                        in.read(buf);
+                        if (null == us) {
+                           in.read(buf);
+                        } else {
+                           buf[0] = us.recvCredentialByte();
+                           int kuid = us.getPeerUID();
+                           if (kuid >= 0)
+                              kernelUid = stupidlyEncode(""+kuid);
+                        }
                         if (0 != buf[0]) state = FAILED;
                         else state = WAIT_AUTH;
                         break;
@@ -575,7 +614,7 @@ public class Transport
                               if (null == c.getData()) {
                                  send(out, COMMAND_REJECTED, getTypes(types));
                               } else {
-                                 switch (do_response(current, Uid, c)) {
+                                 switch (do_response(current, Uid, kernelUid, c)) {
                                     case CONTINUE:
                                        send(out, COMMAND_DATA, c.getResponse());
                                        current = c.getMechs();
@@ -608,7 +647,7 @@ public class Transport
                         c = receive(in);
                         switch (c.getCommand()) {
                            case COMMAND_DATA:
-                              switch (do_response(current, Uid, c)) {
+                              switch (do_response(current, Uid, kernelUid, c)) {
                                  case CONTINUE:
                                     send(out, COMMAND_DATA, c.getResponse());
                                     state = WAIT_DATA;
@@ -665,7 +704,6 @@ public class Transport
          return state == AUTHENTICATED;
       }
    }
-   private BusAddress address;
    public MessageReader min;
    public MessageWriter mout;
    public Transport() {}
@@ -681,19 +719,19 @@ public class Transport
    {
       connect(address);
    }
-   public Transport(String address) throws IOException
+   public Transport(String address) throws IOException, ParseException
    {
       connect(new BusAddress(address));
    }
-   public Transport(String address, int timeout) throws IOException
+   public Transport(String address, int timeout) throws IOException, ParseException
    {
       connect(new BusAddress(address), timeout);
    }
-   public void connect(String address) throws IOException
+   public void connect(String address) throws IOException, ParseException
    {
       connect(new BusAddress(address), 0);
    }
-   public void connect(String address, int timeout) throws IOException
+   public void connect(String address, int timeout) throws IOException, ParseException
    {
       connect(new BusAddress(address), timeout);
    }
@@ -704,7 +742,6 @@ public class Transport
    public void connect(BusAddress address, int timeout) throws IOException
    {
       if (Debug.debug) Debug.print(Debug.INFO, "Connecting to "+address);
-      this.address = address;
       OutputStream out = null;
       InputStream in = null;
       UnixSocket us = null;
@@ -747,12 +784,12 @@ public class Transport
          in = s.getInputStream();
          out = s.getOutputStream();
       } else {
-         throw new IOException("unknown address type "+address.getType());
+         throw new IOException(_("unknown address type ")+address.getType());
       }
       
-      if (!(new SASL()).auth(mode, types, address.getParameter("guid"), out, in)) {
+      if (!(new SASL()).auth(mode, types, address.getParameter("guid"), out, in, us)) {
          out.close();
-         throw new IOException("Failed to auth");
+         throw new IOException(_("Failed to auth"));
       }
       if (null != us) {
          if (Debug.debug) Debug.print(Debug.VERBOSE, "Setting timeout to "+timeout+" on Socket");
@@ -770,6 +807,7 @@ public class Transport
    }
    public void disconnect() throws IOException
    {
+      if (Debug.debug) Debug.print(Debug.INFO, "Disconnecting Transport");
       min.close();
       mout.close();
    }

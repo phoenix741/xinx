@@ -10,6 +10,8 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
 
@@ -54,42 +56,49 @@ public class DBusMatchRule
       member = method;
       type = "method_call";
    }
-   public DBusMatchRule(Class c, String source, String object) throws DBusException
+   public DBusMatchRule(Class<? extends Object> c, String source, String object) throws DBusException
    {
       this(c);
       this.source = source;
       this.object = object;
    }
-   public DBusMatchRule(Class c) throws DBusException
+   @SuppressWarnings("unchecked")
+   public DBusMatchRule(Class<? extends Object> c) throws DBusException
    {
       if (DBusInterface.class.isAssignableFrom(c)) {
          if (null != c.getAnnotation(DBusInterfaceName.class))
-            iface = ((DBusInterfaceName) c.getAnnotation(DBusInterfaceName.class)).value();
+            iface = c.getAnnotation(DBusInterfaceName.class).value();
          else
             iface = AbstractConnection.dollar_pattern.matcher(c.getName()).replaceAll(".");
          if (!iface.matches(".*\\..*"))
-            throw new DBusException("DBusInterfaces must be defined in a package.");
+            throw new DBusException(_("DBusInterfaces must be defined in a package."));
          member = null;
          type = null;
       }
       else if (DBusSignal.class.isAssignableFrom(c)) {
-         if (null != c.getEnclosingClass().getAnnotation(DBusInterfaceName.class))
-            iface = ((DBusInterfaceName) c.getEnclosingClass().getAnnotation(DBusInterfaceName.class)).value();
+         if (null == c.getEnclosingClass())
+            throw new DBusException(_("Signals must be declared as a member of a class implementing DBusInterface which is the member of a package."));
          else
-            iface = AbstractConnection.dollar_pattern.matcher(c.getEnclosingClass().getName()).replaceAll(".");
+            if (null != c.getEnclosingClass().getAnnotation(DBusInterfaceName.class))
+               iface = c.getEnclosingClass().getAnnotation(DBusInterfaceName.class).value();
+            else
+               iface = AbstractConnection.dollar_pattern.matcher(c.getEnclosingClass().getName()).replaceAll(".");
          // Don't export things which are invalid D-Bus interfaces
          if (!iface.matches(".*\\..*"))
-            throw new DBusException("DBusInterfaces must be defined in a package.");
-         member = c.getSimpleName();
+            throw new DBusException(_("DBusInterfaces must be defined in a package."));
+         if (c.isAnnotationPresent(DBusMemberName.class))
+            member = c.getAnnotation(DBusMemberName.class).value();
+         else
+            member = c.getSimpleName();
          type = "signal";
       }
       else if (Error.class.isAssignableFrom(c)) {
          if (null != c.getAnnotation(DBusInterfaceName.class))
-            iface = ((DBusInterfaceName) c.getAnnotation(DBusInterfaceName.class)).value();
+            iface = c.getAnnotation(DBusInterfaceName.class).value();
          else
             iface = AbstractConnection.dollar_pattern.matcher(c.getName()).replaceAll(".");
          if (!iface.matches(".*\\..*"))
-            throw new DBusException("DBusInterfaces must be defined in a package.");
+            throw new DBusException(_("DBusInterfaces must be defined in a package."));
          member = null;
          type = "error";
       }
@@ -99,12 +108,12 @@ public class DBusMatchRule
          else
             iface = AbstractConnection.dollar_pattern.matcher(c.getClass().getName()).replaceAll(".");
          if (!iface.matches(".*\\..*"))
-            throw new DBusException("DBusInterfaces must be defined in a package.");
+            throw new DBusException(_("DBusInterfaces must be defined in a package."));
          member = null;
          type = "error";
       }
       else
-         throw new DBusException("Invalid type for match rule ("+c+")");
+         throw new DBusException(_("Invalid type for match rule: ")+c);
    }
    public String toString()
    {

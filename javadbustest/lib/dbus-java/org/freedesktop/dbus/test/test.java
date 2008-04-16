@@ -13,6 +13,7 @@ package org.freedesktop.dbus.test;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,6 @@ import org.freedesktop.dbus.UInt64;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
-import org.freedesktop.dbus.types.DBusListType;
 
 import org.freedesktop.DBus;
 import org.freedesktop.DBus.Error.MatchRuleInvalid;
@@ -60,6 +60,21 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
    {
       this.conn = conn;
    }
+   public String Introspect()
+   {
+      return "Not XML";
+   }
+   public int[][] teststructstruct(TestStruct3 in)
+   {
+      List<List<Integer>> lli = in.b;
+      int[][] out = new int[lli.size()][];
+      for (int j = 0; j < out.length; j++) {
+         out[j] = new int[lli.get(j).size()];
+         for (int k = 0; k < out[j].length; k++)
+            out[j][k] = lli.get(j).get(k);
+      }
+      return out;
+   }
    public float testfloat(float[] f)
    {
       if (f.length < 4 ||
@@ -79,7 +94,7 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
    {
       System.out.println("Sleeping.");
       try {
-         Thread.sleep(5000);
+         Thread.sleep(1000);
       } catch (InterruptedException Ie) {}
       System.out.println("Done sleeping.");
    }
@@ -202,7 +217,7 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
    {
       throw new TestException("test");
    }
-   public void testSerializable(byte b, TestSerializable s, int i)
+   public void testSerializable(byte b, TestSerializable<String> s, int i)
    {
       System.out.println("Recieving TestSerializable: "+s);
       if (  b != 12
@@ -210,9 +225,9 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
          || !(s.getInt() == 1)
          || !(s.getString().equals("woo"))
          || !(s.getVector().size() == 3)
-         || !((Integer) s.getVector().get(0) == 1)
-         || !((Integer) s.getVector().get(1) == 2)
-         || !((Integer) s.getVector().get(2) == 3)    )
+         || !(s.getVector().get(0) == 1)
+         || !(s.getVector().get(1) == 2)
+         || !(s.getVector().get(2) == 3)    )
          test.fail("Error in recieving custom synchronisation");
    }
    public String recursionTest()
@@ -267,12 +282,13 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
          || ! Integer.class.equals(((ParameterizedType) s[1]).getActualTypeArguments()[1]))
          test.fail("Didn't send types correctly");
    }
-   public void complexv(Variant v)
+   @SuppressWarnings("unchecked")
+   public void complexv(Variant<? extends Object> v)
    {
       if (!"a{ss}".equals(v.getSig())
          || ! (v.getValue() instanceof Map)
-         || ((Map) v.getValue()).size() != 1
-         || !"moo".equals(((Map) v.getValue()).get("cow")))
+         || ((Map<Object,Object>) v.getValue()).size() != 1
+         || !"moo".equals(((Map<Object,Object>) v.getValue()).get("cow")))
          test.fail("Didn't send variant correctly");
    }
 }
@@ -300,10 +316,10 @@ class signalhandler implements DBusSigHandler<TestSignalInterface.TestSignal>
 /**
  * Untyped signal handler
  */
-class arraysignalhandler implements DBusSigHandler
+class arraysignalhandler implements DBusSigHandler<TestSignalInterface.TestArraySignal>
 {
    /** Handling a signal */
-   public void handle(DBusSignal s)
+   public void handle(TestSignalInterface.TestArraySignal t)
    {
       try {
          if (false == test.done2) {
@@ -311,7 +327,6 @@ class arraysignalhandler implements DBusSigHandler
          } else {
             test.fail("SignalHandler 2 has been run too many times");
          }
-         TestSignalInterface.TestArraySignal t = (TestSignalInterface.TestArraySignal) s;
          System.out.println("SignalHandler 2 Running");
          if (t.v.size() != 1) test.fail("Incorrect TestArraySignal array length: should be 1, actually "+t.v.size());
          System.out.println("Got a test array signal with Parameters: ");
@@ -354,10 +369,10 @@ class objectsignalhandler implements DBusSigHandler<TestSignalInterface.TestObje
 /**
  * handler which should never be called
  */
-class badarraysignalhandler implements DBusSigHandler
+class badarraysignalhandler<T extends DBusSignal> implements DBusSigHandler<T>
 {
    /** Handling a signal */
-   public void handle(DBusSignal s)
+   public void handle(T s)
    {
       test.fail("This signal handler shouldn't be called");
    }
@@ -420,7 +435,7 @@ public class test
          String source = dbus.GetNameOwner("foo.bar.Test");
          clientconn.addSigHandler(TestSignalInterface.TestArraySignal.class, source, peer, new arraysignalhandler());
          clientconn.addSigHandler(TestSignalInterface.TestObjectSignal.class, new objectsignalhandler());
-         badarraysignalhandler bash = new badarraysignalhandler();
+         badarraysignalhandler<TestSignalInterface.TestSignal> bash = new badarraysignalhandler<TestSignalInterface.TestSignal>();
          clientconn.addSigHandler(TestSignalInterface.TestSignal.class, bash);
          clientconn.removeSigHandler(TestSignalInterface.TestSignal.class, bash);
          System.out.println("done");
@@ -432,8 +447,23 @@ public class test
       
       System.out.println("Listening for Method Calls");
       testclass tclass = new testclass(serverconn);
+      testclass tclass2 = new testclass(serverconn);
       /** This exports an instance of the test class as the object /Test. */
       serverconn.exportObject("/Test", tclass);
+      serverconn.exportObject("/BadTest", tclass);
+      serverconn.exportObject("/BadTest2", tclass2);
+      serverconn.addFallback("/FallbackTest", tclass);
+
+      // explicitly unexport object
+      serverconn.unExportObject("/BadTest");
+      // implicitly unexport object
+      tclass2 = null;
+      System.gc();
+      System.runFinalization();
+      System.gc();
+      System.runFinalization();
+      System.gc();
+      System.runFinalization();
       
       System.out.println("Sending Signal");
       /** This creates an instance of the Test Signal, with the given object path, signal name and parameters, and broadcasts in on the Bus. */
@@ -485,6 +515,24 @@ public class test
       System.out.println("testing floats");
       if (17.093f != tri.testfloat(new float[] { 17.093f, -23f, 0.0f, 31.42f }))
          fail("testfloat returned the wrong thing");
+      System.out.println("Structs of Structs");
+      List<List<Integer>> lli = new Vector<List<Integer>>();
+      List<Integer> li = new Vector<Integer>();
+      li.add(1);
+      li.add(2);
+      li.add(3);
+      lli.add(li);
+      lli.add(li);
+      lli.add(li);
+      TestStruct3 ts3 = new TestStruct3(new TestStruct2(new Vector<String>(), new Variant<Integer>(0)), lli);
+      int[][] out = tri.teststructstruct(ts3);
+      if (out.length != 3) fail("teststructstruct returned the wrong thing: "+Arrays.deepToString(out));
+      for (int[] o: out)
+         if (o.length != 3
+           ||o[0] != 1
+           ||o[1] != 2
+           ||o[2] != 3) fail("teststructstruct returned the wrong thing: "+Arrays.deepToString(out));
+
       System.out.println("frobnicating");
       List<Long> ls = new Vector<Long>();
       ls.add(2L);
@@ -540,10 +588,42 @@ public class test
       } catch (UnknownObject UO) {
          System.out.println("Remote Method Failed with: "+UO.getClass().getName()+" "+UO.getMessage());
       }
+      
+      /** Try and call an explicitly unexported object */
+      try {
+         System.out.println("Calling Method4");
+         tri = clientconn.getRemoteObject("foo.bar.Test", "/BadTest", TestRemoteInterface.class);
+         System.out.println("Got Remote Name: "+tri.getName());
+         test.fail("Method Execution should have failed");
+      } catch (UnknownObject UO) {
+         System.out.println("Remote Method Failed with: "+UO.getClass().getName()+" "+UO.getMessage());
+      }
+ 
+      /** Try and call an implicitly unexported object */
+      try {
+         System.out.println("Calling Method5");
+         tri = clientconn.getRemoteObject("foo.bar.Test", "/BadTest2", TestRemoteInterface.class);
+         System.out.println("Got Remote Name: "+tri.getName());
+         test.fail("Method Execution should have failed");
+      } catch (UnknownObject UO) {
+         System.out.println("Remote Method Failed with: "+UO.getClass().getName()+" "+UO.getMessage());
+      }
 
-      System.out.println("Calling Method4/5/6/7");
+      System.out.println("Calling Method6");
+      tri = clientconn.getRemoteObject("foo.bar.Test", "/FallbackTest/0/1", TestRemoteInterface.class);
+      intro = clientconn.getRemoteObject("foo.bar.Test", "/FallbackTest/0/4", Introspectable.class);
+      System.out.println("Got Fallback Name: "+tri.getName());
+      System.out.println("Fallback Introspection Data: \n"+intro.Introspect());
+
+      System.out.println("Calling Method7--9");
       /** This gets a remote object matching our bus name and exported object path. */
       TestRemoteInterface2 tri2 = clientconn.getRemoteObject("foo.bar.Test", "/Test", TestRemoteInterface2.class);
+      System.out.print("Calling the other introspect method: ");
+      String intro2 = tri2.Introspect();
+      System.out.println(intro2);
+      if (0 != col.compare("Not XML", intro2))
+         fail("Introspect return value incorrect");
+
       /** Call the remote object and get a response. */
       TestTuple<String,List<Integer>,Boolean> rv = tri2.show(234);
       System.out.println("Show returned: "+rv);
@@ -626,8 +706,8 @@ public class test
       System.out.println("done");
 
       System.out.print("Testing nested lists...");
-      List<List<Integer>> lli = new Vector<List<Integer>>();
-      List<Integer> li = new Vector<Integer>();
+      lli = new Vector<List<Integer>>();
+      li = new Vector<Integer>();
       li.add(1);
       lli.add(li);
       List<List<Integer>> reti = tri2.checklist(lli);

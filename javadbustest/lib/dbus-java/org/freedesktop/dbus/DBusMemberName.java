@@ -16,12 +16,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Force the interface name to be different to the Java class name.
+ * Force the member (method/signal) name on the bus to be different to the Java name.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface DBusInterfaceName
+@Target({ElementType.TYPE,ElementType.METHOD})
+public @interface DBusMemberName
 {
-   /** The replacement interface name. */
+   /** The replacement member name. */
    String value();
 }

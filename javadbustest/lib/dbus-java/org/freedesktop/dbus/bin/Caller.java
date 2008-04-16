@@ -1,3 +1,13 @@
+/*
+   D-Bus Java Implementation
+   Copyright (c) 2005-2006 Matthew Johnson
+
+   This program is free software; you can redistribute it and/or modify it
+   under the terms of either the GNU General Public License Version 2 or the
+   Academic Free Licence Version 2.1.
+
+   Full licence texts are included in the COPYING file with this program.
+*/
 package org.freedesktop.dbus.bin;
 
 import java.lang.reflect.Constructor;
@@ -15,6 +25,7 @@ import cx.ath.matthew.debug.Debug;
 
 public class Caller
 {
+   @SuppressWarnings("unchecked")
    public static void main(String[] args) 
    {
       try { 
@@ -39,7 +50,7 @@ public class Caller
          else {
             Vector<Type> lts = new Vector<Type>();
             Marshalling.getJavaType(args[4],lts, -1);
-            Type[] ts = (Type[]) lts.toArray(new Type[0]);
+            Type[] ts = lts.toArray(new Type[0]);
             Object[] os = new Object[args.length-5];
             for (int i = 5; i < args.length; i++) {
                if (ts[i-5] instanceof Class) {

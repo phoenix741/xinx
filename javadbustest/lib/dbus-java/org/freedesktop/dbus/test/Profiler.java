@@ -26,10 +26,12 @@ public interface Profiler extends DBusInterface
       }
    }
    public void array(int[] v);
+   public void stringarray(String[] v);
    public void map(Map<String,String> m);
    public void list(List<String> l);
    public void bytes(byte[] b);
    public void struct(ProfileStruct ps);
+   public void string(String s);
 }
 
 

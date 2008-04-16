@@ -10,7 +10,10 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import java.lang.reflect.Constructor;
+import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
@@ -31,7 +34,7 @@ public class DBusSignal extends Message
       super(Message.Endian.BIG, Message.MessageType.SIGNAL, (byte) 0);
 
       if (null == path || null == member || null == iface)
-         throw new MessageFormatException("Must specify object path, interface and signal name to Signals.");
+         throw new MessageFormatException(_("Must specify object path, interface and signal name to Signals."));
       headers.put(Message.HeaderField.PATH,path);
       headers.put(Message.HeaderField.MEMBER,member);
       headers.put(Message.HeaderField.INTERFACE,iface);
@@ -69,17 +72,34 @@ public class DBusSignal extends Message
          super(source, objectpath, type, name, sig, parameters, serial);
       }
    }
-   private static Map<Class, Type[]> typeCache = new HashMap<Class, Type[]>();
-   private static Map<Class, Constructor> conCache = new HashMap<Class, Constructor>();
+   private static Map<Class<? extends DBusSignal>, Type[]> typeCache = new HashMap<Class<? extends DBusSignal>, Type[]>();
+   private static Map<Class<? extends DBusSignal>, Constructor<? extends DBusSignal>> conCache = new HashMap<Class<? extends DBusSignal>, Constructor<? extends DBusSignal>>();
+   private static Map<String, String> signames = new HashMap<String, String>();
+   private static Map<String, String> intnames = new HashMap<String, String>();
    private Class<? extends DBusSignal> c;
    private boolean bodydone = false;
    private byte[] blen;
+
+   static void addInterfaceMap(String java, String dbus)
+   {
+      intnames.put(dbus, java);
+   }
+   static void addSignalMap(String java, String dbus)
+   {
+      signames.put(dbus, java);
+   }
    
    static DBusSignal createSignal(Class<? extends DBusSignal> c, String source, String objectpath, String sig, long serial, Object... parameters) throws DBusException
    {
       String type = "";
-      if (null != c.getEnclosingClass())
-         type = AbstractConnection.dollar_pattern.matcher(c.getEnclosingClass().getName()).replaceAll(".");
+      if (null != c.getEnclosingClass()) {
+         if (null != c.getEnclosingClass().getAnnotation(DBusInterfaceName.class))
+            type = c.getEnclosingClass().getAnnotation(DBusInterfaceName.class).value();
+         else
+            type = AbstractConnection.dollar_pattern.matcher(c.getEnclosingClass().getName()).replaceAll(".");
+
+      } else
+         throw new DBusException(_("Signals must be declared as a member of a class implementing DBusInterface which is the member of a package."));
       DBusSignal s = new internalsig(source, objectpath, type, c.getSimpleName(), sig, parameters, serial);
       s.c = c;
       return s;
@@ -96,21 +116,26 @@ public class DBusSignal extends Message
       } while (null == c && name.matches(".*\\..*"));
       return c;
    }
+   @SuppressWarnings("unchecked")
    DBusSignal createReal(AbstractConnection conn) throws DBusException
    {
+      String intname = intnames.get(getInterface());
+      String signame = signames.get(getName());
+      if (null == intname) intname = getInterface();
+      if (null == signame) signame = getName();
       if (null == c) 
-         c = createSignalClass(getInterface()+"$"+getName());
+         c = createSignalClass(intname+"$"+signame);
       if (Debug.debug) Debug.print(Debug.DEBUG, "Converting signal to type: "+c);
       Type[] types = typeCache.get(c);
-      Constructor con = conCache.get(c);
+      Constructor<? extends DBusSignal> con = conCache.get(c);
       if (null == types) {
-         con = c.getDeclaredConstructors()[0];
+         con = (Constructor<? extends DBusSignal>) c.getDeclaredConstructors()[0];
          conCache.put(c, con);
          Type[] ts = con.getGenericParameterTypes();
          types = new Type[ts.length-1];
          for (int i = 1; i < ts.length; i++)
             if (ts[i] instanceof TypeVariable)
-               for (Type b: ((TypeVariable) ts[i]).getBounds())
+               for (Type b: ((TypeVariable<GenericDeclaration>) ts[i]).getBounds())
                   types[i-1] = b;
             else
                types[i-1] = ts[i];
@@ -145,23 +170,28 @@ public class DBusSignal extends Message
     * @param args The parameters of the signal.
     * @throws DBusException This is thrown if the subclass is incorrectly defined.
     */
+   @SuppressWarnings("unchecked")
    protected DBusSignal(String objectpath, Object... args) throws DBusException
    {
       super(Message.Endian.BIG, Message.MessageType.SIGNAL, (byte) 0);
 
-      if (!objectpath.matches(AbstractConnection.OBJECT_REGEX)) throw new DBusException("Invalid object path ("+objectpath+")");
+      if (!objectpath.matches(AbstractConnection.OBJECT_REGEX)) throw new DBusException(_("Invalid object path: ")+objectpath);
 
-      Class tc = getClass();
-      String member = tc.getSimpleName();
+      Class<? extends DBusSignal> tc = getClass();
+      String member;
+      if (tc.isAnnotationPresent(DBusMemberName.class))
+         member = tc.getAnnotation(DBusMemberName.class).value();
+      else
+         member = tc.getSimpleName();
       String iface = null;
-      Class enc = tc.getEnclosingClass();
+      Class<? extends Object> enc = tc.getEnclosingClass();
       if (null == enc ||
             !DBusInterface.class.isAssignableFrom(enc) ||
             enc.getName().equals(enc.getSimpleName()))
-         throw new DBusException("Signals must be declared as a member of a class implementing DBusInterface which is the member of a package.");
+         throw new DBusException(_("Signals must be declared as a member of a class implementing DBusInterface which is the member of a package."));
       else
          if (null != enc.getAnnotation(DBusInterfaceName.class))
-            iface = ((DBusInterfaceName) enc.getAnnotation(DBusInterfaceName.class)).value();
+            iface = enc.getAnnotation(DBusInterfaceName.class).value();
          else
             iface = AbstractConnection.dollar_pattern.matcher(enc.getName()).replaceAll(".");
 
@@ -179,13 +209,13 @@ public class DBusSignal extends Message
          try {
             Type[] types = typeCache.get(tc);
             if (null == types) {
-               Constructor con = tc.getDeclaredConstructors()[0];
+               Constructor<? extends DBusSignal> con = (Constructor<? extends DBusSignal>) tc.getDeclaredConstructors()[0];
                conCache.put(tc, con);
                Type[] ts = con.getGenericParameterTypes();
                types = new Type[ts.length-1];
                for (int i = 1; i <= types.length; i++) 
                   if (ts[i] instanceof TypeVariable)
-                     types[i-1] = ((TypeVariable) ts[i]).getBounds()[0];
+                     types[i-1] = ((TypeVariable<GenericDeclaration>) ts[i]).getBounds()[0];
                   else
                      types[i-1] = ts[i];
                typeCache.put(tc, types);
@@ -196,7 +226,7 @@ public class DBusSignal extends Message
             setArgs(args);
          } catch (Exception e) {
             if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, e);
-            throw new DBusException("Failed to add signal parameters: "+e.getMessage());
+            throw new DBusException(_("Failed to add signal parameters: ")+e.getMessage());
          }
       }
 

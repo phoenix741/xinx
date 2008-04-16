@@ -10,6 +10,8 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -18,6 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +86,7 @@ public class Marshalling
       return recursiveGetDBusType(c, basic, 0);
    }
    private static StringBuffer[] out = new StringBuffer[10];
+   @SuppressWarnings("unchecked")
    public static String[] recursiveGetDBusType(Type c, boolean basic, int level) throws DBusException
    {
       if (out.length <= level) {
@@ -94,15 +98,40 @@ public class Marshalling
       else out[level].delete(0, out.length);      
 
       if (basic && !(c instanceof Class))
-         throw new DBusException(c+" is not a basic type");
+         throw new DBusException(c+_(" is not a basic type"));
 
       if (c instanceof TypeVariable) out[level].append((char) Message.ArgumentType.VARIANT);
       else if (c instanceof GenericArrayType) {
          out[level].append((char) Message.ArgumentType.ARRAY);
          String[] s = recursiveGetDBusType(((GenericArrayType) c).getGenericComponentType(), false, level+1);
-         if (s.length != 1) throw new DBusException("Multi-valued array types not permitted");
+         if (s.length != 1) throw new DBusException(_("Multi-valued array types not permitted"));
          out[level].append(s[0]);
-      }
+      } else if ((c instanceof Class && 
+               DBusSerializable.class.isAssignableFrom((Class<? extends Object>) c)) ||
+            (c instanceof ParameterizedType &&
+             DBusSerializable.class.isAssignableFrom((Class<? extends Object>) ((ParameterizedType) c).getRawType()))) {
+         // it's a custom serializable type
+         Type[] newtypes = null;
+         if (c instanceof Class)  {
+            for (Method m: ((Class<? extends Object>) c).getDeclaredMethods()) 
+               if (m.getName().equals("deserialize")) 
+                  newtypes = m.getGenericParameterTypes();
+         }
+         else 
+            for (Method m: ((Class<? extends Object>) ((ParameterizedType) c).getRawType()).getDeclaredMethods()) 
+               if (m.getName().equals("deserialize")) 
+                  newtypes = m.getGenericParameterTypes();
+
+         if (null == newtypes) throw new DBusException(_("Serializable classes must implement a deserialize method"));
+
+         String[] sigs = new String[newtypes.length];
+         for (int j = 0; j < sigs.length; j++) {
+            String[] ss = recursiveGetDBusType(newtypes[j], false, level+1);
+            if (1 != ss.length) throw new DBusException(_("Serializable classes must serialize to native DBus types"));
+            sigs[j] = ss[0];
+         }
+         return sigs;
+      } 
       else if (c instanceof ParameterizedType) {
          ParameterizedType p = (ParameterizedType) c;
          if (p.getRawType().equals(Map.class)) {
@@ -110,24 +139,24 @@ public class Marshalling
             Type[] t = p.getActualTypeArguments();
             try {
                String[] s = recursiveGetDBusType(t[0], true, level+1);
-               if (s.length != 1) throw new DBusException("Multi-valued array types not permitted");
+               if (s.length != 1) throw new DBusException(_("Multi-valued array types not permitted"));
                out[level].append(s[0]);
                s = recursiveGetDBusType(t[1], false, level+1);
-               if (s.length != 1) throw new DBusException("Multi-valued array types not permitted");
+               if (s.length != 1) throw new DBusException(_("Multi-valued array types not permitted"));
                out[level].append(s[0]);
             } catch (ArrayIndexOutOfBoundsException AIOOBe) {
                if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, AIOOBe);
-               throw new DBusException("Map must have 2 parameters");
+               throw new DBusException(_("Map must have 2 parameters"));
             }
             out[level].append('}');
          }
-         else if (List.class.isAssignableFrom((Class) p.getRawType())) {
+         else if (List.class.isAssignableFrom((Class<? extends Object>) p.getRawType())) {
             for (Type t: p.getActualTypeArguments()) {
                if (Type.class.equals(t)) 
                   out[level].append((char) Message.ArgumentType.SIGNATURE);
                else {
                   String[] s = recursiveGetDBusType(t, false, level+1);
-                  if (s.length != 1) throw new DBusException("Multi-valued array types not permitted");
+                  if (s.length != 1) throw new DBusException(_("Multi-valued array types not permitted"));
                   out[level].append((char) Message.ArgumentType.ARRAY);
                   out[level].append(s[0]);
                }
@@ -136,19 +165,19 @@ public class Marshalling
          else if (p.getRawType().equals(Variant.class)) {
             out[level].append((char) Message.ArgumentType.VARIANT);
          }
-         else if (DBusInterface.class.isAssignableFrom((Class) p.getRawType())) {
+         else if (DBusInterface.class.isAssignableFrom((Class<? extends Object>) p.getRawType())) {
             out[level].append((char) Message.ArgumentType.OBJECT_PATH);
          }
-         else if (Tuple.class.isAssignableFrom((Class) p.getRawType())) {
+         else if (Tuple.class.isAssignableFrom((Class<? extends Object>) p.getRawType())) {
             Type[] ts = p.getActualTypeArguments();
             Vector<String> vs = new Vector<String>();
             for (Type t: ts)
                for (String s: recursiveGetDBusType(t, false, level+1))
                   vs.add(s);
-            return (String[]) vs.toArray(new String[0]);
+            return vs.toArray(new String[0]);
          }
          else
-            throw new DBusException("Exporting non-exportable parameterized type "+c);
+            throw new DBusException(_("Exporting non-exportable parameterized type ")+c);
       }
       
       else if (c.equals(Byte.class)) out[level].append((char) Message.ArgumentType.BYTE);
@@ -173,26 +202,27 @@ public class Marshalling
       else if (c.equals(String.class)) out[level].append((char) Message.ArgumentType.STRING);
       else if (c.equals(Variant.class)) out[level].append((char) Message.ArgumentType.VARIANT);
       else if (c instanceof Class && 
-            DBusInterface.class.isAssignableFrom((Class) c)) out[level].append((char) Message.ArgumentType.OBJECT_PATH);
+            DBusInterface.class.isAssignableFrom((Class<? extends Object>) c)) out[level].append((char) Message.ArgumentType.OBJECT_PATH);
       else if (c instanceof Class && 
-            Path.class.equals((Class) c)) out[level].append((char) Message.ArgumentType.OBJECT_PATH);
+            Path.class.equals((Class<? extends Object>) c)) out[level].append((char) Message.ArgumentType.OBJECT_PATH);
       else if (c instanceof Class && 
-            ObjectPath.class.equals((Class) c)) out[level].append((char) Message.ArgumentType.OBJECT_PATH);
-      else if (c instanceof Class && ((Class) c).isArray()) {
-         if (Type.class.equals(((Class) c).getComponentType()))
+            ObjectPath.class.equals((Class<? extends Object>) c)) out[level].append((char) Message.ArgumentType.OBJECT_PATH);
+      else if (c instanceof Class && 
+            ((Class<? extends Object>) c).isArray()) {
+         if (Type.class.equals(((Class<? extends Object>) c).getComponentType()))
             out[level].append((char) Message.ArgumentType.SIGNATURE);
          else {
             out[level].append((char) Message.ArgumentType.ARRAY);
-            String[] s = recursiveGetDBusType(((Class) c).getComponentType(), false, level+1);
-            if (s.length != 1) throw new DBusException("Multi-valued array types not permitted");
+            String[] s = recursiveGetDBusType(((Class<? extends Object>) c).getComponentType(), false, level+1);
+            if (s.length != 1) throw new DBusException(_("Multi-valued array types not permitted"));
             out[level].append(s[0]);
          }
       } else if (c instanceof Class && 
-            Struct.class.isAssignableFrom((Class) c)) {
+            Struct.class.isAssignableFrom((Class<? extends Object>) c)) {
          out[level].append((char) Message.ArgumentType.STRUCT1);
          Type[] ts = Container.getTypeCache(c);
          if (null == ts) {
-            Field[] fs = ((Class) c).getDeclaredFields();
+            Field[] fs = ((Class<? extends Object>) c).getDeclaredFields();
             ts = new Type[fs.length];
             for (Field f : fs) {
                Position p = f.getAnnotation(Position.class);
@@ -207,33 +237,8 @@ public class Marshalling
                for (String s: recursiveGetDBusType(t, false, level+1))
                   out[level].append(s);
          out[level].append(')');
-      } else if ((c instanceof Class && 
-            DBusSerializable.class.isAssignableFrom((Class) c)) ||
-            (c instanceof ParameterizedType &&
-             DBusSerializable.class.isAssignableFrom((Class) ((ParameterizedType) c).getRawType()))) {
-         // it's a custom serializable type
-         Type[] newtypes = null;
-         if (c instanceof Class)  {
-            for (Method m: ((Class) c).getDeclaredMethods()) 
-               if (m.getName().equals("deserialize")) 
-                  newtypes = m.getGenericParameterTypes();
-         }
-         else 
-            for (Method m: ((Class) ((ParameterizedType) c).getRawType()).getDeclaredMethods()) 
-               if (m.getName().equals("deserialize")) 
-                  newtypes = m.getGenericParameterTypes();
-
-         if (null == newtypes) throw new DBusException("Serializable classes must implement a deserialize method");
-
-         String[] sigs = new String[newtypes.length];
-         for (int j = 0; j < sigs.length; j++) {
-            String[] ss = recursiveGetDBusType(newtypes[j], false, level+1);
-            if (1 != ss.length) throw new DBusException("Serializable classes must serialize to native DBus types");
-            sigs[j] = ss[0];
-         }
-         return sigs;
       } else {
-         throw new DBusException("Exporting non-exportable type "+c);
+         throw new DBusException(_("Exporting non-exportable type ")+c);
       }
 
       if (Debug.debug) Debug.print(Debug.VERBOSE, "Converted Java type: "+c+" to D-Bus Type: "+out[level]);
@@ -330,12 +335,12 @@ public class Marshalling
                   i+=c+1;
                   break;
                default:
-                  throw new DBusException("Failed to parse DBus type signature: "+dbus+" ("+dbus.charAt(i)+")");
+                  throw new DBusException(MessageFormat.format(_("Failed to parse DBus type signature: {0} ({1})."), new Object[] { dbus, dbus.charAt(i) }));
             }
          return i;
       } catch (IndexOutOfBoundsException IOOBe) {
          if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, IOOBe);
-         throw new DBusException("Failed to parse DBus type signature: "+dbus);
+         throw new DBusException(_("Failed to parse DBus type signature: ")+dbus);
       }
    }
    /**
@@ -515,7 +520,7 @@ public class Marshalling
       }
       return parameter;
    }
-   static List deSerializeParameters(List parameters, Type type, AbstractConnection conn) throws Exception
+   static List<Object> deSerializeParameters(List<Object> parameters, Type type, AbstractConnection conn) throws Exception
    {
       if (Debug.debug) Debug.print(Debug.VERBOSE, "Deserializing from "+parameters+" to "+type);
       if (null == parameters) return null;
@@ -550,23 +555,41 @@ public class Marshalling
       return parameters;
    }
 
+   @SuppressWarnings("unchecked")
    static Object[] deSerializeParameters(Object[] parameters, Type[] types, AbstractConnection conn) throws Exception
    {
-      if (Debug.debug) Debug.print(Debug.VERBOSE, "Deserializing from "+parameters+" to "+types);
+      if (Debug.debug) Debug.print(Debug.VERBOSE, "Deserializing from "+Arrays.deepToString(parameters)+" to "+Arrays.deepToString(types));
       if (null == parameters) return null;
+
       for (int i = 0; i < parameters.length; i++) {
+         // CHECK IF ARRAYS HAVE THE SAME LENGTH <-- has to happen after expanding parameters
+         if (i >= types.length) {
+            if (Debug.debug) {
+               for (int j = 0; j < parameters.length; j++) {
+                  Debug.print(Debug.ERR, String.format("Error, Parameters difference (%1d, '%2s')", j, parameters[j].toString()));
+               }
+            }
+            throw new DBusException(_("Error deserializing message: number of parameters didn't match receiving signature"));
+         }
          if (null == parameters[i]) continue;
 
-         if (types[i] instanceof Class &&
-               DBusSerializable.class.isAssignableFrom((Class) types[i])) {
-            for (Method m: ((Class) types[i]).getDeclaredMethods()) 
+         if ((types[i] instanceof Class &&
+               DBusSerializable.class.isAssignableFrom((Class<? extends Object>) types[i])) ||
+               (types[i] instanceof ParameterizedType &&
+               DBusSerializable.class.isAssignableFrom((Class<? extends Object>) ((ParameterizedType) types[i]).getRawType()))) {
+            Class<? extends DBusSerializable> dsc;
+            if (types[i] instanceof Class)
+               dsc = (Class<? extends DBusSerializable>) types[i];
+            else
+               dsc = (Class<? extends DBusSerializable>) ((ParameterizedType) types[i]).getRawType();
+            for (Method m: dsc.getDeclaredMethods()) 
                if (m.getName().equals("deserialize")) {
                   Type[] newtypes = m.getGenericParameterTypes();
                   try {
                      Object[] sub = new Object[newtypes.length];
                      System.arraycopy(parameters, i, sub, 0, newtypes.length); 
                      sub = deSerializeParameters(sub, newtypes, conn);
-                     DBusSerializable sz = (DBusSerializable) ((Class) types[i]).newInstance();
+                     DBusSerializable sz = dsc.newInstance();
                      m.invoke(sz, sub);
                      Object[] compress = new Object[parameters.length - newtypes.length + 1];
                      System.arraycopy(parameters, 0, compress, 0, i);
@@ -575,7 +598,8 @@ public class Marshalling
                      parameters = compress;
                   } catch (ArrayIndexOutOfBoundsException AIOOBe) {
                      if (AbstractConnection.EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, AIOOBe);
-                     throw new DBusException("Not enough elements to create custom object from serialized data ("+(parameters.length-i)+" < "+(newtypes.length)+")");
+                     throw new DBusException(MessageFormat.format(_("Not enough elements to create custom object from serialized data ({0} < {1})."), 
+                                 new Object[] { parameters.length-i, newtypes.length }));
                   }
                }
          } else

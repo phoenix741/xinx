@@ -10,6 +10,8 @@
 */
 package org.freedesktop.dbus;
 
+import static org.freedesktop.dbus.Gettext._;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,10 +33,10 @@ public class DBusAsyncReply<ReturnType>
     * @param replies A Collection of handles to replies to check.
     * @return A Collection only containing those calls which have had replies.
     */
-   public static Collection<DBusAsyncReply> hasReply(Collection<DBusAsyncReply> replies)
+   public static Collection<DBusAsyncReply<? extends Object>> hasReply(Collection<DBusAsyncReply<? extends Object>> replies)
    {
-      Collection<DBusAsyncReply> c = new ArrayList<DBusAsyncReply>(replies);
-      Iterator<DBusAsyncReply> i = c.iterator();
+      Collection<DBusAsyncReply<? extends Object>> c = new ArrayList<DBusAsyncReply<? extends Object>>(replies);
+      Iterator<DBusAsyncReply<? extends Object>> i = c.iterator();
       while (i.hasNext())
          if (!i.next().hasReply()) i.remove();
       return c;
@@ -95,12 +97,12 @@ public class DBusAsyncReply<ReturnType>
       checkReply();
       if (null != rval) return rval;
       else if (null != error) throw error;
-      else throw new NoReply("Async call has not had a reply");
+      else throw new NoReply(_("Async call has not had a reply"));
    }
 
    public String toString()
    {
-      return "Waiting for: "+mc;
+      return _("Waiting for: ")+mc;
    }
    Method getMethod() { return me; }
    AbstractConnection getConnection() { return conn; }
