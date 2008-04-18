@@ -1,0 +1,10 @@
+This path contains patch and tools. This file describe the content
+of each path.
+
+ * javadbustest : a tool developpement in java to use dbus and show how
+xinx can comunicate with java program.
+ * sqlconf : a tool to load a configuration.xml file in a sqlite base.
+ * configure_xinx.cache : an exemple of configure file for compile Qt
+source for xinx
+ * dbus_ulrich.patch : a patch used to hide the dbus-daemon console on
+windows.
