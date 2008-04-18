@@ -2005,7 +2005,15 @@ Date du fichier : %4</translation>
 &lt;li&gt;Add the file to &lt;i&gt;revision control system.&lt;/i&gt;&lt;/li&gt;
 &lt;li&gt;Commit the file to &lt;i&gt;revision control system.&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;You can compare two file too.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cette vue affiche toutes les fichiers du dossier projet (et peut-être filtré par le champ plus haut).&lt;/p&gt;
+&lt;p&gt;Par un clique droit à l&apos;aide de la souris sur un fichier, on peut : &lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Comparer le fichier avec le standard&lt;/li&gt;
+&lt;li&gt;Comparer le fichier avec le référenciel&lt;/li&gt;
+&lt;li&gt;Mettre à jour le fichier depuis le référenciel&lt;/li&gt;
+&lt;li&gt;Supprimer un fichier du référenciel.&lt;/li&gt;
+&lt;li&gt;Ajouter un fichier au référenciel.&lt;/li&gt;
+&lt;li&gt;Valider un fichier sur le référenciel.&lt;/li&gt;&lt;/ul&gt;
+&lt;p&gt;On peut également comparer deux fichiers.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2055,40 +2063,45 @@ Date du fichier : %4</translation>
         <source>&lt;p&gt;This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;/p&gt;
 &lt;p&gt;In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research &lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use a &lt;i&gt;project prefix&lt;/i&gt; in derivated modules.&lt;/p&gt;
 &lt;p&gt;A project can define web services too.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cette assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et de définir les variables importantes.&lt;/p&gt;
+&lt;p&gt;Dans &lt;b&gt;XINX&lt;/b&gt;, un projet est utilisé sur la &lt;i&gt;recherche fichier&lt;/i&gt; dans un projet, utilise un &lt;i&gt;gestionnaire de version&lt;/i&gt;, ou utiliser un &lt;i&gt;préfixe projet&lt;/i&gt; dans les modules dérivés.&lt;/p&gt;
+&lt;p&gt;Un projet peut également définir des services internet.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;In a derivated project, the file prefix is used to check if a file is derivated or standard.&lt;/p&gt;
 &lt;p&gt;A derivated file, he begins by the prefix and an underscore like &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
 &lt;p&gt;If you save a standard file, &lt;b&gt;XINX&lt;/b&gt; propose you to derive the file, and if possible to add the file in the &lt;i&gt;revision control system&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Dans un projet dérivé, le prefixe fichier est utilisé pour vérifier si un fichier est standard ou dérivé.&lt;/p&gt;
+&lt;p&gt;Un fichier dérivé commence par un préfixe, suivis d&apos;un surligner, comme &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
+&lt;p&gt;Si on sauve un fichier standard, &lt;b&gt;XINX&lt;/b&gt; vous propose de dériver le fichier, et si possible de l&apos;ajouter dans le &lt;i&gt;gestionnaire de version&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If the project is full standard, the project don&apos;t ask you to save the file with a specifique prefix.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si le projet est complétement standard, &lt;b&gt;XINX&lt;/b&gt; ne demandera pas à sauvegarder les fichiers avec un préfix spécifique.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Name of the project showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;, the project name is appended to the application server directory and showed the project directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du projet affiché dans la barre de titre de &lt;b&gt;XINX&lt;/b&gt;, le nom du projet est ajouté également au chemin du serveur d&apos;application comme dossier projet dans &lt;i&gt;l&apos;assistant de création de projet&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The &lt;i&gt;application serveur directory&lt;/i&gt; is used to fill the &lt;i&gt;applcation server log directory&lt;/i&gt;, and the &lt;i&gt;project directory&lt;/i&gt;. The default value for this field is the &lt;i&gt;application server directory&lt;/i&gt; from the settings dialog.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; est utilisé pour remplire automatiquement le &lt;i&gt;chemin des journaux du serveur d&apos;application&lt;/i&gt;, ainsi que le &lt;i&gt;dossier projet&lt;/i&gt;. La valeur par défaut de ce cahmp est le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; de la boite de dialogue de personnalisation.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the server log directory, used to list presentation files in the &lt;i&gt;XML presentation View&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le dossier des journaux du serveur, utilisé pour listé tous les flux de présentation dans la fenêtre &lt;i&gt;Flux de présentation&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;This is the project directory, generally where is stored the &lt;i&gt;configuration.xml&lt;/i&gt; file.&lt;/p&gt;
 &lt;p&gt;This is the racine where the &lt;i&gt;project file view&lt;/i&gt; start.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;C&apos;est le chemin du dossier projet, généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;C&apos;est la racine om la &lt;i&gt;vue projet&lt;/i&gt; commence.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2246,48 +2259,49 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le nom du projet affiché dans la bar de titre de &lt;b&gt;XINX&lt;/b&gt;. C&apos;est information est inutil.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the project directory (generally where is stored &lt;i&gt;configuration.xml&lt;/i&gt;). This is the root of the project directory dock, used to search file and for &lt;i&gt;revision control system&lt;/i&gt; access.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le dossier projet (généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;). C&apos;est la racine où la vue dossier projet, utilisé pour chercher des fichiers et utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt; commence.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This the list of &lt;i&gt;revision control system&lt;/i&gt;. The list is appended by modules that you can find in the customize dialog.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est la liste des &lt;i&gt;gestionnaire de version&lt;/i&gt; disponible. Cette liste est mise à jours par les modules que vous pouvez trouver dans la fenêtre de personnalisation.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the path of the log server directory (where is stored all &lt;i&gt;presentation_*.xml&lt;/i&gt; files).</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le chemin vers les dossier du journal du serveur (où sont enregistré les fichiers du styles &lt;i&gt;presentation_*.xml&lt;/i&gt;).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the default lang used by your project. This can be used for the search path of the &lt;u&gt;C&lt;/u&gt;ustom files tab.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est la langue utilisé par défaut dans le projet. Cette information peut-être utilisé par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the default navigator used in the list of path in the &lt;u&gt;C&lt;/u&gt;ustom files tab.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est le navigateur par défaut utilisé dans la liste des chemins de l&apos;onget &lt;u&gt;F&lt;/u&gt;ichier spéciques.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b&gt;XINX&lt;/b&gt; will connect to the service and download the description file.&lt;/p&gt;
 &lt;p&gt;Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Cochez case si vous voulez ajouter des services internet à votre projet. La liste doit contenir des chemins vers les fichiers WSDL. A l&apos;ouverture du projet, &lt;b&gt;XINX&lt;/b&gt; se connectera aux services et téléchargera le fichier de description.&lt;/p&gt;
+&lt;p&gt;Après, vous pouver executer un flux à destination du service, ce qui ouvrira une fenêtre avec le flux entrant et le flux sortant.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si choché, &lt;b&gt;XINX&lt;/b&gt; vérifira si le fichier est dérivé ou non, et le cas échéans proposera de le préfixer.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The sub-directory where the derivated file must be stored.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le sous-dossier dans lequelle le fichier dérivé doit être enregistré.</translation>
     </message>
 </context>
 <context>
@@ -2360,7 +2374,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;html&gt;This is where &lt;b&gt;XINX&lt;/b&gt; store it&apos;s message from &lt;i&gt;revision control system&lt;/i&gt; console.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;est la fenêtre où &lt;b&gt;XINX&lt;/b&gt; affichera les messages venant de la console du &lt;i&gt;gestionnaire de version&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2449,43 +2463,45 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>p&gt;If checked, &lt;b&gt;XINX&lt;/b&gt; replace the searched string by this  sting.&lt;/p&gt;
 &lt;p&gt;If the search string is a &lt;i&gt;regular expression&lt;/i&gt;, you can use \1 or \2 for captured string. Captured string in the find string is in bracket.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si coché, &lt;b&gt;XINX&lt;/b&gt; remplacera la chaine de recherche par cette chaine de caractère.&lt;/p&gt;
+&lt;p&gt;Si la chaine de recherche est une &lt;i&gt;expression régulière&lt;/i&gt;, on peut utiliser \1 ou \2 pour les chaines capturés. Les chaines capturés dans la chaine de recherche sont entre parenthèse.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Text to search in the editor. The search string can be &lt;i&gt;string literal&lt;/i&gt; or a &lt;i&gt;regular expression&lt;/i&gt; (if the corresponding checkbox is checked).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; keep history of searched text.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Texte à utiliser lors de la recherche. La chaine de recherche peut être &lt;i&gt;literal&lt;/i&gt; ou une &lt;i&gt;expression régulière&lt;/i&gt; (si la case à cocher correspondante est coché).&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; garde un historique des chaines recherchées.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Direction where &lt;b&gt;XINX&lt;/b&gt; must go for search string.</source>
-        <translation type="unfinished"></translation>
+        <translation>Direction que &lt;b&gt;XINX&lt;/b&gt; doit prendre pour rechercher la chaine.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If &lt;i&gt;All&lt;/i&gt; is checked &lt;b&gt;XINX&lt;/b&gt; search in the whole document, else &lt;b&gt;XINX&lt;/b&gt; search only in the selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si &lt;i&gt;Tout&lt;/i&gt; est coché &lt;b&gt;XINX&lt;/b&gt; cherchera le texte dans tout le document, sinon &lt;b&gt;XINX&lt;/b&gt; cherchera uniquement dans la sélection.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; search the case sensitive string.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; cherche la chaine en respectant la Casse.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; search the word from the start of the document, else &lt;b&gt;XINX&lt;/b&gt; search from the cursor position.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; cherchera le mot depuis le début du document, sinon &lt;b&gt;XINX&lt;/b&gt; cherchera depuis la position du curseur.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If unchecked, &lt;b&gt;XINX&lt;/b&gt; search string include in other word, else only whole word is searched.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si non coché, &lt;b&gt;XINX&lt;/b&gt; cherchera la chaine même si elle est incluse dans un autre mot, sinon seul les mots complet seront recherché.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; use regular expression to match string.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; utilisera les expressions régulière pour trouver la chaine.</translation>
     </message>
 </context>
 <context>
@@ -2569,22 +2585,22 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Content of the selected input parameter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenue du paramêtre d&apos;entrée selectionné.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The list of the input parameter send to the &lt;i&gt;web service&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des paramêtres d&apos;entrées envoyés aux &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Content of the selected result of the &lt;i&gt;web service&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenu du résultat séléctionné du &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>List of result returned by the &lt;i&gt;web services&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des résulats retourné par le &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2623,12 +2639,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked the next page ask you the list of WSDL used to known params of the WebServices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, la prochaine page vous demandera la listes des fichiers de descriptions de service internet (WSDL).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Don&apos;t manage web services in the project.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne gère pas les services internet dans ce projet.</translation>
     </message>
 </context>
 <context>
@@ -2762,17 +2778,17 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked &lt;b&gt;XINX&lt;/b&gt; will propose you to add a prefix to the filename.</source>
-        <translation type="unfinished"></translation>
+        <translation>So coché &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le préfixe au nom du fichier.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; will propose you to add the file to the repository.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le fichier au référenciel.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>List of &lt;i&gt;Business View&lt;/i&gt; using this file and that made be impactedi.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des &lt;i&gt;Business View&lt;/i&gt; utilisé dans le fichier et pouvant être impacté.</translation>
     </message>
 </context>
 <context>
@@ -2821,12 +2837,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the prefix appended to the file when the file is saved.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce préfix est ajouté au fichier au moment de la sauvegarde.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the directory where is stored derivated files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin utilisé pour stocker les fichiers dérives.</translation>
     </message>
 </context>
 <context>
@@ -3063,29 +3079,31 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Refresh the list of file present in the &lt;i&gt;log&lt;/i&gt; directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rafraichir la liste des fichier de présentation du dossier &lt;i&gt;log&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file the view is updated with the content of the file.&lt;/p&gt;
 &lt;p&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Liste des fichiers du dossier &lt;i&gt;log&lt;/i&gt;. Si vous sélectionné un fichier la vue sera mis à jours par son contenu.&lt;/p&gt;
+&lt;p&gt;Vous pouvez ouvrir un fichier de la liste, ou un fichier d&apos;un autre dossier.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Clear the text filter at right.</source>
-        <translation type="unfinished"></translation>
+        <translation>Efface le flitre.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; search node where name match the filter (literal or regular expression).</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre utilisé dans la vue.&lt;b&gt;XINX&lt;/b&gt; recherche les noeuds possédant un nom correspondant au filtre (litéral ou expression régulière).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is finded, all sub-element is showed. &lt;/p&gt;
 &lt;p&gt;If &lt;i&gt;None&lt;/i&gt; is selected only matched element is showed.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Si &lt;i&gt;Sous-élément&lt;/i&gt; est sélectionné, quand un élément est trouvé, tout les sous-éléments sont affichés.&lt;/p&gt;
+&lt;p&gt;Si &lt;i&gt;Aucun&lt;/i&gt; est séléctionné, seul les éléments correspondant au filtre sont affiché.&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
