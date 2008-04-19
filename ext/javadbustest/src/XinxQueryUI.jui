@@ -1,0 +1,87 @@
+<ui version="4.0" language="jambi" >
+ <class>XinxQueryUI</class>
+ <widget class="QWidget" name="XinxQueryUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>512</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <widget class="QSplitter" name="splitter" >
+     <property name="orientation" >
+      <enum>com.trolltech.qt.core.Qt.Orientation.Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="layoutWidget" >
+      <layout class="QVBoxLayout" >
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="leftMargin" >
+        <number>0</number>
+       </property>
+       <property name="topMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="connectPushButton" >
+         <property name="focusPolicy" >
+          <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>&amp;Connect</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="callPushButton" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy" >
+          <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>C&amp;all</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="methodListWidget" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy" >
+          <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QTextEdit" name="logTextEdit" >
+      <property name="focusPolicy" >
+       <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+      </property>
+      <property name="readOnly" >
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

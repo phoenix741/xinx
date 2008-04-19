@@ -54,7 +54,7 @@ PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent )
 void PrivateUniqueApplication::start() {
 	XINX_TRACE( "PrivateUniqueApplication::start", "()" );
 
-	QString appName = "com.editor.xinx";
+	QString appName = "org.shadoware.xinx";
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
 	if ( dbusService && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
