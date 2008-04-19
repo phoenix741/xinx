@@ -16,13 +16,9 @@
    <item row="0" column="0" colspan="3" >
     <widget class="QLabel" name="label" >
      <property name="text" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This wizard will help you to create a &lt;span style=" font-weight:600;">XINX&lt;/span> project and define some important variables.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">In &lt;span style=" font-weight:600;">XINX&lt;/span>, a project is used to use the &lt;span style=" font-style:italic;">file research &lt;/span>in a project, use a &lt;span style=" font-style:italic;">revision control system&lt;/span>, or use a &lt;span style=" font-style:italic;">project prefix&lt;/span> in derivated modules.&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">A project can define web services too.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>&lt;p>This wizard will help you to create a &lt;b>XINX&lt;/b> project and define some important variables.&lt;/p>
+&lt;p>In &lt;b>XINX&lt;/b>, a project is used to use the &lt;i>file research &lt;/i>in a project, use a &lt;i>revision control system&lt;/i>, or use a &lt;i>project prefix&lt;/i> in derivated modules.&lt;/p>
+&lt;p>A project can define web services too.&lt;/p></string>
      </property>
      <property name="wordWrap" >
       <bool>true</bool>
@@ -32,13 +28,9 @@ p, li { white-space: pre-wrap; }
    <item row="1" column="0" colspan="3" >
     <widget class="QRadioButton" name="m_derivatedRadio" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">In a derivated project, the file prefix is used to check if a file is derivated or standard.&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">A derivated file, he begins bye the prefix and an underscore like '&lt;span style=" font-style:italic;">&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/span>'.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If you save a standard file, &lt;span style=" font-weight:600;">XINX&lt;/span> propose you to derive the file, and if possible to add the file in the &lt;span style=" font-style:italic;">revision control system&lt;/span>.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>&lt;p>In a derivated project, the file prefix is used to check if a file is derivated or standard.&lt;/p>
+&lt;p>A derivated file, he begins by the prefix and an underscore like '&lt;i>&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i>'.&lt;/p>
+&lt;p>If you save a standard file, &lt;b>XINX&lt;/b> propose you to derive the file, and if possible to add the file in the &lt;i>revision control system&lt;/i>.&lt;/p></string>
      </property>
      <property name="text" >
       <string>&amp;Derivated from standard</string>
@@ -51,10 +43,7 @@ p, li { white-space: pre-wrap; }
    <item row="2" column="0" colspan="3" >
     <widget class="QRadioButton" name="m_standardRadio" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If the project is full standard, the project don't ask you to save the file with a specifique prefix.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>If the project is full standard, the project don't ask you to save the file with a specifique prefix.</string>
      </property>
      <property name="text" >
       <string>Change the &amp;standard</string>
@@ -74,10 +63,7 @@ p, li { white-space: pre-wrap; }
    <item row="3" column="1" >
     <widget class="QLineEdit" name="m_projectNameEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Name of the project showed in the title bar of &lt;span style=" font-weight:600;">XINX&lt;/span>, the project name is appended to the application server directory and showed the project directory&lt;/p>&lt;/body>&lt;/html></string>
+      <string>Name of the project showed in the title bar of &lt;b>XINX&lt;/b>, the project name is appended to the application server directory and showed the project directory.</string>
      </property>
     </widget>
    </item>
@@ -94,10 +80,7 @@ p, li { white-space: pre-wrap; }
    <item row="4" column="1" >
     <widget class="DirectoryEdit" name="m_ASPathEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">The &lt;span style=" font-style:italic;">application serveur directory&lt;/span> is used to fill the &lt;span style=" font-style:italic;">applcation server log directory&lt;/span>, and the &lt;span style=" font-style:italic;">project directory&lt;/span>. The default value for this field is the &lt;span style=" font-style:italic;">application server directory&lt;/span> from the settings dialog.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>The &lt;i>application serveur directory&lt;/i> is used to fill the &lt;i>applcation server log directory&lt;/i>, and the &lt;i>project directory&lt;/i>. The default value for this field is the &lt;i>application server directory&lt;/i> from the settings dialog.</string>
      </property>
     </widget>
    </item>
@@ -114,10 +97,7 @@ p, li { white-space: pre-wrap; }
    <item row="5" column="1" >
     <widget class="DirectoryEdit" name="m_logPathEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the server log directory, used to list presentation files in the &lt;span style=" font-style:italic;">XML presentation View&lt;/span>.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>This is the server log directory, used to list presentation files in the &lt;i>XML presentation View&lt;/i>.</string>
      </property>
     </widget>
    </item>
@@ -134,11 +114,8 @@ p, li { white-space: pre-wrap; }
    <item row="6" column="1" >
     <widget class="DirectoryEdit" name="m_projectPathEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the project directory, generally where is stored the &lt;span style=" font-style:italic;">configuration.xml&lt;/span> file.&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the racine where the &lt;span style=" font-style:italic;">project file view&lt;/span> start.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>&lt;p>This is the project directory, generally where is stored the &lt;i>configuration.xml&lt;/i> file.&lt;/p>
+&lt;p>This is the racine where the &lt;i>project file view&lt;/i> start.&lt;/p></string>
      </property>
     </widget>
    </item>

@@ -112,10 +112,7 @@
           <item row="0" column="1" >
            <widget class="QLineEdit" name="m_nameLineEdit" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the project name showed in the title bar of &lt;span style=" font-weight:600;">XINX&lt;/span>.This just an informative information useless.&lt;/p>&lt;/body>&lt;/html></string>
+             <string>This is the project name showed in the title bar of &lt;b>XINX&lt;/b>.This just an informative information useless.</string>
             </property>
            </widget>
           </item>
@@ -129,30 +126,21 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="1" >
            <widget class="DirectoryEdit" name="m_projectLineEdit" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the project directory (generally where is stored &lt;span style=" font-style:italic;">configuration.xml&lt;/span>). This is the root of the project directory dock, used to search file and for &lt;span style=" font-style:italic;">revision control system&lt;/span> access.&lt;/p>&lt;/body>&lt;/html></string>
+             <string>This is the project directory (generally where is stored &lt;i>configuration.xml&lt;/i>). This is the root of the project directory dock, used to search file and for &lt;i>revision control system&lt;/i> access.</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1" >
            <widget class="QComboBox" name="m_projectRCSComboBox" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This the list of &lt;span style=" font-style:italic;">revision control system&lt;/span>. The list is appended by modules that you can find in the customize dialog.&lt;/p>&lt;/body>&lt;/html></string>
+             <string>This the list of &lt;i>revision control system&lt;/i>. The list is appended by modules that you can find in the customize dialog.</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1" >
            <widget class="DirectoryEdit" name="m_logLineEdit" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the path of the log server directory (where is stored all &lt;span style=" font-style:italic;">presentation_*.xml&lt;/span> files).&lt;/p>&lt;/body>&lt;/html></string>
+             <string>This is the path of the log server directory (where is stored all &lt;i>presentation_*.xml&lt;/i> files).</string>
             </property>
            </widget>
           </item>
@@ -228,10 +216,7 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="1" colspan="2" >
            <widget class="QComboBox" name="m_langComboBox" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the default lang used by your project. This can be used for the search path of the &lt;span style=" text-decoration: underline;">C&lt;/span>ustom files tab.&lt;/p>&lt;/body>&lt;/html></string>
+             <string>This is the default lang used by your project. This can be used for the search path of the &lt;u>C&lt;/u>ustom files tab.</string>
             </property>
             <item>
              <property name="text" >
@@ -296,10 +281,7 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="1" colspan="2" >
            <widget class="QComboBox" name="m_navigatorComboBox" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the default navigator used in the list of path in the &lt;span style=" text-decoration: underline;">C&lt;/span>ustom files tab.&lt;/p>&lt;/body>&lt;/html></string>
+             <string>This is the default navigator used in the list of path in the &lt;u>C&lt;/u>ustom files tab.</string>
             </property>
             <item>
              <property name="text" >
@@ -394,12 +376,8 @@ p, li { white-space: pre-wrap; }
        <item row="0" column="0" >
         <widget class="QGroupBox" name="m_webServiceGroupBox" >
          <property name="whatsThis" >
-          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;span style=" font-weight:600;">XINX&lt;/span> will connect to the service and download the description file.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p>&lt;/body>&lt;/html></string>
+          <string>&lt;p>Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b>XINX&lt;/b> will connect to the service and download the description file.&lt;/p>
+&lt;p>Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p></string>
          </property>
          <property name="title" >
           <string>Project has WebServices</string>
@@ -427,10 +405,7 @@ p, li { white-space: pre-wrap; }
        <item row="0" column="0" >
         <widget class="QGroupBox" name="m_specifiqueGroupBox" >
          <property name="whatsThis" >
-          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked, &lt;span style=" font-weight:600;">XINX&lt;/span> will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.&lt;/p>&lt;/body>&lt;/html></string>
+          <string>If checked, &lt;b>XINX&lt;/b> will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.</string>
          </property>
          <property name="title" >
           <string>&amp;Project is derivated from standard</string>
@@ -484,10 +459,7 @@ p, li { white-space: pre-wrap; }
           <item row="4" column="1" >
            <widget class="QLineEdit" name="m_specifiqueProjectPathLineEdit" >
             <property name="whatsThis" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">The sub-directory where the derivated file must be stored.&lt;/p>&lt;/body>&lt;/html></string>
+             <string>The sub-directory where the derivated file must be stored.</string>
             </property>
            </widget>
           </item>

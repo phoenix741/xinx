@@ -51,10 +51,7 @@
         <string>Update project</string>
        </property>
        <property name="whatsThis" >
-        <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Call the update fonction of your &lt;span style=" font-style:italic;">revision control system&lt;/span> for all the project directory.&lt;/p>&lt;/body>&lt;/html></string>
+        <string>Call the update fonction of your &lt;i>revision control system&lt;/i> for all the project directory.</string>
        </property>
        <property name="icon" >
         <iconset resource="../application.qrc" >:/images/vcs_update.png</iconset>
@@ -67,12 +64,8 @@ p, li { white-space: pre-wrap; }
         <string>Commit project</string>
        </property>
        <property name="whatsThis" >
-        <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Call the commit method of your &lt;span style=" font-style:italic;">revision control sytem&lt;/span> for all the project directory. An optional message can be added.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Only &lt;/span>&lt;span style=" font-weight:600; font-style:italic;">XINX&lt;/span>&lt;span style=" font-style:italic;"> managed files are commited to the repository.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+        <string>&lt;p>Call the commit method of your &lt;i>revision control sytem&lt;/i> for all the project directory. An optional message can be added.&lt;/p>
+&lt;p>&lt;i>Only &lt;b>XINX&lt;/b> managed files are commited to the repository.&lt;/i>&lt;/p></string>
        </property>
        <property name="icon" >
         <iconset resource="../application.qrc" >:/images/vcs_commit.png</iconset>
@@ -82,10 +75,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QComboBox" name="m_prefixComboBox" >
        <property name="whatsThis" >
-        <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">This is a list of prefix used in the project. This list is used to check if a file is standard or derived. The selected prefix is used when saving standard file, to propose automatically the file name prefixed of the selected value.&lt;/p>&lt;/body>&lt;/html></string>
+        <string>This is a list of prefix used in the project. This list is used to check if a file is standard or derived. The selected prefix is used when saving standard file, to propose automatically the file name prefixed of the selected value.</string>
        </property>
       </widget>
      </item>
@@ -105,10 +95,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QToolButton" name="m_flatListBtn" >
        <property name="whatsThis" >
-        <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.&lt;/p>&lt;/body>&lt;/html></string>
+        <string>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</string>
        </property>
        <property name="icon" >
         <iconset resource="../application.qrc" >:/images/flatlist.png</iconset>
@@ -127,10 +114,7 @@ p, li { white-space: pre-wrap; }
    <item row="2" column="0" >
     <widget class="QToolButton" name="m_clearToolButton" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Clear the content of filter and restore the project directory view.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>Clear the content of filter and restore the project directory view.</string>
      </property>
      <property name="text" >
       <string>Clear</string>
@@ -143,29 +127,22 @@ p, li { white-space: pre-wrap; }
    <item row="2" column="1" >
     <widget class="QLineEdit" name="m_filtreLineEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Filter the view on files present in the project directory. (joker as * and ? can be used). When filter is actived, the view is automatically switched in flat view. When filter is cleared, the view is switched in tree view.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>Filter the view on files present in the project directory. (joker as * and ? can be used). When filter is actived, the view is automatically switched in flat view. When filter is cleared, the view is switched in tree view.</string>
      </property>
     </widget>
    </item>
    <item row="3" column="0" colspan="2" >
     <widget class="QTreeView" name="m_projectDirectoryTreeView" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">This view show all file in the project directory (and may be filtered by the field upper).&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">By a right click with your mouse on a file, you can :&lt;/p>
-&lt;ul style="-qt-list-indent: 1;">&lt;li style=" font-size:8pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Compare the file with the standard&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Compare the file with the head version&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"> Update the file from &lt;span style=" font-style:italic;">revision control system&lt;/span>.&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"> Remove the file from &lt;span style=" font-style:italic;">revision control system&lt;/span>.&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"> Add the file to &lt;span style=" font-style:italic;">revision control system.&lt;/span>&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Commit the file to &lt;span style=" font-style:italic;">revision control system.&lt;/span>&lt;/li>&lt;/ul>
-&lt;p style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;">&lt;span style=" font-style:normal;">You can compare two file too.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+      <string>&lt;p>This view show all file in the project directory (and may be filtered by the field upper).&lt;/p>
+&lt;p>By a right click with your mouse on a file, you can :&lt;/p>
+&lt;ul>&lt;li>Compare the file with the standard&lt;/li>
+&lt;li>Compare the file with the head version&lt;/li>
+&lt;li>Update the file from &lt;i>revision control system&lt;/i>.&lt;/li>
+&lt;li>Remove the file from &lt;i>revision control system&lt;/i>.&lt;/li>
+&lt;li>Add the file to &lt;i>revision control system.&lt;/i>&lt;/li>
+&lt;li>Commit the file to &lt;i>revision control system.&lt;/i>&lt;/li>&lt;/ul>
+&lt;p>You can compare two file too.&lt;/p></string>
      </property>
      <property name="selectionMode" >
       <enum>QAbstractItemView::ExtendedSelection</enum>

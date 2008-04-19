@@ -55,14 +55,11 @@
       <item row="0" column="0" >
        <widget class="QTextEdit" name="m_textEditMessages" >
         <property name="whatsThis" >
-         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Please type your message in this box. The message will be used with your revision control manager.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This message must describe what you have done, to easyli find an old version.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">With CVS, the list of file commited is appended to the message&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+         <string>&lt;p>Please type your message in this box. The message will be used with your revision control manager.&lt;/p>
+&lt;p/>
+&lt;p>This message must describe what you have done, to easily find an old version.&lt;/p>
+&lt;p/>
+&lt;p>&lt;i>With CVS, the list of file commited is appended to the message&lt;/i>&lt;/p></string>
         </property>
        </widget>
       </item>
@@ -96,15 +93,12 @@ p, li { white-space: pre-wrap; }
       <item row="0" column="0" >
        <widget class="QListWidget" name="m_fileListWidget" >
         <property name="whatsThis" >
-         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">This is the list of the file to commit. Only knew file is listed there (.xsl, .html, .css, .js, ...).&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">In the list &lt;span style=" font-weight:600;">XINX&lt;/span> present three actions : &lt;/p>
-&lt;ul style="-qt-list-indent: 1;">&lt;li style=" font-size:8pt;" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Add and Commit&lt;/span> : If the file don't exist in the repository but maybe commited.&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Remove and Commit&lt;/span> : If the file is deleted from disk but not from repository&lt;/li>
-&lt;li style=" font-size:8pt;" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Commit&lt;/span> : If the file exist and is modified (checked by default).&lt;/li>&lt;/ul>
-&lt;p style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Only checked file are commited.&lt;/p>&lt;/body>&lt;/html></string>
+         <string>&lt;p>This is the list of the file to commit. Only knew file is listed there (.xsl, .html, .css, .js, ...).&lt;/p>
+&lt;p>In the list &lt;b>XINX&lt;/b> present three actions : &lt;/p>
+&lt;ul>&lt;li>&lt;i>Add and Commit&lt;/i> : If the file don't exist in the repository but maybe commited.&lt;/li>
+&lt;li>&lt;i>Remove and Commit&lt;/i> : If the file is deleted from disk but not from repository&lt;/li>
+&lt;li>&lt;i>Commit&lt;/i> : If the file exist and is modified (checked by default).&lt;/li>&lt;/ul>
+&lt;p>Only checked file are commited.&lt;/p></string>
         </property>
        </widget>
       </item>

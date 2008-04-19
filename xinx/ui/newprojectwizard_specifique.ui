@@ -26,10 +26,7 @@
    <item row="0" column="1" >
     <widget class="QLineEdit" name="m_prefixEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the prefix appended to the file when the file is saved.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>This is the prefix appended to the file when the file is saved.</string>
      </property>
     </widget>
    </item>
@@ -46,10 +43,7 @@ p, li { white-space: pre-wrap; }
    <item row="1" column="1" >
     <widget class="QLineEdit" name="m_specifiquePathNameEdit" >
      <property name="whatsThis" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">This is the directory where is stored derivated files.&lt;/p>&lt;/body>&lt;/html></string>
+      <string>This is the directory where is stored derivated files.</string>
      </property>
     </widget>
    </item>

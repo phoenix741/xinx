@@ -32,10 +32,7 @@
       <item>
        <widget class="QCheckBox" name="m_specifiqueCheckBox" >
         <property name="whatsThis" >
-         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked &lt;span style=" font-weight:600;">XINX&lt;/span> will propose you to add a prefix to the filename. &lt;/p>&lt;/body>&lt;/html></string>
+         <string>If checked &lt;b>XINX&lt;/b> will propose you to add a prefix to the filename.</string>
         </property>
         <property name="text" >
          <string>Do you want make it &amp;specifique ?</string>
@@ -45,10 +42,7 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QCheckBox" name="m_repositoryCheckBox" >
         <property name="whatsThis" >
-         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">If checked, &lt;span style=" font-weight:600;">XINX&lt;/span> will propose you to add the file to the repository.&lt;/p>&lt;/body>&lt;/html></string>
+         <string>If checked, &lt;b>XINX&lt;/b> will propose you to add the file to the repository.</string>
         </property>
         <property name="text" >
          <string>Do you want add it to &amp;repository ?</string>
@@ -67,10 +61,7 @@ p, li { white-space: pre-wrap; }
       <item row="0" column="0" >
        <widget class="QListWidget" name="m_impactedListWidget" >
         <property name="whatsThis" >
-         <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">List of &lt;span style=" font-style:italic;">Business View&lt;/span> using this file and that made be impactedi.&lt;/p>&lt;/body>&lt;/html></string>
+         <string>List of &lt;i>Business View&lt;/i> using this file and that made be impactedi.</string>
         </property>
        </widget>
       </item>
