@@ -29,6 +29,7 @@
 
 // Xinx header
 #include "../customdialogimpl.h"
+#include "../snipetlist.h"
 #include "../snipet.h"
 #include <syntaxhighlighter.h>
 
@@ -41,6 +42,7 @@ public:
 	XINXConfig m_config;
 	QString m_previousFormat;
 	SyntaxHighlighter * m_highlighter;
+	SnipetList m_snipets;
 	
 	void showConfig();
 	void storeConfig();
@@ -104,7 +106,7 @@ private:
 class SnipetModelIndex : public QAbstractTableModel {
 	Q_OBJECT
 public:
-	SnipetModelIndex( QList<Snipet*> * list, QObject * parent = 0 );
+	SnipetModelIndex( SnipetList * list, QObject * parent = 0 );
 	virtual ~SnipetModelIndex();
 
 	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
@@ -112,7 +114,7 @@ public:
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 private:
-	QList<Snipet*> * m_list;
+	SnipetList * m_list;
 };
 
 #endif /*P_CUSTOMDIALOGIMPL_H_*/

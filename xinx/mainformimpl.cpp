@@ -491,7 +491,7 @@ void PrivateMainformImpl::connectDbus() {
 void PrivateMainformImpl::createSnipet() {
 	XINX_TRACE( "PrivateMainformImpl::createSnipet", "()" );
 
-	connect( SnipetList::self(), SIGNAL(listChanged()), this, SLOT(updateSnipetMenu()) );
+	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateSnipetMenu()) );
 	updateSnipetMenu();
 }
 
@@ -521,14 +521,14 @@ void PrivateMainformImpl::updateSnipetMenu() {
 	qDeleteAllLater( m_snipetCategoryActs.values() ); 
 	m_snipetCategoryActs.clear();
 	
-	if( SnipetList::self()->count() > 0 ) {
-		foreach( QString category, SnipetList::self()->categories() ) {
+	if( SnipetListManager::self()->count() > 0 ) {
+		foreach( QString category, SnipetListManager::self()->categories() ) {
 			QAction * act = new QAction( category, m_parent );
 			m_snipetCategoryActs[ category ] = act;
 			act->setMenu( new QMenu( m_parent ) );
 		}
-		for( int i = 0 ; i < SnipetList::self()->count() ; i++ ) {
-			Snipet * snipet = SnipetList::self()->at( i );
+		for( int i = 0 ; i < SnipetListManager::self()->count() ; i++ ) {
+			Snipet * snipet = SnipetListManager::self()->at( i );
 			QAction * act = new QAction( QIcon( snipet->icon() ), snipet->name(), m_parent );
 			m_snipetActs.append( act );
 			m_snipetCategoryActs[ snipet->category() ]->menu()->addAction( act );
@@ -660,12 +660,6 @@ void PrivateMainformImpl::customize() {
 	if( custom.exec() ) {
 		custom.saveToConfig( XINXConfig::self() );
 		XINXConfig::self()->save();
-
-		try {
-			SnipetList::self()->loadFromFile( "datas:template.xnx" );
-		} catch( SnipetListException ) {
-			QMessageBox::warning( m_parent, tr("Load snipet"), tr("Can't load snipet file.") );
-		}
 	}
 }
 

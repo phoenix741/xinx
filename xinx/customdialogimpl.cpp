@@ -22,7 +22,6 @@
 #include <exceptions.h>
 #include <xinxpluginsloader.h>
 #include "private/p_customdialogimpl.h"
-#include "snipetlist.h"
 
 // Qt header
 #include <QDir>
@@ -257,7 +256,7 @@ Qt::ItemFlags SpecifiqueModelIndex::flags ( const QModelIndex & index ) const {
 
 /* SnipetModelIndex */
 
-SnipetModelIndex::SnipetModelIndex( QList<Snipet*> * list, QObject * parent ) : QAbstractTableModel( parent ), m_list( list ) {
+SnipetModelIndex::SnipetModelIndex( SnipetList * list, QObject * parent ) : QAbstractTableModel( parent ), m_list( list ) {
 	
 }
 
@@ -302,16 +301,16 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 	if( role == Qt::DisplayRole )
 	switch( index.column() ) {
 	case 0:
-		return m_list->at( line )->name();
+		return m_list->at( line ).name();
 	case 1:
-		return m_list->at( line )->key();
+		return m_list->at( line ).key();
 	case 2:
-		return m_list->at( line )->description();
+		return m_list->at( line ).description();
 	default:
 		return QVariant();
 	} else {
 		if( index.column() == 0 )
-			return QIcon( m_list->at( line )->icon() );
+			return QIcon( m_list->at( line ).icon() );
 		else
 			return QVariant();
 	}
@@ -428,10 +427,8 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
 	
 	// Snipet 
-	QList<Snipet*> * snipetList = new QList<Snipet*>();
-	for( int i = 0 ; i < SnipetList::self()->count() ; i++ )
-		snipetList->append( SnipetList::self()->at( i ) );
-	SnipetModelIndex * snipetModel = new SnipetModelIndex( snipetList, m_parent->m_snipetTableView );
+	m_snipets = SnipetListManager::self()->snipets();
+	SnipetModelIndex * snipetModel = new SnipetModelIndex( &m_snipets, m_parent->m_snipetTableView );
 	m_parent->m_snipetTableView->setModel( snipetModel );
 	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
 	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
