@@ -116,7 +116,6 @@ HEADERS += specifiquedlgimpl.h \
     private/p_runsnipetdialogimpl.h \
     private/p_serviceresultdialogimpl.h \
     private/p_snipetdialog.h \
-    private/p_snipetlist.h \
     private/p_webserviceseditor.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
