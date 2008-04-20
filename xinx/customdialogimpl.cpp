@@ -22,6 +22,7 @@
 #include <exceptions.h>
 #include <xinxpluginsloader.h>
 #include "private/p_customdialogimpl.h"
+#include "snipetdialog.h"
 
 // Qt header
 #include <QDir>
@@ -325,6 +326,13 @@ void SnipetModelIndex::removeSnipet( QList<int> indexes ) {
 	}
 }
 
+void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
+	SnipetList::iterator i = qLowerBound( m_list->begin(), m_list->end(), snipet );
+	beginInsertRows( QModelIndex(), i - m_list->begin(), i - m_list->begin() );
+	m_list->insert( i, snipet );
+	endInsertRows();
+}
+
 /* PrivateCustomDialogImpl */
 
 PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) : m_snipetModel( 0 ) {
@@ -530,7 +538,10 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().xmlPres.showFilteredSubTree = m_parent->m_showSubEltCheckBox->isChecked();
 	m_config.config().xmlPres.viewColor = m_parent->m_viewColorBox->color(); 
 	m_config.config().xmlPres.errorColor = m_parent->m_errorColorBox->color(); 
-	m_config.config().xmlPres.screenDataColor = m_parent->m_screenColorBox->color(); 
+	m_config.config().xmlPres.screenDataColor = m_parent->m_screenColorBox->color();
+	
+	// Snipet
+	SnipetListManager::self()->setSnipets( m_snipets );
 }
 
 void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
@@ -715,7 +726,11 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_addPushButton_clicked() {
-	
+	SnipetDialogImpl dlg( QString(), this );
+	if( dlg.exec() ) {
+		Snipet s = dlg.getSnipet();
+		d->m_snipetModel->addSnipet( s );
+	}
 }
 
 void CustomDialogImpl::on_m_removePushButton_clicked() {
@@ -728,7 +743,15 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {
-	
+	QModelIndexList index = m_snipetTableView->selectionModel()->selectedRows();
+	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
+	SnipetDialogImpl dlg( s, this );
+	if( dlg.exec() ) {
+		d->m_snipets.replace( index.at( 0 ).row(), dlg.getSnipet() );
+		qSort( d->m_snipets );
+		m_snipetTableView->reset();
+		m_snipetTableView_selectionChanged();
+	}
 }
 
 void CustomDialogImpl::m_snipetTableView_selectionChanged() {

@@ -143,7 +143,8 @@ public:
 	QStringList & params();
 	const QStringList & params() const;
 	
-	bool operator==( const Snipet & s );
+	bool operator==( const Snipet & s ) const;
+	bool operator<( const Snipet & s ) const;
 private:
 	QString m_text, m_name, m_description, m_icon, m_category, m_key, m_type;
 	QStringList m_params;

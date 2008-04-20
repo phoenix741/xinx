@@ -22,6 +22,7 @@
 #include "snipetdialog.h"
 #include "xinxpluginsloader.h"
 #include "snipetlist.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QSyntaxHighlighter>
@@ -32,17 +33,18 @@ SnipetDialogImpl::SnipetDialogImpl( const QString & text, QWidget * parent, Qt::
 	setupUi( this );
 
 	m_textEdit->setPlainText( text );
+	updateFont();
 }
 
 SnipetDialogImpl::SnipetDialogImpl( const QString & type, const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ), m_highlighter(0) {
 	setupUi( this );
 
 	m_extLineEdit->setText( type );
-
 	m_textEdit->setPlainText( text );
+	updateFont();
 }
 
-SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
+SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ), m_highlighter(0) {
 	setupUi( this );
 	
 	m_extLineEdit->setText( snipet.type() );
@@ -52,6 +54,7 @@ SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt:
 	m_iconLineEdit->setText( snipet.icon() );
 	m_categoryComboBox->setEditText( snipet.category() );
 	m_textEdit->setPlainText( snipet.text() );
+	updateFont();
 	
 	int index = 0;
 	QListIterator< QPair<QLabel*,QLineEdit*> > i( m_paramList );
@@ -64,6 +67,13 @@ SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt:
 
 SnipetDialogImpl::~SnipetDialogImpl() {
 
+}
+
+void SnipetDialogImpl::updateFont() {
+	QFont font = XINXConfig::self()->config().editor.defaultFormat;
+	QFontMetrics fm( font );
+	m_textEdit->setFont( font );
+	m_textEdit->setTabStopWidth( fm.width("M") * XINXConfig::self()->config().editor.tabulationSize );
 }
 
 void SnipetDialogImpl::setupUi( QDialog * parent ) {

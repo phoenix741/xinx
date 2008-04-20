@@ -82,6 +82,7 @@ private slots:
 private:
 	void setupUi( QDialog * parent );
 	void addParamLine();
+	void updateFont();
 
 	QGridLayout * m_paramGrid;
 	QSyntaxHighlighter * m_highlighter;

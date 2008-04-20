@@ -94,6 +94,7 @@ public:
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	
+	void addSnipet( const Snipet & snipet );
 	void removeSnipet( QList<int> indexes );
 private:
 	SnipetList * m_list;

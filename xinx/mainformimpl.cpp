@@ -537,6 +537,8 @@ void PrivateMainformImpl::updateSnipetMenu() {
 		}
 		m_parent->m_toolsMenu->insertActions( m_parent->m_createTemplate, m_snipetCategoryActs.values() );
 	}
+	
+	updateActions();
 }
 
 void PrivateMainformImpl::newFile() {
@@ -660,6 +662,7 @@ void PrivateMainformImpl::customize() {
 	if( custom.exec() ) {
 		custom.saveToConfig( XINXConfig::self() );
 		XINXConfig::self()->save();
+		SnipetListManager::self()->saveToSnipetFile();
 	}
 }
 

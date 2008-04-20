@@ -86,7 +86,10 @@ const QStringList & Snipet::params() const {
 	return m_params;
 }
 
-bool Snipet::operator==( const Snipet & s ) {
+bool Snipet::operator==( const Snipet & s ) const {
 	return ( m_name == s.m_name ) && ( m_key == s.m_key );
 }
 
+bool Snipet::operator<( const Snipet & s ) const {
+	return m_name < s.m_name;
+}

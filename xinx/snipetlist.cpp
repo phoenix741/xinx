@@ -145,6 +145,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		append( newSnipet );
 		snipet = snipet.nextSiblingElement( "Snipet" );
 	}
+	qSort( *this );
 }
 
 /* SnipetListManager */
