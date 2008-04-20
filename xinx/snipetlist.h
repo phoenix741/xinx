@@ -82,11 +82,18 @@ public:
 	~SnipetListManager();
 	
 	static SnipetListManager * self();
+	
+	void loadFromSnipetFile();
+	void saveToSnipetFile();
+	
+	const SnipetList & snipets() const;
+	void setSnipets( const SnipetList & list );
 signals:
 	void listChanged();
 private:
 	static SnipetListManager * s_self;
-	QString m_filename;
+	
+	SnipetList m_snipets;
 };
 
 #endif // __SNIPETLIST_H__

@@ -112,10 +112,10 @@ int main(int argc, char *argv[]) {
 			app.processEvents();
 			XINXConfig::self()->load();
 
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Create completion and snipet object ...") );
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load snipets ...") );
 			app.processEvents();
 			try {
-				SnipetList::self()->loadFromFile( "datas:template.xnx" );
+				SnipetListManager::self()->loadFromSnipetFile();
 			} catch( SnipetListException ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();

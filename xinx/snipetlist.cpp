@@ -164,4 +164,23 @@ SnipetListManager * SnipetListManager::self() {
 	return s_self;
 }
 
+void SnipetListManager::loadFromSnipetFile() {
+	m_snipets.clear();
+	m_snipets.loadFromFile( "datas:template.xnx" );
+}
+
+void SnipetListManager::saveToSnipetFile() {
+	m_snipets.saveToFile( "datas:template.xnx" );
+}
+
+const SnipetList & SnipetListManager::snipets() const {
+	return m_snipets;
+}
+
+void SnipetListManager::setSnipets( const SnipetList & list ) {
+	if( list != m_snipets ) {
+		m_snipets = list;
+		emit listChanged();
+	}
+}
 
