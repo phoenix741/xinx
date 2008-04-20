@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,12 +21,15 @@
 #ifndef __SNIPETDIALOG_H__
 #define __SNIPETDIALOG_H__
 
-#include <QDialog>
-
+// Xinx header
 #include "ui_snipetproperty.h"
 #include "snipet.h"
 
+// Qt header
+#include <QDialog>
+
 class PrivateSnipetDialogImpl;
+class QSyntaxHighlighter;
 
 /*!
  * Implementation of snipet dialog. This dialog permit to create, modify.
@@ -53,7 +56,7 @@ public:
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	SnipetDialogImpl( enum Snipet::SnipetType type, const QString & text, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SnipetDialogImpl( const QString & type, const QString & text, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
 	 * Constructor of the snipet dialog implementation, the dialog is created to use a snipet. 
 	 * We defines a default windows flags. The windows can be resize.
@@ -61,7 +64,7 @@ public:
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	SnipetDialogImpl( Snipet * snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	SnipetDialogImpl( const Snipet & snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
 	 * Destroy the dialog. 
 	 */
@@ -71,13 +74,19 @@ public:
 	 * Create a template with information given informations.
 	 * \return a template
 	 */
-	Snipet * getSnipet();
+	Snipet getSnipet();
 	
 private slots:
-
+	void on_m_textEdit_textChanged();
+	void on_m_extLineEdit_textChanged( const QString & text );
 private:
-	PrivateSnipetDialogImpl * d;
-	friend class PrivateSnipetDialogImpl;
+	void setupUi( QDialog * parent );
+	void addParamLine();
+
+	QGridLayout * m_paramGrid;
+	QSyntaxHighlighter * m_highlighter;
+	
+	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
 };
 
 #endif // __SNIPETDIALOG_H__

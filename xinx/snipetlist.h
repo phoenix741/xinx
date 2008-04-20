@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,8 @@
 #define __SNIPETLIST_H__
 
 // Xinx header
-#include "exceptions.h"
+#include <exceptions.h>
+#include "snipet.h"
 
 // Qt header
 #include <QObject>
@@ -41,7 +42,6 @@ public:
 	SnipetListException( const QString & message );
 };
 
-class Snipet;
 
 /*!
  * The snipet list contains all snipet defined in XINX. This snipet is stored in a 

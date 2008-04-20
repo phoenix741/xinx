@@ -33,26 +33,6 @@
 #include "../snipet.h"
 #include <syntaxhighlighter.h>
 
-class PrivateCustomDialogImpl : public QObject {
-	Q_OBJECT
-public:
-	PrivateCustomDialogImpl( CustomDialogImpl * parent );
-	virtual ~PrivateCustomDialogImpl() {};
-
-	XINXConfig m_config;
-	QString m_previousFormat;
-	SyntaxHighlighter * m_highlighter;
-	SnipetList m_snipets;
-	
-	void showConfig();
-	void storeConfig();
-public slots:
-	void configurePlugin( XinxPluginElement * plugin );
-	void aboutPlugin( XinxPluginElement * plugin );
-private:
-	CustomDialogImpl * m_parent;
-};
-
 class ToolsModelIndex : public QAbstractTableModel {
 	Q_OBJECT
 public:
@@ -113,8 +93,34 @@ public:
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+	
+	void removeSnipet( QList<int> indexes );
 private:
 	SnipetList * m_list;
+	
+	friend class CustomDialogImpl;
+};
+
+class PrivateCustomDialogImpl : public QObject {
+	Q_OBJECT
+public:
+	PrivateCustomDialogImpl( CustomDialogImpl * parent );
+	virtual ~PrivateCustomDialogImpl() {};
+
+	XINXConfig m_config;
+	QString m_previousFormat;
+	SyntaxHighlighter * m_highlighter;
+	
+	SnipetModelIndex * m_snipetModel;
+	SnipetList m_snipets;
+	
+	void showConfig();
+	void storeConfig();
+public slots:
+	void configurePlugin( XinxPluginElement * plugin );
+	void aboutPlugin( XinxPluginElement * plugin );
+private:
+	CustomDialogImpl * m_parent;
 };
 
 #endif /*P_CUSTOMDIALOGIMPL_H_*/

@@ -292,7 +292,7 @@ QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation,
 }
 
 QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
-	if( ( role != Qt::DisplayRole ) && ( role != Qt::DecorationRole ) ) return QVariant();
+	if( ( role != Qt::DisplayRole ) && ( role != Qt::DecorationRole ) && ( role != Qt::UserRole ) ) return QVariant();
 	if( ! index.isValid() ) return QVariant();
 		
 	int line = index.row();
@@ -306,19 +306,28 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 		return m_list->at( line ).key();
 	case 2:
 		return m_list->at( line ).description();
-	default:
-		return QVariant();
-	} else {
+	} else if( role == Qt::DecorationRole ) {
 		if( index.column() == 0 )
 			return QIcon( m_list->at( line ).icon() );
-		else
-			return QVariant();
+	} else if( role == Qt::UserRole ) {
+		if( index.column() == 0 )
+			return QVariant::fromValue( m_list->at( line ) );
+	}
+	return QVariant();
+}
+
+void SnipetModelIndex::removeSnipet( QList<int> indexes ) {
+	qStableSort( indexes.begin(), indexes.end(), qGreater<int>() );
+	foreach( int index, indexes ) {
+		beginRemoveRows( QModelIndex(), index, index );
+		m_list->removeAt( index );
+		endRemoveRows();
 	}
 }
 
 /* PrivateCustomDialogImpl */
 
-PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
+PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) : m_snipetModel( 0 ) {
 	m_highlighter = 0;
 	m_parent = parent;
 }
@@ -428,11 +437,13 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	
 	// Snipet 
 	m_snipets = SnipetListManager::self()->snipets();
-	SnipetModelIndex * snipetModel = new SnipetModelIndex( &m_snipets, m_parent->m_snipetTableView );
-	m_parent->m_snipetTableView->setModel( snipetModel );
+	m_snipetModel = new SnipetModelIndex( &m_snipets, m_parent->m_snipetTableView );
+	m_parent->m_snipetTableView->setModel( m_snipetModel );
 	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
 	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
 //	m_parent->m_snipetTableView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
+	m_parent->m_snipetTableView_selectionChanged();
+	connect( m_parent->m_snipetTableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), m_parent, SLOT(m_snipetTableView_selectionChanged()) );
 }
 
 void PrivateCustomDialogImpl::storeConfig() {
@@ -642,8 +653,10 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 
 	setupUi( this );
 	
+	// XML Pres
 	m_hideElementList->setDefaultVisible( false );
 	
+	// Editor
 	QFont font( "Monospace", 8 );
 	font.setFixedPitch( true );
   
@@ -677,6 +690,52 @@ void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 	
 	d->storeConfig();
 	*config = d->m_config;
+}
+
+void CustomDialogImpl::on_m_importPushButton_clicked() {
+	QString importedFilename = QFileDialog::getOpenFileName( this, tr("Import snipets"), "datas:/", "*.xml" );
+	if( ! importedFilename.isEmpty() ) {
+		d->m_snipets.loadFromFile( importedFilename );
+		d->m_snipetModel->reset();
+	}
+}
+
+void CustomDialogImpl::on_m_exportPushButton_clicked() {
+	QModelIndexList indexes = m_snipetTableView->selectionModel()->selectedRows();
+	QString exportedFilename = QFileDialog::getSaveFileName( this, tr("Export snipets"), "datas:/", "*.xml" );
+	if( ! exportedFilename.isEmpty() ) {
+		SnipetList list;
+		for( int i = 0 ; i < indexes.size() ; i++ ) {
+			const Snipet & s = indexes.at( i ).data( Qt::UserRole ).value<Snipet>();
+			
+			list << s;
+		}
+		list.saveToFile( exportedFilename );
+	}
+}
+
+void CustomDialogImpl::on_m_addPushButton_clicked() {
+	
+}
+
+void CustomDialogImpl::on_m_removePushButton_clicked() {
+	QModelIndexList indexes = m_snipetTableView->selectionModel()->selectedRows();
+	QList<int> lists;
+	for( int i = indexes.count() - 1 ; i >= 0 ; i-- ) {
+		lists << indexes.at( i ).row();
+	}
+	d->m_snipetModel->removeSnipet( lists );
+}
+
+void CustomDialogImpl::on_m_modifyPushButton_clicked() {
+	
+}
+
+void CustomDialogImpl::m_snipetTableView_selectionChanged() {
+	QModelIndexList indexes = m_snipetTableView->selectionModel()->selectedRows();
+	m_removePushButton->setEnabled( indexes.count() > 0 );
+	m_modifyPushButton->setEnabled( indexes.count() == 1 );
+	m_exportPushButton->setEnabled( indexes.count() > 0 );
 }
 
 void CustomDialogImpl::on_m_changeProjectPathBtn_clicked() {

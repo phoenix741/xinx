@@ -340,11 +340,13 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 }
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
-	Snipet * s = SnipetList::self()->indexOf( snipet );
-	if( ! s ) 
-		return ;
+	int index = SnipetListManager::self()->snipets().indexOf( snipet );
+	if( index == -1 ) return ;
+	
+	const Snipet & s = SnipetListManager::self()->snipets().at( index );
+	
 	RunSnipetDialogImpl dlg( s );
-	if( ( s->params().count() == 0 ) || dlg.exec() ) {
+	if( ( s.params().count() == 0 ) || dlg.exec() ) {
 		TextEditor * textEdit = qobject_cast<TextEditor	*>( sender() );
 		textEdit->insertText( dlg.getResult() );
 	}		

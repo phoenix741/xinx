@@ -157,6 +157,7 @@ private:
 	PrivateMainformImpl * d;
 	friend class PrivateMainformImpl;
 };
+
 #endif
 
 

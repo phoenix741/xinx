@@ -940,7 +940,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <includes/>
  <resources>
   <include location="../application.qrc" />
  </resources>

@@ -19,70 +19,44 @@
  ***************************************************************************/
 
 // Xinx header
-#include "private/p_runsnipetdialogimpl.h"
-
-/* PrivateRunSnipetDialogImpl */
-
-PrivateRunSnipetDialogImpl::PrivateRunSnipetDialogImpl( RunSnipetDialogImpl * parent ) : m_parent( parent ) {
-	
-}
-
-PrivateRunSnipetDialogImpl::~PrivateRunSnipetDialogImpl() {
-	
-}
-
-void PrivateRunSnipetDialogImpl::setupUi() {
-	connect( m_parent->m_detailPushButton, SIGNAL(clicked()), this, SLOT(changeSnipet()) );
-}
-
-void PrivateRunSnipetDialogImpl::changeSnipet() {
-	SnipetDialogImpl dlg( m_snipet );
-	if( dlg.exec() == QDialog::Accepted ) {
-		dlg.getSnipet();
-	}
-}
-
+#include "runsnipetdialogimpl.h"
 
 /* RunSnipetDialogImpl */
 
-RunSnipetDialogImpl::RunSnipetDialogImpl( Snipet * snipet, QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
+RunSnipetDialogImpl::RunSnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
 	
-	d = new PrivateRunSnipetDialogImpl( this );
-	d->setupUi();
-	d->m_snipet = snipet;
+	m_text = snipet.text();
 	
-	d->m_text = snipet->text();
-	
-	d->m_paramGrid = new QGridLayout( m_paramGroupBox );
+	m_paramGrid = new QGridLayout( m_paramGroupBox );
 
-	m_labelName->setText( QString( "<b>%1</b>" ).arg( snipet->name() ) );
-	m_descriptionLabel->setText( snipet->description() );
-	foreach( QString params, snipet->params() ) {
+	m_labelName->setText( QString( "<b>%1</b>" ).arg( snipet.name() ) );
+	m_descriptionLabel->setText( snipet.description() );
+	foreach( QString params, snipet.params() ) {
 		QLabel * label = new QLabel( params, m_paramGroupBox );
 		QLineEdit * edit = new QLineEdit( m_paramGroupBox );
 
-		d->m_paramGrid->addWidget( label, d->m_paramList.size(), 0 );
-		d->m_paramGrid->addWidget( edit, d->m_paramList.size(), 1 );
+		m_paramGrid->addWidget( label, m_paramList.size(), 0 );
+		m_paramGrid->addWidget( edit, m_paramList.size(), 1 );
 
-		d->m_paramList.append( qMakePair( label, edit ) );
+		m_paramList.append( qMakePair( label, edit ) );
 	}
 	
-	m_paramGroupBox->setVisible( d->m_paramList.size() > 0 );
-	if( d->m_paramList.size() > 0 ) {
-		d->m_paramList.at( 0 ).second->setFocus( Qt::OtherFocusReason );
+	m_paramGroupBox->setVisible( m_paramList.size() > 0 );
+	if( m_paramList.size() > 0 ) {
+		m_paramList.at( 0 ).second->setFocus( Qt::OtherFocusReason );
 	}
 }
 
 RunSnipetDialogImpl::~RunSnipetDialogImpl() {
-	delete d;
+
 }
 
 
 QString RunSnipetDialogImpl::getResult() {
-	QString text = d->m_text;
-	for( int i = 0 ; i < d->m_paramList.size() ; i++ ) {
-		text = text.arg( d->m_paramList.at( i ).second->text() );
+	QString text = m_text;
+	for( int i = 0 ; i < m_paramList.size() ; i++ ) {
+		text = text.arg( m_paramList.at( i ).second->text() );
 	}
 	return text;
 }

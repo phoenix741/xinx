@@ -64,6 +64,15 @@ private slots:
 	void on_m_changeApplicationDescriptionPathBtn_clicked();
 	void on_m_highlighterComboBox_activated( QString text );
 	void on_m_labelLink_linkActivated( const QString & link );
+	
+	void on_m_importPushButton_clicked();
+	void on_m_exportPushButton_clicked();
+	
+	void on_m_addPushButton_clicked();
+	void on_m_removePushButton_clicked();
+	void on_m_modifyPushButton_clicked();
+	
+	void m_snipetTableView_selectionChanged();
 private:
 	PrivateCustomDialogImpl * d;
 	friend class PrivateCustomDialogImpl;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,11 +20,16 @@
  
 #ifndef RUNSNIPETDIALOGIMPL_H
 #define RUNSNIPETDIALOGIMPL_H
-//
+
+// Xinx header
 #include "ui_runsnipet.h"
 #include "snipet.h"
 
-class PrivateRunSnipetDialogImpl;
+// Qt header
+#include <QList>
+#include <QPair>
+#include <QLabel>
+#include <QLineEdit>
 
 /*!
  * Implementation of snipet dialog. This dialog permit to use snipet.
@@ -41,7 +46,7 @@ public:
 	 * \param parent The parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
-	RunSnipetDialogImpl( Snipet * snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	RunSnipetDialogImpl( const Snipet & snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	
 	/*!
 	 * Destructor of the snipet dialog.
@@ -52,11 +57,10 @@ public:
 	 * Resultat of the snipet.
 	 */
 	 QString getResult();
-private slots:
-
 private:
-	PrivateRunSnipetDialogImpl * d;
-	friend class PrivateRunSnipetDialogImpl;
+	QGridLayout * m_paramGrid;
+	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
+	QString m_text;
 };
 #endif
 

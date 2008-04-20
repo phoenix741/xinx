@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +19,14 @@
  ***************************************************************************/
 
 // Xinx header
-#include "private/p_snipetlist.h"
+#include "snipetlist.h"
+
+// Qt header
+#include <QDomDocument>
+#include <QDomNode>
+#include <QFile>
+#include <QTextStream>
+#include <QApplication>
 
 /* Static member */
 
@@ -40,11 +47,6 @@ SnipetList::~SnipetList() {
 
 }
 
-void PrivateSnipetList::addCategory( QString newCategory ) {
-	if( ! m_categories.contains( newCategory ) )
-		m_categories.append( newCategory );
-}
-
 QStringList SnipetList::categories() const {
 	QStringList result;
 	foreach( const Snipet & snipet, *this ) {
@@ -54,7 +56,7 @@ QStringList SnipetList::categories() const {
 	return result;
 }
 
-int SnipetList::indexOf( const QString & key, int from ) {
+int SnipetList::indexOf( const QString & key, int from ) const {
 	for( int i = from ; i < size() ; i++ ) {
 		const Snipet & snipet = at( i );
 		if( snipet.key() == key )
@@ -80,11 +82,11 @@ void SnipetList::saveToFile( const QString & filename ) {
 		s.setAttribute( "key", snipet.key() );
 		s.setAttribute( "type", snipet.type() );
 		s.setAttribute( "category", snipet.category() );
-		s.setAttribute( "icon", snipet.œicon() );
+		s.setAttribute( "icon", snipet.icon() );
 		
 		QDomElement description = document.createElement( "Description" );
 		s.appendChild( description );
-		QDomText text = document.createTextNode( snipet.œdescription() );
+		QDomText text = document.createTextNode( snipet.description() );
 		description.appendChild( text );
 		
 		QDomElement textElement = document.createElement( "Text" );
@@ -101,7 +103,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 
 	QFile file( filename );
 	if ( ! file.open( QFile::WriteOnly ) )
-		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.").arg(usedFilename).arg(file.errorString()) );
+		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.").arg(filename).arg(file.errorString()) );
 	QTextStream out( &file );
 	document.save( out, IndentSize );
 }
@@ -132,7 +134,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		newSnipet.setDescription( description.text() );
 
 		QDomElement textElement = snipet.firstChildElement( "Text" );
-		newSnipet->setText( textElement.text() );
+		newSnipet.setText( textElement.text() );
 		
 		QDomElement param = snipet.firstChildElement( "Param" );
 		while( ! param.isNull() ) {
@@ -140,7 +142,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 			param = param.nextSiblingElement( "Param" );
 		}
 
-		add( newSnipet );		
+		append( newSnipet );
 		snipet = snipet.nextSiblingElement( "Snipet" );
 	}
 }
@@ -166,11 +168,11 @@ SnipetListManager * SnipetListManager::self() {
 
 void SnipetListManager::loadFromSnipetFile() {
 	m_snipets.clear();
-	m_snipets.loadFromFile( "datas:template.xnx" );
+	m_snipets.loadFromFile( "datas:template.xml" );
 }
 
 void SnipetListManager::saveToSnipetFile() {
-	m_snipets.saveToFile( "datas:template.xnx" );
+	m_snipets.saveToFile( "datas:template.xml" );
 }
 
 const SnipetList & SnipetListManager::snipets() const {

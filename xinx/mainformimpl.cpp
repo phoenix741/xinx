@@ -502,7 +502,7 @@ void PrivateMainformImpl::callSnipetMenu() {
 
 	QAction * action = qobject_cast<QAction*>( sender() );
 	if( action && TabEditor::isFileEditor( m_parent->m_tabEditors->currentEditor() ) ) {
-		Snipet * snipet = action->data().value<Snipet*>();
+		const Snipet & snipet = action->data().value<Snipet>();
 		
 		RunSnipetDialogImpl dlg( snipet );
 		if( dlg.exec() ) {
@@ -521,17 +521,17 @@ void PrivateMainformImpl::updateSnipetMenu() {
 	qDeleteAllLater( m_snipetCategoryActs.values() ); 
 	m_snipetCategoryActs.clear();
 	
-	if( SnipetListManager::self()->count() > 0 ) {
-		foreach( QString category, SnipetListManager::self()->categories() ) {
+	if( SnipetListManager::self()->snipets().count() > 0 ) {
+		foreach( QString category, SnipetListManager::self()->snipets().categories() ) {
 			QAction * act = new QAction( category, m_parent );
 			m_snipetCategoryActs[ category ] = act;
 			act->setMenu( new QMenu( m_parent ) );
 		}
-		for( int i = 0 ; i < SnipetListManager::self()->count() ; i++ ) {
-			Snipet * snipet = SnipetListManager::self()->at( i );
-			QAction * act = new QAction( QIcon( snipet->icon() ), snipet->name(), m_parent );
+		for( int i = 0 ; i < SnipetListManager::self()->snipets().count() ; i++ ) {
+			const Snipet & snipet = SnipetListManager::self()->snipets().at( i );
+			QAction * act = new QAction( QIcon( snipet.icon() ), snipet.name(), m_parent );
 			m_snipetActs.append( act );
-			m_snipetCategoryActs[ snipet->category() ]->menu()->addAction( act );
+			m_snipetCategoryActs[ snipet.category() ]->menu()->addAction( act );
 			act->setData( QVariant::fromValue( snipet ) );
 			connect( act, SIGNAL(triggered()), this, SLOT(callSnipetMenu()) );
 		}
@@ -1476,13 +1476,14 @@ void MainformImpl::newTemplate() {
 		FileEditor * editor = static_cast<FileEditor*>( m_tabEditors->currentEditor() );
 		QString selectedText = editor->textEdit()->textCursor().selectedText();
 		
-		Snipet * newSnipet;
 		SnipetDialogImpl dlg( selectedText );
 		if( dlg.exec() == QDialog::Accepted ) {
-			newSnipet = dlg.getSnipet();
-			SnipetList::self()->add( newSnipet );
+			Snipet s = dlg.getSnipet();
+			SnipetList list = SnipetListManager::self()->snipets();
+			list.append( s );
+			SnipetListManager::self()->setSnipets( list );
 			
-			SnipetList::self()->saveToFile();
+			SnipetListManager::self()->saveToSnipetFile();
 		}
 		
 	}

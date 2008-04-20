@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,10 +21,10 @@
 #ifndef __SNIPET_H__
 #define __SNIPET_H__
 
+// Qt header
 #include <QString>
 #include <QStringList>
-
-class PrivateSnipet;
+#include <QMetaType>
 
 /*!
  * The snipet is a sort of template but it's just called snipet ;)
@@ -35,17 +35,6 @@ class PrivateSnipet;
  */
 class Snipet {
 public:
-
-	/*!
-	 * Create an empty template.
-	 */
-	Snipet();
-	
-	/*!
-	 * Destroy the template 
-	 */ 
-	virtual ~Snipet();
-	
 	/*!
 	 * Name of the template. Use when show a list of snipet.
 	 * \return Name of the template.
@@ -153,9 +142,14 @@ public:
 	 */
 	QStringList & params();
 	const QStringList & params() const;
+	
+	bool operator==( const Snipet & s );
 private:
 	QString m_text, m_name, m_description, m_icon, m_category, m_key, m_type;
 	QStringList m_params;
-};
+};	
+
+
+Q_DECLARE_METATYPE(Snipet);
 
 #endif // __SNIPET_H__

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,14 +21,6 @@
 #include "snipet.h"
 
 /* Snipet */
-
-Snipet::Snipet() {
-
-}
-
-Snipet::~Snipet() {
-
-}
 	
 const QString & Snipet::name() const {
 	return m_name;
@@ -46,11 +38,11 @@ void Snipet::setKey( const QString & key ) {
 	m_key = key;
 }
 
-enum Snipet::SnipetType Snipet::type() const {
+const QString & Snipet::type() const {
 	return m_type;
 }
 	 
-void Snipet::setType( enum Snipet::SnipetType type ) {
+void Snipet::setType( const QString & type ) {
 	m_type = type;
 }
 	
@@ -93,3 +85,8 @@ QStringList & Snipet::params() {
 const QStringList & Snipet::params() const {
 	return m_params;
 }
+
+bool Snipet::operator==( const Snipet & s ) {
+	return ( m_name == s.m_name ) && ( m_key == s.m_key );
+}
+
