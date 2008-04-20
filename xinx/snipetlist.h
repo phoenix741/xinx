@@ -28,43 +28,65 @@
 #include <QObject>
 #include <QString>
 
-class QMenu;
-
+/*!
+ * \class SnipetListException
+ * The snipet list exception, is throw when Snipet list load or save file.
+ */
 class SnipetListException : public XinxException {
 public:
+	/*!
+	 * Exception throw by the Snipet list.
+	 * \param message Message of the error.
+	 */
 	SnipetListException( const QString & message );
 };
 
 class Snipet;
-class PrivateSnipetList;
 
-class SnipetList : public QObject {
-	Q_OBJECT
+/*!
+ * The snipet list contains all snipet defined in XINX. This snipet is stored in a 
+ * file in XML format. 
+ */
+class SnipetList : public QList<Snipet> {
 public:
 	SnipetList();
 	virtual ~SnipetList();
 	
-	static SnipetList * self();
+	int indexOf( const QString & key, int from = 0 ) const;
 	
-	void add( Snipet * snipet );
-	void remove( int index );
-	Snipet * replace( int index, Snipet * snipet );
-	Snipet * at( int index );
-	int count();
-	
-	Snipet * indexOf( const QString & key );
-	
-	void saveToFile( const QString & filename = QString() );
+	/*!
+	 * Save the snipet list into a file.
+	 * \param filename The filename where we want save snipet.
+	 * \throw SnipetListException
+	 */
+	void saveToFile( const QString & filename );
+	/*!
+	 * Load the snipet from a file.
+	 * \param filename The filename used to load snipet.
+	 * \throw SnipetListException
+	 */
 	void loadFromFile( const QString & filename );
 	
-	const QStringList & categories() const;
+	/*!
+	 * List of categories used by templates
+	 * \return List of template.
+	 */
+	QStringList categories() const;
+private:
+};
+
+class SnipetListManager : public QObject {
+	Q_OBJECT
+public:
+	SnipetListManager();
+	~SnipetListManager();
+	
+	static SnipetListManager * self();
 signals:
 	void listChanged();
 private:
-	static SnipetList * s_self;
-	
-	PrivateSnipetList * d;
-	friend class PrivateSnipetList;
+	static SnipetListManager * s_self;
+	QString m_filename;
 };
 
 #endif // __SNIPETLIST_H__

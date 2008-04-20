@@ -29,6 +29,7 @@
 
 // Xinx header
 #include "../customdialogimpl.h"
+#include "../snipet.h"
 #include <syntaxhighlighter.h>
 
 class PrivateCustomDialogImpl : public QObject {
@@ -100,5 +101,18 @@ private:
 	QHash<QString,AppSettings::struct_extentions> m_extentions;
 };
 
+class SnipetModelIndex : public QAbstractTableModel {
+	Q_OBJECT
+public:
+	SnipetModelIndex( QList<Snipet*> * list, QObject * parent = 0 );
+	virtual ~SnipetModelIndex();
+
+	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+private:
+	QList<Snipet*> * m_list;
+};
 
 #endif /*P_CUSTOMDIALOGIMPL_H_*/

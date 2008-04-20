@@ -52,26 +52,18 @@
      </item>
      <item>
       <property name="text" >
+       <string>Project</string>
+      </property>
+      <property name="icon" >
+       <iconset resource="../application.qrc" >:/images/preferences-project.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
        <string>Revision</string>
       </property>
       <property name="icon" >
        <iconset resource="../application.qrc" >:/images/preference-rcs.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Tools</string>
-      </property>
-      <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-tools.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Interface</string>
-      </property>
-      <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-ui.png</iconset>
       </property>
      </item>
      <item>
@@ -100,18 +92,26 @@
      </item>
      <item>
       <property name="text" >
-       <string>Project</string>
-      </property>
-      <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-project.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
        <string>XML Pres.</string>
       </property>
       <property name="icon" >
        <iconset resource="../application.qrc" >:/images/preferences-xmlpres.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>Snipet</string>
+      </property>
+      <property name="icon" >
+       <iconset resource="../application.qrc" >:/images/preferences-desktop-keyboard.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>Tools</string>
+      </property>
+      <property name="icon" >
+       <iconset resource="../application.qrc" >:/images/preferences-tools.png</iconset>
       </property>
      </item>
      <item>
@@ -224,11 +224,100 @@
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>325</width>
+           <height>91</height>
           </size>
          </property>
         </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="m_project" >
+      <layout class="QGridLayout" >
+       <item row="0" column="0" colspan="3" >
+        <widget class="QCheckBox" name="m_alertStandardCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;p>In derivated project mode only, when a standard file (with no prefix) is saving, &lt;b>XINX&lt;/b> ask you to save the file with a new prefixed name.&lt;/p>
+&lt;p>The prefix must be specified in the project property.&lt;/p></string>
+         </property>
+         <property name="text" >
+          <string>&amp;Alert user when file is standard (project mode only)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="3" >
+        <widget class="QCheckBox" name="m_saveSessionCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;p>This define the default way to close the project.&lt;/p>
+&lt;p>If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p>
+&lt;p>Else, the XINX ask the user about unsaved file.&lt;/p>
+&lt;p/>
+&lt;p>&lt;i>In case of crash &lt;b>XINX&lt;/b> save the project in session mode automatically.&lt;/i>&lt;/p></string>
+         </property>
+         <property name="text" >
+          <string>&amp;Save project with session information by default (content of modified file)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>&amp;Application server path :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_projectPathLineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
+         <property name="whatsThis" >
+          <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
+&lt;p>&lt;i>As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i>New Project Wizard&lt;/i>, the Application Server path would be wrong.&lt;/i>&lt;/p></string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2" >
+        <widget class="QToolButton" name="m_changeProjectPathBtn" >
+         <property name="icon" >
+          <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label_11" >
+         <property name="text" >
+          <string>Default &amp;specifique path name :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_lineEditDefaultProjectPathName</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
+         <property name="whatsThis" >
+          <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
+&lt;p>&lt;i>In &lt;b>Generix&lt;/b>, this is a sub-directory of langue/fra/nav/&lt;/i>&lt;/p></string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_16" >
+         <property name="text" >
+          <string>&amp;Specifique file :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_specifiqueTableView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QTableView" name="m_specifiqueTableView" >
+         <property name="whatsThis" >
+          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -280,25 +369,50 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="m_tools" >
+     <widget class="QWidget" name="m_editor" >
       <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QTableView" name="m_toolsTable" >
-         <property name="whatsThis" >
-          <string>&lt;p>List of tools used by &lt;b>XINX&lt;/b> and all plugins. Tools are external application called by this application.&lt;/p>
-&lt;p>If the tool can't be find, the text color will be &lt;span style="color:#ff0000;">red&lt;/span>.&lt;/p>
-&lt;p>To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p></string>
+       <item row="0" column="0" colspan="2" >
+        <widget class="QGroupBox" name="groupBox_3" >
+         <property name="title" >
+          <string>&amp;Options</string>
          </property>
-         <property name="alternatingRowColors" >
-          <bool>true</bool>
-         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;p>Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u>and loose his change&lt;/u>) or keep current file.&lt;/p></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Popup when file modifed</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="m_createBakCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;p>Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p>
+&lt;p>The backup is created by copy the modified file before he his saved.&lt;/p></string>
+            </property>
+            <property name="text" >
+             <string>&amp;Create backup file when saving (.bak)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="m_prettyPrintOnSavingCheckBox" >
+            <property name="whatsThis" >
+             <string>&lt;p>If the box is checked, when saving the file, &lt;b>XINX &lt;/b>apply the pretty print function on the text. This format the code on saving file. &lt;/p>
+&lt;p>&lt;i>Saving file can be slower.&lt;/i>&lt;/p></string>
+            </property>
+            <property name="text" >
+             <string>P&amp;retty print on saving</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="m_interface" >
-      <layout class="QVBoxLayout" >
-       <item>
+       <item row="0" column="2" >
         <widget class="QGroupBox" name="groupBox_8" >
          <property name="title" >
           <string>Close Tab Button</string>
@@ -340,73 +454,7 @@
          </layout>
         </widget>
        </item>
-       <item>
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="m_editor" >
-      <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="3" >
-        <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u>and loose his change&lt;/u>) or keep current file.&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>&amp;Popup when file modifed</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="QCheckBox" name="m_createBakCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p>
-&lt;p>The backup is created by copy the modified file before he his saved.&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>&amp;Create backup file when saving (.bak)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="3" >
-        <widget class="QCheckBox" name="m_prettyPrintOnSavingCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>If the box is checked, when saving the file, &lt;b>XINX &lt;/b>apply the pretty print function on the text. This format the code on saving file. &lt;/p>
-&lt;p>&lt;i>Saving file can be slower.&lt;/i>&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>P&amp;retty print on saving</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="2" >
-        <widget class="QLabel" name="label_14" >
-         <property name="text" >
-          <string>Size of a &amp;tabulation :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_sizeOfTabSpinBox</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2" >
-        <widget class="QSpinBox" name="m_sizeOfTabSpinBox" >
-         <property name="whatsThis" >
-          <string>Size of tabulation in number of character. This is the number of character that tabulation replaces.</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" >
+       <item row="1" column="0" >
         <widget class="QLabel" name="label_19" >
          <property name="text" >
           <string>&amp;Code helper :</string>
@@ -416,7 +464,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
+       <item row="1" column="1" colspan="2" >
         <widget class="QComboBox" name="m_completionLevelComboBox" >
          <property name="whatsThis" >
           <string>&lt;p>Level of the completion. The completion can be :&lt;/p>
@@ -446,15 +494,15 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="1" >
+       <item row="2" column="1" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>166</width>
+           <height>101</height>
           </size>
          </property>
         </spacer>
@@ -545,7 +593,24 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1" >
+       <item row="6" column="0" colspan="2" >
+        <widget class="QLabel" name="label_14" >
+         <property name="text" >
+          <string>Size of a &amp;tabulation :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_sizeOfTabSpinBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2" >
+        <widget class="QSpinBox" name="m_sizeOfTabSpinBox" >
+         <property name="whatsThis" >
+          <string>Size of tabulation in number of character. This is the number of character that tabulation replaces.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -553,7 +618,7 @@
          <property name="sizeHint" >
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>71</height>
           </size>
          </property>
         </spacer>
@@ -709,96 +774,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="m_project" >
-      <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="3" >
-        <widget class="QCheckBox" name="m_alertStandardCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>In derivated project mode only, when a standard file (with no prefix) is saving, &lt;b>XINX&lt;/b> ask you to save the file with a new prefixed name.&lt;/p>
-&lt;p>The prefix must be specified in the project property.&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>&amp;Alert user when file is standard (project mode only)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="QCheckBox" name="m_saveSessionCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>This define the default way to close the project.&lt;/p>
-&lt;p>If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p>
-&lt;p>Else, the XINX ask the user about unsaved file.&lt;/p>
-&lt;p/>
-&lt;p>&lt;i>In case of crash &lt;b>XINX&lt;/b> save the project in session mode automatically.&lt;/i>&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>&amp;Save project with session information by default (content of modified file)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
-          <string>&amp;Application server path :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_projectPathLineEdit</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
-         <property name="whatsThis" >
-          <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
-&lt;p>&lt;i>As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i>New Project Wizard&lt;/i>, the Application Server path would be wrong.&lt;/i>&lt;/p></string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2" >
-        <widget class="QToolButton" name="m_changeProjectPathBtn" >
-         <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/folder.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label_11" >
-         <property name="text" >
-          <string>Default &amp;specifique path name :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_lineEditDefaultProjectPathName</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
-         <property name="whatsThis" >
-          <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
-&lt;p>&lt;i>In &lt;b>Generix&lt;/b>, this is a sub-directory of langue/fra/nav/&lt;/i>&lt;/p></string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label_16" >
-         <property name="text" >
-          <string>&amp;Specifique file :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_specifiqueTableView</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="2" >
-        <widget class="QTableView" name="m_specifiqueTableView" >
-         <property name="whatsThis" >
-          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="page" >
+     <widget class="QWidget" name="m_xplPres" >
       <layout class="QVBoxLayout" >
        <item>
         <layout class="QHBoxLayout" >
@@ -949,6 +925,106 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="m_snipet" >
+      <layout class="QGridLayout" >
+       <item row="0" column="0" colspan="6" >
+        <widget class="QLabel" name="label_13" >
+         <property name="text" >
+          <string>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b>XINX&lt;/b> file or export snipet to a &lt;i>XML&lt;/i> file.</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="6" >
+        <widget class="QTableView" name="m_snipetTableView" >
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QPushButton" name="m_addPushButton" >
+         <property name="text" >
+          <string>&amp;Add</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="../application.qrc" >:/images/add.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QPushButton" name="m_removePushButton" >
+         <property name="text" >
+          <string>&amp;Delete</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="../application.qrc" >:/images/remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2" >
+        <widget class="QPushButton" name="m_modifyPushButton" >
+         <property name="text" >
+          <string>&amp;Modify</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="../application.qrc" >:/images/document-properties.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="4" >
+        <widget class="QPushButton" name="m_importPushButton" >
+         <property name="text" >
+          <string>&amp;Import ...</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="../application.qrc" >:/images/document-import.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5" >
+        <widget class="QPushButton" name="m_exportPushButton" >
+         <property name="text" >
+          <string>&amp;Export ...</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="../application.qrc" >:/images/document-export.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="m_tools" >
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QTableView" name="m_toolsTable" >
+         <property name="whatsThis" >
+          <string>&lt;p>List of tools used by &lt;b>XINX&lt;/b> and all plugins. Tools are external application called by this application.&lt;/p>
+&lt;p>If the tool can't be find, the text color will be &lt;span style="color:#ff0000;">red&lt;/span>.&lt;/p>
+&lt;p>To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p></string>
+         </property>
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="m_modules" >
       <layout class="QGridLayout" >
        <item row="0" column="0" >
@@ -1064,13 +1140,9 @@
   <tabstop>m_fontComboBox</tabstop>
   <tabstop>m_completionLevelComboBox</tabstop>
   <tabstop>m_showTabulationCheckBox</tabstop>
-  <tabstop>m_sizeOfTabSpinBox</tabstop>
   <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
   <tabstop>m_createBakCheckBox</tabstop>
   <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>
-  <tabstop>m_closeBtnRadioButton</tabstop>
-  <tabstop>m_cornerBtnRadioButton</tabstop>
-  <tabstop>m_closeAndCornerBtnRadioButton</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
   <tabstop>m_defaultPushButton</tabstop>

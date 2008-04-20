@@ -22,12 +22,14 @@
 #include <exceptions.h>
 #include <xinxpluginsloader.h>
 #include "private/p_customdialogimpl.h"
+#include "snipetlist.h"
 
 // Qt header
 #include <QDir>
 #include <QFileDialog>
 #include <QPainter>
 #include <QMessageBox>
+#include <QHeaderView>
 
 /* ToolsModelIndex */
 
@@ -253,6 +255,68 @@ Qt::ItemFlags SpecifiqueModelIndex::flags ( const QModelIndex & index ) const {
 	return QAbstractTableModel::flags( index );
 }
 
+/* SnipetModelIndex */
+
+SnipetModelIndex::SnipetModelIndex( QList<Snipet*> * list, QObject * parent ) : QAbstractTableModel( parent ), m_list( list ) {
+	
+}
+
+SnipetModelIndex::~SnipetModelIndex() {
+	
+}
+
+int SnipetModelIndex::rowCount( const QModelIndex & ) const {
+	return m_list->size();
+}
+
+int SnipetModelIndex::columnCount( const QModelIndex & ) const {
+	return 3;
+}
+
+QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation, int role ) const {
+	if( role != Qt::DisplayRole ) return QVariant();
+	
+	if( orientation == Qt::Horizontal ) {
+		switch( section ) {
+		case 0: 
+			return tr("Name");
+		case 1:
+			return tr("Key");
+		case 2:
+			return tr("Description");
+		default:
+			return QVariant();
+		}
+	} else {
+		return QVariant( section );
+	}
+}
+
+QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
+	if( ( role != Qt::DisplayRole ) && ( role != Qt::DecorationRole ) ) return QVariant();
+	if( ! index.isValid() ) return QVariant();
+		
+	int line = index.row();
+	if( ( line < 0 ) || ( line >= m_list->size() ) ) return QVariant();
+	
+	if( role == Qt::DisplayRole )
+	switch( index.column() ) {
+	case 0:
+		return m_list->at( line )->name();
+	case 1:
+		return m_list->at( line )->key();
+	case 2:
+		return m_list->at( line )->description();
+	default:
+		return QVariant();
+	} else {
+		if( index.column() == 0 )
+			return QIcon( m_list->at( line )->icon() );
+		else
+			return QVariant();
+	}
+}
+
 /* PrivateCustomDialogImpl */
 
 PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) {
@@ -334,8 +398,10 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	ToolsModelIndex * toolsModel = new ToolsModelIndex( &(m_config.config().tools), m_parent->m_toolsTable );
 	m_parent->m_toolsTable->setModel( toolsModel );
 	m_parent->m_toolsTable->setItemDelegate( new DirectoryEditDelegate( m_parent->m_toolsTable ) );
-	m_parent->m_toolsTable->resizeColumnsToContents();
-	QObject::connect( toolsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_toolsTable, SLOT(resizeColumnsToContents()) );
+	m_parent->m_toolsTable->horizontalHeader()->setResizeMode( 0, QHeaderView::ResizeToContents );
+	m_parent->m_toolsTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
+	//m_parent->m_toolsTable->resizeColumnsToContents();
+	//QObject::connect( toolsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_toolsTable, SLOT(resizeColumnsToContents()) );
 	
 	// CVS : Create Change Log automatically
 	m_parent->m_changeLogCheckBox->setChecked( m_config.config().rcs.createChangelog );
@@ -359,7 +425,17 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
 	m_parent->m_viewColorBox->setColor( m_config.config().xmlPres.viewColor ); 
 	m_parent->m_errorColorBox->setColor( m_config.config().xmlPres.errorColor ); 
-	m_parent->m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor ); 
+	m_parent->m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
+	
+	// Snipet 
+	QList<Snipet*> * snipetList = new QList<Snipet*>();
+	for( int i = 0 ; i < SnipetList::self()->count() ; i++ )
+		snipetList->append( SnipetList::self()->at( i ) );
+	SnipetModelIndex * snipetModel = new SnipetModelIndex( snipetList, m_parent->m_snipetTableView );
+	m_parent->m_snipetTableView->setModel( snipetModel );
+	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
+	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
+//	m_parent->m_snipetTableView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
 }
 
 void PrivateCustomDialogImpl::storeConfig() {

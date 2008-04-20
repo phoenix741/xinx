@@ -23,150 +23,47 @@
 
 /* Static member */
 
-SnipetList * SnipetList::s_self = 0;
+SnipetListManager * SnipetListManager::s_self = 0;
 
 /* SnipetListException */
 
-/*!
- * \class SnipetListException
- * The snipet list exception, is throw when Snipet list load or save file.
- */
-
-/*!
- * Exception throw by the Snipet list.
- * \param message Message of the error.
- */
 SnipetListException::SnipetListException( const QString & message ) : XinxException( message ) {
 }
 	
-/* PrivateSnipetList */
+/* SnipetList */
 
-PrivateSnipetList::PrivateSnipetList( SnipetList * parent ) : m_parent( parent ) {
-	
+SnipetList::SnipetList() {
+
 }
 
-PrivateSnipetList::~PrivateSnipetList() {
-	
+SnipetList::~SnipetList() {
+
 }
 
 void PrivateSnipetList::addCategory( QString newCategory ) {
 	if( ! m_categories.contains( newCategory ) )
 		m_categories.append( newCategory );
-	emit m_parent->listChanged();
 }
 
-void PrivateSnipetList::snipetPropertyChange() {
-	if( ! m_filename.isEmpty() )
-		m_parent->saveToFile();
-}
-
-/* SnipetList */
-
-/*!
- * \class SnipetList
- * The snipet list contains all snipet defined in XINX. This snipet is stored in a 
- * file in XML format. 
- */
-
-/*!
- * Create an empty snipet list. 
- */
-SnipetList::SnipetList() {
-	d = new PrivateSnipetList( this );
-}
-
-/*!
- * Destroy a snipet list.
- */
-SnipetList::~SnipetList() {
-	delete d;
-	if( s_self == this )
-		s_self = 0;
-}
-
-SnipetList * SnipetList::self() {
-	if( s_self == 0 ) {
-		s_self = new SnipetList();
-		XINXStaticDeleter::self()->addObject( s_self );
+QStringList SnipetList::categories() const {
+	QStringList result;
+	foreach( const Snipet & snipet, *this ) {
+		if( ! result.contains( snipet.category() ) )
+			result << snipet.category();
 	}
-	return s_self;
+	return result;
 }
 
-
-/*!
- * Add a snipet to the list.
- * \param snipet The snipet to add.
- */
-void SnipetList::add( Snipet * snipet ) {
-	d->m_list.append( snipet );
-	d->addCategory( snipet->category() );
-	connect( snipet, SIGNAL(categoryChange(QString)), d, SLOT(addCategory(QString)) );
-	connect( snipet, SIGNAL(propertyChange()), d, SLOT(snipetPropertyChange()) );
-}
-
-/*!
- * Remove the snipet of the list.
- * \param index The index of the snipet to remove.
- */
-void SnipetList::remove( int index ) {
-	d->m_list.removeAt( index );
-	emit listChanged();
-}
-
-/*!
- * Replace a snipet in the list. The snipet is replaced by the one in the
- * parameter. The old snipet is returned.
- * \param index The index of the element to replace
- * \param snipet The new snipet used to replace the older.
- * \return The older snipet.
- */
-Snipet * SnipetList::replace( int index, Snipet * snipet ) {
-	Snipet * s = d->m_list.at( index );	
-	d->m_list.replace( index, snipet );
-	emit listChanged();
-	return s;
-}
-
-/*!
- * Return the element at index from the list.
- * \param index The index in the list.
- * \return The snipet at the index.
- */
-Snipet * SnipetList::at( int index ) {
-	return d->m_list.at( index );
-}
-
-/*!
- * Return the number of element in the list.
- * \return Number of element.
- */
-int SnipetList::count() {
-	return d->m_list.count();
-}
-
-/*!
- * List of categories used by templates
- * \return List of template.
- */
-const QStringList & SnipetList::categories() const {
-	return d->m_categories;
-}
-
-Snipet * SnipetList::indexOf( const QString & key ) {
-	foreach( Snipet * snipet, d->m_list ) {
-		if( snipet->key() == key )
-			return snipet;
+int SnipetList::indexOf( const QString & key, int from ) {
+	for( int i = from ; i < size() ; i++ ) {
+		const Snipet & snipet = at( i );
+		if( snipet.key() == key )
+			return i;
 	}
-	return NULL;
+	return -1;
 }
 
-/*!
- * Save the snipet list into a file.
- * \param filename The filename where we want save snipet.
- * \throw SnipetListException
- */
 void SnipetList::saveToFile( const QString & filename ) {
-	QString usedFilename = filename.isEmpty() ? d->m_filename : filename;
 	const int IndentSize = 2;
 
 	QDomDocument document( "SnipetList" );
@@ -175,51 +72,41 @@ void SnipetList::saveToFile( const QString & filename ) {
 	QDomElement root = document.createElement( "SnipetList" );
 	document.appendChild( root );
 	
-	foreach( Snipet * snipet, d->m_list ) {
+	foreach( const Snipet & snipet, *this ) {
 		QDomElement s = document.createElement( "Snipet" );
 		root.appendChild( s );
 		
-		s.setAttribute( "name", snipet->name() );
-		s.setAttribute( "key", snipet->key() );
-		s.setAttribute( "type", snipet->type() );
-		s.setAttribute( "category", snipet->category() );
-		s.setAttribute( "icon", snipet->icon() );
+		s.setAttribute( "name", snipet.name() );
+		s.setAttribute( "key", snipet.key() );
+		s.setAttribute( "type", snipet.type() );
+		s.setAttribute( "category", snipet.category() );
+		s.setAttribute( "icon", snipet.œicon() );
 		
 		QDomElement description = document.createElement( "Description" );
 		s.appendChild( description );
-		QDomText text = document.createTextNode( snipet->description() );
+		QDomText text = document.createTextNode( snipet.œdescription() );
 		description.appendChild( text );
 		
 		QDomElement textElement = document.createElement( "Text" );
 		s.appendChild( textElement );
-		text = document.createTextNode( snipet->text() );
+		text = document.createTextNode( snipet.text() );
 		textElement.appendChild( text );
 		
-		foreach( QString params, snipet->params() ) {
+		foreach( QString params, snipet.params() ) {
 			QDomElement param = document.createElement( "Param" );
 			s.appendChild( param );
 			param.setAttribute( "name", params );
 		}
 	}
 
-	QFile file( usedFilename );
+	QFile file( filename );
 	if ( ! file.open( QFile::WriteOnly ) )
-		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.", 0, QApplication::UnicodeUTF8).arg(usedFilename).arg(file.errorString()) );
+		throw SnipetListException( QApplication::translate("SnipetList", "Cannot write file %1:\n%2.").arg(usedFilename).arg(file.errorString()) );
 	QTextStream out( &file );
 	document.save( out, IndentSize );
 }
 
-/*!
- * Load the snipet from a file.
- * \param filename The filename used to load snipet.
- */
 void SnipetList::loadFromFile( const QString & filename ) {
-	d->m_filename = filename;
-	
-	d->m_categories.clear();
-	qDeleteAll( d->m_list );
-	d->m_list.clear();
-	
 	QFile file( filename );
 	if( ! file.open( QFile::ReadOnly ) )
 		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()) ); 
@@ -232,45 +119,49 @@ void SnipetList::loadFromFile( const QString & filename ) {
 	if( root.tagName() != "SnipetList" ) 
 		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.") );
 
-	Snipet *  newSnipet;
 	QDomElement snipet = root.firstChildElement( "Snipet" );
 	while( ! snipet.isNull() ) {
-		newSnipet = new Snipet();
-		newSnipet->setName( snipet.attribute( "name" ) );
-		newSnipet->setKey( snipet.attribute( "key" ) );
-		newSnipet->setType( (enum Snipet::SnipetType)snipet.attribute( "type" ).toInt() );
-		newSnipet->setCategory( snipet.attribute( "category" ) );
-		newSnipet->setIcon( snipet.attribute( "icon" ) );
+		Snipet newSnipet;
+		newSnipet.setName( snipet.attribute( "name" ) );
+		newSnipet.setKey( snipet.attribute( "key" ) );
+		newSnipet.setType( snipet.attribute( "type" ) );
+		newSnipet.setCategory( snipet.attribute( "category" ) );
+		newSnipet.setIcon( snipet.attribute( "icon" ) );
 		
 		QDomElement description = snipet.firstChildElement( "Description" );
-		QDomNode text = description.firstChild(); 
-		QString strText = "";
-		while( ! text.isNull() ) {
-			if( text.isText() ) 
-				strText += text.toText().data();
-			text = text.nextSibling();			
-		}
-		newSnipet->setDescription( strText );
+		newSnipet.setDescription( description.text() );
 
 		QDomElement textElement = snipet.firstChildElement( "Text" );
-		text = textElement.firstChild(); 
-		strText = "";
-		while( ! text.isNull() ) {
-			if( text.isText() ) 
-				strText += text.toText().data();
-			text = text.nextSibling();			
-		}
-		newSnipet->setText( strText );
+		newSnipet->setText( textElement.text() );
 		
 		QDomElement param = snipet.firstChildElement( "Param" );
 		while( ! param.isNull() ) {
-			newSnipet->params().append( param.attribute( "name" ) );
+			newSnipet.params().append( param.attribute( "name" ) );
 			param = param.nextSiblingElement( "Param" );
 		}
-		
+
 		add( newSnipet );		
 		snipet = snipet.nextSiblingElement( "Snipet" );
 	}
-	emit listChanged();
 }
+
+/* SnipetListManager */
+
+SnipetListManager::SnipetListManager() {
+	
+}
+
+SnipetListManager::~SnipetListManager() {
+	if( s_self == this )
+		s_self = 0;
+}
+
+SnipetListManager * SnipetListManager::self() {
+	if( s_self == 0 ) {
+		s_self = new SnipetListManager();
+		XINXStaticDeleter::self()->addObject( s_self );
+	}
+	return s_self;
+}
+
 

@@ -20,110 +20,76 @@
 
 #include "snipet.h"
 
-/* PrivateSnipet */
-
-class PrivateSnipet {
-public:
-	PrivateSnipet( Snipet * parent );
-	virtual ~PrivateSnipet();
-	
-	QString m_text, m_name, m_description, m_icon, m_category, m_key;
-	QStringList m_params;
-	enum Snipet::SnipetType m_type;
-private:
-	Snipet * m_parent;
-	friend class Snipet;
-};
-
-PrivateSnipet::PrivateSnipet( Snipet * parent ) : m_parent( parent ) {
-
-}
-
-PrivateSnipet::~PrivateSnipet() {
-	
-}
-
 /* Snipet */
 
 Snipet::Snipet() {
-	d = new PrivateSnipet( this );
+
 }
 
-Snipet::Snipet( const Snipet & snipet ) : QObject( snipet.parent() ) {
-	d = new PrivateSnipet( this );
-	*d = *(snipet.d);
-	d->m_parent = this;
-}
-
-	
 Snipet::~Snipet() {
-	delete d;
+
 }
 	
 const QString & Snipet::name() const {
-	return d->m_name;
+	return m_name;
 }
 
 void Snipet::setName( const QString & name ) {
-	d->m_name = name;
-	emit propertyChange();
+	m_name = name;
 }
 
 const QString & Snipet::key() const {
-	return d->m_key;
+	return m_key;
 }
 	 
 void Snipet::setKey( const QString & key ) {
-	d->m_key = key;
-	emit propertyChange();
+	m_key = key;
 }
 
 enum Snipet::SnipetType Snipet::type() const {
-	return d->m_type;
+	return m_type;
 }
 	 
 void Snipet::setType( enum Snipet::SnipetType type ) {
-	d->m_type = type;
-	emit propertyChange();
+	m_type = type;
 }
 	
 const QString & Snipet::description() const {
-	return d->m_description;
+	return m_description;
 }
 
 void Snipet::setDescription( const QString & description ) {
-	d->m_description = description;
-	emit propertyChange();
+	m_description = description;
 }
 	
 const QString & Snipet::icon() const {
-	return d->m_icon;
+	return m_icon;
 }
 
 void Snipet::setIcon( const QString & icon ) {
-	d->m_icon = icon;
-	emit propertyChange();
+	m_icon = icon;
 }
 
 const QString & Snipet::category() const {
-	return d->m_category;
+	return m_category;
 }
 	
 void Snipet::setCategory( const QString & category ) {
-	d->m_category = category;
-	emit categoryChange( category );
-	emit propertyChange();
+	m_category = category;
 }
 
 const QString & Snipet::text() const {
-	return d->m_text;
+	return m_text;
 }
 	
 void Snipet::setText( const QString & value ) {
-	d->m_text = value;
-	emit propertyChange();
+	m_text = value;
 }
 	
 QStringList & Snipet::params() {
-	return d->m_params;
+	return m_params;
+}
+
+const QStringList & Snipet::params() const {
+	return m_params;
 }

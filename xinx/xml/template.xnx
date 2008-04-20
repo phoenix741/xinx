@@ -93,9 +93,7 @@
     <Param name="Date de réalisation (format YYYYMMJJ)" />
   </Snipet>
   <Snipet category="Webservices" key="createeve" icon="" type="0" name="Créer un évènement" >
-    <Description>Créer un évènement avec un seul poste
-(possibiliter d'en rajouter)
-La valorisation est incluse.</Description>
+    <Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
     <Text>&lt;egx_ws>
 &lt;bean_in>
 &lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common">

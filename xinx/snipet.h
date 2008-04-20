@@ -33,29 +33,14 @@ class PrivateSnipet;
  * The text contains %1, %2, ... this data will be replaced by params.
  * The params of this class, is just names. 
  */
-class Snipet : public QObject {
-	Q_OBJECT
+class Snipet {
 public:
-	/*!
-	 * Type of template that XINX can manage.
-	 */
-	enum SnipetType {
-		/// XSL Stylesheet type
-	 	SNIPET_XSL,
-	 	/// Javascript type
-	 	SNIPET_JAVASCRIPT
- 	};
 
 	/*!
 	 * Create an empty template.
 	 */
 	Snipet();
 	
-	/*!
-	 * Copy constructor
-	 */
-	Snipet( const Snipet & snipet );
-
 	/*!
 	 * Destroy the template 
 	 */ 
@@ -94,14 +79,14 @@ public:
 	 * \return Type of template.
 	 * \sa setType()
 	 */
-	enum SnipetType type() const;
+	const QString & type() const;
 	 
 	/*!
 	 * Set the type of template.
 	 * \param type new type of template.
 	 * \sa type()
 	 */
-	void setType( enum SnipetType type );
+	void setType( const QString & type );
 	
 	/*!
 	 * Description of the template. 
@@ -167,24 +152,10 @@ public:
 	 * \return a list of parameter.
 	 */
 	QStringList & params();
-	
-signals:
-	/*!
-	 * Signal emitted by the object when the category is modified. This signal help to refresh list
-	 * when needed.
-	 * \param newValue New value of the category
-	 * \sa setCategory(), category()
-	 */
-	void categoryChange( QString newValue );
-	
-	/*!
-	 * Signal emitted by the object when a property is modified. This signal is used to save the list
-	 * if a property is modified
-	 */ 
-	void propertyChange();
+	const QStringList & params() const;
 private:
-	PrivateSnipet * d;
-	friend class PrivateSnipet;
+	QString m_text, m_name, m_description, m_icon, m_category, m_key, m_type;
+	QStringList m_params;
 };
 
 #endif // __SNIPET_H__

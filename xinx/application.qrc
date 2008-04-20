@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/" >
-        <file alias="translations/xinxcomponents_fr.qm">../components/translations/xinxcomponents_fr.qm</file>
-        <file alias="translations/libxinx_fr.qm">../libxinx/translations/libxinx_fr.qm</file>
+        <file alias="translations/xinxcomponents_fr.qm" >../components/translations/xinxcomponents_fr.qm</file>
+        <file alias="translations/libxinx_fr.qm" >../libxinx/translations/libxinx_fr.qm</file>
         <file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
         <file>images/action.png</file>
@@ -22,6 +22,9 @@
         <file>images/configure.png</file>
         <file>images/datetimeedit.png</file>
         <file>images/dialog-information.png</file>
+        <file>images/document-export.png</file>
+        <file>images/document-import.png</file>
+        <file>images/document-properties.png</file>
         <file>images/down.png</file>
         <file>images/draw-text.png</file>
         <file>images/edit-clear-locationbar-ltr.png</file>
@@ -68,6 +71,7 @@
         <file>images/portugal.png</file>
         <file>images/preference-rcs.png</file>
         <file>images/preferences-color.png</file>
+        <file>images/preferences-desktop-keyboard.png</file>
         <file>images/preferences-editor.png</file>
         <file>images/preferences-font.png</file>
         <file>images/preferences-general.png</file>
