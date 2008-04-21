@@ -91,7 +91,6 @@ QString RunSnipetDialogImpl::getResult() {
 		from = jsString.pos() + jsString.matchedLength();
 	}
 	processedString += text.mid( from );
-	qDebug( qPrintable( text.mid( from ) ) );
 	
 	return processedString;
 }

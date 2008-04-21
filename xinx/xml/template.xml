@@ -144,7 +144,7 @@
     <Param name="Caption" />
   </Snipet>
   <Snipet category="Displays Widgets" key="sort" icon="" type="xsl" name="GnxSort" >
-    <Description></Description>
+    <Description>Template for sort a title with two sort key (to define in ViewStruct)</Description>
     <Text>&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
