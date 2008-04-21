@@ -23,8 +23,7 @@
   </Snipet>
   <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for Generix Stylesheet" >
     <Description>Base used for Generix Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
-    <Text>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
-&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 
 	&lt;xsl:template match="/">
@@ -123,7 +122,7 @@
   <Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="xsl" name="Delete button" >
     <Description>Show a delete button in a table.</Description>
     <Text>&lt;td class="supprimer">
-	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}" onFocus="this.form['chp:SupprimerTyptie'].value='{Typtie}',this.form['supprimer'].value='O'"/>
+	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
 &lt;/td></Text>
   </Snipet>
   <Snipet category="Displays Widgets" key="href" icon="" type="xsl" name="GnxPopup" >
@@ -149,16 +148,14 @@
     <Text>&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
-	&lt;xsl:with-param name="sortkey_desc">%3&lt;/xsl:with-param>
+	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
 &lt;/xsl:call-template></Text>
     <Param name="Title" />
-    <Param name="Asc key sort" />
-    <Param name="Desc key sort" />
+    <Param name="Sort key" />
   </Snipet>
   <Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields" >
     <Description>Hidden fields for Generix forms</Description>
-    <Text>&lt;input type="hidden" name="sourceview" value="%1"/>
-&lt;input type="hidden" name="cinematic" value="%2"/>
+    <Text>&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>\n' ?>&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
 &lt;input type="hidden" name="entity" value="{$ENTITY}"/>
 &lt;input type="hidden" name="id" value="{$ID}"/>
 &lt;input type="hidden" name="frame" value="{$FRAME}"/></Text>

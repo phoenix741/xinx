@@ -87,7 +87,14 @@ const QStringList & Snipet::params() const {
 }
 
 bool Snipet::operator==( const Snipet & s ) const {
-	return ( m_name == s.m_name ) && ( m_key == s.m_key );
+	return ( m_name == s.m_name ) 
+		&& ( m_key == s.m_key )
+		&& ( m_category == s.m_category )
+		&& ( m_text == s.m_text )
+		&& ( m_description == s.m_description )
+		&& ( m_icon == s.m_icon )
+		&& ( m_type == s.m_type )
+		&& ( m_params == s.m_params );
 }
 
 bool Snipet::operator<( const Snipet & s ) const {

@@ -22,6 +22,7 @@
 #include "runsnipetdialogimpl.h"
 
 // Qt header
+#include <QMessageBox>
 #include <QScriptEngine>
 
 /* RunSnipetDialogImpl */
@@ -65,6 +66,7 @@ QString RunSnipetDialogImpl::getResult() {
 	/* Process script */
 	QScriptEngine engine;
 	QRegExp jsString( "<\\?.*\\?>" ); 
+	jsString.setMinimal( true );
 	int from = 0;
 	QString processedString;
 	while( jsString.indexIn( text, from ) >= 0 ) {
@@ -72,11 +74,24 @@ QString RunSnipetDialogImpl::getResult() {
 		
 		QString js = text.mid( jsString.pos() + 2, jsString.matchedLength() - 4 );
 		if( js.at(0) == '=' ) {
-			processedString += engine.evaluate( js.mid(1) ).toString();
+			QScriptValue result = engine.evaluate( js.mid(1) );
+			if( ! result.isError() )
+				processedString += result.toString();
+			else {
+				QMessageBox::critical( this, tr("Script error"), result.toString() );
+				return QString();
+			}
+		} else {
+			engine.evaluate( js ); // Only for define variable or make pre-process.
+			if( engine.hasUncaughtException() ) {
+				QMessageBox::critical( this, tr("Script error"), engine.uncaughtException().toString() );
+				return QString();
+			}
 		}
-		from += jsString.pos() + jsString.matchedLength();
+		from = jsString.pos() + jsString.matchedLength();
 	}
 	processedString += text.mid( from );
+	qDebug( qPrintable( text.mid( from ) ) );
 	
 	return processedString;
 }
