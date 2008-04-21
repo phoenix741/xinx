@@ -53,6 +53,8 @@ public:
 	 */
 	void saveToConfig( XINXConfig * config );
 private slots:
+	void on_m_descriptionPathLineEdit_textChanged( QString text );
+
 	void on_m_defaultPushButton_clicked();
 	void on_m_colorComboBox_activated(QColor color);
 	void on_m_boldCheckBox_toggled(bool checked);

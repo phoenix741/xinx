@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE SnipetList>
 <SnipetList>
-  <Snipet category="Webservices" key="ajoutmvt" icon="" type="0" name="Ajouter un movement de stock" >
+  <Snipet category="Webservices" key="ajoutmvt" icon="" type="fws" name="Ajouter un movement de stock" >
     <Description>Ajouter un mouvement de stock a un contexte déjà créé.</Description>
-    <Text>		&lt;inventoryTurnover>
-			&lt;movement>%1&lt;/movement>
-			&lt;depot>%2&lt;/depot>
-			&lt;product>
-				&lt;key>
-					&lt;code>%3&lt;/code>
-				&lt;/key>
-			&lt;/product>
-			&lt;quantity>%4&lt;/quantity>
-			&lt;price>%5&lt;/price>
-		&lt;/inventoryTurnover>
+    <Text>&lt;inventoryTurnover>
+	&lt;movement>%1&lt;/movement>
+	&lt;depot>%2&lt;/depot>
+	&lt;product>
+		&lt;key>
+			&lt;code>%3&lt;/code>
+		&lt;/key>
+	&lt;/product>
+	&lt;quantity>%4&lt;/quantity>
+	&lt;price>%5&lt;/price>
+&lt;/inventoryTurnover>
 </Text>
     <Param name="Code mouvement de stock (exemple : ENTREE)" />
-    <Param name="Sigle du d�p�t (exemple : LILLE)" />
+    <Param name="Sigle du dépôt (exemple : LILLE)" />
     <Param name="Code produit (exemple : BR101)" />
-    <Param name="Quantit� (exemple : 3)" />
+    <Param name="Quantité (exemple : 3)" />
     <Param name="Prix (exemple : 12)" />
   </Snipet>
-  <Snipet category="XSL" key="xslbase" icon="" type="xsl" name="Base for Generix Stylesheet" >
+  <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for Generix Stylesheet" >
     <Description>Base used for Generix Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
     <Text>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
 &lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -48,7 +48,7 @@
 &lt;/xsl:stylesheet>
 </Text>
   </Snipet>
-  <Snipet category="Webservices" key="createeve" icon="" type="0" name="Créer un évènement" >
+  <Snipet category="Webservices" key="createeve" icon="" type="fws" name="Créer un évènement" >
     <Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
     <Text>&lt;egx_ws>
 &lt;bean_in>
@@ -99,7 +99,7 @@
     <Param name="Code produit (exemple : AG101)" />
     <Param name="Quantite (exemple : 3)" />
   </Snipet>
-  <Snipet category="Webservices" key="createtim" icon="" type="0" name="Créer une action TIM" >
+  <Snipet category="Webservices" key="createtim" icon="" type="fws" name="Créer une action TIM" >
     <Description>Création d'une action</Description>
     <Text>&lt;egx_ws>
 &lt;bean_in>
@@ -120,13 +120,42 @@
     <Param name="Type action" />
     <Param name="Date de réalisation (format YYYYMMJJ)" />
   </Snipet>
-  <Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="0" name="Delete button" >
+  <Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="xsl" name="Delete button" >
     <Description>Show a delete button in a table.</Description>
     <Text>&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}" onFocus="this.form['chp:SupprimerTyptie'].value='{Typtie}',this.form['supprimer'].value='O'"/>
 &lt;/td></Text>
   </Snipet>
-  <Snipet category="Input Widgets" key="cine" icon="" type="0" name="Hidden fields" >
+  <Snipet category="Displays Widgets" key="href" icon="" type="xsl" name="GnxPopup" >
+    <Description>Display a link to another page.</Description>
+    <Text>&lt;td align="right" class="pop1">&amp;#160;
+    &lt;a href="?sourceview=%1&amp;amp;cinematic=%2&amp;amp;%3&amp;amp;frame=%4" target="%4" title="{$%5}">
+        &lt;xsl:call-template name="GnxPopup">
+            &lt;xsl:with-param name="Name">
+                &lt;xsl:value-of select="$%6"/>
+            &lt;/xsl:with-param>
+        &lt;/xsl:call-template>
+    &lt;/a>
+&lt;/td></Text>
+    <Param name="Sourceview" />
+    <Param name="Cinematic" />
+    <Param name="Fields" />
+    <Param name="Frame" />
+    <Param name="Title" />
+    <Param name="Caption" />
+  </Snipet>
+  <Snipet category="Displays Widgets" key="sort" icon="" type="xsl" name="GnxSort" >
+    <Description></Description>
+    <Text>&lt;xsl:call-template name="GnxSort">
+	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
+	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
+	&lt;xsl:with-param name="sortkey_desc">%3&lt;/xsl:with-param>
+&lt;/xsl:call-template></Text>
+    <Param name="Title" />
+    <Param name="Asc key sort" />
+    <Param name="Desc key sort" />
+  </Snipet>
+  <Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields" >
     <Description>Hidden fields for Generix forms</Description>
     <Text>&lt;input type="hidden" name="sourceview" value="%1"/>
 &lt;input type="hidden" name="cinematic" value="%2"/>
@@ -136,7 +165,11 @@
     <Param name="Sourceview" />
     <Param name="Cinematic" />
   </Snipet>
-  <Snipet category="Input Widgets" key="text" icon=":/images/lineedit.png" type="0" name="Input text" >
+  <Snipet category="Input Widgets" key="upper" icon="" type="xsl" name="Input Uppercase" >
+    <Description>Add attribute on an input to be Uppercase</Description>
+    <Text>style="text-transform:uppercase;" onchange="this.value=this.value.toUpperCase()"</Text>
+  </Snipet>
+  <Snipet category="Input Widgets" key="text" icon=":/images/lineedit.png" type="xsl" name="Input text" >
     <Description>Enter text into a line</Description>
     <Text>&lt;input name="chp:%1" size="%4" maxlength="%3" class="%2">
 	&lt;xsl:call-template name="ChpModif">
@@ -148,7 +181,7 @@
     <Param name="Size" />
     <Param name="Max length" />
   </Snipet>
-  <Snipet category="Webservices" key="stock" icon="" type="0" name="Interroger le stock" >
+  <Snipet category="Webservices" key="stock" icon="" type="fws" name="Interroger le stock" >
     <Description>Permet d'interroger le stock pour un produit.</Description>
     <Text>&lt;egx_ws>
 &lt;bean_in>
@@ -167,35 +200,16 @@
     <Param name="Code dépôt (exemple : LILLE)" />
     <Param name="Code affichage ask  (exemple : TOUS)" />
   </Snipet>
-  <Snipet category="Displays Widgets" key="variable" icon=":/images/label.png" type="0" name="Label" >
+  <Snipet category="Displays Widgets" key="variable" icon=":/images/label.png" type="xsl" name="Label" >
     <Description>Create a variable in a XSL stylesheet. This variable is a label show in the page. To call this variable use the balise &lt;i>xsl:value-of&lt;/i> and select the variable which the name is &lt;i>LBL.NAME&lt;/i>.</Description>
-    <Text>&lt;xsl:variable name="LBL.%1">%2&lt;/xsl:variable></Text>
-    <Param name="Name" />
-    <Param name="Caption" />
+    <Text>&lt;xsl:variable name="LBL.&lt;?= "%1".toUpperCase().replace(/\W/g, '') ?>">%1&lt;/xsl:variable></Text>
+    <Param name="Text" />
   </Snipet>
-  <Snipet category="Buttons Widgets" key="modif" icon=":/images/pushbutton.png" type="0" name="Modifier" >
+  <Snipet category="Buttons Widgets" key="modif" icon=":/images/pushbutton.png" type="xsl" name="Modifier" >
     <Description>Sumbit a form. Show the label 'LBL.MODIFIER'</Description>
     <Text>&lt;input class="bouton" type="submit" value="{$LBL.MODIFIER}"/></Text>
   </Snipet>
-  <Snipet category="Displays Widgets" key="href" icon="" type="0" name="Popup" >
-    <Description>Display a link to another page.</Description>
-    <Text>&lt;td align="right" class="pop1">&amp;#160;
-    &lt;a href="?sourceview=%1&amp;amp;cinematic=%2&amp;amp;%3&amp;amp;frame=%4" target="%4" title="{$%5}">
-        &lt;xsl:call-template name="GnxPopup">
-            &lt;xsl:with-param name="Name">
-                &lt;xsl:value-of select="$%6"/>
-            &lt;/xsl:with-param>
-        &lt;/xsl:call-template>
-    &lt;/a>
-&lt;/td></Text>
-    <Param name="Sourceview" />
-    <Param name="Cinematic" />
-    <Param name="Fields" />
-    <Param name="Frame" />
-    <Param name="Title" />
-    <Param name="Caption" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="select" icon=":/images/combobox.png" type="0" name="Select box (LibOnly)" >
+  <Snipet category="Input Widgets" key="select" icon=":/images/combobox.png" type="xsl" name="Select box (LibOnly)" >
     <Description>Present a select box with differente choice.</Description>
     <Text>&lt;select name="chp:%1" size="1">
 	&lt;xsl:call-template name="ChpModifSelect">
@@ -210,22 +224,7 @@
     <Param name="Label" />
     <Param name="List" />
   </Snipet>
-  <Snipet category="Displays Widgets" key="sort" icon="" type="0" name="Sort" >
-    <Description></Description>
-    <Text>&lt;xsl:call-template name="GnxSort">
-	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
-	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
-	&lt;xsl:with-param name="sortkey_desc">%3&lt;/xsl:with-param>
-&lt;/xsl:call-template></Text>
-    <Param name="Title" />
-    <Param name="Asc key sort" />
-    <Param name="Desc key sort" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="upper" icon="" type="0" name="Uppercase" >
-    <Description>Add attribute on an input to be Uppercase</Description>
-    <Text>style="text-transform:uppercase;" onchange="this.value=this.value.toUpperCase()"</Text>
-  </Snipet>
-  <Snipet category="Global Input" key="param" icon="" type="0" name="Url Parameter" >
+  <Snipet category="Global Input" key="param" icon="" type="xsl" name="Url Parameter" >
     <Description>Param passed by Url (post and get)</Description>
     <Text>key('url-param', '%1')/@value</Text>
     <Param name="Param" />

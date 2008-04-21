@@ -21,7 +21,8 @@ CONFIG += exceptions \
     warn_on \
     x86
 QT += network \
-    xml
+    xml \
+    script
 LIBS = -L../plugins/webplugin \
     -L../libxinx \
     -L../components \

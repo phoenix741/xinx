@@ -703,6 +703,17 @@ void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 	*config = d->m_config;
 }
 
+void CustomDialogImpl::on_m_descriptionPathLineEdit_textChanged( QString text ) {
+	if( ! d->m_snipetModel ) return;
+	try {
+		d->m_snipets.clear();
+		d->m_snipets.loadFromFile( QDir( text ).absoluteFilePath( "template.xml" ) );
+	} catch( SnipetListException e ) {
+		qWarning( qPrintable(e.getMessage() )) ;
+	}
+	d->m_snipetModel->reset();
+}
+
 void CustomDialogImpl::on_m_importPushButton_clicked() {
 	QString importedFilename = QFileDialog::getOpenFileName( this, tr("Import snipets"), "datas:/", "*.xml" );
 	if( ! importedFilename.isEmpty() ) {

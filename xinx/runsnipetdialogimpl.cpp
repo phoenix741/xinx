@@ -21,6 +21,9 @@
 // Xinx header
 #include "runsnipetdialogimpl.h"
 
+// Qt header
+#include <QScriptEngine>
+
 /* RunSnipetDialogImpl */
 
 RunSnipetDialogImpl::RunSnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
@@ -54,9 +57,26 @@ RunSnipetDialogImpl::~RunSnipetDialogImpl() {
 
 
 QString RunSnipetDialogImpl::getResult() {
+	/* Process arguments */
 	QString text = m_text;
 	for( int i = 0 ; i < m_paramList.size() ; i++ ) {
 		text = text.arg( m_paramList.at( i ).second->text() );
 	}
-	return text;
+	/* Process script */
+	QScriptEngine engine;
+	QRegExp jsString( "<\\?.*\\?>" ); 
+	int from = 0;
+	QString processedString;
+	while( jsString.indexIn( text, from ) >= 0 ) {
+		processedString += text.mid( from, jsString.pos() - from ); 
+		
+		QString js = text.mid( jsString.pos() + 2, jsString.matchedLength() - 4 );
+		if( js.at(0) == '=' ) {
+			processedString += engine.evaluate( js.mid(1) ).toString();
+		}
+		from += jsString.pos() + jsString.matchedLength();
+	}
+	processedString += text.mid( from );
+	
+	return processedString;
 }
