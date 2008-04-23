@@ -125,7 +125,10 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	
 	m_servicesList->setValues( project->serveurWeb() );
 
-	QString defSearchPath = project->searchPathList().at( project->indexOfSpecifiquePath() );
+	QString defSearchPath;
+	int indexOfSpecifquePath = project->indexOfSpecifiquePath();
+	if( ( indexOfSpecifquePath > 0 ) && ( indexOfSpecifquePath <= project->searchPathList().size() ) )
+		defSearchPath = project->searchPathList().at( indexOfSpecifquePath );
 
 	m_searchPathList->setDefaultValue( defSearchPath );
 	m_searchPathList->setValues( project->searchPathList() ); // fromNativeSeparators

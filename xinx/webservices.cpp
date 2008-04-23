@@ -267,6 +267,8 @@ void WebServices::askWSDL( QWidget * parent ) {
 }
 
 void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
+	XINX_ASSERT( op );
+	
 	Envelop soapEnvelop( op->encodingStyle(), op->namespaceString() , op->name() );
 	QString query;
 	
