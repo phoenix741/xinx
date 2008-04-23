@@ -170,6 +170,7 @@ SnipetListManager * SnipetListManager::self() {
 void SnipetListManager::loadFromSnipetFile() {
 	m_snipets.clear();
 	m_snipets.loadFromFile( "datas:template.xml" );
+	emit listChanged();
 }
 
 void SnipetListManager::saveToSnipetFile() {

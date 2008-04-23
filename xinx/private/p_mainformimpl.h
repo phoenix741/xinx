@@ -26,11 +26,12 @@
 #include "../filecontentdockwidget.h"
 #include "../projectdirectorydockwidget.h"
 #include "../xmlpresentationdockwidget.h"
-#include "xinxcore.h"
+#include <xinxcore.h>
 #include "../replacedialogimpl.h"
 #include "../rcslogdialogimpl.h"
 #include "../snipet.h"
-#include "xinxconfig.h"
+#include "../snipetdockwidget.h"
+#include <xinxconfig.h>
 
 // Qt header
 #include <QObject>
@@ -83,6 +84,7 @@ public:
 	ProjectDirectoryDockWidget * m_projectDock;
 	RCSLogDockWidget * m_rcslogDock;
 	XmlPresentationDockWidget * m_xmlpresentationdock;
+	SnipetDockWidget * m_snipetsDock;
 	
 	// RCS
 	bool m_rcsExecute, m_rcsVisible;
@@ -172,6 +174,7 @@ public slots:
 	// Windows
 	void nextTab();
 	void previousTab();
+	void currentTabChanged(int);
 	void setEditorPosition( int line, int column );
 	void setThreadCountChange();
 	

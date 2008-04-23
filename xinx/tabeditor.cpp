@@ -305,6 +305,7 @@ void TabEditor::tabRemoved ( int index ) {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
 		emit modelChanged( NULL );
+		emit currentChanged( -1 );
 	}
 }
 
@@ -321,22 +322,23 @@ void TabEditor::slotCursorPositionChanged() {
 }
 
 void TabEditor::slotCurrentTabChanged( int index ) {
-	Q_UNUSED( index );
-	Editor * editor = currentEditor();
+	if( index == -1 ) return;
 	
-	emit copyAvailable( editor->canCopy() );
-	emit pasteAvailable( editor->canPaste() );
-	emit undoAvailable( editor->canUndo() );
-	emit redoAvailable( editor->canRedo() );
+	Editor * ed = editor( index );
 	
-	if( isFileEditor( editor ) ) {
+	emit copyAvailable( ed->canCopy() );
+	emit pasteAvailable( ed->canPaste() );
+	emit undoAvailable( ed->canUndo() );
+	emit redoAvailable( ed->canRedo() );
+	
+	if( isFileEditor( ed ) ) {
 		emit textAvailable( true );
-		emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<FileEditor*>( editor )->textEdit()->currentColumn() );
+		emit setEditorPosition( qobject_cast<FileEditor*>( ed )->textEdit()->currentRow(), qobject_cast<FileEditor*>( ed )->textEdit()->currentColumn() );
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
 	}
-	emit modelChanged( editor->model() );
+	emit modelChanged( ed->model() );
 }
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {

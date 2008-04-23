@@ -129,6 +129,13 @@ void PrivateMainformImpl::createDockWidget() {
 	action->setShortcut( tr("Alt+3") );
 	m_parent->m_windowsMenu->addAction( action );
 
+	m_snipetsDock = new SnipetDockWidget( tr("Snipets"), m_parent );
+	m_snipetsDock->setObjectName( QString::fromUtf8( "m_snipetsDock" ) );
+	m_parent->addDockWidget( Qt::RightDockWidgetArea, m_snipetsDock );
+	action = m_snipetsDock->toggleViewAction();
+	action->setShortcut( tr("Alt+4") );
+	m_parent->m_windowsMenu->addAction( action );
+
 	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
 	m_rcslogDock->setObjectName( QString::fromUtf8("m_rcslogDock") );
 	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
@@ -279,7 +286,8 @@ void PrivateMainformImpl::createActions() {
 	connect( m_contentDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
 	connect( m_projectDock, SIGNAL(open(QString)), m_parent, SLOT(openFile(QString)) );
 	connect( m_parent->m_tabEditors, SIGNAL(modelChanged(QAbstractItemModel*)), m_contentDock, SLOT(updateModel(QAbstractItemModel*)) );
-
+	connect( m_parent->m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)) );
+	
 	// Recent open action
 	for(int i = 0; i < MAXRECENTFILES; i++) {
 		connect( m_recentProjectActs[i], SIGNAL(triggered()), this, SLOT(openRecentProject()) );
@@ -539,6 +547,10 @@ void PrivateMainformImpl::updateSnipetMenu() {
 	}
 	
 	updateActions();
+}
+
+void PrivateMainformImpl::currentTabChanged( int index ) {
+	m_snipetsDock->setEditor( m_parent->m_tabEditors->editor( index ) );
 }
 
 void PrivateMainformImpl::newFile() {

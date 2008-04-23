@@ -87,7 +87,8 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_specifique.ui \
     ui/newprojectwizard_services.ui \
     ui/newprojectwizard_serviceslist.ui
-HEADERS += specifiquedlgimpl.h \
+HEADERS += snipetdockwidget.h \
+    specifiquedlgimpl.h \
     aboutdialogimpl.h \
     commitmessagedialogimpl.h \
     configurationfile.h \
@@ -138,7 +139,8 @@ HEADERS += specifiquedlgimpl.h \
     xmlpresentationitem.h \
     xslproject.h \
     private/p_customdialogimpl.h
-SOURCES += specifiquedlgimpl.cpp \
+SOURCES += snipetdockwidget.cpp \
+    specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
     commitmessagedialogimpl.cpp \
     configurationfile.cpp \
