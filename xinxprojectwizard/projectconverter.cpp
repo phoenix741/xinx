@@ -262,18 +262,6 @@ void ProjectConverter::process() {
 	int process = 0;
 	switch( m_version ) {
 	case XINX_PROJECT_VERSION_0: {
-		int options = 1;
-		// type ==> options
-		QDomElement type = m_projectDocument.documentElement().firstChildElement( "type" );
-		if( type.text() == "services" )
-			options = 3;
-		m_projectDocument.documentElement().removeChild( type );
-
-		QDomElement opt = m_projectDocument.createElement( "options" );
-		m_projectDocument.documentElement().appendChild( opt );
-		QDomText text = m_projectDocument.createTextNode( QString( options ) );
-		opt.appendChild( text );
-		
 		// specifique ==> lists
 		QDomElement specifique = m_projectDocument.documentElement().firstChildElement( "specifique" );
 		QString path = specifique.text();
@@ -301,6 +289,18 @@ void ProjectConverter::process() {
 		emit setValue( process++ );
 	}
 	case XINX_PROJECT_VERSION_1: {
+		int options = 1;
+		// type ==> options
+		QDomElement type = m_projectDocument.documentElement().firstChildElement( "type" );
+		if( type.text() == "services" )
+			options = 3;
+		m_projectDocument.documentElement().removeChild( type );
+
+		QDomElement opt = m_projectDocument.createElement( "options" );
+		m_projectDocument.documentElement().appendChild( opt );
+		QDomText text = m_projectDocument.createTextNode( QString( "%1" ).arg( options ) );
+		opt.appendChild( text );
+		
 		QDomElement editor = m_sessionDocument.documentElement().firstChildElement( "Opened" ).firstChildElement( "editor" );
 		
 		while( ! editor.isNull() ) {
