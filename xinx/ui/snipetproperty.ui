@@ -81,13 +81,23 @@
           <height>100</height>
          </size>
         </property>
+        <property name="whatsThis" >
+         <string>Long des descriptions of the snipet.</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="2" >
-       <widget class="QLineEdit" name="m_iconLineEdit" />
+       <widget class="QLineEdit" name="m_iconLineEdit" >
+        <property name="whatsThis" >
+         <string>Path to an icon for the template. If the path begin by :/ the icon is looked in the &lt;b>XINX&lt;/b> resources</string>
+        </property>
+       </widget>
       </item>
       <item row="4" column="2" >
        <widget class="QComboBox" name="m_categoryComboBox" >
+        <property name="whatsThis" >
+         <string>Category where the snipet must be classed.</string>
+        </property>
         <property name="editable" >
          <bool>true</bool>
         </property>
@@ -112,10 +122,18 @@
        </widget>
       </item>
       <item row="0" column="2" >
-       <widget class="QLineEdit" name="m_nameLineEdit" />
+       <widget class="QLineEdit" name="m_nameLineEdit" >
+        <property name="whatsThis" >
+         <string>Name of the snipet used in to identify the snipet in menus.</string>
+        </property>
+       </widget>
       </item>
       <item row="3" column="2" >
-       <widget class="QLineEdit" name="m_keyLineEdit" />
+       <widget class="QLineEdit" name="m_keyLineEdit" >
+        <property name="whatsThis" >
+         <string>Word key used to call the snipet in the &lt;b>XINX&lt;/b> editor. If no key is defined, it's not possible to call the template in the completion.</string>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0" >
        <widget class="QLabel" name="label_5" >
@@ -138,7 +156,11 @@
        </widget>
       </item>
       <item row="2" column="2" >
-       <widget class="QLineEdit" name="m_extLineEdit" />
+       <widget class="QLineEdit" name="m_extLineEdit" >
+        <property name="whatsThis" >
+         <string>Extention to use for the syntax highlighter in the editor below.</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -150,6 +172,9 @@
        <width>250</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="whatsThis" >
+      <string>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</string>
      </property>
      <property name="title" >
       <string>&amp;Parameter</string>
@@ -164,6 +189,9 @@
      <layout class="QGridLayout" >
       <item row="0" column="0" >
        <widget class="QTextEdit" name="m_textEdit" >
+        <property name="whatsThis" >
+         <string>Templat to show to screen. In this template you can define parameter by used &lt;i>%n&lt;/i> keyword where &lt;i>n&lt;/i> is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i>&amp;lt;?= ?&amp;gt;&lt;/i> is used to call script and show the text returned by the script. &lt;i>&amp;lt;?    ?&amp;gt;&lt;/i> can be used to init the script and make some pre-process.</string>
+        </property>
         <property name="lineWrapMode" >
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -229,9 +257,11 @@
  <tabstops>
   <tabstop>m_nameLineEdit</tabstop>
   <tabstop>m_iconLineEdit</tabstop>
+  <tabstop>m_extLineEdit</tabstop>
   <tabstop>m_keyLineEdit</tabstop>
   <tabstop>m_categoryComboBox</tabstop>
   <tabstop>m_descriptionTextEdit</tabstop>
+  <tabstop>m_textEdit</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>

@@ -939,6 +939,9 @@
        </item>
        <item row="1" column="0" colspan="6" >
         <widget class="QTableView" name="m_snipetTableView" >
+         <property name="whatsThis" >
+          <string>List of snipet known by &lt;b>XINX&lt;/b>. This snipets can contains keyword and script to held the user to edit text.</string>
+         </property>
          <property name="alternatingRowColors" >
           <bool>true</bool>
          </property>
@@ -949,6 +952,9 @@
        </item>
        <item row="2" column="0" >
         <widget class="QPushButton" name="m_addPushButton" >
+         <property name="whatsThis" >
+          <string>Open a dialog to create a new snipet.</string>
+         </property>
          <property name="text" >
           <string>&amp;Add</string>
          </property>
@@ -959,6 +965,9 @@
        </item>
        <item row="2" column="1" >
         <widget class="QPushButton" name="m_removePushButton" >
+         <property name="whatsThis" >
+          <string>Delete selected snipet in the list below.</string>
+         </property>
          <property name="text" >
           <string>&amp;Delete</string>
          </property>
@@ -969,6 +978,9 @@
        </item>
        <item row="2" column="2" >
         <widget class="QPushButton" name="m_modifyPushButton" >
+         <property name="whatsThis" >
+          <string>Modify the selected snipet.</string>
+         </property>
          <property name="text" >
           <string>&amp;Modify</string>
          </property>
@@ -992,6 +1004,9 @@
        </item>
        <item row="2" column="4" >
         <widget class="QPushButton" name="m_importPushButton" >
+         <property name="whatsThis" >
+          <string>Import a list of snipet from an XML file.</string>
+         </property>
          <property name="text" >
           <string>&amp;Import ...</string>
          </property>
@@ -1002,6 +1017,9 @@
        </item>
        <item row="2" column="5" >
         <widget class="QPushButton" name="m_exportPushButton" >
+         <property name="whatsThis" >
+          <string>Export selected snipet to an XML file.</string>
+         </property>
          <property name="text" >
           <string>&amp;Export ...</string>
          </property>
@@ -1136,36 +1154,59 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>m_autoHighlightCheckBox</tabstop>
-  <tabstop>m_highlightTextColorComboBox</tabstop>
-  <tabstop>m_showCurrentLineCheckBox</tabstop>
-  <tabstop>m_fontSizeSpinBox</tabstop>
-  <tabstop>m_fontComboBox</tabstop>
-  <tabstop>m_completionLevelComboBox</tabstop>
-  <tabstop>m_showTabulationCheckBox</tabstop>
-  <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
-  <tabstop>m_createBakCheckBox</tabstop>
-  <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>
-  <tabstop>okButton</tabstop>
-  <tabstop>cancelButton</tabstop>
-  <tabstop>m_defaultPushButton</tabstop>
-  <tabstop>m_StrikeoutCheckBox</tabstop>
-  <tabstop>m_colorComboBox</tabstop>
-  <tabstop>m_exempleTextEdit</tabstop>
+  <tabstop>m_descriptionPathLineEdit</tabstop>
+  <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
+  <tabstop>m_langComboBox</tabstop>
+  <tabstop>m_listWidget</tabstop>
   <tabstop>m_alertStandardCheckBox</tabstop>
   <tabstop>m_saveSessionCheckBox</tabstop>
   <tabstop>m_projectPathLineEdit</tabstop>
   <tabstop>m_changeProjectPathBtn</tabstop>
   <tabstop>m_lineEditDefaultProjectPathName</tabstop>
-  <tabstop>m_underlineCheckBox</tabstop>
-  <tabstop>m_italicCheckBox</tabstop>
-  <tabstop>m_boldCheckBox</tabstop>
-  <tabstop>m_descriptionPathLineEdit</tabstop>
+  <tabstop>m_specifiqueTableView</tabstop>
   <tabstop>m_closeLogCheckBox</tabstop>
   <tabstop>m_changeLogCheckBox</tabstop>
-  <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
-  <tabstop>m_langComboBox</tabstop>
+  <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
+  <tabstop>m_createBakCheckBox</tabstop>
+  <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>
+  <tabstop>m_closeBtnRadioButton</tabstop>
+  <tabstop>m_cornerBtnRadioButton</tabstop>
+  <tabstop>m_closeAndCornerBtnRadioButton</tabstop>
+  <tabstop>m_completionLevelComboBox</tabstop>
+  <tabstop>m_fontComboBox</tabstop>
+  <tabstop>m_fontSizeSpinBox</tabstop>
+  <tabstop>m_showCurrentLineCheckBox</tabstop>
+  <tabstop>m_autoHighlightCheckBox</tabstop>
+  <tabstop>m_highlightTextColorComboBox</tabstop>
+  <tabstop>m_showTabulationCheckBox</tabstop>
+  <tabstop>m_sizeOfTabSpinBox</tabstop>
+  <tabstop>m_highlighterComboBox</tabstop>
   <tabstop>m_formatsListView</tabstop>
+  <tabstop>m_boldCheckBox</tabstop>
+  <tabstop>m_underlineCheckBox</tabstop>
+  <tabstop>m_italicCheckBox</tabstop>
+  <tabstop>m_StrikeoutCheckBox</tabstop>
+  <tabstop>m_colorComboBox</tabstop>
+  <tabstop>m_exempleTextEdit</tabstop>
+  <tabstop>m_hideElementList</tabstop>
+  <tabstop>m_expandPathLineEdit</tabstop>
+  <tabstop>m_showSubEltCheckBox</tabstop>
+  <tabstop>m_viewColorBox</tabstop>
+  <tabstop>m_errorColorBox</tabstop>
+  <tabstop>m_screenColorBox</tabstop>
+  <tabstop>m_snipetTableView</tabstop>
+  <tabstop>m_addPushButton</tabstop>
+  <tabstop>m_removePushButton</tabstop>
+  <tabstop>m_modifyPushButton</tabstop>
+  <tabstop>m_importPushButton</tabstop>
+  <tabstop>m_exportPushButton</tabstop>
+  <tabstop>m_toolsTable</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>m_pluginListView</tabstop>
+  <tabstop>m_defaultPushButton</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>m_scriptListView</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />
