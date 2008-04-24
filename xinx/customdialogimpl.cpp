@@ -23,6 +23,7 @@
 #include <xinxpluginsloader.h>
 #include "private/p_customdialogimpl.h"
 #include "snipetdialog.h"
+#include "scriptmanager.h"
 
 // Qt header
 #include <QDir>
@@ -452,6 +453,12 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 //	m_parent->m_snipetTableView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
 	m_parent->m_snipetTableView_selectionChanged();
 	connect( m_parent->m_snipetTableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), m_parent, SLOT(m_snipetTableView_selectionChanged()) );
+	
+	// Load Script
+	m_parent->m_scriptListView->clear();
+	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
+		m_parent->m_scriptListView->addItem( s.property( "text" ).toString().replace( "&", "" ) );
+	}
 }
 
 void PrivateCustomDialogImpl::storeConfig() {

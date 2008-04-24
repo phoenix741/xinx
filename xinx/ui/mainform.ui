@@ -102,7 +102,19 @@
     <property name="title" >
      <string>&amp;Tools</string>
     </property>
-    <addaction name="m_createTemplate" />
+    <widget class="QMenu" name="m_templateMenu" >
+     <property name="title" >
+      <string>&amp;Template</string>
+     </property>
+     <addaction name="m_createTemplate" />
+    </widget>
+    <widget class="QMenu" name="m_scriptMenu" >
+     <property name="title" >
+      <string>&amp;Script</string>
+     </property>
+    </widget>
+    <addaction name="m_templateMenu" />
+    <addaction name="m_scriptMenu" />
     <addaction name="separator" />
     <addaction name="m_customApplicationAct" />
    </widget>

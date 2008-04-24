@@ -43,6 +43,7 @@
 #include "specifiquedlgimpl.h"
 #include "xinxpluginsloader.h"
 #include "newprojectwizard.h"
+#include "scriptmanager.h"
 
 // Qt header
 #include <QKeySequence>
@@ -499,8 +500,8 @@ void PrivateMainformImpl::connectDbus() {
 void PrivateMainformImpl::createSnipet() {
 	XINX_TRACE( "PrivateMainformImpl::createSnipet", "()" );
 
-	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateSnipetMenu()) );
-	updateSnipetMenu();
+	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateToolsMenu()) );
+	updateToolsMenu();
 }
 
 void PrivateMainformImpl::callSnipetMenu() {
@@ -520,9 +521,32 @@ void PrivateMainformImpl::callSnipetMenu() {
 	}
 }
 
-void PrivateMainformImpl::updateSnipetMenu() {
-	XINX_TRACE( "PrivateMainformImpl::updateSnipetMenu", "()" );
+void PrivateMainformImpl::callScriptAction() {
+	XINX_TRACE( "PrivateMainformImpl::callScriptAction", "()" );
+	QAction * action = qobject_cast<QAction*>( sender() );
+	QScriptValue qsScript = action->data().value<QScriptValue>();
+	
+	if( m_parent->m_tabEditors->currentEditor() ) {
+		FileEditor * editor = qobject_cast<FileEditor*>( m_parent->m_tabEditors->currentEditor() );
+		QTextEdit * textEdit = editor->textEdit();
+		QScriptValue qsTextEdit = ScriptManager::self()->engine().newQObject( textEdit );
+		QScriptValue qsDocument = ScriptManager::self()->engine().newQObject( textEdit->document() );
+		qsTextEdit.setProperty( "document", qsDocument );
+		qsScript.setProperty( "textEdit", qsTextEdit );
+	} else {
+		qsScript.setProperty( "textEdit", QScriptValue() );
+	}
+	
+	QScriptValue result = qsScript.property( "run" ).call( qsScript );
+	if( result.isError() ) {
+		qWarning( qPrintable( tr("An error occure while run the script : %1").arg( result.toString() ) ) );
+	}
+}
 
+void PrivateMainformImpl::updateToolsMenu() {
+	XINX_TRACE( "PrivateMainformImpl::updateToolsMenu", "()" );
+
+	/* Snipet */
 	qDeleteAllLater( m_snipetActs ); 
 	m_snipetActs.clear();
 	
@@ -543,7 +567,21 @@ void PrivateMainformImpl::updateSnipetMenu() {
 			act->setData( QVariant::fromValue( snipet ) );
 			connect( act, SIGNAL(triggered()), this, SLOT(callSnipetMenu()) );
 		}
-		m_parent->m_toolsMenu->insertActions( m_parent->m_createTemplate, m_snipetCategoryActs.values() );
+		m_parent->m_templateMenu->insertActions( m_parent->m_createTemplate, m_snipetCategoryActs.values() );
+	}
+	
+	/* Scripts */
+	qDeleteAllLater( m_scriptActs );
+	m_scriptActs.clear();
+	
+	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
+		QAction * action = new QAction( this );
+		action->setText( s.property("text").toString() );
+		action->setData( QVariant::fromValue( s ) );
+		m_parent->m_scriptMenu->addAction( action );
+		
+		connect( action, SIGNAL(triggered()), this, SLOT(callScriptAction()) );
+		m_scriptActs.append( action );
 	}
 	
 	updateActions();

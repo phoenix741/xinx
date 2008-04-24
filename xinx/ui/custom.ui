@@ -1074,7 +1074,7 @@
           </attribute>
           <layout class="QGridLayout" >
            <item row="0" column="0" >
-            <widget class="QListView" name="m_scriptListView" />
+            <widget class="QListWidget" name="m_scriptListView" />
            </item>
           </layout>
          </widget>
@@ -1206,7 +1206,6 @@
   <tabstop>m_defaultPushButton</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
-  <tabstop>m_scriptListView</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />

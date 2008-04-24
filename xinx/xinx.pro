@@ -87,7 +87,8 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_specifique.ui \
     ui/newprojectwizard_services.ui \
     ui/newprojectwizard_serviceslist.ui
-HEADERS += snipetdockwidget.h \
+HEADERS += scriptmanager.h \
+    snipetdockwidget.h \
     specifiquedlgimpl.h \
     aboutdialogimpl.h \
     commitmessagedialogimpl.h \
@@ -178,7 +179,8 @@ SOURCES += snipetdockwidget.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     xslproject.cpp \
-    newprojectwizard.cpp
+    newprojectwizard.cpp \
+    scriptmanager.cpp
 contains( CONFIG, qdbus ) { 
     HEADERS += studioadaptor.h \
         studiointerface.h

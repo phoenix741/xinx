@@ -108,6 +108,7 @@ public:
 	// Snipet
 	QHash<QString,QAction*> m_snipetCategoryActs;
 	QList<QAction*> m_snipetActs;
+	QList<QAction*> m_scriptActs;
 	
 	// Find/Replace
 	ReplaceDialogImpl * m_findDialog;
@@ -180,7 +181,8 @@ public slots:
 	
 	// Tools
 	void callSnipetMenu();
-	void updateSnipetMenu();
+	void callScriptAction();
+	void updateToolsMenu();
 	void customize();
 
 	// About

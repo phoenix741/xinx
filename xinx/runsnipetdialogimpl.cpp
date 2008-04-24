@@ -50,6 +50,8 @@ RunSnipetDialogImpl::RunSnipetDialogImpl( const Snipet & snipet, QWidget * paren
 	if( m_paramList.size() > 0 ) {
 		m_paramList.at( 0 ).second->setFocus( Qt::OtherFocusReason );
 	}
+	
+	resize( sizeHint() );
 }
 
 RunSnipetDialogImpl::~RunSnipetDialogImpl() {
