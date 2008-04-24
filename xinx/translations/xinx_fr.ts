@@ -21,7 +21,7 @@
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Thanks to</source>
-        <translation>&amp;Remerciement</translation>
+        <translation type="unfinished">&amp;Remerciements</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -136,11 +136,11 @@ p, li { white-space: pre-wrap; }
 &lt;p&gt;This message must describe what you have done, to easily find an old version.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;With CVS, the list of file commited is appended to the message&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ecrivez votre message dans cette fenêtre. Ce message sera utilisé par le gestionnaire de version.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Ecrivez votre message dans cette fenêtre. Ce message sera utilisé par le gestionnaire de version.&lt;/p&gt;
 &lt;p/&gt;
-&lt;p&gt;Le message doit décrire ce qui a été fait, afind de retrouver facilement une ancienne version.&lt;/p&gt;
+&lt;p&gt;Le message doit décrire ce qui a été fait, afin de retrouver facilement une ancienne version.&lt;/p&gt;
 &lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Avec CVS, la liste des fichiers validés est ajouté au message.&lt;/i&gt;&lt;/p&gt;</translation>
+&lt;p&gt;&lt;i&gt;Avec CVS, la liste des fichiers validés est ajoutée au message.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -150,12 +150,12 @@ p, li { white-space: pre-wrap; }
 &lt;li&gt;&lt;i&gt;Remove and Commit&lt;/i&gt; : If the file is deleted from disk but not from repository&lt;/li&gt;
 &lt;li&gt;&lt;i&gt;Commit&lt;/i&gt; : If the file exist and is modified (checked by default).&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;Only checked file are commited.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ceci est liste des fichiers à valider. Seul les fichiers connus sont listés ici (.xsl, .html, .css, .js, ...).&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Ceci est la liste des fichiers à valider. Seuls les fichiers connus sont listés ici (.xsl, .html, .css, .js, ...).&lt;/p&gt;
 &lt;p&gt;Dans cette liste &lt;b&gt;XINX&lt;/b&gt; présente trois actions : &lt;/p&gt;
-&lt;ul&gt;&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le référenciel mais existe sur le disque dure.&lt;/li&gt;
+&lt;ul&gt;&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le référenciel mais existe sur le disque dur.&lt;/li&gt;
 &lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel.&lt;li&gt;
 &lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;&lt;/ul&gt;
-&lt;p&gt;Seul les fichiers cochés sont validés&lt;/p&gt;</translation>
+&lt;p&gt;Seuls les fichiers cochés sont validés&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -334,7 +334,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Save project with session information by default (content of modified file)</source>
-        <translation>&amp;Sauvegarde le project avec les informations de session par défaut (contenue des fichiers modifié)</translation>
+        <translation type="unfinished">&amp;Sauvegarde le project avec les informations de session par défaut (contenu des fichiers modifié)</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -354,7 +354,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>Show current &amp;line</source>
-        <translation>Affiche la &amp;ligne courrant</translation>
+        <translation type="unfinished">Affiche la &amp;ligne courant</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -429,7 +429,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Color of highlight:</source>
-        <translation>&amp;Couleur du surligner:</translation>
+        <translation type="unfinished">&amp;Couleur du surligneur:</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -454,17 +454,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Update &quot;ChangeLog&quot; automatically.</source>
-        <translation>&amp;Mise à jours du &quot;ChangeLog&quot; automatiquement.</translation>
+        <translation type="unfinished">&amp;Mise à jour du &quot;ChangeLog&quot; automatiquement.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;i&gt;Options related to a named revision manager (such as CVS or Subversion) must be changed in the &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt; section.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Les options relatives a un gestionnaire de version (comme CVS ou SubVersion) peuvent être modifié dans la section &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt;.&lt;/i&gt;</translation>
+        <translation type="unfinished">&lt;i&gt;Les options relatives à un gestionnaire de version (comme CVS ou SubVersion) peuvent être modifiées dans la section &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt;.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Auto highlight same &amp;word</source>
-        <translation>Surligne automatiquement tous les &amp;mots identique</translation>
+        <translation type="unfinished">Surligne automatiquement tous les &amp;mots identiques</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -525,36 +525,36 @@ p, li { white-space: pre-wrap; }
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;This is the path where &lt;b&gt;XINX&lt;/b&gt; data files are stored (as snipet or completion file). &lt;/p&gt;
 &lt;p&gt;Normally the directory is stored in the xml sub-directory of &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où &lt;b&gt;XINX&lt;/b&gt; stocke les fichiers de données (comme les fichiers de de modéle ou d&apos;aide à la saisie).&lt;/p&gt;
-&lt;p&gt;Normallement le dossier du nom de xml est placé dans un sous dossier de &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où &lt;b&gt;XINX&lt;/b&gt; stocke les fichiers de données (comme les fichiers de modéle ou d&apos;aide à la saisie).&lt;/p&gt;
+&lt;p&gt;Normalement le dossier du nom de xml est placé dans un sous dossier de &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Les modifications prendrons effets au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Langue dans laquelle &lt;b&gt;XINX&lt;/b&gt; est utilisé.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Les modifications prendront effet au redémarrage.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Quand une action avec le gestionnaire de version est effectué, un journal est ouvert et affiche des indications sur la progression.&lt;/p&gt;
-&lt;p&gt;Si coché, le journal sera automatiquement fermé à la fin de l&apos;opération (comme la mise à jours, ou la validation, ...).&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Quand une action avec le gestionnaire de version est effectuée, un journal est ouvert et affiche des indications sur la progression.&lt;/p&gt;
+&lt;p&gt;Si coché, le journal sera automatiquement fermé à la fin de l&apos;opération (comme la mise à jour, ou la validation, ...).&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</source>
-        <translation>Si coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé/mis à jours à chaque validation avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
+        <translation type="unfinished">Si coché, un fichier &lt;i&gt;ChangeLog&lt;/i&gt; est créé/mis à jour à chaque validation avec la date, l&apos;heure, et le message de validation.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;List of tools used by &lt;b&gt;XINX&lt;/b&gt; and all plugins. Tools are external application called by this application.&lt;/p&gt;
 &lt;p&gt;If the tool can&apos;t be find, the text color will be &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;To edit a tool, double click (or presse F2) on the path of the tool.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette applications.&lt;/p&gt;
-&lt;p&gt;Si l&apos;outil ne peux être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
-&lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou présser la toucher F2) sur le chemoin de l&apos;outil.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Liste des outils utilisés par &lt;b&gt;XINX&lt;/b&gt; et ces modules. Les outils sont des applications externes appelés par cette application.&lt;/p&gt;
+&lt;p&gt;Si l&apos;outil ne peut être trouvé, le chemin vers l&apos;application sera affiché en &lt;span style=&quot;color:#ff0000;&quot;&gt;red&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Pour éditer un outil, vous pouvez double-cliquer (ou presser la toucher F2) sur le chemin de l&apos;outil.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -574,20 +574,20 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Préviens l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Prévient l&apos;utilisateur quand le fichier est modifié par une application externe. L&apos;utilisateur a alors le choix d&apos;ouvrir le nouveau fichier (&lt;u&gt;et alors perdre ses modifications&lt;/u&gt;) ou garder la version courante.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
 &lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Créé une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stocké dans le même dossier que le fichier original.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Crée une sauvegarde du fichier avant l&apos;enregistrement. La sauvegarde est stockée dans le même dossier que le fichier original.&lt;/p&gt;
 &lt;p&gt;Le fichier est copié avant sauvegarde.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si la case est coché, pendant la sauvegarde du fichier, &lt;b&gt;XINX&lt;/b&gt; applique une indentation automatique sur le texte. Ce qui formate le code à l&apos;enregistrement.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Si la case est cochée, pendant la sauvegarde du fichier, &lt;b&gt;XINX&lt;/b&gt; applique une indentation automatique sur le texte. Ce qui formate le code à l&apos;enregistrement.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;L&apos;enregistrement du fichier peut être lent.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
@@ -601,10 +601,10 @@ p, li { white-space: pre-wrap; }
 &lt;ul&gt;&lt;li&gt;Desactivated&lt;/li&gt;
 &lt;li&gt;Activated but only with an help on tapping&lt;/li&gt;
 &lt;li&gt;Fully activated with the help on tapping and the adding code (as configured on completion file)&lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>&lt;p&gt;Niveau d&apos;aide à la saisie. L&apos;aide à la saisie peut être : &lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Niveau d&apos;aide à la saisie. L&apos;aide à la saisie peut être : &lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;Désactiver&lt;/li&gt;
 &lt;li&gt;Activer mais seulement pour la saisie des mots.&lt;/li&gt;
-&lt;li&gt;Complétement activé, avec une aide à la saise et ajout de bout de code (comme configuré dans le fichier d&apos;aide à la saisie).&lt;/i&gt;&lt;/ul&gt;</translation>
+&lt;li&gt;Complétement activé, avec une aide à la saisie et ajout de bout de code (comme configuré dans le fichier d&apos;aide à la saisie).&lt;/i&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -631,7 +631,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>Color used for highlight same word</source>
-        <translation>Couleur utilisé pour surligner les mots identiques</translation>
+        <translation type="unfinished">Couleur utilisée pour surligner les mots identiques</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -642,23 +642,23 @@ p, li { white-space: pre-wrap; }
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
 &lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste les modules de coloration syntaxique. La coloration syntaxique est utilisé pour coloré le texte dans l&apos;éditeur.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Liste les modules de coloration syntaxique. La coloration syntaxique est utilisée pour colorer le texte dans l&apos;éditeur.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Pour ajouter la gestion d&apos;un nouveau type de fichier, il faut ajouter le plugin correspondant.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Color used in the text for the selected token.</source>
-        <translation>Couleur utilisé dans le texte pour l&apos;élément selectionné.</translation>
+        <translation type="unfinished">Couleur utilisée dans le texte pour l&apos;élément selectionné.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;b&gt;Wrote the text in bold&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Ecris le mot en gras&lt;/b&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Ecrit le mot en gras&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;i&gt;Wrote the text in italic.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Ecris le texte en italique.&lt;/i&gt;</translation>
+        <translation type="unfinished">&lt;i&gt;Ecrit le texte en italique.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -673,12 +673,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="" line="3021184"/>
         <source>List of token that can be modified on the highlighter. Each token is a part of a document (an XML node, an attribute, a reserved word, ...)</source>
-        <translation>Liste des éléments qui peuvent être modifié pour la coloration syntaxique. Chaque élément est une partie d&apos;un document (un noeud XML, un attribut, un mot réservé ...)</translation>
+        <translation type="unfinished">Liste des éléments qui peuvent être modifiés pour la coloration syntaxique. Chaque élément est une partie d&apos;un document (un noeud XML, un attribut, un mot réservé ...)</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is an example of how is showed the text in the editor after the change that are been made.</source>
-        <translation>Contient un text exemple affichant comment l&apos;éditeur colorisera le texe.</translation>
+        <translation type="unfinished">Contient un texte exemple affichant comment l&apos;éditeur colorisera le texte.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -693,9 +693,9 @@ p, li { white-space: pre-wrap; }
 &lt;p&gt;Else, the XINX ask the user about unsaved file.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;In case of crash &lt;b&gt;XINX&lt;/b&gt; save the project in session mode automatically.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ceci définie la méthode utilisé pour fermer le projet.&lt;/p&gt;
-&lt;p&gt;Si coché, quand le projet, our l&apos;application est fermé, les informations à propos des fichiers sont stocké dans le fichier de session même sir le fichier n&apos;était pas sauvé.&lt;/p&gt;
-&lt;p&gt;Sinon, XINX demande à l&apos;utilisateur d&apos;enregistrer les fichiers non sauvé.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Ceci définit la méthode utilisée pour fermer le projet.&lt;/p&gt;
+&lt;p&gt;Si coché, quand le projet, ou l&apos;application est fermé, les informations à propos des fichiers sont stockées dans le fichier de session même si le fichier n&apos;était pas sauvé.&lt;/p&gt;
+&lt;p&gt;Sinon, XINX demande à l&apos;utilisateur d&apos;enregistrer les fichiers non sauvés.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;Lors d&apos;un plantage &lt;b&gt;XINX&lt;/b&gt; sauve automatiquement le projet en mode session.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
@@ -703,20 +703,20 @@ p, li { white-space: pre-wrap; }
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouvert lors de la création d&apos;un nouveau projet.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où la boite de dialogue de sauvegarde doit être ouverte lors de la création d&apos;un nouveau projet.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Comme l&apos;auteur du logiciel mémorise le chemin du serveur d&apos;application dans ce chemin, c&apos;est maintenant la valeur de ce dossier. Vous pouvez, sans problème, indiquer un autre chemin, mais &lt;i&gt;L&apos;assistant de création de nouveau projet&lt;/i&gt;, le chemin vers le serveur d&apos;application sera faux.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;This is the path where derivated files are stored in derivated project mode.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;In &lt;b&gt;Generix&lt;/b&gt;, this is a sub-directory of langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où les fichiers dérivés sont enregisté en mode projet dérivé.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin où les fichiers dérivés sont enregistrés en mode projet dérivé.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Dans &lt;b&gt;Generix&lt;/b&gt;, c&apos;est le sous-dossier de langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</source>
-        <translation>Pour chaque type de fichier, on peut choisir un sous dossier du dossier par défaut des spécifique (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). On peut également choisir si le type de fichier peut être spécifique ou non. Dans ce dernier cas, le sous dossier est ignoré.</translation>
+        <translation type="unfinished">Pour chaque type de fichier, on peut choisir un sous dossier du dossier par défaut des spécifiques (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). On peut également choisir si le type de fichier peut être spécifique ou non. Dans ce dernier cas, le sous dossier est ignoré.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -747,8 +747,8 @@ p, li { white-space: pre-wrap; }
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;List of plugins of &lt;b&gt;XINX&lt;/b&gt;. Plugins are piece of software that can be added without reinstall &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i&gt;C++&lt;/i&gt;, use &lt;i&gt;Qt&lt;/i&gt;, and must be in licence accepted by &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des modules de &lt;b&gt;XINX&lt;/b&gt;. Les modules sont des morceaux de logiciel qui peuvent être ajouté/supprimé sans réinstaller &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; est maintenant modulaire, vous pouvez donc écrire vos propre modules et jouir de leur utilisation. Les modules sont écrit en &lt;i&gt;C++&lt;/i&gt; et utilise &lt;i&gt;Qt&lt;/i&gt;. La licence doit être compatible avec &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Liste des modules de &lt;b&gt;XINX&lt;/b&gt;. Les modules sont des morceaux de logiciel qui peuvent être ajoutés/supprimés sans réinstaller &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; est maintenant modulaire, vous pouvez donc écrire vos propres modules et jouir de leur utilisation. Les modules sont écrits en &lt;i&gt;C++&lt;/i&gt; et utilisent &lt;i&gt;Qt&lt;/i&gt;. La licence doit être compatible avec &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -787,8 +787,8 @@ Date in CVS : %4
 Version : %5
 
 Cache size : %6/%7</source>
-        <translation>Nom du fichier : %1
-Status : %2
+        <translation type="unfinished">Nom du fichier : %1
+Statuts : %2
 Date du fichier : %3
 Date dans CVS : %4
 Version : %5
@@ -853,14 +853,14 @@ Taille du cache : %6/%7</translation>
         <location filename="" line="3021184"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :
+        <translation type="unfinished">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :
+        <translation type="unfinished">Ne peut écrire le fichier %1 :
 %2.</translation>
     </message>
     <message>
@@ -871,7 +871,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t indent this type of document</source>
-        <translation>Ne peux identer ce type de document</translation>
+        <translation type="unfinished">Ne peut identer ce type de document</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -896,7 +896,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t comment this type of document</source>
-        <translation>Ne peux commenter ce type de document</translation>
+        <translation type="unfinished">Ne peut commenter ce type de document</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -906,7 +906,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>The file %1 was modified. Reload the page ?</source>
-        <translation>Le fichier %1 a été modifié. Rechager la page ?</translation>
+        <translation type="unfinished">Le fichier %1 a été modifié. Recharger la page ?</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -989,7 +989,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Update project</source>
-        <translation>Mise à jours du projet</translation>
+        <translation type="unfinished">Mise à jour du projet</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1034,7 +1034,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Save all documents to disk</source>
-        <translation>Sauver tout les documents sur le disque</translation>
+        <translation type="unfinished">Sauver tous les documents sur le disque</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1044,7 +1044,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Print the current document</source>
-        <translation>Imprimer le document courrant</translation>
+        <translation type="unfinished">Imprimer le document courant</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1054,7 +1054,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Close the current document</source>
-        <translation>Fermer le document courrant</translation>
+        <translation type="unfinished">Fermer le document courant</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1079,7 +1079,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Undo the last action</source>
-        <translation>Défait la dernière opération</translation>
+        <translation type="unfinished">Défaire la dernière opération</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1099,7 +1099,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Cut the selection to the clipboard</source>
-        <translation>Couper la séléction vers le presse papier</translation>
+        <translation type="unfinished">Couper la sélection vers le presse papier</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1109,7 +1109,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Copy the selection to the clipboard</source>
-        <translation>Copier la séléction vers le presse papier</translation>
+        <translation type="unfinished">Copier la sélection vers le presse papier</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1124,12 +1124,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Select All</source>
-        <translation>Tout séléction&amp;ner</translation>
+        <translation type="unfinished">Tout sélection&amp;ner</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Select all the text of the current editor</source>
-        <translation>Séléctionner tout le contenu de l&apos;éditeur</translation>
+        <translation type="unfinished">Sélectionner tout le contenu de l&apos;éditeur</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1159,7 +1159,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Comment</source>
-        <translation>&amp;Commentaire</translation>
+        <translation type="unfinished">&amp;Commenter</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1329,12 +1329,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Cancel RCS operation</source>
-        <translation>Annule l&apos;opération</translation>
+        <translation type="unfinished">Annulle l&apos;opération</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Compare with the version management</source>
-        <translation>Compare avec le gestionnaire de version</translation>
+        <translation type="unfinished">Comparer avec le gestionnaire de version</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1354,7 +1354,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Project Tool Bar</source>
-        <translation>Bar à outils des projets</translation>
+        <translation type="unfinished">Barre à outils des projets</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1444,12 +1444,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Duplicate the current line</source>
-        <translation>Duplique la ligne courrante</translation>
+        <translation type="unfinished">Dupliquer la ligne courrante</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Move the current line up</source>
-        <translation>Déplace la ligne courante ver les haut</translation>
+        <translation type="unfinished">Déplace la ligne courante vers le haut</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1459,22 +1459,22 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Make the selected character upper case</source>
-        <translation>Converti les caractères séléctionnés en majuscule</translation>
+        <translation type="unfinished">Converti les caractères sélectionnés en majuscule</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Make the selected character lower case</source>
-        <translation>Converti les caratères séléctionnés en minuscule</translation>
+        <translation type="unfinished">Converti les caratères sélectionnés en minuscule</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Comment the selected text</source>
-        <translation>Commente le texte selectionné</translation>
+        <translation type="unfinished">Commente le texte sélectionné</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Comment the selected text with the specifique guidelines of the language. &lt;ul&gt;&lt;li&gt;In &lt;b&gt;XML&lt;/b&gt; like format &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/i&gt;&lt;/li&gt; &lt;li&gt;In &lt;b&gt;Javascript&lt;/b&gt; : &lt;i&gt;/* comment */&lt;/i&gt; &lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>Commente le texte séléctionné selon le type de language. &lt;ul&gt;&lt;li&gt;Dans du &lt;b&gt;XML&lt;/b&gt; comme &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/li&gt;&lt;li&gt;Dans du &lt;b&gt;JavaScript&lt;/b&gt; : &lt;i&gt; /* comment */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation type="unfinished">Commente le texte sélectionné selon le type de langage. &lt;ul&gt;&lt;li&gt;Dans du &lt;b&gt;XML&lt;/b&gt; comme &lt;i&gt;&amp;lt;!-- comment --&amp;gt;&lt;/li&gt;&lt;li&gt;Dans du &lt;b&gt;JavaScript&lt;/b&gt; : &lt;i&gt; /* comment */&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1484,7 +1484,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>See the comment helper function</source>
-        <translation>Voir l&apos;aide de la function de commentaire</translation>
+        <translation type="unfinished">Voir l&apos;aide de la fonction de commentaire</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1509,12 +1509,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Choose a project file</source>
-        <translation>Choisis un fichier projet</translation>
+        <translation type="unfinished">Choisit un fichier projet</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Choose a project file on the disk</source>
-        <translation>Choisis un fichier projet sur le disque</translation>
+        <translation type="unfinished">Choisit un fichier projet sur le disque</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1529,12 +1529,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Save and Close project with session information (the content of file editor is saved too).</source>
-        <translation>Sauve et Ferme le project avec les informations de sessions (le contenue de l&apos;éditeur est sauvé également).</translation>
+        <translation type="unfinished">Sauve et Ferme le projet avec les informations de sessions (le contenu de l&apos;éditeur est sauvé également).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Show space and &amp;Tabulation</source>
-        <translation>Affiche les espaces et les &amp;tabulration</translation>
+        <translation type="unfinished">Affiche les espaces et les &amp;tabulations</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1545,13 +1545,13 @@ Taille du cache : %6/%7</translation>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Appele la méthode de validation de votre &lt;i&gt;getionnaire de version&lt;/i&gt; pour tout les dossiers projets. Un message optionnel peut être ajouté.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Seul les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés par le référenciel.&lt;/li&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Appelle la méthode de validation de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour tous les dossiers projets. Un message optionnel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés par le référenciel.&lt;/li&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation>Si coché la liste est affiché à plat, au lieu d&apos;affiche un arbre. Chaque liste de fichier est précédé d&apos;un entête avec le dossier.</translation>
+        <translation type="unfinished">Si coché la liste est affichée à plat, au lieu d&apos;afficher un arbre. Chaque liste de fichier est précédé d&apos;un entête avec le dossier.</translation>
     </message>
 </context>
 <context>
@@ -1579,12 +1579,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t open project</source>
-        <translation>Ne peux ouvrir le projet</translation>
+        <translation type="unfinished">Ne peut ouvrir le projet</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Deserialization</source>
-        <translation>Déserialisation</translation>
+        <translation type="unfinished">Désérialisation</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1620,27 +1620,27 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>The host name lookup failed.</source>
-        <translation>La recherche de l&apos;hôte à échouée.</translation>
+        <translation type="unfinished">La recherche de l&apos;hôte a échouée.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The server refused the connection.</source>
-        <translation>Le serveur à refusé la connexion.</translation>
+        <translation type="unfinished">Le serveur a refusé la connexion.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The server closed the connection unexpectedly.</source>
-        <translation>Le serveur à fermé la connection inopinément.</translation>
+        <translation type="unfinished">Le serveur a fermé la connection inopinément.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The server sent an invalid response header.</source>
-        <translation>Le serveur à envoyé un entête invalide.</translation>
+        <translation type="unfinished">Le serveur a envoyé une entête invalide.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The client could not read the content correctly.</source>
-        <translation>Le client ne peux lire le contenu correctement.</translation>
+        <translation type="unfinished">Le client ne peut lire le contenu correctement.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1670,12 +1670,12 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>The client is sending its request to the server.</source>
-        <translation>Le client envoi sa requête au serveur.</translation>
+        <translation type="unfinished">Le client envoie sa requête au serveur.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The client&apos;s request has been sent and the client is reading the server&apos;s response.</source>
-        <translation>La requête du client a été envoyé et le client lit la réponse du serveur.</translation>
+        <translation type="unfinished">La requête du client a été envoyée et le client lit la réponse du serveur.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1698,7 +1698,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t load the plugin configuration</source>
-        <translation>Ne peux charger la configuration du module</translation>
+        <translation type="unfinished">Ne peut charger la configuration du module</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1713,7 +1713,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t save the plugin configuration</source>
-        <translation>Ne peux sauvegarder la configuration du plugin</translation>
+        <translation type="unfinished">Ne peut sauvegarder la configuration du plugin</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1753,7 +1753,7 @@ Voulez-vous vraiment l&apos;actualiser ?</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t load snipet file.</source>
-        <translation>Ne peux charger le fichier de template.</translation>
+        <translation type="unfinished">Ne peut charger le fichier de template.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1790,7 +1790,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
-        <translation>%1 occurences de la chaine &apos;%2&apos; remplacés.</translation>
+        <translation type="unfinished">%1 occurences de la chaine &apos;%2&apos; remplacées.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1800,12 +1800,12 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>replaced</source>
-        <translation>remplacés</translation>
+        <translation type="unfinished">remplacé</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>finded</source>
-        <translation>trouvés</translation>
+        <translation type="unfinished">trouvé</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -1965,34 +1965,34 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Call the update fonction of your &lt;i&gt;revision control system&lt;/i&gt; for all the project directory.</source>
-        <translation>Appele la fonction de mise à jours de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet.</translation>
+        <translation type="unfinished">Appelle la fonction de mise à jour de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Appelle la métode de validation de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet. Un message optionnel peut être ajouté.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Seul les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés dans le référenciel.&lt;/li&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Appelle la méthode de validation de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet. Un message optionnel peut être ajouté.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés dans le référenciel.&lt;/li&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is a list of prefix used in the project. This list is used to check if a file is standard or derived. The selected prefix is used when saving standard file, to propose automatically the file name prefixed of the selected value.</source>
-        <translation>Liste des préfixes utilisé par le projet. Cette liste est utilisé pour vérifier si le fichier est standard ou dérivé. Le préfix sélectionné est utilisé pour la sauvegarde de fichier standard.</translation>
+        <translation type="unfinished">Liste des préfixes utilisée par le projet. Cette liste est utilisée pour vérifier si le fichier est standard ou dérivé. Le préfix sélectionné est utilisé pour la sauvegarde de fichier standard.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation>Si coché, la liste est affiché à plat au lieu d&apos;utiliser un arbre. Chaque liste de fichier est précédé d&apos;un entête de dossier.</translation>
+        <translation type="unfinished">Si cochée, la liste est affichée à plat au lieu d&apos;utiliser un arbre. Chaque liste de fichier est précédée d&apos;une entête de dossier.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Clear the content of filter and restore the project directory view.</source>
-        <translation>Efface le contenue du filtre et restaure le vue du dossier projet.</translation>
+        <translation type="unfinished">Efface le contenu du filtre et restaure la vue du dossier projet.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Filter the view on files present in the project directory. (joker as * and ? can be used). When filter is actived, the view is automatically switched in flat view. When filter is cleared, the view is switched in tree view.</source>
-        <translation>Filtre la vue sur les fichiers présent dans le dossier projet. (les jokers tel que * et ? peuvent être utilisés). Quand le filtre est actif, la vue bascule automatiquement en vue à plat. Quand le filtre est éffacé, la vue est rebasculer en mode arblre.</translation>
+        <translation type="unfinished">Filtre la vue sur les fichiers présents dans le dossier projet. (les jokers tel que * et ? peuvent être utilisés). Quand le filtre est actif, la vue bascule automatiquement en vue à plat. Quand le filtre est effacé, la vue est rebasculée en mode arblre.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2005,7 +2005,7 @@ Date du fichier : %4</translation>
 &lt;li&gt;Add the file to &lt;i&gt;revision control system.&lt;/i&gt;&lt;/li&gt;
 &lt;li&gt;Commit the file to &lt;i&gt;revision control system.&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;You can compare two file too.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cette vue affiche toutes les fichiers du dossier projet (et peut-être filtré par le champ plus haut).&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Cette vue affiche tous les fichiers du dossier projet (et peut-être filtrée par le champ plus haut).&lt;/p&gt;
 &lt;p&gt;Par un clique droit à l&apos;aide de la souris sur un fichier, on peut : &lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;Comparer le fichier avec le standard&lt;/li&gt;
 &lt;li&gt;Comparer le fichier avec le référenciel&lt;/li&gt;
@@ -2063,7 +2063,7 @@ Date du fichier : %4</translation>
         <source>&lt;p&gt;This wizard will help you to create a &lt;b&gt;XINX&lt;/b&gt; project and define some important variables.&lt;/p&gt;
 &lt;p&gt;In &lt;b&gt;XINX&lt;/b&gt;, a project is used to use the &lt;i&gt;file research &lt;/i&gt;in a project, use a &lt;i&gt;revision control system&lt;/i&gt;, or use a &lt;i&gt;project prefix&lt;/i&gt; in derivated modules.&lt;/p&gt;
 &lt;p&gt;A project can define web services too.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cette assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et de définir les variables importantes.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Cet assistant vous aidera à créer un projet &lt;b&gt;XINX&lt;/b&gt; et à définir les variables importantes.&lt;/p&gt;
 &lt;p&gt;Dans &lt;b&gt;XINX&lt;/b&gt;, un projet est utilisé sur la &lt;i&gt;recherche fichier&lt;/i&gt; dans un projet, utilise un &lt;i&gt;gestionnaire de version&lt;/i&gt;, ou utiliser un &lt;i&gt;préfixe projet&lt;/i&gt; dans les modules dérivés.&lt;/p&gt;
 &lt;p&gt;Un projet peut également définir des services internet.&lt;/p&gt;</translation>
     </message>
@@ -2072,8 +2072,8 @@ Date du fichier : %4</translation>
         <source>&lt;p&gt;In a derivated project, the file prefix is used to check if a file is derivated or standard.&lt;/p&gt;
 &lt;p&gt;A derivated file, he begins by the prefix and an underscore like &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
 &lt;p&gt;If you save a standard file, &lt;b&gt;XINX&lt;/b&gt; propose you to derive the file, and if possible to add the file in the &lt;i&gt;revision control system&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dans un projet dérivé, le prefixe fichier est utilisé pour vérifier si un fichier est standard ou dérivé.&lt;/p&gt;
-&lt;p&gt;Un fichier dérivé commence par un préfixe, suivis d&apos;un surligner, comme &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Dans un projet dérivé, le préfixe fichier est utilisé pour vérifier si un fichier est standard ou dérivé.&lt;/p&gt;
+&lt;p&gt;Un fichier dérivé commence par un préfixe, suivi d&apos;un surligneur, comme &apos;&lt;i&gt;&amp;lt;prefix&amp;gt;_&amp;lt;filename&amp;gt;.&amp;lt;ext&amp;gt;&lt;/i&gt;&apos;.&lt;/p&gt;
 &lt;p&gt;Si on sauve un fichier standard, &lt;b&gt;XINX&lt;/b&gt; vous propose de dériver le fichier, et si possible de l&apos;ajouter dans le &lt;i&gt;gestionnaire de version&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -2089,19 +2089,19 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>The &lt;i&gt;application serveur directory&lt;/i&gt; is used to fill the &lt;i&gt;applcation server log directory&lt;/i&gt;, and the &lt;i&gt;project directory&lt;/i&gt;. The default value for this field is the &lt;i&gt;application server directory&lt;/i&gt; from the settings dialog.</source>
-        <translation>Le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; est utilisé pour remplire automatiquement le &lt;i&gt;chemin des journaux du serveur d&apos;application&lt;/i&gt;, ainsi que le &lt;i&gt;dossier projet&lt;/i&gt;. La valeur par défaut de ce cahmp est le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; de la boite de dialogue de personnalisation.</translation>
+        <translation type="unfinished">Le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; est utilisé pour remplir automatiquement le &lt;i&gt;chemin des journaux du serveur d&apos;application&lt;/i&gt;, ainsi que le &lt;i&gt;dossier projet&lt;/i&gt;. La valeur par défaut de ce champ est le &lt;i&gt;chemin du serveur d&apos;application&lt;/i&gt; de la boite de dialogue de personnalisation.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the server log directory, used to list presentation files in the &lt;i&gt;XML presentation View&lt;/i&gt;.</source>
-        <translation>C&apos;est le dossier des journaux du serveur, utilisé pour listé tous les flux de présentation dans la fenêtre &lt;i&gt;Flux de présentation&lt;/i&gt;.</translation>
+        <translation type="unfinished">C&apos;est le dossier des journaux du serveur, utilisé pour lister tous les flux de présentation dans la fenêtre &lt;i&gt;Flux de présentation&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;This is the project directory, generally where is stored the &lt;i&gt;configuration.xml&lt;/i&gt; file.&lt;/p&gt;
 &lt;p&gt;This is the racine where the &lt;i&gt;project file view&lt;/i&gt; start.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin du dossier projet, généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;.&lt;/p&gt;
-&lt;p&gt;C&apos;est la racine om la &lt;i&gt;vue projet&lt;/i&gt; commence.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;C&apos;est le chemin du dossier projet, généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;C&apos;est la racine où la &lt;i&gt;vue projet&lt;/i&gt; commence.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2264,22 +2264,22 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the project directory (generally where is stored &lt;i&gt;configuration.xml&lt;/i&gt;). This is the root of the project directory dock, used to search file and for &lt;i&gt;revision control system&lt;/i&gt; access.</source>
-        <translation>C&apos;est le dossier projet (généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;). C&apos;est la racine où la vue dossier projet, utilisé pour chercher des fichiers et utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt; commence.</translation>
+        <translation type="unfinished">C&apos;est le dossier projet (généralement là où est stocké le fichier &lt;i&gt;configuration.xml&lt;/i&gt;). C&apos;est la racine où la vue dossier projet, utilisée pour chercher des fichiers et utiliser le &lt;i&gt;gestionnaire de version&lt;/i&gt; commence.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This the list of &lt;i&gt;revision control system&lt;/i&gt;. The list is appended by modules that you can find in the customize dialog.</source>
-        <translation>C&apos;est la liste des &lt;i&gt;gestionnaire de version&lt;/i&gt; disponible. Cette liste est mise à jours par les modules que vous pouvez trouver dans la fenêtre de personnalisation.</translation>
+        <translation type="unfinished">C&apos;est la liste des &lt;i&gt;gestionnaires de version&lt;/i&gt; disponible. Cette liste est mise à jour par les modules que vous pouvez trouver dans la fenêtre de personnalisation.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the path of the log server directory (where is stored all &lt;i&gt;presentation_*.xml&lt;/i&gt; files).</source>
-        <translation>C&apos;est le chemin vers les dossier du journal du serveur (où sont enregistré les fichiers du styles &lt;i&gt;presentation_*.xml&lt;/i&gt;).</translation>
+        <translation type="unfinished">C&apos;est le chemin vers les dossiers du journal du serveur (où sont enregistrés les fichiers du style &lt;i&gt;présentation_*.xml&lt;/i&gt;).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the default lang used by your project. This can be used for the search path of the &lt;u&gt;C&lt;/u&gt;ustom files tab.</source>
-        <translation>C&apos;est la langue utilisé par défaut dans le projet. Cette information peut-être utilisé par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
+        <translation type="unfinished">C&apos;est la langue utilisé par défaut dans le projet. Cette information peut-être utilisée par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2290,18 +2290,18 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b&gt;XINX&lt;/b&gt; will connect to the service and download the description file.&lt;/p&gt;
 &lt;p&gt;Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cochez case si vous voulez ajouter des services internet à votre projet. La liste doit contenir des chemins vers les fichiers WSDL. A l&apos;ouverture du projet, &lt;b&gt;XINX&lt;/b&gt; se connectera aux services et téléchargera le fichier de description.&lt;/p&gt;
-&lt;p&gt;Après, vous pouver executer un flux à destination du service, ce qui ouvrira une fenêtre avec le flux entrant et le flux sortant.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Cochez la case si vous voulez ajouter des services internet à votre projet. La liste doit contenir des chemins vers les fichiers WSDL. A l&apos;ouverture du projet, &lt;b&gt;XINX&lt;/b&gt; se connectera aux services et téléchargera le fichier de description.&lt;/p&gt;
+&lt;p&gt;Après, vous pouvez exécuter un flux à destination du service, ce qui ouvrira une fenêtre avec le flux entrant et le flux sortant.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.</source>
-        <translation>Si choché, &lt;b&gt;XINX&lt;/b&gt; vérifira si le fichier est dérivé ou non, et le cas échéans proposera de le préfixer.</translation>
+        <translation type="unfinished">Si coché, &lt;b&gt;XINX&lt;/b&gt; vérifira si le fichier est dérivé ou non, et le cas échéant proposera de le préfixer.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The sub-directory where the derivated file must be stored.</source>
-        <translation>Le sous-dossier dans lequelle le fichier dérivé doit être enregistré.</translation>
+        <translation type="unfinished">Le sous-dossier dans lequel le fichier dérivé doit être enregistré.</translation>
     </message>
 </context>
 <context>
@@ -2332,17 +2332,17 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>UniqueApplication: Cannot find the D-Bus session server</source>
-        <translation>UniqueApplication: Ne peux trouver la session sur le serveur D-BUS</translation>
+        <translation type="unfinished">UniqueApplication: Ne peut trouver la session sur le serveur D-BUS</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>UniqueApplication: Can&apos;t setup D-Bus service. Probably already running.</source>
-        <translation>UniqueApplication: Ne peux configurer le service D-BUS. L&apos;application est probablement déjà en cours d&apos;éxecution.</translation>
+        <translation type="unfinished">UniqueApplication: Ne peut configurer le service D-BUS. L&apos;application est probablement déjà en cours d&apos;exécution.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>UniqueApplication: Can&apos;t really create D-Bus service.</source>
-        <translation>UniqueApplication: Ne peux vraiment pas créer de service D-BUS.</translation>
+        <translation type="unfinished">UniqueApplication: Ne peut vraiment pas créer de service D-BUS.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2365,7 +2365,7 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :
+        <translation type="unfinished">Ne peut écrire le fichier %1 :
 %2.</translation>
     </message>
 </context>
@@ -2442,7 +2442,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Whole words</source>
-        <translation>To&amp;ut les mots</translation>
+        <translation type="unfinished">To&amp;us les mots</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2463,14 +2463,14 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>p&gt;If checked, &lt;b&gt;XINX&lt;/b&gt; replace the searched string by this  sting.&lt;/p&gt;
 &lt;p&gt;If the search string is a &lt;i&gt;regular expression&lt;/i&gt;, you can use \1 or \2 for captured string. Captured string in the find string is in bracket.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si coché, &lt;b&gt;XINX&lt;/b&gt; remplacera la chaine de recherche par cette chaine de caractère.&lt;/p&gt;
-&lt;p&gt;Si la chaine de recherche est une &lt;i&gt;expression régulière&lt;/i&gt;, on peut utiliser \1 ou \2 pour les chaines capturés. Les chaines capturés dans la chaine de recherche sont entre parenthèse.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Si coché, &lt;b&gt;XINX&lt;/b&gt; remplacera la chaine de recherche par cette chaine de caractère.&lt;/p&gt;
+&lt;p&gt;Si la chaine de recherche est une &lt;i&gt;expression régulière&lt;/i&gt;, on peut utiliser \1 ou \2 pour les chaines capturées. Les chaines capturées dans la chaine de recherche sont entre parenthèse.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;Text to search in the editor. The search string can be &lt;i&gt;string literal&lt;/i&gt; or a &lt;i&gt;regular expression&lt;/i&gt; (if the corresponding checkbox is checked).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; keep history of searched text.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Texte à utiliser lors de la recherche. La chaine de recherche peut être &lt;i&gt;literal&lt;/i&gt; ou une &lt;i&gt;expression régulière&lt;/i&gt; (si la case à cocher correspondante est coché).&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Texte à utiliser lors de la recherche. La chaine de recherche peut être &lt;i&gt;litérale&lt;/i&gt; ou une &lt;i&gt;expression régulière&lt;/i&gt; (si la case à cocher correspondante est cochée).&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; garde un historique des chaines recherchées.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -2496,12 +2496,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>If unchecked, &lt;b&gt;XINX&lt;/b&gt; search string include in other word, else only whole word is searched.</source>
-        <translation>Si non coché, &lt;b&gt;XINX&lt;/b&gt; cherchera la chaine même si elle est incluse dans un autre mot, sinon seul les mots complet seront recherché.</translation>
+        <translation type="unfinished">Si non coché, &lt;b&gt;XINX&lt;/b&gt; cherchera la chaine même si elle est incluse dans un autre mot, sinon seuls les mots complets seront recherchés.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; use regular expression to match string.</source>
-        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; utilisera les expressions régulière pour trouver la chaine.</translation>
+        <translation type="unfinished">Si coché, &lt;b&gt;XINX&lt;/b&gt; utilisera les expressions régulières pour trouver la chaine.</translation>
     </message>
 </context>
 <context>
@@ -2537,7 +2537,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>This is a long description of the template. This description explain how to use, or why, and all the possible parameter.</source>
-        <translation>Ceci est une longue description du template. On y explique comment l&apos;utiliser, pourquoi et les paramêtres possible.</translation>
+        <translation type="unfinished">Ceci est une longue description du template. On y explique comment l&apos;utiliser, pourquoi et les paramêtres possibles.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2570,7 +2570,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Input Stream</source>
-        <translation>Flux d&apos;entré</translation>
+        <translation type="unfinished">Flux d&apos;entrée</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2585,12 +2585,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Content of the selected input parameter.</source>
-        <translation>Contenue du paramêtre d&apos;entrée selectionné.</translation>
+        <translation type="unfinished">Contenu du paramêtre d&apos;entrée selectionné.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>The list of the input parameter send to the &lt;i&gt;web service&lt;/i&gt;.</source>
-        <translation>Liste des paramêtres d&apos;entrées envoyés aux &lt;i&gt;service internet&lt;/i&gt;.</translation>
+        <translation type="unfinished">Liste des paramêtres d&apos;entrées envoyés aux &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2600,7 +2600,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>List of result returned by the &lt;i&gt;web services&lt;/i&gt;.</source>
-        <translation>Liste des résulats retourné par le &lt;i&gt;service internet&lt;/i&gt;.</translation>
+        <translation type="unfinished">Liste des résultats retournés par le &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2616,7 +2616,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Define the list of WSDL. WSDL is used to describe the web services. Thislist contains link to WSDL.</source>
-        <translation>Définie la liste des fichiers de description WSDL. Les fichiers WSDL sont utilisés pour décrire les services Internet. Cette liste contient les liens vers le fichier WSDL.</translation>
+        <translation type="unfinished">Définit la liste des fichiers de description WSDL. Les fichiers WSDL sont utilisés pour décrire les services Internet. Cette liste contient les liens vers le fichier WSDL.</translation>
     </message>
 </context>
 <context>
@@ -2639,7 +2639,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked the next page ask you the list of WSDL used to known params of the WebServices.</source>
-        <translation>Si coché, la prochaine page vous demandera la listes des fichiers de descriptions de service internet (WSDL).</translation>
+        <translation type="unfinished">Si coché, la prochaine page vous demandera la liste des fichiers de descriptions de service internet (WSDL).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2652,7 +2652,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Define if the project contains WebServices. WebServices can be used to query database.</source>
-        <translation>Indique si le projet posséde ou non des services Internet. Les services Internet peuvent être utilisé pour interoger la base de donnée.</translation>
+        <translation type="unfinished">Indique si le projet posséde ou non des services Internet. Les services Internet peuvent être utilisés pour interroger la base de donnée.</translation>
     </message>
 </context>
 <context>
@@ -2724,7 +2724,7 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :
+        <translation type="unfinished">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
@@ -2778,7 +2778,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>If checked &lt;b&gt;XINX&lt;/b&gt; will propose you to add a prefix to the filename.</source>
-        <translation>So coché &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le préfixe au nom du fichier.</translation>
+        <translation type="unfinished">Si coché &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le préfixe au nom du fichier.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2822,7 +2822,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Define Specifique property</source>
-        <translation>Définition des propriété spécifique</translation>
+        <translation type="unfinished">Définition des propriétés spécifiques</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2832,7 +2832,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>&amp;Specifique path name :</source>
-        <translation>Nom du dossier des &amp;spécifique :</translation>
+        <translation type="unfinished">Nom du dossier des &amp;spécifiques :</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2842,7 +2842,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>This is the directory where is stored derivated files.</source>
-        <translation>Chemin utilisé pour stocker les fichiers dérives.</translation>
+        <translation type="unfinished">Chemin utilisé pour stocker les fichiers dérivés.</translation>
     </message>
 </context>
 <context>
@@ -2850,7 +2850,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Define if the project is specifique or not. A specifique (derivated) project is used when original&apos;s file can&apos;t be modified.</source>
-        <translation>Définie si le projet est spécifique ou non. Un projet spécifique (ou dérivé) est utilisé quand les fichiers d&apos;origines ne peuvent être modifié.</translation>
+        <translation type="unfinished">Définit si le projet est spécifique ou non. Un projet spécifique (ou dérivé) est utilisé quand les fichiers d&apos;origines ne peuvent être modifiés.</translation>
     </message>
 </context>
 <context>
@@ -2873,7 +2873,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t load snipet file.</source>
-        <translation>Ne peux charger le fichier de template.</translation>
+        <translation type="unfinished">Ne peut charger le fichier de template.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -2927,17 +2927,17 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Define Revision Control</source>
-        <translation>Définition le système de control des versions</translation>
+        <translation type="unfinished">Définissons le système de contrôle des versions</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Define the revision control used for the project if you want to used one.</source>
-        <translation>Définie le système de controle utilisé pour le projet, si vous voulez en utiliser un.</translation>
+        <translation type="unfinished">Définit le système de contrôle utilisé pour le projet, si vous voulez en utiliser un.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>No revision control system.</source>
-        <translation>Pas de système de control de version.</translation>
+        <translation type="unfinished">Pas de système de contrôle de version.</translation>
     </message>
 </context>
 <context>
@@ -2966,14 +2966,14 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :
+        <translation type="unfinished">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :
+        <translation type="unfinished">Ne peut écrire le fichier %1 :
 %2.</translation>
     </message>
 </context>
@@ -2990,7 +2990,7 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :
+        <translation type="unfinished">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
@@ -3019,7 +3019,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Can&apos;t open session file.</source>
-        <translation>Ne peux ouvrir le fichier de session.</translation>
+        <translation type="unfinished">Ne peut ouvrir le fichier de session.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
@@ -3037,7 +3037,7 @@ Date du fichier : %4</translation>
         <location filename="" line="3021184"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1 :
+        <translation type="unfinished">Ne peut écrire le fichier %1 :
 %2.</translation>
     </message>
 </context>
@@ -3079,13 +3079,13 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Refresh the list of file present in the &lt;i&gt;log&lt;/i&gt; directory.</source>
-        <translation>Rafraichir la liste des fichier de présentation du dossier &lt;i&gt;log&lt;/i&gt;.</translation>
+        <translation type="unfinished">Rafraichir la liste des fichiers de présentation du dossier &lt;i&gt;log&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file the view is updated with the content of the file.&lt;/p&gt;
 &lt;p&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Liste des fichiers du dossier &lt;i&gt;log&lt;/i&gt;. Si vous sélectionné un fichier la vue sera mis à jours par son contenu.&lt;/p&gt;
+        <translation type="unfinished">&lt;p&gt;Liste des fichiers du dossier &lt;i&gt;log&lt;/i&gt;. Si vous sélectionnez un fichier la vue sera mis à jour par son contenu.&lt;/p&gt;
 &lt;p&gt;Vous pouvez ouvrir un fichier de la liste, ou un fichier d&apos;un autre dossier.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -3096,14 +3096,14 @@ Date du fichier : %4</translation>
     <message>
         <location filename="" line="3021184"/>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; search node where name match the filter (literal or regular expression).</source>
-        <translation>Filtre utilisé dans la vue.&lt;b&gt;XINX&lt;/b&gt; recherche les noeuds possédant un nom correspondant au filtre (litéral ou expression régulière).</translation>
+        <translation type="unfinished">Filtre utilisé dans la vue.&lt;b&gt;XINX&lt;/b&gt; recherche les noeuds possédant un nom correspondant au filtre (litérale ou expression régulière).</translation>
     </message>
     <message>
         <location filename="" line="3021184"/>
         <source>&lt;p&gt;If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is finded, all sub-element is showed. &lt;/p&gt;
 &lt;p&gt;If &lt;i&gt;None&lt;/i&gt; is selected only matched element is showed.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Si &lt;i&gt;Sous-élément&lt;/i&gt; est sélectionné, quand un élément est trouvé, tout les sous-éléments sont affichés.&lt;/p&gt;
-&lt;p&gt;Si &lt;i&gt;Aucun&lt;/i&gt; est séléctionné, seul les éléments correspondant au filtre sont affiché.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;Si &lt;i&gt;Sous-élément&lt;/i&gt; est sélectionné, quand un élément est trouvé, tous les sous-éléments sont affichés.&lt;/p&gt;
+&lt;p&gt;Si &lt;i&gt;Aucun&lt;/i&gt; est séléctionné, seuls les éléments correspondants au filtre sont affichés.&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>

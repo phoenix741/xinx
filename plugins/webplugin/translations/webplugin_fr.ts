@@ -16,7 +16,7 @@
     <message>
         <location filename="" line="0"/>
         <source>%1 is not auto completion file</source>
-        <translation>%1 ne contient pas les informations d&apos;auto compéltion</translation>
+        <translation type="unfinished">%1 ne contient pas les informations d&apos;auto complétion</translation>
     </message>
 </context>
 <context>
@@ -35,13 +35,13 @@ Valeur : %2</translation>
         <location filename="" line="0"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Net peut lire le fichier %1:
+        <translation type="unfinished">Ne peut lire le fichier %1:
 %2.</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Can&apos;t attach variable to function ?</source>
-        <translation>Ne peux pas attacher la variable à la fonction ?</translation>
+        <translation type="unfinished">Ne peut pas attacher la variable à la fonction ?</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -56,27 +56,27 @@ Valeur : %2</translation>
     <message>
         <location filename="" line="0"/>
         <source>I wait something but i don&apos;t know what !</source>
-        <translation>J&apos;attend quelque chose mais je ne sais pas quoi !</translation>
+        <translation type="unfinished">J&apos;attends quelque chose mais je ne sais pas quoi !</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>I wait an identifier</source>
-        <translation>J&apos;attend un identificateur</translation>
+        <translation type="unfinished">J&apos;attends un identificateur</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>I wait an identifier.</source>
-        <translation>J&apos;attend un identificateur.</translation>
+        <translation type="unfinished">J&apos;attends un identificateur.</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>I wait a &apos;(&apos;</source>
-        <translation>J&apos;attend une parathèse ouvrante &apos;(&apos;</translation>
+        <translation type="unfinished">J&apos;attends une parenthèse ouvrante &apos;(&apos;</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Not a stylesheet content.</source>
-        <translation>Ce n&apos;est pas un contenue de feuille de style.</translation>
+        <translation type="unfinished">Ce n&apos;est pas un contenu de feuille de style.</translation>
     </message>
 </context>
 <context>
@@ -139,17 +139,17 @@ Valeur : %2</translation>
     <message>
         <location filename="" line="0"/>
         <source>Can&apos;t read baseplugin_xml file</source>
-        <translation>Ne peux lire le fichier baseplugin_xml</translation>
+        <translation type="unfinished">Ne peut lire le fichier baseplugin_xml</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Web Plugin</source>
-        <translation>Plugin Internet</translation>
+        <translation type="unfinished">Plugin Internet</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Editor helper for HTML, XSL, XML, JS, CSS files.</source>
-        <translation>Aide à la saisie pour le HTML, le XML, le XSL, le JavaScript, les feuilles de styles CSS.</translation>
+        <translation type="unfinished">Aide à la saisie pour le HTML, le XML, le XSL, le JavaScript, les feuilles de styles CSS.</translation>
     </message>
 </context>
 <context>
