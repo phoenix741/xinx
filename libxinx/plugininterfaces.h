@@ -42,32 +42,55 @@ class QKeyEvent;
 class QCompleter;
 class RCS;
 
+/*! 
+ * This intereface is used to create a plugin used by XINX. 
+ * At start XINX load all plugins and call the initializePlugin method from the plugin.
+ * The plugin must define some attribute used to show information to user (in about box and 
+ * in the list of Plugin).
+ * A plugin can return a list of tools (with a default value), that he needed. 
+ */
 class IXinxPlugin {
 public:
 	enum PluginAttribute { 
-		PLG_NAME        = 1001, 
-		PLG_DESCRIPTION = 1002, 
-		PLG_ICON        = 1003, 
-		PLG_AUTHOR      = 1004, 
-		PLG_EMAIL       = 1005, 
-		PLG_WEBSITE     = 1006, 
-		PLG_VERSION     = 1007, 
-		PLG_LICENCE     = 1008 };
+		PLG_NAME        = 1001, //!< Name of the plugin
+		PLG_DESCRIPTION = 1002, //!< Long description of the plugin
+		PLG_ICON        = 1003, //!< An icon that represent the plugin
+		PLG_AUTHOR      = 1004, //!< The author (or authors) of the plugin
+		PLG_EMAIL       = 1005, //!< Email to contact the author (or team)
+		PLG_WEBSITE     = 1006, //!< The site where we can find the plugin
+		PLG_VERSION     = 1007, //!< The Version of the plugin
+		PLG_LICENCE     = 1008  //!< The Licence of the plugin
+	};
 	
+	//! Destroy the plugin
 	virtual ~IXinxPlugin() {};
 
+	/*! 
+	 * Called when the plugin is loaded.
+	 * \param lang The lang in which the plugin must be load.
+	 */
 	virtual bool initializePlugin( const QString & lang ) = 0;
+	/*! Get an information from the attribute. List of informations can be found in the \e PluginAttribute enum. */
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
 	
+	/*! List of tools with the default value where find the tool */
 	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
 };
 
+/*!
+ * If the plugin inherits from this class, a configuration button is proposed to the user, and the 
+ * plugins can open a custom dialog box for user modify his options.
+ */
 class IXinxPluginConfiguration {
 public:
+	//! Destroy the interface
 	virtual ~IXinxPluginConfiguration() {};
 	
+	//! Create a widget used in a wrapper for the configuration dialog box.
 	virtual QWidget * createSettingsDialog() = 0;
+	//! Load settings to dialog box
 	virtual bool loadSettingsDialog( QWidget * widget ) = 0;
+	//! Save settings to dialog box
 	virtual bool saveSettingsDialog( QWidget * widget ) = 0;
 };
 

@@ -41,6 +41,7 @@ Name: remplace_template; Description: Replace XINX data files
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\libxinx\sharedxinx.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\xinxprojectwizard\xinxprojectwizard.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
 Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
@@ -48,16 +49,18 @@ Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: shar
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile; Tasks: ; Languages: 
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtScript4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: ..\xinx\xml\baseplugin_xml.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_xml.xml; Flags: skipifsourcedoesntexist; Languages: ; Tasks: remplace_template
 Source: ..\xinx\xml\baseplugin_js.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_js.xml; Flags: skipifsourcedoesntexist; Tasks: remplace_template
 Source: ..\xinx\xml\baseplugin_css.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_css.xml; Flags: skipifsourcedoesntexist; Languages: ; Tasks: remplace_template
-Source: ..\xinx\xml\template.xnx; DestDir: {app}\xml; Components: application; Tasks: remplace_template; DestName: template.xnx; Languages: 
+Source: ..\xinx\xml\template.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template; DestName: template.xnx; Languages: 
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete skipifsourcedoesntexist; Components: dbus qt
 Source: dbus-pre-1.0.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
-DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: " svnplugin"
+DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
+DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
@@ -68,11 +71,11 @@ Name: {group}\dbus\D-BUS Viewer; Filename: {pf}\dbus\bin\qdbusviewer.exe; Compon
 Name: {group}\Documentation (API); Filename: {app}\doc\api\index.html; Comment: Documentation API de XINX; Components: documentation
 
 [Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{pf}\dbus\bin"
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinxprojectwizard.exe; ValueType: string; ValueData: {app}\bin\xinxprojectwizard.exe
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{pf}\dbus\bin"
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\xinx.exe; ValueType: string; ValueData: {app}\bin\xinx.exe
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\qdbusviewer.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{cf}\Qt\{#QtVersion};{cf}\MinGW;{pf}\dbus\bin"; Components: dbus
+Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\qdbusviewer.exe; ValueType: string; ValueName: Path; ValueData: "{app}\bin;{pf}\dbus\bin"; Components: dbus
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\App Paths\qdbusviewer.exe; ValueType: string; ValueData: {pf}\dbus\bin\qdbusviewer.exe; Components: dbus
 Root: HKCR; SubKey: .xsl; ValueType: string; ValueData: Fichier XSL; Flags: uninsdeletekey; Tasks: assoxml
 Root: HKCR; SubKey: Fichier XSL; ValueType: string; ValueData: Feuille de style XML; Flags: uninsdeletekey; Tasks: assoxml
@@ -92,6 +95,7 @@ Name: qt; Description: Qt Library; Flags: fixed; Types: custom compact full
 Name: mingw; Description: MinGW Library; Flags: fixed; Types: custom compact full
 Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom compact full
 Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom compact full
+Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 
 [Run]
 Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- /SILENT /NOCANCEL /NORESTART"; StatusMsg: Installation de D-BUS; Flags: hidewizard; Components: dbus

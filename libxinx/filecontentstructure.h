@@ -95,9 +95,7 @@ public:
 	 * \param line Line where the element is.
 	 */
 	FileContentElement( FileContentElement * parent, const QString & name, int line );
-	/*!
-	 * Destroy the element.
-	 */
+	/*! Destroy the element. */
 	virtual ~FileContentElement();
 	
 	/*!
@@ -147,14 +145,10 @@ public:
 	 */
 	virtual bool equals( FileContentElement * element );
 	
-	/*!
-	 * Copy the contents of an FileContentElement \e element to this.
-	 */
+	/*! Copy the contents of an FileContentElement \e element to this. */
 	virtual void copyFrom( FileContentElement * element );
 	
-	/*!
-	 * Icon used for show how the element must be.
-	 */
+	/*! Icon used for show how the element must be. */
 	virtual QIcon icon() const;
 
 	/*!
@@ -167,9 +161,7 @@ public:
 	 * \param line Line of an element.
 	 */
 	void setLine( int line );
-	/*!
-	 * Function to change the filename of the element.
-	 */
+	/*! Function to change the filename of the element. */
 	void setFilename( const QString & filename );
 	
 protected:
@@ -184,9 +176,7 @@ protected:
 	 * updated and the signal \e updated() is emited.
 	 */
 	FileContentElement * append( FileContentElement * element );
-	/*!
-	 * Remove all elements from the list.
-	 */
+	/*! Remove all elements from the list. */
 	void clear();
 	
 	/*!
@@ -195,45 +185,55 @@ protected:
 	 */
 	FileContentElement * contains( FileContentElement * element );
 	
-	/*!
-	 * Mark this element to be deleted by method \e removeMarkedDeleted().
-	 */
+	/*! Mark this element to be deleted by method \e removeMarkedDeleted(). */
 	void markDeleted();
-	/*!
-	 * Mark the element to be keeped and ignored by \e removeMarkedDeleted().
-	 */
+	/*! Mark the element to be keeped and ignored by \e removeMarkedDeleted(). */
 	void markKeeped();
-	/*!
-	 * Mark all child element to be deleted by method \e removeMarkedDeleted().
-	 */
+	/*! Mark all child element to be deleted by method \e removeMarkedDeleted(). */
 	void markAllDeleted();
-	/*!
-	 * Remove from the child list all elements marked to be deleted by \e markDeleted().
-	 */
+	/*! Remove from the child list all elements marked to be deleted by \e markDeleted(). */
 	void removeMarkedDeleted();
 signals:
+	/*! Signal emited when an element is modified */
 	void updated( FileContentElement * element );
+	/*! Signal emited when an element is about to be removed. */
 	void aboutToRemove( FileContentElement * element );
+	/*! Signal emited when the element is removed. */
 	void removed();
+	/*! Signal emited when an element is about to be added. */
 	void aboutToAdd( FileContentElement * element, int row );
+	/*! Signal emited when an element is added. */
 	void added();
 private:
 	PrivateFileContentElement * d;
 	friend class PrivateFileContentElement;
 };
 
+/*!
+ * This class is used to store a  list of \e FileContentElement. This list is updated when new
+ * element is added to the list, or when element are removed.
+ * This list can be used to represent the File contente tree in a list structure for the completion.
+ */
 class XINX_EXPORT FileContentElementList : public QObject {
 	Q_OBJECT
 public:
+	/*!  Create a list of \e FileContentElement with the root element \e root. */
 	FileContentElementList( FileContentElement * root );
+	/*! Destroy the list but not the tree */
 	virtual ~FileContentElementList();
 	
+	/*! Return the list of \e FileContentElement. */
 	const QList<FileContentElement*> & list() const;
 signals:
+	/*! Signal emited when an element is about to be added. */
 	void aboutToAdd( int row );
+	/*! Signal emited when an element is added. */
 	void added();
+	/*! Signal emited when an element is about to be removed. */
 	void aboutToRemove( int row );
+	/*! Signal emited when the element is removed. */
 	void removed();
+	/*! Signal emited when the list is refreshed */
 	void reset();
 private slots:
 	void refreshList();
