@@ -109,6 +109,7 @@
         <file>images/vcs_update.png</file>
         <file>images/warning.png</file>
         <file>images/window_new.png</file>
+        <file>rc/exceptionfilter.txt</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>
     </qresource>

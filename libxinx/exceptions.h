@@ -130,9 +130,11 @@ private:
 	ExceptionManager();
 	
 	static ExceptionManager * s_self;
+	
 	QHash<unsigned long,QStringList> m_stackTrace;
 	QErrorMessage * m_dialog;
 	bool m_fatal;
+	QStringList m_exceptionFilter;
 };
 
 /*!

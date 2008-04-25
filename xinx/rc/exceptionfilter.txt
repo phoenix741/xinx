@@ -1,0 +1,5 @@
+.*is not a valid Qt plugin.*
+.*QWindowsFileSystemWatcherEngine: unknown message.*
+.*QPainter::begin: Paint device returned engine == 0, type: 3.*
+.*QPainter::setWorldTransform: Painter not active.*
+.*QPainter::end: Painter not active, aborted.*

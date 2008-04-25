@@ -113,6 +113,13 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
 ExceptionManager::ExceptionManager() : m_fatal( false ) {
 	m_dialog = new QErrorMessage(0);
 	m_dialog->setWindowTitle( qApp->applicationName() );
+	
+	QFile exceptionFilterFile( ":/rc/exceptionfilter.txt" );
+	if( exceptionFilterFile.open( QIODevice::ReadOnly ) ) {
+		QTextStream exceptionFilterStream( &exceptionFilterFile );
+		m_exceptionFilter = exceptionFilterStream.readAll().split( "\n" );
+	}
+	
 	qInstallMsgHandler( xinxMessageHandler );
 }
 
@@ -173,19 +180,26 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 	char * filename = "c:\\xinx_trace.log";
 #endif
 		
-	file = fopen( filename, "w+" );
+	file = fopen( filename, "a" );
 	if( file ) {
+		fprintf( file, qPrintable( QDateTime::currentDateTime().toString() ) );
 		fprintf( file, "* Backtrace ...\n" );
 		fprintf( file, qPrintable( stack.join( "\n" ) ) );
 		fprintf( file, "* Error ...\n" );
 		fprintf( file, qPrintable( error ) );
 		fclose( file );
 	}
-/*
-    if( QThread::currentThread() == qApp->thread() ) 
+
+	foreach( QString filter, m_exceptionFilter ) {
+		if( QRegExp( filter ).exactMatch( error ) )
+			return;
+	}
+	
+	if( m_fatal && ( QThread::currentThread() == qApp->thread() ) ) 
     	m_dialog->showMessage( error );
-    else */ 
-	QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+    else  
+    	QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+	
 	std::cerr << qPrintable( error ) << std::endl;
 	
     if( m_fatal ) m_dialog->exec(); // Pour ne pas quitter de suite

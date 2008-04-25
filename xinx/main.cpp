@@ -85,6 +85,9 @@ int main(int argc, char *argv[]) {
 			splash.setMask(pixmap.mask());
 			splash.show();
 	  		app.processEvents();
+	  		
+	  		/* Load the exception manager */
+	  		ExceptionManager::self();
 	
 	  		/* Must load to have traductions in plugins */
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
