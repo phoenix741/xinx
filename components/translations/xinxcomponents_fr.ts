@@ -27,7 +27,7 @@
     <message>
         <location filename="" line="1"/>
         <source>Custom...</source>
-        <translation type="unfinished">Personnaliser ...</translation>
+        <translation>Personnaliser ...</translation>
     </message>
 </context>
 <context>
@@ -80,7 +80,7 @@
     <message>
         <location filename="" line="1"/>
         <source>Dark Cyan</source>
-        <translation type="unfinished">Bleu ciel foncé(bleu marine???)</translation>
+        <translation>Bleu ciel foncé</translation>
     </message>
     <message>
         <location filename="" line="1"/>

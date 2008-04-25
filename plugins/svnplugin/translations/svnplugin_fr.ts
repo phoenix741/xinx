@@ -29,7 +29,7 @@
     <message>
         <location filename="" line="0"/>
         <source>Wrapper for SubVersion</source>
-        <translation type="unfinished">Encapsulation du programme SubVersion</translation>
+        <translation>Encapsulation du programme SubVersion</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="" line="0"/>
         <source>SVN - Subversion</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 </TS>

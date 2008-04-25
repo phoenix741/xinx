@@ -27,7 +27,7 @@
     <message>
         <location filename="" line="7471221"/>
         <source>Wrapper of CVS</source>
-        <translation type="unfinished">Encapsulation du programme CVS</translation>
+        <translation>Encapsulation du programme CVS</translation>
     </message>
     <message>
         <location filename="" line="7471221"/>
@@ -53,7 +53,7 @@
     <message>
         <location filename="" line="7471221"/>
         <source>I&apos;M A PROCESS KILLER</source>
-        <translation type="unfinished">Le processus a été tué</translation>
+        <translation>Le processus a été tué</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="" line="7471221"/>
         <source>Update to revision %1 terminated</source>
-        <translation type="unfinished">Mise à jour vers la version %1 est terminée</translation>
+        <translation>La mise à jour vers la version %1 est terminée</translation>
     </message>
 </context>
 <context>
@@ -69,7 +69,7 @@
     <message>
         <location filename="" line="7471221"/>
         <source>Update terminated</source>
-        <translation type="unfinished">Mise à jour terminée</translation>
+        <translation>Mise à jour terminée</translation>
     </message>
 </context>
 <context>
@@ -132,7 +132,7 @@
     <message>
         <location filename="" line="7471221"/>
         <source>-z5 Medium Level</source>
-        <translation type="unfinished">-z5 Intermédiaire</translation>
+        <translation>-z5 Intermédiaire</translation>
     </message>
     <message>
         <location filename="" line="7471221"/>

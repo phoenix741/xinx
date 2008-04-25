@@ -6,7 +6,7 @@
     <message>
         <location filename="" line="0"/>
         <source>Element at line : %1</source>
-        <translation type="unfinished">Elément à la ligne : %1</translation>
+        <translation>Elément à la ligne : %1</translation>
     </message>
 </context>
 <context>
@@ -24,7 +24,7 @@
     <message>
         <location filename="" line="0"/>
         <source>Fatal Error:</source>
-        <translation type="unfinished">Erreur fatale :</translation>
+        <translation>Erreur fatale :</translation>
     </message>
 </context>
 <context>
@@ -32,7 +32,7 @@
     <message>
         <location filename="" line="0"/>
         <source>Select the %1 tool</source>
-        <translation type="unfinished">Sélectionner l&apos;outil %1</translation>
+        <translation>Sélectionner l&apos;outil %1</translation>
     </message>
     <message>
         <location filename="" line="0"/>
