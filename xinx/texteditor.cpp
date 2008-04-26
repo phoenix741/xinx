@@ -202,7 +202,7 @@ void TextEditor::mousePressEvent ( QMouseEvent * event ) {
 }
 
 QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord, bool dot ) {
-	XINX_ASSERT( ! cursor.isNull() );
+	Q_ASSERT( ! cursor.isNull() );
 	QString expr = EOWREGEXPDOT;
 	if( ! dot ) 
 		expr = EOWREGEXP;

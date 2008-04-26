@@ -552,8 +552,8 @@ void PrivateCustomDialogImpl::storeConfig() {
 }
 
 void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
-	XINX_ASSERT( plugin );
-	XINX_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin ) );
+	Q_ASSERT( plugin );
+	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin ) );
 	
 	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin );
 	
@@ -588,7 +588,7 @@ void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
 }
 
 void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
-	XINX_ASSERT( plugin );
+	Q_ASSERT( plugin );
 	
 	QDialog informationDialog;
 	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
@@ -697,14 +697,14 @@ CustomDialogImpl::~CustomDialogImpl() {
 
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
-	XINX_ASSERT( config );
+	Q_ASSERT( config );
 	
 	d->m_config = *config;
 	d->showConfig();
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
-	XINX_ASSERT( config );
+	Q_ASSERT( config );
 	
 	d->storeConfig();
 	*config = d->m_config;

@@ -38,38 +38,30 @@ XMLParserException::XMLParserException( const QString & message, int line, int c
 
 XSLFileContentParams::XSLFileContentParams( FileContentElement * parent, const QDomElement & node )
 					 : FileContentElement( parent, node.attribute( "name" ), node.lineNumber() ) {
-	XINX_TRACE( "XSLFileContentParams", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
+	
 
 	m_value = node.attribute( "select", node.text() );
 }
 
 XSLFileContentParams::~XSLFileContentParams() {
-	XINX_TRACE( "~XSLFileContentParams", "()" );
+	
 }
 
 const QString & XSLFileContentParams::value() const {
-	XINX_TRACE( "XSLFileContentParams::value", "()" );
-
 	return m_value;
 }
 
 QString XSLFileContentParams::displayTips() const {
-	XINX_TRACE( "XSLFileContentParams::displayTips", "()" );
-
 	return FileContentElement::displayTips() + tr( "\nValue : %2" ).arg( m_value );
 }
 
 void XSLFileContentParams::copyFrom( FileContentElement * element ) {
-	XINX_TRACE( "XSLFileContentParams::copyFrom", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
-
 	FileContentElement::copyFrom( element );
 	if( dynamic_cast<XSLFileContentParams*>( element ) )
 		m_value = dynamic_cast<XSLFileContentParams*>( element )->m_value;
 }
 
 QIcon XSLFileContentParams::icon() const {
-	XINX_TRACE( "XSLFileContentParams::icon", "()" );
-
 	return QIcon( ":/images/html_value.png" );
 }
 
@@ -77,17 +69,15 @@ QIcon XSLFileContentParams::icon() const {
 
 XSLFileContentVariable::XSLFileContentVariable( FileContentElement * parent, const QDomElement & node )
 					   : XSLFileContentParams( parent, node ) {
-	XINX_TRACE( "XSLFileContentVariable", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
+	
 }
 
 XSLFileContentVariable::~XSLFileContentVariable() {
-	XINX_TRACE( "~XSLFileContentVariable::icon", "()" );
+	
 
 }
 
 QIcon XSLFileContentVariable::icon() const {
-	XINX_TRACE( "XSLFileContentVariable::icon", "()" );
-
 	return QIcon(":/images/variable.png");
 }
 
@@ -95,15 +85,11 @@ QIcon XSLFileContentVariable::icon() const {
 
 XSLFileContentTemplate::XSLFileContentTemplate( IXinxExtendedEditor * editor, FileContentElement * parent, const QDomElement & node, const QString & name )
 					   : FileContentElement( parent, name, node.lineNumber() ), m_editor( editor ) {
-	XINX_TRACE( "XSLFileContentTemplate", QString( "( %1, node )" ).arg( (unsigned int)parent, 0, 16 ) );
-
 	m_mode = node.attribute( "mode" ).trimmed();
 }
 
 
 void XSLFileContentTemplate::loadFromXML( const QDomElement& node ) {
-	XINX_TRACE( "XSLFileContentTemplate::loadFromXML", "( node )" );
-
 	markAllDeleted();
 	
 	QDomNodeList list = node.elementsByTagName( "script" );
@@ -182,14 +168,10 @@ void XSLFileContentTemplate::loadFromXML( const QDomElement& node ) {
 
 
 const QString & XSLFileContentTemplate::mode() const {
-	XINX_TRACE( "XSLFileContentTemplate::mode", "()" );
-
 	return m_mode;
 }
 
 QString XSLFileContentTemplate::displayName() const {
-	XINX_TRACE( "XSLFileContentTemplate::displayName", "()" );
-
 	if( m_mode.isEmpty() )
 		return name();
 	else
@@ -198,54 +180,46 @@ QString XSLFileContentTemplate::displayName() const {
 
 
 XSLFileContentTemplate::~XSLFileContentTemplate() {
-	XINX_TRACE( "~XSLFileContentTemplate", "()" );
+	
 }
 
 bool XSLFileContentTemplate::equals( FileContentElement * element ) {
-	//XINX_TRACE( "XSLFileContentTemplate::equals", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
+	//
 
 	return FileContentElement::equals( element ) 
 		&& ( m_mode == dynamic_cast<XSLFileContentTemplate*>( element )->m_mode );
 }
 
 void XSLFileContentTemplate::copyFrom( FileContentElement * element ) {
-	XINX_TRACE( "XSLFileContentTemplate::copyFrom", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
-
 	FileContentElement::copyFrom( element );
 	if( dynamic_cast<XSLFileContentTemplate*>( element ) )
 		m_mode = dynamic_cast<XSLFileContentTemplate*>( element )->m_mode;
 }
 
 QIcon XSLFileContentTemplate::icon() const {
-	XINX_TRACE( "XSLFileContentTemplate::icon", "()" );
-
 	return QIcon(":/images/template.png");
 }
 
 /* XSLFileContentParser */
 
 XSLFileContentParser::XSLFileContentParser( IXinxExtendedEditor * editor ) : FileContentElement( NULL, QString(), 0 ), m_editor( editor ), m_isLoaded( true ) {
-	XINX_TRACE( "XSLFileContentParser", "()" );
+	
 }
 
 XSLFileContentParser::XSLFileContentParser( IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ), m_editor( editor ), m_isLoaded( true ) {
-	XINX_TRACE( "XSLFileContentParser", QString( "( %1, %2, %3 )" ).arg( (unsigned int)parent, 0, 16 ).arg( filename ).arg( lineNumber ) );
+	
 }
 
 
 XSLFileContentParser::~XSLFileContentParser() {
-	XINX_TRACE( "~XSLFileContentParser", "()" );
+	
 }
 
 QIcon XSLFileContentParser::icon() const {
-	XINX_TRACE( "XSLFileContentParser::icon", "()" );
-
 	return QIcon(":/images/import.png");
 }
 
 void XSLFileContentParser::loadFromFileDelayed( const QString & filename ) {
-	XINX_TRACE( "XSLFileContentParser::loadFromFileDelayed", QString( "( %1 )" ).arg( filename ) );
-
 	setFilename( filename );
 	setName( QFileInfo( filename ).fileName() );
 	
@@ -257,8 +231,6 @@ bool XSLFileContentParser::isLoaded() {
 }
 
 void XSLFileContentParser::loadFromFile( const QString & filename ) {
-	XINX_TRACE( "XSLFileContentParser::loadFromFile", QString( "( %1 )" ).arg( filename ) );
-
 	setFilename( filename );
 	setName( QFileInfo( filename ).fileName() );
 	
@@ -274,8 +246,6 @@ void XSLFileContentParser::loadFromFile( const QString & filename ) {
 }
 
 void XSLFileContentParser::loadFromContent( const QString & content ) {
-	XINX_TRACE( "XSLFileContentParser::loadFromContent", QString( "( %1 )" ).arg( content ) );
-
 	m_isLoaded = true;
 
 	if( content.isEmpty() ) {
@@ -301,8 +271,6 @@ void XSLFileContentParser::loadFromContent( const QString & content ) {
 }
 
 void XSLFileContentParser::loadFromXML( const QDomElement & element ) {	
-	XINX_TRACE( "XSLFileContentParser::loadFromXML", "( element )" );
-
 	markAllDeleted();
 	
 	QDomElement child = element.firstChildElement();

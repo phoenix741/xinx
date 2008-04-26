@@ -55,23 +55,6 @@ private:
 };
 
 /*!
- * Exception called by the XINX_ASSERT. This assert can now be replace by Q_ASSERT.
- * If QT_NO_DEBUG is defined, this exception is never call.
- */
-class XINX_EXPORT XinxAssertException : public XinxException {
-public:
-	XinxAssertException( const char *assertion, const char *file, int line );
-};
-
-#if !defined( XINX_ASSERT )
-#  ifndef QT_NO_DEBUG
-#    define XINX_ASSERT(cond) do{if(!(cond)) throw XinxAssertException(#cond,__FILE__,__LINE__);} while (0)
-#  else
-#    define XINX_ASSERT(cond) do{}while(0)
-#  endif
-#endif
-
-/*!
  * The Exception manager contains an error dialog that can be used when a error occure or when we 
  * use qWarning, qCritical, qError, qDebug. When an fatal error occure, the signal \e errorTriggered
  * is emited.
@@ -136,30 +119,5 @@ private:
 	bool m_fatal;
 	QStringList m_exceptionFilter;
 };
-
-/*!
- * \obsolete
- * Create a stack trace
- * This class is usefull but too slow.
- */
-class XINX_EXPORT Trace {
-public:
-	explicit Trace( char* filename, int line, const QString& func_name, const QString & args );	
-	~Trace();
-private:
-	void LogMsg( int depth, const char * filename, int line, const QString & fonction );
-	
-	unsigned long m_handle;
-	
-	static QHash<unsigned long,int> m_depth;
-};
-
-//#define XINX_DEBUG
-// Attention : Trop lent
-#ifdef XINX_DEBUG
-#  define XINX_TRACE( fct, args ) Trace __XINX_TRACE__ ( __FILE__, __LINE__, fct, args )
-#else
-#  define XINX_TRACE( fct, args ) 
-#endif
 
 #endif /* __EXCEPTIONS_H__ */

@@ -31,9 +31,7 @@
 #include <QThread>
 #include <QDebug>
 
-static QDBusConnectionInterface *tryToInitDBusConnection() {
-	XINX_TRACE( "tryToInitDBusConnection", "()" );
-	
+static QDBusConnectionInterface *tryToInitDBusConnection() {	
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
 	if (!QDBusConnection::sessionBus().isConnected() || !(dbusService = QDBusConnection::sessionBus().interface())) {
@@ -46,14 +44,10 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 /* PrivateUniqueApplication */
 
 PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent ) : m_mainform(0), m_parent( parent ) {
-	XINX_TRACE( "PrivateUniqueApplication", QString( "( 0x%1 )" ).arg( (unsigned int)parent, 0, 16 ) );
-
 	m_interface = NULL;
 }
 
 void PrivateUniqueApplication::start() {
-	XINX_TRACE( "PrivateUniqueApplication::start", "()" );
-
 	QString appName = "org.shadoware.xinx";
 	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
 
@@ -89,35 +83,27 @@ void PrivateUniqueApplication::slotErrorTriggered() {
 /* UniqueApplication */
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
-	XINX_TRACE( "UniqueApplication", QString( "( %1, argv )" ).arg( argc ) );
-
 	d = new PrivateUniqueApplication( this );
 	d->start();
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
-	XINX_TRACE( "UniqueApplication", QString( "( %1, argv, %2 )" ).arg( argc ).arg( GUIenabled ) );
-
 	d = new PrivateUniqueApplication( this );
 	d->start();
 }
 
 UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
-	XINX_TRACE( "UniqueApplication", QString( "( %1, argv, type )" ).arg( argc ) );
-
 	d = new PrivateUniqueApplication( this );
 	d->start();
 }
 
 UniqueApplication::~UniqueApplication() {
-	XINX_TRACE( "~UniqueApplication", "()" );
-
 	delete d;
 }
 
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	// Too verbose
-	//XINX_TRACE( "UniqueApplication::notify", QString( "( 0x%1, 0x%2 )" ).arg( (unsigned int)receiver, 0, 16 ).arg( (unsigned int)event, 0, 16 ) );
+	//
 
 	try {
 		return QApplication::notify( receiver, event );
@@ -131,14 +117,10 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 }
 
 bool UniqueApplication::isUnique() { 
-	XINX_TRACE( "UniqueApplication::isUnique", "()" );
-
 	return d->m_isUnique; 
 }
 
 void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
-	XINX_TRACE( "UniqueApplication::attachMainWindow", QString( "( 0x%1 )" ).arg( (unsigned int)mainform, 0, 16 ) );
-
 	d->m_mainform = mainform;
 	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), d, SLOT(slotErrorTriggered()) );
 
@@ -147,7 +129,5 @@ void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
 }
 
 void UniqueApplication::callOpenFile(const QString &fileName) {
-	XINX_TRACE( "UniqueApplication::callOpenFile", QString( "( %1 )" ).arg( fileName ) );
-
 	d->m_interface->openFile( fileName );
 }

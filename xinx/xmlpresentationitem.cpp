@@ -153,7 +153,7 @@ bool XmlPresentationNodeItem::isView() const {
 /* XmlPresentationParamItem */
 
 XmlPresentationParamItem::XmlPresentationParamItem( QDomNode node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
-	XINX_ASSERT( ! m_domNode.toAttr().isNull() );
+	Q_ASSERT( ! m_domNode.toAttr().isNull() );
 }
 
 XmlPresentationParamItem::~XmlPresentationParamItem() {

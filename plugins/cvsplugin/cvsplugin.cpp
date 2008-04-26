@@ -46,7 +46,7 @@ bool CVSPlugin::initializePlugin( const QString & lang ) {
 	tranlator->load( QString(":/translations/cvsplugin_%1").arg( lang ) );
 	qApp->installTranslator(tranlator);
 	
-	XINX_ASSERT( m_settings );
+	Q_ASSERT( m_settings );
 	m_settings->load();
 
 	return true;
@@ -82,7 +82,7 @@ QWidget * CVSPlugin::createSettingsDialog() {
 
 bool CVSPlugin::loadSettingsDialog( QWidget * widget ) {
 	CustomizePlugin * dlg = qobject_cast<CustomizePlugin*>( widget );
-	XINX_ASSERT( dlg );
+	Q_ASSERT( dlg );
 
 	// CVS: Progress message
 	if( m_settings->config().progressMessages.isEmpty() ) 
@@ -108,7 +108,7 @@ bool CVSPlugin::loadSettingsDialog( QWidget * widget ) {
 
 bool CVSPlugin::saveSettingsDialog( QWidget * widget ) {
 	CustomizePlugin * dlg = qobject_cast<CustomizePlugin*>( widget );
-	XINX_ASSERT( dlg );
+	Q_ASSERT( dlg );
 
 	// CVS: Progress message
 	switch( dlg->m_cvsVerboseComboBox->currentIndex() ) {

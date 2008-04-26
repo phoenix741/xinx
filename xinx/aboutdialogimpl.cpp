@@ -26,7 +26,6 @@
 
 AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f ) 
 	: QDialog(parent, f) {
-	XINX_TRACE( "AboutDialogImpl", QString("( parent, flags )") );
 	setupUi(this);
 	
 	m_labelVersion->setText( m_labelVersion->text().arg( qVersion() ) );

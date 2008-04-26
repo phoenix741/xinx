@@ -80,8 +80,6 @@ QIcon JavaScriptParser::icon() const {
 }
 
 void JavaScriptParser::loadFromFileDelayed( const QString & filename ) {
-	XINX_TRACE( "JavaScriptParser::loadFromFileDelayed", QString( "( %1 )" ).arg( filename ) );
-
 	setFilename( filename );
 	setName( QFileInfo( filename ).fileName() );
 	

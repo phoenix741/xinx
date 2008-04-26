@@ -41,8 +41,6 @@ SpecifiqueDialogImpl::SpecifiqueDialogImpl( QWidget * parent, Qt::WFlags f ) : Q
 }
 
 AppSettings::struct_extentions SpecifiqueDialogImpl::extentionOfFileName( const QString & name ) {
-	XINX_TRACE( "SpecifiqueDialogImpl::extentionOfFileName", QString( "( %1 )" ).arg( name ) );
-
 	AppSettings::struct_extentions result;
 	int dotPosition = name.lastIndexOf( "." );
 	QString suffix = name.toLower();
@@ -87,7 +85,7 @@ QString SpecifiqueDialogImpl::lastPlace() {
 }
 
 void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
-	XINX_ASSERT( XINXProjectManager::self()->project() );
+	Q_ASSERT( XINXProjectManager::self()->project() );
 
 	m_filename = filename;
 	m_specifiqueCheckBox->setEnabled( (!filename.isEmpty()) && (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) );
@@ -157,7 +155,7 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 }
 
 QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository ) {
-	XINX_ASSERT( ! filename.isEmpty() );
+	Q_ASSERT( ! filename.isEmpty() );
 	if( (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) ) {
 		SpecifiqueDialogImpl dlg;
 		dlg.setFileName( filename );

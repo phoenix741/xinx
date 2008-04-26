@@ -30,8 +30,6 @@ public:
 /* FileContentItemModel */
 
 FileContentItemModel::FileContentItemModel( FileContentElement * root, QObject *parent ) : QAbstractItemModel( parent ) {
-	XINX_TRACE( "FileContentItemModel", QString( "( %1, %2 )" ).arg( (unsigned int)root, 0, 16 ).arg( (unsigned int)parent, 0, 16 ) );
-
 	d = new PrivateFileContentModel();
 	d->m_root = root;
 	
@@ -43,15 +41,11 @@ FileContentItemModel::FileContentItemModel( FileContentElement * root, QObject *
 }
 
 FileContentItemModel::~FileContentItemModel() {
-	XINX_TRACE( "~FileContentItemModel", "()" );
-	
 	d->m_root->disconnect( this );
 	delete d;
 }
 	
 QVariant FileContentItemModel::data( const QModelIndex &index, int role ) const {
-	XINX_TRACE( "FileContentItemModel::data", QString( "( index, %1 )" ).arg( role ) );
-
 	if( !index.isValid() ) 
 		return QVariant();
 		
@@ -75,8 +69,6 @@ QVariant FileContentItemModel::data( const QModelIndex &index, int role ) const 
 }
 
 Qt::ItemFlags FileContentItemModel::flags( const QModelIndex &index ) const {
-	XINX_TRACE( "FileContentItemModel::flags", "( index )" );
-
 	if (!index.isValid())
 		return Qt::ItemIsEnabled;
 
@@ -84,8 +76,6 @@ Qt::ItemFlags FileContentItemModel::flags( const QModelIndex &index ) const {
 }
 
 QModelIndex FileContentItemModel::index( int row, int column, const QModelIndex &parent ) const {
-	XINX_TRACE( "FileContentItemModel::index", QString( "( %1, %2, parent )" ).arg( row ).arg( column ) );
-
 	FileContentElement * parentElement = d->m_root, * currentElement = NULL;
 	if( parent.isValid() ) {
 		parentElement = static_cast<FileContentElement*>( parent.internalPointer() );
@@ -100,8 +90,6 @@ QModelIndex FileContentItemModel::index( int row, int column, const QModelIndex 
 }
 
 QModelIndex FileContentItemModel::index( FileContentElement * element ) const {
-	XINX_TRACE( "FileContentItemModel::index", QString( "( %1 )" ).arg( (unsigned int)element, 0, 16 ) );
-
 	if( element == d->m_root )
 		return QModelIndex();
 	else
@@ -109,8 +97,6 @@ QModelIndex FileContentItemModel::index( FileContentElement * element ) const {
 }
 
 QModelIndex FileContentItemModel::parent( const QModelIndex &index ) const {
-	XINX_TRACE( "FileContentItemModel::index", "( index )" );
-
 	if( !index.isValid() )
 		return QModelIndex();
 	
@@ -124,8 +110,6 @@ QModelIndex FileContentItemModel::parent( const QModelIndex &index ) const {
 }
 
 bool FileContentItemModel::hasChildren( const QModelIndex & parent ) const {
-	XINX_TRACE( "FileContentItemModel::hasChildren", "( parent )" );
-	
 	FileContentElement * element;
 	if( parent.isValid() ) 
 		element = static_cast<FileContentElement*>( parent.internalPointer() );
@@ -140,8 +124,6 @@ bool FileContentItemModel::hasChildren( const QModelIndex & parent ) const {
 }
 
 int FileContentItemModel::rowCount( const QModelIndex &parent ) const {
-	XINX_TRACE( "FileContentItemModel::rowCount", "( index )" );
-
 	FileContentElement * element;
 	if( parent.isValid() ) 
 		element = static_cast<FileContentElement*>( parent.internalPointer() );
@@ -152,8 +134,6 @@ int FileContentItemModel::rowCount( const QModelIndex &parent ) const {
 }
 
 QVariant FileContentItemModel::headerData( int section, Qt::Orientation orientation, int role ) const {
-	XINX_TRACE( "FileContentItemModel::headerData", QString( "( %1, %2, %3 )" ).arg( section ).arg( orientation ).arg( role ) );
-
 	if( ( orientation == Qt::Horizontal ) && ( role == Qt::DisplayRole ) && ( section == 0 ) )
 		return tr("Name");
 		
@@ -162,36 +142,29 @@ QVariant FileContentItemModel::headerData( int section, Qt::Orientation orientat
 
 int FileContentItemModel::columnCount( const QModelIndex &parent ) const {
 	Q_UNUSED( parent );
-	XINX_TRACE( "FileContentItemModel::columnCount", "( parent )" );
+	
 
 	return 1;
 }
 
 void FileContentItemModel::beginInsertRow( FileContentElement * element, int row ) {
-	XINX_TRACE( "FileContentItemModel::beginInsertRow", QString( "( %1, %2 )").arg( (unsigned int)element, 0, 16 ).arg( row ) );
-
 	QModelIndex idx = index( element->parent() );
 	beginInsertRows( idx, row, row );
 }
 
 void FileContentItemModel::endInsertRow() {
-	XINX_TRACE( "FileContentItemModel::endInsertRow", "()" );
 	endInsertRows();
 }
 
 void FileContentItemModel::beginRemoveRow( FileContentElement * element ) {
-	XINX_TRACE( "FileContentItemModel::beginRemoveRow", QString( "( %1 )").arg( (unsigned int)element, 0, 16 ) );
-
 	QModelIndex idx = index( element->parent() );
 	beginRemoveRows( idx, element->row(), element->row() );
 }
 
 void FileContentItemModel::endRemoveRow() {
-	XINX_TRACE( "FileContentItemModel::endRemoveRow", "()" );
 	endRemoveRows();
 }
 
 void FileContentItemModel::update( FileContentElement * element ) {
-	XINX_TRACE( "FileContentItemModel::update", QString( "( %1 )").arg( (unsigned int)element, 0, 16 ) );
 	emit dataChanged( index( element ), index( element ) );
 }

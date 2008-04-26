@@ -40,46 +40,34 @@ private:
 };
 
 PrivateCommitMessageDialogImpl::PrivateCommitMessageDialogImpl( CommitMessageDialogImpl * parent ) {
-	XINX_TRACE( "PrivateCommitMessageDialogImpl", QString("( %1 )").arg( (unsigned int)parent, 16 ) );
 	m_parent = parent;
 }
 
 PrivateCommitMessageDialogImpl::~PrivateCommitMessageDialogImpl() {
-	XINX_TRACE( "~PrivateCommitMessageDialogImpl", "()" );
 	
 }
 
 /* CommitMessageDialogImpl */
 
 CommitMessageDialogImpl::CommitMessageDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
-	XINX_TRACE( "CommitMessageDialogImpl", QString("( %1, f )").arg( (unsigned int)parent, 16 ) );
-
 	setupUi(this);
 	d = new PrivateCommitMessageDialogImpl( this );
 }
 
 CommitMessageDialogImpl::~CommitMessageDialogImpl() {
-	XINX_TRACE( "~CommitMessageDialogImpl", "()" );
-
 	delete d;
 }
 
 void CommitMessageDialogImpl::setMessages( const QString & message ) {
-	XINX_TRACE( "CommitMessageDialogImpl::setMessages", QString( "( %1 )" ).arg( message ) );
-
 	m_textEditMessages->setText( message );
 }
 
 QString CommitMessageDialogImpl::messages() {
-	XINX_TRACE( "CommitMessageDialogImpl::messages", "()" );
-
 	return m_textEditMessages->toPlainText();
 }
 
 void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
-	XINX_TRACE( "CommitMessageDialogImpl::setFilesOperation", "( files )" );
-
-	XINX_ASSERT( XINXProjectManager::self()->project() != NULL );
+	Q_ASSERT( XINXProjectManager::self()->project() != NULL );
 	
 	m_fileListWidget->clear();
 	d->m_files = files;
@@ -106,8 +94,6 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 }
 
 RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
-	XINX_TRACE( "CommitMessageDialogImpl::filesOperation", "()" );
-
 	for( int i = 0 ; i < m_fileListWidget->count(); i++ ) {
 		RCS::FileOperation op;
 		op = d->m_files.at( i );
@@ -118,8 +104,6 @@ RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
 }
 
 int CommitMessageDialogImpl::exec() {
-	XINX_TRACE( "CommitMessageDialogImpl::exec", "()" );
-
 	if( d->m_files.size() == 0 ) {
 		QMessageBox::information( this, tr("Commit"), tr("Nothing to do.") );
 		return QDialog::Rejected;

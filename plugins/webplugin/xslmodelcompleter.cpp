@@ -30,8 +30,6 @@
 /* XSLValueCompletionModel */
 
 XSLValueCompletionModel::XSLValueCompletionModel( FileContentElementList * data, QObject *parent ) : QAbstractListModel( parent ), m_list( data ) {
-	XINX_TRACE( "XSLValueCompletionModel", QString( "( %1, %2 )" ).arg( (unsigned int)data, 0, 16 ).arg( (unsigned int)parent, 0, 16 ) );
-
 	connect( m_list, SIGNAL(aboutToAdd(int)), this, SLOT(beginInsertRows(int)) );
 	connect( m_list, SIGNAL(added()), this, SLOT(endInsertRows()) );
 	connect( m_list, SIGNAL(aboutToRemove(int)), this, SLOT(beginRemoveRows(int)) );
@@ -40,7 +38,7 @@ XSLValueCompletionModel::XSLValueCompletionModel( FileContentElementList * data,
 }
 
 XSLValueCompletionModel::~XSLValueCompletionModel() {
-	XINX_TRACE( "~XSLValueCompletionModel", "()" );
+	
 }
 
 void XSLValueCompletionModel::beginInsertRows( int row ) {
@@ -64,7 +62,7 @@ void XSLValueCompletionModel::reset() {
 }
 
 void XSLValueCompletionModel::setBaliseName( const QString & name, const QString & attribute ) { 
-	XINX_TRACE( "XSLValueCompletionModel::setBaliseName", QString( "( %1, %2 )" ).arg( name ).arg( attribute ) );
+	
 
 	int before = m_list->list().count(), after  = m_list->list().count();
 	
@@ -95,8 +93,6 @@ void XSLValueCompletionModel::setBaliseName( const QString & name, const QString
 
 	
 QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) const {
-	XINX_TRACE( "XSLValueCompletionModel::data", QString( "( index, %1 )" ).arg( role ) );
-
 	if (!index.isValid()) return QVariant();
 
 	if( index.row() < m_list->list().count() ) {
@@ -128,8 +124,6 @@ QVariant XSLValueCompletionModel::data( const QModelIndex &index, int role ) con
 }
 
 Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
-	XINX_TRACE( "XSLValueCompletionModel::flags", "( index )" );
-
 	if ( index.isValid() )
 		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
@@ -137,8 +131,6 @@ Qt::ItemFlags XSLValueCompletionModel::flags(const QModelIndex &index) const {
 }
 
 int XSLValueCompletionModel::rowCount(const QModelIndex &parent) const {
-	XINX_TRACE( "XSLValueCompletionModel::rowCount", "( index )" );
-
 	if ( ! parent.isValid() ) {
 		int size = m_list->list().count();	
 		if( xmlCompletionContents ) {

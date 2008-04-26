@@ -267,7 +267,7 @@ void WebServices::askWSDL( QWidget * parent ) {
 }
 
 void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
-	XINX_ASSERT( op );
+	Q_ASSERT( op );
 	
 	Envelop soapEnvelop( op->encodingStyle(), op->namespaceString() , op->name() );
 	QString query;
@@ -323,11 +323,11 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 /* WebServicesManager */
 
 WebServicesManager::WebServicesManager() : QObject(), WebServicesList() {
-	
+
 }
 
 WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : QObject(), WebServicesList( manager ) {
-	
+
 }
 
 WebServicesManager::~WebServicesManager() {

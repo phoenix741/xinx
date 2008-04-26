@@ -173,7 +173,7 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 }
 
 void RCS_SVN::update( const QStringList & path ) {
-	XINX_ASSERT( !m_process );
+	Q_ASSERT( !m_process );
 	
 	try {
 		QString tool = XINXConfig::self()->getTools( "svn", false );
@@ -196,7 +196,7 @@ void RCS_SVN::update( const QStringList & path ) {
 } 
 
 void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message ) {
-	XINX_ASSERT( !m_process );
+	Q_ASSERT( !m_process );
 
 	QStringList addedFiles, removedFiles, commitedFiles;
 	foreach( RCS::FileOperation operation, path ) {
@@ -243,7 +243,7 @@ void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message 
 }
 
 void RCS_SVN::add( const QStringList & path ) {
-	XINX_ASSERT( !m_process );
+	Q_ASSERT( !m_process );
 	
 	try {
 		QString tool = XINXConfig::self()->getTools( "svn", false );
@@ -266,7 +266,7 @@ void RCS_SVN::add( const QStringList & path ) {
 }
 
 void RCS_SVN::remove( const QStringList & path ) {
-	XINX_ASSERT( !m_process );
+	Q_ASSERT( !m_process );
 	
 	try {
 		QString tool = XINXConfig::self()->getTools( "svn", false );

@@ -131,7 +131,7 @@ void XinxListWidgetImpl::on_m_btnAdd_clicked() {
 }
 
 void XinxListWidgetImpl::on_m_btnDel_clicked() {
-	XINX_ASSERT( m_list->currentRow() >= 0 );
+	Q_ASSERT( m_list->currentRow() >= 0 );
 	
 	delete m_list->currentItem();
 	

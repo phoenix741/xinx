@@ -30,27 +30,27 @@ MetaXinxThread * MetaXinxThread::m_metaXinxThread = NULL;
 /* MetaXinxThread */
 
 MetaXinxThread::MetaXinxThread() {
-	XINX_TRACE( "MetaXinxThread", "()" );
+	
 }
 
 MetaXinxThread::~MetaXinxThread() {
-	XINX_TRACE( "~MetaXinxThread", "()" );
+	
 }
 
 int MetaXinxThread::getThreadCount() {
-	XINX_TRACE( "MetaXinxThread::getThreadCount", "()" );
+	
 	
 	return XinxThread::m_threadCount;
 }
 
 int MetaXinxThread::getThreadClassCount() {
-	XINX_TRACE( "MetaXinxThread::getThreadClassCount", "()" );
+	
 
 	return XinxThread::m_threadClassCount;
 }
 
 MetaXinxThread * MetaXinxThread::getMetaThread() {
-	XINX_TRACE( "MetaXinxThread::getMetaThread", "()" );
+	
 	if( ! m_metaXinxThread )
 		m_metaXinxThread = new MetaXinxThread();
 	
@@ -61,21 +61,21 @@ MetaXinxThread * MetaXinxThread::getMetaThread() {
 /* XinxThread */
 
 XinxThread::XinxThread( QObject * parent ) : QThread( parent ) {
-	XINX_TRACE( "XinxThread", QString( "( 0x%1 )" ).arg( (unsigned int)parent, 0, 16 ) );
+	
 
 	m_threadClassCount++;
 	emit MetaXinxThread::getMetaThread()->threadCountChange();
 }
 
 XinxThread::~XinxThread() {
-	XINX_TRACE( "~XinxThread", "()" );
+	
 
 	m_threadClassCount--;
 	emit MetaXinxThread::getMetaThread()->threadCountChange();
 }
 	
 void XinxThread::run() {
-	XINX_TRACE( "XinxThread::run", "()" );
+	
 
 	{
 		QMutexLocker locker( &m_mutex );

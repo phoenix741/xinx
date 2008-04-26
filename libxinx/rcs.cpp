@@ -24,17 +24,14 @@
 /* RCS */
 
 RCS::RCS( const QString & base ) : m_base( base ) {
-	XINX_TRACE( "RCS", QString( "( %1 )" ).arg( base ) );
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
 RCS::~RCS() {
-	XINX_TRACE( "~RCS", "()" );
+	
 	
 }
 
 const QString & RCS::getBasePath() const {
-	XINX_TRACE( "RCS::getBasePath", "()" );
-
 	return m_base;
 }

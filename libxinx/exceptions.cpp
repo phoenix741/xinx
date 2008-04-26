@@ -43,44 +43,6 @@
 
 ExceptionManager * ExceptionManager::s_self = 0;
 
-/* Trace */
-
-QHash<unsigned long,int> Trace::m_depth;
-
-Trace::Trace( char* filename, int line, const QString & func_name, const QString & args ) {
-	m_handle = (unsigned long)QThread::currentThreadId();
-	
-    LogMsg( m_depth[m_handle], filename, line, QString( "%1%2" ).arg( func_name ).arg( args ) );
-	m_depth[m_handle]++;		
-}
-
-Trace::~Trace() {
-	m_depth[m_handle]--;		
-	ExceptionManager::self()->xinxStackTrace()[m_handle].removeLast();
-}
-
-void Trace::LogMsg( int depth, const char * filename, int line, const QString & fonction ) {
-	QString s;
-	s += QDateTime::currentDateTime().toString() + " ";
-	for( int i = 0; i < depth; i++ )
-		s += " ";
-	s += QString("> (%1)").arg( depth );
-	s += QString( fonction );
-	s += QString( " on %1 at line %2 (thread %3)." ).arg( filename ).arg( line ).arg( m_handle );
-	
-	ExceptionManager::self()->xinxStackTrace()[m_handle].append( s );
-
-#ifdef Q_WS_WIN
-	QFile logfile( QString( "c:\\xinx_debug_%1.log" ).arg( m_handle ) );
-#else 
-	QFile logfile( QString( "/tmp/xinx_debug_%1.log" ).arg( m_handle ) );
-#endif
-	if( logfile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
-		QTextStream logfileStream( &logfile );
-		logfileStream << s << endl;
-	}
-}
-
 /* Message Handler */
 
 static void xinxMessageHandler( QtMsgType t, const char * m ) {
@@ -183,6 +145,7 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 	file = fopen( filename, "a" );
 	if( file ) {
 		fprintf( file, qPrintable( QDateTime::currentDateTime().toString() ) );
+		fprintf( file, "\n" );
 		fprintf( file, "* Backtrace ...\n" );
 		fprintf( file, qPrintable( stack.join( "\n" ) ) );
 		fprintf( file, "* Error ...\n" );
@@ -216,27 +179,14 @@ ExceptionManager * ExceptionManager::self() {
 
 /* XinxException */
 
-XinxException::XinxException( QString message ) : m_message( message ) {
-	XINX_TRACE( "XinxException", QString("( %1 )").arg( message ) );
-	
+XinxException::XinxException( QString message ) : m_message( message ) {	
 	m_stack = ExceptionManager::self()->stackTrace(); //[ (unsigned long)QThread::currentThreadId() ];
 }
 
 const QString & XinxException::getMessage() const {
-	XINX_TRACE( "XinxException::getMessage", "()" );
-
 	return m_message;
 }
 
 const QStringList & XinxException::getStack() const {
-	XINX_TRACE( "XinxException::getStack", "()" );
-
 	return m_stack;
-}
-
-
-/* XinxAssertException */
-
-XinxAssertException::XinxAssertException( const char *assertion, const char *file, int line ) : XinxException( QString( "ASSERT: \"%1\" in file %2, line %3" ).arg( assertion ).arg( file ).arg( line ) ) {
-	XINX_TRACE( "XinxAssertException", QString( "(%1, %2, %3)" ).arg( assertion ).arg( file ).arg( line ) );
 }

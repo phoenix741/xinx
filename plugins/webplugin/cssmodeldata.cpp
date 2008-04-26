@@ -60,8 +60,6 @@ void CssFileContentProperty::copyFrom( FileContentElement * element ) {
 }
 
 QIcon CssFileContentProperty::icon() const {
-	XINX_TRACE( "XSLFileContentVariable::icon", "()" );
-
 	return QIcon(":/images/html_value.png");
 }
 

@@ -37,37 +37,32 @@ QFileSystemWatcher * watcher = NULL;
 /* CVSFileEntry */
 
 CVSFileEntry::CVSFileEntry() : m_fileName( QString() ) {
-	XINX_TRACE( "CVSFileEntry", "()" );
+	
 }
 
 CVSFileEntry::CVSFileEntry( const QString & filename, const QString & version ) {
-	XINX_TRACE( "CVSFileEntry", QString( "( %1, %2 )" ).arg( filename ).arg( version ) );
 	setFileName( filename );
 	setVersion( version );
 }
 
 CVSFileEntry::CVSFileEntry( const QString & path, const QString & filename, const QString & version ) {
-	XINX_TRACE( "CVSFileEntry", QString( "( %1, %2, %3 )" ).arg( path ).arg( filename ).arg( version ) );
 	setFileName( path, filename );
 	setVersion( version );
 }
 
 CVSFileEntry::~CVSFileEntry() {
-	XINX_TRACE( "~CVSFileEntry", "()" );
 	if( ! m_fileName.isEmpty() )
 		watcherInstance()->removePath( m_fileName );
 	deleteInstance();
 }
 
 void CVSFileEntry::setFileName( const QString & path, const QString & filename ) {
-	XINX_TRACE( "CVSFileEntry::setFileName", QString( "( %1, %2 )" ).arg( path ).arg( filename ) );
 	m_fileName = QDir( path ).absoluteFilePath( filename );
 	setFileName( m_fileName );
 }
 
 void CVSFileEntry::setFileName( const QString & filename ) {
-	XINX_TRACE( "CVSFileEntry::setFileName", QString( "( %1 )" ).arg( filename ) );
-	XINX_ASSERT( ! filename.isEmpty() );
+	Q_ASSERT( ! filename.isEmpty() );
 	
 	QFileSystemWatcher * watcher = watcherInstance();
 	if( ! m_fileName.isEmpty() )
@@ -83,7 +78,6 @@ void CVSFileEntry::setFileName( const QString & filename ) {
 }
 
 void CVSFileEntry::slotFileChanged( const QString & file ) {
-	XINX_TRACE( "CVSFileEntry::slotFileChanged", QString( "( %1 )" ).arg( file ) );
 	if( file == m_fileName ) {
 		getFileDate();
 		refreshStatus();
@@ -91,15 +85,11 @@ void CVSFileEntry::slotFileChanged( const QString & file ) {
 }
 
 void CVSFileEntry::init() {
-	XINX_TRACE( "CVSFileEntry::init", "()" );
-
 	m_fileInfo = QFileInfo( m_fileName );
 	m_fileDate = QDateTime();
 }
 
 const QDateTime & CVSFileEntry::getFileDate() {
-	XINX_TRACE( "CVSFileEntry::getFileDate", "()" );
-
 	if( ! m_fileInfo.isDir() ) {
 		m_fileInfo.refresh();
 		m_fileDate = m_fileInfo.lastModified().toUTC();
@@ -116,23 +106,19 @@ const QDateTime & CVSFileEntry::getFileDate() {
 }
 
 const QString & CVSFileEntry::getVersion() const {
-	XINX_TRACE( "CVSFileEntry::getVersion", "()" );
 	return m_cvsVersion;
 }
 
 const QDateTime & CVSFileEntry::getCVSDate() const {
-	XINX_TRACE( "CVSFileEntry::getCVSDate", "()" );
 	return m_cvsDate;
 }
 
 const QString & CVSFileEntry::getFileName() const {
-	XINX_TRACE( "CVSFileEntry::getFileName", "()" );
 	return m_fileName;
 }
 
 
 void CVSFileEntry::setCVSFileDate( QString date ) {
-	XINX_TRACE( "CVSFileEntry::setCVSFileDate", QString( "( %1 )" ).arg( date ) );
 	try {
 		if( ( m_cvsVersion == "0" ) || m_fileInfo.isDir() ) throw "Directory";
 		if( date.contains( "+" ) ) {
@@ -153,12 +139,10 @@ void CVSFileEntry::setCVSFileDate( QString date ) {
 }
 
 void CVSFileEntry::setVersion( const QString & version ) {
-	XINX_TRACE( "CVSFileEntry::setVersion", QString( "( %1 )" ).arg( version ) );
 	m_cvsVersion = version;
 }
 
 void CVSFileEntry::refreshStatus() {
-	XINX_TRACE( "CVSFileEntry::refreshStatus", "()" );
 	RCS::rcsState oldState = m_status;
 	
 	if( ! m_fileInfo.exists() ) {
@@ -184,19 +168,16 @@ void CVSFileEntry::refreshStatus() {
 }
 
 RCS::rcsState CVSFileEntry::status() {
-	XINX_TRACE( "CVSFileEntry::status", "()" );
 	return m_status;
 }
 
 QFileSystemWatcher * CVSFileEntry::watcherInstance() {
-	XINX_TRACE( "CVSFileEntry::watcherInstance", "()" );
 	if( ! watcher )
 		watcher = new QFileSystemWatcher();
 	return watcher;
 }
 
 void CVSFileEntry::deleteInstance() {
-	XINX_TRACE( "CVSFileEntry::deleteInstance", "()" );
 	if( watcher && ( watcher->files().size() == 0 ) && ( watcher->directories().size() == 0 ) ) {
 		delete watcher;
 		watcher = NULL;
@@ -206,10 +187,8 @@ void CVSFileEntry::deleteInstance() {
 /* CVSFileEntryList */
 
 CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( QFileInfo( path ).absoluteFilePath() ) {
-	XINX_TRACE( "CVSFileEntryList", QString( "( %1 )" ).arg( path ) );
-
-	XINX_ASSERT( QFileInfo( path ).isDir() );
-	XINX_ASSERT( QDir( path ).exists() );
+	Q_ASSERT( QFileInfo( path ).isDir() );
+	Q_ASSERT( QDir( path ).exists() );
 	
 	m_entries = QDir( m_path ).absoluteFilePath( "CVS/Entries" );
 
@@ -227,8 +206,6 @@ CVSFileEntryList::CVSFileEntryList( const QString & path ) : m_path( QFileInfo( 
 }
 
 CVSFileEntryList::~CVSFileEntryList() {
-	XINX_TRACE( "~CVSFileEntryList", "()" );
-
 	QFileSystemWatcher * instance = CVSFileEntry::watcherInstance();
 	instance->removePath( m_entries );
 	instance->removePath( m_path );
@@ -238,24 +215,20 @@ CVSFileEntryList::~CVSFileEntryList() {
 }
 
 void CVSFileEntryList::entriesChanged( const QString & filename ) {
-	XINX_TRACE( "CVSFileEntryList::entriesChanged", QString( "( %1 )" ).arg( filename ) );
 	if( filename == m_entries ) {
 		m_refreshTimer->start( 1000 );
 	}
 }
 
 void CVSFileEntryList::directoryChanged( const QString & filename ) {
-	XINX_TRACE( "CVSFileEntryList::directoryChanged", QString( "( %1 )" ).arg( filename ) );
 	if( filename == m_path ) {
 		m_refreshTimer->start( 1000 );
 	}
 }
 
 CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
-	XINX_TRACE( "CVSFileEntryList::path", QString( "( %1 )" ).arg( filename ) );
-
-	XINX_ASSERT( QDir( filename ).exists() );
-	XINX_ASSERT( filename.contains( m_path ) ); 
+	Q_ASSERT( QDir( filename ).exists() );
+	Q_ASSERT( filename.contains( m_path ) ); 
 	// 1. Quand clique sur bouton filtre
 
 	CVSFileEntryList * list = NULL;
@@ -265,8 +238,8 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 	if( dir.isEmpty() ) 
 		return this;
 	
-	XINX_ASSERT( dir != "." );
-	XINX_ASSERT( dir != ".." );
+	Q_ASSERT( dir != "." );
+	Q_ASSERT( dir != ".." );
 	/*if( ( dir == "." ) || (dir == ".." ) )
 		return NULL;
 	else*/
@@ -283,10 +256,8 @@ CVSFileEntryList * CVSFileEntryList::path( const QString & filename ) {
 		return list->path( filename );
 }
 
-CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
-	XINX_TRACE( "CVSFileEntryList::object", QString( "( %1 )" ).arg( filename ) );
-	
-	XINX_ASSERT( filename.contains( m_path ) );
+CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {	
+	Q_ASSERT( filename.contains( m_path ) );
 
 	// The object can't know if itself is managed by CVS.
 	if( filename == m_path ) return NULL; 
@@ -308,7 +279,7 @@ CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 		qDebug() << "object : " << filename << " null because no dir" << endl;
 		return NULL;
 	} else*/
-	XINX_ASSERT( list );
+	Q_ASSERT( list );
 
 	if( list->count( basename ) == 0 ) {
 		return NULL;
@@ -318,9 +289,7 @@ CVSFileEntry * CVSFileEntryList::object( const QString & filename ) {
 }
 
 RCS::rcsState CVSFileEntryList::status( const QString & filename ) {
-	XINX_TRACE( "CVSFileEntryList::status", QString( "( %1 )" ).arg( filename ) );
-
-	XINX_ASSERT( filename.contains( m_path ) );
+	Q_ASSERT( filename.contains( m_path ) );
 
 	CVSFileEntry * entry = object( filename );
 	if( entry ) {
@@ -330,8 +299,6 @@ RCS::rcsState CVSFileEntryList::status( const QString & filename ) {
 }
 
 void CVSFileEntryList::loadEntriesFile() {
-	XINX_TRACE( "CVSFileEntryList::loadEntriesFile", "()" );
-
 	if( ! QFileInfo( m_entries ).exists() ) { 
 		qDeleteAll( values() );
 		clear();

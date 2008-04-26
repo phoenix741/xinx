@@ -53,8 +53,6 @@ QString RCSCachedElement::stringState() const {
 /* DirRCSModel */
 
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ), m_cache( 500 ) {
-	XINX_TRACE( "DirRCSModel", QString( "( %1, ... )" ).arg( nameFilters.join(";") ) );
-
 	if( XINXProjectManager::self()->project() && ( !XINXProjectManager::self()->project()->projectRCS().isEmpty() ) )  {
 		QString rcsKey = XINXProjectManager::self()->project()->projectRCS();
 		m_rcs = XinxPluginsLoader::self()->createRevisionControl( rcsKey, XINXProjectManager::self()->project()->projectPath() );
@@ -64,19 +62,14 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
-	XINX_TRACE( "DirRCSModel", QString( "( 0x%1 )" ).arg( (unsigned long)parent, 0, 16 ) );
 	
 }
 
 DirRCSModel::~DirRCSModel() {
-	XINX_TRACE( "~DirRCSModel", "()" );
-
 	delete m_rcs;
 }
 
-RCS * DirRCSModel::rcs() { 
-	XINX_TRACE( "DirRCSModel::rcs", "()" );
-
+RCS * DirRCSModel::rcs() {
 	return m_rcs;
 }
 
@@ -103,7 +96,6 @@ RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
 }
 
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
-	XINX_TRACE( "DirRCSModel::data", QString( "( index, %1 )" ).arg( role ) );
 	if( ! index.isValid() ) return QVariant();
 	
 	QString path = filePath(index);
@@ -142,7 +134,5 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 }
 
 void DirRCSModel::refresh( const QString & path ) {
-	XINX_TRACE( "DirRCSModel::refresh", QString( "( %1 )" ).arg( path ) );
-
 	QDirModel::refresh( index( path ) );
 }

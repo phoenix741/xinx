@@ -138,7 +138,7 @@ void XmlCompleter::commentSelectedText( IXinxExtendedEditor * editor, bool uncom
 }
 
 XmlCompleter::cursorPosition XmlCompleter::editPosition( const QTextEdit * qTextEdit, const QTextCursor & cursor, QString & nodeName, QString & paramName ) {
-	XINX_ASSERT( ! cursor.isNull() );
+	Q_ASSERT( ! cursor.isNull() );
 	
 	cursorPosition cPosition = cpNone;
 	nodeName = QString();
@@ -251,7 +251,7 @@ XmlCompleter::cursorPosition XmlCompleter::editPosition( const QTextCursor & cur
 }
 
 QCompleter * XmlCompleter::currentCompleter( const QTextCursor & cursor ) {
-	XINX_ASSERT( ! cursor.isNull() );
+	Q_ASSERT( ! cursor.isNull() );
 	
 	if( m_editor->level() == 0 ) 
 		return NULL;

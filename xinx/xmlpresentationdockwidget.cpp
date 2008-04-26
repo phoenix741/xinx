@@ -255,7 +255,7 @@ void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text )
 }
 
 void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
-	XINX_ASSERT( ! isRunning() );
+	Q_ASSERT( ! isRunning() );
 	
 	if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
 		m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
@@ -337,7 +337,7 @@ bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::mustBeShow( co
 }
 
 bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const {
-	XINX_ASSERT( filterKeyColumn() != -1 );
+	Q_ASSERT( filterKeyColumn() != -1 );
 	
 	QModelIndex index = sourceModel()->index( source_row, filterKeyColumn(), source_parent );
 	return canBeShow( index );
