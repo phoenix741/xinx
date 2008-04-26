@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 // Xinx header
-#include "p_rcs_cvs.h"
+#include "rcs_cvs.h"
 #include "cvsthread.h"
 #include "cvsfiles.h"
 #include "xinxpluginsloader.h"
@@ -28,84 +28,118 @@
 // Qt header
 #include <QDir>
 
-/* ProcessExecutedException */
+/* RCS_CVS */
 
-ProcessExecutedException::ProcessExecutedException( QString message ) : XinxException( message ) {
-	
+RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
+	m_entries = new CVSFileEntryList( getBasePath() );
+	connect( m_entries, SIGNAL(fileChanged(QString)), this, SIGNAL(stateChanged(QString)) );
 }
 
-/* PrivateRCS_CVS */
-
-PrivateRCS_CVS::PrivateRCS_CVS( RCS_CVS * parent ) : m_thread( 0 ), m_parent( parent ) {
-	m_entries = new CVSFileEntryList( m_parent->getBasePath() );
-	connect( m_entries, SIGNAL(fileChanged(QString)), m_parent, SIGNAL(stateChanged(QString)) );
-}
-
-PrivateRCS_CVS::~PrivateRCS_CVS() {
+RCS_CVS::~RCS_CVS() {
 	delete m_entries;
 }
 
-void PrivateRCS_CVS::callUpdate( const QStringList & path ) {
+RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
+	RCS::FilesOperation files;
+	foreach( QString p, path ) {
+		files += recursiveOperationOf( p );
+	}
+	return files;
+}
+
+RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
+	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
+	QString localPath = QDir::fromNativeSeparators( path );
+	CVSFileEntry * o = m_entries->object( localPath );
+	if( o ) {
+		rcsInfos.state   = m_entries->status( localPath );
+		rcsInfos.rcsDate = o->getCVSDate();
+		rcsInfos.version = o->getVersion();
+	}
+	return rcsInfos;
+}
+
+void RCS_CVS::update( const QStringList & path ) {
+	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+
 	try {
-		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		if( m_thread ) delete m_thread; 
+		
 		m_thread = new CVSUpdateThread( path );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
 		m_thread->start();
 	} catch( ToolsNotDefinedException e ) {
-		emit m_parent->log( RCS::LogError, e.getMessage() );		
+		emit log( RCS::LogError, e.getMessage() );		
 	}
 }
 
-void PrivateRCS_CVS::callUpdateToRevision( const QString & path, const QString & revision, QString * content ) {
+void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
+	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+
 	try {
-		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		if( m_thread ) delete m_thread; 
+
 		m_thread = new CVSUpdateRevisionThread( path, revision, content );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
 		m_thread->start();
 	} catch( ToolsNotDefinedException e ) {
-		emit m_parent->log( RCS::LogError, e.getMessage() );		
+		emit log( RCS::LogError, e.getMessage() );		
 	}
 }
 
-void PrivateRCS_CVS::callCommit( const RCS::FilesOperation & path, const QString & message ) {
+void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
+	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+
 	try {
-		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		if( m_thread ) delete m_thread;
+		
 		m_thread = new CVSCommitThread( path, message );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
 		m_thread->start();
 	} catch( ToolsNotDefinedException e ) {
-		emit m_parent->log( RCS::LogError, e.getMessage() );		
+		emit log( RCS::LogError, e.getMessage() );		
 	}
 }
 
-void PrivateRCS_CVS::callAdd( const QStringList & path ) {
+void RCS_CVS::add( const QStringList & path ) {
+	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+
 	try {
-		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		if( m_thread ) delete m_thread;
+		
 		m_thread = new CVSAddThread( path );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
 		m_thread->start();
 	} catch( ToolsNotDefinedException e ) {
-		emit m_parent->log( RCS::LogError, e.getMessage() );		
+		emit log( RCS::LogError, e.getMessage() );		
 	}
 }
 
-void PrivateRCS_CVS::callRemove( const QStringList & path ) {
+void RCS_CVS::remove( const QStringList & path ) {
+	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+
 	try {
-		if( m_thread ) { delete m_thread; m_thread = NULL; }
+		if( m_thread ) delete m_thread;
+		
 		m_thread = new CVSRemoveThread( path );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), m_parent, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), m_parent, SIGNAL(operationTerminated()) );
+		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
 		m_thread->start();
 	} catch( ToolsNotDefinedException e ) {
-		emit m_parent->log( RCS::LogError, e.getMessage() );		
+		emit log( RCS::LogError, e.getMessage() );		
 	}
 }
-	
-RCS::rcsOperation PrivateRCS_CVS::operationOfState( RCS::rcsState state ) {
+
+void RCS_CVS::abort() {
+	if( m_thread )
+		m_thread->abort();
+}
+
+RCS::rcsOperation RCS_CVS::operationOfState( RCS::rcsState state ) {
 	RCS::rcsOperation operation;
 	switch( state ) {
 	case RCS::LocallyModified:
@@ -129,7 +163,7 @@ RCS::rcsOperation PrivateRCS_CVS::operationOfState( RCS::rcsState state ) {
 	return operation;
 }
 
-RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
+RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 	RCS::FilesOperation operations;
 	
 	QStringList files = QDir( path ).entryList( XinxPluginsLoader::self()->defaultProjectFilter(), QDir::Files );
@@ -159,7 +193,7 @@ RCS::FilesOperation PrivateRCS_CVS::operationOf( const QString & path ) {
 	return operations;
 }
 
-RCS::FilesOperation PrivateRCS_CVS::recursiveOperationOf( const QString & path ) {
+RCS::FilesOperation RCS_CVS::recursiveOperationOf( const QString & path ) {
 	RCS::FilesOperation operations;
 	if( QFileInfo( path ).isDir() ) {
 		if( QFileInfo( QDir( path ).absoluteFilePath( "CVS/Entries" ) ).exists() ) {
@@ -181,75 +215,4 @@ RCS::FilesOperation PrivateRCS_CVS::recursiveOperationOf( const QString & path )
 		operations.append( file );
 	}
 	return operations;
-}
-
-
-/* RCS_CVS */
-
-RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
-	d = new PrivateRCS_CVS( this );
-}
-
-RCS_CVS::~RCS_CVS() {
-	delete d;
-}
-
-RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
-	RCS::FilesOperation files;
-	foreach( QString p, path ) {
-		files += d->recursiveOperationOf( p );
-	}
-	return files;
-}
-
-RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
-	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
-	QString localPath = QDir::fromNativeSeparators( path );
-	CVSFileEntry * o = d->m_entries->object( localPath );
-	if( o ) {
-		rcsInfos.state   = d->m_entries->status( localPath );
-		rcsInfos.rcsDate = o->getCVSDate();
-		rcsInfos.version = o->getVersion();
-	}
-	return rcsInfos;
-}
-
-void RCS_CVS::update( const QStringList & path ) {
-	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException( "Can't update" );
-	} else
-		d->callUpdate( path );
-}
-
-void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
-	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException( "Can't commit" );
-	} else
-		d->callCommit( path, message );
-}
-
-void RCS_CVS::add( const QStringList & path ) {
-	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException( "Can't add" );
-	} else
-		d->callAdd( path );
-}
-
-void RCS_CVS::remove( const QStringList & path ) {
-	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException( "Can't remove" );
-	} else
-		d->callRemove( path );
-}
-
-void RCS_CVS::abort() {
-	if( d->m_thread )
-		qobject_cast<CVSThread*>(d->m_thread)->abort();
-}
-
-void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
-	if( d->m_thread && d->m_thread->isRunning() ) {
-		throw ProcessExecutedException( "Can't update to revision" );
-	} else
-		d->callUpdateToRevision( path, revision, content );
 }

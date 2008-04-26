@@ -24,14 +24,13 @@
 // Xinx header
 #include <rcs.h>
 #include <exceptions.h>
+#include "cvsfiles.h"
 
-class PrivateRCS_CVS;
+//Qt header
+#include <QPointer>
+
 class PluginSettings;
-
-class ProcessExecutedException : public XinxException {
-public:
-	ProcessExecutedException( QString message );
-};
+class CVSThread;
 
 class RCS_CVS : public RCS {
 	Q_OBJECT
@@ -49,8 +48,18 @@ public:
 public slots:
 	virtual void abort();
 private:
-	PrivateRCS_CVS * d;
-	friend class PrivateRCS_CVS;
+	void callUpdate( const QStringList & path );
+	void callCommit( const RCS::FilesOperation & path, const QString & message );
+	void callAdd( const QStringList & path );
+	void callRemove( const QStringList & path );
+	void callUpdateToRevision( const QString & path, const QString & revision, QString * content );
+	
+	RCS::rcsOperation operationOfState( RCS::rcsState state );
+	RCS::FilesOperation operationOf( const QString & path );
+	RCS::FilesOperation recursiveOperationOf( const QString & path );
+	
+	QPointer<CVSThread> m_thread;
+	CVSFileEntryList * m_entries;
 };
 
 #endif // __RCS_CVS_H__

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,43 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __P_RCS_CVS_H__
-#define __P_RCS_CVS_H__
-
 // Xinx header
-#include "rcs_cvs.h"
-#include "cvsfiles.h"
-#include "xinxthread.h"
-#include "pluginsettings.h"
+#include <rcs.h>
 
 // Qt header
-#include <QStringList>
-#include <QThread>
+#include <QString>
+#include <QDateTime>
+#include <QHash>
 
-/* PrivateRCS_CVS */
-
-class PrivateRCS_CVS : public QObject {
-	Q_OBJECT
-public:
-	PrivateRCS_CVS( RCS_CVS * parent );
-	virtual ~PrivateRCS_CVS();
-
-	void callUpdate( const QStringList & path );
-	void callCommit( const RCS::FilesOperation & path, const QString & message );
-	void callAdd( const QStringList & path );
-	void callRemove( const QStringList & path );
-	void callUpdateToRevision( const QString & path, const QString & revision, QString * content );
+struct EntriesLine {
+	EntriesLine();
+	EntriesLine( const QString & line );
 	
-	RCS::rcsOperation operationOfState( RCS::rcsState state );
-	RCS::FilesOperation operationOf( const QString & path );
-	RCS::FilesOperation recursiveOperationOf( const QString & path );
+	RCS::rcsState status( const QString & path ) const;
 	
-	XinxThread * m_thread;
-	CVSFileEntryList * m_entries;
-	PluginSettings * m_settings;
-	QHash<QString,QString> * m_tools;
-private:
-	RCS_CVS * m_parent;
+	bool hasConflict;
+	QChar type; // D pour dossier
+	QString filename;
+	QString version;
+	QDateTime date;
 };
 
-#endif // __P_RCS_CVS_H__
+struct EntriesFile : public QHash<QString,EntriesLine> {
+	EntriesFile();
+	EntriesFile( const QString & file );
+	
+	RCS::rcsState status( const QString & path ) const;
+	
+	QString path;
+	QDateTime fileDate;
+};
+
+struct EntriesList : public QHash<QString,EntriesFile> {
+	const EntriesFile value( const QString & key );
+	const EntriesFile value( const QString & key, const EntriesFile & defaultValue );
+	
+	RCS::rcsState status( const QString & filename );
+};
