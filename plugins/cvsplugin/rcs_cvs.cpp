@@ -31,12 +31,14 @@
 /* RCS_CVS */
 
 RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
+	m_entriesList = new EntriesList();
 	m_entries = new CVSFileEntryList( getBasePath() );
 	connect( m_entries, SIGNAL(fileChanged(QString)), this, SIGNAL(stateChanged(QString)) );
 }
 
 RCS_CVS::~RCS_CVS() {
 	delete m_entries;
+	delete m_entriesList;
 }
 
 RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
@@ -48,14 +50,12 @@ RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 }
 
 RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
-	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
+	RCS::struct_rcs_infos rcsInfos;
 	QString localPath = QDir::fromNativeSeparators( path );
-	CVSFileEntry * o = m_entries->object( localPath );
-	if( o ) {
-		rcsInfos.state   = m_entries->status( localPath );
-		rcsInfos.rcsDate = o->getCVSDate();
-		rcsInfos.version = o->getVersion();
-	}
+	EntriesLine e    = m_entriesList->status( localPath ); 
+	rcsInfos.state   = e.status( QFileInfo( localPath ).absolutePath() );
+	rcsInfos.rcsDate = e.date;
+	rcsInfos.version = e.version;
 	return rcsInfos;
 }
 

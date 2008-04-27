@@ -108,10 +108,9 @@ EntriesFile::EntriesFile( const QString & file ) {
 	
 }
 
-RCS::rcsState EntriesFile::status( const QString & path ) const {
+const EntriesLine EntriesFile::status( const QString & path ) const {
 	QString filename = QFileInfo( path ).fileName();
-	EntriesLine e = value( filename );
-	return e.status( this->path );
+	return value( filename );
 }
 
 /* EntriesList */
@@ -130,16 +129,17 @@ const EntriesFile EntriesList::value( const QString & key, const EntriesFile & d
 	}
 }
 
-RCS::rcsState EntriesList::status( const QString & filename ) {
+const EntriesLine EntriesList::status( const QString & filename ) {
 	Q_ASSERT( QFileInfo( filename ).isAbsolute() );
 	
-	QString path = QFileInfo( filename ).absoluteFilePath();
+	QString path = QFileInfo( filename ).absolutePath();
+	QString cvsEntries = QDir( path ).absoluteFilePath( "CVS/Entries" );
 	EntriesFile file;
-	if( contains( path ) ) {
-		file = value( path );
+	if( contains( cvsEntries ) ) {
+		file = value( cvsEntries );
 	} else {
-		file = EntriesFile( QDir( path ).absoluteFilePath( "CVS/Entries" ) );
-		insert( path, file );
+		file = EntriesFile( cvsEntries );
+		insert( cvsEntries, file );
 	}
 	return file.status( filename );
 }

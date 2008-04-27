@@ -43,7 +43,7 @@ struct EntriesFile : public QHash<QString,EntriesLine> {
 	EntriesFile();
 	EntriesFile( const QString & file );
 	
-	RCS::rcsState status( const QString & path ) const;
+	const EntriesLine status( const QString & path ) const;
 	
 	QString path;
 	QDateTime fileDate;
@@ -53,5 +53,5 @@ struct EntriesList : public QHash<QString,EntriesFile> {
 	const EntriesFile value( const QString & key );
 	const EntriesFile value( const QString & key, const EntriesFile & defaultValue );
 	
-	RCS::rcsState status( const QString & filename );
+	const EntriesLine status( const QString & filename );
 };

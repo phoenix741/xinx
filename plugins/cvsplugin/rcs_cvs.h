@@ -25,6 +25,7 @@
 #include <rcs.h>
 #include <exceptions.h>
 #include "cvsfiles.h"
+#include "entries.h"
 
 //Qt header
 #include <QPointer>
@@ -60,6 +61,7 @@ private:
 	
 	QPointer<CVSThread> m_thread;
 	CVSFileEntryList * m_entries;
+	EntriesList * m_entriesList;
 };
 
 #endif // __RCS_CVS_H__
