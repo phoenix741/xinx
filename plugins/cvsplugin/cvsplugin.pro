@@ -12,8 +12,6 @@ if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
     win32:LIBS = $$member(LIBS, 0) \
         $$member(LIBS, 1)d
 }
-win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release):POST_TARGETDEPS = ../../libxinx/libsharedxinxd.a
-else:POST_TARGETDEPS = ../../libxinx/libsharedxinx.a
 TARGET = $$qtLibraryTarget(cvsplugin)
 unix { 
     QMAKE_CC = "ccache gcc"
@@ -22,14 +20,12 @@ unix {
 }
 INCLUDEPATH += ../../libxinx
 HEADERS = entries.h \
-    cvsfiles.h \
     cvsthread.h \
     rcs_cvs.h \
     pluginsettings.h \
     customizeplugin.h \
     cvsplugin.h
 SOURCES = entries.cpp \
-    cvsfiles.cpp \
     cvsthread.cpp \
     rcs_cvs.cpp \
     pluginsettings.cpp \

@@ -21,7 +21,6 @@
 // Xinx header
 #include "rcs_cvs.h"
 #include "cvsthread.h"
-#include "cvsfiles.h"
 #include "xinxpluginsloader.h"
 #include "xinxconfig.h"
 
@@ -32,21 +31,11 @@
 
 RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
 	m_entriesList = new EntriesList();
-	m_entries = new CVSFileEntryList( getBasePath() );
-	connect( m_entries, SIGNAL(fileChanged(QString)), this, SIGNAL(stateChanged(QString)) );
+//	connect( m_entries, SIGNAL(fileChanged(QString)), this, SIGNAL(stateChanged(QString)) );
 }
 
 RCS_CVS::~RCS_CVS() {
-	delete m_entries;
 	delete m_entriesList;
-}
-
-RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
-	RCS::FilesOperation files;
-	foreach( QString p, path ) {
-		files += recursiveOperationOf( p );
-	}
-	return files;
 }
 
 RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
@@ -139,6 +128,14 @@ void RCS_CVS::abort() {
 		m_thread->abort();
 }
 
+RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
+	RCS::FilesOperation files;
+	foreach( QString p, path ) {
+		files += recursiveOperationOf( p );
+	}
+	return files;
+}
+
 RCS::rcsOperation RCS_CVS::operationOfState( RCS::rcsState state ) {
 	RCS::rcsOperation operation;
 	switch( state ) {
@@ -171,7 +168,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 	foreach( QString filename, files ) {
 		QString filepath = QDir( path ).absoluteFilePath ( filename );
 		if( ! QFileInfo( filepath ).isDir() ) {
-			RCS::rcsState state = m_entries->status( filepath );
+			RCS::rcsState state = m_entriesList->status( filepath ).status( QFileInfo( filepath ).absolutePath() );
 			RCS::rcsOperation operation = operationOfState( state ); 
 			if( operation != RCS::Nothing ) {
 				RCS::FileOperation file;
@@ -180,7 +177,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 				operations.append( file );
 			}
 		}
-	}
+	}/*
 	CVSFileEntryList * entrie = m_entries->path( path );
 	foreach( CVSFileEntry * file, entrie->values() ) {
 		if( file->status() == RCS::NeedsCheckout ) {
@@ -189,7 +186,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 			op.second = RCS::RemoveAndCommit;
 			operations.append( op );
 		}
-	}
+	}*/
 	return operations;
 }
 
@@ -208,7 +205,7 @@ RCS::FilesOperation RCS_CVS::recursiveOperationOf( const QString & path ) {
 		}  
 	} else {
 		RCS::FileOperation file;
-		RCS::rcsState state = m_entries->status( path );
+		RCS::rcsState state = m_entriesList->status( path ).status( QFileInfo( path ).absolutePath() );
 		RCS::rcsOperation operation = operationOfState( state ); 
 		file.first = path;
 		file.second = operation;

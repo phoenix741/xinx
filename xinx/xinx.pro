@@ -44,10 +44,8 @@ if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
         $$member(LIBS, 5)d
 }
 win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release):POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
-    ../libxinx/libsharedxinxd.a \
     ../components/libxinxcmpd.a
 else:POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
-    ../libxinx/libsharedxinx.a \
     ../components/libxinxcmp.a
 win32:RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \

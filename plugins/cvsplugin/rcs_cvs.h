@@ -60,7 +60,6 @@ private:
 	RCS::FilesOperation recursiveOperationOf( const QString & path );
 	
 	QPointer<CVSThread> m_thread;
-	CVSFileEntryList * m_entries;
 	EntriesList * m_entriesList;
 };
 
