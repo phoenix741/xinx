@@ -24,7 +24,6 @@
 // Xinx header
 #include <rcs.h>
 #include <exceptions.h>
-#include "cvsfiles.h"
 #include "entries.h"
 
 //Qt header

@@ -177,16 +177,16 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 				operations.append( file );
 			}
 		}
-	}/*
-	CVSFileEntryList * entrie = m_entries->path( path );
-	foreach( CVSFileEntry * file, entrie->values() ) {
-		if( file->status() == RCS::NeedsCheckout ) {
+	}
+	EntriesFile file = m_entriesList->value( QFileInfo( path ).absoluteFilePath() );
+	foreach( const EntriesLine & e, file ) {
+		if( e.status( path ) == RCS::NeedsCheckout ) {
 			RCS::FileOperation op;
-			op.first = file->getFileName();
+			op.first = e.filename;
 			op.second = RCS::RemoveAndCommit;
 			operations.append( op );
 		}
-	}*/
+	}
 	return operations;
 }
 
