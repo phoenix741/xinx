@@ -39,7 +39,7 @@ EntriesLine::EntriesLine( const QString & line ) {
 	if( entry.size() >= 2 ) filename = entry.at( 1 );
 	if( type != 'D' ) { 
 		if( entry.size() >= 3 ) version = entry.at( 2 );
-		if( ( entry.size() >= 4 ) && ( ! entry.at( 3 ).isEmpty() ) ) {
+		if( ( entry.size() >= 4 ) && ( ! entry.at( 3 ).trimmed().isEmpty() ) && ( entry.at(3) != "dummy timestamp" ) ) {
 			if( entry.at( 3 ).contains( '+' ) ) {
 				date = QDateTime::fromString( entry.at( 3 ).section( '+', -1, -1 ).simplified() );// , "ddd MMM d hh:mm:ss yyyy"
 				hasConflict = true;

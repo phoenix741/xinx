@@ -178,12 +178,15 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 			}
 		}
 	}
-	EntriesFile file = m_entriesList->value( QFileInfo( path ).absoluteFilePath() );
+	EntriesFile file = m_entriesList->value( QDir( path ).absoluteFilePath( "CVS/Entries" ) );
 	foreach( const EntriesLine & e, file ) {
-		if( e.status( path ) == RCS::NeedsCheckout ) {
+		RCS::rcsState state = e.status( path );
+		if( ( state != RCS::NeedsCheckout ) && ( state != RCS::LocallyRemoved ) ) continue; // Géré au dessus
+		RCS::rcsOperation operation = operationOfState( state ); 
+		if( operation != RCS::Nothing ) {
 			RCS::FileOperation op;
 			op.first = e.filename;
-			op.second = RCS::RemoveAndCommit;
+			op.second = operation;
 			operations.append( op );
 		}
 	}
