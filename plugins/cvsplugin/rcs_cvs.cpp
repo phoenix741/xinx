@@ -31,7 +31,8 @@
 
 RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
 	m_entriesList = new EntriesList();
-//	connect( m_entries, SIGNAL(fileChanged(QString)), this, SIGNAL(stateChanged(QString)) );
+	m_watcher     = new QFileSystemWatcher( this );
+	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(entriesStateChanged(QString)) );
 }
 
 RCS_CVS::~RCS_CVS() {
@@ -128,6 +129,20 @@ void RCS_CVS::abort() {
 		m_thread->abort();
 }
 
+void RCS_CVS::entriesStateChanged( const QString & path ) {
+	const EntriesFile & e = m_entriesList->value( path );
+	foreach( const EntriesLine & l, e ) {
+		emit stateChanged( QDir( e.path ).absoluteFilePath( l.filename ) );
+	}
+}
+
+void RCS_CVS::updateEntries() {
+	m_watcher->removePaths( m_watcher->files() );
+	foreach( const EntriesFile & e, *m_entriesList ) {
+		m_watcher->addPath( QDir( e.path ).absoluteFilePath( "CVS/Entries" ) );
+	}
+}
+
 RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 	RCS::FilesOperation files;
 	foreach( QString p, path ) {
@@ -181,7 +196,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 	EntriesFile file = m_entriesList->value( QDir( path ).absoluteFilePath( "CVS/Entries" ) );
 	foreach( const EntriesLine & e, file ) {
 		RCS::rcsState state = e.status( path );
-		if( ( state != RCS::NeedsCheckout ) && ( state != RCS::LocallyRemoved ) ) continue; // Géré au dessus
+		if( ( state != RCS::NeedsCheckout ) && ( state != RCS::LocallyRemoved ) ) continue; // GÃ©rÃ© au dessus
 		RCS::rcsOperation operation = operationOfState( state ); 
 		if( operation != RCS::Nothing ) {
 			RCS::FileOperation op;

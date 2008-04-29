@@ -26,8 +26,9 @@
 #include <exceptions.h>
 #include "entries.h"
 
-//Qt header
+// Qt header
 #include <QPointer>
+#include <QFileSystemWatcher>
 
 class PluginSettings;
 class CVSThread;
@@ -47,12 +48,10 @@ public:
 	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
 public slots:
 	virtual void abort();
+private slots:
+	void entriesStateChanged( const QString & path );
 private:
-	void callUpdate( const QStringList & path );
-	void callCommit( const RCS::FilesOperation & path, const QString & message );
-	void callAdd( const QStringList & path );
-	void callRemove( const QStringList & path );
-	void callUpdateToRevision( const QString & path, const QString & revision, QString * content );
+	void updateEntries();
 	
 	RCS::rcsOperation operationOfState( RCS::rcsState state );
 	RCS::FilesOperation operationOf( const QString & path );
@@ -60,6 +59,7 @@ private:
 	
 	QPointer<CVSThread> m_thread;
 	EntriesList * m_entriesList;
+	QFileSystemWatcher * m_watcher;
 };
 
 #endif // __RCS_CVS_H__
