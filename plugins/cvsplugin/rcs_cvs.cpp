@@ -46,6 +46,7 @@ RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
 	rcsInfos.state   = e.status( QFileInfo( localPath ).absolutePath() );
 	rcsInfos.rcsDate = e.date;
 	rcsInfos.version = e.version;
+	updateEntries();
 	return rcsInfos;
 }
 
@@ -137,9 +138,11 @@ void RCS_CVS::entriesStateChanged( const QString & path ) {
 }
 
 void RCS_CVS::updateEntries() {
-	m_watcher->removePaths( m_watcher->files() );
+	if( m_watcher->files().size() )
+		m_watcher->removePaths( m_watcher->files() );
 	foreach( const EntriesFile & e, *m_entriesList ) {
-		m_watcher->addPath( QDir( e.path ).absoluteFilePath( "CVS/Entries" ) );
+		if( e.size() > 0 ) 
+			m_watcher->addPath( QDir( e.path ).absoluteFilePath( "CVS/Entries" ) );
 	}
 }
 
@@ -148,6 +151,7 @@ RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 	foreach( QString p, path ) {
 		files += recursiveOperationOf( p );
 	}
+	updateEntries();
 	return files;
 }
 
@@ -179,7 +183,6 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 	RCS::FilesOperation operations;
 	
 	QStringList files = QDir( path ).entryList( XinxPluginsLoader::self()->defaultProjectFilter(), QDir::Files );
-	
 	foreach( QString filename, files ) {
 		QString filepath = QDir( path ).absoluteFilePath ( filename );
 		if( ! QFileInfo( filepath ).isDir() ) {
@@ -200,7 +203,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 		RCS::rcsOperation operation = operationOfState( state ); 
 		if( operation != RCS::Nothing ) {
 			RCS::FileOperation op;
-			op.first = e.filename;
+			op.first = QDir( path ).absoluteFilePath( e.filename );
 			op.second = operation;
 			operations.append( op );
 		}

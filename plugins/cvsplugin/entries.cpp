@@ -105,7 +105,6 @@ EntriesFile::EntriesFile( const QString & file ) {
 			insert( e.filename, e );
 		}
 	}
-	
 }
 
 const EntriesLine EntriesFile::status( const QString & path ) const {
@@ -116,11 +115,11 @@ const EntriesLine EntriesFile::status( const QString & path ) const {
 /* EntriesList */
 
 const EntriesFile EntriesList::value( const QString & key ) {
-	return value( key, EntriesFile( key ) );
+	return value( key, EntriesFile() );
 }
 
 const EntriesFile EntriesList::value( const QString & key, const EntriesFile & defaultValue ) {
-	EntriesFile entries = QHash<QString,EntriesFile>::value( key, defaultValue );
+	const EntriesFile & entries = QHash<QString,EntriesFile>::value( key, defaultValue );
 	if( entries.fileDate == QFileInfo( key ).lastModified() )
 		return entries;
 	else { 
