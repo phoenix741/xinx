@@ -419,7 +419,11 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	if( ! QDir( d->m_projectPath ).exists() )
 		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 
-	d->m_session->loadFromFile( d->m_fileName + ".session" );
+	try {
+		d->m_session->loadFromFile( d->m_fileName + ".session" );
+	} catch( XSLProjectException e ) {
+		qWarning( qPrintable( e.getMessage() ) );
+	}
 	
 	emit changed();
 }
