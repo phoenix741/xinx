@@ -23,12 +23,12 @@ CONFIG += exceptions \
 QT += network \
     xml \
     script
-LIBS = -L../plugins/webplugin \
+LIBS = -L../plugins \
     -L../libxinx \
     -L../components \
     -lwebplugin \
     -lsharedxinx \
-    -lxinxcmp
+    -lxinxcmp 
 if(!debug_and_release|build_pass):CONFIG(debug, debug|release) { 
     mac:LIBS = $$member(LIBS, 0) \
         $$member(LIBS, 1) \
@@ -43,9 +43,9 @@ if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
         $$member(LIBS, 4)d \
         $$member(LIBS, 5)d
 }
-win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release):POST_TARGETDEPS = ../plugins/webplugin/libwebplugind.a \
+win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release):POST_TARGETDEPS = ../plugins/libwebplugind.a \
     ../components/libxinxcmpd.a
-else:POST_TARGETDEPS = ../plugins/webplugin/libwebplugin.a \
+else:POST_TARGETDEPS = ../plugins/libwebplugin.a \
     ../components/libxinxcmp.a
 win32:RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \

@@ -1,22 +1,18 @@
 TEMPLATE = lib
-CONFIG += plugin static
+CONFIG += plugin \
+    static
 QT += xml
-
-DESTDIR += ./
+DESTDIR += ../
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-
 RESOURCES += webplugin.qrc
-
 TARGET = $$qtLibraryTarget(webplugin)
-
 unix { 
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-
 INCLUDEPATH += ../../libxinx
 HEADERS = xmlprettyprinter.h \
     webplugin.h \

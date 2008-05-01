@@ -39,7 +39,7 @@ EntriesLine::EntriesLine( const QString & line ) {
 	if( entry.size() >= 2 ) filename = entry.at( 1 );
 	if( type != 'D' ) { 
 		if( entry.size() >= 3 ) version = entry.at( 2 );
-		if( ( entry.size() >= 4 ) && ( ! entry.at( 3 ).trimmed().isEmpty() ) && ( entry.at(3) != "dummy timestamp" ) ) {
+		if( ( entry.size() >= 4 ) && ( ! entry.at( 3 ).trimmed().isEmpty() ) && ( entry.at(3) != "dummy timestamp" ) && ( entry.at(3) != "Result of merge" ) ) {
 			if( entry.at( 3 ).contains( '+' ) ) {
 				date = QDateTime::fromString( entry.at( 3 ).section( '+', -1, -1 ).simplified() );// , "ddd MMM d hh:mm:ss yyyy"
 				hasConflict = true;
@@ -74,7 +74,7 @@ RCS::rcsState EntriesLine::status( const QString & path ) const {
 		return RCS::Updated;
 	
 	if( hasConflict )
-		return RCS::FileHadConflictsOnMerge;
+		return RCS::UnresolvedConflict;
 //		else if( m_cvsDate.isNull() || ( ( m_cvsDate != m_fileDate ) && ( m_cvsDate != m_fileDate.addSecs( -3600 ) ) && ( m_cvsDate.addSecs( -3600 ) != m_fileDate ) ) )  /// \todo Find a better way to correct this line.
 	
 	if( date.isNull() || ( date != fileDate ) )  

@@ -129,7 +129,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 
 	QString defSearchPath;
 	int indexOfSpecifquePath = project->indexOfSpecifiquePath();
-	if( ( indexOfSpecifquePath > 0 ) && ( indexOfSpecifquePath <= project->searchPathList().size() ) )
+	if( ( indexOfSpecifquePath >= 0 ) && ( indexOfSpecifquePath < project->searchPathList().size() ) )
 		defSearchPath = project->searchPathList().at( indexOfSpecifquePath );
 
 	m_searchPathList->setDefaultValue( defSearchPath );

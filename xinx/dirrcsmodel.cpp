@@ -135,5 +135,7 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 
 void DirRCSModel::refresh( const QString & path ) {
 	m_cache.remove( QFileInfo( path ).absoluteFilePath() );
-	QDirModel::refresh( index( path ) );
+	QModelIndex idx = index( path );
+	if( idx.isValid() )
+		QDirModel::refresh( idx );
 }

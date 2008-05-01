@@ -406,8 +406,13 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	d->m_webServiceLink      = PrivateXSLProject::loadList( document, "webServiceLink", "link" );
 	QString path;
 
-	d->m_searchPathList = PrivateXSLProject::loadList( document, "paths", "path" );
-	d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
+	QStringList spl = PrivateXSLProject::loadList( document, "paths", "path" );
+	if( spl.size() > 0 ) {
+		d->m_searchPathList = spl;
+		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
+	} else {
+		d->m_indexOfSpecifiquePath = 0;
+	}
 	d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
 	d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
 	d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "logProjectDirectory" ) );
