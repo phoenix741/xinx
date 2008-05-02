@@ -65,7 +65,7 @@ public:
 	virtual ~ExceptionManager();
 	
 	/*! 
-	* \obsolete
+	* \deprecated
 	 * Xinx stack trace is construct by XINX_TRACE macro. This macro make the application
 	 * so slow and this stack is desactivated in release mode (and often in debug mode).
 	 */

@@ -56,6 +56,11 @@ public:
 	 * QPair. The first element is the key and the second element is the description.
 	 */
 	QList< QPair<QString,QString> > revisionsControls() const;
+	/*!
+	 * Method called by XINX to create a Revision control system.
+	 * \param revision The system to use.
+	 * \param basePath The path used in the constructor.
+	 */
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 	
 	/*!

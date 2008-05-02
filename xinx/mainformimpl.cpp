@@ -195,7 +195,7 @@ void PrivateMainformImpl::createStatusBar() {
 	m_threadCount = new QLabel( "000 (000)" );
 	m_parent->statusBar()->addPermanentWidget( m_editorPosition );
 	m_parent->statusBar()->addPermanentWidget( m_threadCount );
-	connect( MetaXinxThread::getMetaThread(), SIGNAL(threadCountChange()), this, SLOT(setThreadCountChange()) );	
+	connect( XinxThreadManager::self(), SIGNAL(threadCountChange()), this, SLOT(setThreadCountChange()) );	
 	m_parent->statusBar()->showMessage( tr("Ready"), 2000 );
 }
 
@@ -1331,8 +1331,8 @@ void PrivateMainformImpl::setEditorPosition( int line, int column ) {
 
 void PrivateMainformImpl::setThreadCountChange() {
 	m_threadCount->setText( QString( "%1 (%2)" )	
-			.arg( MetaXinxThread::getThreadCount(), 3, 10, QLatin1Char('0') )
-			.arg( MetaXinxThread::getThreadClassCount(), 3, 10, QLatin1Char('0') ) );
+			.arg( XinxThreadManager::self()->getThreadCount(), 3, 10, QLatin1Char('0') )
+			.arg( XinxThreadManager::self()->getThreadClassCount(), 3, 10, QLatin1Char('0') ) );
 }
 
 

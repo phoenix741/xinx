@@ -30,38 +30,61 @@
 
 class XinxThread;
 
-class XINX_EXPORT MetaXinxThread : public QObject {
+/*!
+ * The XinxThreadManager class is a debugger class to count the number of XinxThread object
+ * created and the number of XinxThread object in the threadrun method.
+ * 
+ * To be used, each created thread must be a XinxThread (derivated from a QThread).
+ */
+class XINX_EXPORT XinxThreadManager : public QObject {
 	Q_OBJECT
 public:
-	MetaXinxThread();
-	virtual ~MetaXinxThread();
+	/// Destroy the mananger
+	virtual ~XinxThreadManager();
+
+	/// Get the number of thread running
+	int getThreadCount() const;
+	/// Get the number of thread class object created
+	int getThreadClassCount() const;
 	
-	static int getThreadCount();
-	static int getThreadClassCount();
-	static MetaXinxThread * getMetaThread();
+	/// Get the static member and create it if needed.
+	static XinxThreadManager * self();
 signals:
+	/// Signal emited when the number of running thread, or object change.
 	void threadCountChange();
 private:
-	static MetaXinxThread * m_metaXinxThread;
+	XinxThreadManager();
+
+	static XinxThreadManager * s_self;
 	
+	int m_threadCount, m_threadClassCount;
+	QMutex m_mutex;
+
 	friend class XinxThread;
 };
 
+/*!
+ * This class is used to create thread in XINX and count the number of created Thread and 
+ * the number of running thread.
+ */
 class XINX_EXPORT XinxThread : public QThread {
 	Q_OBJECT
 public:
+	/// Create a new thread object and increment XinxThreadManager::getThreadClassCount()
 	XinxThread( QObject * parent = 0 );
+	/// Destroy a thread and decrement XinxThreadManager::getThreadClassCount()
 	virtual ~XinxThread();
 	
 protected:
+	/*!
+	 * This function is derivated to incremente and decremente  XinxThreadManager::getThreadCount() before
+	 * and after call of threadrun().
+	 */
 	virtual void run();
+	/*!
+	 * This is the new function to implemente for running thread.
+	 */
 	virtual void threadrun() = 0;
-	
-private:
-	static int m_threadCount, m_threadClassCount;
-	static QMutex m_mutex;
-	
-	friend class MetaXinxThread;
 };
 
 #endif /* _XINXTHREAD_H_ */

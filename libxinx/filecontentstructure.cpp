@@ -37,7 +37,7 @@ int FileContentException::getColumn() const {
 	return m_column;
 }
 
-/* PrivateFileContentElement */
+/* PrivateFileContentElement */ /*! \cond PRIVATE */
 
 class PrivateFileContentElement {
 public:
@@ -70,6 +70,8 @@ PrivateFileContentElement::~PrivateFileContentElement() {
 	//qDeleteAll( m_elements );
 	// Can cause some problem. Don't forget to clean memory
 }
+
+/*! \endcond */
 
 /* FileContentElement */
 

@@ -57,9 +57,6 @@ protected:
 	virtual struct_editor getDefaultEditor();
 private:
 	static XINXConfig * s_self;
-	
-	friend class PrivateXINXConfig;
-	PrivateXINXConfig * d;
 };
 
 #endif

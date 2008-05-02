@@ -44,13 +44,17 @@ class RCS;
 
 /*! 
  * This intereface is used to create a plugin used by XINX. 
- * At start XINX load all plugins and call the initializePlugin method from the plugin.
- * The plugin must define some attribute used to show information to user (in about box and 
+ * At start, XINX load all plugins and call the initializePlugin method from the plugin.
+ * 
+ * The plugin must define some attribute used to show informations to user (in about box and 
  * in the list of Plugin).
- * A plugin can return a list of tools (with a default value), that he needed. 
+ * 
+ * A plugin can return a list of tools (with a default value). This tool will be show in the
+ * customize dialog of XINX. 
  */
 class IXinxPlugin {
 public:
+	/*! Information that can be asked to plugin */
 	enum PluginAttribute { 
 		PLG_NAME        = 1001, //!< Name of the plugin
 		PLG_DESCRIPTION = 1002, //!< Long description of the plugin
@@ -78,8 +82,13 @@ public:
 };
 
 /*!
- * If the plugin inherits from this class, a configuration button is proposed to the user, and the 
- * plugins can open a custom dialog box for user modify his options.
+ * This class is used to propose to the user modify their options. If the Plugins inherits from this interface
+ * the XinxPluginSelector propose automatically a custom button.
+ * 
+ * The Plugin create a wigdet contains the user interface, and have two method for put and get the configuration
+ * in the dialog.
+ * 
+ * Xinx create the dialog with the Ok and Cancel button. 
  */
 class IXinxPluginConfiguration {
 public:
@@ -94,18 +103,39 @@ public:
 	virtual bool saveSettingsDialog( QWidget * widget ) = 0;
 };
 
+/*!
+ * \internal
+ * Structure used for communication beetween XinxPluginsLoader and XinxPluginSelector 
+ */
 struct XinxPluginElement {
 	bool isStatic;
 	bool isActivated;
 	QObject * plugin;
 };
 
+/*!
+ * This plugins is used to add a new revision control system to XINX. For this purpose, 
+ * the plugin give a list of managed rcs and a description (show in the project page).
+ * 
+ * When XINX must create a RCS object, he call the IRCSPlugin::createRCS() method with 
+ * the parameter used in the constructor, and the revision control system to create (one from
+ * the rcs() method).
+ * The method will create a derivated object of RCS with the required implementation for the
+ * revision control system. 
+ */
 class IRCSPlugin : virtual public IXinxPlugin {
 public:
+	/// Destroy the plugin
 	virtual ~IRCSPlugin() {};
 	
+	/// List of revision control system proposed by the plugin
 	virtual QStringList rcs() = 0;
+	/// Description of each revision control system
 	virtual QString descriptionOfRCS( const QString & rcs ) = 0;
+	/*!
+	 * Create a revision control system for the revision control system \e rcs
+	 * and the path \e basePath.
+	 */
 	virtual RCS * createRCS( const QString & rcs, const QString & basePath ) = 0;
 };
 

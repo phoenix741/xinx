@@ -21,73 +21,66 @@
 // Xinx header
 #include "xinxthread.h"
 #include "exceptions.h"
+#include "xinxcore.h"
 
-int XinxThread::m_threadCount = 0;
-int XinxThread::m_threadClassCount = 0;
-QMutex XinxThread::m_mutex;
-MetaXinxThread * MetaXinxThread::m_metaXinxThread = NULL;
+/* Static member */
 
-/* MetaXinxThread */
+XinxThreadManager * XinxThreadManager::s_self = NULL;
 
-MetaXinxThread::MetaXinxThread() {
+/* XinxThreadManager */
+
+XinxThreadManager::XinxThreadManager() : m_threadCount( 0 ), m_threadClassCount( 0 ) {
 	
 }
 
-MetaXinxThread::~MetaXinxThread() {
-	
+XinxThreadManager::~XinxThreadManager() {
+	if( this == s_self )
+		s_self = NULL;
 }
 
-int MetaXinxThread::getThreadCount() {
-	
-	
-	return XinxThread::m_threadCount;
+int XinxThreadManager::getThreadCount() const {
+	return m_threadCount;
 }
 
-int MetaXinxThread::getThreadClassCount() {
-	
-
-	return XinxThread::m_threadClassCount;
+int XinxThreadManager::getThreadClassCount() const {
+	return m_threadClassCount;
 }
 
-MetaXinxThread * MetaXinxThread::getMetaThread() {
+XinxThreadManager * XinxThreadManager::self() {
+	if( ! s_self ) {
+		s_self = new XinxThreadManager();
+		XINXStaticDeleter::self()->add( s_self );
+	}
 	
-	if( ! m_metaXinxThread )
-		m_metaXinxThread = new MetaXinxThread();
-	
-	return m_metaXinxThread;
+	return s_self;
 }
-
 
 /* XinxThread */
 
 XinxThread::XinxThread( QObject * parent ) : QThread( parent ) {
-	
-
-	m_threadClassCount++;
-	emit MetaXinxThread::getMetaThread()->threadCountChange();
+	QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+	XinxThreadManager::self()->m_threadClassCount++;
+	emit XinxThreadManager::self()->threadCountChange();
 }
 
 XinxThread::~XinxThread() {
-	
-
-	m_threadClassCount--;
-	emit MetaXinxThread::getMetaThread()->threadCountChange();
+	QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+	XinxThreadManager::self()->m_threadClassCount--;
+	emit XinxThreadManager::self()->threadCountChange();
 }
 	
 void XinxThread::run() {
-	
-
 	{
-		QMutexLocker locker( &m_mutex );
-		m_threadCount++;
-		emit MetaXinxThread::getMetaThread()->threadCountChange();
+		QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+		XinxThreadManager::self()->m_threadCount++;
+		emit XinxThreadManager::self()->threadCountChange();
 	}
 	
 	threadrun();
 	
 	{
-		QMutexLocker locker( &m_mutex );
-		m_threadCount--;
-		emit MetaXinxThread::getMetaThread()->threadCountChange();
+		QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
+		XinxThreadManager::self()->m_threadCount--;
+		emit XinxThreadManager::self()->threadCountChange();
 	}
 }

@@ -31,8 +31,7 @@ XINXStaticDeleter::XINXStaticDeleter() {
 
 XINXStaticDeleter::~XINXStaticDeleter() {
 	s_self = 0;
-	qDeleteAll( m_objectList );
-	m_objectList.clear();
+	clear();
 }
 
 XINXStaticDeleter * XINXStaticDeleter::self() {
@@ -42,7 +41,4 @@ XINXStaticDeleter * XINXStaticDeleter::self() {
 	return s_self;
 }
 
-void XINXStaticDeleter::addObject( QObject * o ) {
-	m_objectList.append( o );
-}
 

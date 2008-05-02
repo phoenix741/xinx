@@ -39,39 +39,20 @@ ToolsNotDefinedException::ToolsNotDefinedException( const QString & tool ) : Xin
 
 XINXConfig * XINXConfig::s_self = 0;
 
-/* PrivateXINXConfig */
-
-class PrivateXINXConfig {
-public:
-	PrivateXINXConfig( XINXConfig * parent );
-	~PrivateXINXConfig();
-private:
-	XINXConfig * m_parent;
-};
-
-PrivateXINXConfig::PrivateXINXConfig( XINXConfig * parent ) : m_parent( parent ) {
-
-}
-
-PrivateXINXConfig::~PrivateXINXConfig() {
-	
-}
-
-
 /* XINXConfig */
 
 XINXConfig::XINXConfig( const XINXConfig & origine ) : QObject(), AppSettings( origine ) {
-	d = new PrivateXINXConfig( this );
+
 }
 
 XINXConfig::XINXConfig() : AppSettings() {
-	d = new PrivateXINXConfig( this );
+
 }
 
 XINXConfig::~XINXConfig() {
 	if( this == s_self )
 		s_self = NULL;
-	delete d;
+
 }
 
 XINXConfig& XINXConfig::operator=(const XINXConfig& p) {

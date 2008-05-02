@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef P_XINXPLUGINSELECTOR_H_
+#ifndef P_XINXPLUGINSELECTOR_H_ /*! \cond PRIVATE */
 #define P_XINXPLUGINSELECTOR_H_
 
 // Xinx header
@@ -123,4 +123,4 @@ private:
 	XinxPluginSelector * m_parent;
 };
 
-#endif /*P_XINXPLUGINSELECTOR_H_*/
+#endif /*P_XINXPLUGINSELECTOR_H_*/ /*! \endcond */
