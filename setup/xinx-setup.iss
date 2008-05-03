@@ -36,7 +36,7 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
 Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
-Name: remplace_template; Description: Replace XINX data files
+Name: remplace_template; Description: Replace XINX data files (please backup your modification)
 
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
@@ -53,7 +53,7 @@ Source: {#QTDIR}\bin\QtScript4.dll; DestDir: {app}\bin; Components: qt; Flags: s
 Source: ..\xinx\xml\baseplugin_xml.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_xml.xml; Flags: skipifsourcedoesntexist; Languages: ; Tasks: remplace_template
 Source: ..\xinx\xml\baseplugin_js.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_js.xml; Flags: skipifsourcedoesntexist; Tasks: remplace_template
 Source: ..\xinx\xml\baseplugin_css.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_css.xml; Flags: skipifsourcedoesntexist; Languages: ; Tasks: remplace_template
-Source: ..\xinx\xml\template.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template; DestName: template.xnx; Languages: 
+Source: ..\xinx\xml\template.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template; DestName: template.xml; Languages: 
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete skipifsourcedoesntexist; Components: dbus qt
