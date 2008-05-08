@@ -94,7 +94,8 @@ void SnipetDockWidget::callSnipet() {
 }
 
 void SnipetDockWidget::updateSnipets() {
-	qDeleteAll( m_snipetsToolBox->findChildren<QWidget*>() );
+	qDeleteAll( m_pages );
+	m_pages.clear();
 	
 	foreach( const Snipet & s, SnipetListManager::self()->snipets() ) {
 		if( m_pages.value( s.category(), 0 ) == 0 ) {
