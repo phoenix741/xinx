@@ -26,7 +26,6 @@
 #include "texteditor.h"
 
 // Qt header
-#include <QApplication>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QScrollArea>
