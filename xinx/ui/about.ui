@@ -40,7 +40,7 @@
    <item row="0" column="1" >
     <widget class="QLabel" name="m_labelVersion" >
      <property name="text" >
-      <string>&lt;b>XINX 0.7.1.0 (use Qt %1)&lt;/b></string>
+      <string>&lt;b>XINX 0.7.1.1 (use Qt %1)&lt;/b></string>
      </property>
     </widget>
    </item>
