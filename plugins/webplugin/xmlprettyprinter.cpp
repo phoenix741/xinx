@@ -22,7 +22,8 @@
 #include "xmlprettyprinter.h"
 
 // Qt header
-#include <QTextStream>
+#include <QTextCodec>
+#include <QTextDocument>
 
 /* XMLPrettyPrinter */
 
@@ -33,126 +34,115 @@ XMLPrettyPrinter::~XMLPrettyPrinter() {
 }
 
 void XMLPrettyPrinter::setText( const QString & text ) {
-	QString errorStr, content = text;
-	int errorLine = 0, errorColumn = 0;
-	
-	content = content.replace( "&#160;", "&nbsp;" ); // Hack (Create a function that replace all chars by entity reference ?)
-	
-	if (! m_document.setContent( content, false, &errorStr, &errorLine, &errorColumn ) )
-		throw XMLPrettyPrinterException( errorStr, errorLine, errorColumn );
+	m_text = text;
 }
 
 void XMLPrettyPrinter::process() {
-	m_result = QString();
-	constructXML( -1, m_result, m_document );
-	m_result = m_result.replace( "&nbsp;", "&#160;" ); // Hack (Create a function that replace all chars by entity reference ?)
+	addData( m_text );
+	//QByteArray buffer = m_text.toUtf8();
+	//QBuffer dev( &buffer );
+	//dev.open( QIODevice::ReadOnly );
+	//setDevice( &dev );
+
+	m_resultBuffer.open( QIODevice::WriteOnly | QIODevice::Truncate );
+	m_result.setDevice( &m_resultBuffer );
+	m_result.setCodec( QTextCodec::codecForName( "UTF-8" ) );
 	
+	constructXML();
+	
+	m_resultBuffer.close();
+	//clear();
+
+	if( error() )
+		throw XMLPrettyPrinterException( errorString(), lineNumber(), columnNumber() );
 }
 
-const QString & XMLPrettyPrinter::getResult() {
-	return m_result;
+QString XMLPrettyPrinter::getResult() {
+	return QString( m_resultBuffer.data() );
 }
 
-void XMLPrettyPrinter::constructXML( int level, QString & result, const QDomNode & n ) {
-	QDomNode node = n;
-	while( ! node.isNull() ) {
-		QDomNode prev  = node.previousSibling(),
-				 next  = node.nextSibling(),
-				 first = node.firstChild(),
-				 last  = node.lastChild();
-				 
-		bool prevText  = prev.isEntityReference() || prev.isCDATASection() || prev.isText(),
-			 nextText  = next.isEntityReference() || next.isCDATASection() || next.isText(),
-			 firstText = first.isEntityReference() || first.isCDATASection() || first.isText(),
-			 lastText  = last.isEntityReference() || last.isCDATASection() || last.isText();
-		
-		if( node.isElement() ) {
-			if( !( !prev.isNull() && prevText) )
-				result.append( QString( level, '\t' ) );
+void XMLPrettyPrinter::writeLevel( int level ) {
+	for( int i = 0; i < level; i++ ) 
+		m_result << "\t";
+}
 
-			result.append( "<" );
-			result.append( node.nodeName() );
+void XMLPrettyPrinter::constructXML( int level ) {
+	QXmlStreamReader::TokenType prevType = QXmlStreamReader::NoToken;
+	QString plainText;
+	bool firstTour = true;
+	
+	while( ! atEnd() ) {
+		readNext();
 
-			if( node.hasAttributes() )
-				result.append( constructAttributes( node ) );
-
-			if( node.hasChildNodes() ) {
-				if( firstText ) 
-					result.append( ">" );
-				else
-					result.append( ">\n" );
-					
-				constructXML( level + 1, result, node.firstChild() );
-				if( ! lastText )
-					result.append( QString( level, '\t' ) );
-
-				result.append( "</" );
-				result.append( node.nodeName() );
-				result.append( ">" );
-			} else {
-				result.append( "/>" );
-			}
-
-			if( ! (!next.isNull() && nextText) )
-				result.append( '\n' );
-		} else if( node.isEntityReference() || node.isCDATASection() || node.isText() ) {
-			constructXMLText( result, node );
-		} else if( node.isComment() ) {
-			constructXMLComment( level, result, node );
-		} else {
-			if( ! node.isDocument() ) {
-				for ( int i = 0 ; i < level ; i++)
-					result.append( '\t' );
-				QTextStream text( &result );
-				node.save( text, 0 );
-			}
-			if( node.hasChildNodes() ) {
-				constructXML( level + 1, result, node.firstChild() );
-			}
+		if( firstTour && ( ( level > 0 ) && ( prevType == QXmlStreamReader::NoToken ) ) ) {
+			if( isEndElement() ) { 
+				m_result << "/>";
+			} else
+				m_result << ">";
 		}
+		
+		
+		if( !isWhitespace() && ( isEntityReference() || isCharacters() ) ) {
+			if( isCDATA() )
+				plainText += "<![CDATA[" + text().toString() + "]]>";
+			else if( isEntityReference() )
+				plainText += name().toString();
+			else if( isCharacters() )
+				plainText += Qt::escape( text().toString() );
+		} else if( ! plainText.isEmpty() ) {
+			plainText = plainText.replace( QChar(QChar::Nbsp), "&#160;" );
+			m_result << plainText.trimmed();
+			plainText = QString();
+		} 
+			
+		if( isStartElement() ) {
+			if( prevType != QXmlStreamReader::Characters ) {
+				m_result << "\n";
+				writeLevel( level );
+			}
 
-		node = node.nextSibling();
+			m_result << "<" + qualifiedName().toString();
+
+			foreach( QXmlStreamAttribute a, attributes() ) {
+				m_result << " " + a.qualifiedName().toString() + "=\"" + Qt::escape( a.value().toString() ) + "\"";
+			}
+
+			QXmlStreamNamespaceDeclarations ns = namespaceDeclarations();
+			for (int i = 0; i < ns.size(); ++i) {
+				const QXmlStreamNamespaceDeclaration &namespaceDeclaration = ns.at(i);
+				if( namespaceDeclaration.prefix().isEmpty() ) 
+					m_result << " xmlns" << "=\"" << namespaceDeclaration.namespaceUri().toString() << "\"";
+				else
+					m_result << " xmlns:" << namespaceDeclaration.prefix().toString() << "=\"" << namespaceDeclaration.namespaceUri().toString() << "\"";
+			}
+				
+			constructXML( level + 1 );
+		} else if( isEndElement() ) {
+			if( prevType != QXmlStreamReader::NoToken ) {
+				if( prevType != QXmlStreamReader::Characters ) {
+					m_result << "\n";
+					writeLevel( level - 1 );
+				}
+				m_result << "</" + qualifiedName().toString() + ">";
+			}
+			break;
+		} else if( isDTD() ) {
+			m_result << text().toString();
+		} else if( isProcessingInstruction() ) {
+			m_result << "<?" << processingInstructionTarget().toString() << " " << processingInstructionData().toString() << "?>";
+		} else if( isStartDocument() ) {
+			m_result << "<?xml version=\"1.0\" encoding=\"" << m_result.codec()->name().constData() << "\"?>"; 
+		} else if( isComment() ) {
+			if( prevType != QXmlStreamReader::Characters ) {
+				m_result << "\n";
+				writeLevel( level );
+			}
+			m_result << "<!--" << text().toString() << "-->";
+		}
+		
+		if( !isWhitespace() )
+			prevType = tokenType();
+		firstTour = false;
 	}
 }
 
-void XMLPrettyPrinter::constructXMLText( QString & result, const QDomNode & node ) {
-	QTextStream text( &result );
-	node.save( text, 0 );
-}
-
-void XMLPrettyPrinter::constructXMLComment( int level, QString & result, const QDomNode & node ) {
-	QString value = node.nodeValue();
-	
-	QDomNode prev  = node.previousSibling(),
-			 next  = node.nextSibling(),
-			 first = node.firstChild(),
-			 last  = node.lastChild();
-			 
-	bool prevText  = prev.isEntityReference() || prev.isCDATASection() || prev.isText(),
-		 nextText  = next.isEntityReference() || next.isCDATASection() || next.isText();
-
-	if( !( !prev.isNull() && prevText ) )
-		result.append( QString( level, '\t' ) );
-
-	result.append( "<!--" );
-	result.append( value );
-	if( value.endsWith( QLatin1Char('-') ) )
-		result.append( " " );
-	result.append( "-->" );
-
-	if( ! (!next.isNull() && nextText) )
-		result.append( '\n' );
-}
-
-QString XMLPrettyPrinter::constructAttributes( QDomNode node ) {
-	QString result;
-	QTextStream text( &result );
-	QDomNamedNodeMap nnm = node.attributes();
-	
-	for( unsigned int i = 0; i < nnm.length() ; i++ ) {
-		text << " ";
-		nnm.item( i ).save( text, 0 );
-	}
-	
-	return result;
-}

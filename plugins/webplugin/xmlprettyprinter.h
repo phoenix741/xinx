@@ -26,7 +26,9 @@
 
 // Qt header
 #include <QString>
-#include <QDomDocument>
+#include <QXmlStreamReader>
+#include <QBuffer>
+#include <QTextStream>
 
 class XMLPrettyPrinterException {
 public:
@@ -35,22 +37,21 @@ public:
 	int m_line, m_column;
 };
 
-class XMLPrettyPrinter {
+class XMLPrettyPrinter : public QXmlStreamReader {
 public:
 	XMLPrettyPrinter();
 	virtual ~XMLPrettyPrinter();
 	
 	void setText( const QString & text );
 	void process();
-	const QString & getResult();
+	QString getResult();
 private:
-	static void constructXML( int level, QString & result, const QDomNode & n );
-	static void constructXMLText( QString & result, const QDomNode & n );
-	static void constructXMLComment( int level, QString & result, const QDomNode & n );
-	static QString constructAttributes( QDomNode node );
-
-	QDomDocument m_document;
-	QString m_result;
+	void writeLevel( int level );
+	void constructXML( int level = 0 );
+	
+	QString m_text;
+	QBuffer m_resultBuffer;
+	QTextStream m_result;
 };
 
 #endif /*XMLPRETTYPRINTER_H_*/
