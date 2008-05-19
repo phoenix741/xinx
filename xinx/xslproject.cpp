@@ -105,6 +105,10 @@ XSLProjectSession::XSLProjectSession( const QString & filename ) {
 	loadFromFile( filename );
 }
 
+XSLProjectSession::~XSLProjectSession() {
+	qDeleteAll( m_sessions );
+}
+
 void XSLProjectSession::loadFromFile( const QString & filename ) {
 	m_filename = filename;
 	QFile file( filename );

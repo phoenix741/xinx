@@ -88,6 +88,8 @@ public:
 	 * \sa loadFromFile
 	 */
 	XSLProjectSession( const QString & filename );
+	
+	virtual ~XSLProjectSession();
 
 	/*!
 	 * Load the file \e filename

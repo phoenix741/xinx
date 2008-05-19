@@ -445,6 +445,12 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_closeProjectNoSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectNoSessionData()) );
 	connect( m_parent->m_closeProjectWithSessionAct, SIGNAL(triggered()), m_parent, SLOT(closeProjectWithSessionData()) );
 	
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateActions()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateTitle()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(openRecentProject()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(openRecentFile()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), m_parent, SLOT(updateWebServicesList()) );
+
 	/* SERVICES */
 	connect( m_parent->m_refreshWebServicesListAct, SIGNAL(triggered()), m_parent, SLOT(updateWebServicesList()) );
 	connect( m_parent->m_callWebServicesAct, SIGNAL(triggered()), m_parent, SLOT(callWebservices()) );
@@ -1239,7 +1245,6 @@ void PrivateMainformImpl::replace() {
 
 bool PrivateMainformImpl::closeProject( bool session ) {
 	if( ! XINXProjectManager::self()->project() ) return false;		
-
 	m_parent->saveProject( session );
 		
 	if( ! session ) {
@@ -1263,11 +1268,6 @@ bool PrivateMainformImpl::closeProject( bool session ) {
 	
 	XINXProjectManager::self()->deleteProject();
 
-	m_parent->updateWebServicesList();
-	updateActions();
-	updateRecentFiles();
-	updateTitle();
-	
 	return true;
 }
 
@@ -1495,8 +1495,6 @@ void MainformImpl::openProject( const QString & filename ) {
 		d->m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
 		SpecifiqueDialogImpl::setLastPlace( XINXProjectManager::self()->project()->projectPath() );
 
-		updateWebServicesList();
-
 		XINXConfig::self()->config().project.recentProjectFiles.prepend( filename );
 		while( XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES )
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
@@ -1512,16 +1510,11 @@ void MainformImpl::openProject( const QString & filename ) {
 		m_tabEditors->setUpdatesEnabled( true );
 
 		d->m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
-
-		d->updateTitle();
 	} catch( XSLProjectException e ) {
 		XINXProjectManager::self()->deleteProject();
 		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << filename ) ) )
 			QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}
-	d->updateActions();
-	d->updateRecentProjects();
-	d->updateRecentFiles();
 }
 
 void MainformImpl::closeProjectNoSessionData() {

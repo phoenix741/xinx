@@ -73,7 +73,6 @@ public:
 	
 	// Project
 	bool closeProject( bool session );
-	void updateTitle();
 	
 	// Settings
 	void readWindowSettings();
@@ -126,6 +125,7 @@ public slots:
 	// Actions
 	void updateActions();
 	void updateConfigElement();
+	void updateTitle();
 
 	// File
 	void newFile();
