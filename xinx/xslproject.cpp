@@ -525,7 +525,7 @@ void XSLProject::setDefaultNav( const QString & value ) {
 }
 	
 QString XSLProject::projectPath() const {
-	return d->m_projectPath;
+	return QDir( d->m_projectPath ).absolutePath();
 }
 
 void XSLProject::setProjectPath( const QString & value ) {
