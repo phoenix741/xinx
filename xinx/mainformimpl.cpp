@@ -260,8 +260,6 @@ void PrivateMainformImpl::createShortcut() {
 }
 
 void PrivateMainformImpl::createActions() {
-	
-
 	/* FILE */
 
 	// New
