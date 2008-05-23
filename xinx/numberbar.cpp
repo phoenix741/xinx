@@ -59,6 +59,7 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
 	QPainter p(this);
  	
 	if( m_direction == VerticalBar ) {
+		QTextBlock currentBlock = m_edit->textCursor().block();
 		int contentsY = m_edit->verticalScrollBar()->value();
 		qreal pageBottom = contentsY + m_edit->viewport()->height();
 		const int ascent = fontMetrics().ascent() + 1; // height = ascent + descent + 1
@@ -72,8 +73,17 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
 			if ( position.y() > pageBottom ) break;
  	
 			const QString txt = QString::number( lineCount );
-			p.drawText( width() - fm.width(txt), qRound( position.y() ) - contentsY + ascent, txt );
-
+			if( block == currentBlock ) { 
+				QFont f = p.font(); 
+				f.setBold( true ); 
+				p.setFont( f ); 
+			}                        
+			p.drawText( width() - fm.width(txt) - 7, qRound( position.y() ) - contentsY + ascent, txt );
+			if( block == currentBlock ) { 
+				QFont f = p.font(); 
+				f.setBold( false ); 
+				p.setFont( f ); 
+		 	} 
 			if( m_lineBookmark.contains( lineCount ) ) {
 				p.drawPixmap( 3, qRound( position.y() ) -contentsY-6,QPixmap(":/images/bookmark.png")/*.scaled(20,20)*/);
 			}
