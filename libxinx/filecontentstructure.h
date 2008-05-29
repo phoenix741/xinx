@@ -35,7 +35,7 @@ class PrivateFileContentElement;
 /*!
  * Exception throw when the model can't be updated.
  */
-class XINX_EXPORT FileContentException : public XinxException {
+class  FileContentException : public XinxException {
 public:
 	/*!
 	 * Create the exception with a message and a line.
@@ -62,7 +62,7 @@ private:
 /*!
  * The file content parser is an interface for the parser.
  */
-class XINX_EXPORT FileContentParser {
+class  FileContentParser {
 public:
 	virtual ~FileContentParser() {};
 	
@@ -86,7 +86,7 @@ public:
  * The file content element is the base element of a file content structure. Javascript file content and
  * XSL file content is based on a structure file content.
  */
-class XINX_EXPORT FileContentElement : public QObject {
+class  FileContentElement : public QObject {
 	Q_OBJECT
 public:
 	/*!
@@ -214,7 +214,7 @@ private:
  * element is added to the list, or when element are removed.
  * This list can be used to represent the File contente tree in a list structure for the completion.
  */
-class XINX_EXPORT FileContentElementList : public QObject {
+class  FileContentElementList : public QObject {
 	Q_OBJECT
 public:
 	/*!  Create a list of \e FileContentElement with the root element \e root. */
@@ -250,6 +250,6 @@ private:
 	FileContentElement * m_root;
 };
 
-XINX_EXPORT bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );
+ bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 );
 
 #endif /*FILECONTENTSTRUCTURE_H_*/

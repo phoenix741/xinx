@@ -313,6 +313,7 @@ QStringList WebPlugin::extendedEditors() {
 
 QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {
 	QHash<QString,QString> extentions;
+	extentions[ "fws" ]   = "FWS";
 	extentions[ "xml" ]   = "XML";
 	extentions[ "xsl" ]   = "XSL";
 	extentions[ "html" ]  = "HTML";
@@ -324,7 +325,7 @@ QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {
 }
 
 void WebPlugin::commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment ) {
-	if( ( plugin == "XML" ) || ( plugin == "XSL" ) || ( plugin == "HTML" ) )
+	if( ( plugin == "XML" ) || ( plugin == "XSL" ) || ( plugin == "HTML" ) || ( plugin == "FWS" ) )
 		XmlCompleter::commentSelectedText( editor, uncomment );
 	else if( plugin == "JS" )
 		JsCompleter::commentSelectedText( editor, uncomment );
@@ -354,7 +355,10 @@ void WebPlugin::createCompleter( const QString & plugin, IXinxExtendedEditor * e
 		XmlCompleter * c = new XmlCompleter( editor );
 		editor->setObject( c );
 	} else if( plugin == "HTML" ) {
-		XmlCompleter * c = new XmlCompleter( editor, true );
+		XmlCompleter * c = new XmlCompleter( editor, plugin );
+		editor->setObject( c );
+	} else if( plugin == "FWS" ) {
+		XmlCompleter * c = new XmlCompleter( editor, plugin );
 		editor->setObject( c );
 	} else if( plugin == "JS" ) {
 		JsCompleter * c = new JsCompleter( editor );
@@ -375,7 +379,7 @@ QCompleter * WebPlugin::completer( const QString & plugin, IXinxExtendedEditor *
 }
 
 bool WebPlugin::keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event ) {
-	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
+	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) || ( plugin == "FWS" ) ) {
 		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
 		return c->keyPressEvent( event );
 	} else if( plugin == "JS" ){

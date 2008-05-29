@@ -30,7 +30,7 @@
 class XINXConfig;
 class IPluginSyntaxHighlighter;
 
-class XINX_EXPORT SyntaxHighlighter : public QSyntaxHighlighter {
+class  SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
 public:
 	SyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );

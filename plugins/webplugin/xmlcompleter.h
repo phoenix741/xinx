@@ -29,6 +29,7 @@
 #include <QString>
 #include <QTextCursor>
 #include <QModelIndex>
+#include <QPointer>
 
 class QCompleter;
 class QKeyEvent;
@@ -39,7 +40,7 @@ class XSLBaliseCompletionModel;
 class XmlCompleter : public QObject {
 	Q_OBJECT
 public:
-	XmlCompleter( IXinxExtendedEditor * editor, bool onlyHtml = false );
+	XmlCompleter( IXinxExtendedEditor * editor, QString filetype = "XSL" );
 	~XmlCompleter();
 	
 	static void commentSelectedText( IXinxExtendedEditor * editor, bool uncomment );
@@ -69,16 +70,16 @@ private:
 	int insertCompletionBalises( QTextCursor & tc, QString node );
 	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type );
 	
-	QCompleter * m_completerNode;
+	QPointer<QCompleter> m_completerNode;
 	QString m_completerParamNodeName, m_completerValueParamName;
-	QCompleter * m_completerParam;
-	QCompleter * m_completerValue;
+	QPointer<QCompleter> m_completerParam;
+	QPointer<QCompleter> m_completerValue;
 
-	XSLValueCompletionModel * m_completionValueModel;
-	XSLParamCompletionModel * m_completionParamModel;
-	XSLBaliseCompletionModel * m_completionBaliseModel;
+	QPointer<XSLValueCompletionModel> m_completionValueModel;
+	QPointer<XSLParamCompletionModel> m_completionParamModel;
+	QPointer<XSLBaliseCompletionModel> m_completionBaliseModel;
 	
-	FileContentElementList * m_list;
+	QPointer<FileContentElementList> m_list;
 
 	QString m_nodeName, m_paramName;
 	IXinxExtendedEditor * m_editor;

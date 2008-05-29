@@ -29,12 +29,12 @@
 class PrivateXINXConfig;
 class QWidget;
 
-class XINX_EXPORT ToolsNotDefinedException : public XinxException {
+class  ToolsNotDefinedException : public XinxException {
 public:
 	ToolsNotDefinedException( const QString & tool );
 };
 
-class XINX_EXPORT XINXConfig : public QObject, public AppSettings {
+class  XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
 public:
 	XINXConfig( const XINXConfig & origine );

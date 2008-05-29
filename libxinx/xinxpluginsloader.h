@@ -37,7 +37,7 @@ class RCS;
 /*!
  * The class XINX Plugins Loader is used to load all plugins and proposed some facilities method.
  */
-class XINX_EXPORT XinxPluginsLoader : public QObject {
+class  XinxPluginsLoader : public QObject {
 	Q_OBJECT
 public:
 	XinxPluginsLoader();

@@ -23,7 +23,7 @@
 
 class PrivateAppSettings;
 
-class XINX_EXPORT AppSettings {
+class  AppSettings {
 public:
 	struct struct_configurationEditor {
 		bool activateConfigurationEditor;

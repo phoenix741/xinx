@@ -9,6 +9,9 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
+win32 {
+	QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
+}
 HEADERS = syntaxhighlighter.h \
     appsettings.h \
     xinxconfig.h \
@@ -28,4 +31,3 @@ SOURCES = syntaxhighlighter.cpp \
     exceptions.cpp \
     filecontentstructure.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-DEFINES += XINX_DLL

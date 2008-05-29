@@ -155,22 +155,11 @@
 #include <QObject>
 #include <QObjectCleanupHandler>
 
-#ifndef Q_WS_WIN
-#	define XINX_EXPORT
-#endif
-#ifndef XINX_EXPORT
-#	ifdef XINX_DLL
-#		define XINX_EXPORT __declspec (dllexport)
-#	else
-#		define XINX_EXPORT __declspec (dllimport)
-#	endif // XINX_DLL
-#endif // XINX_EXPORT
-
 /*!
  * All static class add self to the static deleter who delete all static class when the application is stopped
  * (if necessary).
  */
-class XINX_EXPORT XINXStaticDeleter : public QObjectCleanupHandler {
+class  XINXStaticDeleter : public QObjectCleanupHandler {
 	Q_OBJECT
 public:
 	/*! Intialize default value of object. */ 

@@ -36,7 +36,7 @@ class XinxErrorMessage;
  * Base class for exceptions in XINX. This base class include a message in the exception, and save 
  * the stack.
  */
-class XINX_EXPORT XinxException {
+class  XinxException {
 public:
 	XinxException( QString message );
 	/*!
@@ -59,7 +59,7 @@ private:
  * use qWarning, qCritical, qError, qDebug. When an fatal error occure, the signal \e errorTriggered
  * is emited.
  */
-class XINX_EXPORT ExceptionManager : public QObject {
+class  ExceptionManager : public QObject {
 	Q_OBJECT
 public:
 	virtual ~ExceptionManager();

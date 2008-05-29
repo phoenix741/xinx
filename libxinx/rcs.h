@@ -38,7 +38,7 @@
  * This object will be used along the project mode, to show to the user the \e status of a file, to \e update from repository,
  * to \e commit to the repository, to \e add a file to the repository, or to \e remove a file from the repository.
  */
-class XINX_EXPORT RCS : public QObject {
+class  RCS : public QObject {
 	Q_OBJECT
 public:
 	/*! 

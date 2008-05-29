@@ -36,7 +36,7 @@ class XinxThread;
  * 
  * To be used, each created thread must be a XinxThread (derivated from a QThread).
  */
-class XINX_EXPORT XinxThreadManager : public QObject {
+class  XinxThreadManager : public QObject {
 	Q_OBJECT
 public:
 	/// Destroy the mananger
@@ -67,7 +67,7 @@ private:
  * This class is used to create thread in XINX and count the number of created Thread and 
  * the number of running thread.
  */
-class XINX_EXPORT XinxThread : public QThread {
+class  XinxThread : public QThread {
 	Q_OBJECT
 public:
 	/// Create a new thread object and increment XinxThreadManager::getThreadClassCount()

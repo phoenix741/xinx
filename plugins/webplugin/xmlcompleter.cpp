@@ -36,41 +36,43 @@
 
 /* XmlCompleter */
 
-XmlCompleter::XmlCompleter( IXinxExtendedEditor * editor, bool onlyHtml ) : m_editor( editor ) {
+XmlCompleter::XmlCompleter( IXinxExtendedEditor * editor, QString filetype ) : m_editor( editor ) {
 	m_completerValueParamName = "";
 	m_completerParamNodeName  = "";
 	m_completerValue 		  = 0;
 	
-	m_completerNode = new QCompleter( this );
-	m_completerNode->setWidget( editor->qTextEdit() );
-	m_completerNode->setCompletionMode( QCompleter::PopupCompletion );
-	m_completerNode->setCaseSensitivity( Qt::CaseInsensitive );
-	m_completerNode->setCompletionRole( Qt::DisplayRole );
-	connect( m_completerNode, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
+	if( filetype == "HTML" || filetype == "XSL" ) {
+		m_completerNode = new QCompleter( this );
+		m_completerNode->setWidget( editor->qTextEdit() );
+		m_completerNode->setCompletionMode( QCompleter::PopupCompletion );
+		m_completerNode->setCaseSensitivity( Qt::CaseInsensitive );
+		m_completerNode->setCompletionRole( Qt::DisplayRole );
+		connect( m_completerNode, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
 
-	m_completionBaliseModel = new XSLBaliseCompletionModel( this, onlyHtml );
-	m_completerNode->setModel( m_completionBaliseModel );
-
-	m_completerParam = new QCompleter( this );
-	m_completerParam->setWidget( editor->qTextEdit() );
-	m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
-	m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
-	m_completerParam->setCompletionRole( Qt::DisplayRole );
-	connect( m_completerParam, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
-
-	m_completionParamModel = new XSLParamCompletionModel( this );
-	m_completerParam->setModel( m_completionParamModel );
-
-	m_completerValue = new QCompleter( this );
-	m_completerValue->setWidget( editor->qTextEdit() );
-	m_completerValue->setCompletionMode( QCompleter::PopupCompletion );
-	m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
-	m_completerValue->setCompletionRole( Qt::DisplayRole );
-	connect( m_completerValue, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
+		m_completionBaliseModel = new XSLBaliseCompletionModel( this, filetype == "HTML" );
+		m_completerNode->setModel( m_completionBaliseModel );
 	
-	m_list = new FileContentElementList( editor->modelData() );
-	m_completionValueModel = new XSLValueCompletionModel( m_list, this );
-	m_completerValue->setModel( m_completionValueModel );
+		m_completerParam = new QCompleter( this );
+		m_completerParam->setWidget( editor->qTextEdit() );
+		m_completerParam->setCompletionMode( QCompleter::PopupCompletion );
+		m_completerParam->setCaseSensitivity( Qt::CaseInsensitive );
+		m_completerParam->setCompletionRole( Qt::DisplayRole );
+		connect( m_completerParam, SIGNAL(activated(const QModelIndex&)), this, SLOT(insertCompletion(const QModelIndex&)) );
+	
+		m_completionParamModel = new XSLParamCompletionModel( this );
+		m_completerParam->setModel( m_completionParamModel );
+	
+		m_completerValue = new QCompleter( this );
+		m_completerValue->setWidget( editor->qTextEdit() );
+		m_completerValue->setCompletionMode( QCompleter::PopupCompletion );
+		m_completerValue->setCaseSensitivity( Qt::CaseInsensitive );
+		m_completerValue->setCompletionRole( Qt::DisplayRole );
+		connect( m_completerValue, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
+		
+		m_list = new FileContentElementList( editor->modelData() );
+		m_completionValueModel = new XSLValueCompletionModel( m_list, this );
+		m_completerValue->setModel( m_completionValueModel );
+	} 
 }
 
 XmlCompleter::~XmlCompleter() {
