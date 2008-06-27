@@ -21,8 +21,8 @@
     <Param name="Quantité (exemple : 3)" />
     <Param name="Prix (exemple : 12)" />
   </Snipet>
-  <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for Generix Stylesheet" >
-    <Description>Base used for Generix Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
+  <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for GCE Stylesheet" >
+    <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
     <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 
@@ -47,8 +47,8 @@
 &lt;/xsl:stylesheet>
 </Text>
   </Snipet>
-  <Snipet category="Stylesheet" key="xslbase140" icon="" type="xsl" name="Base for Generix Stylesheet (GCE140)" >
-    <Description>Base used for Generix Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
+  <Snipet category="Stylesheet" key="xslbase140" icon="" type="xsl" name="Base for GCE Stylesheet (GCE140)" >
+    <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
     <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 	&lt;!-- Définition du nom de la feuille de style -->
@@ -210,7 +210,7 @@
     <Param name="Multisort" />
   </Snipet>
   <Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields" >
-    <Description>Hidden fields for Generix forms</Description>
+    <Description>Hidden fields for GCE forms</Description>
     <Text>
 			&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
 			&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
