@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<!-- Contribution from A. Rocher -->
+		<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+		<meta http-equiv="Pragma" content="no-cache"/>
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+		<meta http-equiv="Expires" content="0"/>
+		<title>Testeur suppression xsl:key</title>
+		<script type="text/javascript" src="xslkey.js" charset="iso-8859-1">&#160;</script>
+		<script type="text/javascript" charset="iso-8859-1">
+			function test(id1, id2)
+			{
+				var test = document.getElementById(id1).value;
+				document.getElementById(id2).value = obj.formatXslKey(test);
+				document.getElementById(id2).value = obj.formatXslKeyPPE(document.getElementById(id2).value);
+			}
+		</script>
+	</head>
+	<body class="selection">
+		<table class="formulaire" width="100%">
+			<tr>
+				<td align="center">
+					<textarea id="texte" cols="120" rows="18"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<input type="button" class="bouton" onclick="test('texte','resultat')" value="Reformater"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<textarea id="resultat" cols="120" rows="18"></textarea>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
