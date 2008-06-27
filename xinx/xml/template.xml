@@ -89,7 +89,7 @@
 				&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
 				&lt;input type="hidden" name="id" value="{$ID}"/>
 				&lt;input type="hidden" name="frame" value="{$FRAME}"/>
-			&lt;form>
+			&lt;/form>
 		</Text>
     <Param name="Sourceview" />
     <Param name="Cinematic" />
