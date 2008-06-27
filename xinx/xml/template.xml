@@ -47,6 +47,54 @@
 &lt;/xsl:stylesheet>
 </Text>
   </Snipet>
+  <Snipet category="Stylesheet" key="xslbase140" icon="" type="xsl" name="Base for Generix Stylesheet (GCE140)" >
+    <Description>Base used for Generix Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
+    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
+	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
+	&lt;!-- Définition du nom de la feuille de style -->
+	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
+	&lt;!--
+		Règle principale
+	&lt;-->
+	&lt;xsl:template match="/">
+		&lt;html>
+			&lt;xsl:call-template name="GnxHead"/>
+			&lt;body>
+				&lt;xsl:choose>
+					&lt;xsl:when test="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow">
+						&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
+					&lt;/xsl:when>
+					&lt;xsl:otherwise>
+						&lt;xsl:call-template name="GnxHabilitation"/>
+					&lt;/xsl:otherwise>
+				&lt;/xsl:choose>
+			&lt;/body>
+		&lt;/html>
+	&lt;/xsl:template>
+	&lt;!--
+		Règle sur l'utilisateur
+	&lt;-->
+	&lt;xsl:template match="JUt_UtiViewRow">
+
+	&lt;/xsl:template>
+&lt;/xsl:stylesheet>
+</Text>
+  </Snipet>
+  <Snipet category="Input Widgets" key="form140" icon="" type="xsl" name="Complete form" >
+    <Description>Complete form with mandatory hidden fields</Description>
+    <Text>
+			&lt;form action="{$SERVLET}" name="%3" method="post" onsubmit="return validform(this);">
+				&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
+				&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
+				&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+				&lt;input type="hidden" name="id" value="{$ID}"/>
+				&lt;input type="hidden" name="frame" value="{$FRAME}"/>
+			&lt;form>
+		</Text>
+    <Param name="Sourceview" />
+    <Param name="Cinematic" />
+    <Param name="FormName" />
+  </Snipet>
   <Snipet category="Webservices" key="createeve" icon="" type="fws" name="Créer un évènement" >
     <Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
     <Text>&lt;egx_ws>
@@ -125,6 +173,12 @@
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
 &lt;/td></Text>
   </Snipet>
+  <Snipet category="Buttons Widgets" key="delete140" icon=":/images/pushbutton.png" type="xsl" name="Delete button (GCE140)" >
+    <Description>Show a delete button in a table (GCE140).</Description>
+    <Text>&lt;td class="supprimer">
+	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{gnx:trad($LANGUAGE,'LBL.SUPPRIMER',$CTXTRD)}"/>
+&lt;/td></Text>
+  </Snipet>
   <Snipet category="Displays Widgets" key="href" icon="" type="xsl" name="GnxPopup" >
     <Description>Display a link to another page.</Description>
     <Text>&lt;td align="right" class="pop1">&amp;#160;
@@ -149,16 +203,21 @@
 	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
+	&lt;xsl:with-param name="multisort">%3&lt;/xsl:with-param>
 &lt;/xsl:call-template></Text>
     <Param name="Title" />
     <Param name="Sort key" />
+    <Param name="Multisort" />
   </Snipet>
   <Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields" >
     <Description>Hidden fields for Generix forms</Description>
-    <Text>&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>\n' ?>&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
-&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
-&lt;input type="hidden" name="id" value="{$ID}"/>
-&lt;input type="hidden" name="frame" value="{$FRAME}"/></Text>
+    <Text>
+			&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
+			&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
+			&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+			&lt;input type="hidden" name="id" value="{$ID}"/>
+			&lt;input type="hidden" name="frame" value="{$FRAME}"/>
+		</Text>
     <Param name="Sourceview" />
     <Param name="Cinematic" />
   </Snipet>
@@ -205,6 +264,18 @@
   <Snipet category="Buttons Widgets" key="modif" icon=":/images/pushbutton.png" type="xsl" name="Modifier" >
     <Description>Sumbit a form. Show the label 'LBL.MODIFIER'</Description>
     <Text>&lt;input class="bouton" type="submit" value="{$LBL.MODIFIER}"/></Text>
+  </Snipet>
+  <Snipet category="Buttons Widgets" key="modif140" icon=":/images/pushbutton.png" type="xsl" name="Modifier (GCE140)" >
+    <Description>Sumbit a form. Show the label 'LBL.MODIFIER' (GCE140)</Description>
+    <Text>&lt;input class="bouton" type="submit" value="{gnx:trad($LANGUAGE,'LBL.MODIFIER',$CTXTRD)}"/></Text>
+  </Snipet>
+  <Snipet category="Stylesheet" key="param140" icon="" type="xsl" name="Parameter from URL" >
+    <Description>Define a variable from an URL value (GCE140)</Description>
+    <Text>
+			&lt;xsl:param name="XXX">
+				&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='chp:XXX']/@value"/>
+			&lt;/xsl:param>
+		</Text>
   </Snipet>
   <Snipet category="Input Widgets" key="select" icon=":/images/combobox.png" type="xsl" name="Select box (LibOnly)" >
     <Description>Present a select box with differente choice.</Description>
