@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE SnipetList>
 <SnipetList>
-	<Snipet category="Webservices" key="ajoutmvt" icon="" type="fws" name="Ajouter un mouvement de stock">
-		<Description>Ajouter un mouvement de stock a un contexte déjà créé.</Description>
-		<Text>&lt;inventoryTurnover>
-	&lt;movement>%1&lt;/movement>
-	&lt;depot>%2&lt;/depot>
-	&lt;product>
-		&lt;key>
-			&lt;code>%3&lt;/code>
-		&lt;/key>
-	&lt;/product>
-	&lt;quantity>%4&lt;/quantity>
-	&lt;price>%5&lt;/price>
-&lt;/inventoryTurnover>
-</Text>
-		<Param name="Code mouvement de stock (exemple : ENTREE)"/>
-		<Param name="Sigle du dépôt (exemple : LILLE)"/>
-		<Param name="Code produit (exemple : BR101)"/>
-		<Param name="Quantité (exemple : 3)"/>
-		<Param name="Prix (exemple : 12)"/>
-	</Snipet>
 	<Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for GCE Stylesheet">
 		<Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
 		<Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -96,83 +76,11 @@
 				&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
 				&lt;input type="hidden" name="id" value="{$ID}"/>
 				&lt;input type="hidden" name="frame" value="{$FRAME}"/>
-			&lt;/form>
+			&lt;form>
 		</Text>
 		<Param name="Sourceview"/>
 		<Param name="Cinematic"/>
 		<Param name="FormName"/>
-	</Snipet>
-	<Snipet category="Webservices" key="createeve" icon="" type="fws" name="Créer un évènement">
-		<Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
-		<Text>&lt;egx_ws>
-&lt;bean_in>
-&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common">
-	&lt;transaction>
-		&lt;context>
-			&lt;entity>%1&lt;/entity>
-			&lt;identification>
-				&lt;code>DEMO&lt;/code>
-			&lt;/identification>
-			&lt;target>%2&lt;/target>
-		&lt;/context>
-		&lt;businessEvent>
-			&lt;header>
-				&lt;info>
-					&lt;thirdparty>
-						&lt;key>
-							&lt;type>%3&lt;/type>
-							&lt;identifier>%4&lt;/identifier>
-						&lt;/key>
-					&lt;/thirdparty>
-					&lt;depot>%5&lt;/depot>
-					&lt;item>
-						&lt;info>
-							&lt;product>
-								&lt;key>
-									&lt;code>%6&lt;/code>
-								&lt;/key>
-							&lt;/product>
-							&lt;quantity>%7&lt;/quantity>
-						&lt;/info>
-					&lt;/item>
-				&lt;/info>
-			&lt;/header>
-			&lt;services service="valueAmount"/>
-			&lt;services service="validate"/>
-			&lt;services service="edit"/>
-		&lt;/businessEvent>
-	&lt;/transaction>
-&lt;/GCEServiceassimilateIn>
-&lt;/bean_in>
-&lt;/egx_ws></Text>
-		<Param name="Code societe (exemple : 1221)"/>
-		<Param name="Target : code pev (exemple : ACDA)"/>
-		<Param name="Type tiers (exemple : FOU)"/>
-		<Param name="Sigle du tiers (exemple : BRFOU101)"/>
-		<Param name="Depot (exemple : ROISSY)"/>
-		<Param name="Code produit (exemple : AG101)"/>
-		<Param name="Quantite (exemple : 3)"/>
-	</Snipet>
-	<Snipet category="Webservices" key="createtim" icon="" type="fws" name="Créer une action TIM">
-		<Description>Création d'une action</Description>
-		<Text>&lt;egx_ws>
-&lt;bean_in>
-	&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
-	&lt;row num="1">
-		&lt;field name="Codsoc1" value="%1"/>
-		&lt;field name="Typtie" value="%2"/>
-		&lt;field name="Sigtie" value="%3"/>
-		&lt;field name="Typact" value="%4"/>
-		&lt;field name="Dat1" value="%5"/>
-	&lt;/row>
-&lt;/CRUDManagercreateIn>
-&lt;/bean_in>
-&lt;/egx_ws></Text>
-		<Param name="Codsoc"/>
-		<Param name="Type de tiers"/>
-		<Param name="Sigle du tiers"/>
-		<Param name="Type action"/>
-		<Param name="Date de réalisation (format YYYYMMJJ)"/>
 	</Snipet>
 	<Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="xsl" name="Delete button">
 		<Description>Show a delete button in a table.</Description>
@@ -268,7 +176,27 @@
 		<Param name="ViewObject name"/>
 		<Param name="ViewStruct composite View name"/>
 	</Snipet>
-	<!-- ROAROA -->
+	<Snipet category="Displays Widgets" key="codzn140" icon="" type="xsl" name="Codzn">
+		<Description>Template to manage Codzn.</Description>
+		<Text>
+&lt;!-- Don't forget to import right xsl templates files
+&lt;xsl:import href="langue/fra/e-GX.xsl"/>
+&lt;xsl:import href="langue/fra/codzn_niveau2.xsl"/>
+&lt;xsl:import href="langue/fra/nav/listes_valeurs.xsl"/>
+You may have to change min and max value !!!
+-->
+&lt;xsl:call-template name="Codzn">
+	&lt;xsl:with-param name="typzod" select="'%1'"/>
+	&lt;xsl:with-param name="numero" select="'1'"/>
+	&lt;xsl:with-param name="max" select="'16'"/>
+	&lt;xsl:with-param name="formulaire" select="'%2'"/>
+	&lt;xsl:with-param name="champ" select="'%3'"/>
+&lt;/xsl:call-template>
+		</Text>
+		<Param name="Typzod"/>
+		<Param name="Form name"/>
+		<Param name="Prefix field"/>
+	</Snipet>
 	<Snipet category="Displays Widgets" key="displayList" icon="" type="xsl" name="XSL code for a list">
 		<Description>Display a list with header and detail tree for 2 columns</Description>
 		<Text>
@@ -415,7 +343,8 @@
 	</Snipet>
 	<Snipet category="Input Widgets" key="text" icon=":/images/lineedit.png" type="xsl" name="Input text">
 		<Description>Enter text into a line</Description>
-		<Text>&lt;input name="chp:%1" size="%4" maxlength="%3" class="%2">
+		<Text>
+&lt;input name="chp:%1" size="%4" maxlength="%3" class="%2">
 	&lt;xsl:call-template name="ChpModif">
 		&lt;xsl:with-param name="Node" select="%1"/>
 	&lt;/xsl:call-template>
@@ -442,25 +371,6 @@
 		<Param name="Label code"/>
 		<Param name="Field name"/>
 	</Snipet>
-	<Snipet category="Webservices" key="stock" icon="" type="fws" name="Interroger le stock">
-		<Description>Permet d'interroger le stock pour un produit.</Description>
-		<Text>&lt;egx_ws>
-&lt;bean_in>
-&lt;CRUDManagerretrieveIn viewObjectName="JDskAskView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd">
-	&lt;retrieve key="ONE">
-	  &lt;param num="1" value="%1"/>
-		&lt;param num="2" value="%2"/>
-		&lt;param num="3" value="%3"/>
-		&lt;param num="4" value="%4"/>
-	&lt;/retrieve>
-&lt;/CRUDManagerretrieveIn>
-&lt;/bean_in>
-&lt;/egx_ws></Text>
-		<Param name="Code société (exemple : 1)"/>
-		<Param name="Code produit (exemple : AG101)"/>
-		<Param name="Code dépôt (exemple : LILLE)"/>
-		<Param name="Code affichage ask  (exemple : TOUS)"/>
-	</Snipet>
 	<Snipet category="Displays Widgets" key="variable" icon=":/images/label.png" type="xsl" name="Label">
 		<Description>Create a variable in a XSL stylesheet. This variable is a label show in the page. To call this variable use the balise &lt;i>xsl:value-of&lt;/i> and select the variable which the name is &lt;i>LBL.NAME&lt;/i>.</Description>
 		<Text>&lt;xsl:variable name="LBL.&lt;?= "%1".toUpperCase().replace(/\W/g, '') ?>">%1&lt;/xsl:variable></Text>
@@ -476,7 +386,8 @@
 	</Snipet>
 	<Snipet category="Input Widgets" key="select" icon=":/images/combobox.png" type="xsl" name="Select box (LibOnly)">
 		<Description>Present a select box with differente choice.</Description>
-		<Text>&lt;select name="chp:%1" size="1">
+		<Text>
+&lt;select name="chp:%1" size="1">
 	&lt;xsl:call-template name="ChpModifSelect">
 		&lt;xsl:with-param name="Node" select="%1"/>
 		&lt;xsl:with-param name="NodeLib" select="%2"/>
@@ -484,13 +395,14 @@
 	&lt;/xsl:call-template>
 	&lt;option/>
 	&lt;xsl:apply-templates select="%3"/>
-&lt;/select></Text>
+&lt;/select>
+		</Text>
 		<Param name="Field"/>
 		<Param name="Label"/>
 		<Param name="List"/>
 	</Snipet>
-	<Snipet category="Input Widgets" key="selectText" icon="" type="xsl" name="Select field into form">
-		<Description>HTML and XSL according to text field</Description>
+	<Snipet category="Input Widgets" key="selectText" icon="" type="xsl" name="Select field into form (eg. for TBL with BF provider)">
+		<Description>HTML and XSL according to SELECT field populated by TBL BusinessFlow</Description>
 		<Text>
 &lt;td class="champ">
 	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
@@ -499,17 +411,16 @@
 	&lt;select name="chp:%2" size="1" class="obligatoire">
 		&lt;xsl:call-template name="ChpModifSelect">
 			&lt;xsl:with-param name="Node" select="%2"/>
-			&lt;xsl:with-param name="NodeLib" select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow/%3/%4/%4Row[%2=current()/%2]/Lir"/>
+			&lt;xsl:with-param name="NodeLib" select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow[Cletbl=current()/%2]/Lir"/>
 			&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
 		&lt;/xsl:call-template>
-		&lt;xsl:apply-templates select="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow/%3/%4/%4Row"/>
+		&lt;xsl:apply-templates select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow"/>
 	&lt;/select>
 &lt;/td>
 		</Text>
 		<Param name="Label code"/>
 		<Param name="Field name"/>
-		<Param name="View name"/>
-		<Param name="ViewObject name"/>
+		<Param name="TBL name"/>
 	</Snipet>
 	<Snipet category="Global Input" key="param" icon="" type="xsl" name="Url Parameter">
 		<Description>Param passed by Url (post and get)</Description>
@@ -542,5 +453,123 @@
 &lt;/xsl:variable>
 		</Text>
 		<Param name="Attribute name"/>
+	</Snipet>
+	<Snipet category="Webservices" key="ajoutmvt" icon="" type="fws" name="Ajouter un mouvement de stock">
+		<Description>Ajouter un mouvement de stock a un contexte déjà créé.</Description>
+		<Text>
+&lt;inventoryTurnover>
+	&lt;movement>%1&lt;/movement>
+	&lt;depot>%2&lt;/depot>
+	&lt;product>
+		&lt;key>
+			&lt;code>%3&lt;/code>
+		&lt;/key>
+	&lt;/product>
+	&lt;quantity>%4&lt;/quantity>
+	&lt;price>%5&lt;/price>
+&lt;/inventoryTurnover>
+</Text>
+		<Param name="Code mouvement de stock (exemple : ENTREE)"/>
+		<Param name="Sigle du dépôt (exemple : LILLE)"/>
+		<Param name="Code produit (exemple : BR101)"/>
+		<Param name="Quantité (exemple : 3)"/>
+		<Param name="Prix (exemple : 12)"/>
+	</Snipet>
+	<Snipet category="Webservices" key="createeve" icon="" type="fws" name="Créer un évènement">
+		<Description>Créer un évènement avec un seul poste (possibiliter d'en rajouter). La valorisation est incluse.</Description>
+		<Text>
+&lt;egx_ws>
+	&lt;bean_in>
+	&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common">
+		&lt;transaction>
+			&lt;context>
+				&lt;entity>%1&lt;/entity>
+				&lt;identification>
+					&lt;code>DEMO&lt;/code>
+				&lt;/identification>
+				&lt;target>%2&lt;/target>
+			&lt;/context>
+			&lt;businessEvent>
+				&lt;header>
+					&lt;info>
+						&lt;thirdparty>
+							&lt;key>
+								&lt;type>%3&lt;/type>
+								&lt;identifier>%4&lt;/identifier>
+							&lt;/key>
+						&lt;/thirdparty>
+						&lt;depot>%5&lt;/depot>
+						&lt;item>
+							&lt;info>
+								&lt;product>
+									&lt;key>
+										&lt;code>%6&lt;/code>
+									&lt;/key>
+								&lt;/product>
+								&lt;quantity>%7&lt;/quantity>
+							&lt;/info>
+						&lt;/item>
+					&lt;/info>
+				&lt;/header>
+				&lt;services service="valueAmount"/>
+				&lt;services service="validate"/>
+				&lt;services service="edit"/>
+			&lt;/businessEvent>
+		&lt;/transaction>
+	&lt;/GCEServiceassimilateIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+		</Text>
+		<Param name="Code societe (exemple : 1221)"/>
+		<Param name="Target : code pev (exemple : ACDA)"/>
+		<Param name="Type tiers (exemple : FOU)"/>
+		<Param name="Sigle du tiers (exemple : BRFOU101)"/>
+		<Param name="Depot (exemple : ROISSY)"/>
+		<Param name="Code produit (exemple : AG101)"/>
+		<Param name="Quantite (exemple : 3)"/>
+	</Snipet>
+	<Snipet category="Webservices" key="createtim" icon="" type="fws" name="Créer une action TIM">
+		<Description>Création d'une action</Description>
+		<Text>
+&lt;egx_ws>
+	&lt;bean_in>
+		&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+		&lt;row num="1">
+			&lt;field name="Codsoc1" value="%1"/>
+			&lt;field name="Typtie" value="%2"/>
+			&lt;field name="Sigtie" value="%3"/>
+			&lt;field name="Typact" value="%4"/>
+			&lt;field name="Dat1" value="%5"/>
+		&lt;/row>
+	&lt;/CRUDManagercreateIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+		</Text>
+		<Param name="Codsoc"/>
+		<Param name="Type de tiers"/>
+		<Param name="Sigle du tiers"/>
+		<Param name="Type action"/>
+		<Param name="Date de réalisation (format YYYYMMJJ)"/>
+	</Snipet>
+	<Snipet category="Webservices" key="stock" icon="" type="fws" name="Interroger le stock">
+		<Description>Permet d'interroger le stock pour un produit.</Description>
+		<Text>
+&lt;egx_ws>
+	&lt;bean_in>
+	&lt;CRUDManagerretrieveIn viewObjectName="JDskAskView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd">
+		&lt;retrieve key="ONE">
+		  &lt;param num="1" value="%1"/>
+			&lt;param num="2" value="%2"/>
+			&lt;param num="3" value="%3"/>
+			&lt;param num="4" value="%4"/>
+		&lt;/retrieve>
+	&lt;/CRUDManagerretrieveIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+		</Text>
+		<Param name="Code société (exemple : 1)"/>
+		<Param name="Code produit (exemple : AG101)"/>
+		<Param name="Code dépôt (exemple : LILLE)"/>
+		<Param name="Code affichage ask  (exemple : TOUS)"/>
 	</Snipet>
 </SnipetList>
