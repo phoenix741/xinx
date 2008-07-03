@@ -54,9 +54,16 @@
 	&lt;!-- Définition du nom de la feuille de style -->
 	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
 	&lt;!--
+		Import des JS spécifiques à la page
+	&lt;-->
+	&lt;xsl:template match="/" mode="js">
+		&lt;script type="text/javascript" src="../langue/fra/nav/js/xxx.js" charset="iso-8859-1">&#160;&lt;/script>
+	&lt;/xsl:template>
+	&lt;!--
 		Règle principale
 	&lt;-->
 	&lt;xsl:template match="/">
+		&lt;xsl:comment> $RCSfile: xxx.xsl,v $ &lt;/xsl:comment>
 		&lt;html>
 			&lt;xsl:call-template name="GnxHead"/>
 			&lt;body>
@@ -169,19 +176,24 @@
 	</Snipet>
 	<Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="xsl" name="Delete button">
 		<Description>Show a delete button in a table.</Description>
-		<Text>&lt;td class="supprimer">
+		<Text>
+&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
-&lt;/td></Text>
+&lt;/td>
+		</Text>
 	</Snipet>
 	<Snipet category="Buttons Widgets" key="delete140" icon=":/images/pushbutton.png" type="xsl" name="Delete button (GCE140)">
 		<Description>Show a delete button in a table (GCE140).</Description>
-		<Text>&lt;td class="supprimer">
+		<Text>
+&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{gnx:trad($LANGUAGE,'LBL.SUPPRIMER',$CTXTRD)}"/>
-&lt;/td></Text>
+&lt;/td>
+		</Text>
 	</Snipet>
 	<Snipet category="Displays Widgets" key="href" icon="" type="xsl" name="GnxPopup">
 		<Description>Display a link to another page.</Description>
-		<Text>&lt;td align="right" class="pop1">&amp;#160;
+		<Text>
+&lt;td align="right" class="pop1">&amp;#160;
     &lt;a href="?sourceview=%1&amp;amp;cinematic=%2&amp;amp;%3&amp;amp;frame=%4" target="%4" title="{$%5}">
         &lt;xsl:call-template name="GnxPopup">
             &lt;xsl:with-param name="Name">
@@ -189,7 +201,8 @@
             &lt;/xsl:with-param>
         &lt;/xsl:call-template>
     &lt;/a>
-&lt;/td></Text>
+&lt;/td>
+		</Text>
 		<Param name="Sourceview"/>
 		<Param name="Cinematic"/>
 		<Param name="Fields"/>
@@ -199,12 +212,14 @@
 	</Snipet>
 	<Snipet category="Displays Widgets" key="sort" icon="" type="xsl" name="GnxSort">
 		<Description>Template for sort a title with two sort key (to define in ViewStruct)</Description>
-		<Text>&lt;xsl:call-template name="GnxSort">
+		<Text>
+&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="multisort">%3&lt;/xsl:with-param>
-&lt;/xsl:call-template></Text>
+&lt;/xsl:call-template>
+		</Text>
 		<Param name="Title"/>
 		<Param name="Sort key"/>
 		<Param name="Multisort (true/false)"/>
@@ -219,7 +234,8 @@
 	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="multisort">%3&lt;/xsl:with-param>
-&lt;/xsl:call-template></Text>
+&lt;/xsl:call-template>
+		</Text>
 		<Param name="Label code"/>
 		<Param name="Sort key"/>
 		<Param name="Multisort"/>
@@ -247,9 +263,81 @@
 			&lt;xsl:with-param name="AffDetail" select="'true'"/>
 		&lt;/xsl:call-template>
 	&lt;/xsl:otherwise>
-&lt;/xsl:choose></Text>
+&lt;/xsl:choose>
+		</Text>
 		<Param name="ViewObject name"/>
 		<Param name="ViewStruct composite View name"/>
+	</Snipet>
+	<!-- ROAROA -->
+	<Snipet category="Displays Widgets" key="displayList" icon="" type="xsl" name="XSL code for a list">
+		<Description>Display a list with header and detail tree for 2 columns</Description>
+		<Text>
+&lt;!--
+	Définition des entêtes de colonnes
+-->
+&lt;xsl:template match="%1">
+	&lt;table width="100%" class="liste">
+		&lt;tr class="entete">
+			&lt;th class="champ" nowrap="nowrap">
+				&lt;xsl:call-template name="GnxSort">
+					&lt;xsl:with-param name="title">
+						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.CODE',$CTXTRD)"/>
+					&lt;/xsl:with-param>
+					&lt;xsl:with-param name="sortkey_asc">COD&lt;/xsl:with-param>
+					&lt;xsl:with-param name="sortkey_desc">-COD&lt;/xsl:with-param>
+					&lt;xsl:with-param name="multisort">true&lt;/xsl:with-param>
+				&lt;/xsl:call-template>
+			&lt;/th>
+			&lt;th class="champ" nowrap="nowrap">
+				&lt;xsl:call-template name="GnxSort">
+					&lt;xsl:with-param name="title">
+						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.LIBELLE',$CTXTRD)"/>
+					&lt;/xsl:with-param>
+					&lt;xsl:with-param name="sortkey_asc">LIB&lt;/xsl:with-param>
+					&lt;xsl:with-param name="sortkey_desc">-LIB&lt;/xsl:with-param>
+				&lt;/xsl:call-template>
+			&lt;/th>
+		&lt;/tr>
+		&lt;xsl:if test="../@total_business_row!=0">
+			&lt;xsl:apply-templates select="%1Row"/>
+		&lt;/xsl:if>
+	&lt;/table>
+	&lt;xsl:choose>
+		&lt;xsl:when test="../@total_business_row=0">
+			&lt;table class="center">
+				&lt;tr>
+					&lt;td class="information" colspan="2" align="center">
+						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.NOROW',$CTXTRD)"/>&#160;&lt;/td>
+				&lt;/tr>
+			&lt;/table>
+		&lt;/xsl:when>
+		&lt;xsl:otherwise>
+			&lt;xsl:call-template name="GnxTable">
+				&lt;xsl:with-param name="Tot" select="../@total_business_row"/>
+				&lt;xsl:with-param name="Idx" select="%1Row[@current]/@business_row_index"/>
+				&lt;xsl:with-param name="Pge" select="../@nbline"/>
+				&lt;xsl:with-param name="Vue" select="'%2'"/>
+				&lt;xsl:with-param name="AffDetail" select="'true'"/>
+			&lt;/xsl:call-template>
+		&lt;/xsl:otherwise>
+	&lt;/xsl:choose>
+&lt;/xsl:template>
+&lt;!--
+	Définition de la liste
+-->
+&lt;xsl:template match="%1Row">
+	&lt;tr class="l{@index}">
+		&lt;td nowrap="nowrap">
+			&lt;xsl:value-of select="CODE"/>
+		&lt;/td>
+		&lt;td nowrap="nowrap">
+			&lt;xsl:value-of select="LIBELLE"/>
+		&lt;/td>
+	&lt;/tr>
+&lt;/xsl:template>
+		</Text>
+		<Param name="ViewObject name"/>
+		<Param name="Composite View name"/>
 	</Snipet>
 	<Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields">
 		<Description>Hidden fields for GCE forms</Description>
@@ -264,7 +352,7 @@
 		<Param name="Cinematic"/>
 	</Snipet>
 	<Snipet category="Input Widgets" key="upper" icon="" type="xsl" name="Input Uppercase">
-		<Description>Add attribute on an input to be Uppercase</Description>
+		<Description>Add attribute for INPUT Uppercase</Description>
 		<Text>style="text-transform:uppercase;" onchange="this.value=this.value.toUpperCase()"</Text>
 	</Snipet>
 	<Snipet category="Input Widgets" key="inputDate" icon="" type="xsl" name="Input field date into form">
@@ -290,6 +378,40 @@
 		<Param name="Label code"/>
 		<Param name="Field name"/>
 		<Param name="Form name"/>
+	</Snipet>
+	<Snipet category="Input Widgets" key="inputNumericQte" icon="" type="xsl" name="Input field numeric (quantity) into form">
+		<Description>HTML and XSL according to numeric field (quantity format)</Description>
+		<Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td nowrap="nowrap">
+	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" size="{$MSQAFF_QTECDE}" maxlength="{$MSQSAI_QTECDE}" class="numeric" onblur="return isDouble(this);">
+		&lt;xsl:call-template name="ChpModifQte">
+			&lt;xsl:with-param name="Node" select="%2"/>
+		&lt;/xsl:call-template>
+	&lt;/input>
+&lt;/td>
+		</Text>
+		<Param name="Label code"/>
+		<Param name="Field name"/>
+	</Snipet>
+	<Snipet category="Input Widgets" key="inputNumericPrice" icon="" type="xsl" name="Input field numeric (price) into form">
+		<Description>HTML and XSL according to numeric field (price format)</Description>
+		<Text>
+&lt;td class="champ">
+	&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
+&lt;/td>
+&lt;td nowrap="nowrap">
+	&lt;input type="text" name="chp:%2-{@index}" id="chp:%2-{@index}" size="{$MSQAFF_MNT}" maxlength="{$MSQSAI_MNT}" class="numeric" onblur="return isDouble(this);">
+		&lt;xsl:call-template name="ChpModifMnt">
+			&lt;xsl:with-param name="Node" select="%2"/>
+		&lt;/xsl:call-template>
+	&lt;/input>
+&lt;/td>
+		</Text>
+		<Param name="Label code"/>
+		<Param name="Field name"/>
 	</Snipet>
 	<Snipet category="Input Widgets" key="text" icon=":/images/lineedit.png" type="xsl" name="Input text">
 		<Description>Enter text into a line</Description>
