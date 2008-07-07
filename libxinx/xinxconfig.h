@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef XINXCONFIG_H
 #define XINXCONFIG_H
 
@@ -29,18 +29,18 @@
 class PrivateXINXConfig;
 class QWidget;
 
-class  ToolsNotDefinedException : public XinxException {
+class ToolsNotDefinedException : public XinxException {
 public:
 	ToolsNotDefinedException( const QString & tool );
 };
 
-class  XINXConfig : public QObject, public AppSettings {
+class XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
 public:
 	XINXConfig( const XINXConfig & origine );
 	XINXConfig();
 	virtual ~XINXConfig();
-	
+
 	static XINXConfig * self();
 	virtual void load();
 	virtual void save();
@@ -48,6 +48,9 @@ public:
 	void setXinxDataFiles( const QString & path );
 	QString getTools( const QString & tool, bool showDialog = true, QWidget * parentWindow = 0 );
 	void addDefaultTool( const QString & tool, const QString & defaultValue );
+
+	/*! Search the file type for the corresponding filename  */
+	struct_extentions matchedFileType( const QString & filename );
 
 	XINXConfig& operator=(const XINXConfig& p);
 signals:

@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 // Xinx header
 #include "configurationfile.h"
 #include "private/p_configurationfile.h"
@@ -28,22 +28,26 @@
 #include <QXmlSimpleReader>
 #include <QDebug>
 
+// TODO: Delete this workaround
+#undef major
+#undef minor
+
 /* 	ConfigurationVerstionIncorectException */
 
 ConfigurationVersionIncorectException::ConfigurationVersionIncorectException( QString version ) : XinxException( QString("Wrong version number %1").arg( version ) ) {
-	
+
 }
 
 /* MetaConfigurationException */
 
 MetaConfigurationException::MetaConfigurationException( QString message ) : XinxException( message ) {
-	
+
 }
 
 /* MetaConfigurationNotExistException */
 
 MetaConfigurationNotExistException::MetaConfigurationNotExistException( QString filename ) : MetaConfigurationException( QString( "Meta configuration \"%1\" not found" ).arg( filename ) ) {
-	
+
 }
 
 /* ConfigurationVersion */
@@ -100,27 +104,27 @@ QString ConfigurationVersion::toString() const {
 								 			.arg( m_release, 2, 10, QLatin1Char('0') );
 	if( m_build > 0 )
 		version += QString( " (%1)" )		.arg( m_build, 2, 10, QLatin1Char('0') );
-		
+
 	return version;
 }
 
 bool ConfigurationVersion::isValid() const {
 	return ( m_major >= 0 ) && ( m_minor >= 0 ) && ( m_release >= 0 );
 }
-	
+
 inline bool ConfigurationVersion::operator== ( ConfigurationVersion version ) const {
 	if( m_major == version.m_major ) {
 		if( m_minor == version.m_minor ) {
 			if( m_release == version.m_release ) {
 				if( m_build == version.m_build ) {
 					return true;
-				} else 
+				} else
 					return false;
-			} else 
+			} else
 				return false;
-		} else 
+		} else
 			return false;
-	} else 
+	} else
 		return false;
 }
 
@@ -130,13 +134,13 @@ inline bool ConfigurationVersion::operator>  ( ConfigurationVersion version ) co
 			if( m_release == version.m_release ) {
 				if( m_build == version.m_build ) {
 					return false;
-				} else 
+				} else
 					return m_build > version.m_build;
-			} else 
+			} else
 				return m_release > version.m_release;
-		} else 
+		} else
 			return m_minor > version.m_minor;
-	} else 
+	} else
 		return m_major > version.m_major;
 }
 
@@ -170,16 +174,16 @@ bool ConfigurationFile::exists( const QString & directoryPath ) {
 
 SimpleConfigurationFile ConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	QString fileName = QFileInfo( directoryPath ).isDir() ?
-			QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) : 
+			QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) :
 			directoryPath;
-	
+
 	ParseVersionHandler handler;
 	QXmlSimpleReader reader;
 	reader.setContentHandler( &handler );
 	reader.setErrorHandler( &handler );
-	
+
 	SimpleConfigurationFile configuration;
-	
+
 	QFile file( fileName );
 	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
 		QXmlInputSource xmlInputSource( &file );
@@ -198,19 +202,19 @@ SimpleConfigurationFile ConfigurationFile::simpleConfigurationFile( const QStrin
 
 MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
 	d = new PrivateMetaConfigurationFile();
-	
+
 	QDomDocument document( "configurationdef.xml" );
 	QFile file( filename );
-	if( ! file.open( QIODevice::ReadOnly ) ) 
+	if( ! file.open( QIODevice::ReadOnly ) )
 		throw MetaConfigurationNotExistException( filename );
-	
+
 	if( ! document.setContent( &file ) ) {
 		file.close();
 		throw MetaConfigurationException( QString( "I can't read \"%1\" as XML Document." ).arg( filename ) );
 	}
-	
+
 	QDomElement root = document.documentElement();
-	
+
 	QDomElement configuration = root.firstChildElement( "configuration" );
 	if( ! configuration.isNull() ) {
 		QDomElement conffile = configuration.firstChildElement( "file" );
@@ -219,7 +223,7 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
 			conffile = conffile.nextSiblingElement( "file" );
 		}
 	}
-	
+
 	if( d->m_files.count() == 0 )
 		throw MetaConfigurationException( QString( "No configuration file found in \"%1\"" ).arg( filename ) );
 }
@@ -242,9 +246,9 @@ SimpleConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QS
 				return configuration;
 			}
 		}
-		return ConfigurationFile::simpleConfigurationFile( directoryPath ); 
+		return ConfigurationFile::simpleConfigurationFile( directoryPath );
 	} catch( MetaConfigurationException ) {
-		return ConfigurationFile::simpleConfigurationFile( directoryPath ); 
+		return ConfigurationFile::simpleConfigurationFile( directoryPath );
 	}
 }
 
@@ -258,10 +262,10 @@ ParseVersionHandler::ParseVersionHandler() {
 }
 
 ParseVersionHandler::~ParseVersionHandler() {
-	
+
 }
-	
-bool ParseVersionHandler::startElement(const QString &namespaceURI, const QString &localName, 
+
+bool ParseVersionHandler::startElement(const QString &namespaceURI, const QString &localName,
 									   const QString &qName, const QXmlAttributes &attributes) {
 	Q_UNUSED( namespaceURI );
 	Q_UNUSED( localName );
@@ -332,5 +336,5 @@ bool ParseVersionHandler::characters(const QString &str) {
 bool ParseVersionHandler::fatalError(const QXmlParseException &exception) {
 	if( m_elementToRead )
 		qDebug() << "Parse error in configuration file at line " << exception.lineNumber() << ", column " << exception.columnNumber() << ": " << exception.message();
-	return false;	
+	return false;
 }

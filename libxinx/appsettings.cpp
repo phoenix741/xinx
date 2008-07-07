@@ -197,7 +197,6 @@ AppSettings::AppSettings::struct_project AppSettings::getDefaultProject() {
 
 	value.saveWithSessionByDefault = false;
 	value.defaultPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
-	value.alertWhenSavingStandardFile = true;
 	value.defaultProjectPathName = "projet";
 	value.closeVersionManagementLog = true;
 
@@ -210,7 +209,6 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( QSetti
 
 	value.saveWithSessionByDefault = settings->value( "Save With Session By Default", defaultValue.saveWithSessionByDefault ).toBool();
 	value.defaultPath = settings->value( "Default Path", defaultValue.defaultPath ).toString();
-	value.alertWhenSavingStandardFile = settings->value( "Alert when saving Standard File", defaultValue.alertWhenSavingStandardFile ).toBool();
 	value.recentProjectFiles = settings->value( "Recent Project Files", defaultValue.recentProjectFiles ).toStringList();
 	value.defaultProjectPathName = settings->value( "Default Project Path Name", defaultValue.defaultProjectPathName ).toString();
 	value.closeVersionManagementLog = settings->value( "Close Version Management Log", defaultValue.closeVersionManagementLog ).toBool();
@@ -224,7 +222,6 @@ void AppSettings::setSettingsProject( QSettings * settings, const QString & path
 
 	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault );
 	settings->setValue( "Default Path", value.defaultPath );
-	settings->setValue( "Alert when saving Standard File", value.alertWhenSavingStandardFile );
 	settings->setValue( "Recent Project Files", value.recentProjectFiles );
 	settings->setValue( "Default Project Path Name", value.defaultProjectPathName );
 	settings->setValue( "Close Version Management Log", value.closeVersionManagementLog );
@@ -429,13 +426,6 @@ void AppSettings::setSettingsHash_QString( QSettings * settings, const QString &
 
 QHash<QString,AppSettings::struct_extentions> AppSettings::getDefaultHash_struct_extentions() {
 	QHash<QString,struct_extentions> value;
-
-	value[ "xml" ] = getDefaultExtentions();
-	value[ "xsl" ] = getDefaultExtentions();
-	value[ "fws" ] = getDefaultExtentions();
-	value[ "fws" ].canBeSpecifique = false;
-	value[ "js" ] = getDefaultExtentions();
-	value[ "js" ].customPath = "js";
 
 	return value;
 }

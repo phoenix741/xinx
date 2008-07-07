@@ -64,7 +64,7 @@ static QScriptValue input( QScriptContext * context, QScriptEngine * interpreter
 	QString message = context->argument( 0 ).toString();
 	if( ( context->argumentCount() > 1 ) && (context->argument( 1 ).isNumber()) ) {
 		int defaultValue = 0;
-		if( context->argument( 1 ).isNumber() ) defaultValue = context->argument( 1 ).toInteger();
+		if( context->argument( 1 ).isNumber() ) defaultValue = context->argument( 1 ).toNumber();
 		int result = QInputDialog::getInteger( 0, "Script input", message, defaultValue );
 		return QScriptValue( interpreter, result );
 	} else {

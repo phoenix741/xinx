@@ -25,7 +25,7 @@
 #include "../projectdirectorydockwidget.h"
 #include "ui_projectdirectorywidget.h"
 #include "../iconprojectprovider.h"
-#include "../xslproject.h"
+#include "xslproject.h"
 
 // Qt header
 #include <QObject>
@@ -52,7 +52,7 @@ public:
 	QDirModel * m_dirModel;
 	QAbstractItemModel * m_flatModel;
 	IconProjectProvider * m_iconProvider;
-	
+
 	XSLProject * m_project;
 
 	bool eventFilter( QObject *obj, QEvent *event );

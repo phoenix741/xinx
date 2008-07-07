@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 // Qt header
 #include <QApplication>
 #include <QDir>
@@ -32,7 +32,7 @@
 /* ToolsNotDefinedException */
 
 ToolsNotDefinedException::ToolsNotDefinedException( const QString & tool ) : XinxException( QString( "Tool %1 not correctly defined." ).arg( tool ) ) {
-	
+
 }
 
 /* Static member */
@@ -62,13 +62,13 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p) {
 
 void XINXConfig::load() {
 	AppSettings::load();
-	
+
 	setXinxDataFiles( config().descriptions.datas );
 }
 
 void XINXConfig::save() {
 	AppSettings::save();
-	
+
 	emit changed();
 }
 
@@ -90,8 +90,8 @@ QString XINXConfig::getTools( const QString & tool, bool showDialog, QWidget * p
 void XINXConfig::addDefaultTool( const QString & tool, const QString & defaultValue ) {
 	if( config().tools.value( tool ).isEmpty() ) {
 		config().tools[ tool ] = defaultValue;
-		// Store imediately the hashtable 
-		QSettings settings("Shadoware.Org", "XINX"); 
+		// Store imediately the hashtable
+		QSettings settings("Shadoware.Org", "XINX");
 		setSettingsHash_QString( &settings, "Tools", config().tools );
 	}
 }
@@ -108,16 +108,26 @@ XINXConfig * XINXConfig::self() {
 	}
 	return s_self;
 }
-	
+
+AppSettings::struct_extentions XINXConfig::matchedFileType( const QString & filename ) {
+	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType( filename );
+	return config().files.value( plugin->description() );
+}
+
 AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
-	
+
 	foreach( QString highlighter, XinxPluginsLoader::self()->highlighters() ) {
 		const QHash<QString,QTextCharFormat> formats = XinxPluginsLoader::self()->formatOfHighlighter( highlighter );
 		foreach( QString key, formats.keys() )
 			value.formats[ key ] = formats.value( key );
 	}
-	
+
+	foreach( IFileTypePlugin * plugin , XinxPluginsLoader::self()->fileTypes() ) {
+		value.files[ plugin->description() ].canBeSpecifique = plugin->properties().canBeSaveAsSpecifique;
+		value.files[ plugin->description() ].customPath = plugin->properties().specifiqueSubDirectory;
+	}
+
 	return value;
 }
 

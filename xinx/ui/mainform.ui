@@ -14,26 +14,23 @@
    <string>XINX</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../application.qrc" >:/images/splash.png</iconset>
+   <iconset resource="../application.qrc" >
+    <normaloff>:/images/splash.png</normaloff>:/images/splash.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>68</y>
+     <width>661</width>
+     <height>373</height>
+    </rect>
+   </property>
    <layout class="QGridLayout" >
-    <property name="leftMargin" >
+    <property name="margin" >
      <number>0</number>
     </property>
-    <property name="topMargin" >
-     <number>0</number>
-    </property>
-    <property name="rightMargin" >
-     <number>0</number>
-    </property>
-    <property name="bottomMargin" >
-     <number>0</number>
-    </property>
-    <property name="horizontalSpacing" >
-     <number>6</number>
-    </property>
-    <property name="verticalSpacing" >
+    <property name="spacing" >
      <number>6</number>
     </property>
     <item row="0" column="0" >
@@ -184,8 +181,25 @@
    <addaction name="m_toolsMenu" />
    <addaction name="m_helpMenu" />
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>441</y>
+     <width>661</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QToolBar" name="m_projectToolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>29</y>
+     <width>85</width>
+     <height>39</height>
+    </rect>
+   </property>
    <property name="windowTitle" >
     <string>Project Tool Bar</string>
    </property>
@@ -202,6 +216,14 @@
    <addaction name="m_closeProjectAct" />
   </widget>
   <widget class="QToolBar" name="m_fileToolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>85</x>
+     <y>29</y>
+     <width>193</width>
+     <height>39</height>
+    </rect>
+   </property>
    <property name="windowTitle" >
     <string>File Tool Bar</string>
    </property>
@@ -222,6 +244,14 @@
    <addaction name="m_printAct" />
   </widget>
   <widget class="QToolBar" name="m_editToolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>278</x>
+     <y>29</y>
+     <width>270</width>
+     <height>39</height>
+    </rect>
+   </property>
    <property name="windowTitle" >
     <string>Edit Tool Bar</string>
    </property>
@@ -248,6 +278,14 @@
    <addaction name="m_showSpaceAndTabAct" />
   </widget>
   <widget class="QToolBar" name="m_searchToolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>548</x>
+     <y>29</y>
+     <width>50</width>
+     <height>39</height>
+    </rect>
+   </property>
    <property name="windowTitle" >
     <string>Search Tool Bar</string>
    </property>
@@ -263,6 +301,14 @@
    <addaction name="m_searchAct" />
   </widget>
   <widget class="QToolBar" name="m_webServicesToolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>598</x>
+     <y>29</y>
+     <width>63</width>
+     <height>39</height>
+    </rect>
+   </property>
    <property name="windowTitle" >
     <string>WebServices Tool Bar</string>
    </property>
@@ -280,7 +326,8 @@
   </widget>
   <action name="m_newAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/filenew.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/filenew.png</normaloff>:/images/filenew.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;New</string>
@@ -294,7 +341,8 @@
   </action>
   <action name="m_openAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fileopen.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/fileopen.png</normaloff>:/images/fileopen.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Open ...</string>
@@ -308,7 +356,8 @@
   </action>
   <action name="m_saveAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/filesave.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Save</string>
@@ -322,7 +371,8 @@
   </action>
   <action name="m_saveAsAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/filesaveas.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/filesaveas.png</normaloff>:/images/filesaveas.png</iconset>
    </property>
    <property name="text" >
     <string>Save &amp;As...</string>
@@ -336,7 +386,8 @@
   </action>
   <action name="m_saveAllAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/filesaveall.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/filesaveall.png</normaloff>:/images/filesaveall.png</iconset>
    </property>
    <property name="text" >
     <string>Save A&amp;ll...</string>
@@ -350,7 +401,8 @@
   </action>
   <action name="m_printAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fileprint.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/fileprint.png</normaloff>:/images/fileprint.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Print ...</string>
@@ -364,7 +416,8 @@
   </action>
   <action name="m_closeAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fileclose.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/fileclose.png</normaloff>:/images/fileclose.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Close</string>
@@ -389,7 +442,8 @@
   </action>
   <action name="m_exitAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/exit.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/exit.png</normaloff>:/images/exit.png</iconset>
    </property>
    <property name="text" >
     <string>E&amp;xit</string>
@@ -403,7 +457,8 @@
   </action>
   <action name="m_undoAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/undo.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/undo.png</normaloff>:/images/undo.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Undo</string>
@@ -414,7 +469,8 @@
   </action>
   <action name="m_redoAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/redo.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/redo.png</normaloff>:/images/redo.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Redo</string>
@@ -425,7 +481,8 @@
   </action>
   <action name="m_cutAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/editcut.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/editcut.png</normaloff>:/images/editcut.png</iconset>
    </property>
    <property name="text" >
     <string>Cu&amp;t</string>
@@ -436,7 +493,8 @@
   </action>
   <action name="m_copyAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/editcopy.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Copy</string>
@@ -447,7 +505,8 @@
   </action>
   <action name="m_pasteAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/editpaste.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/editpaste.png</normaloff>:/images/editpaste.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Paste</string>
@@ -458,7 +517,8 @@
   </action>
   <action name="m_selectAllAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/edit-select-all.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/edit-select-all.png</normaloff>:/images/edit-select-all.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Select All</string>
@@ -477,7 +537,8 @@
   </action>
   <action name="m_moveUpLineAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/1uparrow.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/1uparrow.png</normaloff>:/images/1uparrow.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Move line up</string>
@@ -488,7 +549,8 @@
   </action>
   <action name="m_moveDownLineAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/1downarrow.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/1downarrow.png</normaloff>:/images/1downarrow.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Move line down</string>
@@ -499,7 +561,8 @@
   </action>
   <action name="m_upperTextAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fontsizeup.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/fontsizeup.png</normaloff>:/images/fontsizeup.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Upper Case</string>
@@ -510,7 +573,8 @@
   </action>
   <action name="m_lowerTextAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fontsizedown.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/fontsizedown.png</normaloff>:/images/fontsizedown.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Lower Case</string>
@@ -548,7 +612,8 @@
   </action>
   <action name="m_searchAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/find.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/find.png</normaloff>:/images/find.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Search ...</string>
@@ -573,7 +638,8 @@
   </action>
   <action name="m_replaceAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/find.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/find.png</normaloff>:/images/find.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Replace ...</string>
@@ -584,7 +650,8 @@
   </action>
   <action name="m_newProjectAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/window_new.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/window_new.png</normaloff>:/images/window_new.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;New project ...</string>
@@ -595,7 +662,8 @@
   </action>
   <action name="m_aboutAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/help-about.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/help-about.png</normaloff>:/images/help-about.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;About</string>
@@ -609,7 +677,8 @@
   </action>
   <action name="m_aboutQtAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/help-hint.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/help-hint.png</normaloff>:/images/help-hint.png</iconset>
    </property>
    <property name="text" >
     <string>About &amp;Qt</string>
@@ -623,7 +692,8 @@
   </action>
   <action name="m_openProjectAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/project_open.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/project_open.png</normaloff>:/images/project_open.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Choose file ...</string>
@@ -637,7 +707,8 @@
   </action>
   <action name="m_saveProjectAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/filesave.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Save project</string>
@@ -674,7 +745,8 @@
   </action>
   <action name="m_indentAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/format-indent-more.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/format-indent-more.png</normaloff>:/images/format-indent-more.png</iconset>
    </property>
    <property name="text" >
     <string>Indent Code</string>
@@ -682,7 +754,8 @@
   </action>
   <action name="m_unindentAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/format-indent-less.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/format-indent-less.png</normaloff>:/images/format-indent-less.png</iconset>
    </property>
    <property name="text" >
     <string>Unindent code</string>
@@ -690,7 +763,8 @@
   </action>
   <action name="m_customApplicationAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/configure.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
    </property>
    <property name="text" >
     <string>Customize ...</string>
@@ -715,7 +789,8 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/reload.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/reload.png</normaloff>:/images/reload.png</iconset>
    </property>
    <property name="text" >
     <string>Refresh WebServices List</string>
@@ -726,18 +801,11 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/run.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
    </property>
    <property name="text" >
     <string>Call WebServices</string>
-   </property>
-  </action>
-  <action name="m_newWebServicesFileAct" >
-   <property name="icon" >
-    <iconset/>
-   </property>
-   <property name="text" >
-    <string>New WebServices file</string>
    </property>
   </action>
   <action name="m_closeProjectWithSessionAct" >
@@ -750,7 +818,8 @@
   </action>
   <action name="m_recentProjectAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/project_open.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/project_open.png</normaloff>:/images/project_open.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Recent Project</string>
@@ -758,7 +827,8 @@
   </action>
   <action name="m_recentFileAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/fileopen.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/fileopen.png</normaloff>:/images/fileopen.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Recent file</string>
@@ -766,7 +836,8 @@
   </action>
   <action name="m_globalUpdateFromRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_update.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_update.png</normaloff>:/images/vcs_update.png</iconset>
    </property>
    <property name="text" >
     <string>Update project</string>
@@ -777,7 +848,8 @@
   </action>
   <action name="m_globalCommitToRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_commit.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_commit.png</normaloff>:/images/vcs_commit.png</iconset>
    </property>
    <property name="text" >
     <string>Commit project</string>
@@ -789,7 +861,8 @@
   </action>
   <action name="m_cancelRCSOperationAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
    </property>
    <property name="text" >
     <string>Cancel RCS operation</string>
@@ -797,7 +870,8 @@
   </action>
   <action name="m_compareWithHeadAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_diff.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_diff.png</normaloff>:/images/vcs_diff.png</iconset>
    </property>
    <property name="text" >
     <string>Compare with the version management</string>
@@ -815,7 +889,8 @@
   </action>
   <action name="m_selectedUpdateFromRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_update.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_update.png</normaloff>:/images/vcs_update.png</iconset>
    </property>
    <property name="text" >
     <string>Update project</string>
@@ -823,7 +898,8 @@
   </action>
   <action name="m_selectedCommitToRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_commit.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_commit.png</normaloff>:/images/vcs_commit.png</iconset>
    </property>
    <property name="text" >
     <string>Commit project</string>
@@ -831,7 +907,8 @@
   </action>
   <action name="m_selectedAddToRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_add.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_add.png</normaloff>:/images/vcs_add.png</iconset>
    </property>
    <property name="text" >
     <string>Add file(s) to project</string>
@@ -839,7 +916,8 @@
   </action>
   <action name="m_selectedRemoveFromRCSAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/vcs_remove.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/vcs_remove.png</normaloff>:/images/vcs_remove.png</iconset>
    </property>
    <property name="text" >
     <string>Delete file(s) from project</string>
@@ -850,7 +928,8 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/flatlist.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/flatlist.png</normaloff>:/images/flatlist.png</iconset>
    </property>
    <property name="text" >
     <string>Toggled Flat View</string>
@@ -866,7 +945,8 @@
   </action>
   <action name="m_refreshFileAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/reload.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/reload.png</normaloff>:/images/reload.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Refresh</string>
@@ -879,7 +959,8 @@
   </action>
   <action name="m_closeProjectAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/project_close.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/project_close.png</normaloff>:/images/project_close.png</iconset>
    </property>
    <property name="text" >
     <string>Close project</string>
@@ -887,7 +968,8 @@
   </action>
   <action name="m_nextBookmarkAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/bookmarknext.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/bookmarknext.png</normaloff>:/images/bookmarknext.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Next bookmark</string>
@@ -895,7 +977,8 @@
   </action>
   <action name="m_bookmarkAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/bookmark.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/bookmark.png</normaloff>:/images/bookmark.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Bookmark</string>
@@ -903,7 +986,8 @@
   </action>
   <action name="m_previousBookmarkAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/bookmarkprevious.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/bookmarkprevious.png</normaloff>:/images/bookmarkprevious.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Previous bookmark</string>
@@ -911,7 +995,8 @@
   </action>
   <action name="m_clearAllBookmarkAct" >
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/clearallbookmarks.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/clearallbookmarks.png</normaloff>:/images/clearallbookmarks.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Clear all bookmark</string>
@@ -937,7 +1022,8 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../application.qrc" >:/images/draw-text.png</iconset>
+    <iconset resource="../application.qrc" >
+     <normaloff>:/images/draw-text.png</normaloff>:/images/draw-text.png</iconset>
    </property>
    <property name="text" >
     <string>Show space and &amp;Tabulation</string>

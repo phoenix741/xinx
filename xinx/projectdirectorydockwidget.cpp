@@ -37,10 +37,10 @@
 
 /* PrivateProjectDirectoryDockWidget */
 
-PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) : 
+PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) :
 	m_selectedUpdateAction(0), m_selectedCommitAction(0), m_selectedAddAction(0), m_selectedRemoveAction(0),
-	m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0), m_selectedCompareAction(0), 
-	m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {	
+	m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0), m_selectedCompareAction(0),
+	m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
 	m_projectDirWidget->setupUi( contentWidget );
@@ -49,10 +49,10 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	m_modelTimer = new QTimer( this );
 	m_modelTimer->setInterval( 500 );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
-	
+
 	m_projectDirWidget->m_projectDirectoryTreeView->header()->hide();
 	m_projectDirWidget->m_projectDirectoryTreeView->installEventFilter( this );
-	
+
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()) );
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
@@ -62,7 +62,7 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 }
 
 PrivateProjectDirectoryDockWidget::~PrivateProjectDirectoryDockWidget() {
-	
+
 }
 
 void PrivateProjectDirectoryDockWidget::projectChange() {
@@ -70,7 +70,7 @@ void PrivateProjectDirectoryDockWidget::projectChange() {
 	if( m_project ) {
 		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
 		m_projectDirWidget->m_prefixComboBox->addItems( m_project->specifiquePrefixes() );
-		m_projectDirWidget->m_prefixComboBox->setCurrentIndex( 
+		m_projectDirWidget->m_prefixComboBox->setCurrentIndex(
 				m_projectDirWidget->m_prefixComboBox->findText( m_project->specifiquePrefix() ) );
 	}
 }
@@ -82,19 +82,24 @@ void PrivateProjectDirectoryDockWidget::on_m_prefixComboBox_activated( QString p
 void PrivateProjectDirectoryDockWidget::filtreChange() {
 	Q_ASSERT( m_dirModel );
 	m_modelTimer->stop();
-	
+
 	QString filtre = m_projectDirWidget->m_filtreLineEdit->text();
 	if( filtre.isEmpty() ) {
-		m_dirModel->setNameFilters( XinxPluginsLoader::self()->defaultProjectFilter() );
+		m_dirModel->setNameFilters( XinxPluginsLoader::self()->managedFilters() );
 		if( m_projectDirWidget->m_flatListBtn->isChecked() )
 			m_projectDirWidget->m_flatListBtn->click();
 	} else {
 		QString extention = QFileInfo( filtre ).suffix();
 		QString filename = QFileInfo( filtre ).fileName();
+
+		QStringList filters;
 		if( extention.isEmpty() )
-			m_dirModel->setNameFilters( XinxPluginsLoader::self()->defaultProjectFilter( filtre ) );
+			filters += QString( "*%1*.*" ).arg( filename );
 		else
-			m_dirModel->setNameFilters( QStringList() << QString( "*%1*" ).arg( filename ) );
+			filters += QString( "*%1*.%2" ).arg( filename ).arg( extention );
+
+		m_dirModel->setNameFilters( filters );
+
 		if( ! m_projectDirWidget->m_flatListBtn->isChecked() )
 			m_projectDirWidget->m_flatListBtn->click();
 	}
@@ -102,7 +107,7 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 
 bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event ) {
 	if ( ( obj == m_projectDirWidget->m_projectDirectoryTreeView ) && ( event->type() == QEvent::ContextMenu ) ) {
-		int nbSelected = m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size(); 
+		int nbSelected = m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size();
 		QMenu *menu = new QMenu( m_projectDirWidget->m_projectDirectoryTreeView );
 
 		if( nbSelected == 1 ) {
@@ -113,7 +118,7 @@ bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event
 			if( m_parent->rcs() )
 				menu->addSeparator();
 		}
-			
+
 		if( m_parent->rcs() ) {
 			if( m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size() == 1 ) {
 				menu->addAction( m_selectedCompareWithHeadAction );
@@ -132,7 +137,7 @@ bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event
 
 void PrivateProjectDirectoryDockWidget::on_m_filtreLineEdit_textChanged( QString filtre ) {
 	Q_UNUSED( filtre );
-	
+
 
 	Q_ASSERT( m_dirModel );
 
@@ -142,7 +147,7 @@ void PrivateProjectDirectoryDockWidget::on_m_filtreLineEdit_textChanged( QString
 
 void PrivateProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
 	QModelIndex idx = index;
-	if( m_flatModel ) 
+	if( m_flatModel )
 		idx = qobject_cast<FlatModel*>( m_flatModel )->mappingToSource( index );
 	if( idx.isValid() && (! m_dirModel->isDir( idx )) )
 		emit m_parent->open( m_dirModel->filePath( idx ) );
@@ -150,13 +155,13 @@ void PrivateProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClic
 
 
 /* ProjectDirectoryDockWidget */
-	
+
 ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
 	d = new PrivateProjectDirectoryDockWidget( this );
 }
 
 ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ) {
-	d = new PrivateProjectDirectoryDockWidget( this );	
+	d = new PrivateProjectDirectoryDockWidget( this );
 }
 
 ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget() {
@@ -202,7 +207,7 @@ void ProjectDirectoryDockWidget::setSelectedCompareAction( QAction * action ) {
 void ProjectDirectoryDockWidget::setToggledViewAction( QAction * action ) {
 	d->m_projectDirWidget->m_flatListBtn->setDefaultAction( action );
 }
-	
+
 bool ProjectDirectoryDockWidget::isViewFlat() {
 	return d->m_projectDirWidget->m_flatListBtn->isChecked();
 }
@@ -239,7 +244,7 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 		delete d->m_flatModel;
 		d->m_flatModel = NULL;
 	}
-	
+
 	QAbstractItemModel * model = d->m_projectDirWidget->m_projectDirectoryTreeView->model();
 	for( int i = 2; i < model->columnCount(); i++ )
 		d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
@@ -258,11 +263,11 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 	delete d->m_iconProvider;
 	d->m_iconProvider = NULL;
 	d->m_projectDirWidget->m_prefixComboBox->clear();
-		
+
 	d->m_project = project;
-	
+
 	if( project ) {
-		d->m_dirModel = new DirRCSModel( XinxPluginsLoader::self()->defaultProjectFilter(), DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
+		d->m_dirModel = new DirRCSModel( XinxPluginsLoader::self()->managedFilters(), DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, d->m_projectDirWidget->m_projectDirectoryTreeView );
 		d->m_iconProvider = new IconProjectProvider();
 		d->m_dirModel->setIconProvider( d->m_iconProvider );
 
@@ -273,7 +278,7 @@ void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
 		for(int i = 2; i < d->m_dirModel->columnCount(); i++ )
 			d->m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
 		d->m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( d->m_dirModel->index( d->m_project->projectPath() ) );
-		
+
 		d->m_projectDirWidget->m_prefixComboBox->addItems( project->specifiquePrefixes() );
 	}
 }
@@ -289,7 +294,7 @@ void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
 
 bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
 	Q_ASSERT( path.contains( d->m_project->projectPath() ) );
-	
+
 	if( d->m_dirModel ) {
 		QModelIndex index = d->m_dirModel->index( path );
 		if( index.isValid() ) {

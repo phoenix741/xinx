@@ -1,0 +1,61 @@
+/***************************************************************************
+ *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   ulrich.vdh@free.fr                                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#ifndef __XSLMODELCOMPLETER_H__
+#define __XSLMODELCOMPLETER_H__
+
+// Xinx header
+#include "filecontentstructure.h"
+
+// Qt header
+#include <QAbstractListModel>
+#include <QStringList>
+
+class XSLCompletionModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	enum CompletionTag { NoTags = 0x0, Html = 0x1, Xsl = 0x2 };
+	Q_DECLARE_FLAGS( CompletionTags, CompletionTag )
+
+	XSLCompletionModel( CompletionTags tags, FileContentElementList * list, QObject * parent = 0 );
+	virtual ~XSLCompletionModel();
+
+	QVariant data( const QModelIndex &index, int role ) const;
+	Qt::ItemFlags flags( const QModelIndex &index ) const;
+	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+
+	void setFilter( QString baliseName = QString(), QString attributeName = QString() );
+protected slots:
+	virtual void beginInsertRows( int row );
+	virtual void endInsertRows();
+	virtual void beginRemoveRows( int row );
+	virtual void endRemoveRows();
+	virtual void reset();
+
+private:
+	FileContentElementList * m_list;
+
+	QString m_baliseName, m_attributeName;
+	CompletionTags m_tags;
+};
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( XSLCompletionModel::CompletionTags )
+
+#endif // __XSLMODELCOMPLETER_H__

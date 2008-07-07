@@ -39,7 +39,7 @@ ToolsModelIndex::ToolsModelIndex( QHash<QString,QString> * tools, QObject * pare
 }
 
 ToolsModelIndex::~ToolsModelIndex() {
-	
+
 }
 
 void ToolsModelIndex::setTools( QHash<QString,QString> * tools ) {
@@ -62,7 +62,7 @@ int ToolsModelIndex::columnCount( const QModelIndex & parent ) const {
 
 bool ToolsModelIndex::setData ( const QModelIndex & index, const QVariant & value, int role ) {
 	if( index.isValid() && ( role == Qt::EditRole ) ) {
-		m_tools->insert( m_tools->keys().at( index.row() ), value.toString() ); 
+		m_tools->insert( m_tools->keys().at( index.row() ), value.toString() );
 		emit dataChanged( index, index );
 		return true;
 	}
@@ -90,7 +90,7 @@ QVariant ToolsModelIndex::data( const QModelIndex & index, int role ) const {
 			return m_tools->values().at( index.row() );
 		}
 	}
-		
+
 	return QVariant();
 }
 
@@ -122,7 +122,7 @@ QWidget * DirectoryEditDelegate::createEditor( QWidget *parent, const QStyleOpti
 	DirectoryEditWidget * editor = new DirectoryEditWidget( parent );
 	editor->setDirectory( false );
 	editor->layout()->setSpacing(0);
-    return editor;	
+    return editor;
 }
 
 void DirectoryEditDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const {
@@ -136,7 +136,7 @@ void DirectoryEditDelegate::setModelData( QWidget *editor, QAbstractItemModel *m
     DirectoryEdit * directoryEdit = qobject_cast<DirectoryEditWidget*>( editor )->lineEdit();
     QString value = directoryEdit->text();
 
-    model->setData( index, QDir::fromNativeSeparators( value ), Qt::EditRole );	
+    model->setData( index, QDir::fromNativeSeparators( value ), Qt::EditRole );
 }
 
 void DirectoryEditDelegate::updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
@@ -147,10 +147,10 @@ void DirectoryEditDelegate::updateEditorGeometry( QWidget *editor, const QStyleO
 void DirectoryEditDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const {
 	if( index.column() == 1 ) {
 		QString value = index.model()->data( index, Qt::DisplayRole ).toString();
-		
+
 		painter->save();
 		QStyleOptionViewItem o = option;
-		if( ! QFile( value ).exists() ) 
+		if( ! QFile( value ).exists() )
 			o.palette.setColor( QPalette::Text, Qt::red );
 		drawDisplay( painter, o, option.rect, value );
 		painter->restore();
@@ -161,19 +161,19 @@ void DirectoryEditDelegate::paint( QPainter *painter, const QStyleOptionViewItem
 /* SpecifiqueModelIndex */
 
 SpecifiqueModelIndex::SpecifiqueModelIndex( QHash<QString,AppSettings::struct_extentions> * extentions, QObject * parent ) : QAbstractTableModel( parent ) {
-	foreach( QString key, XinxPluginsLoader::self()->extentions().keys() ) {
-		m_extentions.insert( key, extentions->value( key ) );
+	foreach( IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes()  ) {
+		m_extentions.insert( plugin->description(), extentions->value( plugin->description() ) );
 	}
 }
 
 SpecifiqueModelIndex::~SpecifiqueModelIndex() {
-	
+
 }
 
 void SpecifiqueModelIndex::setExtentions( QHash<QString,AppSettings::struct_extentions> * extentions ) {
 	emit layoutAboutToBeChanged();
 	m_extentions.clear();
-	foreach( QString key, XinxPluginsLoader::self()->extentions().keys() ) {
+	foreach( QString key, XinxPluginsLoader::self()->managedFilters() ) {
 		m_extentions.insert( key, extentions->value( key ) );
 	}
 	emit layoutChanged();
@@ -218,7 +218,7 @@ bool SpecifiqueModelIndex::setData ( const QModelIndex & index, const QVariant &
 			ext.customPath = value.toString();
 			break;
 		}
-		m_extentions.insert( key, ext ); 
+		m_extentions.insert( key, ext );
 		emit dataChanged( index, index );
 		return true;
 	}
@@ -229,10 +229,10 @@ QVariant SpecifiqueModelIndex::data ( const QModelIndex & index, int role ) cons
 	if( index.isValid() && ( role == Qt::DisplayRole ) ) {
 		switch( index.column() ) {
 		case 0 :
-			return XinxPluginsLoader::self()->filter( m_extentions.keys().at( index.row() ) );
+			return m_extentions.keys().at( index.row() );
 		case 1 :
 			return m_extentions.values().at( index.row() ).canBeSpecifique;
-		case 2 : 
+		case 2 :
 			return m_extentions.values().at( index.row() ).customPath;
 		}
 	}
@@ -242,11 +242,11 @@ QVariant SpecifiqueModelIndex::data ( const QModelIndex & index, int role ) cons
 			return m_extentions.keys().at( index.row() );
 		case 1 :
 			return m_extentions.values().at( index.row() ).canBeSpecifique;
-		case 2 : 
+		case 2 :
 			return m_extentions.values().at( index.row() ).customPath;
 		}
 	}
-	
+
 	return QVariant();
 }
 
@@ -259,11 +259,11 @@ Qt::ItemFlags SpecifiqueModelIndex::flags ( const QModelIndex & index ) const {
 /* SnipetModelIndex */
 
 SnipetModelIndex::SnipetModelIndex( SnipetList * list, QObject * parent ) : QAbstractTableModel( parent ), m_list( list ) {
-	
+
 }
 
 SnipetModelIndex::~SnipetModelIndex() {
-	
+
 }
 
 int SnipetModelIndex::rowCount( const QModelIndex & ) const {
@@ -276,10 +276,10 @@ int SnipetModelIndex::columnCount( const QModelIndex & ) const {
 
 QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation, int role ) const {
 	if( role != Qt::DisplayRole ) return QVariant();
-	
+
 	if( orientation == Qt::Horizontal ) {
 		switch( section ) {
-		case 0: 
+		case 0:
 			return tr("Name");
 		case 1:
 			return tr("Key");
@@ -296,10 +296,10 @@ QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation,
 QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 	if( ( role != Qt::DisplayRole ) && ( role != Qt::DecorationRole ) && ( role != Qt::UserRole ) ) return QVariant();
 	if( ! index.isValid() ) return QVariant();
-		
+
 	int line = index.row();
 	if( ( line < 0 ) || ( line >= m_list->size() ) ) return QVariant();
-	
+
 	if( role == Qt::DisplayRole )
 	switch( index.column() ) {
 	case 0:
@@ -356,16 +356,16 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Create backup file when saving
 	m_parent->m_createBakCheckBox->setChecked( m_config.config().editor.createBackupFile );
-	
+
 	// Popup when file modified
 	m_parent->m_popupWhenFileModifiedCheckBox->setChecked( m_config.config().editor.popupWhenFileModified );
 
 	// Pretty print on saving
 	m_parent->m_prettyPrintOnSavingCheckBox->setChecked( m_config.config().editor.autoindentOnSaving );
-	
+
 	// Complession level
 	m_parent->m_completionLevelComboBox->setCurrentIndex( m_config.config().editor.completionLevel );
-	
+
 	// Tab close button
 	if( m_config.config().editor.closeButtonOnEachTab ) {
 		if( m_config.config().editor.hideCloseTab )
@@ -374,7 +374,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 			m_parent->m_closeAndCornerBtnRadioButton->setChecked( true );
 	} else
 		m_parent->m_cornerBtnRadioButton->setChecked( true );
-	
+
 	// Auto highlight text
 	m_parent->m_autoHighlightCheckBox->setChecked( m_config.config().editor.autoHighlight );
 
@@ -383,34 +383,31 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Show tabulation and space in the editor
 	m_parent->m_showTabulationCheckBox->setChecked( m_config.config().editor.showTabulationAndSpace );
-	
+
 	// Show current line
 	m_parent->m_showCurrentLineCheckBox->setChecked( m_config.config().editor.highlightCurrentLine );
-	
+
 	// Size of tabulation
 	m_parent->m_sizeOfTabSpinBox->setValue( m_config.config().editor.tabulationSize );
-	
+
 	// Font size
 	m_parent->m_fontSizeSpinBox->setValue( m_config.config().editor.defaultFormat.pointSize() );
-	
+
 	// Font name
 	m_parent->m_fontComboBox->setCurrentFont(  m_config.config().editor.defaultFormat );
-	
-	// Alert user when file is standard
-	m_parent->m_alertStandardCheckBox->setChecked( m_config.config().project.alertWhenSavingStandardFile );
-	
+
 	// Save project with session
 	m_parent->m_saveSessionCheckBox->setChecked( m_config.config().project.saveWithSessionByDefault );
-	
+
 	// Close the version management log automaticaly.
 	m_parent->m_closeLogCheckBox->setChecked( m_config.config().project.closeVersionManagementLog );
-	
+
 	// Default project directory
 	m_parent->m_projectPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().project.defaultPath ) );
-	
+
 	// Default specifique path name
 	m_parent->m_lineEditDefaultProjectPathName->setText( QDir::toNativeSeparators( m_config.config().project.defaultProjectPathName ) );
-	
+
 	// Tools
 	ToolsModelIndex * toolsModel = new ToolsModelIndex( &(m_config.config().tools), m_parent->m_toolsTable );
 	m_parent->m_toolsTable->setModel( toolsModel );
@@ -419,7 +416,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_toolsTable->horizontalHeader()->setResizeMode( 1, QHeaderView::Stretch );
 	//m_parent->m_toolsTable->resizeColumnsToContents();
 	//QObject::connect( toolsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_toolsTable, SLOT(resizeColumnsToContents()) );
-	
+
 	// CVS : Create Change Log automatically
 	m_parent->m_changeLogCheckBox->setChecked( m_config.config().rcs.createChangelog );
 
@@ -429,22 +426,22 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_highlighterComboBox->addItems( XinxPluginsLoader::self()->highlighters() );
 	m_parent->m_highlighterComboBox->setCurrentIndex( 0 );
 	m_parent->on_m_highlighterComboBox_activated( m_parent->m_highlighterComboBox->currentText() );
-	
+
 	// Extentions
 	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex( &(m_config.config().files) , m_parent->m_specifiqueTableView );
 	m_parent->m_specifiqueTableView->setModel( specifiqueModel );
 	m_parent->m_specifiqueTableView->resizeColumnsToContents();
 	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_parent->m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
-	
+
 	// Xml pres
 	m_parent->m_expandPathLineEdit->setText( m_config.config().xmlPres.autoExpandedPath );
 	m_parent->m_hideElementList->setValues( m_config.config().xmlPres.hidePath );
 	m_parent->m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
-	m_parent->m_viewColorBox->setColor( m_config.config().xmlPres.viewColor ); 
-	m_parent->m_errorColorBox->setColor( m_config.config().xmlPres.errorColor ); 
+	m_parent->m_viewColorBox->setColor( m_config.config().xmlPres.viewColor );
+	m_parent->m_errorColorBox->setColor( m_config.config().xmlPres.errorColor );
 	m_parent->m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
-	
-	// Snipet 
+
+	// Snipet
 	m_snipets = SnipetListManager::self()->snipets();
 	m_snipetModel = new SnipetModelIndex( &m_snipets, m_parent->m_snipetTableView );
 	m_parent->m_snipetTableView->setModel( m_snipetModel );
@@ -453,7 +450,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 //	m_parent->m_snipetTableView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
 	m_parent->m_snipetTableView_selectionChanged();
 	connect( m_parent->m_snipetTableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), m_parent, SLOT(m_snipetTableView_selectionChanged()) );
-	
+
 	// Load Script
 	m_parent->m_scriptListView->clear();
 	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
@@ -464,7 +461,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 void PrivateCustomDialogImpl::storeConfig() {
 	// Application description path
 	m_config.setXinxDataFiles( QDir::fromNativeSeparators( m_parent->m_descriptionPathLineEdit->text() ) );
-	
+
 	// Language
 	QRegExp exp("^\\((.*)\\).*$");
 	if( exp.indexIn( m_parent->m_langComboBox->currentText() ) >= 0 )
@@ -472,13 +469,13 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Create backup file when saving
 	m_config.config().editor.createBackupFile = m_parent->m_createBakCheckBox->isChecked();
-	
+
 	// Popup when file modified
 	m_config.config().editor.popupWhenFileModified = m_parent->m_popupWhenFileModifiedCheckBox->isChecked();
-	
+
 	// Pretty print on saving
 	m_config.config().editor.autoindentOnSaving = m_parent->m_prettyPrintOnSavingCheckBox->isChecked();
-	
+
 	// Complession level
 	m_config.config().editor.completionLevel = m_parent->m_completionLevelComboBox->currentIndex();
 
@@ -503,37 +500,34 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Show tabulation and space in the editor
 	m_config.config().editor.showTabulationAndSpace = m_parent->m_showTabulationCheckBox->isChecked();
-	
+
 	// Show current line
 	m_config.config().editor.highlightCurrentLine = m_parent->m_showCurrentLineCheckBox->isChecked();
 
 	// Size of tabulation
 	m_config.config().editor.tabulationSize = m_parent->m_sizeOfTabSpinBox->value();
-	
+
 	// Font name
 	m_config.config().editor.defaultFormat = m_parent->m_fontComboBox->currentFont();
 
 	// Font size
 	m_config.config().editor.defaultFormat.setPointSize( m_parent->m_fontSizeSpinBox->value() );
-	
-	// Alert user when file is standard
-	m_config.config().project.alertWhenSavingStandardFile = m_parent->m_alertStandardCheckBox->isChecked();
-	
+
 	// Save project with session
 	m_config.config().project.saveWithSessionByDefault = m_parent->m_saveSessionCheckBox->isChecked();
-	
+
 	// Close the version management log automaticaly.
 	m_config.config().project.closeVersionManagementLog = m_parent->m_closeLogCheckBox->isChecked();
 
 	// Default project directory
 	m_config.config().project.defaultPath = QDir::fromNativeSeparators( m_parent->m_projectPathLineEdit->text() );
-	
+
 	// Default specifique path name
 	m_config.config().project.defaultProjectPathName = QDir::fromNativeSeparators( m_parent->m_lineEditDefaultProjectPathName->text() );
 
 	// CVS : Create Change Log automatically
 	m_config.config().rcs.createChangelog = m_parent->m_changeLogCheckBox->isChecked();
-	
+
 	// Extentions
 	SpecifiqueModelIndex * specifiqueModel = qobject_cast<SpecifiqueModelIndex*>( m_parent->m_specifiqueTableView->model() );
 	m_config.config().files.clear();
@@ -543,10 +537,10 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().xmlPres.autoExpandedPath = m_parent->m_expandPathLineEdit->text();
 	m_config.config().xmlPres.hidePath = m_parent->m_hideElementList->values();
 	m_config.config().xmlPres.showFilteredSubTree = m_parent->m_showSubEltCheckBox->isChecked();
-	m_config.config().xmlPres.viewColor = m_parent->m_viewColorBox->color(); 
-	m_config.config().xmlPres.errorColor = m_parent->m_errorColorBox->color(); 
+	m_config.config().xmlPres.viewColor = m_parent->m_viewColorBox->color();
+	m_config.config().xmlPres.errorColor = m_parent->m_errorColorBox->color();
 	m_config.config().xmlPres.screenDataColor = m_parent->m_screenColorBox->color();
-	
+
 	// Snipet
 	SnipetListManager::self()->setSnipets( m_snipets );
 }
@@ -554,33 +548,33 @@ void PrivateCustomDialogImpl::storeConfig() {
 void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
 	Q_ASSERT( plugin );
 	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin ) );
-	
+
 	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin );
-	
+
 	QDialog configureDialog;
 	configureDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
-	
+
 	QWidget * settings = p->createSettingsDialog();
-	if( ! p->loadSettingsDialog( settings ) ) 
+	if( ! p->loadSettingsDialog( settings ) )
 		QMessageBox::warning( m_parent, tr("Plugin Customization"), tr("Can't load the plugin configuration") );
-	
+
 	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &configureDialog );
 	QPushButton *cancelButton = new QPushButton( QIcon(":/images/button_cancel.png"), tr("&Cancel"), &configureDialog );
-	
+
 	QHBoxLayout * hbox = new QHBoxLayout;
 	hbox->addStretch();
 	hbox->addWidget( okButton );
 	hbox->addWidget( cancelButton );
-	
+
 	QVBoxLayout * vbox = new QVBoxLayout;
 	vbox->addWidget( settings );
 	vbox->addLayout( hbox );
-	
+
 	configureDialog.setLayout( vbox );
-	
+
 	connect( okButton, SIGNAL(clicked()), &configureDialog, SLOT(accept()) );
 	connect( cancelButton, SIGNAL(clicked()), &configureDialog, SLOT(reject()) );
-	
+
 	if( configureDialog.exec() == QDialog::Accepted ) {
 		if( ! p->saveSettingsDialog( settings ) )
 			QMessageBox::warning( m_parent, tr("Plugin Customization"), tr("Can't save the plugin configuration") );
@@ -589,10 +583,10 @@ void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
 
 void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
 	Q_ASSERT( plugin );
-	
+
 	QDialog informationDialog;
 	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
-	
+
 	QLabel * informations = new QLabel( &informationDialog );
 	informations->setWordWrap( true );
 	informations->setOpenExternalLinks( true );
@@ -639,28 +633,28 @@ void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
 				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
 				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
 			);
-	
+
 	QVBoxLayout * labelLayout = new QVBoxLayout;
 	labelLayout->addWidget( informations );
-	
+
 	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
 	grp->setLayout( labelLayout );
-	
+
 	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &informationDialog );
-	
+
 	QHBoxLayout * hbox = new QHBoxLayout;
 	hbox->addStretch();
 	hbox->addWidget( okButton );
 	hbox->addStretch();
-	
+
 	QVBoxLayout * vbox = new QVBoxLayout;
 	vbox->addWidget( grp );
 	vbox->addLayout( hbox );
-	
+
 	informationDialog.setLayout( vbox );
-	
+
 	connect( okButton, SIGNAL(clicked()), &informationDialog, SLOT(accept()) );
-	
+
 	informationDialog.exec();
 }
 
@@ -670,14 +664,14 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	d = new PrivateCustomDialogImpl( this );
 
 	setupUi( this );
-	
+
 	// XML Pres
 	m_hideElementList->setDefaultVisible( false );
-	
+
 	// Editor
 	QFont font( "Monospace", 8 );
 	font.setFixedPitch( true );
-  
+
 	m_exempleTextEdit->setFont( font );
 
 	// Plugins
@@ -685,7 +679,7 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	connect( m_pluginListView, SIGNAL(aboutPlugin(XinxPluginElement*)), d, SLOT(aboutPlugin(XinxPluginElement*)) );
 	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
 		XinxPluginElement * e = new XinxPluginElement();
-		*e = plugin; 
+		*e = plugin;
 		m_pluginListView->addPlugin( e );
 	}
 }
@@ -698,14 +692,14 @@ CustomDialogImpl::~CustomDialogImpl() {
 
 void CustomDialogImpl::loadFromConfig( XINXConfig * config ) {
 	Q_ASSERT( config );
-	
+
 	d->m_config = *config;
 	d->showConfig();
 }
 
 void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 	Q_ASSERT( config );
-	
+
 	d->storeConfig();
 	*config = d->m_config;
 }
@@ -736,7 +730,7 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 		SnipetList list;
 		for( int i = 0 ; i < indexes.size() ; i++ ) {
 			const Snipet & s = indexes.at( i ).data( Qt::UserRole ).value<Snipet>();
-			
+
 			list << s;
 		}
 		list.saveToFile( exportedFilename );
@@ -795,14 +789,14 @@ void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 		m_formatsListView->addItem( key.remove( text + "_", Qt::CaseInsensitive ) );
 	}
 	m_formatsListView->setCurrentRow( 0 );
-	 
+
 	// Example
 	if( text != d->m_previousFormat ) {
 		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
 		example = XinxPluginsLoader::self()->exampleOfHighlighter( text );
 		m_exempleTextEdit->setText( example );
-		d->m_highlighter = XinxPluginsLoader::self()->createHighlighter( text, m_exempleTextEdit, &(d->m_config) );
+		d->m_highlighter = XinxPluginsLoader::self()->createHighlighter( text, m_exempleTextEdit->document(), &(d->m_config) );
 	}
 
 	d->m_previousFormat = text;
@@ -813,19 +807,19 @@ void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) 
 	QString format = m_highlighterComboBox->currentText(),
 			token = format + "_" + m_formatsListView->item( currentRow )->text();
 	token = token.toLower();
-	
+
 	// Bold
 	m_boldCheckBox->setChecked( d->m_config.config().formats[ token ].fontWeight() != QFont::Normal );
-	
+
 	// Italic
 	m_italicCheckBox->setChecked( d->m_config.config().formats[ token ].fontItalic() );
-	
+
 	// Underline
 	m_underlineCheckBox->setChecked( d->m_config.config().formats[ token ].fontUnderline() );
-	
+
 	// Strikeout
 	m_StrikeoutCheckBox->setChecked( d->m_config.config().formats[ token ].fontStrikeOut() );
-	
+
 	// Color
 	m_colorComboBox->setColor( d->m_config.config().formats[ token ].foreground().color() );
 }

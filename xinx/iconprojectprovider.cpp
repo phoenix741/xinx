@@ -23,18 +23,20 @@
 #include "iconprojectprovider.h"
 
 IconProjectProvider::IconProjectProvider() : QFileIconProvider() {
-	
+
 }
 
 IconProjectProvider::~IconProjectProvider() {
-	
+
 }
-	
+
 QIcon IconProjectProvider::icon( const QFileInfo & info ) const {
-	QIcon icon = XinxPluginsLoader::self()->iconOfSuffix( info.suffix() );
-	if( ! icon.isNull() )
-		return icon;
-	else
-		return QFileIconProvider::icon( info );
+	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType( info.fileName() );
+	if( plugin ) {
+		QIcon icon = plugin->icon();
+		if( ! icon.isNull() )
+			return icon;
+	}
+	return QFileIconProvider::icon( info );
 }
 

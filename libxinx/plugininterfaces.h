@@ -31,7 +31,6 @@
 // Xinx header
 #include <syntaxhighlighter.h>
 #include <filecontentstructure.h>
-#include <iextendededitor.h>
 
 class SyntaxHighlighter;
 class XINXConfig;
@@ -41,21 +40,23 @@ class QTextEdit;
 class QKeyEvent;
 class QCompleter;
 class RCS;
+class AbstractFileContainer;
+class AbstractEditor;
 
-/*! 
- * This intereface is used to create a plugin used by XINX. 
+/*!
+ * This intereface is used to create a plugin used by XINX.
  * At start, XINX load all plugins and call the initializePlugin method from the plugin.
- * 
- * The plugin must define some attribute used to show informations to user (in about box and 
+ *
+ * The plugin must define some attribute used to show informations to user (in about box and
  * in the list of Plugin).
- * 
+ *
  * A plugin can return a list of tools (with a default value). This tool will be show in the
- * customize dialog of XINX. 
+ * customize dialog of XINX.
  */
 class IXinxPlugin {
 public:
 	/*! Information that can be asked to plugin */
-	enum PluginAttribute { 
+	enum PluginAttribute {
 		PLG_NAME        = 1001, //!< Name of the plugin
 		PLG_DESCRIPTION = 1002, //!< Long description of the plugin
 		PLG_ICON        = 1003, //!< An icon that represent the plugin
@@ -65,18 +66,18 @@ public:
 		PLG_VERSION     = 1007, //!< The Version of the plugin
 		PLG_LICENCE     = 1008  //!< The Licence of the plugin
 	};
-	
+
 	//! Destroy the plugin
 	virtual ~IXinxPlugin() {};
 
-	/*! 
+	/*!
 	 * Called when the plugin is loaded.
 	 * \param lang The lang in which the plugin must be load.
 	 */
 	virtual bool initializePlugin( const QString & lang ) = 0;
 	/*! Get an information from the attribute. List of informations can be found in the \e PluginAttribute enum. */
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
-	
+
 	/*! List of tools with the default value where find the tool */
 	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
 };
@@ -84,17 +85,17 @@ public:
 /*!
  * This class is used to propose to the user modify their options. If the Plugins inherits from this interface
  * the XinxPluginSelector propose automatically a custom button.
- * 
+ *
  * The Plugin create a wigdet contains the user interface, and have two method for put and get the configuration
  * in the dialog.
- * 
- * Xinx create the dialog with the Ok and Cancel button. 
+ *
+ * Xinx create the dialog with the Ok and Cancel button.
  */
 class IXinxPluginConfiguration {
 public:
 	//! Destroy the interface
 	virtual ~IXinxPluginConfiguration() {};
-	
+
 	//! Create a widget used in a wrapper for the configuration dialog box.
 	virtual QWidget * createSettingsDialog() = 0;
 	//! Load settings to dialog box
@@ -105,7 +106,7 @@ public:
 
 /*!
  * \internal
- * Structure used for communication beetween XinxPluginsLoader and XinxPluginSelector 
+ * Structure used for communication beetween XinxPluginsLoader and XinxPluginSelector
  */
 struct XinxPluginElement {
 	bool isStatic;
@@ -114,20 +115,20 @@ struct XinxPluginElement {
 };
 
 /*!
- * This plugins is used to add a new revision control system to XINX. For this purpose, 
+ * This plugins is used to add a new revision control system to XINX. For this purpose,
  * the plugin give a list of managed rcs and a description (show in the project page).
- * 
- * When XINX must create a RCS object, he call the IRCSPlugin::createRCS() method with 
+ *
+ * When XINX must create a RCS object, he call the IRCSPlugin::createRCS() method with
  * the parameter used in the constructor, and the revision control system to create (one from
  * the rcs() method).
  * The method will create a derivated object of RCS with the required implementation for the
- * revision control system. 
+ * revision control system.
  */
 class IRCSPlugin : virtual public IXinxPlugin {
 public:
 	/// Destroy the plugin
 	virtual ~IRCSPlugin() {};
-	
+
 	/// List of revision control system proposed by the plugin
 	virtual QStringList rcs() = 0;
 	/// Description of each revision control system
@@ -139,27 +140,58 @@ public:
 	virtual RCS * createRCS( const QString & rcs, const QString & basePath ) = 0;
 };
 
-/*! 
- * This interface represents a plugins used for show manage an extention 
+/*!
+ * This interface is used to create an editor for an associated file type.
+ */
+class IFileTypePlugin {
+public:
+	/*!
+	 * Structure indicate if a file type plugin can be save as specifique and the
+	 * directory where the file must be stored if it can. This is the default value,
+	 * Real value are stored in the configuration.
+	 */
+	struct struct_properties {
+		bool canBeCommitToRCS;
+		bool canBeFindInConfiguration;
+		bool canBeSaveAsSpecifique;
+		QString specifiqueSubDirectory;
+	};
+
+	//! Destroy a file type
+	virtual ~IFileTypePlugin() {};
+
+	//! A description of a file type
+	virtual QString description() = 0;
+	//! Used to choose a file in a dialog box
+	virtual QString match() = 0;
+	//! Return the icon for the filte type.
+	virtual QIcon icon() = 0;
+
+	//! Return some properties for the file type
+	virtual struct_properties properties() = 0;
+
+	//! Create an editor with the given filename
+	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
+	//! Create a parser
+	virtual FileContentElement * createElement( FileContentElement * parent = 0, int line = -1, const QString & filename = QString() ) = 0;
+};
+
+/*!
+ * This interface represents a plugins used for show manage an extention
  */
 class IFilePlugin : virtual public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
 	virtual ~IFilePlugin() {};
-	
-	//! List of extentions that can manage the plugins.
-	virtual QStringList extentions() = 0;
-	//! Description of the extention
-	virtual QHash<QString,QString> extentionsDescription() = 0;
-	
-	//! Return the icon for the plugin.
-	virtual QIcon icon( const QString & extention ) = 0;
+
+	//! List of file type knew by the plugins.
+	virtual QList<IFileTypePlugin*> fileTypes() = 0;
 };
 
 /*!
  * This interface represents a plugins. The plugins is used to highlight the text.
  */
-class IPluginSyntaxHighlighter : virtual public IFilePlugin {
+class IPluginSyntaxHighlighter : virtual public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
 	virtual ~IPluginSyntaxHighlighter() {};
@@ -174,42 +206,8 @@ public:
 	//! Return an example of highlighter.
 	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
 
-	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QObject* parent = NULL, XINXConfig * config = NULL ) = 0;
+	//! Create a syntax highlighter based on a text document.
 	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config = NULL ) = 0;
-	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config = NULL ) = 0;
-};
-
-/*!
- * This interface represents a plugins used to auto-indent text.
- */
-class IPluginPrettyPrint : virtual public IFilePlugin {
-public:
-	virtual ~IPluginPrettyPrint() {};
-
-	//! Return the list of pretty printers
-	virtual QStringList prettyPrinters() = 0;
-	//! Give the pretty printer for an extention
-	virtual QString prettyPrinterOfExtention( const QString & extention ) = 0;
-	
-	//! Pretty Print a text \e text. If an error occure, the error is returned in variables \e errorStr, \e line, and \e column
-	virtual QString prettyPrint( const QString & plugin, const QString & text, QString * errorStr = NULL, int * line = 0, int * column = 0 ) = 0;
-};
-
-class IPluginExtendedEditor : virtual public IFilePlugin {
-public:
-	virtual ~IPluginExtendedEditor() {};
-	
-	//! Return possibles extended editor.
-	virtual QStringList extendedEditors() = 0;
-	//! Give the extended editor to use for this extentions
-	virtual QString extendedEditorOfExtention( const QString & extention ) = 0;
-	
-	virtual void commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment ) = 0;
-	virtual FileContentElement * createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent = NULL, const QString & filename = QString(), int line = 0 ) = 0;
-	virtual void createCompleter( const QString & plugin, IXinxExtendedEditor * editor ) = 0;
-	virtual QCompleter * completer( const QString & plugin, IXinxExtendedEditor * editor ) = 0;
-	virtual bool keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event ) = 0;
-	virtual QPair<QString,int> searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word ) = 0;
 };
 
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0")
@@ -217,7 +215,5 @@ Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginCon
 Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0")
 Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
 Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
-Q_DECLARE_INTERFACE(IPluginPrettyPrint, "org.shadoware.xinx.IPluginPrettyPrint/1.0")
-Q_DECLARE_INTERFACE(IPluginExtendedEditor, "org.shadoware.xinx.IPluginExtendedEditor/1.0")
 
 #endif /*INTERFACES_H_*/

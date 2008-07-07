@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef __CONFIGURATIONFILE_H__
 #define __CONFIGURATIONFILE_H__
 
@@ -27,6 +27,11 @@
 // Qt header
 #include <QString>
 #include <QList>
+
+// TODO: Delete this workaround
+#undef major
+#undef minor
+
 
 class ConfigurationVersionIncorectException : public XinxException {
 public:
@@ -58,7 +63,7 @@ public:
 	 * \param minor The minor number of the version.
 	 * \param release The release number of the version
 	 * \param build The build number (or special edition number) of the version
-	 */ 
+	 */
 	ConfigurationVersion( int major = -1, int minor = -1, int release = -1, int build = -1 );
 	/*!
 	 * Construct a configuration version as input a strint. The number version translate
@@ -77,7 +82,7 @@ public:
 	 * \return An integer represents the major parts
 	 */
 	int major() const;
-	/*! 
+	/*!
 	 * Return the minor part of the version
 	 * \return An integer represents the minor parts
 	 */
@@ -92,22 +97,22 @@ public:
 	 * \return An integer represents the special edition number
 	 */
 	int build() const;
-	
+
 	/*!
 	 * Return a string a representation of the version. The string has the form :
 	 * VXX.XX-XX (XX) where the number in bracket is the special edition number. This
 	 * is not necessary and can be omited, if not specified.
 	 * \return A string representation of the version.
-	 */	
+	 */
 	QString toString() const;
 	/*!
 	 * Test if a version is valid.
 	 * A version is valid only if major, minor, and release number are greater than
 	 * zero.
-	 * \return true if the version is valid, else return false. 
+	 * \return true if the version is valid, else return false.
 	 */
 	bool isValid() const;
-	
+
 	/*!
 	 * Compare two version number.
 	 * \return Return true if the two version are equal
@@ -153,7 +158,7 @@ public:
 protected:
 	ConfigurationVersion m_version;
 	QString m_xmlPresentationFile;
-	
+
 	friend class ConfigurationFile;
 };
 
@@ -174,40 +179,40 @@ public:
 	/*!
 	 * Return the version of the configuration file (only if the file exists and the version
 	 * can be found).
-	 * This method parse the configuration file to find the version number. If he find him, 
+	 * This method parse the configuration file to find the version number. If he find him,
 	 * the parser stop immediatly to not read the entierly.
 	 * \param DirectoryPath the path where the configuration file is.
 	 * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
 	 */
 	static SimpleConfigurationFile simpleConfigurationFile( const QString & directoryPath );
-private:	
+private:
 };
 
 /*!
- * Definition of a meta configuration file defined in file configurationdef.xml. The meta file defined 
+ * Definition of a meta configuration file defined in file configurationdef.xml. The meta file defined
  * one or more configuration file. This file define dictionary too.
  */
 class MetaConfigurationFile {
 public:
-	/*! 
+	/*!
 	 * Create a meta configuration file object an load configuration in memory.
 	 * \param The file name of the meta configuration file.
 	 */
 	MetaConfigurationFile( const QString & filename );
 	/*!
-	 * Destroy the meta configuration file 
+	 * Destroy the meta configuration file
 	 */
 	virtual ~MetaConfigurationFile();
-	
+
 	/*!
-	 * Test if the meta configuration file exists in the path \e DirectoryPath 
+	 * Test if the meta configuration file exists in the path \e DirectoryPath
 	 * and return true if the file exist
 	 */
 	static bool exists( const QString & directoryPath );
 	/*!
 	 * Return the version of one of the configuration file (only if the file exists and the
 	 * version can be found).
-	 * This method parse configurations file to find the version number. If a version is founded, 
+	 * This method parse configurations file to find the version number. If a version is founded,
 	 * this not parse the next files.
 	 * \param DirectoryPath path of the meta configuration file.
 	 */

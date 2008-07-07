@@ -23,29 +23,28 @@
 //
 #include <QTabWidget>
 //
-class Editor;
+class AbstractEditor;
 class QAbstractItemModel;
+class IFileTypePlugin;
 
 class TabEditor : public QTabWidget {
 	Q_OBJECT
 public:
 	TabEditor( QWidget * parent = 0 );
 	virtual ~TabEditor();
-	
-	Editor * currentEditor();
-	Editor * editor( int index );
-	Editor * editor( const QString & filename );
-	
-	static bool isFileEditor( Editor * editor );
 
-	void newFileEditor( Editor * editor );
+	AbstractEditor * currentEditor();
+	AbstractEditor * editor( int index );
+	AbstractEditor * editor( const QString & filename );
 
-	Editor * newFileEditorTxt( const QString & suffix );
-	Editor * newFileEditorWS();
-	Editor * loadFileEditor( const QString & fileName );
+	static bool isTextFileEditor( AbstractEditor * editor );
+
+	void newTextFileEditor( AbstractEditor * editor );
+
+	AbstractEditor * createEditor( IFileTypePlugin * plugin, const QString & filename = QString() );
 
 	int getClickedTab();
-	
+
 	void setRefreshAction( QAction * action );
 	void setSaveAction( QAction * action );
 	void setSaveAsAction( QAction * action );
@@ -61,12 +60,12 @@ public slots:
 	void copy();
 	void cut();
 	void paste();
-  
+
 	void undo();
-	void redo(); 
-  
+	void redo();
+
 	void selectAll();
-  
+
 	void duplicateCurrentLine();
 
 	void moveLineUp();
@@ -77,12 +76,12 @@ public slots:
 
 	void commentSelectedText();
 	void uncommentSelectedText();
-	
+
 	void indent();
 	void unindent();
 	void autoindent();
 
-	void complete();	
+	void complete();
 	void highlightWord();
 signals:
 	void undoAvailable( bool available );
@@ -92,9 +91,9 @@ signals:
 
 	void textAvailable( bool available ); // For move, duplicate line, complete and select all
 	void hasTextSelection( bool selection ); // For Upper/Lower Case ; Comment/Uncomment
-	
+
 	void modelChanged( QAbstractItemModel * model );
-	
+
 	void fileOpened( const QString & filename );
 	void setEditorPosition( int, int );
 protected:
@@ -105,15 +104,14 @@ protected:
 private slots:
 	void slotCurrentTabChanged( int );
 	void slotModifiedChange( bool );
-	
+
 	void slotCursorPositionChanged();
-	
+
 	void slotNeedInsertSnipet( const QString & snipet );
 	void fileEditorOpen( const QString & name, int line );
 private:
 	int tabPositionIcon( QPoint point );
 	int tabPosition( QPoint point );
-	Editor * newFileEditor( const QString & fileName );
 
 	QAction * m_refreshAction;
 	QAction * m_saveAction;
@@ -121,7 +119,7 @@ private:
 	QAction * m_closeAction;
 	QAction * m_copyFilenameAction;
 	QAction * m_copyPathAction;
-	
+
 	int m_clickedItem;
 };
 

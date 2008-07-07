@@ -66,14 +66,19 @@ class  FileContentParser {
 public:
 	virtual ~FileContentParser() {};
 	
+	/*! Loed the content of the device. */
+	virtual void loadFromDevice( QIODevice * device ) = 0;
+	/*! Save the content of the device. */
+	virtual void saveToDevice( QIODevice * ) {};
+	
 	/*!
 	 * Construct elements from \e content.
 	 */
-	virtual void loadFromContent( const QString & content ) = 0;
+	virtual void loadFromContent( const QString & content );
 	/*!
 	 * Construct elements from \e filename.
 	 */
-	virtual void loadFromFile( const QString & filename ) = 0;
+	virtual void loadFromFile( const QString & filename );
 	
 	//! Load from file \e filename but really charged it when needed.
 	virtual void loadFromFileDelayed( const QString & filename ) = 0;
@@ -164,7 +169,7 @@ public:
 	/*! Function to change the filename of the element. */
 	void setFilename( const QString & filename );
 	
-protected:
+public: // TODO: Workaround to permit to XINX to be compiled on Windows ...
 	/*!
 	 * Remove an element from the child list. The signal \e aboutToRemove() and \e removed() is emited
 	 * while deleting the line \e index.

@@ -1,13 +1,15 @@
 TEMPLATE = lib
-CONFIG += static
+CONFIG += static \
+ staticlib \
+ debug
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
 TARGET = $$qtLibraryTarget(xinxcmp)
 INCLUDEPATH += ../libxinx
-LIBS=-L../libxinx -lsharedxinx
-unix { 
+LIBS =-L../libxinx -lsharedxinx
+unix {
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic

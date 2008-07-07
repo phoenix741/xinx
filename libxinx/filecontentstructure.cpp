@@ -22,11 +22,38 @@
 #include "filecontentstructure.h"
 #include "exceptions.h"
 
+// Qt header
+#include <QBuffer>
+#include <QFile>
+
+// Std header
+#include <typeinfo>
+
+/* FileContentParser */
+
+void FileContentParser::loadFromContent( const QString & content ) {
+	QByteArray contentArray = content.toUtf8();
+	QBuffer buffer( &contentArray );
+	buffer.open( QIODevice::ReadOnly );
+
+	loadFromDevice( &buffer );
+}
+
+void FileContentParser::loadFromFile( const QString & filename ) {
+	QFile file( filename );
+
+	// Open the file
+	if (!file.open(QFile::ReadOnly))
+		throw FileContentException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
+
+	loadFromDevice( & file );
+}
+
 /* FileContentException */
 
-FileContentException::FileContentException( QString message, int line, int column ) 
+FileContentException::FileContentException( QString message, int line, int column )
 	: XinxException( QString("Error : %1 at line %2:%3").arg( message ).arg( line ).arg( column ) ), m_line( line ), m_column( column ) {
-	
+
 }
 
 int FileContentException::getLine() const {
@@ -43,21 +70,19 @@ class PrivateFileContentElement {
 public:
 	PrivateFileContentElement( FileContentElement * parent );
 	~PrivateFileContentElement();
-	
+
 	bool m_flagDelete;
-	
+
 	int m_line;
 	QString m_name, m_filename;
 	FileContentElement * m_parentElement;
-	
+
 	QList<FileContentElement*> m_elements;
 private:
 	FileContentElement * m_parent;
 };
 
 PrivateFileContentElement::PrivateFileContentElement( FileContentElement * parent ) {
-	
-
 	m_parent = parent;
 	m_line   = -1;
 	m_name   = QString();
@@ -66,9 +91,8 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 }
 
 PrivateFileContentElement::~PrivateFileContentElement() {
-	
 	//qDeleteAll( m_elements );
-	// Can cause some problem. Don't forget to clean memory
+	// TODO: Can cause some problem. Don't forget to clean memory
 }
 
 /*! \endcond */
@@ -76,13 +100,11 @@ PrivateFileContentElement::~PrivateFileContentElement() {
 /* FileContentElement */
 
 FileContentElement::FileContentElement( FileContentElement * parent, const QString & name, int line ) {
-	
-
 	d = new PrivateFileContentElement( this );
 	d->m_line = line;
 	d->m_name = name;
 	d->m_parentElement = parent;
-	if( parent ) { 
+	if( parent ) {
 		d->m_filename = parent->d->m_filename;
 		connect( this, SIGNAL(aboutToRemove(FileContentElement*)), d->m_parentElement, SIGNAL(aboutToRemove(FileContentElement*)) );
 		connect( this, SIGNAL(aboutToAdd(FileContentElement*,int)), d->m_parentElement, SIGNAL(aboutToAdd(FileContentElement*,int)) );
@@ -93,114 +115,78 @@ FileContentElement::FileContentElement( FileContentElement * parent, const QStri
 }
 
 FileContentElement::~FileContentElement() {
-	
-	
-	this->disconnect( d->m_parentElement );
-
 	delete d;
 }
 
 bool FileContentElement::equals( FileContentElement * element ) {
-	//
-
 	return ( ( typeid( *element ) == typeid( *this ) )
 		  && ( d->m_name == element->d->m_name ) );
 }
 
 void FileContentElement::copyFrom( FileContentElement * element ) {
-	
-
 	d->m_filename = element->d->m_filename;
 	d->m_line = element->d->m_line;
 	d->m_name = element->d->m_name;
 }
 
 QIcon FileContentElement::icon() const {
-	
-
 	return QIcon("images/warning.png");
 }
 
 const QString & FileContentElement::name() const {
-	
-
 	return d->m_name;
 }
 
 QString FileContentElement::displayName() const {
-	
-
 	return name();
 }
 
 QString FileContentElement::displayTips() const {
-	
-
 	return tr( "Element at line : %1" ).arg( d->m_line );
 }
 
 int FileContentElement::line() {
-	
-
 	return d->m_line;
 }
 
 const QString & FileContentElement::filename() const {
-	
-
 	return d->m_filename;
 }
 
 void FileContentElement::setName( const QString & name ) {
-	
-
 	d->m_name = name;
 }
-	
-void FileContentElement::setLine( int line ) {
-	
 
+void FileContentElement::setLine( int line ) {
 	d->m_line = line;
 }
 
 void FileContentElement::setFilename( const QString & filename ) {
-	
-
 	d->m_filename = filename;
 }
 
 FileContentElement * FileContentElement::parent() {
-	
-
 	return d->m_parentElement;
 }
 
 int FileContentElement::row() {
-	
-
 	if( d->m_parentElement )
 		for( int i = 0 ; i < d->m_parentElement->rowCount(); i++ ) {
-			if( this == d->m_parentElement->element( i ) ) 
+			if( this == d->m_parentElement->element( i ) )
 				return i;
 		}
 	return 0;
 }
 
 int FileContentElement::rowCount() {
-	
-
 	return d->m_elements.size();
 }
 
 FileContentElement * FileContentElement::element( int index ) {
-	
-
 	return d->m_elements.at( index );
 }
 
 void FileContentElement::remove( int index ) {
-	
-
 	emit aboutToRemove( d->m_elements.at( index ) );
 
 	delete d->m_elements.at( index );
@@ -210,9 +196,7 @@ void FileContentElement::remove( int index ) {
 }
 
 FileContentElement * FileContentElement::append( FileContentElement * element ) {
-	
-
-	FileContentElement * old = contains( element ); 
+	FileContentElement * old = contains( element );
 	if( old ) {
 		old->copyFrom( element );
 		old->d->m_flagDelete = false;
@@ -224,7 +208,7 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 		emit aboutToAdd( element, d->m_elements.size() );
 
 		d->m_elements.append( element );
-		
+
 		emit added();
 		return element;
 	}
@@ -232,45 +216,33 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 
 
 void FileContentElement::clear() {
-	
-
 	for( int i = d->m_elements.size() - 1; i >= 0; i-- )
 		remove( i );
 }
 
 FileContentElement * FileContentElement::contains( FileContentElement * element ) {
-	
-
 	foreach( FileContentElement * e, d->m_elements ) {
-		if( element->equals( e ) ) 
+		if( element->equals( e ) )
 			return e;
 	}
 	return NULL;
 }
 
 void FileContentElement::markDeleted() {
-	
-
 	d->m_flagDelete = true;
 }
 
 void FileContentElement::markKeeped() {
-	
-
 	d->m_flagDelete = false;
 }
 
 void FileContentElement::markAllDeleted() {
-	
-
 	foreach( FileContentElement * e, d->m_elements ) {
 		e->markDeleted();
 	}
 }
 
 void FileContentElement::removeMarkedDeleted() {
-	
-
 	for( int i = d->m_elements.size() - 1 ; i >= 0 ; i-- ) {
 		if( d->m_elements.at( i )->d->m_flagDelete ) {
 			remove( i );
@@ -281,8 +253,6 @@ void FileContentElement::removeMarkedDeleted() {
 /* FileContentElementModelObjListSort */
 
 bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 ) {
-	
-
 	return d1->name() < d2->name();
 }
 
@@ -297,7 +267,7 @@ FileContentElementList::FileContentElementList( FileContentElement * root ) : m_
 }
 
 FileContentElementList::~FileContentElementList() {
-	
+
 }
 
 const QList<FileContentElement*> & FileContentElementList::list() const {
@@ -305,8 +275,6 @@ const QList<FileContentElement*> & FileContentElementList::list() const {
 }
 
 void FileContentElementList::refreshList() {
-	
-
 	m_list.clear();
 	if( m_root ) {
 		refreshRecursive( m_root );
@@ -316,20 +284,16 @@ void FileContentElementList::refreshList() {
 }
 
 void FileContentElementList::addElement( FileContentElement * element, int row ) {
-	
-
 	Q_UNUSED( row );
-	if( dynamic_cast<FileContentParser*>( element ) ) 
+	if( dynamic_cast<FileContentParser*>( element ) )
 		refreshRecursive( element );
 	else if( ! contains( element ) )
 		addElement( element );
 }
 
 bool FileContentElementList::contains( FileContentElement * data ) {
-	
-
 	foreach( FileContentElement * element, m_list ) {
-		if( element->equals( data ) ) 
+		if( element->equals( data ) )
 			return true;
 	}
 	return false;
@@ -337,13 +301,12 @@ bool FileContentElementList::contains( FileContentElement * data ) {
 
 void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 	Q_ASSERT( data );
-	
 
 	for( int i = 0; i < data->rowCount(); i++ ) {
 		FileContentElement * e = data->element( i );
 		if( dynamic_cast<FileContentParser*>( e ) ) {
 			QString name = e->name();
-			if( ! m_files.contains( name ) ) { 
+			if( ! m_files.contains( name ) ) {
 				m_files.append( name );
 				refreshRecursive( e );
 			}
@@ -355,8 +318,6 @@ void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 }
 
 void FileContentElementList::addElement( FileContentElement* element ) {
-	
-
 	QList<FileContentElement*>::iterator i = qLowerBound( m_list.begin(), m_list.end(), element, FileContentElementModelObjListSort );
 	int index = i - m_list.begin();
 	emit aboutToAdd( index );
@@ -365,8 +326,6 @@ void FileContentElementList::addElement( FileContentElement* element ) {
 }
 
 void FileContentElementList::removeElement( FileContentElement* element ) {
-	
-
 	int index = m_list.indexOf( element );
 	if( index >= 0 ) {
 		emit aboutToRemove( index );

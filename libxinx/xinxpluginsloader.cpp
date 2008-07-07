@@ -22,6 +22,7 @@
 #include "xinxpluginsloader.h"
 #include "xinxcore.h"
 #include "xinxconfig.h"
+#include "xslproject.h"
 
 // Qt header
 #include <QPluginLoader>
@@ -35,7 +36,7 @@ XinxPluginsLoader * XinxPluginsLoader::s_self = 0;
 /* XinxPluginsLoader */
 
 XinxPluginsLoader::XinxPluginsLoader() {
-	
+
 }
 
 XinxPluginsLoader::~XinxPluginsLoader() {
@@ -55,27 +56,6 @@ const QList<XinxPluginElement> & XinxPluginsLoader::plugins() const {
 	return m_plugins;
 }
 
-	
-void XinxPluginsLoader::addPlugin( QString extention, QObject * plugin ) {
-	QString subplugin;
-	
-	IPluginPrettyPrint * iPrettyPrinter = qobject_cast<IPluginPrettyPrint*>( plugin );
-	if( iPrettyPrinter ) {
-		subplugin = iPrettyPrinter->prettyPrinterOfExtention( extention ).toUpper();
-		if( ! subplugin.isEmpty() ) {
-			m_prettyPlugins.insert( extention.toLower(), qMakePair( iPrettyPrinter, subplugin ) );
-		}
-	}
-
-	IPluginExtendedEditor * iExtendedEditor = qobject_cast<IPluginExtendedEditor*>( plugin );
-	if( iExtendedEditor ) {
-		subplugin = iExtendedEditor->extendedEditorOfExtention( extention ).toUpper();
-		if( ! subplugin.isEmpty() ) {
-			m_extendedEditorPlugins.insert( extention.toLower(), qMakePair( iExtendedEditor, subplugin ) );
-		}
-	}
-}
-
 void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	/* Manage all XINX Plugin */
 	IXinxPlugin * iXinxPlugin = qobject_cast<IXinxPlugin*>( plugin );
@@ -86,78 +66,124 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 		return;
 	}
 
-	struct XinxPluginElement element;
-	element.plugin = plugin;
-	element.isActivated = true;
-	element.isStatic = staticLoaded;
+	struct XinxPluginElement element = { staticLoaded, true, plugin };
 	m_plugins.append( element );
+
 	QPair<QString,QString> tools;
 	foreach( tools, iXinxPlugin->pluginTools() )
 		XINXConfig::self()->addDefaultTool( tools.first, tools.second );
-	
-	/* Manage all XINX file Plugin */
-	IFilePlugin * iFilePlugin = qobject_cast<IFilePlugin*>( plugin );
-	if( iFilePlugin ) {	
-		QHash<QString,QString> libelles = iFilePlugin->extentionsDescription();
-		
-		foreach( QString extentions, iFilePlugin->extentions() ) {
-			QString libelle = libelles[ extentions.section( ' ', 0, 0 ) ];
-			QStringList suffixes = extentions.split( ' ' );
-			
-			if( suffixes.count() > 0 ) {
-				m_libelles.insert( suffixes.at( 0 ), libelle );
-			}
-			
-			foreach( QString suffix, suffixes ) {
-				m_filterIndex[ suffix ] = m_filters.count();
-				m_icons[ suffix ] = iFilePlugin->icon( suffix );
-
-				addPlugin( suffix, plugin );
-			}
-			
-			suffixes = suffixes.replaceInStrings( QRegExp( "^" ), "*." );
-			m_defaultProjectFilter << suffixes;
-			
-			m_filters.append( QApplication::translate( "XINXConfig", "All %1 (%2)" ).arg( libelle ).arg( suffixes.join( " " ) ) );			
-		}
-		m_filters.insert( 0, QApplication::translate( "XINXConfig", "All managed file") + " (" + m_defaultProjectFilter.join( " " ) + ")" );
-	}
-
-	IPluginPrettyPrint * iPrettyPrinter = qobject_cast<IPluginPrettyPrint*>( plugin );
-	if( iPrettyPrinter ) {
-		foreach( QString p, iPrettyPrinter->prettyPrinters() )
-			m_directPrettyPlugins.insert( p.toUpper(), iPrettyPrinter );
-	}
-
-	IPluginExtendedEditor * iExtendedEditor = qobject_cast<IPluginExtendedEditor*>( plugin );
-	if( iExtendedEditor ) {
-		foreach( QString p, iExtendedEditor->extendedEditors() )
-			m_directExtendedEditorPlugins.insert( p.toUpper(), iExtendedEditor );
-	}
 }
 
 void XinxPluginsLoader::loadPlugins() {
 	foreach( QObject * plugin, QPluginLoader::staticInstances() )
 		addPlugin( plugin, true );
-	
+
 	m_pluginsDir = QDir( qApp->applicationDirPath() );
 	m_pluginsDir.cd( "../plugins" );
     foreach( QString fileName, m_pluginsDir.entryList( QDir::Files ) ) {
         QPluginLoader loader( m_pluginsDir.absoluteFilePath( fileName ) );
         QObject * plugin = loader.instance();
-        if ( plugin ) {
-        	addPlugin(plugin);
-        } else {
+        if ( plugin )
+        	addPlugin( plugin );
+        else
         	qDebug() << loader.errorString();
-        }
     }
+}
+
+QList<IFileTypePlugin*> XinxPluginsLoader::fileTypes() const {
+	QList<IFileTypePlugin*> result;
+
+	foreach( XinxPluginElement element, m_plugins ) {
+		IFilePlugin * interface = qobject_cast<IFilePlugin*>( element.plugin );
+		if( element.isActivated && interface ) {
+			result += interface->fileTypes();
+		}
+	}
+
+	return result;
+}
+
+IFileTypePlugin * XinxPluginsLoader::matchedFileType( const QString & filename ) const {
+	QList<IFileTypePlugin*> types = fileTypes();
+	foreach( IFileTypePlugin* plugin, types ) {
+		QStringList patterns = plugin->match().split( " " );
+		foreach( QString match, patterns ) {
+			QRegExp pattern( match, Qt::CaseInsensitive, QRegExp::Wildcard );
+			if( pattern.exactMatch( filename ) )
+				return plugin;
+		}
+	}
+	return 0;
+}
+
+QString XinxPluginsLoader::allManagedFileFilter() const {
+	QStringList result;
+	QList<IFileTypePlugin*> types = fileTypes();
+	foreach( IFileTypePlugin* plugin, types ) {
+		result += plugin->match();
+	}
+	return tr( "All managed files (%1)" ).arg( result.join( " " ) );
+}
+
+QString XinxPluginsLoader::fileTypeFilter( IFileTypePlugin * fileType ) {
+	return tr( "All %1 (%2)" ).arg( fileType->description() ).arg( fileType->match() );
+}
+
+QStringList XinxPluginsLoader::openDialogBoxFilters() const {
+	QStringList result;
+	QList<IFileTypePlugin*> types = fileTypes();
+	foreach( IFileTypePlugin* plugin, types ) {
+		result += fileTypeFilter( plugin );
+	}
+	result += allManagedFileFilter();
+	return result;
+}
+
+QStringList XinxPluginsLoader::managedFilters() const {
+	QStringList result;
+	foreach( IFileTypePlugin* plugin, fileTypes() ) {
+		result += plugin->match().split( " " );
+	}
+	return result;
+}
+
+FileContentElement * XinxPluginsLoader::createElement( QString & filename, FileContentElement * parent, int line ) {
+	IFileTypePlugin * fileType = matchedFileType( filename );
+	if( ! fileType ) return NULL;
+
+	QStringList searchList;
+
+	if( ! parent->filename().isEmpty() )
+		searchList << QFileInfo( parent->filename() ).absolutePath();
+
+	if( XINXProjectManager::self()->project() )
+		searchList += XINXProjectManager::self()->project()->processedSearchPathList();
+
+	QString absPath = QString();
+	bool finded = false;
+	foreach( QString path, searchList ) {
+		absPath = QDir( path ).absoluteFilePath( filename );
+		if( QFile::exists( absPath ) ) {
+			finded = true;
+			break;
+		}
+	}
+
+	if( finded ) filename = absPath;
+
+	FileContentElement * element = fileType->createElement( parent, line, filename );
+	if( ! element ) return NULL;
+
+	Q_ASSERT( dynamic_cast<FileContentParser*>( element ) );
+
+	return element;
 }
 
 QList< QPair<QString,QString> > XinxPluginsLoader::revisionsControls() const {
 	QList< QPair<QString,QString> > result;
 	foreach( XinxPluginElement element, m_plugins ) {
 		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin );
-		if( interface ) {
+		if( element.isActivated && interface ) {
 			foreach( QString rcsKey, interface->rcs() ) {
 				result << qMakePair( rcsKey, interface->descriptionOfRCS( rcsKey ) );
 			}
@@ -170,7 +196,7 @@ RCS * XinxPluginsLoader::createRevisionControl( QString revision, QString basePa
 	RCS * rcs = NULL;
 	foreach( XinxPluginElement element, m_plugins ) {
 		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin );
-		if( interface ) {
+		if( element.isActivated && interface ) {
 			rcs = interface->createRCS( revision, basePath );
 			if( rcs ) break;
 		}
@@ -182,7 +208,7 @@ QStringList XinxPluginsLoader::highlighters() const {
 	QStringList result;
 	foreach( XinxPluginElement element, m_plugins ) {
 		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface ) 
+		if( element.isActivated && interface )
 			result += interface->highlighters();
 	}
 	return result;
@@ -191,7 +217,7 @@ QStringList XinxPluginsLoader::highlighters() const {
 QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
 	foreach( XinxPluginElement element, m_plugins ) {
 		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface ) {
+		if( element.isActivated && interface ) {
 			QString value = interface->highlighterOfExtention( suffix );
 			if( ! value.isEmpty() )
 				return value;
@@ -200,35 +226,11 @@ QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
 	return QString();
 }
 
-SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QObject* parent, XINXConfig * config ) {
-	SyntaxHighlighter * h = NULL;
-	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface ) {
-			h = interface->createHighlighter( highlighter, parent, config );
-			if( h ) break;
-		}
-	}
-	return h;
-}
-
 SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
 	SyntaxHighlighter * h = NULL;
 	foreach( XinxPluginElement element, m_plugins ) {
 		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface ) {
-			h = interface->createHighlighter( highlighter, parent, config );
-			if( h ) break;
-		}
-	}
-	return h;
-}
-
-SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config ) {
-	SyntaxHighlighter * h = NULL;
-	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface ) {
+		if( element.isActivated && interface ) {
 			h = interface->createHighlighter( highlighter, parent, config );
 			if( h ) break;
 		}
@@ -239,7 +241,7 @@ SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highli
 QHash<QString,QTextCharFormat> XinxPluginsLoader::formatOfHighlighter( const QString & highlighter ) {
 	foreach( XinxPluginElement element, m_plugins ) {
 		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface && interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) ) 
+		if( element.isActivated && interface && interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) )
 			return interface->formatOfHighlighter( highlighter );
 	}
 	return QHash<QString,QTextCharFormat>();
@@ -248,62 +250,11 @@ QHash<QString,QTextCharFormat> XinxPluginsLoader::formatOfHighlighter( const QSt
 QString XinxPluginsLoader::exampleOfHighlighter( const QString & highlighter ) {
 	foreach( XinxPluginElement element, m_plugins ) {
 		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( interface ) {
+		if( element.isActivated && interface ) {
 			QString value = interface->exampleOfHighlighter( highlighter );
 			if( ! value.isEmpty() )
 				return value;
 		}
 	}
 	return QString();
-}
-
-QIcon XinxPluginsLoader::iconOfSuffix( const QString & suffix ) const {
-	return m_icons.value( suffix );
-}
-
-const QHash<QString,QString> & XinxPluginsLoader::extentions() const {
-	return m_libelles;
-}
-
-QString XinxPluginsLoader::filter( const QString & suffix ) const {
-	return m_filters[ m_filterIndex[ suffix ] + 1 ];
-}
-
-const QStringList & XinxPluginsLoader::filters() const {
-	return m_filters;
-}
-
-const QStringList & XinxPluginsLoader::defaultProjectFilter() const {
-	return m_defaultProjectFilter;
-}
-
-QStringList XinxPluginsLoader::defaultProjectFilter( const QString & name ) const {
-	QStringList result;
-	foreach( QString t, m_defaultProjectFilter )
-		result << t.replace( "*", QString( "*%1*" ).arg( name ) );
-	return result;
-}
-
-QPair<IPluginPrettyPrint*,QString> XinxPluginsLoader::prettyPrinterOfSuffix( const QString & suffix ) const {
-	return m_prettyPlugins.value( suffix.toLower() );
-}
-
-QPair<IPluginExtendedEditor*,QString> XinxPluginsLoader::extendedEditorOfSuffix( const QString & suffix ) const {
-	return m_extendedEditorPlugins.value( suffix.toLower() );
-}
-
-QStringList XinxPluginsLoader::prettyPrinterOfPlugins() const {
-	return m_directPrettyPlugins.keys();
-}
-
-QStringList XinxPluginsLoader::extendedEditorOfPlugins() const {
-	return m_directExtendedEditorPlugins.keys();
-}
-
-IPluginPrettyPrint* XinxPluginsLoader::prettyPrinterOfPlugin( const QString & suffix ) const {
-	return m_directPrettyPlugins.value( suffix.toUpper() );
-}
-
-IPluginExtendedEditor* XinxPluginsLoader::extendedEditorOfPlugin( const QString & suffix ) const {
-	return m_directExtendedEditorPlugins.value( suffix.toUpper() );
 }

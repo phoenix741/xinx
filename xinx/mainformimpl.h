@@ -32,18 +32,18 @@
 class PrivateMainformImpl;
 
 /*!
- * This is the implementation of the MAIN FORM of XINX. This Windows allow the user to edit file, 
- * create new project, open it. It show also dock for file content, and project content. It is 
+ * This is the implementation of the MAIN FORM of XINX. This Windows allow the user to edit file,
+ * create new project, open it. It show also dock for file content, and project content. It is
  * the main part of the project to interact with the user.
- * 
- * This form contains also some function that can be call with D-BUS. This functionnality is defined 
+ *
+ * This form contains also some function that can be call with D-BUS. This functionnality is defined
  * slots.
  */
 class MainformImpl : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
 public:
 	/*!
-	 * Create the main form. 
+	 * Create the main form.
 	 * Theres is normally no parent widget, and no specifique flags for the user interface.
 	 */
 	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
@@ -52,20 +52,6 @@ public:
 	 */
 	virtual ~MainformImpl();
 public slots:
-	/*! 
-	 * Create a new empty page in the Tab editor for a file of extention \e suffix.
-	 */
-	void newFile( const QString & suffix );
-	/*!
-	 * Create a new WebServices empty page in the Tab editor.
-	 */
-	void newWebservicesFile();
-	/*!
-	 * Create a new empty page in the Tab editor. The type of the empty page depends of 
-	 * type of project. If the project is an WebServices project, the page is an Webservice
-	 * stream file, else, it's an XSL stylesheet.
-	 */ 
-	void newDefaultFile();
 	/*!
 	 * Open a dialog to create a new template (snipet).
 	 * To create a template, a text must be selected.
@@ -95,19 +81,19 @@ public slots:
 	 * to save it.
 	 */
 	bool closeAllFile();
-	
+
 	/*!
 	 * Create a new project. A dialog is opened and ask some question to the user.
 	 * \todo Add some options to create a project without user interaciton.
 	 */
 	void newProject();
 	/*!
-	 * Open a project defined by the param \e filename. If project is already open, 
+	 * Open a project defined by the param \e filename. If project is already open,
 	 * the project is closed.
 	 */
 	void openProject( const QString & filename );
 	/*!
-	 * Save(flush) the project. 
+	 * Save(flush) the project.
 	 * \param withSessionData If true, the project is saved with session data. It's used
 	 * in case XINX stop with error.
 	 */
@@ -147,11 +133,11 @@ public slots:
 	 */
 	void addFilesToVersionManager( const QStringList & list );
 	/*!
-	 * Remove some file from version management. 
+	 * Remove some file from version management.
 	 * \warning Files are also delete from disk.
 	 */
 	void removeFilesFromVersionManager( const QStringList & list );
-protected: 
+protected:
 	void closeEvent( QCloseEvent *event );
 private:
 	PrivateMainformImpl * d;

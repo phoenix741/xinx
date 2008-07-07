@@ -23,32 +23,29 @@
 
 // Xinx header
 #include "ui_specifiquedlg.h"
-#include "xinxconfig.h"
 
 class SpecifiqueDialogImpl : public QDialog, public Ui::SpecifiqueDialog {
 	Q_OBJECT
 public:
-	SpecifiqueDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	
-	static bool isSpecifique( const QString & filename );
-	static bool canBeSaveAsSpecifique( const QString & filename );
-	static bool canBeAddedToRepository( const QString & filename );
-	
-	void setFileName( const QString & filename );
 	static void setLastPlace( const QString & pathname );
-	static QString lastPlace(); 
-	
-	QString path() const;
-	QString filename() const; 
-	
-	static QString saveFileAs( const QString & filename, const QString & suffix, QStringList & filesForRepository );
+	static QString lastPlace();
+
+	static QString saveFileAs( const QString & filename, const QString & defaultFileName, QStringList & filesForRepository );
 	static QString saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository );
 private slots:
 private:
-	static AppSettings::struct_extentions extentionOfFileName( const QString & name );
-	
+	SpecifiqueDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+
+	QString path() const;
+	void setFileName( const QString & filename );
+	QString filename() const;
+
+	static bool isSpecifique( const QString & filename );
+	static bool canBeSaveAsSpecifique( const QString & filename );
+	static bool canBeAddedToRepository( const QString & filename );
+
 	static QString m_lastPlace;
-	QString m_filename, m_suffix;
+	QString m_filename, m_defaultFileName;
 };
 
 #endif /*SPECIFIQUEDLGIMPL_H_*/

@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "snipet.h"
-#include "editor.h"
+#include "abstracteditor.h"
 
 // Qt header
 #include <QDockWidget>
@@ -32,7 +32,7 @@
 #include <QHash>
 
 /*!
- * This dock represent a Snipet Dock Widget to search and place snipet 
+ * This dock represent a Snipet Dock Widget to search and place snipet
  * in XINX.
  */
 class SnipetDockWidget : public QDockWidget {
@@ -43,7 +43,7 @@ public:
 	virtual ~SnipetDockWidget();
 
 public slots:
-	void setEditor( Editor * ed );
+	void setEditor( AbstractEditor * ed );
 private slots:
 	void updateSnipets();
 	void callSnipet();
@@ -51,10 +51,10 @@ private:
 	QWidget * createWidget();
 	QWidget * createSnipetWidget( const Snipet & s );
 	void setupUi();
-	
+
 	QToolBox * m_snipetsToolBox;
 	QHash<QString,QWidget*> m_pages;
-	Editor * m_editor;
+	AbstractEditor * m_editor;
 };
 
 #endif /*__SNIPETDOCKWIDGET_H__*/

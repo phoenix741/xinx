@@ -21,16 +21,16 @@
 #ifndef __WEBSERVICESEDITOR_H__
 #define __WEBSERVICESEDITOR_H__
 
+// Xinx header
 #include "fileeditor.h"
 
+// Qt header
 #include <QHash>
 #include <QString>
 
 class WebServices;
 class Operation;
 class QComboBox;
-
-class PrivateWebServicesEditor;
 
 class WebServicesEditor : public FileEditor {
 	Q_OBJECT
@@ -42,7 +42,7 @@ public:
 	
 	WebServices * service();
 	Operation * operation();
-	const QHash<QString,QString> & values() const;
+	const QHash<QString,QString> & values();
 	
 	virtual void loadFile( const QString &fileName = "" );
 	virtual bool saveFile( const QString &fileName = "" );
@@ -54,9 +54,26 @@ public:
 	virtual bool isModified();
 
 	virtual QIcon icon();
+
+private slots:
+	void webServicesChanged();
+	void webServicesActivated( int );
+	void webServicesParamActivated( int );
+	void webServicesValueActivated();
+
 private:
-	PrivateWebServicesEditor * d;
-	friend class PrivateWebServicesEditor;
+	void loadServicesList();
+	void loadActionsList( int index );
+	void loadValuesList( int index );
+
+private:
+	void store( const QString & );
+	void restore( const QString & );
+
+	QString m_serviceName, m_operationName, m_oldParamValue;
+	QComboBox * m_servicesList, * m_paramList, * m_actionList;
+	QHash<QString,QString> m_paramValues;
+	bool m_isModified;
 };
 
 #endif // __WEBSERVICESEDITOR_H__

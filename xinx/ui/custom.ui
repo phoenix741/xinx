@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
+    <width>681</width>
     <height>483</height>
    </rect>
   </property>
@@ -47,7 +47,8 @@
        <string>General</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-general.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-general.png</normaloff>:/images/preferences-general.png</iconset>
       </property>
      </item>
      <item>
@@ -55,7 +56,8 @@
        <string>Project</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-project.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-project.png</normaloff>:/images/preferences-project.png</iconset>
       </property>
      </item>
      <item>
@@ -63,7 +65,8 @@
        <string>Revision</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preference-rcs.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preference-rcs.png</normaloff>:/images/preference-rcs.png</iconset>
       </property>
      </item>
      <item>
@@ -71,7 +74,8 @@
        <string>Editor</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-editor.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-editor.png</normaloff>:/images/preferences-editor.png</iconset>
       </property>
      </item>
      <item>
@@ -79,7 +83,8 @@
        <string>Font</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-font.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-font.png</normaloff>:/images/preferences-font.png</iconset>
       </property>
      </item>
      <item>
@@ -87,7 +92,8 @@
        <string>Syntax</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-color.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-color.png</normaloff>:/images/preferences-color.png</iconset>
       </property>
      </item>
      <item>
@@ -95,7 +101,8 @@
        <string>XML Pres.</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-xmlpres.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-xmlpres.png</normaloff>:/images/preferences-xmlpres.png</iconset>
       </property>
      </item>
      <item>
@@ -103,7 +110,8 @@
        <string>Snipet</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-desktop-keyboard.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-desktop-keyboard.png</normaloff>:/images/preferences-desktop-keyboard.png</iconset>
       </property>
      </item>
      <item>
@@ -111,7 +119,8 @@
        <string>Tools</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-tools.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-tools.png</normaloff>:/images/preferences-tools.png</iconset>
       </property>
      </item>
      <item>
@@ -119,7 +128,8 @@
        <string>Modules</string>
       </property>
       <property name="icon" >
-       <iconset resource="../application.qrc" >:/images/preferences-plugin.png</iconset>
+       <iconset resource="../application.qrc" >
+        <normaloff>:/images/preferences-plugin.png</normaloff>:/images/preferences-plugin.png</iconset>
       </property>
      </item>
     </widget>
@@ -157,6 +167,14 @@
       </color>
      </property>
      <widget class="QWidget" name="m_general" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QLabel" name="label_3" >
@@ -179,7 +197,8 @@
        <item row="0" column="2" >
         <widget class="QToolButton" name="m_changeApplicationDescriptionPathBtn" >
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
          </property>
         </widget>
        </item>
@@ -204,7 +223,8 @@
            <string>(en) English</string>
           </property>
           <property name="icon" >
-           <iconset resource="../application.qrc" >:/images/usa.png</iconset>
+           <iconset resource="../application.qrc" >
+            <normaloff>:/images/usa.png</normaloff>:/images/usa.png</iconset>
           </property>
          </item>
          <item>
@@ -212,7 +232,8 @@
            <string>(fr_FR) French</string>
           </property>
           <property name="icon" >
-           <iconset resource="../application.qrc" >:/images/france.png</iconset>
+           <iconset resource="../application.qrc" >
+            <normaloff>:/images/france.png</normaloff>:/images/france.png</iconset>
           </property>
          </item>
         </widget>
@@ -222,7 +243,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>325</width>
            <height>91</height>
@@ -233,19 +254,16 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_project" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" colspan="3" >
-        <widget class="QCheckBox" name="m_alertStandardCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>In derivated project mode only, when a standard file (with no prefix) is saving, &lt;b>XINX&lt;/b> ask you to save the file with a new prefixed name.&lt;/p>
-&lt;p>The prefix must be specified in the project property.&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>&amp;Alert user when file is standard (project mode only)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_saveSessionCheckBox" >
          <property name="whatsThis" >
           <string>&lt;p>This define the default way to close the project.&lt;/p>
@@ -259,7 +277,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
+       <item row="1" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="text" >
           <string>&amp;Application server path :</string>
@@ -269,7 +287,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
+       <item row="1" column="1" >
         <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
          <property name="whatsThis" >
           <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
@@ -277,14 +295,15 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="2" >
+       <item row="1" column="2" >
         <widget class="QToolButton" name="m_changeProjectPathBtn" >
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" >
+       <item row="2" column="0" >
         <widget class="QLabel" name="label_11" >
          <property name="text" >
           <string>Default &amp;specifique path name :</string>
@@ -294,7 +313,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1" >
+       <item row="2" column="1" >
         <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
          <property name="whatsThis" >
           <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
@@ -302,7 +321,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" >
+       <item row="3" column="0" >
         <widget class="QLabel" name="label_16" >
          <property name="text" >
           <string>&amp;Specifique file :</string>
@@ -312,7 +331,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2" >
+       <item row="4" column="0" colspan="2" >
         <widget class="QTableView" name="m_specifiqueTableView" >
          <property name="whatsThis" >
           <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
@@ -322,6 +341,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_revision" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QCheckBox" name="m_closeLogCheckBox" >
@@ -349,7 +376,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -370,6 +397,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_editor" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" colspan="2" >
         <widget class="QGroupBox" name="groupBox_3" >
@@ -499,7 +534,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>166</width>
            <height>101</height>
@@ -510,6 +545,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_font" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" colspan="2" >
         <widget class="QLabel" name="label_6" >
@@ -615,7 +658,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>71</height>
@@ -626,6 +669,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_syntax" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QComboBox" name="m_highlighterComboBox" >
@@ -641,22 +692,10 @@
           <string>Customize syntax</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>9</number>
           </property>
-          <property name="topMargin" >
-           <number>9</number>
-          </property>
-          <property name="rightMargin" >
-           <number>9</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>9</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="2" column="1" colspan="2" >
@@ -775,6 +814,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_xplPres" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout" >
        <item>
         <layout class="QHBoxLayout" >
@@ -837,7 +884,7 @@
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>40</height>
@@ -915,7 +962,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>31</height>
@@ -926,6 +973,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_snipet" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" colspan="6" >
         <widget class="QLabel" name="label_13" >
@@ -959,7 +1014,8 @@
           <string>&amp;Add</string>
          </property>
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/add.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
          </property>
         </widget>
        </item>
@@ -972,7 +1028,8 @@
           <string>&amp;Delete</string>
          </property>
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/remove.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/remove.png</normaloff>:/images/remove.png</iconset>
          </property>
         </widget>
        </item>
@@ -985,7 +1042,8 @@
           <string>&amp;Modify</string>
          </property>
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/document-properties.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/document-properties.png</normaloff>:/images/document-properties.png</iconset>
          </property>
         </widget>
        </item>
@@ -994,7 +1052,7 @@
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -1011,7 +1069,8 @@
           <string>&amp;Import ...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/document-import.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/document-import.png</normaloff>:/images/document-import.png</iconset>
          </property>
         </widget>
        </item>
@@ -1024,13 +1083,22 @@
           <string>&amp;Export ...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../application.qrc" >:/images/document-export.png</iconset>
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/document-export.png</normaloff>:/images/document-export.png</iconset>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="m_tools" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QTableView" name="m_toolsTable" >
@@ -1047,6 +1115,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_modules" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>528</width>
+        <height>395</height>
+       </rect>
+      </property>
       <layout class="QGridLayout" >
        <item row="0" column="0" >
         <widget class="QTabWidget" name="tabWidget" >
@@ -1054,6 +1130,14 @@
           <number>0</number>
          </property>
          <widget class="QWidget" name="tab" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>506</width>
+            <height>353</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>Plugins</string>
           </attribute>
@@ -1069,6 +1153,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="Tab_2" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>512</width>
+            <height>307</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>Script</string>
           </attribute>
@@ -1098,7 +1190,7 @@
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>131</width>
          <height>31</height>
@@ -1112,7 +1204,8 @@
         <string>&amp;OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -1122,7 +1215,8 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>
@@ -1158,7 +1252,6 @@
   <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
   <tabstop>m_langComboBox</tabstop>
   <tabstop>m_listWidget</tabstop>
-  <tabstop>m_alertStandardCheckBox</tabstop>
   <tabstop>m_saveSessionCheckBox</tabstop>
   <tabstop>m_projectPathLineEdit</tabstop>
   <tabstop>m_changeProjectPathBtn</tabstop>

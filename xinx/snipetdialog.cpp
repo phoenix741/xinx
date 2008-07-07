@@ -88,7 +88,7 @@ void SnipetDialogImpl::setupUi( QDialog * parent ) {
 
 void SnipetDialogImpl::on_m_extLineEdit_textChanged( const QString & text ) {
 	if( m_highlighter ) delete m_highlighter;
-	m_highlighter = XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( text ), m_textEdit );
+	m_highlighter = XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( text ), m_textEdit->document() );
 }
 
 void SnipetDialogImpl::on_m_textEdit_textChanged() {

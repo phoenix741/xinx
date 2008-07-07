@@ -33,11 +33,9 @@ class IPluginSyntaxHighlighter;
 class  SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
 public:
-	SyntaxHighlighter( QObject* parent = NULL, XINXConfig * config = NULL );
 	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
-	SyntaxHighlighter( QTextEdit* parent, XINXConfig * config = NULL );
 	virtual ~SyntaxHighlighter();
-	
+
 protected:
 	XINXConfig * m_config;
 };

@@ -20,15 +20,15 @@
 
 // Xinx header
 #include "tabeditor.h"
-#include "editor.h"
+#include "abstracteditor.h"
 #include "texteditor.h"
-#include "fileeditor.h"
-#include "webserviceseditor.h"
+#include "textfileeditor.h"
 #include "xslproject.h"
 #include "runsnipetdialogimpl.h"
 #include "snipet.h"
 #include "snipetlist.h"
 #include "xinxconfig.h"
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QDir>
@@ -42,13 +42,13 @@
 #include <typeinfo>
 
 //
-TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), 
+TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0),
 	m_clickedItem( -1 ) { //, m_previous(NULL) {
 	setAcceptDrops(true);
 
     tabBar()->installEventFilter(this);
     tabBar()->setAttribute( Qt::WA_Hover );
-       
+
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
 //
@@ -56,218 +56,205 @@ TabEditor::~TabEditor() {
 }
 //
 
-bool TabEditor::isFileEditor( Editor * editor ) {
-	return dynamic_cast<FileEditor*>(editor) != NULL;
+bool TabEditor::isTextFileEditor( AbstractEditor * editor ) {
+	return dynamic_cast<TextFileEditor*>(editor) != NULL;
 }
 
-Editor * TabEditor::currentEditor() {
-	return dynamic_cast<Editor*>( currentWidget() );
+AbstractEditor * TabEditor::currentEditor() {
+	return dynamic_cast<AbstractEditor*>( currentWidget() );
 }
 
-Editor * TabEditor::editor( int index ) {
-	return dynamic_cast<Editor*>( widget( index ) );
+AbstractEditor * TabEditor::editor( int index ) {
+	return dynamic_cast<AbstractEditor*>( widget( index ) );
 }
 
-Editor * TabEditor::editor( const QString & filename ) {
+AbstractEditor * TabEditor::editor( const QString & filename ) {
 	for( int i = 0; i < count(); i++ ) {
-		if( ( isFileEditor( editor( i ) ) ) && ( static_cast<FileEditor*>( editor(i) )->getFileName() == QDir::fromNativeSeparators( filename ) ) ) 
+		AbstractFileEditor * ed = dynamic_cast<AbstractFileEditor*>( editor(i) );
+		if( ed && ( ed->lastFileName() == QDir::fromNativeSeparators( filename ) ) )
 			return editor(i);
 	}
 	return NULL;
 }
 
-void TabEditor::newFileEditor( Editor * editor ) {
+void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
+	Q_ASSERT( editor );
+
 	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
 	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange(bool)) );
 	connect( editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
-	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );	
-	connect( editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );	
-	connect( editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );	
+	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );
+	connect( editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
+	connect( editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
-	connect( editor, SIGNAL(modelUpdated(QAbstractItemModel*)), this, SIGNAL(modelChanged(QAbstractItemModel*)) );
-	if( isFileEditor( editor ) ) {
+	if( isTextFileEditor( editor ) ) {
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
-		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
-		connect( qobject_cast<FileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
+		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
+		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
 	}
-	
+
 	QString title = editor->getTitle();
 	if( editor->isModified() )
 		title += "*";
-		
+
 	int index = addTab( editor, title );
 	setTabIcon( index, editor->icon() );
 	setCurrentIndex( index );
-	emit currentChanged( currentIndex() );  
+	emit currentChanged( currentIndex() );
 }
 
-Editor * TabEditor::newFileEditor( const QString & fileName ) {
-	FileEditor * ed;
-	if( QDir::match( "*.fws", fileName ) ) {
-		ed = new WebServicesEditor( this );
-	} else {
-		ed = new FileEditor( this );	
-	}
-	ed->loadFile( fileName );
-	newFileEditor( ed );
-	return ed;
-}
-
-Editor * TabEditor::newFileEditorTxt( const QString & suffix ) {
-	Editor * editor = new FileEditor( this, suffix );
-	newFileEditor( editor );
-	return editor;
-}
-
-Editor * TabEditor::newFileEditorWS() {
-	Editor * editor = new WebServicesEditor( this );
-	newFileEditor( editor );
-	return editor;
-}
-
-Editor * TabEditor::loadFileEditor( const QString & fileName ) {
-	Editor * ed = editor( fileName );
+AbstractEditor * TabEditor::createEditor( IFileTypePlugin * plugin, const QString & filename ) {
+	AbstractEditor * ed = 0;
+	if( !filename.isEmpty() ) ed = editor( filename );
 	if( ! ed ) {
-		ed = newFileEditor( fileName );	
+		AbstractEditor * ed;
+		if( plugin )
+			ed = plugin->createEditor( filename );
+		else
+			ed = new TextFileEditor( new TextEditor() );
+		if( !ed ) return 0; // Maybe a dialog box or other
+
+		newTextFileEditor( ed );
 		setTabText( currentIndex(), ed->getTitle() );
 	}
 	setCurrentWidget( ed );
 	dynamic_cast<QWidget*>( parent() )->activateWindow();
-	emit currentChanged( currentIndex() );  
+	emit currentChanged( currentIndex() );
+
 	return ed;
 }
 
 void TabEditor::fileEditorOpen( const QString & name, int line ) {
 	if( !name.isEmpty() )
-		loadFileEditor( name );
+		createEditor( XinxPluginsLoader::self()->matchedFileType( name ), name );
 
 	emit fileOpened( name );
-	
+
 	// Deplace to rigth line.
-	FileEditor * ed = qobject_cast<FileEditor*>( currentEditor() );
-	ed->gotoLine( line );
+	TextFileEditor * ed = qobject_cast<TextFileEditor*>( currentEditor() );
+	ed->textEdit()->gotoLine( line );
 	ed->textEdit()->setFocus( Qt::OtherFocusReason );
 }
 
 void TabEditor::copy() {
-	Editor * editor = currentEditor();
-	if( editor && editor->canCopy() ) 
+	AbstractEditor * editor = currentEditor();
+	if( editor && editor->canCopy() )
 		editor->copy();
 }
-	
+
 void TabEditor::cut() {
-	Editor * editor = currentEditor();
-	if( editor && editor->canCopy() ) 
+	AbstractEditor * editor = currentEditor();
+	if( editor && editor->canCopy() )
 		editor->cut();
 }
 
 void TabEditor::paste() {
-	Editor * editor = currentEditor();
-	if( editor && editor->canPaste() ) 
+	AbstractEditor * editor = currentEditor();
+	if( editor && editor->canPaste() )
 		editor->paste();
 }
-  
+
 void TabEditor::undo() {
-	Editor * editor = currentEditor();
-	if( editor && editor->canUndo() ) 
-		editor->undo();	
+	AbstractEditor * editor = currentEditor();
+	if( editor && editor->canUndo() )
+		editor->undo();
 }
-	
+
 void TabEditor::redo() {
-	Editor * editor = currentEditor();
-	if( editor && editor->canRedo() ) 
+	AbstractEditor * editor = currentEditor();
+	if( editor && editor->canRedo() )
 		editor->redo();
 }
-  
+
 void TabEditor::selectAll() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->selectAll();
 	}
 }
-  
+
 void TabEditor::duplicateCurrentLine() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
-		editor->duplicateCurrentLine();
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+		editor->textEdit()->duplicateLines();
 	}
 }
 
 void TabEditor::moveLineUp() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
-		editor->moveLineUp();
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+		editor->textEdit()->moveLineUp();
 	}
 }
-	
+
 void TabEditor::moveLineDown() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
-		editor->moveLineDown();
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+		editor->textEdit()->moveLineDown();
 	}
 }
 
 void TabEditor::upperSelectedText() {
-	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
-		editor->uploSelectedText();
+	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+		editor->textEdit()->upperSelectedText();
 	}
 }
-	
+
 void TabEditor::lowerSelectedText() {
-	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
-		editor->uploSelectedText( false );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+		editor->textEdit()->lowerSelectedText();
 	}
 }
 
 void TabEditor::commentSelectedText() {
-	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->commentSelectedText();
 	}
 }
 
 void TabEditor::uncommentSelectedText() {
-	if( currentEditor() && isFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->commentSelectedText( true );
 	}
 }
 
 void TabEditor::indent() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->indent();
 	}
 }
 
 void TabEditor::unindent() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->indent( true );
 	}
 }
 
 void TabEditor::autoindent() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->autoIndent();
 	}
 }
 
 
 void TabEditor::complete() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
 		editor->complete();
 	}
 }
 
 void TabEditor::highlightWord() {
-	if( currentEditor() && isFileEditor( currentEditor() ) ) {
-		FileEditor * editor = static_cast<FileEditor*>( currentEditor() );
-		editor->callTextHighlighter();
+	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
+		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
+		editor->textEdit()->callTextHighlighter();
 	}
 }
 
@@ -285,18 +272,18 @@ void TabEditor::dropEvent( QDropEvent *event ) {
 	if (mimeData->hasUrls()) {
 		for(int i = 0; i < urls.size(); i++) {
 			if((!urls.at(i).toLocalFile().isEmpty()))
-				loadFileEditor( urls.at(i).toLocalFile() );
+				createEditor( XinxPluginsLoader::self()->matchedFileType( urls.at(i).toLocalFile() ), urls.at(i).toLocalFile() );
 				emit fileOpened( urls.at(i).toLocalFile() );
 		}
-	 
+
 		setBackgroundRole(QPalette::NoRole);
-		event->acceptProposedAction(); 
+		event->acceptProposedAction();
 	}
 }
 
 void TabEditor::tabRemoved ( int index ) {
 	Q_UNUSED( index );
-	
+
 	if( count() == 0 ) {
 		emit copyAvailable( false );
 		emit pasteAvailable( false );
@@ -310,48 +297,52 @@ void TabEditor::tabRemoved ( int index ) {
 }
 
 void TabEditor::slotModifiedChange( bool changed ) {
-	if( changed ) 
+	if( changed )
 		setTabText ( currentIndex(), tr("%1*").arg( currentEditor()->getTitle() ) );
 	else
 		setTabText ( currentIndex(), tr("%1").arg( currentEditor()->getTitle() ) );
 }
 
 void TabEditor::slotCursorPositionChanged() {
-	Editor * editor = currentEditor();
-	emit setEditorPosition( qobject_cast<FileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<FileEditor*>( editor )->textEdit()->currentColumn() );
+	AbstractEditor * editor = currentEditor();
+	emit setEditorPosition( qobject_cast<TextFileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<TextFileEditor*>( editor )->textEdit()->currentColumn() );
 }
 
 void TabEditor::slotCurrentTabChanged( int index ) {
 	if( index == -1 ) return;
-	
-	Editor * ed = editor( index );
-	
+
+	AbstractEditor * ed = editor( index );
+
 	emit copyAvailable( ed->canCopy() );
 	emit pasteAvailable( ed->canPaste() );
 	emit undoAvailable( ed->canUndo() );
 	emit redoAvailable( ed->canRedo() );
-	
-	if( isFileEditor( ed ) ) {
+
+	if( isTextFileEditor( ed ) ) {
 		emit textAvailable( true );
-		emit setEditorPosition( qobject_cast<FileEditor*>( ed )->textEdit()->currentRow(), qobject_cast<FileEditor*>( ed )->textEdit()->currentColumn() );
+		emit setEditorPosition( qobject_cast<TextFileEditor*>( ed )->textEdit()->currentRow(), qobject_cast<TextFileEditor*>( ed )->textEdit()->currentColumn() );
 	} else {
 		emit textAvailable( false );
 		emit hasTextSelection( false );
 	}
-	emit modelChanged( ed->model() );
+
+	if( ed )
+		emit modelChanged( ed->model() );
+	else
+		emit modelChanged( 0 );
 }
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
 	int index = SnipetListManager::self()->snipets().indexOf( snipet );
 	if( index == -1 ) return ;
-	
+
 	const Snipet & s = SnipetListManager::self()->snipets().at( index );
-	
+
 	RunSnipetDialogImpl dlg( s );
 	if( ( s.params().count() == 0 ) || dlg.exec() ) {
 		TextEditor * textEdit = qobject_cast<TextEditor	*>( sender() );
 		textEdit->insertText( dlg.getResult() );
-	}		
+	}
 }
 
 int TabEditor::getClickedTab() {
@@ -418,7 +409,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
         if( event->type() == QEvent::Leave ) {
         	for( int i = 0 ; i < tabBar()->count(); i++ )
         		setTabIcon( i, editor( i )->icon() );
-			
+
 			return true;
 		} else
 		if( ( event->type() == QEvent::HoverMove ) && XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
@@ -430,21 +421,21 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
 
 			setTabIcon( m_clickedItem, QIcon( ":/images/fileclose.png" ) );
-			
+
 			return true;
 		} else
 		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) && XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
         	QMouseEvent * mouseEvent = static_cast<QMouseEvent *>( event );
         	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
 			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
-						
-			m_closeAction->trigger();	
+
+			m_closeAction->trigger();
 		} else
  		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 			m_clickedItem = tabPosition( mouseEvent->pos() );
 			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
-			
+
 			if ( ( event->type() == QEvent::MouseButtonPress ) && ( mouseEvent->button() == Qt::RightButton ) ) {
 				QMenu *menu = new QMenu( this );
 				menu->addAction( m_refreshAction );
@@ -460,7 +451,7 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 				delete menu;
 			} else
 			if ( ( event->type() == QEvent::MouseButtonDblClick ) && ( mouseEvent->button() == Qt::LeftButton ) ) {
-				m_closeAction->trigger();	
+				m_closeAction->trigger();
 			}
 			return true;
 		}

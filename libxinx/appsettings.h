@@ -53,7 +53,6 @@ public:
 	struct struct_project {
 		bool saveWithSessionByDefault;
 		QString defaultPath;
-		bool alertWhenSavingStandardFile;
 		QStringList recentProjectFiles;
 		QString defaultProjectPathName;
 		bool closeVersionManagementLog;

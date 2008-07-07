@@ -6,48 +6,50 @@ DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-unix { 
+unix {
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
-INCLUDEPATH += ../xinx/ \
-    ../libxinx \
-    ../components
+INCLUDEPATH += ../components \
+  ../libxinx \
+  ../xinx/
 CONFIG += exceptions \
     qdbus \
     qt \
     thread \
     warn_on \
-    x86
+    x86 \
+ debug
 QT += network \
     xml \
     script
-LIBS = -L../plugins \
-    -L../libxinx \
+
+LIBS = -L../libxinx \
+	-L../plugins \
     -L../components \
     -lwebplugin \
     -lsharedxinx \
-    -lxinxcmp 
-if(!debug_and_release|build_pass):CONFIG(debug, debug|release) { 
-    mac:LIBS = $$member(LIBS, 0) \
+    -lxinxcmp
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release){
+    mac : LIBS = $$member(LIBS, 0) \
         $$member(LIBS, 1) \
         $$member(LIBS, 2) \
         $$member(LIBS, 3)_debug \
         $$member(LIBS, 4)_debug \
         $$member(LIBS, 5)_debug
-    win32:LIBS = $$member(LIBS, 0) \
+    win32 : LIBS = $$member(LIBS, 0) \
         $$member(LIBS, 1) \
         $$member(LIBS, 2) \
         $$member(LIBS, 3)d \
         $$member(LIBS, 4)d \
         $$member(LIBS, 5)d
 }
-win32:if(!debug_and_release|build_pass):CONFIG(debug, debug|release):POST_TARGETDEPS = ../plugins/libwebplugind.a \
+win32 : if(!debug_and_release|build_pass):CONFIG(debug, debug|release): POST_TARGETDEPS = ../plugins/libwebplugind.a \
     ../components/libxinxcmpd.a
-else:POST_TARGETDEPS = ../plugins/libwebplugin.a \
+else : POST_TARGETDEPS = ../plugins/libwebplugin.a \
     ../components/libxinxcmp.a
-win32:RC_FILE += rc/xinx.rc
+win32 : RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
     ../COPYING \
     ../Doxyfile \
@@ -94,20 +96,14 @@ HEADERS += scriptmanager.h \
     connectionwebservicesdialogimpl.h \
     customdialogimpl.h \
     dirrcsmodel.h \
-    editor.h \
     filecontentdockwidget.h \
-    filecontentitemmodel.h \
-    fileeditor.h \
-    filewatcher.h \
     flattreeview.h \
     iconprojectprovider.h \
     mainformimpl.h \
-    numberbar.h \
     newprojectwizard.h \
     private/p_configurationfile.h \
     private/p_connectionwebservicesdialogimpl.h \
     private/p_filecontentdockwidget.h \
-    private/p_filewatcher.h \
     private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \
     private/p_threadedconfigurationfile.h \
@@ -115,7 +111,6 @@ HEADERS += scriptmanager.h \
     private/p_xmlpresentationdockwidget.h \
     private/p_flattreeview.h \
     private/p_serviceresultdialogimpl.h \
-    private/p_webserviceseditor.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
     rcslogdialogimpl.h \
@@ -125,19 +120,15 @@ HEADERS += scriptmanager.h \
     snipet.h \
     snipetdialog.h \
     snipetlist.h \
-    snipetmodel.h \
     soap.h \
     tabeditor.h \
-    texteditor.h \
     threadedconfigurationfile.h \
     uniqueapplication.h \
-    webservices.h \
-    webserviceseditor.h \
-    wsdl.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
-    xslproject.h \
-    private/p_customdialogimpl.h
+    private/p_customdialogimpl.h \
+    webservices.h \
+    wsdl.h
 SOURCES += snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -146,16 +137,11 @@ SOURCES += snipetdockwidget.cpp \
     connectionwebservicesdialogimpl.cpp \
     customdialogimpl.cpp \
     dirrcsmodel.cpp \
-    editor.cpp \
     filecontentdockwidget.cpp \
-    filecontentitemmodel.cpp \
-    fileeditor.cpp \
-    filewatcher.cpp \
     flattreeview.cpp \
     iconprojectprovider.cpp \
     main.cpp \
     mainformimpl.cpp \
-    numberbar.cpp \
     projectdirectorydockwidget.cpp \
     projectpropertyimpl.cpp \
     rcslogdialogimpl.cpp \
@@ -165,21 +151,17 @@ SOURCES += snipetdockwidget.cpp \
     snipet.cpp \
     snipetdialog.cpp \
     snipetlist.cpp \
-    snipetmodel.cpp \
     soap.cpp \
     tabeditor.cpp \
-    texteditor.cpp \
     threadedconfigurationfile.cpp \
     uniqueapplication.cpp \
-    webservices.cpp \
-    webserviceseditor.cpp \
-    wsdl.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
-    xslproject.cpp \
     newprojectwizard.cpp \
-    scriptmanager.cpp
-contains( CONFIG, qdbus ) { 
+    scriptmanager.cpp \
+    webservices.cpp \
+    wsdl.cpp
+contains( CONFIG, qdbus ){
     HEADERS += studioadaptor.h \
         studiointerface.h
     SOURCES += studioadaptor.cpp \

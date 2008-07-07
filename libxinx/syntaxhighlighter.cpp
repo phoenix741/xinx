@@ -25,21 +25,7 @@
 
 /* SyntaxHighlighter */
 
-SyntaxHighlighter::SyntaxHighlighter( QObject* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
-	if( config ) 
-		m_config = config;
-	else
-		m_config = XINXConfig::self();
-}
-
 SyntaxHighlighter::SyntaxHighlighter( QTextDocument* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
-	if( config )
-		m_config = config;
-	else
-		m_config = XINXConfig::self();
-}
-
-SyntaxHighlighter::SyntaxHighlighter( QTextEdit* parent, XINXConfig * config ) : QSyntaxHighlighter( parent ) {
 	if( config )
 		m_config = config;
 	else

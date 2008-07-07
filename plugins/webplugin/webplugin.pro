@@ -1,6 +1,8 @@
 TEMPLATE = lib
 CONFIG += plugin \
-    static
+    static \
+    staticlib \
+    debug
 QT += xml
 DESTDIR += ../
 MOC_DIR += ./
@@ -8,38 +10,51 @@ OBJECTS_DIR += ./
 RCC_DIR += ./
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
-unix { 
+unix {
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../../libxinx
-HEADERS = xmlprettyprinter.h \
+HEADERS =xsl/xmlprettyprinter.h \
     webplugin.h \
-    xmlhighlighter.h \
-    jshighlighter.h \
-    csshighlighter.h \
-    xsllistview.h \
-    javascriptparser.h \
+    xsl/xmlhighlighter.h \
+    js/jshighlighter.h \
+    css/csshighlighter.h \
+    xsl/xsllistview.h \
+    js/javascriptparser.h \
     editorcompletion.h \
-    xmlcompleter.h \
-    xslmodelcompleter.h \
-    javascriptmodelcompleter.h \
-    jscompleter.h \
-    csscompleter.h \
-    cssmodeldata.h
-SOURCES = xmlprettyprinter.cpp \
+    css/cssmodeldata.h \
+    xsl/xmltexteditor.h \
+	xsl/xslmodelcompleter.h \
+	xsl/stylesheeteditor.h \
+	xsl/xmlfileeditor.h \
+xsl/htmlfileeditor.h \
+js/javascriptmodelcompleter.h \
+js/jsfileeditor.h \
+js/jstexteditor.h \
+css/cssfileeditor.h \
+css/csstexteditor.h
+SOURCES = xsl/xmlprettyprinter.cpp \
     webplugin.cpp \
-    xmlhighlighter.cpp \
-    jshighlighter.cpp \
-    csshighlighter.cpp \
-    xsllistview.cpp \
-    javascriptparser.cpp \
+    xsl/xmlhighlighter.cpp \
+    js/jshighlighter.cpp \
+    css/csshighlighter.cpp \
+    xsl/xsllistview.cpp \
+    js/javascriptparser.cpp \
     editorcompletion.cpp \
-    xmlcompleter.cpp \
-    xslmodelcompleter.cpp \
-    javascriptmodelcompleter.cpp \
-    jscompleter.cpp \
-    csscompleter.cpp \
-    cssmodeldata.cpp
+    css/cssmodeldata.cpp \
+    xsl/xmltexteditor.cpp \
+	xsl/xslmodelcompleter.cpp \
+ 	xsl/stylesheeteditor.cpp \
+ 	xsl/xmlfileeditor.cpp \
+ xsl/htmlfileeditor.cpp \
+ js/javascriptmodelcompleter.cpp \
+ js/jsfileeditor.cpp \
+ js/jstexteditor.cpp \
+ css/cssfileeditor.cpp \
+ css/csstexteditor.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
+
+SOURCES -= javascriptmodelcompleter.cpp
+

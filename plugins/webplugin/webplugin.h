@@ -24,43 +24,27 @@
 // Xinx header
 #include <plugininterfaces.h>
 
-class WebPlugin : public QObject, public IPluginSyntaxHighlighter, public IPluginPrettyPrint, public IPluginExtendedEditor {
+class WebPlugin : public QObject, public IFilePlugin, public IPluginSyntaxHighlighter {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IFilePlugin)
 	Q_INTERFACES(IPluginSyntaxHighlighter)
-	Q_INTERFACES(IPluginPrettyPrint)
-	Q_INTERFACES(IPluginExtendedEditor)
 public:
 	WebPlugin();
-	
+	virtual ~WebPlugin();
+
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
-	
-	virtual QStringList extentions();
-	virtual QHash<QString,QString> extentionsDescription();
-	virtual QIcon icon( const QString & extention );
-	
+
+	virtual QList<IFileTypePlugin*> fileTypes();
+
 	virtual QStringList highlighters();
 	virtual QString highlighterOfExtention( const QString & extention );
 	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
 	virtual QString exampleOfHighlighter( const QString & highlighter );
-	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QObject* parent, XINXConfig * config );
 	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config );
-	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config );
-
-	virtual QStringList prettyPrinters();
-	virtual QString prettyPrinterOfExtention( const QString & extention );
-	virtual QString prettyPrint( const QString & plugin, const QString & text, QString * errorStr, int * line, int * column );
-	
-	virtual QStringList extendedEditors();
-	virtual QString extendedEditorOfExtention( const QString & extention );
-	virtual void commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment );
-	virtual FileContentElement * createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int line );
-	virtual void createCompleter( const QString & plugin, IXinxExtendedEditor * editor );
-	virtual QCompleter * completer( const QString & plugin, IXinxExtendedEditor * editor );
-	virtual bool keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event );
-	virtual QPair<QString,int> searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word );
+private:
+	QList<IFileTypePlugin*> m_fileTypes;
 };
 
 #endif /* WEBPLUGIN_H_*/

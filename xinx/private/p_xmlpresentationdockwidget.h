@@ -22,10 +22,10 @@
 #define __P_XMLPRESENTATIONDOCKWIDGET_H__
 
 // Xinx header
+#include <filewatcher.h>
 #include "../xmlpresentationdockwidget.h"
 #include "ui_xmlpresentationwidget.h"
 #include "../xmlpresentationitem.h"
-#include "../filewatcher.h"
 #include "xinxthread.h"
 
 // Qt header

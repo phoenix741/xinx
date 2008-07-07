@@ -20,20 +20,25 @@
 
 // Xinx header
 #include "webplugin.h"
-#include "xmlhighlighter.h"
-#include "jshighlighter.h"
-#include "csshighlighter.h"
 
-#include "xmlprettyprinter.h"
+#include "xsl/xmlhighlighter.h"
+#include "xsl/xsllistview.h"
+#include "xsl/stylesheeteditor.h"
+#include "xsl/xmlfileeditor.h"
+#include "xsl/htmlfileeditor.h"
 
-#include "xsllistview.h"
-#include "javascriptparser.h"
-#include "cssmodeldata.h"
+#include "js/jshighlighter.h"
+#include "js/jsfileeditor.h"
+#include "js/javascriptparser.h"
+
+#include "css/csshighlighter.h"
+#include "css/cssmodeldata.h"
+#include "css/cssfileeditor.h"
 
 #include "editorcompletion.h"
-#include "xmlcompleter.h"
-#include "jscompleter.h"
-#include "csscompleter.h"
+#include "textfileeditor.h"
+
+#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QStringList>
@@ -60,10 +65,182 @@ static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
 static const QColor DEFAULT_NUMBER			= Qt::blue;
 static const QColor DEFAULT_STRING			= Qt::red;
 
+/* XSLStyleSheetFileType */
+
+class XSLStyleSheetFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "XSL Stylesheet" ); };
+	virtual QString match() { return "*.xsl"; };
+	virtual QIcon icon() { return QIcon( ":/images/typexsl.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = true;
+		p.canBeSaveAsSpecifique = true;
+		p.specifiqueSubDirectory = QString();
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		StyleSheetEditor * editor = new StyleSheetEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		if( parent )
+			return new XSLFileContentParser( parent, filename, line );
+		else
+			return new XSLFileContentParser();
+	}
+};
+
+/* XMLFileType */
+
+class XMLFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "XML File" ); };
+	virtual QString match() { return "*.xml"; };
+	virtual QIcon icon() { return QIcon( ":/images/typexml.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = true;
+		p.specifiqueSubDirectory = QString();
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		XmlFileEditor * editor = new XmlFileEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement *, int, const QString & ) {
+		return NULL;
+	}
+};
+
+/* HTMLFileType */
+
+class HTMLFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "HTML File" ); };
+	virtual QString match() { return "*.htm *.html *.xhtml"; };
+	virtual QIcon icon() { return QIcon( ":/images/typehtml.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = false;
+		p.specifiqueSubDirectory = QString();
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		HtmlFileEditor * editor = new HtmlFileEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement *, int, const QString & ) {
+		return NULL;
+	}
+};
+
+/* JSFileType */
+
+class JSFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "JavaScript" ); };
+	virtual QString match() { return "*.js"; };
+	virtual QIcon icon() { return QIcon( ":/images/typejs.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = true;
+		p.specifiqueSubDirectory = "js/";
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		JSFileEditor * editor = new JSFileEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		if( parent )
+			return new JavaScriptParser( parent, filename, line );
+		else
+			return new JavaScriptParser();
+	}
+};
+
+/* CSSFileType */
+
+class CSSFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "Cascading Style Sheet" ); };
+	virtual QString match() { return "*.css"; };
+	virtual QIcon icon() { return QIcon( ":/images/typecss.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = true;
+		p.specifiqueSubDirectory = "css/";
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		CSSFileEditor * editor = new CSSFileEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		return new CSSFileContentParser( parent, filename, line );
+	}
+};
+
 /* BasePlugin */
 
 WebPlugin::WebPlugin() {
 	Q_INIT_RESOURCE(webplugin);
+
+	qRegisterMetaType<StyleSheetEditor>( "StyleSheetEditor" );
+	qRegisterMetaType<XmlFileEditor>( "XmlFileEditor" );
+	qRegisterMetaType<HtmlFileEditor>( "HtmlFileEditor" );
+	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );
+	qRegisterMetaType<CSSFileEditor>( "CSSFileEditor" );
+
+	m_fileTypes << new XSLStyleSheetFileType;
+	m_fileTypes << new XMLFileType;
+	m_fileTypes << new HTMLFileType;
+	m_fileTypes << new JSFileType;
+	m_fileTypes << new CSSFileType;
+}
+
+WebPlugin::~WebPlugin() {
+	qDeleteAll( m_fileTypes );
 }
 
 bool WebPlugin::initializePlugin( const QString & lang ) {
@@ -73,7 +250,7 @@ bool WebPlugin::initializePlugin( const QString & lang ) {
 
 	webplugin_js::init();
 	webplugin_css::init();
-	
+
 	xmlCompletionContents = new CompletionXML();
 	try {
 		xmlCompletionContents->setPath( "datas:baseplugin_xml.xml" );
@@ -105,38 +282,8 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
-QStringList WebPlugin::extentions() {
-	return QStringList() << "xml" << "xsl" << "htm html xhtml" << "js" << "css" << "fws"; 
-}
-
-QHash<QString,QString> WebPlugin::extentionsDescription() {
-	QHash<QString,QString> extentions;
-	extentions[ "xsl" ]   = tr( "XSL Stylesheet" );
-	extentions[ "fws" ]   = tr( "Webservices input stream" );
-	extentions[ "xml" ]   = tr( "XML File" );
-	extentions[ "html" ]  = tr( "HTML File" );
-	extentions[ "htm" ]   = tr( "HTML File" );
-	extentions[ "xhtml" ] = tr( "HTML File" );
-	extentions[ "js" ]    = tr( "JavaScript" );
-	extentions[ "css" ]   = tr( "Cascading Style Sheet" );
-	return extentions;
-}
-
-QIcon WebPlugin::icon( const QString & extention ) {
-	if( extention == "xml" ) {
-		return QIcon( ":/images/typexml.png" );
-	} else if( extention == "xsl" ) {
-		return QIcon( ":/images/typexsl.png" );
-	} else if( extention == "js" ) {
-		return QIcon( ":/images/typejs.png" );
-	} else if( ( extention == "html" ) || ( extention == "htm" ) || ( extention == "xhtml" ) ) {
-		return QIcon( ":/images/typehtml.png" );
-	} else if( extention == "css" ) {
-		return QIcon( ":/images/typecss.png" );
-	} else if( extention == "fws" ) {
-		return QIcon( ":/images/typefws.png" );
-	} else
-		return QIcon( ":/images/typeunknown.png" );
+QList<IFileTypePlugin*> WebPlugin::fileTypes() {
+	return m_fileTypes;
 }
 
 QStringList WebPlugin::highlighters() {
@@ -164,9 +311,9 @@ QHash<QString,QTextCharFormat> WebPlugin::formatOfHighlighter( const QString & h
 		formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
 		formats[ "xml_syntaxchar"     ].setForeground( DEFAULT_SYNTAX_CHAR );
 		formats[ "xml_elementname"    ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );	
-		formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );	
-		formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );	
+		formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );
+		formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );
+		formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );
 	} else if( highlighter.toUpper() == "JS" ) {
 		formats[ "js_comment"         ].setForeground( DEFAULT_COMMENT );
 		formats[ "js_error"           ].setForeground( DEFAULT_ERROR );
@@ -174,12 +321,12 @@ QHash<QString,QTextCharFormat> WebPlugin::formatOfHighlighter( const QString & h
 		formats[ "js_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
 		formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
 		formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
-		formats[ "js_string"          ].setForeground( DEFAULT_STRING );	
+		formats[ "js_string"          ].setForeground( DEFAULT_STRING );
 	} else if( highlighter.toUpper() == "CSS" ) {
 		formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
 		formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
 		formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
-		formats[ "css_string"         ].setForeground( DEFAULT_STRING );	
+		formats[ "css_string"         ].setForeground( DEFAULT_STRING );
 		formats[ "css_operator"       ].setForeground( DEFAULT_SYNTAX_CHAR );
 		formats[ "css_directive"      ].setForeground( DEFAULT_NUMBER );
 		formats[ "css_number"         ].setForeground( DEFAULT_NUMBER );
@@ -202,7 +349,7 @@ QHash<QString,QTextCharFormat> WebPlugin::formatOfHighlighter( const QString & h
 		formats[ "css_value2"		  ].setForeground( DEFAULT_ELEMENT_NAME );
 		formats[ "css_value2"		  ].setFontItalic( true );
 	}
-	
+
 	return formats;
 }
 
@@ -225,9 +372,9 @@ QString WebPlugin::exampleOfHighlighter( const QString & highlighter ) {
 				"\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
 				"\t\t</xsl:choose>\n"
 				"\t</xsl:template>\n"
-				"</xsl:stylesheet>\n";		
+				"</xsl:stylesheet>\n";
 	} else if( highlighter.toUpper() == "JS" ) {
-		example = 
+		example =
 				"/**\n"
 				" * This is a comment\n"
 				"**/\n"
@@ -243,158 +390,18 @@ QString WebPlugin::exampleOfHighlighter( const QString & highlighter ) {
 				"\tbackground-color: red; /* Commentaire */\n"
 				"\tmargin: 8pt;\n"
 				"}\n";
-	} 
+	}
 	return example;
 }
 
-SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QObject* parent, XINXConfig * config ) {
-	if( highlighter.toUpper() == "XML" ) 
-		return new webplugin_xml( parent, config );
-	if( highlighter.toUpper() == "JS" ) 
-		return new webplugin_js( parent, config );
-	if( highlighter.toUpper() == "CSS" ) 
-		return new webplugin_css( parent, config );
-	return 0;
-}
-
 SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
-	if( highlighter.toUpper() == "XML" ) 
+	if( highlighter.toUpper() == "XML" )
 		return new webplugin_xml( parent, config );
-	if( highlighter.toUpper() == "JS" ) 
+	if( highlighter.toUpper() == "JS" )
 		return new webplugin_js( parent, config );
-	if( highlighter.toUpper() == "CSS" ) 
+	if( highlighter.toUpper() == "CSS" )
 		return new webplugin_css( parent, config );
 	return 0;
-}
-
-SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QTextEdit* parent, XINXConfig * config ) {
-	if( highlighter.toUpper() == "XML" ) 
-		return new webplugin_xml( parent, config );
-	if( highlighter.toUpper() == "JS" ) 
-		return new webplugin_js( parent, config );
-	if( highlighter.toUpper() == "CSS" ) 
-		return new webplugin_css( parent, config );
-	return 0;
-}
-
-QStringList WebPlugin::prettyPrinters() {
-	return QStringList() << "XML";
-}
-
-QString WebPlugin::prettyPrinterOfExtention( const QString & extention ) {
-	QHash<QString,QString> extentions;
-	extentions[ "xsl" ]   = "XML";
-	extentions[ "xml" ]   = "XML";
-	extentions[ "xhtml" ] = "XML";
-	return extentions[ extention ];
-}
-
-QString WebPlugin::prettyPrint( const QString & plugin, const QString & text, QString * errorStr, int * line, int * column  ) {
-	if( plugin == "XML" ) {
-		try {
-			if( errorStr ) *errorStr = QString();
-			XMLPrettyPrinter prettyPrinter;
-			prettyPrinter.setText( text );
-			prettyPrinter.process();
-			return prettyPrinter.getResult();
-		} catch( XMLPrettyPrinterException e ) {
-			if( errorStr ) *errorStr = e.m_message;
-			if( line )     *line     = e.m_line;
-			if( column )   *column   = e.m_column;
-			return text;
-		}
-	} else
-		return text;
-}
-
-QStringList WebPlugin::extendedEditors() {
-	return QStringList() << "HTML" << "XML" << "XSL" << "JS" << "CSS";
-}
-
-QString WebPlugin::extendedEditorOfExtention( const QString & extention ) {
-	QHash<QString,QString> extentions;
-	extentions[ "fws" ]   = "FWS";
-	extentions[ "xml" ]   = "XML";
-	extentions[ "xsl" ]   = "XSL";
-	extentions[ "html" ]  = "HTML";
-	extentions[ "htm" ]   = "HTML";
-	extentions[ "xhtml" ] = "HTML";
-	extentions[ "js" ]    = "JS";
-	extentions[ "css" ]   = "CSS";
-	return extentions[ extention ];
-}
-
-void WebPlugin::commentSelectedText( const QString & plugin, IXinxExtendedEditor * editor, bool uncomment ) {
-	if( ( plugin == "XML" ) || ( plugin == "XSL" ) || ( plugin == "HTML" ) || ( plugin == "FWS" ) )
-		XmlCompleter::commentSelectedText( editor, uncomment );
-	else if( plugin == "JS" )
-		JsCompleter::commentSelectedText( editor, uncomment );
-	else if( plugin == "CSS" )
-		CssCompleter::commentSelectedText( editor, uncomment );
-}
-
-FileContentElement * WebPlugin::createModelData( const QString & plugin, IXinxExtendedEditor * editor, FileContentElement * parent, const QString & filename, int line ) {
-	if( plugin == "XSL" ) {
-		if( ! parent )
-			return new XSLFileContentParser( editor );
-		else
-			return new XSLFileContentParser( editor, parent, filename, line );
-	} else if( plugin == "JS" ) {
-		if( ! parent )
-			return new JavaScriptParser();
-		else
-			return new JavaScriptParser( parent, filename, line );
-	} else if( plugin == "CSS" ) {
-		return new CSSFileContentParser( editor, parent, filename, line );
-	} else
-		return NULL;
-}
-
-void WebPlugin::createCompleter( const QString & plugin, IXinxExtendedEditor * editor ) {
-	if( plugin == "XSL" ) {
-		XmlCompleter * c = new XmlCompleter( editor );
-		editor->setObject( c );
-	} else if( plugin == "HTML" ) {
-		XmlCompleter * c = new XmlCompleter( editor, plugin );
-		editor->setObject( c );
-	} else if( plugin == "FWS" ) {
-		XmlCompleter * c = new XmlCompleter( editor, plugin );
-		editor->setObject( c );
-	} else if( plugin == "JS" ) {
-		JsCompleter * c = new JsCompleter( editor );
-		editor->setObject( c );
-	} else 
-		editor->setObject( NULL );
-}
-
-QCompleter * WebPlugin::completer( const QString & plugin, IXinxExtendedEditor * editor ) {
-	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
-		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
-		return c->currentCompleter( editor->qTextEdit()->textCursor() );
-	} else if( plugin == "JS" ) {
-		JsCompleter * c = dynamic_cast<JsCompleter*>( editor->object() );
-		return c->currentCompleter( editor->qTextEdit()->textCursor() );
-	} else
-		return NULL;
-}
-
-bool WebPlugin::keyPress( const QString & plugin, IXinxExtendedEditor * editor, QKeyEvent * event ) {
-	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) || ( plugin == "FWS" ) ) {
-		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
-		return c->keyPressEvent( event );
-	} else if( plugin == "JS" ){
-		JsCompleter * c = dynamic_cast<JsCompleter*>( editor->object() );
-		return c->keyPressEvent( event );
-	}
-	return false;
-}
-
-QPair<QString,int> WebPlugin::searchWord( const QString & plugin, IXinxExtendedEditor * editor, const QString & word ) {
-	if( ( plugin == "XSL" ) || ( plugin == "HTML" ) ) {
-		XmlCompleter * c = dynamic_cast<XmlCompleter*>( editor->object() );
-		return c->searchWord( word );
-	}
-	return qMakePair( QString(), -1 );
 }
 
 Q_EXPORT_PLUGIN2(webplugin, WebPlugin)

@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 // Xinx header
 #include "xmlpresentationdockwidget.h"
 #include "private/p_xmlpresentationdockwidget.h"
@@ -34,30 +34,30 @@
 
 PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
 	qRegisterMetaType<QModelIndex>( "QModelIndex" );
-	
+
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_xmlPresentationWidget = new Ui::XmlPresentationWidget();
 	m_xmlPresentationWidget->setupUi( contentWidget );
 	m_parent->setWidget( contentWidget );
 
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
-	
+
 	m_timerTextChanged.setSingleShot( true );
 	m_timerTextChanged.setInterval( 1000 );
 
 	m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
 
 	initXmlPresentationCombo();
-	
+
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()) );
-	
+
 	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
 	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
 	connect( this, SIGNAL(finished()), this, SLOT(threadTerminated()) );
-	
+
 	connect( m_xmlPresentationWidget->m_presentationTreeView, SIGNAL(expanded(QModelIndex)), this, SLOT(adaptColumns()));
-	
+
 	connect( m_xmlPresentationWidget->m_filterComboBox, SIGNAL(activated(int)), this, SLOT(updateXinxConf(int)) );
 	connect( &m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()) );
 	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()) );
@@ -77,23 +77,23 @@ void PrivateXmlPresentationDockWidget::adaptColumns() {
 void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 	int index;
 	QString filename = m_openingFile;
-	
+
 	m_xmlPresentationWidget->m_presentationComboBox->blockSignals( true );
 	m_xmlPresentationWidget->m_presentationComboBox->clear();
-	
+
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<No presentation file>") );
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<Choose an XML file ...>") );
-	
+
 	if( XINXProjectManager::self()->project() ) {
 		m_logPath = XINXProjectManager::self()->project()->logProjectDirectory();
 		QDir logDir( m_logPath );
 		if( logDir.exists() ) {
 			QStringList files = logDir.entryList( QStringList() << "Presentation_*.xml", QDir::Files | QDir::Readable );
-			foreach( QString file, files ) 
+			foreach( QString file, files )
 				m_xmlPresentationWidget->m_presentationComboBox->addItem( file );
 		}
 	}
-	
+
 	if( filename.isEmpty() ) {
 		m_xmlPresentationWidget->m_presentationComboBox->blockSignals( false );
 		presentationActivated( 0 );
@@ -118,7 +118,7 @@ void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
 		m_openingFile = QString();
 	} else if( index == 1 ) {
 		// Open a file
-		QString name = QFileDialog::getOpenFileName( m_parent, 
+		QString name = QFileDialog::getOpenFileName( m_parent,
 			tr("Open a presentation file"),
 			m_logPath,
 			tr("Presentation XML File (*.xml)") );
@@ -150,8 +150,8 @@ void PrivateXmlPresentationDockWidget::setComboToolTip( const QString & filename
 		default: break;
 		}
 	}
-	
-	m_xmlPresentationWidget->m_presentationComboBox->setToolTip( 
+
+	m_xmlPresentationWidget->m_presentationComboBox->setToolTip(
 			tr( "File name : %1\n"
 				"Size : %2 %3b\n"
 				"File date : %4" )	.arg( file.canonicalFilePath() )
@@ -176,8 +176,8 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
 	m_filteredElement = XINXConfig::self()->config().xmlPres.showFilteredSubTree;
 
-	delete m_sortFilterModel; delete m_model; delete m_watcher;  
-	
+	delete m_sortFilterModel; delete m_model; delete m_watcher;
+
 	m_threadAct = THREAD_OPENING;
 	start( QThread::IdlePriority );
 }
@@ -196,7 +196,7 @@ void PrivateXmlPresentationDockWidget::threadrun() {
 			m_sortFilterModel = new RecursiveFilterProxyModel( m_model );
 			m_sortFilterModel->setSourceModel( m_model );
 		}
-	} 
+	}
 	if( m_model ) {
 		m_sortFilterModel->setShowAllChild( m_filteredElement );
 		m_sortFilterModel->setFilterRegExp( m_filteredText );
@@ -205,44 +205,41 @@ void PrivateXmlPresentationDockWidget::threadrun() {
 }
 
 void PrivateXmlPresentationDockWidget::threadTerminated() {
-	if( m_model ) {
-		if( m_threadAct == THREAD_OPENING ) {
-			m_watcher = new FileWatcher( m_openingFile );
-			connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
-			m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
-		} 
-	
-		/* Filter part */
-		QModelIndex expandIndex = QModelIndex();
-		if( !m_filteredText.isEmpty() ) {
-			while( m_sortFilterModel->rowCount( expandIndex ) > 0 ) {
-				m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-				expandIndex = m_sortFilterModel->index( 0, 0, expandIndex );
-			}
-		} else {
-			QStringList xpath = m_currentXpath.isEmpty() ? XINXConfig::self()->config().xmlPres.autoExpandedPath.split( '/' ) : m_currentXpath.split( '/' );
-			foreach( QString path, xpath ) {
-				m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-				if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
-					QModelIndexList matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly );
+	if( m_threadAct == THREAD_OPENING ) {
+		m_watcher = new FileWatcher( m_openingFile );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
+		m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
+	} else if( m_threadAct == THREAD_FILTERED ) {
+	}
+
+	/* Filter part */
+	QModelIndex expandIndex = QModelIndex();
+	if( !m_filteredText.isEmpty() ) {
+		while( m_sortFilterModel->rowCount( expandIndex ) > 0 ) {
+			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
+			expandIndex = m_sortFilterModel->index( 0, 0, expandIndex );
+		}
+	} else {
+		QStringList xpath = m_currentXpath.isEmpty() ? XINXConfig::self()->config().xmlPres.autoExpandedPath.split( '/' ) : m_currentXpath.split( '/' );
+		foreach( QString path, xpath ) {
+			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
+			if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
+				QModelIndexList matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly );
+				if( matchedIndex.count() > 0 )
+					expandIndex = matchedIndex.at( 0 );
+				else {
+					matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), Qt::DisplayRole, path, 1, Qt::MatchExactly );
 					if( matchedIndex.count() > 0 )
 						expandIndex = matchedIndex.at( 0 );
-					else {
-						matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), Qt::DisplayRole, path, 1, Qt::MatchExactly );
-						if( matchedIndex.count() > 0 )
-							expandIndex = matchedIndex.at( 0 );
-					}
 				}
 			}
 		}
-		m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
-		m_xmlPresentationWidget->m_presentationTreeView->setCurrentIndex( expandIndex );		
-		/* End of filter part */
-	} else {
-		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
-		presentationActivated( 0 );
 	}
-	
+
+	m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
+	m_xmlPresentationWidget->m_presentationTreeView->setCurrentIndex( expandIndex );
+	/* End of filter part */
+
 	m_xmlPresentationWidget->m_presentationProgressBar->hide();
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
@@ -254,17 +251,17 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 
 void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text ) {
 	Q_UNUSED( text );
-	if( m_sortFilterModel ) 
+	if( m_sortFilterModel )
 		m_timerTextChanged.start();
 }
 
 void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 	Q_ASSERT( ! isRunning() );
-	
+
 	if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
 		m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
 	}
-	
+
 	if( m_sortFilterModel ) {
 		// TODO: Delete this line in 4.4
 		m_xmlPresentationWidget->m_filtreLineEdit->clearFocus();
@@ -300,25 +297,25 @@ void PrivateXmlPresentationDockWidget::updateXinxConf( int value ) {
 /* RecursiveFilterProxyModel */
 
 PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::RecursiveFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ) {
-	
+
 }
 
 bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::canBeShow( const QModelIndex & index ) const {
 	if( m_indexCache.contains( index ) ) return m_indexCache.value( index );
-	
+
 	QString data = sourceModel()->data( index ).toString();
 	if( XINXConfig::self()->config().xmlPres.hidePath.contains( data ) ) {
 		m_indexCache.insert( QPersistentModelIndex( index ), false );
 		return false;
 	}
-	
+
 	bool show = data.contains( filterRegExp() );
-	
+
 	if( ! show ) {
 		int r = sourceModel()->rowCount( index );
 		for( int i = 0; i < r; i++ ) {
 			QModelIndex child = sourceModel()->index( i, filterKeyColumn(), index );
-			if( canBeShow( child ) ) { 
+			if( canBeShow( child ) ) {
 				m_indexCache.insert( QPersistentModelIndex( index ), true );
 				return true;
 			}
@@ -342,7 +339,7 @@ bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::mustBeShow( co
 
 bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const {
 	Q_ASSERT( filterKeyColumn() != -1 );
-	
+
 	QModelIndex index = sourceModel()->index( source_row, filterKeyColumn(), source_parent );
 	return canBeShow( index );
 }

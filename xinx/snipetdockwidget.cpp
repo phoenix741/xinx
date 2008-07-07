@@ -22,7 +22,7 @@
 #include "snipetdockwidget.h"
 #include "snipetlist.h"
 #include "runsnipetdialogimpl.h"
-#include "fileeditor.h"
+#include "textfileeditor.h"
 #include "texteditor.h"
 
 // Qt header
@@ -44,7 +44,7 @@ SnipetDockWidget::SnipetDockWidget( QWidget * parent, Qt::WindowFlags flags ) : 
 }
 
 SnipetDockWidget::~SnipetDockWidget() {
-	
+
 }
 
 void SnipetDockWidget::setupUi() {
@@ -59,7 +59,7 @@ void SnipetDockWidget::setupUi() {
 	snipetsWidget->setLayout( vlayout );
 
 	setWidget( snipetsWidget );
-	
+
 	updateSnipets();
 	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateSnipets()) );
 }
@@ -87,16 +87,16 @@ QWidget * SnipetDockWidget::createSnipetWidget( const Snipet & s ) {
 void SnipetDockWidget::callSnipet() {
 	const Snipet & s = sender()->property( "Snipet" ).value<Snipet>();
 	RunSnipetDialogImpl dlg( s, this );
-	if( qobject_cast<FileEditor*>( m_editor ) && dlg.exec() ) {
+	if( qobject_cast<TextFileEditor*>( m_editor ) && dlg.exec() ) {
 		QString text = dlg.getResult();
-		qobject_cast<FileEditor*>( m_editor )->textEdit()->insertText( text ); 
+		qobject_cast<TextFileEditor*>( m_editor )->textEdit()->insertText( text );
 	}
 }
 
 void SnipetDockWidget::updateSnipets() {
 	qDeleteAll( m_pages );
 	m_pages.clear();
-	
+
 	foreach( const Snipet & s, SnipetListManager::self()->snipets() ) {
 		if( m_pages.value( s.category(), 0 ) == 0 ) {
 			m_pages[ s.category() ] = createWidget();
@@ -109,13 +109,13 @@ void SnipetDockWidget::updateSnipets() {
 	}
 }
 
-void SnipetDockWidget::setEditor( Editor * ed ) {
+void SnipetDockWidget::setEditor( AbstractEditor * ed ) {
 	if( (!ed) || (m_editor != ed) ) {
 		m_editor = ed;
 		bool enabled = false;
-		if( qobject_cast<FileEditor*>( ed ) ) 
+		if( qobject_cast<TextFileEditor*>( ed ) )
 			enabled = true;
-		
+
 		QList<QPushButton*> btnList = m_snipetsToolBox->findChildren<QPushButton*>();
 		foreach( QPushButton * btn, btnList ) {
 			btn->setEnabled( enabled );
