@@ -19,6 +19,14 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="tabProjectDefinition" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>591</width>
+        <height>311</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>&amp;Project Definition</string>
       </attribute>
@@ -26,16 +34,7 @@
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>9</number>
-       </property>
-       <property name="topMargin" >
-        <number>9</number>
-       </property>
-       <property name="rightMargin" >
-        <number>9</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>9</number>
        </property>
        <item>
@@ -44,28 +43,17 @@
           <string>Project</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>9</number>
           </property>
-          <property name="topMargin" >
-           <number>9</number>
-          </property>
-          <property name="rightMargin" >
-           <number>9</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>9</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="2" column="2" >
            <widget class="QToolButton" name="m_logButton" >
             <property name="icon" >
-             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+             <iconset resource="../application.qrc" >
+              <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
             </property>
            </widget>
           </item>
@@ -119,7 +107,8 @@
           <item row="1" column="2" >
            <widget class="QToolButton" name="m_projectButton" >
             <property name="icon" >
-             <iconset resource="../application.qrc" >:/images/folder.png</iconset>
+             <iconset resource="../application.qrc" >
+              <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
             </property>
            </widget>
           </item>
@@ -152,7 +141,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -163,6 +152,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabDefaultValue" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>591</width>
+        <height>311</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>&amp;Default value</string>
       </attribute>
@@ -170,16 +167,7 @@
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
-        <number>9</number>
-       </property>
-       <property name="topMargin" >
-        <number>9</number>
-       </property>
-       <property name="rightMargin" >
-        <number>9</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>9</number>
        </property>
        <item>
@@ -188,22 +176,10 @@
           <string>Default Value</string>
          </property>
          <layout class="QGridLayout" >
-          <property name="leftMargin" >
+          <property name="margin" >
            <number>9</number>
           </property>
-          <property name="topMargin" >
-           <number>9</number>
-          </property>
-          <property name="rightMargin" >
-           <number>9</number>
-          </property>
-          <property name="bottomMargin" >
-           <number>9</number>
-          </property>
-          <property name="horizontalSpacing" >
-           <number>6</number>
-          </property>
-          <property name="verticalSpacing" >
+          <property name="spacing" >
            <number>6</number>
           </property>
           <item row="2" column="0" >
@@ -218,12 +194,16 @@
             <property name="whatsThis" >
              <string>This is the default lang used by your project. This can be used for the search path of the &lt;u>C&lt;/u>ustom files tab.</string>
             </property>
+            <property name="editable" >
+             <bool>true</bool>
+            </property>
             <item>
              <property name="text" >
               <string>FRA</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/france.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/france.png</normaloff>:/images/france.png</iconset>
              </property>
             </item>
             <item>
@@ -231,7 +211,8 @@
               <string>ENG</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/usa.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/usa.png</normaloff>:/images/usa.png</iconset>
              </property>
             </item>
             <item>
@@ -239,7 +220,8 @@
               <string>DEU</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/germany.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/germany.png</normaloff>:/images/germany.png</iconset>
              </property>
             </item>
             <item>
@@ -247,7 +229,8 @@
               <string>ITA</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/italy.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/italy.png</normaloff>:/images/italy.png</iconset>
              </property>
             </item>
             <item>
@@ -255,7 +238,8 @@
               <string>ESP</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/spain.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/spain.png</normaloff>:/images/spain.png</iconset>
              </property>
             </item>
             <item>
@@ -263,7 +247,8 @@
               <string>POR</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/portugal.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/portugal.png</normaloff>:/images/portugal.png</iconset>
              </property>
             </item>
            </widget>
@@ -283,12 +268,16 @@
             <property name="whatsThis" >
              <string>This is the default navigator used in the list of path in the &lt;u>C&lt;/u>ustom files tab.</string>
             </property>
+            <property name="editable" >
+             <bool>true</bool>
+            </property>
             <item>
              <property name="text" >
               <string>NAV/MIC</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/ie_logo.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/ie_logo.png</normaloff>:/images/ie_logo.png</iconset>
              </property>
             </item>
             <item>
@@ -296,7 +285,8 @@
               <string>NAV/NET</string>
              </property>
              <property name="icon" >
-              <iconset resource="../application.qrc" >:/images/firefox_logo.png</iconset>
+              <iconset resource="../application.qrc" >
+               <normaloff>:/images/firefox_logo.png</normaloff>:/images/firefox_logo.png</iconset>
              </property>
             </item>
            </widget>
@@ -340,7 +330,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>40</height>
@@ -351,26 +341,22 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabWebServices" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>591</width>
+        <height>311</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>&amp;WebServices</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>9</number>
        </property>
-       <property name="topMargin" >
-        <number>9</number>
-       </property>
-       <property name="rightMargin" >
-        <number>9</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>9</number>
-       </property>
-       <property name="horizontalSpacing" >
-        <number>6</number>
-       </property>
-       <property name="verticalSpacing" >
+       <property name="spacing" >
         <number>6</number>
        </property>
        <item row="0" column="0" >
@@ -398,6 +384,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabCustomFiles" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>591</width>
+        <height>311</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>&amp;Custom files</string>
       </attribute>
@@ -475,16 +469,7 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
@@ -492,7 +477,7 @@
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>131</width>
          <height>31</height>
@@ -509,7 +494,8 @@
         <string>&amp;OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -519,7 +505,8 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>

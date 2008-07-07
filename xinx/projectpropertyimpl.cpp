@@ -37,10 +37,10 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
 	m_servicesList->setDefaultVisible( false );
 	m_servicesList->setDefaultProposedValue( "http://localhost" );
-	
+
 	m_projectRCSComboBox->addItem( tr("<No Revision Control System>") );
 	QPair<QString,QString> revisionControl;
-	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() ) 
+	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() )
 		m_projectRCSComboBox->addItem( revisionControl.second, revisionControl.first );
 }
 
@@ -57,20 +57,20 @@ void ProjectPropertyImpl::on_m_projectButton_clicked() {
 
 void ProjectPropertyImpl::on_m_prefixList_defaultValueChanged( QString text ) {
 	Q_UNUSED( text );
-	
+
 	updateOkButton();
 }
 
 void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	QDir dir (text);
 	QPalette paletteVerion( m_configurationVersionLabel->palette() );
-	
+
 	if( m_versionInstance ) {
 		m_versionInstance->wait();
 		delete m_versionInstance;
 		m_versionInstance = NULL;
 	}
-	
+
 	if( dir.exists() ) {
 		paletteVerion.setColor( QPalette::WindowText, Qt::red );
 
@@ -110,21 +110,23 @@ void ProjectPropertyImpl::versionFinded( SimpleConfigurationFile configuration )
 void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_nameLineEdit->setText( project->projectName() );
 	m_projectLineEdit->setText( QDir::toNativeSeparators( project->projectPath() ) );
+	if( m_langComboBox->findText( project->defaultLang() ) < 0 ) m_langComboBox->addItem( project->defaultLang() );
 	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
+	if( m_navigatorComboBox->findText( project->defaultNav() ) < 0 ) m_navigatorComboBox->addItem( project->defaultNav() );
 	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
 	m_specifiqueProjectPathLineEdit->setText( project->specifiquePathName() );
-	
+
 	m_prefixList->setDefaultValue( project->specifiquePrefix() );
 	m_prefixList->setValues( project->specifiquePrefixes() );
 
 	m_specifiqueGroupBox->setChecked( project->options().testFlag( XSLProject::hasSpecifique ) );
 	m_webServiceGroupBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
 	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
-	
+
 	int index = m_projectRCSComboBox->findData( project->projectRCS() );
 	if( index < 0 ) index = 0;
 	m_projectRCSComboBox->setCurrentIndex( index );
-	
+
 	m_servicesList->setValues( project->serveurWeb() );
 
 	QString defSearchPath;
@@ -150,7 +152,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 
 	project->setSpecifiquePrefix( m_prefixList->defaultValue() );
 	project->specifiquePrefixes() = m_prefixList->values();
-	
+
 	project->setProjectRCS( m_projectRCSComboBox->itemData( m_projectRCSComboBox->currentIndex() ).toString() );
 	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
 
