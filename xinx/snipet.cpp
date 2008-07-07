@@ -21,7 +21,7 @@
 #include "snipet.h"
 
 /* Snipet */
-	
+
 const QString & Snipet::name() const {
 	return m_name;
 }
@@ -33,7 +33,7 @@ void Snipet::setName( const QString & name ) {
 const QString & Snipet::key() const {
 	return m_key;
 }
-	 
+
 void Snipet::setKey( const QString & key ) {
 	m_key = key;
 }
@@ -41,11 +41,11 @@ void Snipet::setKey( const QString & key ) {
 const QString & Snipet::type() const {
 	return m_type;
 }
-	 
+
 void Snipet::setType( const QString & type ) {
 	m_type = type;
 }
-	
+
 const QString & Snipet::description() const {
 	return m_description;
 }
@@ -53,7 +53,7 @@ const QString & Snipet::description() const {
 void Snipet::setDescription( const QString & description ) {
 	m_description = description;
 }
-	
+
 const QString & Snipet::icon() const {
 	return m_icon;
 }
@@ -65,7 +65,7 @@ void Snipet::setIcon( const QString & icon ) {
 const QString & Snipet::category() const {
 	return m_category;
 }
-	
+
 void Snipet::setCategory( const QString & category ) {
 	m_category = category;
 }
@@ -73,11 +73,11 @@ void Snipet::setCategory( const QString & category ) {
 const QString & Snipet::text() const {
 	return m_text;
 }
-	
+
 void Snipet::setText( const QString & value ) {
 	m_text = value;
 }
-	
+
 QStringList & Snipet::params() {
 	return m_params;
 }
@@ -87,7 +87,7 @@ const QStringList & Snipet::params() const {
 }
 
 bool Snipet::operator==( const Snipet & s ) const {
-	return ( m_name == s.m_name ) 
+	return ( m_name == s.m_name )
 		&& ( m_key == s.m_key )
 		&& ( m_category == s.m_category )
 		&& ( m_text == s.m_text )
@@ -98,5 +98,5 @@ bool Snipet::operator==( const Snipet & s ) const {
 }
 
 bool Snipet::operator<( const Snipet & s ) const {
-	return m_name < s.m_name;
+	return ( m_category < s.m_category ) && ( m_name < s.m_name );
 }

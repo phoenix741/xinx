@@ -34,14 +34,14 @@ class PrivateCustomDialogImpl;
 class CustomDialogImpl : public QDialog, public Ui::CustomDialog {
 	Q_OBJECT
 public:
-	/*! 
-	 * Custom dialog constructor. The dialog is create with a fixed size 
+	/*!
+	 * Custom dialog constructor. The dialog is create with a fixed size
 	 * \param parent Parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
 	 */
 	CustomDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	~CustomDialogImpl();
-	
+
 	/*!
 	 * Restore the XINXConfig class in the custom dialog to reflect the configuration of application.
 	 * \param config The config file used to load options.
@@ -66,15 +66,15 @@ private slots:
 	void on_m_changeApplicationDescriptionPathBtn_clicked();
 	void on_m_highlighterComboBox_activated( QString text );
 	void on_m_labelLink_linkActivated( const QString & link );
-	
+
 	void on_m_importPushButton_clicked();
 	void on_m_exportPushButton_clicked();
-	
+
 	void on_m_addPushButton_clicked();
 	void on_m_removePushButton_clicked();
 	void on_m_modifyPushButton_clicked();
-	
-	void m_snipetTableView_selectionChanged();
+
+	void m_snipetTreeView_selectionChanged();
 private:
 	PrivateCustomDialogImpl * d;
 	friend class PrivateCustomDialogImpl;

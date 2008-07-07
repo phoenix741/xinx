@@ -258,19 +258,49 @@ Qt::ItemFlags SpecifiqueModelIndex::flags ( const QModelIndex & index ) const {
 
 /* SnipetModelIndex */
 
-SnipetModelIndex::SnipetModelIndex( SnipetList * list, QObject * parent ) : QAbstractTableModel( parent ), m_list( list ) {
-
+SnipetModelIndex::SnipetModelIndex( const SnipetList & list, QObject * parent ) : QAbstractItemModel( parent ) {
+	loadSnipetList( list );
 }
 
 SnipetModelIndex::~SnipetModelIndex() {
 
 }
 
-int SnipetModelIndex::rowCount( const QModelIndex & ) const {
-	return m_list->size();
+void SnipetModelIndex::loadSnipetList( const SnipetList & list ) {
+	m_snipetList.clear();
+	foreach( Snipet s, list )
+		m_snipetList[ s.category() ].append( s );
 }
 
-int SnipetModelIndex::columnCount( const QModelIndex & ) const {
+QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & parent ) const {
+	if( parent.isValid() ) {
+		QString categoryName = m_snipetList.keys().at( (long)parent.internalPointer() );
+		if( ( row >= m_snipetList.value( categoryName ).size() ) || ( row < 0 ) ) return QModelIndex();
+		return createIndex( row, column, m_snipetList.keys().indexOf( categoryName ) );
+	} else {
+		if( ( row >= m_snipetList.keys().size() ) || ( row < 0 ) ) return QModelIndex();
+		return createIndex( row, column, -1 );
+	}
+}
+
+QModelIndex SnipetModelIndex::parent( const QModelIndex & index ) const {
+	if( !index.isValid() ) return QModelIndex();
+
+	if( (long)index.internalPointer() == -1 ) {
+		return QModelIndex();
+	}
+}
+
+int SnipetModelIndex::rowCount( const QModelIndex & index ) const {
+	if( ! index.isValid() )
+		return m_snipetList.keys().size();
+	else {
+		return m_snipetList.values( m_snipetList.keys().at( (long)index.internalPointer() ) ).size();
+	}
+}
+
+int SnipetModelIndex::columnCount( const QModelIndex & index ) const {
+	if( index.isValid() && ((long)index.internalPointer() == -1) ) return 1;
 	return 3;
 }
 
@@ -288,50 +318,61 @@ QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation,
 		default:
 			return QVariant();
 		}
-	} else {
-		return QVariant( section );
-	}
+	} else
+		return QVariant();
 }
 
 QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 	if( ( role != Qt::DisplayRole ) && ( role != Qt::DecorationRole ) && ( role != Qt::UserRole ) ) return QVariant();
 	if( ! index.isValid() ) return QVariant();
 
-	int line = index.row();
-	if( ( line < 0 ) || ( line >= m_list->size() ) ) return QVariant();
+	if( (long)index.internalPointer() == -1 ) {
+		if( index.column() != 0 ) return QVariant();
 
-	if( role == Qt::DisplayRole )
-	switch( index.column() ) {
-	case 0:
-		return m_list->at( line ).name();
-	case 1:
-		return m_list->at( line ).key();
-	case 2:
-		return m_list->at( line ).description();
-	} else if( role == Qt::DecorationRole ) {
-		if( index.column() == 0 )
-			return QIcon( m_list->at( line ).icon() );
-	} else if( role == Qt::UserRole ) {
-		if( index.column() == 0 )
-			return QVariant::fromValue( m_list->at( line ) );
+		if( role == Qt::DisplayRole ) {
+			return m_snipetList.keys().at( index.row() );
+		} else if( role == Qt::DecorationRole ) {
+			return QIcon( ":/images/folder.png" );
+		}
+
+	} else {
+		QString category = m_snipetList.keys().at( (long)index.internalPointer() );
+		int line = index.row();
+		if( ( line < 0 ) || ( line >= m_snipetList.value( category ).size() ) ) return QVariant();
+
+		if( role == Qt::DisplayRole )
+			switch( index.column() ) {
+			case 0:
+				return m_snipetList.value( category ).at( line ).name();
+			case 1:
+				return m_snipetList.value( category ).at( line ).key();
+			case 2:
+				return m_snipetList.value( category ).at( line ).description();
+		} else if( role == Qt::DecorationRole ) {
+			if( index.column() == 0 )
+				return QIcon( m_snipetList.value( category ).at( line ).icon() );
+		} else if( role == Qt::UserRole ) {
+			if( index.column() == 0 )
+				return QVariant::fromValue( m_snipetList.value( category ).at( line ) );
+		}
 	}
 	return QVariant();
 }
 
 void SnipetModelIndex::removeSnipet( QList<int> indexes ) {
-	qStableSort( indexes.begin(), indexes.end(), qGreater<int>() );
+	/*qStableSort( indexes.begin(), indexes.end(), qGreater<int>() );
 	foreach( int index, indexes ) {
 		beginRemoveRows( QModelIndex(), index, index );
-		m_list->removeAt( index );
+		m_snipetList->removeAt( index );
 		endRemoveRows();
-	}
+	}*/
 }
 
 void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
-	SnipetList::iterator i = qLowerBound( m_list->begin(), m_list->end(), snipet );
-	beginInsertRows( QModelIndex(), i - m_list->begin(), i - m_list->begin() );
-	m_list->insert( i, snipet );
-	endInsertRows();
+	/*SnipetList::iterator i = qLowerBound( m_snipetList->begin(), m_snipetList->end(), snipet );
+	beginInsertRows( QModelIndex(), i - m_snipetList->begin(), i - m_snipetList->begin() );
+	m_snipetList->insert( i, snipet );
+	endInsertRows();*/
 }
 
 /* PrivateCustomDialogImpl */
@@ -443,13 +484,13 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Snipet
 	m_snipets = SnipetListManager::self()->snipets();
-	m_snipetModel = new SnipetModelIndex( &m_snipets, m_parent->m_snipetTableView );
-	m_parent->m_snipetTableView->setModel( m_snipetModel );
-	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
-	m_parent->m_snipetTableView->horizontalHeader()->setResizeMode( 2, QHeaderView::Stretch );
-//	m_parent->m_snipetTableView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
-	m_parent->m_snipetTableView_selectionChanged();
-	connect( m_parent->m_snipetTableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), m_parent, SLOT(m_snipetTableView_selectionChanged()) );
+	m_snipetModel = new SnipetModelIndex( m_snipets, m_parent->m_snipetTreeView );
+	m_parent->m_snipetTreeView->setModel( m_snipetModel );
+	m_parent->m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
+	m_parent->m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
+//	m_parent->m_snipetTreeView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
+	m_parent->m_snipetTreeView_selectionChanged();
+	connect( m_parent->m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), m_parent, SLOT(m_snipetTreeView_selectionChanged()) );
 
 	// Load Script
 	m_parent->m_scriptListView->clear();
@@ -724,7 +765,7 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_exportPushButton_clicked() {
-	QModelIndexList indexes = m_snipetTableView->selectionModel()->selectedRows();
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
 	QString exportedFilename = QFileDialog::getSaveFileName( this, tr("Export snipets"), "datas:/", "*.xml" );
 	if( ! exportedFilename.isEmpty() ) {
 		SnipetList list;
@@ -746,7 +787,7 @@ void CustomDialogImpl::on_m_addPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_removePushButton_clicked() {
-	QModelIndexList indexes = m_snipetTableView->selectionModel()->selectedRows();
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
 	QList<int> lists;
 	for( int i = indexes.count() - 1 ; i >= 0 ; i-- ) {
 		lists << indexes.at( i ).row();
@@ -755,19 +796,19 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {
-	QModelIndexList index = m_snipetTableView->selectionModel()->selectedRows();
+	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
 	SnipetDialogImpl dlg( s, this );
 	if( dlg.exec() ) {
 		d->m_snipets.replace( index.at( 0 ).row(), dlg.getSnipet() );
 		qSort( d->m_snipets );
-		m_snipetTableView->reset();
-		m_snipetTableView_selectionChanged();
+		m_snipetTreeView->reset();
+		m_snipetTreeView_selectionChanged();
 	}
 }
 
-void CustomDialogImpl::m_snipetTableView_selectionChanged() {
-	QModelIndexList indexes = m_snipetTableView->selectionModel()->selectedRows();
+void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
 	m_removePushButton->setEnabled( indexes.count() > 0 );
 	m_modifyPushButton->setEnabled( indexes.count() == 1 );
 	m_exportPushButton->setEnabled( indexes.count() > 0 );

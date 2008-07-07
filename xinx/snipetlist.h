@@ -44,16 +44,16 @@ public:
 
 
 /*!
- * The snipet list contains all snipet defined in XINX. This snipet is stored in a 
- * file in XML format. 
+ * The snipet list contains all snipet defined in XINX. This snipet is stored in a
+ * file in XML format.
  */
 class SnipetList : public QList<Snipet> {
 public:
 	SnipetList();
 	virtual ~SnipetList();
-	
+
 	int indexOf( const QString & key, int from = 0 ) const;
-	
+
 	/*!
 	 * Save the snipet list into a file.
 	 * \param filename The filename where we want save snipet.
@@ -66,12 +66,17 @@ public:
 	 * \throw SnipetListException
 	 */
 	void loadFromFile( const QString & filename );
-	
+
 	/*!
 	 * List of categories used by templates
 	 * \return List of template.
 	 */
 	QStringList categories() const;
+
+	/*!
+	 * List all the snipet of a the category \e category
+	 */
+	SnipetList categorie( const QString & category );
 private:
 };
 
@@ -80,19 +85,19 @@ class SnipetListManager : public QObject {
 public:
 	SnipetListManager();
 	~SnipetListManager();
-	
+
 	static SnipetListManager * self();
-	
+
 	void loadFromSnipetFile();
 	void saveToSnipetFile();
-	
+
 	const SnipetList & snipets() const;
 	void setSnipets( const SnipetList & list );
 signals:
 	void listChanged();
 private:
 	static SnipetListManager * s_self;
-	
+
 	SnipetList m_snipets;
 };
 

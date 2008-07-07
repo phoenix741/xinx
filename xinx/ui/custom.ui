@@ -12,7 +12,7 @@
   <property name="windowTitle" >
    <string>Customize</string>
   </property>
-  <layout class="QGridLayout" >
+  <layout class="QGridLayout" name="gridLayout_2" >
    <item rowspan="4" row="0" column="0" >
     <widget class="QListWidget" name="m_listWidget" >
      <property name="minimumSize" >
@@ -157,7 +157,7 @@
    <item row="2" column="1" >
     <widget class="QStackedWidget" name="stackedWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>7</number>
      </property>
      <property name="color" stdset="0" >
       <color>
@@ -258,8 +258,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -345,8 +345,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -401,8 +401,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -549,8 +549,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -673,8 +673,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -818,8 +818,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -977,11 +977,11 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>528</width>
-        <height>395</height>
+        <width>644</width>
+        <height>391</height>
        </rect>
       </property>
-      <layout class="QGridLayout" >
+      <layout class="QGridLayout" name="gridLayout" >
        <item row="0" column="0" colspan="6" >
         <widget class="QLabel" name="label_13" >
          <property name="text" >
@@ -993,17 +993,7 @@
         </widget>
        </item>
        <item row="1" column="0" colspan="6" >
-        <widget class="QTableView" name="m_snipetTableView" >
-         <property name="whatsThis" >
-          <string>List of snipet known by &lt;b>XINX&lt;/b>. This snipets can contains keyword and script to held the user to edit text.</string>
-         </property>
-         <property name="alternatingRowColors" >
-          <bool>true</bool>
-         </property>
-         <property name="selectionBehavior" >
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-        </widget>
+        <widget class="QTreeView" name="m_snipetTreeView" />
        </item>
        <item row="2" column="0" >
         <widget class="QPushButton" name="m_addPushButton" >
@@ -1134,8 +1124,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>622</width>
-            <height>346</height>
+            <width>100</width>
+            <height>30</height>
            </rect>
           </property>
           <attribute name="title" >
@@ -1287,7 +1277,6 @@
   <tabstop>m_viewColorBox</tabstop>
   <tabstop>m_errorColorBox</tabstop>
   <tabstop>m_screenColorBox</tabstop>
-  <tabstop>m_snipetTableView</tabstop>
   <tabstop>m_addPushButton</tabstop>
   <tabstop>m_removePushButton</tabstop>
   <tabstop>m_modifyPushButton</tabstop>

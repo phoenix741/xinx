@@ -38,7 +38,7 @@ class ToolsModelIndex : public QAbstractTableModel {
 public:
 	ToolsModelIndex( QHash<QString,QString> * tools, QObject * parent = 0 );
 	virtual ~ToolsModelIndex();
-	
+
 	void setTools( QHash<QString,QString> * tools );
 
 	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
@@ -60,7 +60,7 @@ public:
     void setEditorData( QWidget *editor, const QModelIndex &index ) const;
     void setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const;
     void updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
-    
+
     void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 };
 
@@ -69,7 +69,7 @@ class SpecifiqueModelIndex : public QAbstractTableModel {
 public:
 	SpecifiqueModelIndex( QHash<QString,AppSettings::struct_extentions> * extentions, QObject * parent = 0 );
 	virtual ~SpecifiqueModelIndex();
-	
+
 	void setExtentions( QHash<QString,AppSettings::struct_extentions> * extentions );
 	const QHash<QString,AppSettings::struct_extentions> & extentions() const;
 
@@ -83,22 +83,26 @@ private:
 	QHash<QString,AppSettings::struct_extentions> m_extentions;
 };
 
-class SnipetModelIndex : public QAbstractTableModel {
+class SnipetModelIndex : public QAbstractItemModel {
 	Q_OBJECT
 public:
-	SnipetModelIndex( SnipetList * list, QObject * parent = 0 );
+	SnipetModelIndex( const SnipetList & list, QObject * parent = 0 );
 	virtual ~SnipetModelIndex();
+
+	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+	virtual QModelIndex parent( const QModelIndex & index ) const;
 
 	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	
+
 	void addSnipet( const Snipet & snipet );
 	void removeSnipet( QList<int> indexes );
 private:
-	SnipetList * m_list;
-	
+	void loadSnipetList( const SnipetList & list );
+	QMap<QString,SnipetList> m_snipetList;
+
 	friend class CustomDialogImpl;
 };
 
@@ -111,10 +115,10 @@ public:
 	XINXConfig m_config;
 	QString m_previousFormat;
 	SyntaxHighlighter * m_highlighter;
-	
+
 	SnipetModelIndex * m_snipetModel;
 	SnipetList m_snipets;
-	
+
 	void showConfig();
 	void storeConfig();
 public slots:

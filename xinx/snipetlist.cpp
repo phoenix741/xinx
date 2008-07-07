@@ -36,7 +36,7 @@ SnipetListManager * SnipetListManager::s_self = 0;
 
 SnipetListException::SnipetListException( const QString & message ) : XinxException( message ) {
 }
-	
+
 /* SnipetList */
 
 SnipetList::SnipetList() {
@@ -73,27 +73,27 @@ void SnipetList::saveToFile( const QString & filename ) {
 	document.appendChild( xmlCodec );
 	QDomElement root = document.createElement( "SnipetList" );
 	document.appendChild( root );
-	
+
 	foreach( const Snipet & snipet, *this ) {
 		QDomElement s = document.createElement( "Snipet" );
 		root.appendChild( s );
-		
+
 		s.setAttribute( "name", snipet.name() );
 		s.setAttribute( "key", snipet.key() );
 		s.setAttribute( "type", snipet.type() );
 		s.setAttribute( "category", snipet.category() );
 		s.setAttribute( "icon", snipet.icon() );
-		
+
 		QDomElement description = document.createElement( "Description" );
 		s.appendChild( description );
 		QDomText text = document.createTextNode( snipet.description() );
 		description.appendChild( text );
-		
+
 		QDomElement textElement = document.createElement( "Text" );
 		s.appendChild( textElement );
 		text = document.createTextNode( snipet.text() );
 		textElement.appendChild( text );
-		
+
 		foreach( QString params, snipet.params() ) {
 			QDomElement param = document.createElement( "Param" );
 			s.appendChild( param );
@@ -111,14 +111,14 @@ void SnipetList::saveToFile( const QString & filename ) {
 void SnipetList::loadFromFile( const QString & filename ) {
 	QFile file( filename );
 	if( ! file.open( QFile::ReadOnly ) )
-		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()) ); 
-		
+		throw SnipetListException( QApplication::translate("SnipetList", "Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()) );
+
 	QDomDocument document( "SnipetList" );
 	if( ! document.setContent( &file ) )
 		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.") );
-	
+
 	QDomElement root = document.documentElement();
-	if( root.tagName() != "SnipetList" ) 
+	if( root.tagName() != "SnipetList" )
 		throw SnipetListException( QApplication::translate("SnipetList", "Parse error exception.") );
 
 	QDomElement snipet = root.firstChildElement( "Snipet" );
@@ -129,13 +129,13 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		newSnipet.setType( snipet.attribute( "type" ) );
 		newSnipet.setCategory( snipet.attribute( "category" ) );
 		newSnipet.setIcon( snipet.attribute( "icon" ) );
-		
+
 		QDomElement description = snipet.firstChildElement( "Description" );
 		newSnipet.setDescription( description.text() );
 
 		QDomElement textElement = snipet.firstChildElement( "Text" );
 		newSnipet.setText( textElement.text() );
-		
+
 		QDomElement param = snipet.firstChildElement( "Param" );
 		while( ! param.isNull() ) {
 			newSnipet.params().append( param.attribute( "name" ) );
@@ -148,10 +148,19 @@ void SnipetList::loadFromFile( const QString & filename ) {
 	qSort( *this );
 }
 
+SnipetList SnipetList::categorie( const QString & category ) {
+	SnipetList result;
+	foreach( Snipet s, *this ) {
+		if( s.category() == category ) result += s;
+	}
+	return result;
+}
+
+
 /* SnipetListManager */
 
 SnipetListManager::SnipetListManager() {
-	
+
 }
 
 SnipetListManager::~SnipetListManager() {
