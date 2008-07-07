@@ -46,7 +46,7 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
 
 	setPixmap( QWizard::LogoPixmap, QPixmap(":/images/splash.png").scaled( QSize( 48, 48 ) ) );
 	setPixmap( QWizard::BannerPixmap, QPixmap(":/images/banner_wizard.png") );
-	
+
 	button( QWizard::CancelButton )->setIcon( QPixmap( ":/images/button_cancel.png" ) );
 	button( QWizard::BackButton )->setIcon( QPixmap( ":/images/bookmarkprevious.png" ) );
 	button( QWizard::NextButton )->setIcon( QPixmap( ":/images/bookmarknext.png" ) );
@@ -71,7 +71,7 @@ XSLProject * NewProjectWizard::createProject() {
 			m_project->setSpecifiquePathName( field( "specifique.path" ).toString() );
 			options |= XSLProject::hasSpecifique;
 		}
-		
+
 		QString rcs = QString();
 		if( ! m_versions->m_noRevisionControl->isChecked() ) {
 			QPair<QRadioButton*,QString> btn;
@@ -100,7 +100,7 @@ void NewProjectWizard::on_customButton1_clicked() {
 	hide();
 	m_project = new XSLProject();
 	ProjectPropertyImpl property ( this );
-	property.loadFromProject( m_project ); // Load an empty project;	
+	property.loadFromProject( m_project ); // Load an empty project;
 	if( ! property.exec() ) {
 		delete m_project; m_project = NULL;
 		reject();
@@ -137,7 +137,7 @@ int ProjectPageImpl::nextId() const {
 
 void ProjectPageImpl::setVisible( bool visible ) {
 	QWizardPage::setVisible( visible );
-	
+
 	if( visible ) {
 		wizard()->setOption( QWizard::HaveCustomButton1, true );
 	} else
@@ -163,21 +163,21 @@ void ProjectPageImpl::on_m_projectPathBtn_clicked() {
 }
 
 void ProjectPageImpl::on_m_projectNameEdit_textChanged( const QString & text ) {
-	m_projectPathEdit->setText( QDir::toNativeSeparators( 
-			QDir( QDir::fromNativeSeparators( m_ASPathEdit->text() ) ).absoluteFilePath( 
-					QString( "j2ee/home/applications/%1" ).arg( text ) 
+	m_projectPathEdit->setText( QDir::toNativeSeparators(
+			QDir( QDir::fromNativeSeparators( m_ASPathEdit->text() ) ).absoluteFilePath(
+					QString( "j2ee/home/applications/%1" ).arg( text )
 			) )
 	);
 }
 
 void ProjectPageImpl::on_m_ASPathEdit_textChanged( const QString & text ) {
-	m_projectPathEdit->setText( QDir::toNativeSeparators( 
-			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath( 
-					QString( "j2ee/home/applications/%1" ).arg( m_projectNameEdit->text() ) 
+	m_projectPathEdit->setText( QDir::toNativeSeparators(
+			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath(
+					QString( "j2ee/home/applications/%1" ).arg( m_projectNameEdit->text() )
 			) )
 	);
-	m_logPathEdit->setText( QDir::toNativeSeparators( 
-			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath( "j2ee/home/log" ) 
+	m_logPathEdit->setText( QDir::toNativeSeparators(
+			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath( "j2ee/home/log" )
 	) );
 }
 
@@ -190,7 +190,7 @@ SpecifiquePageImpl::SpecifiquePageImpl( QWidget * parent ) : QWizardPage( parent
 					"is used when original's file can't be modified.") );
 
 	m_specifiquePathNameEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiquePathNameEdit ) );
-					
+
     registerField( "specifique.prefix*",    m_prefixEdit );
     registerField( "specifique.path*",      m_specifiquePathNameEdit );
 }
@@ -202,10 +202,6 @@ void SpecifiquePageImpl::initializePage() {
 
 int SpecifiquePageImpl::nextId() const {
 	return NewProjectWizard::Page_Services;
-}
-
-void SpecifiquePageImpl::on_m_prefixEdit_textChanged( QString text ) {
-	m_prefixEdit->setText( text.toUpper() );
 }
 
 /* ServicesPageImpl */
@@ -221,7 +217,7 @@ ServicesPageImpl::ServicesPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 
 int ServicesPageImpl::nextId() const {
 	if( m_addWebServicesButton->isChecked() )
-		return NewProjectWizard::Page_ServicesList; 	
+		return NewProjectWizard::Page_ServicesList;
 	else
 		return NewProjectWizard::Page_Versions;
 }
@@ -233,7 +229,7 @@ ServicesListPageImpl::ServicesListPageImpl( QWidget * parent ) : QWizardPage( pa
 	setTitle( windowTitle() );
 	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
 					"list contains link to WSDL.") );
-	
+
 	registerField( "services.list", m_webServicesWidget );
 
 	m_webServicesWidget->setDefaultProposedValue( "http://localhost:8888/gce/services/?WSDL" );
@@ -241,7 +237,7 @@ ServicesListPageImpl::ServicesListPageImpl( QWidget * parent ) : QWizardPage( pa
 }
 
 int ServicesListPageImpl::nextId() const {
-	return NewProjectWizard::Page_Versions; 
+	return NewProjectWizard::Page_Versions;
 }
 
 /* VersionsPageImpl */
@@ -249,10 +245,10 @@ int ServicesListPageImpl::nextId() const {
 VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Define Revision Control") );
 	setSubTitle( tr("Define the revision control used for the project if you want to used one.") );
-	
+
 	m_noRevisionControl = new QRadioButton( tr("No revision control system."), this );
 	m_noRevisionControl->setChecked( true );
-	
+
 	QPair<QString,QString> revisionControl;
 	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() ) {
 		m_revisionBtn.append( qMakePair( new QRadioButton( revisionControl.second, this ), revisionControl.first) );
@@ -269,5 +265,5 @@ VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 }
 
 int VersionsPageImpl::nextId() const {
-	return -1;	
+	return -1;
 }

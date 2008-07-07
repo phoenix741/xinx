@@ -37,7 +37,7 @@ class ProjectPageImpl : public QWizardPage, private Ui::ProjectPage {
 	Q_OBJECT
 public:
 	ProjectPageImpl( QWidget * parent = 0 );
-	
+
 	int nextId() const;
 
     virtual void setVisible( bool visible );
@@ -59,15 +59,13 @@ public:
 
 	int nextId() const;
 	virtual void initializePage();
-private slots:
-	void on_m_prefixEdit_textChanged( QString text );
 };
 
 class ServicesPageImpl : public QWizardPage, private Ui::ServicesPage {
 	Q_OBJECT
 public:
 	ServicesPageImpl( QWidget * parent = 0 );
-	
+
 	int nextId() const;
 private:
 };
@@ -76,7 +74,7 @@ class ServicesListPageImpl : public QWizardPage, private Ui::ServicesListPage {
 	Q_OBJECT
 public:
 	ServicesListPageImpl( QWidget * parent = 0 );
-	
+
 	int nextId() const;
 private slots:
 	friend class NewProjectWizard;
@@ -86,12 +84,12 @@ class VersionsPageImpl : public QWizardPage {
 	Q_OBJECT
 public:
 	VersionsPageImpl( QWidget * parent = 0 );
-	
+
 	int nextId() const;
 private:
 	QRadioButton * m_noRevisionControl;
 	QList< QPair<QRadioButton*, QString> > m_revisionBtn;
-	
+
 	friend class NewProjectWizard;
 };
 
@@ -99,7 +97,7 @@ class NewProjectWizard : public QWizard {
 	Q_OBJECT
 public:
 	enum { Page_Projet, Page_Specifique, Page_Services, Page_ServicesList, Page_Versions };
-	
+
 	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 
 	XSLProject * createProject();
@@ -107,7 +105,7 @@ private slots:
 	void on_customButton1_clicked();
 private:
 	XSLProject * m_project;
-	
+
 	ServicesListPageImpl * m_listPage;
 	VersionsPageImpl * m_versions;
 };
