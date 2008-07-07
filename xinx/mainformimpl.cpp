@@ -959,6 +959,7 @@ void PrivateMainformImpl::rcsLogTerminated() {
 		try {
 			QTemporaryFile * headContentFile = new QTemporaryFile( m_parent ); // Delete when the main windows is destroyed
 			if( headContentFile->open() ) {
+				headContentFile->setTextModeEnabled( true );
 				QTextStream out(headContentFile);
 				out << m_headContent;
 			}
