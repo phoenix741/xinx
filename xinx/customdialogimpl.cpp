@@ -273,30 +273,27 @@ void SnipetModelIndex::loadSnipetList( const SnipetList & list ) {
 }
 
 QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & parent ) const {
-	if( parent.isValid() ) {
-		QString categoryName = m_snipetList.keys().at( (long)parent.internalPointer() );
-		if( ( row >= m_snipetList.value( categoryName ).size() ) || ( row < 0 ) ) return QModelIndex();
-		return createIndex( row, column, m_snipetList.keys().indexOf( categoryName ) );
-	} else {
-		if( ( row >= m_snipetList.keys().size() ) || ( row < 0 ) ) return QModelIndex();
+	if( parent.isValid() && ( (long)parent.internalPointer() == -1 ) ) {
+		if( ( row < 0 ) || ( row >= m_snipetList.values().at( parent.row() ).size() ) ) return QModelIndex();
+		return createIndex( row, column, parent.row() );
+	} else if( !parent.isValid() ) {
+		if( ( row < 0 ) || ( row >= m_snipetList.keys().size() ) ) return QModelIndex();
 		return createIndex( row, column, -1 );
 	}
+	return QModelIndex();
 }
 
 QModelIndex SnipetModelIndex::parent( const QModelIndex & index ) const {
-	if( !index.isValid() ) return QModelIndex();
-
-	if( (long)index.internalPointer() == -1 ) {
-		return QModelIndex();
+	if( index.isValid() && ((long)index.internalPointer() >= 0) ) {
+		return createIndex( (long)index.internalPointer(), 0, -1 ); 
 	}
+	return QModelIndex();
 }
 
 int SnipetModelIndex::rowCount( const QModelIndex & index ) const {
-	if( ! index.isValid() )
-		return m_snipetList.keys().size();
-	else {
-		return m_snipetList.values( m_snipetList.keys().at( (long)index.internalPointer() ) ).size();
-	}
+	if( ! index.isValid() ) return m_snipetList.keys().size();
+	if( (long)index.internalPointer() != -1 ) return 0;
+	return m_snipetList.values().at( index.row() ).size();
 }
 
 int SnipetModelIndex::columnCount( const QModelIndex & index ) const {
@@ -334,26 +331,25 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 		} else if( role == Qt::DecorationRole ) {
 			return QIcon( ":/images/folder.png" );
 		}
-
 	} else {
-		QString category = m_snipetList.keys().at( (long)index.internalPointer() );
 		int line = index.row();
-		if( ( line < 0 ) || ( line >= m_snipetList.value( category ).size() ) ) return QVariant();
+		long category = (long)index.internalPointer();
+		if( ( line < 0 ) || ( line >= m_snipetList.values().at( category ).size() ) ) return QVariant();
 
 		if( role == Qt::DisplayRole )
 			switch( index.column() ) {
 			case 0:
-				return m_snipetList.value( category ).at( line ).name();
+				return m_snipetList.values().at( category ).at( line ).name();
 			case 1:
-				return m_snipetList.value( category ).at( line ).key();
+				return m_snipetList.values().at( category ).at( line ).key();
 			case 2:
-				return m_snipetList.value( category ).at( line ).description();
+				return m_snipetList.values().at( category ).at( line ).description();
 		} else if( role == Qt::DecorationRole ) {
 			if( index.column() == 0 )
-				return QIcon( m_snipetList.value( category ).at( line ).icon() );
+				return QIcon( m_snipetList.values().at( category ).at( line ).icon() );
 		} else if( role == Qt::UserRole ) {
 			if( index.column() == 0 )
-				return QVariant::fromValue( m_snipetList.value( category ).at( line ) );
+				return QVariant::fromValue( m_snipetList.values().at( category ).at( line ) );
 		}
 	}
 	return QVariant();
