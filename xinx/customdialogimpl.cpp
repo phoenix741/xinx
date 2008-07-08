@@ -276,6 +276,8 @@ void SnipetModelIndex::loadSnipetList( const SnipetList & list ) {
 }
 
 QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & parent ) const {
+	if( ( column < 0 ) || ( column > 3 ) ) return QModelIndex(); // Test supplémentaire pour ModelTest
+	
 	if( parent.isValid() && ( (long)parent.internalPointer() == -1 ) ) {
 		if( ( row < 0 ) || ( row >= m_snipetList.values().at( parent.row() ).size() ) ) return QModelIndex();
 		return createIndex( row, column, parent.row() );
@@ -295,6 +297,8 @@ QModelIndex SnipetModelIndex::parent( const QModelIndex & index ) const {
 
 int SnipetModelIndex::rowCount( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return m_snipetList.keys().size();
+	if( index.column() != 0 ) return 0; // Column don't have children (Test supplémentaire pour ModelTest)
+
 	if( (long)index.internalPointer() != -1 ) return 0;
 	return m_snipetList.values().at( index.row() ).size();
 }
@@ -334,8 +338,13 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 
 	if( (long)index.internalPointer() == -1 ) {
 		if( role == Qt::DisplayRole ) {
-			if( index.column() == 0 )
+			switch( index.column() ) {
+			case 0:
 				return m_snipetList.keys().at( index.row() );
+			case 1:
+			case 2:
+				return QString(""); // Needed for Model test
+			}
 		} else if( role == Qt::DecorationRole ) {
 			if( index.column() == 0 )
 				return QIcon( ":/images/folder.png" );
