@@ -285,7 +285,7 @@ QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & pa
 
 QModelIndex SnipetModelIndex::parent( const QModelIndex & index ) const {
 	if( index.isValid() && ((long)index.internalPointer() >= 0) ) {
-		return createIndex( (long)index.internalPointer(), 0, -1 ); 
+		return createIndex( (long)index.internalPointer(), 0, -1 );
 	}
 	return QModelIndex();
 }
@@ -299,6 +299,13 @@ int SnipetModelIndex::rowCount( const QModelIndex & index ) const {
 int SnipetModelIndex::columnCount( const QModelIndex & index ) const {
 	if( index.isValid() && ((long)index.internalPointer() == -1) ) return 1;
 	return 3;
+}
+
+Qt::ItemFlags SnipetModelIndex::flags( const QModelIndex & index ) const {
+	if( index.isValid() && ((long)index.internalPointer() == -1) ) {
+		return Qt::ItemIsEnabled;
+	} else
+		return QAbstractItemModel::flags( index );
 }
 
 QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation, int role ) const {
@@ -320,16 +327,21 @@ QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation,
 }
 
 QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
-	if( ( role != Qt::DisplayRole ) && ( role != Qt::DecorationRole ) && ( role != Qt::UserRole ) ) return QVariant();
 	if( ! index.isValid() ) return QVariant();
 
 	if( (long)index.internalPointer() == -1 ) {
-		if( index.column() != 0 ) return QVariant();
-
 		if( role == Qt::DisplayRole ) {
-			return m_snipetList.keys().at( index.row() );
+			if( index.column() == 0 )
+				return m_snipetList.keys().at( index.row() );
 		} else if( role == Qt::DecorationRole ) {
-			return QIcon( ":/images/folder.png" );
+			if( index.column() == 0 )
+				return QIcon( ":/images/folder.png" );
+		} else if( role == Qt::BackgroundRole ) {
+			return QColor( 0xFF, 0xFF, 0xCC );
+		} else if( role == Qt::FontRole ) {
+			QFont currentFont;
+			currentFont.setBold( true );
+			return currentFont;
 		}
 	} else {
 		int line = index.row();
@@ -365,10 +377,25 @@ void SnipetModelIndex::removeSnipet( QList<int> indexes ) {
 }
 
 void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
-	/*SnipetList::iterator i = qLowerBound( m_snipetList->begin(), m_snipetList->end(), snipet );
-	beginInsertRows( QModelIndex(), i - m_snipetList->begin(), i - m_snipetList->begin() );
-	m_snipetList->insert( i, snipet );
-	endInsertRows();*/
+	QString category = snipet.category();
+	int indexOfCategory = m_snipetList.keys().indexOf( category );
+
+	if( indexOfCategory < 0 ) {
+		QStringList categories = m_snipetList.keys();
+		QStringList::iterator i = qLowerBound( categories.begin(), categories.end(), category );
+		indexOfCategory = i - categories.begin();
+		beginInsertRows( QModelIndex(), indexOfCategory, indexOfCategory );
+		m_snipetList[ category ] = SnipetList();
+		endInsertRows();
+	}
+
+	SnipetList list = m_snipetList.value( category );
+
+	SnipetList::iterator i = qLowerBound( list.begin(), list.end(), snipet );
+	beginInsertRows( index( indexOfCategory, 0 ), i - list.begin(), i - list.begin() );
+	list.insert( i, snipet );
+	m_snipetList[ category ] = list;
+	endInsertRows();
 }
 
 /* PrivateCustomDialogImpl */
@@ -484,7 +511,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_snipetTreeView->setModel( m_snipetModel );
 	m_parent->m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_parent->m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
-//	m_parent->m_snipetTreeView->setSpan( 0, 0, 1, 3 ); // Peut-être une bonne idée pour les catégories.
+	m_parent->m_snipetTreeView->expandAll();
 	m_parent->m_snipetTreeView_selectionChanged();
 	connect( m_parent->m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), m_parent, SLOT(m_snipetTreeView_selectionChanged()) );
 
@@ -779,6 +806,7 @@ void CustomDialogImpl::on_m_addPushButton_clicked() {
 	if( dlg.exec() ) {
 		Snipet s = dlg.getSnipet();
 		d->m_snipetModel->addSnipet( s );
+		//m_snipetTreeView->expandAll();
 	}
 }
 
@@ -805,6 +833,9 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 
 void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	foreach( QModelIndex i, indexes ) {
+		if( (long)i.internalPointer() == -1 ) indexes.removeAll( i );
+	}
 	m_removePushButton->setEnabled( indexes.count() > 0 );
 	m_modifyPushButton->setEnabled( indexes.count() == 1 );
 	m_exportPushButton->setEnabled( indexes.count() > 0 );

@@ -98,5 +98,9 @@ bool Snipet::operator==( const Snipet & s ) const {
 }
 
 bool Snipet::operator<( const Snipet & s ) const {
-	return ( m_category < s.m_category ) && ( m_name < s.m_name );
+	if( m_category < s.m_category ) return true;
+	if( m_category > s.m_category ) return false;
+	if( m_name < s.m_name )         return true;
+	if( m_name > s.m_name )         return false;
+	return false;
 }
