@@ -32,6 +32,9 @@
 #include <QMessageBox>
 #include <QHeaderView>
 
+// Model test
+#include <modeltest.h>
+
 /* ToolsModelIndex */
 
 ToolsModelIndex::ToolsModelIndex( QHash<QString,QString> * tools, QObject * parent ) : QAbstractTableModel( parent ) {
@@ -508,6 +511,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Snipet
 	m_snipets = SnipetListManager::self()->snipets();
 	m_snipetModel = new SnipetModelIndex( m_snipets, m_parent->m_snipetTreeView );
+	new ModelTest( m_snipetModel, this );
 	m_parent->m_snipetTreeView->setModel( m_snipetModel );
 	m_parent->m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_parent->m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
