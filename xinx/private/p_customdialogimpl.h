@@ -98,10 +98,13 @@ public:
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 
+	void loadSnipetList( const SnipetList & list );
+	void clear();
 	void addSnipet( const Snipet & snipet );
 	void removeSnipet( const QModelIndexList & indexes );
+
+	SnipetList getSnipetList() const;
 private:
-	void loadSnipetList( const SnipetList & list );
 	QMap<QString,SnipetList> m_snipetList;
 
 	friend class CustomDialogImpl;
@@ -118,7 +121,6 @@ public:
 	SyntaxHighlighter * m_highlighter;
 
 	SnipetModelIndex * m_snipetModel;
-	SnipetList m_snipets;
 
 	void showConfig();
 	void storeConfig();
