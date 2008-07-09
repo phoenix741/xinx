@@ -172,7 +172,7 @@
         <x>0</x>
         <y>0</y>
         <width>644</width>
-        <height>395</height>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -978,11 +978,11 @@
         <x>0</x>
         <y>0</y>
         <width>644</width>
-        <height>395</height>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout" >
-       <item row="0" column="0" colspan="6" >
+       <item row="0" column="0" colspan="7" >
         <widget class="QLabel" name="label_13" >
          <property name="text" >
           <string>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b>XINX&lt;/b> file or export snipet to a &lt;i>XML&lt;/i> file.</string>
@@ -992,7 +992,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="6" >
+       <item row="1" column="0" colspan="7" >
         <widget class="QTreeView" name="m_snipetTreeView" >
          <property name="alternatingRowColors" >
           <bool>true</bool>
@@ -1050,7 +1050,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="3" >
+       <item row="2" column="4" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
@@ -1063,7 +1063,7 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="4" >
+       <item row="2" column="5" >
         <widget class="QPushButton" name="m_importPushButton" >
          <property name="whatsThis" >
           <string>Import a list of snipet from an XML file.</string>
@@ -1077,7 +1077,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="5" >
+       <item row="2" column="6" >
         <widget class="QPushButton" name="m_exportPushButton" >
          <property name="whatsThis" >
           <string>Export selected snipet to an XML file.</string>
@@ -1091,6 +1091,17 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="3" >
+        <widget class="QPushButton" name="m_duplicatePushButton" >
+         <property name="text" >
+          <string>D&amp;uplicate</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="m_tools" >
@@ -1099,7 +1110,7 @@
         <x>0</x>
         <y>0</y>
         <width>644</width>
-        <height>395</height>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -1123,7 +1134,7 @@
         <x>0</x>
         <y>0</y>
         <width>644</width>
-        <height>395</height>
+        <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -1138,7 +1149,7 @@
             <x>0</x>
             <y>0</y>
             <width>622</width>
-            <height>353</height>
+            <height>346</height>
            </rect>
           </property>
           <attribute name="title" >

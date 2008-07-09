@@ -73,6 +73,7 @@ private slots:
 	void on_m_addPushButton_clicked();
 	void on_m_removePushButton_clicked();
 	void on_m_modifyPushButton_clicked();
+	void on_m_duplicatePushButton_clicked();
 
 	void m_snipetTreeView_selectionChanged();
 private:

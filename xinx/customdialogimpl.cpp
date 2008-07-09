@@ -864,12 +864,23 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 	}
 }
 
+void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
+	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
+	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
+	SnipetDialogImpl dlg( s, this );
+	if( dlg.exec() ) {
+		d->m_snipetModel->addSnipet( dlg.getSnipet() );
+		m_snipetTreeView->expandAll();
+	}
+}
+
 void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
 	foreach( QModelIndex i, indexes ) {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 	m_removePushButton->setEnabled( indexes.count() > 0 );
+	m_duplicatePushButton->setEnabled( indexes.count() == 1 );
 	m_modifyPushButton->setEnabled( indexes.count() == 1 );
 	m_exportPushButton->setEnabled( indexes.count() > 0 );
 }
