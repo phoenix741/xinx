@@ -278,6 +278,11 @@ signals:
 	 * \param line line of the file to open
 	 */
 	void open( const QString & filename, int line );
+
+	/*!
+	 * Signal emited when the content of the editor change.
+	 */
+	void contentChanged();
 protected:
 	AbstractEditor( const AbstractEditor & editor );
 

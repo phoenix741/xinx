@@ -48,7 +48,7 @@ class PrivateMainformImpl : public QObject {
 public:
 	PrivateMainformImpl( MainformImpl * parent );
 	~PrivateMainformImpl();
-	
+
 	// Creation
 	void createTabEditorButton();
 	void createShortcut();
@@ -64,51 +64,53 @@ public:
 	// Editor
 	QString m_lastProjectOpenedPlace;
 	QStringList m_fileToAdd;
-	
+
 	bool fileEditorMayBeSave( int index );
 	void fileEditorSave( int index );
 	void fileEditorSaveAs( int index );
 	void fileEditorClose( int index );
 	void fileEditorRefreshFile( int index );
-	
+
 	// Project
 	bool closeProject( bool session );
-	
+
 	// Settings
 	void readWindowSettings();
 	void storeWindowSettings();
-	
+
 	// Dock
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
 	RCSLogDockWidget * m_rcslogDock;
 	XmlPresentationDockWidget * m_xmlpresentationdock;
 	SnipetDockWidget * m_snipetsDock;
-	
+
 	// RCS
 	bool m_rcsExecute, m_rcsVisible;
 	QString m_headContent, m_compareFileName;
 	QTimer * m_timer;
-	
+
 	// Label text
 	QLabel * m_editorPosition;
 	QLabel * m_threadCount;
+	QLabel * m_codecLabel;
+	QLabel * m_lineFeedLabel;
 
 	// Recent action
-	QAction * m_recentProjectActs[ MAXRECENTFILES ]; 
+	QAction * m_recentProjectActs[ MAXRECENTFILES ];
 	QAction * m_recentSeparator;
-	QAction * m_recentFileActs[ MAXRECENTFILES ]; 
+	QAction * m_recentFileActs[ MAXRECENTFILES ];
 	QAction * m_recentFileSeparator;
 
 	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
 	void updateRecentFiles();
 	void updateRecentProjects();
-	
+
 	// Snipet
 	QHash<QString,QAction*> m_snipetCategoryActs;
 	QList<QAction*> m_snipetActs;
 	QList<QAction*> m_scriptActs;
-	
+
 	// Find/Replace
 	ReplaceDialogImpl * m_findDialog;
 	QString m_findExpression, m_replaceExpression;
@@ -117,7 +119,7 @@ public:
 	QTextCursor m_cursorStart, m_cursorEnd;
 	int m_nbFindedText;
 	QMessageBox * m_replaceNextDlg;
-	
+
 	// Customize
 	AppSettings::struct_extentions extentionOfFileName( const QString & name );
 	QToolButton * m_closeTabBtn;
@@ -126,6 +128,7 @@ public slots:
 	void updateActions();
 	void updateConfigElement();
 	void updateTitle();
+	void updateEditorInformations();
 
 	// File
 	void newFile();
@@ -136,7 +139,7 @@ public slots:
 	void saveAsFile();
 	void printFile();
 	void currentCloseFile();
-	
+
 	// Recent action
 	void openRecentProject();
 	void openRecentFile();
@@ -145,7 +148,7 @@ public slots:
 	void copyFileName();
 	void copyPath();
 	void updateSpaceAndTab();
-	
+
 	// Search
 	void findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options );
 	void find();
@@ -168,7 +171,7 @@ public slots:
 	void selectedCompare();
 	void rcsLogTerminated();
 	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
-	
+
 	// Log timer
 	void logTimeout();
 
@@ -178,7 +181,7 @@ public slots:
 	void currentTabChanged(int);
 	void setEditorPosition( int line, int column );
 	void setThreadCountChange();
-	
+
 	// Tools
 	void callSnipetMenu();
 	void callScriptAction();
@@ -187,7 +190,7 @@ public slots:
 
 	// About
 	void about();
-private:	
+private:
 	MainformImpl * m_parent;
 };
 

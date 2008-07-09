@@ -53,6 +53,7 @@ class SyntaxHighlighter;
 class TextFileEditor : public AbstractFileEditor {
 	Q_OBJECT
 public:
+	enum EndOfLineType { WindowsEndOfLine, UnixEndOfLine, MacEndOfLine };
 	/*!
 	 * Construct a FileEditor with the help of a TextEditor and a parent.
 	 * \param textEditor TextEditor to use to print file to screen
@@ -106,6 +107,7 @@ public:
 	virtual QAbstractItemModel * model()  const;
 
 	virtual QTextCodec * codec() const;
+	virtual EndOfLineType eol() const;
 
 	virtual bool canCopy();
 	virtual bool canPaste();
@@ -186,6 +188,7 @@ private:
 
 	NumberBar * m_numbers;
 	TextEditor * m_view;
+	EndOfLineType m_eol;
 };
 
 #endif // __FILEEDITOR_H__

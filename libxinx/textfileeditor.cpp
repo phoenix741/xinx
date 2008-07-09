@@ -53,7 +53,17 @@
 /* TextFileEditor */
 //Q_DECLARE_METATYPE( TextFileEditor );
 
-TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : AbstractFileEditor( parent ), m_view( editor ) {
+#ifdef Q_WS_X11
+#	define DEFAULT_EOL TextFileEditor::UnixEndOfLine
+#else
+#ifdef Q_WS_MAC
+#	define DEFAULT_EOL TextFileEditor::MacEndOfLine
+#else
+#	define DEFAULT_EOL TextFileEditor::WindowsEndOfLine
+#endif
+#endif
+
+TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : AbstractFileEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
 	m_commentAction = new QAction( tr("Comment"), this );
 	m_commentAction->setEnabled( false );
 	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
@@ -80,6 +90,7 @@ TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : Abstrac
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
 	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
+	connect( m_view, SIGNAL(textChanged()), this, SIGNAL(contentChanged()) );
 
 	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );
 
@@ -226,14 +237,34 @@ void TextFileEditor::indent( bool unindent ) {
 }
 
 void TextFileEditor::loadFromDevice( QIODevice & d ) {
+	// Get the EOL of the file.
+	char c;
+	d.setTextModeEnabled( true );
+	d.readLine(); // Load the firstLine
+	d.seek( d.pos() - 1 ); d.getChar( &c ); // Read previous char
+	if( c == '\r' ) {
+		m_eol = MacEndOfLine;
+	} else {
+		Q_ASSERT( c == '\n' );
+		d.seek( d.pos() - 2 ); d.getChar( &c ); // Read previous char
+		if( c == '\r' )
+			m_eol = WindowsEndOfLine;
+		else
+			m_eol = UnixEndOfLine;
+	}
+	d.reset();
+	d.setTextModeEnabled( false );
+
 	QTextStream text( &d );
+	text.setCodec( codec() );
 	m_view->setPlainText( text.readAll() );
 }
 
 void TextFileEditor::saveToDevice( QIODevice & d ) {
 	if( XINXConfig::self()->config().editor.autoindentOnSaving ) autoIndent();
-
+	m_eol = DEFAULT_EOL; // Don't conserve the EOL
 	QTextStream text( &d );
+	text.setCodec( codec() ); // Use the real codec on save
 	text << m_view->toPlainText();
 }
 
@@ -252,6 +283,10 @@ void TextFileEditor::updateModel() {
 
 QTextCodec * TextFileEditor::codec() const {
 	return QTextCodec::codecForLocale();
+}
+
+TextFileEditor::EndOfLineType TextFileEditor::eol() const {
+	return m_eol;
 }
 
 bool TextFileEditor::autoIndent() {

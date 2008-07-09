@@ -81,6 +81,7 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 	Q_ASSERT( editor );
 
 	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
+	connect( editor, SIGNAL(contentChanged()), this, SIGNAL(contentChanged()) );
 	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange(bool)) );
 	connect( editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
 	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );

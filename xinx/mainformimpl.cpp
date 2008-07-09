@@ -61,6 +61,7 @@
 #include <QClipboard>
 #include <QDateTime>
 #include <QWhatsThis>
+#include <QTextCodec>
 
 /* PrivateMainformImpl */
 
@@ -189,8 +190,12 @@ void PrivateMainformImpl::createSubMenu() {
 }
 
 void PrivateMainformImpl::createStatusBar() {
+	m_codecLabel = new QLabel( tr("Unknown") );
+	m_lineFeedLabel = new QLabel( tr("Unknown") );
 	m_editorPosition = new QLabel( "000x000" );
 	m_threadCount = new QLabel( "000 (000)" );
+	m_parent->statusBar()->addPermanentWidget( m_codecLabel );
+	m_parent->statusBar()->addPermanentWidget( m_lineFeedLabel );
 	m_parent->statusBar()->addPermanentWidget( m_editorPosition );
 	m_parent->statusBar()->addPermanentWidget( m_threadCount );
 	connect( XinxThreadManager::self(), SIGNAL(threadCountChange()), this, SLOT(setThreadCountChange()) );
@@ -293,8 +298,9 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_closeAct, SIGNAL(triggered()), m_parent, SLOT(closeFile()) );
 	connect( m_parent->m_closeAllAct, SIGNAL(triggered()), m_parent, SLOT(closeAllFile()) );
 
-	// Model
+	// Tab Editor
 	connect( m_parent->m_tabEditors, SIGNAL(setEditorPosition(int,int)), this, SLOT(setEditorPosition(int,int)) );
+	connect( m_parent->m_tabEditors, SIGNAL(contentChanged()), this, SLOT(updateEditorInformations()) );
 
 	/* EDIT */
 	// Undo
@@ -564,7 +570,31 @@ void PrivateMainformImpl::updateToolsMenu() {
 }
 
 void PrivateMainformImpl::currentTabChanged( int index ) {
-	m_snipetsDock->setEditor( m_parent->m_tabEditors->editor( index ) );
+	AbstractEditor * editor = m_parent->m_tabEditors->editor( index );
+	m_snipetsDock->setEditor( editor );
+	updateEditorInformations();
+}
+
+void PrivateMainformImpl::updateEditorInformations() {
+	AbstractEditor * editor = m_parent->m_tabEditors->currentEditor();
+	if( qobject_cast<TextFileEditor*>( editor ) ) { // This is a text file editor. So we have codec, ...
+		TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>( editor );
+		m_codecLabel->setText( textFileEditor->codec()->name() );
+		switch( textFileEditor->eol() ) {
+		case TextFileEditor::MacEndOfLine:
+			m_lineFeedLabel->setText( "MAC" );
+			break;
+		case TextFileEditor::WindowsEndOfLine:
+			m_lineFeedLabel->setText( "WIN" );
+			break;
+		case TextFileEditor::UnixEndOfLine:
+			m_lineFeedLabel->setText( "UNIX" );
+			break;
+		}
+	} else {
+		m_codecLabel->setText( tr("No codec") );
+		m_lineFeedLabel->setText( tr("Unknown") );
+	}
 }
 
 void PrivateMainformImpl::newFile() {
@@ -1478,29 +1508,32 @@ void MainformImpl::openProject( const QString & filename ) {
 
 	XINXConfig::self()->config().project.recentProjectFiles.removeAll( filename );
 
-	XINXProjectManager::self()->deleteProject();
+	XSLProject * project = NULL;
 	try {
-		XINXProjectManager::self()->setCurrentProject( new XSLProject( filename ) );
+		project = new XSLProject( filename );
 		d->m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
-		SpecifiqueDialogImpl::setLastPlace( XINXProjectManager::self()->project()->projectPath() );
+		SpecifiqueDialogImpl::setLastPlace( project->projectPath() );
 
 		XINXConfig::self()->config().project.recentProjectFiles.prepend( filename );
 		while( XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES )
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
 		m_tabEditors->setUpdatesEnabled( false );
-		foreach( XSLProjectSessionEditor * data, XINXProjectManager::self()->project()->session()->serializedEditors() ) {
+		foreach( XSLProjectSessionEditor * data, project->session()->serializedEditors() ) {
 			AbstractEditor * editor = AbstractEditor::deserializeEditor( data );
 			if( editor )
 				m_tabEditors->newTextFileEditor( editor );
 			else
-				QMessageBox::critical( this, tr("Deserialization"), tr("Error when restoring editor") );
+				qWarning( qPrintable( tr("Error when restoring editor for %1").arg( data->readProperty( "FileName" ).toString() ) ) );
 		}
+		if( m_tabEditors->count() > 0 ) m_tabEditors->setCurrentIndex( 0 );
 		m_tabEditors->setUpdatesEnabled( true );
 
+		XINXProjectManager::self()->deleteProject();
+		XINXProjectManager::self()->setCurrentProject( project );
 		d->m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
 	} catch( XSLProjectException e ) {
-		XINXProjectManager::self()->deleteProject();
+		delete project;
 		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << filename ) ) )
 			QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}

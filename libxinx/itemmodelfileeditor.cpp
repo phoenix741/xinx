@@ -31,6 +31,7 @@ ItemModelFileEditor::ItemModelFileEditor( FileContentParser * element, TextEdito
 	m_keyTimer->setInterval( 1000 );
 	connect( m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()) );
 	connect( textEdit(), SIGNAL(textChanged()), this, SLOT(textChanged()) );
+	disconnect( textEdit(), SIGNAL(textChanged()), this, SIGNAL(contentChanged()) );
 }
 
 ItemModelFileEditor::~ItemModelFileEditor() {
@@ -74,6 +75,7 @@ void ItemModelFileEditor::setParser( FileContentParser * parser ) {
 void ItemModelFileEditor::updateModel() {
 	try {
 		m_parser->loadFromContent( textEdit()->toPlainText() );
+		emit contentChanged();
 		numbersBar()->setErrors( QList<int>() );
 		setMessage( QString() );
 	} catch( FileContentException e ) {

@@ -96,6 +96,7 @@ signals:
 
 	void fileOpened( const QString & filename );
 	void setEditorPosition( int, int );
+	void contentChanged();
 protected:
     bool eventFilter( QObject *obj, QEvent *event );
 	virtual void dragEnterEvent( QDragEnterEvent *event );
