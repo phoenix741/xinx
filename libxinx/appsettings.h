@@ -4,10 +4,6 @@
 #ifndef _APPSETTINGS_H_
 #define _APPSETTINGS_H_
 
-// Xinx header
-#include "xinxcore.h"
-
-// Qt header
 #include <QSettings>
 #include <QString>
 #include <QStringList>
@@ -23,7 +19,7 @@
 
 class PrivateAppSettings;
 
-class  AppSettings {
+class AppSettings {
 public:
 	struct struct_configurationEditor {
 		bool activateConfigurationEditor;
@@ -51,6 +47,8 @@ public:
 	};
 
 	struct struct_project {
+		QString lastOpenedProject;
+		bool openTheLastProjectAtStart;
 		bool saveWithSessionByDefault;
 		QString defaultPath;
 		QStringList recentProjectFiles;

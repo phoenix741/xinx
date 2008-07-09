@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>797</width>
+    <width>885</width>
     <height>483</height>
    </rect>
   </property>
@@ -171,7 +171,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
+        <width>732</width>
         <height>391</height>
        </rect>
       </property>
@@ -258,12 +258,80 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
+        <width>732</width>
         <height>391</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="3" >
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>&amp;Application server path :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_projectPathLineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
+         <property name="whatsThis" >
+          <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
+&lt;p>&lt;i>As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i>New Project Wizard&lt;/i>, the Application Server path would be wrong.&lt;/i>&lt;/p></string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2" >
+        <widget class="QToolButton" name="m_changeProjectPathBtn" >
+         <property name="icon" >
+          <iconset resource="../application.qrc" >
+           <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label_11" >
+         <property name="text" >
+          <string>Default &amp;specifique path name :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_lineEditDefaultProjectPathName</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
+         <property name="whatsThis" >
+          <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
+&lt;p>&lt;i>In &lt;b>Generix&lt;/b>, this is a sub-directory of langue/fra/nav/&lt;/i>&lt;/p></string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label_16" >
+         <property name="text" >
+          <string>&amp;Specifique file :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_specifiqueTableView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2" >
+        <widget class="QTableView" name="m_specifiqueTableView" >
+         <property name="whatsThis" >
+          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="3" >
+        <widget class="QCheckBox" name="m_openLastProjectCheckBox" >
+         <property name="text" >
+          <string>&amp;Open the last project at start</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="3" >
         <widget class="QCheckBox" name="m_saveSessionCheckBox" >
          <property name="whatsThis" >
           <string>&lt;p>This define the default way to close the project.&lt;/p>
@@ -274,67 +342,6 @@
          </property>
          <property name="text" >
           <string>&amp;Save project with session information by default (content of modified file)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
-          <string>&amp;Application server path :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_projectPathLineEdit</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="DirectoryEdit" name="m_projectPathLineEdit" >
-         <property name="whatsThis" >
-          <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
-&lt;p>&lt;i>As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i>New Project Wizard&lt;/i>, the Application Server path would be wrong.&lt;/i>&lt;/p></string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2" >
-        <widget class="QToolButton" name="m_changeProjectPathBtn" >
-         <property name="icon" >
-          <iconset resource="../application.qrc" >
-           <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_11" >
-         <property name="text" >
-          <string>Default &amp;specifique path name :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_lineEditDefaultProjectPathName</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
-         <property name="whatsThis" >
-          <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
-&lt;p>&lt;i>In &lt;b>Generix&lt;/b>, this is a sub-directory of langue/fra/nav/&lt;/i>&lt;/p></string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label_16" >
-         <property name="text" >
-          <string>&amp;Specifique file :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_specifiqueTableView</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2" >
-        <widget class="QTableView" name="m_specifiqueTableView" >
-         <property name="whatsThis" >
-          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
          </property>
         </widget>
        </item>
@@ -1266,7 +1273,6 @@
   <tabstop>m_changeApplicationDescriptionPathBtn</tabstop>
   <tabstop>m_langComboBox</tabstop>
   <tabstop>m_listWidget</tabstop>
-  <tabstop>m_saveSessionCheckBox</tabstop>
   <tabstop>m_projectPathLineEdit</tabstop>
   <tabstop>m_changeProjectPathBtn</tabstop>
   <tabstop>m_lineEditDefaultProjectPathName</tabstop>

@@ -195,6 +195,7 @@ void AppSettings::setSettingsRcs( QSettings * settings, const QString & path, Ap
 AppSettings::AppSettings::struct_project AppSettings::getDefaultProject() {
 	struct_project value;
 
+	value.openTheLastProjectAtStart = false;
 	value.saveWithSessionByDefault = false;
 	value.defaultPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
 	value.defaultProjectPathName = "projet";
@@ -207,6 +208,8 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( QSetti
 	struct_project value;
 	settings->beginGroup( path );
 
+	value.lastOpenedProject = settings->value( "Last opened project", defaultValue.lastOpenedProject ).toString();
+	value.openTheLastProjectAtStart = settings->value( "Open the last project at start", defaultValue.openTheLastProjectAtStart ).toBool();
 	value.saveWithSessionByDefault = settings->value( "Save With Session By Default", defaultValue.saveWithSessionByDefault ).toBool();
 	value.defaultPath = settings->value( "Default Path", defaultValue.defaultPath ).toString();
 	value.recentProjectFiles = settings->value( "Recent Project Files", defaultValue.recentProjectFiles ).toStringList();
@@ -220,6 +223,8 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( QSetti
 void AppSettings::setSettingsProject( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_project value ) {
 	settings->beginGroup( path );
 
+	settings->setValue( "Last opened project", value.lastOpenedProject );
+	settings->setValue( "Open the last project at start", value.openTheLastProjectAtStart );
 	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault );
 	settings->setValue( "Default Path", value.defaultPath );
 	settings->setValue( "Recent Project Files", value.recentProjectFiles );
@@ -426,6 +431,7 @@ void AppSettings::setSettingsHash_QString( QSettings * settings, const QString &
 
 QHash<QString,AppSettings::struct_extentions> AppSettings::getDefaultHash_struct_extentions() {
 	QHash<QString,struct_extentions> value;
+
 
 	return value;
 }

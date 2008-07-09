@@ -18,13 +18,15 @@
 		<value name="Datas" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
 	</type>
 	<type name="Project">
+		<value name="Last opened project" type="string"/>
+		<value name="Open the last project at start" type="bool" default="no"/>
 		<value name="Save With Session By Default" type="bool" default="no"/>
 		<value name="Default Path" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;project&quot; )"/>
 		<value name="Recent Project Files" type="stringlist"/>
 		<value name="Default Project Path Name" type="string" default="projet"/>
 		<value name="Close Version Management Log" type="bool" default="true"/>
 	</type>
-	<type name="RCS"> 
+	<type name="RCS">
 		<value name="Create ChangeLog" type="bool" default="no"/>
 	</type>
 	<type name="Editor">
@@ -36,7 +38,7 @@
         <value name="Show Tabulation and space" type="bool" default="false"/>
         <value name="Highlight Current Line" type="bool" default="true"/>
         <value name="Default format" type="font"/>
-        <value name="Highlight word" type="color" default="yellow"/> 
+        <value name="Highlight word" type="color" default="yellow"/>
         <value name="Auto Highlight" type="bool" default="false"/>
         <value name="Hide Close Tab" type="bool" default="false"/>
         <value name="Close Button on each Tab" type="bool" default="false"/>
@@ -46,22 +48,22 @@
         <value name="Auto load configuration file" type="bool" default="true"/>
         <value name="Auto save configuration file" type="bool" default="false"/>
     </type>
-	
+
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
-	
+
 	<value name="Position" type="point" default="200,200"/>
 	<value name="Size" type="size" default="400,400"/>
     <value name="Maximized" type="bool" default="no"/>
 	<value name="State" type="blob"/>
-	
+
 	<value name="Descriptions" type="Descriptions"/>
 	<value name="Project" type="Project"/>
 	<value name="RCS" type="RCS"/>
 	<value name="Editor" type="Editor"/>
 	<value name="Configuration Editor" type="Configuration Editor"/>
-	
+
 	<value name="Xml Pres" type="XmlPres"/>
-    
+
 	<value name="Tools" type="hash:string">
 		<default name="diff" default="/usr/bin/kompare"/>
 	</value>

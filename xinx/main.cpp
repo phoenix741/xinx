@@ -52,7 +52,7 @@ MainformImpl * mainWin = NULL;
 class SignalSegFaultException : public XinxException {
 public:
 	SignalSegFaultException( int signal ) : XinxException( QString("Signal emited : %1").arg( signal ) ) {
-		
+
 	}
 };
 
@@ -66,29 +66,29 @@ void backup_appli_signal( int signal ) {
 
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
-	
+
 //	std::signal(SIGSEGV, backup_appli_signal);
 //	std::signal(SIGABRT, backup_appli_signal);
 //	std::signal(SIGINT, backup_appli_signal);
 //	std::signal(SIGTERM, backup_appli_signal);
-	    
-	
+
+
 	UniqueApplication app(argc, argv);
 	try {
 		app.setOrganizationName( "Shadoware" );
 		app.setOrganizationDomain( "Shadoware.Org" );
 		app.setApplicationName( "XINX" );
-		
+
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);
 			splash.setMask(pixmap.mask());
 			splash.show();
 	  		app.processEvents();
-	  		
+
 	  		/* Load the exception manager */
 	  		ExceptionManager::self();
-	
+
 	  		/* Must load to have traductions in plugins */
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 			app.installTranslator(&translator_libxinx);
 			tranlator_components.load( QString(":/translations/xinxcomponents_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&tranlator_components);
-	
+
 			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
 			app.processEvents();
 			XinxPluginsLoader::self()->loadPlugins();
@@ -123,15 +123,22 @@ int main(int argc, char *argv[]) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
 				app.processEvents();
 			}
-			
+
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
 	  		app.processEvents();
 			mainWin = new MainformImpl();
-	  
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load arguments ...") );
-	  		app.processEvents();
+
 			QStringList args = app.arguments();
-			if(args.count() > 0) {
+			if( ( args.count() == 1 ) && ( XINXConfig::self()->config().project.openTheLastProjectAtStart ) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()) ) {
+				splash.showMessage( QApplication::translate("SplashScreen", "Load last opened project ...") );
+				app.processEvents();
+				mainWin->openProject( XINXConfig::self()->config().project.lastOpenedProject );
+			}
+
+			if( args.count() > 1 ) {
+				splash.showMessage( QApplication::translate("SplashScreen", "Load arguments ...") );
+				app.processEvents();
+
 				QStringList::iterator it = args.begin();
 				it++;
 				while (it != args.end()) {
@@ -139,10 +146,11 @@ int main(int argc, char *argv[]) {
 					it++;
 				}
 			}
+
 			splash.finish(mainWin);
-			
+
 			mainWin->show();
-	
+
 			return app.exec();
 	 	} else {
 			// Send Parameter to open

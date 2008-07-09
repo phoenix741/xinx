@@ -484,7 +484,10 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_fontSizeSpinBox->setValue( m_config.config().editor.defaultFormat.pointSize() );
 
 	// Font name
-	m_parent->m_fontComboBox->setCurrentFont(  m_config.config().editor.defaultFormat );
+	m_parent->m_fontComboBox->setCurrentFont( m_config.config().editor.defaultFormat );
+
+	// Open the last project at start
+	m_parent->m_openLastProjectCheckBox->setChecked( m_config.config().project.openTheLastProjectAtStart );
 
 	// Save project with session
 	m_parent->m_saveSessionCheckBox->setChecked( m_config.config().project.saveWithSessionByDefault );
@@ -601,6 +604,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Font size
 	m_config.config().editor.defaultFormat.setPointSize( m_parent->m_fontSizeSpinBox->value() );
+
+	// Open the last project at start
+	m_config.config().project.openTheLastProjectAtStart = m_parent->m_openLastProjectCheckBox->isChecked();
 
 	// Save project with session
 	m_config.config().project.saveWithSessionByDefault = m_parent->m_saveSessionCheckBox->isChecked();

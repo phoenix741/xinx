@@ -624,7 +624,10 @@ XINXProjectManager * XINXProjectManager::self() {
 void XINXProjectManager::setCurrentProject( XSLProject * project ) {
 	if( m_project )
 		m_project->disconnect( this );
+
 	m_project = project;
+	XINXConfig::self()->config().project.lastOpenedProject = project->fileName();
+
 	connect( m_project, SIGNAL(changed()), this, SIGNAL(changed()) );
 	emit changed();
 }

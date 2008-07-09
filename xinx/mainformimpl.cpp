@@ -1359,6 +1359,7 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 			return;
 		}
 	} else if( ! closeAllFile() ) {
+		XINXConfig::self()->config().project.lastOpenedProject = QString(); // Pas de projet ouvert
 		event->ignore();
 		return;
 	}
@@ -1468,8 +1469,6 @@ void MainformImpl::newProject() {
 }
 
 void MainformImpl::openProject( const QString & filename ) {
-
-
 	Q_ASSERT( ! filename.isEmpty() );
 
 	if( XINXProjectManager::self()->project() )
