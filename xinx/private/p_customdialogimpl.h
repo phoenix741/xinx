@@ -99,7 +99,7 @@ public:
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 
 	void addSnipet( const Snipet & snipet );
-	void removeSnipet( QList<int> indexes );
+	void removeSnipet( const QModelIndexList & indexes );
 private:
 	void loadSnipetList( const SnipetList & list );
 	QMap<QString,SnipetList> m_snipetList;

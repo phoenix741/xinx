@@ -274,7 +274,7 @@ void SnipetModelIndex::loadSnipetList( const SnipetList & list ) {
 
 QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & parent ) const {
 	if( ( column < 0 ) || ( column > 3 ) ) return QModelIndex(); // Test supplémentaire pour ModelTest
-	
+
 	if( parent.isValid() && ( parent.internalId() == -1 ) ) {
 		if( ( row < 0 ) || ( row >= m_snipetList.values().at( parent.row() ).size() ) ) return QModelIndex();
 		return createIndex( row, column, parent.row() );
@@ -376,13 +376,21 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 	return QVariant();
 }
 
-void SnipetModelIndex::removeSnipet( QList<int> indexes ) {
-	/*qStableSort( indexes.begin(), indexes.end(), qGreater<int>() );
-	foreach( int index, indexes ) {
-		beginRemoveRows( QModelIndex(), index, index );
-		m_snipetList->removeAt( index );
-		endRemoveRows();
-	}*/
+void SnipetModelIndex::removeSnipet( const QModelIndexList & indexes ) {
+	QMultiMap<QString,int> deletedValue;
+	foreach( QModelIndex index, indexes ) {
+		deletedValue.insert( index.parent().data().toString(), index.row() );
+	}
+
+	foreach( QString category, deletedValue.uniqueKeys() ) {
+		QList<int> lines = deletedValue.values( category );
+		qSort( lines.begin(), lines.end(), qGreater<int>() );
+		foreach( int line, lines ) {
+			beginRemoveRows( index( m_snipetList.keys().indexOf( category ), 0 ), line, line );
+			m_snipetList[ category ].removeAt( line );
+			endRemoveRows();
+		}
+	}
 }
 
 void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
@@ -818,11 +826,11 @@ void CustomDialogImpl::on_m_addPushButton_clicked() {
 
 void CustomDialogImpl::on_m_removePushButton_clicked() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
-	QList<int> lists;
-	for( int i = indexes.count() - 1 ; i >= 0 ; i-- ) {
-		lists << indexes.at( i ).row();
+	foreach( QModelIndex i, indexes ) {
+		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
-	d->m_snipetModel->removeSnipet( lists );
+
+	d->m_snipetModel->removeSnipet( indexes );
 }
 
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {
@@ -840,7 +848,7 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
 	foreach( QModelIndex i, indexes ) {
-		if( (long)i.internalPointer() == -1 ) indexes.removeAll( i );
+		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 	m_removePushButton->setEnabled( indexes.count() > 0 );
 	m_modifyPushButton->setEnabled( indexes.count() == 1 );
