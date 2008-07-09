@@ -36,7 +36,10 @@ public:
 
 	virtual QIcon icon() const;
 	virtual QTextCodec * codec() const;
+
+	virtual void loadFromDevice( QIODevice & d );
 private:
+	QTextCodec * m_codec;
 };
 
 #endif //_XMLFILEEDITOR_H_

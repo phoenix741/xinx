@@ -32,7 +32,7 @@
 #include <QCompleter>
 
 // Define
-#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>\\?,/;'\\[\\]\\\\=\\s]"
+#define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>,/;'\\[\\]\\\\=\\s]"
 #define isEditBalise(value) ((value == cpEditNodeName) || (value == cpEditParamName) || (value == cpEditParamValue))
 
 
@@ -203,12 +203,12 @@ XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QTextEdit * qTe
 
 	paramName = tc.selectedText().trimmed();
 
-	if( cursorEgal.isNull() || ( ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) && ( ( quoteCount % 2 ) == 0 ) ) ) {
-		cPosition = cpEditParamName;
+	cPosition = cpEditParamName;
+	if( cursorEgal.isNull() || ( ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) && ( ( quoteCount % 2 ) == 0 ) ) )
 		return cPosition;
-	}
 
-	cPosition = cpEditParamValue;
+	if( ! nodeName.isEmpty() )
+		cPosition = cpEditParamValue;
 	return cPosition;
 }
 

@@ -48,7 +48,7 @@ StyleSheetEditor::~StyleSheetEditor() {
 }
 
 QTextCodec * StyleSheetEditor::codec() const {
-	if( dynamic_cast<XSLFileContentParser*>( m_parser )->codec() )
+	if( dynamic_cast<XSLFileContentParser*>( m_parser ) )
 		return dynamic_cast<XSLFileContentParser*>( m_parser )->codec();
 	else
 		return ItemModelFileEditor::codec();

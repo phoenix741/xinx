@@ -24,6 +24,9 @@
 #include "xsllistview.h"
 #include "xmltexteditor.h"
 
+// Qt header
+#include <QXmlStreamReader>
+#include <QTextCodec>
 
 /* XmlFileEditor */
 
@@ -33,8 +36,8 @@ XmlFileEditor::XmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEdi
 XmlFileEditor::~XmlFileEditor() {
 }
 
-QTextCodec * XmlFileEditor::codec() const { // TODO: Use XML file codec
-	return TextFileEditor::codec();
+QTextCodec * XmlFileEditor::codec() const {
+	return m_codec;
 }
 
 QString XmlFileEditor::defaultFileName() const {
@@ -56,5 +59,26 @@ bool XmlFileEditor::autoIndent() {
 		return false;
 	}
 	return true;
+}
+
+void XmlFileEditor::loadFromDevice( QIODevice & d ) {
+	{
+		QXmlStreamReader reader( &d );
+		while( ! reader.atEnd() ) {
+			reader.readNext();
+
+			if( reader.isStartDocument() ) {
+				m_codec = QTextCodec::codecForName( reader.documentEncoding().toString().toLatin1() );
+				break;
+			}
+
+			if( reader.isStartElement() ) {
+				m_codec = TextFileEditor::codec();
+				break;
+			}
+		}
+	}
+	d.reset();
+	TextFileEditor::loadFromDevice( d );
 }
 

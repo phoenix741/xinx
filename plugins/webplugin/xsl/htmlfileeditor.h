@@ -36,6 +36,7 @@ public:
 	virtual bool autoIndent();
 
 	virtual QIcon icon() const;
+	virtual QTextCodec * codec() const;
 
 	XSLCompletionModel * completionModel() const;
 private:

@@ -130,6 +130,7 @@ int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 }
 
 void XSLCompletionModel::setFilter( QString baliseName, QString attributeName ) {
+	// TODO : Deux cas d'erreur : Si a = blanc..... !!!
 	Q_ASSERT( ! baliseName.isEmpty() || attributeName.isEmpty() );
 
 	emit layoutAboutToBeChanged();

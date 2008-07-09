@@ -27,6 +27,7 @@
 
 // Qt header
 #include <QCompleter>
+#include <QTextCodec>
 
 /* StyleSheetContainer */
 
@@ -48,6 +49,10 @@ QString HtmlFileEditor::defaultFileName() const {
 
 QIcon HtmlFileEditor::icon() const {
 	return QIcon( ":/images/typehtml.png" );
+}
+
+QTextCodec * HtmlFileEditor::codec() const {
+	return QTextCodec::codecForHtml( textEdit()->toPlainText().toLocal8Bit(), TextFileEditor::codec() );
 }
 
 bool HtmlFileEditor::autoIndent() {
