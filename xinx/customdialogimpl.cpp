@@ -32,9 +32,6 @@
 #include <QMessageBox>
 #include <QHeaderView>
 
-// Model test
-#include <modeltest.h>
-
 /* ToolsModelIndex */
 
 ToolsModelIndex::ToolsModelIndex( QHash<QString,QString> * tools, QObject * parent ) : QAbstractTableModel( parent ) {
@@ -278,7 +275,7 @@ void SnipetModelIndex::loadSnipetList( const SnipetList & list ) {
 QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & parent ) const {
 	if( ( column < 0 ) || ( column > 3 ) ) return QModelIndex(); // Test supplémentaire pour ModelTest
 	
-	if( parent.isValid() && ( (long)parent.internalPointer() == -1 ) ) {
+	if( parent.isValid() && ( parent.internalId() == -1 ) ) {
 		if( ( row < 0 ) || ( row >= m_snipetList.values().at( parent.row() ).size() ) ) return QModelIndex();
 		return createIndex( row, column, parent.row() );
 	} else if( !parent.isValid() ) {
@@ -289,8 +286,8 @@ QModelIndex SnipetModelIndex::index( int row, int column, const QModelIndex & pa
 }
 
 QModelIndex SnipetModelIndex::parent( const QModelIndex & index ) const {
-	if( index.isValid() && ((long)index.internalPointer() >= 0) ) {
-		return createIndex( (long)index.internalPointer(), 0, -1 );
+	if( index.isValid() && (index.internalId() >= 0) ) {
+		return createIndex( index.internalId(), 0, -1 );
 	}
 	return QModelIndex();
 }
@@ -299,17 +296,17 @@ int SnipetModelIndex::rowCount( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return m_snipetList.keys().size();
 	if( index.column() != 0 ) return 0; // Column don't have children (Test supplémentaire pour ModelTest)
 
-	if( (long)index.internalPointer() != -1 ) return 0;
+	if( index.internalId() != -1 ) return 0;
 	return m_snipetList.values().at( index.row() ).size();
 }
 
 int SnipetModelIndex::columnCount( const QModelIndex & index ) const {
-	if( index.isValid() && ((long)index.internalPointer() == -1) ) return 1;
+	if( index.isValid() && (index.internalId() == -1) ) return 1;
 	return 3;
 }
 
 Qt::ItemFlags SnipetModelIndex::flags( const QModelIndex & index ) const {
-	if( index.isValid() && ((long)index.internalPointer() == -1) ) {
+	if( index.isValid() && (index.internalId() == -1) ) {
 		return Qt::ItemIsEnabled;
 	} else
 		return QAbstractItemModel::flags( index );
@@ -336,14 +333,14 @@ QVariant SnipetModelIndex::headerData( int section, Qt::Orientation orientation,
 QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 	if( ! index.isValid() ) return QVariant();
 
-	if( (long)index.internalPointer() == -1 ) {
+	if( index.internalId() == -1 ) {
 		if( role == Qt::DisplayRole ) {
 			switch( index.column() ) {
 			case 0:
 				return m_snipetList.keys().at( index.row() );
 			case 1:
 			case 2:
-				return QString(""); // Needed for Model test
+				return QString(""); // Needed for Model tests
 			}
 		} else if( role == Qt::DecorationRole ) {
 			if( index.column() == 0 )
@@ -357,7 +354,7 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 		}
 	} else {
 		int line = index.row();
-		long category = (long)index.internalPointer();
+		int category = index.internalId();
 		if( ( line < 0 ) || ( line >= m_snipetList.values().at( category ).size() ) ) return QVariant();
 
 		if( role == Qt::DisplayRole )
@@ -393,12 +390,9 @@ void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
 	int indexOfCategory = m_snipetList.keys().indexOf( category );
 
 	if( indexOfCategory < 0 ) {
-		QStringList categories = m_snipetList.keys();
-		QStringList::iterator i = qLowerBound( categories.begin(), categories.end(), category );
-		indexOfCategory = i - categories.begin();
-		beginInsertRows( QModelIndex(), indexOfCategory, indexOfCategory );
 		m_snipetList[ category ] = SnipetList();
-		endInsertRows();
+		reset();
+		indexOfCategory = m_snipetList.keys().indexOf( category );
 	}
 
 	SnipetList list = m_snipetList.value( category );
@@ -520,7 +514,6 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Snipet
 	m_snipets = SnipetListManager::self()->snipets();
 	m_snipetModel = new SnipetModelIndex( m_snipets, m_parent->m_snipetTreeView );
-	new ModelTest( m_snipetModel, this );
 	m_parent->m_snipetTreeView->setModel( m_snipetModel );
 	m_parent->m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_parent->m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
@@ -819,7 +812,7 @@ void CustomDialogImpl::on_m_addPushButton_clicked() {
 	if( dlg.exec() ) {
 		Snipet s = dlg.getSnipet();
 		d->m_snipetModel->addSnipet( s );
-		//m_snipetTreeView->expandAll();
+		m_snipetTreeView->expandAll();
 	}
 }
 

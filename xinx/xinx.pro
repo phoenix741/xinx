@@ -168,6 +168,3 @@ contains( CONFIG, qdbus ){
         studiointerface.cpp
 }
 TRANSLATIONS += translations/xinx_fr.ts
-
-
-include(../ext/qmodeltest/modeltest.pri)
