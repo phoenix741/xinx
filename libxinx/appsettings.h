@@ -28,6 +28,7 @@ public:
 	};
 
 	struct struct_editor {
+		QString defaultTextCodec;
 		bool autoindentOnSaving;
 		bool popupWhenFileModified;
 		bool createBackupFile;

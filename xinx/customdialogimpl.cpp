@@ -31,6 +31,7 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QHeaderView>
+#include <QTextCodec>
 
 /* ToolsModelIndex */
 
@@ -465,6 +466,9 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	} else
 		m_parent->m_cornerBtnRadioButton->setChecked( true );
 
+	// Default text encoding.
+	m_parent->m_encodingComboBox->setCurrentIndex( m_parent->m_encodingComboBox->findText( m_config.config().editor.defaultTextCodec ) );
+
 	// Auto highlight text
 	m_parent->m_autoHighlightCheckBox->setChecked( m_config.config().editor.autoHighlight );
 
@@ -583,6 +587,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 		m_config.config().editor.closeButtonOnEachTab = true;
 		m_config.config().editor.hideCloseTab = false;
 	}
+
+	// Default text encoding.
+	m_config.config().editor.defaultTextCodec = m_parent->m_encodingComboBox->itemText( m_parent->m_encodingComboBox->currentIndex() );
 
 	// Auto highlight text
 	m_config.config().editor.autoHighlight = m_parent->m_autoHighlightCheckBox->isChecked();
@@ -762,6 +769,13 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 
 	// XML Pres
 	m_hideElementList->setDefaultVisible( false );
+
+	// Font encodingas
+	QList<QByteArray> encodings = QTextCodec::availableCodecs();
+	qSort( encodings );
+	foreach( QByteArray encoding, encodings ) {
+		m_encodingComboBox->addItem( encoding );
+	}
 
 	// Editor
 	QFont font( "Monospace", 8 );

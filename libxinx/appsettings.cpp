@@ -111,6 +111,7 @@ void AppSettings::setSettingsConfigurationEditor( QSettings * settings, const QS
 AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	struct_editor value;
 
+	value.defaultTextCodec = "UTF-8";
 	value.autoindentOnSaving = false;
 	value.popupWhenFileModified = true;
 	value.createBackupFile = true;
@@ -130,6 +131,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( QSetting
 	struct_editor value;
 	settings->beginGroup( path );
 
+	value.defaultTextCodec = settings->value( "Default Text Codec", defaultValue.defaultTextCodec ).toString();
 	value.autoindentOnSaving = settings->value( "Autoindent On Saving", defaultValue.autoindentOnSaving ).toBool();
 	value.popupWhenFileModified = settings->value( "Popup When File Modified", defaultValue.popupWhenFileModified ).toBool();
 	value.createBackupFile = settings->value( "Create Backup File", defaultValue.createBackupFile ).toBool();
@@ -150,6 +152,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( QSetting
 void AppSettings::setSettingsEditor( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor value ) {
 	settings->beginGroup( path );
 
+	settings->setValue( "Default Text Codec", value.defaultTextCodec );
 	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving );
 	settings->setValue( "Popup When File Modified", value.popupWhenFileModified );
 	settings->setValue( "Create Backup File", value.createBackupFile );

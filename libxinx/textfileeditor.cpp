@@ -282,6 +282,8 @@ void TextFileEditor::updateModel() {
 }
 
 QTextCodec * TextFileEditor::codec() const {
+	QTextCodec * c = QTextCodec::codecForName( XINXConfig::self()->config().editor.defaultTextCodec.toAscii() );
+	if( c ) return c;
 	return QTextCodec::codecForLocale();
 }
 

@@ -352,7 +352,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
+        <width>732</width>
         <height>391</height>
        </rect>
       </property>
@@ -408,7 +408,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
+        <width>732</width>
         <height>391</height>
        </rect>
       </property>
@@ -536,7 +536,7 @@
          </item>
         </widget>
        </item>
-       <item row="2" column="1" colspan="2" >
+       <item row="3" column="1" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -548,6 +548,16 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_15" >
+         <property name="text" >
+          <string>Default text &amp;encoding :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QComboBox" name="m_encodingComboBox" />
        </item>
       </layout>
      </widget>
@@ -1140,7 +1150,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
+        <width>732</width>
         <height>391</height>
        </rect>
       </property>
@@ -1155,7 +1165,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>622</width>
+            <width>710</width>
             <height>346</height>
            </rect>
           </property>
