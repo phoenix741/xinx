@@ -19,50 +19,42 @@
  ***************************************************************************/
 
 // Xinx header
-#include "private/p_serviceresultdialogimpl.h"
+#include "serviceresultdialogimpl.h"
 #include "xinxpluginsloader.h"
-
-/* PrivateServiceResultDialogImpl */
-
-PrivateServiceResultDialogImpl::PrivateServiceResultDialogImpl( ServiceResultDialogImpl * parent ) {
-	m_parent = parent;
-}
-
-void PrivateServiceResultDialogImpl::inputComboChanged( QString value ) {
-	m_parent->m_inputStreamTextEdit->setText( m_input.value( value ) );
-}
-
-void PrivateServiceResultDialogImpl::outputComboChanged( QString value ) {
-	m_parent->m_outputStreamTextEdit->setText( m_output.value( value ) );
-}
 
 /* ServiceResultDialogImpl */
 
-ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f ) 
-	: QDialog(parent, f) {
-	setupUi(this);	
-	d = new PrivateServiceResultDialogImpl( this );
-	
+ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f ) : QDialog(parent, f) {
+	setupUi(this);
+
 	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_inputStreamTextEdit->document() );
 	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_outputStreamTextEdit->document() );
 
-	connect( m_inputComboBox, SIGNAL(activated(QString)), d, SLOT(inputComboChanged(QString)) );
-	connect( m_outputComboBox, SIGNAL(activated(QString)), d, SLOT(outputComboChanged(QString)) );
+	connect( m_inputComboBox, SIGNAL(activated(QString)), this, SLOT(inputComboChanged(QString)) );
+	connect( m_outputComboBox, SIGNAL(activated(QString)), this, SLOT(outputComboChanged(QString)) );
 }
 
 ServiceResultDialogImpl::~ServiceResultDialogImpl() {
-	delete d;
+
 }
 
 void ServiceResultDialogImpl::setInputStreamText( const QHash<QString,QString> & text ) {
-	d->m_input = text;
+	m_input = text;
 	m_inputComboBox->addItems( text.keys() );
 	m_inputStreamTextEdit->setText( text.values().at( 0 ) );
 }
 
 void ServiceResultDialogImpl::setOutputStreamText( const QHash<QString,QString> & text ) {
-	d->m_output = text;
+	m_output = text;
 	m_outputComboBox->addItems( text.keys() );
 	m_outputStreamTextEdit->setText( text.values().at( 0 ) );
+}
+
+void ServiceResultDialogImpl::inputComboChanged( QString value ) {
+	m_inputStreamTextEdit->setText( m_input.value( value ) );
+}
+
+void ServiceResultDialogImpl::outputComboChanged( QString value ) {
+	m_outputStreamTextEdit->setText( m_output.value( value ) );
 }
 

@@ -21,8 +21,7 @@ CONFIG += exceptions \
     warn_on \
     x86 \
  debug
-QT += network \
-    xml \
+QT += xml \
     script
 
 LIBS = -L../libxinx \
@@ -78,9 +77,7 @@ FORMS += ui/specifiquedlg.ui \
     ui/projectproperty.ui \
     ui/rcslogform.ui \
     ui/replace.ui \
-    ui/resultatServices.ui \
     ui/runsnipet.ui \
-    ui/servicesconnection.ui \
     ui/snipetproperty.ui \
     ui/xmlpresentationwidget.ui \
     ui/newprojectwizard_project.ui \
@@ -91,7 +88,6 @@ HEADERS += scriptmanager.h \
     aboutdialogimpl.h \
     commitmessagedialogimpl.h \
     configurationfile.h \
-    connectionwebservicesdialogimpl.h \
     customdialogimpl.h \
     dirrcsmodel.h \
     filecontentdockwidget.h \
@@ -100,7 +96,6 @@ HEADERS += scriptmanager.h \
     mainformimpl.h \
     newprojectwizard.h \
     private/p_configurationfile.h \
-    private/p_connectionwebservicesdialogimpl.h \
     private/p_filecontentdockwidget.h \
     private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \
@@ -108,31 +103,25 @@ HEADERS += scriptmanager.h \
     private/p_uniqueapplication.h \
     private/p_xmlpresentationdockwidget.h \
     private/p_flattreeview.h \
-    private/p_serviceresultdialogimpl.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
     rcslogdialogimpl.h \
     replacedialogimpl.h \
     runsnipetdialogimpl.h \
-    serviceresultdialogimpl.h \
     snipet.h \
     snipetdialog.h \
     snipetlist.h \
-    soap.h \
     tabeditor.h \
     threadedconfigurationfile.h \
     uniqueapplication.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
-    private/p_customdialogimpl.h \
-    webservices.h \
-    wsdl.h
+    private/p_customdialogimpl.h
 SOURCES += snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
     commitmessagedialogimpl.cpp \
     configurationfile.cpp \
-    connectionwebservicesdialogimpl.cpp \
     customdialogimpl.cpp \
     dirrcsmodel.cpp \
     filecontentdockwidget.cpp \
@@ -145,20 +134,16 @@ SOURCES += snipetdockwidget.cpp \
     rcslogdialogimpl.cpp \
     replacedialogimpl.cpp \
     runsnipetdialogimpl.cpp \
-    serviceresultdialogimpl.cpp \
     snipet.cpp \
     snipetdialog.cpp \
     snipetlist.cpp \
-    soap.cpp \
     tabeditor.cpp \
     threadedconfigurationfile.cpp \
     uniqueapplication.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     newprojectwizard.cpp \
-    scriptmanager.cpp \
-    webservices.cpp \
-    wsdl.cpp
+    scriptmanager.cpp
 contains( CONFIG, qdbus ){
     HEADERS += studioadaptor.h \
         studiointerface.h

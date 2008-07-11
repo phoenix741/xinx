@@ -34,8 +34,6 @@ public:
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
-	virtual bool initializeProject( XSLProject * project );
-
 	virtual QWidget * createProjectSettingsPage();
 	virtual bool loadProjectSettingsPage( QWidget * widget );
 	virtual bool saveProjectSettingsPage( QWidget * widget );

@@ -35,8 +35,6 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 	m_pathListLabel->setBuddy( m_searchPathList );
 	m_prefixLabel->setBuddy( m_prefixList );
 	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
-	m_servicesList->setDefaultVisible( false );
-	m_servicesList->setDefaultProposedValue( "http://localhost" );
 
 	m_projectRCSComboBox->addItem( tr("<No Revision Control System>") );
 	QPair<QString,QString> revisionControl;
@@ -131,14 +129,11 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_prefixList->setValues( project->specifiquePrefixes() );
 
 	m_specifiqueGroupBox->setChecked( project->options().testFlag( XSLProject::hasSpecifique ) );
-	m_webServiceGroupBox->setChecked( project->options().testFlag( XSLProject::hasWebServices ) );
 	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
 
 	int index = m_projectRCSComboBox->findData( project->projectRCS() );
 	if( index < 0 ) index = 0;
 	m_projectRCSComboBox->setCurrentIndex( index );
-
-	m_servicesList->setValues( project->serveurWeb() );
 
 	QString defSearchPath;
 	int indexOfSpecifquePath = project->indexOfSpecifiquePath();
@@ -175,11 +170,7 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	XSLProject::ProjectOptions options;
 	if( m_specifiqueGroupBox->isChecked() )
 		options |= XSLProject::hasSpecifique;
-	if( m_webServiceGroupBox->isChecked() )
-		options |= XSLProject::hasWebServices;
 	project->setOptions( options );
-
-	project->serveurWeb() = m_servicesList->values();
 
 	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
 	foreach( page, m_pluginPages ) {

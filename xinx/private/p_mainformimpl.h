@@ -170,7 +170,6 @@ public slots:
 	void selectedCompareWithStd();
 	void selectedCompare();
 	void rcsLogTerminated();
-	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 
 	// Log timer
 	void logTimeout();

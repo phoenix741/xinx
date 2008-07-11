@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef __WEBSERVICES_H__
 #define __WEBSERVICES_H__
 
@@ -51,15 +51,15 @@ public:
 	virtual ~Operation();
 
 	QString name();
-	
+
 	const QList<Parameter*> & inputParam();
 	const QList<Parameter*> & outputParam();
-	
+
 	QString encodingStyle();
 	QString namespaceString();
 private:
 	PrivateOperation * d;
-	friend class PrivateOperation;	
+	friend class PrivateOperation;
 	friend class WebServices;
 };
 
@@ -73,13 +73,13 @@ public:
 
 	QString name();
 	const QList<Operation*> & operations();
-	
+
 	void askWSDL( QWidget * parent = 0 );
 	void loadFromElement( const QDomElement & element );
-	
+
 	void call( Operation * operation, const QHash<QString,QString> & param );
 signals:
-	void updated();	
+	void updated();
 	void soapResponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
 private:
 	PrivateWebServices * d;
@@ -88,18 +88,23 @@ private:
 
 typedef QList<WebServices*> WebServicesList;
 
+class XSLProject;
+
 class WebServicesManager : public QObject, public WebServicesList {
 	Q_OBJECT
 public:
 	WebServicesManager( const WebServicesManager & manager );
 	WebServicesManager();
 	virtual ~WebServicesManager();
-	
+
+	void setProject( XSLProject * project );
+
 	static WebServicesManager * self();
-	
-	void listUpdated();
 signals:
 	void changed();
+private slots:
+	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
+	void updateWebServicesList();
 private:
 	static WebServicesManager * s_self;
 };

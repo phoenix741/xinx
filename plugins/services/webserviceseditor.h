@@ -22,7 +22,7 @@
 #define __WEBSERVICESEDITOR_H__
 
 // Xinx header
-#include "fileeditor.h"
+#include <textfileeditor.h>
 
 // Qt header
 #include <QHash>
@@ -32,18 +32,18 @@ class WebServices;
 class Operation;
 class QComboBox;
 
-class WebServicesEditor : public FileEditor {
+class WebServicesEditor : public TextFileEditor {
 	Q_OBJECT
 public:
 	WebServicesEditor( QWidget *parent = 0 );
 	~WebServicesEditor();
 
 	virtual QString getSuffix() const;
-	
+
 	WebServices * service();
 	Operation * operation();
 	const QHash<QString,QString> & values();
-	
+
 	virtual void loadFile( const QString &fileName = "" );
 	virtual bool saveFile( const QString &fileName = "" );
 

@@ -1,7 +1,8 @@
 TEMPLATE = lib
 CONFIG += plugin \
  debug
-QT += xml
+QT += network \
+	xml
 DESTDIR += ../
 MOC_DIR += ./
 OBJECTS_DIR += ./
@@ -21,12 +22,24 @@ INCLUDEPATH += ../../libxinx ../../components
 RESOURCES = servicesplugin.qrc
 TRANSLATIONS += translations/servicesplugin_fr.ts
 HEADERS =servicesplugin.h \
-servicesprojectpropertyimpl.h \
-servicesprojectwizard.h
+	servicesprojectpropertyimpl.h \
+	servicesprojectwizard.h \
+	connectionwebservicesdialogimpl.h \
+	serviceresultdialogimpl.h \
+	soap.h \
+	webservices.h \
+	wsdl.h
 SOURCES =servicesplugin.cpp \
-servicesprojectpropertyimpl.cpp \
-servicesprojectwizard.cpp
+	servicesprojectpropertyimpl.cpp \
+	servicesprojectwizard.cpp \
+	connectionwebservicesdialogimpl.cpp \
+	serviceresultdialogimpl.cpp \
+	soap.cpp \
+	webservices.cpp \
+	wsdl.cpp
 FORMS += ui/newprojectwizard_serviceslist.ui \
-ui/newprojectwizard_services.ui \
-ui/servicesprojectproperty.ui
+	ui/newprojectwizard_services.ui \
+	ui/servicesprojectproperty.ui \
+	ui/resultatServices.ui \
+	ui/servicesconnection.ui
 

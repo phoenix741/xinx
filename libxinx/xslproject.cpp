@@ -226,7 +226,6 @@ public:
 	int m_version;
 
 	QStringList m_searchPathList,
-				m_webServiceLink,
 				m_specifiquePrefixes;
 	int m_indexOfSpecifiquePath;
 	QString m_projectName, m_defaultLang, m_defaultNav;
@@ -265,7 +264,6 @@ PrivateXSLProject::~PrivateXSLProject() {
 
 PrivateXSLProject& PrivateXSLProject::operator=( const PrivateXSLProject& p ) {
 	m_searchPathList        = p.m_searchPathList;
-	m_webServiceLink 		= p.m_webServiceLink;
 	m_indexOfSpecifiquePath = p.m_indexOfSpecifiquePath;
 	m_projectName			= p.m_projectName;
 	m_defaultLang			= p.m_defaultLang;
@@ -408,7 +406,6 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	d->m_projectPath         = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "project" ) );
 	d->m_specifiquePrefix    = PrivateXSLProject::getValue( document, "prefix" );
 	d->m_projectRCS 		 = PrivateXSLProject::getValue( document, "rcs" );
-	d->m_webServiceLink      = PrivateXSLProject::loadList( document, "webServiceLink", "link" );
 	QString path;
 
 	QStringList spl = PrivateXSLProject::loadList( document, "paths", "path" );
@@ -477,7 +474,6 @@ void XSLProject::saveToFile( const QString & filename ) {
 	PrivateXSLProject::setValue( document, "prefix", d->m_specifiquePrefix );
 	PrivateXSLProject::setValue( document, "rcs", d->m_projectRCS );
 	PrivateXSLProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
-	PrivateXSLProject::saveList( document, "webServiceLink", "link", d->m_webServiceLink );
 	PrivateXSLProject::saveList( document, "paths", "path", d->m_searchPathList );
 	PrivateXSLProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
 	PrivateXSLProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
@@ -614,10 +610,6 @@ void XSLProject::setIndexOfSpecifiquePath( int value ) {
 
 const QString & XSLProject::fileName() const {
 	return d->m_fileName;
-}
-
-QStringList & XSLProject::serveurWeb() {
-	return d->m_webServiceLink;
 }
 
 void XSLProject::setLogProjectDirectory( const QString & value ) {

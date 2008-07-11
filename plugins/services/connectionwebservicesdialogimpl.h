@@ -38,8 +38,8 @@ class PrivateConnectionWebServicesDialogImpl;
 class ConnectionWebServicesDialogImpl : public QDialog, public Ui::ConnectionWebServicesDialog {
 	Q_OBJECT
 public:
-	/*! 
-	 * Constructor of the WebServices Connection dialog. 
+	/*!
+	 * Constructor of the WebServices Connection dialog.
 	 * The dialog as a fixed size.
 	 * \param parent Parent of the dialog
 	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
@@ -58,7 +58,7 @@ public:
 	void setHost( const QString & path, quint16 port = 80 );
 	/*!
 	 * Call the get request of the QHttp, with a path. The dialog show the progression
-	 * of the connection (downloading, and uploading). 
+	 * of the connection (downloading, and uploading).
 	 * \param path Path on the server where we want to send data.
 	 * \param to Device where the content will be returned.
 	 */
@@ -78,9 +78,16 @@ public:
 	 * \param to Device where the content will be returned.
 	 */
 	bool request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to );
+
+private slots:
+	void requestFinished( int id, bool error );
+	void stateChanged( int state );
+	void setSendProgress( int value, int max );
+	void setReadProgress( int value, int max );
 private:
-	PrivateConnectionWebServicesDialogImpl * d;
-	friend class PrivateConnectionWebServicesDialogImpl;
+	int m_requestId;
+	QHttp * m_http;
+	bool m_hasResult;
 };
 #endif
 

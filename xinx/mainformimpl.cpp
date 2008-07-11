@@ -30,8 +30,6 @@
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
 #include "projectpropertyimpl.h"
-#include "webservices.h"
-#include "serviceresultdialogimpl.h"
 #include "rcs.h"
 #include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
@@ -447,11 +445,6 @@ void PrivateMainformImpl::createActions() {
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateTitle()) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(openRecentProject()) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(openRecentFile()) );
-	connect( XINXProjectManager::self(), SIGNAL(changed()), m_parent, SLOT(updateWebServicesList()) );
-
-	/* SERVICES */
-	connect( m_parent->m_refreshWebServicesListAct, SIGNAL(triggered()), m_parent, SLOT(updateWebServicesList()) );
-	connect( m_parent->m_callWebServicesAct, SIGNAL(triggered()), m_parent, SLOT(callWebservices()) );
 
 	/* WINDOWS */
 	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
@@ -1298,8 +1291,10 @@ bool PrivateMainformImpl::closeProject( bool session ) {
 	m_projectDock->setProjectPath( NULL );
 	m_contentDock->updateModel( NULL );
 
+	/* TODO:
 	qDeleteAll( *(WebServicesManager::self()) );
 	WebServicesManager::self()->clear();
+	*/
 
 	XINXProjectManager::self()->deleteProject();
 
@@ -1328,25 +1323,12 @@ void PrivateMainformImpl::projectProperty() {
 
 	if( property.exec() ) {
 		property.saveToProject( XINXProjectManager::self()->project() );
-
-		m_parent->updateWebServicesList();
 		XINXProjectManager::self()->project()->saveToFile();
 	}
 }
 
 void PrivateMainformImpl::closeProject() {
 	closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault );
-}
-
-void PrivateMainformImpl::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
-	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
-		QMessageBox::warning( m_parent, tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
-	} else {
-		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( m_parent );
-		dlg->setInputStreamText( query );
-		dlg->setOutputStreamText( response );
-		dlg->show();
-	}
 }
 
 AppSettings::struct_extentions PrivateMainformImpl::extentionOfFileName( const QString & name ) {
@@ -1404,7 +1386,7 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 }
 
 /*
-void MainformImpl::newWebservicesFile() {
+void MainformImpl::newWebservicesFile() { TODO:
 	if( WebServicesManager::self()->size() == 0 ) {
 		QMessageBox::warning( this, tr("WebServices"), tr("No WebServices can be found. Please update WebServices list to continue.") );
 		return;
@@ -1568,38 +1550,15 @@ void MainformImpl::saveProject( bool withSessionData ) {
 	XINXProjectManager::self()->project()->saveOnlySession();
 }
 
-void MainformImpl::callWebservices() {
-	/*
+/*void MainformImpl::callWebservices() {
+	TODO:
 	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
 	Q_ASSERT( XINXProjectManager::self()->project() );
 
 	WebServicesEditor * editor = qobject_cast<WebServicesEditor*>( m_tabEditors->currentEditor() );
 	if( editor )
 		editor->service()->call( editor->operation(), editor->values() );
-	*/
-}
-
-void MainformImpl::updateWebServicesList() {
-	bool enabled = XINXProjectManager::self()->project() && ( XINXProjectManager::self()->project()->options().testFlag( XSLProject::hasWebServices ) );
-	qDeleteAll( *(WebServicesManager::self()) );
-	WebServicesManager::self()->clear();
-	WebServicesManager::self()->listUpdated();
-
-	if( enabled ) {
-		foreach( QString link, XINXProjectManager::self()->project()->serveurWeb() ) {
-			WebServices * ws = new WebServices( link, WebServicesManager::self() );
-			WebServicesManager::self()->append( ws );
-			ws->askWSDL( this );
-			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), d, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
-		}
-	}
-
-	m_webServicesMenu->setEnabled( enabled );
-	m_refreshWebServicesListAct->setEnabled( enabled );
-	m_callWebServicesAct->setEnabled( enabled );
-
-	WebServicesManager::self()->listUpdated();
-}
+}*/
 
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();

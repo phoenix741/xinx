@@ -109,16 +109,6 @@ public slots:
 	void closeProjectWithSessionData();
 
 	/*!
-	 * Call a WebServices. The webservices called is defined in the editor.
-	 * \todo Permit to call another webservices.
-	 */
-	void callWebservices();
-	/*!
-	 * Update the list of WebServices, and connect to them to obtains WSDL.
-	 */
-	void updateWebServicesList();
-
-	/*!
 	 * Update the project from Version management. If more one file is specified
 	 * this method update only choose file.
 	 */

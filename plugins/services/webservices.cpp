@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 // Qt header
 #include <QBuffer>
 #include <QFile>
@@ -37,6 +37,7 @@
 #include "wsdl.h"
 #include "soap.h"
 #include "connectionwebservicesdialogimpl.h"
+#include "serviceresultdialogimpl.h"
 
 /* Static member */
 
@@ -46,8 +47,8 @@ WebServicesManager * WebServicesManager::s_self = 0;
 
 class PrivateParameter {
 public:
-	PrivateParameter( Parameter * parent );	
-	
+	PrivateParameter( Parameter * parent );
+
 	QString m_paramString;
 	QString m_paramType;
 private:
@@ -68,11 +69,11 @@ Parameter::~Parameter() {
 	delete d;
 }
 
-const QString & Parameter::paramString() const { 
+const QString & Parameter::paramString() const {
 	return d->m_paramString;
 }
 
-const QString & Parameter::paramType() const { 
+const QString & Parameter::paramType() const {
 	return d->m_paramType;
 }
 
@@ -86,11 +87,11 @@ public:
 	QString m_name;
 	QString m_encodingStyle;
 	QString m_namespaceString;
-	
+
 	QList<Parameter*> m_inputParam;
 	QList<Parameter*> m_outputParam;
 private:
-	Operation * m_parent;	
+	Operation * m_parent;
 friend class WebServices;
 };
 
@@ -113,24 +114,24 @@ Operation::~Operation() {
 	delete d;
 }
 
-QString Operation::name() { 
-	return d->m_name; 
-}
-	
-const QList<Parameter*> & Operation::inputParam() { 
-	return d->m_inputParam; 
+QString Operation::name() {
+	return d->m_name;
 }
 
-const QList<Parameter*> & Operation::outputParam() { 
-	return d->m_outputParam; 
-}
-	
-QString Operation::encodingStyle() { 
-	return d->m_encodingStyle; 
+const QList<Parameter*> & Operation::inputParam() {
+	return d->m_inputParam;
 }
 
-QString Operation::namespaceString() { 
-	return d->m_namespaceString; 
+const QList<Parameter*> & Operation::outputParam() {
+	return d->m_outputParam;
+}
+
+QString Operation::encodingStyle() {
+	return d->m_encodingStyle;
+}
+
+QString Operation::namespaceString() {
+	return d->m_namespaceString;
 }
 
 /* WebServices */
@@ -143,12 +144,12 @@ public:
 	WSDL m_wsdl;
 	QString m_link;
 	QList<Operation*> m_list;
-private:	
+private:
 	WebServices * m_parent;
 };
 
 PrivateWebServices::PrivateWebServices( WebServices * parent ) {
-	m_parent = parent;	
+	m_parent = parent;
 }
 
 PrivateWebServices::~PrivateWebServices() {
@@ -164,50 +165,50 @@ WebServices::~WebServices() {
 	delete d;
 }
 
-QString WebServices::name() { 
+QString WebServices::name() {
 	return d->m_wsdl.name();
 }
 
-const QList<Operation*> & WebServices::operations() { 
-	return d->m_list; 
+const QList<Operation*> & WebServices::operations() {
+	return d->m_list;
 }
 
 void WebServices::loadFromElement( const QDomElement & element ) {
 	qDeleteAll( d->m_list );
 	d->m_list.clear();
-	
+
 	d->m_wsdl = WSDL( element );
-	
+
 	foreach( WSDLService service, d->m_wsdl.services() ) {
 		QString tnsBinding = service.port().binding();
 		tnsBinding = tnsBinding.mid( tnsBinding.indexOf( ":" ) + 1 );
-		
+
 		WSDLBinding binding = d->m_wsdl.bindings()[ tnsBinding ];
 		QString tnsType = binding.type();
 		tnsType = tnsType.mid( tnsType.indexOf( ":" ) + 1 );
-		
+
 		WSDLPortType portType = d->m_wsdl.portTypes()[ tnsType ];
-		
+
 		foreach( WSDLOperation operation, portType.operations() ) {
 			Operation * wsOperation = new Operation( operation.name() );
-			
+
 			foreach( WSDLOperation bindingOperation, binding.operations() ) {
 				if( bindingOperation.name() == operation.name() ) {
 					wsOperation->d->m_encodingStyle = bindingOperation.inputEncodingStyle();
 					wsOperation->d->m_namespaceString = bindingOperation.inputNamespace();
 				}
 			}
-			
+
 			QString tnsInputMessage = operation.inputMessage();
 			tnsInputMessage = tnsInputMessage.mid( tnsInputMessage.indexOf( ":" ) + 1 );
-			
+
 			WSDLMessage inputMessage = d->m_wsdl.messages()[ tnsInputMessage ];
 			foreach( WSDLPart part, inputMessage.parts() ) {
 				Parameter * param = new Parameter( part.name(), part.type() );
 				wsOperation->d->m_inputParam.append( param );
 			}
-			
-			
+
+
 			QString tnsOutputMessage = operation.outputMessage();
 			tnsOutputMessage = tnsOutputMessage.mid( tnsOutputMessage.indexOf( ":" ) + 1 );
 
@@ -216,11 +217,11 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 				Parameter * param = new Parameter( part.name(), part.type() );
 				wsOperation->d->m_outputParam.append( param );
 			}
-			
+
 			d->m_list.append( wsOperation );
 		}
 	}
-	
+
 	emit updated();
 }
 
@@ -249,29 +250,29 @@ void WebServices::askWSDL( QWidget * parent ) {
 	}
 	if( dlg.get( query, &buffer ) ) {
 		buffer.seek( 0 );
-		
+
 		QDomDocument document;
 		QString errorStr;
 		int errorLine;
-		int errorColumn;  
+		int errorColumn;
 		if (!document.setContent( &buffer, true, &errorStr, &errorLine, &errorColumn)) {
 			QMessageBox::information(qApp->activeWindow(), QObject::tr("WSDL WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
 																						.arg(errorLine)
 	        			                      											.arg(errorColumn)
  																						.arg(errorStr));
 		    return;
-		}  
-		
+		}
+
 		loadFromElement( document.documentElement() );
 	}
 }
 
 void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 	Q_ASSERT( op );
-	
+
 	Envelop soapEnvelop( op->encodingStyle(), op->namespaceString() , op->name() );
 	QString query;
-	
+
 	for( int i = 0; i < op->inputParam().count(); i++ ) {
 		soapEnvelop.setParam( op->inputParam()[i]->paramString(), op->inputParam()[i]->paramType(), param[ op->inputParam()[i]->paramString() ] );
 		query += op->inputParam()[i]->paramString() + "=\n" + param[ op->inputParam()[i]->paramString() ] + "\n";
@@ -299,14 +300,14 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 		QDomDocument document;
 		QString errorStr;
 		int errorLine;
-		int errorColumn;  
+		int errorColumn;
 		if (!document.setContent( &obuffer, true, &errorStr, &errorLine, &errorColumn)) {
 			QMessageBox::information(qApp->activeWindow(), QObject::tr("Invok WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
 																						.arg(errorLine)
 	        			                      											.arg(errorColumn)
 																						.arg(errorStr));
 		    return;
-		}  
+		}
 
 		Envelop soapResult( document.toString(), op->name() + "Response" );
 		QHash<QString,QString> response;
@@ -315,7 +316,7 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 			QPair<QString,QString> pair = soapResult.getParam( param );
 			response[ param ] = pair.first;
 		}
-		
+
 		emit soapResponse( param, response, soapResult.getErrorCode(), soapResult.getErrorString() );
 	}
 }
@@ -340,14 +341,43 @@ WebServicesManager::~WebServicesManager() {
 WebServicesManager * WebServicesManager::self() {
 	if( s_self == 0 ) {
 		s_self = new WebServicesManager();
+		connect( XINXProjectManager::self(), SIGNAL(changed()), s_self, SLOT(updateWebServicesList()) );
 		XINXStaticDeleter::self()->addObject( s_self );
 	}
 	return s_self;
 }
 
-void WebServicesManager::listUpdated() {
+void WebServicesManager::setProject( XSLProject * project ) {
+	bool enabled = project && project->options().testFlag( XSLProject::hasWebServices );
+
+	qDeleteAll( *this );
+	clear();
+	emit changed();
+
+	if( enabled ) {
+		QStringList serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split(";;",QString::SkipEmptyParts);
+		foreach( QString link, serveurWeb ) {
+			WebServices * ws = new WebServices( link, this );
+			append( ws );
+			ws->askWSDL( qApp->activeWindow() );
+			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), this, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
+		}
+	}
+
 	emit changed();
 }
 
+void WebServicesManager::updateWebServicesList() {
+	setProject( XINXProjectManager::self()->project() );
+}
 
-
+void WebServicesManager::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
+	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
+	} else {
+		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( qApp->activeWindow() );
+		dlg->setInputStreamText( query );
+		dlg->setOutputStreamText( response );
+		dlg->show();
+	}
+}

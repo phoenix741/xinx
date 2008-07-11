@@ -362,12 +362,6 @@ public:
 	QString processedSpecifiquePath() const;
 
 	/*!
-	 * List of Web services link. The link must point to the WSDL.
-	 * \return list of WSDL link.
-	 */
-	QStringList & serveurWeb();
-
-	/*!
 	 * Write a property in the project file.
 	 * \param key The property to write
 	 * \param value The value to write

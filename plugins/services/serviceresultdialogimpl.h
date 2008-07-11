@@ -20,9 +20,13 @@
 
 #ifndef SERVICERESULTDIALOGIMPL_H
 #define SERVICERESULTDIALOGIMPL_H
-//
+
+// Xinx header
 #include "ui_resultatServices.h"
-//
+
+// Qt header
+#include <QHash>
+
 class PrivateServiceResultDialogImpl;
 
 /*!
@@ -52,9 +56,14 @@ public:
 	 * \param output List of parameter and value of the parameter.
 	 */
 	void setOutputStreamText( const QHash<QString,QString> & output );
+
+private slots:
+	void inputComboChanged( QString value );
+	void outputComboChanged( QString value );
+
 private:
-	PrivateServiceResultDialogImpl * d;
-	friend class PrivateServiceResultDialogImpl;
+	QHash<QString,QString> m_input;
+	QHash<QString,QString> m_output;
 };
 #endif
 

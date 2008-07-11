@@ -23,6 +23,7 @@
 #include "servicesprojectpropertyimpl.h"
 #include "servicesprojectwizard.h"
 #include <xslproject.h>
+#include "webservices.h"
 
 // Qt header
 #include <QString>
@@ -34,6 +35,8 @@
 
 ServicesPlugin::ServicesPlugin() {
     Q_INIT_RESOURCE(servicesplugin);
+
+	WebServicesManager::self();
 }
 
 bool ServicesPlugin::initializePlugin( const QString & lang ) {
@@ -68,13 +71,6 @@ QVariant ServicesPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttri
 
 QWidget * ServicesPlugin::createProjectSettingsPage() {
 	return new ServicesProjectPropertyImpl();
-}
-
-bool ServicesPlugin::initializeProject( XSLProject * project ) {
-	if( project->options().testFlag( XSLProject::hasWebServices ) ) {
-		return false;
-	} else
-		return true;
 }
 
 bool ServicesPlugin::loadProjectSettingsPage( QWidget * widget ) {
@@ -116,9 +112,11 @@ bool ServicesPlugin::saveNewProjectSettingsPage( XSLProject * project, QWizardPa
 		options |= XSLProject::hasWebServices;
 		project->setOptions( options );
 
-		QStringList & services = project->serveurWeb();
+		QStringList services;
 		foreach( QString value, servicesPage->m_webServicesWidget->values() )
 			services += value;
+
+		project->writeProperty( "webServiceLink", services.join(";;") );
 	}
 
 	return false;
