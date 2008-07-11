@@ -84,9 +84,7 @@ FORMS += ui/specifiquedlg.ui \
     ui/snipetproperty.ui \
     ui/xmlpresentationwidget.ui \
     ui/newprojectwizard_project.ui \
-    ui/newprojectwizard_specifique.ui \
-    ui/newprojectwizard_services.ui \
-    ui/newprojectwizard_serviceslist.ui
+    ui/newprojectwizard_specifique.ui
 HEADERS += scriptmanager.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \

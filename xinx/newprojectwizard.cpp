@@ -38,9 +38,21 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
 
 	setPage( Page_Projet, new ProjectPageImpl );
     setPage( Page_Specifique, new SpecifiquePageImpl );
-    setPage( Page_Services, new ServicesPageImpl );
-    setPage( Page_ServicesList, m_listPage = new ServicesListPageImpl );
     setPage( Page_Versions, m_versions = new VersionsPageImpl );
+
+	int pageid = NewProjectWizard::Page_Versions + 1;
+	foreach( XinxPluginElement element, XinxPluginsLoader::self()->plugins() ) {
+		if( element.isActivated && qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin ) ) {
+			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin );
+			QList<QWizardPage*> pages = interface->createNewProjectSettingsPages( pageid );
+			foreach( QWizardPage* page, pages ) {
+				m_wizardPages.append( qMakePair( interface, page ) );
+				setPage( pageid++, page );
+			}
+		}
+	}
+	m_lastPage = pageid;
+	setPage( m_lastPage, new LastPageImpl );
 
     setStartId( Page_Projet );
 
@@ -60,17 +72,17 @@ XSLProject * NewProjectWizard::createProject() {
 	if( ! m_project ) {
 		m_project = new XSLProject();
 
-		XSLProject::ProjectOptions options;
-
 		m_project->setProjectName( field( "project.name" ).toString() );
 		m_project->setProjectPath( QDir::fromNativeSeparators( field( "project.path" ).toString() ) );
 		m_project->setLogProjectDirectory( QDir::fromNativeSeparators( field( "project.log" ).toString() ) );
 
+		XSLProject::ProjectOptions options;
 		if( field( "project.derivated" ).toBool() ) {
 			m_project->setSpecifiquePrefix( field( "specifique.prefix" ).toString() );
 			m_project->setSpecifiquePathName( field( "specifique.path" ).toString() );
 			options |= XSLProject::hasSpecifique;
 		}
+		m_project->setOptions( options );
 
 		QString rcs = QString();
 		if( ! m_versions->m_noRevisionControl->isChecked() ) {
@@ -84,14 +96,10 @@ XSLProject * NewProjectWizard::createProject() {
 		}
 		m_project->setProjectRCS( rcs );
 
-		if( field( "project.services" ).toBool() ) {
-			options |= XSLProject::hasWebServices;
-			QStringList & services = m_project->serveurWeb();
-			foreach( QString value, m_listPage->m_webServicesWidget->values() )
-				services += value;
+		QPair<IXinxPluginProjectConfiguration*,QWizardPage*> page;
+		foreach( page, m_wizardPages ) {
+			if(! page.first->saveNewProjectSettingsPage( m_project, page.second )) qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page.second->windowTitle() ) ) );
 		}
-
-		m_project->setOptions( options );
 	}
 	return m_project;
 }
@@ -132,7 +140,7 @@ int ProjectPageImpl::nextId() const {
 	if( m_derivatedRadio->isChecked() )
 		return NewProjectWizard::Page_Specifique;
 	else
-		return NewProjectWizard::Page_Services;
+		return NewProjectWizard::Page_Versions;
 }
 
 void ProjectPageImpl::setVisible( bool visible ) {
@@ -201,42 +209,6 @@ void SpecifiquePageImpl::initializePage() {
 }
 
 int SpecifiquePageImpl::nextId() const {
-	return NewProjectWizard::Page_Services;
-}
-
-/* ServicesPageImpl */
-
-ServicesPageImpl::ServicesPageImpl( QWidget * parent ) : QWizardPage( parent ) {
-	setupUi( this );
-	setTitle( windowTitle() );
-	setSubTitle( tr("Define if the project contains WebServices. WebServices can be used to "
-					"query database.") );
-
-	registerField( "project.services", m_addWebServicesButton );
-}
-
-int ServicesPageImpl::nextId() const {
-	if( m_addWebServicesButton->isChecked() )
-		return NewProjectWizard::Page_ServicesList;
-	else
-		return NewProjectWizard::Page_Versions;
-}
-
-/* ServicesListPageImpl */
-
-ServicesListPageImpl::ServicesListPageImpl( QWidget * parent ) : QWizardPage( parent ) {
-	setupUi( this );
-	setTitle( windowTitle() );
-	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
-					"list contains link to WSDL.") );
-
-	registerField( "services.list", m_webServicesWidget );
-
-	m_webServicesWidget->setDefaultProposedValue( "http://localhost:8888/gce/services/?WSDL" );
-	m_webServicesWidget->setDefaultVisible( false );
-}
-
-int ServicesListPageImpl::nextId() const {
 	return NewProjectWizard::Page_Versions;
 }
 
@@ -265,5 +237,23 @@ VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 }
 
 int VersionsPageImpl::nextId() const {
+	return NewProjectWizard::Page_Versions + 1;
+}
+
+/* LastPageImpl */
+
+LastPageImpl::LastPageImpl( QWidget * parent ) : QWizardPage( parent ) {
+	setTitle( tr("Project created") );
+	setSubTitle( tr("The project is now created.") );
+
+	QLabel * label = new QLabel( tr("The project is now created, please enjoy."), this );
+
+	QVBoxLayout * layout = new QVBoxLayout;
+	layout->addWidget( label );
+	setLayout( layout );
+
+}
+
+int LastPageImpl::nextId() const {
 	return -1;
 }

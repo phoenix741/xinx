@@ -42,6 +42,17 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 	QPair<QString,QString> revisionControl;
 	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() )
 		m_projectRCSComboBox->addItem( revisionControl.second, revisionControl.first );
+
+	foreach( XinxPluginElement element, XinxPluginsLoader::self()->plugins() ) {
+		if( element.isActivated && qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin ) ) {
+			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin );
+			QWidget* widget = interface->createProjectSettingsPage();
+			if( widget ) {
+				m_pluginPages.append( qMakePair( interface, widget ) );
+				m_tabWidget->addTab( widget, widget->windowTitle() );
+			}
+		}
+	}
 }
 
 ProjectPropertyImpl::~ProjectPropertyImpl() {
@@ -137,6 +148,11 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_searchPathList->setDefaultValue( defSearchPath );
 	m_searchPathList->setValues( project->searchPathList() ); // fromNativeSeparators
 
+	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
+	foreach( page, m_pluginPages ) {
+		if( ! page.first->loadProjectSettingsPage( page.second ) ) qWarning( qPrintable( tr("Can't load \"%1\" page").arg( page.second->windowTitle() ) ) );
+	}
+
 	updateOkButton();
 }
 
@@ -164,6 +180,11 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setOptions( options );
 
 	project->serveurWeb() = m_servicesList->values();
+
+	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
+	foreach( page, m_pluginPages ) {
+		if( ! page.first->saveProjectSettingsPage( page.second ) ) qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page.second->windowTitle() ) ) );
+	}
 }
 
 void ProjectPropertyImpl::updateOkButton() {

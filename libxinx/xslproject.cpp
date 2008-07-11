@@ -234,6 +234,8 @@ public:
 	QString m_logProjectDirectory;
 	XSLProject::ProjectOptions m_projectOptions;
 	QString m_projectRCS;
+
+	QHash<QString,QVariant> m_properties;
 private:
 	XSLProject * m_parent;
 };
@@ -424,6 +426,25 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	if( d->m_specifiquePrefixes.size() == 0 )
 		d->m_specifiquePrefixes.append( d->m_specifiquePrefix );
 
+	QDomElement propertiesElement = root.firstChildElement( "properties" );
+
+	d->m_properties.clear();
+	QDomElement node = propertiesElement.firstChildElement();
+	while( ! node.isNull() ) {
+		QString type  = node.attribute( "type", "QString" ),
+				name  = node.tagName(),
+				value = node.text();
+
+		if( ! value.isEmpty() ) {
+			QVariant::Type variantType = QVariant::nameToType( qPrintable( type ) );
+			QVariant p( variantType );
+			p.setValue( value );
+			d->m_properties[ name ] = p;
+		}
+
+		node = node.nextSiblingElement();
+	}
+
 	if( ! QDir( d->m_projectPath ).exists() )
 		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 
@@ -462,6 +483,17 @@ void XSLProject::saveToFile( const QString & filename ) {
 	PrivateXSLProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
 	PrivateXSLProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
 	PrivateXSLProject::setValue( document, "logProjectDirectory", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_logProjectDirectory ) );
+
+	QDomElement propertiesElement = document.createElement( "properties" );
+	root.appendChild( propertiesElement );
+
+	foreach( QString key, d->m_properties.keys() ) {
+		QDomElement propertyElement = document.createElement( key );
+		QDomText text = document.createTextNode( d->m_properties[ key ].toString() );
+		propertyElement.appendChild( text );
+		propertyElement.setAttribute( "type", d->m_properties[ key ].typeName() );
+		propertiesElement.appendChild( propertyElement );
+	}
 
 	// Open the file
 	static const int IndentSize = 3;
@@ -599,6 +631,14 @@ const QString & XSLProject::logProjectDirectory() {
 
 XSLProjectSession * XSLProject::session() const {
 	return d->m_session;
+}
+
+void XSLProject::writeProperty( const QString & key, QVariant value ) {
+	d->m_properties[ key ] = value;
+}
+
+QVariant XSLProject::readProperty( const QString & key ) {
+	return d->m_properties.value( key );
 }
 
 /* XINXProjectManager */

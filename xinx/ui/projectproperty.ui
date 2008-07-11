@@ -14,7 +14,7 @@
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabWidget" >
+    <widget class="QTabWidget" name="m_tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -24,7 +24,7 @@
         <x>0</x>
         <y>0</y>
         <width>591</width>
-        <height>311</height>
+        <height>316</height>
        </rect>
       </property>
       <attribute name="title" >

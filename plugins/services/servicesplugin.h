@@ -18,45 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+#ifndef SERVICESPLUGIN_H_
+#define SERVICESPLUGIN_H_
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+// Xinx header
+#include <plugininterfaces.h>
 
-class XSLProject;
-class IXinxPluginProjectConfiguration;
-
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
+class ServicesPlugin : public QObject, public IXinxPlugin, public IXinxPluginProjectConfiguration {
 	Q_OBJECT
+	Q_INTERFACES(IXinxPlugin)
+	Q_INTERFACES(IXinxPluginProjectConfiguration)
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+	ServicesPlugin();
 
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
+	virtual bool initializePlugin( const QString & lang );
+	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
-	QList< QPair<IXinxPluginProjectConfiguration*,QWidget*> > m_pluginPages;
-private slots:
-	void on_m_logButton_clicked();
-	void on_m_specifiqueGroupBox_clicked();
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_prefixList_defaultValueChanged( QString );
+	virtual bool initializeProject( XSLProject * project );
 
-	void versionFinded( SimpleConfigurationFile configuration );
+	virtual QWidget * createProjectSettingsPage();
+	virtual bool loadProjectSettingsPage( QWidget * widget );
+	virtual bool saveProjectSettingsPage( QWidget * widget );
+
+	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
+	virtual bool saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page );
 };
 
-#endif
-
-
-
-
-
-
-
-
-
+#endif /* SERVICESPLUGIN_H_*/

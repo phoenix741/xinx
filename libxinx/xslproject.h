@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef _XSLPROJECT_H_
 #define _XSLPROJECT_H_
 
@@ -34,11 +34,11 @@
 /*!
  * Exception throw by XSLProject when the project can't be opened or saved.
  * The exception contains the message send to the user.
- * 
- * The exception is used in internal for the session. If session file can't be 
+ *
+ * The exception is used in internal for the session. If session file can't be
  * read, the exception is catched and the application continue. The project is
- * opened. 
- */ 
+ * opened.
+ */
 class XSLProjectException : public XinxException {
 public:
 	/*!
@@ -46,7 +46,7 @@ public:
 	 * \param message Message for the user.
 	 */
 	XSLProjectException( const QString & message, bool wizard = false );
-	
+
 	bool startWizard() const;
 private:
 	bool m_wizard;
@@ -59,10 +59,10 @@ class XSLProjectSessionEditor : public QObject {
 public:
 	XSLProjectSessionEditor( XSLProjectSession * parent = 0 );
 	~XSLProjectSessionEditor();
-	
+
 	void loadFromNode( const QDomElement & element );
 	void saveToNode( QDomDocument & document, QDomElement & element );
-	
+
 	void writeProperty( const QString & key, QVariant value );
 	QVariant readProperty( const QString & key );
 private:
@@ -71,8 +71,8 @@ private:
 };
 
 /*!
- * An XSLProjectSession represents the .session file associate to the project and who contains 
- * tempory data as last opened file, current opened file. This file is extern of project file, 
+ * An XSLProjectSession represents the .session file associate to the project and who contains
+ * tempory data as last opened file, current opened file. This file is extern of project file,
  * to permit project file to be saved in Revision Control System.
  */
 class XSLProjectSession : public QObject {
@@ -88,7 +88,7 @@ public:
 	 * \sa loadFromFile
 	 */
 	XSLProjectSession( const QString & filename );
-	
+
 	virtual ~XSLProjectSession();
 
 	/*!
@@ -97,26 +97,26 @@ public:
 	 * \throw XSLProjectException When the application can't read the session file.
 	 */
 	void loadFromFile( const QString & filename );
-	
-	/*! 
+
+	/*!
 	 * Save the session in the file \e filename, or in the loaded file if possible
 	 * \sa loadFromFile
 	 * \throw XSLProjectException When the application can't save the session file.
 	 */
 	void saveToFile( const QString & filename = QString() );
-	
+
 	/*!
 	 * List all the last opend files in the project.
 	 * \return the list of the last opend file.
 	 */
 	QStringList & lastOpenedFile();
-	
+
 	const QList<XSLProjectSessionEditor*> & serializedEditors() const;
 private:
 	QString m_filename;
 	QStringList m_lastOpenedFile;
 	QList<XSLProjectSessionEditor*> m_sessions;
-	
+
 	friend class XSLProjectSessionEditor;
 };
 
@@ -137,17 +137,17 @@ class XSLProject : public QObject {
 	Q_OBJECT
 public:
 	/*!
-	 * This enumeration is a list of options that can be used by a project. This options active 
-	 * some functionnalities in XINX has the customization of stylesheet (make it specifique) and 
+	 * This enumeration is a list of options that can be used by a project. This options active
+	 * some functionnalities in XINX has the customization of stylesheet (make it specifique) and
 	 * usability of webservices.
 	 */
 	enum ProjectOption {
 		NoOptions = 0x0, ///< No options are defined.
 		hasSpecifique = 0x1, ///< The project can have specifique stylesheet
-		hasWebServices = 0x2 ///< The project can connect to WebServices
+		hasWebServices = 0x2 ///< The project can connect to WebServices (plugin must be activated)
 	};
 	Q_DECLARE_FLAGS( ProjectOptions, ProjectOption );
-	
+
 	/*!
 	 * Create an empty project.
 	 */
@@ -171,9 +171,9 @@ public:
 
 	/*!
 	 * Assigned operator to copy object contents at assignation
-	 */ 
+	 */
 	XSLProject& operator=( const XSLProject& p );
-	
+
 	/*!
 	 * Read the content of the file in the XSLProject structure.
 	 * \param filename Name of file (in XML format) where the XSLProject
@@ -186,12 +186,12 @@ public:
 	 * Save the XSLProject structure in a file. If the file name is not specified
 	 * the project is saved in the file used to open the project.
 	 * The project is serialized in a XML file.
-	 * \param filename The file where we save the project. 
+	 * \param filename The file where we save the project.
 	 * \sa loadFromFile()
 	 * \throw XSLProjectException When the application can't save the project file.
 	 */
 	void saveToFile( const QString & filename = QString() );
-	
+
 	/*!
 	 * Return the file name where the project is stored.
 	 * \return the file name.
@@ -202,14 +202,14 @@ public:
 	 * Return the session object used to store session information.
 	 */
 	XSLProjectSession * session() const;
-	
+
 	/*!
-	 * Save the session in the file. 
+	 * Save the session in the file.
 	 * \throw XSLProjectException when the application can't save the session file.
 	 * \sa loadFromFile(), saveToFile()
 	 */
 	void saveOnlySession();
-	
+
 	/*!
 	 * Name of the project. The name is just an information, nothing else.
 	 * \return The name of the project.
@@ -217,12 +217,12 @@ public:
 	 */
 	QString projectName() const;
 	/*!
-	 * Set the name of the project. 
+	 * Set the name of the project.
 	 * \param value The new name of the project.
 	 * \sa projectName()
 	 */
 	void setProjectName( const QString & value );
-	
+
 	/*!
 	 * Return the options of the project.
 	 * \return The options of the project.
@@ -238,7 +238,7 @@ public:
 
 	/*!
 	 * The concurent file system used by XINX (only CVS can be used).
-	 * \return Return the number version. 
+	 * \return Return the number version.
 	 * \sa setProjectRCS()
 	 */
 	const QString & projectRCS() const;
@@ -248,7 +248,7 @@ public:
 	 * \sa projectRCS()
 	 */
 	void setProjectRCS( const QString & value );
-	
+
 	/*!
 	 * Langue used by Generix. Used to determine the project path.
 	 * \todo How the langue is managed on GCE130 ? and GCE140 ? with the new traduction
@@ -263,7 +263,7 @@ public:
 	 * \sa defaultLang()
 	 */
 	void setDefaultLang( const QString & value );
-	
+
 	/*!
 	 * Get the navigator defined as defined in the configuration file.
 	 * This is used for information, this not used by XINX.
@@ -277,7 +277,7 @@ public:
 	 * \sa defaultNav()
 	 */
 	void setDefaultNav( const QString & value );
-	
+
 	/*!
 	 * Get the project path. The project path is the path where the configuration file
 	 * is positioned.
@@ -291,7 +291,7 @@ public:
 	 * \sa projectPath(), languePath(), navPath(), languesPath(), specifPath(), setSpecifPath()
 	 */
 	void setProjectPath( const QString & value );
-	
+
 	/*!
 	 * Set the specifique project path name with the value stored in \e value. The specifique project
 	 * path name is the project that must be replaced by <project>
@@ -301,8 +301,8 @@ public:
 	 * Return the specifique project path name.
 	 * \return specifique project path name
 	 */
-	QString specifiquePathName(); 
-	
+	QString specifiquePathName();
+
 	/*!
 	 * Set the log projet directory with the new \e value.
 	 */
@@ -311,7 +311,7 @@ public:
 	 * Return the log project directory.
 	 */
 	const QString & logProjectDirectory();
-	
+
 	/*!
 	 * Get the specifique prefix.
 	 * \return the specifique prefix.
@@ -335,14 +335,14 @@ public:
 	 * \return List of search path
 	 */
 	QStringList & searchPathList();
-	
+
 	/*!
 	 * List of processed path where the application must searh.
 	 */
 	QStringList processedSearchPathList();
 
 	/*!
-	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet). The specifique 
+	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet). The specifique
 	 * project path is in the QStringList.
 	 * \return the path
 	 * \sa projectPath(), setProjectPath(), setSpecifPath()
@@ -360,12 +360,25 @@ public:
 	 * \sa specifPath(), setSpecifPath()
 	 */
 	QString processedSpecifiquePath() const;
-	
+
 	/*!
 	 * List of Web services link. The link must point to the WSDL.
 	 * \return list of WSDL link.
 	 */
 	QStringList & serveurWeb();
+
+	/*!
+	 * Write a property in the project file.
+	 * \param key The property to write
+	 * \param value The value to write
+	 */
+	void writeProperty( const QString & key, QVariant value );
+	/*!
+	 * Read a written property from the project file
+	 * \param key The Property to read
+	 * \return The value of the property
+	 */
+	QVariant readProperty( const QString & key );
 signals:
 	void changed();
 private:
@@ -380,18 +393,18 @@ class XINXProjectManager : public QObject {
 public:
 	XINXProjectManager();
 	virtual ~XINXProjectManager();
-	
+
 	static XINXProjectManager * self();
-	
+
 	void setCurrentProject( XSLProject * project );
 	XSLProject * project() const;
-	
+
 	void deleteProject();
 signals:
 	void changed();
 private:
 	XSLProject * m_project;
-	
+
 	static XINXProjectManager * s_self;
 };
 

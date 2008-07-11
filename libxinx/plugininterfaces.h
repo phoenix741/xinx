@@ -42,6 +42,8 @@ class QCompleter;
 class RCS;
 class AbstractFileContainer;
 class AbstractEditor;
+class QWizardPage;
+class XSLProject;
 
 /*!
  * This intereface is used to create a plugin used by XINX.
@@ -80,6 +82,9 @@ public:
 
 	/*! List of tools with the default value where find the tool */
 	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
+
+	virtual bool initializeProject( XSLProject * project ) { Q_UNUSED( project ); return true; };
+	virtual bool destroyProject( XSLProject * project ) { Q_UNUSED( project ); return true; };
 };
 
 /*!
@@ -102,6 +107,28 @@ public:
 	virtual bool loadSettingsDialog( QWidget * widget ) = 0;
 	//! Save settings to dialog box
 	virtual bool saveSettingsDialog( QWidget * widget ) = 0;
+};
+
+/*!
+ * This class is used to permit to read and save some property in the project file. To do this the plugin can
+ * also propose an user interface and a list of wizard pages.
+ */
+class IXinxPluginProjectConfiguration {
+public:
+	//! Destroy the interface
+	virtual ~IXinxPluginProjectConfiguration() {};
+
+	//! Create a widget used in the project dialog
+	virtual QWidget * createProjectSettingsPage() = 0;
+	//! Load the settings in the settings page
+	virtual bool loadProjectSettingsPage( QWidget * widget ) = 0;
+	//! Save the settings in the settings page
+	virtual bool saveProjectSettingsPage( QWidget * widget ) = 0;
+
+	//! Create some page used in the wizard page
+	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid ) = 0;
+	//! Save the wizard settings page in the project
+	virtual bool saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page ) = 0;
 };
 
 /*!
@@ -212,6 +239,7 @@ public:
 
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0")
 Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0")
+Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0")
 Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0")
 Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
 Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")

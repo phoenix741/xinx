@@ -18,45 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+#ifndef _SERVICESPROJECTWIZARD_H_
+#define _SERVICESPROJECTWIZARD_H_
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+// Qt header
+#include <QWizard>
 
-class XSLProject;
-class IXinxPluginProjectConfiguration;
+// Xinx header
+#include "ui_newprojectwizard_services.h"
+#include "ui_newprojectwizard_serviceslist.h"
 
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
+class ServicesPageImpl : public QWizardPage, public Ui::ServicesPage {
 	Q_OBJECT
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+	ServicesPageImpl( int nextId, QWidget * parent = 0 );
 
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
+	int nextId() const;
 private:
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-
-	QList< QPair<IXinxPluginProjectConfiguration*,QWidget*> > m_pluginPages;
-private slots:
-	void on_m_logButton_clicked();
-	void on_m_specifiqueGroupBox_clicked();
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_prefixList_defaultValueChanged( QString );
-
-	void versionFinded( SimpleConfigurationFile configuration );
+	int m_nextId;
 };
 
-#endif
+class ServicesListPageImpl : public QWizardPage, public Ui::ServicesListPage {
+	Q_OBJECT
+public:
+	ServicesListPageImpl( int nextId, QWidget * parent = 0 );
 
+	int nextId() const;
+	QVariant field(const QString &name) const;
+private:
+	int m_nextId;
+};
 
-
-
-
-
-
-
-
+#endif // _SERVICESPROJECTWIZARD_H_

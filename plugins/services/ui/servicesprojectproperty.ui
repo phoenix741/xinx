@@ -1,0 +1,50 @@
+<ui version="4.0" >
+ <class>ServicesProjectProperty</class>
+ <widget class="QWidget" name="ServicesProjectProperty" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>653</width>
+    <height>327</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>WebServices</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
+    <widget class="QGroupBox" name="m_webServiceGroupBox" >
+     <property name="whatsThis" >
+      <string>&lt;p>Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b>XINX&lt;/b> will connect to the service and download the description file.&lt;/p>
+&lt;p>Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p></string>
+     </property>
+     <property name="title" >
+      <string>Project has WebServices</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <property name="checked" >
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="0" column="0" >
+       <widget class="XinxListWidgetImpl" native="1" name="m_servicesList" />
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxListWidgetImpl</class>
+   <extends>QWidget</extends>
+   <header>xinxlistwidgetimpl.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -18,45 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+#ifndef SERVICESPROJECTPROPERTYIMPL_H
+#define SERVICESPROJECTPROPERTYIMPL_H
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+// Xinx header
+#include "ui_servicesprojectproperty.h"
 
-class XSLProject;
-class IXinxPluginProjectConfiguration;
+// Qt header
+#include <QWidget>
 
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
+class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectProperty {
 	Q_OBJECT
 public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+	ServicesProjectPropertyImpl( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	~ServicesProjectPropertyImpl();
 
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-
-	QList< QPair<IXinxPluginProjectConfiguration*,QWidget*> > m_pluginPages;
-private slots:
-	void on_m_logButton_clicked();
-	void on_m_specifiqueGroupBox_clicked();
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_prefixList_defaultValueChanged( QString );
-
-	void versionFinded( SimpleConfigurationFile configuration );
 };
 
-#endif
-
-
-
-
-
-
-
-
+#endif // SERVICESPROJECTPROPERTYIMPL_H
 

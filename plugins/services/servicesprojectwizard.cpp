@@ -18,45 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTPROPERTYIMPL_H
-#define PROJECTPROPERTYIMPL_H
+// Xinx header
+#include "servicesprojectwizard.h"
 
-#include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
+/* ServicesPageImpl */
 
-class XSLProject;
-class IXinxPluginProjectConfiguration;
+ServicesPageImpl::ServicesPageImpl( int nextId, QWidget * parent ) : QWizardPage( parent ), m_nextId( nextId ) {
+	setupUi( this );
+	setTitle( windowTitle() );
+	setSubTitle( tr("Define if the project contains WebServices. WebServices can be used to "
+					"query database.") );
 
-class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
-	Q_OBJECT
-public:
-	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	virtual ~ProjectPropertyImpl();
+	registerField( "project.services", m_addWebServicesButton );
+}
 
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
-private:
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
+int ServicesPageImpl::nextId() const {
+	if( m_addWebServicesButton->isChecked() )
+		return m_nextId + 1;
+	else
+		return m_nextId + 2;
+}
 
-	QList< QPair<IXinxPluginProjectConfiguration*,QWidget*> > m_pluginPages;
-private slots:
-	void on_m_logButton_clicked();
-	void on_m_specifiqueGroupBox_clicked();
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_prefixList_defaultValueChanged( QString );
+/* ServicesListPageImpl */
 
-	void versionFinded( SimpleConfigurationFile configuration );
-};
+ServicesListPageImpl::ServicesListPageImpl( int nextId, QWidget * parent ) : QWizardPage( parent ), m_nextId( nextId ) {
+	setupUi( this );
+	setTitle( windowTitle() );
+	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
+					"list contains link to WSDL.") );
 
-#endif
+	registerField( "services.list", m_webServicesWidget );
 
+	m_webServicesWidget->setDefaultProposedValue( "http://localhost:8888/gce/services/?WSDL" );
+	m_webServicesWidget->setDefaultVisible( false );
+}
 
+QVariant ServicesListPageImpl::field( const QString &name ) const {
+	return QWizardPage::field( name );
+}
 
-
-
-
-
-
-
+int ServicesListPageImpl::nextId() const {
+	return m_nextId + 2;
+}
