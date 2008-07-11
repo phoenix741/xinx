@@ -38,8 +38,6 @@ public:
 	WebServicesEditor( QWidget *parent = 0 );
 	~WebServicesEditor();
 
-	virtual QString getSuffix() const;
-
 	WebServices * service();
 	Operation * operation();
 	const QHash<QString,QString> & values();

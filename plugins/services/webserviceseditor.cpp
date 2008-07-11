@@ -24,6 +24,7 @@
 #include "texteditor.h"
 #include "xslproject.h"
 #include "borderlayout.h"
+#include <xmltexteditor.h>
 
 // Qt header
 #include <QLabel>
@@ -39,7 +40,7 @@
 
 /* WebServicesEditor */
 
-WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( XXX, parent ) {
+WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
 	m_oldParamValue = QString();
 
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
@@ -84,13 +85,6 @@ const QHash<QString,QString> & WebServicesEditor::values() {
 	store( m_paramList->currentText() );
 
 	return m_paramValues;
-}
-
-QString WebServicesEditor::getSuffix() const {
-	if( lastFileName().isEmpty() )
-		return "fws";
-	else
-		return FileEditor::getSuffix();
 }
 
 WebServices * WebServicesEditor::service() {
@@ -310,14 +304,14 @@ void WebServicesEditor::setModified( bool modified ) {
 	bool needEmit = modified != isModified();
 
 	m_isModified = modified;
-	m_view->document()->setModified( modified );
+	textEdit()->document()->setModified( modified );
 
 	if( needEmit )
 		emit modificationChanged( modified );
 }
 
 bool WebServicesEditor::isModified() {
-	return m_isModified || m_view->document()->isModified();
+	return m_isModified || textEdit()->document()->isModified();
 }
 
 QIcon WebServicesEditor::icon() {

@@ -24,15 +24,19 @@
 // Xinx header
 #include <plugininterfaces.h>
 
-class ServicesPlugin : public QObject, public IXinxPlugin, public IXinxPluginProjectConfiguration {
+class ServicesPlugin : public QObject, public IFilePlugin, public IXinxPluginProjectConfiguration {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
+	Q_INTERFACES(IFilePlugin)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
 public:
 	ServicesPlugin();
+	virtual ~ServicesPlugin();
 
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+
+	virtual QList<IFileTypePlugin*> fileTypes();
 
 	virtual QWidget * createProjectSettingsPage();
 	virtual bool loadProjectSettingsPage( QWidget * widget );
@@ -40,6 +44,8 @@ public:
 
 	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
 	virtual bool saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page );
+private:
+	QList<IFileTypePlugin*> m_fileTypes;
 };
 
 #endif /* SERVICESPLUGIN_H_*/

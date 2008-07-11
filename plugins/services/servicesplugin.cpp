@@ -24,6 +24,7 @@
 #include "servicesprojectwizard.h"
 #include <xslproject.h>
 #include "webservices.h"
+#include "webserviceseditor.h"
 
 // Qt header
 #include <QString>
@@ -31,12 +32,50 @@
 #include <QTranslator>
 #include <QApplication>
 
+/* WebServicesFileType */
+
+class WebServicesFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "Web Services Stream" ); };
+	virtual QString match() { return "*.fws"; };
+	virtual QIcon icon() { return QIcon( ":/services/images/typefws.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = false;
+		p.specifiqueSubDirectory = QString();
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		WebServicesEditor * editor = new WebServicesEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		Q_UNUSED( parent );
+		Q_UNUSED( line );
+		Q_UNUSED( filename );
+		return 0;
+	}
+};
+
 /* ServicesPlugin */
 
 ServicesPlugin::ServicesPlugin() {
     Q_INIT_RESOURCE(servicesplugin);
 
 	WebServicesManager::self();
+	m_fileTypes << new WebServicesFileType;
+}
+
+ServicesPlugin::~ServicesPlugin() {
+	qDeleteAll( m_fileTypes );
 }
 
 bool ServicesPlugin::initializePlugin( const QString & lang ) {
@@ -67,6 +106,10 @@ QVariant ServicesPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttri
 		return "GPL v2.0 or later";
 	}
 	return QVariant();
+}
+
+QList<IFileTypePlugin*> ServicesPlugin::fileTypes() {
+	return m_fileTypes;
 }
 
 QWidget * ServicesPlugin::createProjectSettingsPage() {

@@ -1,6 +1,7 @@
 <RCC>
 	<qresource prefix="/services/" >
         <file>images/webservices.png</file>
+        <file>images/typefws.png</file>
 		<file>translations/servicesplugin_fr.qm</file>
     </qresource>
 </RCC>
