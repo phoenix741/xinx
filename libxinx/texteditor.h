@@ -111,12 +111,12 @@ protected:
 	virtual void printWhiteSpaces( QPainter & p );
 
 	virtual bool processKeyPress( QKeyEvent * ) { return true; };
+	virtual void localKeyPressExecute( QKeyEvent * e );
 protected slots:
 	virtual void insertCompletion( const QModelIndex& index );
 private slots:
 	void slotCursorPositionChanged();
 private:
-	void localKeyPressExecute( QKeyEvent * e );
 
 	void uploSelectedText( bool upper = true );
 	void key_home( bool );

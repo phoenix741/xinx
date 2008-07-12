@@ -36,7 +36,11 @@ public slots:
 protected slots:
 	virtual void insertCompletion( const QModelIndex& index );
 protected:
+	virtual void localKeyPressExecute( QKeyEvent * e );
 	virtual bool processKeyPress( QKeyEvent * );
+
+private:
+	void key_shenter( bool back );
 
 	enum cursorPosition {
 		cpEditComment, // <!-- XXXXX  -->
