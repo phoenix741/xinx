@@ -31,6 +31,7 @@
 class WebServices;
 class Operation;
 class QComboBox;
+class QToolButton;
 
 class WebServicesEditor : public TextFileEditor {
 	Q_OBJECT
@@ -42,23 +43,23 @@ public:
 	Operation * operation();
 	const QHash<QString,QString> & values();
 
-	virtual void loadFile( const QString &fileName = "" );
-	virtual bool saveFile( const QString &fileName = "" );
+	virtual void loadFromDevice( QIODevice & d );
+	virtual void saveToDevice( QIODevice & d );
 
 	virtual void serialize( XSLProjectSessionEditor * data, bool content );
 	virtual void deserialize( XSLProjectSessionEditor * data );
 
-	virtual void setModified( bool modified );
-	virtual bool isModified();
-
-	virtual QIcon icon();
-
+	virtual QIcon icon() const;
 private slots:
+	void paramListEditingFinished();
+	void updateActions();
+
 	void webServicesChanged();
 	void webServicesActivated( int );
 	void webServicesParamActivated( int );
 	void webServicesValueActivated();
 
+	void run();
 private:
 	void loadServicesList();
 	void loadActionsList( int index );
@@ -70,8 +71,8 @@ private:
 
 	QString m_serviceName, m_operationName, m_oldParamValue;
 	QComboBox * m_servicesList, * m_paramList, * m_actionList;
+	QToolButton * m_updateButton, * m_runButton;
 	QHash<QString,QString> m_paramValues;
-	bool m_isModified;
 };
 
 #endif // __WEBSERVICESEDITOR_H__

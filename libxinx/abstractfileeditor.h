@@ -45,7 +45,7 @@ public:
 
 	virtual void serialize( XSLProjectSessionEditor * data, bool content );
 	virtual void deserialize( XSLProjectSessionEditor * data );
-protected:
+protected slots:
 	virtual void setModified( bool isModified );
 private slots:
 	void fileChanged();

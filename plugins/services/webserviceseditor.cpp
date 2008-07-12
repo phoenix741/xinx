@@ -27,8 +27,10 @@
 #include <xmltexteditor.h>
 
 // Qt header
+#include <QToolButton>
 #include <QLabel>
 #include <QComboBox>
+#include <QLineEdit>
 #include <QVBoxLayout>
 #include <QFile>
 #include <QMessageBox>
@@ -43,6 +45,13 @@
 WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
 	m_oldParamValue = QString();
 
+	m_updateButton = new QToolButton( this );
+	m_updateButton->setIcon( QIcon(":/images/reload.png") );
+	m_updateButton->setText( tr("Update WebServices List") );
+	m_runButton = new QToolButton( this );
+	m_runButton->setIcon( QIcon(":/images/run.png") );
+	m_runButton->setText( tr("Call the service") );
+
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
 	m_servicesList = new QComboBox( this );
 
@@ -51,8 +60,11 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 
 	QLabel * label3 = new QLabel( tr("Parameter : "), this );
 	m_paramList = new QComboBox( this );
+	m_paramList->setEditable( true );
 
 	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addWidget( m_updateButton );
+	hbox->addSpacing( 10 );
 	hbox->addWidget( label1 );
 	hbox->addWidget( m_servicesList );
 	hbox->addSpacing( 10 );
@@ -61,6 +73,8 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	hbox->addSpacing( 10 );
 	hbox->addWidget( label3 );
 	hbox->addWidget( m_paramList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( m_runButton );
 	//hbox->addStretch();
 
 	borderLayout()->add( hbox, BorderLayout::North );
@@ -70,11 +84,17 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	connect( m_actionList, SIGNAL(activated(int)), this, SLOT(webServicesParamActivated(int)) );
 	connect( m_paramList, SIGNAL(activated(int)), this, SLOT(webServicesValueActivated()) );
 
+	connect( m_updateButton, SIGNAL(clicked()), WebServicesManager::self(), SLOT(updateWebServicesList()) );
+	connect( m_runButton, SIGNAL(clicked()), this, SLOT(run()) );
+
+	connect( m_paramList->lineEdit(), SIGNAL(editingFinished()), this, SLOT(paramListEditingFinished()) );
+
 	loadServicesList();
 	loadActionsList( m_servicesList->currentIndex() );
 	loadValuesList( m_actionList->currentIndex() );
 
 	setModified( false );
+	updateActions();
 }
 
 WebServicesEditor::~WebServicesEditor() {
@@ -109,25 +129,14 @@ public:
 	}
 };
 
-void WebServicesEditor::loadFile( const QString & fileName ){
-	/* TODO : Le plugins sur les
-	if( ! fileName.isEmpty() ) m_fileName = fileName;
-
-	QFile file( getFileName() );
-	if ( ! file.open( QFile::ReadOnly | QFile::Text ) ) {
-		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot read file %1:\n%2." )
-																.arg( getFileName() )
-																.arg( file.errorString() ) );
-		return;
-	}
-
+void WebServicesEditor::loadFromDevice( QIODevice & d ) {
 	m_paramValues.clear(); m_oldParamValue = QString();
 	try {
 		QDomDocument document;
-		if( ! document.setContent( &file, false ) ) throw WrongFwsFormatException( "Can't read content of file" );
+		if( ! document.setContent( &d, false ) ) throw WrongFwsFormatException( tr("Can't read content of file") );
 
 		QDomElement element = document.documentElement();
-		if( element.tagName() != "webservice" ) throw WrongFwsFormatException( "Not a WebServices file" );
+		if( element.tagName() != "webservice" ) throw WrongFwsFormatException( tr("Not a WebServices file") );
 
 		m_serviceName = element.attribute( "service" );
 		m_operationName = element.attribute( "action" );
@@ -154,28 +163,15 @@ void WebServicesEditor::loadFile( const QString & fileName ){
 		loadActionsList( m_servicesList->currentIndex() );
 		loadValuesList( m_actionList->currentIndex() );
 		restore( m_paramList->currentText() );
-	} catch(WrongFwsFormatException) {
-		file.seek( 0 );
-		QTextStream in( &file );
+	} catch( WrongFwsFormatException ) {
+		d.seek( 0 );
+		QTextStream in( &d );
 		QApplication::setOverrideCursor( Qt::WaitCursor );
-		m_view->setPlainText( in.readAll() );
+		textEdit()->setPlainText( in.readAll() );
 	}
-
-	setModified( false );
-
-	QApplication::restoreOverrideCursor();
-	*/
 }
 
-bool WebServicesEditor::saveFile( const QString & fileName ){
-	/*
-	if( ( fileName == m_fileName ) || fileName.isEmpty() ) createBackup( m_fileName );
-	if( ! fileName.isEmpty() ) setFileName( fileName );
-
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
-	setIsSaving( true );
-
+void WebServicesEditor::saveToDevice( QIODevice & d ) {
 	store( m_paramList->currentText() );
 
 	QDomDocument document;
@@ -192,45 +188,21 @@ bool WebServicesEditor::saveFile( const QString & fileName ){
 		paramElement.appendChild( text );
 	}
 
-	QFile file( getFileName() );
-	if ( ! file.open( QFile::WriteOnly | QFile::Text ) ) {
-		QMessageBox::warning(this, tr( "XINX" ), tr( "Cannot write file %1:\n%2." )
-																.arg( fileName )
-																.arg( file.errorString() ) );
-		activateWatcher();
-		return false;
-	}
-
-	QTextStream out( &file );
+	QTextStream out( &d );
 	document.save( out, 3 );
-	file.flush();
-	file.close();
-
-	emit modificationChanged( false );
-	setModified( false );
-
-	setIsSaving( false );
-
-	QApplication::restoreOverrideCursor();
-
-	return true;
-	*/
 }
 
 void WebServicesEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
-	/*
-	Editor::serialize( data, content );
+	AbstractFileEditor::serialize( data, content );
 	store( m_paramList->currentText() );
 
-	data->writeProperty( "FileName", QVariant( m_fileName ) );
 	data->writeProperty( "Service", QVariant( m_servicesList->currentText() ) );
 	data->writeProperty( "Action", QVariant( m_actionList->currentText() ) );
 	data->writeProperty( "Param", QVariant( m_paramList->currentText() ) );
-	data->writeProperty( "Position", QVariant( m_view->textCursor().position() ) );
-	data->writeProperty( "Modified", QVariant( isModified() ) );
+	data->writeProperty( "Position", QVariant( textEdit()->textCursor().position() ) );
 
 	int i = 0;
-	if( content && m_view->document()->isModified() ) {
+	if( content && isModified() ) {
 		foreach( QString param, m_paramValues.keys() ) {
 			data->writeProperty( QString( "Key_%1" ).arg( i ), QVariant( param ) );
 			data->writeProperty( QString( "Value_%1" ).arg( i++ ), QVariant( m_paramValues[ param ] ) );
@@ -243,24 +215,15 @@ void WebServicesEditor::serialize( XSLProjectSessionEditor * data, bool content 
 		data->writeProperty( QString( "Bookmark_%1" ).arg( i++ ), QVariant( line ) );
 	}
 	data->writeProperty( "BookmarkCount", QVariant( i ) );
-	*/
 }
 
 void WebServicesEditor::deserialize( XSLProjectSessionEditor * data ) {
-	/*
 	int position = 0;
-	bool isModified = false;
 	QString key, value, param;
 
 	m_paramValues.clear(); m_oldParamValue = QString();
 
-	Editor::deserialize( data );
-
-	m_fileName = data->readProperty( "FileName" ).toString();
-	setSuffix( QFileInfo( m_fileName ).suffix() );
-
 	position  = data->readProperty( "Position" ) .toInt();
-	isModified = data->readProperty( "Modified" ).toBool();
 
 	int bc = data->readProperty( "BookmarkCount" ).toInt();
 	for( int i = 0 ; i < bc; i++ ) {
@@ -280,8 +243,12 @@ void WebServicesEditor::deserialize( XSLProjectSessionEditor * data ) {
 	}
 
 	if( m_paramValues.keys().count() == 0 ) {
-		if( ! m_fileName.isEmpty() )
-			loadFile( m_fileName );
+		AbstractFileEditor::deserialize( data );
+
+		if( ! lastFileName().isEmpty() )
+			loadFromFile( lastFileName() );
+	} else {
+		AbstractFileEditor::deserialize( data );
 	}
 
 	loadServicesList();
@@ -292,41 +259,31 @@ void WebServicesEditor::deserialize( XSLProjectSessionEditor * data ) {
 	restore( m_paramList->currentText() );
 
 	if( m_paramValues.keys().count() > 0 )
-		m_view->document()->setModified( isModified );
+		textEdit()->document()->setModified( isModified() );
 
-	QTextCursor tc = m_view->textCursor();
+	QTextCursor tc = textEdit()->textCursor();
 	tc.setPosition( position );
-	m_view->setTextCursor( tc );
-	*/
+	textEdit()->setTextCursor( tc );
 }
 
-void WebServicesEditor::setModified( bool modified ) {
-	bool needEmit = modified != isModified();
-
-	m_isModified = modified;
-	textEdit()->document()->setModified( modified );
-
-	if( needEmit )
-		emit modificationChanged( modified );
+QIcon WebServicesEditor::icon() const {
+	return QIcon( ":/services/images/typefws.png" );
 }
 
-bool WebServicesEditor::isModified() {
-	return m_isModified || textEdit()->document()->isModified();
-}
-
-QIcon WebServicesEditor::icon() {
-	return QIcon( ":/images/typefws.png" );
+void WebServicesEditor::paramListEditingFinished() {
+	int index = m_paramList->findText( m_paramList->lineEdit()->text() );
+	if( index >= 0 ) m_paramList->setItemIcon( index, QIcon(":/services/images/serviceparam.png") );
 }
 
 void WebServicesEditor::loadServicesList() {
 	m_servicesList->clear();
 	foreach( WebServices * ed, *(WebServicesManager::self()) )
 		if( ! ed->name().isEmpty() )
-			m_servicesList->addItem( QIcon(":/images/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
+			m_servicesList->addItem( QIcon(":/services/images/services.png"), ed->name(), qVariantFromValue( (void*)ed ) );
 
 	int findIndex = m_servicesList->findText( m_serviceName );
 	if( ( ! m_serviceName.isEmpty() ) && ( findIndex == -1 ) ) {
-		m_servicesList->addItem( QIcon(":/images/services.png"), m_serviceName );
+		m_servicesList->addItem( QIcon(":/services/images/services.png"), m_serviceName );
 		m_servicesList->setItemData( m_servicesList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		m_servicesList->setCurrentIndex( m_servicesList->count() - 1 );
 	} else if( findIndex >= 0 ) {
@@ -340,12 +297,12 @@ void WebServicesEditor::loadActionsList( int index ) {
 	if( ( index >= 0 ) && ( m_servicesList->itemData( index ).isValid() ) ) {
 		WebServices * ed = (WebServices*)( m_servicesList->itemData( index ).value<void*>() );
 		foreach( Operation * op, ed->operations() )
-			m_actionList->addItem( QIcon(":/images/action.png"), op->name(), qVariantFromValue( (void*)op ) );
+			m_actionList->addItem( QIcon(":/services/images/action.png"), op->name(), qVariantFromValue( (void*)op ) );
 	}
 
 	int findIndex = m_actionList->findText( m_operationName );
 	if( ( ! m_operationName.isEmpty() ) && ( findIndex == -1 ) ) {
-		m_actionList->addItem( QIcon(":/images/action.png"), m_operationName );
+		m_actionList->addItem( QIcon(":/services/images/action.png"), m_operationName );
 		m_actionList->setItemData( m_actionList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		m_actionList->setCurrentIndex( m_actionList->count() - 1 );
 	} else if( findIndex >= 0 ) {
@@ -361,12 +318,12 @@ void WebServicesEditor::loadValuesList( int index ) {
 	if( ( index >= 0 ) && ( m_actionList->itemData( index ).isValid() ) ) {
 		Operation * op = (Operation*)( m_actionList->itemData( index ).value<void*>() );
 		foreach( Parameter * param, op->inputParam() )
-			m_paramList->addItem( QIcon(":/images/serviceparam.png"), param->paramString() );
+			m_paramList->addItem( QIcon(":/services/images/serviceparam.png"), param->paramString() );
 	}
 
 	foreach( QString param, m_paramValues.keys() ) {
 		if( ( !param.isEmpty() ) && m_paramList->findText( param ) == -1 ) {
-			m_paramList->addItem( QIcon(":/images/serviceparam.png"), param );
+			m_paramList->addItem( QIcon(":/services/images/serviceparam.png"), param );
 			m_paramList->setItemData( m_paramList->count() - 1, Qt::gray, Qt::ForegroundRole );
 		}
 	}
@@ -377,6 +334,8 @@ void WebServicesEditor::loadValuesList( int index ) {
 			m_paramList->setCurrentIndex( paramIndex );
 	} else if( m_paramList->count() > 0 )
 		m_paramList->setCurrentIndex( 0 );
+
+	updateActions();
 }
 
 void WebServicesEditor::webServicesChanged() {
@@ -403,10 +362,18 @@ void WebServicesEditor::webServicesValueActivated() {
 }
 
 void WebServicesEditor::store( const QString & paramStr ) {
+	if( textEdit()->document()->isModified() ) setModified(true);
 	m_paramValues[ paramStr ] = textEdit()->toPlainText();
-	setModified( isModified() );
 }
 
 void WebServicesEditor::restore( const QString & paramStr ) {
 	textEdit()->setPlainText( m_paramValues[ paramStr ] );
+}
+
+void WebServicesEditor::run() {
+	service()->call( operation(), values() );
+}
+
+void WebServicesEditor::updateActions() {
+	m_runButton->setEnabled( ( service() != NULL ) && ( operation() != NULL ) );
 }

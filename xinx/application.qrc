@@ -4,7 +4,6 @@
         <file alias="translations/libxinx_fr.qm" >../libxinx/translations/libxinx_fr.qm</file>
         <file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
-        <file>images/action.png</file>
         <file>images/add.png</file>
         <file>images/balise.png</file>
         <file>images/banner_wizard.png</file>
@@ -88,8 +87,6 @@
         <file>images/reload.png</file>
         <file>images/remove.png</file>
         <file>images/run.png</file>
-        <file>images/serviceparam.png</file>
-        <file>images/services.png</file>
         <file>images/spain.png</file>
         <file>images/splash.png</file>
         <file>images/style.png</file>

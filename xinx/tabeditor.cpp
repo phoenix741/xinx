@@ -298,6 +298,9 @@ void TabEditor::tabRemoved ( int index ) {
 }
 
 void TabEditor::slotModifiedChange( bool changed ) {
+	Q_ASSERT( currentIndex() >= 0 );
+	Q_ASSERT( currentEditor() );
+
 	if( changed )
 		setTabText ( currentIndex(), tr("%1*").arg( currentEditor()->getTitle() ) );
 	else

@@ -89,7 +89,7 @@ TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : Abstrac
 	connect( m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
-	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SIGNAL(modificationChanged(bool)) );
+	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SLOT(setModified(bool)) );
 	connect( m_view, SIGNAL(textChanged()), this, SIGNAL(contentChanged()) );
 
 	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );

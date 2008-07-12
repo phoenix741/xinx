@@ -252,9 +252,6 @@ void PrivateMainformImpl::createShortcut() {
 	m_parent->m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
 	m_parent->m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
 
-	// Webservices menu
-	m_parent->m_callWebServicesAct->setShortcut( QKeySequence( "F9" ) );
-
 	// Windows menu
 	m_parent->m_nextTabAct->setShortcut( QKeySequence::NextChild );
 	m_parent->m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
@@ -1291,11 +1288,6 @@ bool PrivateMainformImpl::closeProject( bool session ) {
 	m_projectDock->setProjectPath( NULL );
 	m_contentDock->updateModel( NULL );
 
-	/* TODO:
-	qDeleteAll( *(WebServicesManager::self()) );
-	WebServicesManager::self()->clear();
-	*/
-
 	XINXProjectManager::self()->deleteProject();
 
 	return true;
@@ -1384,15 +1376,6 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 	d->storeWindowSettings();
 	event->accept();
 }
-
-/*
-void MainformImpl::newWebservicesFile() { TODO:
-	if( WebServicesManager::self()->size() == 0 ) {
-		QMessageBox::warning( this, tr("WebServices"), tr("No WebServices can be found. Please update WebServices list to continue.") );
-		return;
-	}
-}
-*/
 
 void MainformImpl::newTemplate() {
 	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
@@ -1549,16 +1532,6 @@ void MainformImpl::saveProject( bool withSessionData ) {
 	}
 	XINXProjectManager::self()->project()->saveOnlySession();
 }
-
-/*void MainformImpl::callWebservices() {
-	TODO:
-	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
-	Q_ASSERT( XINXProjectManager::self()->project() );
-
-	WebServicesEditor * editor = qobject_cast<WebServicesEditor*>( m_tabEditors->currentEditor() );
-	if( editor )
-		editor->service()->call( editor->operation(), editor->values() );
-}*/
 
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();

@@ -2,6 +2,9 @@
 	<qresource prefix="/services/" >
         <file>images/webservices.png</file>
         <file>images/typefws.png</file>
+        <file>images/action.png</file>
+        <file>images/services.png</file>
+        <file>images/serviceparam.png</file>
 		<file>translations/servicesplugin_fr.qm</file>
     </qresource>
 </RCC>

@@ -100,11 +100,12 @@ public:
 	void setProject( XSLProject * project );
 
 	static WebServicesManager * self();
+public slots:
+	void updateWebServicesList();
 signals:
 	void changed();
 private slots:
 	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
-	void updateWebServicesList();
 private:
 	static WebServicesManager * s_self;
 };

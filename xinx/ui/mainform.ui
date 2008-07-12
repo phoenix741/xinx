@@ -21,9 +21,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>68</y>
+     <y>56</y>
      <width>661</width>
-     <height>373</height>
+     <height>385</height>
     </rect>
    </property>
    <layout class="QGridLayout" >
@@ -44,7 +44,7 @@
      <x>0</x>
      <y>0</y>
      <width>661</width>
-     <height>29</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -76,14 +76,6 @@
     <addaction name="m_globalUpdateFromRCSAct" />
     <addaction name="m_globalCommitToRCSAct" />
     <addaction name="m_cancelRCSOperationAct" />
-   </widget>
-   <widget class="QMenu" name="m_webServicesMenu" >
-    <property name="title" >
-     <string>WebServices</string>
-    </property>
-    <addaction name="m_refreshWebServicesListAct" />
-    <addaction name="separator" />
-    <addaction name="m_callWebServicesAct" />
    </widget>
    <widget class="QMenu" name="m_windowsMenu" >
     <property name="title" >
@@ -176,7 +168,6 @@
    <addaction name="m_searchMenu" />
    <addaction name="menu_Bookmark" />
    <addaction name="m_projectMenu" />
-   <addaction name="m_webServicesMenu" />
    <addaction name="m_windowsMenu" />
    <addaction name="m_toolsMenu" />
    <addaction name="m_helpMenu" />
@@ -195,9 +186,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>29</y>
-     <width>85</width>
-     <height>39</height>
+     <y>22</y>
+     <width>76</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="windowTitle" >
@@ -218,10 +209,10 @@
   <widget class="QToolBar" name="m_fileToolBar" >
    <property name="geometry" >
     <rect>
-     <x>85</x>
-     <y>29</y>
-     <width>193</width>
-     <height>39</height>
+     <x>76</x>
+     <y>22</y>
+     <width>175</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="windowTitle" >
@@ -246,10 +237,10 @@
   <widget class="QToolBar" name="m_editToolBar" >
    <property name="geometry" >
     <rect>
-     <x>278</x>
-     <y>29</y>
-     <width>270</width>
-     <height>39</height>
+     <x>251</x>
+     <y>22</y>
+     <width>311</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="windowTitle" >
@@ -280,10 +271,10 @@
   <widget class="QToolBar" name="m_searchToolBar" >
    <property name="geometry" >
     <rect>
-     <x>548</x>
-     <y>29</y>
-     <width>50</width>
-     <height>39</height>
+     <x>562</x>
+     <y>22</y>
+     <width>45</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="windowTitle" >
@@ -303,10 +294,10 @@
   <widget class="QToolBar" name="m_webServicesToolBar" >
    <property name="geometry" >
     <rect>
-     <x>598</x>
-     <y>29</y>
-     <width>63</width>
-     <height>39</height>
+     <x>607</x>
+     <y>22</y>
+     <width>54</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="windowTitle" >
@@ -321,8 +312,6 @@
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
-   <addaction name="m_refreshWebServicesListAct" />
-   <addaction name="m_callWebServicesAct" />
   </widget>
   <action name="m_newAct" >
    <property name="icon" >
@@ -782,30 +771,6 @@
    </property>
    <property name="toolTip" >
     <string>Search previous</string>
-   </property>
-  </action>
-  <action name="m_refreshWebServicesListAct" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="icon" >
-    <iconset resource="../application.qrc" >
-     <normaloff>:/images/reload.png</normaloff>:/images/reload.png</iconset>
-   </property>
-   <property name="text" >
-    <string>Refresh WebServices List</string>
-   </property>
-  </action>
-  <action name="m_callWebServicesAct" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="icon" >
-    <iconset resource="../application.qrc" >
-     <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
-   </property>
-   <property name="text" >
-    <string>Call WebServices</string>
    </property>
   </action>
   <action name="m_closeProjectWithSessionAct" >

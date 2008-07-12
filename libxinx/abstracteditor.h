@@ -286,6 +286,8 @@ signals:
 protected:
 	AbstractEditor( const AbstractEditor & editor );
 
+	BorderLayout * borderLayout();
+protected slots:
 	virtual void setModified( bool isModified ) = 0;
 
 	/*!
@@ -293,8 +295,6 @@ protected:
 	 * \param message When the message is set, the message is show on the screen. If the message is blank, the popup is hidden.
 	 */
 	void setMessage( QString message );
-
-	BorderLayout * borderLayout();
 private:
 	void init();
 

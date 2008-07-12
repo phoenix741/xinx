@@ -138,11 +138,11 @@ QIcon XSLFileContentTemplate::icon() const {
 
 /* XSLFileContentParser */
 
-XSLFileContentParser::XSLFileContentParser() : FileContentElement( NULL, QString(), 0 ), m_isLoaded( true ) {
+XSLFileContentParser::XSLFileContentParser() : FileContentElement( NULL, QString(), 0 ), m_isLoaded( true ), m_codec( 0 ) {
 
 }
 
-XSLFileContentParser::XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ), m_isLoaded( true ) {
+XSLFileContentParser::XSLFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ), m_isLoaded( true ), m_codec( 0 ) {
 
 }
 
