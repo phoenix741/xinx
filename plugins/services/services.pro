@@ -7,12 +7,14 @@ DESTDIR += ../
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-LIBS = -L../../libxinx -L../../components -L../ -lsharedxinx -lxinxcmp -lwebplugin
+LIBS = -L../../libxinx -L../../components -L../ -lxinxcmp -lwebplugin -lsharedxinx
 if(!debug_and_release|build_pass):CONFIG(debug, debug|release){
     mac : LIBS = $$member(LIBS, 0) $$member(LIBS, 1) $$member(LIBS, 2) $$member(LIBS, 3)_debug $$member(LIBS, 4)_debug $$member(LIBS, 5)_debug
     win32 : LIBS = $$member(LIBS, 0) $$member(LIBS, 1) $$member(LIBS, 2) $$member(LIBS, 3)d $$member(LIBS, 4)d $$member(LIBS, 5)d
 }
 TARGET = $$qtLibraryTarget(services)
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
+    -enable-runtime-pseudo-reloc
 unix {
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
@@ -29,7 +31,7 @@ HEADERS =servicesplugin.h \
 	soap.h \
 	webservices.h \
 	wsdl.h \
-webserviceseditor.h
+	webserviceseditor.h
 SOURCES =servicesplugin.cpp \
 	servicesprojectpropertyimpl.cpp \
 	servicesprojectwizard.cpp \
@@ -38,7 +40,7 @@ SOURCES =servicesplugin.cpp \
 	soap.cpp \
 	webservices.cpp \
 	wsdl.cpp \
-webserviceseditor.cpp
+	webserviceseditor.cpp
 FORMS += ui/newprojectwizard_serviceslist.ui \
 	ui/newprojectwizard_services.ui \
 	ui/servicesprojectproperty.ui \
