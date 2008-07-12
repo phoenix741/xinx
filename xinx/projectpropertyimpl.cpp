@@ -152,6 +152,8 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 }
 
 void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
+	project->blockSignals( true );
+
 	project->setProjectName( m_nameLineEdit->text() );
 	project->setProjectPath( QDir::fromNativeSeparators( m_projectLineEdit->text() ) );
 	project->setDefaultLang( m_langComboBox->currentText() );
@@ -176,6 +178,8 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	foreach( page, m_pluginPages ) {
 		if( ! page.first->saveProjectSettingsPage( page.second ) ) qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page.second->windowTitle() ) ) );
 	}
+
+	project->blockSignals( false );
 }
 
 void ProjectPropertyImpl::updateOkButton() {

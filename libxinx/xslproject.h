@@ -373,6 +373,8 @@ public:
 	 * \return The value of the property
 	 */
 	QVariant readProperty( const QString & key );
+
+	bool blockSignals( bool block );
 signals:
 	void changed();
 private:

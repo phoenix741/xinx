@@ -511,8 +511,10 @@ XSLProject::ProjectOptions & XSLProject::options() {
 }
 
 void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
-	d->m_projectOptions = options;
-	emit changed();
+	if( d->m_projectOptions != options ) {
+		d->m_projectOptions = options;
+		emit changed();
+	}
 }
 
 const QString & XSLProject::projectRCS() const {
@@ -520,8 +522,10 @@ const QString & XSLProject::projectRCS() const {
 }
 
 void XSLProject::setProjectRCS( const QString & value ) {
-	d->m_projectRCS = value;
-	emit changed();
+	if( d->m_projectRCS != value ) {
+		d->m_projectRCS = value;
+		emit changed();
+	}
 }
 
 QString XSLProject::projectName() const {
@@ -529,8 +533,10 @@ QString XSLProject::projectName() const {
 }
 
 void XSLProject::setProjectName( const QString & value ) {
-	d->m_projectName = value;
-	emit changed();
+	if( d->m_projectName != value ) {
+		d->m_projectName = value;
+		emit changed();
+	}
 }
 
 QString XSLProject::defaultLang() const {
@@ -538,8 +544,10 @@ QString XSLProject::defaultLang() const {
 }
 
 void XSLProject::setDefaultLang( const QString & value ) {
-	d->m_defaultLang = value;
-	emit changed();
+	if( d->m_defaultLang != value ) {
+		d->m_defaultLang = value;
+		emit changed();
+	}
 }
 
 QString XSLProject::defaultNav() const {
@@ -547,8 +555,10 @@ QString XSLProject::defaultNav() const {
 }
 
 void XSLProject::setDefaultNav( const QString & value ) {
-	d->m_defaultNav = value;
-	emit changed();
+	if( d->m_defaultNav != value ) {
+		d->m_defaultNav = value;
+		emit changed();
+	}
 }
 
 QString XSLProject::projectPath() const {
@@ -556,13 +566,17 @@ QString XSLProject::projectPath() const {
 }
 
 void XSLProject::setProjectPath( const QString & value ) {
-	d->m_projectPath = value;
-	emit changed();
+	if( d->m_projectPath != value ) {
+		d->m_projectPath = value;
+		emit changed();
+	}
 }
 
 void XSLProject::setSpecifiquePathName( const QString & value ) {
-	d->m_specifiquePathName = value;
-	emit changed();
+	if( d->m_specifiquePathName != value ) {
+		d->m_specifiquePathName = value;
+		emit changed();
+	}
 }
 
 QString XSLProject::specifiquePathName() {
@@ -574,10 +588,12 @@ QString XSLProject::specifiquePrefix() const {
 }
 
 void XSLProject::setSpecifiquePrefix( const QString & value ) {
-	d->m_specifiquePrefix = value;
-	if( ! d->m_specifiquePrefixes.contains( value ) )
-		d->m_specifiquePrefixes.append( value );
-	emit changed();
+	if( d->m_specifiquePrefix != value ) {
+		d->m_specifiquePrefix = value;
+		if( ! d->m_specifiquePrefixes.contains( value ) )
+			d->m_specifiquePrefixes.append( value );
+		emit changed();
+	}
 }
 
 QStringList & XSLProject::specifiquePrefixes() {
@@ -613,8 +629,10 @@ const QString & XSLProject::fileName() const {
 }
 
 void XSLProject::setLogProjectDirectory( const QString & value ) {
-	d->m_logProjectDirectory = value;
-	emit changed();
+	if( d->m_logProjectDirectory != value ) {
+		d->m_logProjectDirectory = value;
+		emit changed();
+	}
 }
 
 const QString & XSLProject::logProjectDirectory() {
@@ -626,12 +644,21 @@ XSLProjectSession * XSLProject::session() const {
 }
 
 void XSLProject::writeProperty( const QString & key, QVariant value ) {
-	d->m_properties[ key ] = value;
+	if( d->m_properties.value( key ) != value ) {
+		d->m_properties[ key ] = value;
+		emit changed();
+	}
 }
 
 QVariant XSLProject::readProperty( const QString & key ) {
 	return d->m_properties.value( key );
 }
+
+bool XSLProject::blockSignals( bool block ) {
+	QObject::blockSignals( block );
+	if( ! block ) emit changed();
+}
+
 
 /* XINXProjectManager */
 
