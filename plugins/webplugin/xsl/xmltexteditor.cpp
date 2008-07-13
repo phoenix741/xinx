@@ -344,8 +344,8 @@ void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QS
 }
 
 void XmlTextEditor::localKeyPressExecute( QKeyEvent * e ) {
-	if ( ( e->key() == Qt::Key_Return ) && ( ( e->modifiers() == Qt::ShiftModifier ) || ( e->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier) ) ) ) {
-		key_shenter( e->modifiers() & Qt::ControlModifier );
+	if ( ( e->key() == Qt::Key_Return ) && ( ( e->modifiers() == Qt::ControlModifier ) || ( e->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier) ) ) ) {
+		key_shenter( e->modifiers() & Qt::ShiftModifier );
 		e->accept();
 	} else
 		TextEditor::localKeyPressExecute( e );
@@ -354,7 +354,11 @@ void XmlTextEditor::localKeyPressExecute( QKeyEvent * e ) {
 void XmlTextEditor::key_shenter( bool back ) {
 	QTextDocument::FindFlags flags = 0;
 	if( back ) flags |= QTextDocument::FindBackward;
-	QTextCursor cursor = document()->find( QRegExp("=\"[^\"]*\""), textCursor(), flags );
+
+	QTextCursor cursor = textCursor();
+	if( back ) cursor.setPosition( cursor.selectionStart() - 2, QTextCursor::MoveAnchor );
+	cursor = document()->find( QRegExp("=\"[^\"]*\""), cursor, flags );
+
 	if( ! cursor.isNull() ) {
 		QTextCursor newCursor = textCursor();
 		newCursor.setPosition( cursor.selectionStart() + 2, QTextCursor::MoveAnchor );

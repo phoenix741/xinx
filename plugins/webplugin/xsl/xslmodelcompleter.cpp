@@ -73,7 +73,7 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 			}
 		}
 	} else if( ! m_baliseName.isEmpty() ) { // Complete attribute
-		if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) ) {
+		if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && ( value_row < xmlCompletionContents->balise( m_baliseName )->attributes().size() ) ) {
 			switch( role ) {
 			case Qt::DecorationRole:
 				return QIcon(":/images/noeud.png");
@@ -82,7 +82,7 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 			}
 		}
 	} else { // Complete balise
-		if( xmlCompletionContents ) {
+		if( xmlCompletionContents && ( ( m_tags.testFlag( Html ) && ( value_row < xmlCompletionContents->htmlBalises().size() )  ) || ( value_row < xmlCompletionContents->xmlBalises().size() ) ) ) {
 			switch( role ) {
 			case Qt::DecorationRole:
 				return QIcon(":/images/balise.png");
@@ -132,11 +132,11 @@ int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 void XSLCompletionModel::setFilter( QString baliseName, QString attributeName ) {
 	// TODO : Deux cas d'erreur : Si a = blanc..... !!!
 	Q_ASSERT( ! baliseName.isEmpty() || attributeName.isEmpty() );
-
-	emit layoutAboutToBeChanged();
-	m_baliseName = baliseName;
-	m_attributeName = attributeName;
-	emit layoutChanged();
+	if( ( m_baliseName != baliseName ) || ( m_attributeName != attributeName ) ) {
+		m_baliseName = baliseName;
+		m_attributeName = attributeName;
+		reset();
+	}
 }
 
 void XSLCompletionModel::beginInsertRows( int row ) {
