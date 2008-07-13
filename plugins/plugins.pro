@@ -3,4 +3,5 @@ SUBDIRS = empty \
     webplugin \
     cvsplugin \
     svnplugin \
-    services
+    services \
+	xslgui
