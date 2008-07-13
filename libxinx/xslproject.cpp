@@ -655,8 +655,9 @@ QVariant XSLProject::readProperty( const QString & key ) {
 }
 
 bool XSLProject::blockSignals( bool block ) {
-	QObject::blockSignals( block );
+	bool result = QObject::blockSignals( block );
 	if( ! block ) emit changed();
+	return result;
 }
 
 

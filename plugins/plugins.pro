@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
-SUBDIRS = webplugin \
+SUBDIRS = empty \
+    webplugin \
     cvsplugin \
     svnplugin \
     services

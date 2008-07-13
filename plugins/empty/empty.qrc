@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="/empty/" >
+        <file>images/empty.png</file>
+		<file>translations/empty_fr.qm</file>
+    </qresource>
+</RCC>
