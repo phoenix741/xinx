@@ -18,27 +18,49 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XSLGUI_H_
-#define XSLGUI_H_
+#ifndef _XUIEDITOR_H_
+#define _XUIEDITOR_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <abstractfileeditor.h>
 
-class XslGuiPlugin : public QObject, public IFilePlugin {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IFilePlugin)
+// Qt header
+#include <QGraphicsScene>
+#include <QGraphicsView>
+
+class XUIEditor : public AbstractFileEditor {
 public:
-	XslGuiPlugin();
-	virtual ~XslGuiPlugin();
+	XUIEditor( QWidget * parent = 0 );
+	virtual ~XUIEditor();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	virtual QString defaultFileName() const;
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+	virtual QIcon icon() const;
 
+	virtual bool canCopy();
+	virtual bool canPaste();
+	virtual bool canUndo();
+	virtual bool canRedo();
+	virtual void loadFromDevice( QIODevice & d );
+	virtual void saveToDevice( QIODevice & d );
+
+	virtual QAbstractItemModel * model() const;
+	virtual void updateModel();
+
+	virtual QString bookmarkAt( int i );
+	virtual int bookmarkCount();
+
+public slots:
+	virtual void undo();
+	virtual void redo();
+	virtual void cut();
+	virtual void copy();
+	virtual void paste();
+	virtual void toogledBookmark();
+	virtual void clearAllBookmark();
 private:
-	QList<IFileTypePlugin*> m_fileTypes;
+	QGraphicsScene * m_scene;
+	QGraphicsView * m_view;
 };
 
-#endif /* XSLGUI_H_*/
+#endif //_XUIEDITOR_H_

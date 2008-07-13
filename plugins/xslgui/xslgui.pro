@@ -19,5 +19,7 @@ unix {
 INCLUDEPATH += ../../libxinx 
 RESOURCES = xslgui.qrc
 TRANSLATIONS += translations/xslgui_fr.ts
-HEADERS = xslgui.h
-SOURCES = xslgui.cpp
+HEADERS = xslgui.h \
+ xuieditor.h
+SOURCES = xslgui.cpp \
+ xuieditor.cpp

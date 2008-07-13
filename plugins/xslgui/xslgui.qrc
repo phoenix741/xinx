@@ -1,6 +1,6 @@
 <RCC>
 	<qresource prefix="/xslgui/" >
-        <file>images/xuifiletype.png</file>
+        <file>images/typexui.png</file>
         <file>images/xslgui.png</file>
 		<file>translations/xslgui_fr.qm</file>
     </qresource>

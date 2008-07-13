@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "xslgui.h"
+#include "xuieditor.h"
 
 // Qt header
 #include <QString>
@@ -27,10 +28,40 @@
 #include <QTranslator>
 #include <QApplication>
 
+/* XSLStyleSheetFileType */
+
+class XUIFileType : public QObject, public IFileTypePlugin {
+public:
+	virtual QString description() {	return tr( "XML User Interface File" ); };
+	virtual QString match() { return "*.xui"; };
+	virtual QIcon icon() { return QIcon( ":/xslgui/images/typexui.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = true;
+		p.canBeSaveAsSpecifique = true;
+		p.specifiqueSubDirectory = "xui/";
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		XUIEditor * editor = new XUIEditor();
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		return NULL;
+	}
+};
+
 /* XslGuiPlugin */
 
 XslGuiPlugin::XslGuiPlugin() {
     Q_INIT_RESOURCE(xslgui);
+
+	m_fileTypes << new XUIFileType;
 }
 
 XslGuiPlugin::~XslGuiPlugin() {
@@ -64,6 +95,10 @@ QVariant XslGuiPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribu
 		return "GPL v2.0 or later";
 	}
 	return QVariant();
+}
+
+QList<IFileTypePlugin*> XslGuiPlugin::fileTypes() {
+	return m_fileTypes;
 }
 
 Q_EXPORT_PLUGIN2(xslgui, XslGuiPlugin)

@@ -351,13 +351,6 @@ void TextFileEditor::searchWord( const QString & ) {
 	setMessage( tr("Not implemented") );
 }
 
-QString TextFileEditor::getTitle() const {
-	if( ! lastFileName().isEmpty() )
-		return QFileInfo( lastFileName() ).fileName();
-	else
-		return tr( "noname" );
-}
-
 void TextFileEditor::comment() {
 	commentSelectedText();
 }

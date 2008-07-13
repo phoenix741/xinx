@@ -18,27 +18,89 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef XSLGUI_H_
-#define XSLGUI_H_
-
 // Xinx header
-#include <plugininterfaces.h>
+#include "xuieditor.h"
+#include "borderlayout.h"
 
-class XslGuiPlugin : public QObject, public IFilePlugin {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IFilePlugin)
-public:
-	XslGuiPlugin();
-	virtual ~XslGuiPlugin();
+// QT header
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+XUIEditor::XUIEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
+	m_scene = new QGraphicsScene(this);
+	m_view  = new QGraphicsView(this);
 
-private:
-	QList<IFileTypePlugin*> m_fileTypes;
-};
+	m_view->setScene( m_scene );
+	//m_view->setDragMode( QGraphicsView::RubberBandDrag );
+	m_view->setRenderHints( QPainter::Antialiasing | QPainter::TextAntialiasing );
 
-#endif /* XSLGUI_H_*/
+	borderLayout()->addWidget( m_view, BorderLayout::Center );
+}
+
+XUIEditor::~XUIEditor() {
+}
+
+QString XUIEditor::defaultFileName() const {
+	return tr("noname.xui");
+}
+
+QIcon XUIEditor::icon() const {
+	return QIcon(":/xslgui/images/typexui.png");
+}
+
+bool XUIEditor::canCopy() {
+	return false;
+}
+
+bool XUIEditor::canPaste() {
+	return false;
+}
+
+bool XUIEditor::canUndo() {
+	return false;
+}
+
+bool XUIEditor::canRedo() {
+	return false;
+}
+
+void XUIEditor::loadFromDevice( QIODevice & d ) {
+}
+
+void XUIEditor::saveToDevice( QIODevice & d ) {
+}
+
+QAbstractItemModel * XUIEditor::model() const {
+	return NULL;
+}
+
+void XUIEditor::updateModel() {
+}
+
+QString XUIEditor::bookmarkAt( int i ) {
+	return QString();
+}
+
+int XUIEditor::bookmarkCount() {
+	return 0;
+}
+
+void XUIEditor::undo() {
+}
+
+void XUIEditor::redo() {
+}
+
+void XUIEditor::cut() {
+}
+
+void XUIEditor::copy() {
+}
+
+void XUIEditor::paste() {
+}
+
+void XUIEditor::toogledBookmark() {
+}
+
+void XUIEditor::clearAllBookmark() {
+}

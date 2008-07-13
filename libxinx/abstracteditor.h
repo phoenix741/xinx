@@ -25,7 +25,6 @@
 
 // Qt header
 #include <QFrame>
-#include <QDomElement>
 #include <QDataStream>
 #include <QIcon>
 

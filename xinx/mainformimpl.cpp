@@ -85,7 +85,6 @@ PrivateMainformImpl::~PrivateMainformImpl() {
 
 void PrivateMainformImpl::registerTypes() {
 	qRegisterMetaType<TextFileEditor>( "TextFileEditor" );
-	//qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
 }
 
 void PrivateMainformImpl::createDockWidget() {
@@ -637,10 +636,9 @@ void PrivateMainformImpl::currentCloseFile() {
 void PrivateMainformImpl::fileEditorRefreshFile( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_parent->m_tabEditors->count() );
-	Q_ASSERT( TabEditor::isTextFileEditor( m_parent->m_tabEditors->editor( index ) ) );
 
-	if( TabEditor::isTextFileEditor( m_parent->m_tabEditors->editor( index ) ) ) {
-		TextFileEditor * ed = static_cast<TextFileEditor*>( m_parent->m_tabEditors->editor( index ) );
+	AbstractFileEditor * ed = qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) );
+	if( ed ) {
 		bool act = ! ed->isModified();
 
 		if( ! act ) {
@@ -822,13 +820,13 @@ void PrivateMainformImpl::updateActions() {
 bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_parent->m_tabEditors->count() );
-	Q_ASSERT( TabEditor::isTextFileEditor( m_parent->m_tabEditors->editor( index ) ) );
 
-	if ( m_parent->m_tabEditors->editor( index )->isModified() ) {
+	AbstractFileEditor * ed = qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) );
+	if( ed && ed->isModified() ) {
 		QMessageBox::StandardButton ret;
 		ret = QMessageBox::warning( m_parent, tr("Application"),
 									tr("The document %1 has been modified.\n"
-									"Do you want to save your changes?").arg( m_parent->m_tabEditors->editor(index)->getTitle() ),
+									"Do you want to save your changes?").arg( ed->getTitle() ),
 									QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 		if ( ret == QMessageBox::Save ) {
 			fileEditorSave( index );
@@ -842,9 +840,9 @@ bool PrivateMainformImpl::fileEditorMayBeSave( int index ) {
 void PrivateMainformImpl::fileEditorSave( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_parent->m_tabEditors->count() );
-	Q_ASSERT( TabEditor::isTextFileEditor( m_parent->m_tabEditors->editor( index ) ) );
+	Q_ASSERT( qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) ) );
 
-	QString editorFileName = qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->editor( index ) )->lastFileName();
+	QString editorFileName = qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) )->lastFileName();
 	bool hasName = ! editorFileName.isEmpty();
 
 	if ( ! hasName ) {
@@ -852,7 +850,7 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 	} else {
 		QString fileName = SpecifiqueDialogImpl::saveFileAsIfStandard( editorFileName, m_fileToAdd );
 		if( ! fileName.isEmpty() ) {
-			qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveToFile( fileName );
+			qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveToFile( fileName );
 			if( m_fileToAdd.count() > 0 )
 				m_parent->addFilesToVersionManager( m_fileToAdd );
 			m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
@@ -863,14 +861,18 @@ void PrivateMainformImpl::fileEditorSave( int index ) {
 }
 
 void PrivateMainformImpl::fileEditorSaveAs( int index ) {
-	QString fileName = qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->editor( index ) )->lastFileName();
+	Q_ASSERT( index >= 0 );
+	Q_ASSERT( index < m_parent->m_tabEditors->count() );
+	Q_ASSERT( qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) ) );
+
+	QString fileName = qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) )->lastFileName();
 
 	fileName = SpecifiqueDialogImpl::saveFileAs( fileName,
-				qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->editor( index ) )->defaultFileName(),
+				qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) )->defaultFileName(),
 				m_fileToAdd );
 
 	if( ! fileName.isEmpty() ) {
-		qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveToFile( fileName );
+		qobject_cast<AbstractFileEditor*>( m_parent->m_tabEditors->editor( index ) )->saveToFile( fileName );
 		if( m_fileToAdd.count() > 0 )
 			m_parent->addFilesToVersionManager( m_fileToAdd );
 		m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );

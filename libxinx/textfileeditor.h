@@ -65,14 +65,6 @@ public:
 	 */
 	virtual ~TextFileEditor();
 
-	/*!
-	 * Return the title of the FileEditor. The title is \e noname if \e getFileName() is Empty
-	 * else return the File name (without the path).
-	 * \return The title to use with Tab name
-	 * \sa getFileName(), hasName()
-	 */
-	virtual QString getTitle() const;
-
  	/*!
  	 * Return the text editor corresponding on the file editor. This editor can't be null.
  	 * \return The text editor widget used by the file editor.

@@ -35,6 +35,14 @@ public:
 	AbstractFileEditor( QWidget * parent = 0 );
 	virtual ~AbstractFileEditor();
 
+	/*!
+	 * Return the title of the FileEditor. The title is \e noname if \e getFileName() is Empty
+	 * else return the File name (without the path).
+	 * \return The title to use with Tab name
+	 * \sa getFileName(), hasName()
+	 */
+	virtual QString getTitle() const;
+
 	virtual void loadFromFile( const QString & fileName = QString() );
 	virtual void saveToFile( const QString & fileName = QString() );
 
