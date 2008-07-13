@@ -33,7 +33,7 @@ XslGuiPlugin::XslGuiPlugin() {
     Q_INIT_RESOURCE(xslgui);
 }
 
-XslGuiPlugin::~EmptyPlugin() {
+XslGuiPlugin::~XslGuiPlugin() {
 }
 
 bool XslGuiPlugin::initializePlugin( const QString & lang ) {
