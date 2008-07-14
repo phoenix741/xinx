@@ -30,6 +30,7 @@
 #include <QDomElement>
 #include <QStringList>
 #include <QPair>
+#include <QVariant>
 
 /*!
  * Exception throw by XSLProject when the project can't be opened or saved.
@@ -77,6 +78,7 @@ private:
  */
 class XSLProjectSession : public QObject {
 	Q_OBJECT
+	Q_PROPERTY( QStringList lastOpenedFile READ lastOpenedFile )
 public:
 	/*!
 	 * Create an empty session
@@ -135,6 +137,19 @@ class PrivateXSLProject;
  */
 class XSLProject : public QObject {
 	Q_OBJECT
+	Q_PROPERTY( QString fileName READ fileName )
+	Q_PROPERTY( XSLProjectSession* session READ session )
+	Q_PROPERTY( QString projectName READ projectName WRITE setProjectName )
+	Q_PROPERTY( ProjectOptions options READ options WRITE setOptions )
+	Q_PROPERTY( QString projectRCS READ projectRCS WRITE setProjectRCS )
+	Q_PROPERTY( QString defaultLang READ defaultLang WRITE setDefaultLang )
+	Q_PROPERTY( QString defaultNav READ defaultNav WRITE setDefaultNav )
+	Q_PROPERTY( QString projectPath READ projectPath WRITE setProjectPath )
+	Q_PROPERTY( QString specifiquePathName READ specifiquePathName WRITE setSpecifiquePathName )
+	Q_PROPERTY( QString logProjectDirectory READ logProjectDirectory WRITE setLogProjectDirectory )
+	Q_PROPERTY( QString specifiquePrefix READ specifiquePrefix WRITE setSpecifiquePrefix )
+	Q_PROPERTY( QStringList specifiquePrefixes READ specifiquePrefixes )
+	Q_PROPERTY( QStringList searchPathList READ searchPathList )
 public:
 	/*!
 	 * This enumeration is a list of options that can be used by a project. This options active
@@ -361,6 +376,9 @@ public:
 	 */
 	QString processedSpecifiquePath() const;
 
+	bool blockSignals( bool block );
+
+public slots:
 	/*!
 	 * Write a property in the project file.
 	 * \param key The property to write
@@ -373,8 +391,6 @@ public:
 	 * \return The value of the property
 	 */
 	QVariant readProperty( const QString & key );
-
-	bool blockSignals( bool block );
 signals:
 	void changed();
 private:

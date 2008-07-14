@@ -509,6 +509,8 @@ void PrivateMainformImpl::callScriptAction() {
 	} else {
 		qsScript.setProperty( "textEdit", QScriptValue() );
 	}
+	QScriptValue qsProject = ScriptManager::self()->engine().newQObject( XINXProjectManager::self()->project() );
+	qsScript.setProperty( "project", qsProject );
 
 	QScriptValue result = qsScript.property( "run" ).call( qsScript );
 	if( result.isError() ) {
