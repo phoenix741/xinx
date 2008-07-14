@@ -159,11 +159,6 @@ void TextEditor::localKeyPressExecute( QKeyEvent * e ) {
 }
 
 void TextEditor::keyPressEvent( QKeyEvent * e ) {
-	if( XINXConfig::self()->config().editor.completionLevel == 0 ) {
-		localKeyPressExecute( e );
-		return;
-	}
-
 	QCompleter * c = completer();
 
 	if( c && c->popup()->isVisible() ) {

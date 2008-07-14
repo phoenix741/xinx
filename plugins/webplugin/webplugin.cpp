@@ -21,6 +21,9 @@
 // Xinx header
 #include "webplugin.h"
 
+#include "config/webpluginformimpl.h"
+#include "config/selfwebpluginsettings.h"
+
 #include "xsl/xmlhighlighter.h"
 #include "xsl/xsllistview.h"
 #include "xsl/stylesheeteditor.h"
@@ -241,6 +244,7 @@ WebPlugin::WebPlugin() {
 
 WebPlugin::~WebPlugin() {
 	qDeleteAll( m_fileTypes );
+	delete SelfWebPluginSettings::self();
 }
 
 bool WebPlugin::initializePlugin( const QString & lang ) {
@@ -402,6 +406,40 @@ SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, Q
 	if( highlighter.toUpper() == "CSS" )
 		return new webplugin_css( parent, config );
 	return 0;
+}
+
+QWidget * WebPlugin::createSettingsDialog() {
+	return new WebPluginFormImpl();
+}
+
+bool WebPlugin::loadSettingsDialog( QWidget * widget ) {
+	SelfWebPluginSettings * settings = SelfWebPluginSettings::self();
+	WebPluginFormImpl * form = qobject_cast<WebPluginFormImpl*>( widget );
+	Q_ASSERT( form );
+
+	form->m_activeXmlGroupBox->setChecked( settings->config().xml.activeCompletion );
+	form->m_addClosedBaliseCheckBox->setChecked( settings->config().xml.addClosedBalise );
+	form->m_addDefaultAttributeCheckBox->setChecked( settings->config().xml.addDefaultAttribute );
+	form->m_addDefaultSubBaliseCheckBox->setChecked( settings->config().xml.addDefaultSubBalise );
+	
+	form->m_javaScriptGroupBox->setChecked( settings->config().javascript.activeCompletion );
+	return true;
+}
+
+bool WebPlugin::saveSettingsDialog( QWidget * widget ) {
+	SelfWebPluginSettings * settings = SelfWebPluginSettings::self();
+	WebPluginFormImpl * form = qobject_cast<WebPluginFormImpl*>( widget );
+	Q_ASSERT( form );
+
+	settings->config().xml.activeCompletion = form->m_activeXmlGroupBox->isChecked();
+	settings->config().xml.addClosedBalise = form->m_addClosedBaliseCheckBox->isChecked();
+	settings->config().xml.addDefaultAttribute = form->m_addDefaultAttributeCheckBox->isChecked();
+	settings->config().xml.addDefaultSubBalise = form->m_addDefaultSubBaliseCheckBox->isChecked();
+
+	settings->config().javascript.activeCompletion = form->m_javaScriptGroupBox->isChecked();
+	
+	settings->save();
+	return true;
 }
 
 Q_EXPORT_PLUGIN2(webplugin, WebPlugin)

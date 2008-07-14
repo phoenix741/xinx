@@ -24,11 +24,14 @@
 // Xinx header
 #include <plugininterfaces.h>
 
-class WebPlugin : public QObject, public IFilePlugin, public IPluginSyntaxHighlighter {
+class WebPluginSettings;
+
+class WebPlugin : public QObject, public IFilePlugin, public IPluginSyntaxHighlighter, public IXinxPluginConfiguration {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IFilePlugin)
 	Q_INTERFACES(IPluginSyntaxHighlighter)
+	Q_INTERFACES(IXinxPluginConfiguration)
 public:
 	WebPlugin();
 	virtual ~WebPlugin();
@@ -37,6 +40,10 @@ public:
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
 	virtual QList<IFileTypePlugin*> fileTypes();
+
+	virtual QWidget * createSettingsDialog();
+	virtual bool loadSettingsDialog( QWidget * widget );
+	virtual bool saveSettingsDialog( QWidget * widget );
 
 	virtual QStringList highlighters();
 	virtual QString highlighterOfExtention( const QString & extention );

@@ -21,6 +21,7 @@
 // Xinx header
 #include "jstexteditor.h"
 #include "javascriptmodelcompleter.h"
+#include "../config/selfwebpluginsettings.h"
 
 #include <xinxconfig.h>
 #include <xinxpluginsloader.h>
@@ -40,6 +41,8 @@ JSTextEditor::~JSTextEditor() {
 }
 
 QCompleter * JSTextEditor::completer() {
+	if( ! SelfWebPluginSettings::self()->config().javascript.activeCompletion ) return 0;
+	
 	if( TextEditor::completer() ) {
 		JavascriptModelCompleter * c = qobject_cast<JavascriptModelCompleter*>( TextEditor::completer()->model() );
 		if( c ) {

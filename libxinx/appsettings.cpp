@@ -115,7 +115,6 @@ AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	value.autoindentOnSaving = false;
 	value.popupWhenFileModified = true;
 	value.createBackupFile = true;
-	value.completionLevel = 3;
 	value.tabulationSize = 4;
 	value.showTabulationAndSpace = false;
 	value.highlightCurrentLine = true;
@@ -135,7 +134,6 @@ AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( QSetting
 	value.autoindentOnSaving = settings->value( "Autoindent On Saving", defaultValue.autoindentOnSaving ).toBool();
 	value.popupWhenFileModified = settings->value( "Popup When File Modified", defaultValue.popupWhenFileModified ).toBool();
 	value.createBackupFile = settings->value( "Create Backup File", defaultValue.createBackupFile ).toBool();
-	value.completionLevel = settings->value( "Completion Level", defaultValue.completionLevel ).toInt();
 	value.tabulationSize = settings->value( "Tabulation Size", defaultValue.tabulationSize ).toInt();
 	value.showTabulationAndSpace = settings->value( "Show Tabulation and space", defaultValue.showTabulationAndSpace ).toBool();
 	value.highlightCurrentLine = settings->value( "Highlight Current Line", defaultValue.highlightCurrentLine ).toBool();
@@ -156,7 +154,6 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving );
 	settings->setValue( "Popup When File Modified", value.popupWhenFileModified );
 	settings->setValue( "Create Backup File", value.createBackupFile );
-	settings->setValue( "Completion Level", value.completionLevel );
 	settings->setValue( "Tabulation Size", value.tabulationSize );
 	settings->setValue( "Show Tabulation and space", value.showTabulationAndSpace );
 	settings->setValue( "Highlight Current Line", value.highlightCurrentLine );

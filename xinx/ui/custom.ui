@@ -172,7 +172,7 @@
         <x>0</x>
         <y>0</y>
         <width>732</width>
-        <height>391</height>
+        <height>395</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -259,7 +259,7 @@
         <x>0</x>
         <y>0</y>
         <width>732</width>
-        <height>391</height>
+        <height>395</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -353,7 +353,7 @@
         <x>0</x>
         <y>0</y>
         <width>732</width>
-        <height>391</height>
+        <height>395</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -409,7 +409,7 @@
         <x>0</x>
         <y>0</y>
         <width>732</width>
-        <height>391</height>
+        <height>395</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -496,47 +496,7 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label_19" >
-         <property name="text" >
-          <string>&amp;Code helper :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_completionLevelComboBox</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="2" >
-        <widget class="QComboBox" name="m_completionLevelComboBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>Level of the completion. The completion can be :&lt;/p>
-&lt;ul>&lt;li>Desactivated&lt;/li>
-&lt;li>Activated but only with an help on tapping&lt;/li>
-&lt;li>Fully activated with the help on tapping and the adding code (as configured on completion file)&lt;/li>&lt;/ul></string>
-         </property>
-         <item>
-          <property name="text" >
-           <string>Desactivate completion</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Active popup completion dialog</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Active automatique code writing (Niveau 1)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Active automatique code writing (Niveau 2)</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="1" colspan="2" >
+       <item row="2" column="1" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -549,14 +509,14 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0" >
+       <item row="1" column="0" >
         <widget class="QLabel" name="label_15" >
          <property name="text" >
           <string>Default text &amp;encoding :</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1" >
+       <item row="1" column="1" >
         <widget class="QComboBox" name="m_encodingComboBox" />
        </item>
       </layout>
@@ -1295,7 +1255,6 @@
   <tabstop>m_closeBtnRadioButton</tabstop>
   <tabstop>m_cornerBtnRadioButton</tabstop>
   <tabstop>m_closeAndCornerBtnRadioButton</tabstop>
-  <tabstop>m_completionLevelComboBox</tabstop>
   <tabstop>m_fontComboBox</tabstop>
   <tabstop>m_fontSizeSpinBox</tabstop>
   <tabstop>m_showCurrentLineCheckBox</tabstop>

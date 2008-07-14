@@ -34,7 +34,6 @@
 		<value name="Autoindent On Saving" type="bool" default="no"/>
 		<value name="Popup When File Modified" type="bool" default="yes"/>
 		<value name="Create Backup File" type="bool" default="yes"/>
-		<value name="Completion Level" type="int" default="3"/>
         <value name="Tabulation Size" type="int" default="4"/>
         <value name="Show Tabulation and space" type="bool" default="false"/>
         <value name="Highlight Current Line" type="bool" default="true"/>

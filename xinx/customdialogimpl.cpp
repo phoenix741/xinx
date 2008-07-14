@@ -454,9 +454,6 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Pretty print on saving
 	m_parent->m_prettyPrintOnSavingCheckBox->setChecked( m_config.config().editor.autoindentOnSaving );
 
-	// Complession level
-	m_parent->m_completionLevelComboBox->setCurrentIndex( m_config.config().editor.completionLevel );
-
 	// Tab close button
 	if( m_config.config().editor.closeButtonOnEachTab ) {
 		if( m_config.config().editor.hideCloseTab )
@@ -571,9 +568,6 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Pretty print on saving
 	m_config.config().editor.autoindentOnSaving = m_parent->m_prettyPrintOnSavingCheckBox->isChecked();
-
-	// Complession level
-	m_config.config().editor.completionLevel = m_parent->m_completionLevelComboBox->currentIndex();
 
 	// Tab close button
 	if( m_parent->m_closeBtnRadioButton->isChecked() ) {

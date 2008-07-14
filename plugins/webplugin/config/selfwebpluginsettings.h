@@ -18,40 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _ITEMMODELFILEEDITOR_H_
-#define _ITEMMODELFILEEDITOR_H_
+#ifndef SELFWEBPLUGINSETTINGS_H_
+#define SELFWEBPLUGINSETTINGS_H_
 
 // Xinx header
-#include "textfileeditor.h"
+#include "webpluginsettings.h"
 
-// Qt header
-#include <QPointer>
-
-class ItemModelFileEditor : public TextFileEditor {
+class SelfWebPluginSettings : public QObject, public WebPluginSettings {
 	Q_OBJECT
 public:
-	ItemModelFileEditor( FileContentParser * element, TextEditor * editor = 0, QWidget *parent = 0 );
-	virtual ~ItemModelFileEditor();
-
-	virtual void loadFromFile( const QString & fileName = QString() );
-	virtual void saveToFile( const QString & fileName = QString() );
-	virtual void loadFromDevice( QIODevice & d );
-
-	virtual QAbstractItemModel * model()  const;
-public slots:
-	virtual void updateModel();
-
-protected:
-	void setParser( FileContentParser * parser );
-
-private slots:
-	virtual void textChanged();
-
+	virtual ~SelfWebPluginSettings();
+	
+	static SelfWebPluginSettings * self();
 private:
-	mutable QPointer<FileContentItemModel> m_model;
-	FileContentParser * m_parser;
+	SelfWebPluginSettings();
 
-	QTimer * m_keyTimer;
+	static SelfWebPluginSettings * s_self;
 };
 
-#endif // _ITEMMODELFILEEDITOR_H_
+#endif /*SELFWEBPLUGINSETTINGS_H_*/

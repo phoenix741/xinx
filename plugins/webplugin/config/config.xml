@@ -1,0 +1,15 @@
+<config classname="Web Plugin Settings" organization="Shadoware.Org" application="XINX" path="plugins/webplugin">
+	<type name="XML">
+		<value name="Active completion" type="bool" default="true"/>
+		<value name="Add closed balise" type="bool" default="true"/>
+		<value name="Add default attribute" type="bool" default="true"/>
+		<value name="Add default sub-balise" type="bool" default="true"/>
+	</type>
+
+	<type name="JavaScript">
+		<value name="Active completion" type="bool" default="true"/>
+	</type>
+
+	<value name="XML" type="XML"/>
+	<value name="JavaScript" type="JavaScript"/>
+</config>

@@ -10,13 +10,14 @@ OBJECTS_DIR += ./
 RCC_DIR += ./
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
-unix {
+unix { 
     QMAKE_CC = "ccache gcc"
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
 INCLUDEPATH += ../../libxinx
-HEADERS =xsl/xmlprettyprinter.h \
+HEADERS = config/webpluginsettings.h \
+    xsl/xmlprettyprinter.h \
     webplugin.h \
     xsl/xmlhighlighter.h \
     js/jshighlighter.h \
@@ -26,16 +27,20 @@ HEADERS =xsl/xmlprettyprinter.h \
     editorcompletion.h \
     css/cssmodeldata.h \
     xsl/xmltexteditor.h \
-	xsl/xslmodelcompleter.h \
-	xsl/stylesheeteditor.h \
-	xsl/xmlfileeditor.h \
-xsl/htmlfileeditor.h \
-js/javascriptmodelcompleter.h \
-js/jsfileeditor.h \
-js/jstexteditor.h \
-css/cssfileeditor.h \
-css/csstexteditor.h
-SOURCES = xsl/xmlprettyprinter.cpp \
+    xsl/xslmodelcompleter.h \
+    xsl/stylesheeteditor.h \
+    xsl/xmlfileeditor.h \
+    xsl/htmlfileeditor.h \
+    js/javascriptmodelcompleter.h \
+    js/jsfileeditor.h \
+    js/jstexteditor.h \
+    css/cssfileeditor.h \
+    css/csstexteditor.h \
+    config/webpluginformimpl.h \
+    config/selfwebpluginsettings.h
+SOURCES = config/selfwebpluginsettings.cpp \
+    config/webpluginsettings.cpp \
+    xsl/xmlprettyprinter.cpp \
     webplugin.cpp \
     xsl/xmlhighlighter.cpp \
     js/jshighlighter.cpp \
@@ -45,16 +50,15 @@ SOURCES = xsl/xmlprettyprinter.cpp \
     editorcompletion.cpp \
     css/cssmodeldata.cpp \
     xsl/xmltexteditor.cpp \
-	xsl/xslmodelcompleter.cpp \
- 	xsl/stylesheeteditor.cpp \
- 	xsl/xmlfileeditor.cpp \
- xsl/htmlfileeditor.cpp \
- js/javascriptmodelcompleter.cpp \
- js/jsfileeditor.cpp \
- js/jstexteditor.cpp \
- css/cssfileeditor.cpp \
- css/csstexteditor.cpp
+    xsl/xslmodelcompleter.cpp \
+    xsl/stylesheeteditor.cpp \
+    xsl/xmlfileeditor.cpp \
+    xsl/htmlfileeditor.cpp \
+    js/javascriptmodelcompleter.cpp \
+    js/jsfileeditor.cpp \
+    js/jstexteditor.cpp \
+    css/cssfileeditor.cpp \
+    css/csstexteditor.cpp \
+    config/webpluginformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
-
-SOURCES -= javascriptmodelcompleter.cpp
-
+FORMS += ui/webpluginform.ui

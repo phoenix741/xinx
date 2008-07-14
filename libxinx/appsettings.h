@@ -32,7 +32,6 @@ public:
 		bool autoindentOnSaving;
 		bool popupWhenFileModified;
 		bool createBackupFile;
-		int completionLevel;
 		int tabulationSize;
 		bool showTabulationAndSpace;
 		bool highlightCurrentLine;

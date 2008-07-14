@@ -18,40 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _ITEMMODELFILEEDITOR_H_
-#define _ITEMMODELFILEEDITOR_H_
-
 // Xinx header
-#include "textfileeditor.h"
+#include "xinxcore.h"
+#include "selfwebpluginsettings.h"
 
-// Qt header
-#include <QPointer>
+SelfWebPluginSettings * SelfWebPluginSettings::s_self = 0;
 
-class ItemModelFileEditor : public TextFileEditor {
-	Q_OBJECT
-public:
-	ItemModelFileEditor( FileContentParser * element, TextEditor * editor = 0, QWidget *parent = 0 );
-	virtual ~ItemModelFileEditor();
+SelfWebPluginSettings::SelfWebPluginSettings() : WebPluginSettings() {
+	load();
+}
 
-	virtual void loadFromFile( const QString & fileName = QString() );
-	virtual void saveToFile( const QString & fileName = QString() );
-	virtual void loadFromDevice( QIODevice & d );
+SelfWebPluginSettings::~SelfWebPluginSettings() {
+	if( s_self == this ) {
+		s_self = 0;
+	}
+}
 
-	virtual QAbstractItemModel * model()  const;
-public slots:
-	virtual void updateModel();
+SelfWebPluginSettings * SelfWebPluginSettings::self() {
+	if( ! s_self ) {
+		s_self = new SelfWebPluginSettings();
+		XINXStaticDeleter::self()->add( s_self );
+	}
+	return s_self;
+}
 
-protected:
-	void setParser( FileContentParser * parser );
-
-private slots:
-	virtual void textChanged();
-
-private:
-	mutable QPointer<FileContentItemModel> m_model;
-	FileContentParser * m_parser;
-
-	QTimer * m_keyTimer;
-};
-
-#endif // _ITEMMODELFILEEDITOR_H_

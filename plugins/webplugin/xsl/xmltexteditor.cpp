@@ -22,6 +22,7 @@
 #include "xmltexteditor.h"
 #include "../editorcompletion.h"
 #include "xslmodelcompleter.h"
+#include "../config/selfwebpluginsettings.h"
 
 #include <xinxpluginsloader.h>
 #include <xinxconfig.h>
@@ -47,6 +48,8 @@ XmlTextEditor::~XmlTextEditor() {
 }
 
 QCompleter * XmlTextEditor::completer() {
+	if( ! SelfWebPluginSettings::self()->config().xml.activeCompletion ) return 0;
+
 	if( TextEditor::completer() ) {
 		XSLCompletionModel * c = qobject_cast<XSLCompletionModel*>( TextEditor::completer()->model() );
 		if( c ) {
@@ -243,18 +246,20 @@ void XmlTextEditor::insertCompletion( const QModelIndex& index ) {
 }
 
 void XmlTextEditor::insertCompletionValue( QTextCursor & tc, QString node, QString param ) {
-	if( xmlCompletionContents && xmlCompletionContents->balise( node ) && xmlCompletionContents->balise( node )->attribute( param ) && xmlCompletionContents->balise( node )->attribute( param )->defaultValue() >= 0 ) {
+	if( xmlCompletionContents && xmlCompletionContents->balise( node ) && xmlCompletionContents->balise( node )->attribute( param ) && SelfWebPluginSettings::self()->config().xml.addDefaultAttribute ) {
 		int defaultValue = xmlCompletionContents->balise( node )->attribute( param )->defaultValue();
-		tc.insertText( QString("=\"%1\"").arg( xmlCompletionContents->balise( node )->attribute( param )->values().at( defaultValue ) ) );
-	} else {
-		tc.insertText("=\"\"");
-		tc.movePosition( QTextCursor::PreviousCharacter );
+		if( defaultValue >= 0 ) {
+			tc.insertText( QString("=\"%1\"").arg( xmlCompletionContents->balise( node )->attribute( param )->values().at( defaultValue ) ) );
+			return;
+		}
 	}
+	tc.insertText("=\"\"");
+	tc.movePosition( QTextCursor::PreviousCharacter );
 }
 
 int XmlTextEditor::insertCompletionParam( QTextCursor & tc, QString node, bool movePosition ) {
 	int position = -1;
-	if( xmlCompletionContents && xmlCompletionContents->balise( node ) ) {
+	if( SelfWebPluginSettings::self()->config().xml.addDefaultAttribute && xmlCompletionContents && xmlCompletionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = xmlCompletionContents->balise( node );
 		foreach( CompletionXMLAttribute* attr, balise->attributes() ) {
 			if( attr->isDefault() ) {
@@ -282,7 +287,7 @@ int XmlTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 
 	int position = -1, cnt = 0;
 
-	if( XINXConfig::self()->config().editor.completionLevel == 3 && xmlCompletionContents && xmlCompletionContents->balise( node ) ) {
+	if( SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && xmlCompletionContents && xmlCompletionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = xmlCompletionContents->balise( node );
 		foreach( CompletionXMLBalise* b, balise->balises() ) {
 			if( b->isDefault() ) {
@@ -297,7 +302,7 @@ int XmlTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 		}
 	}
 
-	if( XINXConfig::self()->config().editor.completionLevel >= 2 ) {
+	if( SelfWebPluginSettings::self()->config().xml.addClosedBalise ) {
 		if( cnt > 0 )
 			tc.insertText( "\n" + indent );
 		tc.insertText( QString("</%1>").arg( node ) );
@@ -368,8 +373,10 @@ void XmlTextEditor::key_shenter( bool back ) {
 }
 
 bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
+	if( ! SelfWebPluginSettings::self()->config().xml.activeCompletion ) return false;
+
 	if( !e->text().isEmpty() ) {
-		if( ( e->text().right(1) == ">" ) && ( XINXConfig::self()->config().editor.completionLevel >= 2 ) ) {
+		if( ( e->text().right(1) == ">" ) && ( SelfWebPluginSettings::self()->config().xml.addClosedBalise ) ) {
 			QTextCursor tc( textCursor() );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
 			tc.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor );
@@ -390,7 +397,7 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 				}
 			}
 			return true;
-		} else if( e->text().right(1) == "=" && XINXConfig::self()->config().editor.completionLevel >= 2 ) {
+		} else if( e->text().right(1) == "=" && SelfWebPluginSettings::self()->config().xml.addDefaultAttribute ) {
 			QTextCursor tc( textCursor() );
 			QTextCursor tc2( textCursor() );
 			tc2.movePosition( QTextCursor::PreviousCharacter );
@@ -400,7 +407,7 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 				setTextCursor( tc );
 			}
 			return true;
-		} else if( e->text().right(1) == " " && XINXConfig::self()->config().editor.completionLevel >= 3 ) {
+		} else if( e->text().right(1) == " " && SelfWebPluginSettings::self()->config().xml.addDefaultAttribute ) {
 			QTextCursor tc( textCursor() );
 			QTextCursor tc2( textCursor() );
 			tc2.movePosition( QTextCursor::PreviousCharacter );
