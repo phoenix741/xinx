@@ -1,15 +1,15 @@
-var obj = new Object; 
+var obj = new Object;
 
-obj.text = "Replace use of xsl:key by full xpath"; 
+obj.text = "Replace use of xsl:key by full xpath";
 obj.author = "Alexandre Rocher";
 
 obj.run = function()
-{ 
-	var text = this.textEdit.plainText; 
+{
+	var text = this.textEdit.selection;
 
-	this.textEdit.plainText = obj.formatXslKey(text); 
-	this.textEdit.document.modified = true; 
-}; 
+	this.textEdit.selection = obj.formatXslKey(text);
+	this.textEdit.document.modified = true;
+};
 
 obj.formatXslKey = function(text)
 {
@@ -17,25 +17,25 @@ obj.formatXslKey = function(text)
 	while (text.indexOf("key('url-param'") != -1)
 	{
 		var pos = text.indexOf("key('url-param'");
- 
-		// Ce qui suit la virgule défini le nom du champ (à trimer) jusqu'à la
+
+		// Ce qui suit la virgule dï¿½fini le nom du champ (ï¿½ trimer) jusqu'ï¿½ la
 		// quote suivante
 		var posV1 = text.indexOf(",", pos);
 		var posQ1 = text.indexOf("'", posV1);
- 
+
 		var posQ2 = text.indexOf("'", posQ1 + 1);
 		var field = text.substring(posQ1 + 1, posQ2);
- 
-		// La parenthèse suivante défini la position de fin de la chaîne
-		// à remplacer
+
+		// La parenthï¿½se suivante dï¿½fini la position de fin de la chaï¿½ne
+		// ï¿½ remplacer
 		var posE = text.indexOf(")", posQ2) + 1;
- 
+
 		text = text.substring(0, pos)
 			+ "/layout_data/application_data/temporaire/param[@name='" + field + "']"
 			+ text.substring(posE);
 	}
- 
+
 	return text;
 }
 
-return obj; 
+return obj;

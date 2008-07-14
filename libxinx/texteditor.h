@@ -33,6 +33,7 @@ class QModelIndex;
 
 class TextEditor : public QTextEdit {
 	Q_OBJECT
+	Q_PROPERTY( QString selection READ selection WRITE setSelection )
 public:
 	TextEditor( QWidget * parent = 0 );
 	virtual ~TextEditor();
@@ -45,7 +46,11 @@ public:
 
 	virtual void setCompleter( QCompleter * completer );
 	virtual QCompleter * completer() { return m_completer; };
+
+	QString selection() const;
 public slots:
+	void setSelection( QString text );
+
 	void insertText( const QString & text );
 
 	void updateFont();

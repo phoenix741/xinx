@@ -106,6 +106,20 @@ TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ), m_syntaxhighli
 TextEditor::~TextEditor() {
 }
 
+QString TextEditor::selection() const {
+	if( textCursor().hasSelection() )
+		return textCursor().selectedText();
+	else
+		return toPlainText();
+}
+
+void TextEditor::setSelection( QString text ) {
+	if( textCursor().hasSelection() )
+		return textCursor().insertText( text );
+	else
+		return setPlainText( text );
+}
+
 void TextEditor::setCompleter( QCompleter * completer ) {
 	if( completer != m_completer ) {
 		if( m_completer ) m_completer->disconnect( this );
