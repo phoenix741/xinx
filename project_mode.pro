@@ -1,4 +1,3 @@
-VERSION = 0.7.2
 CONFIG += debug
 
 if(!debug_and_release|build_pass):CONFIG(debug, debug|release){
