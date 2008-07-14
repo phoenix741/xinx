@@ -4,15 +4,8 @@ MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
 TARGET = $$qtLibraryTarget(sharedxinx)
-unix {
-    QMAKE_CC = "ccache gcc"
-    QMAKE_CXX = "ccache gcc"
-    QMAKE_LFLAGS = -rdynamic
-}
-win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
-    -enable-runtime-pseudo-reloc
-HEADERS = serialization.h \
-    textfileeditor.h \
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
+HEADERS = textfileeditor.h \
     numberbar.h \
     texteditor.h \
     borderlayout.h \
@@ -30,10 +23,9 @@ HEADERS = serialization.h \
     filecontentstructure.h \
     abstracteditor.h \
     xslproject.h \
- abstractfileeditor.h \
- itemmodelfileeditor.h
-SOURCES = serialization.cpp \
-    textfileeditor.cpp \
+    abstractfileeditor.h \
+    itemmodelfileeditor.h
+SOURCES = textfileeditor.cpp \
     numberbar.cpp \
     texteditor.cpp \
     borderlayout.cpp \
@@ -50,16 +42,10 @@ SOURCES = serialization.cpp \
     filecontentstructure.cpp \
     abstracteditor.cpp \
     xslproject.cpp \
- abstractfileeditor.cpp \
- itemmodelfileeditor.cpp
+    abstractfileeditor.cpp \
+    itemmodelfileeditor.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-CONFIG += dll \
- debug
+CONFIG += dll
 QT += xml
 
-SOURCES -= xinxcontainer.cpp \
- serialization.cpp
-
-HEADERS -= xinxcontainer.h \
- serialization.h
-
+include(../project_mode.pro)

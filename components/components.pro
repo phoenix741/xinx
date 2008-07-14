@@ -1,7 +1,5 @@
 TEMPLATE = lib
-CONFIG += static \
- staticlib \
- debug
+CONFIG += static staticlib
 DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
@@ -9,11 +7,6 @@ RCC_DIR += ./
 TARGET = $$qtLibraryTarget(xinxcmp)
 INCLUDEPATH += ../libxinx
 LIBS =-L../libxinx -lsharedxinx
-unix {
-    QMAKE_CC = "ccache gcc"
-    QMAKE_CXX = "ccache gcc"
-    QMAKE_LFLAGS = -rdynamic
-}
 FORMS = ui/xinxlistwidget.ui
 HEADERS = p_xinxpluginselector.h \
     xinxpluginselector.h \
@@ -26,3 +19,4 @@ SOURCES = directoryedit.cpp \
     xinxlistwidgetimpl.cpp 
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
+include(../project_mode.pro)

@@ -6,11 +6,6 @@ DESTDIR += ./
 MOC_DIR += ./
 OBJECTS_DIR += ./
 RCC_DIR += ./
-unix {
-    QMAKE_CC = "ccache gcc"
-    QMAKE_CXX = "ccache gcc"
-    QMAKE_LFLAGS = -rdynamic
-}
 INCLUDEPATH += ../components \
   ../libxinx \
   ../xinx/
@@ -18,36 +13,10 @@ CONFIG += exceptions \
     qdbus \
     qt \
     thread \
-    warn_on \
-    x86 \
- debug
+    warn_on 
 QT += xml \
     script
-
-LIBS = -L../libxinx \
-	-L../plugins \
-    -L../components \
-    -lwebplugin \
-    -lsharedxinx \
-    -lxinxcmp
-if(!debug_and_release|build_pass):CONFIG(debug, debug|release){
-    mac : LIBS = $$member(LIBS, 0) \
-        $$member(LIBS, 1) \
-        $$member(LIBS, 2) \
-        $$member(LIBS, 3)_debug \
-        $$member(LIBS, 4)_debug \
-        $$member(LIBS, 5)_debug
-    win32 : LIBS = $$member(LIBS, 0) \
-        $$member(LIBS, 1) \
-        $$member(LIBS, 2) \
-        $$member(LIBS, 3)d \
-        $$member(LIBS, 4)d \
-        $$member(LIBS, 5)d
-}
-win32 : if(!debug_and_release|build_pass):CONFIG(debug, debug|release): POST_TARGETDEPS = ../plugins/libwebplugind.a \
-    ../components/libxinxcmpd.a
-else : POST_TARGETDEPS = ../plugins/libwebplugin.a \
-    ../components/libxinxcmp.a
+LIBS = -L../libxinx -L../plugins -L../components -lwebplugin -lsharedxinx -lxinxcmp
 win32 : RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
     ../COPYING \
@@ -151,3 +120,4 @@ contains( CONFIG, qdbus ){
         studiointerface.cpp
 }
 TRANSLATIONS += translations/xinx_fr.ts
+include(../project_mode.pro)
