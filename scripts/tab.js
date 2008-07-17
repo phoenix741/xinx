@@ -3,7 +3,7 @@ var obj = new Object;
 obj.text = "&Replace left space";
 
 obj.run = function() {
-	var text = this.textEdit.selection;
+	var text = textEdit.selection;
 	var result = "";
 
 	var nbSpace = input( "Number of space to be replaced", 4 );
@@ -29,8 +29,8 @@ obj.run = function() {
 		}
 	}
 
-	this.textEdit.selection = result;
-	this.textEdit.document.modified = true;
+	textEdit.selection = result;
+	textEdit.document.modified = true;
 };
 
 return obj;

@@ -3,8 +3,11 @@ var obj = new Object;
 obj.text = "Just an example";
 
 obj.run = function() {
-	if( this.project != undefined )
-		alert( this.project.projectName );
+	if( project != undefined )
+		alert( project.projectName );
+	
+	if( editor != undefined ) 
+		alert( editor.filename + ' or ' + editor.filename.substring( editor.filename.lastIndexOf('/') + 1 ) );
 
 	alert( "This is exemple show you how use alert, confirm and input dialog." );
 

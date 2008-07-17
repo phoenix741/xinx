@@ -49,6 +49,8 @@ public:
 	virtual void serialize( XSLProjectSessionEditor * data, bool content );
 	virtual void deserialize( XSLProjectSessionEditor * data );
 
+	virtual bool autoIndent();
+
 	virtual QIcon icon() const;
 private slots:
 	void paramListEditingFinished();

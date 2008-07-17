@@ -5,10 +5,10 @@ obj.author = "Alexandre Rocher";
 
 obj.run = function()
 {
-	var text = this.textEdit.selection;
+	var text = textEdit.selection;
 
-	this.textEdit.selection = obj.formatXslKey(text);
-	this.textEdit.document.modified = true;
+	textEdit.selection = obj.formatXslKey(text);
+	textEdit.document.modified = true;
 };
 
 obj.formatXslKey = function(text)

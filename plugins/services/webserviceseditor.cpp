@@ -24,6 +24,7 @@
 #include "texteditor.h"
 #include "xslproject.h"
 #include "borderlayout.h"
+#include <xmlprettyprinter.h>
 #include <xmltexteditor.h>
 
 // Qt header
@@ -99,6 +100,19 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 
 WebServicesEditor::~WebServicesEditor() {
 
+}
+
+bool WebServicesEditor::autoIndent() {
+	try {
+		XMLPrettyPrinter prettyPrinter;
+		prettyPrinter.setText( textEdit()->toPlainText() );
+		prettyPrinter.process();
+		textEdit()->setPlainText( prettyPrinter.getResult() );
+	} catch( XMLPrettyPrinterException e ) {
+		setMessage( e.getMessage() );
+		return false;
+	}
+	return true;
 }
 
 const QHash<QString,QString> & WebServicesEditor::values() {

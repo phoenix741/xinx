@@ -58,7 +58,7 @@ public:
 	void createActions();
 	void createFindReplace();
 	void connectDbus();
-	void createSnipet();
+	void createTools();
 	void registerTypes();
 
 	// Editor

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>885</width>
-    <height>483</height>
+    <width>672</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -171,8 +171,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>732</width>
-        <height>395</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -258,8 +258,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>732</width>
-        <height>395</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -352,8 +352,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>732</width>
-        <height>395</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -408,8 +408,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>732</width>
-        <height>395</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -514,6 +514,9 @@
          <property name="text" >
           <string>Default text &amp;encoding :</string>
          </property>
+         <property name="buddy" >
+          <cstring>m_encodingComboBox</cstring>
+         </property>
         </widget>
        </item>
        <item row="1" column="1" >
@@ -526,8 +529,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
-        <height>391</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -650,8 +653,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
-        <height>391</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -795,8 +798,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
-        <height>391</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -853,6 +856,13 @@
               </property>
               <property name="text" >
                <string>&amp;Show sub-element of a corresponding node</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="m_showNameAttributeCheckBox" >
+              <property name="text" >
+               <string>Show name attribute if exist</string>
               </property>
              </widget>
             </item>
@@ -954,8 +964,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
-        <height>391</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout" >
@@ -1086,8 +1096,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>644</width>
-        <height>391</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -1110,8 +1120,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>732</width>
-        <height>391</height>
+        <width>520</width>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -1125,8 +1135,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>710</width>
-            <height>346</height>
+            <width>498</width>
+            <height>276</height>
            </rect>
           </property>
           <attribute name="title" >
@@ -1146,10 +1156,10 @@
          <widget class="QWidget" name="Tab_2" >
           <property name="geometry" >
            <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>622</width>
-            <height>346</height>
+            <x>4</x>
+            <y>23</y>
+            <width>498</width>
+            <height>276</height>
            </rect>
           </property>
           <attribute name="title" >
@@ -1157,7 +1167,11 @@
           </attribute>
           <layout class="QGridLayout" >
            <item row="0" column="0" >
-            <widget class="QListWidget" name="m_scriptListView" />
+            <widget class="QListWidget" name="m_scriptListView" >
+             <property name="alternatingRowColors" >
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

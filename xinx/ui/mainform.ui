@@ -21,9 +21,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>56</y>
+     <y>55</y>
      <width>661</width>
-     <height>385</height>
+     <height>389</height>
     </rect>
    </property>
    <layout class="QGridLayout" >
@@ -44,7 +44,7 @@
      <x>0</x>
      <y>0</y>
      <width>661</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu" >
@@ -95,12 +95,16 @@
      <property name="title" >
       <string>&amp;Template</string>
      </property>
+     <addaction name="m_refreshSnipet" />
+     <addaction name="separator" />
      <addaction name="m_createTemplate" />
     </widget>
     <widget class="QMenu" name="m_scriptMenu" >
      <property name="title" >
       <string>&amp;Script</string>
      </property>
+     <addaction name="m_refreshScripts" />
+     <addaction name="separator" />
     </widget>
     <addaction name="m_templateMenu" />
     <addaction name="m_scriptMenu" />
@@ -176,9 +180,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>441</y>
+     <y>444</y>
      <width>661</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>
@@ -186,8 +190,8 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>22</y>
-     <width>76</width>
+     <y>21</y>
+     <width>74</width>
      <height>34</height>
     </rect>
    </property>
@@ -209,9 +213,9 @@
   <widget class="QToolBar" name="m_fileToolBar" >
    <property name="geometry" >
     <rect>
-     <x>76</x>
-     <y>22</y>
-     <width>175</width>
+     <x>74</x>
+     <y>21</y>
+     <width>173</width>
      <height>34</height>
     </rect>
    </property>
@@ -237,9 +241,9 @@
   <widget class="QToolBar" name="m_editToolBar" >
    <property name="geometry" >
     <rect>
-     <x>251</x>
-     <y>22</y>
-     <width>311</width>
+     <x>247</x>
+     <y>21</y>
+     <width>309</width>
      <height>34</height>
     </rect>
    </property>
@@ -271,9 +275,9 @@
   <widget class="QToolBar" name="m_searchToolBar" >
    <property name="geometry" >
     <rect>
-     <x>562</x>
-     <y>22</y>
-     <width>45</width>
+     <x>556</x>
+     <y>21</y>
+     <width>105</width>
      <height>34</height>
     </rect>
    </property>
@@ -290,28 +294,6 @@
     <bool>false</bool>
    </attribute>
    <addaction name="m_searchAct" />
-  </widget>
-  <widget class="QToolBar" name="m_webServicesToolBar" >
-   <property name="geometry" >
-    <rect>
-     <x>607</x>
-     <y>22</y>
-     <width>54</width>
-     <height>34</height>
-    </rect>
-   </property>
-   <property name="windowTitle" >
-    <string>WebServices Tool Bar</string>
-   </property>
-   <property name="orientation" >
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
-   </attribute>
   </widget>
   <action name="m_newAct" >
    <property name="icon" >
@@ -992,6 +974,16 @@
    </property>
    <property name="text" >
     <string>Show space and &amp;Tabulation</string>
+   </property>
+  </action>
+  <action name="m_refreshSnipet" >
+   <property name="text" >
+    <string>&amp;Refresh Snipets</string>
+   </property>
+  </action>
+  <action name="m_refreshScripts" >
+   <property name="text" >
+    <string>&amp;Refresh Scripts</string>
    </property>
   </action>
  </widget>

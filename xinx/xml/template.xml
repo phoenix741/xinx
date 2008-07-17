@@ -126,7 +126,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Displays Widgets" key="variable" icon=":/images/label.png" type="xsl" name="Label" >
     <Description>Create a variable in a XSL stylesheet. This variable is a label show in the page. To call this variable use the balise &lt;i>xsl:value-of&lt;/i> and select the variable which the name is &lt;i>LBL.NAME&lt;/i>.</Description>
-    <Text>&lt;xsl:variable name="LBL.&lt;?= "%1".toUpperCase().replace(/\W/g, '') ?>">%1&lt;/xsl:variable></Text>
+    <Text>&lt;xsl:variable name="LBL.&lt;?= "%1".replace(/[éèêë]/gi,'e').replace(/[à]/gi,'a').replace(/[îï]/gi,'i').replace(/[ù]/gi,'u').replace(/[ôö]/gi,'o').toUpperCase().replace(/\W/g, '') ?>">%1&lt;/xsl:variable></Text>
     <Param name="Text" />
   </Snipet>
   <Snipet category="Displays Widgets" key="displayList" icon="" type="xsl" name="XSL code for a list" >
