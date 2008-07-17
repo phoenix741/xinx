@@ -93,6 +93,12 @@ public slots:
 	void updateHighlighter();
 
 	/*!
+	 * Indent or unindent the selected text depending on the parameter.
+	 * \param unindent If false (by default) the text is indented. (the character \\t is added), else the text is unindented.
+	 */
+	void indent( bool unindent = false );
+
+	/*!
 	 * Comment or Uncomment the selected text depending on the parrameter.
 	 * If a part of a text is already (un)commented, the balise is moved to comment all the text.
 	 * Warning: If you comment code with comment, the comment can be merged with code.

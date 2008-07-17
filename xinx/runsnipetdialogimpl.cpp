@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "runsnipetdialogimpl.h"
+#include "scriptmanager.h"
 
 // Qt header
 #include <QMessageBox>
@@ -66,7 +67,8 @@ QString RunSnipetDialogImpl::getResult() {
 		text = text.arg( m_paramList.at( i ).second->text() );
 	}
 	/* Process script */
-	QScriptEngine engine;
+	QScriptEngine & engine = ScriptManager::self()->engine();
+	engine.pushContext();
 	QRegExp jsString( "<\\?.*\\?>" ); 
 	jsString.setMinimal( true );
 	int from = 0;
@@ -80,13 +82,15 @@ QString RunSnipetDialogImpl::getResult() {
 			if( ! result.isError() )
 				processedString += result.toString();
 			else {
-				QMessageBox::critical( this, tr("Script error"), result.toString() );
+				qCritical( qPrintable( result.toString() ) );
+				engine.popContext();
 				return QString();
 			}
 		} else {
 			engine.evaluate( js ); // Only for define variable or make pre-process.
 			if( engine.hasUncaughtException() ) {
-				QMessageBox::critical( this, tr("Script error"), engine.uncaughtException().toString() );
+				qCritical( qPrintable( engine.uncaughtException().toString() ) );
+				engine.popContext();
 				return QString();
 			}
 		}
@@ -94,5 +98,6 @@ QString RunSnipetDialogImpl::getResult() {
 	}
 	processedString += text.mid( from );
 	
+	engine.popContext();
 	return processedString;
 }

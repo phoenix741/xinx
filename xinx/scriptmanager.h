@@ -26,17 +26,26 @@
 #include <QStringList>
 #include <QScriptEngine>
 
+class AbstractEditor;
+
 class ScriptManager : public QObject {
 	Q_OBJECT
 public:
 	~ScriptManager();
 	
-	void loadScripts();
-	
 	const QList<QScriptValue> & objects() const; 
 	QScriptEngine & engine();
 	
+	void setCurrentEditeur( AbstractEditor * editor );
+	
 	static ScriptManager * self();
+	
+public slots:
+	void loadScripts();
+signals:
+	void changed();
+private slots:
+	void projectChange();
 private:
 	ScriptManager();
 	void loadScript( const QString & filename );

@@ -19,8 +19,12 @@
  ***************************************************************************/
 
 // Xinx header
-#include "xinxcore.h"
+#include <xinxcore.h>
 #include "scriptmanager.h"
+#include "xslproject.h"
+#include <abstracteditor.h>
+#include <textfileeditor.h>
+#include <texteditor.h>
 
 // Qt header
 #include <QApplication>
@@ -31,6 +35,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QTextEdit>
 
 /* Static member */
 
@@ -64,7 +69,7 @@ static QScriptValue input( QScriptContext * context, QScriptEngine * interpreter
 	QString message = context->argument( 0 ).toString();
 	if( ( context->argumentCount() > 1 ) && (context->argument( 1 ).isNumber()) ) {
 		int defaultValue = 0;
-		if( context->argument( 1 ).isNumber() ) defaultValue = context->argument( 1 ).toNumber();
+		if( context->argument( 1 ).isNumber() ) defaultValue = (int)context->argument( 1 ).toNumber();
 		int result = QInputDialog::getInteger( 0, "Script input", message, defaultValue );
 		return QScriptValue( interpreter, result );
 	} else {
@@ -75,6 +80,20 @@ static QScriptValue input( QScriptContext * context, QScriptEngine * interpreter
 }
 
 /* ScriptManager */
+
+ScriptManager::ScriptManager() {
+	QScriptValue qsAlert = m_engine.newFunction( alert );
+	m_engine.globalObject().setProperty( "alert", qsAlert );
+	QScriptValue qsConfirm = m_engine.newFunction( confirm );
+	m_engine.globalObject().setProperty( "confirm", qsConfirm );
+	QScriptValue qsInput = m_engine.newFunction( input );
+	m_engine.globalObject().setProperty( "input", qsInput );
+	loadScripts();
+	projectChange();
+	setCurrentEditeur(0);
+	
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChange()) );
+}
 
 ScriptManager::~ScriptManager() {
 	
@@ -90,6 +109,8 @@ void ScriptManager::loadScripts() {
 	foreach( QString filename, filenames ) {
 		loadScript( scriptDir.absoluteFilePath( filename ) );
 	}
+	
+	emit changed();
 }
 
 void ScriptManager::loadScript( const QString & filename ) {
@@ -124,6 +145,36 @@ QScriptEngine & ScriptManager::engine() {
 	return m_engine;
 }
 
+void ScriptManager::projectChange() {
+	if( XINXProjectManager::self()->project() ) {
+		QScriptValue qsProject = ScriptManager::self()->engine().newQObject( XINXProjectManager::self()->project() );
+		m_engine.globalObject().setProperty( "project", qsProject );
+	} else {
+		m_engine.globalObject().setProperty( "project", QScriptValue() );
+	}
+}
+
+void ScriptManager::setCurrentEditeur( AbstractEditor * editor ) {
+	if( editor ) {
+		QScriptValue qsEditor = ScriptManager::self()->engine().newQObject( editor );
+		m_engine.globalObject().setProperty( "editor", qsEditor );
+
+		TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>( editor );
+		if( textFileEditor ) {
+			QTextEdit * textEdit = textFileEditor->textEdit();
+			QScriptValue qsTextEdit = m_engine.newQObject( textEdit );
+			QScriptValue qsDocument = m_engine.newQObject( textEdit->document() );
+			qsTextEdit.setProperty( "document", qsDocument );
+			m_engine.globalObject().setProperty( "textEdit", qsTextEdit );
+		} else {
+			m_engine.globalObject().setProperty( "textEdit", QScriptValue() );
+		}
+	} else {
+		m_engine.globalObject().setProperty( "textEdit", QScriptValue() );
+		m_engine.globalObject().setProperty( "editor", QScriptValue() );
+	}
+}
+
 ScriptManager * ScriptManager::self() {
 	static QMutex selfMutex;
 	
@@ -135,13 +186,4 @@ ScriptManager * ScriptManager::self() {
 	return s_self;
 }
 
-ScriptManager::ScriptManager() {
-	QScriptValue qsAlert = m_engine.newFunction( alert );
-	m_engine.globalObject().setProperty( "alert", qsAlert );
-	QScriptValue qsConfirm = m_engine.newFunction( confirm );
-	m_engine.globalObject().setProperty( "confirm", qsConfirm );
-	QScriptValue qsInput = m_engine.newFunction( input );
-	m_engine.globalObject().setProperty( "input", qsInput );
-	loadScripts();
-}
 

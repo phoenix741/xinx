@@ -226,14 +226,14 @@ void TabEditor::uncommentSelectedText() {
 void TabEditor::indent() {
 	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
 		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
-		editor->indent();
+		editor->textEdit()->indent();
 	}
 }
 
 void TabEditor::unindent() {
 	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
 		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
-		editor->indent( true );
+		editor->textEdit()->indent( true );
 	}
 }
 

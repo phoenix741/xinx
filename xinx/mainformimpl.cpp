@@ -72,7 +72,7 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 	createShortcut();
 	createActions();
 	createFindReplace();
-	createSnipet();
+	createTools();
 	connectDbus();
 	updateActions();
 	updateRecentFiles();
@@ -446,10 +446,12 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
 	connect( m_parent->m_nextTabAct, SIGNAL(triggered()), this, SLOT(nextTab()) );
 	connect( m_parent->m_previousTabAct, SIGNAL(triggered()), this, SLOT(previousTab()) );
-
+	
 	/* Tools */
 	// Create Template
 	connect( m_parent->m_createTemplate, SIGNAL(triggered()), m_parent, SLOT(newTemplate()) );
+	connect( m_parent->m_refreshSnipet, SIGNAL(triggered()), SnipetListManager::self(), SLOT(loadFromSnipetFile()) );
+	connect( m_parent->m_refreshScripts, SIGNAL(triggered()), ScriptManager::self(), SLOT(loadScripts()) );
 
 	// Customize
 	connect( m_parent->m_customApplicationAct, SIGNAL(triggered()), this, SLOT(customize()) );
@@ -475,8 +477,9 @@ void PrivateMainformImpl::connectDbus() {
 	qobject_cast<UniqueApplication*>(qApp)->attachMainWindow( m_parent );
 }
 
-void PrivateMainformImpl::createSnipet() {
+void PrivateMainformImpl::createTools() {
 	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateToolsMenu()) );
+	connect( ScriptManager::self(), SIGNAL(changed()), this, SLOT(updateToolsMenu()) );
 	updateToolsMenu();
 }
 
@@ -498,19 +501,6 @@ void PrivateMainformImpl::callSnipetMenu() {
 void PrivateMainformImpl::callScriptAction() {
 	QAction * action = qobject_cast<QAction*>( sender() );
 	QScriptValue qsScript = action->data().value<QScriptValue>();
-
-	if( m_parent->m_tabEditors->currentEditor() ) {
-		TextFileEditor * editor = qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->currentEditor() );
-		QTextEdit * textEdit = editor->textEdit();
-		QScriptValue qsTextEdit = ScriptManager::self()->engine().newQObject( textEdit );
-		QScriptValue qsDocument = ScriptManager::self()->engine().newQObject( textEdit->document() );
-		qsTextEdit.setProperty( "document", qsDocument );
-		qsScript.setProperty( "textEdit", qsTextEdit );
-	} else {
-		qsScript.setProperty( "textEdit", QScriptValue() );
-	}
-	QScriptValue qsProject = ScriptManager::self()->engine().newQObject( XINXProjectManager::self()->project() );
-	qsScript.setProperty( "project", qsProject );
 
 	QScriptValue result = qsScript.property( "run" ).call( qsScript );
 	if( result.isError() ) {
@@ -562,6 +552,7 @@ void PrivateMainformImpl::updateToolsMenu() {
 
 void PrivateMainformImpl::currentTabChanged( int index ) {
 	AbstractEditor * editor = m_parent->m_tabEditors->editor( index );
+	ScriptManager::self()->setCurrentEditeur( editor );
 	m_snipetsDock->setEditor( editor );
 	updateEditorInformations();
 }

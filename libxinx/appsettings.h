@@ -72,6 +72,7 @@ public:
 		QColor viewColor;
 		QColor errorColor;
 		QColor screenDataColor;
+		bool showNameAttributeIfExists;
 	};
 
 	struct struct_globals {

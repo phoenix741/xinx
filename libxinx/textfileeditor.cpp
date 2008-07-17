@@ -190,52 +190,6 @@ void TextFileEditor::selectAll() {
 	textEdit()->selectAll();
 }
 
-void TextFileEditor::indent( bool unindent ) {
-	QTextCursor tc ( m_view->textCursor() );
-
-	if( tc.selectedText().isEmpty() ) {
-		tc.insertText( "\t" );
-		m_view->setTextCursor( tc );
-		return;
-	}
-
-    tc.beginEditBlock();
-
-    int startPos = tc.selectionStart();
-    int endPos = tc.selectionEnd();
-    if( startPos > endPos ) {
-    	int tmp = endPos;
-    	endPos = startPos;
-    	startPos = tmp;
-   	}
-    tc.clearSelection();
-
-    tc.setPosition( endPos, QTextCursor::MoveAnchor );
-    tc.movePosition( QTextCursor::EndOfLine, QTextCursor::MoveAnchor );
-    QTextBlock endBlock = tc.block();
-    if( endBlock.position() == endPos )
-    	endBlock = endBlock.previous();
-
-    tc.setPosition( startPos, QTextCursor::MoveAnchor );
-    tc.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
-    QTextBlock startBlock = tc.block();
-
-    QTextBlock block = startBlock;
-    do {
-		tc.setPosition( block.position() );
-
-	    if( ! unindent )
-		    tc.insertText( "\t" );
-		else
-          if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
-			tc.deleteChar();
-
-    	block = block.next();
-   	} while( block.isValid() && (( block < endBlock ) || ( block == endBlock )) );
-
-	tc.endEditBlock();
-}
-
 void TextFileEditor::loadFromDevice( QIODevice & d ) {
 	// Get the EOL of the file.
 	char c;

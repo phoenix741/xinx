@@ -301,7 +301,10 @@ QMimeData * XmlPresentationModel::mimeData( const QModelIndexList &indexes ) con
 
 	foreach( QModelIndex index, indexes ) {
 		if ( index.isValid() ) {
-			text += data( index, Qt::UserRole ).toString();
+			if( XINXConfig::self()->config().xmlPres.showNameAttributeIfExists )
+				text += data( index, XmlPresentationModel::XNamedPathRole ).toString();
+			else
+				text += data( index, XmlPresentationModel::XPathRole ).toString();
 		}
 	}
 

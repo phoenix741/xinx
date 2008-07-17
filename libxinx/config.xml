@@ -9,6 +9,7 @@
 		<value name="View Color" type="color" default="blue"/>
 		<value name="Error Color" type="color" default="red"/>
 		<value name="Screen data Color" type="color" default="darkRed"/>
+		<value name="Show name attribute if exists" type="bool" default="true"/>
 	</type>
 	<type name="Extentions">
 		<value name="Custom Path" type="string"/>

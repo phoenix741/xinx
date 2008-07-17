@@ -88,11 +88,11 @@ public:
 
 	static SnipetListManager * self();
 
-	void loadFromSnipetFile();
-	void saveToSnipetFile();
-
 	const SnipetList & snipets() const;
 	void setSnipets( const SnipetList & list );
+public slots:
+	void loadFromSnipetFile();
+	void saveToSnipetFile();
 signals:
 	void listChanged();
 private:

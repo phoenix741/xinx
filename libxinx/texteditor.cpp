@@ -164,6 +164,9 @@ void TextEditor::localKeyPressExecute( QKeyEvent * e ) {
 		QTextEdit::keyPressEvent( e );
 		key_enter();
 		e->accept();
+	} else if( ( e->key() == Qt::Key_Tab ) && ( ( e->modifiers() == Qt::NoModifier ) || ( e->modifiers() == Qt::ShiftModifier ) ) ) { // TODO: May be replace by an action of the texteditor...
+		indent( e->modifiers() != Qt::NoModifier );
+		e->accept();
 	} else if( isShortcut ) {
 		QString snipet = textUnderCursor( textCursor(), true );
 		emit needInsertSnipet( snipet );
@@ -521,3 +524,48 @@ void TextEditor::uploSelectedText( bool upper ) {
 	setTextCursor( cursor );
 }
 
+void TextEditor::indent( bool unindent ) {
+	QTextCursor tc ( textCursor() );
+
+	if( tc.selectedText().isEmpty() ) {
+		tc.insertText( "\t" );
+		setTextCursor( tc );
+		return;
+	}
+
+    tc.beginEditBlock();
+
+    int startPos = tc.selectionStart();
+    int endPos = tc.selectionEnd();
+    if( startPos > endPos ) {
+    	int tmp = endPos;
+    	endPos = startPos;
+    	startPos = tmp;
+   	}
+    tc.clearSelection();
+
+    tc.setPosition( endPos, QTextCursor::MoveAnchor );
+    tc.movePosition( QTextCursor::EndOfLine, QTextCursor::MoveAnchor );
+    QTextBlock endBlock = tc.block();
+    if( endBlock.position() == endPos )
+    	endBlock = endBlock.previous();
+
+    tc.setPosition( startPos, QTextCursor::MoveAnchor );
+    tc.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
+    QTextBlock startBlock = tc.block();
+
+    QTextBlock block = startBlock;
+    do {
+		tc.setPosition( block.position() );
+
+	    if( ! unindent )
+		    tc.insertText( "\t" );
+		else
+          if ( block.text().count() && (block.text().at(0) == '\t' || block.text().at(0) == ' ') )
+			tc.deleteChar();
+
+    	block = block.next();
+   	} while( block.isValid() && (( block < endBlock ) || ( block == endBlock )) );
+
+	tc.endEditBlock();
+}

@@ -131,19 +131,14 @@ public slots :
 	/*!
 	 * Method used to select all the text in the editor. The call is sent to the TextEditor.
 	 */
-	virtual void selectAll();
+	void selectAll();
 	/*!
 	 * Comment or Uncomment the selected text depending on the parrameter.
 	 * If a part of a text is already (un)commented, the balise is moved to comment all the text.
 	 * Warning: If you comment code with comment, the comment can be merged with code.
 	 * \param uncomment If false (by default) the text is commented, else the text is uncommented
 	 */
-	virtual void commentSelectedText( bool uncomment = false );
-	/*!
-	 * Indent or unindent the selected text depending on the parameter.
-	 * \param unindent If false (by default) the text is indented. (the character \\t is added), else the text is unindented.
-	 */
-	virtual void indent( bool unindent = false );
+	void commentSelectedText( bool uncomment = false );
 	/*!
 	 * Auto indent all the document (named Pretty Print).
 	 */

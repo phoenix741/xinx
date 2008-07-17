@@ -297,6 +297,7 @@ AppSettings::AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
 	value.viewColor = Qt::blue;
 	value.errorColor = Qt::red;
 	value.screenDataColor = Qt::darkRed;
+	value.showNameAttributeIfExists = true;
 
 	return value;
 }
@@ -311,6 +312,7 @@ AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( QSetti
 	value.viewColor = settings->value( "View Color", defaultValue.viewColor ).value<QColor>();
 	value.errorColor = settings->value( "Error Color", defaultValue.errorColor ).value<QColor>();
 	value.screenDataColor = settings->value( "Screen data Color", defaultValue.screenDataColor ).value<QColor>();
+	value.showNameAttributeIfExists = settings->value( "Show name attribute if exists", defaultValue.showNameAttributeIfExists ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -325,6 +327,7 @@ void AppSettings::setSettingsXmlpres( QSettings * settings, const QString & path
 	settings->setValue( "View Color", value.viewColor );
 	settings->setValue( "Error Color", value.errorColor );
 	settings->setValue( "Screen data Color", value.screenDataColor );
+	settings->setValue( "Show name attribute if exists", value.showNameAttributeIfExists );
 
 	settings->endGroup();
 }

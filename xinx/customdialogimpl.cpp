@@ -531,6 +531,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_expandPathLineEdit->setText( m_config.config().xmlPres.autoExpandedPath );
 	m_parent->m_hideElementList->setValues( m_config.config().xmlPres.hidePath );
 	m_parent->m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
+	m_parent->m_showNameAttributeCheckBox->setChecked( m_config.config().xmlPres.showNameAttributeIfExists );
 	m_parent->m_viewColorBox->setColor( m_config.config().xmlPres.viewColor );
 	m_parent->m_errorColorBox->setColor( m_config.config().xmlPres.errorColor );
 	m_parent->m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
@@ -636,6 +637,7 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().xmlPres.viewColor = m_parent->m_viewColorBox->color();
 	m_config.config().xmlPres.errorColor = m_parent->m_errorColorBox->color();
 	m_config.config().xmlPres.screenDataColor = m_parent->m_screenColorBox->color();
+	m_config.config().xmlPres.showNameAttributeIfExists = m_parent->m_showNameAttributeCheckBox->isChecked();
 
 	// Snipet
 	SnipetListManager::self()->setSnipets( m_snipetModel->getSnipetList() );
