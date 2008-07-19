@@ -108,7 +108,7 @@ Qt::ItemFlags XSLCompletionModel::flags( const QModelIndex &index ) const {
 int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 	if( ! parent.isValid() ) {
 		int size = 0;
-		if( m_list && ( m_baliseName.isEmpty() || m_attributeName.isEmpty() ) ) size += m_list->list().count();
+		if( m_list && !( m_baliseName.isEmpty() || m_attributeName.isEmpty() ) ) size += m_list->list().count();
 		if( ! ( m_baliseName.isEmpty() || m_attributeName.isEmpty() ) ) { // Complete value
 			if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 				size += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();

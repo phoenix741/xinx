@@ -6,6 +6,7 @@ if(!debug_and_release|build_pass):CONFIG(debug, debug|release){
 		LIBS -= $$LIBRARY
 		mac : LIBS += $$join(LIBRARY,,,_debug)
 		win32 : LIBS += $$join(LIBRARY,,,d)
+		unix : LIBS += $$LIBRARY
 	}
 }
 
