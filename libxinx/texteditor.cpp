@@ -449,11 +449,20 @@ void TextEditor::gotoLine( int line ) {
 
 void TextEditor::duplicateLines() {
 	QTextCursor cursor( textCursor() );
+	QString text;
+	if( cursor.hasSelection() )
+		text = cursor.selectedText();
+	else
+	    text = cursor.block().text();
+	if( (!cursor.hasSelection()) && cursor.block().contains( cursor.selectionStart() ) && cursor.block().contains( cursor.selectionEnd() ) )
+		text += "\n";
+
 
 	cursor.beginEditBlock();
-	QTextBlock currentBlock = cursor.block();
-	cursor.movePosition( QTextCursor::StartOfLine );
-	cursor.insertText( currentBlock.text() + "\n" );
+	cursor.setPosition( cursor.selectionStart() );
+	if( text.contains( '\n' ) )
+		cursor.movePosition( QTextCursor::StartOfBlock ); // TODO: StartOfLine : workaround
+	cursor.insertText( text );
 	cursor.endEditBlock();
 }
 
