@@ -6,11 +6,6 @@ OBJECTS_DIR += ./
 RCC_DIR += ./
 LIBS = -L../../libxinx -lsharedxinx
 TARGET = $$qtLibraryTarget(xslgui)
-unix {
-    QMAKE_CC = "ccache gcc"
-    QMAKE_CXX = "ccache gcc"
-    QMAKE_LFLAGS = -rdynamic
-}
 INCLUDEPATH += ../../libxinx 
 RESOURCES = xslgui.qrc
 TRANSLATIONS += translations/xslgui_fr.ts

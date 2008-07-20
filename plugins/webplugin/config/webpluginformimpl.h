@@ -22,7 +22,7 @@
 #define WEBPLUGINFORMIMPL_H_
 
 // Xinx header
-#include "../ui_webpluginform.h"
+#include "ui_webpluginform.h"
 
 class WebPluginFormImpl : public QWidget, public Ui::WebPluginForm {
 	Q_OBJECT

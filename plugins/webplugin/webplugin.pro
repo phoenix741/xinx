@@ -9,7 +9,7 @@ OBJECTS_DIR += ./
 RCC_DIR += ./
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
-INCLUDEPATH += ../../libxinx
+INCLUDEPATH += ./ ../../libxinx
 HEADERS = config/webpluginsettings.h \
     xsl/xmlprettyprinter.h \
     webplugin.h \

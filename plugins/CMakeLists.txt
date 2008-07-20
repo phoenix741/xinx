@@ -1,1 +1,6 @@
+add_subdirectory(empty)
 add_subdirectory(webplugin)
+add_subdirectory(services)
+add_subdirectory(cvsplugin)
+add_subdirectory(svnplugin)
+add_subdirectory(xslgui)

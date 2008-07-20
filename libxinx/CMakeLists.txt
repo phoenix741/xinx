@@ -1,3 +1,5 @@
+set(QT_USE_QTXML TRUE)
+
 include(${QT_USE_FILE})
 
 set(libxinx_SRCS

@@ -15,9 +15,14 @@ SET(xinxcmp_MOC_HDRS
 	xinxpluginselector.h
 )
 
-include_directories( . ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR} )
+SET(xinxcmp_UIS
+	ui/xinxlistwidget.ui
+)
+
+include_directories(../libxinx . ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDE_DIR} )
 
 QT4_WRAP_CPP(xinxcmp_MOC_SRCS ${xinxcmp_MOC_HDRS})
+QT4_WRAP_UI(xinxcmp_UI_HDRS ${xinxcmp_UIS})
 
 add_definitions(-O2)
 add_definitions(-Wall)
@@ -25,7 +30,7 @@ add_definitions(${QT_DEFINITIONS})
 add_definitions(-DQT_NO_DEBUG)
 add_definitions(-DQT_SHARED)
 
-add_library(xinxcmp STATIC ${xinxcmpx_SRCS} ${xinxcmp_MOC_SRCS})
+add_library(xinxcmp STATIC ${xinxcmp_SRCS} ${xinxcmp_MOC_SRCS} ${xinxcmp_UI_HDRS})
 target_link_libraries(xinxcmp ${QT_LIBRARIES})
 
 
