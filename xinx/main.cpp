@@ -67,11 +67,10 @@ void backup_appli_signal( int signal ) {
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
 
-//	std::signal(SIGSEGV, backup_appli_signal);
-//	std::signal(SIGABRT, backup_appli_signal);
-//	std::signal(SIGINT, backup_appli_signal);
-//	std::signal(SIGTERM, backup_appli_signal);
-
+	std::signal(SIGSEGV, backup_appli_signal);
+	std::signal(SIGABRT, backup_appli_signal);
+	std::signal(SIGINT, backup_appli_signal);
+	std::signal(SIGTERM, backup_appli_signal);
 
 	UniqueApplication app(argc, argv);
 	try {

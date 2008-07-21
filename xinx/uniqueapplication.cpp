@@ -102,9 +102,6 @@ UniqueApplication::~UniqueApplication() {
 }
 
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
-	// Too verbose
-	//
-
 	try {
 		return QApplication::notify( receiver, event );
 	} catch( XinxException e ) {

@@ -85,7 +85,9 @@ HEADERS += scriptmanager.h \
     uniqueapplication.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
-    private/p_customdialogimpl.h
+    private/p_customdialogimpl.h \
+	studioadaptor.h \
+	studiointerface.h
 SOURCES += snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -112,12 +114,8 @@ SOURCES += snipetdockwidget.cpp \
     xmlpresentationdockwidget.cpp \
     xmlpresentationitem.cpp \
     newprojectwizard.cpp \
-    scriptmanager.cpp
-contains( CONFIG, qdbus ){
-    HEADERS += studioadaptor.h \
-        studiointerface.h
-    SOURCES += studioadaptor.cpp \
-        studiointerface.cpp
-}
+    scriptmanager.cpp \
+    studioadaptor.cpp \
+    studiointerface.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 include(../project_mode.pro)

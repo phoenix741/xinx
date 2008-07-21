@@ -12,18 +12,16 @@ CONFIG += exceptions \
     warn_on 
 SOURCES = projectconverter.cpp \
     projectwizard.cpp \
-    main.cpp
+    main.cpp \
+	../xinx/studioadaptor.cpp \
+    ../xinx/studiointerface.cpp
 HEADERS = projectconverter.h \
-    projectwizard.h
+    projectwizard.h \
+	../xinx/studioadaptor.h \
+    ../xinx/studiointerface.h
 RESOURCES = xinxprojectwizard.qrc
 INCLUDEPATH += ../components \
     ../libxinx
 LIBS = -L../libxinx -L../components -lsharedxinx -lxinxcmp
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
-contains( CONFIG, qdbus ){
-    HEADERS += ../xinx/studioadaptor.h \
-        ../xinx/studiointerface.h
-    SOURCES += ../xinx/studioadaptor.cpp \
-        ../xinx/studiointerface.cpp
-}
 include(../project_mode.pro)

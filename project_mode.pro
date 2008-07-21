@@ -15,3 +15,5 @@ unix {
     QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
+
+QMAKE_CXXFLAGS_RELEASE = "-Os"
