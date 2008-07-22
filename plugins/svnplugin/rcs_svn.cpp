@@ -45,11 +45,17 @@ RCS_SVN::~RCS_SVN() {
 }
 
 RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
-	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0.0", QDateTime() };
+	if( m_infos.contains( path ) )
+		return m_infos.value( path );
+
+	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0", QDateTime() };
 	try {
+		QString absolutePath = QFileInfo( path ).absolutePath();
 		QProcess process;
-		process.setWorkingDirectory( QFileInfo( path ).absolutePath() );
-		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "--non-interactive" << "-vuN" << path );
+		int index = 0;
+
+		process.setWorkingDirectory( absolutePath );
+		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "--non-interactive" << "-vuN" << absolutePath );
 		process.waitForStarted();
 		if( process.error() == QProcess::FailedToStart ) {
 			return rcsInfos;
@@ -57,41 +63,63 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 		process.waitForFinished();
 		QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
 		if( processResult.count() == 0 ) return rcsInfos;
-		QString statutFile = processResult.at(0);
-		if( statutFile.length() < 8 ) return rcsInfos;
 
-		rcsInfos.state = RCS::Updated;
-		switch( statutFile.at( 0 ).toAscii() ) {
-		case 'A' :
-			rcsInfos.state = RCS::LocallyAdded;
-			break;
-		case 'D' :
-			rcsInfos.state = RCS::LocallyRemoved;
-			break;
-		case 'C' :
-			rcsInfos.state = RCS::UnresolvedConflict;
-			break;
-		case 'M' :
-		case 'R' :
-			rcsInfos.state = RCS::LocallyModified;
-			break;
-		case 'X' :
-		case '?' :
-		case '~' :
-		case '!' :
+		do {
 			rcsInfos.state = RCS::Unknown;
-			break;
-		default:
-			;
-		}
-		if( ( rcsInfos.state == RCS::Updated ) && ( statutFile.at( 7 ) == '*' ) )
-			rcsInfos.state = RCS::NeedsCheckout;
-		QStringList eol = statutFile.mid( 7 ).simplified().split( " " );
-		if( eol.size() > 1 ) rcsInfos.version = eol.at( 0 );
+			rcsInfos.version = "0";
+			rcsInfos.rcsDate = QDateTime();
 
+			QString statutFile = processResult.at( index );
+			if( statutFile.length() < 8 ) return rcsInfos;
+
+			rcsInfos.state = RCS::Updated;
+			switch( statutFile.at( 0 ).toAscii() ) {
+			case 'A' :
+				rcsInfos.state = RCS::LocallyAdded;
+				break;
+			case 'D' :
+				rcsInfos.state = RCS::LocallyRemoved;
+				break;
+			case 'C' :
+				rcsInfos.state = RCS::UnresolvedConflict;
+				break;
+			case 'M' :
+			case 'R' :
+				rcsInfos.state = RCS::LocallyModified;
+				break;
+			case 'X' :
+			case '?' :
+			case '~' :
+			case '!' :
+				rcsInfos.state = RCS::Unknown;
+				break;
+			default:
+				;
+			}
+			if( ( rcsInfos.state == RCS::Updated ) && ( statutFile.at( 7 ) == '*' ) )
+				rcsInfos.state = RCS::NeedsCheckout;
+			QStringList eol = statutFile.mid( 7 ).simplified().split( " " );
+			if( eol.size() >= 1 ) rcsInfos.version = eol.at( 0 );
+
+			QString filename;
+			if( eol.count() >= 4 ) {
+				filename = eol.at( 3 );
+				m_infos.insert( QDir( absolutePath ).absoluteFilePath( filename ), rcsInfos );
+			}
+
+			index++;
+		} while( index < processResult.count() );
 	} catch( ToolsNotDefinedException e ) {
 	}
-	return rcsInfos;
+
+	if( m_infos.contains( path ) )
+		return m_infos.value( path );
+	else {
+		rcsInfos.state = RCS::Unknown;
+		rcsInfos.version = "0";
+		rcsInfos.rcsDate = QDateTime();
+		return rcsInfos;
+	}
 }
 
 RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
@@ -166,8 +194,10 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	emit log( RCS::LogApplication, tr("Process terminated") );
 	emit operationTerminated();
 
-	foreach( QString file,  m_fileChanged )
+	foreach( QString file,  m_fileChanged ) {
+		m_infos.remove( file );
 		emit stateChanged( file );
+	}
 
 	m_process->deleteLater();
 }
