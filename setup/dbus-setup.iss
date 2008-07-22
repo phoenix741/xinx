@@ -5,11 +5,11 @@
 
 [Setup]
 AppName=DBus for Windows
-AppVerName=DBus for Windows pre-1.0
+AppVerName=DBus for Windows-1.1
 DefaultDirName={pf}\dbus
 DefaultGroupName=D-Bus
 OutputDir=.\
-OutputBaseFilename=dbus-pre-1.0
+OutputBaseFilename=dbus-1.1
 Compression=lzma
 SolidCompression=true
 UserInfoPage=true
@@ -46,6 +46,7 @@ Source: {#DBUSDIR}\include\dbus\dbus-protocol.h; DestDir: {app}\include\dbus
 Source: {#DBUSDIR}\include\dbus\dbus-server.h; DestDir: {app}\include\dbus
 Source: {#DBUSDIR}\include\dbus\dbus-shared.h; DestDir: {app}\include\dbus
 Source: {#DBUSDIR}\include\dbus\dbus-signature.h; DestDir: {app}\include\dbus
+Source: {#DBUSDIR}\include\dbus\dbus-spawn.h; DestDir: {app}\include\dbus
 Source: {#DBUSDIR}\include\dbus\dbus-threads.h; DestDir: {app}\include\dbus
 Source: {#DBUSDIR}\include\dbus\dbus-types.h; DestDir: {app}\include\dbus
 Source: {#DBUSDIR}\include\dbus\dbus.h; DestDir: {app}\include\dbus
