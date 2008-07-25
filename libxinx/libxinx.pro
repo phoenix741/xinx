@@ -1,9 +1,8 @@
 TEMPLATE = lib
-DESTDIR += ./
-MOC_DIR += ./
-OBJECTS_DIR += ./
-RCC_DIR += ./
+CONFIG += dll
+QT += xml
 TARGET = $$qtLibraryTarget(sharedxinx)
+DESTDIR += ./
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
 HEADERS = textfileeditor.h \
     numberbar.h \
@@ -45,7 +44,5 @@ SOURCES = textfileeditor.cpp \
     abstractfileeditor.cpp \
     itemmodelfileeditor.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-CONFIG += dll
-QT += xml
 
 include(../project_mode.pro)

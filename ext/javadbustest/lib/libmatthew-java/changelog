@@ -1,3 +1,17 @@
+Version 0.7.1:
+
+	* Fix compiler warning on 64bit systems (spotted by 
+	  serkankaba -at- gmail -dot- com)
+	* Fix compilation with glibc 2.8 (patch from Omair Majid
+	  <omajid -at- redhat -dot- com>)
+
+Version 0.7:
+
+	* use += not ?= when setting *FLAGS
+	* Possible SIGSEGV in native_close, possible fix
+	* Don't include debug-disable in any manifests
+	* Fix some compiler warnings. Setenv doesn't exist on all platforms.
+
 Version 0.6:
 
 	* Add toByteArray to Hexdump for creating byte-array-literals in

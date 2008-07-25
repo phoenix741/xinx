@@ -103,8 +103,6 @@ public:
 	QAction * m_recentFileSeparator;
 
 	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
-	void updateRecentFiles();
-	void updateRecentProjects();
 
 	// Snipet
 	QHash<QString,QAction*> m_snipetCategoryActs;
@@ -129,6 +127,8 @@ public slots:
 	void updateConfigElement();
 	void updateTitle();
 	void updateEditorInformations();
+	void updateRecentFiles();
+	void updateRecentProjects();
 
 	// File
 	void newFile();

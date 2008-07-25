@@ -5,20 +5,20 @@ JAVAH?=javah
 GCJ?=gcj
 CC?=gcc
 LD?=ld
-PPFLAGS?=-C -P
-CFLAGS?=-fpic -Wall -Os -pedantic -std=c99
-GCJFLAGS?=-fjni
-JCFLAGS?=-source 5.0
-INCLUDES?=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux
+PPFLAGS+=-C -P
+CFLAGS+=-fpic -Wall -Os -pedantic -std=c99 -Werror
+GCJFLAGS+=-fjni
+JCFLAGS+=-source 5.0
+INCLUDES+=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux
 JAVADOCFLAGS?=-quiet -author -link http://java.sun.com/j2se/1.4.2/docs/api/
 
 LDVER?=$(shell ld -v | cut -d' ' -f1)
 UNAME?=$(shell uname -s)
 
 ifeq ($(LDVER),GNU)
-LDFLAGS?=-fpic -shared -lc 
+LDFLAGS+=-fpic -shared -lc 
 else
-LDFLAGS?=-lc
+LDFLAGS+=-lc
 endif
 
 PREFIX?=/usr/local
@@ -26,9 +26,9 @@ JARDIR?=$(PREFIX)/share/java
 DOCDIR?=$(PREFIX)/share/doc/libmatthew-java/
 LIBDIR?=$(PREFIX)/lib/jni
 
-MATTVER=0.6
+MATTVER=0.7.1
 DEBUGVER=1.1
-UNIXVER=0.3
+UNIXVER=0.5
 CGIVER=0.5
 IOVER=0.1
 HEXVER=0.2
@@ -57,8 +57,13 @@ cgi-$(CGIVER).jar: .classes
 io-$(IOVER).jar: .classes
 	(cd classes; $(JAR) cf ../$@ cx/ath/matthew/io/*class)
 unix-$(UNIXVER).jar: .classes
+ifeq ($(DEBUG),enable)
 	echo "Class-Path: $(JARDIR)/debug-$(DEBUG).jar" > Manifest
+else
+	echo "Class-Path: " > Manifest
+endif
 	(cd classes; $(JAR) cfm ../$@ ../Manifest cx/ath/matthew/unix/*class)
+
 hexdump-$(HEXVER).jar: .classes
 	(cd classes; $(JAR) cf ../$@ cx/ath/matthew/utils/Hexdump.class)
 

@@ -33,6 +33,8 @@ JARPREFIX?=$(PREFIX)/share/java
 BINPREFIX?=$(PREFIX)/bin
 DOCPREFIX?=$(PREFIX)/share/doc/libdbus-java
 MANPREFIX?=$(PREFIX)/share/man/man1
+# allows overriding the javadoc install location from command line
+JAVADOCPREFIX?=$(DOCPREFIX)
 
 # Installation directory of the java-unix libraries
 JAVAUNIXLIBDIR?=/usr/lib/jni
@@ -46,7 +48,10 @@ RELEASEVERSION = $(shell sed -n '/^Version/s/.* \(.*\):/\1/p' changelog | sed -n
 
 DISTFILES=dbus-java.tex Makefile org tmp-session.conf CreateInterface.sgml DBusDaemon.sgml ListDBus.sgml DBusViewer.sgml changelog AUTHORS COPYING README INSTALL CreateInterface.sh DBusDaemon.sh ListDBus.sh DBusViewer.sh DBusDaemon.bat CreateInterface.bat ListDBus.bat DBusViewer.bat compile.bat DBusCall.bat DBusCall.sh DBusCall.sgml translations
 
-all: libdbus-java-$(VERSION).jar dbus-java-viewer-$(VERSION).jar bin/DBusDaemon bin/ListDBus bin/CreateInterface bin/DBusViewer dbus-java-bin-$(VERSION).jar bin/DBusCall
+all: bin doc man
+bin: libdbus-java-$(VERSION).jar dbus-java-viewer-$(VERSION).jar bin/DBusDaemon bin/ListDBus bin/CreateInterface bin/DBusViewer dbus-java-bin-$(VERSION).jar bin/DBusCall
+man: CreateInterface.1 ListDBus.1 DBusDaemon.1 DBusViewer.1 DBusCall.1 
+doc: doc/dbus-java.dvi doc/dbus-java.ps doc/dbus-java.pdf doc/dbus-java/index.html doc/api/index.html
 
 clean:
 	rm -rf doc bin classes testbin win
@@ -101,7 +106,7 @@ dbus-viewer.jar: dbus-java-viewer-$(VERSION).jar
 	ln -sf $< $@
 	
 jar: libdbus-java-$(VERSION).jar
-doc: doc/dbus-java.dvi doc/dbus-java.ps doc/dbus-java.pdf doc/dbus-java/index.html doc/api/index.html
+
 .doc:
 	mkdir -p doc
 	mkdir -p doc/dbus-java
@@ -232,7 +237,7 @@ uninstall:
 	rm -f $(DESTDIR)$(MANPREFIX)/CreateInterface.1 $(DESTDIR)$(MANPREFIX)/ListDBus.1  $(DESTDIR)$(MANPREFIX)/DBusViewer.1 $(DESTDIR)$(MANPREFIX)/DBusDaemon.1 $(DESTDIR)$(MANPREFIX)/DBusCall.1
 	rm -f $(DESTDIR)$(BINPREFIX)/CreateInterface $(DESTDIR)$(BINPREFIX)/ListDBus  $(DESTDIR)$(BINPREFIX)/DBusViewer $(DESTDIR)$(BINPREFIX)/DBusDaemon  $(DESTDIR)$(BINPREFIX)/DBusCall
 
-install: install-bin install-man
+install: install-bin install-man install-doc
 
 install-bin: dbus-java-viewer-$(VERSION).jar libdbus-java-$(VERSION).jar bin/CreateInterface bin/ListDBus bin/DBusViewer bin/DBusDaemon dbus-java-bin-$(VERSION).jar bin/DBusCall
 	install -d $(DESTDIR)$(JARPREFIX)
@@ -271,8 +276,8 @@ install-doc: doc
 	install -d $(DESTDIR)$(DOCPREFIX)/dbus-java
 	install -m 644 doc/dbus-java/*.html $(DESTDIR)$(DOCPREFIX)/dbus-java
 	install -m 644 doc/dbus-java/*.css $(DESTDIR)$(DOCPREFIX)/dbus-java
-	install -d $(DESTDIR)$(DOCPREFIX)/api
-	cp -a doc/api/* $(DESTDIR)$(DOCPREFIX)/api
+	install -d $(DESTDIR)$(JAVADOCPREFIX)/api
+	cp -a doc/api/* $(DESTDIR)$(JAVADOCPREFIX)/api
 
 dist: .dist
 .dist: $(DISTFILES)

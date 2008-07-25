@@ -1,22 +1,10 @@
 TEMPLATE = app
-TARGET = xinx
-xinx.path = /usr/local/xinx
-INSTALLS += xinx
+CONFIG += qdbus warn_on 
+QT += xml script
 DESTDIR += ./
-MOC_DIR += ./
-OBJECTS_DIR += ./
-RCC_DIR += ./
-INCLUDEPATH += ../components \
-  ../libxinx \
-  ../xinx/
-CONFIG += exceptions \
-    qdbus \
-    qt \
-    thread \
-    warn_on 
-QT += xml \
-    script
+INCLUDEPATH += ../components ../libxinx ../xinx/
 LIBS = -L../libxinx -L../plugins -L../components -lwebplugin -lsharedxinx -lxinxcmp
+PRE_TARGETDEPS = ../components/libxinxcmp.a ../plugins/libwebplugin.a
 win32 : RC_FILE += rc/xinx.rc
 DISTFILES = ../CHANGELOG \
     ../COPYING \
@@ -118,4 +106,8 @@ SOURCES += snipetdockwidget.cpp \
     studioadaptor.cpp \
     studiointerface.cpp
 TRANSLATIONS += translations/xinx_fr.ts
+
 include(../project_mode.pro)
+
+xinx.path = /usr/local/xinx
+INSTALLS += xinx

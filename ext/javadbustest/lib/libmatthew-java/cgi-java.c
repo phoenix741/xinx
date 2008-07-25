@@ -49,7 +49,9 @@ extern jstring Java_cx_ath_matthew_cgi_CGI_getenv (JNIEnv *env, jobject obj, jst
 
 extern void Java_cx_ath_matthew_cgi_CGI_setenv (JNIEnv *env, jobject obj, jstring var, jstring val)
 {
+#ifdef setenv
    const char *cvar = (*env)->GetStringUTFChars(env, var, 0);
    const char *cval = (*env)->GetStringUTFChars(env, val, 0);
    setenv(cvar, cval, 1);
+#endif
 }

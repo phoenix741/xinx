@@ -439,8 +439,8 @@ void PrivateMainformImpl::createActions() {
 
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateActions()) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateTitle()) );
-	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(openRecentProject()) );
-	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(openRecentFile()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateRecentProjects()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateRecentFiles()) );
 
 	/* WINDOWS */
 	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
@@ -1404,7 +1404,7 @@ void MainformImpl::openFile( const QString & filename ) {
 	}
 
 	// Load the file in the editor
-	m_tabEditors->createEditor( XinxPluginsLoader::self()->matchedFileType( filename ), filename );
+	m_tabEditors->createEditor( XinxPluginsLoader::self()->matchedFileType( filename ), QDir::fromNativeSeparators( filename ) );
 	d->updateRecentFiles();
 	d->updateActions();
 	statusBar()->showMessage(tr("File loaded"), 2000);

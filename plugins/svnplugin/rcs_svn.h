@@ -56,6 +56,7 @@ private:
 	QString * m_content, m_tmpfilename;
 	QStringList m_fileChanged;
 	QHash<QString,RCS::struct_rcs_infos> m_infos;
+	bool m_isCommit;
 };
 
 #endif /*RCS_SVN_H_*/

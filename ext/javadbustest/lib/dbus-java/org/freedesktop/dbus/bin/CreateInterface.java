@@ -3,7 +3,7 @@
    Copyright (c) 2005-2006 Matthew Johnson
 
    This program is free software; you can redistribute it and/or modify it
-   under the terms of either the GNU General Public License Version 2 or the
+   under the terms of either the GNU Lesser General Public License Version 2 or the
    Academic Free Licence Version 2.1.
 
    Full licence texts are included in the COPYING file with this program.
@@ -11,6 +11,7 @@
 package org.freedesktop.dbus.bin;
 
 import static org.freedesktop.dbus.Gettext._;
+import static org.freedesktop.dbus.bin.IdentifierMangler.mangle;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.freedesktop.DBus.Introspectable;
 import org.freedesktop.dbus.DBusConnection;
+import org.freedesktop.dbus.Marshalling;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
 import org.freedesktop.dbus.types.DBusStructType;
@@ -103,7 +105,7 @@ public class CreateInterface
    {
       if (null == dbus || "".equals(dbus)) return "";
       Vector<Type> v = new Vector<Type>();
-      /* UNNECCESSARY?? int c = Marshalling.getJavaType(dbus, v, 1);*/
+      int c = Marshalling.getJavaType(dbus, v, 1);
       Type t = v.get(0);
       return collapseType(t, imports, structs, container, fullnames);
    }
@@ -154,7 +156,7 @@ public class CreateInterface
       Vector<Element> out = new Vector<Element>();
       if (null == meth.getAttribute("name") ||
             "".equals(meth.getAttribute("name"))) {
-         System.err.println(_("ERROR: Interface name was blank, failed"));
+         System.err.println(_("ERROR: Method name was blank, failed"));
          System.exit(1);
       }
       String annotations = "";
@@ -192,7 +194,7 @@ public class CreateInterface
       comment = "";
       sig += parseReturns(out, imports, tuples, structs);
 
-      sig += meth.getAttribute("name")+"(";
+      sig += mangle(meth.getAttribute("name"))+"(";
 
       char defaultname = 'a';
       String params = "";
@@ -200,7 +202,7 @@ public class CreateInterface
          String type = getJavaType(arg.getAttribute("type"), imports, structs, false, false);
          String name = arg.getAttribute("name");
          if (null == name || "".equals(name)) name = ""+(defaultname++);
-         params += type+" "+name+", ";         
+         params += type+" "+mangle(name)+", ";         
       }
       return ("".equals(comment) ? "" : "   /**\n" + comment + "   */\n")
          + annotations + "  public " + sig + 
@@ -228,8 +230,8 @@ public class CreateInterface
             String type = getJavaType(arg.getAttribute("type"), imports, structs, false, false);
             String name = arg.getAttribute("name");
             if (null == name || "".equals(name)) name = ""+(defaultname++);
-            params.put(name, type);
-            porder.add(name);
+            params.put(mangle(name), type);
+            porder.add(mangle(name));
          }
       }
 

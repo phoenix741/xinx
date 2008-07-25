@@ -53,9 +53,11 @@ QCompleter * XmlTextEditor::completer() {
 	if( TextEditor::completer() ) {
 		XSLCompletionModel * c = qobject_cast<XSLCompletionModel*>( TextEditor::completer()->model() );
 		if( c ) {
+			c->setHiddenAttribute( QStringList() );
 			cursorPosition pos = editPosition( textCursor() );
 			if( pos == cpEditParamName ) {
 				c->setFilter( m_nodeName );
+				c->setHiddenAttribute( paramOfNode( textCursor() ) );
 			} else if( pos == cpEditNodeName ) {
 				c->setFilter();
 			} else if( pos == cpEditParamValue ) {
@@ -218,6 +220,37 @@ XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QTextEdit * qTe
 
 XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QTextCursor & cursor ) {
 	return editPosition( this, cursor, m_nodeName, m_paramName );
+}
+
+
+QStringList XmlTextEditor::paramOfNode( const QTextCursor & cursor ) {
+	XmlTextEditor::cursorPosition position = editPosition( cursor );
+	if( ( position == cpEditComment ) || ( position == cpNone ) ) return QStringList();
+	
+	QTextCursor baliseStart = document()->find( "<", cursor, QTextDocument::FindBackward );
+	QTextCursor baliseStop = document()->find( ">", cursor );
+	if( baliseStart.isNull() || baliseStop.isNull() ) return QStringList();
+
+	QStringList result;
+
+	QTextCursor c = cursor;
+	do {
+		c = document()->find( QRegExp("\\W\\w+=\""), c, QTextDocument::FindBackward );
+		if( c.isNull() || ( baliseStart >= c ) ) break;
+		QTextCursor text( document() );
+		text.setPosition( c.selectionStart() + 1 );
+		text.setPosition( c.selectionEnd() - 2, QTextCursor::KeepAnchor );
+		result << text.selectedText();
+	} while( baliseStart < c );
+	c = cursor;
+	do {
+		c = document()->find( QRegExp("\\w+=\""), c );
+		if( c.isNull() || ( c >= baliseStop ) ) break;
+		c.setPosition( c.selectionEnd() - 2, QTextCursor::KeepAnchor );
+		result << c.selectedText();
+	} while( c < baliseStop );
+	
+	return result;
 }
 
 void XmlTextEditor::insertCompletion( const QModelIndex& index ) {

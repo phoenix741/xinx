@@ -1,17 +1,14 @@
 TEMPLATE = lib
 CONFIG += plugin
-QT += network \
-	xml
+QT += network xml
 DESTDIR += ../
-MOC_DIR += ./
-OBJECTS_DIR += ./
-RCC_DIR += ./
-LIBS = -L../../libxinx -L../../components -L../ -lxinxcmp -lwebplugin -lsharedxinx
-TARGET = $$qtLibraryTarget(services)
 INCLUDEPATH += ../../libxinx ../../components ../webplugin/xsl
+LIBS = -L../../libxinx -L../../components -L../ -lxinxcmp -lwebplugin -lsharedxinx
+PRE_TARGETDEPS = ../libwebplugin.a ../../components/libxinxcmp.a
+TARGET = $$qtLibraryTarget(services)
 RESOURCES = servicesplugin.qrc
 TRANSLATIONS += translations/servicesplugin_fr.ts
-HEADERS =servicesplugin.h \
+HEADERS = servicesplugin.h \
 	servicesprojectpropertyimpl.h \
 	servicesprojectwizard.h \
 	connectionwebservicesdialogimpl.h \

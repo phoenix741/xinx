@@ -3,7 +3,7 @@
    Copyright (c) 2005-2006 Matthew Johnson
 
    This program is free software; you can redistribute it and/or modify it
-   under the terms of either the GNU General Public License Version 2 or the
+   under the terms of either the GNU Lesser General Public License Version 2 or the
    Academic Free Licence Version 2.1.
 
    Full licence texts are included in the COPYING file with this program.
@@ -159,9 +159,11 @@ public class DBusConnection extends AbstractConnection
          transport = new Transport(addr, AbstractConnection.TIMEOUT);
       } catch (IOException IOe) {
          if (EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, IOe);            
+         disconnect();
          throw new DBusException(_("Failed to connect to bus ")+IOe.getMessage());
       } catch (ParseException Pe) {
          if (EXCEPTION_DEBUG && Debug.debug) Debug.print(Debug.ERR, Pe);            
+         disconnect();
          throw new DBusException(_("Failed to connect to bus ")+Pe.getMessage());
       }
 
@@ -183,6 +185,7 @@ public class DBusConnection extends AbstractConnection
       }
    }
 
+   @SuppressWarnings("unchecked")
    DBusInterface dynamicProxy(String source, String path) throws DBusException
    {
       try {
@@ -200,7 +203,9 @@ public class DBusConnection extends AbstractConnection
             int j = 0;
             while (j >= 0) {
                try {
-                  ifcs.add(Class.forName(iface));
+                  Class ifclass = Class.forName(iface);
+                  if (!ifcs.contains(ifclass))
+                     ifcs.add(ifclass);
                   break;
                } catch (Exception e) {}
                j = iface.lastIndexOf(".");

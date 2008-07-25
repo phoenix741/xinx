@@ -73,12 +73,23 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 			}
 		}
 	} else if( ! m_baliseName.isEmpty() ) { // Complete attribute
-		if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && ( value_row < xmlCompletionContents->balise( m_baliseName )->attributes().size() ) ) {
-			switch( role ) {
-			case Qt::DecorationRole:
-				return QIcon(":/images/noeud.png");
-			case Qt::DisplayRole:
-				return xmlCompletionContents->balise( m_baliseName )->attributes().at( value_row )->name();
+		if( m_attributes.isEmpty() ) {
+			if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && ( value_row < xmlCompletionContents->balise( m_baliseName )->attributes().size() ) ) {
+				switch( role ) {
+				case Qt::DecorationRole:
+					return QIcon(":/images/noeud.png");
+				case Qt::DisplayRole:
+					return xmlCompletionContents->balise( m_baliseName )->attributes().at( value_row )->name();
+				}
+			}
+		} else {
+			if( value_row < m_attributes.size() ) {
+				switch( role ) {
+				case Qt::DecorationRole:
+					return QIcon(":/images/noeud.png");
+				case Qt::DisplayRole:
+					return m_attributes.at( value_row );
+				}
 			}
 		}
 	} else { // Complete balise
@@ -114,8 +125,13 @@ int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 				size += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
 			}
 		} else if( ! m_baliseName.isEmpty() ) { // Complete attribute
-			if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) )
-				size += xmlCompletionContents->balise( m_baliseName )->attributes().count();
+			if( m_attributes.isEmpty() ) {
+				if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) ) {
+					size += xmlCompletionContents->balise( m_baliseName )->attributes().count();
+				}
+			} else {
+				size += m_attributes.count();
+			}
 		} else {
 			if( xmlCompletionContents ) { // Complate balise
 				if( m_tags.testFlag( Html ) )
@@ -135,6 +151,22 @@ void XSLCompletionModel::setFilter( QString baliseName, QString attributeName ) 
 	if( ( m_baliseName != baliseName ) || ( m_attributeName != attributeName ) ) {
 		m_baliseName = baliseName;
 		m_attributeName = attributeName;
+		reset();
+	}
+}
+
+void XSLCompletionModel::setHiddenAttribute( const QStringList & attributes ) {
+	if( !xmlCompletionContents || !xmlCompletionContents->balise( m_baliseName ) ) return;
+
+	QStringList showedAttribute;
+	if( ! attributes.isEmpty() ) 
+		foreach( CompletionXMLAttribute* attribute, xmlCompletionContents->balise( m_baliseName )->attributes() ) {
+			if( ! attributes.contains( attribute->name() ) )
+				showedAttribute += attribute->name();
+		}
+	
+	if( m_attributes != showedAttribute ) {
+		m_attributes = showedAttribute;
 		reset();
 	}
 }

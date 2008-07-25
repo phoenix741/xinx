@@ -1,9 +1,5 @@
 TEMPLATE = app
-TARGET = xinxprojectwizard
 DESTDIR += ./
-MOC_DIR += ./
-OBJECTS_DIR += ./
-RCC_DIR += ./
 QT += xml
 CONFIG += exceptions \
     qt \
@@ -24,4 +20,5 @@ INCLUDEPATH += ../components \
     ../libxinx
 LIBS = -L../libxinx -L../components -lsharedxinx -lxinxcmp
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
+PRE_TARGETDEPS = ../components/libxinxcmp.a
 include(../project_mode.pro)

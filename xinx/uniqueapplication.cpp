@@ -35,7 +35,7 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
 	if (!QDBusConnection::sessionBus().isConnected() || !(dbusService = QDBusConnection::sessionBus().interface())) {
-		qWarning() << QObject::tr("UniqueApplication: Cannot find the D-Bus session server");;
+		qWarning() << QObject::tr("UniqueApplication: Cannot find the D-Bus session server (%1)").arg( qt_error_string() );;
 		return NULL;
 	}
 	return dbusService;

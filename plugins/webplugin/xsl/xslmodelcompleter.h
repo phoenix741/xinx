@@ -42,6 +42,7 @@ public:
 	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 
 	void setFilter( QString baliseName = QString(), QString attributeName = QString() );
+	void setHiddenAttribute( const QStringList & attributes );
 protected slots:
 	virtual void beginInsertRows( int row );
 	virtual void endInsertRows();
@@ -53,6 +54,7 @@ private:
 	FileContentElementList * m_list;
 
 	QString m_baliseName, m_attributeName;
+	QStringList m_attributes;
 	CompletionTags m_tags;
 };
 

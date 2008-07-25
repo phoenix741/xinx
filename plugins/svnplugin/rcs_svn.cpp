@@ -36,7 +36,7 @@
 
 /* RCS_SVN */
 
-RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_content(0) {
+RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_content(0), m_isCommit( false ) {
 
 }
 
@@ -45,23 +45,33 @@ RCS_SVN::~RCS_SVN() {
 }
 
 RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
-	if( m_infos.contains( path ) )
-		return m_infos.value( path );
+	if( m_infos.contains( QDir::fromNativeSeparators( path ) ) )
+		return m_infos.value( QDir::fromNativeSeparators( path ) );
 
 	RCS::struct_rcs_infos rcsInfos = { RCS::Unknown, "0", QDateTime() };
 	try {
 		QString absolutePath = QFileInfo( path ).absolutePath();
 		QProcess process;
 		int index = 0;
-
-		process.setWorkingDirectory( absolutePath );
-		process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "--non-interactive" << "-vuN" << absolutePath );
-		process.waitForStarted();
-		if( process.error() == QProcess::FailedToStart ) {
-			return rcsInfos;
-		}
-		process.waitForFinished();
-		QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
+		QStringList processResult;
+		QString options = "-vuN";
+		int boucle = 0;
+		do {
+			process.setWorkingDirectory( absolutePath );
+			process.setProcessChannelMode( QProcess::MergedChannels );
+			process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << "--non-interactive" << options << absolutePath );
+			process.waitForStarted();
+			if( process.error() == QProcess::FailedToStart ) {
+				return rcsInfos;
+			}
+			process.waitForFinished();
+			processResult = QString(process.readAllStandardOutput()).split( "\n" );
+			if( ( processResult.count() > 0 ) && ( processResult.at(0).startsWith( "svn:" ) ) && ( processResult.at(0).contains( "Could not resolve hostname" ) ) ) {
+				options = "-vN";
+			} else break;
+			boucle++;
+		} while( boucle <= 1 );
+			
 		if( processResult.count() == 0 ) return rcsInfos;
 
 		do {
@@ -104,16 +114,16 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 			QString filename;
 			if( eol.count() >= 4 ) {
 				filename = eol.at( 3 );
-				m_infos.insert( QDir( absolutePath ).absoluteFilePath( filename ), rcsInfos );
+				m_infos.insert( QDir::fromNativeSeparators( QDir( absolutePath ).absoluteFilePath( filename ) ), rcsInfos );
 			}
 
 			index++;
-		} while( index < processResult.count() );
+		} while( index < (processResult.count() - 1) ); // Last line is "At revision XXX."
 	} catch( ToolsNotDefinedException e ) {
 	}
 
-	if( m_infos.contains( path ) )
-		return m_infos.value( path );
+	if( m_infos.contains( QDir::fromNativeSeparators( path ) ) )
+		return m_infos.value( QDir::fromNativeSeparators( path ) );
 	else {
 		rcsInfos.state = RCS::Unknown;
 		rcsInfos.version = "0";
@@ -126,7 +136,7 @@ RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
 	QList<FileOperation> result;
 	QProcess process;
 	process.setWorkingDirectory( QFileInfo( path ).absolutePath() );
-	process.start( XINXConfig::self()->getTools( "svn", false ), QStringList() << "status" << path );
+	process.start( XINXConfig::self()->getTools( "svn", true ), QStringList() << "status" << path );
 	process.waitForStarted();
 	if( process.error() == QProcess::FailedToStart ) return result;
 	process.waitForFinished();
@@ -191,11 +201,13 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
 
-	emit log( RCS::LogApplication, tr("Process terminated") );
-	emit operationTerminated();
+	if( ! m_isCommit ) {
+		emit log( RCS::LogApplication, tr("Process terminated") );
+		emit operationTerminated();
+	}
 
 	foreach( QString file,  m_fileChanged ) {
-		m_infos.remove( file );
+		m_infos.remove( QDir::fromNativeSeparators( file ) );
 		emit stateChanged( file );
 	}
 
@@ -206,7 +218,7 @@ void RCS_SVN::update( const QStringList & path ) {
 	Q_ASSERT( !m_process );
 
 	try {
-		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QString tool = XINXConfig::self()->getTools( "svn", true );
 		QStringList args = QStringList() << "update" << "--non-interactive" << path;
 		m_fileChanged = path;
 		m_process = new QProcess;
@@ -240,6 +252,7 @@ void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message 
 		commitedFiles += operation.first;
 	}
 
+	m_isCommit = true;
 	if( ! addedFiles.isEmpty() ) {
 		add( addedFiles );
 		while( m_process ) qApp->processEvents();
@@ -248,9 +261,10 @@ void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message 
 		remove( removedFiles );
 		while( m_process ) qApp->processEvents();
 	}
+	m_isCommit = false;
 
 	try {
-		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QString tool = XINXConfig::self()->getTools( "svn", true );
 		QStringList args = QStringList() << "commit";
 		if( ! message.isEmpty() )
 			args << "-m" << message;
@@ -276,7 +290,7 @@ void RCS_SVN::add( const QStringList & path ) {
 	Q_ASSERT( !m_process );
 
 	try {
-		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QString tool = XINXConfig::self()->getTools( "svn", true );
 		QStringList args = QStringList() << "add" << path;
 		m_fileChanged = path;
 		m_process = new QProcess;
@@ -299,7 +313,7 @@ void RCS_SVN::remove( const QStringList & path ) {
 	Q_ASSERT( !m_process );
 
 	try {
-		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QString tool = XINXConfig::self()->getTools( "svn", true );
 		QStringList args = QStringList() << "remove" << "--non-interactive" << path;
 		m_fileChanged = path;
 		m_process = new QProcess;
@@ -339,7 +353,7 @@ void RCS_SVN::updateToRevision( const QString & path, const QString & revision, 
 	m_content     = content;
 	m_tmpfilename =  QDir( QDir::tempPath() ).absoluteFilePath( QFileInfo( path ).fileName() + "." + revision );
 	try {
-		QString tool = XINXConfig::self()->getTools( "svn", false );
+		QString tool = XINXConfig::self()->getTools( "svn", true );
 		QStringList args = QStringList() << "export" << "--non-interactive" << "-r" << revision << path << m_tmpfilename;
 		m_process = new QProcess;
 		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );

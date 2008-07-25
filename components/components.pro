@@ -1,9 +1,6 @@
 TEMPLATE = lib
-CONFIG += static staticlib
+CONFIG += staticlib
 DESTDIR += ./
-MOC_DIR += ./
-OBJECTS_DIR += ./
-RCC_DIR += ./
 TARGET = $$qtLibraryTarget(xinxcmp)
 INCLUDEPATH += ../libxinx
 LIBS =-L../libxinx -lsharedxinx
@@ -19,4 +16,5 @@ SOURCES = directoryedit.cpp \
     xinxlistwidgetimpl.cpp 
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
+
 include(../project_mode.pro)

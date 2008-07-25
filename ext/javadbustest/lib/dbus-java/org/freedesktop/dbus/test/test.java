@@ -3,7 +3,7 @@
    Copyright (c) 2005-2006 Matthew Johnson
 
    This program is free software; you can redistribute it and/or modify it
-   under the terms of either the GNU General Public License Version 2 or the
+   under the terms of either the GNU Lesser General Public License Version 2 or the
    Academic Free Licence Version 2.1.
 
    Full licence texts are included in the COPYING file with this program.
@@ -217,7 +217,7 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
    {
       throw new TestException("test");
    }
-   public void testSerializable(byte b, TestSerializable<String> s, int i)
+   public TestSerializable<String> testSerializable(byte b, TestSerializable<String> s, int i)
    {
       System.out.println("Recieving TestSerializable: "+s);
       if (  b != 12
@@ -229,6 +229,7 @@ class testclass implements TestRemoteInterface, TestRemoteInterface2, TestSignal
          || !(s.getVector().get(1) == 2)
          || !(s.getVector().get(2) == 3)    )
          test.fail("Error in recieving custom synchronisation");
+      return s;
    }
    public String recursionTest()
    {
@@ -420,6 +421,8 @@ public class test
       System.out.println("Creating Connection");
       serverconn = DBusConnection.getConnection(DBusConnection.SESSION);
       clientconn = DBusConnection.getConnection(DBusConnection.SESSION);
+      serverconn.setWeakReferences(true);
+      clientconn.setWeakReferences(true);
       
       System.out.println("Registering Name");
       serverconn.requestBusName("foo.bar.Test");
@@ -681,7 +684,15 @@ public class test
       v.add(2);
       v.add(3);
       TestSerializable<String> s = new TestSerializable<String>(1, "woo", v);
-      tri2.testSerializable((byte) 12, s, 13);
+      s = tri2.testSerializable((byte) 12, s, 13);
+      System.out.print("returned: "+s);
+      if (s.getInt() != 1 || 
+          ! s.getString().equals("woo") ||
+          s.getVector().size() != 3 ||
+          s.getVector().get(0) != 1 ||
+          s.getVector().get(1) != 2 ||
+          s.getVector().get(2) != 3)
+         fail("Didn't get back the same TestSerializable");
       
       System.out.println("done");
 

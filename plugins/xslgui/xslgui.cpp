@@ -80,7 +80,7 @@ QVariant XslGuiPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribu
 	case PLG_NAME:
 		return tr("User Interface for editing Stylesheet");
 	case PLG_DESCRIPTION:
-		return tr("Helper to develop stylesheet in What You See Is What You Get");
+		return tr("EXPERIMENTAL / Helper to develop stylesheet in What You See Is What You Get");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
     case PLG_ICON:

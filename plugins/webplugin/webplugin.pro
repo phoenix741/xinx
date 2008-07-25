@@ -1,12 +1,7 @@
 TEMPLATE = lib
-CONFIG += plugin \
-    static \
-    staticlib 
+CONFIG += plugin staticlib 
 QT += xml
 DESTDIR += ../
-MOC_DIR += ./
-OBJECTS_DIR += ./
-RCC_DIR += ./
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
 INCLUDEPATH += ./ ../../libxinx
@@ -56,4 +51,5 @@ SOURCES = config/selfwebpluginsettings.cpp \
     config/webpluginformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
+
 include(../../project_mode.pro)

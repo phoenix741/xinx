@@ -36,6 +36,7 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Components: application
 Name: assoxml; Description: Associate XSL stylesheet with {#AppName}; Flags: unchecked
 Name: assojs; Description: Associate JS with {#AppName}; Flags: unchecked
+Name: assofws; Description: Associate WebServices stream with {#AppName}; Flags: unchecked
 Name: remplace_template; Description: Replace XINX data files (please backup your modification)
 
 [Files]
@@ -50,16 +51,16 @@ Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sha
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtScript4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
-Source: ..\xinx\xml\baseplugin_xml.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_xml.xml; Flags: skipifsourcedoesntexist; Languages: ; Tasks: remplace_template
-Source: ..\xinx\xml\baseplugin_js.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_js.xml; Flags: skipifsourcedoesntexist; Tasks: remplace_template
-Source: ..\xinx\xml\baseplugin_css.xml; DestDir: {app}\xml; Components: application; DestName: baseplugin_css.xml; Flags: skipifsourcedoesntexist; Languages: ; Tasks: remplace_template
-Source: ..\xinx\xml\template.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template; DestName: template.xml; Languages: 
+Source: ..\xinx\xml\*.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete skipifsourcedoesntexist; Components: dbus qt
-Source: dbus-pre-1.0.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
+Source: dbus-1.1.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
+DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
+DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: experimental
+DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 
 [Icons]
@@ -85,6 +86,10 @@ Root: HKCR; SubKey: .js; ValueType: string; ValueData: Fichier javascript; Flags
 Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier source JavaScript; Flags: uninsdeletekey; Tasks: assojs
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assojs
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assojs
+Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: uninsdeletekey; Tasks: assofws
+Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServices; Flags: uninsdeletekey; Tasks: assofws
+Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
+Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -93,9 +98,11 @@ Name: documentation; Description: Technical documentation of XINX; Types: full
 Name: dbus; Description: D-Bus support; Types: full custom compact; Flags: fixed
 Name: qt; Description: Qt Library; Flags: fixed; Types: custom compact full
 Name: mingw; Description: MinGW Library; Flags: fixed; Types: custom compact full
-Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom compact full
-Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom compact full
+Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom full
+Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom full
 Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
+Name: services; Description: Plugin with a WebServices editor; Types: custom full
+Name: experimental; Description: Plugins experimentals; Languages: 
 
 [Run]
 Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- /SILENT /NOCANCEL /NORESTART"; StatusMsg: Installation de D-BUS; Flags: hidewizard; Components: dbus

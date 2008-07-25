@@ -24,6 +24,9 @@
 // Xinx header
 #include "texteditor.h"
 
+// Qt header
+#include <QStringList>
+
 class XmlTextEditor : public TextEditor {
 	Q_OBJECT
 public:
@@ -31,6 +34,8 @@ public:
 	virtual ~XmlTextEditor();
 
 	virtual QCompleter * completer();
+	
+	QStringList paramOfNode( const QTextCursor & cursor );
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected slots:
