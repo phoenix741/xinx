@@ -42,17 +42,20 @@ public:
 	virtual QCompleter * completer();
 
 	QStringList paramOfNode( const QTextCursor & cursor );
-	QList<XPathBalise> xpath( const QTextCursor & cursor, const  QStringList & attributeName = QStringList() );
+	QList<XPathBalise> xpath( const QTextCursor & cursor, const QStringList & includeOnly = QStringList(), const QString & prefix = QString(), const  QStringList & attributeName = QStringList() );
+	
+	static QString xpathToString( const QList<XPathBalise> & xp );
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected slots:
 	virtual void insertCompletion( const QModelIndex& index );
+	virtual void insertCompletionValue( QTextCursor & tc, QString node, QString param );
+	virtual int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
+	virtual int insertCompletionBalises( QTextCursor & tc, QString node );
+	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type );
 protected:
 	virtual void localKeyPressExecute( QKeyEvent * e );
 	virtual bool processKeyPress( QKeyEvent * );
-
-private:
-	void key_shenter( bool back );
 
 	enum cursorPosition {
 		cpEditComment, // <!-- XXXXX  -->
@@ -65,12 +68,9 @@ private:
 	cursorPosition editPosition( const QTextCursor & cursor, QString & nodeName, QString & paramName );
 	cursorPosition editPosition( const QTextCursor & cursor );
 
-	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
-	int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
-	int insertCompletionBalises( QTextCursor & tc, QString node );
-	void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type );
-
 	QString m_nodeName, m_paramName;
+private:
+	void key_shenter( bool back );
 };
 
 #endif /*XMLTEXTEDITOR_H_*/

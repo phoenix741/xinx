@@ -23,7 +23,7 @@
 #include "xmlprettyprinter.h"
 #include "xslmodelcompleter.h"
 #include "xsllistview.h"
-#include "xmltexteditor.h"
+#include "xsltexteditor.h"
 
 // Qt header
 #include <QMessageBox>
@@ -31,7 +31,8 @@
 
 /* StyleSheetContainer */
 
-StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ItemModelFileEditor( m_parser = new XSLFileContentParser(), new XmlTextEditor(), parent ) {
+StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ItemModelFileEditor( m_parser = new XSLFileContentParser(), new XslTextEditor(), parent ) {
+	dynamic_cast<XslTextEditor*>( textEdit() )->setParser( dynamic_cast<XSLFileContentParser*>( m_parser ) );
 	m_list = new FileContentElementList( dynamic_cast<XSLFileContentParser*>( m_parser ) );
 	m_completionModel = new XSLCompletionModel( XSLCompletionModel::Xsl, m_list );
 

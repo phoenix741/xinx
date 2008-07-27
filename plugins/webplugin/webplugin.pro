@@ -1,11 +1,14 @@
 TEMPLATE = lib
-CONFIG += plugin staticlib 
+CONFIG += plugin \
+    staticlib
 QT += xml
 DESTDIR += ../
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
-INCLUDEPATH += ./ ../../libxinx
-HEADERS = config/webpluginsettings.h \
+INCLUDEPATH += ./ \
+    ../../libxinx
+HEADERS = xsl/xsltexteditor.h \
+    config/webpluginsettings.h \
     xsl/xmlprettyprinter.h \
     webplugin.h \
     xsl/xmlhighlighter.h \
@@ -27,7 +30,8 @@ HEADERS = config/webpluginsettings.h \
     css/csstexteditor.h \
     config/webpluginformimpl.h \
     config/selfwebpluginsettings.h
-SOURCES = config/selfwebpluginsettings.cpp \
+SOURCES = xsl/xsltexteditor.cpp \
+    config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \
     xsl/xmlprettyprinter.cpp \
     webplugin.cpp \
@@ -51,5 +55,4 @@ SOURCES = config/selfwebpluginsettings.cpp \
     config/webpluginformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
-
 include(../../project_mode.pro)

@@ -51,23 +51,6 @@ XmlTextEditor::~XmlTextEditor() {
 QCompleter * XmlTextEditor::completer() {
 	if( ! SelfWebPluginSettings::self()->config().xml.activeCompletion ) return 0;
 
-	if( TextEditor::completer() ) {
-		XSLCompletionModel * c = qobject_cast<XSLCompletionModel*>( TextEditor::completer()->model() );
-		if( c ) {
-			c->setHiddenAttribute( QStringList() );
-			cursorPosition pos = editPosition( textCursor() );
-			if( pos == cpEditParamName ) {
-				c->setFilter( m_nodeName );
-				c->setHiddenAttribute( paramOfNode( textCursor() ) );
-			} else if( pos == cpEditNodeName ) {
-				c->setFilter();
-			} else if( pos == cpEditParamValue ) {
-				c->setFilter( m_nodeName, m_paramName );
-		}
-
-		return TextEditor::completer();
-		}
-	}
 	return TextEditor::completer();
 }
 
@@ -382,32 +365,9 @@ void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QS
 	}
 }
 
-#include <QApplication>
-#include <QMessageBox>
 void XmlTextEditor::localKeyPressExecute( QKeyEvent * e ) {
 	if ( ( e->key() == Qt::Key_Return ) && ( ( e->modifiers() == Qt::ControlModifier ) || ( e->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier) ) ) ) {
 		key_shenter( e->modifiers() & Qt::ShiftModifier );
-		e->accept();
-	} else	if ( ( e->key() == Qt::Key_T ) && ( e->modifiers() == Qt::ControlModifier ) ) {
-		QList<XPathBalise> xp = xpath( textCursor(), QStringList() << "name" << "match" );
-		QString xps;
-		foreach( XPathBalise balise, xp ) {
-			QString text = balise.name;
-			if( ! balise.attributes.isEmpty() ) {
-				text += "[";
-				QHashIterator<QString,QString> i( balise.attributes );
-				while( i.hasNext() ) {
-					i.next();
-					text += "@" + i.key() + "='" + i.value() + "'";
-					if( i.hasNext() )
-						text += " and ";
-				}
-				text += "]";
-			}
-			xps.insert( 0, "/" + text );
-		}
-
-		QMessageBox::information( qApp->activeWindow(), "test", xps );
 		e->accept();
 	} else
 		TextEditor::localKeyPressExecute( e );
@@ -480,7 +440,7 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 	return false;
 }
 
-QList<XPathBalise> XmlTextEditor::xpath( const QTextCursor & cursor, const QStringList & attributeName ) {
+QList<XPathBalise> XmlTextEditor::xpath( const QTextCursor & cursor, const QStringList & includeOnly, const QString & prefix, const QStringList & attributeName ) {
 	QList<XPathBalise> xpath;
 	QStack<QString> baliseClose;
 
@@ -493,15 +453,19 @@ QList<XPathBalise> XmlTextEditor::xpath( const QTextCursor & cursor, const QStri
 		baliseText.remove( 0, 1 ).chop( 1 );
 		baliseText = baliseText.trimmed();
 
-		if( baliseText.startsWith( '?' ) || baliseText.startsWith( '!' ) ) {
+		if( ! (prefix.isEmpty() || baliseText.startsWith( prefix + ":" ) || baliseText.startsWith( "/" + prefix + ":" ) ) ) {
 			// do nothing
-		} else if( baliseText.startsWith( '/' ) ) {
+		} else if( baliseText.startsWith( '?' ) || baliseText.startsWith( '!' ) ) {
+			// do nothing
+		} else if( baliseText.startsWith( '/' ) && (includeOnly.isEmpty() || includeOnly.contains( baliseText ) ) ) {
 			baliseText = baliseText.remove( 0, 1 ).trimmed();
 			baliseClose.push( baliseText );
 		} else if( baliseText.endsWith( '/' ) ) {
 			// do nothing : add and remove from baliseClose
 		} else {
 			QString baliseName = baliseText.section( ' ', 0, 0 );
+			
+			if( ! ( includeOnly.isEmpty() || includeOnly.contains( baliseName ) ) ) continue; // do nothing
 			if( !baliseClose.isEmpty() && ( baliseName == baliseClose.top() ) ) {
 				baliseClose.pop();
 			} else {
@@ -529,3 +493,22 @@ QList<XPathBalise> XmlTextEditor::xpath( const QTextCursor & cursor, const QStri
 	return xpath;
 }
 
+QString XmlTextEditor::xpathToString( const QList<XPathBalise> & xp ) {
+	QString xps;
+	foreach( XPathBalise balise, xp ) {
+		QString text = balise.name;
+		if( ! balise.attributes.isEmpty() ) {
+			text += "[";
+			QHashIterator<QString,QString> i( balise.attributes );
+			while( i.hasNext() ) {
+				i.next();
+				text += "@" + i.key() + "='" + i.value() + "'";
+				if( i.hasNext() )
+					text += " and ";
+			}
+			text += "]";
+		}
+		xps.insert( 0, "/" + text );
+	}
+	return xps;
+}
