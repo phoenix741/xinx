@@ -79,6 +79,9 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 		tc.insertText( "<xsl:with-param name=\"" + name + "\" select=\"\"/>" );
 		cnt++;
 	}
+	
+	if( cnt > 0 )
+		tc.insertText( "\n" + indent );
 
 	return cnt + XmlTextEditor::insertCompletionBalises( tc, node );
 }
