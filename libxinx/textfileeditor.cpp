@@ -193,21 +193,20 @@ void TextFileEditor::selectAll() {
 void TextFileEditor::loadFromDevice( QIODevice & d ) {
 	// Get the EOL of the file.
 	char c;
-	d.setTextModeEnabled( true );
-	d.readLine(); // Load the firstLine
-	d.seek( d.pos() - 1 ); d.getChar( &c ); // Read previous char
-	if( c == '\r' ) {
-		m_eol = MacEndOfLine;
-	} else {
-		Q_ASSERT( c == '\n' );
-		d.seek( d.pos() - 2 ); d.getChar( &c ); // Read previous char
-		if( c == '\r' )
-			m_eol = WindowsEndOfLine;
-		else
+	while( d.getChar( &c ) ) {
+		if( c == '\r' ) {
+			m_eol = MacEndOfLine;
+			if( d.getChar( &c ) && ( c == '\n' ) ) {
+				m_eol = WindowsEndOfLine;
+			}
+			break;
+		} else if( c == '\n' ) {
 			m_eol = UnixEndOfLine;
+			break;
+		}
 	}
+
 	d.reset();
-	d.setTextModeEnabled( false );
 
 	QTextStream text( &d );
 	text.setCodec( codec() );

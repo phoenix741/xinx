@@ -26,6 +26,12 @@
 
 // Qt header
 #include <QStringList>
+#include <QHash>
+
+struct XPathBalise {
+	QString name;
+	QHash<QString,QString> attributes;
+};
 
 class XmlTextEditor : public TextEditor {
 	Q_OBJECT
@@ -34,8 +40,9 @@ public:
 	virtual ~XmlTextEditor();
 
 	virtual QCompleter * completer();
-	
+
 	QStringList paramOfNode( const QTextCursor & cursor );
+	QList<XPathBalise> xpath( const QTextCursor & cursor, const  QStringList & attributeName = QStringList() );
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected slots:
@@ -55,7 +62,7 @@ private:
 		cpNone
 	};
 
-	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & nodeName, QString & paramName );
+	cursorPosition editPosition( const QTextCursor & cursor, QString & nodeName, QString & paramName );
 	cursorPosition editPosition( const QTextCursor & cursor );
 
 	void insertCompletionValue( QTextCursor & tc, QString node, QString param );
