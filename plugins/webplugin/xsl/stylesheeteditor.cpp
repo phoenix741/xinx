@@ -32,8 +32,8 @@
 /* StyleSheetContainer */
 
 StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ItemModelFileEditor( m_parser = new XSLFileContentParser(), new XslTextEditor(), parent ) {
-	dynamic_cast<XslTextEditor*>( textEdit() )->setParser( dynamic_cast<XSLFileContentParser*>( m_parser ) );
-	m_list = new FileContentElementList( dynamic_cast<XSLFileContentParser*>( m_parser ) );
+	m_list = new XslContentElementList( dynamic_cast<XSLFileContentParser*>( m_parser ) );
+	dynamic_cast<XslTextEditor*>( textEdit() )->setParser( m_list );
 	m_completionModel = new XSLCompletionModel( XSLCompletionModel::Xsl, m_list );
 
 	QCompleter * completer = new QCompleter( textEdit() );
@@ -44,6 +44,7 @@ StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ItemModelFileEditor( m_p
 StyleSheetEditor::~StyleSheetEditor() {
 	setParser( 0 );
 	delete m_completionModel;
+	dynamic_cast<XslTextEditor*>( textEdit() )->setParser( 0 );
 	delete m_list;
 	delete m_parser;
 }

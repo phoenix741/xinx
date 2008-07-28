@@ -25,6 +25,8 @@
 #include <itemmodelfileeditor.h>
 #include "xslmodelcompleter.h"
 
+class XslContentElementList;
+
 class StyleSheetEditor : public ItemModelFileEditor {
 	Q_OBJECT
 public:
@@ -43,7 +45,7 @@ public:
 	XSLCompletionModel * completionModel() const;
 private:
 	FileContentParser * m_parser;
-	FileContentElementList * m_list;
+	XslContentElementList * m_list;
 	XSLCompletionModel * m_completionModel;
 };
 

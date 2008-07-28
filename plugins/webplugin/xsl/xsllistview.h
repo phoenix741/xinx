@@ -27,6 +27,7 @@
 
 // Qt header
 #include <QXmlStreamReader>
+#include <QMultiHash>
 
 /*!
  * This exception is launch when the file can't be parsed.
@@ -144,6 +145,26 @@ private:
 
 		XSLFileContentParser * m_parent;
 	};
+};
+
+class XslContentElementList : public FileContentElementList {
+	Q_OBJECT
+public:
+	XslContentElementList( FileContentElement * root );
+	virtual ~XslContentElementList();
+
+	QStringList modes( QString templateName ) const;
+	QStringList params( QString templateName ) const;
+private slots:
+	void slotAboutToAdd( int row );
+	void slotAdded();
+	void slotAboutToRemove( int row );
+	void slotReset();
+private:
+	void addElementList( XSLFileContentTemplate * templ );
+	
+	QMultiHash<QString,QString> m_modes, m_params;
+	int m_line;
 };
 
 #endif

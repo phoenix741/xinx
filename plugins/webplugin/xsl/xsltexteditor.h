@@ -24,7 +24,7 @@
 // Xinx header
 #include "xmltexteditor.h"
 
-class XSLFileContentParser;
+class XslContentElementList;
 
 class XslTextEditor : public XmlTextEditor {
 	Q_OBJECT
@@ -36,9 +36,9 @@ public:
 
 	virtual int insertCompletionBalises( QTextCursor & tc, QString node );
 	
-	void setParser( XSLFileContentParser * parser );
+	void setParser( XslContentElementList * parser );
 private:
-	XSLFileContentParser * m_parser;
+	XslContentElementList * m_parser;
 };
 
 #endif /*XSLTEXTEDITOR_H_*/

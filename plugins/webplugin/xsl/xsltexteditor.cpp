@@ -39,7 +39,7 @@ XslTextEditor::~XslTextEditor() {
 	
 }
 
-void XslTextEditor::setParser( XSLFileContentParser * parser ) {
+void XslTextEditor::setParser( XslContentElementList * parser ) {
 	m_parser = parser;
 }
 
@@ -74,10 +74,19 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	int cnt = 0;
 
 	if( m_parser && SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && ( ( node == "xsl:call-template" ) || ( node == "xsl:apply-templates" ) ) ) {
-		QString name = "name";
-		tc.insertText( "\n" + indent + "\t" );
-		tc.insertText( "<xsl:with-param name=\"" + name + "\" select=\"\"/>" );
-		cnt++;
+		if( node == "xsl:call-template" ) {
+			QTextCursor c = document()->find( QRegExp( "name=\"[^\"]*\"" ), tc, QTextDocument::FindBackward );
+			if( ! c.isNull() ) {
+				QString nodeName = c.selectedText();
+				nodeName.remove( 0, 6 ).chop( 1 );
+				
+				foreach( QString param, m_parser->modes( nodeName ) ) {
+					tc.insertText( "\n" + indent + "\t" );
+					tc.insertText( "<xsl:with-param name=\"" + param + "\" select=\"\"/>" );
+					cnt++;
+				}
+			}
+		}
 	}
 	
 	if( cnt > 0 )

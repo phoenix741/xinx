@@ -427,3 +427,71 @@ void XSLFileContentParser::Parser::readUnknownElement() {
 			readUnknownElement();
     }
 }
+
+/* XslContentElementList */
+
+XslContentElementList::XslContentElementList( FileContentElement * root ) : FileContentElementList( root ), m_line( -1 ) {
+	connect( this, SIGNAL(aboutToAdd(int)), this, SLOT(slotAboutToAdd(int)) );	
+	connect( this, SIGNAL(added()), this, SLOT(slotAdded()) );	
+	connect( this, SIGNAL(aboutToRemove(int)), this, SLOT(slotAboutToRemove(int)) );	
+	connect( this, SIGNAL(reset()), this, SLOT(slotReset()) );	
+}
+
+XslContentElementList::~XslContentElementList() {
+	
+}
+
+QStringList XslContentElementList::modes( QString templateName ) const {
+	return QStringList( m_modes.values( templateName ) );
+}
+
+QStringList XslContentElementList::params( QString templateName ) const {
+	return QStringList( m_params.values( templateName ) );
+}
+
+void XslContentElementList::slotAboutToAdd( int row ) {
+	m_line = row;
+}
+
+void XslContentElementList::slotAdded() {
+	Q_ASSERT( m_line != -1 );
+	
+	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( list().at( m_line ) );
+	if( templ ) addElementList( templ );
+	
+	m_line = -1;
+}
+
+void XslContentElementList::slotAboutToRemove( int row ) {
+	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( list().at( row ) );
+	if( templ ) {
+		if( ! templ->mode().isEmpty() )
+			m_modes.remove( templ->displayName(), templ->mode() );
+
+		for( int i = 0; i < templ->rowCount(); i++ ) {
+			XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( templ->element( i ) );
+			if( param )
+				m_params.remove( templ->displayName(), param->displayName() );
+		}
+	}
+}
+
+void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
+	Q_ASSERT( templ );
+	
+	if( !templ->mode().isEmpty() ) 
+		m_modes.insert( templ->displayName(), templ->mode() );				
+	
+	for( int i = 0; i < templ->rowCount(); i++ ) {
+		XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( templ->element( i ) );
+		if( param )
+			m_params.insert( templ->displayName(), param->displayName() );
+	}
+}
+
+void XslContentElementList::slotReset() {
+	foreach( FileContentElement * element, list() ) {
+		XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
+		if( templ ) addElementList( templ );
+	}
+}
