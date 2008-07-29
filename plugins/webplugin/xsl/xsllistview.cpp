@@ -439,7 +439,7 @@ XslContentElementList::XslContentElementList( FileContentElement * root ) : File
 }
 
 XslContentElementList::~XslContentElementList() {
-	
+
 }
 
 QStringList XslContentElementList::modes( QString templateName ) const {
@@ -453,7 +453,7 @@ QStringList XslContentElementList::params( QString templateName ) const {
 
 void XslContentElementList::slotAdd( FileContentElement * element, int row ) {
 	Q_UNUSED( row );
-	
+
 	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
 	if( templ ) addElementList( templ );
 
@@ -480,12 +480,12 @@ void XslContentElementList::slotRemove( FileContentElement * element ) {
 
 void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
 	Q_ASSERT( templ );
-	
+
 	//qDebug( qPrintable( QString( "Name = %1, Mode = %2, CountChildren = %3").arg( templ->name() ).arg( templ->mode() ).arg( templ->rowCount() ) ) );
-	
-	if( !templ->mode().isEmpty() ) 
-		m_modes.insert( templ->name(), templ->mode() );				
-	
+
+	if( !templ->mode().isEmpty() )
+		m_modes.insert( templ->name(), templ->mode() );
+
 	for( int i = 0; i < templ->rowCount(); i++ ) {
 		XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( templ->element( i ) );
 		if( param )
@@ -495,7 +495,7 @@ void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
 
 void XslContentElementList::addElementList( XSLFileContentParser * parser ) {
 	Q_ASSERT( parser );
-	
+
 	for( int i = 0; i < parser->rowCount(); i++ ) {
 		XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( parser->element( i ) );
 		if( templ ) addElementList( templ );

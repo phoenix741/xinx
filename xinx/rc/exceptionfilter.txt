@@ -3,3 +3,4 @@
 .*QPainter::begin: Paint device returned engine == 0, type: 3.*
 .*QPainter::setWorldTransform: Painter not active.*
 .*QPainter::end: Painter not active, aborted.*
+.*Plugin verification data mismatch in.*
