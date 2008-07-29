@@ -32,11 +32,11 @@
 /* XslTextEditor */
 
 XslTextEditor::XslTextEditor( QWidget * parent ) : XmlTextEditor( parent ), m_parser( 0 ) {
-	
+
 }
 
 XslTextEditor::~XslTextEditor() {
-	
+
 }
 
 void XslTextEditor::setParser( XslContentElementList * parser ) {
@@ -88,16 +88,32 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 			}
 		}
 	}
-	
+
 	if( cnt > 0 )
 		tc.insertText( "\n" + indent );
 
-	if( position == -1 ) { 
+	if( position == -1 ) {
 		position = XmlTextEditor::insertCompletionBalises( tc, node );
 	} else {
 		XmlTextEditor::insertCompletionBalises( tc, node );
 		tc.setPosition( position );
 	}
-		
+
 	return position;
+}
+
+void XslTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, const QModelIndex & index ) {
+	XmlTextEditor::insertCompletionAccolade( tc, node, param, value, index );
+
+	QStringList list = paramOfNode( tc );
+	QCompleter * c = completer();
+	if( ( node == "xsl:apply-templates" ) && (c->completionModel()->data( index ).toString().indexOf( "[" ) >= 0) && !list.contains( "mode" ) ) {
+		QString mode = c->completionModel()->data( index ).toString();
+		mode = mode.mid( mode.indexOf( '[' ) + 1 );
+		mode.remove( mode.indexOf( ']' ), mode.length() );
+
+		QTextCursor tc2 = document()->find( "\"", tc );
+		tc2.setPosition( tc2.selectionEnd() );
+		tc2.insertText( " mode=\"" + mode + "\"" );
+	}
 }

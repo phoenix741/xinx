@@ -258,9 +258,7 @@ void XmlTextEditor::insertCompletion( const QModelIndex& index ) {
 				tc.insertText( ">" );
 		} else
 			if( pos == cpEditParamValue ) {
-				insertCompletionAccolade( tc, m_nodeName, m_paramName, completion,
-				                          c->completionModel()->data( index, XSLCompletionModel::isVariable ).toBool(),
-				                          c->completionModel()->data( index, XSLCompletionModel::isHtmlOnly ).toBool() );
+				insertCompletionAccolade( tc, m_nodeName, m_paramName, completion, index );
 			}
 
 	setTextCursor( tc );
@@ -334,8 +332,11 @@ int XmlTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	return position;
 }
 
-void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, bool isVariable, bool isHtmlOnly ) {
+void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, const QModelIndex & index ) {
 	Q_UNUSED( param );
+	QCompleter * c = completer();
+	bool isVariable = c->completionModel()->data( index, XSLCompletionModel::isVariable ).toBool();
+	bool isHtmlOnly = c->completionModel()->data( index, XSLCompletionModel::isHtmlOnly ).toBool();
 
 	QTextCursor tc2( tc );
 	tc2.movePosition( QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, value.length() );

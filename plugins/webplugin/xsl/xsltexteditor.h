@@ -35,7 +35,8 @@ public:
 	virtual QCompleter * completer();
 
 	virtual int insertCompletionBalises( QTextCursor & tc, QString node );
-	
+	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
+
 	void setParser( XslContentElementList * parser );
 private:
 	XslContentElementList * m_parser;

@@ -52,7 +52,7 @@ protected slots:
 	virtual void insertCompletionValue( QTextCursor & tc, QString node, QString param );
 	virtual int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
 	virtual int insertCompletionBalises( QTextCursor & tc, QString node );
-	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, bool isVariable, bool isHtmlOnly );
+	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
 protected:
 	virtual void localKeyPressExecute( QKeyEvent * e );
 	virtual bool processKeyPress( QKeyEvent * );
