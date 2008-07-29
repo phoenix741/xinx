@@ -240,6 +240,8 @@ signals:
 	void removed();
 	/*! Signal emited when the list is refreshed */
 	void reset();
+protected:
+	FileContentElement * rootElement() const;
 private slots:
 	void refreshList();
 	void addElement( FileContentElement * element, int row );

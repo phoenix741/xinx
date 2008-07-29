@@ -274,6 +274,11 @@ const QList<FileContentElement*> & FileContentElementList::list() const {
 	return m_list;
 }
 
+FileContentElement * FileContentElementList::rootElement() const {
+	return m_root;
+}
+
+
 void FileContentElementList::refreshList() {
 	m_list.clear();
 	if( m_root ) {

@@ -71,7 +71,7 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	QString indent = tc.block().text();
 	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
 
-	int cnt = 0;
+	int position = -1, cnt = 0;
 
 	if( m_parser && SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && ( ( node == "xsl:call-template" ) || ( node == "xsl:apply-templates" ) ) ) {
 		if( node == "xsl:call-template" ) {
@@ -79,10 +79,10 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 			if( ! c.isNull() ) {
 				QString nodeName = c.selectedText();
 				nodeName.remove( 0, 6 ).chop( 1 );
-				
-				foreach( QString param, m_parser->modes( nodeName ) ) {
+				foreach( QString param, m_parser->params( nodeName ) ) {
 					tc.insertText( "\n" + indent + "\t" );
 					tc.insertText( "<xsl:with-param name=\"" + param + "\" select=\"\"/>" );
+					if( position == -1 ) position = tc.position() - 3;
 					cnt++;
 				}
 			}
@@ -92,5 +92,12 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	if( cnt > 0 )
 		tc.insertText( "\n" + indent );
 
-	return cnt + XmlTextEditor::insertCompletionBalises( tc, node );
+	if( position == -1 ) { 
+		position = XmlTextEditor::insertCompletionBalises( tc, node );
+	} else {
+		XmlTextEditor::insertCompletionBalises( tc, node );
+		tc.setPosition( position );
+	}
+		
+	return position;
 }

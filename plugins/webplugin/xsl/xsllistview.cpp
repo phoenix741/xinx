@@ -430,11 +430,12 @@ void XSLFileContentParser::Parser::readUnknownElement() {
 
 /* XslContentElementList */
 
-XslContentElementList::XslContentElementList( FileContentElement * root ) : FileContentElementList( root ), m_line( -1 ) {
-	connect( this, SIGNAL(aboutToAdd(int)), this, SLOT(slotAboutToAdd(int)) );	
-	connect( this, SIGNAL(added()), this, SLOT(slotAdded()) );	
-	connect( this, SIGNAL(aboutToRemove(int)), this, SLOT(slotAboutToRemove(int)) );	
-	connect( this, SIGNAL(reset()), this, SLOT(slotReset()) );	
+XslContentElementList::XslContentElementList( FileContentElement * root ) : FileContentElementList( root ) {
+	if( root ) {
+		connect( root, SIGNAL(aboutToAdd(FileContentElement*,int)), this, SLOT(slotAdd(FileContentElement*,int)) );
+		connect( root, SIGNAL(aboutToRemove(FileContentElement*)), this, SLOT(slotRemove(FileContentElement*)) );
+	}
+	slotReset();
 }
 
 XslContentElementList::~XslContentElementList() {
@@ -446,24 +447,25 @@ QStringList XslContentElementList::modes( QString templateName ) const {
 }
 
 QStringList XslContentElementList::params( QString templateName ) const {
+	//qDebug( qPrintable( QString( "Name = %1 : %2" ).arg( templateName ).arg( m_params.values( templateName ).size() ) ) );
 	return QStringList( m_params.values( templateName ) );
 }
 
-void XslContentElementList::slotAboutToAdd( int row ) {
-	m_line = row;
-}
-
-void XslContentElementList::slotAdded() {
-	Q_ASSERT( m_line != -1 );
+void XslContentElementList::slotAdd( FileContentElement * element, int row ) {
+	Q_UNUSED( row );
 	
-	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( list().at( m_line ) );
+	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
 	if( templ ) addElementList( templ );
-	
-	m_line = -1;
+
+	XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( element );
+	if( param && ( templ = dynamic_cast<XSLFileContentTemplate*>( param->parent() ) ) ) {
+		//qDebug( qPrintable( QString( "Name = %1, Mode = %2, Param = %3").arg( templ->name() ).arg( templ->mode() ).arg( param->name() ) ) );
+		m_params.insert( templ->name(), param->name() );
+	}
 }
 
-void XslContentElementList::slotAboutToRemove( int row ) {
-	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( list().at( row ) );
+void XslContentElementList::slotRemove( FileContentElement * element ) {
+	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
 	if( templ ) {
 		if( ! templ->mode().isEmpty() )
 			m_modes.remove( templ->displayName(), templ->mode() );
@@ -479,19 +481,29 @@ void XslContentElementList::slotAboutToRemove( int row ) {
 void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
 	Q_ASSERT( templ );
 	
+	//qDebug( qPrintable( QString( "Name = %1, Mode = %2, CountChildren = %3").arg( templ->name() ).arg( templ->mode() ).arg( templ->rowCount() ) ) );
+	
 	if( !templ->mode().isEmpty() ) 
-		m_modes.insert( templ->displayName(), templ->mode() );				
+		m_modes.insert( templ->name(), templ->mode() );				
 	
 	for( int i = 0; i < templ->rowCount(); i++ ) {
 		XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( templ->element( i ) );
 		if( param )
-			m_params.insert( templ->displayName(), param->displayName() );
+			m_params.insert( templ->name(), param->name() );
+	}
+}
+
+void XslContentElementList::addElementList( XSLFileContentParser * parser ) {
+	Q_ASSERT( parser );
+	
+	for( int i = 0; i < parser->rowCount(); i++ ) {
+		XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( parser->element( i ) );
+		if( templ ) addElementList( templ );
+		XSLFileContentParser * p = dynamic_cast<XSLFileContentParser*>( parser->element( i ) );
+		if( p ) addElementList( p );
 	}
 }
 
 void XslContentElementList::slotReset() {
-	foreach( FileContentElement * element, list() ) {
-		XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
-		if( templ ) addElementList( templ );
-	}
+	if( dynamic_cast<XSLFileContentParser*>( rootElement() ) ) addElementList( dynamic_cast<XSLFileContentParser*>( rootElement() ) );
 }

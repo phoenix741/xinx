@@ -156,15 +156,14 @@ public:
 	QStringList modes( QString templateName ) const;
 	QStringList params( QString templateName ) const;
 private slots:
-	void slotAboutToAdd( int row );
-	void slotAdded();
-	void slotAboutToRemove( int row );
+	void slotAdd( FileContentElement * element, int row );
+	void slotRemove( FileContentElement * element );
 	void slotReset();
 private:
+	void addElementList( XSLFileContentParser * parser );
 	void addElementList( XSLFileContentTemplate * templ );
 	
 	QMultiHash<QString,QString> m_modes, m_params;
-	int m_line;
 };
 
 #endif
