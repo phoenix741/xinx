@@ -54,8 +54,12 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 				return data->icon();
 			case Qt::DisplayRole:
 				return data->displayName();
-			case Qt::UserRole:
-				return data->metaObject()->className();
+			case XSLCompletionModel::Name:
+				return data->name();
+			case XSLCompletionModel::isVariable:
+				return dynamic_cast<XSLFileContentParams*>( data ) || dynamic_cast<XSLFileContentVariable*>( data );
+			case XSLCompletionModel::isHtmlOnly:
+				return false;
 			}
 		} else {
 			value_row = index.row();
@@ -66,9 +70,12 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 				case Qt::DecorationRole:
 					return QIcon(":/images/html_value.png");
 				case Qt::DisplayRole:
+				case XSLCompletionModel::Name:
 					return xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().at( value_row );
-				case Qt::UserRole:
-					return -1;
+				case XSLCompletionModel::isVariable:
+					return false;
+				case XSLCompletionModel::isHtmlOnly:
+					return true;
 				}
 			}
 		}
@@ -79,7 +86,11 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 				case Qt::DecorationRole:
 					return QIcon(":/images/noeud.png");
 				case Qt::DisplayRole:
+				case XSLCompletionModel::Name:
 					return xmlCompletionContents->balise( m_baliseName )->attributes().at( value_row )->name();
+				case XSLCompletionModel::isVariable:
+				case XSLCompletionModel::isHtmlOnly:
+					return false;
 				}
 			}
 		} else {
@@ -88,7 +99,11 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 				case Qt::DecorationRole:
 					return QIcon(":/images/noeud.png");
 				case Qt::DisplayRole:
+				case XSLCompletionModel::Name:
 					return m_attributes.at( value_row );
+				case XSLCompletionModel::isVariable:
+				case XSLCompletionModel::isHtmlOnly:
+					return false;
 				}
 			}
 		}
@@ -97,11 +112,15 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 			switch( role ) {
 			case Qt::DecorationRole:
 				return QIcon(":/images/balise.png");
+			case XSLCompletionModel::Name:
 			case Qt::DisplayRole:
 				if( m_tags.testFlag( Html ) )
 					return xmlCompletionContents->htmlBalises().at( value_row )->name();
 				else
 					return xmlCompletionContents->xmlBalises().at( value_row )->name();
+			case XSLCompletionModel::isVariable:
+			case XSLCompletionModel::isHtmlOnly:
+				return false;
 			}
 		}
 	}
@@ -159,12 +178,12 @@ void XSLCompletionModel::setHiddenAttribute( const QStringList & attributes ) {
 	if( !xmlCompletionContents || !xmlCompletionContents->balise( m_baliseName ) ) return;
 
 	QStringList showedAttribute;
-	if( ! attributes.isEmpty() ) 
+	if( ! attributes.isEmpty() )
 		foreach( CompletionXMLAttribute* attribute, xmlCompletionContents->balise( m_baliseName )->attributes() ) {
 			if( ! attributes.contains( attribute->name() ) )
 				showedAttribute += attribute->name();
 		}
-	
+
 	if( m_attributes != showedAttribute ) {
 		m_attributes = showedAttribute;
 		reset();

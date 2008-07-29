@@ -43,7 +43,7 @@ public:
 
 	QStringList paramOfNode( const QTextCursor & cursor );
 	QList<XPathBalise> xpath( const QTextCursor & cursor, const QStringList & includeOnly = QStringList(), const QString & prefix = QString(), const  QStringList & attributeName = QStringList() );
-	
+
 	static QString xpathToString( const QList<XPathBalise> & xp );
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
@@ -52,7 +52,7 @@ protected slots:
 	virtual void insertCompletionValue( QTextCursor & tc, QString node, QString param );
 	virtual int insertCompletionParam( QTextCursor & tc, QString node, bool movePosition = true );
 	virtual int insertCompletionBalises( QTextCursor & tc, QString node );
-	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type );
+	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, bool isVariable, bool isHtmlOnly );
 protected:
 	virtual void localKeyPressExecute( QKeyEvent * e );
 	virtual bool processKeyPress( QKeyEvent * );

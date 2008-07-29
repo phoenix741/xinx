@@ -34,6 +34,8 @@ public:
 	enum CompletionTag { NoTags = 0x0, Html = 0x1, Xsl = 0x2 };
 	Q_DECLARE_FLAGS( CompletionTags, CompletionTag )
 
+	enum CompletionRole { Name = 0x32, isVariable = 0x33, isHtmlOnly = 0x34 };
+
 	XSLCompletionModel( CompletionTags tags, FileContentElementList * list, QObject * parent = 0 );
 	virtual ~XSLCompletionModel();
 

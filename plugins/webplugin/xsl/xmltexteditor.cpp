@@ -238,12 +238,15 @@ QStringList XmlTextEditor::paramOfNode( const QTextCursor & cursor ) {
 }
 
 void XmlTextEditor::insertCompletion( const QModelIndex& index ) {
-	TextEditor::insertCompletion( index );
+	QTextCursor tc = textCursor();
 
 	QCompleter * c = completer();
-	QString completion = c->completionModel()->data( index ).toString();
+	QString completion = c->completionModel()->data( index, XSLCompletionModel::Name ).toString(),
+			prefix     = c->completionPrefix();
 
-	QTextCursor tc = textCursor();
+	textUnderCursor( tc, true );
+	tc.insertText( completion );
+
 	cursorPosition pos = editPosition( tc );
 	if( pos == cpEditParamName ) {
 		insertCompletionValue( tc, m_nodeName, completion );
@@ -255,8 +258,9 @@ void XmlTextEditor::insertCompletion( const QModelIndex& index ) {
 				tc.insertText( ">" );
 		} else
 			if( pos == cpEditParamValue ) {
-				QString type = c->completionModel()->data( index, Qt::UserRole ).toString();
-				insertCompletionAccolade( tc, m_nodeName, m_paramName, completion, type );
+				insertCompletionAccolade( tc, m_nodeName, m_paramName, completion,
+				                          c->completionModel()->data( index, XSLCompletionModel::isVariable ).toBool(),
+				                          c->completionModel()->data( index, XSLCompletionModel::isHtmlOnly ).toBool() );
 			}
 
 	setTextCursor( tc );
@@ -330,7 +334,7 @@ int XmlTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 	return position;
 }
 
-void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, QString type ) {
+void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, bool isVariable, bool isHtmlOnly ) {
 	Q_UNUSED( param );
 
 	QTextCursor tc2( tc );
@@ -352,14 +356,15 @@ void XmlTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QS
 
 	if( xmlCompletionContents && xmlCompletionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = xmlCompletionContents->balise( node );
-		if( insertAccolade && (balise->category() != "stylesheet") && ( ( type == "XSLFileContentParams" ) || ( type == "XSLFileContentVariable" ) || ( type == "XSLFileContentTemplate" ) )) {
-			if( insertDollard && ( ( type == "XSLFileContentParams" ) || ( type == "XSLFileContentVariable" ) ) )
+
+		if( insertAccolade && ( balise->category() != "stylesheet" ) && ( isVariable || !isHtmlOnly ) ) {
+			if( insertDollard && isVariable )
 				tc2.insertText( "{$" );
 			else
 				tc2.insertText( "{" );
 			tc.insertText( "}" );
 		} else
-		if( insertDollard && ( ( type == "XSLFileContentParams" ) || ( type == "XSLFileContentVariable" ) ) ) {
+		if( insertDollard && isVariable ) {
 			tc2.insertText( "$" );
 		}
 	}
@@ -464,7 +469,7 @@ QList<XPathBalise> XmlTextEditor::xpath( const QTextCursor & cursor, const QStri
 			// do nothing : add and remove from baliseClose
 		} else {
 			QString baliseName = baliseText.section( ' ', 0, 0 );
-			
+
 			if( ! ( includeOnly.isEmpty() || includeOnly.contains( baliseName ) ) ) continue; // do nothing
 			if( !baliseClose.isEmpty() && ( baliseName == baliseClose.top() ) ) {
 				baliseClose.pop();
