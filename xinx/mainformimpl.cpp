@@ -446,7 +446,7 @@ void PrivateMainformImpl::createActions() {
 	connect( m_parent->m_toggledFlatView, SIGNAL(toggled(bool)), m_projectDock, SLOT(toggledView(bool)) );
 	connect( m_parent->m_nextTabAct, SIGNAL(triggered()), this, SLOT(nextTab()) );
 	connect( m_parent->m_previousTabAct, SIGNAL(triggered()), this, SLOT(previousTab()) );
-	
+
 	/* Tools */
 	// Create Template
 	connect( m_parent->m_createTemplate, SIGNAL(triggered()), m_parent, SLOT(newTemplate()) );
@@ -699,7 +699,8 @@ void PrivateMainformImpl::updateRecentFiles() {
 
 		for( int i = 0; i < numRecentFiles; i++ ) {
 			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( XINXProjectManager::self()->project()->session()->lastOpenedFile()[i] ).fileName() );
-			m_recentFileActs[i]->setIcon( XinxPluginsLoader::self()->matchedFileType( QFileInfo( text ).fileName() )->icon() );
+			if( XinxPluginsLoader::self()->matchedFileType( QFileInfo( text ).fileName() ) )
+				m_recentFileActs[i]->setIcon( XinxPluginsLoader::self()->matchedFileType( QFileInfo( text ).fileName() )->icon() );
 			m_recentFileActs[i]->setText( text );
 			m_recentFileActs[i]->setData( XINXProjectManager::self()->project()->session()->lastOpenedFile()[i] );
 			m_recentFileActs[i]->setVisible( true );

@@ -280,8 +280,9 @@ int XmlTextEditor::insertCompletionParam( QTextCursor & tc, QString node, bool m
 	int position = -1;
 	if( SelfWebPluginSettings::self()->config().xml.addDefaultAttribute && xmlCompletionContents && xmlCompletionContents->balise( node ) ) {
 		CompletionXMLBalise* balise = xmlCompletionContents->balise( node );
+		QStringList paramList = paramOfNode( tc );
 		foreach( CompletionXMLAttribute* attr, balise->attributes() ) {
-			if( attr->isDefault() ) {
+			if( attr->isDefault() && !paramList.contains( attr->name() ) ) {
 				int defaultValue = attr->defaultValue();
 				QString defaultValueString;
 				if( defaultValue >= 0 )

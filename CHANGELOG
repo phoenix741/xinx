@@ -1,3 +1,67 @@
+XINX - 0.7.2.0
+==============
+
+XINX - 0.7.1.0
+==============
+- 176 : Erreur sur les icons lors de la completion	   
+- 117 : Subversion	   
+- 147 : Utilisation de Plugins et de librairie	   
+- 129 : Amélioration de la vue des fichiers de présentation	   
+- 170 : Assistant création de projet : orthographe !	   
+- 171 : Affichage des espaces/tabulation par bouton	   
+- 172 : Traitement	   
+- 174 : Plugin édition	   
+- 175 : Simplifier le plugin CVS	   
+- 177 : Utilisation du moteur de script pour les templates	   
+- 160 : Plantage lors du changement de projet et utilisation du flux de présentation	   
+- 163 : Plantage à la validation du projet	 
+
+
+XINX - 0.7.0.0
+==============
+- La coloration syntaxique, ainsi que la complétion sont déporté dans des plugins.
+- Le contenue du fichier, ainsi que la complétion sont rafraîchis, non plus à la sauvegarde mais après chaque arrêt de frappe.
+- Amélioration de la gestions des spécifiques.
+- Mise en commentaire dans les JavaScript et gestion des feuilles de styles CSS.
+- Une nouvelle charte graphique.
+- Un assistant pour la création de projet.
+- La gestion de plusieurs préfixes différents dans un même projet.
+- La copie du nom du fichier en faisant un clique droit sur un onglet 
+- 157 : Utilisation de CVS impossible	   
+- 159 : Complétion	   
+- 167 : Ne peux plus ouvrir un fichier WebServices...	   
+- 154 : Crash de XINX	   
+- 155 : Plantage dans le fichier JS	   
+- 140 : Ctrl+Clique	   
+- 142 : Amélioration de l'éditeur à onglet	   
+- 153 : WebServices	   
+- 158 : Boite de dialogue d'option	   
+-  97 : Fenêtre "Remplacer cette occurrence"	   
+- 108 : change Log	   
+- 118 : Afficher un BackTrace	   
+- 120 : Fusionner le content model JavaScript et XSL	   
+- 126 : Wizard de création projet	   
+- 130 : Afficher des mots en surligné.	   
+- 133 : Onglet Dossier projet > Préselection du nom de fichier	   
+- 135 : Recherche multi fichiers	   
+- 136 : Copier le nom du fichier	   
+- 137 : Utilisation d'un Cache	   
+- 138 : Simplifier la création de spécifique	   
+- 139 : Suppression de colonne	   
+- 141 : Gestion des fichers HTML/XHTML	   
+- 143 : Recherche dans les fluxs de présentation	   
+- 144 : Gérer plusieurs préfix	   
+- 145 : Ajout de fichiers Html dans le filtre "recherche de fichiers"
+- 148 : Problème sur la création des spécifiques	   
+- 149 : Suppression d'un fichier	   
+- 151 : Filtre projet	   
+- 161 : Liste des flux de présentation	   
+- 162 : Complétion/Import	   
+- 164 : Comparaison	   
+- 165 : JS Plante	   
+- 166 : Convertisseur	   
+- 146 : Fichier de conf bloqué	 
+
 XINX - 0.6.10.0
 ===============
 - Changement de la taille d'une tabulation

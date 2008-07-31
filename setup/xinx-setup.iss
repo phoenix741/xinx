@@ -20,13 +20,19 @@ UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany=Ulrich Van Den Hekke
-VersionInfoDescription=XSL / Javascript editor
+VersionInfoDescription=Project Editor
 ChangesAssociations=true
 AppVersion={#AppVersion}
 UninstallDisplayName={#AppName}
 TerminalServicesAware=false
 MinVersion=0,5.0.2195
 AllowUNCPath=false
+InfoAfterFile=..\CHANGELOG
+AppPublisher=Shadoware.Org
+AppPublisherURL=http://xinx.shadoware.org/
+AppSupportURL=http://xinx.shadoware.org/newticket
+AppUpdatesURL=http://xinx.shadoware.org/downloads
+AppContact=xinx@shadoware.org
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -62,6 +68,7 @@ DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
 DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: experimental
 DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
+DestDir: {app}\plugins\styles; Source: ..\..\..\Qt\4.4.0\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
@@ -103,6 +110,7 @@ Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom ful
 Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 Name: services; Description: Plugin with a WebServices editor; Types: custom full
 Name: experimental; Description: Plugins experimentals; Languages: 
+Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
 
 [Run]
 Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- /SILENT /NOCANCEL /NORESTART"; StatusMsg: Installation de D-BUS; Flags: hidewizard; Components: dbus
