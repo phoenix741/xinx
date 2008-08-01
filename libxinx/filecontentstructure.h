@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef FILECONTENTSTRUCTURE_H_
 #define FILECONTENTSTRUCTURE_H_
 
@@ -49,8 +49,8 @@ public:
 	 * \return The line of the error.
 	 */
 	int getLine() const;
-	
-	/*! 
+
+	/*!
 	 * Return the column where the error is.
 	 * \return the column of the error.
 	 */
@@ -65,12 +65,12 @@ private:
 class  FileContentParser {
 public:
 	virtual ~FileContentParser() {};
-	
+
 	/*! Loed the content of the device. */
 	virtual void loadFromDevice( QIODevice * device ) = 0;
 	/*! Save the content of the device. */
 	virtual void saveToDevice( QIODevice * ) {};
-	
+
 	/*!
 	 * Construct elements from \e content.
 	 */
@@ -79,10 +79,10 @@ public:
 	 * Construct elements from \e filename.
 	 */
 	virtual void loadFromFile( const QString & filename );
-	
+
 	//! Load from file \e filename but really charged it when needed.
 	virtual void loadFromFileDelayed( const QString & filename ) = 0;
-	
+
 	//! Tell if the file is loaded or not.
 	virtual bool isLoaded() = 0;
 };
@@ -102,7 +102,7 @@ public:
 	FileContentElement( FileContentElement * parent, const QString & name, int line );
 	/*! Destroy the element. */
 	virtual ~FileContentElement();
-	
+
 	/*!
 	 * Name of the element.
 	 * \return Return the name of the element.
@@ -119,7 +119,7 @@ public:
 	 * File name where is the element. If the file is unknown, Null string is returned.
 	 */
 	const QString & filename() const;
-	
+
 	/*!
 	 * Count the number of child of the element.
 	 * \return the number of child.
@@ -131,44 +131,44 @@ public:
 	 * \return The child element.
 	 */
 	virtual FileContentElement * element( int index );
-	
+
 	/*!
 	 * Return the parent of this element.
 	 * \return The parent of this element.
 	 */
 	virtual FileContentElement * parent();
-	 
+
 	/*!
 	 * Return the row index in the parent list.
 	 * \return The index of the element
-	 */ 
+	 */
 	virtual int row();
-	
+
 	/*!
-	 * Test if an element is equals to another FileContentElement \e element. If the element is equals 
+	 * Test if an element is equals to another FileContentElement \e element. If the element is equals
 	 * the method return \e true.
 	 */
 	virtual bool equals( FileContentElement * element );
-	
+
 	/*! Copy the contents of an FileContentElement \e element to this. */
 	virtual void copyFrom( FileContentElement * element );
-	
+
 	/*! Icon used for show how the element must be. */
 	virtual QIcon icon() const;
 
 	/*!
-	 * Function to change the name of the element. 
+	 * Function to change the name of the element.
 	 * \param name New name of the element.
 	 */
 	void setName( const QString & name );
 	/*!
-	 * Function to change the line of the element. 
+	 * Function to change the line of the element.
 	 * \param line Line of an element.
 	 */
 	void setLine( int line );
 	/*! Function to change the filename of the element. */
 	void setFilename( const QString & filename );
-	
+
 public: // TODO: Workaround to permit to XINX to be compiled on Windows ...
 	/*!
 	 * Remove an element from the child list. The signal \e aboutToRemove() and \e removed() is emited
@@ -177,19 +177,19 @@ public: // TODO: Workaround to permit to XINX to be compiled on Windows ...
 	void remove( int index );
 	/*!
 	 * Append an element at the end of the list. Signals, \e aboutToAdd() and \e added() is emited while
-	 * adding the element \e element. If the element is already in the list, the elements is not added but 
+	 * adding the element \e element. If the element is already in the list, the elements is not added but
 	 * updated and the signal \e updated() is emited.
 	 */
 	FileContentElement * append( FileContentElement * element );
 	/*! Remove all elements from the list. */
 	void clear();
-	
+
 	/*!
 	 * Search if the list contains the element \e element. The test is made using method \e equals().
 	 * If the list contains the element, a pointer to the element is returned, else NULL, is returned.
 	 */
 	FileContentElement * contains( FileContentElement * element );
-	
+
 	/*! Mark this element to be deleted by method \e removeMarkedDeleted(). */
 	void markDeleted();
 	/*! Mark the element to be keeped and ignored by \e removeMarkedDeleted(). */
@@ -226,7 +226,7 @@ public:
 	FileContentElementList( FileContentElement * root );
 	/*! Destroy the list but not the tree */
 	virtual ~FileContentElementList();
-	
+
 	/*! Return the list of \e FileContentElement. */
 	const QList<FileContentElement*> & list() const;
 signals:
@@ -242,6 +242,7 @@ signals:
 	void reset();
 protected:
 	FileContentElement * rootElement() const;
+	virtual bool isElementShowed( FileContentElement * ) { return true; };
 private slots:
 	void refreshList();
 	void addElement( FileContentElement * element, int row );
@@ -250,10 +251,10 @@ private:
 	void addElement( FileContentElement * element );
 	bool contains( FileContentElement * data );
 	void refreshRecursive( FileContentElement * data );
-	
+
 	QList<FileContentElement*> m_list;
 	QStringList m_files;
-	
+
 	FileContentElement * m_root;
 };
 

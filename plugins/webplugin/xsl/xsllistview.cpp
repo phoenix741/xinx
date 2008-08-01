@@ -442,6 +442,23 @@ XslContentElementList::~XslContentElementList() {
 
 }
 
+void XslContentElementList::setTemplateName( const QString & templateMatchName, const QString & mode ) {
+	//qDebug( qPrintable( QString("Name = \"%1\", Mode = \"%2\"").arg( templateMatchName ).arg( mode ) ) );
+	if( ( templateMatchName != m_templateMatchName ) || ( m_templateMode != mode ) ) {
+		m_templateMatchName = templateMatchName;
+		m_templateMode      = mode;
+		slotReset();
+	}
+}
+
+const QString & XslContentElementList::templateMatchName() const {
+	return m_templateMatchName;
+}
+
+const QString & XslContentElementList::templateMode() const {
+	return m_templateMode;
+}
+
 QStringList XslContentElementList::modes( QString templateName ) const {
 	return QStringList( m_modes.values( templateName ) );
 }
@@ -449,6 +466,15 @@ QStringList XslContentElementList::modes( QString templateName ) const {
 QStringList XslContentElementList::params( QString templateName ) const {
 	//qDebug( qPrintable( QString( "Name = %1 : %2" ).arg( templateName ).arg( m_params.values( templateName ).size() ) ) );
 	return QStringList( m_params.values( templateName ) );
+}
+
+bool XslContentElementList::isElementShowed( FileContentElement * element ) {
+	Q_ASSERT( element );
+	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element->parent() );
+	if( ! templ ) return true;
+	//qDebug( qPrintable( QString( "really name = \"%1\", really mode = \"%2\", asked name = \"%3\", asked mode = \"%4\"" ).arg( templ->name() ).arg( templ->mode() ).arg( m_templateMatchName ).arg( m_templateMode ) ) );
+	if( ( templ->name() == m_templateMatchName ) && ( m_templateMode.isEmpty() || ( templ->mode() == m_templateMode ) ) ) return true;
+	return false;
 }
 
 void XslContentElementList::slotAdd( FileContentElement * element, int row ) {
@@ -505,5 +531,7 @@ void XslContentElementList::addElementList( XSLFileContentParser * parser ) {
 }
 
 void XslContentElementList::slotReset() {
+	m_modes.clear();
+	m_params.clear();
 	if( dynamic_cast<XSLFileContentParser*>( rootElement() ) ) addElementList( dynamic_cast<XSLFileContentParser*>( rootElement() ) );
 }

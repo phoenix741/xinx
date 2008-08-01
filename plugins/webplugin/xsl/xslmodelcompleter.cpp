@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "xslmodelcompleter.h"
-#include "xsllistview.h"
 #include "editorcompletion.h"
 
 // Qt header
@@ -28,7 +27,7 @@
 
 /* XSLCompletionModel */
 
-XSLCompletionModel::XSLCompletionModel( CompletionTags tags, FileContentElementList * list, QObject * parent ) : QAbstractListModel( parent ), m_list( list ), m_tags( tags ) {
+XSLCompletionModel::XSLCompletionModel( CompletionTags tags, XslContentElementList * list, QObject * parent ) : QAbstractListModel( parent ), m_list( list ), m_tags( tags ) {
 	if( m_list ) {
 		connect( m_list, SIGNAL(aboutToAdd(int)), this, SLOT(beginInsertRows(int)) );
 		connect( m_list, SIGNAL(added()), this, SLOT(endInsertRows()) );
@@ -62,6 +61,23 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 				return false;
 			}
 		} else {
+			value_row -= m_list->list().count();
+			if( m_list && ( m_baliseName == "xsl:template" ) && ( m_attributeName == "mode" ) ) {
+				QStringList listeModes = m_list->modes( m_list->templateMatchName() );
+				switch( role ) {
+				case Qt::DecorationRole:
+					return QIcon(":/images/html_value.png");
+				case Qt::DisplayRole:
+				case XSLCompletionModel::Name:
+					return listeModes.at( value_row );
+				case XSLCompletionModel::isVariable:
+				case XSLCompletionModel::isHtmlOnly:
+					return false;
+				}
+
+				value_row -= listeModes.count();
+			}
+
 			value_row = index.row();
 			if( m_list ) value_row -= m_list->list().count();
 
@@ -78,6 +94,7 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 					return true;
 				}
 			}
+
 		}
 	} else if( ! m_baliseName.isEmpty() ) { // Complete attribute
 		if( m_attributes.isEmpty() ) {
@@ -143,6 +160,9 @@ int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 			if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 				size += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
 			}
+			if( m_list && ( m_baliseName == "xsl:template" ) && ( m_attributeName == "mode" ) ) {
+				size += m_list->modes( m_list->templateMatchName() ).size();
+			}
 		} else if( ! m_baliseName.isEmpty() ) { // Complete attribute
 			if( m_attributes.isEmpty() ) {
 				if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) ) {
@@ -188,6 +208,11 @@ void XSLCompletionModel::setHiddenAttribute( const QStringList & attributes ) {
 		m_attributes = showedAttribute;
 		reset();
 	}
+}
+
+void XSLCompletionModel::setTemplateName( const QString & templateMatchName, const QString & mode ) {
+	m_list->setTemplateName( templateMatchName, mode );
+	reset();
 }
 
 void XSLCompletionModel::beginInsertRows( int row ) {

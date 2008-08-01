@@ -43,13 +43,50 @@ void XslTextEditor::setParser( XslContentElementList * parser ) {
 	m_parser = parser;
 }
 
+QString XslTextEditor::paramValue( const QTextCursor & cursor, const QString & param ) {
+	QString text;
+	QTextCursor lt = document()->find( "<", cursor, QTextDocument::FindBackward );
+	QTextCursor c = document()->find( QRegExp( param + "=\"[^\"]*\"" ), cursor, QTextDocument::FindBackward );
+	if( ( ! c.isNull() ) && ( lt < c ) ) {
+		text = c.selectedText();
+	} else {
+		QTextCursor gt = document()->find( ">", cursor );
+		QTextCursor c = document()->find( QRegExp( param + "=\"[^\"]*\"" ), cursor );
+		if( ( ! c.isNull() ) && ( c < gt ) ) {
+			text = c.selectedText();
+		} else
+			return QString();
+	}
+
+	text.remove( 0, param.length() + 2 ).chop( 1 );
+	return text;
+}
+
+void XslTextEditor::getTemplate( const QTextCursor & cursor, QString * name, QString * mode ) {
+	if( ( name == 0 ) && ( mode == 0 ) ) return ;
+	*name = QString();
+	*mode = QString();
+	QTextCursor c = document()->find( "xsl:template", cursor, QTextDocument::FindBackward );
+	if( ! c.isNull() ) {
+		*name  = paramValue( c, "name" );
+		if( name->isEmpty() )
+			*name = paramValue( c, "match" );
+		*mode  = paramValue( c, "mode" );
+	}
+}
+
+
 QCompleter * XslTextEditor::completer() {
 	QCompleter * completer = XmlTextEditor::completer();
 
 	if( completer ) {
 		XSLCompletionModel * c = qobject_cast<XSLCompletionModel*>( completer->model() );
 		if( c ) {
+			QString templateName, templateMode;
+			getTemplate( textCursor(), &templateName, &templateMode );
+
 			c->setHiddenAttribute( QStringList() );
+			c->setTemplateName( templateName, templateMode );
 			cursorPosition pos = editPosition( textCursor() );
 			if( pos == cpEditParamName ) {
 				c->setFilter( m_nodeName );
@@ -73,18 +110,14 @@ int XslTextEditor::insertCompletionBalises( QTextCursor & tc, QString node ) {
 
 	int position = -1, cnt = 0;
 
-	if( m_parser && SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && ( ( node == "xsl:call-template" ) || ( node == "xsl:apply-templates" ) ) ) {
-		if( node == "xsl:call-template" ) {
-			QTextCursor c = document()->find( QRegExp( "name=\"[^\"]*\"" ), tc, QTextDocument::FindBackward );
-			if( ! c.isNull() ) {
-				QString nodeName = c.selectedText();
-				nodeName.remove( 0, 6 ).chop( 1 );
-				foreach( QString param, m_parser->params( nodeName ) ) {
-					tc.insertText( "\n" + indent + "\t" );
-					tc.insertText( "<xsl:with-param name=\"" + param + "\" select=\"\"/>" );
-					if( position == -1 ) position = tc.position() - 3;
-					cnt++;
-				}
+	if( m_parser && SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && ( node == "xsl:call-template" ) ) {
+		QString nodeName = paramValue( tc, "name" );
+		if( ! nodeName.isEmpty() ) {
+			foreach( QString param, m_parser->params( nodeName ) ) {
+				tc.insertText( "\n" + indent + "\t" );
+				tc.insertText( "<xsl:with-param name=\"" + param + "\" select=\"\"/>" );
+				if( position == -1 ) position = tc.position() - 3;
+				cnt++;
 			}
 		}
 	}

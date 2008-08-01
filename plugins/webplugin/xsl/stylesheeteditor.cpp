@@ -28,6 +28,7 @@
 // Qt header
 #include <QMessageBox>
 #include <QCompleter>
+#include <QSortFilterProxyModel>
 
 /* StyleSheetContainer */
 

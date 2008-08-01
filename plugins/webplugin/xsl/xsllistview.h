@@ -155,6 +155,12 @@ public:
 
 	QStringList modes( QString templateName ) const;
 	QStringList params( QString templateName ) const;
+
+	void setTemplateName( const QString & templateMatchName, const QString & mode = QString() );
+	const QString & templateMatchName() const;
+	const QString & templateMode() const;
+protected:
+	virtual bool isElementShowed( FileContentElement * );
 private slots:
 	void slotAdd( FileContentElement * element, int row );
 	void slotRemove( FileContentElement * element );
@@ -162,8 +168,9 @@ private slots:
 private:
 	void addElementList( XSLFileContentParser * parser );
 	void addElementList( XSLFileContentTemplate * templ );
-	
+
 	QMultiHash<QString,QString> m_modes, m_params;
+	QString m_templateMatchName, m_templateMode;
 };
 
 #endif

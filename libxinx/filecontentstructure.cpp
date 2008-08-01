@@ -323,6 +323,7 @@ void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 }
 
 void FileContentElementList::addElement( FileContentElement* element ) {
+	if( ! isElementShowed( element ) ) return;
 	QList<FileContentElement*>::iterator i = qLowerBound( m_list.begin(), m_list.end(), element, FileContentElementModelObjListSort );
 	int index = i - m_list.begin();
 	emit aboutToAdd( index );

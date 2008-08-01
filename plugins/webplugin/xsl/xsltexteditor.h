@@ -39,6 +39,9 @@ public:
 
 	void setParser( XslContentElementList * parser );
 private:
+	QString paramValue( const QTextCursor & cursor, const QString & param );
+	void getTemplate( const QTextCursor & cursor, QString * name, QString * mode );
+
 	XslContentElementList * m_parser;
 };
 

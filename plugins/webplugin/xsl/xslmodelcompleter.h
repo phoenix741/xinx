@@ -22,7 +22,7 @@
 #define __XSLMODELCOMPLETER_H__
 
 // Xinx header
-#include "filecontentstructure.h"
+#include "xsllistview.h"
 
 // Qt header
 #include <QAbstractListModel>
@@ -36,7 +36,7 @@ public:
 
 	enum CompletionRole { Name = 0x32, isVariable = 0x33, isHtmlOnly = 0x34 };
 
-	XSLCompletionModel( CompletionTags tags, FileContentElementList * list, QObject * parent = 0 );
+	XSLCompletionModel( CompletionTags tags, XslContentElementList * list, QObject * parent = 0 );
 	virtual ~XSLCompletionModel();
 
 	QVariant data( const QModelIndex &index, int role ) const;
@@ -45,6 +45,7 @@ public:
 
 	void setFilter( QString baliseName = QString(), QString attributeName = QString() );
 	void setHiddenAttribute( const QStringList & attributes );
+	void setTemplateName( const QString & templateMatchName, const QString & mode = QString() );
 protected slots:
 	virtual void beginInsertRows( int row );
 	virtual void endInsertRows();
@@ -53,7 +54,7 @@ protected slots:
 	virtual void reset();
 
 private:
-	FileContentElementList * m_list;
+	XslContentElementList * m_list;
 
 	QString m_baliseName, m_attributeName;
 	QStringList m_attributes;
