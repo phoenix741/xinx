@@ -87,8 +87,14 @@ static const char * spacePixmap_img[] = {
 
 /* TextEditor */
 
-TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ), m_syntaxhighlighter( 0 ), m_completer( 0 ) {
+TextEditor::TextEditor( QWidget * parent ) : QT_TEXT_EDITOR( parent ), m_syntaxhighlighter( 0 ), m_completer( 0 ) {
 	// Setup the main view
+	setFrameStyle( QFrame::NoFrame );
+	setLineWrapMode( QT_TEXT_EDITOR::NoWrap );
+
+#ifndef QT_PLAINTEXT
+	setAcceptRichText( false );
+#endif
 
     m_tabPixmap = QPixmap( tabPixmap_img );
 	m_spacePixmap = QPixmap( spacePixmap_img );
@@ -98,7 +104,6 @@ TextEditor::TextEditor( QWidget * parent ) : QTextEdit( parent ), m_syntaxhighli
 	connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateHighlighter() ) );
 	connect( XINXConfig::self(), SIGNAL( changed() ), this, SLOT( updateFont() ) );
 
-	setAcceptRichText(false);
 	//setAcceptDrops(false);
 	updateFont();
 }
@@ -161,7 +166,7 @@ void TextEditor::localKeyPressExecute( QKeyEvent * e ) {
 		key_home( e->modifiers() == Qt::ShiftModifier );
 		e->accept();
 	} else if( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) {
-		QTextEdit::keyPressEvent( e );
+		QT_TEXT_EDITOR::keyPressEvent( e );
 		key_enter();
 		e->accept();
 	} else if( ( e->key() == Qt::Key_Tab ) && ( ( e->modifiers() == Qt::NoModifier ) || ( e->modifiers() == Qt::ShiftModifier ) ) ) { // TODO: May be replace by an action of the texteditor...
@@ -172,7 +177,7 @@ void TextEditor::localKeyPressExecute( QKeyEvent * e ) {
 		emit needInsertSnipet( snipet );
 		e->accept();
 	} else
-		QTextEdit::keyPressEvent( e );
+		QT_TEXT_EDITOR::keyPressEvent( e );
 }
 
 void TextEditor::keyPressEvent( QKeyEvent * e ) {
@@ -286,10 +291,10 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent * event ) {
 
 void TextEditor::mousePressEvent ( QMouseEvent * event ) {
 	if( ( event->type() == QEvent::MouseButtonPress ) && ( dynamic_cast<QMouseEvent*>( event )->button() == Qt::LeftButton ) && ( event->modifiers() == Qt::ControlModifier ) ) {
-		QTextEdit::mousePressEvent( event );
+		QT_TEXT_EDITOR::mousePressEvent( event );
 		emit searchWord( textUnderCursor( textCursor(), false ) );
 	} else
-		QTextEdit::mousePressEvent( event );
+		QT_TEXT_EDITOR::mousePressEvent( event );
 }
 
 QString TextEditor::textUnderCursor( const QTextCursor & cursor, bool deleteWord, bool dot ) {
@@ -364,6 +369,56 @@ void TextEditor::setMatchingText( QString text ) {
 }
 
 void TextEditor::printWhiteSpaces( QPainter &p ) {
+#ifdef QT_PLAINTEXT
+	QTextBlock block        = firstVisibleBlock();
+	int blockNumber         = block.blockNumber();
+	int top                 = (int) blockBoundingGeometry( block ).translated( contentOffset() ).top();
+	int bottom              = top + (int) blockBoundingRect( block ).height();
+
+	while( block.isValid() && top <= this->rect().bottom() ) {
+		if( block.isVisible() && bottom >= this->rect().top() ) {
+			const QString txt = block.text();
+			const int len = txt.length();
+
+			for ( int i = 0; i < len; i++ ) {
+				QTextCursor cursor = textCursor();
+				cursor.setPosition( block.position() + i, QTextCursor::MoveAnchor );
+				const QFontMetrics fm = QFontMetrics( cursor.blockCharFormat().font() );
+				QRect r = cursorRect( cursor );
+
+				/* Highlight text */
+				if( (!m_matchedText.isEmpty() ) && ( txt[i] == m_matchedText[0] ) && ( txt.mid( i, m_matchedText.length() ) == m_matchedText ) ){
+					QRect highlightZone = r;
+					highlightZone.setLeft( highlightZone.left() + highlightZone.width() / 2 );
+					highlightZone.setWidth( fm.width( m_matchedText ) );
+					p.fillRect( highlightZone, XINXConfig::self()->config().editor.highlightWord );
+				}
+
+				if( XINXConfig::self()->config().editor.showTabulationAndSpace ) {
+					QPixmap *p1 = 0;
+
+					if ( txt[i] == ' ' )
+						p1 = &m_spacePixmap;
+					else if ( txt[i] == '\t' )
+						p1 = &m_tabPixmap;
+					else
+						continue;
+
+					// pixmaps are of size 8x8 pixels
+
+					int x = r.x() + 4;
+					int y = r.y() + fm.height() / 2 - 5;
+					p.drawPixmap( x, y, *p1 );
+				}
+			}
+		}
+
+		block  = block.next();
+		top    = bottom;
+		bottom = top + (int) blockBoundingRect( block ).height();
+		++blockNumber;
+	}
+#else
 	const int contentsY = verticalScrollBar()->value();
 	const qreal pageBottom = contentsY + viewport()->height();
 
@@ -412,6 +467,7 @@ void TextEditor::printWhiteSpaces( QPainter &p ) {
 			}
 		}
 	}
+#endif
 }
 
 void TextEditor::slotCursorPositionChanged() {
@@ -434,7 +490,7 @@ void TextEditor::paintEvent ( QPaintEvent * event ) {
 		printWhiteSpaces( painter );
 
 	painter.end();
-    QTextEdit::paintEvent( event );
+    QT_TEXT_EDITOR::paintEvent( event );
 }
 
 void TextEditor::gotoLine( int line ) {

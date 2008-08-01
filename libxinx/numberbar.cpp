@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "numberbar.h"
+#include "texteditor.h"
 
 // Qt header
 #include <QAbstractTextDocumentLayout>
@@ -37,7 +38,7 @@ NumberBar::NumberBar( QWidget *parent ) : QWidget( parent ), m_edit(0) {
 NumberBar::~NumberBar() {
 }
 
-void NumberBar::setTextEdit( QTextEdit *edit ) {
+void NumberBar::setTextEdit( TextEditor *edit ) {
 	this->m_edit = edit;
 	connect( m_edit->document()->documentLayout(), SIGNAL( update(const QRectF &) ), this, SLOT( update() ) );
 	connect( m_edit->verticalScrollBar(), SIGNAL( valueChanged(int) ), this, SLOT( update() ) );
@@ -45,13 +46,43 @@ void NumberBar::setTextEdit( QTextEdit *edit ) {
 }
 
 void NumberBar::paintEvent( QPaintEvent * event ) {
+	QPainter p( this );
+	p.setPen( Qt::black );
+	p.fillRect( event->rect(), Qt::lightGray );
+
+	QTextBlock currentBlock = m_edit->textCursor().block();
+#ifdef QT_PLAINTEXT
+	QTextBlock block        = m_edit->firstVisibleBlock();
+	int blockNumber         = block.blockNumber();
+	int top                 = (int) m_edit->blockBoundingGeometry( block ).translated( m_edit->contentOffset() ).top();
+	int bottom              = top + (int) m_edit->blockBoundingRect( block ).height();
+
+	while( block.isValid() && top <= event->rect().bottom() ) {
+		if( block.isVisible() && bottom >= event->rect().top() ) {
+			QString number = QString::number( blockNumber + 1 );
+			if( block == currentBlock ) { QFont f = p.font(); f.setBold( true ); p.setFont( f ); }
+			p.drawText( 0, top, width(), m_edit->fontMetrics().height(), Qt::AlignRight, number );
+			if( block == currentBlock ) { QFont f = p.font(); f.setBold( false ); p.setFont( f ); }
+
+			if( m_errors.contains( blockNumber + 1 ) ) {
+				p.drawPixmap( 3 + 20, top, QPixmap(":/images/warning.png").scaled(20,20) );
+			}
+			if( m_lineBookmark.contains( blockNumber + 1 ) ) {
+				p.drawPixmap( 3, top, QPixmap(":/images/bookmark.png").scaled(20,20) );
+			}
+		}
+
+		block  = block.next();
+		top    = bottom;
+		bottom = top + (int) m_edit->blockBoundingRect( block ).height();
+		++blockNumber;
+	}
+#else
 	Q_UNUSED( event );
 
 	QAbstractTextDocumentLayout *layout = m_edit->document()->documentLayout();
 	const QFontMetrics fm = fontMetrics();
-	QPainter p(this);
 
-	QTextBlock currentBlock = m_edit->textCursor().block();
 	int contentsY = m_edit->verticalScrollBar()->value();
 	qreal pageBottom = contentsY + m_edit->viewport()->height();
 	const int ascent = fontMetrics().ascent() + 1; // height = ascent + descent + 1
@@ -76,7 +107,7 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
 			f.setBold( false );
 			p.setFont( f );
 	 	}
-		
+
 		if( m_errors.contains( lineCount ) ) {
 			p.drawPixmap( 3 + 20, qRound( position.y() ) -contentsY-6,QPixmap(":/images/warning.png").scaled(20,20));
 		}
@@ -84,6 +115,7 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
 			p.drawPixmap( 3, qRound( position.y() ) -contentsY-6,QPixmap(":/images/bookmark.png").scaled(20,20));
 		}
 	}
+#endif
 }
 
 void NumberBar::mousePressEvent ( QMouseEvent * event ) {

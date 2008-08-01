@@ -42,7 +42,7 @@ protected:
 			cpEditGlobal
 	};
 
-	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & functionName );
+	static cursorPosition editPosition( const TextEditor * textEdit, const QTextCursor & cursor, QString & functionName );
 	cursorPosition editPosition( const QTextCursor & cursor );
 
 	QString m_functionName;

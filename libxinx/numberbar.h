@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-class QTextEdit;
+class TextEditor;
 class QPaintEvent;
 
 /*!
@@ -45,20 +45,20 @@ public:
 	 * Destroy the number bar.
 	 */
 	virtual ~NumberBar();
- 
+
  	/*!
- 	 * Define the text edit used with the number bar. The Text Edit will be used to count the 
+ 	 * Define the text edit used with the number bar. The Text Edit will be used to count the
  	 * number block and known where ths start of the document is show.
  	 * \param edit the text edit associate with the number bar.
  	 */
-	void setTextEdit( QTextEdit *edit );
+	void setTextEdit( TextEditor *edit );
 	/*!
-	 * Redfine the paint event of the number bar. The paint event write the line number in 
+	 * Redfine the paint event of the number bar. The paint event write the line number in
 	 * the number bar.
 	 */
 	virtual void paintEvent( QPaintEvent *ev );
 	/*!
-	 * Redefine the mouse event of the number bar. The mouse event show a popup to toggled a 
+	 * Redefine the mouse event of the number bar. The mouse event show a popup to toggled a
 	 * Bookmark.
 	 */
 	virtual void mousePressEvent ( QMouseEvent * event );
@@ -67,12 +67,12 @@ public:
 	 * Show icon bookmark at line \e line.
 	 */
 	void setBookmark( int line, bool enabled );
-	
+
 	/*!
 	 * List of bookmark of the editor.
 	 */
 	QList<int> & listOfBookmark();
-	
+
 	/*!
 	 * Set the list of error
 	 */
@@ -85,7 +85,7 @@ signals:
 	 */
 	void bookmarkToggled( int line, bool enabled );
 private:
-	QTextEdit *m_edit;
+	TextEditor *m_edit;
 	QList<int> m_lineBookmark, m_errors;
 };
 

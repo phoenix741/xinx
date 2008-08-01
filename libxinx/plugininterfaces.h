@@ -36,7 +36,6 @@ class SyntaxHighlighter;
 class XINXConfig;
 class QObject;
 class QTextDocument;
-class QTextEdit;
 class QKeyEvent;
 class QCompleter;
 class RCS;

@@ -76,7 +76,7 @@ void CSSTextEditor::commentSelectedText( bool uncomment ) {
 }
 
 
-CSSTextEditor::cursorPosition CSSTextEditor::editPosition( const QTextEdit * textEdit, const QTextCursor & cursor ) {
+CSSTextEditor::cursorPosition CSSTextEditor::editPosition( const TextEditor * textEdit, const QTextCursor & cursor ) {
 	QTextCursor cursorStartOfComment = textEdit->document()->find( "/*", cursor, QTextDocument::FindBackward );
 	QTextCursor cursorEndOfComment   = textEdit->document()->find( "*/", cursor, QTextDocument::FindBackward );
 

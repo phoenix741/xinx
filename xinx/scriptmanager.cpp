@@ -91,25 +91,25 @@ ScriptManager::ScriptManager() {
 	loadScripts();
 	projectChange();
 	setCurrentEditeur(0);
-	
+
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChange()) );
 }
 
 ScriptManager::~ScriptManager() {
-	
+
 }
 
 void ScriptManager::loadScripts() {
 	QDir scriptDir = QApplication::applicationDirPath();
 	scriptDir.cdUp();
 	scriptDir.cd( "scripts" );
-	
+
 	QStringList filenames = scriptDir.entryList( QStringList("*.js"), QDir::Files );
-	
+
 	foreach( QString filename, filenames ) {
 		loadScript( scriptDir.absoluteFilePath( filename ) );
 	}
-	
+
 	emit changed();
 }
 
@@ -119,21 +119,21 @@ void ScriptManager::loadScript( const QString & filename ) {
 		qWarning( qPrintable( tr("Cannot read file : %1: %2").arg( QFileInfo( filename ).fileName() ).arg( qsFile.errorString() ) ) );
 		return;
 	}
-	
+
 	QTextStream in( &qsFile );
 	in.setCodec( "UTF-8" );
-	
+
 	QString script = in.readAll();
 	qsFile.close();
-	
+
 	QScriptValue qsScript = m_engine.evaluate( script );
 	if( m_engine.hasUncaughtException() ) {
 		qWarning( qPrintable( tr( "An error occurred while executing the script %1 : %2 at line %3" ).arg( QFileInfo( filename ).fileName() ).arg( m_engine.uncaughtException().toString() ).arg( m_engine.uncaughtExceptionLineNumber() ) ) );
 		return;
 	}
-	
+
 	m_objects.append( qsScript );
-	
+
 	m_filenames << filename;
 }
 
@@ -161,7 +161,7 @@ void ScriptManager::setCurrentEditeur( AbstractEditor * editor ) {
 
 		TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>( editor );
 		if( textFileEditor ) {
-			QTextEdit * textEdit = textFileEditor->textEdit();
+			TextEditor * textEdit = textFileEditor->textEdit();
 			QScriptValue qsTextEdit = m_engine.newQObject( textEdit );
 			QScriptValue qsDocument = m_engine.newQObject( textEdit->document() );
 			qsTextEdit.setProperty( "document", qsDocument );
@@ -177,7 +177,7 @@ void ScriptManager::setCurrentEditeur( AbstractEditor * editor ) {
 
 ScriptManager * ScriptManager::self() {
 	static QMutex selfMutex;
-	
+
 	QMutexLocker locker( &selfMutex );
 	if( s_self == 0 ) {
 		s_self = new ScriptManager();

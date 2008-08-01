@@ -22,7 +22,6 @@
 #define __TEXTEDITOR_H__
 
 // Qt header
-#include <QTextEdit>
 #include <QPixmap>
 
 class QAbstractItemModel;
@@ -31,7 +30,15 @@ class SyntaxHighlighter;
 class QCompleter;
 class QModelIndex;
 
-class TextEditor : public QTextEdit {
+#ifdef QT_PLAINTEXT
+#	include <QPlainTextEdit>
+#	define QT_TEXT_EDITOR QPlainTextEdit
+#else
+#	include <QTextEdit>
+#	define QT_TEXT_EDITOR QTextEdit
+#endif // QT_PLAINTEXT
+
+class TextEditor : public QT_TEXT_EDITOR {
 	Q_OBJECT
 	Q_PROPERTY( QString selection READ selection WRITE setSelection )
 public:
@@ -138,6 +145,8 @@ private:
     QPixmap m_tabPixmap, m_spacePixmap;
 	QColor m_currentLineColor;
 	QCompleter * m_completer;
+
+	friend class NumberBar;
 };
 
 #endif // __TEXTEDITOR_H__

@@ -80,8 +80,6 @@ TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : Abstrac
 	else
 		m_view->setParent( this );
 
-	m_view->setFrameStyle( QFrame::NoFrame );
-	m_view->setLineWrapMode(QTextEdit::NoWrap);
 	m_view->installEventFilter( this );
 	m_view->setContextMenuPolicy( Qt::NoContextMenu );
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );

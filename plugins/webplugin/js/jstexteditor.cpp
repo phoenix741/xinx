@@ -42,7 +42,7 @@ JSTextEditor::~JSTextEditor() {
 
 QCompleter * JSTextEditor::completer() {
 	if( ! SelfWebPluginSettings::self()->config().javascript.activeCompletion ) return 0;
-	
+
 	if( TextEditor::completer() ) {
 		JavascriptModelCompleter * c = qobject_cast<JavascriptModelCompleter*>( TextEditor::completer()->model() );
 		if( c ) {
@@ -95,7 +95,7 @@ void JSTextEditor::commentSelectedText( bool uncomment ) {
 }
 
 
-JSTextEditor::cursorPosition JSTextEditor::editPosition( const QTextEdit * textEdit, const QTextCursor & cursor, QString & functionName ) {
+JSTextEditor::cursorPosition JSTextEditor::editPosition( const TextEditor * textEdit, const QTextCursor & cursor, QString & functionName ) {
 	QTextCursor cursorStartOfComment = textEdit->document()->find( "/*", cursor, QTextDocument::FindBackward );
 	QTextCursor cursorEndOfComment   = textEdit->document()->find( "*/", cursor, QTextDocument::FindBackward );
 	QTextCursor cursorLineCommented  = textEdit->document()->find( "//", cursor, QTextDocument::FindBackward );

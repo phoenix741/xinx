@@ -38,7 +38,7 @@ protected:
 		cpEditGlobal
 	};
 
-	static cursorPosition editPosition( const QTextEdit * textEdit, const QTextCursor & cursor );
+	static cursorPosition editPosition( const TextEditor * textEdit, const QTextCursor & cursor );
 	cursorPosition editPosition( const QTextCursor & cursor );
 };
 
