@@ -165,7 +165,10 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 
 	std::cerr << qPrintable( error ) << std::endl;
 
-    if( m_fatal ) m_dialog->exec(); // Pour ne pas quitter de suite
+	if( m_fatal ) {
+		m_dialog->exec(); // Pour ne pas quitter de suite
+		abort();
+	}
 }
 
 ExceptionManager * ExceptionManager::self() {

@@ -46,6 +46,7 @@ public:
 	void setFilter( QString baliseName = QString(), QString attributeName = QString() );
 	void setHiddenAttribute( const QStringList & attributes );
 	void setTemplateName( const QString & templateMatchName, const QString & mode = QString() );
+	void setApplyTemplateMatch( const QString & match );
 protected slots:
 	virtual void beginInsertRows( int row );
 	virtual void endInsertRows();
@@ -56,6 +57,7 @@ protected slots:
 private:
 	XslContentElementList * m_list;
 
+	QString m_applyTemplateMatch;
 	QString m_baliseName, m_attributeName;
 	QStringList m_attributes;
 	CompletionTags m_tags;

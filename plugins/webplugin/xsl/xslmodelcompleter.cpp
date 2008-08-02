@@ -45,7 +45,21 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 
 	int value_row = index.row();
 	if( ! ( m_baliseName.isEmpty() || m_attributeName.isEmpty() ) ) { // Complete value
-		if( m_list && ( value_row < m_list->list().count() ) ) {
+		if( m_list && ( m_baliseName == "xsl:apply-templates" ) && ( m_attributeName == "mode" ) ) {
+			QStringList listeModes = m_list->modes( m_applyTemplateMatch );
+			if( value_row < listeModes.size() ) {
+				switch( role ) {
+				case Qt::DecorationRole:
+					return QIcon(":/images/html_value.png");
+				case Qt::DisplayRole:
+				case XSLCompletionModel::Name:
+					return listeModes.at( value_row );
+				case XSLCompletionModel::isVariable:
+				case XSLCompletionModel::isHtmlOnly:
+					return false;
+				}
+			}
+		} else if( m_list && ( value_row < m_list->list().count() ) ) {
 			FileContentElement * data = m_list->list().at( value_row );
 
 			switch( role ) {
@@ -61,24 +75,6 @@ QVariant XSLCompletionModel::data( const QModelIndex &index, int role ) const {
 				return false;
 			}
 		} else {
-			value_row -= m_list->list().count();
-			if( m_list && ( m_baliseName == "xsl:template" ) && ( m_attributeName == "mode" ) ) {
-				QStringList listeModes = m_list->modes( m_list->templateMatchName() );
-				switch( role ) {
-				case Qt::DecorationRole:
-					return QIcon(":/images/html_value.png");
-				case Qt::DisplayRole:
-				case XSLCompletionModel::Name:
-					return listeModes.at( value_row );
-				case XSLCompletionModel::isVariable:
-				case XSLCompletionModel::isHtmlOnly:
-					return false;
-				}
-
-				value_row -= listeModes.count();
-			}
-
-			value_row = index.row();
 			if( m_list ) value_row -= m_list->list().count();
 
 			if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
@@ -157,11 +153,10 @@ int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 		int size = 0;
 		if( m_list && !( m_baliseName.isEmpty() || m_attributeName.isEmpty() ) ) size += m_list->list().count();
 		if( ! ( m_baliseName.isEmpty() || m_attributeName.isEmpty() ) ) { // Complete value
-			if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
+			if( m_list && ( m_baliseName == "xsl:apply-templates" ) && ( m_attributeName == "mode" ) ) {
+				size = m_list->modes( m_applyTemplateMatch ).size();
+			} else 	if( xmlCompletionContents && xmlCompletionContents->balise( m_baliseName ) && xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName ) ) {
 				size += xmlCompletionContents->balise( m_baliseName )->attribute( m_attributeName )->values().count();
-			}
-			if( m_list && ( m_baliseName == "xsl:template" ) && ( m_attributeName == "mode" ) ) {
-				size += m_list->modes( m_list->templateMatchName() ).size();
 			}
 		} else if( ! m_baliseName.isEmpty() ) { // Complete attribute
 			if( m_attributes.isEmpty() ) {
@@ -190,6 +185,18 @@ void XSLCompletionModel::setFilter( QString baliseName, QString attributeName ) 
 	if( ( m_baliseName != baliseName ) || ( m_attributeName != attributeName ) ) {
 		m_baliseName = baliseName;
 		m_attributeName = attributeName;
+		reset();
+	}
+}
+
+void XSLCompletionModel::setApplyTemplateMatch( const QString & match ) {
+	QString templateMatch = match;
+
+	if( templateMatch.contains( "/" ) )
+		templateMatch.remove( templateMatch.lastIndexOf( "/" ) + 1, templateMatch.length() );
+
+	if( m_applyTemplateMatch != templateMatch ) {
+		m_applyTemplateMatch = match;
 		reset();
 	}
 }

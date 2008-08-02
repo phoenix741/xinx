@@ -75,7 +75,7 @@ void XslTextEditor::getTemplate( const QTextCursor & cursor, QString * name, QSt
 	}
 }
 
-
+//#include <QDebug>
 QCompleter * XslTextEditor::completer() {
 	QCompleter * completer = XmlTextEditor::completer();
 
@@ -84,17 +84,24 @@ QCompleter * XslTextEditor::completer() {
 		if( c ) {
 			QString templateName, templateMode;
 			getTemplate( textCursor(), &templateName, &templateMode );
+			//qDebug() << "Ask for the model : name = " << templateName << ", mode" << templateMode;
 
 			c->setHiddenAttribute( QStringList() );
 			c->setTemplateName( templateName, templateMode );
 			cursorPosition pos = editPosition( textCursor() );
 			if( pos == cpEditParamName ) {
-				c->setFilter( m_nodeName );
-				c->setHiddenAttribute( paramOfNode( textCursor() ) );
+				//qDebug() << "Edit param (node name) " << m_nodeName;
+				c->setFilter( m_nodeName ); // Param of the node
+				c->setHiddenAttribute( paramOfNode( textCursor() ) ); // But hide some param
 			} else if( pos == cpEditNodeName ) {
-				c->setFilter();
+				//qDebug() << "Edit node";
+				c->setFilter(); // Edit Node
 			} else if( pos == cpEditParamValue ) {
-				c->setFilter( m_nodeName, m_paramName );
+				//qDebug() << "Edit param value (node name, param name) " << m_nodeName << " " << m_paramName;
+				//qDebug() << "match is " << paramValue( textCursor(), "select" );
+				c->setFilter( m_nodeName, m_paramName ); // Edit Value so
+				if( ( m_nodeName == "xsl:apply-templates" ) && ( m_paramName == "mode" ) )
+					c->setApplyTemplateMatch( paramValue( textCursor(), "select" ) );
 		}
 
 		return completer;
@@ -148,5 +155,7 @@ void XslTextEditor::insertCompletionAccolade( QTextCursor & tc, QString node, QS
 		QTextCursor tc2 = document()->find( "\"", tc );
 		tc2.setPosition( tc2.selectionEnd() );
 		tc2.insertText( " mode=\"" + mode + "\"" );
+		tc2.insertText( "/>" );
+		tc = tc2;
 	}
 }

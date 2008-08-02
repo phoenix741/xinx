@@ -211,8 +211,8 @@ QStringList XmlTextEditor::paramOfNode( const QTextCursor & cursor ) {
 	XmlTextEditor::cursorPosition position = editPosition( cursor );
 	if( ( position == cpEditComment ) || ( position == cpNone ) ) return QStringList();
 
-	QTextCursor baliseStart = document()->find( "<", cursor, QTextDocument::FindBackward );
-	QTextCursor baliseStop = document()->find( ">", cursor );
+	QTextCursor baliseStart = document()->find( QRegExp("[<>]"), cursor, QTextDocument::FindBackward );
+	QTextCursor baliseStop = document()->find( QRegExp("[<>]"), cursor );
 	if( baliseStart.isNull() || baliseStop.isNull() ) return QStringList();
 
 	QStringList result;

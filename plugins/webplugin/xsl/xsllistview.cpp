@@ -221,7 +221,8 @@ bool XSLFileContentParser::Parser::loadFromDevice( QIODevice * device ) {
 		}
 	}
 
-	m_parent->removeMarkedDeleted();
+	if( !error() ) // Else completion can be more difficulte
+		m_parent->removeMarkedDeleted();
 	return ! error();
 }
 
