@@ -10,4 +10,6 @@ HEADERS = xslgui.h \
  xuieditor.h
 SOURCES = xslgui.cpp \
  xuieditor.cpp
+win32 : RC_FILE += rc/plugin.rc
+
 include(../../project_mode.pro)

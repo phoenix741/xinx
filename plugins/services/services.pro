@@ -31,5 +31,6 @@ FORMS += ui/newprojectwizard_serviceslist.ui \
 	ui/servicesprojectproperty.ui \
 	ui/resultatServices.ui \
 	ui/servicesconnection.ui
+win32 : RC_FILE += rc/plugin.rc
 
 include(../../project_mode.pro)

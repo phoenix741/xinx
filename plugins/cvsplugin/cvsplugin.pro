@@ -19,5 +19,6 @@ SOURCES = entries.cpp \
 FORMS += ui/customize.ui
 RESOURCES = cvsplugin.qrc
 TRANSLATIONS += translations/cvsplugin_fr.ts
+win32 : RC_FILE += rc/plugin.rc
 
 include(../../project_mode.pro)

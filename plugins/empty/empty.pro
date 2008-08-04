@@ -8,4 +8,6 @@ RESOURCES = empty.qrc
 TRANSLATIONS += translations/empty_fr.ts
 HEADERS = empty.h
 SOURCES = empty.cpp
+win32 : RC_FILE += rc/plugin.rc
+
 include(../../project_mode.pro)

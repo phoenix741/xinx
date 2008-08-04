@@ -4,6 +4,7 @@ QT += xml
 TARGET = $$qtLibraryTarget(sharedxinx)
 DESTDIR += ./
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
+win32 : RC_FILE += rc/libxinx.rc
 HEADERS = textfileeditor.h \
     numberbar.h \
     texteditor.h \

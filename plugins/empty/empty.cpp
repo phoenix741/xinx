@@ -59,7 +59,7 @@ QVariant EmptyPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribut
 	case PLG_WEBSITE:
 		return "http://www.shadoware.org";
 	case PLG_VERSION:
-		return "0.1";
+		return "1.0";
 	case PLG_LICENCE:
 		return "GPL v2.0 or later";
 	}
