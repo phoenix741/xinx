@@ -72,6 +72,7 @@ void AbstractEditor::init() {
 	QHBoxLayout * messageWidgetLayout = new QHBoxLayout( m_messageWidget );
 	messageWidgetLayout->addWidget( m_messageLabel );
 	messageWidgetLayout->addWidget( messageClose );
+	messageWidgetLayout->setMargin( 0 );
 
 	connect( messageClose, SIGNAL(clicked()), m_messageWidget, SLOT(hide()) );
 

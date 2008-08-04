@@ -59,16 +59,17 @@ void NumberBar::paintEvent( QPaintEvent * event ) {
 
 	while( block.isValid() && top <= event->rect().bottom() ) {
 		if( block.isVisible() && bottom >= event->rect().top() ) {
+			int height = m_edit->fontMetrics().height();
 			QString number = QString::number( blockNumber + 1 );
 			if( block == currentBlock ) { QFont f = p.font(); f.setBold( true ); p.setFont( f ); }
-			p.drawText( 0, top, width(), m_edit->fontMetrics().height(), Qt::AlignRight, number );
+			p.drawText( 0, top, width(), height, Qt::AlignRight, number );
 			if( block == currentBlock ) { QFont f = p.font(); f.setBold( false ); p.setFont( f ); }
 
 			if( m_errors.contains( blockNumber + 1 ) ) {
-				p.drawPixmap( 3 + 20, top, QPixmap(":/images/warning.png").scaled(20,20) );
+				p.drawPixmap( 3 + height, top, QPixmap(":/images/warning.png").scaled( height, height ) );
 			}
 			if( m_lineBookmark.contains( blockNumber + 1 ) ) {
-				p.drawPixmap( 3, top, QPixmap(":/images/bookmark.png").scaled(20,20) );
+				p.drawPixmap( 3, top, QPixmap(":/images/bookmark.png").scaled( height, height ) );
 			}
 		}
 

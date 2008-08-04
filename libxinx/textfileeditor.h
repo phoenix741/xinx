@@ -118,6 +118,10 @@ public:
 	virtual bool nextBookmark();
 	virtual void clearAllBookmark();
 public slots :
+	virtual void initSearch( SearchOptions & options );
+	virtual bool find( const QString & text, SearchOptions options );
+	virtual void replace( const QString & from, const QString & to );
+
 	//! The default implementation do nothing
 	virtual void updateModel();
 
@@ -176,6 +180,7 @@ private:
 	NumberBar * m_numbers;
 	TextEditor * m_view;
 	EndOfLineType m_eol;
+	QTextCursor m_cursorStart, m_cursorEnd;
 };
 
 #endif // __FILEEDITOR_H__

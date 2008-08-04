@@ -53,7 +53,7 @@ void AbstractFileEditor::loadFromFile( const QString & fileName ) {
 	if( ! fileName.isEmpty() ) setWatcher( fileName );
 
 	QFile file( m_lastFileName );
-	if( ! file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+	if( ! file.open( QIODevice::ReadOnly ) ) {
 		qCritical( qPrintable(tr("Can't open file for reading %1 : %2").arg( m_lastFileName ).arg( file.errorString() )) );
 		return;
 	}

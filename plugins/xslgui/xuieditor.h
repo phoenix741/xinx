@@ -51,6 +51,9 @@ public:
 	virtual int bookmarkCount();
 
 public slots:
+	virtual void initSearch( SearchOptions & options );
+	virtual bool find( const QString & text, SearchOptions options );
+	virtual void replace( const QString & from, const QString & to );
 	virtual void undo();
 	virtual void redo();
 	virtual void cut();

@@ -228,6 +228,64 @@ QAbstractItemModel * TextFileEditor::model()  const {
 	return 0;
 }
 
+void TextFileEditor::initSearch( SearchOptions & options ) {
+	m_cursorStart = textEdit()->textCursor();
+	m_cursorEnd   = QTextCursor();
+
+	int selectionStart = m_cursorStart.selectionStart(),
+	    selectionEnd   = m_cursorStart.selectionEnd();
+
+	if( options.testFlag( SEARCH_FROM_START ) ) {
+		m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+		options &= ~ SearchOptions( SEARCH_FROM_START );
+	} else if( options.testFlag( ONLY_SELECTION ) && ! options.testFlag( BACKWARD ) ) {
+		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+		m_cursorEnd   = m_cursorStart;
+		m_cursorEnd.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+	} else if( options.testFlag( ONLY_SELECTION ) && options.testFlag( BACKWARD ) ) {
+		m_cursorStart.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+		m_cursorEnd   = m_cursorStart;
+		m_cursorEnd.setPosition( selectionStart, QTextCursor::MoveAnchor );
+	} else if( options.testFlag( BACKWARD ) ) {
+		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+	}
+
+	textEdit()->setTextCursor( m_cursorStart );
+}
+
+bool TextFileEditor::find( const QString & text, SearchOptions options ) {
+	QTextCursor finded, tc = m_cursorStart.isNull() ? textEdit()->textCursor() : m_cursorStart;
+
+	if( options.testFlag( BACKWARD ) )
+		tc.setPosition( tc.selectionStart() );
+	else
+		tc.setPosition( tc.selectionEnd() );
+
+	QTextDocument::FindFlags flags;
+	if( options.testFlag( BACKWARD ) ) flags ^= QTextDocument::FindBackward;
+	if( options.testFlag( MATCH_CASE ) ) flags ^= QTextDocument::FindCaseSensitively;
+	if( options.testFlag( WHOLE_WORDS ) ) flags ^= QTextDocument::FindWholeWords;
+
+	if( options.testFlag( REGULAR_EXPRESSION ) ) {
+		finded = textEdit()->document()->find( QRegExp( text ), tc, flags );
+	} else {
+		finded = textEdit()->document()->find( text, tc, flags );
+	}
+
+	if( options.testFlag( ONLY_SELECTION ) && (!finded.isNull())   ) ;; // EOSelection
+
+	if( ! finded.isNull() ) {
+		m_cursorStart = finded;
+		textEdit()->setTextCursor( finded );
+	}
+
+	return !finded.isNull();
+}
+
+void TextFileEditor::replace( const QString & from, const QString & to ) {
+
+}
+
 void TextFileEditor::updateModel() {
 	// Do nothing
 }
