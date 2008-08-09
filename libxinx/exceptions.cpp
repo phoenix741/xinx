@@ -131,31 +131,34 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 		emit errorTriggered();
 	}
 
+	foreach( QString filter, m_exceptionFilter ) {
+		if( QRegExp( filter ).exactMatch( error ) )
+			return;
+	}
+
 	if (stack.isEmpty())
 		stack << stackTrace();
 
 	// Create a file where write error
 	FILE * file = NULL;
 #ifndef Q_WS_WIN
-	const char * filename = "/tmp/xinx_trace.log";
+	const char * filename = "/tmp/xinx_trace.html";
 #else
-	const char * filename = "c:\\xinx_trace.log";
+	const char * filename = "c:\\xinx_trace.html";
 #endif
 
 	file = fopen( filename, "a" );
 	if( file ) {
+		fprintf( file, "<u><i>" );
 		fprintf( file, qPrintable( QDateTime::currentDateTime().toString() ) );
-		fprintf( file, "\n" );
-		fprintf( file, "* Backtrace ...\n" );
+		fprintf( file, "</i></u><br/>\n" );
+		fprintf( file, "<b>Backtrace :</b><br/>\n" );
+		fprintf( file, "<p>\n" );
 		fprintf( file, qPrintable( stack.join( "\n" ) ) );
-		fprintf( file, "* Error ...\n" );
+		fprintf( file, "</p>\n" );
 		fprintf( file, qPrintable( error ) );
+		fprintf( file, "<hr/>\n" );
 		fclose( file );
-	}
-
-	foreach( QString filter, m_exceptionFilter ) {
-		if( QRegExp( filter ).exactMatch( error ) )
-			return;
 	}
 
 	if( m_fatal && ( QThread::currentThread() == qApp->thread() ) )
