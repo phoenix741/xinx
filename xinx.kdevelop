@@ -107,7 +107,7 @@
       <designerintegration>ExternalDesigner</designerintegration>
       <root>/usr/lib/qt4</root>
       <qmake>/usr/bin/qmake-qt4</qmake>
-      <designer>/usr/bin/designer</designer>
+      <designer>/usr/bin/designer-qt4</designer>
       <designerpluginpaths/>
     </qt>
     <codecompletion>
@@ -158,14 +158,14 @@
   </kdevfilecreate>
   <kdevtrollproject>
     <general>
-      <activedir></activedir>
+      <activedir>xinx</activedir>
     </general>
     <run>
       <directoryradio>executable</directoryradio>
-      <mainprogram>/home/phoenix/logiciels/linux/qt/xinx-trunk/xinx/xinx</mainprogram>
+      <mainprogram>/home/phoenix/logiciels/qt/xinx-trunk/xinx/xinx</mainprogram>
       <programargs></programargs>
       <globaldebugarguments></globaldebugarguments>
-      <globalcwd>/home/phoenix/logiciels/linux/qt/xinx-trunk</globalcwd>
+      <globalcwd>/home/phoenix/logiciels/qt/xinx-trunk</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
@@ -223,7 +223,7 @@
     </projectdoc>
   </kdevdocumentation>
   <ctagspart>
-    <customArguments/>
+    <customArguments></customArguments>
     <customTagfilePath>/home/phoenix/logiciels/linux/qt/xinx-trunk/tags</customTagfilePath>
     <activeTagsFiles/>
   </ctagspart>
