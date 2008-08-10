@@ -53,7 +53,7 @@ public:
 public slots:
 	virtual void initSearch( SearchOptions & options );
 	virtual bool find( const QString & text, SearchOptions options );
-	virtual void replace( const QString & from, const QString & to );
+	virtual void replace( const QString & from, const QString & to, SearchOptions options );
 	virtual void undo();
 	virtual void redo();
 	virtual void cut();

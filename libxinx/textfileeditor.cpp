@@ -236,7 +236,10 @@ void TextFileEditor::initSearch( SearchOptions & options ) {
 	    selectionEnd   = m_cursorStart.selectionEnd();
 
 	if( options.testFlag( SEARCH_FROM_START ) ) {
-		m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+		if( ! options.testFlag( BACKWARD ) )
+			m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+		else
+			m_cursorStart.movePosition( QTextCursor::End, QTextCursor::MoveAnchor );
 		options &= ~ SearchOptions( SEARCH_FROM_START );
 	} else if( options.testFlag( ONLY_SELECTION ) && ! options.testFlag( BACKWARD ) ) {
 		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );

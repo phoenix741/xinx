@@ -111,12 +111,11 @@ public:
 
 	// Find/Replace
 	ReplaceDialogImpl * m_findDialog;
-	QString m_findExpression, m_replaceExpression;
-	struct ReplaceDialogImpl::FindOptions m_findOptions;
-	bool m_yesToAllReplace, m_searchInverse;
-	QTextCursor m_cursorStart, m_cursorEnd;
-	int m_nbFindedText;
 	QMessageBox * m_replaceNextDlg;
+	bool m_yesToAllReplace, m_searchInverse;
+	int m_nbFindedText;
+	QString m_findExpression, m_replaceExpression;
+	AbstractEditor::SearchOptions m_findOptions;
 
 	// Customize
 	AppSettings::struct_extentions extentionOfFileName( const QString & name );
@@ -150,10 +149,10 @@ public slots:
 	void updateSpaceAndTab();
 
 	// Search
-	void findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options );
-	void find();
+	void findFirst( const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options );
 	void findNext();
 	void findPrevious();
+	void find();
 	void replace();
 
 	// Project

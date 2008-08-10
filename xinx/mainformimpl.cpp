@@ -1070,18 +1070,17 @@ void PrivateMainformImpl::updateSpaceAndTab() {
 }
 
 void PrivateMainformImpl::createFindReplace() {
-	m_cursorStart 	   = QTextCursor();
-	m_cursorEnd		   = QTextCursor();
 	m_findDialog       = new ReplaceDialogImpl( m_parent );
-	connect( m_findDialog, SIGNAL(find(QString, QString, ReplaceDialogImpl::FindOptions)), this, SLOT(findFirst(QString, QString, ReplaceDialogImpl::FindOptions)) );
+	connect( m_findDialog, SIGNAL(find(QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findFirst(QString, QString, AbstractEditor::SearchOptions)) );
 
 	m_replaceNextDlg   = new QMessageBox( QMessageBox::Question, tr("Replace text"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, m_parent, Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint );
 	m_replaceNextDlg->setWindowModality( Qt::NonModal );
 }
 
-void PrivateMainformImpl::findFirst( const QString & chaine, const QString & dest, const struct ReplaceDialogImpl::FindOptions & options ) {
+void PrivateMainformImpl::findFirst( const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options ) {
 	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
+
+	AbstractEditor * editor = m_parent->m_tabEditors->currentEditor();
 
 	m_findExpression    = chaine;
 	m_replaceExpression = dest;
@@ -1090,106 +1089,28 @@ void PrivateMainformImpl::findFirst( const QString & chaine, const QString & des
 	m_nbFindedText		= 0;
 	m_searchInverse		= false;
 
-	bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
-	bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP );
-
-	TextEditor * textEdit = static_cast<TextFileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
-
-	m_cursorStart = textEdit->textCursor();
-	m_cursorEnd   = QTextCursor();
-
-	int selectionStart = m_cursorStart.selectionStart(),
-	    selectionEnd = m_cursorStart.selectionEnd();
-
-	if( m_findOptions.searchFromStart ) {
-		m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
-		m_findOptions.searchFromStart = false;
-	} else
-	if( selectionOnly && ! backwardSearch ) {
-		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
-		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.setPosition( selectionEnd, QTextCursor::MoveAnchor );
-	} else
-	if( selectionOnly && backwardSearch ) {
-		m_cursorStart.setPosition( selectionEnd, QTextCursor::MoveAnchor );
-		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.setPosition( selectionStart, QTextCursor::MoveAnchor );
-	} else
-	if( backwardSearch ) {
-		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
-	}
-
-	textEdit->setTextCursor( m_cursorStart );
-
+	editor->initSearch( m_findOptions );
 	findNext();
 }
 
 void PrivateMainformImpl::findNext() {
 	Q_ASSERT( m_parent->m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<TextFileEditor*>( m_parent->m_tabEditors->currentEditor() ) );
 
-	TextEditor * textEdit = static_cast<TextFileEditor*>( m_parent->m_tabEditors->currentEditor() )->textEdit();
-	QTextDocument * document = textEdit->document();
+	AbstractEditor * editor = m_parent->m_tabEditors->currentEditor();
 
 	bool continuer = true;
 
 	while( continuer ) {
 		continuer = false;
 
-		m_cursorStart = textEdit->textCursor();
+		AbstractEditor::SearchOptions options = m_findOptions;
+		if( m_searchInverse ) options |= AbstractEditor::BACKWARD;
+		bool trouve = editor->find( m_findExpression, options );
 
-		bool selectionOnly = ( m_findOptions.searchExtend == ReplaceDialogImpl::FindOptions::SEARCHSELECTION );
-		bool backwardSearch = ( m_findOptions.searchDirection == ReplaceDialogImpl::FindOptions::SEARCHUP ) || m_searchInverse;
-
-		if( backwardSearch )
-			m_cursorStart.setPosition( m_cursorStart.selectionStart() );
-		else
-			m_cursorStart.setPosition( m_cursorStart.selectionEnd() );
-
-		QTextDocument::FindFlags flags;
-		if( backwardSearch ) flags ^= QTextDocument::FindBackward;
-		if( m_findOptions.matchCase ) flags ^= QTextDocument::FindCaseSensitively;
-		if( m_findOptions.wholeWords ) flags ^= QTextDocument::FindWholeWords;
-
-		if( ! m_cursorStart.isNull() ) {
-			if( m_findOptions.regularExpression ) {
-				m_cursorStart = document->find( QRegExp( m_findExpression ), m_cursorStart, flags );
-			} else {
-				m_cursorStart = document->find( m_findExpression, m_cursorStart, flags );
-			}
-		}
-
-		if( m_cursorStart.isNull() || ( selectionOnly && ( ( !backwardSearch && m_cursorEnd < m_cursorStart ) || ( backwardSearch && m_cursorStart < m_cursorEnd ) ) ) ) {
-			if( m_findOptions.toReplace && m_yesToAllReplace ) {
-				QMessageBox::information( m_parent,
-							tr("Search/Replace"),
-							tr("%1 occurences of '%2' replaced.").arg( m_nbFindedText ).arg( m_findExpression ),
-							QMessageBox::Ok);
-			} else {
-				QMessageBox::StandardButton ret = QMessageBox::warning( m_parent,
-							tr("Search/Replace"),
-							tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg( m_nbFindedText ).arg( m_findExpression ).arg( m_findOptions.toReplace ? tr("replaced") : tr("finded") ),
-							QMessageBox::Yes | QMessageBox::No);
-
-				if( ret == QMessageBox::Yes ) {
-					m_findOptions.searchExtend = ReplaceDialogImpl::FindOptions::SEARCHALL;
-					m_cursorStart = textEdit->textCursor();
-					if( ! backwardSearch )
-						m_cursorStart.movePosition( QTextCursor::Start );
-					else
-						m_cursorStart.movePosition( QTextCursor::End );
-					m_cursorEnd = QTextCursor();
-
-					continuer = true;
-				}
-			}
-			m_nbFindedText = 0;
-		} else {
+		if( trouve ) {
 			m_nbFindedText++;
 
-			textEdit->setTextCursor( m_cursorStart );
-
-			if( m_findOptions.toReplace ) {
+			if( ! m_replaceExpression.isNull() ) {
 				QMessageBox::StandardButton ret = QMessageBox::Yes;
 
 				if(! m_yesToAllReplace) {
@@ -1204,11 +1125,11 @@ void PrivateMainformImpl::findNext() {
 				switch(ret) {
 				case QMessageBox::Yes:
 					// Replace chaine
-					m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
+					editor->replace( m_findExpression, m_replaceExpression, options );
 					continuer = true;
 					break;
 				case QMessageBox::YesToAll:
-					m_cursorStart.insertText( ReplaceDialogImpl::replaceStr( m_findOptions, m_findExpression, m_replaceExpression, m_cursorStart.selectedText() ) );
+					editor->replace( m_findExpression, m_replaceExpression, options );
 					m_yesToAllReplace = true;
 					continuer = true;
 					break;
@@ -1219,9 +1140,29 @@ void PrivateMainformImpl::findNext() {
 					;
 				}
 			}
+		} else {
+			if( m_yesToAllReplace && ! m_replaceExpression.isNull() ) {
+				QMessageBox::information( m_parent,
+				                          tr("Search/Replace"),
+				                          tr("%1 occurences of '%2' replaced.").arg( m_nbFindedText ).arg( m_findExpression ),
+				                          QMessageBox::Ok );
+			} else {
+				QMessageBox::StandardButton ret = QMessageBox::warning( m_parent,
+					tr("Search/Replace"),
+					tr("%1 occurences of '%2' %3. Return to the beginning of the document ?").arg( m_nbFindedText ).arg( m_findExpression ).arg( ! m_replaceExpression.isNull() ? tr("replaced") : tr("finded") ),
+					QMessageBox::Yes | QMessageBox::No );
+
+				if( ret == QMessageBox::Yes ) {
+					m_findOptions   &= ~ AbstractEditor::SearchOptions( AbstractEditor::ONLY_SELECTION );
+					options			&= ~ AbstractEditor::SearchOptions( AbstractEditor::ONLY_SELECTION );
+					options 		|= AbstractEditor::SEARCH_FROM_START;
+					editor->initSearch( options );
+
+					continuer = true;
+				}
+			}
+			m_nbFindedText = 0;
 		}
-		if( ! m_cursorStart.isNull() )
-			textEdit->setTextCursor( m_cursorStart );
 	}
 	m_yesToAllReplace = false;
 }

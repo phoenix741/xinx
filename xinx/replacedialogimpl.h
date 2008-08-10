@@ -23,39 +23,23 @@
 
 #ifndef REPLACEDIALOGIMPL_H
 #define REPLACEDIALOGIMPL_H
-//
+
+// Xinx header
 #include "ui_replace.h"
-//
+#include <abstracteditor.h>
+
 class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog {
 	Q_OBJECT
 public:
-	struct FindOptions {
-		bool toReplace;
-
-		bool matchCase;
-		bool searchFromStart;
-		bool wholeWords;
-		bool regularExpression;
-
-		enum { SEARCHUP, SEARCHDOWN } searchDirection;
-		enum { SEARCHALL, SEARCHSELECTION } searchExtend;
-	};
-
 	ReplaceDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	
+
 	void initialize();
 	void setText( const QString & );
 	void setReplace( bool );
 
-	/*!
-	 * \param src regular expression for search
-	 * \param dest result type
-	 * \param content the content find in the editor
-	 */
-	static QString replaceStr( const struct FindOptions &, const QString & src, const QString & dest, const QString & content );
-
 signals:
-	void find( const QString &, const QString &, const struct ReplaceDialogImpl::FindOptions & );
+	void find( const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
+	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
 
 private slots:
 	void on_m_findButton_clicked();

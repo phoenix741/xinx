@@ -23,15 +23,17 @@
 
 #include <QLineEdit>
 
+// Xinx header
 #include "replacedialogimpl.h"
-//
+#include "xslproject.h"
+
 ReplaceDialogImpl::ReplaceDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
 }
 //
 
 void ReplaceDialogImpl::on_m_replaceCheckBox_toggled( bool checked ) {
-	if( checked ) 
+	if( checked )
 		m_findButton->setText( tr("Replace") );
 	else
 		m_findButton->setText( tr("Find") );
@@ -40,6 +42,17 @@ void ReplaceDialogImpl::on_m_replaceCheckBox_toggled( bool checked ) {
 void ReplaceDialogImpl::initialize() {
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus( Qt::ActiveWindowFocusReason );
+
+	if( XINXProjectManager::self()->project() ) {
+		m_directoryWidget->setDefaultValue( XINXProjectManager::self()->project()->projectPath() );
+		m_directoryWidget->lineEdit()->setText( XINXProjectManager::self()->project()->projectPath() );
+	} else {
+		m_directoryWidget->setDefaultValue( QString() );
+		m_directoryWidget->lineEdit()->setText( QString() );
+	}
+
+	m_projectFilesRadioButton->setEnabled( XINXProjectManager::self()->project() != 0 );
+
 	m_findButton->setDefault(true);
 }
 
@@ -48,7 +61,7 @@ void ReplaceDialogImpl::setText( const QString & str ) {
 }
 
 void ReplaceDialogImpl::setReplace( bool value ) {
-	m_replaceCheckBox->setChecked( value ) ; 
+	m_replaceCheckBox->setChecked( value ) ;
 }
 
 void ReplaceDialogImpl::on_m_findButton_clicked() {
@@ -56,36 +69,25 @@ void ReplaceDialogImpl::on_m_findButton_clicked() {
 		m_comboFind->addItem( m_comboFind->lineEdit()->text() );
 	if( ! m_comboReplace->lineEdit()->text().isEmpty() && ( m_comboReplace->findText( m_comboFind->lineEdit()->text() ) == -1 ) )
 		m_comboReplace->addItem( m_comboReplace->lineEdit()->text() );
-	
-	struct FindOptions options;
-	options.toReplace         = m_replaceCheckBox->checkState() == Qt::Checked;
-	options.matchCase         = m_caseCheckBox->checkState() == Qt::Checked;
-	options.searchFromStart   = m_fromStartCheckBox->checkState() == Qt::Checked;
-	options.wholeWords        = m_wholeWordsCheckBox->checkState() == Qt::Checked;
-	options.regularExpression = m_regularExpressionCheckBox->checkState() == Qt::Checked;
 
-	options.searchDirection   = m_UpRadioButton->isChecked() ? FindOptions::SEARCHUP : FindOptions::SEARCHDOWN;
-	options.searchExtend      = m_searchAllRadioButton->isChecked() ? FindOptions::SEARCHALL : FindOptions::SEARCHSELECTION;
-	
-	emit find( m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options );
-}
+	AbstractEditor::SearchOptions options;
+	if( m_searchSelectionRadioButton->isChecked() )					options |= AbstractEditor::ONLY_SELECTION;
+	if( m_UpRadioButton->isChecked() )								options |= AbstractEditor::BACKWARD;
+	if( m_caseCheckBox->checkState() == Qt::Checked )				options |= AbstractEditor::MATCH_CASE;
+	if( m_fromStartCheckBox->checkState() == Qt::Checked )			options |= AbstractEditor::SEARCH_FROM_START;
+	if( m_wholeWordsCheckBox->checkState() == Qt::Checked )			options |= AbstractEditor::WHOLE_WORDS;
+	if( m_regularExpressionCheckBox->checkState() == Qt::Checked )	options |= AbstractEditor::REGULAR_EXPRESSION;
 
-QString ReplaceDialogImpl::replaceStr( const struct FindOptions & options, const QString & src, const QString & dest, const QString & content ) {
-	if( ! options.toReplace ) return QString();
-	if( ! options.regularExpression ) return dest;
-		
-	QRegExp	expression( src );
-	expression.indexIn( content );
-	QStringList list = expression.capturedTexts();
-	QString result( dest );
-	int index = 1;
-
-	QStringList::iterator it = list.begin();
-	while (it != list.end()) {
-		result = result.replace(QString("\\%1").arg(index), *it);
-		it++; index++;
+	if( ! (m_projectFilesRadioButton->isChecked() || m_customFilesRadioButton->isChecked()) ) {
+		if( m_replaceCheckBox->checkState() == Qt::Checked )
+			emit find( m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options );
+		else
+			emit find( m_comboFind->lineEdit()->text(), QString(), options );
+	} else {
+		if( m_replaceCheckBox->checkState() == Qt::Checked )
+			emit findInFiles( m_directoryWidget->lineEdit()->text(), m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options );
+		else
+			emit findInFiles( m_directoryWidget->lineEdit()->text(), QString(), m_comboReplace->lineEdit()->text(), options );
 	}
-	
-	return result;
 }
 

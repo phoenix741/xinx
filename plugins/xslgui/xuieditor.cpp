@@ -170,7 +170,7 @@ bool XUIEditor::find( const QString & text, SearchOptions options ) {
 
 }
 
-void XUIEditor::replace( const QString & from, const QString & to ) {
+void XUIEditor::replace( const QString & from, const QString & to, SearchOptions options ) {
 
 }
 

@@ -53,8 +53,8 @@ public:
 		BACKWARD = 0x02,            //!< Reverse search
 		WHOLE_WORDS = 0x04,          //!< Search a word and not a piece of word
 		REGULAR_EXPRESSION = 0x08,  //!< The search string is a regular expression
-		SEARCH_FROM_START = 0x16,   //!< Search from the start of the document (backward and selection must be ignored)
-		MATCH_CASE = 0x32           //!< The search is case sensitive
+		SEARCH_FROM_START = 0x10,   //!< Search from the start of the document (backward and selection must be ignored)
+		MATCH_CASE = 0x20           //!< The search is case sensitive
 	};
 	Q_DECLARE_FLAGS( SearchOptions, SearchOption )
 	/*!
@@ -205,7 +205,7 @@ public slots :
 	 * @param from The text to replace (as asked by user so be aware of regexp)
 	 * @param to The text the user want to put. (if regexp \1, \2 is catched text)
 	 */
-	virtual void replace( const QString & from, const QString & to ) = 0;
+	virtual void replace( const QString & from, const QString & to, SearchOptions options ) = 0;
 
 	/*!
 	 * Call undo operation on the editor, if available. This operation rollback the last modification
@@ -333,5 +333,7 @@ private:
 
 	int m_bookmarkNumber;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( AbstractEditor::SearchOptions );
 
 #endif

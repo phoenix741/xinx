@@ -162,7 +162,7 @@
     </general>
     <run>
       <directoryradio>executable</directoryradio>
-      <mainprogram></mainprogram>
+      <mainprogram>/home/phoenix/logiciels/linux/qt/xinx-trunk/xinx/xinx</mainprogram>
       <programargs></programargs>
       <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/phoenix/logiciels/linux/qt/xinx-trunk</globalcwd>
