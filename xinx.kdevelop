@@ -106,8 +106,8 @@
       <includestyle>4</includestyle>
       <designerintegration>ExternalDesigner</designerintegration>
       <root>/usr/lib/qt4</root>
-      <qmake>/usr/bin/qmake-qt4</qmake>
-      <designer>/usr/bin/designer-qt4</designer>
+      <qmake>/usr/bin/qmake</qmake>
+      <designer>/usr/bin/designer</designer>
       <designerpluginpaths/>
     </qt>
     <codecompletion>

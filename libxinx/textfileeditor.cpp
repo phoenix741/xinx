@@ -254,7 +254,7 @@ void TextFileEditor::initSearch( SearchOptions & options ) {
 }
 
 bool TextFileEditor::find( const QString & text, SearchOptions options ) {
-	QTextCursor finded, tc = m_cursorStart.isNull() ? textEdit()->textCursor() : m_cursorStart;
+	QTextCursor finded, tc = m_cursorStart;
 
 	if( options.testFlag( BACKWARD ) )
 		tc.setPosition( tc.selectionStart() );
@@ -272,9 +272,15 @@ bool TextFileEditor::find( const QString & text, SearchOptions options ) {
 		finded = textEdit()->document()->find( text, tc, flags );
 	}
 
-	if( options.testFlag( ONLY_SELECTION ) && (!finded.isNull())   ) ;; // EOSelection
-
 	if( ! finded.isNull() ) {
+		if( options.testFlag( ONLY_SELECTION  ) ) {
+			if( (! options.testFlag( BACKWARD )) && ( m_cursorEnd < finded ) ) {
+				return false;
+			} else if( options.testFlag( BACKWARD ) && ( finded < m_cursorEnd ) ) {
+				return false;
+			}
+		}
+
 		m_cursorStart = finded;
 		textEdit()->setTextCursor( finded );
 	}
@@ -282,7 +288,27 @@ bool TextFileEditor::find( const QString & text, SearchOptions options ) {
 	return !finded.isNull();
 }
 
-void TextFileEditor::replace( const QString & from, const QString & to ) {
+void TextFileEditor::replace( const QString & from, const QString & to, SearchOptions options ) {
+	Q_ASSERT( ! m_cursorStart.isNull() );
+
+	if( ! options.testFlag( REGULAR_EXPRESSION ) ) {
+		m_cursorStart.insertText( to );
+		return;
+	}
+
+	QRegExp	expression( from );
+	expression.indexIn( m_cursorStart.selectedText() );
+	QStringList list = expression.capturedTexts();
+	QString result( to );
+	int index = 1;
+
+	QStringList::iterator it = list.begin();
+	while (it != list.end()) {
+		result = result.replace(QString("\\%1").arg(index), *it);
+		it++; index++;
+	}
+
+	m_cursorStart.insertText( result );
 
 }
 
