@@ -75,7 +75,8 @@ HEADERS += scriptmanager.h \
     xmlpresentationitem.h \
     private/p_customdialogimpl.h \
 	studioadaptor.h \
-	studiointerface.h
+	studiointerface.h \
+ searchfilethread.h
 SOURCES += snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -104,7 +105,8 @@ SOURCES += snipetdockwidget.cpp \
     newprojectwizard.cpp \
     scriptmanager.cpp \
     studioadaptor.cpp \
-    studiointerface.cpp
+    studiointerface.cpp \
+ searchfilethread.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 
 include(../project_mode.pro)
