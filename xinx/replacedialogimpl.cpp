@@ -64,6 +64,12 @@ void ReplaceDialogImpl::setReplace( bool value ) {
 	m_replaceCheckBox->setChecked( value ) ;
 }
 
+void ReplaceDialogImpl::on_m_projectFilesRadioButton_toggled(bool checked) {
+	if( checked ) {
+		m_directoryWidget->lineEdit()->setText( XINXProjectManager::self()->project()->projectPath() );
+	}
+}
+
 void ReplaceDialogImpl::on_m_findButton_clicked() {
 	if( ! m_comboFind->lineEdit()->text().isEmpty() && ( m_comboFind->findText( m_comboFind->lineEdit()->text() ) == -1 ) )
 		m_comboFind->addItem( m_comboFind->lineEdit()->text() );
@@ -87,7 +93,7 @@ void ReplaceDialogImpl::on_m_findButton_clicked() {
 		if( m_replaceCheckBox->checkState() == Qt::Checked )
 			emit findInFiles( m_directoryWidget->lineEdit()->text(), m_comboFind->lineEdit()->text(), m_comboReplace->lineEdit()->text(), options );
 		else
-			emit findInFiles( m_directoryWidget->lineEdit()->text(), QString(), m_comboReplace->lineEdit()->text(), options );
+			emit findInFiles( m_directoryWidget->lineEdit()->text(), m_comboFind->lineEdit()->text(), QString(), options );
 	}
 }
 

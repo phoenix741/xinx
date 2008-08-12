@@ -44,6 +44,7 @@ signals:
 private slots:
 	void on_m_findButton_clicked();
 	void on_m_replaceCheckBox_toggled(bool checked);
+	void on_m_projectFilesRadioButton_toggled(bool checked);
 };
 #endif
 

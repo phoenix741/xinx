@@ -149,6 +149,8 @@ public slots:
 	void updateSpaceAndTab();
 
 	// Search
+	void find( const QString & filename, const QString & lineText, int lineNumber );
+	void findEnd();
 	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
 	void findFirst( const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options );
 	void findNext();

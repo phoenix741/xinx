@@ -18,13 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// Qt header
-#include <QThread>
+#ifndef _SEARCHFILETHREAD_H_
+#define _SEARCHFILETHREAD_H_
 
 // Xinx header
 #include <abstracteditor.h>
+#include <xinxthread.h>
 
-class SearchFileThread : public QThread {
+class SearchFileThread : public XinxThread {
 	Q_OBJECT
 public:
 	SearchFileThread( QObject * parent = 0 );
@@ -35,12 +36,17 @@ public:
 
 	void search();
 signals:
-	void find( const QString & filename, const QString & line );
+	void find( const QString & filename, const QString & lineText, int lineNumber );
+	void test( const QString & filename );
+	void end();
 protected:
-	virtual void run();
+	virtual void threadrun();
 private:
 	void searchRecursive( const QString & path );
+	void testFile( const QString & path );
 
 	QString m_from, m_to, m_path;
 	AbstractEditor::SearchOptions m_options;
 };
+
+#endif // _SEARCHFILETHREAD_H_

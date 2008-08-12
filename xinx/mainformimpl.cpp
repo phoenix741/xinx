@@ -40,6 +40,7 @@
 #include "xinxpluginsloader.h"
 #include "newprojectwizard.h"
 #include "scriptmanager.h"
+#include "searchfilethread.h"
 
 // Qt header
 #include <QKeySequence>
@@ -1072,7 +1073,7 @@ void PrivateMainformImpl::updateSpaceAndTab() {
 void PrivateMainformImpl::createFindReplace() {
 	m_findDialog       = new ReplaceDialogImpl( m_parent );
 	connect( m_findDialog, SIGNAL(find(QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findFirst(QString, QString, AbstractEditor::SearchOptions)) );
-	connect( m_findDialog, SIGNAL(findInFiles(QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findInFiles(QString, QString, AbstractEditor::SearchOptions)) );
+	connect( m_findDialog, SIGNAL(findInFiles(QString, QString, QString, AbstractEditor::SearchOptions)), this, SLOT(findInFiles(QString, QString, QString, AbstractEditor::SearchOptions)) );
 
 	m_replaceNextDlg   = new QMessageBox( QMessageBox::Question, tr("Replace text"), tr("Replace this occurence"), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel, m_parent, Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint );
 	m_replaceNextDlg->setWindowModality( Qt::NonModal );
@@ -1095,7 +1096,21 @@ void PrivateMainformImpl::findFirst( const QString & chaine, const QString & des
 }
 
 void PrivateMainformImpl::findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options ) {
+	SearchFileThread * threadSearch = new SearchFileThread();
+	connect( threadSearch, SIGNAL(find(QString,QString,int)), this, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection );
+	connect( threadSearch, SIGNAL(end()), this, SLOT(findEnd()) );
 
+	threadSearch->setPath( directory );
+	threadSearch->setSearchString( from, to, options );
+	threadSearch->search();
+}
+
+void PrivateMainformImpl::find( const QString & filename, const QString & lineText, int lineNumber ) {
+	m_rcslogDock->log( RCS::LogNormal, QString("%1:%2\t%3").arg( QFileInfo( filename ).fileName() ).arg( lineNumber ).arg( lineText ) );
+}
+
+void PrivateMainformImpl::findEnd() {
+	QMessageBox::information( m_parent, tr("Search End"), tr("All string are finded") );
 }
 
 void PrivateMainformImpl::findNext() {
