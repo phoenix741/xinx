@@ -32,13 +32,13 @@ FORMS += ui/specifiquedlg.ui \
     ui/mainform.ui \
     ui/projectdirectorywidget.ui \
     ui/projectproperty.ui \
-    ui/rcslogform.ui \
     ui/replace.ui \
     ui/runsnipet.ui \
     ui/snipetproperty.ui \
     ui/xmlpresentationwidget.ui \
     ui/newprojectwizard_project.ui \
-    ui/newprojectwizard_specifique.ui
+    ui/newprojectwizard_specifique.ui \
+ ui/logform.ui
 HEADERS += scriptmanager.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \
@@ -62,7 +62,6 @@ HEADERS += scriptmanager.h \
     private/p_flattreeview.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
-    rcslogdialogimpl.h \
     replacedialogimpl.h \
     runsnipetdialogimpl.h \
     snipet.h \
@@ -76,7 +75,8 @@ HEADERS += scriptmanager.h \
     private/p_customdialogimpl.h \
 	studioadaptor.h \
 	studiointerface.h \
- searchfilethread.h
+ searchfilethread.h \
+ logdialogimpl.h
 SOURCES += snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -91,7 +91,6 @@ SOURCES += snipetdockwidget.cpp \
     mainformimpl.cpp \
     projectdirectorydockwidget.cpp \
     projectpropertyimpl.cpp \
-    rcslogdialogimpl.cpp \
     replacedialogimpl.cpp \
     runsnipetdialogimpl.cpp \
     snipet.cpp \
@@ -106,7 +105,8 @@ SOURCES += snipetdockwidget.cpp \
     scriptmanager.cpp \
     studioadaptor.cpp \
     studiointerface.cpp \
- searchfilethread.cpp
+ searchfilethread.cpp \
+ logdialogimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 
 include(../project_mode.pro)

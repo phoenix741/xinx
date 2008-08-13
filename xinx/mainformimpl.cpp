@@ -127,10 +127,11 @@ void PrivateMainformImpl::createDockWidget() {
 	action->setShortcut( tr("Alt+4") );
 	m_parent->m_windowsMenu->addAction( action );
 
-	m_rcslogDock = new RCSLogDockWidget( tr("RCS Log"), m_parent );
-	m_rcslogDock->setObjectName( QString::fromUtf8("m_rcslogDock") );
-	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_rcslogDock );
-	action = m_rcslogDock->toggleViewAction();
+	m_logDock = new LogDockWidget( tr("Log"), m_parent );
+	connect( m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
+	m_logDock->setObjectName( QString::fromUtf8("m_logDock") );
+	m_parent->addDockWidget( Qt::BottomDockWidgetArea, m_logDock );
+	action = m_logDock->toggleViewAction();
 	action->setShortcut( tr("Alt+9") );
 	m_parent->m_windowsMenu->addAction( action );
 }
@@ -950,23 +951,23 @@ void PrivateMainformImpl::selectedCompareWithVersionManager() {
 	if( rcs ) {
 		revision = rcs->infos( m_compareFileName ).version;
 
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
 		connect( m_parent->m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
 
-		m_rcslogDock->init();
+		m_logDock->init();
 		m_rcsExecute = true;
 
 		updateActions();
-		m_rcsVisible = m_rcslogDock->isVisible();
-		m_rcslogDock->show();
+		m_rcsVisible = m_logDock->isVisible();
+		m_logDock->show();
 		rcs->updateToRevision( m_compareFileName, revision, &m_headContent );
 	}
 }
 
 void PrivateMainformImpl::logTimeout() {
 	m_timer->stop();
-	m_rcslogDock->setVisible( false );
+	m_logDock->setVisible( false );
 }
 
 void PrivateMainformImpl::rcsLogTerminated() {
@@ -993,7 +994,8 @@ void PrivateMainformImpl::rcsLogTerminated() {
 		rcs->disconnect();
 	updateActions();
 
-	if( (!m_rcsVisible) && m_rcslogDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
+	m_logDock->end();
+	if( (!m_rcsVisible) && m_logDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
 		m_timer->start( 5000 );
 }
 
@@ -1096,8 +1098,15 @@ void PrivateMainformImpl::findFirst( const QString & chaine, const QString & des
 }
 
 void PrivateMainformImpl::findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options ) {
+	m_parent->m_searchAct->setEnabled( false );
+	m_parent->m_searchNextAct->setEnabled( false );
+	m_parent->m_searchPreviousAct->setEnabled( false );
+	m_parent->m_replaceAct->setEnabled( false );
+	m_logDock->init();
+	m_logDock->setVisible( true );
+
 	SearchFileThread * threadSearch = new SearchFileThread();
-	connect( threadSearch, SIGNAL(find(QString,QString,int)), this, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection );
+	connect( threadSearch, SIGNAL(find(QString,QString,int)), m_logDock, SLOT(find(QString,QString,int)), Qt::BlockingQueuedConnection );
 	connect( threadSearch, SIGNAL(end()), this, SLOT(findEnd()) );
 
 	threadSearch->setPath( directory );
@@ -1105,11 +1114,14 @@ void PrivateMainformImpl::findInFiles( const QString & directory, const QString 
 	threadSearch->search();
 }
 
-void PrivateMainformImpl::find( const QString & filename, const QString & lineText, int lineNumber ) {
-	m_rcslogDock->log( RCS::LogNormal, QString("%1:%2\t%3").arg( QFileInfo( filename ).fileName() ).arg( lineNumber ).arg( lineText ) );
-}
-
 void PrivateMainformImpl::findEnd() {
+	m_parent->m_searchAct->setEnabled( true );
+	m_parent->m_searchNextAct->setEnabled( true );
+	m_parent->m_searchPreviousAct->setEnabled( true );
+	m_parent->m_replaceAct->setEnabled( true );
+
+	m_logDock->end();
+
 	QMessageBox::information( m_parent, tr("Search End"), tr("All string are finded") );
 }
 
@@ -1493,18 +1505,18 @@ void MainformImpl::saveProject( bool withSessionData ) {
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_logDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		d->m_rcslogDock->init();
+		d->m_logDock->init();
 		d->m_rcsExecute = true;
 		if( list.count() == 0 )
 			rcs->update( QStringList() << XINXProjectManager::self()->project()->projectPath() );
 		else
 			rcs->update( list );
 		d->updateActions();
-		d->m_rcsVisible = d->m_rcslogDock->isVisible();
-		d->m_rcslogDock->show();
+		d->m_rcsVisible = d->m_logDock->isVisible();
+		d->m_logDock->show();
 	}
 }
 
@@ -1547,48 +1559,48 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 			}
 		}
 
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_logDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		d->m_rcslogDock->init();
+		d->m_logDock->init();
 		d->m_rcsExecute = true;
 
 		rcs->commit( dlg.filesOperation(), message );
 		d->updateActions();
-		d->m_rcsVisible = d->m_rcslogDock->isVisible();
-		d->m_rcslogDock->show();
+		d->m_rcsVisible = d->m_logDock->isVisible();
+		d->m_logDock->show();
 	}
 }
 
 void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_logDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		d->m_rcslogDock->init();
+		d->m_logDock->init();
 		d->m_rcsExecute = true;
 		rcs->add( list );
 		d->updateActions();
-		d->m_rcsVisible = d->m_rcslogDock->isVisible();
-		d->m_rcslogDock->show();
+		d->m_rcsVisible = d->m_logDock->isVisible();
+		d->m_logDock->show();
 	}
 }
 
 void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 	RCS * rcs = d->m_projectDock->rcs();
 	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_rcslogDock, SLOT(log(RCS::rcsLog,QString)) );
+		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), d->m_logDock, SLOT(log(RCS::rcsLog,QString)) );
 		connect( rcs, SIGNAL(operationTerminated()), d, SLOT(rcsLogTerminated()) );
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		d->m_rcslogDock->init();
+		d->m_logDock->init();
 		d->m_rcsExecute = true;
 		foreach( QString file, list ) {
 			d->m_projectDock->removeFile( file );
 		}
 		rcs->remove( list );
 		d->updateActions();
-		d->m_rcsVisible = d->m_rcslogDock->isVisible();
-		d->m_rcslogDock->show();
+		d->m_rcsVisible = d->m_logDock->isVisible();
+		d->m_logDock->show();
 	}
 }

@@ -37,7 +37,7 @@ SearchFileThread::~SearchFileThread() {
 }
 
 void SearchFileThread::search() {
-	if( ! m_to.isEmpty() )
+	if( ! m_to.isNull() )
 		QMessageBox::information( qApp->activeWindow(), tr("Not supported"), tr("Replacement on multiple file is not yet supported") );
 
 	start( QThread::IdlePriority );
@@ -63,9 +63,9 @@ void SearchFileThread::testFile( const QString & path ) {
 
 		bool contains;
 		if( m_options.testFlag( AbstractEditor::WHOLE_WORDS ) || m_options.testFlag( AbstractEditor::REGULAR_EXPRESSION ) )
-			contains = text.contains( QRegExp( m_from ) );
+			contains = text.contains( QRegExp( from ) );
 		else
-			contains = text.contains( m_from, cs );
+			contains = text.contains( from, cs );
 
 		if( contains )
 			emit find( path, text.trimmed(), line );

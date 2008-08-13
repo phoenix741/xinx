@@ -28,7 +28,7 @@
 #include "../xmlpresentationdockwidget.h"
 #include <xinxcore.h>
 #include "../replacedialogimpl.h"
-#include "../rcslogdialogimpl.h"
+#include "../logdialogimpl.h"
 #include "../snipet.h"
 #include "../snipetdockwidget.h"
 #include <xinxconfig.h>
@@ -81,7 +81,7 @@ public:
 	// Dock
 	FileContentDockWidget * m_contentDock;
 	ProjectDirectoryDockWidget * m_projectDock;
-	RCSLogDockWidget * m_rcslogDock;
+	LogDockWidget * m_logDock;
 	XmlPresentationDockWidget * m_xmlpresentationdock;
 	SnipetDockWidget * m_snipetsDock;
 
@@ -149,7 +149,6 @@ public slots:
 	void updateSpaceAndTab();
 
 	// Search
-	void find( const QString & filename, const QString & lineText, int lineNumber );
 	void findEnd();
 	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
 	void findFirst( const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options );

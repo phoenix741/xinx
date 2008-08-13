@@ -17,31 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef RCSLOGDIALOGIMPL_H
 #define RCSLOGDIALOGIMPL_H
 
 // Xinx header
 #include "rcs.h"
+#include "ui_logform.h"
 
 // Qt header
 #include <QDockWidget>
 
-class PrivateRCSLogDockWidget;
+class PrivateLogDockWidget;
 
-class RCSLogDockWidget : public QDockWidget {
+class LogDockWidget : public QDockWidget {
 	Q_OBJECT
 public:
-	RCSLogDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	RCSLogDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	virtual ~RCSLogDockWidget();
-	
+	LogDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	LogDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+	virtual ~LogDockWidget();
+
 	void init();
+	void end();
 public slots:
 	void log( RCS::rcsLog niveau, const QString & info );
+	void find( const QString & filename, const QString & text, int line );
+signals:
+	void open( const QString & filename, int line );
+protected slots:
+	void on_m_searchTreeWidget_doubleClicked( const QModelIndex & index );;
 private:
-	PrivateRCSLogDockWidget * d;
-	friend class PrivateRCSLogDockWidget;
+	Ui::LogWidget * m_logwidget;
 };
 #endif
 
