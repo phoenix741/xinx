@@ -91,7 +91,7 @@ void XINXConfig::addDefaultTool( const QString & tool, const QString & defaultVa
 	if( config().tools.value( tool ).isEmpty() ) {
 		config().tools[ tool ] = defaultValue;
 		// Store imediately the hashtable
-		QSettings settings("Shadoware.Org", "XINX");
+		AppSettingsSettings settings("Shadoware.Org", "XINX");
 		setSettingsHash_QString( &settings, "Tools", config().tools );
 	}
 }

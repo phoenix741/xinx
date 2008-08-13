@@ -4,13 +4,29 @@
 
 #include "webpluginsettings.h"
 
+/* WebPluginSettingsSettings */
+
+WebPluginSettingsSettings::WebPluginSettingsSettings( const QString & organization, const QString & application ) : QSettings( organization, application ) {
+}
+
+void WebPluginSettingsSettings::setValue( const QString & key, const QVariant & value, const QVariant & defaultValue ) {
+	if( value == defaultValue )
+		remove( key );
+	else
+		QSettings::setValue( key, value );
+}
+
+void WebPluginSettingsSettings::setValue( const QString & key, const QVariant & value ) {
+	QSettings::setValue( key, value );
+}
+
 /* PrivateWebPluginSettings */
 
 class PrivateWebPluginSettings {
 public:
 	PrivateWebPluginSettings( WebPluginSettings * parent );
 
-	QSettings * m_settings;
+	WebPluginSettingsSettings * m_settings;
 	void createSettings();
 	void deleteSettings();
 
@@ -24,7 +40,7 @@ PrivateWebPluginSettings::PrivateWebPluginSettings( WebPluginSettings * parent )
 }
 
 void PrivateWebPluginSettings::createSettings() {
-	m_settings = new QSettings("Shadoware.Org", "XINX");
+	m_settings = new WebPluginSettingsSettings("Shadoware.Org", "XINX");
 }
 
 void PrivateWebPluginSettings::deleteSettings() {
@@ -81,7 +97,7 @@ WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getDe
 	return value;
 }
 
-WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getSettingsJavascript( QSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_javascript defaultValue ) {
+WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_javascript defaultValue ) {
 	struct_javascript value;
 	settings->beginGroup( path );
 
@@ -91,10 +107,11 @@ WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getSe
 	return value;
 }
 
-void WebPluginSettings::setSettingsJavascript( QSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_javascript value ) {
+void WebPluginSettings::setSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_javascript value ) {
+	struct_javascript defaultValue = getDefaultJavascript();
 	settings->beginGroup( path );
 
-	settings->setValue( "Active completion", value.activeCompletion );
+	settings->setValue( "Active completion", value.activeCompletion, defaultValue.activeCompletion );
 
 	settings->endGroup();
 }
@@ -110,7 +127,7 @@ WebPluginSettings::WebPluginSettings::struct_xml WebPluginSettings::getDefaultXm
 	return value;
 }
 
-WebPluginSettings::WebPluginSettings::struct_xml WebPluginSettings::getSettingsXml( QSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_xml defaultValue ) {
+WebPluginSettings::WebPluginSettings::struct_xml WebPluginSettings::getSettingsXml( WebPluginSettingsSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_xml defaultValue ) {
 	struct_xml value;
 	settings->beginGroup( path );
 
@@ -123,13 +140,14 @@ WebPluginSettings::WebPluginSettings::struct_xml WebPluginSettings::getSettingsX
 	return value;
 }
 
-void WebPluginSettings::setSettingsXml( QSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_xml value ) {
+void WebPluginSettings::setSettingsXml( WebPluginSettingsSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_xml value ) {
+	struct_xml defaultValue = getDefaultXml();
 	settings->beginGroup( path );
 
-	settings->setValue( "Active completion", value.activeCompletion );
-	settings->setValue( "Add closed balise", value.addClosedBalise );
-	settings->setValue( "Add default attribute", value.addDefaultAttribute );
-	settings->setValue( "Add default sub-balise", value.addDefaultSubBalise );
+	settings->setValue( "Active completion", value.activeCompletion, defaultValue.activeCompletion );
+	settings->setValue( "Add closed balise", value.addClosedBalise, defaultValue.addClosedBalise );
+	settings->setValue( "Add default attribute", value.addDefaultAttribute, defaultValue.addDefaultAttribute );
+	settings->setValue( "Add default sub-balise", value.addDefaultSubBalise, defaultValue.addDefaultSubBalise );
 
 	settings->endGroup();
 }
@@ -143,7 +161,7 @@ WebPluginSettings::WebPluginSettings::struct_globals WebPluginSettings::getDefau
 	return value;
 }
 
-WebPluginSettings::WebPluginSettings::struct_globals WebPluginSettings::getSettingsGlobals( QSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_globals defaultValue ) {
+WebPluginSettings::WebPluginSettings::struct_globals WebPluginSettings::getSettingsGlobals( WebPluginSettingsSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_globals defaultValue ) {
 	struct_globals value;
 	settings->beginGroup( path );
 
@@ -154,7 +172,8 @@ WebPluginSettings::WebPluginSettings::struct_globals WebPluginSettings::getSetti
 	return value;
 }
 
-void WebPluginSettings::setSettingsGlobals( QSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_globals value ) {
+void WebPluginSettings::setSettingsGlobals( WebPluginSettingsSettings * settings, const QString & path, WebPluginSettings::WebPluginSettings::struct_globals value ) {
+	struct_globals defaultValue = getDefaultGlobals();
 	settings->beginGroup( path );
 
 	setSettingsXml( settings, "XML", value.xml );

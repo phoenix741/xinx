@@ -7,13 +7,29 @@
 
 #include "appsettings.h"
 
+/* AppSettingsSettings */
+
+AppSettingsSettings::AppSettingsSettings( const QString & organization, const QString & application ) : QSettings( organization, application ) {
+}
+
+void AppSettingsSettings::setValue( const QString & key, const QVariant & value, const QVariant & defaultValue ) {
+	if( value == defaultValue )
+		remove( key );
+	else
+		QSettings::setValue( key, value );
+}
+
+void AppSettingsSettings::setValue( const QString & key, const QVariant & value ) {
+	QSettings::setValue( key, value );
+}
+
 /* PrivateAppSettings */
 
 class PrivateAppSettings {
 public:
 	PrivateAppSettings( AppSettings * parent );
 
-	QSettings * m_settings;
+	AppSettingsSettings * m_settings;
 	void createSettings();
 	void deleteSettings();
 
@@ -27,7 +43,7 @@ PrivateAppSettings::PrivateAppSettings( AppSettings * parent ) {
 }
 
 void PrivateAppSettings::createSettings() {
-	m_settings = new QSettings("Shadoware.Org", "XINX");
+	m_settings = new AppSettingsSettings("Shadoware.Org", "XINX");
 }
 
 void PrivateAppSettings::deleteSettings() {
@@ -86,7 +102,7 @@ AppSettings::AppSettings::struct_configurationEditor AppSettings::getDefaultConf
 	return value;
 }
 
-AppSettings::AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEditor( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_configurationEditor defaultValue ) {
+AppSettings::AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_configurationEditor defaultValue ) {
 	struct_configurationEditor value;
 	settings->beginGroup( path );
 
@@ -98,12 +114,13 @@ AppSettings::AppSettings::struct_configurationEditor AppSettings::getSettingsCon
 	return value;
 }
 
-void AppSettings::setSettingsConfigurationEditor( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_configurationEditor value ) {
+void AppSettings::setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_configurationEditor value ) {
+	struct_configurationEditor defaultValue = getDefaultConfigurationEditor();
 	settings->beginGroup( path );
 
-	settings->setValue( "Activate Configuration Editor", value.activateConfigurationEditor );
-	settings->setValue( "Auto load configuration file", value.autoLoadConfigurationFile );
-	settings->setValue( "Auto save configuration file", value.autoSaveConfigurationFile );
+	settings->setValue( "Activate Configuration Editor", value.activateConfigurationEditor, defaultValue.activateConfigurationEditor );
+	settings->setValue( "Auto load configuration file", value.autoLoadConfigurationFile, defaultValue.autoLoadConfigurationFile );
+	settings->setValue( "Auto save configuration file", value.autoSaveConfigurationFile, defaultValue.autoSaveConfigurationFile );
 
 	settings->endGroup();
 }
@@ -127,7 +144,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	return value;
 }
 
-AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor defaultValue ) {
+AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor defaultValue ) {
 	struct_editor value;
 	settings->beginGroup( path );
 
@@ -149,22 +166,23 @@ AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( QSetting
 	return value;
 }
 
-void AppSettings::setSettingsEditor( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor value ) {
+void AppSettings::setSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor value ) {
+	struct_editor defaultValue = getDefaultEditor();
 	settings->beginGroup( path );
 
-	settings->setValue( "Default Text Codec", value.defaultTextCodec );
-	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving );
-	settings->setValue( "Popup When File Modified", value.popupWhenFileModified );
-	settings->setValue( "Create Backup File", value.createBackupFile );
-	settings->setValue( "Tabulation Size", value.tabulationSize );
-	settings->setValue( "Show Tabulation and space", value.showTabulationAndSpace );
-	settings->setValue( "Highlight Current Line", value.highlightCurrentLine );
-	settings->setValue( "Default format", value.defaultFormat );
-	settings->setValue( "Highlight word", value.highlightWord );
-	settings->setValue( "Auto Highlight", value.autoHighlight );
-	settings->setValue( "Hide Close Tab", value.hideCloseTab );
-	settings->setValue( "Close Button on each Tab", value.closeButtonOnEachTab );
-	settings->setValue( "Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout );
+	settings->setValue( "Default Text Codec", value.defaultTextCodec, defaultValue.defaultTextCodec );
+	settings->setValue( "Autoindent On Saving", value.autoindentOnSaving, defaultValue.autoindentOnSaving );
+	settings->setValue( "Popup When File Modified", value.popupWhenFileModified, defaultValue.popupWhenFileModified );
+	settings->setValue( "Create Backup File", value.createBackupFile, defaultValue.createBackupFile );
+	settings->setValue( "Tabulation Size", value.tabulationSize, defaultValue.tabulationSize );
+	settings->setValue( "Show Tabulation and space", value.showTabulationAndSpace, defaultValue.showTabulationAndSpace );
+	settings->setValue( "Highlight Current Line", value.highlightCurrentLine, defaultValue.highlightCurrentLine );
+	settings->setValue( "Default format", value.defaultFormat, defaultValue.defaultFormat );
+	settings->setValue( "Highlight word", value.highlightWord, defaultValue.highlightWord );
+	settings->setValue( "Auto Highlight", value.autoHighlight, defaultValue.autoHighlight );
+	settings->setValue( "Hide Close Tab", value.hideCloseTab, defaultValue.hideCloseTab );
+	settings->setValue( "Close Button on each Tab", value.closeButtonOnEachTab, defaultValue.closeButtonOnEachTab );
+	settings->setValue( "Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout, defaultValue.automaticModelRefreshTimeout );
 
 	settings->endGroup();
 }
@@ -177,7 +195,7 @@ AppSettings::AppSettings::struct_rcs AppSettings::getDefaultRcs() {
 	return value;
 }
 
-AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_rcs defaultValue ) {
+AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_rcs defaultValue ) {
 	struct_rcs value;
 	settings->beginGroup( path );
 
@@ -187,10 +205,11 @@ AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs( QSettings * se
 	return value;
 }
 
-void AppSettings::setSettingsRcs( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_rcs value ) {
+void AppSettings::setSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_rcs value ) {
+	struct_rcs defaultValue = getDefaultRcs();
 	settings->beginGroup( path );
 
-	settings->setValue( "Create ChangeLog", value.createChangelog );
+	settings->setValue( "Create ChangeLog", value.createChangelog, defaultValue.createChangelog );
 
 	settings->endGroup();
 }
@@ -208,7 +227,7 @@ AppSettings::AppSettings::struct_project AppSettings::getDefaultProject() {
 	return value;
 }
 
-AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_project defaultValue ) {
+AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_project defaultValue ) {
 	struct_project value;
 	settings->beginGroup( path );
 
@@ -225,17 +244,18 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( QSetti
 	return value;
 }
 
-void AppSettings::setSettingsProject( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_project value ) {
+void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_project value ) {
+	struct_project defaultValue = getDefaultProject();
 	settings->beginGroup( path );
 
-	settings->setValue( "Last opened project", value.lastOpenedProject );
-	settings->setValue( "Open the last project at start", value.openTheLastProjectAtStart );
-	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault );
-	settings->setValue( "Default Path", value.defaultPath );
-	settings->setValue( "Recent Project Files", value.recentProjectFiles );
-	settings->setValue( "Default Project Path Name", value.defaultProjectPathName );
-	settings->setValue( "Close Version Management Log", value.closeVersionManagementLog );
-	settings->setValue( "Automatic Project Directory Refresh Timeout", value.automaticProjectDirectoryRefreshTimeout );
+	settings->setValue( "Last opened project", value.lastOpenedProject, defaultValue.lastOpenedProject );
+	settings->setValue( "Open the last project at start", value.openTheLastProjectAtStart, defaultValue.openTheLastProjectAtStart );
+	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault, defaultValue.saveWithSessionByDefault );
+	settings->setValue( "Default Path", value.defaultPath, defaultValue.defaultPath );
+	settings->setValue( "Recent Project Files", value.recentProjectFiles, defaultValue.recentProjectFiles );
+	settings->setValue( "Default Project Path Name", value.defaultProjectPathName, defaultValue.defaultProjectPathName );
+	settings->setValue( "Close Version Management Log", value.closeVersionManagementLog, defaultValue.closeVersionManagementLog );
+	settings->setValue( "Automatic Project Directory Refresh Timeout", value.automaticProjectDirectoryRefreshTimeout, defaultValue.automaticProjectDirectoryRefreshTimeout );
 
 	settings->endGroup();
 }
@@ -248,7 +268,7 @@ AppSettings::AppSettings::struct_descriptions AppSettings::getDefaultDescription
 	return value;
 }
 
-AppSettings::AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_descriptions defaultValue ) {
+AppSettings::AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_descriptions defaultValue ) {
 	struct_descriptions value;
 	settings->beginGroup( path );
 
@@ -258,10 +278,11 @@ AppSettings::AppSettings::struct_descriptions AppSettings::getSettingsDescriptio
 	return value;
 }
 
-void AppSettings::setSettingsDescriptions( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_descriptions value ) {
+void AppSettings::setSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_descriptions value ) {
+	struct_descriptions defaultValue = getDefaultDescriptions();
 	settings->beginGroup( path );
 
-	settings->setValue( "Datas", value.datas );
+	settings->setValue( "Datas", value.datas, defaultValue.datas );
 
 	settings->endGroup();
 }
@@ -274,7 +295,7 @@ AppSettings::AppSettings::struct_extentions AppSettings::getDefaultExtentions() 
 	return value;
 }
 
-AppSettings::AppSettings::struct_extentions AppSettings::getSettingsExtentions( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_extentions defaultValue ) {
+AppSettings::AppSettings::struct_extentions AppSettings::getSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_extentions defaultValue ) {
 	struct_extentions value;
 	settings->beginGroup( path );
 
@@ -285,11 +306,12 @@ AppSettings::AppSettings::struct_extentions AppSettings::getSettingsExtentions( 
 	return value;
 }
 
-void AppSettings::setSettingsExtentions( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_extentions value ) {
+void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_extentions value ) {
+	struct_extentions defaultValue = getDefaultExtentions();
 	settings->beginGroup( path );
 
-	settings->setValue( "Custom Path", value.customPath );
-	settings->setValue( "Can Be Specifique", value.canBeSpecifique );
+	settings->setValue( "Custom Path", value.customPath, defaultValue.customPath );
+	settings->setValue( "Can Be Specifique", value.canBeSpecifique, defaultValue.canBeSpecifique );
 
 	settings->endGroup();
 }
@@ -308,7 +330,7 @@ AppSettings::AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
 	return value;
 }
 
-AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres defaultValue ) {
+AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres defaultValue ) {
 	struct_xmlpres value;
 	settings->beginGroup( path );
 
@@ -324,16 +346,17 @@ AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( QSetti
 	return value;
 }
 
-void AppSettings::setSettingsXmlpres( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres value ) {
+void AppSettings::setSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres value ) {
+	struct_xmlpres defaultValue = getDefaultXmlpres();
 	settings->beginGroup( path );
 
-	settings->setValue( "Auto expanded path", value.autoExpandedPath );
-	settings->setValue( "Hide path", value.hidePath );
-	settings->setValue( "Show filtered sub-tree", value.showFilteredSubTree );
-	settings->setValue( "View Color", value.viewColor );
-	settings->setValue( "Error Color", value.errorColor );
-	settings->setValue( "Screen data Color", value.screenDataColor );
-	settings->setValue( "Show name attribute if exists", value.showNameAttributeIfExists );
+	settings->setValue( "Auto expanded path", value.autoExpandedPath, defaultValue.autoExpandedPath );
+	settings->setValue( "Hide path", value.hidePath, defaultValue.hidePath );
+	settings->setValue( "Show filtered sub-tree", value.showFilteredSubTree, defaultValue.showFilteredSubTree );
+	settings->setValue( "View Color", value.viewColor, defaultValue.viewColor );
+	settings->setValue( "Error Color", value.errorColor, defaultValue.errorColor );
+	settings->setValue( "Screen data Color", value.screenDataColor, defaultValue.screenDataColor );
+	settings->setValue( "Show name attribute if exists", value.showNameAttributeIfExists, defaultValue.showNameAttributeIfExists );
 
 	settings->endGroup();
 }
@@ -358,7 +381,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	return value;
 }
 
-AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_globals defaultValue ) {
+AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_globals defaultValue ) {
 	struct_globals value;
 	settings->beginGroup( path );
 
@@ -382,15 +405,16 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( QSetti
 	return value;
 }
 
-void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path, AppSettings::AppSettings::struct_globals value ) {
+void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_globals value ) {
+	struct_globals defaultValue = getDefaultGlobals();
 	settings->beginGroup( path );
 
-	settings->setValue( "Language", value.language );
-	settings->setValue( "Position", value.position );
-	settings->setValue( "Size", value.size );
-	settings->setValue( "Maximized", value.maximized );
-	settings->setValue( "State", value.state );
-	settings->setValue( "XINX Trace", value.xinxTrace );
+	settings->setValue( "Language", value.language, defaultValue.language );
+	settings->setValue( "Position", value.position, defaultValue.position );
+	settings->setValue( "Size", value.size, defaultValue.size );
+	settings->setValue( "Maximized", value.maximized, defaultValue.maximized );
+	settings->setValue( "State", value.state, defaultValue.state );
+	settings->setValue( "XINX Trace", value.xinxTrace, defaultValue.xinxTrace );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsRcs( settings, "RCS", value.rcs );
@@ -412,7 +436,7 @@ QHash<QString,QString> AppSettings::getDefaultHash_QString() {
 	return value;
 }
 
-QHash<QString,QString> AppSettings::getSettingsHash_QString( QSettings * settings, const QString & path, QHash<QString,QString> defaultValue ) {
+QHash<QString,QString> AppSettings::getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, QHash<QString,QString> defaultValue ) {
 	QHash<QString,QString> value;
 	settings->beginGroup( path );
 
@@ -430,11 +454,12 @@ QHash<QString,QString> AppSettings::getSettingsHash_QString( QSettings * setting
 	return value;
 }
 
-void AppSettings::setSettingsHash_QString( QSettings * settings, const QString & path, QHash<QString,QString> value ) {
+void AppSettings::setSettingsHash_QString( AppSettingsSettings * settings, const QString & path, QHash<QString,QString> value ) {
+	QHash<QString,QString> defaultValue = getDefaultHash_QString();
 	settings->beginGroup( path );
 
 	foreach( QString key, value.keys() ) {
-		settings->setValue( key, value[ key ] );
+		settings->setValue( key, value[ key ], defaultValue[ key ] );
 	}
 
 	settings->endGroup();
@@ -447,7 +472,7 @@ QHash<QString,AppSettings::struct_extentions> AppSettings::getDefaultHash_struct
 	return value;
 }
 
-QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struct_extentions( QSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> defaultValue ) {
+QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> defaultValue ) {
 	QHash<QString,struct_extentions> value;
 	settings->beginGroup( path );
 
@@ -465,7 +490,8 @@ QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struc
 	return value;
 }
 
-void AppSettings::setSettingsHash_struct_extentions( QSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> value ) {
+void AppSettings::setSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> value ) {
+	QHash<QString,struct_extentions> defaultValue = getDefaultHash_struct_extentions();
 	settings->beginGroup( path );
 
 	foreach( QString key, value.keys() ) {
@@ -475,7 +501,7 @@ void AppSettings::setSettingsHash_struct_extentions( QSettings * settings, const
 	settings->endGroup();
 }
 
-QTextCharFormat AppSettings::getSettingsTextCharFormat( QSettings * settings, const QString & path, QTextCharFormat defaultValue ) {
+QTextCharFormat AppSettings::getSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat defaultValue ) {
 	QTextCharFormat format;
 	settings->beginGroup( path );
 
@@ -490,7 +516,7 @@ QTextCharFormat AppSettings::getSettingsTextCharFormat( QSettings * settings, co
 	return format;
 }
 
-void AppSettings::setSettingsTextCharFormat( QSettings * settings, const QString & path, QTextCharFormat value ) {
+void AppSettings::setSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat value ) {
 	settings->beginGroup( path );
 
 	settings->setValue( "italic", value.fontItalic() );
@@ -510,7 +536,7 @@ QHash<QString,QTextCharFormat> AppSettings::getDefaultHash_QTextCharFormat() {
 	return value;
 }
 
-QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue ) {
+QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue ) {
 	QHash<QString,QTextCharFormat> value;
 	settings->beginGroup( path );
 
@@ -528,7 +554,8 @@ QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( QSe
 	return value;
 }
 
-void AppSettings::setSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value ) {
+void AppSettings::setSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value ) {
+	QHash<QString,QTextCharFormat> defaultValue = getDefaultHash_QTextCharFormat();
 	settings->beginGroup( path );
 
 	foreach( QString key, value.keys() ) {

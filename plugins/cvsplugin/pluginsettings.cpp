@@ -4,13 +4,29 @@
 
 #include "pluginsettings.h"
 
+/* PluginSettingsSettings */
+
+PluginSettingsSettings::PluginSettingsSettings( const QString & organization, const QString & application ) : QSettings( organization, application ) {
+}
+
+void PluginSettingsSettings::setValue( const QString & key, const QVariant & value, const QVariant & defaultValue ) {
+	if( value == defaultValue )
+		remove( key );
+	else
+		QSettings::setValue( key, value );
+}
+
+void PluginSettingsSettings::setValue( const QString & key, const QVariant & value ) {
+	QSettings::setValue( key, value );
+}
+
 /* PrivatePluginSettings */
 
 class PrivatePluginSettings {
 public:
 	PrivatePluginSettings( PluginSettings * parent );
 
-	QSettings * m_settings;
+	PluginSettingsSettings * m_settings;
 	void createSettings();
 	void deleteSettings();
 
@@ -24,7 +40,7 @@ PrivatePluginSettings::PrivatePluginSettings( PluginSettings * parent ) {
 }
 
 void PrivatePluginSettings::createSettings() {
-	m_settings = new QSettings("Shadoware.Org", "XINX");
+	m_settings = new PluginSettingsSettings("Shadoware.Org", "XINX");
 }
 
 void PrivatePluginSettings::deleteSettings() {
@@ -73,19 +89,18 @@ void PluginSettings::load() {
 	d->deleteSettings();
 }
 
-PluginSettings::struct_globals PluginSettings::getDefaultGlobals() {
+PluginSettings::PluginSettings::struct_globals PluginSettings::getDefaultGlobals() {
 	struct_globals value;
 
 	value.progressMessages = "-q";
 	value.compressionLevel = 9;
 	value.pruneEmptyDirectories = false;
 	value.createDirectories = true;
-	value.createChangelog = false;
 
 	return value;
 }
 
-PluginSettings::struct_globals PluginSettings::getSettingsGlobals( QSettings * settings, const QString & path, PluginSettings::struct_globals defaultValue ) {
+PluginSettings::PluginSettings::struct_globals PluginSettings::getSettingsGlobals( PluginSettingsSettings * settings, const QString & path, PluginSettings::PluginSettings::struct_globals defaultValue ) {
 	struct_globals value;
 	settings->beginGroup( path );
 
@@ -93,20 +108,19 @@ PluginSettings::struct_globals PluginSettings::getSettingsGlobals( QSettings * s
 	value.compressionLevel = settings->value( "Compression Level", defaultValue.compressionLevel ).toInt();
 	value.pruneEmptyDirectories = settings->value( "Prune Empty Directories", defaultValue.pruneEmptyDirectories ).toBool();
 	value.createDirectories = settings->value( "Create Directories", defaultValue.createDirectories ).toBool();
-	value.createChangelog = settings->value( "Create ChangeLog", defaultValue.createChangelog ).toBool();
 
 	settings->endGroup();
 	return value;
 }
 
-void PluginSettings::setSettingsGlobals( QSettings * settings, const QString & path, PluginSettings::struct_globals value ) {
+void PluginSettings::setSettingsGlobals( PluginSettingsSettings * settings, const QString & path, PluginSettings::PluginSettings::struct_globals value ) {
+	struct_globals defaultValue = getDefaultGlobals();
 	settings->beginGroup( path );
 
-	settings->setValue( "Progress Messages", value.progressMessages );
-	settings->setValue( "Compression Level", value.compressionLevel );
-	settings->setValue( "Prune Empty Directories", value.pruneEmptyDirectories );
-	settings->setValue( "Create Directories", value.createDirectories );
-	settings->setValue( "Create ChangeLog", value.createChangelog );
+	settings->setValue( "Progress Messages", value.progressMessages, defaultValue.progressMessages );
+	settings->setValue( "Compression Level", value.compressionLevel, defaultValue.compressionLevel );
+	settings->setValue( "Prune Empty Directories", value.pruneEmptyDirectories, defaultValue.pruneEmptyDirectories );
+	settings->setValue( "Create Directories", value.createDirectories, defaultValue.createDirectories );
 
 	settings->endGroup();
 }

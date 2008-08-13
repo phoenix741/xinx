@@ -19,6 +19,13 @@
 
 class PrivateAppSettings;
 
+class AppSettingsSettings : public QSettings {
+public:
+	AppSettingsSettings( const QString & organization, const QString & application );
+	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
+	void setValue( const QString & key, const QVariant & value );
+};
+
 class AppSettings {
 public:
 	struct struct_configurationEditor {
@@ -109,51 +116,51 @@ public:
 	AppSettings& operator=(const AppSettings& p);
 protected:
 	virtual struct_configurationEditor getDefaultConfigurationEditor();
-	virtual AppSettings::struct_configurationEditor getSettingsConfigurationEditor( QSettings * settings, const QString & path, AppSettings::struct_configurationEditor defaultValue );
-	virtual void setSettingsConfigurationEditor( QSettings * settings, const QString & path, AppSettings::struct_configurationEditor value );
+	virtual AppSettings::struct_configurationEditor getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_configurationEditor defaultValue );
+	virtual void setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_configurationEditor value );
 
 	virtual struct_editor getDefaultEditor();
-	virtual AppSettings::struct_editor getSettingsEditor( QSettings * settings, const QString & path, AppSettings::struct_editor defaultValue );
-	virtual void setSettingsEditor( QSettings * settings, const QString & path, AppSettings::struct_editor value );
+	virtual AppSettings::struct_editor getSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_editor defaultValue );
+	virtual void setSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_editor value );
 
 	virtual struct_rcs getDefaultRcs();
-	virtual AppSettings::struct_rcs getSettingsRcs( QSettings * settings, const QString & path, AppSettings::struct_rcs defaultValue );
-	virtual void setSettingsRcs( QSettings * settings, const QString & path, AppSettings::struct_rcs value );
+	virtual AppSettings::struct_rcs getSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::struct_rcs defaultValue );
+	virtual void setSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::struct_rcs value );
 
 	virtual struct_project getDefaultProject();
-	virtual AppSettings::struct_project getSettingsProject( QSettings * settings, const QString & path, AppSettings::struct_project defaultValue );
-	virtual void setSettingsProject( QSettings * settings, const QString & path, AppSettings::struct_project value );
+	virtual AppSettings::struct_project getSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::struct_project defaultValue );
+	virtual void setSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::struct_project value );
 
 	virtual struct_descriptions getDefaultDescriptions();
-	virtual AppSettings::struct_descriptions getSettingsDescriptions( QSettings * settings, const QString & path, AppSettings::struct_descriptions defaultValue );
-	virtual void setSettingsDescriptions( QSettings * settings, const QString & path, AppSettings::struct_descriptions value );
+	virtual AppSettings::struct_descriptions getSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_descriptions defaultValue );
+	virtual void setSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_descriptions value );
 
 	virtual struct_extentions getDefaultExtentions();
-	virtual AppSettings::struct_extentions getSettingsExtentions( QSettings * settings, const QString & path, AppSettings::struct_extentions defaultValue );
-	virtual void setSettingsExtentions( QSettings * settings, const QString & path, AppSettings::struct_extentions value );
+	virtual AppSettings::struct_extentions getSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_extentions defaultValue );
+	virtual void setSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_extentions value );
 
 	virtual struct_xmlpres getDefaultXmlpres();
-	virtual AppSettings::struct_xmlpres getSettingsXmlpres( QSettings * settings, const QString & path, AppSettings::struct_xmlpres defaultValue );
-	virtual void setSettingsXmlpres( QSettings * settings, const QString & path, AppSettings::struct_xmlpres value );
+	virtual AppSettings::struct_xmlpres getSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::struct_xmlpres defaultValue );
+	virtual void setSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::struct_xmlpres value );
 
 	virtual struct_globals getDefaultGlobals();
-	virtual AppSettings::struct_globals getSettingsGlobals( QSettings * settings, const QString & path, AppSettings::struct_globals defaultValue );
-	virtual void setSettingsGlobals( QSettings * settings, const QString & path, AppSettings::struct_globals value );
+	virtual AppSettings::struct_globals getSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::struct_globals defaultValue );
+	virtual void setSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::struct_globals value );
 
 	virtual QHash<QString,QString> getDefaultHash_QString();
-	virtual QHash<QString,QString> getSettingsHash_QString( QSettings * settings, const QString & path, QHash<QString,QString> defaultValue );
-	virtual void setSettingsHash_QString( QSettings * settings, const QString & path, QHash<QString,QString> value );
+	virtual QHash<QString,QString> getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, QHash<QString,QString> defaultValue );
+	virtual void setSettingsHash_QString( AppSettingsSettings * settings, const QString & path, QHash<QString,QString> value );
 
 	virtual QHash<QString,struct_extentions> getDefaultHash_struct_extentions();
-	virtual QHash<QString,AppSettings::struct_extentions> getSettingsHash_struct_extentions( QSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> defaultValue );
-	virtual void setSettingsHash_struct_extentions( QSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> value );
+	virtual QHash<QString,AppSettings::struct_extentions> getSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> defaultValue );
+	virtual void setSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> value );
 
-	virtual QTextCharFormat getSettingsTextCharFormat( QSettings * settings, const QString & path, QTextCharFormat defaultValue );
-	virtual void setSettingsTextCharFormat( QSettings * settings, const QString & path, QTextCharFormat value );
+	virtual QTextCharFormat getSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat defaultValue );
+	virtual void setSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat value );
 
 	virtual QHash<QString,QTextCharFormat> getDefaultHash_QTextCharFormat();
-	virtual QHash<QString,QTextCharFormat> getSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue );
-	virtual void setSettingsHash_QTextCharFormat( QSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value );
+	virtual QHash<QString,QTextCharFormat> getSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue );
+	virtual void setSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value );
 
 private:
 	PrivateAppSettings * d;
