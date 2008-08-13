@@ -268,30 +268,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3" >
-       <item row="0" column="0" colspan="2" >
-        <widget class="QCheckBox" name="m_openLastProjectCheckBox" >
-         <property name="whatsThis" >
-          <string>This is the last opened project (&lt;i>if any, it's the opened project when &lt;b>XINX&lt;/b> is closed&lt;/i>), when &lt;b>XINX&lt;/b> is started.</string>
-         </property>
-         <property name="text" >
-          <string>&amp;Open the last project at start</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2" >
-        <widget class="QCheckBox" name="m_saveSessionCheckBox" >
-         <property name="whatsThis" >
-          <string>&lt;p>This define the default way to close the project.&lt;/p>
-&lt;p>If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p>
-&lt;p>Else, the XINX ask the user about unsaved file.&lt;/p>
-&lt;p/>
-&lt;p>&lt;i>In case of crash &lt;b>XINX&lt;/b> save the project in session mode automatically.&lt;/i>&lt;/p></string>
-         </property>
-         <property name="text" >
-          <string>&amp;Save project with session information by default (content of modified file)</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0" >
         <widget class="QLabel" name="label_2" >
          <property name="text" >
@@ -331,7 +307,36 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2" >
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_20" >
+         <property name="text" >
+          <string>Refresh Directory &amp;Timeout :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_refreshProjectTimoutSpinBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QSpinBox" name="m_refreshProjectTimoutSpinBox" >
+         <property name="whatsThis" >
+          <string>Timeout before the directory view is reloaded with your filter.</string>
+         </property>
+         <property name="suffix" >
+          <string> ms</string>
+         </property>
+         <property name="minimum" >
+          <number>100</number>
+         </property>
+         <property name="maximum" >
+          <number>10000</number>
+         </property>
+         <property name="singleStep" >
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2" >
         <widget class="QLabel" name="label_16" >
          <property name="text" >
           <string>&amp;Specifique file :</string>
@@ -341,10 +346,34 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2" >
+       <item row="8" column="0" colspan="2" >
         <widget class="QTableView" name="m_specifiqueTableView" >
          <property name="whatsThis" >
           <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QCheckBox" name="m_openLastProjectCheckBox" >
+         <property name="whatsThis" >
+          <string>This is the last opened project (&lt;i>if any, it's the opened project when &lt;b>XINX&lt;/b> is closed&lt;/i>), when &lt;b>XINX&lt;/b> is started.</string>
+         </property>
+         <property name="text" >
+          <string>&amp;Open the last project at start</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2" >
+        <widget class="QCheckBox" name="m_saveSessionCheckBox" >
+         <property name="whatsThis" >
+          <string>&lt;p>This define the default way to close the project.&lt;/p>
+&lt;p>If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p>
+&lt;p>Else, the XINX ask the user about unsaved file.&lt;/p>
+&lt;p/>
+&lt;p>&lt;i>In case of crash &lt;b>XINX&lt;/b> save the project in session mode automatically.&lt;/i>&lt;/p></string>
+         </property>
+         <property name="text" >
+          <string>&amp;Save project with session information by default (content of modified file)</string>
          </property>
         </widget>
        </item>
@@ -499,7 +528,7 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="1" colspan="2" >
+       <item row="3" column="1" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -528,6 +557,35 @@
           <string>&lt;p>Choose the default text encoding, when the text encoding can't be found. 
 
 &lt;i>Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i>&lt;/p></string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_21" >
+         <property name="text" >
+          <string>&amp;Text content refresh :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_refreshContentTimeoutSpinBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QSpinBox" name="m_refreshContentTimeoutSpinBox" >
+         <property name="whatsThis" >
+          <string>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</string>
+         </property>
+         <property name="suffix" >
+          <string> ms</string>
+         </property>
+         <property name="minimum" >
+          <number>200</number>
+         </property>
+         <property name="maximum" >
+          <number>10000</number>
+         </property>
+         <property name="singleStep" >
+          <number>10</number>
          </property>
         </widget>
        </item>
@@ -793,6 +851,96 @@
            <string/>
           </property>
          </item>
+         <item>
+          <property name="text" >
+           <string>Custom...</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="5" column="0" colspan="3" >
@@ -872,6 +1020,96 @@
             <property name="whatsThis" >
              <string>Color used in the text for the selected token.</string>
             </property>
+            <item>
+             <property name="text" >
+              <string>Custom...</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text" >
               <string>Custom...</string>
@@ -1458,6 +1696,96 @@
                 <string/>
                </property>
               </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="1" column="0" >
@@ -1655,6 +1983,96 @@
                 <string/>
                </property>
               </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="2" column="0" >
@@ -1672,6 +2090,96 @@
               <property name="whatsThis" >
                <string>Color of a balise with a &lt;i>screen_data&lt;/i> node.</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -2180,8 +2688,6 @@
  <tabstops>
   <tabstop>m_descriptionPathLineEdit</tabstop>
   <tabstop>m_langComboBox</tabstop>
-  <tabstop>m_openLastProjectCheckBox</tabstop>
-  <tabstop>m_saveSessionCheckBox</tabstop>
   <tabstop>m_projectPathLineEdit</tabstop>
   <tabstop>m_lineEditDefaultProjectPathName</tabstop>
   <tabstop>m_specifiqueTableView</tabstop>

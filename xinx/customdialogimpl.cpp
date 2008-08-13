@@ -445,6 +445,9 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 		}
 	}
 
+	// Trace Log File
+	m_parent->m_traceLogWidget->lineEdit()->setText( QDir::toNativeSeparators( m_config.config().xinxTrace ) );
+
 	// Create backup file when saving
 	m_parent->m_createBakCheckBox->setChecked( m_config.config().editor.createBackupFile );
 
@@ -466,6 +469,9 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Default text encoding.
 	m_parent->m_encodingComboBox->setCurrentIndex( m_parent->m_encodingComboBox->findText( m_config.config().editor.defaultTextCodec ) );
 
+	// Text content refresh
+	m_parent->m_refreshContentTimeoutSpinBox->setValue( m_config.config().editor.automaticModelRefreshTimeout );
+
 	// Auto highlight text
 	m_parent->m_autoHighlightCheckBox->setChecked( m_config.config().editor.autoHighlight );
 
@@ -486,6 +492,9 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Font name
 	m_parent->m_fontComboBox->setCurrentFont( m_config.config().editor.defaultFormat );
+
+	// Refresh Directory Timeout
+	m_parent->m_refreshProjectTimoutSpinBox->setValue( m_config.config().project.automaticProjectDirectoryRefreshTimeout );
 
 	// Open the last project at start
 	m_parent->m_openLastProjectCheckBox->setChecked( m_config.config().project.openTheLastProjectAtStart );
@@ -561,6 +570,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	if( exp.indexIn( m_parent->m_langComboBox->currentText() ) >= 0 )
 		m_config.config().language = exp.cap( 1 );
 
+	// Trace Log File
+	m_config.config().xinxTrace = QDir::fromNativeSeparators( m_parent->m_traceLogWidget->lineEdit()->text() );
+
 	// Create backup file when saving
 	m_config.config().editor.createBackupFile = m_parent->m_createBakCheckBox->isChecked();
 
@@ -586,6 +598,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Default text encoding.
 	m_config.config().editor.defaultTextCodec = m_parent->m_encodingComboBox->itemText( m_parent->m_encodingComboBox->currentIndex() );
 
+	// Text content refresh
+	m_config.config().editor.automaticModelRefreshTimeout = m_parent->m_refreshContentTimeoutSpinBox->value();
+
 	// Auto highlight text
 	m_config.config().editor.autoHighlight = m_parent->m_autoHighlightCheckBox->isChecked();
 
@@ -606,6 +621,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Font size
 	m_config.config().editor.defaultFormat.setPointSize( m_parent->m_fontSizeSpinBox->value() );
+
+	// Refresh Directory Timeout
+	m_config.config().project.automaticProjectDirectoryRefreshTimeout = m_parent->m_refreshProjectTimoutSpinBox->value();
 
 	// Open the last project at start
 	m_config.config().project.openTheLastProjectAtStart = m_parent->m_openLastProjectCheckBox->isChecked();
