@@ -21,11 +21,12 @@
 // Xinx header
 #include "projectdirectorydockwidget.h"
 #include "private/p_projectdirectorydockwidget.h"
-#include "xinxcore.h"
-#include "xinxpluginsloader.h"
+#include <xinxcore.h>
+#include <xinxpluginsloader.h>
 #include "flattreeview.h"
 #include "dirrcsmodel.h"
-#include "exceptions.h"
+#include <exceptions.h>
+#include <xinxconfig.h>
 
 // Qt header
 #include <QFileInfo>
@@ -47,7 +48,7 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	m_parent->setWidget( contentWidget );
 
 	m_modelTimer = new QTimer( this );
-	m_modelTimer->setInterval( 500 );
+	m_modelTimer->setInterval( XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 
 	m_projectDirWidget->m_projectDirectoryTreeView->header()->hide();

@@ -53,7 +53,7 @@ public:
 	 */
 	void saveToConfig( XINXConfig * config );
 private slots:
-	void on_m_descriptionPathLineEdit_textChanged( QString text );
+	void m_descriptionPathLineEdit_textChanged( QString text );
 
 	void on_m_defaultPushButton_clicked();
 	void on_m_colorComboBox_activated(QColor color);
@@ -62,8 +62,6 @@ private slots:
 	void on_m_StrikeoutCheckBox_toggled(bool checked);
 	void on_m_underlineCheckBox_toggled(bool checked);
 	void on_m_formatsListView_currentRowChanged(int currentRow);
-	void on_m_changeProjectPathBtn_clicked();
-	void on_m_changeApplicationDescriptionPathBtn_clicked();
 	void on_m_highlighterComboBox_activated( QString text );
 	void on_m_labelLink_linkActivated( const QString & link );
 

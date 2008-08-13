@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "exceptions.h"
+#include "xinxconfig.h"
 
 // Qt header
 #include <QTextDocument>
@@ -141,11 +142,7 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 
 	// Create a file where write error
 	FILE * file = NULL;
-#ifndef Q_WS_WIN
-	const char * filename = "/tmp/xinx_trace.html";
-#else
-	const char * filename = "c:\\xinx_trace.html";
-#endif
+	const char * filename = qPrintable( XINXConfig::self()->config().xinxTrace );
 
 	file = fopen( filename, "a" );
 	if( file ) {

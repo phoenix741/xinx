@@ -128,6 +128,12 @@ AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 		value.files[ plugin->description() ].customPath = plugin->properties().specifiqueSubDirectory;
 	}
 
+#ifndef Q_WS_WIN
+	value.xinxTrace = "/tmp/xinx_trace.html";
+#else
+	value.xinxTrace = "c:\\xinx_trace.html";
+#endif
+
 	return value;
 }
 

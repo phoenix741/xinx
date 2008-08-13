@@ -434,7 +434,7 @@ PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) : 
 
 void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Application description path
-	m_parent->m_descriptionPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().descriptions.datas ) );
+	m_parent->m_descriptionPathLineEdit->lineEdit()->setText( QDir::toNativeSeparators( m_config.config().descriptions.datas ) );
 
 	// Language
 	m_parent->m_langComboBox->setCurrentIndex( 0 );
@@ -497,7 +497,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_closeLogCheckBox->setChecked( m_config.config().project.closeVersionManagementLog );
 
 	// Default project directory
-	m_parent->m_projectPathLineEdit->setText( QDir::toNativeSeparators( m_config.config().project.defaultPath ) );
+	m_parent->m_projectPathLineEdit->lineEdit()->setText( QDir::toNativeSeparators( m_config.config().project.defaultPath ) );
 
 	// Default specifique path name
 	m_parent->m_lineEditDefaultProjectPathName->setText( QDir::toNativeSeparators( m_config.config().project.defaultProjectPathName ) );
@@ -554,7 +554,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 void PrivateCustomDialogImpl::storeConfig() {
 	// Application description path
-	m_config.setXinxDataFiles( QDir::fromNativeSeparators( m_parent->m_descriptionPathLineEdit->text() ) );
+	m_config.setXinxDataFiles( QDir::fromNativeSeparators( m_parent->m_descriptionPathLineEdit->lineEdit()->text() ) );
 
 	// Language
 	QRegExp exp("^\\((.*)\\).*$");
@@ -617,7 +617,7 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().project.closeVersionManagementLog = m_parent->m_closeLogCheckBox->isChecked();
 
 	// Default project directory
-	m_config.config().project.defaultPath = QDir::fromNativeSeparators( m_parent->m_projectPathLineEdit->text() );
+	m_config.config().project.defaultPath = QDir::fromNativeSeparators( m_parent->m_projectPathLineEdit->lineEdit()->text() );
 
 	// Default specifique path name
 	m_config.config().project.defaultProjectPathName = QDir::fromNativeSeparators( m_parent->m_lineEditDefaultProjectPathName->text() );
@@ -763,6 +763,9 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 
 	setupUi( this );
 
+	// General
+	connect( m_descriptionPathLineEdit->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(m_descriptionPathLineEdit_textChanged(QString)) );
+
 	// XML Pres
 	m_hideElementList->setDefaultVisible( false );
 
@@ -809,7 +812,7 @@ void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 	*config = d->m_config;
 }
 
-void CustomDialogImpl::on_m_descriptionPathLineEdit_textChanged( QString text ) {
+void CustomDialogImpl::m_descriptionPathLineEdit_textChanged( QString text ) {
 	if( ! d->m_snipetModel ) return;
 	SnipetList list;
 	try {
@@ -899,14 +902,6 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 	m_duplicatePushButton->setEnabled( indexes.count() == 1 );
 	m_modifyPushButton->setEnabled( indexes.count() == 1 );
 	m_exportPushButton->setEnabled( indexes.count() > 0 );
-}
-
-void CustomDialogImpl::on_m_changeProjectPathBtn_clicked() {
-	m_projectPathLineEdit->changePath( this );
-}
-
-void CustomDialogImpl::on_m_changeApplicationDescriptionPathBtn_clicked() {
-	m_descriptionPathLineEdit->changePath( this );
 }
 
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
@@ -1009,5 +1004,5 @@ void CustomDialogImpl::on_m_defaultPushButton_clicked() {
 
 void CustomDialogImpl::on_m_labelLink_linkActivated( const QString & link ) {
 	if( link == "#modules" )
-		m_listWidget->setCurrentRow( 8 );
+		m_listWidget->setCurrentRow( 9 );
 }

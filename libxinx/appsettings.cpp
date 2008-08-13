@@ -122,6 +122,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	value.autoHighlight = false;
 	value.hideCloseTab = false;
 	value.closeButtonOnEachTab = false;
+	value.automaticModelRefreshTimeout = 1000;
 
 	return value;
 }
@@ -142,6 +143,7 @@ AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( QSetting
 	value.autoHighlight = settings->value( "Auto Highlight", defaultValue.autoHighlight ).toBool();
 	value.hideCloseTab = settings->value( "Hide Close Tab", defaultValue.hideCloseTab ).toBool();
 	value.closeButtonOnEachTab = settings->value( "Close Button on each Tab", defaultValue.closeButtonOnEachTab ).toBool();
+	value.automaticModelRefreshTimeout = settings->value( "Automatic Model Refresh Timeout", defaultValue.automaticModelRefreshTimeout ).toInt();
 
 	settings->endGroup();
 	return value;
@@ -162,6 +164,7 @@ void AppSettings::setSettingsEditor( QSettings * settings, const QString & path,
 	settings->setValue( "Auto Highlight", value.autoHighlight );
 	settings->setValue( "Hide Close Tab", value.hideCloseTab );
 	settings->setValue( "Close Button on each Tab", value.closeButtonOnEachTab );
+	settings->setValue( "Automatic Model Refresh Timeout", value.automaticModelRefreshTimeout );
 
 	settings->endGroup();
 }
@@ -200,6 +203,7 @@ AppSettings::AppSettings::struct_project AppSettings::getDefaultProject() {
 	value.defaultPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
 	value.defaultProjectPathName = "projet";
 	value.closeVersionManagementLog = true;
+	value.automaticProjectDirectoryRefreshTimeout = 500;
 
 	return value;
 }
@@ -215,6 +219,7 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( QSetti
 	value.recentProjectFiles = settings->value( "Recent Project Files", defaultValue.recentProjectFiles ).toStringList();
 	value.defaultProjectPathName = settings->value( "Default Project Path Name", defaultValue.defaultProjectPathName ).toString();
 	value.closeVersionManagementLog = settings->value( "Close Version Management Log", defaultValue.closeVersionManagementLog ).toBool();
+	value.automaticProjectDirectoryRefreshTimeout = settings->value( "Automatic Project Directory Refresh Timeout", defaultValue.automaticProjectDirectoryRefreshTimeout ).toInt();
 
 	settings->endGroup();
 	return value;
@@ -230,6 +235,7 @@ void AppSettings::setSettingsProject( QSettings * settings, const QString & path
 	settings->setValue( "Recent Project Files", value.recentProjectFiles );
 	settings->setValue( "Default Project Path Name", value.defaultProjectPathName );
 	settings->setValue( "Close Version Management Log", value.closeVersionManagementLog );
+	settings->setValue( "Automatic Project Directory Refresh Timeout", value.automaticProjectDirectoryRefreshTimeout );
 
 	settings->endGroup();
 }
@@ -361,6 +367,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( QSetti
 	value.size = settings->value( "Size", defaultValue.size ).toSize();
 	value.maximized = settings->value( "Maximized", defaultValue.maximized ).toBool();
 	value.state = settings->value( "State", defaultValue.state ).toByteArray();
+	value.xinxTrace = settings->value( "XINX Trace", defaultValue.xinxTrace ).toString();
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", defaultValue.descriptions );
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
 	value.rcs = getSettingsRcs( settings, "RCS", defaultValue.rcs );
@@ -383,6 +390,7 @@ void AppSettings::setSettingsGlobals( QSettings * settings, const QString & path
 	settings->setValue( "Size", value.size );
 	settings->setValue( "Maximized", value.maximized );
 	settings->setValue( "State", value.state );
+	settings->setValue( "XINX Trace", value.xinxTrace );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsRcs( settings, "RCS", value.rcs );

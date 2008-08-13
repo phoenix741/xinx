@@ -40,6 +40,7 @@ public:
 		bool autoHighlight;
 		bool hideCloseTab;
 		bool closeButtonOnEachTab;
+		int automaticModelRefreshTimeout;
 	};
 
 	struct struct_rcs {
@@ -54,6 +55,7 @@ public:
 		QStringList recentProjectFiles;
 		QString defaultProjectPathName;
 		bool closeVersionManagementLog;
+		int automaticProjectDirectoryRefreshTimeout;
 	};
 
 	struct struct_descriptions {
@@ -81,6 +83,7 @@ public:
 		QSize size;
 		bool maximized;
 		QByteArray state;
+		QString xinxTrace;
 		struct_descriptions descriptions;
 		struct_project project;
 		struct_rcs rcs;

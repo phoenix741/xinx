@@ -26,6 +26,7 @@
 		<value name="Recent Project Files" type="stringlist"/>
 		<value name="Default Project Path Name" type="string" default="projet"/>
 		<value name="Close Version Management Log" type="bool" default="true"/>
+		<value name="Automatic Project Directory Refresh Timeout" type="int" default="500"/>
 	</type>
 	<type name="RCS">
 		<value name="Create ChangeLog" type="bool" default="no"/>
@@ -43,6 +44,7 @@
         <value name="Auto Highlight" type="bool" default="false"/>
         <value name="Hide Close Tab" type="bool" default="false"/>
         <value name="Close Button on each Tab" type="bool" default="false"/>
+		<value name="Automatic Model Refresh Timeout" type="int" default="1000"/>
 	</type>
     <type name="Configuration Editor">
         <value name="Activate Configuration Editor" type="bool" default="no"/>
@@ -56,6 +58,7 @@
 	<value name="Size" type="size" default="400,400"/>
     <value name="Maximized" type="bool" default="no"/>
 	<value name="State" type="blob"/>
+	<value name="XINX Trace" type="string"/>
 
 	<value name="Descriptions" type="Descriptions"/>
 	<value name="Project" type="Project"/>

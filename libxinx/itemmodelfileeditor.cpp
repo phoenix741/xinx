@@ -22,13 +22,14 @@
 #include "itemmodelfileeditor.h"
 #include "texteditor.h"
 #include "numberbar.h"
+#include "xinxconfig.h"
 
 /* ItemModelFileEditor */
 
 ItemModelFileEditor::ItemModelFileEditor( FileContentParser * element, TextEditor * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( element ) {
 	m_keyTimer = new QTimer();
 	m_keyTimer->setSingleShot( true );
-	m_keyTimer->setInterval( 1000 );
+	m_keyTimer->setInterval( XINXConfig::self()->config().editor.automaticModelRefreshTimeout );
 	connect( m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()) );
 	connect( textEdit(), SIGNAL(textChanged()), this, SLOT(textChanged()) );
 	disconnect( textEdit(), SIGNAL(textChanged()), this, SIGNAL(contentChanged()) );
