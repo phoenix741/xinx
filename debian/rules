@@ -1,19 +1,19 @@
 #!/usr/bin/make -f
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/qmake.mk
-QMAKE=qmake-qt4
+QMAKE=qmake-qt4 project.pro
 
 install/xinx::
-        mkdir $(DEB_DESTDIR)/usr/
-        mkdir $(DEB_DESTDIR)/usr/bin/
-        cp $(CURDIR)/xinx/xinx $(DEB_DESTDIR)/usr/bin/
-        cp $(CURDIR)/xinxprojectwizard/xinxprojectwizard $(DEB_DESTDIR)/usr/bin/
-        mkdir $(DEB_DESTDIR)/usr/lib/
-        cp $(CURDIR)/libxinx/libsharedxinx* $(DEB_DESTDIR)/usr/lib/
+	mkdir $(CURDIR)/debian/xinx/usr/
+	mkdir $(CURDIR)/debian/xinx/usr/bin/
+	cp $(CURDIR)/xinx/xinx $(CURDIR)/debian/xinx/usr/bin/
+	cp $(CURDIR)/xinxprojectwizard/xinxprojectwizard $(CURDIR)/debian/xinx/usr/bin/
+	mkdir $(CURDIR)/debian/xinx/usr/lib/
+	cp $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
 
-install/xinx-doc
-        mkdir $(DEB_DESTDIR)/usr/
-        mkdir $(DEB_DESTDIR)/usr/share/
-        mkdir $(DEB_DESTDIR)/usr/share/doc/
-        mkdir $(DEB_DESTDIR)/usr/share/doc/xinx-doc/
-        cp -a $(CURDIR)/doc/* $(DEB_DESTDIR)/usr/share/doc/xinx-doc/
+install/xinx-doc::
+	mkdir $(CURDIR)/debian/xinx-doc/usr/
+	mkdir $(CURDIR)/debian/xinx-doc/usr/share/
+	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/
+	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
+	cp -a $(CURDIR)/doc/* $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
