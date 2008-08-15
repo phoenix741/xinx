@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef __THREADEDCONFIGURATIONFILE_H__
 #define __THREADEDCONFIGURATIONFILE_H__
 
@@ -25,21 +25,23 @@
 #include "configurationfile.h"
 #include "xinxthread.h"
 
-class PrivateThreadedConfigurationFile;
-
 class ThreadedConfigurationFile : public XinxThread {
 	Q_OBJECT
 public:
 	virtual ~ThreadedConfigurationFile();
 	static ThreadedConfigurationFile * simpleConfigurationFile( const QString & pathname );
 signals:
-	void versionFinded( SimpleConfigurationFile configuration );
+	void versionFinded( ConfigurationFile configuration );
 protected:
 	ThreadedConfigurationFile();
 	virtual void threadrun();
+private slots:
+	void threadFinished();
 private:
-	PrivateThreadedConfigurationFile * d;
-	friend class PrivateThreadedConfigurationFile;
+	enum state { GETVERSION } m_state;
+	QString m_pathname;
+	ConfigurationFile m_configuration;
+
 };
 
 #endif // __THREADEDCONFIGURATIONFILE_H__

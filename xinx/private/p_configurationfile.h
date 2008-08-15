@@ -1,4 +1,4 @@
-/***************************************************************************
+/*************************'{}'**************************************************
  *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
@@ -22,30 +22,45 @@
 #define __P_CONFIGURATIONFILE_H__
 
 // Qt header
-#include <QXmlDefaultHandler>
-#include <QDomDocument>
+#include <QXmlStreamReader>
+#include <QIODevice>
+#include <QString>
 
-class ParseVersionHandler : public QXmlDefaultHandler {
+class ConfigurationBusinessView {
 public:
-	enum ParseVersionState { STATE_START, STATE_CONFIG, STATE_APPLICATION, STATE_VERSION, STATE_NUMERO, STATE_EDITIONSPECIAL };
+	QString target,
+			viewstruct,
+			type,
+			fileRef,
+			lang,
+			support;
+};
 
-	ParseVersionHandler();
-	virtual ~ParseVersionHandler();
+class ConfigurationParser : public QXmlStreamReader {
+public:
+	ConfigurationParser( bool minimal = true );
 
-	bool startElement(const QString &namespaceURI, const QString &localName,
-					  const QString &qName, const QXmlAttributes &attributes);
-	bool endElement(const QString &namespaceURI, const QString &localName,
-					const QString &qName);
-	bool characters(const QString &str);
-	bool fatalError(const QXmlParseException &exception);
+	const QString & version() const { return m_version; };
+	int build() const { return m_build; };
+	const QString & xmlPresentationFile() const { return m_xmlPresentationFile; };
 
-	QString m_errorStr;
-	enum ParseVersionState m_parserState;
+	bool loadFromDevice( QIODevice * device );
+private: // Lecture de nouveau éléments à l'aide de Plugins.
+	void readUnknownElement();
+	void readConfigElement();
+	void readVersionElement();
+	void readApplicationElement();
 
-	QString m_text, m_version, m_xmlPresentationFile;
-	int m_build;
+	void readBusinessViewDef();
 
-	int m_elementToRead;
+	void readPresentation();
+	void readPresentationElement();
+
+	bool m_minimal;
+	QString m_version, m_xmlPresentationFile;
+	int m_build, m_elementToRead;
+
+	QHash<QString,ConfigurationBusinessView> m_configurations;
 };
 
 #endif // __P_CONFIGURATIONFILE_H__

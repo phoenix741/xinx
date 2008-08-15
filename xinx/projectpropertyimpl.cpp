@@ -87,7 +87,7 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 			m_configurationVersionLabel->setText( tr("Search version of file ...") );
 			m_presentationLabel->setText( "" );
 			m_versionInstance = ThreadedConfigurationFile::simpleConfigurationFile( text );
-			connect( m_versionInstance, SIGNAL(versionFinded(SimpleConfigurationFile)), this, SLOT(versionFinded(SimpleConfigurationFile)) );
+			connect( m_versionInstance, SIGNAL(versionFinded(ConfigurationFile)), this, SLOT(versionFinded(ConfigurationFile)) );
 			m_versionInstance->start();
 		} else {
 			m_configurationVersionLabel->setText( tr("warning: The configuration file is not in this directory.") );
@@ -102,7 +102,7 @@ void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
 	updateOkButton();
 }
 
-void ProjectPropertyImpl::versionFinded( SimpleConfigurationFile configuration ) {
+void ProjectPropertyImpl::versionFinded( ConfigurationFile configuration ) {
 	QPalette paletteVerion( m_configurationVersionLabel->palette() );
 	if( configuration.version().isValid() ) {
 		paletteVerion.setColor( QPalette::WindowText, QColor() );

@@ -146,33 +146,21 @@ private:
 };
 
 /*!
- * This class defined some parameter readed in the configuration property box. This class don't contains all
- * the configuration file and take few memory. :)
- */
-class SimpleConfigurationFile {
-public:
-	SimpleConfigurationFile();
-
-	/*! Return the version of the configuration file. */
-	const ConfigurationVersion & version() const;
-	/*! Return the name of presentations files, if defined, else return presentation.xml */
-	const QString & xmlPresentationFile() const;
-protected:
-	SimpleConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile );
-
-	ConfigurationVersion m_version;
-	QString m_xmlPresentationFile;
-
-	friend class ConfigurationFile;
-};
-
-/*!
  * Class represente a configuration file. This class contais method checking the
  * version number of a configuration file, testing if the file exists in the path
  * or other usuable functionnality.
  */
-class ConfigurationFile : public SimpleConfigurationFile {
+class ConfigurationFile {
 public:
+	ConfigurationFile();
+	ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile );
+
+	/*! Return the version of the configuration file. */
+	const ConfigurationVersion & version() const;
+
+	/*! Return the name of presentations files, if defined, else return presentation.xml */
+	const QString & xmlPresentationFile() const;
+
 	/*!
 	 * Test if the configuration file exists in the directory path.
 	 * The configuration file has the name configuration.xml
@@ -188,8 +176,10 @@ public:
 	 * \param DirectoryPath the path where the configuration file is.
 	 * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
 	 */
-	static SimpleConfigurationFile simpleConfigurationFile( const QString & directoryPath );
+	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 private:
+	ConfigurationVersion m_version;
+	QString m_xmlPresentationFile;
 };
 
 /*!
@@ -220,7 +210,7 @@ public:
 	 * this not parse the next files.
 	 * \param DirectoryPath path of the meta configuration file.
 	 */
-	static SimpleConfigurationFile simpleConfigurationFile( const QString & directoryPath );
+	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 private:
 	QStringList m_files;
 };

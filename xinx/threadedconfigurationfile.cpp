@@ -17,57 +17,44 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 // Xinx header
 #include "threadedconfigurationfile.h"
-#include "private/p_threadedconfigurationfile.h"
 
 // Qt header
 #include <QMetaType>
 
-/* PrivateThreadedConfigurationFile */
-
-PrivateThreadedConfigurationFile::PrivateThreadedConfigurationFile( ThreadedConfigurationFile * parent ) : m_parent( parent ) {
-	
-}
-
-PrivateThreadedConfigurationFile::~PrivateThreadedConfigurationFile() {
-	
-}
-
-void PrivateThreadedConfigurationFile::threadFinished() {
-	if( m_state == GETVERSION ) {
-		emit m_parent->versionFinded( m_configuration );
-	}
-}
-
-
 /* ThreadedConfigurationFile */
 
 ThreadedConfigurationFile::ThreadedConfigurationFile() {
-	d = new PrivateThreadedConfigurationFile( this );
-	connect( this, SIGNAL(finished()), d, SLOT(threadFinished()) );
+	connect( this, SIGNAL(finished()), this, SLOT(threadFinished()) );
 }
 
 ThreadedConfigurationFile::~ThreadedConfigurationFile() {
 	disconnect();
 	terminate();
 	wait();
-	delete d;
 }
 
 ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( const QString & pathname ) {
-	qRegisterMetaType<SimpleConfigurationFile>("SimpleConfigurationFile");
-	
+	qRegisterMetaType<ConfigurationFile>("ConfigurationFile");
+
 	ThreadedConfigurationFile * instance = new ThreadedConfigurationFile();
-	instance->d->m_state = PrivateThreadedConfigurationFile::GETVERSION;
-	instance->d->m_pathname = pathname;
+	instance->m_state = ThreadedConfigurationFile::GETVERSION;
+	instance->m_pathname = pathname;
 
 	return instance;
 }
 
 void ThreadedConfigurationFile::threadrun() {
-	if( d->m_state == PrivateThreadedConfigurationFile::GETVERSION ) {
-		d->m_configuration = MetaConfigurationFile::simpleConfigurationFile( d->m_pathname );
+	if( m_state == ThreadedConfigurationFile::GETVERSION ) {
+		m_configuration = MetaConfigurationFile::simpleConfigurationFile( m_pathname );
 	}
 }
+
+void ThreadedConfigurationFile::threadFinished() {
+	if( m_state == GETVERSION ) {
+		emit versionFinded( m_configuration );
+	}
+}
+

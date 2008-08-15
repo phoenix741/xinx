@@ -28,6 +28,9 @@
 #include <QXmlSimpleReader>
 #include <QDebug>
 
+#include <QDomDocument>
+#include <QDomElement>
+
 // TODO: Delete this workaround
 #undef major
 #undef minor
@@ -156,49 +159,42 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 	return ! ( *this > version );
 }
 
-/* SimpleConfigurationFile */
+/* ConfigurationFile */
 
-SimpleConfigurationFile::SimpleConfigurationFile() {
+ConfigurationFile::ConfigurationFile() {
 }
 
-SimpleConfigurationFile::SimpleConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile )
-						: m_version( version ), m_xmlPresentationFile( xmlPresentationFile ) {
+ConfigurationFile::ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile )
+: m_version( version ), m_xmlPresentationFile( xmlPresentationFile ) {
 
 }
 
-const ConfigurationVersion & SimpleConfigurationFile::version() const {
+const ConfigurationVersion & ConfigurationFile::version() const {
 	return m_version;
 }
 
-const QString & SimpleConfigurationFile::xmlPresentationFile() const {
+const QString & ConfigurationFile::xmlPresentationFile() const {
 	return m_xmlPresentationFile;
 }
-
-/* ConfigurationFile */
 
 bool ConfigurationFile::exists( const QString & directoryPath ) {
 	return QFile::exists( QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) );
 }
 
-SimpleConfigurationFile ConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
+ConfigurationFile ConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	QString fileName = QFileInfo( directoryPath ).isDir() ?
 			QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) :
 			directoryPath;
 
-	ParseVersionHandler handler;
-	QXmlSimpleReader reader;
-	reader.setContentHandler( &handler );
-	reader.setErrorHandler( &handler );
-
-	SimpleConfigurationFile configuration;
+	ConfigurationParser parser;
+	ConfigurationFile configuration;
 
 	QFile file( fileName );
 	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
-		QXmlInputSource xmlInputSource( &file );
-		reader.parse( xmlInputSource );
-		configuration.m_xmlPresentationFile = handler.m_xmlPresentationFile;
+		parser.loadFromDevice( &file );
+		configuration.m_xmlPresentationFile = parser.xmlPresentationFile();
 		try {
-			configuration.m_version = ConfigurationVersion( handler.m_version, handler.m_build );
+			configuration.m_version = ConfigurationVersion( parser.version(), parser.build() );
 		} catch( ConfigurationVersionIncorectException ) {
 			configuration.m_version = ConfigurationVersion();
 		}
@@ -242,12 +238,12 @@ bool MetaConfigurationFile::exists( const QString & directoryPath ) {
 	return QFile::exists( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
 }
 
-SimpleConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
+ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	try {
 		MetaConfigurationFile meta( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
 		foreach( QString file, meta.m_files ) {
 			QString path = QDir( directoryPath ).absoluteFilePath( file );
-			SimpleConfigurationFile configuration = ConfigurationFile::simpleConfigurationFile( path );
+			ConfigurationFile configuration = ConfigurationFile::simpleConfigurationFile( path );
 			if( configuration.version().isValid() ) {
 				return configuration;
 			}
@@ -258,89 +254,169 @@ SimpleConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QS
 	}
 }
 
-/* ParseVersionHandler */
+/* ConfigurationParser */
 
-ParseVersionHandler::ParseVersionHandler() {
-	m_parserState = STATE_START;
+ConfigurationParser::ConfigurationParser( bool minimal ) : m_minimal( minimal ) {
 	m_build = -1;
 	m_elementToRead = 2;
 	m_xmlPresentationFile = "Presentation.xml";
 }
 
-ParseVersionHandler::~ParseVersionHandler() {
+bool ConfigurationParser::loadFromDevice( QIODevice * device ) {
+	Q_ASSERT( device );
 
-}
+	setDevice( device );
 
-bool ParseVersionHandler::startElement(const QString &namespaceURI, const QString &localName,
-									   const QString &qName, const QXmlAttributes &attributes) {
-	Q_UNUSED( namespaceURI );
-	Q_UNUSED( localName );
-	Q_UNUSED( attributes );
+	while( ! atEnd() ) {
+		readNext();
 
-	if( m_parserState == ParseVersionHandler::STATE_START && qName != "config" ) {
-		m_errorStr = "The file is not a configuration file";
-		return false;
+		if( isStartElement() ) {
+			if( name() == "config" )
+				readConfigElement();
+			else
+				raiseError("The file is not a configuration file.");
+		}
 	}
-	if( qName == "config" ) {
-		m_parserState = ParseVersionHandler::STATE_CONFIG;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_CONFIG && qName == "version" ) {
-		m_parserState = ParseVersionHandler::STATE_VERSION;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_CONFIG && qName == "application" ) {
-		m_parserState = ParseVersionHandler::STATE_APPLICATION;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_APPLICATION && qName == "properties" ) {
-		m_xmlPresentationFile = attributes.value( "xmlPresentationFile" );
-		m_elementToRead--;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "numero" ) {
-		m_parserState = ParseVersionHandler::STATE_NUMERO;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "edition_speciale" ) {
-		m_parserState = ParseVersionHandler::STATE_EDITIONSPECIAL;
+
+	return ! error();
+}
+
+void ConfigurationParser::readUnknownElement() {
+	Q_ASSERT( isStartElement() );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() )
+			readUnknownElement();
 	}
-	m_text = "";
-	if( m_elementToRead <= 0 )
-		return false;
-	return true;
 }
 
-bool ParseVersionHandler::endElement(const QString &namespaceURI, const QString &localName,
-									 const QString &qName) {
-	Q_UNUSED( namespaceURI );
-	Q_UNUSED( localName );
+void ConfigurationParser::readConfigElement() {
+	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "config" ) );
 
-	if( m_parserState == ParseVersionHandler::STATE_CONFIG && qName == "config" ) {
-		m_parserState = ParseVersionHandler::STATE_START;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_APPLICATION && qName == "application" ) {
-		m_parserState = ParseVersionHandler::STATE_CONFIG;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_VERSION && qName == "version" ) {
-		m_parserState = ParseVersionHandler::STATE_CONFIG;
-		m_elementToRead--;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_NUMERO && qName == "numero" ) {
-		m_version = m_text;
-		m_parserState = ParseVersionHandler::STATE_VERSION;
-	} else
-	if( m_parserState == ParseVersionHandler::STATE_EDITIONSPECIAL && qName == "edition_speciale" ) {
-		m_build = m_text.toInt();
-		m_parserState = ParseVersionHandler::STATE_VERSION;
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "version" )
+				readVersionElement();
+			else
+			if( QXmlStreamReader::name() == "application" )
+				readApplicationElement();
+			else
+				readUnknownElement();
+		}
 	}
-	if( m_elementToRead <= 0 )
-		return false;
-	return true;
 }
 
-bool ParseVersionHandler::characters(const QString &str) {
-	m_text += str;
-	return true;
+void ConfigurationParser::readVersionElement() {
+	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "version" ) );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "numero" )
+				m_version = readElementText();
+			else
+			if( QXmlStreamReader::name() == "edition_speciale" )
+				m_build = readElementText().toInt();
+			else
+				readUnknownElement();
+		}
+	}
+
+	if( m_minimal && ( --m_elementToRead == 0 ) )
+		raiseError("Simple configuration file is read");
 }
 
-bool ParseVersionHandler::fatalError(const QXmlParseException &exception) {
-	if( m_elementToRead )
-		qDebug() << "Parse error in configuration file at line " << exception.lineNumber() << ", column " << exception.columnNumber() << ": " << exception.message();
-	return false;
+void ConfigurationParser::readApplicationElement() {
+	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "application" ) );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "properties" ) {
+				if( ! attributes().value( "xmlPresentationFile" ).isEmpty() )
+					m_xmlPresentationFile = attributes().value( "xmlPresentationFile" ).toString();
+
+				if( m_minimal && ( --m_elementToRead == 0 ) )
+					raiseError("Simple configuration file is read");
+
+			}
+			if( !error() )
+				readUnknownElement();
+		}
+	}
 }
+
+void ConfigurationParser::readBusinessViewDef() {
+	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "businessview_def" ) );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "businessview" ) {
+				QString name = attributes().value( "name" ).toString();
+				m_configurations[ name ].target = attributes().value( "target" ).toString();
+				m_configurations[ name ].viewstruct = attributes().value( "viewstruct" ).toString();
+			}
+			if( !error() )
+				readUnknownElement();
+		}
+	}
+}
+
+void ConfigurationParser::readPresentation() {
+	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "presentation" ) );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() )
+			readPresentationElement();
+	}
+}
+
+void ConfigurationParser::readPresentationElement() {
+	Q_ASSERT( isStartElement() );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			QString name = attributes().value( "businessview" ).toString();
+			m_configurations[ name ].type = QXmlStreamReader::name().toString();
+			m_configurations[ name ].fileRef = attributes().value( "fileRef" ).toString();
+			m_configurations[ name ].lang = attributes().value( "lang" ).toString();
+			m_configurations[ name ].support = attributes().value( "support" ).toString();
+			if( !error() )
+				readUnknownElement();
+		}
+	}
+}
+

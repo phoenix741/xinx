@@ -47,7 +47,7 @@ private slots:
 	void on_m_projectButton_clicked();
 	void on_m_prefixList_defaultValueChanged( QString );
 
-	void versionFinded( SimpleConfigurationFile configuration );
+	void versionFinded( ConfigurationFile configuration );
 };
 
 #endif
