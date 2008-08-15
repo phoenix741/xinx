@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef __P_CONFIGURATIONFILE_H__
 #define __P_CONFIGURATIONFILE_H__
 
@@ -31,27 +31,21 @@ public:
 
 	ParseVersionHandler();
 	virtual ~ParseVersionHandler();
-	
-	bool startElement(const QString &namespaceURI, const QString &localName, 
+
+	bool startElement(const QString &namespaceURI, const QString &localName,
 					  const QString &qName, const QXmlAttributes &attributes);
 	bool endElement(const QString &namespaceURI, const QString &localName,
 					const QString &qName);
 	bool characters(const QString &str);
 	bool fatalError(const QXmlParseException &exception);
-	
+
 	QString m_errorStr;
 	enum ParseVersionState m_parserState;
-	
+
 	QString m_text, m_version, m_xmlPresentationFile;
 	int m_build;
-	
+
 	int m_elementToRead;
 };
-
-class PrivateMetaConfigurationFile {
-public:
-	QStringList m_files;
-};
-
 
 #endif // __P_CONFIGURATIONFILE_H__

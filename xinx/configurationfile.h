@@ -151,11 +151,15 @@ private:
  */
 class SimpleConfigurationFile {
 public:
+	SimpleConfigurationFile();
+
 	/*! Return the version of the configuration file. */
 	const ConfigurationVersion & version() const;
 	/*! Return the name of presentations files, if defined, else return presentation.xml */
 	const QString & xmlPresentationFile() const;
 protected:
+	SimpleConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile );
+
 	ConfigurationVersion m_version;
 	QString m_xmlPresentationFile;
 
@@ -218,8 +222,7 @@ public:
 	 */
 	static SimpleConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 private:
-	PrivateMetaConfigurationFile * d;
-	friend class PrivateMetaConfigurationFile;
+	QStringList m_files;
 };
 
 #endif // __CONFIGURATIONFILE_H__

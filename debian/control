@@ -7,6 +7,7 @@ Standards-Version: 3.7.3
 Homepage: http://xinx.shadoware.org/
 
 Package: xinx
+Section: devel
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: XSL/JS/HTML editor for Generix
@@ -14,6 +15,7 @@ Description: XSL/JS/HTML editor for Generix
  This editor is used with egx.
 
 Package: xinx-doc
+Section: doc
 Architecture: all
 Depends: xinx (>= 0.7.2.0)
 Description: Documentation for xinx

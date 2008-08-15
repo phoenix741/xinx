@@ -158,6 +158,14 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 
 /* SimpleConfigurationFile */
 
+SimpleConfigurationFile::SimpleConfigurationFile() {
+}
+
+SimpleConfigurationFile::SimpleConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile )
+						: m_version( version ), m_xmlPresentationFile( xmlPresentationFile ) {
+
+}
+
 const ConfigurationVersion & SimpleConfigurationFile::version() const {
 	return m_version;
 }
@@ -201,14 +209,12 @@ SimpleConfigurationFile ConfigurationFile::simpleConfigurationFile( const QStrin
 /* MetaConfigurationFile */
 
 MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
-	d = new PrivateMetaConfigurationFile();
-
 	QDomDocument document( "configurationdef.xml" );
 	QFile file( filename );
-	if( ! file.open( QIODevice::ReadOnly ) )
-		throw MetaConfigurationNotExistException( filename );
-
-	if( ! document.setContent( &file ) ) {
+	if( ! file.open( QIODevice::ReadOnly ) ) {
+		// If MetaConfigurationFile not exists, there is one ;)
+		m_files << "configuration.xml";
+	} else if( ! document.setContent( &file ) ) {
 		file.close();
 		throw MetaConfigurationException( QString( "I can't read \"%1\" as XML Document." ).arg( filename ) );
 	}
@@ -219,17 +225,17 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
 	if( ! configuration.isNull() ) {
 		QDomElement conffile = configuration.firstChildElement( "file" );
 		while( ! conffile.isNull() ) {
-			d->m_files.insert( 0, conffile.attribute( "name" ) );
+			m_files.insert( 0, conffile.attribute( "name" ) );
 			conffile = conffile.nextSiblingElement( "file" );
 		}
 	}
 
-	if( d->m_files.count() == 0 )
+	if( m_files.count() == 0 )
 		throw MetaConfigurationException( QString( "No configuration file found in \"%1\"" ).arg( filename ) );
 }
 
 MetaConfigurationFile::~MetaConfigurationFile() {
-	delete d;
+
 }
 
 bool MetaConfigurationFile::exists( const QString & directoryPath ) {
@@ -239,7 +245,7 @@ bool MetaConfigurationFile::exists( const QString & directoryPath ) {
 SimpleConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	try {
 		MetaConfigurationFile meta( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
-		foreach( QString file, meta.d->m_files ) {
+		foreach( QString file, meta.m_files ) {
 			QString path = QDir( directoryPath ).absoluteFilePath( file );
 			SimpleConfigurationFile configuration = ConfigurationFile::simpleConfigurationFile( path );
 			if( configuration.version().isValid() ) {
