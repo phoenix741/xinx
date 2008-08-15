@@ -145,6 +145,16 @@ private:
 	int m_build;
 };
 
+class ConfigurationBusinessView {
+public:
+	QString target,
+		viewstruct,
+		type,
+		fileRef,
+		lang,
+		support;
+};
+
 /*!
  * Class represente a configuration file. This class contais method checking the
  * version number of a configuration file, testing if the file exists in the path
@@ -154,6 +164,7 @@ class ConfigurationFile {
 public:
 	ConfigurationFile();
 	ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile );
+	ConfigurationFile( const QString & filename );
 
 	/*! Return the version of the configuration file. */
 	const ConfigurationVersion & version() const;
@@ -178,6 +189,7 @@ public:
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 private:
+	QHash<QString,ConfigurationBusinessView> m_configurations;
 	ConfigurationVersion m_version;
 	QString m_xmlPresentationFile;
 };
@@ -211,8 +223,12 @@ public:
 	 * \param DirectoryPath path of the meta configuration file.
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
+
+	ConfigurationFile * configurations( int index );
+	int count() const;
 private:
 	QStringList m_files;
+	QList<ConfigurationFile*> m_configurations;
 };
 
 #endif // __CONFIGURATIONFILE_H__

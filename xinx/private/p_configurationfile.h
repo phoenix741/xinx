@@ -26,16 +26,6 @@
 #include <QIODevice>
 #include <QString>
 
-class ConfigurationBusinessView {
-public:
-	QString target,
-			viewstruct,
-			type,
-			fileRef,
-			lang,
-			support;
-};
-
 class ConfigurationParser : public QXmlStreamReader {
 public:
 	ConfigurationParser( bool minimal = true );
@@ -43,6 +33,7 @@ public:
 	const QString & version() const { return m_version; };
 	int build() const { return m_build; };
 	const QString & xmlPresentationFile() const { return m_xmlPresentationFile; };
+	const QHash<QString,ConfigurationBusinessView> & configuration() { return m_configurations; };
 
 	bool loadFromDevice( QIODevice * device );
 private: // Lecture de nouveau éléments à l'aide de Plugins.

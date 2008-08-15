@@ -25,8 +25,6 @@
 // Qt header
 #include <QDir>
 #include <QFile>
-#include <QXmlSimpleReader>
-#include <QDebug>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -164,8 +162,25 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 ConfigurationFile::ConfigurationFile() {
 }
 
+ConfigurationFile::ConfigurationFile( const QString & filename ) {
+	ConfigurationParser parser( false );
+
+	QFile file( filename );
+	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
+		parser.loadFromDevice( &file );
+
+		m_xmlPresentationFile = parser.xmlPresentationFile();
+		m_configurations      = parser.configuration();
+		try {
+			m_version = ConfigurationVersion( parser.version(), parser.build() );
+		} catch( ConfigurationVersionIncorectException ) {
+			m_version = ConfigurationVersion();
+		}
+	}
+}
+
 ConfigurationFile::ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile )
-: m_version( version ), m_xmlPresentationFile( xmlPresentationFile ) {
+		  : m_version( version ), m_xmlPresentationFile( xmlPresentationFile ) {
 
 }
 
@@ -226,6 +241,10 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
 		}
 	}
 
+	for( int i = 0 ; i < m_files.size() ; i++ ) {
+		m_files.append( 0 );
+	}
+
 	if( m_files.count() == 0 )
 		throw MetaConfigurationException( QString( "No configuration file found in \"%1\"" ).arg( filename ) );
 }
@@ -252,6 +271,21 @@ ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString 
 	} catch( MetaConfigurationException ) {
 		return ConfigurationFile::simpleConfigurationFile( directoryPath );
 	}
+}
+
+int MetaConfigurationFile::count() const {
+	return m_configurations.size();
+}
+
+ConfigurationFile * MetaConfigurationFile::configurations( int index ) {
+	Q_ASSERT( ( index >= 0 ) && ( index < m_files.count() ) );
+	Q_ASSERT( ( index >= 0 ) && ( index < m_configurations.count() ) );
+
+	if( m_configurations.at( index ) ) return m_configurations.at( index );
+
+	ConfigurationFile * configuration = new ConfigurationFile( m_files.at( index ) );
+	m_configurations.replace( index, configuration );
+	return configuration;
 }
 
 /* ConfigurationParser */
