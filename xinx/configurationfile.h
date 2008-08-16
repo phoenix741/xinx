@@ -27,6 +27,7 @@
 // Qt header
 #include <QString>
 #include <QList>
+#include <QMultiHash>
 
 // TODO: Delete this workaround
 #undef major
@@ -145,16 +146,6 @@ private:
 	int m_build;
 };
 
-class ConfigurationBusinessView {
-public:
-	QString target,
-		viewstruct,
-		type,
-		fileRef,
-		lang,
-		support;
-};
-
 /*!
  * Class represente a configuration file. This class contais method checking the
  * version number of a configuration file, testing if the file exists in the path
@@ -166,11 +157,15 @@ public:
 	ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile );
 	ConfigurationFile( const QString & filename );
 
+	const QString & filename() const;
+
 	/*! Return the version of the configuration file. */
 	const ConfigurationVersion & version() const;
 
 	/*! Return the name of presentations files, if defined, else return presentation.xml */
 	const QString & xmlPresentationFile() const;
+
+	const QMultiHash<QString,QString> & BusinessViewPerFiles() const;
 
 	/*!
 	 * Test if the configuration file exists in the directory path.
@@ -189,9 +184,10 @@ public:
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 private:
-	QHash<QString,ConfigurationBusinessView> m_configurations;
+	QMultiHash<QString,QString> m_files_bv;
 	ConfigurationVersion m_version;
 	QString m_xmlPresentationFile;
+	QString m_filename;
 };
 
 /*!
@@ -224,6 +220,7 @@ public:
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 
+	const QStringList & files() const;
 	ConfigurationFile * configurations( int index );
 	int count() const;
 private:

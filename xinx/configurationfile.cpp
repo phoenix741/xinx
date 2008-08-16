@@ -162,7 +162,7 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 ConfigurationFile::ConfigurationFile() {
 }
 
-ConfigurationFile::ConfigurationFile( const QString & filename ) {
+ConfigurationFile::ConfigurationFile( const QString & filename ) : m_filename( filename ) {
 	ConfigurationParser parser( false );
 
 	QFile file( filename );
@@ -170,7 +170,7 @@ ConfigurationFile::ConfigurationFile( const QString & filename ) {
 		parser.loadFromDevice( &file );
 
 		m_xmlPresentationFile = parser.xmlPresentationFile();
-		m_configurations      = parser.configuration();
+		m_files_bv            = parser.files_bv();
 		try {
 			m_version = ConfigurationVersion( parser.version(), parser.build() );
 		} catch( ConfigurationVersionIncorectException ) {
@@ -184,12 +184,20 @@ ConfigurationFile::ConfigurationFile( const ConfigurationVersion & version, cons
 
 }
 
+const QString & ConfigurationFile::filename() const {
+	return m_filename;
+}
+
 const ConfigurationVersion & ConfigurationFile::version() const {
 	return m_version;
 }
 
 const QString & ConfigurationFile::xmlPresentationFile() const {
 	return m_xmlPresentationFile;
+}
+
+const QMultiHash<QString,QString> & ConfigurationFile::BusinessViewPerFiles() const {
+	return m_files_bv;
 }
 
 bool ConfigurationFile::exists( const QString & directoryPath ) {
@@ -250,7 +258,9 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
 }
 
 MetaConfigurationFile::~MetaConfigurationFile() {
-
+	QList<ConfigurationFile*> configuration = m_configurations;
+	m_configurations.clear();
+	qDeleteAll( configurations );
 }
 
 bool MetaConfigurationFile::exists( const QString & directoryPath ) {
@@ -271,6 +281,10 @@ ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString 
 	} catch( MetaConfigurationException ) {
 		return ConfigurationFile::simpleConfigurationFile( directoryPath );
 	}
+}
+
+const QStringList & MetaConfigurationFile::files() const {
+	return m_files;
 }
 
 int MetaConfigurationFile::count() const {
@@ -391,29 +405,10 @@ void ConfigurationParser::readApplicationElement() {
 				if( m_minimal && ( --m_elementToRead == 0 ) )
 					raiseError("Simple configuration file is read");
 
-			}
-			if( !error() )
 				readUnknownElement();
-		}
-	}
-}
-
-void ConfigurationParser::readBusinessViewDef() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "businessview_def" ) );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "businessview" ) {
-				QString name = attributes().value( "name" ).toString();
-				m_configurations[ name ].target = attributes().value( "target" ).toString();
-				m_configurations[ name ].viewstruct = attributes().value( "viewstruct" ).toString();
-			}
-			if( !error() )
+			} else if( QXmlStreamReader::name() == "presentation" ) {
+				readPresentation();
+			} else
 				readUnknownElement();
 		}
 	}
@@ -443,11 +438,7 @@ void ConfigurationParser::readPresentationElement() {
 			break;
 
 		if( isStartElement() ) {
-			QString name = attributes().value( "businessview" ).toString();
-			m_configurations[ name ].type = QXmlStreamReader::name().toString();
-			m_configurations[ name ].fileRef = attributes().value( "fileRef" ).toString();
-			m_configurations[ name ].lang = attributes().value( "lang" ).toString();
-			m_configurations[ name ].support = attributes().value( "support" ).toString();
+			m_files_bv.insert( attributes().value( "businessview" ).toString(), attributes().value( "fileRef" ).toString() );
 			if( !error() )
 				readUnknownElement();
 		}

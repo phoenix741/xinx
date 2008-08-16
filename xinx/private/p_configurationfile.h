@@ -25,6 +25,7 @@
 #include <QXmlStreamReader>
 #include <QIODevice>
 #include <QString>
+#include <QMultiHash>
 
 class ConfigurationParser : public QXmlStreamReader {
 public:
@@ -33,7 +34,7 @@ public:
 	const QString & version() const { return m_version; };
 	int build() const { return m_build; };
 	const QString & xmlPresentationFile() const { return m_xmlPresentationFile; };
-	const QHash<QString,ConfigurationBusinessView> & configuration() { return m_configurations; };
+	const QMultiHash<QString,QString> & files_bv() { return m_files_bv; };
 
 	bool loadFromDevice( QIODevice * device );
 private: // Lecture de nouveau éléments à l'aide de Plugins.
@@ -42,8 +43,6 @@ private: // Lecture de nouveau éléments à l'aide de Plugins.
 	void readVersionElement();
 	void readApplicationElement();
 
-	void readBusinessViewDef();
-
 	void readPresentation();
 	void readPresentationElement();
 
@@ -51,7 +50,7 @@ private: // Lecture de nouveau éléments à l'aide de Plugins.
 	QString m_version, m_xmlPresentationFile;
 	int m_build, m_elementToRead;
 
-	QHash<QString,ConfigurationBusinessView> m_configurations;
+	QMultiHash<QString,QString> m_files_bv;
 };
 
 #endif // __P_CONFIGURATIONFILE_H__

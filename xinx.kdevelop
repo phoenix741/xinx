@@ -157,7 +157,7 @@
   </kdevfilecreate>
   <kdevtrollproject>
     <general>
-      <activedir>xinx</activedir>
+      <activedir>xinxprojectwizard</activedir>
     </general>
     <run>
       <directoryradio>executable</directoryradio>
