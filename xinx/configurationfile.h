@@ -164,7 +164,7 @@ public:
 	/*! Return the name of presentations files, if defined, else return presentation.xml */
 	QString xmlPresentationFile();
 
-	QMultiHash<QString,QString> BusinessViewPerFiles();
+	QStringList businessViewPerFiles( const QString & filename );
 
 	/*!
 	 * Test if the configuration file exists in the directory path.

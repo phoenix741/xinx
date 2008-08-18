@@ -52,7 +52,6 @@ HEADERS += scriptmanager.h \
     iconprojectprovider.h \
     mainformimpl.h \
     newprojectwizard.h \
-    private/p_configurationfile.h \
     private/p_filecontentdockwidget.h \
     private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \

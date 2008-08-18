@@ -33,6 +33,7 @@ public:
 	static QString saveFileAs( const QString & filename, const QString & defaultFileName, QStringList & filesForRepository );
 	static QString saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository );
 private slots:
+	void businessViewFinded( QStringList list );
 private:
 	SpecifiqueDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 

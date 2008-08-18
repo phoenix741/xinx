@@ -20,7 +20,6 @@
 
 // Xinx header
 #include "configurationfile.h"
-#include "private/p_configurationfile.h"
 
 // Qt header
 #include <QDir>
@@ -165,6 +164,8 @@ ConfigurationFile::ConfigurationFile() {
 }
 
 ConfigurationFile::ConfigurationFile( const QString & filename ) : m_filename( filename ) {
+	version();
+	xmlPresentationFile();
 }
 
 const QString & ConfigurationFile::filename() const {
@@ -177,7 +178,8 @@ ConfigurationVersion ConfigurationFile::version() {
 	try {
 		QFile sourceDocument;
 		sourceDocument.setFileName( m_filename );
-		sourceDocument.open(QIODevice::ReadOnly);
+		if(! sourceDocument.open(QIODevice::ReadOnly))
+			throw ConfigurationVersionIncorectException( "" );
 
 		QString versionInfo;
 		int buildInfo = 0;
@@ -186,7 +188,8 @@ ConfigurationVersion ConfigurationFile::version() {
 		QXmlResultItems result;
 
 		query.bindVariable( "inputDocument", &sourceDocument );
-		query.setQuery( "doc($inputDocument)/config/version/numero/\n"
+		query.setQuery( "declare default element namespace 'http://www.generix.fr/technicalframework/configuration';\n"
+		                "doc($inputDocument)/config/version/numero/\n"
 		                "string(text())" );
 
 
@@ -200,7 +203,9 @@ ConfigurationVersion ConfigurationFile::version() {
 		QXmlItem item( result.next() );
 		if( !item.isNull() ) versionInfo = item.toAtomicValue().toString();
 
-		query.setQuery( "doc($inputDocument)/config/version/edition_speciale/\n"
+		sourceDocument.reset();
+		query.setQuery( "declare default element namespace 'http://www.generix.fr/technicalframework/configuration';\n"
+		                "doc($inputDocument)/config/version/edition_speciale/\n"
 		                "string(text())" );
 
 		if( !query.isValid() )
@@ -230,7 +235,8 @@ QString ConfigurationFile::xmlPresentationFile() {
 	QXmlResultItems result;
 
 	query.bindVariable( "inputDocument", &sourceDocument );
-	query.setQuery( "doc($inputDocument)/config/application/properties/\n"
+	query.setQuery( "declare default element namespace 'http://www.generix.fr/technicalframework/configuration';\n"
+	                "doc($inputDocument)/config/application/properties/\n"
 	                "string(@xmlPresentationFile)" );
 
 	query.evaluateTo( &result );
@@ -242,8 +248,45 @@ QString ConfigurationFile::xmlPresentationFile() {
 	return m_xmlPresentationFile;
 }
 
-QMultiHash<QString,QString> ConfigurationFile::BusinessViewPerFiles() {
-	return QMultiHash<QString,QString>();
+QStringList ConfigurationFile::businessViewPerFiles( const QString & filename ) {
+	QStringList fileList;
+	QString relativeFileName = filename, rootPath;
+
+	QFile sourceDocument;
+	sourceDocument.setFileName( m_filename );
+	sourceDocument.open( QIODevice::ReadOnly );
+
+	QXmlQuery query;
+	QXmlResultItems result;
+
+	query.bindVariable( "inputDocument", &sourceDocument );
+	query.setQuery( "declare default element namespace 'http://www.generix.fr/technicalframework/configuration';\n"
+	                "doc($inputDocument)/config/application/presentation/\n"
+	                "string(@rootPath)" );
+
+	query.evaluateTo( &result );
+
+	QXmlItem item( result.next() );
+	if( !item.isNull() ) rootPath = item.toAtomicValue().toString();
+
+	relativeFileName.remove( rootPath );
+	while( relativeFileName.startsWith( '/' ) ) relativeFileName.remove( 0, 1 );
+
+	sourceDocument.reset();
+	query.setQuery( "declare default element namespace 'http://www.generix.fr/technicalframework/configuration';\n"
+	                "doc($inputDocument)/config/application/presentation/*[@fileRef='" + relativeFileName + "']/\n"
+	                "string(@businessview)" );
+
+	query.evaluateTo( &result );
+
+	item = result.next();
+	while( !item.isNull() ) {
+		fileList << item.toAtomicValue().toString();
+
+		item = result.next();
+	}
+
+	return fileList;
 }
 
 bool ConfigurationFile::exists( const QString & directoryPath ) {
@@ -321,147 +364,3 @@ ConfigurationFile * MetaConfigurationFile::configurations( int index ) {
 
 	return m_configurations.at( index );
 }
-
-/* ConfigurationParser */
-
-ConfigurationParser::ConfigurationParser( bool minimal ) : m_minimal( minimal ) {
-	m_build = -1;
-	m_elementToRead = 2;
-	m_xmlPresentationFile = "Presentation.xml";
-}
-
-bool ConfigurationParser::loadFromDevice( QIODevice * device ) {
-	Q_ASSERT( device );
-
-	setDevice( device );
-
-	while( ! atEnd() ) {
-		readNext();
-
-		if( isStartElement() ) {
-			if( name() == "config" )
-				readConfigElement();
-			else
-				raiseError("The file is not a configuration file.");
-		}
-	}
-
-	return ! error();
-}
-
-void ConfigurationParser::readUnknownElement() {
-	Q_ASSERT( isStartElement() );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() )
-			readUnknownElement();
-	}
-}
-
-void ConfigurationParser::readConfigElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "config" ) );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "version" )
-				readVersionElement();
-			else
-			if( QXmlStreamReader::name() == "application" )
-				readApplicationElement();
-			else
-				readUnknownElement();
-		}
-	}
-}
-
-void ConfigurationParser::readVersionElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "version" ) );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "numero" )
-				m_version = readElementText();
-			else
-			if( QXmlStreamReader::name() == "edition_speciale" )
-				m_build = readElementText().toInt();
-			else
-				readUnknownElement();
-		}
-	}
-
-	if( m_minimal && ( --m_elementToRead == 0 ) )
-		raiseError("Simple configuration file is read");
-}
-
-void ConfigurationParser::readApplicationElement() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "application" ) );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() ) {
-			if( QXmlStreamReader::name() == "properties" ) {
-				if( ! attributes().value( "xmlPresentationFile" ).isEmpty() )
-					m_xmlPresentationFile = attributes().value( "xmlPresentationFile" ).toString();
-
-				if( m_minimal && ( --m_elementToRead == 0 ) )
-					raiseError("Simple configuration file is read");
-
-				readUnknownElement();
-			} else if( QXmlStreamReader::name() == "presentation" ) {
-				readPresentation();
-			} else
-				readUnknownElement();
-		}
-	}
-}
-
-void ConfigurationParser::readPresentation() {
-	Q_ASSERT( isStartElement() && ( QXmlStreamReader::name() == "presentation" ) );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() )
-			readPresentationElement();
-	}
-}
-
-void ConfigurationParser::readPresentationElement() {
-	Q_ASSERT( isStartElement() );
-
-	while( !atEnd() ) {
-		readNext();
-
-		if( isEndElement() )
-			break;
-
-		if( isStartElement() ) {
-			m_files_bv.insert( attributes().value( "businessview" ).toString(), attributes().value( "fileRef" ).toString() );
-			if( !error() )
-				readUnknownElement();
-		}
-	}
-}
-

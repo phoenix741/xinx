@@ -20,13 +20,17 @@
 
 // Xinx header
 #include "threadedconfigurationfile.h"
+#include "xslproject.h"
 
 // Qt header
 #include <QMetaType>
+#include <QDir>
 
 /* ThreadedConfigurationFile */
 
 ThreadedConfigurationFile::ThreadedConfigurationFile() {
+	qRegisterMetaType<ConfigurationFile>("ConfigurationFile");
+
 	connect( this, SIGNAL(finished()), this, SLOT(threadFinished()) );
 }
 
@@ -37,8 +41,6 @@ ThreadedConfigurationFile::~ThreadedConfigurationFile() {
 }
 
 ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( const QString & pathname ) {
-	qRegisterMetaType<ConfigurationFile>("ConfigurationFile");
-
 	ThreadedConfigurationFile * instance = new ThreadedConfigurationFile();
 	instance->m_state = ThreadedConfigurationFile::GETVERSION;
 	instance->m_pathname = pathname;
@@ -46,15 +48,35 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::simpleConfigurationFile( 
 	return instance;
 }
 
+ThreadedConfigurationFile * ThreadedConfigurationFile::businessViewOfFile( const QString & filename ) {
+	ThreadedConfigurationFile * instance = new ThreadedConfigurationFile();
+	instance->m_state = ThreadedConfigurationFile::GETBUSINESSVIEW;
+	instance->m_filename = filename;
+	instance->m_businessView.clear();
+
+	return instance;
+}
+
 void ThreadedConfigurationFile::threadrun() {
 	if( m_state == ThreadedConfigurationFile::GETVERSION ) {
 		m_configuration = MetaConfigurationFile::simpleConfigurationFile( m_pathname );
+	} else if( m_state == ThreadedConfigurationFile::GETBUSINESSVIEW ) {
+		if( XINXProjectManager::self()->project() ) {
+			QString path = XINXProjectManager::self()->project()->projectPath();
+
+			MetaConfigurationFile metaconf( QDir( path ).absoluteFilePath( "configurationdef.xml" ) );
+			for( int i = 0; i < metaconf.count(); i++ ) {
+				m_businessView += metaconf.configurations( i )->businessViewPerFiles( QDir( path ).relativeFilePath( m_filename ) );
+			}
+		}
 	}
 }
 
 void ThreadedConfigurationFile::threadFinished() {
 	if( m_state == GETVERSION ) {
 		emit versionFinded( m_configuration );
+	} else if( m_state == GETBUSINESSVIEW ) {
+		emit businessViewFinded( m_businessView );
 	}
 }
 

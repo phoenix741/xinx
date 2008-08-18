@@ -24,6 +24,8 @@
 #include <xslproject.h>
 #include <xinxpluginsloader.h>
 #include <xinxconfig.h>
+#include "configurationfile.h"
+#include "threadedconfigurationfile.h"
 
 // Qt header
 #include <QFileInfo>
@@ -72,12 +74,24 @@ QString SpecifiqueDialogImpl::lastPlace() {
 	return m_lastPlace;
 }
 
+void SpecifiqueDialogImpl::businessViewFinded( QStringList list ) {
+	sender()->deleteLater();
+
+	m_impactedListWidget->clear();
+	m_impactedListWidget->addItems( list );
+	m_progressBar->setVisible( false );
+}
+
 void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
 	Q_ASSERT( XINXProjectManager::self()->project() );
 
 	m_filename = filename;
 	m_specifiqueCheckBox->setEnabled( (! filename.isEmpty() ) && ( ! isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) );
 	m_repositoryCheckBox->setEnabled( canBeAddedToRepository( filename ) );
+
+	ThreadedConfigurationFile * instance = ThreadedConfigurationFile::businessViewOfFile( filename );
+	connect( instance, SIGNAL(businessViewFinded(QStringList)), this, SLOT(businessViewFinded(QStringList)) );
+	instance->start();
 }
 
 QString SpecifiqueDialogImpl::path() const {

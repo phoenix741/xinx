@@ -30,7 +30,9 @@ class ThreadedConfigurationFile : public XinxThread {
 public:
 	virtual ~ThreadedConfigurationFile();
 	static ThreadedConfigurationFile * simpleConfigurationFile( const QString & pathname );
+	static ThreadedConfigurationFile * businessViewOfFile( const QString & filename );
 signals:
+	void businessViewFinded( QStringList list );
 	void versionFinded( ConfigurationFile configuration );
 protected:
 	ThreadedConfigurationFile();
@@ -38,8 +40,9 @@ protected:
 private slots:
 	void threadFinished();
 private:
-	enum state { GETVERSION } m_state;
-	QString m_pathname;
+	enum state { GETVERSION, GETBUSINESSVIEW } m_state;
+	QString m_pathname, m_filename;
+	QStringList m_businessView;
 	ConfigurationFile m_configuration;
 
 };

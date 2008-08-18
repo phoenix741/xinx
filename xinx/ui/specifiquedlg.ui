@@ -58,10 +58,20 @@
       <string>&amp;Impacted BusinessView</string>
      </property>
      <layout class="QGridLayout" >
-      <item row="0" column="0" >
+      <item row="1" column="0" >
        <widget class="QListWidget" name="m_impactedListWidget" >
         <property name="whatsThis" >
          <string>List of &lt;i>Business View&lt;/i> using this file and that made be impactedi.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QProgressBar" name="m_progressBar" >
+        <property name="maximum" >
+         <number>0</number>
+        </property>
+        <property name="value" >
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -73,16 +83,7 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
@@ -90,7 +91,7 @@
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>131</width>
          <height>31</height>
@@ -104,7 +105,8 @@
         <string>&amp;OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -114,7 +116,8 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>
