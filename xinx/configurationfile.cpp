@@ -194,6 +194,9 @@ ConfigurationVersion ConfigurationFile::version() {
 			throw ConfigurationVersionIncorectException( "" );
 
 		query.evaluateTo( &result );
+		if( result.hasError() )
+			throw ConfigurationVersionIncorectException( "" );
+
 		QXmlItem item( result.next() );
 		if( !item.isNull() ) versionInfo = item.toAtomicValue().toString();
 
@@ -231,6 +234,8 @@ QString ConfigurationFile::xmlPresentationFile() {
 	                "string(@xmlPresentationFile)" );
 
 	query.evaluateTo( &result );
+	if( result.hasError() )
+		throw ConfigurationVersionIncorectException( "" );
 	QXmlItem item( result.next() );
 	if( !item.isNull() ) m_xmlPresentationFile = item.toAtomicValue().toString();
 
