@@ -154,18 +154,17 @@ private:
 class ConfigurationFile {
 public:
 	ConfigurationFile();
-	ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile );
 	ConfigurationFile( const QString & filename );
 
 	const QString & filename() const;
 
 	/*! Return the version of the configuration file. */
-	const ConfigurationVersion & version() const;
+	ConfigurationVersion version();
 
 	/*! Return the name of presentations files, if defined, else return presentation.xml */
-	const QString & xmlPresentationFile() const;
+	QString xmlPresentationFile();
 
-	const QMultiHash<QString,QString> & BusinessViewPerFiles() const;
+	QMultiHash<QString,QString> BusinessViewPerFiles();
 
 	/*!
 	 * Test if the configuration file exists in the directory path.
@@ -184,10 +183,9 @@ public:
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 private:
-	QMultiHash<QString,QString> m_files_bv;
+	QString m_filename;
 	ConfigurationVersion m_version;
 	QString m_xmlPresentationFile;
-	QString m_filename;
 };
 
 /*!
@@ -220,11 +218,9 @@ public:
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 
-	const QStringList & files() const;
 	ConfigurationFile * configurations( int index );
 	int count() const;
 private:
-	QStringList m_files;
 	QList<ConfigurationFile*> m_configurations;
 };
 

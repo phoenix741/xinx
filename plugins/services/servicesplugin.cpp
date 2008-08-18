@@ -152,7 +152,7 @@ QList<QWizardPage*> ServicesPlugin::createNewProjectSettingsPages( int nextid ) 
 
 bool ServicesPlugin::saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page ) {
 	ServicesListPageImpl * servicesPage = qobject_cast<ServicesListPageImpl*>( page );
-	if( servicesPage->field( "project.services" ).toBool() ) {
+	if( servicesPage && servicesPage->field( "project.services" ).toBool() ) {
 		XSLProject::ProjectOptions options = project->options();
 		options |= XSLProject::hasWebServices;
 		project->setOptions( options );
@@ -164,7 +164,7 @@ bool ServicesPlugin::saveNewProjectSettingsPage( XSLProject * project, QWizardPa
 		project->writeProperty( "webServiceLink", services.join(";;") );
 	}
 
-	return false;
+	return true;
 }
 
 Q_EXPORT_PLUGIN2(servicesplugin, ServicesPlugin)

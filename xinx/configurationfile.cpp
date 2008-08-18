@@ -26,6 +26,8 @@
 #include <QDir>
 #include <QFile>
 
+#include <QtXmlPatterns>
+
 #include <QDomDocument>
 #include <QDomElement>
 
@@ -33,7 +35,7 @@
 #undef major
 #undef minor
 
-/* 	ConfigurationVerstionIncorectException */
+/* ConfigurationVerstionIncorectException */
 
 ConfigurationVersionIncorectException::ConfigurationVersionIncorectException( QString version ) : XinxException( QString("Wrong version number %1").arg( version ) ) {
 
@@ -163,41 +165,80 @@ ConfigurationFile::ConfigurationFile() {
 }
 
 ConfigurationFile::ConfigurationFile( const QString & filename ) : m_filename( filename ) {
-	ConfigurationParser parser( false );
-
-	QFile file( filename );
-	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
-		parser.loadFromDevice( &file );
-
-		m_xmlPresentationFile = parser.xmlPresentationFile();
-		m_files_bv            = parser.files_bv();
-		try {
-			m_version = ConfigurationVersion( parser.version(), parser.build() );
-		} catch( ConfigurationVersionIncorectException ) {
-			m_version = ConfigurationVersion();
-		}
-	}
-}
-
-ConfigurationFile::ConfigurationFile( const ConfigurationVersion & version, const QString & xmlPresentationFile )
-		  : m_version( version ), m_xmlPresentationFile( xmlPresentationFile ) {
-
 }
 
 const QString & ConfigurationFile::filename() const {
 	return m_filename;
 }
 
-const ConfigurationVersion & ConfigurationFile::version() const {
-	return m_version;
+ConfigurationVersion ConfigurationFile::version() {
+	if( m_version.isValid() ) return m_version;
+
+	try {
+		QFile sourceDocument;
+		sourceDocument.setFileName( m_filename );
+		sourceDocument.open(QIODevice::ReadOnly);
+
+		QString versionInfo;
+		int buildInfo = 0;
+
+		QXmlQuery query;
+		QXmlResultItems result;
+
+		query.bindVariable( "inputDocument", &sourceDocument );
+		query.setQuery( "doc($inputDocument)/config/version/numero/\n"
+		                "string(text())" );
+
+
+		if( !query.isValid() )
+			throw ConfigurationVersionIncorectException( "" );
+
+		query.evaluateTo( &result );
+		QXmlItem item( result.next() );
+		if( !item.isNull() ) versionInfo = item.toAtomicValue().toString();
+
+		query.setQuery( "doc($inputDocument)/config/version/edition_speciale/\n"
+		                "string(text())" );
+
+		if( !query.isValid() )
+			throw ConfigurationVersionIncorectException( "" );
+
+		query.evaluateTo( &result );
+		item = QXmlItem( result.next() );
+		if( !item.isNull() ) buildInfo = item.toAtomicValue().toInt();
+
+		m_version = ConfigurationVersion( versionInfo, buildInfo );
+		return m_version;
+	} catch( ConfigurationVersionIncorectException ) {
+		return ConfigurationVersion();
+	}
 }
 
-const QString & ConfigurationFile::xmlPresentationFile() const {
+QString ConfigurationFile::xmlPresentationFile() {
+	if( ! m_xmlPresentationFile.isNull() ) return m_xmlPresentationFile;
+
+	m_xmlPresentationFile = "Presentation.xml";
+
+	QFile sourceDocument;
+	sourceDocument.setFileName( m_filename );
+	sourceDocument.open(QIODevice::ReadOnly);
+
+	QXmlQuery query;
+	QXmlResultItems result;
+
+	query.bindVariable( "inputDocument", &sourceDocument );
+	query.setQuery( "doc($inputDocument)/config/application/properties/\n"
+	                "string(@xmlPresentationFile)" );
+
+	query.evaluateTo( &result );
+	QXmlItem item( result.next() );
+	if( !item.isNull() ) m_xmlPresentationFile = item.toAtomicValue().toString();
+
 	return m_xmlPresentationFile;
 }
 
-const QMultiHash<QString,QString> & ConfigurationFile::BusinessViewPerFiles() const {
-	return m_files_bv;
+QMultiHash<QString,QString> ConfigurationFile::BusinessViewPerFiles() {
+	return QMultiHash<QString,QString>();
 }
 
 bool ConfigurationFile::exists( const QString & directoryPath ) {
@@ -209,58 +250,43 @@ ConfigurationFile ConfigurationFile::simpleConfigurationFile( const QString & di
 			QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) :
 			directoryPath;
 
-	ConfigurationParser parser;
-	ConfigurationFile configuration;
-
-	QFile file( fileName );
-	if( file.open( QFile::ReadOnly | QFile::Text ) ) {
-		parser.loadFromDevice( &file );
-		configuration.m_xmlPresentationFile = parser.xmlPresentationFile();
-		try {
-			configuration.m_version = ConfigurationVersion( parser.version(), parser.build() );
-		} catch( ConfigurationVersionIncorectException ) {
-			configuration.m_version = ConfigurationVersion();
-		}
-	}
-	return configuration;
+	return ConfigurationFile( fileName );
 }
 
 /* MetaConfigurationFile */
 
 MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
+	QString directoryPath = QFileInfo( filename ).absolutePath();
+
 	QDomDocument document( "configurationdef.xml" );
 	QFile file( filename );
 	if( ! file.open( QIODevice::ReadOnly ) ) {
 		// If MetaConfigurationFile not exists, there is one ;)
-		m_files << "configuration.xml";
+		m_configurations << new ConfigurationFile( QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) );
 	} else if( ! document.setContent( &file ) ) {
 		file.close();
 		throw MetaConfigurationException( QString( "I can't read \"%1\" as XML Document." ).arg( filename ) );
-	}
+	} else {
+		QDomElement root = document.documentElement();
 
-	QDomElement root = document.documentElement();
-
-	QDomElement configuration = root.firstChildElement( "configuration" );
-	if( ! configuration.isNull() ) {
-		QDomElement conffile = configuration.firstChildElement( "file" );
-		while( ! conffile.isNull() ) {
-			m_files.insert( 0, conffile.attribute( "name" ) );
-			conffile = conffile.nextSiblingElement( "file" );
+		QDomElement configuration = root.firstChildElement( "configuration" );
+		if( ! configuration.isNull() ) {
+			QDomElement conffile = configuration.firstChildElement( "file" );
+			while( ! conffile.isNull() ) {
+				m_configurations.insert( 0, new ConfigurationFile( QDir( directoryPath ).absoluteFilePath( conffile.attribute( "name" ) ) ) );
+				conffile = conffile.nextSiblingElement( "file" );
+			}
 		}
 	}
 
-	for( int i = 0 ; i < m_files.size() ; i++ ) {
-		m_files.append( 0 );
-	}
-
-	if( m_files.count() == 0 )
+	if( m_configurations.count() == 0 )
 		throw MetaConfigurationException( QString( "No configuration file found in \"%1\"" ).arg( filename ) );
 }
 
 MetaConfigurationFile::~MetaConfigurationFile() {
 	QList<ConfigurationFile*> configuration = m_configurations;
 	m_configurations.clear();
-	qDeleteAll( configurations );
+	qDeleteAll( configuration );
 }
 
 bool MetaConfigurationFile::exists( const QString & directoryPath ) {
@@ -270,11 +296,9 @@ bool MetaConfigurationFile::exists( const QString & directoryPath ) {
 ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString & directoryPath ) {
 	try {
 		MetaConfigurationFile meta( QDir( directoryPath ).absoluteFilePath( "configurationdef.xml" ) );
-		foreach( QString file, meta.m_files ) {
-			QString path = QDir( directoryPath ).absoluteFilePath( file );
-			ConfigurationFile configuration = ConfigurationFile::simpleConfigurationFile( path );
-			if( configuration.version().isValid() ) {
-				return configuration;
+		foreach( ConfigurationFile * conf, meta.m_configurations ) {
+			if( conf->version().isValid() ) {
+				return *conf;
 			}
 		}
 		return ConfigurationFile::simpleConfigurationFile( directoryPath );
@@ -283,23 +307,14 @@ ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString 
 	}
 }
 
-const QStringList & MetaConfigurationFile::files() const {
-	return m_files;
-}
-
 int MetaConfigurationFile::count() const {
 	return m_configurations.size();
 }
 
 ConfigurationFile * MetaConfigurationFile::configurations( int index ) {
-	Q_ASSERT( ( index >= 0 ) && ( index < m_files.count() ) );
 	Q_ASSERT( ( index >= 0 ) && ( index < m_configurations.count() ) );
 
-	if( m_configurations.at( index ) ) return m_configurations.at( index );
-
-	ConfigurationFile * configuration = new ConfigurationFile( m_files.at( index ) );
-	m_configurations.replace( index, configuration );
-	return configuration;
+	return m_configurations.at( index );
 }
 
 /* ConfigurationParser */

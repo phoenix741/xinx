@@ -1,6 +1,6 @@
 TEMPLATE = app
-CONFIG += qdbus warn_on 
-QT += xml script
+CONFIG += qdbus warn_on
+QT += xml script xmlpatterns
 DESTDIR += ./
 INCLUDEPATH += ../components ../libxinx ../xinx/
 LIBS = -L../libxinx -L../plugins -L../components -lwebplugin -lsharedxinx -lxinxcmp
