@@ -96,7 +96,7 @@ static QScriptValue cflToScriptValue( QScriptEngine *engine, const QList<Configu
 	return qsConfigurationsArray;
 }
 
-static void cflFromScriptValue(const QScriptValue &obj, QList<ConfigurationFile*> &s ) {
+static void cflFromScriptValue(const QScriptValue &, QList<ConfigurationFile*> & ) {
 	// Pas de modification
 }
 
@@ -111,7 +111,7 @@ static QScriptValue cvToScriptValue( QScriptEngine *engine, const ConfigurationV
 	return qsVersion;
 }
 
-static void cvFromScriptValue(const QScriptValue &obj, ConfigurationVersion &s ) {
+static void cvFromScriptValue(const QScriptValue &, ConfigurationVersion & ) {
 	// Pas de modification
 }
 

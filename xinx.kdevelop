@@ -161,11 +161,11 @@
     </general>
     <run>
       <directoryradio>executable</directoryradio>
-      <mainprogram>/home/phoenix/logiciels/qt/xinx-trunk/xinx/xinx</mainprogram>
+      <mainprogram></mainprogram>
       <programargs></programargs>
       <globaldebugarguments></globaldebugarguments>
-      <globalcwd>/home/phoenix/logiciels/qt/xinx-trunk</globalcwd>
-      <useglobalprogram>true</useglobalprogram>
+      <globalcwd></globalcwd>
+      <useglobalprogram>false</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <autoinstall>false</autoinstall>
