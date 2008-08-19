@@ -157,14 +157,14 @@
   </kdevfilecreate>
   <kdevtrollproject>
     <general>
-      <activedir>xinxprojectwizard</activedir>
+      <activedir>xinx</activedir>
     </general>
     <run>
       <directoryradio>executable</directoryradio>
-      <mainprogram>/home/phoenix/logiciels/linux/qt/xinx-trunk/xinx/xinx</mainprogram>
+      <mainprogram>/home/phoenix/logiciels/qt/xinx-trunk/xinx/xinx</mainprogram>
       <programargs></programargs>
       <globaldebugarguments></globaldebugarguments>
-      <globalcwd>/home/phoenix/logiciels/linux/qt/xinx-trunk</globalcwd>
+      <globalcwd>/home/phoenix/logiciels/qt/xinx-trunk</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>

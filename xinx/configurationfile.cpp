@@ -54,7 +54,7 @@ MetaConfigurationNotExistException::MetaConfigurationNotExistException( QString 
 
 /* ConfigurationVersion */
 
-ConfigurationVersion::ConfigurationVersion( int major, int minor, int release, int build ) {
+ConfigurationVersion::ConfigurationVersion( int major, int minor, int release, int build) {
 	m_major = major;
 	m_minor = minor;
 	m_release = release;
@@ -160,12 +160,26 @@ inline bool ConfigurationVersion::operator<= ( ConfigurationVersion version ) co
 
 /* ConfigurationFile */
 
-ConfigurationFile::ConfigurationFile() {
+ConfigurationFile::ConfigurationFile( QObject * parent ) : QObject( parent ) {
 }
 
-ConfigurationFile::ConfigurationFile( const QString & filename ) : m_filename( filename ) {
-	version();
-	xmlPresentationFile();
+ConfigurationFile::ConfigurationFile( const QString & filename, QObject * parent ) : QObject( parent ), m_filename( filename ) {
+}
+
+ConfigurationFile::ConfigurationFile( const ConfigurationFile & configuration ) : QObject() {
+	*this = configuration;
+}
+
+ConfigurationFile::~ConfigurationFile() {
+}
+
+ConfigurationFile & ConfigurationFile::operator=( const ConfigurationFile & p ) {
+	this->m_version = p.m_version;
+	this->m_filename = p.m_filename;
+	this->m_xmlPresentationFile = p.m_xmlPresentationFile;
+	this->setParent( p.parent() );
+
+	return *this;
 }
 
 const QString & ConfigurationFile::filename() const {
@@ -240,8 +254,7 @@ QString ConfigurationFile::xmlPresentationFile() {
 	                "string(@xmlPresentationFile)" );
 
 	query.evaluateTo( &result );
-	if( result.hasError() )
-		throw ConfigurationVersionIncorectException( "" );
+	if( result.hasError() ) return m_xmlPresentationFile;
 	QXmlItem item( result.next() );
 	if( !item.isNull() ) m_xmlPresentationFile = item.toAtomicValue().toString();
 
@@ -303,14 +316,14 @@ ConfigurationFile ConfigurationFile::simpleConfigurationFile( const QString & di
 
 /* MetaConfigurationFile */
 
-MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
+MetaConfigurationFile::MetaConfigurationFile( const QString & filename, QObject * parent ) : QObject( parent ) {
 	QString directoryPath = QFileInfo( filename ).absolutePath();
 
 	QDomDocument document( "configurationdef.xml" );
 	QFile file( filename );
 	if( ! file.open( QIODevice::ReadOnly ) ) {
 		// If MetaConfigurationFile not exists, there is one ;)
-		m_configurations << new ConfigurationFile( QDir( directoryPath ).absoluteFilePath( "configuration.xml" ) );
+		m_configurations << new ConfigurationFile( QDir( directoryPath ).absoluteFilePath( "configuration.xml" ), this );
 	} else if( ! document.setContent( &file ) ) {
 		file.close();
 		throw MetaConfigurationException( QString( "I can't read \"%1\" as XML Document." ).arg( filename ) );
@@ -332,9 +345,6 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename ) {
 }
 
 MetaConfigurationFile::~MetaConfigurationFile() {
-	QList<ConfigurationFile*> configuration = m_configurations;
-	m_configurations.clear();
-	qDeleteAll( configuration );
 }
 
 bool MetaConfigurationFile::exists( const QString & directoryPath ) {
@@ -355,12 +365,6 @@ ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString 
 	}
 }
 
-int MetaConfigurationFile::count() const {
-	return m_configurations.size();
-}
-
-ConfigurationFile * MetaConfigurationFile::configurations( int index ) {
-	Q_ASSERT( ( index >= 0 ) && ( index < m_configurations.count() ) );
-
-	return m_configurations.at( index );
+const QList<ConfigurationFile*> & MetaConfigurationFile::configurations() const {
+	return m_configurations;
 }

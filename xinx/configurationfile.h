@@ -151,10 +151,17 @@ private:
  * version number of a configuration file, testing if the file exists in the path
  * or other usuable functionnality.
  */
-class ConfigurationFile {
+class ConfigurationFile : public QObject {
+	Q_OBJECT
+	Q_PROPERTY( QString filename READ filename )
+	Q_PROPERTY( ConfigurationVersion version READ version )
+	Q_PROPERTY( QString xmlPresentationFile READ xmlPresentationFile )
 public:
-	ConfigurationFile();
-	ConfigurationFile( const QString & filename );
+	ConfigurationFile( QObject * parent = 0 );
+	ConfigurationFile( const QString & filename, QObject * parent = 0 );
+	ConfigurationFile( const ConfigurationFile & configuration );
+
+	virtual ~ConfigurationFile();
 
 	const QString & filename() const;
 
@@ -182,6 +189,8 @@ public:
 	 * \return A ConfigurationVersion with the version number or an invalid object if the version can't be found.
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
+
+	ConfigurationFile & operator=( const ConfigurationFile & p );
 private:
 	QString m_filename;
 	ConfigurationVersion m_version;
@@ -192,13 +201,15 @@ private:
  * Definition of a meta configuration file defined in file configurationdef.xml. The meta file defined
  * one or more configuration file. This file define dictionary too.
  */
-class MetaConfigurationFile {
+class MetaConfigurationFile : public QObject {
+	Q_OBJECT
+	Q_PROPERTY( QList<ConfigurationFile*> configurations READ configurations );
 public:
 	/*!
 	 * Create a meta configuration file object an load configuration in memory.
 	 * \param The file name of the meta configuration file.
 	 */
-	MetaConfigurationFile( const QString & filename );
+	MetaConfigurationFile( const QString & filename, QObject * parent = 0 );
 	/*!
 	 * Destroy the meta configuration file
 	 */
@@ -218,10 +229,10 @@ public:
 	 */
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 
-	ConfigurationFile * configurations( int index );
-	int count() const;
+	const QList<ConfigurationFile*> & configurations() const;
 private:
 	QList<ConfigurationFile*> m_configurations;
 };
+
 
 #endif // __CONFIGURATIONFILE_H__

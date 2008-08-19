@@ -60,13 +60,18 @@ ThreadedConfigurationFile * ThreadedConfigurationFile::businessViewOfFile( const
 void ThreadedConfigurationFile::threadrun() {
 	if( m_state == ThreadedConfigurationFile::GETVERSION ) {
 		m_configuration = MetaConfigurationFile::simpleConfigurationFile( m_pathname );
+		m_configuration.version();
+		m_configuration.xmlPresentationFile();
 	} else if( m_state == ThreadedConfigurationFile::GETBUSINESSVIEW ) {
 		if( XINXProjectManager::self()->project() ) {
 			QString path = XINXProjectManager::self()->project()->projectPath();
 
 			MetaConfigurationFile metaconf( QDir( path ).absoluteFilePath( "configurationdef.xml" ) );
-			for( int i = 0; i < metaconf.count(); i++ ) {
-				m_businessView += metaconf.configurations( i )->businessViewPerFiles( QDir( path ).relativeFilePath( m_filename ) );
+			foreach( ConfigurationFile * conf, metaconf.configurations() ) {
+				QStringList bvs = conf->businessViewPerFiles( QDir( path ).relativeFilePath( m_filename ) );
+				foreach( QString bv, bvs ) {
+					m_businessView << (bv + " (" + QFileInfo( conf->filename() ).fileName() + ")");
+				}
 			}
 		}
 	}

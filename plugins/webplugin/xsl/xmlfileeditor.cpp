@@ -30,14 +30,17 @@
 
 /* XmlFileEditor */
 
-XmlFileEditor::XmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
+XmlFileEditor::XmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ), m_codec( 0 ) {
 }
 
 XmlFileEditor::~XmlFileEditor() {
 }
 
 QTextCodec * XmlFileEditor::codec() const {
-	return m_codec;
+	if( m_codec )
+		return m_codec;
+	else
+		return TextFileEditor::codec();
 }
 
 QString XmlFileEditor::defaultFileName() const {

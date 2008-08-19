@@ -25,6 +25,7 @@
 #include <abstracteditor.h>
 #include <textfileeditor.h>
 #include <texteditor.h>
+#include "configurationfile.h"
 
 // Qt header
 #include <QApplication>
@@ -79,9 +80,47 @@ static QScriptValue input( QScriptContext * context, QScriptEngine * interpreter
 	}
 }
 
+/* Global conversion fonction */
+
+Q_DECLARE_METATYPE(ConfigurationVersion);
+Q_DECLARE_METATYPE(ConfigurationFile);
+Q_DECLARE_METATYPE(ConfigurationFile*);
+Q_DECLARE_METATYPE(QList<ConfigurationFile*>);
+
+static QScriptValue cflToScriptValue( QScriptEngine *engine, const QList<ConfigurationFile*> &s ) {
+	QScriptValue qsConfigurationsArray = engine->newArray( s.size() );
+	for( int i = 0 ; i < s.count(); i++ ) {
+		QScriptValue qsc = engine->newQObject( s.at( i ) );
+		qsConfigurationsArray.setProperty( i++, qsc );
+	}
+	return qsConfigurationsArray;
+}
+
+static void cflFromScriptValue(const QScriptValue &obj, QList<ConfigurationFile*> &s ) {
+	// Pas de modification
+}
+
+static QScriptValue cvToScriptValue( QScriptEngine *engine, const ConfigurationVersion &s ) {
+	QScriptValue qsVersion = engine->newObject();
+	qsVersion.setProperty( "major", QScriptValue( engine, s.major() ) );
+	qsVersion.setProperty( "minor", QScriptValue( engine, s.minor() ) );
+	qsVersion.setProperty( "release", QScriptValue( engine, s.release() ) );
+	qsVersion.setProperty( "build", QScriptValue( engine, s.build() ) );
+	qsVersion.setProperty( "toString", QScriptValue( engine, s.toString() ) );
+	qsVersion.setProperty( "isValid", QScriptValue( engine, s.isValid() ) );
+	return qsVersion;
+}
+
+static void cvFromScriptValue(const QScriptValue &obj, ConfigurationVersion &s ) {
+	// Pas de modification
+}
+
 /* ScriptManager */
 
 ScriptManager::ScriptManager() {
+	qScriptRegisterMetaType(&m_engine, &cflToScriptValue, &cflFromScriptValue);
+	qScriptRegisterMetaType(&m_engine, &cvToScriptValue, &cvFromScriptValue);
+
 	QScriptValue qsAlert = m_engine.newFunction( alert );
 	m_engine.globalObject().setProperty( "alert", qsAlert );
 	QScriptValue qsConfirm = m_engine.newFunction( confirm );
@@ -147,10 +186,16 @@ QScriptEngine & ScriptManager::engine() {
 
 void ScriptManager::projectChange() {
 	if( XINXProjectManager::self()->project() ) {
-		QScriptValue qsProject = ScriptManager::self()->engine().newQObject( XINXProjectManager::self()->project() );
+		MetaConfigurationFile * conf = new MetaConfigurationFile( QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "configurationdef.xml" ) );
+		QScriptValue qsConfiguration = m_engine.newQObject( conf, QScriptEngine::ScriptOwnership );
+
+		QScriptValue qsProject = m_engine.newQObject( XINXProjectManager::self()->project() );
+
 		m_engine.globalObject().setProperty( "project", qsProject );
+		m_engine.globalObject().setProperty( "configuration", qsConfiguration );
 	} else {
 		m_engine.globalObject().setProperty( "project", QScriptValue() );
+		m_engine.globalObject().setProperty( "configuration", QScriptValue() );
 	}
 }
 
