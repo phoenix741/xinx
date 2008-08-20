@@ -125,8 +125,8 @@ public:
 	void showConfig();
 	void storeConfig();
 public slots:
-	void configurePlugin( XinxPluginElement * plugin );
-	void aboutPlugin( XinxPluginElement * plugin );
+	void configurePlugin( PluginElement * plugin );
+	void aboutPlugin( PluginElement * plugin );
 private:
 	CustomDialogImpl * m_parent;
 };

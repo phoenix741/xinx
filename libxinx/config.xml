@@ -36,29 +36,30 @@
 		<value name="Autoindent On Saving" type="bool" default="no"/>
 		<value name="Popup When File Modified" type="bool" default="yes"/>
 		<value name="Create Backup File" type="bool" default="yes"/>
-        <value name="Tabulation Size" type="int" default="4"/>
-        <value name="Show Tabulation and space" type="bool" default="false"/>
-        <value name="Highlight Current Line" type="bool" default="true"/>
-        <value name="Default format" type="font"/>
-        <value name="Highlight word" type="color" default="yellow"/>
-        <value name="Auto Highlight" type="bool" default="false"/>
-        <value name="Hide Close Tab" type="bool" default="false"/>
-        <value name="Close Button on each Tab" type="bool" default="false"/>
+		<value name="Tabulation Size" type="int" default="4"/>
+		<value name="Show Tabulation and space" type="bool" default="false"/>
+		<value name="Highlight Current Line" type="bool" default="true"/>
+		<value name="Default format" type="font"/>
+		<value name="Highlight word" type="color" default="yellow"/>
+		<value name="Auto Highlight" type="bool" default="false"/>
+		<value name="Hide Close Tab" type="bool" default="false"/>
+		<value name="Close Button on each Tab" type="bool" default="false"/>
 		<value name="Automatic Model Refresh Timeout" type="int" default="1000"/>
 	</type>
-    <type name="Configuration Editor">
-        <value name="Activate Configuration Editor" type="bool" default="no"/>
-        <value name="Auto load configuration file" type="bool" default="true"/>
-        <value name="Auto save configuration file" type="bool" default="false"/>
-    </type>
+	<type name="Configuration Editor">
+		<value name="Activate Configuration Editor" type="bool" default="no"/>
+		<value name="Auto load configuration file" type="bool" default="true"/>
+		<value name="Auto save configuration file" type="bool" default="false"/>
+	</type>
 
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
 
 	<value name="Position" type="point" default="200,200"/>
 	<value name="Size" type="size" default="400,400"/>
-    <value name="Maximized" type="bool" default="no"/>
+	<value name="Maximized" type="bool" default="no"/>
 	<value name="State" type="blob"/>
 	<value name="XINX Trace" type="string"/>
+	<value name="Plugins" type="hash:bool"/>
 
 	<value name="Descriptions" type="Descriptions"/>
 	<value name="Project" type="Project"/>

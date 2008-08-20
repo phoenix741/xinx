@@ -47,14 +47,17 @@ public:
 	/*!
 	 * Destroy the plugin selector.
 	 */
-    virtual ~PluginSelector();
+	virtual ~PluginSelector();
 
-    /*!
-     * Add a plugin to the list. The plugin must be a \e XinxPluginElement.
-     */
-    void addPlugin( PluginElement * plugin );
+	/*!
+	* Add a plugin to the list. The plugin must be a \e XinxPluginElement.
+	*/
+	void addPlugin( PluginElement * plugin );
 
-    QStyleOptionViewItem viewOptions() const;
+	const QList<PluginElement*> & plugins() const;
+	void clear();
+
+	QStyleOptionViewItem viewOptions() const;
 signals:
 	/*!
 	 * This signal is emited when the plugin request to be configured.

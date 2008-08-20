@@ -2573,7 +2573,7 @@
           </attribute>
           <layout class="QGridLayout" >
            <item row="0" column="0" >
-            <widget class="XinxPluginSelector" name="m_pluginListView" >
+            <widget class="PluginSelector" name="m_pluginListView" >
              <property name="whatsThis" >
               <string>&lt;p>List of plugins of &lt;b>XINX&lt;/b>. Plugins are piece of software that can be added without reinstall &lt;b>XINX&lt;/b>.&lt;/p>
 &lt;p>&lt;b>XINX&lt;/b> is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i>C++&lt;/i>, use &lt;i>Qt&lt;/i>, and must be in licence accepted by &lt;i>Qt&lt;/i>.&lt;/p></string>
@@ -2668,9 +2668,9 @@
    <header>kcolorcombo.h</header>
   </customwidget>
   <customwidget>
-   <class>XinxPluginSelector</class>
+   <class>PluginSelector</class>
    <extends>QListView</extends>
-   <header location="global" >xinxpluginselector.h</header>
+   <header location="global" >pluginselector.h</header>
   </customwidget>
   <customwidget>
    <class>XinxListWidgetImpl</class>

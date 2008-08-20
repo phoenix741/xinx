@@ -5,8 +5,7 @@ QT += xml
 DESTDIR += ../
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
-INCLUDEPATH += ./ \
-    ../../libxinx
+INCLUDEPATH += ./ ../../libxinx ../../components
 HEADERS = xsl/xsltexteditor.h \
     config/webpluginsettings.h \
     xsl/xmlprettyprinter.h \

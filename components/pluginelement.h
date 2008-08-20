@@ -27,6 +27,7 @@
 
 class PluginElement {
 public:
+	PluginElement();
 	virtual ~PluginElement() {};
 
 	virtual bool isModifiable() const = 0;

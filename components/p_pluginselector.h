@@ -40,12 +40,14 @@ public:
 	virtual ~PluginModel();
 
 	void addPlugin( PluginElement * plugin );
+	const QList<PluginElement*> & plugins() const;
+	void clear();
 
-    bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
-    QVariant data( const QModelIndex &index, int role ) const;
-    Qt::ItemFlags flags( const QModelIndex &index ) const;
-    QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
-    int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+	bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
+	QVariant data( const QModelIndex &index, int role ) const;
+	Qt::ItemFlags flags( const QModelIndex &index ) const;
+	QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
+	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 private:
 	QList<PluginElement*> m_plugins;
 };
@@ -56,32 +58,32 @@ public:
 	PluginDelegate( QObject * parent );
 	virtual ~PluginDelegate();
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    int separtorPixels() const { return m_separatorPixels; };
-    void setSepartorPixels( int value ) { m_separatorPixels = value; };
+	int separtorPixels() const { return m_separatorPixels; };
+	void setSepartorPixels( int value ) { m_separatorPixels = value; };
 
-    int rightMargin() const { return m_rightMargin; };
-    void setRightMargin( int value ) { m_rightMargin = value; };
+	int rightMargin() const { return m_rightMargin; };
+	void setRightMargin( int value ) { m_rightMargin = value; };
 
-    int leftMargin() const { return m_leftMargin; };
-    void setLeftMargin( int value ) { m_leftMargin = value; };
+	int leftMargin() const { return m_leftMargin; };
+	void setLeftMargin( int value ) { m_leftMargin = value; };
 
-    int iconHeight() const { return m_iconHeight; };
-    void setIconHeight( int value ) { m_iconHeight = value; };
+	int iconHeight() const { return m_iconHeight; };
+	void setIconHeight( int value ) { m_iconHeight = value; };
 
-    int iconWidth() const { return m_iconWidth; };
-    void setIconWidth( int value ) { m_iconWidth = value; };
+	int iconWidth() const { return m_iconWidth; };
+	void setIconWidth( int value ) { m_iconWidth = value; };
 
-    QSize iconSize() const { return QSize( m_iconWidth, m_iconHeight ); };
-    void setIconSize( QSize value ) { m_iconWidth = value.width(); m_iconHeight = value.height(); };
-    void setIconSize( int width, int height ) { m_iconWidth = width; m_iconHeight = height; };
+	QSize iconSize() const { return QSize( m_iconWidth, m_iconHeight ); };
+	void setIconSize( QSize value ) { m_iconWidth = value.width(); m_iconHeight = value.height(); };
+	void setIconSize( int width, int height ) { m_iconWidth = width; m_iconHeight = height; };
 signals:
 	void configurePlugin( PluginElement * plugin );
 	void aboutPlugin( PluginElement * plugin );
 protected:
-    virtual bool eventFilter( QObject *watched, QEvent *event );
+	virtual bool eventFilter( QObject *watched, QEvent *event );
 private:
 	/*!
 	 * Prerpare a button to be designed. \e decalage define the distance from the border (left or right), and ca be used

@@ -28,7 +28,7 @@ HEADERS = textfileeditor.h \
     xslproject.h \
     abstractfileeditor.h \
     itemmodelfileeditor.h \
- xinxpluginelement.h
+    xinxpluginelement.h
 SOURCES = textfileeditor.cpp \
     numberbar.cpp \
     texteditor.cpp \
@@ -48,7 +48,7 @@ SOURCES = textfileeditor.cpp \
     xslproject.cpp \
     abstractfileeditor.cpp \
     itemmodelfileeditor.cpp \
- xinxpluginelement.cpp
+    xinxpluginelement.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 
 include(../project_mode.pro)

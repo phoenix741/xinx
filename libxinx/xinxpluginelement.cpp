@@ -28,6 +28,10 @@ QObject * XinxPluginElement::plugin() const {
 	return m_plugin;
 }
 
+bool XinxPluginElement::isStatic() const {
+	return m_isStatic;
+}
+
 bool XinxPluginElement::isModifiable() const {
 	return !m_isStatic;
 }

@@ -39,6 +39,7 @@ public:
 	virtual QString description() const;
 
 	QObject * plugin() const;
+	bool isStatic() const;
 private:
 	QObject * m_plugin;
 	bool m_isStatic;

@@ -4,7 +4,7 @@ QT += xml
 DESTDIR += ../
 LIBS = -L../../libxinx -lsharedxinx
 TARGET = $$qtLibraryTarget(svnplugin)
-INCLUDEPATH += ../../libxinx
+INCLUDEPATH += ../../libxinx ../../components
 HEADERS = rcs_svn.h \
     svnplugin.h
 SOURCES = rcs_svn.cpp \

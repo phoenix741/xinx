@@ -52,6 +52,14 @@ void PluginModel::addPlugin( PluginElement * plugin ) {
 	endInsertRows();
 }
 
+const QList<PluginElement*> & PluginModel::plugins() const {
+	return m_plugins;
+}
+
+void PluginModel::clear() {
+	m_plugins.clear();
+	reset();
+}
 
 bool PluginModel::setData( const QModelIndex &index, const QVariant &value, int role ) {
 	if( ! ( index.isValid() && value.isValid() ) ) return false;
@@ -63,7 +71,7 @@ bool PluginModel::setData( const QModelIndex &index, const QVariant &value, int 
 	switch( role ) {
 	case Qt::CheckStateRole:
 		element = m_plugins.at( i );
-		if( element->isModifiable() ) return false;
+		if( ! element->isModifiable() ) return false;
 		element->setActivated( value.toBool() );
 		emit dataChanged( index, index );
 		return true;
@@ -108,7 +116,7 @@ Qt::ItemFlags PluginModel::flags( const QModelIndex &index ) const {
 		if( ( i < 0 ) || ( i >= m_plugins.count() ) )
 			return QAbstractListModel::flags( index );
 
-		if( m_plugins.at( i )->isModifiable() )
+		if( ! m_plugins.at( i )->isModifiable() )
 			return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 		else
 			return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
@@ -232,16 +240,16 @@ void PluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &optio
 	if( index.model()->flags( index ) & Qt::ItemIsUserCheckable )
 		drawCheck( painter, checkOpt, checkRect, index.model()->data( index, Qt::CheckStateRole ).toBool() ? Qt::Checked : Qt::Unchecked );
 
-    // Draw icon
+	// Draw icon
 	QPixmap iconPixmap = index.model()->data( index, PluginModel::PLG_ICON ).value<QPixmap>();
 	iconPixmap = iconPixmap.scaled( iconSize() );
 	int pixmapLeftPosition = myOption.direction == Qt::LeftToRight ?
 								checkRect.right() + m_separatorPixels
 							:   checkRect.left() - m_separatorPixels - iconPixmap.width();
 
-    painter->drawPixmap( pixmapLeftPosition, ( myOption.rect.height() - iconPixmap.height() ) / 2 + myOption.rect.top(), iconPixmap );
+	painter->drawPixmap( pixmapLeftPosition, ( myOption.rect.height() - iconPixmap.height() ) / 2 + myOption.rect.top(), iconPixmap );
 
-    // Draw buttons
+	// Draw buttons
 	const QAbstractItemModel * model = index.model();
 	PluginElement* element = model->data( index, Qt::UserRole ).value<PluginElement*>();
 
@@ -275,13 +283,13 @@ void PluginDelegate::paint( QPainter *painter, const QStyleOptionViewItem &optio
 
 	painter->setFont( descFont );
 	description = metrics.elidedText( description, Qt::ElideRight, maxTextLength );
-    painter->drawText(
-    		LeftPosition( description, metrics ),
-    		myOption.rect.height() - m_separatorPixels - metrics.height() + myOption.rect.top(),
-    		metrics.width( description ),
-    		metrics.height(),
-    		Qt::AlignLeft,
-    		description );
+	painter->drawText(
+		LeftPosition( description, metrics ),
+		myOption.rect.height() - m_separatorPixels - metrics.height() + myOption.rect.top(),
+		metrics.width( description ),
+		metrics.height(),
+		Qt::AlignLeft,
+		description );
 
 	painter->restore();
 }
@@ -391,9 +399,9 @@ PluginSelector::PluginSelector( QWidget *parent ) : QListView( parent ) {
 	connect( d->m_delegate, SIGNAL(configurePlugin(PluginElement*)), this, SIGNAL(configurePlugin(PluginElement*)) );
 	setModel( d->m_model );
 	setItemDelegate( d->m_delegate );
-    viewport()->installEventFilter( d->m_delegate );
-    installEventFilter( d->m_delegate );
-    setMouseTracking( true );
+	viewport()->installEventFilter( d->m_delegate );
+	installEventFilter( d->m_delegate );
+	setMouseTracking( true );
 }
 
 PluginSelector::~PluginSelector() {
@@ -402,6 +410,14 @@ PluginSelector::~PluginSelector() {
 
 void PluginSelector::addPlugin( PluginElement * plugin ) {
 	d->m_model->addPlugin( plugin );
+}
+
+const QList<PluginElement*> & PluginSelector::plugins() const {
+	return d->m_model->plugins();
+}
+
+void PluginSelector::clear() {
+	d->m_model->clear();
 }
 
 QStyleOptionViewItem PluginSelector::viewOptions() const {

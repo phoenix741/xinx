@@ -559,6 +559,14 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
 		m_parent->m_scriptListView->addItem( s.property( "text" ).toString().replace( "&", "" ) );
 	}
+
+	// Plugins
+	m_parent->m_pluginListView->clear();
+	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
+		XinxPluginElement * e = new XinxPluginElement( plugin.plugin(), plugin.isStatic() );
+		e->setActivated( plugin.isActivated() );
+		m_parent->m_pluginListView->addPlugin( e );
+	}
 }
 
 void PrivateCustomDialogImpl::storeConfig() {
@@ -659,13 +667,22 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Snipet
 	SnipetListManager::self()->setSnipets( m_snipetModel->getSnipetList() );
+
+	// Plugins
+	foreach( PluginElement * plugin, m_parent->m_pluginListView->plugins() ) {
+		XinxPluginElement * element = dynamic_cast<XinxPluginElement*>( plugin );
+		QString name = element->plugin()->metaObject()->className();
+		bool isActivated = plugin->isActivated();
+	}
 }
 
-void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
+void PrivateCustomDialogImpl::configurePlugin( PluginElement * plugin ) {
 	Q_ASSERT( plugin );
-	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin ) );
+	Q_ASSERT( dynamic_cast<XinxPluginElement*>( plugin ) );
+	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( dynamic_cast<XinxPluginElement*>( plugin )->plugin() ) );
 
-	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( plugin->plugin );
+	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>( plugin );
+	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( xinxPlugin->plugin() );
 
 	QDialog configureDialog;
 	configureDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
@@ -697,8 +714,12 @@ void PrivateCustomDialogImpl::configurePlugin( XinxPluginElement * plugin ) {
 	}
 }
 
-void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
+void PrivateCustomDialogImpl::aboutPlugin( PluginElement * plugin ) {
 	Q_ASSERT( plugin );
+	Q_ASSERT( dynamic_cast<XinxPluginElement*>( plugin ) );
+	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( dynamic_cast<XinxPluginElement*>( plugin )->plugin() ) );
+
+	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>( plugin );
 
 	QDialog informationDialog;
 	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
@@ -741,13 +762,13 @@ void PrivateCustomDialogImpl::aboutPlugin( XinxPluginElement * plugin ) {
 						"<td>%7</td>"
 					"</tr>"
 				"</table>" )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString() )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_AUTHOR ).toString() )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_EMAIL ).toString() )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_WEBSITE ).toString() )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
-				.arg( qobject_cast<IXinxPlugin*>( plugin->plugin )->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_DESCRIPTION ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_AUTHOR ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_EMAIL ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_WEBSITE ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_VERSION ).toString() )
+	                       .arg( qobject_cast<IXinxPlugin*>( xinxPlugin->plugin() )->getPluginAttribute( IXinxPlugin::PLG_LICENCE ).toString() )
 			);
 
 	QVBoxLayout * labelLayout = new QVBoxLayout;
@@ -801,16 +822,21 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	m_exempleTextEdit->setFont( font );
 
 	// Plugins
-	connect( m_pluginListView, SIGNAL(configurePlugin(XinxPluginElement*)), d, SLOT(configurePlugin(XinxPluginElement*)) );
-	connect( m_pluginListView, SIGNAL(aboutPlugin(XinxPluginElement*)), d, SLOT(aboutPlugin(XinxPluginElement*)) );
+	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), d, SLOT(configurePlugin(PluginElement*)) );
+	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), d, SLOT(aboutPlugin(PluginElement*)) );
+
+	m_pluginListView->clear();
 	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
-		XinxPluginElement * e = new XinxPluginElement();
-		*e = plugin;
+		XinxPluginElement * e = new XinxPluginElement( plugin.plugin(), plugin.isStatic() );
+		e->setActivated( plugin.isActivated() );
 		m_pluginListView->addPlugin( e );
 	}
 }
 
 CustomDialogImpl::~CustomDialogImpl() {
+	QList<PluginElement*> list = m_pluginListView->plugins();
+	m_pluginListView->clear();
+	qDeleteAll( list );
 	// TODO : Delete plugin selector element
 	delete d;
 }

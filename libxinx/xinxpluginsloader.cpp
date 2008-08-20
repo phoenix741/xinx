@@ -182,8 +182,8 @@ FileContentElement * XinxPluginsLoader::createElement( QString & filename, FileC
 QList< QPair<QString,QString> > XinxPluginsLoader::revisionsControls() const {
 	QList< QPair<QString,QString> > result;
 	foreach( XinxPluginElement element, m_plugins ) {
-		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin );
-		if( element.isActivated && interface ) {
+		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin() );
+		if( element.isActivated() && interface ) {
 			foreach( QString rcsKey, interface->rcs() ) {
 				result << qMakePair( rcsKey, interface->descriptionOfRCS( rcsKey ) );
 			}
@@ -195,8 +195,8 @@ QList< QPair<QString,QString> > XinxPluginsLoader::revisionsControls() const {
 RCS * XinxPluginsLoader::createRevisionControl( QString revision, QString basePath ) const {
 	RCS * rcs = NULL;
 	foreach( XinxPluginElement element, m_plugins ) {
-		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin );
-		if( element.isActivated && interface ) {
+		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element.plugin() );
+		if( element.isActivated() && interface ) {
 			rcs = interface->createRCS( revision, basePath );
 			if( rcs ) break;
 		}
@@ -207,8 +207,8 @@ RCS * XinxPluginsLoader::createRevisionControl( QString revision, QString basePa
 QStringList XinxPluginsLoader::highlighters() const {
 	QStringList result;
 	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( element.isActivated && interface )
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin() );
+		if( element.isActivated() && interface )
 			result += interface->highlighters();
 	}
 	return result;
@@ -216,8 +216,8 @@ QStringList XinxPluginsLoader::highlighters() const {
 
 QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
 	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( element.isActivated && interface ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin() );
+		if( element.isActivated() && interface ) {
 			QString value = interface->highlighterOfExtention( suffix );
 			if( ! value.isEmpty() )
 				return value;
@@ -229,8 +229,8 @@ QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
 SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
 	SyntaxHighlighter * h = NULL;
 	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( element.isActivated && interface ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin() );
+		if( element.isActivated() && interface ) {
 			h = interface->createHighlighter( highlighter, parent, config );
 			if( h ) break;
 		}
@@ -240,8 +240,8 @@ SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highli
 
 QHash<QString,QTextCharFormat> XinxPluginsLoader::formatOfHighlighter( const QString & highlighter ) {
 	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( element.isActivated && interface && interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) )
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin() );
+		if( element.isActivated() && interface && interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) )
 			return interface->formatOfHighlighter( highlighter );
 	}
 	return QHash<QString,QTextCharFormat>();
@@ -249,8 +249,8 @@ QHash<QString,QTextCharFormat> XinxPluginsLoader::formatOfHighlighter( const QSt
 
 QString XinxPluginsLoader::exampleOfHighlighter( const QString & highlighter ) {
 	foreach( XinxPluginElement element, m_plugins ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin );
-		if( element.isActivated && interface ) {
+		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element.plugin() );
+		if( element.isActivated() && interface ) {
 			QString value = interface->exampleOfHighlighter( highlighter );
 			if( ! value.isEmpty() )
 				return value;

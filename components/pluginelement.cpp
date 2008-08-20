@@ -23,8 +23,12 @@
 
 /* PluginElement */
 
+PluginElement::PluginElement() : m_isActivated( true ) {
+
+}
+
 bool PluginElement::isActivated() const {
-	return isActivated() && isActivated();
+	return m_isActivated || (! isModifiable());
 }
 
 void PluginElement::setActivated( bool activated ) {

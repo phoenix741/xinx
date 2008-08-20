@@ -3,7 +3,7 @@ CONFIG += plugin
 DESTDIR += ../
 LIBS = -L../../libxinx -lsharedxinx
 TARGET = $$qtLibraryTarget(cvsplugin)
-INCLUDEPATH += ../../libxinx
+INCLUDEPATH += ../../libxinx ../../components
 HEADERS = entries.h \
     cvsthread.h \
     rcs_cvs.h \

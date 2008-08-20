@@ -14,6 +14,7 @@
 #include <QByteArray>
 #include <QHash>
 #include <QHash>
+#include <QHash>
 #include <QTextCharFormat>
 #include <QHash>
 
@@ -91,6 +92,7 @@ public:
 		bool maximized;
 		QByteArray state;
 		QString xinxTrace;
+		QHash<QString,bool> plugins;
 		struct_descriptions descriptions;
 		struct_project project;
 		struct_rcs rcs;
@@ -146,6 +148,10 @@ protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual AppSettings::struct_globals getSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::struct_globals defaultValue );
 	virtual void setSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::struct_globals value );
+
+	virtual QHash<QString,bool> getDefaultHash_bool();
+	virtual QHash<QString,bool> getSettingsHash_bool( AppSettingsSettings * settings, const QString & path, QHash<QString,bool> defaultValue );
+	virtual void setSettingsHash_bool( AppSettingsSettings * settings, const QString & path, QHash<QString,bool> value );
 
 	virtual QHash<QString,QString> getDefaultHash_QString();
 	virtual QHash<QString,QString> getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, QHash<QString,QString> defaultValue );

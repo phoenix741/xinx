@@ -368,6 +368,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.position = QPoint( 200,200 );
 	value.size = QSize( 400,400 );
 	value.maximized = false;
+	value.plugins = getDefaultHash_bool();
 	value.descriptions = getDefaultDescriptions();
 	value.project = getDefaultProject();
 	value.rcs = getDefaultRcs();
@@ -391,6 +392,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSet
 	value.maximized = settings->value( "Maximized", defaultValue.maximized ).toBool();
 	value.state = settings->value( "State", defaultValue.state ).toByteArray();
 	value.xinxTrace = settings->value( "XINX Trace", defaultValue.xinxTrace ).toString();
+	value.plugins = getSettingsHash_bool( settings, "Plugins", defaultValue.plugins );
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", defaultValue.descriptions );
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
 	value.rcs = getSettingsRcs( settings, "RCS", defaultValue.rcs );
@@ -415,6 +417,7 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	settings->setValue( "Maximized", value.maximized, defaultValue.maximized );
 	settings->setValue( "State", value.state, defaultValue.state );
 	settings->setValue( "XINX Trace", value.xinxTrace, defaultValue.xinxTrace );
+	setSettingsHash_bool( settings, "Plugins", value.plugins );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsRcs( settings, "RCS", value.rcs );
@@ -424,6 +427,42 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	setSettingsHash_QString( settings, "Tools", value.tools );
 	setSettingsHash_struct_extentions( settings, "Files", value.files );
 	setSettingsHash_QTextCharFormat( settings, "Formats", value.formats );
+
+	settings->endGroup();
+}
+
+QHash<QString,bool> AppSettings::getDefaultHash_bool() {
+	QHash<QString,bool> value;
+
+
+	return value;
+}
+
+QHash<QString,bool> AppSettings::getSettingsHash_bool( AppSettingsSettings * settings, const QString & path, QHash<QString,bool> defaultValue ) {
+	QHash<QString,bool> value;
+	settings->beginGroup( path );
+
+	QStringList keys = settings->childKeys() + settings->childGroups();
+	foreach( QString key, keys ) {
+		value[ key ] = settings->value( key, defaultValue[ key ] ).toBool();
+	}
+	foreach( QString defaultValueKey, defaultValue.keys() ) {
+		if( ! value.contains( defaultValueKey ) ) {
+			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
+		}
+	}
+
+	settings->endGroup();
+	return value;
+}
+
+void AppSettings::setSettingsHash_bool( AppSettingsSettings * settings, const QString & path, QHash<QString,bool> value ) {
+	QHash<QString,bool> defaultValue = getDefaultHash_bool();
+	settings->beginGroup( path );
+
+	foreach( QString key, value.keys() ) {
+		settings->setValue( key, value[ key ], defaultValue[ key ] );
+	}
 
 	settings->endGroup();
 }

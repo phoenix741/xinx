@@ -42,8 +42,8 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 		m_projectRCSComboBox->addItem( revisionControl.second, revisionControl.first );
 
 	foreach( XinxPluginElement element, XinxPluginsLoader::self()->plugins() ) {
-		if( element.isActivated && qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin ) ) {
-			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin );
+		if( element.isActivated() && qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin() ) ) {
+			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin() );
 			QWidget* widget = interface->createProjectSettingsPage();
 			if( widget ) {
 				m_pluginPages.append( qMakePair( interface, widget ) );
