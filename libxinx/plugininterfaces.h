@@ -131,16 +131,6 @@ public:
 };
 
 /*!
- * \internal
- * Structure used for communication beetween XinxPluginsLoader and XinxPluginSelector
- */
-struct XinxPluginElement {
-	bool isStatic;
-	bool isActivated;
-	QObject * plugin;
-};
-
-/*!
  * This plugins is used to add a new revision control system to XINX. For this purpose,
  * the plugin give a list of managed rcs and a description (show in the project page).
  *

@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "xinxcore.h"
-#include <plugininterfaces.h>
+#include "xinxpluginelement.h"
 
 // Qt header
 #include <QHash>

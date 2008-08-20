@@ -66,7 +66,7 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 		return;
 	}
 
-	struct XinxPluginElement element = { staticLoaded, true, plugin };
+	XinxPluginElement element( plugin, staticLoaded );
 	m_plugins.append( element );
 
 	QPair<QString,QString> tools;
@@ -94,8 +94,8 @@ QList<IFileTypePlugin*> XinxPluginsLoader::fileTypes() const {
 	QList<IFileTypePlugin*> result;
 
 	foreach( XinxPluginElement element, m_plugins ) {
-		IFilePlugin * interface = qobject_cast<IFilePlugin*>( element.plugin );
-		if( element.isActivated && interface ) {
+		IFilePlugin * interface = qobject_cast<IFilePlugin*>( element.plugin() );
+		if( element.isActivated() && interface ) {
 			result += interface->fileTypes();
 		}
 	}

@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef P_XINXPLUGINSELECTOR_H_ /*! \cond PRIVATE */
-#define P_XINXPLUGINSELECTOR_H_
+#ifndef P_PLUGINSELECTOR_H_ /*! \cond PRIVATE */
+#define P_PLUGINSELECTOR_H_
 
 // Xinx header
-#include "xinxpluginselector.h"
+#include "pluginselector.h"
 #include "plugininterfaces.h"
 
 // Qt header
@@ -31,53 +31,55 @@
 #include <QPainter>
 
 
-class XinxPluginModel : public QAbstractListModel {
+class PluginModel : public QAbstractListModel {
 	Q_OBJECT
 public:
-	XinxPluginModel( QWidget * parent );
-	virtual ~XinxPluginModel();
+	enum PluginModelRole { PLG_NAME = 1001, PLG_DESCRIPTION = 1002, PLG_ICON = 1003 };
 
-	void addPlugin( XinxPluginElement * plugin );
-	
+	PluginModel( QWidget * parent );
+	virtual ~PluginModel();
+
+	void addPlugin( PluginElement * plugin );
+
     bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::CheckStateRole );
     QVariant data( const QModelIndex &index, int role ) const;
     Qt::ItemFlags flags( const QModelIndex &index ) const;
     QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
     int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 private:
-	QList<XinxPluginElement*> m_plugins;
+	QList<PluginElement*> m_plugins;
 };
 
-class XinxPluginDelegate : public QItemDelegate {
+class PluginDelegate : public QItemDelegate {
 	Q_OBJECT
 public:
-	XinxPluginDelegate( QObject * parent );
-	virtual ~XinxPluginDelegate();
-	
+	PluginDelegate( QObject * parent );
+	virtual ~PluginDelegate();
+
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    
+
     int separtorPixels() const { return m_separatorPixels; };
     void setSepartorPixels( int value ) { m_separatorPixels = value; };
-    
+
     int rightMargin() const { return m_rightMargin; };
     void setRightMargin( int value ) { m_rightMargin = value; };
-    
+
     int leftMargin() const { return m_leftMargin; };
     void setLeftMargin( int value ) { m_leftMargin = value; };
-    
+
     int iconHeight() const { return m_iconHeight; };
     void setIconHeight( int value ) { m_iconHeight = value; };
-    
+
     int iconWidth() const { return m_iconWidth; };
     void setIconWidth( int value ) { m_iconWidth = value; };
-    
+
     QSize iconSize() const { return QSize( m_iconWidth, m_iconHeight ); };
     void setIconSize( QSize value ) { m_iconWidth = value.width(); m_iconHeight = value.height(); };
     void setIconSize( int width, int height ) { m_iconWidth = width; m_iconHeight = height; };
 signals:
-	void configurePlugin( XinxPluginElement * plugin );
-	void aboutPlugin( XinxPluginElement * plugin );
+	void configurePlugin( PluginElement * plugin );
+	void aboutPlugin( PluginElement * plugin );
 protected:
     virtual bool eventFilter( QObject *watched, QEvent *event );
 private:
@@ -98,29 +100,29 @@ private:
 	 * \param option  The option used to design the view item.
 	 */
 	QStyleOptionButton drawButton( QPainter * painter, const QIcon & icon, const QString & caption, const QStyleOptionViewItem & option, int decalage = 0 ) const;
-	
+
 	QStyleOptionViewItem calculateCheckbox( const QStyleOptionViewItem & option, QRect & rect, int decalage = 0 ) const;
-	
+
 	QStyleOptionButton calculateButtonAbout( const QStyleOptionViewItem & option, int decalage = 0 ) const;
 	QStyleOptionButton drawButtonAbout( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
-	
+
 	QStyleOptionButton calculateButtonConfigure( const QStyleOptionViewItem & option, int decalage = 0 ) const;
 	QStyleOptionButton drawButtonConfigure( QPainter * painter, const QStyleOptionViewItem & option, int decalage = 0 ) const;
-		
+
 	int m_separatorPixels, m_rightMargin, m_leftMargin, m_iconHeight, m_iconWidth, m_minimumItemWidth;
 	QPoint m_cursorPosition;
 	bool m_buttonPressed;
 };
 
-class PrivateXinxPluginSelector : public QObject {
+class PrivatePluginSelector : public QObject {
 	Q_OBJECT
 public:
-	PrivateXinxPluginSelector( XinxPluginSelector * parent );
-	
-	XinxPluginModel * m_model;
-	XinxPluginDelegate * m_delegate;
+	PrivatePluginSelector( PluginSelector * parent );
+
+	PluginModel * m_model;
+	PluginDelegate * m_delegate;
 private:
-	XinxPluginSelector * m_parent;
+	PluginSelector * m_parent;
 };
 
-#endif /*P_XINXPLUGINSELECTOR_H_*/ /*! \endcond */
+#endif /*P_PLUGINSELECTOR_H_*/ /*! \endcond */

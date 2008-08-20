@@ -3,6 +3,9 @@ CONFIG += dll
 QT += xml
 TARGET = $$qtLibraryTarget(sharedxinx)
 DESTDIR += ./
+INCLUDEPATH += ../components
+LIBS = -L../components -lxinxcmp
+PRE_TARGETDEPS = ../components/libxinxcmp.a
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
 win32 : RC_FILE += rc/libxinx.rc
 HEADERS = textfileeditor.h \
@@ -24,7 +27,8 @@ HEADERS = textfileeditor.h \
     abstracteditor.h \
     xslproject.h \
     abstractfileeditor.h \
-    itemmodelfileeditor.h
+    itemmodelfileeditor.h \
+ xinxpluginelement.h
 SOURCES = textfileeditor.cpp \
     numberbar.cpp \
     texteditor.cpp \
@@ -43,7 +47,8 @@ SOURCES = textfileeditor.cpp \
     abstracteditor.cpp \
     xslproject.cpp \
     abstractfileeditor.cpp \
-    itemmodelfileeditor.cpp
+    itemmodelfileeditor.cpp \
+ xinxpluginelement.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 
 include(../project_mode.pro)
