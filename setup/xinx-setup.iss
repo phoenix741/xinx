@@ -57,6 +57,7 @@ Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sha
 Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtScript4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: ..\xinx\xml\*.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion skipifsourcedoesntexist
