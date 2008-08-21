@@ -25,8 +25,7 @@
 #include "xslproject.h"
 
 #include "mainformimpl.h"
-#include "studioadaptor.h"
-#include "studiointerface.h"
+#include "dbus/studiointerface.h"
 
 // Qt header
 #include <QString>
@@ -86,9 +85,6 @@ bool UniqueApplication::isUnique() {
 void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
 	m_mainform = mainform;
 	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(slotErrorTriggered()) );
-
-	new XinxAdaptor( mainform );
-	QDBusConnection::sessionBus().registerObject( "/", mainform );
 }
 
 void UniqueApplication::callOpenFile(const QString &fileName) {

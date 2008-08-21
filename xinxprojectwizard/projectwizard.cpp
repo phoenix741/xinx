@@ -22,7 +22,7 @@
 #include "projectwizard.h"
 #include "directoryedit.h"
 #include "projectconverter.h"
-#include "../xinx/studiointerface.h"
+#include "../xinx/dbus/studiointerface.h"
 
 // Qt header
 #include <QApplication>
@@ -40,10 +40,10 @@ ProjectWizard::ProjectWizard( QWidget * parent ) : QWizard( parent ), m_converte
 	addPage( new VersionWizardPage );
 	addPage( new ProgressWizardPage );
 	addPage( new ConclusionWizardPage );
-	
+
 	setPixmap( QWizard::LogoPixmap, QPixmap(":/images/splash.png").scaled( QSize( 48, 48 ) ) );
 	setPixmap( QWizard::BannerPixmap, QPixmap(":/images/banner.png") );
-	 
+
 	button( QWizard::CancelButton )->setIcon( QPixmap( ":/images/button_cancel.png" ) );
 	button( QWizard::BackButton )->setIcon( QPixmap( ":/images/bookmarkprevious.png" ) );
 	button( QWizard::NextButton )->setIcon( QPixmap( ":/images/bookmarknext.png" ) );
@@ -68,7 +68,7 @@ void ProjectWizard::accept() {
 		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "com.editor.xinx", "/", QDBusConnection::sessionBus(), this );
 		interface->openProject( field( "project.name" ).toString() );
 	}
-	
+
 	QWizard::accept();
 }
 
@@ -78,13 +78,13 @@ FileWizardPage::FileWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Project file selection") );
 	setSubTitle( tr("This wizard will help you to migrate your project file to "
 					"the current version of XINX. Please fill all fields.") );
-	
+
 	QLabel * directoryLabel;
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	layout->addWidget( directoryLabel = new QLabel( tr("&Project file : "), this ) );
 	layout->addWidget( m_projectEdit  = new DirectoryEditWidget( false, this ) );
 	directoryLabel->setBuddy( m_projectEdit->lineEdit() );
-	
+
 	registerField( "project.name*", m_projectEdit->lineEdit() );
 }
 
@@ -116,19 +116,19 @@ VersionWizardPage::VersionWizardPage( QWidget * parent ) : QWizardPage( parent )
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	m_resume = new QLabel( this );
 	m_resume->setWordWrap( true );
-	
+
 	layout->addWidget( m_resume );
 }
 
 void VersionWizardPage::initializePage() {
 	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
-		m_resume->setText( 
+		m_resume->setText(
 				tr("You want convert a %1 (version %2).\nThis wizard will convert the project to the last version of XINX. Wizard must convert %3 opened file.")
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->type() )
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->version() )
 					.arg( dynamic_cast<ProjectWizard*>( wizard() )->converter()->nbSession() )
 		);
-		
+
 	}
 }
 
@@ -137,7 +137,7 @@ void VersionWizardPage::initializePage() {
 ProgressWizardPage::ProgressWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Progress of the conversion") );
 	setSubTitle( tr("Please wait ...") );
-	
+
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	m_progressBar = new QProgressBar( this );
 	layout->addWidget( m_progressBar );
@@ -158,12 +158,12 @@ void ProgressWizardPage::initializePage() {
 ConclusionWizardPage::ConclusionWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 	setTitle( tr("Conversion finished") );
 	setSubTitle( tr("The conversion is terminated, you can now reopen the project.") );
-	
+
 	QVBoxLayout * layout = new QVBoxLayout( this );
-	layout->addWidget( new QLabel( tr("The project is now converted. XINX can now open the project file normally."), this ) );	
+	layout->addWidget( new QLabel( tr("The project is now converted. XINX can now open the project file normally."), this ) );
 	layout->addWidget( m_openCheck = new QCheckBox( tr("Re-open the project with XINX automatically"), this ) );
 
 	m_openCheck->setChecked( true );
-	
+
 	registerField( "project.open", m_openCheck );
 }

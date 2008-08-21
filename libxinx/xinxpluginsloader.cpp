@@ -33,6 +33,14 @@
 
 XinxPluginsLoader * XinxPluginsLoader::s_self = 0;
 
+/* Static function */
+
+static bool pluginsLessThan( XinxPluginElement * s1, XinxPluginElement * s2 ) {
+	if( s1->isStatic() && (!s2->isStatic()) ) return true;
+	if( (!s1->isStatic()) && s2->isStatic() ) return false;
+	return s1->name() < s2->name();
+}
+
 /* XinxPluginsLoader */
 
 XinxPluginsLoader::XinxPluginsLoader() {
@@ -54,7 +62,9 @@ XinxPluginsLoader * XinxPluginsLoader::self() {
 }
 
 QList<XinxPluginElement*> XinxPluginsLoader::plugins() const {
-	return m_plugins.values();
+	QList<XinxPluginElement*> result = m_plugins.values();
+	qSort( result.begin(), result.end(), pluginsLessThan );
+	return result;
 }
 
 XinxPluginElement * XinxPluginsLoader::plugin( const QString & name ) {

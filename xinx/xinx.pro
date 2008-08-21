@@ -70,8 +70,8 @@ HEADERS += scriptmanager.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     private/p_customdialogimpl.h \
-	studioadaptor.h \
-	studiointerface.h \
+	dbus/studioadaptor.h \
+	dbus/studiointerface.h \
  searchfilethread.h \
  logdialogimpl.h
 SOURCES += snipetdockwidget.cpp \
@@ -100,8 +100,8 @@ SOURCES += snipetdockwidget.cpp \
     xmlpresentationitem.cpp \
     newprojectwizard.cpp \
     scriptmanager.cpp \
-    studioadaptor.cpp \
-    studiointerface.cpp \
+    dbus/studioadaptor.cpp \
+    dbus/studiointerface.cpp \
  searchfilethread.cpp \
  logdialogimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts

@@ -41,6 +41,7 @@
 #include "newprojectwizard.h"
 #include "scriptmanager.h"
 #include "searchfilethread.h"
+#include "dbus/studioadaptor.h"
 
 // Qt header
 #include <QKeySequence>
@@ -78,6 +79,9 @@ PrivateMainformImpl::PrivateMainformImpl( MainformImpl * parent ) : m_lastProjec
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
+
+	// Attache to main application
+	qobject_cast<UniqueApplication*>(qApp)->attachMainWindow( m_parent );
 }
 
 PrivateMainformImpl::~PrivateMainformImpl() {
@@ -476,7 +480,8 @@ void PrivateMainformImpl::createActions() {
 }
 
 void PrivateMainformImpl::connectDbus() {
-	qobject_cast<UniqueApplication*>(qApp)->attachMainWindow( m_parent );
+	new XinxAdaptor( this );
+	QDBusConnection::sessionBus().registerObject( "/", this );
 }
 
 void PrivateMainformImpl::createTools() {

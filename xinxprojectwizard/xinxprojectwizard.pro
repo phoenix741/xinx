@@ -9,12 +9,10 @@ CONFIG += exceptions \
 SOURCES = projectconverter.cpp \
     projectwizard.cpp \
     main.cpp \
-	../xinx/studioadaptor.cpp \
-    ../xinx/studiointerface.cpp
+    ../xinx/dbus/studiointerface.cpp
 HEADERS = projectconverter.h \
     projectwizard.h \
-	../xinx/studioadaptor.h \
-    ../xinx/studiointerface.h
+    ../xinx/dbus/studiointerface.h
 RESOURCES = xinxprojectwizard.qrc
 INCLUDEPATH += ../components \
     ../libxinx

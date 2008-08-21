@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
-SUBDIRS += libxinx \
-    components \
+SUBDIRS += components \
+	libxinx \
     plugins \
     xinx \
     xinxprojectwizard
