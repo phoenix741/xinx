@@ -562,9 +562,9 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Plugins
 	m_parent->m_pluginListView->clear();
-	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
-		XinxPluginElement * e = new XinxPluginElement( plugin.plugin(), plugin.isStatic() );
-		e->setActivated( plugin.isActivated() );
+	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
+		XinxPluginElement * e = new XinxPluginElement( plugin->plugin(), plugin->isStatic() );
+		e->setActivated( plugin->isActivated() );
 		m_parent->m_pluginListView->addPlugin( e );
 	}
 }
@@ -670,9 +670,13 @@ void PrivateCustomDialogImpl::storeConfig() {
 
 	// Plugins
 	foreach( PluginElement * plugin, m_parent->m_pluginListView->plugins() ) {
-		XinxPluginElement * element = dynamic_cast<XinxPluginElement*>( plugin );
-		QString name = element->plugin()->metaObject()->className();
+		QString name = dynamic_cast<XinxPluginElement*>( plugin )->plugin()->metaObject()->className();
 		bool isActivated = plugin->isActivated();
+
+		m_config.config().plugins[ name ] = isActivated;
+		if( XinxPluginsLoader::self()->plugin( name ) ) {
+			XinxPluginsLoader::self()->plugin( name )->setActivated( isActivated );
+		}
 	}
 }
 
@@ -824,13 +828,6 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	// Plugins
 	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), d, SLOT(configurePlugin(PluginElement*)) );
 	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), d, SLOT(aboutPlugin(PluginElement*)) );
-
-	m_pluginListView->clear();
-	foreach( XinxPluginElement plugin, XinxPluginsLoader::self()->plugins() ) {
-		XinxPluginElement * e = new XinxPluginElement( plugin.plugin(), plugin.isStatic() );
-		e->setActivated( plugin.isActivated() );
-		m_pluginListView->addPlugin( e );
-	}
 }
 
 CustomDialogImpl::~CustomDialogImpl() {

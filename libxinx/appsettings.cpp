@@ -434,6 +434,10 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 QHash<QString,bool> AppSettings::getDefaultHash_bool() {
 	QHash<QString,bool> value;
 
+	value[ "WebPlugin" ] = true;
+	value[ "ServicesPlugin" ] = true;
+	value[ "SVNPlugin" ] = true;
+	value[ "CVSPlugin" ] = true;
 
 	return value;
 }

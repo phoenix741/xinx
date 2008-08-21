@@ -41,9 +41,9 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
     setPage( Page_Versions, m_versions = new VersionsPageImpl );
 
 	int pageid = NewProjectWizard::Page_Versions + 1;
-	foreach( XinxPluginElement element, XinxPluginsLoader::self()->plugins() ) {
-		if( element.isActivated() && qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin() ) ) {
-			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element.plugin() );
+	foreach( XinxPluginElement * element, XinxPluginsLoader::self()->plugins() ) {
+		if( element->isActivated() && qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() ) ) {
+			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() );
 			QList<QWizardPage*> pages = interface->createNewProjectSettingsPages( pageid );
 			foreach( QWizardPage* page, pages ) {
 				m_wizardPages.append( qMakePair( interface, page ) );

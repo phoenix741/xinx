@@ -78,6 +78,8 @@ int main(int argc, char *argv[]) {
 		app.setOrganizationDomain( "Shadoware.Org" );
 		app.setApplicationName( "XINX" );
 
+		QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
+		QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);

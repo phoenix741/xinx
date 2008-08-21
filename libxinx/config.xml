@@ -59,7 +59,12 @@
 	<value name="Maximized" type="bool" default="no"/>
 	<value name="State" type="blob"/>
 	<value name="XINX Trace" type="string"/>
-	<value name="Plugins" type="hash:bool"/>
+	<value name="Plugins" type="hash:bool">
+		<default name="WebPlugin" default="true"/>
+		<default name="ServicesPlugin" default="true"/>
+		<default name="SVNPlugin" default="true"/>
+		<default name="CVSPlugin" default="true"/>
+	</value>
 
 	<value name="Descriptions" type="Descriptions"/>
 	<value name="Project" type="Project"/>

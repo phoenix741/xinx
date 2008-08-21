@@ -33,7 +33,6 @@
 #undef major
 #undef minor
 
-
 class ConfigurationVersionIncorectException : public XinxException {
 public:
 	ConfigurationVersionIncorectException( QString version );
@@ -195,6 +194,10 @@ private:
 	QString m_filename;
 	ConfigurationVersion m_version;
 	QString m_xmlPresentationFile;
+	QString m_rootPath;
+
+	bool m_hasRead;
+	void read();
 };
 
 /*!

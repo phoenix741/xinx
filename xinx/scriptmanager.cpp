@@ -139,9 +139,7 @@ ScriptManager::~ScriptManager() {
 }
 
 void ScriptManager::loadScripts() {
-	QDir scriptDir = QApplication::applicationDirPath();
-	scriptDir.cdUp();
-	scriptDir.cd( "scripts" );
+	QDir scriptDir("scripts:");
 
 	QStringList filenames = scriptDir.entryList( QStringList("*.js"), QDir::Files );
 

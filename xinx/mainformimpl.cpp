@@ -1234,9 +1234,9 @@ void PrivateMainformImpl::replace() {
 bool PrivateMainformImpl::closeProject( bool session ) {
 	if( ! XINXProjectManager::self()->project() ) return false;
 
-	foreach( XinxPluginElement e, XinxPluginsLoader::self()->plugins() ) {
-		if( e.isActivated() && (! qobject_cast<IXinxPlugin*>( e.plugin() )->destroyProject( XINXProjectManager::self()->project() ) ))
-			qWarning( qPrintable(tr("Can't stop a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e.plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+		if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->destroyProject( XINXProjectManager::self()->project() ) ))
+			qWarning( qPrintable(tr("Can't stop a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
 	}
 
 	m_parent->saveProject( session );
@@ -1473,9 +1473,9 @@ void MainformImpl::openProject( const QString & filename ) {
 		XINXProjectManager::self()->setCurrentProject( project );
 		d->m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
 
-		foreach( XinxPluginElement e, XinxPluginsLoader::self()->plugins() ) {
-			if( e.isActivated() && (! qobject_cast<IXinxPlugin*>( e.plugin() )->initializeProject( XINXProjectManager::self()->project() ) ))
-				qWarning( qPrintable(tr("Can't start a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e.plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
+		foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+			if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->initializeProject( XINXProjectManager::self()->project() ) ))
+				qWarning( qPrintable(tr("Can't start a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
 		}
 	} catch( XSLProjectException e ) {
 		delete project;

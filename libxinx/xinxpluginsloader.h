@@ -50,7 +50,11 @@ public:
 	/*!
 	 * List all the loaded plugins
 	 */
-	const QList<XinxPluginElement> & plugins() const;
+	QList<XinxPluginElement*> plugins() const;
+	/*!
+	 * Plugin of name \e name
+	 */
+	XinxPluginElement * plugin( const QString & name );
 	/*!
 	 * List all the revision control that can be used. The Result is a list of
 	 * QPair. The first element is the key and the second element is the description.
@@ -94,7 +98,7 @@ private:
 	QString allManagedFileFilter() const;
 
 	QDir m_pluginsDir;
-	QList< XinxPluginElement > m_plugins;
+	QMap<QString, XinxPluginElement*> m_plugins;
 
 	static XinxPluginsLoader * s_self;
 };
