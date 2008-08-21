@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef _UNIQUEAPPLICATION_H_
 #define _UNIQUEAPPLICATION_H_
 
 #include <QApplication>
 
-class PrivateUniqueApplication;
+class OrgShadowareXinxInterface;
 class MainformImpl;
 
 class UniqueApplication : public QApplication {
@@ -32,18 +32,22 @@ public:
 	UniqueApplication ( int & argc, char ** argv );
 	UniqueApplication ( int & argc, char ** argv, bool GUIenabled );
 	UniqueApplication ( int & argc, char ** argv, Type type );
-	
 	virtual ~UniqueApplication ();
-	
+
 	virtual bool notify ( QObject * receiver, QEvent * event );
-	
+
 	bool isUnique();
 	void callOpenFile( const QString & fileName );
-	
+
 	void attachMainWindow( MainformImpl * mainform );
+public slots:
+	void slotErrorTriggered();
 private:
-	PrivateUniqueApplication * d;
-	friend class PrivateUniqueApplication;
+	void start();
+
+	bool m_isUnique;
+	MainformImpl * m_mainform;
+	OrgShadowareXinxInterface * m_interface;
 };
 
 #endif

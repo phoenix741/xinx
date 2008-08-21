@@ -55,7 +55,6 @@ HEADERS += scriptmanager.h \
     private/p_filecontentdockwidget.h \
     private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \
-    private/p_uniqueapplication.h \
     private/p_xmlpresentationdockwidget.h \
     private/p_flattreeview.h \
     projectdirectorydockwidget.h \

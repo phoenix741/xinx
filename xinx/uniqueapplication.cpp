@@ -20,10 +20,13 @@
 
 // Xinx header
 #include "uniqueapplication.h"
-#include "private/p_uniqueapplication.h"
 #include "mainformimpl.h"
 #include "exceptions.h"
 #include "xslproject.h"
+
+#include "mainformimpl.h"
+#include "studioadaptor.h"
+#include "studiointerface.h"
 
 // Qt header
 #include <QString>
@@ -31,7 +34,12 @@
 #include <QThread>
 #include <QDebug>
 
-static QDBusConnectionInterface *tryToInitDBusConnection() {	
+// Qt header
+#include <QObject>
+#include <QtDBus>
+
+
+static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health
 	QDBusConnectionInterface* dbusService = 0;
 	if (!QDBusConnection::sessionBus().isConnected() || !(dbusService = QDBusConnection::sessionBus().interface())) {
@@ -41,64 +49,22 @@ static QDBusConnectionInterface *tryToInitDBusConnection() {
 	return dbusService;
 }
 
-/* PrivateUniqueApplication */
-
-PrivateUniqueApplication::PrivateUniqueApplication( UniqueApplication * parent ) : m_mainform(0), m_parent( parent ) {
-	m_interface = NULL;
-}
-
-void PrivateUniqueApplication::start() {
-	QString appName = "org.shadoware.xinx";
-	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
-
-	if ( dbusService && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
-		qWarning() << QObject::tr("UniqueApplication: Can't setup D-Bus service. Probably already running.");
-		
-		QString pid = QString::number(getpid());
-		if( dbusService->registerService(appName + '-' + pid) != QDBusConnectionInterface::ServiceRegistered ) {
-			qWarning() << QObject::tr("UniqueApplication: Can't really create D-Bus service.");
-		} else {
-			m_interface = new OrgShadowareXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
-		}
-		
-		m_isUnique = false;
-		return;
-	}
-	
-	m_interface = new OrgShadowareXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
-
-	m_isUnique = true;
-} 
-
-void PrivateUniqueApplication::slotErrorTriggered() {
-	if( m_mainform ) {
-		// Hide the main widget
-		m_mainform->hide();
-		
-		if( XINXProjectManager::self()->project() )
-			m_mainform->saveProject( true );
-	}
-}
-
 /* UniqueApplication */
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ) {
-	d = new PrivateUniqueApplication( this );
-	d->start();
+UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QApplication( argc, argv ), m_mainform(0), m_interface(0) {
+	start();
 }
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ) {
-	d = new PrivateUniqueApplication( this );
-	d->start();
+UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QApplication( argc, argv, GUIenabled ), m_mainform(0), m_interface(0) {
+	start();
 }
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ) {
-	d = new PrivateUniqueApplication( this );
-	d->start();
+UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QApplication( argc, argv, type ), m_mainform(0), m_interface(0) {
+	start();
 }
 
 UniqueApplication::~UniqueApplication() {
-	delete d;
+
 }
 
 bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
@@ -113,18 +79,52 @@ bool UniqueApplication::notify ( QObject * receiver, QEvent * event ) {
 	}
 }
 
-bool UniqueApplication::isUnique() { 
-	return d->m_isUnique; 
+bool UniqueApplication::isUnique() {
+	return m_isUnique;
 }
 
 void UniqueApplication::attachMainWindow( MainformImpl * mainform ) {
-	d->m_mainform = mainform;
-	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), d, SLOT(slotErrorTriggered()) );
+	m_mainform = mainform;
+	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(slotErrorTriggered()) );
 
 	new XinxAdaptor( mainform );
 	QDBusConnection::sessionBus().registerObject( "/", mainform );
 }
 
 void UniqueApplication::callOpenFile(const QString &fileName) {
-	d->m_interface->openFile( fileName );
+	m_interface->openFile( fileName );
+}
+
+
+void UniqueApplication::start() {
+	QString appName = "org.shadoware.xinx";
+	QDBusConnectionInterface* dbusService = tryToInitDBusConnection();
+
+	if ( dbusService && (dbusService->registerService(appName) != QDBusConnectionInterface::ServiceRegistered) ) {
+		qWarning() << QObject::tr("UniqueApplication: Can't setup D-Bus service. Probably already running.");
+
+		QString pid = QString::number(getpid());
+		if( dbusService->registerService(appName + '-' + pid) != QDBusConnectionInterface::ServiceRegistered ) {
+			qWarning() << QObject::tr("UniqueApplication: Can't really create D-Bus service.");
+		} else {
+			m_interface = new OrgShadowareXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
+		}
+
+		m_isUnique = false;
+		return;
+	}
+
+	m_interface = new OrgShadowareXinxInterface( appName, "/", QDBusConnection::sessionBus(), this);
+
+	m_isUnique = true;
+}
+
+void UniqueApplication::slotErrorTriggered() {
+	if( m_mainform ) {
+		// Hide the main widget
+		m_mainform->hide();
+
+		if( XINXProjectManager::self()->project() )
+			m_mainform->saveProject( true );
+	}
 }
