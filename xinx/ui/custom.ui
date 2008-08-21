@@ -171,8 +171,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>691</width>
-        <height>330</height>
+        <width>679</width>
+        <height>314</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout" >
@@ -263,8 +263,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>691</width>
-        <height>330</height>
+        <width>679</width>
+        <height>314</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3" >
@@ -941,6 +941,96 @@
            <string/>
           </property>
          </item>
+         <item>
+          <property name="text" >
+           <string>Custom...</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="5" column="0" colspan="3" >
@@ -1020,6 +1110,96 @@
             <property name="whatsThis" >
              <string>Color used in the text for the selected token.</string>
             </property>
+            <item>
+             <property name="text" >
+              <string>Custom...</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text" >
               <string>Custom...</string>
@@ -1786,6 +1966,96 @@
                 <string/>
                </property>
               </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="1" column="0" >
@@ -1803,6 +2073,96 @@
               <property name="whatsThis" >
                <string>Color of a node with a sub-element of name error.</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -2360,6 +2720,96 @@
                 <string/>
                </property>
               </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
@@ -2549,8 +2999,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>691</width>
-        <height>330</height>
+        <width>679</width>
+        <height>314</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -2564,8 +3014,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>675</width>
-            <height>290</height>
+            <width>657</width>
+            <height>269</height>
            </rect>
           </property>
           <attribute name="title" >
@@ -2587,8 +3037,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>675</width>
-            <height>290</height>
+            <width>657</width>
+            <height>269</height>
            </rect>
           </property>
           <attribute name="title" >
@@ -2596,14 +3046,7 @@
           </attribute>
           <layout class="QGridLayout" >
            <item row="0" column="0" >
-            <widget class="QListWidget" name="m_scriptListView" >
-             <property name="whatsThis" >
-              <string>List of script (in &lt;i>ECMAScript&lt;/i>)  than &lt;b>XINX&lt;/b> found.</string>
-             </property>
-             <property name="alternatingRowColors" >
-              <bool>true</bool>
-             </property>
-            </widget>
+            <widget class="PluginSelector" name="m_scriptListView" />
            </item>
           </layout>
          </widget>
@@ -2732,7 +3175,6 @@
   <tabstop>m_toolsTable</tabstop>
   <tabstop>modulesTabWidget</tabstop>
   <tabstop>m_pluginListView</tabstop>
-  <tabstop>m_scriptListView</tabstop>
   <tabstop>m_listWidget</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>

@@ -1,7 +1,9 @@
 var obj = new Object;
 
-obj.text = "Replace use of xsl:key by full xpath";
-obj.author = "Alexandre Rocher";
+obj.text    = "Replace use of xsl:key by full xpath";
+obj.author  = "Alexandre Rocher";
+obj.licence = "See the author"
+obj.version = "0.1"
 
 obj.run = function()
 {

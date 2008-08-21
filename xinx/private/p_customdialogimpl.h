@@ -32,6 +32,8 @@
 #include "../snipetlist.h"
 #include "../snipet.h"
 #include <syntaxhighlighter.h>
+#include <xinxpluginsloader.h>
+#include "scriptmanager.h"
 
 class ToolsModelIndex : public QAbstractTableModel {
 	Q_OBJECT
@@ -110,6 +112,22 @@ private:
 	friend class CustomDialogImpl;
 };
 
+class ScriptElement : public PluginElement {
+public:
+	ScriptElement( const QScriptValue & script );
+
+	virtual bool isModifiable() const;
+	virtual bool isConfigurable() const;
+
+	virtual QPixmap pixmap() const;
+	virtual QString name() const;
+	virtual QString description() const;
+
+	const QScriptValue & script() const;
+private:
+	QScriptValue m_script;
+};
+
 class PrivateCustomDialogImpl : public QObject {
 	Q_OBJECT
 public:
@@ -127,6 +145,7 @@ public:
 public slots:
 	void configurePlugin( PluginElement * plugin );
 	void aboutPlugin( PluginElement * plugin );
+	void aboutScript( PluginElement * plugin );
 private:
 	CustomDialogImpl * m_parent;
 };

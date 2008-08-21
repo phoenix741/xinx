@@ -20,10 +20,8 @@
 
 // Xinx header
 #include <exceptions.h>
-#include <xinxpluginsloader.h>
 #include "private/p_customdialogimpl.h"
 #include "snipetdialog.h"
-#include "scriptmanager.h"
 
 // Qt header
 #include <QDir>
@@ -425,6 +423,31 @@ void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
 	endInsertRows();
 }
 
+/* ScriptElement */
+
+ScriptElement::ScriptElement( const QScriptValue & script ) : m_script( script ) {
+}
+
+bool ScriptElement::isModifiable() const { return false; }
+
+bool ScriptElement::isConfigurable() const { return false; }
+
+QPixmap ScriptElement::pixmap() const {
+	return QPixmap( ":/images/ecmascript.png" );
+}
+
+QString ScriptElement::name() const {
+	return m_script.property( "text" ).toString().replace( "&", "" );
+}
+
+QString ScriptElement::description() const {
+	return "Author : " + m_script.property( "author" ).toString();
+}
+
+const QScriptValue & ScriptElement::script() const {
+	return m_script;
+}
+
 /* PrivateCustomDialogImpl */
 
 PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) : m_snipetModel( 0 ) {
@@ -557,7 +580,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Load Script
 	m_parent->m_scriptListView->clear();
 	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
-		m_parent->m_scriptListView->addItem( s.property( "text" ).toString().replace( "&", "" ) );
+		m_parent->m_scriptListView->addPlugin( new ScriptElement( s ) );
 	}
 
 	// Plugins
@@ -721,7 +744,6 @@ void PrivateCustomDialogImpl::configurePlugin( PluginElement * plugin ) {
 void PrivateCustomDialogImpl::aboutPlugin( PluginElement * plugin ) {
 	Q_ASSERT( plugin );
 	Q_ASSERT( dynamic_cast<XinxPluginElement*>( plugin ) );
-	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( dynamic_cast<XinxPluginElement*>( plugin )->plugin() ) );
 
 	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>( plugin );
 
@@ -799,6 +821,71 @@ void PrivateCustomDialogImpl::aboutPlugin( PluginElement * plugin ) {
 	informationDialog.exec();
 }
 
+
+void PrivateCustomDialogImpl::aboutScript( PluginElement * plugin ) {
+	Q_ASSERT( plugin );
+	Q_ASSERT( dynamic_cast<ScriptElement*>( plugin ) );
+
+	ScriptElement * script = dynamic_cast<ScriptElement*>( plugin );
+
+	QDialog informationDialog;
+	informationDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
+
+	QLabel * informations = new QLabel( &informationDialog );
+	informations->setWordWrap( true );
+	informations->setOpenExternalLinks( true );
+	informations->setText(
+	                       tr( "<table>"
+	                           "<tr>"
+	                           "<td colspan=\"3\"><b>%1</b></td>"
+	                           "</tr>"
+	                           "<tr><td colspan=\"3\"><hr/></td></tr>"
+	                           "<tr>"
+	                           "<td><b>Author</b></td>"
+	                           "<td width=\"0\">:</td>"
+	                           "<td>%2</td>"
+	                           "</tr>"
+	                           "<tr>"
+	                           "<td><b>Version</b></td>"
+	                           "<td width=\"0\">:</td>"
+	                           "<td>%3</td>"
+	                           "</tr>"
+	                           "<tr>"
+	                           "<td><b>Licence</b></td>"
+	                           "<td width=\"0\">:</td>"
+	                           "<td>%4</td>"
+	                           "</tr>"
+	                           "</table>" )
+	                       .arg( script->name() )
+	                       .arg( script->script().property( "author" ).toString() )
+	                       .arg( script->script().property( "version" ).toString() )
+	                       .arg( script->script().property( "licence" ).toString() )
+	                     );
+
+	QVBoxLayout * labelLayout = new QVBoxLayout;
+	labelLayout->addWidget( informations );
+
+	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
+	grp->setLayout( labelLayout );
+
+	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &informationDialog );
+
+	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addStretch();
+	hbox->addWidget( okButton );
+	hbox->addStretch();
+
+	QVBoxLayout * vbox = new QVBoxLayout;
+	vbox->addWidget( grp );
+	vbox->addLayout( hbox );
+
+	informationDialog.setLayout( vbox );
+
+	connect( okButton, SIGNAL(clicked()), &informationDialog, SLOT(accept()) );
+
+	informationDialog.exec();
+}
+
 /* CustomDialogImpl */
 
 CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( parent, f ) {
@@ -828,13 +915,18 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	// Plugins
 	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), d, SLOT(configurePlugin(PluginElement*)) );
 	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), d, SLOT(aboutPlugin(PluginElement*)) );
+	connect( m_scriptListView, SIGNAL(aboutPlugin(PluginElement*)), d, SLOT(aboutScript(PluginElement*)) );
 }
 
 CustomDialogImpl::~CustomDialogImpl() {
 	QList<PluginElement*> list = m_pluginListView->plugins();
 	m_pluginListView->clear();
 	qDeleteAll( list );
-	// TODO : Delete plugin selector element
+
+	list = m_scriptListView->plugins();
+	m_scriptListView->clear();
+	qDeleteAll( list );
+
 	delete d;
 }
 

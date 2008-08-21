@@ -1,6 +1,9 @@
 var obj = new Object;
 
-obj.text = "Just an example";
+obj.text    = "Just an example";
+obj.author  = "Ulrich Van Den Hekke";
+obj.licence = "GPL v2 or later"
+obj.version = "0.1"
 
 obj.run = function() {
 	if( project != undefined )

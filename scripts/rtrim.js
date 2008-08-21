@@ -1,6 +1,9 @@
 var obj = new Object;
 
-obj.text = "&Delete right spaces";
+obj.text    = "&Delete right spaces";
+obj.author  = "Ulrich Van Den Hekke";
+obj.licence = "GPL v2 or later"
+obj.version = "0.1"
 
 obj.run = function() {
 	var text = textEdit.selection;
