@@ -79,7 +79,13 @@ int main(int argc, char *argv[]) {
 		app.setApplicationName( "XINX" );
 
 		QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
+
 		QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
+		QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
+
+		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
+		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);

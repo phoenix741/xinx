@@ -9,11 +9,39 @@ Homepage: http://xinx.shadoware.org/
 Package: xinx
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts
 Description: XSL/JS/HTML editor for Generix
  XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet.
  This editor is used with egx.
 
+Package: xinx-plugins-services
+Section: devel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx
+Description: WebServices plugins library for XINX
+ Add the WebServices capabilities to XINX
+ 
+Package: xinx-plugins-cvs
+Section: devel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx, cvs | cvsnt
+Description: CVS plugins library for XINX
+ Add the CVS capabilities to XINX
+ 
+Package: xinx-plugins-svn
+Section: devel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx, subversion
+Description: SubVersion plugins library for XINX
+ Add the SubVersion capabilities to XINX
+
+Package: xinx-scripts
+Section: devel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx
+Description: Default Scripts for XINX
+ Default Script for XINX
+ 
 Package: xinx-doc
 Section: doc
 Architecture: all
