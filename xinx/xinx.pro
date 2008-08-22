@@ -53,7 +53,6 @@ HEADERS += scriptmanager.h \
     mainformimpl.h \
     newprojectwizard.h \
     private/p_filecontentdockwidget.h \
-    private/p_mainformimpl.h \
     private/p_projectdirectorydockwidget.h \
     private/p_xmlpresentationdockwidget.h \
     private/p_flattreeview.h \
@@ -70,8 +69,8 @@ HEADERS += scriptmanager.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     private/p_customdialogimpl.h \
-	dbus/studioadaptor.h \
-	dbus/studiointerface.h \
+	dbus/orgshadowarexinxadaptor.h \
+	dbus/orgshadowarexinxinterface.h \
  searchfilethread.h \
  logdialogimpl.h
 SOURCES += snipetdockwidget.cpp \
@@ -100,8 +99,8 @@ SOURCES += snipetdockwidget.cpp \
     xmlpresentationitem.cpp \
     newprojectwizard.cpp \
     scriptmanager.cpp \
-    dbus/studioadaptor.cpp \
-    dbus/studiointerface.cpp \
+    dbus/orgshadowarexinxadaptor.cpp \
+    dbus/orgshadowarexinxinterface.cpp \
  searchfilethread.cpp \
  logdialogimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts

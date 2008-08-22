@@ -38,6 +38,19 @@
 		</method>
 		<method name="closeProjectNoSessionData"/>
 		<method name="closeProjectWithSessionData"/>
+
+		<method name="updateFromVersionManager">
+			<arg name="list" type="as"/>
+		</method>
+		<method name="commitToVersionManager">
+			<arg name="list" type="as"/>
+		</method>
+		<method name="addFilesToVersionManager">
+			<arg name="list" type="as"/>
+		</method>
+		<method name="removeFilesFromVersionManager">
+			<arg name="list" type="as"/>
+		</method>
   </interface>
 </node>
 

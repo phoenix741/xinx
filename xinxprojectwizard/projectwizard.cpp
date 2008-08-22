@@ -22,7 +22,7 @@
 #include "projectwizard.h"
 #include "directoryedit.h"
 #include "projectconverter.h"
-#include "../xinx/dbus/studiointerface.h"
+#include "../xinx/dbus/orgshadowarexinxinterface.h"
 
 // Qt header
 #include <QApplication>

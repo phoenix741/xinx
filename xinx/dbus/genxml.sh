@@ -1,4 +1,4 @@
 #!/bin/sh
 
-qdbusxml2cpp -a studioadaptor org.shadoware.xinx.xml
-qdbusxml2cpp -p studiointerface org.shadoware.xinx.xml
+qdbusxml2cpp -a orgshadowarexinxadaptor org.shadoware.xinx.xml
+qdbusxml2cpp -p orgshadowarexinxinterface org.shadoware.xinx.xml

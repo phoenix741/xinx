@@ -23,115 +23,201 @@
 
 // Xinx header
 #include "ui_mainform.h"
+#include <xinxcore.h>
+#include <abstracteditor.h>
+#include <xinxconfig.h>
 
 // Qt header
 #include <QMainWindow>
 #include <QString>
 #include <QStringList>
+#include <QHash>
 
-class PrivateMainformImpl;
+class FileContentDockWidget;
+class ProjectDirectoryDockWidget;
+class LogDockWidget;
+class XmlPresentationDockWidget;
+class SnipetDockWidget;
+class ReplaceDialogImpl;
 
-/*!
- * This is the implementation of the MAIN FORM of XINX. This Windows allow the user to edit file,
- * create new project, open it. It show also dock for file content, and project content. It is
- * the main part of the project to interact with the user.
- *
- * This form contains also some function that can be call with D-BUS. This functionnality is defined
- * slots.
- */
+class QLabel;
+class QMessageBox;
+class QAction;
+class QToolButton;
+
 class MainformImpl : public QMainWindow, public Ui::MainForm {
 	Q_OBJECT
 public:
-	/*!
-	 * Create the main form.
-	 * Theres is normally no parent widget, and no specifique flags for the user interface.
-	 */
 	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
-	/*!
-	 * Destroy the main form, and consequently quit the application.
-	 */
 	virtual ~MainformImpl();
 public slots:
-	/*!
-	 * Open a dialog to create a new template (snipet).
-	 * To create a template, a text must be selected.
-	 * The dialog interact with the user to choose the information.
-	 * \todo Propose some options, to create the a snipet without user interaction.
-	 */
-	void newTemplate();
-	/*!
-	 * Open the file \e filename in the tab editor
-	 */
+	// DBUS Function
+	void newFile( const QString &filename );
+	void newTemplate( const QString &name, const QString &category, const QString &description, const QString &text, const QStringList &arguments = QStringList(), const QString &key = QString(), const QString &type = QString() );
 	void openFile( const QString & filename );
-	/*!
-	 * Save the current selected editor, in the file defined by \e filename. If
-	 * no filename is specified, the current name is used.
-	 */
 	void saveFileAs( const QString & filename = QString() );
-	/*!
-	 * Save all opened files.
-	 */
 	void saveAllFile();
-	/*!
-	 * Close the current file. Ask to user to save it, if the file is modified.
-	 */
 	void closeFile();
-	/*!
-	 * Close all files of the editor. If some file are modified, XINX ask the user
-	 * to save it.
-	 */
 	bool closeAllFile();
 
-	/*!
-	 * Create a new project. A dialog is opened and ask some question to the user.
-	 * \todo Add some options to create a project without user interaciton.
-	 */
-	void newProject();
-	/*!
-	 * Open a project defined by the param \e filename. If project is already open,
-	 * the project is closed.
-	 */
+	void newProject( const QString &name, const QString &path, bool isDerivated, const QString &prefix, const QString &filename );
 	void openProject( const QString & filename );
-	/*!
-	 * Save(flush) the project.
-	 * \param withSessionData If true, the project is saved with session data. It's used
-	 * in case XINX stop with error.
-	 */
 	void saveProject( bool withSessionData );
-	/*!
-	 * Close the project with no session data.
-	 */
 	void closeProjectNoSessionData();
-	/*!
-	 * Close the project with session data. The session data saved is content of non-saved
-	 * files.
-	 */
 	void closeProjectWithSessionData();
 
-	/*!
-	 * Update the project from Version management. If more one file is specified
-	 * this method update only choose file.
-	 */
 	void updateFromVersionManager( const QStringList & list = QStringList() );
-	/*!
-	 * Commit the project from Version managerment. If more one file is specified
-	 * this method update only choose file.
-	 */
 	void commitToVersionManager( const QStringList & list = QStringList() );
-	/*!
-	 * Add some files to version management.
-	 */
 	void addFilesToVersionManager( const QStringList & list );
-	/*!
-	 * Remove some file from version management.
-	 * \warning Files are also delete from disk.
-	 */
 	void removeFilesFromVersionManager( const QStringList & list );
+signals:
+	void aboutToClose();
 protected:
 	void closeEvent( QCloseEvent *event );
 private:
-	PrivateMainformImpl * d;
-	friend class PrivateMainformImpl;
+	// Creation
+	void createTabEditorButton();
+	void createShortcut();
+	void createSubMenu();
+	void createStatusBar();
+	void createDockWidget();
+	void createActions();
+	void createFindReplace();
+	void connectDbus();
+	void createTools();
+	void registerTypes();
+
+	// Editor
+	QString m_lastProjectOpenedPlace;
+	QStringList m_fileToAdd;
+
+	bool fileEditorMayBeSave( int index );
+	void fileEditorSave( int index );
+	void fileEditorSaveAs( int index );
+	void fileEditorClose( int index );
+	void fileEditorRefreshFile( int index );
+
+	// Project
+	bool closeProject( bool session );
+
+	// Settings
+	void readWindowSettings();
+	void storeWindowSettings();
+
+	// Dock
+	FileContentDockWidget * m_contentDock;
+	ProjectDirectoryDockWidget * m_projectDock;
+	LogDockWidget * m_logDock;
+	XmlPresentationDockWidget * m_xmlpresentationdock;
+	SnipetDockWidget * m_snipetsDock;
+
+	// RCS
+	bool m_rcsExecute, m_rcsVisible;
+	QString m_headContent, m_compareFileName;
+	QTimer * m_timer;
+
+	// Label text
+	QLabel * m_editorPosition;
+	QLabel * m_threadCount;
+	QLabel * m_codecLabel;
+	QLabel * m_lineFeedLabel;
+
+	// Recent action
+	QAction * m_recentProjectActs[ MAXRECENTFILES ];
+	QAction * m_recentSeparator;
+	QAction * m_recentFileActs[ MAXRECENTFILES ];
+	QAction * m_recentFileSeparator;
+
+	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
+
+	// Snipet
+	QHash<QString,QAction*> m_snipetCategoryActs;
+	QList<QAction*> m_snipetActs;
+	QList<QAction*> m_scriptActs;
+
+	// Find/Replace
+	ReplaceDialogImpl * m_findDialog;
+	QMessageBox * m_replaceNextDlg;
+	bool m_yesToAllReplace, m_searchInverse;
+	int m_nbFindedText;
+	QString m_findExpression, m_replaceExpression;
+	AbstractEditor::SearchOptions m_findOptions;
+
+	// Customize
+	AppSettings::struct_extentions extentionOfFileName( const QString & name );
+	QToolButton * m_closeTabBtn;
+private slots:
+	// Actions
+	void updateActions();
+	void updateConfigElement();
+	void updateTitle();
+	void updateEditorInformations();
+	void updateRecentFiles();
+	void updateRecentProjects();
+
+	// File
+	void newFile();
+	void openFile();
+	void openFile( const QString & name, int line );
+	void refreshFile();
+	void saveFile();
+	void saveAsFile();
+	void printFile();
+	void currentCloseFile();
+
+	// Recent action
+	void openRecentProject();
+	void openRecentFile();
+
+	// Edit
+	void copyFileName();
+	void copyPath();
+	void updateSpaceAndTab();
+
+	// Search
+	void findEnd();
+	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
+	void findFirst( const QString & chaine, const QString & dest, const AbstractEditor::SearchOptions & options );
+	void findNext();
+	void findPrevious();
+	void find();
+	void replace();
+
+	// Project
+	void newProject();
+	void openProject();
+	void projectProperty();
+	void closeProject();
+	void globalUpdateFromVersionManager();
+	void globalCommitToVersionManager();
+	void selectedUpdateFromVersionManager();
+	void selectedCommitToVersionManager();
+	void selectedAddToVersionManager();
+	void selectedRemoveFromVersionManager();
+	void selectedCompareWithVersionManager();
+	void selectedCompareWithStd();
+	void selectedCompare();
+	void rcsLogTerminated();
+
+	// Log timer
+	void logTimeout();
+
+	// Windows
+	void nextTab();
+	void previousTab();
+	void currentTabChanged(int);
+	void setEditorPosition( int line, int column );
+	void setThreadCountChange();
+
+	// Tools
+	void newTemplate();
+	void callSnipetMenu();
+	void callScriptAction();
+	void updateToolsMenu();
+	void customize();
+
+	// About
+	void about();
 };
 
 #endif

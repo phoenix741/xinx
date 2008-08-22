@@ -25,7 +25,7 @@
 #include "xslproject.h"
 
 #include "mainformimpl.h"
-#include "dbus/studiointerface.h"
+#include "dbus/orgshadowarexinxinterface.h"
 
 // Qt header
 #include <QString>
