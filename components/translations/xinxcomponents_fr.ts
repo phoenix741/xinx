@@ -30,6 +30,19 @@
     </message>
 </context>
 <context>
+    <name>PluginDelegate</name>
+    <message>
+        <location filename="../pluginselector.cpp" line="298"/>
+        <source>About ...</source>
+        <translation type="unfinished">A propos de ...</translation>
+    </message>
+    <message>
+        <location filename="../pluginselector.cpp" line="308"/>
+        <source>Configure ...</source>
+        <translation type="unfinished">Personnaliser ...</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../kcolorcombo.cpp" line="59"/>
@@ -140,12 +153,12 @@
     <message>
         <location filename="../xinxpluginselector.cpp" line="282"/>
         <source>About ...</source>
-        <translation>A propos de ...</translation>
+        <translation type="obsolete">A propos de ...</translation>
     </message>
     <message>
         <location filename="../xinxpluginselector.cpp" line="292"/>
         <source>Configure ...</source>
-        <translation>Personnaliser ...</translation>
+        <translation type="obsolete">Personnaliser ...</translation>
     </message>
 </context>
 </TS>

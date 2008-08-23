@@ -28,7 +28,8 @@ HEADERS = xsl/xsltexteditor.h \
     css/cssfileeditor.h \
     css/csstexteditor.h \
     config/webpluginformimpl.h \
-    config/selfwebpluginsettings.h
+    config/selfwebpluginsettings.h \
+ filetypeplugin.h
 SOURCES = xsl/xsltexteditor.cpp \
     config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \

@@ -3,22 +3,22 @@
 <context>
     <name>RCS_SVN</name>
     <message>
-        <location filename="../rcs_svn.cpp" line="301"/>
+        <location filename="../rcs_svn.cpp" line="345"/>
         <source>Process terminated</source>
         <translation>Traitement terminé</translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="283"/>
+        <location filename="../rcs_svn.cpp" line="327"/>
         <source>Can&apos;t start svn program.</source>
         <translation>Ne peux démarrer le programme SubVersion.</translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="287"/>
+        <location filename="../rcs_svn.cpp" line="331"/>
         <source>Can&apos;t find the svn program.</source>
         <translation>Ne peut trouver le programme svn.</translation>
     </message>
     <message>
-        <location filename="../rcs_svn.cpp" line="337"/>
+        <location filename="../rcs_svn.cpp" line="381"/>
         <source>Can&apos;t stop the process on windows.</source>
         <translation>Ne peux stopper arrêter le traitement sous windows.</translation>
     </message>
