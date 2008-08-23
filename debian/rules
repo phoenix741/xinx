@@ -10,7 +10,7 @@ install/xinx::
 	cp $(CURDIR)/xinxprojectwizard/xinxprojectwizard $(CURDIR)/debian/xinx/usr/bin/
 	
 	mkdir $(CURDIR)/debian/xinx/usr/lib/
-	cp $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
+	cp -a $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
 	
 install/xinx-plugins-services::
 	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/

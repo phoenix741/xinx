@@ -37,13 +37,14 @@
 #include <QDir>
 #include <QThread>
 #include <QBitmap>
+#include <QStyleFactory>
 
 // C++ header
 #include <csignal>
 #include <iostream>
 
 // Import plugins
-Q_IMPORT_PLUGIN(webplugin)
+Q_IMPORT_PLUGIN(webplugin);
 //Q_IMPORT_PLUGIN(cvsplugin)
 //Q_IMPORT_PLUGIN(svnplugin)
 
@@ -85,6 +86,12 @@ int main(int argc, char *argv[]) {
 
 		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
 		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+		app.addLibraryPath( "plugins:" );
+
+#if defined(Q_WS_WIN)
+		if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
+			app.setStyle(QStyleFactory::create("ExplorerStyle"));
+#endif // Q_WS_WIN
 
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");

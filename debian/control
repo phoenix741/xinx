@@ -9,7 +9,9 @@ Homepage: http://xinx.shadoware.org/
 Package: xinx
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx-scripts (>= 0.7.2.0)
+Recommends: xinx-plugins-services, xinx-plugins-cvs, xinx-plugins-svn
+Suggests: xinx-doc
 Description: XSL/JS/HTML editor for Generix
  XINX is an editor of XSL stylesheet, JavaScript, Cascading Style Sheet.
  This editor is used with egx.
@@ -17,28 +19,28 @@ Description: XSL/JS/HTML editor for Generix
 Package: xinx-plugins-services
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.7.2.0)
 Description: WebServices plugins library for XINX
  Add the WebServices capabilities to XINX
  
 Package: xinx-plugins-cvs
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx, cvs | cvsnt
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.7.2.0), cvs | cvsnt
 Description: CVS plugins library for XINX
  Add the CVS capabilities to XINX
  
 Package: xinx-plugins-svn
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx, subversion
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.7.2.0), subversion
 Description: SubVersion plugins library for XINX
  Add the SubVersion capabilities to XINX
 
 Package: xinx-scripts
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (>= 0.7.2.0)
 Description: Default Scripts for XINX
  Default Script for XINX
  
