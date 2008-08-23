@@ -13,29 +13,33 @@ install/xinx::
 	cp $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
 	
 install/xinx-plugins-services::
+	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/
 	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/share/
 	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/share/xinx/
 	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/share/xinx/plugins/
 	cp $(CURDIR)/plugins/libservices.so $(CURDIR)/debian/xinx-plugins-services/usr/share/xinx/plugins/
 
 install/xinx-plugins-cvs::
+	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/
 	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/share/
 	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/share/xinx/
 	mkdir $(CURDIR)/debian/xinx-plugins-cvs/usr/share/xinx/plugins/
 	cp $(CURDIR)/plugins/libcvsplugin.so $(CURDIR)/debian/xinx-plugins-cvs/usr/share/xinx/plugins/
 
 install/xinx-plugins-svn::
+	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/
 	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/
 	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/
 	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
 	cp $(CURDIR)/plugins/libsvnplugin.so $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
 
 install/xinx-scripts::
+	mkdir $(CURDIR)/debian/xinx-scripts/usr/
 	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/
 	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/xinx/
 	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
-	cp $(CURDIR)/scripts/*.js $(CURDIR)/debian/xinx-scripts/usr/share/xinx/script/
-	cp $(CURDIR)/scripts/*.xq $(CURDIR)/debian/xinx-scripts/usr/share/xinx/script/
+	cp $(CURDIR)/scripts/*.js $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
+	cp $(CURDIR)/scripts/*.xq $(CURDIR)/debian/xinx-scripts/usr/share/xinx/scripts/
 
 install/xinx-doc::
 	mkdir $(CURDIR)/debian/xinx-doc/usr/
