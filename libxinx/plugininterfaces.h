@@ -82,7 +82,9 @@ public:
 	/*! List of tools with the default value where find the tool */
 	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
 
+	//! Call when a new project is created or opened
 	virtual bool initializeProject( XSLProject * project ) { Q_UNUSED( project ); return true; };
+	///! Call before the project is closed
 	virtual bool destroyProject( XSLProject * project ) { Q_UNUSED( project ); return true; };
 };
 
