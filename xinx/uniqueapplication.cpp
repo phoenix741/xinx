@@ -37,6 +37,8 @@
 #include <QObject>
 #include <QtDBus>
 
+// Standard header
+#include <unistd.h>
 
 static QDBusConnectionInterface *tryToInitDBusConnection() {
 	// Check the D-Bus connection health

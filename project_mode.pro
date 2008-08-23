@@ -1,4 +1,4 @@
-CONFIG += debug
+CONFIG += release
 if(!debug_and_release|build_pass):CONFIG(debug, debug|release) { 
     win32:PRE_TARGETDEPS ~= s/\.a/d.a/g
     mac:PRE_TARGETDEPS ~= s/\.a/_debug.a/g

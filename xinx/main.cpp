@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
 #if defined(Q_WS_WIN)
 		if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
-			app.setStyle(QStyleFactory::create("ExplorerStyle"));
+			app.setStyle(QStyleFactory::create("Explorer"));
 #endif // Q_WS_WIN
 
 		if( app.isUnique() ) {

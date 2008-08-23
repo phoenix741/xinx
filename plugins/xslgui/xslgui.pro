@@ -1,7 +1,7 @@
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx -lsharedxinx
+LIBS = -L../../libxinx -L../../components -lsharedxinx -lxinxcmp
 TARGET = $$qtLibraryTarget(xslgui)
 INCLUDEPATH += ../../libxinx ../../components
 RESOURCES = xslgui.qrc

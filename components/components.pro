@@ -1,5 +1,6 @@
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += dll
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
 DESTDIR += ./
 TARGET = $$qtLibraryTarget(xinxcmp)
 FORMS = ui/xinxlistwidget.ui

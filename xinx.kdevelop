@@ -168,7 +168,7 @@
       <autoinstall>false</autoinstall>
       <autokdesu>false</autokdesu>
       <envvars>
-        <envvar value="libxinx" name="LD_LIBRARY_PATH" />
+        <envvar value="libxinx:components" name="LD_LIBRARY_PATH" />
       </envvars>
       <runarguments>
         <xinxprojectwizard/>

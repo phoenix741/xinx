@@ -11,6 +11,7 @@ install/xinx::
 	
 	mkdir $(CURDIR)/debian/xinx/usr/lib/
 	cp -a $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
+	cp -a $(CURDIR)/components/libxinxcmp* $(CURDIR)/debian/xinx/usr/lib/
 	
 install/xinx-plugins-services::
 	mkdir $(CURDIR)/debian/xinx-plugins-services/usr/

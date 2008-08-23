@@ -48,6 +48,7 @@ Name: remplace_template; Description: Replace XINX data files (please backup you
 [Files]
 Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\components\xinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\libxinx\sharedxinx.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\xinxprojectwizard\xinxprojectwizard.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
@@ -69,7 +70,7 @@ DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
 DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: experimental
 DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
-DestDir: {app}\plugins\styles; Source: ..\..\..\Qt\4.4.0\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
