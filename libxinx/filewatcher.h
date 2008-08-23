@@ -29,7 +29,7 @@ class PrivateWatcher;
 /*!
  * Class used to watch the modification of a file. The file is periodically watched
  * and if the date of the file is modified, the user is alerted by a signal.
- * 
+ *
  * Behind the FileWatcher, a thread watch modifications of all files referenced by a
  * FileWatcher. The watcher can be desactivate and reactivate without delete the object.
  * When the object is reactivated, the file date, in memory, is updated.
@@ -42,25 +42,21 @@ public:
 	 * \param filename The file name to watch.
 	 */
 	FileWatcher( const QString & filename );
-	/*!
-	 * Destroy the FileWatcher
-	 */
+	/*! Destroy the FileWatcher */
 	virtual ~FileWatcher();
-	
+
 	/*!
 	 * Desactivate the watcher. You must called the \e activate method to reactivate
 	 * the watcher.
 	 */
 	void desactivate();
 	/*!
-	 * Activate the watcher. The watcher is created activated. Use \e desactivate to 
+	 * Activate the watcher. The watcher is created activated. Use \e desactivate to
 	 * desactivate.
 	 */
 	void activate();
 signals:
-	/*!
-	 * The signal is emited when the watched file is modified.
-	 */
+	/*! The signal is emited when the watched file is modified.*/
 	void fileChanged();
 protected:
 	PrivateWatcher * d;

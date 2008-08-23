@@ -13,13 +13,10 @@
     <ignoreparts>
       <part>kdevtools</part>
       <part>kdevfilter</part>
-      <part>kdevdistpart</part>
       <part>kdevfilegroups</part>
-      <part>kdevvalgrind</part>
       <part>kdevgrepview</part>
       <part>kdevkonsoleview</part>
       <part>kdevfileselector</part>
-      <part>kdevbookmarks</part>
     </ignoreparts>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
@@ -157,14 +154,14 @@
   </kdevfilecreate>
   <kdevtrollproject>
     <general>
-      <activedir>xinx</activedir>
+      <activedir>xinxprojectwizard</activedir>
     </general>
     <run>
       <directoryradio>executable</directoryradio>
       <mainprogram></mainprogram>
       <programargs></programargs>
       <globaldebugarguments></globaldebugarguments>
-      <globalcwd></globalcwd>
+      <globalcwd>/home/phoenix/logiciels/qt/xinx-trunk</globalcwd>
       <useglobalprogram>false</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
@@ -178,8 +175,8 @@
         <xinx/>
       </runarguments>
       <cwd>
-        <xinxprojectwizard>/home/phoenix/logiciels/linux/qt/xinx-trunk/.</xinxprojectwizard>
-        <xinx>/home/phoenix/logiciels/linux/qt/xinx-trunk/.</xinx>
+        <xinxprojectwizard>/home/phoenix/logiciels/qt/xinx-trunk/.</xinxprojectwizard>
+        <xinx>/home/phoenix/logiciels/qt/xinx-trunk/.</xinx>
       </cwd>
       <debugarguments>
         <xinxprojectwizard/>
@@ -222,7 +219,7 @@
     </projectdoc>
   </kdevdocumentation>
   <ctagspart>
-    <customArguments/>
+    <customArguments></customArguments>
     <customTagfilePath>/home/phoenix/logiciels/linux/qt/xinx-trunk/tags</customTagfilePath>
     <activeTagsFiles/>
   </ctagspart>

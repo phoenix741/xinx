@@ -38,40 +38,62 @@ class QModelIndex;
 #	define QT_TEXT_EDITOR QTextEdit
 #endif // QT_PLAINTEXT
 
+/*!
+ * The center widget of the \e TextFileEditor class.
+ *
+ * This class is based on a QTextEdit or a QPlainTextEdit. This depend
+ * on the existance of the define QT_PLAINTEXT at the compilation time.
+ * The goal is to remove the QTextEdit. QPlainTextEdit is normally more
+ * fast.
+ * The possibility of use a QTextEdit is keep in the case of probleme.
+ */
 class TextEditor : public QT_TEXT_EDITOR {
 	Q_OBJECT
 	Q_PROPERTY( QString selection READ selection WRITE setSelection )
 public:
+	//! Create the text editor with the parent \e parent
 	TextEditor( QWidget * parent = 0 );
+	//! Destroy the text editor.
 	virtual ~TextEditor();
 
+	//! Return the current column of the cursor
 	int currentColumn();
+	//! Return the current row of the cursor
 	int currentRow();
 
+	/*!
+	 * Return the text who is under the cursor.
+	 * \param cursor The cursor to use to look the text.
+	 * \param deleteWord If true, \e textUnderCursor will remove the text returned.
+	 * \param dot If true '.' is considered in a word
+	 */
 	QString textUnderCursor( const QTextCursor & cursor, bool deleteWord = false, bool dot = true );
+	//! Set the syntax highlighter \e highlighter for the text.
 	void setHighlighter( SyntaxHighlighter * highlighter );
 
+	//! Set the completer \e completer to the editor
 	virtual void setCompleter( QCompleter * completer );
+	//! Return the editor setted.
 	virtual QCompleter * completer() { return m_completer; };
 
+	//! Return the content of the current selection or all the text if there is no selection.
 	QString selection() const;
 public slots:
+	//! Set the selection to \e text, or replace all the text if there is no selection.
 	void setSelection( QString text );
 
+	//! Insert the selection where the cursor is (and replace the selection if any)
 	void insertText( const QString & text );
 
+	//! Update the font (when the configuration change)
 	void updateFont();
+	//! Set the highlight text with \e text. All text equals are highlighted.
 	void setMatchingText( QString text );
 
-	/*!
-	 * In the editor go to the line \e line.
-	 */
+	/*! In the editor go to the line \e line. */
 	void gotoLine( int line );
 
-	/*!
-	 * Duplicate the current line in the editor.
-	 * \todo Duplicate more than one line. (duplicate the selected text).
-	 */
+	/*! Duplicate the current line or the current selection in the editor. */
 	void duplicateLines();
 	/*!
 	 * Move the current line up.
@@ -85,13 +107,9 @@ public slots:
 	 * \sa moveLineUp()
 	 */
 	void moveLineDown();
-	/*!
-	 * Replace the selected text by upper case character the parameter.
-	 */
+	/*! Replace the selected text by upper case character the parameter. */
 	void upperSelectedText();
-	/*!
-	 * Replace the selected text by lower case character.
-	 */
+	/*! Replace the selected text by lower case character. */
 	void lowerSelectedText();
 	/*!
 	 * Called when the configuration change and it's necessary to update the highlighter.
@@ -113,24 +131,39 @@ public slots:
 	 */
 	virtual void commentSelectedText( bool uncomment = false );
 
+	/*! Refresh the text highlighter (in case the cursor position change) */
 	void refreshTextHighlighter();
+	/*! Highlight all text equals of the current word under the cursor */
 	void callTextHighlighter();
 signals:
+	/*! The user press Ctrl+Space and call the snipet given */
 	void needInsertSnipet( QString snipet );
+	/*! The model is destroyed or created and need to be updated in the content dialog */
 	void modelUpdated( QAbstractItemModel * model );
 
+	//! The user (By pressing Ctrl+Click) search a word in the document or another.
 	void searchWord( const QString & word );
 protected:
 	virtual void paintEvent ( QPaintEvent * event );
 	virtual void keyPressEvent( QKeyEvent * e );
-    virtual void mouseDoubleClickEvent( QMouseEvent * event );
+	virtual void mouseDoubleClickEvent( QMouseEvent * event );
 	virtual void mousePressEvent ( QMouseEvent * e );
 
 	virtual void printWhiteSpaces( QPainter & p );
 
+	/*!
+	 * Process to do when a user press a key.
+	 * This method is called when the editor ask to add some text automatically. (ie:
+	 * close a bracket, ...)
+	 */
 	virtual bool processKeyPress( QKeyEvent * ) { return true; };
+	/*!
+	 * Process to do when a user press a key
+	 * This method is called when the editor ask to process some shortcut.
+	 */
 	virtual void localKeyPressExecute( QKeyEvent * e );
 protected slots:
+	/*! Insert the completion based on the QCompleter */
 	virtual void insertCompletion( const QModelIndex& index );
 private slots:
 	void slotCursorPositionChanged();
@@ -142,7 +175,7 @@ private:
 
 	SyntaxHighlighter* m_syntaxhighlighter;
 	QString m_matchedText;
-    QPixmap m_tabPixmap, m_spacePixmap;
+	QPixmap m_tabPixmap, m_spacePixmap;
 	QColor m_currentLineColor;
 	QCompleter * m_completer;
 

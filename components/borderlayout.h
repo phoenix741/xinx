@@ -48,26 +48,61 @@
 #include <QRect>
 #include <QWidgetItem>
 
+/*!
+ * This layout is decomposed with a center widget and four border.
+ *
+ *    +---------------------------+
+ *    |           NORTH           |
+ *    +------+-------------+------+
+ *    |      |             |      |
+ *    |      |             |      |
+ *    | WEST |   CENTER    | EAST |
+ *    |      |             |      |
+ *    |      |             |      |
+ *    +------+-------------+------+
+ *    |           SOUTH           |
+ *    +---------------------------+
+ *
+ * Please read the doc of trolltech for the example.
+ */
 class BorderLayout : public QLayout {
 public:
-	enum Position { West, North, South, East, Center };
+	/*! Position of the widget */
+	enum Position {
+		West,   //!< The widget is placed at left
+		North,  //!< The widget is placed in top
+		South,  //!< The widget is placed in bottom
+		East,   //!< The widget is placed in right
+		Center  //!< The widget is placed in center
+	};
 
-	BorderLayout(QWidget *parent, int margin = 0, int spacing = -1);
-	BorderLayout(int spacing = -1);
+	/*!
+	 * Create the \e BorderLayout
+	 * \param parent The parent widget
+	 * \param margin The marge arround the layout
+	 * \param spacing The space between the widget
+	 */
+	BorderLayout( QWidget *parent, int margin = 0, int spacing = -1 );
+	/*!
+	 * Create the \e BorderLayout
+	 * \param spacing The space between the widget
+	 */
+	BorderLayout( int spacing = -1 );
+	//! Destroy the layout
 	~BorderLayout();
 
-	void addItem(QLayoutItem *item);
-	void addWidget(QWidget *widget, Position position);
+	void addItem( QLayoutItem *item );
+	void addWidget( QWidget *widget, Position position );
 	Qt::Orientations expandingDirections() const;
 	bool hasHeightForWidth() const;
 	int count() const;
-	QLayoutItem *itemAt(int index) const;
+	QLayoutItem *itemAt( int index ) const;
 	QSize minimumSize() const;
-	void setGeometry(const QRect &rect);
+	void setGeometry( const QRect &rect );
 	QSize sizeHint() const;
-	QLayoutItem *takeAt(int index);
+	QLayoutItem *takeAt( int index );
 
-	void add(QLayoutItem *item, Position position);
+	void add( QLayoutItem *item, Position position );
 private:
 	struct ItemWrapper {
 		ItemWrapper(QLayoutItem *i, Position p) {

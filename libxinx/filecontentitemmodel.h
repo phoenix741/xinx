@@ -42,25 +42,17 @@ public:
 	 * \param parent Parent of the file content model.
 	 */
 	FileContentItemModel( FileContentElement * root, QObject *parent = 0 );
-	/*!
-	 * Destroy the model.
-	 */
+	/*! Destroy the model. */
 	virtual ~FileContentItemModel();
-	
+
 	/*!
 	 * This structure give the line and the filename where we can find data that
 	 * model represents.
 	 * If the filename is empty, the model refere to the current file.
 	 */
 	struct struct_file_content {
-		/*!
-		 * The line of the element.
-		 */
-		int line;
-		/*!
-		 * The file name of the element. If empty the file is the current file.
-		 */
-		QString filename;
+		int line; /*!< The line of the element. */
+		QString filename; /*!< The file name of the element. If empty the file is the current file. */
 	};
 
 	virtual QVariant data( const QModelIndex &index, int role ) const;
@@ -71,7 +63,7 @@ public:
 	virtual bool hasChildren( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;	
+	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;
 public slots:
 	void update( FileContentElement * element );
 	void beginInsertRow( FileContentElement * element, int row );
@@ -83,6 +75,6 @@ private:
 	friend class PrivateFileContentModel;
 };
 
-Q_DECLARE_METATYPE ( FileContentItemModel::struct_file_content )
+Q_DECLARE_METATYPE( FileContentItemModel::struct_file_content )
 
 #endif // __FILECONTENTITEMMODEL_H__

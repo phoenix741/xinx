@@ -34,26 +34,54 @@ public:
 	ToolsNotDefinedException( const QString & tool );
 };
 
+/*!
+ * Represente the configuration of XINX. The configuration of unique for a
+ * unique process.
+ */
 class XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
 public:
+	/*! Create a configuration by assignation */
 	XINXConfig( const XINXConfig & origine );
+	/*! Create an empty configuration */
 	XINXConfig();
+	/*! Destroy the configuration object */
 	virtual ~XINXConfig();
 
+	/*! Self create a XINX configuration file if necessary */
 	static XINXConfig * self();
+
+	/*! Load the configuration from the QSettings (Registry, INI File, ...) */
 	virtual void load();
+	/*! Save the configuration to the QSettings (Registry, INI File, ...) */
 	virtual void save();
 
+	/*! Set the search path of data files. The Search path is accessible with datas:filename.xml */
 	void setXinxDataFiles( const QString & path );
+
+	/*!
+	 * Get the tool name from the configuration, and if the tool doesn't exist or
+	 * is not defined a dialog box to ask the user to define the tool.
+	 * \param tool The tool to use (cvs, svn, diff, ...)
+	 * \param showDialog Show a dialog box if the tool is not defined (else throw an exception)
+	 * \param parentWindow The parent windows used to show the dialog.
+	 * \throw ToolsNotDefinedException
+	 */
 	QString getTools( const QString & tool, bool showDialog = true, QWidget * parentWindow = 0 );
+	/*!
+	 * Add a new tool in the configuration with a default value.
+	 * \param tool The tool to add (cvs, svn, diff, ...).
+	 * \param defaultValue The default value to use, if not already defined.
+	 */
 	void addDefaultTool( const QString & tool, const QString & defaultValue );
 
 	/*! Search the file type for the corresponding filename  */
 	struct_extentions matchedFileType( const QString & filename );
 
-	XINXConfig& operator=(const XINXConfig& p);
+	/*! Assign a configuration to another */
+	XINXConfig & operator=( const XINXConfig& p );
 signals:
+	/*! Signal emited when the configuration is changed */
 	void changed();
 protected:
 	virtual struct_globals getDefaultGlobals();

@@ -20,19 +20,18 @@
 
 // Xinx header
 #include "xinxlistwidgetimpl.h"
-#include "exceptions.h"
 
 /* XinxListWidgetImpl */
 
 XinxListWidgetImpl::XinxListWidgetImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
 	setupUi( this );
-	
+
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
 }
 
 XinxListWidgetImpl::~XinxListWidgetImpl() {
-	
+
 }
 
 void XinxListWidgetImpl::updateDefault( const QString & def ) {
@@ -59,7 +58,7 @@ void XinxListWidgetImpl::updateDefault( const QString & def ) {
 		m_defaultValue = m_list->count() - 1;
 	}
 }
-	
+
 QString XinxListWidgetImpl::defaultValue() const {
 	if( m_list->item( m_defaultValue ) )
 		return m_list->item( m_defaultValue )->text();
@@ -70,7 +69,7 @@ QString XinxListWidgetImpl::defaultValue() const {
 void XinxListWidgetImpl::setDefaultValue( const QString & value ) {
 	updateDefault( value );
 }
-	
+
 bool XinxListWidgetImpl::defaultVisible() const {
 	return m_btnDef->isVisible();
 }
@@ -132,9 +131,9 @@ void XinxListWidgetImpl::on_m_btnAdd_clicked() {
 
 void XinxListWidgetImpl::on_m_btnDel_clicked() {
 	Q_ASSERT( m_list->currentRow() >= 0 );
-	
+
 	delete m_list->currentItem();
-	
+
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
 }

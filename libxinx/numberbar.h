@@ -41,9 +41,7 @@ public:
 	 * by default, and is the only current value.
 	 */
 	NumberBar( QWidget *parent );
-	/*!
-	 * Destroy the number bar.
-	 */
+	/*! Destroy the number bar. */
 	virtual ~NumberBar();
 
  	/*!
@@ -63,19 +61,13 @@ public:
 	 */
 	virtual void mousePressEvent ( QMouseEvent * event );
 
-	/*!
-	 * Show icon bookmark at line \e line.
-	 */
+	/*! Show icon bookmark at line \e line. */
 	void setBookmark( int line, bool enabled );
 
-	/*!
-	 * List of bookmark of the editor.
-	 */
+	/*! List of bookmark of the editor. */
 	QList<int> & listOfBookmark();
 
-	/*!
-	 * Set the list of error
-	 */
+	/*! Set the list of error. */
 	void setErrors( QList<int> errors );
 signals:
 	/*!

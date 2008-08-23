@@ -51,21 +51,20 @@ public:
 	enum SearchOption {
 		ONLY_SELECTION = 0x01,      //!< Search only on selected element (text, widget, ...)
 		BACKWARD = 0x02,            //!< Reverse search
-		WHOLE_WORDS = 0x04,          //!< Search a word and not a piece of word
+		WHOLE_WORDS = 0x04,         //!< Search a word and not a piece of word
 		REGULAR_EXPRESSION = 0x08,  //!< The search string is a regular expression
 		SEARCH_FROM_START = 0x10,   //!< Search from the start of the document (backward and selection must be ignored)
 		MATCH_CASE = 0x20           //!< The search is case sensitive
 	};
 	Q_DECLARE_FLAGS( SearchOptions, SearchOption )
+
 	/*!
 	 * Create an editor and define default style for the Frame.
 	 * \param parent Parent and containers of the editor.
 	 */
 	AbstractEditor( QWidget * parent = 0 );
 
-	/*!
-	 * Destroy the created frame editor.
-	 */
+	/*! Destroy the created frame editor. */
 	virtual ~AbstractEditor();
 
 	/*!
@@ -146,18 +145,29 @@ public:
 	 */
 	virtual QIcon icon() const;
 
+	/*!
+	 * Load the editor from a device (from a file, the memory or any medium).
+	 * \param d The device where XINX must load.
+	 */
 	virtual void loadFromDevice( QIODevice & d ) = 0;
+	/*!
+	 * Save the editor in a device(to a file, in the memory, or any medium).
+	 * \param d The device where XINX must write.
+	 */
 	virtual void saveToDevice( QIODevice & d ) = 0;
 
+	/*! Return the model that represent the content of the editor. */
 	virtual QAbstractItemModel * model() const = 0;
+	/*! Update the content of the model from the content of the editor */
 	virtual void updateModel() = 0;
 
+	/*! Return true if the editor is modified by the user, else return false */
 	virtual bool isModified() = 0;
 
 	/*!
 	 * Serialize the editor and return the value in a byte array. The serialization save internal data of
 	 * the editor (modified, content, position of cursor, ...).
-	 * \param stream where datas must be stored.
+	 * \param data where datas must be stored.
 	 * \param content If true, the editor save the modifed content, else the editor must save only
 	 * the state.
 	 * \sa deserialze(), deserialzeEditor()
@@ -167,32 +177,30 @@ public:
 	/*!
 	 * Restore the editor with the content of the XML document. The deserialization restore the
 	 * maximum of information of the document.
-	 * \param stream from what the data must be read
+	 * \param data from what the data must be read
 	 * \sa serialize(), deserializeEditor()
 	 */
 	virtual void deserialize( XSLProjectSessionEditor * data );
 	/*!
 	 * Create the right editor and deserualize it.
-	 * \param stream from what the data must be read
+	 * \param data from what the data must be read
 	 * \return An editor
 	 * \sa serialize(), deserialize()
 	 */
 	static AbstractEditor * deserializeEditor( XSLProjectSessionEditor * data );
 
-	/*!
-	 * Return a string reprensents the content of the \em i bookmark.
-	 */
+	/*! Return a string reprensents the content of the \em i -ième bookmark. */
 	virtual QString bookmarkAt( int i ) = 0;
-	/*!
-	 * Return the number of bookmark.
-	 */
+	/*! Return the number of bookmark. */
 	virtual int bookmarkCount() = 0;
 public slots :
 	/*!
-	 * Call before the search begins.
+	 * Call-it before the search/replace begins to define the option to use
+	 * when search and initialize some variables.
 	 * @param options Options used to search text.
 	 */
 	virtual void initSearch( SearchOptions & options ) = 0;
+
 	/*!
 	 * Search the \e text in the document, and select it.
 	 * @param text The text to search in the document
@@ -204,6 +212,7 @@ public slots :
 	 * Replace the current selection by the user text.
 	 * @param from The text to replace (as asked by user so be aware of regexp)
 	 * @param to The text the user want to put. (if regexp \1, \2 is catched text)
+	 * @param options User options used to replace the text
 	 */
 	virtual void replace( const QString & from, const QString & to, SearchOptions options ) = 0;
 
@@ -313,10 +322,31 @@ signals:
 	 */
 	void contentChanged();
 protected:
+	/*! Constructor used to copy the editor content. This constructor must exist for serialization works. */
 	AbstractEditor( const AbstractEditor & editor );
 
+	/*!
+	 * The layout used for the editor. This layout is decomposed with a center widget and
+	 * four border.
+	 *
+	 *    +---------------------------+
+	 *    |            TOP            |
+	 *    +-------+------------+------+
+	 *    |       |            |      |
+	 *    |       |            |      |
+	 *    | RIGHT |   CENTER   | LEFT |
+	 *    |       |            |      |
+	 *    |       |            |      |
+	 *    +-------+------------+------+
+	 *    |           BOTTOM          |
+	 *    +---------------------------+
+	 */
 	BorderLayout * borderLayout();
 protected slots:
+	/*!
+	 * Set the modified attribute in local.
+	 * \param isModified The new value for the modified attribute.
+	 */
 	virtual void setModified( bool isModified ) = 0;
 
 	/*!

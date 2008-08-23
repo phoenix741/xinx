@@ -28,11 +28,20 @@
 // Qt header
 #include <QPointer>
 
+/*!
+ * This class is an editor that can read and write from and to a file. This class
+ * open the file (with the correct option) and call loadFromDevice and saveTofDevice.
+ */
 class AbstractFileEditor : public AbstractEditor {
 	Q_OBJECT
 	Q_PROPERTY( QString filename READ lastFileName WRITE setWatcher )
 public:
+	/*!
+	 * Constructor of the abstract file editor.
+	 * \param parent Parent of the editor
+	 */
 	AbstractFileEditor( QWidget * parent = 0 );
+	//! Destroy the editor
 	virtual ~AbstractFileEditor();
 
 	/*!
@@ -43,12 +52,16 @@ public:
 	 */
 	virtual QString getTitle() const;
 
+	/*! Open and load from the file \e fileName */
 	virtual void loadFromFile( const QString & fileName = QString() );
+	/*! Open and save to file \e fileName */
 	virtual void saveToFile( const QString & fileName = QString() );
 
 	virtual bool isModified();
 
+	/*! Return the last name used with \e loadFromFile() or \e saveToFile() */
 	const QString & lastFileName() const;
+	/*! Return the name used if no name is defined (ie. noname.txt) */
 	virtual QString defaultFileName() const = 0;
 
 	virtual void serialize( XSLProjectSessionEditor * data, bool content );

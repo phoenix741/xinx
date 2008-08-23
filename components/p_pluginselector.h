@@ -23,7 +23,6 @@
 
 // Xinx header
 #include "pluginselector.h"
-#include "plugininterfaces.h"
 
 // Qt header
 #include <QAbstractListModel>

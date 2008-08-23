@@ -2,28 +2,10 @@ TEMPLATE = app
 CONFIG += qdbus warn_on
 QT += xml script xmlpatterns
 DESTDIR += ./
-INCLUDEPATH += ../components ../libxinx ../xinx/
+INCLUDEPATH += ../components ../libxinx ../xinx
 LIBS = -L../libxinx -L../plugins -L../components -lwebplugin -lsharedxinx -lxinxcmp
 PRE_TARGETDEPS = ../components/libxinxcmp.a ../plugins/libwebplugin.a
 win32 : RC_FILE += rc/xinx.rc
-DISTFILES = ../CHANGELOG \
-    ../COPYING \
-    ../Doxyfile \
-    ../INSTALL \
-    ../TODO \
-    application.qrc \
-    rc/*.rc \
-    setup/*.bat \
-    setup/*.iss \
-    *.bat \
-    *.cpp \
-    *.h \
-    *.sh \
-    *.xml \
-    private/*.h \
-    translations/*.ts \
-    ui/*.ui \
-    xml/*.xnx
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \
     ui/about.ui \
@@ -38,7 +20,7 @@ FORMS += ui/specifiquedlg.ui \
     ui/xmlpresentationwidget.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
- ui/logform.ui
+    ui/logform.ui
 HEADERS += scriptmanager.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \
@@ -69,10 +51,10 @@ HEADERS += scriptmanager.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
     private/p_customdialogimpl.h \
-	dbus/orgshadowarexinxadaptor.h \
-	dbus/orgshadowarexinxinterface.h \
- searchfilethread.h \
- logdialogimpl.h
+    dbus/orgshadowarexinxadaptor.h \
+    dbus/orgshadowarexinxinterface.h \
+    searchfilethread.h \
+    logdialogimpl.h
 SOURCES += snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -101,11 +83,8 @@ SOURCES += snipetdockwidget.cpp \
     scriptmanager.cpp \
     dbus/orgshadowarexinxadaptor.cpp \
     dbus/orgshadowarexinxinterface.cpp \
- searchfilethread.cpp \
- logdialogimpl.cpp
+    searchfilethread.cpp \
+    logdialogimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 
 include(../project_mode.pro)
-
-xinx.path = /usr/local/xinx
-INSTALLS += xinx

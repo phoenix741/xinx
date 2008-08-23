@@ -21,24 +21,38 @@
 #ifndef _XINXPLUGINELEMENT_H_
 #define _XINXPLUGINELEMENT_H_
 
-// Qt header
-
 // Xinx header
 #include <pluginelement.h>
 #include "plugininterfaces.h"
 
+/*!
+ * A XinxPluginElement is a plugin (a library, PluginElement can be a script :).
+ * It's used with PluginSelector.
+ */
 class XinxPluginElement : public PluginElement {
 public:
+	/*!
+	 * Create an object based on a \e plugin. If the plugin \e isStatic
+	 * \e isModifiable() will return false and \e isActivated() will
+	 * return true.
+	 */
 	XinxPluginElement( QObject * plugin, bool isStatic = false );
 
+	/*! Return true if the plugin is modifiable (no static) */
 	virtual bool isModifiable() const;
+	/*!
+	 * Return true if the plugin is configurable. A plugin is configurable
+	 * if \e plugin() is \e IXinxPluginConfiguration.
+	 */
 	virtual bool isConfigurable() const;
 
 	virtual QPixmap pixmap() const;
 	virtual QString name() const;
 	virtual QString description() const;
 
+	/*! Return the plugin of the element  */
 	QObject * plugin() const;
+	/*! Return true if the plugin is static */
 	bool isStatic() const;
 private:
 	QObject * m_plugin;

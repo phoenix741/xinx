@@ -48,6 +48,7 @@ public:
 	 */
 	XSLProjectException( const QString & message, bool wizard = false );
 
+	//! True if XINX must start "xinxprojectwizard"
 	bool startWizard() const;
 private:
 	bool m_wizard;
@@ -55,16 +56,37 @@ private:
 
 class XSLProjectSession;
 
+/*!
+ * Represent a session editor A session is an hash table of properties.
+ * A property is a couple :
+ *  - key   : QString
+ *  - value : QVariant
+ *
+ * The value is a QVariant but must be writtable in a text file. (QString, int, ...)
+ */
 class XSLProjectSessionEditor : public QObject {
 	Q_OBJECT
 public:
+	/*! Create a session editor with a session file as \e parent. */
 	XSLProjectSessionEditor( XSLProjectSession * parent = 0 );
+	/*! Destroy the session editor */
 	~XSLProjectSessionEditor();
 
+	/*!
+	 * Load the session from a DOM Element.
+	 * \param element The DOM Element to read
+	 */
 	void loadFromNode( const QDomElement & element );
+	/*!
+	 * Save the session to a DOM Element.
+	 * \param document The document used to create new QDomElement.
+	 * \param element The DOM Element to create.
+	 */
 	void saveToNode( QDomDocument & document, QDomElement & element );
 
+	/*! Store the property \e key with the \e value in the session. */
 	void writeProperty( const QString & key, QVariant value );
+	/*! Read the property \e key */
 	QVariant readProperty( const QString & key );
 private:
 	QHash<QString,QVariant> m_properties;
@@ -80,9 +102,7 @@ class XSLProjectSession : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( QStringList lastOpenedFile READ lastOpenedFile )
 public:
-	/*!
-	 * Create an empty session
-	 */
+	/*! Create an empty session */
 	XSLProjectSession();
 	/*!
 	 * Create a session object and load the file \e filename
@@ -90,7 +110,7 @@ public:
 	 * \sa loadFromFile
 	 */
 	XSLProjectSession( const QString & filename );
-
+	/*! Destroy the session */
 	virtual ~XSLProjectSession();
 
 	/*!
@@ -113,6 +133,7 @@ public:
 	 */
 	QStringList & lastOpenedFile();
 
+	/*! List of serialized editor. */
 	const QList<XSLProjectSessionEditor*> & serializedEditors() const;
 private:
 	QString m_filename;
@@ -163,9 +184,7 @@ public:
 	};
 	Q_DECLARE_FLAGS( ProjectOptions, ProjectOption );
 
-	/*!
-	 * Create an empty project.
-	 */
+	/*! Create an empty project. */
 	XSLProject();
 	/*!
 	 * Create a project with another project. This is the copy constructor used in
@@ -179,14 +198,10 @@ public:
 	 * \throw XSLProjectException When the application can't read the project file.
 	 */
 	XSLProject( const QString & filename );
-	/*!
-	 * Destroy the project
-	 */
+	/*! Destroy the project */
 	~XSLProject();
 
-	/*!
-	 * Assigned operator to copy object contents at assignation
-	 */
+	/*! Assigned operator to copy object contents at assignation */
 	XSLProject& operator=( const XSLProject& p );
 
 	/*!
@@ -213,9 +228,7 @@ public:
 	 */
 	const QString & fileName() const;
 
-	/*!
-	 * Return the session object used to store session information.
-	 */
+	/*! Return the session object used to store session information. */
 	XSLProjectSession * session() const;
 
 	/*!
@@ -318,13 +331,9 @@ public:
 	 */
 	QString specifiquePathName();
 
-	/*!
-	 * Set the log projet directory with the new \e value.
-	 */
+	/*! Set the log projet directory with the new \e value. */
 	void setLogProjectDirectory( const QString & value );
-	/*!
-	 * Return the log project directory.
-	 */
+	/*! Return the log project directory. */
 	const QString & logProjectDirectory();
 
 	/*!
@@ -340,9 +349,7 @@ public:
 	 */
 	void setSpecifiquePrefix( const QString & value );
 
-	/*!
-	 * List of all specifique prefix.
-	 */
+	/*! List of all specifique prefix. */
 	QStringList & specifiquePrefixes();
 
 	/*!
@@ -351,9 +358,7 @@ public:
 	 */
 	QStringList & searchPathList();
 
-	/*!
-	 * List of processed path where the application must searh.
-	 */
+	/*! List of processed path where the application must searh. */
 	QStringList processedSearchPathList();
 
 	/*!
@@ -376,22 +381,23 @@ public:
 	 */
 	QString processedSpecifiquePath() const;
 
+	/*! Block the signal temporary */
 	bool blockSignals( bool block );
-
 public slots:
 	/*!
-	 * Write a property in the project file.
+	 * Write a property in the project file (used by the plugin).
 	 * \param key The property to write
 	 * \param value The value to write
 	 */
 	void writeProperty( const QString & key, QVariant value );
 	/*!
-	 * Read a written property from the project file
+	 * Read a written property from the project file (used by the plugin).
 	 * \param key The Property to read
 	 * \return The value of the property
 	 */
 	QVariant readProperty( const QString & key );
 signals:
+	/*! Emited when a property has changed. */
 	void changed();
 private:
 	PrivateXSLProject * d;
@@ -400,23 +406,34 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(XSLProject::ProjectOptions);
 
+/*!
+ * The XINX Project Manager is used to manage \e XSLProject file. One project
+ * only by process is authorized.
+ */
 class XINXProjectManager : public QObject {
 	Q_OBJECT
 public:
-	XINXProjectManager();
+	/*! Destroy the manager */
 	virtual ~XINXProjectManager();
 
+	/*! Create the manager if necessary, else return the singleton */
 	static XINXProjectManager * self();
 
+	/*! Change the current projet to \e project */
 	void setCurrentProject( XSLProject * project );
+	/*! Return the project */
 	XSLProject * project() const;
 
+	/*! Delete the project */
 	void deleteProject();
 signals:
+	/*! Signal emited when the project is changed or when the project emit \e changed() */
 	void changed();
 private:
-	XSLProject * m_project;
+	/*! Create the XINX Project Manager */
+	XINXProjectManager();
 
+	XSLProject * m_project;
 	static XINXProjectManager * s_self;
 };
 

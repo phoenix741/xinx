@@ -11,7 +11,6 @@ win32 : RC_FILE += rc/libxinx.rc
 HEADERS = textfileeditor.h \
     numberbar.h \
     texteditor.h \
-    borderlayout.h \
     filewatcher.h \
     p_filewatcher.h \
     filecontentitemmodel.h \
@@ -28,11 +27,11 @@ HEADERS = textfileeditor.h \
     xslproject.h \
     abstractfileeditor.h \
     itemmodelfileeditor.h \
-    xinxpluginelement.h
+    xinxpluginelement.h \
+ plugininterfaces.h
 SOURCES = textfileeditor.cpp \
     numberbar.cpp \
     texteditor.cpp \
-    borderlayout.cpp \
     filewatcher.cpp \
     filecontentitemmodel.cpp \
     syntaxhighlighter.cpp \

@@ -39,70 +39,69 @@ class KColorComboInternal;
  * and an associate text to the color. The showed color, is standard Qt color.
  * The user can also change, and use a custom color. In this case a dialog
  * is open to allow the user to make his choice.
- * 
+ *
  * This component is originally written for KDE3. He was adapt to turn on Qt4.
- */ 
+ */
 class KColorCombo : public QComboBox {
-    Q_OBJECT
+	Q_OBJECT
 	Q_CLASSINFO("Author", "Martin Jones")
 	Q_CLASSINFO("Author", "Mario Weilguni")
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
-    Q_PROPERTY( QColor color READ color WRITE setColor )
+	Q_PROPERTY( QColor color READ color WRITE setColor )
 public:
 	/*!
 	 * Create a color combo box
 	 * \param parent The parent widget of the color combo box.
 	 */
-    KColorCombo( QWidget *parent );
-    /*!
-     * Destroy the ColorComboBox
-     */
-    ~KColorCombo();
+	KColorCombo( QWidget *parent );
+	/*!
+	* Destroy the ColorComboBox
+	*/
+	~KColorCombo();
 
-    /*!
-     * Change the value of the ComboBox to the color define in bracket.
-     * \param col The new color to use. 
-     */
-    void setColor( const QColor &col );
-    /*!
-     * Return the color selected in the ComboBox.
-     * \return The color selected
-     */
-    QColor color() const;
+	/*!
+	* Change the value of the ComboBox to the color define in bracket.
+	* \param col The new color to use.
+	*/
+	void setColor( const QColor &col );
+	/*!
+	* Return the color selected in the ComboBox.
+	* \return The color selected
+	*/
+	QColor color() const;
 
-    /*!
-     * Show an empty color combo box.
-     */
-    void showEmptyList();
-
+	/*!
+	* Show an empty color combo box.
+	*/
+	void showEmptyList();
 signals:
 	/*!
 	 * Signal emited when a color is activated by the user.
 	 */
-    void activated( const QColor &col );
-    /*!
-     * Signal emited when a color is highlighted by the user.
-     */
-    void highlighted( const QColor &col );
+	void activated( const QColor &col );
+	/*!
+	* Signal emited when a color is highlighted by the user.
+	*/
+	void highlighted( const QColor &col );
 
 protected:
-    virtual void resizeEvent( QResizeEvent *re );
+	virtual void resizeEvent( QResizeEvent *re );
 
 private slots:
-    void slotActivated( int index );
-    void slotHighlighted( int index );
+	void slotActivated( int index );
+	void slotHighlighted( int index );
 
 private:
-    void addColors();
-    QColor customColor;
-    QColor internalcolor;
+	void addColors();
+	QColor customColor;
+	QColor internalcolor;
 
 protected:
-    virtual void virtual_hook( int id, void* data );
+	virtual void virtual_hook( int id, void* data );
 private:
-    class KColorComboPrivate;
-    KColorComboPrivate *d;
+	class KColorComboPrivate;
+	KColorComboPrivate *d;
 };
 
 #endif  // __KCOLORCOMBO_H__

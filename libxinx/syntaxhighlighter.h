@@ -30,16 +30,19 @@
 class XINXConfig;
 class IPluginSyntaxHighlighter;
 
-class  SyntaxHighlighter : public QSyntaxHighlighter {
+/*! The Syntax highlighter used by XINX where configuration is based on \e XINXConfig */
+class SyntaxHighlighter : public QSyntaxHighlighter {
 	Q_OBJECT
 public:
+	/*! Create a Syntax Highlighter with the \e QTextDocument and a \e XINXConfig */
 	SyntaxHighlighter( QTextDocument* parent, XINXConfig * config = NULL );
+	/*! Destroy the Syntax Highlighter */
 	virtual ~SyntaxHighlighter();
-
 protected:
 	XINXConfig * m_config;
 };
 
+/*! Regular expression of an identifier */
 static const QString EXPR_TEXT = "[A-Za-z_][A-Za-z0-9_]*";
 
 #endif

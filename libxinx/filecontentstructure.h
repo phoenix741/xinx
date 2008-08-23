@@ -71,13 +71,9 @@ public:
 	/*! Save the content of the device. */
 	virtual void saveToDevice( QIODevice * ) {};
 
-	/*!
-	 * Construct elements from \e content.
-	 */
+	/*! Construct elements from \e content. */
 	virtual void loadFromContent( const QString & content );
-	/*!
-	 * Construct elements from \e filename.
-	 */
+	/*! Construct elements from \e filename. */
 	virtual void loadFromFile( const QString & filename );
 
 	//! Load from file \e filename but really charged it when needed.
@@ -115,9 +111,7 @@ public:
 	 * \return the line of the element.
 	 */
 	int line();
-	/*!
-	 * File name where is the element. If the file is unknown, Null string is returned.
-	 */
+	/*! File name where is the element. If the file is unknown, Null string is returned. */
 	const QString & filename() const;
 
 	/*!
@@ -241,7 +235,9 @@ signals:
 	/*! Signal emited when the list is refreshed */
 	void reset();
 protected:
+	/*! The root element declared in the constructor */
 	FileContentElement * rootElement() const;
+	/*! Return true if the element must be showed else return false */
 	virtual bool isElementShowed( FileContentElement * ) { return true; };
 private slots:
 	void refreshList();

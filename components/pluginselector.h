@@ -44,28 +44,23 @@ public:
 	 * \param parent The parent widget.
 	 */
 	PluginSelector( QWidget *parent = 0 );
-	/*!
-	 * Destroy the plugin selector.
-	 */
+	//! Destroy the plugin selector.
 	virtual ~PluginSelector();
 
-	/*!
-	* Add a plugin to the list. The plugin must be a \e XinxPluginElement.
-	*/
+	//! Add a plugin to the list. The plugin must be a \e XinxPluginElement.
 	void addPlugin( PluginElement * plugin );
 
+	//! List of plugins add in the \e PluginSelector
 	const QList<PluginElement*> & plugins() const;
+	//! Clear the list of \e PluginElement*
 	void clear();
 
+	//! \internal
 	QStyleOptionViewItem viewOptions() const;
 signals:
-	/*!
-	 * This signal is emited when the plugin request to be configured.
-	 */
+	//! This signal is emited when the plugin request to be configured.
 	void configurePlugin( PluginElement * plugin );
-	/*!
-	 * The signal is emited when the plugin request to show a description.
-	 */
+	//! The signal is emited when the plugin request to show a description.
 	void aboutPlugin( PluginElement * plugin );
 private:
 	PrivatePluginSelector * d;

@@ -27,21 +27,35 @@
 // Qt header
 #include <QPointer>
 
+/*!
+ * An \e ItemModelFileEditor load and unload the content model editor when
+ * reading the device. The content model is based on a FileContentParser and
+ * some FileContentElement.
+ */
 class ItemModelFileEditor : public TextFileEditor {
 	Q_OBJECT
 public:
+	/*!
+	 * Create the \e ItemModelFileEditor. This editor add the notion of model.
+	 * \param element The parser to use to show the content of the document.
+	 * \param editor The editor (center widget) of the document.
+	 * \param parent The parent object
+	 */
 	ItemModelFileEditor( FileContentParser * element, TextEditor * editor = 0, QWidget *parent = 0 );
+	//! Destroy the object
 	virtual ~ItemModelFileEditor();
 
 	virtual void loadFromFile( const QString & fileName = QString() );
 	virtual void saveToFile( const QString & fileName = QString() );
 	virtual void loadFromDevice( QIODevice & d );
 
-	virtual QAbstractItemModel * model()  const;
+	//! The model editor is really created (based on the parser) at the first call.
+	virtual QAbstractItemModel * model() const;
 public slots:
 	virtual void updateModel();
 
 protected:
+	//! Change the parser of the model file editor.
 	void setParser( FileContentParser * parser );
 
 private slots:

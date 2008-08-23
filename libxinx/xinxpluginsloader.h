@@ -34,26 +34,17 @@
 
 class RCS;
 
-/*!
- * The class XINX Plugins Loader is used to load all plugins and proposed some facilities method.
- */
+/*! The class XINX Plugins Loader is used to load all plugins and proposed some facilities method. */
 class  XinxPluginsLoader : public QObject {
 	Q_OBJECT
 public:
-	XinxPluginsLoader();
 	~XinxPluginsLoader();
 
-	/*!
-	 * Load the plugins
-	 */
+	/*! Load the plugins */
 	void loadPlugins();
-	/*!
-	 * List all the loaded plugins
-	 */
+	/*! List all the loaded plugins */
 	QList<XinxPluginElement*> plugins() const;
-	/*!
-	 * Plugin of name \e name
-	 */
+	/*! Plugin of name \e name. */
 	XinxPluginElement * plugin( const QString & name );
 	/*!
 	 * List all the revision control that can be used. The Result is a list of
@@ -92,8 +83,11 @@ public:
 	//! Create an element (and also a parser) for the given filename
 	FileContentElement * createElement( QString & filename, FileContentElement * parent = 0, int line = -1 );
 
+	/*! Create a plugin loader object */
 	static XinxPluginsLoader * self();
 private:
+	XinxPluginsLoader();
+
 	void addPlugin( QObject * plugin, bool staticLoaded = false );
 	QString allManagedFileFilter() const;
 

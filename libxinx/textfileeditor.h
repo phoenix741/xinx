@@ -53,16 +53,19 @@ class SyntaxHighlighter;
 class TextFileEditor : public AbstractFileEditor {
 	Q_OBJECT
 public:
-	enum EndOfLineType { WindowsEndOfLine, UnixEndOfLine, MacEndOfLine };
+	/*! Type of End Of Line that the editor can understand. */
+	enum EndOfLineType {
+		WindowsEndOfLine, //!< The end of line is terminated by \\r\\n
+		UnixEndOfLine,    //!< The end of line is terminated by \\n
+		MacEndOfLine      //!< The end of line is terminated by \\r\\n
+	};
 	/*!
 	 * Construct a FileEditor with the help of a TextEditor and a parent.
-	 * \param textEditor TextEditor to use to print file to screen
+	 * \param textEditor TextEditor to use to print file to screen (center widget)
 	 * \param parent Parent of the editor.
 	 */
 	TextFileEditor( TextEditor * editor = 0, QWidget *parent = 0 );
-	/*!
-	 * Destructor of the FileEditor.
-	 */
+	/*! Destructor of the FileEditor.*/
 	virtual ~TextFileEditor();
 
  	/*!
@@ -98,7 +101,13 @@ public:
 	//! The default implementation return null.
 	virtual QAbstractItemModel * model()  const;
 
+	//! The codec used to read and write the file. By Default, the codec is defined in options.
 	virtual QTextCodec * codec() const;
+	/*!
+	 * Return the EndOfLine of the document. This can't be modified.
+	 * A newly created editor is in platform end of line type. Saving a file converte the
+	 * EndOfLine to the platform behavour.
+	 */
 	virtual EndOfLineType eol() const;
 
 	virtual bool canCopy();
@@ -132,9 +141,7 @@ public slots :
 	virtual void copy();
 	virtual void paste();
 
-	/*!
-	 * Method used to select all the text in the editor. The call is sent to the TextEditor.
-	 */
+	/*! Method used to select all the text in the editor. The call is sent to the TextEditor. */
 	void selectAll();
 	/*!
 	 * Comment or Uncomment the selected text depending on the parrameter.
@@ -143,13 +150,9 @@ public slots :
 	 * \param uncomment If false (by default) the text is commented, else the text is uncommented
 	 */
 	void commentSelectedText( bool uncomment = false );
-	/*!
-	 * Auto indent all the document (named Pretty Print).
-	 */
+	/*! Auto indent all the document (named Pretty Print). */
 	virtual bool autoIndent();
-	/*!
-	 * Call the completer of the text on the current position of the cursor, if possible.
-	 */
+	/*! Call the completer of the text on the current position of the cursor, if possible. */
 	virtual void complete();
 
 	virtual void searchWord( const QString & word );
@@ -161,9 +164,7 @@ signals:
 	void selectionAvailable ( bool yes );
 
 protected slots:
-	/*!
-	 * Slot called when the bookmark is toogled on a line. This slot change the project settings.
-	 */
+	/*! Slot called when the bookmark is toogled on a line. This slot change the project settings. */
 	void slotBookmarkToggled( int line, bool enabled );
 
 protected:
