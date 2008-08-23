@@ -181,7 +181,7 @@ TextEditor * TextFileEditor::textEdit() const {
 }
 
 QString TextFileEditor::defaultFileName() const {
-	return QString( "noname.txt" );
+	return tr( "noname.txt" );
 }
 
 void TextFileEditor::selectAll() {

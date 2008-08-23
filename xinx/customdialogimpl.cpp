@@ -441,7 +441,7 @@ QString ScriptElement::name() const {
 }
 
 QString ScriptElement::description() const {
-	return "Author : " + m_script.property( "author" ).toString();
+	return CustomDialogImpl::tr("Author : ") + m_script.property( "author" ).toString();
 }
 
 const QScriptValue & ScriptElement::script() const {

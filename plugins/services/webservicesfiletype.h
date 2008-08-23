@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Ulrich Van Den Hekke                            *
+ *   Copyright (C) 2008 by Ulrich Van Den Hekke                            *
  *   ulrich.vdh@free.fr                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,43 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SPECIFIQUEDLGIMPL_H_
-#define SPECIFIQUEDLGIMPL_H_
+#ifndef _WEBSERVICESFILETYPE_H_
+#define _WEBSERVICESFILETYPE_H_
 
 // Xinx header
-#include "ui_specifiquedlg.h"
+#include "webserviceseditor.h"
 
-// Qt header
-#include <QPointer>
+/* WebServicesFileType */
 
-class ThreadedConfigurationFile;
-
-class SpecifiqueDialogImpl : public QDialog, public Ui::SpecifiqueDialog {
+class WebServicesFileType : public QObject, public IFileTypePlugin {
 	Q_OBJECT
 public:
-	virtual ~SpecifiqueDialogImpl();
+	virtual QString description() {	return tr( "Web Services Stream" ); };
+	virtual QString match() { return "*.fws"; };
+	virtual QIcon icon() { return QIcon( ":/services/images/typefws.png" ); };
 
-	static void setLastPlace( const QString & pathname );
-	static QString lastPlace();
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = true;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = false;
+		p.specifiqueSubDirectory = QString();
+		return p;
+	};
 
-	static QString saveFileAs( const QString & filename, const QString & defaultFileName, QStringList & filesForRepository );
-	static QString saveFileAsIfStandard( const QString & filename, QStringList & filesForRepository );
-private slots:
-	void businessViewFinded( QStringList list );
-private:
-	SpecifiqueDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		WebServicesEditor * editor = new WebServicesEditor();
 
-	QString path() const;
-	void setFileName( const QString & filename );
-	QString filename() const;
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
 
-	static bool isSpecifique( const QString & filename );
-	static bool canBeSaveAsSpecifique( const QString & filename );
-	static bool canBeAddedToRepository( const QString & filename );
-
-	static QString m_lastPlace;
-	QString m_filename, m_defaultFileName;
-	QPointer<ThreadedConfigurationFile> m_instance;
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		Q_UNUSED( parent );
+		Q_UNUSED( line );
+		Q_UNUSED( filename );
+		return 0;
+	}
 };
 
-#endif /*SPECIFIQUEDLGIMPL_H_*/
+#endif //  _WEBSERVICESFILETYPE_H_

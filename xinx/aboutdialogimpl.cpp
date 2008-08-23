@@ -55,6 +55,8 @@ AboutDialogImpl::AboutDialogImpl( QWidget * parent, Qt::WFlags f )
 							"For ideas and bug reports, some snipets, some scripts and more<br/>"
 							"<b>Matthieu DUBOUT</b><br/>"
 							"For ideas, bug reports, some snipets, and more<br/>"
+	                      	"<b>Cathy VANDENHEKKE</b><br/>"
+	                      	"For translations<br/>"
 							"<br/>"
 							"And all people who help me in some ways and i have forgotten to mention"
 						);

@@ -24,46 +24,13 @@
 #include "servicesprojectwizard.h"
 #include <xslproject.h>
 #include "webservices.h"
-#include "webserviceseditor.h"
+#include "webservicesfiletype.h"
 
 // Qt header
 #include <QString>
 #include <QVariant>
 #include <QTranslator>
 #include <QApplication>
-
-/* WebServicesFileType */
-
-class WebServicesFileType : public QObject, public IFileTypePlugin {
-public:
-	virtual QString description() {	return tr( "Web Services Stream" ); };
-	virtual QString match() { return "*.fws"; };
-	virtual QIcon icon() { return QIcon( ":/services/images/typefws.png" ); };
-
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = false;
-		p.specifiqueSubDirectory = QString();
-		return p;
-	};
-
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		WebServicesEditor * editor = new WebServicesEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		Q_UNUSED( parent );
-		Q_UNUSED( line );
-		Q_UNUSED( filename );
-		return 0;
-	}
-};
 
 /* ServicesPlugin */
 

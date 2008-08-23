@@ -52,6 +52,7 @@ public:
 	virtual bool autoIndent();
 
 	virtual QIcon icon() const;
+	virtual QString defaultFileName() const;
 private slots:
 	void paramListEditingFinished();
 	void updateActions();

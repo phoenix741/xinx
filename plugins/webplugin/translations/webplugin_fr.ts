@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>CSSFileEditor</name>
     <message>
         <location filename="../css/cssfileeditor.cpp" line="37"/>
         <source>noname.css</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom.css</translation>
     </message>
 </context>
 <context>
@@ -13,7 +14,7 @@
     <message>
         <location filename="../filetypeplugin.h" line="178"/>
         <source>Cascading Style Sheet</source>
-        <translation type="unfinished">Feuille de style en cascade CSS</translation>
+        <translation>Feuille de style en cascade CSS</translation>
     </message>
 </context>
 <context>
@@ -49,7 +50,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../filetypeplugin.h" line="113"/>
         <source>HTML File</source>
-        <translation type="unfinished">Fichier HTML</translation>
+        <translation>Fichier HTML</translation>
     </message>
 </context>
 <context>
@@ -57,7 +58,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../xsl/htmlfileeditor.cpp" line="47"/>
         <source>noname.html</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom.html</translation>
     </message>
 </context>
 <context>
@@ -65,7 +66,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../js/jsfileeditor.cpp" line="46"/>
         <source>noname.js</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom.js</translation>
     </message>
 </context>
 <context>
@@ -73,7 +74,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../filetypeplugin.h" line="144"/>
         <source>JavaScript</source>
-        <translation type="unfinished">JavaScript</translation>
+        <translation>JavaScript</translation>
     </message>
 </context>
 <context>
@@ -131,17 +132,17 @@ Valeur : %2</translation>
     <message>
         <location filename="../xsl/stylesheeteditor.cpp" line="61"/>
         <source>noname.xsl</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom.xsl</translation>
     </message>
     <message>
         <location filename="../xsl/stylesheeteditor.cpp" line="75"/>
         <source>Search Word</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche du mot</translation>
     </message>
     <message>
         <location filename="../xsl/stylesheeteditor.cpp" line="75"/>
         <source>Word %1 not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mot %1 n&apos;a pas été trouvé</translation>
     </message>
 </context>
 <context>
@@ -177,27 +178,22 @@ Valeur : %2</translation>
         <translation type="obsolete">Feuille de style en cascade CSS</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>XML, XSL, HTML</source>
         <translation type="obsolete">XML, XSL, HTML</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>XML, XSL, XHTML</source>
         <translation type="obsolete">XML, XSL, XHTML</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>HTML</source>
         <translation type="obsolete">HTML</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>XML</source>
         <translation type="obsolete">XML</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>XSL</source>
         <translation type="obsolete">XSL</translation>
     </message>
@@ -222,47 +218,47 @@ Valeur : %2</translation>
     <message>
         <location filename="../ui/webpluginform.ui" line="13"/>
         <source>Customize Web Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Personaliser le module Web</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="34"/>
         <source>XML</source>
-        <translation type="unfinished">XML</translation>
+        <translation>XML</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="40"/>
         <source>Active completion on XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la complétion sur l&apos;XML</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="55"/>
         <source>&amp;Add closed balise automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter la balise de fermeture automatiquement</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="62"/>
         <source>Add default a&amp;ttribute automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter les a&amp;ttributs par défaut automatiquement</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="69"/>
         <source>Add default sub-&amp;balise automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter le sous-&amp;balises par défaut automatiquement </translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="88"/>
         <source>JavaScript</source>
-        <translation type="unfinished">JavaScript</translation>
+        <translation>JavaScript</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="94"/>
         <source>Active completion on JavaScript</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la complétion sur le JavaScript</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="109"/>
         <source>Auto close bracket</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer automatiquement les parenthèses</translation>
     </message>
 </context>
 <context>
@@ -270,7 +266,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../filetypeplugin.h" line="82"/>
         <source>XML File</source>
-        <translation type="unfinished">Fichier XML</translation>
+        <translation>Fichier XML</translation>
     </message>
 </context>
 <context>
@@ -288,12 +284,12 @@ Valeur : %2</translation>
     <message>
         <location filename="../xsl/xsllistview.cpp" line="220"/>
         <source>The file is not an Stylesheet file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier n&apos;est pas une feuille de style.</translation>
     </message>
     <message>
         <location filename="../xsl/xsllistview.cpp" line="379"/>
         <source>Can&apos;t insert %1 template</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peux insérer le modèle %1</translation>
     </message>
 </context>
 <context>
@@ -301,7 +297,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../filetypeplugin.h" line="48"/>
         <source>XSL Stylesheet</source>
-        <translation type="unfinished">Feuille de style XSL</translation>
+        <translation>Feuille de style XSL</translation>
     </message>
 </context>
 <context>
@@ -309,7 +305,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../xsl/xmlfileeditor.cpp" line="47"/>
         <source>noname.xml</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom.xml</translation>
     </message>
 </context>
 </TS>

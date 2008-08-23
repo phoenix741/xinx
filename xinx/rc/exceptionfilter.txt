@@ -4,3 +4,4 @@
 .*QPainter::setWorldTransform: Painter not active.*
 .*QPainter::end: Painter not active, aborted.*
 .*Plugin verification data mismatch in.*
+.*Le fichier.*n'est pas un plugin Qt valide..*

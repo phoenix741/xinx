@@ -284,6 +284,10 @@ QIcon WebServicesEditor::icon() const {
 	return QIcon( ":/services/images/typefws.png" );
 }
 
+QString WebServicesEditor::defaultFileName() const {
+	return tr( "noname.fws" );
+}
+
 void WebServicesEditor::paramListEditingFinished() {
 	int index = m_paramList->findText( m_paramList->lineEdit()->text() );
 	if( index >= 0 ) m_paramList->setItemIcon( index, QIcon(":/services/images/serviceparam.png") );

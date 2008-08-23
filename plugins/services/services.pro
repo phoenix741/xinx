@@ -16,7 +16,8 @@ HEADERS = servicesplugin.h \
 	soap.h \
 	webservices.h \
 	wsdl.h \
-	webserviceseditor.h
+	webserviceseditor.h \
+ webservicesfiletype.h
 SOURCES =servicesplugin.cpp \
 	servicesprojectpropertyimpl.cpp \
 	servicesprojectwizard.cpp \

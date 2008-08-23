@@ -43,6 +43,14 @@ SpecifiqueDialogImpl::SpecifiqueDialogImpl( QWidget * parent, Qt::WFlags f ) : Q
 	m_repositoryCheckBox->setChecked( true );
 }
 
+SpecifiqueDialogImpl::~SpecifiqueDialogImpl() {
+	if( m_instance ) {
+		m_instance->terminate();
+		m_instance->wait();
+	}
+	delete m_instance;
+}
+
 bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
 	if( ! XINXProjectManager::self()->project() ) return false;
 
@@ -89,9 +97,14 @@ void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
 	m_specifiqueCheckBox->setEnabled( (! filename.isEmpty() ) && ( ! isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) );
 	m_repositoryCheckBox->setEnabled( canBeAddedToRepository( filename ) );
 
-	ThreadedConfigurationFile * instance = ThreadedConfigurationFile::businessViewOfFile( filename );
-	connect( instance, SIGNAL(businessViewFinded(QStringList)), this, SLOT(businessViewFinded(QStringList)) );
-	instance->start();
+	if( (! filename.isEmpty() ) && canBeSaveAsSpecifique( filename ) ) {
+		m_instance = ThreadedConfigurationFile::businessViewOfFile( filename );
+		connect( m_instance, SIGNAL(businessViewFinded(QStringList)), this, SLOT(businessViewFinded(QStringList)) );
+		m_instance->start();
+	} else {
+		m_impactedBVGroupBox->hide();
+		adjustSize();
+	}
 }
 
 QString SpecifiqueDialogImpl::path() const {

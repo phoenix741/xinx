@@ -19,22 +19,10 @@
       <string>&amp;Description</string>
      </property>
      <layout class="QGridLayout" >
-      <property name="leftMargin" >
+      <property name="margin" >
        <number>9</number>
       </property>
-      <property name="topMargin" >
-       <number>9</number>
-      </property>
-      <property name="rightMargin" >
-       <number>9</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>9</number>
-      </property>
-      <property name="horizontalSpacing" >
-       <number>6</number>
-      </property>
-      <property name="verticalSpacing" >
+      <property name="spacing" >
        <number>6</number>
       </property>
       <item row="4" column="0" >
@@ -82,7 +70,7 @@
          </size>
         </property>
         <property name="whatsThis" >
-         <string>Long des descriptions of the snipet.</string>
+         <string>Long descriptions of the snipet.</string>
         </property>
        </widget>
       </item>
@@ -205,16 +193,7 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
@@ -222,7 +201,7 @@
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>131</width>
          <height>31</height>
@@ -236,7 +215,8 @@
         <string>&amp;OK</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_ok.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
        </property>
       </widget>
      </item>
@@ -246,7 +226,8 @@
         <string>&amp;Cancel</string>
        </property>
        <property name="icon" >
-        <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
+        <iconset resource="../application.qrc" >
+         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
        </property>
       </widget>
      </item>

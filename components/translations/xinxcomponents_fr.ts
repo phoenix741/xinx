@@ -16,7 +16,7 @@
 <context>
     <name>FileContentElement</name>
     <message>
-        <location filename="" line="1"/>
+        <location filename="" line="0"/>
         <source>Element at line : %1</source>
         <translation type="obsolete">Element à la ligne : %1</translation>
     </message>
@@ -34,12 +34,12 @@
     <message>
         <location filename="../pluginselector.cpp" line="298"/>
         <source>About ...</source>
-        <translation type="unfinished">A propos de ...</translation>
+        <translation>A propos de ...</translation>
     </message>
     <message>
         <location filename="../pluginselector.cpp" line="308"/>
         <source>Configure ...</source>
-        <translation type="unfinished">Personnaliser ...</translation>
+        <translation>Personnaliser ...</translation>
     </message>
 </context>
 <context>
