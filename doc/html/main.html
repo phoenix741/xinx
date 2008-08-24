@@ -20,13 +20,13 @@
 <p>
 <h3 align="center">0.7.1 </h3><h2><a class="anchor" name="preface">
 Preface</a></h2>
-This document explain how to use the XINX Library to create a plugins. This document can be used to known how XINX work, in part, too.<p>
+This document explain how to use the XINX Library to create a plugins. This document can be used to known how XINX work too.<p>
 You can find in the menu, documented class present in the libxinxcmp and libsharedxinx. The first library contains components, the second, contains shared object beetween XINX and plugins. Source of existing plugins can be use too, as documentation.<p>
 Plugins is used to extend XINX in different way.<ul>
-<li>Add a revision control system</li><li>Add Syntax Highlighter on file editor</li><li>Add new editor</li></ul>
+<li>Add a revision control system</li><li>Add Syntax Highlighter on file editor</li><li>Add a new editor (text, graphics, ...)</li></ul>
 <h2><a class="anchor" name="pluginbase">
 Base of plugin</a></h2>
-A plugins must implements at least one interface : <em><a class="el" href="classIXinxPlugin.html">IXinxPlugin</a></em>. This interface is used to know informations about the plugins. A plugin that implement only this interface do nothing but is regocgnize by XINX.<p>
+A plugins must implements at least one interface : <em><a class="el" href="classIXinxPlugin.html">IXinxPlugin</a></em>. This interface is used to know informations about the plugins. A plugin that implement only this interface do nothing but is recognize by XINX (see EmptyPlugin exemple).<p>
 To implemente the interface you must write some code like this : <div class="fragment"><pre class="fragment"> <span class="keyword">class </span>FooPlugin : <span class="keyword">public</span> QObject, <span class="keyword">public</span> <a class="code" href="classIXinxPlugin.html">IXinxPlugin</a> {
         Q_OBJECT
         Q_INTERFACES(<a class="code" href="classIXinxPlugin.html">IXinxPlugin</a>)
@@ -69,13 +69,23 @@ The implementation of this class can be :<p>
  }
  Q_EXPORT_PLUGIN2(fooplugin, FooPlugin)
 </pre></div><p>
-The plugins must inherits from the <em>QObject</em> class (see Qt documentation), and must call the <em>Q_OBJECT</em> macro. He can inherits <em><a class="el" href="classIXinxPlugin.html">IXinxPlugin</a></em> indirectly (some interface as <em><a class="el" href="classIRCSPlugin.html">IRCSPlugin</a></em> inherits from <em><a class="el" href="classIXinxPlugin.html">IXinxPlugin</a></em>).<p>
-The plugin must call the <em>Q_EXPORT_PLUGIN2</em> macro in the implementation. This create a static variable for the plugin.<p>
-If the plugin need to call new tools, you can reimplement <em><a class="el" href="classIXinxPlugin.html#84298f635f6ead2dda34818656f6164b">IXinxPlugin::pluginTools()</a></em> and returns the list of tool needed by your plugin with the default value.<p>
-You can also reimplement <em><a class="el" href="classIXinxPlugin.html#311b09c37ddd149f3dbab15a2aca0d91" title="Call when a new project is created or opened.">IXinxPlugin::initializeProject()</a></em> and <em><a class="el" href="classIXinxPlugin.html#e88985de2a29f875f9999237cd99ba8b" title="! Call before the project is closed">IXinxPlugin::destroyProject()</a></em> if you have specifique code when the current project is opened or destroyed.<p>
-A plugin can propose a configuration dialog throw the <em><a class="el" href="classIXinxPluginConfiguration.html">IXinxPluginConfiguration</a></em> interface.<h2><a class="anchor" name="rcsplugin">
+The plugins must inherits from the <em>QObject</em> class (see Qt documentation), and must call the <em>Q_OBJECT</em> macro. <em>QObject</em> class give to the class some meta-object methods (to know the name of the class, ... dynamicaly). He can inherits <em><a class="el" href="classIXinxPlugin.html">IXinxPlugin</a></em> directly or indirectly (some interface as <em><a class="el" href="classIRCSPlugin.html">IRCSPlugin</a></em> inherits from <em><a class="el" href="classIXinxPlugin.html">IXinxPlugin</a></em>).<p>
+The plugin must call the <em>Q_EXPORT_PLUGIN2</em> macro in the implementation. This create a static variable for the plugin, created when the library is loading.<p>
+If the plugin need to call new tools, you can reimplement <em><a class="el" href="classIXinxPlugin.html#84298f635f6ead2dda34818656f6164b">IXinxPlugin::pluginTools()</a></em> and returns the list of tool needed by your plugin with the default value (you can have a default value for Gnu/linux and for Windows).<p>
+<div class="fragment"><pre class="fragment"> QList&amp;lt; QPair&amp;lt;QString,QString&amp;gt; &amp;gt; CVSPlugin::pluginTools() {
+        QList&amp;lt; QPair&amp;lt;QString,QString&amp;gt; &amp;gt; tools;
+<span class="preprocessor"> #ifdef Q_WS_WIN</span>
+<span class="preprocessor"></span>        tools.append( qMakePair( QString(<span class="stringliteral">"mytool"</span>), QString(<span class="stringliteral">"%1/Tool/mytool.exe"</span>).arg( <span class="stringliteral">"C:/Program Files"</span> ) ) );
+<span class="preprocessor"> #else</span>
+<span class="preprocessor"></span>        tools.append( qMakePair( QString(<span class="stringliteral">"cvs"</span>), QString(<span class="stringliteral">"/usr/bin/mytool"</span>) ) );
+<span class="preprocessor"> #endif // Q_WS_WIN</span>
+<span class="preprocessor"></span>        <span class="keywordflow">return</span> tools;
+ }
+</pre></div><p>
+You can also reimplement <em><a class="el" href="classIXinxPlugin.html#311b09c37ddd149f3dbab15a2aca0d91" title="Call when a new project is created or opened.">IXinxPlugin::initializeProject()</a></em> and <em><a class="el" href="classIXinxPlugin.html#e88985de2a29f875f9999237cd99ba8b" title="! Call before the project is closed">IXinxPlugin::destroyProject()</a></em> if you have specifique code when the current project is opened or destroyed. This two fonction can be replaced by whatching the signal <em><a class="el" href="classXINXProjectManager.html#e426cc6f98dc6224a101968793f505cd">XINXProjectManager::changed()</a></em>.<p>
+if <em><a class="el" href="classXINXProjectManager.html#592fa5614f8a37dd501bb5262d9cdb99">XINXProjectManager::self()</a>-&gt;project()</em> is null the plugin is destroyed else, he is created.<h2><a class="anchor" name="rcsplugin">
 The Revision Control System Plugin</a></h2>
-A <a class="el" href="classRCS.html">RCS</a> Plugin must implemente the <a class="el" href="classIRCSPlugin.html">IRCSPlugin</a> interface.<p>
+A <a class="el" href="classRCS.html">RCS</a> Plugin must implemente the <em><a class="el" href="classIRCSPlugin.html">IRCSPlugin</a></em> interface.<p>
 <div class="fragment"><pre class="fragment"> <span class="keyword">class </span>FooPlugin : <span class="keyword">public</span> QObject, <span class="keyword">public</span> <a class="code" href="classIRCSPlugin.html">IRCSPlugin</a> {
         Q_OBJECT
         Q_INTERFACES(<a class="code" href="classIXinxPlugin.html">IXinxPlugin</a>)
@@ -92,7 +102,7 @@ A <a class="el" href="classRCS.html">RCS</a> Plugin must implemente the <a class
         virtual <a class="code" href="classRCS.html">RCS</a> * createRCS( const QString &amp; rcs, const QString &amp; basePath );
  };
 </pre></div><p>
-In the implementation method create a derivated object of <a class="el" href="classRCS.html">RCS</a><p>
+In the implementation method create a derivated object of <em><a class="el" href="classRCS.html">RCS</a></em> <p>
 <div class="fragment"><pre class="fragment"> QStringList <a class="code" href="classIRCSPlugin.html#7ab4240b80ee1c77c392536d544faaff" title="List of revision control system proposed by the plugin.">FooPlugin::rcs</a>() {
         <span class="keywordflow">return</span> QStringList() &lt;&lt; <span class="stringliteral">"foo"</span>;
  }
@@ -110,15 +120,74 @@ In the implementation method create a derivated object of <a class="el" href="cl
         <span class="keywordflow">return</span> NULL;
  }
 </pre></div><p>
-Next this is the RCS_Foo object that will be used in the application to <em>update</em>, <em>commit</em>, <em>remove</em> and <em>add</em>.<h2><a class="anchor" name="projectconfiguration">
+Then, in the object RCS_Foo (that inherits from <a class="el" href="classRCS.html">RCS</a>) :<p>
+<div class="fragment"><pre class="fragment"> <span class="keyword">class </span>RCS_Foo : <span class="keyword">public</span> <a class="code" href="classRCS.html">RCS</a> {
+        Q_OBJECT
+ <span class="keyword">public</span>:
+        RCS_Foo( <span class="keyword">const</span> QString &amp; base );
+        <span class="keyword">virtual</span> ~RCS_Foo();
+
+        <span class="keyword">virtual</span> struct_rcs_infos infos( <span class="keyword">const</span> QString &amp; path );
+        <span class="keyword">virtual</span> <a class="code" href="classRCS.html#2a5e4c568a4c455fe90f52553dc1eb14" title="List of FileOperation.">RCS::FilesOperation</a> operations( <span class="keyword">const</span> QStringList &amp; path );
+        <span class="keyword">virtual</span> <span class="keywordtype">void</span> update( <span class="keyword">const</span> QStringList &amp; path );
+        <span class="keyword">virtual</span> <span class="keywordtype">void</span> commit( <span class="keyword">const</span> FilesOperation &amp; path, <span class="keyword">const</span> QString &amp; message );
+        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <span class="keyword">add</span>( <span class="keyword">const</span> QStringList &amp; path );
+        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <span class="keyword">remove</span>( <span class="keyword">const</span> QStringList &amp; path );
+        <span class="keyword">virtual</span> <span class="keywordtype">void</span> updateToRevision( <span class="keyword">const</span> QString &amp; path, <span class="keyword">const</span> QString &amp; revision, QString * content = 0 );
+ <span class="keyword">public</span> slots:
+        <span class="keyword">virtual</span> <span class="keywordtype">void</span> abort();
+ <span class="keyword">private</span> slots:
+ <span class="keyword">private</span>:
+ };
+</pre></div><p>
+Operations <em><a class="el" href="classRCS.html#fb8ca36fa6c78f07372d9de76288e275">RCS::update()</a></em>, <em><a class="el" href="classRCS.html#29df4dbc8c5bd8f85bf6f1b7573c5b79">RCS::commit()</a></em>, <em><a class="el" href="classRCS.html#863649cf3e4684ea77e18a0f78bd7992">RCS::add()</a></em>, <em><a class="el" href="classRCS.html#1396b786aade85f1c4194c216916214b">RCS::remove()</a></em> and <em><a class="el" href="classRCS.html#701d051c9c18d39874d681f0860b6b0b">RCS::updateToRevision()</a></em> is the correspponding opperation in the revision manager.<p>
+<em><a class="el" href="classRCS.html#5ff5fbbe7e8a74fcff3f430ccfee8030">RCS::operations()</a></em> describe the file than can be Commited, Removed or Added.<h2><a class="anchor" name="projectconfiguration">
 Project configuration plugins</a></h2>
 We can configure a plugin throw the <em><a class="el" href="classIXinxPluginConfiguration.html">IXinxPluginConfiguration</a></em> interface, if the configuration is global, or throw the <em><a class="el" href="classIXinxPluginProjectConfiguration.html">IXinxPluginProjectConfiguration</a></em> interface, if the configuration depends on the project.<p>
-Methods <em><a class="el" href="classIXinxPluginConfiguration.html#f425a2a62642f79cc57718cc2fc8568c" title="Create a widget used in a wrapper for the configuration dialog box.">IXinxPluginConfiguration::createSettingsDialog()</a></em> and <em><a class="el" href="classIXinxPluginProjectConfiguration.html#7358ad14e86ea04e3aafc2f0eba44590" title="Create a widget used in the project dialog.">IXinxPluginProjectConfiguration::createProjectSettingsPage()</a></em> return a widget thar will be include in the project configuration box, or in the configuration dialog.<p>
-Settings are load and saved with methods <em>loadSettingsDialog()</em>, <em>loadProjectSettingsPage()</em>, <em>saveSettingsDialog()</em>, and <em>saveProjectSettingsPage()</em>.<p>
-If you want to add page in the new project wizard dialog, the plugin <a class="el" href="classIXinxPluginProjectConfiguration.html">IXinxPluginProjectConfiguration</a> give you too, two method : * <em>createNewProjectSettingsPages()</em> * <em>saveNewProjectSettingsPage()</em> <h2><a class="anchor" name="neweditor">
+<div class="fragment"><pre class="fragment"> <span class="keyword">class </span>FooPlugin : <span class="keyword">public</span> QObject, <span class="keyword">public</span> <a class="code" href="classIRCSPlugin.html">IRCSPlugin</a>, <span class="keyword">public</span> IRCSPluginProjectConfiguration {
+        Q_OBJECT
+        Q_INTERFACES(<a class="code" href="classIXinxPlugin.html">IXinxPlugin</a>)
+        Q_INTERFACES(<a class="code" href="classIRCSPlugin.html">IRCSPlugin</a>)
+        Q_INTERFACES(IRCSPluginProjectConfiguration)
+ public:
+        FooPlugin();
+        virtual ~FooPlugin();
+</pre></div><p>
+Methods <em><a class="el" href="classIXinxPluginConfiguration.html#f425a2a62642f79cc57718cc2fc8568c" title="Create a widget used in a wrapper for the configuration dialog box.">IXinxPluginConfiguration::createSettingsDialog()</a></em> and <em><a class="el" href="classIXinxPluginProjectConfiguration.html#7358ad14e86ea04e3aafc2f0eba44590" title="Create a widget used in the project dialog.">IXinxPluginProjectConfiguration::createProjectSettingsPage()</a></em> return a widget that will be include in the project configuration box, or in the configuration dialog.<p>
+<div class="fragment"><pre class="fragment">  <span class="keyword">virtual</span> QWidget * createProjectSettingsPage() {
+    <span class="keywordflow">return</span> <span class="keyword">new</span> FooProjectImpl();
+  }
+</pre></div><p>
+The class <em>FooProjectImpl</em> is a dialog box that contains the different CheckBox, RadioButton, ... for configure the dialog.<p>
+Settings are load and saved with methods <em><a class="el" href="classIXinxPluginConfiguration.html#4fe523e86896193b9da98ed1239a9efd" title="Load settings to dialog box.">IXinxPluginConfiguration::loadSettingsDialog()</a></em>, <em><a class="el" href="classIXinxPluginProjectConfiguration.html#f66a5ca65fdfd37061e3cbb2258ffc14" title="Load the settings in the settings page.">IXinxPluginProjectConfiguration::loadProjectSettingsPage()</a></em>, <em><a class="el" href="classIXinxPluginConfiguration.html#1e728ba77f5d487ed7b564e143e6c094" title="Save settings to dialog box.">IXinxPluginConfiguration::saveSettingsDialog()</a></em>, and <em><a class="el" href="classIXinxPluginProjectConfiguration.html#63a93329f440331537328548bdea6cdb" title="Save the settings in the settings page.">IXinxPluginProjectConfiguration::saveProjectSettingsPage()</a></em>.<p>
+<div class="fragment"><pre class="fragment"> <span class="keywordtype">bool</span> loadProjectSettingsPage( QWidget * widget ) {
+        FooProjectImpl * page = qobject_cast&lt;FooProjectImpl*&gt;( widget );
+        Q_ASSERT( page );
+
+        XSLProject::ProjectOptions options = <a class="code" href="classXINXProjectManager.html#592fa5614f8a37dd501bb5262d9cdb99">XINXProjectManager::self</a>()-&gt;<a class="code" href="classXINXProjectManager.html#1f82364dc1fef9ae2b2c9a4c0f9eb5d3">project</a>()-&gt;<a class="code" href="classXSLProject.html#4f370a246045a82e6f50aadb4b09986f">options</a>();
+        page-&gt;m_monoption-&gt;setChecked( options.testFlag( XSLProject::hasSpecifiques ) );
+        <span class="keywordflow">return</span> <span class="keyword">true</span>;
+ }
+
+ <span class="keywordtype">bool</span> saveProjectSettingsPage( QWidget * widget ) {
+        FooProjectImpl * page = qobject_cast&lt;FooProjectImpl*&gt;( widget );
+        Q_ASSERT( page );
+
+        XSLProject::ProjectOptions options = <a class="code" href="classXINXProjectManager.html#592fa5614f8a37dd501bb5262d9cdb99">XINXProjectManager::self</a>()-&gt;<a class="code" href="classXINXProjectManager.html#1f82364dc1fef9ae2b2c9a4c0f9eb5d3">project</a>()-&gt;<a class="code" href="classXSLProject.html#4f370a246045a82e6f50aadb4b09986f">options</a>();
+        <span class="keywordflow">if</span>( page-&gt;m_monoption-&gt;isChecked() )
+                options |= XSLProject::hasSpecifiques;
+        <span class="keywordflow">else</span>
+                options &amp;= ~<a class="code" href="classXSLProject.html">XSLProject</a>::hasSpecifiques;
+        <a class="code" href="classXINXProjectManager.html#592fa5614f8a37dd501bb5262d9cdb99">XINXProjectManager::self</a>()-&gt;<a class="code" href="classXINXProjectManager.html#1f82364dc1fef9ae2b2c9a4c0f9eb5d3">project</a>()-&gt;<a class="code" href="classXSLProject.html#acf92cf3090b409915403e51885b7c1d">setOptions</a>( options );
+        <span class="keywordflow">return</span> <span class="keyword">true</span>;
+ }
+</pre></div><p>
+If you want to add page in the new project wizard dialog, the plugin <em><a class="el" href="classIXinxPluginProjectConfiguration.html">IXinxPluginProjectConfiguration</a></em> give you too, two method who works in the same way that previous : * <em>createNewProjectSettingsPages()</em> * <em>saveNewProjectSettingsPage()</em> <h2><a class="anchor" name="neweditor">
 Creation of a new editor</a></h2>
-It's possible to create a new editor with the interface <em><a class="el" href="classIFileTypePlugin.html">IFileTypePlugin</a></em> and <em><a class="el" href="classIFilePlugin.html">IFilePlugin</a></em> </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sat Aug 23 14:51:31 2008 for XINX Library by&nbsp;
+It's possible to create a new editor with the interface <em><a class="el" href="classIFileTypePlugin.html">IFileTypePlugin</a></em> and <em><a class="el" href="classIFilePlugin.html">IFilePlugin</a></em>. The interface <em><a class="el" href="classIFileTypePlugin.html">IFileTypePlugin</a></em> define for one type of file the mask to use (ie: *.foo) with the function <a class="el" href="classIFileTypePlugin.html#774d251387cee7dac46148c1d0f79caa" title="Used to choose a file in a dialog box.">IFileTypePlugin::match()</a>, a description (used in open/save dialog box and new menu), an icon and some default properties (than user can modify).<p>
+Then the two principal method <em><a class="el" href="classIFileTypePlugin.html#7046db4c3cbdae6d2c7b86e36f39b8bb" title="Create an editor with the given filename.">IFileTypePlugin::createEditor()</a></em> and <em><a class="el" href="classIFileTypePlugin.html#f901bc2342e99bedf5113609c461a432" title="Create a parser.">IFileTypePlugin::createElement()</a></em> is used to create the editor, and a content element (used in import, in the content view list).<p>
+Interface <em><a class="el" href="classIFilePlugin.html">IFilePlugin</a></em> is just a list of <a class="el" href="classIFileTypePlugin.html">IFileTypePlugin</a>. </div>
+<hr size="1"><address style="text-align: right;"><small>Generated on Sun Aug 24 20:18:24 2008 for XINX Library by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

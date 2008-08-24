@@ -163,13 +163,14 @@
  * }
  * \endcode
  *
+ * Then, in the object RCS_Foo (that inherits from RCS) :
  *
  * \code
- * class RCS_CVS : public RCS {
+ * class RCS_Foo : public RCS {
  *	Q_OBJECT
  * public:
- *	RCS_CVS( const QString & base );
- *	virtual ~RCS_CVS();
+ *	RCS_Foo( const QString & base );
+ *	virtual ~RCS_Foo();
  *
  *	virtual struct_rcs_infos infos( const QString & path );
  *	virtual RCS::FilesOperation operations( const QStringList & path );
@@ -185,8 +186,10 @@
  * };
  * \endcode
  *
- * Next this is the RCS_Foo object that will be used in the application to \e update,
- * \e commit, \e remove and \e add.
+ * Operations \e RCS::update(), \e RCS::commit(), \e RCS::add(), \e RCS::remove() and
+ * \e RCS::updateToRevision() is the correspponding opperation in the revision manager.
+ *
+ * \e RCS::operations() describe the file than can be Commited, Removed or Added.
  *
  * \section projectconfiguration Project configuration plugins
  *
@@ -194,21 +197,73 @@
  * configuration is global, or throw the \e IXinxPluginProjectConfiguration interface,
  * if the configuration depends on the project.
  *
+ * \code
+ * class FooPlugin : public QObject, public IRCSPlugin, public IRCSPluginProjectConfiguration {
+ *	Q_OBJECT
+ *	Q_INTERFACES(IXinxPlugin)
+ *	Q_INTERFACES(IRCSPlugin)
+ *	Q_INTERFACES(IRCSPluginProjectConfiguration)
+ * public:
+ * 	FooPlugin();
+ *	virtual ~FooPlugin();
+ * \endcode
+ *
  * Methods \e IXinxPluginConfiguration::createSettingsDialog() and \e IXinxPluginProjectConfiguration::createProjectSettingsPage()
- * return a widget thar will be include in the project configuration box, or in the configuration dialog.
+ * return a widget that will be include in the project configuration box, or in the configuration dialog.
  *
- * Settings are load and saved with methods \e loadSettingsDialog(), \e loadProjectSettingsPage(),
- * \e saveSettingsDialog(), and \e saveProjectSettingsPage().
+ * \code
+ *  virtual QWidget * createProjectSettingsPage() {
+ *    return new FooProjectImpl();
+ *  }
+ * \endcode
  *
- * If you want to add page in the new project wizard dialog, the plugin IXinxPluginProjectConfiguration
- * give you too, two method :
+ * The class \e FooProjectImpl is a dialog box that contains the different CheckBox, RadioButton, ...
+ * for configure the dialog.
+ *
+ * Settings are load and saved with methods \e IXinxPluginConfiguration::loadSettingsDialog(),
+ * \e IXinxPluginProjectConfiguration::loadProjectSettingsPage(), \e IXinxPluginConfiguration::saveSettingsDialog(),
+ * and \e IXinxPluginProjectConfiguration::saveProjectSettingsPage().
+ *
+ * \code
+ * bool loadProjectSettingsPage( QWidget * widget ) {
+ *	FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
+ *	Q_ASSERT( page );
+ *
+ *	XSLProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+ *	page->m_monoption->setChecked( options.testFlag( XSLProject::hasSpecifiques ) );
+ *	return true;
+ * }
+ *
+ * bool saveProjectSettingsPage( QWidget * widget ) {
+ * 	FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
+ * 	Q_ASSERT( page );
+ *
+ * 	XSLProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+ * 	if( page->m_monoption->isChecked() )
+ * 		options |= XSLProject::hasSpecifiques;
+ * 	else
+ * 		options &= ~XSLProject::hasSpecifiques;
+ * 	XINXProjectManager::self()->project()->setOptions( options );
+ * 	return true;
+ * }
+ * \endcode
+ *
+ * If you want to add page in the new project wizard dialog, the plugin \e IXinxPluginProjectConfiguration
+ * give you too, two method who works in the same way that previous :
  *  * \e createNewProjectSettingsPages()
  *  * \e saveNewProjectSettingsPage()
  *
  * \section neweditor Creation of a new editor
  *
- * It's possible to create a new editor with the interface \e IFileTypePlugin and
- * \e IFilePlugin
+ * It's possible to create a new editor with the interface \e IFileTypePlugin and \e IFilePlugin.
+ * The interface \e IFileTypePlugin define for one type of file the mask to use (ie: *.foo) with
+ * the function IFileTypePlugin::match(), a description (used in open/save dialog box and new menu),
+ * an icon and some default properties (than user can modify).
+ *
+ * Then the two principal method \e IFileTypePlugin::createEditor() and \e IFileTypePlugin::createElement()
+ * is used to create the editor, and a content element (used in import, in the content view list).
+ *
+ * Interface \e IFilePlugin is just a list of IFileTypePlugin.
  *
  */
 

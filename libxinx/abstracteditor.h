@@ -211,7 +211,7 @@ public slots :
 	/*!
 	 * Replace the current selection by the user text.
 	 * @param from The text to replace (as asked by user so be aware of regexp)
-	 * @param to The text the user want to put. (if regexp \1, \2 is catched text)
+	 * @param to The text the user want to put. (if regexp \\1, \\2 is catched text)
 	 * @param options User options used to replace the text
 	 */
 	virtual void replace( const QString & from, const QString & to, SearchOptions options ) = 0;
@@ -312,7 +312,7 @@ signals:
 
 	/*!
 	 * Signal emited when a request to open a file is made.
-	 * \param name file name of the file to open
+	 * \param filename file name of the file to open
 	 * \param line line of the file to open
 	 */
 	void open( const QString & filename, int line );

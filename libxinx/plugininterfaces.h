@@ -169,8 +169,8 @@ public:
 	 * Real value are stored in the configuration.
 	 */
 	struct struct_properties {
-		bool canBeCommitToRCS;
-		bool canBeFindInConfiguration;
+		bool canBeCommitToRCS;         //!< not yet implemented
+		bool canBeFindInConfiguration; //!< not yet implemented
 		bool canBeSaveAsSpecifique;
 		QString specifiqueSubDirectory;
 	};

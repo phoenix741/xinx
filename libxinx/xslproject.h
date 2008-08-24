@@ -45,6 +45,7 @@ public:
 	/*!
 	 * Constructor of the exception.
 	 * \param message Message for the user.
+	 * \param wizard Show a wizard to migrate the project
 	 */
 	XSLProjectException( const QString & message, bool wizard = false );
 
@@ -322,7 +323,7 @@ public:
 
 	/*!
 	 * Set the specifique project path name with the value stored in \e value. The specifique project
-	 * path name is the project that must be replaced by <project>
+	 * path name is the project that must be replaced by &lt;project&gt;
 	 */
 	void setSpecifiquePathName( const QString & value );
 	/*!
@@ -362,20 +363,20 @@ public:
 	QStringList processedSearchPathList();
 
 	/*!
-	 * Get the specifique project path (as <project>/langue/<langue>/nav/projet). The specifique
+	 * Get the specifique project path (as &lt;project&gt;/langue/&lt;langue&gt;/nav/projet). The specifique
 	 * project path is in the QStringList.
 	 * \return the path
 	 * \sa projectPath(), setProjectPath(), setSpecifPath()
 	 */
 	int indexOfSpecifiquePath() const;
 	/*!
-	 * Set the specifique project path (as <project>/langue/<langue>/nav/projet)
+	 * Set the specifique project path (as &lt;project>/langue/&lt;langue&gt;/nav/projet)
 	 * \param value The specifique path
 	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), specifPath()
 	 */
 	void setIndexOfSpecifiquePath( int value );
 	/*!
-	 * Get the specifique project path but replace <lang>, <nav>, and <project> pattern.
+	 * Get the specifique project path but replace &lt;lang&gt;,&lt;nav&gt;, and &lt;project&gt; pattern.
 	 * \return the pattern modified path
 	 * \sa specifPath(), setSpecifPath()
 	 */

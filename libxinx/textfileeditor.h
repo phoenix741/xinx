@@ -61,7 +61,7 @@ public:
 	};
 	/*!
 	 * Construct a FileEditor with the help of a TextEditor and a parent.
-	 * \param textEditor TextEditor to use to print file to screen (center widget)
+	 * \param editor TextEditor to use to print file to screen (center widget)
 	 * \param parent Parent of the editor.
 	 */
 	TextFileEditor( TextEditor * editor = 0, QWidget *parent = 0 );
