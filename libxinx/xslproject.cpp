@@ -698,6 +698,7 @@ XSLProject * XINXProjectManager::project() const {
 
 void XINXProjectManager::deleteProject() {
 	delete m_project;
+	XINXConfig::self()->config().project.lastOpenedProject = QString();
 	m_project = NULL;
 	emit changed();
 }
