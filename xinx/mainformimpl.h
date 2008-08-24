@@ -79,6 +79,7 @@ private:
 	void createTabEditorButton();
 	void createShortcut();
 	void createSubMenu();
+	void createNewSubMenu();
 	void createStatusBar();
 	void createDockWidget();
 	void createActions();
@@ -121,6 +122,9 @@ private:
 	QLabel * m_threadCount;
 	QLabel * m_codecLabel;
 	QLabel * m_lineFeedLabel;
+
+	// Menu
+	QMenu * m_newMenu;
 
 	// Recent action
 	QAction * m_recentProjectActs[ MAXRECENTFILES ];
@@ -221,8 +225,3 @@ private slots:
 };
 
 #endif
-
-
-
-
-

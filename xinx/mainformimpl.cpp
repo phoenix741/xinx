@@ -168,23 +168,12 @@ void MainformImpl::createDockWidget() {
 
 void MainformImpl::createSubMenu() {
 	// New sub menu
-	QMenu * newMenu = new QMenu( this );
-	foreach( IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes() ) {
-		QAction * action = new QAction(
-				plugin->icon(),
-				tr( "New %1" ).arg( plugin->description() ),
-				this
-				);
-		action->setData( QVariant::fromValue<IFileTypePlugin*>( plugin ) );
-		newMenu->addAction( action );
-
-		connect( action, SIGNAL(triggered()), this, SLOT(newFile()) );
-	}
-
+	m_newMenu = new QMenu( this );
+	createNewSubMenu();
 	m_newAct->setData( QVariant::fromValue<IFileTypePlugin*>( XinxPluginsLoader::self()->fileTypes()[0] ) );
 	connect( m_newAct, SIGNAL(triggered()), this, SLOT(newFile()) );
 
-	m_newAct->setMenu( newMenu );
+	m_newAct->setMenu( m_newMenu );
 	QToolButton * btn = qobject_cast<QToolButton*>( m_fileToolBar->widgetForAction( m_newAct ) );
 	if( btn )
 		btn->setPopupMode( QToolButton::MenuButtonPopup );
@@ -216,6 +205,24 @@ void MainformImpl::createSubMenu() {
 	btn = qobject_cast<QToolButton*>( m_projectToolBar->widgetForAction( m_closeProjectAct ) );
 	if( btn )
 		btn->setPopupMode( QToolButton::MenuButtonPopup );
+}
+
+void MainformImpl::createNewSubMenu() {
+	QList<QAction*> actions = m_newMenu->actions();
+	m_newMenu->clear();
+	qDeleteAll( actions );
+
+	foreach( IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes() ) {
+		QAction * action = new QAction(
+				plugin->icon(),
+				tr( "New %1" ).arg( plugin->description() ),
+				this
+				);
+		action->setData( QVariant::fromValue<IFileTypePlugin*>( plugin ) );
+		m_newMenu->addAction( action );
+
+		connect( action, SIGNAL(triggered()), this, SLOT(newFile()) );
+	}
 }
 
 void MainformImpl::createStatusBar() {
@@ -805,6 +812,8 @@ void MainformImpl::updateConfigElement() {
 	if( m_showSpaceAndTabAct->isChecked() != XINXConfig::self()->config().editor.showTabulationAndSpace )
 		m_showSpaceAndTabAct->setChecked( XINXConfig::self()->config().editor.showTabulationAndSpace );
 	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
+
+	createNewSubMenu();
 }
 
 void MainformImpl::updateActions() {
