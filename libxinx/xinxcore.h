@@ -26,7 +26,7 @@
  * \section preface Preface
  *
  * This document explain how to use the XINX Library to create a plugins. This document can be used
- * to known how XINX work, in part, too.
+ * to known how XINX work too.
  *
  * You can find in the menu, documented class present in the libxinxcmp and libsharedxinx. The first
  * library contains components, the second, contains shared object beetween XINX and plugins. Source of
@@ -35,13 +35,13 @@
  * Plugins is used to extend XINX in different way.
  *  - Add a revision control system
  *  - Add Syntax Highlighter on file editor
- *  - Add new editor
+ *  - Add a new editor (text, graphics, ...)
  *
  * \section pluginbase Base of plugin
  *
  * A plugins must implements at least one interface : \e IXinxPlugin. This interface is used to know
  * informations about the plugins. A plugin that implement only this interface do nothing but is
- * regocgnize by XINX.
+ * recognize by XINX (see EmptyPlugin exemple).
  *
  * To implemente the interface you must write some code like this :
  * \code
@@ -93,22 +93,36 @@
  * \endcode
  *
  * The plugins must inherits from the \e QObject class (see Qt documentation), and must call the \e Q_OBJECT macro.
- * He can inherits \e IXinxPlugin indirectly (some interface as \e IRCSPlugin inherits from \e IXinxPlugin).
+ * \e QObject class give to the class some meta-object methods (to know the name of the class, ... dynamicaly).
+ * He can inherits \e IXinxPlugin directly or indirectly (some interface as \e IRCSPlugin inherits from \e IXinxPlugin).
  *
  * The plugin must call the \e Q_EXPORT_PLUGIN2 macro in the implementation. This create a static variable for the
- * plugin.
+ * plugin, created when the library is loading.
  *
  * If the plugin need to call new tools, you can reimplement \e IXinxPlugin::pluginTools() and returns the list of
- * tool needed by your plugin with the default value.
+ * tool needed by your plugin with the default value (you can have a default value for Gnu/linux and for Windows).
+ *
+ * \code
+ * QList&lt; QPair&lt;QString,QString&gt; &gt; CVSPlugin::pluginTools() {
+ *	QList&lt; QPair&lt;QString,QString&gt; &gt; tools;
+ * #ifdef Q_WS_WIN
+ * 	tools.append( qMakePair( QString("mytool"), QString("%1/Tool/mytool.exe").arg( "C:/Program Files" ) ) );
+ * #else
+ * 	tools.append( qMakePair( QString("cvs"), QString("/usr/bin/mytool") ) );
+ * #endif // Q_WS_WIN
+ * 	return tools;
+ * }
+ * \endcode
  *
  * You can also reimplement \e IXinxPlugin::initializeProject() and \e IXinxPlugin::destroyProject() if you have
- * specifique code when the current project is opened or destroyed.
+ * specifique code when the current project is opened or destroyed. This two fonction can be replaced by whatching the
+ * signal \e XINXProjectManager::changed().
  *
- * A plugin can propose a configuration dialog throw the \e IXinxPluginConfiguration interface.
+ * if \e XINXProjectManager::self()->project() is null the plugin is destroyed else, he is created.
  *
  * \section rcsplugin The Revision Control System Plugin
  *
- * A RCS Plugin must implemente the IRCSPlugin interface.
+ * A RCS Plugin must implemente the \e IRCSPlugin interface.
  *
  * \code
  * class FooPlugin : public QObject, public IRCSPlugin {
@@ -128,7 +142,7 @@
  * };
  * \endcode
  *
- * In the implementation method create a derivated object of RCS
+ * In the implementation method create a derivated object of \e RCS
  *
  * \code
  * QStringList FooPlugin::rcs() {
@@ -147,6 +161,28 @@
  *	}
  *	return NULL;
  * }
+ * \endcode
+ *
+ *
+ * \code
+ * class RCS_CVS : public RCS {
+ *	Q_OBJECT
+ * public:
+ *	RCS_CVS( const QString & base );
+ *	virtual ~RCS_CVS();
+ *
+ *	virtual struct_rcs_infos infos( const QString & path );
+ *	virtual RCS::FilesOperation operations( const QStringList & path );
+ *	virtual void update( const QStringList & path );
+ *	virtual void commit( const FilesOperation & path, const QString & message );
+ *	virtual void add( const QStringList & path );
+ *	virtual void remove( const QStringList & path );
+ *	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
+ * public slots:
+ *	virtual void abort();
+ * private slots:
+ * private:
+ * };
  * \endcode
  *
  * Next this is the RCS_Foo object that will be used in the application to \e update,
