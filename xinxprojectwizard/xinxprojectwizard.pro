@@ -18,6 +18,5 @@ INCLUDEPATH += ../components \
     ../libxinx
 LIBS = -L../libxinx -L../components -lsharedxinx -lxinxcmp
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
-PRE_TARGETDEPS = ../components/libxinxcmp.a
 win32 : RC_FILE += rc/xinxprojectwizard.rc
 include(../project_mode.pro)
