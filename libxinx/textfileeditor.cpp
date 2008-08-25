@@ -214,6 +214,7 @@ void TextFileEditor::loadFromDevice( QIODevice & d ) {
 void TextFileEditor::saveToDevice( QIODevice & d ) {
 	if( XINXConfig::self()->config().editor.autoindentOnSaving ) autoIndent();
 	m_eol = DEFAULT_EOL; // Don't conserve the EOL
+	d.setTextModeEnabled( true );
 	QTextStream text( &d );
 	text.setCodec( codec() ); // Use the real codec on save
 	text << m_view->toPlainText();

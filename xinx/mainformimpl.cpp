@@ -1361,6 +1361,7 @@ void MainformImpl::setThreadCountChange() {
 
 void MainformImpl::closeEvent( QCloseEvent *event ) {
 	emit aboutToClose();
+	storeWindowSettings(); // Store before the project is closed
 
 	if( XINXProjectManager::self()->project() ) {
 		if( ! closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault ) ) {
@@ -1372,7 +1373,6 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 		event->ignore();
 		return;
 	}
-	storeWindowSettings();
 	event->accept();
 }
 
