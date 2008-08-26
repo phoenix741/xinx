@@ -71,7 +71,7 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 			} else break;
 			boucle++;
 		} while( boucle <= 1 );
-			
+
 		if( processResult.count() == 0 ) return rcsInfos;
 
 		do {
@@ -337,7 +337,7 @@ void RCS_SVN::updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitS
 	Q_UNUSED( exitStatus );
 
 	QFile temporaryFile( m_tmpfilename );
-	if( temporaryFile.open( QIODevice::ReadOnly ) ) {
+	if( temporaryFile.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
 		*m_content = QString( temporaryFile.readAll() );
 	}
 	temporaryFile.remove();

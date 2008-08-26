@@ -32,7 +32,7 @@
 		<value name="Create ChangeLog" type="bool" default="no"/>
 	</type>
 	<type name="Editor">
-		<value name="Default Text Codec" type="string" default="UTF-8"/>
+		<value name="Default Text Codec" type="string" default="ISO-8859-1"/>
 		<value name="Autoindent On Saving" type="bool" default="no"/>
 		<value name="Popup When File Modified" type="bool" default="yes"/>
 		<value name="Create Backup File" type="bool" default="yes"/>

@@ -178,6 +178,19 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 
 	delete m_sortFilterModel; delete m_model; delete m_watcher;
 
+	if( !QFileInfo( filename ).exists() ) {
+		m_openingFile = QString();
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
+		m_xmlPresentationWidget->m_presentationProgressBar->hide();
+		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
+		m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
+		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
+		m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
+		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
+		m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
+		return;
+	}
+
 	m_threadAct = THREAD_OPENING;
 	start( QThread::IdlePriority );
 }

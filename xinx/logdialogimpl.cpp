@@ -51,13 +51,15 @@ void SearchLogWidgetDelegate::paint( QPainter * painter, const QStyleOptionViewI
 	QString text = index.data().toString();
 	QStyleOptionViewItem myOpt = option;
 	if( index.column() == 0 ) { // Filename
+		drawBackground( painter, option, index );
+
 		QRectF boundingRect;
 		painter->setPen( Qt::magenta );
 		painter->drawText( myOpt.rect, Qt::AlignLeft, text.left( text.indexOf(':') ), &boundingRect );
-		myOpt.rect.setLeft( myOpt.rect.left() + boundingRect.width() );
+		myOpt.rect.setLeft( (int)(myOpt.rect.left() + boundingRect.width()) );
 		painter->setPen( Qt::black );
 		painter->drawText( myOpt.rect, Qt::AlignLeft, ":", &boundingRect );
-		myOpt.rect.setLeft( myOpt.rect.left() + boundingRect.width() );
+		myOpt.rect.setLeft( (int)(myOpt.rect.left() + boundingRect.width()) );
 		painter->setPen( Qt::blue );
 		painter->drawText( myOpt.rect, Qt::AlignLeft, text.mid( text.indexOf(':') + 1 ), &boundingRect );
 
@@ -137,7 +139,8 @@ void LogDockWidget::log( RCS::rcsLog niveau, const QString & info ) {
 void LogDockWidget::find( const QString & filename, const QString & text, int line ) {
 	QString emplacement = QFileInfo( filename ).fileName() + ":" + QString::number( line );
 	QTreeWidgetItem * item = new QTreeWidgetItem( QStringList() << emplacement << text );
-	item->setData( 0, Qt::UserRole, filename + ":" + QString::number( line ) );
+	item->setData( 0, Qt::UserRole, filename );
+	item->setData( 0, Qt::UserRole + 1, line );
 	m_logwidget->m_searchTreeWidget->addTopLevelItem( item );
 	m_logwidget->m_searchTreeWidget->scrollToItem( item );
 	m_logwidget->m_tabWidget->setCurrentWidget( m_logwidget->m_searchTab );
@@ -145,9 +148,8 @@ void LogDockWidget::find( const QString & filename, const QString & text, int li
 
 void LogDockWidget::on_m_searchTreeWidget_doubleClicked( const QModelIndex & index ) {
 	QTreeWidgetItem * item = static_cast<SearchLogWidget*>( m_logwidget->m_searchTreeWidget )->itemFromIndex( index );
-	QStringList filenameList = item->data( 0, Qt::UserRole ).toString().split( ":" );
-	QString filename = filenameList.at( 0 );
-	int line = filenameList.at( 1 ).toInt();
+	QString filename = item->data( 0, Qt::UserRole ).toString();
+	int line = item->data( 0, Qt::UserRole + 1 ).toInt();
 
 	emit open( filename, line );
 }

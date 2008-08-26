@@ -1051,25 +1051,29 @@ void MainformImpl::selectedCompareWithStd() {
 		Q_ASSERT( list.size() == 1 && XINXProjectManager::self()->project() );
 
 		QString customFilename = list.at( 0 ), stdFilename, path, filename;
+		bool isSpecifique = false;
 
 		path = QFileInfo( customFilename ).absolutePath();
 		filename = QFileInfo( customFilename ).fileName();
 
 		foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
 			if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
-				filename.remove( 0, prefix.size() + 1 );
-				stdFilename = QDir( path ).absoluteFilePath( filename );
+				isSpecifique = true;
+				stdFilename = filename;
+				stdFilename.remove( 0, prefix.size() + 1 );
+				stdFilename = QDir( path ).absoluteFilePath( stdFilename );
 
-				if( QFileInfo( stdFilename ).exists() )
+				if( QFileInfo( stdFilename ).exists() ) {
 					QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << customFilename << stdFilename );
-				else
-					QMessageBox::information( this, tr("Compare"), tr("Standard file %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
-
-				return;
+					return;
+				}
 			}
 		}
 
-		QMessageBox::information( this, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
+		if( isSpecifique )
+			QMessageBox::information( this, tr("Compare"), tr("Standard file for %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
+		else
+			QMessageBox::information( this, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
 	} catch( ToolsNotDefinedException e ) {
 		QMessageBox::warning( this, tr( "Tools" ), e.getMessage() );
 	}

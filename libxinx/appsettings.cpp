@@ -128,7 +128,7 @@ void AppSettings::setSettingsConfigurationEditor( AppSettingsSettings * settings
 AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	struct_editor value;
 
-	value.defaultTextCodec = "UTF-8";
+	value.defaultTextCodec = "ISO-8859-1";
 	value.autoindentOnSaving = false;
 	value.popupWhenFileModified = true;
 	value.createBackupFile = true;

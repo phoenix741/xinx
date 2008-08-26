@@ -69,7 +69,17 @@ PrivateProjectDirectoryDockWidget::~PrivateProjectDirectoryDockWidget() {
 void PrivateProjectDirectoryDockWidget::projectChange() {
 	m_projectDirWidget->m_prefixComboBox->clear();
 	if( m_project ) {
-		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
+		if( m_flatModel ) {
+			m_projectDirWidget->m_projectDirectoryTreeView->setModel( NULL );
+			delete m_flatModel;
+			m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( m_project->projectPath() ) );
+			m_projectDirWidget->m_projectDirectoryTreeView->setModel( m_flatModel );
+			m_projectDirWidget->m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
+			m_projectDirWidget->m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
+		} else {
+			m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
+		}
+
 		m_projectDirWidget->m_prefixComboBox->addItems( m_project->specifiquePrefixes() );
 		m_projectDirWidget->m_prefixComboBox->setCurrentIndex(
 				m_projectDirWidget->m_prefixComboBox->findText( m_project->specifiquePrefix() ) );
@@ -138,8 +148,6 @@ bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event
 
 void PrivateProjectDirectoryDockWidget::on_m_filtreLineEdit_textChanged( QString filtre ) {
 	Q_UNUSED( filtre );
-
-
 	Q_ASSERT( m_dirModel );
 
 	m_modelTimer->stop();
