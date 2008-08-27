@@ -896,7 +896,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="579"/>
         <source> ms</source>
-        <translation>ms</translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="359"/>
