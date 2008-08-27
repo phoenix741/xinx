@@ -100,14 +100,24 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 		if( m_projectDirWidget->m_flatListBtn->isChecked() )
 			m_projectDirWidget->m_flatListBtn->click();
 	} else {
-		QString extention = QFileInfo( filtre ).suffix();
-		QString filename = QFileInfo( filtre ).fileName();
+		QString extention = QFileInfo( filtre ).completeSuffix();
+		QString filename = QFileInfo( filtre ).baseName();
 
 		QStringList filters;
-		if( extention.isEmpty() )
-			filters += QString( "*%1*.*" ).arg( filename );
-		else
-			filters += QString( "*%1*.%2" ).arg( filename ).arg( extention );
+		foreach( QString pluginFilter, XinxPluginsLoader::self()->managedFilters() ) {
+			QString pluginFilename  = QFileInfo( pluginFilter ).baseName();
+			QString pluginExtention = QFileInfo( pluginFilter ).completeSuffix();
+			if( ! filename.isEmpty() )
+				pluginFilename.replace( '*', "*" + filename + "*" );
+			if( ! extention.isEmpty() )
+				pluginExtention.replace( '*', "*" + extention + "*" );
+
+			if( ! ( extention.isEmpty() || pluginExtention.contains( extention ) ) ) continue;
+
+			filters += (pluginFilename + "." + pluginExtention);
+		}
+		if( filters.isEmpty() )
+			filters += ( "*" + filename + "*." + extention );
 
 		m_dirModel->setNameFilters( filters );
 
