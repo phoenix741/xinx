@@ -33,7 +33,7 @@ class XinxThread;
 /*!
  * The XinxThreadManager class is a debugger class to count the number of XinxThread object
  * created and the number of XinxThread object in the threadrun method.
- * 
+ *
  * To be used, each created thread must be a XinxThread (derivated from a QThread).
  */
 class  XinxThreadManager : public QObject {
@@ -46,7 +46,7 @@ public:
 	int getThreadCount() const;
 	/// Get the number of thread class object created
 	int getThreadClassCount() const;
-	
+
 	/// Get the static member and create it if needed.
 	static XinxThreadManager * self();
 signals:
@@ -56,7 +56,7 @@ private:
 	XinxThreadManager();
 
 	static XinxThreadManager * s_self;
-	
+
 	int m_threadCount, m_threadClassCount;
 	QMutex m_mutex;
 
@@ -64,7 +64,7 @@ private:
 };
 
 /*!
- * This class is used to create thread in XINX and count the number of created Thread and 
+ * This class is used to create thread in XINX and count the number of created Thread and
  * the number of running thread.
  */
 class  XinxThread : public QThread {
@@ -74,7 +74,6 @@ public:
 	XinxThread( QObject * parent = 0 );
 	/// Destroy a thread and decrement XinxThreadManager::getThreadClassCount()
 	virtual ~XinxThread();
-	
 protected:
 	/*!
 	 * This function is derivated to incremente and decremente  XinxThreadManager::getThreadCount() before

@@ -30,7 +30,7 @@ XinxThreadManager * XinxThreadManager::s_self = NULL;
 /* XinxThreadManager */
 
 XinxThreadManager::XinxThreadManager() : m_threadCount( 0 ), m_threadClassCount( 0 ) {
-	
+
 }
 
 XinxThreadManager::~XinxThreadManager() {
@@ -51,7 +51,7 @@ XinxThreadManager * XinxThreadManager::self() {
 		s_self = new XinxThreadManager();
 		XINXStaticDeleter::self()->add( s_self );
 	}
-	
+
 	return s_self;
 }
 
@@ -68,16 +68,16 @@ XinxThread::~XinxThread() {
 	XinxThreadManager::self()->m_threadClassCount--;
 	emit XinxThreadManager::self()->threadCountChange();
 }
-	
+
 void XinxThread::run() {
 	{
 		QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
 		XinxThreadManager::self()->m_threadCount++;
 		emit XinxThreadManager::self()->threadCountChange();
 	}
-	
+
 	threadrun();
-	
+
 	{
 		QMutexLocker locker( &(XinxThreadManager::self()->m_mutex) );
 		XinxThreadManager::self()->m_threadCount--;

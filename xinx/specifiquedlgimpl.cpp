@@ -45,10 +45,13 @@ SpecifiqueDialogImpl::SpecifiqueDialogImpl( QWidget * parent, Qt::WFlags f ) : Q
 
 SpecifiqueDialogImpl::~SpecifiqueDialogImpl() {
 	if( m_instance ) {
-		m_instance->terminate();
-		m_instance->wait();
+		if( m_instance->isRunning() ) {
+			connect( m_instance, SIGNAL(finished()), m_instance, SLOT(deleteLater()) );
+		} else {
+			m_instance->wait();
+			delete m_instance;
+		}
 	}
-	delete m_instance;
 }
 
 bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
@@ -100,7 +103,7 @@ void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
 	if( (! filename.isEmpty() ) && canBeSaveAsSpecifique( filename ) ) {
 		m_instance = ThreadedConfigurationFile::businessViewOfFile( filename );
 		connect( m_instance, SIGNAL(businessViewFinded(QStringList)), this, SLOT(businessViewFinded(QStringList)) );
-		m_instance->start();
+		m_instance->start( QThread::IdlePriority );
 	} else {
 		m_impactedBVGroupBox->hide();
 		adjustSize();

@@ -1355,9 +1355,13 @@ void MainformImpl::setEditorPosition( int line, int column ) {
 }
 
 void MainformImpl::setThreadCountChange() {
-	m_threadCount->setText( QString( "%1 (%2)" )
-			.arg( XinxThreadManager::self()->getThreadCount(), 3, 10, QLatin1Char('0') )
-			.arg( XinxThreadManager::self()->getThreadClassCount(), 3, 10, QLatin1Char('0') ) );
+	int threadCount      = XinxThreadManager::self()->getThreadCount(),
+	    threadClassCount = XinxThreadManager::self()->getThreadClassCount();
+	QString threadCountText = QString( "%1 (%2)" ).arg( threadCount, 3, 10, QLatin1Char('0') )
+												  .arg( threadClassCount, 3, 10, QLatin1Char('0') );
+	if( threadCount > QThread::idealThreadCount() )
+		threadCountText = "<font color=\"red\">" + threadCountText + "</font>";
+	m_threadCount->setText( threadCountText );
 }
 
 void MainformImpl::closeEvent( QCloseEvent *event ) {
