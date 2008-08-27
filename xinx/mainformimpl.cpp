@@ -1108,7 +1108,7 @@ void MainformImpl::copyPath() {
 	if( item == -1 ) item = m_tabEditors->currentIndex();
 	AbstractFileEditor * ed = dynamic_cast<AbstractFileEditor*>( m_tabEditors->editor( item ) );
 	if( ed ) {
-		QString name = ed->lastFileName();
+		QString name = QDir::toNativeSeparators( ed->lastFileName() );
 		qApp->clipboard()->setText( name );
 	}
 }
