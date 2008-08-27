@@ -33,7 +33,7 @@ class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog {
 public:
 	ReplaceDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 
-	void initialize();
+	void initialize( bool hasEditor = true );
 	void setText( const QString & );
 	void setReplace( bool );
 

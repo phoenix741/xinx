@@ -420,8 +420,6 @@ void MainformImpl::createActions() {
 
 	// Search
 	connect( m_searchAct, SIGNAL(triggered()), this, SLOT(find()) );
-	m_searchAct->setEnabled(false);
-	connect( m_tabEditors, SIGNAL(textAvailable(bool)), m_searchAct, SLOT(setEnabled(bool)) );
 
 	// Search next/previous
 	connect( m_searchNextAct, SIGNAL(triggered()), this, SLOT(findNext()) );
@@ -1256,14 +1254,13 @@ void MainformImpl::findPrevious() {
 }
 
 void MainformImpl::find() {
-	Q_ASSERT( m_tabEditors->currentEditor() );
-	Q_ASSERT( qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() ) );
-
-	TextEditor * textEdit = qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-	if( ! textEdit->textCursor().selectedText().isEmpty() ){
-		m_findDialog->setText( textEdit->textCursor().selectedText() );
+	if( qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() ) ) {
+		TextEditor * textEdit = qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		if( ! textEdit->textCursor().selectedText().isEmpty() ){
+			m_findDialog->setText( textEdit->textCursor().selectedText() );
+		}
 	}
-	m_findDialog->initialize();
+	m_findDialog->initialize( m_tabEditors->count() > 0 );
 	m_findDialog->setReplace(false);
 	m_findDialog->exec();
 }

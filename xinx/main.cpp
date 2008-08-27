@@ -73,8 +73,14 @@ int main(int argc, char *argv[]) {
 	std::signal(SIGINT, backup_appli_signal);
 	std::signal(SIGTERM, backup_appli_signal);
 
+#if defined(Q_WS_WIN)
+		if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
+			QApplication::setStyle(QStyleFactory::create("Explorer"));
+#endif // Q_WS_WIN
 	UniqueApplication app(argc, argv);
 	try {
+		QStringList args = app.arguments();
+
 		app.setOrganizationName( "Shadoware" );
 		app.setOrganizationDomain( "Shadoware.Org" );
 		app.setApplicationName( "XINX" );
@@ -87,11 +93,6 @@ int main(int argc, char *argv[]) {
 		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
 		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
 		app.addLibraryPath( "plugins:" );
-
-#if defined(Q_WS_WIN)
-		if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
-			app.setStyle(QStyleFactory::create("Explorer"));
-#endif // Q_WS_WIN
 
 		if( app.isUnique() ) {
 			QPixmap pixmap(":/images/splash.png");
@@ -142,7 +143,6 @@ int main(int argc, char *argv[]) {
 	  		app.processEvents();
 			mainWin = new MainformImpl();
 
-			QStringList args = app.arguments();
 			if( ( args.count() == 1 ) && ( XINXConfig::self()->config().project.openTheLastProjectAtStart ) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()) ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Load last opened project ...") );
 				app.processEvents();
@@ -168,7 +168,6 @@ int main(int argc, char *argv[]) {
 			return app.exec();
 	 	} else {
 			// Send Parameter to open
-			QStringList args = app.arguments();
 			if(args.count() > 0) {
 				QStringList::iterator it = args.begin();
 				it++;

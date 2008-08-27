@@ -39,7 +39,12 @@ void ReplaceDialogImpl::on_m_replaceCheckBox_toggled( bool checked ) {
 		m_findButton->setText( tr("Find") );
 }
 
-void ReplaceDialogImpl::initialize() {
+void ReplaceDialogImpl::initialize( bool hasEditor ) {
+	m_searchAllRadioButton->setEnabled( hasEditor );
+	m_searchSelectionRadioButton->setEnabled( hasEditor );
+	m_searchAllRadioButton->setChecked( hasEditor );
+	m_projectFilesRadioButton->setChecked( ! hasEditor );
+
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus( Qt::ActiveWindowFocusReason );
 
