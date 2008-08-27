@@ -67,10 +67,11 @@ Source: dbus-1.1.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression sk
 DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: experimental
+DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: empty
 DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"
+DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: scripts
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
@@ -117,6 +118,7 @@ Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 Name: services; Description: Plugin with a WebServices editor; Types: custom full
 Name: experimental; Description: Plugins experimentals; Languages: 
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
+Name: empty; Description: Plugin vide (pour dev)
 
 [Run]
 Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- /SILENT /NOCANCEL /NORESTART"; StatusMsg: Installation de D-BUS; Flags: hidewizard; Components: dbus
