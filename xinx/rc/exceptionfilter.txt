@@ -5,3 +5,4 @@
 .*QPainter::end: Painter not active, aborted.*
 .*Plugin verification data mismatch in.*
 .*Le fichier.*n'est pas un plugin Qt valide..*
+.*Donn.es de v.rification du plugin diff.rente dans.*
