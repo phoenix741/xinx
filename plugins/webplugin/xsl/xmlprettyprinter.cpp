@@ -20,6 +20,7 @@
 
 // Xinx header
 #include "xmlprettyprinter.h"
+#include <xinxconfig.h>
 
 // Qt header
 #include <QTextCodec>
@@ -46,10 +47,10 @@ void XMLPrettyPrinter::process() {
 
 	m_resultBuffer.open( QIODevice::WriteOnly | QIODevice::Truncate );
 	m_result.setDevice( &m_resultBuffer );
-	m_result.setCodec( QTextCodec::codecForName( "UTF-8" ) );
-	
+	m_result.setCodec( QTextCodec::codecForName( qPrintable( XINXConfig::self()->config().editor.defaultTextCodec ) ) );
+
 	constructXML();
-	
+
 	m_resultBuffer.close();
 	//clear();
 
@@ -62,7 +63,7 @@ QString XMLPrettyPrinter::getResult() {
 }
 
 void XMLPrettyPrinter::writeLevel( int level ) {
-	for( int i = 0; i < level; i++ ) 
+	for( int i = 0; i < level; i++ )
 		m_result << "\t";
 }
 
@@ -70,18 +71,18 @@ void XMLPrettyPrinter::constructXML( int level ) {
 	QXmlStreamReader::TokenType prevType = QXmlStreamReader::NoToken;
 	QString plainText;
 	bool firstTour = true;
-	
+
 	while( ! atEnd() ) {
 		readNext();
 
 		if( firstTour && ( ( level > 0 ) && ( prevType == QXmlStreamReader::NoToken ) ) ) {
-			if( isEndElement() ) { 
+			if( isEndElement() ) {
 				m_result << "/>";
 			} else
 				m_result << ">";
 		}
-		
-		
+
+
 		if( !isWhitespace() && ( isEntityReference() || isCharacters() ) ) {
 			if( isCDATA() )
 				plainText += "<![CDATA[" + text().toString() + "]]>";
@@ -93,8 +94,8 @@ void XMLPrettyPrinter::constructXML( int level ) {
 			plainText = plainText.replace( QChar(QChar::Nbsp), "&#160;" );
 			m_result << plainText.trimmed();
 			plainText = QString();
-		} 
-			
+		}
+
 		if( isStartElement() ) {
 			if( prevType != QXmlStreamReader::Characters ) {
 				m_result << "\n";
@@ -110,12 +111,12 @@ void XMLPrettyPrinter::constructXML( int level ) {
 			QXmlStreamNamespaceDeclarations ns = namespaceDeclarations();
 			for (int i = 0; i < ns.size(); ++i) {
 				const QXmlStreamNamespaceDeclaration &namespaceDeclaration = ns.at(i);
-				if( namespaceDeclaration.prefix().isEmpty() ) 
+				if( namespaceDeclaration.prefix().isEmpty() )
 					m_result << " xmlns" << "=\"" << namespaceDeclaration.namespaceUri().toString() << "\"";
 				else
 					m_result << " xmlns:" << namespaceDeclaration.prefix().toString() << "=\"" << namespaceDeclaration.namespaceUri().toString() << "\"";
 			}
-				
+
 			constructXML( level + 1 );
 		} else if( isEndElement() ) {
 			if( prevType != QXmlStreamReader::NoToken ) {
@@ -131,7 +132,8 @@ void XMLPrettyPrinter::constructXML( int level ) {
 		} else if( isProcessingInstruction() ) {
 			m_result << "<?" << processingInstructionTarget().toString() << " " << processingInstructionData().toString() << "?>";
 		} else if( isStartDocument() ) {
-			m_result << "<?xml version=\"1.0\" encoding=\"" << m_result.codec()->name().constData() << "\"?>"; 
+			m_result.setCodec( QTextCodec::codecForName( qPrintable( documentEncoding().toString() ) ) );
+			m_result << "<?xml version=\"1.0\" encoding=\"" << m_result.codec()->name().constData() << "\"?>";
 		} else if( isComment() ) {
 			if( prevType != QXmlStreamReader::Characters ) {
 				m_result << "\n";
@@ -139,7 +141,7 @@ void XMLPrettyPrinter::constructXML( int level ) {
 			}
 			m_result << "<!--" << text().toString() << "-->";
 		}
-		
+
 		if( !isWhitespace() )
 			prevType = tokenType();
 		firstTour = false;

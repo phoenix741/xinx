@@ -3,16 +3,14 @@
 <SnipetList>
   <Snipet category="Buttons Widgets" key="delete" icon=":/images/pushbutton.png" type="xsl" name="Delete button" >
     <Description>Show a delete button in a table.</Description>
-    <Text>
-&lt;td class="supprimer">
+    <Text>&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
 &lt;/td>
 		</Text>
   </Snipet>
   <Snipet category="Buttons Widgets" key="delete140" icon=":/images/pushbutton.png" type="xsl" name="Delete button (GCE140)" >
     <Description>Show a delete button in a table (GCE140).</Description>
-    <Text>
-&lt;td class="supprimer">
+    <Text>&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{gnx:trad($LANGUAGE,'LBL.SUPPRIMER',$CTXTRD)}"/>
 &lt;/td>
 		</Text>
@@ -27,8 +25,7 @@
   </Snipet>
   <Snipet category="Displays Widgets" key="codzn140" icon="" type="xsl" name="Codzn" >
     <Description>Template to manage Codzn.</Description>
-    <Text>
-&lt;!-- Don't forget to import right xsl templates files
+    <Text>&lt;!-- Don't forget to import right xsl templates files
 &lt;xsl:import href="langue/fra/e-GX.xsl"/>
 &lt;xsl:import href="langue/fra/codzn_niveau2.xsl"/>
 &lt;xsl:import href="langue/fra/nav/listes_valeurs.xsl"/>
@@ -48,8 +45,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Displays Widgets" key="href" icon="" type="xsl" name="GnxPopup" >
     <Description>Display a link to another page.</Description>
-    <Text>
-&lt;td align="right" class="pop1">&amp;#160;
+    <Text>&lt;td align="right" class="pop1">&amp;#160;
     &lt;a href="?sourceview=%1&amp;amp;cinematic=%2&amp;amp;%3&amp;amp;frame=%4" target="%4" title="{$%5}">
         &lt;xsl:call-template name="GnxPopup">
             &lt;xsl:with-param name="Name">
@@ -68,8 +64,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Displays Widgets" key="sort" icon="" type="xsl" name="GnxSort" >
     <Description>Template for sort a title with two sort key (to define in ViewStruct)</Description>
-    <Text>
-&lt;xsl:call-template name="GnxSort">
+    <Text>&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">%1&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_asc">%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
@@ -82,8 +77,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Displays Widgets" key="sort140" icon="" type="xsl" name="GnxSort (GCE140)" >
     <Description>Template for column sorting with two sort key (to define in ViewStruct)</Description>
-    <Text>
-&lt;xsl:call-template name="GnxSort">
+    <Text>&lt;xsl:call-template name="GnxSort">
 	&lt;xsl:with-param name="title">
 		&lt;xsl:value-of select="gnx:trad($LANGUAGE,'%1',$CTXTRD)"/>
 	&lt;/xsl:with-param>
@@ -98,14 +92,13 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Displays Widgets" key="table" icon="" type="xsl" name="GnxTable" >
     <Description>Template to manage page cinematics.</Description>
-    <Text>
-&lt;xsl:choose>
+    <Text>&lt;xsl:choose>
 	&lt;xsl:when test="../@total_business_row=0">
 		&lt;center>
 			&lt;table>
 				&lt;tr>
 					&lt;td align="center" class="information" colspan="11">
-						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.NOROWS',$CTXTRD)"/> &lt;/td>
+						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.NOROWS',$CTXTRD)"/> &lt;/td>
 				&lt;/tr>
 			&lt;/table>
 		&lt;/center>
@@ -167,7 +160,7 @@ You may have to change min and max value !!!
 			&lt;table class="center">
 				&lt;tr>
 					&lt;td class="information" colspan="2" align="center">
-						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.NOROW',$CTXTRD)"/> &lt;/td>
+						&lt;xsl:value-of select="gnx:trad($LANGUAGE,'LBL.NOROW',$CTXTRD)"/> &lt;/td>
 				&lt;/tr>
 			&lt;/table>
 		&lt;/xsl:when>
@@ -215,8 +208,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Global Input" key="pev140" icon="" type="xsl" name="Variable from PEV value (BusinessFlow)" >
     <Description>Define a stylesheet variable from a PEV value (GCE140)</Description>
-    <Text>
-&lt;xsl:variable name="PEV.%1">
+    <Text>&lt;xsl:variable name="PEV.%1">
 	&lt;xsl:value-of select="/layout_data/businessFlow/PEV/general/%1/@value"/>
 &lt;/xsl:variable>
 		</Text>
@@ -224,8 +216,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Global Input" key="ppe140" icon="" type="xsl" name="Variable from PPE value (BusinessFlow)" >
     <Description>Define a stylesheet variable from a PPE value (GCE140)</Description>
-    <Text>
-&lt;xsl:variable name="PPE.%1">
+    <Text>&lt;xsl:variable name="PPE.%1">
 	&lt;xsl:value-of select="/layout_data/businessFlow/PPE/parametre[@name='%1']/Para1/@value"/>
 &lt;/xsl:variable>
 		</Text>
@@ -233,14 +224,13 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Input Widgets" key="form140" icon="" type="xsl" name="Complete form" >
     <Description>Complete form with mandatory hidden fields</Description>
-    <Text>
-			&lt;form action="{$SERVLET}" name="%3" method="post" onsubmit="return validform(this);">
-				&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
-				&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
-				&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
-				&lt;input type="hidden" name="id" value="{$ID}"/>
-				&lt;input type="hidden" name="frame" value="{$FRAME}"/>
-			&lt;form>
+    <Text>&lt;form action="{$SERVLET}" name="%3" method="post" onsubmit="return validform(this);">
+	&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
+	&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
+	&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+	&lt;input type="hidden" name="id" value="{$ID}"/>
+	&lt;input type="hidden" name="frame" value="{$FRAME}"/>
+&lt;form>
 		</Text>
     <Param name="Sourceview" />
     <Param name="Cinematic" />
@@ -248,12 +238,11 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Input Widgets" key="cine" icon="" type="xsl" name="Hidden fields" >
     <Description>Hidden fields for GCE forms</Description>
-    <Text>
-			&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
-			&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
-			&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
-			&lt;input type="hidden" name="id" value="{$ID}"/>
-			&lt;input type="hidden" name="frame" value="{$FRAME}"/>
+    <Text>&lt;?= '%1' == '' ? '' : '&lt;input type="hidden" name="sourceview" value="%1"/>' ?>
+&lt;input type="hidden" name="cinematic" value="&lt;?= ( '%1' == '' ) ? "propose(0);assimilate();" : "" ?>%2"/>
+&lt;input type="hidden" name="entity" value="{$ENTITY}"/>
+&lt;input type="hidden" name="id" value="{$ID}"/>
+&lt;input type="hidden" name="frame" value="{$FRAME}"/>
 		</Text>
     <Param name="Sourceview" />
     <Param name="Cinematic" />
@@ -286,7 +275,7 @@ You may have to change min and max value !!!
     <Param name="Field name" />
     <Param name="Form name" />
   </Snipet>
-  <Snipet category="Input Widgets" key="inputNumericPrice" icon="" type="xsl" name="Input field numeric (price) into form" >
+  <Snipet category="Input Widgets" key="inputNumericPrice" icon=":/images/lineedit.png" type="xsl" name="Input field numeric (price) into form" >
     <Description>HTML and XSL according to numeric field (price format)</Description>
     <Text>
 &lt;td class="champ">
@@ -303,7 +292,7 @@ You may have to change min and max value !!!
     <Param name="Label code" />
     <Param name="Field name" />
   </Snipet>
-  <Snipet category="Input Widgets" key="inputNumericQte" icon="" type="xsl" name="Input field numeric (quantity) into form" >
+  <Snipet category="Input Widgets" key="inputNumericQte" icon=":/images/lineedit.png" type="xsl" name="Input field numeric (quantity) into form" >
     <Description>HTML and XSL according to numeric field (quantity format)</Description>
     <Text>
 &lt;td class="champ">
@@ -320,20 +309,7 @@ You may have to change min and max value !!!
     <Param name="Label code" />
     <Param name="Field name" />
   </Snipet>
-  <Snipet category="Input Widgets" key="text" icon=":/images/lineedit.png" type="xsl" name="Input text" >
-    <Description>Enter text into a line</Description>
-    <Text>
-&lt;input name="chp:%1" size="%4" maxlength="%3" class="%2">
-	&lt;xsl:call-template name="ChpModif">
-		&lt;xsl:with-param name="Node" select="%1"/>
-	&lt;/xsl:call-template>
-&lt;/input></Text>
-    <Param name="Field" />
-    <Param name="Class" />
-    <Param name="Size" />
-    <Param name="Max length" />
-  </Snipet>
-  <Snipet category="Input Widgets" key="inputText" icon="" type="xsl" name="Input text field into form" >
+  <Snipet category="Input Widgets" key="inputText" icon=":/images/lineedit.png" type="xsl" name="Input text field into form" >
     <Description>HTML and XSL according to text field</Description>
     <Text>
 &lt;td class="champ">
@@ -367,7 +343,7 @@ You may have to change min and max value !!!
     <Param name="Label" />
     <Param name="List" />
   </Snipet>
-  <Snipet category="Input Widgets" key="selectText" icon="" type="xsl" name="Select field into form (eg. for TBL with BF provider)" >
+  <Snipet category="Input Widgets" key="selectText" icon=":/images/combobox.png" type="xsl" name="Select field into form (eg. for TBL with BF provider)" >
     <Description>HTML and XSL according to SELECT field populated by TBL BusinessFlow</Description>
     <Text>
 &lt;td class="champ">
