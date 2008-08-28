@@ -119,10 +119,14 @@ QString TextEditor::selection() const {
 }
 
 void TextEditor::setSelection( QString text ) {
-	if( textCursor().hasSelection() )
-		return textCursor().insertText( text );
-	else
-		return setPlainText( text );
+	if( textCursor().hasSelection() ) {
+		textCursor().insertText( text );
+	} else {
+		textCursor().beginEditBlock();
+		selectAll();
+		textCursor().insertText( text );
+		textCursor().endEditBlock();
+	}
 }
 
 void TextEditor::setCompleter( QCompleter * completer ) {

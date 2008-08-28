@@ -9,8 +9,7 @@ obj.run = function()
 {
 	var text = textEdit.selection;
 
-	textEdit.selection = obj.formatXslKey(text);
-	textEdit.document.modified = true;
+	textEdit.selection = this.formatXslKey(text);
 };
 
 obj.formatXslKey = function(text)

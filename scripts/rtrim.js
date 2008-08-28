@@ -12,7 +12,6 @@ obj.run = function() {
 	result = text.replace(/\s+\n/g,"\n");
 
 	textEdit.selection = result;
-	textEdit.document.modified = true;
 };
 
 return obj;

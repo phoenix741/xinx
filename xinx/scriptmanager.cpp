@@ -141,6 +141,7 @@ ScriptManager::~ScriptManager() {
 void ScriptManager::loadScripts() {
 	QDir scriptDir("scripts:");
 
+	m_objects.clear();
 	QStringList filenames = scriptDir.entryList( QStringList("*.js"), QDir::Files );
 
 	foreach( QString filename, filenames ) {

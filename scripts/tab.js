@@ -33,7 +33,6 @@ obj.run = function() {
 	}
 
 	textEdit.selection = result;
-	textEdit.document.modified = true;
 };
 
 return obj;

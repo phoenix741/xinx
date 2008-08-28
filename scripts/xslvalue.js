@@ -13,7 +13,6 @@ obj.run = function() {
 	result = result.replace("}","\"/>");
 
 	textEdit.selection = result;
-	textEdit.document.modified = true;
 };
 
 return obj;
