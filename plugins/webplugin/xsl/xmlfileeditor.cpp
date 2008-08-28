@@ -56,7 +56,11 @@ bool XmlFileEditor::autoIndent() {
 		XMLPrettyPrinter prettyPrinter;
 		prettyPrinter.setText( textEdit()->toPlainText() );
 		prettyPrinter.process();
-		textEdit()->setPlainText( prettyPrinter.getResult() );
+
+		textEdit()->textCursor().beginEditBlock();
+		textEdit()->selectAll();
+		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
+		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {
 		setMessage( e.getMessage() );
 		return false;

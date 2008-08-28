@@ -353,7 +353,7 @@ You may have to change min and max value !!!
 	&lt;select name="chp:%2" size="1" class="obligatoire">
 		&lt;xsl:call-template name="ChpModifSelect">
 			&lt;xsl:with-param name="Node" select="%2"/>
-			&lt;xsl:with-param name="NodeLib" select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow[Cletbl=current()/%2]/Lir"/>
+			&lt;xsl:with-param name="NodeLib" select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow[Cletbl=current()/%2/business_data]/Lir"/>
 			&lt;xsl:with-param name="Mode" select="'LibOnly'"/>
 		&lt;/xsl:call-template>
 		&lt;xsl:apply-templates select="/layout_data/businessFlow/TBL[@name='%3']/JTblViewRow"/>

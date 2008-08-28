@@ -33,7 +33,7 @@ class QWidget;
 class XinxErrorMessage;
 
 /*!
- * Base class for exceptions in XINX. This base class include a message in the exception, and save 
+ * Base class for exceptions in XINX. This base class include a message in the exception, and save
  * the stack.
  */
 class  XinxException {
@@ -55,7 +55,7 @@ private:
 };
 
 /*!
- * The Exception manager contains an error dialog that can be used when a error occure or when we 
+ * The Exception manager contains an error dialog that can be used when a error occure or when we
  * use qWarning, qCritical, qError, qDebug. When an fatal error occure, the signal \e errorTriggered
  * is emited.
  */
@@ -63,8 +63,8 @@ class  ExceptionManager : public QObject {
 	Q_OBJECT
 public:
 	virtual ~ExceptionManager();
-	
-	/*! 
+
+	/*!
 	* \deprecated
 	 * Xinx stack trace is construct by XINX_TRACE macro. This macro make the application
 	 * so slow and this stack is desactivated in release mode (and often in debug mode).
@@ -75,23 +75,12 @@ public:
 	 * -rdynamic in Gnu/Linux. This stack is unused on Windows.
 	 */
 	QStringList stackTrace() const;
-	
+
 	/*!
 	 * The dialog created and used to show message. This dialog is automatically called when Qt
 	 * macro (qDebug, ...) is used.
 	 */
 	QErrorMessage * errorDialog() const;
-
-	/*!
-	 * If set to \e true the dialog is not only showed but executed too. The message is show to user
-	 * before the application is sopped. 
-	 * Fatal can be set when an assert failed, or when a signal fault is called.
-	 */
-	void setFatal( bool value );
-	/*!
-	 * Return true if the error is fatal.
-	 */
-	bool fatal() const;
 
 	/*!
 	 * Return the exception manager of the application and created it if needed.
@@ -103,7 +92,7 @@ public:
 	 * \param error Message to store in the file
 	 * \param stack Stack to store when the error occure.
 	 */
-	void notifyError( QString error, QStringList stack = QStringList() );
+	void notifyError( QString error, QtMsgType t = QtWarningMsg );
 signals:
 	/*!
 	 * Signal emited when \e notifyError is called and the exception manager is set to be fatal.
@@ -111,12 +100,11 @@ signals:
 	void errorTriggered();
 private:
 	ExceptionManager();
-	
+
 	static ExceptionManager * s_self;
-	
+
 	QHash<unsigned long,QStringList> m_stackTrace;
 	QErrorMessage * m_dialog;
-	bool m_fatal;
 	QStringList m_exceptionFilter;
 };
 

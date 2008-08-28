@@ -59,7 +59,6 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
         break;
     case QtFatalMsg:
         rich = QErrorMessage::tr("Fatal Error:");
-        ExceptionManager::self()->setFatal( true );
     }
     rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
     rich += Qt::escape(QLatin1String( m ));
@@ -68,12 +67,12 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
     if (rich.endsWith(QLatin1String("</p>")))
         rich.chop(4);
 
-    ExceptionManager::self()->notifyError( rich );
+    ExceptionManager::self()->notifyError( rich, t );
 }
 
 /* ExceptionManager */
 
-ExceptionManager::ExceptionManager() : m_fatal( false ) {
+ExceptionManager::ExceptionManager() {
 	m_dialog = new QErrorMessage(0);
 	m_dialog->setWindowTitle( qApp->applicationName() );
 
@@ -90,14 +89,6 @@ ExceptionManager::~ExceptionManager() {
 	delete m_dialog;
 	if( s_self == this )
 		s_self = 0;
-}
-
-void ExceptionManager::setFatal( bool value ) {
-	m_fatal = value;
-}
-
-bool ExceptionManager::fatal() const {
-	return m_fatal;
 }
 
 QHash<unsigned long,QStringList> & ExceptionManager::xinxStackTrace() {
@@ -126,8 +117,8 @@ QErrorMessage * ExceptionManager::errorDialog() const {
 	return m_dialog;
 }
 
-void ExceptionManager::notifyError( QString error, QStringList stack ) {
-	if( m_fatal ) {
+void ExceptionManager::notifyError( QString error, QtMsgType t ) {
+	if( t == QtFatalMsg ) {
 		//((ExceptionManager*)0)->m_fatal = 1;
 		emit errorTriggered();
 	}
@@ -137,8 +128,7 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 			return;
 	}
 
-	if (stack.isEmpty())
-		stack << stackTrace();
+	QStringList stack = stackTrace();
 
 	// Create a file where write error
 	FILE * file = NULL;
@@ -158,14 +148,14 @@ void ExceptionManager::notifyError( QString error, QStringList stack ) {
 		fclose( file );
 	}
 
-	if( m_fatal && ( QThread::currentThread() == qApp->thread() ) )
+	if( ( t == QtFatalMsg ) && ( QThread::currentThread() == qApp->thread() ) )
     	m_dialog->showMessage( error );
-    else
+    else if( t != QtDebugMsg )
     	QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
 
 	std::cerr << qPrintable( error ) << std::endl;
 
-	if( m_fatal ) {
+	if( t == QtFatalMsg ) {
 		m_dialog->exec(); // Pour ne pas quitter de suite
 		abort();
 	}

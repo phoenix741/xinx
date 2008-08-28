@@ -75,7 +75,7 @@ void XMLPrettyPrinter::constructXML( int level ) {
 	while( ! atEnd() ) {
 		readNext();
 
-		if( firstTour && ( ( level > 0 ) && ( prevType == QXmlStreamReader::NoToken ) ) ) {
+		if( firstTour && ( ( level > 0 ) && ( prevType == QXmlStreamReader::NoToken ) && ( !isWhitespace() ) ) ) {
 			if( isEndElement() ) {
 				m_result << "/>";
 			} else
@@ -142,9 +142,10 @@ void XMLPrettyPrinter::constructXML( int level ) {
 			m_result << "<!--" << text().toString() << "-->";
 		}
 
-		if( !isWhitespace() )
+		if( !isWhitespace() ) {
 			prevType = tokenType();
-		firstTour = false;
+			firstTour = false;
+		}
 	}
 }
 
