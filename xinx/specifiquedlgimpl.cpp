@@ -138,8 +138,8 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 
 	SpecifiqueDialogImpl dlg;
 
-	if( ( canBeAddedToRepository( newFilename ) || ( (!filename.isEmpty()) && (!isSpecifique( filename )) && canBeSaveAsSpecifique( filename ) ) ) ) {
-		dlg.setFileName( filename );
+	if( ( canBeAddedToRepository( newFilename ) || ( (!newFilename.isEmpty()) && (!isSpecifique( newFilename )) && canBeSaveAsSpecifique( newFilename ) ) ) ) {
+		dlg.setFileName( newFilename );
 		dlg.m_defaultFileName = defaultFileName;
 
 		if( dlg.exec() ) {
@@ -151,19 +151,20 @@ QString SpecifiqueDialogImpl::saveFileAs( const QString & filename, const QStrin
 		newFilename = QDir( m_lastPlace ).absoluteFilePath( QFileInfo( filename ).fileName() );
 	}
 
-	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, XinxPluginsLoader::self()->managedFilters().join(";;"), &filter );
+	newFilename = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), newFilename, filter, &filter );
 	if( newFilename.isEmpty() )
 		return QString();
 
 	m_lastPlace = QFileInfo( newFilename ).absolutePath();
 
 	if( saveToRepository ) {
+		if( ! filename.isEmpty() )
 		filesForRepository << QDir( dlg.path() ).absoluteFilePath( QFileInfo( filename ).fileName() );
 		if( filename != newFilename )
 			filesForRepository << newFilename;
 	}
 
-	if( ( filename != newFilename ) && (!isSpecifique( filename )) && isSpecifique( newFilename ) ) {
+	if( (!filename.isEmpty()) && ( filename != newFilename ) && (!isSpecifique( filename )) && isSpecifique( newFilename ) ) {
 		QFile::copy( filename, QDir( dlg.path() ).absoluteFilePath( QFileInfo( filename ).fileName() ) );
 	}
 
@@ -181,7 +182,7 @@ QString SpecifiqueDialogImpl::saveFileAsIfStandard( const QString & filename, QS
 					filter	= XinxPluginsLoader::self()->fileTypeFilter( XinxPluginsLoader::self()->matchedFileType( filename ) );
 
 			if( dlg.m_specifiqueCheckBox->isEnabled() && dlg.m_specifiqueCheckBox->isChecked() ) {
-				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, XinxPluginsLoader::self()->managedFilters().join(";;"), &filter );
+				path = QFileDialog::getSaveFileName( &dlg, tr("Save text file"), path, filter, &filter );
 				if( ! path.isEmpty() )
 					m_lastPlace = QFileInfo( path ).absolutePath();
 			}
