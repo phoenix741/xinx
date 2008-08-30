@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>CVSAddThread</name>
     <message>
         <location filename="../cvsthread.cpp" line="243"/>
         <source>Add terminated</source>
-        <translation>Ajout terminé</translation>
+        <translation type="unfinished">Ajout terminé</translation>
     </message>
 </context>
 <context>
