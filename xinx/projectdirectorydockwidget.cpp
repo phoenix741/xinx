@@ -38,17 +38,16 @@
 
 /* PrivateProjectDirectoryDockWidget */
 
-PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) :
-	m_selectedUpdateAction(0), m_selectedCommitAction(0), m_selectedAddAction(0), m_selectedRemoveAction(0),
-	m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0), m_selectedCompareAction(0),
-	m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {
+PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) : m_selectedUpdateAction(0),
+	m_selectedCommitAction(0), m_selectedAddAction(0), m_selectedRemoveAction(0), m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0),
+	m_selectedCompareAction(0), m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {
+
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
 	m_projectDirWidget->setupUi( contentWidget );
 	m_parent->setWidget( contentWidget );
 
 	m_modelTimer = new QTimer( this );
-	m_modelTimer->setInterval( XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 
 	m_projectDirWidget->m_projectDirectoryTreeView->header()->hide();
@@ -57,6 +56,8 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()) );
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
+	connect( m_projectDirWidget->m_clearToolButton, SIGNAL(clicked()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
+	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(returnPressed()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
 	connect( m_projectDirWidget->m_projectDirectoryTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_projectDirectoryTreeView_doubleClicked(QModelIndex)) );
 	connect( m_projectDirWidget->m_prefixComboBox, SIGNAL(activated(QString)), this, SLOT(on_m_prefixComboBox_activated(QString)) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChange()) );
@@ -156,12 +157,23 @@ bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event
 	return QObject::eventFilter( obj, event );
 }
 
+void PrivateProjectDirectoryDockWidget::on_m_filtreLineEdit_returnPressed() {
+	int timeout = XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout;
+	if( timeout == 0 ) {
+		filtreChange();
+	}
+}
+
 void PrivateProjectDirectoryDockWidget::on_m_filtreLineEdit_textChanged( QString filtre ) {
 	Q_UNUSED( filtre );
 	Q_ASSERT( m_dirModel );
 
 	m_modelTimer->stop();
-	m_modelTimer->start();
+	int timeout = XINXConfig::self()->config().project.automaticProjectDirectoryRefreshTimeout;
+	if( timeout > 0 ) {
+		m_modelTimer->setInterval( timeout );
+		m_modelTimer->start();
+	}
 }
 
 void PrivateProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index ) {
