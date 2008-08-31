@@ -20,17 +20,45 @@
 
 // Qt header
 #include <QApplication>
+#include <QLocale>
+#include <QTranslator>
 
 // Xinx header
 #include "projectwizard.h"
 
 int main( int argc, char *argv[] ) {
 	Q_INIT_RESOURCE( xinxprojectwizard );
-	
+
 	QApplication app( argc, argv );
-	
-	ProjectWizard wizard;
+
+	QString langue = QLocale::system().name();
+	QString filename;
+
+	QStringListIterator iterator( app.arguments() );
+	iterator.next(); // Zap le nom du programme
+	while( iterator.hasNext() ) {
+		QString arg  = iterator.next();
+		if( arg.startsWith( "-lang" ) ) {
+			if( arg.contains("=") ) {
+				langue = arg.split( "=" ).at( 1 );
+			} else {
+				langue = iterator.next();
+			}
+		} else {
+			filename = arg;
+		}
+	}
+
+	QTranslator translator_xinx, translator_qt;
+
+	translator_qt.load( QString(":/translations/qt_%1").arg( langue ) );
+	app.installTranslator(&translator_qt);
+
+	translator_xinx.load( QString(":/translations/xinxprojectwizard_%1").arg( langue ) );
+	app.installTranslator(&translator_xinx);
+
+	ProjectWizard wizard( filename );
 	wizard.show();
-	
+
 	return app.exec();
 }

@@ -33,24 +33,26 @@ class ProjectConverter;
 class ProjectWizard : public QWizard {
 	Q_OBJECT
 public:
-	ProjectWizard( QWidget * parent = 0 );
-	
+	ProjectWizard( QString filname, QWidget * parent = 0 );
+
 	ProjectConverter * converter() const;
 	void setConverter( ProjectConverter * c );
-	
+
 	virtual void accept();
 private:
 	ProjectConverter * m_converter;
+	QString m_filename;
 };
 
 class FileWizardPage : public QWizardPage {
 	Q_OBJECT
 public:
-	FileWizardPage( QWidget * parent = 0 );
+	FileWizardPage( QString filename, QWidget * parent = 0 );
 
 	virtual void initializePage();
 	virtual bool validatePage();
 private:
+	QString m_filename;
 	DirectoryEditWidget * m_projectEdit;
 };
 
@@ -68,8 +70,10 @@ class ProgressWizardPage : public QWizardPage {
 	Q_OBJECT
 public:
 	ProgressWizardPage( QWidget * parent = 0 );
-	
+
 	virtual void initializePage ();
+private slots:
+	void processMessages();
 private:
 	QProgressBar * m_progressBar;
 };

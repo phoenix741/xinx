@@ -35,7 +35,8 @@ class Editor {
 public:
 	void loadFromVersion1( QDomElement & element );
 	void loadFromVersion2( QDomElement & element );
-	
+	void loadFromVersion3( QDomElement & element );
+
 	void saveToCurrentVersion( QDomDocument & document, QDomElement & element );
 private:
 	void getSerializedData( QDataStream & stream, int & type, QVariant & data );
@@ -55,17 +56,18 @@ private:
         SERIALIZED_KEY              = 2004, ///< The serialized params name
         SERIALIZED_VALUE            = 2005, ///< The serialized params name
         SERIALIZED_ENDOFWSEDITOR    = 2999  ///< The last element;
-    };	
+    };
 	void saveField( QDomDocument & document, QDomElement & element, QString name, QVariant value );
-	
+	QVariant readField( QDomElement & element, QString name );
+
 	bool m_isServices;
-	
+
 	QString m_fileName, m_content;
 	int m_position;
 	bool m_isModified;
-	
+
 	QList<int> m_bookmarks;
-	
+
 	QString m_service, m_action, m_param;
 	QList< QPair<QString,QString> > m_servicesContent;
 };
@@ -79,18 +81,18 @@ void Editor::loadFromVersion1( QDomElement & element ) {
 	m_position = element.attribute( "position" ).toInt();
 	m_fileName = element.attribute( "filename" );
 	m_isModified = (bool)element.attribute( "ismodified" ).toInt();
-	
+
 	if( element.attribute( "class" ) == "WebServicesEditor" ) {
 		m_isServices = true;
-		
+
 		m_service = element.attribute( "service" );
 		m_action  = element.attribute( "action" );
 		m_param   = element.attribute( "param" );
-		
+
 		QDomElement co = element.firstChildElement();
 		while( ! co.isNull() ) {
 			m_servicesContent.append( qMakePair( co.tagName(), co.text() ) );
-			
+
 			co = co.nextSiblingElement();
 		}
 	} else {
@@ -101,7 +103,7 @@ void Editor::loadFromVersion1( QDomElement & element ) {
 
 void Editor::loadFromVersion2( QDomElement & element ) {
 	QByteArray datas = QByteArray::fromBase64( element.text().toUtf8() );
-	QDataStream stream( datas ); 
+	QDataStream stream( datas );
 	QString className;
 	stream >> className;
 	m_isServices = className == "WebServicesEditor";
@@ -150,10 +152,45 @@ void Editor::loadFromVersion2( QDomElement & element ) {
 		case SERIALIZED_ENDOFWSEDITOR:
 			break;
 		}
-	} while( ( type != Editor::SERIALIZED_ENDOFFILEEDITOR ) || ( m_isServices && type != Editor::SERIALIZED_ENDOFWSEDITOR )  );
+	} while( ( type != Editor::SERIALIZED_ENDOFFILEEDITOR ) && ( (!m_isServices) || ( type != Editor::SERIALIZED_ENDOFWSEDITOR ) )  );
+}
+
+void Editor::loadFromVersion3( QDomElement & element ) {
+	m_fileName = readField( element, "FileName" ).toString();
+	m_position = readField( element, "Position" ).toInt();
+	m_isModified = readField( element, "Modified" ).toBool();
+	int bookmarkCount = readField( element, "BookmarkCount" ).toInt();
+
+	for( int i = 0; i < bookmarkCount; i++ ) {
+		m_bookmarks += readField( element, "Bookmark_" + i ).toInt();
+	}
+
+	QString className = readField( element, "ClassName" ).toString();
+	if( className == "WebServicesEditor" ) {
+		m_isServices = true;
+		m_service = readField( element, "Service" ).toString();
+		m_action = readField( element, "Action" ).toString();
+		m_param = readField( element, "Param" ).toString();
+
+		QString serviceKey, serviceValue;
+		int serviceCpt = 0;
+		while(! ( serviceKey = readField( element, "Key_" + serviceCpt ).toString() ).isEmpty() ) {
+			serviceValue = readField( element, "Value_" + serviceCpt ).toString();
+
+			m_servicesContent += qMakePair( serviceKey, serviceValue );
+
+			serviceCpt++;
+		}
+	} else {
+		m_isServices = false;
+		m_content = readField( element, "Content" ).toString();
+	}
 }
 
 void Editor::saveField( QDomDocument & document, QDomElement & element, QString name, QVariant value ) {
+	QDomElement oldElement = element.firstChildElement( name );
+	element.removeChild( oldElement );
+
 	QDomElement newElement = document.createElement( name );
 	newElement.setAttribute( "type", value.typeName() );
 	QDomText t = document.createTextNode( value.toString() );
@@ -161,31 +198,52 @@ void Editor::saveField( QDomDocument & document, QDomElement & element, QString 
 	element.appendChild( newElement );
 }
 
+QVariant Editor::readField( QDomElement & element, QString name ) {
+	QVariant value;
+	QDomElement field = element.firstChildElement( name );
+	if( field.isNull() ) return QVariant();
+	value = field.text();
+	return value;
+}
+
 void Editor::saveToCurrentVersion( QDomDocument & document, QDomElement & element ) {
 	element.setTagName( "Editor" );
-	
+
 	saveField( document, element, "FileName", m_fileName );
 	saveField( document, element, "Position", m_position );
 	saveField( document, element, "Modified", m_isModified );
 	saveField( document, element, "BookmarkCount", m_bookmarks.size() );
-	
+
 	for( int i = 0; i < m_bookmarks.size(); i++ ) {
 		saveField( document, element, "Bookmark_" + i, m_bookmarks.at( i ) );
 	}
-	
+
 	if( m_isServices ) {
 		saveField( document, element, "ClassName", "WebServicesEditor" );
 
 		saveField( document, element, "Service", m_service );
 		saveField( document, element, "Action", m_action );
 		saveField( document, element, "Param", m_param );
-		
+
 		for( int i = 0; i < m_servicesContent.size(); i++ ) {
 			saveField( document, element, "Key_" + i, m_servicesContent.at( i ).first );
 			saveField( document, element, "Value_" + i, m_servicesContent.at( i ).second );
 		}
 	} else {
-		saveField( document, element, "ClassName", "FileEditor" );
+		if( QRegExp( "*.htm*", Qt::CaseInsensitive, QRegExp::Wildcard ).exactMatch( m_fileName ) )
+			saveField( document, element, "ClassName", "HtmlFileEditor" );
+		else if( QRegExp( "*.xsl", Qt::CaseInsensitive, QRegExp::Wildcard ).exactMatch( m_fileName ) )
+			saveField( document, element, "ClassName", "StyleSheetEditor" );
+		else if( QRegExp( "*.xml", Qt::CaseInsensitive, QRegExp::Wildcard ).exactMatch( m_fileName ) )
+			saveField( document, element, "ClassName", "XmlFileEditor" );
+		else if( QRegExp( "*.css", Qt::CaseInsensitive, QRegExp::Wildcard ).exactMatch( m_fileName ) )
+			saveField( document, element, "ClassName", "CSSFileEditor" );
+		else if( QRegExp( "*.js", Qt::CaseInsensitive, QRegExp::Wildcard ).exactMatch( m_fileName ) )
+			saveField( document, element, "ClassName", "JSFileEditor" );
+		else
+			saveField( document, element, "ClassName", "TextFileEditor" );
+
+
 		if( ! m_content.isEmpty() )
 			saveField( document, element, "Content", m_content );
 	}
@@ -195,20 +253,20 @@ void Editor::saveToCurrentVersion( QDomDocument & document, QDomElement & elemen
 
 ProjectConverter::ProjectConverter( const QString & filename ) : m_filename( filename ), m_version( XINX_PROJECT_VERSION_0 ), m_nbSession( 0 )  {
 	m_type = tr("XINX Project file");
-	
+
 	QFile file( filename );
-	
+
 	if( file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
 		if(! m_projectDocument.setContent( &file ) ) throw XinxException( "Not an xml file." );
 		QDomElement rootElement = m_projectDocument.documentElement();
 		if( rootElement.tagName() != "XSLProject" ) throw XinxException( "Not a managed project file." );
-		
+
 		QDomElement version = rootElement.firstChildElement( "xinx_version" );
 		if( ! version.isNull() )
 			m_version = version.text().toInt();
-	
+
 		emit setMaximum( m_version - XINX_PROJECT_VERSION );
-		
+
 		// Lecture du fichier de session, mais s'il n'est pas là, pas d'erreur.
 		if( m_version > XINX_PROJECT_VERSION_0 ) {
 			QFile sessionFile( filename + ".session" );
@@ -217,7 +275,7 @@ ProjectConverter::ProjectConverter( const QString & filename ) : m_filename( fil
 				QDomElement session = sessionRootElement.firstChildElement( "Opened" );
 				if( sessionRootElement.tagName() != "Session" ) return;
 				QString ed = m_version == XINX_PROJECT_VERSION_1 ? "editor" : "Editor";
-				
+
 				session = session.firstChildElement( ed );
 				while( ! session.isNull() ) {
 					m_nbSession++;
@@ -243,9 +301,9 @@ void ProjectConverter::save() {
 }
 
 ProjectConverter::~ProjectConverter() {
-	
+
 }
-	
+
 int ProjectConverter::version() const {
 	return m_version;
 }
@@ -267,11 +325,11 @@ void ProjectConverter::process() {
 		QString path = specifique.text();
 		path = QFileInfo( m_filename ).absoluteDir().relativeFilePath( path );
 		m_projectDocument.documentElement().removeChild( specifique );
-		
+
 		QStringList pathList;
 		pathList << "langue/<lang>/nav/<project>" << "langue/<lang>/nav" << "." << "langue/<lang>" << "langue" << path;
 		int index = pathList.size() - 1;
-		
+
 		QDomElement paths = m_projectDocument.createElement( "paths" );
 		m_projectDocument.documentElement().appendChild( paths );
 		foreach( QString p, pathList ) {
@@ -280,12 +338,12 @@ void ProjectConverter::process() {
 			QDomText text = m_projectDocument.createTextNode( p );
 			e.appendChild( text );
 		}
-		
+
 		QDomElement indexOfSpecifiquePath = m_projectDocument.createElement( "indexOfSpecifiquePath" );
 		m_projectDocument.documentElement().appendChild( indexOfSpecifiquePath );
 		QDomText indexElement = m_projectDocument.createTextNode( QString( index ) );
 		indexOfSpecifiquePath.appendChild( indexElement );
-		
+
 		emit setValue( process++ );
 	}
 	case XINX_PROJECT_VERSION_1: {
@@ -300,9 +358,9 @@ void ProjectConverter::process() {
 		m_projectDocument.documentElement().appendChild( opt );
 		QDomText text = m_projectDocument.createTextNode( QString( "%1" ).arg( options ) );
 		opt.appendChild( text );
-		
+
 		QDomElement editor = m_sessionDocument.documentElement().firstChildElement( "Opened" ).firstChildElement( "editor" );
-		
+
 		while( ! editor.isNull() ) {
 			Editor e;
 			e.loadFromVersion1( editor );
@@ -311,23 +369,23 @@ void ProjectConverter::process() {
 
 			editor = editor.nextSiblingElement( "editor" );
 		}
-		
+
 		emit setValue( process++ );
 	}
 	case XINX_PROJECT_VERSION_2: {
 		if( m_version == XINX_PROJECT_VERSION_2 ) { // Not a previous version, only this version
 			QDomElement editor = m_sessionDocument.documentElement().firstChildElement( "Opened" ).firstChildElement( "Editor" );
-			
+
 			while( ! editor.isNull() ) {
 				Editor e;
 				e.loadFromVersion2( editor );
 				e.saveToCurrentVersion( m_sessionDocument, editor );
 				emit setValue( process++ );
-				
+
 				editor = editor.nextSiblingElement( "Editor" );
 			}
 		}
-		
+
 		QString prefix = m_projectDocument.documentElement().firstChildElement( "prefix" ).text();
 		QDomElement prefixesElement = m_projectDocument.createElement( "prefixes" );
 		m_projectDocument.documentElement().appendChild( prefixesElement );
@@ -335,14 +393,47 @@ void ProjectConverter::process() {
 		prefixesElement.appendChild( prefixElement );
 		QDomText prefixText = m_projectDocument.createTextNode( prefix );
 		prefixElement.appendChild( prefixText );
-		
+
+		emit setValue( process++ );
+	}
+	case XINX_PROJECT_VERSION_3: {
+		// Ici les WebServices ont été exporté dans un plugins
+		QStringList wsList;
+		QDomElement webServicesList = m_projectDocument.documentElement().firstChildElement( "webServiceLink" );
+		QDomElement link = webServicesList.firstChildElement( "link" );
+		while( !link.isNull() ) {
+			wsList << link.text();
+
+			link = link.nextSiblingElement();
+		}
+
+		QDomElement propertiesElement = m_projectDocument.createElement( "properties" );
+		m_projectDocument.documentElement().appendChild( propertiesElement );
+		QDomElement webServiceLinkElement = m_projectDocument.createElement( "webServiceLink" );
+		propertiesElement.appendChild( webServiceLinkElement );
+		QDomText webServiceLinkText = m_projectDocument.createTextNode( wsList.join( ";;" ) );
+		webServiceLinkElement.appendChild( webServiceLinkText );
+
+		if( m_version == XINX_PROJECT_VERSION_3 ) { // Not a previous version, only this version
+			QDomElement editor = m_sessionDocument.documentElement().firstChildElement( "Opened" ).firstChildElement( "Editor" );
+
+			while( ! editor.isNull() ) {
+				Editor e;
+				e.loadFromVersion3( editor );
+				e.saveToCurrentVersion( m_sessionDocument, editor );
+				emit setValue( process++ );
+
+				editor = editor.nextSiblingElement( "Editor" );
+			}
+		}
+
 		emit setValue( process++ );
 	}
 	}
-	
+
 	QDomElement version_xml = m_projectDocument.documentElement().firstChildElement( "xinx_version" );
 	m_projectDocument.documentElement().removeChild( version_xml );
-	
+
 	version_xml = m_projectDocument.createElement( "xinx_version" );
 	QDomText version_text = m_projectDocument.createTextNode( QString("%1").arg(XINX_PROJECT_VERSION) );
 	m_projectDocument.documentElement().appendChild( version_xml );

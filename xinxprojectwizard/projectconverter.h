@@ -32,18 +32,19 @@
 #define XINX_PROJECT_VERSION_1 1
 #define XINX_PROJECT_VERSION_2 2
 #define XINX_PROJECT_VERSION_3 3
-#define XINX_PROJECT_VERSION 3
+#define XINX_PROJECT_VERSION_4 4
+#define XINX_PROJECT_VERSION 4
 
 class ProjectConverter : public QObject {
 	Q_OBJECT
 public:
 	ProjectConverter( const QString & filename );
 	virtual ~ProjectConverter();
-	
+
 	int version() const;
 	int nbSession() const;
 	QString type() const;
-	
+
 	void process();
 	void save();
 signals:

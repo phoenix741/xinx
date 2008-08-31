@@ -35,8 +35,8 @@
 
 /* ProjectWizard */
 
-ProjectWizard::ProjectWizard( QWidget * parent ) : QWizard( parent ), m_converter( 0 ) {
-	addPage( new FileWizardPage );
+ProjectWizard::ProjectWizard( QString filename, QWidget * parent ) : QWizard( parent ), m_converter( 0 ), m_filename( filename ) {
+	addPage( new FileWizardPage( filename ) );
 	addPage( new VersionWizardPage );
 	addPage( new ProgressWizardPage );
 	addPage( new ConclusionWizardPage );
@@ -64,8 +64,9 @@ void ProjectWizard::setConverter( ProjectConverter * c ) {
 void ProjectWizard::accept() {
 	if( m_converter )
 		m_converter->save();
+
 	if( field( "project.open" ).toBool() ) {
-		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "com.editor.xinx", "/", QDBusConnection::sessionBus(), this );
+		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "org.shadoware.xinx", "/", QDBusConnection::sessionBus(), this );
 		interface->openProject( field( "project.name" ).toString() );
 	}
 
@@ -74,7 +75,7 @@ void ProjectWizard::accept() {
 
 /* FileWizardPage */
 
-FileWizardPage::FileWizardPage( QWidget * parent ) : QWizardPage( parent ) {
+FileWizardPage::FileWizardPage( QString filename, QWidget * parent ) : QWizardPage( parent ), m_filename( filename ) {
 	setTitle( tr("Project file selection") );
 	setSubTitle( tr("This wizard will help you to migrate your project file to "
 					"the current version of XINX. Please fill all fields.") );
@@ -89,8 +90,7 @@ FileWizardPage::FileWizardPage( QWidget * parent ) : QWizardPage( parent ) {
 }
 
 void FileWizardPage::initializePage() {
-	if( qApp->arguments().count() > 1 )
-		m_projectEdit->lineEdit()->setText( qApp->arguments().at( 1 ) );
+	m_projectEdit->lineEdit()->setText( m_filename );
 }
 
 bool FileWizardPage::validatePage() {
@@ -147,10 +147,15 @@ void ProgressWizardPage::initializePage() {
 	if( dynamic_cast<ProjectWizard*>( wizard() )->converter() ) {
 		ProjectConverter * converter = dynamic_cast<ProjectWizard*>( wizard() )->converter();
 		connect( converter, SIGNAL(setValue(int)), m_progressBar, SLOT(setValue(int)) );
+		connect( converter, SIGNAL(setValue(int)), this, SLOT(processMessages()) );
 		connect( converter, SIGNAL(setMaximum(int)), m_progressBar, SLOT(setMaximum(int)) );
 		converter->process();
 		m_progressBar->setMaximum( converter->nbSession() + XINX_PROJECT_VERSION - converter->version() );
 	}
+}
+
+void ProgressWizardPage::processMessages() {
+	qApp->processEvents();
 }
 
 /* ConclusionWizardPage */

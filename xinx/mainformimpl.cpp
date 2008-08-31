@@ -1553,7 +1553,7 @@ void MainformImpl::openProject( const QString & filename ) {
 		}
 	} catch( XSLProjectException e ) {
 		delete project;
-		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << filename ) ) )
+		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << "-lang" << XINXConfig::self()->config().language << filename ) ) )
 			QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
 	}
 }

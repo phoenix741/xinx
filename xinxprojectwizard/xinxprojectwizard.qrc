@@ -9,4 +9,8 @@
         <file alias="banner.png">../xinx/images/banner_wizard.png</file>
         <file alias="folder.png">../xinx/images/folder.png</file>
     </qresource>
+	<qresource prefix="/translations" >
+		<file alias="qt_fr.qm">../xinx/translations/qt_fr.qm</file>
+		<file alias="xinxprojectwizard_fr.qm">translations/xinxprojectwizard_fr.qm</file>
+	</qresource>
 </RCC>

@@ -2,7 +2,9 @@
     <qresource prefix="/" >
         <file alias="translations/xinxcomponents_fr.qm" >../components/translations/xinxcomponents_fr.qm</file>
         <file alias="translations/libxinx_fr.qm" >../libxinx/translations/libxinx_fr.qm</file>
-        <file>images/1downarrow.png</file>
+		<file>translations/qt_fr.qm</file>
+		<file>translations/xinx_fr.qm</file>
+		<file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
         <file>images/add.png</file>
         <file>images/balise.png</file>
@@ -108,7 +110,5 @@
         <file>images/window_new.png</file>
         <file>images/ecmascript.png</file>
         <file>rc/exceptionfilter.txt</file>
-        <file>translations/qt_fr.qm</file>
-        <file>translations/xinx_fr.qm</file>
     </qresource>
 </RCC>
