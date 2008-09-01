@@ -178,22 +178,27 @@ Valeur : %2</translation>
         <translation type="obsolete">Feuille de style en cascade CSS</translation>
     </message>
     <message>
+        <location filename="../webplugin.cpp" line="121"/>
         <source>XML, XSL, HTML</source>
         <translation type="obsolete">XML, XSL, HTML</translation>
     </message>
     <message>
+        <location filename="../webplugin.cpp" line="121"/>
         <source>XML, XSL, XHTML</source>
         <translation type="obsolete">XML, XSL, XHTML</translation>
     </message>
     <message>
+        <location filename="../webplugin.cpp" line="121"/>
         <source>HTML</source>
         <translation type="obsolete">HTML</translation>
     </message>
     <message>
+        <location filename="../webplugin.cpp" line="121"/>
         <source>XML</source>
         <translation type="obsolete">XML</translation>
     </message>
     <message>
+        <location filename="../webplugin.cpp" line="121"/>
         <source>XSL</source>
         <translation type="obsolete">XSL</translation>
     </message>
@@ -218,7 +223,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../ui/webpluginform.ui" line="13"/>
         <source>Customize Web Plugin</source>
-        <translation>Personaliser le module Web</translation>
+        <translation>Personnaliser le module Web</translation>
     </message>
     <message>
         <location filename="../ui/webpluginform.ui" line="34"/>
@@ -289,7 +294,7 @@ Valeur : %2</translation>
     <message>
         <location filename="../xsl/xsllistview.cpp" line="379"/>
         <source>Can&apos;t insert %1 template</source>
-        <translation>Ne peux insérer le modèle %1</translation>
+        <translation>Ne peut insérer le modèle %1</translation>
     </message>
 </context>
 <context>

@@ -11,7 +11,7 @@
     <message>
         <location filename="../empty.cpp" line="52"/>
         <source>This small plugin do nothing and is just a demo</source>
-        <translation>Ce petit plugin est une demonstration et ne fait rien</translation>
+        <translation>Ce petit plugin est une démonstration et ne fait rien</translation>
     </message>
 </context>
 </TS>

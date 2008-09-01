@@ -6,7 +6,7 @@
     <message>
         <location filename="../cvsthread.cpp" line="243"/>
         <source>Add terminated</source>
-        <translation type="unfinished">Ajout terminé</translation>
+        <translation>Ajout terminé</translation>
     </message>
 </context>
 <context>

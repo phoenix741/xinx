@@ -203,8 +203,8 @@ p, li { white-space: pre-wrap; }
 &lt;p&gt;Only checked file are commited.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ceci est la liste des fichiers à valider. Seuls les fichiers connus sont listés ici (.xsl, .html, .css, .js, ...).&lt;/p&gt;
 &lt;p&gt;Dans cette liste &lt;b&gt;XINX&lt;/b&gt; présente trois actions : &lt;/p&gt;
-&lt;ul&gt;&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le référenciel mais existe sur le disque dur.&lt;/li&gt;
-&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référenciel.&lt;li&gt;
+&lt;ul&gt;&lt;li&gt;&lt;i&gt;Ajouter et Valider&lt;/i&gt; : Si le fichier n&apos;existe pas dans le référentiel mais existe sur le disque dur.&lt;/li&gt;
+&lt;li&gt;&lt;i&gt;Supprimer et Valider&lt;/i&gt; : Si le fichier est supprimé du disque mais pas du référentiel.&lt;li&gt;
 &lt;li&gt;&lt;i&gt;Valider&lt;/i&gt; : Si le fichier existe et est modifié (coché par défaut).&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;Seuls les fichiers cochés sont validés&lt;/p&gt;</translation>
     </message>
@@ -258,22 +258,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ConnectionWebServicesDialog</name>
     <message>
+        <location filename="../configurationfile.cpp" line="306"/>
         <source>WebServices Connection</source>
         <translation type="obsolete">Connexion aux WebServices</translation>
     </message>
     <message>
+        <location filename="../configurationfile.cpp" line="306"/>
         <source>Connection ....</source>
         <translation type="obsolete">Connexion ....</translation>
     </message>
     <message>
+        <location filename="../configurationfile.cpp" line="306"/>
         <source>Send Request :</source>
         <translation type="obsolete">Envoi de la requête :</translation>
     </message>
     <message>
+        <location filename="../configurationfile.cpp" line="306"/>
         <source>Receive Request :</source>
         <translation type="obsolete">Réception de la requête :</translation>
     </message>
     <message>
+        <location filename="../configurationfile.cpp" line="306"/>
         <source>&amp;Abort</source>
         <translation type="obsolete">&amp;Annuler</translation>
     </message>
@@ -346,10 +351,12 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Créer une sauvegarde avant enregistrement (.bak)</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="471"/>
         <source>Active popup completion dialog</source>
         <translation type="obsolete">Active le popup de complétion</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="471"/>
         <source>Desactivate completion</source>
         <translation type="obsolete">Désactive la complétion</translation>
     </message>
@@ -389,13 +396,14 @@ p, li { white-space: pre-wrap; }
         <translation>Nom par défaut du dossier des &amp;spécifiques :</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="295"/>
         <source>&amp;Alert user when file is standard (project mode only)</source>
         <translation type="obsolete">&amp;Alerter l&apos;utilisateur quand le fichier est standard (mode projet seulement)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="376"/>
         <source>&amp;Save project with session information by default (content of modified file)</source>
-        <translation>&amp;Sauvegarde le project avec les informations de session par défaut (contenu des fichiers modifié)</translation>
+        <translation>&amp;Sauvegarde le projet avec les informations de session par défaut (contenu des fichiers modifiés)</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3514"/>
@@ -403,10 +411,12 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Défaut</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="3514"/>
         <source>Active automatique code writing (Niveau 1)</source>
         <translation type="obsolete">Active l&apos;écriture de code automatique (Niveau 1)</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="3514"/>
         <source>Active automatique code writing (Niveau 2)</source>
         <translation type="obsolete">Active l&apos;écriture de code automatique (Niveau 2)</translation>
     </message>
@@ -436,6 +446,7 @@ p, li { white-space: pre-wrap; }
         <translation>Révision</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="65"/>
         <source>Interface</source>
         <translation type="obsolete">Interface</translation>
     </message>
@@ -480,6 +491,7 @@ p, li { white-space: pre-wrap; }
         <translation>Bouton de fermeture sur l&apos;onglet &amp;et le coin</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="524"/>
         <source>&amp;Code helper :</source>
         <translation type="obsolete">&amp;Aide à la saisie :</translation>
     </message>
@@ -574,6 +586,7 @@ p, li { white-space: pre-wrap; }
         <translation>Modules</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="3472"/>
         <source>Script</source>
         <translation type="obsolete">Scripts</translation>
     </message>
@@ -652,6 +665,7 @@ p, li { white-space: pre-wrap; }
         <translation>Taille d&apos;une tabulation en nombre de caractère.</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="1149"/>
         <source>&lt;p&gt;Level of the completion. The completion can be :&lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;Desactivated&lt;/li&gt;
 &lt;li&gt;Activated but only with an help on tapping&lt;/li&gt;
@@ -736,6 +750,7 @@ p, li { white-space: pre-wrap; }
         <translation>Contient un texte exemple affichant comment l&apos;éditeur colorisera le texte.</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="1745"/>
         <source>&lt;p&gt;In derivated project mode only, when a standard file (with no prefix) is saving, &lt;b&gt;XINX&lt;/b&gt; ask you to save the file with a new prefixed name.&lt;/p&gt;
 &lt;p&gt;The prefix must be specified in the project property.&lt;/p&gt;</source>
         <translation type="obsolete">&lt;p&gt;Dans les projets dérivés uniquement, quand un fichier standard (sans préfix) est sauvé, &lt;b&gt;XINX&lt;/b&gt; demande pour sauver le fichier sous un nouveau nom avec un préfix.&lt;/p&gt;&lt;p&gt;Le préfix doit être indiqué dans les propriétés du projet.&lt;/p&gt;</translation>
@@ -748,7 +763,7 @@ p, li { white-space: pre-wrap; }
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;In case of crash &lt;b&gt;XINX&lt;/b&gt; save the project in session mode automatically.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ceci définit la méthode utilisée pour fermer le projet.&lt;/p&gt;
-&lt;p&gt;Si coché, quand le projet, ou l&apos;application est fermé, les informations à propos des fichiers sont stockées dans le fichier de session même si le fichier n&apos;était pas sauvé.&lt;/p&gt;
+&lt;p&gt;Si coché, quand le projet ou l&apos;application est fermé, les informations à propos des fichiers sont stockées dans le fichier de session même si le fichier n&apos;était pas sauvé.&lt;/p&gt;
 &lt;p&gt;Sinon, XINX demande à l&apos;utilisateur d&apos;enregistrer les fichiers non sauvés.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;Lors d&apos;un plantage &lt;b&gt;XINX&lt;/b&gt; sauve automatiquement le projet en mode session.&lt;/i&gt;&lt;/p&gt;</translation>
@@ -790,7 +805,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="2344"/>
         <source>Color of a node with a sub-element of name error.</source>
-        <translation>Couleur du noeud ayant comme sous-élément le noeud error.</translation>
+        <translation>Couleur du noeud ayant comme sous-élément le nom erreur.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="2811"/>
@@ -817,9 +832,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3298"/>
         <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
-        <translation>Liste des modéles pouvant être utilisé lors de la complétion (avec la clé du modéle) ou appelé manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modéles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
+        <translation>Liste des modéles pouvant être utilisés lors de la complétion (avec la clé du modéle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modéles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../ui/custom.ui" line="3298"/>
         <source>List of snipet known by &lt;b&gt;XINX&lt;/b&gt;. This snipets can contains keyword and script to held the user to edit text.</source>
         <translation type="obsolete">Liste des modéles connue par &lt;b&gt;XINX&lt;/b&gt;. Ces modéles peuvent contenir des mots clés et des scripts pour aider l&apos;utilisateur à éditer le texte.</translation>
     </message>
@@ -866,7 +882,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3396"/>
         <source>Export selected snipet to an XML file.</source>
-        <translation>Exporte les modéles selectionné dans un fichier XML.</translation>
+        <translation>Exporte les modéles selectionnés dans un fichier XML.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3399"/>
@@ -891,7 +907,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="323"/>
         <source>Timeout before the directory view is reloaded with your filter.</source>
-        <translation>Temps avant lequel la vue des dossiers est rechargé afin de refleter le filtre.</translation>
+        <translation>Temps avant lequel la vue des dossiers est rechargée afin de refléter le filtre.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="579"/>
@@ -918,24 +934,24 @@ p, li { white-space: pre-wrap; }
         <source>&lt;p&gt;Choose the default text encoding, when the text encoding can&apos;t be found. 
 
 &lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Quand l&apos;encodage du texte ne peux pas être trouvé, c&apos;est l&apos;encodage par défaut qui est utilisé.
+        <translation>&lt;p&gt;Quand l&apos;encodage du texte ne peut pas être trouvé, c&apos;est l&apos;encodage par défaut qui est utilisé.
 
-&lt;i&gt;Quelques éditeurs, peuvent redéfinir l&apos;encodage du texte (par exemple : XML est dérivé). Cette encodage est utilisé par les éditeurs comme JavaScript et autres&lt;/i&gt;&lt;/p&gt;</translation>
+&lt;i&gt;Quelques éditeurs, peuvent redéfinir l&apos;encodage du texte (par exemple : XML est dérivé). Cet encodage est utilisé par les éditeurs comme JavaScript et autres&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="566"/>
         <source>&amp;Text content refresh :</source>
-        <translation>&amp;Rafraichissement du contenue :</translation>
+        <translation>&amp;Rafraichissement du contenu :</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="576"/>
         <source>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</source>
-        <translation>Nombre de milliseconde à attendre avant le rechargement du contenue de l&apos;éditeur. A chaque frappe au clavier le compte à rebour est remis à zéro.</translation>
+        <translation>Nombre de millisecondes à attendre avant le rechargement du contenu de l&apos;éditeur. A chaque frappe au clavier le compte à rebours est remis à zéro.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3175"/>
         <source>Custom...</source>
-        <translation>Personaliser ...</translation>
+        <translation>Personnaliser ...</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="1832"/>
@@ -1040,22 +1056,27 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>Editor</name>
     <message>
+        <location filename="../dirrcsmodel.cpp" line="129"/>
         <source>&amp;Undo</source>
         <translation type="obsolete">&amp;Défaire</translation>
     </message>
     <message>
+        <location filename="../dirrcsmodel.cpp" line="129"/>
         <source>&amp;Redo</source>
         <translation type="obsolete">&amp;Refaire</translation>
     </message>
     <message>
+        <location filename="../dirrcsmodel.cpp" line="129"/>
         <source>&amp;Cut</source>
         <translation type="obsolete">&amp;Couper</translation>
     </message>
     <message>
+        <location filename="../dirrcsmodel.cpp" line="129"/>
         <source>C&amp;opy</source>
         <translation type="obsolete">C&amp;opier</translation>
     </message>
     <message>
+        <location filename="../dirrcsmodel.cpp" line="129"/>
         <source>&amp;Paste</source>
         <translation type="obsolete">Co&amp;ller</translation>
     </message>
@@ -1071,70 +1092,86 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>FileEditor</name>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>&amp;Close</source>
         <translation type="obsolete">&amp;Fermer</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>noname</source>
         <translation type="obsolete">sansnom</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="obsolete">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation type="obsolete">Ne peut écrire le fichier %1 :
 %2.</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>%1 at %2</source>
         <translation type="obsolete">%1 à %2</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Can&apos;t indent this type of document</source>
         <translation type="obsolete">Ne peut identer ce type de document</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>In editor &apos;%1&apos; at line %2</source>
         <translation type="obsolete">Dans l&apos;éditeur &apos;%1&apos; à la ligne %2</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Comment</source>
         <translation type="obsolete">Commenter</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Uncomment</source>
         <translation type="obsolete">Décommenter</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Parse error line %1 column %2 : %3</source>
         <translation type="obsolete">Erreur d&apos;analyse à la ligne %1, et colonne %2 :%3</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Can&apos;t comment this type of document</source>
         <translation type="obsolete">Ne peut commenter ce type de document</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Reload page</source>
         <translation type="obsolete">Recharger la page</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>The file %1 was modified. Reload the page ?</source>
         <translation type="obsolete">Le fichier %1 a été modifié. Recharger la page ?</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>The file %1 was removed.</source>
         <translation type="obsolete">Le fichier %1 a été supprimé.</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Search Word</source>
         <translation type="obsolete">Chercher le mot</translation>
     </message>
     <message>
+        <location filename="../../libxinx/filecontentitemmodel.cpp" line="138"/>
         <source>Word %1 not found</source>
         <translation type="obsolete">Mot %1 non trouvé</translation>
     </message>
@@ -1216,6 +1253,7 @@ Taille du cache : %6/%7</translation>
         <translation>&amp;Affichage</translation>
     </message>
     <message>
+        <location filename="../ui/mainform.ui" line="82"/>
         <source>WebServices</source>
         <translation type="obsolete">Services internet</translation>
     </message>
@@ -1265,6 +1303,7 @@ Taille du cache : %6/%7</translation>
         <translation>Validation du projet</translation>
     </message>
     <message>
+        <location filename="../ui/mainform.ui" line="852"/>
         <source>WebServices Tool Bar</source>
         <translation type="obsolete">Barre d&apos;outil des services internet</translation>
     </message>
@@ -1529,14 +1568,17 @@ Taille du cache : %6/%7</translation>
         <translation>Recherche précédente</translation>
     </message>
     <message>
+        <location filename="../ui/mainform.ui" line="755"/>
         <source>Refresh WebServices List</source>
         <translation type="obsolete">Rafraichir la liste des services internet</translation>
     </message>
     <message>
+        <location filename="../ui/mainform.ui" line="755"/>
         <source>Call WebServices</source>
         <translation type="obsolete">Appeler les services internet</translation>
     </message>
     <message>
+        <location filename="../ui/mainform.ui" line="755"/>
         <source>New WebServices file</source>
         <translation type="obsolete">Nouveau service internet</translation>
     </message>
@@ -1593,7 +1635,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../ui/mainform.ui" line="815"/>
         <source>Cancel RCS operation</source>
-        <translation>Annulle l&apos;opération</translation>
+        <translation>Annule l&apos;opération</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="824"/>
@@ -1810,12 +1852,12 @@ Taille du cache : %6/%7</translation>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Appelle la méthode de validation de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour tous les dossiers projets. Un message optionnel peut être ajouté.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés par le référenciel.&lt;/li&gt;&lt;/p&gt;</translation>
+&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés par le référentiel.&lt;/li&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="885"/>
         <source>If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header.</source>
-        <translation>Si coché la liste est affichée à plat, au lieu d&apos;afficher un arbre. Chaque liste de fichier est précédé d&apos;un entête avec le dossier.</translation>
+        <translation>Si cochée la liste est affichée à plat, au lieu d&apos;afficher un arbre. Chaque liste de fichier est précédée d&apos;un entête avec le dossier.</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="96"/>
@@ -1841,10 +1883,12 @@ Taille du cache : %6/%7</translation>
 <context>
     <name>MainformImpl</name>
     <message>
+        <location filename="../ui/mainform.ui" line="986"/>
         <source>WebServices</source>
         <translation type="obsolete">Services internet</translation>
     </message>
     <message>
+        <location filename="../ui/mainform.ui" line="986"/>
         <source>No WebServices can be found. Please update WebServices list to continue.</source>
         <translation type="obsolete">Le service internet ne peut être trouvé. Rafraichissez la liste des services pour continuer.</translation>
     </message>
@@ -1864,10 +1908,12 @@ Taille du cache : %6/%7</translation>
         <translation>Ne peut ouvrir le projet</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1543"/>
         <source>Deserialization</source>
         <translation type="obsolete">Désérialisation</translation>
     </message>
     <message>
+        <location filename="../mainformimpl.cpp" line="1543"/>
         <source>Error when restoring editor</source>
         <translation type="obsolete">Erreur lors de la restauration de l&apos;éditeur</translation>
     </message>
@@ -1944,7 +1990,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="540"/>
         <source>An error occure while run the script : %1</source>
-        <translation>Une erreur est survenue pendant l&apos;éxécution du script : %1</translation>
+        <translation>Une erreur est survenue pendant l&apos;exécution du script : %1</translation>
     </message>
     <message>
         <location filename="../mainformimpl.cpp" line="610"/>
@@ -2058,7 +2104,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="1276"/>
         <source>Can&apos;t stop a project for plugin &quot;%1&quot;</source>
-        <translation>Le module &quot;%1&quot; ne peux arrêter le projet</translation>
+        <translation>Le module &quot;%1&quot; ne peut arrêter le projet</translation>
     </message>
     <message>
         <location filename="../mainformimpl.cpp" line="1306"/>
@@ -2083,7 +2129,7 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="1538"/>
         <source>Can&apos;t start a project for plugin &quot;%1&quot;</source>
-        <translation>Le module &quot;%1&quot; ne peux démarrer le projet</translation>
+        <translation>Le module &quot;%1&quot; ne peut démarrer le projet</translation>
     </message>
 </context>
 <context>
@@ -2101,68 +2147,83 @@ Voulez-vous sauver les changements ?</translation>
     <message>
         <location filename="../newprojectwizard.cpp" line="101"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
-        <translation>Ne peux pas sauvegarder la page &quot;%1&quot;</translation>
+        <translation>Ne peut pas sauvegarder la page &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
     <name>PrivateConnectionWebServicesDialogImpl</name>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>Close</source>
         <translation type="obsolete">Fermer</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The host name lookup failed.</source>
         <translation type="obsolete">La recherche de l&apos;hôte a échouée.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The server refused the connection.</source>
         <translation type="obsolete">Le serveur a refusé la connexion.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The server closed the connection unexpectedly.</source>
         <translation type="obsolete">Le serveur a fermé la connection inopinément.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The server sent an invalid response header.</source>
         <translation type="obsolete">Le serveur a envoyé une entête invalide.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The client could not read the content correctly.</source>
         <translation type="obsolete">Le client ne peut lire le contenu correctement.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The request was aborted.</source>
         <translation type="obsolete">La requête a été annulée.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>An error occure.</source>
         <translation type="obsolete">Une erreur est arrivée.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>There is no connection to the host.</source>
         <translation type="obsolete">La connexion avec l&apos;hôte a été perdue.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>A host name lookup is in progress.</source>
         <translation type="obsolete">Recherche de l&apos;hôte.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>An attempt to connect to the host is in progress.</source>
         <translation type="obsolete">Connexion en cours avec l&apos;hôte.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The client is sending its request to the server.</source>
         <translation type="obsolete">Le client envoie sa requête au serveur.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The client&apos;s request has been sent and the client is reading the server&apos;s response.</source>
         <translation type="obsolete">La requête du client a été envoyée et le client lit la réponse du serveur.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The connection to the host is open.</source>
         <translation type="obsolete">La connexion avec l&apos;hôte est ouverte.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="101"/>
         <source>The connection is closing down.</source>
         <translation type="obsolete">La connexion est en cours de fermeture.</translation>
     </message>
@@ -2213,134 +2274,166 @@ Voulez-vous sauver les changements ?</translation>
 <context>
     <name>PrivateMainformImpl</name>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Open text file</source>
         <translation type="obsolete">Ouvrir un fichier texte</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Application</source>
         <translation type="obsolete">Application</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>The document %1 has been modified.
 Do you really want refresh this?</source>
         <translation type="obsolete">Le document %1 a été modifié.
 Voulez-vous vraiment l&apos;actualiser ?</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Load snipet</source>
         <translation type="obsolete">Chargement du template</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Can&apos;t load snipet file.</source>
         <translation type="obsolete">Ne peut charger le fichier de template.</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>&amp;%1 %2</source>
         <translation type="obsolete">&amp;%1 %2</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Ready</source>
         <translation type="obsolete">Prêt</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>The document %1 has been modified.
 Do you want to save your changes?</source>
         <translation type="obsolete">Le document %1 a été modifié.
 Voulez-vous sauver les changements ?</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>File %1 saved</source>
         <translation type="obsolete">Fichier %1 sauvé</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Printed</source>
         <translation type="obsolete">Impression</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Search/Replace</source>
         <translation type="obsolete">Chercher/Remplacer</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>%1 occurences of &apos;%2&apos; replaced.</source>
         <translation type="obsolete">%1 occurences de la chaine &apos;%2&apos; remplacées.</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>%1 occurences of &apos;%2&apos; %3. Return to the beginning of the document ?</source>
         <translation type="obsolete">%1 occurences de la chaine &apos;%2&apos; %3. Retourner au début du document ?</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>replaced</source>
         <translation type="obsolete">remplacé</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>finded</source>
         <translation type="obsolete">trouvé</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Replace this occurence</source>
         <translation type="obsolete">Remplacer cette occurence</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>%1 - %2</source>
         <translation type="obsolete">%1 - %2</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Open a project</source>
         <translation type="obsolete">Ouvrir un projet</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>WebServices Error</source>
         <translation type="obsolete">Erreur du service internet</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Web services has error code %1 : %2</source>
         <translation type="obsolete">Le service internet a retourné le code erreur suivante %1 : %2</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>File Content</source>
         <translation type="obsolete">Contenu du document</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Project Directory</source>
         <translation type="obsolete">Dossier projet</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>RCS Log</source>
         <translation type="obsolete">Journal du système de gestion de version</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Compare</source>
         <translation type="obsolete">Comparer</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Standard file %1 not found or not in specifique directory.</source>
         <translation type="obsolete">Le fichier standard %1 n&apos;a pas été trouvé ou n&apos;est pas dans le dossier spécifique.</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Not a specifique file</source>
         <translation type="obsolete">Le fichier n&apos;est pas spécifique</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>XML Presentation</source>
         <translation type="obsolete">Flux de présentation XML</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>New %1</source>
         <translation type="obsolete">Nouveau %1</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Tools</source>
         <translation type="obsolete">Outils</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Replace text</source>
         <translation type="obsolete">Remplacer le text</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>Snipets</source>
         <translation type="obsolete">Modéles</translation>
     </message>
     <message>
+        <location filename="../customdialogimpl.cpp" line="859"/>
         <source>An error occure while run the script : %1</source>
         <translation type="obsolete">Une erreur est survenue pendant l&apos;éxécution du script : %1</translation>
     </message>
@@ -2382,7 +2475,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/projectdirectorywidget.ui" line="51"/>
         <source>Update project</source>
-        <translation>Mise à jours du projet</translation>
+        <translation>Mise à jour du projet</translation>
     </message>
     <message>
         <location filename="../ui/projectdirectorywidget.ui" line="64"/>
@@ -2409,7 +2502,7 @@ Date du fichier : %4</translation>
         <source>&lt;p&gt;Call the commit method of your &lt;i&gt;revision control sytem&lt;/i&gt; for all the project directory. An optional message can be added.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Only &lt;b&gt;XINX&lt;/b&gt; managed files are commited to the repository.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Appelle la méthode de validation de votre &lt;i&gt;gestionnaire de version&lt;/i&gt; pour chaque dossier projet. Un message optionnel peut être ajouté.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés dans le référenciel.&lt;/li&gt;&lt;/p&gt;</translation>
+&lt;p&gt;&lt;i&gt;Seuls les fichiers gérés par &lt;b&gt;XINX&lt;/b&gt; sont validés dans le référentiel.&lt;/li&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../ui/projectdirectorywidget.ui" line="78"/>
@@ -2445,11 +2538,11 @@ Date du fichier : %4</translation>
         <translation>&lt;p&gt;Cette vue affiche tous les fichiers du dossier projet (et peut-être filtrée par le champ plus haut).&lt;/p&gt;
 &lt;p&gt;Par un clique droit à l&apos;aide de la souris sur un fichier, on peut : &lt;/p&gt;
 &lt;ul&gt;&lt;li&gt;Comparer le fichier avec le standard&lt;/li&gt;
-&lt;li&gt;Comparer le fichier avec le référenciel&lt;/li&gt;
-&lt;li&gt;Mettre à jour le fichier depuis le référenciel&lt;/li&gt;
-&lt;li&gt;Supprimer un fichier du référenciel.&lt;/li&gt;
-&lt;li&gt;Ajouter un fichier au référenciel.&lt;/li&gt;
-&lt;li&gt;Valider un fichier sur le référenciel.&lt;/li&gt;&lt;/ul&gt;
+&lt;li&gt;Comparer le fichier avec le référentiel&lt;/li&gt;
+&lt;li&gt;Mettre à jour le fichier depuis le référentiel&lt;/li&gt;
+&lt;li&gt;Supprimer un fichier du référentiel.&lt;/li&gt;
+&lt;li&gt;Ajouter un fichier au référentiel.&lt;/li&gt;
+&lt;li&gt;Valider un fichier sur le référentiel.&lt;/li&gt;&lt;/ul&gt;
 &lt;p&gt;On peut également comparer deux fichiers.&lt;/p&gt;</translation>
     </message>
 </context>
@@ -2644,6 +2737,7 @@ Date du fichier : %4</translation>
         <translation>Version :</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="188"/>
         <source>&amp;WebServices</source>
         <translation type="obsolete">Service &amp;Internet</translation>
     </message>
@@ -2673,6 +2767,7 @@ Date du fichier : %4</translation>
         <translation>&amp;Annuler</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="462"/>
         <source>Project has WebServices</source>
         <translation type="obsolete">Le projet a des services Internet</translation>
     </message>
@@ -2694,7 +2789,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/projectproperty.ui" line="103"/>
         <source>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</source>
-        <translation>C&apos;est le nom du projet affiché dans la bar de titre de &lt;b&gt;XINX&lt;/b&gt;. C&apos;est information est inutil.</translation>
+        <translation>C&apos;est le nom du projet affiché dans la barre de titre de &lt;b&gt;XINX&lt;/b&gt;. Cette information est inutile.</translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="118"/>
@@ -2714,7 +2809,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/projectproperty.ui" line="195"/>
         <source>This is the default lang used by your project. This can be used for the search path of the &lt;u&gt;C&lt;/u&gt;ustom files tab.</source>
-        <translation>C&apos;est la langue utilisé par défaut dans le projet. Cette information peut-être utilisée par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
+        <translation>C&apos;est la langue utilisée par défaut dans le projet. Cette information peut-être utilisée par les chemins de l&apos;onglet &lt;u&gt;F&lt;/u&gt;ichier spécifique.</translation>
     </message>
     <message>
         <location filename="../ui/projectproperty.ui" line="269"/>
@@ -2722,6 +2817,7 @@ Date du fichier : %4</translation>
         <translation>C&apos;est le navigateur par défaut utilisé dans la liste des chemins de l&apos;onget &lt;u&gt;F&lt;/u&gt;ichier spéciques.</translation>
     </message>
     <message>
+        <location filename="../ui/projectproperty.ui" line="269"/>
         <source>&lt;p&gt;Check this box is you want add service web to the project. The list is a list of WSDL. When you start the project, &lt;b&gt;XINX&lt;/b&gt; will connect to the service and download the description file.&lt;/p&gt;
 &lt;p&gt;Next you can execute a service stream that open a dialog with the in stream and the out stream.&lt;/p&gt;</source>
         <translation type="obsolete">&lt;p&gt;Cochez la case si vous voulez ajouter des services internet à votre projet. La liste doit contenir des chemins vers les fichiers WSDL. A l&apos;ouverture du projet, &lt;b&gt;XINX&lt;/b&gt; se connectera aux services et téléchargera le fichier de description.&lt;/p&gt;
@@ -2763,17 +2859,18 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../projectpropertyimpl.cpp" line="148"/>
         <source>Can&apos;t load &quot;%1&quot; page</source>
-        <translation>Ne peux pas charger la page &quot;%1&quot;</translation>
+        <translation>Ne peut pas charger la page &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../projectpropertyimpl.cpp" line="179"/>
         <source>Can&apos;t save &quot;%1&quot; page</source>
-        <translation>Ne peux pas sauvegarder la page &quot;%1&quot;</translation>
+        <translation>Ne peut pas sauvegarder la page &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../projectpropertyimpl.cpp" line="179"/>
         <source>UniqueApplication: Cannot find the D-Bus session server</source>
         <translation type="obsolete">UniqueApplication: Ne peut trouver la session sur le serveur D-BUS</translation>
     </message>
@@ -2788,16 +2885,19 @@ Date du fichier : %4</translation>
         <translation>UniqueApplication: Ne peut vraiment pas créer de service D-BUS.</translation>
     </message>
     <message>
+        <location filename="../uniqueapplication.cpp" line="104"/>
         <source>WSDL WebServices file</source>
         <translation type="obsolete">Fichier de description de service internet WSDL</translation>
     </message>
     <message>
+        <location filename="../uniqueapplication.cpp" line="104"/>
         <source>Parse error at line %1, column %2:
 %3</source>
         <translation type="obsolete">Erreur de parsing à la ligne %1, et colonne %2 :
 %3</translation>
     </message>
     <message>
+        <location filename="../uniqueapplication.cpp" line="104"/>
         <source>Invok WebServices file</source>
         <translation type="obsolete">Invoquer le service internet</translation>
     </message>
@@ -2811,7 +2911,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../uniqueapplication.cpp" line="45"/>
         <source>UniqueApplication: Cannot find the D-Bus session server (%1)</source>
-        <translation>UniqueApplication: Ne peux trouver le serveur Session de D-BUS</translation>
+        <translation>UniqueApplication: Ne peut trouver le serveur Session de D-BUS (%1)</translation>
     </message>
     <message>
         <location filename="../../libxinx/filecontentstructure.cpp" line="47"/>
@@ -2824,6 +2924,7 @@ Date du fichier : %4</translation>
 <context>
     <name>RCSLogWidget</name>
     <message>
+        <location filename="../../libxinx/filecontentstructure.cpp" line="47"/>
         <source>&lt;html&gt;This is where &lt;b&gt;XINX&lt;/b&gt; store it&apos;s message from &lt;i&gt;revision control system&lt;/i&gt; console.</source>
         <translation type="obsolete">C&apos;est la fenêtre où &lt;b&gt;XINX&lt;/b&gt; affichera les messages venant de la console du &lt;i&gt;gestionnaire de version&lt;/i&gt;.</translation>
     </message>
@@ -2866,6 +2967,7 @@ Date du fichier : %4</translation>
         <translation>Etendue</translation>
     </message>
     <message>
+        <location filename="../ui/replace.ui" line="190"/>
         <source>All</source>
         <translation type="obsolete">Tous</translation>
     </message>
@@ -2961,7 +3063,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/replace.ui" line="202"/>
         <source>Current document</source>
-        <translation>Document courrant</translation>
+        <translation>Document courant</translation>
     </message>
     <message>
         <location filename="../ui/replace.ui" line="219"/>
@@ -2971,7 +3073,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/replace.ui" line="226"/>
         <source>Custom files</source>
-        <translation>Fichiers personalisés</translation>
+        <translation>Fichiers personnalisés</translation>
     </message>
 </context>
 <context>
@@ -3007,7 +3109,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/runsnipet.ui" line="62"/>
         <source>This is a long description of the template. This description explain how to use, or why, and all the possible parameter.</source>
-        <translation>Ceci est une longue description du modéle. On y explique comment l&apos;utiliser, pourquoi et les paramêtres possibles.</translation>
+        <translation>Ceci est une longue description du modéle. On y explique comment l&apos;utiliser, pourquoi, et les paramêtres possibles.</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="75"/>
@@ -3015,6 +3117,7 @@ Date du fichier : %4</translation>
         <translation>&amp;Paramêtre</translation>
     </message>
     <message>
+        <location filename="../ui/runsnipet.ui" line="75"/>
         <source>&amp;Detail ...</source>
         <translation type="obsolete">&amp;Détail ...</translation>
     </message>
@@ -3032,6 +3135,7 @@ Date du fichier : %4</translation>
 <context>
     <name>RunSnipetDialogImpl</name>
     <message>
+        <location filename="../ui/runsnipet.ui" line="122"/>
         <source>Script error</source>
         <translation type="obsolete">Erreur de script</translation>
     </message>
@@ -3065,34 +3169,42 @@ Date du fichier : %4</translation>
 <context>
     <name>ServiceResultDialog</name>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Result</source>
         <translation type="obsolete">Résultat</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Input Stream</source>
         <translation type="obsolete">Flux d&apos;entrée</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Output Stream</source>
         <translation type="obsolete">Flux de sortie</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>&amp;Close</source>
         <translation type="obsolete">&amp;Fermer</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Content of the selected input parameter.</source>
         <translation type="obsolete">Contenu du paramêtre d&apos;entrée selectionné.</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>The list of the input parameter send to the &lt;i&gt;web service&lt;/i&gt;.</source>
         <translation type="obsolete">Liste des paramêtres d&apos;entrées envoyés aux &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Content of the selected result of the &lt;i&gt;web service&lt;/i&gt;.</source>
         <translation type="obsolete">Contenu du résultat séléctionné du &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>List of result returned by the &lt;i&gt;web services&lt;/i&gt;.</source>
         <translation type="obsolete">Liste des résultats retournés par le &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
@@ -3100,6 +3212,7 @@ Date du fichier : %4</translation>
 <context>
     <name>ServicesListPage</name>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Define WebServices List</source>
         <translation type="obsolete">Définition de la liste des services Internet</translation>
     </message>
@@ -3107,6 +3220,7 @@ Date du fichier : %4</translation>
 <context>
     <name>ServicesListPageImpl</name>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Define the list of WSDL. WSDL is used to describe the web services. Thislist contains link to WSDL.</source>
         <translation type="obsolete">Définit la liste des fichiers de description WSDL. Les fichiers WSDL sont utilisés pour décrire les services Internet. Cette liste contient les liens vers le fichier WSDL.</translation>
     </message>
@@ -3114,22 +3228,27 @@ Date du fichier : %4</translation>
 <context>
     <name>ServicesPage</name>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Define Services</source>
         <translation type="obsolete">Définir les services</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>I want add some WebServices</source>
         <translation type="obsolete">Je souhaite ajouter quelques services Internet</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>I don&apos;t want WebServices</source>
         <translation type="obsolete">Je ne veux pas de service Internet</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>If checked the next page ask you the list of WSDL used to known params of the WebServices.</source>
         <translation type="obsolete">Si coché, la prochaine page vous demandera la liste des fichiers de descriptions de service internet (WSDL).</translation>
     </message>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Don&apos;t manage web services in the project.</source>
         <translation type="obsolete">Ne gère pas les services internet dans ce projet.</translation>
     </message>
@@ -3137,6 +3256,7 @@ Date du fichier : %4</translation>
 <context>
     <name>ServicesPageImpl</name>
     <message>
+        <location filename="../searchfilethread.cpp" line="41"/>
         <source>Define if the project contains WebServices. WebServices can be used to query database.</source>
         <translation type="obsolete">Indique si le projet posséde ou non des services Internet. Les services Internet peuvent être utilisés pour interroger la base de donnée.</translation>
     </message>
@@ -3204,6 +3324,7 @@ Date du fichier : %4</translation>
         <translation>&amp;Clé du modéle :</translation>
     </message>
     <message>
+        <location filename="../ui/snipetproperty.ui" line="129"/>
         <source>Long des descriptions of the snipet.</source>
         <translation type="obsolete">Longue description du modéle.</translation>
     </message>
@@ -3225,7 +3346,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="122"/>
         <source>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it&apos;s not possible to call the template in the completion.</source>
-        <translation>Mot clé utilisé pour appelé le modéle dans l&apos;éditeur de text de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il n&apos;est pas possible d&apos;appeler le modéle lors de la complétion.</translation>
+        <translation>Mot clé utilisé pour appeler le modéle dans l&apos;éditeur de text de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il n&apos;est pas possible d&apos;appeler le modéle lors de la complétion.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="139"/>
@@ -3235,7 +3356,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="149"/>
         <source>Extention to use for the syntax highlighter in the editor below.</source>
-        <translation>Extention à utiliser pour la coloration syntaxique utilisé dans l&apos;éditeur ci-dessous.</translation>
+        <translation>Extention à utiliser pour la coloration syntaxique utilisée dans l&apos;éditeur ci-dessous.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="165"/>
@@ -3245,7 +3366,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="181"/>
         <source>Templat to show to screen. In this template you can define parameter by used &lt;i&gt;%n&lt;/i&gt; keyword where &lt;i&gt;n&lt;/i&gt; is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; is used to call script and show the text returned by the script. &lt;i&gt;&amp;lt;?    ?&amp;gt;&lt;/i&gt; can be used to init the script and make some pre-process.</source>
-        <translation>Modéle a affiché à l&apos;écran. Dans ce modéle il est possible de définir des paramêtres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modéles plus sophistiqué peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appelle d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisé à l&apos;initialisation du script et pour faire quelque pré-traitement?.</translation>
+        <translation>Modéle à afficher à l&apos;écran. Dans ce modéle il est possible de définir des paramêtres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modéles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="73"/>
@@ -3326,7 +3447,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/specifiquedlg.ui" line="48"/>
         <source>Do you want add it to &amp;repository ?</source>
-        <translation>Voulez-vous l&apos;ajouter au &amp;référenciel ?</translation>
+        <translation>Voulez-vous l&apos;ajouter au &amp;référentiel ?</translation>
     </message>
     <message>
         <location filename="../ui/specifiquedlg.ui" line="58"/>
@@ -3351,7 +3472,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/specifiquedlg.ui" line="45"/>
         <source>If checked, &lt;b&gt;XINX&lt;/b&gt; will propose you to add the file to the repository.</source>
-        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le fichier au référenciel.</translation>
+        <translation>Si coché, &lt;b&gt;XINX&lt;/b&gt; proposera d&apos;ajouter le fichier au référentiel.</translation>
     </message>
     <message>
         <location filename="../ui/specifiquedlg.ui" line="64"/>
@@ -3434,6 +3555,7 @@ Date du fichier : %4</translation>
         <translation>Chargement des traductions ...</translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="104"/>
         <source>Create completion and snipet object ...</source>
         <translation type="obsolete">Création des objets internes de complétion et des templates ...</translation>
     </message>
@@ -3551,24 +3673,29 @@ Date du fichier : %4</translation>
 <context>
     <name>WebServicesEditor</name>
     <message>
+        <location filename="../newprojectwizard.cpp" line="221"/>
         <source>WebServices : </source>
         <translation type="obsolete">Service internet : </translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="221"/>
         <source>Action : </source>
         <translation type="obsolete">Action : </translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="221"/>
         <source>Parameter : </source>
         <translation type="obsolete">Paramêtre : </translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="221"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="obsolete">Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
+        <location filename="../newprojectwizard.cpp" line="221"/>
         <source>Cannot write file %1:
 %2.</source>
         <translation type="obsolete">Ne peut écrire le fichier %1 :

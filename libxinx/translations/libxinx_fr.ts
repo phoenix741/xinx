@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>AbstractEditor</name>
     <message>
@@ -38,12 +39,12 @@
     <message>
         <location filename="../abstractfileeditor.cpp" line="57"/>
         <source>Can&apos;t open file for reading %1 : %2</source>
-        <translation>Ne peux pas ouvrir le fichier en lecture %1 : %2</translation>
+        <translation>Ne peut pas ouvrir le fichier en lecture %1 : %2</translation>
     </message>
     <message>
         <location filename="../abstractfileeditor.cpp" line="84"/>
         <source>Can&apos;t open file for writing %1 : %2</source>
-        <translation>Ne peux pas ouvrir le fichier en écriture %1 : %2</translation>
+        <translation>Ne peut pas ouvrir le fichier en écriture %1 : %2</translation>
     </message>
     <message>
         <location filename="../abstractfileeditor.cpp" line="123"/>
@@ -62,9 +63,6 @@
     </message>
 </context>
 <context>
-    <name>DirectoryEdit</name>
-</context>
-<context>
     <name>FileContentElement</name>
     <message>
         <location filename="../filecontentstructure.cpp" line="145"/>
@@ -79,12 +77,6 @@
         <source>Name</source>
         <translation>Nom</translation>
     </message>
-</context>
-<context>
-    <name>KColorCombo</name>
-</context>
-<context>
-    <name>PluginDelegate</name>
 </context>
 <context>
     <name>QErrorMessage</name>
@@ -110,14 +102,14 @@
         <location filename="../filecontentstructure.cpp" line="47"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :
+        <translation>Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
         <location filename="../xslproject.cpp" line="498"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1:
+        <translation>Ne peut écrire le fichier %1:
 %2.</translation>
     </message>
 </context>
@@ -126,7 +118,7 @@
     <message>
         <location filename="../texteditor.cpp" line="159"/>
         <source>Can&apos;t comment this type of document</source>
-        <translation>Ne peux commenter ce type de document</translation>
+        <translation>Ne peut commenter ce type de document</translation>
     </message>
 </context>
 <context>
@@ -149,7 +141,7 @@
     <message>
         <location filename="../textfileeditor.cpp" line="333"/>
         <source>Can&apos;t indent this type of document</source>
-        <translation>Ne peux indenter ce type de document</translation>
+        <translation>Ne peut indenter ce type de document</translation>
     </message>
     <message>
         <location filename="../textfileeditor.cpp" line="389"/>
@@ -159,7 +151,7 @@
     <message>
         <location filename="../textfileeditor.cpp" line="184"/>
         <source>noname.txt</source>
-        <translation type="unfinished"></translation>
+        <translation>sansnom.txt</translation>
     </message>
 </context>
 <context>
@@ -186,7 +178,7 @@
         <location filename="../xslproject.cpp" line="378"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation>Ne peux lire le fichier %1 :
+        <translation>Ne peut lire le fichier %1 :
 %2.</translation>
     </message>
     <message>
@@ -209,7 +201,7 @@
     <message>
         <location filename="../xslproject.cpp" line="397"/>
         <source>The project can&apos;t be opened. Please use the XINX Project Wizard.</source>
-        <translation>Ce projet ne peux pas être ouvert. Utilisez l&apos;assistant de migration des projets XINX, s&apos;il vous plait.</translation>
+        <translation>Ce projet ne peut pas être ouvert. Utilisez l&apos;assistant de migration des projets XINX, s&apos;il vous plait.</translation>
     </message>
     <message>
         <location filename="../xslproject.cpp" line="446"/>
@@ -222,7 +214,7 @@
     <message>
         <location filename="../xslproject.cpp" line="122"/>
         <source>Can&apos;t open session file.</source>
-        <translation>Ne peux ouvrir le fichier de session.</translation>
+        <translation>Ne peut ouvrir le fichier de session.</translation>
     </message>
     <message>
         <location filename="../xslproject.cpp" line="129"/>
@@ -240,12 +232,9 @@
         <location filename="../xslproject.cpp" line="191"/>
         <source>Cannot write file %1:
 %2.</source>
-        <translation>Ne peux écrire le fichier %1:
+        <translation>Ne peut écrire le fichier %1:
 %2.</translation>
     </message>
-</context>
-<context>
-    <name>XinxListWidget</name>
 </context>
 <context>
     <name>XinxPluginsLoader</name>
