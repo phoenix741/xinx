@@ -1,5 +1,41 @@
 XINX - 0.7.2.0
 ==============
+- 204 : Problème de complétion sur la valeur des attributs
+- 186 : Indentation
+- 213 : Migration vers la nouvelle version
+- 217 : Plantage lors du redémarrage du serveur d'application
+- 070 : Améliorations sur complétion des attributs
+- 090 : Dans quel charset est la feuille
+- 106 : Rechercher sur des fichiers
+- 119 : Complétion XML - Complétion des attributs
+- 150 : Navigation dans les attributs d'une balise
+- 173 : Attribut Name optionel sur le XPath Généré
+- 178 : Ouverture de fichiers
+- 182 : Plugins SubVersion
+- 184 : Pretty Print
+- 187 : Fermeture d'onglet
+- 188 : Préfixe dans l'assistant de création de projet
+- 189 : Comparaison avec le gestionnaire de version
+- 191 : Snippet/template : variables globales
+- 192 : Langues
+- 193 : Faute d'orthographe
+- 194 : Application de scripts
+- 195 : Pouvoir rafraichir les snippets en live
+- 196 : Réouverture du dernier projet utilisé
+- 200 : WebServices forever
+- 201 : Appel D-Bus
+- 205 : Duplication de ligne
+- 206 : Ajout automatique des attribut d'un tag
+- 207 : Fichier xinx_trace.log sans lecteur C:\
+- 209 : Fichier de configuration
+- 210 : Plugins & Script
+- 211 : Plugins Style et Plugins Linux
+- 212 : Recherche projet
+- 215 : Ouverture d'un resultat de recherche
+- 216 : Recherche dans les fichiers du projets
+- 218 : Réindentation
+- 208 : paramétrer le temps d'attente pour le recherche de feuille XSL
+- 214 : Copie du nom de fichier complet
 
 XINX - 0.7.1.0
 ==============
