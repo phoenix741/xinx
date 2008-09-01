@@ -413,6 +413,7 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	if( spl.size() > 0 ) {
 		d->m_searchPathList = spl;
 		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
+		if( ( d->m_indexOfSpecifiquePath < 0 ) || ( d->m_indexOfSpecifiquePath >= spl.size() ) ) d->m_indexOfSpecifiquePath = 0;
 	} else {
 		d->m_indexOfSpecifiquePath = 0;
 	}
@@ -606,6 +607,9 @@ QStringList & XSLProject::searchPathList() {
 }
 
 QString XSLProject::processedSpecifiquePath() const {
+	Q_ASSERT( d->m_indexOfSpecifiquePath >= 0 );
+	Q_ASSERT( d->m_searchPathList.size() > 0 );
+
 	return d->processPath( d->m_searchPathList.at( d->m_indexOfSpecifiquePath ) );
 }
 
