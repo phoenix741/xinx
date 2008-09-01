@@ -5,11 +5,11 @@
 
 [Setup]
 AppName=DBus for Windows
-AppVerName=DBus for Windows-1.1
+AppVerName=DBus for Windows-1.2
 DefaultDirName={pf}\dbus
 DefaultGroupName=D-Bus
 OutputDir=.\
-OutputBaseFilename=dbus-1.1
+OutputBaseFilename=dbus-1.2
 Compression=lzma
 SolidCompression=true
 UserInfoPage=true
