@@ -5,7 +5,7 @@
 
 [Setup]
 AppName={#AppName}
-AppVerName={#AppName} {#AppVersion} beta
+AppVerName={#AppName} {#AppVersion} pre-version
 DefaultDirName={pf}\{#AppName}
 DefaultGroupName={#AppName}
 OutputDir=.\
