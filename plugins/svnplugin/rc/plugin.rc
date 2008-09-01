@@ -20,7 +20,7 @@ BEGIN
 		VALUE "FileDescription", "Wrapper for SubVersion"
         VALUE "FileVersion", "0, 1, 0, 0"
         VALUE "InternalName", "subversion"
-        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2007"
+        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2008"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "svnplugin.dll"
 		VALUE "PrivateBuild", "\0"
