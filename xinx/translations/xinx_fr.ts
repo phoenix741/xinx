@@ -594,7 +594,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/custom.ui" line="198"/>
         <source>&lt;p&gt;This is the path where &lt;b&gt;XINX&lt;/b&gt; data files are stored (as snipet or completion file). &lt;/p&gt;
 &lt;p&gt;Normally the directory is stored in the xml sub-directory of &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;C&apos;est le chemin où &lt;b&gt;XINX&lt;/b&gt; stocke les fichiers de données (comme les fichiers de modéle ou d&apos;aide à la saisie).&lt;/p&gt;
+        <translation>&lt;p&gt;C&apos;est le chemin où &lt;b&gt;XINX&lt;/b&gt; stocke les fichiers de données (comme les fichiers de modèle ou d&apos;aide à la saisie).&lt;/p&gt;
 &lt;p&gt;Normalement le dossier du nom de xml est placé dans un sous dossier de &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
@@ -822,7 +822,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="110"/>
         <source>Snipet</source>
-        <translation>Modéle</translation>
+        <translation>Modèle</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="451"/>
@@ -832,7 +832,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3298"/>
         <source>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</source>
-        <translation>Liste des modéles pouvant être utilisés lors de la complétion (avec la clé du modéle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modéles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
+        <translation>Liste des modèles pouvant être utilisés lors de la complétion (avec la clé du modèle) ou appelés manuellement dans le menu. Il est aussi possible d&apos;importer dans &lt;b&gt;XINX&lt;/b&gt; des fichiers ou d&apos;exporter des modèles dans un fichier &lt;i&gt;XML&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3298"/>
@@ -842,7 +842,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3327"/>
         <source>Open a dialog to create a new snipet.</source>
-        <translation>Ouvre une fenêtre pour créer un nouveau modéle.</translation>
+        <translation>Ouvre une fenêtre pour créer un nouveau modèle.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3330"/>
@@ -852,7 +852,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3341"/>
         <source>Delete selected snipet in the list below.</source>
-        <translation>Supprime les modéles selectionnés dans la liste ci-dessus.</translation>
+        <translation>Supprime les modèles selectionnés dans la liste ci-dessus.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3344"/>
@@ -862,7 +862,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3355"/>
         <source>Modify the selected snipet.</source>
-        <translation>Modifie le modéle selectionné.</translation>
+        <translation>Modifie le modèle selectionné.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3358"/>
@@ -872,7 +872,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3382"/>
         <source>Import a list of snipet from an XML file.</source>
-        <translation>Importe une liste de modéle depuis un fichier XML.</translation>
+        <translation>Importe une liste de modèle depuis un fichier XML.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3385"/>
@@ -882,7 +882,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3396"/>
         <source>Export selected snipet to an XML file.</source>
-        <translation>Exporte les modéles selectionnés dans un fichier XML.</translation>
+        <translation>Exporte les modèles selectionnés dans un fichier XML.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3399"/>
@@ -972,12 +972,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/custom.ui" line="3308"/>
         <source>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</source>
-        <translation>Liste des modéles (snipet ou template) que &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code rapidement accessible par un mot clé ou par le menu.</translation>
+        <translation>Liste des modèles (snipet ou template) que &lt;b&gt;XINX&lt;/b&gt; peut utiliser. Un modèle est un morceau de code rapidement accessible par un mot clé ou par le menu.</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3410"/>
         <source>Duplicate the selected snipet</source>
-        <translation>Duplique le modéle selectionné</translation>
+        <translation>Duplique le modèle selectionné</translation>
     </message>
     <message>
         <location filename="../ui/custom.ui" line="3413"/>
@@ -995,12 +995,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../customdialogimpl.cpp" line="962"/>
         <source>Import snipets</source>
-        <translation>Importation de modéle</translation>
+        <translation>Importation de modèle</translation>
     </message>
     <message>
         <location filename="../customdialogimpl.cpp" line="977"/>
         <source>Export snipets</source>
-        <translation>Exportation de modéle</translation>
+        <translation>Exportation de modèle</translation>
     </message>
     <message>
         <location filename="../customdialogimpl.cpp" line="444"/>
@@ -1615,7 +1615,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../ui/mainform.ui" line="890"/>
         <source>Create &amp;template</source>
-        <translation>Créer un &amp;modéle</translation>
+        <translation>Créer un &amp;modèle</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="899"/>
@@ -1862,7 +1862,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../ui/mainform.ui" line="96"/>
         <source>&amp;Template</source>
-        <translation>&amp;Modéle</translation>
+        <translation>&amp;Modèle</translation>
     </message>
     <message>
         <location filename="../ui/mainform.ui" line="104"/>
@@ -1955,7 +1955,7 @@ Taille du cache : %6/%7</translation>
     <message>
         <location filename="../mainformimpl.cpp" line="153"/>
         <source>Snipets</source>
-        <translation>Modéles</translation>
+        <translation>Modèles</translation>
     </message>
     <message>
         <location filename="../mainformimpl.cpp" line="157"/>
@@ -3094,7 +3094,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/runsnipet.ui" line="13"/>
         <source>Use the template</source>
-        <translation>Utiliser un modéle</translation>
+        <translation>Utiliser un modèle</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="34"/>
@@ -3109,7 +3109,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/runsnipet.ui" line="62"/>
         <source>This is a long description of the template. This description explain how to use, or why, and all the possible parameter.</source>
-        <translation>Ceci est une longue description du modéle. On y explique comment l&apos;utiliser, pourquoi, et les paramêtres possibles.</translation>
+        <translation>Ceci est une longue description du modèle. On y explique comment l&apos;utiliser, pourquoi, et les paramêtres possibles.</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="75"/>
@@ -3266,12 +3266,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="13"/>
         <source>Template property</source>
-        <translation>Propriété du modéle</translation>
+        <translation>Propriété du modèle</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="175"/>
         <source>&amp;Template text :</source>
-        <translation>&amp;Texte du modéle : </translation>
+        <translation>&amp;Texte du modèle : </translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="215"/>
@@ -3321,7 +3321,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="129"/>
         <source>&amp;Snipet key :</source>
-        <translation>&amp;Clé du modéle :</translation>
+        <translation>&amp;Clé du modèle :</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="129"/>
@@ -3331,22 +3331,22 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="80"/>
         <source>Path to an icon for the template. If the path begin by :/ the icon is looked in the &lt;b&gt;XINX&lt;/b&gt; resources</source>
-        <translation>Chemin vers une icone pour le modéle. Si le chemin commence par &quot;:/&quot;, l&apos;icone sera recherché dans les resources de &lt;b&gt;XINX&lt;/b&gt;</translation>
+        <translation>Chemin vers une icone pour le modèle. Si le chemin commence par &quot;:/&quot;, l&apos;icone sera recherché dans les resources de &lt;b&gt;XINX&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="87"/>
         <source>Category where the snipet must be classed.</source>
-        <translation>Catégorie où le modéle doit être classé.</translation>
+        <translation>Catégorie où le modèle doit être classé.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="115"/>
         <source>Name of the snipet used in to identify the snipet in menus.</source>
-        <translation>Nom du modéle utilisé pour l&apos;identifier dans le menu des modéles.</translation>
+        <translation>Nom du modèle utilisé pour l&apos;identifier dans le menu des modèles.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="122"/>
         <source>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it&apos;s not possible to call the template in the completion.</source>
-        <translation>Mot clé utilisé pour appeler le modéle dans l&apos;éditeur de text de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il n&apos;est pas possible d&apos;appeler le modéle lors de la complétion.</translation>
+        <translation>Mot clé utilisé pour appeler le modèle dans l&apos;éditeur de text de &lt;b&gt;XINX&lt;/b&gt;. Si aucune clé n&apos;est définie, il n&apos;est pas possible d&apos;appeler le modèle lors de la complétion.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="139"/>
@@ -3361,17 +3361,17 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="165"/>
         <source>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</source>
-        <translation>Liste de nom de paramêtres utilisé par le modéle. Le premier paramêtre remplace le mot clé %1, le second paramêtre remplace le mot clé %2, ...</translation>
+        <translation>Liste de nom de paramêtres utilisé par le modèle. Le premier paramêtre remplace le mot clé %1, le second paramêtre remplace le mot clé %2, ...</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="181"/>
         <source>Templat to show to screen. In this template you can define parameter by used &lt;i&gt;%n&lt;/i&gt; keyword where &lt;i&gt;n&lt;/i&gt; is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; is used to call script and show the text returned by the script. &lt;i&gt;&amp;lt;?    ?&amp;gt;&lt;/i&gt; can be used to init the script and make some pre-process.</source>
-        <translation>Modéle à afficher à l&apos;écran. Dans ce modéle il est possible de définir des paramêtres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modéles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
+        <translation>Modèle à afficher à l&apos;écran. Dans ce modèle il est possible de définir des paramêtres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modèles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="73"/>
         <source>Long descriptions of the snipet.</source>
-        <translation>Longue description du modéle.</translation>
+        <translation>Longue description du modèle.</translation>
     </message>
 </context>
 <context>
@@ -3562,7 +3562,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../main.cpp" line="130"/>
         <source>Can&apos;t load snipet file.</source>
-        <translation>Ne peut charger le fichier de modéle.</translation>
+        <translation>Ne peut charger le fichier de modèle.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="134"/>
@@ -3587,7 +3587,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../main.cpp" line="125"/>
         <source>Load snipets ...</source>
-        <translation>Lecture des modéles ...</translation>
+        <translation>Lecture des modèles ...</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="140"/>

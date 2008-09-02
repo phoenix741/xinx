@@ -116,7 +116,7 @@ Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom full
 Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom full
 Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 Name: services; Description: Plugin with a WebServices editor; Types: custom full
-Name: experimental; Description: Plugins experimentals; Languages: 
+Name: experimental; Description: Plugins experimentaux; Languages: 
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
 Name: empty; Description: Plugin vide (pour dev)
 
