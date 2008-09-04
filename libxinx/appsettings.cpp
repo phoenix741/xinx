@@ -4,6 +4,7 @@
 #include <QLocale>
 #include <QDir>
 #include <QApplication>
+#include <QStyle>
 
 #include "appsettings.h"
 
@@ -92,7 +93,7 @@ void AppSettings::load() {
 	d->deleteSettings();
 }
 
-AppSettings::struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
+AppSettings::AppSettings::struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
 	struct_configurationEditor value;
 
 	value.activateConfigurationEditor = false;
@@ -102,7 +103,7 @@ AppSettings::struct_configurationEditor AppSettings::getDefaultConfigurationEdit
 	return value;
 }
 
-AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_configurationEditor defaultValue ) {
+AppSettings::AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_configurationEditor defaultValue ) {
 	struct_configurationEditor value;
 	settings->beginGroup( path );
 
@@ -114,7 +115,7 @@ AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEdi
 	return value;
 }
 
-void AppSettings::setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_configurationEditor value ) {
+void AppSettings::setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_configurationEditor value ) {
 	struct_configurationEditor defaultValue = getDefaultConfigurationEditor();
 	settings->beginGroup( path );
 
@@ -125,7 +126,7 @@ void AppSettings::setSettingsConfigurationEditor( AppSettingsSettings * settings
 	settings->endGroup();
 }
 
-AppSettings::struct_editor AppSettings::getDefaultEditor() {
+AppSettings::AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	struct_editor value;
 
 	value.defaultTextCodec = "ISO-8859-1";
@@ -144,7 +145,7 @@ AppSettings::struct_editor AppSettings::getDefaultEditor() {
 	return value;
 }
 
-AppSettings::struct_editor AppSettings::getSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_editor defaultValue ) {
+AppSettings::AppSettings::struct_editor AppSettings::getSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor defaultValue ) {
 	struct_editor value;
 	settings->beginGroup( path );
 
@@ -166,7 +167,7 @@ AppSettings::struct_editor AppSettings::getSettingsEditor( AppSettingsSettings *
 	return value;
 }
 
-void AppSettings::setSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_editor value ) {
+void AppSettings::setSettingsEditor( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_editor value ) {
 	struct_editor defaultValue = getDefaultEditor();
 	settings->beginGroup( path );
 
@@ -187,7 +188,7 @@ void AppSettings::setSettingsEditor( AppSettingsSettings * settings, const QStri
 	settings->endGroup();
 }
 
-AppSettings::struct_rcs AppSettings::getDefaultRcs() {
+AppSettings::AppSettings::struct_rcs AppSettings::getDefaultRcs() {
 	struct_rcs value;
 
 	value.createChangelog = false;
@@ -195,7 +196,7 @@ AppSettings::struct_rcs AppSettings::getDefaultRcs() {
 	return value;
 }
 
-AppSettings::struct_rcs AppSettings::getSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::struct_rcs defaultValue ) {
+AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_rcs defaultValue ) {
 	struct_rcs value;
 	settings->beginGroup( path );
 
@@ -205,7 +206,7 @@ AppSettings::struct_rcs AppSettings::getSettingsRcs( AppSettingsSettings * setti
 	return value;
 }
 
-void AppSettings::setSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::struct_rcs value ) {
+void AppSettings::setSettingsRcs( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_rcs value ) {
 	struct_rcs defaultValue = getDefaultRcs();
 	settings->beginGroup( path );
 
@@ -214,7 +215,7 @@ void AppSettings::setSettingsRcs( AppSettingsSettings * settings, const QString 
 	settings->endGroup();
 }
 
-AppSettings::struct_project AppSettings::getDefaultProject() {
+AppSettings::AppSettings::struct_project AppSettings::getDefaultProject() {
 	struct_project value;
 
 	value.openTheLastProjectAtStart = false;
@@ -227,7 +228,7 @@ AppSettings::struct_project AppSettings::getDefaultProject() {
 	return value;
 }
 
-AppSettings::struct_project AppSettings::getSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::struct_project defaultValue ) {
+AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_project defaultValue ) {
 	struct_project value;
 	settings->beginGroup( path );
 
@@ -244,7 +245,7 @@ AppSettings::struct_project AppSettings::getSettingsProject( AppSettingsSettings
 	return value;
 }
 
-void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::struct_project value ) {
+void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_project value ) {
 	struct_project defaultValue = getDefaultProject();
 	settings->beginGroup( path );
 
@@ -260,7 +261,7 @@ void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QStr
 	settings->endGroup();
 }
 
-AppSettings::struct_descriptions AppSettings::getDefaultDescriptions() {
+AppSettings::AppSettings::struct_descriptions AppSettings::getDefaultDescriptions() {
 	struct_descriptions value;
 
 	value.datas = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
@@ -268,7 +269,7 @@ AppSettings::struct_descriptions AppSettings::getDefaultDescriptions() {
 	return value;
 }
 
-AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_descriptions defaultValue ) {
+AppSettings::AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_descriptions defaultValue ) {
 	struct_descriptions value;
 	settings->beginGroup( path );
 
@@ -278,7 +279,7 @@ AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( AppSettin
 	return value;
 }
 
-void AppSettings::setSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_descriptions value ) {
+void AppSettings::setSettingsDescriptions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_descriptions value ) {
 	struct_descriptions defaultValue = getDefaultDescriptions();
 	settings->beginGroup( path );
 
@@ -287,7 +288,7 @@ void AppSettings::setSettingsDescriptions( AppSettingsSettings * settings, const
 	settings->endGroup();
 }
 
-AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
+AppSettings::AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
 	struct_extentions value;
 
 	value.canBeSpecifique = true;
@@ -295,7 +296,7 @@ AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
 	return value;
 }
 
-AppSettings::struct_extentions AppSettings::getSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_extentions defaultValue ) {
+AppSettings::AppSettings::struct_extentions AppSettings::getSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_extentions defaultValue ) {
 	struct_extentions value;
 	settings->beginGroup( path );
 
@@ -306,7 +307,7 @@ AppSettings::struct_extentions AppSettings::getSettingsExtentions( AppSettingsSe
 	return value;
 }
 
-void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::struct_extentions value ) {
+void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_extentions value ) {
 	struct_extentions defaultValue = getDefaultExtentions();
 	settings->beginGroup( path );
 
@@ -316,7 +317,7 @@ void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const Q
 	settings->endGroup();
 }
 
-AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
+AppSettings::AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
 	struct_xmlpres value;
 
 	value.autoExpandedPath = "/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow";
@@ -330,7 +331,7 @@ AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
 	return value;
 }
 
-AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::struct_xmlpres defaultValue ) {
+AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres defaultValue ) {
 	struct_xmlpres value;
 	settings->beginGroup( path );
 
@@ -346,7 +347,7 @@ AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( AppSettingsSettings
 	return value;
 }
 
-void AppSettings::setSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::struct_xmlpres value ) {
+void AppSettings::setSettingsXmlpres( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_xmlpres value ) {
 	struct_xmlpres defaultValue = getDefaultXmlpres();
 	settings->beginGroup( path );
 
@@ -361,13 +362,13 @@ void AppSettings::setSettingsXmlpres( AppSettingsSettings * settings, const QStr
 	settings->endGroup();
 }
 
-AppSettings::struct_globals AppSettings::getDefaultGlobals() {
+AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	struct_globals value;
 
 	value.language = QLocale::system().name();
 	value.position = QPoint( 200,200 );
 	value.size = QSize( 400,400 );
-	value.maximized = false;
+	value.maximized = false;;
 	value.plugins = getDefaultHash_bool();
 	value.descriptions = getDefaultDescriptions();
 	value.project = getDefaultProject();
@@ -382,7 +383,7 @@ AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	return value;
 }
 
-AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::struct_globals defaultValue ) {
+AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_globals defaultValue ) {
 	struct_globals value;
 	settings->beginGroup( path );
 
@@ -392,6 +393,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSettingsSettings
 	value.maximized = settings->value( "Maximized", defaultValue.maximized ).toBool();
 	value.state = settings->value( "State", defaultValue.state ).toByteArray();
 	value.xinxTrace = settings->value( "XINX Trace", defaultValue.xinxTrace ).toString();
+	value.style = settings->value( "Style", defaultValue.style ).toString();
 	value.plugins = getSettingsHash_bool( settings, "Plugins", defaultValue.plugins );
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", defaultValue.descriptions );
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
@@ -407,7 +409,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSettingsSettings
 	return value;
 }
 
-void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::struct_globals value ) {
+void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_globals value ) {
 	struct_globals defaultValue = getDefaultGlobals();
 	settings->beginGroup( path );
 
@@ -417,6 +419,7 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	settings->setValue( "Maximized", value.maximized, defaultValue.maximized );
 	settings->setValue( "State", value.state, defaultValue.state );
 	settings->setValue( "XINX Trace", value.xinxTrace, defaultValue.xinxTrace );
+	settings->setValue( "Style", value.style, defaultValue.style );
 	setSettingsHash_bool( settings, "Plugins", value.plugins );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );

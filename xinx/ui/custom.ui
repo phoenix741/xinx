@@ -172,7 +172,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout" >
@@ -256,6 +256,19 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="1" >
+        <widget class="QComboBox" name="m_styleComboBox" />
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_22" >
+         <property name="text" >
+          <string>Force current &amp;style :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_styleComboBox</cstring>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="m_project" >
@@ -264,96 +277,83 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_3" >
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
-          <string>&amp;Application server path :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_projectPathLineEdit</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="DirectoryEditWidget" native="1" name="m_projectPathLineEdit" >
-         <property name="focusPolicy" >
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="whatsThis" >
-          <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
+      <layout class="QVBoxLayout" name="verticalLayout" >
+       <item>
+        <layout class="QFormLayout" name="formLayout_2" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="label_2" >
+           <property name="text" >
+            <string>&amp;Application server path :</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_projectPathLineEdit</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="DirectoryEditWidget" native="1" name="m_projectPathLineEdit" >
+           <property name="focusPolicy" >
+            <enum>Qt::TabFocus</enum>
+           </property>
+           <property name="whatsThis" >
+            <string>&lt;p>This the path where the save dialog must be opened when you create a new project.&lt;/p>
 &lt;p>&lt;i>As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i>New Project Wizard&lt;/i>, the Application Server path would be wrong.&lt;/i>&lt;/p></string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label_11" >
-         <property name="text" >
-          <string>Default &amp;specifique path name :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_lineEditDefaultProjectPathName</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
-         <property name="whatsThis" >
-          <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="label_11" >
+           <property name="text" >
+            <string>Default &amp;specifique path name :</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_lineEditDefaultProjectPathName</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" >
+          <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName" >
+           <property name="whatsThis" >
+            <string>&lt;p>This is the path where derivated files are stored in derivated project mode.&lt;/p>
 &lt;p>&lt;i>In &lt;b>Generix&lt;/b>, this is a sub-directory of langue/fra/nav/&lt;/i>&lt;/p></string>
-         </property>
-        </widget>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QLabel" name="label_20" >
+           <property name="text" >
+            <string>Refresh Directory &amp;Timeout :</string>
+           </property>
+           <property name="buddy" >
+            <cstring>m_refreshProjectTimoutSpinBox</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" >
+          <widget class="QSpinBox" name="m_refreshProjectTimoutSpinBox" >
+           <property name="whatsThis" >
+            <string>Timeout before the directory view is reloaded with your filter.</string>
+           </property>
+           <property name="suffix" >
+            <string> ms</string>
+           </property>
+           <property name="minimum" >
+            <number>0</number>
+           </property>
+           <property name="maximum" >
+            <number>10000</number>
+           </property>
+           <property name="singleStep" >
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label_20" >
-         <property name="text" >
-          <string>Refresh Directory &amp;Timeout :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_refreshProjectTimoutSpinBox</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" >
-        <widget class="QSpinBox" name="m_refreshProjectTimoutSpinBox" >
-         <property name="whatsThis" >
-          <string>Timeout before the directory view is reloaded with your filter.</string>
-         </property>
-         <property name="suffix" >
-          <string> ms</string>
-         </property>
-         <property name="minimum" >
-          <number>0</number>
-         </property>
-         <property name="maximum" >
-          <number>10000</number>
-         </property>
-         <property name="singleStep" >
-          <number>10</number>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="2" >
-        <widget class="QLabel" name="label_16" >
-         <property name="text" >
-          <string>&amp;Specifique file :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>m_specifiqueTableView</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0" colspan="2" >
-        <widget class="QTableView" name="m_specifiqueTableView" >
-         <property name="whatsThis" >
-          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="2" >
+       <item>
         <widget class="QCheckBox" name="m_openLastProjectCheckBox" >
          <property name="whatsThis" >
           <string>Open the last opened project (&lt;i>if any, it's the opened project when &lt;b>XINX&lt;/b> is closed&lt;/i>), when &lt;b>XINX&lt;/b> is started.</string>
@@ -363,7 +363,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2" >
+       <item>
         <widget class="QCheckBox" name="m_saveSessionCheckBox" >
          <property name="whatsThis" >
           <string>&lt;p>This define the default way to close the project.&lt;/p>
@@ -377,6 +377,23 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="label_16" >
+         <property name="text" >
+          <string>&amp;Specifique file :</string>
+         </property>
+         <property name="buddy" >
+          <cstring>m_specifiqueTableView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableView" name="m_specifiqueTableView" >
+         <property name="whatsThis" >
+          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i>langue/fra/nav/projet/js&lt;/i>). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="m_revision" >
@@ -385,7 +402,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -441,7 +458,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -597,11 +614,11 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="2" >
+      <layout class="QGridLayout" name="gridLayout_3" >
+       <item row="0" column="0" >
         <widget class="QLabel" name="label_6" >
          <property name="text" >
           <string>&amp;Font name :</string>
@@ -618,7 +635,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2" >
+       <item row="1" column="0" >
         <widget class="QLabel" name="label_10" >
          <property name="text" >
           <string>Font &amp;size :</string>
@@ -635,7 +652,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="3" >
+       <item row="2" column="0" >
         <widget class="QCheckBox" name="m_showCurrentLineCheckBox" >
          <property name="whatsThis" >
           <string>Show the current line in a different color. Usually a blue-gray.</string>
@@ -645,7 +662,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="3" >
+       <item row="3" column="0" colspan="2" >
         <widget class="QCheckBox" name="m_autoHighlightCheckBox" >
          <property name="whatsThis" >
           <string>&lt;p>Highlight automatically all same word in the editor in the same color.&lt;/p>
@@ -666,7 +683,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2" >
+       <item row="4" column="2" >
         <widget class="KColorCombo" name="m_highlightTextColorComboBox" >
          <property name="whatsThis" >
           <string>Color used for highlight same word</string>
@@ -1211,9 +1228,99 @@
            <string/>
           </property>
          </item>
+         <item>
+          <property name="text" >
+           <string>Custom...</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string/>
+          </property>
+         </item>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3" >
+       <item row="5" column="0" colspan="2" >
         <widget class="QCheckBox" name="m_showTabulationCheckBox" >
          <property name="whatsThis" >
           <string>Show tabulation and space in the editor with specialcharacter (in greyed colour).</string>
@@ -1223,7 +1330,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2" >
+       <item row="6" column="0" >
         <widget class="QLabel" name="label_14" >
          <property name="text" >
           <string>Size of a &amp;tabulation :</string>
@@ -1241,14 +1348,14 @@
         </widget>
        </item>
        <item row="7" column="1" >
-        <spacer>
+        <spacer name="verticalSpacer" >
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
-           <height>71</height>
+           <height>99</height>
           </size>
          </property>
         </spacer>
@@ -1261,7 +1368,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -1290,6 +1397,96 @@
             <property name="whatsThis" >
              <string>Color used in the text for the selected token.</string>
             </property>
+            <item>
+             <property name="text" >
+              <string>Custom...</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text" >
               <string>Custom...</string>
@@ -1946,7 +2143,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -2040,7 +2237,7 @@
            <property name="title" >
             <string>&amp;Color</string>
            </property>
-           <layout class="QGridLayout" >
+           <layout class="QFormLayout" name="formLayout_4" >
             <item row="0" column="0" >
              <widget class="QLabel" name="label_8" >
               <property name="text" >
@@ -2056,6 +2253,96 @@
               <property name="whatsThis" >
                <string>Color of the node of view type (Generally begins by &lt;i>Vue...&lt;/i>)</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -3153,6 +3440,96 @@
                 <string/>
                </property>
               </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="2" column="0" >
@@ -3170,6 +3547,96 @@
               <property name="whatsThis" >
                <string>Color of a balise with a &lt;i>screen_data&lt;/i> node.</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -3738,7 +4205,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout" >
@@ -3876,7 +4343,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -3900,7 +4367,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>314</height>
+        <height>318</height>
        </rect>
       </property>
       <layout class="QGridLayout" >
@@ -3915,7 +4382,7 @@
             <x>0</x>
             <y>0</y>
             <width>657</width>
-            <height>269</height>
+            <height>273</height>
            </rect>
           </property>
           <attribute name="title" >
@@ -3957,50 +4424,11 @@
     </widget>
    </item>
    <item row="3" column="1" >
-    <layout class="QHBoxLayout" >
-     <item>
-      <widget class="QPushButton" name="m_defaultPushButton" >
-       <property name="text" >
-        <string>&amp;Default</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>131</width>
-         <height>31</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QDialogButtonBox" name="m_buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -4076,46 +4504,11 @@
   <tabstop>modulesTabWidget</tabstop>
   <tabstop>m_pluginListView</tabstop>
   <tabstop>m_listWidget</tabstop>
-  <tabstop>okButton</tabstop>
-  <tabstop>cancelButton</tabstop>
-  <tabstop>m_defaultPushButton</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />
  </resources>
  <connections>
-  <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
-   <receiver>CustomDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>715</x>
-     <y>396</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>96</x>
-     <y>254</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked()</signal>
-   <receiver>CustomDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>825</x>
-     <y>396</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>179</x>
-     <y>282</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>m_listWidget</sender>
    <signal>currentTextChanged(QString)</signal>
@@ -4145,6 +4538,38 @@
     <hint type="destinationlabel" >
      <x>165</x>
      <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>CustomDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>623</x>
+     <y>385</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>246</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>CustomDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>771</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>667</x>
+     <y>402</y>
     </hint>
    </hints>
   </connection>

@@ -24,7 +24,7 @@
         <x>0</x>
         <y>0</y>
         <width>591</width>
-        <height>316</height>
+        <height>320</height>
        </rect>
       </property>
       <attribute name="title" >
@@ -157,7 +157,7 @@
         <x>0</x>
         <y>0</y>
         <width>591</width>
-        <height>311</height>
+        <height>320</height>
        </rect>
       </property>
       <attribute name="title" >
@@ -346,7 +346,7 @@
         <x>0</x>
         <y>0</y>
         <width>591</width>
-        <height>316</height>
+        <height>320</height>
        </rect>
       </property>
       <attribute name="title" >
@@ -422,52 +422,11 @@
     </widget>
    </item>
    <item row="1" column="0" >
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
+    <widget class="QDialogButtonBox" name="m_buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>131</width>
-         <height>31</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -490,42 +449,40 @@
   <tabstop>m_projectButton</tabstop>
   <tabstop>m_langComboBox</tabstop>
   <tabstop>m_navigatorComboBox</tabstop>
-  <tabstop>okButton</tabstop>
-  <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
+   <sender>m_buttonBox</sender>
+   <signal>accepted()</signal>
    <receiver>ProjectProperty</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>466</x>
-     <y>458</y>
+     <x>492</x>
+     <y>375</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>96</x>
-     <y>254</y>
+     <x>399</x>
+     <y>395</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked()</signal>
+   <sender>m_buttonBox</sender>
+   <signal>rejected()</signal>
    <receiver>ProjectProperty</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>547</x>
-     <y>458</y>
+     <x>545</x>
+     <y>375</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>179</x>
-     <y>282</y>
+     <x>568</x>
+     <y>396</y>
     </hint>
    </hints>
   </connection>

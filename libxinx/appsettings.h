@@ -92,6 +92,7 @@ public:
 		bool maximized;
 		QByteArray state;
 		QString xinxTrace;
+		QString style;
 		QHash<QString,bool> plugins;
 		struct_descriptions descriptions;
 		struct_project project;

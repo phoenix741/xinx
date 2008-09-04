@@ -74,9 +74,10 @@ int main(int argc, char *argv[]) {
 	std::signal(SIGTERM, backup_appli_signal);
 
 #if defined(Q_WS_WIN)
-		if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
-			QApplication::setStyle(QStyleFactory::create("Explorer"));
+	if( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based )
+		QApplication::setStyle(QStyleFactory::create("Explorer"));
 #endif // Q_WS_WIN
+
 	UniqueApplication app(argc, argv);
 	try {
 		QStringList args = app.arguments();
@@ -108,6 +109,9 @@ int main(int argc, char *argv[]) {
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
 			XINXConfig::self()->load();
+			if( ! XINXConfig::self()->config().style.isEmpty() ) {
+				QApplication::setStyle( XINXConfig::self()->config().style );
+			}
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();

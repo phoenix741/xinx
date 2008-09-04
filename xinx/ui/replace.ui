@@ -12,13 +12,7 @@
   <property name="windowTitle" >
    <string>Find or Replace a text</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <property name="margin" >
-    <number>9</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
     <layout class="QGridLayout" >
      <property name="margin" >
@@ -288,49 +282,11 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
+    <widget class="QDialogButtonBox" name="m_buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Ok</set>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>131</width>
-         <height>31</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_findButton" >
-       <property name="text" >
-        <string>&amp;Find</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/find.png</normaloff>:/images/find.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_closeButton" >
-       <property name="text" >
-        <string>&amp;Close</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -357,45 +313,11 @@
   <tabstop>m_searchSelectionRadioButton</tabstop>
   <tabstop>m_projectFilesRadioButton</tabstop>
   <tabstop>m_customFilesRadioButton</tabstop>
-  <tabstop>m_findButton</tabstop>
-  <tabstop>m_closeButton</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />
  </resources>
  <connections>
-  <connection>
-   <sender>m_findButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ReplaceDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>427</x>
-     <y>317</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>96</x>
-     <y>254</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_closeButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ReplaceDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>531</x>
-     <y>317</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>179</x>
-     <y>282</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>m_replaceCheckBox</sender>
    <signal>toggled(bool)</signal>
@@ -419,12 +341,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>159</x>
-     <y>198</y>
+     <x>180</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>340</x>
-     <y>238</y>
+     <x>355</x>
+     <y>205</y>
     </hint>
    </hints>
   </connection>
@@ -435,12 +357,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>195</x>
-     <y>198</y>
+     <x>189</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>517</x>
-     <y>167</y>
+     <x>520</x>
+     <y>141</y>
     </hint>
    </hints>
   </connection>
@@ -451,12 +373,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>195</x>
-     <y>198</y>
+     <x>189</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>340</x>
-     <y>187</y>
+     <x>355</x>
+     <y>159</y>
     </hint>
    </hints>
   </connection>
@@ -467,12 +389,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>195</x>
-     <y>198</y>
+     <x>189</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>517</x>
-     <y>198</y>
+     <x>520</x>
+     <y>169</y>
     </hint>
    </hints>
   </connection>
@@ -483,12 +405,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>87</x>
-     <y>260</y>
+     <x>108</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>88</x>
-     <y>229</y>
+     <x>109</x>
+     <y>224</y>
     </hint>
    </hints>
   </connection>
@@ -499,12 +421,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>64</x>
-     <y>260</y>
+     <x>85</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>72</x>
-     <y>167</y>
+     <x>93</x>
+     <y>142</y>
     </hint>
    </hints>
   </connection>
@@ -515,12 +437,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>517</x>
-     <y>260</y>
+     <x>520</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel" >
      <x>531</x>
-     <y>95</y>
+     <y>83</y>
     </hint>
    </hints>
   </connection>
@@ -531,12 +453,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>517</x>
-     <y>260</y>
+     <x>520</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>72</x>
-     <y>95</y>
+     <x>82</x>
+     <y>83</y>
     </hint>
    </hints>
   </connection>
@@ -547,8 +469,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>446</x>
-     <y>217</y>
+     <x>520</x>
+     <y>197</y>
     </hint>
     <hint type="destinationlabel" >
      <x>301</x>
@@ -563,12 +485,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>482</x>
-     <y>213</y>
+     <x>520</x>
+     <y>197</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>91</x>
-     <y>182</y>
+     <x>112</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>
@@ -579,8 +501,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>392</x>
-     <y>243</y>
+     <x>520</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel" >
      <x>239</x>
@@ -595,12 +517,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>423</x>
-     <y>245</y>
+     <x>520</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>109</x>
-     <y>187</y>
+     <x>130</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>
@@ -611,12 +533,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>408</x>
-     <y>222</y>
+     <x>520</x>
+     <y>197</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>84</x>
-     <y>87</y>
+     <x>94</x>
+     <y>83</y>
     </hint>
    </hints>
   </connection>
@@ -627,12 +549,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>178</x>
-     <y>189</y>
+     <x>189</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>441</x>
-     <y>217</y>
+     <x>520</x>
+     <y>197</y>
     </hint>
    </hints>
   </connection>
@@ -643,12 +565,44 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>56</x>
-     <y>183</y>
+     <x>77</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>506</x>
-     <y>246</y>
+     <x>520</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>ReplaceDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>406</x>
+     <y>311</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>537</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ReplaceDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>337</x>
+     <y>312</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>540</x>
+     <y>267</y>
     </hint>
    </hints>
   </connection>

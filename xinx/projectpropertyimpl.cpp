@@ -28,9 +28,12 @@
 // Qt header
 #include <QDir>
 #include <QInputDialog>
+#include <QPushButton>
 
 ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
 	setupUi(this);
+
+	m_buttonBox->button( QDialogButtonBox::Ok )->setDisabled( true );
 
 	m_pathListLabel->setBuddy( m_searchPathList );
 	m_prefixLabel->setBuddy( m_prefixList );
@@ -189,7 +192,7 @@ void ProjectPropertyImpl::updateOkButton() {
 	     prefixLineOk  = ! m_prefixList->defaultValue().isEmpty(),
 	     okButtonEnabled = projectLineOk && ( (!hasSpecif) || ( specifLineOk && prefixLineOk ) );
 
-	okButton->setEnabled( okButtonEnabled );
+	m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( okButtonEnabled );
 }
 
 void ProjectPropertyImpl::on_m_specifiqueGroupBox_clicked() {

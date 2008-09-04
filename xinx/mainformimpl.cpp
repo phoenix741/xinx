@@ -723,6 +723,11 @@ void MainformImpl::customize() {
 		custom.saveToConfig( XINXConfig::self() );
 		XINXConfig::self()->save();
 		SnipetListManager::self()->saveToSnipetFile();
+
+		if( ! XINXConfig::self()->config().style.isEmpty() ) {
+			QApplication::setStyle( XINXConfig::self()->config().style );
+			setStyle( QApplication::style() );
+		}
 	}
 }
 

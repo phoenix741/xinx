@@ -12,50 +12,21 @@
   <property name="windowTitle" >
    <string>WebServices Connection</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout" >
    <item row="0" column="0" >
     <widget class="QLabel" name="m_iconState" >
      <property name="text" >
       <string/>
      </property>
      <property name="pixmap" >
-      <pixmap resource="../application.qrc" >:/images/network_disconnected_lan.png</pixmap>
+      <pixmap>:/images/network_disconnected_lan.png</pixmap>
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="3" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" >
-      <size>
-       <width>255</width>
-       <height>27</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="1" colspan="3" >
+   <item row="0" column="1" >
     <widget class="QLabel" name="m_labelState" >
      <property name="text" >
       <string>Connection ....</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="3" >
-    <widget class="QPushButton" name="m_abortPushButton" >
-     <property name="text" >
-      <string>&amp;Abort</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >:/images/button_cancel.png</iconset>
      </property>
     </widget>
    </item>
@@ -66,14 +37,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
-      <string>Receive Request :</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" colspan="3" >
+   <item row="1" column="1" >
     <widget class="QProgressBar" name="m_sendProgressBar" >
      <property name="value" >
       <number>24</number>
@@ -83,7 +47,14 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="3" >
+   <item row="2" column="0" >
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>Receive Request :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" >
     <widget class="QProgressBar" name="m_recieveProgressBar" >
      <property name="value" >
       <number>24</number>
@@ -93,10 +64,15 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="0" colspan="2" >
+    <widget class="QDialogButtonBox" name="m_buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Abort</set>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
- <resources>
-  <include location="../application.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>

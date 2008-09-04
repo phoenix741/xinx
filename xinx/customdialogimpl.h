@@ -55,7 +55,7 @@ public:
 private slots:
 	void m_descriptionPathLineEdit_textChanged( QString text );
 
-	void on_m_defaultPushButton_clicked();
+	void on_m_buttonBox_clicked( QAbstractButton * button );
 	void on_m_colorComboBox_activated(QColor color);
 	void on_m_boldCheckBox_toggled(bool checked);
 	void on_m_italicCheckBox_toggled(bool checked);
