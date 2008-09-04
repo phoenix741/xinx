@@ -48,3 +48,4 @@ install/xinx-doc::
 	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/
 	mkdir $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
 	cp -a $(CURDIR)/doc/* $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/
+	rm -rf $(CURDIR)/debian/xinx-doc/usr/share/doc/xinx-doc/html/.svn
