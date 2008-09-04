@@ -63,8 +63,8 @@ QString XSLFileContentParams::displayTips() const {
 
 void XSLFileContentParams::copyFrom( FileContentElement * element ) {
 	FileContentElement::copyFrom( element );
-	if( dynamic_cast<XSLFileContentParams*>( element ) )
-		m_value = dynamic_cast<XSLFileContentParams*>( element )->m_value;
+	if( qobject_cast<XSLFileContentParams*>( element ) )
+		m_value = qobject_cast<XSLFileContentParams*>( element )->m_value;
 }
 
 QIcon XSLFileContentParams::icon() const {
@@ -123,13 +123,13 @@ XSLFileContentTemplate::~XSLFileContentTemplate() {
 
 bool XSLFileContentTemplate::equals( FileContentElement * element ) {
 	return FileContentElement::equals( element )
-		&& ( m_mode == dynamic_cast<XSLFileContentTemplate*>( element )->m_mode );
+		&& ( m_mode == qobject_cast<XSLFileContentTemplate*>( element )->m_mode );
 }
 
 void XSLFileContentTemplate::copyFrom( FileContentElement * element ) {
 	FileContentElement::copyFrom( element );
-	if( dynamic_cast<XSLFileContentTemplate*>( element ) )
-		m_mode = dynamic_cast<XSLFileContentTemplate*>( element )->m_mode;
+	if( qobject_cast<XSLFileContentTemplate*>( element ) )
+		m_mode = qobject_cast<XSLFileContentTemplate*>( element )->m_mode;
 }
 
 QIcon XSLFileContentTemplate::icon() const {
@@ -374,7 +374,7 @@ void XSLFileContentParser::Parser::readTemplate() {
 	readTemplate( variables, scripts );
 
 	foreach( QString name, templates ) {
-		XSLFileContentTemplate * t = dynamic_cast<XSLFileContentTemplate*>( m_parent->append( new XSLFileContentTemplate( m_parent, name, mode, line ) ) );
+		XSLFileContentTemplate * t = qobject_cast<XSLFileContentTemplate*>( m_parent->append( new XSLFileContentTemplate( m_parent, name, mode, line ) ) );
 		if( ! t ) {
 			raiseError( tr("Can't insert %1 template").arg( name ) );
 			break;
@@ -471,7 +471,7 @@ QStringList XslContentElementList::params( QString templateName ) const {
 
 bool XslContentElementList::isElementShowed( FileContentElement * element ) {
 	Q_ASSERT( element );
-	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element->parent() );
+	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element->parent() );
 	if( ! templ ) return true;
 	//qDebug( qPrintable( QString( "really name = \"%1\", really mode = \"%2\", asked name = \"%3\", asked mode = \"%4\"" ).arg( templ->name() ).arg( templ->mode() ).arg( m_templateMatchName ).arg( m_templateMode ) ) );
 	if( ( templ->name() == m_templateMatchName ) && ( m_templateMode.isEmpty() || ( templ->mode() == m_templateMode ) ) ) return true;
@@ -481,25 +481,25 @@ bool XslContentElementList::isElementShowed( FileContentElement * element ) {
 void XslContentElementList::slotAdd( FileContentElement * element, int row ) {
 	Q_UNUSED( row );
 
-	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
+	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element );
 	if( templ ) addElementList( templ );
 
-	XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( element );
-	if( param && ( templ = dynamic_cast<XSLFileContentTemplate*>( param->parent() ) ) ) {
+	XSLFileContentParams * param = qobject_cast<XSLFileContentParams*>( element );
+	if( param && ( param->metaObject()->className() == QLatin1String("XSLFileContentParams") ) && ( templ = qobject_cast<XSLFileContentTemplate*>( param->parent() ) ) ) {
 		//qDebug( qPrintable( QString( "Name = %1, Mode = %2, Param = %3").arg( templ->name() ).arg( templ->mode() ).arg( param->name() ) ) );
 		m_params.insert( templ->name(), param->name() );
 	}
 }
 
 void XslContentElementList::slotRemove( FileContentElement * element ) {
-	XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( element );
+	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element );
 	if( templ ) {
 		if( ! templ->mode().isEmpty() )
 			m_modes.remove( templ->displayName(), templ->mode() );
 
 		for( int i = 0; i < templ->rowCount(); i++ ) {
-			XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( templ->element( i ) );
-			if( param )
+			XSLFileContentParams * param = qobject_cast<XSLFileContentParams*>( templ->element( i ) );
+			if( param && ( param->metaObject()->className() == QLatin1String("XSLFileContentParams") ) )
 				m_params.remove( templ->displayName(), param->displayName() );
 		}
 	}
@@ -514,8 +514,8 @@ void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
 		m_modes.insert( templ->name(), templ->mode() );
 
 	for( int i = 0; i < templ->rowCount(); i++ ) {
-		XSLFileContentParams * param = dynamic_cast<XSLFileContentParams*>( templ->element( i ) );
-		if( param )
+		XSLFileContentParams * param = qobject_cast<XSLFileContentParams*>( templ->element( i ) );
+		if( param && ( param->metaObject()->className() == QLatin1String("XSLFileContentParams") ) )
 			m_params.insert( templ->name(), param->name() );
 	}
 }
@@ -524,9 +524,9 @@ void XslContentElementList::addElementList( XSLFileContentParser * parser ) {
 	Q_ASSERT( parser );
 
 	for( int i = 0; i < parser->rowCount(); i++ ) {
-		XSLFileContentTemplate * templ = dynamic_cast<XSLFileContentTemplate*>( parser->element( i ) );
+		XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( parser->element( i ) );
 		if( templ ) addElementList( templ );
-		XSLFileContentParser * p = dynamic_cast<XSLFileContentParser*>( parser->element( i ) );
+		XSLFileContentParser * p = qobject_cast<XSLFileContentParser*>( parser->element( i ) );
 		if( p ) addElementList( p );
 	}
 }
@@ -534,5 +534,5 @@ void XslContentElementList::addElementList( XSLFileContentParser * parser ) {
 void XslContentElementList::slotReset() {
 	m_modes.clear();
 	m_params.clear();
-	if( dynamic_cast<XSLFileContentParser*>( rootElement() ) ) addElementList( dynamic_cast<XSLFileContentParser*>( rootElement() ) );
+	if( qobject_cast<XSLFileContentParser*>( rootElement() ) ) addElementList( qobject_cast<XSLFileContentParser*>( rootElement() ) );
 }
