@@ -86,6 +86,16 @@ int main(int argc, char *argv[]) {
 		app.setOrganizationDomain( "Shadoware.Org" );
 		app.setApplicationName( "XINX" );
 
+		// Set a stylesheet to have icons on button
+//		app.setStyleSheet(
+//				"* {"
+//				"	dialogbuttonbox-buttons-have-icons: 1;"
+//				"	dialog-ok-icon: url(:/images/button_ok.png);"
+//				"	dialog-cancel-icon: url(:/images/button_cancel.png);"
+//				"	dialog-close-icon: url(:/images/editdelete.png);"
+//				"	dialog-apply-icon: url(:/images/button_apply.png);"
+//				"}" );
+
 		QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
 
 		QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );

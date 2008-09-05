@@ -726,7 +726,6 @@ void MainformImpl::customize() {
 
 		if( ! XINXConfig::self()->config().style.isEmpty() ) {
 			QApplication::setStyle( XINXConfig::self()->config().style );
-			setStyle( QApplication::style() );
 		}
 	}
 }
