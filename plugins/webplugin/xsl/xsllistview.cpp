@@ -510,7 +510,7 @@ void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
 
 	//qDebug( qPrintable( QString( "Name = %1, Mode = %2, CountChildren = %3").arg( templ->name() ).arg( templ->mode() ).arg( templ->rowCount() ) ) );
 
-	if( !templ->mode().isEmpty() )
+	if( (!templ->mode().isEmpty()) && (!m_modes.values( templ->name() ).contains( templ->mode() )) )
 		m_modes.insert( templ->name(), templ->mode() );
 
 	for( int i = 0; i < templ->rowCount(); i++ ) {

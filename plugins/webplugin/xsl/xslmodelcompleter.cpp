@@ -193,10 +193,10 @@ void XSLCompletionModel::setApplyTemplateMatch( const QString & match ) {
 	QString templateMatch = match;
 
 	if( templateMatch.contains( "/" ) )
-		templateMatch.remove( templateMatch.lastIndexOf( "/" ) + 1, templateMatch.length() );
+		templateMatch.remove( 0, templateMatch.lastIndexOf( "/" ) + 1 );
 
 	if( m_applyTemplateMatch != templateMatch ) {
-		m_applyTemplateMatch = match;
+		m_applyTemplateMatch = templateMatch;
 		reset();
 	}
 }
