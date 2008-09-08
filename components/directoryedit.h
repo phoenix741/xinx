@@ -32,6 +32,7 @@
 class CompleterDirModel : public QDirModel {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
 public:
 	/*!
@@ -57,6 +58,7 @@ public:
 class DirectoryEdit : public QLineEdit {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
 public:
 	/*!
@@ -95,6 +97,7 @@ class PrivateDirectoryEditWidget;
 class DirectoryEditWidget : public QWidget {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
 	Q_PROPERTY( bool directory READ isDirectory WRITE setDirectory )
 	Q_PROPERTY( QString defaultValue READ defaultValue WRITE setDefaultValue )

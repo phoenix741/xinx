@@ -37,6 +37,7 @@ class PluginElement;
 class PluginSelector : public QListView {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
 public:
 	/*!
@@ -52,11 +53,14 @@ public:
 
 	//! List of plugins add in the \e PluginSelector
 	const QList<PluginElement*> & plugins() const;
-	//! Clear the list of \e PluginElement*
-	void clear();
 
 	//! \internal
 	QStyleOptionViewItem viewOptions() const;
+
+public slots:
+	//! Clear the list of \e PluginElement*
+	void clear();
+
 signals:
 	//! This signal is emited when the plugin request to be configured.
 	void configurePlugin( PluginElement * plugin );
