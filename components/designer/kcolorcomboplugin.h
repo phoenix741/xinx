@@ -18,63 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// Xinx header
-#include "directoryeditwidgetplugin.h"
-#include "directoryedit.h"
+#ifndef KCOLORCOMBOPLUGIN_H_
+#define KCOLORCOMBOPLUGIN_H_
 
 // Qt header
-#include <QtPlugin>
+#include <QDesignerCustomWidgetInterface>
 
-/* DirectoryEditWidgetPlugin */
+/* KColorComboPlugin */
 
-DirectoryEditWidgetPlugin::DirectoryEditWidgetPlugin( QObject *parent ) : QObject( parent ) {
-	m_initialized = false;
-}
+class KColorComboPlugin : public QObject, public QDesignerCustomWidgetInterface {
+	Q_OBJECT
+	Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+	KColorComboPlugin( QObject *parent = 0 );
 
-void DirectoryEditWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
-		return;
+    bool isContainer() const;
+    bool isInitialized() const;
+    QIcon icon() const;
+    QString domXml() const;
+    QString group() const;
+    QString includeFile() const;
+    QString name() const;
+    QString toolTip() const;
+    QString whatsThis() const;
+    QWidget *createWidget( QWidget *parent );
+    void initialize( QDesignerFormEditorInterface *core );
+private:
+    bool m_initialized;
+};
 
-	m_initialized = true;
-}
-
-bool DirectoryEditWidgetPlugin::isInitialized() const {
-	return m_initialized;
-}
-
-bool DirectoryEditWidgetPlugin::isContainer() const {
-	return false;
-}
-
-QIcon DirectoryEditWidgetPlugin::icon() const {
-	return QIcon();
-}
-
-QString DirectoryEditWidgetPlugin::toolTip() const {
-	return "";
-}
-
-QString DirectoryEditWidgetPlugin::whatsThis() const {
-	return "";
-}
-
-QString DirectoryEditWidgetPlugin::group() const {
-	return "XINX Widget";
-}
-
-QString DirectoryEditWidgetPlugin::name() const {
-	return "DirectoryEditWidget";
-}
-
-QString DirectoryEditWidgetPlugin::includeFile() const {
-	return "directoryedit.h";
-}
-
-QString DirectoryEditWidgetPlugin::domXml() const {
-	return  "<widget class=\"DirectoryEditWidget\" name=\"directoryEditWidget\"/>";
-}
-
-QWidget * DirectoryEditWidgetPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEditWidget( parent );
-}
-
+#endif /* KCOLORCOMBOPLUGIN_H_ */

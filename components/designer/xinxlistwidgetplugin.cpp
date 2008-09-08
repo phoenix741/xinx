@@ -19,62 +19,62 @@
  ***************************************************************************/
 
 // Xinx header
-#include "directoryeditwidgetplugin.h"
-#include "directoryedit.h"
+#include "xinxlistwidgetplugin.h"
+#include "xinxlistwidgetimpl.h"
 
 // Qt header
 #include <QtPlugin>
 
-/* DirectoryEditWidgetPlugin */
+/* XinxListWidgetPlugin */
 
-DirectoryEditWidgetPlugin::DirectoryEditWidgetPlugin( QObject *parent ) : QObject( parent ) {
+XinxListWidgetPlugin::XinxListWidgetPlugin( QObject *parent ) : QObject( parent ) {
 	m_initialized = false;
 }
 
-void DirectoryEditWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
+void XinxListWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
 	if( m_initialized )
 		return;
 
 	m_initialized = true;
 }
 
-bool DirectoryEditWidgetPlugin::isInitialized() const {
+bool XinxListWidgetPlugin::isInitialized() const {
 	return m_initialized;
 }
 
-bool DirectoryEditWidgetPlugin::isContainer() const {
+bool XinxListWidgetPlugin::isContainer() const {
 	return false;
 }
 
-QIcon DirectoryEditWidgetPlugin::icon() const {
+QIcon XinxListWidgetPlugin::icon() const {
 	return QIcon();
 }
 
-QString DirectoryEditWidgetPlugin::toolTip() const {
+QString XinxListWidgetPlugin::toolTip() const {
 	return "";
 }
 
-QString DirectoryEditWidgetPlugin::whatsThis() const {
+QString XinxListWidgetPlugin::whatsThis() const {
 	return "";
 }
 
-QString DirectoryEditWidgetPlugin::group() const {
+QString XinxListWidgetPlugin::group() const {
 	return "XINX Widget";
 }
 
-QString DirectoryEditWidgetPlugin::name() const {
-	return "DirectoryEditWidget";
+QString XinxListWidgetPlugin::name() const {
+	return "XinxListWidgetImpl";
 }
 
-QString DirectoryEditWidgetPlugin::includeFile() const {
-	return "directoryedit.h";
+QString XinxListWidgetPlugin::includeFile() const {
+	return "xinxlistwidgetimpl.h";
 }
 
-QString DirectoryEditWidgetPlugin::domXml() const {
-	return  "<widget class=\"DirectoryEditWidget\" name=\"directoryEditWidget\"/>";
+QString XinxListWidgetPlugin::domXml() const {
+	return  "<widget class=\"XinxListWidgetImpl\" name=\"xinxListWidget\"/>";
 }
 
-QWidget * DirectoryEditWidgetPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEditWidget( parent );
+QWidget * XinxListWidgetPlugin::createWidget( QWidget *parent ) {
+	return new XinxListWidgetImpl( parent );
 }
 

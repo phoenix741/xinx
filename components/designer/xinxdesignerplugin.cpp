@@ -19,62 +19,23 @@
  ***************************************************************************/
 
 // Xinx header
+#include "xinxdesignerplugin.h"
+#include "directoryeditplugin.h"
 #include "directoryeditwidgetplugin.h"
-#include "directoryedit.h"
+#include "kcolorcomboplugin.h"
+#include "pluginselectorplugin.h"
+#include "xinxlistwidgetplugin.h"
 
-// Qt header
-#include <QtPlugin>
-
-/* DirectoryEditWidgetPlugin */
-
-DirectoryEditWidgetPlugin::DirectoryEditWidgetPlugin( QObject *parent ) : QObject( parent ) {
-	m_initialized = false;
+XinxDesignerPlugin::XinxDesignerPlugin( QObject *parent ) : QObject( parent ) {
+	widgets.append( new DirectoryEditPlugin( this ) );
+	widgets.append( new DirectoryEditWidgetPlugin( this ) );
+	widgets.append( new KColorComboPlugin( this ) );
+	widgets.append( new PluginSelectorPlugin( this ) );
+	widgets.append( new XinxListWidgetPlugin( this ) );
 }
 
-void DirectoryEditWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
-		return;
-
-	m_initialized = true;
+QList<QDesignerCustomWidgetInterface*> XinxDesignerPlugin::customWidgets() const {
+	return widgets;
 }
 
-bool DirectoryEditWidgetPlugin::isInitialized() const {
-	return m_initialized;
-}
-
-bool DirectoryEditWidgetPlugin::isContainer() const {
-	return false;
-}
-
-QIcon DirectoryEditWidgetPlugin::icon() const {
-	return QIcon();
-}
-
-QString DirectoryEditWidgetPlugin::toolTip() const {
-	return "";
-}
-
-QString DirectoryEditWidgetPlugin::whatsThis() const {
-	return "";
-}
-
-QString DirectoryEditWidgetPlugin::group() const {
-	return "XINX Widget";
-}
-
-QString DirectoryEditWidgetPlugin::name() const {
-	return "DirectoryEditWidget";
-}
-
-QString DirectoryEditWidgetPlugin::includeFile() const {
-	return "directoryedit.h";
-}
-
-QString DirectoryEditWidgetPlugin::domXml() const {
-	return  "<widget class=\"DirectoryEditWidget\" name=\"directoryEditWidget\"/>";
-}
-
-QWidget * DirectoryEditWidgetPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEditWidget( parent );
-}
-
+Q_EXPORT_PLUGIN2(xinxdesignerplugin, XinxDesignerPlugin);

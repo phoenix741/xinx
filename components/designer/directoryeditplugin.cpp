@@ -78,5 +78,3 @@ QWidget * DirectoryEditPlugin::createWidget( QWidget *parent ) {
 	return new DirectoryEdit( parent );
 }
 
-Q_EXPORT_PLUGIN2(directoryeditplugin, DirectoryEditPlugin)
-

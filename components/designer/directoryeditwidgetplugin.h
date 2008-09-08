@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIRECTORYEDITPLUGIN_H_
-#define DIRECTORYEDITPLUGIN_H_
+#ifndef DIRECTORYEDITWIDGETPLUGIN_H_
+#define DIRECTORYEDITWIDGETPLUGIN_H_
 
 // Qt header
 #include <QDesignerCustomWidgetInterface>
@@ -47,4 +47,4 @@ private:
     bool m_initialized;
 };
 
-#endif /* DIRECTORYEDITPLUGIN_H_ */
+#endif /* DIRECTORYEDITWIDGETPLUGIN_H_ */

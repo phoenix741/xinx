@@ -19,62 +19,62 @@
  ***************************************************************************/
 
 // Xinx header
-#include "directoryeditwidgetplugin.h"
-#include "directoryedit.h"
+#include "pluginselectorplugin.h"
+#include "pluginselector.h"
 
 // Qt header
 #include <QtPlugin>
 
-/* DirectoryEditWidgetPlugin */
+/* PluginSelectorPlugin */
 
-DirectoryEditWidgetPlugin::DirectoryEditWidgetPlugin( QObject *parent ) : QObject( parent ) {
+PluginSelectorPlugin::PluginSelectorPlugin( QObject *parent ) : QObject( parent ) {
 	m_initialized = false;
 }
 
-void DirectoryEditWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
+void PluginSelectorPlugin::initialize( QDesignerFormEditorInterface *core ) {
 	if( m_initialized )
 		return;
 
 	m_initialized = true;
 }
 
-bool DirectoryEditWidgetPlugin::isInitialized() const {
+bool PluginSelectorPlugin::isInitialized() const {
 	return m_initialized;
 }
 
-bool DirectoryEditWidgetPlugin::isContainer() const {
+bool PluginSelectorPlugin::isContainer() const {
 	return false;
 }
 
-QIcon DirectoryEditWidgetPlugin::icon() const {
+QIcon PluginSelectorPlugin::icon() const {
 	return QIcon();
 }
 
-QString DirectoryEditWidgetPlugin::toolTip() const {
+QString PluginSelectorPlugin::toolTip() const {
 	return "";
 }
 
-QString DirectoryEditWidgetPlugin::whatsThis() const {
+QString PluginSelectorPlugin::whatsThis() const {
 	return "";
 }
 
-QString DirectoryEditWidgetPlugin::group() const {
+QString PluginSelectorPlugin::group() const {
 	return "XINX Widget";
 }
 
-QString DirectoryEditWidgetPlugin::name() const {
-	return "DirectoryEditWidget";
+QString PluginSelectorPlugin::name() const {
+	return "PluginSelector";
 }
 
-QString DirectoryEditWidgetPlugin::includeFile() const {
-	return "directoryedit.h";
+QString PluginSelectorPlugin::includeFile() const {
+	return "pluginselector.h";
 }
 
-QString DirectoryEditWidgetPlugin::domXml() const {
-	return  "<widget class=\"DirectoryEditWidget\" name=\"directoryEditWidget\"/>";
+QString PluginSelectorPlugin::domXml() const {
+	return  "<widget class=\"PluginSelector\" name=\"pluginSelector\"/>";
 }
 
-QWidget * DirectoryEditWidgetPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEditWidget( parent );
+QWidget * PluginSelectorPlugin::createWidget( QWidget *parent ) {
+	return new PluginSelector( parent );
 }
 

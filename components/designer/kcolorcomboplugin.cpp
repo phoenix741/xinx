@@ -19,62 +19,62 @@
  ***************************************************************************/
 
 // Xinx header
-#include "directoryeditwidgetplugin.h"
-#include "directoryedit.h"
+#include "kcolorcomboplugin.h"
+#include "kcolorcombo.h"
 
 // Qt header
 #include <QtPlugin>
 
-/* DirectoryEditWidgetPlugin */
+/* KColorComboPlugin */
 
-DirectoryEditWidgetPlugin::DirectoryEditWidgetPlugin( QObject *parent ) : QObject( parent ) {
+KColorComboPlugin::KColorComboPlugin( QObject *parent ) : QObject( parent ) {
 	m_initialized = false;
 }
 
-void DirectoryEditWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
+void KColorComboPlugin::initialize( QDesignerFormEditorInterface *core ) {
 	if( m_initialized )
 		return;
 
 	m_initialized = true;
 }
 
-bool DirectoryEditWidgetPlugin::isInitialized() const {
+bool KColorComboPlugin::isInitialized() const {
 	return m_initialized;
 }
 
-bool DirectoryEditWidgetPlugin::isContainer() const {
+bool KColorComboPlugin::isContainer() const {
 	return false;
 }
 
-QIcon DirectoryEditWidgetPlugin::icon() const {
+QIcon KColorComboPlugin::icon() const {
 	return QIcon();
 }
 
-QString DirectoryEditWidgetPlugin::toolTip() const {
+QString KColorComboPlugin::toolTip() const {
 	return "";
 }
 
-QString DirectoryEditWidgetPlugin::whatsThis() const {
+QString KColorComboPlugin::whatsThis() const {
 	return "";
 }
 
-QString DirectoryEditWidgetPlugin::group() const {
+QString KColorComboPlugin::group() const {
 	return "XINX Widget";
 }
 
-QString DirectoryEditWidgetPlugin::name() const {
-	return "DirectoryEditWidget";
+QString KColorComboPlugin::name() const {
+	return "KColorCombo";
 }
 
-QString DirectoryEditWidgetPlugin::includeFile() const {
-	return "directoryedit.h";
+QString KColorComboPlugin::includeFile() const {
+	return "kcolorcombo.h";
 }
 
-QString DirectoryEditWidgetPlugin::domXml() const {
-	return  "<widget class=\"DirectoryEditWidget\" name=\"directoryEditWidget\"/>";
+QString KColorComboPlugin::domXml() const {
+	return  "<widget class=\"KColorCombo\" name=\"kColorCombo\"/>";
 }
 
-QWidget * DirectoryEditWidgetPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEditWidget( parent );
+QWidget * KColorComboPlugin::createWidget( QWidget *parent ) {
+	return new KColorCombo( parent );
 }
 

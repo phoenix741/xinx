@@ -18,63 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// Xinx header
-#include "directoryeditwidgetplugin.h"
-#include "directoryedit.h"
+#ifndef XINXDESIGNERPLUGIN_H_
+#define XINXDESIGNERPLUGIN_H_
 
-// Qt header
-#include <QtPlugin>
+#include <QtDesigner/QtDesigner>
+#include <QtCore/qplugin.h>
 
-/* DirectoryEditWidgetPlugin */
+class XinxDesignerPlugin: public QObject, public QDesignerCustomWidgetCollectionInterface {
+	Q_OBJECT
+	Q_INTERFACES(QDesignerCustomWidgetCollectionInterface)
+public:
+	XinxDesignerPlugin( QObject *parent = 0 );
 
-DirectoryEditWidgetPlugin::DirectoryEditWidgetPlugin( QObject *parent ) : QObject( parent ) {
-	m_initialized = false;
-}
+	virtual QList<QDesignerCustomWidgetInterface*> customWidgets() const;
+private:
+	QList<QDesignerCustomWidgetInterface*> widgets;
+};
 
-void DirectoryEditWidgetPlugin::initialize( QDesignerFormEditorInterface *core ) {
-	if( m_initialized )
-		return;
 
-	m_initialized = true;
-}
-
-bool DirectoryEditWidgetPlugin::isInitialized() const {
-	return m_initialized;
-}
-
-bool DirectoryEditWidgetPlugin::isContainer() const {
-	return false;
-}
-
-QIcon DirectoryEditWidgetPlugin::icon() const {
-	return QIcon();
-}
-
-QString DirectoryEditWidgetPlugin::toolTip() const {
-	return "";
-}
-
-QString DirectoryEditWidgetPlugin::whatsThis() const {
-	return "";
-}
-
-QString DirectoryEditWidgetPlugin::group() const {
-	return "XINX Widget";
-}
-
-QString DirectoryEditWidgetPlugin::name() const {
-	return "DirectoryEditWidget";
-}
-
-QString DirectoryEditWidgetPlugin::includeFile() const {
-	return "directoryedit.h";
-}
-
-QString DirectoryEditWidgetPlugin::domXml() const {
-	return  "<widget class=\"DirectoryEditWidget\" name=\"directoryEditWidget\"/>";
-}
-
-QWidget * DirectoryEditWidgetPlugin::createWidget( QWidget *parent ) {
-	return new DirectoryEditWidget( parent );
-}
-
+#endif /* XINXDESIGNERPLUGIN_H_ */
