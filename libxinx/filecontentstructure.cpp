@@ -91,15 +91,14 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 }
 
 PrivateFileContentElement::~PrivateFileContentElement() {
-	//qDeleteAll( m_elements );
-	// TODO: Can cause some problem. Don't forget to clean memory
+
 }
 
 /*! \endcond */
 
 /* FileContentElement */
 
-FileContentElement::FileContentElement( FileContentElement * parent, const QString & name, int line ) {
+FileContentElement::FileContentElement( FileContentElement * parent, const QString & name, int line ) : QObject( parent ) {
 	d = new PrivateFileContentElement( this );
 	d->m_line = line;
 	d->m_name = name;
@@ -208,6 +207,7 @@ FileContentElement * FileContentElement::append( FileContentElement * element ) 
 		emit aboutToAdd( element, d->m_elements.size() );
 
 		d->m_elements.append( element );
+		element->setParent( this );
 
 		emit added();
 		return element;
