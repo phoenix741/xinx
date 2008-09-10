@@ -372,6 +372,7 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename, QObject 
 }
 
 MetaConfigurationFile::~MetaConfigurationFile() {
+	qDeleteAll( m_configurations );
 }
 
 bool MetaConfigurationFile::exists( const QString & directoryPath ) {
