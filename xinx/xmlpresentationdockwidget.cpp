@@ -357,6 +357,24 @@ bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::filterAcceptsR
 	return canBeShow( index );
 }
 
+bool PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::showAllChild() const {
+	return m_showAllChild;
+}
+
+void PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::setShowAllChild( bool value ) {
+	if( m_showAllChild != value ) {
+		m_indexCache.clear();
+		m_showAllChild = value;
+		m_indexCache.clear();
+	}
+}
+
+void PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::setFilterRegExp( const QString & regExp ) {
+	m_indexCache.clear();
+	QSortFilterProxyModel::setFilterRegExp( regExp );
+}
+
+
 /* XmlPresentationDockWidget */
 
 XmlPresentationDockWidget::XmlPresentationDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
