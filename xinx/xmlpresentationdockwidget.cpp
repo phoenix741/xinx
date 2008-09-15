@@ -258,6 +258,7 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
 	m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
+	m_xmlPresentationWidget->m_filtreLineEdit->setText( m_filteredText ); // Au cas où des caractères n'ont pas été pris en compte
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 }
@@ -270,10 +271,7 @@ void PrivateXmlPresentationDockWidget::filterTextChanged( const QString & text )
 
 void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 	Q_ASSERT( ! isRunning() );
-
-	if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
-		m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
-	}
+	m_timerTextChanged.stop();
 
 	if( m_sortFilterModel ) {
 		// TODO: Delete this line in 4.4
@@ -283,6 +281,10 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
+
+		if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
+			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
+		}
 
 		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
 
