@@ -221,9 +221,9 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 	if( m_threadAct == THREAD_OPENING ) {
 		m_watcher = new FileWatcher( m_openingFile );
 		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
-		m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
 	} else if( m_threadAct == THREAD_FILTERED ) {
 	}
+	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
 
 	/* Filter part */
 	QModelIndex expandIndex = QModelIndex();
@@ -281,6 +281,7 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
+		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
 
 		if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
 			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
