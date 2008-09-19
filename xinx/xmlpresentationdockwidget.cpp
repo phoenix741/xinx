@@ -161,6 +161,8 @@ void PrivateXmlPresentationDockWidget::setComboToolTip( const QString & filename
 }
 
 void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
+	Q_ASSERT( ! isRunning() );
+
 	if( m_watcher ) m_watcher->desactivate();
 
 	m_xmlPresentationWidget->m_presentationProgressBar->show();
@@ -169,6 +171,10 @@ void PrivateXmlPresentationDockWidget::open( const QString& filename ) {
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
+
+	if( m_sortFilterModel && m_xmlPresentationWidget )
+		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
+
 	m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
 
 	m_openingFile = filename;
@@ -281,7 +287,6 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
-		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
 
 		if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
 			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
@@ -289,7 +294,7 @@ void PrivateXmlPresentationDockWidget::filterTextChangedTimer() {
 
 		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
 
-		m_xmlPresentationWidget->m_presentationTreeView->collapseAll();
+		m_xmlPresentationWidget->m_presentationTreeView->setModel( NULL );
 		m_xmlPresentationWidget->m_presentationProgressBar->show();
 
 		m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
@@ -368,7 +373,6 @@ void PrivateXmlPresentationDockWidget::RecursiveFilterProxyModel::setShowAllChil
 	if( m_showAllChild != value ) {
 		m_indexCache.clear();
 		m_showAllChild = value;
-		m_indexCache.clear();
 	}
 }
 
