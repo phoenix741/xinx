@@ -182,6 +182,7 @@ int XSLCompletionModel::rowCount( const QModelIndex &parent ) const {
 void XSLCompletionModel::setFilter( QString baliseName, QString attributeName ) {
 	// TODO : Deux cas d'erreur : Si a = blanc..... !!!
 	Q_ASSERT( ! baliseName.isEmpty() || attributeName.isEmpty() );
+	//qDebug( qPrintable( QString("setFilter( baliseName = %1, attributeName = %2 )").arg( baliseName ).arg( attributeName ) ) );
 	if( ( m_baliseName != baliseName ) || ( m_attributeName != attributeName ) ) {
 		m_baliseName = baliseName;
 		m_attributeName = attributeName;
@@ -191,6 +192,8 @@ void XSLCompletionModel::setFilter( QString baliseName, QString attributeName ) 
 
 void XSLCompletionModel::setApplyTemplateMatch( const QString & match ) {
 	QString templateMatch = match;
+
+	//qDebug( qPrintable( QString("setApplyTemplateMatch( match = %1 )").arg( match ) ) );
 
 	if( templateMatch.contains( "/" ) )
 		templateMatch.remove( 0, templateMatch.lastIndexOf( "/" ) + 1 );
@@ -218,6 +221,8 @@ void XSLCompletionModel::setHiddenAttribute( const QStringList & attributes ) {
 }
 
 void XSLCompletionModel::setTemplateName( const QString & templateMatchName, const QString & mode ) {
+	//qDebug( qPrintable( QString("setTemplateName(templateMatchName = %1, mode = %2)").arg( templateMatchName ).arg( mode ) ) );
+
 	m_list->setTemplateName( templateMatchName, mode );
 	reset();
 }

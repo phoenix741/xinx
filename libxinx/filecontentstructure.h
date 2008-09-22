@@ -163,6 +163,8 @@ public:
 	/*! Function to change the filename of the element. */
 	void setFilename( const QString & filename );
 
+	void dumpObjectTree( int level = 0 );
+
 public: // TODO: Workaround to permit to XINX to be compiled on Windows ...
 	/*!
 	 * Remove an element from the child list. The signal \e aboutToRemove() and \e removed() is emited
@@ -235,17 +237,21 @@ signals:
 	/*! Signal emited when the list is refreshed */
 	void reset();
 protected:
+	/*! Refresh the list and reset the object */
+	virtual void refreshList();
+	/*! Add one element */
+	virtual bool addElement( FileContentElement * element );
+	/*! Test if an element is in the list */
+	virtual bool contains( FileContentElement * data );
+
 	/*! The root element declared in the constructor */
 	FileContentElement * rootElement() const;
 	/*! Return true if the element must be showed else return false */
 	virtual bool isElementShowed( FileContentElement * ) { return true; };
-private slots:
-	void refreshList();
-	void addElement( FileContentElement * element, int row );
-	void removeElement( FileContentElement * element );
+protected slots:
+	virtual void addElement( FileContentElement * element, int row );
+	virtual void removeElement( FileContentElement * element );
 private:
-	void addElement( FileContentElement * element );
-	bool contains( FileContentElement * data );
 	void refreshRecursive( FileContentElement * data );
 
 	QList<FileContentElement*> m_list;
