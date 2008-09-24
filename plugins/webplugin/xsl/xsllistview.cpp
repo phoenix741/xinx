@@ -440,7 +440,7 @@ XslContentElementList::~XslContentElementList() {
 }
 
 void XslContentElementList::setTemplateName( const QString & templateMatchName, const QString & mode ) {
-//	qDebug( qPrintable( QString("setTemplateName( templateMatchName = %1, mode = %2 )").arg( templateMatchName ).arg( mode ) ) );
+	qDebug( qPrintable( QString("setTemplateName( templateMatchName = %1, mode = %2 )").arg( templateMatchName ).arg( mode ) ) );
 	if( ( templateMatchName != m_templateMatchName ) || ( m_templateMode != mode ) ) {
 		m_templateMatchName = templateMatchName;
 		m_templateMode      = mode;
@@ -468,10 +468,21 @@ QStringList XslContentElementList::params( QString templateName ) const {
 
 bool XslContentElementList::isElementShowed( FileContentElement * element ) {
 	Q_ASSERT( element );
+
+	if( element->name() == "SOC1000" ) qDebug( "Variable SOC1000 :" );
+
 	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element->parent() );
+
+	if( ( element->name() == "SOC1000" ) && (!templ) ) qDebug( "    Pas de parent" );
+
 	if( ! templ ) return true;
 	//qDebug( qPrintable( QString( "isElementShowed( element->name() = %1, element->parent()->name() = %2, element->parent()->mode() = %3 )" ).arg( element->name() ).arg( templ->name() ).arg( templ->mode() ) ) );
+
+	if( element->name() == "SOC1000" ) qDebug( qPrintable( QString("    parent name : %1" ).arg( templ->name() ) ) );
+
 	if( ( templ->name() == m_templateMatchName ) && ( m_templateMode.isEmpty() || ( templ->mode() == m_templateMode ) ) ) return true;
+
+	if( element->name() == "SOC1000" ) qDebug( qPrintable( QString( "    no matching, %1 %2" ).arg( m_templateMatchName ).arg( m_templateMode ) ) );
 	return false;
 }
 
@@ -492,18 +503,15 @@ void XslContentElementList::removeElement( FileContentElement * element ) {
 }
 
 bool XslContentElementList::addElement( FileContentElement * element ) {
-	if( FileContentElementList::addElement( element ) ) {
-		XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element );
-		if( templ ) addElementList( templ );
+	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element );
+	if( templ ) addElementList( templ );
 
-		XSLFileContentParams * param = qobject_cast<XSLFileContentParams*>( element );
-		if( param && ( param->metaObject()->className() == QLatin1String("XSLFileContentParams") ) && ( templ = qobject_cast<XSLFileContentTemplate*>( param->parent() ) ) ) {
-			//qDebug( qPrintable( QString( "Name = %1, Mode = %2, Param = %3").arg( templ->name() ).arg( templ->mode() ).arg( param->name() ) ) );
-			m_params.insert( templ->name(), param->name() );
-		}
-		return true;
+	XSLFileContentParams * param = qobject_cast<XSLFileContentParams*>( element );
+	if( param && ( param->metaObject()->className() == QLatin1String("XSLFileContentParams") ) && ( templ = qobject_cast<XSLFileContentTemplate*>( param->parent() ) ) ) {
+		//qDebug( qPrintable( QString( "Name = %1, Mode = %2, Param = %3").arg( templ->name() ).arg( templ->mode() ).arg( param->name() ) ) );
+		m_params.insert( templ->name(), param->name() );
 	}
-	return false;
+	return FileContentElementList::addElement( element );
 }
 
 void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {
