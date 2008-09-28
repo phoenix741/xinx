@@ -332,8 +332,8 @@ void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 				refreshRecursive( e );
 			}
 		} else {
-			if( ! contains( e ) )
-				addElement( e );
+			if( ! contains( e ) ) addElement( e );
+			refreshRecursive( e );
 		}
 	}
 }
