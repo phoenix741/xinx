@@ -71,7 +71,9 @@ DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: empty
 DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: scripts
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\qtdotnet2.dll; Flags: skipifsourcedoesntexist; Components: " styles"; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Flags: skipifsourcedoesntexist; Components: " styles"; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 

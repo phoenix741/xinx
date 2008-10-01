@@ -28,6 +28,9 @@
 #include "ui_replace.h"
 #include <abstracteditor.h>
 
+// Qt header
+#include <QPushButton>
+
 class ReplaceDialogImpl : public QDialog, public Ui::ReplaceDialog {
 	Q_OBJECT
 public:
@@ -42,9 +45,12 @@ signals:
 	void findInFiles( const QString & directory, const QString & from, const QString & to, const AbstractEditor::SearchOptions & options );
 
 private slots:
-	void on_m_findButton_clicked();
+	void m_findButton_clicked();
 	void on_m_replaceCheckBox_toggled(bool checked);
 	void on_m_projectFilesRadioButton_toggled(bool checked);
+
+private:
+	QPushButton * m_findButton;
 };
 #endif
 

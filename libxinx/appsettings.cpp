@@ -4,6 +4,7 @@
 #include <QLocale>
 #include <QDir>
 #include <QApplication>
+#include <QStyle>
 
 #include "appsettings.h"
 
@@ -392,6 +393,7 @@ AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSettingsSettings
 	value.maximized = settings->value( "Maximized", defaultValue.maximized ).toBool();
 	value.state = settings->value( "State", defaultValue.state ).toByteArray();
 	value.xinxTrace = settings->value( "XINX Trace", defaultValue.xinxTrace ).toString();
+	value.style = settings->value( "Style", defaultValue.style ).toString();
 	value.plugins = getSettingsHash_bool( settings, "Plugins", defaultValue.plugins );
 	value.descriptions = getSettingsDescriptions( settings, "Descriptions", defaultValue.descriptions );
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
@@ -417,6 +419,7 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	settings->setValue( "Maximized", value.maximized, defaultValue.maximized );
 	settings->setValue( "State", value.state, defaultValue.state );
 	settings->setValue( "XINX Trace", value.xinxTrace, defaultValue.xinxTrace );
+	settings->setValue( "Style", value.style, defaultValue.style );
 	setSettingsHash_bool( settings, "Plugins", value.plugins );
 	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );

@@ -189,49 +189,11 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="2" >
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>131</width>
-         <height>31</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -243,42 +205,40 @@
   <tabstop>m_categoryComboBox</tabstop>
   <tabstop>m_descriptionTextEdit</tabstop>
   <tabstop>m_textEdit</tabstop>
-  <tabstop>okButton</tabstop>
-  <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
   <include location="../application.qrc" />
  </resources>
  <connections>
   <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
    <receiver>SnipetDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>278</x>
-     <y>253</y>
+     <x>459</x>
+     <y>574</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>96</x>
-     <y>254</y>
+     <x>594</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
    <receiver>SnipetDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>369</x>
-     <y>253</y>
+     <x>313</x>
+     <y>569</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>179</x>
-     <y>282</y>
+     <x>593</x>
+     <y>216</y>
     </hint>
    </hints>
   </connection>

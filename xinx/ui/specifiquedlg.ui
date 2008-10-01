@@ -79,49 +79,11 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>131</width>
-         <height>31</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton" >
-       <property name="text" >
-        <string>&amp;OK</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_ok.png</normaloff>:/images/button_ok.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton" >
-       <property name="text" >
-        <string>&amp;Cancel</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../application.qrc" >
-         <normaloff>:/images/button_cancel.png</normaloff>:/images/button_cancel.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -129,38 +91,6 @@
   <include location="../application.qrc" />
  </resources>
  <connections>
-  <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
-   <receiver>SpecifiqueDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>359</x>
-     <y>303</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>96</x>
-     <y>254</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked()</signal>
-   <receiver>SpecifiqueDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>440</x>
-     <y>303</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>179</x>
-     <y>282</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>m_specifiqueCheckBox</sender>
    <signal>toggled(bool)</signal>
@@ -190,6 +120,38 @@
     <hint type="destinationlabel" >
      <x>207</x>
      <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SpecifiqueDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>251</x>
+     <y>423</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>-1</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SpecifiqueDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>181</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>386</x>
+     <y>224</y>
     </hint>
    </hints>
   </connection>

@@ -78,7 +78,7 @@ void AbstractFileEditor::saveToFile( const QString & fileName ) {
 	desactivateWatcher();
 	qApp->processEvents();
 
-	/* Open the file for writint an save */
+	/* Open the file for writting an save */
 	QFile file( m_lastFileName );
 	if( ! file.open( QIODevice::WriteOnly ) ) {
 		qCritical( qPrintable(tr("Can't open file for writing %1 : %2").arg( m_lastFileName ).arg( file.errorString() )) );

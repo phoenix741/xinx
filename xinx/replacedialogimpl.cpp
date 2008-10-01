@@ -21,6 +21,7 @@
  **
  ****************************************************************************/
 
+// Qt header
 #include <QLineEdit>
 
 // Xinx header
@@ -29,6 +30,12 @@
 
 ReplaceDialogImpl::ReplaceDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
+
+	m_findButton = m_buttonBox->button( QDialogButtonBox::Ok );
+	m_findButton->setText( tr("Find") );
+	m_findButton->setIcon( QIcon( ":/images/find.png" ) );
+
+	connect( m_findButton, SIGNAL(clicked()), this, SLOT(m_findButton_clicked()) );
 }
 //
 
@@ -75,7 +82,7 @@ void ReplaceDialogImpl::on_m_projectFilesRadioButton_toggled(bool checked) {
 	}
 }
 
-void ReplaceDialogImpl::on_m_findButton_clicked() {
+void ReplaceDialogImpl::m_findButton_clicked() {
 	if( ! m_comboFind->lineEdit()->text().isEmpty() && ( m_comboFind->findText( m_comboFind->lineEdit()->text() ) == -1 ) )
 		m_comboFind->addItem( m_comboFind->lineEdit()->text() );
 	if( ! m_comboReplace->lineEdit()->text().isEmpty() && ( m_comboReplace->findText( m_comboFind->lineEdit()->text() ) == -1 ) )

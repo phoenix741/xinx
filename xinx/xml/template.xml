@@ -194,11 +194,10 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Global Input" key="param140" icon="" type="xsl" name="Parameter from URL" >
     <Description>Define a stylesheet parameter from an URL value (GCE140)</Description>
-    <Text>
-&lt;xsl:param name="XXX">
+    <Text>&lt;xsl:param name="&lt;?= '%1'.toUpperCase().replace(/\W/g, '')?>">
 	&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='%1']/@value"/>
 &lt;/xsl:param>
-		</Text>
+</Text>
     <Param name="Param" />
   </Snipet>
   <Snipet category="Global Input" key="param" icon="" type="xsl" name="Url Parameter" >

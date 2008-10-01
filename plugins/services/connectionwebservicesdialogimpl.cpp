@@ -38,12 +38,18 @@ ConnectionWebServicesDialogImpl::ConnectionWebServicesDialogImpl( QWidget * pare
 	connect( m_http, SIGNAL(dataReadProgress(int,int)), this, SLOT(setReadProgress(int,int)) );
 	connect( m_http, SIGNAL(requestFinished(int,bool)), this, SLOT(requestFinished(int,bool)) );
 	connect( m_http, SIGNAL(stateChanged(int)), this, SLOT(stateChanged(int)) );
-
-	connect( m_abortPushButton, SIGNAL(clicked()), m_http, SLOT(abort()) );
 }
 
 ConnectionWebServicesDialogImpl::~ConnectionWebServicesDialogImpl() {
 	delete m_http;
+}
+
+void ConnectionWebServicesDialogImpl::on_m_buttonBox_clicked( QAbstractButton * button ) {
+	if( m_buttonBox->standardButton( button ) == QDialogButtonBox::Abort ) {
+		m_http->abort();
+	} else if( m_buttonBox->standardButton( button ) == QDialogButtonBox::Close ) {
+		close();
+	}
 }
 
 void ConnectionWebServicesDialogImpl::setHost( const QString & path, quint16 port ) {
@@ -72,9 +78,7 @@ void ConnectionWebServicesDialogImpl::requestFinished( int id, bool error ) {
 	if( m_requestId == id ) {
 		m_hasResult = ! error;
 		if( error ) {
-			m_abortPushButton->setText( tr("Close") );
-			m_abortPushButton->disconnect();
-			connect( m_abortPushButton, SIGNAL(clicked()), this, SLOT(close()) );
+			m_buttonBox->setStandardButtons( QDialogButtonBox::Close );
 
 			switch( m_http->error() ) {
 			case QHttp::HostNotFound:

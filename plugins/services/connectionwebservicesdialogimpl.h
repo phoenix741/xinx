@@ -80,6 +80,7 @@ public:
 	bool request( QHttpRequestHeader * header, QByteArray * data, QIODevice * to );
 
 private slots:
+	void on_m_buttonBox_clicked( QAbstractButton * button );
 	void requestFinished( int id, bool error );
 	void stateChanged( int state );
 	void setSendProgress( int value, int max );

@@ -30,6 +30,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include <QTextCodec>
+#include <QStyleFactory>
 
 /* ToolsModelIndex */
 
@@ -471,6 +472,10 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	// Trace Log File
 	m_parent->m_traceLogWidget->lineEdit()->setText( QDir::toNativeSeparators( m_config.config().xinxTrace ) );
 
+	// Style
+	int currentStyle = m_parent->m_styleComboBox->findText( m_config.config().style, Qt::MatchFixedString );
+	m_parent->m_styleComboBox->setCurrentIndex( currentStyle );
+
 	// Create backup file when saving
 	m_parent->m_createBakCheckBox->setChecked( m_config.config().editor.createBackupFile );
 
@@ -604,6 +609,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	// Trace Log File
 	m_config.config().xinxTrace = QDir::fromNativeSeparators( m_parent->m_traceLogWidget->lineEdit()->text() );
 
+	// Style
+	m_config.config().style = m_parent->m_styleComboBox->currentText();
+
 	// Create backup file when saving
 	m_config.config().editor.createBackupFile = m_parent->m_createBakCheckBox->isChecked();
 
@@ -718,22 +726,16 @@ void PrivateCustomDialogImpl::configurePlugin( PluginElement * plugin ) {
 	if( ! p->loadSettingsDialog( settings ) )
 		QMessageBox::warning( m_parent, tr("Plugin Customization"), tr("Can't load the plugin configuration") );
 
-	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &configureDialog );
-	QPushButton *cancelButton = new QPushButton( QIcon(":/images/button_cancel.png"), tr("&Cancel"), &configureDialog );
-
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addStretch();
-	hbox->addWidget( okButton );
-	hbox->addWidget( cancelButton );
+	QDialogButtonBox * buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
 
 	QVBoxLayout * vbox = new QVBoxLayout;
 	vbox->addWidget( settings );
-	vbox->addLayout( hbox );
+	vbox->addWidget( buttonBox );
 
 	configureDialog.setLayout( vbox );
 
-	connect( okButton, SIGNAL(clicked()), &configureDialog, SLOT(accept()) );
-	connect( cancelButton, SIGNAL(clicked()), &configureDialog, SLOT(reject()) );
+	connect( buttonBox, SIGNAL(accepted()), &configureDialog, SLOT(accept()) );
+	connect( buttonBox, SIGNAL(rejected()), &configureDialog, SLOT(reject()) );
 
 	if( configureDialog.exec() == QDialog::Accepted ) {
 		if( ! p->saveSettingsDialog( settings ) )
@@ -803,20 +805,16 @@ void PrivateCustomDialogImpl::aboutPlugin( PluginElement * plugin ) {
 	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
 	grp->setLayout( labelLayout );
 
-	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &informationDialog );
-
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addStretch();
-	hbox->addWidget( okButton );
-	hbox->addStretch();
+	QDialogButtonBox * buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok );
+	buttonBox->setCenterButtons( true );
 
 	QVBoxLayout * vbox = new QVBoxLayout;
 	vbox->addWidget( grp );
-	vbox->addLayout( hbox );
+	vbox->addWidget( buttonBox );
 
 	informationDialog.setLayout( vbox );
 
-	connect( okButton, SIGNAL(clicked()), &informationDialog, SLOT(accept()) );
+	connect( buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()) );
 
 	informationDialog.exec();
 }
@@ -868,20 +866,16 @@ void PrivateCustomDialogImpl::aboutScript( PluginElement * plugin ) {
 	QGroupBox * grp = new QGroupBox( tr("&Informations"), &informationDialog );
 	grp->setLayout( labelLayout );
 
-	QPushButton *okButton = new QPushButton( QIcon(":/images/button_ok.png"), tr("&Ok"), &informationDialog );
-
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addStretch();
-	hbox->addWidget( okButton );
-	hbox->addStretch();
+	QDialogButtonBox * buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok );
+	buttonBox->setCenterButtons( true );
 
 	QVBoxLayout * vbox = new QVBoxLayout;
 	vbox->addWidget( grp );
-	vbox->addLayout( hbox );
+	vbox->addWidget( buttonBox );
 
 	informationDialog.setLayout( vbox );
 
-	connect( okButton, SIGNAL(clicked()), &informationDialog, SLOT(accept()) );
+	connect( buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()) );
 
 	informationDialog.exec();
 }
@@ -916,6 +910,12 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), d, SLOT(configurePlugin(PluginElement*)) );
 	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), d, SLOT(aboutPlugin(PluginElement*)) );
 	connect( m_scriptListView, SIGNAL(aboutPlugin(PluginElement*)), d, SLOT(aboutScript(PluginElement*)) );
+
+	// Style
+	m_styleComboBox->addItem( QString() );
+	foreach( QString style, QStyleFactory::keys() ) {
+		m_styleComboBox->addItem( style );
+	}
 }
 
 CustomDialogImpl::~CustomDialogImpl() {
@@ -1130,9 +1130,11 @@ void CustomDialogImpl::on_m_underlineCheckBox_toggled(bool checked) {
 		d->m_highlighter->rehighlight();
 }
 
-void CustomDialogImpl::on_m_defaultPushButton_clicked() {
-	d->m_config.setDefault();
-	d->showConfig();
+void CustomDialogImpl::on_m_buttonBox_clicked( QAbstractButton * button ) {
+	if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::ResetRole ) {
+		d->m_config.setDefault();
+		d->showConfig();
+	}
 }
 
 void CustomDialogImpl::on_m_labelLink_linkActivated( const QString & link ) {

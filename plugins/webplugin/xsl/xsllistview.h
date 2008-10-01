@@ -43,7 +43,6 @@ public:
 };
 
 class QDomElement;
-class IXinxExtendedEditor;
 
 class XSLFileContentParams : public FileContentElement {
 	Q_OBJECT
@@ -89,7 +88,6 @@ public:
 	virtual QIcon icon() const;
 private:
 	QString m_mode;
-	IXinxExtendedEditor * m_editor;
 
 	friend class XSLFileContentParser;
 };
@@ -159,12 +157,12 @@ public:
 	void setTemplateName( const QString & templateMatchName, const QString & mode = QString() );
 	const QString & templateMatchName() const;
 	const QString & templateMode() const;
+protected slots:
+	virtual void removeElement( FileContentElement * element );
 protected:
+	virtual bool addElement( FileContentElement * element );
 	virtual bool isElementShowed( FileContentElement * );
-private slots:
-	void slotAdd( FileContentElement * element, int row );
-	void slotRemove( FileContentElement * element );
-	void slotReset();
+	virtual void refreshList();
 private:
 	void addElementList( XSLFileContentParser * parser );
 	void addElementList( XSLFileContentTemplate * templ );

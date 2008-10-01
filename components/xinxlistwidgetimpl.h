@@ -32,6 +32,7 @@
 class XinxListWidgetImpl : public QWidget, public Ui::XinxListWidget {
 	Q_OBJECT
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
+	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
 	Q_PROPERTY( bool defaultVisible READ defaultVisible WRITE setDefaultVisible )
 	Q_PROPERTY( QString defaultValue READ defaultValue WRITE setDefaultValue )

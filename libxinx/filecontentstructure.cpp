@@ -91,8 +91,7 @@ PrivateFileContentElement::PrivateFileContentElement( FileContentElement * paren
 }
 
 PrivateFileContentElement::~PrivateFileContentElement() {
-	//qDeleteAll( m_elements );
-	// TODO: Can cause some problem. Don't forget to clean memory
+	m_parent->clear();
 }
 
 /*! \endcond */
@@ -250,6 +249,23 @@ void FileContentElement::removeMarkedDeleted() {
 	}
 }
 
+void FileContentElement::dumpObjectTree( int level ) {
+	QByteArray buf;
+
+	buf.fill( '\t', level );
+
+	QString name = this->displayName();
+	QString flags = QLatin1String("");
+	qDebug("%s%s::%s %s", (const char*)buf, this->metaObject()->className(), name.toLocal8Bit().data(), flags.toLatin1().data());
+
+	QList<FileContentElement*> children = d->m_elements;
+	if (!children.isEmpty()) {
+		for (int i = 0; i < children.size(); ++i)
+			children.at(i)->dumpObjectTree( level + 1 );
+	}
+}
+
+
 /* FileContentElementModelObjListSort */
 
 bool FileContentElementModelObjListSort( FileContentElement * d1, FileContentElement * d2 ) {
@@ -316,19 +332,20 @@ void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 				refreshRecursive( e );
 			}
 		} else {
-			if( ! contains( e ) )
-				addElement( e );
+			if( ! contains( e ) ) addElement( e );
+			refreshRecursive( e );
 		}
 	}
 }
 
-void FileContentElementList::addElement( FileContentElement* element ) {
-	if( ! isElementShowed( element ) ) return;
+bool FileContentElementList::addElement( FileContentElement* element ) {
+	if( ! isElementShowed( element ) ) return false;
 	QList<FileContentElement*>::iterator i = qLowerBound( m_list.begin(), m_list.end(), element, FileContentElementModelObjListSort );
 	int index = i - m_list.begin();
 	emit aboutToAdd( index );
 	m_list.insert( i, element );
 	emit added();
+	return true;
 }
 
 void FileContentElementList::removeElement( FileContentElement* element ) {

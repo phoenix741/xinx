@@ -37,40 +37,40 @@
 class PrivateXmlPresentationDockWidget : public XinxThread {
 	Q_OBJECT
 public:
-	
+
 	class RecursiveFilterProxyModel : public QSortFilterProxyModel {
 	public:
 		RecursiveFilterProxyModel( QObject * parent = 0 );
-		
-		bool showAllChild() const { return m_showAllChild; } ;
-		void setShowAllChild( bool value ) { if( m_showAllChild != value ) { m_indexCache.clear(); m_showAllChild = value; m_indexCache.clear(); } };
-		void setFilterRegExp( const QString & regExp ) { m_indexCache.clear(); QSortFilterProxyModel::setFilterRegExp( regExp ); };
+
+		bool showAllChild() const;
+		void setShowAllChild( bool value );
+		void setFilterRegExp( const QString & regExp );
 	protected:
 		virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
 		bool canBeShow( const QModelIndex & index ) const;
 		bool mustBeShow( const QModelIndex & index ) const; // true if a parent is equals
 	private:
 		bool m_showAllChild;
-		
+
 		mutable QHash<QPersistentModelIndex,bool> m_indexCache;
 	};
-	
+
 	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
 	~PrivateXmlPresentationDockWidget();
-	
+
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
 	QString m_logPath, m_openingFile;
-	
+
 	QPointer<XmlPresentationModel> m_model;
 	QPointer<RecursiveFilterProxyModel> m_sortFilterModel;
 	QPointer<FileWatcher> m_watcher;
-	
+
 	QString m_filteredText, m_currentXpath;
 	bool m_filteredElement;
 	QTimer m_timerTextChanged;
-	
+
 	enum { THREAD_OPENING, THREAD_FILTERED } m_threadAct;
-	
+
 	void open( const QString& filename );
 	void setComboToolTip( const QString & filename );
 public slots:
@@ -79,10 +79,10 @@ public slots:
 	void initXmlPresentationCombo();
 	void presentationActivated( int index );
 	void threadTerminated();
-	
+
 	void filterTextChanged( const QString & text );
 	void filterTextChangedTimer();
-	
+
 	void updateXinxConf( int value );
 protected:
 	virtual void threadrun();
