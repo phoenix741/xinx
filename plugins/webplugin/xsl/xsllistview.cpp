@@ -466,6 +466,7 @@ QStringList XslContentElementList::params( QString templateName ) const {
 
 bool XslContentElementList::isElementShowed( FileContentElement * element ) {
 	Q_ASSERT( element );
+	if( dynamic_cast<FileContentParser*>( element->parent() ) ) return true;
 	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element->parent() );
 	if( ! templ ) return true;
 	if( ( templ->name() == m_templateMatchName ) && ( m_templateMode.isEmpty() || ( templ->mode() == m_templateMode ) ) ) return true;

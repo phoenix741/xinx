@@ -207,16 +207,17 @@ void PrivateXmlPresentationDockWidget::open() {
 }
 
 void PrivateXmlPresentationDockWidget::threadrun() {
+	delete m_sortFilterModel;
 	if( m_threadAct == THREAD_OPENING ) {
 		QFile presentation( m_openingFile );
 		QDomDocument document;
 		if( presentation.open( QIODevice::ReadOnly | QIODevice::Text ) && document.setContent( &presentation, false ) ) {
 			m_model = new XmlPresentationModel( document );
-			m_sortFilterModel = new RecursiveFilterProxyModel( m_model );
-			m_sortFilterModel->setSourceModel( m_model );
 		}
 	}
 	if( m_model ) {
+		m_sortFilterModel = new RecursiveFilterProxyModel( m_model );
+		m_sortFilterModel->setSourceModel( m_model );
 		m_sortFilterModel->setShowAllChild( m_filteredElement );
 		m_sortFilterModel->setFilterRegExp( m_filteredText );
 		m_model->moveToThread( qApp->thread() );
