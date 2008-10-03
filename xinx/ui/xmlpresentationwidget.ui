@@ -5,30 +5,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>231</width>
-    <height>287</height>
+    <width>227</width>
+    <height>309</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string/>
   </property>
-  <layout class="QGridLayout" >
-   <property name="leftMargin" >
+  <layout class="QGridLayout" name="gridLayout" >
+   <property name="margin" >
     <number>0</number>
    </property>
-   <property name="topMargin" >
-    <number>0</number>
-   </property>
-   <property name="rightMargin" >
-    <number>0</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>0</number>
-   </property>
-   <property name="horizontalSpacing" >
-    <number>0</number>
-   </property>
-   <property name="verticalSpacing" >
+   <property name="spacing" >
     <number>0</number>
    </property>
    <item row="0" column="0" >
@@ -40,7 +28,8 @@
       <string>...</string>
      </property>
      <property name="icon" >
-      <iconset resource="../application.qrc" >:/images/reload.png</iconset>
+      <iconset resource="../application.qrc" >
+       <normaloff>:/images/reload.png</normaloff>:/images/reload.png</iconset>
      </property>
     </widget>
    </item>
@@ -52,7 +41,18 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="3" >
+   <item row="0" column="3" >
+    <widget class="QToolButton" name="m_evaluateToolButton" >
+     <property name="text" >
+      <string>Evaluate</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../application.qrc" >
+       <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4" >
     <widget class="QLabel" name="label" >
      <property name="text" >
       <string>&amp;Filtre :</string>
@@ -62,7 +62,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" >
+   <item rowspan="2" row="2" column="0" >
     <widget class="QToolButton" name="m_clearToolButton" >
      <property name="whatsThis" >
       <string>Clear the text filter at right.</string>
@@ -71,18 +71,19 @@
       <string>...</string>
      </property>
      <property name="icon" >
-      <iconset resource="../application.qrc" >:/images/edit-clear-locationbar-ltr.png</iconset>
+      <iconset resource="../application.qrc" >
+       <normaloff>:/images/edit-clear-locationbar-ltr.png</normaloff>:/images/edit-clear-locationbar-ltr.png</iconset>
      </property>
     </widget>
    </item>
-   <item row="2" column="1" >
+   <item row="3" column="1" >
     <widget class="QLineEdit" name="m_filtreLineEdit" >
      <property name="whatsThis" >
       <string>Filter to use in the view. &lt;b>XINX&lt;/b> search node where name match the filter (literal or regular expression).</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="2" >
+   <item row="3" column="2" colspan="2" >
     <widget class="QComboBox" name="m_filterComboBox" >
      <property name="whatsThis" >
       <string>&lt;p>If &lt;i>Sub-element&lt;/i> is selected when an element is finded, all sub-element is showed. &lt;/p>
@@ -100,7 +101,7 @@
      </item>
     </widget>
    </item>
-   <item row="3" column="0" colspan="3" >
+   <item row="4" column="0" colspan="4" >
     <widget class="QTreeView" name="m_presentationTreeView" >
      <property name="dragEnabled" >
       <bool>true</bool>
@@ -110,7 +111,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="3" >
+   <item row="5" column="0" colspan="4" >
     <widget class="QProgressBar" name="m_presentationProgressBar" >
      <property name="maximum" >
       <number>0</number>
@@ -126,6 +127,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../application.qrc" />
   <include location="../application.qrc" />
  </resources>
  <connections>

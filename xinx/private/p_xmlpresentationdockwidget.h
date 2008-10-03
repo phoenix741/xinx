@@ -84,6 +84,8 @@ public slots:
 	void filterTextChangedTimer();
 
 	void updateXinxConf( int value );
+
+	void evaluate();
 protected:
 	virtual void threadrun();
 private:

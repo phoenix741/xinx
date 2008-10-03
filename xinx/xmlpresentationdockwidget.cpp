@@ -25,10 +25,14 @@
 #include <xinxconfig.h>
 
 // Qt header
+#include <QApplication>
 #include <QDir>
 #include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QtXmlPatterns>
 
 /* PrivateXmlPresentationDockWidget */
 
@@ -51,6 +55,7 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()) );
+	connect( m_xmlPresentationWidget->m_evaluateToolButton, SIGNAL(clicked()), this, SLOT(evaluate()) );
 
 	connect( m_xmlPresentationWidget->m_presentationComboBox, SIGNAL(activated(int)), this, SLOT(presentationActivated(int)) );
 	connect( m_xmlPresentationWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(filterTextChanged(QString)) );
@@ -67,6 +72,33 @@ PrivateXmlPresentationDockWidget::PrivateXmlPresentationDockWidget( XmlPresentat
 PrivateXmlPresentationDockWidget::~PrivateXmlPresentationDockWidget() {
 	presentationActivated( 0 );
 	delete m_xmlPresentationWidget;
+}
+
+void PrivateXmlPresentationDockWidget::evaluate() {
+	// Open the file to read it
+	QFile sourceDocument;
+	sourceDocument.setFileName( m_openingFile );
+	if(! sourceDocument.open( QIODevice::ReadOnly ) ) {
+		qWarning( qPrintable( tr("Error while opening presentation file : %1").arg( sourceDocument.errorString() ) ) );
+		return;
+	}
+
+	// Get the XPath
+	QString xpath = QInputDialog::getText( qApp->activeWindow(), tr("XPATH evaluation"), tr("XPATH to evaluate") );
+	if( xpath.isEmpty() ) return;
+
+	// Prepare the query
+	QBuffer result;
+	result.open( QIODevice::ReadWrite );
+	QXmlQuery query;
+	QXmlSerializer serializer( query, &result );
+
+	// Execute the query
+	query.bindVariable( "inputDocument", &sourceDocument );
+	query.setQuery( xpath );
+	query.evaluateTo( &serializer );
+
+	QMessageBox::information( qApp->activeWindow(), tr("XPATH evaluation"), result.data() );
 }
 
 void PrivateXmlPresentationDockWidget::adaptColumns() {
