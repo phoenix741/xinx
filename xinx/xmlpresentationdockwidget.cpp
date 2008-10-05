@@ -91,10 +91,10 @@ void PrivateXmlPresentationDockWidget::evaluate() {
 	QBuffer result;
 	result.open( QIODevice::ReadWrite );
 	QXmlQuery query;
-	QXmlSerializer serializer( query, &result );
+	QXmlFormatter serializer( query, &result );
 
 	// Execute the query
-	query.bindVariable( "inputDocument", &sourceDocument );
+	query.bindVariable( "d", &sourceDocument );
 	query.setQuery( xpath );
 	query.evaluateTo( &serializer );
 
@@ -297,7 +297,7 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
 	m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
-	m_xmlPresentationWidget->m_filtreLineEdit->setText( m_filteredText ); // Au cas où des caractères n'ont pas été pris en compte
+	m_xmlPresentationWidget->m_filtreLineEdit->setText( m_filteredText ); // Au cas oï¿½ des caractï¿½res n'ont pas ï¿½tï¿½ pris en compte
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 }
