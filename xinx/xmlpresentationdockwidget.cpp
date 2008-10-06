@@ -23,6 +23,7 @@
 #include "private/p_xmlpresentationdockwidget.h"
 #include "xslproject.h"
 #include <xinxconfig.h>
+#include "xquerydialogimpl.h"
 
 // Qt header
 #include <QApplication>
@@ -32,7 +33,6 @@
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QDateTime>
-#include <QtXmlPatterns>
 
 /* PrivateXmlPresentationDockWidget */
 
@@ -75,30 +75,15 @@ PrivateXmlPresentationDockWidget::~PrivateXmlPresentationDockWidget() {
 }
 
 void PrivateXmlPresentationDockWidget::evaluate() {
-	// Open the file to read it
-	QFile sourceDocument;
-	sourceDocument.setFileName( m_openingFile );
-	if(! sourceDocument.open( QIODevice::ReadOnly ) ) {
-		qWarning( qPrintable( tr("Error while opening presentation file : %1").arg( sourceDocument.errorString() ) ) );
-		return;
-	}
+	XQueryDialogImpl dlg( m_parent );
+	dlg.setFileName( m_openingFile );
 
-	// Get the XPath
-	QString xpath = QInputDialog::getText( qApp->activeWindow(), tr("XPATH evaluation"), tr("XPATH to evaluate") );
-	if( xpath.isEmpty() ) return;
+	QString m_currentXpath;
+	if( m_sortFilterModel )
+		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
+	dlg.setCurrentXPath( m_currentXpath );
 
-	// Prepare the query
-	QBuffer result;
-	result.open( QIODevice::ReadWrite );
-	QXmlQuery query;
-	QXmlFormatter serializer( query, &result );
-
-	// Execute the query
-	query.bindVariable( "d", &sourceDocument );
-	query.setQuery( xpath );
-	query.evaluateTo( &serializer );
-
-	QMessageBox::information( qApp->activeWindow(), tr("XPATH evaluation"), result.data() );
+	dlg.exec();
 }
 
 void PrivateXmlPresentationDockWidget::adaptColumns() {

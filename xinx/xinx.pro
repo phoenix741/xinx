@@ -1,13 +1,24 @@
 TEMPLATE = app
-CONFIG += qdbus warn_on
-QT += xml script xmlpatterns
+CONFIG += qdbus \
+    warn_on
+QT += xml \
+    script \
+    xmlpatterns
 DESTDIR += ./
-INCLUDEPATH += ../components ../libxinx ../xinx
-LIBS = -L../libxinx -L../plugins -L../components -lwebplugin -lsharedxinx -lxinxcmp
+INCLUDEPATH += ../components \
+    ../libxinx \
+    ../xinx
+LIBS = -L../libxinx \
+    -L../plugins \
+    -L../components \
+    -lwebplugin \
+    -lsharedxinx \
+    -lxinxcmp
 PRE_TARGETDEPS = ../plugins/libwebplugin.a
-win32 : RC_FILE += rc/xinx.rc
+win32:RC_FILE += rc/xinx.rc
 RESOURCES += application.qrc
-FORMS += ui/specifiquedlg.ui \
+FORMS += ui/xquery.ui \
+    ui/specifiquedlg.ui \
     ui/about.ui \
     ui/commitmessages.ui \
     ui/custom.ui \
@@ -21,7 +32,8 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
     ui/logform.ui
-HEADERS += scriptmanager.h \
+HEADERS += xquerydialogimpl.h \
+    scriptmanager.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \
     aboutdialogimpl.h \
@@ -55,7 +67,8 @@ HEADERS += scriptmanager.h \
     dbus/orgshadowarexinxinterface.h \
     searchfilethread.h \
     logdialogimpl.h
-SOURCES += snipetdockwidget.cpp \
+SOURCES += xquerydialogimpl.cpp \
+    snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
     commitmessagedialogimpl.cpp \
@@ -86,5 +99,4 @@ SOURCES += snipetdockwidget.cpp \
     searchfilethread.cpp \
     logdialogimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts
-
 include(../project_mode.pro)
