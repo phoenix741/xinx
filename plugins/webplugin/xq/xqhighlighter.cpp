@@ -21,35 +21,16 @@
 // Xinx header
 #include <xinxconfig.h>
 #include "xqhighlighter.h"
+#include "xquery_keyword.h"
 
-/* Static member */
-QStringList XQHighlighter::keywordPatterns;
+/* Static */
+QStringList XQHighlighter::m_keywords;
 
-/* webplugin_js */
+/* XQHighlighter */
 
 XQHighlighter::XQHighlighter( QTextDocument* parent, XINXConfig * config ) : SyntaxHighlighter( parent, config ) {
-
-}
-
-void XQHighlighter::init() {
-	keywordPatterns.clear();
-	keywordPatterns << "abstract" << "boolean" << "break"
-					<< "byte" << "case" << "catch" << "char"
-					<< "class" << "const" << "continue"
-					<< "debugger" << "default" << "delete"
-					<< "do" << "double" << "else" << "enum"
-					<< "export" << "extends" << "false" << "final"
-					<< "finally" << "float" << "for" << "function"
-					<< "goto" << "if" << "implements" << "import"
-					<< "in" << "instanceof" << "int" << "interface"
-					<< "long" << "native" << "new" << "null"
-					<< "package" << "private" << "protected"
-					<< "public" << "return" << "short" << "static"
-					<< "super" << "switch" << "synchronized"
-					<< "this" << "throw" << "throws" << "transient"
-					<< "true" << "try" << "typeof" << "var"
-					<< "void" << "volatile" << "while" << "with";
-	keywordPatterns.sort();
+	if( m_keywords.count() == 0 )
+		m_keywords = XQueryKeyword::self()->keywords().keys();
 }
 
 void XQHighlighter::highlightBlock( const QString & text ) {
@@ -58,32 +39,8 @@ void XQHighlighter::highlightBlock( const QString & text ) {
 	int i = 0;
 	int pos = 0;
 
-	QRegExp commentStartExpression("^/\\*");
-	QRegExp commentEndExpression("\\*/");
 	QRegExp numberExpression("^\\b[\\-\\+]?[0-9]+(\\.[0-9]+)?\\b");
-	QRegExp functionNameExpression("^\\b[A-Za-z0-9_]+(?=\\s*\\()");
 	QRegExp motExpression("^\\w*");
-	QRegExp commentExpression("^//[^\n]*");
-	QRegExp string1Expression("^'[^\']*'");
-	QRegExp string2Expression("^\"[^\"]*\"");
-
-	setCurrentBlockState( NoBlock );
-
-	if ( previousBlockState() == InComment ) {
-		pos = commentEndExpression.indexIn( text, i );
-
-		if (pos >= 0) {
-			// end comment found
-			const int iLength = commentEndExpression.matchedLength();
-			setFormat( 0, pos + iLength, formats["js_comment"] );
-			i += pos + iLength; // skip comment
-		} else {
-			// in comment
-			setFormat( 0, text.length(), formats["js_comment"] );
-			setCurrentBlockState( InComment );
-			return;
-		}
-	}
 
 	for (; i < text.length(); i++) {
 		char c = text.at(i).toLower().toAscii();
@@ -92,57 +49,23 @@ void XQHighlighter::highlightBlock( const QString & text ) {
 
 			if( pos == i ) {
 				const int iLength = numberExpression.matchedLength();
-				setFormat( pos, iLength, formats["js_number"] );
+				setFormat( pos, iLength, formats["xq_numerical"] );
 				i += iLength;
 			}
 		} else if( ( c >= 'a' ) && ( c <= 'z' ) ) {
 			pos = motExpression.indexIn( text, i, QRegExp::CaretAtOffset );
 			if( pos == i ) {
 				const int iLength = motExpression.matchedLength();
-				if( keywordPatterns.contains( text.mid( i, iLength ) ) ) {
-					setFormat( pos, iLength, formats["js_reservedword"] );
+				QString matchedText = text.mid( i, iLength );
+				if( m_keywords.contains( matchedText ) ) {
+					setFormat( pos, iLength, formats["xq_" + XQueryKeyword::self()->keywords()[matchedText] ] );
 				} else {
-					setFormat( pos, iLength, formats["js_other"] );
+					setFormat( pos, iLength, formats["xq_other"] );
 				}
-				i += iLength;
-			}
-		} else if ( c == '/' ) {
-			pos = commentStartExpression.indexIn( text, i, QRegExp::CaretAtOffset );
-
-			if( pos == i ) {
-				int posEnd = commentEndExpression.indexIn( text, i + 2 );
- 				int length = (posEnd >= 0) ? posEnd + 2 : ( text.length() - pos );
-
- 				setFormat( pos, length, formats["js_comment"] );
-				i += length;
-				if( posEnd == -1 ) {
-					setCurrentBlockState( InComment );
-					return;
-				}
-			} else {
-				pos = commentExpression.indexIn( text, i, QRegExp::CaretAtOffset );
-				if( pos == i ) {
-					const int iLength = commentExpression.matchedLength() + 2;
-					i += iLength;
-					setFormat( pos, iLength, formats["js_comment"] );
-				}
-			}
-		} else if ( ( c == '\'' ) || ( c == '"' ) ) {
-			int iLength;
-			if( c == '\'' ) {
-				pos = string1Expression.indexIn( text, i, QRegExp::CaretAtOffset );
-				iLength = string1Expression.matchedLength();
-			} else {
-				pos = string2Expression.indexIn( text, i, QRegExp::CaretAtOffset );
-				iLength = string2Expression.matchedLength();
-			}
-
-			if( pos == i ) {
-				setFormat( pos, iLength, formats["js_string"] );
 				i += iLength;
 			}
 		} else {
-			setFormat( i, 1, formats["js_other"] );
+			setFormat( i, 1, formats["xq_other"] );
 		}
 	}
 }

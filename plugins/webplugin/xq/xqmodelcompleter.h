@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __JAVASCRIPTMODELCOMPETER_H__
-#define __JAVASCRIPTMODELCOMPETER_H__
+#ifndef __XQMODELCOMPETER_H__
+#define __XQMODELCOMPETER_H__
 
 #include <QAbstractListModel>
 
@@ -36,4 +36,4 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 };
 
-#endif // __JAVASCRIPTMODELCOMPETER_H__
+#endif // __XQMODELCOMPETER_H__

@@ -5,8 +5,11 @@ QT += xml
 DESTDIR += ../
 RESOURCES += webplugin.qrc
 TARGET = $$qtLibraryTarget(webplugin)
-INCLUDEPATH += ./ ../../libxinx ../../components
-HEADERS = xsl/xsltexteditor.h \
+INCLUDEPATH += ./ \
+    ../../libxinx \
+    ../../components
+HEADERS = xq/xquery_keyword.h \
+    xsl/xsltexteditor.h \
     config/webpluginsettings.h \
     xsl/xmlprettyprinter.h \
     webplugin.h \
@@ -29,8 +32,13 @@ HEADERS = xsl/xsltexteditor.h \
     css/csstexteditor.h \
     config/webpluginformimpl.h \
     config/selfwebpluginsettings.h \
- filetypeplugin.h
-SOURCES = xsl/xsltexteditor.cpp \
+    xq/xqtexteditor.h \
+    xq/xqfileeditor.h \
+    xq/xqmodelcompleter.h \
+    xq/xqhighlighter.h \
+    filetypeplugin.h
+SOURCES = xq/xquery_keyword.cpp \
+    xsl/xsltexteditor.cpp \
     config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \
     xsl/xmlprettyprinter.cpp \
@@ -52,13 +60,9 @@ SOURCES = xsl/xsltexteditor.cpp \
     js/jstexteditor.cpp \
     css/cssfileeditor.cpp \
     css/csstexteditor.cpp \
-    xq/xqtexteditor.h \
     xq/xqtexteditor.cpp \
-    xq/xqfileeditor.h \
     xq/xqfileeditor.cpp \
-    xq/xqmodelcompleter.h \
     xq/xqmodelcompleter.cpp \
-    xq/xqhighlighter.h \
     xq/xqhighlighter.cpp \
     config/webpluginformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts

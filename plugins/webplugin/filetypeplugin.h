@@ -35,6 +35,9 @@
 #include "css/cssmodeldata.h"
 #include "css/cssfileeditor.h"
 
+#include "xq/xqhighlighter.h"
+#include "xq/xqfileeditor.h"
+
 #include "editorcompletion.h"
 #include "textfileeditor.h"
 
@@ -198,6 +201,37 @@ public:
 	}
 	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
 		return new CSSFileContentParser( parent, filename, line );
+	}
+};
+
+/* XQFileType */
+
+class XQFileType : public QObject, public IFileTypePlugin {
+	Q_OBJECT
+public:
+	virtual QString description() {	return tr( "XQuery" ); };
+	virtual QString match() { return "*.xq"; };
+	virtual QIcon icon() { return QIcon( ":/images/typexq.png" ); };
+
+	virtual struct_properties properties() {
+		struct_properties p;
+		p.canBeCommitToRCS = false;
+		p.canBeFindInConfiguration = false;
+		p.canBeSaveAsSpecifique = false;
+		p.specifiqueSubDirectory = QString();
+		return p;
+	};
+
+	virtual AbstractEditor * createEditor( const QString & filename ) {
+		XQFileEditor * editor = new XQFileEditor();
+
+		if( ! filename.isEmpty() )
+			editor->loadFromFile( filename );
+
+		return editor;
+	}
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
+		return 0;
 	}
 };
 

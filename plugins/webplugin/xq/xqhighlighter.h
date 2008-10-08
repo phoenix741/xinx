@@ -38,11 +38,11 @@ public:
 		InComment
 	};
 
-	static void init();
 protected:
 	virtual void highlightBlock( const QString& text );
+
 private:
-	static QStringList keywordPatterns;
+	static QStringList m_keywords;
 };
 
 #endif /*JSHIGHLIGHTER_H_*/

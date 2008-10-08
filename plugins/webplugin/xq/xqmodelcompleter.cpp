@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "xqmodelcompleter.h"
+#include "xquery_keyword.h"
+#include <xinxconfig.h>
 
 #include <QIcon>
 
@@ -32,14 +34,25 @@ XQModelCompleter::~XQModelCompleter() {
 }
 
 QVariant XQModelCompleter::data( const QModelIndex &index, int role ) const {
+	if ( ! index.isValid() ) return QVariant();
+
+	QString e = XQueryKeyword::self()->keywords().keys().at( index.row() );
+
+	if( role == Qt::ForegroundRole ) {
+		QString format =  "xq_" + XQueryKeyword::self()->keywords()[e];
+		return XINXConfig::self()->config().formats[ format ].foreground();
+	} else
+	if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) )
+		return e;
+
 	return QVariant();
 }
 
 Qt::ItemFlags XQModelCompleter::flags( const QModelIndex &index ) const {
-	return Qt::ItemIsEnabled;
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 int XQModelCompleter::rowCount( const QModelIndex &parent ) const {
-	return 0;
+	return XQueryKeyword::self()->keywords().keys().count();
 }
 

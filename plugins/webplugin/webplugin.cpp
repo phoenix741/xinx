@@ -61,12 +61,14 @@ WebPlugin::WebPlugin() {
 	qRegisterMetaType<HtmlFileEditor>( "HtmlFileEditor" );
 	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );
 	qRegisterMetaType<CSSFileEditor>( "CSSFileEditor" );
+	qRegisterMetaType<XQFileEditor>( "XQFileEditor" );
 
 	m_fileTypes << new XSLStyleSheetFileType;
 	m_fileTypes << new XMLFileType;
 	m_fileTypes << new HTMLFileType;
 	m_fileTypes << new JSFileType;
 	m_fileTypes << new CSSFileType;
+	m_fileTypes << new XQFileType;
 }
 
 WebPlugin::~WebPlugin() {
@@ -118,7 +120,7 @@ QList<IFileTypePlugin*> WebPlugin::fileTypes() {
 }
 
 QStringList WebPlugin::highlighters() {
-	return QStringList() << "XML" << "JS" << "CSS";
+	return QStringList() << "XML" << "JS" << "CSS" << "XQ";
 }
 
 QString WebPlugin::highlighterOfExtention( const QString & extention ) {
@@ -131,6 +133,7 @@ QString WebPlugin::highlighterOfExtention( const QString & extention ) {
 	extentions[ "xhtml" ] = "XML";
 	extentions[ "js" ]    = "JS";
 	extentions[ "css" ]   = "CSS";
+	extentions[ "xq" ]    = "XQ";
 	return extentions[ extention ];
 }
 
@@ -179,7 +182,31 @@ QHash<QString,QTextCharFormat> WebPlugin::formatOfHighlighter( const QString & h
 		formats[ "css_value1"		  ].setFontItalic( true );
 		formats[ "css_value2"		  ].setForeground( DEFAULT_ELEMENT_NAME );
 		formats[ "css_value2"		  ].setFontItalic( true );
+	} else if( highlighter.toUpper() == "XQ" ) {
+		formats[ "xq_accessors"       ].setForeground( DEFAULT_COMMENT );
+		formats[ "xq_accessors"       ].setFontWeight( QFont::Bold );
+		formats[ "xq_other"           ].setForeground( DEFAULT_OTHER );
+		formats[ "xq_buildin"         ].setForeground( DEFAULT_OTHER );
+		formats[ "xq_buildin"         ].setFontWeight( QFont::Bold );
+		formats[ "xq_numerical"       ].setForeground( DEFAULT_NUMBER );
+		formats[ "xq_numerical"       ].setFontWeight( QFont::Bold );
+		formats[ "xq_string"          ].setForeground( DEFAULT_STRING );
+		formats[ "xq_string"          ].setFontWeight( QFont::Bold );
+		formats[ "xq_regular"         ].setForeground( DEFAULT_COMMENT );
+		formats[ "xq_regular"         ].setFontWeight( QFont::Bold );
+		formats[ "xq_boolean"         ].setForeground( DEFAULT_COMMENT );
+		formats[ "xq_boolean"         ].setFontWeight( QFont::Bold );
+		formats[ "xq_datetime"        ].setForeground( DEFAULT_OTHER );
+		formats[ "xq_datetime"        ].setFontWeight( QFont::Bold );
+		formats[ "xq_sequence"        ].setForeground( DEFAULT_STRING );
+		formats[ "xq_sequence"        ].setFontWeight( QFont::Bold );
+		formats[ "xq_aggregate"       ].setForeground( DEFAULT_NUMBER );
+		formats[ "xq_aggregate"       ].setFontWeight( QFont::Bold );
+		formats[ "xq_context"         ].setForeground( DEFAULT_COMMENT );
+		formats[ "xq_context"         ].setFontWeight( QFont::Bold );
+
 	}
+
 
 	return formats;
 }
@@ -215,12 +242,17 @@ QString WebPlugin::exampleOfHighlighter( const QString & highlighter ) {
 				"	alert( param& );\n"
 				"	variable.close();\n"
 				"}\n";
-	} else if( highlighter.toUpper() == "CSS" )  {
+	} else if( highlighter.toUpper() == "CSS" ) {
 		example =
 				".test, #td, test2 {\n"
 				"\tbackground-color: red; /* Commentaire */\n"
 				"\tmargin: 8pt;\n"
 				"}\n";
+	} else if( highlighter.toUpper() == "XQ" ) {
+		example =
+				"count(DynamicRow)\n"
+				"max(Qtecde)";
+
 	}
 	return example;
 }
@@ -232,6 +264,8 @@ SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, Q
 		return new webplugin_js( parent, config );
 	if( highlighter.toUpper() == "CSS" )
 		return new webplugin_css( parent, config );
+	if( highlighter.toUpper() == "XQ" )
+		return new XQHighlighter( parent, config );
 	return 0;
 }
 

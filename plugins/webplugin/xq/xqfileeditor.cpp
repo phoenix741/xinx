@@ -44,9 +44,9 @@ QString XQFileEditor::defaultFileName() const {
 }
 
 QIcon XQFileEditor::icon() const {
-	return QIcon( ":/images/typejs.png" );
+	return QIcon( ":/images/typexq.png" );
 }
 
-JavascriptModelCompleter * XQFileEditor::completionModel() const {
+XQModelCompleter * XQFileEditor::completionModel() const {
 	return m_completionModel;
 }
