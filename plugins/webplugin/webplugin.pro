@@ -52,6 +52,14 @@ SOURCES = xsl/xsltexteditor.cpp \
     js/jstexteditor.cpp \
     css/cssfileeditor.cpp \
     css/csstexteditor.cpp \
+    xq/xqtexteditor.h \
+    xq/xqtexteditor.cpp \
+    xq/xqfileeditor.h \
+    xq/xqfileeditor.cpp \
+    xq/xqmodelcompleter.h \
+    xq/xqmodelcompleter.cpp \
+    xq/xqhighlighter.h \
+    xq/xqhighlighter.cpp \
     config/webpluginformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
