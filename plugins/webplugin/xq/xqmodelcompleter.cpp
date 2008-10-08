@@ -41,8 +41,9 @@ QVariant XQModelCompleter::data( const QModelIndex &index, int role ) const {
 	if( role == Qt::ForegroundRole ) {
 		QString format =  "xq_" + XQueryKeyword::self()->keywords()[e];
 		return XINXConfig::self()->config().formats[ format ].foreground();
-	} else
-	if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) )
+	} else if( role == Qt::DecorationRole ) {
+		return QIcon(":/images/complete_fn.png");
+	} else if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) )
 		return e;
 
 	return QVariant();

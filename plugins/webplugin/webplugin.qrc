@@ -6,6 +6,8 @@
         <file>images/typejs.png</file>
         <file>images/typexml.png</file>
         <file>images/typexsl.png</file>
+        <file>images/typexq.png</file>
+        <file>images/complete_fn.png</file>
 	<file>translations/webplugin_fr.qm</file>
     </qresource>
 </RCC>

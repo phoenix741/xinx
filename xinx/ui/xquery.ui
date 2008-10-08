@@ -43,7 +43,7 @@
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QPlainTextEdit" name="m_queryTextEdit" />
+       <widget class="TextEditor" name="m_queryTextEdit" />
       </item>
      </layout>
     </widget>
@@ -76,6 +76,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextEditor</class>
+   <extends>QPlainTextEdit</extends>
+   <header location="global" >texteditor.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

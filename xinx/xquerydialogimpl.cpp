@@ -22,9 +22,12 @@
 #include "xquerydialogimpl.h"
 #include "xinxpluginsloader.h"
 
+#include "../plugins/webplugin/xq/xqmodelcompleter.h" // we can because static linked
+
 // Qt header
 #include <QStringList>
 #include <QPushButton>
+#include <QCompleter>
 #include <QtXmlPatterns>
 
 /* XQueryDialogMessageHandler */
@@ -93,7 +96,17 @@ private:
 XQueryDialogImpl::XQueryDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
 
+	m_queryTextEdit->setFrameStyle( QFrame::StyledPanel );
+	m_queryTextEdit->setFrameShadow( QFrame::Sunken );
+	m_queryTextEdit->setLineWrapMode( QT_TEXT_EDITOR::WidgetWidth );
+
 	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_resultTextEdit->document() );
+	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xq" ), m_queryTextEdit->document() );
+
+	XQModelCompleter * completionModel = new XQModelCompleter( m_queryTextEdit );
+	QCompleter * completer = new QCompleter( m_queryTextEdit );
+	completer->setModel( completionModel );
+	m_queryTextEdit->setCompleter( completer );
 
 	QPushButton * evaluateBtn = new QPushButton(tr("&Evaluate"));
 	evaluateBtn->setDefault( true );
