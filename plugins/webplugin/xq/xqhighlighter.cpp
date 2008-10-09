@@ -40,7 +40,7 @@ void XQHighlighter::highlightBlock( const QString & text ) {
 	int pos = 0;
 
 	QRegExp numberExpression("^\\b[\\-\\+]?[0-9]+(\\.[0-9]+)?\\b");
-	QRegExp motExpression("^\\w*");
+	QRegExp motExpression("^[\\w-]*");
 
 	for (; i < text.length(); i++) {
 		char c = text.at(i).toLower().toAscii();
