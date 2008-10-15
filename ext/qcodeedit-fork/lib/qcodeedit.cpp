@@ -3,7 +3,7 @@
 ** Copyright (C) 2006-2008 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
-** 
+**
 ** This file may be used under the terms of the GNU General Public License
 ** version 3 as published by the Free Software Foundation and appearing in the
 ** file GPL.txt included in the packaging of this file.
@@ -31,15 +31,15 @@ QString QCE::fetchDataFile(const QString& file)
 {
 	if ( QFileInfo(file).isAbsolute() )
 		return file;
-	
+
 	foreach ( QString dp, __qce_data_path )
 	{
 		QDir d(dp);
-		
+
 		if ( d.exists(file) )
 			return d.absoluteFilePath(file);
 	}
-	
+
 	return file;
 }
 
@@ -78,10 +78,10 @@ QCodeEdit::~QCodeEdit()
 	
 	if ( m_editor )
 		delete m_editor;
-	
+
 	if ( m_layout )
 		delete m_layout;
-	
+
 }
 
 QEditor* QCodeEdit::editor() const
@@ -99,19 +99,19 @@ QAction* QCodeEdit::addPanel(QPanel *panel, Position pos, bool _add)
 	panel->attach(m_editor);
 	m_layout->addWidget(panel, QPanelLayout::Position(pos));
 	m_layout->update();
-	
+
 	QAction *a = new QAction(panel->type(), m_editor);
 	a->setCheckable(true);
 	a->setChecked(panel->defaultVisibility());
-	
+
 	QObject::connect(a		, SIGNAL( toggled(bool) ),
 					panel	, SLOT  ( setVisible(bool) ) );
-	
+
 	m_actions << a;
-	
+
 	if ( _add )
 		m_editor->addAction(a, QEditor::tr("&Display"), QString());
-	
+
 	return a;
 }
 
@@ -130,18 +130,18 @@ void QCodeEdit::sendPanelCommand(	const QString& type,
 									const QList<QGenericArgument>& args)
 {
 	QList<QPanel*> lp = panels();
-	
+
 	//qDebug("looking for panel of type %s", qPrintable(type));
-	
+
 	foreach ( QPanel *p, lp )
 	{
 		if ( p && (p->type() == type) )
 		{
 			//qDebug("found.");
-			
+
 			// TODO : ask trolltech to provide an overloaded invokeMetaMethod()
 			// taking a QList<> instead of nine defaulted args...
-			
+
 			if ( args.isEmpty() )
 				QMetaObject::invokeMethod(p, signature);
 			else if ( args.count() == 1 )
@@ -226,7 +226,7 @@ void QCodeEdit::sendPanelCommand(	const QString& type,
 												args.at(7),
 												args.at(8),
 												args.at(9));
-			
+
 		}
 	}
 }

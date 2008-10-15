@@ -5,7 +5,7 @@
 TEMPLATE = lib
 TARGET = qcodeedit
 DESTDIR = ..
-CONFIG += release
+CONFIG += debug
 
 DEPENDPATH += . document language widgets qnfa
 INCLUDEPATH += . document language widgets qnfa

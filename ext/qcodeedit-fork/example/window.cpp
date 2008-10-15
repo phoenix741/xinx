@@ -4,9 +4,6 @@
 #include "qeditor.h"
 #include "qcodeedit.h"
 
-#include "qstatuspanel.h"
-#include "qsearchreplacepanel.h"
-
 #include "qfoldpanel.h"
 #include "qlinemarkpanel.h"
 #include "qlinechangepanel.h"
@@ -31,63 +28,57 @@
 Window::Window(QWidget *p)
 {
 	setupUi(this);
-	
+
 	m_formats = new QFormatFactory("qxs/formats.qxf", this);
 	QDocument::setFormatFactory(m_formats);
-	
+
 	QDocument::setShowSpaces(QDocument::ShowTrailing | QDocument::ShowLeading | QDocument::ShowTabs);
-	
+
 	QLineMarksInfoCenter::instance()->loadMarkTypes("qxs/marks.qxm");
-	
+
 	m_languages = new QLanguageFactory(m_formats, this);
 	m_languages->addDefinitionPath("qxs");
-	
+
 	m_editControl = new QCodeEdit(this);
-	
+
 	m_editControl
 		->addPanel(new QLineMarkPanel, QCodeEdit::West, true)
 		->setShortcut(QKeySequence("F6"));
-	
+
 	m_editControl
 		->addPanel(new QLineNumberPanel, QCodeEdit::West, true)
 		->setShortcut(QKeySequence("F11"));
-	
+
 	m_editControl
 		->addPanel(new QFoldPanel, QCodeEdit::West, true)
 		->setShortcut(QKeySequence("F9"));
-	
+
 	m_editControl
 		->addPanel(new QLineChangePanel, QCodeEdit::West, true)
 		; //->setShortcut(QKeySequence("F11"));
-	
-	m_editControl
-		->addPanel(new QStatusPanel, QCodeEdit::South, true);
-	
-	m_editControl
-		->addPanel(new QSearchReplacePanel, QCodeEdit::South);
-	
+
 	setCentralWidget(m_editControl->editor());
-	
+
 	setWindowTitle("QCodeEdit example");
 }
 
 void Window::load(const QString& file)
-{
+{/*
 	QTime t;
 	t.start();
 	if ( QFile::exists(file) )
 	{
 		m_languages->setLanguage(m_editControl->editor(), file);
 		m_editControl->editor()->load(file);
-		
+
 		setWindowTitle(QString("QCodeEdit example [%1[*]]").arg(file));
 	} else {
 		m_languages->setLanguage(m_editControl->editor(), "loading_failed.cpp");
 		m_editControl->editor()->setText("// Loading failed\n// fallback to C++\n");
-		
+
 		setWindowTitle("QCodeEdit example");
 	}
-	qDebug("loading took %i ms", t.elapsed());
+	qDebug("loading took %i ms", t.elapsed());*/
 }
 
 void Window::on_action_Open_triggered()
@@ -100,18 +91,18 @@ void Window::on_action_Open_triggered()
 									0,
 									0
 								);
-	
+
 	load(fn);
 }
 
 void Window::on_action_Settings_triggered()
 {
-	
+
 }
 
 void Window::on_action_Reload_syntax_files_triggered()
 {
-	
+
 }
 
 void Window::on_action_About_triggered()
