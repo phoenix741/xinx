@@ -5,7 +5,6 @@ QT *= xml
 # Input
 HEADERS += qce-config.h \
     qeditor.h \
-    qeditorfactory.h \
     qcodeedit.h \
     qpanellayout.h \
     qformatfactory.h \
@@ -34,7 +33,6 @@ HEADERS += qce-config.h \
     widgets/qfoldpanel.h \
     widgets/qcalltip.h
 SOURCES += qeditor.cpp \
-    qeditorfactory.cpp \
     qcodeedit.cpp \
     qpanellayout.cpp \
     qformatfactory.cpp \
