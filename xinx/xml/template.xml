@@ -365,7 +365,8 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for GCE Stylesheet" >
     <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
-    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <Text>&lt; ?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 
 	&lt;xsl:template match="/">
@@ -391,7 +392,8 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Stylesheet" key="xslbase140" icon="" type="xsl" name="Base for GCE Stylesheet (GCE140)" >
     <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
-    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
+    <Text>&lt; ?xml version="1.0" encoding="ISO-8859-1"?>
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 	&lt;!-- Définition du nom de la feuille de style -->
 	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
@@ -399,7 +401,7 @@ You may have to change min and max value !!!
 		Import des JS spécifiques à la page
 	&lt;-->
 	&lt;xsl:template match="/" mode="js">
-		&lt;script type="text/javascript" src="../langue/fra/nav/js/xxx.js" charset="iso-8859-1"> &lt;/script>
+		&lt;script type="text/javascript" src="../langue/fra/nav/js/xxx.js" charset="iso-8859-1"> &lt;/script>
 	&lt;/xsl:template>
 	&lt;!--
 		Règle principale
