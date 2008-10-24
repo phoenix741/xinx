@@ -132,7 +132,10 @@ void XMLPrettyPrinter::constructXML( int level ) {
 		} else if( isProcessingInstruction() ) {
 			m_result << "<?" << processingInstructionTarget().toString() << " " << processingInstructionData().toString() << "?>";
 		} else if( isStartDocument() ) {
-			m_result.setCodec( QTextCodec::codecForName( qPrintable( documentEncoding().toString() ) ) );
+			if( ! documentEncoding().toString().isEmpty() )
+				m_result.setCodec( QTextCodec::codecForName( qPrintable( documentEncoding().toString() ) ) );
+			else
+				m_result.setCodec( QTextCodec::codecForName( qPrintable( XINXConfig::self()->config().editor.defaultTextCodec ) ) );
 			m_result << "<?xml version=\"1.0\" encoding=\"" << m_result.codec()->name().constData() << "\"?>";
 		} else if( isComment() ) {
 			if( prevType != QXmlStreamReader::Characters ) {

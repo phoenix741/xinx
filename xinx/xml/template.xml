@@ -6,14 +6,14 @@
     <Text>&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{$LBL.SUPPRIMER}"/>
 &lt;/td>
-		</Text>
+</Text>
   </Snipet>
   <Snipet category="Buttons Widgets" key="delete140" icon=":/images/pushbutton.png" type="xsl" name="Delete button (GCE140)" >
     <Description>Show a delete button in a table (GCE140).</Description>
     <Text>&lt;td class="supprimer">
 	&lt;input xsl:use-attribute-sets="BTN_DELETE" title="{gnx:trad($LANGUAGE,'LBL.SUPPRIMER',$CTXTRD)}"/>
 &lt;/td>
-		</Text>
+</Text>
   </Snipet>
   <Snipet category="Buttons Widgets" key="modif" icon=":/images/pushbutton.png" type="xsl" name="Modifier" >
     <Description>Sumbit a form. Show the label 'LBL.MODIFIER'</Description>
@@ -38,7 +38,7 @@ You may have to change min and max value !!!
 	&lt;xsl:with-param name="formulaire" select="'%2'"/>
 	&lt;xsl:with-param name="champ" select="'%3'"/>
 &lt;/xsl:call-template>
-		</Text>
+</Text>
     <Param name="Typzod" />
     <Param name="Form name" />
     <Param name="Prefix field" />
@@ -54,7 +54,7 @@ You may have to change min and max value !!!
         &lt;/xsl:call-template>
     &lt;/a>
 &lt;/td>
-		</Text>
+</Text>
     <Param name="Sourceview" />
     <Param name="Cinematic" />
     <Param name="Fields" />
@@ -70,7 +70,7 @@ You may have to change min and max value !!!
 	&lt;xsl:with-param name="sortkey_desc">-%2&lt;/xsl:with-param>
 	&lt;xsl:with-param name="multisort">%3&lt;/xsl:with-param>
 &lt;/xsl:call-template>
-		</Text>
+</Text>
     <Param name="Title" />
     <Param name="Sort key" />
     <Param name="Multisort (true/false)" />
@@ -124,8 +124,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Displays Widgets" key="displayList" icon="" type="xsl" name="XSL code for a list" >
     <Description>Display a list with header and detail tree for 2 columns</Description>
-    <Text>
-&lt;!--
+    <Text>&lt;!--
 	Définition des entêtes de colonnes
 -->
 &lt;xsl:template match="%1">
@@ -187,8 +186,7 @@ You may have to change min and max value !!!
 			&lt;xsl:value-of select="LIBELLE"/>
 		&lt;/td>
 	&lt;/tr>
-&lt;/xsl:template>
-		</Text>
+&lt;/xsl:template></Text>
     <Param name="ViewObject name" />
     <Param name="Composite View name" />
   </Snipet>
@@ -365,8 +363,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Stylesheet" key="xslbase" icon="" type="xsl" name="Base for GCE Stylesheet" >
     <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test.</Description>
-    <Text>&lt; ?xml version="1.0" encoding="ISO-8859-1"?>
-&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 
 	&lt;xsl:template match="/">
@@ -392,8 +389,7 @@ You may have to change min and max value !!!
   </Snipet>
   <Snipet category="Stylesheet" key="xslbase140" icon="" type="xsl" name="Base for GCE Stylesheet (GCE140)" >
     <Description>Base used for GCE Stylesheet with e-Gx.xsl inclusion and habilitation test (GCE140)</Description>
-    <Text>&lt; ?xml version="1.0" encoding="ISO-8859-1"?>
-&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
+    <Text>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gnx="http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" exclude-result-prefixes="gnx">
 	&lt;xsl:import href="langue/fra/e-GX.xsl"/>
 	&lt;!-- Définition du nom de la feuille de style -->
 	&lt;xsl:variable name="CTXTRD">xxx.xsl&lt;/xsl:variable>
