@@ -49,7 +49,7 @@ int webplugin_xml::processDefaultText( ParsingState & state, const QChar & quote
 	case webplugin_xml::ExpectElementNameOrSlash:
 	case webplugin_xml::ExpectElementName: {
 			// search element name
-			static QRegExp expression(EXPR_NAME);
+			QRegExp expression(EXPR_NAME);
 			const int pos = expression.indexIn(text, i);
 
 			if (pos == i) { // found ?
@@ -64,7 +64,7 @@ int webplugin_xml::processDefaultText( ParsingState & state, const QChar & quote
 		break;
 	case webplugin_xml::ExpectAttributeOrEndOfElement: {
 			// search attribute name
-			static QRegExp expression(EXPR_NAME);
+			QRegExp expression(EXPR_NAME);
 			const int pos = expression.indexIn(text, i);
 
 			if (pos == i) { // found ?
@@ -78,7 +78,7 @@ int webplugin_xml::processDefaultText( ParsingState & state, const QChar & quote
 		}
 		break;
 	case webplugin_xml::ExpectAttributeTextOrPath: {
-			static QRegExp expression( EXPR_ATTRIBUTE_VALUE.arg( quoteType ) );
+			QRegExp expression( EXPR_ATTRIBUTE_VALUE.arg( quoteType ) );
 			const int pos = expression.indexIn( text, i );
 
 			if( pos == i ) {
@@ -89,7 +89,7 @@ int webplugin_xml::processDefaultText( ParsingState & state, const QChar & quote
 		}
 		break;
 	case webplugin_xml::ExpectPathTextOrEndOfPath: {
-			static QRegExp expression( EXPR_XPATH_VALUE.arg( quoteType ) );
+			QRegExp expression( EXPR_XPATH_VALUE.arg( quoteType ) );
 			const int pos = expression.indexIn( text, i );
 
 			if( pos == i ) {
@@ -100,7 +100,7 @@ int webplugin_xml::processDefaultText( ParsingState & state, const QChar & quote
 		}
 		break;
 	default: {
-		static QRegExp expression( EXPR_TEXT );
+		QRegExp expression( EXPR_TEXT );
 		const int pos = expression.indexIn( text, i );
 
 		if (pos == i) { // found ?
@@ -130,7 +130,7 @@ void webplugin_xml::highlightBlock( const QString& text ) {
 
 	if( previousBlockState() == InComment ) {
 		// search for the end of the comment
-		static QRegExp expression( EXPR_COMMENT_END );
+		QRegExp expression( EXPR_COMMENT_END );
 		pos = expression.indexIn(text, i);
 
 		if (pos >= 0) {
@@ -222,7 +222,7 @@ void webplugin_xml::highlightBlock( const QString& text ) {
 		case '!':
 			if( state == ExpectElementNameOrSlash ) {
 				// search comment
-				static QRegExp expression(EXPR_COMMENT);
+				QRegExp expression(EXPR_COMMENT);
 				pos = expression.indexIn(text, i - 1);
 
 				if( pos == i - 1 ) { // comment found ?
@@ -236,7 +236,7 @@ void webplugin_xml::highlightBlock( const QString& text ) {
 					brackets--;
 				} else {
 					// Try find multiline comment
-					static QRegExp expression(EXPR_COMMENT_BEGIN); // search comment start
+					QRegExp expression(EXPR_COMMENT_BEGIN); // search comment start
 					pos = expression.indexIn(text, i - 1);
 
 					//if (pos == i - 1) // comment found ?
