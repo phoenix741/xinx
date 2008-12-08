@@ -1,0 +1,7 @@
+<RCC>
+	<qresource prefix="/xsd/" >
+        <file>images/typexsd.png</file>
+        <file>images/xsdedit.png</file>
+		<file>translations/xsdedit_fr.qm</file>
+    </qresource>
+</RCC>
