@@ -474,6 +474,7 @@ bool XslContentElementList::isElementShowed( FileContentElement * element ) {
 }
 
 void XslContentElementList::removeElement( FileContentElement * element ) {
+//	qDebug( qPrintable( QString("remove element -> %1").arg( element->name() ) ) );
 	FileContentElementList::removeElement( element );
 
 	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element );
@@ -489,7 +490,9 @@ void XslContentElementList::removeElement( FileContentElement * element ) {
 	}
 }
 
-bool XslContentElementList::addElement( FileContentElement * element ) {
+bool XslContentElementList::addElement( FileContentElement * element, bool alert ) {
+//	qDebug( qPrintable( QString("add element -> %1").arg( element->name() ) ) );
+
 	XSLFileContentTemplate * templ = qobject_cast<XSLFileContentTemplate*>( element );
 	if( templ ) addElementList( templ );
 
@@ -497,7 +500,7 @@ bool XslContentElementList::addElement( FileContentElement * element ) {
 	if( param && ( param->metaObject()->className() == QLatin1String("XSLFileContentParams") ) && ( templ = qobject_cast<XSLFileContentTemplate*>( param->parent() ) ) ) {
 		m_params.insert( templ->name(), param->name() );
 	}
-	return FileContentElementList::addElement( element );
+	return FileContentElementList::addElement( element, alert );
 }
 
 void XslContentElementList::addElementList( XSLFileContentTemplate * templ ) {

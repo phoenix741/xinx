@@ -25,6 +25,50 @@
 // Qt header
 #include <QGraphicsTextItem>
 
+/* XsdAttributeItem */
+
+class XsdAttributeItem : public QGraphicsTextItem {
+public:
+	XsdAttributeItem( const QString & name, const QString & value, const QString & use );
+};
+
+XsdAttributeItem::XsdAttributeItem( const QString & name, const QString & value, const QString & use ) : QGraphicsTextItem() {
+
+}
+
+/* XsdElementItem */
+
+class XsdElementItem : public QGraphicsTextItem {
+public:
+	XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs );
+};
+
+XsdElementItem::XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs ) : QGraphicsTextItem() {
+
+}
+
+/* XsdSequenceItem */
+
+class XsdSequenceItem : public QGraphicsTextItem {
+public:
+	XsdSequenceItem();
+};
+
+XsdSequenceItem::XsdSequenceItem() : QGraphicsTextItem() {
+
+}
+
+/* XsdComplexeType */
+
+class XsdComplexeType : public QGraphicsTextItem {
+public:
+	XsdComplexeType( const QString & name );
+};
+
+XsdComplexeType::XsdComplexeType( const QString & name ) : QGraphicsTextItem() {
+
+}
+
 /* XsdTabTextItem */
 
 class XsdTabTextItem : public QGraphicsTextItem {

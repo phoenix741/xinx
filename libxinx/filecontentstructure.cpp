@@ -297,18 +297,23 @@ FileContentElement * FileContentElementList::rootElement() const {
 
 void FileContentElementList::refreshList() {
 	m_list.clear();
+	m_files.clear();
+
 	if( m_root ) {
 		refreshRecursive( m_root );
 		qSort( m_list.begin(), m_list.end(), FileContentElementModelObjListSort );
 	}
+
 	emit reset();
 }
 
 void FileContentElementList::addElement( FileContentElement * element, int row ) {
 	Q_UNUSED( row );
-	if( dynamic_cast<FileContentParser*>( element ) )
+	if( dynamic_cast<FileContentParser*>( element ) ) {
 		refreshRecursive( element );
-	else if( ! contains( element ) )
+		qSort( m_list.begin(), m_list.end(), FileContentElementModelObjListSort );
+		emit reset();
+	} else if( ! contains( element ) )
 		addElement( element );
 }
 
@@ -332,19 +337,23 @@ void FileContentElementList::refreshRecursive( FileContentElement * data ) {
 				refreshRecursive( e );
 			}
 		} else {
-			if( ! contains( e ) ) addElement( e );
+			if( ! contains( e ) ) addElement( e, false );
 			refreshRecursive( e );
 		}
 	}
 }
 
-bool FileContentElementList::addElement( FileContentElement* element ) {
+bool FileContentElementList::addElement( FileContentElement* element, bool alert ) {
 	if( ! isElementShowed( element ) ) return false;
-	QList<FileContentElement*>::iterator i = qLowerBound( m_list.begin(), m_list.end(), element, FileContentElementModelObjListSort );
-	int index = i - m_list.begin();
-	emit aboutToAdd( index );
-	m_list.insert( i, element );
-	emit added();
+	if( alert ) {
+		QList<FileContentElement*>::iterator i = qLowerBound( m_list.begin(), m_list.end(), element, FileContentElementModelObjListSort );
+		int index = i - m_list.begin();
+		emit aboutToAdd( index );
+		m_list.insert( i, element );
+		emit added();
+	} else {
+		m_list.append( element );
+	}
 	return true;
 }
 

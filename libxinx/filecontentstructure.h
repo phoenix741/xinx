@@ -29,6 +29,7 @@
 #include <QObject>
 #include <QString>
 #include <QIcon>
+#include <QMultiHash>
 
 class PrivateFileContentElement;
 
@@ -237,10 +238,10 @@ signals:
 	/*! Signal emited when the list is refreshed */
 	void reset();
 protected:
-	/*! Refresh the list and reset the object */
+	/*! Refresh the list and reset the object. \e deleteAll tell if we erase the content of the list before update or not */
 	virtual void refreshList();
 	/*! Add one element */
-	virtual bool addElement( FileContentElement * element );
+	virtual bool addElement( FileContentElement * element, bool alert = true );
 	/*! Test if an element is in the list */
 	virtual bool contains( FileContentElement * data );
 
@@ -254,6 +255,7 @@ protected slots:
 private:
 	void refreshRecursive( FileContentElement * data );
 
+	QMultiHash<QString,FileContentElement*> m_includes;
 	QList<FileContentElement*> m_list;
 	QStringList m_files;
 

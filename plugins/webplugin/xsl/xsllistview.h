@@ -160,7 +160,7 @@ public:
 protected slots:
 	virtual void removeElement( FileContentElement * element );
 protected:
-	virtual bool addElement( FileContentElement * element );
+	virtual bool addElement( FileContentElement * element, bool alert = true );
 	virtual bool isElementShowed( FileContentElement * );
 	virtual void refreshList();
 private:
