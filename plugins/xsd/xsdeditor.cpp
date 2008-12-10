@@ -25,26 +25,74 @@
 // Qt header
 #include <QGraphicsTextItem>
 
-/* XsdAttributeItem */
+/* XsdAnnotationItem */
 
-class XsdAttributeItem : public QGraphicsTextItem {
+class XsdAnnotationItem : public QGraphicsTextItem {
 public:
-	XsdAttributeItem( const QString & name, const QString & value, const QString & use );
+	XsdAnnotationItem( const QString & text, QGraphicsItem * parent = 0 );
 };
 
-XsdAttributeItem::XsdAttributeItem( const QString & name, const QString & value, const QString & use ) : QGraphicsTextItem() {
+XsdAnnotationItem::XsdAnnotationItem( const QString & text, QGraphicsItem * parent ) : QGraphicsTextItem( text, parent ) {
+
+}
+
+/* XsdAttributeItem */
+
+struct XsdAttributeItem {
+	XsdAttributeItem( const QString & name, const QString & value, const QString & use );
+
+	QString m_name, m_value, m_use;
+};
+
+XsdAttributeItem::XsdAttributeItem( const QString & name, const QString & value, const QString & use ) : m_name( name ), m_value( value ), m_use( use ) {
 
 }
 
 /* XsdElementItem */
 
-class XsdElementItem : public QGraphicsTextItem {
+class XsdElementItem : public QGraphicsItem {
 public:
-	XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs );
+	XsdElementItem( const QString & name, const QString & type, int minOccurs = 1, int maxOccurs = 1, QGraphicsItem * parent = 0 );
+
+	QRectF boundingRect () const;
+	QRectF elementRect() const;
+	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
+
+	const QFont & font() const;
+	void setFont( const QFont & font );
+private:
+
+	QFont m_font;
+	QString m_name, m_type;
+	int m_minOccurs, m_maxOccurs, m_spacing;
 };
 
-XsdElementItem::XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs ) : QGraphicsTextItem() {
+XsdElementItem::XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs, QGraphicsItem * parent ) : QGraphicsItem( parent ), m_name( name ), m_type( type ), m_minOccurs( minOccurs ), m_maxOccurs( maxOccurs ), m_spacing( 5 ) {
 
+}
+
+QRectF XsdElementItem::elementRect () const {
+	QFontMetrics metrics( m_font );
+	QRect r = metrics.boundingRect( m_name );
+	r.moveTo( 0, 0 );
+	r.adjust( 0, 0, m_spacing * 2, m_spacing * 2 );
+	return r;
+}
+
+QRectF XsdElementItem::boundingRect () const {
+	QRectF r = elementRect();
+	r.setHeight( r.height() + childrenBoundingRect().height() );
+	if( r.width() < childrenBoundingRect().width() )
+		r.setWidth( childrenBoundingRect().width() );
+	return r;
+}
+
+void XsdElementItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * ) {
+	painter->setBrush( Qt::white );
+	painter->setPen( Qt::black );
+	painter->drawRect( elementRect() );
+
+	painter->drawText( elementRect(), m_name, QTextOption( Qt::AlignCenter ) );
 }
 
 /* XsdSequenceItem */
@@ -69,80 +117,6 @@ XsdComplexeType::XsdComplexeType( const QString & name ) : QGraphicsTextItem() {
 
 }
 
-/* XsdTabTextItem */
-
-class XsdTabTextItem : public QGraphicsTextItem {
-public:
-	XsdTabTextItem( const QString & text, XsdTabTextItem * left = 0 );
-protected:
-	virtual QVariant itemChange( GraphicsItemChange change, const QVariant & value );
-private:
-	void setLeft( XsdTabTextItem * left );
-	XsdTabTextItem * m_left, * m_right;
-};
-
-XsdTabTextItem::XsdTabTextItem( const QString & text, XsdTabTextItem * left ) : QGraphicsTextItem(), m_left( 0 ), m_right( 0 ) {
-	setHtml( "<table style=\"	padding: 0px 0px 0px 0px;	margin-bottom: 0px;	margin-left: 0px;	margin-right: 0px;	margin-top: 0px;\">"
-			 "<tr>"
-			 "<td style=\"color : #000000; font-style: normal; text-align: center; font-family: verdana,arial,sans-serif; font-size: 7pt; background-color : #fcfad5; margin: 2px; padding: 2px; border-width:1px; border-color:#54545d; border-style: none solid none none; white-space: nowrap;\">"
-			 "<a href=\"#\" style=\"  color: #000000;  text-decoration: none;  font-weight: bold;  font-size: 7pt;\">" +
-			 text +
-			 "</a>"
-			 "</td>"
-			 "</tr>"
-			 "</table>" );
-	setLeft( left );
-	setFlags( QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable );
-}
-
-void XsdTabTextItem::setLeft( XsdTabTextItem * left ) {
-	if( m_left != left ) {
-		setPos( left->pos().x() + left->boundingRect().width(), left->pos().y() );
-		m_left = left;
-		m_left->m_right = this;
-	} else {
-		setPos( 0, 0 );
-	}
-}
-
-QVariant XsdTabTextItem::itemChange( GraphicsItemChange change, const QVariant & value ) {
-	if( change == QGraphicsItem::ItemPositionChange ) {
-		QPointF position = QGraphicsTextItem::itemChange( change, value ).toPointF();
-		position.setY( pos().y() );
-		return position;
-	} else
-		return QGraphicsTextItem::itemChange( change, value );
-}
-
-/* XsdFormItem */
-
-class XsdFormItem : public QGraphicsItem {
-public:
-	XsdFormItem();
-	virtual ~XsdFormItem();
-
-	virtual QRectF boundingRect() const;
-	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
-};
-
-XsdFormItem::XsdFormItem() : QGraphicsItem( 0 ) {
-
-}
-
-XsdFormItem::~XsdFormItem() {
-
-}
-
-QRectF XsdFormItem::boundingRect() const {
-	return QRectF( 0, 0, 1000, 400 );
-}
-
-void XsdFormItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * ) {
-	painter->setBrush( QColor(0xD2, 0xDB, 0xE9) );
-	painter->setPen( QColor(0x7e, 0x7e, 0x89) );
-	painter->drawRect( boundingRect() );
-}
-
 /* XsdEditor */
 
 XsdEditor::XsdEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
@@ -153,16 +127,20 @@ XsdEditor::XsdEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
 	//m_view->setDragMode( QGraphicsView::RubberBandDrag );
 	//m_view->setRenderHints( QPainter::Antialiasing | QPainter::TextAntialiasing );
 
-	XsdTabTextItem * item = 0;
-	m_scene->addItem( item = new XsdTabTextItem( "popup1", item ) );
-	m_scene->addItem( item = new XsdTabTextItem( "popup2", item ) );
-	m_scene->addItem( item = new XsdTabTextItem( "popup3", item ) );
-	m_scene->addItem( item = new XsdTabTextItem( "popup4", item ) );
-	m_scene->addItem( item = new XsdTabTextItem( "popup5", item ) );
+	XsdElementItem * item = new XsdElementItem( "numero", "xs:string" );
+	m_scene->addItem( item );
+	item->setPos( 15, 15 );
 
-	XsdFormItem * form = new XsdFormItem();
-	form->setPos( 0, item->boundingRect().height() );
-	m_scene->addItem( form );
+	XsdAnnotationItem * annotation = new XsdAnnotationItem( "Ceci est un petit text explicatif sur le foncitonnement de ...", item );
+	annotation->setPos( 0, item->elementRect().height() );
+//	m_scene->addItem( annotation );
+
+	item = new XsdElementItem( "edition_special", "xs:string" );
+	m_scene->addItem( item );
+	item->setPos( 15, 115 );
+	item = new XsdElementItem( "level", "xs:string" );
+	m_scene->addItem( item );
+	item->setPos( 15, 215 );
 
 	m_view->centerOn( m_view->width() / 2, m_view->height() / 2 );
 
