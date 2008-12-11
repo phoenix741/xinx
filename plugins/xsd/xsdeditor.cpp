@@ -19,130 +19,190 @@
  ***************************************************************************/
 
 // Xinx header
-#include "xsdeditor.h"
+#include "p_xsdeditor.h"
 #include "borderlayout.h"
-
-// Qt header
-#include <QGraphicsTextItem>
 
 /* XsdAnnotationItem */
 
-class XsdAnnotationItem : public QGraphicsTextItem {
-public:
-	XsdAnnotationItem( const QString & text, QGraphicsItem * parent = 0 );
-};
-
 XsdAnnotationItem::XsdAnnotationItem( const QString & text, QGraphicsItem * parent ) : QGraphicsTextItem( text, parent ) {
-
+	setPos( 0, parent->boundingRect().height() );
+	setTextWidth( parent->boundingRect().width() * 2 );
 }
 
 /* XsdAttributeItem */
-
-struct XsdAttributeItem {
-	XsdAttributeItem( const QString & name, const QString & value, const QString & use );
-
-	QString m_name, m_value, m_use;
-};
 
 XsdAttributeItem::XsdAttributeItem( const QString & name, const QString & value, const QString & use ) : m_name( name ), m_value( value ), m_use( use ) {
 
 }
 
-/* XsdElementItem */
+/* XsdNodeItem */
 
-class XsdElementItem : public QGraphicsItem {
-public:
-	XsdElementItem( const QString & name, const QString & type, int minOccurs = 1, int maxOccurs = 1, QGraphicsItem * parent = 0 );
-
-	QRectF boundingRect () const;
-	QRectF elementRect() const;
-	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
-
-	const QFont & font() const;
-	void setFont( const QFont & font );
-private:
-
-	QFont m_font;
-	QString m_name, m_type;
-	int m_minOccurs, m_maxOccurs, m_spacing;
-};
-
-XsdElementItem::XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs, QGraphicsItem * parent ) : QGraphicsItem( parent ), m_name( name ), m_type( type ), m_minOccurs( minOccurs ), m_maxOccurs( maxOccurs ), m_spacing( 5 ) {
-
+XsdNodeItem::~XsdNodeItem() {
+	qDeleteAll( m_line );
 }
 
-QRectF XsdElementItem::elementRect () const {
-	QFontMetrics metrics( m_font );
-	QRect r = metrics.boundingRect( m_name );
-	r.moveTo( 0, 0 );
-	r.adjust( 0, 0, m_spacing * 2, m_spacing * 2 );
-	return r;
+QVariant XsdNodeItem::itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) {
+	if( change == QGraphicsItem::ItemPositionHasChanged ) {
+		foreach( XsdLine * l, m_line ) {
+			l->updatePosition();
+		}
+	}
+
+	return value;
+}
+
+/* XsdLine */
+
+XsdLine::XsdLine( XsdNodeItem * startItem, XsdNodeItem * endItem, QGraphicsItem *parent ) : QGraphicsPathItem( parent ), m_startItem( startItem ), m_endItem( endItem ) {
+	m_startItem->m_line.append( this );
+	m_endItem->m_line.append( this );
+	setZValue( -1 );
+
+	updatePosition();
+}
+
+XsdLine::~XsdLine() {
+	m_startItem->m_line.removeOne( this ) ;
+	m_endItem->m_line.removeOne( this );
+}
+
+QRectF XsdLine::boundingRect() const {
+	return m_path.boundingRect();
+}
+
+void XsdLine::updatePosition() {
+	m_path = QPainterPath();
+	QPointF start = mapFromItem( dynamic_cast<QGraphicsItem*>( m_startItem ), 0, 0 );
+	QPointF end   = mapFromItem( dynamic_cast<QGraphicsItem*>( m_endItem ), 0, 0 );
+	m_path.moveTo( start );
+	m_path.lineTo( 30, start.y() );
+	m_path.lineTo( 30, end.y() );
+	m_path.lineTo( end );
+
+	setPath( m_path );
+}
+
+/* XsdElementItem */
+
+XsdElementItem::XsdElementItem( const QString & name, const QString & type, int minOccurs, int maxOccurs, QGraphicsItem * parent ) : QGraphicsItem( parent ), m_name( name ), m_type( type ), m_minOccurs( minOccurs ), m_maxOccurs( maxOccurs ), m_spacing( 5 ) {
+	scene()->addItem( new XsdLine( dynamic_cast<XsdNodeItem*>( parent ), this ) );
+}
+
+QList<XsdAttributeItem> & XsdElementItem::attributes() {
+	return m_attributes;
 }
 
 QRectF XsdElementItem::boundingRect () const {
-	QRectF r = elementRect();
-	r.setHeight( r.height() + childrenBoundingRect().height() );
-	if( r.width() < childrenBoundingRect().width() )
-		r.setWidth( childrenBoundingRect().width() );
+	QFontMetrics metrics( m_font );
+	QRectF r = metrics.boundingRect( m_name );
+	r.adjust( -m_spacing, -m_spacing, m_spacing, m_spacing );
+	r.moveCenter( QPointF( 0, 0 ) );
 	return r;
 }
 
 void XsdElementItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * ) {
 	painter->setBrush( Qt::white );
 	painter->setPen( Qt::black );
-	painter->drawRect( elementRect() );
+	painter->drawRect( boundingRect() );
 
-	painter->drawText( elementRect(), m_name, QTextOption( Qt::AlignCenter ) );
+	painter->drawText( boundingRect(), m_name, QTextOption( Qt::AlignCenter ) );
 }
 
 /* XsdSequenceItem */
 
-class XsdSequenceItem : public QGraphicsTextItem {
-public:
-	XsdSequenceItem();
-};
+XsdSequenceItem::XsdSequenceItem( QGraphicsItem * parent ) : QGraphicsPolygonItem( parent ), m_vspacing( 10 ), m_hspacing( 30 ) {
+	setBrush( Qt::white );
+	setPen( QPen( Qt::black ) );
 
-XsdSequenceItem::XsdSequenceItem() : QGraphicsTextItem() {
-
+	QPolygonF polygone;
+	polygone << QPointF( 5, 0 );
+	polygone << QPointF( 35, 0 );
+	polygone << QPointF( 40, 5 );
+	polygone << QPointF( 40, 15 );
+	polygone << QPointF( 35, 20 );
+	polygone << QPointF( 5, 20 );
+	polygone << QPointF( 0, 15 );
+	polygone << QPointF( 0, 5 );
+	polygone << QPointF( 5, 0 );
+	polygone.translate( -20, -10 );
+	setPolygon( polygone );
 }
+
+void XsdSequenceItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w ) {
+	QGraphicsPolygonItem::paint( painter, option, w );
+	painter->drawText( boundingRect(), "seq", QTextOption( Qt::AlignCenter ) );
+}
+
+void XsdSequenceItem::addItem( QGraphicsItem * item ) {
+	item->setParentItem( this );
+	updatePosition();
+}
+
+void XsdSequenceItem::updatePosition() {
+	int countOfChild = childItems().count();
+
+	qreal height = 0;
+	if( countOfChild > 1 )
+		height = ( countOfChild - 1 ) * m_vspacing;
+	foreach( QGraphicsItem * i, childItems() ) {
+		height += ( i->boundingRect() | i->childrenBoundingRect() ).height();
+	}
+
+	qreal itemPosX = - height / 2;
+	foreach( QGraphicsItem * i, childItems() ) {
+		i->setPos( boundingRect().width() / 2 + m_hspacing + i->boundingRect().width() / 2, itemPosX - i->boundingRect().height() / 2 );
+
+		itemPosX += ( i->boundingRect() | i->childrenBoundingRect() ).height() + m_hspacing;
+	}
+}
+
+
+/* XsdChoiceItem */
+
+XsdChoiceItem::XsdChoiceItem( QGraphicsItem * parent ) : XsdSequenceItem( parent ) {
+}
+
+void XsdChoiceItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * w ) {
+	QGraphicsPolygonItem::paint( painter, option, w );
+	painter->drawText( boundingRect(), "chx", QTextOption( Qt::AlignCenter ) );
+}
+
 
 /* XsdComplexeType */
 
-class XsdComplexeType : public QGraphicsTextItem {
-public:
-	XsdComplexeType( const QString & name );
-};
-
-XsdComplexeType::XsdComplexeType( const QString & name ) : QGraphicsTextItem() {
+XsdComplexeType::XsdComplexeType( const QString & name ) : QGraphicsItem() {
 
 }
 
 /* XsdEditor */
 
 XsdEditor::XsdEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
-	m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
+//	m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
+	m_scene = new QGraphicsScene(this);
 	m_view  = new QGraphicsView(this);
 
 	m_view->setScene( m_scene );
 	//m_view->setDragMode( QGraphicsView::RubberBandDrag );
 	//m_view->setRenderHints( QPainter::Antialiasing | QPainter::TextAntialiasing );
 
-	XsdElementItem * item = new XsdElementItem( "numero", "xs:string" );
-	m_scene->addItem( item );
-	item->setPos( 15, 15 );
+	XsdSequenceItem * seq = new XsdSequenceItem();
+	m_scene->addItem( seq );
+//	seq->setPos( 500, 500 );
 
-	XsdAnnotationItem * annotation = new XsdAnnotationItem( "Ceci est un petit text explicatif sur le foncitonnement de ...", item );
-	annotation->setPos( 0, item->elementRect().height() );
-//	m_scene->addItem( annotation );
+	XsdElementItem * item = new XsdElementItem( "numero", "xs:string", 1, 1, seq );
+	seq->addItem( item );
 
-	item = new XsdElementItem( "edition_special", "xs:string" );
-	m_scene->addItem( item );
-	item->setPos( 15, 115 );
-	item = new XsdElementItem( "level", "xs:string" );
-	m_scene->addItem( item );
-	item->setPos( 15, 215 );
+	new XsdAnnotationItem( "Numéro de version", item );
 
-	m_view->centerOn( m_view->width() / 2, m_view->height() / 2 );
+	item = new XsdElementItem( "edition_special", "xs:string", 1, 1, seq );
+	seq->addItem( item );
+
+	new XsdAnnotationItem( "Numéro de l'édition spécial", item );
+
+	item = new XsdElementItem( "level", "xs:string", 1, 1, seq );
+	seq->addItem( item );
+
+//	m_view->centerOn( 0, 0 );
 
 	borderLayout()->addWidget( m_view, BorderLayout::Center );
 }
