@@ -34,6 +34,8 @@ class XsdLine;
 class XsdAnnotationItem : public QGraphicsTextItem {
 public:
 	XsdAnnotationItem( const QString & text, QGraphicsItem * parent = 0 );
+public slots:
+	void updatePosition();
 };
 
 /* XsdAttributeItem */
@@ -60,7 +62,7 @@ private:
 
 class XsdLine : public QGraphicsPathItem {
 public:
-	XsdLine( XsdNodeItem * startItem, XsdNodeItem * endItem, QGraphicsItem *parent = 0 );
+	XsdLine( XsdNodeItem * startItem, XsdNodeItem * endItem );
 	virtual ~XsdLine();
 
 	XsdNodeItem *startItem() const { return m_startItem; };
@@ -125,9 +127,22 @@ public:
 
 /* XsdComplexeType */
 
-class XsdComplexeType : public QGraphicsItem {
+class XsdComplexeType : public QGraphicsRectItem, public XsdNodeItem {
 public:
 	XsdComplexeType( const QString & name );
+
+	const QString & name() const;
+
+	void addItem( QGraphicsItem * item );
+
+	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
+public slots:
+	void updatePosition();
+protected:
+	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) { return XsdNodeItem::itemChange( change, value ); };
+private:
+	QString m_name;
+	int m_spacing;
 };
 
 
