@@ -27,13 +27,13 @@
 // Qt header
 #include <QGraphicsTextItem>
 
-class XsdLine;
+class XsdGraphicsLine;
 
-/* XsdAnnotationItem */
+/* XsdGraphicsAnnotationItem */
 
-class XsdAnnotationItem : public QGraphicsTextItem {
+class XsdGraphicsAnnotationItem : public QGraphicsTextItem {
 public:
-	XsdAnnotationItem( const QString & text, QGraphicsItem * parent = 0 );
+	XsdGraphicsAnnotationItem( const QString & text, QGraphicsItem * parent = 0 );
 public slots:
 	void updatePosition();
 };
@@ -46,7 +46,7 @@ struct XsdAttributeItem {
 	QString m_name, m_value, m_use;
 };
 
-/* XsdNodeItem */
+/* XsdGraphicsNodeItem */
 
 class XsdNodeItem {
 public:
@@ -54,16 +54,16 @@ public:
 protected:
 	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value );
 private:
-	QList<XsdLine*> m_line;
-	friend class XsdLine;
+	QList<XsdGraphicsLine*> m_line;
+	friend class XsdGraphicsLine;
 };
 
-/* XsdLine */
+/* XsdGraphicsLine */
 
-class XsdLine : public QGraphicsPathItem {
+class XsdGraphicsLine : public QGraphicsPathItem {
 public:
-	XsdLine( XsdNodeItem * startItem, XsdNodeItem * endItem );
-	virtual ~XsdLine();
+	XsdGraphicsLine( XsdNodeItem * startItem, XsdNodeItem * endItem );
+	virtual ~XsdGraphicsLine();
 
 	XsdNodeItem *startItem() const { return m_startItem; };
 	XsdNodeItem *endItem() const { return m_endItem; };
@@ -77,11 +77,11 @@ private:
 	XsdNodeItem *m_endItem;
 };
 
-/* XsdElementItem */
+/* XsdGraphicsElementItem */
 
-class XsdElementItem : public QGraphicsItem, public XsdNodeItem {
+class XsdGraphicsElementItem : public QGraphicsItem, public XsdNodeItem {
 public:
-	XsdElementItem( const QString & name, const QString & type, int minOccurs = 1, int maxOccurs = 1, QGraphicsItem * parent = 0 );
+	XsdGraphicsElementItem( const QString & name, const QString & type, int minOccurs = 1, int maxOccurs = 1, QGraphicsItem * parent = 0 );
 
 	QRectF boundingRect() const;
 	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
@@ -99,11 +99,11 @@ private:
 	QList<XsdAttributeItem> m_attributes;
 };
 
-/* XsdSequenceItem */
+/* XsdGraphicsSequenceItem */
 
-class XsdSequenceItem : public QGraphicsPolygonItem, public XsdNodeItem {
+class XsdGraphicsSequenceItem : public QGraphicsPolygonItem, public XsdNodeItem {
 public:
-	XsdSequenceItem( QGraphicsItem * parent = 0 );
+	XsdGraphicsSequenceItem( QGraphicsItem * parent = 0 );
 
 	void addItem( QGraphicsItem * item );
 
@@ -116,20 +116,20 @@ private:
 	qreal m_vspacing, m_hspacing;
 };
 
-/* XsdChoiceItem */
+/* XsdGraphicsChoiceItem */
 
-class XsdChoiceItem : public XsdSequenceItem {
+class XsdGraphicsChoiceItem : public XsdGraphicsSequenceItem {
 public:
-	XsdChoiceItem( QGraphicsItem * parent = 0 );
+	XsdGraphicsChoiceItem( QGraphicsItem * parent = 0 );
 
 	virtual void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * = 0 );
 };
 
-/* XsdComplexeType */
+/* XsdGraphicsComplexeType */
 
-class XsdComplexeType : public QGraphicsRectItem, public XsdNodeItem {
+class XsdGraphicsComplexeType : public QGraphicsRectItem, public XsdNodeItem {
 public:
-	XsdComplexeType( const QString & name );
+	XsdGraphicsComplexeType( const QString & name );
 
 	const QString & name() const;
 
