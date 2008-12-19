@@ -10,10 +10,12 @@ INCLUDEPATH += ../../libxinx \
     ../../components
 RESOURCES = xsdedit.qrc
 TRANSLATIONS += translations/xsledit_fr.ts
-HEADERS = p_xsdeditor.h \
+HEADERS = xmlschema.h \
+    p_xsdeditor.h \
     xsdedit.h \
     xsdeditor.h
-SOURCES = xsdedit.cpp \
+SOURCES = xmlschema.cpp \
+    xsdedit.cpp \
     xsdeditor.cpp
 win32:RC_FILE += rc/plugin.rc
 include(../../project_mode.pro)

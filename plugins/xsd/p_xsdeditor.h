@@ -38,14 +38,6 @@ public slots:
 	void updatePosition();
 };
 
-/* XsdAttributeItem */
-
-struct XsdAttributeItem {
-	XsdAttributeItem( const QString & name, const QString & value, const QString & use );
-
-	QString m_name, m_value, m_use;
-};
-
 /* XsdGraphicsNodeItem */
 
 class XsdNodeItem {
@@ -88,15 +80,12 @@ public:
 
 	const QFont & font() const;
 	void setFont( const QFont & font );
-
-	QList<XsdAttributeItem> & attributes();
 protected:
 	virtual QVariant itemChange( QGraphicsItem::GraphicsItemChange change, const QVariant &value ) { return XsdNodeItem::itemChange( change, value ); };
 private:
 	QFont m_font;
 	QString m_name, m_type;
 	int m_minOccurs, m_maxOccurs, m_spacing;
-	QList<XsdAttributeItem> m_attributes;
 };
 
 /* XsdGraphicsSequenceItem */
@@ -144,7 +133,5 @@ private:
 	QString m_name;
 	int m_spacing;
 };
-
-
 
 #endif /* _P_XSDEDITOR_H_ */

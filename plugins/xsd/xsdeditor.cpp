@@ -37,12 +37,6 @@ void XsdGraphicsAnnotationItem::updatePosition() {
 }
 
 
-/* XsdAttributeItem */
-
-XsdAttributeItem::XsdAttributeItem( const QString & name, const QString & value, const QString & use ) : m_name( name ), m_value( value ), m_use( use ) {
-
-}
-
 /* XsdNodeItem */
 
 XsdNodeItem::~XsdNodeItem() {
@@ -96,9 +90,6 @@ XsdGraphicsElementItem::XsdGraphicsElementItem( const QString & name, const QStr
 	new XsdGraphicsLine( dynamic_cast<XsdNodeItem*>( parent ), this );
 }
 
-QList<XsdAttributeItem> & XsdGraphicsElementItem::attributes() {
-	return m_attributes;
-}
 
 QRectF XsdGraphicsElementItem::boundingRect () const {
 	QFontMetrics metrics( m_font );
