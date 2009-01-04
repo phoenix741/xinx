@@ -24,6 +24,8 @@
 // Qt header
 #include <QObject>
 #include <QString>
+#include <QStringList>
+#include <QDomElement>
 
 /* Forward declaration */
 
@@ -34,12 +36,31 @@ class XmlSchemaFile;
 
 class XsdItem : public QObject {
 	Q_OBJECT
+	Q_PROPERTY( bool readOnly READ readOnly WRITE setReadOnly )
 public:
 	XsdItem( XmlSchemaFile * schema, QObject * parent = 0 );
 
 	XmlSchemaFile * schema() const;
+
+	bool readOnly() const;
+	void setReadOnly( bool readonly );
 private:
+	bool m_readOnly;
 	XmlSchemaFile * m_schema;
+};
+
+/* XsdAnnotationItem */
+
+class XsdAnnotationItem : public XsdItem {
+	Q_OBJECT
+	Q_PROPERTY( QString documentation READ documentation WRITE setDocumentation )
+public:
+	XsdAnnotationItem( XmlSchemaFile * schema, QObject * parent = 0, const QString & documentation = QString() );
+
+	const QString & documentation() const;
+	void setDocumentation( const QString & value );
+private:
+	QString m_documentation;
 };
 
 /* XsdAttributeItem */
@@ -62,6 +83,34 @@ public:
 	void setUse( const QString & value );
 private:
 	QString m_name, m_value, m_use;
+};
+
+/* XsdSimpleType */
+
+class XsdSimpleType : public XsdItem {
+	Q_OBJECT
+	Q_PROPERTY( QString name READ name WRITE setName )
+public:
+	XsdSimpleType( XmlSchemaFile * schema, QObject * parent = 0, const QString & name = QString() );
+
+	const QString & name() const;
+	void setName( const QString & value );
+private:
+	QString m_name;
+};
+
+/* XsdComplexeType */
+
+class XsdComplexeType : public XsdSimpleType {
+	Q_OBJECT
+	Q_PROPERTY( QString inheritsFrom READ inheritsFrom WRITE setInheritsFrom )
+public:
+	XsdComplexeType( XmlSchemaFile * schema, QObject * parent = 0, const QString & name = QString(), const QString & inheritsFrom = QString() );
+
+	const QString & inheritsFrom() const;
+	void setInheritsFrom( const QString & value );
+private:
+	QString m_inheritsFrom;
 };
 
 /* XsdElementItem */
@@ -91,6 +140,36 @@ private:
 	int m_minOccurs, m_maxOccurs;
 };
 
+/* XsdRestrictionItem */
+
+class XsdRestrictionItem : public XsdItem {
+	Q_OBJECT
+	Q_PROPERTY( QString minValue READ minValue WRITE setMinValue )
+	Q_PROPERTY( QString maxValue READ maxValue WRITE setMaxValue )
+	Q_PROPERTY( QStringList enumeration READ enumeration WRITE setEnumeration )
+	Q_PROPERTY( QString pattern READ pattern WRITE setPattern )
+public:
+	XsdRestrictionItem( XmlSchemaFile * schema, QObject * parent = 0, const QString & base = QString() );
+
+	const QString & base();
+	void setBase( const QString & value );
+
+	const QString & minValue() const;
+	void setMinValue( const QString & value );
+
+	const QString & maxValue() const;
+	void setMaxValue( const QString & value );
+
+	const QStringList & enumeration() const;
+	void setEnumeration( const QStringList & value );
+
+	const QString & pattern() const;
+	void setPattern( const QString & pattern );
+private:
+	QString m_minValue, m_maxValue, m_pattern, m_base;
+	QStringList m_enumeration;
+};
+
 /* XsdSequenceItem */
 
 class XsdSequenceItem : public XsdElementItem {
@@ -116,8 +195,11 @@ public:
 	XmlSchemaFile( QFile * file );
 
 	void loadFromFile( const QString & filename );
-	void loadFromFile( QFile * file );
+	void loadFromFile( QFile * file, bool isInclude = true );
 private:
+	XsdSimpleType * createNewSimpleType( XsdItem * parent, const QDomElement & e );
+	XsdAnnotationItem * createXsdAnnotation( XsdItem * parent, const QDomElement & e );
+	XsdItem * createNewItem( XsdItem * parent, const QDomElement & e, bool isInclude );
 };
 
 #endif /* _XMLSCHEMA_H_ */
