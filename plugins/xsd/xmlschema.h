@@ -29,7 +29,7 @@
 
 /* Forward declaration */
 
-class QFile;
+class QIODevice;
 class XmlSchemaFile;
 
 /* XsdNodeItem */
@@ -44,6 +44,8 @@ public:
 
 	bool readOnly() const;
 	void setReadOnly( bool readonly );
+
+	virtual void loadFromElement( const QDomElement & e );
 private:
 	bool m_readOnly;
 	XmlSchemaFile * m_schema;
@@ -59,6 +61,8 @@ public:
 
 	const QString & documentation() const;
 	void setDocumentation( const QString & value );
+
+	virtual void loadFromElement( const QDomElement & e );
 private:
 	QString m_documentation;
 };
@@ -95,6 +99,8 @@ public:
 
 	const QString & name() const;
 	void setName( const QString & value );
+
+	virtual void loadFromElement( const QDomElement & e );
 private:
 	QString m_name;
 };
@@ -103,14 +109,8 @@ private:
 
 class XsdComplexeType : public XsdSimpleType {
 	Q_OBJECT
-	Q_PROPERTY( QString inheritsFrom READ inheritsFrom WRITE setInheritsFrom )
 public:
-	XsdComplexeType( XmlSchemaFile * schema, QObject * parent = 0, const QString & name = QString(), const QString & inheritsFrom = QString() );
-
-	const QString & inheritsFrom() const;
-	void setInheritsFrom( const QString & value );
-private:
-	QString m_inheritsFrom;
+	XsdComplexeType( XmlSchemaFile * schema, QObject * parent = 0, const QString & name = QString() );
 };
 
 /* XsdElementItem */
@@ -135,6 +135,8 @@ public:
 
 	int maxOccurs() const;
 	void setMaxOccurs( int value );
+
+	virtual void loadFromElement( const QDomElement & e );
 private:
 	QString m_name, m_type;
 	int m_minOccurs, m_maxOccurs;
@@ -165,6 +167,8 @@ public:
 
 	const QString & pattern() const;
 	void setPattern( const QString & pattern );
+
+	virtual void loadFromElement( const QDomElement & e );
 private:
 	QString m_minValue, m_maxValue, m_pattern, m_base;
 	QStringList m_enumeration;
@@ -173,17 +177,39 @@ private:
 /* XsdSequenceItem */
 
 class XsdSequenceItem : public XsdElementItem {
+	Q_OBJECT
 public:
 	XsdSequenceItem( XmlSchemaFile * schema, QObject * parent = 0 );
 
 	QList<XsdElementItem*> elements() const;
+
+	virtual void loadFromElement( const QDomElement & e );
+
+	static XsdElementItem * createXsdElementItem( XmlSchemaFile * schema, QObject * parent, const QDomElement & e );
 };
 
 /* XsdChoiceItem */
 
 class XsdChoiceItem : public XsdSequenceItem {
+	Q_OBJECT
 public:
 	XsdChoiceItem( XmlSchemaFile * schema, QObject * parent = 0 );
+};
+
+/* XsdComplexeContent */
+
+class XsdComplexeContentItem : public XsdSequenceItem {
+	Q_OBJECT
+	Q_PROPERTY( QString base READ base WRITE setBase )
+public:
+	XsdComplexeContentItem( XmlSchemaFile * schema, QObject * parent = 0, const QString & base = QString() );
+
+	const QString & base() const;
+	void setBase( const QString & value );
+
+	virtual void loadFromElement( const QDomElement & e );
+private:
+	QString m_base;
 };
 
 /* XmlSchemaFile */
@@ -192,14 +218,14 @@ class XmlSchemaFile : public XsdItem {
 	Q_OBJECT
 public:
 	XmlSchemaFile();
-	XmlSchemaFile( QFile * file );
+	XmlSchemaFile( QIODevice * file );
 
 	void loadFromFile( const QString & filename );
-	void loadFromFile( QFile * file, bool isInclude = true );
+	void loadFromFile( QIODevice * file, bool isInclude = true );
 private:
-	XsdSimpleType * createNewSimpleType( XsdItem * parent, const QDomElement & e );
-	XsdAnnotationItem * createXsdAnnotation( XsdItem * parent, const QDomElement & e );
 	XsdItem * createNewItem( XsdItem * parent, const QDomElement & e, bool isInclude );
+
+	QList<XmlSchemaFile*> m_imports, m_includes;
 };
 
 #endif /* _XMLSCHEMA_H_ */

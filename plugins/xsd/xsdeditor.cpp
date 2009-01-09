@@ -302,6 +302,9 @@ bool XsdEditor::canRedo() {
 }
 
 void XsdEditor::loadFromDevice( QIODevice & d ) {
+	if( m_schema ) delete m_schema;
+	m_schema = new XmlSchemaFile( &d );
+	m_schema->dumpObjectTree();
 }
 
 void XsdEditor::saveToDevice( QIODevice & d ) {

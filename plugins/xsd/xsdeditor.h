@@ -23,8 +23,10 @@
 
 // Xinx header
 #include <abstractfileeditor.h>
+#include "xmlschema.h"
 
 // Qt header
+#include <QPointer>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
@@ -62,6 +64,7 @@ public slots:
 	virtual void toogledBookmark();
 	virtual void clearAllBookmark();
 private:
+	QPointer<XmlSchemaFile> m_schema;
 	QGraphicsScene * m_scene;
 	QGraphicsView * m_view;
 };

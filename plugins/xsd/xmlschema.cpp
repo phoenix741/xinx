@@ -43,6 +43,14 @@ void XsdItem::setReadOnly( bool readonly ) {
 	m_readOnly = readonly;
 }
 
+void XsdItem::loadFromElement( const QDomElement & e ) {
+	QDomElement annotation = e.firstChildElement( "annotation" );
+	if( ! annotation.isNull() ) {
+		XsdAnnotationItem * a = new XsdAnnotationItem( schema(), this );
+		a->loadFromElement( annotation );
+	}
+}
+
 /* XsdAnnotationItem */
 
 XsdAnnotationItem::XsdAnnotationItem( XmlSchemaFile * schema, QObject * parent, const QString & documentation ) : XsdItem( schema, parent ), m_documentation( documentation ) {
@@ -55,6 +63,11 @@ const QString & XsdAnnotationItem::documentation() const {
 
 void XsdAnnotationItem::setDocumentation( const QString & value ) {
 	m_documentation = value;
+}
+
+void XsdAnnotationItem::loadFromElement( const QDomElement & e ) {
+	QDomElement documentation = e.firstChildElement( "documentation" );
+	setDocumentation( documentation.text() );
 }
 
 /* XsdAttributeItem */
@@ -125,6 +138,23 @@ void XsdElementItem::setMaxOccurs( int value ) {
 	m_maxOccurs = value;
 }
 
+void XsdElementItem::loadFromElement( const QDomElement & e ) {
+	XsdItem::loadFromElement( e );
+
+	setName( e.attribute( "name" ) );
+	setType( e.attribute( "type" ) );
+
+	if( ! e.attribute( "minOccurs" ).isNull() )
+		setMinOccurs( e.attribute( "minOccurs" ).toInt() );
+	else
+		setMinOccurs( 0 );
+
+	if( ! e.attribute( "maxOccurs" ).isNull() )
+		setMaxOccurs( e.attribute( "maxOccurs" ).toInt() );
+	else
+		setMaxOccurs( 1 );
+}
+
 /* XsdRestrictionItem */
 
 XsdRestrictionItem::XsdRestrictionItem( XmlSchemaFile * schema, QObject * parent, const QString & base ) : XsdItem( schema, parent ), m_base( base ) {
@@ -171,6 +201,26 @@ void XsdRestrictionItem::setPattern( const QString & pattern ) {
 	m_pattern = pattern;
 }
 
+void XsdRestrictionItem::loadFromElement( const QDomElement & e ) {
+	XsdItem::loadFromElement( e );
+	setBase( e.attribute( "base" ) );
+
+	QDomElement node = e.firstChildElement();
+	while( ! node.isNull() ) {
+		if( node.nodeName() == "minLength" ) {
+			setMinValue( node.attribute( "value" ) );
+		} else if( node.nodeName() == "maxLength" ) {
+			setMaxValue( node.attribute( "value" ) );
+		} else if( node.nodeName() == "enumeration" ) {
+			m_enumeration.append( node.attribute( "value" ) );
+		} else if( node.nodeName() == "pattern" ) {
+			setPattern( node.attribute( "value" ) );
+		}
+
+		node = node.nextSiblingElement();
+	}
+}
+
 /* XsdSequenceItem */
 
 XsdSequenceItem::XsdSequenceItem( XmlSchemaFile * schema, QObject * parent ) : XsdElementItem( schema, parent ) {
@@ -188,10 +238,56 @@ QList<XsdElementItem*> XsdSequenceItem::elements() const {
 	return list;
 }
 
+XsdElementItem * XsdSequenceItem::createXsdElementItem( XmlSchemaFile * schema, QObject * parent, const QDomElement & e ) {
+	XsdElementItem * item = 0;
+	if( e.nodeName() == "element" )
+		item = new XsdElementItem( schema, parent );
+	else if( e.nodeName() == "complexContent" )
+		item = new XsdComplexeContentItem( schema, parent );
+	else if( e.nodeName() == "sequence" )
+		item = new XsdSequenceItem( schema, parent );
+	else if( e.nodeName() == "choice" )
+		item = new XsdChoiceItem( schema, parent );
+	if( item )
+		item->loadFromElement( e );
+	return item;
+}
+
+void XsdSequenceItem::loadFromElement( const QDomElement & e ) {
+	XsdElementItem::loadFromElement( e );
+
+	QDomElement node = e.firstChildElement();
+	while( ! node.isNull() ) {
+		createXsdElementItem( schema(), this, node );
+
+		node = node.nextSiblingElement();
+	}
+
+}
+
 /* XsdChoiceItem */
 
 XsdChoiceItem::XsdChoiceItem( XmlSchemaFile * schema, QObject * parent ) : XsdSequenceItem( schema, parent ) {
 
+}
+
+/* XsdComplexeContentItem */
+
+XsdComplexeContentItem::XsdComplexeContentItem( XmlSchemaFile * schema, QObject * parent, const QString & base ) : XsdSequenceItem( schema, parent ), m_base( base ) {
+
+}
+
+const QString & XsdComplexeContentItem::base() const {
+	return m_base;
+}
+
+void XsdComplexeContentItem::setBase( const QString & value ) {
+	m_base = value;
+}
+
+void XsdComplexeContentItem::loadFromElement( const QDomElement & e ) {
+	XsdSequenceItem::loadFromElement( e );
+	setBase( e.attribute( "base" ) );
 }
 
 /* XsdSimpleType */
@@ -208,18 +304,23 @@ void XsdSimpleType::setName( const QString & value ) {
 	m_name = value;
 }
 
+void XsdSimpleType::loadFromElement( const QDomElement & e ) {
+	XsdItem::loadFromElement( e );
+	setName( e.attribute( "name" ) );
+
+	QDomElement restrictionElement = e.firstChildElement( "restriction" );
+
+	XsdSimpleType * type = new XsdSimpleType( schema(), this );
+	type->loadFromElement( e );
+
+	XsdRestrictionItem * restriction = new XsdRestrictionItem( schema(), this );
+	restriction->loadFromElement( restrictionElement );
+}
+
 /* XsdComplexeType */
 
-XsdComplexeType::XsdComplexeType( XmlSchemaFile * schema, QObject * parent, const QString & name, const QString & inheritsFrom ) : XsdSimpleType( schema, parent, name ), m_inheritsFrom( inheritsFrom ) {
+XsdComplexeType::XsdComplexeType( XmlSchemaFile * schema, QObject * parent, const QString & name ) : XsdSimpleType( schema, parent, name ) {
 
-}
-
-const QString & XsdComplexeType::inheritsFrom() const {
-	return m_inheritsFrom;
-}
-
-void XsdComplexeType::setInheritsFrom( const QString & value ) {
-	m_inheritsFrom = value;
 }
 
 /* XmlSchemaFile */
@@ -228,7 +329,7 @@ XmlSchemaFile::XmlSchemaFile() : XsdItem( this ) {
 
 }
 
-XmlSchemaFile::XmlSchemaFile( QFile * file ) : XsdItem( this ) {
+XmlSchemaFile::XmlSchemaFile( QIODevice * file ) : XsdItem( this ) {
 	loadFromFile( file );
 }
 
@@ -240,7 +341,7 @@ void XmlSchemaFile::loadFromFile( const QString & filename ) {
 	f.close();
 }
 
-void XmlSchemaFile::loadFromFile( QFile * file, bool isInclude ) {
+void XmlSchemaFile::loadFromFile( QIODevice * file, bool isInclude ) {
 	QDomDocument doc;
 	if( ! doc.setContent( file, true ) ) return;
 
@@ -253,31 +354,23 @@ void XmlSchemaFile::loadFromFile( QFile * file, bool isInclude ) {
 	}
 }
 
-XsdAnnotationItem * XmlSchemaFile::createXsdAnnotation( XsdItem * parent, const QDomElement & e ) {
-	QDomElement documentation = e.firstChildElement( "documentation" );
-	return new XsdAnnotationItem( this, parent, documentation.text() );
-}
-
-XsdSimpleType * XmlSchemaFile::createNewSimpleType( XsdItem * parent, const QDomElement & e ) {
-
-}
-
 XsdItem * XmlSchemaFile::createNewItem( XsdItem * parent, const QDomElement & e, bool isInclude ) {
 	QString elementName = e.nodeName();
 	XsdItem * item = 0;
 
-	if( elementName == "complexType" ) {
-
+	if( elementName == "element" ) {
+		item = new XsdElementItem( this, this );
+	} else if( elementName == "complexType" ) {
+		item = new XsdComplexeType( this, this );
 	} else if( elementName == "simpleType" ) {
-	} else if( elementName == "element" ) {
+		item = new XsdSimpleType( this, this );
 	} else if( ( elementName == "include" ) || ( elementName == "import" ) ) {
+
 	}
 
 	if( item ) {
 		item->setReadOnly( isInclude );
-		QDomElement annotation = e.firstChildElement( "annotation" );
-		if( ! annotation.isNull() )
-			createXsdAnnotation( item, annotation );
+		item->loadFromElement( e );
 	}
 	return item;
 }
