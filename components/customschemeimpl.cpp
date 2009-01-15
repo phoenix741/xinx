@@ -46,7 +46,15 @@ void CustomSchemeImpl::setFormatScheme( QFormatScheme * formats ) {
 	if( formats != m_formats ) {
 		m_formats = formats;
 
-		m_formatsListView->addItems( m_formats->formats() );
+		foreach( QString f, m_formats->formats() ) {
+			QFormat format = m_formats->format( f );
+			QListWidgetItem * item = new QListWidgetItem( f, m_formatsListView );
+			if( format.background.isValid() ) item->setBackground( format.background );
+			if( format.foreground.isValid() ) item->setForeground( format.foreground );
+			item->setFont( format.toTextCharFormat().font() );
+		}
+
+		m_formatsListView->setCurrentRow( 0 );
 	}
 }
 

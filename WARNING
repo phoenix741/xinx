@@ -1,2 +1,11 @@
-- Delete NumberBar
-- Delete Bookmark 
+- Paste (Ctrl+V) doesn't work
+- Can't paste when i'm from XDME
+- I have a crash in use (QVector index out of bound)
+- Bookmark bar doesn't work
+- If i have an error and i press <ENTER> before the error is correct, the line is red
+- Crash quand essai d'utilisation de Ctrl+Shift+Bas
+	- Quand ca marche, le curseur ne suit pas la ligne 
+	- Quand j'ai une sélection plantage.
+- Attention la marque suit la ligne pas le numéro de ligne.
+- Le surligner automatique/non automatique ne fonctionne pas.
+	- Le surligner ne marche pas quand recherche espace.

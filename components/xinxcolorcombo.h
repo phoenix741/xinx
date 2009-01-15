@@ -59,7 +59,7 @@ public:
 	/*!
 	* Destroy the ColorComboBox
 	*/
-	~XinxColorCombo();
+	virtual ~XinxColorCombo();
 
 	/*!
 	* Change the value of the ComboBox to the color define in bracket.
@@ -98,8 +98,6 @@ private:
 	QColor customColor;
 	QColor internalcolor;
 
-protected:
-	virtual void virtual_hook( int id, void* data );
 private:
 	class XinxColorComboPrivate;
 	XinxColorComboPrivate *d;

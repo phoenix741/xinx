@@ -36,7 +36,7 @@ XinxFormatFactory::~XinxFormatFactory() {
 }
 
 void XinxFormatFactory::updateFormats() {
-	QFormat searchFormat, matchFormat, textFormat;
+	QFormat searchFormat, matchFormat;
 	searchFormat.background = m_config->config().editor.highlightWord;
 	matchFormat.weight = QFont::Bold;
 
