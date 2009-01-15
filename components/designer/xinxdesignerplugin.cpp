@@ -22,16 +22,18 @@
 #include "xinxdesignerplugin.h"
 #include "directoryeditplugin.h"
 #include "directoryeditwidgetplugin.h"
-#include "kcolorcomboplugin.h"
+#include "xinxcolorcomboplugin.h"
 #include "pluginselectorplugin.h"
 #include "xinxlistwidgetplugin.h"
+#include "customschemeplugin.h"
 
 XinxDesignerPlugin::XinxDesignerPlugin( QObject *parent ) : QObject( parent ) {
 	widgets.append( new DirectoryEditPlugin( this ) );
 	widgets.append( new DirectoryEditWidgetPlugin( this ) );
-	widgets.append( new KColorComboPlugin( this ) );
+	widgets.append( new XinxColorComboPlugin( this ) );
 	widgets.append( new PluginSelectorPlugin( this ) );
 	widgets.append( new XinxListWidgetPlugin( this ) );
+	widgets.append( new CustomSchemeWidgetPlugin( this ) );
 }
 
 QList<QDesignerCustomWidgetInterface*> XinxDesignerPlugin::customWidgets() const {

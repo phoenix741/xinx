@@ -20,19 +20,18 @@
 
 // Xinx header
 #include "itemmodelfileeditor.h"
-#include "texteditor.h"
-#include "numberbar.h"
+#include "xinxcodeedit.h"
 #include "xinxconfig.h"
 
 /* ItemModelFileEditor */
 
-ItemModelFileEditor::ItemModelFileEditor( FileContentParser * element, TextEditor * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( element ) {
+ItemModelFileEditor::ItemModelFileEditor( FileContentParser * element, XinxCodeEdit * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( element ) {
 	m_keyTimer = new QTimer();
 	m_keyTimer->setSingleShot( true );
 	m_keyTimer->setInterval( XINXConfig::self()->config().editor.automaticModelRefreshTimeout );
 	connect( m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()) );
-	connect( textEdit(), SIGNAL(textChanged()), this, SLOT(textChanged()) );
-	disconnect( textEdit(), SIGNAL(textChanged()), this, SIGNAL(contentChanged()) );
+	connect( textEdit()->document(), SIGNAL(contentsChanged()), this, SLOT(textChanged()) );
+	disconnect( textEdit()->document(), SIGNAL(contentsChanged()), this, SIGNAL(contentChanged()) );
 }
 
 ItemModelFileEditor::~ItemModelFileEditor() {
@@ -52,10 +51,10 @@ void ItemModelFileEditor::saveToFile( const QString & fileName ) {
 void ItemModelFileEditor::loadFromDevice( QIODevice & d ) {
 	try {
 		m_parser->loadFromDevice( &d );
-		numbersBar()->setErrors( QList<int>() );
+		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );
 	} catch( FileContentException e ) {
-		numbersBar()->setErrors( QList<int>() << e.getLine() );
+		textEdit()->setErrors( QList<int>() << e.getLine() );
 		setMessage( e.getMessage() );
 	}
 	d.reset();
@@ -77,10 +76,10 @@ void ItemModelFileEditor::updateModel() {
 	try {
 		m_parser->loadFromContent( textEdit()->toPlainText() );
 		emit contentChanged();
-		numbersBar()->setErrors( QList<int>() );
+		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );
 	} catch( FileContentException e ) {
-		numbersBar()->setErrors( QList<int>() << e.getLine() );
+		textEdit()->setErrors( QList<int>() << e.getLine() );
 		setMessage( e.getMessage() );
 	}
 }

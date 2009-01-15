@@ -24,15 +24,18 @@
 
 #include <xinxconfig.h>
 #include <xinxpluginsloader.h>
+#include <xinxlanguagefactory.h>
+
+// QCodeEdit header
+#include <qlanguagedefinition.h>
 
 // Qt header
 #include <QKeyEvent>
 #include <QTextBlock>
 #include <QCompleter>
 
-XQTextEditor::XQTextEditor( QWidget * parent ) : TextEditor( parent ) {
-	SyntaxHighlighter * highlighter = XinxPluginsLoader::self()->createHighlighter( "XQ", document() );
-	setHighlighter( highlighter );
+XQTextEditor::XQTextEditor( QWidget * parent ) : XinxCodeEdit( parent ) {
+	setHighlighter( "XQuery" );
 }
 
 XQTextEditor::~XQTextEditor() {

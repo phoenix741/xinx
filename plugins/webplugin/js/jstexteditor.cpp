@@ -25,15 +25,19 @@
 
 #include <xinxconfig.h>
 #include <xinxpluginsloader.h>
+#include <xinxlanguagefactory.h>
+
+// QCodeEdit header
+#include <qlanguagedefinition.h>
+#include <qdocumentline.h>
 
 // Qt header
 #include <QKeyEvent>
 #include <QTextBlock>
 #include <QCompleter>
 
-JSTextEditor::JSTextEditor( QWidget * parent ) : TextEditor( parent ) {
-	SyntaxHighlighter * highlighter = XinxPluginsLoader::self()->createHighlighter( "JS", document() );
-	setHighlighter( highlighter );
+JSTextEditor::JSTextEditor( QWidget * parent ) : XinxCodeEdit( parent ) {
+	setHighlighter( "ECMAScript" );
 }
 
 JSTextEditor::~JSTextEditor() {
@@ -43,29 +47,29 @@ JSTextEditor::~JSTextEditor() {
 QCompleter * JSTextEditor::completer() {
 	if( ! SelfWebPluginSettings::self()->config().javascript.activeCompletion ) return 0;
 
-	if( TextEditor::completer() ) {
-		JavascriptModelCompleter * c = qobject_cast<JavascriptModelCompleter*>( TextEditor::completer()->model() );
+	if( XinxCodeEdit::completer() ) {
+		JavascriptModelCompleter * c = qobject_cast<JavascriptModelCompleter*>( XinxCodeEdit::completer()->model() );
 		if( c ) {
 			editPosition( textCursor() );
 			c->setFilter( m_functionName );
 
-			return TextEditor::completer();
+			return XinxCodeEdit::completer();
 		}
 	}
-	return TextEditor::completer();
+	return XinxCodeEdit::completer();
 }
 
 void JSTextEditor::commentSelectedText( bool uncomment ) {
 	QString functionName;
 
-	QTextCursor cursor( textCursor() );
+	QDocumentCursor cursor( textCursor() );
 
-	QTextCursor cursorStart( textCursor() );
-	cursorStart.setPosition( cursor.selectionStart() );
+	QDocumentCursor cursorStart( textCursor() );
+	cursorStart.moveTo( cursor.selectionStart() );
 	bool isStartCommented = editPosition( this, cursorStart, functionName ) == cpEditLongComment;
 
-	QTextCursor cursorEnd( textCursor() );
-	cursorEnd.setPosition( cursor.selectionEnd() );
+	QDocumentCursor cursorEnd( textCursor() );
+	cursorEnd.moveTo( cursor.selectionEnd() );
 	bool isEndCommented =  editPosition( this, cursorEnd, functionName ) == cpEditLongComment;
 
 	QString text = cursor.selectedText();
@@ -95,26 +99,26 @@ void JSTextEditor::commentSelectedText( bool uncomment ) {
 }
 
 
-JSTextEditor::cursorPosition JSTextEditor::editPosition( const TextEditor * textEdit, const QTextCursor & cursor, QString & functionName ) {
-	QTextCursor cursorStartOfComment = textEdit->document()->find( "/*", cursor, QTextDocument::FindBackward );
-	QTextCursor cursorEndOfComment   = textEdit->document()->find( "*/", cursor, QTextDocument::FindBackward );
-	QTextCursor cursorLineCommented  = textEdit->document()->find( "//", cursor, QTextDocument::FindBackward );
+JSTextEditor::cursorPosition JSTextEditor::editPosition( const XinxCodeEdit * textEdit, const QDocumentCursor & cursor, QString & functionName ) {
+	QDocumentCursor cursorStartOfComment = textEdit->find( "/*", cursor, XinxCodeEdit::FindBackward ).selectionStart();
+	QDocumentCursor cursorEndOfComment   = textEdit->find( "*/", cursor, XinxCodeEdit::FindBackward ).selectionStart();
+	QDocumentCursor cursorLineCommented  = textEdit->find( "//", cursor, XinxCodeEdit::FindBackward ).selectionStart();
 
 	functionName = QString();
 
 	if(! ( cursorStartOfComment.isNull() || ( !cursorEndOfComment.isNull() && (cursorStartOfComment < cursorEndOfComment ) ) ))
 		return cpEditLongComment;
-	if(! cursorLineCommented.isNull() && ( cursorLineCommented.blockNumber() == cursor.blockNumber() ) )
+	if(! cursorLineCommented.isNull() && ( cursorLineCommented.lineNumber() == cursor.lineNumber() ) )
 		return cpEditSimpleComment;
 
 	QRegExp function( "function[\\s]*([a-zA-Z_][a-zA-Z0-9_]*)[\\s]*\\(" );
-	QTextCursor cursorFunction = textEdit->document()->find( function, cursor, QTextDocument::FindBackward );
-	QTextCursor endOfParam     = textEdit->document()->find( ")", cursor, QTextDocument::FindBackward );
+	QDocumentCursor cursorFunction = textEdit->find( function, cursor, XinxCodeEdit::FindBackward );
+	QDocumentCursor endOfParam     = textEdit->find( ")", cursor, XinxCodeEdit::FindBackward ).selectionStart();
 
 	if( cursorFunction.isNull() )
 		return cpEditGlobal;
 
-	QTextCursor cursorOfFunctionName = cursorFunction;
+	QDocumentCursor cursorOfFunctionName = cursorFunction;
 	functionName = cursorOfFunctionName.selectedText();
 	function.indexIn( functionName, 0 );
 	functionName = function.cap(1);
@@ -124,7 +128,7 @@ JSTextEditor::cursorPosition JSTextEditor::editPosition( const TextEditor * text
 	}
 
 	int bloc = 0;
-	QTextCursor c = textEdit->document()->find( ")", cursorFunction );
+	QDocumentCursor c = textEdit->find( ")", cursorFunction );
 	while( ( c < cursor ) && ( c.position() > 0 ) ) {
 		QString text = c.selectedText();
 		if( text.contains( '{' ) )
@@ -132,7 +136,7 @@ JSTextEditor::cursorPosition JSTextEditor::editPosition( const TextEditor * text
 		else if( text.contains( '}' ) )
 			bloc--;
 
-		c = textEdit->document()->find( QRegExp("[\\S]+"), c );
+		c = textEdit->find( QRegExp("[\\S]+"), c );
 	}
 
 	if( bloc > 0 )
@@ -143,6 +147,6 @@ JSTextEditor::cursorPosition JSTextEditor::editPosition( const TextEditor * text
 	}
 }
 
-JSTextEditor::cursorPosition JSTextEditor::editPosition( const QTextCursor & cursor ) {
+JSTextEditor::cursorPosition JSTextEditor::editPosition( const QDocumentCursor & cursor ) {
 	return editPosition( this, cursor, m_functionName );
 }

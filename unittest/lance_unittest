@@ -1,0 +1,8 @@
+#!/bin/sh
+LD_LIBRARY_PATH=../libxinx:../components:../ext/qcodeedit:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+# Test au format xml
+xvfb-run ./testxinxcodeedit/testxinxcodeedit -xml > unittest.xml
+sleep 1
+# Test au format log
+xvfb-run ./testxinxcodeedit/testxinxcodeedit

@@ -31,7 +31,6 @@
 #include "../customdialogimpl.h"
 #include "../snipetlist.h"
 #include "../snipet.h"
-#include <syntaxhighlighter.h>
 #include <xinxpluginsloader.h>
 #include "scriptmanager.h"
 
@@ -135,8 +134,7 @@ public:
 	virtual ~PrivateCustomDialogImpl() {};
 
 	XINXConfig m_config;
-	QString m_previousFormat;
-	SyntaxHighlighter * m_highlighter;
+	//QString m_previousFormat;
 
 	SnipetModelIndex * m_snipetModel;
 

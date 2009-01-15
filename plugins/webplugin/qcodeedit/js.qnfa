@@ -1,0 +1,106 @@
+<!DOCTYPE QNFA>
+<QNFA language="ECMAScript" extensions="js" defaultLineMark="bookmark">
+	<context id="comment/multi" format="ecmascript_comment">
+		<start parenthesis="cppcomment:open" indent="1" fold="1">/\*</start>
+		<stop parenthesis="cppcomment:close" indent="1" fold="1">\*/</stop>
+	</context>
+
+	<context id="comment/single" format="ecmascript_comment" >
+		<start>//</start>
+		<stop exclusive="false">\n</stop>
+
+		<context id="evilJump" format="ecmascript_danger" >
+			<start>\\\n</start>
+			<stop exclusive="false">\n</stop>
+			<escape>\\</escape>
+		</context>
+	</context>
+
+	<context id="data/string" format="ecmascript_string" >
+		<start>&quot;</start>
+		<stop>&quot;</stop>
+		<stop exclusive="false">\n</stop>
+		<sequence id="escape" format="ecmascript_escapeseq" >\\[nrtvf\\"'\n]</sequence>
+	</context>
+
+	<context id="data/chars" format="ecmascript_string" >
+		<start>'</start>
+		<stop>'</stop>
+		<stop exclusive="false">\n</stop>
+		<sequence id="escape" format="ecmascript_escapeseq" >\\[nrtvf\\"'\n]</sequence>
+	</context>
+
+	<sequence parenthesis="round:open">(</sequence>
+	<sequence parenthesis="round:close">)</sequence>
+	<sequence parenthesis="curly:open" indent="1" fold="1">{</sequence>
+	<sequence parenthesis="curly:close" indent="1" fold="1">}</sequence>
+	<sequence parenthesis="square:open">\[</sequence>
+	<sequence parenthesis="square:close">\]</sequence>
+
+	<list id="keywords/all" format="ecmascript_reservedword">
+		<word>abstract</word>
+		<word>boolean</word>
+		<word>break</word>
+		<word>byte</word>
+		<word>case</word>
+		<word>catch</word>
+		<word>char</word>
+		<word>class</word>
+		<word>const</word>
+		<word>continue</word>
+		<word>debugger</word>
+		<word>default</word>
+		<word>delete</word>
+		<word>do</word>
+		<word>double</word>
+		<word>else</word>
+		<word>enum</word>
+		<word>export</word>
+		<word>extends</word>
+		<word>false</word>
+		<word>final</word>
+		<word>finally</word>
+		<word>float</word>
+		<word>for</word>
+		<word>function</word>
+		<word>goto</word>
+		<word>if</word>
+		<word>implements</word>
+		<word>import</word>
+		<word>in</word>
+		<word>instanceof</word>
+		<word>int</word>
+		<word>interface</word>
+		<word>long</word>
+		<word>native</word>
+		<word>new</word>
+		<word>null</word>
+		<word>package</word>
+		<word>private</word>
+		<word>protected</word>
+		<word>public</word>
+		<word>return</word>
+		<word>short</word>
+		<word>static</word>
+		<word>super</word>
+		<word>switch</word>
+		<word>synchronized</word>
+		<word>this</word>
+		<word>throw</word>
+		<word>throws</word>
+		<word>transient</word>
+		<word>true</word>
+		<word>try</word>
+		<word>typeof</word>
+		<word>var</word>
+		<word>void</word>
+		<word>volatile</word>
+		<word>while</word>
+		<word>with</word>
+	</list>
+
+	<word id="data/float" format="ecmascript_numbers">-?[0-9]*.[0-9]+f?</word>
+	<word id="data/hexadecimal" format="ecmascript_numbers">0[xX][0-9a-fA-F]+[ulUL]*</word>
+	<word id="data/octal" format="ecmascript_numbers">0[0-7]+</word>
+	<word id="data/decimal" format="ecmascript_numbers">-?[0-9]+[ulUL]*</word>
+</QNFA>

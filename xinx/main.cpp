@@ -26,6 +26,9 @@
 #include "exceptions.h"
 #include "xinxpluginsloader.h"
 
+// QCodeEdit header
+#include <qlinemarksinfocenter.h>
+
 // Qt header
 #include <QApplication>
 #include <QSplashScreen>
@@ -143,6 +146,11 @@ int main(int argc, char *argv[]) {
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Reload configuration ...") );
 			app.processEvents();
 			XINXConfig::self()->load();
+
+			/* Reload to have options in plugins */
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load QCodeEdit feature ...") );
+			app.processEvents();
+			QLineMarksInfoCenter::instance()->loadMarkTypes( ":/qcodeedit/marks.qxm" );
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load snipets ...") );
 			app.processEvents();

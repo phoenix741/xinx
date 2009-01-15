@@ -4,18 +4,20 @@ CONFIG += plugin \
 QT += xml
 DESTDIR += ../
 RESOURCES += webplugin.qrc
-TARGET = $$qtLibraryTarget(webplugin)
+TARGET = webplugin
 INCLUDEPATH += ./ \
     ../../libxinx \
-    ../../components
+    ../../components \
+	../../ext/qcodeedit/lib \
+	../../ext/qcodeedit/lib/document \
+	../../ext/qcodeedit/lib/language \
+	../../ext/qcodeedit/lib/qnfa \
+	../../ext/qcodeedit/lib/widgets
 HEADERS = xq/xquery_keyword.h \
     xsl/xsltexteditor.h \
     config/webpluginsettings.h \
     xsl/xmlprettyprinter.h \
     webplugin.h \
-    xsl/xmlhighlighter.h \
-    js/jshighlighter.h \
-    css/csshighlighter.h \
     xsl/xsllistview.h \
     js/javascriptparser.h \
     editorcompletion.h \
@@ -35,7 +37,6 @@ HEADERS = xq/xquery_keyword.h \
     xq/xqtexteditor.h \
     xq/xqfileeditor.h \
     xq/xqmodelcompleter.h \
-    xq/xqhighlighter.h \
     filetypeplugin.h
 SOURCES = xq/xquery_keyword.cpp \
     xsl/xsltexteditor.cpp \
@@ -43,9 +44,6 @@ SOURCES = xq/xquery_keyword.cpp \
     config/webpluginsettings.cpp \
     xsl/xmlprettyprinter.cpp \
     webplugin.cpp \
-    xsl/xmlhighlighter.cpp \
-    js/jshighlighter.cpp \
-    css/csshighlighter.cpp \
     xsl/xsllistview.cpp \
     js/javascriptparser.cpp \
     editorcompletion.cpp \
@@ -63,7 +61,6 @@ SOURCES = xq/xquery_keyword.cpp \
     xq/xqtexteditor.cpp \
     xq/xqfileeditor.cpp \
     xq/xqmodelcompleter.cpp \
-    xq/xqhighlighter.cpp \
     config/webpluginformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui

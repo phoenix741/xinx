@@ -82,7 +82,7 @@ bool StyleSheetEditor::autoIndent() {
 		prettyPrinter.process();
 
 		textEdit()->textCursor().beginEditBlock();
-		textEdit()->selectAll();
+		textEdit()->editor()->selectAll();
 		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
 		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {

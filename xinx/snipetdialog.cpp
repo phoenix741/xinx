@@ -29,14 +29,14 @@
 
 /* SnipetDialogImpl */
 
-SnipetDialogImpl::SnipetDialogImpl( const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ), m_highlighter(0) {
+SnipetDialogImpl::SnipetDialogImpl( const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
 
 	m_textEdit->setPlainText( text );
 	updateFont();
 }
 
-SnipetDialogImpl::SnipetDialogImpl( const QString & type, const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ), m_highlighter(0) {
+SnipetDialogImpl::SnipetDialogImpl( const QString & type, const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
 
 	m_extLineEdit->setText( type );
@@ -44,9 +44,9 @@ SnipetDialogImpl::SnipetDialogImpl( const QString & type, const QString & text, 
 	updateFont();
 }
 
-SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ), m_highlighter(0) {
+SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
-	
+
 	m_extLineEdit->setText( snipet.type() );
 	m_nameLineEdit->setText( snipet.name() );
 	m_descriptionTextEdit->setPlainText( snipet.description() );
@@ -55,7 +55,7 @@ SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt:
 	m_categoryComboBox->setEditText( snipet.category() );
 	m_textEdit->setPlainText( snipet.text() );
 	updateFont();
-	
+
 	int index = 0;
 	QListIterator< QPair<QLabel*,QLineEdit*> > i( m_paramList );
 	while( i.hasNext() ) {
@@ -78,7 +78,7 @@ void SnipetDialogImpl::updateFont() {
 
 void SnipetDialogImpl::setupUi( QDialog * parent ) {
 	Ui::SnipetDialog::setupUi( parent );
-	
+
 	m_categoryComboBox->clear();
 	m_categoryComboBox->addItems( SnipetListManager::self()->snipets().categories() );
 
@@ -87,8 +87,7 @@ void SnipetDialogImpl::setupUi( QDialog * parent ) {
 }
 
 void SnipetDialogImpl::on_m_extLineEdit_textChanged( const QString & text ) {
-	if( m_highlighter ) delete m_highlighter;
-	m_highlighter = XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( text ), m_textEdit->document() );
+	m_textEdit->setHighlighter( text );
 }
 
 void SnipetDialogImpl::on_m_textEdit_textChanged() {
@@ -118,10 +117,10 @@ void SnipetDialogImpl::on_m_textEdit_textChanged() {
 void SnipetDialogImpl::addParamLine() {
 	QLabel * label;
 	label = new QLabel( QApplication::translate("SnipetDialogImpl", "Param &%1 : ").arg( m_paramList.size() + 1 ), this );
-		
+
 	QLineEdit * lineEdit = new QLineEdit( this );
 	label->setBuddy( lineEdit );
-	
+
 	m_paramGrid->addWidget( label, m_paramList.size(), 0 );
 	m_paramGrid->addWidget( lineEdit, m_paramList.size(), 1 );
 	m_paramList.append( qMakePair( label, lineEdit ) );
@@ -129,7 +128,7 @@ void SnipetDialogImpl::addParamLine() {
 
 Snipet SnipetDialogImpl::getSnipet() {
 	Snipet s;
-	
+
 	s.setType( m_extLineEdit->text() );
 	s.setName( m_nameLineEdit->text() );
 	s.setKey( m_keyLineEdit->text() );
@@ -137,7 +136,7 @@ Snipet SnipetDialogImpl::getSnipet() {
 	s.setIcon( m_iconLineEdit->text() );
 	s.setCategory( m_categoryComboBox->currentText() );
 	s.setText( m_textEdit->toPlainText() );
-		
+
 	QListIterator< QPair<QLabel*,QLineEdit*> > i( m_paramList );
 	s.params().clear();
 	while( i.hasNext() ) {

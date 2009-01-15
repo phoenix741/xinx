@@ -26,12 +26,11 @@
 
 class WebPluginSettings;
 
-class WebPlugin : public QObject, public IFilePlugin, public IPluginSyntaxHighlighter, public IXinxPluginConfiguration {
+class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IFilePlugin)
-	Q_INTERFACES(IPluginSyntaxHighlighter)
 	Q_INTERFACES(IXinxPluginConfiguration)
+	Q_INTERFACES(IFilePlugin)
 public:
 	WebPlugin();
 	virtual ~WebPlugin();
@@ -44,12 +43,6 @@ public:
 	virtual QWidget * createSettingsDialog();
 	virtual bool loadSettingsDialog( QWidget * widget );
 	virtual bool saveSettingsDialog( QWidget * widget );
-
-	virtual QStringList highlighters();
-	virtual QString highlighterOfExtention( const QString & extention );
-	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
-	virtual QString exampleOfHighlighter( const QString & highlighter );
-	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config );
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 };

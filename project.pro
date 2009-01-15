@@ -1,9 +1,11 @@
 TEMPLATE = subdirs
-SUBDIRS += components \
+SUBDIRS += ext \
+	components \
 	libxinx \
-    plugins \
-    xinx \
-    xinxprojectwizard
+	unittest \
+	plugins \
+	xinx \
+	xinxprojectwizard
 
 dox.target = doc
 dox.commands = doxygen Doxyfile

@@ -58,17 +58,6 @@ public:
 	 */
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 
-	/*! List all highlighter that can be used. */
-	QStringList highlighters() const;
-	/*! Select the highlighter for the corresponding suffix */
-	QString highlighterOfSuffix( const QString & suffix ) const;
-	/*! Defaut format of the highlighter (used by the configuration manager) */
-	QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter );
-	/*! Exemple of highlighter */
-	QString exampleOfHighlighter( const QString & highlighter );
-	/*! Create a highlighter for the texte document */
-	SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config = NULL );
-
 	/*! Return all the file type knew by XINX. */
 	QList<IFileTypePlugin*> fileTypes() const;
 	/*! Search the file type for the corresponding filename  */
@@ -79,6 +68,8 @@ public:
 	QStringList openDialogBoxFilters() const;
 	//! Return a list of filter
 	QStringList managedFilters() const;
+	//! Return the exemple of an highlighter
+	QString exampleOfHighlighter( const QString & name ) const;
 
 	//! Create an element (and also a parser) for the given filename
 	FileContentElement * createElement( QString & filename, FileContentElement * parent = 0, int line = -1 );

@@ -7,13 +7,20 @@ QT += xml \
 DESTDIR += ./
 INCLUDEPATH += ../components \
     ../libxinx \
-    ../xinx
+    ../xinx \
+	../ext/qcodeedit/lib \
+	../ext/qcodeedit/lib/document \
+	../ext/qcodeedit/lib/language \
+	../ext/qcodeedit/lib/qnfa \
+	../ext/qcodeedit/lib/widgets
 LIBS = -L../libxinx \
     -L../plugins \
     -L../components \
+    -L../ext/qcodeedit \
     -lwebplugin \
     -lsharedxinx \
-    -lxinxcmp
+    -lxinxcmp \
+    -lqcodeedit
 PRE_TARGETDEPS = ../plugins/libwebplugin.a
 win32:RC_FILE += rc/xinx.rc
 RESOURCES += application.qrc

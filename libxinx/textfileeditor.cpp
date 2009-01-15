@@ -20,17 +20,13 @@
 
 // xinx header
 #include "textfileeditor.h"
-#include "syntaxhighlighter.h"
 #include "xslproject.h"
 #include "xinxconfig.h"
-#include "texteditor.h"
-#include "numberbar.h"
+#include "xinxcodeedit.h"
 #include "xinxpluginsloader.h"
 #include "borderlayout.h"
 
 // Qt header
-#include <QTextEdit>
-#include <QAbstractTextDocumentLayout>
 #include <QScrollBar>
 #include <QPainter>
 #include <QHBoxLayout>
@@ -39,7 +35,6 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include <QApplication>
-#include <QTextDocumentFragment>
 #include <QLabel>
 #include <QPushButton>
 #include <QMessageBox>
@@ -51,7 +46,6 @@
 #include <QTextCodec>
 
 /* TextFileEditor */
-//Q_DECLARE_METATYPE( TextFileEditor );
 
 #ifdef Q_WS_X11
 #	define DEFAULT_EOL TextFileEditor::UnixEndOfLine
@@ -63,7 +57,7 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : AbstractFileEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
+TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : AbstractFileEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
 	m_commentAction = new QAction( tr("Comment"), this );
 	m_commentAction->setEnabled( false );
 	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
@@ -76,33 +70,23 @@ TextFileEditor::TextFileEditor( TextEditor * editor, QWidget *parent ) : Abstrac
 
 	// Set filter event layout.
 	if( ! m_view )
-		m_view = new TextEditor( this );
+		m_view = new XinxCodeEdit( this );
 	else
 		m_view->setParent( this );
 
 	m_view->installEventFilter( this );
-	m_view->setContextMenuPolicy( Qt::NoContextMenu );
+	m_view->editor()->setContextMenuPolicy( Qt::NoContextMenu );
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)) );
 	connect( m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
 	connect( m_view, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
 
-	connect( m_view->document(), SIGNAL(modificationChanged(bool)), this, SLOT(setModified(bool)) );
-	connect( m_view, SIGNAL(textChanged()), this, SIGNAL(contentChanged()) );
+	connect( m_view->editor(), SIGNAL(contentModified(bool)), this, SLOT(setModified(bool)) );
+	connect( m_view->document(), SIGNAL(contentsChanged()), this, SIGNAL(contentChanged()) );
 
 	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );
 
-	// Setup the line number pane
-	m_numbers = new NumberBar( this );
-	m_numbers->setTextEdit( m_view );
-
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->setSpacing( 0 );
-	hbox->setMargin( 0 );
-	hbox->addWidget( m_numbers );
-	hbox->addWidget( m_view );
-
-	borderLayout()->add( hbox, BorderLayout::Center );
+	borderLayout()->addWidget( m_view, BorderLayout::Center );
 }
 
 TextFileEditor::~TextFileEditor() {
@@ -114,45 +98,45 @@ void TextFileEditor::slotBookmarkToggled( int line, bool enabled ) {
 	Q_UNUSED( line );
 
 	if( enabled ) {
-		gotoBookmarkAt( m_numbers->listOfBookmark().indexOf( line ) );
+		gotoBookmarkAt( m_view->listOfBookmark().indexOf( line ) );
 	}
 	emit bookmarkModified( 0, bookmarkCount() );
 }
 
 QList<int> & TextFileEditor::bookmarks() const {
-	return m_numbers->listOfBookmark();
+	return m_view->listOfBookmark();
 }
 
 void TextFileEditor::setBookmark( int line, bool enabled ) {
-	m_numbers->setBookmark( line, enabled );
+	m_view->setBookmark( line, enabled );
 }
 
 void TextFileEditor::toogledBookmark() {
-	m_numbers->setBookmark( m_view->currentRow(), !m_numbers->listOfBookmark().contains( m_view->currentRow() ) );
+	m_view->setBookmark( m_view->currentRow(), !m_view->listOfBookmark().contains( m_view->currentRow() ) );
 }
 
 void TextFileEditor::gotoBookmarkAt( int i ) {
 	AbstractFileEditor::gotoBookmarkAt( i );
-	m_view->gotoLine( m_numbers->listOfBookmark().at( i ) );
+	m_view->gotoLine( m_view->listOfBookmark().at( i ) );
 }
 
 QString TextFileEditor::bookmarkAt( int i ) {
 	QString description = tr( "In editor '%1' at line %2" );
 	description = description
 					.arg( getTitle() )
-					.arg( m_numbers->listOfBookmark().at( i ) );
+					.arg( m_view->listOfBookmark().at( i ) );
 	return description;
 }
 
 int TextFileEditor::bookmarkCount() {
-	return m_numbers->listOfBookmark().count();
+	return m_view->listOfBookmark().count();
 }
 
 bool TextFileEditor::previousBookmark() {
 	int line = m_view->currentRow();
-	for ( QList<int>::iterator i = m_numbers->listOfBookmark().end() - 1 ; i != m_numbers->listOfBookmark().begin() - 1; i-- ) {
+	for ( QList<int>::iterator i = m_view->listOfBookmark().end() - 1 ; i != m_view->listOfBookmark().begin() - 1; i-- ) {
 		if( line > *i ) {
-			int bookmark = i - m_numbers->listOfBookmark().begin();
+			int bookmark = i - m_view->listOfBookmark().begin();
 			gotoBookmarkAt( bookmark );
 			return true;
 		}
@@ -162,9 +146,9 @@ bool TextFileEditor::previousBookmark() {
 
 bool TextFileEditor::nextBookmark() {
 	int line = m_view->currentRow();
-	for( QList<int>::iterator i = m_numbers->listOfBookmark().begin(); i != m_numbers->listOfBookmark().end() ; i++ ) {
+	for( QList<int>::iterator i = m_view->listOfBookmark().begin(); i != m_view->listOfBookmark().end() ; i++ ) {
 		if( line < *i ) {
-			int bookmark = i - m_numbers->listOfBookmark().begin();
+			int bookmark = i - m_view->listOfBookmark().begin();
 			gotoBookmarkAt( bookmark );
 			return true;
 		}
@@ -173,10 +157,11 @@ bool TextFileEditor::nextBookmark() {
 }
 
 void TextFileEditor::clearAllBookmark() {
-	m_numbers->listOfBookmark().clear();
+	/*! \todo this doesn't work ... */
+	m_view->listOfBookmark().clear();
 }
 
-TextEditor * TextFileEditor::textEdit() const {
+XinxCodeEdit * TextFileEditor::textEdit() const {
 	return m_view;
 }
 
@@ -185,7 +170,7 @@ QString TextFileEditor::defaultFileName() const {
 }
 
 void TextFileEditor::selectAll() {
-	textEdit()->selectAll();
+	textEdit()->editor()->selectAll();
 }
 
 void TextFileEditor::loadFromDevice( QIODevice & d ) {
@@ -221,7 +206,7 @@ void TextFileEditor::saveToDevice( QIODevice & d ) {
 }
 
 void TextFileEditor::setModified( bool isModified ) {
-	m_view->document()->setModified( isModified );
+	m_view->setModified( isModified );
 	AbstractFileEditor::setModified( isModified );
 }
 
@@ -231,49 +216,49 @@ QAbstractItemModel * TextFileEditor::model()  const {
 
 void TextFileEditor::initSearch( SearchOptions & options ) {
 	m_cursorStart = textEdit()->textCursor();
-	m_cursorEnd   = QTextCursor();
+	m_cursorEnd   = QDocumentCursor();
 
-	int selectionStart = m_cursorStart.selectionStart(),
-	    selectionEnd   = m_cursorStart.selectionEnd();
+	QDocumentCursor selectionStart = m_cursorStart.selectionStart(),
+	    		selectionEnd   = m_cursorStart.selectionEnd();
 
 	if( options.testFlag( SEARCH_FROM_START ) ) {
 		if( ! options.testFlag( BACKWARD ) )
-			m_cursorStart.movePosition( QTextCursor::Start, QTextCursor::MoveAnchor );
+			m_cursorStart.movePosition( 1, QDocumentCursor::Start, QDocumentCursor::MoveAnchor );
 		else
-			m_cursorStart.movePosition( QTextCursor::End, QTextCursor::MoveAnchor );
+			m_cursorStart.movePosition( 1, QDocumentCursor::End, QDocumentCursor::MoveAnchor );
 		options &= ~ SearchOptions( SEARCH_FROM_START );
 	} else if( options.testFlag( ONLY_SELECTION ) && ! options.testFlag( BACKWARD ) ) {
-		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+		m_cursorStart.moveTo( selectionStart );
 		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+		m_cursorEnd.movePosition( selectionEnd.position() - selectionStart.position(), QDocumentCursor::Right, QDocumentCursor::MoveAnchor );
 	} else if( options.testFlag( ONLY_SELECTION ) && options.testFlag( BACKWARD ) ) {
-		m_cursorStart.setPosition( selectionEnd, QTextCursor::MoveAnchor );
+		m_cursorStart.moveTo( selectionEnd );
 		m_cursorEnd   = m_cursorStart;
-		m_cursorEnd.setPosition( selectionStart, QTextCursor::MoveAnchor );
+		m_cursorEnd.movePosition( selectionEnd.position() - selectionStart.position(), QDocumentCursor::Left, QDocumentCursor::MoveAnchor );
 	} else if( options.testFlag( BACKWARD ) ) {
-		m_cursorStart.setPosition( selectionStart, QTextCursor::MoveAnchor );
+		m_cursorStart.moveTo( selectionStart );
 	}
 
 	textEdit()->setTextCursor( m_cursorStart );
 }
 
 bool TextFileEditor::find( const QString & text, SearchOptions options ) {
-	QTextCursor finded, tc = m_cursorStart;
+	QDocumentCursor finded, tc = m_cursorStart;
 
 	if( options.testFlag( BACKWARD ) )
-		tc.setPosition( tc.selectionStart() );
+		tc.moveTo( tc.selectionStart() );
 	else
-		tc.setPosition( tc.selectionEnd() );
+		tc.moveTo( tc.selectionEnd() );
 
-	QTextDocument::FindFlags flags;
-	if( options.testFlag( BACKWARD ) ) flags ^= QTextDocument::FindBackward;
-	if( options.testFlag( MATCH_CASE ) ) flags ^= QTextDocument::FindCaseSensitively;
-	if( options.testFlag( WHOLE_WORDS ) ) flags ^= QTextDocument::FindWholeWords;
+	XinxCodeEdit::FindFlags flags;
+	if( options.testFlag( BACKWARD ) ) flags ^= XinxCodeEdit::FindBackward;
+	if( options.testFlag( MATCH_CASE ) ) flags ^= XinxCodeEdit::FindCaseSensitively;
+	if( options.testFlag( WHOLE_WORDS ) ) flags ^= XinxCodeEdit::FindWholeWords;
 
 	if( options.testFlag( REGULAR_EXPRESSION ) ) {
-		finded = textEdit()->document()->find( QRegExp( text ), tc, flags );
+		finded = textEdit()->find( QRegExp( text ), tc, flags );
 	} else {
-		finded = textEdit()->document()->find( text, tc, flags );
+		finded = textEdit()->find( text, tc, flags );
 	}
 
 	if( ! finded.isNull() ) {
@@ -344,9 +329,8 @@ void TextFileEditor::commentSelectedText( bool uncomment ) {
 }
 
 void TextFileEditor::complete() {
-	QTextCursor cursor = textEdit()->textCursor();
+	QDocumentCursor cursor = textEdit()->textCursor();
 
-	QRect cr = textEdit()->cursorRect();
 	QString completionPrefix = textEdit()->textUnderCursor(cursor);
 
 	QCompleter * c = textEdit()->completer();
@@ -356,6 +340,12 @@ void TextFileEditor::complete() {
 		    c->setCompletionPrefix( completionPrefix );
 			c->popup()->setCurrentIndex( c->completionModel()->index(0, 0) );
 		}
+
+		int x, y, h, w;
+		QPoint pos = textEdit()->editor()->mapFromContents( textEdit()->textCursor().documentPosition() );
+		textEdit()->editor()->getPanelMargins( &x, &y, &h, &w );
+		QRect cr( pos.x() + x, pos.y() + textEdit()->document()->fontMetrics().height(), 1, 1 );
+
 		cr.setWidth( c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width() );
 		c->complete( cr );
 	}
@@ -398,10 +388,6 @@ void TextFileEditor::uncomment() {
 	commentSelectedText( true );
 }
 
-NumberBar * TextFileEditor::numbersBar() const {
-	return m_numbers;
-}
-
 void TextFileEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
 	AbstractFileEditor::serialize( data, content );
 
@@ -412,7 +398,7 @@ void TextFileEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
 	}
 
 	int i = 0;
-	foreach( int line, m_numbers->listOfBookmark() ) {
+	foreach( int line, m_view->listOfBookmark() ) {
 		data->writeProperty( QString( "Bookmark_%1" ).arg( i++ ), QVariant( line ) );
 	}
 	data->writeProperty( "BookmarkCount", QVariant( i ) );
@@ -441,13 +427,13 @@ void TextFileEditor::deserialize( XSLProjectSessionEditor * data ) {
 			loadFromFile( lastFileName() );
 	}
 
-	QTextCursor tc = m_view->textCursor();
-	tc.setPosition( position );
+	QDocumentCursor tc( textEdit()->editor()->document() );
+	tc.movePosition( position, QDocumentCursor::Right );
 	m_view->setTextCursor( tc );
 }
 
 bool TextFileEditor::canCopy() {
-	return ! textEdit()->textCursor().selection().isEmpty();
+	return textEdit()->textCursor().hasSelection();
 }
 
 bool TextFileEditor::canPaste() {
@@ -455,31 +441,31 @@ bool TextFileEditor::canPaste() {
 }
 
 bool TextFileEditor::canUndo() {
-	return textEdit()->document()->isUndoAvailable();
+	return textEdit()->editor()->canUndo();
 }
 
 bool TextFileEditor::canRedo() {
-	return textEdit()->document()->isRedoAvailable();
+	return textEdit()->editor()->canRedo();
 }
 
 void TextFileEditor::undo() {
-	textEdit()->undo();
+	textEdit()->editor()->undo();
 }
 
 void TextFileEditor::redo() {
-	textEdit()->redo();
+	textEdit()->editor()->redo();
 }
 
 void TextFileEditor::cut() {
-	textEdit()->cut();
+	textEdit()->editor()->cut();
 }
 
 void TextFileEditor::copy() {
-	textEdit()->copy();
+	textEdit()->editor()->copy();
 }
 
 void TextFileEditor::paste() {
-	textEdit()->paste();
+	textEdit()->editor()->paste();
 }
 
 QAction * TextFileEditor::commentAction() {

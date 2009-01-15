@@ -1,0 +1,321 @@
+Index: lib/qeditor.cpp
+===================================================================
+--- lib/qeditor.cpp	(révision 758)
++++ lib/qeditor.cpp	(copie de travail)
+@@ -1634,6 +1634,12 @@
+ 			addCursorMirror(QDocumentCursor(m_doc, ln, m_cursor.anchorColumn()));
+ 			repaintCursor();
+ 			emitCursorPositionChanged();
++
++			if ( m_binding )
++			{
++				m_binding->keyPressEventOut(e, this);
++			}
++
+ 			return;
+ 		}
+ 	}
+@@ -1673,6 +1679,11 @@
+ 		
+ 		emitCursorPositionChanged();
+ 		
++		if ( m_binding )
++		{
++			m_binding->keyPressEventOut(e, this);
++		}
++
+ 		return;
+ 	}
+ 	
+@@ -1709,6 +1720,11 @@
+ 	if ( !bOk )
+ 	{
+ 		QAbstractScrollArea::keyPressEvent(e);
++
++		if ( m_binding )
++		{
++			m_binding->keyPressEventOut(e, this);
++		}
+ 		return;
+ 	}
+ 	
+@@ -1718,8 +1734,14 @@
+ 	ensureCursorVisible();
+ 	repaintCursor();
+ 	selectionChange();
++
++	if ( m_binding )
++	{
++		m_binding->keyPressEventOut(e, this);
+ }
+ 
++}
++
+ void QEditor::inputMethodEvent(QInputMethodEvent* e)
+ {
+ 	if ( m_binding )
+@@ -1745,7 +1767,12 @@
+ 		m_cursor.insertText(e->commitString());
+ 	
+ 	m_cursor.endEditBlock();
++
++	if ( m_binding )
++	{
++		m_binding->inputMethodEventOut(e, this);
+ }
++}
+ 
+ void QEditor::mouseMoveEvent(QMouseEvent *e)
+ {
+@@ -1755,11 +1782,21 @@
+ 			return;
+ 	}
+ 	
+-	if ( !(e->buttons() & Qt::LeftButton) )
++	if ( !(e->buttons() & Qt::LeftButton) ) {
++		if ( m_binding )
++		{
++			m_binding->mouseMoveEventOut(e, this);
++		}
+ 		return;
++	}
+ 	
+-	if ( !( flag(MousePressed) || m_doubleClick.hasSelection() ) )
++	if ( !( flag(MousePressed) || m_doubleClick.hasSelection() ) ) {
++		if ( m_binding )
++		{
++			m_binding->mouseMoveEventOut(e, this);
++		}
+ 		return;
++	}
+ 	
+ 	if ( flag(MaybeDrag) )
+ 	{
+@@ -1771,6 +1808,12 @@
+ 			startDrag();
+ 		
+ 		//emit clearAutoCloseStack();
++
++		if ( m_binding )
++		{
++			m_binding->mouseMoveEventOut(e, this);
++		}
++
+ 		return;
+ 	}
+ 	
+@@ -1790,8 +1833,13 @@
+ 	
+ 	QDocumentCursor newCursor = cursorForPosition(mousePos);
+ 	
+-	if ( newCursor.isNull() )
++	if ( newCursor.isNull() ) {
++		if ( m_binding )
++		{
++			m_binding->mouseMoveEventOut(e, this);
++		}
+ 		return;
++	}
+ 	
+ 	if ( flag(Persistent) )
+ 	{
+@@ -1840,7 +1888,12 @@
+ 	emitCursorPositionChanged();
+ 	
+ 	repaintCursor();
++
++	if ( m_binding )
++	{
++		m_binding->mouseMoveEventOut(e, this);
+ }
++}
+ 
+ void QEditor::mousePressEvent(QMouseEvent *e)
+ {
+@@ -1850,8 +1903,13 @@
+ 			return;
+ 	}
+ 	
+-	if ( !(e->buttons() & Qt::LeftButton) )
++	if ( !(e->buttons() & Qt::LeftButton) ) {
++		if ( m_binding )
++		{
++			m_binding->mousePressEventOut(e, this);
++		}
+ 		return;
++	}
+ 	
+ 	QPoint p = mapToContents(e->pos());
+ 	
+@@ -1877,8 +1935,13 @@
+ 	} else {
+ 		QDocumentCursor cursor = cursorForPosition(p);
+ 		
+-		if ( cursor.isNull() )
++		if ( cursor.isNull() ) {
++			if ( m_binding )
++			{
++				m_binding->mousePressEventOut(e, this);
++			}
+ 			return;
++		}
+ 		
+ 		if ( e->modifiers() == Qt::ShiftModifier )
+ 		{
+@@ -1945,6 +2008,11 @@
+ 					m_dragPoint = e->globalPos();
+ 					m_drag.start(QApplication::startDragTime(), this);
+ 					
++					if ( m_binding )
++					{
++						m_binding->mousePressEventOut(e, this);
++					}
++
+ 					return;
+ 				}
+ 			}
+@@ -1953,6 +2021,12 @@
+ // 			clearCursorMirrors();
+ 			m_doubleClick = QDocumentCursor();
+ 			setCursor(cursor);
++
++			if ( m_binding )
++			{
++				m_binding->mousePressEventOut(e, this);
++			}
++
+ 			return;
+ 		}
+ 	}
+@@ -1962,7 +2036,12 @@
+ 	emitCursorPositionChanged();
+ 	repaintCursor();
+ 	selectionChange();
++
++	if ( m_binding )
++	{
++		m_binding->mousePressEventOut(e, this);
+ }
++}
+ 
+ void QEditor::mouseReleaseEvent(QMouseEvent *e)
+ {
+@@ -2014,7 +2093,12 @@
+ 		m_drag.stop();
+ 	
+ 	selectionChange();
++
++	if ( m_binding )
++	{
++		m_binding->mouseReleaseEventOut(e, this);
+ }
++}
+ 
+ void QEditor::mouseDoubleClickEvent(QMouseEvent *e)
+ {
+@@ -2026,6 +2110,11 @@
+ 	
+ 	if ( e->button() != Qt::LeftButton )
+ 	{
++		if ( m_binding )
++		{
++			m_binding->mouseDoubleClickEventOut(e, this);
++		}
++
+ 		e->ignore();
+ 		return;
+ 	}
+@@ -2062,7 +2151,12 @@
+ 	
+ 	m_clickPoint = e->globalPos();
+ 	m_click.start(qApp->doubleClickInterval(), this);
++
++	if ( m_binding )
++	{
++		m_binding->mouseDoubleClickEventOut(e, this);
+ }
++}
+ 
+ void QEditor::dragEnterEvent(QDragEnterEvent *e)
+ {
+Index: lib/qeditor.h
+===================================================================
+--- lib/qeditor.h	(révision 758)
++++ lib/qeditor.h	(copie de travail)
+@@ -101,6 +101,12 @@
+ 					return false;
+ 				}
+ 				
++				virtual void keyPressEventOut(QKeyEvent *event, QEditor *editor)
++				{
++					Q_UNUSED(event);
++					Q_UNUSED(editor);
++				}
++
+ 				virtual bool inputMethodEvent(QInputMethodEvent* event, QEditor *editor)
+ 				{
+ 					Q_UNUSED(event)
+@@ -108,6 +114,12 @@
+ 					return false;
+ 				}
+ 				
++				virtual void inputMethodEventOut(QInputMethodEvent* event, QEditor* editor)
++				{
++					Q_UNUSED(event);
++					Q_UNUSED(editor);
++				}
++
+ 				virtual bool mouseMoveEvent(QMouseEvent *event, QEditor *editor)
+ 				{
+ 					Q_UNUSED(event)
+@@ -115,6 +127,12 @@
+ 					return false;
+ 				}
+ 				
++				virtual void mouseMoveEventOut(QMouseEvent *event, QEditor *editor)
++				{
++					Q_UNUSED(event);
++					Q_UNUSED(editor);
++				}
++
+ 				virtual bool mousePressEvent(QMouseEvent *event, QEditor *editor)
+ 				{
+ 					Q_UNUSED(event)
+@@ -122,6 +140,12 @@
+ 					return false;
+ 				}
+ 				
++				virtual void mousePressEventOut(QMouseEvent *event, QEditor *editor)
++				{
++					Q_UNUSED(event)
++					Q_UNUSED(editor)
++				}
++
+ 				virtual bool mouseReleaseEvent(QMouseEvent *event, QEditor *editor)
+ 				{
+ 					Q_UNUSED(event)
+@@ -129,12 +153,24 @@
+ 					return false;
+ 				}
+ 				
++				virtual void mouseReleaseEventOut(QMouseEvent *event, QEditor *editor)
++				{
++					Q_UNUSED(event)
++					Q_UNUSED(editor)
++				}
++
+ 				virtual bool mouseDoubleClickEvent(QMouseEvent *event, QEditor *editor)
+ 				{
+ 					Q_UNUSED(event)
+ 					Q_UNUSED(editor)
+ 					return false;
+ 				}
++
++				virtual void mouseDoubleClickEventOut(QMouseEvent *event, QEditor *editor)
++				{
++					Q_UNUSED(event)
++					Q_UNUSED(editor)
++				}
+ 		};
+ 		
+ 		//typedef QFlags<EditFlag> State;

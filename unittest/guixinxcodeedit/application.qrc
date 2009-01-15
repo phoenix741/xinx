@@ -1,0 +1,8 @@
+<RCC>
+	<qresource prefix="/" >
+		<file alias="qcodeedit/marks.qxm" >../../libxinx/marks.qxm</file>
+		<file alias="qcodeedit/lan/none.qnfa" >../../libxinx/none.qnfa</file>
+		<file alias="images/bookmark.png">../../xinx/images/bookmark.png</file>
+		<file alias="images/warning.png">../../xinx/images/warning.png</file>
+	</qresource>
+</RCC>

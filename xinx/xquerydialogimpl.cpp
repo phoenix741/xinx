@@ -96,12 +96,12 @@ private:
 XQueryDialogImpl::XQueryDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
 
-	m_queryTextEdit->setFrameStyle( QFrame::StyledPanel );
-	m_queryTextEdit->setFrameShadow( QFrame::Sunken );
-	m_queryTextEdit->setLineWrapMode( QT_TEXT_EDITOR::WidgetWidth );
+	m_queryTextEdit->editor()->setFrameStyle( QFrame::StyledPanel );
+	m_queryTextEdit->editor()->setFrameShadow( QFrame::Sunken );
+	m_queryTextEdit->editor()->setLineWrapping( true );
 
-	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_resultTextEdit->document() );
-	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xq" ), m_queryTextEdit->document() );
+	m_resultTextEdit->setHighlighter( "XML" );
+	m_resultTextEdit->setHighlighter( "XQuery" );
 
 	XQModelCompleter * completionModel = new XQModelCompleter( m_queryTextEdit );
 	QCompleter * completer = new QCompleter( m_queryTextEdit );
@@ -155,6 +155,6 @@ void XQueryDialogImpl::evaluate() {
 
 	query.evaluateTo( &serializer );
 
-	m_resultTextEdit->setPlainText( result.data() );
-	m_resultTextEdit->appendHtml( handler.messages().join("\n") );
+	QString r = result.data() + "\n" + handler.messages().join("\n");
+	m_resultTextEdit->setPlainText( r );
 }

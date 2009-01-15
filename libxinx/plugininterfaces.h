@@ -29,13 +29,10 @@
 #include <QIcon>
 
 // Xinx header
-#include <syntaxhighlighter.h>
 #include <filecontentstructure.h>
 
-class SyntaxHighlighter;
 class XINXConfig;
 class QObject;
-class QTextDocument;
 class QKeyEvent;
 class QCompleter;
 class RCS;
@@ -186,12 +183,25 @@ public:
 	virtual QIcon icon() = 0;
 
 	//! Return some properties for the file type
-	virtual struct_properties properties() = 0;
+	//virtual struct_properties properties() = 0;
 
 	//! Create an editor with the given filename
 	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
 	//! Create a parser
 	virtual FileContentElement * createElement( FileContentElement * parent = 0, int line = -1, const QString & filename = QString() ) = 0;
+};
+
+/*!
+ * This interface is used to create an editor for text file type.
+ */
+class IFileTextPlugin : public IFileTypePlugin {
+public:
+	//! Identifier used to find the correct file type
+	virtual QString highlighterId() const = 0;
+	//! Return the default formats of a highlighter
+	//virtual QHash<QString,QTextCharFormat> defaultsFormat() const = 0;
+	//! Return an example of highlighter.
+	virtual QString fileExample() const = 0;
 };
 
 /*!
@@ -206,33 +216,10 @@ public:
 	virtual QList<IFileTypePlugin*> fileTypes() = 0;
 };
 
-/*!
- * This interface represents a plugins. The plugins is used to highlight the text.
- */
-class IPluginSyntaxHighlighter : virtual public IXinxPlugin {
-public:
-	//! Destroy the interface. Used to hide warning when using the interface.
-	virtual ~IPluginSyntaxHighlighter() {};
-
-	//! Return the list of plugins what can process the file for syntax highlighter.
-	virtual QStringList highlighters() = 0;
-
-	//! Return the highlighter that can manage the extention.
-	virtual QString highlighterOfExtention( const QString & extention ) = 0;
-	//! Return the default formats of a highlighter
-	virtual QHash<QString,QTextCharFormat> formatOfHighlighter( const QString & highlighter ) = 0;
-	//! Return an example of highlighter.
-	virtual QString exampleOfHighlighter( const QString & highlighter ) = 0;
-
-	//! Create a syntax highlighter based on a text document.
-	virtual SyntaxHighlighter * createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config = NULL ) = 0;
-};
-
-Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0")
-Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0")
-Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0")
-Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0")
-Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.0")
-Q_DECLARE_INTERFACE(IPluginSyntaxHighlighter, "org.shadoware.xinx.IPluginSyntaxHighlighter/1.0")
+Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0");
+Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0");
+Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0");
+Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0");
+Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.1");
 
 #endif /*INTERFACES_H_*/

@@ -36,11 +36,11 @@
         <number>6</number>
        </property>
        <item row="1" column="0" >
-        <widget class="QTextEdit" name="m_inputStreamTextEdit" >
+        <widget class="XinxCodeEdit" native="1" name="m_inputStreamTextEdit" >
          <property name="whatsThis" >
           <string>Content of the selected input parameter.</string>
          </property>
-         <property name="readOnly" >
+         <property name="readOnly" stdset="0" >
           <bool>true</bool>
          </property>
         </widget>
@@ -66,11 +66,11 @@
         <number>6</number>
        </property>
        <item row="1" column="0" >
-        <widget class="QTextEdit" name="m_outputStreamTextEdit" >
+        <widget class="XinxCodeEdit" native="1" name="m_outputStreamTextEdit" >
          <property name="whatsThis" >
           <string>Content of the selected result of the &lt;i>web service&lt;/i>.</string>
          </property>
-         <property name="readOnly" >
+         <property name="readOnly" stdset="0" >
           <bool>true</bool>
          </property>
         </widget>
@@ -95,6 +95,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxCodeEdit</class>
+   <extends>QWidget</extends>
+   <header location="global" >xinxcodeedit.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

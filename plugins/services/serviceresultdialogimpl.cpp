@@ -20,15 +20,21 @@
 
 // Xinx header
 #include "serviceresultdialogimpl.h"
-#include "xinxpluginsloader.h"
+
+#include <xinxpluginsloader.h>
+#include <xinxconfig.h>
+#include <xinxlanguagefactory.h>
+
+// QCodeEdit header
+#include <qlanguagedefinition.h>
 
 /* ServiceResultDialogImpl */
 
 ServiceResultDialogImpl::ServiceResultDialogImpl( QWidget * parent, Qt::WFlags f ) : QDialog(parent, f) {
 	setupUi(this);
 
-	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_inputStreamTextEdit->document() );
-	XinxPluginsLoader::self()->createHighlighter( XinxPluginsLoader::self()->highlighterOfSuffix( "xml" ), m_outputStreamTextEdit->document() );
+	m_inputStreamTextEdit->setHighlighter( "XML" );
+	m_outputStreamTextEdit->setHighlighter( "XML" );
 
 	connect( m_inputComboBox, SIGNAL(activated(QString)), this, SLOT(inputComboChanged(QString)) );
 	connect( m_outputComboBox, SIGNAL(activated(QString)), this, SLOT(outputComboChanged(QString)) );
@@ -41,20 +47,20 @@ ServiceResultDialogImpl::~ServiceResultDialogImpl() {
 void ServiceResultDialogImpl::setInputStreamText( const QHash<QString,QString> & text ) {
 	m_input = text;
 	m_inputComboBox->addItems( text.keys() );
-	m_inputStreamTextEdit->setText( text.values().at( 0 ) );
+	m_inputStreamTextEdit->setPlainText( text.values().at( 0 ) );
 }
 
 void ServiceResultDialogImpl::setOutputStreamText( const QHash<QString,QString> & text ) {
 	m_output = text;
 	m_outputComboBox->addItems( text.keys() );
-	m_outputStreamTextEdit->setText( text.values().at( 0 ) );
+	m_outputStreamTextEdit->setPlainText( text.values().at( 0 ) );
 }
 
 void ServiceResultDialogImpl::inputComboChanged( QString value ) {
-	m_inputStreamTextEdit->setText( m_input.value( value ) );
+	m_inputStreamTextEdit->setPlainText( m_input.value( value ) );
 }
 
 void ServiceResultDialogImpl::outputComboChanged( QString value ) {
-	m_outputStreamTextEdit->setText( m_output.value( value ) );
+	m_outputStreamTextEdit->setPlainText( m_output.value( value ) );
 }
 

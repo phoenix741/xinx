@@ -2,22 +2,33 @@ TEMPLATE = lib
 CONFIG += dll
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
 DESTDIR += ./
-TARGET = $$qtLibraryTarget(xinxcmp)
-FORMS = ui/xinxlistwidget.ui
+INCLUDEPATH += ../ext/qcodeedit/lib \
+    ../ext/qcodeedit/lib/document \
+    ../ext/qcodeedit/lib/language \
+    ../ext/qcodeedit/lib/qnfa \
+    ../ext/qcodeedit/lib/widgets
+LIBS = -L../ext/qcodeedit \
+    -lqcodeedit
+TARGET = xinxcmp
+FORMS = ui/xinxlistwidget.ui \
+	ui/customscheme.ui
 HEADERS = p_pluginselector.h \
     pluginselector.h \
     directoryedit.h \
-    kcolorcombo.h \
+    xinxcolorcombo.h \
     xinxlistwidgetimpl.h \
     pluginelement.h \
-    borderlayout.h
+    borderlayout.h \
+ customschemeimpl.h
 SOURCES = directoryedit.cpp \
-    kcolorcombo.cpp \
+    xinxcolorcombo.cpp \
     pluginselector.cpp \
     xinxlistwidgetimpl.cpp \
     pluginelement.cpp \
-    borderlayout.cpp
+    borderlayout.cpp \
+ customschemeimpl.cpp
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
 
 include(../project_mode.pro)
+

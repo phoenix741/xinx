@@ -32,7 +32,7 @@
 #include "snipetlist.h"
 #include "snipetdialog.h"
 #include "textfileeditor.h"
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
 #include "projectpropertyimpl.h"
@@ -530,7 +530,7 @@ void MainformImpl::callSnipetMenu() {
 
 		RunSnipetDialogImpl dlg( snipet );
 		if( dlg.exec() ) {
-			TextEditor * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+			XinxCodeEdit * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 			editor->insertText( dlg.getResult() );
 		}
 	}
@@ -941,13 +941,12 @@ void MainformImpl::printFile() {
 
 	if( TabEditor::isTextFileEditor( m_tabEditors->currentEditor() ) ) {
 		TextFileEditor * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() );
-		QTextDocument *document = editor->textEdit()->document();
 		QPrinter printer;
 
 		QPrintDialog *dlg = new QPrintDialog( &printer, this );
 		if ( dlg->exec() != QDialog::Accepted ) return;
 
-		document->print( &printer );
+		editor->textEdit()->print( &printer );
 
 		delete dlg;
 
@@ -1259,7 +1258,7 @@ void MainformImpl::findPrevious() {
 
 void MainformImpl::find() {
 	if( qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() ) ) {
-		TextEditor * textEdit = qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+		XinxCodeEdit * textEdit = qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 		if( ! textEdit->textCursor().selectedText().isEmpty() ){
 			m_findDialog->setText( textEdit->textCursor().selectedText() );
 		}
@@ -1273,7 +1272,7 @@ void MainformImpl::replace() {
 	Q_ASSERT( m_tabEditors->currentEditor() );
 	Q_ASSERT( qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() ) );
 
-	TextEditor * textEdit = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+	XinxCodeEdit * textEdit = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 	if( ! textEdit->textCursor().selectedText().isEmpty() ){
 		m_findDialog->setText( textEdit->textCursor().selectedText() );
 	}

@@ -22,9 +22,9 @@
 #define XQTEXTEDITOR_H_
 
 // Xinx header
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 
-class XQTextEditor : public TextEditor {
+class XQTextEditor : public XinxCodeEdit {
 	Q_OBJECT
 public:
 	XQTextEditor( QWidget * parent = 0 );

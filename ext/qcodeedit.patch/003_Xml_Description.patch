@@ -1,0 +1,26 @@
+Index: qxs/xml.qnfa
+===================================================================
+--- qxs/xml.qnfa	(révision 758)
++++ qxs/xml.qnfa	(copie de travail)
+@@ -22,10 +22,10 @@
+ 	
+ 	<sequence id="entity" format="numbers">&amp;$w+;</sequence>
+ 	
+-	<context id="tag" >
+-		<start format="keyword" parenthesis="xmltag:open@nomatch" indent="1" fold="1" >&lt;[$w:]+</start>
+-		<start format="keyword" parenthesis="xmltag:close@nomatch" indent="1" fold="1" >&lt;/[$w:]+</start>
+-		<stop format="keyword" >&gt;</stop>
++	<context id="tag/start" >
++		<start format="keyword">&lt;[$w:]+</start>
++		<stop format="keyword" parenthesis="xmltag:open@nomatch" indent="1" fold="1" >&gt;</stop>
++		<stop format="keyword">/&gt;</stop>
+ 		
+ 		<word format="preprocessor">[$w:]+=</word>
+ 		
+@@ -42,5 +42,5 @@
+ 		</context>
+ 	</context>
+ 	
+-	<!-- <sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="1" fold="1" format="keyword" >&lt;/[a-zA-Z0-9_:]+&gt;</sequence> -->
++	<sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="1" fold="1" format="keyword" >&lt;/[$w:]+&gt;</sequence>
+ </QNFA>

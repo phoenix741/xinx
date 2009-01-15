@@ -23,9 +23,9 @@
     </message>
 </context>
 <context>
-    <name>KColorCombo</name>
+    <name>XinxColorCombo</name>
     <message>
-        <location filename="../kcolorcombo.cpp" line="210"/>
+        <location filename="../xinxcolorcombo.cpp" line="210"/>
         <source>Custom...</source>
         <translation>Personnaliser ...</translation>
     </message>
@@ -46,87 +46,87 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../kcolorcombo.cpp" line="59"/>
+        <location filename="../xinxcolorcombo.cpp" line="59"/>
         <source>Red</source>
         <translation>Rouge</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="60"/>
+        <location filename="../xinxcolorcombo.cpp" line="60"/>
         <source>Green</source>
         <translation>Vert</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="61"/>
+        <location filename="../xinxcolorcombo.cpp" line="61"/>
         <source>Blue</source>
         <translation>Bleu</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="62"/>
+        <location filename="../xinxcolorcombo.cpp" line="62"/>
         <source>Cyan</source>
         <translation>Bleu ciel</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="63"/>
+        <location filename="../xinxcolorcombo.cpp" line="63"/>
         <source>Magenta</source>
         <translation>Magenta</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="64"/>
+        <location filename="../xinxcolorcombo.cpp" line="64"/>
         <source>Yellow</source>
         <translation>Jaune</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="65"/>
+        <location filename="../xinxcolorcombo.cpp" line="65"/>
         <source>Dark Red</source>
         <translation>Rouge foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="66"/>
+        <location filename="../xinxcolorcombo.cpp" line="66"/>
         <source>Dark Green</source>
         <translation>Vert foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="67"/>
+        <location filename="../xinxcolorcombo.cpp" line="67"/>
         <source>Dark Blue</source>
         <translation>Bleu foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="68"/>
+        <location filename="../xinxcolorcombo.cpp" line="68"/>
         <source>Dark Cyan</source>
         <translation>Bleu ciel foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="69"/>
+        <location filename="../xinxcolorcombo.cpp" line="69"/>
         <source>Dark Magenta</source>
         <translation>Magenta foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="70"/>
+        <location filename="../xinxcolorcombo.cpp" line="70"/>
         <source>Dark Yellow</source>
         <translation>Jaune foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="71"/>
+        <location filename="../xinxcolorcombo.cpp" line="71"/>
         <source>White</source>
         <translation>Blanc</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="72"/>
+        <location filename="../xinxcolorcombo.cpp" line="72"/>
         <source>Light Gray</source>
         <translation>Gris clair</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="73"/>
+        <location filename="../xinxcolorcombo.cpp" line="73"/>
         <source>Gray</source>
         <translation>Gris</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="74"/>
+        <location filename="../xinxcolorcombo.cpp" line="74"/>
         <source>Dark Gray</source>
         <translation>Gris foncé</translation>
     </message>
     <message>
-        <location filename="../kcolorcombo.cpp" line="75"/>
+        <location filename="../xinxcolorcombo.cpp" line="75"/>
         <source>Black</source>
         <translation>Noir</translation>
     </message>

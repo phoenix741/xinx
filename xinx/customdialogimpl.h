@@ -56,12 +56,14 @@ private slots:
 	void m_descriptionPathLineEdit_textChanged( QString text );
 
 	void on_m_buttonBox_clicked( QAbstractButton * button );
+	/*
 	void on_m_colorComboBox_activated(QColor color);
 	void on_m_boldCheckBox_toggled(bool checked);
 	void on_m_italicCheckBox_toggled(bool checked);
 	void on_m_StrikeoutCheckBox_toggled(bool checked);
 	void on_m_underlineCheckBox_toggled(bool checked);
 	void on_m_formatsListView_currentRowChanged(int currentRow);
+	*/
 	void on_m_highlighterComboBox_activated( QString text );
 	void on_m_labelLink_linkActivated( const QString & link );
 

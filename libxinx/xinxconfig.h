@@ -26,7 +26,11 @@
 #include "appsettings.h"
 #include "exceptions.h"
 
-class PrivateXINXConfig;
+// Qt header
+#include <QPointer>
+
+class XinxFormatFactory;
+class XinxLanguageFactory;
 class QWidget;
 
 class ToolsNotDefinedException : public XinxException {
@@ -50,6 +54,12 @@ public:
 
 	/*! Self create a XINX configuration file if necessary */
 	static XINXConfig * self();
+
+	/*! Return the format factory (from QCodeEdit library) for the format in config */
+	XinxFormatFactory * formatFactory();
+
+	/*! Return the language factory (from QCodeEdit library) for the definition in config */
+	XinxLanguageFactory * languageFactory();
 
 	/*! Load the configuration from the QSettings (Registry, INI File, ...) */
 	virtual void load();
@@ -88,6 +98,8 @@ protected:
 	virtual struct_editor getDefaultEditor();
 private:
 	static XINXConfig * s_self;
+	QPointer<XinxFormatFactory> m_formats;
+	QPointer<XinxLanguageFactory> m_languages;
 };
 
 #endif

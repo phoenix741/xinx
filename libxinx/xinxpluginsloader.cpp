@@ -147,6 +147,21 @@ QString XinxPluginsLoader::fileTypeFilter( IFileTypePlugin * fileType ) {
 	return tr( "All %1 (%2)" ).arg( fileType->description() ).arg( fileType->match() );
 }
 
+QString XinxPluginsLoader::exampleOfHighlighter( const QString & name ) const {
+	foreach( XinxPluginElement * element, plugins() ) {
+		IFilePlugin * interface = qobject_cast<IFilePlugin*>( element->plugin() );
+		if( element->isActivated() && interface ) {
+			foreach( IFileTypePlugin * p, interface->fileTypes() ) {
+				IFileTextPlugin * textFileType = dynamic_cast<IFileTextPlugin*>( p );
+				if( textFileType && textFileType->highlighterId().toLower() == name.toLower() ) {
+					return textFileType->fileExample();
+				}
+			}
+		}
+	}
+	return QString();
+}
+
 QStringList XinxPluginsLoader::openDialogBoxFilters() const {
 	QStringList result;
 	QList<IFileTypePlugin*> types = fileTypes();
@@ -220,59 +235,4 @@ RCS * XinxPluginsLoader::createRevisionControl( QString revision, QString basePa
 		}
 	}
 	return rcs;
-}
-
-QStringList XinxPluginsLoader::highlighters() const {
-	QStringList result;
-	foreach( XinxPluginElement * element, plugins() ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element->plugin() );
-		if( element->isActivated() && interface )
-			result += interface->highlighters();
-	}
-	return result;
-}
-
-QString XinxPluginsLoader::highlighterOfSuffix( const QString & suffix ) const {
-	foreach( XinxPluginElement * element, plugins() ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element->plugin() );
-		if( element->isActivated() && interface ) {
-			QString value = interface->highlighterOfExtention( suffix );
-			if( ! value.isEmpty() )
-				return value;
-		}
-	}
-	return QString();
-}
-
-SyntaxHighlighter * XinxPluginsLoader::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
-	SyntaxHighlighter * h = NULL;
-	foreach( XinxPluginElement * element, plugins() ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element->plugin() );
-		if( element->isActivated() && interface ) {
-			h = interface->createHighlighter( highlighter, parent, config );
-			if( h ) break;
-		}
-	}
-	return h;
-}
-
-QHash<QString,QTextCharFormat> XinxPluginsLoader::formatOfHighlighter( const QString & highlighter ) {
-	foreach( XinxPluginElement * element, plugins() ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element->plugin() );
-		if( element->isActivated() && interface && interface->highlighters().contains( highlighter, Qt::CaseInsensitive ) )
-			return interface->formatOfHighlighter( highlighter );
-	}
-	return QHash<QString,QTextCharFormat>();
-}
-
-QString XinxPluginsLoader::exampleOfHighlighter( const QString & highlighter ) {
-	foreach( XinxPluginElement * element, plugins() ) {
-		IPluginSyntaxHighlighter * interface = qobject_cast<IPluginSyntaxHighlighter*>( element->plugin() );
-		if( element->isActivated() && interface ) {
-			QString value = interface->exampleOfHighlighter( highlighter );
-			if( ! value.isEmpty() )
-				return value;
-		}
-	}
-	return QString();
 }

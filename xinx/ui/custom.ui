@@ -539,7 +539,7 @@
        <item row="1" column="1" >
         <widget class="QComboBox" name="m_encodingComboBox" >
          <property name="whatsThis" >
-          <string>&lt;p>Choose the default text encoding, when the text encoding can't be found. 
+          <string>&lt;p>Choose the default text encoding, when the text encoding can't be found.
 
 &lt;i>Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i>&lt;/p></string>
          </property>
@@ -644,13 +644,98 @@
         </widget>
        </item>
        <item row="4" column="2" >
-        <widget class="KColorCombo" name="m_highlightTextColorComboBox" >
+        <widget class="XinxColorCombo" name="m_highlightTextColorComboBox" >
          <property name="whatsThis" >
           <string>Color used for highlight same word</string>
          </property>
          <item>
           <property name="text" >
            <string>Custom...</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Red</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Green</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Blue</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Cyan</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Magenta</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Yellow</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Red</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Green</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Blue</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Cyan</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Magenta</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Yellow</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>White</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Light Gray</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Gray</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Dark Gray</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Black</string>
           </property>
          </item>
         </widget>
@@ -698,8 +783,8 @@
       </layout>
      </widget>
      <widget class="QWidget" name="m_syntax" >
-      <layout class="QGridLayout" >
-       <item row="0" column="0" >
+      <layout class="QVBoxLayout" name="verticalLayout_2" >
+       <item>
         <widget class="QComboBox" name="m_highlighterComboBox" >
          <property name="whatsThis" >
           <string>&lt;p>List of highlighter. Highlighter is used to color a text in an editor. &lt;/p>
@@ -707,135 +792,8 @@
          </property>
         </widget>
        </item>
-       <item rowspan="2" row="0" column="1" >
-        <widget class="QGroupBox" name="groupBox_4" >
-         <property name="title" >
-          <string>Customize syntax</string>
-         </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
-           <number>9</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item row="2" column="1" colspan="2" >
-           <widget class="KColorCombo" name="m_colorComboBox" >
-            <property name="whatsThis" >
-             <string>Color used in the text for the selected token.</string>
-            </property>
-            <item>
-             <property name="text" >
-              <string>Custom...</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_5" >
-            <property name="text" >
-             <string>&amp;Color :</string>
-            </property>
-            <property name="buddy" >
-             <cstring>m_colorComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_boldCheckBox" >
-            <property name="font" >
-             <font/>
-            </property>
-            <property name="whatsThis" >
-             <string>&lt;b>Wrote the text in bold&lt;/b></string>
-            </property>
-            <property name="text" >
-             <string>&amp;Bold</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2" >
-           <widget class="QCheckBox" name="m_italicCheckBox" >
-            <property name="font" >
-             <font/>
-            </property>
-            <property name="whatsThis" >
-             <string>&lt;i>Wrote the text in italic.&lt;/i></string>
-            </property>
-            <property name="text" >
-             <string>&amp;Italic</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2" >
-           <widget class="QCheckBox" name="m_StrikeoutCheckBox" >
-            <property name="font" >
-             <font/>
-            </property>
-            <property name="whatsThis" >
-             <string>&lt;strike>Strikeout the text&lt;/strike></string>
-            </property>
-            <property name="text" >
-             <string>&amp;Strikeout</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2" >
-           <widget class="QCheckBox" name="m_underlineCheckBox" >
-            <property name="font" >
-             <font/>
-            </property>
-            <property name="whatsThis" >
-             <string>&lt;u>Underline the text&lt;/u></string>
-            </property>
-            <property name="text" >
-             <string>&amp;Underline</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item rowspan="2" row="1" column="0" >
-        <widget class="QListWidget" name="m_formatsListView" >
-         <property name="minimumSize" >
-          <size>
-           <width>125</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize" >
-          <size>
-           <width>125</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="whatsThis" >
-          <string>List of token that can be modified on the highlighter. Each token is a part of a document (an XML node, an attribute, a reserved word, ...)</string>
-         </property>
-         <property name="sortingEnabled" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QTextEdit" name="m_exempleTextEdit" >
-         <property name="whatsThis" >
-          <string>This is an example of how is showed the text in the editor after the change that are been made.</string>
-         </property>
-         <property name="lineWrapMode" >
-          <enum>QTextEdit::NoWrap</enum>
-         </property>
-         <property name="readOnly" >
-          <bool>true</bool>
-         </property>
-         <property name="tabStopWidth" >
-          <number>15</number>
-         </property>
-         <property name="acceptRichText" >
-          <bool>false</bool>
-         </property>
-        </widget>
+       <item>
+        <widget class="CustomSchemeImpl" native="1" name="m_customScheme" />
        </item>
       </layout>
      </widget>
@@ -943,10 +901,190 @@
              </widget>
             </item>
             <item row="0" column="1" >
-             <widget class="KColorCombo" name="m_viewColorBox" >
+             <widget class="XinxColorCombo" name="m_viewColorBox" >
               <property name="whatsThis" >
                <string>Color of the node of view type (Generally begins by &lt;i>Vue...&lt;/i>)</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Magenta</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Yellow</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Magenta</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Yellow</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>White</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Light Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Black</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -965,10 +1103,190 @@
              </widget>
             </item>
             <item row="1" column="1" >
-             <widget class="KColorCombo" name="m_errorColorBox" >
+             <widget class="XinxColorCombo" name="m_errorColorBox" >
               <property name="whatsThis" >
                <string>Color of a node with a sub-element of name error.</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Magenta</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Yellow</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Magenta</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Yellow</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>White</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Light Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Black</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -987,10 +1305,190 @@
              </widget>
             </item>
             <item row="2" column="1" >
-             <widget class="KColorCombo" name="m_screenColorBox" >
+             <widget class="XinxColorCombo" name="m_screenColorBox" >
               <property name="whatsThis" >
                <string>Color of a balise with a &lt;i>screen_data&lt;/i> node.</string>
               </property>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Magenta</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Yellow</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Red</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Green</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Blue</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Cyan</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Magenta</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Yellow</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>White</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Light Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Dark Gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Black</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>Custom...</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string/>
+               </property>
+              </item>
               <item>
                <property name="text" >
                 <string>Custom...</string>
@@ -1213,26 +1711,31 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KColorCombo</class>
+   <class>XinxColorCombo</class>
    <extends>QComboBox</extends>
-   <header>kcolorcombo.h</header>
-  </customwidget>
-  <customwidget>
-   <class>PluginSelector</class>
-   <extends>QListView</extends>
-   <header location="global" >pluginselector.h</header>
-  </customwidget>
-  <customwidget>
-   <class>XinxListWidgetImpl</class>
-   <extends>QWidget</extends>
-   <header location="global" >xinxlistwidgetimpl.h</header>
-   <container>1</container>
+   <header>xinxcolorcombo.h</header>
   </customwidget>
   <customwidget>
    <class>DirectoryEditWidget</class>
    <extends>QWidget</extends>
-   <header location="global" >directoryedit.h</header>
+   <header>directoryedit.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PluginSelector</class>
+   <extends>QListView</extends>
+   <header>pluginselector.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XinxListWidgetImpl</class>
+   <extends>QWidget</extends>
+   <header>xinxlistwidgetimpl.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CustomSchemeImpl</class>
+   <extends>QWidget</extends>
+   <header>customschemeimpl.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -1258,13 +1761,6 @@
   <tabstop>m_showTabulationCheckBox</tabstop>
   <tabstop>m_sizeOfTabSpinBox</tabstop>
   <tabstop>m_highlighterComboBox</tabstop>
-  <tabstop>m_formatsListView</tabstop>
-  <tabstop>m_boldCheckBox</tabstop>
-  <tabstop>m_underlineCheckBox</tabstop>
-  <tabstop>m_italicCheckBox</tabstop>
-  <tabstop>m_StrikeoutCheckBox</tabstop>
-  <tabstop>m_colorComboBox</tabstop>
-  <tabstop>m_exempleTextEdit</tabstop>
   <tabstop>m_expandPathLineEdit</tabstop>
   <tabstop>m_hideElementList</tabstop>
   <tabstop>m_showSubEltCheckBox</tabstop>

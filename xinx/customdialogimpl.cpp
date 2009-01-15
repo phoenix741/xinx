@@ -23,6 +23,10 @@
 #include "private/p_customdialogimpl.h"
 #include "snipetdialog.h"
 
+#include <xinxlanguagefactory.h>
+#include <xinxcodeedit.h>
+#include <xinxformatfactory.h>
+
 // Qt header
 #include <QDir>
 #include <QFileDialog>
@@ -451,9 +455,7 @@ const QScriptValue & ScriptElement::script() const {
 
 /* PrivateCustomDialogImpl */
 
-PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) : m_snipetModel( 0 ) {
-	m_highlighter = 0;
-	m_parent = parent;
+PrivateCustomDialogImpl::PrivateCustomDialogImpl( CustomDialogImpl * parent ) : m_snipetModel( 0 ), m_parent( parent ) {
 }
 
 void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
@@ -552,11 +554,16 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_changeLogCheckBox->setChecked( m_config.config().rcs.createChangelog );
 
 	// Syntax highlighter
-	m_previousFormat = QString();
+	QStringList languages = XINXConfig::self()->languageFactory()->languages();
+	languages.removeAll( "None" );
+	languages.sort();
+	//	m_previousFormat = QString();
 	m_parent->m_highlighterComboBox->clear();
-	m_parent->m_highlighterComboBox->addItems( XinxPluginsLoader::self()->highlighters() );
+	m_parent->m_highlighterComboBox->addItems( languages );
 	m_parent->m_highlighterComboBox->setCurrentIndex( 0 );
 	m_parent->on_m_highlighterComboBox_activated( m_parent->m_highlighterComboBox->currentText() );
+
+	m_parent->m_customScheme->setFormatScheme( m_config.formatFactory() );
 
 	// Extentions
 	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex( &(m_config.config().files) , m_parent->m_specifiqueTableView );
@@ -901,10 +908,12 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	}
 
 	// Editor
+	/** \todo
 	QFont font( "Monospace", 8 );
 	font.setFixedPitch( true );
 
-	m_exempleTextEdit->setFont( font );
+	m_customScheme->setFont( font );
+	*/
 
 	// Plugins
 	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), d, SLOT(configurePlugin(PluginElement*)) );
@@ -1038,7 +1047,7 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 }
 
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
-	m_formatsListView->clear();
+	/*	m_formatsListView->clear();
 	QStringList filtered = d->m_config.config().formats.keys();
 	filtered = filtered.filter( text, Qt::CaseInsensitive );
 	foreach( QString key, filtered ) {
@@ -1048,16 +1057,15 @@ void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 
 	// Example
 	if( text != d->m_previousFormat ) {
-		if( d->m_highlighter ) { delete d->m_highlighter; d->m_highlighter = NULL; };
 		QString example;
 		example = XinxPluginsLoader::self()->exampleOfHighlighter( text );
-		m_exempleTextEdit->setText( example );
-		d->m_highlighter = XinxPluginsLoader::self()->createHighlighter( text, m_exempleTextEdit->document(), &(d->m_config) );
+		m_exempleTextEdit->setHighlighter( text, &(d->m_config) );
+		m_exempleTextEdit->setPlainText( example );
 	}
 
-	d->m_previousFormat = text;
+	d->m_previousFormat = text;*/
 }
-
+/*
 void CustomDialogImpl::on_m_formatsListView_currentRowChanged( int currentRow ) {
 	if( currentRow < 0 ) return ;
 	QString format = m_highlighterComboBox->currentText(),
@@ -1086,8 +1094,7 @@ void CustomDialogImpl::on_m_colorComboBox_activated(QColor color) {
 	token = token.toLower();
 
 	d->m_config.config().formats[ token ].setForeground( color );
-	if( d->m_highlighter )
-		d->m_highlighter->rehighlight();
+	m_exempleTextEdit->updateHighlighter();
 }
 
 void CustomDialogImpl::on_m_boldCheckBox_toggled(bool checked) {
@@ -1096,8 +1103,7 @@ void CustomDialogImpl::on_m_boldCheckBox_toggled(bool checked) {
 	token = token.toLower();
 
 	d->m_config.config().formats[ token ].setFontWeight( checked ? QFont::Bold : QFont::Normal );
-	if( d->m_highlighter )
-		d->m_highlighter->rehighlight();
+	m_exempleTextEdit->updateHighlighter();
 }
 
 void CustomDialogImpl::on_m_italicCheckBox_toggled(bool checked) {
@@ -1106,8 +1112,7 @@ void CustomDialogImpl::on_m_italicCheckBox_toggled(bool checked) {
 	token = token.toLower();
 
 	d->m_config.config().formats[ token ].setFontItalic( checked );
-	if( d->m_highlighter )
-		d->m_highlighter->rehighlight();
+	m_exempleTextEdit->updateHighlighter();
 }
 
 void CustomDialogImpl::on_m_StrikeoutCheckBox_toggled(bool checked) {
@@ -1116,8 +1121,7 @@ void CustomDialogImpl::on_m_StrikeoutCheckBox_toggled(bool checked) {
 	token = token.toLower();
 
 	d->m_config.config().formats[ token ].setFontStrikeOut( checked );
-	if( d->m_highlighter )
-		d->m_highlighter->rehighlight();
+	m_exempleTextEdit->updateHighlighter();
 }
 
 void CustomDialogImpl::on_m_underlineCheckBox_toggled(bool checked) {
@@ -1126,10 +1130,9 @@ void CustomDialogImpl::on_m_underlineCheckBox_toggled(bool checked) {
 	token = token.toLower();
 
 	d->m_config.config().formats[ token ].setFontUnderline( checked );
-	if( d->m_highlighter )
-		d->m_highlighter->rehighlight();
+	m_exempleTextEdit->updateHighlighter();
 }
-
+*/
 void CustomDialogImpl::on_m_buttonBox_clicked( QAbstractButton * button ) {
 	if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::ResetRole ) {
 		d->m_config.setDefault();

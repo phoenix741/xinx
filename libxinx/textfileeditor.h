@@ -28,10 +28,11 @@
 
 // Qt header
 #include <QTimer>
-#include <QTextEdit>
 
-class NumberBar;
-class TextEditor;
+// QCodeEdit header
+#include <qdocumentcursor.h>
+
+class XinxCodeEdit;
 class QHBoxLayout;
 class QVBoxLayout;
 class QLabel;
@@ -41,8 +42,8 @@ class SyntaxHighlighter;
 
 
 /*!
- * Class used to represent a file editor. A file editor have a TextEditor class (subclassing of QTextEdit) and a NumberBar,
- * who show the line in the document.
+ * Class used to represent a file editor. A file editor have a XinxCodeEditor class, who show the line in the document,
+ * folding, ....
  * The File Editor is a subclass of Editor and implements all its pure virtual method.
  *
  * The File Editor propose a method to read the FileName : getFileName(), and the default suffix (for save as) to use (getSuffix).
@@ -64,7 +65,7 @@ public:
 	 * \param editor TextEditor to use to print file to screen (center widget)
 	 * \param parent Parent of the editor.
 	 */
-	TextFileEditor( TextEditor * editor = 0, QWidget *parent = 0 );
+	TextFileEditor( XinxCodeEdit * editor = 0, QWidget *parent = 0 );
 	/*! Destructor of the FileEditor.*/
 	virtual ~TextFileEditor();
 
@@ -72,7 +73,7 @@ public:
  	 * Return the text editor corresponding on the file editor. This editor can't be null.
  	 * \return The text editor widget used by the file editor.
  	 */
-	virtual TextEditor * textEdit() const;
+	virtual XinxCodeEdit * textEdit() const;
 	virtual QString defaultFileName() const;
 
 	/*!
@@ -170,18 +171,15 @@ protected slots:
 protected:
 	virtual void setModified( bool isModified );
 	virtual bool eventFilter( QObject *obj, QEvent *event );
-	NumberBar * numbersBar() const;
-
 private slots:
 	void comment();
 	void uncomment();
 private:
 	QAction * m_commentAction, * m_uncommentAction;
 
-	NumberBar * m_numbers;
-	TextEditor * m_view;
+	XinxCodeEdit * m_view;
 	EndOfLineType m_eol;
-	QTextCursor m_cursorStart, m_cursorEnd;
+	QDocumentCursor m_cursorStart, m_cursorEnd;
 };
 
 #endif // __FILEEDITOR_H__

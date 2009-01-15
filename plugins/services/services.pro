@@ -2,10 +2,17 @@ TEMPLATE = lib
 CONFIG += plugin
 QT += network xml
 DESTDIR += ../
-INCLUDEPATH += ../../libxinx ../../components ../webplugin/xsl
-LIBS = -L../../libxinx -L../../components -L../ -lxinxcmp -lwebplugin -lsharedxinx
+INCLUDEPATH += ../../libxinx \
+	../../components \
+	../webplugin/xsl \
+	../../ext/qcodeedit/lib \
+	../../ext/qcodeedit/lib/document \
+	../../ext/qcodeedit/lib/language \
+	../../ext/qcodeedit/lib/qnfa \
+	../../ext/qcodeedit/lib/widgets
+LIBS = -L../../libxinx -L../../components -L../ -L../../ext/qcodeedit -lxinxcmp -lwebplugin -lsharedxinx -lqcodeedit
 PRE_TARGETDEPS = ../libwebplugin.a
-TARGET = $$qtLibraryTarget(services)
+TARGET = services
 RESOURCES = servicesplugin.qrc
 TRANSLATIONS += translations/servicesplugin_fr.ts
 HEADERS = servicesplugin.h \

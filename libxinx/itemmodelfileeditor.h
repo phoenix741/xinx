@@ -41,7 +41,7 @@ public:
 	 * \param editor The editor (center widget) of the document.
 	 * \param parent The parent object
 	 */
-	ItemModelFileEditor( FileContentParser * element, TextEditor * editor = 0, QWidget *parent = 0 );
+	ItemModelFileEditor( FileContentParser * element, XinxCodeEdit * editor = 0, QWidget *parent = 0 );
 	//! Destroy the object
 	virtual ~ItemModelFileEditor();
 

@@ -29,11 +29,10 @@
 #include <QDialog>
 
 class PrivateSnipetDialogImpl;
-class QSyntaxHighlighter;
 
 /*!
  * Implementation of snipet dialog. This dialog permit to create, modify.
- * The implementation containts only a constructor who defines default dialog 
+ * The implementation containts only a constructor who defines default dialog
  * presentation : Windows Style Dialog.
  */
 class SnipetDialogImpl : public QDialog, public Ui::SnipetDialog {
@@ -48,7 +47,7 @@ public:
 	 */
 	SnipetDialogImpl( const QString & text, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
-	 * Constructor of the snipet dialog implementation. 
+	 * Constructor of the snipet dialog implementation.
 	 * This constructor defines the type of the template.
 	 * We defines a default windows flags. The windows can be resize.
 	 * \param type Type of snipet
@@ -58,7 +57,7 @@ public:
 	 */
 	SnipetDialogImpl( const QString & type, const QString & text, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
-	 * Constructor of the snipet dialog implementation, the dialog is created to use a snipet. 
+	 * Constructor of the snipet dialog implementation, the dialog is created to use a snipet.
 	 * We defines a default windows flags. The windows can be resize.
 	 * \param snipet The template to use.
 	 * \param parent The parent of the dialog
@@ -66,16 +65,16 @@ public:
 	 */
 	SnipetDialogImpl( const Snipet & snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	/*!
-	 * Destroy the dialog. 
+	 * Destroy the dialog.
 	 */
 	virtual ~SnipetDialogImpl();
-	
+
 	/*!
 	 * Create a template with information given informations.
 	 * \return a template
 	 */
 	Snipet getSnipet();
-	
+
 private slots:
 	void on_m_textEdit_textChanged();
 	void on_m_extLineEdit_textChanged( const QString & text );
@@ -85,8 +84,7 @@ private:
 	void updateFont();
 
 	QGridLayout * m_paramGrid;
-	QSyntaxHighlighter * m_highlighter;
-	
+
 	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
 };
 

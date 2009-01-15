@@ -24,7 +24,7 @@
 #include "xslproject.h"
 #include <abstracteditor.h>
 #include <textfileeditor.h>
-#include <texteditor.h>
+#include <xinxcodeedit.h>
 #include "configurationfile.h"
 
 // Qt header
@@ -205,7 +205,7 @@ void ScriptManager::setCurrentEditeur( AbstractEditor * editor ) {
 
 		TextFileEditor * textFileEditor = qobject_cast<TextFileEditor*>( editor );
 		if( textFileEditor ) {
-			TextEditor * textEdit = textFileEditor->textEdit();
+			XinxCodeEdit * textEdit = textFileEditor->textEdit();
 			QScriptValue qsTextEdit = m_engine.newQObject( textEdit );
 			QScriptValue qsDocument = m_engine.newQObject( textEdit->document() );
 			qsTextEdit.setProperty( "document", qsDocument );

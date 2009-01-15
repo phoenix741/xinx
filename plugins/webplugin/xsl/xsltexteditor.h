@@ -34,13 +34,13 @@ public:
 
 	virtual QCompleter * completer();
 
-	virtual int insertCompletionBalises( QTextCursor & tc, QString node );
-	virtual void insertCompletionAccolade( QTextCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
+	virtual QDocumentCursor insertCompletionBalises( QDocumentCursor & tc, QString node );
+	virtual void insertCompletionAccolade( QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
 
 	void setParser( XslContentElementList * parser );
 private:
-	QString paramValue( const QTextCursor & cursor, const QString & param );
-	void getTemplate( const QTextCursor & cursor, QString * name, QString * mode );
+	QString paramValue( const QDocumentCursor & cursor, const QString & param );
+	void getTemplate( const QDocumentCursor & cursor, QString * name, QString * mode );
 
 	XslContentElementList * m_parser;
 };

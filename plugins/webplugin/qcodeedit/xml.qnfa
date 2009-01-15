@@ -1,0 +1,62 @@
+<!DOCTYPE QNFA>
+<QNFA language="XML" extensions="xml" defaultLineMark="bookmark" >
+	<context id="comment" format="xml_comment" >
+		<start parenthesis="xmlcomment:open" indent="1" fold="1">&lt;!--</start>
+		<stop parenthesis="xmlcomment:close" indent="1" fold="1">--&gt;</stop>
+	</context>
+
+	<context id="cdata" format="xml_cdata" >
+		<start parenthesis="xmlcdata:open" indent="1" fold="1">&lt;!\[CDATA\[</start>
+		<stop parenthesis="xmlcdata:close" indent="1" fold="1">\]\]&gt;</stop>
+	</context>
+
+	<context id="preprocessor" format="xml_preprocessor" >
+		<start parenthesis="xmlpreproc:open" indent="1" fold="1">&lt;\?xml</start>
+		<stop parenthesis="xmlpreproc:close" indent="1" fold="1">\?&gt;</stop>
+	</context>
+
+	<context id="doctype" format="xml_doctype" >
+		<start>&lt;!DOCTYPE</start>
+		<stop>&gt;</stop>
+	</context>
+
+	<sequence id="entity" format="xml_entity">&amp;$w+;</sequence>
+
+	<context id="tag/start" >
+		<start format="xml_elementname" >&lt;[$w:\-]+</start>
+		<stop format="xml_elementname" parenthesis="xmltag:open@nomatch" indent="1" fold="1" >&gt;</stop>
+		<stop format="xml_elementname" >/&gt;</stop>
+
+		<word format="xml_attributename">[$w:]+=</word>
+
+		<context id="data/string" format="xml_attributevalue" stayOnLine="true" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
+			<escape>\\</escape>
+
+			<context id="xpath" format="xml_xpath" >
+				<start parenthesis="xpath:open">{</start>
+				<stop parenthesis="xpath:close">}</stop>
+				<stop exclusive="false">&quot;</stop>
+				<stop exclusive="false">\n</stop>
+				<stop exclusive="false">&gt;</stop>
+			</context>
+		</context>
+
+		<context id="data/chars" format="xml_attributevalue" stayOnLine="true" >
+			<start>'</start>
+			<stop>'</stop>
+			<escape>\\</escape>
+
+			<context id="xpath" format="xml_xpath" >
+				<start parenthesis="xpath:open">{</start>
+				<stop parenthesis="xpath:close">}</stop>
+				<stop exclusive="false">&quot;</stop>
+				<stop exclusive="false">\n</stop>
+				<stop exclusive="false">&gt;</stop>
+			</context>
+		</context>
+	</context>
+
+	<sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="1" fold="1" format="xml_elementname" >&lt;/[$w:\-]+&gt;</sequence>
+</QNFA>

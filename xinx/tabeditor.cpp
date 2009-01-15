@@ -21,7 +21,7 @@
 // Xinx header
 #include "tabeditor.h"
 #include "abstracteditor.h"
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 #include "textfileeditor.h"
 #include "xslproject.h"
 #include "runsnipetdialogimpl.h"
@@ -90,7 +90,7 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 
 	if( isTextFileEditor( editor ) ) {
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
-		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
+		connect( qobject_cast<TextFileEditor*>( editor )->textEdit()->editor(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
 		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
 	}
 
@@ -112,7 +112,7 @@ AbstractEditor * TabEditor::createEditor( IFileTypePlugin * plugin, const QStrin
 		if( plugin )
 			ed = plugin->createEditor( filename );
 		else
-			ed = new TextFileEditor( new TextEditor() );
+			ed = new TextFileEditor( new XinxCodeEdit() );
 		if( !ed ) return 0; // Maybe a dialog box or other
 
 		newTextFileEditor( ed );
@@ -344,7 +344,7 @@ void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
 
 	RunSnipetDialogImpl dlg( s );
 	if( ( s.params().count() == 0 ) || dlg.exec() ) {
-		TextEditor * textEdit = qobject_cast<TextEditor	*>( sender() );
+		XinxCodeEdit * textEdit = qobject_cast<XinxCodeEdit*>( sender() );
 		textEdit->insertText( dlg.getResult() );
 	}
 }

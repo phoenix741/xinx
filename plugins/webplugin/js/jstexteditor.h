@@ -22,9 +22,9 @@
 #define JSTEXTEDITOR_H_
 
 // Xinx header
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 
-class JSTextEditor : public TextEditor {
+class JSTextEditor : public XinxCodeEdit {
 	Q_OBJECT
 public:
 	JSTextEditor( QWidget * parent = 0 );
@@ -42,8 +42,8 @@ protected:
 			cpEditGlobal
 	};
 
-	static cursorPosition editPosition( const TextEditor * textEdit, const QTextCursor & cursor, QString & functionName );
-	cursorPosition editPosition( const QTextCursor & cursor );
+	static cursorPosition editPosition( const XinxCodeEdit * textEdit, const QDocumentCursor & cursor, QString & functionName );
+	cursorPosition editPosition( const QDocumentCursor & cursor );
 
 	QString m_functionName;
 };

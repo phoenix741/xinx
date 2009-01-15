@@ -1,19 +1,26 @@
 TEMPLATE = lib
 CONFIG += dll
 QT += xml
-TARGET = $$qtLibraryTarget(sharedxinx)
+TARGET = sharedxinx
 DESTDIR += ./
-INCLUDEPATH += ../components
-LIBS = -L../components -lxinxcmp
-win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
+INCLUDEPATH += ../components \
+    ../ext/qcodeedit/lib \
+    ../ext/qcodeedit/lib/document \
+    ../ext/qcodeedit/lib/language \
+    ../ext/qcodeedit/lib/qnfa \
+    ../ext/qcodeedit/lib/widgets
+LIBS = -L../components \
+    -L../ext/qcodeedit \
+    -lxinxcmp \
+    -lqcodeedit
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
+    -enable-runtime-pseudo-reloc
 win32 : RC_FILE += rc/libxinx.rc
-HEADERS = textfileeditor.h \
-    numberbar.h \
-    texteditor.h \
+HEADERS = xinxformatfactory.h \
+    textfileeditor.h \
     filewatcher.h \
     p_filewatcher.h \
     filecontentitemmodel.h \
-    syntaxhighlighter.h \
     appsettings.h \
     xinxconfig.h \
     xinxpluginsloader.h \
@@ -27,13 +34,14 @@ HEADERS = textfileeditor.h \
     abstractfileeditor.h \
     itemmodelfileeditor.h \
     xinxpluginelement.h \
- plugininterfaces.h
-SOURCES = textfileeditor.cpp \
-    numberbar.cpp \
-    texteditor.cpp \
+    plugininterfaces.h \
+    xinxcodeedit.h \
+ xinxcodeedit_p.h \
+ xinxlanguagefactory.h
+SOURCES = xinxformatfactory.cpp \
+    textfileeditor.cpp \
     filewatcher.cpp \
     filecontentitemmodel.cpp \
-    syntaxhighlighter.cpp \
     appsettings.cpp \
     xinxconfig.cpp \
     xinxpluginsloader.cpp \
@@ -46,7 +54,8 @@ SOURCES = textfileeditor.cpp \
     xslproject.cpp \
     abstractfileeditor.cpp \
     itemmodelfileeditor.cpp \
-    xinxpluginelement.cpp
+    xinxpluginelement.cpp \
+    xinxcodeedit.cpp \
+ xinxlanguagefactory.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-
 include(../project_mode.pro)

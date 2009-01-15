@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG += plugin 
 DESTDIR += ../
 LIBS = -L../../libxinx -lsharedxinx
-TARGET = $$qtLibraryTarget(cvsplugin)
+TARGET = cvsplugin
 INCLUDEPATH += ../../libxinx ../../components
 HEADERS = entries.h \
     cvsthread.h \

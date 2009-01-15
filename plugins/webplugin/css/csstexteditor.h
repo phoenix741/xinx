@@ -22,9 +22,9 @@
 #define CSSTEXTEDITOR_H_
 
 // Xinx header
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 
-class CSSTextEditor : public TextEditor {
+class CSSTextEditor : public XinxCodeEdit {
 	Q_OBJECT
 public:
 	CSSTextEditor( QWidget * parent = 0 );
@@ -38,8 +38,8 @@ protected:
 		cpEditGlobal
 	};
 
-	static cursorPosition editPosition( const TextEditor * textEdit, const QTextCursor & cursor );
-	cursorPosition editPosition( const QTextCursor & cursor );
+	static cursorPosition editPosition( const XinxCodeEdit * textEdit, const QDocumentCursor & cursor );
+	cursorPosition editPosition( const QDocumentCursor & cursor );
 };
 
 #endif /*CSSTEXTEDITOR_H_*/

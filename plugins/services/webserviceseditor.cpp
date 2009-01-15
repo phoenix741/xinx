@@ -21,7 +21,7 @@
 // Xinx header
 #include "webserviceseditor.h"
 #include "webservices.h"
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 #include "xslproject.h"
 #include "borderlayout.h"
 #include <xmlprettyprinter.h>
@@ -109,7 +109,7 @@ bool WebServicesEditor::autoIndent() {
 		prettyPrinter.process();
 
 		textEdit()->textCursor().beginEditBlock();
-		textEdit()->selectAll();
+		textEdit()->editor()->selectAll();
 		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
 		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {
@@ -277,10 +277,10 @@ void WebServicesEditor::deserialize( XSLProjectSessionEditor * data ) {
 	restore( m_paramList->currentText() );
 
 	if( m_paramValues.keys().count() > 0 )
-		textEdit()->document()->setModified( isModified() );
+		textEdit()->setModified( isModified() );
 
-	QTextCursor tc = textEdit()->textCursor();
-	tc.setPosition( position );
+	QDocumentCursor tc( textEdit()->editor()->document() );
+	tc.movePosition( position, QDocumentCursor::Right );
 	textEdit()->setTextCursor( tc );
 }
 
@@ -384,7 +384,7 @@ void WebServicesEditor::webServicesValueActivated() {
 }
 
 void WebServicesEditor::store( const QString & paramStr ) {
-	if( textEdit()->document()->isModified() ) setModified(true);
+	if( textEdit()->editor()->isContentModified() ) setModified(true);
 	m_paramValues[ paramStr ] = textEdit()->toPlainText();
 }
 

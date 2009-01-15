@@ -9,15 +9,17 @@ LIBS = -L../ -lxinxcmp
 HEADERS = xinxdesignerplugin.h \
     directoryeditplugin.h \
     directoryeditwidgetplugin.h \
-    kcolorcomboplugin.h \
+    xinxcolorcomboplugin.h \
     pluginselectorplugin.h \
-    xinxlistwidgetplugin.h 
+    xinxlistwidgetplugin.h \
+    customschemeplugin.h
 SOURCES = xinxdesignerplugin.cpp \
 	directoryeditplugin.cpp \
     directoryeditwidgetplugin.cpp \
-    kcolorcomboplugin.cpp \
+    xinxcolorcomboplugin.cpp \
     pluginselectorplugin.cpp \
-    xinxlistwidgetplugin.cpp
+    xinxlistwidgetplugin.cpp \
+    customschemeplugin.cpp
 
 # install
 target.path = $$[QT_INSTALL_PLUGINS]/designer

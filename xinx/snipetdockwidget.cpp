@@ -23,7 +23,7 @@
 #include "snipetlist.h"
 #include "runsnipetdialogimpl.h"
 #include "textfileeditor.h"
-#include "texteditor.h"
+#include "xinxcodeedit.h"
 
 // Qt header
 #include <QVBoxLayout>

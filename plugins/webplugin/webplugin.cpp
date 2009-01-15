@@ -35,22 +35,6 @@
 #include <QTranslator>
 #include <QApplication>
 
-/* Constantes */
-
-static const QColor DEFAULT_COMMENT			= Qt::darkGreen;
-static const QColor DEFAULT_ERROR			= Qt::darkMagenta;
-static const QColor DEFAULT_OTHER			= Qt::black;
-
-static const QColor DEFAULT_SYNTAX_CHAR		= Qt::blue;
-static const QColor DEFAULT_ELEMENT_NAME	= Qt::darkRed;
-static const QColor DEFAULT_ATTRIBUTE_NAME	= Qt::red;
-static const QColor DEFAULT_ATTRIBUTE_VALUE	= Qt::blue;
-static const QColor DEFAULT_XPATH_VALUE		= Qt::darkMagenta;
-
-static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
-static const QColor DEFAULT_NUMBER			= Qt::blue;
-static const QColor DEFAULT_STRING			= Qt::red;
-
 /* BasePlugin */
 
 WebPlugin::WebPlugin() {
@@ -80,9 +64,6 @@ bool WebPlugin::initializePlugin( const QString & lang ) {
 	QTranslator * tranlator = new QTranslator( this );
 	tranlator->load( QString(":/translations/webplugin_%1").arg( lang ) );
 	qApp->installTranslator(tranlator);
-
-	webplugin_js::init();
-	webplugin_css::init();
 
 	xmlCompletionContents = new CompletionXML();
 	try {
@@ -117,156 +98,6 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 
 QList<IFileTypePlugin*> WebPlugin::fileTypes() {
 	return m_fileTypes;
-}
-
-QStringList WebPlugin::highlighters() {
-	return QStringList() << "XML" << "JS" << "CSS" << "XQ";
-}
-
-QString WebPlugin::highlighterOfExtention( const QString & extention ) {
-	QHash<QString,QString> extentions;
-	extentions[ "fws" ]   = "XML";
-	extentions[ "xsl" ]   = "XML";
-	extentions[ "xml" ]   = "XML";
-	extentions[ "html" ]  = "XML";
-	extentions[ "htm" ]   = "XML";
-	extentions[ "xhtml" ] = "XML";
-	extentions[ "js" ]    = "JS";
-	extentions[ "css" ]   = "CSS";
-	extentions[ "xq" ]    = "XQ";
-	return extentions[ extention ];
-}
-
-QHash<QString,QTextCharFormat> WebPlugin::formatOfHighlighter( const QString & highlighter ) {
-	QHash<QString,QTextCharFormat> formats;
-	if( highlighter.toUpper() == "XML" )  {
-		formats[ "xml_comment"        ].setForeground( DEFAULT_COMMENT );
-		formats[ "xml_error"          ].setForeground( DEFAULT_ERROR );
-		formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
-		formats[ "xml_syntaxchar"     ].setForeground( DEFAULT_SYNTAX_CHAR );
-		formats[ "xml_elementname"    ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );
-		formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );
-		formats[ "xml_xpathvalue"     ].setForeground( DEFAULT_XPATH_VALUE );
-	} else if( highlighter.toUpper() == "JS" ) {
-		formats[ "js_comment"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "js_error"           ].setForeground( DEFAULT_ERROR );
-		formats[ "js_other"           ].setForeground( DEFAULT_OTHER );
-		formats[ "js_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "js_reservedword"    ].setFontWeight( QFont::Bold );
-		formats[ "js_number"          ].setForeground( DEFAULT_NUMBER );
-		formats[ "js_string"          ].setForeground( DEFAULT_STRING );
-	} else if( highlighter.toUpper() == "CSS" ) {
-		formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
-		formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
-		formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
-		formats[ "css_string"         ].setForeground( DEFAULT_STRING );
-		formats[ "css_operator"       ].setForeground( DEFAULT_SYNTAX_CHAR );
-		formats[ "css_directive"      ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_number"         ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_pseudoclass"	  ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_class"		  ].setForeground( DEFAULT_XPATH_VALUE );
-		formats[ "css_class"          ].setFontWeight( QFont::Bold );
-		formats[ "css_id"		      ].setForeground( DEFAULT_XPATH_VALUE );
-		formats[ "css_tag"		      ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_attribute"      ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_identifier"     ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_identifier"     ].setFontWeight( QFont::Bold );
-		formats[ "css_identifier1"    ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_identifier1"    ].setFontWeight( QFont::Bold );
-		formats[ "css_identifier2"    ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_identifier2"    ].setFontWeight( QFont::Bold );
-		formats[ "css_value"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "css_value"		  ].setFontItalic( true );
-		formats[ "css_value1"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "css_value1"		  ].setFontItalic( true );
-		formats[ "css_value2"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "css_value2"		  ].setFontItalic( true );
-	} else if( highlighter.toUpper() == "XQ" ) {
-		formats[ "xq_accessors"       ].setForeground( DEFAULT_COMMENT );
-		formats[ "xq_accessors"       ].setFontWeight( QFont::Bold );
-		formats[ "xq_other"           ].setForeground( DEFAULT_OTHER );
-		formats[ "xq_buildin"         ].setForeground( DEFAULT_OTHER );
-		formats[ "xq_buildin"         ].setFontWeight( QFont::Bold );
-		formats[ "xq_numerical"       ].setForeground( DEFAULT_NUMBER );
-		formats[ "xq_numerical"       ].setFontWeight( QFont::Bold );
-		formats[ "xq_string"          ].setForeground( DEFAULT_STRING );
-		formats[ "xq_string"          ].setFontWeight( QFont::Bold );
-		formats[ "xq_regular"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "xq_regular"         ].setFontWeight( QFont::Bold );
-		formats[ "xq_boolean"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "xq_boolean"         ].setFontWeight( QFont::Bold );
-		formats[ "xq_datetime"        ].setForeground( DEFAULT_OTHER );
-		formats[ "xq_datetime"        ].setFontWeight( QFont::Bold );
-		formats[ "xq_sequence"        ].setForeground( DEFAULT_STRING );
-		formats[ "xq_sequence"        ].setFontWeight( QFont::Bold );
-		formats[ "xq_aggregate"       ].setForeground( DEFAULT_NUMBER );
-		formats[ "xq_aggregate"       ].setFontWeight( QFont::Bold );
-		formats[ "xq_context"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "xq_context"         ].setFontWeight( QFont::Bold );
-
-	}
-
-
-	return formats;
-}
-
-QString WebPlugin::exampleOfHighlighter( const QString & highlighter ) {
-	QString example;
-	if( highlighter.toUpper() == "XML" ) {
-		example =
-				"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-				"<!-- This is a comment -->\n"
-				"<xsl:stylesheet version=\"1.0\">\n"
-				"\t<xsl:import href=\"myimport.xsl\"/>\n"
-				"\t<xsl:variable name=\"MYVARIABLE\"/>\n"
-				"\t<xsl:template match=\"/\">\n"
-				"\t\t<xsl:comment> This is a text </xsl:comment>>>>>>>\n"
-				"\n"
-				"\t\t<xsl:choose>\n"
-				"\t\t\t<xsl:when test=\"test\">\n"
-				"\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
-				"\t\t\t</xsl:when>\n"
-				"\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
-				"\t\t</xsl:choose>\n"
-				"\t</xsl:template>\n"
-				"</xsl:stylesheet>\n";
-	} else if( highlighter.toUpper() == "JS" ) {
-		example =
-				"/**\n"
-				" * This is a comment\n"
-				"**/\n"
-				"\n"
-				"function myfunction( param1, param2, param3 ) {\n"
-				"	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
-				"	alert( param& );\n"
-				"	variable.close();\n"
-				"}\n";
-	} else if( highlighter.toUpper() == "CSS" ) {
-		example =
-				".test, #td, test2 {\n"
-				"\tbackground-color: red; /* Commentaire */\n"
-				"\tmargin: 8pt;\n"
-				"}\n";
-	} else if( highlighter.toUpper() == "XQ" ) {
-		example =
-				"count(DynamicRow)\n"
-				"max(Qtecde)";
-
-	}
-	return example;
-}
-
-SyntaxHighlighter * WebPlugin::createHighlighter( const QString & highlighter, QTextDocument* parent, XINXConfig * config ) {
-	if( highlighter.toUpper() == "XML" )
-		return new webplugin_xml( parent, config );
-	if( highlighter.toUpper() == "JS" )
-		return new webplugin_js( parent, config );
-	if( highlighter.toUpper() == "CSS" )
-		return new webplugin_css( parent, config );
-	if( highlighter.toUpper() == "XQ" )
-		return new XQHighlighter( parent, config );
-	return 0;
 }
 
 QWidget * WebPlugin::createSettingsDialog() {

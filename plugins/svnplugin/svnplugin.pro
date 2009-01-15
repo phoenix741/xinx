@@ -3,7 +3,7 @@ CONFIG += plugin
 QT += xml
 DESTDIR += ../
 LIBS = -L../../libxinx -lsharedxinx
-TARGET = $$qtLibraryTarget(svnplugin)
+TARGET = svnplugin
 INCLUDEPATH += ../../libxinx ../../components
 HEADERS = rcs_svn.h \
     svnplugin.h
