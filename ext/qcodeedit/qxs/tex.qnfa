@@ -1,0 +1,37 @@
+<!DOCTYPE QNFA>
+<QNFA language="(La-)Tex" extensions="tex" defaultLineMark="">
+	<context id="comment/single" format="comment" stayOnLine="true" >
+		<start>%</start>
+		<stop exclusive="false">\n</stop>
+	</context>
+	
+	<context id="mathmode" format="numbers">
+		<start parenthesis="math:open" fold="1" >$</start>
+		<stop parenthesis="math:close" fold="1" >$</stop>
+	</context>
+	
+	<list id="keywords/block" format="extra-keyword">
+		<prefix>\\</prefix>
+		<word>part</word>
+		<word>chapter</word>
+		<word>section</word>
+		<word>subsection</word>
+		<word>subsection*</word>
+		<word>paragraph</word>
+		<word>subparagraph</word>
+		<word>begin</word>
+		<word>end</word>
+	</list>
+	
+    <word id="keywords/single" format="keyword">\\[a-zA-Z]+</word>
+	
+	<sequence parenthesis="round:open">(</sequence>
+	<sequence parenthesis="round:close">)</sequence>
+	<sequence parenthesis="curly:open" indent="1" fold="1">{</sequence>
+	<sequence parenthesis="curly:close" indent="1" fold="1">}</sequence>
+	<sequence parenthesis="square:open">\[</sequence>
+	<sequence parenthesis="square:close">\]</sequence>
+	
+	<word parenthesis="block:open" fold="1" indent="1" >\\begin</word>
+	<word parenthesis="block:close" fold="1" indent="1" >\\end</word>
+</QNFA>
