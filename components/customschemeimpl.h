@@ -55,7 +55,7 @@ public:
 	void setExample( const QString & value );
 	const QString & example() const;
 private slots:
-	void on_m_formatsListView_currentTextChanged( const QString & currentText );
+	void on_m_formatsListView_currentItemChanged( QListWidgetItem * current, QListWidgetItem * previous );
 	void on_m_boldCheckBox_stateChanged( int state );
 	void on_m_overLineCheckBox_stateChanged( int state );
 	void on_m_strikeOutCheckBox_stateChanged( int state );
@@ -68,6 +68,7 @@ private:
 	QCodeEdit * m_exampleEditor;
 	QFormatScheme * m_formats;
 	QFormat * m_currentFormat;
+	QListWidgetItem * m_currentItem;
 	QString m_example;
 };
 

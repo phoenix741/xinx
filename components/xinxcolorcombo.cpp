@@ -38,7 +38,7 @@
 
 #include "xinxcolorcombo.h"
 
-#define STANDARD_PAL_SIZE 17
+#define STANDARD_PAL_SIZE 18
 
 static QColor *standardPalette = 0;
 static QHash<QColor,QString> standardPaletteName;
