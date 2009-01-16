@@ -30,6 +30,19 @@
 		
 		QDocumentLine and QDocumentLineHandle => equivalent of QTextBlock
 		QDocumentCursor and QDocumentCursorHandle => equivalent of QTextCursor
+	
+	Note :
+		The KISS principle has been kinda mistreated in the private API due to
+		the addition of some complex features which where not planned to be
+		supported when defining the goals (e.g line wrapping, variable width
+		fonts, ...). Such a compromission is affordable but should be avoided
+		whenever possible in the future. And of course the public API should
+		never suffer from such a thing.
+*/
+
+/*!
+	\ingroup document
+	@{
 */
 
 /*!
@@ -290,7 +303,7 @@ QString QDocument::text(int mode) const
 	}
 	
 	//s.chop(m_impl->m_lineEndingString.count());
-	
+	return s;
 }
 
 /*!
@@ -5732,5 +5745,5 @@ void QDocumentPrivate::emitMarkChanged(QDocumentLineHandle *l, int m, bool on)
 	emit m_doc->markChanged(l, m, on);
 }
 
-//////////////////
+/*! @} */
 

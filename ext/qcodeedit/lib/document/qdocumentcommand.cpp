@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2006-2008 fullmetalcoder <fullmetalcoder@hotmail.fr>
+** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
 ** 
@@ -15,14 +15,28 @@
 
 #include "qdocumentcommand.h"
 
+/*!
+	\file qdocumentcommand.cpp
+	\brief Implementation of the QDocumentCommand class and its basic heirs.
+*/
+
 #include "qdocument_p.h"
 
-/////////////////////////
-//	QDocumentCommand
-/////////////////////////
+/*!
+	\ingroup document
+	@{
+*/
+
+/*!
+	\class QDocumentCommand
+	\brief The base class for document editing command
+*/
 
 QList<QDocumentCursorHandle*> QDocumentCommand::m_autoUpdated;
 
+/*!
+	\brief ctor
+*/
 QDocumentCommand::QDocumentCommand(Command c, QDocument *d, QDocumentCommand *p)
  : QUndoCommand(p),
 	m_state(false), m_doc(d),
@@ -32,6 +46,9 @@ QDocumentCommand::QDocumentCommand(Command c, QDocument *d, QDocumentCommand *p)
 	
 }
 
+/*!
+	\brief dtor
+*/
 QDocumentCommand::~QDocumentCommand()
 {
 	if ( m_cursor )
@@ -41,36 +58,63 @@ QDocumentCommand::~QDocumentCommand()
 	}
 }
 
+/*!
+	\return command identifier
+*/
 int QDocumentCommand::id() const
 {
 	return m_command;
 }
 
+/*!
+	\brief Attempts to merge with another command
+	
+	Command merging is not implemented.
+*/
 bool QDocumentCommand::mergeWith(const QUndoCommand *)
 {
 	return false;
 }
 
+/*!
+	\brief Redo the command
+*/
 void QDocumentCommand::redo()
 {
 	QUndoCommand::redo();
 }
 
+/*!
+	\brief Undo the command
+*/
 void QDocumentCommand::undo()
 {
 	QUndoCommand::undo();
 }
 
+/*!
+	\return whether the command is silent
+	
+	Silent command do not update the editing cursor of the host document.
+*/
 bool QDocumentCommand::isSilent() const
 {
 	return m_silent;
 }
 
+/*!
+	\brief Set whether the command is silent
+*/
 void QDocumentCommand::setSilent(bool y)
 {
 	m_silent = y;
 }
 
+/*!
+	\brief Set the target cursor
+	
+	The position of the target cursor is update upon undo() and redo()
+*/
 void QDocumentCommand::setTargetCursor(QDocumentCursorHandle *h)
 {
 	if ( m_cursor )
@@ -88,16 +132,31 @@ void QDocumentCommand::setTargetCursor(QDocumentCursorHandle *h)
 	}
 }
 
+/*!
+	\brief ?
+*/
 void QDocumentCommand::setRedoOffset(int off)
 {
 	m_redoOffset = off;
 }
 
+/*!
+	\brief ?
+*/
 void QDocumentCommand::setUndoOffset(int off)
 {
 	m_undoOffset = off;
 }
 
+/*!
+	\brief Insert some text
+	\param line target line
+	\param pos target text position within line
+	\param s text to insert
+	
+	This helper method is provided so that subclasses may actually
+	modify the document contents without using private API.
+*/
 void QDocumentCommand::insertText(int line, int pos, const QString& s)
 {
 	if ( !m_doc )
@@ -127,6 +186,15 @@ void QDocumentCommand::insertText(int line, int pos, const QString& s)
 	pd->adjustWidth(line);
 }
 
+/*!
+	\brief Remove some text
+	\param line target line
+	\param pos target text position within line
+	\param length length of the text to remove
+	
+	This helper method is provided so that subclasses may actually
+	modify the document contents without using private API.
+*/
 void QDocumentCommand::removeText(int line, int pos, int length)
 {
 	if ( !m_doc )
@@ -186,6 +254,15 @@ void QDocumentCommand::removeText(int line, int pos, int length)
 	pd->adjustWidth(line);
 }
 
+/*!
+	\brief Insert some lines in the host document
+	\param after where to insert lines (line number)
+	\param l list of lines to insert
+	
+	This helper method is provided so that subclasses may actually
+	modify the document contents without using too much private API
+	(QDocumentLineHandle is part of the private API...)
+*/
 void QDocumentCommand::insertLines(int after, const QList<QDocumentLineHandle*>& l)
 {
 	if ( l.isEmpty() )
@@ -237,6 +314,14 @@ void QDocumentCommand::insertLines(int after, const QList<QDocumentLineHandle*>&
 	m_doc->impl()->insertLines(after, l);
 }
 
+/*!
+	\brief Remove some lines from the host document
+	\param after where to remove lines (line number)
+	\param n number of lines to remove
+	
+	This helper method is provided so that subclasses may actually
+	modify the document contents without using the private API.
+*/
 void QDocumentCommand::removeLines(int after, int n)
 {
 	if ( n <= 0 )
@@ -272,6 +357,11 @@ void QDocumentCommand::removeLines(int after, int n)
 	m_doc->impl()->removeLines(after, n);
 }
 
+/*!
+	\brief Update the target cursor
+	\param l target line
+	\param offset target text position within target line
+*/
 void QDocumentCommand::updateTarget(int l, int offset)
 {
 	QDocumentLineHandle *h = m_doc->impl()->at(l);
@@ -308,11 +398,17 @@ void QDocumentCommand::updateTarget(int l, int offset)
 	}
 }
 
+/*!
+	\return whether a given cursor is auto updated
+*/
 bool QDocumentCommand::isAutoUpdated(const QDocumentCursorHandle *h)
 {
 	return m_autoUpdated.contains(const_cast<QDocumentCursorHandle*>(h));
 }
 
+/*!
+	\brief Enable auto update for a given cursor
+*/
 void QDocumentCommand::enableAutoUpdate(QDocumentCursorHandle *h)
 {
 	//qDebug("up(0x%x)", h);
@@ -321,17 +417,26 @@ void QDocumentCommand::enableAutoUpdate(QDocumentCursorHandle *h)
 		m_autoUpdated << h;
 }
 
+/*!
+	\brief Disable auto update for a given cursor
+*/
 void QDocumentCommand::disableAutoUpdate(QDocumentCursorHandle *h)
 {
 	//qDebug("no-up(0x%x)", h);
 	m_autoUpdated.removeAll(h);
 }
 
+/*!
+	\brief Change the modification status of a line
+*/
 void QDocumentCommand::markRedone(QDocumentLineHandle *h)
 {
 	++m_doc->impl()->m_status[h];
 }
 
+/*!
+	\brief Change the modifiaction status of a line
+*/
 void QDocumentCommand::markUndone(QDocumentLineHandle *h)
 {
 	--m_doc->impl()->m_status[h];
@@ -339,6 +444,19 @@ void QDocumentCommand::markUndone(QDocumentLineHandle *h)
 
 ////////////////////////////
 
+/*!
+	\class QDocumentInsertCommand
+	\brief A specialized command to insert text
+*/
+
+/*!
+	\brief ctor
+	\param l target line
+	\param offset target text position within target line
+	\param text text to insert (can contain line feeds, "\n", which will result in the creation of new lines)
+	\param doc host document
+	\param p parent command
+*/
 QDocumentInsertCommand::QDocumentInsertCommand(	int l, int offset,
 												const QString& text,
 												QDocument *doc,
@@ -373,6 +491,9 @@ QDocumentInsertCommand::QDocumentInsertCommand(	int l, int offset,
 	*/
 }
 
+/*!
+	\brief dtor
+*/
 QDocumentInsertCommand::~QDocumentInsertCommand()
 {
 	if ( m_state )
@@ -459,6 +580,20 @@ void QDocumentInsertCommand::undo()
 
 ///////////////////////////
 
+/*!
+	\class QDocumentEraseCommand
+	\brief A specialized command to erase text
+*/
+
+/*!
+	\brief ctor
+	\param bl begin line of the target area
+	\param bo begin text position of the target area
+	\param el end line of the target area
+	\param eo end text position of the target area
+	\param doc host document
+	\param p parent command
+*/
 QDocumentEraseCommand::QDocumentEraseCommand(	int bl, int bo,
 												int el, int eo,
 												QDocument *doc,
@@ -495,6 +630,9 @@ QDocumentEraseCommand::QDocumentEraseCommand(	int bl, int bo,
 	m_state = true;
 }
 
+/*!
+	\brief dtor
+*/
 QDocumentEraseCommand::~QDocumentEraseCommand()
 {
 	if ( m_state )
@@ -619,12 +757,25 @@ void QDocumentReplaceCommand::undo()
 
 //////////////////////
 
+
+/*!
+	\class QDocumentCommandBlock
+	\brief A meta command used for command grouping
+*/
+
+/*!
+	\brief ctor
+	\param d host document
+*/
 QDocumentCommandBlock::QDocumentCommandBlock(QDocument *d)
  : QDocumentCommand(Custom, d), m_weakLocked(false)
 {
 	
 }
 
+/*!
+	\brief dtor
+*/
 QDocumentCommandBlock::~QDocumentCommandBlock()
 {
 	
@@ -656,23 +807,47 @@ void QDocumentCommandBlock::undo()
 	
 }
 
+/*!
+	\brief Set whether the block is weakly locked
+*/
 void QDocumentCommandBlock::setWeakLock(bool l)
 {
 	m_weakLocked = l;
 }
 
+/*!
+	\return whether the block is weakly locked
+	
+	Weak locking of command block is an obscure internal feature
+	which prevents the first redo() call from actually redo'ing
+	the grouped commands
+*/
 bool QDocumentCommandBlock::isWeakLocked() const
 {
 	return m_weakLocked;
 }
 
+/*!
+	\brief Add a command to the group
+	
+	\warning Doing that after having pushed the command on the undo/redo stack
+	is likely to result in corruption of the undo/redo stack
+*/
 void QDocumentCommandBlock::addCommand(QDocumentCommand *c)
 {
 	m_commands << c;
 }
 
+/*!
+	\brief Remove a command from the block
+	
+	\warning Doing that after having pushed the command on the undo/redo stack
+	is likely to result in corruption of the undo/redo stack
+*/
 void QDocumentCommandBlock::removeCommand(QDocumentCommand *c)
 {
 	m_commands.removeAll(c);
 }
+
+/*! @} */
 

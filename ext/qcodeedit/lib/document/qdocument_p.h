@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2006-2008 fullmetalcoder <fullmetalcoder@hotmail.fr>
+** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
 ** 
@@ -17,6 +17,11 @@
 #define _QDOCUMENT_P_H_
 
 #include "qce-config.h"
+
+/*!
+	\file qdocument_p.h
+	\brief Definition of the private document API
+*/
 
 #include "qnfa.h"
 

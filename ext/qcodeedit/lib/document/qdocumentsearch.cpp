@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2006-2008 fullmetalcoder <fullmetalcoder@hotmail.fr>
+** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
 ** 
@@ -15,11 +15,15 @@
 
 /*!
 	\file qdocumentsearch.cpp
-	
 	\brief Implementation of QDocumentSearch
 */
 
 #include "qdocumentsearch.h"
+
+/*!
+	\ingroup document
+	@{
+*/
 
 #include "qeditor.h"
 #include "qdocument.h"
@@ -29,8 +33,15 @@
 
 #include <QMessageBox>
 
+/*!
+	\class QDocumentSearch
+	\brief An helper class to perform search in document
+	
+	QDocumentSearch offer means to perform complex search in documents.
+*/
+
 QDocumentSearch::QDocumentSearch(QEditor *e, const QString& f, Options opt, const QString& r)
-	: m_option(opt), m_string(f), m_replace(r), m_editor(e)
+ : m_option(opt), m_string(f), m_replace(r), m_editor(e)
 {
 	
 }
@@ -449,3 +460,6 @@ void QDocumentSearch::next(bool backward, bool all)
 			next(backward);
 	}
 }
+
+/*! @} */
+

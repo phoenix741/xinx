@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2006-2008 fullmetalcoder <fullmetalcoder@hotmail.fr>
+** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
 ** 
@@ -15,19 +15,19 @@
 
 #include "qeditconfig.h"
 
-#include "qeditor.h"
-#include "qdocument.h"
-#include "qdocument_p.h"
-
-#include <QDebug>
-#include <QTextCodec>
-
 /*!
 	\file qeditconfig.cpp
 	\brief Implementation of the QEditConfig class.
 	
 	\see QEditConfig
 */
+
+#include "qeditor.h"
+#include "qdocument.h"
+#include "qdocument_p.h"
+
+#include <QDebug>
+#include <QTextCodec>
 
 /*!
 	\ingroup dialogs
