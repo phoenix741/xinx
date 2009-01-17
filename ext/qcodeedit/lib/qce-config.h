@@ -46,6 +46,21 @@ namespace QCE
 	
 	QStringList dataPathes();
 	void addDataPath(const QString& path);
+	
+	template <typename Registerable>
+	class Registar
+	{
+		public:
+			Registar()
+			{
+				Registerable::_register();
+			}
+	};
 }
+
+#define QCE_AUTO_REGISTER(T)							\
+	static QCE::Registar<T> _auto_##T##_registar;		\
+	
+
 
 #endif // !_QCE_CONFIG_H_

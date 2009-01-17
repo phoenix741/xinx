@@ -34,7 +34,7 @@ class QCE_EXPORT QStatusPanel : public QPanel
 	Q_OBJECT
 	
 	public:
-		Q_PANEL(QStatusPanel, "Default Status Panel")
+		Q_PANEL(QStatusPanel, "Status Panel")
 		
 		QStatusPanel(QWidget *p = 0);
 		virtual ~QStatusPanel();

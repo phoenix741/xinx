@@ -36,9 +36,14 @@
 /*!
 	\ingroup widgets
 	@{
-	
-	\class QStatusPanel
 */
+
+/*!
+	\class QStatusPanel
+	\brief A panel that display some status informations 
+*/
+
+QCE_AUTO_REGISTER(QStatusPanel)
 
 /*!
 	\brief Constructor

@@ -35,7 +35,7 @@ class QCE_EXPORT QLineChangePanel : public QPanel
 	Q_OBJECT
 	
 	public:
-		Q_PANEL(QLineChangePanel, "Default Line Change Panel")
+		Q_PANEL(QLineChangePanel, "Line Change Panel")
 		
 		QLineChangePanel(QWidget *p = 0);
 		virtual ~QLineChangePanel();

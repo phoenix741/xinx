@@ -75,26 +75,7 @@ QEditorFactory::QEditorFactory(QSettingsServer *s)
 #endif
 	QSettingsClient(s, "editor")
 {
-	//Q_REGISTER_DEFAULT_ID
-	Q_REGISTER_PANEL(QFoldPanel);
-	Q_REGISTER_PANEL(QLineMarkPanel);
-	Q_REGISTER_PANEL(QLineNumberPanel);
-	Q_REGISTER_PANEL(QLineChangePanel);
-	
-	Q_REGISTER_PANEL(QStatusPanel);
-	Q_REGISTER_PANEL(QSearchReplacePanel);
-	
 	m_defaultScheme = new QFormatScheme(QCE::fetchDataFile("formats.qxf"), this);
-	
-	/*
-	qDebug("format file : %s", qPrintable(
-						QApplication::applicationDirPath()
-						+ QDir::separator()
-						+ "qxs"
-						+ QDir::separator()
-						+ "formats.qxf")
-						);
-	*/
 	
 	QDocument::setFormatFactory(m_defaultScheme);
 	
@@ -105,9 +86,9 @@ QEditorFactory::QEditorFactory(QSettingsServer *s)
 		m_languageFactory->addDefinitionPath(dp);
 	}
 	
-	if ( value("version").toInt() != 2 )
+	if ( value("version").toInt() != 3 )
 	{
-		setValue("version", 2);
+		setValue("version", 3);
 		
 		// setup default layouts...
 		beginGroup("layouts");

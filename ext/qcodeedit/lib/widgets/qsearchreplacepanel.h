@@ -35,7 +35,7 @@ class QCE_EXPORT QSearchReplacePanel : public QPanel, private Ui::SearchReplace
 	Q_OBJECT
 	
 	public:
-		Q_PANEL(QSearchReplacePanel, "Default FF-like Search Replace Panel")
+		Q_PANEL(QSearchReplacePanel, "Search Replace Panel")
 		
 		QSearchReplacePanel(QWidget *p = 0);
 		virtual ~QSearchReplacePanel();

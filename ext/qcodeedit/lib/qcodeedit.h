@@ -61,6 +61,7 @@ class QCE_EXPORT QCodeEdit
 		QPanelLayout* panelLayout() const;
 		
 		QAction* addPanel(QPanel *panel, Position pos, bool _add = false);
+		QAction* addPanel(const QString& name, Position pos, bool _add = false); 
 		
 		QList<QPanel*> panels(const QString& type = QString()) const;
 		

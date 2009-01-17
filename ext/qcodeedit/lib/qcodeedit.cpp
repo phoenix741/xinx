@@ -281,6 +281,18 @@ QAction* QCodeEdit::addPanel(QPanel *panel, Position pos, bool _add)
 }
 
 /*!
+	\overload
+	\return Toggle view action for the added panel
+	\param name name of panel to add
+	\param pos position of the panel in the layout
+	\param _add whether to add the show action of the panel to the menu of the editor
+*/
+QAction* QCodeEdit::addPanel(const QString& name, Position pos, bool _add)
+{
+	return addPanel(QPanel::panel(name, m_editor), pos, _add);
+}
+
+/*!
 	\return a list of panels added to the editor
 	\param type Type of panel to look for (no filtering is performed if empty)
 */

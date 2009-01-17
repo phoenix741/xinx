@@ -1,17 +1,10 @@
 
 #include "window.h"
 
+#include "qpanel.h"
 #include "qeditor.h"
 #include "qcodeedit.h"
 #include "qeditconfig.h"
-
-#include "qstatuspanel.h"
-#include "qsearchreplacepanel.h"
-
-#include "qfoldpanel.h"
-#include "qlinemarkpanel.h"
-#include "qlinechangepanel.h"
-#include "qlinenumberpanel.h"
 
 #include "qdocument.h"
 #include "qdocumentline.h"
@@ -77,26 +70,26 @@ Window::Window(QWidget *p)
 	m_editControl = new QCodeEdit(this);
 	
 	m_editControl
-		->addPanel(new QLineMarkPanel, QCodeEdit::West, true)
+		->addPanel("Line Mark Panel", QCodeEdit::West, true)
 		->setShortcut(QKeySequence("F6"));
 	
 	m_editControl
-		->addPanel(new QLineNumberPanel, QCodeEdit::West, true)
+		->addPanel("Line Number Panel", QCodeEdit::West, true)
 		->setShortcut(QKeySequence("F11"));
 	
 	m_editControl
-		->addPanel(new QFoldPanel, QCodeEdit::West, true)
+		->addPanel("Fold Panel", QCodeEdit::West, true)
 		->setShortcut(QKeySequence("F9"));
 	
 	m_editControl
-		->addPanel(new QLineChangePanel, QCodeEdit::West, true)
+		->addPanel("Line Change Panel", QCodeEdit::West, true)
 		; //->setShortcut(QKeySequence("F11"));
 	
 	m_editControl
-		->addPanel(new QStatusPanel, QCodeEdit::South, true);
+		->addPanel("Status Panel", QCodeEdit::South, true);
 	
 	m_editControl
-		->addPanel(new QSearchReplacePanel, QCodeEdit::South);
+		->addPanel("Search Replace Panel", QCodeEdit::South);
 	
 	connect(m_editControl->editor()	, SIGNAL( contentModified(bool) ),
 			this					, SLOT  ( setWindowModified(bool) ) );

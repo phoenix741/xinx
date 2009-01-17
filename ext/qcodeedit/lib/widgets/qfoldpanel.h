@@ -32,7 +32,7 @@ class QCE_EXPORT QFoldPanel : public QPanel
 	Q_OBJECT
 	
 	public:
-		Q_PANEL(QFoldPanel, "Default Fold Panel")
+		Q_PANEL(QFoldPanel, "Fold Panel")
 		
 		QFoldPanel(QWidget *p = 0);
 		virtual ~QFoldPanel();

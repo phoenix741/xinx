@@ -37,9 +37,14 @@
 /*!
 	\ingroup widgets
 	@{
-	
-	\class QFoldPanel
 */
+
+/*!
+	\class QFoldPanel
+	\brief A panel that draw fold indicators and provide fold/unfold actions to the user
+*/
+
+QCE_AUTO_REGISTER(QFoldPanel)
 
 /*!
 	\brief Constructor

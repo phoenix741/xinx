@@ -269,13 +269,13 @@ QLayoutItem* QPanelLayout::takeAt(int idx)
 void QPanelLayout::setGeometry(const QRect &r)
 {
 	//qDebug("laying out %i panels", count());
-	#if 0
+	#if QT_VERSION <= 0x040400
 	QScrollBar *vb = m_parent->verticalScrollBar(),
 			*hb = m_parent->horizontalScrollBar();
 	
 	QRect rect(	r.x(), r.y(),
-				r.width() - (vb->isVisible() ? vb->width() : 0),
-				r.height() - (hb->isVisible() ? hb->height() : 0)
+				r.width() - (vb->isVisibleTo(m_parent) ? vb->width() : 0),
+				r.height() - (hb->isVisibleTo(m_parent) ? hb->height() : 0)
 				);
 	#else
 	QRect rect(	r.x(), r.y(),

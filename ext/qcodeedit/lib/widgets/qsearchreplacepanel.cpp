@@ -32,7 +32,6 @@
 #include <QScrollBar>
 #include <QPaintEvent>
 
-
 static QString escapeCpp(const QString& s, bool rep)
 {
 	if ( !rep )
@@ -70,9 +69,14 @@ static QString escapeCpp(const QString& s, bool rep)
 /*!
 	\ingroup widgets
 	@{
-	
-	\class QSearchReplacePanel
 */
+
+/*!
+	\class QSearchReplacePanel
+	\brief A panel that provide inline search/replace functionalities
+*/
+
+QCE_AUTO_REGISTER(QSearchReplacePanel)
 
 /*!
 	\brief Constructor

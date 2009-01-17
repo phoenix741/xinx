@@ -34,12 +34,16 @@
 /*!
 	\ingroup widgets
 	@{
-	
+*/
+
+/*!
 	\class QLineMarkPanel
 	\brief A specific panel in charge of drawing line numbers of an editor
 	
 	\see QEditorInterface
 */
+
+QCE_AUTO_REGISTER(QLineChangePanel)
 
 /*!
 	\brief Constructor

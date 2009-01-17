@@ -30,7 +30,7 @@ class QCE_EXPORT QLineNumberPanel : public QPanel
 	Q_OBJECT
 	
 	public:
-		Q_PANEL(QLineNumberPanel, "Default Line Numbering Panel")
+		Q_PANEL(QLineNumberPanel, "Line Number Panel")
 		
 		QLineNumberPanel(QWidget *p = 0);
 		virtual ~QLineNumberPanel();
