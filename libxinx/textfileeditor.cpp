@@ -103,7 +103,7 @@ void TextFileEditor::slotBookmarkToggled( int line, bool enabled ) {
 	emit bookmarkModified( 0, bookmarkCount() );
 }
 
-QList<int> & TextFileEditor::bookmarks() const {
+QList<int> TextFileEditor::bookmarks() const {
 	return m_view->listOfBookmark();
 }
 
@@ -116,15 +116,12 @@ void TextFileEditor::toogledBookmark() {
 }
 
 void TextFileEditor::gotoBookmarkAt( int i ) {
-	AbstractFileEditor::gotoBookmarkAt( i );
 	m_view->gotoLine( m_view->listOfBookmark().at( i ) );
 }
 
 QString TextFileEditor::bookmarkAt( int i ) {
 	QString description = tr( "In editor '%1' at line %2" );
-	description = description
-					.arg( getTitle() )
-					.arg( m_view->listOfBookmark().at( i ) );
+	description = description.arg( getTitle() ).arg( m_view->listOfBookmark().at( i ) );
 	return description;
 }
 
@@ -133,32 +130,15 @@ int TextFileEditor::bookmarkCount() {
 }
 
 bool TextFileEditor::previousBookmark() {
-	int line = m_view->currentRow();
-	for ( QList<int>::iterator i = m_view->listOfBookmark().end() - 1 ; i != m_view->listOfBookmark().begin() - 1; i-- ) {
-		if( line > *i ) {
-			int bookmark = i - m_view->listOfBookmark().begin();
-			gotoBookmarkAt( bookmark );
-			return true;
-		}
-	}
-	return false;
+	return m_view->previousBookmark();
 }
 
 bool TextFileEditor::nextBookmark() {
-	int line = m_view->currentRow();
-	for( QList<int>::iterator i = m_view->listOfBookmark().begin(); i != m_view->listOfBookmark().end() ; i++ ) {
-		if( line < *i ) {
-			int bookmark = i - m_view->listOfBookmark().begin();
-			gotoBookmarkAt( bookmark );
-			return true;
-		}
-	}
-	return false;
+	return m_view->nextBookmark();
 }
 
 void TextFileEditor::clearAllBookmark() {
-	/*! \todo this doesn't work ... */
-	m_view->listOfBookmark().clear();
+	m_view->clearBookmark();
 }
 
 XinxCodeEdit * TextFileEditor::textEdit() const {
@@ -411,11 +391,6 @@ void TextFileEditor::deserialize( XSLProjectSessionEditor * data ) {
 	position  = data->readProperty( "Position" ) .toInt();
 	text = data->readProperty( "Content" ).toString();
 
-	int bc = data->readProperty( "BookmarkCount" ).toInt();
-	for( int i = 0 ; i < bc; i++ ) {
-		setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
-	}
-
 	if( ! text.isEmpty() ) {
 		m_view->setPlainText( text );
 
@@ -425,6 +400,11 @@ void TextFileEditor::deserialize( XSLProjectSessionEditor * data ) {
 
 		if( ! lastFileName().isEmpty() )
 			loadFromFile( lastFileName() );
+	}
+
+	int bc = data->readProperty( "BookmarkCount" ).toInt();
+	for( int i = 0 ; i < bc; i++ ) {
+		setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
 	}
 
 	QDocumentCursor tc( textEdit()->editor()->document() );

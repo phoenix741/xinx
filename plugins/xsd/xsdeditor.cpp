@@ -256,17 +256,17 @@ XsdEditor::XsdEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
 	XsdGraphicsElementItem * item = new XsdGraphicsElementItem( "numero", "xs:string", 1, 1, seq );
 	seq->addItem( item );
 
-	new XsdGraphicsAnnotationItem( "Numéro de version", item );
+	new XsdGraphicsAnnotationItem( "Numï¿½ro de version", item );
 
 	item = new XsdGraphicsElementItem( "edition_special", "xs:string", 0, 1, seq );
 	seq->addItem( item );
 
-	new XsdGraphicsAnnotationItem( "Numéro de l'édition spécial", item );
+	new XsdGraphicsAnnotationItem( "Numï¿½ro de l'ï¿½dition spï¿½cial", item );
 
 	item = new XsdGraphicsElementItem( "level", "xs:string", 1, 1, seq );
 	seq->addItem( item );
 	complex->updatePosition();
-	new XsdGraphicsAnnotationItem( "Gestion de la version de eGX. Les valeurs des élements sont mis à jour par l'outil de migration. Toute modification par l'utilisateur entrainera des disfonctionnements de cet outil.", complex );
+	new XsdGraphicsAnnotationItem( "Gestion de la version de eGX. Les valeurs des ï¿½lements sont mis ï¿½ jour par l'outil de migration. Toute modification par l'utilisateur entrainera des disfonctionnements de cet outil.", complex );
 
 
 //	m_view->centerOn( 0, 0 );
@@ -335,6 +335,18 @@ QString XsdEditor::bookmarkAt( int i ) {
 
 int XsdEditor::bookmarkCount() {
 	return 0;
+}
+
+bool XsdEditor::previousBookmark() {
+	return true;
+}
+
+bool XsdEditor::nextBookmark() {
+	return false;
+}
+
+void XsdEditor::gotoBookmarkAt( int ) {
+
 }
 
 void XsdEditor::undo() {

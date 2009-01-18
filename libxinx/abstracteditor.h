@@ -256,11 +256,11 @@ public slots :
 	/*!
 	 * Go to the previous bookmark or return false if there is no more bookmark.
 	 */
-	virtual bool previousBookmark();
+	virtual bool previousBookmark() = 0;
 	/*!
 	 * Go to the next bookmark or return false if ther is no more bookmark.
 	 */
-	virtual bool nextBookmark();
+	virtual bool nextBookmark() = 0;
 	/*!
 	 * Go to the last bookmark of the editor, if possible.
 	 */
@@ -268,7 +268,7 @@ public slots :
 	/*!
 	 * Go to the \em i Bookmark of the editor.
 	 */
-	virtual void gotoBookmarkAt( int i );
+	virtual void gotoBookmarkAt( int i ) = 0;
 	/*!
 	 * Delete all existing bookmark
 	 */
@@ -360,8 +360,6 @@ private:
 	QAction * m_undoAction, * m_redoAction, * m_cutAction, * m_copyAction, * m_pasteAction;
 	QWidget * m_messageWidget;
 	QLabel * m_messageLabel;
-
-	int m_bookmarkNumber;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( AbstractEditor::SearchOptions );

@@ -94,7 +94,7 @@ public:
 	/*!
 	 * List of bookmarks of the editor
 	 */
-	virtual QList<int> & bookmarks() const;
+	virtual QList<int> bookmarks() const;
 
 	virtual void loadFromDevice( QIODevice & d );
 	virtual void saveToDevice( QIODevice & d );

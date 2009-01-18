@@ -107,31 +107,9 @@ void AbstractEditor::firstBookmark() {
 		gotoBookmarkAt( 0 );
 }
 
-bool AbstractEditor::previousBookmark() {
-	if( m_bookmarkNumber == 0 )
-		return false;
-	if( m_bookmarkNumber >= bookmarkCount() )
-		m_bookmarkNumber = bookmarkCount();
-	gotoBookmarkAt( m_bookmarkNumber - 1 );
-	return true;
-}
-
-bool AbstractEditor::nextBookmark() {
-	if( m_bookmarkNumber == bookmarkCount() - 1 )
-		return false;
-	if( m_bookmarkNumber < 0 )
-		m_bookmarkNumber = -1;
-	gotoBookmarkAt( m_bookmarkNumber + 1 );
-	return true;
-}
-
 void AbstractEditor::lastBookmark() {
 	if( bookmarkCount() > 0 )
 		gotoBookmarkAt( bookmarkCount() - 1 );
-}
-
-void AbstractEditor::gotoBookmarkAt( int i ) {
-	m_bookmarkNumber = i;
 }
 
 QAction * AbstractEditor::undoAction() {

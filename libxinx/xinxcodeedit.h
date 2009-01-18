@@ -173,11 +173,20 @@ public:
 	 */
 	QDocumentCursor textCursor() const;
 
+	/*! Clear all bookrmark */
+	void clearBookmark();
+
+	/*! Previous mark */
+	bool previousBookmark();
+
+	/*! Next bookmark */
+	bool nextBookmark();
+
 	/*! Show icon bookmark at line \e line. */
 	void setBookmark( int line, bool enabled );
 
 	/*! List of bookmark of the editor. */
-	QList<int> & listOfBookmark();
+	QList<int> listOfBookmark();
 
 	/*! Set the list of error. */
 	void setErrors( QList<int> errors );
@@ -315,7 +324,6 @@ private:
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;
 	QCompleter * m_completer;
-	QList<int> m_lineBookmark, m_errors;
 };
 
 #endif /* _XINXCODEEDIT_H_ */

@@ -61,6 +61,9 @@ public slots:
 	virtual void paste();
 	virtual void toogledBookmark();
 	virtual void clearAllBookmark();
+	virtual bool previousBookmark();
+	virtual bool nextBookmark();
+	virtual void gotoBookmarkAt( int );
 private:
 	QGraphicsScene * m_scene;
 	QGraphicsView * m_view;

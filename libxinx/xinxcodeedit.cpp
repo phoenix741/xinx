@@ -59,8 +59,6 @@
 /* XinxCodeEdit */
 
 XinxCodeEdit::XinxCodeEdit( QWidget * parent ) : QWidget( parent ), m_completer( 0 ) {
-	QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
-
 	m_editor = new QCodeEdit( false, this );
 	setHighlighter( QString() );
 
@@ -68,6 +66,8 @@ XinxCodeEdit::XinxCodeEdit( QWidget * parent ) : QWidget( parent ), m_completer(
 	m_editor->editor()->setWindowTitle( "[*]" );
 	m_editor->editor()->addInputBinding( this );
 	m_editor->editor()->setInputBinding( this );
+
+	QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
 	m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
 
 	m_editor->addPanel( new QLineMarkPanel, QCodeEdit::West, true );
@@ -116,43 +116,80 @@ QEditor * XinxCodeEdit::editor() const {
 
 void XinxCodeEdit::slotMarkChanged( QDocumentLineHandle* line, int type, bool enabled ) {
 	Q_UNUSED( type );
+
 	emit bookmarkToggled( line->line(), enabled );
 }
 
-void XinxCodeEdit::setBookmark( int line, bool enabled ) {
-	int index = m_lineBookmark.indexOf( line );
-	if( enabled && index < 0  ) {
-		m_lineBookmark.append( line );
-		qSort( m_lineBookmark );
-	} else if( !enabled && index >= 0 ) {
-		m_lineBookmark.removeAt( index );
-	}
+void XinxCodeEdit::clearBookmark() {
+	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
+	int mark = document()->findNextMark( bid );
+	while( mark != -1 ) {
+		emit bookmarkToggled( mark + 1, false );
+		document()->line( mark ).removeMark( bid );
 
-	int bid = QLineMarksInfoCenter::instance()->markTypeId("bookmark");
-	QDocumentLine documentLine = m_editor->editor()->document()->line( line );
-	documentLine.toggleMark(bid);
+		mark = document()->findNextMark( bid, mark + 1 );
+	}
+}
+
+bool XinxCodeEdit::previousBookmark() {
+	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
+	int mark = document()->findPreviousMark( bid, currentRow() - 1 );
+	if( mark == -1 ) return false;
+	gotoLine( mark + 1 );
+	return true;
+}
+
+bool XinxCodeEdit::nextBookmark() {
+	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
+	int mark = document()->findNextMark( bid, currentRow() + 1 );
+	if( mark == -1 ) return false;
+	gotoLine( mark + 1 );
+	return true;
+}
+
+void XinxCodeEdit::setBookmark( int line, bool enabled ) {
+	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
+	QDocumentLine documentLine = m_editor->editor()->document()->line( line - 1 );
+	if( enabled )
+		documentLine.addMark( bid );
+	else
+		documentLine.removeMark( bid );
 
 	emit bookmarkToggled( line, enabled );
 }
 
-QList<int> & XinxCodeEdit::listOfBookmark() {
-	return m_lineBookmark;
+QList<int> XinxCodeEdit::listOfBookmark() {
+	QList<int> bookmarks;
+
+	int bid = QLineMarksInfoCenter::instance()->markTypeId( "bookmark" );
+	int mark = document()->findNextMark( bid );
+	while( mark != -1 ) {
+		bookmarks.append( mark + 1 );
+
+		mark = document()->findNextMark( bid, mark + 1 );
+	}
+
+	return bookmarks;
 }
 
 void XinxCodeEdit::setErrors( QList<int> errors ) {
-	int bid = QLineMarksInfoCenter::instance()->markTypeId("error");
-	if( errors != m_errors ) {
-		// Desactivate marks
-		foreach( int mark, m_errors ) {
-			QDocumentLine line = m_editor->editor()->document()->line( mark );
-			line.removeMark(bid);
-		}
-		m_errors = errors;
-		// Activate new marks
-		foreach( int mark, m_errors ) {
-			QDocumentLine line = m_editor->editor()->document()->line( mark );
-			line.addMark(bid);
-		}
+	QList<int> bookmarks;
+
+	int bid = QLineMarksInfoCenter::instance()->markTypeId( "error" );
+
+	// Remove old mark
+	int mark = document()->findNextMark( bid );
+	while( mark != -1 ) {
+		QDocumentLine line = m_editor->editor()->document()->line( mark );
+		line.removeMark( bid );
+
+		mark = document()->findNextMark( bid, mark + 1 );
+	}
+
+	// Activate new marks
+	foreach( mark, errors ) {
+		QDocumentLine line = m_editor->editor()->document()->line( mark );
+		line.addMark( bid );
 	}
 }
 
@@ -258,9 +295,15 @@ void XinxCodeEdit::setSelection( QString text ) {
 void XinxCodeEdit::setMatchingText( QString text ) {
 	QDocumentCursor cursor;
 	cursor.setSilent( true );
-	m_matchingText->setCursor( cursor );
-	m_matchingText->setSearchText( text );
-	m_matchingText->next( false );
+	if( ! text.isEmpty() ) {
+		m_matchingText->setCursor( cursor );
+		m_matchingText->setSearchText( text );
+		m_matchingText->next( false );
+	} else {
+		delete m_matchingText;
+		QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
+		m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
+	}
 }
 
 void XinxCodeEdit::setCompleter( QCompleter * completer ) {
@@ -395,9 +438,12 @@ void XinxCodeEdit::duplicateLines() {
 void XinxCodeEdit::moveLineUp() {
 	QDocumentCursor cursor( textCursor() );
 
-	QDocumentCursor selectionStart = cursor.selectionStart(),
-			selectionEnd   = cursor.selectionEnd();
+	int selectionLength = 0;
+	QDocumentCursor selectionStart 		= cursor.selectionStart(),
+			selectionEnd   		= cursor.selectionEnd();
+	if( selectionEnd.isValid() ) selectionLength = cursor.selectedText().length();
 
+	if( selectionEnd.columnNumber() == 0 ) selectionEnd.movePosition( 1, QDocumentCursor::Left );
 	if( selectionStart.lineNumber() == 0 ) return; // No move when we are at the first line
 
 	cursor.beginEditBlock();
@@ -419,8 +465,8 @@ void XinxCodeEdit::moveLineUp() {
 	cursor.insertText( text );
 
 	cursor.moveTo( selectionStart.lineNumber() - 1, selectionStart.columnNumber() );
-	if( selectionEnd.isNull() )
-		cursor.movePosition( selectionEnd.position() - selectionStart.position(), QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
+	if( selectionLength > 0 )
+		cursor.movePosition( selectionLength, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 
 	cursor.endEditBlock();
 	setTextCursor( cursor );
@@ -429,9 +475,12 @@ void XinxCodeEdit::moveLineUp() {
 void XinxCodeEdit::moveLineDown() {
 	QDocumentCursor cursor( textCursor() );
 
-	QDocumentCursor selectionStart = cursor.selectionStart(),
-			selectionEnd   = cursor.selectionEnd();
+	int selectionLength = 0;
+	QDocumentCursor selectionStart 		= cursor.selectionStart(),
+			selectionEnd   		= cursor.selectionEnd();
+	if( selectionEnd.isValid() ) selectionLength = cursor.selectedText().length();
 
+	if( selectionEnd.columnNumber() == 0 ) selectionEnd.movePosition( 1, QDocumentCursor::Left );
 	if( ( ( selectionEnd.lineNumber() + 1 ) == m_editor->editor()->document()->lines() ) || ( ( selectionStart.lineNumber() + 1 ) == m_editor->editor()->document()->lines() ) ) return; // No move at end of document
 
 	cursor.beginEditBlock();
@@ -458,12 +507,12 @@ void XinxCodeEdit::moveLineDown() {
 	}
 	cursor.insertText( text );
 
-	/*
-	cursor.moveTo( selectionStart.lineNumber(), selectionStart.columnNumber() );
-	if( selectionEnd.isNull() )
-		cursor.movePosition( selectionEnd.position() - selectionStart.position(), QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor );
-	*/
+	cursor.moveTo( selectionStart.lineNumber() + 1, selectionStart.columnNumber() );
+	if( selectionLength > 0 )
+		cursor.movePosition( selectionLength, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
+
 	cursor.endEditBlock();
+	setTextCursor( cursor );
 }
 
 void XinxCodeEdit::uploSelectedText( bool upper ) {

@@ -205,3 +205,15 @@ void XUIEditor::toogledBookmark() {
 
 void XUIEditor::clearAllBookmark() {
 }
+
+bool XUIEditor::previousBookmark() {
+	return true;
+}
+
+bool XUIEditor::nextBookmark() {
+	return false;
+}
+
+void XUIEditor::gotoBookmarkAt( int ) {
+
+}
