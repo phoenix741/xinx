@@ -204,7 +204,6 @@ void QLineMarkPanel::actionBookmarkTriggered()
 	if( s && m_currentLine.isValid() ) {
 		m_currentLine.toggleMark( QLineMarksInfoCenter::instance()->markTypeId( s->text() ) );
 	}
-	m_currentLine = QDocumentLine();
 }
 
 /*!
@@ -240,6 +239,7 @@ void QLineMarkPanel::contextMenuEvent(QContextMenuEvent *e)
 
 	menu->exec( e->globalPos() );
 	delete menu;
+	m_currentLine = QDocumentLine();
 
 	/*
 	QTextBlock b;
