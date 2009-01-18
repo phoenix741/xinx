@@ -3,7 +3,7 @@
 ** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
-** 
+**
 ** This file may be used under the terms of the GNU General Public License
 ** version 3 as published by the Free Software Foundation and appearing in the
 ** file GPL.txt included in the packaging of this file.
@@ -19,7 +19,7 @@
 /*!
 	\file qlinemarkpanel.h
 	\brief Definition of the QLineMarkPanel class.
-	
+
 	\see QLineMarkPanel
 */
 
@@ -27,30 +27,33 @@
 
 #include <QHash>
 #include <QIcon>
-
-class QDocumentLine;
+#include "qdocumentline.h"
 
 class QCE_EXPORT QLineMarkPanel : public QPanel
 {
 	Q_OBJECT
-	
+
 	public:
 		Q_PANEL(QLineMarkPanel, "Line Mark Panel")
-		
+
 		QLineMarkPanel(QWidget *p = 0);
 		virtual ~QLineMarkPanel();
-		
+
 		virtual QString type() const;
-		
+
 	protected:
 		virtual void paint(QPainter *p, QEditor *e);
 		virtual void mousePressEvent(QMouseEvent *e);
 		virtual void mouseReleaseEvent(QMouseEvent *e);
 		virtual void contextMenuEvent(QContextMenuEvent *e);
-		
+	private slots:
+		void actionBookmarkTriggered();
 	private:
 		QList<QRect> m_rects;
 		QList<int> m_lines;
+		QString m_defaultMark;
+		QDocumentLine m_currentLine;
+
 };
 
 #endif // _QLINE_MARK_PANEL_H_
