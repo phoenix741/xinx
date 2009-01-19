@@ -5,7 +5,7 @@ LIBS = -L../../libxinx \
     -L../../components \
     -lsharedxinx \
     -lxinxcmp
-TARGET = $$qtLibraryTarget(xsd)
+TARGET = xsd
 INCLUDEPATH += ../../libxinx \
     ../../components
 RESOURCES = xsdedit.qrc
