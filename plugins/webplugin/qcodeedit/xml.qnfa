@@ -21,7 +21,7 @@
 	</context>
 
 	<sequence id="entity" format="xml_entity">&amp;$w+;</sequence>
-
+		
 	<context id="tag/start" >
 		<start format="xml_elementname" >&lt;[$w:\-]+</start>
 		<stop format="xml_elementname" parenthesis="xmltag:open@nomatch" indent="0" fold="1" >&gt;</stop>
@@ -34,19 +34,8 @@
 			<stop>&quot;</stop>
 			<escape>\\</escape>
 
-			<context id="xpath" format="xml_xpath" >
-				<start parenthesis="xpath:open">{</start>
-				<stop parenthesis="xpath:close">}</stop>
-				<stop exclusive="false">&quot;</stop>
-				<stop exclusive="false">\n</stop>
-				<stop exclusive="false">&gt;</stop>
-			</context>
-		</context>
-
-		<context id="data/chars" format="xml_attributevalue" stayOnLine="true" >
-			<start>'</start>
-			<stop>'</stop>
-			<escape>\\</escape>
+			<sequence parenthesis="round:open">(</sequence>
+			<sequence parenthesis="round:close">)</sequence>
 
 			<context id="xpath" format="xml_xpath" >
 				<start parenthesis="xpath:open">{</start>
