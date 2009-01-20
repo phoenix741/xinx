@@ -183,7 +183,7 @@ public:
 	virtual QIcon icon() = 0;
 
 	//! Return some properties for the file type
-	//virtual struct_properties properties() = 0;
+	virtual struct_properties properties() = 0;
 
 	//! Create an editor with the given filename
 	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
@@ -198,8 +198,7 @@ class IFileTextPlugin : public IFileTypePlugin {
 public:
 	//! Identifier used to find the correct file type
 	virtual QString highlighterId() const = 0;
-	//! Return the default formats of a highlighter
-	//virtual QHash<QString,QTextCharFormat> defaultsFormat() const = 0;
+
 	//! Return an example of highlighter.
 	virtual QString fileExample() const = 0;
 };
