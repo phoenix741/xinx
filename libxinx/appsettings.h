@@ -71,8 +71,10 @@ public:
 	};
 
 	struct struct_extentions {
-		QString customPath;
-		bool canBeSpecifique;
+		QString specifiqueSubDirectory;
+		bool canBeSaveAsSpecifique;
+		bool canBeFindInConfiguration;
+		bool canBeCommitToRcs;
 	};
 
 	struct struct_xmlpres {

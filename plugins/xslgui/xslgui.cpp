@@ -35,9 +35,9 @@ public:
 	virtual QString match() { return "*.xui"; };
 	virtual QIcon icon() { return QIcon( ":/xslgui/images/typexui.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = true;
 		p.canBeSaveAsSpecifique = true;
 		p.specifiqueSubDirectory = "xui/";

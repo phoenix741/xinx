@@ -49,6 +49,7 @@ private:
 
 	static bool isSpecifique( const QString & filename );
 	static bool canBeSaveAsSpecifique( const QString & filename );
+	static bool isInConfigurationFile( const QString & filename );
 	static bool canBeAddedToRepository( const QString & filename );
 
 	static QString m_lastPlace;

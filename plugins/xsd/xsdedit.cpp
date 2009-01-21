@@ -35,9 +35,9 @@ public:
 	virtual QString match() { return "*.xsd"; };
 	virtual QIcon icon() { return QIcon( ":/xsd/images/typexsd.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = false;
 		p.specifiqueSubDirectory = "";

@@ -75,22 +75,18 @@ public:
 		QHash<QString,QTextCharFormat> formats = defaultsFormat();
 		foreach( QString key, formats.keys() )
 			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-
-		struct_properties property = properties();
-		XINXConfig::self()->config().files[ description() ].canBeSpecifique = property.canBeSaveAsSpecifique;
-		XINXConfig::self()->config().files[ description() ].customPath = property.specifiqueSubDirectory;
 	}
 
 	virtual QString description() {	return tr( "XML File" ); };
 	virtual QString match() { return "*.xml"; };
 	virtual QIcon icon() { return QIcon( ":/images/typexml.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = true;
-		p.specifiqueSubDirectory = QString();
+		p.specifiqueSubDirectory = "xml/";
 		return p;
 	};
 
@@ -154,9 +150,9 @@ public:
 	virtual QString match() { return "*.xsl"; };
 	virtual QIcon icon() { return QIcon( ":/images/typexsl.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = true;
 		p.canBeSaveAsSpecifique = true;
 		p.specifiqueSubDirectory = QString();
@@ -189,9 +185,9 @@ public:
 	virtual QString match() { return "*.htm *.html *.xhtml"; };
 	virtual QIcon icon() { return QIcon( ":/images/typehtml.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = false;
 		p.specifiqueSubDirectory = QString();
@@ -217,19 +213,15 @@ public:
 		QHash<QString,QTextCharFormat> formats = defaultsFormat();
 		foreach( QString key, formats.keys() )
 			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-
-		struct_properties property = properties();
-		XINXConfig::self()->config().files[ description() ].canBeSpecifique = property.canBeSaveAsSpecifique;
-		XINXConfig::self()->config().files[ description() ].customPath = property.specifiqueSubDirectory;
 	}
 
 	virtual QString description() {	return tr( "JavaScript" ); };
 	virtual QString match() { return "*.js"; };
 	virtual QIcon icon() { return QIcon( ":/images/typejs.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = true;
 		p.specifiqueSubDirectory = "js/";
@@ -290,19 +282,15 @@ public:
 		QHash<QString,QTextCharFormat> formats = defaultsFormat();
 		foreach( QString key, formats.keys() )
 			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-
-		struct_properties property = properties();
-		XINXConfig::self()->config().files[ description() ].canBeSpecifique = property.canBeSaveAsSpecifique;
-		XINXConfig::self()->config().files[ description() ].customPath = property.specifiqueSubDirectory;
 	}
 
 	virtual QString description() {	return tr( "Cascading Style Sheet" ); };
 	virtual QString match() { return "*.css"; };
 	virtual QIcon icon() { return QIcon( ":/images/typecss.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = true;
 		p.specifiqueSubDirectory = "css/";
@@ -374,10 +362,6 @@ public:
 		foreach( QString key, formats.keys() )
 			XINXConfig::self()->config().formats[ key ] = formats[ key ];
 
-		struct_properties property = properties();
-		XINXConfig::self()->config().files[ description() ].canBeSpecifique = property.canBeSaveAsSpecifique;
-		XINXConfig::self()->config().files[ description() ].customPath = property.specifiqueSubDirectory;
-
 		QTemporaryFile temporaryXqFile;
 		if( temporaryXqFile.open() ) {
 			QTextStream textStream( &temporaryXqFile );
@@ -424,9 +408,9 @@ public:
 	virtual QString match() { return "*.xq"; };
 	virtual QIcon icon() { return QIcon( ":/images/typexq.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = false;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = false;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = false;
 		p.specifiqueSubDirectory = QString();

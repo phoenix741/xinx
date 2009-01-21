@@ -4,7 +4,6 @@
 #include <QLocale>
 #include <QDir>
 #include <QApplication>
-#include <QStyle>
 
 #include "appsettings.h"
 
@@ -291,7 +290,9 @@ void AppSettings::setSettingsDescriptions( AppSettingsSettings * settings, const
 AppSettings::AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
 	struct_extentions value;
 
-	value.canBeSpecifique = true;
+	value.canBeSaveAsSpecifique = true;
+	value.canBeFindInConfiguration = false;
+	value.canBeCommitToRcs = true;
 
 	return value;
 }
@@ -300,8 +301,10 @@ AppSettings::AppSettings::struct_extentions AppSettings::getSettingsExtentions( 
 	struct_extentions value;
 	settings->beginGroup( path );
 
-	value.customPath = settings->value( "Custom Path", defaultValue.customPath ).toString();
-	value.canBeSpecifique = settings->value( "Can Be Specifique", defaultValue.canBeSpecifique ).toBool();
+	value.specifiqueSubDirectory = settings->value( "Specifique Sub Directory", defaultValue.specifiqueSubDirectory ).toString();
+	value.canBeSaveAsSpecifique = settings->value( "Can Be Save As Specifique", defaultValue.canBeSaveAsSpecifique ).toBool();
+	value.canBeFindInConfiguration = settings->value( "Can Be Find In Configuration", defaultValue.canBeFindInConfiguration ).toBool();
+	value.canBeCommitToRcs = settings->value( "Can Be Commit To RCS", defaultValue.canBeCommitToRcs ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -311,8 +314,10 @@ void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const Q
 	struct_extentions defaultValue = getDefaultExtentions();
 	settings->beginGroup( path );
 
-	settings->setValue( "Custom Path", value.customPath, defaultValue.customPath );
-	settings->setValue( "Can Be Specifique", value.canBeSpecifique, defaultValue.canBeSpecifique );
+	settings->setValue( "Specifique Sub Directory", value.specifiqueSubDirectory, defaultValue.specifiqueSubDirectory );
+	settings->setValue( "Can Be Save As Specifique", value.canBeSaveAsSpecifique, defaultValue.canBeSaveAsSpecifique );
+	settings->setValue( "Can Be Find In Configuration", value.canBeFindInConfiguration, defaultValue.canBeFindInConfiguration );
+	settings->setValue( "Can Be Commit To RCS", value.canBeCommitToRcs, defaultValue.canBeCommitToRcs );
 
 	settings->endGroup();
 }
@@ -368,7 +373,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.language = QLocale::system().name();
 	value.position = QPoint( 200,200 );
 	value.size = QSize( 400,400 );
-	value.maximized = false;;
+	value.maximized = false;
 	value.plugins = getDefaultHash_bool();
 	value.descriptions = getDefaultDescriptions();
 	value.project = getDefaultProject();

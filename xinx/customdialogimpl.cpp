@@ -193,7 +193,7 @@ int SpecifiqueModelIndex::rowCount( const QModelIndex & parent ) const {
 
 int SpecifiqueModelIndex::columnCount( const QModelIndex & parent ) const {
 	Q_UNUSED( parent );
-	return 3;
+	return 5;
 }
 
 QVariant SpecifiqueModelIndex::headerData ( int section, Qt::Orientation orientation, int role ) const {
@@ -202,9 +202,13 @@ QVariant SpecifiqueModelIndex::headerData ( int section, Qt::Orientation orienta
 		case 0 :
 			return tr( "File type" );
 		case 1 :
-			return tr( "Can be specifique" );
+			return tr( "Can be save as specifique" );
 		case 2 :
 			return tr( "Sub-directory" );
+		case 3 :
+			return tr( "Can be Commited" );
+		case 4 :
+			return tr( "Is in configuration.xml" );
 		}
 	return QVariant();
 }
@@ -215,10 +219,16 @@ bool SpecifiqueModelIndex::setData ( const QModelIndex & index, const QVariant &
 		AppSettings::struct_extentions ext = m_extentions.value( key );
 		switch( index.column() ) {
 		case 1:
-			ext.canBeSpecifique = value.toBool();
+			ext.canBeSaveAsSpecifique = value.toBool();
 			break;
 		case 2:
-			ext.customPath = value.toString();
+			ext.specifiqueSubDirectory = value.toString();
+			break;
+		case 3:
+			ext.canBeCommitToRcs = value.toBool();
+			break;
+		case 4:
+			ext.canBeFindInConfiguration = value.toBool();
 			break;
 		}
 		m_extentions.insert( key, ext );
@@ -229,24 +239,18 @@ bool SpecifiqueModelIndex::setData ( const QModelIndex & index, const QVariant &
 }
 
 QVariant SpecifiqueModelIndex::data ( const QModelIndex & index, int role ) const {
-	if( index.isValid() && ( role == Qt::DisplayRole ) ) {
+	if( index.isValid() && ( ( role == Qt::DisplayRole ) || ( role == Qt::EditRole ) ) ) {
 		switch( index.column() ) {
 		case 0 :
 			return m_extentions.keys().at( index.row() );
 		case 1 :
-			return m_extentions.values().at( index.row() ).canBeSpecifique;
+			return m_extentions.values().at( index.row() ).canBeSaveAsSpecifique;
 		case 2 :
-			return m_extentions.values().at( index.row() ).customPath;
-		}
-	}
-	if( index.isValid() && ( role == Qt::EditRole ) ) {
-		switch( index.column() ) {
-		case 0 :
-			return m_extentions.keys().at( index.row() );
-		case 1 :
-			return m_extentions.values().at( index.row() ).canBeSpecifique;
-		case 2 :
-			return m_extentions.values().at( index.row() ).customPath;
+			return m_extentions.values().at( index.row() ).specifiqueSubDirectory;
+		case 3 :
+			return m_extentions.values().at( index.row() ).canBeCommitToRcs;
+		case 4 :
+			return m_extentions.values().at( index.row() ).canBeFindInConfiguration;
 		}
 	}
 

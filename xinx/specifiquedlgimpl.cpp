@@ -66,14 +66,19 @@ bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
 bool SpecifiqueDialogImpl::canBeSaveAsSpecifique( const QString & filename ) {
 	return 	XINXProjectManager::self()->project() &&
 		XINXProjectManager::self()->project()->options().testFlag( XSLProject::hasSpecifique ) &&
-		XINXConfig::self()->matchedFileType( filename ).canBeSpecifique &&
+		XINXConfig::self()->matchedFileType( filename ).canBeSaveAsSpecifique &&
+		QFileInfo( filename ).absolutePath().contains( XINXProjectManager::self()->project()->projectPath() );
+}
+
+bool SpecifiqueDialogImpl::isInConfigurationFile( const QString & filename ) {
+	return XINXConfig::self()->matchedFileType( filename ).canBeFindInConfiguration &&
 		QFileInfo( filename ).absolutePath().contains( XINXProjectManager::self()->project()->projectPath() );
 }
 
 bool SpecifiqueDialogImpl::canBeAddedToRepository( const QString & filename ) {
 	Q_UNUSED( filename );
 
-	return XINXProjectManager::self()->project() && ( ! XINXProjectManager::self()->project()->projectRCS().isEmpty() );
+	return XINXProjectManager::self()->project() && ( ! XINXProjectManager::self()->project()->projectRCS().isEmpty() ) && ( XINXConfig::self()->matchedFileType( filename ).canBeCommitToRcs );
 }
 
 void SpecifiqueDialogImpl::setLastPlace( const QString & pathname ) {
@@ -99,7 +104,7 @@ void SpecifiqueDialogImpl::setFileName( const QString & filename ) {
 	m_specifiqueCheckBox->setEnabled( (! filename.isEmpty() ) && ( ! isSpecifique( filename ) ) && canBeSaveAsSpecifique( filename ) );
 	m_repositoryCheckBox->setEnabled( canBeAddedToRepository( filename ) );
 
-	if( (! filename.isEmpty() ) && canBeSaveAsSpecifique( filename ) ) {
+	if( (! filename.isEmpty() ) && canBeSaveAsSpecifique( filename ) && isInConfigurationFile( filename ) ) {
 		m_instance = ThreadedConfigurationFile::businessViewOfFile( filename );
 		connect( m_instance, SIGNAL(businessViewFinded(QStringList)), this, SLOT(businessViewFinded(QStringList)) );
 		m_instance->start( QThread::IdlePriority );
@@ -113,7 +118,7 @@ QString SpecifiqueDialogImpl::path() const {
 	if( m_specifiqueCheckBox->isChecked() ) {
 		QString newFilename = m_filename.isEmpty() ? m_defaultFileName : m_filename;
 		AppSettings::struct_extentions customFile = XINXConfig::self()->matchedFileType( newFilename );
-		return QDir( XINXProjectManager::self()->project()->processedSpecifiquePath() ).absoluteFilePath( customFile.customPath );
+		return QDir( XINXProjectManager::self()->project()->processedSpecifiquePath() ).absoluteFilePath( customFile.specifiqueSubDirectory );
 	} else if( !m_filename.isEmpty() )
 		return QFileInfo( m_filename ).absolutePath();
 	else

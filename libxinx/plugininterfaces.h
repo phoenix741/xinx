@@ -30,6 +30,7 @@
 
 // Xinx header
 #include <filecontentstructure.h>
+#include <appsettings.h>
 
 class XINXConfig;
 class QObject;
@@ -160,18 +161,6 @@ public:
  */
 class IFileTypePlugin {
 public:
-	/*!
-	 * Structure indicate if a file type plugin can be save as specifique and the
-	 * directory where the file must be stored if it can. This is the default value,
-	 * Real value are stored in the configuration.
-	 */
-	struct struct_properties {
-		bool canBeCommitToRCS;         //!< not yet implemented
-		bool canBeFindInConfiguration; //!< not yet implemented
-		bool canBeSaveAsSpecifique;
-		QString specifiqueSubDirectory;
-	};
-
 	//! Destroy a file type
 	virtual ~IFileTypePlugin() {};
 
@@ -183,7 +172,7 @@ public:
 	virtual QIcon icon() = 0;
 
 	//! Return some properties for the file type
-	virtual struct_properties properties() = 0;
+	virtual AppSettings::struct_extentions properties() = 0;
 
 	//! Create an editor with the given filename
 	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;

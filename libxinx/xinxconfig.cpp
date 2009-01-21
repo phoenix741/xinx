@@ -149,6 +149,9 @@ AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 		value.files[ plugin->description() ].customPath = plugin->properties().specifiqueSubDirectory;
 	}
 	*/
+	foreach( IFileTypePlugin * plugin , XinxPluginsLoader::self()->fileTypes() ) {
+		value.files[ plugin->description() ] = plugin->properties();
+	}
 
 #ifndef Q_WS_WIN
 	value.xinxTrace = "/tmp/xinx_trace.html";

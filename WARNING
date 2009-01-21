@@ -8,17 +8,17 @@
 * Crash quand essai d'utilisation de Ctrl+Shift+Bas
 	* Quand ca marche, le curseur ne suit pas la ligne
 	* Quand j'ai une selection plantage.
-- Le surligner automatique/non automatique ne fonctionne pas. ==> le fichier de config est chargé après le plugins
+- Le surligner automatique/non automatique ne fonctionne pas. ==> le fichier de config est charge apres le plugins
 	* Le surligner ne marche pas quand recherche espace.
 - Probleme lors d'ouverture de fichier qui n'existe plus ?
 - Ctrl+D pour dupliquer ne fonctionne pas : plantage
-- Si ajout de // sur une ligne de l'editeur ....
-- Ctrl+Enter ne fonctionne plus
+* Si ajout de // sur une ligne de l'editeur ....
+* Ctrl+Enter ne fonctionne plus
 
-- Verifier
-	- Que les parametre sur la specificite d'un type de fichier fonctionne toujours
+* Verifier
+	* Que les parametre sur la specificite d'un type de fichier fonctionne toujours
 
 - Lenteur :
-	- Problème lors de enter suivis directe d'un tab
-	- Si Ok dans boite de dialogue propriété projet.
-	- après sauvegarde ? ==> Remettre les plugins au carr
+	- Probleme lors de enter suivis directe d'un tab
+	- Si Ok dans boite de dialogue propriete projet.
+	- apres sauvegarde ? ==> Remettre les plugins au carr

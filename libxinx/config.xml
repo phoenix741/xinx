@@ -12,8 +12,10 @@
 		<value name="Show name attribute if exists" type="bool" default="true"/>
 	</type>
 	<type name="Extentions">
-		<value name="Custom Path" type="string"/>
-		<value name="Can Be Specifique" type="bool" default="yes"/>
+		<value name="Specifique Sub Directory" type="string"/>
+		<value name="Can Be Save As Specifique" type="bool" default="yes"/>
+		<value name="Can Be Find In Configuration" type="bool" default="no"/>
+		<value name="Can Be Commit To RCS" type="bool" default="yes"/>
 	</type>
 	<type name="Descriptions">
 		<value name="Datas" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>

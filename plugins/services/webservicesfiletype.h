@@ -32,9 +32,9 @@ public:
 	virtual QString match() { return "*.fws"; };
 	virtual QIcon icon() { return QIcon( ":/services/images/typefws.png" ); };
 
-	virtual struct_properties properties() {
-		struct_properties p;
-		p.canBeCommitToRCS = true;
+	virtual AppSettings::struct_extentions properties() {
+		AppSettings::struct_extentions p;
+		p.canBeCommitToRcs = true;
 		p.canBeFindInConfiguration = false;
 		p.canBeSaveAsSpecifique = false;
 		p.specifiqueSubDirectory = QString();

@@ -405,13 +405,13 @@ void XmlTextEditor::key_shenter( bool back ) {
 		cursor.moveTo( cursor.selectionStart() );
 		cursor.movePosition( 2, QDocumentCursor::Left, QDocumentCursor::MoveAnchor );
 	}
-	cursor = find( QRegExp("=\"[^\"]*\""), cursor, flags ).selectionEnd();
+	cursor = find( QRegExp("=\"[^\"]*\""), cursor, flags );
 
 	if( ! cursor.isNull() ) {
 		QDocumentCursor newCursor = textCursor();
 		newCursor.moveTo( cursor.selectionStart() );
 		newCursor.movePosition( 2, QDocumentCursor::Right );
-		newCursor.movePosition( cursor.selectionEnd().position() - cursor.selectionStart().position() - 1, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
+		newCursor.movePosition( cursor.selectionEnd().position() - cursor.selectionStart().position() - 3, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 		setTextCursor( newCursor );
 	}
 }
