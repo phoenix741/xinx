@@ -182,6 +182,7 @@ void match(QNFAMatchContext *lexer, const QChar *d, int length, QNFAMatchNotifie
 			
 			if ( it != lexer->context->tree.constEnd() )
 			{
+				//qDebug("plain on %c", c);
 				do
 				{
 					++di;
@@ -561,7 +562,7 @@ QNFA* context(const QString& start, const QString& stop, const QString&, int act
 
 void addWord(QNFA *lexer, const QString& w, int action, bool cs)
 {
-	if ( !lexer || (lexer->type != ContextBegin) || !lexer->out.branch )
+	if ( !lexer || !(lexer->type & CxtBeg) || !lexer->out.branch )
 		return;
 	
 	// try using the fastest way if possible
@@ -593,8 +594,10 @@ void addWord(QNFA *lexer, const QString& w, int action, bool cs)
 
 void addSequence(QNFA *lexer, const QString& w, int action, bool cs)
 {
-	if ( !lexer || (lexer->type != ContextBegin) || !lexer->out.branch )
+	if ( !lexer || !(lexer->type & CxtBeg) || !lexer->out.branch )
+	{
 		return;
+	}
 	
 	QNFA *seq, *end, *nfa;
 	

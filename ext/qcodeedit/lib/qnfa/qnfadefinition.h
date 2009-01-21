@@ -74,6 +74,8 @@ class QCE_EXPORT QNFADefinition : public QLanguageDefinition
 		
 		virtual QString singleLineComment() const;
 		
+		virtual QString defaultLineMark() const;
+		
 		virtual void clearMatches(QDocument *d);
 		virtual void match(QDocumentCursor& c);
 		

@@ -93,6 +93,14 @@ QString QLanguageDefinition::singleLineComment() const
 }
 
 /*!
+	\brief Let language specify which line mark should be toggled by left clicking a line mark panel
+*/
+QString QLanguageDefinition::defaultLineMark() const
+{
+	return QString();
+}
+
+/*!
 	\brief Brace matching entry point
 */
 void QLanguageDefinition::clearMatches(QDocument *d)

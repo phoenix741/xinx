@@ -60,6 +60,8 @@ class QCE_EXPORT QLanguageDefinition
 		
 		virtual QString singleLineComment() const;
 		
+		virtual QString defaultLineMark() const;
+		
 		virtual void match(QDocumentCursor& c);
 		virtual void clearMatches(QDocument *d);
 		

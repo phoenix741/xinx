@@ -21,6 +21,8 @@
 /*!
 	\file qdocument.h
 	\brief Definition of the QDocument class
+	
+	\defgroup document Document related classes 
 */
 
 #include <QList>
@@ -74,6 +76,7 @@ class QCE_EXPORT QDocument : public QObject
 			QPalette palette;
 			bool blinkingCursor;
 			bool fillCursorRect;
+			QList<QDocumentCursorHandle*> extra;
 			QList<QDocumentCursorHandle*> cursors;
 			QList<QDocumentSelection> selections;
 		};

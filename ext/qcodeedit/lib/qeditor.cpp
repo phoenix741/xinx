@@ -12,6 +12,10 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ****************************************************************************/
+/*
+ * 16/01/2009 : We can paste all type of text (uri too). This can be use when
+ * an application store a text with uri-list tag.
+ */
 
 #include "qeditor.h"
 
@@ -2145,7 +2149,8 @@ void QEditor::paintEvent(QPaintEvent *e)
 	// cursor mirrors :D
 	foreach ( const QDocumentCursor& m, m_mirrors )
 	{
-		ctx.cursors << m.handle();
+		if ( ctx.blinkingCursor )
+			ctx.extra << m.handle();
 		
 		if ( m.hasSelection() )
 		{
@@ -2153,6 +2158,11 @@ void QEditor::paintEvent(QPaintEvent *e)
 			
 			ctx.selections << s;
 		}
+	}
+	
+	if ( m_dragAndDrop.isValid() )
+	{
+		ctx.extra << m_dragAndDrop.handle();
 	}
 	
 	p.save();
@@ -2460,35 +2470,33 @@ void QEditor::mouseMoveEvent(QMouseEvent *e)
 		} else if ( e->modifiers() & Qt::ControlModifier ) {
 			
 			// get column number for column selection
-			int col = newCursor.columnNumber();
-			
-			newCursor.setColumnNumber(m_cursor.anchorColumn());
+			int org = m_cursor.anchorColumn();
+			int dst = newCursor.columnNumber();
+			// TODO : adapt to line wrapping...
 			
 			clearCursorMirrors();
-			m_cursor.clearSelection();
+			//m_cursor.clearSelection();
+			int min = qMin(m_cursor.lineNumber(), newCursor.lineNumber());
+			int max = qMax(m_cursor.lineNumber(), newCursor.lineNumber());
 			
-			if ( newCursor != m_cursor )
+			if ( min != max )
 			{
-				QDocumentCursor fake(m_cursor);
-				fake.setSelectionBoundary(newCursor);
-				
-				QDocumentSelection sel = fake.selection();
-				
-				for ( int l = sel.startLine; l <= sel.endLine; ++l )
+				for ( int l = min; l <= max; ++l )
 				{
 					if ( l != m_cursor.lineNumber() )
-						addCursorMirror(QDocumentCursor(m_doc, l,
-										m_cursor.anchorColumn()));
+						addCursorMirror(QDocumentCursor(m_doc, l, org));
 					
 				}
 				
 				if ( e->modifiers() & Qt::ShiftModifier )
 				{
-					m_cursor.setColumnNumber(col, QDocumentCursor::KeepAnchor);
+					m_cursor.setColumnNumber(dst, QDocumentCursor::KeepAnchor);
 					
 					for ( int i = 0; i < m_mirrors.count(); ++i )
-						m_mirrors[i].setColumnNumber(col, QDocumentCursor::KeepAnchor);
+						m_mirrors[i].setColumnNumber(dst, QDocumentCursor::KeepAnchor);
 				}
+			} else {
+				m_cursor.setSelectionBoundary(newCursor);
 			}
 		} else {
 			m_cursor.setSelectionBoundary(newCursor);
@@ -2559,33 +2567,34 @@ void QEditor::mousePressEvent(QMouseEvent *e)
 				//m_mirrors << cursor;
 				if ( e->modifiers() & Qt::ShiftModifier )
 				{
-					int col = cursor.columnNumber();
-					
-					cursor.setColumnNumber(m_cursor.anchorColumn());
+					// get column number for column selection
+					int org = m_cursor.anchorColumn();
+					int dst = cursor.columnNumber();
+					// TODO : fix and adapt to line wrapping...
 					
 					clearCursorMirrors();
-					m_cursor.clearSelection();
+					//m_cursor.clearSelection();
+					int min = qMin(m_cursor.lineNumber(), cursor.lineNumber());
+					int max = qMax(m_cursor.lineNumber(), cursor.lineNumber());
 					
-					if ( cursor != m_cursor )
+					if ( min != max )
 					{
-						QDocumentCursor fake(m_cursor);
-						fake.setSelectionBoundary(cursor);
-						
-						QDocumentSelection sel = fake.selection();
-						
-						for ( int l = sel.startLine; l <= sel.endLine; ++l )
+						for ( int l = min; l <= max; ++l )
 						{
 							if ( l != m_cursor.lineNumber() )
-								addCursorMirror(QDocumentCursor(m_doc, l,
-												m_cursor.anchorColumn()));
+								addCursorMirror(QDocumentCursor(m_doc, l, org));
 							
 						}
 						
-						m_cursor.setColumnNumber(col, QDocumentCursor::KeepAnchor);
-						
-						for ( int i = 0; i < m_mirrors.count(); ++i )
-							m_mirrors[i].setColumnNumber(col, QDocumentCursor::KeepAnchor);
-						
+						if ( e->modifiers() & Qt::ShiftModifier )
+						{
+							m_cursor.setColumnNumber(dst, QDocumentCursor::KeepAnchor);
+							
+							for ( int i = 0; i < m_mirrors.count(); ++i )
+								m_mirrors[i].setColumnNumber(dst, QDocumentCursor::KeepAnchor);
+						}
+					} else {
+						m_cursor.setSelectionBoundary(cursor);
 					}
 				} else if ( (e->modifiers() & Qt::AltModifier) ) {
 					addCursorMirror(cursor);

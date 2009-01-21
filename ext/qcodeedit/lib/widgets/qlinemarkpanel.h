@@ -51,7 +51,6 @@ class QCE_EXPORT QLineMarkPanel : public QPanel
 	private:
 		QList<QRect> m_rects;
 		QList<int> m_lines;
-		QString m_defaultMark;
 		QDocumentLine m_currentLine;
 
 };

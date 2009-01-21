@@ -811,7 +811,7 @@ void QNFADefinition::load(const QDomDocument& doc, QLanguageFactory::LangData *d
 	nd->m_language = d->lang = root.attribute("language");
 	nd->m_indentFold = stringToBool(root.attribute("indentationFold"), false);
 	nd->m_extensions = d->extensions = root.attribute("extensions").split(";");
-	nd->m_defaultMark = root.attribute("defaultLineMark");
+	nd->m_defaultMark = root.attribute("defaultLineMark", "bookmark");
 	
 	/*
 	qDebug("Generating definition for %s language from XML file : %s",
@@ -928,6 +928,11 @@ int QNFADefinition::tokenize(QDocument *d, int line, int count)
 QString QNFADefinition::singleLineComment() const
 {
 	return m_singleLineComment;
+}
+
+QString QNFADefinition::defaultLineMark() const
+{
+	return m_defaultMark;
 }
 
 /*!

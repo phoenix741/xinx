@@ -25,6 +25,7 @@
 #include "qdocument.h"
 #include "qdocumentline.h"
 
+#include "qlanguagedefinition.h"
 #include "qlinemarksinfocenter.h"
 
 #include <QIcon>
@@ -50,7 +51,7 @@ QCE_AUTO_REGISTER(QLineMarkPanel)
 	\brief Constructor
 */
 QLineMarkPanel::QLineMarkPanel(QWidget *p)
-	: QPanel(p), m_defaultMark( "bookmark" )
+	: QPanel(p)
 {
 	setFixedWidth(16);
 }
@@ -169,7 +170,7 @@ void QLineMarkPanel::mousePressEvent(QMouseEvent *e)
 */
 void QLineMarkPanel::mouseReleaseEvent(QMouseEvent *e)
 {
-	if ( !editor() || !editor()->document() )
+	if ( !editor() || !editor()->document() || !editor()->languageDefinition() )
 	{
 		QPanel::mouseReleaseEvent(e);
 		return;
@@ -178,7 +179,12 @@ void QLineMarkPanel::mouseReleaseEvent(QMouseEvent *e)
 	//QMessageBox::warning(0, 0, "clik.");
 
 	QDocumentLine l;
-
+	QLanguageDefinition *d = editor()->languageDefinition();
+	const int id = QLineMarksInfoCenter::instance()->markTypeId(d->defaultLineMark());
+	
+	if ( id < 0 )
+		return;
+	
 	e->accept();
 
 	for ( int i = 0; i < m_rects.count(); ++i )
@@ -186,7 +192,8 @@ void QLineMarkPanel::mouseReleaseEvent(QMouseEvent *e)
 		if ( m_rects.at(i).contains(e->pos()) )
 		{
 			l = editor()->document()->line(m_lines.at(i));
-			l.toggleMark( QLineMarksInfoCenter::instance()->markTypeId("bookmark") );
+			l.toggleMark(id);
+			//m->toggleDefaultMark(l, -1);
 
 			break;
 		}
