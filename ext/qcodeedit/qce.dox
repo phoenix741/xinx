@@ -1,0 +1,238 @@
+/*!
+	\mainpage QCodeEdit manual
+	
+	Sumarry :
+	<ol>
+		<li>\ref intro "Introduction"
+		<li>\ref license "License"
+		<li>\ref tutorial "Tutorial"
+		<li>\ref examples "Examples"
+	</ol>
+	
+	\section intro Introduction 
+	
+	%QCodeEdit is a library offering an advanced text editing framework ready to use in other Qt apps.
+	
+	The goals of QCodeEdit are :
+	<ul>
+		<li>Flexibility</li>
+		<li>Performance</li>
+		<li>Usability</li>
+	</ul>
+	
+	Flexibility is achieved by splitting the library in logical components that can be used (almost)
+	independently. The document-related classes for instances don't need an editor to be around (it
+	is a bit similar to a model/view approach in that way). Two other important features of %QCodeEdit
+	have been designed to maximize flexibility : the syntax engine and the panel system.
+	
+	<ul>
+		<li>the \ref QDocument "document" contains the data to be edited. It is made of \ref QDocumentLine "lines"
+		and can be manipulated using \ref QDocumentCursor "cursors".
+		<li>the \ref QEditor "editor" is a simple widget which allows edition of the document through mouse and
+		keyboard interaction.
+		<li>the syntax engine add new functionalities to both the \ref QDocument "document" and \ref QEditor "editor", such
+		as syntax highlighting, brace matching, code folding, auto indenting, (un)commenting... The builtin
+		implementation generates language definitions on-the-fly from XML files specifying the structure of
+		the language in a hierarchical and very intuitive way.
+		<li>the \ref QPanel "panels" are simple widgets which can be attached to the \ref QEditor "editor" using a
+		\ref QCodeEdit "manager". Builtin panels include : line numbers, fold indicators, line marks, line changes,
+		editor status and search/replace. It is of course possible to create new panels very easily.
+	</ul>
+	
+	
+	<table width="100%" border="0" frame="void"><tr width="100%">
+	<td align="left"></td>
+	<td align="right">\ref license "[Next:License]"</td>
+	</tr></table>
+*/
+
+/*!
+	\page license License
+	<table width="100%" border="0" frame="void"><tr width="100%">
+	<td align="left">\ref intro "[Previous:Introduction]"</td>
+	<td align="right">\ref tutorial "[Next:Tutorial]"</td>
+	</tr></table>
+	
+	\verbinclude GPL.txt
+	
+	<table width="100%" border="0" frame="void"><tr width="100%">
+	<td align="left">\ref intro "[Previous:Introduction]"</td>
+	<td align="right">\ref tutorial "[Next:Tutorial]"</td>
+	</tr></table>
+*/
+
+/*!
+	\page tutorial Tutorial
+	
+	<table width="100%" border="0" frame="void"><tr width="100%">
+	<td align="left">\ref license "[Previous:License]"</td>
+	<td align="right">\ref examples "[Next:Examples]"</td>
+	</tr></table>
+	
+	Sumarry :
+	<ol>
+		<li>\ref install "Installation"
+		<li>\ref start "Getting started"
+		<li>\ref examples "Examples"
+	</ol>
+	
+	\section install Installation
+	Installing %QCodeEdit is really simple.
+	
+	\subsection install-source Building from sources
+	
+		-# Make sure you have Qt4 installed and a supported compiler
+		-# Get %QCodeEdit sources : http://sourceforge.net/projects/edyuk/files
+		-# Uncompress the archive into the directory of your choice
+		-# Step into that directory and open a shell and type :\verbatim $ qmake && make \endverbatim
+		-# Once the compilation is finished type : \verbatim $ su -c "make install" \endverbatim
+	
+	\subsection install-win Windows : Using the binary installer
+	
+		-# Make sure you have Qt4 installed
+		-# Get %QCodeEdit windows installer : http://sourceforge.net/projects/edyuk/files
+		-# Run it
+	
+	\section start Getting started
+	
+	%QCodeEdit API has been modelled after that of QTextEdit/QTextDocument so porting should be relatively easy.
+	
+	The demo application gives a quick overview of what comes "for free" with %QCodeEdit and how to set it up
+	quickly. Some explanations are given below.
+	
+	For those interested in using some more advanced features of %QCodeEdit, the \ref examples section awaits you.
+	
+	Above all, you need to configure your project to use %QCodeEdit. There are several possible ways of doing that :
+	<ul>
+		<li>Embedding %QCodeEdit code into your application : simply copy the lib directory where you want and add
+		a proper include directive inside your project (probably something like : include(lib/lib.pri) )
+		<li>Using the installed %QCodeEdit library : simply add CONFIG += qcodeedit to your project and qmake will
+		take care of everything, provided %QCodeEdit has been installed properly beforehand
+		<li>Tweaking your porject files by hand : if you choose this way you probably don't need any advice on the
+		topic (otherwise you'd be a bit of a fool)
+	</ul>
+	
+	Here is the code, taken from the demo application, used to setup QCodeEdit :
+	
+	\code
+	m_formats = new QFormatScheme("qxs/formats.qxf", this);
+	QDocument::setDefaultFormatScheme(m_formats);
+	
+	QLineMarksInfoCenter::instance()->loadMarkTypes("qxs/marks.qxm");
+	
+	m_languages = new QLanguageFactory(m_formats, this);
+	m_languages->addDefinitionPath("qxs");
+	\endcode
+	
+	It is quite simple really. First we load a format scheme from a file and set
+	it as the default format scheme used by documents to draw themselves when no
+	other is provided.
+	It used to be necessary when the format scheme was common to all languages.
+	However, in newer version of QCodeEdit (starting with 2.2) this is only
+	a recommended operation to prevent highlighting from being useless when some
+	languages do not come with their own format scheme.
+	
+	Then we load the line marks definition. Lines marks can be customized in any
+	way you like through the use of such a file or even directly using the various
+	methods provided by QLineMarksInfoCenter. Again, this is not required but
+	highly recommended, if you want to take advantage of %QCodeEdit features.
+	
+	Finally we create a language factory and feed it with a path to search for
+	language definitions. This language factory can later be used to easily
+	adjust the language definition of a \ref QDocument "document" / \ref QEditor "editor".
+	All the files recognized as language definitions within the given path will
+	be loaded and support for a set of languages will be added automagically :)
+	
+	
+	Now, lets create a neat widget with which the user will be able to actually edit some text :
+	
+	\code
+	m_editControl = new QCodeEdit(this);
+	
+	m_editControl
+		->addPanel("Line Mark Panel", QCodeEdit::West, true)
+		->setShortcut(QKeySequence("F6"));
+	
+	m_editControl
+		->addPanel("Line Number Panel", QCodeEdit::West, true)
+		->setShortcut(QKeySequence("F11"));
+	
+	m_editControl
+		->addPanel("Fold Panel", QCodeEdit::West, true)
+		->setShortcut(QKeySequence("F9"));
+	
+	m_editControl
+		->addPanel("Line Change Panel", QCodeEdit::West, true)
+	
+	m_editControl
+		->addPanel("Status Panel", QCodeEdit::South, true);
+	
+	m_editControl
+		->addPanel("Search Replace Panel", QCodeEdit::South);
+	
+	\endcode
+	
+	So creating a managed editor only takes one line. All the rest is just about adding fancy
+	\ref QPanel "panels" to make the editor more user/friendly.
+	
+	As you can see the QCodeEdit::addPanel() method returns a QAction object which behaves in
+	the exact same way the toggle view action of a QDockWidget do : un/check it to hide/show
+	the panel.
+	
+	Some of these toggle view actions are given shortcuts to make it easier to show them.
+	The boolean argument passed to addPanel() specifies whether the toggle view action should
+	be added to the context menu of the \ref QEditor "editor".
+	
+	If you think it takes too much space you can also specify the panel layout in its
+	serialized form. The code below has the exact same effect as the one above except that it
+	does not bother creating actions, let alone setting shortcuts.
+	
+	\code
+	m_editControl = new QCodeEdit(
+							"0{Line Mark Panel, Line Number Panel, Fold Panel, Line Change Panel}"
+							"2{Status Panel, Search Replace Panel}",
+							this
+						);
+	\endcode
+	
+	Ok, real good, but we still haven't loaded a file... Here's how to proceed :
+	
+	\code 
+	m_languages->setLanguage(m_editControl->editor(), filename);
+	m_editControl->editor()->load(filename);
+	\endcode
+	
+	The first step is to set the proper \ref QLanguageDefinition "language definition" for the
+	\ref QEditor "editor". This is achieved by a single call to the \ref QLanguageFactory "language factory"
+	we created earlier. We pass it the filename but a simple suffix or even a language name
+	would work just as well.
+	
+	At last, we load the content of the file into the editor. The user can now edit it (once the
+	widget will be displayed of course...)
+	
+	<table width="100%" border="0" frame="void"><tr width="100%">
+	<td align="left">\ref license "[Previous:License]"</td>
+	<td align="right">\ref examples "[Next:Examples]"</td>
+	</tr></table>
+*/
+
+/*!
+	<table width="100%" border="0" frame="void"><tr width="100%">
+	<td align="left">\ref tutorial "[Previous:Tutorial]"</td>
+	<td align="right"></td>
+	</tr></table>
+	
+	\page examples Example
+	
+	Sumarry :
+	<ol>
+		<li>\ref ex1 ""
+		<li>\ref ex2 ""
+	</ol>
+	
+	\section ex1
+	
+	
+	\section ex2
+	
+*/

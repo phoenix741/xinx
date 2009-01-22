@@ -39,7 +39,7 @@ QList<QDocumentCursorHandle*> QDocumentCommand::m_autoUpdated;
 */
 QDocumentCommand::QDocumentCommand(Command c, QDocument *d, QDocumentCommand *p)
  : QUndoCommand(p),
-	m_state(false), m_doc(d),
+	m_state(false), m_first(true), m_doc(d),
 	m_redoOffset(0), m_undoOffset(0),
 	m_silent(false), m_command(c), m_cursor(0)
 {
@@ -429,9 +429,19 @@ void QDocumentCommand::disableAutoUpdate(QDocumentCursorHandle *h)
 /*!
 	\brief Change the modification status of a line
 */
-void QDocumentCommand::markRedone(QDocumentLineHandle *h)
+void QDocumentCommand::markRedone(QDocumentLineHandle *h, bool firstTime)
 {
-	++m_doc->impl()->m_status[h];
+	QHash<QDocumentLineHandle*, QPair<int, int> >::iterator it = m_doc->impl()->m_status.find(h);
+	
+	if ( it != m_doc->impl()->m_status.end() )
+	{
+		if ( firstTime && it->first < it->second )
+			it->second = -1;
+		
+		++it->first;
+	} else {
+		m_doc->impl()->m_status[h] = qMakePair(1, 0);
+	}
 }
 
 /*!
@@ -439,7 +449,15 @@ void QDocumentCommand::markRedone(QDocumentLineHandle *h)
 */
 void QDocumentCommand::markUndone(QDocumentLineHandle *h)
 {
-	--m_doc->impl()->m_status[h];
+	QHash<QDocumentLineHandle*, QPair<int, int> >::iterator it = m_doc->impl()->m_status.find(h);
+	
+	if ( it != m_doc->impl()->m_status.end() )
+	{
+		--it->first;
+	} else {
+		qDebug("warning: status data and/or undo stack corrupted...");
+		m_doc->impl()->m_status[h] = qMakePair(-1, 0);
+	}
 }
 
 ////////////////////////////
@@ -541,12 +559,13 @@ void QDocumentInsertCommand::redo()
 	
 	m_doc->impl()->emitContentsChange(m_data.lineNumber, m_data.handles.count() + 1);
 	
-	markRedone(hl);
+	markRedone(hl, m_first);
 	
 	foreach ( QDocumentLineHandle *h, m_data.handles )
-		markRedone(h);
+		markRedone(h, m_first);
 	
-	m_doc->impl()->emitContentsChanged();
+	//m_doc->impl()->emitContentsChanged();
+	m_first = false;
 }
 
 void QDocumentInsertCommand::undo()
@@ -575,7 +594,7 @@ void QDocumentInsertCommand::undo()
 	foreach ( QDocumentLineHandle *h, m_data.handles )
 		markUndone(h);
 	
-	m_doc->impl()->emitContentsChanged();
+	//m_doc->impl()->emitContentsChanged();
 }
 
 ///////////////////////////
@@ -674,12 +693,13 @@ void QDocumentEraseCommand::redo()
 	
 	updateTarget(m_data.lineNumber, m_data.startOffset + m_redoOffset);
 	
-	markRedone(hl);
+	markRedone(hl, m_first);
 	
 	foreach ( QDocumentLineHandle *h, m_data.handles )
-		markRedone(h);
+		markRedone(h, m_first);
 	
-	m_doc->impl()->emitContentsChanged();
+	//m_doc->impl()->emitContentsChanged();
+	m_first = false;
 }
 
 void QDocumentEraseCommand::undo()
@@ -723,7 +743,7 @@ void QDocumentEraseCommand::undo()
 	foreach ( QDocumentLineHandle *h, m_data.handles )
 		markUndone(h);
 	
-	m_doc->impl()->emitContentsChanged();
+	//m_doc->impl()->emitContentsChanged();
 }
 
 ///////////////////////////

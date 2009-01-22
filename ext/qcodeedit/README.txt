@@ -2,11 +2,11 @@
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
   
-        QCodeEdit, copyright (c) 2006-2008 Luc Bruant aka fullmetalcoder,
+        QCodeEdit, copyright (c) 2006-2009 Luc Bruant aka fullmetalcoder,
                   is a free and open source software
   
-  QCodeEdit sources are part of Edyuk and thus GNU General Public License (GPL)
-  version 2, as published by the Free Software Fondation, applies to them.
+  QCodeEdit sources are part of Edyuk and are thus available under GNU General Public
+  License version 3 (GPL v3), as published by the Free Software Foundation.
 
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
@@ -20,13 +20,14 @@ a framework within other apps without having to reinvent the wheel.
 Writing closed source applications with QCodeEdit is possible after buying a
 proper license. For more informations about pricing and licensing conditions
 please contact the author directly <non.deterministic.finite.organism@gmail.com>
-Note that you will still need a Qt commercial license for that.
+Note that you will still need a Qt commercial license for that or, starting with
+Qt 4.5, a LGPL one.
 
-QCodeEdit depends on Qt 4.3, copyright (c) Trolltech AS , which can be downloaded at :
-ftp://ftp.trolltech.com/qt/sources
+QCodeEdit depends on Qt 4.3 or newer, copyright (c) Nokia Corporation, which can
+be downloaded at : ftp://ftp.trolltech.com/qt/sources
 
-More information about Qt and Trolltech :
-http://www.trolltech.com
+More information about Qt and Qt Software (formerly Trolltech) :
+http://www.qtsoftware.com
 
 Hoping you'll like it.
 
@@ -43,6 +44,7 @@ The author would like to thank all the people who contributed to QCodeEdit in va
  * contributing patches :
 	Jerome Vizcaino
 	Benito van der Zander
+	Ulrich Van Den Hekke
 	Boris Barbulovski
 
  * funding (by buying commercial licenses) :
@@ -53,7 +55,6 @@ The author would like to thank all the people who contributed to QCodeEdit in va
 	Johan Thelin (posted a blog post that appeared on PlanetKDE)
 
 (If you have been forgotten send an email to the author and the list will be updated)
-
 
 
 IMPORTANT : If you encounter any sort of troubles trying to build or run QCodeEdit
@@ -126,10 +127,15 @@ definitions are provided :
   * XML
   * Doxygen alone (for .dox files)
   * QMake project files
-  * Python (experimental)
-  * C# (experimental)
+  * Python
+  * QtScript/JavaScript
+  * C# (WIP)
+  * Lua (WIP)
+  * LaTex (WIP)
+  * BibTex (WIP)
 
-Feel free to add other ;)
+If you write a new one for your own use (or modify an existing one to suit you needs)
+please consider contributing it back to the project.
 
 ------------------------------------------------------------------------------------------
 $ example/example [file]
@@ -154,7 +160,6 @@ $ doxygen
 
 NB :
 	* This will create the documentation in the doc folder. Just open doc/html/index.html
-	* These are only API docs (which lack completeness ATM...)
 
 
  >>> Fetching bleeding edge sources [needs Subversion : http://subversion.tigris.org] :
@@ -165,4 +170,3 @@ $ svn co http://edyuk.svn.sf.net/svnroot/edyuk/trunk/3rdparty/qcodeedit2
 
 NB : Using a graphical client this command extends to a "checkout" action using the above
 repository URL.
-

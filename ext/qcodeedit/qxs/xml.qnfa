@@ -1,5 +1,5 @@
 <!DOCTYPE QNFA>
-<QNFA language="XML" extensions="xml;qnfa;qxm;qxf;ui" defaultLineMark="" >
+<QNFA language="XML" extensions="xml;qnfa;qxm;qxf;ui" >
 	<context id="comment" format="comment" >
 		<start parenthesis="xmlcomment:open" indent="1" fold="1">&lt;!--</start>
 		<stop parenthesis="xmlcomment:close" indent="1" fold="1">--&gt;</stop>
@@ -25,6 +25,7 @@
 	<context id="tag" >
 		<start format="keyword" parenthesis="xmltag:open@nomatch" indent="1" fold="1" >&lt;[$w:]+</start>
 		<start format="keyword" parenthesis="xmltag:close@nomatch" indent="1" fold="1" >&lt;/[$w:]+</start>
+		<stop format="keyword" parenthesis="xmltag:close@nomatch" indent="1" fold="1" >/$w*&gt;</stop>
 		<stop format="keyword" >&gt;</stop>
 		
 		<word format="preprocessor">[$w:]+=</word>
@@ -33,6 +34,8 @@
 			<start>&quot;</start>
 			<stop>&quot;</stop>
 			<escape>\\</escape>
+			<sequence parenthesis="round:open" format="keyword" >(</sequence>
+			<sequence parenthesis="round:close" format="keyword" >)</sequence>
 		</context>
 		
 		<context id="data/chars" format="text" stayOnLine="true" >

@@ -423,8 +423,8 @@ class QCE_EXPORT QDocumentPrivate
 		static QList<QDocumentPrivate*> m_documents;
 		
 		int m_maxMarksPerLine;
-		QHash<QDocumentLineHandle*, int> m_status;
 		QHash<QDocumentLineHandle*, QList<int> > m_marks;
+		QHash<QDocumentLineHandle*, QPair<int, int> > m_status;
 		
 		int _nix, _dos;
 		QString m_lineEndingString;

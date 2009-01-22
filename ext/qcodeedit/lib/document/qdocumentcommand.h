@@ -73,11 +73,11 @@ class QCE_EXPORT QDocumentCommand : public QUndoCommand
 		static void disableAutoUpdate(QDocumentCursorHandle *h);
 		
 	protected:
-		bool m_state;
+		bool m_state, m_first;
 		QDocument *m_doc;
 		int m_redoOffset, m_undoOffset;
 		
-		void markRedone(QDocumentLineHandle *h);
+		void markRedone(QDocumentLineHandle *h, bool firstTime);
 		void markUndone(QDocumentLineHandle *h);
 		
 		void updateTarget(int l, int offset);

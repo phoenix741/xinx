@@ -1261,7 +1261,15 @@ void QDocument::setClean()
 	if ( m_impl )
 	{
 		m_impl->m_commands.setClean();
-		m_impl->m_status.clear();
+		//m_impl->m_status.clear();
+		
+		QHash<QDocumentLineHandle*, QPair<int, int> >::iterator it = m_impl->m_status.begin();
+		
+		while ( it != m_impl->m_status.end() )
+		{
+			it->second = it->first;
+			++it;
+		}
 	}
 }
 
@@ -1270,12 +1278,23 @@ void QDocument::setClean()
 */
 bool QDocument::isLineModified(const QDocumentLine& l) const
 {
-	return (!m_impl || !m_impl->m_status.contains(l.handle()))
-			?
-				false
-			:
-				m_impl->m_status.value(l.handle())
-			;
+	if ( !m_impl )
+		return false;
+	
+	QHash<QDocumentLineHandle*, QPair<int, int> >::const_iterator it = m_impl->m_status.constFind(l.handle());
+	
+	//if ( it != m_impl->m_status.constEnd() )
+	//	qDebug("%i vs %i", it->first, it->second);
+	
+	return it != m_impl->m_status.constEnd() ? it->first != it->second : false;
+}
+
+/*!
+	\return Whether a given line has been modified since last load
+*/
+bool QDocument::hasLineEverBeenModified(const QDocumentLine& l) const
+{
+	return m_impl ? m_impl->m_status.contains(l.handle()) : false;
 }
 
 /*!
