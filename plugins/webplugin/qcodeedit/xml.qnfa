@@ -23,11 +23,11 @@
 	<sequence id="entity" format="xml_entity">&amp;$w+;</sequence>
 		
 	<context id="tag/start" >
-		<start format="xml_elementname" >&lt;[$w:\-]+</start>
+		<start format="xml_elementname" >&lt;[0-9$w:\-]+</start>
 		<stop format="xml_elementname" parenthesis="xmltag:open@nomatch" indent="0" fold="1" >&gt;</stop>
 		<stop format="xml_elementname" >/&gt;</stop>
 
-		<word format="xml_attributename">[$w:]+=</word>
+		<word format="xml_attributename">[0-9$w:]+=</word>
 
 		<context id="data/string" format="xml_attributevalue" stayOnLine="true" >
 			<start>&quot;</start>
@@ -47,5 +47,5 @@
 		</context>
 	</context>
 
-	<sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="0" fold="1" format="xml_elementname" >&lt;/[$w:\-]+&gt;</sequence>
+	<sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="0" fold="1" format="xml_elementname" >&lt;/[0-9$w:\-]+&gt;</sequence>
 </QNFA>

@@ -1,4 +1,5 @@
 - Paste (Ctrl+V) doesn't work
+	* From word 
 * Can't paste when i'm from XDME
 * I have a crash in use (QVector index out of bound)
 * Bookmark bar doesn't work
