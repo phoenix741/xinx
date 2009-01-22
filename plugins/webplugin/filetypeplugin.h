@@ -21,6 +21,7 @@
 #define _FILETYPEPLUGIN_H_
 
 // Xinx header
+#include "xsl/xmlformatscheme.h"
 #include "xsl/xsllistview.h"
 #include "xsl/stylesheeteditor.h"
 #include "xsl/xmlfileeditor.h"
@@ -71,11 +72,7 @@ static const QColor DEFAULT_STRING			= Qt::red;
 class XMLFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	XMLFileType() {
-		QHash<QString,QTextCharFormat> formats = defaultsFormat();
-		foreach( QString key, formats.keys() )
-			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-	}
+	XMLFileType() : m_formats(0) {};
 
 	virtual QString description() {	return tr( "XML File" ); };
 	virtual QString match() { return "*.xml"; };
@@ -105,6 +102,10 @@ public:
 
 	virtual QString highlighterId() const {
 		return "XML";
+	}
+
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
+		return new XmlFormatScheme( config );
 	}
 
 	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {

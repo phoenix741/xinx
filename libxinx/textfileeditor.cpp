@@ -260,6 +260,7 @@ void TextFileEditor::replace( const QString & from, const QString & to, SearchOp
 	Q_ASSERT( ! m_cursorStart.isNull() );
 
 	if( ! options.testFlag( REGULAR_EXPRESSION ) ) {
+		m_cursorStart.removeSelectedText();
 		m_cursorStart.insertText( to );
 		return;
 	}
@@ -276,6 +277,7 @@ void TextFileEditor::replace( const QString & from, const QString & to, SearchOp
 		it++; index++;
 	}
 
+	m_cursorStart.removeSelectedText();
 	m_cursorStart.insertText( result );
 
 }

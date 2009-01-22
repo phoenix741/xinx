@@ -1,0 +1,70 @@
+/* *********************************************************************** *
+ * XINX                                                                    *
+ * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * ulrich.vdh@shadoware.org                                                *
+ *                                                                         *
+ * This program is free software: you can redistribute it and/or modify    *
+ * it under the terms of the GNU General Public License as published by    *
+ * the Free Software Foundation, either version 3 of the License, or       *
+ * (at your option) any later version.                                     *
+ *                                                                         *
+ * This program is distributed in the hope that it will be useful,         *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+ * GNU General Public License for more details.                            *
+ *                                                                         *
+ * You should have received a copy of the GNU General Public License       *
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
+ * *********************************************************************** */
+
+// Xinx header
+#include "xinxformatscheme.h"
+#include "xinxconfig.h"
+
+// QCodeEdit header
+#include "qformat.h"
+
+/* XinxFormatScheme */
+
+XinxFormatScheme::XinxFormatScheme( XINXConfig * parent ) : QFormatScheme( parent ), m_config( parent ) {
+	createStandardFormat();
+}
+
+XinxFormatScheme::~XinxFormatScheme() {
+
+}
+
+void XinxFormatScheme::createStandardFormat() {
+	QFormat searchFormat, matchFormat;
+
+	// Init search format
+	searchFormat.background = m_config->config().editor.highlightWord;
+	setFormat( "search", searchFormat );
+
+	// Init match format
+	matchFormat.weight = QFont::Bold;
+	matchFormat.foreground = Qt::red;
+	matchFormat.foreground = Qt::yellow;
+	setFormat( "match", matchFormat );
+}
+
+void XinxFormatScheme::updateFormatsFromConfig() {
+	// Reload from config file ;)
+	createStandardFormat();
+
+	foreach( QString format, m_config->config().formats.keys() ) {
+
+	}
+}
+
+void XinxFormatScheme::putFormatsToConfig() {
+
+}
+
+void XinxFormatScheme::setNameSpace( const QString & value ) {
+	m_nameSpace = value;
+}
+
+const QString & XinxFormatScheme::nameSpace() const {
+	return m_nameSpace;
+}

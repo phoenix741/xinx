@@ -1,5 +1,6 @@
 - Paste (Ctrl+V) doesn't work
 	* From word 
+* Rechercher/Remplacer : ne remplace pas
 * Can't paste when i'm from XDME
 * I have a crash in use (QVector index out of bound)
 * Bookmark bar doesn't work
@@ -12,7 +13,7 @@
 - Le surligner automatique/non automatique ne fonctionne pas. ==> le fichier de config est charge apres le plugins
 	* Le surligner ne marche pas quand recherche espace.
 - Probleme lors d'ouverture de fichier qui n'existe plus ?
-- Ctrl+D pour dupliquer ne fonctionne pas : plantage
+* Ctrl+D pour dupliquer ne fonctionne pas : plantage
 * Si ajout de // sur une ligne de l'editeur ....
 * Ctrl+Enter ne fonctionne plus
 

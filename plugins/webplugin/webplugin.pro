@@ -8,12 +8,13 @@ TARGET = webplugin
 INCLUDEPATH += ./ \
     ../../libxinx \
     ../../components \
-	../../ext/qcodeedit/lib \
-	../../ext/qcodeedit/lib/document \
-	../../ext/qcodeedit/lib/language \
-	../../ext/qcodeedit/lib/qnfa \
-	../../ext/qcodeedit/lib/widgets
-HEADERS = xq/xquery_keyword.h \
+    ../../ext/qcodeedit/lib \
+    ../../ext/qcodeedit/lib/document \
+    ../../ext/qcodeedit/lib/language \
+    ../../ext/qcodeedit/lib/qnfa \
+    ../../ext/qcodeedit/lib/widgets
+HEADERS = xsl/xmlformatscheme.h \
+    xq/xquery_keyword.h \
     xsl/xsltexteditor.h \
     config/webpluginsettings.h \
     xsl/xmlprettyprinter.h \
@@ -38,7 +39,8 @@ HEADERS = xq/xquery_keyword.h \
     xq/xqfileeditor.h \
     xq/xqmodelcompleter.h \
     filetypeplugin.h
-SOURCES = xq/xquery_keyword.cpp \
+SOURCES = xsl/xmlformatscheme.cpp \
+    xq/xquery_keyword.cpp \
     xsl/xsltexteditor.cpp \
     config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \

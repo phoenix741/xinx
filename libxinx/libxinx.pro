@@ -17,6 +17,7 @@ win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
 win32 : RC_FILE += rc/libxinx.rc
 HEADERS = xinxformatfactory.h \
+	xinxformatscheme.h \
     textfileeditor.h \
     filewatcher.h \
     p_filewatcher.h \
@@ -39,6 +40,7 @@ HEADERS = xinxformatfactory.h \
  xinxcodeedit_p.h \
  xinxlanguagefactory.h
 SOURCES = xinxformatfactory.cpp \
+	xinxformatscheme.cpp \
     textfileeditor.cpp \
     filewatcher.cpp \
     filecontentitemmodel.cpp \

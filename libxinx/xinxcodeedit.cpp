@@ -426,12 +426,15 @@ void XinxCodeEdit::duplicateLines() {
 		text += "\n";
 
 
+	QDocumentCursor selStart = cursor.selectionStart();
 	cursor.beginEditBlock();
-	cursor.moveTo( cursor.selectionStart() );
+	cursor.moveTo( selStart );
 	if( text.contains( '\n' ) )
 		cursor.movePosition( 0, QDocumentCursor::StartOfLine );
 	cursor.insertText( text );
+	cursor.movePosition( text.length(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 	cursor.endEditBlock();
+	setTextCursor( cursor );
 }
 
 void XinxCodeEdit::moveLineUp() {
