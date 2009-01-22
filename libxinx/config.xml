@@ -53,6 +53,16 @@
 		<value name="Auto load configuration file" type="bool" default="true"/>
 		<value name="Auto save configuration file" type="bool" default="false"/>
 	</type>
+	<type name="QFormat">
+		<value name="italic" type="bool" default="false"/>
+		<value name="bold" type="bool" default="false"/>
+		<value name="overline" type="bool" default="false"/>
+		<value name="strikout" type="bool" default="false"/>
+		<value name="underline" type="bool" default="false"/>
+		<value name="waveunderline" type="bool" default="false"/>
+		<value name="foreground" type="color"/>
+		<value name="background" type="color"/>
+	</type>
 
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
 
@@ -81,5 +91,5 @@
 		<default name="diff" default="/usr/bin/kompare"/>
 	</value>
 	<value name="Files" type="hash:Extentions"/>
-	<value name="Formats" type="hash:textformat"/>
+	<value name="Formats" type="hash:QFormat"/>
 </config>

@@ -34,7 +34,7 @@ XinxFormatFactory::~XinxFormatFactory() {
 
 }
 
-void XinxFormatFactory::updateFormats() {
+void XinxFormatFactory::updateFormats() {/*
 	QFormat searchFormat, matchFormat;
 	searchFormat.background = m_config->config().editor.highlightWord;
 	matchFormat.weight = QFont::Bold;
@@ -45,7 +45,7 @@ void XinxFormatFactory::updateFormats() {
 
 	foreach( QString key, m_config->config().formats.keys() ) {
 		QFormat ceFormat;
-		QTextCharFormat tcFormat = m_config->config().formats[ key ];
+			QTextCharFormat tcFormat = m_config->config().formats[ key ];
 
 		ceFormat.weight = tcFormat.fontWeight();
 		ceFormat.italic = tcFormat.fontItalic();
@@ -55,6 +55,6 @@ void XinxFormatFactory::updateFormats() {
 		ceFormat.foreground = tcFormat.foreground().color();
 
 		setFormat( key, ceFormat );
-	}
+	}*/
 }
 

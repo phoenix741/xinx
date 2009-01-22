@@ -21,7 +21,7 @@
 #include "xmlformatscheme.h"
 
 // QCodeEdit header
-#include <QFormat>
+#include <qformat.h>
 
 XmlFormatScheme::XmlFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
 	createDefaultScheme();

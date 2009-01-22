@@ -15,7 +15,6 @@
 #include <QHash>
 #include <QHash>
 #include <QHash>
-#include <QTextCharFormat>
 #include <QHash>
 
 class PrivateAppSettings;
@@ -29,6 +28,17 @@ public:
 
 class AppSettings {
 public:
+	struct struct_qformat {
+		bool italic;
+		bool bold;
+		bool overline;
+		bool strikout;
+		bool underline;
+		bool waveunderline;
+		QColor foreground;
+		QColor background;
+	};
+
 	struct struct_configurationEditor {
 		bool activateConfigurationEditor;
 		bool autoLoadConfigurationFile;
@@ -104,7 +114,7 @@ public:
 		struct_xmlpres xmlPres;
 		QHash<QString,QString> tools;
 		QHash<QString,struct_extentions> files;
-		QHash<QString,QTextCharFormat> formats;
+		QHash<QString,struct_qformat> formats;
 	};
 
 
@@ -120,6 +130,10 @@ public:
 
 	AppSettings& operator=(const AppSettings& p);
 protected:
+	virtual struct_qformat getDefaultQformat();
+	virtual AppSettings::struct_qformat getSettingsQformat( AppSettingsSettings * settings, const QString & path, AppSettings::struct_qformat defaultValue );
+	virtual void setSettingsQformat( AppSettingsSettings * settings, const QString & path, AppSettings::struct_qformat value );
+
 	virtual struct_configurationEditor getDefaultConfigurationEditor();
 	virtual AppSettings::struct_configurationEditor getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_configurationEditor defaultValue );
 	virtual void setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, AppSettings::struct_configurationEditor value );
@@ -164,12 +178,9 @@ protected:
 	virtual QHash<QString,AppSettings::struct_extentions> getSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> defaultValue );
 	virtual void setSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_extentions> value );
 
-	virtual QTextCharFormat getSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat defaultValue );
-	virtual void setSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat value );
-
-	virtual QHash<QString,QTextCharFormat> getDefaultHash_QTextCharFormat();
-	virtual QHash<QString,QTextCharFormat> getSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue );
-	virtual void setSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value );
+	virtual QHash<QString,struct_qformat> getDefaultHash_struct_qformat();
+	virtual QHash<QString,AppSettings::struct_qformat> getSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_qformat> defaultValue );
+	virtual void setSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_qformat> value );
 
 private:
 	PrivateAppSettings * d;

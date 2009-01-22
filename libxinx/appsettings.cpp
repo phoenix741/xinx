@@ -92,6 +92,52 @@ void AppSettings::load() {
 	d->deleteSettings();
 }
 
+AppSettings::AppSettings::struct_qformat AppSettings::getDefaultQformat() {
+	struct_qformat value;
+
+	value.italic = false;
+	value.bold = false;
+	value.overline = false;
+	value.strikout = false;
+	value.underline = false;
+	value.waveunderline = false;
+
+	return value;
+}
+
+AppSettings::AppSettings::struct_qformat AppSettings::getSettingsQformat( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_qformat defaultValue ) {
+	struct_qformat value;
+	settings->beginGroup( path );
+
+	value.italic = settings->value( "italic", defaultValue.italic ).toBool();
+	value.bold = settings->value( "bold", defaultValue.bold ).toBool();
+	value.overline = settings->value( "overline", defaultValue.overline ).toBool();
+	value.strikout = settings->value( "strikout", defaultValue.strikout ).toBool();
+	value.underline = settings->value( "underline", defaultValue.underline ).toBool();
+	value.waveunderline = settings->value( "waveunderline", defaultValue.waveunderline ).toBool();
+	value.foreground = settings->value( "foreground", defaultValue.foreground ).value<QColor>();
+	value.background = settings->value( "background", defaultValue.background ).value<QColor>();
+
+	settings->endGroup();
+	return value;
+}
+
+void AppSettings::setSettingsQformat( AppSettingsSettings * settings, const QString & path, AppSettings::AppSettings::struct_qformat value ) {
+	struct_qformat defaultValue = getDefaultQformat();
+	settings->beginGroup( path );
+
+	settings->setValue( "italic", value.italic, defaultValue.italic );
+	settings->setValue( "bold", value.bold, defaultValue.bold );
+	settings->setValue( "overline", value.overline, defaultValue.overline );
+	settings->setValue( "strikout", value.strikout, defaultValue.strikout );
+	settings->setValue( "underline", value.underline, defaultValue.underline );
+	settings->setValue( "waveunderline", value.waveunderline, defaultValue.waveunderline );
+	settings->setValue( "foreground", value.foreground, defaultValue.foreground );
+	settings->setValue( "background", value.background, defaultValue.background );
+
+	settings->endGroup();
+}
+
 AppSettings::AppSettings::struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
 	struct_configurationEditor value;
 
@@ -383,7 +429,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.xmlPres = getDefaultXmlpres();
 	value.tools = getDefaultHash_QString();
 	value.files = getDefaultHash_struct_extentions();
-	value.formats = getDefaultHash_QTextCharFormat();
+	value.formats = getDefaultHash_struct_qformat();
 
 	return value;
 }
@@ -408,7 +454,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSet
 	value.xmlPres = getSettingsXmlpres( settings, "Xml Pres", defaultValue.xmlPres );
 	value.tools = getSettingsHash_QString( settings, "Tools", defaultValue.tools );
 	value.files = getSettingsHash_struct_extentions( settings, "Files", defaultValue.files );
-	value.formats = getSettingsHash_QTextCharFormat( settings, "Formats", defaultValue.formats );
+	value.formats = getSettingsHash_struct_qformat( settings, "Formats", defaultValue.formats );
 
 	settings->endGroup();
 	return value;
@@ -434,7 +480,7 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	setSettingsXmlpres( settings, "Xml Pres", value.xmlPres );
 	setSettingsHash_QString( settings, "Tools", value.tools );
 	setSettingsHash_struct_extentions( settings, "Files", value.files );
-	setSettingsHash_QTextCharFormat( settings, "Formats", value.formats );
+	setSettingsHash_struct_qformat( settings, "Formats", value.formats );
 
 	settings->endGroup();
 }
@@ -552,48 +598,20 @@ void AppSettings::setSettingsHash_struct_extentions( AppSettingsSettings * setti
 	settings->endGroup();
 }
 
-QTextCharFormat AppSettings::getSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat defaultValue ) {
-	QTextCharFormat format;
-	settings->beginGroup( path );
-
-	format.setFontItalic( settings->value( "italic", defaultValue.fontItalic() ).toBool() );
-	format.setFontOverline( settings->value( "overline", defaultValue.fontOverline() ).toBool() );
-	format.setFontStrikeOut( settings->value( "strikeOut", defaultValue.fontStrikeOut() ).toBool() );
-	format.setFontUnderline( settings->value( "underline", defaultValue.fontUnderline() ).toBool() );
-	format.setFontWeight( settings->value( "weight", defaultValue.fontWeight() ).toInt() );
-	format.setForeground( settings->value( "color", defaultValue.foreground() ).value<QColor>() );
-
-	settings->endGroup();
-	return format;
-}
-
-void AppSettings::setSettingsTextCharFormat( AppSettingsSettings * settings, const QString & path, QTextCharFormat value ) {
-	settings->beginGroup( path );
-
-	settings->setValue( "italic", value.fontItalic() );
-	settings->setValue( "overline", value.fontOverline() );
-	settings->setValue( "strikeOut", value.fontStrikeOut() );
-	settings->setValue( "underline", value.fontUnderline() );
-	settings->setValue( "weight", value.fontWeight() );
-	settings->setValue( "color", value.foreground() );
-
-	settings->endGroup();
-}
-
-QHash<QString,QTextCharFormat> AppSettings::getDefaultHash_QTextCharFormat() {
-	QHash<QString,QTextCharFormat> value;
+QHash<QString,AppSettings::struct_qformat> AppSettings::getDefaultHash_struct_qformat() {
+	QHash<QString,struct_qformat> value;
 
 
 	return value;
 }
 
-QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> defaultValue ) {
-	QHash<QString,QTextCharFormat> value;
+QHash<QString,AppSettings::struct_qformat> AppSettings::getSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_qformat> defaultValue ) {
+	QHash<QString,struct_qformat> value;
 	settings->beginGroup( path );
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( QString key, keys ) {
-		value[ key ] = getSettingsTextCharFormat( settings, key, defaultValue[ key ] );
+		value[ key ] = getSettingsQformat( settings, key, defaultValue[ key ] );
 	}
 	foreach( QString defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
@@ -605,12 +623,12 @@ QHash<QString,QTextCharFormat> AppSettings::getSettingsHash_QTextCharFormat( App
 	return value;
 }
 
-void AppSettings::setSettingsHash_QTextCharFormat( AppSettingsSettings * settings, const QString & path, QHash<QString,QTextCharFormat> value ) {
-	QHash<QString,QTextCharFormat> defaultValue = getDefaultHash_QTextCharFormat();
+void AppSettings::setSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, QHash<QString,AppSettings::struct_qformat> value ) {
+	QHash<QString,struct_qformat> defaultValue = getDefaultHash_struct_qformat();
 	settings->beginGroup( path );
 
 	foreach( QString key, value.keys() ) {
-		setSettingsTextCharFormat( settings, key, value[ key ] );
+		setSettingsQformat( settings, key, value[ key ] );
 	}
 
 	settings->endGroup();

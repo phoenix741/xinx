@@ -72,8 +72,6 @@ static const QColor DEFAULT_STRING			= Qt::red;
 class XMLFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	XMLFileType() : m_formats(0) {};
-
 	virtual QString description() {	return tr( "XML File" ); };
 	virtual QString match() { return "*.xml"; };
 	virtual QIcon icon() { return QIcon( ":/images/typexml.png" ); };
@@ -210,12 +208,6 @@ public:
 class JSFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	JSFileType() {
-		QHash<QString,QTextCharFormat> formats = defaultsFormat();
-		foreach( QString key, formats.keys() )
-			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-	}
-
 	virtual QString description() {	return tr( "JavaScript" ); };
 	virtual QString match() { return "*.js"; };
 	virtual QIcon icon() { return QIcon( ":/images/typejs.png" ); };
@@ -279,12 +271,6 @@ public:
 class CSSFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	CSSFileType() {
-		QHash<QString,QTextCharFormat> formats = defaultsFormat();
-		foreach( QString key, formats.keys() )
-			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-	}
-
 	virtual QString description() {	return tr( "Cascading Style Sheet" ); };
 	virtual QString match() { return "*.css"; };
 	virtual QIcon icon() { return QIcon( ":/images/typecss.png" ); };
@@ -359,10 +345,7 @@ class XQFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
 	XQFileType() {
-		QHash<QString,QTextCharFormat> formats = defaultsFormat();
-		foreach( QString key, formats.keys() )
-			XINXConfig::self()->config().formats[ key ] = formats[ key ];
-
+		/*
 		QTemporaryFile temporaryXqFile;
 		if( temporaryXqFile.open() ) {
 			QTextStream textStream( &temporaryXqFile );
@@ -400,7 +383,7 @@ public:
 			QLanguageFactory::LangData data;
 			QNFADefinition::load( temporaryXqFile.fileName(), &data, XINXConfig::self()->formatFactory() );
 			XINXConfig::self()->languageFactory()->addLanguage(data);
-		}
+		}*/
 	}
 	virtual ~XQFileType() {
 	};
