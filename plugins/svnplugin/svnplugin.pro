@@ -1,6 +1,5 @@
 TEMPLATE = lib
 CONFIG += plugin
-QT += xml
 DESTDIR += ../
 LIBS = -L../../libxinx -lsharedxinx
 TARGET = svnplugin

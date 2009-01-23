@@ -1,4 +1,0 @@
-<config classname="Plugin Settings" organization="Shadoware.Org" application="XINX" path="plugins/svnplugin">
-	<value name="Options" type="string"/>
-	<value name="Use as" type="string" default="wrapper"/>
-</config>

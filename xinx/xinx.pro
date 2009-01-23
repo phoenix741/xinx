@@ -13,6 +13,7 @@ INCLUDEPATH += ../components \
 	../ext/qcodeedit/lib/language \
 	../ext/qcodeedit/lib/qnfa \
 	../ext/qcodeedit/lib/widgets
+
 LIBS = -L../libxinx \
     -L../plugins \
     -L../components \

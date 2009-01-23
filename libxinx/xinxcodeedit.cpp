@@ -35,7 +35,6 @@
 #include <QAbstractItemView>
 
 // QCodeEdit header
-#include <qformatfactory.h>
 #include <qpanellayout.h>
 #include <qdocument.h>
 #include <qdocumentsearch.h>

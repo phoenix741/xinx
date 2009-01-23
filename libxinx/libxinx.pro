@@ -9,13 +9,8 @@ INCLUDEPATH += ../components \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
-    ../ext/qcodeedit/lib/widgets \
-	../precompiled_headers
+    ../ext/qcodeedit/lib/widgets
 	
-PRECOMPILED_HEADER = ../precompiled_headers/qtgui_header.h \
-	../precompiled_headers/qtxml_header.h \
-	../precompiled_headers/qcodeedit_header.h
-
 LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
