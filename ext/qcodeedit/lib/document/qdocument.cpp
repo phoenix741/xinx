@@ -2131,6 +2131,42 @@ void QDocumentLineHandle::removeOverlay(const QFormatRange& over)
 	//applyOverlays();
 }
 
+void QDocumentLineHandle::shiftOverlays(int position, int offset)
+{
+	if ( offset > 0 )
+	{
+		for ( int i = 0; i < m_overlays.count(); ++i )
+		{
+			QFormatRange& r = m_overlays[i];
+			
+			if ( r.offset >= position )
+			{
+				r.offset += offset;
+			} else if ( r.offset + r.length > position ) {
+				m_overlays.removeAt(i);
+				--i;
+			}
+		}
+	} else if ( offset < 0 ) {
+		const int max = position - offset;
+		
+		for ( int i = 0; i < m_overlays.count(); ++i )
+		{
+			QFormatRange& r = m_overlays[i];
+			
+			if ( r.offset >= max )
+			{
+				r.offset += offset;
+			} else if ( r.offset + r.length >= position ) {
+				m_overlays.removeAt(i);
+				--i;
+			}
+		}
+	}
+	
+	setFlag(QDocumentLine::FormatsApplied, false);
+}
+
 void QDocumentLineHandle::setFormats(const QVector<int>& fmts)
 {
 	m_formats = fmts;
@@ -5563,14 +5599,14 @@ int QDocumentPrivate::visualLine(int textLine) const
 			
 			if ( hl >= textLine )
 				break;
-				
+			
 			int max = 0;
 			
 			do
 			{
-				max = qMax(max, *hit);
+				max = qMax(max, hit.key() - hl + *hit);
 				++hit;
-			} while ( (hit != he) && (hit.key() == hl) );
+			} while ( (hit != he) && (hit.key() <= hl + max) );
 			
 			hiddenLines += max;
 			
@@ -5635,9 +5671,9 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 				
 				do
 				{
-					max = qMax(max, *h);
+					max = qMax(max, h.key() - hl + *h);
 					++h;
-				} while ( (h != he) && (h.key() == hl) );
+				} while ( (h != he) && (h.key() <= hl + max) );
 				
 				// very important : do not forget possible wrapping on folded block start
 				if ( w != we && w.key() == hl )
@@ -5734,8 +5770,6 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 
 void QDocumentPrivate::hideEvent(int line, int count)
 {
-//	qDebug("hiding %i lines from %i", count, line);
-	
 	m_hidden.insertMulti(line, count);
 	
 	setHeight();
@@ -5745,7 +5779,6 @@ void QDocumentPrivate::hideEvent(int line, int count)
 
 void QDocumentPrivate::showEvent(int line, int count)
 {
-//	qDebug("trying to show %i lines from %i", count, line);
 	QMap<int, int>::iterator it = m_hidden.find(line);
 	
 	while ( (it != m_hidden.end()) && (it.key() == line)  )
@@ -5767,15 +5800,15 @@ void QDocumentPrivate::updateHidden(int line, int count)
 {
 	if ( m_hidden.isEmpty() || (line > (m_hidden.constEnd() - 1).key() ) )
 		return;
-		
+	
 	QMap<int, int> prev = m_hidden;
 	m_hidden.clear();
 	
-	QMap<int, int>::iterator it = prev.begin();
+	QMap<int, int>::const_iterator it = prev.constBegin();
 	
 	//qDebug("shifting by %i from %i", count, line);
 	
-	while ( it != prev.end() )
+	while ( it != prev.constEnd() )
 	{
 		if ( it.key() < line )
 		{

@@ -107,8 +107,8 @@ class QCE_EXPORT QNFADefinition : public QLanguageDefinition
 		static QHash<QString, int> m_paren;
 		static QHash<QString, QNFA*> m_contexts;
 		
-		int matchOpen(QDocument *d, int& line, QParenthesis p, int& end);
-		int matchClose(QDocument *d, int& line, QParenthesis p, int& beg);
+		int matchOpen(QDocument *d, int& line, QParenthesis& p, int& end, bool *ok = 0);
+		int matchClose(QDocument *d, int& line, QParenthesis& p, int& beg, bool *ok = 0);
 		
 		static void flushEmbedRequests(const QString& lang);
 		

@@ -169,6 +169,7 @@ void QDocumentCommand::insertText(int line, int pos, const QString& s)
 		return;
 	
 	h->textBuffer().insert(pos, s);
+	h->shiftOverlays(pos, s.length());
 	
 	foreach ( QDocumentCursorHandle *ch, m_autoUpdated )
 	{
@@ -207,6 +208,7 @@ void QDocumentCommand::removeText(int line, int pos, int length)
 		return;
 	
 	h->textBuffer().remove(pos, length);
+	h->shiftOverlays(pos, -length);
 	
 	QList<QDocumentCursorHandle*> m_del;
 	

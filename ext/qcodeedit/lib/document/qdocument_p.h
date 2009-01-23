@@ -111,6 +111,8 @@ class QCE_EXPORT QDocumentLineHandle
 		void addOverlay(const QFormatRange& over);
 		void removeOverlay(const QFormatRange& over);
 		
+		void shiftOverlays(int position, int offset);
+		
 		void draw(	QPainter *p,
 					int xOffset,
 					int vWidth,

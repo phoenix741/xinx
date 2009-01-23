@@ -472,6 +472,7 @@ void QDocumentSearch::next(bool backward, bool all)
 				}
 				
 				m_highlight << m_cursor;
+				m_highlight.last().setAutoUpdated(true);
 				
 			} else {
 				// regression fix : here is how we clear the selection without moving back to the anchor column...
