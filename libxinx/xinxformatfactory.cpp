@@ -19,6 +19,8 @@
 
 // Xinx header
 #include "xinxformatfactory.h"
+#include "xinxformatscheme.h"
+#include "xinxpluginsloader.h"
 #include "xinxconfig.h"
 
 // QCodeEdit header
@@ -26,7 +28,7 @@
 
 /* XinxFormatFactory */
 
-XinxFormatFactory::XinxFormatFactory( XINXConfig * parent ) : QFormatScheme( parent ), m_config( parent ) {
+XinxFormatFactory::XinxFormatFactory( XINXConfig * parent ) : QObject( parent ), m_config( parent ) {
 	updateFormats();
 }
 
@@ -34,27 +36,26 @@ XinxFormatFactory::~XinxFormatFactory() {
 
 }
 
-void XinxFormatFactory::updateFormats() {/*
-	QFormat searchFormat, matchFormat;
-	searchFormat.background = m_config->config().editor.highlightWord;
-	matchFormat.weight = QFont::Bold;
-	matchFormat.foreground = Qt::red;
-
-	setFormat( "search", searchFormat );
-	setFormat( "match", matchFormat );
-
-	foreach( QString key, m_config->config().formats.keys() ) {
-		QFormat ceFormat;
-			QTextCharFormat tcFormat = m_config->config().formats[ key ];
-
-		ceFormat.weight = tcFormat.fontWeight();
-		ceFormat.italic = tcFormat.fontItalic();
-		ceFormat.overline = tcFormat.fontOverline();
-		ceFormat.underline = tcFormat.fontUnderline();
-		ceFormat.strikeout = tcFormat.fontStrikeOut();
-		ceFormat.foreground = tcFormat.foreground().color();
-
-		setFormat( key, ceFormat );
-	}*/
+XinxFormatScheme * XinxFormatFactory::scheme( const QString & highlighter ) {
+	if( ! m_formatScheme.contains( highlighter ) ) {
+		XinxFormatScheme * scheme = XinxPluginsLoader::self()->scheme( highlighter, m_config );
+		if( scheme ) {
+			m_formatScheme[ highlighter ] = scheme;
+		}
+	}
+	return m_formatScheme.value( highlighter, 0 );
 }
+
+void XinxFormatFactory::updateFormats() {
+	foreach( XinxFormatScheme * scheme, m_formatScheme.values() ) {
+		scheme->updateFormatsFromConfig();
+	}
+}
+
+void XinxFormatFactory::putFormats() {
+	foreach( XinxFormatScheme * scheme, m_formatScheme.values() ) {
+		scheme->putFormatsToConfig();
+	}
+}
+
 

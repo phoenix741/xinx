@@ -80,14 +80,16 @@ ExceptionManager::ExceptionManager() {
 		QTextStream exceptionFilterStream( &exceptionFilterFile );
 		m_exceptionFilter = exceptionFilterStream.readAll().split( "\n" );
 	}
-
-	qInstallMsgHandler( xinxMessageHandler );
 }
 
 ExceptionManager::~ExceptionManager() {
 	delete m_dialog;
 	if( s_self == this )
 		s_self = 0;
+}
+
+void ExceptionManager::installExceptionHandler() {
+	qInstallMsgHandler( xinxMessageHandler );
 }
 
 QHash<unsigned long,QStringList> & ExceptionManager::xinxStackTrace() {

@@ -84,6 +84,13 @@ public:
 	 */
 	void addDefaultTool( const QString & tool, const QString & defaultValue );
 
+	/*!
+	 * Add a new extention in the configuration with a default value
+	 * \param type The type to add (XML File)
+	 * \param properties Default properties to add
+	 */
+	void addDefaultExtention( const QString & type, struct AppSettings::struct_extentions properties );
+
 	/*! Search the file type for the corresponding filename  */
 	struct_extentions matchedFileType( const QString & filename );
 

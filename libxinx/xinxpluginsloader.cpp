@@ -22,6 +22,7 @@
 #include "xinxcore.h"
 #include "xinxconfig.h"
 #include "xslproject.h"
+#include "xinxformatscheme.h"
 
 // Qt header
 #include <QPluginLoader>
@@ -89,6 +90,13 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	QPair<QString,QString> tools;
 	foreach( tools, iXinxPlugin->pluginTools() )
 		XINXConfig::self()->addDefaultTool( tools.first, tools.second );
+
+	IFilePlugin * interface = qobject_cast<IFilePlugin*>( plugin );
+	if( interface ) {
+		foreach( IFileTypePlugin * t, interface->fileTypes() ) {
+			XINXConfig::self()->addDefaultExtention( t->description(), t->properties() );
+		}
+	}
 }
 
 void XinxPluginsLoader::loadPlugins() {
@@ -159,6 +167,21 @@ QString XinxPluginsLoader::exampleOfHighlighter( const QString & name ) const {
 		}
 	}
 	return QString();
+}
+
+XinxFormatScheme * XinxPluginsLoader::scheme( const QString & highlighter, XINXConfig * config ) {
+	foreach( XinxPluginElement * element, plugins() ) {
+		IFilePlugin * interface = qobject_cast<IFilePlugin*>( element->plugin() );
+		if( element->isActivated() && interface ) {
+			foreach( IFileTypePlugin * p, interface->fileTypes() ) {
+				IFileTextPlugin * textFileType = dynamic_cast<IFileTextPlugin*>( p );
+				if( textFileType && textFileType->highlighterId().toLower() == highlighter.toLower() ) {
+					return textFileType->createFormatScheme( config );
+				}
+			}
+		}
+	}
+	return 0;
 }
 
 QStringList XinxPluginsLoader::openDialogBoxFilters() const {

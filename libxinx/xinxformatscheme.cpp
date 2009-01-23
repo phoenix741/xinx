@@ -54,19 +54,21 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 
 	foreach( QString format, m_config->config().formats.keys() ) {
 		if( m_nameSpace.isEmpty() || format.startsWith( m_nameSpace + "_" ) ) {
-			XINXConfig::struct_qformat conf = m_config->config().formats[ format ];
+			if( m_config->config().formats.contains( format ) ) {
+				XINXConfig::struct_qformat conf = m_config->config().formats.value( format );
 
-			QString formatName = format.remove( 0, m_nameSpace.length() + 1 );
-			QFormat format;
-			format.italic        = conf.italic;
-			format.weight        = conf.bold ? QFont::Bold : QFont::Normal;
-			format.overline      = conf.overline;
-			format.strikeout     = conf.strikout;
-			format.underline     = conf.underline;
-			format.waveUnderline = conf.waveunderline;
-			format.foreground    = conf.foreground;
-			format.background    = conf.background;
-			setFormat( formatName, format );
+				QString formatName = format.remove( 0, m_nameSpace.length() + 1 );
+				QFormat format;
+				format.italic        = conf.italic;
+				format.weight        = conf.bold ? QFont::Bold : QFont::Normal;
+				format.overline      = conf.overline;
+				format.strikeout     = conf.strikout;
+				format.underline     = conf.underline;
+				format.waveUnderline = conf.waveunderline;
+				format.foreground    = conf.foreground;
+				format.background    = conf.background;
+				setFormat( formatName, format );
+			}
 		}
 	}
 }

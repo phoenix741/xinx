@@ -106,19 +106,6 @@ public:
 		return new XmlFormatScheme( config );
 	}
 
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {
-		QHash<QString,QTextCharFormat> formats;
-		formats[ "xml_comment"        ].setForeground( DEFAULT_COMMENT );
-		formats[ "xml_error"          ].setForeground( DEFAULT_ERROR );
-		formats[ "xml_other"          ].setForeground( DEFAULT_OTHER );
-		formats[ "xml_syntaxchar"     ].setForeground( DEFAULT_SYNTAX_CHAR );
-		formats[ "xml_elementname"    ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "xml_attributename"  ].setForeground( DEFAULT_ATTRIBUTE_NAME );
-		formats[ "xml_attributevalue" ].setForeground( DEFAULT_ATTRIBUTE_VALUE );
-		formats[ "xml_xpath"          ].setForeground( DEFAULT_XPATH_VALUE );
-		return formats;
-	}
-
 	virtual QString fileExample() const {
 		return
 			"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
@@ -240,6 +227,10 @@ public:
 		return "ECMAScript";
 	}
 
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
+		return 0;
+	}
+
 	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {
 		QHash<QString,QTextCharFormat> formats;
 		formats[ "ecmascript_comment"         ].setForeground( DEFAULT_COMMENT );
@@ -330,6 +321,10 @@ public:
 		return formats;
 	}
 
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
+		return 0;
+	}
+
 	virtual QString fileExample() const {
 		return
 			".test, #td, test2 {\n"
@@ -418,6 +413,10 @@ public:
 
 	virtual QString highlighterId() const {
 		return "XQuery";
+	}
+
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
+		return 0;
 	}
 
 	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {

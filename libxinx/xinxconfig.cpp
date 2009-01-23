@@ -28,6 +28,7 @@
 #include "xinxcore.h"
 #include "xinxpluginsloader.h"
 #include "xinxformatfactory.h"
+#include "xinxformatscheme.h"
 #include "xinxlanguagefactory.h"
 
 /* ToolsNotDefinedException */
@@ -42,11 +43,11 @@ XINXConfig * XINXConfig::s_self = 0;
 
 /* XINXConfig */
 
-XINXConfig::XINXConfig( const XINXConfig & origine ) : QObject(), AppSettings( origine ), m_formats( 0 ), m_languages( 0 ) {
+XINXConfig::XINXConfig( const XINXConfig & origine ) : QObject(), AppSettings( origine ) {
 
 }
 
-XINXConfig::XINXConfig() : QObject(), AppSettings(), m_formats( 0 ), m_languages( 0 ) {
+XINXConfig::XINXConfig() : QObject(), AppSettings() {
 
 }
 
@@ -83,7 +84,7 @@ XinxFormatFactory * XINXConfig::formatFactory() {
 
 XinxLanguageFactory * XINXConfig::languageFactory() {
 	if( ! m_languages ) {
-		m_languages = new XinxLanguageFactory( formatFactory(), this );
+		m_languages = new XinxLanguageFactory( new XinxFormatScheme( this ), this );
 	}
 	return m_languages;
 }
@@ -113,6 +114,15 @@ void XINXConfig::addDefaultTool( const QString & tool, const QString & defaultVa
 	}
 }
 
+void XINXConfig::addDefaultExtention( const QString & type, struct AppSettings::struct_extentions properties ) {
+	if( ! config().files.contains( type ) ) {
+		config().files[ type ] = properties;
+		// Store imediately the hashtable
+		AppSettingsSettings settings("Shadoware.Org", "XINX");
+		setSettingsHash_struct_extentions( &settings, "Files", config().files );
+	}
+}
+
 void XINXConfig::setXinxDataFiles( const QString & path ) {
 	config().descriptions.datas = path;
 	QDir::setSearchPaths( "datas", QStringList() << path );
@@ -133,25 +143,6 @@ AppSettings::struct_extentions XINXConfig::matchedFileType( const QString & file
 
 AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
-
-	/*
-	foreach( IFileTypePlugin* fileType, XinxPluginsLoader::self()->fileTypes() ) {
-		IFileTextPlugin * textFileType = dynamic_cast<IFileTextPlugin*>( fileType );
-		if( textFileType ) {
-			const QHash<QString,QTextCharFormat> formats = textFileType->defaultsFormat();
-			foreach( QString key, formats.keys() )
-				value.formats[ key ] = formats.value( key );
-		}
-	}
-
-	foreach( IFileTypePlugin * plugin , XinxPluginsLoader::self()->fileTypes() ) {
-		value.files[ plugin->description() ].canBeSpecifique = plugin->properties().canBeSaveAsSpecifique;
-		value.files[ plugin->description() ].customPath = plugin->properties().specifiqueSubDirectory;
-	}
-	*/
-	foreach( IFileTypePlugin * plugin , XinxPluginsLoader::self()->fileTypes() ) {
-		value.files[ plugin->description() ] = plugin->properties();
-	}
 
 #ifndef Q_WS_WIN
 	value.xinxTrace = "/tmp/xinx_trace.html";

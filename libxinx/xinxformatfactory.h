@@ -20,29 +20,38 @@
 #ifndef XINXFORMATFACTORY_H_
 #define XINXFORMATFACTORY_H_
 
+// Qt header
+#include <QHash>
+
 // QCodeEdit header
 #include <qformatscheme.h>
 
 class XINXConfig;
+class XinxFormatScheme;
 
 /*!
- * The goal of this object is to retrieve the format from the
+ * This object is a list of format scheme by highlighter
  */
-class XinxFormatFactory : public QFormatScheme {
+class XinxFormatFactory : public QObject {
 	Q_OBJECT
 public:
 	//! Destroy the format factory
 	virtual ~XinxFormatFactory();
+
+	XinxFormatScheme * scheme( const QString & highlighter );
 public slots:
 	//! Update the list of format (can't delete existing format)
 	void updateFormats();
+	//! Put format to config
+	void putFormats();
 protected:
 	/*!
-	 * Create a XinxFormatFactory. The object is initialize with the file :/qcodeedit/formats.qxf if exist.
-	 * This object is created by a XINXConfig file only.
+	 * Create a XinxFormatFactory. This object is created by a XINXConfig file only.
 	 */
 	XinxFormatFactory( XINXConfig * parent );
 private:
+	QHash<QString,XinxFormatScheme*> m_formatScheme;
+
 	XINXConfig * m_config;
 	friend class XINXConfig;
 };

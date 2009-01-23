@@ -22,6 +22,7 @@
 #include "xinxconfig.h"
 #include "xinxformatfactory.h"
 #include "xinxlanguagefactory.h"
+#include "xinxformatscheme.h"
 
 // Qt header
 #include <QHBoxLayout>
@@ -356,8 +357,18 @@ void XinxCodeEdit::setHighlighter( const QString & highlighter ) {
 }
 
 void XinxCodeEdit::setHighlighter( const QString & highlighter, XINXConfig * config ) {
-	document()->setFormatScheme( config->formatFactory() );
-	config->languageFactory()->setLanguage( m_editor->editor(), highlighter.isEmpty() ? "None" : highlighter  );
+	if( highlighter.isEmpty() ) {
+		document()->setFormatScheme( config->languageFactory()->defaultFormatScheme() );
+		config->languageFactory()->setLanguage( m_editor->editor(), "None" );
+		return;
+	}
+
+	QFormatScheme * scheme = config->formatFactory()->scheme( highlighter );
+	if( ! scheme )
+		scheme = config->languageFactory()->defaultFormatScheme();
+	document()->setFormatScheme( scheme );
+
+	config->languageFactory()->setLanguage( m_editor->editor(), highlighter );
 }
 
 void XinxCodeEdit::updateHighlighter() {

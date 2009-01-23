@@ -24,7 +24,7 @@
 #include <qlanguagefactory.h>
 
 class XINXConfig;
-class XinxFormatFactory;
+class XinxFormatScheme;
 
 /*!
  * This class used to create language definition for text editor in XINX.
@@ -36,7 +36,7 @@ public:
 	virtual ~XinxLanguageFactory();
 private:
 	//! Create a new instance of XinxLanguageFactory
-	XinxLanguageFactory( XinxFormatFactory *fmt, XINXConfig *p = 0 );
+	XinxLanguageFactory( XinxFormatScheme *fmt, XINXConfig *p = 0 );
 	friend class XINXConfig;
 };
 

@@ -45,6 +45,7 @@ public:
 	QList<XinxPluginElement*> plugins() const;
 	/*! Plugin of name \e name. */
 	XinxPluginElement * plugin( const QString & name );
+
 	/*!
 	 * List all the revision control that can be used. The Result is a list of
 	 * QPair. The first element is the key and the second element is the description.
@@ -67,8 +68,11 @@ public:
 	QStringList openDialogBoxFilters() const;
 	//! Return a list of filter
 	QStringList managedFilters() const;
+
 	//! Return the exemple of an highlighter
 	QString exampleOfHighlighter( const QString & name ) const;
+	//! Create a format scheme for the given highlighter
+	XinxFormatScheme * scheme( const QString & highlighter, XINXConfig * config );
 
 	//! Create an element (and also a parser) for the given filename
 	FileContentElement * createElement( QString & filename, FileContentElement * parent = 0, int line = -1 );

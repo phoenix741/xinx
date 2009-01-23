@@ -88,26 +88,9 @@ int main(int argc, char *argv[]) {
 		app.setOrganizationDomain( "Shadoware.Org" );
 		app.setApplicationName( "XINX" );
 
-		// Set a stylesheet to have icons on button
-//		app.setStyleSheet(
-//				"* {"
-//				"	dialogbuttonbox-buttons-have-icons: 1;"
-//				"	dialog-ok-icon: url(:/images/button_ok.png);"
-//				"	dialog-cancel-icon: url(:/images/button_cancel.png);"
-//				"	dialog-close-icon: url(:/images/editdelete.png);"
-//				"	dialog-apply-icon: url(:/images/button_apply.png);"
-//				"}" );
-
-		QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
-
-		QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
-		QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
-
-		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
-		QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
-		app.addLibraryPath( "plugins:" );
-
+		// .. If application is not started
 		if( app.isUnique() ) {
+			// Create the splash screen
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);
 			splash.setMask(pixmap.mask());
@@ -115,41 +98,63 @@ int main(int argc, char *argv[]) {
 	  		app.processEvents();
 
 	  		/* Load the exception manager */
-	  		ExceptionManager::self();
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Install exception handler ...") );
+			app.processEvents();
+	  		ExceptionManager::installExceptionHandler();
 
-	  		/* Must load to have traductions in plugins */
+			// Initialize search path for datas ...
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Initialize search path ...") );
+			app.processEvents();
+			QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
+
+			// ... for scripts ...
+			QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
+			QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
+
+			// ... for plugins ...
+			QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
+			QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+			app.addLibraryPath( "plugins:" );
+
+			/*
+			 * To have the lang and style loaded earlier in the process, we load configuration of XINX
+			 * XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
+			 */
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
+
 			XINXConfig::self()->load();
 			if( ! XINXConfig::self()->config().style.isEmpty() ) {
 				QApplication::setStyle( XINXConfig::self()->config().style );
 			}
 
+			// Now we know which lang use, we can load translations. We are not lost in translation ...
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();
+
+			// ... load qt translation ...
 			QTranslator translator_xinx, translator_qt, translator_libxinx, tranlator_components;
 			translator_qt.load( QString(":/translations/qt_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_qt);
+			// ... load xinx translation ...
 			translator_xinx.load( QString(":/translations/xinx_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_xinx);
+			// ... load xinx library translation ...
 			translator_libxinx.load( QString(":/translations/libxinx_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&translator_libxinx);
+			// ... load components translations
 			tranlator_components.load( QString(":/translations/xinxcomponents_%1").arg( XINXConfig::self()->config().language ) );
 			app.installTranslator(&tranlator_components);
 
+			/* Load available marks (for QCodeEdit use) */
+	  		splash.showMessage( QApplication::translate("SplashScreen", "Load available marks ...") );
+			app.processEvents();
+			QLineMarksInfoCenter::instance()->loadMarkTypes( ":/qcodeedit/marks.qxm" );
+
+			// Loads plugins
 			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
 			app.processEvents();
 			XinxPluginsLoader::self()->loadPlugins();
-
-			/* Reload to have options in plugins */
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Reload configuration ...") );
-			app.processEvents();
-			XINXConfig::self()->load();
-
-			/* Reload to have options in plugins */
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load QCodeEdit feature ...") );
-			app.processEvents();
-			QLineMarksInfoCenter::instance()->loadMarkTypes( ":/qcodeedit/marks.qxm" );
 
 	  		splash.showMessage( QApplication::translate("SplashScreen", "Load snipets ...") );
 			app.processEvents();
@@ -182,9 +187,8 @@ int main(int argc, char *argv[]) {
 				}
 			}
 
-			splash.finish(mainWin);
-
 			mainWin->show();
+			splash.finish(mainWin);
 
 			return app.exec();
 	 	} else {

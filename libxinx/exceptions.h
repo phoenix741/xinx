@@ -87,6 +87,11 @@ public:
 	static ExceptionManager * self();
 
 	/*!
+	 * Install the Exception Handler but doesn't create the exception manager if not needed.
+	 */
+	static void installExceptionHandler();
+
+	/*!
 	 *Show a dialog and save the error in a trace file.
 	 * \param error Message to store in the file
 	 * \param stack Stack to store when the error occure.

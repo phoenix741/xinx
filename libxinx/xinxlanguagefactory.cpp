@@ -19,13 +19,21 @@
 
 // Xinx header
 #include "xinxlanguagefactory.h"
+#include "xinxformatscheme.h"
 #include "xinxformatfactory.h"
 #include "xinxconfig.h"
 
+// QCodeEdit header
+#include <qnfadefinition.h>
+
 /* XinxLanguageFactory */
 
-XinxLanguageFactory::XinxLanguageFactory( XinxFormatFactory *fmt, XINXConfig *p ) : QLanguageFactory( fmt, p ) {
-	addDefinitionPath( ":/qcodeedit/lan" );
+XinxLanguageFactory::XinxLanguageFactory( XinxFormatScheme *fmt, XINXConfig *p ) : QLanguageFactory( fmt, p ) {
+/*	QLanguageFactory::LangData data;
+	QNFADefinition::load( ":/qcodeedit/lan/xml.qnfa", &data, XINXConfig::self()->formatFactory()->scheme( "XML" ) );
+	XINXConfig::self()->languageFactory()->addLanguage(data);
+*/
+//	addDefinitionPath( ":/qcodeedit/lan" );
 }
 
 XinxLanguageFactory::~XinxLanguageFactory() {
