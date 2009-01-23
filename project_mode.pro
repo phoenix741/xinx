@@ -1,7 +1,5 @@
 CONFIG += debug
 unix { 
-    QMAKE_CC = "ccache gcc"
-    QMAKE_CXX = "ccache gcc"
     QMAKE_LFLAGS = -rdynamic
 }
 
