@@ -63,7 +63,8 @@ SOURCES = xsl/xmlformatscheme.cpp \
     xq/xqtexteditor.cpp \
     xq/xqfileeditor.cpp \
     xq/xqmodelcompleter.cpp \
-    config/webpluginformimpl.cpp
+    config/webpluginformimpl.cpp \
+ filetypeplugin.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
 include(../../project_mode.pro)

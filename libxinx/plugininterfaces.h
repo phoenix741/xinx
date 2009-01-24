@@ -191,6 +191,9 @@ public:
 	//! Return the format scheme used to draw the text.
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const = 0;
 
+	//! Create a language description that can be used with QCodeEdit.
+	virtual QString createLanguageDescription() const = 0;
+
 	//! Return an example of highlighter.
 	virtual QString fileExample() const = 0;
 };

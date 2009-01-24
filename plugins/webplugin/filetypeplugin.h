@@ -72,59 +72,18 @@ static const QColor DEFAULT_STRING			= Qt::red;
 class XMLFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	virtual QString description() {	return tr( "XML File" ); };
-	virtual QString match() { return "*.xml"; };
-	virtual QIcon icon() { return QIcon( ":/images/typexml.png" ); };
+	virtual QString description();
+	virtual QString match();
+	virtual QIcon icon();
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = true;
-		p.specifiqueSubDirectory = "xml/";
-		return p;
-	};
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual FileContentElement * createElement( FileContentElement *, int, const QString & );
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		XmlFileEditor * editor = new XmlFileEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-
-	virtual FileContentElement * createElement( FileContentElement *, int, const QString & ) {
-		return NULL;
-	}
-
-	virtual QString highlighterId() const {
-		return "XML";
-	}
-
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
-		return new XmlFormatScheme( config );
-	}
-
-	virtual QString fileExample() const {
-		return
-			"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-			"<!-- This is a comment -->\n"
-			"<xsl:stylesheet version=\"1.0\">\n"
-			"\t<xsl:import href=\"myimport.xsl\"/>\n"
-			"\t<xsl:variable name=\"MYVARIABLE\"/>\n"
-			"\t<xsl:template match=\"/\">\n"
-			"\t\t<xsl:comment> This is a text </xsl:comment>>>>>>>\n"
-			"\n"
-			"\t\t<xsl:choose>\n"
-			"\t\t\t<xsl:when test=\"test\">\n"
-			"\t\t\t\t<input type=\"hidden\" value=\"{$MYVARIABLE}\"/>\n"
-			"\t\t\t</xsl:when>\n"
-			"\t\t\t<xsl:otherwise>Otherwise not</xsl:otherwise>\n"
-			"\t\t</xsl:choose>\n"
-			"\t</xsl:template>\n"
-			"</xsl:stylesheet>\n";
-	}
+	virtual QString highlighterId() const;
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual QString createLanguageDescription() const;
+	virtual QString fileExample() const;
 };
 
 /* XSLStyleSheetFileType */
@@ -132,34 +91,13 @@ public:
 class XSLStyleSheetFileType : public XMLFileType {
 	Q_OBJECT
 public:
-	virtual QString description() {	return tr( "XSL Stylesheet" ); };
-	virtual QString match() { return "*.xsl"; };
-	virtual QIcon icon() { return QIcon( ":/images/typexsl.png" ); };
+	virtual QString description();
+	virtual QString match();
+	virtual QIcon icon();
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = true;
-		p.canBeSaveAsSpecifique = true;
-		p.specifiqueSubDirectory = QString();
-		return p;
-	};
-
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		StyleSheetEditor * editor = new StyleSheetEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		if( parent )
-			return new XSLFileContentParser( parent, filename, line );
-		else
-			return new XSLFileContentParser();
-	}
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 };
 
 /* HTMLFileType */
@@ -167,27 +105,12 @@ public:
 class HTMLFileType : public XMLFileType {
 	Q_OBJECT
 public:
-	virtual QString description() {	return tr( "HTML File" ); };
-	virtual QString match() { return "*.htm *.html *.xhtml"; };
-	virtual QIcon icon() { return QIcon( ":/images/typehtml.png" ); };
+	virtual QString description();
+	virtual QString match();
+	virtual QIcon icon();
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = false;
-		p.specifiqueSubDirectory = QString();
-		return p;
-	};
-
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		HtmlFileEditor * editor = new HtmlFileEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
 };
 
 /* JSFileType */
@@ -195,66 +118,19 @@ public:
 class JSFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	virtual QString description() {	return tr( "JavaScript" ); };
-	virtual QString match() { return "*.js"; };
-	virtual QIcon icon() { return QIcon( ":/images/typejs.png" ); };
+	virtual QString description();
+	virtual QString match();
+	virtual QIcon icon();
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = true;
-		p.specifiqueSubDirectory = "js/";
-		return p;
-	};
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		JSFileEditor * editor = new JSFileEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		if( parent )
-			return new JavaScriptParser( parent, filename, line );
-		else
-			return new JavaScriptParser();
-	}
-
-	virtual QString highlighterId() const {
-		return "ECMAScript";
-	}
-
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
-		return 0;
-	}
-
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {
-		QHash<QString,QTextCharFormat> formats;
-		formats[ "ecmascript_comment"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "ecmascript_error"           ].setForeground( DEFAULT_ERROR );
-		formats[ "ecmascript_other"           ].setForeground( DEFAULT_OTHER );
-		formats[ "ecmascript_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "ecmascript_reservedword"    ].setFontWeight( QFont::Bold );
-		formats[ "ecmascript_number"          ].setForeground( DEFAULT_NUMBER );
-		formats[ "ecmascript_string"          ].setForeground( DEFAULT_STRING );
-		return formats;
-	}
-
-	virtual QString fileExample() const {
-		return
-			"/**\n"
-			" * This is a comment\n"
-			"**/\n"
-			"\n"
-			"function myfunction( param1, param2, param3 ) {\n"
-			"	var variable = window.open('number' + 56 + \"othertext\",'frame','options');\n"
-			"	alert( param& );\n"
-			"	variable.close();\n"
-			"}\n";
-	}
+	virtual QString highlighterId() const;
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual QString createLanguageDescription() const;
+	virtual QHash<QString,QTextCharFormat> defaultsFormat() const;
+	virtual QString fileExample() const;
 };
 
 /* CSSFileType */
@@ -262,76 +138,19 @@ public:
 class CSSFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	virtual QString description() {	return tr( "Cascading Style Sheet" ); };
-	virtual QString match() { return "*.css"; };
-	virtual QIcon icon() { return QIcon( ":/images/typecss.png" ); };
+	virtual QString description();
+	virtual QString match();
+	virtual QIcon icon();
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = true;
-		p.specifiqueSubDirectory = "css/";
-		return p;
-	};
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		CSSFileEditor * editor = new CSSFileEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		return new CSSFileContentParser( parent, filename, line );
-	}
-
-	virtual QString highlighterId() const {
-		return "CSS";
-	}
-
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {
-		QHash<QString,QTextCharFormat> formats;
-		formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
-		formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
-		formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
-		formats[ "css_string"         ].setForeground( DEFAULT_STRING );
-		formats[ "css_operator"       ].setForeground( DEFAULT_SYNTAX_CHAR );
-		formats[ "css_directive"      ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_number"         ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_pseudoclass"	  ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_class"		  ].setForeground( DEFAULT_XPATH_VALUE );
-		formats[ "css_class"          ].setFontWeight( QFont::Bold );
-		formats[ "css_id"		      ].setForeground( DEFAULT_XPATH_VALUE );
-		formats[ "css_tag"		      ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_attribute"      ].setForeground( DEFAULT_NUMBER );
-		formats[ "css_identifier"     ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_identifier"     ].setFontWeight( QFont::Bold );
-		formats[ "css_identifier1"    ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_identifier1"    ].setFontWeight( QFont::Bold );
-		formats[ "css_identifier2"    ].setForeground( DEFAULT_RESERVEDWORD );
-		formats[ "css_identifier2"    ].setFontWeight( QFont::Bold );
-		formats[ "css_value"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "css_value"		  ].setFontItalic( true );
-		formats[ "css_value1"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "css_value1"		  ].setFontItalic( true );
-		formats[ "css_value2"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-		formats[ "css_value2"		  ].setFontItalic( true );
-		return formats;
-	}
-
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
-		return 0;
-	}
-
-	virtual QString fileExample() const {
-		return
-			".test, #td, test2 {\n"
-			"\tbackground-color: red; /* Commentaire */\n"
-			"\tmargin: 8pt;\n"
-			"}\n";
-	}
+	virtual QString highlighterId() const;
+	virtual QHash<QString,QTextCharFormat> defaultsFormat() const;
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual QString createLanguageDescription() const;
+	virtual QString fileExample() const;
 };
 
 /* XQFileType */
@@ -339,117 +158,22 @@ public:
 class XQFileType : public QObject, public IFileTextPlugin {
 	Q_OBJECT
 public:
-	XQFileType() {
-		/*
-		QTemporaryFile temporaryXqFile;
-		if( temporaryXqFile.open() ) {
-			QTextStream textStream( &temporaryXqFile );
-			textStream 	<< "<!DOCTYPE QNFA>"
-						<< "<QNFA language=\"XQuery\" extensions=\"xq\" defaultLineMark=\"bookmark\">"
-						<< "<word id=\"data/float\" format=\"xq_numbers\">-?[0-9]*.[0-9]+</word>"
-						<< "<word id=\"data/decimal\" format=\"xq_numbers\">-?[0-9]+</word>"
-						<< "<context id=\"data/string\" format=\"xq_string\" >"
-						<< "<start>&quot;</start>"
-						<< "<stop>&quot;</stop>"
-						<< "<stop exclusive=\"false\">\n</stop>"
-						<< "<sequence id=\"escape\" format=\"xq_escapeseq\" >\\[nrtvf\\\"'\n]</sequence>"
-						<< "</context>"
-						<< "<context id=\"data/chars\" format=\"ecmascript_string\" >"
-						<< "<start>'</start>"
-						<< "<stop>'</stop>"
-						<< "<stop exclusive=\"false\">\n</stop>"
-						<< "<sequence id=\"escape\" format=\"escapeseq\" >\\[nrtvf\\\"'\n]</sequence>"
-						<< "</context>";
+	XQFileType();
+	virtual ~XQFileType();
 
-			foreach( QString key, XQueryKeyword::self()->keywords().values() ) {
-				textStream << "<list id=\"keyword_/" << key << "\" format=\"xquery_" << key << "\">";
+	virtual QString description();
+	virtual QString match();
+	virtual QIcon icon();
 
-				foreach( QString value, XQueryKeyword::self()->keywords().keys( key ) ) {
-					textStream << "<word>" << value << "</word>";
-				}
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
+	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
-				textStream << "</list>";
-			}
-
-			textStream << "</QNFA>";
-
-			temporaryXqFile.reset();
-
-			QLanguageFactory::LangData data;
-			QNFADefinition::load( temporaryXqFile.fileName(), &data, XINXConfig::self()->formatFactory() );
-			XINXConfig::self()->languageFactory()->addLanguage(data);
-		}*/
-	}
-	virtual ~XQFileType() {
-	};
-
-	virtual QString description() {	return tr( "XQuery" ); };
-	virtual QString match() { return "*.xq"; };
-	virtual QIcon icon() { return QIcon( ":/images/typexq.png" ); };
-
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = false;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = false;
-		p.specifiqueSubDirectory = QString();
-		return p;
-	};
-
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		XQFileEditor * editor = new XQFileEditor();
-
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		Q_UNUSED( parent );
-		Q_UNUSED( line );
-		Q_UNUSED( filename );
-		return 0;
-	}
-
-	virtual QString highlighterId() const {
-		return "XQuery";
-	}
-
-	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const {
-		return 0;
-	}
-
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const {
-		QHash<QString,QTextCharFormat> formats;
-		formats[ "xquery_accessors"       ].setForeground( DEFAULT_COMMENT );
-		formats[ "xquery_accessors"       ].setFontWeight( QFont::Bold );
-		formats[ "xquery_other"           ].setForeground( DEFAULT_OTHER );
-		formats[ "xquery_buildin"         ].setForeground( DEFAULT_OTHER );
-		formats[ "xquery_buildin"         ].setFontWeight( QFont::Bold );
-		formats[ "xquery_numerical"       ].setForeground( DEFAULT_NUMBER );
-		formats[ "xquery_numerical"       ].setFontWeight( QFont::Bold );
-		formats[ "xquery_string"          ].setForeground( DEFAULT_STRING );
-		formats[ "xquery_string"          ].setFontWeight( QFont::Bold );
-		formats[ "xquery_regular"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "xquery_regular"         ].setFontWeight( QFont::Bold );
-		formats[ "xquery_boolean"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "xquery_boolean"         ].setFontWeight( QFont::Bold );
-		formats[ "xquery_datetime"        ].setForeground( DEFAULT_OTHER );
-		formats[ "xquery_datetime"        ].setFontWeight( QFont::Bold );
-		formats[ "xquery_sequence"        ].setForeground( DEFAULT_STRING );
-		formats[ "xquery_sequence"        ].setFontWeight( QFont::Bold );
-		formats[ "xquery_aggregate"       ].setForeground( DEFAULT_NUMBER );
-		formats[ "xquery_aggregate"       ].setFontWeight( QFont::Bold );
-		formats[ "xquery_context"         ].setForeground( DEFAULT_COMMENT );
-		formats[ "xquery_context"         ].setFontWeight( QFont::Bold );
-		return formats;
-	}
-
-	virtual QString fileExample() const {
-		return
-			"count(DynamicRow)\n"
-			"max(Qtecde)";
-	}
+	virtual QString highlighterId() const;
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual QString createLanguageDescription() const;
+	virtual QHash<QString,QTextCharFormat> defaultsFormat() const;
+	virtual QString fileExample() const;
 };
 
 #endif // _FILETYPEPLUGIN_H_

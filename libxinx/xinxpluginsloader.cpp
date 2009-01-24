@@ -78,23 +78,36 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 
 	QString name = plugin->metaObject()->className();
 
+	// Initialize the plugin (if needed)
 	if(! iXinxPlugin->initializePlugin( XINXConfig::self()->config().language ) ) {
 		qCritical() << "Can't load " << name << " plugin.";
 		return;
 	}
 
+	// Create a glue to use the plugin with XinxPluginsLoader
 	XinxPluginElement * element = new XinxPluginElement( plugin, staticLoaded );
+
+	// Set the status of the plugin with the configuration
 	element->setActivated( XINXConfig::self()->config().plugins.value( name, false ) );
 	m_plugins.insert( name, element );
 
+	//! \todo move this line in setActivated method of the plugin
+	// Create default tools given by the plugin
 	QPair<QString,QString> tools;
 	foreach( tools, iXinxPlugin->pluginTools() )
 		XINXConfig::self()->addDefaultTool( tools.first, tools.second );
 
+	// Create possible extention definition
 	IFilePlugin * interface = qobject_cast<IFilePlugin*>( plugin );
 	if( interface ) {
 		foreach( IFileTypePlugin * t, interface->fileTypes() ) {
 			XINXConfig::self()->addDefaultExtention( t->description(), t->properties() );
+
+			// If the plugin contains format and language description, we loaded it.
+			IFileTextPlugin * textPlugin = dynamic_cast<IFileTextPlugin*>( t );
+			if( textPlugin ) {
+
+			}
 		}
 	}
 }
