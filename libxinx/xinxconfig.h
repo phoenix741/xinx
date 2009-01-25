@@ -30,6 +30,7 @@
 
 class XinxFormatFactory;
 class XinxLanguageFactory;
+class XinxFormatScheme;
 class QWidget;
 
 class ToolsNotDefinedException : public XinxException {
@@ -54,8 +55,15 @@ public:
 	/*! Self create a XINX configuration file if necessary */
 	static XINXConfig * self();
 
-	/*! Return the format factory (from QCodeEdit library) for the format in config */
-	XinxFormatFactory * formatFactory();
+	//! Get a created format scheme
+	XinxFormatScheme * scheme( const QString & highlighter );
+
+	/*!
+	 * Add a new format scheme to XINX
+	 * \param id the id to use for the scheme
+	 * \param scheme the added scheme
+	 */
+	void addFormatScheme( const QString & id, XinxFormatScheme * scheme );
 
 	/*! Return the language factory (from QCodeEdit library) for the definition in config */
 	XinxLanguageFactory * languageFactory();
@@ -99,13 +107,19 @@ public:
 signals:
 	/*! Signal emited when the configuration is changed */
 	void changed();
+protected slots:
+	//! Update the list of format (can't delete existing format)
+	void updateFormatsSchemeFromConfig();
+	//! Put format to config
+	void putFormatsSchemeToConfig();
+
 protected:
 	virtual struct_globals getDefaultGlobals();
 	virtual struct_editor getDefaultEditor();
 private:
 	static XINXConfig * s_self;
-	QPointer<XinxFormatFactory> m_formats;
 	QPointer<XinxLanguageFactory> m_languages;
+	QHash<QString,XinxFormatScheme*> m_formatScheme;
 };
 
 #endif

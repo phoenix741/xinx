@@ -36,33 +36,33 @@ void XmlFormatScheme::createDefaultScheme() {
 
 	// CDATA format
 	cdata.foreground = Qt::gray;
-	setFormat( "comment", cdata );
+	setFormat( "cdata", cdata );
 
 	// Preprocessor format
 	preprocessor.foreground = Qt::gray;
-	setFormat( "comment", preprocessor );
+	setFormat( "preprocessor", preprocessor );
 
 	// doctype format
 	doctype.foreground = Qt::gray;
-	setFormat( "comment", doctype );
+	setFormat( "doctype", doctype );
 
 	// entity format
 	entity.foreground = Qt::gray;
-	setFormat( "comment", entity );
+	setFormat( "entity", entity );
 
 	// Element Name format
 	elementname.foreground = Qt::darkRed;
-	setFormat( "comment", elementname );
+	setFormat( "elementname", elementname );
 
 	// Attribute Name format
 	attributename.foreground = Qt::red;
-	setFormat( "comment", attributename );
+	setFormat( "attributename", attributename );
 
 	// Attribute Value format
 	attributevalue.foreground = Qt::blue;
-	setFormat( "comment", attributevalue );
+	setFormat( "attributevalue", attributevalue );
 
 	// X Path format
 	xpath.foreground = Qt::darkMagenta;
-	setFormat( "comment", xpath );
+	setFormat( "xpath", xpath );
 }

@@ -10,7 +10,7 @@ INCLUDEPATH += ../components \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
     ../ext/qcodeedit/lib/widgets
-	
+
 LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
@@ -18,8 +18,7 @@ LIBS = -L../components \
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
 win32 : RC_FILE += rc/libxinx.rc
-HEADERS = xinxformatfactory.h \
-	xinxformatscheme.h \
+HEADERS = xinxformatscheme.h \
     textfileeditor.h \
     filewatcher.h \
     p_filewatcher.h \
@@ -41,8 +40,7 @@ HEADERS = xinxformatfactory.h \
     xinxcodeedit.h \
  xinxcodeedit_p.h \
  xinxlanguagefactory.h
-SOURCES = xinxformatfactory.cpp \
-	xinxformatscheme.cpp \
+SOURCES = xinxformatscheme.cpp \
     textfileeditor.cpp \
     filewatcher.cpp \
     filecontentitemmodel.cpp \
@@ -63,3 +61,7 @@ SOURCES = xinxformatfactory.cpp \
  xinxlanguagefactory.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
+SOURCES -= xinxformatfactory.cpp
+
+HEADERS -= xinxformatfactory.h
+

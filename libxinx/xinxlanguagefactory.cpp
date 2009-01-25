@@ -20,7 +20,6 @@
 // Xinx header
 #include "xinxlanguagefactory.h"
 #include "xinxformatscheme.h"
-#include "xinxformatfactory.h"
 #include "xinxconfig.h"
 
 // QCodeEdit header

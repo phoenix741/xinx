@@ -23,11 +23,16 @@
 #include "xinxconfig.h"
 #include "xslproject.h"
 #include "xinxformatscheme.h"
+#include "xinxlanguagefactory.h"
 
 // Qt header
 #include <QPluginLoader>
 #include <QApplication>
 #include <QDebug>
+
+// QCodeEdit header
+#include <qlanguagefactory.h>
+#include <qnfadefinition.h>
 
 /* Static member */
 
@@ -106,7 +111,19 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 			// If the plugin contains format and language description, we loaded it.
 			IFileTextPlugin * textPlugin = dynamic_cast<IFileTextPlugin*>( t );
 			if( textPlugin ) {
+				// Format
+				QFormatScheme * scheme = textPlugin->createFormatScheme( XINXConfig::self() );
+				if( ! scheme ) {
+					XINXConfig::self()->addFormatScheme( textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>( scheme ) );
+					scheme = XINXConfig::self()->languageFactory()->defaultFormatScheme();
+				}
 
+				// Language
+				QDomDocument doc;
+				QLanguageFactory::LangData data;
+				doc.setContent( textPlugin->createLanguageDescription() );
+				QNFADefinition::load( doc, &data, scheme );
+				XINXConfig::self()->languageFactory()->addLanguage( data );
 			}
 		}
 	}

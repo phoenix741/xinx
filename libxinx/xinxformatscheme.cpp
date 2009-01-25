@@ -35,17 +35,24 @@ XinxFormatScheme::~XinxFormatScheme() {
 }
 
 void XinxFormatScheme::createStandardFormat() {
-	QFormat searchFormat, matchFormat;
+	QFormat searchFormat, braceMatchFormat, braceMismatchFormat;
 
 	// Init search format
 	searchFormat.background = m_config->config().editor.highlightWord;
 	setFormat( "search", searchFormat );
 
 	// Init match format
-	matchFormat.weight = QFont::Bold;
-	matchFormat.foreground = Qt::red;
-	matchFormat.foreground = Qt::yellow;
-	setFormat( "match", matchFormat );
+	braceMatchFormat.weight = QFont::Bold;
+	braceMatchFormat.foreground = Qt::red;
+	braceMatchFormat.background = Qt::yellow;
+	setFormat( "match", braceMatchFormat );
+	setFormat( "braceMatch", braceMatchFormat );
+
+	// Init mismatch format
+	braceMismatchFormat.weight = QFont::Bold;
+	braceMismatchFormat.foreground = Qt::yellow;
+	braceMismatchFormat.background = Qt::red;
+	setFormat( "braceMismatch", braceMismatchFormat );
 }
 
 void XinxFormatScheme::updateFormatsFromConfig() {
@@ -75,6 +82,7 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 
 void XinxFormatScheme::putFormatsToConfig() {
 	foreach( QString f, formats() ) {
+		if( ( f == "match" ) || ( f == "search" ) ) continue;
 		XINXConfig::struct_qformat conf;
 		conf.italic        = format( f ).italic;
 		conf.bold          = format( f ).weight == QFont::Bold;

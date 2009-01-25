@@ -27,7 +27,6 @@
 #include "xinxconfig.h"
 #include "xinxcore.h"
 #include "xinxpluginsloader.h"
-#include "xinxformatfactory.h"
 #include "xinxformatscheme.h"
 #include "xinxlanguagefactory.h"
 
@@ -64,7 +63,6 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p) {
 
 void XINXConfig::load() {
 	AppSettings::load();
-	if( m_formats ) m_formats->updateFormats();
 	setXinxDataFiles( config().descriptions.datas );
 }
 
@@ -74,14 +72,6 @@ void XINXConfig::save() {
 	emit changed();
 }
 
-XinxFormatFactory * XINXConfig::formatFactory() {
-	if( ! m_formats ) {
-		m_formats = new XinxFormatFactory( this );
-		connect( this, SIGNAL(changed()), m_formats, SLOT(updateFormats()) );
-	}
-	return m_formats;
-}
-
 XinxLanguageFactory * XINXConfig::languageFactory() {
 	if( ! m_languages ) {
 		m_languages = new XinxLanguageFactory( new XinxFormatScheme( this ), this );
@@ -89,6 +79,34 @@ XinxLanguageFactory * XINXConfig::languageFactory() {
 	return m_languages;
 }
 
+void XINXConfig::addFormatScheme( const QString & id, XinxFormatScheme * scheme ) {
+	if( m_formatScheme.contains( id ) ) {
+		delete m_formatScheme[ id ];
+	}
+	m_formatScheme[ id ] = scheme;
+}
+
+XinxFormatScheme * XINXConfig::scheme( const QString & highlighter ) {
+	if( ! m_formatScheme.contains( highlighter ) ) {
+		XinxFormatScheme * scheme = XinxPluginsLoader::self()->scheme( highlighter, this );
+		if( scheme ) {
+			m_formatScheme[ highlighter ] = scheme;
+		}
+	}
+	return m_formatScheme.value( highlighter, qobject_cast<XinxFormatScheme*>( languageFactory()->defaultFormatScheme() ) );
+}
+
+void XINXConfig::updateFormatsSchemeFromConfig() {
+	foreach( XinxFormatScheme * scheme, m_formatScheme.values() ) {
+		scheme->updateFormatsFromConfig();
+	}
+}
+
+void XINXConfig::putFormatsSchemeToConfig() {
+	foreach( XinxFormatScheme * scheme, m_formatScheme.values() ) {
+		scheme->putFormatsToConfig();
+	}
+}
 
 QString XINXConfig::getTools( const QString & tool, bool showDialog, QWidget * parentWindow ) {
 	QString toolsPath = config().tools.value( tool );

@@ -24,7 +24,6 @@
 
 #include <xinxlanguagefactory.h>
 #include <xinxcodeedit.h>
-#include <xinxformatfactory.h>
 
 // Qt header
 #include <QDir>

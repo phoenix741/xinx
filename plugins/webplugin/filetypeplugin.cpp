@@ -400,20 +400,20 @@ QString XQFileType::createLanguageDescription() const {
 	result
 		= "<!DOCTYPE QNFA>"
 		  "<QNFA language=\"XQuery\" extensions=\"xq\" defaultLineMark=\"bookmark\">"
-		  "<word id=\"data/float\" format=\"xq_numbers\">-?[0-9]*.[0-9]+</word>"
-		  "<word id=\"data/decimal\" format=\"xq_numbers\">-?[0-9]+</word>"
-		  "<context id=\"data/string\" format=\"xq_string\" >"
-		  "<start>&quot;</start>"
-		  "<stop>&quot;</stop>"
-		  "<stop exclusive=\"false\">\n</stop>"
-		  "<sequence id=\"escape\" format=\"xq_escapeseq\" >\\[nrtvf\\\"'\n]</sequence>"
-		  "</context>"
-		  "<context id=\"data/chars\" format=\"ecmascript_string\" >"
-		  "<start>'</start>"
-		  "<stop>'</stop>"
-		  "<stop exclusive=\"false\">\n</stop>"
-		  "<sequence id=\"escape\" format=\"escapeseq\" >\\[nrtvf\\\"'\n]</sequence>"
-		  "</context>";
+		  "	<word id=\"data/float\" format=\"xq_numbers\">-?[0-9]*.[0-9]+</word>"
+		  "	<word id=\"data/decimal\" format=\"xq_numbers\">-?[0-9]+</word>"
+		  "	<context id=\"data/string\" format=\"xq_string\" >"
+		  "		<start>&quot;</start>"
+		  "		<stop>&quot;</stop>"
+		  "		<stop exclusive=\"false\">\n</stop>"
+		  "		<sequence id=\"escape\" format=\"xq_escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
+		  "	</context>"
+		  "	<context id=\"data/chars\" format=\"ecmascript_string\" >"
+		  "		<start>'</start>"
+		  "		<stop>'</stop>"
+		  "		<stop exclusive=\"false\">\n</stop>"
+		  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
+		  "	</context>";
 
 	foreach( QString key, XQueryKeyword::self()->keywords().values() ) {
 		result += QString("<list id=\"keyword_/%1\" format=\"xquery_%1\">").arg( key );

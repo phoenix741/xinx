@@ -42,7 +42,6 @@
 #include <xinxpluginsloader.h>
 #include <xinxconfig.h>
 #include <xinxlanguagefactory.h>
-#include <xinxformatfactory.h>
 
 // QCodeedit header
 #include "qnfadefinition.h"

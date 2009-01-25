@@ -20,7 +20,6 @@
 // Xinx header
 #include "xinxcodeedit_p.h"
 #include "xinxconfig.h"
-#include "xinxformatfactory.h"
 #include "xinxlanguagefactory.h"
 #include "xinxformatscheme.h"
 
@@ -362,7 +361,7 @@ void XinxCodeEdit::setHighlighter( const QString & highlighter, XINXConfig * con
 		return;
 	}
 
-	QFormatScheme * scheme = config->formatFactory()->scheme( highlighter );
+	QFormatScheme * scheme = config->scheme( highlighter );
 	if( ! scheme )
 		scheme = config->languageFactory()->defaultFormatScheme();
 	document()->setFormatScheme( scheme );
