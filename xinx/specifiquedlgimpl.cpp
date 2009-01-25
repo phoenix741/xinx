@@ -56,7 +56,7 @@ SpecifiqueDialogImpl::~SpecifiqueDialogImpl() {
 bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
 	if( ! XINXProjectManager::self()->project() ) return false;
 
-	foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
+	foreach( const QString & prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
 		if( QFileInfo( filename ).fileName().startsWith( prefix + "_", Qt::CaseInsensitive ) )
 			return true;
 	}

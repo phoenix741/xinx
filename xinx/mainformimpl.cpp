@@ -554,7 +554,7 @@ void MainformImpl::updateToolsMenu() {
 	m_snipetCategoryActs.clear();
 
 	if( SnipetListManager::self()->snipets().count() > 0 ) {
-		foreach( QString category, SnipetListManager::self()->snipets().categories() ) {
+		foreach( const QString & category, SnipetListManager::self()->snipets().categories() ) {
 			QAction * act = new QAction( category, this );
 			m_snipetCategoryActs[ category ] = act;
 			act->setMenu( new QMenu( this ) );
@@ -658,7 +658,7 @@ void MainformImpl::openFile() {
 	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), XinxPluginsLoader::self()->openDialogBoxFilters().join(";;") );
 
 	m_tabEditors->setUpdatesEnabled( false );
-	foreach( QString filename, selectedFiles ) {
+	foreach( const QString & filename, selectedFiles ) {
 		SpecifiqueDialogImpl::setLastPlace( QFileInfo( filename ).absolutePath() );
 		openFile( filename );
 	}
@@ -1056,7 +1056,7 @@ void MainformImpl::selectedCompareWithStd() {
 		path = QFileInfo( customFilename ).absolutePath();
 		filename = QFileInfo( customFilename ).fileName();
 
-		foreach( QString prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
+		foreach( const QString & prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
 			if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
 				isSpecifique = true;
 				stdFilename = filename;
@@ -1671,7 +1671,7 @@ void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
 		m_logDock->init();
 		m_rcsExecute = true;
-		foreach( QString file, list ) {
+		foreach( const QString & file, list ) {
 			m_projectDock->removeFile( file );
 		}
 		rcs->remove( list );

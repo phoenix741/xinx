@@ -178,7 +178,7 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 
 	d->m_wsdl = WSDL( element );
 
-	foreach( WSDLService service, d->m_wsdl.services() ) {
+	foreach( const WSDLService & service, d->m_wsdl.services() ) {
 		QString tnsBinding = service.port().binding();
 		tnsBinding = tnsBinding.mid( tnsBinding.indexOf( ":" ) + 1 );
 
@@ -188,10 +188,10 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 
 		WSDLPortType portType = d->m_wsdl.portTypes()[ tnsType ];
 
-		foreach( WSDLOperation operation, portType.operations() ) {
+		foreach( const WSDLOperation & operation, portType.operations() ) {
 			Operation * wsOperation = new Operation( operation.name() );
 
-			foreach( WSDLOperation bindingOperation, binding.operations() ) {
+			foreach( const WSDLOperation & bindingOperation, binding.operations() ) {
 				if( bindingOperation.name() == operation.name() ) {
 					wsOperation->d->m_encodingStyle = bindingOperation.inputEncodingStyle();
 					wsOperation->d->m_namespaceString = bindingOperation.inputNamespace();
@@ -202,7 +202,7 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 			tnsInputMessage = tnsInputMessage.mid( tnsInputMessage.indexOf( ":" ) + 1 );
 
 			WSDLMessage inputMessage = d->m_wsdl.messages()[ tnsInputMessage ];
-			foreach( WSDLPart part, inputMessage.parts() ) {
+			foreach( const WSDLPart & part, inputMessage.parts() ) {
 				Parameter * param = new Parameter( part.name(), part.type() );
 				wsOperation->d->m_inputParam.append( param );
 			}
@@ -212,7 +212,7 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 			tnsOutputMessage = tnsOutputMessage.mid( tnsOutputMessage.indexOf( ":" ) + 1 );
 
 			WSDLMessage outputMessage = d->m_wsdl.messages()[ tnsOutputMessage ];
-			foreach( WSDLPart part, outputMessage.parts() ) {
+			foreach( const WSDLPart & part, outputMessage.parts() ) {
 				Parameter * param = new Parameter( part.name(), part.type() );
 				wsOperation->d->m_outputParam.append( param );
 			}
@@ -241,7 +241,7 @@ void WebServices::askWSDL( QWidget * parent ) {
 	QString query = wsdlUrl.path();
 	if( wsdlUrl.hasQuery() ) {
 		query += "?";
-		foreach( ParamStr param, wsdlUrl.queryItems() ) {
+		foreach( const ParamStr & param, wsdlUrl.queryItems() ) {
 			query += param.first;
 			if( !param.second.isEmpty() )
 				query += "=" + param.second;
@@ -311,7 +311,7 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 		Envelop soapResult( document.toString(), op->name() + "Response" );
 		QHash<QString,QString> response;
 		QStringList params = soapResult.getParams();
-		foreach( QString param, params ) {
+		foreach( const QString & param, params ) {
 			QPair<QString,QString> pair = soapResult.getParam( param );
 			response[ param ] = pair.first;
 		}
@@ -355,7 +355,7 @@ void WebServicesManager::setProject( XSLProject * project ) {
 
 	if( enabled ) {
 		QStringList serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split(";;",QString::SkipEmptyParts);
-		foreach( QString link, serveurWeb ) {
+		foreach( const QString & link, serveurWeb ) {
 			WebServices * ws = new WebServices( link, this );
 			append( ws );
 			ws->askWSDL( qApp->activeWindow() );

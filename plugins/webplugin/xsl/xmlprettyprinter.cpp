@@ -103,7 +103,7 @@ void XMLPrettyPrinter::constructXML( int level ) {
 
 			m_result << "<" + qualifiedName().toString();
 
-			foreach( QXmlStreamAttribute a, attributes() ) {
+			foreach( const QXmlStreamAttribute & a, attributes() ) {
 				m_result << " " + a.qualifiedName().toString() + "=\"" + Qt::escape( a.value().toString() ) + "\"";
 			}
 

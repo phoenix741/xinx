@@ -106,7 +106,8 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	IFilePlugin * interface = qobject_cast<IFilePlugin*>( plugin );
 	if( interface ) {
 		foreach( IFileTypePlugin * t, interface->fileTypes() ) {
-			XINXConfig::self()->addDefaultExtention( t->description(), t->properties() );
+			struct AppSettings::struct_extentions properties = t->properties();
+			XINXConfig::self()->addDefaultExtention( t->description(), properties );
 
 			// If the plugin contains format and language description, we loaded it.
 			IFileTextPlugin * textPlugin = dynamic_cast<IFileTextPlugin*>( t );
@@ -135,7 +136,7 @@ void XinxPluginsLoader::loadPlugins() {
 
 	m_pluginsDir = QDir( "plugins:" );
 
-	foreach( QString fileName, m_pluginsDir.entryList( QDir::Files ) ) {
+	foreach( const QString & fileName, m_pluginsDir.entryList( QDir::Files ) ) {
 		QPluginLoader loader( m_pluginsDir.absoluteFilePath( fileName ) );
 		QObject * plugin = loader.instance();
 		if ( plugin )
@@ -162,7 +163,7 @@ IFileTypePlugin * XinxPluginsLoader::matchedFileType( const QString & filename )
 	QList<IFileTypePlugin*> types = fileTypes();
 	foreach( IFileTypePlugin* plugin, types ) {
 		QStringList patterns = plugin->match().split( " " );
-		foreach( QString match, patterns ) {
+		foreach( const QString & match, patterns ) {
 			QRegExp pattern( match, Qt::CaseInsensitive, QRegExp::Wildcard );
 			if( pattern.exactMatch( filename ) )
 				return plugin;
@@ -246,7 +247,7 @@ FileContentElement * XinxPluginsLoader::createElement( QString & filename, FileC
 
 	QString absPath = QString();
 	bool finded = false;
-	foreach( QString path, searchList ) {
+	foreach( const QString & path, searchList ) {
 		absPath = QDir( path ).absoluteFilePath( filename );
 		if( QFile::exists( absPath ) ) {
 			finded = true;
@@ -269,7 +270,7 @@ QList< QPair<QString,QString> > XinxPluginsLoader::revisionsControls() const {
 	foreach( XinxPluginElement * element, plugins() ) {
 		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element->plugin() );
 		if( element->isActivated() && interface ) {
-			foreach( QString rcsKey, interface->rcs() ) {
+			foreach( const QString & rcsKey, interface->rcs() ) {
 				result << qMakePair( rcsKey, interface->descriptionOfRCS( rcsKey ) );
 			}
 		}

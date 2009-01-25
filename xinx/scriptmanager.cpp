@@ -143,7 +143,7 @@ void ScriptManager::loadScripts() {
 	m_objects.clear();
 	QStringList filenames = scriptDir.entryList( QStringList("*.js"), QDir::Files );
 
-	foreach( QString filename, filenames ) {
+	foreach( const QString & filename, filenames ) {
 		loadScript( scriptDir.absoluteFilePath( filename ) );
 	}
 

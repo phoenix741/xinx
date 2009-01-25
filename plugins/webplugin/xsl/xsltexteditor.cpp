@@ -119,7 +119,7 @@ QDocumentCursor XslTextEditor::insertCompletionBalises( QDocumentCursor & tc, QS
 	if( m_parser && SelfWebPluginSettings::self()->config().xml.addDefaultSubBalise && ( node == "xsl:call-template" ) ) {
 		QString nodeName = paramValue( tc, "name" );
 		if( ! nodeName.isEmpty() ) {
-			foreach( QString param, m_parser->params( nodeName ) ) {
+			foreach( const QString & param, m_parser->params( nodeName ) ) {
 				tc.insertText( "\n" + indent + "\t" );
 				tc.insertText( "<xsl:with-param name=\"" + param + "\" select=\"\"/>" );
 				if( position.isNull() ) {

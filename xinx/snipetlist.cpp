@@ -93,7 +93,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 		text = document.createTextNode( snipet.text() );
 		textElement.appendChild( text );
 
-		foreach( QString params, snipet.params() ) {
+		foreach( const QString & params, snipet.params() ) {
 			QDomElement param = document.createElement( "Param" );
 			s.appendChild( param );
 			param.setAttribute( "name", params );
@@ -149,7 +149,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 
 SnipetList SnipetList::categorie( const QString & category ) {
 	SnipetList result;
-	foreach( Snipet s, *this ) {
+	foreach( const Snipet & s, *this ) {
 		if( s.category() == category ) result += s;
 	}
 	return result;

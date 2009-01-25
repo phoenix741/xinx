@@ -29,7 +29,7 @@
 
 /* XmlPresentationItem */
 
-XmlPresentationItem::XmlPresentationItem( QDomNode node, int row, XmlPresentationItem * parent ) 
+XmlPresentationItem::XmlPresentationItem( QDomNode node, int row, XmlPresentationItem * parent )
 	: m_domNode( node ), m_parentItem( parent ), m_rowNumber( row ) {
 }
 
@@ -52,13 +52,13 @@ int XmlPresentationItem::count() {
 			m_childItems.append( new XmlPresentationParamItem( attributes.item( i ), i, this ) );
 		}
 		int countAttribute = attributes.count();
-		
+
 		QDomElement node = m_domNode.firstChildElement();
 		int index = 0;
 		while( ! node.isNull() ) {
 			m_childItems.append( new XmlPresentationNodeItem( node, index + countAttribute, this ) );
 			if( node.nodeName() == "business_data" )
-				m_businessData = node.toElement().text(); 
+				m_businessData = node.toElement().text();
 			if( node.nodeName() == "screen_data" )
 				m_screenData = node.toElement().text();
 			if( node.nodeName() == "error" )
@@ -66,7 +66,7 @@ int XmlPresentationItem::count() {
 			node = node.nextSiblingElement(); index++;
 		}
 	}
-	
+
 	return m_childItems.count();
 }
 
@@ -76,7 +76,7 @@ XmlPresentationItem * XmlPresentationItem::child( int i ) {
 
 int XmlPresentationItem::row() {
 	return m_rowNumber;
-} 
+}
 
 QString XmlPresentationItem::xpath( bool unique ) const {
 	if( m_parentItem )
@@ -109,11 +109,11 @@ QString XmlPresentationItem::errorData() const {
 /* XmlPresentationNodeItem */
 
 XmlPresentationNodeItem::XmlPresentationNodeItem( QDomNode node, int row, XmlPresentationItem * parent ) : XmlPresentationItem( node, row, parent ) {
-	
+
 }
 
 XmlPresentationNodeItem::~XmlPresentationNodeItem() {
-	
+
 }
 
 QString XmlPresentationNodeItem::tipsText() const {
@@ -121,7 +121,7 @@ QString XmlPresentationNodeItem::tipsText() const {
 	foreach( XmlPresentationItem * item, m_childItems ) {
 		XmlPresentationParamItem * param = dynamic_cast<XmlPresentationParamItem*>( item );
 		if( param )
-			result += item->xpathName() + "=" + param->value() + "\n"; 
+			result += item->xpathName() + "=" + param->value() + "\n";
 	}
 	QDomNode node = m_domNode.firstChild();
 	while( ! node.isNull() ) {
@@ -133,7 +133,7 @@ QString XmlPresentationNodeItem::tipsText() const {
 		result += "Business=" + m_businessData.simplified() + "\n";
 	if( ! m_screenData.isEmpty() )
 		result += "Screen=" + m_screenData.simplified() + "\n";
-	if( result.simplified().isEmpty() ) 
+	if( result.simplified().isEmpty() )
 		result = XmlPresentationModel::tr( "(empty)" );
 	return result;
 }
@@ -156,7 +156,7 @@ XmlPresentationParamItem::XmlPresentationParamItem( QDomNode node, int row, XmlP
 }
 
 XmlPresentationParamItem::~XmlPresentationParamItem() {
-	
+
 }
 
 QString XmlPresentationParamItem::value() const {
@@ -193,7 +193,7 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 
 	XmlPresentationItem *item = static_cast<XmlPresentationItem*>(index.internalPointer());
 	QDomNode node = item->node();
-	
+
 	if( role == Qt::DisplayRole ) {
 		return node.nodeName();
 	} else if( role == XmlPresentationModel::XNamedPathRole ) {
@@ -203,7 +203,7 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 	} else if( role == XmlPresentationModel::NamedViewRole ) {
 		return item->xpathName();
 	} else if( ( role == Qt::DecorationRole ) && ( index.column() == 0 ) ) {
-		if( dynamic_cast<XmlPresentationNodeItem*>( item ) ) 
+		if( dynamic_cast<XmlPresentationNodeItem*>( item ) )
 			return QIcon( ":/images/balise.png" );
 		else
 			return QIcon( ":/images/variable.png" );
@@ -211,7 +211,7 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 		return item->tipsText();
 	} else if( role == Qt::ForegroundRole ) {
 		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
-		if( node && node->isView() ) 
+		if( node && node->isView() )
 			return XINXConfig::self()->config().xmlPres.viewColor;
 		else if( ! item->errorData().isEmpty() )
 			return XINXConfig::self()->config().xmlPres.errorColor;
@@ -283,12 +283,12 @@ int XmlPresentationModel::rowCount(const QModelIndex &parent) const {
 		parentItem = m_rootItem;
 	else
 		parentItem = static_cast<XmlPresentationItem*>(parent.internalPointer());
-	
+
 	if( dynamic_cast<XmlPresentationParamItem*>(parentItem) )
 		return 0;
 	else
 		return parentItem->count();
-} 
+}
 
 QStringList XmlPresentationModel::mimeTypes() const {
 	return QStringList() << "text/plain";
@@ -298,7 +298,7 @@ QMimeData * XmlPresentationModel::mimeData( const QModelIndexList &indexes ) con
 	QMimeData *mimeData = new QMimeData();
 	QString text;
 
-	foreach( QModelIndex index, indexes ) {
+	foreach( const QModelIndex & index, indexes ) {
 		if ( index.isValid() ) {
 			if( XINXConfig::self()->config().xmlPres.showNameAttributeIfExists )
 				text += data( index, XmlPresentationModel::XNamedPathRole ).toString();
@@ -309,4 +309,4 @@ QMimeData * XmlPresentationModel::mimeData( const QModelIndexList &indexes ) con
 
 	mimeData->setText( text );
 	return mimeData;
-} 
+}

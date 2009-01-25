@@ -331,7 +331,7 @@ void ProjectConverter::process() {
 
 		QDomElement paths = m_projectDocument.createElement( "paths" );
 		m_projectDocument.documentElement().appendChild( paths );
-		foreach( QString p, pathList ) {
+		foreach( const QString & p, pathList ) {
 			QDomElement e = m_projectDocument.createElement( "path" );
 			paths.appendChild( e );
 			QDomText text = m_projectDocument.createTextNode( p );

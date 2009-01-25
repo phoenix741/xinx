@@ -219,19 +219,7 @@ QString JSFileType::createLanguageDescription() const {
 }
 
 XinxFormatScheme * JSFileType::createFormatScheme( XINXConfig * config ) const {
-	return 0;
-}
-
-QHash<QString,QTextCharFormat> JSFileType::defaultsFormat() const {
-	QHash<QString,QTextCharFormat> formats;
-	formats[ "ecmascript_comment"         ].setForeground( DEFAULT_COMMENT );
-	formats[ "ecmascript_error"           ].setForeground( DEFAULT_ERROR );
-	formats[ "ecmascript_other"           ].setForeground( DEFAULT_OTHER );
-	formats[ "ecmascript_reservedword"    ].setForeground( DEFAULT_RESERVEDWORD );
-	formats[ "ecmascript_reservedword"    ].setFontWeight( QFont::Bold );
-	formats[ "ecmascript_number"          ].setForeground( DEFAULT_NUMBER );
-	formats[ "ecmascript_string"          ].setForeground( DEFAULT_STRING );
-	return formats;
+	return new JsFormatScheme( config );
 }
 
 QString JSFileType::fileExample() const {
@@ -288,36 +276,6 @@ QString CSSFileType::highlighterId() const {
 	return "CSS";
 }
 
-QHash<QString,QTextCharFormat> CSSFileType::defaultsFormat() const {
-	QHash<QString,QTextCharFormat> formats;
-	formats[ "css_comment"        ].setForeground( DEFAULT_COMMENT );
-	formats[ "css_error"          ].setForeground( DEFAULT_ERROR );
-	formats[ "css_other"          ].setForeground( DEFAULT_OTHER );
-	formats[ "css_string"         ].setForeground( DEFAULT_STRING );
-	formats[ "css_operator"       ].setForeground( DEFAULT_SYNTAX_CHAR );
-	formats[ "css_directive"      ].setForeground( DEFAULT_NUMBER );
-	formats[ "css_number"         ].setForeground( DEFAULT_NUMBER );
-	formats[ "css_pseudoclass"	  ].setForeground( DEFAULT_NUMBER );
-	formats[ "css_class"		  ].setForeground( DEFAULT_XPATH_VALUE );
-	formats[ "css_class"          ].setFontWeight( QFont::Bold );
-	formats[ "css_id"		      ].setForeground( DEFAULT_XPATH_VALUE );
-	formats[ "css_tag"		      ].setForeground( DEFAULT_RESERVEDWORD );
-	formats[ "css_attribute"      ].setForeground( DEFAULT_NUMBER );
-	formats[ "css_identifier"     ].setForeground( DEFAULT_RESERVEDWORD );
-	formats[ "css_identifier"     ].setFontWeight( QFont::Bold );
-	formats[ "css_identifier1"    ].setForeground( DEFAULT_RESERVEDWORD );
-	formats[ "css_identifier1"    ].setFontWeight( QFont::Bold );
-	formats[ "css_identifier2"    ].setForeground( DEFAULT_RESERVEDWORD );
-	formats[ "css_identifier2"    ].setFontWeight( QFont::Bold );
-	formats[ "css_value"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-	formats[ "css_value"		  ].setFontItalic( true );
-	formats[ "css_value1"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-	formats[ "css_value1"		  ].setFontItalic( true );
-	formats[ "css_value2"		  ].setForeground( DEFAULT_ELEMENT_NAME );
-	formats[ "css_value2"		  ].setFontItalic( true );
-	return formats;
-}
-
 QString CSSFileType::createLanguageDescription() const {
 	QString result;
 	QFile description( ":/qcodeedit/lan/css.qnfa" );
@@ -329,7 +287,7 @@ QString CSSFileType::createLanguageDescription() const {
 }
 
 XinxFormatScheme * CSSFileType::createFormatScheme( XINXConfig * config ) const {
-	return 0;
+	return new CssFormatScheme( config );
 }
 
 QString CSSFileType::fileExample() const {
@@ -400,25 +358,25 @@ QString XQFileType::createLanguageDescription() const {
 	result
 		= "<!DOCTYPE QNFA>"
 		  "<QNFA language=\"XQuery\" extensions=\"xq\" defaultLineMark=\"bookmark\">"
-		  "	<word id=\"data/float\" format=\"xq_numbers\">-?[0-9]*.[0-9]+</word>"
-		  "	<word id=\"data/decimal\" format=\"xq_numbers\">-?[0-9]+</word>"
-		  "	<context id=\"data/string\" format=\"xq_string\" >"
+		  "	<word id=\"data/float\" format=\"numbers\">-?[0-9]*.[0-9]+</word>"
+		  "	<word id=\"data/decimal\" format=\"numbers\">-?[0-9]+</word>"
+		  "	<context id=\"data/string\" format=\"string\" >"
 		  "		<start>&quot;</start>"
 		  "		<stop>&quot;</stop>"
 		  "		<stop exclusive=\"false\">\n</stop>"
-		  "		<sequence id=\"escape\" format=\"xq_escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
+		  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
 		  "	</context>"
-		  "	<context id=\"data/chars\" format=\"ecmascript_string\" >"
+		  "	<context id=\"data/chars\" format=\"string\" >"
 		  "		<start>'</start>"
 		  "		<stop>'</stop>"
 		  "		<stop exclusive=\"false\">\n</stop>"
 		  "		<sequence id=\"escape\" format=\"escapeseq\" >\\\\[nrtvf\\\"'\n]</sequence>"
 		  "	</context>";
 
-	foreach( QString key, XQueryKeyword::self()->keywords().values() ) {
+	foreach( const QString & key, XQueryKeyword::self()->keywords().values() ) {
 		result += QString("<list id=\"keyword_/%1\" format=\"xquery_%1\">").arg( key );
 
-		foreach( QString value, XQueryKeyword::self()->keywords().keys( key ) ) {
+		foreach( const QString & value, XQueryKeyword::self()->keywords().keys( key ) ) {
 			result += QString("<word>%1</word>").arg( value );
 		}
 
@@ -430,33 +388,7 @@ QString XQFileType::createLanguageDescription() const {
 }
 
 XinxFormatScheme * XQFileType::createFormatScheme( XINXConfig * config ) const {
-	return 0;
-}
-
-QHash<QString,QTextCharFormat> XQFileType::defaultsFormat() const {
-	QHash<QString,QTextCharFormat> formats;
-	formats[ "xquery_accessors"       ].setForeground( DEFAULT_COMMENT );
-	formats[ "xquery_accessors"       ].setFontWeight( QFont::Bold );
-	formats[ "xquery_other"           ].setForeground( DEFAULT_OTHER );
-	formats[ "xquery_buildin"         ].setForeground( DEFAULT_OTHER );
-	formats[ "xquery_buildin"         ].setFontWeight( QFont::Bold );
-	formats[ "xquery_numerical"       ].setForeground( DEFAULT_NUMBER );
-	formats[ "xquery_numerical"       ].setFontWeight( QFont::Bold );
-	formats[ "xquery_string"          ].setForeground( DEFAULT_STRING );
-	formats[ "xquery_string"          ].setFontWeight( QFont::Bold );
-	formats[ "xquery_regular"         ].setForeground( DEFAULT_COMMENT );
-	formats[ "xquery_regular"         ].setFontWeight( QFont::Bold );
-	formats[ "xquery_boolean"         ].setForeground( DEFAULT_COMMENT );
-	formats[ "xquery_boolean"         ].setFontWeight( QFont::Bold );
-	formats[ "xquery_datetime"        ].setForeground( DEFAULT_OTHER );
-	formats[ "xquery_datetime"        ].setFontWeight( QFont::Bold );
-	formats[ "xquery_sequence"        ].setForeground( DEFAULT_STRING );
-	formats[ "xquery_sequence"        ].setFontWeight( QFont::Bold );
-	formats[ "xquery_aggregate"       ].setForeground( DEFAULT_NUMBER );
-	formats[ "xquery_aggregate"       ].setFontWeight( QFont::Bold );
-	formats[ "xquery_context"         ].setForeground( DEFAULT_COMMENT );
-	formats[ "xquery_context"         ].setFontWeight( QFont::Bold );
-	return formats;
+	return new XqFormatScheme( config );
 }
 
 QString XQFileType::fileExample() const {

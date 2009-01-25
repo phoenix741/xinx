@@ -132,7 +132,7 @@ void XINXConfig::addDefaultTool( const QString & tool, const QString & defaultVa
 	}
 }
 
-void XINXConfig::addDefaultExtention( const QString & type, struct AppSettings::struct_extentions properties ) {
+void XINXConfig::addDefaultExtention( const QString & type, const struct AppSettings::struct_extentions & properties ) {
 	if( ! config().files.contains( type ) ) {
 		config().files[ type ] = properties;
 		// Store imediately the hashtable

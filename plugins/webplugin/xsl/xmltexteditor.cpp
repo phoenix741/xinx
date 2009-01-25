@@ -501,7 +501,7 @@ QList<XPathBalise> XmlTextEditor::xpath( const QDocumentCursor & cursor, const Q
 				QStringList params = baliseText.split( ' ', QString::SkipEmptyParts );
 				params.removeFirst();
 
-				foreach( QString param, params ) {
+				foreach( const QString & param, params ) {
 					QString name  = param.section( '=', 0, 0 );
 					if( attributeName.contains( name ) ) {
 						QString value = param.section( '=', 1, 1 ).remove( '"' ).trimmed();
@@ -521,7 +521,7 @@ QList<XPathBalise> XmlTextEditor::xpath( const QDocumentCursor & cursor, const Q
 
 QString XmlTextEditor::xpathToString( const QList<XPathBalise> & xp ) {
 	QString xps;
-	foreach( XPathBalise balise, xp ) {
+	foreach( const XPathBalise & balise, xp ) {
 		QString text = balise.name;
 		if( ! balise.attributes.isEmpty() ) {
 			text += "[";

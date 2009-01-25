@@ -105,7 +105,7 @@ void PrivateXmlPresentationDockWidget::initXmlPresentationCombo() {
 		QDir logDir( m_logPath );
 		if( logDir.exists() ) {
 			QStringList files = logDir.entryList( QStringList() << "Presentation_*.xml", QDir::Files | QDir::Readable );
-			foreach( QString file, files )
+			foreach( const QString & file, files )
 				m_xmlPresentationWidget->m_presentationComboBox->addItem( file );
 		}
 	}
@@ -257,7 +257,7 @@ void PrivateXmlPresentationDockWidget::threadTerminated() {
 		}
 	} else {
 		QStringList xpath = m_currentXpath.isEmpty() ? XINXConfig::self()->config().xmlPres.autoExpandedPath.split( '/' ) : m_currentXpath.split( '/' );
-		foreach( QString path, xpath ) {
+		foreach( const QString & path, xpath ) {
 			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
 			if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
 				QModelIndexList matchedIndex = m_sortFilterModel->match( m_sortFilterModel->index( 0, 0, expandIndex ), XmlPresentationModel::NamedViewRole, path, 1, Qt::MatchExactly );

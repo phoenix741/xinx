@@ -104,7 +104,7 @@ void PrivateProjectDirectoryDockWidget::filtreChange() {
 		QString filename = QFileInfo( filtre ).baseName();
 
 		QStringList filters;
-		foreach( QString pluginFilter, XinxPluginsLoader::self()->managedFilters() ) {
+		foreach( const QString & pluginFilter, XinxPluginsLoader::self()->managedFilters() ) {
 			QString pluginFilename  = QFileInfo( pluginFilter ).baseName();
 			QString pluginExtention = QFileInfo( pluginFilter ).completeSuffix();
 			if( ! filename.isEmpty() )
@@ -248,11 +248,11 @@ QStringList ProjectDirectoryDockWidget::selectedFiles() {
 	if( d->m_flatModel ) {
 		QModelIndexList indexList = list;
 		list.clear();
-		foreach( QModelIndex index, indexList ) {
+		foreach( const QModelIndex & index, indexList ) {
 			list << static_cast<FlatModel*>( d->m_flatModel )->mappingToSource( index );
 		}
 	}
-	foreach( QModelIndex index, list )
+	foreach( const QModelIndex & index, list )
 		paths << d->m_dirModel->filePath( index );
 	return paths;
 }

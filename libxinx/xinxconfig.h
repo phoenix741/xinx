@@ -97,7 +97,7 @@ public:
 	 * \param type The type to add (XML File)
 	 * \param properties Default properties to add
 	 */
-	void addDefaultExtention( const QString & type, struct AppSettings::struct_extentions properties );
+	void addDefaultExtention( const QString & type, const struct AppSettings::struct_extentions & properties );
 
 	/*! Search the file type for the corresponding filename  */
 	struct_extentions matchedFileType( const QString & filename );

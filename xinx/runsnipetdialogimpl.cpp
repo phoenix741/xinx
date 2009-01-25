@@ -29,14 +29,14 @@
 
 RunSnipetDialogImpl::RunSnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
-	
+
 	m_text = snipet.text();
-	
+
 	m_paramGrid = new QGridLayout( m_paramGroupBox );
 
 	m_labelName->setText( QString( "<b>%1</b>" ).arg( snipet.name() ) );
 	m_descriptionLabel->setText( snipet.description() );
-	foreach( QString params, snipet.params() ) {
+	foreach( const QString & params, snipet.params() ) {
 		QLabel * label = new QLabel( params, m_paramGroupBox );
 		QLineEdit * edit = new QLineEdit( m_paramGroupBox );
 
@@ -45,12 +45,12 @@ RunSnipetDialogImpl::RunSnipetDialogImpl( const Snipet & snipet, QWidget * paren
 
 		m_paramList.append( qMakePair( label, edit ) );
 	}
-	
+
 	m_paramGroupBox->setVisible( m_paramList.size() > 0 );
 	if( m_paramList.size() > 0 ) {
 		m_paramList.at( 0 ).second->setFocus( Qt::OtherFocusReason );
 	}
-	
+
 	resize( sizeHint() );
 }
 
@@ -68,13 +68,13 @@ QString RunSnipetDialogImpl::getResult() {
 	/* Process script */
 	QScriptEngine & engine = ScriptManager::self()->engine();
 	engine.pushContext();
-	QRegExp jsString( "<\\?.*\\?>" ); 
+	QRegExp jsString( "<\\?.*\\?>" );
 	jsString.setMinimal( true );
 	int from = 0;
 	QString processedString;
 	while( jsString.indexIn( text, from ) >= 0 ) {
-		processedString += text.mid( from, jsString.pos() - from ); 
-		
+		processedString += text.mid( from, jsString.pos() - from );
+
 		QString js = text.mid( jsString.pos() + 2, jsString.matchedLength() - 4 );
 		if( js.at(0) == '=' ) {
 			QScriptValue result = engine.evaluate( js.mid(1) );
@@ -96,7 +96,7 @@ QString RunSnipetDialogImpl::getResult() {
 		from = jsString.pos() + jsString.matchedLength();
 	}
 	processedString += text.mid( from );
-	
+
 	engine.popContext();
 	return processedString;
 }

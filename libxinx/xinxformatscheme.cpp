@@ -59,12 +59,13 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 	// Reload from config file ;)
 	createStandardFormat();
 
-	foreach( QString format, m_config->config().formats.keys() ) {
+	foreach( const QString & format, m_config->config().formats.keys() ) {
 		if( m_nameSpace.isEmpty() || format.startsWith( m_nameSpace + "_" ) ) {
 			if( m_config->config().formats.contains( format ) ) {
 				XINXConfig::struct_qformat conf = m_config->config().formats.value( format );
 
-				QString formatName = format.remove( 0, m_nameSpace.length() + 1 );
+				QString formatName( format );
+				formatName = formatName.remove( 0, m_nameSpace.length() + 1 );
 				QFormat format;
 				format.italic        = conf.italic;
 				format.weight        = conf.bold ? QFont::Bold : QFont::Normal;
@@ -81,7 +82,7 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 }
 
 void XinxFormatScheme::putFormatsToConfig() {
-	foreach( QString f, formats() ) {
+	foreach( const QString & f, formats() ) {
 		if( ( f == "match" ) || ( f == "search" ) ) continue;
 		XINXConfig::struct_qformat conf;
 		conf.italic        = format( f ).italic;

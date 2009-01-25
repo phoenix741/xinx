@@ -142,11 +142,11 @@ RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
 	QStringList processResult = QString(process.readAllStandardOutput()).split( "\n" );
 	if( processResult.count() == 0 ) return result;
 
-	foreach( QString pr, processResult ) {
+	foreach( const QString & pr, processResult ) {
 		if( pr.isEmpty() ) continue;
 		QString filename = QDir( path ).absoluteFilePath ( pr.mid(7).trimmed() );
 		bool hasWilcard = false;
-		foreach( QString wilcard, XinxPluginsLoader::self()->managedFilters() ) {
+		foreach( const QString & wilcard, XinxPluginsLoader::self()->managedFilters() ) {
 			QRegExp projectWilcard( wilcard, Qt::CaseInsensitive, QRegExp::Wildcard );
 			if( projectWilcard.exactMatch( filename ) ) { hasWilcard = true; break; }
 		}
@@ -175,7 +175,7 @@ RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
 RCS::FilesOperation RCS_SVN::operations( const QStringList & paths ) {
 	QList<FileOperation> result;
 	try {
-		foreach( QString p, paths ) {
+		foreach( const QString & p, paths ) {
 			result += operations( p );
 		}
 	} catch( ToolsNotDefinedException e ) {
@@ -185,12 +185,12 @@ RCS::FilesOperation RCS_SVN::operations( const QStringList & paths ) {
 
 void RCS_SVN::logMessages() {
 	QStringList errors = QString::fromLocal8Bit( m_process->readAllStandardError() ).split( "\n" );
-	foreach( QString error, errors ) {
+	foreach( const QString & error, errors ) {
 		if( ! error.trimmed().isEmpty() )
 			emit log( RCS::LogError, error.trimmed() );
 	}
 	QStringList infos = QString::fromLocal8Bit( m_process->readAllStandardOutput() ).split( "\n" );
-	foreach( QString info, infos ) {
+	foreach( const QString & info, infos ) {
 		if( ! info.trimmed().isEmpty() )
 			emit log( RCS::LogNormal, info.trimmed() );
 	}
@@ -205,7 +205,7 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 		emit operationTerminated();
 	}
 
-	foreach( QString file,  m_fileChanged ) {
+	foreach( const QString & file,  m_fileChanged ) {
 		m_infos.remove( QDir::fromNativeSeparators( file ) );
 		emit stateChanged( file );
 	}
@@ -240,7 +240,7 @@ void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message 
 	Q_ASSERT( !m_process );
 
 	QStringList addedFiles, removedFiles, commitedFiles;
-	foreach( RCS::FileOperation operation, path ) {
+	foreach( const RCS::FileOperation & operation, path ) {
 		if( operation.second == RCS::Nothing ) continue;
 
 		if( operation.second == RCS::AddAndCommit )

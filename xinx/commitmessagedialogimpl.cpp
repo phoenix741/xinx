@@ -32,7 +32,7 @@ class PrivateCommitMessageDialogImpl {
 public:
 	PrivateCommitMessageDialogImpl( CommitMessageDialogImpl * parent );
 	~PrivateCommitMessageDialogImpl();
-	
+
 	RCS::FilesOperation m_files;
 private:
 	CommitMessageDialogImpl * m_parent;
@@ -43,7 +43,7 @@ PrivateCommitMessageDialogImpl::PrivateCommitMessageDialogImpl( CommitMessageDia
 }
 
 PrivateCommitMessageDialogImpl::~PrivateCommitMessageDialogImpl() {
-	
+
 }
 
 /* CommitMessageDialogImpl */
@@ -67,19 +67,19 @@ QString CommitMessageDialogImpl::messages() {
 
 void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 	Q_ASSERT( XINXProjectManager::self()->project() != NULL );
-	
+
 	m_fileListWidget->clear();
 	d->m_files = files;
-	foreach( RCS::FileOperation file, d->m_files ) {
+	foreach( const RCS::FileOperation & file, d->m_files ) {
 		QString fileName = QDir( XINXProjectManager::self()->project()->projectPath() ).relativeFilePath( file.first );
 		switch( file.second ) {
-		case RCS::Commit: 
+		case RCS::Commit:
 			fileName += tr( " ( Commit )" );
 			break;
-		case RCS::AddAndCommit: 
+		case RCS::AddAndCommit:
 			fileName += tr( " ( Add and Commit )" );
 			break;
-		case RCS::RemoveAndCommit: 
+		case RCS::RemoveAndCommit:
 			fileName += tr( " ( Remove and Commit )" );
 			break;
 		default: ;

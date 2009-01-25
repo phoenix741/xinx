@@ -175,7 +175,7 @@ SpecifiqueModelIndex::~SpecifiqueModelIndex() {
 void SpecifiqueModelIndex::setExtentions( QHash<QString,AppSettings::struct_extentions> * extentions ) {
 	emit layoutAboutToBeChanged();
 	m_extentions.clear();
-	foreach( QString key, XinxPluginsLoader::self()->managedFilters() ) {
+	foreach( const QString & key, XinxPluginsLoader::self()->managedFilters() ) {
 		m_extentions.insert( key, extentions->value( key ) );
 	}
 	emit layoutChanged();
@@ -273,7 +273,7 @@ SnipetModelIndex::~SnipetModelIndex() {
 }
 
 void SnipetModelIndex::loadSnipetList( const SnipetList & list ) {
-	foreach( Snipet s, list )
+	foreach( const Snipet & s, list )
 		m_snipetList[ s.category() ].append( s );
 	reset();
 }
@@ -285,7 +285,7 @@ void SnipetModelIndex::clear() {
 
 SnipetList SnipetModelIndex::getSnipetList() const {
 	SnipetList result;
-	foreach( SnipetList list, m_snipetList )
+	foreach( const SnipetList & list, m_snipetList )
 		result += list;
 	return result;
 }
@@ -396,11 +396,11 @@ QVariant SnipetModelIndex::data( const QModelIndex & index, int role ) const {
 
 void SnipetModelIndex::removeSnipet( const QModelIndexList & indexes ) {
 	QMultiMap<QString,int> deletedValue;
-	foreach( QModelIndex index, indexes ) {
+	foreach( const QModelIndex & index, indexes ) {
 		deletedValue.insert( index.parent().data().toString(), index.row() );
 	}
 
-	foreach( QString category, deletedValue.uniqueKeys() ) {
+ 	foreach( const QString & category, deletedValue.uniqueKeys() ) {
 		QList<int> lines = deletedValue.values( category );
 		qSort( lines.begin(), lines.end(), qGreater<int>() );
 		foreach( int line, lines ) {
@@ -905,7 +905,7 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	// Font encodingas
 	QList<QByteArray> encodings = QTextCodec::availableCodecs();
 	qSort( encodings );
-	foreach( QByteArray encoding, encodings ) {
+	foreach( const QByteArray & encoding, encodings ) {
 		m_encodingComboBox->addItem( encoding );
 	}
 
@@ -924,7 +924,7 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 
 	// Style
 	m_styleComboBox->addItem( QString() );
-	foreach( QString style, QStyleFactory::keys() ) {
+	foreach( const QString & style, QStyleFactory::keys() ) {
 		m_styleComboBox->addItem( style );
 	}
 }
@@ -981,7 +981,7 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 
 void CustomDialogImpl::on_m_exportPushButton_clicked() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
-	foreach( QModelIndex i, indexes ) {
+	foreach( const QModelIndex & i, indexes ) {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 
@@ -1008,7 +1008,7 @@ void CustomDialogImpl::on_m_addPushButton_clicked() {
 
 void CustomDialogImpl::on_m_removePushButton_clicked() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
-	foreach( QModelIndex i, indexes ) {
+	foreach( const QModelIndex & i, indexes ) {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 
@@ -1039,7 +1039,7 @@ void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 
 void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
-	foreach( QModelIndex i, indexes ) {
+	foreach( const QModelIndex & i, indexes ) {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 	m_removePushButton->setEnabled( indexes.count() > 0 );
@@ -1052,7 +1052,7 @@ void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 	/*	m_formatsListView->clear();
 	QStringList filtered = d->m_config.config().formats.keys();
 	filtered = filtered.filter( text, Qt::CaseInsensitive );
-	foreach( QString key, filtered ) {
+	foreach( const QString & key, filtered ) {
 		m_formatsListView->addItem( key.remove( text + "_", Qt::CaseInsensitive ) );
 	}
 	m_formatsListView->setCurrentRow( 0 );

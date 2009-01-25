@@ -197,7 +197,7 @@ void WebServicesEditor::saveToDevice( QIODevice & d ) {
 	element.setAttribute( "service", m_servicesList->currentText() );
 	element.setAttribute( "action", m_actionList->currentText() );
 
-	foreach( QString param, m_paramValues.keys() ) {
+	foreach( const QString & param, m_paramValues.keys() ) {
 		QDomElement paramElement = document.createElement( param ) ;
 		element.appendChild( paramElement );
 
@@ -220,7 +220,7 @@ void WebServicesEditor::serialize( XSLProjectSessionEditor * data, bool content 
 
 	int i = 0;
 	if( content && isModified() ) {
-		foreach( QString param, m_paramValues.keys() ) {
+		foreach( const QString & param, m_paramValues.keys() ) {
 			data->writeProperty( QString( "Key_%1" ).arg( i ), QVariant( param ) );
 			data->writeProperty( QString( "Value_%1" ).arg( i++ ), QVariant( m_paramValues[ param ] ) );
 		}
@@ -342,7 +342,7 @@ void WebServicesEditor::loadValuesList( int index ) {
 			m_paramList->addItem( QIcon(":/services/images/serviceparam.png"), param->paramString() );
 	}
 
-	foreach( QString param, m_paramValues.keys() ) {
+	foreach( const QString & param, m_paramValues.keys() ) {
 		if( ( !param.isEmpty() ) && m_paramList->findText( param ) == -1 ) {
 			m_paramList->addItem( QIcon(":/services/images/serviceparam.png"), param );
 			m_paramList->setItemData( m_paramList->count() - 1, Qt::gray, Qt::ForegroundRole );

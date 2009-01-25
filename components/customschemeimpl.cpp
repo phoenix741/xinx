@@ -49,7 +49,7 @@ void CustomSchemeImpl::setFormatScheme( QFormatScheme * formats ) {
 
 		m_exampleEditor->editor()->document()->setFormatScheme( m_formats );
 
-		foreach( QString f, m_formats->formats() ) {
+		foreach( const QString & f, m_formats->formats() ) {
 			QFormat format = m_formats->format( f );
 			QListWidgetItem * item = new QListWidgetItem( f, m_formatsListView );
 			if( format.background.isValid() ) item->setBackground( format.background );

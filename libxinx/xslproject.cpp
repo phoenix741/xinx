@@ -73,7 +73,7 @@ void XSLProjectSessionEditor::loadFromNode( const QDomElement & element ) {
 }
 
 void XSLProjectSessionEditor::saveToNode( QDomDocument & document, QDomElement & element ) {
-	foreach( QString key, m_properties.keys() ) {
+	foreach( const QString & key, m_properties.keys() ) {
 		QDomElement propertyElement = element.firstChildElement( key );
 		if( ! propertyElement.isNull() ) element.removeChild( propertyElement );
 
@@ -173,7 +173,7 @@ void XSLProjectSession::saveToFile( const QString & filename ) {
 	QDomElement lastOpenedFile = document.createElement( "LastOpenedFile" );
 	root.appendChild( lastOpenedFile );
 
-	foreach( QString name, m_lastOpenedFile ) {
+	foreach( const QString & name, m_lastOpenedFile ) {
 		QDomElement file = document.createElement( "File" );
 		file.setAttribute( "name", name );
 		lastOpenedFile.appendChild( file );
@@ -325,7 +325,7 @@ void PrivateXSLProject::saveList( QDomDocument & document, const QString & list,
 	QDomElement dlist = document.createElement( list );
 	root.appendChild( dlist );
 
-	foreach( QString s, slist ) {
+	foreach( const QString & s, slist ) {
 		QDomElement delement = document.createElement( element );
 		dlist.appendChild( delement );
 
@@ -484,7 +484,7 @@ void XSLProject::saveToFile( const QString & filename ) {
 	QDomElement propertiesElement = document.createElement( "properties" );
 	root.appendChild( propertiesElement );
 
-	foreach( QString key, d->m_properties.keys() ) {
+	foreach( const QString & key, d->m_properties.keys() ) {
 		QDomElement propertyElement = document.createElement( key );
 		QDomText text = document.createTextNode( d->m_properties[ key ].toString() );
 		propertyElement.appendChild( text );
@@ -614,7 +614,7 @@ QString XSLProject::processedSpecifiquePath() const {
 
 QStringList XSLProject::processedSearchPathList() {
 	QStringList list;
-	foreach( QString path, searchPathList() ) {
+	foreach( const QString & path, searchPathList() ) {
 		list << d->processPath( path );
 	}
 	return list;

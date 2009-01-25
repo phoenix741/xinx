@@ -75,14 +75,14 @@ void SearchFileThread::searchRecursive( const QString & path ) {
 	QDir pathObject( path );
 	QStringList directory = pathObject.entryList( QDir::Dirs );
 
-	foreach( QString pathName, directory ) {
+	foreach( const QString & pathName, directory ) {
 		if( ( pathName != "." ) && ( pathName != ".." ) )
 		searchRecursive( pathObject.absoluteFilePath( pathName ) );
 	}
 
 	QStringList files = pathObject.entryList( XinxPluginsLoader::self()->managedFilters(), QDir::Files );
 
-	foreach( QString fileName, files ) {
+	foreach( const QString & fileName, files ) {
 		testFile( pathObject.absoluteFilePath( fileName ) );
 	}
 }

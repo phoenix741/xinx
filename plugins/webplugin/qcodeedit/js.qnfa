@@ -1,33 +1,33 @@
 <!DOCTYPE QNFA>
 <QNFA language="ECMAScript" extensions="js" defaultLineMark="bookmark">
-	<context id="comment/multi" format="ecmascript_comment">
+	<context id="comment/multi" format="comment">
 		<start parenthesis="cppcomment:open" indent="1" fold="1">/\*</start>
 		<stop parenthesis="cppcomment:close" indent="1" fold="1">\*/</stop>
 	</context>
 
-	<context id="comment/single" format="ecmascript_comment" >
+	<context id="comment/single" format="comment" >
 		<start>//</start>
 		<stop exclusive="false">\n</stop>
 
-		<context id="evilJump" format="ecmascript_danger" >
+		<context id="evilJump" format="danger" >
 			<start>\\\n</start>
 			<stop exclusive="false">\n</stop>
 			<escape>\\</escape>
 		</context>
 	</context>
 
-	<context id="data/string" format="ecmascript_string" >
+	<context id="data/string" format="string" >
 		<start>&quot;</start>
 		<stop>&quot;</stop>
 		<stop exclusive="false">\n</stop>
-		<sequence id="escape" format="ecmascript_escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 	</context>
 
-	<context id="data/chars" format="ecmascript_string" >
+	<context id="data/chars" format="string" >
 		<start>'</start>
 		<stop>'</stop>
 		<stop exclusive="false">\n</stop>
-		<sequence id="escape" format="ecmascript_escapeseq" >\\[nrtvf\\"'\n]</sequence>
+		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 	</context>
 
 	<sequence parenthesis="round:open">(</sequence>
@@ -37,7 +37,7 @@
 	<sequence parenthesis="square:open">\[</sequence>
 	<sequence parenthesis="square:close">\]</sequence>
 
-	<list id="keywords/all" format="ecmascript_reservedword">
+	<list id="keywords/all" format="reservedword">
 		<word>abstract</word>
 		<word>boolean</word>
 		<word>break</word>
@@ -99,8 +99,8 @@
 		<word>with</word>
 	</list>
 
-	<word id="data/float" format="ecmascript_numbers">-?[0-9]*.[0-9]+f?</word>
-	<word id="data/hexadecimal" format="ecmascript_numbers">0[xX][0-9a-fA-F]+[ulUL]*</word>
-	<word id="data/octal" format="ecmascript_numbers">0[0-7]+</word>
-	<word id="data/decimal" format="ecmascript_numbers">-?[0-9]+[ulUL]*</word>
+	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>
+	<word id="data/hexadecimal" format="numbers">0[xX][0-9a-fA-F]+[ulUL]*</word>
+	<word id="data/octal" format="numbers">0[0-7]+</word>
+	<word id="data/decimal" format="numbers">-?[0-9]+[ulUL]*</word>
 </QNFA>

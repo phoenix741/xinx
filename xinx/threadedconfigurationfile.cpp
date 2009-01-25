@@ -68,7 +68,7 @@ void ThreadedConfigurationFile::threadrun() {
 			MetaConfigurationFile metaconf( QDir( path ).absoluteFilePath( "configurationdef.xml" ) );
 			foreach( ConfigurationFile * conf, metaconf.configurations() ) {
 				QStringList bvs = conf->businessViewPerFiles( QDir( path ).relativeFilePath( m_filename ) );
-				foreach( QString bv, bvs ) {
+				foreach( const QString & bv, bvs ) {
 					m_businessView << (bv + " (" + QFileInfo( conf->filename() ).fileName() + ")");
 				}
 			}

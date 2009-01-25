@@ -1,152 +1,152 @@
 <!DOCTYPE QNFA>
 <QNFA language="CSS" extensions="css" defaultLineMark="bookmark">
-	<context id="comment/multi" format="css_comment">
+	<context id="comment/multi" format="comment">
 		<start parenthesis="cppcomment:open" indent="1" fold="1">/\*</start>
 		<stop parenthesis="cppcomment:close" indent="1" fold="1">\*/</stop>
 	</context>
-	
-	<context id="data/string" format="css_string" >
+
+	<context id="data/string" format="string" >
 		<start>&quot;</start>
 		<stop>&quot;</stop>
 		<stop exclusive="false">\n</stop>
 		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 	</context>
-	
-	<context id="data/chars" format="css_string" >
+
+	<context id="data/chars" format="string" >
 		<start>'</start>
 		<stop>'</stop>
 		<stop exclusive="false">\n</stop>
 		<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 	</context>
-	
-	<word id="data/float" format="css_numbers">-?[0-9]*.[0-9]+p?[xt]?</word>
-	<word id="data/decimal" format="css_numbers">-?[0-9]+p?[xt]?</word>
-	<word id="data/number3" format="css_numbers">#[0-9A-Fa-f]+</word>
-	
-	<word id="data/attribute" format="css_attribute">\[[$w=&quot;']+\]</word>
-	<word id="data/class" format="css_class">.$w+</word>
-	<word id="data/pseudoclass" format="css_pseudoclass">:$w+</word>
-	<word id="data/directive" format="css_directive">@$w+</word>
-	<word id="data/id" format="css_id">#$w+</word>
-	<word id="data/tag" format="css_tag">$w+</word>
-	
+
+	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+p?[xt]?</word>
+	<word id="data/decimal" format="numbers">-?[0-9]+p?[xt]?</word>
+	<word id="data/number3" format="numbers">#[0-9A-Fa-f]+</word>
+
+	<word id="data/attribute" format="attribute">\[[$w=&quot;']+\]</word>
+	<word id="data/class" format="class">.$w+</word>
+	<word id="data/pseudoclass" format="pseudoclass">:$w+</word>
+	<word id="data/directive" format="directive">@$w+</word>
+	<word id="data/id" format="id">#$w+</word>
+	<word id="data/tag" format="tag">$w+</word>
+
 	<context id="keywords">
 		<start parenthesis="curly:open" indent="1" fold="1">{</start>
 		<stop parenthesis="curly:close" indent="1" fold="1">}</stop>
-		
-		
-		<context id="comment/multi" format="css_comment">
+
+
+		<context id="comment/multi" format="comment">
 			<start parenthesis="cppcomment:open" indent="1" fold="1">/\*</start>
 			<stop parenthesis="cppcomment:close" indent="1" fold="1">\*/</stop>
 		</context>
-		
-		<context id="data/string" format="css_string" >
+
+		<context id="data/string" format="string" >
 			<start>&quot;</start>
 			<stop>&quot;</stop>
 			<stop exclusive="false">\n</stop>
 			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 		</context>
-		
-		<context id="data/chars" format="css_string" >
+
+		<context id="data/chars" format="string" >
 			<start>'</start>
 			<stop>'</stop>
 			<stop exclusive="false">\n</stop>
 			<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 		</context>
-		
-		<word id="data/float" format="css_numbers">-?[0-9]*.[0-9]+p?[xt]?</word>
-		<word id="data/decimal" format="css_numbers">-?[0-9]+p?[xt]?</word>
-		<word id="data/number3" format="css_numbers">#[0-9A-Fa-f]+</word>
-		
-		<word id="data/attribute" format="css_attribute">\[[$w=&quot;']+\]</word>
-		<word id="data/class" format="css_class">.$w+</word>
-		<word id="data/pseudoclass" format="css_pseudoclass">:$w+</word>
-		<word id="data/directive" format="css_directive">@$w+</word>
-		<word id="data/id" format="css_id">#$w+</word>
-		<word id="data/tag" format="css_tag">$w+</word>
-		
-		<list id="keywords/css1" format="css_identifier1">
+
+		<word id="data/float" format="numbers">-?[0-9]*.[0-9]+p?[xt]?</word>
+		<word id="data/decimal" format="numbers">-?[0-9]+p?[xt]?</word>
+		<word id="data/number3" format="numbers">#[0-9A-Fa-f]+</word>
+
+		<word id="data/attribute" format="attribute">\[[$w=&quot;']+\]</word>
+		<word id="data/class" format="class">.$w+</word>
+		<word id="data/pseudoclass" format="pseudoclass">:$w+</word>
+		<word id="data/directive" format="directive">@$w+</word>
+		<word id="data/id" format="id">#$w+</word>
+		<word id="data/tag" format="tag">$w+</word>
+
+		<list id="keywords/css1" format="identifier1">
 			<word>color</word>
 			<word>background\-color</word>
 			<word>background\-image</word>
-			
+
 			<word>background\-repeat</word>
 			<word>background\-attachment</word>
 			<word>background\-position</word>
-			
+
 			<word>background</word>
 			<word>font\-family</word>
 			<word>font\-style</word>
 			<word>font\-variant</word>
-			
+
 			<word>font\-weight</word>
 			<word>font\-size</word>
 			<word>font</word>
 			<word>word\-spacing</word>
-			
+
 			<word>letter\-spacing</word>
 			<word>text\-decoration</word>
 			<word>vertical\-align</word>
-			
+
 			<word>text\-transform</word>
 			<word>text\-align</word>
 			<word>text\-indent</word>
 			<word>line\-height</word>
-			
+
 			<word>margin\-top</word>
 			<word>margin\-right</word>
 			<word>margin\-bottom</word>
 			<word>margin\-left</word>
 			<word>margin</word>
-			
+
 			<word>padding\-top</word>
 			<word>padding\-right</word>
 			<word>padding\-bottom</word>
 			<word>padding\-left</word>
-			
+
 			<word>padding</word>
 			<word>border\-top\-width</word>
 			<word>border\-right\-width</word>
-			
+
 			<word>border\-bottom\-width</word>
 			<word>border\-left\-width</word>
 			<word>border\-width</word>
-			
+
 			<word>border\-top</word>
 			<word>border\-right</word>
 			<word>border\-bottom</word>
 			<word>border\-left</word>
 			<word>border</word>
-			
+
 			<word>border\-color</word>
 			<word>border\-style</word>
 			<word>width</word>
 			<word>height</word>
 			<word>float</word>
 			<word>clear</word>
-			
+
 			<word>display</word>
 			<word>white\-space</word>
 			<word>list\-style\-type</word>
 			<word>list\-style\-image</word>
-			
+
 			<word>list\-style\-position</word>
 			<word>list\-style</word>
 		</list>
-		<list id="keywords/css2" format="css_identifier2">
+		<list id="keywords/css2" format="identifier2">
 			<word>border\-top\-color</word>
 			<word>border\-right\-color</word>
-			
+
 			<word>border\-bottom\-color</word>
 			<word>border\-left\-color</word>
 			<word>border\-color</word>
 			<word>border\-top\-style</word>
-			
+
 			<word>border\-right\-style</word>
 			<word>border\-bottom\-style</word>
 			<word>border\-left\-style</word>
 			<word>border\-style</word>
-			
+
 			<word>top</word>
 			<word>right</word>
 			<word>bottom</word>
@@ -154,183 +154,183 @@
 			<word>position</word>
 			<word>z\-index</word>
 			<word>direction</word>
-			
+
 			<word>unicode\-bidi</word>
 			<word>min\-width</word>
 			<word>max\-width</word>
 			<word>min\-height</word>
 			<word>max\-height</word>
-			
+
 			<word>overflow</word>
 			<word>clip</word>
 			<word>visibility</word>
 			<word>content</word>
 			<word>quotes</word>
 			<word>counter\-reset</word>
-			
+
 			<word>counter\-increment</word>
 			<word>marker\-offset</word>
 			<word>size</word>
 			<word>marks</word>
 			<word>page\-break\-before</word>
-			
+
 			<word>page\-break\-after</word>
 			<word>page\-break\-inside</word>
 			<word>page</word>
 			<word>orphans</word>
 			<word>widows</word>
-			
+
 			<word>font\-stretch</word>
 			<word>font\-size\-adjust</word>
 			<word>unicode\-range</word>
 			<word>units\-per\-em</word>
 			<word>src</word>
-			
+
 			<word>panose\-1</word>
 			<word>stemv</word>
 			<word>stemh</word>
 			<word>slope</word>
 			<word>cap\-height</word>
 			<word>x\-height</word>
-			
+
 			<word>ascent</word>
 			<word>descent</word>
 			<word>widths</word>
 			<word>bbox</word>
 			<word>definition\-src</word>
 			<word>baseline</word>
-			
+
 			<word>centerline</word>
 			<word>mathline</word>
 			<word>topline</word>
 			<word>text\-shadow</word>
 			<word>caption\-side</word>
-			
+
 			<word>table\-layout</word>
 			<word>border\-collapse</word>
 			<word>border\-spacing</word>
 			<word>empty\-cells</word>
-			
+
 			<word>speak\-header</word>
 			<word>cursor</word>
 			<word>outline</word>
 			<word>outline\-width</word>
 			<word>outline\-style</word>
-			
+
 			<word>outline\-color</word>
 			<word>volume</word>
 			<word>speak</word>
 			<word>pause\-before</word>
 			<word>pause\-after</word>
-			
+
 			<word>pause</word>
 			<word>cue\-before</word>
 			<word>cue\-after</word>
 			<word>cue</word>
 			<word>play\-during</word>
 			<word>azimuth</word>
-			
+
 			<word>elevation</word>
 			<word>speech\-rate</word>
 			<word>voice\-family</word>
 			<word>pitch</word>
 			<word>pitch\-range</word>
-			
+
 			<word>stress</word>
 			<word>richness</word>
 			<word>speak\-punctuation</word>
 			<word>speak\-numeral</word>
 		</list>
-		
+
 		<context id="value">
 			<start>:</start>
 			<stop>;</stop>
 			<stop exclusive="false">\n</stop>
-			
-			<context id="comment/multi" format="css_comment">
+
+			<context id="comment/multi" format="comment">
 				<start parenthesis="cppcomment:open" indent="1" fold="1">/\*</start>
 				<stop parenthesis="cppcomment:close" indent="1" fold="1">\*/</stop>
 			</context>
-			
-			<context id="data/string" format="css_string" >
+
+			<context id="data/string" format="string" >
 				<start>&quot;</start>
 				<stop>&quot;</stop>
 				<stop exclusive="false">\n</stop>
 				<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 			</context>
-			
-			<context id="data/chars" format="css_string" >
+
+			<context id="data/chars" format="string" >
 				<start>'</start>
 				<stop>'</stop>
 				<stop exclusive="false">\n</stop>
 				<sequence id="escape" format="escapeseq" >\\[nrtvf\\"'\n]</sequence>
 			</context>
-			
-			<word id="data/float" format="css_numbers">-?[0-9]*.[0-9]+p?[xt]?</word>
-			<word id="data/decimal" format="css_numbers">-?[0-9]+p?[xt]?</word>
-			<word id="data/number3" format="css_numbers">#[0-9A-Fa-f]+</word>
-			
-			<word id="data/attribute" format="css_attribute">\[[$w=&quot;']+\]</word>
-			<word id="data/class" format="css_class">.$w+</word>
-			<word id="data/pseudoclass" format="css_pseudoclass">:$w+</word>
-			<word id="data/directive" format="css_directive">@$w+</word>
-			<word id="data/id" format="css_id">#$w+</word>
-			<word id="data/tag" format="css_tag">$w+</word>
-			
-			<list id="values/css1" format="css_value1">
+
+			<word id="data/float" format="numbers">-?[0-9]*.[0-9]+p?[xt]?</word>
+			<word id="data/decimal" format="numbers">-?[0-9]+p?[xt]?</word>
+			<word id="data/number3" format="numbers">#[0-9A-Fa-f]+</word>
+
+			<word id="data/attribute" format="attribute">\[[$w=&quot;']+\]</word>
+			<word id="data/class" format="class">.$w+</word>
+			<word id="data/pseudoclass" format="pseudoclass">:$w+</word>
+			<word id="data/directive" format="directive">@$w+</word>
+			<word id="data/id" format="id">#$w+</word>
+			<word id="data/tag" format="tag">$w+</word>
+
+			<list id="values/css1" format="value1">
 				<word>auto</word>
 				<word>none</word>
 				<word>normal</word>
 				<word>italic</word>
 				<word>oblique</word>
-				
+
 				<word>small\-caps</word>
 				<word>bold</word>
 				<word>bolder</word>
 				<word>lighter</word>
 				<word>xx\-small</word>
 				<word>x\-small</word>
-				
+
 				<word>small</word>
 				<word>medium</word>
 				<word>large</word>
 				<word>x\-large</word>
 				<word>xx\-large</word>
 				<word>larger</word>
-				
+
 				<word>smaller</word>
 				<word>transparent</word>
 				<word>repeat</word>
 				<word>repeat\-x</word>
 				<word>repeat\-y</word>
-				
+
 				<word>no\-repeat</word>
 				<word>scroll</word>
 				<word>fixed</word>
 				<word>top</word>
 				<word>bottom</word>
 				<word>left</word>
-				
+
 				<word>center</word>
 				<word>right</word>
 				<word>justify</word>
 				<word>both</word>
 				<word>underline</word>
 				<word>overline</word>
-				
+
 				<word>line\-through</word>
 				<word>blink</word>
 				<word>baseline</word>
 				<word>sub</word>
 				<word>super</word>
 				<word>text\-top</word>
-				
+
 				<word>middle</word>
 				<word>text\-bottom</word>
 				<word>capitalize</word>
 				<word>uppercase</word>
 				<word>lowercase</word>
-				
+
 				<word>thin</word>
 				<word>medium</word>
 				<word>thick</word>
@@ -338,34 +338,34 @@
 				<word>dashed</word>
 				<word>solid</word>
 				<word>double</word>
-				
+
 				<word>groove</word>
 				<word>ridge</word>
 				<word>inset</word>
 				<word>outset</word>
 				<word>block</word>
 				<word>inline</word>
-				
+
 				<word>list\-item</word>
 				<word>pre</word>
 				<word>no\-wrap</word>
 				<word>inside</word>
 				<word>outside</word>
 				<word>disc</word>
-				
+
 				<word>circle</word>
 				<word>square</word>
 				<word>decimal</word>
 				<word>lower\-roman</word>
 				<word>upper\-roman</word>
-				
+
 				<word>lower\-alpha</word>
 				<word>upper\-alpha</word>
 				<word>aqua</word>
 				<word>black</word>
 				<word>blue</word>
 				<word>fuchsia</word>
-				
+
 				<word>gray</word>
 				<word>green</word>
 				<word>lime</word>
@@ -373,37 +373,37 @@
 				<word>navy</word>
 				<word>olive</word>
 				<word>purple</word>
-				
+
 				<word>red</word>
 				<word>silver</word>
 				<word>teal</word>
 				<word>white</word>
 				<word>yellow</word>
 			</list>
-			
-			
-			<list id="values/css2" format="css_value2">
+
+
+			<list id="values/css2" format="value2">
 				<word>inherit</word>
 				<word>run\-in</word>
 				<word>compact</word>
 				<word>marker</word>
-				
+
 				<word>table</word>
 				<word>inline\-table</word>
 				<word>table\-row\-group</word>
 				<word>table\-header\-group</word>
-				
+
 				<word>table\-footer\-group</word>
 				<word>table\-row</word>
 				<word>table\-column\-group</word>
 				<word>table\-column</word>
-				
+
 				<word>table\-cell</word>
 				<word>table\-caption</word>
 				<word>static</word>
 				<word>relative</word>
 				<word>absolute</word>
-				
+
 				<word>fixed</word>
 				<word>ltr</word>
 				<word>rtl</word>
@@ -411,30 +411,30 @@
 				<word>bidi\-override</word>
 				<word>visible</word>
 				<word>hidden</word>
-				
+
 				<word>scroll</word>
 				<word>collapse</word>
 				<word>open\-quote</word>
 				<word>close\-quote</word>
 				<word>no\-open\-quote</word>
-				
+
 				<word>no\-close\-quote</word>
 				<word>decimal\-leading\-zero</word>
 				<word>lower\-greek</word>
 				<word>lower\-latin</word>
-				
+
 				<word>upper\-latin</word>
 				<word>hebrew</word>
 				<word>armenian</word>
 				<word>georgian</word>
 				<word>cjk\-ideographic</word>
-				
+
 				<word>hiragana</word>
 				<word>katakana</word>
 				<word>hiragana\-iroha</word>
 				<word>katakana\-iroha</word>
 				<word>landscape</word>
-				
+
 				<word>portrait</word>
 				<word>crop</word>
 				<word>cross</word>
@@ -442,25 +442,25 @@
 				<word>avoid</word>
 				<word>wider</word>
 				<word>narrower</word>
-				
+
 				<word>ultra\-condensed</word>
 				<word>extra\-condensed</word>
 				<word>condensed</word>
 				<word>semi\-condensed</word>
-				
+
 				<word>semi\-expanded</word>
 				<word>expanded</word>
 				<word>extra\-expanded</word>
 				<word>ultra\-expanded</word>
 				<word>caption</word>
-				
+
 				<word>icon</word>
 				<word>menu</word>
 				<word>message\-box</word>
 				<word>small\-caption</word>
 				<word>status\-bar</word>
 				<word>separate</word>
-				
+
 				<word>show</word>
 				<word>hide</word>
 				<word>once</word>
@@ -468,7 +468,7 @@
 				<word>default</word>
 				<word>pointer</word>
 				<word>move</word>
-				
+
 				<word>text</word>
 				<word>wait</word>
 				<word>help</word>
@@ -476,65 +476,65 @@
 				<word>ne\-resize</word>
 				<word>nw\-resize</word>
 				<word>n\-resize</word>
-				
+
 				<word>se\-resize</word>
 				<word>sw\-resize</word>
 				<word>s\-resize</word>
 				<word>w\-resize</word>
 				<word>ActiveBorder</word>
-				
+
 				<word>ActiveCaption</word>
 				<word>AppWorkspace</word>
 				<word>Background</word>
 				<word>ButtonFace</word>
 				<word>ButtonHighlight</word>
-				
+
 				<word>ButtonShadow</word>
 				<word>InactiveCaptionText</word>
 				<word>ButtonText</word>
 				<word>CaptionText</word>
 				<word>GrayText</word>
-				
+
 				<word>Highlight</word>
 				<word>HighlightText</word>
 				<word>InactiveBorder</word>
 				<word>InactiveCaption</word>
 				<word>InfoBackground</word>
-				
+
 				<word>InfoText</word>
 				<word>Menu</word>
 				<word>MenuText</word>
 				<word>Scrollbar</word>
 				<word>ThreeDDarkShadow</word>
 				<word>ThreeDFace</word>
-				
+
 				<word>ThreeDHighlight</word>
 				<word>ThreeDLightShadow</word>
 				<word>ThreeDShadow</word>
 				<word>Window</word>
 				<word>WindowFrame</word>
-				
+
 				<word>WindowText</word>
 				<word>silent</word>
 				<word>x\-soft</word>
 				<word>soft</word>
 				<word>medium</word>
 				<word>loud</word>
-				
+
 				<word>x\-loud</word>
 				<word>spell\-out</word>
 				<word>mix</word>
 				<word>left\-side</word>
 				<word>far\-left</word>
 				<word>center\-left</word>
-				
+
 				<word>center\-right</word>
 				<word>far\-right</word>
 				<word>right\-side</word>
 				<word>behind</word>
 				<word>leftwards</word>
 				<word>rightwards</word>
-				
+
 				<word>below</word>
 				<word>level</word>
 				<word>above</word>
@@ -542,7 +542,7 @@
 				<word>lower</word>
 				<word>x\-slow</word>
 				<word>slow</word>
-				
+
 				<word>medium</word>
 				<word>fast</word>
 				<word>x\-fast</word>
@@ -550,7 +550,7 @@
 				<word>slower</word>
 				<word>male</word>
 				<word>female</word>
-				
+
 				<word>child</word>
 				<word>x\-low</word>
 				<word>low</word>

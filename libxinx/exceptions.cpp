@@ -124,7 +124,7 @@ void ExceptionManager::notifyError( QString error, QtMsgType t ) {
 		emit errorTriggered();
 	}
 
-	foreach( QString filter, m_exceptionFilter ) {
+	foreach( const QString & filter, m_exceptionFilter ) {
 		if( QRegExp( filter ).exactMatch( error ) )
 			return;
 	}

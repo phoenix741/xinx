@@ -372,7 +372,7 @@ void XSLFileContentParser::Parser::readTemplate() {
 	QList<struct_script> scripts;
 	readTemplate( variables, scripts );
 
-	foreach( QString name, templates ) {
+	foreach( const QString & name, templates ) {
 		XSLFileContentTemplate * t = qobject_cast<XSLFileContentTemplate*>( m_parent->append( new XSLFileContentTemplate( m_parent, name, mode, line ) ) );
 		if( ! t ) {
 			raiseError( tr("Can't insert %1 template").arg( name ) );
@@ -404,7 +404,7 @@ void XSLFileContentParser::Parser::readTemplate() {
 		}
 
 		/* Chargement des variables et params */
-		foreach( struct_xsl_variable v, variables ) {
+		foreach( const struct_xsl_variable & v, variables ) {
 			if( v.isParam )
 				t->append( new XSLFileContentParams( t, v.name, v.value, v.line ) );
 			else

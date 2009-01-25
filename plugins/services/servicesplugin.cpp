@@ -124,7 +124,7 @@ bool ServicesPlugin::saveNewProjectSettingsPage( XSLProject * project, QWizardPa
 		project->setOptions( options );
 
 		QStringList services;
-		foreach( QString value, servicesPage->m_webServicesWidget->values() )
+		foreach( const QString & value, servicesPage->m_webServicesWidget->values() )
 			services += value;
 
 		project->writeProperty( "webServiceLink", services.join(";;") );

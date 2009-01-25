@@ -29,12 +29,15 @@
 
 #include "js/jsfileeditor.h"
 #include "js/javascriptparser.h"
+#include "js/jsformatscheme.h"
 
 #include "css/cssmodeldata.h"
 #include "css/cssfileeditor.h"
+#include "css/cssformatscheme.h"
 
 #include "xq/xqfileeditor.h"
 #include "xq/xquery_keyword.h"
+#include "xq/xqformatscheme.h"
 
 #include "editorcompletion.h"
 #include "textfileeditor.h"
@@ -128,7 +131,6 @@ public:
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const;
 	virtual QString fileExample() const;
 };
 
@@ -146,7 +148,6 @@ public:
 	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
 	virtual QString highlighterId() const;
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
@@ -171,7 +172,6 @@ public:
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
-	virtual QHash<QString,QTextCharFormat> defaultsFormat() const;
 	virtual QString fileExample() const;
 };
 

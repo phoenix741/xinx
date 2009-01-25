@@ -89,7 +89,7 @@ void XinxListWidgetImpl::setValues( const QStringList & values ) {
 	QString def = m_list->item( m_defaultValue ) ? m_list->item( m_defaultValue )->text() : QString();
 
 	m_list->clear();
-	foreach( QString value, values ) {
+	foreach( const QString & value, values ) {
 		QListWidgetItem * item = new QListWidgetItem( value, m_list );
 		item->setFlags( item->flags() | Qt::ItemIsEditable );
 		m_list->addItem( item );

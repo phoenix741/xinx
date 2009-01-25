@@ -147,7 +147,7 @@ void RCS_CVS::updateEntries() {
 
 RCS::FilesOperation RCS_CVS::operations( const QStringList & path ) {
 	RCS::FilesOperation files;
-	foreach( QString p, path ) {
+	foreach( const QString & p, path ) {
 		files += recursiveOperationOf( p );
 	}
 	updateEntries();
@@ -182,7 +182,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 	RCS::FilesOperation operations;
 
 	QStringList files = QDir( path ).entryList( XinxPluginsLoader::self()->managedFilters(), QDir::Files );
-	foreach( QString filename, files ) {
+	foreach( const QString & filename, files ) {
 		QString filepath = QDir( path ).absoluteFilePath ( filename );
 		if( ! QFileInfo( filepath ).isDir() ) {
 			RCS::rcsState state = m_entriesList->status( filepath ).status( QFileInfo( filepath ).absolutePath() );
@@ -217,7 +217,7 @@ RCS::FilesOperation RCS_CVS::recursiveOperationOf( const QString & path ) {
 			operations += operationOf( path );
 
 			QStringList infolist = QDir( path ).entryList( QDir::Dirs | QDir::NoDotAndDotDot );
-			foreach( QString fileName, infolist )
+			foreach( const QString & fileName, infolist )
 				if( fileName != "CVS" ) {
 					QString file = QDir( path ).absoluteFilePath ( fileName );
 					operations += recursiveOperationOf( file );

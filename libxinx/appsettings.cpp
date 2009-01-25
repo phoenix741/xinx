@@ -501,10 +501,10 @@ QHash<QString,bool> AppSettings::getSettingsHash_bool( AppSettingsSettings * set
 	settings->beginGroup( path );
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
-	foreach( QString key, keys ) {
+	foreach( const QString & key, keys ) {
 		value[ key ] = settings->value( key, defaultValue[ key ] ).toBool();
 	}
-	foreach( QString defaultValueKey, defaultValue.keys() ) {
+	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
 			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
 		}
@@ -518,7 +518,7 @@ void AppSettings::setSettingsHash_bool( AppSettingsSettings * settings, const QS
 	QHash<QString,bool> defaultValue = getDefaultHash_bool();
 	settings->beginGroup( path );
 
-	foreach( QString key, value.keys() ) {
+	foreach( const QString & key, value.keys() ) {
 		settings->setValue( key, value[ key ], defaultValue[ key ] );
 	}
 
@@ -538,10 +538,10 @@ QHash<QString,QString> AppSettings::getSettingsHash_QString( AppSettingsSettings
 	settings->beginGroup( path );
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
-	foreach( QString key, keys ) {
+	foreach( const QString & key, keys ) {
 		value[ key ] = settings->value( key, defaultValue[ key ] ).toString();
 	}
-	foreach( QString defaultValueKey, defaultValue.keys() ) {
+	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
 			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
 		}
@@ -555,7 +555,7 @@ void AppSettings::setSettingsHash_QString( AppSettingsSettings * settings, const
 	QHash<QString,QString> defaultValue = getDefaultHash_QString();
 	settings->beginGroup( path );
 
-	foreach( QString key, value.keys() ) {
+	foreach( const QString & key, value.keys() ) {
 		settings->setValue( key, value[ key ], defaultValue[ key ] );
 	}
 
@@ -574,10 +574,10 @@ QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struc
 	settings->beginGroup( path );
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
-	foreach( QString key, keys ) {
+	foreach( const QString & key, keys ) {
 		value[ key ] = getSettingsExtentions( settings, key, defaultValue[ key ] );
 	}
-	foreach( QString defaultValueKey, defaultValue.keys() ) {
+	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
 			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
 		}
@@ -591,7 +591,7 @@ void AppSettings::setSettingsHash_struct_extentions( AppSettingsSettings * setti
 	QHash<QString,struct_extentions> defaultValue = getDefaultHash_struct_extentions();
 	settings->beginGroup( path );
 
-	foreach( QString key, value.keys() ) {
+	foreach( const QString & key, value.keys() ) {
 		setSettingsExtentions( settings, key, value[ key ] );
 	}
 
@@ -610,10 +610,10 @@ QHash<QString,AppSettings::struct_qformat> AppSettings::getSettingsHash_struct_q
 	settings->beginGroup( path );
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
-	foreach( QString key, keys ) {
+	foreach( const QString & key, keys ) {
 		value[ key ] = getSettingsQformat( settings, key, defaultValue[ key ] );
 	}
-	foreach( QString defaultValueKey, defaultValue.keys() ) {
+	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
 			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
 		}
@@ -627,7 +627,7 @@ void AppSettings::setSettingsHash_struct_qformat( AppSettingsSettings * settings
 	QHash<QString,struct_qformat> defaultValue = getDefaultHash_struct_qformat();
 	settings->beginGroup( path );
 
-	foreach( QString key, value.keys() ) {
+	foreach( const QString & key, value.keys() ) {
 		setSettingsQformat( settings, key, value[ key ] );
 	}
 
