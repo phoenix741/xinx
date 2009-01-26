@@ -3,7 +3,7 @@
 ** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
-** 
+**
 ** This file may be used under the terms of the GNU General Public License
 ** version 3 as published by the Free Software Foundation and appearing in the
 ** file GPL.txt included in the packaging of this file.
@@ -36,14 +36,14 @@
 /*!
 	\class QDocumentSearch
 	\brief An helper class to perform search in document
-	
+
 	QDocumentSearch offer means to perform complex search in documents.
 */
 
 QDocumentSearch::QDocumentSearch(QEditor *e, const QString& f, Options opt, const QString& r)
  : m_option(opt), m_string(f), m_replace(r), m_editor(e)
 {
-	
+
 }
 
 QDocumentSearch::~QDocumentSearch()
@@ -53,7 +53,7 @@ QDocumentSearch::~QDocumentSearch()
 
 /*!
 	\brief Clear matches
-	
+
 	This function should be called anytime you perform a search with the HighlightAll option,
 	once you're done iterating over the matches.
 */
@@ -61,23 +61,23 @@ void QDocumentSearch::clearMatches()
 {
 	if ( !(m_editor && m_editor->document()) )
 		return;
-	
-	QFormatScheme *f = m_editor->document()->formatFactory();
-	
+
+	QFormatScheme *f = m_editor->document()->formatScheme();
+
 	if ( !f )
 		return;
-	
+
 	quint8 sid = f->id("search");
-	
+
 	foreach ( const QDocumentCursor& c, m_highlight )
 	{
 		QFormatRange r(c.anchorColumn(), c.columnNumber() - c.anchorColumn(), sid);
-		
+
 		c.line().removeOverlay(r);
-		
+
 		//qDebug("(%i, %i, %i)", r.offset, r.length, r.format);
 	}
-	
+
 	m_highlight.clear();
 }
 
@@ -95,13 +95,13 @@ QString QDocumentSearch::searchText() const
 void QDocumentSearch::setSearchText(const QString& f)
 {
 	m_string = f;
-	
+
 	if ( m_highlight.count() )
 	{
 		//qDebug("cleanup.");
-		
+
 		clearMatches();
-		
+
 		if ( m_editor )
 			m_editor->viewport()->update();
 	}
@@ -146,7 +146,7 @@ void QDocumentSearch::setReplaceText(const QString& r)
 
 /*!
 	\return The current cursor position
-	
+
 	This is useful to examine matches after performing a search.
 */
 QDocumentCursor QDocumentSearch::cursor() const
@@ -156,7 +156,7 @@ QDocumentCursor QDocumentSearch::cursor() const
 
 /*!
 	\brief Set the cursor
-	
+
 	If the related option is set, search will start from that cursor position
 */
 void QDocumentSearch::setCursor(const QDocumentCursor& c)
@@ -166,7 +166,7 @@ void QDocumentSearch::setCursor(const QDocumentCursor& c)
 
 /*!
 	\return The scope of the search
-	
+
 	An invalid cursor indicate that the scope is the whole document, otherwise
 	the scope is the selection of the returned cursor.
 */
@@ -177,7 +177,7 @@ QDocumentCursor QDocumentSearch::scope() const
 
 /*!
 	\brief Set the search scope
-	
+
 	If the given cursor has no selection (a fortiori if it is invalid) then
 	the scope is the whole document.
 */
@@ -195,7 +195,7 @@ void QDocumentSearch::setScope(const QDocumentCursor& c)
 bool QDocumentSearch::end(bool backward) const
 {
 	bool absEnd = backward ? m_cursor.atStart() : m_cursor.atEnd();
-	
+
 	if ( m_scope.isValid() && m_scope.hasSelection() )
 	{
 		absEnd |= !m_scope.isWithinSelection(m_cursor);
@@ -213,7 +213,7 @@ bool QDocumentSearch::end(bool backward) const
 			);
 		*/
 	}
-	
+
 	return absEnd;
 }
 
@@ -221,7 +221,7 @@ bool QDocumentSearch::end(bool backward) const
 	\brief Perform a search
 	\param backward whether to go backward or forward
 	\param all if true, the whole document will be searched first, all matches recorded and available for further navigation
-	
+
 	\note Technically speaking the all parameter make search behave similarly to the HighlightAll option, except that the former
 	option does not alter the formatting of the document.
 */
@@ -230,7 +230,7 @@ void QDocumentSearch::next(bool backward, bool all)
 	if ( !hasOption(Replace) && (all || hasOption(HighlightAll)) && m_highlight.count() )
 	{
 		m_index = m_index + (backward ? -1 : 1);
-		
+
 		if ( (m_index < 0 || m_index >= m_highlight.count()) )
 		{
 			if ( hasOption(Silent) )
@@ -238,8 +238,8 @@ void QDocumentSearch::next(bool backward, bool all)
 				m_cursor = QDocumentCursor();
 				return;
 			}
-			
-			int ret = 
+
+			int ret =
 			QMessageBox::question(
 							m_editor,
 							tr("Failure"),
@@ -251,7 +251,7 @@ void QDocumentSearch::next(bool backward, bool all)
 							| QMessageBox::No,
 							QMessageBox::Yes
 						);
-			
+
 			if ( ret == QMessageBox::Yes )
 			{
 				m_index = backward ? m_highlight.count() : -1;
@@ -259,14 +259,14 @@ void QDocumentSearch::next(bool backward, bool all)
 			}
 		} else {
 			m_cursor = m_highlight.at(m_index);
-			
+
 			if ( m_editor && !hasOption(Silent) )
 				m_editor->setCursor(m_cursor);
 		}
-		
+
 		return;
 	}
-	
+
 	if ( m_cursor.isNull() )
 	{
 		if ( m_scope.isValid() && m_scope.hasSelection() )
@@ -276,17 +276,17 @@ void QDocumentSearch::next(bool backward, bool all)
 			else
 				m_cursor = m_scope.selectionStart();
 		} else if ( m_editor ) {
-			
+
 			m_cursor = QDocumentCursor(m_editor->document());
-			
+
 			if ( backward )
 				m_cursor.movePosition(1, QDocumentCursor::End);
-			
+
 		} else {
 			QMessageBox::warning(0, 0, "Unable to perform search operation");
 		}
 	}
-	
+
 	/*
 	qDebug(
 		"searching %s from line %i (column %i)",
@@ -295,14 +295,14 @@ void QDocumentSearch::next(bool backward, bool all)
 		m_cursor.columnNumber()
 	);
 	*/
-	
+
 	QRegExp m_regexp;
 	Qt::CaseSensitivity cs = hasOption(CaseSensitive)
 								?
 									Qt::CaseSensitive
 								:
 									Qt::CaseInsensitive;
-	
+
 	if ( hasOption(RegExp) )
 	{
 		m_regexp = QRegExp(m_string, cs, QRegExp::RegExp);
@@ -315,11 +315,11 @@ void QDocumentSearch::next(bool backward, bool all)
 	} else {
 		m_regexp = QRegExp(m_string, cs, QRegExp::FixedString);
 	}
-	
+
 	bool found = false;
 	QDocumentCursor::MoveOperation move;
 	move = backward ? QDocumentCursor::PreviousBlock : QDocumentCursor::NextBlock;
-	
+
 	/*
 	// regression fix : here is how we clear the selection without moving back to the anchor column...
 	if ( m_cursor.hasSelection() )
@@ -334,11 +334,11 @@ void QDocumentSearch::next(bool backward, bool all)
 
 	QDocumentSelection boundaries;
 	bool bounded = m_scope.isValid() && m_scope.hasSelection();
-	
+
 	// condition only to avoid debug messages...
 	if ( bounded )
 		boundaries = m_scope.selection();
-	
+
 	while ( !end(backward) )
 	{
 		if ( backward && !m_cursor.columnNumber() )
@@ -346,13 +346,13 @@ void QDocumentSearch::next(bool backward, bool all)
 			m_cursor.movePosition(1, QDocumentCursor::PreviousCharacter);
 			continue;
 		}
-		
+
 		int ln = m_cursor.lineNumber();
 		QDocumentLine l = m_cursor.line();
-		
+
 		int coloffset = 0;
 		QString s = l.text();
-		
+
 		if ( backward )
 		{
 			if ( bounded && (boundaries.startLine == ln) )
@@ -363,32 +363,32 @@ void QDocumentSearch::next(bool backward, bool all)
 		} else {
 			if ( bounded && (boundaries.endLine == ln) )
 				s = s.left(boundaries.end);
-			
+
 		}
-		
+
 		int column = backward
 				?
 					m_regexp.lastIndexIn(s, m_cursor.columnNumber() - 1)
 				:
 					m_regexp.indexIn(s, m_cursor.columnNumber())
 				;
-		
+
 		/*
 		qDebug("searching %s in %s => %i",
 				qPrintable(m_regexp.pattern()),
 				qPrintable(s),
 				column);
 		*/
-		
+
 		if ( column != -1 && (backward ? (column + m_regexp.matchedLength()) <= m_cursor.columnNumber() : column >= m_cursor.columnNumber()) )
 		{
 			column += coloffset;
-			
+
 			if ( backward )
 			{
 				m_cursor.setColumnNumber(column + m_regexp.matchedLength());
 				m_cursor.setColumnNumber(column, QDocumentCursor::KeepAnchor);
-				
+
 				/*
 				m_cursor.movePosition(m_regexp.matchedLength(),
 									QDocumentCursor::PreviousCharacter,
@@ -397,21 +397,21 @@ void QDocumentSearch::next(bool backward, bool all)
 			} else {
 				m_cursor.setColumnNumber(column);
 				m_cursor.setColumnNumber(column + m_regexp.matchedLength(), QDocumentCursor::KeepAnchor);
-				
+
 				/*
 				m_cursor.movePosition(m_regexp.matchedLength(),
 									QDocumentCursor::NextCharacter,
 									QDocumentCursor::KeepAnchor);
 				*/
 			}
-			
+
 			if ( m_editor && !hasOption(Silent) && !hasOption(HighlightAll) )
 				m_editor->setCursor(m_cursor);
-			
+
 			if ( hasOption(Replace) )
 			{
 				bool rep = true;
-				
+
 				if ( hasOption(Prompt) )
 				{
 					int ret = QMessageBox::question(m_editor, tr("Replacement prompt"),
@@ -420,7 +420,7 @@ void QDocumentSearch::next(bool backward, bool all)
 										| QMessageBox::No
 										| QMessageBox::Cancel,
 										QMessageBox::Yes);
-					
+
 					if ( ret == QMessageBox::Yes )
 					{
 						rep = true;
@@ -431,13 +431,13 @@ void QDocumentSearch::next(bool backward, bool all)
 						return;
 					}
 				}
-				
+
 				//
 				if ( rep )
 				{
 					//qDebug("rep");
 					QString replacement = m_replace;
-					
+
 					for ( int i = m_regexp.numCaptures(); i >= 0; --i )
 						replacement.replace(QString("\\") + QString::number(i),
 											m_regexp.cap(i));
@@ -446,68 +446,68 @@ void QDocumentSearch::next(bool backward, bool all)
 						replacement.replace(QString("\\") + QString::number(i),
 											m_regexp.cap(i));
 					*/
-					
+
 					m_cursor.beginEditBlock();
 					m_cursor.removeSelectedText();
 					m_cursor.insertText(replacement);
 					m_cursor.endEditBlock();
-					
+
 					if ( backward )
 						m_cursor.movePosition(replacement.length(), QDocumentCursor::PreviousCharacter);
 				} else {
 					//qDebug("no rep");
 				}
 			} else if ( all || hasOption(HighlightAll) ) {
-				
+
 				if ( hasOption(HighlightAll) )
 				{
 					QFormatRange r(
 								m_cursor.anchorColumn(),
 								m_cursor.columnNumber() - m_cursor.anchorColumn(),
-								m_editor->document()->formatFactory()->id("search")
+								m_editor->document()->formatScheme()->id("search")
 							);
-					
+
 					//qDebug("(%i, %i, %i)", r.offset, r.length, r.format);
 					m_cursor.line().addOverlay(r);
 				}
-				
+
 				m_highlight << m_cursor;
 				m_highlight.last().setAutoUpdated(true);
-				
+
 			} else {
 				// regression fix : here is how we clear the selection without moving back to the anchor column...
 				//m_cursor.clearSelection();
 				//m_cursor.setColumnNumber(m_cursor.columnNumber());
 			}
-			
+
 			found = true;
-			
+
 			if ( !(all || hasOption(HighlightAll)) )
 				break;
-			
+
 			//m_cursor.setColumnNumber(m_cursor.columnNumber());
 		} else {
 			m_cursor.movePosition(1, move);
 		}
 	}
-	
+
 	if ( !hasOption(Replace) && hasOption(HighlightAll) && m_highlight.count() )
 	{
 		if ( m_editor && m_editor->document() )
 			m_editor->document()->markViewDirty();
-		
+
 		m_index = backward ? m_highlight.count() : -1;
 		return next(backward);
 	}
-	
+
 	if ( !found )
 	{
 		m_cursor = QDocumentCursor();
-		
+
 		if ( hasOption(Silent) )
 			return;
-		
-		int ret = 
+
+		int ret =
 		QMessageBox::question(
 						m_editor,
 						tr("Failure"),
@@ -519,7 +519,7 @@ void QDocumentSearch::next(bool backward, bool all)
 						| QMessageBox::No,
 						QMessageBox::Yes
 					);
-		
+
 		if ( ret == QMessageBox::Yes )
 			next(backward);
 	}
