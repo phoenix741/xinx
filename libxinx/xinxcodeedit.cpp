@@ -291,16 +291,19 @@ void XinxCodeEdit::setSelection( QString text ) {
 }
 
 void XinxCodeEdit::setMatchingText( QString text ) {
-	QDocumentCursor cursor;
-	cursor.setSilent( true );
-	if( ! text.isEmpty() ) {
-		m_matchingText->setCursor( cursor );
-		m_matchingText->setSearchText( text );
-		m_matchingText->next( false );
-	} else {
-		delete m_matchingText;
-		QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
-		m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
+	if( m_matchingTextString != text ) {
+		QDocumentCursor cursor;
+		cursor.setSilent( true );
+		if( ! text.isEmpty() ) {
+			m_matchingText->setCursor( cursor );
+			m_matchingText->setSearchText( text );
+			m_matchingText->next( false );
+		} else {
+			delete m_matchingText;
+			QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
+			m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
+		}
+		m_matchingTextString = text;
 	}
 }
 

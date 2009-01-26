@@ -21,7 +21,7 @@
 #include <exceptions.h>
 #include "private/p_customdialogimpl.h"
 #include "snipetdialog.h"
-
+#include <xinxformatscheme.h>
 #include <xinxlanguagefactory.h>
 #include <xinxcodeedit.h>
 
@@ -565,7 +565,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_highlighterComboBox->setCurrentIndex( 0 );
 	m_parent->on_m_highlighterComboBox_activated( m_parent->m_highlighterComboBox->currentText() );
 
-	//m_parent->m_customScheme->setFormatScheme( m_config.formatFactory() );
+//	m_parent->m_customScheme->setFormatScheme( m_config.formatFactory() );
 
 	// Extentions
 	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex( &(m_config.config().files) , m_parent->m_specifiqueTableView );
@@ -1049,6 +1049,8 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 }
 
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
+	m_customScheme->setFormatScheme( d->m_config.scheme( text ) );
+
 	/*	m_formatsListView->clear();
 	QStringList filtered = d->m_config.config().formats.keys();
 	filtered = filtered.filter( text, Qt::CaseInsensitive );

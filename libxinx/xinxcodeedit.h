@@ -323,6 +323,7 @@ private:
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;
 	QCompleter * m_completer;
+	QString m_matchingTextString;
 };
 
 #endif /* _XINXCODEEDIT_H_ */

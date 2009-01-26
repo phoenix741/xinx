@@ -64,9 +64,11 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p) {
 void XINXConfig::load() {
 	AppSettings::load();
 	setXinxDataFiles( config().descriptions.datas );
+	updateFormatsSchemeFromConfig();
 }
 
 void XINXConfig::save() {
+	putFormatsSchemeToConfig();
 	AppSettings::save();
 
 	emit changed();
@@ -83,6 +85,7 @@ void XINXConfig::addFormatScheme( const QString & id, XinxFormatScheme * scheme 
 	if( m_formatScheme.contains( id ) ) {
 		delete m_formatScheme[ id ];
 	}
+	scheme->updateFormatsFromConfig();
 	m_formatScheme[ id ] = scheme;
 }
 
