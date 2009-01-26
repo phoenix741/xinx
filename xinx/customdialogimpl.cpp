@@ -25,6 +25,9 @@
 #include <xinxlanguagefactory.h>
 #include <xinxcodeedit.h>
 
+// QCodeEdit header
+#include <qnfadefinition.h>
+
 // Qt header
 #include <QDir>
 #include <QFileDialog>
@@ -33,6 +36,7 @@
 #include <QHeaderView>
 #include <QTextCodec>
 #include <QStyleFactory>
+#include <QDomDocument>
 
 /* ToolsModelIndex */
 
@@ -556,16 +560,33 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_parent->m_changeLogCheckBox->setChecked( m_config.config().rcs.createChangelog );
 
 	// Syntax highlighter
-	QStringList languages = XINXConfig::self()->languageFactory()->languages();
+	foreach( IFileTypePlugin * t, XinxPluginsLoader::self()->fileTypes() ) {
+		if( IFileTextPlugin * textPlugin = dynamic_cast<IFileTextPlugin*>( t ) ) {
+			// Format
+			QFormatScheme * scheme = textPlugin->createFormatScheme( &m_config );
+			if( ! scheme ) {
+				m_config.addFormatScheme( textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>( scheme ) );
+				scheme = m_config.languageFactory()->defaultFormatScheme();
+			}
+
+			// Language
+			QDomDocument doc;
+			QLanguageFactory::LangData data;
+			doc.setContent( textPlugin->createLanguageDescription() );
+			QNFADefinition::load( doc, &data, scheme );
+			m_config.languageFactory()->addLanguage( data );
+		}
+	}
+
+	QStringList languages = m_config.languageFactory()->languages();
 	languages.removeAll( "None" );
 	languages.sort();
+
 	//	m_previousFormat = QString();
 	m_parent->m_highlighterComboBox->clear();
 	m_parent->m_highlighterComboBox->addItems( languages );
 	m_parent->m_highlighterComboBox->setCurrentIndex( 0 );
 	m_parent->on_m_highlighterComboBox_activated( m_parent->m_highlighterComboBox->currentText() );
-
-//	m_parent->m_customScheme->setFormatScheme( m_config.formatFactory() );
 
 	// Extentions
 	SpecifiqueModelIndex * specifiqueModel = new SpecifiqueModelIndex( &(m_config.config().files) , m_parent->m_specifiqueTableView );
@@ -1049,6 +1070,7 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 }
 
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
+	m_customScheme->setHiddenFormat( QStringList() << "normal" << "search" << "match" << "braceMatch" << "braceMismatch" );
 	m_customScheme->setFormatScheme( d->m_config.scheme( text ) );
 	m_customScheme->setLanguageFactory( d->m_config.languageFactory() );
 	m_customScheme->setLanguageDefinition( text );

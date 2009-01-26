@@ -41,6 +41,7 @@ class CustomSchemeImpl : public QWidget, public Ui::CustomScheme {
 	Q_PROPERTY( QFormatScheme* scheme READ formatScheme WRITE setFormatScheme )
 	Q_PROPERTY( QString languageDefinition READ languageDefinition WRITE setLanguageDefinition )
 	Q_PROPERTY( QLanguageFactory* languageFactory READ languageFactory WRITE setLanguageFactory )
+	Q_PROPERTY( QStringList hiddenFormat READ hiddenFormat WRITE setHiddenFormat )
 public:
 	/*!
 	 * Construct the widget.
@@ -65,6 +66,9 @@ public:
 
 	void setLanguageFactory( QLanguageFactory * value );
 	QLanguageFactory * languageFactory() const;
+
+	void setHiddenFormat( const QStringList & value );
+	const QStringList & hiddenFormat() const;
 private slots:
 	void on_m_formatsListView_currentItemChanged( QListWidgetItem * current, QListWidgetItem * previous );
 	void on_m_boldCheckBox_stateChanged( int state );
@@ -76,12 +80,15 @@ private slots:
 	void on_m_foreGroundComboBox_activated( const QColor &col );
 	void on_m_backGroundComboBox_activated( const QColor &col );
 private:
+	void updateFormatList();
+
 	QLanguageFactory * m_languageFactory;
 	QCodeEdit * m_exampleEditor;
 	QFormatScheme * m_formats;
 	QFormat * m_currentFormat;
 	QListWidgetItem * m_currentItem;
 	QString m_example;
+	QStringList m_hiddenFormat;
 };
 
 #endif /* _CUSTOMSCHEMEIMPL_H_ */

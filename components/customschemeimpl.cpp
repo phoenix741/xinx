@@ -26,6 +26,8 @@
 #include <qformatscheme.h>
 #include <qformat.h>
 #include <qdocument.h>
+#include <qlanguagefactory.h>
+#include <qlanguagedefinition.h>
 
 // Qt header
 #include <QHBoxLayout>
@@ -43,22 +45,28 @@ CustomSchemeImpl::CustomSchemeImpl( QWidget * parent, Qt::WindowFlags f ) : QWid
 CustomSchemeImpl::~CustomSchemeImpl() {
 }
 
-void CustomSchemeImpl::setFormatScheme( QFormatScheme * formats ) {
-	if( formats != m_formats ) {
-		m_formats = formats;
+void CustomSchemeImpl::updateFormatList() {
+	m_formatsListView->clear();
 
-		m_exampleEditor->editor()->document()->setFormatScheme( m_formats );
-
-		m_formatsListView->clear();
+	if( m_formats )
 		foreach( const QString & f, m_formats->formats() ) {
 			QFormat format = m_formats->format( f );
 			QListWidgetItem * item = new QListWidgetItem( f, m_formatsListView );
 			if( format.background.isValid() ) item->setBackground( format.background );
 			if( format.foreground.isValid() ) item->setForeground( format.foreground );
 			item->setFont( format.toTextCharFormat().font() );
+			item->setHidden( m_hiddenFormat.contains( f ) );
 		}
 
+	if( m_formatsListView->count() )
 		m_formatsListView->setCurrentRow( 0 );
+}
+
+void CustomSchemeImpl::setFormatScheme( QFormatScheme * formats ) {
+	if( formats != m_formats ) {
+		m_formats = formats;
+		m_exampleEditor->editor()->document()->setFormatScheme( m_formats );
+		updateFormatList();
 	}
 }
 
@@ -96,6 +104,17 @@ void CustomSchemeImpl::setLanguageDefinition( const QString & value ) {
 
 QString CustomSchemeImpl::languageDefinition() const {
 	return m_exampleEditor->editor()->languageDefinition()->language();
+}
+
+void CustomSchemeImpl::setHiddenFormat( const QStringList & value ) {
+	if( m_hiddenFormat != value ) {
+		m_hiddenFormat = value;
+		updateFormatList();
+	}
+}
+
+const QStringList & CustomSchemeImpl::hiddenFormat() const {
+	return m_hiddenFormat;
 }
 
 void CustomSchemeImpl::on_m_formatsListView_currentItemChanged( QListWidgetItem * current, QListWidgetItem * previous ) {
