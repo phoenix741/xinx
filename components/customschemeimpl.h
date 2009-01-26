@@ -26,6 +26,7 @@
 class QCodeEdit;
 class QFormatScheme;
 class QFormat;
+class QLanguageFactory;
 
 /*!
  * Create a widget that permit to personalize the editor.
@@ -35,6 +36,11 @@ class CustomSchemeImpl : public QWidget, public Ui::CustomScheme {
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
 	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v3 or later")
+
+	Q_PROPERTY( QString example READ example WRITE setExample )
+	Q_PROPERTY( QFormatScheme* scheme READ formatScheme WRITE setFormatScheme )
+	Q_PROPERTY( QString languageDefinition READ languageDefinition WRITE setLanguageDefinition )
+	Q_PROPERTY( QLanguageFactory* languageFactory READ languageFactory WRITE setLanguageFactory )
 public:
 	/*!
 	 * Construct the widget.
@@ -53,6 +59,12 @@ public:
 
 	void setExample( const QString & value );
 	const QString & example() const;
+
+	void setLanguageDefinition( const QString & value );
+	QString languageDefinition() const;
+
+	void setLanguageFactory( QLanguageFactory * value );
+	QLanguageFactory * languageFactory() const;
 private slots:
 	void on_m_formatsListView_currentItemChanged( QListWidgetItem * current, QListWidgetItem * previous );
 	void on_m_boldCheckBox_stateChanged( int state );
@@ -64,6 +76,7 @@ private slots:
 	void on_m_foreGroundComboBox_activated( const QColor &col );
 	void on_m_backGroundComboBox_activated( const QColor &col );
 private:
+	QLanguageFactory * m_languageFactory;
 	QCodeEdit * m_exampleEditor;
 	QFormatScheme * m_formats;
 	QFormat * m_currentFormat;

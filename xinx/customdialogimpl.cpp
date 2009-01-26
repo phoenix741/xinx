@@ -1050,6 +1050,9 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 	m_customScheme->setFormatScheme( d->m_config.scheme( text ) );
+	m_customScheme->setLanguageFactory( d->m_config.languageFactory() );
+	m_customScheme->setLanguageDefinition( text );
+	m_customScheme->setExample( XinxPluginsLoader::self()->exampleOfHighlighter( text ) );
 
 	/*	m_formatsListView->clear();
 	QStringList filtered = d->m_config.config().formats.keys();
