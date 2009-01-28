@@ -502,7 +502,8 @@ QHash<QString,bool> AppSettings::getSettingsHash_bool( AppSettingsSettings * set
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( const QString & key, keys ) {
-		value[ key ] = settings->value( key, defaultValue[ key ] ).toBool();
+		bool def = defaultValue[ key ];
+		value[ key ] = settings->value( key, def ).toBool();
 	}
 	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
@@ -539,7 +540,8 @@ QHash<QString,QString> AppSettings::getSettingsHash_QString( AppSettingsSettings
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( const QString & key, keys ) {
-		value[ key ] = settings->value( key, defaultValue[ key ] ).toString();
+		QString def = defaultValue[ key ];
+		value[ key ] = settings->value( key, def ).toString();
 	}
 	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
@@ -575,7 +577,12 @@ QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struc
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( const QString & key, keys ) {
-		value[ key ] = getSettingsExtentions( settings, key, defaultValue[ key ] );
+		struct_extentions def;
+		if( defaultValue.contains( key ) )
+			def = defaultValue[ key ];
+		else
+			def = getDefaultExtentions();
+		value[ key ] = getSettingsExtentions( settings, key, def );
 	}
 	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
@@ -611,7 +618,12 @@ QHash<QString,AppSettings::struct_qformat> AppSettings::getSettingsHash_struct_q
 
 	QStringList keys = settings->childKeys() + settings->childGroups();
 	foreach( const QString & key, keys ) {
-		value[ key ] = getSettingsQformat( settings, key, defaultValue[ key ] );
+		struct_qformat def;
+		if( defaultValue.contains( key ) )
+			def = defaultValue[ key ];
+		else
+			def = getDefaultQformat();
+		value[ key ] = getSettingsQformat( settings, key, def );
 	}
 	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
 		if( ! value.contains( defaultValueKey ) ) {
