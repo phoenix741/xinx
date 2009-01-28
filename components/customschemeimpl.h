@@ -38,9 +38,7 @@ class CustomSchemeImpl : public QWidget, public Ui::CustomScheme {
 	Q_CLASSINFO("Licence", "GPL v3 or later")
 
 	Q_PROPERTY( QString example READ example WRITE setExample )
-	Q_PROPERTY( QFormatScheme* scheme READ formatScheme WRITE setFormatScheme )
 	Q_PROPERTY( QString languageDefinition READ languageDefinition WRITE setLanguageDefinition )
-	Q_PROPERTY( QLanguageFactory* languageFactory READ languageFactory WRITE setLanguageFactory )
 	Q_PROPERTY( QStringList hiddenFormat READ hiddenFormat WRITE setHiddenFormat )
 public:
 	/*!

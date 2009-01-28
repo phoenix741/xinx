@@ -103,7 +103,10 @@ void CustomSchemeImpl::setLanguageDefinition( const QString & value ) {
 }
 
 QString CustomSchemeImpl::languageDefinition() const {
-	return m_exampleEditor->editor()->languageDefinition()->language();
+	if( m_exampleEditor->editor()->languageDefinition() )
+		return m_exampleEditor->editor()->languageDefinition()->language();
+	else
+		return QString();
 }
 
 void CustomSchemeImpl::setHiddenFormat( const QStringList & value ) {
@@ -121,7 +124,7 @@ void CustomSchemeImpl::on_m_formatsListView_currentItemChanged( QListWidgetItem 
 	if( current != m_currentItem ) {
 		m_currentItem = current;
 
-		if( m_currentItem ) {
+		if( m_currentItem && m_formats ) {
 			m_currentFormat = &(m_formats->formatRef( m_currentItem->text() ));
 
 			m_boldCheckBox->setChecked( m_currentFormat->weight != QFont::Normal );
