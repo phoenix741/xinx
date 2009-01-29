@@ -83,7 +83,7 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 
 void XinxFormatScheme::putFormatsToConfig() {
 	foreach( const QString & f, formats() ) {
-		if( ( f == "match" ) || ( f == "search" ) ) continue;
+		if( ( f == "normal" ) || ( f == "match" ) || ( f == "search" ) || ( f == "braceMatch" ) || ( f == "braceMismatch" ) ) continue;
 		XINXConfig::struct_qformat conf;
 		conf.italic        = format( f ).italic;
 		conf.bold          = format( f ).weight == QFont::Bold;

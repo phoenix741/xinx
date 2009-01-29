@@ -726,6 +726,9 @@ void PrivateCustomDialogImpl::storeConfig() {
 	m_config.config().xmlPres.screenDataColor = m_parent->m_screenColorBox->color();
 	m_config.config().xmlPres.showNameAttributeIfExists = m_parent->m_showNameAttributeCheckBox->isChecked();
 
+	// Syntax highlighter
+	m_config.putFormatsSchemeToConfig();
+
 	// Snipet
 	SnipetListManager::self()->setSnipets( m_snipetModel->getSnipetList() );
 

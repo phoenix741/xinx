@@ -24,6 +24,7 @@
 #include <qformat.h>
 
 CssFormatScheme::CssFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
+	setNameSpace( "css" );
 	createDefaultScheme();
 }
 

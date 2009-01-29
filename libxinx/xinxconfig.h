@@ -107,7 +107,7 @@ public:
 signals:
 	/*! Signal emited when the configuration is changed */
 	void changed();
-protected slots:
+public slots:
 	//! Update the list of format (can't delete existing format)
 	void updateFormatsSchemeFromConfig();
 	//! Put format to config

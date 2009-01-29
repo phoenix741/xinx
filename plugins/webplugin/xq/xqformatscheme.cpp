@@ -24,6 +24,7 @@
 #include <qformat.h>
 
 XqFormatScheme::XqFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
+	setNameSpace( "xq" );
 	createDefaultScheme();
 }
 

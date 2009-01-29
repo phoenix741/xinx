@@ -24,6 +24,7 @@
 #include <qformat.h>
 
 JsFormatScheme::JsFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
+	setNameSpace( "js" );
 	createDefaultScheme();
 }
 

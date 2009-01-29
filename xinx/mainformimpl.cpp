@@ -720,6 +720,7 @@ void MainformImpl::customize() {
 
 	if( custom.exec() ) {
 		custom.saveToConfig( XINXConfig::self() );
+		XINXConfig::self()->updateFormatsSchemeFromConfig();
 		XINXConfig::self()->save();
 		SnipetListManager::self()->saveToSnipetFile();
 

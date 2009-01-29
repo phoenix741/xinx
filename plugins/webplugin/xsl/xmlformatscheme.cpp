@@ -24,6 +24,7 @@
 #include <qformat.h>
 
 XmlFormatScheme::XmlFormatScheme( XINXConfig * config ) : XinxFormatScheme( config ) {
+	setNameSpace( "xml" );
 	createDefaultScheme();
 }
 
