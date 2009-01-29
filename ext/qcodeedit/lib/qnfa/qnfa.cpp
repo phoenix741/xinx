@@ -270,13 +270,20 @@ void match(QNFAMatchContext *lexer, const QChar *d, int length, QNFAMatchNotifie
 							
 							++nlvls;
 							
+							bool notifySub = notify.bufferLevel();
+
+							if ( notifySub )
+							{
+								// pop one message buffer
+								notify.stopBuffering();
+							}
+
 							// notify content of previous context until nest
 							notify(lastCxt, index - lastCxt, lexer->context->actionid | 0x80000000);
 							
-							if ( notify.bufferLevel() )
+							if ( notifySub )
 							{
 								// notify sub matches so far to avoid tricky handling later on
-								notify.stopBuffering();
 								notify.flush();
 								
 								//notify.startBuffering();

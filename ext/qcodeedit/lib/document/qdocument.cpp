@@ -873,6 +873,26 @@ int QDocument::visualLines() const
 }
 
 /*!
+	\brief Convert a text (logical) line number int a visual line number
+	
+	\note this is not a 1:1 mapping as logical lines can span over several visual lines
+*/
+int QDocument::visualLineNumber(int textLineNumber) const
+{
+	return m_impl ? m_impl->visualLine(textLineNumber) : -1;
+}
+
+/*!
+	\brief Convert a visual line number int a text (logical) line number
+	
+	\note this is not a 1:1 mapping as logical lines can span over several visual lines
+*/
+int QDocument::textLineNumber(int visualLineNumber) const
+{
+	return m_impl ? m_impl->textLine(visualLineNumber) : -1;
+}
+
+/*!
 	\brief Clear the width constraint, if any
 */
 void QDocument::clearWidthConstraint()
@@ -1863,6 +1883,22 @@ int QDocumentLineHandle::xToCursor(int xpos) const
 	}
 }
 
+int QDocumentLineHandle::wrappedLineForCursor(int cpos) const
+{
+	int wrap = m_frontiers.count();
+	
+	for ( int i = 0; i < m_frontiers.count(); ++i )
+	{
+		if ( m_frontiers.at(i).first > cpos )
+		{
+			wrap = i;
+			break;
+		}
+	}
+	
+	return wrap;
+}
+
 int QDocumentLineHandle::documentOffsetToCursor(int x, int y) const
 {
 	int wrap = y / QDocumentPrivate::m_lineSpacing;
@@ -1979,16 +2015,7 @@ void QDocumentLineHandle::cursorToDocumentOffset(int cpos, int& x, int& y) const
 		cpos = 0;
 		
 	int idx = 0;
-	int wrap = m_frontiers.count();
-	
-	for ( int i = 0; i < m_frontiers.count(); ++i )
-	{
-		if ( m_frontiers.at(i).first > cpos )
-		{
-			wrap = i;
-			break;
-		}
-	}
+	int wrap = wrappedLineForCursor(cpos);
 	
 	x = QDocumentPrivate::m_leftMargin;
 	y = wrap * QDocumentPrivate::m_lineSpacing;
@@ -3391,12 +3418,25 @@ QDocumentLine QDocumentCursorHandle::line() const
 	return m_doc->line(m_begLine);
 }
 
+QDocumentLine QDocumentCursorHandle::anchorLine() const
+{
+	if ( !m_doc )
+		return QDocumentLine();
+		
+	return m_endLine != -1 ? m_doc->line(m_endLine) : line();
+}
+
 int QDocumentCursorHandle::lineNumber() const
 {
 	return m_begLine;
 }
 
-int QDocumentCursorHandle::anchorColumn() const
+int QDocumentCursorHandle::anchorLineNumber() const
+{
+	return m_endLine != -1 ? m_endLine : m_begLine;
+}
+
+int QDocumentCursorHandle::anchorColumnNumber() const
 {
 	if ( !m_doc )
 		return -1;
@@ -3404,7 +3444,7 @@ int QDocumentCursorHandle::anchorColumn() const
 	return m_doc->line(m_endLine).isValid() ? m_endOffset : m_begOffset;
 }
 
-int QDocumentCursorHandle::visualColumn() const
+int QDocumentCursorHandle::visualColumnNumber() const
 {
 	return QDocument::screenLength(
 						line().text().constData(),
@@ -3448,8 +3488,19 @@ QPoint QDocumentCursorHandle::documentPosition() const
 {
 	if ( !m_doc )
 		return QPoint();
-		
+	
 	return QPoint(0, m_doc->y(m_begLine)) + m_doc->line(m_begLine).cursorToDocumentOffset(m_begOffset);
+}
+
+QPoint QDocumentCursorHandle::anchorDocumentPosition() const
+{
+	if ( !m_doc )
+		return QPoint();
+	
+	if ( m_endLine < 0 || m_endOffset < 0 )
+		return documentPosition();
+	
+	return QPoint(0, m_doc->y(m_endLine)) + m_doc->line(m_endLine).cursorToDocumentOffset(m_endOffset);
 }
 
 int QDocumentCursorHandle::position() const
@@ -5638,6 +5689,8 @@ int QDocumentPrivate::visualLine(int textLine) const
 			++wit;
 		}
 	}
+	
+	//qDebug("translating %i => %i", textLine, textLine - hiddenLines + wrappedLines);
 	
 	return textLine - hiddenLines + wrappedLines;
 }

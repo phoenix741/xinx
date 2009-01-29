@@ -5,25 +5,40 @@
 		<stop exclusive="false">\n</stop>
 	</context>
 	
-	<context id="mathmode" format="numbers">
+	<word id="keywords/single" format="keyword">\\[a-zA-Z]+</word>
+	
+	<context id="mathmode" format="numbers" transparency="true" >
 		<start parenthesis="math:open" fold="1" >$</start>
 		<stop parenthesis="math:close" fold="1" >$</stop>
 	</context>
 	
-	<list id="keywords/block" format="extra-keyword">
-		<prefix>\\</prefix>
-		<word>part</word>
-		<word>chapter</word>
-		<word>section</word>
-		<word>subsection</word>
-		<word>subsection*</word>
-		<word>paragraph</word>
-		<word>subparagraph</word>
-		<word>begin</word>
-		<word>end</word>
-	</list>
+	<context id="mathmodeNormal" format="numbers" transparency="true">
+		<start parenthesis="math:open" fold="1" format="extra-keyword">\\begin{math}</start>
+		<stop parenthesis="math:close" fold="1" format="extra-keyword">\\end{math}</stop>
+		<start parenthesis="math:open" fold="1" >\\\(</start>
+		<stop parenthesis="math:close" fold="1" >\\\)</stop>
+	</context>
 	
-    <word id="keywords/single" format="keyword">\\[a-zA-Z]+</word>
+	<context id="mathmodeDisplay" format="numbers" transparency="true">
+		<start parenthesis="math:open" fold="1" format="extra-keyword">\\begin{displaymath}</start>
+		<stop parenthesis="math:close" fold="1" format="extra-keyword">\\end{displaymath}</stop>
+		<start parenthesis="math:open" fold="1" >\\\[</start>
+		<stop parenthesis="math:close" fold="1" >\\\]</stop>
+		<start parenthesis="math:open" fold="1" format="extra-keyword">\\begin{equation}</start>
+		<stop parenthesis="math:close" fold="1" format="extra-keyword">\\end{equation}</stop>
+  	</context>
+	
+	<word parenthesis="block:open" fold="1" indent="1" format="extra-keyword">\\begin</word>
+	<word parenthesis="block:close" fold="1" indent="1" format="extra-keyword" >\\end</word>
+
+	<list id="keywords/block" format="extra-keyword">
+		<word parenthesis="part:boundary" fold="1" indent="1" >\\part</word>
+		<word parenthesis="chapter:boundary" fold="1" indent="1" >\\chapter</word>
+		<word parenthesis="section:boundary" fold="1" indent="1" >\\section</word>
+		<word parenthesis="subsection:boundary" fold="1" indent="1" >\\subsection</word>
+		<word parenthesis="paragraph:boundary" fold="1" indent="1" >\\paragraph</word>
+		<word parenthesis="subparagraph:boundary" fold="1" indent="1" >\\subparagraph</word>
+	</list>
 	
 	<sequence parenthesis="round:open">(</sequence>
 	<sequence parenthesis="round:close">)</sequence>
@@ -31,7 +46,5 @@
 	<sequence parenthesis="curly:close" indent="1" fold="1">}</sequence>
 	<sequence parenthesis="square:open">\[</sequence>
 	<sequence parenthesis="square:close">\]</sequence>
-	
-	<word parenthesis="block:open" fold="1" indent="1" >\\begin</word>
-	<word parenthesis="block:close" fold="1" indent="1" >\\end</word>
 </QNFA>
+

@@ -18,7 +18,7 @@
 		</context>
 	</context>
 	
-	<context id="preprocessor" format="preprocessor" transparency="true" >
+	<context id="preprocessor" format="preprocessor" transparency="true" stayOnLine="true" >
 		<start>#</start>
 		<stop exclusive="false">\n</stop>
 		<escape>\\</escape>

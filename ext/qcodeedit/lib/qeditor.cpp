@@ -2126,6 +2126,9 @@ void QEditor::paintEvent(QPaintEvent *e)
 	QRect r(e->rect());
 	#endif
 	
+	//qDebug() << r;
+	
+	p.setClipping(false);
 	p.translate(-xOffset, -yOffset);
 	
 	QDocument::PaintContext ctx;
@@ -2273,7 +2276,7 @@ void QEditor::keyPressEvent(QKeyEvent *e)
 			
 			if ( l.isValid() )
 			{
-				addCursorMirror(QDocumentCursor(m_doc, ln, m_cursor.anchorColumn()));
+				addCursorMirror(QDocumentCursor(m_doc, ln, m_cursor.anchorColumnNumber()));
 				repaintCursor();
 				emitCursorPositionChanged();
 				
@@ -2470,7 +2473,7 @@ void QEditor::mouseMoveEvent(QMouseEvent *e)
 		} else if ( e->modifiers() & Qt::ControlModifier ) {
 			
 			// get column number for column selection
-			int org = m_cursor.anchorColumn();
+			int org = m_cursor.anchorColumnNumber();
 			int dst = newCursor.columnNumber();
 			// TODO : adapt to line wrapping...
 			
@@ -2568,7 +2571,7 @@ void QEditor::mousePressEvent(QMouseEvent *e)
 				if ( e->modifiers() & Qt::ShiftModifier )
 				{
 					// get column number for column selection
-					int org = m_cursor.anchorColumn();
+					int org = m_cursor.anchorColumnNumber();
 					int dst = cursor.columnNumber();
 					// TODO : fix and adapt to line wrapping...
 					
@@ -3039,6 +3042,14 @@ void QEditor::focusOutEvent(QFocusEvent *e)
 */
 void QEditor::contextMenuEvent(QContextMenuEvent *e)
 {
+	if ( m_binding )
+	{
+		if ( m_binding->contextMenuEvent(e, this) )
+		{
+			return;
+		}
+	}
+
 	if ( !pMenu )
 	{
 		e->ignore();
@@ -4241,14 +4252,22 @@ void QEditor::repaintContent(int i, int n)
 		viewport()->update();
 	}
 	
-	QDocumentLine first = m_doc->line(i), last = m_doc->line(i + n);
-	//const int docPos = m_doc->y(l);
+	QRect frect = m_doc->lineRect(i);
 	
-	QRect frect = m_doc->lineRect(i), lrect = m_doc->lineRect(i + n);
 	const int yoff = verticalOffset() + viewport()->height();
 	
 	if ( frect.y() > yoff )
 		return;
+	
+	if ( n == 1 )
+	{
+		frect.translate(0, -verticalOffset());
+		//qDebug() << frect;
+		viewport()->update(frect);
+		return;
+	}
+	
+	QRect lrect = m_doc->lineRect(i + n - 1);
 	
 	if ( (n > 0) && (lrect.y() + lrect.height()) < verticalOffset() )
 		return;
@@ -4272,6 +4291,8 @@ void QEditor::repaintContent(int i, int n)
 				:
 					qMin(maxPaintHeight, paintHeight)
 			);
+	
+	//qDebug() << rect;
 	
 	viewport()->update(rect);
 	#endif

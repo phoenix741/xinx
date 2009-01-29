@@ -87,6 +87,8 @@ class QCE_EXPORT QDocumentLineHandle
 		int xToCursor(int x) const;
 		int cursorToX(int i) const;
 		
+		int wrappedLineForCursor(int cpos) const;
+		
 		int documentOffsetToCursor(int x, int y) const;
 		void cursorToDocumentOffset(int cpos, int& x, int& y) const;
 		
@@ -192,15 +194,21 @@ class QCE_EXPORT QDocumentCursorHandle
 		void setAutoUpdated(bool y);
 		
 		QDocumentLine line() const;
+		QDocumentLine anchorLine() const;
 		
 		int lineNumber() const;
-		int anchorColumn() const;
-		int visualColumn() const;
 		int columnNumber() const;
+		
+		int anchorLineNumber() const;
+		int anchorColumnNumber() const;
+		
+		int visualColumnNumber() const;
+		
 		void setColumnNumber(int c, QDocumentCursor::MoveMode m =
 									QDocumentCursor::MoveAnchor);
 		
 		QPoint documentPosition() const;
+		QPoint anchorDocumentPosition() const;
 		
 		int position() const;
 		

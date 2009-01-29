@@ -92,7 +92,7 @@ class QCE_EXPORT QNFADefinition : public QLanguageDefinition
 
 		static void addContext(const QString& id, QNFA *nfa);
 		static void addEmbedRequest(const QString& lang, QNFA *dest);
-		static void shareEmbedRequests(QNFA *src, QNFA *dest);
+		static void shareEmbedRequests(QNFA *src, QNFA *dest, int offset);
 
 	private:
 		bool m_indentFold;
@@ -107,9 +107,39 @@ class QCE_EXPORT QNFADefinition : public QLanguageDefinition
 		static QHash<QString, int> m_paren;
 		static QHash<QString, QNFA*> m_contexts;
 
-		int matchOpen(QDocument *d, int& line, QParenthesis& p, int& end, bool *ok = 0);
-		int matchClose(QDocument *d, int& line, QParenthesis& p, int& beg, bool *ok = 0);
+		struct PMatch
+		{
+			PMatch() : type(Invalid)
+			{
+				line[0] = -1;
+				line[1] = -1;
+				
+				column[0] = -1;
+				column[1] = -1;
+				
+				length[0] = 0;
+				length[1] = 0;
+			}
+			
+			enum Type
+			{
+				Invalid,
+				Match,
+				Mismatch
+			};
+			
+			char type;
+			
+			int line[2];
+			int column[2];
+			int length[2];
+		};
 
+		void matchOpen(QDocument *d, PMatch& m);
+		void matchClose(QDocument *d, PMatch& m);
+		
+		int findBlockEnd(QDocument *d, int line, bool *open = 0);
+		
 		static void flushEmbedRequests(const QString& lang);
 
 		struct EmbedRequest

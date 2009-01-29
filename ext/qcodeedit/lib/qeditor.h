@@ -185,6 +185,14 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 					Q_UNUSED(event)
 					Q_UNUSED(editor)
 				}
+				
+				virtual bool contextMenuEvent(QContextMenuEvent *event, QEditor *editor)
+				{
+					Q_UNUSED(event)
+					Q_UNUSED(editor)
+
+					return false;
+				}
 		};
 		
 		Q_DECLARE_FLAGS(State, EditFlag)
@@ -231,9 +239,9 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 		bool isInConflict() const;
 		
 		inline int horizontalOffset() const
-		{ return horizontalScrollBar()->value(); }
+		{ return horizontalScrollBar()->isVisible() ? horizontalScrollBar()->value() : 0; }
 		inline int verticalOffset() const
-		{ return verticalScrollBar()->value(); }
+		{ return verticalScrollBar()->isVisible() ? verticalScrollBar()->value() : 0; }
 		
 		inline QPoint mapToContents(const QPoint &point) const
 		{

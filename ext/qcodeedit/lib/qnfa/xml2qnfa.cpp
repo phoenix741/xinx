@@ -79,9 +79,8 @@ int pid(const QString& s, QHash<QString, int>& pids)
 	return id;
 }
 
-int action(QDomElement c, QFormatScheme *f, QHash<QString, int>& pids)
+int action(QDomElement c, QFormatScheme *f, QHash<QString, int>& pids, int fid = 0)
 {
-	int fid = 0;
 	QString paren, spid, spt, sfid, indent, fold;
 	
 	sfid = c.attribute("format");
@@ -112,8 +111,14 @@ int action(QDomElement c, QFormatScheme *f, QHash<QString, int>& pids)
 					(spt == "open" ? QNFAAction::ParenOpen : QNFAAction::ParenClose) | pid(spid, pids));
 			*/
 			
-			fid |= (spt == "open" ? QNFAAction::ParenOpen : QNFAAction::ParenClose)
-				| QNFAAction::parenthesis(pid(spid, pids));
+			if ( spt == "open" )
+				fid |= QNFAAction::ParenOpen;
+			else if ( spt == "close" )
+				fid |= QNFAAction::ParenClose;
+			else if ( spt == "boundary" )
+				fid |= QNFAAction::ParenOpen | QNFAAction::ParenClose;
+
+			fid |= QNFAAction::parenthesis(pid(spid, pids));
 			
 			/*
 			qDebug("paren : [%s|%s] => 0x%x",
@@ -267,7 +272,7 @@ void addToContext(	QNFA *cxt, QDomElement c, int fid,
 			else if ( role == "suffix" )
 				suffixes << value;
 			else
-				addToContext(cxt, cc, fid, f, pids, prefixes, suffixes, cs);
+				addToContext(cxt, cc, action(cc, f, pids, fid), f, pids, prefixes, suffixes, cs);
 		}
 		//qDebug("ending list");
 		
@@ -397,8 +402,8 @@ void addToContext(	QNFA *cxt, QDomElement c, int fid,
 			
 			if ( trans )
 			{
+				QNFADefinition::shareEmbedRequests(cxt, cstart, cstart->out.branch->count());
 				embed(cxt, cstart, cstart->out.branch->count());
-				QNFADefinition::shareEmbedRequests(cxt, cstart);
 			}
 			
 			foreach ( start, lStart )
