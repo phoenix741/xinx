@@ -20,7 +20,7 @@ UninstallDisplayIcon={app}\xinx.exe
 LicenseFile=..\COPYING
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany=Ulrich Van Den Hekke
-VersionInfoDescription=Project Editor
+VersionInfoDescription=Stylesheet editor
 ChangesAssociations=true
 AppVersion={#AppVersion}
 UninstallDisplayName={#AppName}
@@ -33,6 +33,7 @@ AppPublisherURL=http://xinx.shadoware.org/
 AppSupportURL=http://xinx.shadoware.org/newticket
 AppUpdatesURL=http://xinx.shadoware.org/downloads
 AppContact=xinx@shadoware.org
+VersionInfoCopyright=2009 (c) Ulrich VANDENHEKKE
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -50,28 +51,46 @@ Source: ..\COPYING; DestDir: {app}; Components: application
 Source: ..\xinx\xinx.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\components\xinxcmp.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\libxinx\sharedxinx.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
+Source: ..\ext\qcodeedit\qcodeedit.dll; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: ..\xinxprojectwizard\xinxprojectwizard.exe; DestDir: {app}\bin; Components: application; Flags: replacesameversion
 Source: {#QTDIR}\bin\mingwm10.dll; DestDir: {app}\bin; Components: mingw; Flags: sharedfile
-Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
-Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\Phonon.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\Qt3Support.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtAssistantClient4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtCLucene4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtCore4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile; Tasks: ; Languages: 
-Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtDBus4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtDesigner4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtDesignerComponents4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtGui4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtHelp4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtNetwork4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtOpenGL4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtScript4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtSvg4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtTest4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+;Source: {#QTDIR}\bin\QtWebKit.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
+Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: ..\xinx\xml\*.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template
 Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete; Components: dbus qt
-Source: dbus-1.1.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
+Source: dbus-1.2.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
 DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: empty
+DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: documentation
 DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
+DestDir: {app}\plugins; Source: ..\plugins\xsd.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: scripts
-DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: " styles"; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\script; Source: {#QTDIR}\plugins\script\qtscriptdbus4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\sqldrivers; Source: {#QTDIR}\plugins\script\qsqlite4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\qtdotnet2.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 
 [Icons]
 Name: {group}\{#AppName}; Filename: {app}\bin\xinx.exe; Components: application; Tasks: 
@@ -79,6 +98,8 @@ Name: {group}\style\{#AppName} (Plastique); Filename: {app}\bin\xinx.exe; Compon
 Name: {group}\style\{#AppName} (CleanLooks); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style CleanLooks; IconIndex: 0
 Name: {group}\style\{#AppName} (CDE); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style cde; IconIndex: 0
 Name: {group}\style\{#AppName} (Motif); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style motif; IconIndex: 0
+Name: {group}\style\{#AppName} (Float); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style Float; IconIndex: 0
+Name: {group}\style\{#AppName} (Explorer); Filename: {app}\bin\xinx.exe; Components: application; Tasks: ; Parameters: -style Explorer; IconIndex: 0
 Name: {group}\{#AppName} Project Wizard; Filename: {app}\bin\xinxprojectwizard.exe; Components: application; Tasks: 
 Name: {group}\{cm:UninstallProgram,XINX}; Filename: {uninstallexe}
 Name: {userdesktop}\{#AppName}; Filename: {app}\bin\xinx.exe; Tasks: desktopicon; Components: application
@@ -118,7 +139,6 @@ Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 Name: services; Description: Plugin with a WebServices editor; Types: custom full
 Name: experimental; Description: Plugins experimentaux; Languages: 
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
-Name: empty; Description: Plugin vide (pour dev)
 
 [Run]
 Filename: {tmp}\dbus-install.exe; Parameters: "/GROUP=""{groupname}\dbus"" /SP- /SILENT /NOCANCEL /NORESTART"; StatusMsg: Installation de D-BUS; Flags: hidewizard; Components: dbus
