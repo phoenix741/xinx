@@ -132,6 +132,7 @@ void PrivateXmlPresentationDockWidget::presentationActivated( int index ) {
 		delete m_sortFilterModel;
 		delete m_model;
 		m_openingFile = QString();
+		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( false );
 	} else if( index == 1 ) {
 		// Open a file
 		QString name = QFileDialog::getOpenFileName( m_parent,
@@ -242,6 +243,7 @@ void PrivateXmlPresentationDockWidget::threadrun() {
 
 void PrivateXmlPresentationDockWidget::threadTerminated() {
 	if( m_threadAct == THREAD_OPENING ) {
+		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( true );
 		m_watcher = new FileWatcher( m_openingFile );
 		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
 	} else if( m_threadAct == THREAD_FILTERED ) {

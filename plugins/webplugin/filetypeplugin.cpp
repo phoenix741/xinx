@@ -376,8 +376,8 @@ QString XQFileType::createLanguageDescription() const {
 	foreach( const QString & key, XQueryKeyword::self()->keywords().values() ) {
 		result += QString("<list id=\"keyword_/%1\" format=\"xquery_%1\">").arg( key );
 
-		foreach( const QString & value, XQueryKeyword::self()->keywords().keys( key ) ) {
-			result += QString("<word>%1</word>").arg( value );
+		foreach( QString value, XQueryKeyword::self()->keywords().keys( key ) ) {
+			result += QString("<word>%1</word>").arg( value.replace( "-", "\\-" ) );
 		}
 
 		result += "</list>";

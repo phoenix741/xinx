@@ -23,6 +23,9 @@
 
 #include "../plugins/webplugin/xq/xqmodelcompleter.h" // we can because static linked
 
+// QCodeEdit header
+#include "qdocumentcursor.h"
+
 // Qt header
 #include <QStringList>
 #include <QPushButton>
@@ -99,8 +102,8 @@ XQueryDialogImpl::XQueryDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDia
 	m_queryTextEdit->editor()->setFrameShadow( QFrame::Sunken );
 	m_queryTextEdit->editor()->setLineWrapping( true );
 
+	m_queryTextEdit->setHighlighter( "XQuery" );
 	m_resultTextEdit->setHighlighter( "XML" );
-	m_resultTextEdit->setHighlighter( "XQuery" );
 
 	XQModelCompleter * completionModel = new XQModelCompleter( m_queryTextEdit );
 	QCompleter * completer = new QCompleter( m_queryTextEdit );
@@ -152,8 +155,37 @@ void XQueryDialogImpl::evaluate() {
 	query.bindVariable( "d", &sourceDocument );
 	query.setQuery( xpath );
 
+	QTime bench;
+	bench.start();
+
 	query.evaluateTo( &serializer );
+
+	m_benchLabel->setText( tr("Resolved in %1 ms").arg( bench.elapsed() ) );
 
 	QString r = result.data() + "\n" + handler.messages().join("\n");
 	m_resultTextEdit->setPlainText( r );
+}
+
+void XQueryDialogImpl::addFunction() {
+	QPushButton * btn = qobject_cast<QPushButton*>( sender() );
+	if( btn ) {
+		QString functionName = btn->text();
+		functionName.chop( 1 );
+
+		if( m_queryTextEdit->textCursor().hasSelection() ) {
+			QDocumentCursor c = m_queryTextEdit->textCursor(),
+				s = c.selectionStart(),
+				e = c.selectionEnd();
+			e.movePosition( functionName.length(), QDocumentCursor::Right );
+
+			s.insertText( functionName );
+			e.insertText( ")" );
+		} else {
+			QDocumentCursor c = QDocumentCursor( m_queryTextEdit->document() );
+			c.movePosition( 1, QDocumentCursor::Start );
+			c.insertText( functionName );
+			c.movePosition( 1, QDocumentCursor::End );
+			c.insertText( ")" );
+		}
+	}
 }

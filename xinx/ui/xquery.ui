@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>634</width>
+    <width>674</width>
     <height>552</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
      <property name="title" >
       <string>Your Query</string>
      </property>
-     <layout class="QFormLayout" name="formLayout" >
+     <layout class="QGridLayout" name="gridLayout_2" >
       <item row="0" column="0" >
        <widget class="QLabel" name="label" >
         <property name="text" >
@@ -32,7 +32,53 @@
       <item row="0" column="1" >
        <widget class="QLineEdit" name="m_xpathTextEdit" />
       </item>
-      <item row="1" column="0" >
+      <item row="1" column="1" >
+       <layout class="QHBoxLayout" name="horizontalLayout" >
+        <item>
+         <widget class="QPushButton" name="m_pushButtonCount" >
+          <property name="text" >
+           <string>count()</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="m_pushButtonSum" >
+          <property name="text" >
+           <string>sum()</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="m_pushButtonFormatNumber" >
+          <property name="text" >
+           <string>format-number()</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="m_pushButtonConcat" >
+          <property name="text" >
+           <string>concat()</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="m_pushButtonNormalize" >
+          <property name="text" >
+           <string>normalize-space()</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="m_pushButtonNot" >
+          <property name="text" >
+           <string>not()</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0" >
        <widget class="QLabel" name="label_2" >
         <property name="text" >
          <string>&amp;Query :</string>
@@ -42,7 +88,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
+      <item row="2" column="1" >
        <widget class="XinxCodeEdit" native="1" name="m_queryTextEdit" />
       </item>
      </layout>
@@ -54,10 +100,17 @@
       <string>&amp;Result</string>
      </property>
      <layout class="QGridLayout" name="gridLayout" >
-      <item row="0" column="0" >
+      <item row="1" column="0" >
        <widget class="XinxCodeEdit" native="1" name="m_resultTextEdit" >
         <property name="readOnly" stdset="0" >
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="m_benchLabel" >
+        <property name="text" >
+         <string/>
         </property>
        </widget>
       </item>
@@ -93,8 +146,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>248</x>
-     <y>254</y>
+     <x>252</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel" >
      <x>157</x>
@@ -109,8 +162,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>316</x>
-     <y>260</y>
+     <x>320</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel" >
      <x>286</x>
@@ -118,5 +171,104 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>m_pushButtonCount</sender>
+   <signal>clicked()</signal>
+   <receiver>XQueryDialog</receiver>
+   <slot>addFunction()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>148</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>176</x>
+     <y>550</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pushButtonSum</sender>
+   <signal>clicked()</signal>
+   <receiver>XQueryDialog</receiver>
+   <slot>addFunction()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>230</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>138</x>
+     <y>550</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pushButtonFormatNumber</sender>
+   <signal>clicked()</signal>
+   <receiver>XQueryDialog</receiver>
+   <slot>addFunction()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>289</x>
+     <y>551</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pushButtonConcat</sender>
+   <signal>clicked()</signal>
+   <receiver>XQueryDialog</receiver>
+   <slot>addFunction()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>426</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>450</x>
+     <y>552</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pushButtonNormalize</sender>
+   <signal>clicked()</signal>
+   <receiver>XQueryDialog</receiver>
+   <slot>addFunction()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>570</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>561</x>
+     <y>554</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pushButtonNot</sender>
+   <signal>clicked()</signal>
+   <receiver>XQueryDialog</receiver>
+   <slot>addFunction()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>625</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>607</x>
+     <y>550</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>addFunction()</slot>
+ </slots>
 </ui>

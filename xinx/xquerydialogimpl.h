@@ -36,6 +36,8 @@ public:
 	void setCurrentXPath( const QString & currentXPath );
 public slots:
 	void evaluate();
+private slots:
+	void addFunction();
 private:
 	QString m_fileName;
 };

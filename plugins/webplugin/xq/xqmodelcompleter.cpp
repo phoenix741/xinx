@@ -17,10 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+// Xinx header
 #include "xqmodelcompleter.h"
 #include "xquery_keyword.h"
 #include <xinxconfig.h>
+#include <xinxformatscheme.h>
 
+// QCodeedit header
+#include <qformat.h>
+
+// Qt header
 #include <QIcon>
 
 /* XQModelCompleter */
@@ -38,8 +44,8 @@ QVariant XQModelCompleter::data( const QModelIndex &index, int role ) const {
 	QString e = XQueryKeyword::self()->keywords().keys().at( index.row() );
 
 	if( role == Qt::ForegroundRole ) {
-		QString format =  "xq_" + XQueryKeyword::self()->keywords()[e];
-		return XINXConfig::self()->config().formats[ format ].foreground;
+		QString format =  "xquery_" + XQueryKeyword::self()->keywords()[e];
+		return XINXConfig::self()->scheme( "XQuery" )->format( format ).foreground;
 	} else if( role == Qt::DecorationRole ) {
 		return QIcon(":/images/complete_fn.png");
 	} else if ( ( role == Qt::DisplayRole ) && ( index.column() == 0 ) )
@@ -49,10 +55,12 @@ QVariant XQModelCompleter::data( const QModelIndex &index, int role ) const {
 }
 
 Qt::ItemFlags XQModelCompleter::flags( const QModelIndex &index ) const {
+	Q_UNUSED( index );
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 int XQModelCompleter::rowCount( const QModelIndex &parent ) const {
+	Q_UNUSED( parent );
 	return XQueryKeyword::self()->keywords().keys().count();
 }
 
