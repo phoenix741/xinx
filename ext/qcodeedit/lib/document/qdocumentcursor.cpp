@@ -3,7 +3,7 @@
 ** Copyright (C) 2006-2009 fullmetalcoder <fullmetalcoder@hotmail.fr>
 **
 ** This file is part of the Edyuk project <http://edyuk.org>
-** 
+**
 ** This file may be used under the terms of the GNU General Public License
 ** version 3 as published by the Free Software Foundation and appearing in the
 ** file GPL.txt included in the packaging of this file.
@@ -31,28 +31,28 @@
 
 /*!
 	\class QDocumentCursor
-	
+
 	\brief A cursor to navigate within documents and edit them
-	
+
 	QDocumentCursor is a central class of the public API.
-	
+
 	It is the best (as in fastest and easiest) way to iterate over
 	the content of a document.
-	
+
 	It is also the only class that allows to perform editing operations.
-	
+
 	A cursor position is defined by a line number and a text position
 	within the line.
-	
+
 	Every cursor can have one or two cursor positions. In the later
 	case, they delimit a selection. The first position set (before
 	selecting) is referred to as the "anchor" and the other (if it
 	is different from the anchor) is the actual cursor position.
-	
+
 	When the cursor does not have a selection, querying informations about
 	the anchor has the same result as querying informations about the cursor
 	position.
-	
+
 	Informations you can get about both the anchor and the posiotion :
 	<ul>
 	<li>the line number : the logical line to which the cursor position points inside the document
@@ -61,13 +61,13 @@
 	the wrapped line it does
 	<li>the document position : document (x, y) coordinates corresponding to the place the cursor is drawn
 	</ul>
-	
+
 	The visual line to which a given cursor resides can be obtained as follows :
-	
+
 	\code
 	int visual_line = cursor.document()->visualLine(cursor.lineNumber()) + cursor.wrappedLineOffset();
 	\endcode
-	
+
 	\note The line and column numbers passed to/returned by a cursor method
 	always start at zero.
 
@@ -100,7 +100,7 @@ QDocumentCursor::QDocumentCursor(QDocument *doc, int line, int column)
  : m_handle(new QDocumentCursorHandle(doc, line))
 {
 	m_handle->ref();
-	
+
 	m_handle->setColumnNumber(column);
 }
 
@@ -109,7 +109,7 @@ QDocumentCursor::QDocumentCursor(const QDocumentLine& line, int column)
  : m_handle(new QDocumentCursorHandle(line.document(), line.lineNumber()))
 {
 	m_handle->ref();
-	
+
 	m_handle->setColumnNumber(column);
 	//movePosition(qMin(column, line.length()));
 }
@@ -138,14 +138,14 @@ QDocumentCursor& QDocumentCursor::operator = (const QDocumentCursor& c)
 	#if 0
 	if ( m_handle )
 		m_handle->deref();
-	
+
 	m_handle = c.m_handle ? c.m_handle->clone() : 0;
 	//m_handle = c.m_handle;
-	
+
 	if ( m_handle )
 		m_handle->ref();
 	#endif
-	
+
 	if ( c.m_handle )
 	{
 		if ( m_handle )
@@ -156,92 +156,92 @@ QDocumentCursor& QDocumentCursor::operator = (const QDocumentCursor& c)
 			m_handle->ref();
 		}
 	} else if ( m_handle ) {
-		
+
 		//qWarning("Setting a cursor to null");
-		
+
 		m_handle->deref();
 		m_handle = 0;
 	}
-	
+
 	return *this;
 }
 
 /*!
 	\brief comparision operator
-	
+
 	\note If any of the operand is an invalid cursor, false is returned
 */
 bool QDocumentCursor::operator == (const QDocumentCursor& c) const
 {
 	if ( !m_handle || !c.m_handle )
 		return false;
-	
+
 	return m_handle->eq(c.m_handle);
 }
 
 /*!
 	\brief comparision operator
-	
+
 	\note If any of the operand is an invalid cursor, true is returned (to preserve logical consistency with == )
 */
 bool QDocumentCursor::operator != (const QDocumentCursor& c) const
 {
 	if ( !m_handle || !c.m_handle )
 		return true;
-	
+
 	return !m_handle->eq(c.m_handle);
 }
 
 /*!
 	\brief comparision operator
-	
+
 	\note If any of the operand is an invalid cursor, false is returned
 */
 bool QDocumentCursor::operator < (const QDocumentCursor& c) const
 {
 	if ( !m_handle || !c.m_handle )
 		return false;
-	
+
 	return m_handle->lt(c.m_handle);
 }
 
 /*!
 	\brief comparision operator
-	
+
 	\note If any of the operand is an invalid cursor, false is returned
 */
 bool QDocumentCursor::operator > (const QDocumentCursor& c) const
 {
 	if ( !m_handle || !c.m_handle )
 		return false;
-	
+
 	return m_handle->gt(c.m_handle);
 }
 
 /*!
 	\brief comparision operator
-	
+
 	\note If any of the operand is an invalid cursor, false is returned
 */
 bool QDocumentCursor::operator <= (const QDocumentCursor& c) const
 {
 	if ( !m_handle || !c.m_handle )
 		return false;
-	
-	return m_handle->gt(c.m_handle) || m_handle->eq(c.m_handle);
+
+	return m_handle->lt(c.m_handle) || m_handle->eq(c.m_handle);
 }
 
 /*!
 	\brief comparision operator
-	
+
 	\note If any of the operand is an invalid cursor, false is returned
 */
 bool QDocumentCursor::operator >= (const QDocumentCursor& c) const
 {
 	if ( !m_handle || !c.m_handle )
 		return false;
-	
-	return m_handle->lt(c.m_handle) || m_handle->eq(c.m_handle);
+
+	return m_handle->gt(c.m_handle) || m_handle->eq(c.m_handle);
 }
 
 /*!
@@ -294,7 +294,7 @@ bool QDocumentCursor::atBlockStart() const
 
 /*!
 	\return whether the cursor is at the end of a line
-	
+
 	\note this may only differ from atBlockEnd() on wrapped lines
 */
 bool QDocumentCursor::atLineEnd() const
@@ -304,7 +304,7 @@ bool QDocumentCursor::atLineEnd() const
 
 /*!
 	\return whether the cursor is at the start of a line
-	
+
 	\note this may only differ from atBlockStart() on wrapped lines
 */
 bool QDocumentCursor::atLineStart() const
@@ -322,7 +322,7 @@ QDocument* QDocumentCursor::document() const
 
 /*!
 	\return the text position (within the whole document) at which this cursor is
-	
+
 	\note available for compat with QTextCursor and ridiculously slow : avoid whenever possible
 */
 int QDocumentCursor::position() const
@@ -340,7 +340,7 @@ int QDocumentCursor::anchorColumnNumber() const
 
 /*!
 	\return the "visual" text column of the cursor
-	
+
 	\note this may only differ from columnNumber() when there are tabs on the line
 */
 int QDocumentCursor::visualColumnNumber() const
@@ -385,7 +385,7 @@ int QDocumentCursor::anchorLineNumber() const
 
 /*!
 	\return The wrapped line on which the cursor resides
-	
+
 	Wrapped line are "sublines" of logical lines.
 */
 int QDocumentCursor::wrappedLineOffset() const
@@ -403,7 +403,7 @@ int QDocumentCursor::anchorWrappedLineOffset() const
 
 /*!
 	\return the document position at which the cursor is
-	
+
 	Document position and viewport position are two terms used interchangeably.
 	The only difference is the former refers to model perception (QDocument)
 	whereas the later refers to view perception (QEditor)
@@ -448,7 +448,7 @@ void QDocumentCursor::shift(int offset)
 
 /*!
 	\brief Set the text position of the cursor (within the whole document)
-	
+
 	Remark made about position() applies.
 */
 void QDocumentCursor::setPosition(int pos, MoveMode m)
@@ -494,7 +494,7 @@ void QDocumentCursor::moveTo(const QDocumentCursor &c)
 	\brief Jump to another cursor position
 	\param l target line
 	\param column target text column
-	
+
 	\note Calls QDocumentLine::lineNumber() => SLOW : avoid whenever possible
 */
 void QDocumentCursor::moveTo(const QDocumentLine &l, int column)
@@ -550,9 +550,9 @@ void QDocumentCursor::insertText(const QString& s)
 
 /*!
 	\return A cursor pointing at the position of the selection start.
-	
+
 	Selection start is the position of the selection that is nearest to document start.
-	
+
 	\note an invalid cursor is returned when the cursor does not have a selection
 */
 QDocumentCursor QDocumentCursor::selectionStart() const
@@ -562,9 +562,9 @@ QDocumentCursor QDocumentCursor::selectionStart() const
 
 /*!
 	\return A cursor pointing at the position of the selection end.
-	
+
 	Selection end is the position of the selection that is nearest to document end.
-	
+
 	\note an invalid cursor is returned when the cursor does not have a selection
 */
 QDocumentCursor QDocumentCursor::selectionEnd() const
@@ -591,13 +591,13 @@ void QDocumentCursor::removeSelectedText()
 
 /*!
 	\brief Begin an edit block
-	
+
 	Edit blocks are command groups. All the commands in an edit block
 	are executed in a row when the edit block is ended with endEditBlock().
-	
+
 	Edit blocks are considered as a single command as far as the undo/redo
 	stack is concerned.
-	
+
 	Edit blocks can be nested but that isn't of much use
 */
 void QDocumentCursor::beginEditBlock()
@@ -630,22 +630,22 @@ void QDocumentCursor::setSilent(bool y)
 {
 	if ( m_handle )
 		m_handle->setSilent(y);
-	
+
 }
 
 /*!
 	\return whether the cursor is auto updated
-	
+
 	An auto updated cursor will remain on the actual line it points
 	to when the document is modified.
-	
+
 	\code
 	QDocumentCursor c1(10, 0, document), c2(10, 0, document), c(5, 0, document);
-	
+
 	c1.setAutoUpdated(true);
-	
+
 	c.insertLine();
-	
+
 	// at this point c2 still points to line 10 whereas c1 points to line 11
 	\endcode
 */
@@ -661,14 +661,14 @@ void QDocumentCursor::setAutoUpdated(bool y)
 {
 	if ( m_handle )
 		m_handle->setAutoUpdated(y);
-	
+
 }
 
 /*!
 	\brief Refresh the column memory of the cursor
-	
+
 	This set the current column memory to the current column position.
-	
+
 	\note It is not recommended to call that yourself. The various
 	movement method should do that perfectly fine.
 */
@@ -676,17 +676,17 @@ void QDocumentCursor::refreshColumnMemory()
 {
 	if ( m_handle )
 		m_handle->refreshColumnMemory();
-	
+
 }
 
 /*!
 	\return Whether the cursor has column memory
-	
+
 	The column memory is a feature that allow a cursor
 	to remember its biggest column number so that moving
 	back and forth (with movePosition()) on lines of
 	different width does not result in the column to change.
-	
+
 */
 bool QDocumentCursor::hasColumnMemory() const
 {
@@ -700,7 +700,7 @@ void QDocumentCursor::setColumnMemory(bool y)
 {
 	if ( m_handle )
 		m_handle->setColumnMemory(y);
-	
+
 }
 
 /*!
@@ -718,7 +718,7 @@ void QDocumentCursor::clearSelection()
 {
 	if ( m_handle )
 		m_handle->clearSelection();
-	
+
 }
 
 /*!
@@ -728,7 +728,7 @@ void QDocumentCursor::select(SelectionType t)
 {
 	if ( m_handle )
 		m_handle->select(t);
-	
+
 }
 
 /*!
@@ -738,7 +738,7 @@ void QDocumentCursor::setSelectionBoundary(const QDocumentCursor& c)
 {
 	if ( m_handle )
 		m_handle->setSelectionBoundary(c);
-	
+
 }
 
 /*!
@@ -751,50 +751,50 @@ bool QDocumentCursor::isWithinSelection(const QDocumentCursor& c) const
 
 /*!
 	\return selection information
-	
+
 	\note The QDocumentSelection object is not updated if the selection
 	changes later on : use it right away and do not store it.
 */
 QDocumentSelection QDocumentCursor::selection() const
 {
 	QDocumentSelection s;
-	
+
 	if ( isNull() || !hasSelection() )
 	{
 		qDebug("NULL selection");
-		
+
 		s.startLine = -1;
 		s.endLine = -1;
-		
+
 		s.start = -1;
 		s.end = -1;
 	} else if ( m_handle->m_begLine == m_handle->m_endLine ) {
-		
+
 		s.startLine = m_handle->m_begLine;
 		s.endLine = m_handle->m_begLine;
-		
+
 		s.start = qMin(m_handle->m_begOffset, m_handle->m_endOffset);
 		s.end = qMax(m_handle->m_begOffset, m_handle->m_endOffset);
-		
+
 	} else if ( m_handle->m_begLine > m_handle->m_endLine ) {
-		
+
 		s.startLine = m_handle->m_endLine;
 		s.endLine = m_handle->m_begLine;
-		
+
 		s.start = m_handle->m_endOffset;
 		s.end = m_handle->m_begOffset;
-		
+
 		//qDebug("[(%i,%i);(%i,%i)]", s.startLine.lineNumber(), s.start, s.endLine.lineNumber(), s.end);
 	} else {
 		s.startLine = m_handle->m_begLine;
 		s.endLine = m_handle->m_endLine;
-		
+
 		s.start = m_handle->m_begOffset;
 		s.end = m_handle->m_endOffset;
-		
+
 		//qDebug("[(%i,%i);(%i,%i)]", s.startLine.lineNumber(), s.start, s.endLine.lineNumber(), s.end);
 	}
-	
+
 	return s;
 }
 

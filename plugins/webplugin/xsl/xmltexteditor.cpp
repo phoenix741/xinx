@@ -214,7 +214,7 @@ QStringList XmlTextEditor::paramOfNode( const QDocumentCursor & cursor ) {
 	XmlTextEditor::cursorPosition position = editPosition( cursor );
 	if( ( position == cpEditComment ) || ( position == cpNone ) ) return QStringList();
 
-	QDocumentCursor baliseStart = find( QRegExp("[<>]"), cursor, XinxCodeEdit::FindBackward ).selectionStart();
+	QDocumentCursor baliseStart = find( "<", cursor, XinxCodeEdit::FindBackward ).selectionStart();
 	QDocumentCursor baliseStop = find( QRegExp("[<>]"), cursor ).selectionEnd();
 	if( baliseStart.isNull() || baliseStop.isNull() ) return QStringList();
 
@@ -222,19 +222,21 @@ QStringList XmlTextEditor::paramOfNode( const QDocumentCursor & cursor ) {
 
 	QDocumentCursor c = cursor;
 	do {
-		c = find( QRegExp("\\W\\w+=\""), c, XinxCodeEdit::FindBackward ).selectionStart();
+		c = find( QRegExp("\\W\\w+=\""), c, XinxCodeEdit::FindBackward );
 		if( c.isNull() || ( baliseStart >= c ) ) break;
 		QDocumentCursor text( document() );
 		text.moveTo( c.selectionStart() );
-		text.movePosition( c.selectionEnd().position() - c.selectionStart().position() - 2,  QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
+		text.movePosition( 1, QDocumentCursor::Right );
+		text.movePosition( c.selectionEnd().position() - c.selectionStart().position() - 3,  QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 		result << text.selectedText();
 	} while( baliseStart < c );
 	c = cursor;
 	do {
-// 		c = find( QRegExp("\\w+=\""), c );
+ 		c = find( QRegExp("\\w+=\""), c );
 		if( c.isNull() || ( c >= baliseStop ) ) break;
 		c.movePosition( 2, QDocumentCursor::Left, QDocumentCursor::KeepAnchor );
-		result << c.selectedText();
+		QString theText = c.selectedText();
+		result << theText;
 	} while( c < baliseStop );
 
 	return result;
@@ -461,6 +463,21 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 				setTextCursor( tc );
 			}
 			return true;
+		} else if( e->text().right(1) == "/" ) {
+			QDocumentCursor tc( textCursor() );
+			tc.movePosition( 2, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor );
+
+			QString selected = tc.selectedText();
+			if( selected == "</" ) {
+				QDocumentCursor balise = find( QRegExp("[<>]"), textCursor() );
+				if( balise.isNull() || ( balise.selectedText() == "<" ) ) {
+					QDocumentCursor c = textCursor();
+					QList<XPathBalise> path = xpath( c );
+					QString baliseName = path.first().name;
+					c.insertText( baliseName + ">" );
+					setTextCursor( c );
+				}
+			}
 		}
 	}
 	return false;
@@ -472,7 +489,7 @@ QList<XPathBalise> XmlTextEditor::xpath( const QDocumentCursor & cursor, const Q
 
 	QDocumentCursor c = cursor;
 	do {
-		c = find( QRegExp( "<[^<>]*>" ), c, XinxCodeEdit::FindBackward ).selectionStart();
+		c = find( QRegExp( "<[^<>]*>" ), c, XinxCodeEdit::FindBackward );
 		if( c.isNull() ) break;
 
 		QString baliseText = c.selectedText();
