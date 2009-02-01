@@ -46,6 +46,8 @@ public:
 	QAction * m_selectedCompareWithHeadAction;
 	QAction * m_selectedCompareWithStdAction;
 	QAction * m_selectedCompareAction;
+	QAction * m_copyFileNameAction;
+	QAction * m_copyPathNameAction;
 
 	QTimer * m_modelTimer;
 	QDirModel * m_dirModel;
@@ -62,6 +64,9 @@ public slots:
 	void on_m_filtreLineEdit_textChanged( QString filtre );
 	void on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index );
 	void on_m_prefixComboBox_activated( QString prefix );
+
+	void copyFileNameTriggered();
+	void copyPathNameTriggered();
 private:
 	ProjectDirectoryDockWidget * m_parent;
 };

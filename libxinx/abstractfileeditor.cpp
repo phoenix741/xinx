@@ -47,6 +47,12 @@ QString AbstractFileEditor::getTitle() const {
 		return defaultFileName();
 }
 
+QString AbstractFileEditor::getLongTitle() const {
+	if( ! m_lastFileName.isEmpty() )
+		return m_lastFileName;
+	else
+		return defaultFileName();
+}
 
 void AbstractFileEditor::loadFromFile( const QString & fileName ) {
 	if( ! fileName.isEmpty() ) setWatcher( fileName );

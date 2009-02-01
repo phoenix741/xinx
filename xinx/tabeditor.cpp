@@ -36,6 +36,7 @@
 #include <QUrl>
 #include <QMenu>
 #include <QMessageBox>
+#include <QDesktopWidget>
 
 // Std header
 #include <typeinfo>
@@ -45,8 +46,8 @@ TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction
 	m_clickedItem( -1 ) { //, m_previous(NULL) {
 	setAcceptDrops(true);
 
-    tabBar()->installEventFilter(this);
-    tabBar()->setAttribute( Qt::WA_Hover );
+	tabBar()->installEventFilter(this);
+	tabBar()->setAttribute( Qt::WA_Hover );
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
 }
@@ -81,7 +82,7 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 
 	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
 	connect( editor, SIGNAL(contentChanged()), this, SIGNAL(contentChanged()) );
-	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange(bool)) );
+	connect( editor, SIGNAL(modificationChanged(bool)), this, SLOT(slotModifiedChange()) );
 	connect( editor, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
 	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );
 	connect( editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
@@ -93,12 +94,9 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
 	}
 
-	QString title = editor->getTitle();
-	if( editor->isModified() )
-		title += "*";
+	int index = addTab( editor, QString() );
+	updateTabWidget( editor );
 
-	int index = addTab( editor, title );
-	setTabIcon( index, editor->icon() );
 	setCurrentIndex( index );
 	emit currentChanged( currentIndex() );
 }
@@ -112,16 +110,35 @@ AbstractEditor * TabEditor::createEditor( IFileTypePlugin * plugin, const QStrin
 			ed = plugin->createEditor( filename );
 		else
 			ed = new TextFileEditor( new XinxCodeEdit() );
+
 		if( !ed ) return 0; // Maybe a dialog box or other
 
 		newTextFileEditor( ed );
-		setTabText( currentIndex(), ed->getTitle() );
+		updateTabWidget( ed );
 	}
 	setCurrentWidget( ed );
 	dynamic_cast<QWidget*>( parent() )->activateWindow();
 	emit currentChanged( currentIndex() );
 
 	return ed;
+}
+
+void TabEditor::updateTabWidget( AbstractEditor * editor ) {
+	Q_ASSERT( indexOf( editor ) != -1 );
+
+	const QFontMetrics & metrics = fontMetrics();
+
+	int index = indexOf( editor );
+	int width = qApp->desktop()->screenGeometry().width();
+
+	QString title = editor->getTitle();
+	QString longTitle = metrics.elidedText( editor->getLongTitle(), Qt::ElideLeft, width );
+
+	if( editor->isModified() ) title += "*";
+
+	setTabText( index, title );
+	setTabToolTip( index, longTitle );
+	setTabIcon( index, editor->icon() );
 }
 
 void TabEditor::fileEditorOpen( const QString & name, int line ) {
@@ -296,14 +313,11 @@ void TabEditor::tabRemoved ( int index ) {
 	}
 }
 
-void TabEditor::slotModifiedChange( bool changed ) {
+void TabEditor::slotModifiedChange() {
 	Q_ASSERT( currentIndex() >= 0 );
 	Q_ASSERT( currentEditor() );
 
-	if( changed )
-		setTabText ( currentIndex(), tr("%1*").arg( currentEditor()->getTitle() ) );
-	else
-		setTabText ( currentIndex(), tr("%1").arg( currentEditor()->getTitle() ) );
+	updateTabWidget( currentEditor() );
 }
 
 void TabEditor::slotCursorPositionChanged() {

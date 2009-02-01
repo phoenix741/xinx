@@ -33,7 +33,7 @@ public:
 	QString fileName, version;
 	RCS::rcsState state;
 	QDateTime filedate, rcsdate;
-	
+
 	QString stringState() const;
 };
 
@@ -61,7 +61,7 @@ DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
-	
+
 }
 
 DirRCSModel::~DirRCSModel() {
@@ -81,7 +81,7 @@ RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
 		else
 			m_cache.remove( path );
 	}
-	
+
 	value = new RCSCachedElement;
 	RCS::struct_rcs_infos infos = m_rcs->infos( path );
 
@@ -96,7 +96,7 @@ RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
 
 QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	if( ! index.isValid() ) return QVariant();
-	
+
 	QString path = filePath(index);
 	if( m_rcs ) {
 		if ( role == Qt::BackgroundRole && index.column() == 0 ) {
@@ -110,7 +110,7 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 				return QBrush( Qt::green );
 			if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
 				return QBrush( Qt::red );
-			
+
 			return QDirModel::data(index, role);
 		} else
 		if( role == Qt::ToolTipRole && index.column() == 0 ) {
@@ -119,9 +119,9 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 					date     = element.rcsdate.toString(),
 					version  = element.version,
 					status   = element.stringState();
-		
+
 			QString tips = tr("Filename : %1\n"
-							  "Status : %2\n"
+					  "Status : %2\n"
 		                  	  "Date of file : %3\n"
 		                  	  "Date in CVS : %4\n"
 		                  	  "Version : %5\n\n"

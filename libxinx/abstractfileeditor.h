@@ -51,6 +51,8 @@ public:
 	 */
 	virtual QString getTitle() const;
 
+	virtual QString getLongTitle() const;
+
 	/*! Open and load from the file \e fileName */
 	virtual void loadFromFile( const QString & fileName = QString() );
 	/*! Open and save to file \e fileName */

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
- 
+
 #ifndef TABEDITOR_H
 #define TABEDITOR_H
 //
@@ -50,6 +50,8 @@ public:
 	void setCloseAction( QAction * action );
 	void setCopyFileNameAction( QAction * action );
 	void setCopyPathAction( QAction * action );
+
+	void updateTabWidget( AbstractEditor * editor );
 public slots:
 	void bookmark();
 	void nextBookmark();
@@ -97,13 +99,13 @@ signals:
 	void setEditorPosition( int, int );
 	void contentChanged();
 protected:
-    bool eventFilter( QObject *obj, QEvent *event );
+	bool eventFilter( QObject *obj, QEvent *event );
 	virtual void dragEnterEvent( QDragEnterEvent *event );
 	virtual void dropEvent( QDropEvent *event );
 	virtual void tabRemoved ( int index );
 private slots:
 	void slotCurrentTabChanged( int );
-	void slotModifiedChange( bool );
+	void slotModifiedChange();
 
 	void slotCursorPositionChanged();
 

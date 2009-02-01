@@ -75,6 +75,14 @@ public:
 	virtual QString getTitle() const = 0;
 
 	/*!
+	 * Get the long title of the editor. It can be use on the TabWidget to inform user in a tool type. If editor has no
+	 * name, this can be equals to "noname".
+	 * \return The title of frame.
+	 * \sa hasName()
+	 */
+	virtual QString getLongTitle() const = 0;
+
+	/*!
 	 * Check if the editor has the capacity to copy or cut data to the clipboead.
 	 * A signal is emmited when this value change.
 	 * \return true if the editor can copy or cut data to clipboard else return false.

@@ -34,12 +34,16 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QMetaObject>
+#include <QClipboard>
 
 /* PrivateProjectDirectoryDockWidget */
 
 PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDirectoryDockWidget * parent ) : m_selectedUpdateAction(0),
 	m_selectedCommitAction(0), m_selectedAddAction(0), m_selectedRemoveAction(0), m_selectedCompareWithHeadAction(0), m_selectedCompareWithStdAction(0),
 	m_selectedCompareAction(0), m_dirModel(0), m_flatModel(0), m_iconProvider(0), m_project(0), m_parent( parent ) {
+
+	m_copyFileNameAction = new QAction( tr("&Copy filename to Clipboard"), m_parent );
+	m_copyPathNameAction = new QAction( tr("C&opy path to clipboard"), m_parent );
 
 	QWidget * contentWidget = new QWidget( m_parent );
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
@@ -52,6 +56,8 @@ PrivateProjectDirectoryDockWidget::PrivateProjectDirectoryDockWidget( ProjectDir
 	m_projectDirWidget->m_projectDirectoryTreeView->header()->hide();
 	m_projectDirWidget->m_projectDirectoryTreeView->installEventFilter( this );
 
+	connect( m_copyFileNameAction, SIGNAL(triggered()), this, SLOT(copyFileNameTriggered()) );
+	connect( m_copyPathNameAction, SIGNAL(triggered()), this, SLOT(copyPathNameTriggered()) );
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()) );
 	connect( parent, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
@@ -84,6 +90,21 @@ void PrivateProjectDirectoryDockWidget::projectChange() {
 		m_projectDirWidget->m_prefixComboBox->setCurrentIndex(
 				m_projectDirWidget->m_prefixComboBox->findText( m_project->specifiquePrefix() ) );
 	}
+}
+
+void PrivateProjectDirectoryDockWidget::copyFileNameTriggered() {
+	QStringList list = m_parent->selectedFiles();
+	QString names;
+	foreach( const QString & name, list ) {
+		names += QFileInfo( name ).fileName() + "\n";
+	}
+	qApp->clipboard()->setText( names );
+}
+
+void PrivateProjectDirectoryDockWidget::copyPathNameTriggered() {
+	QStringList list = m_parent->selectedFiles();
+	qApp->clipboard()->setText( list.join( "\n" ) );
+
 }
 
 void PrivateProjectDirectoryDockWidget::on_m_prefixComboBox_activated( QString prefix ) {
@@ -149,7 +170,11 @@ bool PrivateProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event
 			menu->addAction( m_selectedCommitAction );
 			menu->addAction( m_selectedAddAction );
 			menu->addAction( m_selectedRemoveAction );
+			menu->addSeparator();
 		}
+		menu->addAction( m_copyFileNameAction );
+		menu->addAction( m_copyPathNameAction );
+
 		menu->exec( static_cast<QContextMenuEvent*>( event )->globalPos() );
 		delete menu;
 	}
