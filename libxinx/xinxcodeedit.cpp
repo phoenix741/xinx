@@ -281,10 +281,14 @@ void XinxCodeEdit::setPlainText( const QString & text ) {
 
 void XinxCodeEdit::setSelection( QString text ) {
 	if( m_editor->editor()->cursor().hasSelection() ) {
+		m_editor->editor()->cursor().beginEditBlock();
+		m_editor->editor()->cursor().removeSelectedText();
 		m_editor->editor()->cursor().insertText( text );
+		m_editor->editor()->cursor().endEditBlock();
 	} else {
 		m_editor->editor()->cursor().beginEditBlock();
 		m_editor->editor()->selectAll();
+		m_editor->editor()->cursor().removeSelectedText();
 		m_editor->editor()->cursor().insertText( text );
 		m_editor->editor()->cursor().endEditBlock();
 	}
@@ -334,7 +338,8 @@ void XinxCodeEdit::setModified( bool modified ) {
 	if( ! modified )
 		document()->setClean();
 	else
-		qDebug( "setModified( false ) not managed" );
+		document()->markViewDirty();
+		//		qDebug( "setModified( false ) not managed" );
 }
 
 void XinxCodeEdit::setTabStopWidth( int width ) {

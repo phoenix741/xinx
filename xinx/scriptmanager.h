@@ -27,18 +27,58 @@
 
 class AbstractEditor;
 
+class ScriptValue {
+public:
+	ScriptValue();
+	ScriptValue( QScriptValue value );
+
+	const QScriptValue & value() const;
+
+	QString text() const;
+
+	bool canBeCallBeforeSave() const;
+	void setCallBeforeSave( bool value );
+	bool isCallBeforeSave() const;
+	void callScriptBeforeSave();
+
+	bool canBeCallBeforeLoad() const;
+	void setCallBeforeLoad( bool value );
+	bool isCallBeforeLoad() const;
+	void callScriptBeforeLoad();
+
+	bool canBeCallAfterSave() const;
+	void setCallAfterSave( bool value );
+	bool isCallAfterSave() const;
+	void callScriptAfterSave();
+
+	bool canBeCallAfterLoad() const;
+	void setCallAfterLoad( bool value );
+	bool isCallAfterLoad() const;
+	void callScriptAfterLoad();
+
+	void callScript();
+private:
+	QScriptValue m_value;
+	bool m_callBeforeSave, m_callAfterSave, m_callBeforeLoad, m_callAfterLoad;
+};
+
+
 class ScriptManager : public QObject {
 	Q_OBJECT
 public:
 	~ScriptManager();
-	
-	const QList<QScriptValue> & objects() const; 
+
+	const QList<ScriptValue> & objects() const;
 	QScriptEngine & engine();
-	
+
 	void setCurrentEditeur( AbstractEditor * editor );
-	
+
 	static ScriptManager * self();
-	
+
+	void callScriptsBeforeSave();
+	void callScriptsAfterSave();
+	void callScriptsBeforeLoad();
+	void callScriptsAfterLoad();
 public slots:
 	void loadScripts();
 signals:
@@ -48,14 +88,15 @@ private slots:
 private:
 	ScriptManager();
 	void loadScript( const QString & filename );
-	
+
 	QStringList m_filenames;
 	QScriptEngine m_engine;
-	QList<QScriptValue> m_objects;
-	
+	QList<ScriptValue> m_objects;
+
 	static ScriptManager * s_self;
 };
 
 Q_DECLARE_METATYPE( QScriptValue )
+Q_DECLARE_METATYPE( ScriptValue )
 
 #endif /*__SCRIPTMANAGER_H__*/

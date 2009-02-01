@@ -112,7 +112,7 @@ private:
 
 class ScriptElement : public PluginElement {
 public:
-	ScriptElement( const QScriptValue & script );
+	ScriptElement( const ScriptValue & script );
 
 	virtual bool isModifiable() const;
 	virtual bool isConfigurable() const;
@@ -123,7 +123,7 @@ public:
 
 	const QScriptValue & script() const;
 private:
-	QScriptValue m_script;
+	ScriptValue m_script;
 };
 
 class PrivateCustomDialogImpl : public QObject {

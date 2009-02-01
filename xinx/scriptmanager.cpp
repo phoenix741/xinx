@@ -114,6 +114,107 @@ static void cvFromScriptValue(const QScriptValue &, ConfigurationVersion & ) {
 	// Pas de modification
 }
 
+/* ScriptValue */
+
+ScriptValue::ScriptValue() : m_callBeforeSave( true ), m_callAfterSave( true ), m_callBeforeLoad( true ), m_callAfterLoad( true ) {
+}
+
+
+ScriptValue::ScriptValue( QScriptValue value ) : m_value( value ), m_callBeforeSave( true ), m_callAfterSave( true ), m_callBeforeLoad( true ), m_callAfterLoad( true ) {
+
+}
+
+const QScriptValue & ScriptValue::value() const {
+	return m_value;
+}
+
+QString ScriptValue::text() const {
+	return m_value.property("text").toString();
+}
+
+bool ScriptValue::canBeCallBeforeSave() const {
+	return m_value.property( "beforeSave" ).isFunction();
+}
+
+void ScriptValue::setCallBeforeSave( bool value ) {
+	m_callBeforeSave = value;
+}
+
+bool ScriptValue::isCallBeforeSave() const {
+	return m_callBeforeSave && canBeCallBeforeSave();
+}
+
+void ScriptValue::callScriptBeforeSave() {
+	QScriptValue result = m_value.property( "beforeSave" ).call( m_value );
+	if( result.isError() ) {
+		qWarning( qPrintable( qApp->translate("ScriptValue", "An error occure while run the script : %1").arg( result.toString() ) ) );
+	}
+}
+
+bool ScriptValue::canBeCallBeforeLoad() const {
+	return m_value.property( "beforeLoad" ).isFunction();
+}
+
+void ScriptValue::setCallBeforeLoad( bool value ) {
+	m_callBeforeLoad = value;
+}
+
+bool ScriptValue::isCallBeforeLoad() const {
+	return m_callBeforeLoad && canBeCallBeforeLoad();
+}
+
+void ScriptValue::callScriptBeforeLoad() {
+	QScriptValue result = m_value.property( "beforeLoad" ).call( m_value );
+	if( result.isError() ) {
+		qWarning( qPrintable( qApp->translate("ScriptValue", "An error occure while run the script : %1").arg( result.toString() ) ) );
+	}
+}
+
+bool ScriptValue::canBeCallAfterSave() const {
+	return m_value.property( "afterSave" ).isFunction();
+}
+
+void ScriptValue::setCallAfterSave( bool value ) {
+	m_callAfterSave = value;
+}
+
+bool ScriptValue::isCallAfterSave() const {
+	return m_callAfterSave && canBeCallAfterSave();
+}
+
+void ScriptValue::callScriptAfterSave() {
+	QScriptValue result = m_value.property( "afterSave" ).call( m_value );
+	if( result.isError() ) {
+		qWarning( qPrintable( qApp->translate("ScriptValue", "An error occure while run the script : %1").arg( result.toString() ) ) );
+	}
+}
+
+bool ScriptValue::canBeCallAfterLoad() const {
+	return m_value.property( "afterLoad" ).isFunction();
+}
+
+void ScriptValue::setCallAfterLoad( bool value ) {
+	m_callAfterLoad = value;
+}
+
+bool ScriptValue::isCallAfterLoad() const {
+	return m_callAfterLoad && canBeCallAfterLoad();
+}
+
+void ScriptValue::callScriptAfterLoad() {
+	QScriptValue result = m_value.property( "afterLoad" ).call( m_value );
+	if( result.isError() ) {
+		qWarning( qPrintable( qApp->translate("ScriptValue", "An error occure while run the script : %1").arg( result.toString() ) ) );
+	}
+}
+
+void ScriptValue::callScript() {
+	QScriptValue result = m_value.property( "run" ).call( m_value );
+	if( result.isError() ) {
+		qWarning( qPrintable( qApp->translate("ScriptValue", "An error occure while run the script : %1").arg( result.toString() ) ) );
+	}
+}
+
 /* ScriptManager */
 
 ScriptManager::ScriptManager() {
@@ -169,12 +270,37 @@ void ScriptManager::loadScript( const QString & filename ) {
 		return;
 	}
 
-	m_objects.append( qsScript );
+	ScriptValue sValue( qsScript );
+	m_objects.append( sValue );
 
 	m_filenames << filename;
 }
 
-const QList<QScriptValue> & ScriptManager::objects() const {
+void ScriptManager::callScriptsBeforeSave() {
+	foreach( ScriptValue v, m_objects )
+		if( v.isCallBeforeSave() )
+			v.callScriptBeforeSave();
+}
+
+void ScriptManager::callScriptsAfterSave() {
+	foreach( ScriptValue v, m_objects )
+		if( v.isCallAfterSave() )
+			v.callScriptAfterSave();
+}
+
+void ScriptManager::callScriptsBeforeLoad() {
+	foreach( ScriptValue v, m_objects )
+		if( v.isCallBeforeLoad() )
+			v.callScriptBeforeLoad();
+}
+
+void ScriptManager::callScriptsAfterLoad() {
+	foreach( ScriptValue v, m_objects )
+		if( v.isCallAfterLoad() )
+			v.callScriptAfterLoad();
+}
+
+const QList<ScriptValue> & ScriptManager::objects() const {
 	return m_objects;
 }
 

@@ -537,11 +537,9 @@ void MainformImpl::callSnipetMenu() {
 
 void MainformImpl::callScriptAction() {
 	QAction * action = qobject_cast<QAction*>( sender() );
-	QScriptValue qsScript = action->data().value<QScriptValue>();
-
-	QScriptValue result = qsScript.property( "run" ).call( qsScript );
-	if( result.isError() ) {
-		qWarning( qPrintable( tr("An error occure while run the script : %1").arg( result.toString() ) ) );
+	if( action ) {
+		ScriptValue qsScript = action->data().value<ScriptValue>();
+		qsScript.callScript();
 	}
 }
 
@@ -574,9 +572,9 @@ void MainformImpl::updateToolsMenu() {
 	qDeleteAllLater( m_scriptActs );
 	m_scriptActs.clear();
 
-	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
+	foreach( const ScriptValue & s, ScriptManager::self()->objects() ) {
 		QAction * action = new QAction( this );
-		action->setText( s.property("text").toString() );
+		action->setText( s.text() );
 		action->setData( QVariant::fromValue( s ) );
 		m_scriptMenu->addAction( action );
 
@@ -686,7 +684,9 @@ void MainformImpl::fileEditorRefreshFile( int index ) {
 			act = ( ret == QMessageBox::Yes );
 		}
 		if( act ) {
+			ScriptManager::self()->callScriptsBeforeLoad();
 			ed->loadFromFile();
+			ScriptManager::self()->callScriptsAfterLoad();
 		}
 	}
 }
@@ -894,10 +894,12 @@ void MainformImpl::fileEditorSave( int index ) {
 	} else {
 		QString fileName = SpecifiqueDialogImpl::saveFileAsIfStandard( editorFileName, m_fileToAdd );
 		if( ! fileName.isEmpty() ) {
+			ScriptManager::self()->callScriptsBeforeSave();
 			qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
 			if( m_fileToAdd.count() > 0 )
 				addFilesToVersionManager( m_fileToAdd );
 			m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
+			ScriptManager::self()->callScriptsAfterSave();
 			statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
 		}
 		m_fileToAdd.clear();
@@ -916,7 +918,9 @@ void MainformImpl::fileEditorSaveAs( int index ) {
 				m_fileToAdd );
 
 	if( ! fileName.isEmpty() ) {
+		ScriptManager::self()->callScriptsBeforeSave();
 		qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
+		ScriptManager::self()->callScriptsAfterSave();
 		if( m_fileToAdd.count() > 0 )
 			addFilesToVersionManager( m_fileToAdd );
 		m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
@@ -1435,15 +1439,19 @@ void MainformImpl::openFile( const QString & filename ) {
 	}
 
 	// Load the file in the editor
+	ScriptManager::self()->callScriptsBeforeLoad();
 	m_tabEditors->createEditor( XinxPluginsLoader::self()->matchedFileType( filename ), QDir::fromNativeSeparators( filename ) );
 	updateRecentFiles();
 	updateActions();
+	ScriptManager::self()->callScriptsAfterLoad();
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
 void MainformImpl::saveFileAs( const QString & name ) {
 	if( ! m_tabEditors->currentEditor() ) return; // Can't save the editor if no editor to save.
+	ScriptManager::self()->callScriptsBeforeSave();
 	qobject_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->saveToFile( name );
+	ScriptManager::self()->callScriptsAfterSave();
 }
 
 void MainformImpl::saveAllFile() {

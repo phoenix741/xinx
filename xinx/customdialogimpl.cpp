@@ -436,7 +436,7 @@ void SnipetModelIndex::addSnipet( const Snipet & snipet ) {
 
 /* ScriptElement */
 
-ScriptElement::ScriptElement( const QScriptValue & script ) : m_script( script ) {
+ScriptElement::ScriptElement( const ScriptValue & script ) : m_script( script ) {
 }
 
 bool ScriptElement::isModifiable() const { return false; }
@@ -448,15 +448,15 @@ QPixmap ScriptElement::pixmap() const {
 }
 
 QString ScriptElement::name() const {
-	return m_script.property( "text" ).toString().replace( "&", "" );
+	return m_script.text().replace( "&", "" );
 }
 
 QString ScriptElement::description() const {
-	return CustomDialogImpl::tr("Author : ") + m_script.property( "author" ).toString();
+	return CustomDialogImpl::tr("Author : ") + m_script.value().property( "author" ).toString();
 }
 
 const QScriptValue & ScriptElement::script() const {
-	return m_script;
+	return m_script.value();
 }
 
 /* PrivateCustomDialogImpl */
@@ -614,7 +614,7 @@ void PrivateCustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Load Script
 	m_parent->m_scriptListView->clear();
-	foreach( const QScriptValue & s, ScriptManager::self()->objects() ) {
+	foreach( const ScriptValue & s, ScriptManager::self()->objects() ) {
 		m_parent->m_scriptListView->addPlugin( new ScriptElement( s ) );
 	}
 

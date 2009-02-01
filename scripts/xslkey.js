@@ -5,6 +5,10 @@ obj.author  = "Alexandre Rocher";
 obj.licence = "See the author"
 obj.version = "0.1"
 
+obj.beforeSave = function() {
+	this.run();
+}
+
 obj.run = function()
 {
 	var text = textEdit.selection;
