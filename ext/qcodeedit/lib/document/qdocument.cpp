@@ -350,6 +350,7 @@ void QDocument::setText(const QString& s)
 	m_impl->m_marks.clear();
 	m_impl->m_status.clear();
 	m_impl->m_hidden.clear();
+	m_impl->m_wrapped.clear();
 	m_impl->m_matches.clear();
 	m_impl->m_largest.clear();
 	m_impl->m_commands.clear();
@@ -521,6 +522,18 @@ void QDocument::setLanguageDefinition(QLanguageDefinition *f)
 {
 	if ( m_impl )
 		m_impl->m_language = f;
+}
+
+/*!
+	\brief Update the formatting of the whole document
+	This function is only useful when changing the language definition
+	of a non-empty document. Make sure you do not call it more often
+	than needed.
+*/
+void QDocument::highlight()
+{
+	if ( m_impl )
+		m_impl->emitContentsChange(0, lines());
 }
 
 /*!
@@ -3309,6 +3322,8 @@ QDocumentCursorHandle* QDocumentCursorHandle::clone() const
 	QDocumentCursorHandle *c = new QDocumentCursorHandle(m_doc);
 	c->copy(this);
 	
+	c->setAutoUpdated(isAutoUpdated());
+	
 	return c;
 }
 
@@ -4979,10 +4994,12 @@ void QDocumentPrivate::setWidth(int width)
 			
 			while ( it != m_wrapped.end() )
 			{
-				QDocumentLineHandle *h = m_lines.at(it.key());
+				QDocumentLineHandle *h = it.key() < m_lines.count() ? m_lines.at(it.key()) : 0;
 				
-				h->updateWrap();
-				int sz = h->m_frontiers.count();
+				if ( h )
+					h->updateWrap();
+				
+				int sz = h ? h->m_frontiers.count() : 0;
 				
 				if ( sz )
 				{

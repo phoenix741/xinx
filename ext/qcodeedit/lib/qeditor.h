@@ -92,10 +92,10 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 			CtrlNavigation			= 0x00010000,
 			CursorJumpPastWrap		= 0x00020000,
 			
-			ReplaceTabs				= 0x00010000,
-			RemoveTrailing			= 0x00020000,
-			PreserveTrailingIndent	= 0x00040000,
-			AutoCloseChars			= 0x00080000,
+			ReplaceTabs				= 0x00100000,
+			RemoveTrailing			= 0x00200000,
+			PreserveTrailingIndent	= 0x00400000,
+			AutoCloseChars			= 0x00800000,
 			
 			Accessible				= 0xfffff000
 		};
@@ -197,6 +197,23 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 		
 		Q_DECLARE_FLAGS(State, EditFlag)
 		
+		struct PlaceHolder
+		{
+			class Affector
+			{
+				public:
+					virtual ~Affector() {}
+					virtual QString affect(const QString& base, int i) = 0;
+			};
+			
+			Placeholder() : length(0), affector(0) {}
+			
+			int length;
+			Affector *affector;
+			QDocumentCursor cursor;
+			QList<QDocumentCursor> mirrors;
+		};
+		
 		QEditor(QWidget *p = 0);
 		QEditor(bool actions, QWidget *p = 0);
 		QEditor(const QString& s, QWidget *p = 0);
@@ -217,6 +234,9 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 		
 		bool isCursorVisible() const;
 		QDocumentCursor cursor() const;
+		
+		int cursorMirrorCount() const;
+		QDocumentCursor cursorMirror(int i) const;
 		
 		QLanguageDefinition* languageDefinition() const;
 		QCodeCompletionEngine* completionEngine() const;
@@ -333,6 +353,15 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 		
 		void highlight();
 		
+		void clearPlaceHolders();
+		void addPlaceHolder(const PlaceHolder& p, bool autoUpdate = true);
+		
+		int placeHolderCount() const;
+		
+		void nextPlaceHolder();
+		void previousPlaceHolder();
+		void setPlaceHolder(int i);
+		
 		virtual void setFileName(const QString& f);
 		
 	signals:
@@ -397,7 +426,7 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 		virtual bool focusNextPrevChild(bool next);
 		
 		virtual bool moveKeyEvent(QDocumentCursor& c, QKeyEvent *e, bool *leave);
-		virtual bool isProcessingKeyEvent(QKeyEvent *e);
+		virtual bool isProcessingKeyEvent(QKeyEvent *e, int *offset = 0);
 		virtual bool processCursor(QDocumentCursor& c, QKeyEvent *e, bool& b);
 		
 		virtual void startDrag();
@@ -487,6 +516,9 @@ class QCE_EXPORT QEditor : public QAbstractScrollArea
 		QDocumentCursor m_cursor, m_doubleClick, m_dragAndDrop;
 		
 		QList<QDocumentCursor> m_mirrors;
+		
+		int m_curPlaceHolder, m_cphOffset;
+		QList<PlaceHolder> m_placeHolders;
 		
 		int m_state;
 		bool m_selection;

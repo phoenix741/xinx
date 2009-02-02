@@ -31,16 +31,16 @@
         <item>
          <widget class="QLabel" name="label" >
           <property name="text" >
-           <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Welcome to &lt;span style=" font-weight:600;">QCodeEdit 2&lt;/span> demo application.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">It is a lightweight but fully functional source code editor which support a wide range of languages and make it easy to add support for other languages through XML-based syntax files.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Hoping you'll like it.&lt;/p>
+           <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">&#xd;
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">&#xd;
+p, li { white-space: pre-wrap; }&#xd;
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
+&lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Welcome to &lt;span style=" font-weight:600;">QCodeEdit 2&lt;/span> demo application.&lt;/p>&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">It is a lightweight but fully functional source code editor which support a wide range of languages and make it easy to add support for other languages through XML-based syntax files.&lt;/p>&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Hoping you'll like it.&lt;/p>&#xd;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
           </property>
           <property name="alignment" >
@@ -102,11 +102,11 @@ p, li { white-space: pre-wrap; }
             <item>
              <widget class="QLabel" name="label_3" >
               <property name="text" >
-               <string>&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">QCodeEdit is a library based on Nokia's (formerly Trolltech's) Qt 4 toolkit. It is available for free under GNU General Public License version 3. It is also possible to buy licenses compatible with proprietary software (e.g BSD).&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Thanks to all the testers and particularly to those who contributed patches or made suggestion. The most helpful ones so far, in no particular order : &lt;b>Benito van der Zander&lt;/b> (TexMakerX : LaTex editor), &lt;b>Ulrich van den Hekke&lt;/b> (Xinx : XSL/JavScript editor), &lt;b>Boris Barbulovski&lt;/b> (ColdFusion editor), &lt;b>Phil Martinot&lt;/b> (Lua editor?), &lt;b>Jeremy Sonander&lt;/b> (proprietary VHDL editor), &lt;b>Jerome Vizcaino&lt;/b> (assembly editor)&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Funders also deserve big thanks because QCodeEdit wouldn't have gone that far without them (money can buy time sometimes) :&lt;/p>&lt;ul>&lt;li>Saros Inc &lt;/li>&lt;li>Movimento&lt;/li>&lt;li>Averant (through Saros)&lt;/li>&lt;/ul>
+               <string>&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">QCodeEdit is a library based on Nokia's (formerly Trolltech's) Qt 4 toolkit. It is available for free under GNU General Public License version 3. It is also possible to buy licenses compatible with proprietary software (e.g BSD).&lt;/p>&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Thanks to all the testers and particularly to those who contributed patches or made suggestion. The most helpful ones so far, in no particular order : &lt;b>Benito van der Zander&lt;/b> (TexMakerX : LaTex editor), &lt;b>Ulrich van den Hekke&lt;/b> (Xinx : XSL/JavScript editor), &lt;b>Boris Barbulovski&lt;/b> (ColdFusion editor), &lt;b>Phil Martinot&lt;/b> (Lua editor?), &lt;b>Jeremy Sonander&lt;/b> (proprietary VHDL editor), &lt;b>Jerome Vizcaino&lt;/b> (assembly editor)&lt;/p>&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Funders also deserve big thanks because QCodeEdit wouldn't have gone that far without them (money can buy time sometimes) :&lt;/p>&lt;ul>&lt;li>Saros Inc &lt;/li>&lt;li>Movimento&lt;/li>&lt;li>Averant (through Saros)&lt;/li>&lt;/ul>&#xd;
 </string>
               </property>
               <property name="wordWrap" >
@@ -134,7 +134,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLabel" name="label_2" >
           <property name="text" >
-           <string>
+           <string>&#xd;
 &lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">QCodeEdit is Copyright © 2007-2009 Luc BRUANT aka fullmetalcoder&lt;/p></string>
           </property>
          </widget>
@@ -469,7 +469,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>726</width>
-     <height>31</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File" >
@@ -483,6 +483,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="action_Clear" />
      <addaction name="separator" />
     </widget>
+    <addaction name="action_New" />
     <addaction name="action_Open" />
     <addaction name="menu_Recent" />
     <addaction name="separator" />
@@ -526,6 +527,7 @@ p, li { white-space: pre-wrap; }
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
+   <addaction name="action_New" />
    <addaction name="action_Open" />
    <addaction name="separator" />
    <addaction name="action_Save" />
@@ -568,6 +570,10 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_Settings" >
+   <property name="icon" >
+    <iconset resource="example.qrc" >
+     <normaloff>:/settings.png</normaloff>:/settings.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Settings</string>
    </property>
@@ -619,6 +625,18 @@ p, li { white-space: pre-wrap; }
   <action name="action_Clear" >
    <property name="text" >
     <string>&amp;Clear</string>
+   </property>
+  </action>
+  <action name="action_New" >
+   <property name="icon" >
+    <iconset resource="example.qrc" >
+     <normaloff>:/new.png</normaloff>:/new.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;New</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>

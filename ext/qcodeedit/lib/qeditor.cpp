@@ -106,7 +106,9 @@
 	so that, among other things, they can be easily added to menus/toolbars
 	and their shortcuts can be changed</li>
 	<li>QEditor brings the notion of cursor mirrors. Column selection and
-	column editing are just a special use case of cursor mirrors.</li>
+	column editing are just special use case of cursor mirrors.</li>
+	<li>QEditor brings the notion of placeholders, snippets-editing is just
+	as special use case of placeholders.</li>
 	<li>QEditor allows easy encodings management</li>
 	</ul>
 	
@@ -147,6 +149,18 @@
 	<li>Allow applications using QCE to easily add extra features (e.g extended code
 	navigation within projects, jump to documentation, ...) with little extra work</li>
 	</ul>
+*/
+
+/*!
+	\struct QEditor::PlaceHolder
+	\brief A small structure holding placeholder data
+	
+	Placeholders are basically lists of cursors. When several palceholders coexist, it is
+	possible to navigate among them using the key assigned to that function by the current
+	input binding (tab and SHIFT+tab by default).
+	
+	Each placeholder consist of a primary cursor and a list of mirrors (modeling the internals
+	of QEditor and allowing extended snippet replacements easily).
 */
 
 ////////////////////////////////////////////////////////////////////////
@@ -266,12 +280,28 @@ int QEditor::defaultFlags()
 */
 void QEditor::setDefaultFlags(int flags)
 {
-	m_defaultFlags = flags & Internal;
+	m_defaultFlags = flags & Accessible;
 	
 	foreach ( QEditor *e, m_editors )
 	{
+		bool ontoWrap = (m_defaultFlags & LineWrap) && !(e->m_state & LineWrap);
+		bool outOfWrap = !(m_defaultFlags & LineWrap) && (e->m_state & LineWrap);
+		
 		e->m_state &= Internal;
 		e->m_state |= m_defaultFlags;
+		
+		if ( ontoWrap )
+		{
+			e->document()->setWidthConstraint(e->viewport()->width());
+		} else if ( outOfWrap ) {
+			e->document()->clearWidthConstraint();
+		}
+		
+		QAction *a = e->m_actions.value("wrap");
+		
+		if ( a && (a->isChecked() != (bool)(e->m_state & LineWrap)) )
+			a->setChecked(e->m_state & LineWrap);
+		
 	}
 }
 
@@ -757,7 +787,8 @@ void QEditor::setFlag(EditFlag f, bool b)
 		
 		if ( f == LineWrap )
 		{
-			m_doc->setWidthConstraint(viewport()->width());
+			if ( isVisible() )
+				m_doc->setWidthConstraint(viewport()->width());
 			
 			QAction *a = m_actions.value("wrap");
 			
@@ -769,7 +800,8 @@ void QEditor::setFlag(EditFlag f, bool b)
 		
 		if ( f == LineWrap )
 		{
-			m_doc->clearWidthConstraint();
+			if ( isVisible() )
+				m_doc->clearWidthConstraint();
 			
 			QAction *a = m_actions.value("wrap");
 			
@@ -777,7 +809,8 @@ void QEditor::setFlag(EditFlag f, bool b)
 				a->setChecked(false);
 		}
 	}
-
+	
+	// TODO : only update cpos if cursor used to be visible?
 	if ( f == LineWrap )
 		ensureCursorVisible();
 	
@@ -1303,6 +1336,8 @@ void QEditor::removeAction(QAction *a, const QString& menu, const QString& toolb
 /*!
 	\brief load a text file
 	\param file file to load
+	
+	If the file cannot be loaded, previous content is cleared.
 */
 void QEditor::load(const QString& file)
 {
@@ -1311,7 +1346,10 @@ void QEditor::load(const QString& file)
 	// gotta handle line endings ourselves if we want to detect current line ending style...
 	//if ( !f.open(QFile::Text | QFile::ReadOnly) )
 	if ( !f.open(QFile::ReadOnly) )
+	{
+		setText(QString());
 		return;
+	}
 	
 	const int size = f.size();
 	//const int size = m_lastFileState.size = f.size();
@@ -1462,7 +1500,8 @@ void QEditor::setCodec(QTextCodec *c)
 */
 void QEditor::highlight()
 {
-	updateContent(0, m_doc->lines());
+	m_doc->highlight();
+	//updateContent(0, m_doc->lines());
 }
 
 /*!
@@ -1650,6 +1689,122 @@ void QEditor::getCursorPosition(int &line, int &index)
 {
 	line = m_cursor.lineNumber();
 	index = m_cursor.columnNumber();
+}
+
+/*!
+	\return the number of cursor mirrors currently used
+*/
+int QEditor::cursorMirrorCount() const
+{
+	return m_mirrors.count();
+}
+
+/*!
+	\return the cursor mirror at index \a i
+	
+	Index has no extra meaning : you cannot deduce anything about
+	the cursor mirror it corresponds to from it. For instance, the
+	cursor mirror at index 0 is neither the first mirror added nor
+	the one at smallest document position (well : it *might* be but
+	that would be a coincidence...)
+*/
+QDocumentCursor QEditor::cursorMirror(int i) const
+{
+	return i >= 0 && i < m_mirrors.count() ? m_mirrors.at(i) : QDocumentCursor();
+}
+
+/*!
+	\brief Clear all placeholders
+*/
+void QEditor::clearPlaceHolders()
+{
+	m_curPlaceHolder = -1;
+	m_placeHolders.clear();
+}
+
+/*!
+	\brief Add a placeholder
+	\param p placeholder data
+	\param autoUpdate whether to force auto updating of all cursors used by the placeholder
+	
+	Auto update is on by default and it is recommended not to disable it unless you know what you are doing.
+*/
+void QEditor::addPlaceHolder(const PlaceHolder& p, bool autoUpdate)
+{
+	m_placeHolders << p;
+}
+
+/*!
+	\return the number of placeholders currently set
+*/
+int QEditor::placeHolderCount() const
+{
+	return m_placeHolders.count();
+}
+
+/*!
+	\brief Set the current placeholder to use
+	
+	This function change the cursor and the cursor mirrors.
+*/
+void QEditor::setPlaceHolder(int i)
+{
+	if ( i < 0 || i >= m_placeHolders.count() )
+		return;
+	
+	clearCursorMirrors();
+	
+	const PlaceHolder& ph = m_placeHolders.at(i);
+	QDocumentCursor cc = ph.cursor;
+	
+	if ( ph.length > 0 )
+		cc.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	
+	setCursor(cc);
+	
+	foreach ( cc, ph.mirrors )
+	{
+		if ( ph.length > 0 )
+			cc.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+		
+		addCursorMirror(cc);
+	}
+}
+
+/*!
+	\brief Move to next placeholder
+	
+	\see setPlaceHolder
+*/
+void QEditor::nextPlaceHolder()
+{
+	if ( m_placeHolders.isEmpty() )
+		return;
+	
+	++m_curPlaceHolder;
+	
+	if ( m_curPlaceHolder >= m_placeHolders.count() )
+		m_curPlaceHolder = 0;
+	
+	setPlaceHolder(m_curPlaceHolder);
+}
+
+/*!
+	\brief Move to previous placeholder
+	
+	\see setPlaceHolder
+*/
+void QEditor::previousPlaceHolder()
+{
+	if ( m_placeHolders.isEmpty() )
+		return;
+	
+	if ( m_curPlaceHolder <= 0 )
+		m_curPlaceHolder = m_placeHolders.count();
+	
+	--m_curPlaceHolder;
+	
+	setPlaceHolder(m_curPlaceHolder);
 }
 
 /*!
@@ -2286,84 +2441,98 @@ void QEditor::keyPressEvent(QKeyEvent *e)
 		
 		selectionChange();
 		
-		if ( moveKeyEvent(m_cursor, e, &leave) )
+		// placeholders handling
+		bool bHandled = false;
+		
+		if ( m_placeHolders.count() && e->modifiers() == Qt::ControlModifier )
 		{
-			e->accept();
-			
-			//setFlag(CursorOn, true);
-			//ensureCursorVisible();
-			
-			if ( !leave )
-				for ( int i = 0; !leave && (i < m_mirrors.count()); ++i )
-					moveKeyEvent(m_mirrors[i], e, &leave);
-			
-			if ( leave && m_mirrors.count() )
+			if ( e->key() == Qt::Key_Up || e->key() == Qt::Key_Left )
 			{
-				for ( int i = 0; i < m_mirrors.count(); ++i )
+				bHandled = true;
+				previousPlaceHolder();
+			} else if ( e->key() == Qt::Key_Down || e->key() == Qt::Key_Right ) {
+				bHandled = true;
+				nextPlaceHolder();
+			}
+		}
+		
+		// regular moves
+		if ( !bHandled )
+		{
+			if ( moveKeyEvent(m_cursor, e, &leave) )
+			{
+				e->accept();
+				
+				//setFlag(CursorOn, true);
+				//ensureCursorVisible();
+				
+				if ( !leave )
+					for ( int i = 0; !leave && (i < m_mirrors.count()); ++i )
+						moveKeyEvent(m_mirrors[i], e, &leave);
+				
+				if ( leave && m_mirrors.count() )
 				{
-					m_mirrors[i].setAutoUpdated(false);
+					for ( int i = 0; i < m_mirrors.count(); ++i )
+					{
+						m_mirrors[i].setAutoUpdated(false);
+					}
+					
+					clearCursorMirrors();
+					viewport()->update();
+				} else {
+					repaintCursor();
+					selectionChange();
 				}
 				
-				clearCursorMirrors();
-				viewport()->update();
-			} else {
-				repaintCursor();
-				selectionChange();
+				bHandled = true;
 			}
-			
-			/*
-			if ( m_mirrors.isEmpty() )
-			{
-				ensureCursorVisible();
-				repaintCursor();
-			}
-			*/
-			
-			emitCursorPositionChanged();
-			setFlag(CursorOn, true);
-			ensureCursorVisible();
-			repaintCursor();
-			selectionChange();
-			break;
 		}
 		
 		bool bOk = true;
-		
-		bool pke = isProcessingKeyEvent(e);
-		
-		if ( !pke )
+		if ( !bHandled )
 		{
-			bOk = false;
-		} else {
-			//if ( m_definition )
-			//	m_definition->clearMatches(m_doc);
+			int offset = 0;
+			bool pke = isProcessingKeyEvent(e, &offset);
 			
-			if ( m_mirrors.isEmpty() )
+			if ( !pke )
 			{
-				bOk = processCursor(m_cursor, e, bOk);
-				
-				// this signal is NOT emitted when cursor mirrors are used ON PURPOSE
-				// as it is the "standard" entry point for code completion, which cannot
-				// work properly with cursor mirrors (art least not always and not simply)
-				if ( bOk )
-					emit textEdited(e);
+				bHandled = false;
 			} else {
-				// begin macro [synchronization of undo/redo ops]
-				m_doc->beginMacro();
+				//if ( m_definition )
+				//	m_definition->clearMatches(m_doc);
 				
-				processCursor(m_cursor, e, bOk);
-				
-				for ( int i = 0; bOk && (i < m_mirrors.count()); ++i )
+				if ( m_placeHolders.count() && m_curPlaceHolder >= 0 )
 				{
-					bOk = processCursor(m_mirrors[i], e, bOk);
+					m_placeHolders[m_curPlaceHolder].length += offset;
 				}
 				
-				// end macro
-				m_doc->endMacro();
+				if ( m_mirrors.isEmpty() )
+				{
+					bHandled = processCursor(m_cursor, e, bOk);
+					
+					// this signal is NOT emitted when cursor mirrors are used ON PURPOSE
+					// as it is the "standard" entry point for code completion, which cannot
+					// work properly with cursor mirrors (art least not always and not simply)
+					if ( bHandled )
+						emit textEdited(e);
+				} else {
+					// begin macro [synchronization of undo/redo ops]
+					m_doc->beginMacro();
+					
+					processCursor(m_cursor, e, bOk);
+					
+					for ( int i = 0; bOk && (i < m_mirrors.count()); ++i )
+					{
+						bHandled = processCursor(m_mirrors[i], e, bOk);
+					}
+					
+					// end macro
+					m_doc->endMacro();
+				}
 			}
 		}
 		
-		if ( !bOk )
+		if ( !bHandled )
 		{
 			QAbstractScrollArea::keyPressEvent(e);
 			
@@ -2900,7 +3069,7 @@ void QEditor::dropEvent(QDropEvent *e)
 			m_mirrors[i].removeSelectedText();
 		
 	} else {
-		qDebug("action : %i", e->dropAction());
+		//qDebug("action : %i", e->dropAction());
 		m_cursor.clearSelection();
 	}
 	
@@ -3156,9 +3325,10 @@ void QEditor::setFileName(const QString& f)
 	//if ( fileName().count() )
 	//	m_watcher->addPath(fileName());
 	
-	watcher()->addWatch(fileName(), this);
+	if ( fileName().count() )
+		watcher()->addWatch(fileName(), this);
 	
-	setTitle(name());
+	setTitle(name().count() ? name() : "untitled");
 }
 
 /*!
@@ -3444,8 +3614,12 @@ bool QEditor::moveKeyEvent(QDocumentCursor& cursor, QKeyEvent *e, bool *leave)
 	{
 		//moved = true;
 		if ( leave ) *leave = true;
+		m_curPlaceHolder = -1;
 	} else {
-		//moved = prevcol != cursor.columnNumber();
+		if ( m_curPlaceHolder >= 0 )
+		{
+			m_cphOffset += cursor.columnNumber() - prevcol;
+		}
 	}
 	
 	return true;
@@ -3454,11 +3628,12 @@ bool QEditor::moveKeyEvent(QDocumentCursor& cursor, QKeyEvent *e, bool *leave)
 /*!
 	\brief Go up by one page
 	
-	\note This method clears all cursor mirrors.
+	\note This method clears all cursor mirrors and suspend placeholder edition.
 */
 void QEditor::pageUp(QDocumentCursor::MoveMode moveMode)
 {
 	clearCursorMirrors();
+	m_curPlaceHolder = -1;
 	
 	if ( m_cursor.atStart() )
 		return;
@@ -3481,6 +3656,7 @@ void QEditor::pageUp(QDocumentCursor::MoveMode moveMode)
 void QEditor::pageDown(QDocumentCursor::MoveMode moveMode)
 {
 	clearCursorMirrors();
+	m_curPlaceHolder = -1;
 	
 	if ( m_cursor.atEnd() )
 		return;
@@ -3497,7 +3673,7 @@ void QEditor::pageDown(QDocumentCursor::MoveMode moveMode)
 /*!
 	\brief Determine whether a given key event is an editing operation
 */
-bool QEditor::isProcessingKeyEvent(QKeyEvent *e)
+bool QEditor::isProcessingKeyEvent(QKeyEvent *e, int *offset)
 {
 	if ( flag(FoldedCursor) )
 		return false;
@@ -3505,9 +3681,29 @@ bool QEditor::isProcessingKeyEvent(QKeyEvent *e)
 	switch ( e->key() )
 	{
 		case Qt::Key_Backspace :
+			if ( offset && m_curPlaceHolder >= 0 && m_placeHolders.count() )
+			{
+				if ( m_cphOffset > 0 && m_cphOffset <= m_placeHolders.at(m_curPlaceHolder).length )
+				{
+					--*offset;
+				}
+			}
+			break;
+			
 		case Qt::Key_Delete :
+			if ( offset && m_curPlaceHolder >= 0 && m_placeHolders.count() )
+			{
+				if ( m_cphOffset >= 0 && m_cphOffset < m_placeHolders.at(m_curPlaceHolder).length )
+				{
+					--*offset;
+				}
+			}
+			break;
+			
 		case Qt::Key_Enter :
 		case Qt::Key_Return :
+			if ( offset )
+				++*offset;
 			break;
 			
 		default :
@@ -3516,6 +3712,9 @@ bool QEditor::isProcessingKeyEvent(QKeyEvent *e)
 			
 			if ( text.isEmpty() || !(text.at(0).isPrint() || (text.at(0) == '\t')) )
 				return false;
+			
+			if ( offset )
+				*offset += text.length();
 			
 			break;
 		}

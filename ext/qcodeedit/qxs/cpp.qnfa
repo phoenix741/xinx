@@ -142,6 +142,19 @@
 		<word>Q_SLOTS</word>
 	</list>
 	
+	<list id="ansi/trigraph" format="extra-keyword">
+		<prefix>\?\?</prefix>
+		<word>\(</word>
+		<word>\)</word>
+		<word>&lt;</word>
+		<word>&gt;</word>
+		<word>=</word>
+		<word>/</word>
+		<word>&apos;</word>
+		<word>!</word>
+		<word>-</word>
+	</list>
+	
 	<word id="QtCasts" format="extra-keyword">q$w+_cast</word>
 	
 	<word id="data/float" format="numbers">-?[0-9]*.[0-9]+f?</word>

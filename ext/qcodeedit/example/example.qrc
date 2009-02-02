@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/" >
+    <file>new.png</file>
     <file>open.png</file>
     <file>exit.png</file>
     <file>print.png</file>

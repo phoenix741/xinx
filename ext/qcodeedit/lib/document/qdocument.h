@@ -222,6 +222,8 @@ class QCE_EXPORT QDocument : public QObject
 		
 		void setClean();
 		
+		void highlight();
+		
 		void print(QPrinter *p);
 		
 		void clearWidthConstraint();

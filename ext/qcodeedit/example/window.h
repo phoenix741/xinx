@@ -25,6 +25,7 @@ class Window : public QMainWindow, private Ui::MainWindow
 		virtual void closeEvent(QCloseEvent *e);
 		
 	private slots:
+		void on_action_New_triggered();
 		void on_action_Open_triggered();
 		void on_action_Save_triggered();
 		void on_action_SaveAs_triggered();

@@ -72,7 +72,7 @@ int pid(const QString& s, QHash<QString, int>& pids)
 	if ( pids.contains(s) )
 		return pids.value(s);
 	
-	int id = 0x0100 * (pids.count() + 1);
+	int id = (pids.count() + 1) << 12;
 	
 	pids[s] = id;
 	
@@ -81,7 +81,7 @@ int pid(const QString& s, QHash<QString, int>& pids)
 
 int action(QDomElement c, QFormatScheme *f, QHash<QString, int>& pids, int fid = 0)
 {
-	QString paren, spid, spt, sfid, indent, fold;
+	QString paren, spid, spt, sfid;
 	
 	sfid = c.attribute("format");
 	
@@ -128,15 +128,15 @@ int action(QDomElement c, QFormatScheme *f, QHash<QString, int>& pids, int fid =
 		}
 	}
 	
-	indent = c.attribute("indent");
-	
-	if ( indent.count() && ((indent == "true") || (indent == "1")) )
+	if ( stringToBool(c.attribute("indent"), false) )
 		fid |= QNFAAction::Indent;
 	
-	fold = c.attribute("fold");
-	
-	if ( fold.count() && ((fold == "true") || (fold == "1")) )
+	if ( stringToBool(c.attribute("fold"), false) )
 		fid |= QNFAAction::Fold;
+	
+	// TODO : determine ambiguity automatically
+	if ( stringToBool(c.attribute("ambiguous"), false) )
+		fid |= QNFAAction::Ambiguous;
 	
 	return fid;
 }

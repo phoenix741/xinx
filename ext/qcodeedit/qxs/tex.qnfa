@@ -5,45 +5,52 @@
 		<stop exclusive="false">\n</stop>
 	</context>
 	
-	<word id="keywords/single" format="keyword">\\[a-zA-Z]+</word>
-	
 	<context id="mathmode" format="numbers" transparency="true" >
-		<start parenthesis="math:open" fold="1" >$</start>
-		<stop parenthesis="math:close" fold="1" >$</stop>
+		<start parenthesis="math:open" fold="true" >$</start>
+		<stop parenthesis="math:close" fold="true" >$</stop>
+		
+		<word id="keywords/math-fallback" format="keyword">\\[a-zA-Z]+</word>
 	</context>
 	
 	<context id="mathmodeNormal" format="numbers" transparency="true">
-		<start parenthesis="math:open" fold="1" format="extra-keyword">\\begin{math}</start>
-		<stop parenthesis="math:close" fold="1" format="extra-keyword">\\end{math}</stop>
-		<start parenthesis="math:open" fold="1" >\\\(</start>
-		<stop parenthesis="math:close" fold="1" >\\\)</stop>
+		<start parenthesis="math:open" fold="true" format="extra-keyword">\\begin{math}</start>
+		<stop parenthesis="math:close" fold="true" format="extra-keyword">\\end{math}</stop>
+		<start parenthesis="math:open" fold="true" >\\\(</start>
+		<stop parenthesis="math:close" fold="true" >\\\)</stop>
+		
+		<word id="keywords/math-fallback" format="keyword">\\[a-zA-Z]+</word>
 	</context>
 	
 	<context id="mathmodeDisplay" format="numbers" transparency="true">
-		<start parenthesis="math:open" fold="1" format="extra-keyword">\\begin{displaymath}</start>
-		<stop parenthesis="math:close" fold="1" format="extra-keyword">\\end{displaymath}</stop>
-		<start parenthesis="math:open" fold="1" >\\\[</start>
-		<stop parenthesis="math:close" fold="1" >\\\]</stop>
-		<start parenthesis="math:open" fold="1" format="extra-keyword">\\begin{equation}</start>
-		<stop parenthesis="math:close" fold="1" format="extra-keyword">\\end{equation}</stop>
+		<start parenthesis="math:open" fold="true" format="extra-keyword">\\begin{displaymath}</start>
+		<stop parenthesis="math:close" fold="true" format="extra-keyword">\\end{displaymath}</stop>
+		<start parenthesis="math:open" fold="true" >\\\[</start>
+		<stop parenthesis="math:close" fold="true" >\\\]</stop>
+		<start parenthesis="math:open" fold="true" format="extra-keyword">\\begin{equation}</start>
+		<stop parenthesis="math:close" fold="true" format="extra-keyword">\\end{equation}</stop>
+		
+		<word id="keywords/math-fallback" format="keyword">\\[a-zA-Z]+</word>
   	</context>
 	
-	<word parenthesis="block:open" fold="1" indent="1" format="extra-keyword">\\begin</word>
-	<word parenthesis="block:close" fold="1" indent="1" format="extra-keyword" >\\end</word>
-
+	<word parenthesis="block:open" fold="true" indent="true" ambiguous="true" format="extra-keyword">\\begin</word>
+	<word parenthesis="block:close" fold="true" indent="true" format="extra-keyword" >\\end</word>
+	
 	<list id="keywords/block" format="extra-keyword">
-		<word parenthesis="part:boundary" fold="1" indent="1" >\\part</word>
-		<word parenthesis="chapter:boundary" fold="1" indent="1" >\\chapter</word>
-		<word parenthesis="section:boundary" fold="1" indent="1" >\\section</word>
-		<word parenthesis="subsection:boundary" fold="1" indent="1" >\\subsection</word>
-		<word parenthesis="paragraph:boundary" fold="1" indent="1" >\\paragraph</word>
-		<word parenthesis="subparagraph:boundary" fold="1" indent="1" >\\subparagraph</word>
+		<word parenthesis="part:boundary" fold="true" indent="true" >\\part</word>
+		<word parenthesis="chapter:boundary" fold="true" indent="true" >\\chapter</word>
+		<word parenthesis="section:boundary" fold="true" indent="true" >\\section</word>
+		<word parenthesis="subsection:boundary" fold="true" indent="true" >\\subsection</word>
+		<word parenthesis="paragraph:boundary" fold="true" indent="true" >\\paragraph</word>
+		<word parenthesis="subparagraph:boundary" fold="true" indent="true" >\\subparagraph</word>
 	</list>
+	 
+	<!-- Keep that one near the end or all the other \commands will be matched by this one... -->
+	<word id="keywords/single" ambiguous="true" format="keyword">\\[a-zA-Z]+</word>
 	
 	<sequence parenthesis="round:open">(</sequence>
 	<sequence parenthesis="round:close">)</sequence>
-	<sequence parenthesis="curly:open" indent="1" fold="1">{</sequence>
-	<sequence parenthesis="curly:close" indent="1" fold="1">}</sequence>
+	<sequence parenthesis="curly:open" indent="true" fold="true">{</sequence>
+	<sequence parenthesis="curly:close" indent="true" fold="true">}</sequence>
 	<sequence parenthesis="square:open">\[</sequence>
 	<sequence parenthesis="square:close">\]</sequence>
 </QNFA>
