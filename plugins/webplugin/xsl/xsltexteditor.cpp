@@ -90,15 +90,17 @@ QCompleter * XslTextEditor::completer() {
 
 			c->setHiddenAttribute( QStringList() );
 			c->setTemplateName( templateName, templateMode );
-			cursorPosition pos = editPosition( textCursor() );
+
+			QString nodeName, paramName;
+			cursorPosition pos = editPosition( textCursor(), nodeName, paramName );
 			if( pos == cpEditParamName ) {
-				c->setFilter( m_nodeName ); // Param of the node
+				c->setFilter( nodeName ); // Param of the node
 				c->setHiddenAttribute( paramOfNode( textCursor() ) ); // But hide some param
 			} else if( pos == cpEditNodeName ) {
 				c->setFilter(); // Edit Node
 			} else if( pos == cpEditParamValue ) {
-				c->setFilter( m_nodeName, m_paramName ); // Edit Value so
-				if( ( m_nodeName == "xsl:apply-templates" ) && ( m_paramName == "mode" ) )
+				c->setFilter( nodeName, paramName ); // Edit Value so
+				if( ( nodeName == "xsl:apply-templates" ) && ( paramName == "mode" ) )
 					c->setApplyTemplateMatch( paramValue( textCursor(), "select" ) );
 		}
 

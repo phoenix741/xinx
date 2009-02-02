@@ -99,119 +99,54 @@ void XmlTextEditor::commentSelectedText( bool uncomment ) {
 XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QDocumentCursor & cursor, QString & nodeName, QString & paramName ) {
 	Q_ASSERT( ! cursor.isNull() );
 
-	cursorPosition cPosition = cpNone;
 	nodeName = QString();
 	paramName = QString();
 
-	/* is a Comment ? */
-	QDocumentCursor cursorCommentStart( find ( "<!--", cursor, XinxCodeEdit::FindBackward ).selectionStart() );
-	QDocumentCursor cursorCommentEnd( find ( "-->", cursor, XinxCodeEdit::FindBackward ).selectionStart() );
-
-	bool inComment = ! (
-			cursorCommentStart.isNull() // No comment before where i am
-		||	( (! cursorCommentEnd.isNull()) && ( cursorCommentStart < cursorCommentEnd ) ) // There is a end before, and the last is the end balise
-	 );
-
-	if( inComment ) {
-		cPosition = cpEditComment;
-		return cPosition;
-	} // else
-
-	/* or simple text */
-	QDocumentCursor cursorBaliseStart ( find ( QRegExp("<(?!\\!\\-\\-)"), cursor, XinxCodeEdit::FindBackward ).selectionEnd() ); // A balise is'nt a comment
-	QDocumentCursor cursorBaliseEnd ( find ( ">", cursor, XinxCodeEdit::FindBackward ).selectionStart() );
-
-	bool inNode = (! cursorBaliseStart.isNull()) && ( cursorBaliseEnd.isNull() || ( cursorBaliseEnd < cursorBaliseStart ) );
-	if( ! inNode ) {
-		return cPosition; // = cpNone;
-	} // else
-
-	/* Retrieve the name of node */ /* Space ? or other ? */
-	QDocumentCursor cursorSpaceAfterNodeName ( find ( QRegExp( EOWREGEXP ), cursorBaliseStart ).selectionStart() );
-	QDocumentCursor tc = cursor;
-
-	tc.moveTo( cursorBaliseStart );
-	if( ! cursorSpaceAfterNodeName.isNull() )
-		tc.movePosition( cursorSpaceAfterNodeName.position() - tc.position(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor ) ;
-	else
-		tc.movePosition( 1, QDocumentCursor::EndOfBlock, QDocumentCursor::KeepAnchor ) ;
-
-	nodeName = tc.selectedText().trimmed();
-
-	/* i'm editing a balise name ? */
-	QDocumentCursor cursorSpace ( find ( QRegExp("\\s"), cursor, XinxCodeEdit::FindBackward ).selectionEnd() );
-	if( cursorSpace < cursorBaliseStart )
-		cursorSpace = QDocumentCursor();
-
-	bool editBaliseName = cursorSpace.isNull();
-	if( editBaliseName ) {
-		cPosition = cpEditNodeName;
-		return cPosition;
-	} // else
-
-	QDocumentCursor cursorEgal ( find ( "=", cursor, XinxCodeEdit::FindBackward ).selectionStart() );
-	QDocumentCursor cursorQuote ( find ( "\"", cursor, XinxCodeEdit::FindBackward ).selectionStart() );
-	if( cursorEgal < cursorBaliseStart )
-		cursorEgal = QDocumentCursor();
-	if( cursorQuote < cursorBaliseStart )
-		cursorQuote = QDocumentCursor();
-
-	int quoteCount = 0;
-	if( ! cursorQuote.isNull() ) {
-		quoteCount ++;
-		QDocumentCursor cursorPreviousQuote( cursorQuote );
-
-		cursorPreviousQuote.movePosition( 1, QDocumentCursor::PreviousCharacter );
-		cursorPreviousQuote = find ( "\"", cursorPreviousQuote, XinxCodeEdit::FindBackward ).selectionStart();
-		while( ( ! cursorPreviousQuote.isNull() ) &&  ( cursorBaliseStart < cursorPreviousQuote ) ) {
-			quoteCount ++;
-
-			cursorPreviousQuote.movePosition( 1, QDocumentCursor::PreviousCharacter );
-			cursorPreviousQuote = find ( "\"", cursorPreviousQuote, XinxCodeEdit::FindBackward ).selectionStart();
-		}
+	QDocumentCursor cursorCommentTag = find( QRegExp( "(<!--)|(-->)" ), cursor, XinxCodeEdit::FindBackward );
+	if( cursorCommentTag.isValid() && ( cursorCommentTag.selectedText() == "<!--" ) ) {
+		return cpEditComment;
 	}
 
-	/*
-		<Noeud Param1=Value1 Param2="Value 2" Param3="Value3" Param4 Param5="Value 5"/>
-		       1   5    10   15   20   25   30   35   40   45   50   55   60   65   70
+	QDocumentCursor cursorNodeTag = find( QRegExp( "(<(?!!--))|>" ), cursor, XinxCodeEdit::FindBackward );
+	if( cursorNodeTag.isNull() || ( cursorNodeTag.selectedText() == ">" ) ) {
+		return cpNone;
+	}
 
-		1 => Param / Space not null, Egal null, Quote null / 0
-		8 => Value / Space < Egal, Quote null / 0
-		15 => Param / Egal < Space, Quote null / 0
-		22 => Value / Space < Egal, Quote null / 1
-		23 => Value / Space < Egal < Quote / 1
-		29 => Value / Egal < Quote < Space / 1
-		31 => Param / Egal < Space  < Quote	 / 2
-		35 => Param / Egal < Quote < Space / 2
+	QDocumentCursor tc( document() );
+	tc.moveTo( cursorNodeTag.selectionEnd() );
+	tc.movePosition( cursor.position() - cursorNodeTag.position(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 
-		Compter le nombre de guillement
-	*/
+	QString baliseContentStr =  tc.selectedText();
+	QStringList baliseContent = baliseContentStr.split( " ", QString::SkipEmptyParts );
+	if( baliseContent.size() == 0 ) {
+		return cpEditNodeName;
+	}
 
-	QDocumentCursor cursorParam ( find ( QRegExp( "[=\\s]" ), cursorSpace ).selectionStart() );
-	tc.moveTo( cursorSpace ) ;
-	if( ! cursorParam.isNull() )
-		tc.movePosition( cursorParam.position() - tc.position(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor ) ;
-	else
-		tc.movePosition( 1, QDocumentCursor::EndOfBlock, QDocumentCursor::KeepAnchor ) ;
+	nodeName = baliseContent.first();
 
-	paramName = tc.selectedText().trimmed();
+	if( ( baliseContent.size() == 1 ) && ( !baliseContentStr.right( 1 ).trimmed().isEmpty() ) ) {
+		return cpEditNodeName;
+	}
 
-	cPosition = cpEditParamName;
-	if( cursorEgal.isNull() || ( cursorQuote.isValid() && cursorSpace.isValid() && ( cursorEgal < cursorQuote ) && ( cursorEgal < cursorSpace ) && ( ( quoteCount % 2 ) == 0 ) ) )
-		return cPosition;
+	paramName = baliseContent.last();
+	int equalsIndex = paramName.indexOf( "=" );
+	if( equalsIndex == -1 ) {
+		return cpEditParamName;
+	}
 
-	if( ! nodeName.isEmpty() )
-		cPosition = cpEditParamValue;
-	return cPosition;
+	if( paramName.count( "\"" ) == 2 ) {
+		paramName = QString();
+		return cpEditParamName;
+	}
+
+	paramName = paramName.left( equalsIndex );
+
+	return cpEditParamValue;
 }
-
-XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QDocumentCursor & cursor ) {
-	return editPosition( cursor, m_nodeName, m_paramName );
-}
-
 
 QStringList XmlTextEditor::paramOfNode( const QDocumentCursor & cursor ) {
-	XmlTextEditor::cursorPosition position = editPosition( cursor );
+	QString nodeName, paramName;
+	XmlTextEditor::cursorPosition position = editPosition( cursor, nodeName, paramName );
 	if( ( position == cpEditComment ) || ( position == cpNone ) ) return QStringList();
 
 	QDocumentCursor baliseStart = find( "<", cursor, XinxCodeEdit::FindBackward ).selectionStart();
@@ -235,8 +170,7 @@ QStringList XmlTextEditor::paramOfNode( const QDocumentCursor & cursor ) {
  		c = find( QRegExp("\\w+=\""), c );
 		if( c.isNull() || ( c >= baliseStop ) ) break;
 		c.movePosition( 2, QDocumentCursor::Left, QDocumentCursor::KeepAnchor );
-		QString theText = c.selectedText();
-		result << theText;
+		result << c.selectedText();
 	} while( c < baliseStop );
 
 	return result;
@@ -254,18 +188,19 @@ void XmlTextEditor::insertCompletion( const QModelIndex& index ) {
 
 	tc.insertText( completion );
 
-	cursorPosition pos = editPosition( tc );
+	QString nodeName, paramName;
+	cursorPosition pos = editPosition( tc, nodeName, paramName );
 	if( pos == cpEditParamName ) {
-		insertCompletionValue( tc, m_nodeName, completion );
+		insertCompletionValue( tc, nodeName, completion );
 	} else
 		if( pos == cpEditNodeName ) {
-			if( ! m_nodeName.isEmpty() )
+			if( ! nodeName.isEmpty() )
 				insertCompletionParam( tc, completion );
 			else
 				tc.insertText( ">" );
 		} else
 			if( pos == cpEditParamValue ) {
-				insertCompletionAccolade( tc, m_nodeName, m_paramName, completion, index );
+				insertCompletionAccolade( tc, nodeName, paramName, completion, index );
 			}
 
 	setTextCursor( tc );
@@ -430,8 +365,9 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 
 			tc.movePosition( 1, QDocumentCursor::NextCharacter );
 
-			if( isEditBalise( editPosition( tc ) ) && selected != "/>" ){
-				QString name = m_nodeName;
+			QString nodeName, paramName;
+			if( isEditBalise( editPosition( tc, nodeName, paramName ) ) && selected != "/>" ){
+				QString name = nodeName;
 				if( ( ! name.isEmpty() ) && ( name.at(0) != '/' ) ) {
 					tc.movePosition( 1, QDocumentCursor::NextCharacter );
 					QDocumentCursor position = textCursor();
@@ -446,9 +382,10 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 			QDocumentCursor tc( textCursor() );
 			QDocumentCursor tc2( textCursor() );
 			tc2.movePosition( 1, QDocumentCursor::PreviousCharacter );
-			if( editPosition( tc2 ) == cpEditParamName ) {
+			QString nodeName, paramName;
+			if( editPosition( tc2, nodeName, paramName ) == cpEditParamName ) {
 				tc.deletePreviousChar();
-				insertCompletionValue( tc, m_nodeName, m_paramName );
+				insertCompletionValue( tc, nodeName, paramName );
 				setTextCursor( tc );
 			}
 			return true;
@@ -456,9 +393,10 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 			QDocumentCursor tc( textCursor() );
 			QDocumentCursor tc2( textCursor() );
 			tc2.movePosition( 1, QDocumentCursor::PreviousCharacter );
-			if( editPosition( tc2 ) == cpEditNodeName ) {
+			QString nodeName, paramName;
+			if( editPosition( tc2, nodeName, paramName ) == cpEditNodeName ) {
 				tc.deletePreviousChar();
-				if( insertCompletionParam( tc, m_nodeName ).isNull() )
+				if( insertCompletionParam( tc, nodeName ).isNull() )
 					tc.insertText( " " );
 				setTextCursor( tc );
 			}

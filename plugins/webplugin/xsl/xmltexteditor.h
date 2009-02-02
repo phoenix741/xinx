@@ -65,9 +65,6 @@ protected:
 	};
 
 	cursorPosition editPosition( const QDocumentCursor & cursor, QString & nodeName, QString & paramName );
-	cursorPosition editPosition( const QDocumentCursor & cursor );
-
-	QString m_nodeName, m_paramName;
 private:
 	void key_shenter( bool back );
 };
