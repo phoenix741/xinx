@@ -99,6 +99,7 @@ void XmlTextEditor::commentSelectedText( bool uncomment ) {
 XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QDocumentCursor & cursor, QString & nodeName, QString & paramName ) {
 	Q_ASSERT( ! cursor.isNull() );
 
+	int cursorPosition = cursor.position();
 	nodeName = QString();
 	paramName = QString();
 
@@ -114,21 +115,24 @@ XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QDocumentCursor
 
 	QDocumentCursor tc( document() );
 	tc.moveTo( cursorNodeTag.selectionEnd() );
-	tc.movePosition( cursor.position() - cursorNodeTag.position(), QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
+	tc.movePosition( cursorPosition - cursorNodeTag.position() - 1, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 
 	QString baliseContentStr =  tc.selectedText();
-	QStringList baliseContent = baliseContentStr.split( " ", QString::SkipEmptyParts );
+	QStringList baliseContent = baliseContentStr.split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
+
 	if( baliseContent.size() == 0 ) {
 		return cpEditNodeName;
 	}
 
+	bool hasTextBeforeCursor = ! baliseContentStr.right( 1 ).trimmed().isEmpty();
 	nodeName = baliseContent.first();
 
-	if( ( baliseContent.size() == 1 ) && ( !baliseContentStr.right( 1 ).trimmed().isEmpty() ) ) {
+	if( ( baliseContent.size() == 1 ) && hasTextBeforeCursor ) {
 		return cpEditNodeName;
 	}
 
 	paramName = baliseContent.last();
+
 	int equalsIndex = paramName.indexOf( "=" );
 	if( equalsIndex == -1 ) {
 		return cpEditParamName;
@@ -157,7 +161,7 @@ QStringList XmlTextEditor::paramOfNode( const QDocumentCursor & cursor ) {
 
 	QDocumentCursor c = cursor;
 	do {
-		c = find( QRegExp("\\W\\w+=\""), c, XinxCodeEdit::FindBackward );
+		c = find( QRegExp("\\s[\\w:-]+=\""), c, XinxCodeEdit::FindBackward );
 		if( c.isNull() || ( baliseStart >= c ) ) break;
 		QDocumentCursor text( document() );
 		text.moveTo( c.selectionStart() );
@@ -167,7 +171,7 @@ QStringList XmlTextEditor::paramOfNode( const QDocumentCursor & cursor ) {
 	} while( baliseStart < c );
 	c = cursor;
 	do {
- 		c = find( QRegExp("\\w+=\""), c );
+ 		c = find( QRegExp("[\\w:-]+=\""), c );
 		if( c.isNull() || ( c >= baliseStop ) ) break;
 		c.movePosition( 2, QDocumentCursor::Left, QDocumentCursor::KeepAnchor );
 		result << c.selectedText();
