@@ -8,12 +8,11 @@ DESTDIR += ./
 INCLUDEPATH += ../components \
     ../libxinx \
     ../xinx \
-	../ext/qcodeedit/lib \
-	../ext/qcodeedit/lib/document \
-	../ext/qcodeedit/lib/language \
-	../ext/qcodeedit/lib/qnfa \
-	../ext/qcodeedit/lib/widgets
-
+    ../ext/qcodeedit/lib \
+    ../ext/qcodeedit/lib/document \
+    ../ext/qcodeedit/lib/language \
+    ../ext/qcodeedit/lib/qnfa \
+    ../ext/qcodeedit/lib/widgets
 LIBS = -L../libxinx \
     -L../plugins \
     -L../components \
@@ -40,7 +39,8 @@ FORMS += ui/xquery.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
     ui/logform.ui
-HEADERS += xquerydialogimpl.h \
+HEADERS += customdialogmodeles.h \
+    xquerydialogimpl.h \
     scriptmanager.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \
@@ -54,10 +54,7 @@ HEADERS += xquerydialogimpl.h \
     iconprojectprovider.h \
     mainformimpl.h \
     newprojectwizard.h \
-    private/p_filecontentdockwidget.h \
-    private/p_projectdirectorydockwidget.h \
     private/p_xmlpresentationdockwidget.h \
-    private/p_flattreeview.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
     replacedialogimpl.h \
@@ -70,12 +67,12 @@ HEADERS += xquerydialogimpl.h \
     uniqueapplication.h \
     xmlpresentationdockwidget.h \
     xmlpresentationitem.h \
-    private/p_customdialogimpl.h \
     dbus/orgshadowarexinxadaptor.h \
     dbus/orgshadowarexinxinterface.h \
     searchfilethread.h \
     logdialogimpl.h
-SOURCES += xquerydialogimpl.cpp \
+SOURCES += customdialogmodeles.cpp \
+    xquerydialogimpl.cpp \
     snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \

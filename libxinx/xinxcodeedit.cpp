@@ -337,9 +337,14 @@ void XinxCodeEdit::setModified( bool modified ) {
 	//static_cast<XinxEditor*>( m_editor->editor() )->setContentModified( modified );
 	if( ! modified )
 		document()->setClean();
-	else
-		document()->markViewDirty();
-		//		qDebug( "setModified( false ) not managed" );
+	else {
+		QDocumentCursor c( document() );
+		c.beginEditBlock();
+		c.moveTo( 0, 0 );
+		c.insertText( " " );
+		c.deletePreviousChar();
+		c.endEditBlock();
+	}
 }
 
 void XinxCodeEdit::setTabStopWidth( int width ) {

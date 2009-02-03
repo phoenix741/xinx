@@ -24,7 +24,7 @@
 #include "ui_custom.h"
 #include <xinxconfig.h>
 
-class PrivateCustomDialogImpl;
+class SnipetModelIndex;
 
 /*!
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
@@ -55,14 +55,6 @@ private slots:
 	void m_descriptionPathLineEdit_textChanged( QString text );
 
 	void on_m_buttonBox_clicked( QAbstractButton * button );
-	/*
-	void on_m_colorComboBox_activated(QColor color);
-	void on_m_boldCheckBox_toggled(bool checked);
-	void on_m_italicCheckBox_toggled(bool checked);
-	void on_m_StrikeoutCheckBox_toggled(bool checked);
-	void on_m_underlineCheckBox_toggled(bool checked);
-	void on_m_formatsListView_currentRowChanged(int currentRow);
-	*/
 	void on_m_highlighterComboBox_activated( QString text );
 	void on_m_labelLink_linkActivated( const QString & link );
 
@@ -75,9 +67,17 @@ private slots:
 	void on_m_duplicatePushButton_clicked();
 
 	void m_snipetTreeView_selectionChanged();
+private slots:
+	void configurePlugin( PluginElement * plugin );
+	void aboutPlugin( PluginElement * plugin );
+	void aboutScript( PluginElement * plugin );
+
 private:
-	PrivateCustomDialogImpl * d;
-	friend class PrivateCustomDialogImpl;
+	void showConfig();
+	void storeConfig();
+
+	XINXConfig m_config;
+	SnipetModelIndex * m_snipetModel;
 };
 
 #endif

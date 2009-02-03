@@ -20,11 +20,14 @@
 #ifndef __FILECONTENTDOCKWIDGET_H__
 #define __FILECONTENTDOCKWIDGET_H__
 
+// Qt header
 #include <QDockWidget>
 #include <QString>
+#include <QPointer>
 
-class PrivateFileContentDockWidget;
 class QAbstractItemModel;
+class QTreeView;
+class QSortFilterProxyModel;
 
 /*!
  * This dock contains the content of the current file editor in a tree.
@@ -44,15 +47,21 @@ public slots:
 	void updateModel( QAbstractItemModel * model );
 signals:
 	/*!
-	 * Signal emited when the user double-click on the editor. The goal is open the file 
+	 * Signal emited when the user double-click on the editor. The goal is open the file
 	 * if necessary, and change the line.
 	 * \param name Name of the file to open
 	 * \param line Line to change.
 	 */
 	void open( const QString & name, int line );
+
+private slots:
+	void contentTreeViewDblClick( QModelIndex index );
 private:
-	PrivateFileContentDockWidget * d;
-	friend class PrivateFileContentDockWidget;
+	void init();
+
+	QTreeView * m_contentTreeView;
+	QAbstractItemModel * m_model;
+	QPointer<QSortFilterProxyModel> m_sortModel;
 };
 
 #endif // __FILECONTENTDOCKWIDGET_H__

@@ -20,22 +20,27 @@
 #ifndef __PROJECTDIRECTORYDOCKWIDGET_H__
 #define __PROJECTDIRECTORYDOCKWIDGET_H__
 
+// Xinx header
+#include "ui_projectdirectorywidget.h"
+
+// Qt header
 #include <QDockWidget>
 #include <QString>
+#include <QPointer>
 
-class PrivateProjectDirectoryDockWidget;
 class QAbstractItemModel;
 class QAction;
 class XSLProject;
 class RCS;
+class IconProjectProvider;
 
-class ProjectDirectoryDockWidget : public QDockWidget {
+class ProjectDirectoryDockWidget : public QDockWidget  {
 	Q_OBJECT
 public:
 	ProjectDirectoryDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
 	ProjectDirectoryDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
 	virtual ~ProjectDirectoryDockWidget();
-	
+
 	void setGlobalUpdateAction( QAction * action );
 	void setGlobalCommitAction( QAction * action );
 	void setSelectedUpdateAction( QAction * action );
@@ -46,23 +51,54 @@ public:
 	void setSelectedCompareWithStdAction( QAction * action );
 	void setSelectedCompareAction( QAction * action );
 	void setToggledViewAction( QAction * action );
-	
+
 	bool isViewFlat();
 	QStringList selectedFiles();
 	void setProjectPath( XSLProject * project );
-	
+
 	void refreshPath( const QString & path );
 	bool removeFile( const QString & path );
-	
+
 	RCS * rcs();
 public slots:
 	void toggledView();
 	void toggledView( bool flat );
 signals:
 	void open( const QString & name );
+
+private slots:
+	void projectChange();
+	void filtreChange();
+	void on_m_filtreLineEdit_returnPressed();
+	void on_m_filtreLineEdit_textChanged( QString filtre );
+	void on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index );
+	void on_m_prefixComboBox_activated( QString prefix );
+
+	void copyFileNameTriggered();
+	void copyPathNameTriggered();
+
 private:
-	PrivateProjectDirectoryDockWidget * d;
-	friend class PrivateProjectDirectoryDockWidget;
+	void init();
+	bool eventFilter( QObject *obj, QEvent *event );
+
+	QPointer<QAction> m_selectedUpdateAction;
+	QPointer<QAction> m_selectedCommitAction;
+	QPointer<QAction> m_selectedAddAction;
+	QPointer<QAction> m_selectedRemoveAction;
+	QPointer<QAction> m_selectedCompareWithHeadAction;
+	QPointer<QAction> m_selectedCompareWithStdAction;
+	QPointer<QAction> m_selectedCompareAction;
+	QPointer<QAction> m_copyFileNameAction;
+	QPointer<QAction> m_copyPathNameAction;
+
+	QPointer<QTimer> m_modelTimer;
+	QPointer<QDirModel> m_dirModel;
+	QPointer<QAbstractItemModel> m_flatModel;
+	IconProjectProvider* m_iconProvider;
+
+	QPointer<XSLProject> m_project;
+
+	Ui::ProjectDirectoryWidget * m_projectDirWidget;
 };
 
 #endif // __PROJECTDIRECTORYDOCKWIDGET_H__

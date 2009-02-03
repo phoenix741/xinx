@@ -20,9 +20,9 @@
 #ifndef __FLATTREEVIEW_H__
 #define __FLATTREEVIEW_H__
 
+// Qt header
 #include <QAbstractItemModel>
-
-class PrivateFlatModel;
+#include <QStringList>
 
 class QDirModel;
 
@@ -43,24 +43,31 @@ public:
 	 * Destructor of the flat model.
 	 */
 	virtual ~FlatModel();
-	
+
 	virtual int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags ( const QModelIndex & index ) const;
 	virtual QModelIndex index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
 	virtual QModelIndex parent ( const QModelIndex & index ) const;
 	virtual int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
-	
+
 	/*!
 	 * Return the index on QDirModel, for an index in the flat model.
 	 * \param index Index in the flat model
 	 * \return Index in the QDirModel
 	 */
 	QModelIndex mappingToSource( const QModelIndex & index );
-	
+
+private slots:
+	void recalcPathList();
+	void rowsInserted ( const QModelIndex & parent, int start, int end );
+	void rowsRemoved ( const QModelIndex & parent, int start, int end );
 private:
-	PrivateFlatModel * d;
-	friend class PrivateFlatModel;
+	void insertIntoPathList( QModelIndex index );
+
+	QDirModel * m_model;
+	QPersistentModelIndex m_root;
+	QStringList m_pathList;
 };
 
 #endif // __FLATTREEVIEW_H__

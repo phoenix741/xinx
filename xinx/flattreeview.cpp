@@ -18,25 +18,39 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "private/p_flattreeview.h"
- 
-/* PrivateFlatModel */
- 
-PrivateFlatModel::PrivateFlatModel( FlatModel * parent ) {
-	m_parent = parent;
+#include "flattreeview.h"
+#include "exceptions.h"
+
+// Qt header
+#include <QHash>
+#include <QDirModel>
+
+/* FlatModel */
+
+FlatModel::FlatModel( QDirModel * model, QModelIndex root ) : QAbstractItemModel( model ), m_model( model ) {
+	m_model = model;
+	m_root = QPersistentModelIndex( root );
+	recalcPathList();
+	connect( m_model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)) );
+	connect( m_model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(rowsRemoved(QModelIndex,int,int)) );
+
+	connect( m_model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()) );
+	connect( m_model, SIGNAL(layoutChanged()), this, SLOT(recalcPathList()) );
+	connect( m_model, SIGNAL(modelAboutToBeReset()), this, SIGNAL(modelAboutToBeReset()) );
+	connect( m_model, SIGNAL(modelReset()), this, SLOT(recalcPathList()) );
 }
 
-PrivateFlatModel::~PrivateFlatModel() {
-	
+FlatModel::~FlatModel() {
+
 }
 
-void PrivateFlatModel::recalcPathList() {
+void FlatModel::recalcPathList() {
 	m_pathList.clear();
 	insertIntoPathList( m_root );
-	m_parent->reset();
+	reset();
 }
 
-void PrivateFlatModel::insertIntoPathList( QModelIndex index ) {
+void FlatModel::insertIntoPathList( QModelIndex index ) {
 	if( index.isValid() && m_model->isDir( index ) ) {
 		int size = m_model->rowCount( index ), position = m_pathList.count();
 
@@ -47,9 +61,9 @@ void PrivateFlatModel::insertIntoPathList( QModelIndex index ) {
 				m_pathList << m_model->filePath( m_model->index( i, 0, index ) );
 			hasFile |= !isDir;
 		}
-		if( hasFile ) 
+		if( hasFile )
 			m_pathList.insert( position, m_model->filePath( index ) );
-		
+
 
 		for( int i = 0 ; i < size ; i++ ) {
 			insertIntoPathList( m_model->index( i, 0, index ) );
@@ -57,68 +71,47 @@ void PrivateFlatModel::insertIntoPathList( QModelIndex index ) {
 	}
 }
 
-void PrivateFlatModel::rowsInserted( const QModelIndex & parent, int start, int end ) {
+void FlatModel::rowsInserted( const QModelIndex & parent, int start, int end ) {
 	for( int i = start ; i <= end ; i++ ) {
 		QString path = m_model->filePath( m_model->index( start, 0, parent ) );
 		m_pathList << path;
 	}
 	m_pathList.sort();
-	emit m_parent->layoutChanged();
+	emit layoutChanged();
 }
 
-void PrivateFlatModel::rowsRemoved( const QModelIndex & parent, int start, int end ) {
+void FlatModel::rowsRemoved( const QModelIndex & parent, int start, int end ) {
 	for( int i = start ; i <= end ; i++ ) {
 		QString path = m_model->filePath( m_model->index( start, 0, parent ) );
 		m_pathList.removeAll( path );
 	}
-	emit m_parent->layoutChanged();
+	emit layoutChanged();
 }
 
-
-/* FlatModel */
-
-FlatModel::FlatModel( QDirModel * model, QModelIndex root ) {
-	d = new PrivateFlatModel( this );
-	d->m_model = model;
-	d->m_root = QPersistentModelIndex( root );
-	d->recalcPathList();
-	connect( d->m_model, SIGNAL(rowsInserted(QModelIndex,int,int)), d, SLOT(rowsInserted(QModelIndex,int,int)) );
-	connect( d->m_model, SIGNAL(rowsRemoved(QModelIndex,int,int)), d, SLOT(rowsRemoved(QModelIndex,int,int)) );
-
-	connect( d->m_model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()) );
-	connect( d->m_model, SIGNAL(layoutChanged()), d, SLOT(recalcPathList()) );
-	connect( d->m_model, SIGNAL(modelAboutToBeReset()), this, SIGNAL(modelAboutToBeReset()) );
-	connect( d->m_model, SIGNAL(modelReset()), d, SLOT(recalcPathList()) );
-}
-
-FlatModel::~FlatModel() {
-	delete d;
-}
-	
 QModelIndex FlatModel::mappingToSource( const QModelIndex & index ) {
-	QString path = d->m_pathList.at( index.row() );
-	return d->m_model->index( path );
+	QString path = m_pathList.at( index.row() );
+	return m_model->index( path );
 }
 
 int FlatModel::columnCount ( const QModelIndex & parent ) const {
 	if( parent.isValid() ) {
-		QString path = d->m_pathList.at( parent.row() );
-		QModelIndex converti = d->m_model->index( path );
-		return d->m_model->columnCount( converti );
+		QString path = m_pathList.at( parent.row() );
+		QModelIndex converti = m_model->index( path );
+		return m_model->columnCount( converti );
 	} else
-		return d->m_model->columnCount( d->m_root );
+		return m_model->columnCount( m_root );
 }
 
 QVariant FlatModel::data ( const QModelIndex & index, int role ) const {
 	if( index.isValid() ) {
-		QString path = d->m_pathList.at( index.row() );
-		QModelIndex converti = d->m_model->index( path, index.column() );
+		QString path = m_pathList.at( index.row() );
+		QModelIndex converti = m_model->index( path, index.column() );
 		if( converti.isValid() ) {
-			if( ( role == Qt::DisplayRole ) && ( d->m_model->isDir( converti ) ) ) {
-				QDir dir = d->m_model->fileInfo( d->m_root ).absoluteDir();
+			if( ( role == Qt::DisplayRole ) && ( m_model->isDir( converti ) ) ) {
+				QDir dir = m_model->fileInfo( m_root ).absoluteDir();
 				return dir.relativeFilePath( path );
 			} else {
-				return d->m_model->data( converti, role );
+				return m_model->data( converti, role );
 			}
 		} else
 			return QVariant();
@@ -128,10 +121,10 @@ QVariant FlatModel::data ( const QModelIndex & index, int role ) const {
 
 Qt::ItemFlags FlatModel::flags ( const QModelIndex & index ) const {
 	if( index.isValid() ) {
-		QString path = d->m_pathList.at( index.row() );
-		QModelIndex converti = d->m_model->index( path );
+		QString path = m_pathList.at( index.row() );
+		QModelIndex converti = m_model->index( path );
 		if( converti.isValid() )
-			return d->m_model->flags( converti );
+			return m_model->flags( converti );
 		else
 			return Qt::ItemIsSelectable;
 	} else
@@ -154,7 +147,7 @@ int FlatModel::rowCount ( const QModelIndex & parent ) const {
 	if( parent.isValid() )
 		return 0;
 	else {
-		int s = d->m_pathList.size();
+		int s = m_pathList.size();
 		return s;
 	}
 }
