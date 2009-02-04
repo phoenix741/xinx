@@ -27,6 +27,7 @@
 #include <QDockWidget>
 #include <QString>
 #include <QPointer>
+#include <QDirModel>
 
 class QAbstractItemModel;
 class QAction;

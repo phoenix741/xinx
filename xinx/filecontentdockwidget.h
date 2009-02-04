@@ -24,6 +24,7 @@
 #include <QDockWidget>
 #include <QString>
 #include <QPointer>
+#include <QModelIndex>
 
 class QAbstractItemModel;
 class QTreeView;

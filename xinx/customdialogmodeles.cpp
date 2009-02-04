@@ -21,6 +21,10 @@
 #include "customdialogmodeles.h"
 #include <directoryedit.h>
 
+// Qt header
+#include <QLayout>
+#include <QModelIndex>
+#include <QPainter>
 
 /* ToolsModelIndex */
 

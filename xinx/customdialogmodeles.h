@@ -25,6 +25,7 @@
 #include <QAbstractTableModel>
 #include <QItemDelegate>
 #include <QHash>
+#include <QApplication>
 
 // Xinx header
 #include "snipetlist.h"
