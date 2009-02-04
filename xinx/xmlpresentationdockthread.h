@@ -22,9 +22,9 @@
 
 // Xinx header
 #include <filewatcher.h>
-#include "../xmlpresentationdockwidget.h"
+#include "xmlpresentationdockwidget.h"
 #include "ui_xmlpresentationwidget.h"
-#include "../xmlpresentationitem.h"
+#include "xmlpresentationitem.h"
 #include "xinxthread.h"
 
 // Qt header
@@ -33,29 +33,28 @@
 #include <QTimer>
 #include <QPointer>
 
-class PrivateXmlPresentationDockWidget : public XinxThread {
+class RecursiveFilterProxyModel : public QSortFilterProxyModel {
+public:
+	RecursiveFilterProxyModel( QObject * parent = 0 );
+
+	bool showAllChild() const;
+	void setShowAllChild( bool value );
+	void setFilterRegExp( const QString & regExp );
+protected:
+	virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
+	bool canBeShow( const QModelIndex & index ) const;
+	bool mustBeShow( const QModelIndex & index ) const; // true if a parent is equals
+private:
+	bool m_showAllChild;
+
+	mutable QHash<QPersistentModelIndex,bool> m_indexCache;
+};
+
+class XmlPresentationDockThread : public XinxThread {
 	Q_OBJECT
 public:
-
-	class RecursiveFilterProxyModel : public QSortFilterProxyModel {
-	public:
-		RecursiveFilterProxyModel( QObject * parent = 0 );
-
-		bool showAllChild() const;
-		void setShowAllChild( bool value );
-		void setFilterRegExp( const QString & regExp );
-	protected:
-		virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
-		bool canBeShow( const QModelIndex & index ) const;
-		bool mustBeShow( const QModelIndex & index ) const; // true if a parent is equals
-	private:
-		bool m_showAllChild;
-
-		mutable QHash<QPersistentModelIndex,bool> m_indexCache;
-	};
-
-	PrivateXmlPresentationDockWidget( XmlPresentationDockWidget * parent );
-	~PrivateXmlPresentationDockWidget();
+	XmlPresentationDockThread( XmlPresentationDockWidget * parent );
+	~XmlPresentationDockThread();
 
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
 	QString m_logPath, m_openingFile;

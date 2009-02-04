@@ -527,9 +527,9 @@ void CustomDialogImpl::aboutScript( PluginElement * plugin ) {
 	                           "</tr>"
 	                           "</table>" )
 	                       .arg( script->name() )
-	                       .arg( script->script().property( "author" ).toString() )
-	                       .arg( script->script().property( "version" ).toString() )
-	                       .arg( script->script().property( "licence" ).toString() )
+	                       .arg( script->author() )
+	                       .arg( script->version() )
+	                       .arg( script->licence() )
 	                     );
 
 	QVBoxLayout * labelLayout = new QVBoxLayout;

@@ -439,10 +439,22 @@ QString ScriptElement::name() const {
 	return m_script.text().replace( "&", "" );
 }
 
+QString ScriptElement::author() const {
+	return m_script.value().property( "author" ).toString();
+}
+
+QString ScriptElement::version() const {
+	return m_script.value().property( "version" ).toString();
+}
+
+QString ScriptElement::licence() const {
+	return m_script.value().property( "licence" ).toString();
+}
+
 QString ScriptElement::description() const {
 	return tr("Author : ") + m_script.value().property( "author" ).toString();
 }
 
-const QScriptValue & ScriptElement::script() const {
-	return m_script.value();
+ScriptValue & ScriptElement::script() {
+	return m_script;
 }

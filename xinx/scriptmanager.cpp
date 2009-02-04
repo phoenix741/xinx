@@ -116,11 +116,11 @@ static void cvFromScriptValue(const QScriptValue &, ConfigurationVersion & ) {
 
 /* ScriptValue */
 
-ScriptValue::ScriptValue() : m_callBeforeSave( true ), m_callAfterSave( true ), m_callBeforeLoad( true ), m_callAfterLoad( true ) {
+ScriptValue::ScriptValue() {
 }
 
 
-ScriptValue::ScriptValue( QScriptValue value ) : m_value( value ), m_callBeforeSave( true ), m_callAfterSave( true ), m_callBeforeLoad( true ), m_callAfterLoad( true ) {
+ScriptValue::ScriptValue( QScriptValue value ) : m_value( value ) {
 
 }
 
@@ -132,16 +132,8 @@ QString ScriptValue::text() const {
 	return m_value.property("text").toString();
 }
 
-bool ScriptValue::canBeCallBeforeSave() const {
-	return m_value.property( "beforeSave" ).isFunction();
-}
-
-void ScriptValue::setCallBeforeSave( bool value ) {
-	m_callBeforeSave = value;
-}
-
 bool ScriptValue::isCallBeforeSave() const {
-	return m_callBeforeSave && canBeCallBeforeSave();
+	return m_value.property( "beforeSave" ).isFunction();
 }
 
 void ScriptValue::callScriptBeforeSave() {
@@ -151,16 +143,8 @@ void ScriptValue::callScriptBeforeSave() {
 	}
 }
 
-bool ScriptValue::canBeCallBeforeLoad() const {
-	return m_value.property( "beforeLoad" ).isFunction();
-}
-
-void ScriptValue::setCallBeforeLoad( bool value ) {
-	m_callBeforeLoad = value;
-}
-
 bool ScriptValue::isCallBeforeLoad() const {
-	return m_callBeforeLoad && canBeCallBeforeLoad();
+	return m_value.property( "beforeLoad" ).isFunction();
 }
 
 void ScriptValue::callScriptBeforeLoad() {
@@ -170,16 +154,8 @@ void ScriptValue::callScriptBeforeLoad() {
 	}
 }
 
-bool ScriptValue::canBeCallAfterSave() const {
-	return m_value.property( "afterSave" ).isFunction();
-}
-
-void ScriptValue::setCallAfterSave( bool value ) {
-	m_callAfterSave = value;
-}
-
 bool ScriptValue::isCallAfterSave() const {
-	return m_callAfterSave && canBeCallAfterSave();
+	return m_value.property( "afterSave" ).isFunction();
 }
 
 void ScriptValue::callScriptAfterSave() {
@@ -189,16 +165,8 @@ void ScriptValue::callScriptAfterSave() {
 	}
 }
 
-bool ScriptValue::canBeCallAfterLoad() const {
-	return m_value.property( "afterLoad" ).isFunction();
-}
-
-void ScriptValue::setCallAfterLoad( bool value ) {
-	m_callAfterLoad = value;
-}
-
 bool ScriptValue::isCallAfterLoad() const {
-	return m_callAfterLoad && canBeCallAfterLoad();
+	return m_value.property( "afterLoad" ).isFunction();
 }
 
 void ScriptValue::callScriptAfterLoad() {

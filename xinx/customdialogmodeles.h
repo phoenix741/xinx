@@ -119,9 +119,12 @@ public:
 
 	virtual QPixmap pixmap() const;
 	virtual QString name() const;
+	virtual QString author() const;
+	virtual QString version() const;
+	virtual QString licence() const;
 	virtual QString description() const;
 
-	const QScriptValue & script() const;
+	ScriptValue & script();
 private:
 	ScriptValue m_script;
 };

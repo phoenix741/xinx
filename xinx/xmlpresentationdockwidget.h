@@ -23,7 +23,7 @@
 #include <QDockWidget>
 #include <QString>
 
-class PrivateXmlPresentationDockWidget;
+class XmlPresentationDockThread;
 
 /*!
  * This dock contains a list of XMLPresentationFile founded in the log directory.
@@ -37,8 +37,8 @@ public:
 	XmlPresentationDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
 	virtual ~XmlPresentationDockWidget();
 private:
-	PrivateXmlPresentationDockWidget * d;
-	friend class PrivateXmlPresentationDockWidget;
+	XmlPresentationDockThread * d;
+	friend class XmlPresentationDockThread;
 };
 
 

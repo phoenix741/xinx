@@ -36,30 +36,21 @@ public:
 
 	QString text() const;
 
-	bool canBeCallBeforeSave() const;
-	void setCallBeforeSave( bool value );
 	bool isCallBeforeSave() const;
 	void callScriptBeforeSave();
 
-	bool canBeCallBeforeLoad() const;
-	void setCallBeforeLoad( bool value );
 	bool isCallBeforeLoad() const;
 	void callScriptBeforeLoad();
 
-	bool canBeCallAfterSave() const;
-	void setCallAfterSave( bool value );
 	bool isCallAfterSave() const;
 	void callScriptAfterSave();
 
-	bool canBeCallAfterLoad() const;
-	void setCallAfterLoad( bool value );
 	bool isCallAfterLoad() const;
 	void callScriptAfterLoad();
 
 	void callScript();
 private:
 	QScriptValue m_value;
-	bool m_callBeforeSave, m_callAfterSave, m_callBeforeLoad, m_callAfterLoad;
 };
 
 

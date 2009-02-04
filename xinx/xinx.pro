@@ -39,7 +39,8 @@ FORMS += ui/xquery.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
     ui/logform.ui
-HEADERS += customdialogmodeles.h \
+HEADERS += xmlpresentationdockthread.h \
+    customdialogmodeles.h \
     xquerydialogimpl.h \
     scriptmanager.h \
     snipetdockwidget.h \
@@ -54,7 +55,6 @@ HEADERS += customdialogmodeles.h \
     iconprojectprovider.h \
     mainformimpl.h \
     newprojectwizard.h \
-    private/p_xmlpresentationdockwidget.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
     replacedialogimpl.h \
@@ -71,7 +71,8 @@ HEADERS += customdialogmodeles.h \
     dbus/orgshadowarexinxinterface.h \
     searchfilethread.h \
     logdialogimpl.h
-SOURCES += customdialogmodeles.cpp \
+SOURCES += xmlpresentationdockthread.cpp \
+    customdialogmodeles.cpp \
     xquerydialogimpl.cpp \
     snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
