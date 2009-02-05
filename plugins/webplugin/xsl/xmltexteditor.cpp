@@ -314,16 +314,16 @@ void XmlTextEditor::insertCompletionAccolade( QDocumentCursor & tc, QString node
 		if( insertAccolade && ( balise->category() != "stylesheet" ) && ( isVariable || !isHtmlOnly ) ) {
 			if( insertDollard && isVariable ) {
 				tc2.insertText( "{$" );
-				tc.movePosition( 2, QDocumentCursor::NextCharacter );
+				//tc.movePosition( 2, QDocumentCursor::NextCharacter );
 			} else {
 				tc2.insertText( "{" );
-				tc.movePosition( 1, QDocumentCursor::NextCharacter );
+				//tc.movePosition( 1, QDocumentCursor::NextCharacter );
 			}
 			tc.insertText( "}" );
 		} else
 		if( insertDollard && isVariable ) {
 			tc2.insertText( "$" );
-			tc.movePosition( 1, QDocumentCursor::NextCharacter );
+			//tc.movePosition( 1, QDocumentCursor::NextCharacter );
 		}
 	}
 }
@@ -375,6 +375,7 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 				if( ( ! name.isEmpty() ) && ( name.at(0) != '/' ) ) {
 					tc.movePosition( 1, QDocumentCursor::NextCharacter );
 					QDocumentCursor position = textCursor();
+					position.setAutoUpdated( false );
 					QDocumentCursor newPosition = insertCompletionBalises( tc, name );
 					if( newPosition.isNull() )
 						tc.moveTo( position );

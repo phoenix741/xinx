@@ -5,9 +5,9 @@ obj.author  = "Ulrich VANDENHEKKE";
 obj.licence = "GPL v3 or later"
 obj.version = "0.1"
 
-obj.beforeSave = function() {
+/*obj.beforeSave = function() {
 	this.run();
-}
+}*/
 
 obj.run = function()
 {

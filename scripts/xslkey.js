@@ -5,9 +5,9 @@ obj.author  = "Alexandre Rocher";
 obj.licence = "See the author"
 obj.version = "0.1"
 
-obj.beforeSave = function() {
+/*obj.beforeSave = function() {
 	this.run();
-}
+}*/
 
 obj.run = function()
 {

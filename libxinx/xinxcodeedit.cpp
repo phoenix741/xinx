@@ -330,20 +330,15 @@ bool XinxCodeEdit::canPaste() {
 
 void XinxCodeEdit::print( QPrinter * printer ) const {
 	Q_UNUSED( printer );
-	//!Â \todo implement the print method
+	//! \todo implement the print method
 }
 
 void XinxCodeEdit::setModified( bool modified ) {
-	//static_cast<XinxEditor*>( m_editor->editor() )->setContentModified( modified );
 	if( ! modified )
 		document()->setClean();
 	else {
-		QDocumentCursor c( document() );
-		c.beginEditBlock();
-		c.moveTo( 0, 0 );
-		c.insertText( " " );
-		c.deletePreviousChar();
-		c.endEditBlock();
+		//! \todo Find a solution to setModified(true)
+		qDebug( "Call of setModified( true ) but not managed" );
 	}
 }
 
