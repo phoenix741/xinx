@@ -459,7 +459,10 @@ void XinxCodeEdit::moveLineUp() {
 
 	int selectionLength = 0;
 	QDocumentCursor selectionStart 		= cursor.selectionStart(),
-			selectionEnd   		= cursor.selectionEnd();
+					selectionEnd   		= cursor.selectionEnd();
+	selectionStart.setAutoUpdated( false );
+	selectionEnd.setAutoUpdated( false );
+
 	if( selectionEnd.isValid() ) selectionLength = cursor.selectedText().length();
 
 	if( selectionEnd.columnNumber() == 0 ) selectionEnd.movePosition( 1, QDocumentCursor::Left );
