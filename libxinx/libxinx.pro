@@ -39,7 +39,9 @@ HEADERS = xinxformatscheme.h \
     plugininterfaces.h \
     xinxcodeedit.h \
  xinxcodeedit_p.h \
- xinxlanguagefactory.h
+ xinxlanguagefactory.h \
+ contentviewcache.h \
+ contentviewnode.h
 SOURCES = xinxformatscheme.cpp \
     textfileeditor.cpp \
     filewatcher.cpp \
