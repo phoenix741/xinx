@@ -17,8 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef __CONTENTVIEWCLASS_H__
-#define __CONTENTVIEWCLASS_H__
+/*!
+ * \file contentviewnode.h
+ * \brief Contains the element for manage a node used in content view.
+ */
+
+#ifndef __CONTENTVIEWNODE_H__
+#define __CONTENTVIEWNODE_H__
 
 /*!
  * \class ContentViewNode
@@ -35,6 +40,30 @@
  */
 class ContentViewNode {
 public:
+	/*!
+	 * To simplify, the content view node will be not subclassed. Else data will
+	 * be stored in this structure as role. Other value (as mode, ...) can be stored
+	 * as user value, if needed.
+	 */
+	enum RoleIndex {
+		NODE_TYPE         = 0,   //!< The waiting content is a QString.
+		NODE_NAME         = 1,   //!< The waiting content is a QString.
+		NODE_DISPLAY_NAME = 2,   //!< The waiting content is a QString.
+		NODE_DISPLAY_TIPS = 3,   //!< The waiting content is a QString.
+		NODE_ICON         = 4,   //!< The waiting content is a QIcon.
+		NODE_USER_VALUE   = 127, //!< No waiting content.
+	};
+
+	/*!
+	 * Create a content view node and initialize the node with a \e name and a \e line
+	 * where the element can be find.
+	 */
+	ContentViewNode( const QString & name, int line );
+	/*!
+	 * Destroy the content view node and detach it and all childs from the all parent
+	 * element.
+	 */
+	~ContentViewNode();
 
 	/*!
 	 * Attach this node and all it's child to the parent node below. If the model
@@ -43,21 +72,96 @@ public:
 	 * \param model The model to use. If not defined, the model of the parent \
 	 * object is use. <i>If the model is different from the parent model this can \
 	 * cause problem.</i>
+	 * \see attach()
 	 */
 	void attach( ContentViewNode * parent, ContentViewModel * model = 0 );
 
-	//! Detach the node from the parent, and from the model of the parent.
+	/*!
+	 * Detach the node from the parent, and from the model of the parent.
+	 * \see detach()
+	 */
 	void detach( ContentViewNode * parent );
+
+	/*!
+	 * Remove all elements of the list but not delete them.
+	 * \see clear()
+	 */
+	void removeAll();
+
+	/*!
+	 * Remove all elements marked as old of the list but not delete them.
+	 * \see clearOld()
+	 */
+	void removeAllOld();
+
+	/*!
+	 * Remove all elements of the list and delete each item.
+	 * \see removeAll()
+	 */
+	void clear();
+
+	/*!
+	 * Remove all old elements of the list and delete each item.
+	 * \see removeAllOld()
+	 */
+	void clearOld();
+
+
+	//! Mark the node and it's child as old.
+	void markAllAsOld();
+
+	//! Mark the node as not old
+	void markAsRecent();
 
 	//! Return the parent of this node for the given model.
 	ContentViewNode * parent( ContentViewModel * model ) const;
+
+	//! Return the register line for the node
+	int line() const;
+	//! Change the line of the node
+	void setLine( int line );
+
+	//! Return the current file name of the node. If not set, this is the current file name.
+	const QString & fileName() const;
+	//! Set the file name of the node with \e value.
+	void setFileName( const QString & value );
+
+	//! Return the data stored in the node for the given \e index
+	QVariant data( enum RoleIndex index = NODE_NAME ) const;
+	//! Set the data for the givent \e index
+	void setData( const QVariant & value, enum RoleIndex index = NODE_NAME );
+
+	/*!
+	 * List of childs node of this node. Childs node are attach with method. If i call
+	 * contains, the operator == must be call. (I hope)
+	 * \e attach()
+	 * \see attach(), detach()
+	 */
+	const QList<ContentViewNode*> & childs() const;
+
+	/*!
+	 * Test if an element is equals to another ContentViewNode. If the \e node is equals
+	 * the method return \e true.
+	 *
+	 * To know if two elements are equals, the method compare the datas content.
+	 */
+	bool operator==( const ContentViewNode & node ) const;
+
+	/*!
+	 * Copy the contents of an ContentViewNode \e node to self.
+	 * Datas copied are the \e line, \e filename, and all elements
+	 * in \e datas.
+	 */
+	ContentViewNode & operator=( const ContentViewNode & node );
 private:
 	QHash<ContentViewModel*, ContentViewNode*> m_parent;
 
+	bool m_oldFlag;
 	int m_line;
-	QString m_name, m_filename;
+	QString m_filename;
+	QHash<enum RoleIndex,QVariant> m_datas;
 
 	QList<ContentViewNode*> m_childs;
 };
 
-#endif /* __CONTENTVIEWCLASS_H__ */
+#endif /* __CONTENTVIEWNODE_H__ */

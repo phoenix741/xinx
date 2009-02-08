@@ -18,40 +18,24 @@
  * *********************************************************************** */
 
 /*!
- * \file contentviewcache.h
- * \brief Class to allow caching of content view object and access it.
+ * \file contentviewmodel.h
+ * \brief This file contains element to manage content view model.
  */
 
-#ifndef __CONTENTVIEWCLASS_H__
-#define __CONTENTVIEWCLASS_H__
+#ifndef __CONTENTVIEWMODEL_H__
+#define __CONTENTVIEWMODEL_H__
 
 /*!
- * \class ContentViewCache
- * \brief This class containt a list of pre-loaded file that can be used in content view obect.
+ * \class ContentViewModel
+ * \brief This class is used to show the content of the file in a tree view.
  *
- * This class is creating by a project. All file defined in the project is pre-loaded. Next when
- * a content view object want to access to a file, he look to know if the file isn't already
- * pre-loaded.
- *
- * If the content of the file is found, he is returned ; else he is created. In this last case,
- * we launch a thread to fill the content of the node.
- *
- * The goal is to down the size in the memory, and speed up the loading of file and completion.
+ * This class is used as a proxy of the tree view and content view nodes. It's
+ * a sub-class of the Qt standard class QAbstractItemModel.
  */
-class ContentViewCache {
+class ContentViewModel : public QAbstractItemModel {
+	Q_OBJECT
 public:
-	//! Create a content view cache and preloads project.
-	ContentViewCache( XinxProject * project );
-
-	/*!
-	 * Return the content view for the given file name. Look in the cache if the
-	 * node exist. If not, use the XinxPluginLoader to create the content file name.
-	 * \param filename The file name of the content view to create.
-	 * \return Return the content view of the file name given in parameters.
-	 */
-	ContentViewNode * contentOfFileName( const QString & filename );
 private:
-	QCache<QString,ContentViewNode*> m_nodes;
 };
 
 #endif /* __CONTENTVIEWCLASS_H__ */

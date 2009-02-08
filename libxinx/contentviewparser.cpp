@@ -17,41 +17,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-/*!
- * \file contentviewcache.h
- * \brief Class to allow caching of content view object and access it.
- */
+// Xinx header
+#include "contentviewparser.h"
 
-#ifndef __CONTENTVIEWCLASS_H__
-#define __CONTENTVIEWCLASS_H__
+/* ContentViewException */
 
-/*!
- * \class ContentViewCache
- * \brief This class containt a list of pre-loaded file that can be used in content view obect.
- *
- * This class is creating by a project. All file defined in the project is pre-loaded. Next when
- * a content view object want to access to a file, he look to know if the file isn't already
- * pre-loaded.
- *
- * If the content of the file is found, he is returned ; else he is created. In this last case,
- * we launch a thread to fill the content of the node.
- *
- * The goal is to down the size in the memory, and speed up the loading of file and completion.
- */
-class ContentViewCache {
-public:
-	//! Create a content view cache and preloads project.
-	ContentViewCache( XinxProject * project );
+ContentViewException::ContentViewException( QString message, int line, int column )
+: XinxException( QString("Error : %1 at line %2:%3").arg( message ).arg( line ).arg( column ) ), m_line( line ), m_column( column ) {
 
-	/*!
-	 * Return the content view for the given file name. Look in the cache if the
-	 * node exist. If not, use the XinxPluginLoader to create the content file name.
-	 * \param filename The file name of the content view to create.
-	 * \return Return the content view of the file name given in parameters.
-	 */
-	ContentViewNode * contentOfFileName( const QString & filename );
-private:
-	QCache<QString,ContentViewNode*> m_nodes;
-};
+}
 
-#endif /* __CONTENTVIEWCLASS_H__ */
+int ContentViewException::getLine() const {
+	return m_line;
+}
+
+int ContentViewException::getColumn() const {
+	return m_column;
+}
+
+/* ContentViewParser */
+
+ContentViewParser::~ContentViewParser() {
+}
+
+ContentViewNode * ContentViewParser::loadFromContent( const QString & content ) {
+	QByteArray contentArray = content.toUtf8();
+	QBuffer buffer( &contentArray );
+	buffer.open( QIODevice::ReadOnly );
+
+	return loadFromDevice( &buffer );
+}
+
+ContentViewNode * ContentViewParser::loadFromFile( const QString & filename ) {
+	QFile file( filename );
+
+	// Open the file
+	if (!file.open(QFile::ReadOnly))
+		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
+
+	return loadFromDevice( & file );
+}

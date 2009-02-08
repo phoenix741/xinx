@@ -41,7 +41,9 @@ HEADERS = xinxformatscheme.h \
  xinxcodeedit_p.h \
  xinxlanguagefactory.h \
  contentviewcache.h \
- contentviewnode.h
+ contentviewnode.h \
+ contentviewmodel.h \
+ contentviewparser.h
 SOURCES = xinxformatscheme.cpp \
     textfileeditor.cpp \
     filewatcher.cpp \
@@ -60,7 +62,8 @@ SOURCES = xinxformatscheme.cpp \
     itemmodelfileeditor.cpp \
     xinxpluginelement.cpp \
     xinxcodeedit.cpp \
- xinxlanguagefactory.cpp
+ xinxlanguagefactory.cpp \
+ contentviewparser.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
 SOURCES -= xinxformatfactory.cpp

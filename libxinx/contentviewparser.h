@@ -18,40 +18,63 @@
  * *********************************************************************** */
 
 /*!
- * \file contentviewcache.h
- * \brief Class to allow caching of content view object and access it.
+ * \file contentviewparser.h
+ * \brief Contains the element for manage the parser.
  */
 
-#ifndef __CONTENTVIEWCLASS_H__
-#define __CONTENTVIEWCLASS_H__
+#ifndef __CONTENTVIEWPARSER_H__
+#define __CONTENTVIEWPARSER_H__
+
+// Xinx header
+#include "exceptions.h"
+
+class ContentViewNode;
 
 /*!
- * \class ContentViewCache
- * \brief This class containt a list of pre-loaded file that can be used in content view obect.
- *
- * This class is creating by a project. All file defined in the project is pre-loaded. Next when
- * a content view object want to access to a file, he look to know if the file isn't already
- * pre-loaded.
- *
- * If the content of the file is found, he is returned ; else he is created. In this last case,
- * we launch a thread to fill the content of the node.
- *
- * The goal is to down the size in the memory, and speed up the loading of file and completion.
+ * \class ContentViewException
+ * \brief Exception throw when the model can't be updated.
  */
-class ContentViewCache {
+class  ContentViewException : public XinxException {
 public:
-	//! Create a content view cache and preloads project.
-	ContentViewCache( XinxProject * project );
+	/*!
+	 * Create the exception with a message and a line.
+	 * \param message Error of the exception.
+	 * \param line Line where the error is.
+	 */
+	ContentViewException( QString message, int line, int column );
 
 	/*!
-	 * Return the content view for the given file name. Look in the cache if the
-	 * node exist. If not, use the XinxPluginLoader to create the content file name.
-	 * \param filename The file name of the content view to create.
-	 * \return Return the content view of the file name given in parameters.
+	 * Return the line where the error is.
+	 * \return The line of the error.
 	 */
-	ContentViewNode * contentOfFileName( const QString & filename );
+	int getLine() const;
+
+	/*!
+	 * Return the column where the error is.
+	 * \return the column of the error.
+	 */
+	int getColumn() const;
 private:
-	QCache<QString,ContentViewNode*> m_nodes;
+	int m_line, m_column;
 };
 
-#endif /* __CONTENTVIEWCLASS_H__ */
+
+/*!
+ * \class ContentViewParser
+ * \brief The content view parser create the content view tree.
+ *
+ * The parser read the content view tree and return the root element :
+ * a content view node.
+ */
+class ContentViewParser {
+	virtual ~ContentViewParser();
+
+	/*! Loed the content of the device. */
+	virtual ContentViewNode * loadFromDevice( QIODevice * device ) = 0;
+	/*! Construct elements from \e content. */
+	virtual ContentViewNode * loadFromContent( const QString & content );
+	/*! Construct elements from \e filename. */
+	virtual ContentViewNode * loadFromFile( const QString & filename );
+};
+
+#endif /* __CONTENTVIEWPARSER_H__ */
