@@ -19,7 +19,7 @@
 
 // xinx header
 #include "textfileeditor.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "xinxconfig.h"
 #include "xinxcodeedit.h"
 #include "xinxpluginsloader.h"
@@ -369,7 +369,7 @@ void TextFileEditor::uncomment() {
 	commentSelectedText( true );
 }
 
-void TextFileEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
+void TextFileEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
 	AbstractFileEditor::serialize( data, content );
 
 	data->writeProperty( "Position", QVariant( m_view->textCursor().position() ) );
@@ -385,7 +385,7 @@ void TextFileEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
 	data->writeProperty( "BookmarkCount", QVariant( i ) );
 }
 
-void TextFileEditor::deserialize( XSLProjectSessionEditor * data ) {
+void TextFileEditor::deserialize( XinxProjectSessionEditor * data ) {
 	int position = 0;
 	QString text;
 

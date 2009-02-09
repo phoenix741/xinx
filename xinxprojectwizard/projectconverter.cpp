@@ -258,7 +258,7 @@ ProjectConverter::ProjectConverter( const QString & filename ) : m_filename( fil
 	if( file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
 		if(! m_projectDocument.setContent( &file ) ) throw XinxException( "Not an xml file." );
 		QDomElement rootElement = m_projectDocument.documentElement();
-		if( rootElement.tagName() != "XSLProject" ) throw XinxException( "Not a managed project file." );
+		if( rootElement.tagName() != "XinxProject" ) throw XinxException( "Not a managed project file." );
 
 		QDomElement version = rootElement.firstChildElement( "xinx_version" );
 		if( ! version.isNull() )

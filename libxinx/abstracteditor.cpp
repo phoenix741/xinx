@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "abstracteditor.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "borderlayout.h"
 
 // Qt header
@@ -135,17 +135,17 @@ QIcon AbstractEditor::icon() const {
 	return QIcon( ":/images/typeunknown.png" );
 }
 
-void AbstractEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
+void AbstractEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
 	Q_UNUSED( content );
 	data->writeProperty( "ClassName", metaObject()->className() ); // Store the class name
 }
 
-void AbstractEditor::deserialize( XSLProjectSessionEditor * data ) {
+void AbstractEditor::deserialize( XinxProjectSessionEditor * data ) {
 	Q_UNUSED( data );
 	// Dont't read the class name, already read.
 }
 
-AbstractEditor * AbstractEditor::deserializeEditor( XSLProjectSessionEditor * data ) {
+AbstractEditor * AbstractEditor::deserializeEditor( XinxProjectSessionEditor * data ) {
 	QString name = data->readProperty( "ClassName" ).toString();
 
 	int id = QMetaType::type( qPrintable( name ) );

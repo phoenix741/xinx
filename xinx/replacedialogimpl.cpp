@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "replacedialogimpl.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 
 ReplaceDialogImpl::ReplaceDialogImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);

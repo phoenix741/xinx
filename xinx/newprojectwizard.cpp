@@ -20,7 +20,7 @@
 // Xinx header
 #include "newprojectwizard.h"
 #include <xinxconfig.h>
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "projectpropertyimpl.h"
 #include <xinxpluginsloader.h>
 
@@ -67,19 +67,19 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
 	setWindowTitle( tr("New Project Wizard") );
 }
 
-XSLProject * NewProjectWizard::createProject() {
+XinxProject * NewProjectWizard::createProject() {
 	if( ! m_project ) {
-		m_project = new XSLProject();
+		m_project = new XinxProject();
 
 		m_project->setProjectName( field( "project.name" ).toString() );
 		m_project->setProjectPath( QDir::fromNativeSeparators( field( "project.path" ).toString() ) );
 		m_project->setLogProjectDirectory( QDir::fromNativeSeparators( field( "project.log" ).toString() ) );
 
-		XSLProject::ProjectOptions options;
+		XinxProject::ProjectOptions options;
 		if( field( "project.derivated" ).toBool() ) {
 			m_project->setSpecifiquePrefix( field( "specifique.prefix" ).toString() );
 			m_project->setSpecifiquePathName( field( "specifique.path" ).toString() );
-			options |= XSLProject::hasSpecifique;
+			options |= XinxProject::hasSpecifique;
 		}
 		m_project->setOptions( options );
 
@@ -105,7 +105,7 @@ XSLProject * NewProjectWizard::createProject() {
 
 void NewProjectWizard::on_customButton1_clicked() {
 	hide();
-	m_project = new XSLProject();
+	m_project = new XinxProject();
 	ProjectPropertyImpl property ( this );
 	property.loadFromProject( m_project ); // Load an empty project;
 	if( ! property.exec() ) {

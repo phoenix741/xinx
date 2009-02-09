@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "commitmessagedialogimpl.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "exceptions.h"
 
 // Qt header

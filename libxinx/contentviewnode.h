@@ -25,6 +25,12 @@
 #ifndef __CONTENTVIEWNODE_H__
 #define __CONTENTVIEWNODE_H__
 
+// Qt header
+#include <QList>
+#include <QHash>
+
+class ContentViewModel;
+
 /*!
  * \class ContentViewNode
  * \brief This class represent a node element for the content view
@@ -37,6 +43,7 @@
  *
  * The object (if in the cache) can have many tuple parent-model. So, in some
  * case, we must call method with the model to use.
+ * All modification (set) must be declared to the model (layoutChanged)
  */
 class ContentViewNode {
 public:
@@ -81,6 +88,12 @@ public:
 	 * \see detach()
 	 */
 	void detach( ContentViewNode * parent );
+
+	/*!
+	 * Method provide for convinence.<br/> Detach the node from all parents.
+	 * \see detach(ContentViewNode*)
+	 */
+	void detach();
 
 	/*!
 	 * Remove all elements of the list but not delete them.
@@ -154,6 +167,9 @@ public:
 	 */
 	ContentViewNode & operator=( const ContentViewNode & node );
 private:
+	void callModelsDataChanged();
+	void callModelBeginInsertRows( ContentViewNode * node, int line, ContentViewModel * model );
+	void callModelEndInsertRows( ContentViewModel * model );
 	QHash<ContentViewModel*, ContentViewNode*> m_parent;
 
 	bool m_oldFlag;

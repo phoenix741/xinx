@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _XSLPROJECT_H_
-#define _XSLPROJECT_H_
+#ifndef _XINXPROJECT_H_
+#define _XINXPROJECT_H_
 
 // Xinx header
 #include "exceptions.h"
@@ -32,21 +32,21 @@
 #include <QVariant>
 
 /*!
- * Exception throw by XSLProject when the project can't be opened or saved.
+ * Exception throw by XinxProject when the project can't be opened or saved.
  * The exception contains the message send to the user.
  *
  * The exception is used in internal for the session. If session file can't be
  * read, the exception is catched and the application continue. The project is
  * opened.
  */
-class XSLProjectException : public XinxException {
+class XinxProjectException : public XinxException {
 public:
 	/*!
 	 * Constructor of the exception.
 	 * \param message Message for the user.
 	 * \param wizard Show a wizard to migrate the project
 	 */
-	XSLProjectException( const QString & message, bool wizard = false );
+	XinxProjectException( const QString & message, bool wizard = false );
 
 	//! True if XINX must start "xinxprojectwizard"
 	bool startWizard() const;
@@ -54,7 +54,7 @@ private:
 	bool m_wizard;
 };
 
-class XSLProjectSession;
+class XinxProjectSession;
 
 /*!
  * Represent a session editor A session is an hash table of properties.
@@ -64,13 +64,13 @@ class XSLProjectSession;
  *
  * The value is a QVariant but must be writtable in a text file. (QString, int, ...)
  */
-class XSLProjectSessionEditor : public QObject {
+class XinxProjectSessionEditor : public QObject {
 	Q_OBJECT
 public:
 	/*! Create a session editor with a session file as \e parent. */
-	XSLProjectSessionEditor( XSLProjectSession * parent = 0 );
+	XinxProjectSessionEditor( XinxProjectSession * parent = 0 );
 	/*! Destroy the session editor */
-	~XSLProjectSessionEditor();
+	~XinxProjectSessionEditor();
 
 	/*!
 	 * Load the session from a DOM Element.
@@ -90,40 +90,40 @@ public:
 	QVariant readProperty( const QString & key );
 private:
 	QHash<QString,QVariant> m_properties;
-	XSLProjectSession * m_parent;
+	XinxProjectSession * m_parent;
 };
 
 /*!
- * An XSLProjectSession represents the .session file associate to the project and who contains
+ * An XinxProjectSession represents the .session file associate to the project and who contains
  * tempory data as last opened file, current opened file. This file is extern of project file,
  * to permit project file to be saved in Revision Control System.
  */
-class XSLProjectSession : public QObject {
+class XinxProjectSession : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( QStringList lastOpenedFile READ lastOpenedFile )
 public:
 	/*! Create an empty session */
-	XSLProjectSession();
+	XinxProjectSession();
 	/*!
 	 * Create a session object and load the file \e filename
-	 * \throw XSLProjectException When the application can't read the session file.
+	 * \throw XinxProjectException When the application can't read the session file.
 	 * \sa loadFromFile
 	 */
-	XSLProjectSession( const QString & filename );
+	XinxProjectSession( const QString & filename );
 	/*! Destroy the session */
-	virtual ~XSLProjectSession();
+	virtual ~XinxProjectSession();
 
 	/*!
 	 * Load the file \e filename
 	 * \sa saveToFile
-	 * \throw XSLProjectException When the application can't read the session file.
+	 * \throw XinxProjectException When the application can't read the session file.
 	 */
 	void loadFromFile( const QString & filename );
 
 	/*!
 	 * Save the session in the file \e filename, or in the loaded file if possible
 	 * \sa loadFromFile
-	 * \throw XSLProjectException When the application can't save the session file.
+	 * \throw XinxProjectException When the application can't save the session file.
 	 */
 	void saveToFile( const QString & filename = QString() );
 
@@ -134,18 +134,18 @@ public:
 	QStringList & lastOpenedFile();
 
 	/*! List of serialized editor. */
-	const QList<XSLProjectSessionEditor*> & serializedEditors() const;
+	const QList<XinxProjectSessionEditor*> & serializedEditors() const;
 private:
 	QString m_filename;
 	QStringList m_lastOpenedFile;
-	QList<XSLProjectSessionEditor*> m_sessions;
+	QList<XinxProjectSessionEditor*> m_sessions;
 
-	friend class XSLProjectSessionEditor;
+	friend class XinxProjectSessionEditor;
 };
 
 class WebServices;
 class WebServicesModel;
-class PrivateXSLProject;
+class PrivateXinxProject;
 
 /*!
  * Represent a project in XINX.
@@ -153,13 +153,13 @@ class PrivateXSLProject;
  * and where the application must store project file.
  * \todo Read Configuration file and manage standard/specifique
  *
- * \throw XSLProjectException When the application can't read a project file or can't
+ * \throw XinxProjectException When the application can't read a project file or can't
  * save it.
  */
-class XSLProject : public QObject {
+class XinxProject : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( QString fileName READ fileName )
-	Q_PROPERTY( XSLProjectSession* session READ session )
+	Q_PROPERTY( XinxProjectSession* session READ session )
 	Q_PROPERTY( QString projectName READ projectName WRITE setProjectName )
 	Q_PROPERTY( ProjectOptions options READ options WRITE setOptions )
 	Q_PROPERTY( QString projectRCS READ projectRCS WRITE setProjectRCS )
@@ -185,40 +185,40 @@ public:
 	Q_DECLARE_FLAGS( ProjectOptions, ProjectOption );
 
 	/*! Create an empty project. */
-	XSLProject();
+	XinxProject();
 	/*!
 	 * Create a project with another project. This is the copy constructor used in
 	 * assignation.
 	 */
-	XSLProject( const XSLProject & );
+	XinxProject( const XinxProject & );
 	/*!
 	 * Create a project and read the content of the file, to initalize variables.
 	 * \param filename The name of the file to be read.
 	 * \sa loadFromFile()
-	 * \throw XSLProjectException When the application can't read the project file.
+	 * \throw XinxProjectException When the application can't read the project file.
 	 */
-	XSLProject( const QString & filename );
+	XinxProject( const QString & filename );
 	/*! Destroy the project */
-	~XSLProject();
+	~XinxProject();
 
 	/*! Assigned operator to copy object contents at assignation */
-	XSLProject& operator=( const XSLProject& p );
+	XinxProject& operator=( const XinxProject& p );
 
 	/*!
-	 * Read the content of the file in the XSLProject structure.
-	 * \param filename Name of file (in XML format) where the XSLProject
+	 * Read the content of the file in the XinxProject structure.
+	 * \param filename Name of file (in XML format) where the XinxProject
 	 * is serialized.
 	 * \sa saveToFile()
-	 * \throw XSLProjectException When the application can't read the project file.
+	 * \throw XinxProjectException When the application can't read the project file.
 	 */
 	void loadFromFile( const QString & filename );
 	/*!
-	 * Save the XSLProject structure in a file. If the file name is not specified
+	 * Save the XinxProject structure in a file. If the file name is not specified
 	 * the project is saved in the file used to open the project.
 	 * The project is serialized in a XML file.
 	 * \param filename The file where we save the project.
 	 * \sa loadFromFile()
-	 * \throw XSLProjectException When the application can't save the project file.
+	 * \throw XinxProjectException When the application can't save the project file.
 	 */
 	void saveToFile( const QString & filename = QString() );
 
@@ -229,11 +229,11 @@ public:
 	const QString & fileName() const;
 
 	/*! Return the session object used to store session information. */
-	XSLProjectSession * session() const;
+	XinxProjectSession * session() const;
 
 	/*!
 	 * Save the session in the file.
-	 * \throw XSLProjectException when the application can't save the session file.
+	 * \throw XinxProjectException when the application can't save the session file.
 	 * \sa loadFromFile(), saveToFile()
 	 */
 	void saveOnlySession();
@@ -400,14 +400,14 @@ signals:
 	/*! Emited when a property has changed. */
 	void changed();
 private:
-	PrivateXSLProject * d;
-	friend class PrivateXSLProject;
+	PrivateXinxProject * d;
+	friend class PrivateXinxProject;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(XSLProject::ProjectOptions);
+Q_DECLARE_OPERATORS_FOR_FLAGS(XinxProject::ProjectOptions);
 
 /*!
- * The XINX Project Manager is used to manage \e XSLProject file. One project
+ * The XINX Project Manager is used to manage \e XinxProject file. One project
  * only by process is authorized.
  */
 class XINXProjectManager : public QObject {
@@ -420,9 +420,9 @@ public:
 	static XINXProjectManager * self();
 
 	/*! Change the current projet to \e project */
-	void setCurrentProject( XSLProject * project );
+	void setCurrentProject( XinxProject * project );
 	/*! Return the project */
-	XSLProject * project() const;
+	XinxProject * project() const;
 
 	/*! Delete the project */
 	void deleteProject();
@@ -433,8 +433,8 @@ private:
 	/*! Create the XINX Project Manager */
 	XINXProjectManager();
 
-	XSLProject * m_project;
+	XinxProject * m_project;
 	static XINXProjectManager * s_self;
 };
 
-#endif
+#endif /* _XINXPROJECT_H_ */

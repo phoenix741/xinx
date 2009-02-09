@@ -20,7 +20,7 @@
 // Xinx header
 #include "specifiquedlgimpl.h"
 #include <exceptions.h>
-#include <xslproject.h>
+#include <xinxproject.h>
 #include <xinxpluginsloader.h>
 #include <xinxconfig.h>
 #include "configurationfile.h"
@@ -65,7 +65,7 @@ bool SpecifiqueDialogImpl::isSpecifique( const QString & filename ) {
 
 bool SpecifiqueDialogImpl::canBeSaveAsSpecifique( const QString & filename ) {
 	return 	XINXProjectManager::self()->project() &&
-		XINXProjectManager::self()->project()->options().testFlag( XSLProject::hasSpecifique ) &&
+		XINXProjectManager::self()->project()->options().testFlag( XinxProject::hasSpecifique ) &&
 		XINXConfig::self()->matchedFileType( filename ).canBeSaveAsSpecifique &&
 		QFileInfo( filename ).absolutePath().contains( XINXProjectManager::self()->project()->projectPath() );
 }

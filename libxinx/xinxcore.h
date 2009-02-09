@@ -228,8 +228,8 @@
  *	FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
  *	Q_ASSERT( page );
  *
- *	XSLProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
- *	page->m_monoption->setChecked( options.testFlag( XSLProject::hasSpecifiques ) );
+ *	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+ *	page->m_monoption->setChecked( options.testFlag( XinxProject::hasSpecifiques ) );
  *	return true;
  * }
  *
@@ -237,11 +237,11 @@
  * 	FooProjectImpl * page = qobject_cast<FooProjectImpl*>( widget );
  * 	Q_ASSERT( page );
  *
- * 	XSLProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+ * 	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
  * 	if( page->m_monoption->isChecked() )
- * 		options |= XSLProject::hasSpecifiques;
+ * 		options |= XinxProject::hasSpecifiques;
  * 	else
- * 		options &= ~XSLProject::hasSpecifiques;
+ * 		options &= ~XinxProject::hasSpecifiques;
  * 	XINXProjectManager::self()->project()->setOptions( options );
  * 	return true;
  * }

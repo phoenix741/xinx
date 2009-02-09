@@ -20,7 +20,7 @@
 // Xinx header
 #include <xinxcore.h>
 #include "scriptmanager.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include <abstracteditor.h>
 #include <textfileeditor.h>
 #include <xinxcodeedit.h>

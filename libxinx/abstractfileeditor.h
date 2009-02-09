@@ -65,8 +65,8 @@ public:
 	/*! Return the name used if no name is defined (ie. noname.txt) */
 	virtual QString defaultFileName() const = 0;
 
-	virtual void serialize( XSLProjectSessionEditor * data, bool content );
-	virtual void deserialize( XSLProjectSessionEditor * data );
+	virtual void serialize( XinxProjectSessionEditor * data, bool content );
+	virtual void deserialize( XinxProjectSessionEditor * data );
 protected slots:
 	virtual void setModified( bool isModified );
 private slots:

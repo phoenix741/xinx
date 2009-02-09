@@ -39,7 +39,7 @@ class RCS;
 class AbstractFileContainer;
 class AbstractEditor;
 class QWizardPage;
-class XSLProject;
+class XinxProject;
 class XinxFormatScheme;
 
 /*!
@@ -81,9 +81,9 @@ public:
 	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
 
 	//! Call when a new project is created or opened
-	virtual bool initializeProject( XSLProject * project ) { Q_UNUSED( project ); return true; };
+	virtual bool initializeProject( XinxProject * project ) { Q_UNUSED( project ); return true; };
 	///! Call before the project is closed
-	virtual bool destroyProject( XSLProject * project ) { Q_UNUSED( project ); return true; };
+	virtual bool destroyProject( XinxProject * project ) { Q_UNUSED( project ); return true; };
 };
 
 /*!
@@ -127,7 +127,7 @@ public:
 	//! Create some page used in the wizard page
 	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid ) = 0;
 	//! Save the wizard settings page in the project
-	virtual bool saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page ) = 0;
+	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) = 0;
 };
 
 /*!

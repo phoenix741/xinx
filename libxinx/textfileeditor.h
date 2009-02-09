@@ -115,8 +115,8 @@ public:
 	virtual bool canUndo();
 	virtual bool canRedo();
 
-	virtual void serialize( XSLProjectSessionEditor * data, bool content );
-	virtual void deserialize( XSLProjectSessionEditor * data );
+	virtual void serialize( XinxProjectSessionEditor * data, bool content );
+	virtual void deserialize( XinxProjectSessionEditor * data );
 
 	void setBookmark( int line, bool enabled );
 	virtual void toogledBookmark();

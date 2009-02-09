@@ -21,7 +21,7 @@
 #include "xinxpluginsloader.h"
 #include "xinxcore.h"
 #include "xinxconfig.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "xinxformatscheme.h"
 #include "xinxlanguagefactory.h"
 

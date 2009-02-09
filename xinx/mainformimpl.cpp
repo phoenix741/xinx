@@ -26,7 +26,7 @@
 #include "logdialogimpl.h"
 #include "snipet.h"
 #include "snipetdockwidget.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "snipet.h"
 #include "snipetlist.h"
 #include "snipetdialog.h"
@@ -1489,7 +1489,7 @@ bool MainformImpl::closeAllFile() {
 void MainformImpl::newProject() {
 	NewProjectWizard wizard;
 	if( wizard.exec() ) {
-		XSLProject * project = wizard.createProject();
+		XinxProject * project = wizard.createProject();
 
 		QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
 		if( filename.isEmpty() ) {
@@ -1507,19 +1507,19 @@ void MainformImpl::newProject() {
 
 void MainformImpl::newProject( const QString &name, const QString &path, bool isDerivated, const QString &prefix, const QString &filename ) {
 	try {
-		XSLProject * project = new XSLProject();
+		XinxProject * project = new XinxProject();
 		project->setProjectName( name );
 		project->setProjectPath( path );
 		if( isDerivated ) {
 			project->setSpecifiquePrefix( prefix );
-			project->setOptions( XSLProject::hasSpecifique );
+			project->setOptions( XinxProject::hasSpecifique );
 		}
 		project->saveToFile( filename );
 
 		delete project;
 
 		openProject( filename );
-	} catch (XSLProjectException e) {
+	} catch (XinxProjectException e) {
 	}
 }
 
@@ -1533,9 +1533,9 @@ void MainformImpl::openProject( const QString & filename ) {
 
 	XINXConfig::self()->config().project.recentProjectFiles.removeAll( filename );
 
-	XSLProject * project = NULL;
+	XinxProject * project = NULL;
 	try {
-		project = new XSLProject( filename );
+		project = new XinxProject( filename );
 		m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
 		SpecifiqueDialogImpl::setLastPlace( project->projectPath() );
 
@@ -1544,7 +1544,7 @@ void MainformImpl::openProject( const QString & filename ) {
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
 		m_tabEditors->setUpdatesEnabled( false );
-		foreach( XSLProjectSessionEditor * data, project->session()->serializedEditors() ) {
+		foreach( XinxProjectSessionEditor * data, project->session()->serializedEditors() ) {
 			AbstractEditor * editor = AbstractEditor::deserializeEditor( data );
 			if( editor )
 				m_tabEditors->newTextFileEditor( editor );
@@ -1562,7 +1562,7 @@ void MainformImpl::openProject( const QString & filename ) {
 			if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->initializeProject( XINXProjectManager::self()->project() ) ))
 				qWarning( qPrintable(tr("Can't start a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
 		}
-	} catch( XSLProjectException e ) {
+	} catch( XinxProjectException e ) {
 		delete project;
 		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << "-lang" << XINXConfig::self()->config().language << filename ) ) )
 			QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
@@ -1582,7 +1582,7 @@ void MainformImpl::saveProject( bool withSessionData ) {
 
 	qDeleteAll( XINXProjectManager::self()->project()->session()->serializedEditors() );
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
-		m_tabEditors->editor( i )->serialize( new XSLProjectSessionEditor( XINXProjectManager::self()->project()->session() ), withSessionData );
+		m_tabEditors->editor( i )->serialize( new XinxProjectSessionEditor( XINXProjectManager::self()->project()->session() ), withSessionData );
 	}
 	XINXProjectManager::self()->project()->saveOnlySession();
 }

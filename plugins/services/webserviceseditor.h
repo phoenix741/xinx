@@ -45,8 +45,8 @@ public:
 	virtual void loadFromDevice( QIODevice & d );
 	virtual void saveToDevice( QIODevice & d );
 
-	virtual void serialize( XSLProjectSessionEditor * data, bool content );
-	virtual void deserialize( XSLProjectSessionEditor * data );
+	virtual void serialize( XinxProjectSessionEditor * data, bool content );
+	virtual void deserialize( XinxProjectSessionEditor * data );
 
 	virtual bool autoIndent();
 

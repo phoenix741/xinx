@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "projectpropertyimpl.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include <xinxconfig.h>
 #include <exceptions.h>
 #include <xinxpluginsloader.h>
@@ -118,7 +118,7 @@ void ProjectPropertyImpl::versionFinded( ConfigurationFile configuration ) {
 	m_configurationVersionLabel->setPalette( paletteVerion );
 }
 
-void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
+void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 	m_nameLineEdit->setText( project->projectName() );
 	m_projectLineEdit->setText( QDir::toNativeSeparators( project->projectPath() ) );
 	if( m_langComboBox->findText( project->defaultLang() ) < 0 ) m_langComboBox->addItem( project->defaultLang() );
@@ -130,7 +130,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	m_prefixList->setDefaultValue( project->specifiquePrefix() );
 	m_prefixList->setValues( project->specifiquePrefixes() );
 
-	m_specifiqueGroupBox->setChecked( project->options().testFlag( XSLProject::hasSpecifique ) );
+	m_specifiqueGroupBox->setChecked( project->options().testFlag( XinxProject::hasSpecifique ) );
 	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
 
 	int index = m_projectRCSComboBox->findData( project->projectRCS() );
@@ -153,7 +153,7 @@ void ProjectPropertyImpl::loadFromProject( XSLProject * project ) {
 	updateOkButton();
 }
 
-void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
+void ProjectPropertyImpl::saveToProject( XinxProject * project ) {
 	project->blockSignals( true );
 
 	project->setProjectName( m_nameLineEdit->text() );
@@ -171,9 +171,9 @@ void ProjectPropertyImpl::saveToProject( XSLProject * project ) {
 	project->setProjectRCS( m_projectRCSComboBox->itemData( m_projectRCSComboBox->currentIndex() ).toString() );
 	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
 
-	XSLProject::ProjectOptions options;
+	XinxProject::ProjectOptions options;
 	if( m_specifiqueGroupBox->isChecked() )
-		options |= XSLProject::hasSpecifique;
+		options |= XinxProject::hasSpecifique;
 	project->setOptions( options );
 
 	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;

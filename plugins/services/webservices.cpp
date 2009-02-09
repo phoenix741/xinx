@@ -32,7 +32,7 @@
 // Xinx header
 #include "xinxcore.h"
 #include "webservices.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "wsdl.h"
 #include "soap.h"
 #include "connectionwebservicesdialogimpl.h"
@@ -346,8 +346,8 @@ WebServicesManager * WebServicesManager::self() {
 	return s_self;
 }
 
-void WebServicesManager::setProject( XSLProject * project ) {
-	bool enabled = project && project->options().testFlag( XSLProject::hasWebServices );
+void WebServicesManager::setProject( XinxProject * project ) {
+	bool enabled = project && project->options().testFlag( XinxProject::hasWebServices );
 
 	qDeleteAll( *this );
 	clear();

@@ -31,7 +31,7 @@
 
 class QAbstractItemModel;
 class QAction;
-class XSLProject;
+class XinxProject;
 class RCS;
 class IconProjectProvider;
 
@@ -55,7 +55,7 @@ public:
 
 	bool isViewFlat();
 	QStringList selectedFiles();
-	void setProjectPath( XSLProject * project );
+	void setProjectPath( XinxProject * project );
 
 	void refreshPath( const QString & path );
 	bool removeFile( const QString & path );
@@ -97,7 +97,7 @@ private:
 	QPointer<QAbstractItemModel> m_flatModel;
 	IconProjectProvider* m_iconProvider;
 
-	QPointer<XSLProject> m_project;
+	QPointer<XinxProject> m_project;
 
 	Ui::ProjectDirectoryWidget * m_projectDirWidget;
 };

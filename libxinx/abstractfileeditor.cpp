@@ -21,7 +21,7 @@
 #include "abstractfileeditor.h"
 #include "xinxconfig.h"
 #include "filewatcher.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 
 // Qt header
 #include <QFile>
@@ -152,14 +152,14 @@ void AbstractFileEditor::setWatcher( const QString & path ) {
 	}
 }
 
-void AbstractFileEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
+void AbstractFileEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
 	AbstractEditor::serialize( data, content );
 
 	data->writeProperty( "FileName", QVariant( m_lastFileName ) );
 	data->writeProperty( "Modified", QVariant( m_modified ) );
 }
 
-void AbstractFileEditor::deserialize( XSLProjectSessionEditor * data ) {
+void AbstractFileEditor::deserialize( XinxProjectSessionEditor * data ) {
 	m_lastFileName = data->readProperty( "FileName" ).toString();
 	m_modified = data->readProperty( "Modified" ).toBool();
 

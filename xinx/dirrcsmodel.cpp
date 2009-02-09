@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "dirrcsmodel.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include <xinxpluginsloader.h>
 
 // Qt header

@@ -21,7 +21,7 @@
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
 #include "exceptions.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 
 #include "mainformimpl.h"
 #include "dbus/orgshadowarexinxinterface.h"

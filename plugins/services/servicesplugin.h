@@ -42,7 +42,7 @@ public:
 	virtual bool saveProjectSettingsPage( QWidget * widget );
 
 	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
-	virtual bool saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page );
+	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page );
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 };

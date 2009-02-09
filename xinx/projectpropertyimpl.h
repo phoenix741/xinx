@@ -23,7 +23,7 @@
 #include "ui_projectproperty.h"
 #include "threadedconfigurationfile.h"
 
-class XSLProject;
+class XinxProject;
 class IXinxPluginProjectConfiguration;
 
 class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
@@ -32,8 +32,8 @@ public:
 	ProjectPropertyImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	virtual ~ProjectPropertyImpl();
 
-	void loadFromProject( XSLProject * );
-	void saveToProject( XSLProject * );
+	void loadFromProject( XinxProject * );
+	void saveToProject( XinxProject * );
 private:
 	void updateOkButton();
 	ThreadedConfigurationFile * m_versionInstance;

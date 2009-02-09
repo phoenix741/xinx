@@ -22,7 +22,7 @@
 #include "abstracteditor.h"
 #include "xinxcodeedit.h"
 #include "textfileeditor.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "runsnipetdialogimpl.h"
 #include "snipet.h"
 #include "snipetlist.h"

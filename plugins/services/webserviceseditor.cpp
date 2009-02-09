@@ -21,7 +21,7 @@
 #include "webserviceseditor.h"
 #include "webservices.h"
 #include "xinxcodeedit.h"
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "borderlayout.h"
 #include <xmlprettyprinter.h>
 #include <xmltexteditor.h>
@@ -209,7 +209,7 @@ void WebServicesEditor::saveToDevice( QIODevice & d ) {
 	document.save( out, 3 );
 }
 
-void WebServicesEditor::serialize( XSLProjectSessionEditor * data, bool content ) {
+void WebServicesEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
 	AbstractFileEditor::serialize( data, content );
 	store( m_paramList->currentText() );
 
@@ -234,7 +234,7 @@ void WebServicesEditor::serialize( XSLProjectSessionEditor * data, bool content 
 	data->writeProperty( "BookmarkCount", QVariant( i ) );
 }
 
-void WebServicesEditor::deserialize( XSLProjectSessionEditor * data ) {
+void WebServicesEditor::deserialize( XinxProjectSessionEditor * data ) {
 	int position = 0;
 	QString key, value, param;
 

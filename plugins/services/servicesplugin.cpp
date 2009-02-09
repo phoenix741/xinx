@@ -21,7 +21,7 @@
 #include "servicesplugin.h"
 #include "servicesprojectpropertyimpl.h"
 #include "servicesprojectwizard.h"
-#include <xslproject.h>
+#include <xinxproject.h>
 #include "webservices.h"
 #include "webservicesfiletype.h"
 
@@ -88,8 +88,8 @@ bool ServicesPlugin::loadProjectSettingsPage( QWidget * widget ) {
 	ServicesProjectPropertyImpl * page = qobject_cast<ServicesProjectPropertyImpl*>( widget );
 	Q_ASSERT( page );
 
-	XSLProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
-	page->m_webServiceGroupBox->setChecked( options.testFlag( XSLProject::hasWebServices ) );
+	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+	page->m_webServiceGroupBox->setChecked( options.testFlag( XinxProject::hasWebServices ) );
 	page->m_servicesList->setValues( XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split(";;",QString::SkipEmptyParts) );
 	return true;
 }
@@ -98,11 +98,11 @@ bool ServicesPlugin::saveProjectSettingsPage( QWidget * widget ) {
 	ServicesProjectPropertyImpl * page = qobject_cast<ServicesProjectPropertyImpl*>( widget );
 	Q_ASSERT( page );
 
-	XSLProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
+	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
 	if( page->m_webServiceGroupBox->isChecked() )
-		options |= XSLProject::hasWebServices;
+		options |= XinxProject::hasWebServices;
 	else
-		options &= ~XSLProject::hasWebServices;
+		options &= ~XinxProject::hasWebServices;
 	XINXProjectManager::self()->project()->setOptions( options );
 
 	XINXProjectManager::self()->project()->writeProperty( "webServiceLink", page->m_servicesList->values().join(";;") );
@@ -116,11 +116,11 @@ QList<QWizardPage*> ServicesPlugin::createNewProjectSettingsPages( int nextid ) 
 	return pages;
 }
 
-bool ServicesPlugin::saveNewProjectSettingsPage( XSLProject * project, QWizardPage * page ) {
+bool ServicesPlugin::saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) {
 	ServicesListPageImpl * servicesPage = qobject_cast<ServicesListPageImpl*>( page );
 	if( servicesPage && servicesPage->field( "project.services" ).toBool() ) {
-		XSLProject::ProjectOptions options = project->options();
-		options |= XSLProject::hasWebServices;
+		XinxProject::ProjectOptions options = project->options();
+		options |= XinxProject::hasWebServices;
 		project->setOptions( options );
 
 		QStringList services;

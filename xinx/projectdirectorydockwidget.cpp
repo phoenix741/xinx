@@ -25,7 +25,7 @@
 #include "dirrcsmodel.h"
 #include <exceptions.h>
 #include <xinxconfig.h>
-#include <xslproject.h>
+#include <xinxproject.h>
 #include "iconprojectprovider.h"
 
 // Qt header
@@ -165,7 +165,7 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 	m_projectDirWidget->m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
 }
 
-void ProjectDirectoryDockWidget::setProjectPath( XSLProject * project ) {
+void ProjectDirectoryDockWidget::setProjectPath( XinxProject * project ) {
 	if( m_projectDirWidget->m_flatListBtn->isChecked() )
 		m_projectDirWidget->m_flatListBtn->click();
 	m_projectDirWidget->m_filtreLineEdit->setText( "" );

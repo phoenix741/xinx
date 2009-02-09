@@ -40,20 +40,20 @@ int ContentViewException::getColumn() const {
 ContentViewParser::~ContentViewParser() {
 }
 
-ContentViewNode * ContentViewParser::loadFromContent( const QString & content ) {
+void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
 	QByteArray contentArray = content.toUtf8();
 	QBuffer buffer( &contentArray );
 	buffer.open( QIODevice::ReadOnly );
 
-	return loadFromDevice( &buffer );
+	return loadFromDevice( rootNode, &buffer );
 }
 
-ContentViewNode * ContentViewParser::loadFromFile( const QString & filename ) {
+void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString & filename ) {
 	QFile file( filename );
 
 	// Open the file
 	if (!file.open(QFile::ReadOnly))
 		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
 
-	return loadFromDevice( & file );
+	return loadFromDevice( rootNode, & file );
 }

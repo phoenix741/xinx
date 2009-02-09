@@ -29,7 +29,7 @@
 
 class QAction;
 class QLabel;
-class XSLProjectSessionEditor;
+class XinxProjectSessionEditor;
 class BorderLayout;
 class QAbstractItemModel;
 
@@ -179,7 +179,7 @@ public:
 	 * the state.
 	 * \sa deserialze(), deserialzeEditor()
 	 */
-	virtual void serialize( XSLProjectSessionEditor * data, bool content );
+	virtual void serialize( XinxProjectSessionEditor * data, bool content );
 
 	/*!
 	 * Restore the editor with the content of the XML document. The deserialization restore the
@@ -187,14 +187,14 @@ public:
 	 * \param data from what the data must be read
 	 * \sa serialize(), deserializeEditor()
 	 */
-	virtual void deserialize( XSLProjectSessionEditor * data );
+	virtual void deserialize( XinxProjectSessionEditor * data );
 	/*!
 	 * Create the right editor and deserualize it.
 	 * \param data from what the data must be read
 	 * \return An editor
 	 * \sa serialize(), deserialize()
 	 */
-	static AbstractEditor * deserializeEditor( XSLProjectSessionEditor * data );
+	static AbstractEditor * deserializeEditor( XinxProjectSessionEditor * data );
 
 	/*! Return a string reprensents the content of the \em i -ième bookmark. */
 	virtual QString bookmarkAt( int i ) = 0;

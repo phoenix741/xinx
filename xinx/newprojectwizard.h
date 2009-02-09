@@ -27,7 +27,7 @@
 #include "ui_newprojectwizard_project.h"
 #include "ui_newprojectwizard_specifique.h"
 
-class XSLProject;
+class XinxProject;
 class NewProjectWizard;
 class IXinxPluginProjectConfiguration;
 
@@ -88,11 +88,11 @@ public:
 
 	NewProjectWizard( QWidget * widget = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 
-	XSLProject * createProject();
+	XinxProject * createProject();
 private slots:
 	void on_customButton1_clicked();
 private:
-	XSLProject * m_project;
+	XinxProject * m_project;
 	QList< QPair<IXinxPluginProjectConfiguration*,QWizardPage*> > m_wizardPages;
 	int m_lastPage;
 

@@ -64,17 +64,19 @@ private:
  * \brief The content view parser create the content view tree.
  *
  * The parser read the content view tree and return the root element :
- * a content view node.
+ * a content view node. The parser must be sub-classed and must redefine
+ * the method \e loadFromDevice().
+ *
  */
 class ContentViewParser {
 	virtual ~ContentViewParser();
 
-	/*! Loed the content of the device. */
-	virtual ContentViewNode * loadFromDevice( QIODevice * device ) = 0;
+	/*! Loed the content of the device. and return the root element of the content view */
+	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) = 0;
 	/*! Construct elements from \e content. */
-	virtual ContentViewNode * loadFromContent( const QString & content );
+	virtual void loadFromContent( ContentViewNode * rootNode, const QString & content );
 	/*! Construct elements from \e filename. */
-	virtual ContentViewNode * loadFromFile( const QString & filename );
+	virtual void loadFromFile( ContentViewNode * rootNode, const QString & filename );
 };
 
 #endif /* __CONTENTVIEWPARSER_H__ */

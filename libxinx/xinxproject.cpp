@@ -24,7 +24,7 @@
 #include <QDir>
 
 // Xinx header
-#include "xslproject.h"
+#include "xinxproject.h"
 #include "xinxcore.h"
 #include "xinxconfig.h"
 
@@ -39,26 +39,26 @@
 
 XINXProjectManager * XINXProjectManager::s_self = 0;
 
-/* XSLProjectException */
+/* XinxProjectException */
 
-XSLProjectException::XSLProjectException( const QString & message, bool wizard ) : XinxException( message ), m_wizard( wizard ) {
+XinxProjectException::XinxProjectException( const QString & message, bool wizard ) : XinxException( message ), m_wizard( wizard ) {
 }
 
-bool XSLProjectException::startWizard() const {
+bool XinxProjectException::startWizard() const {
 	return m_wizard;
 }
 
-/* XSLProjectSessionEditor */
+/* XinxProjectSessionEditor */
 
-XSLProjectSessionEditor::XSLProjectSessionEditor( XSLProjectSession * parent ) : QObject( parent ), m_parent( parent ) {
+XinxProjectSessionEditor::XinxProjectSessionEditor( XinxProjectSession * parent ) : QObject( parent ), m_parent( parent ) {
 	parent->m_sessions.append( this );
 }
 
-XSLProjectSessionEditor::~XSLProjectSessionEditor() {
+XinxProjectSessionEditor::~XinxProjectSessionEditor() {
 	m_parent->m_sessions.removeAll( this );
 }
 
-void XSLProjectSessionEditor::loadFromNode( const QDomElement & element ) {
+void XinxProjectSessionEditor::loadFromNode( const QDomElement & element ) {
 	m_properties.clear();
 	QDomElement node = element.firstChildElement();
 	while( ! node.isNull() ) {
@@ -72,7 +72,7 @@ void XSLProjectSessionEditor::loadFromNode( const QDomElement & element ) {
 	}
 }
 
-void XSLProjectSessionEditor::saveToNode( QDomDocument & document, QDomElement & element ) {
+void XinxProjectSessionEditor::saveToNode( QDomDocument & document, QDomElement & element ) {
 	foreach( const QString & key, m_properties.keys() ) {
 		QDomElement propertyElement = element.firstChildElement( key );
 		if( ! propertyElement.isNull() ) element.removeChild( propertyElement );
@@ -86,29 +86,29 @@ void XSLProjectSessionEditor::saveToNode( QDomDocument & document, QDomElement &
 	}
 }
 
-void XSLProjectSessionEditor::writeProperty( const QString & key, QVariant value ) {
+void XinxProjectSessionEditor::writeProperty( const QString & key, QVariant value ) {
 	m_properties[ key ] = value;
 }
 
-QVariant XSLProjectSessionEditor::readProperty( const QString & key ) {
+QVariant XinxProjectSessionEditor::readProperty( const QString & key ) {
 	return m_properties.value( key );
 }
 
-/* XSLProjectSession */
+/* XinxProjectSession */
 
-XSLProjectSession::XSLProjectSession() {
+XinxProjectSession::XinxProjectSession() {
 
 }
 
-XSLProjectSession::XSLProjectSession( const QString & filename ) {
+XinxProjectSession::XinxProjectSession( const QString & filename ) {
 	loadFromFile( filename );
 }
 
-XSLProjectSession::~XSLProjectSession() {
+XinxProjectSession::~XinxProjectSession() {
 	qDeleteAll( m_sessions );
 }
 
-void XSLProjectSession::loadFromFile( const QString & filename ) {
+void XinxProjectSession::loadFromFile( const QString & filename ) {
 	m_filename = filename;
 	QFile file( filename );
 
@@ -119,26 +119,26 @@ void XSLProjectSession::loadFromFile( const QString & filename ) {
 
 	// Open the file
 	if ( ! file.open(QFile::ReadOnly | QFile::Text) )
-		throw XSLProjectException( tr("Can't open session file." ) );
+		throw XinxProjectException( tr("Can't open session file." ) );
 
 	// Load XML Document
 	QString errorStr;
 	int errorLine;
 	int errorColumn;
 	if ( ! document.setContent(&file, true, &errorStr, &errorLine, &errorColumn) )
-		throw XSLProjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
+		throw XinxProjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 
 	QDomElement rootSession = document.documentElement();
 
 	// Test if Project File
 	if( rootSession.tagName() != "Session" )
-		throw XSLProjectException( tr("The file isn't a XINX Project Session file") );
+		throw XinxProjectException( tr("The file isn't a XINX Project Session file") );
 
 	QDomElement sessionNode = rootSession.firstChildElement( "Opened" );
 	if( ! sessionNode.isNull() ) {
 		QDomElement editor = sessionNode.firstChildElement( "Editor" );
 		while( ! editor.isNull() ) {
-			(new XSLProjectSessionEditor( this ))->loadFromNode( editor );
+			(new XinxProjectSessionEditor( this ))->loadFromNode( editor );
 			editor = editor.nextSiblingElement( "Editor" );
 		}
 	}
@@ -154,7 +154,7 @@ void XSLProjectSession::loadFromFile( const QString & filename ) {
 	}
 }
 
-void XSLProjectSession::saveToFile( const QString & filename ) {
+void XinxProjectSession::saveToFile( const QString & filename ) {
 	QDomDocument document( "Session" );
 
 	QDomElement root = document.createElement( "Session" );
@@ -163,7 +163,7 @@ void XSLProjectSession::saveToFile( const QString & filename ) {
 	QDomElement sessions = document.createElement( "Opened" );
 	root.appendChild( sessions );
 
-	foreach( XSLProjectSessionEditor* session, m_sessions ) {
+	foreach( XinxProjectSessionEditor* session, m_sessions ) {
 		QDomElement editor = document.createElement( "Editor" );
 		sessions.appendChild( editor );
 
@@ -188,27 +188,27 @@ void XSLProjectSession::saveToFile( const QString & filename ) {
 
 	// Open the file
 	if ( ! file.open(QFile::WriteOnly | QFile::Text) )
-		throw XSLProjectException( tr("Cannot write file %1:\n%2.").arg( m_filename ).arg( file.errorString()) );
+		throw XinxProjectException( tr("Cannot write file %1:\n%2.").arg( m_filename ).arg( file.errorString()) );
 
 	// Save the content
 	QTextStream text( &file );
 	document.save( text, IndentSize );
 }
 
-QStringList & XSLProjectSession::lastOpenedFile() {
+QStringList & XinxProjectSession::lastOpenedFile() {
 	return m_lastOpenedFile;
 }
 
-const QList<XSLProjectSessionEditor*> & XSLProjectSession::serializedEditors() const {
+const QList<XinxProjectSessionEditor*> & XinxProjectSession::serializedEditors() const {
 	return m_sessions;
 }
 
-/* PrivateXSLProject */
+/* PrivateXinxProject */
 
-class PrivateXSLProject {
+class PrivateXinxProject {
 public:
-	PrivateXSLProject( XSLProject * parent );
-	~PrivateXSLProject();
+	PrivateXinxProject( XinxProject * parent );
+	~PrivateXinxProject();
 
 	static QString getValue( const QDomDocument & document, const QString & node );
 	static void setValue( QDomDocument & document, const QString & node, const QString & value );
@@ -218,9 +218,9 @@ public:
 
 	QString processPath( QString path );
 
-	PrivateXSLProject& operator=( const PrivateXSLProject& p );
+	PrivateXinxProject& operator=( const PrivateXinxProject& p );
 
-	XSLProjectSession * m_session;
+	XinxProjectSession * m_session;
 
 	QString m_fileName;
 	int m_version;
@@ -231,15 +231,15 @@ public:
 	QString m_projectName, m_defaultLang, m_defaultNav;
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
 	QString m_logProjectDirectory;
-	XSLProject::ProjectOptions m_projectOptions;
+	XinxProject::ProjectOptions m_projectOptions;
 	QString m_projectRCS;
 
 	QHash<QString,QVariant> m_properties;
 private:
-	XSLProject * m_parent;
+	XinxProject * m_parent;
 };
 
-PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
+PrivateXinxProject::PrivateXinxProject( XinxProject * parent ) {
 	m_parent = parent;
 
 	m_defaultLang = "FRA";
@@ -253,16 +253,16 @@ PrivateXSLProject::PrivateXSLProject( XSLProject * parent ) {
 	m_indexOfSpecifiquePath = 0;
 
 	m_specifiquePathName = XINXConfig::self()->config().project.defaultProjectPathName;
-	m_projectOptions |= XSLProject::hasSpecifique;
+	m_projectOptions |= XinxProject::hasSpecifique;
 
-	m_session = new XSLProjectSession();
+	m_session = new XinxProjectSession();
 }
 
-PrivateXSLProject::~PrivateXSLProject() {
+PrivateXinxProject::~PrivateXinxProject() {
 	delete m_session;
 }
 
-PrivateXSLProject& PrivateXSLProject::operator=( const PrivateXSLProject& p ) {
+PrivateXinxProject& PrivateXinxProject::operator=( const PrivateXinxProject& p ) {
 	m_searchPathList        = p.m_searchPathList;
 	m_indexOfSpecifiquePath = p.m_indexOfSpecifiquePath;
 	m_projectName			= p.m_projectName;
@@ -278,13 +278,13 @@ PrivateXSLProject& PrivateXSLProject::operator=( const PrivateXSLProject& p ) {
 	return *this;
 }
 
-QString PrivateXSLProject::getValue( const QDomDocument & document, const QString & node ) {
+QString PrivateXinxProject::getValue( const QDomDocument & document, const QString & node ) {
 	QDomElement root = document.documentElement();
 	QDomElement elt  = root.firstChildElement( node );
 	return elt.text();
 }
 
-void PrivateXSLProject::setValue( QDomDocument & document, const QString & node, const QString & value ) {
+void PrivateXinxProject::setValue( QDomDocument & document, const QString & node, const QString & value ) {
 	QDomElement root = document.documentElement();
 	QDomElement elt  = root.firstChildElement( node );
 	QDomText    text;
@@ -305,7 +305,7 @@ void PrivateXSLProject::setValue( QDomDocument & document, const QString & node,
 		text.setData( value );
 }
 
-QStringList PrivateXSLProject::loadList( QDomDocument document, const QString & list, const QString & element ) {
+QStringList PrivateXinxProject::loadList( QDomDocument document, const QString & list, const QString & element ) {
 	QDomElement root = document.documentElement();
 	QDomElement dlist = root.firstChildElement( list );
 	if( dlist.isNull() ) return QStringList();
@@ -320,7 +320,7 @@ QStringList PrivateXSLProject::loadList( QDomDocument document, const QString & 
 	return result;
 }
 
-void PrivateXSLProject::saveList( QDomDocument & document, const QString & list, const QString & element, const QStringList & slist ) {
+void PrivateXinxProject::saveList( QDomDocument & document, const QString & list, const QString & element, const QStringList & slist ) {
 	QDomElement root = document.documentElement();
 	QDomElement dlist = document.createElement( list );
 	root.appendChild( dlist );
@@ -334,7 +334,7 @@ void PrivateXSLProject::saveList( QDomDocument & document, const QString & list,
 	}
 }
 
-QString PrivateXSLProject::processPath( QString path ) {
+QString PrivateXinxProject::processPath( QString path ) {
 	path.replace( "<lang>", m_defaultLang.toLower() );
 	path.replace( "<LANG>", m_defaultLang.toUpper() );
 	path.replace( "<nav>", m_defaultNav.toLower() );
@@ -344,82 +344,82 @@ QString PrivateXSLProject::processPath( QString path ) {
 	return QDir( m_parent->projectPath() ).absoluteFilePath( path );
 }
 
-/* XSLProject */
+/* XinxProject */
 
-XSLProject::XSLProject() : QObject() {
-	d = new PrivateXSLProject( this );
+XinxProject::XinxProject() : QObject() {
+	d = new PrivateXinxProject( this );
 }
 
-XSLProject::XSLProject( const XSLProject & object ) : QObject() {
-	d = new PrivateXSLProject( this );
+XinxProject::XinxProject( const XinxProject & object ) : QObject() {
+	d = new PrivateXinxProject( this );
 	*d = *(object.d);
 }
 
-XSLProject::XSLProject( const QString & project ) : QObject() {
-	d = new PrivateXSLProject( this );
+XinxProject::XinxProject( const QString & project ) : QObject() {
+	d = new PrivateXinxProject( this );
 	loadFromFile( project );
 }
 
-XSLProject::~XSLProject() {
+XinxProject::~XinxProject() {
 	delete d;
 }
 
-XSLProject& XSLProject::operator=(const XSLProject& p) {
+XinxProject& XinxProject::operator=(const XinxProject& p) {
 	*d = *(p.d);
 	return *this;
 }
 
-void XSLProject::loadFromFile( const QString & filename ) {
+void XinxProject::loadFromFile( const QString & filename ) {
 	QFile file(filename);
 	QDomDocument document;
 
 	// Open the file
 	if (! file.open(QFile::ReadOnly | QFile::Text) )
-		throw XSLProjectException( tr("Cannot read file %1:\n%2.").arg( filename ).arg( file.errorString() ) );
+		throw XinxProjectException( tr("Cannot read file %1:\n%2.").arg( filename ).arg( file.errorString() ) );
 
 	// Load XML Document
 	QString errorStr;
 	int errorLine;
 	int errorColumn;
 	if ( ! document.setContent( &file, true, &errorStr, &errorLine, &errorColumn ) )
-		throw XSLProjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
+		throw XinxProjectException( tr("Parse error at line %1, column %2:\n%3").arg(errorLine).arg(errorColumn).arg(errorStr) );
 
 	QDomElement root = document.documentElement();
 
 	// Test if Project File
-	if( root.tagName() != "XSLProject" )
-		throw XSLProjectException( tr("The file isn't a XINX Project") );
+	if( root.tagName() != "XinxProject" )
+		throw XinxProjectException( tr("The file isn't a XINX Project") );
 
-	d->m_version = PrivateXSLProject::getValue( document, "xinx_version" ).isEmpty() ? 0 : PrivateXSLProject::getValue( document, "xinx_version" ).toInt();
+	d->m_version = PrivateXinxProject::getValue( document, "xinx_version" ).isEmpty() ? 0 : PrivateXinxProject::getValue( document, "xinx_version" ).toInt();
 	if( d->m_version > XINX_PROJECT_VERSION )
-		throw XSLProjectException( tr("The file is a too recent XINX Project") );
+		throw XinxProjectException( tr("The file is a too recent XINX Project") );
 	if( d->m_version < XINX_PROJECT_VERSION )
-		throw XSLProjectException( tr("The project can't be opened. Please use the XINX Project Wizard."), true );
+		throw XinxProjectException( tr("The project can't be opened. Please use the XINX Project Wizard."), true );
 
 
 	d->m_fileName = filename;
 
 	// Load values
-	d->m_projectName         = PrivateXSLProject::getValue( document, "name" );
-	d->m_defaultLang         = PrivateXSLProject::getValue( document, "lang" );
-	d->m_defaultNav          = PrivateXSLProject::getValue( document, "nav" );
-	d->m_projectPath         = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "project" ) );
-	d->m_specifiquePrefix    = PrivateXSLProject::getValue( document, "prefix" );
-	d->m_projectRCS 		 = PrivateXSLProject::getValue( document, "rcs" );
+	d->m_projectName         = PrivateXinxProject::getValue( document, "name" );
+	d->m_defaultLang         = PrivateXinxProject::getValue( document, "lang" );
+	d->m_defaultNav          = PrivateXinxProject::getValue( document, "nav" );
+	d->m_projectPath         = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXinxProject::getValue( document, "project" ) );
+	d->m_specifiquePrefix    = PrivateXinxProject::getValue( document, "prefix" );
+	d->m_projectRCS 		 = PrivateXinxProject::getValue( document, "rcs" );
 	QString path;
 
-	QStringList spl = PrivateXSLProject::loadList( document, "paths", "path" );
+	QStringList spl = PrivateXinxProject::loadList( document, "paths", "path" );
 	if( spl.size() > 0 ) {
 		d->m_searchPathList = spl;
-		d->m_indexOfSpecifiquePath = PrivateXSLProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
+		d->m_indexOfSpecifiquePath = PrivateXinxProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
 		if( ( d->m_indexOfSpecifiquePath < 0 ) || ( d->m_indexOfSpecifiquePath >= spl.size() ) ) d->m_indexOfSpecifiquePath = 0;
 	} else {
 		d->m_indexOfSpecifiquePath = 0;
 	}
-	d->m_specifiquePathName = PrivateXSLProject::getValue( document, "specifiquePathName" );
-	d->m_projectOptions = ProjectOptions( PrivateXSLProject::getValue( document, "options" ).toInt() );
-	d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXSLProject::getValue( document, "logProjectDirectory" ) );
-	d->m_specifiquePrefixes = PrivateXSLProject::loadList( document, "prefixes", "prefix" );
+	d->m_specifiquePathName = PrivateXinxProject::getValue( document, "specifiquePathName" );
+	d->m_projectOptions = ProjectOptions( PrivateXinxProject::getValue( document, "options" ).toInt() );
+	d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXinxProject::getValue( document, "logProjectDirectory" ) );
+	d->m_specifiquePrefixes = PrivateXinxProject::loadList( document, "prefixes", "prefix" );
 
 	if( d->m_specifiquePrefixes.size() == 0 )
 		d->m_specifiquePrefixes.append( d->m_specifiquePrefix );
@@ -444,18 +444,18 @@ void XSLProject::loadFromFile( const QString & filename ) {
 	}
 
 	if( ! QDir( d->m_projectPath ).exists() )
-		throw XSLProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
+		throw XinxProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 
 	try {
 		d->m_session->loadFromFile( d->m_fileName + ".session" );
-	} catch( XSLProjectException e ) {
+	} catch( XinxProjectException e ) {
 		qWarning( qPrintable( e.getMessage() ) );
 	}
 
 	emit changed();
 }
 
-void XSLProject::saveToFile( const QString & filename ) {
+void XinxProject::saveToFile( const QString & filename ) {
 	if( ! filename.isEmpty() ) d->m_fileName = filename;
 	if( d->m_fileName.isEmpty() ) return;
 
@@ -463,23 +463,23 @@ void XSLProject::saveToFile( const QString & filename ) {
 	d->m_session->saveToFile( d->m_fileName + ".session" );
 
 	// Save attributes
-	QDomDocument document( "XSLProject" );
-	QDomElement root = document.createElement( "XSLProject" );
+	QDomDocument document( "XinxProject" );
+	QDomElement root = document.createElement( "XinxProject" );
 	document.appendChild( root );
 
-	PrivateXSLProject::setValue( document, "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
-	PrivateXSLProject::setValue( document, "name", d->m_projectName );
-	PrivateXSLProject::setValue( document, "lang", d->m_defaultLang );
-	PrivateXSLProject::setValue( document, "nav", d->m_defaultNav );
-	PrivateXSLProject::setValue( document, "project", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_projectPath ) );
-	PrivateXSLProject::setValue( document, "prefix", d->m_specifiquePrefix );
-	PrivateXSLProject::setValue( document, "rcs", d->m_projectRCS );
-	PrivateXSLProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
-	PrivateXSLProject::saveList( document, "paths", "path", d->m_searchPathList );
-	PrivateXSLProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
-	PrivateXSLProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
-	PrivateXSLProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
-	PrivateXSLProject::setValue( document, "logProjectDirectory", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_logProjectDirectory ) );
+	PrivateXinxProject::setValue( document, "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
+	PrivateXinxProject::setValue( document, "name", d->m_projectName );
+	PrivateXinxProject::setValue( document, "lang", d->m_defaultLang );
+	PrivateXinxProject::setValue( document, "nav", d->m_defaultNav );
+	PrivateXinxProject::setValue( document, "project", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_projectPath ) );
+	PrivateXinxProject::setValue( document, "prefix", d->m_specifiquePrefix );
+	PrivateXinxProject::setValue( document, "rcs", d->m_projectRCS );
+	PrivateXinxProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
+	PrivateXinxProject::saveList( document, "paths", "path", d->m_searchPathList );
+	PrivateXinxProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
+	PrivateXinxProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
+	PrivateXinxProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
+	PrivateXinxProject::setValue( document, "logProjectDirectory", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_logProjectDirectory ) );
 
 	QDomElement propertiesElement = document.createElement( "properties" );
 	root.appendChild( propertiesElement );
@@ -496,99 +496,99 @@ void XSLProject::saveToFile( const QString & filename ) {
 	static const int IndentSize = 3;
 	QFile file( d->m_fileName );
 	if ( !file.open(QFile::WriteOnly | QFile::Text) )
-		throw XSLProjectException( QObject::tr("Cannot write file %1:\n%2.").arg( d->m_fileName ).arg( file.errorString()) );
+		throw XinxProjectException( QObject::tr("Cannot write file %1:\n%2.").arg( d->m_fileName ).arg( file.errorString()) );
 
 	QTextStream text( &file );
 	document.save( text, IndentSize );
 }
 
-void XSLProject::saveOnlySession() {
+void XinxProject::saveOnlySession() {
 	if( d->m_fileName.isEmpty() ) return;
 	d->m_session->saveToFile();
 }
 
-XSLProject::ProjectOptions & XSLProject::options() {
+XinxProject::ProjectOptions & XinxProject::options() {
 	return d->m_projectOptions;
 }
 
-void XSLProject::setOptions( XSLProject::ProjectOptions options ) {
+void XinxProject::setOptions( XinxProject::ProjectOptions options ) {
 	if( d->m_projectOptions != options ) {
 		d->m_projectOptions = options;
 		emit changed();
 	}
 }
 
-const QString & XSLProject::projectRCS() const {
+const QString & XinxProject::projectRCS() const {
 	return d->m_projectRCS == "no" ? d->m_projectRCS = QString() : d->m_projectRCS;
 }
 
-void XSLProject::setProjectRCS( const QString & value ) {
+void XinxProject::setProjectRCS( const QString & value ) {
 	if( d->m_projectRCS != value ) {
 		d->m_projectRCS = value;
 		emit changed();
 	}
 }
 
-QString XSLProject::projectName() const {
+QString XinxProject::projectName() const {
 	return d->m_projectName;
 }
 
-void XSLProject::setProjectName( const QString & value ) {
+void XinxProject::setProjectName( const QString & value ) {
 	if( d->m_projectName != value ) {
 		d->m_projectName = value;
 		emit changed();
 	}
 }
 
-QString XSLProject::defaultLang() const {
+QString XinxProject::defaultLang() const {
 	return d->m_defaultLang;
 }
 
-void XSLProject::setDefaultLang( const QString & value ) {
+void XinxProject::setDefaultLang( const QString & value ) {
 	if( d->m_defaultLang != value ) {
 		d->m_defaultLang = value;
 		emit changed();
 	}
 }
 
-QString XSLProject::defaultNav() const {
+QString XinxProject::defaultNav() const {
 	return d->m_defaultNav;
 }
 
-void XSLProject::setDefaultNav( const QString & value ) {
+void XinxProject::setDefaultNav( const QString & value ) {
 	if( d->m_defaultNav != value ) {
 		d->m_defaultNav = value;
 		emit changed();
 	}
 }
 
-QString XSLProject::projectPath() const {
+QString XinxProject::projectPath() const {
 	return QDir( d->m_projectPath ).absolutePath();
 }
 
-void XSLProject::setProjectPath( const QString & value ) {
+void XinxProject::setProjectPath( const QString & value ) {
 	if( d->m_projectPath != value ) {
 		d->m_projectPath = value;
 		emit changed();
 	}
 }
 
-void XSLProject::setSpecifiquePathName( const QString & value ) {
+void XinxProject::setSpecifiquePathName( const QString & value ) {
 	if( d->m_specifiquePathName != value ) {
 		d->m_specifiquePathName = value;
 		emit changed();
 	}
 }
 
-QString XSLProject::specifiquePathName() {
+QString XinxProject::specifiquePathName() {
 	return d->m_specifiquePathName;
 }
 
-QString XSLProject::specifiquePrefix() const {
+QString XinxProject::specifiquePrefix() const {
 	return d->m_specifiquePrefix;
 }
 
-void XSLProject::setSpecifiquePrefix( const QString & value ) {
+void XinxProject::setSpecifiquePrefix( const QString & value ) {
 	if( d->m_specifiquePrefix != value ) {
 		d->m_specifiquePrefix = value;
 		if( ! d->m_specifiquePrefixes.contains( value ) )
@@ -597,22 +597,22 @@ void XSLProject::setSpecifiquePrefix( const QString & value ) {
 	}
 }
 
-QStringList & XSLProject::specifiquePrefixes() {
+QStringList & XinxProject::specifiquePrefixes() {
 	return d->m_specifiquePrefixes;
 }
 
-QStringList & XSLProject::searchPathList() {
+QStringList & XinxProject::searchPathList() {
 	return d->m_searchPathList;
 }
 
-QString XSLProject::processedSpecifiquePath() const {
+QString XinxProject::processedSpecifiquePath() const {
 	Q_ASSERT( d->m_indexOfSpecifiquePath >= 0 );
 	Q_ASSERT( d->m_searchPathList.size() > 0 );
 
 	return d->processPath( d->m_searchPathList.at( d->m_indexOfSpecifiquePath ) );
 }
 
-QStringList XSLProject::processedSearchPathList() {
+QStringList XinxProject::processedSearchPathList() {
 	QStringList list;
 	foreach( const QString & path, searchPathList() ) {
 		list << d->processPath( path );
@@ -620,45 +620,45 @@ QStringList XSLProject::processedSearchPathList() {
 	return list;
 }
 
-int XSLProject::indexOfSpecifiquePath() const {
+int XinxProject::indexOfSpecifiquePath() const {
 	return d->m_indexOfSpecifiquePath;
 }
 
-void XSLProject::setIndexOfSpecifiquePath( int value ) {
+void XinxProject::setIndexOfSpecifiquePath( int value ) {
 	d->m_indexOfSpecifiquePath = value;
 }
 
-const QString & XSLProject::fileName() const {
+const QString & XinxProject::fileName() const {
 	return d->m_fileName;
 }
 
-void XSLProject::setLogProjectDirectory( const QString & value ) {
+void XinxProject::setLogProjectDirectory( const QString & value ) {
 	if( d->m_logProjectDirectory != value ) {
 		d->m_logProjectDirectory = value;
 		emit changed();
 	}
 }
 
-const QString & XSLProject::logProjectDirectory() {
+const QString & XinxProject::logProjectDirectory() {
 	return d->m_logProjectDirectory;
 }
 
-XSLProjectSession * XSLProject::session() const {
+XinxProjectSession * XinxProject::session() const {
 	return d->m_session;
 }
 
-void XSLProject::writeProperty( const QString & key, QVariant value ) {
+void XinxProject::writeProperty( const QString & key, QVariant value ) {
 	if( d->m_properties.value( key ) != value ) {
 		d->m_properties[ key ] = value;
 		emit changed();
 	}
 }
 
-QVariant XSLProject::readProperty( const QString & key ) {
+QVariant XinxProject::readProperty( const QString & key ) {
 	return d->m_properties.value( key );
 }
 
-bool XSLProject::blockSignals( bool block ) {
+bool XinxProject::blockSignals( bool block ) {
 	bool result = QObject::blockSignals( block );
 	if( ! block ) emit changed();
 	return result;
@@ -685,7 +685,7 @@ XINXProjectManager * XINXProjectManager::self() {
 	return s_self;
 }
 
-void XINXProjectManager::setCurrentProject( XSLProject * project ) {
+void XINXProjectManager::setCurrentProject( XinxProject * project ) {
 	if( m_project )
 		m_project->disconnect( this );
 
@@ -696,7 +696,7 @@ void XINXProjectManager::setCurrentProject( XSLProject * project ) {
 	emit changed();
 }
 
-XSLProject * XINXProjectManager::project() const {
+XinxProject * XINXProjectManager::project() const {
 	return m_project;
 }
 

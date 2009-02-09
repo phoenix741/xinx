@@ -87,7 +87,7 @@ private:
 
 typedef QList<WebServices*> WebServicesList;
 
-class XSLProject;
+class XinxProject;
 
 class WebServicesManager : public QObject, public WebServicesList {
 	Q_OBJECT
@@ -96,7 +96,7 @@ public:
 	WebServicesManager();
 	virtual ~WebServicesManager();
 
-	void setProject( XSLProject * project );
+	void setProject( XinxProject * project );
 
 	static WebServicesManager * self();
 public slots:
