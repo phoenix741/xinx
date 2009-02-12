@@ -45,6 +45,9 @@ class ContentViewModel;
  * case, we must call method with an id to know which tuple use. The id will be
  * the root element of the structure when needed.
  * All modification (set) must be warn to the model (layoutChanged)
+ *
+ * ContentViewNode is inspered from QCodeNode of Edyuk but is rewriting from null to
+ * considere multiple modele and multiple parents.
  */
 class ContentViewNode {
 public:
@@ -72,6 +75,13 @@ public:
 	 * element.
 	 */
 	~ContentViewNode();
+
+	/*!
+	 * Used to delete this object. Redefined to prevent to delete this object if member
+	 * \e canBeDeleted is set to false.
+	 * \see canBeDeleted(), setCanBeDeleted()
+	 */
+	void operator delete( void * ptr );
 
 	/*!
 	 * Attach this node and all it's child to the parent node below. Use the parent model
@@ -107,32 +117,13 @@ public:
 	 * Remove all elements of the list but not delete them.
 	 * \see clear()
 	 */
-	void removeAll();
-
-	/*!
-	 * Remove all elements marked as old of the list but not delete them.
-	 * \see clearOld()
-	 */
-	void removeAllOld();
+	void removeAll( unsigned long id = 0 );
 
 	/*!
 	 * Remove all elements of the list and delete each item.
 	 * \see removeAll()
 	 */
 	void clear();
-
-	/*!
-	 * Remove all old elements of the list and delete each item.
-	 * \see removeAllOld()
-	 */
-	void clearOld();
-
-
-	//! Mark the node and it's child as old.
-	void markAllAsOld();
-
-	//! Mark the node as not old
-	void markAsRecent();
 
 	//! Return the parent of this node for the given model.
 	ContentViewNode * parent( unsigned long id ) const;
@@ -146,6 +137,11 @@ public:
 	const QString & fileName() const;
 	//! Set the file name of the node with \e value.
 	void setFileName( const QString & value );
+
+	//! Return if the item can be deleted by call of delete. This prevent deleting item in cache
+	bool canBeDeleted();
+	//! Set to true if you want to prevent the item to be deleted
+	void setCanBeDeleted( bool value );
 
 	//! Return the data stored in the node for the given \e index
 	QVariant data( enum RoleIndex index = NODE_NAME ) const;
@@ -176,12 +172,20 @@ public:
 	ContentViewNode & operator=( const ContentViewNode & node );
 private:
 	void callModelsDataChanged();
+
 	void callModelBeginInsertRows( ContentViewNode * node, int line, unsigned long id );
 	void callModelEndInsertRows( unsigned long id );
+
+	void callModelBeginRemoveRows( ContentViewNode * node, int firstLine, int lastLine, unsigned long id );
+	void callModelEndRemoveRows( unsigned long id );
+
+	void setModels();
+	void clearModels();
+
 	QHash<unsigned long, ContentViewNode* > m_parents;
 	QHash<unsigned long, ContentViewModel* > m_models;
 
-	bool m_oldFlag;
+	bool m_canBeDeleted;
 	int m_line;
 	QString m_filename;
 	QHash<enum RoleIndex,QVariant> m_datas;

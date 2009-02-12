@@ -20,6 +20,10 @@
 // Xinx header
 #include "contentviewparser.h"
 
+// Qt header
+#include <QFile>
+#include <QBuffer>
+
 /* ContentViewException */
 
 ContentViewException::ContentViewException( QString message, int line, int column )

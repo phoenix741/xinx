@@ -21,6 +21,9 @@
 #include "contentviewnode.h"
 #include "contentviewmodel.h"
 
+// Qt header
+#include <QStack>
+
 /* ContentViewNodeListSort */
 
 bool ContentViewNodeListSort( ContentViewNode * d1, ContentViewNode * d2 ) {
@@ -29,7 +32,7 @@ bool ContentViewNodeListSort( ContentViewNode * d1, ContentViewNode * d2 ) {
 
 /* ContentViewNode */
 
-ContentViewNode::ContentViewNode( const QString & name, int line ) : m_oldFlag( false ), m_line( line ) {
+ContentViewNode::ContentViewNode( const QString & name, int line ) : m_canBeDeleted( true ), m_line( line ) {
 	m_datas.insert( ContentViewNode::NODE_NAME, name );
 }
 
@@ -37,11 +40,16 @@ ContentViewNode::~ContentViewNode() {
 	detach();
 }
 
+void ContentViewNode::operator delete( void * ptr ) {
+	ContentViewNode * node = static_cast<ContentViewNode*>( ptr );
+
+	if( node && node->m_canBeDeleted )
+		::operator delete( ptr );
+}
+
 void ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	// In case where we are already attach to parent
 	if( !parent || parent->m_childs.contains( this ) ) {
-		int finded = parent->m_childs.indexOf( this );
-		parent->m_childs.at( finded )->markAsRecent();
 		return;
 	}
 
@@ -49,12 +57,18 @@ void ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( parent->m_childs.begin(), parent->m_childs.end(), this, ContentViewNodeListSort );
 	int rowForModel = insertingRow - parent->m_childs.begin();
 
-	// If no model given we copy models from parent
-	setModel( parent->model( id ), id );
+	// Set the model of the parent for this and all this child
+	// If no id set, copy all models from parent to this and it childs.
+	if( id ) {
+		setModel( parent->model( id ), id );
+	} else {
+		setModels();
+	}
 
 	// If model, we alert it of inserting a row
 	callModelBeginInsertRows( parent, rowForModel, id );
 
+	// Insert this in line."insertingRow" of parent childs
 	parent->m_childs.insert( insertingRow, this );
 
 	// If model, we alert it of end
@@ -66,17 +80,30 @@ void ContentViewNode::detach( unsigned long id ) {
 	ContentViewNode * parent = m_parents.value( id );
 	if( ! parent ) return;
 
-	// Get the model
-	ContentViewModel * model = m_models.value( id );
-	if( ! model ) return;
-
 	// Search the line to remove
 	int removingRow = parent->m_childs.indexOf( this );
 	if( removingRow < 0 ) return;
 
+	// If model, we alert it of removing row
+	callModelBeginRemoveRows( parent, removingRow, removingRow, id );
+
+	// Remove the row
+	parent->m_childs.removeAt( removingRow );
+	m_parents.remove( id );
+
+	// If model, we alert it of end
+	callModelEndRemoveRows( id );
+
+	// Remove the model for givent key
+	if( id ) {
+		setModel( 0, id );
+	} else {
+		clearModels();
+	}
 }
 
 void ContentViewNode::detach() {
+	// Detach all parents
 	foreach( unsigned long id, m_parents.keys() ) {
 		detach( id );
 	}
@@ -92,39 +119,75 @@ void ContentViewNode::setModel( ContentViewModel * model, unsigned long id ) {
 		ContentViewNode * node  = stack.pop();
 
 		if( node->m_models.value( id ) == model ) continue;
-		node->m_models.insert( id, model );
+
+		// If model defined, we add it, else we remove it.
+		if( model )
+			node->m_models.insert( id, model );
+		else
+			node->m_models.remove( id );
 
 		foreach ( ContentViewNode * child, node->m_childs )
 			stack.push( child );
 	}
 }
 
+void ContentViewNode::setModels() {
+	QHash<unsigned long, ContentViewModel* > models = m_models;
+	QStack< ContentViewNode* > stack;
+
+	stack.push( this );
+	while ( stack.count() ) {
+		ContentViewNode * node  = stack.pop();
+
+		foreach( unsigned long id, models.keys() ) {
+			node->m_models.insert( id, models.value( id ) );
+		}
+
+		foreach ( ContentViewNode * child, node->m_childs )
+			stack.push( child );
+	}
+}
+
+void ContentViewNode::clearModels() {
+	QStack< ContentViewNode* > stack;
+
+	stack.push( this );
+	while ( stack.count() ) {
+		ContentViewNode * node  = stack.pop();
+
+		node->m_models.clear();
+
+		foreach ( ContentViewNode * child, node->m_childs )
+			stack.push( child );
+	}
+}
+
+
 ContentViewModel * ContentViewNode::model( unsigned long id ) {
 	return m_models.value( id );
 }
 
-void ContentViewNode::removeAll() {
+void ContentViewNode::removeAll( unsigned long id ) {
+	if( m_childs.isEmpty() ) return;
 
-}
+	// If model, we alert it of removing row
+	callModelBeginRemoveRows( this, 0, m_childs.count() - 1, id );
 
-void ContentViewNode::removeAllOld() {
+	// Remove the row
+	foreach( ContentViewNode * child, m_childs ) {
+		child->m_parents.remove( id );
+		child->m_models.remove( id );
+	}
+	m_childs.clear();
 
+	// If model, we alert it of end
+	callModelEndRemoveRows( id );
 }
 
 void ContentViewNode::clear() {
-
-}
-
-void ContentViewNode::clearOld() {
-
-}
-
-void ContentViewNode::markAllAsOld() {
-	m_oldFlag = true;
-}
-
-void ContentViewNode::markAsRecent() {
-	m_oldFlag = false;
+	QList<ContentViewNode*> list = m_childs;
+	removeAll();
+	qDeleteAll( list );
 }
 
 ContentViewNode * ContentViewNode::parent( unsigned long id ) const {
@@ -165,6 +228,14 @@ void ContentViewNode::setData( const QVariant & value, enum RoleIndex index ) {
 		m_datas.insert( index, value );
 		callModelsDataChanged();
 	}
+}
+
+bool ContentViewNode::canBeDeleted() {
+	return m_canBeDeleted;
+}
+
+void ContentViewNode::setCanBeDeleted( bool value ) {
+	m_canBeDeleted = value;
 }
 
 const QList<ContentViewNode*> & ContentViewNode::childs() const {
@@ -217,6 +288,30 @@ void ContentViewNode::callModelEndInsertRows( unsigned long id ) {
 		foreach( ContentViewModel * model, m_models ) {
 			if( ! model ) continue;
 			model->endInsertRows();
+		}
+	}
+}
+
+void ContentViewNode::callModelBeginRemoveRows( ContentViewNode * node, int firstLine, int lastLine, unsigned long id ) {
+	ContentViewModel * model = m_models.value( id );
+	if( model ) {
+		model->beginRemoveRows( model->index( node ), firstLine, lastLine );
+	} else {
+		foreach( ContentViewModel * model, m_models ) {
+			if( ! model ) continue;
+			model->beginRemoveRows( model->index( node ), firstLine, lastLine );
+		}
+	}
+}
+
+void ContentViewNode::callModelEndRemoveRows( unsigned long id ) {
+	ContentViewModel * model = m_models.value( id );
+	if( model ) {
+		model->endRemoveRows();
+	} else {
+		foreach( ContentViewModel * model, m_models ) {
+			if( ! model ) continue;
+			model->endRemoveRows();
 		}
 	}
 }

@@ -1,15 +1,13 @@
 CONFIG += debug
-unix { 
+unix {
     QMAKE_LFLAGS = -rdynamic
 }
 
-win32 {
-	MOC_DIR = .
-	OBJECTS_DIR = .
-	RCC_DIR = .
-}
+MOC_DIR = .
+OBJECTS_DIR = .
+RCC_DIR = .
 
 QMAKE_CXXFLAGS_RELEASE = "-Os"
 
-CONFIG += precompile_header
+#CONFIG += precompile_header
 PRECOMPILED_HEADER = stable_header.h

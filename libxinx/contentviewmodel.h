@@ -25,6 +25,9 @@
 #ifndef __CONTENTVIEWMODEL_H__
 #define __CONTENTVIEWMODEL_H__
 
+// Qt header
+#include <QAbstractItemModel>
+
 class ContentViewNode;
 
 /*!
