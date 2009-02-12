@@ -140,7 +140,7 @@ public:
 	//! Return the register line for the node
 	int line() const;
 	//! Change the line of the node
-	void setLine( int line );
+	void setLine( int value );
 
 	//! Return the current file name of the node. If not set, this is the current file name.
 	const QString & fileName() const;
@@ -176,9 +176,10 @@ public:
 	ContentViewNode & operator=( const ContentViewNode & node );
 private:
 	void callModelsDataChanged();
-	void callModelBeginInsertRows( ContentViewNode * node, int line, ContentViewModel * model );
-	void callModelEndInsertRows( ContentViewModel * model );
-	QHash<unsigned long, QPair<ContentViewModel*,ContentViewNode*> > m_parent;
+	void callModelBeginInsertRows( ContentViewNode * node, int line, unsigned long id );
+	void callModelEndInsertRows( unsigned long id );
+	QHash<unsigned long, ContentViewNode* > m_parents;
+	QHash<unsigned long, ContentViewModel* > m_models;
 
 	bool m_oldFlag;
 	int m_line;

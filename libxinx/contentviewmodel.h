@@ -25,6 +25,8 @@
 #ifndef __CONTENTVIEWMODEL_H__
 #define __CONTENTVIEWMODEL_H__
 
+class ContentViewNode;
+
 /*!
  * \class ContentViewModel
  * \brief This class is used to show the content of the file in a tree view.
@@ -35,7 +37,12 @@
 class ContentViewModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
+	QModelIndex index( ContentViewNode * node );
+
 private:
+	void callDataChanged( const QModelIndex & topLeft, const QModelIndex & bottomRight );
+
+	friend class ContentViewNode;
 };
 
 #endif /* __CONTENTVIEWCLASS_H__ */

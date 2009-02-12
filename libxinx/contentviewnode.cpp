@@ -29,7 +29,7 @@ bool ContentViewNodeListSort( ContentViewNode * d1, ContentViewNode * d2 ) {
 
 /* ContentViewNode */
 
-ContentViewNode::ContentViewNode( const QString & name, int line ) : m_line( line ), m_oldFlag( false ) {
+ContentViewNode::ContentViewNode( const QString & name, int line ) : m_oldFlag( false ), m_line( line ) {
 	m_datas.insert( ContentViewNode::NODE_NAME, name );
 }
 
@@ -50,8 +50,7 @@ void ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	int rowForModel = insertingRow - parent->m_childs.begin();
 
 	// If no model given we copy models from parent
-	ContentViewModel * parentModel = parent->model( id );
-	setModel( parentModel, id );
+	setModel( parent->model( id ), id );
 
 	// If model, we alert it of inserting a row
 	callModelBeginInsertRows( parent, rowForModel, id );
@@ -59,22 +58,27 @@ void ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	parent->m_childs.insert( insertingRow, this );
 
 	// If model, we alert it of end
-	callModelEndInsertRows( model );
+	callModelEndInsertRows( id );
 }
 
 void ContentViewNode::detach( unsigned long id ) {
-	if( ! m_parent.contains( parent ) ) return;
+	// Get the parent
+	ContentViewNode * parent = m_parents.value( id );
+	if( ! parent ) return;
 
+	// Get the model
+	ContentViewModel * model = m_models.value( id );
+	if( ! model ) return;
+
+	// Search the line to remove
 	int removingRow = parent->m_childs.indexOf( this );
 	if( removingRow < 0 ) return;
 
-	ContentViewModel * model = m_parent.key( parent );
-	if( ! model ) return;
 }
 
 void ContentViewNode::detach() {
-	foreach( ContentViewNode * parent, m_parent ) {
-		detach( parent );
+	foreach( unsigned long id, m_parents.keys() ) {
+		detach( id );
 	}
 }
 
@@ -87,16 +91,8 @@ void ContentViewNode::setModel( ContentViewModel * model, unsigned long id ) {
 	while ( stack.count() ) {
 		ContentViewNode * node  = stack.pop();
 
-		QPair< ContentViewModel *, ContentViewNode * > parent;
-		if( node->m_parent.contains( id ) ) {
-			parent = node->m_parent.value( id );
-			if( parent.first == model ) continue;
-
-			parent.first = model;
-		} else {
-			parent = qMakePair( model, (ContentViewNode*)0 );
-		}
-		node->m_parent.insert( id, parent );
+		if( node->m_models.value( id ) == model ) continue;
+		node->m_models.insert( id, model );
 
 		foreach ( ContentViewNode * child, node->m_childs )
 			stack.push( child );
@@ -104,7 +100,7 @@ void ContentViewNode::setModel( ContentViewModel * model, unsigned long id ) {
 }
 
 ContentViewModel * ContentViewNode::model( unsigned long id ) {
-	return m_parent.value( id ).first;
+	return m_models.value( id );
 }
 
 void ContentViewNode::removeAll() {
@@ -132,17 +128,17 @@ void ContentViewNode::markAsRecent() {
 }
 
 ContentViewNode * ContentViewNode::parent( unsigned long id ) const {
-	if( m_parent.contains( id ) )
-		return m_parent.value( id ).second;
+	if( m_parents.contains( id ) )
+		return m_parents.value( id );
 	else
-		return m_parent.value( 0 ).second;
+		return m_parents.value( 0 );
 }
 
 int ContentViewNode::line() const {
 	return m_line;
 }
 
-void ContentViewNode::setLine( int line ) {
+void ContentViewNode::setLine( int value ) {
 	if( m_line != value ) {
 		m_line = value;
 		callModelsDataChanged();
@@ -190,31 +186,35 @@ ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
 	m_line     = node.m_line;
 	m_filename = node.m_filename;
 	m_datas    = node.m_datas;
+
+	return *this;
 }
 
 void ContentViewNode::callModelsDataChanged() {
-	foreach( ContentViewModel * model, m_parent.keys() ) {
+	foreach( ContentViewModel * model, m_models ) {
 		if( ! model ) continue;
-		model->callDataChanged( index( this ), index( this ) );
+		model->callDataChanged( model->index( this ), model->index( this ) );
 	}
 }
 
-void ContentViewNode::callModelBeginInsertRows( ContentViewNode * node, int line, ContentViewModel * model ) {
+void ContentViewNode::callModelBeginInsertRows( ContentViewNode * node, int line, unsigned long id ) {
+	ContentViewModel * model = m_models.value( id );
 	if( model ) {
 		model->beginInsertRows( model->index( node ), line, line );
 	} else {
-		foreach( ContentViewModel * model, m_parent.keys() ) {
+		foreach( ContentViewModel * model, m_models ) {
 			if( ! model ) continue;
-			model->beginInsertRows( index( node ), line, line );
+			model->beginInsertRows( model->index( node ), line, line );
 		}
 	}
 }
 
-void ContentViewNode::callModelEndInsertRows( ContentViewModel * model ) {
+void ContentViewNode::callModelEndInsertRows( unsigned long id ) {
+	ContentViewModel * model = m_models.value( id );
 	if( model ) {
 		model->endInsertRows();
 	} else {
-		foreach( ContentViewModel * model, m_parent.keys() ) {
+		foreach( ContentViewModel * model, m_models ) {
 			if( ! model ) continue;
 			model->endInsertRows();
 		}

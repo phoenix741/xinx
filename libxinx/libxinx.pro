@@ -42,7 +42,8 @@ HEADERS = xinxproject.h \
     contentviewnode.h \
     contentviewmodel.h \
     contentviewparser.h
-SOURCES = contentviewnode.cpp \
+SOURCES = contentviewmodel.cpp \
+    contentviewnode.cpp \
     xinxproject.cpp \
     xinxformatscheme.cpp \
     textfileeditor.cpp \
