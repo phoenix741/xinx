@@ -37,41 +37,24 @@ ContentViewNode::~ContentViewNode() {
 	detach();
 }
 
-void ContentViewNode::attach( ContentViewNode * parent, ContentViewModel * model ) {
+void ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
+	// In case where we are already attach to parent
 	if( !parent || parent->m_childs.contains( this ) ) {
 		int finded = parent->m_childs.indexOf( this );
 		parent->m_childs.at( finded )->markAsRecent();
 		return;
 	}
 
-	// In case where we are already attach to parent
-	detach( parent );
-
 	// Search where inserting the node (sort by display name)
 	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( parent->m_childs.begin(), parent->m_childs.end(), this, ContentViewNodeListSort );
 	int rowForModel = insertingRow - parent->m_childs.begin();
 
 	// If no model given we copy models from parent
-
+	ContentViewModel * parentModel = parent->model( id );
+	setModel( parentModel, id );
 
 	// If model, we alert it of inserting a row
-	callModelBeginInsertRows( parent, rowForModel, model );
-
-	// Update the parent in the node and all it's child
-	m_parent.insert( model, parent );
-	if ( m_parent.keys().contains( model ) ) {
-		QStack< QPair< ContentViewNode*,ContentViewNode*> > stack;
-
-		stack.push( qMakePair( parent, this ) );
-		while ( stack.count() ) {
-			QPair<ContentViewNode *, ContentViewNode *> node  = stack.pop();
-
-			node.second->m_parent.insert( model, node.first );
-
-			foreach ( ContentViewNode * child, node.second->m_childs )
-				stack.push( qMakePair( node.second, child ) );
-		}
-	}
+	callModelBeginInsertRows( parent, rowForModel, id );
 
 	parent->m_childs.insert( insertingRow, this );
 
@@ -79,7 +62,7 @@ void ContentViewNode::attach( ContentViewNode * parent, ContentViewModel * model
 	callModelEndInsertRows( model );
 }
 
-void ContentViewNode::detach( ContentViewNode * parent ) {
+void ContentViewNode::detach( unsigned long id ) {
 	if( ! m_parent.contains( parent ) ) return;
 
 	int removingRow = parent->m_childs.indexOf( this );
@@ -93,6 +76,35 @@ void ContentViewNode::detach() {
 	foreach( ContentViewNode * parent, m_parent ) {
 		detach( parent );
 	}
+}
+
+void ContentViewNode::setModel( ContentViewModel * model, unsigned long id ) {
+	Q_ASSERT( id );
+
+	QStack< ContentViewNode* > stack;
+
+	stack.push( this );
+	while ( stack.count() ) {
+		ContentViewNode * node  = stack.pop();
+
+		QPair< ContentViewModel *, ContentViewNode * > parent;
+		if( node->m_parent.contains( id ) ) {
+			parent = node->m_parent.value( id );
+			if( parent.first == model ) continue;
+
+			parent.first = model;
+		} else {
+			parent = qMakePair( model, (ContentViewNode*)0 );
+		}
+		node->m_parent.insert( id, parent );
+
+		foreach ( ContentViewNode * child, node->m_childs )
+			stack.push( child );
+	}
+}
+
+ContentViewModel * ContentViewNode::model( unsigned long id ) {
+	return m_parent.value( id ).first;
 }
 
 void ContentViewNode::removeAll() {
@@ -119,11 +131,11 @@ void ContentViewNode::markAsRecent() {
 	m_oldFlag = false;
 }
 
-ContentViewNode * ContentViewNode::parent( ContentViewModel * model ) const {
-	if( m_parent.contains( model ) )
-		return m_parent.value( model );
+ContentViewNode * ContentViewNode::parent( unsigned long id ) const {
+	if( m_parent.contains( id ) )
+		return m_parent.value( id ).second;
 	else
-		return m_parent.value( 0, 0 );
+		return m_parent.value( 0 ).second;
 }
 
 int ContentViewNode::line() const {

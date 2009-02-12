@@ -42,8 +42,9 @@ class ContentViewModel;
  * add and remove, we define the used model.
  *
  * The object (if in the cache) can have many tuple parent-model. So, in some
- * case, we must call method with the model to use.
- * All modification (set) must be declared to the model (layoutChanged)
+ * case, we must call method with an id to know which tuple use. The id will be
+ * the root element of the structure when needed.
+ * All modification (set) must be warn to the model (layoutChanged)
  */
 class ContentViewNode {
 public:
@@ -73,27 +74,34 @@ public:
 	~ContentViewNode();
 
 	/*!
-	 * Attach this node and all it's child to the parent node below. If the model
-	 * is'nt in the list, we add it (with setModel).
+	 * Attach this node and all it's child to the parent node below. Use the parent model
+	 * to know which model use.
 	 * \param parent The parent node where this node is attached.
-	 * \param model The model to use. If not defined, the model of the parent \
-	 * object is use. <i>If the model is different from the parent model this can \
-	 * cause problem.</i>
-	 * \see attach()
+	 * \param id The id to use to known the context.
+	 * \see detach()
 	 */
-	void attach( ContentViewNode * parent, ContentViewModel * model = 0 );
+	void attach( ContentViewNode * parent, unsigned long id = 0 );
 
 	/*!
 	 * Detach the node from the parent, and from the model of the parent.
-	 * \see detach()
+	 * \see detach(), attach()
 	 */
-	void detach( ContentViewNode * parent );
+	void detach( unsigned long id );
 
 	/*!
 	 * Method provide for convinence.<br/> Detach the node from all parents.
-	 * \see detach(ContentViewNode*)
+	 * \see detach(ContentViewNode*), attach()
 	 */
 	void detach();
+
+	/*!
+	 * Set the content view model for a given id. We can't set the model
+	 * for a null id.
+	 */
+	void setModel( ContentViewModel * model, unsigned long id );
+
+	//! Get the model for the given id \e id.
+	ContentViewModel * model( unsigned long id );
 
 	/*!
 	 * Remove all elements of the list but not delete them.
@@ -127,7 +135,7 @@ public:
 	void markAsRecent();
 
 	//! Return the parent of this node for the given model.
-	ContentViewNode * parent( ContentViewModel * model ) const;
+	ContentViewNode * parent( unsigned long id ) const;
 
 	//! Return the register line for the node
 	int line() const;
@@ -170,7 +178,7 @@ private:
 	void callModelsDataChanged();
 	void callModelBeginInsertRows( ContentViewNode * node, int line, ContentViewModel * model );
 	void callModelEndInsertRows( ContentViewModel * model );
-	QHash<ContentViewModel*, ContentViewNode*> m_parent;
+	QHash<unsigned long, QPair<ContentViewModel*,ContentViewNode*> > m_parent;
 
 	bool m_oldFlag;
 	int m_line;

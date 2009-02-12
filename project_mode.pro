@@ -4,9 +4,9 @@ unix {
 }
 
 win32 {
-	MOC_DIR += .
-	OBJECTS_DIR += .
-	RCC_DIR += .
+	MOC_DIR = .
+	OBJECTS_DIR = .
+	RCC_DIR = .
 }
 
 QMAKE_CXXFLAGS_RELEASE = "-Os"
