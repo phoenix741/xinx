@@ -40,10 +40,37 @@ class ContentViewNode;
 class ContentViewModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
-	QModelIndex index( ContentViewNode * node );
+	/*!
+	 * Construct a file content model.
+	 * \param parent Parent of the file content model.
+	 */
+	ContentViewModel( ContentViewNode * root, QObject *parent = 0 );
+	/*! Destroy the model. */
+	virtual ~ContentViewModel();
 
+	/*!
+	 * This structure give the line and the filename where we can find data that
+	 * model represents.
+	 * If the filename is empty, the model refere to the current file.
+	 */
+	struct struct_file_content {
+		int line; /*!< The line of the element. */
+		QString filename; /*!< The file name of the element. If empty the file is the current file. */
+	};
+
+	virtual QVariant data( const QModelIndex &index, int role ) const;
+	virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
+	virtual QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
+	QModelIndex index( ContentViewNode * node ) const;
+	virtual QModelIndex parent( const QModelIndex &index ) const;
+	virtual bool hasChildren( const QModelIndex & parent = QModelIndex() ) const;
+	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;
 private:
 	void callDataChanged( const QModelIndex & topLeft, const QModelIndex & bottomRight );
+
+	ContentViewNode * m_rootNode;
 
 	friend class ContentViewNode;
 };

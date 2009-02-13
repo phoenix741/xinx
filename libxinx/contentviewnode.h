@@ -57,12 +57,12 @@ public:
 	 * as user value, if needed.
 	 */
 	enum RoleIndex {
-		NODE_TYPE         = 0,   //!< The waiting content is a QString.
-		NODE_NAME         = 1,   //!< The waiting content is a QString.
-		NODE_DISPLAY_NAME = 2,   //!< The waiting content is a QString.
-		NODE_DISPLAY_TIPS = 3,   //!< The waiting content is a QString.
-		NODE_ICON         = 4,   //!< The waiting content is a QIcon.
-		NODE_USER_VALUE   = 127, //!< No waiting content.
+			NODE_DISPLAY_NAME = 0,   //!< The waiting content is a QString.
+			NODE_ICON         = 1,   //!< The waiting content is a QIcon.
+			NODE_NAME         = 2,   //!< The waiting content is a QString.
+			NODE_DISPLAY_TIPS = 3,   //!< The waiting content is a QString.
+			NODE_TYPE         = 33,  //!< The waiting content is a QString.
+			NODE_USER_VALUE   = 34,  //!< No waiting content.
 	};
 
 	/*!
