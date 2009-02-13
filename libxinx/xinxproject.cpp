@@ -387,8 +387,8 @@ void XinxProject::loadFromFile( const QString & filename ) {
 	QDomElement root = document.documentElement();
 
 	// Test if Project File
-	if( root.tagName() != "XinxProject" )
-		throw XinxProjectException( tr("The file isn't a XINX Project") );
+	if( ( root.tagName() != "XinxProject" ) && ( root.tagName() != "XSLProject" ) )
+		throw XinxProjectException( tr("The file isn't a XINX Project. The root name must be \"XinxProject\", not \"%1\".").arg( root.tagName() ) );
 
 	d->m_version = PrivateXinxProject::getValue( document, "xinx_version" ).isEmpty() ? 0 : PrivateXinxProject::getValue( document, "xinx_version" ).toInt();
 	if( d->m_version > XINX_PROJECT_VERSION )
