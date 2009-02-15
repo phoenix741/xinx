@@ -17,49 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-/*!
- * \file contentviewmodel.h
- * \brief This file contains element to manage content view model.
- */
-
-#ifndef __CONTENTVIEWMODEL_H__
-#define __CONTENTVIEWMODEL_H__
+#ifndef _COMPLETIONNODEMODEL_H_
+#define _COMPLETIONNODEMODEL_H_
 
 // Xinx header
 #include "abstractcontentviewmodel.h"
 
-// Qt header
-#include <QAbstractItemModel>
-
-class ContentViewNode;
-
 /*!
- * \class ContentViewModel
- * \brief This class is used to show the content of the file in a tree view.
+ * \class CompletionNodeModel
+ * \brief The completion node model is used to complete editor.
  *
- * This class is used as a proxy of the tree view and content view nodes. It's
- * a sub-class of the Qt standard class QAbstractItemModel.
+ * The goal of CompletionNodeModel is to manage a list of elements for the
+ * completion. This completion model is used by an object like \e QCompleter.
  */
-class ContentViewModel : public AbstractContentViewModel {
+class CompletionNodeModel : public AbstractContentViewModel {
 	Q_OBJECT
 public:
 	/*!
-	 * Construct a file content model.
-	 * \param parent Parent of the file content model.
+	 * Create a completion node model.
+	 * \param root The root element that contains all node used for \
+	 * completion
+	 * \param parent The parent of the completion node model.
 	 */
-	ContentViewModel( ContentViewNode * root, QObject *parent = 0 );
-	/*! Destroy the model. */
-	virtual ~ContentViewModel();
-
-	/*!
-	 * This structure give the line and the filename where we can find data that
-	 * model represents.
-	 * If the filename is empty, the model refere to the current file.
-	 */
-	struct struct_file_content {
-		int line; /*!< The line of the element. */
-		QString filename; /*!< The file name of the element. If empty the file is the current file. */
-	};
+	CompletionNodeModel( ContentViewNode * root, QObject *parent = 0 );
+	//! Destroy the completion node model.
+	virtual ~CompletionNodeModel();
 
 	virtual QVariant data( const QModelIndex &index, int role ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
@@ -70,9 +52,31 @@ public:
 	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;
+protected:
+	//! Method to used to know if an element must be showed
+	virtual bool mustElementBeShowed( ContentViewNode * node );
+
+	//! List of all nodes in the model
+	QList<ContentViewNode*> & nodes();
+	//! List of showed nodes in the model
+	QList<ContentViewNode*> & showedNodes();
+
+	//! Show a node in the screen
+	void showNode( ContentViewNode * node );
+	//! Hide a node of the screen
+	void hideNode( ContentViewNode * node );
+	//! Return wether the node is showed or not
+	bool isElementShowed( ContentViewNode * node );
+
+	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
+	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );
+	virtual void endInsertNode();
+	virtual void endRemoveNode();
 private:
+	ContentViewNode * m_parent;
+	int m_first, m_last;
+
+	QList<ContentViewNode*> m_nodes, m_showedNodes;
 };
 
-Q_DECLARE_METATYPE( ContentViewModel::struct_file_content )
-
-#endif /* __CONTENTVIEWMODEL_H__ */
+#endif /* _COMPLETIONNODEMODEL_H_ */

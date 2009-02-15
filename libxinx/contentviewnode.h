@@ -29,7 +29,7 @@
 #include <QList>
 #include <QHash>
 
-class ContentViewModel;
+class AbstractContentViewModel;
 
 /*!
  * \class ContentViewNode
@@ -108,10 +108,10 @@ public:
 	 * Set the content view model for a given id. We can't set the model
 	 * for a null id.
 	 */
-	void setModel( ContentViewModel * model, unsigned long id );
+	void setModel( AbstractContentViewModel * model, unsigned long id );
 
 	//! Get the model for the given id \e id.
-	ContentViewModel * model( unsigned long id );
+	AbstractContentViewModel * model( unsigned long id );
 
 	/*!
 	 * Remove all elements of the list but not delete them.
@@ -183,7 +183,7 @@ private:
 	void clearModels();
 
 	QHash<unsigned long, ContentViewNode* > m_parents;
-	QHash<unsigned long, ContentViewModel* > m_models;
+	QHash<unsigned long, AbstractContentViewModel* > m_models;
 
 	bool m_canBeDeleted;
 	int m_line;
@@ -192,5 +192,7 @@ private:
 
 	QList<ContentViewNode*> m_childs;
 };
+
+extern bool ContentViewNodeListSort( ContentViewNode * d1, ContentViewNode * d2 );
 
 #endif /* __CONTENTVIEWNODE_H__ */

@@ -23,12 +23,12 @@
 
 /* ContentViewModel */
 
-ContentViewModel::ContentViewModel( ContentViewNode * root, QObject *parent ) : QAbstractItemModel( parent ), m_rootNode( root ) {
-	m_rootNode->setModel( this, (unsigned long)m_rootNode );
+ContentViewModel::ContentViewModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ) {
+
 }
 
 ContentViewModel::~ContentViewModel() {
-	m_rootNode->setModel( 0, (unsigned long)m_rootNode );
+
 }
 
 QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
@@ -39,15 +39,14 @@ QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
 
 	if( item ) {
 		if( role == Qt::UserRole ) {
-			FileContentItemModel::struct_file_content data;
+			ContentViewModel::struct_file_content data;
 			data.line = item->line();
-			data.filename = item->filename();
+			data.filename = item->fileName();
 			return QVariant::fromValue( data );
 		} else
-			return item->data( role );
-	} else
-		return QVariant();
-	return item ? item->data( role ) : QVariant();
+			return item->data( (ContentViewNode::RoleIndex)role );
+	}
+	return QVariant();
 }
 
 Qt::ItemFlags ContentViewModel::flags( const QModelIndex &index ) const {
@@ -58,11 +57,25 @@ Qt::ItemFlags ContentViewModel::flags( const QModelIndex &index ) const {
 }
 
 QModelIndex ContentViewModel::index( int row, int column, const QModelIndex &parent ) const {
+	if( column ) return QModelIndex();
+
+	ContentViewNode * item = 0;
+	if( parent.isValid() )
+		item = static_cast<ContentViewNode*>( parent.internalPointer() );
+	else
+		item = rootNode();
+
+	if( ( row < 0 ) || ( row >= item->childs().size() ) ) {
+		return QModelIndex();
+	}
+
+	ContentViewNode * child = item->childs().at( row );
+	return createIndex( row, column, child );
 }
 
 QModelIndex ContentViewModel::index( ContentViewNode * node ) const {
 	if( node ) {
-		ContentViewNode * parent = node->parent( (unsigned long)m_rootNode );
+		ContentViewNode * parent = node->parent( (unsigned long)rootNode() );
 		if( parent )
 			return createIndex( parent->childs().indexOf( node ), 0, node );
 	}
@@ -77,12 +90,12 @@ QModelIndex ContentViewModel::parent( const QModelIndex &index ) const {
 	if( !item )
 		return QModelIndex();
 
-	ContentViewNode * parent = item->parent( (unsigned long)m_rootNode );
+	ContentViewNode * parent = item->parent( (unsigned long)rootNode() );
 	if( !parent )
 		return QModelIndex();
 
-	ContentViewNode * parent2 = parent->parent( (unsigned long)m_rootNode );
-	if( !parent2 ) // In this case parent is m_rootNode
+	ContentViewNode * parent2 = parent->parent( (unsigned long)rootNode() );
+	if( !parent2 ) // In this case parent is rootNode()
 		return QModelIndex();
 
 	return createIndex( parent2->childs().indexOf( parent ), 0, parent );
@@ -93,9 +106,9 @@ bool ContentViewModel::hasChildren( const QModelIndex & parent ) const {
 }
 
 int ContentViewModel::rowCount( const QModelIndex &parent ) const {
-	if( ! parent.isValid() ) return m_rootNode.childs().size();
+	if( ! parent.isValid() ) return rootNode()->childs().size();
 
-	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
+	ContentViewNode * item = static_cast<ContentViewNode*>( parent.internalPointer() );
 
 	return item ? item->childs().size() : 0;
 }
@@ -112,6 +125,3 @@ int ContentViewModel::columnCount( const QModelIndex &parent ) const {
 	return 1;
 }
 
-void ContentViewModel::callDataChanged( const QModelIndex & topLeft, const QModelIndex & bottomRight ) {
-	emit dataChanged( topLeft, bottomRight );
-}

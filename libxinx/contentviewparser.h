@@ -69,14 +69,30 @@ private:
  *
  */
 class ContentViewParser {
+public:
+	/*!
+	 * Create a content view parser used to fill the content of a node.
+	 * If \e autoDelete is se to true, the object will be self destroyed after
+	 * the content of the node read.
+	 */
+	ContentViewParser( bool autoDelete = false );
 	virtual ~ContentViewParser();
 
-	/*! Loed the content of the device. and return the root element of the content view */
-	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) = 0;
+	/*! Load the content of the device. and return the root element of the content view */
+	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
 	/*! Construct elements from \e content. */
 	virtual void loadFromContent( ContentViewNode * rootNode, const QString & content );
 	/*! Construct elements from \e filename. */
 	virtual void loadFromFile( ContentViewNode * rootNode, const QString & filename );
+
+	/*! Change the autodelete member to \e value. */
+	void setAutoDelete( bool value );
+	/*! Return wethere the object will be auto deleted */
+	bool isAutoDelete() const;
+protected:
+	virtual void loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) = 0;
+public:
+	bool m_autoDelete;
 };
 
 #endif /* __CONTENTVIEWPARSER_H__ */

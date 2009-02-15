@@ -41,7 +41,18 @@ int ContentViewException::getColumn() const {
 
 /* ContentViewParser */
 
+ContentViewParser::ContentViewParser( bool autoDelete ) : m_autoDelete( autoDelete ) {
+}
+
 ContentViewParser::~ContentViewParser() {
+}
+
+void ContentViewParser::setAutoDelete( bool value ) {
+	m_autoDelete = value;
+}
+
+bool ContentViewParser::isAutoDelete() const {
+	return m_autoDelete;
 }
 
 void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
@@ -49,7 +60,9 @@ void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QStri
 	QBuffer buffer( &contentArray );
 	buffer.open( QIODevice::ReadOnly );
 
-	return loadFromDevice( rootNode, &buffer );
+	loadFromDeviceImpl( rootNode, &buffer );
+
+	if( m_autoDelete ) delete this;
 }
 
 void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString & filename ) {
@@ -59,5 +72,13 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 	if (!file.open(QFile::ReadOnly))
 		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
 
-	return loadFromDevice( rootNode, & file );
+	loadFromDeviceImpl( rootNode, & file );
+
+	if( m_autoDelete ) delete this;
+}
+
+void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
+	loadFromDeviceImpl( rootNode, device );
+
+	if( m_autoDelete ) delete this;
 }

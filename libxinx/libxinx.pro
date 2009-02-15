@@ -13,9 +13,9 @@ LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
     -lqcodeedit
-win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
-win32:RC_FILE += rc/libxinx.rc
+win32 : RC_FILE += rc/libxinx.rc
 HEADERS = xinxproject.h \
     xinxformatscheme.h \
     textfileeditor.h \
@@ -41,7 +41,9 @@ HEADERS = xinxproject.h \
     contentviewcache.h \
     contentviewnode.h \
     contentviewmodel.h \
-    contentviewparser.h
+    contentviewparser.h \
+ completionnodelist.h \
+ abstractcontentviewmodel.h
 SOURCES = contentviewmodel.cpp \
     contentviewnode.cpp \
     xinxproject.cpp \
@@ -63,7 +65,10 @@ SOURCES = contentviewmodel.cpp \
     xinxpluginelement.cpp \
     xinxcodeedit.cpp \
     xinxlanguagefactory.cpp \
-    contentviewparser.cpp
+    contentviewparser.cpp \
+ contentviewcache.cpp \
+ abstractcontentviewmodel.cpp \
+ completionnodemodel.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
 SOURCES -= xinxformatfactory.cpp

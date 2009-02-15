@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "contentviewnode.h"
-#include "contentviewmodel.h"
+#include "abstractcontentviewmodel.h"
 
 // Qt header
 #include <QStack>
@@ -109,7 +109,7 @@ void ContentViewNode::detach() {
 	}
 }
 
-void ContentViewNode::setModel( ContentViewModel * model, unsigned long id ) {
+void ContentViewNode::setModel( AbstractContentViewModel * model, unsigned long id ) {
 	Q_ASSERT( id );
 
 	QStack< ContentViewNode* > stack;
@@ -132,7 +132,7 @@ void ContentViewNode::setModel( ContentViewModel * model, unsigned long id ) {
 }
 
 void ContentViewNode::setModels() {
-	QHash<unsigned long, ContentViewModel* > models = m_models;
+	QHash<unsigned long, AbstractContentViewModel* > models = m_models;
 	QStack< ContentViewNode* > stack;
 
 	stack.push( this );
@@ -163,7 +163,7 @@ void ContentViewNode::clearModels() {
 }
 
 
-ContentViewModel * ContentViewNode::model( unsigned long id ) {
+AbstractContentViewModel * ContentViewNode::model( unsigned long id ) {
 	return m_models.value( id );
 }
 
@@ -262,56 +262,56 @@ ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
 }
 
 void ContentViewNode::callModelsDataChanged() {
-	foreach( ContentViewModel * model, m_models ) {
+	foreach( AbstractContentViewModel * model, m_models ) {
 		if( ! model ) continue;
-		model->callDataChanged( model->index( this ), model->index( this ) );
+		model->nodeChanged( this );
 	}
 }
 
 void ContentViewNode::callModelBeginInsertRows( ContentViewNode * node, int line, unsigned long id ) {
-	ContentViewModel * model = m_models.value( id );
+	AbstractContentViewModel * model = m_models.value( id );
 	if( model ) {
-		model->beginInsertRows( model->index( node ), line, line );
+		model->beginInsertNode( node, line, line );
 	} else {
-		foreach( ContentViewModel * model, m_models ) {
+		foreach( AbstractContentViewModel * model, m_models ) {
 			if( ! model ) continue;
-			model->beginInsertRows( model->index( node ), line, line );
+			model->beginInsertNode( node, line, line );
 		}
 	}
 }
 
 void ContentViewNode::callModelEndInsertRows( unsigned long id ) {
-	ContentViewModel * model = m_models.value( id );
+	AbstractContentViewModel * model = m_models.value( id );
 	if( model ) {
-		model->endInsertRows();
+		model->endInsertNode();
 	} else {
-		foreach( ContentViewModel * model, m_models ) {
+		foreach( AbstractContentViewModel * model, m_models ) {
 			if( ! model ) continue;
-			model->endInsertRows();
+			model->endInsertNode();
 		}
 	}
 }
 
 void ContentViewNode::callModelBeginRemoveRows( ContentViewNode * node, int firstLine, int lastLine, unsigned long id ) {
-	ContentViewModel * model = m_models.value( id );
+	AbstractContentViewModel * model = m_models.value( id );
 	if( model ) {
-		model->beginRemoveRows( model->index( node ), firstLine, lastLine );
+		model->beginRemoveNode( node, firstLine, lastLine );
 	} else {
-		foreach( ContentViewModel * model, m_models ) {
+		foreach( AbstractContentViewModel * model, m_models ) {
 			if( ! model ) continue;
-			model->beginRemoveRows( model->index( node ), firstLine, lastLine );
+			model->beginRemoveNode( node, firstLine, lastLine );
 		}
 	}
 }
 
 void ContentViewNode::callModelEndRemoveRows( unsigned long id ) {
-	ContentViewModel * model = m_models.value( id );
+	AbstractContentViewModel * model = m_models.value( id );
 	if( model ) {
-		model->endRemoveRows();
+		model->endRemoveNode();
 	} else {
-		foreach( ContentViewModel * model, m_models ) {
+		foreach( AbstractContentViewModel * model, m_models ) {
 			if( ! model ) continue;
-			model->endRemoveRows();
+			model->endRemoveNode();
 		}
 	}
 }

@@ -18,47 +18,46 @@
  * *********************************************************************** */
 
 /*!
- * \file contentviewcache.h
- * \brief Class to allow caching of content view object and access it.
+ * \file abstractcontentviewmodel.h
+ * \brief This file contains element to manage content view node for content view or for completion.
  */
 
-#ifndef __CONTENTVIEWCLASS_H__
-#define __CONTENTVIEWCLASS_H__
+#ifndef __ABSTRACTCONTENTVIEWMODEL_H__
+#define __ABSTRACTCONTENTVIEWMODEL_H__
 
 // Qt header
-#include <QCache>
+#include <QAbstractItemModel>
 
-class XinxProject;
 class ContentViewNode;
-class ContentViewParser;
 
 /*!
- * \class ContentViewCache
- * \brief This class containt a list of pre-loaded file that can be used in content view obect.
- *
- * This class is creating by a project. All file defined in the project is pre-loaded. Next when
- * a content view object want to access to a file, he look to know if the file isn't already
- * pre-loaded.
- *
- * If the content of the file is found, he is returned ; else he is created. In this last case,
- * we launch a thread to fill the content of the node.
- *
- * The goal is to down the size in the memory, and speed up the loading of file and completion.
+ * \class AbstractContentViewModel
+ * \brief This class is used to show the content of the file in a tree view or in completion.
  */
-class ContentViewCache {
+class AbstractContentViewModel : public QAbstractItemModel {
+	Q_OBJECT
 public:
-	//! Create a content view cache and preloads project.
-	ContentViewCache( XinxProject * project );
-
 	/*!
-	 * Return the content view for the given file name. Look in the cache if the
-	 * node exist. If not, use the XinxPluginLoader to create the content file name.
-	 * \param filename The file name of the content view to create.
-	 * \return Return the content view of the file name given in parameters.
+	 * Construct a file node model.
+	 * \param parent Parent of the file node model.
 	 */
-	ContentViewNode * contentOfFileName( const QString & filename );
+	AbstractContentViewModel( ContentViewNode * root, QObject *parent = 0 );
+	/*! Destroy the model. */
+	virtual ~AbstractContentViewModel();
+
+	virtual QModelIndex index( ContentViewNode * node ) const = 0;
+protected:
+	ContentViewNode * rootNode() const;
+
+	virtual void nodeChanged( ContentViewNode * node );
+	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
+	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );
+	virtual void endInsertNode();
+	virtual void endRemoveNode();
 private:
-	QCache<QString,ContentViewNode*> m_nodes;
+	ContentViewNode * m_rootNode;
+
+	friend class ContentViewNode;
 };
 
-#endif /* __CONTENTVIEWCLASS_H__ */
+#endif /* __ABSTRACTCONTENTVIEWMODEL_H__ */
