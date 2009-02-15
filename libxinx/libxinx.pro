@@ -42,8 +42,8 @@ HEADERS = xinxproject.h \
     contentviewnode.h \
     contentviewmodel.h \
     contentviewparser.h \
- completionnodelist.h \
- abstractcontentviewmodel.h
+    completionnodemodel.h \
+    abstractcontentviewmodel.h
 SOURCES = contentviewmodel.cpp \
     contentviewnode.cpp \
     xinxproject.cpp \
@@ -66,10 +66,8 @@ SOURCES = contentviewmodel.cpp \
     xinxcodeedit.cpp \
     xinxlanguagefactory.cpp \
     contentviewparser.cpp \
- contentviewcache.cpp \
- abstractcontentviewmodel.cpp \
- completionnodemodel.cpp
+    contentviewcache.cpp \
+    abstractcontentviewmodel.cpp \
+    completionnodemodel.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
-SOURCES -= xinxformatfactory.cpp
-HEADERS -= xinxformatfactory.h
