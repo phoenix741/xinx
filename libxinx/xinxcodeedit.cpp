@@ -274,6 +274,7 @@ QString XinxCodeEdit::toPlainText() const {
 }
 
 void XinxCodeEdit::setPlainText( const QString & text ) {
+	m_editor->editor()->cursor().movePosition( 1, QDocumentCursor::Start );
 	m_editor->editor()->setText( text );
 	m_editor->editor()->document()->setClean();
 	m_editor->editor()->update();
@@ -289,6 +290,7 @@ void XinxCodeEdit::setSelection( QString text ) {
 		m_editor->editor()->cursor().beginEditBlock();
 		m_editor->editor()->selectAll();
 		m_editor->editor()->cursor().removeSelectedText();
+		m_editor->editor()->cursor().movePosition( 1, QDocumentCursor::Start );
 		m_editor->editor()->cursor().insertText( text );
 		m_editor->editor()->cursor().endEditBlock();
 	}
@@ -329,8 +331,7 @@ bool XinxCodeEdit::canPaste() {
 }
 
 void XinxCodeEdit::print( QPrinter * printer ) const {
-	Q_UNUSED( printer );
-	//! \todo implement the print method
+	document()->print( printer );
 }
 
 void XinxCodeEdit::setModified( bool modified ) {

@@ -72,7 +72,7 @@ void SnipetDialogImpl::updateFont() {
 	QFont font = XINXConfig::self()->config().editor.defaultFormat;
 	QFontMetrics fm( font );
 	m_textEdit->setFont( font );
-	m_textEdit->setTabStopWidth( fm.width("M") * XINXConfig::self()->config().editor.tabulationSize );
+	m_textEdit->setTabStopWidth( XINXConfig::self()->config().editor.tabulationSize );
 }
 
 void SnipetDialogImpl::setupUi( QDialog * parent ) {

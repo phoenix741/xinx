@@ -92,8 +92,8 @@ void XINXConfig::addFormatScheme( const QString & id, XinxFormatScheme * scheme 
 XinxFormatScheme * XINXConfig::scheme( const QString & highlighter ) {
 	if( ! m_formatScheme.contains( highlighter ) ) {
 		XinxFormatScheme * scheme = XinxPluginsLoader::self()->scheme( highlighter, this );
-		scheme->updateFormatsFromConfig();
 		if( scheme ) {
+			scheme->updateFormatsFromConfig();
 			m_formatScheme[ highlighter ] = scheme;
 		}
 	}

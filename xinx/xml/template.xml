@@ -190,7 +190,7 @@ You may have to change min and max value !!!
     <Param name="ViewObject name" />
     <Param name="Composite View name" />
   </Snipet>
-  <Snipet category="Global Input" key="param140" icon="" type="xsl" name="Parameter from URL" >
+  <Snipet category="Global Input" key="param140" icon="" type="xml" name="Parameter from URL" >
     <Description>Define a stylesheet parameter from an URL value (GCE140)</Description>
     <Text>&lt;xsl:param name="&lt;?= '%1'.toUpperCase().replace(/\W/g, '')?>">
 	&lt;xsl:value-of select="/layout_data/application_data/temporaire/param[@name='%1']/@value"/>

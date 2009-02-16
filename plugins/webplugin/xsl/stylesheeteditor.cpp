@@ -82,6 +82,8 @@ bool StyleSheetEditor::autoIndent() {
 
 		textEdit()->textCursor().beginEditBlock();
 		textEdit()->editor()->selectAll();
+		textEdit()->textCursor().removeSelectedText();
+		textEdit()->textCursor().movePosition( 1, QDocumentCursor::Start );
 		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
 		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {
