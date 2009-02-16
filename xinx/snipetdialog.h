@@ -75,12 +75,11 @@ public:
 	Snipet getSnipet();
 
 private slots:
-	void on_m_textEdit_textChanged();
+	void m_textEdit_textChanged();
 	void on_m_extLineEdit_textChanged( const QString & text );
 private:
 	void setupUi( QDialog * parent );
 	void addParamLine();
-	void updateFont();
 
 	QGridLayout * m_paramGrid;
 

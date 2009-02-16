@@ -32,7 +32,6 @@ SnipetDialogImpl::SnipetDialogImpl( const QString & text, QWidget * parent, Qt::
 	setupUi( this );
 
 	m_textEdit->setPlainText( text );
-	updateFont();
 }
 
 SnipetDialogImpl::SnipetDialogImpl( const QString & type, const QString & text, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
@@ -40,7 +39,6 @@ SnipetDialogImpl::SnipetDialogImpl( const QString & type, const QString & text, 
 
 	m_extLineEdit->setText( type );
 	m_textEdit->setPlainText( text );
-	updateFont();
 }
 
 SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
@@ -53,7 +51,6 @@ SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt:
 	m_iconLineEdit->setText( snipet.icon() );
 	m_categoryComboBox->setEditText( snipet.category() );
 	m_textEdit->setPlainText( snipet.text() );
-	updateFont();
 
 	int index = 0;
 	QListIterator< QPair<QLabel*,QLineEdit*> > i( m_paramList );
@@ -68,15 +65,10 @@ SnipetDialogImpl::~SnipetDialogImpl() {
 
 }
 
-void SnipetDialogImpl::updateFont() {
-	QFont font = XINXConfig::self()->config().editor.defaultFormat;
-	QFontMetrics fm( font );
-	m_textEdit->setFont( font );
-	m_textEdit->setTabStopWidth( XINXConfig::self()->config().editor.tabulationSize );
-}
-
 void SnipetDialogImpl::setupUi( QDialog * parent ) {
 	Ui::SnipetDialog::setupUi( parent );
+
+	connect( m_textEdit->document(), SIGNAL(contentsChanged()), this, SLOT(m_textEdit_textChanged()) );
 
 	m_categoryComboBox->clear();
 	m_categoryComboBox->addItems( SnipetListManager::self()->snipets().categories() );
@@ -89,7 +81,7 @@ void SnipetDialogImpl::on_m_extLineEdit_textChanged( const QString & text ) {
 	m_textEdit->setHighlighter( text );
 }
 
-void SnipetDialogImpl::on_m_textEdit_textChanged() {
+void SnipetDialogImpl::m_textEdit_textChanged() {
 	QString text = m_textEdit->toPlainText();
 	bool finded = true;
 	int i;

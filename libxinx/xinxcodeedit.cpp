@@ -395,21 +395,25 @@ void XinxCodeEdit::updateFont() {
 }
 
 void XinxCodeEdit::insertText( const QString & text ) {
-	QString txt = text, left, right;
 	QDocumentCursor cursor = textCursor();
-	QDocumentLine previous = cursor.line().previous();
-	QString indent = previous.text();
-	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) ) + "\t";
 
-	while( txt.contains( "\n" ) ) {
-		int index  = txt.indexOf( "\n" );
-		QString left = txt.left( index ),
-			rigth = txt.mid( index + 1 );
-		cursor.insertText( left );
-		txt = rigth;
-		cursor.insertText( "\n" + indent );
+	QString indent = cursor.line().previous().text();
+	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
+
+	QStringList lines = text.trimmed().split( "\n", QString::KeepEmptyParts );
+
+	QStringListIterator i( lines );
+	if( i.hasNext() ) {
+		cursor.insertText( i.next() );
+		if( i.hasNext() )
+			cursor.insertLine();
 	}
-	cursor.insertText( txt + " " );
+
+	while( i.hasNext() ) {
+		cursor.insertText( indent + i.next() );
+		if( i.hasNext() )
+			cursor.insertLine();
+	}
 	setTextCursor( cursor );
 }
 
