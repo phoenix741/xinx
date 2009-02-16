@@ -114,6 +114,9 @@ file (this won't work if you have not installed QCodeEdit as described above....
 
 CONFIG += qcodeedit
 
+If you did not install QCodeEdit as described above you will have to either update the file
+qcodeedit.prf or inspect it to determine what project variables need to be adjusted and how.
+
 Then, add proper headers in your sources and start coding. :D
 
 
@@ -152,7 +155,7 @@ NB : [file] stands for a filename. If omitted a minimal string will be loaded an
 considered as C++ source code
 
 
- >>> Documentation [needs Doxygen : http://www.doxygen.org] :
+ >>> Generating documentation [needs Doxygen : http://www.doxygen.org] :
 
 ------------------------------------------------------------------------------------------
 $ doxygen

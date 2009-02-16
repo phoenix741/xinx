@@ -97,7 +97,8 @@ QSearchReplacePanel::QSearchReplacePanel(QWidget *p)
 */
 QSearchReplacePanel::~QSearchReplacePanel()
 {
-	
+	if ( m_search )
+		delete m_search;
 }
 
 /*!
@@ -196,10 +197,12 @@ void QSearchReplacePanel::find(int backward)
 */
 void QSearchReplacePanel::hideEvent(QHideEvent *)
 {
+	/*
 	if ( m_search )
 		delete m_search;
 	
 	m_search = 0;
+	*/
 }
 
 /*!
@@ -322,15 +325,23 @@ void QSearchReplacePanel::on_cbCase_toggled(bool on)
 void QSearchReplacePanel::on_cbCursor_toggled(bool on)
 {
 	if ( m_search )
-		m_search->setCursor(on ? editor()->cursor() : QDocumentCursor());
+		m_search->setOrigin(on ? editor()->cursor() : QDocumentCursor());
 	
 	leFind->setFocus();
 }
 
 void QSearchReplacePanel::on_cbHighlight_toggled(bool on)
 {
+	if ( !m_search )
+		init();
+	
 	if ( m_search )
+	{
 		m_search->setOption(QDocumentSearch::HighlightAll, on);
+		
+		if ( on && !m_search->indexedMatchCount() )
+			m_search->next(false);
+	}
 	
 	leFind->setFocus();
 }

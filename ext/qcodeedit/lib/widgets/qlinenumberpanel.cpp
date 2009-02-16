@@ -117,11 +117,21 @@ void QLineNumberPanel::paint(QPainter *p, QEditor *e)
 			0x21B3
 			0x2937
 	*/
-	static const QChar wrappingArrow(0x2937);
 	
 	QFont f(font());
 	f.setWeight(QFont::Bold);
 	const QFontMetrics sfm(f);
+	
+	#ifndef WIN32
+	static const QChar wrappingArrow(0x2937);
+	const QFontMetrics specialSfm(sfm);
+	#else
+	static const QChar wrappingArrow('Ä');
+	QFont specialFont(font());
+	specialFont.setRawName("Wingdings");
+	const QFontMetrics specialSfm(specialFont);
+	#endif
+	
 	const int max = e->document()->lines();
 	const int panelWidth = sfm.width(QString::number(max)) + 5;
 	setFixedWidth(panelWidth);
@@ -132,7 +142,7 @@ void QLineNumberPanel::paint(QPainter *p, QEditor *e)
 		as = fm.ascent(),
 		ls = fm.lineSpacing(),
 		pageBottom = e->viewport()->height(),
-		contentsY = e->verticalScrollBar()->value();
+		contentsY = e->verticalOffset();
 	
 	QString txt;
 	QDocument *d = e->document();
@@ -155,18 +165,11 @@ void QLineNumberPanel::paint(QPainter *p, QEditor *e)
 		if ( line.isHidden() )
 			continue;
 		
-		/*
-		int vl = d->impl()->visualLine(n);
-		int tl = d->impl()->textLine(vl);
-		
-		txt = QString::number(vl) + ":" + QString::number(tl);
-		*/
-		
 		bool draw = true;
 		
 		if ( !m_verbose )
 		{
-			draw = !((n + 1) % 10) || !n;
+			draw = !((n + 1) % 10) || !n || line.marks().count();
 		}
 		
 		txt = QString::number(n + 1);
@@ -188,18 +191,6 @@ void QLineNumberPanel::paint(QPainter *p, QEditor *e)
 						posY,
 						txt);
 			
-			for ( int i = 1; i < line.lineSpan(); ++i )
-			{
-				// draw line wrapping indicators
-				
-				p->drawText(width() - 2 - sfm.width(wrappingArrow), posY + i * ls, wrappingArrow);
-				
-				/*
-				p->drawText(width() - 2 - sfm.width(txt),
-							posY + i * ls,
-							QString("--") + ":" + QString::number(d->impl()->textLine(vl + i)));
-				*/
-			}
 		} else {
 			int yOff = posY - (as + 1) + ls / 2;
 			
@@ -207,6 +198,26 @@ void QLineNumberPanel::paint(QPainter *p, QEditor *e)
 				p->drawPoint(width() - 5, yOff);
 			else
 				p->drawLine(width() - 7, yOff, width() - 2, yOff);
+		}
+		
+		if ( line.lineSpan() > 1 )
+		{
+			#ifdef Q_OS_WIN32
+			p->save();
+			specialFont.setBold(n == cursorLine); //todo: only get bold on the current wrapped line
+			p->setFont(specialFont);
+			#endif
+
+			for ( int i = 1; i < line.lineSpan(); ++i )
+			{
+				// draw line wrapping indicators
+				//p->drawText(width() - 2 - sfm.width(wrappingArrow), posY + i * ls, wrappingArrow);
+				p->drawText(width() - 1 - specialSfm.width(wrappingArrow), posY + i * ls, wrappingArrow);
+			}
+			
+			#ifdef Q_OS_WIN32
+			p->restore();
+			#endif
 		}
 		
 		if ( n == cursorLine )

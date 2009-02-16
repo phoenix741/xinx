@@ -21,14 +21,26 @@
 	\brief
 */
 
+#include <QStringList>
+
+class QEditor;
+
 class Snippet
 {
 	public:
 		virtual ~Snippet() {}
 		
-		virtual QString name() const = 0;
-		virtual QString identifier() const = 0;
+		inline QString name() const { return m_name; }
+		inline void setName(const QString& n) { m_name = n; }
+		
+		inline QStringList contexts() const { return m_contexts; }
+		inline void setContexts(const QStringList& l) { m_contexts = l; }
+		
 		virtual void insert(QEditor *e) const = 0;
+		
+	private:
+		QString m_name;
+		QStringList m_contexts;
 };
 
 class SnippetManager
@@ -46,10 +58,16 @@ class SnippetManager
 		virtual ~SnippetManager();
 		
 		int snippetCount() const;
-		const Snippet* snippet(int i) const;
+		Snippet* snippet(int i) const;
+		void removeSnippet(int i, bool cleanup = true);
 		
-		void loadSnippetFromString(const QString& s, int type = Simple);
-		void loadSnippetFromFile(const QString& file, int type = Simple);
+		void addSnippet(Snippet *s);
+		
+		void reloadSnippetFromString(int i, const QString& s, int type = Simple);
+		void reloadSnippetFromFile(int i, const QString& file, int type = Simple);
+		
+		Snippet* loadSnippetFromString(const QString& s, int type = Simple);
+		Snippet* loadSnippetFromFile(const QString& file, int type = Simple);
 		
 	protected:
 		virtual Snippet* loadFile(const QString& s, int type = Simple);

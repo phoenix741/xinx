@@ -11,18 +11,23 @@ class QEditConfig;
 class QFormatScheme;
 class QLanguageFactory;
 
+class SnippetManager;
+
 class Window : public QMainWindow, private Ui::MainWindow
 {
 	Q_OBJECT
 	
 	public:
 		Window(QWidget *p = 0);
-		
+		virtual ~Window();
+
 	public slots:
 		void load(const QString& file);
 		
 	protected:
 		virtual void closeEvent(QCloseEvent *e);
+		
+		virtual void switchPage(int i);
 		
 	private slots:
 		void on_action_New_triggered();
@@ -38,7 +43,14 @@ class Window : public QMainWindow, private Ui::MainWindow
 		
 		void on_bbSettings_clicked(QAbstractButton *b);
 		
+		void on_lwSnippets_currentRowChanged(int idx);
+		
+		void on_bNewSnippet_clicked();
+		void on_bEraseSnippet_clicked();
+		void on_bExitSnippets_clicked();
+		
 		void on_action_Settings_triggered();
+		void on_action_Snippets_triggered();
 		void on_action_Reload_syntax_files_triggered();
 		
 		void on_action_About_triggered();
@@ -48,12 +60,20 @@ class Window : public QMainWindow, private Ui::MainWindow
 		
 	private:
 		bool maybeSave();
+		bool maybeCommitSnippetChanges();
+		
 		void updateRecentFiles(const QString& filename = QString());
 		
 		QEditConfig *m_config;
 		QCodeEdit *m_editControl;
 		QFormatScheme *m_formats;
 		QLanguageFactory *m_languages;
+		
+		QToolBar *m_edit, *m_find;
+		
+		int m_editedSnippet;
+		QStringList m_snippetPatterns;
+		SnippetManager *m_snippetManager;
 };
 
 #endif

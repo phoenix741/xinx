@@ -258,7 +258,7 @@ QReliableFileWatch* QEditor::watcher()
 
 ////////////////////////////////////////////////////////////////////////
 
-int QEditor::m_defaultFlags = 0;
+int QEditor::m_defaultFlags = QEditor::AutoIndent;
 QTextCodec* QEditor::m_defaultCodec = 0;
 
 /*!
@@ -292,7 +292,7 @@ void QEditor::setDefaultFlags(int flags)
 		
 		if ( ontoWrap )
 		{
-			e->document()->setWidthConstraint(e->viewport()->width());
+			e->document()->setWidthConstraint(e->wrapWidth());
 		} else if ( outOfWrap ) {
 			e->document()->clearWidthConstraint();
 		}
@@ -384,7 +384,7 @@ QEditor::QEditor(QWidget *p)
  : QAbstractScrollArea(p),
 	pMenu(0), m_lineEndingsMenu(0), m_lineEndingsActions(0),
 	m_bindingsMenu(0), aDefaultBinding(0), m_bindingsActions(0),
-	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_state(defaultFlags())
+	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_curPlaceHolder(-1), m_state(defaultFlags())
 {
 	m_editors << this;
 	
@@ -401,7 +401,7 @@ QEditor::QEditor(bool actions, QWidget *p)
  : QAbstractScrollArea(p),
 	pMenu(0), m_lineEndingsMenu(0), m_lineEndingsActions(0),
 	m_bindingsMenu(0), aDefaultBinding(0), m_bindingsActions(0),
-	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_state(defaultFlags())
+	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_curPlaceHolder(-1), m_state(defaultFlags())
 {
 	m_editors << this;
 	
@@ -420,7 +420,7 @@ QEditor::QEditor(const QString& s, QWidget *p)
  : QAbstractScrollArea(p),
 	pMenu(0), m_lineEndingsMenu(0), m_lineEndingsActions(0),
 	m_bindingsMenu(0), aDefaultBinding(0), m_bindingsActions(0),
-	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_state(defaultFlags())
+	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_curPlaceHolder(-1), m_state(defaultFlags())
 {
 	m_editors << this;
 	
@@ -441,7 +441,7 @@ QEditor::QEditor(const QString& s, bool actions, QWidget *p)
  : QAbstractScrollArea(p),
 	pMenu(0), m_lineEndingsMenu(0), m_lineEndingsActions(0),
 	m_bindingsMenu(0), aDefaultBinding(0), m_bindingsActions(0),
-	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_state(defaultFlags())
+	m_doc(0), m_codec(m_defaultCodec), m_binding(m_defaultBinding), m_definition(0), m_curPlaceHolder(-1), m_state(defaultFlags())
 {
 	m_editors << this;
 	
@@ -485,7 +485,7 @@ void QEditor::init(bool actions)
 	//viewport()->setAttribute(Qt::WA_OpaquePaintEvent, true);
 	viewport()->setAttribute(Qt::WA_InputMethodEnabled, true);
 	
-	verticalScrollBar()->setSingleStep(20);
+	verticalScrollBar()->setSingleStep(1);
 	horizontalScrollBar()->setSingleStep(20);
 	
 	setAcceptDrops(true);
@@ -534,7 +534,7 @@ void QEditor::init(bool actions)
 	m_cursor = QDocumentCursor(m_doc);
 	m_cursor.setAutoUpdated(true);
 	
-	m_doc->setEditCursor(&m_cursor);
+	//m_doc->setEditCursor(&m_cursor);
 	
 	if ( actions )
 	{
@@ -788,7 +788,9 @@ void QEditor::setFlag(EditFlag f, bool b)
 		if ( f == LineWrap )
 		{
 			if ( isVisible() )
-				m_doc->setWidthConstraint(viewport()->width());
+				m_doc->setWidthConstraint(wrapWidth());
+			
+			m_cursor.refreshColumnMemory();
 			
 			QAction *a = m_actions.value("wrap");
 			
@@ -802,6 +804,8 @@ void QEditor::setFlag(EditFlag f, bool b)
 		{
 			if ( isVisible() )
 				m_doc->clearWidthConstraint();
+			
+			m_cursor.refreshColumnMemory();
 			
 			QAction *a = m_actions.value("wrap");
 			
@@ -867,13 +871,16 @@ QString QEditor::text(int line) const
 */
 void QEditor::setText(const QString& s)
 {
+	clearPlaceHolders();
+	
 	if ( m_doc )
 		m_doc->setText(s);
 	
 	setCursor(QDocumentCursor(m_doc));
-	
+
 	documentWidthChanged(m_doc->width());
 	documentHeightChanged(m_doc->height());
+	viewport()->update();
 }
 
 /*!
@@ -1649,7 +1656,9 @@ void QEditor::lineEndingChanged(int lineEnding)
 */
 QDocumentCursor QEditor::cursor() const
 {
-	return m_cursor;
+	QDocumentCursor copy = m_cursor;
+	copy.setAutoUpdated(false);
+	return copy;
 }
 
 /*!
@@ -1659,7 +1668,8 @@ void QEditor::setCursor(const QDocumentCursor& c)
 {
 	repaintCursor();
 	
-	m_cursor = c;
+	m_cursor = c.isValid() ? c : QDocumentCursor(m_doc);
+	m_cursor.setAutoUpdated(true);
 	clearCursorMirrors();
 	
 	emitCursorPositionChanged();
@@ -1719,6 +1729,21 @@ QDocumentCursor QEditor::cursorMirror(int i) const
 void QEditor::clearPlaceHolders()
 {
 	m_curPlaceHolder = -1;
+	
+	for ( int i = 0; i < m_placeHolders.count(); ++i )
+	{
+		PlaceHolder& ph = m_placeHolders[i];
+		
+		ph.cursor.setAutoUpdated(false);
+		
+		for ( int j = 0; j < ph.mirrors.count(); ++j )
+		{
+			ph.mirrors[j].setAutoUpdated(false);
+		}
+		
+		ph.mirrors.clear();
+	}
+	
 	m_placeHolders.clear();
 }
 
@@ -1732,6 +1757,17 @@ void QEditor::clearPlaceHolders()
 void QEditor::addPlaceHolder(const PlaceHolder& p, bool autoUpdate)
 {
 	m_placeHolders << p;
+
+	PlaceHolder& ph = m_placeHolders.last();
+
+	ph.cursor.setAutoUpdated(true);
+	ph.cursor.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	
+	for ( int i = 0; i < ph.mirrors.count(); ++i )
+	{
+		ph.mirrors[i].setAutoUpdated(true);
+		ph.mirrors[i].movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	}
 }
 
 /*!
@@ -1757,18 +1793,20 @@ void QEditor::setPlaceHolder(int i)
 	const PlaceHolder& ph = m_placeHolders.at(i);
 	QDocumentCursor cc = ph.cursor;
 	
-	if ( ph.length > 0 )
-		cc.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+	//if ( ph.length > 0 )
+	//	cc.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
 	
 	setCursor(cc);
 	
 	foreach ( cc, ph.mirrors )
 	{
-		if ( ph.length > 0 )
-			cc.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
+		//if ( ph.length > 0 )
+		//	cc.movePosition(ph.length, QDocumentCursor::NextCharacter, QDocumentCursor::KeepAnchor);
 		
 		addCursorMirror(cc);
 	}
+	
+	m_curPlaceHolder = i;
 }
 
 /*!
@@ -2255,7 +2293,7 @@ bool QEditor::event(QEvent *e)
 	if ( e->type() == QEvent::Resize && flag(LineWrap) )
 	{
 		//qDebug("resize adjust (1) : wrapping to %i", viewport()->width());
-		m_doc->setWidthConstraint(viewport()->width());
+		m_doc->setWidthConstraint(wrapWidth());
 		ensureCursorVisible();
 	}
 	
@@ -2283,7 +2321,7 @@ void QEditor::paintEvent(QPaintEvent *e)
 	
 	//qDebug() << r;
 	
-	p.setClipping(false);
+	//p.setClipping(false);
 	p.translate(-xOffset, -yOffset);
 	
 	QDocument::PaintContext ctx;
@@ -2326,6 +2364,17 @@ void QEditor::paintEvent(QPaintEvent *e)
 	p.save();
 	m_doc->draw(&p, ctx);
 	p.restore();
+	
+	if ( m_curPlaceHolder >= 0 && m_curPlaceHolder < m_placeHolders.count() )
+	{
+		const PlaceHolder& ph = m_placeHolders.at(m_curPlaceHolder);
+		
+		foreach ( const QDocumentCursor& m, ph.mirrors )
+		{
+			if ( m.isValid() )
+				p.drawConvexPolygon(m.documentRegion());
+		}
+	}
 	
 	if ( viewport()->height() > m_doc->height() )
 	{
@@ -2387,6 +2436,33 @@ static int min(const QList<QDocumentCursor>& l)
 			ln = c.lineNumber();
 	
 	return ln;
+}
+
+static bool protectedCursor(const QDocumentCursor& c)
+{
+	QDocumentLine l = c.line();
+	
+	bool prot = 
+			l.hasFlag(QDocumentLine::Hidden)
+		||
+			l.hasFlag(QDocumentLine::CollapsedBlockStart)
+		||
+			l.hasFlag(QDocumentLine::CollapsedBlockEnd)
+		;
+	
+	if ( c.hasSelection() && !prot )
+	{
+		l = c.anchorLine();
+		prot = 
+				l.hasFlag(QDocumentLine::Hidden)
+			||
+				l.hasFlag(QDocumentLine::CollapsedBlockStart)
+			||
+				l.hasFlag(QDocumentLine::CollapsedBlockEnd)
+			;
+	}
+	
+	return prot;
 }
 
 /*!
@@ -2493,19 +2569,15 @@ void QEditor::keyPressEvent(QKeyEvent *e)
 		{
 			int offset = 0;
 			bool pke = isProcessingKeyEvent(e, &offset);
+			bool prot = protectedCursor(m_cursor);
 			
-			if ( !pke )
+			foreach ( const QDocumentCursor& c, m_mirrors )
+				prot |= protectedCursor(c);
+			
+			if ( !pke || prot )
 			{
 				bHandled = false;
 			} else {
-				//if ( m_definition )
-				//	m_definition->clearMatches(m_doc);
-				
-				if ( m_placeHolders.count() && m_curPlaceHolder >= 0 )
-				{
-					m_placeHolders[m_curPlaceHolder].length += offset;
-				}
-				
 				if ( m_mirrors.isEmpty() )
 				{
 					bHandled = processCursor(m_cursor, e, bOk);
@@ -3128,7 +3200,7 @@ void QEditor::showEvent(QShowEvent *e)
 	
 	if ( flag(LineWrap) )
 	{
-		m_doc->setWidthConstraint(viewport()->width());
+		m_doc->setWidthConstraint(wrapWidth());
 	}
 }
 
@@ -3168,12 +3240,13 @@ void QEditor::resizeEvent(QResizeEvent *)
 	{
 		//qDebug("resize t (2) : wrapping to %i", viewport()->width());
 		
-		m_doc->setWidthConstraint(viewport()->width());
+		m_doc->setWidthConstraint(wrapWidth());
 	} else {
 		horizontalScrollBar()->setMaximum(qMax(0, m_doc->width() - viewportSize.width()));
 		horizontalScrollBar()->setPageStep(viewportSize.width());
 		
-		verticalScrollBar()->setMaximum(qMax(0, m_doc->height() - viewportSize.height()));
+		const int ls = m_doc->fontMetrics().lineSpacing();
+		verticalScrollBar()->setMaximum(qMax(0, 1 + (m_doc->height() - viewportSize.height()) / ls));
 		verticalScrollBar()->setPageStep(viewportSize.height());
 	}
 	
@@ -3612,14 +3685,19 @@ bool QEditor::moveKeyEvent(QDocumentCursor& cursor, QKeyEvent *e, bool *leave)
 	
 	if ( prev != cursor.line() )
 	{
+		if ( m_curPlaceHolder >= 0 && m_curPlaceHolder < m_placeHolders.count() )
+		{
+			// allow mirror movement out of line while in placeholder
+			PlaceHolder& ph = m_placeHolders[m_curPlaceHolder];
+			if ( ph.cursor.isWithinSelection(cursor) )
+				return true;
+			for ( int i = 0; i < ph.mirrors.count(); ++i )
+				if ( ph.mirrors.at(i).isWithinSelection(cursor) )
+					return true;
+		}
 		//moved = true;
 		if ( leave ) *leave = true;
 		m_curPlaceHolder = -1;
-	} else {
-		if ( m_curPlaceHolder >= 0 )
-		{
-			m_cphOffset += cursor.columnNumber() - prevcol;
-		}
 	}
 	
 	return true;
@@ -3681,23 +3759,11 @@ bool QEditor::isProcessingKeyEvent(QKeyEvent *e, int *offset)
 	switch ( e->key() )
 	{
 		case Qt::Key_Backspace :
-			if ( offset && m_curPlaceHolder >= 0 && m_placeHolders.count() )
-			{
-				if ( m_cphOffset > 0 && m_cphOffset <= m_placeHolders.at(m_curPlaceHolder).length )
-				{
-					--*offset;
-				}
-			}
+			//--*offset;
 			break;
 			
 		case Qt::Key_Delete :
-			if ( offset && m_curPlaceHolder >= 0 && m_placeHolders.count() )
-			{
-				if ( m_cphOffset >= 0 && m_cphOffset < m_placeHolders.at(m_curPlaceHolder).length )
-				{
-					--*offset;
-				}
-			}
+			//--*offset;
 			break;
 			
 		case Qt::Key_Enter :
@@ -3713,8 +3779,8 @@ bool QEditor::isProcessingKeyEvent(QKeyEvent *e, int *offset)
 			if ( text.isEmpty() || !(text.at(0).isPrint() || (text.at(0) == '\t')) )
 				return false;
 			
-			if ( offset )
-				*offset += text.length();
+			//if ( offset )
+			//	*offset += text.length();
 			
 			break;
 		}
@@ -3777,19 +3843,22 @@ bool QEditor::processCursor(QDocumentCursor& c, QKeyEvent *e, bool& b)
 			
 			QString indent;
 			
-			if ( m_definition )
+			if ( flag(AutoIndent) && (m_curPlaceHolder == -1) )
 			{
-				indent = m_definition->indent(c);
-			} else {
-				// default : keep leading ws from previous line...
-				QDocumentLine l = c.line();
-				const int idx = l.firstChar();
-				
-				indent = l.text();
-				
-				if ( idx != -1 )
-					indent.resize(idx);
-				
+				if ( m_definition )
+				{
+					indent = m_definition->indent(c);
+				} else {
+					// default : keep leading ws from previous line...
+					QDocumentLine l = c.line();
+					const int idx = l.firstChar();
+					
+					indent = l.text();
+					
+					if ( idx != -1 )
+						indent.resize(idx);
+					
+				}
 			}
 			
 			if ( indent.count() )
@@ -3828,7 +3897,6 @@ bool QEditor::processCursor(QDocumentCursor& c, QKeyEvent *e, bool& b)
 		}
 	}
 	
-	//if ( hasSelection & b )
 	selectionChange();
 	
 	return true;
@@ -3846,9 +3914,19 @@ void QEditor::insertText(QDocumentCursor& c, const QString& text)
 	if ( hasSelection )
 		c.removeSelectedText();
 	
-	QKeyEvent fake(QEvent::KeyPress, 0, Qt::NoModifier, text);
+	QStringList lines = text.split('\n', QString::KeepEmptyParts);
 	
-	if ( c.columnNumber() && m_definition && m_definition->unindent(c, &fake) )
+	if (
+			flag(AutoIndent)
+		&&
+			(m_curPlaceHolder == -1)
+		&&
+			c.columnNumber()
+		&&
+			m_definition
+		&&
+			m_definition->unindent(c, lines.at(0))
+		)
 	{
 		int firstNS = 0;
 		QString txt = c.line().text();
@@ -3883,30 +3961,33 @@ void QEditor::insertText(QDocumentCursor& c, const QString& text)
 	if ( !hasSelection && flag(Overwrite) )
 		c.deleteChar();
 	
-	QStringList lines = text.split('\n', QString::KeepEmptyParts);
-	
 	if ( lines.count() == 1 )
 	{
 		c.insertText(text);
 	} else {
-		QString indent;
-		
 		for ( int i = 0; i < lines.count(); ++i )
 		{
-			if ( m_definition )
+			QString indent;
+			// TODO : adjust indent based on indent around insertion spot
+			/*
+			if ( flag(AutoIndent) && (m_curPlaceHolder == -1) )
 			{
-				indent = m_definition->indent(c);
-			} else {
-				// default : keep leading ws from previous line...
-				QDocumentLine l = c.line();
-				const int idx = l.firstChar();
-				
-				indent = l.text();
-				
-				if ( idx != -1 )
-					indent.resize(idx);
-				
+				if ( m_definition )
+				{
+					indent = m_definition->indent(c);
+				} else {
+					// default : keep leading ws from previous line...
+					QDocumentLine l = c.line();
+					const int idx = l.firstChar();
+					
+					indent = l.text();
+					
+					if ( idx != -1 )
+						indent.resize(idx);
+					
+				}
 			}
+			*/
 			
 			if ( indent.count() )
 			{
@@ -3916,7 +3997,8 @@ void QEditor::insertText(QDocumentCursor& c, const QString& text)
 				c.insertLine();
 			}
 			
-			c.insertText(lines.at(i));
+			insertText(c, lines.at(i));
+			//c.insertText(lines.at(i));
 		}
 	}
 }
@@ -3992,7 +4074,7 @@ void QEditor::setPanelMargins(int l, int t, int r, int b)
 	if ( flag(LineWrap) )
 	{
 		//qDebug("panel adjust : wrapping to %i", viewport()->width());
-		m_doc->setWidthConstraint(viewport()->width());
+		m_doc->setWidthConstraint(wrapWidth());
 	}
 }
 
@@ -4058,15 +4140,17 @@ void QEditor::ensureCursorVisible()
 {
 	QPoint pos = m_cursor.documentPosition();
 	
+	const int ls = QDocument::fontMetrics().lineSpacing();
+	
 	int ypos = pos.y(),
 		yval = verticalOffset(),
 		ylen = viewport()->height(),
-		yend = ypos + QDocument::fontMetrics().lineSpacing();
+		yend = ypos + ls;
 	
 	if ( ypos < yval )
-		verticalScrollBar()->setValue(ypos);
+		verticalScrollBar()->setValue(ypos / ls);
 	else if ( yend > (yval + ylen) )
-		verticalScrollBar()->setValue(yend - ylen);
+		verticalScrollBar()->setValue(1 + (yend - ylen) / ls);
 	
 	int xval = horizontalOffset(),
 		xlen = viewport()->width(),
@@ -4091,15 +4175,16 @@ void QEditor::ensureVisible(int line)
 	if ( !m_doc )
 		return;
 	
+	const int ls = QDocument::fontMetrics().lineSpacing();
 	int ypos = m_doc->y(line),
 		yval = verticalOffset(),
 		ylen = viewport()->height(),
-		yend = ypos + QDocument::fontMetrics().lineSpacing();
+		yend = ypos + ls;
 	
 	if ( ypos < yval )
-		verticalScrollBar()->setValue(ypos);
+		verticalScrollBar()->setValue(ypos / ls);
 	else if ( yend > (yval + ylen) )
-		verticalScrollBar()->setValue(yend - ylen);
+		verticalScrollBar()->setValue(1 + (yend - ylen) / ls);
 	
 }
 
@@ -4111,15 +4196,16 @@ void QEditor::ensureVisible(const QRect &rect)
 	if ( !m_doc )
 		return;
 	
+	const int ls = QDocument::fontMetrics().lineSpacing();
 	int ypos = rect.y(),
 		yval = verticalOffset(),
 		ylen = viewport()->height(),
 		yend = ypos + rect.height();
 	
 	if ( ypos < yval )
-		verticalScrollBar()->setValue(ypos);
+		verticalScrollBar()->setValue(ypos / ls);
 	else if ( yend > (yval + ylen) )
-		verticalScrollBar()->setValue(yend - ylen);
+		verticalScrollBar()->setValue(1 + (yend - ylen) / ls);
 	
 	//verticalScrollBar()->setValue(rect.y());
 }
@@ -4276,8 +4362,8 @@ void QEditor::insertFromMimeData(const QMimeData *d)
 				m_cursor.removeSelectedText();
 			
 			int col = m_cursor.columnNumber();
-			m_cursor.insertText(columns.takeFirst());
-			
+			//m_cursor.insertText(columns.takeFirst());
+			insertText(m_cursor, columns.takeFirst());
 			QDocumentCursor c = m_cursor;
 			
 			while ( columns.count() )
@@ -4294,8 +4380,8 @@ void QEditor::insertFromMimeData(const QMimeData *d)
 				c.setColumnNumber(qMin(col, c.line().length()));
 				
 				// copy content of clipboard
-				c.insertText(columns.takeFirst());
-				
+				//c.insertText(columns.takeFirst());
+				insertText(c, columns.takeFirst());
 				addCursorMirror(c);
 			}
 			
@@ -4304,10 +4390,10 @@ void QEditor::insertFromMimeData(const QMimeData *d)
 		} else {
 			m_doc->beginMacro();
 			
-			if ( s )
-			{
-				m_cursor.removeSelectedText();
-			}
+			//if ( s )
+			//{
+			//	m_cursor.removeSelectedText();
+			//}
 			
 			QString txt;
 			
@@ -4316,11 +4402,11 @@ void QEditor::insertFromMimeData(const QMimeData *d)
 			else if ( d->hasFormat("text/html") )
 				txt = d->html();
 			
-			m_cursor.insertText(txt);
+			insertText(m_cursor, txt);
 			
 			for ( int i = 0; i < m_mirrors.count(); ++i )
 			{
-				m_mirrors[i].insertText(txt);
+				insertText(m_mirrors[i], txt);
 			}
 			
 			m_doc->endMacro();
@@ -4338,6 +4424,9 @@ void QEditor::insertFromMimeData(const QMimeData *d)
 */
 void QEditor::clearCursorMirrors()
 {
+	m_curPlaceHolder = -1;
+	repaintCursor();
+
 	for ( int i = 0; i < m_mirrors.count(); ++i )
 	{
 		m_mirrors[i].setAutoUpdated(false);
@@ -4392,8 +4481,23 @@ void QEditor::scrollContentsBy(int dx, int dy)
 	#ifdef Q_GL_EDITOR
 	viewport()->update();
 	#else
-	viewport()->scroll(dx, dy);
+	const int ls = m_doc->fontMetrics().lineSpacing();
+	viewport()->scroll(dx * ls, dy * ls);
 	#endif
+}
+
+/*!
+	\internal
+	\brief Workaround inconsistent width determination of viewport width
+	accross platfroms when scrollbars are visible...
+*/
+int QEditor::wrapWidth() const
+{
+	#ifdef Q_WS_WIN
+	//if ( verticalScrollBar()->isVisible() )
+	//	return viewport()->width() - verticalScrollBar()->width();
+	#endif
+	return viewport()->width();
 }
 
 /*!
@@ -4412,7 +4516,7 @@ void QEditor::documentWidthChanged(int newWidth)
 		return;
 	}
 	
-	int nv = qMax(0, newWidth - viewport()->width());
+	int nv = qMax(0, newWidth - wrapWidth());
 	
 	horizontalScrollBar()->setMaximum(nv);
 	
@@ -4428,8 +4532,13 @@ void QEditor::documentWidthChanged(int newWidth)
 */
 void QEditor::documentHeightChanged(int newHeight)
 {
-	verticalScrollBar()->setMaximum(qMax(0, newHeight - viewport()->height()));
-	ensureCursorVisible();
+	if ( flag(LineWrap) )
+	{
+		m_doc->setWidthConstraint(wrapWidth());
+	}
+	const int ls = m_doc->fontMetrics().lineSpacing();
+	verticalScrollBar()->setMaximum(qMax(0, 1 + (newHeight - viewport()->height()) / ls));
+	//ensureCursorVisible();
 }
 
 /*!
@@ -4532,4 +4641,3 @@ void QEditor::markChanged(QDocumentLineHandle *l, int mark, bool on)
 }
 
 /*! @} */
-

@@ -53,6 +53,8 @@ class QCE_EXPORT QDocumentSearch
 		QDocumentSearch(QEditor *e, const QString& f, Options opt, const QString& r = QString());
 		~QDocumentSearch();
 		
+		int indexedMatchCount() const;
+		
 		QString searchText() const;
 		void setSearchText(const QString& f);
 		
@@ -61,6 +63,9 @@ class QCE_EXPORT QDocumentSearch
 		
 		QString replaceText() const;
 		void setReplaceText(const QString& r);
+		
+		QDocumentCursor origin() const;
+		void setOrigin(const QDocumentCursor& c);
 		
 		QDocumentCursor cursor() const;
 		void setCursor(const QDocumentCursor& c);
@@ -75,12 +80,13 @@ class QCE_EXPORT QDocumentSearch
 		
 		void clearMatches();
 		
+		int m_group;
 		int m_index;
 		Options m_option;
 		QString m_string;
 		QString m_replace;
 		QPointer<QEditor> m_editor;
-		QDocumentCursor m_cursor, m_scope;
+		QDocumentCursor m_cursor, m_scope, m_origin;
 		QList<QDocumentCursor> m_highlight;
 };
 

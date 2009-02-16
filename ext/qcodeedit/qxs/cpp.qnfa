@@ -46,9 +46,9 @@
 	<sequence parenthesis="square:close">\]</sequence>
 	
 	<list id="keywords/visibility" format="keyword">
-		<word>public</word>
-		<word>protected</word>
-		<word>private</word>
+		<word parenthesis="visibility:boundary" fold="1" indent="1">public</word>
+		<word parenthesis="visibility:boundary" fold="1" indent="1">protected</word>
+		<word parenthesis="visibility:boundary" fold="1" indent="1">private</word>
 	</list>
 	
 	<list id="keywords/storage" format="keyword">
@@ -84,8 +84,8 @@
 		<word>if</word>
 		<word>else</word>
 		<word>switch</word>
-		<word>case</word>
-		<word>default</word>
+		<word parenthesis="case:boundary" fold="1" indent="1" >case</word>
+		<word parenthesis="case:boundary" fold="1" indent="1" >default</word>
 		<word>break</word>
 		<word>continue</word>
 		<word>try</word>

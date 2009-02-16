@@ -210,6 +210,8 @@ class QCE_EXPORT QDocumentCursorHandle
 		QPoint documentPosition() const;
 		QPoint anchorDocumentPosition() const;
 		
+		QPolygon documentRegion() const;
+		
 		int position() const;
 		
 		void shift(int offset);
@@ -237,7 +239,13 @@ class QCE_EXPORT QDocumentCursorHandle
 		void select(QDocumentCursor::SelectionType t);
 		void setSelectionBoundary(const QDocumentCursor& c);
 		
-		bool isWithinSelection(const QDocumentCursor& c);
+		bool isWithinSelection(const QDocumentCursor& c) const;
+		QDocumentCursor intersect(const QDocumentCursor& c) const;
+		
+		void substractBoundaries(int lbeg, int cbeg, int lend, int cend);
+		void boundaries(int& begline, int& begcol, int& endline, int& endcol) const;
+		void intersectBoundaries(int& lbeg, int& cbeg, int& lend, int& cend) const;
+		void intersectBoundaries(QDocumentCursorHandle *h, int& lbeg, int& cbeg, int& lend, int& cend) const;
 		
 		void beginEditBlock();
 		void endEditBlock();
@@ -336,9 +344,11 @@ class QCE_EXPORT QDocumentPrivate
 		int findNextMark(int id, int from = 0, int until = -1);
 		int findPreviousMark(int id, int from = -1, int until = 0);
 		
-		void clearMatches(int format);
-		void flushMatches(int format);
-		void addMatch(int line, int pos, int len, int format);
+		int getNextGroupId();
+		void releaseGroupId(int groupId);
+		void clearMatches(int gid);
+		void flushMatches(int gid);
+		void addMatch(int gid, int line, int pos, int len, int format);
 		
 		void emitFormatsChange (int line, int lines);
 		void emitContentsChange(int line, int lines);
@@ -402,6 +412,8 @@ class QCE_EXPORT QDocumentPrivate
 			int index;
 		};
 		
+		int m_lastGroupId;
+		QList<int> m_freeGroupIds;
 		QHash<int, MatchList> m_matches;
 		
 		bool m_constrained;

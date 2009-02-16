@@ -25,6 +25,7 @@
 
 class QPoint;
 class QString;
+class QPolygon;
 
 class QDocument;
 class QDocumentLine;
@@ -134,6 +135,8 @@ class QCE_EXPORT QDocumentCursor
 		
 		QPoint documentPosition() const;
 		QPoint anchorDocumentPosition() const;
+		
+		QPolygon documentRegion() const;
 		
 		QDocumentLine line() const;
 		QDocumentLine anchorLine() const;

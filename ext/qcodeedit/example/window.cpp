@@ -1,6 +1,8 @@
 
 #include "window.h"
 
+#include "snippets.h"
+
 #include "qpanel.h"
 #include "qeditor.h"
 #include "qcodeedit.h"
@@ -23,6 +25,44 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
+
+class SnippetBinding : public QEditor::InputBinding
+{
+	public:
+		SnippetBinding(SnippetManager *manager)
+		 : m(manager)
+		{
+		}
+		
+		virtual QString id() const
+		{
+			return "snippet binding";
+		}
+		
+		virtual QString name() const
+		{
+			return "snippet binding";
+		}
+		
+		virtual bool keyPressEvent(QKeyEvent *event, QEditor *editor)
+		{
+			if ( event->modifiers() & Qt::ControlModifier )
+			{
+				for ( int i = 0; i < qMin(10, m->snippetCount()); ++i )
+				{
+					if ( event->key() == (Qt::Key_F1 + i) )
+					{
+						m->snippet(i)->insert(editor);
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		
+	private:
+		SnippetManager *m;
+};
 
 static QMap<QString, QVariant> readSettingsMap(const QSettings& s)
 {
@@ -55,19 +95,26 @@ static void writeSettingsMap(QSettings& s, const QMap<QString, QVariant>& m, con
 }
 
 Window::Window(QWidget *p)
+ : m_editedSnippet(-1)
 {
-	setupUi(this);
-	
 	// QCE setup
 	m_formats = new QFormatScheme("qxs/formats.qxf", this);
 	QDocument::setDefaultFormatScheme(m_formats);
 	
 	QLineMarksInfoCenter::instance()->loadMarkTypes("qxs/marks.qxm");
 	
+	setupUi(this);
+	
+	m_snippetManager = new SnippetManager;
+	
 	m_languages = new QLanguageFactory(m_formats, this);
 	m_languages->addDefinitionPath("qxs");
 	
+	m_languages->setLanguage(eSnippet, "QCE::Snippet");
+	
 	m_editControl = new QCodeEdit(this);
+	
+	m_editControl->editor()->setInputBinding(new SnippetBinding(m_snippetManager));
 	
 	m_editControl
 		->addPanel("Line Mark Panel", QCodeEdit::West, true)
@@ -97,28 +144,30 @@ Window::Window(QWidget *p)
 	m_stack->insertWidget(1, m_editControl->editor());
 	
 	// create toolbars
-	QToolBar *edit = new QToolBar(tr("Edit"), this);
-	edit->setIconSize(QSize(24, 24));
-	edit->addAction(m_editControl->editor()->action("undo"));
-	edit->addAction(m_editControl->editor()->action("redo"));
-	edit->addSeparator();
-	edit->addAction(m_editControl->editor()->action("cut"));
-	edit->addAction(m_editControl->editor()->action("copy"));
-	edit->addAction(m_editControl->editor()->action("paste"));
-	edit->addSeparator();
-	edit->addAction(m_editControl->editor()->action("indent"));
-	edit->addAction(m_editControl->editor()->action("unindent"));
-	//edit->addAction(m_editControl->editor()->action("comment"));
-	//edit->addAction(m_editControl->editor()->action("uncomment"));
-	addToolBar(edit);
+	m_edit = new QToolBar(tr("Edit"), this);
+	m_edit->setIconSize(QSize(24, 24));
+	m_edit->addAction(m_editControl->editor()->action("undo"));
+	m_edit->addAction(m_editControl->editor()->action("redo"));
+	m_edit->addSeparator();
+	m_edit->addAction(m_editControl->editor()->action("cut"));
+	m_edit->addAction(m_editControl->editor()->action("copy"));
+	m_edit->addAction(m_editControl->editor()->action("paste"));
+	m_edit->addSeparator();
+	m_edit->addAction(m_editControl->editor()->action("indent"));
+	m_edit->addAction(m_editControl->editor()->action("unindent"));
+	//m_edit->addAction(m_editControl->editor()->action("comment"));
+	//m_edit->addAction(m_editControl->editor()->action("uncomment"));
+	addToolBar(m_edit);
+	m_edit->hide();
 	
-	QToolBar *find = new QToolBar(tr("Find"), this);
-	find->setIconSize(QSize(24, 24));
-	find->addAction(m_editControl->editor()->action("find"));
+	m_find = new QToolBar(tr("Find"), this);
+	m_find->setIconSize(QSize(24, 24));
+	m_find->addAction(m_editControl->editor()->action("find"));
 	//find->addAction(m_editControl->editor()->action("findNext"));
-	find->addAction(m_editControl->editor()->action("replace"));
-	find->addAction(m_editControl->editor()->action("goto"));
-	addToolBar(find);
+	m_find->addAction(m_editControl->editor()->action("replace"));
+	m_find->addAction(m_editControl->editor()->action("goto"));
+	addToolBar(m_find);
+	m_find->hide();
 	
 	// settings restore
 	QSettings settings;
@@ -169,6 +218,11 @@ Window::Window(QWidget *p)
 	else
 		flags &= ~QEditor::CursorJumpPastWrap;
 	
+	if ( settings.value("auto_indent", true).toBool() )
+		flags |= QEditor::AutoIndent;
+	else
+		flags &= ~QEditor::AutoIndent;
+	
 	QEditor::setDefaultFlags(flags);
 	
 	spnRecent->setValue(settings.value("files/max_recent", 10).toInt());
@@ -214,6 +268,11 @@ Window::Window(QWidget *p)
 	setWindowTitle("QCodeEdit::Demo [untitled[*]]");
 }
 
+Window::~Window()
+{
+	delete m_snippetManager;
+}
+
 void Window::closeEvent(QCloseEvent *e)
 {
 	if ( maybeSave() )
@@ -232,6 +291,49 @@ void Window::closeEvent(QCloseEvent *e)
 	settings.setValue("height", height());
 	settings.setValue("position", pos());
 	settings.endGroup();
+}
+
+void Window::switchPage(int i)
+{
+	/*
+		page switching entry point
+
+		default layout (somewhat weird)
+			0 : about
+			1 : editor widget
+			2...n : potentially other editors in the future)
+			-2 : settings 
+			-1 : code snippets (move into settings?)
+	*/
+	if ( i < 0 )
+		i += m_stack->count();
+	
+	if ( i >= m_stack->count() )
+		return;
+	
+	if ( i == m_stack->currentIndex() )
+		return;
+	
+	if ( m_stack->currentIndex() == m_stack->count() - 1 )
+	{
+		if ( maybeCommitSnippetChanges() )
+			return;
+		
+	} else if ( m_stack->currentIndex() == m_stack->count() - 2 ) {
+		// TODO : find a way to warn for changed settings
+	}
+	
+	if ( i == 1 )
+	{
+		m_edit->show();
+		m_find->show();
+		m_editControl->editor()->setFocus();
+	} else {
+		m_edit->hide();
+		m_find->hide();
+	}
+	
+	m_stack->setCurrentIndex(i);
 }
 
 bool Window::maybeSave()
@@ -285,7 +387,7 @@ void Window::load(const QString& file)
 		setWindowTitle("QCodeEdit::Demo [untitled[*]]");
 	}
 	
-	m_stack->setCurrentIndex(1);
+	switchPage(1); //m_stack->setCurrentIndex(1);
 	//qDebug("loading took %i ms", t.elapsed());
 }
 
@@ -357,7 +459,7 @@ void Window::on_action_Print_triggered()
 
 void Window::on_clbEdit_clicked()
 {
-	m_stack->setCurrentIndex(1);
+	switchPage(1); //m_stack->setCurrentIndex(1);
 }
 
 void Window::on_clbMore_clicked()
@@ -380,11 +482,11 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 	{
 		// General section
 		settings.beginGroup("display");
-		settings.setValue("line_numbers", chkLineNumbers->isChecked());
-		settings.setValue("fold_indicators", chkFoldPanel->isChecked());
-		settings.setValue("line_marks", chkLineMarks->isChecked());
-		settings.setValue("line_changes", chkLineChange->isChecked());
-		settings.setValue("status", chkStatusPanel->isChecked());
+		//settings.setValue("line_numbers", chkLineNumbers->isChecked());
+		//settings.setValue("fold_indicators", chkFoldPanel->isChecked());
+		//settings.setValue("line_marks", chkLineMarks->isChecked());
+		//settings.setValue("line_changes", chkLineChange->isChecked());
+		//settings.setValue("status", chkStatusPanel->isChecked());
 		
 		settings.setValue("dynamic_word_wrap", chkWrap->isChecked());
 		settings.setValue("cursor_move_within_wrapped_blocks", chkMoveInWrap->isChecked());
@@ -409,6 +511,8 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		
 		settings.endGroup();
 		
+		settings.setValue("auto_indent", chkIndent->isChecked());
+		
 		int flags = QEditor::defaultFlags();
 		
 		if ( chkWrap->isChecked() )
@@ -420,6 +524,11 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 			flags |= QEditor::CursorJumpPastWrap;
 		else
 			flags &= ~QEditor::CursorJumpPastWrap;
+		
+		if ( chkIndent->isChecked() )
+			flags |= QEditor::AutoIndent;
+		else
+			flags &= ~QEditor::AutoIndent;
 		
 		QEditor::setDefaultFlags(flags);
 		
@@ -438,12 +547,13 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		
 		// Syntax section
 		
-		m_stack->setCurrentIndex(1);
+		switchPage(1); //m_stack->setCurrentIndex(1);
 	} else if ( r == QDialogButtonBox::RejectRole ) {
 		// General section
 		
 		//chkWrap->setChecked(m_editControl->editor()->flag(QEditor::LineWrap));
 		//chkMoveInWrap->setChecked(m_editControl->editor()->flag(QEditor::CursorJumpPastWrap));
+		//chkIndent->setChecked(m_editControl->editor()->flag(QEditor::AutoIndent));
 		
 		spnRecent->setValue(settings.value("files/max_recent", 10).toInt());
 		
@@ -452,7 +562,7 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		
 		// Syntax section
 		
-		m_stack->setCurrentIndex(1);
+		switchPage(1); //m_stack->setCurrentIndex(1);
 	} else if ( r == QDialogButtonBox::ResetRole ) {
 		// General section
 		chkLineNumbers->setChecked(true);
@@ -468,6 +578,8 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		
 		chkWrap->setChecked(false);
 		chkMoveInWrap->setChecked(true);
+		
+		chkIndent->setChecked(true);
 		
 		spnRecent->setValue(10);
 		
@@ -506,8 +618,164 @@ void Window::on_action_Settings_triggered()
 	int flags = QEditor::defaultFlags();
 	chkWrap->setChecked(flags & QEditor::LineWrap);
 	chkMoveInWrap->setChecked(flags & QEditor::CursorJumpPastWrap);
+	chkIndent->setChecked(flags & QEditor::AutoIndent);
 	
-	m_stack->setCurrentIndex(m_stack->count() - 1);
+	switchPage(-2); //m_stack->setCurrentIndex(m_stack->count() - 2);
+}
+
+static const QRegExp _cxt_splitter("\\s*,\\s*");
+
+bool Window::maybeCommitSnippetChanges()
+{
+	static const QRegExp nonTrivial("\\S");
+	
+	QString pattern = eSnippet->text();
+	QString name = leSnippetName->text();
+	QStringList contexts = leSnippetContext->text().split(_cxt_splitter);
+	bool nonTrivialPattern = pattern.contains(nonTrivial);
+	
+	if ( m_editedSnippet >= 0 )
+	{
+		if ( m_snippetPatterns.at(m_editedSnippet) != pattern )
+		{
+			int ret = QMessageBox::warning(this,
+										tr("Unsaved changes"),
+										tr("Do you want to save pattern changes to snippet %1 ?")
+											.arg(m_snippetManager->snippet(m_editedSnippet)->name()),
+										QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+										QMessageBox::Yes
+										);
+			
+			if ( ret == QMessageBox::Cancel )
+			{
+				return true;
+			} else if ( ret == QMessageBox::Yes ) {
+				m_snippetManager->reloadSnippetFromString(m_editedSnippet, pattern, SnippetManager::Simple);
+				lwSnippets->item(m_editedSnippet + 1)->setText(name);
+				m_snippetManager->snippet(m_editedSnippet)->setName(name);
+				m_snippetManager->snippet(m_editedSnippet)->setContexts(contexts);
+			}
+		} else if (
+						(name.count() && name != m_snippetManager->snippet(m_editedSnippet)->name())
+					||
+						(contexts != m_snippetManager->snippet(m_editedSnippet)->contexts())
+					)
+		{
+			int ret = QMessageBox::warning(this,
+										tr("Unsaved changes"),
+										tr("Do you want to save contextual changes to snippet %1 ?")
+											.arg(m_snippetManager->snippet(m_editedSnippet)->name()),
+										QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+										QMessageBox::Yes
+										);
+			
+			if ( ret == QMessageBox::Cancel )
+			{
+				return true;
+			} else if ( ret == QMessageBox::Yes ) {
+				lwSnippets->item(m_editedSnippet + 1)->setText(name);
+				m_snippetManager->snippet(m_editedSnippet)->setName(name);
+				m_snippetManager->snippet(m_editedSnippet)->setContexts(contexts);
+			}
+		}
+	} else if ( nonTrivialPattern ) {
+		int ret = QMessageBox::warning(this,
+									tr("Unsaved changes"),
+									tr("The current snippet data will be discarded. Do you want to continue?"),
+									QMessageBox::Yes | QMessageBox::No,
+									QMessageBox::Yes
+									);
+		
+		if ( ret == QMessageBox::No )
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+void Window::on_lwSnippets_currentRowChanged(int idx)
+{
+	if ( idx - 1 == m_editedSnippet )
+		return;
+	
+	if ( maybeCommitSnippetChanges() )
+	{
+		lwSnippets->setCurrentRow(m_editedSnippet);
+		return;
+	}
+	
+	m_editedSnippet = idx - 1;
+	
+	if ( idx <= 0 )
+	{
+		eSnippet->setText(QString());
+		leSnippetName->setText(QString());
+		leSnippetContext->setText(QString());
+	} else {
+		eSnippet->setText(m_snippetPatterns.at(m_editedSnippet));
+		leSnippetName->setText(m_snippetManager->snippet(m_editedSnippet)->name());
+		leSnippetContext->setText(m_snippetManager->snippet(m_editedSnippet)->contexts().join(","));
+		//eSnippet->highlight();
+	}
+}
+
+void Window::on_bNewSnippet_clicked()
+{
+	QString name = leSnippetName->text();
+	QString pattern = eSnippet->text();
+	QStringList contexts = leSnippetContext->text().split(_cxt_splitter);
+	
+	if ( name.isEmpty() || pattern.isEmpty() )
+	{
+		QMessageBox::information(0, tr("Missing data"), tr("Please provide a name and a content to create a new snippet"));
+		return;
+	}
+	
+	m_snippetPatterns << QStringList(pattern);
+	Snippet *s = m_snippetManager->loadSnippetFromString(pattern, SnippetManager::Simple);
+	
+	if ( !s )
+	{
+		QMessageBox::warning(0, tr("Error"), tr("Invalid snippet pattern."));
+		return;
+	}
+	
+	eSnippet->setText(QString());
+	leSnippetContext->clear();
+	leSnippetName->clear();
+	
+	lwSnippets->addItem(name);
+	s->setName(name);
+	s->setContexts(contexts);
+
+	lwSnippets->setCurrentRow(0);
+}
+
+void Window::on_bEraseSnippet_clicked()
+{
+	int row = lwSnippets->currentRow() - 1;
+	
+	if ( row < 0 )
+	{
+		QMessageBox::warning(0, tr("Error"), tr("Please select a valid snippet to erase"));
+		return;
+	}
+	
+	m_snippetPatterns.removeAt(row);
+	delete lwSnippets->takeItem(row);
+}
+
+void Window::on_bExitSnippets_clicked()
+{
+	switchPage(1);
+}
+
+void Window::on_action_Snippets_triggered()
+{
+	switchPage(-1);
+	//m_stack->setCurrentIndex(m_stack->count() - 1);
 }
 
 void Window::on_action_Reload_syntax_files_triggered()
@@ -517,7 +785,8 @@ void Window::on_action_Reload_syntax_files_triggered()
 
 void Window::on_action_About_triggered()
 {
-	m_stack->setCurrentIndex(0);
+	switchPage(0);
+	//m_stack->setCurrentIndex(0);
 }
 
 void Window::on_action_About_Qt_triggered()

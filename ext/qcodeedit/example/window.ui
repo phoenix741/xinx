@@ -31,16 +31,16 @@
         <item>
          <widget class="QLabel" name="label" >
           <property name="text" >
-           <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">&#xd;
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">&#xd;
-p, li { white-space: pre-wrap; }&#xd;
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">&#xd;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
-&lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Welcome to &lt;span style=" font-weight:600;">QCodeEdit 2&lt;/span> demo application.&lt;/p>&#xd;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">It is a lightweight but fully functional source code editor which support a wide range of languages and make it easy to add support for other languages through XML-based syntax files.&lt;/p>&#xd;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Hoping you'll like it.&lt;/p>&#xd;
+           <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">&#xd;&#xd;&#xd;&#xd;
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">&#xd;&#xd;&#xd;&#xd;
+p, li { white-space: pre-wrap; }&#xd;&#xd;&#xd;&#xd;
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">&#xd;&#xd;&#xd;&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Welcome to &lt;span style=" font-weight:600;">QCodeEdit 2&lt;/span> demo application.&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">It is a lightweight but fully functional source code editor which support a wide range of languages and make it easy to add support for other languages through XML-based syntax files.&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Hoping you'll like it.&lt;/p>&#xd;&#xd;&#xd;&#xd;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
           </property>
           <property name="alignment" >
@@ -102,11 +102,11 @@ p, li { white-space: pre-wrap; }&#xd;
             <item>
              <widget class="QLabel" name="label_3" >
               <property name="text" >
-               <string>&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">QCodeEdit is a library based on Nokia's (formerly Trolltech's) Qt 4 toolkit. It is available for free under GNU General Public License version 3. It is also possible to buy licenses compatible with proprietary software (e.g BSD).&lt;/p>&#xd;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Thanks to all the testers and particularly to those who contributed patches or made suggestion. The most helpful ones so far, in no particular order : &lt;b>Benito van der Zander&lt;/b> (TexMakerX : LaTex editor), &lt;b>Ulrich van den Hekke&lt;/b> (Xinx : XSL/JavScript editor), &lt;b>Boris Barbulovski&lt;/b> (ColdFusion editor), &lt;b>Phil Martinot&lt;/b> (Lua editor?), &lt;b>Jeremy Sonander&lt;/b> (proprietary VHDL editor), &lt;b>Jerome Vizcaino&lt;/b> (assembly editor)&lt;/p>&#xd;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Funders also deserve big thanks because QCodeEdit wouldn't have gone that far without them (money can buy time sometimes) :&lt;/p>&lt;ul>&lt;li>Saros Inc &lt;/li>&lt;li>Movimento&lt;/li>&lt;li>Averant (through Saros)&lt;/li>&lt;/ul>&#xd;
+               <string>&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">QCodeEdit is a library based on Nokia's (formerly Trolltech's) Qt 4 toolkit. It is available for free under GNU General Public License version 3. It is also possible to buy licenses compatible with proprietary software (e.g BSD).&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Thanks to all the testers and particularly to those who contributed patches or made suggestion. The most helpful ones so far, in no particular order : &lt;b>Benito van der Zander&lt;/b> (TexMakerX : LaTex editor), &lt;b>Ulrich van den Hekke&lt;/b> (Xinx : XSL/JavScript editor), &lt;b>Boris Barbulovski&lt;/b> (ColdFusion editor), &lt;b>Phil Martinot&lt;/b> (Lua editor?), &lt;b>Jeremy Sonander&lt;/b> (proprietary VHDL editor), &lt;b>Jerome Vizcaino&lt;/b> (assembly editor)&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&#xd;&#xd;&#xd;&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Funders also deserve big thanks because QCodeEdit wouldn't have gone that far without them (money can buy time sometimes) :&lt;/p>&lt;ul>&lt;li>Saros Inc &lt;/li>&lt;li>Movimento&lt;/li>&lt;li>Averant (through Saros)&lt;/li>&lt;/ul>&#xd;&#xd;&#xd;&#xd;
 </string>
               </property>
               <property name="wordWrap" >
@@ -134,7 +134,7 @@ p, li { white-space: pre-wrap; }&#xd;
         <item>
          <widget class="QLabel" name="label_2" >
           <property name="text" >
-           <string>&#xd;
+           <string>&#xd;&#xd;&#xd;&#xd;
 &lt;p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">QCodeEdit is Copyright © 2007-2009 Luc BRUANT aka fullmetalcoder&lt;/p></string>
           </property>
          </widget>
@@ -256,29 +256,6 @@ p, li { white-space: pre-wrap; }&#xd;
             <string/>
            </property>
           </item>
-         </widget>
-        </item>
-        <item row="0" column="4" >
-         <spacer name="horizontalSpacer" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0" >
-           <size>
-            <width>0</width>
-            <height>528</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0" colspan="5" >
-         <widget class="QDialogButtonBox" name="bbSettings" >
-          <property name="standardButtons" >
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
-          </property>
          </widget>
         </item>
         <item row="0" column="1" >
@@ -408,6 +385,13 @@ p, li { white-space: pre-wrap; }&#xd;
                  </property>
                 </widget>
                </item>
+               <item row="7" column="0" >
+                <widget class="QCheckBox" name="chkIndent" >
+                 <property name="text" >
+                  <string>Auto indent</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
@@ -457,6 +441,185 @@ p, li { white-space: pre-wrap; }&#xd;
           </widget>
          </widget>
         </item>
+        <item row="0" column="4" >
+         <spacer name="horizontalSpacer" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType" >
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>0</width>
+            <height>528</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0" colspan="5" >
+         <widget class="QDialogButtonBox" name="bbSettings" >
+          <property name="standardButtons" >
+           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="m_snippetsPage" >
+       <layout class="QGridLayout" name="gridLayout_4" >
+        <item row="0" column="4" >
+         <spacer name="horizontalSpacer_3" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType" >
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>220</width>
+            <height>18</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="3" >
+         <widget class="QLabel" name="label_5" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>Name/trigger</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5" colspan="2" >
+         <widget class="QLineEdit" name="leSnippetName" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip" >
+           <string>Enter the name of the code snippet, which will also be its full-text trigger, if enabled.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" >
+         <widget class="QToolButton" name="bNewSnippet" >
+          <property name="toolTip" >
+           <string>Create a new snippet or update the one being edited.</string>
+          </property>
+          <property name="text" >
+           <string>+</string>
+          </property>
+          <property name="icon" >
+           <iconset resource="example.qrc" >
+            <normaloff>:/save.png</normaloff>:/save.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" >
+         <widget class="QToolButton" name="bEraseSnippet" >
+          <property name="toolTip" >
+           <string>Erase the selected snippet.</string>
+          </property>
+          <property name="text" >
+           <string> - </string>
+          </property>
+          <property name="icon" >
+           <iconset resource="example.qrc" >
+            <normaloff>:/closeall.png</normaloff>:/closeall.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="6" >
+         <widget class="QToolButton" name="bExitSnippets" >
+          <property name="text" >
+           <string>Back to editor</string>
+          </property>
+          <property name="icon" >
+           <iconset resource="example.qrc" >
+            <normaloff>:/goto.png</normaloff>:/goto.png</iconset>
+          </property>
+          <property name="toolButtonStyle" >
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2" colspan="4" >
+         <spacer name="horizontalSpacer_4" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>546</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="3" colspan="4" >
+         <widget class="QEditor" name="eSnippet" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="frameShape" >
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </item>
+        <item rowspan="3" row="0" column="0" colspan="3" >
+         <widget class="QListWidget" name="lwSnippets" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Maximum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <item>
+           <property name="text" >
+            <string>empty</string>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>new.png</normaloff>new.png</iconset>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="3" >
+         <widget class="QLabel" name="label_6" >
+          <property name="text" >
+           <string>Languages</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4" colspan="3" >
+         <widget class="QLineEdit" name="leSnippetContext" >
+          <property name="toolTip" >
+           <string>Enter a coma-separated list of languages in which the snippet can be used.</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
@@ -499,6 +662,7 @@ p, li { white-space: pre-wrap; }&#xd;
      <string>&amp;Advanced</string>
     </property>
     <addaction name="action_Settings" />
+    <addaction name="action_Snippets" />
    </widget>
    <widget class="QMenu" name="menu_Help" >
     <property name="title" >
@@ -534,6 +698,7 @@ p, li { white-space: pre-wrap; }&#xd;
    <addaction name="action_SaveAs" />
    <addaction name="separator" />
    <addaction name="action_Print" />
+   <addaction name="action_Snippets" />
   </widget>
   <action name="action_Open" >
    <property name="icon" >
@@ -639,8 +804,43 @@ p, li { white-space: pre-wrap; }&#xd;
     <string>Ctrl+N</string>
    </property>
   </action>
+  <action name="action_Snippets" >
+   <property name="text" >
+    <string>Snippets</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="2" margin="2" />
+ <customwidgets>
+  <customwidget>
+   <class>QEditor</class>
+   <extends>QFrame</extends>
+   <header>qeditor.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>clbEdit</tabstop>
+  <tabstop>clbMore</tabstop>
+  <tabstop>lwSettings</tabstop>
+  <tabstop>chkLineNumbers</tabstop>
+  <tabstop>chkFoldPanel</tabstop>
+  <tabstop>chkLineChange</tabstop>
+  <tabstop>chkLineMarks</tabstop>
+  <tabstop>chkStatusPanel</tabstop>
+  <tabstop>chkWrap</tabstop>
+  <tabstop>chkMoveInWrap</tabstop>
+  <tabstop>chkIndent</tabstop>
+  <tabstop>spnRecent</tabstop>
+  <tabstop>bbSettings</tabstop>
+  <tabstop>lwSnippets</tabstop>
+  <tabstop>leSnippetName</tabstop>
+  <tabstop>leSnippetContext</tabstop>
+  <tabstop>bNewSnippet</tabstop>
+  <tabstop>bEraseSnippet</tabstop>
+  <tabstop>bExitSnippets</tabstop>
+  <tabstop>clbLess</tabstop>
+ </tabstops>
  <resources>
   <include location="example.qrc" />
  </resources>

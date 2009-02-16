@@ -249,7 +249,7 @@ bool QDocumentCursor::operator >= (const QDocumentCursor& c) const
 */
 bool QDocumentCursor::isNull() const
 {
-	return !m_handle || !m_handle->document();
+	return !m_handle || !m_handle->document() || !line().isValid();
 }
 
 /*!
@@ -257,7 +257,7 @@ bool QDocumentCursor::isNull() const
 */
 bool QDocumentCursor::isValid() const
 {
-	return m_handle && m_handle->document();
+	return m_handle && m_handle->document() && line().isValid();
 }
 
 /*!
@@ -419,6 +419,11 @@ QPoint QDocumentCursor::documentPosition() const
 QPoint QDocumentCursor::anchorDocumentPosition() const
 {
 	return m_handle ? m_handle->anchorDocumentPosition() : QPoint();
+}
+
+QPolygon QDocumentCursor::documentRegion() const
+{
+	return m_handle ? m_handle->documentRegion() : QPolygon();
 }
 
 /*!
