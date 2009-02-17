@@ -577,44 +577,10 @@ void XinxCodeEdit::lowerSelectedText() {
 }
 
 void XinxCodeEdit::indent( bool unindent ) {
-	QDocumentCursor tc ( textCursor() );
-
-	if( tc.selectedText().isEmpty() ) {
-		tc.insertText( "\t" );
-		setTextCursor( tc );
-		return;
-	}
-
-	tc.beginEditBlock();
-
-	QDocumentCursor selectionStart = tc.selectionStart();
-	QDocumentCursor selectionEnd = tc.selectionEnd();
-	tc.clearSelection();
-
-	tc.moveTo( selectionEnd );
-	tc.movePosition( 1, QDocumentCursor::EndOfLine, QDocumentCursor::MoveAnchor );
-	QDocumentLine endLine = tc.line();
-	if( endLine.position() == selectionEnd.position() )
-		endLine = endLine.previous();
-
-	tc.moveTo( selectionStart );
-	tc.movePosition( 1, QDocumentCursor::StartOfLine, QDocumentCursor::MoveAnchor );
-	QDocumentLine startLine = tc.line();
-
-	QDocumentLine line = startLine;
-	do {
-		tc.moveTo( line, 1 );
-
-		if( ! unindent )
-			tc.insertText( "\t" );
-		else
-			if ( line.text().count() && (line.text().at(0) == '\t' || line.text().at(0) == ' ') )
-				tc.deleteChar();
-
-		line = line.next();
-	} while( line.isValid() && (( line < endLine ) || ( line == endLine )) );
-
-	tc.endEditBlock();
+	if( ! unindent )
+		m_editor->editor()->indentSelection();
+	else
+		m_editor->editor()->unindentSelection();
 }
 
 void XinxCodeEdit::commentSelectedText( bool uncomment ) {
