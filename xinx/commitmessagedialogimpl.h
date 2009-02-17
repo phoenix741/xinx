@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "ui_commitmessages.h"
-#include "rcs.h"
+#include <rcs/rcs.h>
 
 class PrivateCommitMessageDialogImpl;
 
@@ -44,7 +44,7 @@ public:
 	 * Destructor of commit dialog.
 	 */
 	~CommitMessageDialogImpl();
-	
+
 	/*!
 	 * Defines the default message to be commited. The message is show in the dialog.
 	 * The user can change the message.
@@ -56,9 +56,9 @@ public:
 	 * \return The message to be sent to CVS.
 	 */
 	QString messages();
-	
+
 	/*!
-	 * Set the list of file to be commited. If the file as mode RCS::RemoveAndCommit 
+	 * Set the list of file to be commited. If the file as mode RCS::RemoveAndCommit
 	 * or AddAndCommit the file is not checked in the list. If the mode is RCS::Commit
 	 * the file is checked.
 	 * \param files List of files who ca be add/remove and commited
@@ -69,11 +69,11 @@ public:
 	 * If file is unchecked then the mode RCS::Nothing is set.
 	 * \return Return the list of files the user whant to commit.
 	 */
-	RCS::FilesOperation filesOperation(); 
-	
+	RCS::FilesOperation filesOperation();
+
 public slots:
 	/*!
-	 * Redefine the exec function. When this function is called if the function 
+	 * Redefine the exec function. When this function is called if the function
 	 * setFilesOperation aren't called then a message is popup (There is nothing to do).
 	 */
 	int exec();

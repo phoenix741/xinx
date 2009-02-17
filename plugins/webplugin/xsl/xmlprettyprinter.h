@@ -21,7 +21,7 @@
 #define XMLPRETTYPRINTER_H_
 
 // Xinx header
-#include <exceptions.h>
+#include <core/exceptions.h>
 
 // Qt header
 #include <QString>

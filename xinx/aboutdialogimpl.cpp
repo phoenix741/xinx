@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "aboutdialogimpl.h"
-#include "exceptions.h"
+#include <core/exceptions.h>
 
 /* AboutDialogImpl */
 

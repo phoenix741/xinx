@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "xquery_keyword.h"
-#include "xinxcore.h"
+#include <core/xinxcore.h>
 
 /* Static */
 XQueryKeyword * XQueryKeyword::s_self = 0;

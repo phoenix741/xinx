@@ -21,7 +21,7 @@
 #define __WEBSERVICESEDITOR_H__
 
 // Xinx header
-#include <textfileeditor.h>
+#include <editors/textfileeditor.h>
 
 // Qt header
 #include <QHash>

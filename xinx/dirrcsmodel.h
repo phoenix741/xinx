@@ -21,7 +21,7 @@
 #define __DIRRCSMODEL_H__
 
 // Xinx header
-#include "rcs.h"
+#include <rcs/rcs.h>
 
 // Qt header
 #include <QDirModel>
@@ -33,14 +33,14 @@ class RCSCachedElement;
 /*!
  * The goal of this class is to store the Version Manager Information \e RCS and show
  * to user information of this Version Manager Information.
- * 
+ *
  * At construction of the object, the object create a \e RCS object if a project exists
  * and manage the RCS.
  * The currently version manager supported is CVS.
- * 
- * The item model show in a different color files modified, added, removed, or not in the 
+ *
+ * The item model show in a different color files modified, added, removed, or not in the
  * repository.
- * A tool tip show some information that the information manager supporte. 
+ * A tool tip show some information that the information manager supporte.
  */
 class DirRCSModel : public QDirModel {
 	Q_OBJECT
@@ -56,12 +56,12 @@ public:
 	 * \return The rcs object.
 	 */
 	RCS * rcs();
-	
+
 public slots:
 	void refresh( const QString & path );
 private:
 	RCSCachedElement cachedValue( const QString & key ) const;
-	
+
 	RCS * m_rcs;
 	mutable QCache<QString,RCSCachedElement> m_cache;
 };

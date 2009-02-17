@@ -21,7 +21,7 @@
 #define SVNPLUGIN_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <plugins/plugininterfaces.h>
 
 class SVNPlugin : public QObject, public IRCSPlugin {
 	Q_OBJECT
@@ -29,7 +29,7 @@ class SVNPlugin : public QObject, public IRCSPlugin {
 	Q_INTERFACES(IRCSPlugin)
 public:
 	SVNPlugin();
-	
+
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 

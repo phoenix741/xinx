@@ -20,8 +20,8 @@
 // Xinx header
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
-#include "exceptions.h"
-#include "xinxproject.h"
+#include <core/exceptions.h>
+#include <core/xinxproject.h>
 
 #include "mainformimpl.h"
 #include "dbus/orgshadowarexinxinterface.h"

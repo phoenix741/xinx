@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <rcs.h>
+#include <rcs/rcs.h>
 
 // Qt header
 #include <QString>
@@ -28,9 +28,9 @@
 struct EntriesLine {
 	EntriesLine();
 	EntriesLine( const QString & line );
-	
+
 	RCS::rcsState status( const QString & path ) const;
-	
+
 	bool hasConflict;
 	QChar type; // D pour dossier
 	QString filename;
@@ -41,9 +41,9 @@ struct EntriesLine {
 struct EntriesFile : public QHash<QString,EntriesLine> {
 	EntriesFile();
 	EntriesFile( const QString & file );
-	
+
 	const EntriesLine status( const QString & path ) const;
-	
+
 	QString path;
 	QDateTime fileDate;
 };
@@ -51,6 +51,6 @@ struct EntriesFile : public QHash<QString,EntriesLine> {
 struct EntriesList : public QHash<QString,EntriesFile> {
 	const EntriesFile value( const QString & key );
 	const EntriesFile value( const QString & key, const EntriesFile & defaultValue );
-	
+
 	const EntriesLine status( const QString & filename );
 };

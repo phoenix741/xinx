@@ -20,8 +20,8 @@
 // Xinx header
 #include "rcs_cvs.h"
 #include "cvsthread.h"
-#include "xinxpluginsloader.h"
-#include "xinxconfig.h"
+#include <core/xinxconfig.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QDir>

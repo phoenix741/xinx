@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "filecontentdockwidget.h"
-#include "filecontentitemmodel.h"
+#include <filecontent/filecontentitemmodel.h>
 
 // Qt header
 #include <QVBoxLayout>

@@ -18,10 +18,10 @@
  * *********************************************************************** */
 
 // Xinx header
+#include <core/xinxproject.h>
 #include "servicesplugin.h"
 #include "servicesprojectpropertyimpl.h"
 #include "servicesprojectwizard.h"
-#include <xinxproject.h>
 #include "webservices.h"
 #include "webservicesfiletype.h"
 

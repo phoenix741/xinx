@@ -21,7 +21,7 @@
 #define XMLTEXTEDITOR_H_
 
 // Xinx header
-#include "xinxcodeedit.h"
+#include <editors/xinxcodeedit.h>
 
 // Qt header
 #include <QStringList>

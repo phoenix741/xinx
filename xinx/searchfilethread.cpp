@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "searchfilethread.h"
-#include <xinxpluginsloader.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QDir>

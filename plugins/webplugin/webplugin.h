@@ -21,7 +21,7 @@
 #define WEBPLUGIN_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <plugins/plugininterfaces.h>
 
 class WebPluginSettings;
 

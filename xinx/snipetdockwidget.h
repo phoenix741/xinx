@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "snipet.h"
-#include "abstracteditor.h"
+#include <editors/abstracteditor.h>
 
 // Qt header
 #include <QDockWidget>

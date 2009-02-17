@@ -19,15 +19,15 @@
 
 // Xinx header
 #include "tabeditor.h"
-#include "abstracteditor.h"
-#include "xinxcodeedit.h"
-#include "textfileeditor.h"
-#include "xinxproject.h"
+#include <core/xinxproject.h>
+#include <core/xinxconfig.h>
+#include <editors/abstracteditor.h>
+#include <editors/xinxcodeedit.h>
+#include <editors/textfileeditor.h>
+#include <plugins/xinxpluginsloader.h>
 #include "runsnipetdialogimpl.h"
 #include "snipet.h"
 #include "snipetlist.h"
-#include "xinxconfig.h"
-#include "xinxpluginsloader.h"
 
 // Qt header
 #include <QDir>

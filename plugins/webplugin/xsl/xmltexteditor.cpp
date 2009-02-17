@@ -23,9 +23,9 @@
 #include "xslmodelcompleter.h"
 #include "../config/selfwebpluginsettings.h"
 
-#include <xinxpluginsloader.h>
-#include <xinxconfig.h>
-#include <xinxlanguagefactory.h>
+#include <plugins/xinxpluginsloader.h>
+#include <core/xinxconfig.h>
+#include <editors/xinxlanguagefactory.h>
 
 // QCodeEdit header
 #include <qlanguagedefinition.h>

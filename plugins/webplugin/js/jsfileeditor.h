@@ -21,7 +21,7 @@
 #define _JSFILEEDITOR_H_
 
 // Xinx header
-#include <itemmodelfileeditor.h>
+#include <editors/itemmodelfileeditor.h>
 #include "javascriptmodelcompleter.h"
 
 class JSFileEditor : public ItemModelFileEditor {

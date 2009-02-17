@@ -19,8 +19,8 @@
 
 // Xinx header
 #include "commitmessagedialogimpl.h"
-#include "xinxproject.h"
-#include "exceptions.h"
+#include <core/xinxproject.h>
+#include <core/exceptions.h>
 
 // Qt header
 #include <QMessageBox>

@@ -30,9 +30,9 @@
 #include <QPair>
 
 // Xinx header
-#include "xinxcore.h"
+#include <core/xinxcore.h>
+#include <core/xinxproject.h>
 #include "webservices.h"
-#include "xinxproject.h"
 #include "wsdl.h"
 #include "soap.h"
 #include "connectionwebservicesdialogimpl.h"

@@ -21,7 +21,7 @@
 #define RCSLOGDIALOGIMPL_H
 
 // Xinx header
-#include "rcs.h"
+#include <rcs/rcs.h>
 #include "ui_logform.h"
 
 // Qt header

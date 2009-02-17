@@ -20,10 +20,10 @@
 // Xinx header
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
-#include "xinxconfig.h"
 #include "snipetlist.h"
-#include "exceptions.h"
-#include "xinxpluginsloader.h"
+#include <core/xinxconfig.h>
+#include <core/exceptions.h>
+#include <plugins/xinxpluginsloader.h>
 
 // QCodeEdit header
 #include <qlinemarksinfocenter.h>

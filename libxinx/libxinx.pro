@@ -16,58 +16,58 @@ LIBS = -L../components \
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
 win32 : RC_FILE += rc/libxinx.rc
-HEADERS = xinxproject.h \
-    xinxformatscheme.h \
-    textfileeditor.h \
-    filewatcher.h \
-    p_filewatcher.h \
-    filecontentitemmodel.h \
-    appsettings.h \
-    xinxconfig.h \
-    xinxpluginsloader.h \
-    xinxcore.h \
-    xinxthread.h \
-    rcs.h \
-    exceptions.h \
-    filecontentstructure.h \
-    abstracteditor.h \
-    abstractfileeditor.h \
-    itemmodelfileeditor.h \
-    xinxpluginelement.h \
-    plugininterfaces.h \
-    xinxcodeedit.h \
-    xinxcodeedit_p.h \
-    xinxlanguagefactory.h \
-    contentviewcache.h \
-    contentviewnode.h \
-    contentviewmodel.h \
-    contentviewparser.h \
-    completionnodemodel.h \
-    abstractcontentviewmodel.h
-SOURCES = contentviewmodel.cpp \
-    contentviewnode.cpp \
-    xinxproject.cpp \
-    xinxformatscheme.cpp \
-    textfileeditor.cpp \
-    filewatcher.cpp \
-    filecontentitemmodel.cpp \
-    appsettings.cpp \
-    xinxconfig.cpp \
-    xinxpluginsloader.cpp \
-    xinxcore.cpp \
-    xinxthread.cpp \
-    rcs.cpp \
-    exceptions.cpp \
-    filecontentstructure.cpp \
-    abstracteditor.cpp \
-    abstractfileeditor.cpp \
-    itemmodelfileeditor.cpp \
-    xinxpluginelement.cpp \
-    xinxcodeedit.cpp \
-    xinxlanguagefactory.cpp \
-    contentviewparser.cpp \
-    contentviewcache.cpp \
-    abstractcontentviewmodel.cpp \
-    completionnodemodel.cpp
+HEADERS = rcs/rcs.h \
+	plugins/xinxpluginsloader.h \
+    plugins/xinxpluginelement.h \
+    core/exceptions.h \
+    core/xinxproject.h \
+    core/filewatcher.h \
+    core/p_filewatcher.h \
+    core/appsettings.h \
+    core/xinxconfig.h \
+    core/xinxcore.h \
+    core/xinxthread.h \
+    core/plugininterfaces.h \
+    filecontent/filecontentitemmodel.h \
+    filecontent/filecontentstructure.h \
+    editors/xinxformatscheme.h \
+    editors/xinxlanguagefactory.h \
+    editors/textfileeditor.h \
+    editors/abstracteditor.h \
+    editors/abstractfileeditor.h \
+    editors/itemmodelfileeditor.h \
+    editors/xinxcodeedit.h \
+    editors/xinxcodeedit_p.h \
+    contentview/contentviewcache.h \
+    contentview/contentviewnode.h \
+    contentview/contentviewmodel.h \
+    contentview/contentviewparser.h \
+    contentview/completionnodemodel.h \
+    contentview/abstractcontentviewmodel.h
+SOURCES = rcs/rcs.cpp \
+	plugins/xinxpluginsloader.cpp \
+    plugins/xinxpluginelement.cpp \
+    core/xinxproject.cpp \
+    core/filewatcher.cpp \
+    core/appsettings.cpp \
+    core/xinxconfig.cpp \
+    core/xinxcore.cpp \
+    core/xinxthread.cpp \
+    core/exceptions.cpp \
+    filecontent/filecontentitemmodel.cpp \
+    filecontent/filecontentstructure.cpp \
+    editors/xinxformatscheme.cpp \
+    editors/xinxlanguagefactory.cpp \
+    editors/abstracteditor.cpp \
+    editors/abstractfileeditor.cpp \
+    editors/textfileeditor.cpp \
+    editors/itemmodelfileeditor.cpp \
+    editors/xinxcodeedit.cpp \
+    contentview/contentviewmodel.cpp \
+    contentview/contentviewnode.cpp \
+    contentview/contentviewparser.cpp \
+    contentview/contentviewcache.cpp \
+    contentview/abstractcontentviewmodel.cpp \
+    contentview/completionnodemodel.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)

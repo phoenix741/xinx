@@ -19,8 +19,8 @@
 
 // Xinx header
 #include "dirrcsmodel.h"
-#include "xinxproject.h"
-#include <xinxpluginsloader.h>
+#include <core/xinxproject.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QBrush>

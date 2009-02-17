@@ -21,7 +21,7 @@
 #define RCS_SVN_H_
 
 // Xinx header
-#include <rcs.h>
+#include <rcs/rcs.h>
 
 // Qt header
 #include <QProcess>

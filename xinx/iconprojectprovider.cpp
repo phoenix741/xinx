@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // xinx header
-#include "xinxpluginsloader.h"
+#include <plugins/xinxpluginsloader.h>
 #include "iconprojectprovider.h"
 
 IconProjectProvider::IconProjectProvider() : QFileIconProvider() {

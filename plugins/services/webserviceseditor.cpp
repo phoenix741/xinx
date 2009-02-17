@@ -18,10 +18,10 @@
  * *********************************************************************** */
 
 // Xinx header
+#include <core/xinxproject.h>
+#include <editors/xinxcodeedit.h>
 #include "webserviceseditor.h"
 #include "webservices.h"
-#include "xinxcodeedit.h"
-#include "xinxproject.h"
 #include "borderlayout.h"
 #include <xmlprettyprinter.h>
 #include <xmltexteditor.h>

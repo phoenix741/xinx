@@ -18,12 +18,12 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <xinxcore.h>
 #include "scriptmanager.h"
-#include "xinxproject.h"
-#include <abstracteditor.h>
-#include <textfileeditor.h>
-#include <xinxcodeedit.h>
+#include <core/xinxcore.h>
+#include <core/xinxproject.h>
+#include <editors/abstracteditor.h>
+#include <editors/textfileeditor.h>
+#include <editors/xinxcodeedit.h>
 #include "configurationfile.h"
 
 // Qt header

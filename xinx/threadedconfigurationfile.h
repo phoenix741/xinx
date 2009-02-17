@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "configurationfile.h"
-#include "xinxthread.h"
+#include <core/xinxthread.h>
 
 class ThreadedConfigurationFile : public XinxThread {
 	Q_OBJECT

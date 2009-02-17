@@ -19,8 +19,8 @@
 
 // Xinx header
 #include "rcs_svn.h"
-#include <xinxconfig.h>
-#include <xinxpluginsloader.h>
+#include <core/xinxconfig.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QTextStream>

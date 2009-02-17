@@ -21,8 +21,8 @@
 #define _XSLLISTVIEW_H_
 
 // Xinx header
-#include <exceptions.h>
-#include <filecontentstructure.h>
+#include <core/exceptions.h>
+#include <filecontent/filecontentstructure.h>
 
 // Qt header
 #include <QXmlStreamReader>

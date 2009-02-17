@@ -20,9 +20,9 @@
 // Xinx header
 #include "serviceresultdialogimpl.h"
 
-#include <xinxpluginsloader.h>
-#include <xinxconfig.h>
-#include <xinxlanguagefactory.h>
+#include <core/xinxconfig.h>
+#include <plugins/xinxpluginsloader.h>
+#include <editors/xinxlanguagefactory.h>
 
 // QCodeEdit header
 #include <qlanguagedefinition.h>

@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "codedialogimpl.h"
-#include "xinxconfig.h"
+#include <core/xinxconfig.h>
 
 // Qt header
 #include <QApplication>

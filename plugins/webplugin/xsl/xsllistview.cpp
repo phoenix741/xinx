@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "xsllistview.h"
-#include <xinxpluginsloader.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QDomElement>

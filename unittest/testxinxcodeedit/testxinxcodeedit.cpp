@@ -18,9 +18,9 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <xinxcodeedit.h>
-#include <xinxconfig.h>
-#include <xinxlanguagefactory.h>
+#include <core/xinxconfig.h>
+#include <editors/xinxcodeedit.h>
+#include <editors/xinxlanguagefactory.h>
 
 // QCodeEdit header
 #include <qlinemarksinfocenter.h>

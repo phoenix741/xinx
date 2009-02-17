@@ -19,8 +19,8 @@
 
 // Xinx header
 #include "xmlpresentationitem.h"
-#include <exceptions.h>
-#include <xinxconfig.h>
+#include <core/exceptions.h>
+#include <core/xinxconfig.h>
 
 // Qt header
 #include <QStringList>

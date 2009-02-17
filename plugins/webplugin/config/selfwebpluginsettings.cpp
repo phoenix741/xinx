@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "xinxcore.h"
+#include <core/xinxcore.h>
 #include "selfwebpluginsettings.h"
 
 SelfWebPluginSettings * SelfWebPluginSettings::s_self = 0;

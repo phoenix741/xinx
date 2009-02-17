@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "xmlprettyprinter.h"
-#include <xinxconfig.h>
+#include <core/xinxconfig.h>
 
 // Qt header
 #include <QTextCodec>

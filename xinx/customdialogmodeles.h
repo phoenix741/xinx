@@ -31,7 +31,7 @@
 #include "snipetlist.h"
 #include "snipet.h"
 #include "scriptmanager.h"
-#include <xinxpluginsloader.h>
+#include <plugins/xinxpluginsloader.h>
 
 class ToolsModelIndex : public QAbstractTableModel {
 	Q_OBJECT

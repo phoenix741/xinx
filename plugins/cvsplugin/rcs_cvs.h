@@ -21,8 +21,8 @@
 #define __RCS_CVS_H__
 
 // Xinx header
-#include <rcs.h>
-#include <exceptions.h>
+#include <core/exceptions.h>
+#include <rcs/rcs.h>
 #include "entries.h"
 
 // Qt header
@@ -38,7 +38,7 @@ public:
 	RCS_CVS( const QString & base );
 	virtual ~RCS_CVS();
 
-	virtual struct_rcs_infos infos( const QString & path ); 
+	virtual struct_rcs_infos infos( const QString & path );
 	virtual RCS::FilesOperation operations( const QStringList & path );
 	virtual void update( const QStringList & path );
 	virtual void commit( const FilesOperation & path, const QString & message );
@@ -51,11 +51,11 @@ private slots:
 	void entriesStateChanged( const QString & path );
 private:
 	void updateEntries();
-	
+
 	RCS::rcsOperation operationOfState( RCS::rcsState state );
 	RCS::FilesOperation operationOf( const QString & path );
 	RCS::FilesOperation recursiveOperationOf( const QString & path );
-	
+
 	QPointer<CVSThread> m_thread;
 	EntriesList * m_entriesList;
 	QFileSystemWatcher * m_watcher;

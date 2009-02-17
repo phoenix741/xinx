@@ -21,7 +21,7 @@
 #define __JAVASCRIPTPARSER_H__
 
 // Xinx header
-#include "filecontentstructure.h"
+#include <filecontent/filecontentstructure.h>
 
 // Qt header
 #include <QStringList>
@@ -110,7 +110,7 @@ public:
 	 * Delete the parser
 	 */
 	virtual ~JavaScriptParser();
-	
+
 	/*!
 	 * Load and parse the content of the file.
 	 * \param content Content of the file
@@ -118,9 +118,9 @@ public:
 	virtual void loadFromFile( const QString & filename );
 	virtual void loadFromFileDelayed( const QString & filename );
 	virtual void loadFromDevice( QIODevice * device );
-	
+
 	virtual bool isLoaded();
-	
+
 	virtual int rowCount();
 	virtual QIcon icon() const;
 private:

@@ -22,9 +22,9 @@
 #include "javascriptmodelcompleter.h"
 #include "../config/selfwebpluginsettings.h"
 
-#include <xinxconfig.h>
-#include <xinxpluginsloader.h>
-#include <xinxlanguagefactory.h>
+#include <core/xinxconfig.h>
+#include <plugins/xinxpluginsloader.h>
+#include <editors/xinxlanguagefactory.h>
 
 // QCodeEdit header
 #include <qlanguagedefinition.h>

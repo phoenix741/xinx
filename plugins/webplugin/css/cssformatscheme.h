@@ -21,7 +21,7 @@
 #define CSSFORMATSCHEME_H_
 
 // Xinx header
-#include <xinxformatscheme.h>
+#include <editors/xinxformatscheme.h>
 
 
 class CssFormatScheme : public XinxFormatScheme {

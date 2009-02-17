@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
- 
+
 #ifndef _EDITORCOMPLETION_H_
 #define _EDITORCOMPLETION_H_
 
 // Xinx header
-#include <exceptions.h>
+#include <core/exceptions.h>
 
 // Qt header
 #include <QList>
@@ -58,13 +58,13 @@ public:
  * multiple value. In this case user can complete on the list of value. If a default value is proposed
  * when user complete on the attribute, the default value is automaticaly written.
  *
- * If the attribute is default, it will be written automaticaly on validation of the balise namec while 
+ * If the attribute is default, it will be written automaticaly on validation of the balise namec while
  * completion.
  */
 class CompletionXMLAttribute {
 public:
 	/*!
-	 * Constructor of the class. Load from XML the content of the completion. 
+	 * Constructor of the class. Load from XML the content of the completion.
 	 * \param node XML Node where element must be read.
 	 */
 	CompletionXMLAttribute( const QDomElement & node );
@@ -84,7 +84,7 @@ public:
 	 * \return True if the attribute is the default value
 	 */
 	bool isDefault() const { return m_isDefault; };
-	
+
 	/*!
 	 * Return the list of possible value for the attribute. The user can complete the value with
 	 * the list.
@@ -101,7 +101,7 @@ public:
 private:
 	QString m_name;
 	bool m_isDefault;
-	
+
 	QStringList m_values;
 	int m_defaultValue;
 };
@@ -119,7 +119,7 @@ private:
  *
  * A balise is under a category (XSL or HTML), and contains one or more attribute.
  * A balise can contains attribute.
- * 
+ *
  * \code
  *   <xsl:choose>
  *	 	<xsl:when test=""/>
@@ -139,7 +139,7 @@ public:
 	 */
 	CompletionXMLBalise( const QString & category, const QDomElement & node );
 	/*!
-	 * Destuctor of Completion XML Balise 
+	 * Destuctor of Completion XML Balise
 	 */
 	~CompletionXMLBalise();
 
@@ -150,7 +150,7 @@ public:
 	const QString & name() const { return m_name; };
 	/*!
 	 * Category of the balise (e.g. XSL, HTML)
-	 * \return The category of the balise 
+	 * \return The category of the balise
 	 */
 	const QString & category() const { return m_category; };
 	/*!
@@ -159,7 +159,7 @@ public:
 	 * \return true if the balise is the default balise from a list of children balise.
 	 */
 	bool isDefault() const { return m_isDefault; };
-	
+
 	/*!
 	 * List of attributes of the balise
 	 * \return The list of attributes in a QList
@@ -170,7 +170,7 @@ public:
 	 * \return A list of balise
 	 */
 	const QList<CompletionXMLBalise*> & balises() const { return m_balises; };
-	
+
 	/*!
 	 * Return a balise from it's name.
 	 * \param name Name of the balise to find.
@@ -185,12 +185,12 @@ public:
 	 * \todo Use a hashtable for searching on name
 	 */
 	CompletionXMLAttribute* attribute( const QString & name ) const;
-private:	
+private:
 	QString m_name;
 	bool m_isDefault;
-	
+
 	QString m_category;
-	
+
 	QList<CompletionXMLAttribute*> m_attributes;
 	QList<CompletionXMLBalise*> m_balises;
 };
@@ -202,7 +202,7 @@ private:
  */
 class CompletionXML {
 public:
-	/*! 
+	/*!
 	 * Create a Completion structure.
 	 * \param name File name to use to read the document.
 	 * \throw ENotCompletionFile if the document isn't valid
@@ -219,11 +219,11 @@ public:
 	 */
 	const QList<CompletionXMLBalise*> xmlBalises();
 
-	/*! 
+	/*!
 	 * List of all HTML balise only
 	 */
 	const QList<CompletionXMLBalise*> htmlBalises();
-	/*! 
+	/*!
 	 * Return a balise class corresponding on name in parameters.
 	 * \param name Name used to find the balise
 	 * \return A balise corresponding on name
@@ -244,7 +244,7 @@ public:
 	 * \sa path()
 	 */
 	void setPath( const QString & name );
-	
+
 protected:
 	/*!
 	 * Load the completion file and charged it in memory.

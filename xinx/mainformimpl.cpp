@@ -26,27 +26,27 @@
 #include "logdialogimpl.h"
 #include "snipet.h"
 #include "snipetdockwidget.h"
-#include "xinxproject.h"
 #include "snipet.h"
 #include "snipetlist.h"
 #include "snipetdialog.h"
-#include "textfileeditor.h"
-#include "xinxcodeedit.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
 #include "projectpropertyimpl.h"
-#include "rcs.h"
 #include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
 #include "runsnipetdialogimpl.h"
-#include "exceptions.h"
-#include "xinxthread.h"
 #include "specifiquedlgimpl.h"
-#include "xinxpluginsloader.h"
 #include "newprojectwizard.h"
 #include "scriptmanager.h"
 #include "searchfilethread.h"
 #include "dbus/orgshadowarexinxadaptor.h"
+#include <core/xinxproject.h>
+#include <core/exceptions.h>
+#include <core/xinxthread.h>
+#include <plugins/xinxpluginsloader.h>
+#include <editors/textfileeditor.h>
+#include <editors/xinxcodeedit.h>
+#include <rcs/rcs.h>
 
 // Qt header
 #include <QObject>

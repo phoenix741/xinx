@@ -21,7 +21,7 @@
 #define _STYLESHEETEDITOR_H_
 
 // Xinx header
-#include <itemmodelfileeditor.h>
+#include <editors/itemmodelfileeditor.h>
 #include "xslmodelcompleter.h"
 
 class XslContentElementList;

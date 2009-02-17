@@ -21,7 +21,7 @@
 #define __CONFIGURATIONFILE_H__
 
 // Xinx header
-#include "exceptions.h"
+#include <core/exceptions.h>
 
 // Qt header
 #include <QString>

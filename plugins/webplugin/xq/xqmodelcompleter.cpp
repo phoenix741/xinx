@@ -20,8 +20,8 @@
 // Xinx header
 #include "xqmodelcompleter.h"
 #include "xquery_keyword.h"
-#include <xinxconfig.h>
-#include <xinxformatscheme.h>
+#include <core/xinxconfig.h>
+#include <editors/xinxformatscheme.h>
 
 // QCodeedit header
 #include <qformat.h>

@@ -21,7 +21,7 @@
 #define XMLFORMATSCHEME_H_
 
 // Xinx header
-#include <xinxformatscheme.h>
+#include <editors/xinxformatscheme.h>
 
 
 class XmlFormatScheme : public XinxFormatScheme {

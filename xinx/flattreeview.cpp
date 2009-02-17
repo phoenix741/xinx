@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "flattreeview.h"
-#include "exceptions.h"
+#include <core/exceptions.h>
 
 // Qt header
 #include <QHash>

@@ -21,7 +21,7 @@
 #define _CSSFILEEDITOR_H_
 
 // Xinx header
-#include <itemmodelfileeditor.h>
+#include <editors/itemmodelfileeditor.h>
 
 class CSSFileContentParser;
 

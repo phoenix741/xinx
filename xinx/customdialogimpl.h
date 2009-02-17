@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "ui_custom.h"
-#include <xinxconfig.h>
+#include <core/xinxconfig.h>
 
 class SnipetModelIndex;
 

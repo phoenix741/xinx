@@ -21,7 +21,7 @@
 #define _XSDEDITOR_H_
 
 // Xinx header
-#include <abstractfileeditor.h>
+#include <editors/abstractfileeditor.h>
 #include "xmlschema.h"
 
 // Qt header

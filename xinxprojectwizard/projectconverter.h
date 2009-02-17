@@ -25,7 +25,7 @@
 #include <QDomDocument>
 
 // Xinx header
-#include "exceptions.h"
+#include <core/exceptions.h>
 
 #define XINX_PROJECT_VERSION_0 0
 #define XINX_PROJECT_VERSION_1 1

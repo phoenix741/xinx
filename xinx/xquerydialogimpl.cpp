@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "xquerydialogimpl.h"
-#include "xinxpluginsloader.h"
+#include <plugins/xinxpluginsloader.h>
 
 #include "../plugins/webplugin/xq/xqmodelcompleter.h" // we can because static linked
 

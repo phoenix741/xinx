@@ -21,7 +21,7 @@
 #define __SNIPETLIST_H__
 
 // Xinx header
-#include <exceptions.h>
+#include <core/exceptions.h>
 #include "snipet.h"
 
 // Qt header

@@ -21,7 +21,7 @@
 #define CVSPLUGIN_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <plugins/plugininterfaces.h>
 #include "pluginsettings.h"
 
 class CVSPlugin : public QObject, public IXinxPluginConfiguration, public IRCSPlugin {
@@ -32,7 +32,7 @@ class CVSPlugin : public QObject, public IXinxPluginConfiguration, public IRCSPl
 public:
 	CVSPlugin();
 	virtual ~CVSPlugin();
-	
+
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
@@ -41,7 +41,7 @@ public:
 	virtual QWidget * createSettingsDialog();
 	virtual bool loadSettingsDialog( QWidget * widget );
 	virtual bool saveSettingsDialog( QWidget * widget );
-	
+
 	virtual QStringList rcs();
 	virtual QString descriptionOfRCS( const QString & rcs );
 	virtual RCS * createRCS( const QString & rcs, const QString & basePath );

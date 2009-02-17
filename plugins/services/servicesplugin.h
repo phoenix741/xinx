@@ -21,7 +21,7 @@
 #define SERVICESPLUGIN_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <plugins/plugininterfaces.h>
 
 class ServicesPlugin : public QObject, public IFilePlugin, public IXinxPluginProjectConfiguration {
 	Q_OBJECT

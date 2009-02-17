@@ -22,7 +22,7 @@
 
 // Xinx header
 #include "ui_replace.h"
-#include <abstracteditor.h>
+#include <editors/abstracteditor.h>
 
 // Qt header
 #include <QPushButton>

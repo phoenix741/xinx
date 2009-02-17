@@ -19,8 +19,8 @@
 
 // Xinx header
 #include "xmlpresentationdockthread.h"
-#include "xinxproject.h"
-#include <xinxconfig.h>
+#include <core/xinxproject.h>
+#include <core/xinxconfig.h>
 #include "xquerydialogimpl.h"
 
 // Qt header

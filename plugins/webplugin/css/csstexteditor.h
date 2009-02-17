@@ -21,7 +21,7 @@
 #define CSSTEXTEDITOR_H_
 
 // Xinx header
-#include "xinxcodeedit.h"
+#include <editors/xinxcodeedit.h>
 
 class CSSTextEditor : public XinxCodeEdit {
 	Q_OBJECT

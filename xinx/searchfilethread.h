@@ -21,8 +21,8 @@
 #define _SEARCHFILETHREAD_H_
 
 // Xinx header
-#include <abstracteditor.h>
-#include <xinxthread.h>
+#include <core/xinxthread.h>
+#include <editors/abstracteditor.h>
 
 class SearchFileThread : public XinxThread {
 	Q_OBJECT

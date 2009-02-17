@@ -21,7 +21,7 @@
 #define XSDEDIT_H_
 
 // Xinx header
-#include <plugininterfaces.h>
+#include <plugins/plugininterfaces.h>
 
 class XsdEditPlugin : public QObject, public IFilePlugin {
 	Q_OBJECT

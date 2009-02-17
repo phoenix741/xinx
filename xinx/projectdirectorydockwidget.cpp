@@ -19,13 +19,13 @@
 
 // Xinx header
 #include "projectdirectorydockwidget.h"
-#include <xinxcore.h>
-#include <xinxpluginsloader.h>
+#include <core/xinxcore.h>
+#include <core/exceptions.h>
+#include <core/xinxconfig.h>
+#include <core/xinxproject.h>
+#include <plugins/xinxpluginsloader.h>
 #include "flattreeview.h"
 #include "dirrcsmodel.h"
-#include <exceptions.h>
-#include <xinxconfig.h>
-#include <xinxproject.h>
 #include "iconprojectprovider.h"
 
 // Qt header

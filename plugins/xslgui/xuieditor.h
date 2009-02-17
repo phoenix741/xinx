@@ -21,7 +21,7 @@
 #define _XUIEDITOR_H_
 
 // Xinx header
-#include <abstractfileeditor.h>
+#include <editors/abstractfileeditor.h>
 
 // Qt header
 #include <QGraphicsScene>

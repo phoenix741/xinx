@@ -18,10 +18,10 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "exceptions.h"
+#include <core/exceptions.h>
+#include <core/xinxconfig.h>
 #include "cvsthread.h"
 #include "pluginsettings.h"
-#include "xinxconfig.h"
 
 // Qt header
 #include <QFileInfo>
@@ -50,7 +50,7 @@ CVSThread::~CVSThread() {
 
 void CVSThread::processLine( const QString & line ) {
 	QString lline = line.simplified();
-	
+
 	if( lline.startsWith( "M " ) )
 		emit log( RCS::LogLocallyModified, lline );
 	else if( lline.startsWith( "A " ) )
@@ -65,15 +65,15 @@ void CVSThread::processLine( const QString & line ) {
 		emit log( RCS::LogConflict, lline );
 	else if( lline.startsWith( "? " ) )
 		emit log( RCS::LogNotManaged, lline );
-	else		
+	else
 		emit log( RCS::LogNormal, lline );
 }
 
 void CVSThread::processReadOutput() {
 	m_process->setReadChannel( QProcess::StandardOutput );
-	while( m_process->canReadLine() ) 
+	while( m_process->canReadLine() )
 		processLine( m_process->readLine() );
-		
+
 	/* Process error */
 	m_process->setReadChannel( QProcess::StandardError );
 	while( m_process->canReadLine() )
@@ -116,7 +116,7 @@ void CVSThread::threadrun() {
 	if( m_paths.size() <= 0 ) return;
 	if( m_paths.size() > 1 )
 		m_paths.sort();
-	
+
 	int i = 0;
 	QString path;
 	QStringList files;
@@ -131,7 +131,7 @@ void CVSThread::threadrun() {
 			files << info.fileName();
 		}
 		i++;
-		QFileInfo infoNext; 
+		QFileInfo infoNext;
 		while( ( i < m_paths.size() ) && ( ( infoNext = QFileInfo( m_paths.at( i ) ) ).absolutePath() == path ) ) {
 			files << infoNext.fileName();
 			i++;
@@ -171,7 +171,7 @@ void CVSUpdateThread::callCVS( const QString & path, const QStringList & files )
 
 void CVSUpdateThread::threadrun() {
 	CVSThread::threadrun();
-		
+
 	emit log( RCS::LogApplication, tr("Update terminated") );
 	if( m_terminate )
 		emit operationTerminated();
@@ -180,7 +180,7 @@ void CVSUpdateThread::threadrun() {
 /* CVSUpdateRevisionThread */
 
 CVSUpdateRevisionThread::CVSUpdateRevisionThread( const QString & path, const QString & revision, QString * content ) : CVSThread( QStringList() << path, true ), m_content( content ), m_revision( revision )  {
-	
+
 }
 
 void CVSUpdateRevisionThread::processReadOutput() {
@@ -188,10 +188,10 @@ void CVSUpdateRevisionThread::processReadOutput() {
 		CVSThread::processReadOutput();
 	else {
 		m_process->setReadChannel( QProcess::StandardOutput );
-		while( m_process->canReadLine() ) { 
+		while( m_process->canReadLine() ) {
 			m_content->append( m_process->readLine() );
 		}
-			
+
 		/* Process error */
 		m_process->setReadChannel( QProcess::StandardError );
 		while( m_process->canReadLine() )
@@ -206,7 +206,7 @@ void CVSUpdateRevisionThread::callCVS( const QString & path, const QStringList &
 	parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "update";
 	if( m_content != NULL )
 		parameters << "-p";
-	parameters << "-r" << m_revision; 
+	parameters << "-r" << m_revision;
 
 	parameters << files;
 
@@ -214,9 +214,9 @@ void CVSUpdateRevisionThread::callCVS( const QString & path, const QStringList &
 }
 
 void CVSUpdateRevisionThread::threadrun() {
-	if( m_paths.size() == 1 && QFileInfo( m_paths[ 0 ] ).exists() && !QFileInfo( m_paths[ 0 ] ).isDir() ) 
+	if( m_paths.size() == 1 && QFileInfo( m_paths[ 0 ] ).exists() && !QFileInfo( m_paths[ 0 ] ).isDir() )
 		CVSThread::threadrun();
-		
+
 	emit log( RCS::LogApplication, tr("Update to revision %1 terminated").arg( m_revision ) );
 	if( m_terminate )
 		emit operationTerminated();
@@ -238,7 +238,7 @@ void CVSAddThread::callCVS( const QString & path, const QStringList & files ) {
 
 void CVSAddThread::threadrun() {
 	CVSThread::threadrun();
-	
+
 	emit log( RCS::LogApplication, tr("Add terminated") );
 	if( m_terminate )
 		emit operationTerminated();
@@ -254,13 +254,13 @@ void CVSRemoveThread::callCVS( const QString & path, const QStringList & files )
 	QStringList parameters;
 	parameters << "remove";
 	parameters << files;
-	
+
 	CVSThread::callCVS( path, parameters );
 }
 
 void CVSRemoveThread::threadrun() {
 	CVSThread::threadrun();
-	
+
 	emit log( RCS::LogApplication, tr("Remove terminated") );
 	if( m_terminate )
 		emit operationTerminated();
@@ -279,9 +279,9 @@ CVSCommitThread::CVSCommitThread( RCS::FilesOperation paths, QString message ) :
 			m_message += QFileInfo( file.first ).fileName() + "\n";
 			m_paths  << file.first;
 		}
-		if( file.second == RCS::RemoveAndCommit ) 
+		if( file.second == RCS::RemoveAndCommit )
 			m_removeList  << file.first;
-		if( file.second == RCS::AddAndCommit ) 
+		if( file.second == RCS::AddAndCommit )
 			m_addList  << file.first;
 	}
 }
@@ -293,7 +293,7 @@ void CVSCommitThread::callCVS( const QString & path, const QStringList & files )
 	parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "commit" << "-m" << m_message;
 
 	parameters << files;
-	
+
 	CVSThread::callCVS( path, parameters );
 }
 
@@ -315,7 +315,7 @@ void CVSCommitThread::threadrun() {
 
 	CVSThread::threadrun();
 
-	
+
 	emit log( RCS::LogApplication, tr("Commit terminated") );
 	if( m_terminate )
 		emit operationTerminated();

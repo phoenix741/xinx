@@ -40,11 +40,11 @@
 #include "xq/xqformatscheme.h"
 
 #include "editorcompletion.h"
-#include "textfileeditor.h"
+#include <editors/textfileeditor.h>
 
-#include <xinxpluginsloader.h>
-#include <xinxconfig.h>
-#include <xinxlanguagefactory.h>
+#include <plugins/xinxpluginsloader.h>
+#include <core/xinxconfig.h>
+#include <editors/xinxlanguagefactory.h>
 
 // QCodeedit header
 #include "qnfadefinition.h"

@@ -21,10 +21,10 @@
 #include "customdialogimpl.h"
 #include "customdialogmodeles.h"
 #include "snipetdialog.h"
-#include <exceptions.h>
-#include <xinxformatscheme.h>
-#include <xinxlanguagefactory.h>
-#include <xinxcodeedit.h>
+#include <core/exceptions.h>
+#include <editors/xinxformatscheme.h>
+#include <editors/xinxlanguagefactory.h>
+#include <editors/xinxcodeedit.h>
 
 // QCodeEdit header
 #include <qnfadefinition.h>

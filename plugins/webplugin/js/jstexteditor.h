@@ -21,7 +21,7 @@
 #define JSTEXTEDITOR_H_
 
 // Xinx header
-#include "xinxcodeedit.h"
+#include <editors/xinxcodeedit.h>
 
 class JSTextEditor : public XinxCodeEdit {
 	Q_OBJECT

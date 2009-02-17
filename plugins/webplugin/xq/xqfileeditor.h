@@ -21,7 +21,7 @@
 #define _XQFILEEDITOR_H_
 
 // Xinx header
-#include <textfileeditor.h>
+#include <editors/textfileeditor.h>
 #include "xqmodelcompleter.h"
 
 class XQFileEditor : public TextFileEditor {

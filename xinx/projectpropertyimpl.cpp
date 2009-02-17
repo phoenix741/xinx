@@ -19,10 +19,10 @@
 
 // Xinx header
 #include "projectpropertyimpl.h"
-#include "xinxproject.h"
-#include <xinxconfig.h>
-#include <exceptions.h>
-#include <xinxpluginsloader.h>
+#include <core/xinxproject.h>
+#include <core/xinxconfig.h>
+#include <core/exceptions.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QDir>

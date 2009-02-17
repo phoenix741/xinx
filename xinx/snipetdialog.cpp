@@ -19,9 +19,9 @@
 
 // Xinx header
 #include "snipetdialog.h"
-#include "xinxpluginsloader.h"
 #include "snipetlist.h"
-#include "xinxconfig.h"
+#include <core/xinxconfig.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QSyntaxHighlighter>

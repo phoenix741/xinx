@@ -21,7 +21,7 @@
 #define _XMLFILEEDITOR_H_
 
 // Xinx header
-#include <textfileeditor.h>
+#include <editors/textfileeditor.h>
 
 class XmlFileEditor : public TextFileEditor {
 	Q_OBJECT

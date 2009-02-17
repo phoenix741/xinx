@@ -21,7 +21,7 @@
 #define XQTEXTEDITOR_H_
 
 // Xinx header
-#include "xinxcodeedit.h"
+#include <editors/xinxcodeedit.h>
 
 class XQTextEditor : public XinxCodeEdit {
 	Q_OBJECT

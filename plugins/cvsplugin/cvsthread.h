@@ -21,8 +21,8 @@
 #define __CVSTHREAD_H__
 
 // Xinx header
-#include "rcs.h"
-#include "xinxthread.h"
+#include <rcs/rcs.h>
+#include <core/xinxthread.h>
 #include "pluginsettings.h"
 
 // Qt header
@@ -36,19 +36,19 @@
  * The class split the list of path from the constructor and pass to
  * \e callCVS only files from the same directory. So, callCVS can be calle
  * more one times.
- * 
+ *
  * To implement a call of CVS, you must redefine callCVS and transform the list
- * of parameters in a list of options, and the path of the executable. 
- */ 
+ * of parameters in a list of options, and the path of the executable.
+ */
 class CVSThread : public XinxThread {
 	Q_OBJECT
 public:
 	/*!
-	 * Create a thread class. \e paths define the list of paths to process. The list 
+	 * Create a thread class. \e paths define the list of paths to process. The list
 	 * will be sorted and spitted to before call CVS.
-	 * 
+	 *
 	 * \param paths List of path to process.
-	 * \param terminate If true, the thread must call \e operationTerminated() when the 
+	 * \param terminate If true, the thread must call \e operationTerminated() when the
 	 * process is terminated.
 	 */
 	CVSThread( QStringList paths, bool terminate = true );
@@ -56,9 +56,9 @@ public:
 	 * Destroy the thread.
 	 */
 	virtual ~CVSThread();
-	
-	static PluginSettings * pluginSettings(); 
-	static void setPluginSettings( PluginSettings * settings ); 
+
+	static PluginSettings * pluginSettings();
+	static void setPluginSettings( PluginSettings * settings );
 public slots:
 	/*!
 	 * Abort the thread. If called, the signal is sending to CVS application.
@@ -78,9 +78,9 @@ signals:
 	 */
 	void operationTerminated();
 protected:
-	/*! 
+	/*!
 	 * Called by the thread when there is data to read.
-	 */ 
+	 */
 	virtual void processReadOutput();
 	/*!
 	 * Process the thread.
@@ -97,7 +97,7 @@ protected:
 	 * This, determine the niveau of the log and send the signal \e log.
 	 */
 	void processLine( const QString & line );
-	
+
 	QProcess * m_process; ///< The CVS process executed.
 	QStringList m_paths; ///< List of path to pass in parameters.
 	bool m_terminate; ///< Determine if we want called \e operationTerminated().
@@ -114,14 +114,14 @@ protected:
 class CVSUpdateThread : public CVSThread {
 	Q_OBJECT
 public:
-	/*! 
+	/*!
 	 * Create a thread with update directive.
 	 * \param paths List of file to update
 	 * \param terminate If true call signal operationTerminated()
 	 */
 	CVSUpdateThread( QStringList paths, bool terminate = true );
 protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 };
 
@@ -130,7 +130,7 @@ protected:
 /*!
  * Thread used to update one file to a specified revision.
  * If defined, the content can be stored in a string.
- */ 
+ */
 class CVSUpdateRevisionThread : public CVSThread {
 	Q_OBJECT
 public:
@@ -145,7 +145,7 @@ public:
 public slots:
 	virtual void processReadOutput();
 protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 private:
 	QString * m_content;
@@ -154,20 +154,20 @@ private:
 
 /* CVSAddThread */
 
-/*! 
- * Thread used to add files. 
+/*!
+ * Thread used to add files.
  */
 class CVSAddThread : public CVSThread {
 	Q_OBJECT
 public:
-	/*! 
+	/*!
 	 * Create a thread with the add directive.
 	 * \param paths List of file to add
 	 * \param terminate If true call signal operationTerminated()
 	 */
 	CVSAddThread( QStringList paths, bool terminate = true );
 protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 };
 
@@ -179,22 +179,22 @@ protected:
 class CVSRemoveThread : public CVSThread {
 	Q_OBJECT
 public:
-	/*! 
+	/*!
 	 * Create a thread with remove directive.
 	 * \param paths List of file to update
 	 * \param terminate If true call signal operationTerminated()
 	 */
 	CVSRemoveThread( QStringList paths, bool terminate = true );
 protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 };
 
 /* CVSCommitThread */
 
 /*!
- * Thread to commit file to CVS. 
- * At the creation, a list of files is defined. The list contains the files 
+ * Thread to commit file to CVS.
+ * At the creation, a list of files is defined. The list contains the files
  * to add and commit, to remove and commit, and to commit only.
  * This thread call CVSAddThread, and CVSRemoveThread and wait the end of each thread
  * to commit all.
@@ -202,14 +202,14 @@ protected:
 class CVSCommitThread : public CVSThread {
 	Q_OBJECT
 public:
-	/*! 
+	/*!
 	 * Create a thread with commit directive.
 	 * \param paths List of file to commit, add and remove.
 	 * \param message Message to use when commit.
 	 */
 	CVSCommitThread( RCS::FilesOperation paths, QString message );
 protected:
-	virtual void callCVS( const QString & path, const QStringList & files );	
+	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 private:
 	QString m_message;

@@ -16,15 +16,15 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
- 
+
 #ifndef MAINFORMIMPL_H
 #define MAINFORMIMPL_H
 
 // Xinx header
 #include "ui_mainform.h"
-#include <xinxcore.h>
-#include <abstracteditor.h>
-#include <xinxconfig.h>
+#include <core/xinxcore.h>
+#include <core/xinxconfig.h>
+#include <editors/abstracteditor.h>
 
 // Qt header
 #include <QMainWindow>

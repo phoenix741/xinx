@@ -21,8 +21,8 @@
 #include "snipetdockwidget.h"
 #include "snipetlist.h"
 #include "runsnipetdialogimpl.h"
-#include "textfileeditor.h"
-#include "xinxcodeedit.h"
+#include <editors/textfileeditor.h>
+#include <editors/xinxcodeedit.h>
 
 // Qt header
 #include <QVBoxLayout>

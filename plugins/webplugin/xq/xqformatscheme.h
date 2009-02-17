@@ -21,7 +21,7 @@
 #define XQFORMATSCHEME_H_
 
 // Xinx header
-#include <xinxformatscheme.h>
+#include <editors/xinxformatscheme.h>
 
 
 class XqFormatScheme : public XinxFormatScheme {
