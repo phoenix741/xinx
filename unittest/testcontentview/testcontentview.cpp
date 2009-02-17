@@ -19,6 +19,7 @@
 
 // Xinx header
 #include <core/xinxconfig.h>
+#include <contentview/contentviewnode.h>
 
 // Qt header
 //#include <QApplication>
@@ -29,23 +30,41 @@ class TextContentView : public QObject {
 private slots:
 	void initTestCase();
 
-	void testContentView();
+	void testCreateAttachNode();
 
 	void cleanupTestCase();
 private:
-
+	ContentViewNode * m_nodes;
 };
 
 void TextContentView::initTestCase() {
-	//	QVERIFY( m_edit != 0 );
+	m_nodes = new ContentViewNode( "root", 0 );
+	QVERIFY( m_nodes != 0 );
 }
 
-void TextContentView::testContentView() {
-	QCOMPARE( "", "" );
+void TextContentView::testCreateAttachNode() {
+	QList<ContentViewNode*> list;
+	list.append( new ContentViewNode( "child1", list.size() ) );
+	list.append( new ContentViewNode( "child2", list.size() ) );
+	list.append( new ContentViewNode( "child3", list.size() ) );
+	list.append( new ContentViewNode( "child4", list.size() ) );
+	list.append( new ContentViewNode( "child5", list.size() ) );
+	list.append( new ContentViewNode( "child6", list.size() ) );
+	list.append( new ContentViewNode( "child7", list.size() ) );
+
+	foreach( ContentViewNode * n, list ) {
+		n->attach( m_nodes );
+	}
+
+	foreach( ContentViewNode * n, list ) {
+		QVERIFY( m_nodes->childs().contains( n ) );
+	}
 }
 
 void TextContentView::cleanupTestCase() {
+	delete m_nodes;
 }
 
 QTEST_MAIN(TextContentView)
+
 #include "testcontentview.moc"
