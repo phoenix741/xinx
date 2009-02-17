@@ -2645,9 +2645,6 @@ void QEditor::inputMethodEvent(QInputMethodEvent* e)
 	
 	m_cursor.beginEditBlock();
 	
-	if ( m_cursor.hasSelection() )
-		m_cursor.removeSelectedText();
-	
 	if ( e->commitString().count() )
 		m_cursor.insertText(e->commitString());
 	

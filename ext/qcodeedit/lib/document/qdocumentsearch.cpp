@@ -52,6 +52,14 @@ QDocumentSearch::~QDocumentSearch()
 }
 
 /*!
+	\brief Position of the current match among the indexed matches
+*/
+int QDocumentSearch::currentMatchIndex() const
+{
+	return m_highlight.count() ? m_index : -1;
+}
+
+/*!
 	\brief Number of availables indexed matches
 	
 	Indexed matches are only available when the whole scope is searched,
@@ -61,6 +69,17 @@ QDocumentSearch::~QDocumentSearch()
 int QDocumentSearch::indexedMatchCount() const
 {
 	return m_highlight.count();
+}
+
+/*!
+	\return A cursor pointing to the n-th index match
+	\param idx index of the match to lookup
+	
+	The cursor returned, if valid, delimits the match through its selection.
+*/
+QDocumentCursor QDocumentSearch::match(int idx) const
+{
+	return idx >= 0 && idx < m_highlight.count() ? m_highlight.at(idx) : QDocumentCursor();
 }
 
 /*!
@@ -125,7 +144,7 @@ void QDocumentSearch::setOption(Option opt, bool on)
 	else
 		m_option &= ~opt;
 	
-	if ( (opt & QDocumentSearch::HighlightAll) && m_highlight.count() && m_editor && m_editor->document() )
+	if ( (opt & QDocumentSearch::HighlightAll) && m_highlight.count() )
 	{
 		QDocument *d = m_editor->document();
 		
@@ -138,6 +157,17 @@ void QDocumentSearch::setOption(Option opt, bool on)
 			m_group = d->getNextGroupId();
 			
 			QFormatScheme *f = d->formatScheme();
+			
+			if ( !f )
+				f = QDocument::formatFactory();
+			
+			if ( !f )
+			{
+				qWarning("No format scheme set to the document and no global default one available.\n"
+						"-> highlighting of search matches disabled.");
+				return;
+			}
+			
 			int sid = f->id("search");
 			
 			foreach ( const QDocumentCursor& c, m_highlight )
@@ -151,9 +181,24 @@ void QDocumentSearch::setOption(Option opt, bool on)
 							sid);
 			}
 			
-			qDebug("%i matches in group %i", indexedMatchCount(), m_group);
+			//qDebug("%i matches in group %i", indexedMatchCount(), m_group);
 			d->flushMatches(m_group);
 		}
+	} else if (
+					(m_option & QDocumentSearch::HighlightAll)
+				&&
+					(
+						(opt & QDocumentSearch::RegExp)
+					||
+						(opt & QDocumentSearch::WholeWords)
+					||
+						(opt & QDocumentSearch::CaseSensitive)
+					)
+			)
+	{
+		// matches may have become invalid : update them
+		clearMatches();
+		next(false);
 	}
 }
 
@@ -290,6 +335,9 @@ bool QDocumentSearch::end(bool backward) const
 */
 void QDocumentSearch::next(bool backward, bool all)
 {
+	if ( m_string.isEmpty() )
+		return;
+	
 	if ( !hasOption(Replace) && (all || hasOption(HighlightAll)) && m_highlight.count() )
 	{
 		if ( !backward )
@@ -396,7 +444,12 @@ void QDocumentSearch::next(bool backward, bool all)
 	bool found = false;
 	QDocumentCursor::MoveOperation move;
 	QDocument *d = m_editor ? m_editor->document() : m_origin.document();
-	int sid = d->formatScheme()->id("search");
+	QFormatScheme *f = d->formatScheme() ? d->formatScheme() : QDocument::formatFactory();
+	int sid = f ? f->id("search") : 0;
+	
+	if ( !sid )
+		qWarning("Highlighting of search matches disabled due to unavailability of a format scheme.");
+	
 	move = backward ? QDocumentCursor::PreviousBlock : QDocumentCursor::NextBlock;
 	
 	QDocumentSelection boundaries;
@@ -520,7 +573,7 @@ void QDocumentSearch::next(bool backward, bool all)
 				}
 			} else if ( all || hasOption(HighlightAll) ) {
 				
-				if ( hasOption(HighlightAll) )
+				if ( sid && hasOption(HighlightAll) )
 				{
 					if ( m_group == -1 )
 						m_group = d->getNextGroupId();

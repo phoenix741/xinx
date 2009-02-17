@@ -4227,7 +4227,15 @@ void QDocumentCursorHandle::insertText(const QString& s)
 {
 	if ( !m_doc || s.isEmpty() || m_doc->line(m_begLine).isNull() )
 		return;
-		
+	
+	bool sel = hasSelection();
+	
+	if ( sel )
+	{
+		beginEditBlock();
+		removeSelectedText();
+	}
+	
 	QDocumentCommand *command = new QDocumentInsertCommand(
 										m_begLine,
 										m_begOffset,
@@ -4237,6 +4245,9 @@ void QDocumentCursorHandle::insertText(const QString& s)
 									
 	command->setTargetCursor(this);
 	execute(command);
+	
+	if ( sel )
+		endEditBlock();
 }
 
 void QDocumentCursorHandle::eraseLine()

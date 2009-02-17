@@ -271,6 +271,8 @@ void QSearchReplacePanel::on_leFind_textEdited(const QString& text)
 	if ( m_search )
 		m_search->setSearchText(text);
 	
+	find(0);
+	
 }
 
 void QSearchReplacePanel::on_leFind_returnPressed(bool backward)
@@ -326,6 +328,9 @@ void QSearchReplacePanel::on_cbCursor_toggled(bool on)
 {
 	if ( m_search )
 		m_search->setOrigin(on ? editor()->cursor() : QDocumentCursor());
+	
+	if ( cbHighlight->isChecked() )
+		m_search->next(false);
 	
 	leFind->setFocus();
 }
@@ -440,6 +445,12 @@ void QSearchReplacePanel::cursorPositionChanged()
 {
 	if ( m_search )
 	{
+		if ( editor()->cursor() == m_search->cursor() || cbHighlight->isChecked() )
+			return;
+		
+		if ( cbCursor->isChecked() )
+			m_search->setOrigin(editor()->cursor());
+		
 		m_search->setCursor(editor()->cursor());
 	}
 }

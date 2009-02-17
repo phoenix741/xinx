@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>726</width>
+    <width>745</width>
     <height>677</height>
    </rect>
   </property>
@@ -199,6 +199,9 @@ p, li { white-space: pre-wrap; }&#xd;&#xd;&#xd;&#xd;
           </property>
           <property name="textElideMode" >
            <enum>Qt::ElideNone</enum>
+          </property>
+          <property name="movement" >
+           <enum>QListView::Static</enum>
           </property>
           <property name="flow" >
            <enum>QListView::LeftToRight</enum>
@@ -631,8 +634,8 @@ p, li { white-space: pre-wrap; }&#xd;&#xd;&#xd;&#xd;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>726</width>
-     <height>22</height>
+     <width>745</width>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File" >
