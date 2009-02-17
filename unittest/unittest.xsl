@@ -4,7 +4,8 @@
 	
 	<xsl:template match="/">
 		<report category="test">
-			<xsl:apply-templates select="/TestCase/TestFunction"/>
+			<xsl:apply-templates select="document('unittest.xml')/TestCase/TestFunction"/>
+			<xsl:apply-templates select="document('unittest2.xml')/TestCase/TestFunction"/>
 		</report>
 	</xsl:template>
 
