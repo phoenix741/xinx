@@ -324,7 +324,6 @@ private slots:
 private:
 	void uploSelectedText( bool upper = true );
 	void key_home( bool );
-	void key_enter();
 
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;

@@ -646,10 +646,6 @@ bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
 		key_home( e->modifiers() == Qt::ShiftModifier );
 		e->accept();
 		return false;
-	} else if( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) {
-		key_enter();
-		e->accept();
-		return false;
 	} else if( ( e->key() == Qt::Key_Tab ) && ( ( e->modifiers() == Qt::NoModifier ) || ( e->modifiers() == Qt::ShiftModifier ) ) ) {
 		// TODO: May be replace by an action of the texteditor...
 		indent( e->modifiers() != Qt::NoModifier );
@@ -680,14 +676,6 @@ void XinxCodeEdit::key_home( bool select ) {
 		setTextCursor( cursor );
 	else
 		setTextCursor( cursorStart );
-}
-
-void XinxCodeEdit::key_enter() {
-	QDocumentCursor tc( textCursor() );
-	QString text = tc.line().text();
-	if( text.contains("</") ) {
-	}
-	setTextCursor( tc );
 }
 
 bool XinxCodeEdit::keyPressEvent( QKeyEvent * e, QEditor * editor ) {

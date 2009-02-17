@@ -361,7 +361,13 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 	if( ! SelfWebPluginSettings::self()->config().xml.activeCompletion ) return false;
 
 	if( !e->text().isEmpty() ) {
-		if( ( e->text().right(1) == ">" ) && ( SelfWebPluginSettings::self()->config().xml.addClosedBalise ) ) {
+		if( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) {
+			QDocumentCursor tc( textCursor() );
+			QString text = tc.line().text();
+			if( text.contains( "</" ) )
+				tc.deletePreviousChar();
+			return true;
+		} else if( ( e->text().right(1) == ">" ) && ( SelfWebPluginSettings::self()->config().xml.addClosedBalise ) ) {
 			QDocumentCursor tc( textCursor() );
 			tc.movePosition( 2, QDocumentCursor::PreviousCharacter, QDocumentCursor::KeepAnchor );
 
