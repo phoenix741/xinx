@@ -196,7 +196,7 @@ SpecifiquePageImpl::SpecifiquePageImpl( QWidget * parent ) : QWizardPage( parent
 	setSubTitle( tr("Define if the project is specifique or not. A specifique (derivated) project "
 					"is used when original's file can't be modified.") );
 
-	m_specifiquePathNameEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiquePathNameEdit ) );
+	m_specifiquePathNameEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w-]*" ), m_specifiquePathNameEdit ) );
 
     registerField( "specifique.prefix*",    m_prefixEdit );
     registerField( "specifique.path*",      m_specifiquePathNameEdit );

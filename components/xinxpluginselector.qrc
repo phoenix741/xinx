@@ -1,7 +1,12 @@
 <RCC>
-    <qresource prefix="/" >
-        <file>images/unknown.png</file>
-        <file>images/configure.png</file>
-        <file>images/help-about.png</file>
-    </qresource>
+  <qresource prefix="/" >
+    <file>images/down.png</file>
+    <file>images/up.png</file>
+    <file>images/add.png</file>
+    <file>images/remove.png</file>
+    <file>images/checkbox.png</file>
+    <file>images/unknown.png</file>
+    <file>images/configure.png</file>
+    <file>images/help-about.png</file>
+  </qresource>
 </RCC>

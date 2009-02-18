@@ -82,6 +82,9 @@ private slots:
 	void on_m_btnDef_clicked();
 	void on_m_btnAdd_clicked();
 	void on_m_btnDel_clicked();
+	void on_m_btnUp_clicked();
+	void on_m_btnDown_clicked();
+	void on_m_list_currentRowChanged ( int row );
 private:
 	void updateDefault( const QString & def );
 	int m_defaultValue;

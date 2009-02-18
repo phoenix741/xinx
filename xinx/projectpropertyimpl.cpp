@@ -36,7 +36,9 @@ ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDia
 
 	m_pathListLabel->setBuddy( m_searchPathList );
 	m_prefixLabel->setBuddy( m_prefixList );
-	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w]*" ), m_specifiqueProjectPathLineEdit ) );
+	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w-]*" ), m_specifiqueProjectPathLineEdit ) );
+
+	m_preloadedProjectFiles->setDefaultVisible( false );
 
 	m_projectRCSComboBox->addItem( tr("<No Revision Control System>") );
 	QPair<QString,QString> revisionControl;
@@ -145,6 +147,8 @@ void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 	m_searchPathList->setDefaultValue( defSearchPath );
 	m_searchPathList->setValues( project->searchPathList() ); // fromNativeSeparators
 
+	m_preloadedProjectFiles->setValues( project->preloadedFiles() );
+
 	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
 	foreach( page, m_pluginPages ) {
 		if( ! page.first->loadProjectSettingsPage( page.second ) ) qWarning( qPrintable( tr("Can't load \"%1\" page").arg( page.second->windowTitle() ) ) );
@@ -170,6 +174,9 @@ void ProjectPropertyImpl::saveToProject( XinxProject * project ) {
 
 	project->setProjectRCS( m_projectRCSComboBox->itemData( m_projectRCSComboBox->currentIndex() ).toString() );
 	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
+
+
+	project->preloadedFiles() = m_preloadedProjectFiles->values();
 
 	XinxProject::ProjectOptions options;
 	if( m_specifiqueGroupBox->isChecked() )

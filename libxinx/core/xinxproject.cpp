@@ -225,8 +225,7 @@ public:
 	QString m_fileName;
 	int m_version;
 
-	QStringList m_searchPathList,
-				m_specifiquePrefixes;
+	QStringList m_searchPathList, m_specifiquePrefixes, m_preloadedFiles;
 	int m_indexOfSpecifiquePath;
 	QString m_projectName, m_defaultLang, m_defaultNav;
 	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
@@ -255,6 +254,8 @@ PrivateXinxProject::PrivateXinxProject( XinxProject * parent ) {
 	m_specifiquePathName = XINXConfig::self()->config().project.defaultProjectPathName;
 	m_projectOptions |= XinxProject::hasSpecifique;
 
+	m_preloadedFiles.append( "langue/js/generix.js" );
+
 	m_session = new XinxProjectSession();
 }
 
@@ -265,15 +266,16 @@ PrivateXinxProject::~PrivateXinxProject() {
 PrivateXinxProject& PrivateXinxProject::operator=( const PrivateXinxProject& p ) {
 	m_searchPathList        = p.m_searchPathList;
 	m_indexOfSpecifiquePath = p.m_indexOfSpecifiquePath;
-	m_projectName			= p.m_projectName;
-	m_defaultLang			= p.m_defaultLang;
-	m_defaultNav			= p.m_defaultNav;
-	m_projectPath			= p.m_projectPath;
+	m_projectName		= p.m_projectName;
+	m_defaultLang		= p.m_defaultLang;
+	m_defaultNav		= p.m_defaultNav;
+	m_projectPath		= p.m_projectPath;
 	m_specifiquePathName	= p.m_specifiquePathName;
-	m_specifiquePrefix		= p.m_specifiquePrefix;
-	m_projectOptions		= p.m_projectOptions;
-	m_projectRCS			= p.m_projectRCS;
+	m_specifiquePrefix	= p.m_specifiquePrefix;
+	m_projectOptions	= p.m_projectOptions;
+	m_projectRCS		= p.m_projectRCS;
 	m_logProjectDirectory   = p.m_logProjectDirectory;
+	m_preloadedFiles	= p.m_preloadedFiles;
 
 	return *this;
 }
@@ -341,6 +343,9 @@ QString PrivateXinxProject::processPath( QString path ) {
 	path.replace( "<NAV>", m_defaultNav.toUpper() );
 	path.replace( "<project>", m_specifiquePathName.toLower() );
 	path.replace( "<PROJECT>", m_specifiquePathName.toUpper() );
+	path.replace( "<prefix>", m_specifiquePrefix.toLower() );
+	path.replace( "<PREFIX>", m_specifiquePrefix.toUpper() );
+
 	return QDir( m_parent->projectPath() ).absoluteFilePath( path );
 }
 
@@ -424,6 +429,8 @@ void XinxProject::loadFromFile( const QString & filename ) {
 	if( d->m_specifiquePrefixes.size() == 0 )
 		d->m_specifiquePrefixes.append( d->m_specifiquePrefix );
 
+	d->m_preloadedFiles = PrivateXinxProject::loadList( document, "preloadedFiles", "file" );
+
 	QDomElement propertiesElement = root.firstChildElement( "properties" );
 
 	d->m_properties.clear();
@@ -476,6 +483,7 @@ void XinxProject::saveToFile( const QString & filename ) {
 	PrivateXinxProject::setValue( document, "rcs", d->m_projectRCS );
 	PrivateXinxProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
 	PrivateXinxProject::saveList( document, "paths", "path", d->m_searchPathList );
+	PrivateXinxProject::saveList( document, "preloadedFiles", "file", d->m_preloadedFiles );
 	PrivateXinxProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
 	PrivateXinxProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
 	PrivateXinxProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
@@ -626,6 +634,10 @@ int XinxProject::indexOfSpecifiquePath() const {
 
 void XinxProject::setIndexOfSpecifiquePath( int value ) {
 	d->m_indexOfSpecifiquePath = value;
+}
+
+QStringList & XinxProject::preloadedFiles() {
+	return d->m_preloadedFiles;
 }
 
 const QString & XinxProject::fileName() const {

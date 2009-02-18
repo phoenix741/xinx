@@ -27,6 +27,8 @@ XinxListWidgetImpl::XinxListWidgetImpl( QWidget * parent, Qt::WindowFlags f ) : 
 
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
+	m_btnUp->setEnabled( m_list->currentRow() > 0 );
+	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
 }
 
 XinxListWidgetImpl::~XinxListWidgetImpl() {
@@ -96,6 +98,8 @@ void XinxListWidgetImpl::setValues( const QStringList & values ) {
 	}
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
+	m_btnUp->setEnabled( m_list->currentRow() > 0 );
+	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
 
 	updateDefault( def );
 }
@@ -126,6 +130,8 @@ void XinxListWidgetImpl::on_m_btnAdd_clicked() {
 
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
+	m_btnUp->setEnabled( m_list->currentRow() > 0 );
+	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
 }
 
 void XinxListWidgetImpl::on_m_btnDel_clicked() {
@@ -135,5 +141,29 @@ void XinxListWidgetImpl::on_m_btnDel_clicked() {
 
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
+	m_btnUp->setEnabled( m_list->currentRow() > 0 );
+	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
 }
 
+void XinxListWidgetImpl::on_m_btnUp_clicked() {
+	Q_ASSERT( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() - 1 >= 0 ) );
+
+	int row = m_list->currentRow();
+	QListWidgetItem * item = m_list->takeItem( m_list->currentRow() );
+	m_list->insertItem( row - 1, item );
+	m_list->setCurrentItem( item );
+}
+
+void XinxListWidgetImpl::on_m_btnDown_clicked() {
+	Q_ASSERT( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() + 1 < m_list->count() ) );
+
+	int row = m_list->currentRow();
+	QListWidgetItem * item = m_list->takeItem( m_list->currentRow() );
+	m_list->insertItem( row + 1, item );
+	m_list->setCurrentItem( item );
+}
+
+void XinxListWidgetImpl::on_m_list_currentRowChanged( int row ) {
+	m_btnUp->setEnabled( row > 0 );
+	m_btnDown->setEnabled( row < m_list->count() - 1 );
+}

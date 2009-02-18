@@ -361,6 +361,9 @@ public:
 	/*! List of processed path where the application must searh. */
 	QStringList processedSearchPathList();
 
+	/*! List of file to preload at XINX start */
+	QStringList & preloadedFiles();
+
 	/*!
 	 * Get the specifique project path (as &lt;project&gt;/langue/&lt;langue&gt;/nav/projet). The specifique
 	 * project path is in the QStringList.

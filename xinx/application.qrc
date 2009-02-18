@@ -8,7 +8,6 @@
 		<file>translations/xinx_fr.qm</file>
 		<file>images/1downarrow.png</file>
 		<file>images/1uparrow.png</file>
-		<file>images/add.png</file>
 		<file>images/balise.png</file>
 		<file>images/banner_wizard.png</file>
 		<file>images/bookmark.png</file>
@@ -18,7 +17,6 @@
 		<file>images/button_cancel.png</file>
 		<file>images/button_ok.png</file>
 		<file>images/calendarwidget.png</file>
-		<file>images/checkbox.png</file>
 		<file>images/clearallbookmarks.png</file>
 		<file>images/colors.png</file>
 		<file>images/combobox.png</file>
@@ -28,7 +26,6 @@
 		<file>images/document-export.png</file>
 		<file>images/document-import.png</file>
 		<file>images/document-properties.png</file>
-		<file>images/down.png</file>
 		<file>images/draw-text.png</file>
 		<file>images/edit-clear-locationbar-ltr.png</file>
 		<file>images/edit-select-all.png</file>
@@ -89,7 +86,6 @@
 		<file>images/radiobutton.png</file>
 		<file>images/redo.png</file>
 		<file>images/reload.png</file>
-		<file>images/remove.png</file>
 		<file>images/run.png</file>
 		<file>images/spain.png</file>
 		<file>images/splash.png</file>
@@ -99,7 +95,6 @@
 		<file>images/textedit.png</file>
 		<file>images/typeunknown.png</file>
 		<file>images/undo.png</file>
-		<file>images/up.png</file>
 		<file>images/usa.png</file>
 		<file>images/variable.png</file>
 		<file>images/vcs_add.png</file>
