@@ -2290,6 +2290,9 @@ bool QEditor::event(QEvent *e)
 {
 	bool r = QAbstractScrollArea::event(e);
 	
+	if ( (e->type() == QEvent::Resize || e->type() == QEvent::Show) && m_doc )
+		verticalScrollBar()->setMaximum(qMax(0, 1 + (m_doc->height() - viewport()->height()) / m_doc->fontMetrics().lineSpacing()));
+	
 	if ( e->type() == QEvent::Resize && flag(LineWrap) )
 	{
 		//qDebug("resize adjust (1) : wrapping to %i", viewport()->width());
@@ -3848,7 +3851,7 @@ bool QEditor::processCursor(QDocumentCursor& c, QKeyEvent *e, bool& b)
 				} else {
 					// default : keep leading ws from previous line...
 					QDocumentLine l = c.line();
-					const int idx = l.firstChar();
+					const int idx = qMin(l.firstChar(), c.columnNumber());
 					
 					indent = l.text();
 					

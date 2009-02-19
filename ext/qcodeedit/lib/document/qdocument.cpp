@@ -2728,7 +2728,7 @@ void QDocumentLineHandle::draw(	QPainter *p,
 				ypos += QDocumentPrivate::m_lineSpacing;
 				xpos = indent;
 				
-				if ( fmt & 0x8000 )
+				if ( r.format & 0x8000 )
 				{
 					// finish selection
 					p->fillRect(

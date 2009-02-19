@@ -268,15 +268,50 @@ bool QSearchReplacePanel::eventFilter(QObject *o, QEvent *e)
 
 void QSearchReplacePanel::on_leFind_textEdited(const QString& text)
 {
-	if ( m_search )
+	bool hadSearch = m_search;
+	QDocumentCursor cur = editor()->cursor();
+	
+	if ( m_search ) 
+	{
+		cur = m_search->cursor();
+		
 		m_search->setSearchText(text);
+		
+		if ( cbCursor->isChecked() )
+		{
+			QDocumentCursor c = cur;
+			c.setColumnNumber(c.anchorColumnNumber());
+			
+			m_search->setCursor(c);
+		}
+	} else {
+		// TODO : make incremental search optional
+		init();
+	}
+	
+	m_search->setOption(QDocumentSearch::Silent, true);
 	
 	find(0);
 	
+	m_search->setOption(QDocumentSearch::Silent, false);
+	
+	if ( m_search->cursor().isNull() )
+	{
+		leFind->setStyleSheet("QLineEdit { background: red; }");
+		
+		if ( hadSearch )
+			m_search->setCursor(cur);
+		 
+	} else {
+		leFind->setStyleSheet(QString());
+		editor()->setCursor(m_search->cursor());
+	}
 }
 
 void QSearchReplacePanel::on_leFind_returnPressed(bool backward)
 {
+	leFind->setStyleSheet(QString());
+	
 	if ( backward )
 		find(1);
 	else
@@ -327,7 +362,12 @@ void QSearchReplacePanel::on_cbCase_toggled(bool on)
 void QSearchReplacePanel::on_cbCursor_toggled(bool on)
 {
 	if ( m_search )
+	{
 		m_search->setOrigin(on ? editor()->cursor() : QDocumentCursor());
+		
+		if ( cbHighlight->isChecked() )
+			m_search->next(false);
+	}
 	
 	if ( cbHighlight->isChecked() )
 		m_search->next(false);
@@ -378,6 +418,7 @@ void QSearchReplacePanel::on_bNext_clicked()
 	if ( !m_search )
 		init();
 	
+	leFind->setStyleSheet(QString());
 	find(0);
 }
 
@@ -386,6 +427,7 @@ void QSearchReplacePanel::on_bPrevious_clicked()
 	if ( !m_search )
 		init();
 	
+	leFind->setStyleSheet(QString());
 	find(1);
 }
 

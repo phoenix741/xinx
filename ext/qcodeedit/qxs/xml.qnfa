@@ -22,28 +22,31 @@
 	
 	<sequence id="entity" format="numbers">&amp;$w+;</sequence>
 	
-	<context id="tag" >
-		<start format="keyword" parenthesis="xmltag:open@nomatch" indent="1" fold="1" >&lt;[$w:]+</start>
-		<start format="keyword" parenthesis="xmltag:close@nomatch" indent="1" fold="1" >&lt;/[$w:]+</start>
-		<stop format="keyword" parenthesis="xmltag:close@nomatch" indent="1" fold="1" >/$w*&gt;</stop>
-		<stop format="keyword" >&gt;</stop>
+	<context id="closetag" format="numbers">
+		<start format="keyword" >&lt;/[$w:]+</start>
+		<stop format="keyword" parenthesis="xmltag:close@nomatch" indent="1" fold="1" >&gt;</stop>
 		
-		<word format="preprocessor">[$w:]+=</word>
+	</context>
+	
+	<context id="opentag" format="numbers">
+		<start format="keyword" >&lt;[$w:]+</start>
+		<stop format="keyword" parenthesis="xmltag:open@nomatch" indent="1" fold="1" >&gt;</stop>
+		<stop format="keyword" >/$s*&gt;</stop>
 		
-		<context id="data/string" format="text" stayOnLine="true" >
-			<start>&quot;</start>
-			<stop>&quot;</stop>
-			<escape>\\</escape>
-			<sequence parenthesis="round:open" format="keyword" >(</sequence>
-			<sequence parenthesis="round:close" format="keyword" >)</sequence>
+		<sequence format="preprocessor">[$w:\-]+=</sequence>
+		
+		<context id="data/string1" format="text" >
+			<start>"</start>
+			<stop>"</stop>
 		</context>
 		
-		<context id="data/chars" format="text" stayOnLine="true" >
-			<start>'</start>
-			<stop>'</stop>
-			<escape>\\</escape>
+		<context id="data/string2" format="text" >
+			<start>&quot;</start>
+			<stop>&quot;</stop>
 		</context>
 	</context>
 	
-	<!-- <sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="1" fold="1" format="keyword" >&lt;/[a-zA-Z0-9_:]+&gt;</sequence> -->
+	<!--
+	<sequence id="tag/stop" parenthesis="xmltag:close@nomatch" indent="1" fold="1" format="keyword" >&lt;/[a-zA-Z0-9_:]+&gt;</sequence>
+	-->
 </QNFA>

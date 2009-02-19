@@ -94,7 +94,7 @@ void QDocumentSearch::clearMatches()
 		return;
 	
 	//qDebug("clearing matches");
-	m_cursor = m_origin;
+	m_cursor = QDocumentCursor();
 	
 	if ( m_group != -1 )
 	{
@@ -239,6 +239,8 @@ QDocumentCursor QDocumentSearch::origin() const
 */
 void QDocumentSearch::setOrigin(const QDocumentCursor& c)
 {
+	m_cursor = QDocumentCursor();
+	
 	if ( c == m_origin )
 		return;
 	
@@ -480,6 +482,8 @@ void QDocumentSearch::next(bool backward, bool all)
 				s = s.mid(boundaries.start);
 				coloffset = boundaries.start;
 			}
+			
+			s = s.left(m_cursor.columnNumber());
 		} else {
 			if ( bounded && (boundaries.endLine == ln) )
 				s = s.left(boundaries.end);
@@ -500,7 +504,7 @@ void QDocumentSearch::next(bool backward, bool all)
 				column);
 		*/
 		
-		if ( column != -1 && (backward ? (column + m_regexp.matchedLength()) <= m_cursor.columnNumber() : column >= m_cursor.columnNumber()) )
+		if ( column != -1 && (backward || column >= m_cursor.columnNumber()) )
 		{
 			column += coloffset;
 			
@@ -644,7 +648,10 @@ void QDocumentSearch::next(bool backward, bool all)
 					);
 		
 		if ( ret == QMessageBox::Yes )
+		{
+			m_origin = QDocumentCursor();
 			next(backward);
+		}
 	}
 }
 
