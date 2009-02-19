@@ -53,6 +53,10 @@ public:
 	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
 		return NULL;
 	}
+
+	virtual ContentViewParser * createParser() {
+		return 0;
+	}
 };
 
 /* XsdEditPlugin */

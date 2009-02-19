@@ -17,48 +17,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _WEBSERVICESFILETYPE_H_
-#define _WEBSERVICESFILETYPE_H_
+#ifndef _XSLCONTENTVIEWPARSER_H_
+#define _XSLCONTENTVIEWPARSER_H_
 
 // Xinx header
-#include "webserviceseditor.h"
+#include <contentviewparser.h>
 
-/* WebServicesFileType */
-
-class WebServicesFileType : public QObject, public IFileTypePlugin {
-	Q_OBJECT
+class XslContentViewParser : public ContentViewParser, private QXmlStreamReader {
 public:
-	virtual QString description() {	return tr( "Web Services Stream" ); };
-	virtual QString match() { return "*.fws"; };
-	virtual QIcon icon() { return QIcon( ":/services/images/typefws.png" ); };
+	XslContentViewParser( bool autoDelete = false );
+	virtual ~XslContentViewParser();
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = false;
-		p.specifiqueSubDirectory = QString();
-		return p;
+	QTextCodec * codec() { return m_codec; };
+protected:
+	virtual void loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device );
+private:
+	struct struct_xsl_variable {
+		bool isParam;
+		int line;
+		QString name;
+		QString value;
+	};
+	struct struct_script {
+		bool isSrc;
+		int line;
+		QString content;
+		QString src;
+		QString title;
 	};
 
-	virtual AbstractEditor * createEditor( const QString & filename ) {
-		WebServicesEditor * editor = new WebServicesEditor();
+	void readStyleSheet();
+	void readUnknownElement();
+	void readVariable();
+	void readTemplate( QList<struct_xsl_variable> & t, QList<struct_script> & s );
+	void readTemplate();
+	QString readElementText();
 
-		if( ! filename.isEmpty() )
-			editor->loadFromFile( filename );
-
-		return editor;
-	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		Q_UNUSED( parent );
-		Q_UNUSED( line );
-		Q_UNUSED( filename );
-		return 0;
-	}
-
-	virtual ContentViewParser * createParser() {
-		return 0;
-	}
+	QTextCodec * m_codec;
+	ContentViewNode * m_node;
 };
 
-#endif //  _WEBSERVICESFILETYPE_H_
+#endif /* _XSLCONTENTVIEWPARSER_H_ */

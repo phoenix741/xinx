@@ -94,6 +94,10 @@ QString XMLFileType::fileExample() const {
 		"</xsl:stylesheet>\n";
 }
 
+ContentViewParser * XMLFileType::createParser() {
+	return 0;
+}
+
 /* XSLStyleSheetFileType */
 
 QString XSLStyleSheetFileType::description() {
@@ -131,6 +135,10 @@ FileContentElement * XSLStyleSheetFileType::createElement( FileContentElement * 
 		return new XSLFileContentParser( parent, filename, line );
 	else
 		return new XSLFileContentParser();
+}
+
+ContentViewParser * XSLStyleSheetFileType::createParser() {
+	return 0;
 }
 
 /* HTMLFileType */
@@ -235,6 +243,10 @@ QString JSFileType::fileExample() const {
 		"}\n";
 }
 
+ContentViewParser * JSFileType::createParser() {
+	return 0;
+}
+
 /* CSSFileType */
 
 
@@ -296,6 +308,10 @@ QString CSSFileType::fileExample() const {
 		"\tbackground-color: red; /* Commentaire */\n"
 		"\tmargin: 8pt;\n"
 		"}\n";
+}
+
+ContentViewParser * CSSFileType::createParser() {
+	return 0;
 }
 
 /* XQFileType */
@@ -395,4 +411,8 @@ QString XQFileType::fileExample() const {
 	return
 		"count(DynamicRow)\n"
 		"max(Qtecde)";
+}
+
+ContentViewParser * XQFileType::createParser() {
+	return 0;
 }

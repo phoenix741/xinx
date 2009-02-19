@@ -86,6 +86,8 @@ public:
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
+
+	virtual ContentViewParser * createParser();
 };
 
 /* XSLStyleSheetFileType */
@@ -100,6 +102,8 @@ public:
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
+
+	virtual ContentViewParser * createParser();
 };
 
 /* HTMLFileType */
@@ -132,6 +136,8 @@ public:
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
+
+	virtual ContentViewParser * createParser();
 };
 
 /* CSSFileType */
@@ -151,6 +157,8 @@ public:
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
+
+	virtual ContentViewParser * createParser();
 };
 
 /* XQFileType */
@@ -173,6 +181,8 @@ public:
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
 	virtual QString createLanguageDescription() const;
 	virtual QString fileExample() const;
+
+	virtual ContentViewParser * createParser();
 };
 
 #endif // _FILETYPEPLUGIN_H_

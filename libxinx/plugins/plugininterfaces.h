@@ -41,6 +41,7 @@ class AbstractEditor;
 class QWizardPage;
 class XinxProject;
 class XinxFormatScheme;
+class ContentViewParser;
 
 /*!
  * This intereface is used to create a plugin used by XINX.
@@ -178,6 +179,11 @@ public:
 	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
 	//! Create a parser
 	virtual FileContentElement * createElement( FileContentElement * parent = 0, int line = -1, const QString & filename = QString() ) = 0;
+	/*!
+	 * Create a content view parser, this content view parser will any file (of the correct type of course)
+	 * If the parser is null, no content view will be load.
+	 */
+	virtual ContentViewParser * createParser() = 0;
 };
 
 /*!

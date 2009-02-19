@@ -50,8 +50,13 @@ public:
 			editor->loadFromFile( filename );
 		return editor;
 	}
+
 	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
 		return NULL;
+	}
+
+	virtual ContentViewParser * createParser() {
+		return 0;
 	}
 };
 
@@ -82,7 +87,7 @@ QVariant XslGuiPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribu
 		return tr("EXPERIMENTAL / Helper to develop stylesheet in What You See Is What You Get");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
-    case PLG_ICON:
+	case PLG_ICON:
 		return QPixmap( ":/xslgui/images/xslgui.png" );
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
