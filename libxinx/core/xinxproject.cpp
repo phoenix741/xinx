@@ -27,6 +27,7 @@
 #include "core/xinxproject.h"
 #include "core/xinxcore.h"
 #include "core/xinxconfig.h"
+#include "contentview/contentviewcache.h"
 
 #define XINX_PROJECT_VERSION_0 0
 #define XINX_PROJECT_VERSION_1 1
@@ -234,12 +235,16 @@ public:
 	QString m_projectRCS;
 
 	QHash<QString,QVariant> m_properties;
+
+	ContentViewCache * m_cache;
 private:
 	XinxProject * m_parent;
 };
 
 PrivateXinxProject::PrivateXinxProject( XinxProject * parent ) {
 	m_parent = parent;
+
+	m_cache = 0;
 
 	m_defaultLang = "FRA";
 	m_defaultNav  = "NAV/MIC";
@@ -638,6 +643,13 @@ void XinxProject::setIndexOfSpecifiquePath( int value ) {
 
 QStringList & XinxProject::preloadedFiles() {
 	return d->m_preloadedFiles;
+}
+
+ContentViewCache * XinxProject::preloadedFilesCache() {
+	if( ! d->m_cache ) {
+		d->m_cache = new ContentViewCache( this );
+	}
+	return d->m_cache;
 }
 
 const QString & XinxProject::fileName() const {

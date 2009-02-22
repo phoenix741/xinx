@@ -21,16 +21,24 @@
 #define _XSLCONTENTVIEWPARSER_H_
 
 // Xinx header
-#include <contentviewparser.h>
+#include <contentview/contentviewparser.h>
+
+// Qt header
+#include <QApplication>
+#include <QXmlStreamReader>
+
+class ContentViewNode;
+class QTextCodec;
 
 class XslContentViewParser : public ContentViewParser, private QXmlStreamReader {
+	Q_DECLARE_TR_FUNCTIONS(XslContentViewParser)
 public:
 	XslContentViewParser( bool autoDelete = false );
 	virtual ~XslContentViewParser();
 
 	QTextCodec * codec() { return m_codec; };
 protected:
-	virtual void loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device );
+	virtual bool loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device );
 private:
 	struct struct_xsl_variable {
 		bool isParam;
@@ -52,6 +60,8 @@ private:
 	void readTemplate( QList<struct_xsl_variable> & t, QList<struct_script> & s );
 	void readTemplate();
 	QString readElementText();
+
+	void attacheNewNode( ContentViewNode * parent, const QString & type, const QString & filename, int line );
 
 	QTextCodec * m_codec;
 	ContentViewNode * m_node;

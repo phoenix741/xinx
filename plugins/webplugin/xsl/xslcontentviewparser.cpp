@@ -19,6 +19,10 @@
 
 // Xinx header
 #include "xslcontentviewparser.h"
+#include <contentview/contentviewnode.h>
+
+// Qt header
+#include <QTextCodec>
 
 /* XslContentViewParser */
 
@@ -28,17 +32,17 @@ XslContentViewParser::XslContentViewParser( bool autoDelete ) : ContentViewParse
 XslContentViewParser::~XslContentViewParser() {
 }
 
-void XslContentViewParser::loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) {
+bool XslContentViewParser::loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) {
 	setDevice( device );
 	m_node = rootNode;
 
-	m_node->markAllDeleted();
+	loadAttachedNode( rootNode );
 
 	while( ! atEnd() ) {
 		readNext();
 
 		if( isStartDocument() ) {
-			m_node->m_codec = QTextCodec::codecForName( documentEncoding().toString().toLatin1() );
+			m_codec = QTextCodec::codecForName( documentEncoding().toString().toLatin1() );
 		}
 
 		if( isStartElement() ) {
@@ -49,8 +53,10 @@ void XslContentViewParser::loadFromDeviceImpl( ContentViewNode * rootNode, QIODe
 		}
 	}
 
-	if( !error() ) // Else completion can be more difficulte
-		m_parent->removeMarkedDeleted();
+	if( !error() ) { // Else completion can be more difficulte
+		detachAttachedNode();
+	}
+
 	return ! error();
 }
 
@@ -97,15 +103,7 @@ void XslContentViewParser::readStyleSheet() {
 				readTemplate();
 			else if( ( QXmlStreamReader::name() == "import" ) || ( QXmlStreamReader::name() == "include" ) ) {
 				QString src = attributes().value( "href" ).toString();
-				FileContentElement * element = XinxPluginsLoader::self()->createElement( src, m_parent, lineNumber() );
-				if( element ) {
-					element = m_parent->append( element );
-					FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
-					if( ( ! src.isEmpty() ) && parser )
-						parser->loadFromFileDelayed( src );
-				} else {
-					element = m_parent->append( new FileContentElement( m_parent, src, lineNumber() ) );
-				}
+				createContentViewNode( this, src );
 				readElementText();
 			} else
 				readUnknownElement();
@@ -254,5 +252,17 @@ void XslContentViewParser::readUnknownElement() {
 
 		if( isStartElement() )
 			readUnknownElement();
+	}
+}
+
+void XslContentViewParser::attacheNewNode( ContentViewNode * parent, const QString & type, const QString & name, int line ) {
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( ContentViewNode::NODE_TYPE, type );
+	if( type == "XSLParams" ) {
+		node->setData( ContentViewNode::NODE_ICON, QIcon(":/") );
+	} else if( type == "XSLVariable" ) {
+		node->setData( ContentViewNode::NODE_ICON, QIcon(":/") );
+	} else if( type == "XSLTemplate" ) {
+		node->setData( ContentViewNode::NODE_ICON, QIcon(":/") );
 	}
 }

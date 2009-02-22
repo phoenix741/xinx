@@ -79,18 +79,25 @@ public:
 	virtual ~ContentViewParser();
 
 	/*! Load the content of the device. and return the root element of the content view */
-	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
+	virtual bool loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
 	/*! Construct elements from \e content. */
-	virtual void loadFromContent( ContentViewNode * rootNode, const QString & content );
+	virtual bool loadFromContent( ContentViewNode * rootNode, const QString & content );
 	/*! Construct elements from \e filename. */
-	virtual void loadFromFile( ContentViewNode * rootNode, const QString & filename );
+	virtual bool loadFromFile( ContentViewNode * rootNode, const QString & filename );
 
 	/*! Change the autodelete member to \e value. */
 	void setAutoDelete( bool value );
 	/*! Return wethere the object will be auto deleted */
 	bool isAutoDelete() const;
 protected:
-	virtual void loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) = 0;
+	virtual bool loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) = 0;
+
+	void createContentViewNode( ContentViewNode * parent, const QString & filename );
+
+	void loadAttachedNode( ContentViewNode * rootNode );
+	void detachAttachedNode();
+
+	QList<ContentViewNode*> m_attachedNode;
 public:
 	bool m_autoDelete;
 };

@@ -132,7 +132,7 @@ void ContentViewNode::setModel( AbstractContentViewModel * model, unsigned long 
 }
 
 void ContentViewNode::setModels() {
-	QHash<unsigned long, AbstractContentViewModel* > models = m_models;
+	const QHash<unsigned long, AbstractContentViewModel* > & models = m_models;
 	QStack< ContentViewNode* > stack;
 
 	stack.push( this );

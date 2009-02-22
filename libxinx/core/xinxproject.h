@@ -146,6 +146,7 @@ private:
 class WebServices;
 class WebServicesModel;
 class PrivateXinxProject;
+class ContentViewCache;
 
 /*!
  * Represent a project in XINX.
@@ -363,6 +364,9 @@ public:
 
 	/*! List of file to preload at XINX start */
 	QStringList & preloadedFiles();
+
+	/*! Content the cache of preloaded files */
+	ContentViewCache * preloadedFilesCache();
 
 	/*!
 	 * Get the specifique project path (as &lt;project&gt;/langue/&lt;langue&gt;/nav/projet). The specifique
