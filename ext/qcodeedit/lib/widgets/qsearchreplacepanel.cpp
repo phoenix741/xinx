@@ -280,13 +280,19 @@ void QSearchReplacePanel::on_leFind_textEdited(const QString& text)
 		if ( cbCursor->isChecked() )
 		{
 			QDocumentCursor c = cur;
-			c.setColumnNumber(c.anchorColumnNumber());
+			c.setColumnNumber(qMin(c.anchorColumnNumber(), c.columnNumber()));
 			
 			m_search->setCursor(c);
 		}
 	} else {
 		// TODO : make incremental search optional
 		init();
+	}
+	
+	if ( text.isEmpty() )
+	{
+		leFind->setStyleSheet(QString());
+		return;
 	}
 	
 	m_search->setOption(QDocumentSearch::Silent, true);
@@ -297,11 +303,30 @@ void QSearchReplacePanel::on_leFind_textEdited(const QString& text)
 	
 	if ( m_search->cursor().isNull() )
 	{
-		leFind->setStyleSheet("QLineEdit { background: red; }");
+		leFind->setStyleSheet("QLineEdit { background: red; color : white; }");
 		
 		if ( hadSearch )
+		{
 			m_search->setCursor(cur);
 		 
+			// figure out whether other matches are availables
+			QDocumentSearch::Options opts = m_search->options();
+			opts &= ~QDocumentSearch::HighlightAll;
+			opts |= QDocumentSearch::Silent;
+			
+			QDocumentSearch temp(editor(), text, opts);
+			temp.setOrigin(QDocumentCursor());
+			temp.setScope(m_search->scope());
+			temp.next(true);
+			
+			if ( temp.cursor().isValid() )
+			{
+				// other match found from doc start
+				leFind->setStyleSheet("QLineEdit { background: yellow; color : black; }");
+				m_search->setCursor(cur.document()->cursor(0,0));
+				find(0);
+			}
+		}
 	} else {
 		leFind->setStyleSheet(QString());
 		editor()->setCursor(m_search->cursor());

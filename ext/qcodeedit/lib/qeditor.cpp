@@ -2465,6 +2465,15 @@ static bool protectedCursor(const QDocumentCursor& c)
 			;
 	}
 	
+	/*
+	if ( prot )
+		qDebug("line %i is protected (%i, %i, %i)", c.lineNumber(), 
+			l.hasFlag(QDocumentLine::Hidden),
+			l.hasFlag(QDocumentLine::CollapsedBlockStart),
+			l.hasFlag(QDocumentLine::CollapsedBlockEnd)
+		);
+	*/
+	
 	return prot;
 }
 
@@ -2581,6 +2590,11 @@ void QEditor::keyPressEvent(QKeyEvent *e)
 			{
 				bHandled = false;
 			} else {
+				
+				// clear matches to avoid offsetting and subsequent remanence of matches
+				if ( m_definition )
+					m_definition->clearMatches(m_doc);
+				
 				if ( m_mirrors.isEmpty() )
 				{
 					bHandled = processCursor(m_cursor, e, bOk);
@@ -3961,10 +3975,11 @@ void QEditor::insertText(QDocumentCursor& c, const QString& text)
 	if ( !hasSelection && flag(Overwrite) )
 		c.deleteChar();
 	
-	if ( lines.count() == 1 )
+	if ( true ) //lines.count() == 1 )
 	{
 		c.insertText(text);
 	} else {
+		#if 0
 		for ( int i = 0; i < lines.count(); ++i )
 		{
 			QString indent;
@@ -4000,6 +4015,7 @@ void QEditor::insertText(QDocumentCursor& c, const QString& text)
 			insertText(c, lines.at(i));
 			//c.insertText(lines.at(i));
 		}
+		#endif
 	}
 }
 

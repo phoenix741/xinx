@@ -1523,12 +1523,12 @@ QDocument* QDocumentLineHandle::document() const
 	return m_doc;
 }
 
-bool QDocumentLineHandle::hasFlag(QDocumentLine::State s) const
+bool QDocumentLineHandle::hasFlag(int s) const
 {
 	return m_state & s;
 }
 
-void QDocumentLineHandle::setFlag(QDocumentLine::State s, bool y) const
+void QDocumentLineHandle::setFlag(int s, bool y) const
 {
 	if ( y )
 		m_state |= s;
@@ -3525,7 +3525,7 @@ int QDocumentCursorHandle::columnNumber() const
 	return m_begOffset;
 }
 
-void QDocumentCursorHandle::setColumnNumber(int c, QDocumentCursor::MoveMode m)
+void QDocumentCursorHandle::setColumnNumber(int c, int m)
 {
 	if ( !m_doc )
 		return;
@@ -3669,7 +3669,7 @@ void QDocumentCursorHandle::setColumnMemory(bool y)
 		clearFlag(ColumnMemory);
 }
 
-void QDocumentCursorHandle::setPosition(int pos, QDocumentCursor::MoveMode m)
+void QDocumentCursorHandle::setPosition(int pos, int m)
 {
 	Q_UNUSED(pos)
 	Q_UNUSED(m)
@@ -3694,8 +3694,7 @@ void QDocumentCursorHandle::setPosition(int pos, QDocumentCursor::MoveMode m)
 	*/
 }
 
-bool QDocumentCursorHandle::movePosition(int count, QDocumentCursor::MoveOperation op,
-										QDocumentCursor::MoveMode m)
+bool QDocumentCursorHandle::movePosition(int count, int op, int m)
 {
 	if ( !m_doc )
 		return false;
@@ -4492,12 +4491,12 @@ QString QDocumentCursorHandle::selectedText() const
 		
 		while ( ++it < m_endLine )
 		{
-			s += "\n";
+			s += '\n';
 			s += m_doc->line(it).text();
 		}
 		
-		s += "\n" + l2.text().left(m_endOffset);
-		
+		s += '\n';
+		s += l2.text().left(m_endOffset);
 	} else {
 		s = l2.text().mid(m_endOffset);
 		
@@ -4506,15 +4505,14 @@ QString QDocumentCursorHandle::selectedText() const
 		
 		while ( ++it < m_begLine )
 		{
-			s += "\n";
+			s += '\n';
 			s += m_doc->line(it).text();
 		}
 		
-		s += "\n" + l1.text().left(m_begOffset);
-		
+		s += '\n';
+		s += l1.text().left(m_begOffset);
 	}
 	
-	//qDebug("selected text : \"%s\"", qPrintable(s));
 	return s;
 }
 
