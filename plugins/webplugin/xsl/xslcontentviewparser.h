@@ -61,7 +61,9 @@ private:
 	void readTemplate();
 	QString readElementText();
 
-	void attacheNewNode( ContentViewNode * parent, const QString & type, const QString & filename, int line );
+	ContentViewNode * attacheNewTemplateNode( ContentViewNode * parent, const QString & name, const QString & mode, int line );
+	ContentViewNode * attacheNewParamsNode( ContentViewNode * parent, const QString & name, const QString & value,  int line );
+	ContentViewNode * attacheNewVariableNode( ContentViewNode * parent, const QString & filename, const QString & value, int line );
 
 	QTextCodec * m_codec;
 	ContentViewNode * m_node;

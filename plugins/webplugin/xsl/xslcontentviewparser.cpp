@@ -23,6 +23,8 @@
 
 // Qt header
 #include <QTextCodec>
+#include <QIcon>
+#include <QVariant>
 
 /* XslContentViewParser */
 
@@ -34,7 +36,9 @@ XslContentViewParser::~XslContentViewParser() {
 
 bool XslContentViewParser::loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) {
 	setDevice( device );
+
 	m_node = rootNode;
+	m_node->setData( QIcon(":/images/typexsl.png"), ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode );
 
@@ -103,7 +107,7 @@ void XslContentViewParser::readStyleSheet() {
 				readTemplate();
 			else if( ( QXmlStreamReader::name() == "import" ) || ( QXmlStreamReader::name() == "include" ) ) {
 				QString src = attributes().value( "href" ).toString();
-				createContentViewNode( this, src );
+				createContentViewNode( m_node, src );
 				readElementText();
 			} else
 				readUnknownElement();
@@ -123,9 +127,9 @@ void XslContentViewParser::readVariable() {
 		readUnknownElement();
 	}
 	if( name == "param" )
-		m_parent->append( new XSLFileContentParams( m_parent, name, value, lineNumber() ) );
+		attacheNewParamsNode( m_node, name, value, lineNumber() );
 	else
-		m_parent->append( new XSLFileContentVariable( m_parent, name, value, lineNumber() ) );
+		attacheNewVariableNode( m_node, name, value, lineNumber() );
 }
 
 void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables, QList<struct_script> & scripts ) {
@@ -150,40 +154,37 @@ void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables,
 					readUnknownElement();
 				}
 				variables += v;
+			} else if( QXmlStreamReader::name() == "script" ) {
+				struct struct_script s;
+				s.isSrc = !attributes().value( "src" ).isEmpty();
+				s.line = lineNumber();
+				s.title = "JavaScript";
+				if( s.isSrc ) {
+					s.src = attributes().value( "src" ).toString();
+					readUnknownElement();
+				} else {
+					s.src = "this.js";
+					s.content = readElementText();
+				}
+				scripts += s;
+			} else if( QXmlStreamReader::name() == "link" ) {
+				struct struct_script s;
+				s.isSrc = true;
+				s.line = lineNumber();
+				s.title = "Cascading StyleSheet";
+				s.src = attributes().value( "href" ).toString();
+				readUnknownElement();
+				scripts += s;
+			} else if( QXmlStreamReader::name() == "style" ) {
+				struct struct_script s;
+				s.isSrc = false;
+				s.line = lineNumber();
+				s.title = "Cascading StyleSheet";
+				s.src = "this.css";
+				s.content = readElementText();
+				scripts += s;
 			} else
-				if( QXmlStreamReader::name() == "script" ) {
-					struct struct_script s;
-					s.isSrc = !attributes().value( "src" ).isEmpty();
-					s.line = lineNumber();
-					s.title = "JavaScript";
-					if( s.isSrc ) {
-						s.src = attributes().value( "src" ).toString();
-						readUnknownElement();
-					} else {
-						s.src = "this.js";
-						s.content = readElementText();
-					}
-					scripts += s;
-				} else
-					if( QXmlStreamReader::name() == "link" ) {
-						struct struct_script s;
-						s.isSrc = true;
-						s.line = lineNumber();
-						s.title = "Cascading StyleSheet";
-						s.src = attributes().value( "href" ).toString();
-						readUnknownElement();
-						scripts += s;
-					} else
-						if( QXmlStreamReader::name() == "style" ) {
-							struct struct_script s;
-							s.isSrc = false;
-							s.line = lineNumber();
-							s.title = "Cascading StyleSheet";
-							s.src = "this.css";
-							s.content = readElementText();
-							scripts += s;
-						} else
-							readTemplate( variables, scripts );
+				readTemplate( variables, scripts );
 		}
 	}
 }
@@ -200,15 +201,13 @@ void XslContentViewParser::readTemplate() {
 	readTemplate( variables, scripts );
 
 	foreach( const QString & name, templates ) {
-		XSLFileContentTemplate * t = qobject_cast<XSLFileContentTemplate*>( m_parent->append( new XSLFileContentTemplate( m_parent, name, mode, line ) ) );
-		if( ! t ) {
-			raiseError( tr("Can't insert %1 template").arg( name ) );
-			break;
-		}
+		ContentViewNode * t = attacheNewTemplateNode( m_node, name, mode, line );
 
-		t->markAllDeleted();
+		loadAttachedNode( t );
 		/* Chargement des scripts */
 		foreach( struct_script s, scripts ) {
+			/*createContentViewNode( m_parent, s.src );
+
 			FileContentElement * element = XinxPluginsLoader::self()->createElement( s.src, m_parent, s.line );
 			if( ! s.isSrc ) {
 				element->setFilename( t->filename() );
@@ -228,16 +227,16 @@ void XslContentViewParser::readTemplate() {
 			} else {
 				element = m_parent->append( new FileContentElement( m_parent, s.src, lineNumber() ) );
 			}
+			*/
 		}
 
 		/* Chargement des variables et params */
 		foreach( const struct_xsl_variable & v, variables ) {
 			if( v.isParam )
-				t->append( new XSLFileContentParams( t, v.name, v.value, v.line ) );
+				attacheNewParamsNode( t, v.name, v.value, v.line );
 			else
-				t->append( new XSLFileContentVariable( t, v.name, v.value, v.line ) );
+				attacheNewVariableNode( t, v.name, v.value, v.line );
 		}
-		t->removeMarkedDeleted();
 	}
 }
 
@@ -255,14 +254,48 @@ void XslContentViewParser::readUnknownElement() {
 	}
 }
 
-void XslContentViewParser::attacheNewNode( ContentViewNode * parent, const QString & type, const QString & name, int line ) {
+ContentViewNode * XslContentViewParser::attacheNewTemplateNode( ContentViewNode * parent, const QString & name, const QString & mode, int line ) {
+	QString displayName = name;
+	if( ! mode.isEmpty() )
+		displayName += " [" + mode + "]";
+
 	ContentViewNode * node = new ContentViewNode( name, line );
-	node->setData( ContentViewNode::NODE_TYPE, type );
-	if( type == "XSLParams" ) {
-		node->setData( ContentViewNode::NODE_ICON, QIcon(":/") );
-	} else if( type == "XSLVariable" ) {
-		node->setData( ContentViewNode::NODE_ICON, QIcon(":/") );
-	} else if( type == "XSLTemplate" ) {
-		node->setData( ContentViewNode::NODE_ICON, QIcon(":/") );
-	}
+	node->setData( "XslTemplate", ContentViewNode::NODE_TYPE );
+	node->setData( QIcon(":/images/template.png"), ContentViewNode::NODE_ICON );
+	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1\nMode = %2" ).arg( line ).arg( mode ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node->attach( parent );
+
+	return node;
 }
+
+ContentViewNode * XslContentViewParser::attacheNewParamsNode( ContentViewNode * parent, const QString & name, const QString & value,  int line ) {
+	QString displayName = name;
+	if( ! value.isEmpty() )
+		displayName += "=" + value;
+
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "XslParam", ContentViewNode::NODE_TYPE );
+	node->setData( QIcon(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node->attach( parent );
+
+	return node;
+}
+
+ContentViewNode * XslContentViewParser::attacheNewVariableNode( ContentViewNode * parent, const QString & name, const QString & value, int line ) {
+	QString displayName = name;
+	if( ! value.isEmpty() )
+		displayName += "=" + value;
+
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "XslVariable", ContentViewNode::NODE_TYPE );
+	node->setData( QIcon(":/images/variable.png"), ContentViewNode::NODE_ICON );
+	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node->attach( parent );
+
+	return node;
+}
+

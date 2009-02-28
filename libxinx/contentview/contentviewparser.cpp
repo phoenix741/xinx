@@ -61,15 +61,8 @@ bool ContentViewParser::isAutoDelete() const {
 }
 
 void ContentViewParser::loadAttachedNode( ContentViewNode * rootNode ) {
-	QStack<ContentViewNode*> stack;
-	stack.push( rootNode );
-
-	while( stack.size() ) {
-		ContentViewNode * parentNode = stack.pop();
-		foreach( ContentViewNode * n, parentNode->childs() ) {
-			m_attachedNode.append( n );
-			stack.push( n );
-		}
+	foreach( ContentViewNode * n, rootNode->childs() ) {
+		m_attachedNode.append( n );
 	}
 }
 
@@ -81,29 +74,27 @@ void ContentViewParser::detachAttachedNode() {
 }
 
 void ContentViewParser::createContentViewNode( ContentViewNode * parent, const QString & filename ) {
+	// Declaration
 	QString name = QFileInfo( filename ).fileName();
 	ContentViewNode * node = 0;
 	ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->preloadedFilesCache() : 0;
+
+	// If cache (so if we have project opened)
 	if( cache ) {
+		// Get the node from the cache
 		node = cache->contentOfFileName( filename );
 	}
+
+	// If parent have this node as child, remove all child from attached node.
 	if( parent->childs().contains( node ) ) {
-		QStack<ContentViewNode*> stack;
-		stack.push( node );
-
-		while( stack.size() ) {
-			ContentViewNode * parentNode = stack.pop();
-			m_attachedNode.removeAll( node );
-
-			foreach( ContentViewNode * n, parentNode->childs() ) {
-				stack.push( n );
-				m_attachedNode.removeAll( n );
-			}
-		}
+		m_attachedNode.removeAll( node );
 	} else if( node ) {
+		// Else if node in cache, we attach the node
 		node->attach( parent );
-	} /// \todo create a node with just the name.
-	// else if(  );
+	} else {
+		ContentViewNode * node = new ContentViewNode( name, -1 );
+		node->attach( parent );
+	}
 }
 
 bool ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
