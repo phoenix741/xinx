@@ -57,6 +57,12 @@ void ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( parent->m_childs.begin(), parent->m_childs.end(), this, ContentViewNodeListSort );
 	int rowForModel = insertingRow - parent->m_childs.begin();
 
+	// Set the parent or quit if no id.
+	if( ! m_parents.value( id ) )
+		m_parents.insert( id, parent );
+	else
+		return;
+
 	// Set the model of the parent for this and all this child
 	// If no id set, copy all models from parent to this and it childs.
 	if( id ) {

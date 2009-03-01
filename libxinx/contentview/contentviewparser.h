@@ -78,28 +78,46 @@ public:
 	ContentViewParser( bool autoDelete = false );
 	virtual ~ContentViewParser();
 
-	/*! Load the content of the device. and return the root element of the content view */
+	/*! Load the content of the givent device and return true if sucessfully loaded */
+	virtual bool loadFromMember();
+	/*! Load the content of the device. and return the true if sucessfully loaded */
 	virtual bool loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
 	/*! Construct elements from \e content. */
 	virtual bool loadFromContent( ContentViewNode * rootNode, const QString & content );
 	/*! Construct elements from \e filename. */
 	virtual bool loadFromFile( ContentViewNode * rootNode, const QString & filename );
 
+	/*! Set the root node */
+	void setRootNode( ContentViewNode * node );
+	/*! Return the root node */
+	ContentViewNode * rootNode() const;
+
+	/*! Set the filename */
+	void setFilename( const QString & filename );
+	/*! Set the device */
+	void setInputDevice( QIODevice * device );
+	/*! Return the device */
+	QIODevice * inputDevice() const;
+
 	/*! Change the autodelete member to \e value. */
 	void setAutoDelete( bool value );
 	/*! Return wethere the object will be auto deleted */
 	bool isAutoDelete() const;
 protected:
-	virtual bool loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) = 0;
+	virtual bool loadFromDeviceImpl() = 0;
 
 	void createContentViewNode( ContentViewNode * parent, const QString & filename );
 
 	void loadAttachedNode( ContentViewNode * rootNode );
 	void detachAttachedNode();
 
+	QString locationOf( ContentViewNode * parent, const QString & filename );
+
 	QList<ContentViewNode*> m_attachedNode;
-public:
+private:
 	bool m_autoDelete;
+	ContentViewNode * m_rootNode;
+	QIODevice * m_device;
 };
 
 #endif /* __CONTENTVIEWPARSER_H__ */

@@ -18,33 +18,86 @@
  * *********************************************************************** */
 
 // Xinx header
+#include "core/xinxproject.h"
+
 #include "contentview/contentviewcache.h"
 #include "contentview/contentviewparser.h"
 #include "contentview/contentviewnode.h"
 
+#include "plugins/xinxpluginsloader.h"
+
 // Qt header
 #include <QtConcurrentRun>
+#include <QtConcurrentMap>
 #include <QFileInfo>
 #include <QIcon>
 #include <QVariant>
 
+/* Static function */
+
+void contentViewParserLoadFromMember( ContentViewParser * parser ) {
+	parser->loadFromMember();
+	delete parser;
+}
+
 /* ContentViewCache */
 
-ContentViewCache::ContentViewCache( XinxProject * project ) {
+ContentViewCache::ContentViewCache( XinxProject * project ) : m_project( project ) {
+}
+
+void ContentViewCache::initializeCache() {
+	QList<ContentViewParser*> m_parsers;
+	foreach( QString name, m_project->preloadedFiles() ) {
+		QString filename = QDir( m_project->projectPath() ).absoluteFilePath( name );
+
+		ContentViewParser * parser;
+		ContentViewNode * node = new ContentViewNode( filename, -1 );
+
+		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
+		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
+		node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
+
+		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
+		if( fileType && ( parser = fileType->createParser() ) ) {
+			m_nodes.insert( QFileInfo( filename ).canonicalFilePath(), node );
+
+			parser->setRootNode( node );
+			parser->setFilename( filename );
+			node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
+			m_parsers.append( parser );
+		} else
+			delete node;
+	}
+	QFuture<void> future = QtConcurrent::map( m_parsers, contentViewParserLoadFromMember );
 }
 
 ContentViewNode * ContentViewCache::contentOfFileName( const QString & filename ) {
+	QString key = QFileInfo( filename ).canonicalFilePath();
+	if( m_nodes.contains( key ) ) {
+		return m_nodes.value( key );
+	}
+
+	ContentViewParser * parser;
 	ContentViewNode * node = new ContentViewNode( filename, -1 );
+
 	node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
 	node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
-	node->setData( QVariant( QIcon(":/images/import.png")     ), ContentViewNode::NODE_ICON );
 
-	ContentViewParser * parser = 0; // QCache pour gérer la suppression
-	parser->setAutoDelete( true );
+	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
+	if( fileType && ( parser = fileType->createParser() ) ) {
+		m_nodes.insert( key, node );
 
-	QFuture<void> future = QtConcurrent::run( parser, &ContentViewParser::loadFromFile, node, filename );
+		parser->setAutoDelete( true );
+		node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
+		QFuture<void> future = QtConcurrent::run( parser, &ContentViewParser::loadFromFile, node, filename );
+	} else
+		delete node;
 
 	return node;
+}
+
+QStringList ContentViewCache::contentsViewLoaded() const {
+	return m_nodes.keys();
 }
 

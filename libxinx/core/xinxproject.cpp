@@ -648,6 +648,7 @@ QStringList & XinxProject::preloadedFiles() {
 ContentViewCache * XinxProject::preloadedFilesCache() {
 	if( ! d->m_cache ) {
 		d->m_cache = new ContentViewCache( this );
+		d->m_cache->initializeCache();
 	}
 	return d->m_cache;
 }

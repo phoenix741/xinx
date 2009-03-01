@@ -38,7 +38,7 @@ public:
 
 	QTextCodec * codec() { return m_codec; };
 protected:
-	virtual bool loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device );
+	virtual bool loadFromDeviceImpl();
 private:
 	struct struct_xsl_variable {
 		bool isParam;
@@ -66,7 +66,6 @@ private:
 	ContentViewNode * attacheNewVariableNode( ContentViewNode * parent, const QString & filename, const QString & value, int line );
 
 	QTextCodec * m_codec;
-	ContentViewNode * m_node;
 };
 
 #endif /* _XSLCONTENTVIEWPARSER_H_ */

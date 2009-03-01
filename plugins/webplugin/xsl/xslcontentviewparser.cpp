@@ -28,19 +28,18 @@
 
 /* XslContentViewParser */
 
-XslContentViewParser::XslContentViewParser( bool autoDelete ) : ContentViewParser( autoDelete ) {
+XslContentViewParser::XslContentViewParser( bool autoDelete ) : ContentViewParser( autoDelete ), m_codec( 0 ) {
 }
 
 XslContentViewParser::~XslContentViewParser() {
 }
 
-bool XslContentViewParser::loadFromDeviceImpl( ContentViewNode * rootNode, QIODevice * device ) {
-	setDevice( device );
+bool XslContentViewParser::loadFromDeviceImpl() {
+	setDevice( inputDevice() );
 
-	m_node = rootNode;
-	m_node->setData( QIcon(":/images/typexsl.png"), ContentViewNode::NODE_ICON );
+	rootNode()->setData( QImage(":/images/typexsl.png"), ContentViewNode::NODE_ICON );
 
-	loadAttachedNode( rootNode );
+	loadAttachedNode( rootNode() );
 
 	while( ! atEnd() ) {
 		readNext();
@@ -107,7 +106,7 @@ void XslContentViewParser::readStyleSheet() {
 				readTemplate();
 			else if( ( QXmlStreamReader::name() == "import" ) || ( QXmlStreamReader::name() == "include" ) ) {
 				QString src = attributes().value( "href" ).toString();
-				createContentViewNode( m_node, src );
+				createContentViewNode( rootNode(), src );
 				readElementText();
 			} else
 				readUnknownElement();
@@ -127,9 +126,9 @@ void XslContentViewParser::readVariable() {
 		readUnknownElement();
 	}
 	if( name == "param" )
-		attacheNewParamsNode( m_node, name, value, lineNumber() );
+		attacheNewParamsNode( rootNode(), name, value, lineNumber() );
 	else
-		attacheNewVariableNode( m_node, name, value, lineNumber() );
+		attacheNewVariableNode( rootNode(), name, value, lineNumber() );
 }
 
 void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables, QList<struct_script> & scripts ) {
@@ -201,7 +200,7 @@ void XslContentViewParser::readTemplate() {
 	readTemplate( variables, scripts );
 
 	foreach( const QString & name, templates ) {
-		ContentViewNode * t = attacheNewTemplateNode( m_node, name, mode, line );
+		ContentViewNode * t = attacheNewTemplateNode( rootNode(), name, mode, line );
 
 		loadAttachedNode( t );
 		/* Chargement des scripts */
@@ -261,7 +260,7 @@ ContentViewNode * XslContentViewParser::attacheNewTemplateNode( ContentViewNode 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "XslTemplate", ContentViewNode::NODE_TYPE );
-	node->setData( QIcon(":/images/template.png"), ContentViewNode::NODE_ICON );
+	node->setData( QImage(":/images/template.png"), ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nMode = %2" ).arg( line ).arg( mode ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node->attach( parent );
@@ -276,7 +275,7 @@ ContentViewNode * XslContentViewParser::attacheNewParamsNode( ContentViewNode * 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "XslParam", ContentViewNode::NODE_TYPE );
-	node->setData( QIcon(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node->attach( parent );
@@ -291,7 +290,7 @@ ContentViewNode * XslContentViewParser::attacheNewVariableNode( ContentViewNode 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "XslVariable", ContentViewNode::NODE_TYPE );
-	node->setData( QIcon(":/images/variable.png"), ContentViewNode::NODE_ICON );
+	node->setData( QImage(":/images/variable.png"), ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node->attach( parent );

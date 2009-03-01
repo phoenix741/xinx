@@ -27,7 +27,7 @@ HEADERS = rcs/rcs.h \
     core/xinxconfig.h \
     core/xinxcore.h \
     core/xinxthread.h \
-    core/plugininterfaces.h \
+    plugins/plugininterfaces.h \
     filecontent/filecontentitemmodel.h \
     filecontent/filecontentstructure.h \
     editors/xinxformatscheme.h \

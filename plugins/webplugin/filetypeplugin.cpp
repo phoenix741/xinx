@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "filetypeplugin.h"
+#include "xsl/xslcontentviewparser.h"
 
 /* XMLFileType */
 
@@ -138,7 +139,7 @@ FileContentElement * XSLStyleSheetFileType::createElement( FileContentElement * 
 }
 
 ContentViewParser * XSLStyleSheetFileType::createParser() {
-	return 0;
+	return new XslContentViewParser();
 }
 
 /* HTMLFileType */

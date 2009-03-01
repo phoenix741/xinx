@@ -23,6 +23,7 @@
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>
+#include <contentview/contentviewcache.h>
 
 // Qt header
 #include <QDir>
@@ -148,6 +149,14 @@ void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 	m_searchPathList->setValues( project->searchPathList() ); // fromNativeSeparators
 
 	m_preloadedProjectFiles->setValues( project->preloadedFiles() );
+
+	foreach( QString filename, project->preloadedFilesCache()->contentsViewLoaded() ) {
+		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
+		if( fileType )
+			new QListWidgetItem ( fileType->icon(), filename, m_preloadedFiles );
+		else
+			new QListWidgetItem ( filename, m_preloadedFiles );
+	}
 
 	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
 	foreach( page, m_pluginPages ) {

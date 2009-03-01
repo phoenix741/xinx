@@ -26,7 +26,7 @@
 #define __CONTENTVIEWCLASS_H__
 
 // Qt header
-#include <QCache>
+#include <QHash>
 
 class XinxProject;
 class ContentViewNode;
@@ -57,8 +57,15 @@ public:
 	 * \return Return the content view of the file name given in parameters.
 	 */
 	ContentViewNode * contentOfFileName( const QString & filename );
+
+	//! Return the list of current contents view loaded.
+	QStringList contentsViewLoaded() const;
+
+	//! Intialize a cache from the content of preloaded files.
+	void initializeCache();
 private:
-	QCache<QString,ContentViewNode*> m_nodes;
+	QHash<QString,ContentViewNode*> m_nodes;
+	XinxProject * m_project;
 };
 
 #endif /* __CONTENTVIEWCLASS_H__ */

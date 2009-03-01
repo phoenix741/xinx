@@ -28,6 +28,7 @@
 #include <QFile>
 #include <QBuffer>
 #include <QFileInfo>
+#include <QDir>
 
 /* ContentViewException */
 
@@ -46,10 +47,11 @@ int ContentViewException::getColumn() const {
 
 /* ContentViewParser */
 
-ContentViewParser::ContentViewParser( bool autoDelete ) : m_autoDelete( autoDelete ) {
+ContentViewParser::ContentViewParser( bool autoDelete ) : m_autoDelete( autoDelete ), m_rootNode( 0 ), m_device( 0 ) {
 }
 
 ContentViewParser::~ContentViewParser() {
+	delete m_device;
 }
 
 void ContentViewParser::setAutoDelete( bool value ) {
@@ -73,16 +75,44 @@ void ContentViewParser::detachAttachedNode() {
 	}
 }
 
+QString ContentViewParser::locationOf( ContentViewNode * parent, const QString & filename ) {
+	QStringList searchList;
+
+	if( ! parent->fileName().isEmpty() )
+		searchList << QFileInfo( parent->fileName() ).absolutePath();
+
+	if( XINXProjectManager::self()->project() )
+		searchList += XINXProjectManager::self()->project()->processedSearchPathList();
+
+	QString absPath = QString();
+	bool finded = false;
+	foreach( const QString & path, searchList ) {
+		absPath = QDir( path ).absoluteFilePath( filename );
+		if( QFile::exists( absPath ) ) {
+			finded = true;
+			break;
+		}
+	}
+
+	if( finded )
+		return absPath;
+
+	return filename;
+}
+
 void ContentViewParser::createContentViewNode( ContentViewNode * parent, const QString & filename ) {
 	// Declaration
-	QString name = QFileInfo( filename ).fileName();
+	QString name = QFileInfo( filename ).fileName(), absFilename;
 	ContentViewNode * node = 0;
 	ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->preloadedFilesCache() : 0;
+
+	// Search the location of the filename
+	absFilename = locationOf( parent, filename );
 
 	// If cache (so if we have project opened)
 	if( cache ) {
 		// Get the node from the cache
-		node = cache->contentOfFileName( filename );
+		node = cache->contentOfFileName( absFilename );
 	}
 
 	// If parent have this node as child, remove all child from attached node.
@@ -103,7 +133,11 @@ bool ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QStri
 	QBuffer buffer( &contentArray );
 	buffer.open( QIODevice::ReadOnly );
 
-	result = loadFromDeviceImpl( rootNode, &buffer );
+	m_rootNode = rootNode;
+	m_device   = &buffer;
+	result = loadFromDeviceImpl();
+	m_rootNode = 0;
+	m_device   = 0;
 
 	if( m_autoDelete ) delete this;
 	return result;
@@ -117,15 +151,64 @@ bool ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 	if (!file.open(QFile::ReadOnly))
 		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
 
-	result = loadFromDeviceImpl( rootNode, & file );
+	m_rootNode = rootNode;
+	m_device   = &file;
+	rootNode->setFileName( filename );
+	result = loadFromDeviceImpl();
+	m_rootNode = 0;
+	m_device   = 0;
 
 	if( m_autoDelete ) delete this;
 	return result;
 }
 
 bool ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
-	bool result = loadFromDeviceImpl( rootNode, device );
+	m_rootNode = rootNode;
+	m_device   = device;
+	bool result = loadFromDeviceImpl();
+	m_rootNode = 0;
+	m_device   = 0;
 
 	if( m_autoDelete ) delete this;
 	return result;
+}
+
+bool ContentViewParser::loadFromMember() {
+	bool result = loadFromDeviceImpl();
+
+	if( m_autoDelete ) delete this;
+	return result;
+}
+
+void ContentViewParser::setRootNode( ContentViewNode * node ) {
+	m_rootNode = node;
+}
+
+ContentViewNode * ContentViewParser::rootNode() const {
+	return m_rootNode;
+}
+
+void ContentViewParser::setFilename( const QString & filename ) {
+	QFile * file = new QFile( filename );
+
+	// Open the file
+	if( ! file->open(QFile::ReadOnly) ) {
+		QString errorString = file->errorString();
+		delete file;
+		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg( filename ).arg( errorString ), 0, 0 );
+	}
+
+	delete m_device;
+	if( m_rootNode )
+		m_rootNode->setFileName( filename );
+	m_device = file;
+	setInputDevice( file );
+}
+
+void ContentViewParser::setInputDevice( QIODevice * device ) {
+	m_device = device;
+}
+
+QIODevice * ContentViewParser::inputDevice() const {
+	return m_device;
 }
