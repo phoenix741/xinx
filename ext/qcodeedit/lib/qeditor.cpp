@@ -3258,14 +3258,16 @@ void QEditor::resizeEvent(QResizeEvent *)
 	} else {
 		horizontalScrollBar()->setMaximum(qMax(0, m_doc->width() - viewportSize.width()));
 		horizontalScrollBar()->setPageStep(viewportSize.width());
-		
-		const int ls = m_doc->fontMetrics().lineSpacing();
-		verticalScrollBar()->setMaximum(qMax(0, 1 + (m_doc->height() - viewportSize.height()) / ls));
-		verticalScrollBar()->setPageStep(viewportSize.height());
 	}
 	
-	//if ( isCursorVisible() )
-		ensureCursorVisible();
+	const int ls = m_doc->fontMetrics().lineSpacing();
+	verticalScrollBar()->setMaximum(qMax(0, 1 + (m_doc->height() - viewportSize.height()) / ls));
+	verticalScrollBar()->setPageStep(viewportSize.height() / ls);
+	
+	//qDebug("page step : %i", viewportSize.height() / ls);
+	
+	//if ( isCursorVisible() && flag(LineWrap) )
+	//	ensureCursorVisible();
 }
 
 /*!
