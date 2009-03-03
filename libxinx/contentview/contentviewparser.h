@@ -41,7 +41,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	ContentViewException( QString message, int line, int column );
+	ContentViewException( QString message, int line, int column = 0 );
 
 	/*!
 	 * Return the line where the error is.
@@ -79,13 +79,13 @@ public:
 	virtual ~ContentViewParser();
 
 	/*! Load the content of the givent device and return true if sucessfully loaded */
-	virtual bool loadFromMember();
+	virtual void loadFromMember();
 	/*! Load the content of the device. and return the true if sucessfully loaded */
-	virtual bool loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
+	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
 	/*! Construct elements from \e content. */
-	virtual bool loadFromContent( ContentViewNode * rootNode, const QString & content );
+	virtual void loadFromContent( ContentViewNode * rootNode, const QString & content );
 	/*! Construct elements from \e filename. */
-	virtual bool loadFromFile( ContentViewNode * rootNode, const QString & filename );
+	virtual void loadFromFile( ContentViewNode * rootNode, const QString & filename );
 
 	/*! Set the root node */
 	void setRootNode( ContentViewNode * node );
@@ -104,7 +104,7 @@ public:
 	/*! Return wethere the object will be auto deleted */
 	bool isAutoDelete() const;
 protected:
-	virtual bool loadFromDeviceImpl() = 0;
+	virtual void loadFromDeviceImpl() = 0;
 
 	void createContentViewNode( ContentViewNode * parent, const QString & filename );
 

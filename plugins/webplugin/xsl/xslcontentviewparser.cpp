@@ -34,7 +34,7 @@ XslContentViewParser::XslContentViewParser( bool autoDelete ) : ContentViewParse
 XslContentViewParser::~XslContentViewParser() {
 }
 
-bool XslContentViewParser::loadFromDeviceImpl() {
+void XslContentViewParser::loadFromDeviceImpl() {
 	setDevice( inputDevice() );
 
 	rootNode()->setData( QImage(":/images/typexsl.png"), ContentViewNode::NODE_ICON );
@@ -60,7 +60,8 @@ bool XslContentViewParser::loadFromDeviceImpl() {
 		detachAttachedNode();
 	}
 
-	return ! error();
+	if( error() )
+	    throw ContentViewException( errorString(), lineNumber(), columnNumber() );
 }
 
 QString XslContentViewParser::readElementText() {

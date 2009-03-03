@@ -20,6 +20,7 @@
 // Xinx header
 #include "filetypeplugin.h"
 #include "xsl/xslcontentviewparser.h"
+#include "js/jscontentviewparser.h"
 
 /* XMLFileType */
 
@@ -245,7 +246,7 @@ QString JSFileType::fileExample() const {
 }
 
 ContentViewParser * JSFileType::createParser() {
-	return 0;
+	return new JsContentViewParser();
 }
 
 /* CSSFileType */

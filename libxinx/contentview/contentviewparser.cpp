@@ -127,24 +127,23 @@ void ContentViewParser::createContentViewNode( ContentViewNode * parent, const Q
 	}
 }
 
-bool ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
-	bool result;
+void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
 	QByteArray contentArray = content.toUtf8();
 	QBuffer buffer( &contentArray );
 	buffer.open( QIODevice::ReadOnly );
 
 	m_rootNode = rootNode;
 	m_device   = &buffer;
-	result = loadFromDeviceImpl();
+
+	loadFromDeviceImpl();
+
 	m_rootNode = 0;
 	m_device   = 0;
 
 	if( m_autoDelete ) delete this;
-	return result;
 }
 
-bool ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString & filename ) {
-	bool result;
+void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString & filename ) {
 	QFile file( filename );
 
 	// Open the file
@@ -154,30 +153,31 @@ bool ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 	m_rootNode = rootNode;
 	m_device   = &file;
 	rootNode->setFileName( filename );
-	result = loadFromDeviceImpl();
+
+	loadFromDeviceImpl();
+
 	m_rootNode = 0;
 	m_device   = 0;
 
 	if( m_autoDelete ) delete this;
-	return result;
 }
 
-bool ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
+void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
 	m_rootNode = rootNode;
 	m_device   = device;
-	bool result = loadFromDeviceImpl();
+
+	loadFromDeviceImpl();
+
 	m_rootNode = 0;
 	m_device   = 0;
 
 	if( m_autoDelete ) delete this;
-	return result;
 }
 
-bool ContentViewParser::loadFromMember() {
-	bool result = loadFromDeviceImpl();
+void ContentViewParser::loadFromMember() {
+	loadFromDeviceImpl();
 
 	if( m_autoDelete ) delete this;
-	return result;
 }
 
 void ContentViewParser::setRootNode( ContentViewNode * node ) {

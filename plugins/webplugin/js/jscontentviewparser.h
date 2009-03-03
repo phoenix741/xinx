@@ -17,55 +17,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _XSLCONTENTVIEWPARSER_H_
-#define _XSLCONTENTVIEWPARSER_H_
+#ifndef _JSCONTENTVIEWPARSER_H_
+#define _JSCONTENTVIEWPARSER_H_
 
 // Xinx header
 #include <contentview/contentviewparser.h>
 
 // Qt header
 #include <QApplication>
-#include <QXmlStreamReader>
 
-class ContentViewNode;
-class QTextCodec;
+class QIODevice;
 
-class XslContentViewParser : public ContentViewParser, private QXmlStreamReader {
-	Q_DECLARE_TR_FUNCTIONS(XslContentViewParser)
+class JsContentViewParser : public ContentViewParser {
+	Q_DECLARE_TR_FUNCTIONS(JsContentViewParser)
 public:
-	XslContentViewParser( bool autoDelete = false );
-	virtual ~XslContentViewParser();
+	JsContentViewParser( bool autoDelete = false );
+	virtual ~JsContentViewParser();
 
-	QTextCodec * codec() { return m_codec; };
 protected:
 	virtual void loadFromDeviceImpl();
 private:
-	struct struct_xsl_variable {
-		bool isParam;
-		int line;
-		QString name;
-		QString value;
-	};
-	struct struct_script {
-		bool isSrc;
-		int line;
-		QString content;
-		QString src;
-		QString title;
-	};
+	enum JAVASCRIPT_TOKEN { TOKEN_UNKNOWN, TOKEN_IDENTIFIER, TOKEN_STRING, TOKEN_NUMBER, TOKEN_PONCTUATION, TOKEN_EOF };
 
-	void readStyleSheet();
-	void readUnknownElement();
-	void readVariable();
-	void readTemplate( QList<struct_xsl_variable> & t, QList<struct_script> & s );
-	void readTemplate();
-	QString readElementText();
+	void nextIdentifier( QIODevice * device, enum JAVASCRIPT_TOKEN & symbType, QString & symbName );
+	void loadVariables( ContentViewNode * parent, QIODevice * device );
+	ContentViewNode * loadFunction( ContentViewNode * parent, QIODevice * device );
+	void loadInstruction( QIODevice * buffer, QString & name, JAVASCRIPT_TOKEN & type );
 
-	ContentViewNode * attacheNewTemplateNode( ContentViewNode * parent, const QString & name, const QString & mode, int line );
-	ContentViewNode * attacheNewParamsNode( ContentViewNode * parent, const QString & name, const QString & value,  int line );
-	ContentViewNode * attacheNewVariableNode( ContentViewNode * parent, const QString & filename, const QString & value, int line );
+	ContentViewNode * attacheNewParamNode( ContentViewNode * parent, const QString & name, int line );
+	ContentViewNode * attacheNewVariableNode( ContentViewNode * parent, const QString & name, int line );
+	ContentViewNode * attacheNewFunctionNode( ContentViewNode * parent, const QString & name, int line );
 
-	QTextCodec * m_codec;
+	int m_line;
 };
 
-#endif /* _XSLCONTENTVIEWPARSER_H_ */
+#endif /* _JSCONTENTVIEWPARSER_H_ */

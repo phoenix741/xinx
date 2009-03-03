@@ -39,10 +39,11 @@ HEADERS = xsl/xmlformatscheme.h \
     xq/xqfileeditor.h \
     xq/xqmodelcompleter.h \
     filetypeplugin.h \
- js/jsformatscheme.h \
- xq/xqformatscheme.h \
- css/cssformatscheme.h \
- xsl/xslcontentviewparser.h
+    js/jsformatscheme.h \
+    xq/xqformatscheme.h \
+    css/cssformatscheme.h \
+    xsl/xslcontentviewparser.h \
+    js/jscontentviewparser.h
 SOURCES = xsl/xmlformatscheme.cpp \
     xq/xquery_keyword.cpp \
     xsl/xsltexteditor.cpp \
@@ -68,11 +69,12 @@ SOURCES = xsl/xmlformatscheme.cpp \
     xq/xqfileeditor.cpp \
     xq/xqmodelcompleter.cpp \
     config/webpluginformimpl.cpp \
- filetypeplugin.cpp \
- js/jsformatscheme.cpp \
- xq/xqformatscheme.cpp \
- css/cssformatscheme.cpp \
- xsl/xslcontentviewparser.cpp
+    filetypeplugin.cpp \
+    js/jsformatscheme.cpp \
+    xq/xqformatscheme.cpp \
+    css/cssformatscheme.cpp \
+    xsl/xslcontentviewparser.cpp \
+    js/jscontentviewparser.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
 include(../../project_mode.pro)

@@ -22,7 +22,7 @@ LIBS = -L../libxinx \
     -lxinxcmp \
     -lqcodeedit
 PRE_TARGETDEPS = ../plugins/libwebplugin.a
-win32:RC_FILE += rc/xinx.rc
+win32 : RC_FILE += rc/xinx.rc
 RESOURCES += application.qrc
 FORMS += ui/xquery.ui \
     ui/specifiquedlg.ui \
