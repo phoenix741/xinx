@@ -33,11 +33,18 @@
 #include <QIcon>
 #include <QVariant>
 
+/* Declaration */
+
+typedef ContentViewParser* pContentViewParser;
+
 /* Static function */
 
-void contentViewParserLoadFromMember( ContentViewParser * parser ) {
-	parser->loadFromMember();
-	delete parser;
+void contentViewParserLoadFromMember( pContentViewParser & parser ) {
+	Q_ASSERT( parser );
+	pContentViewParser p = parser;
+
+	p->loadFromMember();
+	delete p;
 }
 
 /* ContentViewCache */
@@ -46,11 +53,11 @@ ContentViewCache::ContentViewCache( XinxProject * project ) : m_project( project
 }
 
 void ContentViewCache::initializeCache() {
-	QList<ContentViewParser*> m_parsers;
+	QList<pContentViewParser> parsers;
 	foreach( QString name, m_project->preloadedFiles() ) {
 		QString filename = QDir( m_project->projectPath() ).absoluteFilePath( name );
 
-		ContentViewParser * parser;
+		pContentViewParser parser;
 		ContentViewNode * node = new ContentViewNode( filename, -1 );
 
 		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
@@ -64,11 +71,11 @@ void ContentViewCache::initializeCache() {
 			parser->setRootNode( node );
 			parser->setFilename( filename );
 			node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
-			m_parsers.append( parser );
+			parsers.append( parser );
 		} else
 			delete node;
 	}
-	QFuture<void> future = QtConcurrent::map( m_parsers, contentViewParserLoadFromMember );
+	QFuture<void> future = QtConcurrent::map( parsers, contentViewParserLoadFromMember );
 }
 
 ContentViewNode * ContentViewCache::contentOfFileName( const QString & filename ) {
