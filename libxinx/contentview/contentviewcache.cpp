@@ -47,6 +47,7 @@ void contentViewParserLoadFromMember( pContentViewParser & parser ) {
 	try {
 		parser->loadFromMember();
 	} catch( ContentViewException e ) {
+		qWarning( qPrintable( e.getMessage() ) );
 	}
 	delete parser;
 }
@@ -81,7 +82,7 @@ void ContentViewCache::initializeCache() {
 			} catch( ContentViewException e ) {
 				delete parser;
 				delete node;
-				qDebug( qPrintable( e.getMessage() ) );
+				qWarning( qPrintable( e.getMessage() ) );
 			}
 		} else
 			delete node;
