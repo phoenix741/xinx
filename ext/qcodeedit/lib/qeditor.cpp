@@ -4500,7 +4500,7 @@ void QEditor::scrollContentsBy(int dx, int dy)
 	viewport()->update();
 	#else
 	const int ls = m_doc->fontMetrics().lineSpacing();
-	viewport()->scroll(dx * ls, dy * ls);
+	viewport()->scroll(dx, dy * ls);
 	#endif
 }
 

@@ -8,6 +8,7 @@
 
 class QCodeEdit;
 class QEditConfig;
+class QFormatConfig;
 class QFormatScheme;
 class QLanguageFactory;
 
@@ -65,6 +66,8 @@ class Window : public QMainWindow, private Ui::MainWindow
 		void updateRecentFiles(const QString& filename = QString());
 		
 		QEditConfig *m_config;
+		QFormatConfig *m_formatConfig;
+		
 		QCodeEdit *m_editControl;
 		QFormatScheme *m_formats;
 		QLanguageFactory *m_languages;

@@ -7,6 +7,7 @@
 #include "qeditor.h"
 #include "qcodeedit.h"
 #include "qeditconfig.h"
+#include "qformatconfig.h"
 
 #include "qdocument.h"
 #include "qdocumentline.h"
@@ -237,7 +238,9 @@ Window::Window(QWidget *p)
 	settingsStack->addWidget(m_config);
 	
 	// syntax settings page
-	settingsStack->addWidget(new QWidget(settingsStack));
+	m_formatConfig = new QFormatConfig(settingsStack);
+	m_formatConfig->addScheme("global", m_formats);
+	settingsStack->addWidget(m_formatConfig);
 	
 	// restore GUI state
 	settings.beginGroup("gui");
@@ -546,6 +549,10 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		writeSettingsMap(settings, m_config->dumpKeys(), "edit");
 		
 		// Syntax section
+		m_formatConfig->apply();
+		
+		// force repaint to make sure new formats are used
+		m_editControl->editor()->viewport()->update();
 		
 		switchPage(1); //m_stack->setCurrentIndex(1);
 	} else if ( r == QDialogButtonBox::RejectRole ) {
@@ -561,6 +568,7 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		m_config->cancel();
 		
 		// Syntax section
+		m_formatConfig->cancel();
 		
 		switchPage(1); //m_stack->setCurrentIndex(1);
 	} else if ( r == QDialogButtonBox::ResetRole ) {
@@ -587,7 +595,7 @@ void Window::on_bbSettings_clicked(QAbstractButton *b)
 		m_config->restore();
 		
 		// Syntax section
-		
+		m_formatConfig->restore();
 	}
 }
 

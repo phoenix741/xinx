@@ -5284,7 +5284,7 @@ void QDocumentPrivate::draw(QPainter *p, QDocument::PaintContext& cxt)
 			//			cxt.width - 4, m_lineSpacing - 1);
 			
 			p->drawRect(m_leftMargin, pos,
-						cxt.width - 4, m_lineSpacing - 1);
+						cxt.width - 4, m_lineSpacing * (wrap + 1) - 1);
 						
 		}
 		
@@ -6077,14 +6077,14 @@ int QDocumentPrivate::visualLine(int textLine) const
 			{
 				if ( wit.key() > hl + max )
 					break;
-					
+				
 				++wit;
 			}
 			
 		} else {
 			if ( wit.key() >= textLine )
 				break;
-				
+			
 			if ( m_lines.at(wit.key())->hasFlag(QDocumentLine::Hidden) )
 			{
 				++wit;
@@ -6125,7 +6125,21 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 			{
 				if ( visualLine + mess <= hl )
 					break;
-					
+				
+				if ( w != we && w.key() == hl )
+				{
+					//qDebug("trying to solve : h=(%i, %i), w=(%i, %i)", hl, *h, w.key(), *w);
+					const int off = (visualLine + mess) - hl;
+					if ( off <= *w )
+					{
+						//qDebug("%i -> %i + %i", visualLine, hl, off);
+						if ( wrap )
+							*wrap = off;
+						
+						return hl;
+					}
+				}
+				
 				int max = 0;
 				
 				do
@@ -6145,7 +6159,7 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 				{
 					if ( w.key() > txt + max )
 						break;
-						
+					
 					++w;
 				}
 				
@@ -6162,7 +6176,7 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 				
 				if ( visualLine + mess < txt )
 					break;
-					
+				
 				wrappedLines += *w;
 				++w;
 			}
@@ -6177,7 +6191,7 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 			
 			if ( visualLine + mess < txt )
 				break;
-				
+			
 			wrappedLines += *w;
 			++w;
 		} else {
@@ -6207,7 +6221,7 @@ int QDocumentPrivate::textLine(int visualLine, int *wrap) const
 				
 				if ( wrap )
 					*wrap = visualLine - base;
-					
+				
 				return wl;
 			}
 		}

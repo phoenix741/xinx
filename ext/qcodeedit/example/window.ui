@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>745</width>
-    <height>677</height>
+    <height>712</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -280,7 +280,7 @@ p, li { white-space: pre-wrap; }&#xd;&#xd;&#xd;&#xd;
         <item row="0" column="3" >
          <widget class="QStackedWidget" name="settingsStack" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+           <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -450,7 +450,7 @@ p, li { white-space: pre-wrap; }&#xd;&#xd;&#xd;&#xd;
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>QSizePolicy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0" >
            <size>

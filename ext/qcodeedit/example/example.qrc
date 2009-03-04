@@ -25,5 +25,12 @@
     <file>find.png</file>
     <file>replace.png</file>
     <file>goto.png</file>
+    <file>bold.png</file>
+    <file>italic.png</file>
+    <file>underline.png</file>
+    <file>strikeout.png</file>
+    <file>textcolor.png</file>
+    <file>fillcolor.png</file>
+    <file>strokecolor.png</file>
   </qresource>
 </RCC>
