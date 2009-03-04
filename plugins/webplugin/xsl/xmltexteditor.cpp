@@ -291,6 +291,7 @@ void XmlTextEditor::insertCompletionAccolade( QDocumentCursor & tc, QString node
 	bool isVariable = c->completionModel()->data( index, XSLCompletionModel::isVariable ).toBool();
 	bool isHtmlOnly = c->completionModel()->data( index, XSLCompletionModel::isHtmlOnly ).toBool();
 
+	tc.setAutoUpdated( true );
 	QDocumentCursor tc2( tc );
 	tc2.movePosition( value.length(), QDocumentCursor::PreviousCharacter, QDocumentCursor::MoveAnchor );
 
