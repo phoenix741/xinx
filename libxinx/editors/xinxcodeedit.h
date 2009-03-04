@@ -62,6 +62,13 @@ public:
 	 */
 	XinxCodeEdit( QWidget * parent = 0 );
 
+	/*!
+	 * Create a XinxCodeEdit object and active action for the editor.
+	 *
+	 * This create the QCodeEdit object with some default option.
+	 */
+	XinxCodeEdit( bool action, QWidget * parent = 0 );
+
 	//! Destroy the object
 	virtual ~XinxCodeEdit();
 
@@ -322,6 +329,7 @@ protected:
 private slots:
 	void slotMarkChanged( QDocumentLineHandle* line, int type, bool enabled );
 private:
+	void init( bool action );
 	void uploSelectedText( bool upper = true );
 	void key_home( bool );
 
@@ -329,6 +337,21 @@ private:
 	QDocumentSearch * m_matchingText;
 	QCompleter * m_completer;
 	QString m_matchingTextString;
+};
+
+/*!
+ * XinxCodeEditAction is a wrapper of QCodeEdit editor. This editor active
+ * action in QCodeEdit.
+ */
+class XinxCodeEditAction : public XinxCodeEdit {
+	Q_OBJECT
+public:
+	/*!
+	 * Create a XinxCodeEdit object.
+	 *
+	 * This create the QCodeEdit object with some default option.
+	 */
+	XinxCodeEditAction( QWidget * parent = 0 );
 };
 
 #endif /* _XINXCODEEDIT_H_ */

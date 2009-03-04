@@ -176,7 +176,7 @@
      </property>
      <layout class="QGridLayout" >
       <item row="0" column="0" >
-       <widget class="XinxCodeEdit" native="1" name="m_textEdit" >
+       <widget class="XinxCodeEditAction" native="1" name="m_textEdit" >
         <property name="whatsThis" >
          <string>Templat to show to screen. In this template you can define parameter by used &lt;i>%n&lt;/i> keyword where &lt;i>n&lt;/i> is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i>&amp;lt;?= ?&amp;gt;&lt;/i> is used to call script and show the text returned by the script. &lt;i>&amp;lt;?    ?&amp;gt;&lt;/i> can be used to init the script and make some pre-process.</string>
         </property>
@@ -196,7 +196,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>XinxCodeEdit</class>
+   <class>XinxCodeEditAction</class>
    <extends>QWidget</extends>
    <header location="global" >editors/xinxcodeedit.h</header>
    <container>1</container>

@@ -57,7 +57,15 @@
 /* XinxCodeEdit */
 
 XinxCodeEdit::XinxCodeEdit( QWidget * parent ) : QWidget( parent ), m_completer( 0 ) {
-	m_editor = new QCodeEdit( false, this );
+	init( false );
+}
+
+XinxCodeEdit::XinxCodeEdit( bool action, QWidget * parent ) : QWidget( parent ), m_completer( 0 ) {
+	init( action );
+}
+
+void XinxCodeEdit::init( bool action ) {
+	m_editor = new QCodeEdit( action, this );
 	setHighlighter( QString() );
 
 	m_editor->editor()->document()->setLineEnding( QDocument::Unix );
@@ -712,4 +720,9 @@ void XinxCodeEdit::postMousePressEvent( QMouseEvent *event, QEditor * editor ) {
 	if( ( event->type() == QEvent::MouseButtonPress ) && ( dynamic_cast<QMouseEvent*>( event )->button() == Qt::LeftButton ) && ( event->modifiers() == Qt::ControlModifier ) ) {
 		QMetaObject::invokeMethod( this, "searchWord", Qt::QueuedConnection, Q_ARG( QString, textUnderCursor( textCursor(), false ) ) );
 	}
+}
+
+/* XinxCodeEditAction */
+
+XinxCodeEditAction::XinxCodeEditAction( QWidget * parent ) : XinxCodeEdit( true, parent ) {
 }
