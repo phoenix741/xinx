@@ -27,10 +27,12 @@
 
 // Qt header
 #include <QHash>
+#include <QFutureWatcher>
 
 class XinxProject;
 class ContentViewNode;
 class ContentViewParser;
+class ContentViewNode;
 
 /*!
  * \class ContentViewCache
@@ -45,10 +47,13 @@ class ContentViewParser;
  *
  * The goal is to down the size in the memory, and speed up the loading of file and completion.
  */
-class ContentViewCache {
+class ContentViewCache : public QObject {
+	Q_OBJECT
 public:
 	//! Create a content view cache and preloads project.
 	ContentViewCache( XinxProject * project );
+
+	~ContentViewCache();
 
 	/*!
 	 * Return the content view for the given file name. Look in the cache if the
@@ -63,9 +68,12 @@ public:
 
 	//! Intialize a cache from the content of preloaded files.
 	void initializeCache();
+private slots:
+	void resultReadyAt( int index );
 private:
 	QHash<QString,ContentViewNode*> m_nodes;
 	XinxProject * m_project;
+	QFutureWatcher<ContentViewNode*> * m_watcher;
 };
 
 #endif /* __CONTENTVIEWCLASS_H__ */

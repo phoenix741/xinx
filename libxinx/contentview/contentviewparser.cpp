@@ -148,7 +148,7 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 
 	// Open the file
 	if (!file.open(QFile::ReadOnly))
-		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()), 0, 0 );
+		throw ContentViewException( QObject::tr("Cannot read file %1:%2.").arg(filename).arg(file.errorString()), 0, 0 );
 
 	m_rootNode = rootNode;
 	m_device   = &file;
@@ -195,7 +195,7 @@ void ContentViewParser::setFilename( const QString & filename ) {
 	if( ! file->open(QFile::ReadOnly) ) {
 		QString errorString = file->errorString();
 		delete file;
-		throw ContentViewException( QObject::tr("Cannot read file %1:\n%2.").arg( filename ).arg( errorString ), 0, 0 );
+		throw ContentViewException( QObject::tr("Cannot read file %1:%2.").arg( filename ).arg( errorString ), 0, 0 );
 	}
 
 	delete m_device;

@@ -33,65 +33,74 @@
 #include <QIcon>
 #include <QVariant>
 
-/* Declaration */
-
-typedef ContentViewParser * pContentViewParser;
-
 /* Static function */
 
-void contentViewParserLoadFromMember( pContentViewParser & parser ) {
-	Q_ASSERT( parser );
+ContentViewNode* contentViewParserLoadFromMember( const QString & filename ) {
+	ContentViewParser * parser = 0;
+	ContentViewNode * node = new ContentViewNode( filename, -1 );
 
-	qDebug( qPrintable( QString("x : %1").arg( (unsigned long)parser, 0, 16 ) ) );
+	node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
+	node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
 
-	try {
-		parser->loadFromMember();
-	} catch( ContentViewException e ) {
-		qWarning( qPrintable( e.getMessage() ) );
+	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
+	if( fileType && ( parser = fileType->createParser() ) ) {
+		try {
+			parser->setRootNode( node );
+			parser->setFilename( filename );
+
+			node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
+
+			parser->loadFromMember();
+
+			delete parser;
+		} catch( ContentViewException e ) {
+			delete parser; parser = 0;
+			delete node; node = 0;
+			qWarning( qPrintable( e.getMessage() ) );
+		}
+	} else {
+		delete node; node = 0;
 	}
-	delete parser;
+
+	return node;
 }
 
 /* ContentViewCache */
 
 ContentViewCache::ContentViewCache( XinxProject * project ) : m_project( project ) {
+	m_watcher = new QFutureWatcher<ContentViewNode*> ( this );
+	connect( m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)) );
+}
+
+ContentViewCache::~ContentViewCache() {
+	if( m_watcher->isRunning() ) {
+		m_watcher->waitForFinished();
+	}
+	delete m_watcher;
 }
 
 void ContentViewCache::initializeCache() {
-	QVector<pContentViewParser> parsers;
+	if( m_watcher->isRunning() ) {
+		m_watcher->waitForFinished();
+	}
+
+	QVector<QString> filenames;
 	foreach( QString name, m_project->preloadedFiles() ) {
 		QString filename = QDir( m_project->projectPath() ).absoluteFilePath( name );
-
-		pContentViewParser parser;
-		ContentViewNode * node = new ContentViewNode( filename, -1 );
-
-		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
-		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
-		node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
-
-		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
-		if( fileType && ( parser = fileType->createParser() ) ) {
-			try {
-				parser->setRootNode( node );
-				parser->setFilename( filename );
-
-				node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
-
-				m_nodes.insert( QFileInfo( filename ).canonicalFilePath(), node );
-				parsers.append( parser );
-			} catch( ContentViewException e ) {
-				delete parser;
-				delete node;
-				qWarning( qPrintable( e.getMessage() ) );
-			}
-		} else
-			delete node;
+		filenames << filename;
 	}
-	qDebug( qPrintable( QString("Count : %1").arg( parsers.size() ) ) );
-	qDebug( qPrintable( QString("1 : %1").arg( (unsigned long)parsers.at( 0 ), 0, 16 ) ) );
-	qDebug( qPrintable( QString("2 : %1").arg( (unsigned long)parsers.at( 1 ), 0, 16 ) ) );
-	QFuture<void> future = QtConcurrent::map( parsers, contentViewParserLoadFromMember );
+	m_watcher->setFuture( QtConcurrent::mapped( filenames, contentViewParserLoadFromMember ) );
 }
+
+void ContentViewCache::resultReadyAt( int index ) {
+	ContentViewNode * node = m_watcher->resultAt( index );
+	if( node ) {
+		QString filename = node->fileName();
+		m_nodes.insert( QFileInfo( filename ).canonicalFilePath(), node );
+	}
+}
+
 
 ContentViewNode * ContentViewCache::contentOfFileName( const QString & filename ) {
 	QString key = QFileInfo( filename ).canonicalFilePath();
