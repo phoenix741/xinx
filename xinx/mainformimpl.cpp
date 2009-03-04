@@ -1536,6 +1536,7 @@ void MainformImpl::openProject( const QString & filename ) {
 	XinxProject * project = NULL;
 	try {
 		project = new XinxProject( filename );
+
 		m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
 		SpecifiqueDialogImpl::setLastPlace( project->projectPath() );
 

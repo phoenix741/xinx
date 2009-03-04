@@ -33,4 +33,4 @@ obj.run = function() {
 	textEdit.selection = result;
 };
 
-return obj;
+obj;

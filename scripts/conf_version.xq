@@ -1,3 +1,6 @@
+declare default element namespace 'http://www.generix.fr/technicalframework/configuration';
+declare variable $inputDocument external;
+
 <result xmlns="http://www.generix.fr/technicalframework/configuration">
 {
 (doc($inputDocument)/config/version/numero)[1]/

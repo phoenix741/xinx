@@ -368,6 +368,9 @@ public:
 	/*! Content the cache of preloaded files */
 	ContentViewCache * preloadedFilesCache();
 
+	/*! Preload file that can be used later */
+	void preloadFilesCache();
+
 	/*!
 	 * Get the specifique project path (as &lt;project&gt;/langue/&lt;langue&gt;/nav/projet). The specifique
 	 * project path is in the QStringList.

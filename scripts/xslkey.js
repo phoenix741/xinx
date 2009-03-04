@@ -43,4 +43,4 @@ obj.formatXslKey = function(text)
 	return text;
 }
 
-return obj;
+obj;

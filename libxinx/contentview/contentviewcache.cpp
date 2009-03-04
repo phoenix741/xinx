@@ -68,7 +68,7 @@ ContentViewNode* contentViewParserLoadFromMember( const QString & filename ) {
 
 /* ContentViewCache */
 
-ContentViewCache::ContentViewCache( XinxProject * project ) : m_project( project ) {
+ContentViewCache::ContentViewCache( XinxProject * project ) : QObject( project ), m_project( project ) {
 	m_watcher = new QFutureWatcher<ContentViewNode*> ( this );
 	connect( m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)) );
 }
@@ -96,8 +96,12 @@ void ContentViewCache::initializeCache() {
 void ContentViewCache::resultReadyAt( int index ) {
 	ContentViewNode * node = m_watcher->resultAt( index );
 	if( node ) {
-		QString filename = node->fileName();
-		m_nodes.insert( QFileInfo( filename ).canonicalFilePath(), node );
+		QString filename = QFileInfo( node->fileName() ).canonicalFilePath();
+
+		if( ! m_nodes.contains( filename ) )
+			m_nodes.insert( filename, node );
+		else
+			delete node;
 	}
 }
 

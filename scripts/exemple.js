@@ -46,4 +46,4 @@ obj.run = function() {
 	alert( input( "Write a text the default is 'toto'", "toto" ) );
 };
 
-return obj;
+obj;

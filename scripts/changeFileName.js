@@ -20,4 +20,4 @@ obj.run = function()
 	textEdit.modified = true;
 };
 
-return obj;
+obj;

@@ -166,7 +166,20 @@ public:
 	};
 	virtual ~ConfigurationFileXmlReceiver() {};
 
-	virtual void atomicValue ( const QVariant & ) {};
+	virtual void atomicValue ( const QVariant & value ) {
+		if( m_currentElement == "numero" ) {
+			*m_version = value.toString();
+		} else
+		if( m_currentElement == "edition_speciale" ) {
+			*m_build = value.toString().toInt();
+		} else
+		if( m_currentElement == "xmlpres" ) {
+			*m_xmlPresentationFile = value.toString();
+		} else
+		if( m_currentElement == "rootPath" ) {
+			*m_rootPath = value.toString();
+		}
+	};
 	virtual void attribute ( const QXmlName &, const QStringRef & ) {};
 	virtual void comment ( const QString & ) {};
 	virtual void endDocument () {};
@@ -181,18 +194,7 @@ public:
 		m_currentElement = name.localName( m_query->namePool() );
 	};
 	virtual void characters ( const QStringRef & value ) {
-		if( m_currentElement == "numero" ) {
-			*m_version = value.toString();
-		} else
-		if( m_currentElement == "edition_speciale" ) {
-			*m_build = value.toString().toInt();
-		} else
-		if( m_currentElement == "xmlpres" ) {
-			*m_xmlPresentationFile = value.toString();
-		} else
-		if( m_currentElement == "rootPath" ) {
-			*m_rootPath = value.toString();
-		}
+		atomicValue( value.toString() );
 	};
 private:
 	QXmlQuery * m_query;

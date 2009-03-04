@@ -645,10 +645,17 @@ QStringList & XinxProject::preloadedFiles() {
 	return d->m_preloadedFiles;
 }
 
-ContentViewCache * XinxProject::preloadedFilesCache() {
+void XinxProject::preloadFilesCache() {
 	if( ! d->m_cache ) {
 		d->m_cache = new ContentViewCache( this );
 		d->m_cache->initializeCache();
+	} else
+		d->m_cache->initializeCache();
+}
+
+ContentViewCache * XinxProject::preloadedFilesCache() {
+	if( ! d->m_cache ) {
+		preloadFilesCache();
 	}
 	return d->m_cache;
 }
@@ -716,6 +723,7 @@ void XINXProjectManager::setCurrentProject( XinxProject * project ) {
 
 	m_project = project;
 	XINXConfig::self()->config().project.lastOpenedProject = project->fileName();
+	m_project->preloadedFilesCache();
 
 	connect( m_project, SIGNAL(changed()), this, SIGNAL(changed()) );
 	emit changed();
