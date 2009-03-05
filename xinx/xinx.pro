@@ -70,7 +70,8 @@ HEADERS += xmlpresentationdockthread.h \
     dbus/orgshadowarexinxadaptor.h \
     dbus/orgshadowarexinxinterface.h \
     searchfilethread.h \
-    logdialogimpl.h
+    logdialogimpl.h \
+ script/documentsearch.h
 SOURCES += xmlpresentationdockthread.cpp \
     customdialogmodeles.cpp \
     xquerydialogimpl.cpp \
@@ -103,6 +104,7 @@ SOURCES += xmlpresentationdockthread.cpp \
     dbus/orgshadowarexinxadaptor.cpp \
     dbus/orgshadowarexinxinterface.cpp \
     searchfilethread.cpp \
-    logdialogimpl.cpp
+    logdialogimpl.cpp \
+ script/documentsearch.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 include(../project_mode.pro)

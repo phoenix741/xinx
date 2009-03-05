@@ -25,6 +25,7 @@
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 #include "configurationfile.h"
+#include "script/documentsearch.h"
 
 // Qt header
 #include <QApplication>
@@ -79,12 +80,29 @@ static QScriptValue input( QScriptContext * context, QScriptEngine * interpreter
 	}
 }
 
+static QScriptValue documentSearch_constructor( QScriptContext * context, QScriptEngine * interpreter ) {
+	XinxCodeEdit * textEdit = qobject_cast<XinxCodeEdit*>( context->argument( 0 ).toQObject() );
+	if( textEdit )
+		return interpreter->newQObject( new DocumentSearch( textEdit ), QScriptEngine::ScriptOwnership );
+	else
+		return interpreter->nullValue();
+}
+
 /* Global conversion fonction */
 
 Q_DECLARE_METATYPE(ConfigurationVersion);
 Q_DECLARE_METATYPE(ConfigurationFile);
 Q_DECLARE_METATYPE(ConfigurationFile*);
 Q_DECLARE_METATYPE(QList<ConfigurationFile*>);
+Q_DECLARE_METATYPE(DocumentSearchOption*);
+
+static QScriptValue documentSearchOptionToScriptValue( QScriptEngine *engine, DocumentSearchOption * const &in ) {
+	return engine->newQObject(in);
+}
+
+static void documentSearchOptionFromScriptValue( const QScriptValue &object, DocumentSearchOption* &out ) {
+	out = qobject_cast<DocumentSearchOption*>( object.toQObject() );
+}
 
 static QScriptValue cflToScriptValue( QScriptEngine *engine, const QList<ConfigurationFile*> &s ) {
 	QScriptValue qsConfigurationsArray = engine->newArray( s.size() );
@@ -186,6 +204,7 @@ void ScriptValue::callScript() {
 /* ScriptManager */
 
 ScriptManager::ScriptManager() {
+	qScriptRegisterMetaType(&m_engine, &documentSearchOptionToScriptValue, &documentSearchOptionFromScriptValue);
 	qScriptRegisterMetaType(&m_engine, &cflToScriptValue, &cflFromScriptValue);
 	qScriptRegisterMetaType(&m_engine, &cvToScriptValue, &cvFromScriptValue);
 
@@ -195,6 +214,8 @@ ScriptManager::ScriptManager() {
 	m_engine.globalObject().setProperty( "confirm", qsConfirm );
 	QScriptValue qsInput = m_engine.newFunction( input );
 	m_engine.globalObject().setProperty( "input", qsInput );
+	QScriptValue qsDocumentSearch = m_engine.newFunction( documentSearch_constructor );
+	m_engine.globalObject().setProperty( "createDocumentSearch", qsDocumentSearch );
 	loadScripts();
 	projectChange();
 	setCurrentEditeur(0);
