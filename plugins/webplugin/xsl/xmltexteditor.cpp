@@ -364,9 +364,21 @@ bool XmlTextEditor::processKeyPress( QKeyEvent * e ) {
 	if( !e->text().isEmpty() ) {
 		if( ( e->key() == Qt::Key_Enter ) || ( e->key() == Qt::Key_Return ) ) {
 			QDocumentCursor tc( textCursor() );
-			QString text = tc.line().text();
-			if( text.contains( "</" ) )
+			bool hasOpenBalise = false, hasCloseBalise = false;
+			QDocumentLine line = tc.line(), previousLine = line.previous();
+
+			foreach ( QParenthesis p, line.parentheses() ) {
+				if ( p.role & QParenthesis::Close )
+					hasCloseBalise = true;
+			}
+			foreach ( QParenthesis p, previousLine.parentheses() ) {
+				if ( p.role & QParenthesis::Open )
+					hasOpenBalise = true;
+			}
+
+			if( hasOpenBalise && hasCloseBalise )
 				tc.deletePreviousChar();
+
 			return true;
 		} else if( ( e->text().right(1) == ">" ) && ( SelfWebPluginSettings::self()->config().xml.addClosedBalise ) ) {
 			QDocumentCursor tc( textCursor() );
