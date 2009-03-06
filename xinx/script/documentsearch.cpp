@@ -60,6 +60,7 @@ bool DocumentSearchOption::isRegExp() const {
 DocumentSearch::DocumentSearch( XinxCodeEdit * editor ) {
 	m_search  = new QDocumentSearch( editor->editor(), QString(), QDocumentSearch::Silent );
 	m_options = new DocumentSearchOption( m_search->options(), this );
+	m_cursor  = QDocumentCursor( editor->document() );
 }
 
 DocumentSearch::~DocumentSearch() {
@@ -75,6 +76,7 @@ void DocumentSearch::setOptions( DocumentSearchOption * value ) {
 }
 
 QString DocumentSearch::searchText( const QString & text ) {
+	m_search->setCursor( m_cursor );
 	m_search->setOption( QDocumentSearch::WholeWords, m_options->isWholeWords() );
 	m_search->setOption( QDocumentSearch::CaseSensitive, m_options->isCaseSensitive() );
 	m_search->setOption( QDocumentSearch::RegExp, m_options->isRegExp() );

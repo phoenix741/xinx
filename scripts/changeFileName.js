@@ -11,6 +11,19 @@ obj.version = "0.1"
 
 obj.run = function()
 {
+	var search = new DocumentSearch( textEdit );
+	var text, filename;
+	alert( editor.filename );
+	filename = editor.filename.substring( editor.filename.lastIndexOf('/') + 1 );
+
+	search.options.regExp = true;
+
+	while( (text = search.searchText( "(\\$RCSfile:\\s+).*(,v\\s+\\$)" )).length > 0 ) {
+		alert( text );
+		search.replaceSelection( "\\1" + filename + "\\2" )
+	}
+	/*
+
 	var text = textEdit.plainText;
 	var result = "";
 
@@ -18,6 +31,7 @@ obj.run = function()
 
 	textEdit.plainText = result;
 	textEdit.modified = true;
+	*/
 };
 
 obj;

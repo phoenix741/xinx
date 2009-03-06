@@ -210,12 +210,17 @@ ScriptManager::ScriptManager() {
 
 	QScriptValue qsAlert = m_engine.newFunction( alert );
 	m_engine.globalObject().setProperty( "alert", qsAlert );
+
 	QScriptValue qsConfirm = m_engine.newFunction( confirm );
 	m_engine.globalObject().setProperty( "confirm", qsConfirm );
+
 	QScriptValue qsInput = m_engine.newFunction( input );
 	m_engine.globalObject().setProperty( "input", qsInput );
+
 	QScriptValue qsDocumentSearch = m_engine.newFunction( documentSearch_constructor );
-	m_engine.globalObject().setProperty( "createDocumentSearch", qsDocumentSearch );
+	QScriptValue qsMetaObjectDocumentSearch = m_engine.newQMetaObject( &DocumentSearch::staticMetaObject, qsDocumentSearch );
+	m_engine.globalObject().setProperty( "DocumentSearch", qsDocumentSearch );
+
 	loadScripts();
 	projectChange();
 	setCurrentEditeur(0);
