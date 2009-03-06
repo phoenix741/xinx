@@ -1,3 +1,24 @@
+XINX - 0.8.0.0
+==============
+- 269 : Problème lors de la complétion & de l'insertion des snipets
+- 259 : Ecrire un wrapper pour QtScript de QDocumentSearch, ...
+- 265 : Problème on inserting template of multiple line 
+- 237 : Passage de QTextEdit à QCodeEdit 
+- 075 : Repérage des parenthèses 
+- 083 : Réduction de code 
+- 219 : Fermeture de balise automatique 
+- 224 : Nom long de fichier 
+- 231 : Script à la sauvegarde 
+- 233 : Test de XPATH : phoenix 
+- 240 : Nouveau format de projets specifiques egx 
+- 260 : pb indentation automatic 
+- 261 : Copy/Paste 
+- 262 : Passage à la ligne 
+- 264 : Problème lors de l'insertion de texte 
+- 266 : Désintenter supprimer des caractères 
+- 267 : Changement sur une balise fermante 
+- 268 : Propriété projet 
+
 XINX - 0.7.2.2
 ==============
 - 230 : Crash Flux de présentation

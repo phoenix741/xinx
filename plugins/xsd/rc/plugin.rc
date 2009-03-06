@@ -1,5 +1,5 @@
 1 VERSIONINFO
-FILEVERSION 0, 1, 0, 0
+FILEVERSION 0, 1, 0, 1
 PRODUCTVERSION 0, 8, 0, 0
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -20,7 +20,7 @@ BEGIN
 		VALUE "FileDescription", "XSD Document Editor"
         VALUE "FileVersion", "0, 1, 0, 0"
         VALUE "InternalName", "xsdedit"
-        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2008"
+        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2009"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "xsd.dll"
 		VALUE "PrivateBuild", "\0"

@@ -20,7 +20,7 @@ BEGIN
 		VALUE "FileDescription", "XINX is not XDME"
         VALUE "FileVersion", "0, 8, 0, 0"
         VALUE "InternalName", "xinx"
-        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2008"
+        VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2009"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "xinx.exe"
 		VALUE "PrivateBuild", "\0"

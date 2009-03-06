@@ -1,4 +1,4 @@
-CONFIG += debug
+CONFIG += release
 unix {
     QMAKE_LFLAGS = -rdynamic
 }
