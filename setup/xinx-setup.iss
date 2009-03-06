@@ -74,7 +74,7 @@ Source: {#QTDIR}\bin\QtSql4.dll; DestDir: {app}\bin; Components: qt; Flags: shar
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: qt; Flags: sharedfile
 Source: ..\xinx\xml\*.xml; DestDir: {app}\xml; Components: application; Tasks: remplace_template
-Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist; DestName: src.zip
+Source: ..\src.zip; DestDir: {app}; Components: source; Flags: replacesameversion nocompression skipifsourcedoesntexist
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 Source: {#QTDIR}\bin\qdbusviewer.exe; DestDir: {pf}\dbus\bin; Flags: sharedfile uninsrestartdelete; Components: dbus qt
 Source: dbus-1.2.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression skipifsourcedoesntexist; Components: dbus; Tasks: ; Languages: ; DestName: dbus-install.exe
@@ -82,12 +82,12 @@ DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
 DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: documentation
-DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
-DestDir: {app}\plugins; Source: ..\plugins\xsd.dll; Components: experimental
+;DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
+;DestDir: {app}\plugins; Source: ..\plugins\xsd.dll; Components: experimental
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: scripts
-DestDir: {app}\plugins\script; Source: {#QTDIR}\plugins\script\qtscriptdbus4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
-DestDir: {app}\plugins\sqldrivers; Source: {#QTDIR}\plugins\script\qsqlite4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
+;DestDir: {app}\plugins\script; Source: {#QTDIR}\plugins\script\qtscriptdbus4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages:
+;DestDir: {app}\plugins\sqldrivers; Source: {#QTDIR}\plugins\script\qsqlite4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages:
 DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\explorerstyle.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\floatstyle0.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
 DestDir: {app}\plugins\styles; Source: {#QTDIR}\plugins\styles\qtdotnet2.dll; Flags: skipifsourcedoesntexist; Components: styles; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
@@ -137,7 +137,7 @@ Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom full
 Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom full
 Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 Name: services; Description: Plugin with a WebServices editor; Types: custom full
-Name: experimental; Description: Plugins experimentaux; Languages: 
+;Name: experimental; Description: Plugins experimentaux; Languages:
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
 
 [Run]
