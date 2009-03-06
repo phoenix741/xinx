@@ -20,7 +20,7 @@
 		<stop>&gt;</stop>
 	</context>
 	
-	<sequence id="entity" format="entity">&amp;[0-9$w]+;</sequence>
+	<sequence id="entity" format="entity">&amp;[#0-9$w]+;</sequence>
 	
 	<sequence parenthesis="round:open">(</sequence>
 	<sequence parenthesis="round:close">)</sequence>
