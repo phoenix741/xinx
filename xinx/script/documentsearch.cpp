@@ -22,10 +22,7 @@
 
 /* DocumentSearchOption */
 
-DocumentSearchOption::DocumentSearchOption( QDocumentSearch::Options options, QObject * parent ) : QObject( parent ) {
-	m_wholeWords = options.testFlag( QDocumentSearch::WholeWords );
-	m_caseSensitive = options.testFlag( QDocumentSearch::CaseSensitive );
-	m_regexp = options.testFlag( QDocumentSearch::RegExp );
+DocumentSearchOption::DocumentSearchOption( QDocumentSearch * search, QObject * parent ) : QObject( parent ), m_search( search ) {
 }
 
 DocumentSearchOption::~DocumentSearchOption() {
@@ -33,6 +30,7 @@ DocumentSearchOption::~DocumentSearchOption() {
 
 void DocumentSearchOption::setWholeWords( bool value ) {
 	m_wholeWords = value;
+	m_search->setOption( QDocumentSearch::WholeWords, value );
 }
 
 bool DocumentSearchOption::isWholeWords() const {
@@ -41,6 +39,7 @@ bool DocumentSearchOption::isWholeWords() const {
 
 void DocumentSearchOption::setCaseSensitive( bool value ) {
 	m_caseSensitive = value;
+	m_search->setOption( QDocumentSearch::CaseSensitive, value );
 }
 
 bool DocumentSearchOption::isCaseSensitive() const {
@@ -49,6 +48,7 @@ bool DocumentSearchOption::isCaseSensitive() const {
 
 void DocumentSearchOption::setRegExp( bool value ) {
 	m_regexp = value;
+	m_search->setOption( QDocumentSearch::RegExp, value );
 }
 
 bool DocumentSearchOption::isRegExp() const {
@@ -59,8 +59,8 @@ bool DocumentSearchOption::isRegExp() const {
 
 DocumentSearch::DocumentSearch( XinxCodeEdit * editor ) {
 	m_search  = new QDocumentSearch( editor->editor(), QString(), QDocumentSearch::Silent );
-	m_options = new DocumentSearchOption( m_search->options(), this );
-	m_cursor  = QDocumentCursor( editor->document() );
+	m_options = new DocumentSearchOption( m_search, this );
+	m_search->setCursor( QDocumentCursor( editor->document() ) );
 }
 
 DocumentSearch::~DocumentSearch() {
@@ -75,27 +75,27 @@ void DocumentSearch::setOptions( DocumentSearchOption * value ) {
 	m_options = value;
 }
 
-QString DocumentSearch::searchText( const QString & text ) {
-	m_search->setCursor( m_cursor );
-	m_search->setOption( QDocumentSearch::WholeWords, m_options->isWholeWords() );
-	m_search->setOption( QDocumentSearch::CaseSensitive, m_options->isCaseSensitive() );
-	m_search->setOption( QDocumentSearch::RegExp, m_options->isRegExp() );
-
+void DocumentSearch::setSearchText( const QString & text ) {
 	m_search->setSearchText( text );
-	m_search->next( false );
-
-	m_cursor = m_search->cursor();
-	if( m_cursor.isValid() )
-		return m_cursor.selectedText();
-
-	return QString();
 }
 
-void DocumentSearch::replaceSelection( const QString & text ) {
-	if( ! m_cursor.isValid() ) return;
-	m_search->setCursor( m_cursor.selectionStart() );
+QString DocumentSearch::getSearchText() const {
+	return m_search->searchText();
+}
+
+void DocumentSearch::setReplaceText( const QString & text ) {
 	m_search->setReplaceText( text );
-	m_search->setOption( QDocumentSearch::Replace, true );
+	m_search->setOption( QDocumentSearch::Replace, ! text.isEmpty() );
+}
+
+QString DocumentSearch::getReplaceText() const {
+	return m_search->replaceText();
+}
+
+bool DocumentSearch::next() {
 	m_search->next( false );
-	m_search->setOption( QDocumentSearch::Replace, false );
+
+	QDocumentCursor cursor = m_search->cursor();
+
+	return cursor.isValid();
 }

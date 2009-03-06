@@ -5,33 +5,26 @@ obj.author  = "Ulrich VANDENHEKKE";
 obj.licence = "GPL v3 or later"
 obj.version = "0.1"
 
-/*obj.beforeSave = function() {
+obj.beforeSave = function() {
 	this.run();
-}*/
+}
 
 obj.run = function()
 {
 	var search = new DocumentSearch( textEdit );
-	var text, filename;
-	alert( editor.filename );
+	var filename;
 	filename = editor.filename.substring( editor.filename.lastIndexOf('/') + 1 );
 
 	search.options.regExp = true;
+	search.searchText = "(\\$RCSfile:\\s+).*(,v\\s+\\$)";
+	search.replaceText = "\\1" + filename + "\\2";
 
-	while( (text = search.searchText( "(\\$RCSfile:\\s+).*(,v\\s+\\$)" )).length > 0 ) {
-		alert( text );
-		search.replaceSelection( "\\1" + filename + "\\2" )
-	}
-	/*
+	while( search.next() ) {}
+	
+	search.searchText = "(<xsl:variable name=\"CTXTRD\">).*(</xsl:variable>)";
+	search.replaceText = "\\1" + filename + "\\2";
 
-	var text = textEdit.plainText;
-	var result = "";
-
-	result = text.replace(/(\$RCSfile:\s+).*(,v\s+\$)/g,"$1" + editor.filename.substring( editor.filename.lastIndexOf('/') + 1 ) + "$2");
-
-	textEdit.plainText = result;
-	textEdit.modified = true;
-	*/
+	while( search.next() ) {}
 };
 
 obj;

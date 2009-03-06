@@ -118,7 +118,22 @@ XmlTextEditor::cursorPosition XmlTextEditor::editPosition( const QDocumentCursor
 	tc.movePosition( cursorPosition - cursorNodeTag.position() - 1, QDocumentCursor::Right, QDocumentCursor::KeepAnchor );
 
 	QString baliseContentStr =  tc.selectedText();
-	QStringList baliseContent = baliseContentStr.split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
+	QStringList baliseContent;// = baliseContentStr.split( QRegExp( "[0-9\\w:\\-]+" ), QString::SkipEmptyParts );
+
+	// Split baliseContentStr into baliseContent by space. But space is keeped in quote.
+	for( int i = 0; i < baliseContentStr.length(); i++ ) {
+		QString text;
+		bool quoted = false;
+		while( ( i < baliseContentStr.length() ) && baliseContentStr.at( i ).isSpace() ) i++;
+		while( ( i < baliseContentStr.length() ) && ( (! baliseContentStr.at( i ).isSpace()) || quoted ) ) {
+			text += baliseContentStr.at( i );
+			if( baliseContentStr.at( i ) == '"' )
+				quoted = ! quoted;
+			i++;
+		}
+		if( ! text.isEmpty() )
+			baliseContent.append( text );
+	}
 
 	if( baliseContent.size() == 0 ) {
 		return cpEditNodeName;

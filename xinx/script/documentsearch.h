@@ -34,7 +34,7 @@ class DocumentSearchOption : public QObject {
 	Q_PROPERTY( bool caseSensitive READ isCaseSensitive WRITE setCaseSensitive )
 	Q_PROPERTY( bool regExp READ isRegExp WRITE setRegExp )
 public:
-	DocumentSearchOption( QDocumentSearch::Options options, QObject * parent = 0 );
+	DocumentSearchOption( QDocumentSearch * search, QObject * parent = 0 );
 	virtual ~DocumentSearchOption();
 public slots:
 	void setWholeWords( bool value );
@@ -47,6 +47,7 @@ public slots:
 	bool isRegExp() const;
 private:
 	bool m_wholeWords, m_caseSensitive, m_regexp;
+	QDocumentSearch * m_search;
 };
 
 /* DocumentSearch */
@@ -54,6 +55,8 @@ private:
 class DocumentSearch : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( DocumentSearchOption * options READ getOptions WRITE setOptions )
+	Q_PROPERTY( QString searchText READ getSearchText WRITE setSearchText )
+	Q_PROPERTY( QString replaceText READ getReplaceText WRITE setReplaceText )
 public:
 	DocumentSearch( XinxCodeEdit * editor );
 	virtual ~DocumentSearch();
@@ -62,12 +65,16 @@ public slots:
 	DocumentSearchOption * getOptions() const;
 	void setOptions( DocumentSearchOption * value );
 
-	QString searchText( const QString & text );
-	void replaceSelection( const QString & text );
+	void setSearchText( const QString & text );
+	QString getSearchText() const;
+
+	void setReplaceText( const QString & text );
+	QString getReplaceText() const;
+
+	bool next();
 private:
 	DocumentSearchOption * m_options;
 	QDocumentSearch * m_search;
-	QDocumentCursor m_cursor;
 };
 
 #endif /* _DOCUMENTSEARCH_H_ */

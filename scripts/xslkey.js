@@ -5,42 +5,19 @@ obj.author  = "Alexandre Rocher";
 obj.licence = "See the author"
 obj.version = "0.1"
 
-/*obj.beforeSave = function() {
+obj.beforeSave = function() {
 	this.run();
-}*/
+}
 
 obj.run = function()
 {
-	var text = textEdit.selection;
+	var search = new DocumentSearch( textEdit );
 
-	textEdit.selection = this.formatXslKey(text);
+	search.options.regExp = true;
+	search.searchText = "key\\('url-param', '(.*)'\\)";
+	search.replaceText = "/layout_data/application_data/temporaire/param[@name='\\1']";
+
+	while( search.next() ) {}
 };
-
-obj.formatXslKey = function(text)
-{
-	// <xsl:value-of select="key('url-param', 'chp:Codmdl')"/>
-	while (text.indexOf("key('url-param'") != -1)
-	{
-		var pos = text.indexOf("key('url-param'");
-
-		// Ce qui suit la virgule d�fini le nom du champ (� trimer) jusqu'� la
-		// quote suivante
-		var posV1 = text.indexOf(",", pos);
-		var posQ1 = text.indexOf("'", posV1);
-
-		var posQ2 = text.indexOf("'", posQ1 + 1);
-		var field = text.substring(posQ1 + 1, posQ2);
-
-		// La parenth�se suivante d�fini la position de fin de la cha�ne
-		// � remplacer
-		var posE = text.indexOf(")", posQ2) + 1;
-
-		text = text.substring(0, pos)
-			+ "/layout_data/application_data/temporaire/param[@name='" + field + "']"
-			+ text.substring(posE);
-	}
-
-	return text;
-}
 
 obj;
