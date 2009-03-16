@@ -408,17 +408,17 @@ void XinxCodeEdit::insertText( const QString & text ) {
 	QString indent = cursor.line().previous().text();
 	indent = indent.left( indent.indexOf( QRegExp( "\\S" ) ) );
 
-	QStringList lines = text.trimmed().split( "\n", QString::KeepEmptyParts );
+	QStringList lines = text.split( "\n", QString::KeepEmptyParts );
 
 	QStringListIterator i( lines );
 	if( i.hasNext() ) {
-		cursor.insertText( i.next() );
+		cursor.insertText( i.next().trimmed() );
 		if( i.hasNext() )
 			cursor.insertLine();
 	}
 
 	while( i.hasNext() ) {
-		cursor.insertText( indent + i.next() );
+		cursor.insertText( indent + i.next().trimmed() );
 		if( i.hasNext() )
 			cursor.insertLine();
 	}
