@@ -628,7 +628,7 @@ bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
 	} else if( isShortcut ) {
 		QString snipet = textUnderCursor( textCursor(), true );
 		emit needInsertSnipet( snipet );
-		e->accept();
+		e->ignore();
 		return false;
 	}
 
