@@ -70,7 +70,7 @@ AbstractEditor * TabEditor::editor( int index ) {
 
 AbstractEditor * TabEditor::editor( const QString & filename ) {
 	for( int i = 0; i < count(); i++ ) {
-		AbstractFileEditor * ed = dynamic_cast<AbstractFileEditor*>( editor(i) );
+		AbstractEditor * ed = dynamic_cast<AbstractEditor*>( editor(i) );
 		if( ed && ( ed->lastFileName() == QDir::fromNativeSeparators( filename ) ) )
 			return editor(i);
 	}

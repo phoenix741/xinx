@@ -34,7 +34,6 @@ HEADERS = rcs/rcs.h \
     editors/xinxlanguagefactory.h \
     editors/textfileeditor.h \
     editors/abstracteditor.h \
-    editors/abstractfileeditor.h \
     editors/itemmodelfileeditor.h \
     editors/xinxcodeedit.h \
     editors/xinxcodeedit_p.h \
@@ -59,7 +58,6 @@ SOURCES = rcs/rcs.cpp \
     editors/xinxformatscheme.cpp \
     editors/xinxlanguagefactory.cpp \
     editors/abstracteditor.cpp \
-    editors/abstractfileeditor.cpp \
     editors/textfileeditor.cpp \
     editors/itemmodelfileeditor.cpp \
     editors/xinxcodeedit.cpp \
@@ -71,3 +69,7 @@ SOURCES = rcs/rcs.cpp \
     contentview/completionnodemodel.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
+SOURCES -= editors/abstractfileeditor.cpp
+
+HEADERS -= editors/abstractfileeditor.h
+

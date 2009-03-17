@@ -100,7 +100,7 @@ void XuiFormItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * op
 
 /* XUIEditor */
 
-XUIEditor::XUIEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
+XUIEditor::XUIEditor( QWidget * parent ) : AbstractEditor( parent ) {
 	m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
 	m_view  = new QGraphicsView(this);
 

@@ -21,11 +21,13 @@
 #define EDITOR_H
 
 // Xinx header
+#include "core/filewatcher.h"
 
 // Qt header
 #include <QFrame>
 #include <QDataStream>
 #include <QIcon>
+#include <QPointer>
 
 class QAction;
 class QLabel;
@@ -39,11 +41,15 @@ class QAbstractItemModel;
  * An editor has a name, a title, and method related with clipboard. The editor has
  * a model for show content of it.
  * An editor can be serialized and deserialized in a XML Document.
+ *
+ * This class is also an editor that can read and write from and to a file. This class
+ * open the file (with the correct option) and call loadFromDevice and saveTofDevice.
  */
 class AbstractEditor : public QFrame {
 	Q_OBJECT
 	Q_PROPERTY( QString title READ getTitle STORED false )
 	Q_PROPERTY( bool isModified READ isModified WRITE setModified )
+	Q_PROPERTY( QString filename READ lastFileName WRITE setWatcher )
 public:
 
 	/*! Options used for search text in the editor. */
@@ -67,12 +73,13 @@ public:
 	virtual ~AbstractEditor();
 
 	/*!
-	 * Get the title of the editor. It can be use on the TabWidget to inform user. If editor has no
-	 * name, this can be equals to "noname".
-	 * \return The title of frame.
-	 * \sa hasName()
+	 * Get the title of the editor. Return the title of the FileEditor. The title is \e noname if \e getFileName() is Empty
+	 * else return the File name (without the path).
+	 * \return The title to use with Tab name
+	 * \sa getFileName(), hasName()
+
 	 */
-	virtual QString getTitle() const = 0;
+	virtual QString getTitle() const;
 
 	/*!
 	 * Get the long title of the editor. It can be use on the TabWidget to inform user in a tool type. If editor has no
@@ -80,7 +87,7 @@ public:
 	 * \return The title of frame.
 	 * \sa hasName()
 	 */
-	virtual QString getLongTitle() const = 0;
+	virtual QString getLongTitle() const;
 
 	/*!
 	 * Check if the editor has the capacity to copy or cut data to the clipboead.
@@ -163,13 +170,23 @@ public:
 	 */
 	virtual void saveToDevice( QIODevice & d ) = 0;
 
+	/*! Open and load from the file \e fileName */
+	virtual void loadFromFile( const QString & fileName = QString() );
+	/*! Open and save to file \e fileName */
+	virtual void saveToFile( const QString & fileName = QString() );
+
 	/*! Return the model that represent the content of the editor. */
 	virtual QAbstractItemModel * model() const = 0;
 	/*! Update the content of the model from the content of the editor */
 	virtual void updateModel() = 0;
 
+	/*! Return the last name used with \e loadFromFile() or \e saveToFile() */
+	const QString & lastFileName() const;
+	/*! Return the name used if no name is defined (ie. noname.txt) */
+	virtual QString defaultFileName() const = 0;
+
 	/*! Return true if the editor is modified by the user, else return false */
-	virtual bool isModified() = 0;
+	virtual bool isModified();
 
 	/*!
 	 * Serialize the editor and return the value in a byte array. The serialization save internal data of
@@ -354,16 +371,24 @@ protected slots:
 	 * Set the modified attribute in local.
 	 * \param isModified The new value for the modified attribute.
 	 */
-	virtual void setModified( bool isModified ) = 0;
+	virtual void setModified( bool isModified );
 
 	/*!
 	 * Set a message and show it on the screen in a no blocking popup.
 	 * \param message When the message is set, the message is show on the screen. If the message is blank, the popup is hidden.
 	 */
 	void setMessage( QString message );
+private slots:
+	void fileChanged();
 private:
 	void init();
+	void desactivateWatcher();
+	void activateWatcher();
+	void setWatcher( const QString & path );
 
+	bool m_isSaving, m_modified;
+	QPointer<FileWatcher> m_watcher;
+	QString m_lastFileName;
 	QAction * m_undoAction, * m_redoAction, * m_cutAction, * m_copyAction, * m_pasteAction;
 	QWidget * m_messageWidget;
 	QLabel * m_messageLabel;

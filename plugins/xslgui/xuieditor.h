@@ -21,13 +21,13 @@
 #define _XUIEDITOR_H_
 
 // Xinx header
-#include <editors/abstractfileeditor.h>
+#include <editors/abstracteditor.h>
 
 // Qt header
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-class XUIEditor : public AbstractFileEditor {
+class XUIEditor : public AbstractEditor {
 public:
 	XUIEditor( QWidget * parent = 0 );
 	virtual ~XUIEditor();

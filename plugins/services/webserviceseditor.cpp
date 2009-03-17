@@ -210,7 +210,7 @@ void WebServicesEditor::saveToDevice( QIODevice & d ) {
 }
 
 void WebServicesEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
-	AbstractFileEditor::serialize( data, content );
+	AbstractEditor::serialize( data, content );
 	store( m_paramList->currentText() );
 
 	data->writeProperty( "Service", QVariant( m_servicesList->currentText() ) );
@@ -260,12 +260,12 @@ void WebServicesEditor::deserialize( XinxProjectSessionEditor * data ) {
 	}
 
 	if( m_paramValues.keys().count() == 0 ) {
-		AbstractFileEditor::deserialize( data );
+		AbstractEditor::deserialize( data );
 
 		if( ! lastFileName().isEmpty() )
 			loadFromFile( lastFileName() );
 	} else {
-		AbstractFileEditor::deserialize( data );
+		AbstractEditor::deserialize( data );
 	}
 
 	loadServicesList();

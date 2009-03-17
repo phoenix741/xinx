@@ -21,7 +21,7 @@
 #define __FILEEDITOR_H__
 
 // Xinx headeur
-#include <editors/abstractfileeditor.h>
+#include <editors/abstracteditor.h>
 #include <filecontent/filecontentitemmodel.h>
 #include <plugins/plugininterfaces.h>
 
@@ -50,7 +50,7 @@ class SyntaxHighlighter;
  *
  * FileEditor has also two methode for load and save file.
  */
-class TextFileEditor : public AbstractFileEditor {
+class TextFileEditor : public AbstractEditor {
 	Q_OBJECT
 public:
 	/*! Type of End Of Line that the editor can understand. */

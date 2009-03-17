@@ -21,19 +21,24 @@
 #include "editors/abstracteditor.h"
 #include "core/xinxproject.h"
 #include "borderlayout.h"
+#include "core/xinxconfig.h"
 
 // Qt header
 #include <QAction>
 #include <QLabel>
 #include <QPushButton>
+#include <QFileInfo>
+#include <QFile>
+#include <QApplication>
+#include <QMessageBox>
 
 /* AbstractEditor */
 
-AbstractEditor::AbstractEditor( QWidget * parent )  : QFrame( parent ) {
+AbstractEditor::AbstractEditor( QWidget * parent )  : QFrame( parent ), m_isSaving( false ), m_modified( false ) {
 	init();
 }
 
-AbstractEditor::AbstractEditor( const AbstractEditor & editor ) : QFrame( qobject_cast<QWidget*>( editor.parent() ) ) {
+AbstractEditor::AbstractEditor( const AbstractEditor & editor ) : QFrame( qobject_cast<QWidget*>( editor.parent() ) ), m_isSaving( false ), m_modified( false ) {
 	init();
 }
 
@@ -86,7 +91,69 @@ void AbstractEditor::init() {
 }
 
 AbstractEditor::~AbstractEditor() {
+	desactivateWatcher();
+	delete m_watcher;
+
 	// Actions deleted as children
+}
+
+QString AbstractEditor::getTitle() const {
+	if( ! m_lastFileName.isEmpty() )
+		return QFileInfo( m_lastFileName ).fileName();
+	else
+		return defaultFileName();
+}
+
+QString AbstractEditor::getLongTitle() const {
+	if( ! m_lastFileName.isEmpty() )
+		return m_lastFileName;
+	else
+		return defaultFileName();
+}
+
+void AbstractEditor::loadFromFile( const QString & fileName ) {
+	if( ! fileName.isEmpty() ) setWatcher( fileName );
+
+	QFile file( m_lastFileName );
+	if( ! file.open( QIODevice::ReadOnly ) ) {
+		qCritical( qPrintable(tr("Can't open file for reading %1 : %2").arg( m_lastFileName ).arg( file.errorString() )) );
+		return;
+	}
+	loadFromDevice( file );
+
+	setModified( false );
+}
+
+void AbstractEditor::saveToFile( const QString & fileName ) {
+	/* Make a backup of the file */
+	if( ( fileName.isEmpty() || ( fileName == m_lastFileName ) )
+	    && XINXConfig::self()->config().editor.createBackupFile ) {
+
+		    if( QFile::exists( fileName + ".bak" ) ) 	QFile::remove( fileName + ".bak" );
+		    QFile::copy( fileName, fileName + ".bak" );
+	    }
+
+	/* Change the file name */
+	if( ! fileName.isEmpty() ) setWatcher( fileName );
+
+	m_isSaving = true;
+	desactivateWatcher();
+	qApp->processEvents();
+
+	/* Open the file for writting an save */
+	QFile file( m_lastFileName );
+	if( ! file.open( QIODevice::WriteOnly ) ) {
+		qCritical( qPrintable(tr("Can't open file for writing %1 : %2").arg( m_lastFileName ).arg( file.errorString() )) );
+		m_isSaving = false;
+		activateWatcher();
+		return;
+	}
+	saveToDevice( file );
+	file.close();
+
+	m_isSaving = false;
+	activateWatcher();
+	setModified( false );
 }
 
 void AbstractEditor::setMessage( QString message ) {
@@ -135,14 +202,37 @@ QIcon AbstractEditor::icon() const {
 	return QIcon( ":/images/typeunknown.png" );
 }
 
+bool AbstractEditor::isModified() {
+	return m_modified;
+}
+
+
+void AbstractEditor::setModified( bool isModified ) {
+	if( m_modified != isModified ) {
+		m_modified = isModified;
+		emit modificationChanged( isModified );
+	}
+}
+
+const QString & AbstractEditor::lastFileName() const {
+	return m_lastFileName;
+}
+
 void AbstractEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
 	Q_UNUSED( content );
 	data->writeProperty( "ClassName", metaObject()->className() ); // Store the class name
+	data->writeProperty( "FileName", QVariant( m_lastFileName ) );
+	data->writeProperty( "Modified", QVariant( m_modified ) );
 }
 
 void AbstractEditor::deserialize( XinxProjectSessionEditor * data ) {
-	Q_UNUSED( data );
 	// Dont't read the class name, already read.
+
+	m_lastFileName = data->readProperty( "FileName" ).toString();
+	m_modified = data->readProperty( "Modified" ).toBool();
+
+	activateWatcher();
+
 }
 
 AbstractEditor * AbstractEditor::deserializeEditor( XinxProjectSessionEditor * data ) {
@@ -160,4 +250,40 @@ AbstractEditor * AbstractEditor::deserializeEditor( XinxProjectSessionEditor * d
 	return NULL;
 }
 
+void AbstractEditor::fileChanged() {
+	if( m_isSaving ) return;
+	if( ! XINXConfig::self()->config().editor.popupWhenFileModified ) return ;
 
+	m_watcher->desactivate();
+	if( QFile( m_lastFileName ).exists() && QMessageBox::question( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was modified. Reload the page ?").arg( QFileInfo( m_lastFileName ).fileName() ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes )
+		loadFromFile();
+	else
+		setModified( true );
+
+	if( ! QFile( m_lastFileName ).exists() ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("Reload page"), tr("The file %1 was removed.").arg( QFileInfo( m_lastFileName ).fileName() ) );
+		setModified( true );
+	}
+	m_watcher->activate();
+}
+
+void AbstractEditor::desactivateWatcher() {
+	if( m_watcher )
+		m_watcher->desactivate();
+}
+
+void AbstractEditor::activateWatcher() {
+	if( ! m_watcher ) {
+		m_watcher = new FileWatcher( m_lastFileName );
+		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(fileChanged()) );
+	} else
+		m_watcher->activate();
+}
+
+void AbstractEditor::setWatcher( const QString & path ) {
+	if( m_lastFileName != path ) {
+		delete m_watcher;
+		m_lastFileName = path;
+		activateWatcher();
+	}
+}

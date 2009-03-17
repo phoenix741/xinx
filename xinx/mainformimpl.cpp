@@ -671,7 +671,7 @@ void MainformImpl::fileEditorRefreshFile( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_tabEditors->count() );
 
-	AbstractFileEditor * ed = qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) );
+	AbstractEditor * ed = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) );
 	if( ed ) {
 		bool act = ! ed->isModified();
 
@@ -865,7 +865,7 @@ bool MainformImpl::fileEditorMayBeSave( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_tabEditors->count() );
 
-	AbstractFileEditor * ed = qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) );
+	AbstractEditor * ed = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) );
 	if( ed && ed->isModified() ) {
 		QMessageBox::StandardButton ret;
 		ret = QMessageBox::warning( this, tr("Application"),
@@ -884,9 +884,9 @@ bool MainformImpl::fileEditorMayBeSave( int index ) {
 void MainformImpl::fileEditorSave( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_tabEditors->count() );
-	Q_ASSERT( qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) ) );
+	Q_ASSERT( qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) ) );
 
-	QString editorFileName = qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->lastFileName();
+	QString editorFileName = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->lastFileName();
 	bool hasName = ! editorFileName.isEmpty();
 
 	if ( ! hasName ) {
@@ -895,7 +895,7 @@ void MainformImpl::fileEditorSave( int index ) {
 		QString fileName = SpecifiqueDialogImpl::saveFileAsIfStandard( editorFileName, m_fileToAdd );
 		if( ! fileName.isEmpty() ) {
 			ScriptManager::self()->callScriptsBeforeSave();
-			qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
+			qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
 			if( m_fileToAdd.count() > 0 )
 				addFilesToVersionManager( m_fileToAdd );
 			m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
@@ -909,17 +909,17 @@ void MainformImpl::fileEditorSave( int index ) {
 void MainformImpl::fileEditorSaveAs( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_tabEditors->count() );
-	Q_ASSERT( qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) ) );
+	Q_ASSERT( qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) ) );
 
-	QString fileName = qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->lastFileName();
+	QString fileName = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->lastFileName();
 
 	fileName = SpecifiqueDialogImpl::saveFileAs( fileName,
-				qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->defaultFileName(),
+				qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->defaultFileName(),
 				m_fileToAdd );
 
 	if( ! fileName.isEmpty() ) {
 		ScriptManager::self()->callScriptsBeforeSave();
-		qobject_cast<AbstractFileEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
+		qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
 		ScriptManager::self()->callScriptsAfterSave();
 		if( m_fileToAdd.count() > 0 )
 			addFilesToVersionManager( m_fileToAdd );
@@ -1113,7 +1113,7 @@ void MainformImpl::copyFileName() {
 void MainformImpl::copyPath() {
 	int item = m_tabEditors->getClickedTab();
 	if( item == -1 ) item = m_tabEditors->currentIndex();
-	AbstractFileEditor * ed = dynamic_cast<AbstractFileEditor*>( m_tabEditors->editor( item ) );
+	AbstractEditor * ed = dynamic_cast<AbstractEditor*>( m_tabEditors->editor( item ) );
 	if( ed ) {
 		QString name = QDir::toNativeSeparators( ed->lastFileName() );
 		qApp->clipboard()->setText( name );

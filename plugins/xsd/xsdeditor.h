@@ -21,7 +21,7 @@
 #define _XSDEDITOR_H_
 
 // Xinx header
-#include <editors/abstractfileeditor.h>
+#include <editors/abstracteditor.h>
 #include "xmlschema.h"
 
 // Qt header
@@ -29,7 +29,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-class XsdEditor : public AbstractFileEditor {
+class XsdEditor : public AbstractEditor {
 public:
 	XsdEditor( QWidget * parent = 0 );
 	virtual ~XsdEditor();

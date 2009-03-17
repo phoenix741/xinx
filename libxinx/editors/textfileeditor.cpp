@@ -56,7 +56,7 @@
 #endif
 #endif
 
-TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : AbstractFileEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
+TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : AbstractEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
 	m_commentAction = new QAction( tr("Comment"), this );
 	m_commentAction->setEnabled( false );
 	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
@@ -186,7 +186,7 @@ void TextFileEditor::saveToDevice( QIODevice & d ) {
 
 void TextFileEditor::setModified( bool isModified ) {
 	m_view->setModified( isModified );
-	AbstractFileEditor::setModified( isModified );
+	AbstractEditor::setModified( isModified );
 }
 
 QAbstractItemModel * TextFileEditor::model()  const {
@@ -370,7 +370,7 @@ void TextFileEditor::uncomment() {
 }
 
 void TextFileEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
-	AbstractFileEditor::serialize( data, content );
+	AbstractEditor::serialize( data, content );
 
 	data->writeProperty( "Position", QVariant( m_view->textCursor().position() ) );
 
@@ -395,9 +395,9 @@ void TextFileEditor::deserialize( XinxProjectSessionEditor * data ) {
 	if( ! text.isEmpty() ) {
 		m_view->setPlainText( text );
 
-		AbstractFileEditor::deserialize( data );
+		AbstractEditor::deserialize( data );
 	} else {
-		AbstractFileEditor::deserialize( data );
+		AbstractEditor::deserialize( data );
 
 		if( ! lastFileName().isEmpty() )
 			loadFromFile( lastFileName() );

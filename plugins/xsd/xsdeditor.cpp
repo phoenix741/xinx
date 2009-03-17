@@ -235,7 +235,7 @@ void XsdGraphicsComplexeType::paint( QPainter * painter, const QStyleOptionGraph
 
 /* XsdEditor */
 
-XsdEditor::XsdEditor( QWidget * parent ) : AbstractFileEditor( parent ) {
+XsdEditor::XsdEditor( QWidget * parent ) : AbstractEditor( parent ) {
 //	m_scene = new QGraphicsScene(0, 0, 1024, 768, this);
 	m_scene = new QGraphicsScene(this);
 	m_view  = new QGraphicsView(this);
