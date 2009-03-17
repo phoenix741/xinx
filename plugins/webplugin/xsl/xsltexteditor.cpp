@@ -102,9 +102,11 @@ QCompleter * XslTextEditor::completer() {
 				c->setFilter( nodeName, paramName ); // Edit Value so
 				if( ( nodeName == "xsl:apply-templates" ) && ( paramName == "mode" ) )
 					c->setApplyTemplateMatch( paramValue( textCursor(), "select" ) );
-		}
+			} else if( pos == cpNone ) {
+				return 0;
+			}
 
-		return completer;
+			return completer;
 		}
 	}
 	return completer;

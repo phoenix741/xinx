@@ -331,7 +331,7 @@ void XinxCodeEdit::setCompleter( QCompleter * completer ) {
 		connect( completer, SIGNAL(activated(const QModelIndex &)), this, SLOT(insertCompletion(const QModelIndex &)) );
 		m_completer = completer;
 	}
-};
+}
 
 bool XinxCodeEdit::canPaste() {
 	const QMimeData *d = QApplication::clipboard()->mimeData();
@@ -687,7 +687,8 @@ void XinxCodeEdit::postKeyPressEvent( QKeyEvent * e, QEditor * editor ) {
 	QCompleter * c = completer();
 	bool isShortcut = ( ( e->modifiers() & Qt::ControlModifier ) && e->key() == Qt::Key_E ); // CTRL+E
 
-	processKeyPress( e );
+	if( e->isAccepted() )
+		processKeyPress( e );
 
 	const bool ctrlOrShift = e->modifiers() & ( Qt::ControlModifier | Qt::ShiftModifier );
 	if( !c || ( ctrlOrShift && e->text().isEmpty() ) )
