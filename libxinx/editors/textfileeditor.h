@@ -22,7 +22,6 @@
 
 // Xinx headeur
 #include <editors/abstracteditor.h>
-#include <filecontent/filecontentitemmodel.h>
 #include <plugins/plugininterfaces.h>
 
 // Qt header

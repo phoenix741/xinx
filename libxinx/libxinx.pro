@@ -37,6 +37,7 @@ HEADERS = rcs/rcs.h \
     editors/itemmodelfileeditor.h \
     editors/xinxcodeedit.h \
     editors/xinxcodeedit_p.h \
+    editors/contentviewtexteditor.h \
     contentview/contentviewcache.h \
     contentview/contentviewnode.h \
     contentview/contentviewmodel.h \
@@ -66,7 +67,8 @@ SOURCES = rcs/rcs.cpp \
     contentview/contentviewparser.cpp \
     contentview/contentviewcache.cpp \
     contentview/abstractcontentviewmodel.cpp \
-    contentview/completionnodemodel.cpp
+    contentview/completionnodemodel.cpp \
+ editors/contentviewtexteditor.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
 SOURCES -= editors/abstractfileeditor.cpp

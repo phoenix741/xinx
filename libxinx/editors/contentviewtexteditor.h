@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _ITEMMODELFILEEDITOR_H_
-#define _ITEMMODELFILEEDITOR_H_
+#ifndef _CONTENTVIEWTEXTEDITOR_H_
+#define _CONTENTVIEWTEXTEDITOR_H_
 
 // Xinx header
 #include <editors/textfileeditor.h>
@@ -26,26 +26,27 @@
 // Qt header
 #include <QPointer>
 
-class FileContentItemModel;
-class FileContentParser;
+class ContentViewNode;
+class ContentViewParser;
+class ContentViewModel;
 
 /*!
- * An \e ItemModelFileEditor load and unload the content model editor when
- * reading the device. The content model is based on a FileContentParser and
- * some FileContentElement.
+ * An \e ContentViewTextEditor load and unload the content view model editor when
+ * reading the device. The content model is based on a ContentViewParser and
+ * some ContentViewNode.
  */
-class ItemModelFileEditor : public TextFileEditor {
+class ContentViewTextEditor : public TextFileEditor {
 	Q_OBJECT
 public:
 	/*!
-	 * Create the \e ItemModelFileEditor. This editor add the notion of model.
-	 * \param element The parser to use to show the content of the document.
+	 * Create the \e ContentViewTextEditor. This editor add the notion of model.
+	 * \param element The parser to use to create tree.
 	 * \param editor The editor (center widget) of the document.
 	 * \param parent The parent object
 	 */
-	ItemModelFileEditor( FileContentParser * element, XinxCodeEdit * editor = 0, QWidget *parent = 0 );
+	ContentViewTextEditor( ContentViewParser * parser, XinxCodeEdit * editor = 0, QWidget *parent = 0 );
 	//! Destroy the object
-	virtual ~ItemModelFileEditor();
+	virtual ~ContentViewTextEditor();
 
 	virtual void loadFromFile( const QString & fileName = QString() );
 	virtual void saveToFile( const QString & fileName = QString() );
@@ -58,16 +59,16 @@ public slots:
 
 protected:
 	//! Change the parser of the model file editor.
-	void setParser( FileContentParser * parser );
-
+	void setParser( ContentViewParser * parser );
 private slots:
 	virtual void textChanged();
 
 private:
-	mutable QPointer<FileContentItemModel> m_model;
-	FileContentParser * m_parser;
+	mutable QPointer<ContentViewModel> m_model;
+	ContentViewNode * m_rootNode;
+	ContentViewParser * m_parser;
 
 	QTimer * m_keyTimer;
 };
 
-#endif // _ITEMMODELFILEEDITOR_H_
+#endif // _CONTENTVIEWTEXTEDITOR_H_

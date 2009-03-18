@@ -18,15 +18,17 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "editors/itemmodelfileeditor.h"
+#include "editors/contentviewtexteditor.h"
 #include "core/xinxconfig.h"
 #include "editors/xinxcodeedit.h"
-#include "filecontent/filecontentstructure.h"
-#include "filecontent/filecontentitemmodel.h"
+#include "contentview/contentviewnode.h"
+#include "contentview/contentviewparser.h"
+#include "contentview/contentviewmodel.h"
 
-/* ItemModelFileEditor */
+/* ContentViewTextEditor */
 
-ItemModelFileEditor::ItemModelFileEditor( FileContentParser * element, XinxCodeEdit * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( element ) {
+ContentViewTextEditor::ContentViewTextEditor( ContentViewParser * parser, XinxCodeEdit * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( parser ) {
+	m_rootNode = new ContentViewNode( "root", -1 );
 	m_keyTimer = new QTimer();
 	m_keyTimer->setSingleShot( true );
 	m_keyTimer->setInterval( XINXConfig::self()->config().editor.automaticModelRefreshTimeout );
@@ -35,23 +37,24 @@ ItemModelFileEditor::ItemModelFileEditor( FileContentParser * element, XinxCodeE
 	disconnect( textEdit()->document(), SIGNAL(contentsChanged()), this, SIGNAL(contentChanged()) );
 }
 
-ItemModelFileEditor::~ItemModelFileEditor() {
+ContentViewTextEditor::~ContentViewTextEditor() {
 	delete m_model;
+	delete m_rootNode;
 }
 
-void ItemModelFileEditor::loadFromFile( const QString & fileName ) {
-	dynamic_cast<FileContentElement*>( m_parser )->setFilename( fileName );
+void ContentViewTextEditor::loadFromFile( const QString & fileName ) {
+	m_parser->loadFromFile( m_rootNode, fileName );
 	TextFileEditor::loadFromFile( fileName );
 }
 
-void ItemModelFileEditor::saveToFile( const QString & fileName ) {
-	dynamic_cast<FileContentElement*>( m_parser )->setFilename( fileName );
+void ContentViewTextEditor::saveToFile( const QString & fileName ) {
+	m_rootNode->setFileName( fileName );
 	TextFileEditor::saveToFile( fileName );
 }
 
-void ItemModelFileEditor::loadFromDevice( QIODevice & d ) {
+void ContentViewTextEditor::loadFromDevice( QIODevice & d ) {
 	try {
-		m_parser->loadFromDevice( &d );
+		m_parser->loadFromDevice( m_rootNode, &d );
 		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );
 	} catch( FileContentException e ) {
@@ -62,20 +65,20 @@ void ItemModelFileEditor::loadFromDevice( QIODevice & d ) {
 	TextFileEditor::loadFromDevice( d );
 }
 
-QAbstractItemModel * ItemModelFileEditor::model()  const {
-	if( ! m_model )
-		m_model = new FileContentItemModel( dynamic_cast<FileContentElement*>( m_parser ) );
+QAbstractItemModel * ContentViewTextEditor::model()  const {
+	if( ( ! m_model ) && m_rootNode )
+		m_model = new ContentViewModel( m_rootNode );
 	return m_model;
 }
 
-void ItemModelFileEditor::setParser( FileContentParser * parser ) {
+void ContentViewTextEditor::setParser( ContentViewParser * parser ) {
 	delete m_model;
 	m_parser = parser;
 }
 
-void ItemModelFileEditor::updateModel() {
+void ContentViewTextEditor::updateModel() {
 	try {
-		m_parser->loadFromContent( textEdit()->toPlainText() );
+		m_parser->loadFromContent( m_rootNode, textEdit()->toPlainText() );
 		emit contentChanged();
 		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );
@@ -85,7 +88,7 @@ void ItemModelFileEditor::updateModel() {
 	}
 }
 
-void ItemModelFileEditor::textChanged() {
+void ContentViewTextEditor::textChanged() {
 	m_keyTimer->start();
 }
 
