@@ -71,7 +71,3 @@ SOURCES = rcs/rcs.cpp \
  editors/contentviewtexteditor.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pro)
-SOURCES -= editors/abstractfileeditor.cpp
-
-HEADERS -= editors/abstractfileeditor.h
-
