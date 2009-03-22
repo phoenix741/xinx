@@ -1942,7 +1942,11 @@
 		</balise>
 		<balise name="xsl:output">
 			<attribute name="version" />
-			<attribute name="method" />
+			<attribute name="method" >
+				<value>xml</value>
+				<value>html</value>
+				<value>text</value>
+			</attribute>
 			<attribute name="standalone" />
 			<attribute name="doctype-public" />
 			<attribute name="omit-xml-declaration" />
