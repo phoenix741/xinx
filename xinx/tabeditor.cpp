@@ -331,7 +331,8 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 	AbstractEditor * ed = editor( index );
 
 	emit copyAvailable( ed->canCopy() );
-	emit pasteAvailable( ed->canPaste() );
+	//	emit pasteAvailable( ed->canPaste() );
+	emit pasteAvailable( true );
 	emit undoAvailable( ed->canUndo() );
 	emit redoAvailable( ed->canRedo() );
 
