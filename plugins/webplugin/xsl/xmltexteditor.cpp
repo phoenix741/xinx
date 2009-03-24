@@ -347,7 +347,7 @@ void XmlTextEditor::insertCompletionAccolade( QDocumentCursor & tc, QString node
 bool XmlTextEditor::localKeyPressExecute( QKeyEvent * e ) {
 	if ( ( e->key() == Qt::Key_Return ) && ( ( e->modifiers() == Qt::ControlModifier ) || ( e->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier) ) ) ) {
 		key_shenter( e->modifiers() & Qt::ShiftModifier );
-		e->accept();
+		e->ignore();
 		return false;
 	} else
 		return XinxCodeEdit::localKeyPressExecute( e );
