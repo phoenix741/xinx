@@ -23,12 +23,10 @@
 // Qt header
 #include <QDockWidget>
 #include <QString>
-#include <QPointer>
 #include <QModelIndex>
 
 class QAbstractItemModel;
 class QTreeView;
-class QSortFilterProxyModel;
 
 /*!
  * This dock contains the content of the current file editor in a tree.
@@ -62,7 +60,6 @@ private:
 
 	QTreeView * m_contentTreeView;
 	QAbstractItemModel * m_model;
-	QPointer<QSortFilterProxyModel> m_sortModel;
 };
 
 #endif // __FILECONTENTDOCKWIDGET_H__

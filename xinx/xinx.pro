@@ -108,3 +108,4 @@ SOURCES += xmlpresentationdockthread.cpp \
  script/documentsearch.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 include(../project_mode.pro)
+include(../ext/qmodeltest/modeltest.pri)

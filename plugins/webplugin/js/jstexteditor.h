@@ -23,6 +23,8 @@
 // Xinx header
 #include <editors/xinxcodeedit.h>
 
+class JavascriptModelCompleter;
+
 class JSTextEditor : public XinxCodeEdit {
 	Q_OBJECT
 public:
@@ -30,6 +32,8 @@ public:
 	virtual ~JSTextEditor();
 
 	virtual QCompleter * completer();
+
+	void setModel( JavascriptModelCompleter * model );
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected:
@@ -45,6 +49,7 @@ protected:
 	cursorPosition editPosition( const QDocumentCursor & cursor );
 
 	QString m_functionName;
+	JavascriptModelCompleter * m_model;
 };
 
 #endif /*JSTEXTEDITOR_H_*/

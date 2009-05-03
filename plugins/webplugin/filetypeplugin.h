@@ -22,13 +22,9 @@
 
 // Xinx header
 #include "xsl/xmlformatscheme.h"
-#include "xsl/xsllistview.h"
-#include "xsl/stylesheeteditor.h"
-#include "xsl/xmlfileeditor.h"
 #include "xsl/htmlfileeditor.h"
 
 #include "js/jsfileeditor.h"
-#include "js/javascriptparser.h"
 #include "js/jsformatscheme.h"
 
 #include "css/cssmodeldata.h"
@@ -39,7 +35,6 @@
 #include "xq/xquery_keyword.h"
 #include "xq/xqformatscheme.h"
 
-#include "editorcompletion.h"
 #include <editors/textfileeditor.h>
 
 #include <plugins/xinxpluginsloader.h>
@@ -76,11 +71,10 @@ class XMLFileType : public QObject, public IFileTextPlugin {
 public:
 	virtual QString description();
 	virtual QString match();
-	virtual QIcon icon();
+	virtual QString icon();
 
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
-	virtual FileContentElement * createElement( FileContentElement *, int, const QString & );
 
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
@@ -97,11 +91,10 @@ class XSLStyleSheetFileType : public XMLFileType {
 public:
 	virtual QString description();
 	virtual QString match();
-	virtual QIcon icon();
+	virtual QString icon();
 
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
 	virtual ContentViewParser * createParser();
 };
@@ -113,7 +106,7 @@ class HTMLFileType : public XMLFileType {
 public:
 	virtual QString description();
 	virtual QString match();
-	virtual QIcon icon();
+	virtual QString icon();
 
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
@@ -126,11 +119,10 @@ class JSFileType : public QObject, public IFileTextPlugin {
 public:
 	virtual QString description();
 	virtual QString match();
-	virtual QIcon icon();
+	virtual QString icon();
 
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
@@ -147,11 +139,10 @@ class CSSFileType : public QObject, public IFileTextPlugin {
 public:
 	virtual QString description();
 	virtual QString match();
-	virtual QIcon icon();
+	virtual QString icon();
 
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
@@ -171,11 +162,10 @@ public:
 
 	virtual QString description();
 	virtual QString match();
-	virtual QIcon icon();
+	virtual QString icon();
 
 	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename );
 
 	virtual QString highlighterId() const;
 	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;

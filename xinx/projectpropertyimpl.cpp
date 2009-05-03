@@ -154,7 +154,7 @@ void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
 		QString fn = QDir( project->projectPath() ).relativeFilePath( filename );
 		if( fileType )
-			new QListWidgetItem ( fileType->icon(), fn, m_preloadedFiles );
+			new QListWidgetItem ( QIcon( fileType->icon() ), fn, m_preloadedFiles );
 		else
 			new QListWidgetItem ( fn, m_preloadedFiles );
 	}

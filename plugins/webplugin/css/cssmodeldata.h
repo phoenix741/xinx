@@ -21,92 +21,33 @@
 #define CSSMODELDATA_H_
 
 // Xinx header
-#include <core/exceptions.h>
-#include <filecontent/filecontentstructure.h>
+#include <contentview/contentviewparser.h>
 
 // Qt header
-#include <QIcon>
+#include <QApplication>
 
-class IXinxExtendedEditor;
-
-/*!
- * This exception is launch when the file can't be parsed.
- */
-class CssParserException : public FileContentException {
+class CSSFileContentParser : public ContentViewParser {
+	Q_DECLARE_TR_FUNCTIONS(CSSFileContentParser)
 public:
-	/*!
-	 * Create the exception
-	 * \param message The message to show.
-	 * \param line Line where the exception is throw
-	 */
-	CssParserException( const QString & message, int line, int column );
-};
-
-class CssFileContentProperty : public FileContentElement {
-	Q_OBJECT
-public:
-	CssFileContentProperty( FileContentElement * parent, const QString & name, int line );
-
-	const QString & value() const;
-	virtual QString displayTips() const;
-
-	virtual void copyFrom( FileContentElement * element );
-
-	virtual QIcon icon() const;
-private:
-	QString m_value;
-};
-
-class CssFileContentIdentifier : public FileContentElement {
-	Q_OBJECT
-public:
-	CssFileContentIdentifier( FileContentElement * parent, const QString & name, int line );
-	FileContentElement * append( FileContentElement * element );
-
-	virtual QIcon icon() const;
-};
-
-class CssFileContentClass : public CssFileContentIdentifier {
-	Q_OBJECT
-public:
-	CssFileContentClass( FileContentElement * parent, const QString & name, int line );
-};
-
-class CssFileContentTag : public CssFileContentIdentifier {
-	Q_OBJECT
-public:
-	CssFileContentTag( FileContentElement * parent, const QString & name, int line );
-};
-
-class CssFileContentId : public CssFileContentIdentifier {
-	Q_OBJECT
-public:
-	CssFileContentId( FileContentElement * parent, const QString & name, int line );
-};
-
-class CSSFileContentParser : public FileContentElement, public FileContentParser {
-	Q_OBJECT
-public:
-	CSSFileContentParser( FileContentElement * parent = NULL, const QString & filename = QString(), int lineNumber = 0 );
+	CSSFileContentParser( bool autoDelete = false );
 	virtual ~CSSFileContentParser();
 
-	virtual void loadFromFile( const QString & filename );
-	virtual void loadFromFileDelayed( const QString & filename );
-	virtual void loadFromDevice( QIODevice * device );
-	virtual bool isLoaded();
+protected:
+	virtual void loadFromDeviceImpl();
 
-	virtual QIcon icon() const;
-
-	virtual int rowCount();
 private:
 	enum ParsingState {
 		CssDefault,
 		CssIdentifier
 	};
 
-	IXinxExtendedEditor * m_editor;
-	bool m_isLoaded;
 	int m_line;
+
+	ContentViewNode * attacheNewPropertyNode( ContentViewNode * parent, const QString & name, int line );
+	ContentViewNode * attacheNewIdentifierNode( ContentViewNode * parent, const QString & name, int line );
+	ContentViewNode * attacheNewClassNode( ContentViewNode * parent, const QString & name, int line );
+	ContentViewNode * attacheNewTagNode( ContentViewNode * parent, const QString & name, int line );
+	ContentViewNode * attacheNewIdNode( ContentViewNode * parent, const QString & name, int line );
 };
 
 #endif /*CSSMODELDATA_H_*/

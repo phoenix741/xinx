@@ -28,11 +28,13 @@
 // Qt header
 #include <QHash>
 #include <QFutureWatcher>
+#include <QQueue>
 
 class XinxProject;
 class ContentViewNode;
 class ContentViewParser;
 class ContentViewNode;
+class QTimerEvent;
 
 /*!
  * \class ContentViewCache
@@ -68,12 +70,15 @@ public:
 
 	//! Intialize a cache from the content of preloaded files.
 	void initializeCache();
+protected:
+	virtual void timerEvent( QTimerEvent * event );
 private slots:
 	void resultReadyAt( int index );
 private:
 	QHash<QString,ContentViewNode*> m_nodes;
 	XinxProject * m_project;
 	QFutureWatcher<ContentViewNode*> * m_watcher;
+	QQueue< ContentViewParser* > m_parsers;
 };
 
 #endif /* __CONTENTVIEWCLASS_H__ */

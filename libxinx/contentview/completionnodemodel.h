@@ -33,6 +33,8 @@
 class CompletionNodeModel : public AbstractContentViewModel {
 	Q_OBJECT
 public:
+	enum CompletionNodeRole { CompletionNodeName = 0x77 };
+
 	/*!
 	 * Create a completion node model.
 	 * \param root The root element that contains all node used for \
@@ -54,24 +56,39 @@ public:
 	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;
 protected:
 	//! Method to used to know if an element must be showed
-	virtual bool mustElementBeShowed( ContentViewNode * node );
+	virtual bool mustElementBeShowed( ContentViewNode * n );
 
 	//! List of all nodes in the model
-	QList<ContentViewNode*> & nodes();
+  const QList<ContentViewNode*> & nodes() const;
 	//! List of showed nodes in the model
-	QList<ContentViewNode*> & showedNodes();
+  const QList<ContentViewNode*> & showedNodes() const;
 
 	//! Show a node in the screen
-	void showNode( ContentViewNode * node );
+	void showNode( ContentViewNode * n );
 	//! Hide a node of the screen
-	void hideNode( ContentViewNode * node );
+	void hideNode( ContentViewNode * n );
 	//! Return wether the node is showed or not
-	bool isElementShowed( ContentViewNode * node );
+	bool isElementShowed( ContentViewNode * n );
 
-	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
-	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );
+	//! Add the node \e node to hidden nodes (and show it if \e mustElementBeShowed() )
+	void addAllNodes( ContentViewNode * node );
+
+	//! This methode is called when a node is add.
+	virtual void addNode( ContentViewNode * n );
+
+	//! Remove the node \e node and all it's child
+	void removeAllNodes( ContentViewNode * n );
+
+	//! Remove a node from the model
+	virtual void removeNode( ContentViewNode * n );
+
+	virtual void beginInsertNode( ContentViewNode * n, int first, int last );
+	virtual void beginRemoveNode( ContentViewNode * n, int first, int last );
 	virtual void endInsertNode();
 	virtual void endRemoveNode();
+	virtual void reset();
+
+	virtual void timerEvent( QTimerEvent * event );
 private:
 	ContentViewNode * m_parent;
 	int m_first, m_last;

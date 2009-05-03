@@ -233,38 +233,6 @@ QStringList XinxPluginsLoader::managedFilters() const {
 	return result;
 }
 
-FileContentElement * XinxPluginsLoader::createElement( QString & filename, FileContentElement * parent, int line ) {
-	IFileTypePlugin * fileType = matchedFileType( filename );
-	if( ! fileType ) return NULL;
-
-	QStringList searchList;
-
-	if( ! parent->filename().isEmpty() )
-		searchList << QFileInfo( parent->filename() ).absolutePath();
-
-	if( XINXProjectManager::self()->project() )
-		searchList += XINXProjectManager::self()->project()->processedSearchPathList();
-
-	QString absPath = QString();
-	bool finded = false;
-	foreach( const QString & path, searchList ) {
-		absPath = QDir( path ).absoluteFilePath( filename );
-		if( QFile::exists( absPath ) ) {
-			finded = true;
-			break;
-		}
-	}
-
-	if( finded ) filename = absPath;
-
-	FileContentElement * element = fileType->createElement( parent, line, filename );
-	if( ! element ) return NULL;
-
-	Q_ASSERT( dynamic_cast<FileContentParser*>( element ) );
-
-	return element;
-}
-
 QList< QPair<QString,QString> > XinxPluginsLoader::revisionsControls() const {
 	QList< QPair<QString,QString> > result;
 	foreach( XinxPluginElement * element, plugins() ) {

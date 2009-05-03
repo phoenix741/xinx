@@ -49,7 +49,7 @@ class XinxCodeEdit : public QWidget, private QEditor::InputBinding {
 	Q_PROPERTY( int row READ currentRow )
 	Q_PROPERTY( int column READ currentColumn )
 	Q_PROPERTY( int tabStopWidth READ tabStopWidth WRITE setTabStopWidth )
-	Q_PROPERTY( bool modified WRITE setModified )
+        Q_PROPERTY( bool modified READ isModified WRITE setModified )
 public:
 	//! XinxCodeEdit::FindFlag is used in find function.
 	enum FindFlag { FindBackward = 0x01, FindCaseSensitively = 0x02, FindWholeWords = 0x04 };
@@ -332,6 +332,7 @@ private:
 	void init( bool action );
 	void uploSelectedText( bool upper = true );
 	void key_home( bool );
+        bool isModified();
 
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;

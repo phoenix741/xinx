@@ -28,6 +28,9 @@
 // Xinx header
 #include <core/exceptions.h>
 
+// Qt header
+#include <QCoreApplication>
+
 class ContentViewNode;
 
 /*!
@@ -69,6 +72,7 @@ private:
  *
  */
 class ContentViewParser {
+	Q_DECLARE_TR_FUNCTIONS(ContentViewParser);
 public:
 	/*!
 	 * Create a content view parser used to fill the content of a node.
@@ -99,25 +103,38 @@ public:
 	/*! Return the device */
 	QIODevice * inputDevice() const;
 
+	/*! Set the Id used on attach and detach */
+	void setAttachId( unsigned long value );
+	/*! Return the id */
+	unsigned long attachId();
+
 	/*! Change the autodelete member to \e value. */
 	void setAutoDelete( bool value );
 	/*! Return wethere the object will be auto deleted */
 	bool isAutoDelete() const;
+
+	/*! Set a decalage when attach a node to the parent */
+	void setDecalage( int line );
+	/*! Return the current decalage */
+	int decalage() const;
 protected:
 	virtual void loadFromDeviceImpl() = 0;
 
 	void createContentViewNode( ContentViewNode * parent, const QString & filename );
+	ContentViewNode * attachNode( ContentViewNode * parent, ContentViewNode * child );
 
 	void loadAttachedNode( ContentViewNode * rootNode );
 	void detachAttachedNode();
+	inline void removeAttachedNode( ContentViewNode * rootNode );
+	inline void removeAttachedNodes();
 
 	QString locationOf( ContentViewNode * parent, const QString & filename );
-
-	QList<ContentViewNode*> m_attachedNode;
 private:
-	bool m_autoDelete;
+	QList<ContentViewNode*> m_attachedNode;
+	bool m_autoDelete, m_alreadyRunning;
 	ContentViewNode * m_rootNode;
 	QIODevice * m_device;
+	unsigned long m_id, m_decaledLine;
 };
 
 #endif /* __CONTENTVIEWPARSER_H__ */

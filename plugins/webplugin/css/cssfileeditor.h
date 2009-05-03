@@ -21,11 +21,12 @@
 #define _CSSFILEEDITOR_H_
 
 // Xinx header
-#include <editors/itemmodelfileeditor.h>
+#include <editors/textfileeditor.h>
+#include <editors/contentviewtexteditor.h>
 
 class CSSFileContentParser;
 
-class CSSFileEditor : public ItemModelFileEditor {
+class CSSFileEditor : public ContentViewTextEditor {
 	Q_OBJECT
 public:
 	CSSFileEditor( QWidget *parent = 0 );

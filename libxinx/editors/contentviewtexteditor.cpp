@@ -29,6 +29,7 @@
 
 ContentViewTextEditor::ContentViewTextEditor( ContentViewParser * parser, XinxCodeEdit * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( parser ) {
 	m_rootNode = new ContentViewNode( "root", -1 );
+	parser->setAttachId( (unsigned long)m_rootNode );
 	m_keyTimer = new QTimer();
 	m_keyTimer->setSingleShot( true );
 	m_keyTimer->setInterval( XINXConfig::self()->config().editor.automaticModelRefreshTimeout );
@@ -39,11 +40,11 @@ ContentViewTextEditor::ContentViewTextEditor( ContentViewParser * parser, XinxCo
 
 ContentViewTextEditor::~ContentViewTextEditor() {
 	delete m_model;
-	delete m_rootNode;
+	m_rootNode->deleteInstance( (unsigned long)m_rootNode );
 }
 
 void ContentViewTextEditor::loadFromFile( const QString & fileName ) {
-	m_parser->loadFromFile( m_rootNode, fileName );
+	m_rootNode->setFileName( fileName );
 	TextFileEditor::loadFromFile( fileName );
 }
 
@@ -57,7 +58,7 @@ void ContentViewTextEditor::loadFromDevice( QIODevice & d ) {
 		m_parser->loadFromDevice( m_rootNode, &d );
 		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );
-	} catch( FileContentException e ) {
+	} catch( ContentViewException e ) {
 		textEdit()->setErrors( QList<int>() << e.getLine() );
 		setMessage( e.getMessage() );
 	}
@@ -82,7 +83,7 @@ void ContentViewTextEditor::updateModel() {
 		emit contentChanged();
 		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );
-	} catch( FileContentException e ) {
+	} catch( ContentViewException e ) {
 		textEdit()->setErrors( QList<int>() << e.getLine() );
 		setMessage( e.getMessage() );
 	}
@@ -92,3 +93,10 @@ void ContentViewTextEditor::textChanged() {
 	m_keyTimer->start();
 }
 
+ContentViewParser * ContentViewTextEditor::parser() const {
+	return m_parser;
+}
+
+ContentViewNode * ContentViewTextEditor::rootNode() const {
+	return m_rootNode;
+}

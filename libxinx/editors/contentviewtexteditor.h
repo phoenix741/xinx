@@ -60,6 +60,12 @@ public slots:
 protected:
 	//! Change the parser of the model file editor.
 	void setParser( ContentViewParser * parser );
+
+	//! Return the current parser
+	ContentViewParser * parser() const;
+
+	//! Return the current root node
+	ContentViewNode * rootNode() const;
 private slots:
 	virtual void textChanged();
 

@@ -16,23 +16,26 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
- 
+
 #ifndef __JAVASCRIPTMODELCOMPETER_H__
 #define __JAVASCRIPTMODELCOMPETER_H__
 
+// Xinx header
+#include <contentview/completionnodemodel.h>
+
+// Qt header
 #include <QAbstractListModel>
 
-class FileContentElement;
-class JavaScriptParser;
+class ContentViewNode;
 
 /* JavascriptModelCompleter */
 
 /*!
  * Class provide completion on JavaScript editor.
- * This class based on a parser show all variables, params, and function name, 
+ * This class based on a parser show all variables, params, and function name,
  * that could be used in the JavaScript file.
  */
-class JavascriptModelCompleter : public QAbstractListModel {
+class JavascriptModelCompleter : public CompletionNodeModel {
 	Q_OBJECT
 public:
 	/*!
@@ -40,15 +43,11 @@ public:
 	 * \param parser The parser used to parse the javascript text
 	 * \param parent Parent object used to create this object.
 	 */
-	JavascriptModelCompleter( FileContentElement * parser, QObject *parent = 0 );
+	JavascriptModelCompleter( ContentViewNode * root, QObject *parent = 0 );
 	/*!
 	 * Destroy the Javascript model.
 	 */
 	virtual ~JavascriptModelCompleter();
-	
-	QVariant data(const QModelIndex &index, int role) const;
-	Qt::ItemFlags flags(const QModelIndex &index) const;
-	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 public slots:
 	/*!
 	 * Set the filter used to define the scope of the function.
@@ -56,13 +55,10 @@ public slots:
 	 */
 	void setFilter( const QString functionName = QString() );
 
-	void addElement( FileContentElement*, int );
-	void removeElement( FileContentElement* );
+protected:
+	virtual bool mustElementBeShowed( ContentViewNode * node );
+
 private:
-	void refreshList( FileContentElement * element );
-	QList<FileContentElement*> m_objList;
-	
-	FileContentElement * m_parser;
 	QString m_functionFiltre;
 };
 

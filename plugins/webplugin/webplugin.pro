@@ -13,68 +13,56 @@ INCLUDEPATH += ./ \
     ../../ext/qcodeedit/lib/language \
     ../../ext/qcodeedit/lib/qnfa \
     ../../ext/qcodeedit/lib/widgets
-HEADERS = xsl/xmlformatscheme.h \
-    xq/xquery_keyword.h \
-    xsl/xsltexteditor.h \
-    config/webpluginsettings.h \
-    xsl/xmlprettyprinter.h \
-    webplugin.h \
-    xsl/xsllistview.h \
-    js/javascriptparser.h \
-    editorcompletion.h \
-    css/cssmodeldata.h \
-    xsl/xmltexteditor.h \
-    xsl/xslmodelcompleter.h \
-    xsl/stylesheeteditor.h \
-    xsl/xmlfileeditor.h \
-    xsl/htmlfileeditor.h \
-    js/javascriptmodelcompleter.h \
-    js/jsfileeditor.h \
-    js/jstexteditor.h \
-    css/cssfileeditor.h \
-    css/csstexteditor.h \
+HEADERS = webplugin.h \
+    filetypeplugin.h \
     config/webpluginformimpl.h \
     config/selfwebpluginsettings.h \
+	config/webpluginsettings.h \
+    xq/xquery_keyword.h \
     xq/xqtexteditor.h \
     xq/xqfileeditor.h \
     xq/xqmodelcompleter.h \
-    filetypeplugin.h \
-    js/jsformatscheme.h \
     xq/xqformatscheme.h \
+    css/cssmodeldata.h \
+    css/cssfileeditor.h \
+    css/csstexteditor.h \
     css/cssformatscheme.h \
+	js/jsfileeditor.h \
+    js/jstexteditor.h \
+    js/jsformatscheme.h \
+    js/jscontentviewparser.h \
+	js/javascriptmodelcompleter.h \
+    xsl/xmlformatscheme.h \
+	xsl/xmlprettyprinter.h \
+    xsl/xmltexteditor.h \
+    xsl/htmlfileeditor.h \
     xsl/xslcontentviewparser.h \
-    js/jscontentviewparser.h
-SOURCES = xsl/xmlformatscheme.cpp \
-    xq/xquery_keyword.cpp \
-    xsl/xsltexteditor.cpp \
+    xsl/xslcompletionnodemodel.h
+SOURCES = webplugin.cpp \
+    filetypeplugin.cpp \
     config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \
-    xsl/xmlprettyprinter.cpp \
-    webplugin.cpp \
-    xsl/xsllistview.cpp \
-    js/javascriptparser.cpp \
-    editorcompletion.cpp \
+    config/webpluginformimpl.cpp \
     css/cssmodeldata.cpp \
-    xsl/xmltexteditor.cpp \
-    xsl/xslmodelcompleter.cpp \
-    xsl/stylesheeteditor.cpp \
-    xsl/xmlfileeditor.cpp \
-    xsl/htmlfileeditor.cpp \
-    js/javascriptmodelcompleter.cpp \
-    js/jsfileeditor.cpp \
-    js/jstexteditor.cpp \
     css/cssfileeditor.cpp \
     css/csstexteditor.cpp \
+    css/cssformatscheme.cpp \
+	xq/xquery_keyword.cpp \
     xq/xqtexteditor.cpp \
     xq/xqfileeditor.cpp \
     xq/xqmodelcompleter.cpp \
-    config/webpluginformimpl.cpp \
-    filetypeplugin.cpp \
-    js/jsformatscheme.cpp \
     xq/xqformatscheme.cpp \
-    css/cssformatscheme.cpp \
+    js/jsfileeditor.cpp \
+    js/jstexteditor.cpp \
+    js/jsformatscheme.cpp \
+    js/jscontentviewparser.cpp \
+	js/javascriptmodelcompleter.cpp \
     xsl/xslcontentviewparser.cpp \
-    js/jscontentviewparser.cpp
+    xsl/xmlformatscheme.cpp \
+    xsl/xmlprettyprinter.cpp \
+    xsl/xmltexteditor.cpp \
+    xsl/htmlfileeditor.cpp \
+    xsl/xslcompletionnodemodel.cpp 
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
 include(../../project_mode.pro)

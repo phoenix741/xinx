@@ -35,7 +35,7 @@
 #include <QTextBlock>
 #include <QCompleter>
 
-JSTextEditor::JSTextEditor( QWidget * parent ) : XinxCodeEdit( parent ) {
+JSTextEditor::JSTextEditor( QWidget * parent ) : XinxCodeEdit( parent ), m_model( 0 ) {
 	setHighlighter( "ECMAScript" );
 }
 
@@ -46,15 +46,11 @@ JSTextEditor::~JSTextEditor() {
 QCompleter * JSTextEditor::completer() {
 	if( ! SelfWebPluginSettings::self()->config().javascript.activeCompletion ) return 0;
 
-	if( XinxCodeEdit::completer() ) {
-		JavascriptModelCompleter * c = qobject_cast<JavascriptModelCompleter*>( XinxCodeEdit::completer()->model() );
-		if( c ) {
-			editPosition( textCursor() );
-			c->setFilter( m_functionName );
-
-			return XinxCodeEdit::completer();
-		}
+	if( m_model ) {
+		editPosition( textCursor() );
+		m_model->setFilter( m_functionName );
 	}
+
 	return XinxCodeEdit::completer();
 }
 
@@ -149,3 +145,8 @@ JSTextEditor::cursorPosition JSTextEditor::editPosition( const XinxCodeEdit * te
 JSTextEditor::cursorPosition JSTextEditor::editPosition( const QDocumentCursor & cursor ) {
 	return editPosition( this, cursor, m_functionName );
 }
+
+void JSTextEditor::setModel( JavascriptModelCompleter * model ) {
+	m_model = model;
+}
+

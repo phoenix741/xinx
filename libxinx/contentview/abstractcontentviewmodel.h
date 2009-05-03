@@ -27,6 +27,7 @@
 
 // Qt header
 #include <QAbstractItemModel>
+#include <QMutex>
 
 class ContentViewNode;
 
@@ -54,8 +55,11 @@ protected:
 	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );
 	virtual void endInsertNode();
 	virtual void endRemoveNode();
+
+	QMutex & mutex();
 private:
 	ContentViewNode * m_rootNode;
+	QMutex m_updateMutex;
 
 	friend class ContentViewNode;
 };

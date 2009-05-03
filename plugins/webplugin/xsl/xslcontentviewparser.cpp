@@ -20,11 +20,19 @@
 // Xinx header
 #include "xslcontentviewparser.h"
 #include <contentview/contentviewnode.h>
+#include <plugins/plugininterfaces.h>
+#include <plugins/xinxpluginsloader.h>
+#include <core/xinxcore.h>
 
 // Qt header
+#include <QtConcurrentRun>
 #include <QTextCodec>
 #include <QIcon>
 #include <QVariant>
+
+/* Static member */
+
+XmlCompletionParser * XmlCompletionParser::s_self = 0;
 
 /* XslContentViewParser */
 
@@ -127,9 +135,9 @@ void XslContentViewParser::readVariable() {
 		readUnknownElement();
 	}
 	if( name == "param" )
-		attacheNewParamsNode( rootNode(), name, value, lineNumber() );
+		attacheNewParamsNode( rootNode(), name.trimmed(), value, lineNumber() );
 	else
-		attacheNewVariableNode( rootNode(), name, value, lineNumber() );
+		attacheNewVariableNode( rootNode(), name.trimmed(), value, lineNumber() );
 }
 
 void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables, QList<struct_script> & scripts ) {
@@ -201,41 +209,48 @@ void XslContentViewParser::readTemplate() {
 	readTemplate( variables, scripts );
 
 	foreach( const QString & name, templates ) {
-		ContentViewNode * t = attacheNewTemplateNode( rootNode(), name, mode, line );
+		ContentViewNode * t = attacheNewTemplateNode( rootNode(), name.trimmed(), mode, line );
+		if( !t ) continue;
 
 		loadAttachedNode( t );
 		/* Chargement des scripts */
 		foreach( struct_script s, scripts ) {
-			/*createContentViewNode( m_parent, s.src );
+			// Si JavaScript externe
+			if( s.isSrc ) {
+				createContentViewNode( t, s.src );
+			} else { // C'est un Javascript interne
+				ContentViewNode * node = new ContentViewNode( s.title, s.line );
+				node->setData( "internal", ContentViewNode::NODE_TYPE );
+				node->setData( s.title, ContentViewNode::NODE_DISPLAY_NAME );
+				node->setData( tr( "Element at line : %1" ).arg( s.line ), ContentViewNode::NODE_DISPLAY_TIPS );
+				node->setData( QImage(":/images/import.png"), ContentViewNode::NODE_ICON );
 
-			FileContentElement * element = XinxPluginsLoader::self()->createElement( s.src, m_parent, s.line );
-			if( ! s.isSrc ) {
-				element->setFilename( t->filename() );
-				element->setName( s.title );
-			}
-			if( element ) {
-				element = t->append( element );
-				FileContentParser * parser = dynamic_cast<FileContentParser*>( element );
-				if( parser )
+				// Il nous faut un parser JavaScript
+				IFileTypePlugin * ft = XinxPluginsLoader::self()->matchedFileType( s.src );
+				ContentViewParser * parser = 0;
+				if( ft && ( parser = ft->createParser() ) ) {
 					try {
-						if( ! s.isSrc )
-							parser->loadFromContent( s.content );
-						else
-							parser->loadFromFileDelayed( s.src );
-					} catch( FileContentException e ) {
+						node->setData( QImage( ft->icon() ), ContentViewNode::NODE_ICON );
+
+						node = attachNode( t, node );
+
+						parser->setDecalage( s.line );
+						parser->setAttachId( (unsigned long)rootNode() );
+						parser->loadFromContent( node, s.content );
+					} catch( ContentViewException e ) {
 					}
-			} else {
-				element = m_parent->append( new FileContentElement( m_parent, s.src, lineNumber() ) );
+					delete parser;
+				} else
+					node = attachNode( t, node );
 			}
-			*/
 		}
 
 		/* Chargement des variables et params */
 		foreach( const struct_xsl_variable & v, variables ) {
 			if( v.isParam )
-				attacheNewParamsNode( t, v.name, v.value, v.line );
+				attacheNewParamsNode( t, v.name.trimmed(), v.value.trimmed(), v.line );
 			else
-				attacheNewVariableNode( t, v.name, v.value, v.line );
+				attacheNewVariableNode( t, v.name.trimmed(), v.value.trimmed(), v.line );
 		}
 	}
 }
@@ -264,7 +279,9 @@ ContentViewNode * XslContentViewParser::attacheNewTemplateNode( ContentViewNode 
 	node->setData( QImage(":/images/template.png"), ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nMode = %2" ).arg( line ).arg( mode ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node->attach( parent );
+	node->setData( mode, ContentViewNode::NODE_USER_VALUE );
+
+	node = attachNode( parent, node );
 
 	return node;
 }
@@ -279,7 +296,9 @@ ContentViewNode * XslContentViewParser::attacheNewParamsNode( ContentViewNode * 
 	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node->attach( parent );
+	node->setData( value, ContentViewNode::NODE_USER_VALUE );
+
+	node = attachNode( parent, node );
 
 	return node;
 }
@@ -294,8 +313,333 @@ ContentViewNode * XslContentViewParser::attacheNewVariableNode( ContentViewNode 
 	node->setData( QImage(":/images/variable.png"), ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node->attach( parent );
+	node->setData( value, ContentViewNode::NODE_USER_VALUE );
+
+	node = attachNode( parent, node );
 
 	return node;
 }
 
+/* XmlCompletionParser */
+
+XmlCompletionParser::XmlCompletionParser() : ContentViewParser( false ), m_codec( 0 ) {
+}
+
+XmlCompletionParser::~XmlCompletionParser() {
+	rootNode()->setCanBeDeleted( true );
+	rootNode()->deleteInstance();
+}
+
+XmlCompletionParser * XmlCompletionParser::self() {
+	if( ! s_self ) {
+		s_self = new XmlCompletionParser();
+		try {
+			ContentViewNode * node = new ContentViewNode( "root", -1 );
+			node->setCanBeDeleted( false );
+			s_self->setRootNode( node );
+			s_self->setFilename( "datas:baseplugin_xml.xml" );
+			QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
+                        //s_self->loadFromMember();
+		} catch( ContentViewException e ) {
+			qWarning( qPrintable( e.getMessage() ) );
+
+		}
+		XINXStaticDeleter::self()->add( s_self );
+	}
+	return s_self;
+}
+
+ContentViewNode * XmlCompletionParser::rootNode() const {
+	return ContentViewParser::rootNode();
+}
+
+void XmlCompletionParser::loadFromDeviceImpl() {
+	setDevice( inputDevice() );
+
+	loadAttachedNode( rootNode() );
+	m_parentNode.clear();
+
+	while( ! atEnd() ) {
+		readNext();
+
+		if( isStartDocument() ) {
+			m_codec = QTextCodec::codecForName( documentEncoding().toString().toLatin1() );
+		}
+
+		if( isStartElement() ) {
+			if( name() == "xml" )
+				readRootTag();
+			else
+				raiseError(tr("The file is not a completion file."));
+		}
+	}
+
+	if( !error() ) { // Else completion can be more difficulte
+		detachAttachedNode();
+	}
+
+	if( error() )
+		throw ContentViewException( errorString(), lineNumber(), columnNumber() );
+}
+
+QString XmlCompletionParser::readElementText() {
+	Q_ASSERT( isStartElement() );
+
+	QString result;
+
+	while( ! atEnd() ) {
+		QXmlStreamReader::TokenType type = readNext();
+
+		if( isEndElement() ) break;
+
+		switch( type ) {
+		case Characters:
+		case EntityReference:
+			result += text().toString().trimmed();
+			break;
+		case StartElement:
+			result += readElementText();
+		default:
+			continue;
+		}
+	}
+
+	return result;
+}
+
+void XmlCompletionParser::readRootTag() {
+	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "xml" );
+
+	m_parentNode.push( rootNode() );
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "type" )
+				readTypeTag();
+			else
+				throw ContentViewException( tr("Wrong node name %1 in root element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+		}
+	}
+
+	m_parentNode.pop();
+}
+
+void XmlCompletionParser::readTypeTag() {
+	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "type" );
+
+	m_type = attributes().value( "name" ).toString();
+
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "balise" )
+				readBaliseTag();
+			else
+				throw ContentViewException( tr("Wrong node name %1 in type element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+		}
+	}
+}
+
+void XmlCompletionParser::readBaliseTag() {
+	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "balise" );
+
+	QString
+		name = attributes().value( "name" ).toString(),
+		defaultValue = attributes().value( "default" ).toString();
+
+	ContentViewNode * node = new ContentViewNode( name, lineNumber() );
+	node->setData( "XmlBalise", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/balise.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
+	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
+
+	node = attachNode( m_parentNode.top(), node );
+
+	m_parentNode.push( node );
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "balise" )
+				readBaliseTag();
+			else
+				if( QXmlStreamReader::name() == "attribute" )
+					readAttributeTag();
+			else
+				throw ContentViewException( tr("Wrong node name %1 in balise element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+		}
+	}
+	m_parentNode.pop();
+}
+
+void XmlCompletionParser::readAttributeTag() {
+	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "attribute" );
+
+	QString
+		name = attributes().value( "name" ).toString(),
+		defaultValue = attributes().value( "default" ).toString();
+
+	ContentViewNode * node = new ContentViewNode( name, lineNumber() );
+	node->setData( "XmlAttribute", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+
+	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
+	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
+
+	node = attachNode( m_parentNode.top(), node );
+
+	m_parentNode.push( node );
+	while( !atEnd() ) {
+		readNext();
+
+		if( isEndElement() )
+			break;
+
+		if( isStartElement() ) {
+			if( QXmlStreamReader::name() == "value" )
+				readValueTag();
+			else
+				throw ContentViewException( tr("Wrong node name %1 in attribute element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+		}
+	}
+	m_parentNode.pop();
+}
+
+void XmlCompletionParser::readValueTag() {
+	Q_ASSERT( isStartElement() && QXmlStreamReader::name() == "value" );
+
+	QString name, defaultValue = attributes().value( "default" ).toString();
+	name = readElementText();
+
+	ContentViewNode * node = new ContentViewNode( name, lineNumber() );
+	node->setData( "XmlValue", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+
+	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
+	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
+
+	node = attachNode( m_parentNode.top(), node );
+}
+
+ContentViewNode * XmlCompletionParser::balise( const QString & name ) const {
+	foreach( ContentViewNode * n, rootNode()->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( ContentViewNode::NODE_NAME ).toString() == name ) ) {
+			return n;
+		}
+	}
+	return 0;
+}
+
+QList<ContentViewNode*> XmlCompletionParser::balises() const {
+	QList<ContentViewNode*> result;
+	foreach( ContentViewNode * n, rootNode()->childs() ) {
+		if( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) {
+			result += n;
+		}
+	}
+	return result;
+}
+
+ContentViewNode * XmlCompletionParser::baliseAttribute( const QString & name, const QString & attribute ) const {
+	ContentViewNode * b = balise( name );
+	if( !b ) return 0;
+
+	foreach( ContentViewNode * n, b->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( n->data( ContentViewNode::NODE_NAME ).toString() == attribute ) ) {
+			return n;
+		}
+	}
+	return 0;
+}
+
+QList<ContentViewNode*> XmlCompletionParser::baliseAttributes( const QString & name ) const {
+	ContentViewNode * b = balise( name );
+	if( !b ) return QList<ContentViewNode*>();
+
+	QList<ContentViewNode*> result;
+	foreach( ContentViewNode * n, b->childs() ) {
+		if( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) {
+			result += n;
+		}
+	}
+	return result;
+}
+
+ContentViewNode * XmlCompletionParser::baliseOfBalise( const QString & name, const QString & baliseName ) const {
+	ContentViewNode * b = balise( name );
+	if( !b ) return 0;
+
+	foreach( ContentViewNode * n, b->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( ContentViewNode::NODE_NAME ).toString() == baliseName ) ) {
+			return n;
+		}
+	}
+	return 0;
+}
+
+ContentViewNode * XmlCompletionParser::baliseAttributeValue( const QString & name, const QString & attribute, const QString & value ) const {
+	ContentViewNode * a = baliseAttribute( name, attribute );
+	if( !a ) return 0;
+
+	foreach( ContentViewNode * n, a->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlValue" ) && ( n->data( ContentViewNode::NODE_NAME ).toString() == value ) ) {
+			return n;
+		}
+	}
+	return 0;
+}
+
+QList<ContentViewNode*> XmlCompletionParser::baliseAttributeValues( const QString & name, const QString & attribute ) const {
+	ContentViewNode * a = baliseAttribute( name, attribute );
+	if( !a ) return QList<ContentViewNode*>();
+
+	QList<ContentViewNode*> result;
+	foreach( ContentViewNode * n, a->childs() ) {
+		if( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlValue" ) {
+			result += n;
+		}
+	}
+	return result;
+}
+
+ContentViewNode * XmlCompletionParser::defaultValue( ContentViewNode * node ) {
+	ContentViewNode * def = 0;
+	foreach( ContentViewNode * n, node->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlValue" ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
+			def = n;
+	}
+	return def;
+}
+
+QList<ContentViewNode*> XmlCompletionParser::defaultAttributes( ContentViewNode * node ) {
+	QList<ContentViewNode *> defs;
+	foreach( ContentViewNode * n, node->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
+			defs += n;
+	}
+	return defs;
+}
+
+QList<ContentViewNode*> XmlCompletionParser::defaultBalises( ContentViewNode * node ) {
+	QList<ContentViewNode *> defs;
+	foreach( ContentViewNode * n, node->childs() ) {
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
+			defs += n;
+	}
+	return defs;
+}

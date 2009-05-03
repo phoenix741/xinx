@@ -328,7 +328,7 @@ ContentViewNode * JsContentViewParser::attacheNewParamNode( ContentViewNode * pa
 	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node->attach( parent );
+	node = attachNode( parent, node );
 
 	return node;
 }
@@ -339,7 +339,7 @@ ContentViewNode * JsContentViewParser::attacheNewVariableNode( ContentViewNode *
 	node->setData( QImage(":/images/variable.png"), ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node->attach( parent );
+	node = attachNode( parent, node );
 
 	return node;
 }
@@ -350,7 +350,7 @@ ContentViewNode * JsContentViewParser::attacheNewFunctionNode( ContentViewNode *
 	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
-	node->attach( parent );
+	node = attachNode( parent, node );
 
 	return node;
 }

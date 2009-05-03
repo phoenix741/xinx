@@ -30,7 +30,7 @@ class WebServicesFileType : public QObject, public IFileTypePlugin {
 public:
 	virtual QString description() {	return tr( "Web Services Stream" ); };
 	virtual QString match() { return "*.fws"; };
-	virtual QIcon icon() { return QIcon( ":/services/images/typefws.png" ); };
+	virtual QString icon() { return ":/services/images/typefws.png"; };
 
 	virtual AppSettings::struct_extentions properties() {
 		AppSettings::struct_extentions p;
@@ -48,12 +48,6 @@ public:
 			editor->loadFromFile( filename );
 
 		return editor;
-	}
-	virtual FileContentElement * createElement( FileContentElement * parent, int line, const QString & filename ) {
-		Q_UNUSED( parent );
-		Q_UNUSED( line );
-		Q_UNUSED( filename );
-		return 0;
 	}
 
 	virtual ContentViewParser * createParser() {

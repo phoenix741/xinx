@@ -24,12 +24,13 @@
 
 /* StyleSheetContainer */
 
-CSSFileEditor::CSSFileEditor( QWidget *parent ) : ItemModelFileEditor( m_parser = new CSSFileContentParser(), new CSSTextEditor(), parent ) {
+CSSFileEditor::CSSFileEditor( QWidget *parent ) : ContentViewTextEditor( new CSSFileContentParser(), new CSSTextEditor(), parent ) {
 }
 
 CSSFileEditor::~CSSFileEditor() {
+	ContentViewParser * p = parser();
 	setParser( 0 );
-	delete m_parser;
+	delete p;
 }
 
 QString CSSFileEditor::defaultFileName() const {

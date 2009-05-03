@@ -20,6 +20,7 @@
 // Xinx header
 #include "filetypeplugin.h"
 #include "xsl/xslcontentviewparser.h"
+#include "xsl/xmltexteditor.h"
 #include "js/jscontentviewparser.h"
 
 /* XMLFileType */
@@ -32,8 +33,8 @@ QString XMLFileType::match() {
 	return "*.xml";
 }
 
-QIcon XMLFileType::icon() {
-	return QIcon( ":/images/typexml.png" );
+QString XMLFileType::icon() {
+	return ":/images/typexml.png";
 }
 
 AppSettings::struct_extentions XMLFileType::properties() {
@@ -52,10 +53,6 @@ AbstractEditor * XMLFileType::createEditor( const QString & filename ) {
 		editor->loadFromFile( filename );
 
 	return editor;
-}
-
-FileContentElement * XMLFileType::createElement( FileContentElement *, int, const QString & ) {
-	return NULL;
 }
 
 QString XMLFileType::highlighterId() const {
@@ -110,8 +107,8 @@ QString XSLStyleSheetFileType::match() {
 	return "*.xsl";
 }
 
-QIcon XSLStyleSheetFileType::icon() {
-	return QIcon( ":/images/typexsl.png" );
+QString XSLStyleSheetFileType::icon() {
+	return ":/images/typexsl.png";
 }
 
 AppSettings::struct_extentions XSLStyleSheetFileType::properties() {
@@ -124,19 +121,13 @@ AppSettings::struct_extentions XSLStyleSheetFileType::properties() {
 };
 
 AbstractEditor * XSLStyleSheetFileType::createEditor( const QString & filename ) {
-	StyleSheetEditor * editor = new StyleSheetEditor();
+	//StyleSheetEditor * editor = new StyleSheetEditor();
+	XslContentEditor * editor = new XslContentEditor();
 
 	if( ! filename.isEmpty() )
 		editor->loadFromFile( filename );
 
 	return editor;
-}
-
-FileContentElement * XSLStyleSheetFileType::createElement( FileContentElement * parent, int line, const QString & filename ) {
-	if( parent )
-		return new XSLFileContentParser( parent, filename, line );
-	else
-		return new XSLFileContentParser();
 }
 
 ContentViewParser * XSLStyleSheetFileType::createParser() {
@@ -153,8 +144,8 @@ QString HTMLFileType::match() {
 	return "*.htm *.html *.xhtml";
 }
 
-QIcon HTMLFileType::icon() {
-	return QIcon( ":/images/typehtml.png" );
+QString HTMLFileType::icon() {
+	return ":/images/typehtml.png";
 }
 
 AppSettings::struct_extentions HTMLFileType::properties() {
@@ -185,8 +176,8 @@ QString JSFileType::match() {
 	return "*.js";
 }
 
-QIcon JSFileType::icon() {
-	return QIcon( ":/images/typejs.png" );
+QString JSFileType::icon() {
+	return ":/images/typejs.png";
 }
 
 AppSettings::struct_extentions JSFileType::properties() {
@@ -205,13 +196,6 @@ AbstractEditor * JSFileType::createEditor( const QString & filename ) {
 		editor->loadFromFile( filename );
 
 	return editor;
-}
-
-FileContentElement * JSFileType::createElement( FileContentElement * parent, int line, const QString & filename ) {
-	if( parent )
-		return new JavaScriptParser( parent, filename, line );
-	else
-		return new JavaScriptParser();
 }
 
 QString JSFileType::highlighterId() const {
@@ -260,8 +244,8 @@ QString CSSFileType::match() {
 	return "*.css";
 }
 
-QIcon CSSFileType::icon() {
-	return QIcon( ":/images/typecss.png" );
+QString CSSFileType::icon() {
+	return ":/images/typecss.png";
 }
 
 AppSettings::struct_extentions CSSFileType::properties() {
@@ -280,10 +264,6 @@ AbstractEditor * CSSFileType::createEditor( const QString & filename ) {
 		editor->loadFromFile( filename );
 
 	return editor;
-}
-
-FileContentElement * CSSFileType::createElement( FileContentElement * parent, int line, const QString & filename ) {
-	return new CSSFileContentParser( parent, filename, line );
 }
 
 QString CSSFileType::highlighterId() const {
@@ -337,8 +317,8 @@ QString XQFileType::match() {
 	return "*.xq";
 }
 
-QIcon XQFileType::icon() {
-	return QIcon( ":/images/typexq.png" );
+QString XQFileType::icon() {
+	return ":/images/typexq.png";
 }
 
 AppSettings::struct_extentions XQFileType::properties() {
@@ -357,14 +337,6 @@ AbstractEditor * XQFileType::createEditor( const QString & filename ) {
 		editor->loadFromFile( filename );
 
 	return editor;
-}
-
-FileContentElement * XQFileType::createElement( FileContentElement * parent, int line, const QString & filename ) {
-	Q_UNUSED( parent );
-	Q_UNUSED( line );
-	Q_UNUSED( filename );
-
-	return 0;
 }
 
 QString XQFileType::highlighterId() const {

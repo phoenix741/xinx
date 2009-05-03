@@ -213,7 +213,7 @@ void MainformImpl::createNewSubMenu() {
 
 	foreach( IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes() ) {
 		QAction * action = new QAction(
-				plugin->icon(),
+		        QIcon( plugin->icon() ),
 				tr( "New %1" ).arg( plugin->description() ),
 				this
 				);
@@ -748,7 +748,7 @@ void MainformImpl::updateRecentFiles() {
 		for( int i = 0; i < numRecentFiles; i++ ) {
 			QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( XINXProjectManager::self()->project()->session()->lastOpenedFile()[i] ).fileName() );
 			if( XinxPluginsLoader::self()->matchedFileType( QFileInfo( text ).fileName() ) )
-				m_recentFileActs[i]->setIcon( XinxPluginsLoader::self()->matchedFileType( QFileInfo( text ).fileName() )->icon() );
+				m_recentFileActs[i]->setIcon( QIcon( XinxPluginsLoader::self()->matchedFileType( QFileInfo( text ).fileName() )->icon() ) );
 			m_recentFileActs[i]->setText( text );
 			m_recentFileActs[i]->setData( XINXProjectManager::self()->project()->session()->lastOpenedFile()[i] );
 			m_recentFileActs[i]->setVisible( true );
@@ -1544,6 +1544,15 @@ void MainformImpl::openProject( const QString & filename ) {
 		while( XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES )
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
+		XINXProjectManager::self()->deleteProject();
+		XINXProjectManager::self()->setCurrentProject( project );
+		m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
+
+		foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+			if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->initializeProject( XINXProjectManager::self()->project() ) ))
+				qWarning( qPrintable(tr("Can't start a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
+		}
+
 		m_tabEditors->setUpdatesEnabled( false );
 		foreach( XinxProjectSessionEditor * data, project->session()->serializedEditors() ) {
 			AbstractEditor * editor = AbstractEditor::deserializeEditor( data );
@@ -1554,15 +1563,6 @@ void MainformImpl::openProject( const QString & filename ) {
 		}
 		if( m_tabEditors->count() > 0 ) m_tabEditors->setCurrentIndex( 0 );
 		m_tabEditors->setUpdatesEnabled( true );
-
-		XINXProjectManager::self()->deleteProject();
-		XINXProjectManager::self()->setCurrentProject( project );
-		m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
-
-		foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
-			if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->initializeProject( XINXProjectManager::self()->project() ) ))
-				qWarning( qPrintable(tr("Can't start a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
-		}
 	} catch( XinxProjectException e ) {
 		delete project;
 		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << "-lang" << XINXConfig::self()->config().language << filename ) ) )

@@ -20,26 +20,39 @@
 // Xinx header
 #include "htmlfileeditor.h"
 #include "xmlprettyprinter.h"
-#include "xslmodelcompleter.h"
-#include "xsllistview.h"
+#include "xslcompletionnodemodel.h"
+#include "xslcontentviewparser.h"
 #include "xmltexteditor.h"
+#include <contentview/contentviewnode.h>
 
 // Qt header
+#include <QXmlStreamReader>
+#include <QMessageBox>
 #include <QCompleter>
 #include <QTextCodec>
 
-/* StyleSheetContainer */
+/* HtmlFileEditor */
 
-HtmlFileEditor::HtmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
-	m_completionModel = new XSLCompletionModel( XSLCompletionModel::Html, 0 );
+HtmlFileEditor::HtmlFileEditor( QWidget *parent ) : ContentViewTextEditor( 0, new XmlTextEditor(), parent ) {
+	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
+	m_completionModel->setCompleteTags( XslCompletionNodeModel::Html );
 
 	QCompleter * completer = new QCompleter( textEdit() );
 	completer->setModel( m_completionModel );
 	textEdit()->setCompleter( completer );
+	qobject_cast<XslTextEditor*>( textEdit() )->setModel( m_completionModel );
 }
 
 HtmlFileEditor::~HtmlFileEditor() {
+	ContentViewParser * p = parser();
+	setParser( 0 );
+	qobject_cast<XslTextEditor*>( textEdit() )->setModel( 0 );
 	delete m_completionModel;
+	delete p;
+}
+
+XslCompletionNodeModel * HtmlFileEditor::completionModel() const {
+	return m_completionModel;
 }
 
 QString HtmlFileEditor::defaultFileName() const {
@@ -73,6 +86,131 @@ bool HtmlFileEditor::autoIndent() {
 	return true;
 }
 
-XSLCompletionModel * HtmlFileEditor::completionModel() const {
+/* XmlFileEditor */
+
+XmlFileEditor::XmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ), m_codec( 0 ) {
+}
+
+XmlFileEditor::~XmlFileEditor() {
+}
+
+QTextCodec * XmlFileEditor::codec() const {
+	if( m_codec )
+		return m_codec;
+	else
+		return TextFileEditor::codec();
+}
+
+QString XmlFileEditor::defaultFileName() const {
+	return tr( "noname.xml" );
+}
+
+QIcon XmlFileEditor::icon() const {
+	return QIcon( ":/images/typexml.png" );
+}
+
+bool XmlFileEditor::autoIndent() {
+	try {
+		XMLPrettyPrinter prettyPrinter;
+		prettyPrinter.setText( textEdit()->toPlainText() );
+		prettyPrinter.process();
+
+		textEdit()->textCursor().beginEditBlock();
+		textEdit()->editor()->selectAll();
+		textEdit()->textCursor().removeSelectedText();
+		textEdit()->textCursor().movePosition( 1, QDocumentCursor::Start );
+		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
+		textEdit()->textCursor().endEditBlock();
+	} catch( XMLPrettyPrinterException e ) {
+		setMessage( e.getMessage() );
+		return false;
+	}
+	return true;
+}
+
+void XmlFileEditor::loadFromDevice( QIODevice & d ) {
+	{
+		QXmlStreamReader reader( &d );
+		while( ! reader.atEnd() ) {
+			reader.readNext();
+
+			if( reader.isStartDocument() ) {
+				m_codec = QTextCodec::codecForName( reader.documentEncoding().toString().toLatin1() );
+				break;
+			}
+
+			if( reader.isStartElement() ) {
+				m_codec = TextFileEditor::codec();
+				break;
+			}
+		}
+	}
+	d.reset();
+	TextFileEditor::loadFromDevice( d );
+}
+
+/* XslContentEditor */
+
+XslContentEditor::XslContentEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
+	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
+	m_completionModel->setCompleteTags( XslCompletionNodeModel::NoTags );
+
+	QCompleter * completer = new QCompleter( textEdit() );
+	completer->setModel( m_completionModel );
+	textEdit()->setCompleter( completer );
+	qobject_cast<XslTextEditor*>( textEdit() )->setModel( m_completionModel );
+}
+
+XslContentEditor::~XslContentEditor() {
+	ContentViewParser * p = parser();
+	setParser( 0 );
+	qobject_cast<XslTextEditor*>( textEdit() )->setModel( 0 );
+	delete m_completionModel;
+	delete p;
+}
+
+QTextCodec * XslContentEditor::codec() const {
+	if( dynamic_cast<XslContentViewParser*>( parser() ) && dynamic_cast<XslContentViewParser*>( parser() )->codec() )
+		return dynamic_cast<XslContentViewParser*>( parser() )->codec();
+	else
+		return ContentViewTextEditor::codec();
+}
+
+XslCompletionNodeModel * XslContentEditor::completionModel() const {
 	return m_completionModel;
+}
+
+QString XslContentEditor::defaultFileName() const {
+	return tr( "noname.xsl" );
+}
+
+QIcon XslContentEditor::icon() const {
+	return QIcon( ":/images/typexsl.png" );
+}
+
+void XslContentEditor::searchWord( const QString & word ) {
+	if( ContentViewNode * n = m_completionModel->nodeOfWord( word ) ) {
+		emit open( n->fileName(), n->line() );
+		return;
+	}
+	QMessageBox::information( this, tr("Search Word"), tr("Word %1 not found").arg( word ) );
+}
+
+bool XslContentEditor::autoIndent() {
+	try {
+		XMLPrettyPrinter prettyPrinter;
+		prettyPrinter.setText( textEdit()->toPlainText() );
+		prettyPrinter.process();
+
+		textEdit()->textCursor().beginEditBlock();
+		textEdit()->editor()->selectAll();
+		textEdit()->textCursor().removeSelectedText();
+		textEdit()->textCursor().movePosition( 1, QDocumentCursor::Start );
+		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
+		textEdit()->textCursor().endEditBlock();
+	} catch( XMLPrettyPrinterException e ) {
+		setMessage( e.getMessage() );
+		return false;
+	}
+	return true;
 }

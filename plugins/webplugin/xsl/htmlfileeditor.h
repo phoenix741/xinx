@@ -21,10 +21,14 @@
 #define _HTMLFILEEDITOR_H_
 
 // Xinx header
-#include <editors/itemmodelfileeditor.h>
-#include "xslmodelcompleter.h"
+#include <editors/textfileeditor.h>
+#include <editors/contentviewtexteditor.h>
 
-class HtmlFileEditor : public TextFileEditor {
+class XslCompletionNodeModel;
+
+/* HtmlFileEditor */
+
+class HtmlFileEditor : public ContentViewTextEditor {
 	Q_OBJECT
 public:
 	HtmlFileEditor( QWidget *parent = 0 );
@@ -37,9 +41,51 @@ public:
 	virtual QIcon icon() const;
 	virtual QTextCodec * codec() const;
 
-	XSLCompletionModel * completionModel() const;
+	XslCompletionNodeModel * completionModel() const;
 private:
-	XSLCompletionModel * m_completionModel;
+	XslCompletionNodeModel * m_completionModel;
+};
+
+/* XmlFileEditor */
+
+class XmlFileEditor : public TextFileEditor {
+	Q_OBJECT
+		public:
+		XmlFileEditor( QWidget *parent = 0 );
+	virtual ~XmlFileEditor();
+
+	virtual QString defaultFileName() const;
+
+	virtual bool autoIndent();
+
+	virtual QIcon icon() const;
+	virtual QTextCodec * codec() const;
+
+	virtual void loadFromDevice( QIODevice & d );
+private:
+	QTextCodec * m_codec;
+};
+
+/* XslContentEditor */
+
+class XslContentEditor : public ContentViewTextEditor {
+	Q_OBJECT
+public:
+	XslContentEditor( QWidget *parent = 0 );
+	virtual ~XslContentEditor();
+
+	virtual QString defaultFileName() const;
+
+	virtual bool autoIndent();
+
+	virtual QIcon icon() const;
+	virtual QTextCodec * codec() const;
+
+	virtual void searchWord( const QString & word );
+
+	XslCompletionNodeModel * completionModel() const;
+private:
+	XslCompletionNodeModel * m_completionModel;
 };
 
 #endif //_HTMLFILEEDITOR_H_

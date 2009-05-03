@@ -62,7 +62,7 @@ void TextContentView::testCreateAttachNode() {
 }
 
 void TextContentView::cleanupTestCase() {
-	delete m_nodes;
+	m_nodes->deleteInstance();
 }
 
 QTEST_MAIN(TextContentView)

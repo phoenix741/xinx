@@ -39,7 +39,7 @@
 WebPlugin::WebPlugin() {
 	Q_INIT_RESOURCE(webplugin);
 
-	qRegisterMetaType<StyleSheetEditor>( "StyleSheetEditor" );
+	qRegisterMetaType<XslContentEditor>( "XslContentEditor" );
 	qRegisterMetaType<XmlFileEditor>( "XmlFileEditor" );
 	qRegisterMetaType<HtmlFileEditor>( "HtmlFileEditor" );
 	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );
@@ -64,12 +64,6 @@ bool WebPlugin::initializePlugin( const QString & lang ) {
 	tranlator->load( QString(":/translations/webplugin_%1").arg( lang ) );
 	qApp->installTranslator(tranlator);
 
-	xmlCompletionContents = new CompletionXML();
-	try {
-		xmlCompletionContents->setPath( "datas:baseplugin_xml.xml" );
-	} catch( NotCompletionFileException ) {
-		qWarning( qPrintable( tr("Can't read baseplugin_xml file") ) );
-	}
 	return true;
 }
 

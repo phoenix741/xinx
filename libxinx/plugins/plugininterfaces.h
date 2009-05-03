@@ -29,7 +29,6 @@
 
 // Xinx header
 #include <core/appsettings.h>
-#include <filecontent/filecontentstructure.h>
 
 class XINXConfig;
 class QObject;
@@ -170,15 +169,13 @@ public:
 	//! Used to choose a file in a dialog box
 	virtual QString match() = 0;
 	//! Return the icon for the filte type.
-	virtual QIcon icon() = 0;
+	virtual QString icon() = 0;
 
 	//! Return some properties for the file type
 	virtual AppSettings::struct_extentions properties() = 0;
 
 	//! Create an editor with the given filename
 	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
-	//! Create a parser
-	virtual FileContentElement * createElement( FileContentElement * parent = 0, int line = -1, const QString & filename = QString() ) = 0;
 	/*!
 	 * Create a content view parser, this content view parser will any file (of the correct type of course)
 	 * If the parser is null, no content view will be load.

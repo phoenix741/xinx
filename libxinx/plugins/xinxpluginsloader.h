@@ -74,9 +74,6 @@ public:
 	//! Create a format scheme for the given highlighter
 	XinxFormatScheme * scheme( const QString & highlighter, XINXConfig * config );
 
-	//! Create an element (and also a parser) for the given filename
-	FileContentElement * createElement( QString & filename, FileContentElement * parent = 0, int line = -1 );
-
 	/*! Create a plugin loader object */
 	static XinxPluginsLoader * self();
 private:

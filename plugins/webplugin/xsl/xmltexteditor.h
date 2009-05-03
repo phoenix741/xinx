@@ -27,10 +27,14 @@
 #include <QStringList>
 #include <QHash>
 
+/* XPathBalise */
+
 struct XPathBalise {
 	QString name;
 	QHash<QString,QString> attributes;
 };
+
+/* XmlTextEditor */
 
 class XmlTextEditor : public XinxCodeEdit {
 	Q_OBJECT
@@ -67,6 +71,29 @@ protected:
 	cursorPosition editPosition( const QDocumentCursor & cursor, QString & nodeName, QString & paramName );
 private:
 	void key_shenter( bool back );
+};
+
+/* XslTextEditor */
+
+class XslCompletionNodeModel;
+
+class XslTextEditor : public XmlTextEditor {
+	Q_OBJECT
+public:
+	XslTextEditor( QWidget * parent = 0 );
+	virtual ~XslTextEditor();
+
+	virtual QCompleter * completer();
+
+	virtual QDocumentCursor insertCompletionBalises( QDocumentCursor & tc, QString node );
+	virtual void insertCompletionAccolade( QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
+
+	void setModel( XslCompletionNodeModel * model );
+private:
+	QString paramValue( const QDocumentCursor & cursor, const QString & param );
+	void getTemplate( const QDocumentCursor & cursor, QString * name, QString * mode );
+
+	XslCompletionNodeModel * m_model;
 };
 
 #endif /*XMLTEXTEDITOR_H_*/

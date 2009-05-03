@@ -104,6 +104,10 @@ XinxCodeEdit::~XinxCodeEdit() {
 	delete m_editor;
 }
 
+bool XinxCodeEdit::isModified() {
+    return m_editor->editor()->document()->isClean();
+}
+
 int XinxCodeEdit::currentColumn() {
 	return m_editor->editor()->cursor().columnNumber();
 }

@@ -20,25 +20,29 @@
 // Xinx header
 #include "jsfileeditor.h"
 #include "jstexteditor.h"
-#include "javascriptparser.h"
+#include "javascriptmodelcompleter.h"
+#include "jscontentviewparser.h"
 
 // Qt header
 #include <QCompleter>
 
 /* StyleSheetContainer */
 
-JSFileEditor::JSFileEditor( QWidget *parent ) : ItemModelFileEditor( m_parser = new JavaScriptParser(), new JSTextEditor(), parent ) {
-	m_completionModel = new JavascriptModelCompleter( m_parser );
+JSFileEditor::JSFileEditor( QWidget *parent ) : ContentViewTextEditor( new JsContentViewParser(), new JSTextEditor(), parent ) {
+	m_completionModel = new JavascriptModelCompleter( rootNode(), this );
 
 	QCompleter * completer = new QCompleter( textEdit() );
 	completer->setModel( m_completionModel );
 	textEdit()->setCompleter( completer );
+	qobject_cast<JSTextEditor*>( textEdit() )->setModel( m_completionModel );
 }
 
 JSFileEditor::~JSFileEditor() {
+	ContentViewParser * p = parser();
 	setParser( 0 );
+	qobject_cast<JSTextEditor*>( textEdit() )->setModel( m_completionModel );
 	delete m_completionModel;
-	delete m_parser;
+	delete p;
 }
 
 QString JSFileEditor::defaultFileName() const {

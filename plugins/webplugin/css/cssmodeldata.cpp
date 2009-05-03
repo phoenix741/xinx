@@ -19,83 +19,18 @@
 
 // Xinx header
 #include "cssmodeldata.h"
+#include <contentview/contentviewnode.h>
 
 // Qt header
 #include <QFileInfo>
 #include <QTextStream>
 #include <QRegExp>
-
-/* CssParserException */
-
-CssParserException::CssParserException( const QString & message, int line, int column ) : FileContentException( message, line, column ) {
-}
-
-/* CssFileContentProperty */
-
-CssFileContentProperty::CssFileContentProperty( FileContentElement * parent, const QString & name, int line )  : FileContentElement( parent, name, line ) {
-	QStringList property = name.split( ':' );
-	int cnt = property.count();
-	if( cnt > 0 )
-		setName( property.at( 0 ).trimmed() );
-	if( cnt > 1 )
-		m_value = property.at( 1 ).trimmed();
-	if( m_value.endsWith( ';' ) )
-		m_value.chop( 1 );
-}
-
-const QString & CssFileContentProperty::value() const {
-	return m_value;
-}
-
-QString CssFileContentProperty::displayTips() const {
-	return FileContentElement::displayTips() + tr( "\nValue : %2" ).arg( m_value );
-}
-
-void CssFileContentProperty::copyFrom( FileContentElement * element ) {
-	FileContentElement::copyFrom( element );
-	if( dynamic_cast<CssFileContentProperty*>( element ) )
-		m_value = dynamic_cast<CssFileContentProperty*>( element )->m_value;
-}
-
-QIcon CssFileContentProperty::icon() const {
-	return QIcon(":/images/html_value.png");
-}
-
-/* CssFileContentIdentifier */
-
-CssFileContentIdentifier::CssFileContentIdentifier( FileContentElement * parent, const QString & name, int line ) : FileContentElement( parent, name, line ) {
-
-}
-
-FileContentElement * CssFileContentIdentifier::append( FileContentElement * element ) {
-	return FileContentElement::append( element );
-}
-
-QIcon CssFileContentIdentifier::icon() const {
-	return QIcon( ":/images/noeud.png" );
-}
-
-/* CssFileContentClass */
-
-CssFileContentClass::CssFileContentClass( FileContentElement * parent, const QString & name, int line ) : CssFileContentIdentifier( parent, name, line ) {
-
-}
-
-/* CssFileContentTag */
-
-CssFileContentTag::CssFileContentTag( FileContentElement * parent, const QString & name, int line ) : CssFileContentIdentifier( parent, name, line ) {
-
-}
-
-/* CssFileContentId */
-
-CssFileContentId::CssFileContentId( FileContentElement * parent, const QString & name, int line ) : CssFileContentIdentifier( parent, name, line ) {
-
-}
+#include <QImage>
+#include <QVariant>
 
 /* CSSFileContentParser */
 
-CSSFileContentParser::CSSFileContentParser( FileContentElement * parent, const QString & filename, int lineNumber ) : FileContentElement( parent, QFileInfo( filename ).fileName(), lineNumber ), m_isLoaded( true ) {
+CSSFileContentParser::CSSFileContentParser( bool autoDelete ) : ContentViewParser( autoDelete ) {
 
 }
 
@@ -103,17 +38,15 @@ CSSFileContentParser::~CSSFileContentParser() {
 
 }
 
-QIcon CSSFileContentParser::icon() const {
-	return QIcon( ":/images/typecss.png" );
-}
+void CSSFileContentParser::loadFromDeviceImpl() {
+	rootNode()->setData( QImage(":/images/typecss.png"), ContentViewNode::NODE_ICON );
 
-void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
-	m_isLoaded = true;
+	loadAttachedNode( rootNode() );
 
-	QString text = device->readAll();
+	QString text = inputDevice()->readAll();
 
 	if( text.isEmpty() ) {
-		clear();
+		removeAttachedNodes();
 		return;
 	}
 
@@ -122,12 +55,11 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 	QRegExp keywordExpression("[A-Za-z_][A-Za-z0-9_-:.]*");
 	QRegExp indentifierExpression("[^\n]*;");
 
-	QList<FileContentElement*> elements;
+	QList<ContentViewNode*> elements;
 
 	int pos;
 	ParsingState state = CssDefault;
 
-	markAllDeleted();
 	m_line = 1;
 
 	for( int i = 0; i < text.length(); i++ ) {
@@ -151,7 +83,7 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 
 				if( pos == i ) {
 					const int iLength = keywordExpression.matchedLength();
-					elements.append( append( new CssFileContentTag( this, keywordExpression.cap(), m_line ) ) );
+					elements.append( attacheNewTagNode( rootNode(), keywordExpression.cap(), m_line ) );
 					i += iLength - 1;
 				}
 			} else if( state == CssIdentifier ) {
@@ -160,8 +92,9 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 
 				if( pos == i ) {
 					const int iLength = indentifierExpression.matchedLength();
-					foreach( FileContentElement* element, elements )
-						dynamic_cast<CssFileContentIdentifier*>( element )->append( new CssFileContentProperty( element, indentifierExpression.cap(), m_line ) );
+					foreach( ContentViewNode * element, elements ) {
+						attacheNewPropertyNode( element, indentifierExpression.cap(), m_line );
+					}
 					i += iLength - 1;
 				}
 			}
@@ -171,7 +104,7 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
 					// Pseudo class
-					elements.append( append( new CssFileContentClass( this, ":" + keywordExpression.cap(), m_line ) ) );
+					elements.append( attacheNewClassNode( rootNode(), ":" + keywordExpression.cap(), m_line ) );
 					i += iLength;
 				}
 			}
@@ -181,7 +114,7 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
 					// Class
-					elements.append( append( new CssFileContentClass( this, "." + keywordExpression.cap(), m_line ) ) );
+					elements.append( attacheNewClassNode( rootNode(), "." + keywordExpression.cap(), m_line ) );
 					i += iLength;
 				}
 			}
@@ -191,13 +124,14 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 				if( pos == ( i + 1 ) ) {
 					const int iLength = keywordExpression.matchedLength();
 					// ID
-					elements.append( append( new CssFileContentId( this, "#" + keywordExpression.cap(), m_line ) ) );
+					elements.append( attacheNewIdNode( rootNode(), "#" + keywordExpression.cap(), m_line ) );
 					i += iLength;
 				}
 			}
 		} else if( c == '*' ) {
-			if( state == CssDefault )
-				elements.append( append( new CssFileContentTag( this, "*", m_line ) ) );
+			if( state == CssDefault ) {
+				elements.append( attacheNewTagNode( rootNode(), "*", m_line ) );
+			}
 		} else if( c == '{' ) {
 			if( state == CssDefault )
 				state = CssIdentifier;
@@ -209,32 +143,72 @@ void CSSFileContentParser::loadFromDevice( QIODevice * device ) {
 		}
 	}
 
-	removeMarkedDeleted();
+	detachAttachedNode();
 }
 
-void CSSFileContentParser::loadFromFile( const QString & filename ) {
-	setFilename( filename );
-	setName( QFileInfo( filename ).fileName() );
+ContentViewNode * CSSFileContentParser::attacheNewPropertyNode( ContentViewNode * parent, const QString & name, int line ) {
+	QStringList property = name.split( ':' );
+	QString n, v;
 
-	FileContentParser::loadFromFile( filename );
+	int cnt = property.count();
+	if( cnt > 0 )
+		n = property.at( 0 ).trimmed();
+	if( cnt > 1 )
+		v = property.at( 1 ).trimmed();
+	if( v.endsWith( ';' ) )
+		v.chop( 1 );
+
+
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "CssProperty", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( n, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1\nValue : %2" ).arg( line ).arg( v ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node = attachNode( parent, node );
+
+	return node;
 }
 
-void CSSFileContentParser::loadFromFileDelayed( const QString & filename ) {
-	setFilename( filename );
-	setName( QFileInfo( filename ).fileName() );
+ContentViewNode * CSSFileContentParser::attacheNewIdentifierNode( ContentViewNode * parent, const QString & name, int line ) {
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "CssIdentifier", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "ddElement at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node = attachNode( parent, node );
 
-	m_isLoaded = false;
+	return node;
 }
 
-bool CSSFileContentParser::isLoaded() {
-	return m_isLoaded;
+ContentViewNode * CSSFileContentParser::attacheNewClassNode( ContentViewNode * parent, const QString & name, int line ) {
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "CssClass", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node = attachNode( parent, node );
+
+	return node;
 }
 
-int CSSFileContentParser::rowCount() {
-	if( ! m_isLoaded )
-		try {
-			loadFromFile( filename() );
-		} catch( FileContentException e ) {
-		}
-	return FileContentElement::rowCount();
+ContentViewNode * CSSFileContentParser::attacheNewTagNode( ContentViewNode * parent, const QString & name, int line ) {
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "CssTag", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node = attachNode( parent, node );
+
+	return node;
+}
+
+ContentViewNode * CSSFileContentParser::attacheNewIdNode( ContentViewNode * parent, const QString & name, int line ) {
+	ContentViewNode * node = new ContentViewNode( name, line );
+	node->setData( "CssId", ContentViewNode::NODE_TYPE );
+	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
+	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node = attachNode( parent, node );
+
+	return node;
 }

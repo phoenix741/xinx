@@ -21,10 +21,12 @@
 #define _JSFILEEDITOR_H_
 
 // Xinx header
-#include <editors/itemmodelfileeditor.h>
-#include "javascriptmodelcompleter.h"
+#include <editors/textfileeditor.h>
+#include <editors/contentviewtexteditor.h>
 
-class JSFileEditor : public ItemModelFileEditor {
+class JavascriptModelCompleter;
+
+class JSFileEditor : public ContentViewTextEditor {
 	Q_OBJECT
 public:
 	JSFileEditor( QWidget *parent = 0 );
@@ -32,9 +34,9 @@ public:
 
 	virtual QString defaultFileName() const;
 	virtual QIcon icon() const;
+
 	JavascriptModelCompleter * completionModel() const;
 private:
-	JavaScriptParser * m_parser;
 	JavascriptModelCompleter * m_completionModel;
 };
 

@@ -19,21 +19,22 @@
 
 // Xinx header
 #include "filecontentdockwidget.h"
-#include <filecontent/filecontentitemmodel.h>
+#include <contentview/contentviewmodel.h>
 
 // Qt header
 #include <QVBoxLayout>
 #include <QTreeView>
 #include <QAbstractItemModel>
-#include <QSortFilterProxyModel>
+
+#include <modeltest.h>
 
 /* ContentDockWidget */
 
-FileContentDockWidget::FileContentDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ), m_model(0), m_sortModel(0) {
+FileContentDockWidget::FileContentDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ), m_model(0) {
 	init();
 }
 
-FileContentDockWidget::FileContentDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ), m_model(0), m_sortModel(0) {
+FileContentDockWidget::FileContentDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ), m_model(0) {
 	init();
 }
 
@@ -43,7 +44,6 @@ FileContentDockWidget::~FileContentDockWidget() {
 
 void FileContentDockWidget::init() {
 	m_contentTreeView = new QTreeView( this );
-	m_contentTreeView->setSortingEnabled( true );
 
 	QVBoxLayout * vlayout = new QVBoxLayout();
 	vlayout->setSpacing( 0 );
@@ -58,9 +58,7 @@ void FileContentDockWidget::init() {
 }
 
 void FileContentDockWidget::contentTreeViewDblClick( QModelIndex index ) {
-	QModelIndex mappingIndex = m_sortModel->mapToSource( index );
-
-	struct FileContentItemModel::struct_file_content data = m_model->data( mappingIndex, Qt::UserRole ).value<FileContentItemModel::struct_file_content>();
+	struct ContentViewModel::struct_file_content data = m_model->data( index, Qt::UserRole ).value<ContentViewModel::struct_file_content>();
 	int line = data.line;
 	QString name = data.filename;
 
@@ -69,15 +67,9 @@ void FileContentDockWidget::contentTreeViewDblClick( QModelIndex index ) {
 
 void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
 	if( model == m_model ) return;
-	if( model ) {
-		delete m_sortModel;
-		m_sortModel = new QSortFilterProxyModel( this );
-		m_sortModel->setSourceModel( model );
-		m_contentTreeView->setModel( m_sortModel );
-		m_contentTreeView->sortByColumn( 0, Qt::AscendingOrder );
-	} else {
-		m_contentTreeView->setModel( NULL );
-		delete m_sortModel;
-	}
+	/*if( model ) {
+		new ModelTest(model, this);
+	}*/
+	m_contentTreeView->setModel( model );
 	m_model = model;
 }

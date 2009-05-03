@@ -21,6 +21,9 @@
 #include "contentview/contentviewmodel.h"
 #include "contentview/contentviewnode.h"
 
+// Qt header
+#include <QImage>
+
 /* ContentViewModel */
 
 ContentViewModel::ContentViewModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ) {
@@ -38,11 +41,16 @@ QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
 	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
 
 	if( item ) {
-		if( role == Qt::UserRole ) {
+		if( role == Qt::DisplayRole ) {
+			return QString( "%1 %2").arg( item->data( (ContentViewNode::RoleIndex)role ).toString() ).arg( (unsigned long)item, 0, 16 );
+		} else if( role == Qt::UserRole ) {
 			ContentViewModel::struct_file_content data;
 			data.line = item->line();
 			data.filename = item->fileName();
 			return QVariant::fromValue( data );
+		} else if( role == Qt::DecorationRole ) {
+			QImage image = item->data( ContentViewNode::NODE_ICON ).value<QImage>();
+			return image.scaled( QSize(16,16) );
 		} else
 			return item->data( (ContentViewNode::RoleIndex)role );
 	}
@@ -51,7 +59,7 @@ QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
 
 Qt::ItemFlags ContentViewModel::flags( const QModelIndex &index ) const {
 	if ( !index.isValid() )
-		return Qt::ItemIsEnabled;
+		return 0;
 
 	return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
@@ -77,7 +85,7 @@ QModelIndex ContentViewModel::index( ContentViewNode * node ) const {
 	if( node ) {
 		ContentViewNode * parent = node->parent( (unsigned long)rootNode() );
 		if( parent )
-			return createIndex( parent->childs().indexOf( node ), 0, node );
+			return createIndex( parent->childs().indexOfObject( node ), 0, node );
 	}
 	return QModelIndex();
 }
@@ -98,7 +106,7 @@ QModelIndex ContentViewModel::parent( const QModelIndex &index ) const {
 	if( !parent2 ) // In this case parent is rootNode()
 		return QModelIndex();
 
-	return createIndex( parent2->childs().indexOf( parent ), 0, parent );
+	return createIndex( parent2->childs().indexOfObject( parent ), 0, parent );
 }
 
 bool ContentViewModel::hasChildren( const QModelIndex & parent ) const {

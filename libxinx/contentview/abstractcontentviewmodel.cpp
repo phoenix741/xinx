@@ -24,11 +24,11 @@
 /* AbstractContentViewModel */
 
 AbstractContentViewModel::AbstractContentViewModel( ContentViewNode * root, QObject *parent ) : QAbstractItemModel( parent ), m_rootNode( root ) {
-	m_rootNode->setModel( this, (unsigned long)m_rootNode );
+	m_rootNode->addModel( this, (unsigned long)m_rootNode );
 }
 
 AbstractContentViewModel::~AbstractContentViewModel() {
-	m_rootNode->setModel( 0, (unsigned long)m_rootNode );
+	m_rootNode->removeModel( this, (unsigned long)m_rootNode );
 }
 
 ContentViewNode * AbstractContentViewModel::rootNode() const {
@@ -54,3 +54,8 @@ void AbstractContentViewModel::endInsertNode() {
 void AbstractContentViewModel::endRemoveNode() {
 	endRemoveRows();
 }
+
+QMutex & AbstractContentViewModel::mutex() {
+	return m_updateMutex;
+}
+

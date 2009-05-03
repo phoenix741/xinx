@@ -21,12 +21,22 @@
 #include "contentview/completionnodemodel.h"
 #include "contentview/contentviewnode.h"
 
+// Qt header
+#include <QTimerEvent>
+#include <QStack>
+
 /* CompletionNodeModel */
 
 CompletionNodeModel::CompletionNodeModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ) {
+	startTimer(0);
 }
 
 CompletionNodeModel::~CompletionNodeModel() {
+}
+
+void CompletionNodeModel::timerEvent( QTimerEvent * event ) {
+	killTimer( event->timerId() );
+	//	addAllNodes( rootNode() );
 }
 
 QVariant CompletionNodeModel::data( const QModelIndex &index, int role ) const {
@@ -36,7 +46,16 @@ QVariant CompletionNodeModel::data( const QModelIndex &index, int role ) const {
 	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
 
 	if( item ) {
-		return item->data( (ContentViewNode::RoleIndex)role );
+		switch( role ) {
+		case Qt::DecorationRole:
+			return item->data( ContentViewNode::NODE_ICON );
+		case Qt::DisplayRole:
+			return item->data( ContentViewNode::NODE_DISPLAY_NAME );
+		case CompletionNodeModel::CompletionNodeName:
+			return item->data( ContentViewNode::NODE_NAME );
+		default:
+			return item->data( (ContentViewNode::RoleIndex)role );
+		}
 	}
 
 	return QVariant();
@@ -93,38 +112,38 @@ int CompletionNodeModel::columnCount( const QModelIndex &parent ) const {
 	return 1;
 }
 
-bool CompletionNodeModel::mustElementBeShowed( ContentViewNode * node ) {
-	Q_UNUSED( node );
+bool CompletionNodeModel::mustElementBeShowed( ContentViewNode * n ) {
+	Q_UNUSED( n );
 	return true;
 }
 
-QList<ContentViewNode*> & CompletionNodeModel::nodes() {
+const QList<ContentViewNode*> & CompletionNodeModel::nodes() const {
 	return m_nodes;
 }
 
-QList<ContentViewNode*> & CompletionNodeModel::showedNodes() {
+const QList<ContentViewNode*> & CompletionNodeModel::showedNodes() const {
 	return m_showedNodes;
 }
 
-bool CompletionNodeModel::isElementShowed( ContentViewNode * node ) {
-	return m_showedNodes.contains( node );
+bool CompletionNodeModel::isElementShowed( ContentViewNode * n ) {
+	return m_showedNodes.contains( n );
 }
 
-void CompletionNodeModel::showNode( ContentViewNode * node ) {
-	if( m_showedNodes.contains( node ) ) return;
+void CompletionNodeModel::showNode( ContentViewNode * n ) {
+	if( m_showedNodes.contains( n ) ) return;
 
-	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( m_showedNodes.begin(), m_showedNodes.end(), node, ContentViewNodeListSort );
+	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( m_showedNodes.begin(), m_showedNodes.end(), n, ContentViewNodeListSort );
 	int rowForModel = insertingRow - m_showedNodes.begin();
 
 	beginInsertRows( QModelIndex(), rowForModel, rowForModel );
-	m_showedNodes.insert( insertingRow, node );
+	m_showedNodes.insert( insertingRow, n );
 	endInsertRows();
 }
 
-void CompletionNodeModel::hideNode( ContentViewNode * node ) {
-	if( ! m_showedNodes.contains( node ) ) return;
+void CompletionNodeModel::hideNode( ContentViewNode * n ) {
+	if( ! m_showedNodes.contains( n ) ) return;
 
-	int removingRow = m_showedNodes.indexOf( node );
+	int removingRow = m_showedNodes.indexOf( n );
 	if( removingRow < 0 ) return;
 
 	beginRemoveRows( QModelIndex(), removingRow, removingRow );
@@ -132,8 +151,67 @@ void CompletionNodeModel::hideNode( ContentViewNode * node ) {
 	endRemoveRows();
 }
 
-void CompletionNodeModel::beginInsertNode( ContentViewNode * node, int first, int last ) {
-	m_parent = node;
+void CompletionNodeModel::addAllNodes( ContentViewNode * n ) {
+	Q_ASSERT( n );
+
+	QStack< ContentViewNode* > stack;
+
+	stack.push( n );
+	while ( stack.count() ) {
+		ContentViewNode * node  = stack.pop();
+
+		addNode( node );
+
+		// Process children
+		foreach ( ContentViewNode * child, node->childs() )
+			stack.push( child );
+	}
+}
+
+void CompletionNodeModel::addNode( ContentViewNode * n ) {
+	Q_ASSERT( n );
+	if( m_nodes.contains( n ) ) {
+		qDebug( qPrintable( QString("The node %1(%2) is already in the list").arg( (unsigned long)n, 0, 16 ).arg( n->data().toString() ) ) );
+		return;
+	}
+
+	// Add the node to list
+	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( m_nodes.begin(), m_nodes.end(), n, ContentViewNodeListSort );
+	m_nodes.insert( insertingRow, n );
+
+	if( mustElementBeShowed( n ) ) {
+		showNode( n );
+	}
+}
+
+void CompletionNodeModel::removeAllNodes( ContentViewNode * n ) {
+	Q_ASSERT( n );
+
+	QStack< ContentViewNode* > stack;
+
+	stack.push( n );
+	while ( stack.count() ) {
+		ContentViewNode * node  = stack.pop();
+
+		removeNode( node );
+
+		// Process children
+		foreach ( ContentViewNode * child, node->childs() )
+			stack.push( child );
+	}
+}
+
+void CompletionNodeModel::removeNode( ContentViewNode * n ) {
+	Q_ASSERT( n );
+
+	// Remove the node to list
+	hideNode( n );
+	int removingRow = m_nodes.indexOf( n );
+	m_nodes.removeAt( removingRow );
+}
+
+void CompletionNodeModel::beginInsertNode( ContentViewNode * n, int first, int last ) {
+	m_parent = n;
 	m_first  = first;
 	m_last   = last;
 }
@@ -142,28 +220,32 @@ void CompletionNodeModel::endInsertNode() {
 	for( int i = m_first; i <= m_last; i++ ) {
 		ContentViewNode * node = m_parent->childs().at( i );
 
-		QList<ContentViewNode*>::iterator insertingRow = qLowerBound( m_nodes.begin(), m_nodes.end(), node, ContentViewNodeListSort );
-		m_nodes.insert( insertingRow, node );
-
-		if( mustElementBeShowed( node ) ) {
-			showNode( node );
-		}
+		addAllNodes( node );
 	}
 }
 
-void CompletionNodeModel::beginRemoveNode( ContentViewNode * node, int first, int last ) {
-	m_parent = node;
+void CompletionNodeModel::beginRemoveNode( ContentViewNode * n, int first, int last ) {
+	m_parent = n;
 	m_first  = first;
 	m_last   = last;
 
 	for( int i = m_first ; i <= m_last ; i++ ) {
 		ContentViewNode * child = m_parent->childs().at( i );
-
-		hideNode( child );
-		int removingRow = m_nodes.indexOf( child );
-		m_nodes.removeAt( removingRow );
+		removeAllNodes( child );
 	}
 }
 
 void CompletionNodeModel::endRemoveNode() {
 }
+
+void CompletionNodeModel::reset() {
+	m_showedNodes.clear();
+	AbstractContentViewModel::reset();
+	foreach( ContentViewNode* node, m_nodes ) {
+		if( mustElementBeShowed( node ) ) {
+			m_showedNodes.append( node );
+		}
+	}
+	AbstractContentViewModel::reset();
+}
+
