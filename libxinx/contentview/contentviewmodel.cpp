@@ -41,15 +41,13 @@ QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
 	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
 
 	if( item ) {
-		if( role == Qt::DisplayRole ) {
-			return QString( "%1 %2").arg( item->data( (ContentViewNode::RoleIndex)role ).toString() ).arg( (unsigned long)item, 0, 16 );
-		} else if( role == Qt::UserRole ) {
+		if( role == Qt::UserRole ) {
 			ContentViewModel::struct_file_content data;
 			data.line = item->line();
 			data.filename = item->fileName();
 			return QVariant::fromValue( data );
 		} else if( role == Qt::DecorationRole ) {
-			QImage image = item->data( ContentViewNode::NODE_ICON ).value<QImage>();
+			QImage image = QImage( item->data( ContentViewNode::NODE_ICON ).toString() );
 			return image.scaled( QSize(16,16) );
 		} else
 			return item->data( (ContentViewNode::RoleIndex)role );

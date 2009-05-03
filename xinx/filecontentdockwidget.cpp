@@ -26,7 +26,7 @@
 #include <QTreeView>
 #include <QAbstractItemModel>
 
-#include <modeltest.h>
+//#include <modeltest.h>
 
 /* ContentDockWidget */
 

@@ -36,7 +36,7 @@ JsContentViewParser::~JsContentViewParser() {
 }
 
 void JsContentViewParser::loadFromDeviceImpl() {
-	rootNode()->setData( QImage(":/images/typejs.png"), ContentViewNode::NODE_ICON );
+	rootNode()->setData( ":/images/typejs.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );
 
@@ -325,7 +325,7 @@ ContentViewNode * JsContentViewParser::loadFunction( ContentViewNode * parent, Q
 ContentViewNode * JsContentViewParser::attacheNewParamNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "JsParam", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/html_value.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );
@@ -336,7 +336,7 @@ ContentViewNode * JsContentViewParser::attacheNewParamNode( ContentViewNode * pa
 ContentViewNode * JsContentViewParser::attacheNewVariableNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "JsVariable", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/variable.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/variable.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );
@@ -347,7 +347,7 @@ ContentViewNode * JsContentViewParser::attacheNewVariableNode( ContentViewNode *
 ContentViewNode * JsContentViewParser::attacheNewFunctionNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "JsFunction", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );

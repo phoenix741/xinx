@@ -39,7 +39,7 @@ CSSFileContentParser::~CSSFileContentParser() {
 }
 
 void CSSFileContentParser::loadFromDeviceImpl() {
-	rootNode()->setData( QImage(":/images/typecss.png"), ContentViewNode::NODE_ICON );
+	rootNode()->setData( ":/images/typecss.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );
 
@@ -161,7 +161,7 @@ ContentViewNode * CSSFileContentParser::attacheNewPropertyNode( ContentViewNode 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "CssProperty", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/html_value.png", ContentViewNode::NODE_ICON );
 	node->setData( n, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue : %2" ).arg( line ).arg( v ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );
@@ -172,9 +172,9 @@ ContentViewNode * CSSFileContentParser::attacheNewPropertyNode( ContentViewNode 
 ContentViewNode * CSSFileContentParser::attacheNewIdentifierNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "CssIdentifier", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( tr( "ddElement at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
+	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );
 
 	return node;
@@ -183,7 +183,7 @@ ContentViewNode * CSSFileContentParser::attacheNewIdentifierNode( ContentViewNod
 ContentViewNode * CSSFileContentParser::attacheNewClassNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "CssClass", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );
@@ -194,7 +194,7 @@ ContentViewNode * CSSFileContentParser::attacheNewClassNode( ContentViewNode * p
 ContentViewNode * CSSFileContentParser::attacheNewTagNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "CssTag", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );
@@ -205,7 +205,7 @@ ContentViewNode * CSSFileContentParser::attacheNewTagNode( ContentViewNode * par
 ContentViewNode * CSSFileContentParser::attacheNewIdNode( ContentViewNode * parent, const QString & name, int line ) {
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "CssId", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1" ).arg( line ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node = attachNode( parent, node );

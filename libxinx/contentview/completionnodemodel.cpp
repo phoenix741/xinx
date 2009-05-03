@@ -24,6 +24,7 @@
 // Qt header
 #include <QTimerEvent>
 #include <QStack>
+#include <QImage>
 
 /* CompletionNodeModel */
 
@@ -44,11 +45,13 @@ QVariant CompletionNodeModel::data( const QModelIndex &index, int role ) const {
 		return QVariant();
 
 	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
+	QImage image;
 
 	if( item ) {
 		switch( role ) {
 		case Qt::DecorationRole:
-			return item->data( ContentViewNode::NODE_ICON );
+			image = QImage( item->data( ContentViewNode::NODE_ICON ).toString() );
+			return image.scaled( QSize(16,16) );
 		case Qt::DisplayRole:
 			return item->data( ContentViewNode::NODE_DISPLAY_NAME );
 		case CompletionNodeModel::CompletionNodeName:

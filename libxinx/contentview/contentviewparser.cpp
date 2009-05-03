@@ -149,7 +149,7 @@ void ContentViewParser::createContentViewNode( ContentViewNode * parent, const Q
 		node->attach( parent, m_id );
 	} else {
 		ContentViewNode * node = new ContentViewNode( name, -1 );
-		node->setData( QImage( ":/images/import.png" ), ContentViewNode::NODE_ICON );
+		node->setData( ":/images/import.png", ContentViewNode::NODE_ICON );
 		if( ! node->attach( parent, m_id ) ) node->deleteInstance();
 	}
 }

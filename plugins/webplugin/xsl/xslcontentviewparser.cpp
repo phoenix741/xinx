@@ -45,7 +45,7 @@ XslContentViewParser::~XslContentViewParser() {
 void XslContentViewParser::loadFromDeviceImpl() {
 	setDevice( inputDevice() );
 
-	rootNode()->setData( QImage(":/images/typexsl.png"), ContentViewNode::NODE_ICON );
+	rootNode()->setData( ":/images/typexsl.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );
 
@@ -223,14 +223,14 @@ void XslContentViewParser::readTemplate() {
 				node->setData( "internal", ContentViewNode::NODE_TYPE );
 				node->setData( s.title, ContentViewNode::NODE_DISPLAY_NAME );
 				node->setData( tr( "Element at line : %1" ).arg( s.line ), ContentViewNode::NODE_DISPLAY_TIPS );
-				node->setData( QImage(":/images/import.png"), ContentViewNode::NODE_ICON );
+				node->setData( ":/images/import.png", ContentViewNode::NODE_ICON );
 
 				// Il nous faut un parser JavaScript
 				IFileTypePlugin * ft = XinxPluginsLoader::self()->matchedFileType( s.src );
 				ContentViewParser * parser = 0;
 				if( ft && ( parser = ft->createParser() ) ) {
 					try {
-						node->setData( QImage( ft->icon() ), ContentViewNode::NODE_ICON );
+						node->setData( ft->icon(), ContentViewNode::NODE_ICON );
 
 						node = attachNode( t, node );
 
@@ -276,7 +276,7 @@ ContentViewNode * XslContentViewParser::attacheNewTemplateNode( ContentViewNode 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "XslTemplate", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/template.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/template.png", ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nMode = %2" ).arg( line ).arg( mode ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node->setData( mode, ContentViewNode::NODE_USER_VALUE );
@@ -293,7 +293,7 @@ ContentViewNode * XslContentViewParser::attacheNewParamsNode( ContentViewNode * 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "XslParam", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/html_value.png", ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node->setData( value, ContentViewNode::NODE_USER_VALUE );
@@ -310,7 +310,7 @@ ContentViewNode * XslContentViewParser::attacheNewVariableNode( ContentViewNode 
 
 	ContentViewNode * node = new ContentViewNode( name, line );
 	node->setData( "XslVariable", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/variable.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/variable.png", ContentViewNode::NODE_ICON );
 	node->setData( displayName, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( tr( "Element at line : %1\nValue = %2" ).arg( line ).arg( value ), ContentViewNode::NODE_DISPLAY_TIPS );
 	node->setData( value, ContentViewNode::NODE_USER_VALUE );
@@ -458,7 +458,7 @@ void XmlCompletionParser::readBaliseTag() {
 
 	ContentViewNode * node = new ContentViewNode( name, lineNumber() );
 	node->setData( "XmlBalise", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/balise.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/balise.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
 	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
@@ -494,7 +494,7 @@ void XmlCompletionParser::readAttributeTag() {
 
 	ContentViewNode * node = new ContentViewNode( name, lineNumber() );
 	node->setData( "XmlAttribute", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/noeud.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 
 	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
@@ -527,7 +527,7 @@ void XmlCompletionParser::readValueTag() {
 
 	ContentViewNode * node = new ContentViewNode( name, lineNumber() );
 	node->setData( "XmlValue", ContentViewNode::NODE_TYPE );
-	node->setData( QImage(":/images/html_value.png"), ContentViewNode::NODE_ICON );
+	node->setData( ":/images/html_value.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 
 	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );

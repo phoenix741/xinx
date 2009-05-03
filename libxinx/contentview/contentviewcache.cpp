@@ -59,7 +59,7 @@ ContentViewNode* fileLoading( const QString & filename ) {
 			parser->setRootNode( node );
 			parser->setFilename( filename );
 
-			node->setData( QVariant::fromValue( QImage( fileType->icon() ) ), ContentViewNode::NODE_ICON );
+			node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
 
 			parser->loadFromMember();
 
@@ -142,7 +142,7 @@ ContentViewNode * ContentViewCache::contentOfFileName( const QString & filename 
 			node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
 			node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
 			node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
-			node->setData( QVariant::fromValue( QImage( fileType->icon() ) ), ContentViewNode::NODE_ICON );
+			node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
 
 			parser->setAutoDelete( true );
 			parser->setRootNode( node );
