@@ -24,6 +24,8 @@
 // Qt header
 #include <QStack>
 #include <QFileInfo>
+#include <QThread>
+#include <QDebug>
 
 /* Static */
 
