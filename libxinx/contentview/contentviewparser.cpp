@@ -97,10 +97,6 @@ void ContentViewParser::removeAttachedNode( ContentViewNode * n ) {
 	m_attachedNode.removeAll( n );
 }
 
-void ContentViewParser::removeAttachedNodes() {
-	m_attachedNode.clear();
-}
-
 QString ContentViewParser::locationOf( ContentViewNode * parent, const QString & filename ) {
 	QStringList searchList;
 

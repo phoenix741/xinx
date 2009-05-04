@@ -126,7 +126,7 @@ protected:
 	void loadAttachedNode( ContentViewNode * rootNode );
 	void detachAttachedNode();
 	inline void removeAttachedNode( ContentViewNode * rootNode );
-	inline void removeAttachedNodes();
+  inline void removeAttachedNodes() { m_attachedNode.clear(); }
 
 	QString locationOf( ContentViewNode * parent, const QString & filename );
 private:
