@@ -66,13 +66,31 @@ VIAddVersionKey /LANG=${LANG_FRENCH} LegalCopyright "2009 (c) Ulrich VANDENHEKKE
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
-InstType "full"
-InstType "minimal"
-
 # Installer sections
+# Installer functions
+Function .onInit
+    InitPluginsDir
+TestXinx:
+	ReadRegStr $0 HKLM SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{AB2A9C86-AD08-4373-98FD-6A9AA8496AEE}_is1 "QuietUninstallString"
+	StrCmp $0 "" TestDBus 0
+	MessageBox MB_OKCANCEL "$(UNINSTALL_OLD_XINX)" IDOK 0 IDCANCEL Annulation
+	ExecWait $0
+	Goto TestDBus
+Annulation:
+	Abort
+TestDBus:
+	ReadRegStr $0 HKLM SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{5561D91E-B126-4C8A-A2A1-E9C095528FD9}_is1 "QuietUninstallString"
+	StrCmp $0 "" Install 0
+	MessageBox MB_OKCANCEL "$(UNINSTALL_OLD_DBUS)" IDOK 0 IDCANCEL Annulation
+	ExecWait $0
+	Goto Install
+Install:
+
+FunctionEnd
+
 SectionGroup Xinx GRP_XNX
 	Section Application SEC_XNX_APP
-		SectionIn 1 2 RO
+		SectionIn RO
 	    SetOutPath $INSTDIR\bin
 	    SetOverwrite on
 	    File ..\xinx\xinx.exe
@@ -85,7 +103,7 @@ SectionGroup Xinx GRP_XNX
 	SectionEnd
 	SectionGroup Librairies
 		Section "Librairies Applicatif" SEC_XNX_LIB
-			SectionIn 1 2 RO
+			SectionIn RO
 		    SetOutPath $INSTDIR\bin
 		    SetOverwrite on
 		    File ..\libxinx\sharedxinx.dll
@@ -94,7 +112,7 @@ SectionGroup Xinx GRP_XNX
 			WriteRegStr HKLM "${REGKEY}\Components" "Librairies Applicatif" 1
 		SectionEnd
 		Section Qt SEC_XNX_QT
-			SectionIn 1 2 RO
+			SectionIn RO
 		    SetOutPath $INSTDIR\bin
 		    SetOverwrite on
 		    File C:\Qt\4.5.0\bin\QtCore4.dll
@@ -108,7 +126,7 @@ SectionGroup Xinx GRP_XNX
 			WriteRegStr HKLM "${REGKEY}\Components" Qt 1
 		SectionEnd
 		Section MinGW SEC_XNX_MINGW
-			SectionIn 1 2 RO
+			SectionIn RO
 		    SetOutPath $INSTDIR\bin
 		    SetOverwrite on
 			File C:\Qt\4.5.0\bin\mingwm10.dll
@@ -117,14 +135,14 @@ SectionGroup Xinx GRP_XNX
 	SectionGroupEnd
 	SectionGroup Plugins
 		Section "CVS Plugin" SEC_XNX_PLUGINCVS
-			SectionIn 1 2 RO
+			SectionIn RO
 		    SetOutPath $INSTDIR\plugins
 		    SetOverwrite on
 		    File ..\plugins\cvsplugin.dll
 			WriteRegStr HKLM "${REGKEY}\Components" "CVS Plugin" 1
 		SectionEnd
 		Section "Web Plugin" SEC_XNX_PLUGINWEB
-			SectionIn 1 2 RO
+			SectionIn RO
 			SetOutPath $INSTDIR\xml
 			File ..\xinx\xml\baseplugin_js.xml
 			File ..\xinx\xml\baseplugin_xml.xml
@@ -132,7 +150,7 @@ SectionGroup Xinx GRP_XNX
 			WriteRegStr HKLM "${REGKEY}\Components" "Web Plugin" 1
 		SectionEnd
 		Section "Scripts XQuery" SEC_XNX_SCRIPT
-			SectionIn 1 2 RO
+			SectionIn RO
 			SetOutPath $INSTDIR\xml
 		    File ..\scripts\conf_businessviewlist.xq
 		    File ..\scripts\conf_version.xq
@@ -143,7 +161,6 @@ SectionGroupEnd
 
 SectionGroup Extra
 	Section Scripts SEC_EXT_SCRIPT
-		SectionIn 1
 	    SetOutPath $INSTDIR\scripts
 	    SetOverwrite on
 	    File ..\scripts\changeFileName.js
@@ -156,14 +173,12 @@ SectionGroup Extra
 	    WriteRegStr HKLM "${REGKEY}\Components" Scripts 1
 	SectionEnd
 	Section "SVN Plugin" SEC_EXT_PLUGINSVN
-		SectionIn 1
 	    SetOutPath $INSTDIR\plugins
 	    SetOverwrite on
 	    File ..\plugins\svnplugin.dll
 	    WriteRegStr HKLM "${REGKEY}\Components" "SVN Plugin" 1
 	SectionEnd
 	Section "WebServices Plugin" SEC_EXT_SERVICES
-		SectionIn 1
 	    SetOutPath $INSTDIR\plugins
 	    SetOverwrite on
 	    File ..\plugins\services.dll
@@ -173,14 +188,12 @@ SectionGroupEnd
 
 SectionGroup /e Developpement GRP_DEV
 	Section /o Source SEC_DEV_SRC
-		SectionIn 1
 		SetOutPath $INSTDIR
 		SetOverwrite on
 		File /oname=src.zip ..\xinx.zip
 		WriteRegStr HKLM "${REGKEY}\Components" Source 1
 	SectionEnd
 	Section /o Documentation SEC_DEV_DOC
-		SectionIn 1
 		SetOutPath $INSTDIR\doc\html
 		SetOverwrite on
 		File ..\doc\html\*.*
@@ -289,11 +302,6 @@ Section -un.post UNSEC0006
     RmDir /REBOOTOK $INSTDIR
 SectionEnd
 
-# Installer functions
-Function .onInit
-    InitPluginsDir
-FunctionEnd
-
 # Uninstaller functions
 Function un.onInit
     ReadRegStr $INSTDIR HKLM "${REGKEY}" Path
@@ -319,10 +327,14 @@ FunctionEnd
 LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
 
+LangString UNINSTALL_OLD_XINX ${LANG_FRENCH} "Il est necessaire de désinstaller l'ancienne version de XINX avant d'installer cette nouvelle version. Voulez-vous désinstaller XINX ?"
+LangString UNINSTALL_OLD_DBUS ${LANG_FRENCH} "Il est necessaire de désinstaller l'ancienne version de D-BUS avant d'installer cette nouvelle version. Voulez-vous désinstaller D-BUS ?"
 LangString SEC_DEV_SRC_DESC ${LANG_FRENCH} "Les sources de XINX"
 LangString SEC_DEV_DOC_DESC ${LANG_FRENCH} "La documentation technique de XINX"
 LangString SEC0002_DESC ${LANG_FRENCH} "Script utilitaire à XINX"
 
+LangString UNINSTALL_OLD_XINX ${LANG_ENGLISH} "Il est necessaire de désinstaller l'ancienne version de XINX avant d'installer cette nouvelle version. Voulez-vous désinstaller XINX ?"
+LangString UNINSTALL_OLD_DBUS ${LANG_ENGLISH} "Il est necessaire de désinstaller l'ancienne version de D-BUS avant d'installer cette nouvelle version. Voulez-vous désinstaller D-BUS ?"
 LangString SEC_DEV_SRC_DESC ${LANG_ENGLISH} "Source of XINX"
 LangString SEC_DEV_DOC_DESC ${LANG_ENGLISH} "Technical documentation"
 LangString SEC0002_DESC ${LANG_ENGLISH} "Script utilitaire à XINX"
