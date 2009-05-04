@@ -403,6 +403,7 @@ QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long 
 		QList<AbstractContentViewModel *> models = m_models.values( id );
 		foreach( AbstractContentViewModel * model, models ) {
 			if( model ) {
+        qDebug() << QThread::currentThread() << " lock model " << model;
 				model->mutex().lock();
 				result += model;
 			}
@@ -410,7 +411,8 @@ QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long 
 	} else {
 		foreach( AbstractContentViewModel * model, m_models.values() ) {
 			if( ! model ) continue;
-			model->mutex().lock();
+      qDebug() << QThread::currentThread() << " lock model " << model;
+      model->mutex().lock();
 			result += model;
 		}
 	}
@@ -419,7 +421,8 @@ QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long 
 
 void ContentViewNode::callModelsUnlock( QList<AbstractContentViewModel*> models ) {
 	foreach( AbstractContentViewModel * model, models ) {
-		model->mutex().unlock();
+    qDebug() << QThread::currentThread() << " unlock model " << model;
+    model->mutex().unlock();
 	}
 }
 

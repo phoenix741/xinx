@@ -29,6 +29,8 @@
 #include <QThread>
 #include <QApplication>
 #include <QErrorMessage>
+#include <QFile>
+#include <QTextStream>
 
 // Std header for exception
 #include <iostream>
@@ -132,22 +134,19 @@ void ExceptionManager::notifyError( QString error, QtMsgType t ) {
 	QStringList stack = stackTrace();
 
 	// Create a file where write error
-	FILE * file = NULL;
-	const char * filename = qPrintable( XINXConfig::self()->config().xinxTrace );
-
-	file = fopen( filename, "a" );
-	if( file ) {
-		fprintf( file, "<u><i>" );
-		fprintf( file, qPrintable( QDateTime::currentDateTime().toString() ) );
-		fprintf( file, "</i></u><br/>\n" );
-		fprintf( file, "<b>Backtrace :</b><br/>\n" );
-		fprintf( file, "<p>\n" );
-		fprintf( file, qPrintable( stack.join( "\n" ) ) );
-		fprintf( file, "</p>\n" );
-		fprintf( file, qPrintable( error ) );
-		fprintf( file, "<hr/>\n" );
-		fclose( file );
-	}
+  QFile file( XINXConfig::self()->config().xinxTrace );
+  if( file.open( QIODevice::Append ) ) {
+    QTextStream text( &file );
+    text << "<u><i>";
+    text << QDateTime::currentDateTime().toString();
+    text << "</i></u><br/>\n";
+    text << "<b>Backtrace :</b><br/>\n";
+    text << "<p>\n";
+    text << stack.join( "\n" );
+    text << "</p>\n";
+    text << error;
+    file.close();
+  }
 
 	if( ( t == QtFatalMsg ) && ( QThread::currentThread() == qApp->thread() ) )
     	m_dialog->showMessage( error );
