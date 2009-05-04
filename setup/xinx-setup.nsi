@@ -2,7 +2,7 @@
 # 14 avr. 2009 11:19:10
 
 Name XINX
-SetCompressor lzma
+SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define VERSION 0.8.1.0

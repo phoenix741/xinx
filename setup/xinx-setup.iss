@@ -81,9 +81,9 @@ Source: dbus-1.2.exe; DestDir: {tmp}; Flags: deleteafterinstall nocompression sk
 DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
-DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: documentation
-DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental
-DestDir: {app}\plugins; Source: ..\plugins\xsd.dll; Components: experimental
+DestDir: {app}\plugins; Source: ..\plugins\empty.dll; Components: documentation; Flags: skipifsourcedoesntexist
+DestDir: {app}\plugins; Source: ..\plugins\xslgui.dll; Components: experimental; Flags: skipifsourcedoesntexist
+DestDir: {app}\plugins; Source: ..\plugins\xsd.dll; Components: experimental; Flags: skipifsourcedoesntexist
 DestDir: {app}\scripts; Source: ..\scripts\*.js; Components: scripts
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: scripts
 DestDir: {app}\plugins\script; Source: {#QTDIR}\plugins\script\qtscriptdbus4.dll; Flags: skipifsourcedoesntexist; Components: qt; MinVersion: 0,6.0.6000; Tasks: ; Languages: 
