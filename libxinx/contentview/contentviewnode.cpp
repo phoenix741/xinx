@@ -397,33 +397,49 @@ ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
 	return *this;
 }
 
+/*
+ * Pour empecher les deadlocks, il y a deux possibilité :
+ * - Réordonner les thread (avec un qSort par exemple)
+ * - Quand ordonner les thread n'est pas possible, il faut en cas de conflit (tryLock)
+ * eviter le conflit et débloquer tous les thread avant de recommancer :
+ *
+ *  for( int i = 0 ; i < models.size(); i++ ) {
+ *    AbstractContentViewModel * model = models.at( i );
+ *    if( ! model ) continue;
+ *
+ *    // Le but ici est d'empecher les dead lock. Si l'un des modeles est déjà utilisé alors on ne le lock pas.
+ *    // Ce point n'est peut-être pas necessaire car nous ordonons les models.
+ *    if( ! model->mutex().tryLock() ) {
+ *      qDebug() << QThread::currentThread() << " unlock " << result;
+ *      foreach( AbstractContentViewModel * lockedModel, result ) {
+ *        lockedModel->mutex().unlock();
+ *      }
+ *      result.clear();
+ *      i = 0;
+ *      continue;
+ *    }
+ *    result += model;
+ *  }
+ *
+ */
 QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long id ) {
-	QList<AbstractContentViewModel*> result;
+  QList<AbstractContentViewModel*> result, models;
 	if( m_models.isEmpty() ) return result;
 
-	if( id ) {
-		QList<AbstractContentViewModel *> models = m_models.values( id );
-		foreach( AbstractContentViewModel * model, models ) {
-			if( model ) {
-        qDebug() << QThread::currentThread() << " lock model " << model;
-				model->mutex().lock();
-				result += model;
-			}
-		}
-	} else {
-		foreach( AbstractContentViewModel * model, m_models.values() ) {
-			if( ! model ) continue;
-      qDebug() << QThread::currentThread() << " lock model " << model;
-      model->mutex().lock();
-			result += model;
-		}
-	}
-	return result;
+  models = id ? m_models.values( id ) : m_models.values();
+  qSort( models );
+  models.removeAll( 0 );
+
+  foreach( AbstractContentViewModel * model, models ) {
+    model->mutex().lock();
+    result += model;
+  }
+
+  return result;
 }
 
 void ContentViewNode::callModelsUnlock( QList<AbstractContentViewModel*> models ) {
 	foreach( AbstractContentViewModel * model, models ) {
-    qDebug() << QThread::currentThread() << " unlock model " << model;
     model->mutex().unlock();
 	}
 }

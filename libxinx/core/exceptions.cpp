@@ -137,14 +137,14 @@ void ExceptionManager::notifyError( QString error, QtMsgType t ) {
   QFile file( XINXConfig::self()->config().xinxTrace );
   if( file.open( QIODevice::Append ) ) {
     QTextStream text( &file );
-    text << "<u><i>";
+    text << "<br/><u><i>";
     text << QDateTime::currentDateTime().toString();
     text << "</i></u><br/>\n";
     text << "<b>Backtrace :</b><br/>\n";
     text << "<p>\n";
-    text << stack.join( "\n" );
+    text << stack.join( "<br/>\n" );
     text << "</p>\n";
-    text << error;
+    text << error.replace( "\n", "<br/>\n" );;
     file.close();
   }
 

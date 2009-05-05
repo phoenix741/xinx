@@ -149,9 +149,9 @@ void XmlFileEditor::loadFromDevice( QIODevice & d ) {
 	TextFileEditor::loadFromDevice( d );
 }
 
-/* XslContentEditor */
+/* StyleSheetEditor */
 
-XslContentEditor::XslContentEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
+StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
 	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
 	m_completionModel->setCompleteTags( XslCompletionNodeModel::NoTags );
 
@@ -161,7 +161,7 @@ XslContentEditor::XslContentEditor( QWidget *parent ) : ContentViewTextEditor( n
 	qobject_cast<XslTextEditor*>( textEdit() )->setModel( m_completionModel );
 }
 
-XslContentEditor::~XslContentEditor() {
+StyleSheetEditor::~StyleSheetEditor() {
 	ContentViewParser * p = parser();
 	setParser( 0 );
 	qobject_cast<XslTextEditor*>( textEdit() )->setModel( 0 );
@@ -169,26 +169,26 @@ XslContentEditor::~XslContentEditor() {
 	delete p;
 }
 
-QTextCodec * XslContentEditor::codec() const {
+QTextCodec * StyleSheetEditor::codec() const {
 	if( dynamic_cast<XslContentViewParser*>( parser() ) && dynamic_cast<XslContentViewParser*>( parser() )->codec() )
 		return dynamic_cast<XslContentViewParser*>( parser() )->codec();
 	else
 		return ContentViewTextEditor::codec();
 }
 
-XslCompletionNodeModel * XslContentEditor::completionModel() const {
+XslCompletionNodeModel * StyleSheetEditor::completionModel() const {
 	return m_completionModel;
 }
 
-QString XslContentEditor::defaultFileName() const {
+QString StyleSheetEditor::defaultFileName() const {
 	return tr( "noname.xsl" );
 }
 
-QIcon XslContentEditor::icon() const {
+QIcon StyleSheetEditor::icon() const {
 	return QIcon( ":/images/typexsl.png" );
 }
 
-void XslContentEditor::searchWord( const QString & word ) {
+void StyleSheetEditor::searchWord( const QString & word ) {
 	if( ContentViewNode * n = m_completionModel->nodeOfWord( word ) ) {
 		emit open( n->fileName(), n->line() );
 		return;
@@ -196,7 +196,7 @@ void XslContentEditor::searchWord( const QString & word ) {
 	QMessageBox::information( this, tr("Search Word"), tr("Word %1 not found").arg( word ) );
 }
 
-bool XslContentEditor::autoIndent() {
+bool StyleSheetEditor::autoIndent() {
 	try {
 		XMLPrettyPrinter prettyPrinter;
 		prettyPrinter.setText( textEdit()->toPlainText() );

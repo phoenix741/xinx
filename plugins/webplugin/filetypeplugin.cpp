@@ -118,11 +118,10 @@ AppSettings::struct_extentions XSLStyleSheetFileType::properties() {
 	p.canBeSaveAsSpecifique = true;
 	p.specifiqueSubDirectory = QString();
 	return p;
-};
+}
 
 AbstractEditor * XSLStyleSheetFileType::createEditor( const QString & filename ) {
-	//StyleSheetEditor * editor = new StyleSheetEditor();
-	XslContentEditor * editor = new XslContentEditor();
+  StyleSheetEditor * editor = new StyleSheetEditor();
 
 	if( ! filename.isEmpty() )
 		editor->loadFromFile( filename );

@@ -39,7 +39,7 @@
 WebPlugin::WebPlugin() {
 	Q_INIT_RESOURCE(webplugin);
 
-	qRegisterMetaType<XslContentEditor>( "XslContentEditor" );
+	qRegisterMetaType<StyleSheetEditor>( "StyleSheetEditor" );
 	qRegisterMetaType<XmlFileEditor>( "XmlFileEditor" );
 	qRegisterMetaType<HtmlFileEditor>( "HtmlFileEditor" );
 	qRegisterMetaType<JSFileEditor>( "JSFileEditor" );

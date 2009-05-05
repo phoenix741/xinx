@@ -68,11 +68,11 @@ private:
 
 /* XslContentEditor */
 
-class XslContentEditor : public ContentViewTextEditor {
+class StyleSheetEditor : public ContentViewTextEditor {
 	Q_OBJECT
 public:
-	XslContentEditor( QWidget *parent = 0 );
-	virtual ~XslContentEditor();
+  StyleSheetEditor( QWidget *parent = 0 );
+  virtual ~StyleSheetEditor();
 
 	virtual QString defaultFileName() const;
 
