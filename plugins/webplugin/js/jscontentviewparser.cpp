@@ -62,7 +62,6 @@ void JsContentViewParser::loadFromDeviceImpl() {
 			} else
 				if( name == "function" ) {
 					function = loadFunction( rootNode(), inputDevice() );
-					loadAttachedNode( function );
 				} else
 					do {
 						nextIdentifier( inputDevice(), type, name );
@@ -298,6 +297,7 @@ ContentViewNode * JsContentViewParser::loadFunction( ContentViewNode * parent, Q
 		throw ContentViewException( tr("I wait an identifier."), m_line );
 
 	ContentViewNode * function = attacheNewFunctionNode( parent, name, m_line );
+	loadAttachedNode( function );
 
 	nextIdentifier( buffer, type, name );
 

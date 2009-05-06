@@ -134,29 +134,35 @@ void ExceptionManager::notifyError( QString error, QtMsgType t ) {
 	QStringList stack = stackTrace();
 
 	// Create a file where write error
-  QFile file( XINXConfig::self()->config().xinxTrace );
-  if( file.open( QIODevice::Append ) ) {
-    QTextStream text( &file );
-    text << "<br/><u><i>";
-    text << QDateTime::currentDateTime().toString();
-    text << "</i></u><br/>\n";
-    text << "<b>Backtrace :</b><br/>\n";
-    text << "<p>\n";
-    text << stack.join( "<br/>\n" );
-    text << "</p>\n";
-    text << error.replace( "\n", "<br/>\n" );;
-    file.close();
-  }
+	QFile file( XINXConfig::self()->config().xinxTrace );
+	if( file.open( QIODevice::Append ) ) {
+		QTextStream text( &file );
+		text << "<br/><u><i>";
+		text << QDateTime::currentDateTime().toString();
+		text << "</i></u><br/>\n";
+		text << "<b>Backtrace :</b><br/>\n";
+		text << "<p>\n";
+		text << stack.join( "<br/>\n" );
+		text << "</p>\n";
+		text << error.replace( "\n", "<br/>\n" );;
+		file.close();
+	}
 
-	if( ( t == QtFatalMsg ) && ( QThread::currentThread() == qApp->thread() ) )
-    	m_dialog->showMessage( error );
-    else if( t != QtDebugMsg )
-    	QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
+	if( t == QtDebugMsg ) return;
 
-	std::cerr << qPrintable( error ) << std::endl;
+	std::cout << qPrintable( error ) << std::endl;
+
+	if( QThread::currentThread() == qApp->thread() )
+		m_dialog->showMessage( error );
+	else
+		QMetaObject::invokeMethod( m_dialog, "showMessage", Qt::QueuedConnection, Q_ARG(QString, error));
 
 	if( t == QtFatalMsg ) {
-		m_dialog->exec(); // Pour ne pas quitter de suite
+		if( QThread::currentThread() == qApp->thread()  ) {
+			m_dialog->exec(); // Pour ne pas quitter de suite
+		} else {
+			QMetaObject::invokeMethod( m_dialog, "exec", Qt::BlockingQueuedConnection, Q_ARG(QString, error));
+		}
 		abort();
 	}
 }

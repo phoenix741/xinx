@@ -140,7 +140,7 @@ void ContentViewParser::createContentViewNode( ContentViewNode * parent, const Q
 	// If parent have this node as child, remove all child from attached node.
 	if( parent->childs().contains( node ) ) {
 		removeAttachedNode( node );
-	} else if( node ) {
+	} else if( node && (! node->parent( m_id ) ) ) {
 		// Else if node in cache, we attach the node
 		node->attach( parent, m_id );
 	} else {
@@ -168,70 +168,107 @@ void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QStri
 	if( m_alreadyRunning )
 		throw ContentViewException( tr("Parser already running"), 0, 0 );
 
-	QByteArray contentArray = content.toUtf8();
-	QBuffer buffer( &contentArray );
-	buffer.open( QIODevice::ReadOnly );
+	try {
+		m_alreadyRunning = true;
 
-	m_rootNode = rootNode;
-	m_device   = &buffer;
-	removeAttachedNodes();
+		QByteArray contentArray = content.toUtf8();
+		QBuffer buffer( &contentArray );
+		buffer.open( QIODevice::ReadOnly );
 
-	loadFromDeviceImpl();
+		m_rootNode = rootNode;
+		m_device   = &buffer;
+		removeAttachedNodes();
 
-	m_rootNode = 0;
-	m_device   = 0;
+		loadFromDeviceImpl();
 
-	if( m_autoDelete ) delete this;
+		m_rootNode = 0;
+		m_device   = 0;
+
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+	} catch( ContentViewException e ) {
+		m_alreadyRunning = false;
+
+		if( m_autoDelete ) delete this;
+		throw e;
+	}
 }
 
 void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString & filename ) {
 	if( m_alreadyRunning )
 		throw ContentViewException( tr("Parser already running"), 0, 0 );
 
-	QFile file( filename );
+	try {
+		m_alreadyRunning = true;
+		QFile file( filename );
 
-	// Open the file
-	if (!file.open(QFile::ReadOnly))
-		throw ContentViewException( tr("Parser already running"), 0, 0 );
+		// Open the file
+		if (!file.open(QFile::ReadOnly))
+			throw ContentViewException( tr("Parser already running"), 0, 0 );
 
-	m_rootNode = rootNode;
-	m_device   = &file;
-	rootNode->setFileName( filename );
-	removeAttachedNodes();
+		m_rootNode = rootNode;
+		m_device   = &file;
+		rootNode->setFileName( filename );
+		removeAttachedNodes();
 
-	loadFromDeviceImpl();
+		loadFromDeviceImpl();
 
-	m_rootNode = 0;
-	m_device   = 0;
+		m_rootNode = 0;
+		m_device   = 0;
 
-	if( m_autoDelete ) delete this;
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+	} catch( ContentViewException e ) {
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+
+		throw e;
+	}
 }
 
 void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
 	if( m_alreadyRunning )
 		throw ContentViewException( tr("Parser already running"), 0, 0 );
 
-	m_rootNode = rootNode;
-	m_device   = device;
-	removeAttachedNodes();
+	try {
+		m_alreadyRunning = true;
+		m_rootNode = rootNode;
+		m_device   = device;
+		removeAttachedNodes();
 
-	loadFromDeviceImpl();
+		loadFromDeviceImpl();
 
-	m_rootNode = 0;
-	m_device   = 0;
+		m_rootNode = 0;
+		m_device   = 0;
 
-	if( m_autoDelete ) delete this;
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+	} catch( ContentViewException e ) {
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+
+		throw e;
+	}
 }
 
 void ContentViewParser::loadFromMember() {
 	if( m_alreadyRunning )
 		throw ContentViewException( tr("Parser already running"), 0, 0 );
 
-	removeAttachedNodes();
+	try {
+		m_alreadyRunning = true;
+		removeAttachedNodes();
 
-	loadFromDeviceImpl();
+		loadFromDeviceImpl();
 
-	if( m_autoDelete ) delete this;
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+	} catch( ContentViewException e ) {
+		m_alreadyRunning = false;
+		if( m_autoDelete ) delete this;
+
+		throw e;
+	}
 }
 
 void ContentViewParser::setRootNode( ContentViewNode * node ) {
