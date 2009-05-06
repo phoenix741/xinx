@@ -44,6 +44,13 @@ public slots:
 	 * \param model Model contains the content of the editor. If NULL, the editor is deleted.
 	 */
 	void updateModel( QAbstractItemModel * model );
+
+	/*!
+	 * When the position in the editor change this slot can be used to tell what
+	 * index must be selected.
+	 * \param index the index in the ContentViewModel that must be selected.
+	 */
+	void positionChanged( const QModelIndex & index );
 signals:
 	/*!
 	 * Signal emited when the user double-click on the editor. The goal is open the file

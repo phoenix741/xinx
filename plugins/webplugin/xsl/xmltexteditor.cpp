@@ -41,6 +41,7 @@
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QStack>
+#include <QModelIndex>
 
 // Define
 #define EOWREGEXP	"[~!@\\$#%\\^&\\*\\(\\)\\+\\{\\}|\"<>,/;'\\[\\]\\\\=\\s]"
@@ -473,17 +474,19 @@ QList<XPathBalise> XmlTextEditor::xpath( const QDocumentCursor & cursor, const Q
 		c = find( QRegExp( "<[^<>]*>" ), c, XinxCodeEdit::FindBackward );
 		if( c.isNull() ) break;
 
-		QString baliseText = c.selectedText();
+		QString baliseText = c.selectedText(), baliseEpuree = baliseText;
 		baliseText.remove( 0, 1 ).chop( 1 );
 		baliseText = baliseText.trimmed();
+		baliseEpuree.remove( 0, 2 ).chop( 1 );
+		baliseEpuree = baliseEpuree.trimmed();
+		baliseEpuree = baliseEpuree.section( ' ', 0, 0 );
 
 		if( ! (prefix.isEmpty() || baliseText.startsWith( prefix + ":" ) || baliseText.startsWith( "/" + prefix + ":" ) ) ) {
 			// do nothing
 		} else if( baliseText.startsWith( '?' ) || baliseText.startsWith( '!' ) ) {
 			// do nothing
-		} else if( baliseText.startsWith( '/' ) && (includeOnly.isEmpty() || includeOnly.contains( baliseText ) ) ) {
-			baliseText = baliseText.remove( 0, 1 ).trimmed();
-			baliseClose.push( baliseText );
+		} else if( baliseText.startsWith( '/' ) && (includeOnly.isEmpty() || includeOnly.contains( baliseEpuree ) ) ) {
+			baliseClose.push( baliseEpuree );
 		} else if( baliseText.endsWith( '/' ) ) {
 			// do nothing : add and remove from baliseClose
 		} else {
@@ -667,4 +670,36 @@ void XslTextEditor::insertCompletionAccolade( QDocumentCursor & tc, QString node
 		tc2.insertText( "/>" );
 		tc = tc2;
 	}
+}
+
+bool XslTextEditor::processKeyPress( QKeyEvent * e ) {
+	if( m_model ) {
+		QList<XPathBalise> p = xpath( textCursor(), QStringList() << "xsl:template" << "xsl:variable" << "xsl:param", QString(), QStringList() << "mode" << "name" << "match"  );
+		ContentViewNode * n = m_model->rootNode();
+		foreach( XPathBalise b, p ) {
+			foreach( ContentViewNode * child, n->childs() ) {
+				if( ( b.name == "xsl:template" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslTemplate" ) ) {
+					if( ( ( child->data().toString() == b.attributes["name"] ) || ( child->data().toString() == b.attributes["match"] ) ) && ( child->data( ContentViewNode::NODE_USER_VALUE ).toString() == b.attributes["mode"] ) ) {
+						n = child;
+						break;
+					}
+				} else if( ( b.name == "xsl:variable" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslVariable" )  ) {
+					if( child->data().toString() == b.attributes["name"] ) {
+						n = child;
+						break;
+					}
+				} else if( ( b.name == "xsl:param" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslParam" )  ) {
+					if( child->data().toString() == b.attributes["name"] ) {
+						n = child;
+						break;
+					}
+				}
+			}
+		}
+		QModelIndex indexToSelect = m_model->index( n );
+
+		emit positionInEditorChanged( indexToSelect );
+	}
+
+	return XmlTextEditor::processKeyPress( e );
 }

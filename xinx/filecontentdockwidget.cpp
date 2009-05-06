@@ -73,3 +73,10 @@ void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
 	m_contentTreeView->setModel( model );
 	m_model = model;
 }
+
+void FileContentDockWidget::positionChanged( const QModelIndex & index ) {
+	QItemSelectionModel * selectionModel = m_contentTreeView->selectionModel();
+	QItemSelection selection( index, index );
+	selectionModel->select( selection, QItemSelectionModel::Select );
+}
+

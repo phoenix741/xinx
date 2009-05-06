@@ -148,9 +148,9 @@ void ExceptionManager::notifyError( QString error, QtMsgType t ) {
 		file.close();
 	}
 
-	if( t == QtDebugMsg ) return;
-
 	std::cout << qPrintable( error ) << std::endl;
+
+	if( t == QtDebugMsg ) return;
 
 	if( QThread::currentThread() == qApp->thread() )
 		m_dialog->showMessage( error );

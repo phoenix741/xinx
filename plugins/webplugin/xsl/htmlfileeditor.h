@@ -50,8 +50,8 @@ private:
 
 class XmlFileEditor : public TextFileEditor {
 	Q_OBJECT
-		public:
-		XmlFileEditor( QWidget *parent = 0 );
+public:
+	XmlFileEditor( QWidget *parent = 0 );
 	virtual ~XmlFileEditor();
 
 	virtual QString defaultFileName() const;
@@ -71,8 +71,8 @@ private:
 class StyleSheetEditor : public ContentViewTextEditor {
 	Q_OBJECT
 public:
-  StyleSheetEditor( QWidget *parent = 0 );
-  virtual ~StyleSheetEditor();
+	StyleSheetEditor( QWidget *parent = 0 );
+	virtual ~StyleSheetEditor();
 
 	virtual QString defaultFileName() const;
 

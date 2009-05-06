@@ -29,6 +29,7 @@
 class ContentViewNode;
 class ContentViewParser;
 class ContentViewModel;
+class QModelIndex;
 
 /*!
  * An \e ContentViewTextEditor load and unload the content view model editor when
@@ -54,6 +55,10 @@ public:
 
 	//! The model editor is really created (based on the parser) at the first call.
 	virtual QAbstractItemModel * model() const;
+
+signals:
+	void positionInEditorChanged( const QModelIndex & index );
+
 public slots:
 	virtual void updateModel();
 

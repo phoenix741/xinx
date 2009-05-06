@@ -47,9 +47,9 @@ public:
 	virtual ~AbstractContentViewModel();
 
 	virtual QModelIndex index( ContentViewNode * node ) const = 0;
-protected:
-	ContentViewNode * rootNode() const;
 
+	ContentViewNode * rootNode() const;
+protected:
 	virtual void nodeChanged( ContentViewNode * node );
 	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
 	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );

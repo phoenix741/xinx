@@ -134,7 +134,7 @@ void XslContentViewParser::readVariable() {
 		value = attributes().value( "select" ).toString();
 		readUnknownElement();
 	}
-	if( name == "param" )
+	if( QXmlStreamReader::name() == "param" )
 		attacheNewParamsNode( rootNode(), name.trimmed(), value, lineNumber() );
 	else
 		attacheNewVariableNode( rootNode(), name.trimmed(), value, lineNumber() );

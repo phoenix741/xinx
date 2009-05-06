@@ -303,6 +303,7 @@ void MainformImpl::createActions() {
 	connect( m_contentDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
 	connect( m_projectDock, SIGNAL(open(QString)), this, SLOT(openFile(QString)) );
 	connect( m_tabEditors, SIGNAL(modelChanged(QAbstractItemModel*)), m_contentDock, SLOT(updateModel(QAbstractItemModel*)) );
+	connect( m_tabEditors, SIGNAL(positionChanged(QModelIndex)), m_contentDock, SLOT(positionChanged(QModelIndex)) );
 	connect( m_tabEditors, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)) );
 
 	// Recent open action

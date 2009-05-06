@@ -152,6 +152,8 @@ void XmlFileEditor::loadFromDevice( QIODevice & d ) {
 /* StyleSheetEditor */
 
 StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
+	connect( textEdit(), SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL(positionInEditorChanged(QModelIndex)) );
+
 	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
 	m_completionModel->setCompleteTags( XslCompletionNodeModel::NoTags );
 

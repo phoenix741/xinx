@@ -25,6 +25,7 @@
 class AbstractEditor;
 class QAbstractItemModel;
 class IFileTypePlugin;
+class QModelIndex;
 
 class TabEditor : public QTabWidget {
 	Q_OBJECT
@@ -94,6 +95,7 @@ signals:
 	void hasTextSelection( bool selection ); // For Upper/Lower Case ; Comment/Uncomment
 
 	void modelChanged( QAbstractItemModel * model );
+	void positionChanged( const QModelIndex & index );
 
 	void fileOpened( const QString & filename );
 	void setEditorPosition( int, int );
