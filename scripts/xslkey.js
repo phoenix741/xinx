@@ -14,7 +14,7 @@ obj.run = function()
 	var search = new DocumentSearch( textEdit );
 
 	search.options.regExp = true;
-	search.searchText = "key\\('url-param', '(.*)'\\)";
+	search.searchText = "key\\('url-param', '([^\\)]*)'\\)";
 	search.replaceText = "/layout_data/application_data/temporaire/param[@name='\\1']";
 
 	while( search.next() ) {}
