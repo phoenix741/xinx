@@ -25,11 +25,12 @@
 
 // Qt header
 #include <QString>
-#include <QDomDocument>
-#include <QDomElement>
 #include <QStringList>
 #include <QPair>
 #include <QVariant>
+
+class QDomDocument;
+class QDomElement;
 
 /*!
  * Exception throw by XinxProject when the project can't be opened or saved.

@@ -66,9 +66,7 @@ void XslContentViewParser::loadFromDeviceImpl() {
 
 	if( !error() ) { // Else completion can be more difficulte
 		detachAttachedNode();
-	}
-
-	if( error() )
+	} else
 	    throw ContentViewException( errorString(), lineNumber(), columnNumber() );
 }
 
@@ -376,9 +374,7 @@ void XmlCompletionParser::loadFromDeviceImpl() {
 
 	if( !error() ) { // Else completion can be more difficulte
 		detachAttachedNode();
-	}
-
-	if( error() )
+	} else
 		throw ContentViewException( errorString(), lineNumber(), columnNumber() );
 }
 
@@ -422,7 +418,7 @@ void XmlCompletionParser::readRootTag() {
 			if( QXmlStreamReader::name() == "type" )
 				readTypeTag();
 			else
-				throw ContentViewException( tr("Wrong node name %1 in root element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+				raiseError( tr("Wrong node name %1 in root element").arg( QXmlStreamReader::name().toString() ) );
 		}
 	}
 
@@ -444,7 +440,7 @@ void XmlCompletionParser::readTypeTag() {
 			if( QXmlStreamReader::name() == "balise" )
 				readBaliseTag();
 			else
-				throw ContentViewException( tr("Wrong node name %1 in type element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+				raiseError( tr("Wrong node name %1 in type element").arg( QXmlStreamReader::name().toString() ) );
 		}
 	}
 }
@@ -479,7 +475,7 @@ void XmlCompletionParser::readBaliseTag() {
 				if( QXmlStreamReader::name() == "attribute" )
 					readAttributeTag();
 			else
-				throw ContentViewException( tr("Wrong node name %1 in balise element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+				raiseError( tr("Wrong node name %1 in balise element").arg( QXmlStreamReader::name().toString() ) );
 		}
 	}
 	m_parentNode.pop();
@@ -513,7 +509,7 @@ void XmlCompletionParser::readAttributeTag() {
 			if( QXmlStreamReader::name() == "value" )
 				readValueTag();
 			else
-				throw ContentViewException( tr("Wrong node name %1 in attribute element").arg( QXmlStreamReader::name().toString() ), lineNumber(), columnNumber() );
+				raiseError( tr("Wrong node name %1 in attribute element").arg( QXmlStreamReader::name().toString() ) );
 		}
 	}
 	m_parentNode.pop();

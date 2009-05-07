@@ -41,6 +41,7 @@ class QWizardPage;
 class XinxProject;
 class XinxFormatScheme;
 class ContentViewParser;
+class QDockWidget;
 
 /*!
  * This intereface is used to create a plugin used by XINX.
@@ -67,7 +68,7 @@ public:
 	};
 
 	//! Destroy the plugin
-	virtual ~IXinxPlugin() {};
+	virtual ~IXinxPlugin() {}
 
 	/*!
 	 * Called when the plugin is loaded.
@@ -78,12 +79,12 @@ public:
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) = 0;
 
 	/*! List of tools with the default value where find the tool */
-	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); };
+	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); }
 
 	//! Call when a new project is created or opened
-	virtual bool initializeProject( XinxProject * project ) { Q_UNUSED( project ); return true; };
+	virtual bool initializeProject( XinxProject * project ) { Q_UNUSED( project ); return true; }
 	///! Call before the project is closed
-	virtual bool destroyProject( XinxProject * project ) { Q_UNUSED( project ); return true; };
+	virtual bool destroyProject( XinxProject * project ) { Q_UNUSED( project ); return true; }
 };
 
 /*!
@@ -98,7 +99,7 @@ public:
 class IXinxPluginConfiguration {
 public:
 	//! Destroy the interface
-	virtual ~IXinxPluginConfiguration() {};
+	virtual ~IXinxPluginConfiguration() {}
 
 	//! Create a widget used in a wrapper for the configuration dialog box.
 	virtual QWidget * createSettingsDialog() = 0;
@@ -115,7 +116,7 @@ public:
 class IXinxPluginProjectConfiguration {
 public:
 	//! Destroy the interface
-	virtual ~IXinxPluginProjectConfiguration() {};
+	virtual ~IXinxPluginProjectConfiguration() {}
 
 	//! Create a widget used in the project dialog
 	virtual QWidget * createProjectSettingsPage() = 0;
@@ -128,6 +129,18 @@ public:
 	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid ) = 0;
 	//! Save the wizard settings page in the project
 	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) = 0;
+};
+
+class IDockPlugin : virtual public IXinxPlugin {
+public:
+	//! Destroy the interface
+	virtual ~IDockPlugin() {}
+
+	/*!
+	 * This method is call when the main form is created to create new
+	 * dock widget. A number (for quick access) is associate if free.
+	 */
+	virtual QDockWidget * createDockWidget( QWidget * parent ) = 0;
 };
 
 /*!
@@ -143,7 +156,7 @@ public:
 class IRCSPlugin : virtual public IXinxPlugin {
 public:
 	/// Destroy the plugin
-	virtual ~IRCSPlugin() {};
+	virtual ~IRCSPlugin() {}
 
 	/// List of revision control system proposed by the plugin
 	virtual QStringList rcs() = 0;
@@ -162,7 +175,7 @@ public:
 class IFileTypePlugin {
 public:
 	//! Destroy a file type
-	virtual ~IFileTypePlugin() {};
+	virtual ~IFileTypePlugin() {}
 
 	//! A description of a file type
 	virtual QString description() = 0;
@@ -207,7 +220,7 @@ public:
 class IFilePlugin : virtual public IXinxPlugin {
 public:
 	//! Destroy the interface. Used to hide warning when using the interface.
-	virtual ~IFilePlugin() {};
+	virtual ~IFilePlugin() {}
 
 	//! List of file type knew by the plugins.
 	virtual QList<IFileTypePlugin*> fileTypes() = 0;
@@ -216,7 +229,8 @@ public:
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0");
 Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0");
 Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0");
+Q_DECLARE_INTERFACE(IDockPlugin, "org.shadoware.xinx.IDockPlugin/1.0");
 Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0");
-Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.1");
+Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.2");
 
 #endif /*INTERFACES_H_*/

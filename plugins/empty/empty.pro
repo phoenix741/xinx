@@ -10,4 +10,4 @@ HEADERS = empty.h
 SOURCES = empty.cpp
 win32 : RC_FILE += rc/plugin.rc
 
-include(../../project_mode.pro)
+include(../../project_mode.pri)

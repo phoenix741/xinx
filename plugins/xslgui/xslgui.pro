@@ -12,4 +12,4 @@ SOURCES = xslgui.cpp \
  xuieditor.cpp
 win32 : RC_FILE += rc/plugin.rc
 
-include(../../project_mode.pro)
+include(../../project_mode.pri)

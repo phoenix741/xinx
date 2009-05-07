@@ -9,6 +9,7 @@ SUBDIRS += external_qcodeedit \
 	plugins_cvsplugin \
 	plugins_svnplugin \
 	plugins_services \
+	plugins_dictionary \
 	xinx_wizard \
 	xinx_application
 	
@@ -35,6 +36,8 @@ plugins_svnplugin.subdir = plugins/svnplugin
 plugins_svnplugin.depends = xinx_components xinx_library
 plugins_services.subdir = plugins/services
 plugins_services.depends = external_qcodeedit xinx_components xinx_library plugins_webplugin
+plugins_dictionary.subdir = plugins/dictionary
+plugins_dictionary.depends = xinx_components xinx_library
 
 xinx_application.subdir = xinx
 xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_webplugin

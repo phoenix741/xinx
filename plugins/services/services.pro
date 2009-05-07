@@ -41,4 +41,4 @@ FORMS += ui/newprojectwizard_serviceslist.ui \
 	ui/servicesconnection.ui
 win32 : RC_FILE += rc/plugin.rc
 
-include(../../project_mode.pro)
+include(../../project_mode.pri)

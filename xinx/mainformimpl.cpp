@@ -132,36 +132,48 @@ void MainformImpl::createDockWidget() {
 	m_projectDock->setToggledViewAction( m_toggledFlatView );
 	addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
 	QAction * action = m_projectDock->toggleViewAction();
-	action->setShortcut( tr("Alt+1") );
+	action->setShortcut( QKeySequence( "Alt+1" ) );
 	m_windowsMenu->addAction( action );
 
 	m_contentDock = new FileContentDockWidget( tr("File Content"), this );
 	m_contentDock->setObjectName( QString::fromUtf8("m_contentDock") );
 	addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
 	action = m_contentDock->toggleViewAction();
-	action->setShortcut( tr("Alt+2") );
+	action->setShortcut( QKeySequence( "Alt+2" ) );
 	m_windowsMenu->addAction( action );
 
 	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), this );
 	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
 	addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
 	action = m_xmlpresentationdock->toggleViewAction();
-	action->setShortcut( tr("Alt+3") );
+	action->setShortcut( QKeySequence( "Alt+3" ) );
 	m_windowsMenu->addAction( action );
 
 	m_snipetsDock = new SnipetDockWidget( tr("Snipets"), this );
 	m_snipetsDock->setObjectName( QString::fromUtf8( "m_snipetsDock" ) );
 	addDockWidget( Qt::RightDockWidgetArea, m_snipetsDock );
 	action = m_snipetsDock->toggleViewAction();
-	action->setShortcut( tr("Alt+4") );
+	action->setShortcut( QKeySequence( "Alt+4" ) );
 	m_windowsMenu->addAction( action );
+
+	// Load dock from plugins and assign automatic shortcut
+	int dockShortcut = 5;
+	foreach( XinxPluginElement * pluginElement, XinxPluginsLoader::self()->plugins() ) {
+		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>( pluginElement->plugin() );
+		if( pluginElement->isActivated() && dockPlugin ) {
+			QDockWidget * dock = dockPlugin->createDockWidget( this );
+			addDockWidget( Qt::RightDockWidgetArea, dock );
+			action = dock->toggleViewAction();
+			action->setShortcut( QString( "Alt+%1" ).arg( dockShortcut++ ) );
+			m_windowsMenu->addAction( action );
+		}
+	}
 
 	m_logDock = new LogDockWidget( tr("Log"), this );
 	connect( m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
 	m_logDock->setObjectName( QString::fromUtf8("m_logDock") );
 	addDockWidget( Qt::BottomDockWidgetArea, m_logDock );
 	action = m_logDock->toggleViewAction();
-	action->setShortcut( tr("Alt+9") );
 	m_windowsMenu->addAction( action );
 }
 
@@ -1409,7 +1421,7 @@ void MainformImpl::newTemplate() {
 }
 
 void MainformImpl::newTemplate( const QString &name, const QString &category, const QString &description, const QString &text, const QStringList &arguments, const QString &key, const QString &type ) {
-	// On créé un template à partir des informations indiqué.
+	// On créé un template �  partir des informations indiqué.
 	Snipet s;
 	s.setName( name );
 	s.setCategory( category );

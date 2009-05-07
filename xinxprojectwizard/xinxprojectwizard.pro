@@ -19,4 +19,4 @@ INCLUDEPATH += ../components \
 LIBS = -L../libxinx -L../components -L../ext/qcodeedit -lsharedxinx -lxinxcmp -lqcodeedit
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
 win32 : RC_FILE += rc/xinxprojectwizard.rc
-include(../project_mode.pro)
+include(../project_mode.pri)

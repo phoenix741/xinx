@@ -30,5 +30,5 @@ SOURCES = directoryedit.cpp \
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
 
-include(../project_mode.pro)
+include(../project_mode.pri)
 

@@ -22,6 +22,8 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QDir>
+#include <QDomDocument>
+#include <QDomElement>
 
 // Xinx header
 #include "core/xinxproject.h"

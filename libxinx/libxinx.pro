@@ -64,4 +64,4 @@ SOURCES = rcs/rcs.cpp \
     contentview/completionnodemodel.cpp \
  editors/contentviewtexteditor.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-include(../project_mode.pro)
+include(../project_mode.pri)

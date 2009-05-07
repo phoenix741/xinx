@@ -65,4 +65,4 @@ SOURCES = webplugin.cpp \
     xsl/xslcompletionnodemodel.cpp 
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
-include(../../project_mode.pro)
+include(../../project_mode.pri)
