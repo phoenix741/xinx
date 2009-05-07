@@ -72,7 +72,8 @@ public slots:
 signals:
 	void aboutToClose();
 protected:
-	void closeEvent( QCloseEvent *event );
+	virtual void closeEvent( QCloseEvent *event );
+	virtual void timerEvent( QTimerEvent * event );
 private:
 	// Creation
 	void createTabEditorButton();
@@ -210,7 +211,6 @@ private slots:
 	void previousTab();
 	void currentTabChanged(int);
 	void setEditorPosition( int line, int column );
-	void setThreadCountChange();
 
 	// Tools
 	void newTemplate();

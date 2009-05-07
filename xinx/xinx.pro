@@ -105,8 +105,7 @@ SOURCES += xmlpresentationdockthread.cpp \
     dbus/orgshadowarexinxinterface.cpp \
     searchfilethread.cpp \
     logdialogimpl.cpp \
- script/documentsearch.cpp \
-		C:/Qt/4.5.1/qtc-debugging-helper/gdbmacros.cpp
+ script/documentsearch.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 include(../project_mode.pri)
 include(../ext/qmodeltest/modeltest.pri)

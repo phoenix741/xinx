@@ -9,5 +9,4 @@ RCC_DIR = .
 
 QMAKE_CXXFLAGS_RELEASE = "-Os"
 
-#CONFIG += precompile_header
 PRECOMPILED_HEADER = stable_header.h

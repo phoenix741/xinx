@@ -107,6 +107,8 @@ MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( pare
 
 	// Restore windows property
 	readWindowSettings();
+
+	startTimer( 1000 );
 }
 
 MainformImpl::~MainformImpl() {
@@ -245,7 +247,6 @@ void MainformImpl::createStatusBar() {
 	statusBar()->addPermanentWidget( m_lineFeedLabel );
 	statusBar()->addPermanentWidget( m_editorPosition );
 	statusBar()->addPermanentWidget( m_threadCount );
-	connect( XinxThreadManager::self(), SIGNAL(threadCountChange()), this, SLOT(setThreadCountChange()) );
 	statusBar()->showMessage( tr("Ready"), 2000 );
 }
 
@@ -1374,16 +1375,6 @@ void MainformImpl::setEditorPosition( int line, int column ) {
 	m_editorPosition->setText( QString("   %1 x %2   ").arg( line, 3, 10, QLatin1Char('0') ).arg( column, 3, 10, QLatin1Char('0') ) );
 }
 
-void MainformImpl::setThreadCountChange() {
-	int threadCount      = XinxThreadManager::self()->getThreadCount(),
-	    threadClassCount = XinxThreadManager::self()->getThreadClassCount();
-	QString threadCountText = QString( "%1 (%2)" ).arg( threadCount, 3, 10, QLatin1Char('0') )
-												  .arg( threadClassCount, 3, 10, QLatin1Char('0') );
-	if( threadCount > QThread::idealThreadCount() )
-		threadCountText = "<font color=\"red\">" + threadCountText + "</font>";
-	m_threadCount->setText( threadCountText );
-}
-
 void MainformImpl::closeEvent( QCloseEvent *event ) {
 	emit aboutToClose();
 	storeWindowSettings(); // Store before the project is closed
@@ -1399,6 +1390,22 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 		return;
 	}
 	event->accept();
+}
+
+void MainformImpl::timerEvent( QTimerEvent * ) {
+	int threadCount      = XinxThreadManager::self()->getThreadCount(),
+	    threadClassCount = XinxThreadManager::self()->getThreadClassCount();
+
+	QString threadCountText = QString( "Xinx Thread : %1 (%2) / Other thread %3/%4" )
+					.arg( threadCount, 3, 10, QLatin1Char('0') )
+					.arg( threadClassCount, 3, 10, QLatin1Char('0') )
+					.arg( QThreadPool::globalInstance()->activeThreadCount(), 3, 10, QLatin1Char('0') )
+					.arg( QThreadPool::globalInstance()->maxThreadCount(), 3, 10, QLatin1Char('0') );
+
+	if( ( threadCount + QThreadPool::globalInstance()->activeThreadCount() ) > QThread::idealThreadCount() )
+		threadCountText = "<font color=\"red\">" + threadCountText + "</font>";
+
+	m_threadCount->setText( threadCountText );
 }
 
 void MainformImpl::newTemplate() {
@@ -1421,7 +1428,7 @@ void MainformImpl::newTemplate() {
 }
 
 void MainformImpl::newTemplate( const QString &name, const QString &category, const QString &description, const QString &text, const QStringList &arguments, const QString &key, const QString &type ) {
-	// On créé un template �  partir des informations indiqué.
+	// On créé un template �  partir des informations indiqué.
 	Snipet s;
 	s.setName( name );
 	s.setCategory( category );

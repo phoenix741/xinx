@@ -29,6 +29,7 @@
 #include <QPluginLoader>
 #include <QApplication>
 #include <QDebug>
+#include <QDomDocument>
 
 // QCodeEdit header
 #include <qlanguagefactory.h>
