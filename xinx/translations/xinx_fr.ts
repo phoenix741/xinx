@@ -3305,12 +3305,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/runsnipet.ui" line="44"/>
         <source>This is a long description of the template. This description explain how to use, or why, and all the possible parameter.</source>
-        <translation>Ceci est une longue description du modèle. On y explique comment l&apos;utiliser, pourquoi, et les paramêtres possibles.</translation>
+        <translation>Ceci est une longue description du modèle. On y explique comment l&apos;utiliser, pourquoi, et les paramètres possibles.</translation>
     </message>
     <message>
         <location filename="../ui/runsnipet.ui" line="57"/>
         <source>&amp;Parameter</source>
-        <translation>&amp;Paramêtre</translation>
+        <translation>&amp;Paramètre</translation>
     </message>
     <message>
         <source>&amp;Detail ...</source>
@@ -3480,7 +3480,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="168"/>
         <source>&amp;Parameter</source>
-        <translation>&amp;Paramêtre</translation>
+        <translation>&amp;Paramètre</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="19"/>
@@ -3554,12 +3554,12 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../ui/snipetproperty.ui" line="165"/>
         <source>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</source>
-        <translation>Liste de nom de paramêtres utilisé par le modèle. Le premier paramêtre remplace le mot clé %1, le second paramêtre remplace le mot clé %2, ...</translation>
+        <translation>Liste de nom de paramètres utilisé par le modèle. Le premier paramètre remplace le mot clé %1, le second paramètre remplace le mot clé %2, ...</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="181"/>
         <source>Templat to show to screen. In this template you can define parameter by used &lt;i&gt;%n&lt;/i&gt; keyword where &lt;i&gt;n&lt;/i&gt; is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; is used to call script and show the text returned by the script. &lt;i&gt;&amp;lt;?    ?&amp;gt;&lt;/i&gt; can be used to init the script and make some pre-process.</source>
-        <translation>Modèle à afficher à l&apos;écran. Dans ce modèle il est possible de définir des paramêtres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modèles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
+        <translation>Modèle à afficher à l&apos;écran. Dans ce modèle il est possible de définir des paramètres à l&apos;aide du mot clé &lt;i&gt;%n&lt;/i&gt; où &lt;i&gt;n&lt;/i&gt; est un nombre. Des modèles plus sophistiqués peuvent utiliser l&apos;ECMAScript. Les balises &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; encadrent l&apos;appel d&apos;un script et affiche le texte retourné par le script. &lt;i&gt;&amp;lt;?   ?&amp;gt;&lt;/i&gt; peuvent être utilisés à l&apos;initialisation du script et pour faire quelques pré-traitements?.</translation>
     </message>
     <message>
         <location filename="../ui/snipetproperty.ui" line="73"/>
@@ -3572,7 +3572,7 @@ Date du fichier : %4</translation>
     <message>
         <location filename="../snipetdialog.cpp" line="110"/>
         <source>Param &amp;%1 : </source>
-        <translation>Paramêtre &amp;%1 :</translation>
+        <translation>Paramètre &amp;%1 :</translation>
     </message>
 </context>
 <context>
