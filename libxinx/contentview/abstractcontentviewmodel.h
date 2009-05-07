@@ -47,8 +47,6 @@ public:
 	virtual ~AbstractContentViewModel();
 
 	virtual QModelIndex index( ContentViewNode * node ) const = 0;
-
-	ContentViewNode * rootNode() const;
 protected:
 	virtual void nodeChanged( ContentViewNode * node );
 	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
@@ -56,6 +54,7 @@ protected:
 	virtual void endInsertNode();
 	virtual void endRemoveNode();
 
+	ContentViewNode * rootNode() const;
 	QMutex & mutex();
 private:
 	ContentViewNode * m_rootNode;

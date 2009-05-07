@@ -55,6 +55,7 @@ public:
 
 	//! The model editor is really created (based on the parser) at the first call.
 	virtual QAbstractItemModel * model() const;
+	ContentViewModel * contentViewModel() const;
 
 signals:
 	void positionInEditorChanged( const QModelIndex & index );
@@ -72,8 +73,7 @@ protected:
 	//! Return the current root node
 	ContentViewNode * rootNode() const;
 private slots:
-	virtual void textChanged();
-
+	void textChanged();
 private:
 	mutable QPointer<ContentViewModel> m_model;
 	ContentViewNode * m_rootNode;

@@ -671,35 +671,3 @@ void XslTextEditor::insertCompletionAccolade( QDocumentCursor & tc, QString node
 		tc = tc2;
 	}
 }
-
-bool XslTextEditor::processKeyPress( QKeyEvent * e ) {
-	if( m_model ) {
-		QList<XPathBalise> p = xpath( textCursor(), QStringList() << "xsl:template" << "xsl:variable" << "xsl:param", QString(), QStringList() << "mode" << "name" << "match"  );
-		ContentViewNode * n = m_model->rootNode();
-		foreach( XPathBalise b, p ) {
-			foreach( ContentViewNode * child, n->childs() ) {
-				if( ( b.name == "xsl:template" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslTemplate" ) ) {
-					if( ( ( child->data().toString() == b.attributes["name"] ) || ( child->data().toString() == b.attributes["match"] ) ) && ( child->data( ContentViewNode::NODE_USER_VALUE ).toString() == b.attributes["mode"] ) ) {
-						n = child;
-						break;
-					}
-				} else if( ( b.name == "xsl:variable" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslVariable" )  ) {
-					if( child->data().toString() == b.attributes["name"] ) {
-						n = child;
-						break;
-					}
-				} else if( ( b.name == "xsl:param" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslParam" )  ) {
-					if( child->data().toString() == b.attributes["name"] ) {
-						n = child;
-						break;
-					}
-				}
-			}
-		}
-		QModelIndex indexToSelect = m_model->index( n );
-
-		emit positionInEditorChanged( indexToSelect );
-	}
-
-	return XmlTextEditor::processKeyPress( e );
-}

@@ -66,7 +66,11 @@ void ContentViewTextEditor::loadFromDevice( QIODevice & d ) {
 	TextFileEditor::loadFromDevice( d );
 }
 
-QAbstractItemModel * ContentViewTextEditor::model()  const {
+QAbstractItemModel * ContentViewTextEditor::model() const {
+	return contentViewModel();
+}
+
+ContentViewModel * ContentViewTextEditor::contentViewModel() const {
 	if( ( ! m_model ) && m_rootNode )
 		m_model = new ContentViewModel( m_rootNode );
 	return m_model;
@@ -100,3 +104,4 @@ ContentViewParser * ContentViewTextEditor::parser() const {
 ContentViewNode * ContentViewTextEditor::rootNode() const {
 	return m_rootNode;
 }
+

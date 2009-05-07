@@ -24,6 +24,7 @@
 #include "xslcontentviewparser.h"
 #include "xmltexteditor.h"
 #include <contentview/contentviewnode.h>
+#include <contentview/contentviewmodel.h>
 
 // Qt header
 #include <QXmlStreamReader>
@@ -152,7 +153,7 @@ void XmlFileEditor::loadFromDevice( QIODevice & d ) {
 /* StyleSheetEditor */
 
 StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
-	connect( textEdit(), SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL(positionInEditorChanged(QModelIndex)) );
+	connect( textEdit()->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()) );
 
 	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
 	m_completionModel->setCompleteTags( XslCompletionNodeModel::NoTags );
@@ -215,4 +216,45 @@ bool StyleSheetEditor::autoIndent() {
 		return false;
 	}
 	return true;
+}
+
+
+void StyleSheetEditor::cursorPositionChanged() {
+	if( model() ) {
+		XslTextEditor * te = qobject_cast<XslTextEditor*>( textEdit() );
+		QList<XPathBalise> p = te->xpath(
+		                                        te->textCursor(),
+		                                        QStringList() << "xsl:template" << "xsl:variable" << "xsl:param",
+		                                        QString(),
+		                                        QStringList() << "mode" << "name" << "match"
+		                                      );
+
+		ContentViewNode * n = rootNode();
+		while( p.size() ) {
+			XPathBalise b = p.last();
+			p.removeLast();
+
+			foreach( ContentViewNode * child, n->childs() ) {
+				if( ( b.name == "xsl:template" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslTemplate" ) ) {
+					if( ( ( child->data().toString() == b.attributes["name"] ) || ( child->data().toString() == b.attributes["match"] ) ) && ( child->data( ContentViewNode::NODE_USER_VALUE ).toString() == b.attributes["mode"] ) ) {
+						n = child;
+						break;
+					}
+				} else if( ( b.name == "xsl:variable" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslVariable" )  ) {
+					if( child->data().toString() == b.attributes["name"] ) {
+						n = child;
+						break;
+					}
+				} else if( ( b.name == "xsl:param" ) && ( child->data( ContentViewNode::NODE_TYPE ).toString() == "XslParam" )  ) {
+					if( child->data().toString() == b.attributes["name"] ) {
+						n = child;
+						break;
+					}
+				}
+			}
+		}
+		QModelIndex indexToSelect = contentViewModel()->index( n );
+
+		emit positionInEditorChanged( indexToSelect );
+	}
 }

@@ -89,12 +89,6 @@ public:
 	virtual void insertCompletionAccolade( QDocumentCursor & tc, QString node, QString param, QString value, const QModelIndex & index );
 
 	void setModel( XslCompletionNodeModel * model );
-
-signals:
-	void positionInEditorChanged( const QModelIndex & index );
-
-protected:
-	virtual bool processKeyPress( QKeyEvent * );
 private:
 	QString paramValue( const QDocumentCursor & cursor, const QString & param );
 	void getTemplate( const QDocumentCursor & cursor, QString * name, QString * mode );
