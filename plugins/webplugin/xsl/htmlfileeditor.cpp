@@ -34,22 +34,17 @@
 
 /* HtmlFileEditor */
 
-HtmlFileEditor::HtmlFileEditor( QWidget *parent ) : ContentViewTextEditor( 0, new XmlTextEditor(), parent ) {
-	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
+HtmlFileEditor::HtmlFileEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
+	m_completionModel = new XslCompletionNodeModel( 0, this );
 	m_completionModel->setCompleteTags( XslCompletionNodeModel::Html );
 
 	QCompleter * completer = new QCompleter( textEdit() );
 	completer->setModel( m_completionModel );
 	textEdit()->setCompleter( completer );
-	qobject_cast<XslTextEditor*>( textEdit() )->setModel( m_completionModel );
 }
 
 HtmlFileEditor::~HtmlFileEditor() {
-	ContentViewParser * p = parser();
-	setParser( 0 );
-	qobject_cast<XslTextEditor*>( textEdit() )->setModel( 0 );
 	delete m_completionModel;
-	delete p;
 }
 
 XslCompletionNodeModel * HtmlFileEditor::completionModel() const {

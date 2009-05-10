@@ -28,7 +28,7 @@ class XslCompletionNodeModel;
 
 /* HtmlFileEditor */
 
-class HtmlFileEditor : public ContentViewTextEditor {
+class HtmlFileEditor : public TextFileEditor {
 	Q_OBJECT
 public:
 	HtmlFileEditor( QWidget *parent = 0 );

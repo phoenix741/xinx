@@ -30,7 +30,7 @@
 
 // Qt header
 #include <QAbstractItemModel>
-#include <QStack>
+#include <QQueue>
 #include <QHash>
 
 class ContentViewNode;
@@ -97,7 +97,7 @@ private:
 		int first, last;
 	};
 
-	QStack<tupleParentFisrtLast> m_stack;
+	QQueue<tupleParentFisrtLast> m_queue;
 
 	unsigned long m_lastId;
 };

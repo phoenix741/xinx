@@ -27,8 +27,9 @@
 
 /* XslCompletionNodeModel */
 
-XslCompletionNodeModel::XslCompletionNodeModel( ContentViewNode * root, QObject *parent ) : CompletionNodeModel( root, parent ), m_completionMode( COMPLETION_NONE_MODE ), m_baliseNode( 0 ), m_attributeNode( 0 ) {
-	startTimer( 0 );
+XslCompletionNodeModel::XslCompletionNodeModel( ContentViewNode * root, QObject *parent ) : CompletionNodeModel( root ? root : XmlCompletionParser::self()->rootNode(), parent ), m_completionMode( COMPLETION_NONE_MODE ), m_baliseNode( 0 ), m_attributeNode( 0 ) {
+	if( root )
+		startTimer( 0 );
 }
 
 XslCompletionNodeModel::~XslCompletionNodeModel() {

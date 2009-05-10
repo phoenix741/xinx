@@ -143,7 +143,7 @@ void ContentViewModel::beginInsertNode( ContentViewNode * node, int first, int l
 	if( ! m_idOfNode.keys().contains( node ) ) return;
 
 	struct tupleParentFisrtLast t = { node, first, last };
-	m_stack.push( t );
+	m_queue.enqueue( t );
 }
 
 void ContentViewModel::addChildsOf( quint32 id ) {
@@ -171,8 +171,8 @@ void ContentViewModel::addChildsOf( quint32 id ) {
 }
 
 void ContentViewModel::endInsertNode() {
-	while( m_stack.size() ) {
-		struct tupleParentFisrtLast t = m_stack.pop();
+	while( m_queue.size() ) {
+		struct tupleParentFisrtLast t = m_queue.dequeue();
 		QList<quint32> ids = m_idOfNode.values( t.parent );
 
 		foreach( quint32 id, ids ) {

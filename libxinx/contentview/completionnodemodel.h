@@ -23,6 +23,9 @@
 // Xinx header
 #include <contentview/abstractcontentviewmodel.h>
 
+// Qt header
+#include <QPair>
+
 /*!
  * \class CompletionNodeModel
  * \brief The completion node model is used to complete editor.

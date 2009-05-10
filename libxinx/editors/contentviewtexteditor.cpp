@@ -29,10 +29,13 @@
 
 ContentViewTextEditor::ContentViewTextEditor( ContentViewParser * parser, XinxCodeEdit * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( parser ) {
 	m_rootNode = new ContentViewNode( "root", -1 );
-	parser->setAttachId( (unsigned long)m_rootNode );
+	if( parser ) {
+		parser->setAttachId( (unsigned long)m_rootNode );
+	}
 	m_keyTimer = new QTimer();
 	m_keyTimer->setSingleShot( true );
 	m_keyTimer->setInterval( XINXConfig::self()->config().editor.automaticModelRefreshTimeout );
+
 	connect( m_keyTimer, SIGNAL(timeout()), this, SLOT(updateModel()) );
 	connect( textEdit()->document(), SIGNAL(contentsChanged()), this, SLOT(textChanged()) );
 	disconnect( textEdit()->document(), SIGNAL(contentsChanged()), this, SIGNAL(contentChanged()) );
