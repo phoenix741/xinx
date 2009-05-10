@@ -50,7 +50,7 @@ ContentViewParser * parserLoading( ContentViewParser * parser ) {
 ContentViewCache::ContentViewCache( XinxProject * project ) : QObject( project ), m_project( project ) {
 	m_watcher = new QFutureWatcher<ContentViewParser*> ( this );
 	connect( m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)) );
-	m_timerId = startTimer( 500 );
+	m_timerId = startTimer( 1000 );
 }
 
 ContentViewCache::~ContentViewCache() {

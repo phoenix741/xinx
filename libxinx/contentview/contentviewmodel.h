@@ -31,6 +31,7 @@
 // Qt header
 #include <QAbstractItemModel>
 #include <QStack>
+#include <QHash>
 
 class ContentViewNode;
 
