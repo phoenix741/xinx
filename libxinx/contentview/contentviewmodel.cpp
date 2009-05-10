@@ -23,11 +23,15 @@
 
 // Qt header
 #include <QImage>
+#include <QMutexLocker>
 
 /* ContentViewModel */
 
-ContentViewModel::ContentViewModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ) {
-
+ContentViewModel::ContentViewModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ), m_lastId( 1 ) {
+	QMutexLocker locker( &mutex() );
+	m_idOfNode.insert( rootNode(), 0 );
+	m_nodeOfId.insert( 0, rootNode() );
+	addChildsOf( 0 );
 }
 
 ContentViewModel::~ContentViewModel() {
@@ -38,7 +42,7 @@ QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
 	if( ! index.isValid() || index.column() )
 		return QVariant();
 
-	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
+	ContentViewNode * item = index.isValid() ? m_nodeOfId.value( index.internalId() ) : rootNode();
 
 	if( item ) {
 		if( role == Qt::UserRole ) {
@@ -65,46 +69,44 @@ Qt::ItemFlags ContentViewModel::flags( const QModelIndex &index ) const {
 QModelIndex ContentViewModel::index( int row, int column, const QModelIndex &parent ) const {
 	if( column ) return QModelIndex();
 
-	ContentViewNode * item = 0;
+	quint32 parentId = 0;
 	if( parent.isValid() )
-		item = static_cast<ContentViewNode*>( parent.internalPointer() );
-	else
-		item = rootNode();
+		parentId = parent.internalId();
+	int size = m_childs.value( parentId ).size();
 
-	if( ( row < 0 ) || ( row >= item->childs().size() ) ) {
+	if( ( row < 0 ) || ( row >= size ) ) {
 		return QModelIndex();
 	}
 
-	ContentViewNode * child = item->childs().at( row );
-	return createIndex( row, column, child );
+	quint32 childId = m_childs.value( parentId ).at( row );
+	return createIndex( row, column, childId );
+}
+
+QModelIndex ContentViewModel::index( quint32 id ) const {
+	if( id == 0 ) return QModelIndex();
+
+	quint32 parentId = m_parents.value( id );
+	return createIndex( m_childs.value( parentId ).indexOf( id ), 0, id );
 }
 
 QModelIndex ContentViewModel::index( ContentViewNode * node ) const {
-	if( node ) {
-		ContentViewNode * parent = node->parent( (unsigned long)rootNode() );
-		if( parent )
-			return createIndex( parent->childs().indexOfObject( node ), 0, node );
-	}
-	return QModelIndex();
+	if( node == rootNode() ) return QModelIndex();
+
+	quint32 id = m_idOfNode.value( node );
+	quint32 parentId = m_parents.value( id );
+	return createIndex( m_childs.value( parentId ).indexOf( id ), 0, id );
 }
 
-QModelIndex ContentViewModel::parent( const QModelIndex &index ) const {
-	if( ! index.isValid() )
+quint32 ContentViewModel::createId() {
+	return m_lastId++;
+}
+
+QModelIndex ContentViewModel::parent( const QModelIndex & i ) const {
+	if( ! i.isValid() )
 		return QModelIndex();
 
-	ContentViewNode * item = static_cast<ContentViewNode*>( index.internalPointer() );
-	if( !item )
-		return QModelIndex();
-
-	ContentViewNode * parent = item->parent( (unsigned long)rootNode() );
-	if( !parent )
-		return QModelIndex();
-
-	ContentViewNode * parent2 = parent->parent( (unsigned long)rootNode() );
-	if( !parent2 ) // In this case parent is rootNode()
-		return QModelIndex();
-
-	return createIndex( parent2->childs().indexOfObject( parent ), 0, parent );
+	quint32 parentId = m_parents.value( i.internalId() );
+	return index( parentId );
 }
 
 bool ContentViewModel::hasChildren( const QModelIndex & parent ) const {
@@ -112,11 +114,8 @@ bool ContentViewModel::hasChildren( const QModelIndex & parent ) const {
 }
 
 int ContentViewModel::rowCount( const QModelIndex &parent ) const {
-	if( ! parent.isValid() ) return rootNode()->childs().size();
-
-	ContentViewNode * item = static_cast<ContentViewNode*>( parent.internalPointer() );
-
-	return item ? item->childs().size() : 0;
+	if( ! parent.isValid() ) return m_childs.value( 0 ).size();
+	return m_childs.value( parent.internalId() ).size();
 }
 
 QVariant ContentViewModel::headerData( int section, Qt::Orientation orientation, int role ) const {
@@ -131,3 +130,118 @@ int ContentViewModel::columnCount( const QModelIndex &parent ) const {
 	return 1;
 }
 
+void ContentViewModel::nodeChanged( ContentViewNode * node ) {
+	QList<quint32> ids = m_idOfNode.values( node );
+	foreach( quint32 id, ids ) {
+		QModelIndex i = index( id );
+		emit dataChanged( i, i );
+	}
+}
+
+void ContentViewModel::beginInsertNode( ContentViewNode * node, int first, int last ) {
+	// Si le noeud nous concerne pas, on a rien a faire
+	if( ! m_idOfNode.keys().contains( node ) ) return;
+
+	struct tupleParentFisrtLast t = { node, first, last };
+	m_stack.push( t );
+}
+
+void ContentViewModel::addChildsOf( quint32 id ) {
+	QStack< quint32 > stack;
+
+	stack.push( id );
+	while ( stack.count() ) {
+		quint32 currentId  = stack.pop();
+
+		ContentViewNode * currentNode = m_nodeOfId.value( currentId );
+
+		// Process children
+		//QList<quint32> childs = m_childs.value( currentId );
+		foreach ( ContentViewNode * child, currentNode->childs() ) {
+			quint32 childId = createId();
+			m_idOfNode.insert( child, childId );
+			m_nodeOfId.insert( childId, child );
+			m_childs[currentId].append( childId );
+			m_parents.insert( childId, currentId );
+
+			stack.push( childId );
+		}
+		//m_childs.insert( currentId, childs );
+	}
+}
+
+void ContentViewModel::endInsertNode() {
+	while( m_stack.size() ) {
+		struct tupleParentFisrtLast t = m_stack.pop();
+		QList<quint32> ids = m_idOfNode.values( t.parent );
+
+		foreach( quint32 id, ids ) {
+			beginInsertRows( index( id ), t.first, t.last );
+
+			//QList<quint32> childs = m_childs.value( id );
+			for( int index = t.first; index <= t.last; index++ ) {
+				ContentViewNode * node = t.parent->childs().at( index );
+				quint32 newId          = createId();
+
+				m_idOfNode.insert( node, newId );
+				m_nodeOfId.insert( newId, node );
+				m_childs[id].insert( index, newId );
+				m_parents.insert( newId, id );
+				addChildsOf( newId );
+			}
+			//m_childs.insert( id, childs );
+
+			endInsertRows();
+		}
+	}
+}
+
+void ContentViewModel::beginRemoveNode( ContentViewNode * node, int first, int last ) {
+	// Si le noeud nous concerne pas, on a rien a faire
+	if( ! m_idOfNode.keys().contains( node ) ) return;
+
+	QList<quint32> ids = m_idOfNode.values( node );
+
+	foreach( quint32 id, ids ) {
+		beginRemoveRows( index( id ), first, last );
+
+		//QList<quint32> childs = m_childs.value( id );
+		for( int index = last; index <= first; index ++ ) {
+			ContentViewNode * child = node->childs().at( index );
+			quint32 oldId           = m_childs.value(id).at( index );
+
+			removeChildsOf( oldId );
+			m_idOfNode.remove( child, oldId );
+			m_nodeOfId.remove( oldId );
+			m_parents.remove( oldId );
+			m_childs[id].removeAt( index );
+		}
+		//m_childs.insert( id, childs );
+
+		endRemoveRows();
+	}
+}
+
+void ContentViewModel::removeChildsOf( quint32 id ) {
+	QStack< quint32 > stack;
+
+	stack.push( id );
+	while ( stack.count() ) {
+		quint32 currentId  = stack.pop();
+
+		// Process children
+		foreach ( quint32 childId, m_childs.value( currentId ) ) {
+			ContentViewNode * child = m_nodeOfId.value( childId );
+
+			m_idOfNode.remove( child, childId );
+			m_nodeOfId.remove( childId );
+			m_parents.remove( childId );
+
+			stack.push( childId );
+		}
+		m_childs.remove( currentId );
+	}
+}
+
+void ContentViewModel::endRemoveNode() {
+}

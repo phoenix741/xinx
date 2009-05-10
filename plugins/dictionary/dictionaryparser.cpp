@@ -65,7 +65,7 @@ void DictionaryParser::loadFromDeviceImpl() {
 	if( !error() ) {
 		detachAttachedNode();
 	} else
-		throw ContentViewException( errorString(), lineNumber(), columnNumber() );
+		throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
 }
 
 

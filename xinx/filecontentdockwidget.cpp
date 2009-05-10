@@ -26,7 +26,7 @@
 #include <QTreeView>
 #include <QAbstractItemModel>
 
-//#include <modeltest.h>
+#include <modeltest.h>
 
 /* ContentDockWidget */
 
@@ -67,9 +67,9 @@ void FileContentDockWidget::contentTreeViewDblClick( QModelIndex index ) {
 
 void FileContentDockWidget::updateModel( QAbstractItemModel * model ) {
 	if( model == m_model ) return;
-	/*if( model ) {
-		new ModelTest(model, this);
-	}*/
+// 	if( model ) {
+// 		new ModelTest(model, this);
+// 	}
 	m_contentTreeView->setModel( model );
 	m_model = model;
 }

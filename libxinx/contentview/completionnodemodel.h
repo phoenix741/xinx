@@ -48,7 +48,6 @@ public:
 	virtual QVariant data( const QModelIndex &index, int role ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
 	virtual QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
-	virtual QModelIndex index( ContentViewNode * node ) const;
 	virtual QModelIndex parent( const QModelIndex &index ) const;
 	virtual bool hasChildren( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
@@ -59,9 +58,9 @@ protected:
 	virtual bool mustElementBeShowed( ContentViewNode * n );
 
 	//! List of all nodes in the model
-  const QList<ContentViewNode*> & nodes() const;
+	const QList<ContentViewNode*> & nodes() const;
 	//! List of showed nodes in the model
-  const QList<ContentViewNode*> & showedNodes() const;
+	const QList<ContentViewNode*> & showedNodes() const;
 
 	//! Show a node in the screen
 	void showNode( ContentViewNode * n );
@@ -71,25 +70,30 @@ protected:
 	bool isElementShowed( ContentViewNode * n );
 
 	//! Add the node \e node to hidden nodes (and show it if \e mustElementBeShowed() )
-	void addAllNodes( ContentViewNode * node );
+	void addAllNodes( ContentViewNode * parent, ContentViewNode * node );
 
 	//! This methode is called when a node is add.
-	virtual void addNode( ContentViewNode * n );
+	virtual void addNode( ContentViewNode * parent, ContentViewNode * n );
 
 	//! Remove the node \e node and all it's child
-	void removeAllNodes( ContentViewNode * n );
+	void removeAllNodes( ContentViewNode * parent, ContentViewNode * n );
 
 	//! Remove a node from the model
-	virtual void removeNode( ContentViewNode * n );
+	virtual void removeNode( ContentViewNode * parent, ContentViewNode * n );
 
+	//! Return the possible parent of a nodes
+	ContentViewNode * parent( ContentViewNode * node ) const;
+
+	virtual void nodeChanged( ContentViewNode * node );
 	virtual void beginInsertNode( ContentViewNode * n, int first, int last );
 	virtual void beginRemoveNode( ContentViewNode * n, int first, int last );
 	virtual void endInsertNode();
 	virtual void endRemoveNode();
 	virtual void reset();
-
-	virtual void timerEvent( QTimerEvent * event );
 private:
+	typedef QPair<ContentViewNode*,ContentViewNode*> ContentViewNodePair;
+	QHash< ContentViewNode*, ContentViewNode* > m_parents;
+
 	ContentViewNode * m_parent;
 	int m_first, m_last;
 

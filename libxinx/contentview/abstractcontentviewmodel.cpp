@@ -21,38 +21,23 @@
 #include "contentview/contentviewmodel.h"
 #include "contentview/contentviewnode.h"
 
+// Qt header
+#include <QMutexLocker>
+
 /* AbstractContentViewModel */
 
 AbstractContentViewModel::AbstractContentViewModel( ContentViewNode * root, QObject *parent ) : QAbstractItemModel( parent ), m_rootNode( root ) {
+	QMutexLocker locker( &mutex() );
 	m_rootNode->addModel( this, (unsigned long)m_rootNode );
 }
 
 AbstractContentViewModel::~AbstractContentViewModel() {
+	QMutexLocker locker( &m_updateMutex );
 	m_rootNode->removeModel( this, (unsigned long)m_rootNode );
 }
 
 ContentViewNode * AbstractContentViewModel::rootNode() const {
 	return m_rootNode;
-}
-
-void AbstractContentViewModel::nodeChanged( ContentViewNode * node ) {
-	emit dataChanged( index( node ), index( node ) );
-}
-
-void AbstractContentViewModel::beginInsertNode( ContentViewNode * node, int first, int last ) {
-	beginInsertRows( index( node ), first, last );
-}
-
-void AbstractContentViewModel::beginRemoveNode( ContentViewNode * node, int first, int last ) {
-	beginRemoveRows( index( node ), first, last );
-}
-
-void AbstractContentViewModel::endInsertNode() {
-	endInsertRows();
-}
-
-void AbstractContentViewModel::endRemoveNode() {
-	endRemoveRows();
 }
 
 QMutex & AbstractContentViewModel::mutex() {

@@ -42,12 +42,12 @@ void JavascriptModelCompleter::setFilter( const QString functionName ) {
 }
 
 bool JavascriptModelCompleter::mustElementBeShowed( ContentViewNode * node ) {
-	ContentViewNode * parent = node->parent( (unsigned long)rootNode() );
-	if( parent && ( parent->data( ContentViewNode::NODE_TYPE ).toString() == "function" ) ) {
+	ContentViewNode * p = parent( node );
+	if( p && ( p->data( ContentViewNode::NODE_TYPE ).toString() == "function" ) ) {
 		return true;
 	}
 
-	if( ! parent ) {
+	if( ! p ) {
 		return true;
 	}
 

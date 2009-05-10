@@ -22,22 +22,16 @@
 #include "contentview/contentviewnode.h"
 
 // Qt header
-#include <QTimerEvent>
 #include <QStack>
 #include <QImage>
 
 /* CompletionNodeModel */
 
 CompletionNodeModel::CompletionNodeModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ) {
-	startTimer(0);
+	m_nodes.append( root );
 }
 
 CompletionNodeModel::~CompletionNodeModel() {
-}
-
-void CompletionNodeModel::timerEvent( QTimerEvent * event ) {
-	killTimer( event->timerId() );
-	//	addAllNodes( rootNode() );
 }
 
 QVariant CompletionNodeModel::data( const QModelIndex &index, int role ) const {
@@ -79,12 +73,6 @@ QModelIndex CompletionNodeModel::index( int row, int column, const QModelIndex &
 	ContentViewNode * item = m_showedNodes.at( row );
 
 	return createIndex( row, column, item );
-}
-
-QModelIndex CompletionNodeModel::index( ContentViewNode * node ) const {
-	if( ! m_showedNodes.contains( node ) ) return QModelIndex();
-
-	return createIndex( m_showedNodes.indexOf( node ), 0, node );
 }
 
 QModelIndex CompletionNodeModel::parent( const QModelIndex &index ) const {
@@ -154,24 +142,24 @@ void CompletionNodeModel::hideNode( ContentViewNode * n ) {
 	endRemoveRows();
 }
 
-void CompletionNodeModel::addAllNodes( ContentViewNode * n ) {
+void CompletionNodeModel::addAllNodes( ContentViewNode * parent, ContentViewNode * n ) {
 	Q_ASSERT( n );
 
-	QStack< ContentViewNode* > stack;
+	QStack< ContentViewNodePair > stack;
 
-	stack.push( n );
+	stack.push( qMakePair( parent, n ) );
 	while ( stack.count() ) {
-		ContentViewNode * node  = stack.pop();
+		ContentViewNodePair nodePair  = stack.pop();
 
-		addNode( node );
+		addNode( nodePair.first, nodePair.second );
 
 		// Process children
-		foreach ( ContentViewNode * child, node->childs() )
-			stack.push( child );
+		foreach ( ContentViewNode * child, nodePair.second->childs() )
+			stack.push( qMakePair( nodePair.second, child ) );
 	}
 }
 
-void CompletionNodeModel::addNode( ContentViewNode * n ) {
+void CompletionNodeModel::addNode( ContentViewNode * parent, ContentViewNode * n ) {
 	Q_ASSERT( n );
 	if( m_nodes.contains( n ) ) {
 		qDebug( qPrintable( QString("The node %1(%2) is already in the list").arg( (unsigned long)n, 0, 16 ).arg( n->data().toString() ) ) );
@@ -181,36 +169,52 @@ void CompletionNodeModel::addNode( ContentViewNode * n ) {
 	// Add the node to list
 	QList<ContentViewNode*>::iterator insertingRow = qLowerBound( m_nodes.begin(), m_nodes.end(), n, ContentViewNodeListSort );
 	m_nodes.insert( insertingRow, n );
+	m_parents.insert( n, parent );
 
 	if( mustElementBeShowed( n ) ) {
 		showNode( n );
 	}
 }
 
-void CompletionNodeModel::removeAllNodes( ContentViewNode * n ) {
+void CompletionNodeModel::removeAllNodes( ContentViewNode * parent, ContentViewNode * n ) {
 	Q_ASSERT( n );
 
-	QStack< ContentViewNode* > stack;
+	QStack< ContentViewNodePair > stack;
 
-	stack.push( n );
+	stack.push( qMakePair( parent, n ) );
 	while ( stack.count() ) {
-		ContentViewNode * node  = stack.pop();
+		ContentViewNodePair nodePair = stack.pop();
 
-		removeNode( node );
+		removeNode( nodePair.first, nodePair.second );
 
 		// Process children
-		foreach ( ContentViewNode * child, node->childs() )
-			stack.push( child );
+		foreach ( ContentViewNode * child, nodePair.second->childs() )
+			stack.push( qMakePair( nodePair.second, child ) );
 	}
 }
 
-void CompletionNodeModel::removeNode( ContentViewNode * n ) {
+void CompletionNodeModel::removeNode( ContentViewNode * parent, ContentViewNode * n ) {
+	Q_UNUSED( parent )
 	Q_ASSERT( n );
 
 	// Remove the node to list
 	hideNode( n );
 	int removingRow = m_nodes.indexOf( n );
-	m_nodes.removeAt( removingRow );
+	if( removingRow >= 0 ) {
+		m_nodes.removeAt( removingRow );
+	}
+	m_parents.remove( n );
+}
+
+ContentViewNode * CompletionNodeModel::parent( ContentViewNode * node ) const {
+	return m_parents.value( node );
+}
+
+void CompletionNodeModel::nodeChanged( ContentViewNode * node ) {
+	if( m_showedNodes.contains( node ) ) return;
+
+	QModelIndex index = createIndex( m_showedNodes.indexOf( node ), 0, node );
+	emit dataChanged( index, index );
 }
 
 void CompletionNodeModel::beginInsertNode( ContentViewNode * n, int first, int last ) {
@@ -220,21 +224,26 @@ void CompletionNodeModel::beginInsertNode( ContentViewNode * n, int first, int l
 }
 
 void CompletionNodeModel::endInsertNode() {
+	// Si le noeud nous concerne pas, on a rien a faire
+	if( ! m_nodes.contains( m_parent ) ) return;
+
 	for( int i = m_first; i <= m_last; i++ ) {
 		ContentViewNode * node = m_parent->childs().at( i );
 
-		addAllNodes( node );
+		addAllNodes( m_parent, node );
 	}
 }
 
 void CompletionNodeModel::beginRemoveNode( ContentViewNode * n, int first, int last ) {
+	// Si le noeud nous concerne pas, on a rien a faire
+
 	m_parent = n;
 	m_first  = first;
 	m_last   = last;
 
 	for( int i = m_first ; i <= m_last ; i++ ) {
 		ContentViewNode * child = m_parent->childs().at( i );
-		removeAllNodes( child );
+		removeAllNodes( m_parent, child );
 	}
 }
 

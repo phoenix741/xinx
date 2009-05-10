@@ -30,6 +30,7 @@
 
 // Qt header
 #include <QAbstractItemModel>
+#include <QStack>
 
 class ContentViewNode;
 
@@ -70,7 +71,34 @@ public:
 	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
 	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual int columnCount( const QModelIndex &parent = QModelIndex() ) const;
+
+protected:
+	virtual void nodeChanged( ContentViewNode * node );
+	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
+	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );
+	virtual void endInsertNode();
+	virtual void endRemoveNode();
+
+	QModelIndex index( quint32 id ) const;
+
+	QHash< quint32, quint32 > m_parents;
+	QHash< quint32, QList< quint32 > > m_childs;
+
+	QHash< quint32, ContentViewNode * > m_nodeOfId;
+	QMultiHash< ContentViewNode*, quint32 > m_idOfNode;
 private:
+	void addChildsOf( quint32 id );
+	void removeChildsOf( quint32 id );
+	inline quint32 createId();
+
+	struct tupleParentFisrtLast {
+		ContentViewNode * parent;
+		int first, last;
+	};
+
+	QStack<tupleParentFisrtLast> m_stack;
+
+	unsigned long m_lastId;
 };
 
 Q_DECLARE_METATYPE( ContentViewModel::struct_file_content )

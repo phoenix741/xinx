@@ -22,9 +22,13 @@
 #include "xslcontentviewparser.h"
 #include <contentview/contentviewnode.h>
 
+// Qt header
+#include <QMutexLocker>
+
 /* XslCompletionNodeModel */
 
 XslCompletionNodeModel::XslCompletionNodeModel( ContentViewNode * root, QObject *parent ) : CompletionNodeModel( root, parent ), m_completionMode( COMPLETION_NONE_MODE ), m_baliseNode( 0 ), m_attributeNode( 0 ) {
+	startTimer( 0 );
 }
 
 XslCompletionNodeModel::~XslCompletionNodeModel() {
@@ -32,9 +36,12 @@ XslCompletionNodeModel::~XslCompletionNodeModel() {
 }
 
 void XslCompletionNodeModel::timerEvent( QTimerEvent * event ) {
-	CompletionNodeModel::timerEvent( event );
+	killTimer( event->timerId() );
+
+	QMutexLocker locker( &mutex() );
+
 	XmlCompletionParser::self()->rootNode()->addModel( this, (unsigned long)rootNode() );
-	addAllNodes( XmlCompletionParser::self()->rootNode() );
+	addAllNodes( 0, XmlCompletionParser::self()->rootNode() );
 }
 
 QVariant XslCompletionNodeModel::data( const QModelIndex &index, int role ) const {
@@ -138,15 +145,14 @@ void XslCompletionNodeModel::setCompleteValue( const QString & baliseName, const
 	}
 }
 
-void XslCompletionNodeModel::addNode( ContentViewNode * n ) {
-	CompletionNodeModel::addNode( n );
+void XslCompletionNodeModel::addNode( ContentViewNode * parentNode, ContentViewNode * n ) {
+	CompletionNodeModel::addNode( parentNode, n );
 
 	QString nodeName = n->data().toString();
 	QString nodeType = n->data( ContentViewNode::NODE_TYPE ).toString();
-	ContentViewNode * parent = n->parent( (unsigned long)rootNode() );
-	if( ( nodeType == "XslParam" ) && parent ) {
-		QString parentType = parent->data( ContentViewNode::NODE_TYPE ).toString();
-		QString parentName = parent->data().toString();
+	if( ( nodeType == "XslParam" ) && parentNode ) {
+		QString parentType = parentNode->data( ContentViewNode::NODE_TYPE ).toString();
+		QString parentName = parentNode->data().toString();
 
     if( ( parentType == "XslTemplate" ) && ( ! m_params.contains( parentName, nodeName ) ) )
 			m_params.insert( parentName, nodeName );
@@ -160,8 +166,8 @@ void XslCompletionNodeModel::addNode( ContentViewNode * n ) {
 	}
 }
 
-void XslCompletionNodeModel::removeNode( ContentViewNode * n ) {
-	CompletionNodeModel::removeNode( n );
+void XslCompletionNodeModel::removeNode( ContentViewNode * parent, ContentViewNode * n ) {
+	CompletionNodeModel::removeNode( parent, n );
 
 	QString nodeName = n->data().toString();
 	QString nodeType = n->data( ContentViewNode::NODE_TYPE ).toString();
@@ -202,27 +208,27 @@ bool XslCompletionNodeModel::mustElementBeShowed( ContentViewNode * n ) {
 		return false;
 	} else
 	if( m_completionMode == COMPLETION_ATTRIBUTE_MODE ) {
-		ContentViewNode * parent = n->parent( (unsigned long)rootNode() );
-		if( ( parent == m_baliseNode ) && ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( m_showedAttributeList.isEmpty() || m_showedAttributeList.contains( n->data().toString() ) ) ) {
+		ContentViewNode * p = parent( n );
+		if( ( p == m_baliseNode ) && ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( m_showedAttributeList.isEmpty() || m_showedAttributeList.contains( n->data().toString() ) ) ) {
 			return true;
 		}
 		return false;
 	} else
 	if( m_completionMode == COMPLETION_VALUE_MODE ) {
-		ContentViewNode * parentAttribute = n->parent( (unsigned long)rootNode() );
-		ContentViewNode * parentBalise = parentAttribute ? parentAttribute->parent( (unsigned long)rootNode() ) : 0;
+		ContentViewNode * parentAttribute = parent( n );
+		ContentViewNode * parentBalise = parentAttribute ? parent( parentAttribute ) : 0;
 		if( ( parentBalise == m_baliseNode ) && ( parentAttribute == m_attributeNode ) && n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlValue" ) {
 			return true;
 		}
 		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XslParam" ) || ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XslVariable" )|| ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XslVariable" ) ) {
-			ContentViewNode * parent = n->parent( (unsigned long)rootNode() );
-			QString parentType = parent ? parent->data( ContentViewNode::NODE_TYPE ).toString() : QString();
+			ContentViewNode * p = parent( n );
+			QString parentType = p ? p->data( ContentViewNode::NODE_TYPE ).toString() : QString();
 
 			// Variable global
 			if( parentType.isEmpty() || ( parentType == "include" ) ) return true;
 
-			if( ( parent->data().toString() == m_currentTemplateName ) && m_currentTemplateMode.isEmpty() ) return true;
-			if( ( parent->data().toString() == m_currentTemplateName ) && ( m_currentTemplateMode == n->data( ContentViewNode::NODE_USER_VALUE ).toString() ) ) return true;
+			if( ( p->data().toString() == m_currentTemplateName ) && m_currentTemplateMode.isEmpty() ) return true;
+			if( ( p->data().toString() == m_currentTemplateName ) && ( m_currentTemplateMode == n->data( ContentViewNode::NODE_USER_VALUE ).toString() ) ) return true;
 			return false;
 		}
 		if( n->data( ContentViewNode::NODE_TYPE ).toString() == "XslTemplate" ) return true;

@@ -44,7 +44,7 @@ public:
 	 * \param message Error of the exception.
 	 * \param line Line where the error is.
 	 */
-	ContentViewException( QString message, int line, int column = 0 );
+	ContentViewException( QString message, QString filename, int line, int column = 0 );
 
 	/*!
 	 * Return the line where the error is.
@@ -57,8 +57,14 @@ public:
 	 * \return the column of the error.
 	 */
 	int getColumn() const;
+
+	/*!
+	 * Return the filename where find the error
+	 * \return the filename of the exception.
+	 */
 private:
 	int m_line, m_column;
+	QString m_filename;
 };
 
 
@@ -130,7 +136,7 @@ protected:
 
 	QString locationOf( ContentViewNode * parent, const QString & filename );
 private:
-	QList<ContentViewNode*> m_attachedNode;
+	QList< QPair<ContentViewNode*,ContentViewNode*> > m_attachedNode;
 	bool m_autoDelete, m_alreadyRunning;
 	ContentViewNode * m_rootNode;
 	QIODevice * m_device;

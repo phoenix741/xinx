@@ -75,10 +75,13 @@ protected:
 private slots:
 	void resultReadyAt( int index );
 private:
+	ContentViewParser * createParser( const QString & filename, ContentViewNode** refNode = 0 );
+
 	QHash<QString,ContentViewNode*> m_nodes;
+	QFutureWatcher<ContentViewParser*> * m_watcher;
 	XinxProject * m_project;
-	QFutureWatcher<ContentViewNode*> * m_watcher;
 	QQueue< ContentViewParser* > m_parsers;
+	int m_timerId;
 };
 
 #endif /* __CONTENTVIEWCLASS_H__ */

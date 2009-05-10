@@ -58,7 +58,7 @@ void JsContentViewParser::loadFromDeviceImpl() {
 				else if( function )
 					loadVariables( function, inputDevice() );
 				else
-					throw ContentViewException( tr("Can't attach variable to function ?"), m_line );
+					throw ContentViewException( tr("Can't attach variable to function ?"), rootNode()->fileName(), m_line );
 			} else
 				if( name == "function" ) {
 					function = loadFunction( rootNode(), inputDevice() );
@@ -66,7 +66,7 @@ void JsContentViewParser::loadFromDeviceImpl() {
 					do {
 						nextIdentifier( inputDevice(), type, name );
 						if( type == TOKEN_EOF )
-							throw ContentViewException( tr("End of file is prematured"), m_line );
+							throw ContentViewException( tr("End of file is prematured"), rootNode()->fileName(), m_line );
 					} while( ( type != TOKEN_PONCTUATION ) || ( ( name != ";" ) && ( name != "{" ) && ( name != "}" ) ) );
 
 			if( ( type == TOKEN_PONCTUATION ) && ( name == "{" ) ) bloc ++;
@@ -84,11 +84,11 @@ void JsContentViewParser::loadFromDeviceImpl() {
 				bloc --;
 			}
 			if( bloc < 0 )
-				throw ContentViewException( tr("Too many '}'"), m_line );
+				throw ContentViewException( tr("Too many '}'"), rootNode()->fileName(), m_line );
 		case TOKEN_EOF:
 			break;
 		default:
-			throw ContentViewException( tr("I wait something but i don't know what !"), m_line );
+			throw ContentViewException( tr("I wait something but i don't know what !"), rootNode()->fileName(), m_line );
 		}
 	} while( ! inputDevice()->atEnd() );
 
@@ -247,7 +247,7 @@ void JsContentViewParser::loadInstruction( QIODevice * buffer, QString & name, J
 				crochet--;
 		nextIdentifier( buffer, type, name );
 		if( type == TOKEN_EOF )
-			throw ContentViewException( tr("End of file is prematured"), m_line );
+			throw ContentViewException( tr("End of file is prematured"), rootNode()->fileName(), m_line );
 	};
 }
 
@@ -258,7 +258,7 @@ void JsContentViewParser::loadVariables( ContentViewNode * parent, QIODevice * b
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
-		throw ContentViewException( tr("I wait an identifier"), m_line );
+		throw ContentViewException( tr("I wait an identifier"), rootNode()->fileName(), m_line );
 
 	attacheNewVariableNode( parent, name, m_line );
 	//variables << new JavaScriptVariables( this, name, m_line );
@@ -270,7 +270,7 @@ void JsContentViewParser::loadVariables( ContentViewNode * parent, QIODevice * b
 		loadIdentifier = true;
 
 		if( type == TOKEN_EOF )
-			throw ContentViewException( tr("End of file is prematured"), m_line );
+			throw ContentViewException( tr("End of file is prematured"), rootNode()->fileName(), m_line );
 
 		if( ( type == TOKEN_PONCTUATION ) && ( name == ";" ) )
 			cont = false;
@@ -278,7 +278,7 @@ void JsContentViewParser::loadVariables( ContentViewNode * parent, QIODevice * b
 			nextIdentifier( buffer, type, name );
 
 			if( type != TOKEN_IDENTIFIER )
-				throw ContentViewException( tr("I wait an identifier."), m_line );
+				throw ContentViewException( tr("I wait an identifier."), rootNode()->fileName(), m_line );
 
 			attacheNewVariableNode( parent, name, m_line );
 		} else if ( ( type == TOKEN_PONCTUATION ) && ( name == "=" ) ) {
@@ -294,7 +294,7 @@ ContentViewNode * JsContentViewParser::loadFunction( ContentViewNode * parent, Q
 
 	nextIdentifier( buffer, type, name );
 	if( type != TOKEN_IDENTIFIER )
-		throw ContentViewException( tr("I wait an identifier."), m_line );
+		throw ContentViewException( tr("I wait an identifier."), rootNode()->fileName(), m_line );
 
 	ContentViewNode * function = attacheNewFunctionNode( parent, name, m_line );
 	loadAttachedNode( function );
@@ -302,12 +302,12 @@ ContentViewNode * JsContentViewParser::loadFunction( ContentViewNode * parent, Q
 	nextIdentifier( buffer, type, name );
 
 	if( ! ( ( type == TOKEN_PONCTUATION ) && ( name == "(" ) ) )
-		throw ContentViewException( tr("I wait a '('"), m_line );
+		throw ContentViewException( tr("I wait a '('"), rootNode()->fileName(), m_line );
 
 	do {
 		nextIdentifier( buffer, type, name );
 		if( type == TOKEN_EOF )
-			throw ContentViewException( tr("End of file is prematured"), m_line );
+ 			throw ContentViewException( tr("End of file is prematured"), rootNode()->fileName(), m_line );
 
 		if( type == TOKEN_IDENTIFIER )
 			attacheNewParamNode( function, name, m_line );
@@ -315,7 +315,7 @@ ContentViewNode * JsContentViewParser::loadFunction( ContentViewNode * parent, Q
 		while( ( type != TOKEN_PONCTUATION ) || ( ( name != ")" ) && ( name != "," ) ) ) {
 			nextIdentifier( buffer, type, name );
 			if( type == TOKEN_EOF )
-				throw ContentViewException( tr("End of file is prematured"), m_line );
+				throw ContentViewException( tr("End of file is prematured"), rootNode()->fileName(), m_line );
 		}
 	} while( ( type != TOKEN_PONCTUATION ) || ( name != ")" ) );
 

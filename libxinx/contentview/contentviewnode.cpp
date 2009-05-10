@@ -29,6 +29,8 @@
 
 /* Static */
 
+QMultiHash<unsigned long, AbstractContentViewModel* > ContentViewNode::s_models;
+
 /* ContentViewNodeListSort */
 
 bool ContentViewNodeListSort( ContentViewNode * d1, ContentViewNode * d2 ) {
@@ -106,24 +108,22 @@ int ContentViewNodeList::count() const {
 
 /* ContentViewNode */
 
-ContentViewNode::ContentViewNode( const QString & name, int line, bool cachedNode ) : m_canBeDeleted( true ), m_cachedNode( cachedNode ), m_line( line ) {
+ContentViewNode::ContentViewNode( const QString & name, int line, bool cachedNode ) : m_autoDelete( true ), m_cachedNode( cachedNode ), m_line( line ) {
 	m_datas.insert( ContentViewNode::NODE_NAME, name );
 	m_datas.insert( ContentViewNode::NODE_DISPLAY_NAME, name );
 }
 
 ContentViewNode::~ContentViewNode() {
-	detach();
+	if( m_referenceCounter > 0 )
+		qWarning() << "Delete " << this << "(" << m_datas.values( ContentViewNode::NODE_NAME ) << ")" << " but reference counter is not null : " << m_referenceCounter;
 }
 
 void ContentViewNode::deleteInstance( unsigned long id ) {
-	if( m_canBeDeleted ) {
-		ContentViewNodeList childs = m_childs;
-		foreach( ContentViewNode* node, childs ) {
-			node->detach( id );
-			node->deleteInstance( id );
-		}
-		delete this;
+	ContentViewNodeList childs = m_childs;
+	foreach( ContentViewNode* node, childs ) {
+		node->detach( this, id );
 	}
+	delete this;
 }
 
 bool ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
@@ -131,11 +131,6 @@ bool ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	if( !parent || parent->m_childs.contains( this ) ) {
 		return false;
 	}
-	Q_ASSERT( ! m_parents.value( id ) );
-
-	// Set the model of the parent for this and all this child
-	// If no id set, copy all models from parent to this and it childs.
-	propagateModels( parent, id );
 
 	// lock the model if possible
 	QList<AbstractContentViewModel*> lockedModels = callModelsLock( id );
@@ -144,14 +139,13 @@ bool ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	ContentViewNodeList::iterator insertingRow = qLowerBound( parent->m_childs.begin(), parent->m_childs.end(), this, ContentViewNodeListSort );
 	int rowForModel = insertingRow - parent->m_childs.begin();
 
-	// Set the parent or quit if already defined.
-	if( m_cachedNode )
-		m_parents.insert( id, parent );
-	else
-		m_parents.insert( 0, parent );
-
 	// If model, we alert it of inserting a row
 	callModelBeginInsertRows( parent, rowForModel, lockedModels );
+
+	// Set the filename
+	if( m_filename.isEmpty() ) {
+		m_filename = parent->m_filename;
+	}
 
 	// Insert this in line."insertingRow" of parent childs
 	parent->m_childs.insert( insertingRow, this );
@@ -162,13 +156,14 @@ bool ContentViewNode::attach( ContentViewNode * parent, unsigned long id ) {
 	// Unlock models
 	callModelsUnlock( lockedModels );
 
+	// Incremente the counter
+	m_referenceCounter.ref();
+
 	return true;
 }
 
-void ContentViewNode::detach( unsigned long id ) {
-	// Get the parent
-	ContentViewNode * parent = m_cachedNode ? m_parents.value( id ) : m_parents.value( 0 );
-	if( ! parent ) return;
+void ContentViewNode::detach( ContentViewNode * parent, unsigned long id ) {
+	Q_ASSERT( parent );
 
 	// lock the model if possible
 	QList<AbstractContentViewModel*> lockedModels = callModelsLock( id );
@@ -182,10 +177,6 @@ void ContentViewNode::detach( unsigned long id ) {
 
 	// Remove the row
 	parent->m_childs.removeAt( removingRow );
-	if( m_cachedNode )
-		m_parents.remove( id );
-	else
-		m_parents.remove( 0 );
 
 	// If model, we alert it of end
 	callModelEndRemoveRows( lockedModels );
@@ -193,14 +184,9 @@ void ContentViewNode::detach( unsigned long id ) {
 	// Unlock models
 	callModelsUnlock( lockedModels );
 
-	// Remove the model for givent key
-	clearModels( id );
-}
-
-void ContentViewNode::detach() {
-	// Detach all parents
-	foreach( unsigned long id, m_parents.keys() ) {
-		detach( id );
+	// Decrement reference counter
+	if( ( m_referenceCounter.deref() == 0 ) && m_autoDelete ) {
+		deleteInstance( id );
 	}
 }
 
@@ -208,87 +194,25 @@ void ContentViewNode::addModel( AbstractContentViewModel * model, unsigned long 
 	Q_ASSERT( id );
 	Q_ASSERT( model );
 
-	QStack< ContentViewNode* > stack;
-
-	stack.push( this );
-	while ( stack.count() ) {
-		ContentViewNode * node  = stack.pop();
-
-		if( ! node->m_models.contains( id, model ) )
-			node->m_models.insert( id, model );
-
-		foreach ( ContentViewNode * child, node->m_childs )
-			stack.push( child );
-	}
+	if( ! s_models.contains( id, model ) )
+		s_models.insert( id, model );
 }
 
 void ContentViewNode::removeModel( AbstractContentViewModel * model, unsigned long id ) {
 	Q_ASSERT( id );
 	Q_ASSERT( model );
 
-	QStack< ContentViewNode* > stack;
-
-	stack.push( this );
-	while ( stack.count() ) {
-		ContentViewNode * node  = stack.pop();
-
-		node->m_models.remove( id, model );
-
-		foreach ( ContentViewNode * child, node->m_childs )
-			stack.push( child );
-	}
+	s_models.remove( id, model );
 }
 
 void ContentViewNode::clearModels( unsigned long id ) {
-	QStack< ContentViewNode* > stack;
+	Q_ASSERT( id );
 
-	stack.push( this );
-	while ( stack.count() ) {
-		ContentViewNode * node  = stack.pop();
-
-		if( id == 0 ) {
-			node->m_models.clear();
-		} else {
-			node->m_models.remove( id );
-		}
-
-		foreach ( ContentViewNode * child, node->m_childs )
-			stack.push( child );
-	}
-}
-
-void ContentViewNode::propagateModels( ContentViewNode * n, unsigned long id ) {
-	QStack< ContentViewNode* > stack;
-
-	stack.push( this );
-	while ( stack.count() ) {
-		ContentViewNode * node  = stack.pop();
-
-		if( id == 0 ) {
-			QHashIterator<unsigned long, AbstractContentViewModel*> i( n->m_models );
-			while( i.hasNext() ) {
-				i.next();
-
-				if( ! node->m_models.contains( i.key(), i.value() ) )
-					node->m_models.insert( i.key(), i.value() );
-			}
-		} else {
-			QListIterator<AbstractContentViewModel*> i( n->m_models.values( id ) );
-			while( i.hasNext() ) {
-				AbstractContentViewModel * m = i.next();
-
-				if( ! node->m_models.contains( id, m ) )
-					node->m_models.insert( id, m );
-			}
-		}
-
-		foreach ( ContentViewNode * child, node->m_childs )
-			stack.push( child );
-	}
+	s_models.remove( id );
 }
 
 QList<AbstractContentViewModel*> ContentViewNode::models( unsigned long id ) {
-	return m_models.values( id );
+	return s_models.values( id );
 }
 
 void ContentViewNode::removeAll( unsigned long id ) {
@@ -300,11 +224,7 @@ void ContentViewNode::removeAll( unsigned long id ) {
 	// If model, we alert it of removing row
 	callModelBeginRemoveRows( this, 0, m_childs.count() - 1, lockedModels );
 
-	// Remove the row
-	foreach( ContentViewNode * child, m_childs ) {
-		child->m_parents.remove( id );
-		child->m_models.remove( id );
-	}
+	// Remove all childs
 	m_childs.clear();
 
 	// If model, we alert it of end
@@ -321,13 +241,6 @@ void ContentViewNode::clear() {
 		c->deleteInstance();
 }
 
-ContentViewNode * ContentViewNode::parent( unsigned long id ) const {
-	if( m_parents.contains( id ) )
-		return m_parents.value( id );
-	else
-		return m_parents.value( 0 );
-}
-
 int ContentViewNode::line() const {
 	return m_line;
 }
@@ -340,11 +253,6 @@ void ContentViewNode::setLine( int value ) {
 }
 
 const QString & ContentViewNode::fileName() const {
-	if( m_filename.isEmpty() ) {
-		ContentViewNode * parent = m_parents.value( 0 ); // Parent pour l'id 0 : pas besoin de se compliquer plus la vie
-		if( parent )
-			return parent->fileName();
-	}
 	return m_filename;
 }
 
@@ -366,12 +274,17 @@ void ContentViewNode::setData( const QVariant & value, enum RoleIndex index ) {
 	}
 }
 
-bool ContentViewNode::canBeDeleted() {
-	return m_canBeDeleted;
+bool ContentViewNode::isAutoDelete() {
+	return m_autoDelete;
 }
 
-void ContentViewNode::setCanBeDeleted( bool value ) {
-	m_canBeDeleted = value;
+void ContentViewNode::setAutoDelete( bool value ) {
+	if( m_autoDelete != value ) {
+		m_autoDelete = value;
+
+		if( m_autoDelete && ( m_referenceCounter == 0 ) )
+			deleteInstance();
+	}
 }
 
 const ContentViewNodeList & ContentViewNode::childs() const {
@@ -398,17 +311,17 @@ ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
 }
 
 /*
- * Pour empecher les deadlocks, il y a deux possibilité :
- * - Réordonner les thread (avec un qSort par exemple)
+ * Pour empecher les deadlocks, il y a deux possibilitï¿½ :
+ * - Rï¿½ordonner les thread (avec un qSort par exemple)
  * - Quand ordonner les thread n'est pas possible, il faut en cas de conflit (tryLock)
- * eviter le conflit et débloquer tous les thread avant de recommancer :
+ * eviter le conflit et dï¿½bloquer tous les thread avant de recommancer :
  *
  *  for( int i = 0 ; i < models.size(); i++ ) {
  *    AbstractContentViewModel * model = models.at( i );
  *    if( ! model ) continue;
  *
- *    // Le but ici est d'empecher les dead lock. Si l'un des modeles est déjà utilisé alors on ne le lock pas.
- *    // Ce point n'est peut-être pas necessaire car nous ordonons les models.
+ *    // Le but ici est d'empecher les dead lock. Si l'un des modeles est dï¿½jï¿½ utilisï¿½ alors on ne le lock pas.
+ *    // Ce point n'est peut-ï¿½tre pas necessaire car nous ordonons les models.
  *    if( ! model->mutex().tryLock() ) {
  *      qDebug() << QThread::currentThread() << " unlock " << result;
  *      foreach( AbstractContentViewModel * lockedModel, result ) {
@@ -423,29 +336,29 @@ ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
  *
  */
 QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long id ) {
-  QList<AbstractContentViewModel*> result, models;
-	if( m_models.isEmpty() ) return result;
+	QList<AbstractContentViewModel*> result, models;
+	if( s_models.isEmpty() ) return result;
 
-  models = id ? m_models.values( id ) : m_models.values();
-  qSort( models );
-  models.removeAll( 0 );
+	models = id ? s_models.values( id ) : s_models.values();
+	qSort( models );
+	models.removeAll( 0 );
 
-  foreach( AbstractContentViewModel * model, models ) {
-    model->mutex().lock();
-    result += model;
-  }
+	foreach( AbstractContentViewModel * model, models ) {
+		model->mutex().lock();
+		result += model;
+	}
 
   return result;
 }
 
 void ContentViewNode::callModelsUnlock( QList<AbstractContentViewModel*> models ) {
 	foreach( AbstractContentViewModel * model, models ) {
-    model->mutex().unlock();
+    	model->mutex().unlock();
 	}
 }
 
 void ContentViewNode::callModelsDataChanged() {
-	foreach( AbstractContentViewModel * model, m_models ) {
+	foreach( AbstractContentViewModel * model, s_models ) {
 		if( ! model ) continue;
 		model->nodeChanged( this );
 	}

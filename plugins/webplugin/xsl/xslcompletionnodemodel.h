@@ -60,8 +60,8 @@ public:
 	QStringList params( QString templateName ) const;
   ContentViewNode * nodeOfWord( const QString & name ) const;
 protected:
-	virtual void addNode( ContentViewNode * node );
-	virtual void removeNode( ContentViewNode * node );
+	virtual void addNode( ContentViewNode * parent, ContentViewNode * node );
+	virtual void removeNode( ContentViewNode * parent, ContentViewNode * node );
 	virtual bool mustElementBeShowed( ContentViewNode * node );
 
 	virtual void timerEvent( QTimerEvent * event );

@@ -33,8 +33,8 @@
 
 /* ContentViewException */
 
-ContentViewException::ContentViewException( QString message, int line, int column )
-: XinxException( QString("Error : %1 at line %2:%3").arg( message ).arg( line ).arg( column ) ), m_line( line ), m_column( column ) {
+ContentViewException::ContentViewException( QString message, QString filename, int line, int column )
+: XinxException( QString("Error : %1 at line %2:%3 of file %4").arg( message ).arg( line ).arg( column ).arg( QFileInfo(filename).fileName() ) ), m_line( line ), m_column( column ), m_filename( filename ) {
 
 }
 
@@ -81,20 +81,26 @@ int ContentViewParser::decalage() const {
 
 void ContentViewParser::loadAttachedNode( ContentViewNode * rootNode ) {
 	foreach( ContentViewNode * n, rootNode->childs() ) {
-		m_attachedNode.append( n );
+		m_attachedNode.append( qMakePair( rootNode, n ) );
 	}
 }
 
 void ContentViewParser::detachAttachedNode() {
-	foreach( ContentViewNode * n, m_attachedNode ) {
-		n->detach();
-		n->deleteInstance();
+	QPair<ContentViewNode*,ContentViewNode*> p;
+	foreach( p, m_attachedNode ) {
+		p.second->detach( p.first );
 	}
 	m_attachedNode.clear();
 }
 
 void ContentViewParser::removeAttachedNode( ContentViewNode * n ) {
-	m_attachedNode.removeAll( n );
+	QMutableListIterator< QPair<ContentViewNode*,ContentViewNode*> > i( m_attachedNode );
+	while( i.hasNext() ) {
+		QPair<ContentViewNode*,ContentViewNode*> p = i.next();
+		if( p.second == n ) {
+			i.remove();
+		}
+	}
 }
 
 QString ContentViewParser::locationOf( ContentViewNode * parent, const QString & filename ) {
@@ -138,9 +144,26 @@ void ContentViewParser::createContentViewNode( ContentViewNode * parent, const Q
 	}
 
 	// If parent have this node as child, remove all child from attached node.
+	if( node ) {
+		if( parent->childs().contains( node ) ) {
+			removeAttachedNode( node );
+		} else {
+			// Else if node in cache, we attach the node
+			node->attach( parent, m_id );
+		}
+	} else {
+		ContentViewNode * node = new ContentViewNode( name, -1 ), * attachedNodeToKeep;
+		node->setData( ":/images/import.png", ContentViewNode::NODE_ICON );
+
+		if( ! node->attach( parent, m_id ) ) {
+			attachedNodeToKeep = parent->childs().at( parent->childs().indexOf( node ) );
+			node->deleteInstance();
+			removeAttachedNode( attachedNodeToKeep );
+		}
+	}
 	if( parent->childs().contains( node ) ) {
 		removeAttachedNode( node );
-	} else if( node && (! node->parent( m_id ) ) ) {
+	} else if( node ) {
 		// Else if node in cache, we attach the node
 		node->attach( parent, m_id );
 	} else {
@@ -166,7 +189,7 @@ ContentViewNode * ContentViewParser::attachNode( ContentViewNode * parent, Conte
 
 void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), rootNode->fileName(), 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
@@ -187,6 +210,9 @@ void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QStri
 		m_alreadyRunning = false;
 		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
+		m_rootNode = 0;
+		m_device   = 0;
+
 		m_alreadyRunning = false;
 
 		if( m_autoDelete ) delete this;
@@ -196,7 +222,7 @@ void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QStri
 
 void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString & filename ) {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), filename, 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
@@ -204,7 +230,7 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 
 		// Open the file
 		if (!file.open(QFile::ReadOnly))
-			throw ContentViewException( tr("Parser already running"), 0, 0 );
+			throw ContentViewException( tr("Parser already running"), filename, 0, 0 );
 
 		m_rootNode = rootNode;
 		m_device   = &file;
@@ -219,6 +245,9 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 		m_alreadyRunning = false;
 		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
+		m_rootNode = 0;
+		m_device   = 0;
+
 		m_alreadyRunning = false;
 		if( m_autoDelete ) delete this;
 
@@ -228,7 +257,7 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 
 void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), rootNode->fileName(), 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
@@ -244,6 +273,9 @@ void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * 
 		m_alreadyRunning = false;
 		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
+		m_rootNode = 0;
+		m_device   = 0;
+
 		m_alreadyRunning = false;
 		if( m_autoDelete ) delete this;
 
@@ -253,7 +285,7 @@ void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * 
 
 void ContentViewParser::loadFromMember() {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), rootNode()->fileName(), 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
@@ -286,7 +318,7 @@ void ContentViewParser::setFilename( const QString & filename ) {
 	if( ! file->open(QFile::ReadOnly) ) {
 		QString errorString = file->errorString();
 		delete file;
-		throw ContentViewException( tr("Cannot read file %1:%2.").arg( filename ).arg( errorString ), 0, 0 );
+		throw ContentViewException( tr("Cannot read file %1:%2.").arg( filename ).arg( errorString ), filename, 0, 0 );
 	}
 
 	delete m_device;

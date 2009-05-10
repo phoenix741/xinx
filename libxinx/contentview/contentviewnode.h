@@ -107,28 +107,22 @@ public:
 	 * Detach the node from the parent, and from the model of the parent.
 	 * \see detach(), attach()
 	 */
-	void detach( unsigned long id );
-
-	/*!
-	 * Method provide for convinence.<br/> Detach the node from all parents.
-	 * \see detach(ContentViewNode*), attach()
-	 */
-	void detach();
+	void detach( ContentViewNode * parent, unsigned long id = 0 );
 
 	/*!
 	 * Set the content view model for a given id. We can't set the model
 	 * for a null id.
 	 */
-	void addModel( AbstractContentViewModel * model, unsigned long id );
+	static void addModel( AbstractContentViewModel * model, unsigned long id );
 
 	//! Get the model for the given id \e id.
-	QList<AbstractContentViewModel*> models( unsigned long id );
+	static QList<AbstractContentViewModel*> models( unsigned long id );
 
 	//! Remove the model from the attached list
-	void removeModel( AbstractContentViewModel * model, unsigned long id );
+	static void removeModel( AbstractContentViewModel * model, unsigned long id );
 
 	//! Remove all models from the node (and it's child) for the given id.
-	void clearModels( unsigned long id = 0 );
+	static void clearModels( unsigned long id );
 
 	/*!
 	 * Remove all elements of the list but not delete them.
@@ -142,9 +136,6 @@ public:
 	 */
 	void clear();
 
-	//! Return the parent of this node for the given model.
-	ContentViewNode * parent( unsigned long id ) const;
-
 	//! Return the register line for the node
 	int line() const;
 	//! Change the line of the node
@@ -155,10 +146,10 @@ public:
 	//! Set the file name of the node with \e value.
 	void setFileName( const QString & value );
 
-	//! Return if the item can be deleted by call of delete. This prevent deleting item in cache
-	bool canBeDeleted();
-	//! Set to true if you want to prevent the item to be deleted
-	void setCanBeDeleted( bool value );
+	//! Return if the item can be deleted when reference counting down to 0
+	bool isAutoDelete();
+	//! Set to true if you want to delete this objet when reference counting down to 0
+	void setAutoDelete( bool value );
 
 	//! Return the data stored in the node for the given \e index
 	QVariant data( enum RoleIndex index = NODE_NAME ) const;
@@ -193,29 +184,29 @@ private:
 	 */
 	~ContentViewNode();
 
-	QList<AbstractContentViewModel*> callModelsLock( unsigned long id );
-	void callModelsUnlock( QList<AbstractContentViewModel*> models );
+	static QList<AbstractContentViewModel*> callModelsLock( unsigned long id );
+	static void callModelsUnlock( QList<AbstractContentViewModel*> models );
 
 	void callModelsDataChanged();
 
-	void callModelBeginInsertRows( ContentViewNode * node, int line, QList<AbstractContentViewModel*> models );
-	void callModelEndInsertRows( QList<AbstractContentViewModel*> models );
+	static void callModelBeginInsertRows( ContentViewNode * node, int line, QList<AbstractContentViewModel*> models );
+	static void callModelEndInsertRows( QList<AbstractContentViewModel*> models );
 
-	void callModelBeginRemoveRows( ContentViewNode * node, int firstLine, int lastLine, QList<AbstractContentViewModel*> models );
-	void callModelEndRemoveRows( QList<AbstractContentViewModel*> models );
-
-	void propagateModels( ContentViewNode * n, unsigned long id );
+	static void callModelBeginRemoveRows( ContentViewNode * node, int firstLine, int lastLine, QList<AbstractContentViewModel*> models );
+	static void callModelEndRemoveRows( QList<AbstractContentViewModel*> models );
 
 	/* Variables */
-	QHash<unsigned long, ContentViewNode* > m_parents;
-	QMultiHash<unsigned long, AbstractContentViewModel* > m_models;
+	QAtomicInt m_referenceCounter;
 
-	bool m_canBeDeleted, m_cachedNode;
+	bool m_autoDelete, m_cachedNode;
 	int m_line;
 	QString m_filename;
 	QHash<enum RoleIndex,QVariant> m_datas;
 
 	ContentViewNodeList m_childs;
+
+	/* On partage les models pour une mise à jours plus rapide */
+	static QMultiHash<unsigned long, AbstractContentViewModel* > s_models;
 };
 
 extern bool ContentViewNodeListSort( ContentViewNode * d1, ContentViewNode * d2 );

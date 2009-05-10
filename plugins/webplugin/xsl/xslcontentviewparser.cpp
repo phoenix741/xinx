@@ -67,7 +67,7 @@ void XslContentViewParser::loadFromDeviceImpl() {
 	if( !error() ) { // Else completion can be more difficulte
 		detachAttachedNode();
 	} else
-	    throw ContentViewException( errorString(), lineNumber(), columnNumber() );
+	    throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
 }
 
 QString XslContentViewParser::readElementText() {
@@ -169,7 +169,7 @@ void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables,
 					s.src = attributes().value( "src" ).toString();
 					readUnknownElement();
 				} else {
-					s.src = "this.js";
+					s.src = rootNode()->fileName() + ".js";
 					s.content = readElementText();
 				}
 				scripts += s;
@@ -186,7 +186,7 @@ void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables,
 				s.isSrc = false;
 				s.line = lineNumber();
 				s.title = "Cascading StyleSheet";
-				s.src = "this.css";
+				s.src = rootNode()->fileName() + ".css";
 				s.content = readElementText();
 				scripts += s;
 			} else
@@ -324,7 +324,7 @@ XmlCompletionParser::XmlCompletionParser() : ContentViewParser( false ), m_codec
 }
 
 XmlCompletionParser::~XmlCompletionParser() {
-	rootNode()->setCanBeDeleted( true );
+	rootNode()->setAutoDelete( true );
 	rootNode()->deleteInstance();
 }
 
@@ -333,7 +333,7 @@ XmlCompletionParser * XmlCompletionParser::self() {
 		s_self = new XmlCompletionParser();
 		try {
 			ContentViewNode * node = new ContentViewNode( "root", -1 );
-			node->setCanBeDeleted( false );
+			node->setAutoDelete( false );
 			s_self->setRootNode( node );
 			s_self->setFilename( "datas:baseplugin_xml.xml" );
 			QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
@@ -375,7 +375,7 @@ void XmlCompletionParser::loadFromDeviceImpl() {
 	if( !error() ) { // Else completion can be more difficulte
 		detachAttachedNode();
 	} else
-		throw ContentViewException( errorString(), lineNumber(), columnNumber() );
+		throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
 }
 
 QString XmlCompletionParser::readElementText() {

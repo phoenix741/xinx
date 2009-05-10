@@ -45,14 +45,12 @@ public:
 	AbstractContentViewModel( ContentViewNode * root, QObject *parent = 0 );
 	/*! Destroy the model. */
 	virtual ~AbstractContentViewModel();
-
-	virtual QModelIndex index( ContentViewNode * node ) const = 0;
 protected:
-	virtual void nodeChanged( ContentViewNode * node );
-	virtual void beginInsertNode( ContentViewNode * node, int first, int last );
-	virtual void beginRemoveNode( ContentViewNode * node, int first, int last );
-	virtual void endInsertNode();
-	virtual void endRemoveNode();
+	virtual void nodeChanged( ContentViewNode * node ) = 0;
+	virtual void beginInsertNode( ContentViewNode * node, int first, int last ) = 0;
+	virtual void beginRemoveNode( ContentViewNode * node, int first, int last ) = 0;
+	virtual void endInsertNode() = 0;
+	virtual void endRemoveNode() = 0;
 
 	ContentViewNode * rootNode() const;
 	QMutex & mutex();
