@@ -24,6 +24,7 @@
 // Qt header
 #include <QImage>
 #include <QMutexLocker>
+#include <QStack>
 
 /* ContentViewModel */
 
