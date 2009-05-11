@@ -8,10 +8,11 @@ INCLUDEPATH += ../../libxinx
 RESOURCES = dictionary.qrc
 TRANSLATIONS += translations/dictionary_fr.ts
 HEADERS = dictionary.h \
-    dictionarydockwidget.h \
+		dictionarydockwidgetimpl.h \
     dictionaryparser.h
 SOURCES = dictionary.cpp \
-    dictionarydockwidget.cpp \
+		dictionarydockwidgetimpl.cpp \
     dictionaryparser.cpp
 win32:RC_FILE += rc/plugin.rc
 include(../../project_mode.pri)
+FORMS += ui/dictionarydockwidget.ui

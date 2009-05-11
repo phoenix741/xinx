@@ -1,6 +1,7 @@
 #if defined __cplusplus
 #include <QtGui>
 #include <QtXml>
+#include <QtXmlPatterns>
 #include <qcodeedit.h>
 #include <qeditor.h>
 #include <qeditorfactory.h>

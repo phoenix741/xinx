@@ -17,19 +17,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#ifndef DICTIONARYDOCKWIDGET_H
+#define DICTIONARYDOCKWIDGET_H
+
 // Xinx header
-#include "dictionarydockwidget.h"
-#include <contentview/contentviewmodel.h>
-#include <contentview/contentviewnode.h>
+#include <ui_dictionarydockwidget.h>
 
-/* DictionaryDockWidget */
+// Qt header
+#include <QDockWidget>
+#include <QFutureWatcher>
 
-DictionaryDockWidget::DictionaryDockWidget( const QString & name, QWidget * parent ) : QDockWidget( name, parent ) {
-	setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
-	m_dictionaryTreeView = new QTreeView( this );
-	setWidget( m_dictionaryTreeView );
+class ContentViewModel;
+class ContentViewNode;
 
-	m_dictionaryNode  = new ContentViewNode( "dictionary", -1 );
-	m_dictionaryModel = new ContentViewModel( m_dictionaryNode, m_dictionaryTreeView );
-	m_dictionaryTreeView->setModel( m_dictionaryModel );
-}
+class DictionaryDockWidgetImpl : public QDockWidget, private Ui::DictionaryDockWidget {
+	Q_OBJECT
+public:
+	DictionaryDockWidgetImpl( QWidget * parent = 0 );
+	virtual ~DictionaryDockWidgetImpl();
+
+	ContentViewNode * dictionary() { return m_dictionaryNode; }
+
+	void loadDictionary( const QString & filename );
+	void loadDictionaryList( const QString & filename );
+	void clearDictionaryList();
+private slots:
+	void dictionaryLoaded();
+	void on_m_dictionaryList_currentIndexChanged( int index );
+private:
+	ContentViewModel * m_dictionaryModel;
+	ContentViewNode * m_dictionaryNode;
+
+	QFutureWatcher<QString> m_watcher;
+};
+
+#endif // DICTIONARYDOCKWIDGET_H

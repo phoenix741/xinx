@@ -26,6 +26,8 @@
 // Qt header
 #include <QPair>
 
+class ContentViewNode;
+
 /*!
  * \class CompletionNodeModel
  * \brief The completion node model is used to complete editor.

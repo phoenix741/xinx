@@ -22,7 +22,7 @@
 
 // Xinx header
 #include <plugins/plugininterfaces.h>
-#include "dictionarydockwidget.h"
+#include "dictionarydockwidgetimpl.h"
 
 class DictionaryPlugin : public QObject, public IDockPlugin {
 	Q_OBJECT
@@ -40,7 +40,7 @@ public:
 
 	virtual QDockWidget * createDockWidget( QWidget * parent );
 private:
-	DictionaryDockWidget * m_dock;
+	DictionaryDockWidgetImpl * m_dock;
 };
 
 #endif /* DICTIONARYPLUGIN_H_*/

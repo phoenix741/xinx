@@ -1,6 +1,7 @@
 TEMPLATE = lib
 CONFIG += dll
-QT += xml
+QT += xml \
+		xmlpatterns
 TARGET = sharedxinx
 DESTDIR += ./
 INCLUDEPATH += ../components \
@@ -27,6 +28,7 @@ HEADERS = rcs/rcs.h \
     core/xinxconfig.h \
     core/xinxcore.h \
     core/xinxthread.h \
+	core/configurationfile.h \
     plugins/plugininterfaces.h \
     editors/xinxformatscheme.h \
     editors/xinxlanguagefactory.h \
@@ -51,6 +53,7 @@ SOURCES = rcs/rcs.cpp \
     core/xinxcore.cpp \
     core/xinxthread.cpp \
     core/exceptions.cpp \
+	core/configurationfile.cpp \
     editors/xinxformatscheme.cpp \
     editors/xinxlanguagefactory.cpp \
     editors/abstracteditor.cpp \

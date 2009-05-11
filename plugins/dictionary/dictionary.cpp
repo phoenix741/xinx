@@ -73,14 +73,7 @@ QVariant DictionaryPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAtt
 bool DictionaryPlugin::initializeProject( XinxProject * project ) {
 	Q_ASSERT( m_dock );
 
-	DictionaryParser * parser = 0;
-	try {
-		parser = new DictionaryParser( false );
-		parser->loadFromFile( m_dock->dictionary(), QDir( project->projectPath() ).absoluteFilePath( "dico/dico_fra_gce140.xml" ) );
-	} catch( ContentViewException e ) {
-		qWarning( qPrintable( e.getMessage() ) );
-	}
-	delete parser;
+	m_dock->loadDictionaryList( QDir( project->projectPath() ).absoluteFilePath( "configurationdef.xml" ) );
 
 	return true;
 }
@@ -88,15 +81,15 @@ bool DictionaryPlugin::initializeProject( XinxProject * project ) {
 bool DictionaryPlugin::destroyProject( XinxProject * project ) {
 	Q_ASSERT( m_dock );
 
-	m_dock->dictionary()->clear();
+	m_dock->clearDictionaryList();
+
 	return true;
 }
 
 QDockWidget * DictionaryPlugin::createDockWidget( QWidget * parent ) {
 	if( ! m_dock ) {
-		m_dock = new DictionaryDockWidget( tr("Dictionary"), parent );
+		m_dock = new DictionaryDockWidgetImpl( parent );
 		m_dock->setObjectName( QString::fromUtf8( "m_dictionaryDock" ) );
-		m_dock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
 	}
 	return m_dock;
 }

@@ -2,8 +2,8 @@ TEMPLATE = app
 CONFIG += qdbus \
     warn_on
 QT += xml \
-    script \
-    xmlpatterns
+		script \
+		xmlpatterns
 DESTDIR += ./
 INCLUDEPATH += ../components \
     ../libxinx \
@@ -47,7 +47,6 @@ HEADERS += xmlpresentationdockthread.h \
     specifiquedlgimpl.h \
     aboutdialogimpl.h \
     commitmessagedialogimpl.h \
-    configurationfile.h \
     customdialogimpl.h \
     dirrcsmodel.h \
     filecontentdockwidget.h \
@@ -79,7 +78,6 @@ SOURCES += xmlpresentationdockthread.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
     commitmessagedialogimpl.cpp \
-    configurationfile.cpp \
     customdialogimpl.cpp \
     dirrcsmodel.cpp \
     filecontentdockwidget.cpp \

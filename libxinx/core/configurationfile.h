@@ -28,6 +28,8 @@
 #include <QList>
 #include <QMultiHash>
 
+// TODO: Changer complétement le fonctionnement de la gestion du fichier de configuration. Voir ticket #291
+
 // TODO: Delete this workaround
 #undef major
 #undef minor
@@ -232,8 +234,10 @@ public:
 	static ConfigurationFile simpleConfigurationFile( const QString & directoryPath );
 
 	const QList<ConfigurationFile*> & configurations() const;
+	const QStringList & dictionaryList() const;
 private:
 	QList<ConfigurationFile*> m_configurations;
+	QStringList m_dictionaryList;
 };
 
 

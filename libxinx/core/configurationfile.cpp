@@ -366,6 +366,14 @@ MetaConfigurationFile::MetaConfigurationFile( const QString & filename, QObject 
 				conffile = conffile.nextSiblingElement( "file" );
 			}
 		}
+		QDomElement translation = root.firstChildElement( "translation" );
+		if( ! translation.isNull() ) {
+			QDomElement translationFile = translation.firstChildElement( "file" );
+			while( ! translationFile.isNull() ) {
+				m_dictionaryList += QDir( directoryPath ).absoluteFilePath( translationFile.attribute( "name" ) );
+				translationFile = translationFile.nextSiblingElement( "file" );
+			}
+		}
 	}
 
 	if( m_configurations.count() == 0 )
@@ -397,3 +405,8 @@ ConfigurationFile MetaConfigurationFile::simpleConfigurationFile( const QString 
 const QList<ConfigurationFile*> & MetaConfigurationFile::configurations() const {
 	return m_configurations;
 }
+
+const QStringList & MetaConfigurationFile::dictionaryList() const {
+	return m_dictionaryList;
+}
+
