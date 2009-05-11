@@ -80,6 +80,8 @@ void DictionaryDockWidgetImpl::clearDictionaryList() {
 }
 
 void DictionaryDockWidgetImpl::dictionaryLoaded() {
+	m_dictionaryList->setEnabled( true );
+
 	QString message = m_watcher.result();
 	if( ! message.isEmpty() )
 		qWarning( qPrintable( message ) );
@@ -103,11 +105,13 @@ void DictionaryDockWidgetImpl::on_m_dictionaryList_currentIndexChanged( int inde
 void DictionaryDockWidgetImpl::loadDictionary( const QString & filename ) {
 	DictionaryParser * parser = 0;
 	try {
+		m_dictionaryList->setEnabled( false );
 		parser = new DictionaryParser( true );
 		parser->setRootNode( m_dictionaryNode );
 		parser->setFilename( filename );
 		m_watcher.setFuture( QtConcurrent::run( loadDictionaryParser, parser ) );
 	} catch( ContentViewException e ) {
+		m_dictionaryList->setEnabled( true );
 		qWarning( qPrintable( e.getMessage() ) );
 	}
 }

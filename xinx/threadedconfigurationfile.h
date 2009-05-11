@@ -21,7 +21,7 @@
 #define __THREADEDCONFIGURATIONFILE_H__
 
 // Xinx header
-#include "configurationfile.h"
+#include <core/configurationfile.h>
 #include <core/xinxthread.h>
 
 class ThreadedConfigurationFile : public XinxThread {

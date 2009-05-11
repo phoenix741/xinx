@@ -24,7 +24,7 @@
 #include <editors/abstracteditor.h>
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
-#include "configurationfile.h"
+#include <core/configurationfile.h>
 #include "script/documentsearch.h"
 
 // Qt header

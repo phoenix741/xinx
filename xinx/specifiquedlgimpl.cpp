@@ -23,7 +23,7 @@
 #include <core/xinxproject.h>
 #include <core/xinxconfig.h>
 #include <plugins/xinxpluginsloader.h>
-#include "configurationfile.h"
+#include <core/configurationfile.h>
 #include "threadedconfigurationfile.h"
 
 // Qt header

@@ -27,20 +27,24 @@
 /* AbstractContentViewModel */
 
 AbstractContentViewModel::AbstractContentViewModel( ContentViewNode * root, QObject *parent ) : QAbstractItemModel( parent ), m_rootNode( root ) {
-	QMutexLocker locker( &mutex() );
+	m_updateMutex = new QMutex( QMutex::Recursive );
+	QMutexLocker locker( m_updateMutex );
 	m_rootNode->addModel( this, (unsigned long)m_rootNode );
 }
 
 AbstractContentViewModel::~AbstractContentViewModel() {
-	QMutexLocker locker( &m_updateMutex );
-	m_rootNode->removeModel( this, (unsigned long)m_rootNode );
+	{
+		QMutexLocker locker( m_updateMutex );
+		m_rootNode->removeModel( this, (unsigned long)m_rootNode );
+	}
+	delete m_updateMutex;
 }
 
 ContentViewNode * AbstractContentViewModel::rootNode() const {
 	return m_rootNode;
 }
 
-QMutex & AbstractContentViewModel::mutex() {
+QMutex * AbstractContentViewModel::mutex() const {
 	return m_updateMutex;
 }
 

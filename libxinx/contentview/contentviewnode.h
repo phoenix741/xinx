@@ -131,10 +131,10 @@ public:
 	void removeAll( unsigned long id = 0 );
 
 	/*!
-	 * Remove all elements of the list and delete each item.
+	 * Remove all elements of the list.
 	 * \see removeAll()
 	 */
-	void clear();
+	inline void clear() { removeAll(); }
 
 	//! Return the register line for the node
 	int line() const;

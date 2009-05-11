@@ -29,7 +29,7 @@
 /* ContentViewModel */
 
 ContentViewModel::ContentViewModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ), m_lastId( 1 ) {
-	QMutexLocker locker( &mutex() );
+	QMutexLocker locker( mutex() );
 	m_idOfNode.insert( rootNode(), 0 );
 	m_nodeOfId.insert( 0, rootNode() );
 	addChildsOf( 0 );
@@ -40,6 +40,7 @@ ContentViewModel::~ContentViewModel() {
 }
 
 QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
+	QMutexLocker locker( mutex() );
 	if( ! index.isValid() || index.column() )
 		return QVariant();
 
@@ -68,6 +69,7 @@ Qt::ItemFlags ContentViewModel::flags( const QModelIndex &index ) const {
 }
 
 QModelIndex ContentViewModel::index( int row, int column, const QModelIndex &parent ) const {
+	QMutexLocker locker( mutex()  );
 	if( column ) return QModelIndex();
 
 	quint32 parentId = 0;
@@ -84,6 +86,7 @@ QModelIndex ContentViewModel::index( int row, int column, const QModelIndex &par
 }
 
 QModelIndex ContentViewModel::index( quint32 id ) const {
+	QMutexLocker locker( mutex()  );
 	if( id == 0 ) return QModelIndex();
 
 	quint32 parentId = m_parents.value( id );
@@ -91,6 +94,7 @@ QModelIndex ContentViewModel::index( quint32 id ) const {
 }
 
 QModelIndex ContentViewModel::index( ContentViewNode * node ) const {
+	QMutexLocker locker( mutex()  );
 	if( node == rootNode() ) return QModelIndex();
 
 	quint32 id = m_idOfNode.value( node );
@@ -103,6 +107,7 @@ quint32 ContentViewModel::createId() {
 }
 
 QModelIndex ContentViewModel::parent( const QModelIndex & i ) const {
+	QMutexLocker locker( mutex()  );
 	if( ! i.isValid() )
 		return QModelIndex();
 
@@ -209,13 +214,16 @@ void ContentViewModel::beginRemoveNode( ContentViewNode * node, int first, int l
 		//QList<quint32> childs = m_childs.value( id );
 		for( int index = last; index <= first; index ++ ) {
 			ContentViewNode * child = node->childs().at( index );
-			quint32 oldId           = m_childs.value(id).at( index );
+			QList<quint32> list = m_childs.value(id);
+			if( index >= list.size() ) {
+				quint32 oldId           = list.at( index );
 
-			removeChildsOf( oldId );
-			m_idOfNode.remove( child, oldId );
-			m_nodeOfId.remove( oldId );
-			m_parents.remove( oldId );
-			m_childs[id].removeAt( index );
+				removeChildsOf( oldId );
+				m_idOfNode.remove( child, oldId );
+				m_nodeOfId.remove( oldId );
+				m_parents.remove( oldId );
+				m_childs[id].removeAt( index );
+			}
 		}
 		//m_childs.insert( id, childs );
 

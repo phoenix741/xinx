@@ -94,7 +94,7 @@ void DictionaryParser::readLabelsNode() {
 	ContentViewNode * labels = new ContentViewNode( code, lineNumber() );
 	labels->setData( "DICTIONARY_LABELS", ContentViewNode::NODE_TYPE );
 	labels->setData( ":/dictionary/images/dictionary16.png", ContentViewNode::NODE_ICON );
-	attachNode( rootNode(), labels );
+	labels = attachNode( rootNode(), labels );
 
 	while( !atEnd() ) {
 		readNext();

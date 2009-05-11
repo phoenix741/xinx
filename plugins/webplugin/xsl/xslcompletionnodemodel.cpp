@@ -39,7 +39,7 @@ XslCompletionNodeModel::~XslCompletionNodeModel() {
 void XslCompletionNodeModel::timerEvent( QTimerEvent * event ) {
 	killTimer( event->timerId() );
 
-	QMutexLocker locker( &mutex() );
+	QMutexLocker locker( mutex() );
 
 	XmlCompletionParser::self()->rootNode()->addModel( this, (unsigned long)rootNode() );
 	addAllNodes( 0, XmlCompletionParser::self()->rootNode() );

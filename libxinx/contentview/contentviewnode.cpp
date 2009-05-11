@@ -225,20 +225,19 @@ void ContentViewNode::removeAll( unsigned long id ) {
 	callModelBeginRemoveRows( this, 0, m_childs.count() - 1, lockedModels );
 
 	// Remove all childs
+	ContentViewNodeList childs = m_childs;
 	m_childs.clear();
+	foreach( ContentViewNode * node, childs ) {
+		if( ( node->m_referenceCounter.deref() == 0 ) && node->m_autoDelete ) {
+			node->deleteInstance( id );
+		}
+	}
 
 	// If model, we alert it of end
 	callModelEndRemoveRows( lockedModels );
 
 	// Unlock models
 	callModelsUnlock( lockedModels );
-}
-
-void ContentViewNode::clear() {
-	ContentViewNodeList list = m_childs;
-	removeAll();
-	foreach( ContentViewNode * c, m_childs )
-		c->deleteInstance();
 }
 
 int ContentViewNode::line() const {
@@ -344,7 +343,7 @@ QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long 
 	models.removeAll( 0 );
 
 	foreach( AbstractContentViewModel * model, models ) {
-		model->mutex().lock();
+		model->mutex()->lock();
 		result += model;
 	}
 
@@ -353,7 +352,7 @@ QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long 
 
 void ContentViewNode::callModelsUnlock( QList<AbstractContentViewModel*> models ) {
 	foreach( AbstractContentViewModel * model, models ) {
-    	model->mutex().unlock();
+    	model->mutex()->unlock();
 	}
 }
 

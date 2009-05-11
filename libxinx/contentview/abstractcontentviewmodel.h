@@ -53,10 +53,10 @@ protected:
 	virtual void endRemoveNode() = 0;
 
 	ContentViewNode * rootNode() const;
-	QMutex & mutex();
+	QMutex * mutex() const;
 private:
 	ContentViewNode * m_rootNode;
-	QMutex m_updateMutex;
+	QMutex * m_updateMutex;
 
 	friend class ContentViewNode;
 };
