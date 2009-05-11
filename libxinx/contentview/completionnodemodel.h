@@ -25,6 +25,7 @@
 
 // Qt header
 #include <QPair>
+#include <QHash>
 
 class ContentViewNode;
 
