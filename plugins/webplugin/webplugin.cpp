@@ -89,6 +89,20 @@ QVariant WebPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
+QList< QPair<QString,QString> > WebPlugin::pluginTools() {
+	QList< QPair<QString,QString> > tools;
+#ifdef Q_WS_WIN
+	tools.append( qMakePair( QString("java"), QString("c:\\jdk") ) );
+	tools.append( qMakePair( QString("viewer"), QString("c:\\Program Files\\Internet Explorer\\iexplorer.exe") ) );
+	tools.append( qMakePair( QString("xsltproc"), QString() ) );
+#else
+	tools.append( qMakePair( QString("java"), QString("/usr/bin/java") ) );
+	tools.append( qMakePair( QString("viewer"), QString("/usr/bin/www-browser") ) );
+	tools.append( qMakePair( QString("xsltproc"), QString("/usr/bin/xsltproc") ) );
+#endif // Q_WS_WIN
+	return tools;
+}
+
 QList<IFileTypePlugin*> WebPlugin::fileTypes() {
 	return m_fileTypes;
 }
@@ -107,6 +121,24 @@ bool WebPlugin::loadSettingsDialog( QWidget * widget ) {
 	form->m_addDefaultAttributeCheckBox->setChecked( settings->config().xml.addDefaultAttribute );
 	form->m_addDefaultSubBaliseCheckBox->setChecked( settings->config().xml.addDefaultSubBalise );
 
+	if( settings->config().stylesheetParsing.viewer.type == "internal" ) {
+		form->m_viewerComboBox->setCurrentIndex( 0 );
+	} else if( settings->config().stylesheetParsing.viewer.type == "external" ) {
+		form->m_viewerComboBox->setCurrentIndex( 1 );
+	}
+
+	if( settings->config().stylesheetParsing.parser.type == "oracle" ) {
+		form->m_parserComboBox->setCurrentIndex( 0 );
+	} else if( settings->config().stylesheetParsing.parser.type == "xsltproc" ) {
+		form->m_parserComboBox->setCurrentIndex( 1 );
+	} else if( settings->config().stylesheetParsing.parser.type == "internal" ) {
+		form->m_parserComboBox->setCurrentIndex( 2 );
+	}
+
+	form->m_classPathEdit->lineEdit()->setText( settings->config().stylesheetParsing.parser.oracleParser.jarName );
+	form->m_classNameEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.classPath );
+	form->m_parameterEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.parameters );
+
 	form->m_javaScriptGroupBox->setChecked( settings->config().javascript.activeCompletion );
 	return true;
 }
@@ -120,6 +152,25 @@ bool WebPlugin::saveSettingsDialog( QWidget * widget ) {
 	settings->config().xml.addClosedBalise = form->m_addClosedBaliseCheckBox->isChecked();
 	settings->config().xml.addDefaultAttribute = form->m_addDefaultAttributeCheckBox->isChecked();
 	settings->config().xml.addDefaultSubBalise = form->m_addDefaultSubBaliseCheckBox->isChecked();
+
+	switch( form->m_viewerComboBox->currentIndex() ) {
+	case 0:
+		settings->config().stylesheetParsing.viewer.type = "internal";
+	case 1:
+		settings->config().stylesheetParsing.viewer.type = "external";
+	}
+	switch( form->m_parserComboBox->currentIndex() ) {
+	case 0:
+		settings->config().stylesheetParsing.viewer.type = "oracle";
+	case 1:
+		settings->config().stylesheetParsing.viewer.type = "xsltproc";
+	case 2:
+		settings->config().stylesheetParsing.viewer.type = "internal";
+	}
+
+	settings->config().stylesheetParsing.parser.oracleParser.jarName    = form->m_classPathEdit->lineEdit()->text();
+	settings->config().stylesheetParsing.parser.oracleParser.classPath  = form->m_classNameEdit->text();
+	settings->config().stylesheetParsing.parser.oracleParser.parameters = form->m_parameterEdit->text();
 
 	settings->config().javascript.activeCompletion = form->m_javaScriptGroupBox->isChecked();
 

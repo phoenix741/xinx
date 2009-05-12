@@ -19,7 +19,11 @@
 
 // Xinx header
 #include <core/xinxcore.h>
+#include <core/xinxconfig.h>
 #include "selfwebpluginsettings.h"
+
+// Qt header
+#include <QDir>
 
 SelfWebPluginSettings * SelfWebPluginSettings::s_self = 0;
 
@@ -39,5 +43,11 @@ SelfWebPluginSettings * SelfWebPluginSettings::self() {
 		XINXStaticDeleter::self()->add( s_self );
 	}
 	return s_self;
+}
+
+WebPluginSettings::struct_oracleParser SelfWebPluginSettings::getDefaultOracleParser() {
+	struct_oracleParser defaultInformation = WebPluginSettings::getDefaultOracleParser();
+	defaultInformation.jarName = QDir( XINXConfig::self()->config().project.defaultPath ).absoluteFilePath( "lib/xmlparserv2.jar" );
+	return defaultInformation;
 }
 

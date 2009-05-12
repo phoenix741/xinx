@@ -27,8 +27,10 @@ class SelfWebPluginSettings : public QObject, public WebPluginSettings {
 	Q_OBJECT
 public:
 	virtual ~SelfWebPluginSettings();
-	
+
 	static SelfWebPluginSettings * self();
+protected:
+	virtual struct_oracleParser getDefaultOracleParser();
 private:
 	SelfWebPluginSettings();
 

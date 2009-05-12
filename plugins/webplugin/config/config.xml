@@ -6,10 +6,31 @@
 		<value name="Add default sub-balise" type="bool" default="true"/>
 	</type>
 
+	<type name="Viewer Information">
+		<value name="Type" type="string" default="internal"/>
+	</type>
+
+	<type name="Oracle Parser">
+		<value name="Jar Name" type="string"/>
+		<value name="Class Path" type="string" default="oracle.xml.parser.v2.oraxsl"/>
+		<value name="Parameters" type="string" default="&lt;source&gt; &lt;stylesheet&gt;"/>
+	</type>
+
+	<type name="Parser Information">
+		<value name="Type" type="string" default="oracle"/>
+		<value name="Oracle Parser" type="Oracle Parser"/>
+	</type>
+
+	<type name="Stylesheet Parsing">
+		<value name="Viewer" type="Viewer Information"/>
+		<value name="Parser" type="Parser Information"/>
+	</type>
+
 	<type name="JavaScript">
 		<value name="Active completion" type="bool" default="true"/>
 	</type>
 
 	<value name="XML" type="XML"/>
+	<value name="Stylesheet Parsing" type="Stylesheet Parsing"/>
 	<value name="JavaScript" type="JavaScript"/>
 </config>
