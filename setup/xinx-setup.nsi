@@ -116,7 +116,7 @@ SectionGroup Xinx GRP_XNX
 		    SetOutPath $INSTDIR\bin
 		    SetOverwrite on
 		    File C:\Qt\4.5.1\bin\QtCore4.dll
-		    File C:\Qt\4.5.1\bin\QtDBus4.dll
+#		    File C:\Qt\4.5.1\bin\QtDBus4.dll
 		    File C:\Qt\4.5.1\bin\QtGui4.dll
 		    File C:\Qt\4.5.1\bin\QtNetwork4.dll
 		    File C:\Qt\4.5.1\bin\QtScript4.dll
@@ -280,7 +280,7 @@ Section /o -un.Main UNSEC0000
     Delete /REBOOTOK $INSTDIR\bin\QtScript4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtNetwork4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtGui4.dll
-    Delete /REBOOTOK $INSTDIR\bin\QtDBus4.dll
+#    Delete /REBOOTOK $INSTDIR\bin\QtDBus4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtWebKit4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtCore4.dll
     Delete /REBOOTOK $INSTDIR\bin\qcodeedit.dll

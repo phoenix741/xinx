@@ -33,6 +33,7 @@
 #include <QCompleter>
 #include <QTextCodec>
 #include <QWebView>
+#include <QSplitter>
 
 /* HtmlFileEditor */
 
