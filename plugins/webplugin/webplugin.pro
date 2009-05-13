@@ -1,7 +1,8 @@
 TEMPLATE = lib
 CONFIG += plugin \
     staticlib
-QT += xml
+QT += xml \
+		webkit
 DESTDIR += ../
 RESOURCES += webplugin.qrc
 TARGET = webplugin

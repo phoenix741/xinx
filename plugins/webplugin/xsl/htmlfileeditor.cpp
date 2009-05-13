@@ -25,12 +25,14 @@
 #include "xmltexteditor.h"
 #include <contentview/contentviewnode.h>
 #include <contentview/contentviewmodel.h>
+#include <borderlayout.h>
 
 // Qt header
 #include <QXmlStreamReader>
 #include <QMessageBox>
 #include <QCompleter>
 #include <QTextCodec>
+#include <QWebView>
 
 /* HtmlFileEditor */
 
@@ -150,6 +152,12 @@ void XmlFileEditor::loadFromDevice( QIODevice & d ) {
 /* StyleSheetEditor */
 
 StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
+	m_htmlView = new QWebView( this );
+	m_htmlView->load( QUrl( "about:blank" ) );
+	m_htmlView->setMinimumHeight( 100 );
+	splitter()->addWidget( m_htmlView );
+	m_htmlView->hide();
+
 	connect( textEdit()->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()) );
 
 	m_completionModel = new XslCompletionNodeModel( rootNode(), this );

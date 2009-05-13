@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QApplication>
 #include <QMessageBox>
+#include <QSplitter>
 
 /* AbstractEditor */
 
@@ -80,9 +81,12 @@ void AbstractEditor::init() {
 
 	connect( messageClose, SIGNAL(clicked()), m_messageWidget, SLOT(hide()) );
 
+	m_splitter = new QSplitter( Qt::Vertical, this );
+
 	/* Layouts */
 	BorderLayout * grid = new BorderLayout( this, 0, 0 );
 	grid->addWidget( m_messageWidget, BorderLayout::South );
+	grid->addWidget( m_splitter, BorderLayout::Center );
 
 	setLayout( grid );
 
@@ -166,6 +170,10 @@ void AbstractEditor::setMessage( QString message ) {
 
 BorderLayout * AbstractEditor::borderLayout() {
 	return dynamic_cast<BorderLayout*>( layout() );
+}
+
+QSplitter * AbstractEditor::splitter() const {
+	return m_splitter;
 }
 
 void AbstractEditor::firstBookmark() {

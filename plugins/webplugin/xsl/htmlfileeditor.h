@@ -25,6 +25,7 @@
 #include <editors/contentviewtexteditor.h>
 
 class XslCompletionNodeModel;
+class QWebView;
 
 /* HtmlFileEditor */
 
@@ -88,6 +89,7 @@ private slots:
 	void cursorPositionChanged();
 private:
 	XslCompletionNodeModel * m_completionModel;
+	QWebView * m_htmlView;
 };
 
 #endif //_HTMLFILEEDITOR_H_

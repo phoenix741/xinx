@@ -115,21 +115,21 @@ SectionGroup Xinx GRP_XNX
 			SectionIn RO
 		    SetOutPath $INSTDIR\bin
 		    SetOverwrite on
-		    File C:\Qt\4.5.0\bin\QtCore4.dll
-		    File C:\Qt\4.5.0\bin\QtDBus4.dll
-		    File C:\Qt\4.5.0\bin\QtGui4.dll
-		    File C:\Qt\4.5.0\bin\QtNetwork4.dll
-		    File C:\Qt\4.5.0\bin\QtScript4.dll
-		    File C:\Qt\4.5.0\bin\QtSql4.dll
-		    File C:\Qt\4.5.0\bin\QtXml4.dll
-		    File C:\Qt\4.5.0\bin\QtXmlPatterns4.dll
+		    File C:\Qt\4.5.1\bin\QtCore4.dll
+		    File C:\Qt\4.5.1\bin\QtDBus4.dll
+		    File C:\Qt\4.5.1\bin\QtGui4.dll
+		    File C:\Qt\4.5.1\bin\QtNetwork4.dll
+		    File C:\Qt\4.5.1\bin\QtScript4.dll
+		    File C:\Qt\4.5.1\bin\QtXml4.dll
+		    File C:\Qt\4.5.1\bin\QtXmlPatterns4.dll
+		    File C:\Qt\4.5.1\bin\QtWebKit4.dll
 			WriteRegStr HKLM "${REGKEY}\Components" Qt 1
 		SectionEnd
 		Section MinGW SEC_XNX_MINGW
 			SectionIn RO
 		    SetOutPath $INSTDIR\bin
 		    SetOverwrite on
-			File C:\Qt\4.5.0\bin\mingwm10.dll
+			File C:\Qt\4.5.1\bin\mingwm10.dll
 			WriteRegStr HKLM "${REGKEY}\Components" MinGW  1
 		SectionEnd
 	SectionGroupEnd
@@ -281,6 +281,7 @@ Section /o -un.Main UNSEC0000
     Delete /REBOOTOK $INSTDIR\bin\QtNetwork4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtGui4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtDBus4.dll
+    Delete /REBOOTOK $INSTDIR\bin\QtWebKit4.dll
     Delete /REBOOTOK $INSTDIR\bin\QtCore4.dll
     Delete /REBOOTOK $INSTDIR\bin\qcodeedit.dll
     Delete /REBOOTOK $INSTDIR\bin\xinxprojectwizard.exe

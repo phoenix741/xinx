@@ -34,6 +34,7 @@ class QLabel;
 class XinxProjectSessionEditor;
 class BorderLayout;
 class QAbstractItemModel;
+class QSplitter;
 
 /*!
  * Base class for construct editor for XINX. This base class contains minimum method
@@ -366,6 +367,11 @@ protected:
 	 *    +---------------------------+
 	 */
 	BorderLayout * borderLayout();
+
+	/*!
+	 * Used for the center widget to have a horizontal splitter
+	 */
+	QSplitter * splitter() const;
 protected slots:
 	/*!
 	 * Set the modified attribute in local.
@@ -392,6 +398,7 @@ private:
 	QAction * m_undoAction, * m_redoAction, * m_cutAction, * m_copyAction, * m_pasteAction;
 	QWidget * m_messageWidget;
 	QLabel * m_messageLabel;
+	QSplitter * m_splitter;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( AbstractEditor::SearchOptions );

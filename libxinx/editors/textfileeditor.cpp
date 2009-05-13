@@ -85,7 +85,7 @@ TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : Abstr
 
 	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );
 
-	borderLayout()->addWidget( m_view, BorderLayout::Center );
+	splitter()->addWidget( m_view );
 }
 
 TextFileEditor::~TextFileEditor() {

@@ -3,7 +3,8 @@ CONFIG += qdbus \
     warn_on
 QT += xml \
 		script \
-		xmlpatterns
+		xmlpatterns \
+		webkit
 DESTDIR += ./
 INCLUDEPATH += ../components \
     ../libxinx \

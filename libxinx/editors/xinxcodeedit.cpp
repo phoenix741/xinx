@@ -72,6 +72,7 @@ void XinxCodeEdit::init( bool action ) {
 	m_editor->editor()->setWindowTitle( "[*]" );
 	m_editor->editor()->addInputBinding( this );
 	m_editor->editor()->setInputBinding( this );
+	m_editor->editor()->setFrameShape( QFrame::NoFrame );
 
 	QDocumentSearch::Options opt = QDocumentSearch::Silent | QDocumentSearch::HighlightAll;
 	m_matchingText = new QDocumentSearch( m_editor->editor(), QString(), opt );
