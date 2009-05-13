@@ -22,33 +22,64 @@
 
 // Qt header
 #include <QObject>
+#include <QAction>
 
 namespace XinxAction {
 
-class MenuItem {};
+class MenuItem {
+public:
+	virtual ~MenuItem() {};
+};
 
-class Separator : public MenuItem {};
+class Separator : public MenuItem {
+public:
+	virtual ~Separator();
+};
 
 class Action : public QObject, public MenuItem {
 	Q_OBJECT
 public:
+	//! Create an action with \a a
 	Action( QAction * a );
 
 	//! The Action to add
-	const QAction * action() {};
+	const QAction * action();
 
 	//! Return true if the action is visible to user
-	virtual bool isActionVisible() const {};
+	virtual bool isActionVisible() const;
 	//! Return true if the action can be called
-	virtual bool isActionEnabled() const {};
+	virtual bool isActionEnabled() const;
 	//! Return true if the action can be add to the toolbar
-	virtual bool isInToolBar() const {};
+	virtual bool isInToolBar() const;
 
 	//! Use methode isActionVisible() and isActionEnabled() to update the status of the action.
-	void updateActionState() {};
+	void updateActionState();
 protected slots:
 	//! Get the current editor (or not) and trigger the action
-	virtual void actionTriggered() {};
+	virtual void actionTriggered();
+private:
+	QAction * m_action;
+};
+
+class ActionList : public QList<MenuItem*> {
+public:
+	ActionList( const QString & menu );
+
+	const QString & menu() const;
+
+	void updateActionsState();
+protected:
+private:
+	QString m_menu;
+};
+
+class MenuList : public QList<ActionList> {
+public:
+	MenuList();
+
+	void updateMenuState();
+protected:
+private:
 };
 
 }

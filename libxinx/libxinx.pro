@@ -14,9 +14,9 @@ LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
     -lqcodeedit
-win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
-win32:RC_FILE += rc/libxinx.rc
+win32 : RC_FILE += rc/libxinx.rc
 HEADERS = rcs/rcs.h \
     plugins/xinxpluginsloader.h \
     plugins/xinxpluginelement.h \
@@ -66,6 +66,7 @@ SOURCES = rcs/rcs.cpp \
     contentview/contentviewcache.cpp \
     contentview/abstractcontentviewmodel.cpp \
     contentview/completionnodemodel.cpp \
-    editors/contentviewtexteditor.cpp
+    editors/contentviewtexteditor.cpp \
+ actions/actioninterface.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pri)
