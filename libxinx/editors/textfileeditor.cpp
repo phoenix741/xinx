@@ -43,6 +43,7 @@
 #include <QCompleter>
 #include <QAbstractItemView>
 #include <QTextCodec>
+#include <QSplitter>
 
 /* TextFileEditor */
 
