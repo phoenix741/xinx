@@ -29,6 +29,7 @@
 
 // Xinx header
 #include <core/appsettings.h>
+#include <actions/actioninterface.h>
 
 class XINXConfig;
 class QObject;
@@ -83,8 +84,10 @@ public:
 
 	//! Call when a new project is created or opened
 	virtual bool initializeProject( XinxProject * project ) { Q_UNUSED( project ); return true; }
-	///! Call before the project is closed
+	//! Call before the project is closed
 	virtual bool destroyProject( XinxProject * project ) { Q_UNUSED( project ); return true; }
+	//! Return a list of action (order in menu) used for dynamic action
+	virtual XinxAction::MenuList actions() { return XinxAction::MenuList(); }
 };
 
 /*!

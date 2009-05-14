@@ -25,8 +25,22 @@ using namespace XinxAction;
 
 /* Action */
 
-Action::Action( QAction * a ) : m_action( a ) {
+Action::Action( QAction * a, QObject * parent ) : QObject( parent ), m_action( a ) {
+	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
 }
+
+Action::Action( const QString & text, const QKeySequence & shortcut, QObject * parent ) : QObject( parent ) {
+	m_action = new QAction( text, this );
+	m_action->setShortcut( shortcut );
+	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
+}
+
+Action::Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) {
+	m_action = new QAction( icon, text, this );
+	m_action->setShortcut( shortcut );
+	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
+}
+
 
 const QAction * Action::action() {
 	return m_action;

@@ -23,6 +23,8 @@
 // Qt header
 #include <QObject>
 #include <QAction>
+#include <QKeySequence>
+#include <QIcon>
 
 namespace XinxAction {
 
@@ -40,7 +42,9 @@ class Action : public QObject, public MenuItem {
 	Q_OBJECT
 public:
 	//! Create an action with \a a
-	Action( QAction * a );
+	Action( QAction * a, QObject * parent );
+	Action( const QString & text, const QKeySequence & shortcut, QObject * parent );
+	Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
 
 	//! The Action to add
 	const QAction * action();

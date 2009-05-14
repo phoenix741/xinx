@@ -41,6 +41,8 @@ public:
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 
+	virtual XinxAction::MenuList actions();
+
 	virtual QWidget * createSettingsDialog();
 	virtual bool loadSettingsDialog( QWidget * widget );
 	virtual bool saveSettingsDialog( QWidget * widget );

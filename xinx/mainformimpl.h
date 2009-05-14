@@ -44,7 +44,7 @@ class QMessageBox;
 class QAction;
 class QToolButton;
 
-class MainformImpl : public QMainWindow, public Ui::MainForm {
+class MainformImpl : public QMainWindow {
 	Q_OBJECT
 public:
 	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
@@ -76,10 +76,14 @@ protected:
 	virtual void timerEvent( QTimerEvent * event );
 private:
 	// Creation
+	void createMainForm();
+
 	void createTabEditorButton();
 	void createShortcut();
+	void createMenus();
 	void createSubMenu();
 	void createNewSubMenu();
+	void createPluginsActions();
 	void createStatusBar();
 	void createDockWidget();
 	void createActions();
@@ -124,7 +128,11 @@ private:
 	QLabel * m_lineFeedLabel;
 
 	// Menu
+	QHash<QString, QMenu*> m_menus;
 	QMenu * m_newMenu;
+
+	// Plugins Actions
+	QList<QAction*> m_pluginsAction;
 
 	// Recent action
 	QAction * m_recentProjectActs[ MAXRECENTFILES ];
@@ -150,6 +158,23 @@ private:
 	// Customize
 	AppSettings::struct_extentions extentionOfFileName( const QString & name );
 	QToolButton * m_closeTabBtn;
+
+	// Actions
+	QAction *m_newAct, *m_openAct, *m_saveAct, *m_saveAsAct, *m_saveAllAct, *m_printAct, *m_closeAct, *m_closeAllAct,
+			*m_exitAct, *m_recentFileAct, *m_refreshFileAct, *m_copyFileNameAct, *m_copyPathAct;
+	QAction *m_undoAct, *m_redoAct, *m_cutAct, *m_copyAct, *m_pasteAct, *m_selectAllAct, *m_duplicateLineAct, *m_moveUpLineAct,
+			*m_moveDownLineAct, *m_upperTextAct, *m_lowerTextAct, *m_commentLineAct, *m_uncommentLineAct, *m_completeAct, *m_indentAct,
+			*m_unindentAct, *m_prettyPrintAct, *m_highlightWord, *m_showSpaceAndTabAct;
+	QAction *m_searchAct, *m_searchNextAct, *m_replaceAct, *m_searchPreviousAct;
+	QAction *m_newProjectAct, *m_openProjectAct, *m_saveProjectAct, *m_closeProjectNoSessionAct, *m_projectPropertyAct,
+			*m_closeProjectWithSessionAct,  *m_recentProjectAct, *m_closeProjectAct;
+	QAction *m_nextBookmarkAct, *m_bookmarkAct, *m_previousBookmarkAct, *m_clearAllBookmarkAct;
+	QAction *m_globalUpdateFromRCSAct, *m_globalCommitToRCSAct, *m_cancelRCSOperationAct, *m_compareWithHeadAct,
+			*m_compareTwoFileAct, *m_compareWithStdAct, *m_selectedUpdateFromRCSAct, *m_selectedCommitToRCSAct,
+			*m_selectedAddToRCSAct, *m_selectedRemoveFromRCSAct, *m_toggledFlatView;
+	QAction *m_nextTabAct, *m_previousTabAct;
+	QAction *m_aboutAct, *m_aboutQtAct;
+	QAction *m_createTemplate, *m_customApplicationAct, *m_refreshSnipet, *m_refreshScripts;
 private slots:
 	// Actions
 	void updateActions();

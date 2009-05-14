@@ -83,15 +83,13 @@ Q_DECLARE_METATYPE(Snipet*);
 
 
 MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ),  m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_closeTabBtn(0) {
-	setupUi(this);
+	createMainForm();
+	createMenus();
 
 	registerTypes();
 	createTabEditorButton();
-	createSubMenu();
 	createStatusBar();
 	createDockWidget();
-	createShortcut();
-	createActions();
 	createFindReplace();
 	createTools();
 	connectDbus();
@@ -115,196 +113,15 @@ MainformImpl::~MainformImpl() {
 
 }
 
-void MainformImpl::registerTypes() {
-	qRegisterMetaType<TextFileEditor>( "TextFileEditor" );
+void MainformImpl::createMainForm() {
+	setObjectName( "MainForm" );
 }
 
-void MainformImpl::createDockWidget() {
-	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), this );
-	m_projectDock->setObjectName( QString::fromUtf8("m_projectDock") );
-	m_projectDock->setGlobalUpdateAction( m_globalUpdateFromRCSAct );
-	m_projectDock->setGlobalCommitAction( m_globalCommitToRCSAct );
-	m_projectDock->setSelectedUpdateAction( m_selectedUpdateFromRCSAct );
-	m_projectDock->setSelectedCommitAction( m_selectedCommitToRCSAct );
-	m_projectDock->setSelectedAddAction( m_selectedAddToRCSAct );
-	m_projectDock->setSelectedRemoveAction( m_selectedRemoveFromRCSAct );
-	m_projectDock->setSelectedCompareWithHeadAction( m_compareWithHeadAct );
-	m_projectDock->setSelectedCompareWithStdAction( m_compareWithStdAct );
-	m_projectDock->setSelectedCompareAction( m_compareTwoFileAct );
-	m_projectDock->setToggledViewAction( m_toggledFlatView );
-	addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
-	QAction * action = m_projectDock->toggleViewAction();
-	action->setShortcut( QKeySequence( "Alt+1" ) );
-	m_windowsMenu->addAction( action );
-
-	m_contentDock = new FileContentDockWidget( tr("File Content"), this );
-	m_contentDock->setObjectName( QString::fromUtf8("m_contentDock") );
-	addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
-	action = m_contentDock->toggleViewAction();
-	action->setShortcut( QKeySequence( "Alt+2" ) );
-	m_windowsMenu->addAction( action );
-
-	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), this );
-	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
-	addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
-	action = m_xmlpresentationdock->toggleViewAction();
-	action->setShortcut( QKeySequence( "Alt+3" ) );
-	m_windowsMenu->addAction( action );
-
-	m_snipetsDock = new SnipetDockWidget( tr("Snipets"), this );
-	m_snipetsDock->setObjectName( QString::fromUtf8( "m_snipetsDock" ) );
-	addDockWidget( Qt::RightDockWidgetArea, m_snipetsDock );
-	action = m_snipetsDock->toggleViewAction();
-	action->setShortcut( QKeySequence( "Alt+4" ) );
-	m_windowsMenu->addAction( action );
-
-	// Load dock from plugins and assign automatic shortcut
-	int dockShortcut = 5;
-	foreach( XinxPluginElement * pluginElement, XinxPluginsLoader::self()->plugins() ) {
-		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>( pluginElement->plugin() );
-		if( pluginElement->isActivated() && dockPlugin ) {
-			QDockWidget * dock = dockPlugin->createDockWidget( this );
-			addDockWidget( Qt::RightDockWidgetArea, dock );
-			action = dock->toggleViewAction();
-			action->setShortcut( QString( "Alt+%1" ).arg( dockShortcut++ ) );
-			m_windowsMenu->addAction( action );
-		}
-	}
-
-	m_logDock = new LogDockWidget( tr("Log"), this );
-	connect( m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
-	m_logDock->setObjectName( QString::fromUtf8("m_logDock") );
-	addDockWidget( Qt::BottomDockWidgetArea, m_logDock );
-	action = m_logDock->toggleViewAction();
-	m_windowsMenu->addAction( action );
-}
-
-void MainformImpl::createSubMenu() {
-	// New sub menu
-	m_newMenu = new QMenu( this );
-	createNewSubMenu();
-	m_newAct->setData( QVariant::fromValue<IFileTypePlugin*>( XinxPluginsLoader::self()->fileTypes()[0] ) );
-	connect( m_newAct, SIGNAL(triggered()), this, SLOT(newFile()) );
-
-	m_newAct->setMenu( m_newMenu );
-	QToolButton * btn = qobject_cast<QToolButton*>( m_fileToolBar->widgetForAction( m_newAct ) );
-	if( btn )
-		btn->setPopupMode( QToolButton::MenuButtonPopup );
-
-	// Recent project menu
-	QMenu * recentProjectMenu = new QMenu( this );
-	recentProjectMenu->addAction( m_openProjectAct );
-	setupRecentMenu( recentProjectMenu, m_recentSeparator, m_recentProjectActs );
-	m_recentProjectAct->setMenu( recentProjectMenu );
-	btn = qobject_cast<QToolButton*>( m_projectToolBar->widgetForAction( m_recentProjectAct ) );
-	if( btn )
-		btn->setPopupMode( QToolButton::MenuButtonPopup );
-
-	// Recent file menu
-	QMenu * recentFileMenu = new QMenu( this );
-	recentFileMenu->addAction( m_openAct );
-	setupRecentMenu( recentFileMenu, m_recentFileSeparator, m_recentFileActs );
-	m_recentFileAct->setMenu( recentFileMenu );
-	btn = qobject_cast<QToolButton*>( m_fileToolBar->widgetForAction( m_recentFileAct ) );
-	if( btn )
-		btn->setPopupMode( QToolButton::MenuButtonPopup );
-
-	// Close project sub menu
-	QMenu * closeProjectMenu = new QMenu( this );
-	closeProjectMenu->addAction( m_closeProjectWithSessionAct );
-	closeProjectMenu->addAction( m_closeProjectNoSessionAct );
-
-	m_closeProjectAct->setMenu( closeProjectMenu );
-	btn = qobject_cast<QToolButton*>( m_projectToolBar->widgetForAction( m_closeProjectAct ) );
-	if( btn )
-		btn->setPopupMode( QToolButton::MenuButtonPopup );
-}
-
-void MainformImpl::createNewSubMenu() {
-	QList<QAction*> actions = m_newMenu->actions();
-	m_newMenu->clear();
-	qDeleteAll( actions );
-
-	foreach( IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes() ) {
-		QAction * action = new QAction(
-		        QIcon( plugin->icon() ),
-				tr( "New %1" ).arg( plugin->description() ),
-				this
-				);
-		action->setData( QVariant::fromValue<IFileTypePlugin*>( plugin ) );
-		m_newMenu->addAction( action );
-
-		connect( action, SIGNAL(triggered()), this, SLOT(newFile()) );
-	}
-}
-
-void MainformImpl::createStatusBar() {
-	m_codecLabel = new QLabel( tr("Unknown") );
-	m_lineFeedLabel = new QLabel( tr("Unknown") );
-	m_editorPosition = new QLabel( "000x000" );
-	m_threadCount = new QLabel( "000 (000)" );
-	statusBar()->addPermanentWidget( m_codecLabel );
-	statusBar()->addPermanentWidget( m_lineFeedLabel );
-	statusBar()->addPermanentWidget( m_editorPosition );
-	statusBar()->addPermanentWidget( m_threadCount );
-	statusBar()->showMessage( tr("Ready"), 2000 );
-}
-
-void MainformImpl::createShortcut() {
-	// File menu
-	m_newAct->setShortcut( QKeySequence::New );
-	m_recentFileAct->setShortcut( QKeySequence::Open );
-	m_saveAct->setShortcut( QKeySequence::Save );
-	m_closeAct->setShortcut( QKeySequence::Close );
-	m_printAct->setShortcut( QKeySequence::Print );
-
-	m_exitAct->setShortcut( QKeySequence::mnemonic( m_exitAct->text() ) );
-
-	// Edit menu
-	m_undoAct->setShortcut( QKeySequence::Undo );
-	m_redoAct->setShortcut( QKeySequence::Redo );
-
-	m_cutAct->setShortcut( QKeySequence::Cut );
-	m_copyAct->setShortcut( QKeySequence::Copy );
-	m_pasteAct->setShortcut( QKeySequence::Paste );
-
-	m_selectAllAct->setShortcut( QKeySequence::SelectAll );
-
-	m_upperTextAct->setShortcut( QKeySequence::mnemonic( m_upperTextAct->text() ) );
-	m_lowerTextAct->setShortcut( QKeySequence::mnemonic( m_lowerTextAct->text() ) );
-
-	m_duplicateLineAct->setShortcut( QKeySequence( "Ctrl+D" ) );
-	m_indentAct->setShortcut( QKeySequence( "Tab" ) );
-	m_unindentAct->setShortcut( QKeySequence( "Shift+Tab" ) );
-	m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
-	m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
-	m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
-	m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );
-
-	m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
-	m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );
-	m_highlightWord->setShortcut( QKeySequence( "Ctrl+U" ) );
-
-	// Bookmark menu
-	m_bookmarkAct->setShortcut( QKeySequence( "Ctrl+B" ) );
-	m_nextBookmarkAct->setShortcut( QKeySequence( "F2" ) );
-	m_previousBookmarkAct->setShortcut( QKeySequence( "Shift+F2" ) );
-	m_clearAllBookmarkAct->setShortcut( QKeySequence( "Ctrl+F2" ) );
-
-	// Search menu
-	m_searchAct->setShortcut( QKeySequence::Find );
-	m_searchNextAct->setShortcut( QKeySequence::FindNext );
-	m_searchPreviousAct->setShortcut( QKeySequence::FindPrevious );
-	m_replaceAct->setShortcut( QKeySequence::Replace );
-
-	// Project menu
-	m_globalUpdateFromRCSAct->setShortcut( QKeySequence::Refresh );
-	m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
-	m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
-
-	// Windows menu
-	m_nextTabAct->setShortcut( QKeySequence::NextChild );
-	m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
+void MainformImpl::createMenus() {
+	createActions();
+	createSubMenu();
+	createShortcut();
+	createPluginsActions();
 }
 
 void MainformImpl::createActions() {
@@ -506,7 +323,7 @@ void MainformImpl::createActions() {
 	// Customize
 	connect( m_customApplicationAct, SIGNAL(triggered()), this, SLOT(customize()) );
 
-  	// About Qt
+		// About Qt
 	connect( m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	// About
@@ -521,6 +338,206 @@ void MainformImpl::createActions() {
 	// Timer LOG
 	m_timer = new QTimer( this );
 	connect( m_timer, SIGNAL(timeout()), this, SLOT(logTimeout()) );
+}
+
+
+void MainformImpl::registerTypes() {
+	qRegisterMetaType<TextFileEditor>( "TextFileEditor" );
+}
+
+void MainformImpl::createDockWidget() {
+	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), this );
+	m_projectDock->setObjectName( QString::fromUtf8("m_projectDock") );
+	m_projectDock->setGlobalUpdateAction( m_globalUpdateFromRCSAct );
+	m_projectDock->setGlobalCommitAction( m_globalCommitToRCSAct );
+	m_projectDock->setSelectedUpdateAction( m_selectedUpdateFromRCSAct );
+	m_projectDock->setSelectedCommitAction( m_selectedCommitToRCSAct );
+	m_projectDock->setSelectedAddAction( m_selectedAddToRCSAct );
+	m_projectDock->setSelectedRemoveAction( m_selectedRemoveFromRCSAct );
+	m_projectDock->setSelectedCompareWithHeadAction( m_compareWithHeadAct );
+	m_projectDock->setSelectedCompareWithStdAction( m_compareWithStdAct );
+	m_projectDock->setSelectedCompareAction( m_compareTwoFileAct );
+	m_projectDock->setToggledViewAction( m_toggledFlatView );
+	addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
+	QAction * action = m_projectDock->toggleViewAction();
+	action->setShortcut( QKeySequence( "Alt+1" ) );
+	m_windowsMenu->addAction( action );
+
+	m_contentDock = new FileContentDockWidget( tr("File Content"), this );
+	m_contentDock->setObjectName( QString::fromUtf8("m_contentDock") );
+	addDockWidget( Qt::LeftDockWidgetArea, m_contentDock );
+	action = m_contentDock->toggleViewAction();
+	action->setShortcut( QKeySequence( "Alt+2" ) );
+	m_windowsMenu->addAction( action );
+
+	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), this );
+	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
+	addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
+	action = m_xmlpresentationdock->toggleViewAction();
+	action->setShortcut( QKeySequence( "Alt+3" ) );
+	m_windowsMenu->addAction( action );
+
+	m_snipetsDock = new SnipetDockWidget( tr("Snipets"), this );
+	m_snipetsDock->setObjectName( QString::fromUtf8( "m_snipetsDock" ) );
+	addDockWidget( Qt::RightDockWidgetArea, m_snipetsDock );
+	action = m_snipetsDock->toggleViewAction();
+	action->setShortcut( QKeySequence( "Alt+4" ) );
+	m_windowsMenu->addAction( action );
+
+	// Load dock from plugins and assign automatic shortcut
+	int dockShortcut = 5;
+	foreach( XinxPluginElement * pluginElement, XinxPluginsLoader::self()->plugins() ) {
+		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>( pluginElement->plugin() );
+		if( pluginElement->isActivated() && dockPlugin ) {
+			QDockWidget * dock = dockPlugin->createDockWidget( this );
+			addDockWidget( Qt::RightDockWidgetArea, dock );
+			action = dock->toggleViewAction();
+			action->setShortcut( QString( "Alt+%1" ).arg( dockShortcut++ ) );
+			m_windowsMenu->addAction( action );
+		}
+	}
+
+	m_logDock = new LogDockWidget( tr("Log"), this );
+	connect( m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
+	m_logDock->setObjectName( QString::fromUtf8("m_logDock") );
+	addDockWidget( Qt::BottomDockWidgetArea, m_logDock );
+	action = m_logDock->toggleViewAction();
+	m_windowsMenu->addAction( action );
+}
+
+void MainformImpl::createSubMenu() {
+	// New sub menu
+	m_newMenu = new QMenu( this );
+	createNewSubMenu();
+	m_newAct->setData( QVariant::fromValue<IFileTypePlugin*>( XinxPluginsLoader::self()->fileTypes()[0] ) );
+	connect( m_newAct, SIGNAL(triggered()), this, SLOT(newFile()) );
+
+	m_newAct->setMenu( m_newMenu );
+	QToolButton * btn = qobject_cast<QToolButton*>( m_fileToolBar->widgetForAction( m_newAct ) );
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
+
+	// Recent project menu
+	QMenu * recentProjectMenu = new QMenu( this );
+	recentProjectMenu->addAction( m_openProjectAct );
+	setupRecentMenu( recentProjectMenu, m_recentSeparator, m_recentProjectActs );
+	m_recentProjectAct->setMenu( recentProjectMenu );
+	btn = qobject_cast<QToolButton*>( m_projectToolBar->widgetForAction( m_recentProjectAct ) );
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
+
+	// Recent file menu
+	QMenu * recentFileMenu = new QMenu( this );
+	recentFileMenu->addAction( m_openAct );
+	setupRecentMenu( recentFileMenu, m_recentFileSeparator, m_recentFileActs );
+	m_recentFileAct->setMenu( recentFileMenu );
+	btn = qobject_cast<QToolButton*>( m_fileToolBar->widgetForAction( m_recentFileAct ) );
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
+
+	// Close project sub menu
+	QMenu * closeProjectMenu = new QMenu( this );
+	closeProjectMenu->addAction( m_closeProjectWithSessionAct );
+	closeProjectMenu->addAction( m_closeProjectNoSessionAct );
+
+	m_closeProjectAct->setMenu( closeProjectMenu );
+	btn = qobject_cast<QToolButton*>( m_projectToolBar->widgetForAction( m_closeProjectAct ) );
+	if( btn )
+		btn->setPopupMode( QToolButton::MenuButtonPopup );
+}
+
+void MainformImpl::createNewSubMenu() {
+	QList<QAction*> actions = m_newMenu->actions();
+	m_newMenu->clear();
+	qDeleteAll( actions );
+
+	foreach( IFileTypePlugin * plugin, XinxPluginsLoader::self()->fileTypes() ) {
+		QAction * action = new QAction(
+		        QIcon( plugin->icon() ),
+				tr( "New %1" ).arg( plugin->description() ),
+				this
+				);
+		action->setData( QVariant::fromValue<IFileTypePlugin*>( plugin ) );
+		m_newMenu->addAction( action );
+
+		connect( action, SIGNAL(triggered()), this, SLOT(newFile()) );
+	}
+}
+
+void MainformImpl::createPluginsActions() {
+	// On supprimer toutes les actions pour mieux les recréer.
+	qDeleteAllLater( m_pluginsAction );
+	m_pluginsAction.clear();
+
+}
+
+void MainformImpl::createStatusBar() {
+	m_codecLabel = new QLabel( tr("Unknown") );
+	m_lineFeedLabel = new QLabel( tr("Unknown") );
+	m_editorPosition = new QLabel( "000x000" );
+	m_threadCount = new QLabel( "000 (000)" );
+	statusBar()->addPermanentWidget( m_codecLabel );
+	statusBar()->addPermanentWidget( m_lineFeedLabel );
+	statusBar()->addPermanentWidget( m_editorPosition );
+	statusBar()->addPermanentWidget( m_threadCount );
+	statusBar()->showMessage( tr("Ready"), 2000 );
+}
+
+void MainformImpl::createShortcut() {
+	// File menu
+	m_newAct->setShortcut( QKeySequence::New );
+	m_recentFileAct->setShortcut( QKeySequence::Open );
+	m_saveAct->setShortcut( QKeySequence::Save );
+	m_closeAct->setShortcut( QKeySequence::Close );
+	m_printAct->setShortcut( QKeySequence::Print );
+
+	m_exitAct->setShortcut( QKeySequence::mnemonic( m_exitAct->text() ) );
+
+	// Edit menu
+	m_undoAct->setShortcut( QKeySequence::Undo );
+	m_redoAct->setShortcut( QKeySequence::Redo );
+
+	m_cutAct->setShortcut( QKeySequence::Cut );
+	m_copyAct->setShortcut( QKeySequence::Copy );
+	m_pasteAct->setShortcut( QKeySequence::Paste );
+
+	m_selectAllAct->setShortcut( QKeySequence::SelectAll );
+
+	m_upperTextAct->setShortcut( QKeySequence::mnemonic( m_upperTextAct->text() ) );
+	m_lowerTextAct->setShortcut( QKeySequence::mnemonic( m_lowerTextAct->text() ) );
+
+	m_duplicateLineAct->setShortcut( QKeySequence( "Ctrl+D" ) );
+	m_indentAct->setShortcut( QKeySequence( "Tab" ) );
+	m_unindentAct->setShortcut( QKeySequence( "Shift+Tab" ) );
+	m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
+	m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
+	m_moveUpLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Up" ) );
+	m_moveDownLineAct->setShortcut( QKeySequence( "Ctrl+Shift+Down" ) );
+
+	m_prettyPrintAct->setShortcut( QKeySequence( "Ctrl+Shift+F" ) );
+	m_completeAct->setShortcut( QKeySequence( "Ctrl+E" ) );
+	m_highlightWord->setShortcut( QKeySequence( "Ctrl+U" ) );
+
+	// Bookmark menu
+	m_bookmarkAct->setShortcut( QKeySequence( "Ctrl+B" ) );
+	m_nextBookmarkAct->setShortcut( QKeySequence( "F2" ) );
+	m_previousBookmarkAct->setShortcut( QKeySequence( "Shift+F2" ) );
+	m_clearAllBookmarkAct->setShortcut( QKeySequence( "Ctrl+F2" ) );
+
+	// Search menu
+	m_searchAct->setShortcut( QKeySequence::Find );
+	m_searchNextAct->setShortcut( QKeySequence::FindNext );
+	m_searchPreviousAct->setShortcut( QKeySequence::FindPrevious );
+	m_replaceAct->setShortcut( QKeySequence::Replace );
+
+	// Project menu
+	m_globalUpdateFromRCSAct->setShortcut( QKeySequence::Refresh );
+	m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
+	m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
+
+	// Windows menu
+	m_nextTabAct->setShortcut( QKeySequence::NextChild );
+	m_previousTabAct->setShortcut( QKeySequence::PreviousChild );
 }
 
 void MainformImpl::connectDbus() {

@@ -33,6 +33,7 @@
 #include <QTextEdit>
 #include <QTranslator>
 #include <QApplication>
+#include <QAction>
 
 /* BasePlugin */
 
@@ -106,6 +107,19 @@ QList< QPair<QString,QString> > WebPlugin::pluginTools() {
 QList<IFileTypePlugin*> WebPlugin::fileTypes() {
 	return m_fileTypes;
 }
+
+XinxAction::MenuList WebPlugin::actions() {
+	XinxAction::Action * runAction = new XinxAction::Action( tr("Process stylesheet"), QString( "F9" ), this );
+
+	XinxAction::ActionList menu( tr("Execute") );
+	menu.append( runAction );
+
+	XinxAction::MenuList menus;
+	menus.append( menu );
+
+	return menus;
+}
+
 
 QWidget * WebPlugin::createSettingsDialog() {
 	return new WebPluginFormImpl();
