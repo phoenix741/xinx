@@ -30,7 +30,6 @@ FORMS += ui/xquery.ui \
     ui/about.ui \
     ui/commitmessages.ui \
     ui/custom.ui \
-    ui/mainform.ui \
     ui/projectdirectorywidget.ui \
     ui/projectproperty.ui \
     ui/replace.ui \

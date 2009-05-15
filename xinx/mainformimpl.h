@@ -31,6 +31,7 @@
 #include <QString>
 #include <QStringList>
 #include <QHash>
+#include <QAction>
 
 class FileContentDockWidget;
 class ProjectDirectoryDockWidget;
@@ -79,9 +80,7 @@ private:
 	void createMainForm();
 
 	void createTabEditorButton();
-	void createShortcut();
 	void createMenus();
-	void createSubMenu();
 	void createNewSubMenu();
 	void createPluginsActions();
 	void createStatusBar();
@@ -127,9 +126,13 @@ private:
 	QLabel * m_codecLabel;
 	QLabel * m_lineFeedLabel;
 
-	// Menu
+	// Status bar
+	QStatusBar * m_statusBar;
+
+	// Menus
 	QHash<QString, QMenu*> m_menus;
-	QMenu * m_newMenu;
+	QHash<QString, QToolBar*> m_toolBars;
+	QMenu * m_newMenu, * m_scriptMenu, *m_templateMenu;
 
 	// Plugins Actions
 	QList<QAction*> m_pluginsAction;
@@ -175,6 +178,9 @@ private:
 	QAction *m_nextTabAct, *m_previousTabAct;
 	QAction *m_aboutAct, *m_aboutQtAct;
 	QAction *m_createTemplate, *m_customApplicationAct, *m_refreshSnipet, *m_refreshScripts;
+
+	// Tab Editors
+	TabEditor * m_tabEditors;
 private slots:
 	// Actions
 	void updateActions();
