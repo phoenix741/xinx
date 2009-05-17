@@ -42,8 +42,7 @@
 #include <typeinfo>
 
 //
-TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0),
-	m_clickedItem( -1 ) { //, m_previous(NULL) {
+TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), m_clickedItem( -1 ) { //, m_previous(NULL) {
 	setAcceptDrops(true);
 
 	tabBar()->installEventFilter(this);
@@ -60,21 +59,45 @@ bool TabEditor::isTextFileEditor( AbstractEditor * editor ) {
 	return dynamic_cast<TextFileEditor*>(editor) != NULL;
 }
 
-AbstractEditor * TabEditor::currentEditor() {
+AbstractEditor * TabEditor::currentEditor() const {
 	return dynamic_cast<AbstractEditor*>( currentWidget() );
 }
 
-AbstractEditor * TabEditor::editor( int index ) {
+AbstractEditor * TabEditor::editor( int index ) const {
 	return dynamic_cast<AbstractEditor*>( widget( index ) );
 }
 
-AbstractEditor * TabEditor::editor( const QString & filename ) {
+AbstractEditor * TabEditor::editor( const QString & filename ) const {
 	for( int i = 0; i < count(); i++ ) {
 		AbstractEditor * ed = dynamic_cast<AbstractEditor*>( editor(i) );
 		if( ed && ( ed->lastFileName() == QDir::fromNativeSeparators( filename ) ) )
 			return editor(i);
 	}
 	return NULL;
+}
+
+QList<AbstractEditor*> TabEditor::editors() const {
+	QList<AbstractEditor*> list;
+	for( int i = 0 ; i < count() ; i++ ) {
+		list << editor( i );
+	}
+	return list;
+}
+
+int TabEditor::editorsCount() const {
+	return count();
+}
+
+void TabEditor::changeToNextEditor() {
+	setCurrentIndex( ( currentIndex() + 1 ) % count() );
+}
+
+void TabEditor::changeToPreviousEditor() {
+	setCurrentIndex( ( currentIndex() - 1 + count() ) % count() );
+}
+
+void TabEditor::changeToEditor( int index ) {
+	setCurrentIndex( index );
 }
 
 void TabEditor::newTextFileEditor( AbstractEditor * editor ) {

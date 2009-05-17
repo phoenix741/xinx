@@ -19,23 +19,34 @@
 
 #ifndef TABEDITOR_H
 #define TABEDITOR_H
-//
+
+// Xinx header
+#include <editors/editormanager.h>
+
+// Qt header
 #include <QTabWidget>
-//
+
 class AbstractEditor;
 class QAbstractItemModel;
 class IFileTypePlugin;
 class QModelIndex;
 
-class TabEditor : public QTabWidget {
+class TabEditor : public QTabWidget, public EditorManager {
 	Q_OBJECT
 public:
 	TabEditor( QWidget * parent = 0 );
 	virtual ~TabEditor();
 
-	AbstractEditor * currentEditor();
-	AbstractEditor * editor( int index );
-	AbstractEditor * editor( const QString & filename );
+	virtual AbstractEditor * currentEditor() const;
+	virtual AbstractEditor * editor( int index ) const;
+	virtual AbstractEditor * editor( const QString & filename ) const;
+	virtual QList<AbstractEditor*> editors() const;
+
+	virtual int editorsCount() const;
+
+	virtual void changeToNextEditor();
+	virtual void changeToPreviousEditor();
+	virtual void changeToEditor( int index );
 
 	static bool isTextFileEditor( AbstractEditor * editor );
 

@@ -26,23 +26,28 @@ using namespace XinxAction;
 /* Action */
 
 Action::Action( QAction * a, QObject * parent ) : QObject( parent ), m_action( a ) {
+	updateActionState();
 	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
 }
 
 Action::Action( const QString & text, const QKeySequence & shortcut, QObject * parent ) : QObject( parent ) {
 	m_action = new QAction( text, this );
 	m_action->setShortcut( shortcut );
+	updateActionState();
 	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
 }
 
-Action::Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) {
+Action::Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : QObject( parent ) {
 	m_action = new QAction( icon, text, this );
 	m_action->setShortcut( shortcut );
+	updateActionState();
 	connect( m_action, SIGNAL(triggered()), this, SLOT(actionTriggered()) );
 }
 
+Action::~Action() {
+}
 
-const QAction * Action::action() {
+QAction * Action::action() const {
 	return m_action;
 };
 

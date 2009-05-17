@@ -130,6 +130,7 @@ private:
 	QStatusBar * m_statusBar;
 
 	// Menus
+	QMenuBar * m_menuBar;
 	QHash<QString, QMenu*> m_menus;
 	QHash<QString, QToolBar*> m_toolBars;
 	QMenu * m_newMenu, * m_scriptMenu, *m_templateMenu;

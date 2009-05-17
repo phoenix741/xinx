@@ -35,7 +35,7 @@ public:
 
 class Separator : public MenuItem {
 public:
-	virtual ~Separator();
+	virtual ~Separator() {};
 };
 
 class Action : public QObject, public MenuItem {
@@ -45,9 +45,10 @@ public:
 	Action( QAction * a, QObject * parent );
 	Action( const QString & text, const QKeySequence & shortcut, QObject * parent );
 	Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	virtual ~Action();
 
 	//! The Action to add
-	const QAction * action();
+	QAction * action() const;
 
 	//! Return true if the action is visible to user
 	virtual bool isActionVisible() const;

@@ -43,7 +43,8 @@ HEADERS = rcs/rcs.h \
     contentview/contentviewparser.h \
     contentview/completionnodemodel.h \
     contentview/abstractcontentviewmodel.h \
-    actions/actioninterface.h
+    actions/actioninterface.h \
+ editors/editormanager.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -67,6 +68,7 @@ SOURCES = rcs/rcs.cpp \
     contentview/abstractcontentviewmodel.cpp \
     contentview/completionnodemodel.cpp \
     editors/contentviewtexteditor.cpp \
- actions/actioninterface.cpp
+ actions/actioninterface.cpp \
+ editors/editormanager.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 include(../project_mode.pri)

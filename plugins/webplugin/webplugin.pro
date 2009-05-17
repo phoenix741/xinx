@@ -38,7 +38,8 @@ HEADERS = webplugin.h \
     xsl/xmltexteditor.h \
     xsl/htmlfileeditor.h \
     xsl/xslcontentviewparser.h \
-    xsl/xslcompletionnodemodel.h
+    xsl/xslcompletionnodemodel.h \
+ xsl/stylesheetaction.h
 SOURCES = webplugin.cpp \
     filetypeplugin.cpp \
     config/selfwebpluginsettings.cpp \
@@ -63,7 +64,8 @@ SOURCES = webplugin.cpp \
     xsl/xmlprettyprinter.cpp \
     xsl/xmltexteditor.cpp \
     xsl/htmlfileeditor.cpp \
-    xsl/xslcompletionnodemodel.cpp 
+    xsl/xslcompletionnodemodel.cpp \
+ xsl/stylesheetaction.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui
 include(../../project_mode.pri)

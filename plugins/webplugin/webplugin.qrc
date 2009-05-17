@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/" >
-		<file alias="qcodeedit/lan/css.qnfa" >./qcodeedit/css.qnfa</file>
-		<file alias="qcodeedit/lan/js.qnfa" >./qcodeedit/js.qnfa</file>
-		<file alias="qcodeedit/lan/xml.qnfa" >./qcodeedit/xml.qnfa</file>
-		<file>images/planet.png</file>
+        <file alias="qcodeedit/lan/css.qnfa" >qcodeedit/css.qnfa</file>
+        <file alias="qcodeedit/lan/js.qnfa" >qcodeedit/js.qnfa</file>
+        <file alias="qcodeedit/lan/xml.qnfa" >qcodeedit/xml.qnfa</file>
+        <file>images/planet.png</file>
         <file>images/typecss.png</file>
         <file>images/typehtml.png</file>
         <file>images/typejs.png</file>
@@ -11,6 +11,7 @@
         <file>images/typexsl.png</file>
         <file>images/typexq.png</file>
         <file>images/complete_fn.png</file>
-	<file>translations/webplugin_fr.qm</file>
+        <file>translations/webplugin_fr.qm</file>
+        <file>images/run.png</file>
     </qresource>
 </RCC>

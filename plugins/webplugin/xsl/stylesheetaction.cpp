@@ -17,39 +17,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef WEBPLUGIN_H_
-#define WEBPLUGIN_H_
-
 // Xinx header
-#include <plugins/plugininterfaces.h>
-#include <actions/actioninterface.h>
+#include "stylesheetaction.h"
+#include "htmlfileeditor.h"
+#include <editors/editormanager.h>
 
-class WebPluginSettings;
+// Qt header
+#include <QMessageBox>
 
-class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IFilePlugin)
-public:
-	WebPlugin();
-	virtual ~WebPlugin();
+/* StyleSheetAction */
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+StyleSheetAction::StyleSheetAction( QAction * a, QObject * parent ) : XinxAction::Action( a, parent ) {
+}
 
-	virtual QList< QPair<QString,QString> > pluginTools();
+StyleSheetAction::StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( text, shortcut, parent ) {
+}
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+StyleSheetAction::StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( icon, text, shortcut, parent ) {
+}
 
-	virtual XinxAction::MenuList actions();
 
-	virtual QWidget * createSettingsDialog();
-	virtual bool loadSettingsDialog( QWidget * widget );
-	virtual bool saveSettingsDialog( QWidget * widget );
-private:
-	QList<IFileTypePlugin*> m_fileTypes;
-	XinxAction::MenuList m_menus;
-};
+bool StyleSheetAction::isActionEnabled() const {
+	return EditorManager::self() && qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() );
+}
 
-#endif /* WEBPLUGIN_H_*/
+bool StyleSheetAction::isInToolBar() const {
+	return true;
+}
+
+void StyleSheetAction::actionTriggered() {
+	QMessageBox::information( 0, "bouh!", "bouh!" );
+}

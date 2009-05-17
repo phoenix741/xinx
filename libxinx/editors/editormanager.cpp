@@ -17,39 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef WEBPLUGIN_H_
-#define WEBPLUGIN_H_
-
 // Xinx header
-#include <plugins/plugininterfaces.h>
-#include <actions/actioninterface.h>
+#include "editormanager.h"
 
-class WebPluginSettings;
+/* Static member */
 
-class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IFilePlugin)
-public:
-	WebPlugin();
-	virtual ~WebPlugin();
+EditorManager * EditorManager::s_self = 0;
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+/* EditorManager */
 
-	virtual QList< QPair<QString,QString> > pluginTools();
+EditorManager::EditorManager() {
+	if( s_self == 0 ) {
+		s_self = this;
+	}
+}
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+EditorManager::~EditorManager() {
+	if( s_self == this ) {
+		s_self = 0;
+	}
+}
 
-	virtual XinxAction::MenuList actions();
+EditorManager * EditorManager::self() {
+	return s_self;
+}
 
-	virtual QWidget * createSettingsDialog();
-	virtual bool loadSettingsDialog( QWidget * widget );
-	virtual bool saveSettingsDialog( QWidget * widget );
-private:
-	QList<IFileTypePlugin*> m_fileTypes;
-	XinxAction::MenuList m_menus;
-};
 
-#endif /* WEBPLUGIN_H_*/
+
+

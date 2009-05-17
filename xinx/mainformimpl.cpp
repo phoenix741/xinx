@@ -128,18 +128,18 @@ void MainformImpl::createMainForm() {
 void MainformImpl::createMenus() {
 	QMenu * fileMenu, * editMenu, *searchMenu, *bookmarkMenu, *projectMenu, *windowsMenu, *toolsMenu, *helpMenu;
 	QToolBar *projectToolBar, * fileToolBar, * editToolBar, * searchToolBar;
-	QMenuBar * menuBar = new QMenuBar( this );
-	setMenuBar( menuBar );
-	m_menus.insert( "file", fileMenu = new QMenu( tr("&File"), menuBar ) );
-	m_menus.insert( "edit", editMenu = new QMenu( tr("&Edit"), menuBar ) );
-	m_menus.insert( "search", searchMenu = new QMenu( tr("&Search"), menuBar ) );
-	m_menus.insert( "bookmark", bookmarkMenu = new QMenu( tr("&Bookmark"), menuBar ) );
-	m_menus.insert( "project", projectMenu = new QMenu( tr("&Project"), menuBar ) );
-	m_menus.insert( "windows", windowsMenu = new QMenu( tr("&Windows"), menuBar ) );
-	m_menus.insert( "tools", toolsMenu = new QMenu( tr("&Tools"), menuBar ) );
-	m_menus.insert( "help", helpMenu = new QMenu( tr("&Help"), menuBar ) );
-	m_scriptMenu = new QMenu( tr("&Script"), menuBar );
-	m_templateMenu = new QMenu( tr("&Template"), menuBar );
+	m_menuBar = new QMenuBar( this );
+	setMenuBar( m_menuBar );
+	m_menus.insert( "file", fileMenu = new QMenu( tr("&File"), m_menuBar ) );
+	m_menus.insert( "edit", editMenu = new QMenu( tr("&Edit"), m_menuBar ) );
+	m_menus.insert( "search", searchMenu = new QMenu( tr("&Search"), m_menuBar ) );
+	m_menus.insert( "bookmark", bookmarkMenu = new QMenu( tr("&Bookmark"), m_menuBar ) );
+	m_menus.insert( "project", projectMenu = new QMenu( tr("&Project"), m_menuBar ) );
+	m_menus.insert( "windows", windowsMenu = new QMenu( tr("&Windows"), m_menuBar ) );
+	m_menus.insert( "tools", toolsMenu = new QMenu( tr("&Tools"), m_menuBar ) );
+	m_menus.insert( "help", helpMenu = new QMenu( tr("&Help"), m_menuBar ) );
+	m_scriptMenu = new QMenu( tr("&Script"), m_menuBar );
+	m_templateMenu = new QMenu( tr("&Template"), m_menuBar );
 
 	m_toolBars.insert( "project", projectToolBar = new QToolBar( this ) );
 	m_toolBars.insert( "file", fileToolBar = new QToolBar( this ) );
@@ -148,14 +148,14 @@ void MainformImpl::createMenus() {
 
 	createActions();
 
-	menuBar->addAction(fileMenu->menuAction());
-	menuBar->addAction(editMenu->menuAction());
-	menuBar->addAction(searchMenu->menuAction());
-	menuBar->addAction(bookmarkMenu->menuAction());
-	menuBar->addAction(projectMenu->menuAction());
-	menuBar->addAction(windowsMenu->menuAction());
-	menuBar->addAction(toolsMenu->menuAction());
-	menuBar->addAction(helpMenu->menuAction());
+	m_menuBar->addAction(fileMenu->menuAction());
+	m_menuBar->addAction(editMenu->menuAction());
+	m_menuBar->addAction(searchMenu->menuAction());
+	m_menuBar->addAction(bookmarkMenu->menuAction());
+	m_menuBar->addAction(projectMenu->menuAction());
+	m_menuBar->addAction(toolsMenu->menuAction());
+	m_menuBar->addAction(windowsMenu->menuAction());
+	m_menuBar->addAction(helpMenu->menuAction());
 
 	fileMenu->addAction(m_newAct);
 	fileMenu->addAction(m_recentFileAct);
@@ -754,6 +754,51 @@ void MainformImpl::createActions() {
 	connect( m_timer, SIGNAL(timeout()), this, SLOT(logTimeout()) );
 }
 
+void MainformImpl::createPluginsActions() {
+	// Clear all action for better creation
+	qDeleteAllLater( m_pluginsAction );
+	m_pluginsAction.clear();
+
+	// Create actions
+
+	// Pour chaque plugins
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+
+		// Si le plugin est activé
+		if( e->isActivated() && qobject_cast<IXinxPlugin*>( e->plugin() ) ) {
+			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>( e->plugin() )->actions();
+
+			// Pour chaque menu
+			foreach( const XinxAction::ActionList & menu, menuList ) {
+				const QString & menuName = menu.menu();
+
+				// Pour chaque élemént du menu
+				foreach( XinxAction::MenuItem * item, menu ) {
+
+					// Si l'élément est un séparateur
+					if( dynamic_cast<XinxAction::Separator*>( item ) ) {
+						m_menus[ menuName ]->addSeparator();
+
+					// Si l'élément est une action
+					} else if( dynamic_cast<XinxAction::Action*>( item ) ) {
+						QAction * actionToAdd = dynamic_cast<XinxAction::Action*>( item )->action();
+
+						// Si le menu n'existe pas alors le créer.
+						if( ! m_menus.value( menuName ) ) {
+							QMenu * newMenu = 0;
+							newMenu = new QMenu( menuName, m_menuBar );
+							m_menuBar->insertMenu( m_menus[ "tools" ]->menuAction(), newMenu );
+							m_menus[ menuName ] = newMenu;
+						}
+						m_menus[ menuName ]->addAction( actionToAdd );
+						m_pluginsAction.append( actionToAdd );
+					}
+				}
+			}
+		}
+	}
+}
+
 void MainformImpl::registerTypes() {
 	qRegisterMetaType<TextFileEditor>( "TextFileEditor" );
 }
@@ -839,13 +884,6 @@ void MainformImpl::createNewSubMenu() {
 
 		connect( action, SIGNAL(triggered()), this, SLOT(newFile()) );
 	}
-}
-
-void MainformImpl::createPluginsActions() {
-	// On supprimer toutes les actions pour mieux les recr�er.
-	qDeleteAllLater( m_pluginsAction );
-	m_pluginsAction.clear();
-
 }
 
 void MainformImpl::createStatusBar() {
@@ -944,6 +982,15 @@ void MainformImpl::currentTabChanged( int index ) {
 	ScriptManager::self()->setCurrentEditeur( editor );
 	m_snipetsDock->setEditor( editor );
 	updateEditorInformations();
+
+	// Update the state of action
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+		if( e->isActivated() && qobject_cast<IXinxPlugin*>( e->plugin() ) ) {
+			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>( e->plugin() )->actions();
+			menuList.updateMenuState();
+		}
+	}
+
 }
 
 void MainformImpl::updateEditorInformations() {

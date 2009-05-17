@@ -25,6 +25,8 @@
 
 #include "filetypeplugin.h"
 
+#include "xsl/stylesheetaction.h"
+
 // Qt header
 #include <QStringList>
 #include <QHash>
@@ -109,15 +111,14 @@ QList<IFileTypePlugin*> WebPlugin::fileTypes() {
 }
 
 XinxAction::MenuList WebPlugin::actions() {
-	XinxAction::Action * runAction = new XinxAction::Action( tr("Process stylesheet"), QString( "F9" ), this );
+	if( m_menus.size() == 0 ) {
+		XinxAction::Action * runAction = new StyleSheetAction( QIcon( ":/images/run.png" ), tr("Process stylesheet"), QString( "F9" ), this );
 
-	XinxAction::ActionList menu( tr("Execute") );
-	menu.append( runAction );
-
-	XinxAction::MenuList menus;
-	menus.append( menu );
-
-	return menus;
+		XinxAction::ActionList menu( tr("Execute") );
+		menu.append( runAction );
+		m_menus.append( menu );
+	}
+	return m_menus;
 }
 
 

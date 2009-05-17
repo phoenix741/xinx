@@ -17,39 +17,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef WEBPLUGIN_H_
-#define WEBPLUGIN_H_
+#ifndef _EDITORMANAGER_H_
+#define _EDITORMANAGER_H_
 
-// Xinx header
-#include <plugins/plugininterfaces.h>
-#include <actions/actioninterface.h>
+// Qt header
+#include <QString>
 
-class WebPluginSettings;
+class AbstractEditor;
 
-class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IFilePlugin)
+/*!
+ * Interface used by plugins. The goal is to permit easily access of all existing
+ * editors. This class is not a QObject class but the inherited class must emit
+ * signal currentChanged(int) when the current editor changed.
+ */
+class EditorManager {
 public:
-	WebPlugin();
-	virtual ~WebPlugin();
+	EditorManager();
+	virtual ~EditorManager();
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+	//! Return the current editor
+	virtual AbstractEditor * currentEditor() const = 0;
+	//! Return the editor at index \e index
+	virtual AbstractEditor * editor( int index ) const = 0;
+	//! Return the editor of name \e filename
+	virtual AbstractEditor * editor( const QString & filename ) const = 0;
+	//! Return the list of editors
+	virtual QList<AbstractEditor*> editors() const = 0;
 
-	virtual QList< QPair<QString,QString> > pluginTools();
+	//! Show the next editor
+	virtual void changeToNextEditor() = 0;
+	//! Show the previous editor
+	virtual void changeToPreviousEditor() = 0;
+	//! Show to the editor \e index
+	virtual void changeToEditor( int index ) = 0;
 
-	virtual QList<IFileTypePlugin*> fileTypes();
+	//! Return the number of editor
+	virtual int editorsCount() const = 0;
 
-	virtual XinxAction::MenuList actions();
-
-	virtual QWidget * createSettingsDialog();
-	virtual bool loadSettingsDialog( QWidget * widget );
-	virtual bool saveSettingsDialog( QWidget * widget );
+	//! Return the editor manager of the application
+	static EditorManager * self();
+//signals:
+//	void currentChanged( int index );
 private:
-	QList<IFileTypePlugin*> m_fileTypes;
-	XinxAction::MenuList m_menus;
+	static EditorManager * s_self;
 };
 
-#endif /* WEBPLUGIN_H_*/
+#endif // _EDITORMANAGER_H_
+

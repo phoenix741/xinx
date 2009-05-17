@@ -17,39 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef WEBPLUGIN_H_
-#define WEBPLUGIN_H_
+#ifndef _STYLESHEETACTION_H_
+#define _STYLESHEETACTION_H_
 
 // Xinx header
-#include <plugins/plugininterfaces.h>
 #include <actions/actioninterface.h>
 
-class WebPluginSettings;
-
-class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration {
-	Q_OBJECT
-	Q_INTERFACES(IXinxPlugin)
-	Q_INTERFACES(IXinxPluginConfiguration)
-	Q_INTERFACES(IFilePlugin)
+class StyleSheetAction : public XinxAction::Action {
 public:
-	WebPlugin();
-	virtual ~WebPlugin();
+	StyleSheetAction( QAction * a, QObject * parent );
+	StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
+	StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
 
-	virtual bool initializePlugin( const QString & lang );
-	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
-
-	virtual QList< QPair<QString,QString> > pluginTools();
-
-	virtual QList<IFileTypePlugin*> fileTypes();
-
-	virtual XinxAction::MenuList actions();
-
-	virtual QWidget * createSettingsDialog();
-	virtual bool loadSettingsDialog( QWidget * widget );
-	virtual bool saveSettingsDialog( QWidget * widget );
-private:
-	QList<IFileTypePlugin*> m_fileTypes;
-	XinxAction::MenuList m_menus;
+	virtual bool isActionEnabled() const;
+	virtual bool isInToolBar() const;
+protected slots:
+	virtual void actionTriggered();
 };
 
-#endif /* WEBPLUGIN_H_*/
+#endif // _STYLESHEETACTION_H_
