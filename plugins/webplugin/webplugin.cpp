@@ -171,16 +171,21 @@ bool WebPlugin::saveSettingsDialog( QWidget * widget ) {
 	switch( form->m_viewerComboBox->currentIndex() ) {
 	case 0:
 		settings->config().stylesheetParsing.viewer.type = "internal";
+		break;
 	case 1:
 		settings->config().stylesheetParsing.viewer.type = "external";
+		break;
 	}
 	switch( form->m_parserComboBox->currentIndex() ) {
 	case 0:
-		settings->config().stylesheetParsing.viewer.type = "oracle";
+		settings->config().stylesheetParsing.parser.type = "oracle";
+		break;
 	case 1:
-		settings->config().stylesheetParsing.viewer.type = "xsltproc";
+		settings->config().stylesheetParsing.parser.type = "xsltproc";
+		break;
 	case 2:
-		settings->config().stylesheetParsing.viewer.type = "internal";
+		settings->config().stylesheetParsing.parser.type = "internal";
+		break;
 	}
 
 	settings->config().stylesheetParsing.parser.oracleParser.jarName    = form->m_classPathEdit->lineEdit()->text();

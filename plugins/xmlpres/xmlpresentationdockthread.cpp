@@ -198,6 +198,7 @@ void XmlPresentationDockThread::presentationActivated( int index ) {
 		delete m_model;
 		m_openingFile = QString();
 		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( false );
+		emit m_parent->filenameChanged( QString() );
 	} else if( index == 1 ) {
 		// Open a file
 		QString name = QFileDialog::getOpenFileName( m_parent,

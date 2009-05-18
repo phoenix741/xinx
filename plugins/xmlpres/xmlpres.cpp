@@ -46,7 +46,7 @@ bool XmlPresPlugin::initializePlugin( const QString & lang ) {
 QVariant XmlPresPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("XINX Xml Pres Plugin");
+		return tr("Xml Pres Plugin");
 	case PLG_DESCRIPTION:
 		return tr("This plugin manage a dock for Xml Pres");
 	case PLG_AUTHOR:

@@ -63,5 +63,7 @@ bool StyleSheetAction::isInToolBar() const {
 
 void StyleSheetAction::actionTriggered() {
 	Q_ASSERT( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) );
-	qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() )->launchStylesheetParsing( QString() );
+	Q_ASSERT( m_dock );
+
+	qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() )->launchStylesheetParsing( m_dock->filename() );
 }

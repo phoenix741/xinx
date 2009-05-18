@@ -29,6 +29,9 @@
 #include <plugins/xinxpluginsloader.h>
 #include "../xmlpres/xmlpres.h"
 #include "../xmlpres/xmlpresentationdockwidget.h"
+#include "config/selfwebpluginsettings.h"
+#include <core/xinxconfig.h>
+#include <core/xinxproject.h>
 
 // Qt header
 #include <QXmlStreamReader>
@@ -37,6 +40,10 @@
 #include <QTextCodec>
 #include <QWebView>
 #include <QSplitter>
+#include <QApplication>
+#include <QTemporaryFile>
+#include <QProcess>
+#include <QDebug>
 
 /* HtmlFileEditor */
 
@@ -228,8 +235,54 @@ bool StyleSheetEditor::autoIndent() {
 }
 
 void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
-		m_htmlView->show();
-		m_htmlView->setUrl( QUrl( xmlfile ) );
+	if( ! XINXProjectManager::self()->project() ) {
+		qWarning( qPrintable( tr("Please use the project mode for use parsing ;)") ) );
+		return;
+	}
+
+	QString output;
+	// Parsing Stylesheet
+	QString parserType = SelfWebPluginSettings::self()->config().stylesheetParsing.parser.type;
+	if( parserType == "oracle" ) {
+	} else if( parserType == "xsltproc" ) {
+		QTemporaryFile outputFile;
+		if( !outputFile.open() ) {
+			qWarning( qPrintable( tr("Can't open file %1.").arg( outputFile.fileName() ) ) );
+			return;
+		}
+		QString outputFileName = outputFile.fileName();
+		outputFile.close();
+
+		QTemporaryFile styleSheetFile;
+		if( ! styleSheetFile.open() ) {
+			qWarning( qPrintable( tr("Can't open file %1.").arg( styleSheetFile.fileName() ) ) );
+			return;
+		}
+		QString styleSheetFileName = styleSheetFile.fileName();
+
+		QTextStream styleSheetFileText( &styleSheetFile );
+		styleSheetFileText.setCodec( codec() ); // Use the real codec on save
+		styleSheetFileText << textEdit()->toPlainText();
+
+		styleSheetFile.close();
+
+		QString tool = XINXConfig::self()->getTools( "xsltproc" );
+		if( tool.isEmpty() ) return;
+
+		qDebug() << tool << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList().join( " " ) << styleSheetFileName << xmlfile;
+		QProcess::execute( tool, QStringList() << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList().join( " " ) << styleSheetFileName << xmlfile );
+
+		outputFile.open();
+		QTextStream outputFileText( &outputFile );
+		output = outputFileText.readAll();
+	} else if( parserType == "internal" ) {
+		QMessageBox::critical( qApp->activeWindow(), tr("Stylesheet Parsing"), tr("The internal parsing is not yet supported. Please choose other") );
+		return;
+	}
+
+	// Show Stylesheet
+	m_htmlView->show();
+	m_htmlView->setHtml( output );
 }
 
 XmlPresentationDockWidget * StyleSheetEditor::xmlPresentationDockWidget() {
