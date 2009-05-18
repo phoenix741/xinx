@@ -26,6 +26,9 @@
 #include <contentview/contentviewnode.h>
 #include <contentview/contentviewmodel.h>
 #include <borderlayout.h>
+#include <plugins/xinxpluginsloader.h>
+#include "../xmlpres/xmlpres.h"
+#include "../xmlpres/xmlpresentationdockwidget.h"
 
 // Qt header
 #include <QXmlStreamReader>
@@ -226,6 +229,16 @@ bool StyleSheetEditor::autoIndent() {
 
 void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 		m_htmlView->show();
+		m_htmlView->setUrl( QUrl( xmlfile ) );
+}
+
+XmlPresentationDockWidget * StyleSheetEditor::xmlPresentationDockWidget() {
+	foreach( XinxPluginElement * element, XinxPluginsLoader::self()->plugins() ) {
+		XmlPresPlugin * plugin = qobject_cast<XmlPresPlugin*>( element->plugin() );
+		if( plugin )
+			return plugin->dock();
+	}
+	return 0;
 }
 
 void StyleSheetEditor::cursorPositionChanged() {

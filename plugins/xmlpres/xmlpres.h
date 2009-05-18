@@ -17,28 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _STYLESHEETACTION_H_
-#define _STYLESHEETACTION_H_
+#ifndef XMLPRESPLUGIN_H_
+#define XMLPRESPLUGIN_H_
 
 // Xinx header
-#include <actions/actioninterface.h>
+#include <plugins/plugininterfaces.h>
+#include "xmlpresentationdockwidget.h"
 
-class XmlPresentationDockWidget;
-
-class StyleSheetAction : public XinxAction::Action {
+class XmlPresPlugin : public QObject, public IDockPlugin {
+	Q_OBJECT
+	Q_INTERFACES(IXinxPlugin)
+	Q_INTERFACES(IDockPlugin)
 public:
-	StyleSheetAction( QAction * a, QObject * parent );
-	StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
-	StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
+	XmlPresPlugin();
+	virtual ~XmlPresPlugin();
 
-	virtual bool isActionEnabled() const;
-	virtual bool isInToolBar() const;
-protected slots:
-	virtual void actionTriggered();
+	virtual bool initializePlugin( const QString & lang );
+	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+
+	virtual QDockWidget * createDockWidget( QWidget * parent );
+
+	XmlPresentationDockWidget * dock();
 private:
-	void setXmlPresentationDockWidget( XmlPresentationDockWidget * value ) const;
-
-	mutable XmlPresentationDockWidget * m_dock;
+	XmlPresentationDockWidget * m_dock;
 };
 
-#endif // _STYLESHEETACTION_H_
+#endif /* XMLPRESPLUGIN_H_*/

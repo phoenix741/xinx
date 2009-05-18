@@ -351,6 +351,8 @@ void XmlPresentationDockThread::threadTerminated() {
 	m_xmlPresentationWidget->m_filtreLineEdit->setText( m_filteredText ); // Au cas o� des caract�res n'ont pas �t� pris en compte
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
+
+	emit m_parent->filenameChanged( m_openingFile );
 }
 
 void XmlPresentationDockThread::filterTextChanged( const QString & text ) {

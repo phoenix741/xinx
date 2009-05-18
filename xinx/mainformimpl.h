@@ -32,6 +32,9 @@
 #include <QStringList>
 #include <QHash>
 #include <QAction>
+#include <QMenuBar>
+#include <QStatusBar>
+#include <QToolBar>
 
 class FileContentDockWidget;
 class ProjectDirectoryDockWidget;

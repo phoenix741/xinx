@@ -57,6 +57,7 @@ public:
 	//! Return true if the action can be add to the toolbar
 	virtual bool isInToolBar() const;
 
+public slots:
 	//! Use methode isActionVisible() and isActionEnabled() to update the status of the action.
 	void updateActionState();
 protected slots:

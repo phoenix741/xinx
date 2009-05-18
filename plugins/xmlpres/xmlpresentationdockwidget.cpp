@@ -17,29 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef __XMLPRESENTATIONDOCKWIDGET_H__
-#define __XMLPRESENTATIONDOCKWIDGET_H__
+// Xinx header
+#include "xmlpresentationdockwidget.h"
+#include "xmlpresentationdockthread.h"
 
-#include <QDockWidget>
-#include <QString>
+/* XmlPresentationDockWidget */
 
-class XmlPresentationDockThread;
+XmlPresentationDockWidget::XmlPresentationDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
+	d = new XmlPresentationDockThread( this );
+}
 
-/*!
- * This dock contains a list of XMLPresentationFile founded in the log directory.
- * The log directory can be modified, and the presentation file can be choosen.
- * Some feature as drag & drop must be added in future.
- */
-class XmlPresentationDockWidget : public QDockWidget {
-	Q_OBJECT
-public:
-	XmlPresentationDockWidget( const QString & title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	XmlPresentationDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-	virtual ~XmlPresentationDockWidget();
-private:
-	XmlPresentationDockThread * d;
-	friend class XmlPresentationDockThread;
-};
+XmlPresentationDockWidget::XmlPresentationDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( tr("XML Presentation"), parent, flags ) {
+	d = new XmlPresentationDockThread( this );
+}
 
+XmlPresentationDockWidget::~XmlPresentationDockWidget() {
+	delete d;
+}
 
-#endif // __XMLPRESENTATIONDOCKWIDGET_H__
+const QString & XmlPresentationDockWidget::filename() const {
+	return d->m_openingFile;
+}

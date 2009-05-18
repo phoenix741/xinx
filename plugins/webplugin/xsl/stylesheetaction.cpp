@@ -21,24 +21,40 @@
 #include "stylesheetaction.h"
 #include "htmlfileeditor.h"
 #include <editors/editormanager.h>
+#include "../xmlpres/xmlpresentationdockwidget.h"
 
 // Qt header
 #include <QMessageBox>
 
 /* StyleSheetAction */
 
-StyleSheetAction::StyleSheetAction( QAction * a, QObject * parent ) : XinxAction::Action( a, parent ) {
+StyleSheetAction::StyleSheetAction( QAction * a, QObject * parent ) : XinxAction::Action( a, parent ), m_dock( 0 ) {
 }
 
-StyleSheetAction::StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( text, shortcut, parent ) {
+StyleSheetAction::StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( text, shortcut, parent ), m_dock( 0 ) {
 }
 
-StyleSheetAction::StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( icon, text, shortcut, parent ) {
+StyleSheetAction::StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent ) : XinxAction::Action( icon, text, shortcut, parent ), m_dock( 0 ) {
 }
 
+void StyleSheetAction::setXmlPresentationDockWidget( XmlPresentationDockWidget * value ) const {
+	if( m_dock != value ) {
+		if( m_dock != 0 )
+			m_dock->disconnect( this );
+		if( value  != 0 )
+			connect( value, SIGNAL(filenameChanged(QString)), this, SLOT(updateActionState()) );
+		m_dock = value;
+	}
+}
 
 bool StyleSheetAction::isActionEnabled() const {
-	return EditorManager::self() && qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() );
+	if( EditorManager::self() && qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) ) {
+		if( ! m_dock ) {
+			setXmlPresentationDockWidget( StyleSheetEditor::xmlPresentationDockWidget() );
+		}
+		return m_dock && !m_dock->filename().isEmpty();
+	}
+	return false;
 }
 
 bool StyleSheetAction::isInToolBar() const {

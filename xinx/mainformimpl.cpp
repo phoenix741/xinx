@@ -21,7 +21,6 @@
 #include "mainformimpl.h"
 #include "filecontentdockwidget.h"
 #include "projectdirectorydockwidget.h"
-#include "xmlpresentationdockwidget.h"
 #include "replacedialogimpl.h"
 #include "logdialogimpl.h"
 #include "snipet.h"
@@ -782,6 +781,7 @@ void MainformImpl::createPluginsActions() {
 					// Si l'élément est une action
 					} else if( dynamic_cast<XinxAction::Action*>( item ) ) {
 						QAction * actionToAdd = dynamic_cast<XinxAction::Action*>( item )->action();
+						dynamic_cast<XinxAction::Action*>( item )->updateActionState();
 
 						// Si le menu n'existe pas alors le créer.
 						if( ! m_menus.value( menuName ) ) {
@@ -791,6 +791,19 @@ void MainformImpl::createPluginsActions() {
 							m_menus[ menuName ] = newMenu;
 						}
 						m_menus[ menuName ]->addAction( actionToAdd );
+
+						// Gestion de la toolbar
+						if( dynamic_cast<XinxAction::Action*>( item )->isInToolBar() ) {
+							if( ! m_toolBars.value( menuName ) ) {
+								QToolBar * newToolBar = 0;
+								newToolBar = new QToolBar( this );
+								newToolBar->setObjectName( menuName );
+								addToolBar( Qt::TopToolBarArea, newToolBar );
+								m_toolBars[ menuName ] = newToolBar;
+							}
+							m_toolBars[ menuName ]->addAction( actionToAdd );
+						}
+
 						m_pluginsAction.append( actionToAdd );
 					}
 				}
@@ -833,22 +846,15 @@ void MainformImpl::createDockWidget() {
 	connect( m_tabEditors, SIGNAL(modelChanged(QAbstractItemModel*)), m_contentDock, SLOT(updateModel(QAbstractItemModel*)) );
 	connect( m_tabEditors, SIGNAL(positionChanged(QModelIndex)), m_contentDock, SLOT(positionChanged(QModelIndex)) );
 
-	m_xmlpresentationdock = new XmlPresentationDockWidget( tr("XML Presentation"), this );
-	m_xmlpresentationdock->setObjectName( QString::fromUtf8( "m_xmlpresentationdock" ) );
-	addDockWidget( Qt::RightDockWidgetArea, m_xmlpresentationdock );
-	action = m_xmlpresentationdock->toggleViewAction();
-	action->setShortcut( QKeySequence( "Alt+3" ) );
-	m_menus["windows"]->addAction( action );
-
 	m_snipetsDock = new SnipetDockWidget( tr("Snipets"), this );
 	m_snipetsDock->setObjectName( QString::fromUtf8( "m_snipetsDock" ) );
 	addDockWidget( Qt::RightDockWidgetArea, m_snipetsDock );
 	action = m_snipetsDock->toggleViewAction();
-	action->setShortcut( QKeySequence( "Alt+4" ) );
+	action->setShortcut( QKeySequence( "Alt+3" ) );
 	m_menus["windows"]->addAction( action );
 
 	// Load dock from plugins and assign automatic shortcut
-	int dockShortcut = 5;
+	int dockShortcut = 4;
 	foreach( XinxPluginElement * pluginElement, XinxPluginsLoader::self()->plugins() ) {
 		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>( pluginElement->plugin() );
 		if( pluginElement->isActivated() && dockPlugin ) {

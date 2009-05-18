@@ -18,15 +18,15 @@ LIBS = -L../libxinx \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
+	-lxmlpres \
     -lwebplugin \
     -lsharedxinx \
     -lxinxcmp \
     -lqcodeedit
-PRE_TARGETDEPS = ../plugins/libwebplugin.a
+PRE_TARGETDEPS = ../plugins/libxmlpres.a ../plugins/libwebplugin.a
 win32 : RC_FILE += rc/xinx.rc
 RESOURCES += application.qrc
-FORMS += ui/xquery.ui \
-    ui/specifiquedlg.ui \
+FORMS += ui/specifiquedlg.ui \
     ui/about.ui \
     ui/commitmessages.ui \
     ui/custom.ui \
@@ -35,13 +35,10 @@ FORMS += ui/xquery.ui \
     ui/replace.ui \
     ui/runsnipet.ui \
     ui/snipetproperty.ui \
-    ui/xmlpresentationwidget.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
     ui/logform.ui
-HEADERS += xmlpresentationdockthread.h \
-    customdialogmodeles.h \
-    xquerydialogimpl.h \
+HEADERS += customdialogmodeles.h \
     scriptmanager.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \
@@ -64,16 +61,12 @@ HEADERS += xmlpresentationdockthread.h \
     tabeditor.h \
     threadedconfigurationfile.h \
     uniqueapplication.h \
-    xmlpresentationdockwidget.h \
-    xmlpresentationitem.h \
     dbus/orgshadowarexinxadaptor.h \
     dbus/orgshadowarexinxinterface.h \
     searchfilethread.h \
     logdialogimpl.h \
  script/documentsearch.h
-SOURCES += xmlpresentationdockthread.cpp \
-    customdialogmodeles.cpp \
-    xquerydialogimpl.cpp \
+SOURCES += customdialogmodeles.cpp \
     snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
     aboutdialogimpl.cpp \
@@ -95,8 +88,6 @@ SOURCES += xmlpresentationdockthread.cpp \
     tabeditor.cpp \
     threadedconfigurationfile.cpp \
     uniqueapplication.cpp \
-    xmlpresentationdockwidget.cpp \
-    xmlpresentationitem.cpp \
     newprojectwizard.cpp \
     scriptmanager.cpp \
     dbus/orgshadowarexinxadaptor.cpp \

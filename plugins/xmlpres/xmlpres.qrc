@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/xmlpres" >
+        <file>images/xmlpres.png</file>
+        <file>translations/xmlpres_fr.qm</file>
+    </qresource>
+</RCC>

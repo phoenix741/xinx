@@ -26,6 +26,7 @@
 
 class XslCompletionNodeModel;
 class QWebView;
+class XmlPresentationDockWidget;
 
 /* HtmlFileEditor */
 
@@ -85,6 +86,7 @@ public:
 	virtual void searchWord( const QString & word );
 
 	void launchStylesheetParsing( const QString & xmlfile );
+	static XmlPresentationDockWidget * xmlPresentationDockWidget();
 
 	XslCompletionNodeModel * completionModel() const;
 private slots:

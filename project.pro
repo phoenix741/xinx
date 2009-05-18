@@ -5,6 +5,7 @@ SUBDIRS += external_qcodeedit \
 	xinx_test1 \
 	xinx_test2 \
 	xinx_test3 \
+	plugins_xmlpres \
 	plugins_webplugin \
 	plugins_cvsplugin \
 	plugins_svnplugin \
@@ -28,6 +29,7 @@ xinx_test2.depends = external_qcodeedit xinx_components xinx_library
 xinx_test3.subdir = unittest/testcontentview
 xinx_test3.depends = external_qcodeedit xinx_components xinx_library
 
+plugins_xmlpres.subdir = plugins/xmlpres
 plugins_webplugin.subdir = plugins/webplugin
 plugins_cvsplugin.depends = xinx_components
 plugins_cvsplugin.subdir = plugins/cvsplugin
@@ -40,7 +42,7 @@ plugins_dictionary.subdir = plugins/dictionary
 plugins_dictionary.depends = xinx_components xinx_library
 
 xinx_application.subdir = xinx
-xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_webplugin
+xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_xmlpres plugins_webplugin
 
 xinx_wizard.subdir = xinxprojectwizard
 xinx_wizard.depends = external_qcodeedit xinx_components xinx_library
