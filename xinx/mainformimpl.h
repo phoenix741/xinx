@@ -21,10 +21,10 @@
 #define MAINFORMIMPL_H
 
 // Xinx header
-#include "ui_mainform.h"
 #include <core/xinxcore.h>
 #include <core/xinxconfig.h>
 #include <editors/abstracteditor.h>
+#include "tabeditor.h"
 
 // Qt header
 #include <QMainWindow>

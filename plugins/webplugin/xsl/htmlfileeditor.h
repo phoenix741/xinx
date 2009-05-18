@@ -84,6 +84,8 @@ public:
 
 	virtual void searchWord( const QString & word );
 
+	void launchStylesheetParsing( const QString & xmlfile );
+
 	XslCompletionNodeModel * completionModel() const;
 private slots:
 	void cursorPositionChanged();

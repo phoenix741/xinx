@@ -46,5 +46,6 @@ bool StyleSheetAction::isInToolBar() const {
 }
 
 void StyleSheetAction::actionTriggered() {
-	QMessageBox::information( 0, "bouh!", "bouh!" );
+	Q_ASSERT( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) );
+	qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() )->launchStylesheetParsing( QString() );
 }

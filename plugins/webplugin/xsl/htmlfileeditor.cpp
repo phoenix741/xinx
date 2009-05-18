@@ -224,6 +224,9 @@ bool StyleSheetEditor::autoIndent() {
 	return true;
 }
 
+void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
+		m_htmlView->show();
+}
 
 void StyleSheetEditor::cursorPositionChanged() {
 	if( model() ) {
