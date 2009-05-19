@@ -39,7 +39,7 @@ ContentViewParser * parserLoading( ContentViewParser * parser ) {
 	try {
 		parser->loadFromMember();
 	} catch( ContentViewException e ) {
-		// Tant que le parseur Javascript n'est pas au norme on ne n'affiche pas les erreurs des imports à l'utilisateur
+		// Tant que le parseur Javascript n'est pas au norme on ne n'affiche pas les erreurs des imports �  l'utilisateur
 		qDebug( qPrintable( e.getMessage() ) );
 	}
 	return parser;
@@ -50,11 +50,12 @@ ContentViewParser * parserLoading( ContentViewParser * parser ) {
 ContentViewCache::ContentViewCache( XinxProject * project ) : QObject( project ), m_project( project ) {
 	m_watcher = new QFutureWatcher<ContentViewParser*> ( this );
 	connect( m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)) );
-	m_timerId = startTimer( 1000 );
+	m_timerId = startTimer( 200 );
 }
 
 ContentViewCache::~ContentViewCache() {
 	killTimer( m_timerId );
+	m_parsers.clear();
 	if( m_watcher->isRunning() ) {
 		m_watcher->waitForFinished();
 	}
@@ -110,7 +111,7 @@ ContentViewParser * ContentViewCache::createParser( const QString & filename, Co
 			m_nodes.insert( filename, node );
 			if( refNode ) *refNode = node;
 		} catch( ContentViewException e ) {
-			// Certainement une erreur indiquant que le fichier n'existe pas (normalement déjà controlé)
+			// Certainement une erreur indiquant que le fichier n'existe pas (normalement déj�  controlé)
 			qWarning( qPrintable( e.getMessage() ) );
 		}
 	}

@@ -325,7 +325,6 @@ XmlCompletionParser::XmlCompletionParser() : ContentViewParser( false ), m_codec
 
 XmlCompletionParser::~XmlCompletionParser() {
 	rootNode()->setAutoDelete( true );
-	rootNode()->deleteInstance();
 }
 
 XmlCompletionParser * XmlCompletionParser::self() {

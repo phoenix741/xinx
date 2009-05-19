@@ -1773,6 +1773,8 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 		event->ignore();
 		return;
 	}
+
+	delete XINXStaticDeleter::self();
 	event->accept();
 }
 
