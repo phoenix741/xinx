@@ -20,7 +20,7 @@
 #ifndef _UNIQUEAPPLICATION_H_
 #define _UNIQUEAPPLICATION_H_
 
-#include <QtSingleApplication>
+#include "qtsingleapplication.h"
 
 class MainformImpl;
 

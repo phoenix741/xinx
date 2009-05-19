@@ -152,9 +152,9 @@ public:
 	void setAutoDelete( bool value );
 
 	//! Return the data stored in the node for the given \e index
-	QVariant data( enum RoleIndex index = NODE_NAME ) const;
+	QVariant data( int index = ContentViewNode::NODE_NAME ) const;
 	//! Set the data for the givent \e index
-	void setData( const QVariant & value, enum RoleIndex index = NODE_NAME );
+	void setData( const QVariant & value, int index = ContentViewNode::NODE_NAME );
 
 	/*!
 	 * List of childs node of this node. Childs node are attach with method. If i call
@@ -187,7 +187,7 @@ private:
 	static QList<AbstractContentViewModel*> callModelsLock( unsigned long id );
 	static void callModelsUnlock( QList<AbstractContentViewModel*> models );
 
-	void callModelsDataChanged();
+	void callModelsDataChanged( QList<AbstractContentViewModel*> models );
 
 	static void callModelBeginInsertRows( ContentViewNode * node, int line, QList<AbstractContentViewModel*> models );
 	static void callModelEndInsertRows( QList<AbstractContentViewModel*> models );
@@ -201,11 +201,11 @@ private:
 	bool m_autoDelete, m_cachedNode;
 	int m_line;
 	QString m_filename;
-	QHash<enum RoleIndex,QVariant> m_datas;
+	QHash<int,QVariant> m_datas;
 
 	ContentViewNodeList m_childs;
 
-	/* On partage les models pour une mise Ã  jours plus rapide */
+	/* On partage les models pour une mise Ã  jours plus rapide */
 	static QMultiHash<unsigned long, AbstractContentViewModel* > s_models;
 };
 

@@ -332,7 +332,7 @@ void XmlTextEditor::insertCompletionAccolade( QDocumentCursor & tc, QString node
 
 	ContentViewNode * balise = XmlCompletionParser::self()->balise( node );
 	if( balise ) {
-		if( insertAccolade && ( balise->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE ).toString() != "stylesheet" ) && ( isVariable || !isHtmlOnly ) ) {
+		if( insertAccolade && ( balise->data( XmlCompletionParser::NODE_XML_TYPE ).toString() != "stylesheet" ) && ( isVariable || !isHtmlOnly ) ) {
 			if( insertDollard && isVariable ) {
 				tc2.insertText( "{$" );
 				//tc.movePosition( 2, QDocumentCursor::NextCharacter );

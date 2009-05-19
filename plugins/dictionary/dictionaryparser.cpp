@@ -122,7 +122,7 @@ void DictionaryParser::readLabelNode( ContentViewNode * parent ) {
 	label->setData( "DICTIONARY_LABEL", ContentViewNode::NODE_TYPE );
 	label->setData( ":/dictionary/images/label.png", ContentViewNode::NODE_ICON );
 	label->setData( lang, ContentViewNode::NODE_USER_VALUE );
-	label->setData( ctx, (ContentViewNode::RoleIndex)(ContentViewNode::NODE_USER_VALUE + 1) );
+	label->setData( ctx, ContentViewNode::NODE_USER_VALUE + 1 );
 	attachNode( parent, label );
 
 	while( !atEnd() ) {

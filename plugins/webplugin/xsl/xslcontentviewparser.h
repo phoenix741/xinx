@@ -77,7 +77,7 @@ class XmlCompletionParser : public QObject, private ContentViewParser, private Q
 	Q_OBJECT
 public:
 	enum XmlCompletionRoleIndex {
-		NODE_XML_TYPE = 34,
+		NODE_XML_TYPE      = 34,
 		NODE_XML_ISDEFAULT = 35
 	};
 

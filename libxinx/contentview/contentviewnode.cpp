@@ -245,9 +245,14 @@ int ContentViewNode::line() const {
 }
 
 void ContentViewNode::setLine( int value ) {
+
 	if( m_line != value ) {
+		QList<AbstractContentViewModel*> lockedModels = callModelsLock( 0 );
+
 		m_line = value;
-		callModelsDataChanged();
+		callModelsDataChanged( lockedModels );
+
+		callModelsUnlock( lockedModels );
 	}
 }
 
@@ -257,19 +262,27 @@ const QString & ContentViewNode::fileName() const {
 
 void ContentViewNode::setFileName( const QString & value ) {
 	if( m_filename != value ) {
+		QList<AbstractContentViewModel*> lockedModels = callModelsLock( 0 );
+
 		m_filename = value;
-		callModelsDataChanged();
+		callModelsDataChanged( lockedModels );
+
+		callModelsUnlock( lockedModels );
 	}
 }
 
-QVariant ContentViewNode::data( enum RoleIndex index ) const {
+QVariant ContentViewNode::data( int index ) const {
 	return m_datas.value( index );
 }
 
-void ContentViewNode::setData( const QVariant & value, enum RoleIndex index ) {
+void ContentViewNode::setData( const QVariant & value, int index ) {
 	if( m_datas.value( index ) != value ) {
+		QList<AbstractContentViewModel*> lockedModels = callModelsLock( 0 );
+
 		m_datas.insert( index, value );
-		callModelsDataChanged();
+		callModelsDataChanged( lockedModels );
+
+		callModelsUnlock( lockedModels );
 	}
 }
 
@@ -293,7 +306,7 @@ const ContentViewNodeList & ContentViewNode::childs() const {
 bool ContentViewNode::operator==( const ContentViewNode & node ) const {
 	if( node.m_datas.size() != m_datas.size() ) return false;
 
-	foreach( enum ContentViewNode::RoleIndex index, m_datas.keys() ) {
+	foreach( int index, m_datas.keys() ) {
 		if( m_datas.value( index ) != node.m_datas.value( index ) )
 			return false;
 	}
@@ -356,8 +369,8 @@ void ContentViewNode::callModelsUnlock( QList<AbstractContentViewModel*> models 
 	}
 }
 
-void ContentViewNode::callModelsDataChanged() {
-	foreach( AbstractContentViewModel * model, s_models ) {
+void ContentViewNode::callModelsDataChanged( QList<AbstractContentViewModel*> models ) {
+	foreach( AbstractContentViewModel * model, models ) {
 		if( ! model ) continue;
 		model->nodeChanged( this );
 	}

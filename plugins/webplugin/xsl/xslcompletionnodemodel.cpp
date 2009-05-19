@@ -194,10 +194,10 @@ bool XslCompletionNodeModel::mustElementBeShowed( ContentViewNode * n ) {
 	} else
 	if( m_completionMode == COMPLETION_NODE_MODE ) {
 		if( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) {
-			if( m_completeTags.testFlag( XslCompletionNodeModel::Xsl ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE ).toString() == "stylesheet" ) ) {
+			if( m_completeTags.testFlag( XslCompletionNodeModel::Xsl ) && ( n->data( XmlCompletionParser::NODE_XML_TYPE ).toString() == "stylesheet" ) ) {
 				return true;
 			}
-			if( m_completeTags.testFlag( XslCompletionNodeModel::Html ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE ).toString() == "html" ) ) {
+			if( m_completeTags.testFlag( XslCompletionNodeModel::Html ) && ( n->data( XmlCompletionParser::NODE_XML_TYPE ).toString() == "html" ) ) {
 				return true;
 			}
 			if( m_completeTags.testFlag( XslCompletionNodeModel::NoTags ) ) {

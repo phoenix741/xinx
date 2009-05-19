@@ -54,7 +54,7 @@ QVariant CompletionNodeModel::data( const QModelIndex &index, int role ) const {
 		case CompletionNodeModel::CompletionNodeName:
 			return item->data( ContentViewNode::NODE_NAME );
 		default:
-			return item->data( (ContentViewNode::RoleIndex)role );
+			return item->data( role );
 		}
 	}
 

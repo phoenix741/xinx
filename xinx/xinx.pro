@@ -91,6 +91,13 @@ SOURCES += customdialogmodeles.cpp \
     logdialogimpl.cpp \
  script/documentsearch.cpp
 TRANSLATIONS += translations/xinx_fr.ts
+CONFIG(debug, debug|release) {
+	exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) {
+		message( "Add GDB Macro to program..." )
+		SOURCES += $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp
+	}
+}
+
 include(../project_mode.pri)
 include(../ext/qmodeltest/modeltest.pri)
 include(../ext/qtsingleapplication/src/qtsingleapplication.pri)

@@ -55,8 +55,9 @@ QVariant ContentViewModel::data( const QModelIndex &index, int role ) const {
 		} else if( role == Qt::DecorationRole ) {
 			QImage image = QImage( item->data( ContentViewNode::NODE_ICON ).toString() );
 			return image.scaled( QSize(16,16) );
-		} else
-			return item->data( (ContentViewNode::RoleIndex)role );
+		} else {
+			return item->data( role );
+		}
 	}
 	return QVariant();
 }
@@ -212,10 +213,10 @@ void ContentViewModel::beginRemoveNode( ContentViewNode * node, int first, int l
 		beginRemoveRows( index( id ), first, last );
 
 		//QList<quint32> childs = m_childs.value( id );
-		for( int index = last; index <= first; index ++ ) {
+		for( int index = last; index >= first; index-- ) {
 			ContentViewNode * child = node->childs().at( index );
 			QList<quint32> list = m_childs.value(id);
-			if( index >= list.size() ) {
+			if( index < list.size() ) {
 				quint32 oldId           = list.at( index );
 
 				removeChildsOf( oldId );

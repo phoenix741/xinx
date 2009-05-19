@@ -455,8 +455,8 @@ void XmlCompletionParser::readBaliseTag() {
 	node->setData( "XmlBalise", ContentViewNode::NODE_TYPE );
 	node->setData( ":/images/balise.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
-	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
-	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
+	node->setData( m_type, XmlCompletionParser::NODE_XML_TYPE );
+	node->setData( defaultValue == "true" ? true : false, XmlCompletionParser::NODE_XML_ISDEFAULT );
 
 	node = attachNode( m_parentNode.top(), node );
 
@@ -492,8 +492,8 @@ void XmlCompletionParser::readAttributeTag() {
 	node->setData( ":/images/noeud.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 
-	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
-	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
+	node->setData( m_type, XmlCompletionParser::NODE_XML_TYPE );
+	node->setData( defaultValue == "true" ? true : false, XmlCompletionParser::NODE_XML_ISDEFAULT );
 
 	node = attachNode( m_parentNode.top(), node );
 
@@ -525,8 +525,8 @@ void XmlCompletionParser::readValueTag() {
 	node->setData( ":/images/html_value.png", ContentViewNode::NODE_ICON );
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 
-	node->setData( m_type, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_TYPE );
-	node->setData( defaultValue == "true" ? true : false, (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT );
+	node->setData( m_type, XmlCompletionParser::NODE_XML_TYPE );
+	node->setData( defaultValue == "true" ? true : false, XmlCompletionParser::NODE_XML_ISDEFAULT );
 
 	node = attachNode( m_parentNode.top(), node );
 }
@@ -615,7 +615,7 @@ QList<ContentViewNode*> XmlCompletionParser::baliseAttributeValues( const QStrin
 ContentViewNode * XmlCompletionParser::defaultValue( ContentViewNode * node ) {
 	ContentViewNode * def = 0;
 	foreach( ContentViewNode * n, node->childs() ) {
-		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlValue" ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlValue" ) && ( n->data( XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
 			def = n;
 	}
 	return def;
@@ -624,7 +624,7 @@ ContentViewNode * XmlCompletionParser::defaultValue( ContentViewNode * node ) {
 QList<ContentViewNode*> XmlCompletionParser::defaultAttributes( ContentViewNode * node ) {
 	QList<ContentViewNode *> defs;
 	foreach( ContentViewNode * n, node->childs() ) {
-		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( n->data( XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
 			defs += n;
 	}
 	return defs;
@@ -633,7 +633,7 @@ QList<ContentViewNode*> XmlCompletionParser::defaultAttributes( ContentViewNode 
 QList<ContentViewNode*> XmlCompletionParser::defaultBalises( ContentViewNode * node ) {
 	QList<ContentViewNode *> defs;
 	foreach( ContentViewNode * n, node->childs() ) {
-		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( (ContentViewNode::RoleIndex)XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
+		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
 			defs += n;
 	}
 	return defs;
