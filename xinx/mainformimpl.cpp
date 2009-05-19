@@ -311,7 +311,6 @@ void MainformImpl::createActions() {
 	m_recentFileAct = new QAction( QIcon( ":/images/fileopen.png" ), tr( "&Recent file"), this );
 	m_recentFileAct->setShortcut( QKeySequence::Open );
 	m_recentFileAct->setMenu( recentFileMenu );
-	m_tabEditors->setRefreshAction( m_refreshFileAct );
 	setupRecentMenu( recentFileMenu, m_recentFileSeparator, m_recentFileActs );
 
 	connect( m_recentFileAct, SIGNAL(triggered()), this, SLOT(openFile()) );
@@ -321,6 +320,7 @@ void MainformImpl::createActions() {
 
 	// Refresh file
 	m_refreshFileAct = new QAction( QIcon(":/images/reload.png"), tr( "&Refresh"), this );
+	m_tabEditors->setRefreshAction( m_refreshFileAct );
 	connect( m_refreshFileAct, SIGNAL(triggered()), this, SLOT(refreshFile()) );
 
 	// Copy Filename

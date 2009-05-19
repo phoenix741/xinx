@@ -45,9 +45,4 @@ SelfWebPluginSettings * SelfWebPluginSettings::self() {
 	return s_self;
 }
 
-WebPluginSettings::struct_oracleParser SelfWebPluginSettings::getDefaultOracleParser() {
-	struct_oracleParser defaultInformation = WebPluginSettings::getDefaultOracleParser();
-	defaultInformation.jarName = QDir( XINXConfig::self()->config().project.defaultPath ).absoluteFilePath( "lib/xmlparserv2.jar" );
-	return defaultInformation;
-}
 

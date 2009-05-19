@@ -150,9 +150,8 @@ bool WebPlugin::loadSettingsDialog( QWidget * widget ) {
 		form->m_parserComboBox->setCurrentIndex( 2 );
 	}
 
-	form->m_classPathEdit->lineEdit()->setText( settings->config().stylesheetParsing.parser.oracleParser.jarName );
-	form->m_classNameEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.classPath );
-	form->m_parameterEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.parameters );
+	form->m_classPathEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.classPath );
+	form->m_mainClassEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.mainClass );
 
 	form->m_javaScriptGroupBox->setChecked( settings->config().javascript.activeCompletion );
 	return true;
@@ -188,9 +187,8 @@ bool WebPlugin::saveSettingsDialog( QWidget * widget ) {
 		break;
 	}
 
-	settings->config().stylesheetParsing.parser.oracleParser.jarName    = form->m_classPathEdit->lineEdit()->text();
-	settings->config().stylesheetParsing.parser.oracleParser.classPath  = form->m_classNameEdit->text();
-	settings->config().stylesheetParsing.parser.oracleParser.parameters = form->m_parameterEdit->text();
+	settings->config().stylesheetParsing.parser.oracleParser.mainClass  = form->m_mainClassEdit->text();
+	settings->config().stylesheetParsing.parser.oracleParser.classPath  = form->m_classPathEdit->text();
 
 	settings->config().javascript.activeCompletion = form->m_javaScriptGroupBox->isChecked();
 

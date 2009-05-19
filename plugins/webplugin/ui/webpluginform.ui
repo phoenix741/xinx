@@ -144,49 +144,28 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label_9">
                 <property name="text">
-                 <string>JAR Name :</string>
+                 <string>Class &amp;Path :</string>
                 </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="DirectoryEditWidget" name="m_classPathEdit" native="true">
-                <property name="focusPolicy">
-                 <enum>Qt::TabFocus</enum>
-                </property>
-                <property name="whatsThis">
-                 <string>&lt;p&gt;This is the path where &lt;b&gt;XINX&lt;/b&gt; data files are stored (as snipet or completion file). &lt;/p&gt;
-&lt;p&gt;Normally the directory is stored in the xml sub-directory of &lt;b&gt;XINX&lt;/b&gt;&lt;/p&gt;</string>
-                </property>
-                <property name="directory" stdset="0">
-                 <bool>false</bool>
+                <property name="buddy">
+                 <cstring>m_classPathEdit</cstring>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="label_4">
                 <property name="text">
-                 <string>&amp;Class name :</string>
+                 <string>&amp;Main class :</string>
                 </property>
                 <property name="buddy">
-                 <cstring>m_classNameEdit</cstring>
+                 <cstring>m_mainClassEdit</cstring>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLineEdit" name="m_classNameEdit"/>
+               <widget class="QLineEdit" name="m_mainClassEdit"/>
               </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string>&amp;Parameter :</string>
-                </property>
-                <property name="buddy">
-                 <cstring>m_parameterEdit</cstring>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="m_parameterEdit"/>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="m_classPathEdit"/>
               </item>
              </layout>
             </widget>
@@ -261,14 +240,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>DirectoryEditWidget</class>
-   <extends>QWidget</extends>
-   <header>directoryedit.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

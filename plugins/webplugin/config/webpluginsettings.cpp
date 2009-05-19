@@ -89,7 +89,7 @@ void WebPluginSettings::load() {
 	d->deleteSettings();
 }
 
-WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getDefaultJavascript() {
+WebPluginSettings::struct_javascript WebPluginSettings::getDefaultJavascript() {
 	struct_javascript value;
 
 	value.activeCompletion = true;
@@ -97,7 +97,7 @@ WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getDe
 	return value;
 }
 
-WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::WebPluginSettings::struct_javascript & defaultValue ) {
+WebPluginSettings::struct_javascript WebPluginSettings::getSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & defaultValue ) {
 	struct_javascript value;
 	settings->beginGroup( path );
 
@@ -107,7 +107,7 @@ WebPluginSettings::WebPluginSettings::struct_javascript WebPluginSettings::getSe
 	return value;
 }
 
-void WebPluginSettings::setSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::WebPluginSettings::struct_javascript & value ) {
+void WebPluginSettings::setSettingsJavascript( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_javascript & value ) {
 	struct_javascript defaultValue = getDefaultJavascript();
 	settings->beginGroup( path );
 
@@ -116,7 +116,7 @@ void WebPluginSettings::setSettingsJavascript( WebPluginSettingsSettings * setti
 	settings->endGroup();
 }
 
-WebPluginSettings::WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getDefaultStylesheetParsing() {
+WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getDefaultStylesheetParsing() {
 	struct_stylesheetParsing value;
 
 	value.viewer = getDefaultViewerInformation();
@@ -125,7 +125,7 @@ WebPluginSettings::WebPluginSettings::struct_stylesheetParsing WebPluginSettings
 	return value;
 }
 
-WebPluginSettings::WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getSettingsStylesheetParsing( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::WebPluginSettings::struct_stylesheetParsing & defaultValue ) {
+WebPluginSettings::struct_stylesheetParsing WebPluginSettings::getSettingsStylesheetParsing( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_stylesheetParsing & defaultValue ) {
 	struct_stylesheetParsing value;
 	settings->beginGroup( path );
 
@@ -179,8 +179,8 @@ void WebPluginSettings::setSettingsParserInformation( WebPluginSettingsSettings 
 WebPluginSettings::struct_oracleParser WebPluginSettings::getDefaultOracleParser() {
 	struct_oracleParser value;
 
-	value.classPath = "oracle.xml.parser.v2.oraxsl";
-	value.parameters = "<source> <stylesheet>";
+	value.classPath = "WEB-INF/lib/xmlparserv2.jar:WEB-INF/lib/gce_xmlparserv2.jar:WEB-INF/lib/technical_divers.jar:WEB-INF/lib/technical_framework.jar:WEB-INF/lib/log4j-1.2.14.jar";
+	value.mainClass = "oracle.xml.parser.v2.oraxsl";
 
 	return value;
 }
@@ -189,9 +189,8 @@ WebPluginSettings::struct_oracleParser WebPluginSettings::getSettingsOracleParse
 	struct_oracleParser value;
 	settings->beginGroup( path );
 
-	value.jarName = settings->value( "Jar Name", defaultValue.jarName ).toString();
 	value.classPath = settings->value( "Class Path", defaultValue.classPath ).toString();
-	value.parameters = settings->value( "Parameters", defaultValue.parameters ).toString();
+	value.mainClass = settings->value( "Main Class", defaultValue.mainClass ).toString();
 
 	settings->endGroup();
 	return value;
@@ -201,9 +200,8 @@ void WebPluginSettings::setSettingsOracleParser( WebPluginSettingsSettings * set
 	struct_oracleParser defaultValue = getDefaultOracleParser();
 	settings->beginGroup( path );
 
-	settings->setValue( "Jar Name", value.jarName, defaultValue.jarName );
 	settings->setValue( "Class Path", value.classPath, defaultValue.classPath );
-	settings->setValue( "Parameters", value.parameters, defaultValue.parameters );
+	settings->setValue( "Main Class", value.mainClass, defaultValue.mainClass );
 
 	settings->endGroup();
 }

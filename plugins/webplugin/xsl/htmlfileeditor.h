@@ -24,9 +24,13 @@
 #include <editors/textfileeditor.h>
 #include <editors/contentviewtexteditor.h>
 
+// Qt header
+#include <QProcess>
+
 class XslCompletionNodeModel;
 class QWebView;
 class XmlPresentationDockWidget;
+class QTemporaryFile;
 
 /* HtmlFileEditor */
 
@@ -91,7 +95,12 @@ public:
 	XslCompletionNodeModel * completionModel() const;
 private slots:
 	void cursorPositionChanged();
+	void parsingFinished();
 private:
+	QString m_parsingOutput;
+	QTemporaryFile * m_parsingOutputFile, * m_parsingStyleSheetFile;
+	QProcess * m_parsingProcess;
+
 	XslCompletionNodeModel * m_completionModel;
 	QWebView * m_htmlView;
 };

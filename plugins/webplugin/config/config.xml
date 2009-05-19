@@ -11,9 +11,8 @@
 	</type>
 
 	<type name="Oracle Parser">
-		<value name="Jar Name" type="string"/>
-		<value name="Class Path" type="string" default="oracle.xml.parser.v2.oraxsl"/>
-		<value name="Parameters" type="string" default="&lt;source&gt; &lt;stylesheet&gt;"/>
+		<value name="Class Path" type="string" default="WEB-INF/lib/xmlparserv2.jar:WEB-INF/lib/gce_xmlparserv2.jar:WEB-INF/lib/technical_divers.jar:WEB-INF/lib/technical_framework.jar:WEB-INF/lib/log4j-1.2.14.jar"/>
+		<value name="Main Class" type="string" default="oracle.xml.parser.v2.oraxsl"/>
 	</type>
 
 	<type name="Parser Information">

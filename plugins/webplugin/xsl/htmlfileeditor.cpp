@@ -163,6 +163,11 @@ void XmlFileEditor::loadFromDevice( QIODevice & d ) {
 /* StyleSheetEditor */
 
 StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ) {
+	m_parsingProcess  = new QProcess( this );
+	m_parsingProcess->setWorkingDirectory( XINXProjectManager::self()->project()->projectPath() );
+	m_parsingProcess->setProcessChannelMode( QProcess::MergedChannels );
+	connect( m_parsingProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(parsingFinished()) );
+
 	m_htmlView = new QWebView( this );
 	m_htmlView->load( QUrl( "about:blank" ) );
 	m_htmlView->setMinimumHeight( 100 );
@@ -186,6 +191,26 @@ StyleSheetEditor::~StyleSheetEditor() {
 	qobject_cast<XslTextEditor*>( textEdit() )->setModel( 0 );
 	delete m_completionModel;
 	delete p;
+}
+
+void StyleSheetEditor::parsingFinished() {
+	if( m_parsingOutputFile ) {
+		m_parsingOutputFile->open();
+		QTextStream outputFileText( m_parsingOutputFile );
+		m_parsingOutput = outputFileText.readAll();
+
+		delete m_parsingOutputFile; m_parsingOutputFile = 0;
+		delete m_parsingStyleSheetFile; m_parsingStyleSheetFile = 0;
+
+		QString error = m_parsingProcess->readAllStandardOutput();
+		if( ! error.isEmpty() ) {
+			QMessageBox::critical( qApp->activeWindow(), tr("Stylesheet Parsing"), error );
+		}
+	}
+
+	// Show Stylesheet
+	m_htmlView->show();
+	m_htmlView->setHtml( m_parsingOutput );
 }
 
 QTextCodec * StyleSheetEditor::codec() const {
@@ -241,48 +266,45 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 	}
 
 	try {
-		QString output;
+		m_parsingOutput = "";
+		m_parsingOutputFile     = new QTemporaryFile();
+		m_parsingStyleSheetFile = new QTemporaryFile();
+
+		// Output file
+		if( ! m_parsingOutputFile->open() ) {
+			qWarning( qPrintable( tr("Can't open file %1.").arg( m_parsingOutputFile->fileName() ) ) );
+			return;
+		}
+		QString outputFileName = m_parsingOutputFile->fileName();
+		m_parsingOutputFile->close();
+
+		// Parsing Stylesheet
+		if( ! m_parsingStyleSheetFile->open() ) {
+			qWarning( qPrintable( tr("Can't open file %1.").arg( m_parsingStyleSheetFile->fileName() ) ) );
+			return;
+		}
+		QString styleSheetFileName = m_parsingStyleSheetFile->fileName();
+
+		QTextStream styleSheetFileText( m_parsingStyleSheetFile );
+		styleSheetFileText.setCodec( codec() ); // Use the real codec on save
+		styleSheetFileText << textEdit()->toPlainText();
+
+		m_parsingStyleSheetFile->close();
+
 		// Parsing Stylesheet
 		QString parserType = SelfWebPluginSettings::self()->config().stylesheetParsing.parser.type;
 		if( parserType == "oracle" ) {
+			QString tool = XINXConfig::self()->getTools( "java" );
+
+			m_parsingProcess->start( tool, QStringList() << "-classpath" << SelfWebPluginSettings::self()->config().stylesheetParsing.parser.oracleParser.classPath << SelfWebPluginSettings::self()->config().stylesheetParsing.parser.oracleParser.mainClass << xmlfile << styleSheetFileName << outputFileName );
 		} else if( parserType == "xsltproc" ) {
-			QTemporaryFile outputFile;
-			if( !outputFile.open() ) {
-				qWarning( qPrintable( tr("Can't open file %1.").arg( outputFile.fileName() ) ) );
-				return;
-			}
-			QString outputFileName = outputFile.fileName();
-			outputFile.close();
-
-			QTemporaryFile styleSheetFile;
-			if( ! styleSheetFile.open() ) {
-				qWarning( qPrintable( tr("Can't open file %1.").arg( styleSheetFile.fileName() ) ) );
-				return;
-			}
-			QString styleSheetFileName = styleSheetFile.fileName();
-
-			QTextStream styleSheetFileText( &styleSheetFile );
-			styleSheetFileText.setCodec( codec() ); // Use the real codec on save
-			styleSheetFileText << textEdit()->toPlainText();
-
-			styleSheetFile.close();
-
 			QString tool = XINXConfig::self()->getTools( "xsltproc" );
 
-			qDebug() << tool << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList().join( " " ) << styleSheetFileName << xmlfile;
-			QProcess::execute( tool, QStringList() << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList().join( " " ) << styleSheetFileName << xmlfile );
-
-			outputFile.open();
-			QTextStream outputFileText( &outputFile );
-			output = outputFileText.readAll();
+			m_parsingProcess->start( tool, QStringList() << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList().join( " " ) << styleSheetFileName << xmlfile );
 		} else if( parserType == "internal" ) {
 			QMessageBox::critical( qApp->activeWindow(), tr("Stylesheet Parsing"), tr("The internal parsing is not yet supported. Please choose other") );
 			return;
 		}
-
-		// Show Stylesheet
-		m_htmlView->show();
-		m_htmlView->setHtml( output );
 	} catch( ToolsNotDefinedException e ) {
 		return;
 	}

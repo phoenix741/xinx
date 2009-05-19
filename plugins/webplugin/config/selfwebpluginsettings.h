@@ -29,8 +29,6 @@ public:
 	virtual ~SelfWebPluginSettings();
 
 	static SelfWebPluginSettings * self();
-protected:
-	virtual struct_oracleParser getDefaultOracleParser();
 private:
 	SelfWebPluginSettings();
 

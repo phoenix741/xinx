@@ -23,9 +23,8 @@ public:
 	};
 
 	struct struct_oracleParser {
-		QString jarName;
 		QString classPath;
-		QString parameters;
+		QString mainClass;
 	};
 
 	struct struct_viewerInformation {
