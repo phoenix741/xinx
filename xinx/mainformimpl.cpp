@@ -73,6 +73,7 @@
 #include <QWhatsThis>
 #include <QTextCodec>
 #include <QIcon>
+#include <QThreadPool>
 
 /* Meta type */
 
