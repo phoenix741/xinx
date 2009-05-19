@@ -20,12 +20,11 @@
 #ifndef _UNIQUEAPPLICATION_H_
 #define _UNIQUEAPPLICATION_H_
 
-#include <QApplication>
+#include <QtSingleApplication>
 
-class OrgShadowareXinxInterface;
 class MainformImpl;
 
-class UniqueApplication : public QApplication {
+class UniqueApplication : public QtSingleApplication {
 	Q_OBJECT
 public:
 	UniqueApplication ( int & argc, char ** argv );
@@ -35,18 +34,11 @@ public:
 
 	virtual bool notify ( QObject * receiver, QEvent * event );
 
-	bool isUnique();
-	void callOpenFile( const QString & fileName );
-
 	void attachMainWindow( MainformImpl * mainform );
 public slots:
 	void slotErrorTriggered();
 private:
-	void start();
-
-	bool m_isUnique;
 	MainformImpl * m_mainform;
-	OrgShadowareXinxInterface * m_interface;
 };
 
 #endif

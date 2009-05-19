@@ -54,7 +54,6 @@ public:
 	MainformImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 	virtual ~MainformImpl();
 public slots:
-	// DBUS Function
 	void newFile( const QString &filename );
 	void newTemplate( const QString &name, const QString &category, const QString &description, const QString &text, const QStringList &arguments = QStringList(), const QString &key = QString(), const QString &type = QString() );
 	void openFile( const QString & filename );
@@ -90,7 +89,6 @@ private:
 	void createDockWidget();
 	void createActions();
 	void createFindReplace();
-	void connectDbus();
 	void createTools();
 	void registerTypes();
 

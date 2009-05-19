@@ -1,6 +1,5 @@
 TEMPLATE = app
-CONFIG += qdbus \
-    warn_on
+CONFIG += warn_on
 QT += xml \
 		script \
 		xmlpatterns \
@@ -61,8 +60,6 @@ HEADERS += customdialogmodeles.h \
     tabeditor.h \
     threadedconfigurationfile.h \
     uniqueapplication.h \
-    dbus/orgshadowarexinxadaptor.h \
-    dbus/orgshadowarexinxinterface.h \
     searchfilethread.h \
     logdialogimpl.h \
  script/documentsearch.h
@@ -90,11 +87,10 @@ SOURCES += customdialogmodeles.cpp \
     uniqueapplication.cpp \
     newprojectwizard.cpp \
     scriptmanager.cpp \
-    dbus/orgshadowarexinxadaptor.cpp \
-    dbus/orgshadowarexinxinterface.cpp \
     searchfilethread.cpp \
     logdialogimpl.cpp \
  script/documentsearch.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 include(../project_mode.pri)
 include(../ext/qmodeltest/modeltest.pri)
+include(../ext/qtsingleapplication/src/qtsingleapplication.pri)

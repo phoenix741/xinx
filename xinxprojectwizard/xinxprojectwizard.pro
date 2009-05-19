@@ -3,16 +3,13 @@ DESTDIR += ./
 QT += xml
 CONFIG += exceptions \
     qt \
-    qdbus \
-    thread \
+		thread \
     warn_on
 SOURCES = projectconverter.cpp \
     projectwizard.cpp \
-    main.cpp \
-    ../xinx/dbus/orgshadowarexinxinterface.cpp
+		main.cpp
 HEADERS = projectconverter.h \
-    projectwizard.h \
-    ../xinx/dbus/orgshadowarexinxinterface.h
+		projectwizard.h
 RESOURCES = xinxprojectwizard.qrc
 INCLUDEPATH += ../components \
     ../libxinx

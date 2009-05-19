@@ -21,7 +21,6 @@
 #include "projectwizard.h"
 #include "directoryedit.h"
 #include "projectconverter.h"
-#include "../xinx/dbus/orgshadowarexinxinterface.h"
 
 // Qt header
 #include <QApplication>
@@ -64,10 +63,10 @@ void ProjectWizard::accept() {
 	if( m_converter )
 		m_converter->save();
 
-	if( field( "project.open" ).toBool() ) {
+	/*if( field( "project.open" ).toBool() ) {
 		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "org.shadoware.xinx", "/", QDBusConnection::sessionBus(), this );
 		interface->openProject( field( "project.name" ).toString() );
-	}
+	}*/
 
 	QWizard::accept();
 }
@@ -165,9 +164,9 @@ ConclusionWizardPage::ConclusionWizardPage( QWidget * parent ) : QWizardPage( pa
 
 	QVBoxLayout * layout = new QVBoxLayout( this );
 	layout->addWidget( new QLabel( tr("The project is now converted. XINX can now open the project file normally."), this ) );
-	layout->addWidget( m_openCheck = new QCheckBox( tr("Re-open the project with XINX automatically"), this ) );
+//	layout->addWidget( m_openCheck = new QCheckBox( tr("Re-open the project with XINX automatically"), this ) );
 
-	m_openCheck->setChecked( true );
+//	m_openCheck->setChecked( true );
 
-	registerField( "project.open", m_openCheck );
+//	registerField( "project.open", m_openCheck );
 }

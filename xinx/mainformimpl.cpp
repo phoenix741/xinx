@@ -38,7 +38,6 @@
 #include "newprojectwizard.h"
 #include "scriptmanager.h"
 #include "searchfilethread.h"
-#include "dbus/orgshadowarexinxadaptor.h"
 #include <core/xinxproject.h>
 #include <core/exceptions.h>
 #include <core/xinxthread.h>
@@ -92,13 +91,9 @@ MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( pare
 	createDockWidget();
 	createFindReplace();
 	createTools();
-	connectDbus();
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
-
-	// Attache to main application
-	qobject_cast<UniqueApplication*>(qApp)->attachMainWindow( this );
 
 	// Update the status bar position
 	setEditorPosition( 1, 1 );
@@ -905,11 +900,6 @@ void MainformImpl::createStatusBar() {
 	statusBar()->addPermanentWidget( m_editorPosition );
 	statusBar()->addPermanentWidget( m_threadCount );
 	statusBar()->showMessage( tr("Ready"), 2000 );
-}
-
-void MainformImpl::connectDbus() {
-	new XinxAdaptor( this );
-	QDBusConnection::sessionBus().registerObject( "/", this );
 }
 
 void MainformImpl::createTools() {

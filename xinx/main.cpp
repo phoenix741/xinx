@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 		QApplication::setStyle(QStyleFactory::create("Explorer"));
 #endif // Q_WS_WIN
 
-	UniqueApplication app(argc, argv);
+	UniqueApplication app( argc, argv );
 	try {
 		QStringList args = app.arguments();
 
@@ -88,21 +88,21 @@ int main(int argc, char *argv[]) {
 		app.setApplicationName( "XINX" );
 
 		// .. If application is not started
-		if( app.isUnique() ) {
+		if( ! app.isRunning() ) {
 			// Create the splash screen
 			QPixmap pixmap(":/images/splash.png");
 			QSplashScreen splash(pixmap);
 			splash.setMask(pixmap.mask());
 			splash.show();
-	  		app.processEvents();
-
-	  		/* Load the exception manager */
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Install exception handler ...") );
 			app.processEvents();
-	  		ExceptionManager::installExceptionHandler();
+
+			/* Load the exception manager */
+			splash.showMessage( QApplication::translate("SplashScreen", "Install exception handler ...") );
+			app.processEvents();
+			ExceptionManager::installExceptionHandler();
 
 			// Initialize search path for datas ...
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Initialize search path ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Initialize search path ...") );
 			app.processEvents();
 			QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 			 * To have the lang and style loaded earlier in the process, we load configuration of XINX
 			 * XINX Config doens't have call to another Big instance (has XinxPluginsLoader)
 			 */
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Load configuration ...") );
 			app.processEvents();
 
 			XINXConfig::self()->load();
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
 			}
 
 			// Now we know which lang use, we can load translations. We are not lost in translation ...
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Load translations ...") );
 			app.processEvents();
 
 			// ... load qt translation ...
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 			app.installTranslator(&tranlator_components);
 
 			/* Load available marks (for QCodeEdit use) */
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load available marks ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Load available marks ...") );
 			app.processEvents();
 			QLineMarksInfoCenter::instance()->loadMarkTypes( ":/qcodeedit/marks.qxm" );
 
@@ -155,7 +155,7 @@ int main(int argc, char *argv[]) {
 			app.processEvents();
 			XinxPluginsLoader::self()->loadPlugins();
 
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load snipets ...") );
+			splash.showMessage( QApplication::translate("SplashScreen", "Load snipets ...") );
 			app.processEvents();
 			try {
 				SnipetListManager::self()->loadFromSnipetFile();
@@ -164,9 +164,9 @@ int main(int argc, char *argv[]) {
 				app.processEvents();
 			}
 
-	  		splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
-	  		app.processEvents();
-			mainWin = new MainformImpl();
+			splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
+			app.processEvents();
+			app.attachMainWindow( mainWin = new MainformImpl() );
 
 			if( ( args.count() == 1 ) && ( XINXConfig::self()->config().project.openTheLastProjectAtStart ) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()) ) {
 				splash.showMessage( QApplication::translate("SplashScreen", "Load last opened project ...") );
@@ -190,13 +190,13 @@ int main(int argc, char *argv[]) {
 			splash.finish(mainWin);
 
 			return app.exec();
-	 	} else {
+		} else {
 			// Send Parameter to open
 			if(args.count() > 0) {
 				QStringList::iterator it = args.begin();
 				it++;
 				while (it != args.end()) {
-					if(QFile(*it).exists()) app.callOpenFile(*it);
+					if(QFile(*it).exists()) app.sendMessage(*it);
 					it++;
 				}
 			}
