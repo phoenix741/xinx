@@ -296,10 +296,12 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 		if( parserType == "oracle" ) {
 			QString tool = XINXConfig::self()->getTools( "java" );
 
+			qDebug() << "Executing commande " << tool << "-classpath" << SelfWebPluginSettings::self()->config().stylesheetParsing.parser.oracleParser.classPath << SelfWebPluginSettings::self()->config().stylesheetParsing.parser.oracleParser.mainClass << xmlfile << styleSheetFileName << outputFileName;
 			m_parsingProcess->start( tool, QStringList() << "-classpath" << SelfWebPluginSettings::self()->config().stylesheetParsing.parser.oracleParser.classPath << SelfWebPluginSettings::self()->config().stylesheetParsing.parser.oracleParser.mainClass << xmlfile << styleSheetFileName << outputFileName );
 		} else if( parserType == "xsltproc" ) {
 			QString tool = XINXConfig::self()->getTools( "xsltproc" );
 
+			qDebug() << "Executing commande " << tool << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList() << styleSheetFileName << xmlfile;
 			m_parsingProcess->start( tool, QStringList() << "-o" << outputFileName << "--path" << XINXProjectManager::self()->project()->processedSearchPathList().join( " " ) << styleSheetFileName << xmlfile );
 		} else if( parserType == "internal" ) {
 			QMessageBox::critical( qApp->activeWindow(), tr("Stylesheet Parsing"), tr("The internal parsing is not yet supported. Please choose other") );
