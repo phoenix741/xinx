@@ -44,6 +44,7 @@
 #include <QTemporaryFile>
 #include <QProcess>
 #include <QDebug>
+#include <QWebFrame>
 
 /* HtmlFileEditor */
 
@@ -210,7 +211,7 @@ void StyleSheetEditor::parsingFinished() {
 
 	// Show Stylesheet
 	m_htmlView->show();
-	m_htmlView->setHtml( m_parsingOutput );
+	m_htmlView->setHtml( m_parsingOutput, QUrl( "http://localhost:8888/ado/btoe/GCE" ) );
 }
 
 QTextCodec * StyleSheetEditor::codec() const {
@@ -267,8 +268,8 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 
 	try {
 		m_parsingOutput = "";
-		m_parsingOutputFile     = new QTemporaryFile();
-		m_parsingStyleSheetFile = new QTemporaryFile();
+		m_parsingOutputFile     = new QTemporaryFile( QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "outputXXXXXX.html" ) );
+		m_parsingStyleSheetFile = new QTemporaryFile( QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "sylesheetXXXXXX.xsl" ) );
 
 		// Output file
 		if( ! m_parsingOutputFile->open() ) {
