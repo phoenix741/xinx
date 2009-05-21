@@ -93,7 +93,7 @@ public:
 	/*! Load the content of the device. and return the true if sucessfully loaded */
 	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
 	/*! Construct elements from \e content. */
-	virtual void loadFromContent( ContentViewNode * rootNode, const QString & content );
+	virtual void loadFromContent( ContentViewNode * rootNode, const QByteArray & content );
 	/*! Construct elements from \e filename. */
 	virtual void loadFromFile( ContentViewNode * rootNode, const QString & filename );
 

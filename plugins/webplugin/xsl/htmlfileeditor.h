@@ -47,9 +47,15 @@ public:
 	virtual QIcon icon() const;
 	virtual QTextCodec * codec() const;
 
+	virtual void showHtml();
+
 	XslCompletionNodeModel * completionModel() const;
+private slots:
+	void configurationChanged();
 private:
 	XslCompletionNodeModel * m_completionModel;
+	QWebView * m_htmlView;
+	QTemporaryFile * m_htmlTempFile;
 };
 
 /* XmlFileEditor */
@@ -94,10 +100,11 @@ public:
 
 	XslCompletionNodeModel * completionModel() const;
 private slots:
+	void configurationChanged();
 	void cursorPositionChanged();
 	void parsingFinished();
 private:
-	QString m_parsingOutput;
+	QString m_parsingOutput, m_parsingOutputFileName;
 	QTemporaryFile * m_parsingOutputFile, * m_parsingStyleSheetFile;
 	QProcess * m_parsingProcess;
 

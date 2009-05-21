@@ -149,7 +149,7 @@ void WebPluginSettings::setSettingsStylesheetParsing( WebPluginSettingsSettings 
 WebPluginSettings::struct_parserInformation WebPluginSettings::getDefaultParserInformation() {
 	struct_parserInformation value;
 
-	value.type = "oracle";
+	value.type = "none";
 	value.oracleParser = getDefaultOracleParser();
 
 	return value;

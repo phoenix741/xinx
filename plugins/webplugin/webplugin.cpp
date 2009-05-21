@@ -27,6 +27,9 @@
 
 #include "xsl/stylesheetaction.h"
 
+#include <core/xinxproject.h>
+#include "webpluginprojectpropertyformimpl.h"
+
 // Qt header
 #include <QStringList>
 #include <QHash>
@@ -136,18 +139,22 @@ bool WebPlugin::loadSettingsDialog( QWidget * widget ) {
 	form->m_addDefaultAttributeCheckBox->setChecked( settings->config().xml.addDefaultAttribute );
 	form->m_addDefaultSubBaliseCheckBox->setChecked( settings->config().xml.addDefaultSubBalise );
 
-	if( settings->config().stylesheetParsing.viewer.type == "internal" ) {
+	if( settings->config().stylesheetParsing.viewer.type == "none" ) {
 		form->m_viewerComboBox->setCurrentIndex( 0 );
-	} else if( settings->config().stylesheetParsing.viewer.type == "external" ) {
+	} else if( settings->config().stylesheetParsing.viewer.type == "internal" ) {
 		form->m_viewerComboBox->setCurrentIndex( 1 );
+	} else if( settings->config().stylesheetParsing.viewer.type == "external" ) {
+		form->m_viewerComboBox->setCurrentIndex( 2 );
 	}
 
-	if( settings->config().stylesheetParsing.parser.type == "oracle" ) {
+	if( settings->config().stylesheetParsing.parser.type == "none" ) {
 		form->m_parserComboBox->setCurrentIndex( 0 );
-	} else if( settings->config().stylesheetParsing.parser.type == "xsltproc" ) {
+	} else if( settings->config().stylesheetParsing.parser.type == "oracle" ) {
 		form->m_parserComboBox->setCurrentIndex( 1 );
-	} else if( settings->config().stylesheetParsing.parser.type == "internal" ) {
+	} else if( settings->config().stylesheetParsing.parser.type == "xsltproc" ) {
 		form->m_parserComboBox->setCurrentIndex( 2 );
+	} else if( settings->config().stylesheetParsing.parser.type == "internal" ) {
+		form->m_parserComboBox->setCurrentIndex( 3 );
 	}
 
 	form->m_classPathEdit->setText( settings->config().stylesheetParsing.parser.oracleParser.classPath );
@@ -169,20 +176,26 @@ bool WebPlugin::saveSettingsDialog( QWidget * widget ) {
 
 	switch( form->m_viewerComboBox->currentIndex() ) {
 	case 0:
-		settings->config().stylesheetParsing.viewer.type = "internal";
+		settings->config().stylesheetParsing.viewer.type = "none";
 		break;
 	case 1:
+		settings->config().stylesheetParsing.viewer.type = "internal";
+		break;
+	case 2:
 		settings->config().stylesheetParsing.viewer.type = "external";
 		break;
 	}
 	switch( form->m_parserComboBox->currentIndex() ) {
 	case 0:
-		settings->config().stylesheetParsing.parser.type = "oracle";
+		settings->config().stylesheetParsing.parser.type = "none";
 		break;
 	case 1:
-		settings->config().stylesheetParsing.parser.type = "xsltproc";
+		settings->config().stylesheetParsing.parser.type = "oracle";
 		break;
 	case 2:
+		settings->config().stylesheetParsing.parser.type = "xsltproc";
+		break;
+	case 3:
 		settings->config().stylesheetParsing.parser.type = "internal";
 		break;
 	}
@@ -193,6 +206,41 @@ bool WebPlugin::saveSettingsDialog( QWidget * widget ) {
 	settings->config().javascript.activeCompletion = form->m_javaScriptGroupBox->isChecked();
 
 	settings->save();
+	return true;
+}
+
+QWidget * WebPlugin::createProjectSettingsPage() {
+	return new WebPluginProjectPropertyFormImpl();
+}
+
+bool WebPlugin::loadProjectSettingsPage( QWidget * widget ) {
+	WebPluginProjectPropertyFormImpl * page = qobject_cast<WebPluginProjectPropertyFormImpl*>( widget );
+	Q_ASSERT( page );
+
+	page->m_internetAdresseLineEdit->setText( XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString() );
+	return true;
+}
+
+bool WebPlugin::saveProjectSettingsPage( QWidget * widget ) {
+	WebPluginProjectPropertyFormImpl * page = qobject_cast<WebPluginProjectPropertyFormImpl*>( widget );
+	Q_ASSERT( page );
+
+	XINXProjectManager::self()->project()->writeProperty( "moduleInternetAdresse", page->m_internetAdresseLineEdit->text() );
+	return true;
+}
+
+QList<QWizardPage*> WebPlugin::createNewProjectSettingsPages( int nextid ) {
+	QList<QWizardPage*> pages;
+	pages << new WebPluginProjectPropertyWizard( nextid );
+	return pages;
+}
+
+bool WebPlugin::saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) {
+	WebPluginProjectPropertyWizard * modulePage = qobject_cast<WebPluginProjectPropertyWizard*>( page );
+	if( modulePage ) {
+		project->writeProperty( "moduleInternetAdresse", modulePage->m_internetAdresseLineEdit->text() );
+	}
+
 	return true;
 }
 

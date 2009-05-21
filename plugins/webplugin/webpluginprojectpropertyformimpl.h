@@ -17,26 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SELFWEBPLUGINSETTINGS_H_
-#define SELFWEBPLUGINSETTINGS_H_
+#ifndef _WEBPLUGINPROJECTPROPERTYFORMIMPL_H_
+#define _WEBPLUGINPROJECTPROPERTYFORMIMPL_H_
 
 // Xinx header
-#include "webpluginsettings.h"
+#include "ui_webpluginprojectpropertyform.h"
 
-class SelfWebPluginSettings : public QObject, public WebPluginSettings {
+// Qt header
+#include <QWizardPage>
+
+class WebPluginProjectPropertyFormImpl : public QWidget, public Ui::WebPluginProjectPropertyForm {
 	Q_OBJECT
 public:
-	virtual ~SelfWebPluginSettings();
-
-	static SelfWebPluginSettings * self();
-
-	virtual void save();
-signals:
-	void changed();
+	WebPluginProjectPropertyFormImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+	virtual ~WebPluginProjectPropertyFormImpl();
 private:
-	SelfWebPluginSettings();
-
-	static SelfWebPluginSettings * s_self;
 };
 
-#endif /*SELFWEBPLUGINSETTINGS_H_*/
+class WebPluginProjectPropertyWizard : public QWizardPage, public Ui::WebPluginProjectPropertyForm {
+	Q_OBJECT
+public:
+	WebPluginProjectPropertyWizard( int nextId, QWidget * parent = 0 );
+
+	int nextId() const;
+private:
+	int m_nextId;
+};
+
+#endif /* _WEBPLUGINPROJECTPROPERTYFORMIMPL_H_ */

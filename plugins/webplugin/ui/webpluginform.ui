@@ -89,6 +89,11 @@
            <widget class="QComboBox" name="m_viewerComboBox">
             <item>
              <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>Internal Viewer (Webkit)</string>
              </property>
             </item>
@@ -113,6 +118,11 @@
            <widget class="QComboBox" name="m_parserComboBox">
             <item>
              <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>Oracle Parser</string>
              </property>
             </item>
@@ -133,6 +143,7 @@
             <property name="currentIndex">
              <number>0</number>
             </property>
+            <widget class="QWidget" name="page"/>
             <widget class="QWidget" name="pageOracleParser">
              <layout class="QFormLayout" name="formLayout_3">
               <property name="fieldGrowthPolicy">

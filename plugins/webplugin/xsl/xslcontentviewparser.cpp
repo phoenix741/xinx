@@ -234,7 +234,11 @@ void XslContentViewParser::readTemplate() {
 
 						parser->setDecalage( s.line );
 						parser->setAttachId( (unsigned long)rootNode() );
-						parser->loadFromContent( node, s.content );
+
+						QByteArray textToParse = qPrintable( s.content );
+						if( codec() )
+							textToParse = codec()->fromUnicode( s.content );
+						parser->loadFromContent( node, textToParse );
 					} catch( ContentViewException e ) {
 					}
 					delete parser;

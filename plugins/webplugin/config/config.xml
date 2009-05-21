@@ -16,7 +16,7 @@
 	</type>
 
 	<type name="Parser Information">
-		<value name="Type" type="string" default="oracle"/>
+		<value name="Type" type="string" default="none"/>
 		<value name="Oracle Parser" type="Oracle Parser"/>
 	</type>
 

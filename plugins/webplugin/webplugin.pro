@@ -39,7 +39,8 @@ HEADERS = webplugin.h \
     xsl/htmlfileeditor.h \
     xsl/xslcontentviewparser.h \
     xsl/xslcompletionnodemodel.h \
- xsl/stylesheetaction.h
+ xsl/stylesheetaction.h \
+ webpluginprojectpropertyformimpl.h
 SOURCES = webplugin.cpp \
     filetypeplugin.cpp \
     config/selfwebpluginsettings.cpp \
@@ -65,7 +66,9 @@ SOURCES = webplugin.cpp \
     xsl/xmltexteditor.cpp \
     xsl/htmlfileeditor.cpp \
     xsl/xslcompletionnodemodel.cpp \
- xsl/stylesheetaction.cpp
+ xsl/stylesheetaction.cpp \
+ webpluginprojectproperyformimpl.cpp
 TRANSLATIONS += translations/webplugin_fr.ts
-FORMS += ui/webpluginform.ui
+FORMS += ui/webpluginform.ui \
+ ui/webpluginprojectpropertyform.ui
 include(../../project_mode.pri)

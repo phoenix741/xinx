@@ -187,14 +187,14 @@ ContentViewNode * ContentViewParser::attachNode( ContentViewNode * parent, Conte
 	return result;
 }
 
-void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QString & content ) {
+void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QByteArray & content ) {
 	if( m_alreadyRunning )
 		throw ContentViewException( tr("Parser already running"), rootNode->fileName(), 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
 
-		QByteArray contentArray = content.toUtf8();
+		QByteArray contentArray = content;
 		QBuffer buffer( &contentArray );
 		buffer.open( QIODevice::ReadOnly );
 

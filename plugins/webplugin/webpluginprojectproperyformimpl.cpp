@@ -17,26 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SELFWEBPLUGINSETTINGS_H_
-#define SELFWEBPLUGINSETTINGS_H_
-
 // Xinx header
-#include "webpluginsettings.h"
+#include "webpluginprojectpropertyformimpl.h"
 
-class SelfWebPluginSettings : public QObject, public WebPluginSettings {
-	Q_OBJECT
-public:
-	virtual ~SelfWebPluginSettings();
+/* WebPluginProjectPropertyFormImpl */
 
-	static SelfWebPluginSettings * self();
+WebPluginProjectPropertyFormImpl::WebPluginProjectPropertyFormImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
+	setupUi( this );
+}
 
-	virtual void save();
-signals:
-	void changed();
-private:
-	SelfWebPluginSettings();
+WebPluginProjectPropertyFormImpl::~WebPluginProjectPropertyFormImpl() {
+}
 
-	static SelfWebPluginSettings * s_self;
-};
+/* WebPluginProjectPropertyWizard */
 
-#endif /*SELFWEBPLUGINSETTINGS_H_*/
+WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard( int nextId, QWidget * parent ) : QWizardPage( parent ), m_nextId( nextId ) {
+	setupUi( this );
+	setTitle( tr("Web Module Property Page") );
+	setSubTitle( tr("Define information about the web module, like the adresse of the servlet control.") );
+
+	m_internetAdresseLineEdit->setText( "http://localhost:8888/gce/btoe/GCE/ServletControl" );
+
+	registerField( "webplugin.adresse", m_internetAdresseLineEdit );
+}
+
+int WebPluginProjectPropertyWizard::nextId() const {
+	return m_nextId + 1;
+}

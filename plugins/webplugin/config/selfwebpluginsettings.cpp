@@ -45,4 +45,8 @@ SelfWebPluginSettings * SelfWebPluginSettings::self() {
 	return s_self;
 }
 
+void SelfWebPluginSettings::save() {
+	WebPluginSettings::save();
+	emit changed();
+}
 

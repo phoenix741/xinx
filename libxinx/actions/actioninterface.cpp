@@ -64,8 +64,8 @@ bool Action::isInToolBar() const {
 }
 
 void Action::updateActionState() {
-	m_action->setEnabled( isActionEnabled() );
 	m_action->setVisible( isActionVisible() );
+	m_action->setEnabled( isActionEnabled() );
 }
 
 void Action::actionTriggered() {

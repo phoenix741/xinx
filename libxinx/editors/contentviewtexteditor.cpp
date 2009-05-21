@@ -25,6 +25,9 @@
 #include "contentview/contentviewparser.h"
 #include "contentview/contentviewmodel.h"
 
+// Qt header
+#include <QTextCodec>
+
 /* ContentViewTextEditor */
 
 ContentViewTextEditor::ContentViewTextEditor( ContentViewParser * parser, XinxCodeEdit * editor, QWidget *parent ) : TextFileEditor( editor, parent ), m_model( 0 ), m_parser( parser ) {
@@ -86,7 +89,13 @@ void ContentViewTextEditor::setParser( ContentViewParser * parser ) {
 
 void ContentViewTextEditor::updateModel() {
 	try {
-		m_parser->loadFromContent( m_rootNode, textEdit()->toPlainText() );
+		QByteArray encodedText;
+		if( codec() ) {
+			encodedText = codec()->fromUnicode( textEdit()->toPlainText() );
+		} else {
+			encodedText = qPrintable( textEdit()->toPlainText() );
+		}
+		m_parser->loadFromContent( m_rootNode, encodedText );
 		emit contentChanged();
 		textEdit()->setErrors( QList<int>() );
 		setMessage( QString() );

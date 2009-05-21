@@ -26,10 +26,11 @@
 
 class WebPluginSettings;
 
-class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration {
+class WebPlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
+	Q_INTERFACES(IXinxPluginProjectConfiguration)
 	Q_INTERFACES(IFilePlugin)
 public:
 	WebPlugin();
@@ -47,6 +48,13 @@ public:
 	virtual QWidget * createSettingsDialog();
 	virtual bool loadSettingsDialog( QWidget * widget );
 	virtual bool saveSettingsDialog( QWidget * widget );
+
+	virtual QWidget * createProjectSettingsPage();
+	virtual bool loadProjectSettingsPage( QWidget * widget );
+	virtual bool saveProjectSettingsPage( QWidget * widget );
+
+	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
+	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page );
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 	XinxAction::MenuList m_menus;

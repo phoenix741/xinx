@@ -31,6 +31,7 @@ public:
 	StyleSheetAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
 	StyleSheetAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
 
+	virtual bool isActionVisible() const;
 	virtual bool isActionEnabled() const;
 	virtual bool isInToolBar() const;
 protected slots:

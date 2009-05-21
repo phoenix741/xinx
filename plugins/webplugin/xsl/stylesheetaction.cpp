@@ -22,6 +22,7 @@
 #include "htmlfileeditor.h"
 #include <editors/editormanager.h>
 #include "../xmlpres/xmlpresentationdockwidget.h"
+#include "config/selfwebpluginsettings.h"
 
 // Qt header
 #include <QMessageBox>
@@ -47,12 +48,20 @@ void StyleSheetAction::setXmlPresentationDockWidget( XmlPresentationDockWidget *
 	}
 }
 
+bool StyleSheetAction::isActionVisible() const {
+	return ( SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none" );
+}
+
 bool StyleSheetAction::isActionEnabled() const {
-	if( EditorManager::self() && qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) ) {
-		if( ! m_dock ) {
-			setXmlPresentationDockWidget( StyleSheetEditor::xmlPresentationDockWidget() );
+	if( ( SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type != "none" ) && EditorManager::self() ) {
+		if( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) && ( SelfWebPluginSettings::self()->config().stylesheetParsing.parser.type != "none" ) ) {
+			if( ! m_dock ) {
+				setXmlPresentationDockWidget( StyleSheetEditor::xmlPresentationDockWidget() );
+			}
+			return m_dock && !m_dock->filename().isEmpty();
+		} else if( qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) ) {
+			return true;
 		}
-		return m_dock && !m_dock->filename().isEmpty();
 	}
 	return false;
 }
@@ -62,8 +71,12 @@ bool StyleSheetAction::isInToolBar() const {
 }
 
 void StyleSheetAction::actionTriggered() {
-	Q_ASSERT( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) );
-	Q_ASSERT( m_dock );
+	Q_ASSERT( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) || qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) );
 
-	qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() )->launchStylesheetParsing( m_dock->filename() );
+	if( qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) ) {
+		Q_ASSERT( m_dock );
+		qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() )->launchStylesheetParsing( m_dock->filename() );
+	}
+	if( qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) )
+		qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() )->showHtml();
 }

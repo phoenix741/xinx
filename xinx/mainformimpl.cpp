@@ -751,7 +751,6 @@ void MainformImpl::createActions() {
 
 void MainformImpl::createPluginsActions() {
 	// Clear all action for better creation
-	qDeleteAllLater( m_pluginsAction );
 	m_pluginsAction.clear();
 
 	// Create actions
@@ -1121,6 +1120,7 @@ void MainformImpl::customize() {
 		XINXConfig::self()->updateFormatsSchemeFromConfig();
 		XINXConfig::self()->save();
 		SnipetListManager::self()->saveToSnipetFile();
+		createPluginsActions();
 
 		if( ! XINXConfig::self()->config().style.isEmpty() ) {
 			QApplication::setStyle( XINXConfig::self()->config().style );
