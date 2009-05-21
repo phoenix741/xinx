@@ -17,6 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+/*!
+ * \file actioninterface.h
+ * \brief Contains class used for plugins's action
+ */
+
 #ifndef ACTIONINTERFACE_H
 #define ACTIONINTERFACE_H
 
@@ -26,24 +31,49 @@
 #include <QKeySequence>
 #include <QIcon>
 
+/*!
+ * \namespace XinxAction
+ * \brief Interfaces to manage action in XINX
+ */
 namespace XinxAction {
 
+/*!
+ * \class MenuItem
+ * \brief This class menu item used in a menu list.
+ * Class represent a menu item. A menu item can be an action or a separator. This used by plugin, for define
+ * which type of item the element is.
+ */
 class MenuItem {
 public:
+	//! Destroy the menu item
 	virtual ~MenuItem() {};
 };
 
+/*!
+ * \class Separator
+ * \brief Represent a separator
+ * Class represent a separator.
+ */
 class Separator : public MenuItem {
 public:
+	//! Destroy the separator
 	virtual ~Separator() {};
 };
 
+/*!
+ * \class Action
+ * \brief This class represent an action in XINX
+ * This class is a wrapper of a Qt action QAction. This wrapper is used to facilite
+ * the enable, and visible feature of the action.
+ */
 class Action : public QObject, public MenuItem {
 	Q_OBJECT
 public:
 	//! Create an action with \a a
 	Action( QAction * a, QObject * parent );
+	//! Create an action with the text \e text and the shortcut \e shortcut.
 	Action( const QString & text, const QKeySequence & shortcut, QObject * parent );
+	//! Create an actiion with the icon \e icon, text \e text, and the shortcut \e shortcut
 	Action( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
 	virtual ~Action();
 
@@ -67,22 +97,38 @@ private:
 	QAction * m_action;
 };
 
+/*!
+ * \class ActionList
+ * \brief Class to manage a list of action (a Menu)
+ * This class is a list of action. This list of action is
+ * a menu too.
+ */
 class ActionList : public QList<MenuItem*> {
 public:
+	//! Create the list with the name \e menu
 	ActionList( const QString & menu );
 
+	//! Return the name of the list
 	const QString & menu() const;
 
+	//! Update the state (visible, and enable) of all actions in the menu
 	void updateActionsState();
 protected:
 private:
 	QString m_menu;
 };
 
+/*!
+ * \class MenuList
+ * \brief Class to manage a list of ActionList (Menu)
+ * This list is a list of menu used in the plugin interface.
+ */
 class MenuList : public QList<ActionList> {
 public:
+	//! Create the menu list
 	MenuList();
 
+	//! Update the state (visible, and enable) of all menu.
 	void updateMenuState();
 protected:
 private:

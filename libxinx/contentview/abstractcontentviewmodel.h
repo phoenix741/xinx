@@ -46,13 +46,21 @@ public:
 	/*! Destroy the model. */
 	virtual ~AbstractContentViewModel();
 protected:
+	//! Inform model that the node have changed.
 	virtual void nodeChanged( ContentViewNode * node ) = 0;
+
+	//! Inform the model of insertion of element \e first to \e last in \e node
 	virtual void beginInsertNode( ContentViewNode * node, int first, int last ) = 0;
+	//! Inform the model of deletion of element \e first to \e last in \e node
 	virtual void beginRemoveNode( ContentViewNode * node, int first, int last ) = 0;
+	//! Inform the model that lines is now insered
 	virtual void endInsertNode() = 0;
+	//! Inform the model that lines is now removed
 	virtual void endRemoveNode() = 0;
 
+	//! Return the root element used in the model
 	ContentViewNode * rootNode() const;
+	//! Return the mutex used to lock the model of concurent access.
 	QMutex * mutex() const;
 private:
 	ContentViewNode * m_rootNode;

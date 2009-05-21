@@ -34,6 +34,12 @@ class AbstractContentViewModel;
 
 class ContentViewNode;
 
+/*!
+ * \class ContentViewNodeList
+ * \brief List of ContentViewNode
+ * List of node.
+ * Instead of compare pointer, we compare the node.
+ */
 class ContentViewNodeList : public QList<ContentViewNode*> {
 public:
 	int indexOfObject( ContentViewNode* t, int from = 0 ) const;
@@ -205,7 +211,7 @@ private:
 
 	ContentViewNodeList m_childs;
 
-	/* On partage les models pour une mise Ã  jours plus rapide */
+	/* On partage les models pour une mise ï¿½  jours plus rapide */
 	static QMultiHash<unsigned long, AbstractContentViewModel* > s_models;
 };
 

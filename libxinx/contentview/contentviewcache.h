@@ -54,8 +54,8 @@ class ContentViewCache : public QObject {
 public:
 	//! Create a content view cache and preloads project.
 	ContentViewCache( XinxProject * project );
-
-	~ContentViewCache();
+	//! Destroy the content view cache
+	virtual ~ContentViewCache();
 
 	/*!
 	 * Return the content view for the given file name. Look in the cache if the

@@ -56,16 +56,24 @@ public:
 	//! Return the current format scheme.
 	QFormatScheme * formatScheme() const;
 
+	//! Set the exemple in the custom widget \e value
 	void setExample( const QString & value );
+	//! Return the exemple set
 	const QString & example() const;
 
+	//! Set the language definition to \e value
 	void setLanguageDefinition( const QString & value );
+	//! Return the language definition set.
 	QString languageDefinition() const;
 
+	//! Set the language factory used in the custom editor \e value
 	void setLanguageFactory( QLanguageFactory * value );
+	//! Return the language factory set.
 	QLanguageFactory * languageFactory() const;
 
+	//! Set the list of format that the widget musn't be show.
 	void setHiddenFormat( const QStringList & value );
+	//! Return the list of format to hide.
 	const QStringList & hiddenFormat() const;
 private slots:
 	void on_m_formatsListView_currentItemChanged( QListWidgetItem * current, QListWidgetItem * previous );

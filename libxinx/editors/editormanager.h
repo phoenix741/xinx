@@ -17,6 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+/*!
+ * \file editormanager.h
+ * \brief This class represent the object that manage the list of editors.
+ */
+
 #ifndef _EDITORMANAGER_H_
 #define _EDITORMANAGER_H_
 
@@ -26,13 +31,17 @@
 class AbstractEditor;
 
 /*!
+ * \class EditorManager
+ * \brief Interface that represent the object used to manage the list of editors.
  * Interface used by plugins. The goal is to permit easily access of all existing
  * editors. This class is not a QObject class but the inherited class must emit
  * signal currentChanged(int) when the current editor changed.
  */
 class EditorManager {
 public:
+	//! Create an EditorManager
 	EditorManager();
+	//! Destroy the class
 	virtual ~EditorManager();
 
 	//! Return the current editor
@@ -56,6 +65,12 @@ public:
 
 	//! Return the editor manager of the application
 	static EditorManager * self();
+
+	/*!
+	 * \fn currentChanged( int index )
+	 * This signal is called when the current editor is changed. This class doesn't
+	 * declare the signal (because don't inherit of QObject) but child should.
+	 */
 //signals:
 //	void currentChanged( int index );
 private:

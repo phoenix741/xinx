@@ -17,6 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+/*!
+ * \file contentviewtexteditor.h
+ * \brief This file contains class used to manage an editor associated to a content view.
+ */
+
 #ifndef _CONTENTVIEWTEXTEDITOR_H_
 #define _CONTENTVIEWTEXTEDITOR_H_
 
@@ -32,6 +37,8 @@ class ContentViewModel;
 class QModelIndex;
 
 /*!
+ * \class ContentViewTextEditor
+ * \brief Editor, with a content view.
  * An \e ContentViewTextEditor load and unload the content view model editor when
  * reading the device. The content model is based on a ContentViewParser and
  * some ContentViewNode.
@@ -55,12 +62,23 @@ public:
 
 	//! The model editor is really created (based on the parser) at the first call.
 	virtual QAbstractItemModel * model() const;
+	/*!
+	 * Return the model used in the editor as model() but with the type ContentViewModel
+	 * \sa model()
+	 */
 	ContentViewModel * contentViewModel() const;
 
 signals:
+	/*!
+	 * Signal emited when the position in the editor is changed. The \e index give
+	 * the position of the cursor in the ContentViewModel.
+	 */
 	void positionInEditorChanged( const QModelIndex & index );
 
 public slots:
+	/*!
+	 * When called, this update the model
+	 */
 	virtual void updateModel();
 
 protected:

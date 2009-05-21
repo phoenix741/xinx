@@ -17,6 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+/*!
+ * \file completionnodemodel.h
+ * \brief Contains object manage ContentViewNode for completion
+ */
+
 #ifndef _COMPLETIONNODEMODEL_H_
 #define _COMPLETIONNODEMODEL_H_
 
@@ -95,6 +100,7 @@ protected:
 	virtual void beginRemoveNode( ContentViewNode * n, int first, int last );
 	virtual void endInsertNode();
 	virtual void endRemoveNode();
+	//! Recalculate the element show with the list of showed eleemnt.
 	virtual void reset();
 private:
 	typedef QPair<ContentViewNode*,ContentViewNode*> ContentViewNodePair;

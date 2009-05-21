@@ -66,6 +66,7 @@ public:
 	virtual QVariant data( const QModelIndex &index, int role ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
 	virtual QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
+	///! Return the index of the given node (warning: we can have more that one index for one \e node )
 	virtual QModelIndex index( ContentViewNode * node ) const;
 	virtual QModelIndex parent( const QModelIndex &index ) const;
 	virtual bool hasChildren( const QModelIndex & parent = QModelIndex() ) const;
@@ -80,12 +81,17 @@ protected:
 	virtual void endInsertNode();
 	virtual void endRemoveNode();
 
+	//! Return the index of the given \e id
 	QModelIndex index( quint32 id ) const;
 
+	//! Hash table with for an id, the associated parent id
 	QHash< quint32, quint32 > m_parents;
+	//! Hash table with for an id, the associated childs ids
 	QHash< quint32, QList< quint32 > > m_childs;
 
+	//! Hash table with for an id, the associated node
 	QHash< quint32, ContentViewNode * > m_nodeOfId;
+	//! Hash table with for an node, the associated ids
 	QMultiHash< ContentViewNode*, quint32 > m_idOfNode;
 private:
 	void addChildsOf( quint32 id );
