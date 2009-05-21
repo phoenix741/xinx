@@ -516,11 +516,10 @@ QHash<QString,bool> AppSettings::getSettingsHash_bool( AppSettingsSettings * set
 }
 
 void AppSettings::setSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & value ) {
-	QHash<QString,bool> defaultValue = getDefaultHash_bool();
 	settings->beginGroup( path );
 
 	foreach( const QString & key, value.keys() ) {
-		settings->setValue( key, value[ key ], defaultValue[ key ] );
+		settings->setValue( key, value[ key ], true );
 	}
 
 	settings->endGroup();

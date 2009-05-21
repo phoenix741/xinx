@@ -117,7 +117,7 @@ XinxAction::MenuList WebPlugin::actions() {
 	if( m_menus.size() == 0 ) {
 		XinxAction::Action * runAction = new StyleSheetAction( QIcon( ":/images/run.png" ), tr("Process stylesheet"), QString( "F9" ), this );
 
-		XinxAction::ActionList menu( tr("Execute") );
+		XinxAction::ActionList menu( tr("&Execute") );
 		menu.append( runAction );
 		m_menus.append( menu );
 	}

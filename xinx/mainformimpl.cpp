@@ -1969,6 +1969,8 @@ void MainformImpl::openProject( const QString & filename ) {
 		}
 		if( m_tabEditors->count() > 0 ) m_tabEditors->setCurrentIndex( 0 );
 		m_tabEditors->setUpdatesEnabled( true );
+
+		updateActions();
 	} catch( XinxProjectException e ) {
 		delete project;
 		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << "-lang" << XINXConfig::self()->config().language << filename ) ) )
