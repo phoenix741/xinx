@@ -1,3 +1,5 @@
+include(../../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
@@ -12,4 +14,3 @@ RESOURCES = svnplugin.qrc
 TRANSLATIONS += translations/svnplugin_fr.ts
 win32 : RC_FILE += rc/plugin.rc
 
-include(../../project_mode.pri)

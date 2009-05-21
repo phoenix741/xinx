@@ -1,3 +1,5 @@
+include(../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += dll
 QT += xml \
@@ -71,4 +73,3 @@ SOURCES = rcs/rcs.cpp \
  actions/actioninterface.cpp \
  editors/editormanager.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-include(../project_mode.pri)

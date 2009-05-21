@@ -1,3 +1,5 @@
+include(../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += dll
 win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined -enable-runtime-pseudo-reloc
@@ -30,5 +32,4 @@ SOURCES = directoryedit.cpp \
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
 
-include(../project_mode.pri)
 

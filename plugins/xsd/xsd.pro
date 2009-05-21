@@ -1,3 +1,5 @@
+include(../../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
@@ -18,5 +20,4 @@ SOURCES = xmlschema.cpp \
     xsdedit.cpp \
     xsdeditor.cpp
 win32:RC_FILE += rc/plugin.rc
-include(../../project_mode.pri)
 QT += xml

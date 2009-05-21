@@ -1,3 +1,5 @@
+include(../../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += plugin staticlib
 QT += xml \
@@ -20,4 +22,3 @@ FORMS += ui/xquery.ui \
     ui/xmlpresentationwidget.ui \
 	ui/config.ui
 
-include(../../project_mode.pri)

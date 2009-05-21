@@ -1,3 +1,5 @@
+include(../../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
@@ -9,5 +11,3 @@ TRANSLATIONS += translations/empty_fr.ts
 HEADERS = empty.h
 SOURCES = empty.cpp
 win32 : RC_FILE += rc/plugin.rc
-
-include(../../project_mode.pri)

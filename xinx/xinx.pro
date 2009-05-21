@@ -1,3 +1,5 @@
+include(../project_mode.pri)
+
 TEMPLATE = app
 CONFIG += warn_on
 QT += xml \
@@ -98,6 +100,5 @@ CONFIG(debug, debug|release) {
 	}
 }
 
-include(../project_mode.pri)
 include(../ext/qmodeltest/modeltest.pri)
 include(../ext/qtsingleapplication/src/qtsingleapplication.pri)

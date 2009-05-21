@@ -1,3 +1,5 @@
+include(../../project_mode.pri)
+
 TEMPLATE = lib
 CONFIG += plugin \
     staticlib
@@ -71,4 +73,3 @@ SOURCES = webplugin.cpp \
 TRANSLATIONS += translations/webplugin_fr.ts
 FORMS += ui/webpluginform.ui \
  ui/webpluginprojectpropertyform.ui
-include(../../project_mode.pri)
