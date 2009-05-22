@@ -128,7 +128,7 @@ void HtmlFileEditor::showHtml() {
 			if( ! m_htmlTempFile )
 				m_htmlTempFile = new QTemporaryFile( this );
 			else
-				m_htmlTempFile->remove();
+				m_htmlTempFile->resize( 0 );
 
 			if( ! m_htmlTempFile->open() ) {
 				qWarning( qPrintable( tr("Can't open file %1.").arg( m_htmlTempFile->fileName() ) ) );
@@ -343,12 +343,12 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 		if( ! m_parsingOutputFile )
 			m_parsingOutputFile     = new QTemporaryFile( QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "outputXXXXXX.html" ), this );
 		else
-			m_parsingOutputFile->remove();
+			m_parsingOutputFile->resize( 0 );
 
 		if( ! m_parsingStyleSheetFile )
 			m_parsingStyleSheetFile = new QTemporaryFile( QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "sylesheetXXXXXX.xsl" ), this );
 		else
-			m_parsingStyleSheetFile->remove();
+			m_parsingStyleSheetFile->resize( 0 );
 
 		// Output file
 		if( ! m_parsingOutputFile->open() ) {

@@ -420,7 +420,6 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.position = QPoint( 200,200 );
 	value.size = QSize( 400,400 );
 	value.maximized = false;
-	value.plugins = getDefaultHash_bool();
 	value.descriptions = getDefaultDescriptions();
 	value.project = getDefaultProject();
 	value.rcs = getDefaultRcs();
@@ -483,17 +482,6 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	setSettingsHash_struct_qformat( settings, "Formats", value.formats );
 
 	settings->endGroup();
-}
-
-QHash<QString,bool> AppSettings::getDefaultHash_bool() {
-	QHash<QString,bool> value;
-
-	value[ "WebPlugin" ] = true;
-	value[ "ServicesPlugin" ] = true;
-	value[ "SVNPlugin" ] = true;
-	value[ "CVSPlugin" ] = true;
-
-	return value;
 }
 
 QHash<QString,bool> AppSettings::getSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & defaultValue ) {

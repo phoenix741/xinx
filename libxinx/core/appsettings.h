@@ -166,7 +166,6 @@ protected:
 	virtual AppSettings::struct_globals getSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & defaultValue );
 	virtual void setSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & value );
 
-	virtual QHash<QString,bool> getDefaultHash_bool();
 	virtual QHash<QString,bool> getSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & defaultValue );
 	virtual void setSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & value );
 

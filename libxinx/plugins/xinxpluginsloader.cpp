@@ -94,7 +94,7 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	XinxPluginElement * element = new XinxPluginElement( plugin, staticLoaded );
 
 	// Set the status of the plugin with the configuration
-	element->setActivated( XINXConfig::self()->config().plugins.value( name, false ) );
+	element->setActivated( XINXConfig::self()->config().plugins.value( name, true ) );
 	m_plugins.insert( name, element );
 
 	//! \todo move this line in setActivated method of the plugin

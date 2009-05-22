@@ -39,6 +39,8 @@ CSSFileContentParser::~CSSFileContentParser() {
 }
 
 void CSSFileContentParser::loadFromDeviceImpl() {
+	if( ! rootNode() ) return;
+
 	rootNode()->setData( ":/images/typecss.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );

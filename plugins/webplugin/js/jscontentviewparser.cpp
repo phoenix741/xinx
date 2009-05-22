@@ -36,6 +36,8 @@ JsContentViewParser::~JsContentViewParser() {
 }
 
 void JsContentViewParser::loadFromDeviceImpl() {
+	if( ! rootNode() ) return;
+
 	rootNode()->setData( ":/images/typejs.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );

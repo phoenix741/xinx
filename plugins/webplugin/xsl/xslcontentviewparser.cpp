@@ -45,7 +45,8 @@ XslContentViewParser::~XslContentViewParser() {
 void XslContentViewParser::loadFromDeviceImpl() {
 	setDevice( inputDevice() );
 
-	rootNode()->setData( ":/images/typexsl.png", ContentViewNode::NODE_ICON );
+	if( rootNode() )
+		rootNode()->setData( ":/images/typexsl.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );
 
@@ -132,10 +133,13 @@ void XslContentViewParser::readVariable() {
 		value = attributes().value( "select" ).toString();
 		readUnknownElement();
 	}
-	if( QXmlStreamReader::name() == "param" )
-		attacheNewParamsNode( rootNode(), name.trimmed(), value, lineNumber() );
-	else
-		attacheNewVariableNode( rootNode(), name.trimmed(), value, lineNumber() );
+
+	if( rootNode() ) {
+		if( QXmlStreamReader::name() == "param" )
+			attacheNewParamsNode( rootNode(), name.trimmed(), value, lineNumber() );
+		else
+			attacheNewVariableNode( rootNode(), name.trimmed(), value, lineNumber() );
+	}
 }
 
 void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables, QList<struct_script> & scripts ) {
@@ -207,8 +211,9 @@ void XslContentViewParser::readTemplate() {
 	readTemplate( variables, scripts );
 
 	foreach( const QString & name, templates ) {
-		ContentViewNode * t = attacheNewTemplateNode( rootNode(), name.trimmed(), mode, line );
-		if( !t ) continue;
+		ContentViewNode * t = 0;
+		if( rootNode() )
+			t = attacheNewTemplateNode( rootNode(), name.trimmed(), mode, line );
 
 		loadAttachedNode( t );
 		/* Chargement des scripts */
@@ -216,7 +221,7 @@ void XslContentViewParser::readTemplate() {
 			// Si JavaScript externe
 			if( s.isSrc ) {
 				createContentViewNode( t, s.src );
-			} else { // C'est un Javascript interne
+			} else if( t ) { // C'est un Javascript interne
 				ContentViewNode * node = new ContentViewNode( s.title, s.line );
 				node->setData( "internal", ContentViewNode::NODE_TYPE );
 				node->setData( s.title, ContentViewNode::NODE_DISPLAY_NAME );
@@ -247,12 +252,14 @@ void XslContentViewParser::readTemplate() {
 			}
 		}
 
-		/* Chargement des variables et params */
-		foreach( const struct_xsl_variable & v, variables ) {
-			if( v.isParam )
-				attacheNewParamsNode( t, v.name.trimmed(), v.value.trimmed(), v.line );
-			else
-				attacheNewVariableNode( t, v.name.trimmed(), v.value.trimmed(), v.line );
+		if( t ) {
+			/* Chargement des variables et params */
+			foreach( const struct_xsl_variable & v, variables ) {
+				if( v.isParam )
+					attacheNewParamsNode( t, v.name.trimmed(), v.value.trimmed(), v.line );
+				else
+					attacheNewVariableNode( t, v.name.trimmed(), v.value.trimmed(), v.line );
+			}
 		}
 	}
 }
@@ -354,6 +361,8 @@ ContentViewNode * XmlCompletionParser::rootNode() const {
 }
 
 void XmlCompletionParser::loadFromDeviceImpl() {
+	Q_ASSERT( rootNode() );
+
 	setDevice( inputDevice() );
 
 	loadAttachedNode( rootNode() );

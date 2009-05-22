@@ -89,13 +89,15 @@ public:
 	virtual ~ContentViewParser();
 
 	/*! Load the content of the givent device and return true if sucessfully loaded */
-	virtual void loadFromMember();
+	void loadFromMember();
 	/*! Load the content of the device. and return the true if sucessfully loaded */
-	virtual void loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
+	void loadFromDevice( ContentViewNode * rootNode, QIODevice * device );
 	/*! Construct elements from \e content. */
-	virtual void loadFromContent( ContentViewNode * rootNode, const QByteArray & content );
+	void loadFromContent( ContentViewNode * rootNode, const QByteArray & content );
 	/*! Construct elements from \e filename. */
-	virtual void loadFromFile( ContentViewNode * rootNode, const QString & filename );
+	void loadFromFile( ContentViewNode * rootNode, const QString & filename );
+	/*! Get the list of import */
+	const QStringList & imports() const;
 
 	/*! Set the root node */
 	void setRootNode( ContentViewNode * node );
@@ -104,6 +106,8 @@ public:
 
 	/*! Set the filename */
 	void setFilename( const QString & filename );
+	/*! Get the filename */
+	const QString & filename() const;
 	/*! Set the device */
 	void setInputDevice( QIODevice * device );
 	/*! Return the device */
@@ -155,9 +159,11 @@ protected:
 private:
 	QList< QPair<ContentViewNode*,ContentViewNode*> > m_attachedNode;
 	bool m_autoDelete, m_alreadyRunning;
+	QString m_filename;
 	ContentViewNode * m_rootNode;
 	QIODevice * m_device;
 	unsigned long m_id, m_decaledLine;
+	QStringList m_imports;
 };
 
 #endif /* __CONTENTVIEWPARSER_H__ */
