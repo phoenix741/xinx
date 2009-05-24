@@ -45,6 +45,8 @@ private slots:
 	void on_m_projectLineEdit_textChanged( QString );
 	void on_m_projectButton_clicked();
 	void on_m_prefixList_defaultValueChanged( QString );
+	void on_m_addPreloadedFile_clicked();
+	void on_m_preloadedFiles_itemSelectionChanged();
 
 	void versionFinded( ConfigurationFile configuration );
 };

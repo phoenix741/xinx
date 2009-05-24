@@ -75,6 +75,8 @@ public:
 	QString defaultProposedValue() const;
 	//! Set the default value proposed to the user.
 	void setDefaultProposedValue( const QString & value );
+	//! Add a value in the list
+	void add( const QString & value );
 signals:
 	//! This signal is emited when the user change the value \e value.
 	void defaultValueChanged( QString value );

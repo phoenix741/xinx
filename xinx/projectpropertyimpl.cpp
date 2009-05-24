@@ -65,8 +65,16 @@ ProjectPropertyImpl::~ProjectPropertyImpl() {
 	}
 }
 
+void ProjectPropertyImpl::on_m_preloadedFiles_itemSelectionChanged() {
+	m_addPreloadedFile->setEnabled( m_preloadedFiles->currentItem() );
+}
+
 void ProjectPropertyImpl::on_m_projectButton_clicked() {
 	m_projectLineEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
+}
+
+void ProjectPropertyImpl::on_m_addPreloadedFile_clicked() {
+	m_preloadedProjectFiles->add( m_preloadedFiles->currentItem()->text() );
 }
 
 void ProjectPropertyImpl::on_m_prefixList_defaultValueChanged( QString text ) {

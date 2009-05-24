@@ -104,6 +104,18 @@ void XinxListWidgetImpl::setValues( const QStringList & values ) {
 	updateDefault( def );
 }
 
+void XinxListWidgetImpl::add( const QString & value ) {
+	QListWidgetItem * item = new QListWidgetItem( value, m_list );
+	item->setFlags( item->flags() | Qt::ItemIsEditable );
+	m_list->addItem( item );
+	m_list->setCurrentItem( item );
+
+	m_btnDel->setEnabled( m_list->count() > 0 );
+	m_btnDef->setEnabled( m_list->count() > 0 );
+	m_btnUp->setEnabled( m_list->currentRow() > 0 );
+	m_btnDown->setEnabled( ( m_list->currentRow() >= 0 ) && ( m_list->currentRow() < m_list->count() - 1 ) );
+}
+
 QString XinxListWidgetImpl::defaultProposedValue() const {
 	return m_defaultProposedValue;
 }

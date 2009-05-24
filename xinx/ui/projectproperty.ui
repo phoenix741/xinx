@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ProjectProperty</class>
- <widget class="QDialog" name="ProjectProperty" >
-  <property name="geometry" >
+ <widget class="QDialog" name="ProjectProperty">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,119 +10,119 @@
     <height>400</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Project property</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="0" column="0" >
-    <widget class="QTabWidget" name="m_tabWidget" >
-     <property name="currentIndex" >
+  <layout class="QGridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="m_tabWidget">
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabProjectDefinition" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tabProjectDefinition">
+      <attribute name="title">
        <string>&amp;Project Definition</string>
       </attribute>
-      <layout class="QVBoxLayout" >
-       <property name="spacing" >
+      <layout class="QVBoxLayout">
+       <property name="spacing">
         <number>6</number>
        </property>
-       <property name="margin" >
+       <property name="margin">
         <number>9</number>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox_3" >
-         <property name="title" >
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
           <string>Project</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>9</number>
           </property>
-          <property name="spacing" >
+          <property name="spacing">
            <number>6</number>
           </property>
-          <item row="2" column="2" >
-           <widget class="QToolButton" name="m_logButton" >
-            <property name="icon" >
-             <iconset resource="../application.qrc" >
+          <item row="2" column="2">
+           <widget class="QToolButton" name="m_logButton">
+            <property name="icon">
+             <iconset resource="../application.qrc">
               <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_12" >
-            <property name="text" >
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
              <string>Project &amp;Log :</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_logLineEdit</cstring>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_3" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
              <string>Project &amp;Directory :</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_projectLineEdit</cstring>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" >
-           <widget class="QLabel" name="label_9" >
-            <property name="text" >
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
              <string>Project &amp;RCS :</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_projectRCSComboBox</cstring>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label_6" >
-            <property name="text" >
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
              <string>Project &amp;Name :</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_nameLineEdit</cstring>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" >
-           <widget class="QLineEdit" name="m_nameLineEdit" >
-            <property name="whatsThis" >
-             <string>This is the project name showed in the title bar of &lt;b>XINX&lt;/b>.This just an informative information useless.</string>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="m_nameLineEdit">
+            <property name="whatsThis">
+             <string>This is the project name showed in the title bar of &lt;b&gt;XINX&lt;/b&gt;.This just an informative information useless.</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2" >
-           <widget class="QToolButton" name="m_projectButton" >
-            <property name="icon" >
-             <iconset resource="../application.qrc" >
+          <item row="1" column="2">
+           <widget class="QToolButton" name="m_projectButton">
+            <property name="icon">
+             <iconset resource="../application.qrc">
               <normaloff>:/images/folder.png</normaloff>:/images/folder.png</iconset>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" >
-           <widget class="DirectoryEdit" name="m_projectLineEdit" >
-            <property name="whatsThis" >
-             <string>This is the project directory (generally where is stored &lt;i>configuration.xml&lt;/i>). This is the root of the project directory dock, used to search file and for &lt;i>revision control system&lt;/i> access.</string>
+          <item row="1" column="1">
+           <widget class="DirectoryEdit" name="m_projectLineEdit">
+            <property name="whatsThis">
+             <string>This is the project directory (generally where is stored &lt;i&gt;configuration.xml&lt;/i&gt;). This is the root of the project directory dock, used to search file and for &lt;i&gt;revision control system&lt;/i&gt; access.</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1" >
-           <widget class="QComboBox" name="m_projectRCSComboBox" >
-            <property name="whatsThis" >
-             <string>This the list of &lt;i>revision control system&lt;/i>. The list is appended by modules that you can find in the customize dialog.</string>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="m_projectRCSComboBox">
+            <property name="whatsThis">
+             <string>This the list of &lt;i&gt;revision control system&lt;/i&gt;. The list is appended by modules that you can find in the customize dialog.</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="DirectoryEdit" name="m_logLineEdit" >
-            <property name="whatsThis" >
-             <string>This is the path of the log server directory (where is stored all &lt;i>presentation_*.xml&lt;/i> files).</string>
+          <item row="2" column="1">
+           <widget class="DirectoryEdit" name="m_logLineEdit">
+            <property name="whatsThis">
+             <string>This is the path of the log server directory (where is stored all &lt;i&gt;presentation_*.xml&lt;/i&gt; files).</string>
             </property>
            </widget>
           </item>
@@ -130,10 +131,10 @@
        </item>
        <item>
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -143,165 +144,165 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabDefaultValue" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tabDefaultValue">
+      <attribute name="title">
        <string>&amp;Default value</string>
       </attribute>
-      <layout class="QVBoxLayout" >
-       <property name="spacing" >
+      <layout class="QVBoxLayout">
+       <property name="spacing">
         <number>6</number>
        </property>
-       <property name="margin" >
+       <property name="margin">
         <number>9</number>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox" >
-         <property name="title" >
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
           <string>Default Value</string>
          </property>
-         <layout class="QGridLayout" >
-          <property name="margin" >
+         <layout class="QGridLayout">
+          <property name="margin">
            <number>9</number>
           </property>
-          <property name="spacing" >
+          <property name="spacing">
            <number>6</number>
           </property>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_8" >
-            <property name="text" >
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
              <string>Version :</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" colspan="2" >
-           <widget class="QComboBox" name="m_langComboBox" >
-            <property name="whatsThis" >
-             <string>This is the default lang used by your project. This can be used for the search path of the &lt;u>C&lt;/u>ustom files tab.</string>
+          <item row="0" column="1" colspan="2">
+           <widget class="QComboBox" name="m_langComboBox">
+            <property name="whatsThis">
+             <string>This is the default lang used by your project. This can be used for the search path of the &lt;u&gt;C&lt;/u&gt;ustom files tab.</string>
             </property>
-            <property name="editable" >
+            <property name="editable">
              <bool>true</bool>
             </property>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>FRA</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/france.png</normaloff>:/images/france.png</iconset>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>ENG</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/usa.png</normaloff>:/images/usa.png</iconset>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>DEU</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/germany.png</normaloff>:/images/germany.png</iconset>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>ITA</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/italy.png</normaloff>:/images/italy.png</iconset>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>ESP</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/spain.png</normaloff>:/images/spain.png</iconset>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>POR</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/portugal.png</normaloff>:/images/portugal.png</iconset>
              </property>
             </item>
            </widget>
           </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_2" >
-            <property name="text" >
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
              <string>N&amp;avigator</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_navigatorComboBox</cstring>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" colspan="2" >
-           <widget class="QComboBox" name="m_navigatorComboBox" >
-            <property name="whatsThis" >
-             <string>This is the default navigator used in the list of path in the &lt;u>C&lt;/u>ustom files tab.</string>
+          <item row="1" column="1" colspan="2">
+           <widget class="QComboBox" name="m_navigatorComboBox">
+            <property name="whatsThis">
+             <string>This is the default navigator used in the list of path in the &lt;u&gt;C&lt;/u&gt;ustom files tab.</string>
             </property>
-            <property name="editable" >
+            <property name="editable">
              <bool>true</bool>
             </property>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>NAV/MIC</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/ie_logo.png</normaloff>:/images/ie_logo.png</iconset>
              </property>
             </item>
             <item>
-             <property name="text" >
+             <property name="text">
               <string>NAV/NET</string>
              </property>
-             <property name="icon" >
-              <iconset resource="../application.qrc" >
+             <property name="icon">
+              <iconset resource="../application.qrc">
                <normaloff>:/images/firefox_logo.png</normaloff>:/images/firefox_logo.png</iconset>
              </property>
             </item>
            </widget>
           </item>
-          <item row="2" column="1" colspan="2" >
-           <widget class="QLabel" name="m_configurationVersionLabel" >
-            <property name="text" >
+          <item row="2" column="1" colspan="2">
+           <widget class="QLabel" name="m_configurationVersionLabel">
+            <property name="text">
              <string/>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label" >
-            <property name="text" >
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
              <string>&amp;Lang</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_langComboBox</cstring>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" >
-           <widget class="QLabel" name="label_13" >
-            <property name="text" >
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
              <string>Presentation file :</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1" colspan="2" >
-           <widget class="QLabel" name="m_presentationLabel" >
-            <property name="text" >
+          <item row="3" column="1" colspan="2">
+           <widget class="QLabel" name="m_presentationLabel">
+            <property name="text">
              <string/>
             </property>
            </widget>
@@ -311,10 +312,10 @@
        </item>
        <item>
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -324,68 +325,68 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabCustomFiles" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tabCustomFiles">
+      <attribute name="title">
        <string>&amp;Custom files</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="m_specifiqueGroupBox" >
-         <property name="whatsThis" >
-          <string>If checked, &lt;b>XINX&lt;/b> will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.</string>
+      <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="m_specifiqueGroupBox">
+         <property name="whatsThis">
+          <string>If checked, &lt;b&gt;XINX&lt;/b&gt; will check if the file is standard or not if the file is standard, and in this case the project porpose you to prefix the file.</string>
          </property>
-         <property name="title" >
+         <property name="title">
           <string>&amp;Project is derivated from standard</string>
          </property>
-         <property name="checkable" >
+         <property name="checkable">
           <bool>true</bool>
          </property>
-         <layout class="QGridLayout" >
-          <item row="0" column="0" >
-           <widget class="QLabel" name="m_pathListLabel" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <layout class="QGridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="m_pathListLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>&amp;Search path list :</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="2" >
-           <widget class="XinxListWidgetImpl" native="1" name="m_searchPathList" />
+          <item row="1" column="0" colspan="2">
+           <widget class="XinxListWidgetImpl" name="m_searchPathList" native="true"/>
           </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="m_prefixLabel" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <item row="2" column="0">
+           <widget class="QLabel" name="m_prefixLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="text" >
+            <property name="text">
              <string>Project p&amp;refix :</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0" colspan="2" >
-           <widget class="XinxListWidgetImpl" native="1" name="m_prefixList" />
+          <item row="3" column="0" colspan="2">
+           <widget class="XinxListWidgetImpl" name="m_prefixList" native="true"/>
           </item>
-          <item row="4" column="0" >
-           <widget class="QLabel" name="label_10" >
-            <property name="text" >
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
              <string>&amp;Specifique project path name :</string>
             </property>
-            <property name="buddy" >
+            <property name="buddy">
              <cstring>m_specifiqueProjectPathLineEdit</cstring>
             </property>
            </widget>
           </item>
-          <item row="4" column="1" >
-           <widget class="QLineEdit" name="m_specifiqueProjectPathLineEdit" >
-            <property name="whatsThis" >
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="m_specifiqueProjectPathLineEdit">
+            <property name="whatsThis">
              <string>The sub-directory where the derivated file must be stored.</string>
             </property>
            </widget>
@@ -395,31 +396,72 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
        <string>&amp;Preloaded files</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout" >
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QGroupBox" name="groupBox_2" >
-         <property name="title" >
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
           <string>&amp;Preloaded files at project loading</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout" >
-          <item row="0" column="0" >
-           <widget class="XinxListWidgetImpl" native="1" name="m_preloadedProjectFiles" />
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="XinxListWidgetImpl" name="m_preloadedProjectFiles" native="true"/>
           </item>
          </layout>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_4" >
-         <property name="title" >
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="m_addPreloadedFile">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="icon">
+            <iconset resource="../application.qrc">
+             <normaloff>:/images/1uparrow.png</normaloff>:/images/1uparrow.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
           <string>Actually preloaded files</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2" >
-          <item row="0" column="0" >
-           <widget class="QListWidget" name="m_preloadedFiles" />
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QListWidget" name="m_preloadedFiles"/>
           </item>
          </layout>
         </widget>
@@ -428,9 +470,9 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <widget class="QDialogButtonBox" name="m_buttonBox" >
-     <property name="standardButtons" >
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="m_buttonBox">
+     <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
@@ -458,7 +500,7 @@
   <tabstop>m_navigatorComboBox</tabstop>
  </tabstops>
  <resources>
-  <include location="../application.qrc" />
+  <include location="../application.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -467,11 +509,11 @@
    <receiver>ProjectProperty</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>492</x>
      <y>375</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>399</x>
      <y>395</y>
     </hint>
@@ -483,11 +525,11 @@
    <receiver>ProjectProperty</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>545</x>
      <y>375</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>568</x>
      <y>396</y>
     </hint>

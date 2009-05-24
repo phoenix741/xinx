@@ -111,14 +111,17 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 		if( parser ) parsers << parser;
 	}
 
-	progressDlg.setLabelText( tr( "Progressing using %1 thread(s) ..." ).arg( QThread::idealThreadCount() ) );
-	connect( m_watcher, SIGNAL(finished()), &progressDlg, SLOT(reset()) );
-	connect( m_watcher, SIGNAL(progressRangeChanged(int,int)), &progressDlg, SLOT(setRange(int,int)) );
-	connect( m_watcher, SIGNAL(progressValueChanged(int)), &progressDlg, SLOT(setValue(int)) );
+	// Watcher
+	QFutureWatcher<ContentViewParser*> watcher;
 
-	m_watcher->setFuture( QtConcurrent::mapped( parsers, parserLoading ) );
+	progressDlg.setLabelText( tr( "Progressing using %1 thread(s) ..." ).arg( QThread::idealThreadCount() ) );
+	connect( &watcher, SIGNAL(finished()), &progressDlg, SLOT(reset()) );
+	connect( &watcher, SIGNAL(progressRangeChanged(int,int)), &progressDlg, SLOT(setRange(int,int)) );
+	connect( &watcher, SIGNAL(progressValueChanged(int)), &progressDlg, SLOT(setValue(int)) );
+
+	watcher.setFuture( QtConcurrent::mapped( parsers, parserLoading ) );
 	progressDlg.exec();
-	m_watcher->waitForFinished();
+	watcher.waitForFinished();
 
 	m_timerId = startTimer( 200 );
 }
