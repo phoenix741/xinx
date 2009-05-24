@@ -30,7 +30,7 @@
 CompletionNodeModel::CompletionNodeModel( ContentViewNode * root, QObject *parent ) : AbstractContentViewModel( root, parent ) {
 	QMutexLocker locker( mutex() );
 
-	m_nodes.append( root );
+	//m_nodes.append( root );
 	addAllNodes( 0, root );
 }
 

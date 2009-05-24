@@ -32,6 +32,7 @@
 #include <QFileInfo>
 #include <QIcon>
 #include <QVariant>
+#include <QProgressDialog>
 
 /* Static function */
 
@@ -39,7 +40,7 @@ ContentViewParser * parserLoading( ContentViewParser * parser ) {
 	try {
 		parser->loadFromMember();
 	} catch( ContentViewException e ) {
-		// Tant que le parseur Javascript n'est pas au norme on ne n'affiche pas les erreurs des imports �  l'utilisateur
+		// Tant que le parseur Javascript n'est pas au norme on ne n'affiche pas les erreurs des imports �  l'utilisateur
 		qDebug( qPrintable( e.getMessage() ) );
 	}
 	return parser;
@@ -67,18 +68,59 @@ ContentViewCache::~ContentViewCache() {
 	}
 }
 
-void ContentViewCache::initializeCache() {
+void ContentViewCache::initializeCache( QWidget * parent ) {
 	if( m_watcher->isRunning() ) {
 		m_watcher->waitForFinished();
 	}
 
-	QList<ContentViewParser*> parsers;
+	killTimer( m_timerId );
+
+	// Create the progress dialog
+	QProgressDialog progressDlg( parent );
+
+	// Initialise the first list
+	QStringList preloadedFiles;
 	foreach( QString name, m_project->preloadedFiles() ) {
 		QString filename = QDir::cleanPath( QDir( m_project->projectPath() ).absoluteFilePath( name ) );
+		if( QFile::exists( filename ) && ( ! preloadedFiles.contains( filename ) ) ) {
+			preloadedFiles << filename;
+		}
+	}
+
+	QQueue<QString> imports;
+	imports += preloadedFiles;
+	while( imports.size() ) {
+		QString filename = imports.dequeue();
 		ContentViewParser * parser = createParser( filename );
+		if( parser ) {
+			parser->loadFromMember();
+			foreach( QString file, parser->imports() ) {
+				QString cleanedFile = QDir::cleanPath( file );
+				if( QFile::exists( cleanedFile ) && ( ! preloadedFiles.contains( cleanedFile ) ) ) {
+					preloadedFiles << cleanedFile;
+					imports.enqueue( cleanedFile );
+				}
+			}
+			delete parser;
+		}
+	}
+
+	QList<ContentViewParser*> parsers;
+	foreach( QString filename, preloadedFiles ) {
+		ContentViewParser * parser = createParserAndNode( filename );
 		if( parser ) parsers << parser;
 	}
+
+	progressDlg.setLabelText( tr( "Progressing using %1 thread(s) ..." ).arg( QThread::idealThreadCount() ) );
+	connect( m_watcher, SIGNAL(finished()), &progressDlg, SLOT(reset()) );
+	connect( m_watcher, SIGNAL(progressRangeChanged(int,int)), &progressDlg, SLOT(setRange(int,int)) );
+	connect( m_watcher, SIGNAL(progressValueChanged(int)), &progressDlg, SLOT(setValue(int)) );
+
 	m_watcher->setFuture( QtConcurrent::mapped( parsers, parserLoading ) );
+	progressDlg.exec();
+	m_watcher->waitForFinished();
+
+	m_timerId = startTimer( 200 );
 }
 
 void ContentViewCache::resultReadyAt( int index ) {
@@ -88,7 +130,7 @@ void ContentViewCache::resultReadyAt( int index ) {
 	}
 }
 
-ContentViewParser * ContentViewCache::createParser( const QString & filename, ContentViewNode** refNode ) {
+ContentViewParser * ContentViewCache::createParser( const QString & filename, ContentViewNode* node ) {
 	if( ! QFileInfo( filename ).exists() ) return 0;
 	if( m_nodes.contains( filename ) ) return 0;
 
@@ -97,24 +139,35 @@ ContentViewParser * ContentViewCache::createParser( const QString & filename, Co
 	IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
 	if( fileType && ( parser = fileType->createParser() ) ) {
 		try {
-			ContentViewNode * node = new ContentViewNode( filename, -1, true );
-
-			node->setAutoDelete( false );
-			node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
-			node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
-			node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
-			node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
-
-			parser->setRootNode( node );
+			if( node ) {
+				parser->setRootNode( node );
+				node->setData( QVariant::fromValue( fileType->icon() ), ContentViewNode::NODE_ICON );
+			}
 			parser->setFilename( filename );
-
-			m_nodes.insert( filename, node );
-			if( refNode ) *refNode = node;
 		} catch( ContentViewException e ) {
-			// Certainement une erreur indiquant que le fichier n'existe pas (normalement déj�  controlé)
+			// Certainement une erreur indiquant que le fichier n'existe pas (normalement déj�  controlé)
 			qWarning( qPrintable( e.getMessage() ) );
+			delete parser;
+			parser = 0;
 		}
 	}
+	return parser;
+}
+
+ContentViewParser * ContentViewCache::createParserAndNode( const QString & filename, ContentViewNode** refNode ) {
+	ContentViewNode * node = new ContentViewNode( filename, -1, true );
+	ContentViewParser * parser = createParser( filename, node );
+
+	if( parser ) {
+		node->setAutoDelete( false );
+		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_NAME );
+		node->setData( QVariant( QFileInfo( filename ).fileName() ), ContentViewNode::NODE_DISPLAY_NAME );
+		node->setData( QVariant( "include"                        ), ContentViewNode::NODE_TYPE );
+
+		m_nodes.insert( filename, node );
+		if( refNode ) *refNode = node;
+	} else
+		node->deleteInstance();
 
 	return parser;
 }
@@ -126,7 +179,7 @@ ContentViewNode * ContentViewCache::contentOfFileName( const QString & filename 
 	}
 
 	ContentViewNode * node = 0;
-	ContentViewParser * parser = createParser( key, &node );
+	ContentViewParser * parser = createParserAndNode( key, &node );
 	if( parser ) {
 		m_parsers.enqueue( parser );
 	}

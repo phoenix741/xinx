@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QApplication>
 
 // Xinx header
 #include "core/xinxproject.h"
@@ -650,9 +651,9 @@ QStringList & XinxProject::preloadedFiles() {
 void XinxProject::preloadFilesCache() {
 	if( ! d->m_cache ) {
 		d->m_cache = new ContentViewCache( this );
-		d->m_cache->initializeCache();
+		d->m_cache->initializeCache( qApp->activeWindow() ? qApp->activeWindow() : 0 );
 	} else
-		d->m_cache->initializeCache();
+		d->m_cache->initializeCache( qApp->activeWindow() ? qApp->activeWindow() : 0 );
 }
 
 ContentViewCache * XinxProject::preloadedFilesCache() {

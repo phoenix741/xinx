@@ -69,13 +69,14 @@ public:
 	QStringList contentsViewLoaded() const;
 
 	//! Intialize a cache from the content of preloaded files.
-	void initializeCache();
+	void initializeCache( QWidget * parent = 0 );
 protected:
 	virtual void timerEvent( QTimerEvent * event );
 private slots:
 	void resultReadyAt( int index );
 private:
-	ContentViewParser * createParser( const QString & filename, ContentViewNode** refNode = 0 );
+	ContentViewParser * createParser( const QString & filename, ContentViewNode* node = 0 );
+	ContentViewParser * createParserAndNode( const QString & filename, ContentViewNode** refNode = 0 );
 
 	QHash<QString,ContentViewNode*> m_nodes;
 	QFutureWatcher<ContentViewParser*> * m_watcher;

@@ -173,7 +173,7 @@ void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables,
 					s.src = attributes().value( "src" ).toString();
 					readUnknownElement();
 				} else {
-					s.src = rootNode()->fileName() + ".js";
+					s.src = ( rootNode() ? rootNode()->fileName() : filename() ) + ".js";
 					s.content = readElementText();
 				}
 				scripts += s;
@@ -190,7 +190,7 @@ void XslContentViewParser::readTemplate( QList<struct_xsl_variable> & variables,
 				s.isSrc = false;
 				s.line = lineNumber();
 				s.title = "Cascading StyleSheet";
-				s.src = rootNode()->fileName() + ".css";
+				s.src = ( rootNode() ? rootNode()->fileName() : filename() ) + ".css";
 				s.content = readElementText();
 				scripts += s;
 			} else

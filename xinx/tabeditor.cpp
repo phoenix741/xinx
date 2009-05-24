@@ -132,8 +132,10 @@ AbstractEditor * TabEditor::createEditor( IFileTypePlugin * plugin, const QStrin
 		AbstractEditor * ed;
 		if( plugin )
 			ed = plugin->createEditor( filename );
-		else
+		else {
 			ed = new TextFileEditor( new XinxCodeEdit() );
+			ed->loadFromFile( filename );
+		}
 
 		if( !ed ) return 0; // Maybe a dialog box or other
 

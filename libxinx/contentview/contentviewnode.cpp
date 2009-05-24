@@ -262,12 +262,7 @@ const QString & ContentViewNode::fileName() const {
 
 void ContentViewNode::setFileName( const QString & value ) {
 	if( m_filename != value ) {
-		QList<AbstractContentViewModel*> lockedModels = callModelsLock( 0 );
-
 		m_filename = value;
-		callModelsDataChanged( lockedModels );
-
-		callModelsUnlock( lockedModels );
 	}
 }
 
@@ -304,6 +299,8 @@ const ContentViewNodeList & ContentViewNode::childs() const {
 }
 
 bool ContentViewNode::operator==( const ContentViewNode & node ) const {
+	//	if( node.m_filename     != m_filename     ) return false;
+	if( node.m_line         != m_line         ) return false;
 	if( node.m_datas.size() != m_datas.size() ) return false;
 
 	foreach( int index, m_datas.keys() ) {

@@ -104,13 +104,12 @@ void ContentViewParser::removeAttachedNode( ContentViewNode * n ) {
 	}
 }
 
-QString ContentViewParser::locationOf( ContentViewNode * parent, const QString & filename ) {
+QString ContentViewParser::locationOf( const QString & relativeFilename ) {
 	QStringList searchList;
+	const QString name = filename();
 
-	if( parent && (! parent->fileName().isEmpty() ) )
-		searchList << QFileInfo( parent->fileName() ).absolutePath();
-	if( ! m_filename.isEmpty() )
-		searchList << QFileInfo( m_filename ).absolutePath();
+	if( ! name.isEmpty() )
+		searchList << QFileInfo( name ).absolutePath();
 
 	if( XINXProjectManager::self()->project() )
 		searchList += XINXProjectManager::self()->project()->processedSearchPathList();
@@ -118,7 +117,7 @@ QString ContentViewParser::locationOf( ContentViewNode * parent, const QString &
 	QString absPath = QString();
 	bool finded = false;
 	foreach( const QString & path, searchList ) {
-		absPath = QDir( path ).absoluteFilePath( filename );
+		absPath = QDir( path ).absoluteFilePath( relativeFilename );
 		if( QFile::exists( absPath ) ) {
 			finded = true;
 			break;
@@ -128,13 +127,13 @@ QString ContentViewParser::locationOf( ContentViewNode * parent, const QString &
 	if( finded )
 		return absPath;
 
-	return filename;
+	return relativeFilename;
 }
 
 void ContentViewParser::createContentViewNode( ContentViewNode * parent, const QString & filename ) {
 	// Declaration
-	QString name = QFileInfo( filename ).fileName(), absFilename = locationOf( parent, filename );
-	m_imports.append( filename );
+	QString name = QFileInfo( filename ).fileName(), absFilename = locationOf( filename );
+	m_imports.append( absFilename );
 
 	if( ! rootNode() ) return;
 
@@ -200,7 +199,7 @@ const QStringList & ContentViewParser::imports() const {
 
 void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QByteArray & content ) {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), rootNode->fileName(), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), filename(), 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
@@ -248,7 +247,8 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 		m_rootNode = rootNode;
 		m_device   = &file;
 		m_filename = filename;
-		rootNode->setFileName( filename );
+		if( rootNode )
+			rootNode->setFileName( filename );
 		removeAttachedNodes();
 
 		loadFromDeviceImpl();
@@ -273,7 +273,7 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 
 void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * device ) {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), rootNode->fileName(), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), filename(), 0, 0 );
 
 	try {
 		m_alreadyRunning = true;
@@ -302,7 +302,7 @@ void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * 
 
 void ContentViewParser::loadFromMember() {
 	if( m_alreadyRunning )
-		throw ContentViewException( tr("Parser already running"), rootNode()->fileName(), 0, 0 );
+		throw ContentViewException( tr("Parser already running"), filename(), 0, 0 );
 
 	try {
 		m_imports.clear();
@@ -344,15 +344,15 @@ void ContentViewParser::setFilename( const QString & filename ) {
 		m_rootNode->setFileName( filename );
 	m_filename = filename;
 	m_device = file;
-	setInputDevice( file );
 }
 
 const QString & ContentViewParser::filename() const {
+	if( rootNode() )
+		return rootNode()->fileName();
 	return m_filename;
 }
 
 void ContentViewParser::setInputDevice( QIODevice * device ) {
-	m_filename = QString();
 	m_device = device;
 }
 

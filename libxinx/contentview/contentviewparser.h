@@ -155,7 +155,7 @@ protected:
 	inline void removeAttachedNodes() { m_attachedNode.clear(); }
 
 	//! Return the location (absolute path) of the filename, with the help of the \e parent node
-	QString locationOf( ContentViewNode * parent, const QString & filename );
+	QString locationOf( const QString & relativeFilename );
 private:
 	QList< QPair<ContentViewNode*,ContentViewNode*> > m_attachedNode;
 	bool m_autoDelete, m_alreadyRunning;
