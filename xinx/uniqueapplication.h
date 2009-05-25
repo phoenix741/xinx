@@ -28,8 +28,6 @@ class UniqueApplication : public QtSingleApplication {
 	Q_OBJECT
 public:
 	UniqueApplication ( int & argc, char ** argv );
-	UniqueApplication ( int & argc, char ** argv, bool GUIenabled );
-	UniqueApplication ( int & argc, char ** argv, Type type );
 	virtual ~UniqueApplication ();
 
 	virtual bool notify ( QObject * receiver, QEvent * event );

@@ -39,15 +39,7 @@
 
 /* UniqueApplication */
 
-UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QtSingleApplication( argc, argv ), m_mainform(0) {
-
-}
-
-UniqueApplication::UniqueApplication( int & argc, char ** argv, bool GUIenabled ) : QtSingleApplication( argc, argv, GUIenabled ), m_mainform(0) {
-
-}
-
-UniqueApplication::UniqueApplication( int & argc, char ** argv, Type type ) : QtSingleApplication( argc, argv, type ), m_mainform(0) {
+UniqueApplication::UniqueApplication( int & argc, char ** argv ) : QtSingleApplication( QString( "XINX" ), argc, argv ), m_mainform(0) {
 
 }
 
