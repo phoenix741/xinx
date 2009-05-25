@@ -60,6 +60,10 @@ void ContentViewTextEditor::saveToFile( const QString & fileName ) {
 }
 
 void ContentViewTextEditor::loadFromDevice( QIODevice & d ) {
+	TextFileEditor::loadFromDevice( d );
+	m_keyTimer->stop();
+	d.reset();
+
 	try {
 		m_parser->loadFromDevice( m_rootNode, &d );
 		textEdit()->setErrors( QList<int>() );
@@ -68,8 +72,6 @@ void ContentViewTextEditor::loadFromDevice( QIODevice & d ) {
 		textEdit()->setErrors( QList<int>() << e.getLine() );
 		setMessage( e.getMessage() );
 	}
-	d.reset();
-	TextFileEditor::loadFromDevice( d );
 }
 
 QAbstractItemModel * ContentViewTextEditor::model() const {

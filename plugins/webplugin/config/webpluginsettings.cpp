@@ -79,13 +79,13 @@ void WebPluginSettings::setDefault() {
 
 void WebPluginSettings::save() {
 	d->createSettings();
-	setSettingsGlobals( d->m_settings, "plugins/webplugin", d->m_globals );
+	setSettingsGlobals( d->m_settings, "PluginsSettings/webplugin", d->m_globals );
 	d->deleteSettings();
 }
 
 void WebPluginSettings::load() {
 	d->createSettings();
-	d->m_globals = getSettingsGlobals( d->m_settings, "plugins/webplugin", getDefaultGlobals() );
+	d->m_globals = getSettingsGlobals( d->m_settings, "PluginsSettings/webplugin", getDefaultGlobals() );
 	d->deleteSettings();
 }
 

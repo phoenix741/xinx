@@ -1,4 +1,4 @@
-<config classname="Web Plugin Settings" organization="Shadoware.Org" application="XINX" path="plugins/webplugin">
+<config classname="Web Plugin Settings" organization="Shadoware.Org" application="XINX" path="PluginsSettings/webplugin">
 	<type name="XML">
 		<value name="Active completion" type="bool" default="true"/>
 		<value name="Add closed balise" type="bool" default="true"/>

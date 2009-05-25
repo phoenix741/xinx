@@ -79,13 +79,13 @@ void PluginSettings::setDefault() {
 
 void PluginSettings::save() {
 	d->createSettings();
-	setSettingsGlobals( d->m_settings, "plugins/cvsplugin", d->m_globals );
+	setSettingsGlobals( d->m_settings, "PluginsSettings/cvsplugin", d->m_globals );
 	d->deleteSettings();
 }
 
 void PluginSettings::load() {
 	d->createSettings();
-	d->m_globals = getSettingsGlobals( d->m_settings, "plugins/cvsplugin", getDefaultGlobals() );
+	d->m_globals = getSettingsGlobals( d->m_settings, "PluginsSettings/cvsplugin", getDefaultGlobals() );
 	d->deleteSettings();
 }
 
