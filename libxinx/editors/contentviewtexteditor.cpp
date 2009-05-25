@@ -20,13 +20,16 @@
 // Xinx header
 #include "editors/contentviewtexteditor.h"
 #include "core/xinxconfig.h"
+#include "core/xinxproject.h"
 #include "editors/xinxcodeedit.h"
 #include "contentview/contentviewnode.h"
 #include "contentview/contentviewparser.h"
 #include "contentview/contentviewmodel.h"
+#include "contentview/contentviewcache.h"
 
 // Qt header
 #include <QTextCodec>
+#include <QDir>
 
 /* ContentViewTextEditor */
 
@@ -62,16 +65,7 @@ void ContentViewTextEditor::saveToFile( const QString & fileName ) {
 void ContentViewTextEditor::loadFromDevice( QIODevice & d ) {
 	TextFileEditor::loadFromDevice( d );
 	m_keyTimer->stop();
-	d.reset();
-
-	try {
-		m_parser->loadFromDevice( m_rootNode, &d );
-		textEdit()->setErrors( QList<int>() );
-		setMessage( QString() );
-	} catch( ContentViewException e ) {
-		textEdit()->setErrors( QList<int>() << e.getLine() );
-		setMessage( e.getMessage() );
-	}
+	updateModel();
 }
 
 QAbstractItemModel * ContentViewTextEditor::model() const {
@@ -97,6 +91,20 @@ void ContentViewTextEditor::updateModel() {
 		} else {
 			encodedText = qPrintable( textEdit()->toPlainText() );
 		}
+
+		// Search imports
+		ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->preloadedFilesCache() : 0;
+		if( cache ) {
+			m_parser->loadFromContent( 0, encodedText );
+			QStringList imports = m_parser->imports();		
+			QMutableStringListIterator i(imports);
+			while( i.hasNext() ) {
+				i.setValue( QDir::cleanPath( i.next() ) );
+			}
+			cache->loadCache( imports, this );
+		}
+
+		// Re-load
 		m_parser->loadFromContent( m_rootNode, encodedText );
 		emit contentChanged();
 		textEdit()->setErrors( QList<int>() );

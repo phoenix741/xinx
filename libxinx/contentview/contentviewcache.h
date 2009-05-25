@@ -70,6 +70,8 @@ public:
 
 	//! Intialize a cache from the content of preloaded files.
 	void initializeCache( QWidget * parent = 0 );
+	//! Load file and import to cache
+	void loadCache( QStringList filenames, QWidget * parent = 0 );
 protected:
 	virtual void timerEvent( QTimerEvent * event );
 private slots:

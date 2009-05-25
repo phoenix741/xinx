@@ -75,9 +75,6 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 
 	killTimer( m_timerId );
 
-	// Create the progress dialog
-	QProgressDialog progressDlg( parent );
-
 	// Initialise the first list
 	QStringList preloadedFiles;
 	foreach( QString name, m_project->preloadedFiles() ) {
@@ -87,8 +84,30 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 		}
 	}
 
+	loadCache( preloadedFiles, parent );
+
+	m_timerId = startTimer( 200 );
+}
+
+void ContentViewCache::loadCache( QStringList filenames, QWidget * parent ) {
+	// Create the progress dialog
+	QProgressDialog progressDlg( parent );
+
+	const QStringList & keys = m_nodes.keys();
+
 	QQueue<QString> imports;
-	imports += preloadedFiles;
+	
+	// Remove file already in cache
+	foreach( const QString & import, filenames ) {
+		if( ! keys.contains( import ) ) {
+			imports += import;
+		}
+	}
+
+	if( imports.isEmpty() )
+		return;
+
+	// Search import
 	while( imports.size() ) {
 		QString filename = imports.dequeue();
 		ContentViewParser * parser = createParser( filename );
@@ -96,8 +115,8 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 			parser->loadFromMember();
 			foreach( QString file, parser->imports() ) {
 				QString cleanedFile = QDir::cleanPath( file );
-				if( QFile::exists( cleanedFile ) && ( ! preloadedFiles.contains( cleanedFile ) ) ) {
-					preloadedFiles << cleanedFile;
+				if( QFile::exists( cleanedFile ) && ( ! filenames.contains( cleanedFile ) ) && ( ! keys.contains( cleanedFile ) ) ) {
+					filenames << cleanedFile;
 					imports.enqueue( cleanedFile );
 				}
 			}
@@ -106,7 +125,7 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 	}
 
 	QList<ContentViewParser*> parsers;
-	foreach( QString filename, preloadedFiles ) {
+	foreach( QString filename, filenames ) {
 		ContentViewParser * parser = createParserAndNode( filename );
 		if( parser ) parsers << parser;
 	}
@@ -122,8 +141,6 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 	watcher.setFuture( QtConcurrent::mapped( parsers, parserLoading ) );
 	progressDlg.exec();
 	watcher.waitForFinished();
-
-	m_timerId = startTimer( 200 );
 }
 
 void ContentViewCache::resultReadyAt( int index ) {
