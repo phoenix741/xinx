@@ -68,7 +68,7 @@ Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: applica
 Source: ..\xinx\xml\*.xml; DestDir: {app}\xml; Components: application
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
 
-Source: ..\xinx.zip; DestDir: {app}; Components: source; Flags: replacesameversion; DestName: src.zip
+Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion;
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 
 DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
