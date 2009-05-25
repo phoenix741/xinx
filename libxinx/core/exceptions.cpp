@@ -48,27 +48,31 @@ ExceptionManager * ExceptionManager::s_self = 0;
 /* Message Handler */
 
 static void xinxMessageHandler( QtMsgType t, const char * m ) {
-    QString rich;
+#ifdef _XINX_RELEASE_MODE_
+	if( t == QtDebugMsg ) return;
+#endif /* _XINX_RELEASE_MODE_ */
 
-    switch (t) {
-    case QtDebugMsg:
-    default:
-        rich = QErrorMessage::tr("Debug Message:");
-        break;
-    case QtWarningMsg:
-        rich = QErrorMessage::tr("Warning:");
-        break;
-    case QtFatalMsg:
-        rich = QErrorMessage::tr("Fatal Error:");
-    }
-    rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
-    rich += Qt::escape(QLatin1String( m ));
+	QString rich;
 
-    // ### work around text engine quirk
-    if (rich.endsWith(QLatin1String("</p>")))
-        rich.chop(4);
+	switch (t) {
+	case QtDebugMsg:
+	default:
+		rich = QErrorMessage::tr("Debug Message:");
+		break;
+	case QtWarningMsg:
+		rich = QErrorMessage::tr("Warning:");
+		break;
+	case QtFatalMsg:
+		rich = QErrorMessage::tr("Fatal Error:");
+	}
+	rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
+	rich += Qt::escape(QLatin1String( m ));
 
-    ExceptionManager::self()->notifyError( rich, t );
+	// ### work around text engine quirk
+	if (rich.endsWith(QLatin1String("</p>")))
+			rich.chop(4);
+
+	ExceptionManager::self()->notifyError( rich, t );
 }
 
 /* ExceptionManager */

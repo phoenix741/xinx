@@ -162,13 +162,20 @@ SectionGroup Extra
 	    File ..\plugins\services.dll
 	    WriteRegStr HKLM "${REGKEY}\Components" "WebServices Plugin" 1
 	SectionEnd
+
+	Section "Dictionary Plugin" SEC_EXT_DICO
+	    SetOutPath $INSTDIR\plugins
+	    SetOverwrite on
+	    File ..\plugins\dictionary.dll
+	    WriteRegStr HKLM "${REGKEY}\Components" "Dictionary Plugin" 1
+	SectionEnd
 SectionGroupEnd
 
 SectionGroup /e Developpement GRP_DEV
 	Section /o Source SEC_DEV_SRC
 		SetOutPath $INSTDIR
 		SetOverwrite on
-		File /oname=src.zip ..\xinx.zip
+		File ..\src.7z
 		WriteRegStr HKLM "${REGKEY}\Components" Source 1
 	SectionEnd
 	Section /o Documentation SEC_DEV_DOC
@@ -253,6 +260,11 @@ Section /o "-un.WebServices Plugin" UNSEC0003
     DeleteRegValue HKLM "${REGKEY}\Components" "WebServices Plugin"
 SectionEnd
 
+Section /o "-un.WebServices Plugin" UNSEC0008
+    Delete /REBOOTOK $INSTDIR\plugins\dictionary.dll
+    DeleteRegValue HKLM "${REGKEY}\Components" "Dictionary Plugin"
+SectionEnd
+
 Section /o -un.Scripts UNSEC0004
     Delete /REBOOTOK $INSTDIR\scripts\xslvalue.js
     Delete /REBOOTOK $INSTDIR\scripts\xslkey.js
@@ -294,6 +306,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION "CVS Plugin" ${UNSEC0001}
     !insertmacro SELECT_UNSECTION "SVN Plugin" ${UNSEC0002}
     !insertmacro SELECT_UNSECTION "WebServices Plugin" ${UNSEC0003}
+    !insertmacro SELECT_UNSECTION "Dictionary Plugin" ${UNSEC0008}
     !insertmacro SELECT_UNSECTION Scripts ${UNSEC0004}
     !insertmacro SELECT_UNSECTION Source ${UNSEC0005}
     !insertmacro SELECT_UNSECTION Documentation ${UNSEC0006}
@@ -306,6 +319,7 @@ FunctionEnd
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_XNX_PLUGINCVS} $(SEC_XNX_PLUGINCVS_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_EXT_PLUGINSVN} $(SEC_EXT_PLUGINSVN_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_EXT_SERVICES} $(SEC_EXT_SERVICES_DESC)
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_EXT_DICO} $(SEC_EXT_DICO_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DEV_SRC} $(SEC_DEV_SRC_DESC)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DEV_DOC} $(SEC_DEV_DOC_DESC)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
@@ -323,6 +337,7 @@ LangString SEC_EXT_SCRIPT_DESC ${LANG_FRENCH} "Des scriptes supplémentaire pour 
 LangString SEC_XNX_PLUGINCVS_DESC ${LANG_FRENCH} "Un plugin permettant d'accéder à referenciel CVS"
 LangString SEC_EXT_PLUGINSVN_DESC ${LANG_FRENCH} "Un plugin permettant d'accéder à referenciel SVN"
 LangString SEC_EXT_SERVICES_DESC ${LANG_FRENCH} "Un plugin permettant d'utiliser les services internet"
+LangString SEC_EXT_DICO_DESC ${LANG_FRENCH} "Un plugin permettant d'afficher le dictionnaire"
 LangString SEC_DEV_SRC_DESC ${LANG_FRENCH} "Les sources de XINX"
 LangString SEC_DEV_DOC_DESC ${LANG_FRENCH} "La documentation technique de XINX"
 LangString SEC0002_DESC ${LANG_FRENCH} "Script utilitaire à XINX"
@@ -334,6 +349,7 @@ LangString SEC_EXT_SCRIPT_DESC ${LANG_ENGLISH} "Some script for XINX"
 LangString SEC_XNX_PLUGINCVS_DESC ${LANG_ENGLISH} "A plugin to access to CVS repository"
 LangString SEC_EXT_PLUGINSVN_DESC ${LANG_ENGLISH} "A plugin to access to SubVersion repository"
 LangString SEC_EXT_SERVICES_DESC ${LANG_ENGLISH} "A plugin to use Web Services"
+LangString SEC_EXT_DICO_DESC ${LANG_ENGLISH} "A plugin to use dictionary"
 LangString SEC_DEV_SRC_DESC ${LANG_ENGLISH} "Source of XINX"
 LangString SEC_DEV_DOC_DESC ${LANG_ENGLISH} "Technical documentation"
 LangString SEC0002_DESC ${LANG_ENGLISH} "Script utilitaire à XINX"
