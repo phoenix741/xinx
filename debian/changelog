@@ -23,6 +23,8 @@ xinx (0.8.1.0) unstable; urgency=low
   * - 271 : Caractère manquant à l'utilisation d'un modèle personnalisé
   * - 277 : Pouvoir ajouter des catégories personnalisées dans la gestion des modèles
 
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Thu, 26 May 2009 08:30:00 +0100
+
 xinx (0.8.0.0) unstable; urgency=low
 
   [ Ulrich Van Den Hekke ]
@@ -46,6 +48,8 @@ xinx (0.8.0.0) unstable; urgency=low
   * - 267 : Changement sur une balise fermante
   * - 268 : Propriété projet
 
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Sun, 02 Mar 2008 20:22:19 +0100
+
 xinx (0.7.2.2) unstable; urgency=high
 
   [ Ulrich Van Den Hekke ]
@@ -58,12 +62,16 @@ xinx (0.7.2.2) unstable; urgency=high
   * - 225 : Complétion sur le mode
   * - 223 : Ajout des balises with-param
 
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Sun, 02 Mar 2008 20:22:19 +0100
+
 xinx (0.7.2.1) unstable; urgency=high
 
   [ Ulrich Van Den Hekke ]
   * Upstream Release
   * - 220 : Faute d'orthographe
   * - 221 : Migration projet
+
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Sun, 02 Mar 2008 20:22:19 +0100
 
 xinx (0.7.2.0) unstable; urgency=low
 
