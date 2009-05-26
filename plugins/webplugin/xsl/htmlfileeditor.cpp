@@ -214,18 +214,20 @@ void XmlFileEditor::loadFromDevice( QIODevice & d ) {
 /* StyleSheetEditor */
 
 StyleSheetEditor::StyleSheetEditor( QWidget *parent ) : ContentViewTextEditor( new XslContentViewParser(), new XslTextEditor(), parent ), m_parsingOutputFile(0), m_parsingStyleSheetFile( 0 ) {
-	m_htmlView = new QWebView( this );
-	m_htmlView->load( QUrl( "about:blank" ) );
-	m_htmlView->setMinimumHeight( 100 );
-	splitter()->addWidget( m_htmlView );
-	configurationChanged();
+	if( XINXProjectManager::self()->project() ) {
+		m_htmlView = new QWebView( this );
+		m_htmlView->load( QUrl( "about:blank" ) );
+		m_htmlView->setMinimumHeight( 100 );
+		splitter()->addWidget( m_htmlView );
+		configurationChanged();
 
-	m_parsingProcess  = new QProcess( this );
-	m_parsingProcess->setWorkingDirectory( XINXProjectManager::self()->project()->projectPath() );
-	m_parsingProcess->setProcessChannelMode( QProcess::MergedChannels );
-	connect( m_parsingProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(parsingFinished()) );
-	connect( SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(configurationChanged()) );
-	connect( textEdit()->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()) );
+		m_parsingProcess  = new QProcess( this );
+		m_parsingProcess->setWorkingDirectory( XINXProjectManager::self()->project()->projectPath() );
+		m_parsingProcess->setProcessChannelMode( QProcess::MergedChannels );
+		connect( m_parsingProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(parsingFinished()) );
+		connect( SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(configurationChanged()) );
+		connect( textEdit()->editor(), SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()) );
+	}
 
 	m_completionModel = new XslCompletionNodeModel( rootNode(), this );
 	m_completionModel->setCompleteTags( XslCompletionNodeModel::NoTags );
@@ -258,7 +260,7 @@ void StyleSheetEditor::parsingFinished() {
 
 	// Show Stylesheet
 	if( SelfWebPluginSettings::self()->config().stylesheetParsing.viewer.type == "internal" ) {
-		QString moduleInternetAdresse = XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString();
+		QString moduleInternetAdresse = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString() : QString();
 		if( moduleInternetAdresse.isEmpty() )
 			qWarning( qPrintable( tr( "Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project" ) ) );
 		m_htmlView->setHtml( m_parsingOutput, QUrl( moduleInternetAdresse ) );
