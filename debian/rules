@@ -10,6 +10,7 @@ install/xinx::
 	cp $(CURDIR)/xinxprojectwizard/xinxprojectwizard $(CURDIR)/debian/xinx/usr/bin/
 	
 	mkdir $(CURDIR)/debian/xinx/usr/lib/
+	cp -a $(CURDIR)/ext/qcodeedit/libqcodeedit* $(CURDIR)/debian/xinx/usr/lib/
 	cp -a $(CURDIR)/libxinx/libsharedxinx* $(CURDIR)/debian/xinx/usr/lib/
 	cp -a $(CURDIR)/components/libxinxcmp* $(CURDIR)/debian/xinx/usr/lib/
 	
