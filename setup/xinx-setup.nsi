@@ -117,9 +117,9 @@ Section Application SEC_XNX_APP
 
 	SetOutPath $INSTDIR\xml
 	SetOverwrite on
-	File ..\xinx\xml\baseplugin_js.xml
-	File ..\xinx\xml\baseplugin_xml.xml
-	File ..\xinx\xml\template.xml
+	File ..\xml\baseplugin_js.xml
+	File ..\xml\baseplugin_xml.xml
+	File ..\xml\template.xml
 
 	File ..\scripts\conf_businessviewlist.xq
 	File ..\scripts\conf_version.xq

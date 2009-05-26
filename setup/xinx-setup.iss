@@ -65,7 +65,7 @@ Source: {#QTDIR}\bin\QtWebKit4.dll; DestDir: {app}\bin; Components: application;
 Source: {#QTDIR}\bin\QtXml4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 Source: {#QTDIR}\bin\QtXmlPatterns4.dll; DestDir: {app}\bin; Components: application; Flags: sharedfile
 
-Source: ..\xinx\xml\*.xml; DestDir: {app}\xml; Components: application
+Source: ..\xml\*.xml; DestDir: {app}\xml; Components: application
 DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
 
 Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion;
