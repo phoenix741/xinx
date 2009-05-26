@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-CONFIG += debug
+CONFIG += release
 
 SUBDIRS += lib example
 
