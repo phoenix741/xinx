@@ -34,6 +34,13 @@ install/xinx-plugins-svn::
 	mkdir $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
 	cp $(CURDIR)/plugins/libsvnplugin.so $(CURDIR)/debian/xinx-plugins-svn/usr/share/xinx/plugins/
 
+install/xinx-plugins-dictionary::
+	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/
+	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/
+	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/
+	mkdir $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/plugins/
+	cp $(CURDIR)/plugins/libdictionary.so $(CURDIR)/debian/xinx-plugins-dictionary/usr/share/xinx/plugins/
+
 install/xinx-scripts::
 	mkdir $(CURDIR)/debian/xinx-scripts/usr/
 	mkdir $(CURDIR)/debian/xinx-scripts/usr/share/

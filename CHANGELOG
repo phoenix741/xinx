@@ -1,3 +1,27 @@
+XINX - 0.8.1.0
+==============
+- 284 : Documentation sur le site de XINX
+- 290 : Plantage
+- 285 : NSIS
+- 249 : Lancer le parseur XSL
+- 292 : D-BUS
+- 250 : Actions
+- 091 : Afficher un Dock avec le dictionnaire de l'application
+- 289 : Certain noeud disparaisse
+- 288 : Ne peux ouvrir les fichiers HTML
+- 272 : Drag & Drop depuis le dossier projet
+- 275 : Faute d'orthographe ;) : Paramêtre au lieu de Paramètre
+- 245 : Synchronisation de la vue Contenue
+- 274 : Message de Qt : QSortFilterProxyModel: inconsistent changes reported by source model
+- 286 : Transformation de ')' en ']' à l"enregistrement
+- 270 : Coller ne fonctionne pas
+- 251 : Completion
+- 280 : Complétion des params en doublon sur un template inclus
+- 283 : Ctrl+Enter/Shift+Ctrl+Enter
+- 271 : Caractère manquant à l'utilisation d'un modèle personnalisé
+- 277 : Pouvoir ajouter des catégories personnalisées dans la gestion des modèles
+
+
 XINX - 0.8.0.0
 ==============
 - 269 : Problème lors de la complétion & de l'insertion des snipets
