@@ -90,9 +90,6 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 }
 
 void ContentViewCache::loadCache( QStringList filenames, QWidget * parent ) {
-	// Create the progress dialog
-	QProgressDialog progressDlg( parent );
-
 	const QStringList & keys = m_nodes.keys();
 
 	QQueue<QString> imports;
@@ -130,9 +127,14 @@ void ContentViewCache::loadCache( QStringList filenames, QWidget * parent ) {
 		if( parser ) parsers << parser;
 	}
 
+	if( parsers.isEmpty() )
+		return;
+
 	// Watcher
 	QFutureWatcher<ContentViewParser*> watcher;
 
+	// Create the progress dialog
+	QProgressDialog progressDlg( parent );
 	progressDlg.setLabelText( tr( "Progressing using %1 thread(s) ..." ).arg( QThread::idealThreadCount() ) );
 	connect( &watcher, SIGNAL(finished()), &progressDlg, SLOT(reset()) );
 	connect( &watcher, SIGNAL(progressRangeChanged(int,int)), &progressDlg, SLOT(setRange(int,int)) );
