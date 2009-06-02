@@ -19,6 +19,7 @@
 
 #ifndef __SCRIPTMANAGER_H__
 #define __SCRIPTMANAGER_H__
+#pragma once
 
 // Qt header
 #include <QObject>

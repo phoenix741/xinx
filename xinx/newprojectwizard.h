@@ -19,6 +19,7 @@
 
 #ifndef _NEWPROJECTWIZARD_H_
 #define _NEWPROJECTWIZARD_H_
+#pragma once
 
 // Qt header
 #include <QWizard>

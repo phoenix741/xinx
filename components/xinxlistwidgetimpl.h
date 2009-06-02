@@ -19,6 +19,7 @@
 
 #ifndef XINXLISTWIDGET_H_
 #define XINXLISTWIDGET_H_
+#pragma once
 
 // Xinx header
 #include "ui_xinxlistwidget.h"

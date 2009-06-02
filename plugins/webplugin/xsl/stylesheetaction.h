@@ -19,6 +19,7 @@
 
 #ifndef _STYLESHEETACTION_H_
 #define _STYLESHEETACTION_H_
+#pragma once
 
 // Xinx header
 #include <actions/actioninterface.h>

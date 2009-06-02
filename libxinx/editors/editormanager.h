@@ -24,6 +24,7 @@
 
 #ifndef _EDITORMANAGER_H_
 #define _EDITORMANAGER_H_
+#pragma once
 
 // Qt header
 #include <QString>

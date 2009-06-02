@@ -19,6 +19,7 @@
 
 #ifndef __FILEEDITOR_H__
 #define __FILEEDITOR_H__
+#pragma once
 
 // Xinx headeur
 #include <editors/abstracteditor.h>

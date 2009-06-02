@@ -19,6 +19,7 @@
 
 #ifndef _XSLCONTENTVIEWPARSER_H_
 #define _XSLCONTENTVIEWPARSER_H_
+#pragma once
 
 // Xinx header
 #include <contentview/contentviewparser.h>

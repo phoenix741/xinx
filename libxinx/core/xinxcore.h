@@ -19,6 +19,7 @@
 
 #ifndef __XINXCORE_H__
 #define __XINXCORE_H__
+#pragma once
 
 /*! \mainpage XINX Library
  *

@@ -24,6 +24,7 @@
 
 #ifndef _COMPLETIONNODEMODEL_H_
 #define _COMPLETIONNODEMODEL_H_
+#pragma once
 
 // Xinx header
 #include <contentview/abstractcontentviewmodel.h>

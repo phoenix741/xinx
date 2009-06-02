@@ -19,6 +19,7 @@
 
 #ifndef DICTIONARYPARSER_H
 #define DICTIONARYPARSER_H
+#pragma once
 
 // Xinx header
 #include <contentview/contentviewparser.h>

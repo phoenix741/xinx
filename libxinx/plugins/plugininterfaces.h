@@ -19,6 +19,7 @@
 
 #ifndef INTERFACES_H_
 #define INTERFACES_H_
+#pragma once
 
 // Qt header
 #include <QtPlugin>

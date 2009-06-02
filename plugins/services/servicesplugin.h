@@ -19,6 +19,7 @@
 
 #ifndef SERVICESPLUGIN_H_
 #define SERVICESPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>

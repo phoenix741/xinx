@@ -19,6 +19,7 @@
 
 #ifndef CSSMODELDATA_H_
 #define CSSMODELDATA_H_
+#pragma once
 
 // Xinx header
 #include <contentview/contentviewparser.h>

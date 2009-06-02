@@ -19,6 +19,7 @@
 
 #ifndef XMLPRESPLUGIN_H_
 #define XMLPRESPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>

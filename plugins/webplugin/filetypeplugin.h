@@ -19,6 +19,7 @@
 
 #ifndef _FILETYPEPLUGIN_H_
 #define _FILETYPEPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include "xsl/xmlformatscheme.h"

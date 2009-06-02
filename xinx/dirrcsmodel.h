@@ -19,6 +19,7 @@
 
 #ifndef __DIRRCSMODEL_H__
 #define __DIRRCSMODEL_H__
+#pragma once
 
 // Xinx header
 #include <rcs/rcs.h>

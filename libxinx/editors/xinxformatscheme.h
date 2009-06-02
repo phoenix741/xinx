@@ -19,6 +19,7 @@
 
 #ifndef XINXFORMATSCHEME_H_
 #define XINXFORMATSCHEME_H_
+#pragma once
 
 // QCodeEdit header
 #include <qformatscheme.h>

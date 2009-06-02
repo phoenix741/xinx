@@ -19,6 +19,7 @@
 
 #ifndef MAINFORMIMPL_H
 #define MAINFORMIMPL_H
+#pragma once
 
 // Xinx header
 #include <core/xinxcore.h>

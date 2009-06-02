@@ -19,6 +19,7 @@
 
 #ifndef RCS_SVN_H_
 #define RCS_SVN_H_
+#pragma once
 
 // Xinx header
 #include <rcs/rcs.h>

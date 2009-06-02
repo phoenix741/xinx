@@ -19,6 +19,7 @@
 
 #ifndef _PLUGINELEMENT_H_
 #define _PLUGINELEMENT_H_
+#pragma once
 
 // Qt header
 #include <QPixmap>

@@ -24,6 +24,7 @@
 
 #ifndef _CONTENTVIEWTEXTEDITOR_H_
 #define _CONTENTVIEWTEXTEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/textfileeditor.h>

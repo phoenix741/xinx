@@ -19,6 +19,7 @@
 
 #ifndef _UNIQUEAPPLICATION_H_
 #define _UNIQUEAPPLICATION_H_
+#pragma once
 
 #include "qtsingleapplication.h"
 

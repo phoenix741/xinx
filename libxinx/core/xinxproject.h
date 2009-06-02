@@ -19,6 +19,7 @@
 
 #ifndef _XINXPROJECT_H_
 #define _XINXPROJECT_H_
+#pragma once
 
 // Xinx header
 #include <core/exceptions.h>

@@ -19,6 +19,7 @@
 
 #ifndef REPLACEDIALOGIMPL_H
 #define REPLACEDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_replace.h"

@@ -24,6 +24,7 @@
 
 #ifndef __CONTENTVIEWCLASS_H__
 #define __CONTENTVIEWCLASS_H__
+#pragma once
 
 // Qt header
 #include <QHash>

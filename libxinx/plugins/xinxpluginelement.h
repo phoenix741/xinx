@@ -19,6 +19,7 @@
 
 #ifndef _XINXPLUGINELEMENT_H_
 #define _XINXPLUGINELEMENT_H_
+#pragma once
 
 // Xinx header
 #include <pluginelement.h>

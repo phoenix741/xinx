@@ -19,6 +19,7 @@
 
 #ifndef __FLATTREEVIEW_H__
 #define __FLATTREEVIEW_H__
+#pragma once
 
 // Qt header
 #include <QAbstractItemModel>

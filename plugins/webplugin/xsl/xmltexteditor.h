@@ -19,6 +19,7 @@
 
 #ifndef XMLTEXTEDITOR_H_
 #define XMLTEXTEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxcodeedit.h>

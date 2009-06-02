@@ -19,6 +19,7 @@
 
 #ifndef _XINXCODEEDIT_P_
 #define _XINXCODEEDIT_P_
+#pragma once
 
 // Xinx header
 #include <editors/xinxcodeedit.h>

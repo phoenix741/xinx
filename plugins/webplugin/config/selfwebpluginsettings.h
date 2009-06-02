@@ -19,6 +19,7 @@
 
 #ifndef SELFWEBPLUGINSETTINGS_H_
 #define SELFWEBPLUGINSETTINGS_H_
+#pragma once
 
 // Xinx header
 #include "webpluginsettings.h"

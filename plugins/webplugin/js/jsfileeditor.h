@@ -19,6 +19,7 @@
 
 #ifndef _JSFILEEDITOR_H_
 #define _JSFILEEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/textfileeditor.h>

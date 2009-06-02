@@ -3,6 +3,7 @@
 
 #ifndef _WEBPLUGINSETTINGS_H_
 #define _WEBPLUGINSETTINGS_H_
+#pragma once
 
 #include <QSettings>
 #include <QString>

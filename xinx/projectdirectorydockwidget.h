@@ -19,6 +19,7 @@
 
 #ifndef __PROJECTDIRECTORYDOCKWIDGET_H__
 #define __PROJECTDIRECTORYDOCKWIDGET_H__
+#pragma once
 
 // Xinx header
 #include "ui_projectdirectorywidget.h"

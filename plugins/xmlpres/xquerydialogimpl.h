@@ -20,6 +20,7 @@
 
 #ifndef XQUERYDIALOGIMPL_H_
 #define XQUERYDIALOGIMPL_H_
+#pragma once
 
 // Xinx header
 #include "ui_xquery.h"

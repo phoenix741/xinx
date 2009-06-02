@@ -19,6 +19,7 @@
 
 #ifndef CONNECTIONWEBSERVICESDIALOGIMPL_H
 #define CONNECTIONWEBSERVICESDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_servicesconnection.h"

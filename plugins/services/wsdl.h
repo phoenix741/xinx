@@ -19,6 +19,7 @@
  
 #ifndef __WSDL_H__
 #define __WSDL_H__
+#pragma once
 
 #include <QDomElement>
 #include <QString>

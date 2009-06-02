@@ -19,6 +19,7 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
+#pragma once
 
 // Xinx header
 #include "core/filewatcher.h"

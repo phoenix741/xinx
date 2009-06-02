@@ -3,6 +3,7 @@
 
 #ifndef _APPSETTINGS_H_
 #define _APPSETTINGS_H_
+#pragma once
 
 #include <QSettings>
 #include <QString>

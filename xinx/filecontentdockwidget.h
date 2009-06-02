@@ -19,6 +19,7 @@
 
 #ifndef __FILECONTENTDOCKWIDGET_H__
 #define __FILECONTENTDOCKWIDGET_H__
+#pragma once
 
 // Qt header
 #include <QDockWidget>

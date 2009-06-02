@@ -19,6 +19,7 @@
 
 #ifndef _SEARCHFILETHREAD_H_
 #define _SEARCHFILETHREAD_H_
+#pragma once
 
 // Xinx header
 #include <core/xinxthread.h>

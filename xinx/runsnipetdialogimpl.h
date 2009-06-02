@@ -19,6 +19,7 @@
  
 #ifndef RUNSNIPETDIALOGIMPL_H
 #define RUNSNIPETDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_runsnipet.h"

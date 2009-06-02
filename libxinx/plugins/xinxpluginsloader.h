@@ -19,6 +19,7 @@
 
 #ifndef XINXPLUGINSLOADER_H_
 #define XINXPLUGINSLOADER_H_
+#pragma once
 
 // Xinx header
 #include <core/xinxcore.h>

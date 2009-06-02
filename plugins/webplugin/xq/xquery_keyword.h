@@ -19,6 +19,7 @@
 
 #ifndef XQUERY_KEYWORD_H_
 #define XQUERY_KEYWORD_H_
+#pragma once
 
 // Qt header
 #include <QHash>

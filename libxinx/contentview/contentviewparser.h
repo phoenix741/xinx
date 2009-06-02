@@ -24,6 +24,7 @@
 
 #ifndef __CONTENTVIEWPARSER_H__
 #define __CONTENTVIEWPARSER_H__
+#pragma once
 
 // Xinx header
 #include <core/exceptions.h>

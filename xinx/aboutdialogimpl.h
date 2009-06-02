@@ -19,6 +19,7 @@
 
 #ifndef ABOUTDIALOGIMPL_H
 #define ABOUTDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_about.h"

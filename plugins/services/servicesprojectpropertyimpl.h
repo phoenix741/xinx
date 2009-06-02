@@ -19,6 +19,7 @@
 
 #ifndef SERVICESPROJECTPROPERTYIMPL_H
 #define SERVICESPROJECTPROPERTYIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_servicesprojectproperty.h"

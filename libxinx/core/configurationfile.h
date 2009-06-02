@@ -19,6 +19,7 @@
 
 #ifndef __CONFIGURATIONFILE_H__
 #define __CONFIGURATIONFILE_H__
+#pragma once
 
 // Xinx header
 #include <core/exceptions.h>

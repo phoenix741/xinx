@@ -19,6 +19,7 @@
 
 #ifndef __ICONPROJECTPROVIDER_H__
 #define __ICONPROJECTPROVIDER_H__
+#pragma once
 
 // Qt header
 #include <QFileIconProvider>

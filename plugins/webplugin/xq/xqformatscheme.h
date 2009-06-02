@@ -19,6 +19,7 @@
 
 #ifndef XQFORMATSCHEME_H_
 #define XQFORMATSCHEME_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxformatscheme.h>

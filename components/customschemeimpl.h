@@ -19,6 +19,7 @@
 
 #ifndef _CUSTOMSCHEMEIMPL_H_
 #define _CUSTOMSCHEMEIMPL_H_
+#pragma once
 
 // Xinx header
 #include "ui_customscheme.h"

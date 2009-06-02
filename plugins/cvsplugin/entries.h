@@ -17,6 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#ifndef _ENTRIES_H_
+#define _ENTRIES_H_
+#pragma once
+
 // Xinx header
 #include <rcs/rcs.h>
 
@@ -54,3 +58,5 @@ struct EntriesList : public QHash<QString,EntriesFile> {
 
 	const EntriesLine status( const QString & filename );
 };
+
+#endif // _ENTRIES_H_

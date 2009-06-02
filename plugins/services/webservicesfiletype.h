@@ -19,6 +19,7 @@
 
 #ifndef _WEBSERVICESFILETYPE_H_
 #define _WEBSERVICESFILETYPE_H_
+#pragma once
 
 // Xinx header
 #include "webserviceseditor.h"

@@ -19,6 +19,7 @@
 
 #ifndef _XSLCOMPLETIONNODEMODEL_H_
 #define _XSLCOMPLETIONNODEMODEL_H_
+#pragma once
 
 // Xinx header
 #include <contentview/completionnodemodel.h>

@@ -19,6 +19,7 @@
 
 #ifndef __DIRECTORYEDIT_H__
 #define __DIRECTORYEDIT_H__
+#pragma once
 
 // Qt header
 #include <QLineEdit>

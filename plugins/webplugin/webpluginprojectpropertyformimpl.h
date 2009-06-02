@@ -19,6 +19,7 @@
 
 #ifndef _WEBPLUGINPROJECTPROPERTYFORMIMPL_H_
 #define _WEBPLUGINPROJECTPROPERTYFORMIMPL_H_
+#pragma once
 
 // Xinx header
 #include "ui_webpluginprojectpropertyform.h"

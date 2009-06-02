@@ -24,6 +24,7 @@
 
 #ifndef ACTIONINTERFACE_H
 #define ACTIONINTERFACE_H
+#pragma once
 
 // Qt header
 #include <QObject>

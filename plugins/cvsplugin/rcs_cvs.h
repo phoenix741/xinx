@@ -19,6 +19,7 @@
 
 #ifndef __RCS_CVS_H__
 #define __RCS_CVS_H__
+#pragma once
 
 // Xinx header
 #include <core/exceptions.h>

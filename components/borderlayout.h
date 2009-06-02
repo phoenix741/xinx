@@ -43,6 +43,7 @@
 
 #ifndef BORDERLAYOUT_H
 #define BORDERLAYOUT_H
+#pragma once
 
 #include <QLayout>
 #include <QRect>

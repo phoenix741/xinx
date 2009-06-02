@@ -3,6 +3,7 @@
 
 #ifndef _PLUGINSETTINGS_H_
 #define _PLUGINSETTINGS_H_
+#pragma once
 
 #include <QSettings>
 #include <QString>

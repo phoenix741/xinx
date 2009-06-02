@@ -19,6 +19,7 @@
 
 #ifndef CUSTOMDIALOGIMPL_H
 #define CUSTOMDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_custom.h"

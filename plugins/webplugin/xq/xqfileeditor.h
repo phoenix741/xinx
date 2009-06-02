@@ -19,6 +19,7 @@
 
 #ifndef _XQFILEEDITOR_H_
 #define _XQFILEEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/textfileeditor.h>

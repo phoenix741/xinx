@@ -19,6 +19,7 @@
 
 #ifndef CVSPLUGIN_H_
 #define CVSPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>

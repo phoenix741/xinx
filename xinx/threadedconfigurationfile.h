@@ -19,6 +19,7 @@
 
 #ifndef __THREADEDCONFIGURATIONFILE_H__
 #define __THREADEDCONFIGURATIONFILE_H__
+#pragma once
 
 // Xinx header
 #include <core/configurationfile.h>

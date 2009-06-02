@@ -19,6 +19,7 @@
 
 #ifndef CSSFORMATSCHEME_H_
 #define CSSFORMATSCHEME_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxformatscheme.h>

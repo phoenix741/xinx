@@ -19,6 +19,7 @@
 
 #ifndef __RCS_H__
 #define __RCS_H__
+#pragma once
 
 // Xinx header
 #include <core/xinxcore.h>

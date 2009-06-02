@@ -19,6 +19,7 @@
 
 #ifndef _SERVICESPROJECTWIZARD_H_
 #define _SERVICESPROJECTWIZARD_H_
+#pragma once
 
 // Qt header
 #include <QWizard>

@@ -19,6 +19,7 @@
 
 #ifndef DICTIONARYDOCKWIDGET_H
 #define DICTIONARYDOCKWIDGET_H
+#pragma once
 
 // Xinx header
 #include <ui_dictionarydockwidget.h>

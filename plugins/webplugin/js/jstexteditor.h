@@ -19,6 +19,7 @@
 
 #ifndef JSTEXTEDITOR_H_
 #define JSTEXTEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxcodeedit.h>
@@ -40,7 +41,7 @@ protected:
 	enum cursorPosition {
 		cpEditLongComment, // in /* ... */
 			cpEditSimpleComment, // in // ...
-			cpEditFunction, // in function ....() {Â .... }
+			cpEditFunction, // in function ....() {Â .... }
 			cpEditParams, // in function .... ( .... )
 			cpEditGlobal
 	};

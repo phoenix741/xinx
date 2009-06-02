@@ -19,6 +19,7 @@
 
 #ifndef P_PLUGINSELECTOR_H_ /*! \cond PRIVATE */
 #define P_PLUGINSELECTOR_H_
+#pragma once
 
 // Xinx header
 #include "pluginselector.h"

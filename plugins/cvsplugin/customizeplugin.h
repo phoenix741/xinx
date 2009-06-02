@@ -19,6 +19,7 @@
 
 #ifndef CUSTOMIZEPLUGIN_H_
 #define CUSTOMIZEPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include "ui_customize.h"

@@ -19,10 +19,10 @@
 
 #ifndef JSFORMATSCHEME_H_
 #define JSFORMATSCHEME_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxformatscheme.h>
-
 
 class JsFormatScheme : public XinxFormatScheme {
 	Q_OBJECT

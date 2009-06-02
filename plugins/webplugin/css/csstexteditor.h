@@ -19,6 +19,7 @@
 
 #ifndef CSSTEXTEDITOR_H_
 #define CSSTEXTEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxcodeedit.h>

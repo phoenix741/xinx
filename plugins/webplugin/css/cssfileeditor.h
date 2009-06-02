@@ -19,6 +19,7 @@
 
 #ifndef _CSSFILEEDITOR_H_
 #define _CSSFILEEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/textfileeditor.h>

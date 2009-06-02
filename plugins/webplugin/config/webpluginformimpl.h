@@ -19,6 +19,7 @@
 
 #ifndef WEBPLUGINFORMIMPL_H_
 #define WEBPLUGINFORMIMPL_H_
+#pragma once
 
 // Xinx header
 #include "ui_webpluginform.h"

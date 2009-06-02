@@ -19,6 +19,7 @@
 
 #ifndef _XINXLANGUAGEFACTORY_H_
 #define _XINXLANGUAGEFACTORY_H_
+#pragma once
 
 // QCodeEdit header
 #include <qlanguagefactory.h>

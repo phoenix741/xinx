@@ -19,6 +19,7 @@
 
 #ifndef XQTEXTEDITOR_H_
 #define XQTEXTEDITOR_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxcodeedit.h>

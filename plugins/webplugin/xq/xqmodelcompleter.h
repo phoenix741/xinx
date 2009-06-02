@@ -19,6 +19,7 @@
 
 #ifndef __XQMODELCOMPETER_H__
 #define __XQMODELCOMPETER_H__
+#pragma once
 
 #include <QAbstractListModel>
 

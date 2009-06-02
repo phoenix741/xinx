@@ -19,6 +19,7 @@
 
 #ifndef _XINXTHREAD_H_
 #define _XINXTHREAD_H_
+#pragma once
 
 // Xinx header
 #include <core/xinxcore.h>

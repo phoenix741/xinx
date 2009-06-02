@@ -19,6 +19,7 @@
 
 #ifndef __P_XMLPRESENTATIONDOCKWIDGET_H__
 #define __P_XMLPRESENTATIONDOCKWIDGET_H__
+#pragma once
 
 // Xinx header
 #include <core/xinxthread.h>

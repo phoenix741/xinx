@@ -19,6 +19,7 @@
 
 #ifndef SVNPLUGIN_H_
 #define SVNPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>

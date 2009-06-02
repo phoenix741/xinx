@@ -19,6 +19,7 @@
 
 #ifndef _XINXCODEEDIT_H_
 #define _XINXCODEEDIT_H_
+#pragma once
 
 // Qt header
 #include <QWidget>

@@ -19,6 +19,7 @@
 
 #ifndef COMMITMESSAGEDIALOGIMPL_H
 #define COMMITMESSAGEDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_commitmessages.h"

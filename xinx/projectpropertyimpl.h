@@ -19,6 +19,7 @@
 
 #ifndef PROJECTPROPERTYIMPL_H
 #define PROJECTPROPERTYIMPL_H
+#pragma once
 
 #include "ui_projectproperty.h"
 #include "threadedconfigurationfile.h"

@@ -19,6 +19,7 @@
 
 #ifndef XINXPLUGINSELECTOR_H_
 #define XINXPLUGINSELECTOR_H_
+#pragma once
 
 // Qt header
 #include <QListView>

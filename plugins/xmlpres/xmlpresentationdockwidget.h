@@ -19,6 +19,7 @@
 
 #ifndef __XMLPRESENTATIONDOCKWIDGET_H__
 #define __XMLPRESENTATIONDOCKWIDGET_H__
+#pragma once
 
 #include <QDockWidget>
 #include <QString>

@@ -19,6 +19,7 @@
 
 #ifndef XMLPRETTYPRINTER_H_
 #define XMLPRETTYPRINTER_H_
+#pragma once
 
 // Xinx header
 #include <core/exceptions.h>

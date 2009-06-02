@@ -19,6 +19,7 @@
 
 #ifndef SERVICERESULTDIALOGIMPL_H
 #define SERVICERESULTDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include "ui_resultatServices.h"

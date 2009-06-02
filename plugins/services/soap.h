@@ -19,6 +19,7 @@
  
 #ifndef __SOAP_H__
 #define __SOAP_H__
+#pragma once
 
 #include <QString>
 #include <QDomDocument>

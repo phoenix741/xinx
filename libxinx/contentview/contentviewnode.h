@@ -24,6 +24,7 @@
 
 #ifndef __CONTENTVIEWNODE_H__
 #define __CONTENTVIEWNODE_H__
+#pragma once
 
 // Qt header
 #include <QList>

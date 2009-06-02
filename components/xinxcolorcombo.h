@@ -29,6 +29,7 @@
 
 #ifndef _XINXCOLORCOMBO_H__
 #define _XINXCOLORCOMBO_H__
+#pragma once
 
 #include <qcombobox.h>
 

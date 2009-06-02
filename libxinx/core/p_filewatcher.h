@@ -20,6 +20,7 @@
 
 #ifndef _P_FILEWATCHER_H_
 #define _P_FILEWATCHER_H_
+#pragma once
 
 // kmdalert watcher
 #include <core/filewatcher.h>

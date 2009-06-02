@@ -19,6 +19,7 @@
 
 #ifndef CUSTOMDIALOGMODELES_H_
 #define CUSTOMDIALOGMODELES_H_
+#pragma once
 
 // Qt header
 #include <QString>

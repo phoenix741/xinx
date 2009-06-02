@@ -19,6 +19,7 @@
 
 #ifndef __WEBSERVICESEDITOR_H__
 #define __WEBSERVICESEDITOR_H__
+#pragma once
 
 // Xinx header
 #include <editors/textfileeditor.h>

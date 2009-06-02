@@ -19,6 +19,7 @@
 
 #ifndef TABEDITOR_H
 #define TABEDITOR_H
+#pragma once
 
 // Xinx header
 #include <editors/editormanager.h>

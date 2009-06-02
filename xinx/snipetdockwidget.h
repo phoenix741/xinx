@@ -19,6 +19,7 @@
 
 #ifndef __SNIPETDOCKWIDGET_H__
 #define __SNIPETDOCKWIDGET_H__
+#pragma once
 
 // Xinx header
 #include "snipet.h"

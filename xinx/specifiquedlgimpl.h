@@ -19,6 +19,7 @@
 
 #ifndef SPECIFIQUEDLGIMPL_H_
 #define SPECIFIQUEDLGIMPL_H_
+#pragma once
 
 // Xinx header
 #include "ui_specifiquedlg.h"

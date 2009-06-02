@@ -24,6 +24,7 @@
 
 #ifndef __ABSTRACTCONTENTVIEWMODEL_H__
 #define __ABSTRACTCONTENTVIEWMODEL_H__
+#pragma once
 
 // Qt header
 #include <QAbstractItemModel>

@@ -19,6 +19,7 @@
 
 #ifndef __SNIPETDIALOG_H__
 #define __SNIPETDIALOG_H__
+#pragma once
 
 // Xinx header
 #include "ui_snipetproperty.h"

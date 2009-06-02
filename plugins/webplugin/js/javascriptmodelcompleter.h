@@ -19,6 +19,7 @@
 
 #ifndef __JAVASCRIPTMODELCOMPETER_H__
 #define __JAVASCRIPTMODELCOMPETER_H__
+#pragma once
 
 // Xinx header
 #include <contentview/completionnodemodel.h>

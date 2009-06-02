@@ -24,6 +24,7 @@
 
 #ifndef __CONTENTVIEWMODEL_H__
 #define __CONTENTVIEWMODEL_H__
+#pragma once
 
 // Xinx header
 #include <contentview/abstractcontentviewmodel.h>

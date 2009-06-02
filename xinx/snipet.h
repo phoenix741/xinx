@@ -19,6 +19,7 @@
 
 #ifndef __SNIPET_H__
 #define __SNIPET_H__
+#pragma once
 
 // Qt header
 #include <QString>

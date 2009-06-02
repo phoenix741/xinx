@@ -19,6 +19,7 @@
 
 #ifndef WEBPLUGIN_H_
 #define WEBPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>

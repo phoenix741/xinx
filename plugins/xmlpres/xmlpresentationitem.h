@@ -19,6 +19,7 @@
 
 #ifndef __XMLPRESENTATIONITEM_H__
 #define __XMLPRESENTATIONITEM_H__
+#pragma once
 
 // Qt header
 #include <QDomNode>

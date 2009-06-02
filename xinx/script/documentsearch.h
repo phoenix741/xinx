@@ -19,6 +19,7 @@
 
 #ifndef _DOCUMENTSEARCH_H_
 #define _DOCUMENTSEARCH_H_
+#pragma once
 
 // Xinx header
 #include <editors/xinxcodeedit.h>

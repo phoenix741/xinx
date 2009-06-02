@@ -19,6 +19,7 @@
 
 #ifndef _JSCONTENTVIEWPARSER_H_
 #define _JSCONTENTVIEWPARSER_H_
+#pragma once
 
 // Xinx header
 #include <contentview/contentviewparser.h>

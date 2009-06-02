@@ -19,6 +19,7 @@
 
 #ifndef RCSLOGDIALOGIMPL_H
 #define RCSLOGDIALOGIMPL_H
+#pragma once
 
 // Xinx header
 #include <rcs/rcs.h>

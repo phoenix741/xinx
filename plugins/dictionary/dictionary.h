@@ -19,6 +19,7 @@
 
 #ifndef DICTIONARYPLUGIN_H_
 #define DICTIONARYPLUGIN_H_
+#pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>

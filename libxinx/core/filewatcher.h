@@ -19,6 +19,7 @@
 
 #ifndef _FILEWATCHER_H_
 #define _FILEWATCHER_H_
+#pragma once
 
 // Qt header
 #include <qobject.h>

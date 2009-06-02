@@ -19,6 +19,7 @@
 
 #ifndef __WEBSERVICES_H__
 #define __WEBSERVICES_H__
+#pragma once
 
 #include <QString>
 #include <QDomElement>
