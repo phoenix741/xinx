@@ -29,6 +29,7 @@
 #include <QTextCodec>
 #include <QIcon>
 #include <QVariant>
+#include <QQueue>
 
 /* Static member */
 
@@ -363,6 +364,7 @@ ContentViewNode * XmlCompletionParser::rootNode() const {
 void XmlCompletionParser::loadFromDeviceImpl() {
 	Q_ASSERT( rootNode() );
 
+	m_index = 0;
 	setDevice( inputDevice() );
 
 	loadAttachedNode( rootNode() );
@@ -469,6 +471,7 @@ void XmlCompletionParser::readBaliseTag() {
 	node->setData( name, ContentViewNode::NODE_DISPLAY_NAME );
 	node->setData( m_type, XmlCompletionParser::NODE_XML_TYPE );
 	node->setData( defaultValue == "true" ? true : false, XmlCompletionParser::NODE_XML_ISDEFAULT );
+	node->setData( (uint)++m_index, XmlCompletionParser::NODE_XML_SORT_INDEX );
 
 	node = attachNode( m_parentNode.top(), node );
 
@@ -507,6 +510,8 @@ void XmlCompletionParser::readAttributeTag() {
 	node->setData( m_type, XmlCompletionParser::NODE_XML_TYPE );
 	node->setData( defaultValue == "true" ? true : false, XmlCompletionParser::NODE_XML_ISDEFAULT );
 
+	node->setData( (uint)++m_index, XmlCompletionParser::NODE_XML_SORT_INDEX );
+
 	node = attachNode( m_parentNode.top(), node );
 
 	m_parentNode.push( node );
@@ -544,12 +549,27 @@ void XmlCompletionParser::readValueTag() {
 }
 
 ContentViewNode * XmlCompletionParser::balise( const QString & name ) const {
-	foreach( ContentViewNode * n, rootNode()->childs() ) {
-		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( ContentViewNode::NODE_NAME ).toString() == name ) ) {
-			return n;
+	QQueue<ContentViewNode*> list;
+	list.enqueue( rootNode() );
+
+	while( list.size() ) {
+		ContentViewNode * parent = list.dequeue();
+
+		foreach( ContentViewNode * n, parent->childs() ) {
+			if( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) {
+				if( n->data( ContentViewNode::NODE_NAME ).toString() == name ) {
+					return n;
+				}
+				list.enqueue( n );
+			}
 		}
 	}
+
 	return 0;
+}
+
+bool XmlCompletionBaliseSort( ContentViewNode * node1, ContentViewNode * node2 ) {
+	return node1->data( XmlCompletionParser::NODE_XML_SORT_INDEX ).toInt() < node2->data( XmlCompletionParser::NODE_XML_SORT_INDEX ).toInt();
 }
 
 QList<ContentViewNode*> XmlCompletionParser::balises() const {
@@ -559,6 +579,7 @@ QList<ContentViewNode*> XmlCompletionParser::balises() const {
 			result += n;
 		}
 	}
+	qSort( result.begin(), result.end(), XmlCompletionBaliseSort );
 	return result;
 }
 
@@ -584,6 +605,7 @@ QList<ContentViewNode*> XmlCompletionParser::baliseAttributes( const QString & n
 			result += n;
 		}
 	}
+	qSort( result.begin(), result.end(), XmlCompletionBaliseSort );
 	return result;
 }
 
@@ -621,6 +643,7 @@ QList<ContentViewNode*> XmlCompletionParser::baliseAttributeValues( const QStrin
 			result += n;
 		}
 	}
+	qSort( result.begin(), result.end(), XmlCompletionBaliseSort );
 	return result;
 }
 
@@ -639,6 +662,7 @@ QList<ContentViewNode*> XmlCompletionParser::defaultAttributes( ContentViewNode 
 		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlAttribute" ) && ( n->data( XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
 			defs += n;
 	}
+	qSort( defs.begin(), defs.end(), XmlCompletionBaliseSort );
 	return defs;
 }
 
@@ -648,5 +672,6 @@ QList<ContentViewNode*> XmlCompletionParser::defaultBalises( ContentViewNode * n
 		if( ( n->data( ContentViewNode::NODE_TYPE ).toString() == "XmlBalise" ) && ( n->data( XmlCompletionParser::NODE_XML_ISDEFAULT ).toBool() ) )
 			defs += n;
 	}
+	qSort( defs.begin(), defs.end(), XmlCompletionBaliseSort );
 	return defs;
 }
