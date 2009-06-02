@@ -68,7 +68,7 @@ void XslContentViewParser::loadFromDeviceImpl() {
 	if( !error() ) { // Else completion can be more difficulte
 		detachAttachedNode();
 	} else
-	    throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
+			throw ContentViewException( errorString(), filename(), lineNumber(), columnNumber() );
 }
 
 QString XslContentViewParser::readElementText() {
