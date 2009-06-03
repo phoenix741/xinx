@@ -1,7 +1,7 @@
 include(../project_mode.pri)
 
 TEMPLATE = lib
-VERSION = 0.9.0.0
+unix:VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns
