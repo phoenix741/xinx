@@ -2,7 +2,7 @@ include(../../project_mode.pri)
 
 DESTDIR += ./
 INCLUDEPATH += ../../libxinx ../../ext/qcodeedit/lib ../../ext/qcodeedit/lib/document
-LIBS = -L ../../components -L../../libxinx -L../../ext/qcodeedit -lsharedxinx -lxinxcmp -lqcodeedit
+LIBS = -L ../../components -L../../libxinx -L../../ext/qcodeedit -lsharedxinx0 -lxinxcmp0 -lqcodeedit
 FORMS += codedialog.ui
 
 HEADERS += codedialogimpl.h

@@ -1,9 +1,10 @@
 include(../../project_mode.pri)
 
 TEMPLATE = lib
-CONFIG += plugin 
+VERSION = 0.1.0.1
+CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx -lsharedxinx
+LIBS = -L../../libxinx -lsharedxinx0
 TARGET = cvsplugin
 INCLUDEPATH += ../../libxinx ../../components
 HEADERS = entries.h \

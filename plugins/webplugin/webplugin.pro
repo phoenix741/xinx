@@ -1,6 +1,7 @@
 include(../../project_mode.pri)
 
 TEMPLATE = lib
+VERSION = 0.9.0.0
 CONFIG += plugin \
     staticlib
 QT += xml \

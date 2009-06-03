@@ -1,6 +1,7 @@
 include(../project_mode.pri)
 
 TEMPLATE = app
+VERSION = 0.9.0.0
 CONFIG += warn_on
 QT += xml \
 		script \
@@ -21,10 +22,9 @@ LIBS = -L../libxinx \
     -L../ext/qcodeedit \
 	-lxmlpres \
     -lwebplugin \
-    -lsharedxinx \
-    -lxinxcmp \
+		-lsharedxinx0 \
+		-lxinxcmp0 \
     -lqcodeedit
-PRE_TARGETDEPS = ../plugins/libxmlpres.a ../plugins/libwebplugin.a
 win32 : RC_FILE += rc/xinx.rc
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \

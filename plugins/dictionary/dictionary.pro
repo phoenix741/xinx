@@ -1,10 +1,11 @@
 include(../../project_mode.pri)
 
 TEMPLATE = lib
+VERSION = 1.0.0.1
 CONFIG += plugin
 DESTDIR += ../
 LIBS = -L../../libxinx \
-    -lsharedxinx
+		-lsharedxinx0
 TARGET = dictionary
 INCLUDEPATH += ../../libxinx
 RESOURCES = dictionary.qrc
