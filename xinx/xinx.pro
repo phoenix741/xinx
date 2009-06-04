@@ -2,7 +2,11 @@ include(../project_mode.pri)
 
 TEMPLATE = app
 VERSION = 0.9.0.0
-win32:QMAKE_RC = windres -DXINX_VERSION=$$replace(VERSION,"\.",",")
+
+DEFINES += XINX_VERSION=$$replace(VERSION,"\.",",")
+win32 : QMAKE_RC = windres -DXINX_VERSION=$$replace(VERSION,"\.",",")
+win32 : RC_FILE += rc/xinx.rc
+
 CONFIG += warn_on
 QT += xml \
 		script \
@@ -26,7 +30,6 @@ LIBS = -L../libxinx \
 		-lsharedxinx \
 		-lxinxcmp \
     -lqcodeedit
-win32 : RC_FILE += rc/xinx.rc
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \
     ui/about.ui \

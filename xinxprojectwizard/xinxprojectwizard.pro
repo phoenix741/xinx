@@ -15,6 +15,7 @@ HEADERS = projectconverter.h \
 RESOURCES = xinxprojectwizard.qrc
 INCLUDEPATH += ../components \
     ../libxinx
-LIBS = -L../libxinx -L../components -L../ext/qcodeedit -lsharedxinx0 -lxinxcmp0 -lqcodeedit
+LIBS = -L../libxinx -L../components -L../ext/qcodeedit -lsharedxinx -lxinxcmp -lqcodeedit
 TRANSLATIONS += translations/xinxprojectwizard_fr.ts
 win32 : RC_FILE += rc/xinxprojectwizard.rc
+win32:QMAKE_RC = windres -DXINX_VERSION=$$replace(VERSION,"\.",",")

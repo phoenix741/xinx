@@ -18,14 +18,14 @@ BEGIN
 			VALUE "Comments", "\0"
 			VALUE "CompanyName", "Ulrich Van Den Hekke"
 			VALUE "FileDescription", "XINX Application"
-			VALUE "FileVersion", TOSTRING(XINX_VERSION)
 			VALUE "InternalName", "xinx"
 			VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2009"
 			VALUE "LegalTrademarks", "\0"
 			VALUE "OriginalFilename", "xinx.exe"
 			VALUE "PrivateBuild", "\0"
 			VALUE "ProductName", "XINX"
-			VALUE "ProductVersion", TOSTRING(XINX_VERSION)
+//			VALUE "FileVersion", TOSTRING(XINX_VERSION)
+//			VALUE "ProductVersion", TOSTRING(XINX_VERSION)
 			VALUE "SpecialBuild", "\0"
 		END
   END

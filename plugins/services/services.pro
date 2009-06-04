@@ -13,7 +13,7 @@ INCLUDEPATH += ../../libxinx \
 	../../ext/qcodeedit/lib/language \
 	../../ext/qcodeedit/lib/qnfa \
 	../../ext/qcodeedit/lib/widgets
-LIBS = -L../../libxinx -L../../components -L../ -L../../ext/qcodeedit -lxinxcmp0 -lwebplugin -lsharedxinx0 -lqcodeedit
+LIBS = -L../../libxinx -L../../components -L../ -L../../ext/qcodeedit -lxinxcmp -lwebplugin -lsharedxinx -lqcodeedit
 PRE_TARGETDEPS = ../libwebplugin.a
 TARGET = services
 RESOURCES = servicesplugin.qrc

@@ -5,7 +5,7 @@ VERSION = 1.0.0.1
 CONFIG += plugin
 DESTDIR += ../
 LIBS = -L../../libxinx \
-		-lsharedxinx0
+		-lsharedxinx
 TARGET = dictionary
 INCLUDEPATH += ../../libxinx
 RESOURCES = dictionary.qrc
