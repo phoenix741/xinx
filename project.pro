@@ -11,7 +11,6 @@ SUBDIRS += external_qcodeedit \
 	plugins_svnplugin \
 	plugins_services \
 	plugins_dictionary \
-	xinx_wizard \
 	xinx_application
 	
 external_qcodeedit.subdir = ext/qcodeedit
@@ -43,9 +42,6 @@ plugins_dictionary.depends = xinx_components xinx_library
 
 xinx_application.subdir = xinx
 xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_xmlpres plugins_webplugin
-
-xinx_wizard.subdir = xinxprojectwizard
-xinx_wizard.depends = external_qcodeedit xinx_components xinx_library
 
 dox.target = doc
 dox.commands = doxygen Doxyfile

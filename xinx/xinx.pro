@@ -68,7 +68,9 @@ HEADERS += customdialogmodeles.h \
     uniqueapplication.h \
     searchfilethread.h \
     logdialogimpl.h \
- script/documentsearch.h
+ script/documentsearch.h \
+ xinxprojectwizard/projectconverter.h \
+ xinxprojectwizard/projectwizard.h
 SOURCES += customdialogmodeles.cpp \
     snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
@@ -95,7 +97,9 @@ SOURCES += customdialogmodeles.cpp \
     scriptmanager.cpp \
     searchfilethread.cpp \
     logdialogimpl.cpp \
- script/documentsearch.cpp
+ script/documentsearch.cpp  \
+ xinxprojectwizard/projectconverter.cpp \
+ xinxprojectwizard/projectwizard.cpp
 TRANSLATIONS += translations/xinx_fr.ts
 CONFIG(debug, debug|release) {
 	exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) {

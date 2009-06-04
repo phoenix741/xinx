@@ -38,6 +38,7 @@
 #include "newprojectwizard.h"
 #include "scriptmanager.h"
 #include "searchfilethread.h"
+#include "xinxprojectwizard/projectwizard.h"
 #include <core/xinxproject.h>
 #include <core/exceptions.h>
 #include <core/xinxthread.h>
@@ -1973,8 +1974,11 @@ void MainformImpl::openProject( const QString & filename ) {
 		updateActions();
 	} catch( XinxProjectException e ) {
 		delete project;
-		if( ( ! e.startWizard() ) || (! QProcess::startDetached( QDir( QApplication::applicationDirPath() ).absoluteFilePath( "xinxprojectwizard" ), QStringList() << "-lang" << XINXConfig::self()->config().language << filename ) ) )
-			QMessageBox::warning( this, tr("Can't open project"), e.getMessage() );
+		
+		ProjectWizard wizard( filename );
+		if( wizard.exec() == QDialog::Accepted ) {
+			openProject( filename );
+		}
 	}
 }
 
