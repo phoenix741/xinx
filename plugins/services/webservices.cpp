@@ -34,7 +34,6 @@
 #include <core/xinxproject.h>
 #include "webservices.h"
 #include "wsdl.h"
-#include "soap.h"
 #include "connectionwebservicesdialogimpl.h"
 #include "serviceresultdialogimpl.h"
 
@@ -44,180 +43,119 @@ WebServicesManager * WebServicesManager::s_self = 0;
 
 /* Parameter */
 
-class PrivateParameter {
-public:
-	PrivateParameter( Parameter * parent );
-
-	QString m_paramString;
-	QString m_paramType;
-private:
-	Parameter * m_parent;
-};
-
-PrivateParameter::PrivateParameter( Parameter * parent ) {
-	m_parent = parent;
-}
-
 Parameter::Parameter( QString paramString, QString paramType ) {
-	d = new PrivateParameter( this );
-	d->m_paramString = paramString;
-	d->m_paramType = paramType;
+	m_paramString = paramString;
+	m_paramType = paramType;
 }
 
 Parameter::~Parameter() {
-	delete d;
+
 }
 
 const QString & Parameter::paramString() const {
-	return d->m_paramString;
+	return m_paramString;
 }
 
 const QString & Parameter::paramType() const {
-	return d->m_paramType;
+	return m_paramType;
 }
 
 /* Operations */
 
-class PrivateOperation {
-public:
-	PrivateOperation( Operation * parent );
-	~PrivateOperation();
-
-	QString m_name;
-	QString m_encodingStyle;
-	QString m_namespaceString;
-
-	QList<Parameter*> m_inputParam;
-	QList<Parameter*> m_outputParam;
-private:
-	Operation * m_parent;
-friend class WebServices;
-};
-
-PrivateOperation::PrivateOperation( Operation * parent ) {
-	m_parent = parent;
+Operation::Operation( QString name ) {
+	m_name = name;
 }
 
-PrivateOperation::~PrivateOperation() {
+Operation::~Operation() {
 	qDeleteAll( m_inputParam );
 	qDeleteAll( m_outputParam );
 }
 
-
-Operation::Operation( QString name ) {
-	d = new PrivateOperation( this );
-	d->m_name = name;
-}
-
-Operation::~Operation() {
-	delete d;
-}
-
 QString Operation::name() {
-	return d->m_name;
+	return m_name;
 }
 
 const QList<Parameter*> & Operation::inputParam() {
-	return d->m_inputParam;
+	return m_inputParam;
 }
 
 const QList<Parameter*> & Operation::outputParam() {
-	return d->m_outputParam;
+	return m_outputParam;
 }
 
 QString Operation::encodingStyle() {
-	return d->m_encodingStyle;
+	return m_encodingStyle;
 }
 
 QString Operation::namespaceString() {
-	return d->m_namespaceString;
+	return m_namespaceString;
 }
 
 /* WebServices */
 
-class PrivateWebServices {
-public:
-	PrivateWebServices( WebServices * parent );
-	~PrivateWebServices();
-
-	WSDL m_wsdl;
-	QString m_link;
-	QList<Operation*> m_list;
-private:
-	WebServices * m_parent;
-};
-
-PrivateWebServices::PrivateWebServices( WebServices * parent ) {
-	m_parent = parent;
-}
-
-PrivateWebServices::~PrivateWebServices() {
-	qDeleteAll( m_list );
-}
-
 WebServices::WebServices( const QString & link, QObject * parent ) : QObject( parent ) {
-	d = new PrivateWebServices( this );
-	d->m_link = link;
+	m_link = link;
+	connect( &http, SIGNAL(responseReady()), SLOT(readResponse()) );
 }
 
 WebServices::~WebServices() {
-	delete d;
+	qDeleteAll( m_list );
 }
 
 QString WebServices::name() {
-	return d->m_wsdl.name();
+	return m_wsdl.name();
 }
 
 const QList<Operation*> & WebServices::operations() {
-	return d->m_list;
+	return m_list;
 }
 
 void WebServices::loadFromElement( const QDomElement & element ) {
-	qDeleteAll( d->m_list );
-	d->m_list.clear();
+	qDeleteAll( m_list );
+	m_list.clear();
 
-	d->m_wsdl = WSDL( element );
+	m_wsdl = WSDL( element );
 
-	foreach( const WSDLService & service, d->m_wsdl.services() ) {
+	foreach( const WSDLService & service, m_wsdl.services() ) {
 		QString tnsBinding = service.port().binding();
 		tnsBinding = tnsBinding.mid( tnsBinding.indexOf( ":" ) + 1 );
 
-		WSDLBinding binding = d->m_wsdl.bindings()[ tnsBinding ];
+		WSDLBinding binding = m_wsdl.bindings()[ tnsBinding ];
 		QString tnsType = binding.type();
 		tnsType = tnsType.mid( tnsType.indexOf( ":" ) + 1 );
 
-		WSDLPortType portType = d->m_wsdl.portTypes()[ tnsType ];
+		WSDLPortType portType = m_wsdl.portTypes()[ tnsType ];
 
 		foreach( const WSDLOperation & operation, portType.operations() ) {
 			Operation * wsOperation = new Operation( operation.name() );
 
 			foreach( const WSDLOperation & bindingOperation, binding.operations() ) {
 				if( bindingOperation.name() == operation.name() ) {
-					wsOperation->d->m_encodingStyle = bindingOperation.inputEncodingStyle();
-					wsOperation->d->m_namespaceString = bindingOperation.inputNamespace();
+					wsOperation->m_encodingStyle = bindingOperation.inputEncodingStyle();
+					wsOperation->m_namespaceString = bindingOperation.inputNamespace();
 				}
 			}
 
 			QString tnsInputMessage = operation.inputMessage();
 			tnsInputMessage = tnsInputMessage.mid( tnsInputMessage.indexOf( ":" ) + 1 );
 
-			WSDLMessage inputMessage = d->m_wsdl.messages()[ tnsInputMessage ];
+			WSDLMessage inputMessage = m_wsdl.messages()[ tnsInputMessage ];
 			foreach( const WSDLPart & part, inputMessage.parts() ) {
 				Parameter * param = new Parameter( part.name(), part.type() );
-				wsOperation->d->m_inputParam.append( param );
+				wsOperation->m_inputParam.append( param );
 			}
 
 
 			QString tnsOutputMessage = operation.outputMessage();
 			tnsOutputMessage = tnsOutputMessage.mid( tnsOutputMessage.indexOf( ":" ) + 1 );
 
-			WSDLMessage outputMessage = d->m_wsdl.messages()[ tnsOutputMessage ];
+			WSDLMessage outputMessage = m_wsdl.messages()[ tnsOutputMessage ];
 			foreach( const WSDLPart & part, outputMessage.parts() ) {
 				Parameter * param = new Parameter( part.name(), part.type() );
-				wsOperation->d->m_outputParam.append( param );
+				wsOperation->m_outputParam.append( param );
 			}
 
-			d->m_list.append( wsOperation );
+			m_list.append( wsOperation );
 		}
 	}
 
@@ -228,7 +166,7 @@ typedef
 	QPair<QString,QString> ParamStr;
 
 void WebServices::askWSDL( QWidget * parent ) {
-	QUrl wsdlUrl( d->m_link );
+	QUrl wsdlUrl( m_link );
 	QBuffer buffer;
 //	QFile buffer( "c:\\temp.wsdl" );
 	buffer.open( QIODevice::ReadWrite );
@@ -266,8 +204,50 @@ void WebServices::askWSDL( QWidget * parent ) {
 	}
 }
 
+void WebServices::readResponse() {
+	const QtSoapMessage & response = http.getResponse();
+	if( response.isFault() ) {
+		emit soapError( response.faultString().value().toString() );
+		return;
+	}
+
+	const QtSoapType & res = response.returnValue();
+	if( ! res.isValid() ) {
+		emit soapError( tr("Invalid return value") );
+		return;
+	}
+
+	QHash<QString,QString> hashResponse;
+	QDomDocument document;
+	QDomElement rootElement = res.toDomElement( document );
+	QDomElement childElement = rootElement.firstChildElement();
+	while( ! childElement.isNull() ) {
+		hashResponse[ childElement.nodeName() ] = childElement.text();
+		childElement = childElement.nextSiblingElement();
+	}
+
+	emit soapResponse( hashResponse );
+}
+
 void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 	Q_ASSERT( op );
+
+	m_namespace = op->namespaceString();
+
+	QtSoapMessage request;
+	request.setMethod( QtSoapQName( op->name(), m_namespace ) );
+
+	QHashIterator<QString,QString> i( param );
+	while( i.hasNext() ) {
+		i.next();
+		request.addMethodArgument( i.key(), op->namespaceString(), i.value() );
+	}
+
+	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
+	http.setHost( queryUrl.host(), queryUrl.port() );
+
+	http.submitRequest( request, queryUrl.path() );
+	/*
 
 	Envelop soapEnvelop( op->encodingStyle(), op->namespaceString() , op->name() );
 	QString query;
@@ -277,7 +257,7 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 		query += op->inputParam()[i]->paramString() + "=\n" + param[ op->inputParam()[i]->paramString() ] + "\n";
 	}
 
-	QUrl queryUrl( d->m_wsdl.services()[0].port().addressLocation() );
+	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
 	QBuffer obuffer;
 	obuffer.open( QIODevice::ReadWrite );
 
@@ -317,7 +297,7 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 		}
 
 		emit soapResponse( param, response, soapResult.getErrorCode(), soapResult.getErrorString() );
-	}
+	}*/
 }
 
 /* WebServicesManager */

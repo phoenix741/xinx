@@ -23,7 +23,6 @@ HEADERS = servicesplugin.h \
 	servicesprojectwizard.h \
 	connectionwebservicesdialogimpl.h \
 	serviceresultdialogimpl.h \
-	soap.h \
 	webservices.h \
 	wsdl.h \
 	webserviceseditor.h \
@@ -33,7 +32,6 @@ SOURCES =servicesplugin.cpp \
 	servicesprojectwizard.cpp \
 	connectionwebservicesdialogimpl.cpp \
 	serviceresultdialogimpl.cpp \
-	soap.cpp \
 	webservices.cpp \
 	wsdl.cpp \
 	webserviceseditor.cpp
@@ -44,3 +42,4 @@ FORMS += ui/newprojectwizard_serviceslist.ui \
 	ui/servicesconnection.ui
 win32 : RC_FILE += rc/plugin.rc
 
+include(../../ext/qtsoap/src/qtsoap.pri)

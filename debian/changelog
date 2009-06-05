@@ -1,3 +1,19 @@
+xinx (0.8.1.2) unstable; urgency=low
+
+  [ Ulrich Van Den Hekke ]
+  * - 296 : Crash régulié lors de l'utilisation de XINX
+  * - 297 : Complétion du XSL
+
+ -- Ulrich Van Den Hekke <phoenix@maxiding>  Tue, 02 Jun 2009 22:18:49 +0200
+
+xinx (0.8.1.1) unstable; urgency=low
+
+  [ Ulrich Van Den Hekke ]
+  * Upstream Release :
+  * - 295 : Ouverture d'un fichier XSL
+
+ -- Ulrich Van Den Hekke <ulrich.vdh@shadoware.org>  Thu, 26 May 2009 19:00:00 +0100
+ 
 xinx (0.8.1.0) unstable; urgency=low
 
   [ Ulrich Van Den Hekke ]

@@ -21,11 +21,16 @@
 #define __WEBSERVICES_H__
 #pragma once
 
+// Qt header
 #include <QString>
 #include <QDomElement>
 #include <QAbstractItemModel>
 #include <QHash>
 
+// Qt Soap header
+#include "qtsoap.h"
+
+// Xinx header
 #include "wsdl.h"
 
 class WebServices;
@@ -39,8 +44,8 @@ public:
 	const QString & paramString() const;
 	const QString & paramType() const;
 private:
-	PrivateParameter * d;
-	friend class PrivateParameter;
+	QString m_paramString;
+	QString m_paramType;
 };
 
 class PrivateOperation;
@@ -58,8 +63,13 @@ public:
 	QString encodingStyle();
 	QString namespaceString();
 private:
-	PrivateOperation * d;
-	friend class PrivateOperation;
+	QString m_name;
+	QString m_encodingStyle;
+	QString m_namespaceString;
+
+	QList<Parameter*> m_inputParam;
+	QList<Parameter*> m_outputParam;
+
 	friend class WebServices;
 };
 
@@ -80,10 +90,16 @@ public:
 	void call( Operation * operation, const QHash<QString,QString> & param );
 signals:
 	void updated();
-	void soapResponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
+
+	void soapError( const QString & errorString );
+	void soapResponse( QHash<QString,QString> response );
+private slots:
+	void readResponse();
 private:
-	PrivateWebServices * d;
-	friend class PrivateWebServices;
+	QtSoapHttpTransport http;
+	WSDL m_wsdl;
+	QString m_link, m_namespace;
+	QList<Operation*> m_list;
 };
 
 typedef QList<WebServices*> WebServicesList;
