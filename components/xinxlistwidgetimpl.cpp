@@ -25,6 +25,8 @@
 XinxListWidgetImpl::XinxListWidgetImpl( QWidget * parent, Qt::WindowFlags f ) : QWidget( parent, f ) {
 	setupUi( this );
 
+	connect( m_list, SIGNAL(currentRowChanged(int)), this, SIGNAL(currentRowChanged(int)));
+
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );
 	m_btnUp->setEnabled( m_list->currentRow() > 0 );

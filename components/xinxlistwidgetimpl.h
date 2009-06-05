@@ -81,6 +81,7 @@ public:
 signals:
 	//! This signal is emited when the user change the value \e value.
 	void defaultValueChanged( QString value );
+	void currentRowChanged( int value );
 private slots:
 	void on_m_btnDef_clicked();
 	void on_m_btnAdd_clicked();

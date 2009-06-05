@@ -211,19 +211,27 @@ void WebServices::readResponse() {
 		return;
 	}
 
+	QMessageBox::information( 0, tr("Test"), response.toXmlString( 2 ) );
+
 	const QtSoapType & res = response.returnValue();
 	if( ! res.isValid() ) {
 		emit soapError( tr("Invalid return value") );
 		return;
 	}
 
+	QMessageBox::information( 0, tr("Test"), res.value().toString() );
+
 	QHash<QString,QString> hashResponse;
-	QDomDocument document;
-	QDomElement rootElement = res.toDomElement( document );
-	QDomElement childElement = rootElement.firstChildElement();
-	while( ! childElement.isNull() ) {
-		hashResponse[ childElement.nodeName() ] = childElement.text();
-		childElement = childElement.nextSiblingElement();
+	if( res.count() > 0 ) {
+		QDomDocument document;
+		QDomElement rootElement = res.toDomElement( document );
+		QDomElement childElement = rootElement.firstChildElement();
+		while( ! childElement.isNull() ) {
+			hashResponse[ childElement.nodeName() ] = childElement.text();
+			childElement = childElement.nextSiblingElement();
+		}
+	} else {
+		hashResponse[ res.name().name() ] = res.value().toString();
 	}
 
 	emit soapResponse( hashResponse );

@@ -30,6 +30,9 @@ ServicesProjectPropertyImpl::ServicesProjectPropertyImpl( QWidget* parent, Qt::W
 ServicesProjectPropertyImpl::~ServicesProjectPropertyImpl() {
 }
 
+void ServicesProjectPropertyImpl::wsdlSelectionChanged() {
+	m_refreshWSDL->setEnabled( m_servicesList->m_list->currentItem() );
+}
 
 
 

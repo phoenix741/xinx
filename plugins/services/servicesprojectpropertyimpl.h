@@ -32,6 +32,8 @@ class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectPr
 public:
 	ServicesProjectPropertyImpl( QWidget* parent = 0, Qt::WFlags fl = 0 );
 	~ServicesProjectPropertyImpl();
+private slots:
+	void wsdlSelectionChanged();
 
 };
 
