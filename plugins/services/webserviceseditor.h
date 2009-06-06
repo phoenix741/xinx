@@ -32,6 +32,7 @@ class WebServices;
 class Operation;
 class QComboBox;
 class QToolButton;
+class QPlainTextEdit;
 
 class WebServicesEditor : public TextFileEditor {
 	Q_OBJECT
@@ -77,6 +78,7 @@ private:
 	QToolButton * m_updateButton, * m_runButton;
 	QHash<QString,QString> m_paramValues;
 	XinxCodeEdit * m_resultEdit;
+//	QPlainTextEdit * m_resultEdit;
 };
 
 #endif // __WEBSERVICESEDITOR_H__

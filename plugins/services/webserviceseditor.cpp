@@ -40,6 +40,7 @@
 #include <QDir>
 #include <QDomDocument>
 #include <QSplitter>
+#include <QPlainTextEdit>
 
 /* WebServicesEditor */
 
@@ -80,24 +81,24 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 
 	borderLayout()->add( hbox, BorderLayout::North );
 
-	QLabel * label4 = new QLabel( tr("Result : "), this );
-	m_resultList = new QComboBox( this );
-
+	QWidget * resultWidget = new QWidget( this );
+	QVBoxLayout * vbox = new QVBoxLayout( resultWidget );
 	hbox = new QHBoxLayout;
+
+	QLabel * label4 = new QLabel( tr("Result : "), resultWidget );
 	hbox->addWidget( label4 );
+
+	m_resultList = new QComboBox( resultWidget );
 	hbox->addWidget( m_resultList );
 	hbox->addStretch();
 
-	m_resultEdit = new XinxCodeEdit( this );
+	vbox->addLayout( hbox );
+
+	m_resultEdit = new XinxCodeEdit( resultWidget );
 	m_resultEdit->editor()->setFlag( QEditor::ReadOnly, true );
 	m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
-
-	QVBoxLayout * vbox = new QVBoxLayout;
-	vbox->addLayout( hbox );
-	vbox->addWidget( m_resultList );
-
-	QWidget * resultWidget = new QWidget( this );
-	resultWidget->setLayout( vbox );
+	//m_resultEdit = new QPlainTextEdit( resultWidget );
+	vbox->addWidget( m_resultEdit );
 
 	splitter()->addWidget( resultWidget );
 
