@@ -34,8 +34,6 @@
 #include <core/xinxproject.h>
 #include "webservices.h"
 #include "wsdl.h"
-#include "connectionwebservicesdialogimpl.h"
-#include "serviceresultdialogimpl.h"
 
 /* Static member */
 
@@ -166,6 +164,7 @@ typedef
 	QPair<QString,QString> ParamStr;
 
 void WebServices::askWSDL( QWidget * parent ) {
+	/*
 	QUrl wsdlUrl( m_link );
 	QBuffer buffer;
 //	QFile buffer( "c:\\temp.wsdl" );
@@ -202,6 +201,7 @@ void WebServices::askWSDL( QWidget * parent ) {
 
 		loadFromElement( document.documentElement() );
 	}
+	*/
 }
 
 void WebServices::readResponse() {
@@ -255,57 +255,6 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 	http.setHost( queryUrl.host(), queryUrl.port() );
 
 	http.submitRequest( request, queryUrl.path() );
-	/*
-
-	Envelop soapEnvelop( op->encodingStyle(), op->namespaceString() , op->name() );
-	QString query;
-
-	for( int i = 0; i < op->inputParam().count(); i++ ) {
-		soapEnvelop.setParam( op->inputParam()[i]->paramString(), op->inputParam()[i]->paramType(), param[ op->inputParam()[i]->paramString() ] );
-		query += op->inputParam()[i]->paramString() + "=\n" + param[ op->inputParam()[i]->paramString() ] + "\n";
-	}
-
-	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
-	QBuffer obuffer;
-	obuffer.open( QIODevice::ReadWrite );
-
-//	query = soapEnvelop.toString();
-	QByteArray ibuffer = soapEnvelop.toString().toUtf8();
-	ibuffer.truncate( ibuffer.size() - 1 );
-
-	QHttpRequestHeader header( "POST", queryUrl.path() );
-	header.setValue( "Host", queryUrl.host() );
-	header.setValue( "Connection", "Keep-Alive" );
-	header.setContentLength( ibuffer.size() );
-	header.setContentType( "text/xml" );
-
-	ConnectionWebServicesDialogImpl dlg;
-	dlg.setHost( queryUrl.host(), queryUrl.port() );
-	if( dlg.request( &header, &ibuffer, &obuffer ) ) {
-		obuffer.seek( 0 );
-
-		QDomDocument document;
-		QString errorStr;
-		int errorLine;
-		int errorColumn;
-		if (!document.setContent( &obuffer, true, &errorStr, &errorLine, &errorColumn)) {
-			QMessageBox::information(qApp->activeWindow(), QObject::tr("Invok WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
-																						.arg(errorLine)
-	        			                      											.arg(errorColumn)
-																						.arg(errorStr));
-		    return;
-		}
-
-		Envelop soapResult( document.toString(), op->name() + "Response" );
-		QHash<QString,QString> response;
-		QStringList params = soapResult.getParams();
-		foreach( const QString & param, params ) {
-			QPair<QString,QString> pair = soapResult.getParam( param );
-			response[ param ] = pair.first;
-		}
-
-		emit soapResponse( param, response, soapResult.getErrorCode(), soapResult.getErrorString() );
-	}*/
 }
 
 /* WebServicesManager */
@@ -362,9 +311,11 @@ void WebServicesManager::webServicesReponse( QHash<QString,QString> query, QHash
 	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
 		QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
 	} else {
+		/*
 		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( qApp->activeWindow() );
 		dlg->setInputStreamText( query );
 		dlg->setOutputStreamText( response );
 		dlg->show();
+		*/
 	}
 }

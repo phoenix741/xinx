@@ -82,6 +82,7 @@ signals:
 	//! This signal is emited when the user change the value \e value.
 	void defaultValueChanged( QString value );
 	void currentRowChanged( int value );
+	void itemChanged( const QString & text );
 private slots:
 	void on_m_btnDef_clicked();
 	void on_m_btnAdd_clicked();
@@ -89,6 +90,7 @@ private slots:
 	void on_m_btnUp_clicked();
 	void on_m_btnDown_clicked();
 	void on_m_list_currentRowChanged ( int row );
+	void on_m_list_itemChanged( QListWidgetItem * item );
 private:
 	void updateDefault( const QString & def );
 	int m_defaultValue;

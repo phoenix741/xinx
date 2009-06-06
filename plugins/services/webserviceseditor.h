@@ -73,9 +73,10 @@ private:
 	void restore( const QString & );
 
 	QString m_serviceName, m_operationName, m_oldParamValue;
-	QComboBox * m_servicesList, * m_paramList, * m_actionList;
+	QComboBox * m_servicesList, * m_paramList, * m_actionList, * m_resultList;
 	QToolButton * m_updateButton, * m_runButton;
 	QHash<QString,QString> m_paramValues;
+	XinxCodeEdit * m_resultEdit;
 };
 
 #endif // __WEBSERVICESEDITOR_H__

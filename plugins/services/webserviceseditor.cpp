@@ -39,6 +39,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDomDocument>
+#include <QSplitter>
 
 /* WebServicesEditor */
 
@@ -78,6 +79,27 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	//hbox->addStretch();
 
 	borderLayout()->add( hbox, BorderLayout::North );
+
+	QLabel * label4 = new QLabel( tr("Result : "), this );
+	m_resultList = new QComboBox( this );
+
+	hbox = new QHBoxLayout;
+	hbox->addWidget( label4 );
+	hbox->addWidget( m_resultList );
+	hbox->addStretch();
+
+	m_resultEdit = new XinxCodeEdit( this );
+	m_resultEdit->editor()->setFlag( QEditor::ReadOnly, true );
+	m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
+
+	QVBoxLayout * vbox = new QVBoxLayout;
+	vbox->addLayout( hbox );
+	vbox->addWidget( m_resultList );
+
+	QWidget * resultWidget = new QWidget( this );
+	resultWidget->setLayout( vbox );
+
+	splitter()->addWidget( resultWidget );
 
 	connect( WebServicesManager::self(), SIGNAL(changed()), this, SLOT(webServicesChanged()) );
 	connect( m_servicesList, SIGNAL(activated(int)), this, SLOT(webServicesActivated(int)) );

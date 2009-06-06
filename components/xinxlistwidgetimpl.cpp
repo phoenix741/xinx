@@ -181,3 +181,10 @@ void XinxListWidgetImpl::on_m_list_currentRowChanged( int row ) {
 	m_btnUp->setEnabled( row > 0 );
 	m_btnDown->setEnabled( row < m_list->count() - 1 );
 }
+
+void XinxListWidgetImpl::on_m_list_itemChanged( QListWidgetItem * item ) {
+	if( item )
+		emit itemChanged( item->text() );
+	else
+		emit itemChanged( QString() );
+}

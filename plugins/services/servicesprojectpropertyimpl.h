@@ -26,15 +26,31 @@
 
 // Qt header
 #include <QWidget>
+#include <QHttp>
+#include <QProgressDialog>
 
 class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectProperty {
 	Q_OBJECT
 public:
 	ServicesProjectPropertyImpl( QWidget* parent = 0, Qt::WFlags fl = 0 );
 	~ServicesProjectPropertyImpl();
+
+	void loadProjectProperty();
+	void saveProjectProperty();
 private slots:
 	void wsdlSelectionChanged();
+	void on_m_refreshWSDL_clicked();
+	void on_m_adressLineEdit_editingFinished();
+	void on_m_wsdlEdit_textChanged();
 
+	void httpDataReadProgress( int done, int total );
+	void httpRequestFinished( bool error );
+private:
+	QHash<QString,QString> m_wsdlContent;
+
+	QHttp * m_http;
+	QProgressDialog * m_httpProgressDialog;
+	QString m_url;
 };
 
 #endif // SERVICESPROJECTPROPERTYIMPL_H
