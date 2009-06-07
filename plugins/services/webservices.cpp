@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <QDomElement>
 #include <QPair>
+#include <QProgressDialog>
 
 // Xinx header
 #include <core/xinxcore.h>
@@ -91,8 +92,7 @@ QString Operation::namespaceString() {
 
 /* WebServices */
 
-WebServices::WebServices( const QString & link, QObject * parent ) : QObject( parent ) {
-	m_link = link;
+WebServices::WebServices( const QString & wsdlLink, const QString & wsdlContent, QObject * parent ) : QObject( parent ), m_wsdlLink( wsdlLink ), m_wsdlContent( wsdlContent ) {
 	connect( &http, SIGNAL(responseReady()), SLOT(readResponse()) );
 }
 
@@ -160,48 +160,20 @@ void WebServices::loadFromElement( const QDomElement & element ) {
 	emit updated();
 }
 
-typedef
-	QPair<QString,QString> ParamStr;
-
-void WebServices::askWSDL( QWidget * parent ) {
-	/*
-	QUrl wsdlUrl( m_link );
-	QBuffer buffer;
-//	QFile buffer( "c:\\temp.wsdl" );
-	buffer.open( QIODevice::ReadWrite );
-
-	ConnectionWebServicesDialogImpl dlg( parent );
-	if( wsdlUrl.port() >= 0 )
-		dlg.setHost( wsdlUrl.host(), wsdlUrl.port() );
-	else
-		dlg.setHost( wsdlUrl.host() );
-	QString query = wsdlUrl.path();
-	if( wsdlUrl.hasQuery() ) {
-		query += "?";
-		foreach( const ParamStr & param, wsdlUrl.queryItems() ) {
-			query += param.first;
-			if( !param.second.isEmpty() )
-				query += "=" + param.second;
-		}
+void WebServices::loadFromContent( const QString & wsdlContent ) {
+	QDomDocument document;
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+	if (!document.setContent( wsdlContent, true, &errorStr, &errorLine, &errorColumn)) {
+		QMessageBox::information(qApp->activeWindow(), QObject::tr("WSDL WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
+		                         .arg(errorLine)
+		                         .arg(errorColumn)
+		                         .arg(errorStr));
+		return;
 	}
-	if( dlg.get( query, &buffer ) ) {
-		buffer.seek( 0 );
 
-		QDomDocument document;
-		QString errorStr;
-		int errorLine;
-		int errorColumn;
-		if (!document.setContent( &buffer, true, &errorStr, &errorLine, &errorColumn)) {
-			QMessageBox::information(qApp->activeWindow(), QObject::tr("WSDL WebServices file"), QObject::tr("Parse error at line %1, column %2:\n%3")
-																						.arg(errorLine)
-	        			                      											.arg(errorColumn)
- 																						.arg(errorStr));
-		    return;
-		}
-
-		loadFromElement( document.documentElement() );
-	}
-	*/
+	loadFromElement( document.documentElement() );
 }
 
 void WebServices::readResponse() {
@@ -211,15 +183,11 @@ void WebServices::readResponse() {
 		return;
 	}
 
-	QMessageBox::information( 0, tr("Test"), response.toXmlString( 2 ) );
-
 	const QtSoapType & res = response.returnValue();
 	if( ! res.isValid() ) {
 		emit soapError( tr("Invalid return value") );
 		return;
 	}
-
-	QMessageBox::information( 0, tr("Test"), res.value().toString() );
 
 	QHash<QString,QString> hashResponse;
 	if( res.count() > 0 ) {
@@ -259,12 +227,22 @@ void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
 
 /* WebServicesManager */
 
-WebServicesManager::WebServicesManager() : QObject(), WebServicesList() {
-
+WebServicesManager::WebServicesManager() : QObject(), WebServicesList(), m_isUpdate( false ){
+	m_http = new QHttp( this );
+	m_httpDialog = new QProgressDialog( qApp->activeWindow() );
+	m_httpDialog->setLabelText( tr("Load Web Services List ...") );
+	m_httpDialog->setValue( 0 );
+	connect( m_httpDialog, SIGNAL( canceled() ), m_http, SLOT( abort() ) );
+	connect( m_http, SIGNAL( done(bool) ), this, SLOT( responseReady() ) );
 }
 
-WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : QObject(), WebServicesList( manager ) {
-
+WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : QObject(), WebServicesList( manager ), m_isUpdate( false ) {
+	m_http = new QHttp( this );
+	m_httpDialog = new QProgressDialog( qApp->activeWindow() );
+	m_httpDialog->setLabelText( tr("Load Web Services List ...") );
+	m_httpDialog->setValue( 0 );
+	connect( m_httpDialog, SIGNAL( canceled() ), m_http, SLOT( abort() ) );
+	connect( m_http, SIGNAL( done(bool) ), this, SLOT( responseReady() ) );
 }
 
 WebServicesManager::~WebServicesManager() {
@@ -284,6 +262,7 @@ WebServicesManager * WebServicesManager::self() {
 }
 
 void WebServicesManager::setProject( XinxProject * project ) {
+	if( m_isUpdate ) return ;
 	bool enabled = project && project->options().testFlag( XinxProject::hasWebServices );
 
 	qDeleteAll( *this );
@@ -291,31 +270,64 @@ void WebServicesManager::setProject( XinxProject * project ) {
 	emit changed();
 
 	if( enabled ) {
-		QStringList serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split(";;",QString::SkipEmptyParts);
-		foreach( const QString & link, serveurWeb ) {
-			WebServices * ws = new WebServices( link, this );
-			append( ws );
-			ws->askWSDL( qApp->activeWindow() );
-			connect( ws, SIGNAL(soapResponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)), this, SLOT(webServicesReponse(QHash<QString,QString>,QHash<QString,QString>,QString,QString)) );
+		QHash<QString,QString> wsdlContent;
+		int index = 0;
+		QString link;
+
+		QStringList serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts );
+		while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
+			if( index == 0 )
+				serveurWeb.clear();
+
+			serveurWeb.append( link );
+			wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
+
+			index++;
 		}
+
+		m_httpDialog->setMaximum( serveurWeb.count() );
+		m_httpDialog->setValue( 0 );
+		m_httpDialog->show();
+
+		m_isUpdate = true;
+		foreach( QString link, serveurWeb ) {
+			if( wsdlContent[ link ].isEmpty() ) {
+				m_hasFinished = false;
+				m_httpString = link;
+				QUrl queryUrl( link );
+				m_http->setHost( queryUrl.host(), queryUrl.port() );
+				m_http->get( queryUrl.path() );
+				while( ! m_hasFinished )
+					qApp->processEvents();
+			} else {
+				append( new WebServices( link, wsdlContent[ link ], this ) );
+				m_httpDialog->setValue( m_httpDialog->value() + 1 );
+			}
+		}
+		m_isUpdate = false;
+		m_httpDialog->reset();
 	}
 
 	emit changed();
+}
+
+void WebServicesManager::responseReady() {
+	if( m_http->error() == QHttp::NoError ) {
+		QString content = m_http->readAll();
+		if( ! content.isEmpty() ) {
+			XINXProjectManager::self()->project()->writeProperty( QString( "webServiceContent_%1" ).arg( m_httpDialog->value() ), content );
+			append( new WebServices( m_httpString, content, this ) );
+		}
+	} else {
+		QMessageBox::critical( qApp->activeWindow(), tr( "WSDL WebServices file" ), tr( "Can't load WSDL of link %1 : %2" ).arg( m_httpString ).arg( m_http->errorString() ) );
+	}
+
+	m_httpDialog->setValue( m_httpDialog->value() + 1 );
+	m_hasFinished = true;
 }
 
 void WebServicesManager::updateWebServicesList() {
 	setProject( XINXProjectManager::self()->project() );
 }
 
-void WebServicesManager::webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString ) {
-	if( ! ( errorString.isEmpty() && errorCode.isEmpty() ) ) {
-		QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error code %1 : %2").arg( errorCode ).arg( errorString ) );
-	} else {
-		/*
-		ServiceResultDialogImpl * dlg = new ServiceResultDialogImpl( qApp->activeWindow() );
-		dlg->setInputStreamText( query );
-		dlg->setOutputStreamText( response );
-		dlg->show();
-		*/
-	}
-}
+

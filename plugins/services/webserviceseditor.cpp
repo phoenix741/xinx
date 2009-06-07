@@ -97,7 +97,6 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	m_resultEdit = new XinxCodeEdit( resultWidget );
 	m_resultEdit->editor()->setFlag( QEditor::ReadOnly, true );
 	m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
-	//m_resultEdit = new QPlainTextEdit( resultWidget );
 	vbox->addWidget( m_resultEdit );
 
 	splitter()->addWidget( resultWidget );
