@@ -52,16 +52,17 @@ void ServicesProjectPropertyImpl::loadProjectProperty() {
 	QStringList links;
 	QString link;
 	int index = 0;
-	while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
-		links.append( link );
-		m_wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
+	int version = XINXProjectManager::self()->project()->readProperty( "webServiceVersion" ).toInt();
+	if( version == WEBSERVICE_VERSION_1 ) {
+		while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
+			links.append( link );
+			m_wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
 
-		index++;
-	}
-	if( index == 0 ) {
-		m_servicesList->setValues( XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts ) );
-	} else {
+			index++;
+		}
 		m_servicesList->setValues( links );
+	} else {
+		m_servicesList->setValues( XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts ) );
 	}
 }
 
@@ -74,6 +75,7 @@ void ServicesProjectPropertyImpl::saveProjectProperty() {
 	XINXProjectManager::self()->project()->setOptions( options );
 
 	int index = 0;
+	XINXProjectManager::self()->project()->writeProperty( "webServiceVersion", WEBSERVICE_VERSION_CURRENT );
 	foreach( const QString & link, m_servicesList->values() ) {
 		XINXProjectManager::self()->project()->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
 		XINXProjectManager::self()->project()->writeProperty( QString( "webServiceContent_%1" ).arg( index ), m_wsdlContent[ link ] );

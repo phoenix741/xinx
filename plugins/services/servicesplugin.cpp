@@ -24,6 +24,7 @@
 #include "servicesprojectwizard.h"
 #include "webservices.h"
 #include "webservicesfiletype.h"
+#include "webservicesaction.h"
 
 // Qt header
 #include <QString>
@@ -34,7 +35,7 @@
 /* ServicesPlugin */
 
 ServicesPlugin::ServicesPlugin() {
-    Q_INIT_RESOURCE(servicesplugin);
+	Q_INIT_RESOURCE(servicesplugin);
 
 	qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
 
@@ -78,6 +79,20 @@ QVariant ServicesPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttri
 
 QList<IFileTypePlugin*> ServicesPlugin::fileTypes() {
 	return m_fileTypes;
+}
+
+XinxAction::MenuList ServicesPlugin::actions() {
+	if( m_menus.size() == 0 ) {
+		XinxAction::Action * refreshAction = new WebServicesRefreshAction( QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this );
+		XinxAction::Action * runAction = new WebServicesRefreshAction( QIcon(":/images/run.png"), tr("Call the service"), QString( "F9" ), this );
+
+		XinxAction::ActionList menu( tr("&Execute") );
+		menu.append( new XinxAction::Separator() );
+		menu.append( refreshAction );
+		menu.append( runAction );
+		m_menus.append( menu );
+	}
+	return m_menus;
 }
 
 QWidget * ServicesPlugin::createProjectSettingsPage() {

@@ -35,6 +35,7 @@
 #include <core/xinxproject.h>
 #include "webservices.h"
 #include "wsdl.h"
+#include "servicesprojectpropertyimpl.h"
 
 /* Static member */
 
@@ -267,19 +268,21 @@ void WebServicesManager::setProject( XinxProject * project ) {
 	emit changed();
 
 	if( enabled ) {
+		int version = XINXProjectManager::self()->project()->readProperty( "webServiceVersion" ).toInt();
 		QHash<QString,QString> wsdlContent;
-		int index = 0;
-		QString link;
 
-		QStringList serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts );
-		while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
-			if( index == 0 )
-				serveurWeb.clear();
+		QStringList serveurWeb;
+		if( version < WEBSERVICE_VERSION_1 ) {
+			serveurWeb = XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts );
+		} else {
+			int index = 0;
+			QString link;
+			while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
+				serveurWeb.append( link );
+				wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
 
-			serveurWeb.append( link );
-			wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
-
-			index++;
+				index++;
+			}
 		}
 
 		m_httpDialog->setMaximum( serveurWeb.count() );
@@ -287,7 +290,7 @@ void WebServicesManager::setProject( XinxProject * project ) {
 		m_httpDialog->show();
 
 		m_isUpdate = true;
-		foreach( QString link, serveurWeb ) {
+		foreach( const QString & link, serveurWeb ) {
 			if( wsdlContent[ link ].isEmpty() ) {
 				m_hasFinished = false;
 				m_httpString = link;
@@ -312,6 +315,8 @@ void WebServicesManager::responseReady() {
 	if( m_http->error() == QHttp::NoError ) {
 		QString content = m_http->readAll();
 		if( ! content.isEmpty() ) {
+			XINXProjectManager::self()->project()->writeProperty( "webServiceVersion" , WEBSERVICE_VERSION_CURRENT );
+			XINXProjectManager::self()->project()->writeProperty( QString( "webServiceLink_%1" ).arg( m_httpDialog->value() ), m_httpString );
 			XINXProjectManager::self()->project()->writeProperty( QString( "webServiceContent_%1" ).arg( m_httpDialog->value() ), content );
 			XINXProjectManager::self()->project()->saveToFile();
 			append( new WebServices( m_httpString, content, this ) );

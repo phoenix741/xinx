@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <plugins/plugininterfaces.h>
+#include <actions/actioninterface.h>
 
 class ServicesPlugin : public QObject, public IFilePlugin, public IXinxPluginProjectConfiguration {
 	Q_OBJECT
@@ -38,6 +39,8 @@ public:
 
 	virtual QList<IFileTypePlugin*> fileTypes();
 
+	virtual XinxAction::MenuList actions();
+
 	virtual QWidget * createProjectSettingsPage();
 	virtual bool loadProjectSettingsPage( QWidget * widget );
 	virtual bool saveProjectSettingsPage( QWidget * widget );
@@ -46,6 +49,7 @@ public:
 	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page );
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
+	XinxAction::MenuList m_menus;
 };
 
 #endif /* SERVICESPLUGIN_H_*/

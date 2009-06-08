@@ -43,6 +43,7 @@ public:
 	WebServices * service();
 	Operation * operation();
 	const QHash<QString,QString> & values();
+	void run();
 
 	virtual void loadFromDevice( QIODevice & d );
 	virtual void saveToDevice( QIODevice & d );
@@ -54,16 +55,18 @@ public:
 
 	virtual QIcon icon() const;
 	virtual QString defaultFileName() const;
+signals:
+	void updateActions();
 private slots:
 	void paramListEditingFinished();
-	void updateActions();
 
 	void webServicesChanged();
 	void webServicesActivated( int );
 	void webServicesParamActivated( int );
 	void webServicesValueActivated();
 
-	void run();
+	void soapError( const QString & errorString );
+	void soapResponse( QHash<QString,QString> response );
 private:
 	void loadServicesList();
 	void loadActionsList( int index );
@@ -75,8 +78,8 @@ private:
 
 	QString m_serviceName, m_operationName, m_oldParamValue;
 	QComboBox * m_servicesList, * m_paramList, * m_actionList, * m_resultList;
-	QToolButton * m_updateButton, * m_runButton;
 	QHash<QString,QString> m_paramValues;
+	QHash<QString,QString> m_resultValues;
 	XinxCodeEdit * m_resultEdit;
 //	QPlainTextEdit * m_resultEdit;
 };

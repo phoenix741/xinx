@@ -21,6 +21,10 @@
 #define SERVICESPROJECTPROPERTYIMPL_H
 #pragma once
 
+#define WEBSERVICE_VERSION_0 0
+#define WEBSERVICE_VERSION_1 1
+#define WEBSERVICE_VERSION_CURRENT 1
+
 // Xinx header
 #include "ui_servicesprojectproperty.h"
 
