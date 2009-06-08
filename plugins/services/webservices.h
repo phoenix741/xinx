@@ -27,6 +27,7 @@
 #include <QAbstractItemModel>
 #include <QHash>
 #include <QProgressDialog>
+#include <QPointer>
 
 // Qt Soap header
 #include "qtsoap.h"
@@ -131,8 +132,8 @@ private slots:
 	void responseReady();
 
 private:
-	QHttp * m_http;
-	QProgressDialog * m_httpDialog;
+	QPointer<QHttp> m_http;
+	QPointer<QProgressDialog> m_httpDialog;
 	QString m_httpString;
 	bool m_hasFinished, m_isUpdate;
 

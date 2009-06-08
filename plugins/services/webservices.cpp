@@ -94,6 +94,7 @@ QString Operation::namespaceString() {
 
 WebServices::WebServices( const QString & wsdlLink, const QString & wsdlContent, QObject * parent ) : QObject( parent ), m_wsdlLink( wsdlLink ), m_wsdlContent( wsdlContent ) {
 	connect( &http, SIGNAL(responseReady()), SLOT(readResponse()) );
+	loadFromContent( wsdlContent );
 }
 
 WebServices::~WebServices() {
@@ -237,12 +238,8 @@ WebServicesManager::WebServicesManager() : QObject(), WebServicesList(), m_isUpd
 }
 
 WebServicesManager::WebServicesManager( const WebServicesManager & manager ) : QObject(), WebServicesList( manager ), m_isUpdate( false ) {
-	m_http = new QHttp( this );
-	m_httpDialog = new QProgressDialog( qApp->activeWindow() );
-	m_httpDialog->setLabelText( tr("Load Web Services List ...") );
-	m_httpDialog->setValue( 0 );
-	connect( m_httpDialog, SIGNAL( canceled() ), m_http, SLOT( abort() ) );
-	connect( m_http, SIGNAL( done(bool) ), this, SLOT( responseReady() ) );
+	m_http = manager.m_http;
+	m_httpDialog = manager.m_httpDialog;
 }
 
 WebServicesManager::~WebServicesManager() {
@@ -296,7 +293,7 @@ void WebServicesManager::setProject( XinxProject * project ) {
 				m_httpString = link;
 				QUrl queryUrl( link );
 				m_http->setHost( queryUrl.host(), queryUrl.port() );
-				m_http->get( queryUrl.path() );
+				m_http->get( queryUrl.toString( QUrl::RemoveScheme | QUrl::RemoveAuthority ) );
 				while( ! m_hasFinished )
 					qApp->processEvents();
 			} else {
@@ -316,6 +313,7 @@ void WebServicesManager::responseReady() {
 		QString content = m_http->readAll();
 		if( ! content.isEmpty() ) {
 			XINXProjectManager::self()->project()->writeProperty( QString( "webServiceContent_%1" ).arg( m_httpDialog->value() ), content );
+			XINXProjectManager::self()->project()->saveToFile();
 			append( new WebServices( m_httpString, content, this ) );
 		}
 	} else {
