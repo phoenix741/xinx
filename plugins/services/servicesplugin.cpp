@@ -84,7 +84,7 @@ QList<IFileTypePlugin*> ServicesPlugin::fileTypes() {
 XinxAction::MenuList ServicesPlugin::actions() {
 	if( m_menus.size() == 0 ) {
 		XinxAction::Action * refreshAction = new WebServicesRefreshAction( QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this );
-		XinxAction::Action * runAction = new WebServicesRefreshAction( QIcon(":/images/run.png"), tr("Call the service"), QString( "F9" ), this );
+		XinxAction::Action * runAction = new WebServicesRunAction( QIcon(":/services/images/action.png"), tr("Call the service"), QString( "F9" ), this );
 
 		XinxAction::ActionList menu( tr("&Execute") );
 		menu.append( new XinxAction::Separator() );

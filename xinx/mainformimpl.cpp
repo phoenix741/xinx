@@ -772,6 +772,12 @@ void MainformImpl::createPluginsActions() {
 
 					// Si l'élément est un séparateur
 					if( dynamic_cast<XinxAction::Separator*>( item ) ) {
+						if( ! m_menus.value( menuName ) ) {
+							QMenu * newMenu = 0;
+							newMenu = new QMenu( menuName, m_menuBar );
+							m_menuBar->insertMenu( m_menus[ "tools" ]->menuAction(), newMenu );
+							m_menus[ menuName ] = newMenu;
+						}
 						m_menus[ menuName ]->addSeparator();
 
 					// Si l'élément est une action
@@ -1712,6 +1718,14 @@ bool MainformImpl::closeProject( bool session ) {
 
 	XINXProjectManager::self()->deleteProject();
 
+	// Update the state of action
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+		if( e->isActivated() && qobject_cast<IXinxPlugin*>( e->plugin() ) ) {
+			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>( e->plugin() )->actions();
+			menuList.updateMenuState();
+		}
+	}
+
 	return true;
 }
 
@@ -1974,7 +1988,7 @@ void MainformImpl::openProject( const QString & filename ) {
 		updateActions();
 	} catch( XinxProjectException e ) {
 		delete project;
-		
+
 		ProjectWizard wizard( filename );
 		if( wizard.exec() == QDialog::Accepted ) {
 			openProject( filename );
