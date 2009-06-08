@@ -1,14 +1,15 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_FR">
 <context>
     <name>ConnectionWebServicesDialog</name>
     <message>
         <source>WebServices Connection</source>
-        <translation>Connection au service Internet</translation>
+        <translation type="obsolete">Connection au service Internet</translation>
     </message>
     <message>
         <source>Connection ....</source>
-        <translation>Connection ...</translation>
+        <translation type="obsolete">Connection ...</translation>
     </message>
     <message>
         <source>&amp;Abort</source>
@@ -16,11 +17,11 @@
     </message>
     <message>
         <source>Send Request :</source>
-        <translation>Envoi de la requête :</translation>
+        <translation type="obsolete">Envoi de la requête :</translation>
     </message>
     <message>
         <source>Receive Request :</source>
-        <translation>Réception de la requête :</translation>
+        <translation type="obsolete">Réception de la requête :</translation>
     </message>
 </context>
 <context>
@@ -31,59 +32,59 @@
     </message>
     <message>
         <source>The host name lookup failed.</source>
-        <translation>La recherche du nom de l&apos;hôte a échouée.</translation>
+        <translation type="obsolete">La recherche du nom de l&apos;hôte a échouée.</translation>
     </message>
     <message>
         <source>The server refused the connection.</source>
-        <translation>Le serveur a refusé la connection.</translation>
+        <translation type="obsolete">Le serveur a refusé la connection.</translation>
     </message>
     <message>
         <source>The server closed the connection unexpectedly.</source>
-        <translation>Le serveur a fermé la connection inopinément.</translation>
+        <translation type="obsolete">Le serveur a fermé la connection inopinément.</translation>
     </message>
     <message>
         <source>The server sent an invalid response header.</source>
-        <translation>L&apos;entête de la réponse envoyée par le serveur est invalide.</translation>
+        <translation type="obsolete">L&apos;entête de la réponse envoyée par le serveur est invalide.</translation>
     </message>
     <message>
         <source>The client could not read the content correctly.</source>
-        <translation>Le client ne peut lire le contenu correctement.</translation>
+        <translation type="obsolete">Le client ne peut lire le contenu correctement.</translation>
     </message>
     <message>
         <source>The request was aborted.</source>
-        <translation>La requête a été annulée.</translation>
+        <translation type="obsolete">La requête a été annulée.</translation>
     </message>
     <message>
         <source>An error occure.</source>
-        <translation>Une erreur est survenue.</translation>
+        <translation type="obsolete">Une erreur est survenue.</translation>
     </message>
     <message>
         <source>There is no connection to the host.</source>
-        <translation>Il n&apos;y a pas de connection jusqu&apos;à l&apos;hôte.</translation>
+        <translation type="obsolete">Il n&apos;y a pas de connection jusqu&apos;à l&apos;hôte.</translation>
     </message>
     <message>
         <source>A host name lookup is in progress.</source>
-        <translation>Une recherche sur le nom d&apos;hôte est en cours.</translation>
+        <translation type="obsolete">Une recherche sur le nom d&apos;hôte est en cours.</translation>
     </message>
     <message>
         <source>An attempt to connect to the host is in progress.</source>
-        <translation>Une tentative de connection à l&apos;hôte est en cours.</translation>
+        <translation type="obsolete">Une tentative de connection à l&apos;hôte est en cours.</translation>
     </message>
     <message>
         <source>The client is sending its request to the server.</source>
-        <translation>Le client envoie sa requête au serveur.</translation>
+        <translation type="obsolete">Le client envoie sa requête au serveur.</translation>
     </message>
     <message>
         <source>The client&apos;s request has been sent and the client is reading the server&apos;s response.</source>
-        <translation>La requête du client a été recue et le client lit la réponse du serveur.</translation>
+        <translation type="obsolete">La requête du client a été recue et le client lit la réponse du serveur.</translation>
     </message>
     <message>
         <source>The connection to the host is open.</source>
-        <translation>La connection à l&apos;hôte est ouverte.</translation>
+        <translation type="obsolete">La connection à l&apos;hôte est ouverte.</translation>
     </message>
     <message>
         <source>The connection is closing down.</source>
-        <translation>La connection est en cours de fermeture.</translation>
+        <translation type="obsolete">La connection est en cours de fermeture.</translation>
     </message>
 </context>
 <context>
@@ -100,38 +101,38 @@
     </message>
     <message>
         <source>Invok WebServices file</source>
-        <translation>Invocation du service</translation>
+        <translation type="obsolete">Invocation du service</translation>
     </message>
 </context>
 <context>
     <name>ServiceResultDialog</name>
     <message>
         <source>Result</source>
-        <translation>Résultat</translation>
+        <translation type="obsolete">Résultat</translation>
     </message>
     <message>
         <source>Input Stream</source>
-        <translation>Flux d&apos;entrée</translation>
+        <translation type="obsolete">Flux d&apos;entrée</translation>
     </message>
     <message>
         <source>Content of the selected input parameter.</source>
-        <translation>Contenu du paramêtre selectionné.</translation>
+        <translation type="obsolete">Contenu du paramêtre selectionné.</translation>
     </message>
     <message>
         <source>The list of the input parameter send to the &lt;i&gt;web service&lt;/i&gt;.</source>
-        <translation>La liste des paramêtres envoyés au &lt;i&gt;service internet&lt;/i&gt;.</translation>
+        <translation type="obsolete">La liste des paramêtres envoyés au &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>Output Stream</source>
-        <translation>Flux de sortie</translation>
+        <translation type="obsolete">Flux de sortie</translation>
     </message>
     <message>
         <source>Content of the selected result of the &lt;i&gt;web service&lt;/i&gt;.</source>
-        <translation>Contenu du résultat selectionné provenant du &lt;i&gt;service internet&lt;/i&gt;.</translation>
+        <translation type="obsolete">Contenu du résultat selectionné provenant du &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>List of result returned by the &lt;i&gt;web services&lt;/i&gt;.</source>
-        <translation>Liste des résultats retournés par le &lt;i&gt;service internet&lt;/i&gt;.</translation>
+        <translation type="obsolete">Liste des résultats retournés par le &lt;i&gt;service internet&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -192,6 +193,18 @@
         <source>Enable the WebServices Capabilities to XINX.</source>
         <translation>Active la capacité de gérer les Services Internet dans XINX.</translation>
     </message>
+    <message>
+        <source>Update WebServices List</source>
+        <translation>Mettre à jour la liste des Services Internet</translation>
+    </message>
+    <message>
+        <source>Call the service</source>
+        <translation>Appeler un Service</translation>
+    </message>
+    <message>
+        <source>&amp;Execute</source>
+        <translation>&amp;Exécuter</translation>
+    </message>
 </context>
 <context>
     <name>ServicesProjectProperty</name>
@@ -209,16 +222,38 @@
         <source>Project has WebServices</source>
         <translation>Le projet a des Services Internet</translation>
     </message>
+    <message>
+        <source>Refresh</source>
+        <translation>Rafraichir</translation>
+    </message>
+    <message>
+        <source>&amp;WebServices Adresse :</source>
+        <translation>Adresse des &amp;WebServices :</translation>
+    </message>
+</context>
+<context>
+    <name>ServicesProjectPropertyImpl</name>
+    <message>
+        <source>Download WSDL from %1 ...</source>
+        <translation>Télécharge le WSDL à partir de %1 ...</translation>
+    </message>
+</context>
+<context>
+    <name>WebServices</name>
+    <message>
+        <source>Invalid return value</source>
+        <translation>Valeur de retour invalide</translation>
+    </message>
 </context>
 <context>
     <name>WebServicesEditor</name>
     <message>
         <source>Update WebServices List</source>
-        <translation>Mettre à jour la liste des Services Internet</translation>
+        <translation type="obsolete">Mettre à jour la liste des Services Internet</translation>
     </message>
     <message>
         <source>Call the service</source>
-        <translation>Appeler un Service</translation>
+        <translation type="obsolete">Appeler un Service</translation>
     </message>
     <message>
         <source>WebServices : </source>
@@ -244,6 +279,18 @@
         <source>noname.fws</source>
         <translation>sansnom.fws</translation>
     </message>
+    <message>
+        <source>Result values: </source>
+        <translation>Valeurs de résultat :</translation>
+    </message>
+    <message>
+        <source>WebServices Error</source>
+        <translation>Erreur Service Internet</translation>
+    </message>
+    <message>
+        <source>Web services has error %1</source>
+        <translation>Le Service Internet échoue avec l&apos;erreur %1</translation>
+    </message>
 </context>
 <context>
     <name>WebServicesFileType</name>
@@ -256,11 +303,23 @@
     <name>WebServicesManager</name>
     <message>
         <source>WebServices Error</source>
-        <translation>Erreur Service Internet</translation>
+        <translation type="obsolete">Erreur Service Internet</translation>
     </message>
     <message>
         <source>Web services has error code %1 : %2</source>
-        <translation>Le Service Internet a le code d&apos;erreur %1 : %2</translation>
+        <translation type="obsolete">Le Service Internet a le code d&apos;erreur %1 : %2</translation>
+    </message>
+    <message>
+        <source>Load Web Services List ...</source>
+        <translation>Chargement de la liste des services internet ...</translation>
+    </message>
+    <message>
+        <source>WSDL WebServices file</source>
+        <translation>Fichier de description des services internet WSDL</translation>
+    </message>
+    <message>
+        <source>Can&apos;t load WSDL of link %1 : %2</source>
+        <translation>Ne peux charger le lien %1 du fichier WSDL : %2</translation>
     </message>
 </context>
 </TS>

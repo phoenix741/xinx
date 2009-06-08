@@ -19,12 +19,20 @@
 
 #ifndef __WEBSERVICES_H__
 #define __WEBSERVICES_H__
+#pragma once
 
+// Qt header
 #include <QString>
 #include <QDomElement>
 #include <QAbstractItemModel>
 #include <QHash>
+#include <QProgressDialog>
+#include <QPointer>
 
+// Qt Soap header
+#include "qtsoap.h"
+
+// Xinx header
 #include "wsdl.h"
 
 class WebServices;
@@ -38,8 +46,8 @@ public:
 	const QString & paramString() const;
 	const QString & paramType() const;
 private:
-	PrivateParameter * d;
-	friend class PrivateParameter;
+	QString m_paramString;
+	QString m_paramType;
 };
 
 class PrivateOperation;
@@ -57,8 +65,13 @@ public:
 	QString encodingStyle();
 	QString namespaceString();
 private:
-	PrivateOperation * d;
-	friend class PrivateOperation;
+	QString m_name;
+	QString m_encodingStyle;
+	QString m_namespaceString;
+
+	QList<Parameter*> m_inputParam;
+	QList<Parameter*> m_outputParam;
+
 	friend class WebServices;
 };
 
@@ -67,22 +80,31 @@ class PrivateWebServices;
 class WebServices : public QObject {
 	Q_OBJECT
 public:
-	WebServices( const QString & link, QObject * parent = 0 );
+	WebServices( const QString & wsdlLink, const QString & wsdlContent, QObject * parent = 0 );
 	virtual ~WebServices();
 
 	QString name();
 	const QList<Operation*> & operations();
 
-	void askWSDL( QWidget * parent = 0 );
+	void loadFromContent( const QString & wsdlContent );
 	void loadFromElement( const QDomElement & element );
 
 	void call( Operation * operation, const QHash<QString,QString> & param );
+
 signals:
 	void updated();
-	void soapResponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
+
+	void soapError( const QString & errorString );
+	void soapResponse( QHash<QString,QString> response );
+
+private slots:
+	void readResponse();
+
 private:
-	PrivateWebServices * d;
-	friend class PrivateWebServices;
+	QtSoapHttpTransport http;
+	WSDL m_wsdl;
+	QString m_wsdlLink, m_wsdlContent, m_namespace;
+	QList<Operation*> m_list;
 };
 
 typedef QList<WebServices*> WebServicesList;
@@ -99,13 +121,22 @@ public:
 	void setProject( XinxProject * project );
 
 	static WebServicesManager * self();
+
 public slots:
 	void updateWebServicesList();
+
 signals:
 	void changed();
+
 private slots:
-	void webServicesReponse( QHash<QString,QString> query, QHash<QString,QString> response, QString errorCode, QString errorString );
+	void responseReady();
+
 private:
+	QPointer<QHttp> m_http;
+	QPointer<QProgressDialog> m_httpDialog;
+	QString m_httpString;
+	bool m_hasFinished, m_isUpdate;
+
 	static WebServicesManager * s_self;
 };
 

@@ -24,6 +24,7 @@
 #include "servicesprojectwizard.h"
 #include "webservices.h"
 #include "webservicesfiletype.h"
+#include "webservicesaction.h"
 
 // Qt header
 #include <QString>
@@ -34,7 +35,7 @@
 /* ServicesPlugin */
 
 ServicesPlugin::ServicesPlugin() {
-    Q_INIT_RESOURCE(servicesplugin);
+	Q_INIT_RESOURCE(servicesplugin);
 
 	qRegisterMetaType<WebServicesEditor>( "WebServicesEditor" );
 
@@ -80,6 +81,20 @@ QList<IFileTypePlugin*> ServicesPlugin::fileTypes() {
 	return m_fileTypes;
 }
 
+XinxAction::MenuList ServicesPlugin::actions() {
+	if( m_menus.size() == 0 ) {
+		XinxAction::Action * refreshAction = new WebServicesRefreshAction( QIcon(":/images/reload.png"), tr("Update WebServices List"), QString(), this );
+		XinxAction::Action * runAction = new WebServicesRunAction( QIcon(":/services/images/action.png"), tr("Call the service"), QString( "F9" ), this );
+
+		XinxAction::ActionList menu( tr("&Execute") );
+		menu.append( new XinxAction::Separator() );
+		menu.append( refreshAction );
+		menu.append( runAction );
+		m_menus.append( menu );
+	}
+	return m_menus;
+}
+
 QWidget * ServicesPlugin::createProjectSettingsPage() {
 	return new ServicesProjectPropertyImpl();
 }
@@ -88,9 +103,7 @@ bool ServicesPlugin::loadProjectSettingsPage( QWidget * widget ) {
 	ServicesProjectPropertyImpl * page = qobject_cast<ServicesProjectPropertyImpl*>( widget );
 	Q_ASSERT( page );
 
-	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
-	page->m_webServiceGroupBox->setChecked( options.testFlag( XinxProject::hasWebServices ) );
-	page->m_servicesList->setValues( XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split(";;",QString::SkipEmptyParts) );
+	page->loadProjectProperty();
 	return true;
 }
 
@@ -98,14 +111,7 @@ bool ServicesPlugin::saveProjectSettingsPage( QWidget * widget ) {
 	ServicesProjectPropertyImpl * page = qobject_cast<ServicesProjectPropertyImpl*>( widget );
 	Q_ASSERT( page );
 
-	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
-	if( page->m_webServiceGroupBox->isChecked() )
-		options |= XinxProject::hasWebServices;
-	else
-		options &= ~XinxProject::hasWebServices;
-	XINXProjectManager::self()->project()->setOptions( options );
-
-	XINXProjectManager::self()->project()->writeProperty( "webServiceLink", page->m_servicesList->values().join(";;") );
+	page->saveProjectProperty();
 	return true;
 }
 
@@ -127,7 +133,12 @@ bool ServicesPlugin::saveNewProjectSettingsPage( XinxProject * project, QWizardP
 		foreach( const QString & value, servicesPage->m_webServicesWidget->values() )
 			services += value;
 
-		project->writeProperty( "webServiceLink", services.join(";;") );
+
+		int index = 0;
+		foreach( const QString & link, services ) {
+			project->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
+			index++;
+		}
 	}
 
 	return true;

@@ -39,18 +39,22 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDomDocument>
+#include <QSplitter>
+#include <QPlainTextEdit>
 
 /* WebServicesEditor */
 
 WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
 	m_oldParamValue = QString();
 
+	/*
 	m_updateButton = new QToolButton( this );
 	m_updateButton->setIcon( QIcon(":/images/reload.png") );
 	m_updateButton->setText( tr("Update WebServices List") );
 	m_runButton = new QToolButton( this );
 	m_runButton->setIcon( QIcon(":/images/run.png") );
 	m_runButton->setText( tr("Call the service") );
+	*/
 
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
 	m_servicesList = new QComboBox( this );
@@ -63,8 +67,6 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	m_paramList->setEditable( true );
 
 	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( m_updateButton );
-	hbox->addSpacing( 10 );
 	hbox->addWidget( label1 );
 	hbox->addWidget( m_servicesList );
 	hbox->addSpacing( 10 );
@@ -73,19 +75,35 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	hbox->addSpacing( 10 );
 	hbox->addWidget( label3 );
 	hbox->addWidget( m_paramList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( m_runButton );
 	//hbox->addStretch();
 
 	borderLayout()->add( hbox, BorderLayout::North );
+
+	QWidget * resultWidget = new QWidget( this );
+	QVBoxLayout * vbox = new QVBoxLayout( resultWidget );
+	hbox = new QHBoxLayout;
+
+	QLabel * label4 = new QLabel( tr("Result values: "), resultWidget );
+	hbox->addWidget( label4 );
+
+	m_resultList = new QComboBox( resultWidget );
+	hbox->addWidget( m_resultList );
+	hbox->addStretch();
+
+	vbox->addLayout( hbox );
+
+	m_resultEdit = new XinxCodeEdit( resultWidget );
+	m_resultEdit->editor()->setFlag( QEditor::ReadOnly, true );
+	m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
+	m_resultEdit->setHighlighter( "XML" );
+	vbox->addWidget( m_resultEdit );
+
+	splitter()->addWidget( resultWidget );
 
 	connect( WebServicesManager::self(), SIGNAL(changed()), this, SLOT(webServicesChanged()) );
 	connect( m_servicesList, SIGNAL(activated(int)), this, SLOT(webServicesActivated(int)) );
 	connect( m_actionList, SIGNAL(activated(int)), this, SLOT(webServicesParamActivated(int)) );
 	connect( m_paramList, SIGNAL(activated(int)), this, SLOT(webServicesValueActivated()) );
-
-	connect( m_updateButton, SIGNAL(clicked()), WebServicesManager::self(), SLOT(updateWebServicesList()) );
-	connect( m_runButton, SIGNAL(clicked()), this, SLOT(run()) );
 
 	connect( m_paramList->lineEdit(), SIGNAL(editingFinished()), this, SLOT(paramListEditingFinished()) );
 
@@ -94,7 +112,6 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	loadValuesList( m_actionList->currentIndex() );
 
 	setModified( false );
-	updateActions();
 }
 
 WebServicesEditor::~WebServicesEditor() {
@@ -356,7 +373,7 @@ void WebServicesEditor::loadValuesList( int index ) {
 	} else if( m_paramList->count() > 0 )
 		m_paramList->setCurrentIndex( 0 );
 
-	updateActions();
+	emit updateActions();
 }
 
 void WebServicesEditor::webServicesChanged() {
@@ -391,10 +408,21 @@ void WebServicesEditor::restore( const QString & paramStr ) {
 	textEdit()->setPlainText( m_paramValues[ paramStr ] );
 }
 
+void WebServicesEditor::soapError( const QString & errorString ) {
+	service()->disconnect( this );
+	QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg( errorString ) );
+}
+
+void WebServicesEditor::soapResponse( QHash<QString,QString> response ) {
+	service()->disconnect( this );
+	m_resultValues = response;
+	m_resultList->addItems( m_resultValues.keys() );
+	m_resultEdit->setPlainText( m_resultValues.values().at( 0 ) );
+}
+
 void WebServicesEditor::run() {
+	connect( service(), SIGNAL(soapError(QString)), this, SLOT(soapError(QString)) );
+	connect( service(), SIGNAL(soapResponse(QHash<QString,QString>)), this, SLOT(soapResponse(QHash<QString,QString>)) );
 	service()->call( operation(), values() );
 }
 
-void WebServicesEditor::updateActions() {
-	m_runButton->setEnabled( ( service() != NULL ) && ( operation() != NULL ) );
-}
