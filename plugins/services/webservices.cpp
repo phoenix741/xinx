@@ -233,7 +233,6 @@ WebServicesManager::WebServicesManager() : QObject(), WebServicesList(), m_isUpd
 	m_http = new QHttp( this );
 	m_httpDialog = new QProgressDialog( qApp->activeWindow() );
 	m_httpDialog->setLabelText( tr("Load Web Services List ...") );
-	m_httpDialog->setValue( 0 );
 	connect( m_httpDialog, SIGNAL( canceled() ), m_http, SLOT( abort() ) );
 	connect( m_http, SIGNAL( done(bool) ), this, SLOT( responseReady() ) );
 }

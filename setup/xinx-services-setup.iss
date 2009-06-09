@@ -30,7 +30,7 @@ Name: french; MessagesFile: compiler:Languages\French.isl
 Name: assofws; Description: Associate WebServices stream with XINX; Flags: unchecked
 
 [Files]
-DestDir: {code:GetInstallPathStr}\plugins; Source: ..\plugins\services1.dll; Tasks: ; Languages: ; DestName: services.dll
+DestDir: {code:GetInstallPathStr}\plugins; Source: ..\plugins\services1.dll; Tasks: ; Languages: ; DestName: services.dll; Flags: replacesameversion
 
 [Registry]
 Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: uninsdeletekey; Tasks: assofws
