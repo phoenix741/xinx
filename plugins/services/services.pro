@@ -1,6 +1,6 @@
 include(../../project_mode.pri)
 TEMPLATE = lib
-VERSION = 0.1.0.1
+VERSION = 1.0.0.0
 CONFIG += plugin
 QT += network \
     xml
@@ -28,7 +28,6 @@ TRANSLATIONS += translations/servicesplugin_fr.ts
 HEADERS = servicesplugin.h \
     servicesprojectpropertyimpl.h \
     servicesprojectwizard.h \
-    serviceresultdialogimpl.h \
     webservices.h \
     wsdl.h \
     webserviceseditor.h \
@@ -37,7 +36,6 @@ HEADERS = servicesplugin.h \
 SOURCES = servicesplugin.cpp \
     servicesprojectpropertyimpl.cpp \
     servicesprojectwizard.cpp \
-    serviceresultdialogimpl.cpp \
     webservices.cpp \
     wsdl.cpp \
     webserviceseditor.cpp \
@@ -46,7 +44,4 @@ FORMS += ui/newprojectwizard_serviceslist.ui \
     ui/newprojectwizard_services.ui \
     ui/servicesprojectproperty.ui
 win32:RC_FILE += rc/plugin.rc
-include(../../ext/qtsoap/src/qtsoap.pri)SOURCES -= connectionwebservicesdialogimpl.cpp \
-    serviceresultdialogimpl.cpp
-HEADERS -= connectionwebservicesdialogimpl.h \
-    serviceresultdialogimpl.h
+include(../../ext/qtsoap/src/qtsoap.pri)
