@@ -1,6 +1,6 @@
 include(../../project_mode.pri)
 TEMPLATE = lib
-VERSION = 0.1.0.1
+VERSION = 1.0.0.0
 CONFIG += plugin
 QT += network \
     xml

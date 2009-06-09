@@ -2,16 +2,9 @@ TEMPLATE = subdirs
 SUBDIRS += external_qcodeedit \
 	xinx_components \
 	xinx_library \
-	xinx_test1 \
-	xinx_test2 \
-	xinx_test3 \
 	plugins_xmlpres \
 	plugins_webplugin \
-	plugins_cvsplugin \
-	plugins_svnplugin \
 	plugins_services \
-	plugins_dictionary \
-	xinx_wizard \
 	xinx_application
 	
 external_qcodeedit.subdir = ext/qcodeedit
