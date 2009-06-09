@@ -94,7 +94,6 @@ QString Operation::namespaceString() {
 /* WebServices */
 
 WebServices::WebServices( const QString & wsdlLink, const QString & wsdlContent, QObject * parent ) : QObject( parent ), m_wsdlLink( wsdlLink ), m_wsdlContent( wsdlContent ) {
-	connect( &http, SIGNAL(responseReady()), SLOT(readResponse()) );
 	loadFromContent( wsdlContent );
 }
 
@@ -108,6 +107,10 @@ QString WebServices::name() {
 
 const QList<Operation*> & WebServices::operations() {
 	return m_list;
+}
+
+const WSDL & WebServices::wsdl() const {
+	return m_wsdl;
 }
 
 void WebServices::loadFromElement( const QDomElement & element ) {
@@ -176,55 +179,6 @@ void WebServices::loadFromContent( const QString & wsdlContent ) {
 	}
 
 	loadFromElement( document.documentElement() );
-}
-
-void WebServices::readResponse() {
-	const QtSoapMessage & response = http.getResponse();
-	if( response.isFault() ) {
-		emit soapError( response.faultString().value().toString() );
-		return;
-	}
-
-	const QtSoapType & res = response.returnValue();
-	if( ! res.isValid() ) {
-		emit soapError( tr("Invalid return value") );
-		return;
-	}
-
-	QHash<QString,QString> hashResponse;
-	if( res.count() > 0 ) {
-		QDomDocument document;
-		QDomElement rootElement = res.toDomElement( document );
-		QDomElement childElement = rootElement.firstChildElement();
-		while( ! childElement.isNull() ) {
-			hashResponse[ childElement.nodeName() ] = childElement.text();
-			childElement = childElement.nextSiblingElement();
-		}
-	} else {
-		hashResponse[ res.name().name() ] = res.value().toString();
-	}
-
-	emit soapResponse( hashResponse );
-}
-
-void WebServices::call( Operation * op, const QHash<QString,QString> & param ) {
-	Q_ASSERT( op );
-
-	m_namespace = op->namespaceString();
-
-	QtSoapMessage request;
-	request.setMethod( QtSoapQName( op->name(), m_namespace ) );
-
-	QHashIterator<QString,QString> i( param );
-	while( i.hasNext() ) {
-		i.next();
-		request.addMethodArgument( i.key(), op->namespaceString(), i.value() );
-	}
-
-	QUrl queryUrl( m_wsdl.services()[0].port().addressLocation() );
-	http.setHost( queryUrl.host(), queryUrl.port() );
-
-	http.submitRequest( request, queryUrl.path() );
 }
 
 /* WebServicesManager */

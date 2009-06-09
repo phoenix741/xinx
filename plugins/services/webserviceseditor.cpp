@@ -45,16 +45,9 @@
 /* WebServicesEditor */
 
 WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
-	m_oldParamValue = QString();
+	m_http = new QtSoapHttpTransport( this );
 
-	/*
-	m_updateButton = new QToolButton( this );
-	m_updateButton->setIcon( QIcon(":/images/reload.png") );
-	m_updateButton->setText( tr("Update WebServices List") );
-	m_runButton = new QToolButton( this );
-	m_runButton->setIcon( QIcon(":/images/run.png") );
-	m_runButton->setText( tr("Call the service") );
-	*/
+	m_oldParamValue = QString();
 
 	QLabel * label1 = new QLabel( tr("WebServices : "), this );
 	m_servicesList = new QComboBox( this );
@@ -86,15 +79,26 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	QLabel * label4 = new QLabel( tr("Result values: "), resultWidget );
 	hbox->addWidget( label4 );
 
+	m_progressBar = new QProgressBar( resultWidget );
+	m_progressBar->setMinimum( 0 );
+	m_progressBar->setMaximum( 0 );
+	m_progressBar->setVisible( false );
+
+	m_benchmark = new QLabel( resultWidget );
+
 	m_resultList = new QComboBox( resultWidget );
 	hbox->addWidget( m_resultList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( m_progressBar );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( m_benchmark );
 	hbox->addStretch();
 
 	vbox->addLayout( hbox );
 
-	m_resultEdit = new XinxCodeEdit( resultWidget );
+	m_resultEdit = new XinxCodeEdit( true, resultWidget );
 	m_resultEdit->editor()->setFlag( QEditor::ReadOnly, true );
-	m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
+	//m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
 	m_resultEdit->setHighlighter( "XML" );
 	vbox->addWidget( m_resultEdit );
 
@@ -106,6 +110,8 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	connect( m_paramList, SIGNAL(activated(int)), this, SLOT(webServicesValueActivated()) );
 
 	connect( m_paramList->lineEdit(), SIGNAL(editingFinished()), this, SLOT(paramListEditingFinished()) );
+
+	connect( m_http, SIGNAL(responseReady()), SLOT(readResponse()) );
 
 	loadServicesList();
 	loadActionsList( m_servicesList->currentIndex() );
@@ -408,21 +414,62 @@ void WebServicesEditor::restore( const QString & paramStr ) {
 	textEdit()->setPlainText( m_paramValues[ paramStr ] );
 }
 
-void WebServicesEditor::soapError( const QString & errorString ) {
-	service()->disconnect( this );
-	QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg( errorString ) );
-}
+void WebServicesEditor::readResponse() {
+	m_benchmark->setText( tr( "Server has respond in %1 ms" ).arg( m_benchmarkTimer.elapsed() ) );
 
-void WebServicesEditor::soapResponse( QHash<QString,QString> response ) {
-	service()->disconnect( this );
-	m_resultValues = response;
+	const QtSoapMessage & response = m_http->getResponse();
+	if( response.isFault() ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg( response.faultString().value().toString() ) );
+		m_progressBar->setVisible( false );
+		return;
+	}
+
+	const QtSoapType & res = response.returnValue();
+	if( ! res.isValid() ) {
+		QMessageBox::warning( qApp->activeWindow(), tr("WebServices Error"), tr("Web services has error %1").arg( tr("Invalid return value") ) );
+		m_progressBar->setVisible( false );
+		return;
+	}
+
+	QHash<QString,QString> hashResponse;
+	if( res.count() > 0 ) {
+		QDomDocument document;
+		QDomElement rootElement = res.toDomElement( document );
+		QDomElement childElement = rootElement.firstChildElement();
+		while( ! childElement.isNull() ) {
+			hashResponse[ childElement.nodeName() ] = childElement.text();
+			childElement = childElement.nextSiblingElement();
+		}
+	} else {
+		hashResponse[ res.name().name() ] = res.value().toString();
+	}
+
+	m_resultValues = hashResponse;
+	m_resultList->clear();
 	m_resultList->addItems( m_resultValues.keys() );
 	m_resultEdit->setPlainText( m_resultValues.values().at( 0 ) );
+	m_progressBar->setVisible( false );
 }
 
 void WebServicesEditor::run() {
-	connect( service(), SIGNAL(soapError(QString)), this, SLOT(soapError(QString)) );
-	connect( service(), SIGNAL(soapResponse(QHash<QString,QString>)), this, SLOT(soapResponse(QHash<QString,QString>)) );
-	service()->call( operation(), values() );
+	m_progressBar->setVisible( true );
+	Operation * op = operation();
+
+	m_namespace = op->namespaceString();
+
+	QtSoapMessage request;
+	request.setMethod( QtSoapQName( op->name(), m_namespace ) );
+
+	QHashIterator<QString,QString> i( m_paramValues );
+	while( i.hasNext() ) {
+		i.next();
+		request.addMethodArgument( i.key(), op->namespaceString(), i.value() );
+	}
+
+	QUrl queryUrl( service()->wsdl().services()[0].port().addressLocation() );
+	m_http->setHost( queryUrl.host(), queryUrl.port() );
+
+	m_benchmarkTimer.start();
+	m_http->submitRequest( request, queryUrl.path() );
 }
 
