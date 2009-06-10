@@ -28,9 +28,7 @@
 #include <QHash>
 #include <QProgressDialog>
 #include <QPointer>
-
-// Qt Soap header
-#include "qtsoap.h"
+#include <QHttp>
 
 // Xinx header
 #include "wsdl.h"
@@ -89,21 +87,13 @@ public:
 	void loadFromContent( const QString & wsdlContent );
 	void loadFromElement( const QDomElement & element );
 
-	void call( Operation * operation, const QHash<QString,QString> & param );
-
+	const WSDL & wsdl() const;
 signals:
 	void updated();
 
-	void soapError( const QString & errorString );
-	void soapResponse( QHash<QString,QString> response );
-
-private slots:
-	void readResponse();
-
 private:
-	QtSoapHttpTransport http;
 	WSDL m_wsdl;
-	QString m_wsdlLink, m_wsdlContent, m_namespace;
+	QString m_wsdlLink, m_wsdlContent;
 	QList<Operation*> m_list;
 };
 
