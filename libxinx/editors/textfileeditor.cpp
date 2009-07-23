@@ -173,7 +173,12 @@ void TextFileEditor::loadFromDevice( QIODevice & d ) {
 
 	QTextStream text( &d );
 	text.setCodec( codec() );
-	m_view->setPlainText( text.readAll() );
+
+	QString textBuffer = text.readAll();
+	if( m_eol == MacEndOfLine ) {
+		textBuffer.replace( "\r", "\n" );
+	}
+	m_view->setPlainText( textBuffer );
 }
 
 void TextFileEditor::saveToDevice( QIODevice & d ) {
