@@ -996,7 +996,7 @@ void MainformImpl::updateEditorInformations() {
 		m_codecLabel->setText( textFileEditor->codec()->name() );
 		switch( textFileEditor->eol() ) {
 		case TextFileEditor::MacEndOfLine:
-			m_lineFeedLabel->setText( "MAC" );
+			m_lineFeedLabel->setText( "OLD MAC" );
 			break;
 		case TextFileEditor::WindowsEndOfLine:
 			m_lineFeedLabel->setText( "WIN" );

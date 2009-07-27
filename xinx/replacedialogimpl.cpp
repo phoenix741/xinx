@@ -19,6 +19,7 @@
 
 // Qt header
 #include <QLineEdit>
+#include <QCompleter>
 
 // Xinx header
 #include "replacedialogimpl.h"
@@ -65,7 +66,8 @@ void ReplaceDialogImpl::initialize( bool hasEditor ) {
 }
 
 void ReplaceDialogImpl::setText( const QString & str ) {
-	m_comboFind->lineEdit()->setText( str );
+	m_comboFind->setEditText( str );
+	m_comboFind->completer()->setCompletionPrefix( str );
 }
 
 void ReplaceDialogImpl::setReplace( bool value ) {

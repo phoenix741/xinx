@@ -19,7 +19,7 @@ BEGIN
 		VALUE "CompanyName", "Ulrich Van Den Hekke"
 		VALUE "FileDescription", "XINX WebServices"
         VALUE "FileVersion", "0, 1, 0, 1"
-        VALUE "InternalName", "libsharedxinx"
+        VALUE "InternalName", "services"
         VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2008"
 		VALUE "LegalTrademarks", "\0"
         VALUE "OriginalFilename", "services.dll"
