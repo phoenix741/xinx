@@ -545,4 +545,238 @@ You may have to change min and max value !!!
     <Param name="Code dépôt (exemple : LILLE)" />
     <Param name="Code affichage ask  (exemple : TOUS)" />
   </Snipet>
+  <Snipet category="Webservices" key="WS1" icon="" type="fws" name="Agil - WS1 - Interrogation vente comptoir" >
+    <Description>Interroge les ventes comptoir, CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+	&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DEve">
+&lt;retrieve key="WS1">
+&lt;!-- Interrogation d'une vente comptoir -->
+&lt;param num="1" value="%1"/> &lt;!-- Code Entité -->
+&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
+&lt;param num="3" value="CDV"/> &lt;!-- Type d'événement -->
+&lt;param num="4" value="%2"/> &lt;!-- n° de la commande de vente comptoir -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Numéro de commande (exemple 200006)" />
+  </Snipet>
+  <Snipet category="Webservices" key="WS3" icon="" type="fws" name="Agil - WS3 - Interrogation facture accompte" >
+    <Description>Interrogation facture accompte, CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DEve">
+&lt;retrieve key="WS3">
+&lt;!-- Interrogation d'une facture d'acompte -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
+&lt;param num="3" value="ACO"/> &lt;!-- Type d'événement -->
+&lt;param num="4" value="%2"/> &lt;!-- N° de la facture d'acompte -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Numéro d'accompte (exemple 400001)" />
+  </Snipet>
+  <Snipet category="Webservices" key="WS4" icon="" type="fws" name="Agil - WS4 - Création événement débit" >
+    <Description>Création d'un événement de débit (target pev VDEB). Le code produit dédié est AG2GC, en quantité 1.
+Valide l'événement créé dans la foulée.</Description>
+    <Text>&lt;egx_ws>
+	&lt;bean_in>
+		&lt;GCEServiceassimilateIn versionImplementation="1" versionSpecification="1.0" xsi:schemaLocation="http://www.generix.fr/metier/bc4j/integration/common GCEServiceassimilateIn.xsd" xmlns="http://www.generix.fr/metier/bc4j/integration/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			&lt;transaction>
+				&lt;context>
+					&lt;entity>%1&lt;/entity>
+					&lt;identification>
+						&lt;code>DEMO&lt;/code>
+					&lt;/identification>
+					&lt;target>VDEB&lt;/target>
+				&lt;/context>
+				&lt;businessEvent>
+					&lt;header>
+						&lt;info>
+							&lt;thirdparty>
+								&lt;key>
+									&lt;type>CLI&lt;/type>
+									&lt;identifier>%2&lt;/identifier>
+								&lt;/key>
+							&lt;/thirdparty>
+							&lt;item>
+								&lt;info>
+									&lt;product>
+										&lt;key>
+											&lt;code>AG2GC&lt;/code>
+										&lt;/key>
+									&lt;/product>
+									&lt;quantity>1&lt;/quantity>
+									&lt;price>%3&lt;/price>
+								&lt;/info>
+							&lt;/item>
+						&lt;/info>
+					&lt;/header>
+					&lt;services service="validate"/>
+				&lt;/businessEvent>
+			&lt;/transaction>
+		&lt;/GCEServiceassimilateIn>
+	&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Code Client (exemple AGCLI001)" />
+    <Param name="Montant du débit (exemple 100)" />
+  </Snipet>
+  <Snipet category="Webservices" key="WS5" icon="" type="fws" name="Agil - WS5 - Interrogation facture de vente" >
+    <Description>Interroge les factures de vente. CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DEve">
+&lt;retrieve key="WS5">
+&lt;!-- Interrogation d'une facture d'enlèvement -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="V"/> &lt;!-- Code achat-vente -->
+&lt;param num="3" value="FAV"/> &lt;!-- Type d'événement -->
+&lt;param num="4" value="%2"/> &lt;!-- N° de la facture d'enlèvement -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Numéro de facture (exemple 400002)" />
+  </Snipet>
+  <Snipet category="Webservices" key="WS7" icon="" type="fws" name="Agil - WS7 - Interrogation compte client" >
+    <Description>Interroge un compte client. CrudManager retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" 
+viewObjectName="DTie">
+&lt;retrieve key="WS7">
+&lt;!-- Interrogation d'un compte client -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="CLI"/> &lt;!-- Type du tiers client -->
+&lt;param num="3" value="%2"/> &lt;!-- Code du tiers client -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Compte client (exemple AGCLI001)" />
+  </Snipet>
+  <Snipet category="Webservices" key="WS9" icon="" type="fws" name="Agil - WS9 - Interrogation des factures d'un compte client" >
+    <Description>Interrogation des factures d'un compte client. CrudManager Retreive.</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+&lt;CRUDManagerretrieveIn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagerretrieveIn.xsd" viewObjectName="DEve">
+&lt;retrieve key="WS9">
+&lt;!-- Interrogation des factures d'un compte client -->
+&lt;param num="1" value="%1"/> &lt;!-- Code entité -->
+&lt;param num="2" value="CLI"/> &lt;!-- Type du tiers client -->
+&lt;param num="3" value="%2"/> &lt;!-- Code du tiers client -->
+&lt;/retrieve>
+&lt;/CRUDManagerretrieveIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Compte client (exemple AGCLI001)" />
+  </Snipet>
+  <Snipet category="Webservices" key="WS2" icon="" type="fws" name="Agil - WS2 - Ajout de réglement" >
+    <Description>Ajoute un réglement dans Agil. CrudManager Create.</Description>
+    <Text>&lt;egx_ws>
+&lt;ctx language="FRA" user="%6" password="%7" target="VFAV" entity="%1"/>
+&lt;bean_in>
+&lt;CRUDManagercreateIn viewObjectName="JEvmView"
+xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+&lt;!-- Ajout d'un règlement -->
+&lt;row num="1">
+&lt;field name="Codsoc1" value="%1"/> &lt;!-- Entité : récupéré de l'interrogation de la facture -->
+&lt;field name="Achvte" value="V"/> &lt;!-- Achat/vente : récupéré de l'interrogation de la facture -->
+&lt;field name="Typeve" value="FAV"/> &lt;!-- Type événément : récupéré de l'interrogation de la facture -->
+&lt;field name="Numeve" value="%2"/> &lt;!-- N° fa cture : récupéré de l'interrogation de la facture -->
+&lt;field name="Numpos" value="0"/> &lt;!-- N° d e poste réglement : constante 0 -->
+&lt;field name="Typenr" value="R"/> &lt;!-- Type enregistrement : constante R -->
+&lt;field name="Monrgl" value="%3"/> &lt;!-- Montant réglé : montant réglé de la facture -->
+&lt;field name="Modrgl" value="%4"/> &lt;!-- Mode réglement : code qui doit exister dans les modes de reglement de GCE -->
+&lt;field name="Coddev" value="%5"/> &lt;!-- Devise du règlement -->
+&lt;field name="Cletec" value="Manuel par XINX"/> &lt;!-- Référence technique du règlement -->
+&lt;/row>
+&lt;/CRUDManagercreateIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Entité magasin (exemple 3001)" />
+    <Param name="Numéro de facture (exemple 400002)" />
+    <Param name="Montant du réglement (exemple 1)" />
+    <Param name="Mode de réglement (exemple ES)" />
+    <Param name="Devise du réglement (exemple EUR)" />
+    <Param name="Utilisateur qui fait la mise a jour (exemple DEMO)" />
+    <Param name="Mot de passe du user (exemple DEMO)" />
+  </Snipet>
+  <Snipet category="Webservices" key="createtims" icon="" type="fws" name="Ajout de plusieurs lignes dans TIM" >
+    <Description>Ajout de plusieurs lignes dans TIM</Description>
+    <Text>&lt;egx_ws>
+&lt;bean_in>
+	&lt;CRUDManagercreateIn viewObjectName="JTimView" xmlns="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.generix.fr/technicalframework/businesscomponent/applicationmodule/common CRUDManagercreateIn.xsd">
+	&lt;dataSet>
+		&lt;header>
+			&lt;name>Codsoc1&lt;/name>
+			&lt;name>Typtie&lt;/name>
+			&lt;name>Sigtie&lt;/name>
+			&lt;name>Typact&lt;/name>
+			&lt;name>Destcod&lt;/name>
+			&lt;name>Codeta&lt;/name>
+			&lt;name>Dat1&lt;/name>
+		&lt;/header>
+		&lt;line>
+			&lt;value>%1&lt;/value>
+			&lt;value>%2&lt;/value>
+			&lt;value>%3&lt;/value>
+			&lt;value>%4&lt;/value>
+			&lt;value>%5&lt;/value>
+			&lt;value>%6&lt;/value>
+			&lt;value>%7&lt;/value>
+		&lt;/line>
+		&lt;line>
+			&lt;value>%1&lt;/value>
+			&lt;value>%2&lt;/value>
+			&lt;value>%3&lt;/value>
+			&lt;value>%4&lt;/value>
+			&lt;value>%5&lt;/value>
+			&lt;value>%6&lt;/value>
+			&lt;value>%7&lt;/value>
+		&lt;/line>		
+	&lt;/dataSet>
+&lt;/CRUDManagercreateIn>
+&lt;/bean_in>
+&lt;/egx_ws>
+</Text>
+    <Param name="Codsoc1" />
+    <Param name="Typtie" />
+    <Param name="Sigtie" />
+    <Param name="Typact" />
+    <Param name="Destcod" />
+    <Param name="Codeta" />
+    <Param name="Dat1" />
+  </Snipet>
 </SnipetList>
