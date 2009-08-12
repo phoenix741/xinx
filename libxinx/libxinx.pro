@@ -47,8 +47,10 @@ HEADERS = rcs/rcs.h \
     contentview/completionnodemodel.h \
     contentview/abstractcontentviewmodel.h \
     actions/actioninterface.h \
- editors/editormanager.h
-SOURCES = rcs/rcs.cpp \
+    editors/editormanager.h \
+    snipet.h \
+    snipetlist.h
+ SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
     core/xinxproject.cpp \
@@ -71,7 +73,9 @@ SOURCES = rcs/rcs.cpp \
     contentview/abstractcontentviewmodel.cpp \
     contentview/completionnodemodel.cpp \
     editors/contentviewtexteditor.cpp \
- actions/actioninterface.cpp \
- editors/editormanager.cpp
+    actions/actioninterface.cpp \
+    editors/editormanager.cpp \
+    snipet.cpp \
+    snipetlist.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 

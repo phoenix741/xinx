@@ -60,9 +60,7 @@ HEADERS += customdialogmodeles.h \
     projectpropertyimpl.h \
     replacedialogimpl.h \
     runsnipetdialogimpl.h \
-    snipet.h \
     snipetdialog.h \
-    snipetlist.h \
     tabeditor.h \
     threadedconfigurationfile.h \
     uniqueapplication.h \
@@ -87,9 +85,7 @@ SOURCES += customdialogmodeles.cpp \
     projectpropertyimpl.cpp \
     replacedialogimpl.cpp \
     runsnipetdialogimpl.cpp \
-    snipet.cpp \
     snipetdialog.cpp \
-    snipetlist.cpp \
     tabeditor.cpp \
     threadedconfigurationfile.cpp \
     uniqueapplication.cpp \
