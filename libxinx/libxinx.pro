@@ -1,7 +1,7 @@
 include(../project_mode.pri)
 
 TEMPLATE = lib
-unix:VERSION = 0.9.0.0
+unix : VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns
@@ -48,9 +48,10 @@ HEADERS = rcs/rcs.h \
     contentview/abstractcontentviewmodel.h \
     actions/actioninterface.h \
     editors/editormanager.h \
-    snipet.h \
-    snipetlist.h
- SOURCES = rcs/rcs.cpp \
+	snipets/snipetelement.h \
+    snipets/snipet.h \
+	snipets/snipetlist.h
+SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
     core/xinxproject.cpp \
@@ -74,8 +75,9 @@ HEADERS = rcs/rcs.h \
     contentview/completionnodemodel.cpp \
     editors/contentviewtexteditor.cpp \
     actions/actioninterface.cpp \
-    editors/editormanager.cpp \
-    snipet.cpp \
-    snipetlist.cpp
+	editors/editormanager.cpp \
+	snipets/snipetelement.cpp \
+    snipets/snipet.cpp \
+    snipets/snipetlist.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 

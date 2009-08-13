@@ -19,6 +19,7 @@
 
 #ifndef _SNIPETMANAGER_H_
 #define _SNIPETMANAGER_H_
+#pragma once
 
 // Xinx header
 #include "snipets/snipetlist.h"

@@ -19,28 +19,28 @@ Description: XSL/JS/HTML editor for Generix
 Package: xinx-plugins-services
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3)
 Description: WebServices plugins library for XINX
  Add the WebServices capabilities to XINX
  
 Package: xinx-plugins-cvs
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.0), cvs | cvsnt
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3), cvs | cvsnt
 Description: CVS plugins library for XINX
  Add the CVS capabilities to XINX
  
 Package: xinx-plugins-svn
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.0), subversion
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3), subversion
 Description: SubVersion plugins library for XINX
  Add the SubVersion capabilities to XINX
 
 Package: xinx-plugins-dictionary
 Section: devel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xinx (= 0.8.1.3)
 Description: Add a dictionary dock to XINX
  Add a dictionary dock to XINX to open dictinary format of GCE130+
 
