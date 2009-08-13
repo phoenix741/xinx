@@ -89,6 +89,14 @@ void SnipetElement::setScript( const QString & value ) {
 	m_script = value;
 }
 
+const QStringList & SnipetElement::categories() {
+	return m_categories;
+}
+
+void SnipetElement::setCategories( const QStringList & value ) {
+	m_categories = value;
+}
+
 QList< QPair<QString,QString> > & SnipetElement::params() {
 	return m_params;
 }
@@ -110,12 +118,14 @@ QDomElement SnipetElement::saveToDom( QDomDocument & document ) const {
 	QDomText text = document.createTextNode( m_description );
 	description.appendChild( text );
 
-	/*
-	QDomElement category = document.createElement( "Category" );
-	s.appendChild( category );
-	QDomText text = document.createTextNode( snipet.category() );
-	description.appendChild( text );
-	*/
+	QDomElement currentNode = s;
+	foreach( const QString & cat, m_categories ) {
+		QDomElement category = document.createElement( "Category" );
+		currentNode.appendChild( category );
+		category.setAttribute( "name", cat );
+
+		currentNode = category;
+	}
 
 	QDomElement textElement = document.createElement( "Text" );
 	s.appendChild( textElement );
@@ -127,7 +137,7 @@ QDomElement SnipetElement::saveToDom( QDomDocument & document ) const {
 		QDomElement param = document.createElement( "Param" );
 		s.appendChild( param );
 		param.setAttribute( "name", params.first );
-		param.setAttribute( "value", params.second );
+		param.setAttribute( "defaultValue", params.second );
 	}
 
 	foreach( const QString ext, m_extentionsList ) {
@@ -141,21 +151,35 @@ void SnipetElement::loadFromDom( const QDomElement & element ) {
 	setName( element.attribute( "name" ) );
 	setKey( element.attribute( "key" ) );
 	setIcon( element.attribute( "icon" ) );
+	QString cat = element.attribute( "category" );
+	m_categories.clear();
+	if( ! cat.isEmpty() ) {
+		m_categories.append( cat );
+	}
+	setAutomatiqueCall( element.attribute( "automatique" ) );
 
-	QDomElement description = snipet.firstChildElement( "Description" );
+	m_extentionsList.clear();
+	QString ext = element.attribute( "type" );
+	if( ! ext.isEmpty() ) {
+		m_extentionsList.append( ext );
+	}
+	QDomElement extentionNode = element.firstChildElement( "Extention" );
+	while( ! extentionNode.isNull() ) {
+		m_extentionsList.append( extentionNode.attribute( "value" ) );
+		extentionNode = extentionNode.nextSiblingElement( "Extention" );
+	}
+
+	QDomElement description = element.firstChildElement( "Description" );
 	newSnipet.setDescription( description.text() );
 
-	QDomElement textElement = snipet.firstChildElement( "Text" );
+	QDomElement textElement = element.firstChildElement( "Text" );
 	newSnipet.setText( textElement.text() );
 
-	QDomElement param = snipet.firstChildElement( "Param" );
+	QDomElement param = element.firstChildElement( "Param" );
 	while( ! param.isNull() ) {
 		newSnipet.params().append( param.attribute( "name" ) );
 		param = param.nextSiblingElement( "Param" );
 	}
-
-	setType( snipet.attribute( "type" ) );
-	setCategory( snipet.attribute( "category" ) );
 }
 
 

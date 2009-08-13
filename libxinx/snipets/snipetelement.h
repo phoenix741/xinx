@@ -144,6 +144,19 @@ public:
 	 */
 	void setScript( const QString & value );
 
+
+	/*!
+	 * Return the hierarchy of category for the snipet.
+	 * \sa setCategories()
+	 */
+	const QStringList & categories();
+
+	/*!
+	 * Set the hierarchy of category for the snipet.
+	 * \sa categories()
+	 */
+	void setCategories( const QStringList & value );
+
 	/*!
 	 * List of parameters of the template. This list is a 'pointer',
 	 * the value can be modified.
@@ -195,7 +208,7 @@ private:
 	friend class SnipetManager;
 
 	QString m_name, m_description, m_key, m_icon, m_text, m_script;
-	QStringList m_extentionsList;
+	QStringList m_extentionsList, m_categories;
 	bool m_isAutomatiqueCall;
 	QList< QPair<QString,QString> > m_params;
 };
