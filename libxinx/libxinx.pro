@@ -1,7 +1,6 @@
 include(../project_mode.pri)
-
 TEMPLATE = lib
-unix : VERSION = 0.9.0.0
+unix:VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns
@@ -17,9 +16,9 @@ LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
     -lqcodeedit
-win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
+win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
-win32 : RC_FILE += rc/libxinx.rc
+win32:RC_FILE += rc/libxinx.rc
 HEADERS = rcs/rcs.h \
     plugins/xinxpluginsloader.h \
     plugins/xinxpluginelement.h \
@@ -48,9 +47,10 @@ HEADERS = rcs/rcs.h \
     contentview/abstractcontentviewmodel.h \
     actions/actioninterface.h \
     editors/editormanager.h \
-	snipets/snipetelement.h \
+    snipets/snipetelement.h \
     snipets/snipet.h \
-	snipets/snipetlist.h
+    snipets/snipetlist.h \
+    snipets/snipetcategory.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -75,9 +75,9 @@ SOURCES = rcs/rcs.cpp \
     contentview/completionnodemodel.cpp \
     editors/contentviewtexteditor.cpp \
     actions/actioninterface.cpp \
-	editors/editormanager.cpp \
-	snipets/snipetelement.cpp \
+    editors/editormanager.cpp \
+    snipets/snipetelement.cpp \
     snipets/snipet.cpp \
-    snipets/snipetlist.cpp
+    snipets/snipetlist.cpp \
+    snipets/snipetcategory.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
-
