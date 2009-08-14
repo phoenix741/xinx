@@ -49,7 +49,7 @@ void SnipetElement::setKey( const QString & value ) {
 	m_key = value;
 }
 
-const QString & SnipetElement::icon() const {
+const QString & SnipetElement::icon() const {
 	return m_icon;
 }
 
@@ -57,7 +57,7 @@ void SnipetElement::setIcon( const QString & value ) {
 	m_icon = value;
 }
 
-bool SnipetElement::isAutomatiqueCall() const {
+bool SnipetElement::isAutomatiqueCall() const {
 	return m_isAutomatiqueCall;
 }
 
@@ -111,7 +111,7 @@ QDomElement SnipetElement::saveToDom( QDomDocument & document ) const {
 	s.setAttribute( "name", m_name );
 	s.setAttribute( "key", m_key );
 	s.setAttribute( "icon", m_icon );
-	s.setAttribute( "automatique", m_isAutomatiqueCall );
+	s.setAttribute( "automatique", m_isAutomatiqueCall ? "true" : "false" );
 
 	QDomElement description = document.createElement( "Description" );
 	s.appendChild( description );
@@ -129,15 +129,15 @@ QDomElement SnipetElement::saveToDom( QDomDocument & document ) const {
 
 	QDomElement textElement = document.createElement( "Text" );
 	s.appendChild( textElement );
-	text = document.createTextNode( snipet.text() );
+	text = document.createTextNode( m_text );
 	textElement.appendChild( text );
 
-	QPair<QString,QString> params;
-	foreach( params, params() ) {
-		QDomElement param = document.createElement( "Param" );
-		s.appendChild( param );
-		param.setAttribute( "name", params.first );
-		param.setAttribute( "defaultValue", params.second );
+	QPair<QString,QString> param;
+	foreach( param, params() ) {
+		QDomElement paramNode = document.createElement( "Param" );
+		s.appendChild( paramNode );
+		paramNode.setAttribute( "name", param.first );
+		paramNode.setAttribute( "defaultValue", param.second );
 	}
 
 	foreach( const QString ext, m_extentionsList ) {
@@ -145,6 +145,7 @@ QDomElement SnipetElement::saveToDom( QDomDocument & document ) const {
 		s.appendChild( extentionElement );
 		extentionElement.setAttribute( "value", ext );
 	}
+	return s;
 }
 
 void SnipetElement::loadFromDom( const QDomElement & element ) {
@@ -156,7 +157,12 @@ void SnipetElement::loadFromDom( const QDomElement & element ) {
 	if( ! cat.isEmpty() ) {
 		m_categories.append( cat );
 	}
-	setAutomatiqueCall( element.attribute( "automatique" ) );
+	QDomElement categoryNode = element.firstChildElement( "Category" );
+	while( ! categoryNode.isNull() ) {
+		m_categories.append( element.attribute( "name" ) );
+		categoryNode = categoryNode.firstChildElement( "Category" );
+	}
+	setAutomatiqueCall( element.attribute( "automatique" ) == "true" );
 
 	m_extentionsList.clear();
 	QString ext = element.attribute( "type" );
@@ -170,27 +176,34 @@ void SnipetElement::loadFromDom( const QDomElement & element ) {
 	}
 
 	QDomElement description = element.firstChildElement( "Description" );
-	newSnipet.setDescription( description.text() );
+	setDescription( description.text() );
 
 	QDomElement textElement = element.firstChildElement( "Text" );
-	newSnipet.setText( textElement.text() );
+	setText( textElement.text() );
 
 	QDomElement param = element.firstChildElement( "Param" );
 	while( ! param.isNull() ) {
-		newSnipet.params().append( param.attribute( "name" ) );
+		m_params.append( qMakePair( param.attribute( "name" ), param.attribute( "defaultValue" ) ) );
 		param = param.nextSiblingElement( "Param" );
 	}
 }
 
+int SnipetElement::order() const {
+	return m_order;
+}
+
+void SnipetElement::setOrder( int value ) {
+	m_order = value;
+}
 
 bool SnipetElement::operator==( const SnipetElement & s ) const {
 	return ( m_key == s.m_key );
 }
 
 bool SnipetElement::operator<( const SnipetElement & s ) const {
-	/*	if( m_category < s.m_category ) return true;
-	if( m_category > s.m_category ) return false;*/
-	if( m_name < s.m_name )         return true;
-	if( m_name > s.m_name )         return false;
+	if( m_order < s.m_order ) return true;
+	if( m_order > s.m_order ) return false;
+	if( m_name < s.m_name )   return true;
+	if( m_name > s.m_name )   return false;
 	return false;
 }

@@ -21,6 +21,12 @@
 #define _SNIPETELEMENT_H_
 #pragma once
 
+// Qt header
+#include <QString>
+#include <QStringList>
+#include <QPair>
+#include <QDomElement>
+
 /*!
  * This class describe a snipet in XINX. A snipet is a piece of
  * code added in your current developpent on the demand.
@@ -158,6 +164,18 @@ public:
 	void setCategories( const QStringList & value );
 
 	/*!
+	 * Return the order to use in the list.
+	 * \sa setOrder()
+	 */
+	int order() const;
+
+	/*!
+	 * Set the order to use in the list.
+	 * \sa order()
+	 */
+	void setOrder( int value );
+
+	/*!
 	 * List of parameters of the template. This list is a 'pointer',
 	 * the value can be modified.
 	 * \return a list of parameter.
@@ -165,8 +183,8 @@ public:
 	QList< QPair<QString,QString> > & params();
 	const QList< QPair<QString,QString> > & params() const;
 
-	bool operator==( const Snipet & s ) const;
-	bool operator<( const Snipet & s ) const;
+	bool operator==( const SnipetElement & s ) const;
+	bool operator<( const SnipetElement & s ) const;
 private:
 	/*!
 	 * Save the content of member in the XML document structure.
@@ -201,6 +219,7 @@ private:
 	 * Load the content of an XML document structure in member.
 	 * It's can be used by ScriptManager to backup all Snipet, or SnipetList
 	 * to import/export script.
+	 * This don't save the order.
 	 * \sa saveToDom()
 	 */
 	void loadFromDom( const QDomElement & element );
@@ -211,6 +230,7 @@ private:
 	QStringList m_extentionsList, m_categories;
 	bool m_isAutomatiqueCall;
 	QList< QPair<QString,QString> > m_params;
+	int m_order;
 };
 
 #endif /* _SNIPETELEMENT_H_ */
