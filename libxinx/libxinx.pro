@@ -3,7 +3,8 @@ TEMPLATE = lib
 unix:VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
-    xmlpatterns
+    xmlpatterns \
+	sql
 TARGET = sharedxinx
 DESTDIR += ./
 INCLUDEPATH += ../components \

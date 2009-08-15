@@ -28,10 +28,6 @@ class SnipetManager : public SnipetList {
 public:
 	SnipetManager();
 	~SnipetManager();
-
-	void saveToPath( const QString & path );
-
-	void loadFromPath( const QString & path );
 private:
 };
 

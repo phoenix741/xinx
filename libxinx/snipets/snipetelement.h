@@ -22,6 +22,7 @@
 #pragma once
 
 // Qt header
+#include <QApplication>
 #include <QString>
 #include <QStringList>
 #include <QPair>
@@ -35,18 +36,19 @@
  * with balise <? and ?>
  */
 class SnipetElement {
+	Q_DECLARE_TR_FUNCTIONS(SnipetElement)
 public:
 	/*!
-	 * Init some member with default value
+	 * Init some member with default value and load value from SQL.
 	 */
-	SnipetElement();
+	SnipetElement( int id );
 
 	/*!
 	 * Name of the snipet. Use when show a list of snipet.
 	 * \return Name of the template.
 	 * \sa setName()
 	 */
-	const QString & name() const;
+	QString name() const;
 	/*!
 	 * Set the name of the snipet.
 	 * \param name New name of the template.
@@ -59,7 +61,7 @@ public:
 	 * \return the description of the template.
 	 * \sa setDescription()
 	 */
-	const QString & description() const;
+	QString description() const;
 
 	/*!
 	 * Set the description of the template.
@@ -73,7 +75,7 @@ public:
 	 * \return the key to use.
 	 * \sa setKey()
 	 */
-	const QString & key() const;
+	QString key() const;
 	/*!
 	 * Set the key to use when complete a snipet.
 	 * \param The new Key to use.
@@ -87,7 +89,7 @@ public:
 	 * \return the link of the icon to use.
 	 * \sa setIcon()
 	 */
-	const QString & icon() const;
+	QString icon() const;
 	/*!
 	 * Set the icon of the template.
 	 * \param name New icon of the template.
@@ -114,7 +116,7 @@ public:
 	 * \return List of snipet.
 	 * \sa setExtentionsList()
 	 */
-	const QStringList & extentionsList() const;
+	QStringList extentionsList() const;
 	/*!
 	 * Set the list of the extentions that can be used with this snipet.
 	 * \return List of snipet.
@@ -128,7 +130,7 @@ public:
 	 * \return the text to add with '%1', ...
 	 * \sa setText()
 	 */
-	const QString & text() const;
+	QString text() const;
 	/*!
 	 * This method set the text of the snipet.
 	 * \param value The new text of the snipet.
@@ -142,26 +144,13 @@ public:
 	 * \return the script
 	 * \sa setScript()
 	 */
-	const QString & script() const;
+	QString script() const;
 	/*!
 	 * Set the script to value.
 	 * \param value the value contains the script
 	 * \sa script()
 	 */
 	void setScript( const QString & value );
-
-
-	/*!
-	 * Return the hierarchy of category for the snipet.
-	 * \sa setCategories()
-	 */
-	const QStringList & categories();
-
-	/*!
-	 * Set the hierarchy of category for the snipet.
-	 * \sa categories()
-	 */
-	void setCategories( const QStringList & value );
 
 	/*!
 	 * Return the order to use in the list.
@@ -211,7 +200,7 @@ private:
 	 *  <Extention value="........."/>
 	 *  <Extention value="........."/>
 	 *  <Extention value="........."/>
-* </Snipet>
+	 * </Snipet>
 	 * \sa loadFromDom()
 	 */
 	QDomElement saveToDom( QDomDocument & document ) const;
@@ -223,14 +212,26 @@ private:
 	 * \sa saveToDom()
 	 */
 	void loadFromDom( const QDomElement & element );
+
+	void loadCache() const;
+	void saveCache();
+
 	friend class SnipetList;
 	friend class SnipetManager;
 
-	QString m_name, m_description, m_key, m_icon, m_text, m_script;
-	QStringList m_extentionsList, m_categories;
-	bool m_isAutomatiqueCall;
-	QList< QPair<QString,QString> > m_params;
-	int m_order;
+	bool m_isCached;
+	volatile struct {
+		QString name;
+		QString description;
+		QString shortcut;
+		QString icon;
+		bool automatic;
+		QString availableScript;
+		int order;
+		int catogaryId;
+	} m_cachedData;
+
+	int m_id;
 };
 
 #endif /* _SNIPETELEMENT_H_ */

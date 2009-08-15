@@ -17,55 +17,84 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+// Xinx header
 #include "snipetelement.h"
+
+// Qt header
+#include <QtSql>
 
 /* SnipetElement */
 
-SnipetElement::SnipetElement() {
-	m_script = "function isEnabled() {\n\treturn true;\n}\n";
+SnipetElement::SnipetElement( int id ) : m_isCached( false ), m_id( id ) {
+
 }
 
-const QString & SnipetElement::name() const {
-	return m_name;
+QString SnipetElement::name() const {
+	loadCache();
+
+	return m_cachedData.name;
 }
 
 void SnipetElement::setName( const QString & value ) {
-	m_name = value;
+	if( m_cachedData.name != value ) {
+		m_cachedData.name = value;
+		saveCache();
+	}
 }
 
-const QString & SnipetElement::description() const {
-	return m_description;
+QString SnipetElement::description() const {
+	loadCache();
+
+	return m_cachedData.description;
 }
 
 void SnipetElement::setDescription( const QString & value ) {
-	m_description = value;
+	if( m_cachedData.description != value ) {
+		m_cachedData.description = value;
+		saveCache();
+	}
 }
 
-const QString & SnipetElement::key() const {
-	return m_key;
+QString SnipetElement::key() const {
+	loadCache();
+
+	return m_cachedData.key;
 }
 
 void SnipetElement::setKey( const QString & value ) {
-	m_key = value;
+	if( m_cachedData.key != value ) {
+		m_cachedData.key = value;
+		saveCache();
+	}
 }
 
-const QString & SnipetElement::icon() const {
-	return m_icon;
+QString SnipetElement::icon() const {
+	loadCache();
+
+	return m_cachedData.icon;
 }
 
 void SnipetElement::setIcon( const QString & value ) {
-	m_icon = value;
+	if( m_cachedData.icon != value ) {
+		m_cachedData.icon = value;
+		saveCache();
+	}
 }
 
 bool SnipetElement::isAutomatiqueCall() const {
-	return m_isAutomatiqueCall;
+	loadCache();
+
+	return m_cachedData.automatic;
 }
 
 void SnipetElement::setAutomatiqueCall( bool value ) {
-	m_isAutomatiqueCall = value;
+	if( m_cachedData.automatic != value ) {
+		m_cachedData.automatic = value;
+		saveCache();
+	}
 }
 
-const QStringList & SnipetElement::extentionsList() const {
+QStringList SnipetElement::extentionsList() const {
 	return m_extentionsList;
 }
 
@@ -73,28 +102,30 @@ void SnipetElement::setExtentionsList( const QStringList & value ) {
 	m_extentionsList = value;
 }
 
-const QString & SnipetElement::text() const {
-	return m_text;
+QString SnipetElement::text() const {
+	loadCache();
+
+	return m_cachedData.text;
 }
 
 void SnipetElement::setText( const QString & value ) {
-	m_text = value;
+	if( m_cachedData.text != value ) {
+		m_cachedData.text = value;
+		saveCache();
+	}
 }
 
-const QString & SnipetElement::script() const {
-	return m_script;
+QString SnipetElement::script() const {
+	loadCache();
+
+	return m_cachedData.script;
 }
 
 void SnipetElement::setScript( const QString & value ) {
-	m_script = value;
-}
-
-const QStringList & SnipetElement::categories() {
-	return m_categories;
-}
-
-void SnipetElement::setCategories( const QStringList & value ) {
-	m_categories = value;
+	if( m_cachedData.availableScript != value ) {
+		m_cachedData.availableScript = value;
+		saveCache();
+	}
 }
 
 QList< QPair<QString,QString> > & SnipetElement::params() {
@@ -103,6 +134,46 @@ QList< QPair<QString,QString> > & SnipetElement::params() {
 
 const QList< QPair<QString,QString> > & SnipetElement::params() const {
 	return m_params;
+}
+
+void SnipetElement::loadCache() {
+	if( ! m_isCached ) {
+		QSqlDatabase db = QSqlDatabase::database( "SNIPET" );
+		QSqlQuery query( "SELECT name, description, shortcut, icon, auto, text, available_script, order, category_id FROM snipet WHERE id=:id", db );
+		query.bindValue( ":id", m_id );
+		query.exec();
+
+		if( query.next() ) {
+			m_cachedData.name = query.value( 0 ).toString();
+			m_cachedData.description = query.value( 1 ).toString();
+			m_cachedData.shortcut =  = query.value( 2 ).toString();
+			m_cachedData.icon = query.value( 3 ).toString();
+			m_cachedData.automatic = query.value( 4 ).toInt() == 1 ? true : false;
+			m_cachedData.text = query.value( 5 ).toString();
+			m_cachedData.availableScript = query.value( 6 ).toString();
+			m_cachedData.order = query.value( 7 ).toInt();
+			m_cachedData.catogaryId = query.value( 8 ).toInt();
+
+			m_isCached = true;
+		} else
+			qWarning( qPrintable( tr("The snipet id %1 isn't found in the database.").arg( m_id ) ) );
+	}
+}
+
+void SnipetElement::saveCache() {
+	QSqlDatabase db = QSqlDatabase::database( "SNIPET" );
+	QSqlQuery query( "UPDATE snipet SET name=:name, description=:description, shortcut=:shortcut, icon=:icon, auto=:auto, text=:text, available_script=:available_script, order=:order, category_id=:catogary_id WHERE id=:id", db );
+	query.bindValue( ":id", m_id );
+	query.bindValue( ":name", m_cachedData.name );
+	query.bindValue( ":description", m_cachedData.description );
+	query.bindValue( ":shortcut", m_cachedData.shortcut );
+	query.bindValue( ":icon", m_cachedData.icon );
+	query.bindValue( ":auto", m_cachedData.automatic );
+	query.bindValue( ":text", m_cachedData.text );
+	query.bindValue( ":available_script", m_cachedData.availableScript );
+	query.bindValue( ":order", m_cachedData.order );
+	query.bindValue( ":category_id", m_cachedData.catogaryId );
+	query.exec();
 }
 
 QDomElement SnipetElement::saveToDom( QDomDocument & document ) const {
@@ -189,7 +260,9 @@ void SnipetElement::loadFromDom( const QDomElement & element ) {
 }
 
 int SnipetElement::order() const {
-	return m_order;
+	loadCache();
+
+	return m_cachedData.order;
 }
 
 void SnipetElement::setOrder( int value ) {
@@ -197,7 +270,7 @@ void SnipetElement::setOrder( int value ) {
 }
 
 bool SnipetElement::operator==( const SnipetElement & s ) const {
-	return ( m_key == s.m_key );
+	return ( m_cachedData.key == s.m_cachedData.key );
 }
 
 bool SnipetElement::operator<( const SnipetElement & s ) const {
