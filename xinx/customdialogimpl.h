@@ -25,7 +25,7 @@
 #include "ui_custom.h"
 #include <core/xinxconfig.h>
 
-class SnipetModelIndex;
+class SnipetItemModel;
 
 /*!
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
@@ -78,7 +78,7 @@ private:
 	void storeConfig();
 
 	XINXConfig m_config;
-	SnipetModelIndex * m_snipetModel;
+	SnipetItemModel * m_snipetModel;
 };
 
 #endif

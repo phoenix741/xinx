@@ -29,8 +29,6 @@
 #include <QApplication>
 
 // Xinx header
-#include "snipetlist.h"
-#include "snipet.h"
 #include "scriptmanager.h"
 #include <plugins/xinxpluginsloader.h>
 
@@ -82,33 +80,6 @@ public:
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 private:
 	QHash<QString,AppSettings::struct_extentions> m_extentions;
-};
-
-class SnipetModelIndex : public QAbstractItemModel {
-	Q_OBJECT
-public:
-	SnipetModelIndex( const SnipetList & list, QObject * parent = 0 );
-	virtual ~SnipetModelIndex();
-
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
-	virtual QModelIndex parent( const QModelIndex & index ) const;
-
-	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
-
-	void loadSnipetList( const SnipetList & list );
-	void clear();
-	void addSnipet( const Snipet & snipet );
-	void removeSnipet( const QModelIndexList & indexes );
-
-	SnipetList getSnipetList() const;
-private:
-	QMap<QString,SnipetList> m_snipetList;
-
-	friend class CustomDialogImpl;
 };
 
 class ScriptElement : public PluginElement {

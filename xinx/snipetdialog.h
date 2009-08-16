@@ -23,7 +23,7 @@
 
 // Xinx header
 #include "ui_snipetproperty.h"
-#include "snipet.h"
+#include <snipets/snipet.h>
 
 // Qt header
 #include <QDialog>

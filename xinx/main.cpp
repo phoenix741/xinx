@@ -20,7 +20,7 @@
 // Xinx header
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
-#include "snipetlist.h"
+#include <snipets/snipetlist.h>
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>

@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include "snipet.h"
+#include <snipets/snipet.h>
 #include <editors/abstracteditor.h>
 
 // Qt header

@@ -26,8 +26,8 @@
 #include <editors/textfileeditor.h>
 #include <plugins/xinxpluginsloader.h>
 #include "runsnipetdialogimpl.h"
-#include "snipet.h"
-#include "snipetlist.h"
+#include <snipets/snipet.h>
+#include <snipets/snipetlist.h>
 
 // Qt header
 #include <QDir>

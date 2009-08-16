@@ -16,55 +16,54 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
- 
-#ifndef RUNSNIPETDIALOGIMPL_H
-#define RUNSNIPETDIALOGIMPL_H
+
+#ifndef SNIPETMODELINDEX_H
+#define SNIPETMODELINDEX_H
 #pragma once
 
-// Xinx header
-#include "ui_runsnipet.h"
-#include <snipets/snipet.h>
-
 // Qt header
-#include <QList>
-#include <QPair>
-#include <QLabel>
-#include <QLineEdit>
+#include <QString>
+#include <QAbstractItemModel>
+#include <QHash>
+#include <QApplication>
+#include <QSqlDatabase>
 
-/*!
- * Implementation of snipet dialog. This dialog permit to use snipet.
- * The implementation containts only a constructor who defines default dialog 
- * presentation : Windows Style Dialog.
- */
-class RunSnipetDialogImpl : public QDialog, public Ui::RunSnipetDialog {
+/* SnipetItemModel */
+
+class SnipetItemModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
-	/*!
-	 * Constructor of the snipet dialog implementation. We defines a default windows flags.
-	 * The windows can't be resize.
-	 * \param text Text used for the template
-	 * \param parent The parent of the dialog
-	 * \param f Flags to use on Windows. By default, the dialog have a fixed size.
-	 */
-	RunSnipetDialogImpl( const Snipet & snipet, QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
-	
-	/*!
-	 * Destructor of the snipet dialog.
-	 */
-	virtual ~RunSnipetDialogImpl();
-	
-	/*!
-	 * Resultat of the snipet.
-	 */
-	 QString getResult();
+	virtual ~SnipetItemModel();
+
+	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+	virtual QModelIndex parent( const QModelIndex & index ) const;
+
+	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+
+	/*
+	void loadSnipetList( const SnipetList & list );
+	void clear();
+	void addSnipet( const Snipet & snipet );
+	void removeSnipet( const QModelIndexList & indexes );
+
+	SnipetList getSnipetList() const;
+	*/
 private:
-	QGridLayout * m_paramGrid;
-	QList< QPair<QLabel*,QLineEdit*> > m_paramList;
-	QString m_text;
+	struct indexInternalPointer {
+		bool is_category;
+		unsigned long parent_id;
+	};
+
+	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+	friend class SnipetDatabaseManager;
+
+	QSqlDatabase m_db;
+	QList<indexInternalPointer> m_internalId;
+	QSqlQuery m_query;
 };
-#endif
 
-
-
-
-
+#endif // SNIPETMODELINDEX_H

@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "snipetdialog.h"
-#include "snipetlist.h"
+#include <snipets/snipetlist.h>
 #include <core/xinxconfig.h>
 #include <plugins/xinxpluginsloader.h>
 

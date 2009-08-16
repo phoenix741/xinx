@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "snipetdockwidget.h"
-#include "snipetlist.h"
+#include <snipets/snipetlist.h>
 #include "runsnipetdialogimpl.h"
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>

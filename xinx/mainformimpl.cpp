@@ -23,10 +23,10 @@
 #include "projectdirectorydockwidget.h"
 #include "replacedialogimpl.h"
 #include "logdialogimpl.h"
-#include "snipet.h"
+#include <snipets/snipet.h>
 #include "snipetdockwidget.h"
-#include "snipet.h"
-#include "snipetlist.h"
+#include <snipets/snipet.h>
+#include <snipets/snipetlist.h>
 #include "snipetdialog.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"

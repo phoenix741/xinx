@@ -25,6 +25,7 @@
 #include <editors/xinxformatscheme.h>
 #include <editors/xinxlanguagefactory.h>
 #include <editors/xinxcodeedit.h>
+#include <snipets/snipetmanager.h>
 
 // QCodeEdit header
 #include <qnfadefinition.h>
@@ -243,7 +244,7 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
 
 	// Snipet
-	m_snipetModel = new SnipetModelIndex( SnipetListManager::self()->snipets(), m_snipetTreeView );
+	m_snipetModel = SnipetDatabaseManager::createSnipetItemModel( m_snipetTreeView );
 	m_snipetTreeView->setModel( m_snipetModel );
 	m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );

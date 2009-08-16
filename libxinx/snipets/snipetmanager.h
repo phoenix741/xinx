@@ -23,12 +23,33 @@
 
 // Xinx header
 #include "snipets/snipetlist.h"
+#include "snipets/snipetmodelindex.h"
 
-class SnipetManager : public SnipetList {
+// Qt header
+#include <QObject>
+#include <QSqlDatabase>
+
+/*!
+ * The goal of SnipetDataBaseManager is too manage the new snipet interface
+ * of XINX. This interface create table if necessary in the SQL database.
+ */
+class SnipetDatabaseManager : public QObject {
+	Q_OBJECT
 public:
-	SnipetManager();
-	~SnipetManager();
+	~SnipetDatabaseManager();
+
+	static SnipetDatabaseManager * self();
+
+	QSqlDatabase database();
+
+	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
 private:
+	SnipetDatabaseManager();
+	bool openDatabase();
+	void createDatabase( QSqlDatabase db );
+	void closeDatabase();
+
+	static SnipetDatabaseManager * s_self;
 };
 
 #endif /* _SNIPETMANAGER_H_ */

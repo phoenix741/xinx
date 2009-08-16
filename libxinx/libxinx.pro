@@ -4,7 +4,7 @@ unix:VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns \
-	sql
+    sql
 TARGET = sharedxinx
 DESTDIR += ./
 INCLUDEPATH += ../components \
@@ -48,10 +48,10 @@ HEADERS = rcs/rcs.h \
     contentview/abstractcontentviewmodel.h \
     actions/actioninterface.h \
     editors/editormanager.h \
-    snipets/snipetelement.h \
     snipets/snipet.h \
     snipets/snipetlist.h \
-    snipets/snipetcategory.h
+    snipets/snipetmanager.h \
+    snipets/snipetmodelindex.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -77,8 +77,9 @@ SOURCES = rcs/rcs.cpp \
     editors/contentviewtexteditor.cpp \
     actions/actioninterface.cpp \
     editors/editormanager.cpp \
-    snipets/snipetelement.cpp \
     snipets/snipet.cpp \
     snipets/snipetlist.cpp \
-    snipets/snipetcategory.cpp
+    snipets/snipetmanager.cpp \
+    snipets/snipetmodelindex.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
+OTHER_FILES += 
