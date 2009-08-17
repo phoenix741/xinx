@@ -36,6 +36,13 @@ SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : QAbstrac
 						 "FROM snipet "
 						 "WHERE category_id=:id "
 						 "ORDER BY order", db );
+	m_parentQuery = QSqlQuery( "SELECT parent_id as id"
+						 "FROM category "
+						 "WHERE id=:id "
+						 "UNION ALL "
+						 "SELECT category_id as id"
+						 "FROM snipet "
+						 "WHERE id=:id ", db );
 }
 
 SnipetItemModel::~SnipetItemModel() {
@@ -64,15 +71,21 @@ SnipetList SnipetItemModel::getSnipetList() const {
 
 QModelIndex SnipetItemModel::index( int row, int column, const QModelIndex & parent ) const {
 	if( ( column < 0 ) || ( column > 3 ) ) return QModelIndex(); // Test supplémentaire pour ModelTest
+	if( row < 0 ) return QModelIndex();
 
-	if( parent.isValid() && ( parent.internalId() == -1 ) ) {
-		if( ( row < 0 ) || ( row >= m_snipetList.values().at( parent.row() ).size() ) ) return QModelIndex();
-		return createIndex( row, column, parent.row() );
-	} else if( !parent.isValid() ) {
-		if( ( row < 0 ) || ( row >= m_snipetList.keys().size() ) ) return QModelIndex();
-		return createIndex( row, column, -1 );
+	if( ! parent.isValid() ) {
+		m_query.bindValue( ":id", 0 );
+	} else {
+		struct indexInternalPointer * p = static_cast<struct indexInternalPointer>( index.internalPointer() );
+		if( p )
+			m_query.bindValue( ":id", p->parent_id );
+		else
+			m_query.bindValue( ":id", 0 );
 	}
-	return QModelIndex();
+	m_query.exec();
+	if( row >= m_query.size() ) return QModelIndex();
+
+	return createIndex( row, column, m_query.value( Sniped_Id ).toInt() );
 }
 
 QModelIndex SnipetItemModel::parent( const QModelIndex & index ) const {

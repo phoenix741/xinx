@@ -63,7 +63,7 @@ private:
 
 	QSqlDatabase m_db;
 	QList<indexInternalPointer> m_internalId;
-	QSqlQuery m_query;
+	QSqlQuery m_query, m_parentQuery;
 };
 
 #endif // SNIPETMODELINDEX_H
