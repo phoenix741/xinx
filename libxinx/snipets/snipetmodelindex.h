@@ -27,6 +27,7 @@
 #include <QHash>
 #include <QApplication>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 /* SnipetItemModel */
 
@@ -52,18 +53,37 @@ public:
 
 	SnipetList getSnipetList() const;
 	*/
-private:
-	struct indexInternalPointer {
-		bool is_category;
-		unsigned long parent_id;
-	};
 
+	void select();
+private:
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 	friend class SnipetDatabaseManager;
 
+	mutable QHash<QString,indexInternalPointer*> m_internalPointers;
+	struct indexInternalPointer * getInternalPointer( QString type, unsigned long id ) const;
+
+	enum {
+		list_id = 0,
+		list_name = 1,
+		list_category = 2,
+
+		parent_id = 0,
+
+		snipet_id = 0,
+		snipet_icon = 1,
+		snipet_name = 2,
+		snipet_shortcut = 3,
+		snipet_description = 4,
+		snipet_category = 5,
+
+		category_id = 0,
+		category_name = 1,
+		category_description = 2,
+		category_parent = 3
+	};
+
 	QSqlDatabase m_db;
-	QList<indexInternalPointer> m_internalId;
-	QSqlQuery m_query, m_parentQuery;
+	mutable QSqlQuery m_listQuery, m_parentQuery, m_snipetQuery, m_categoryQuery;
 };
 
 #endif // SNIPETMODELINDEX_H

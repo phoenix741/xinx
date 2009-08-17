@@ -24,29 +24,37 @@
 #include <QIcon>
 #include <QColor>
 #include <QFont>
+#include <QVariant>
+#include <QSqlError>
 
 /* SnipetItemModel */
 
 SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : QAbstractItemModel( parent ), m_db( db ) {
-	m_query = QSqlQuery( "SELECT id, '' as icon, name, '' as shortcut, description, name as snipet_order "
+	m_listQuery = QSqlQuery( "SELECT id, name as snipet_order, 'C' as cat "
 						 "FROM category "
 						 "WHERE parent_id=:id "
 						 "UNION ALL "
-						 "SELECT id, icon, name, shortcut, description, 'ZZZ' || snipet_order "
-						 "FROM snipet "
+						 "SELECT id, 'ZZZ' || snipet_order, 'S' as cat "
+						 "FROM snipets "
 						 "WHERE category_id=:id "
-						 "ORDER BY order", db );
-	m_parentQuery = QSqlQuery( "SELECT parent_id as id"
+						 "ORDER BY snipet_order", db );
+	m_parentQuery = QSqlQuery( "SELECT parent_id as id "
 						 "FROM category "
 						 "WHERE id=:id "
 						 "UNION ALL "
-						 "SELECT category_id as id"
-						 "FROM snipet "
+						 "SELECT category_id as id "
+						 "FROM snipets "
+						 "WHERE id=:id ", db );
+	m_categoryQuery = QSqlQuery( "SELECT id, name, description, parent_id "
+						 "FROM category "
+						 "WHERE id=:id ", db );
+	m_snipetQuery = QSqlQuery( "SELECT id, icon, name, shortcut, description, category_id "
+						 "FROM snipets "
 						 "WHERE id=:id ", db );
 }
 
 SnipetItemModel::~SnipetItemModel() {
-	qDeleteAll( m_internalId );
+	qDeleteAll( m_internalPointers.values() );
 }
 
 /*
@@ -69,46 +77,124 @@ SnipetList SnipetItemModel::getSnipetList() const {
 }
 */
 
+SnipetItemModel::indexInternalPointer * SnipetItemModel::getInternalPointer( QString type, unsigned long id ) const {
+	QString key = QString("%1%2").arg( type ).arg( (ulong)id, (int)10, (int)10, QChar('0') );
+	if( ! m_internalPointers.contains( key ) ) {
+		struct indexInternalPointer * p = new struct indexInternalPointer;
+		m_internalPointers.insert( key, p );
+
+		p->id = id;
+		p->is_category = ( type == "C" );
+	}
+	return m_internalPointers.value( key );
+}
+
 QModelIndex SnipetItemModel::index( int row, int column, const QModelIndex & parent ) const {
-	if( ( column < 0 ) || ( column > 3 ) ) return QModelIndex(); // Test supplémentaire pour ModelTest
+	if( ( column < 0 ) || ( column > 3 ) ) return QModelIndex(); // Test supplementaire pour ModelTest
 	if( row < 0 ) return QModelIndex();
 
-	if( ! parent.isValid() ) {
-		m_query.bindValue( ":id", 0 );
-	} else {
-		struct indexInternalPointer * p = static_cast<struct indexInternalPointer>( index.internalPointer() );
-		if( p )
-			m_query.bindValue( ":id", p->parent_id );
-		else
-			m_query.bindValue( ":id", 0 );
-	}
-	m_query.exec();
-	if( row >= m_query.size() ) return QModelIndex();
+	struct indexInternalPointer * p = 0;
+	if( parent.isValid() && (p = static_cast<struct indexInternalPointer*>( parent.internalPointer() )) ) {
+		// Si on est sur un snipet et non sur une cat�gorie, pas la peine d'aller plus loin : pas d'enfant.
+		if( ! p->is_category ) return QModelIndex();
 
-	return createIndex( row, column, m_query.value( Sniped_Id ).toInt() );
+		m_listQuery.bindValue( ":id", QVariant::fromValue( p->id ) );
+	} else {
+		m_listQuery.bindValue( ":id", QVariant::fromValue( 0 ) );
+	}
+	if( ! m_listQuery.exec() ) {
+		qWarning( qPrintable( m_listQuery.lastError().text() ) );
+		return QModelIndex();
+	}
+
+	if( ! m_listQuery.seek( row ) ) {
+		qWarning( qPrintable( m_listQuery.lastError().text() ) );
+		return QModelIndex();
+	}
+
+	return createIndex( row, column,
+						getInternalPointer(
+								m_listQuery.value( list_category ).toString(),
+								m_listQuery.value( list_id ).toInt()
+						) );
 }
 
 QModelIndex SnipetItemModel::parent( const QModelIndex & index ) const {
-	if( index.isValid() && (index.internalId() >= 0) ) {
-		return createIndex( index.internalId(), 0, -1 );
+	if( index.isValid() ) {
+		struct indexInternalPointer * p = static_cast<struct indexInternalPointer*>( index.internalPointer() );
+		if( p ) {
+			unsigned int parentId;
+			if( p->is_category ) {
+				m_categoryQuery.bindValue( ":id", QVariant::fromValue( p->id ) );
+				if( ! m_categoryQuery.exec() ) {
+					qWarning( qPrintable( m_categoryQuery.lastError().text() ) );
+					return QModelIndex();
+				}
+				m_categoryQuery.first();
+				parentId = m_categoryQuery.value( category_parent ).toUInt();
+			} else {
+				m_snipetQuery.bindValue( ":id", QVariant::fromValue( p->id ) );
+				if( ! m_snipetQuery.exec() ) {
+					qWarning( qPrintable( m_snipetQuery.lastError().text() ) );
+					return QModelIndex();
+				}
+				m_snipetQuery.first();
+				parentId = m_snipetQuery.value( snipet_category ).toUInt();
+			}
+
+			if( parentId == 0 ) return QModelIndex();
+
+			m_parentQuery.bindValue( ":id", QVariant::fromValue( parentId ) );
+			m_parentQuery.exec();
+			if( ! m_parentQuery.exec() ) {
+				qWarning( qPrintable( m_parentQuery.lastError().text() ) );
+				return QModelIndex();
+			}
+
+			m_parentQuery.first();
+
+			unsigned long gparentId = m_parentQuery.value( parent_id ).toUInt();
+
+			m_listQuery.bindValue( ":id", QVariant::fromValue( gparentId ) );
+			m_listQuery.exec();
+			if( ! m_listQuery.exec() ) {
+				qWarning( qPrintable( m_listQuery.lastError().text() ) );
+				return QModelIndex();
+			}
+
+			int row = 0;
+			while( m_listQuery.next() ) {
+				if( m_listQuery.value( list_id ).toUInt() == parentId ) break;
+				row++;
+			}
+
+			return createIndex( row, 0, getInternalPointer( "C", parentId ) );
+		}
 	}
 	return QModelIndex();
 }
 
 int SnipetItemModel::rowCount( const QModelIndex & index ) const {
-	if( index.column() != 0 ) return 0; // Column don't have children (Test supplémentaire pour ModelTest)
-	if( ! index.isValid() ) {
-		m_query.bindValue( ":id", 0 );
-	} else {
-		struct indexInternalPointer * p = static_cast<struct indexInternalPointer>( index.internalPointer() );
-		if( p )
-			m_query.bindValue( ":id", p->parent_id );
-		else
-			m_query.bindValue( ":id", 0 );
-	}
-	m_query.exec();
+	if( index.isValid() && ( index.column() != 0 ) ) return 0; // Column don't have children (Test supplémentaire pour ModelTest)
 
-	return m_query.size();
+	struct indexInternalPointer * p = 0;
+	if( index.isValid() && (p = static_cast<struct indexInternalPointer*>( index.internalPointer() )) ) {
+		// Si on est sur un snipet, pas d'enfant
+		if( ! p->is_category ) return 0;
+
+		m_listQuery.bindValue( ":id", QVariant::fromValue( p->id ) );
+	} else {
+		m_listQuery.bindValue( ":id", 0 );
+	}
+	if( ! m_listQuery.exec() ) {
+		qWarning( qPrintable( m_listQuery.lastError().text() ) );
+		return 0;
+	}
+
+	int sizeOfList = 0;
+	while( m_listQuery.next() ) sizeOfList++;
+
+	return sizeOfList;
 }
 
 int SnipetItemModel::columnCount( const QModelIndex & index ) const {
@@ -117,7 +203,8 @@ int SnipetItemModel::columnCount( const QModelIndex & index ) const {
 }
 
 Qt::ItemFlags SnipetItemModel::flags( const QModelIndex & index ) const {
-	if( index.isValid() && (index.internalId() == -1) ) {
+	struct indexInternalPointer * p = 0;
+	if( index.isValid() && (p = static_cast<struct indexInternalPointer*>( index.internalPointer() )) && (!p->is_category) ) {
 		return Qt::ItemIsEnabled;
 	} else
 		return QAbstractItemModel::flags( index );
@@ -144,14 +231,21 @@ QVariant SnipetItemModel::headerData( int section, Qt::Orientation orientation, 
 QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 	if( ! index.isValid() ) return QVariant();
 
-	if( index.internalId() == -1 ) {
+	struct indexInternalPointer * p = static_cast<struct indexInternalPointer*>( index.internalPointer() );
+	if( p->is_category ) {
+		/* Category */
+		m_categoryQuery.bindValue( ":id", QVariant::fromValue( p->id ) );
+		m_categoryQuery.exec();
+		m_categoryQuery.first();
+
 		if( role == Qt::DisplayRole ) {
 			switch( index.column() ) {
 			case 0:
-				return m_snipetList.keys().at( index.row() );
+				return m_categoryQuery.value( category_name );
 			case 1:
-			case 2:
 				return QString(""); // Needed for Model tests
+			case 2:
+				return m_categoryQuery.value( category_description ); // Needed for Model tests
 			}
 		} else if( role == Qt::DecorationRole ) {
 			if( index.column() == 0 )
@@ -164,26 +258,28 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 			return currentFont;
 		}
 	} else {
-		int line = index.row();
-		int category = index.internalId();
-		if( ( line < 0 ) || ( line >= m_snipetList.values().at( category ).size() ) ) return QVariant();
+		/* Snipet */
+		m_snipetQuery.bindValue( ":id", QVariant::fromValue( p->id ) );
+		m_snipetQuery.exec();
+		m_snipetQuery.first();
 
 		if( role == Qt::DisplayRole )
 			switch( index.column() ) {
 			case 0:
-				return m_snipetList.values().at( category ).at( line ).name();
+				return m_snipetQuery.value( snipet_name );
 			case 1:
-				return m_snipetList.values().at( category ).at( line ).key();
+				return m_snipetQuery.value( snipet_shortcut );
 			case 2:
-				return m_snipetList.values().at( category ).at( line ).description();
+				return m_snipetQuery.value( snipet_description );
 		} else if( role == Qt::DecorationRole ) {
 			if( index.column() == 0 )
-				return QIcon( m_snipetList.values().at( category ).at( line ).icon() );
+				return QIcon( m_snipetQuery.value( snipet_icon ).toString() );
 		} else if( role == Qt::UserRole ) {
 			if( index.column() == 0 )
-				return QVariant::fromValue( m_snipetList.values().at( category ).at( line ) );
+				return QVariant::fromValue( m_snipetQuery.value( snipet_id ) );
 		}
 	}
+
 	return QVariant();
 }
 

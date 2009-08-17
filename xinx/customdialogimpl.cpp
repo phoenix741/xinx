@@ -39,6 +39,7 @@
 #include <QTextCodec>
 #include <QStyleFactory>
 #include <QDomDocument>
+#include <modeltest.h>
 
 
 /* CustomDialogImpl */
@@ -244,7 +245,8 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
 
 	// Snipet
-	m_snipetModel = SnipetDatabaseManager::createSnipetItemModel( m_snipetTreeView );
+	m_snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_snipetTreeView );
+	new ModelTest( m_snipetModel, this );
 	m_snipetTreeView->setModel( m_snipetModel );
 	m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
@@ -370,7 +372,8 @@ void CustomDialogImpl::storeConfig() {
 	m_config.putFormatsSchemeToConfig();
 
 	// Snipet
-	SnipetListManager::self()->setSnipets( m_snipetModel->getSnipetList() );
+	// TODO
+	//	SnipetListManager::self()->setSnipets( m_snipetModel->getSnipetList() );
 
 	// Plugins
 	foreach( PluginElement * plugin, m_pluginListView->plugins() ) {
@@ -557,9 +560,11 @@ void CustomDialogImpl::m_descriptionPathLineEdit_textChanged( QString text ) {
 	if( ! m_snipetModel ) return;
 	SnipetList list;
 	try {
-		m_snipetModel->clear();
+		// TODO
+		// m_snipetModel->clear();
 		list.loadFromFile( QDir( text ).absoluteFilePath( "template.xml" ) );
-		m_snipetModel->loadSnipetList( list );
+		// TODO
+		// m_snipetModel->loadSnipetList( list );
 	} catch( SnipetListException e ) {
 		qWarning( qPrintable(e.getMessage() )) ;
 	}
@@ -571,7 +576,8 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 	if( ! importedFilename.isEmpty() ) {
 		SnipetList list;
 		list.loadFromFile( importedFilename );
-		m_snipetModel->loadSnipetList( list );
+		// TODO
+		//m_snipetModel->loadSnipetList( list );
 		m_snipetTreeView->expandAll();
 	}
 }
@@ -598,7 +604,8 @@ void CustomDialogImpl::on_m_addPushButton_clicked() {
 	SnipetDialogImpl dlg( QString(), this );
 	if( dlg.exec() ) {
 		Snipet s = dlg.getSnipet();
-		m_snipetModel->addSnipet( s );
+		// TODO
+		//m_snipetModel->addSnipet( s );
 		m_snipetTreeView->expandAll();
 	}
 }
@@ -609,7 +616,8 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 
-	m_snipetModel->removeSnipet( indexes );
+	// TODO
+	//m_snipetModel->removeSnipet( indexes );
 	m_snipetTreeView->expandAll();
 }
 
@@ -618,8 +626,9 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
 	SnipetDialogImpl dlg( s, this );
 	if( dlg.exec() ) {
-		m_snipetModel->removeSnipet( index );
-		m_snipetModel->addSnipet( dlg.getSnipet() );
+		// TODO
+		//m_snipetModel->removeSnipet( index );
+		//m_snipetModel->addSnipet( dlg.getSnipet() );
 		m_snipetTreeView->expandAll();
 	}
 }
@@ -629,7 +638,8 @@ void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
 	SnipetDialogImpl dlg( s, this );
 	if( dlg.exec() ) {
-		m_snipetModel->addSnipet( dlg.getSnipet() );
+		// TODO
+		//m_snipetModel->addSnipet( dlg.getSnipet() );
 		m_snipetTreeView->expandAll();
 	}
 }

@@ -11,7 +11,8 @@ CONFIG += warn_on
 QT += xml \
 		script \
 		xmlpatterns \
-		webkit
+		webkit \
+		sql
 DESTDIR += ./
 INCLUDEPATH += ../components \
     ../libxinx \

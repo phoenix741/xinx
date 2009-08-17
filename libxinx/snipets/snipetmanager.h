@@ -46,7 +46,7 @@ public:
 private:
 	SnipetDatabaseManager();
 	bool openDatabase();
-	void createDatabase( QSqlDatabase db );
+	bool createDatabase( QSqlDatabase db );
 	void closeDatabase();
 
 	static SnipetDatabaseManager * s_self;

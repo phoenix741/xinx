@@ -24,6 +24,7 @@
 // Qt header
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QFileInfo>
 
 /* Static member */
 
@@ -62,7 +63,8 @@ SnipetItemModel * SnipetDatabaseManager::createSnipetItemModel( QObject * parent
 bool SnipetDatabaseManager::openDatabase() {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "SNIPETBASE" );
-	db.setDatabaseName( "datas:snipets.db");
+	QString databaseFileName = QFileInfo( "datas:snipets.db" ).absoluteFilePath();
+	db.setDatabaseName( databaseFileName );
 	if( ! db.open() ) {
 		qWarning( qPrintable( tr("Can't load snipet database : %1" ).arg( db.lastError().text() ) ) );
 		return false;
@@ -71,42 +73,59 @@ bool SnipetDatabaseManager::openDatabase() {
 	// Check the content
 	QStringList tables = db.tables();
 	if( ! tables.contains("snipets") )
-		createDatabase( db );
+		return createDatabase( db );
 
 	return true;
 }
 
-void SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
+bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	QSqlQuery createQuery( db );
-	createQuery.exec( "CREATE TABLE category ("
-					  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					  "    parent_id INTEGER NOT NULL DEFAULT(0),"
-					  "    name TEXT NOT NULL,"
-					  "    description TEXT,"
-					  "    available_script TEXT)" );
-	createQuery.exec( "CREATE TABLE snipet ("
-					  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					  "    name TEXT,"
-					  "    description TEXT,"
-					  "    shortcut TEXT,"
-					  "    icon TEXT,"
-					  "    auto INTEGER,"
-					  "    text TEXT,"
-					  "    available_script TEXT,"
-					  "    snipet_order INTEGER,"
-					  "    category_id INTEGER  NOT NULL DEFAULT (0),"
-					  "    FOREIGN KEY(category_id) REFERENCES category)" );
-	createQuery.exec( "CREATE TABLE snipet_extentions ("
-					  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					  "    snipet_id INTEGER NOT NULL,"
-					  "    extention TEXT,"
-					  "    FOREIGN KEY(snipet_id) REFERENCES snipet)" );
-	createQuery.exec( "CREATE TABLE snipet_params ("
-					  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					  "    snipet_id INTEGER NOT NULL,"
-					  "    name TEXT,"
-					  "    default_value TEXT,"
-					  "    FOREIGN KEY(snipet_id) REFERENCES snipet)" );
+	if( !
+		createQuery.exec( "CREATE TABLE category ("
+						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    parent_id INTEGER NOT NULL DEFAULT(0),"
+						  "    name TEXT NOT NULL,"
+						  "    description TEXT,"
+						  "    available_script TEXT)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE TABLE snipets ("
+						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    name TEXT,"
+						  "    description TEXT,"
+						  "    shortcut TEXT,"
+						  "    icon TEXT,"
+						  "    auto INTEGER,"
+						  "    text TEXT,"
+						  "    available_script TEXT,"
+						  "    snipet_order INTEGER,"
+						  "    category_id INTEGER  NOT NULL DEFAULT (0),"
+						  "    FOREIGN KEY(category_id) REFERENCES category)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE TABLE snipets_extentions ("
+						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    snipet_id INTEGER NOT NULL,"
+						  "    extention TEXT,"
+						  "    FOREIGN KEY(snipet_id) REFERENCES snipet)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE TABLE snipets_params ("
+						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    snipet_id INTEGER NOT NULL,"
+						  "    name TEXT,"
+						  "    default_value TEXT,"
+						  "    FOREIGN KEY(snipet_id) REFERENCES snipet)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	return true;
 }
 
 void SnipetDatabaseManager::closeDatabase() {
