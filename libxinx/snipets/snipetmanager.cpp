@@ -86,7 +86,8 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 						  "    parent_id INTEGER NOT NULL DEFAULT(0),"
 						  "    name TEXT NOT NULL,"
 						  "    description TEXT,"
-						  "    available_script TEXT)" ) ) {
+						  "    available_script TEXT,"
+						  "    category_order INTEGER)" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}

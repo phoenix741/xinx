@@ -23,15 +23,13 @@
 
 // Qt header
 #include <QString>
-#include <QAbstractItemModel>
-#include <QHash>
-#include <QApplication>
+#include <QAbstractProxyModel>
 #include <QSqlDatabase>
-#include <QSqlQuery>
+#include <QSqlQueryModel>
 
 /* SnipetItemModel */
 
-class SnipetItemModel : public QAbstractItemModel {
+class SnipetItemModel : public QAbstractProxyModel {
 	Q_OBJECT
 public:
 	virtual ~SnipetItemModel();
@@ -41,7 +39,6 @@ public:
 
 	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
-	virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 
@@ -54,36 +51,24 @@ public:
 	SnipetList getSnipetList() const;
 	*/
 
-	void select();
+	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
+	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
 private:
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 	friend class SnipetDatabaseManager;
-
-	mutable QHash<QString,indexInternalPointer*> m_internalPointers;
-	struct indexInternalPointer * getInternalPointer( QString type, unsigned long id ) const;
-
 	enum {
-		list_id = 0,
-		list_name = 1,
-		list_category = 2,
-
-		parent_id = 0,
-
-		snipet_id = 0,
-		snipet_icon = 1,
-		snipet_name = 2,
-		snipet_shortcut = 3,
-		snipet_description = 4,
-		snipet_category = 5,
-
-		category_id = 0,
-		category_name = 1,
-		category_description = 2,
-		category_parent = 3
+		list_id          = 0,
+		list_parentid    = 1,
+		list_icon        = 2,
+		list_name        = 3,
+		list_description = 4,
+		list_shortcut    = 5,
+		list_order       = 6,
+		list_type        = 7
 	};
 
 	QSqlDatabase m_db;
-	mutable QSqlQuery m_listQuery, m_parentQuery, m_snipetQuery, m_categoryQuery;
+	QSqlQueryModel * m_sourceModel;
 };
 
 #endif // SNIPETMODELINDEX_H
