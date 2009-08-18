@@ -26,6 +26,8 @@
 #include <QAbstractProxyModel>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
+#include <QMap>
+#include <QVector>
 
 /* SnipetItemModel */
 
@@ -53,9 +55,12 @@ public:
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+
+	void select();
 private:
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 	friend class SnipetDatabaseManager;
+
 	enum {
 		list_id          = 0,
 		list_parentid    = 1,
@@ -66,6 +71,22 @@ private:
 		list_order       = 6,
 		list_type        = 7
 	};
+
+	struct Mapping {
+		bool is_category;  // Has debug information only.
+		int id, parrentId; // Has debug information only.
+		int parentIndex;
+		QVector<int> source_rows;
+		QMap<int,Mapping*>::const_iterator map_iter;
+	};
+	typedef QMap<int,Mapping*> IndexMap;
+
+	IndexMap m_sourcesIndexMapping;
+	QHash<int,int> m_categoryIdMapping;
+
+	int proxyColumnToSource( int proxyColumn ) const;
+	int sourceColumnToProxy( int sourceColumn ) const;
+	void createMapping();
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;

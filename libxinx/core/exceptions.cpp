@@ -34,6 +34,7 @@
 
 // Std header for exception
 #include <iostream>
+#include <csignal>
 #ifndef Q_WS_WIN
 #	include <execinfo.h>
 #	include <stdio.h>
@@ -126,6 +127,11 @@ QErrorMessage * ExceptionManager::errorDialog() const {
 
 void ExceptionManager::notifyError( QString error, QtMsgType t ) {
 	if( t == QtFatalMsg ) {
+		// On restore les signaux pour éviter d'être perturbé pendant la phase de sauvegarde ...
+		std::signal(SIGSEGV, SIG_DFL);
+		std::signal(SIGABRT, SIG_DFL);
+		std::signal(SIGINT, SIG_DFL);
+		std::signal(SIGTERM, SIG_DFL);
 		//((ExceptionManager*)0)->m_fatal = 1;
 		emit errorTriggered();
 	}
