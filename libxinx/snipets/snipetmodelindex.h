@@ -27,6 +27,7 @@
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
 #include <QMap>
+#include <QHash>
 #include <QVector>
 
 /* SnipetItemModel */
