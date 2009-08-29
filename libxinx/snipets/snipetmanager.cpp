@@ -60,6 +60,35 @@ SnipetItemModel * SnipetDatabaseManager::createSnipetItemModel( QObject * parent
 	return new SnipetItemModel( database(), parent );
 }
 
+int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
+	int parentCategory = 0;
+	QSqlQuery selectQuery( "SELECT id FROM category WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database() );
+	QSqlQuery insertQuery( "INSERT INTO category(parent_id, name) VALUES(:parentCategory, :name)", database() );
+	for( int index; index < category.count(); index++ ) {
+		const QString & categoryLevelName = category.at( index );
+	
+		selectQuery.bindValue( ":parentCategory", parentCategory );
+		selectQuery.bindValue( ":name", categoryLevelName );
+		
+		bool result = selectQuery.exec();
+		Q_ASSERT( result );
+		
+		if( selectQuery.next() ) {
+			parentCategory = selectQuery.value( 0 ).toInt();
+		} else {
+			insertQuery.bindValue( ":parentCategory", parentCategory );
+			insertQuery.bindValue( ":name", categoryLevelName );
+			result = insertQuery.exec();
+			
+			Q_ASSERT( result );
+			
+			// Afin de relancer la recherche courante.
+			index--;
+		}
+	}
+	return parentCategory;
+}
+
 bool SnipetDatabaseManager::removeSnipet( int id ) {
 	QSqlQuery removeSnipetQuery(
 	                       "DELETE FROM snipets "
@@ -74,16 +103,56 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 }
 
 bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
-	QSqlQuery insertCategoryQuery(
-				    "", database() );
-	QSqlQuery insertSnipetQuery(
-				    "", database() );
-	QSqlQuery insertSnipetParamsQuery(
-				    "", database() );
-	QSqlQuery insertSnipetExtentionsQuery(
-				    "", database() );
+	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, text, available_script, category_id) "
+				     "VALUES(:name, :description, :shortcut, :icon, :auto, :text, :available_script, :category_id)", database() );
+	QSqlQuery selectSnipetQuery( "SELECT id FROM snipets WHERE rowid=last_insert_rowid()", database() );
+	QSqlQuery insertSnipetParamsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );
+	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database() );
+	
 	foreach( const Snipet & s, list ) {
+		int categoryId = getCategoryId( s.categories() );
+		
+		insertSnipetQuery.bindValue( ":name", s.name() );
+		insertSnipetQuery.bindValue( ":description", s.description() );
+		insertSnipetQuery.bindValue( ":shortcut", s.key() );
+		insertSnipetQuery.bindValue( ":icon", s.icon() );
+		insertSnipetQuery.bindValue( ":auto", s.callIsAutomatic() );
+		insertSnipetQuery.bindValue( ":text", s.text() );
+		insertSnipetQuery.bindValue( ":available_script", s.availableScript() );
+		insertSnipetQuery.bindValue( ":category_id", categoryId );
+		
+		if( ! insertSnipetQuery.exec() ) {
+			qWarning( qPrintable( insertSnipetQuery.lastError().text() ) );
+			return false;
+		}
+		
+		bool result = selectSnipetQuery.exec();
+		Q_ASSERT( result );
+		
+		int snipetId = selectSnipetQuery.value( 0 ).toInt();
+		
+		insertSnipetExtentionsQuery.bindValue( ":snipet_id", snipetId );
+		insertSnipetParamsQuery.bindValue( ":snipet_id", snipetId );
+		
+		foreach( const QString & ext, s.extentions() ) {
+			insertSnipetExtentionsQuery.bindValue( ":extention", ext );
+			if( insertSnipetExtentionsQuery.exec() ) {
+				qWarning( qPrintable( insertSnipetExtentionsQuery.lastError().text() ) );
+				return false;
+			}
+		}
+		
+		foreach( const Snipet::Parameter & param, s.params() ) {
+			insertSnipetParamsQuery.bindValue( ":name", param.name );
+			insertSnipetParamsQuery.bindValue( ":defaultValue", param.defaultValue );	
+			if( insertSnipetParamsQuery.exec() ) {
+				qWarning( qPrintable( insertSnipetParamsQuery.lastError().text() ) );
+				return false;
+			}
+		}
 	}
+	
+	return true;
 }
 
 bool SnipetDatabaseManager::openDatabase() {

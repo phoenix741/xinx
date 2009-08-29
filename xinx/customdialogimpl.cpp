@@ -577,7 +577,7 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 	if( ! importedFilename.isEmpty() ) {
 		SnipetList list;
 		list.loadFromFile( importedFilename );
-		//m_snipetModel->loadSnipetList( list );
+		m_snipetModel->importSnipetList( list );
 		m_snipetTreeView->expandAll();
 	}
 }

@@ -46,6 +46,8 @@ public:
 
 	bool removeSnipet( int id );
 	bool importSnipetList( const SnipetList & list );
+
+	int getCategoryId( const QStringList & category );
 private:
 	SnipetDatabaseManager();
 	bool openDatabase();

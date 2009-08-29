@@ -314,6 +314,11 @@ void SnipetItemModel::removeSnipet( const QModelIndexList & indexes ) {
 	select();
 }
 
+void SnipetItemModel::importSnipetList( const SnipetList & list ) {
+	SnipetDatabaseManager::self()->importSnipetList( list );
+	select();
+}
+
 /*
 void SnipetItemModel::removeSnipet( const QModelIndexList & indexes ) {
 	QMultiMap<QString,int> deletedValue;
