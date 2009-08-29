@@ -79,7 +79,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 
 		s.setAttribute( "name", snipet.name() );
 		s.setAttribute( "key", snipet.key() );
-		s.setAttribute( "category", snipet.category() );
+		//s.setAttribute( "category", snipet.category() );
 		s.setAttribute( "icon", snipet.icon() );
 		s.setAttribute( "automatique", snipet.callIsAutomatic() );
 
@@ -99,7 +99,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 		availableScript.appendChild( text );
 		
 		QDomElement parentCategory = s;
-		foreach( const QString & category, categories() ) {
+		foreach( const QString & category, snipet.categories() ) {
 			QDomElement categoryElement = document.createElement( "Category" );
 			parentCategory.appendChild( categoryElement );
 			categoryElement.setAttribute( "name", category );
@@ -180,7 +180,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		}
 		
 		QString category = snipet.attribute( "category" );
-		if( ! type.isEmpty() ) {
+		if( ! category.isEmpty() ) {
 			newSnipet.setCategory( snipet.attribute( "category" ) );
 		} else {
 			QDomElement categoryElement = snipet.firstChildElement( "Category" );

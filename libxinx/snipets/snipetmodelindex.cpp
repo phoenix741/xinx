@@ -45,7 +45,7 @@ void SnipetItemModel::select() {
 	// Set the query used all snipet
 	m_sourceModel->setQuery(
 			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type "
-			"FROM category "
+			"FROM categories "
 			"UNION ALL "
 			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type "
 			"FROM snipets "

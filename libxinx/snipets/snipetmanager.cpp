@@ -62,9 +62,9 @@ SnipetItemModel * SnipetDatabaseManager::createSnipetItemModel( QObject * parent
 
 int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 	int parentCategory = 0;
-	QSqlQuery selectQuery( "SELECT id FROM category WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database() );
-	QSqlQuery insertQuery( "INSERT INTO category(parent_id, name) VALUES(:parentCategory, :name)", database() );
-	for( int index; index < category.count(); index++ ) {
+	QSqlQuery selectQuery( "SELECT id FROM categories WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database() );
+	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", database() );
+	for( int index = 0; index < category.count(); index++ ) {
 		const QString & categoryLevelName = category.at( index );
 	
 		selectQuery.bindValue( ":parentCategory", parentCategory );
@@ -105,9 +105,8 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, text, available_script, category_id) "
 				     "VALUES(:name, :description, :shortcut, :icon, :auto, :text, :available_script, :category_id)", database() );
-	QSqlQuery selectSnipetQuery( "SELECT id FROM snipets WHERE rowid=last_insert_rowid()", database() );
-	QSqlQuery insertSnipetParamsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );
-	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database() );
+	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );
+	QSqlQuery insertSnipetParamsQuery( "INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database() );
 	
 	foreach( const Snipet & s, list ) {
 		int categoryId = getCategoryId( s.categories() );
@@ -126,17 +125,14 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 			return false;
 		}
 		
-		bool result = selectSnipetQuery.exec();
-		Q_ASSERT( result );
-		
-		int snipetId = selectSnipetQuery.value( 0 ).toInt();
+		int snipetId = insertSnipetQuery.lastInsertId().toInt();
 		
 		insertSnipetExtentionsQuery.bindValue( ":snipet_id", snipetId );
 		insertSnipetParamsQuery.bindValue( ":snipet_id", snipetId );
 		
 		foreach( const QString & ext, s.extentions() ) {
 			insertSnipetExtentionsQuery.bindValue( ":extention", ext );
-			if( insertSnipetExtentionsQuery.exec() ) {
+			if( ! insertSnipetExtentionsQuery.exec() ) {
 				qWarning( qPrintable( insertSnipetExtentionsQuery.lastError().text() ) );
 				return false;
 			}
@@ -144,8 +140,8 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 		
 		foreach( const Snipet::Parameter & param, s.params() ) {
 			insertSnipetParamsQuery.bindValue( ":name", param.name );
-			insertSnipetParamsQuery.bindValue( ":defaultValue", param.defaultValue );	
-			if( insertSnipetParamsQuery.exec() ) {
+			insertSnipetParamsQuery.bindValue( ":default_value", param.defaultValue );	
+			if( ! insertSnipetParamsQuery.exec() ) {
 				qWarning( qPrintable( insertSnipetParamsQuery.lastError().text() ) );
 				return false;
 			}
@@ -176,7 +172,7 @@ bool SnipetDatabaseManager::openDatabase() {
 bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	QSqlQuery createQuery( db );
 	if( !
-		createQuery.exec( "CREATE TABLE category ("
+		createQuery.exec( "CREATE TABLE categories ("
 						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
 						  "    parent_id INTEGER NOT NULL DEFAULT(0),"
 						  "    name TEXT NOT NULL,"
