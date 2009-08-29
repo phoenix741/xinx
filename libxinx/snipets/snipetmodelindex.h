@@ -47,12 +47,20 @@ public:
 
 	/*
 	void loadSnipetList( const SnipetList & list );
-	void clear();
 	void addSnipet( const Snipet & snipet );
-	void removeSnipet( const QModelIndexList & indexes );
 
 	SnipetList getSnipetList() const;
 	*/
+
+	/*!
+	 * Remove snipets from the database where the indexes is indicate.
+	 */
+	void removeSnipet( const QModelIndexList & indexes );
+	/*!
+	 * Clear all data of the snipet (you must call \e select after)
+	 * \sa select()
+	 */
+	void clear();
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;

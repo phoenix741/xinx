@@ -60,6 +60,19 @@ SnipetItemModel * SnipetDatabaseManager::createSnipetItemModel( QObject * parent
 	return new SnipetItemModel( database(), parent );
 }
 
+bool SnipetDatabaseManager::removeSnipet( int id ) {
+	QSqlQuery removeSnipetQuery(
+	                       "DELETE FROM snipets "
+	                       "WHERE id=:id", database() );
+	removeSnipetQuery.bindValue( ":id", id );
+
+	if( ! removeSnipetQuery.exec() ) {
+		qWarning( qPrintable( removeSnipetQuery.lastError().text() ) );
+		return false;
+	}
+	return true;
+}
+
 bool SnipetDatabaseManager::openDatabase() {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "SNIPETBASE" );

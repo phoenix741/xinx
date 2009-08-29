@@ -43,6 +43,8 @@ public:
 	QSqlDatabase database();
 
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
+
+	bool removeSnipet( int id );
 private:
 	SnipetDatabaseManager();
 	bool openDatabase();

@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "snipetmodelindex.h"
+#include "snipetmanager.h"
 
 // Qt header
 #include <QIcon>
@@ -34,12 +35,10 @@ SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : QAbstrac
 	// This will be automatically deleted.
 	m_sourceModel = new QSqlQueryModel( this );
 	setSourceModel( m_sourceModel );
-
-	select();
 }
 
 SnipetItemModel::~SnipetItemModel() {
-
+	qDeleteAll( m_sourcesIndexMapping );
 }
 
 void SnipetItemModel::select() {
@@ -65,12 +64,19 @@ void SnipetItemModel::select() {
 
 	// Initialize the mapping
 	createMapping();
+
+	// Reset the layout
+	reset();
 }
 
 /*! \internal
 	Create the mapping of all index in the table.
 */
 void SnipetItemModel::createMapping() {
+	qDeleteAll( m_sourcesIndexMapping );
+	m_sourcesIndexMapping.clear();
+	m_categoryIdMapping.clear();
+
 	int source_rows = m_sourceModel->rowCount();
 	for( int i = -1; i < source_rows; ++i ) {
 		Mapping * m = new Mapping;
@@ -116,10 +122,6 @@ void SnipetItemModel::loadSnipetList( const SnipetList & list ) {
 	reset();
 }
 
-void SnipetItemModel::clear() {
-	m_snipetList.clear();
-	reset();
-}
 
 SnipetList SnipetItemModel::getSnipetList() const {
 	SnipetList result;
@@ -223,7 +225,7 @@ QModelIndex SnipetItemModel::parent( const QModelIndex & index ) const {
 	int sourceRow = it.key();
 	if( sourceRow == -1 ) return QModelIndex();
 
-	QModelIndex sourceParent = m_sourceModel->index( sourceRow, proxyColumnToSource( index.column() ) );
+	QModelIndex sourceParent = m_sourceModel->index( sourceRow, proxyColumnToSource( 0 ) );
 	QModelIndex proxyParent = mapFromSource( sourceParent );
 
 	return proxyParent;
@@ -244,13 +246,8 @@ int SnipetItemModel::rowCount( const QModelIndex & index ) const {
 }
 
 int SnipetItemModel::columnCount( const QModelIndex & index ) const {
-	if( index.isValid() ) {
-		QModelIndex sourceIndex = mapToSource( index );
-		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-		if( record.value( list_type ).toString() == "CATEGORY" ) {
-			return 1;
-		}
-	}
+	Q_UNUSED( index );
+
 	return 3;
 }
 
@@ -270,9 +267,7 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 	if( ! index.isValid() ) return QVariant();
 
 
-	if( role == Qt::DisplayRole ) {
-		return QAbstractProxyModel::data( index, role );
-	} else if( role == Qt::DecorationRole ) {
+	if( role == Qt::DecorationRole ) {
 		if( index.column() == 0 ) {
 			QModelIndex sourceIndex = mapToSource( index );
 			QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
@@ -294,7 +289,29 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 		}
 	}
 
-	return QVariant();
+	return QAbstractProxyModel::data( index, role );
+}
+
+void SnipetItemModel::clear() {
+	emit layoutAboutToBeChanged();
+
+	qDeleteAll( m_sourcesIndexMapping );
+	m_sourcesIndexMapping.clear();
+	m_categoryIdMapping.clear();
+
+	emit layoutChanged();
+}
+
+void SnipetItemModel::removeSnipet( const QModelIndexList & indexes ) {
+	foreach( const QModelIndex & index, indexes ) {
+		Mapping * parrentMapping = static_cast<Mapping*>( index.internalPointer() );
+		int sourceRowIndex = parrentMapping->source_rows.at( index.row() );
+		Mapping * rowMapping = m_sourcesIndexMapping.value( sourceRowIndex );
+
+		SnipetDatabaseManager::self()->removeSnipet( rowMapping->id );
+	}
+
+	select();
 }
 
 /*

@@ -246,6 +246,7 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Snipet
 	m_snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_snipetTreeView );
+	m_snipetModel->select();
 	new ModelTest( m_snipetModel, this );
 	m_snipetTreeView->setModel( m_snipetModel );
 	m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
@@ -576,7 +577,6 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 	if( ! importedFilename.isEmpty() ) {
 		SnipetList list;
 		list.loadFromFile( importedFilename );
-		// TODO
 		//m_snipetModel->loadSnipetList( list );
 		m_snipetTreeView->expandAll();
 	}
@@ -616,8 +616,7 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 
-	// TODO
-	//m_snipetModel->removeSnipet( indexes );
+	m_snipetModel->removeSnipet( indexes );
 	m_snipetTreeView->expandAll();
 }
 
