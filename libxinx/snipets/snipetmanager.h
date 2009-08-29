@@ -45,6 +45,7 @@ public:
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
 
 	bool removeSnipet( int id );
+	bool importSnipetList( const SnipetList & list );
 private:
 	SnipetDatabaseManager();
 	bool openDatabase();

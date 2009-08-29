@@ -19,6 +19,14 @@
 
 #include "snipet.h"
 
+/* Snipet::Parameter */
+
+bool Snipet::Parameter::operator==( const Snipet::Parameter & p ) const {
+	return ( name == p.name )
+	    && ( defaultValue == p.defaultValue );
+}
+
+
 /* Snipet */
 
 const QString & Snipet::name() const {
@@ -37,12 +45,32 @@ void Snipet::setKey( const QString & key ) {
 	m_key = key;
 }
 
-const QString & Snipet::type() const {
-	return m_type;
+bool Snipet::callIsAutomatic() const {
+	return m_callIsAutomatic;
+}
+
+void Snipet::setCallIsAutomatic( bool value ) {
+	m_callIsAutomatic = value;
+}
+
+QString Snipet::type() const {
+	return m_extentions.size() ? m_extentions.at( 0 ) : QString();
 }
 
 void Snipet::setType( const QString & type ) {
-	m_type = type;
+	if( m_extentions.size() ) {
+		m_extentions[0] = type;
+	} else {
+		m_extentions << type;
+	}
+}
+
+QStringList & Snipet::extentions() {
+	return m_extentions;
+}
+
+const QStringList & Snipet::extentions() const {
+	return m_extentions;
 }
 
 const QString & Snipet::description() const {
@@ -61,14 +89,26 @@ void Snipet::setIcon( const QString & icon ) {
 	m_icon = icon;
 }
 
-const QString & Snipet::category() const {
-	return m_category;
+QString Snipet::category() const {
+	return m_categories.size() ? m_categories.at( 0 ) : QString();
 }
 
 void Snipet::setCategory( const QString & category ) {
-	m_category = category;
+	if( m_categories.size() ) {
+		m_categories[0] = category;
+	} else {
+		m_categories.append( category );
+	}
 }
-
+	
+QStringList & Snipet::categories() {
+	return m_categories;
+}
+	
+const QStringList & Snipet::categories() const {
+	return m_categories;
+}
+	
 const QString & Snipet::text() const {
 	return m_text;
 }
@@ -77,28 +117,34 @@ void Snipet::setText( const QString & value ) {
 	m_text = value;
 }
 
-QStringList & Snipet::params() {
+QList<Snipet::Parameter> & Snipet::params() {
 	return m_params;
 }
 
-const QStringList & Snipet::params() const {
+const QList<Snipet::Parameter> & Snipet::params() const {
 	return m_params;
+}
+
+const QString & Snipet::availableScript() const {
+	return m_availableScript;
+}
+
+void Snipet::setAvailableScript( const QString & value ) {
+	m_availableScript = value;
 }
 
 bool Snipet::operator==( const Snipet & s ) const {
 	return ( m_name == s.m_name )
 		&& ( m_key == s.m_key )
-		&& ( m_category == s.m_category )
+		&& ( m_categories == s.m_categories )
 		&& ( m_text == s.m_text )
 		&& ( m_description == s.m_description )
 		&& ( m_icon == s.m_icon )
-		&& ( m_type == s.m_type )
+		&& ( m_extentions == s.m_extentions )
 		&& ( m_params == s.m_params );
 }
 
 bool Snipet::operator<( const Snipet & s ) const {
-	if( m_category < s.m_category ) return true;
-	if( m_category > s.m_category ) return false;
 	if( m_name < s.m_name )         return true;
 	if( m_name > s.m_name )         return false;
 	return false;

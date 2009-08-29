@@ -36,6 +36,17 @@
 class Snipet {
 public:
 	/*!
+	 * This structure represent a parameter used to complete
+	 * the snipet.
+	 */
+	struct Parameter {
+		QString name;
+		QString defaultValue;
+		
+		bool operator==( const Snipet::Parameter & p ) const;
+	};
+
+	/*!
 	 * Name of the template. Use when show a list of snipet.
 	 * \return Name of the template.
 	 * \sa setName()
@@ -62,13 +73,24 @@ public:
 	 * \sa key();
 	 */
 	void setKey( const QString & key );
-	
+
+	/*!
+	 * Return true if the call is automatic, else return false.
+	 * \return The value
+	 */
+	bool callIsAutomatic() const;
+	/*!
+	 * If the \e value is true, the snipet must be called automatically.
+	 * Else the snipet is called with Ctrl+Space.
+	 */
+	void setCallIsAutomatic( bool value );
+		
 	/*!
 	 * Type of template. The type of template help to filter.
 	 * \return Type of template.
 	 * \sa setType()
 	 */
-	const QString & type() const;
+	QString type() const;
 	 
 	/*!
 	 * Set the type of template.
@@ -77,6 +99,13 @@ public:
 	 */
 	void setType( const QString & type );
 	
+	/*!
+	 * List of extentions of the template.
+	 * \return a list of extentions.
+	 */
+	QStringList & extentions();
+	const QStringList & extentions() const;
+
 	/*!
 	 * Description of the template. 
 	 * \return the description of the template.
@@ -95,16 +124,25 @@ public:
 	 * Return the category to use to store template. The category is used
 	 * to class the template in different way.
 	 * \return the category to use.
-	 * \sa setCategory(), categoryChange()
+	 * \sa setCategory()
 	 */
-	const QString & category() const;
+	QString category() const;
 	
 	/*!
 	 * Set the category used to store the template.
 	 * \param value The new category used to store the template.
-	 * \sa category(), categoryChange()
+	 * \sa category()
 	 */
 	void setCategory( const QString & category );
+
+	/*!
+	 * Return the categories to use to store template. The categories is used
+	 * to class the template in different way.
+	 * \return the categories to use.
+	 * \sa setCategories()
+	 */
+	const QStringList & categories() const;
+	QStringList & categories();
 
 	/*!
 	 * Icon to show link in the list of template. The icon can be 
@@ -136,18 +174,33 @@ public:
 	void setText( const QString & value );
 	
 	/*!
+	 * This method retrieve the script that tell if the snipet is 
+	 * available or noit.
+	 * \sa setAvailableScript()
+	 */
+	const QString & availableScript() const;
+	/*!
+	 * This method set the script who tell if the snipet is 
+	 * available or not.
+	 * \sa availableScript()
+	 */
+	void setAvailableScript( const QString & value );
+	
+	/*!
 	 * List of parameters of the template. This list is a 'pointer', 
 	 * the value can be modified. 
 	 * \return a list of parameter.
 	 */
-	QStringList & params();
-	const QStringList & params() const;
+	QList<Snipet::Parameter> & params();
+	const QList<Snipet::Parameter> & params() const;
 	
 	bool operator==( const Snipet & s ) const;
 	bool operator<( const Snipet & s ) const;
 private:
-	QString m_text, m_name, m_description, m_icon, m_category, m_key, m_type;
-	QStringList m_params;
+	QString m_text, m_name, m_description, m_icon, m_key, m_availableScript;
+	QList<Snipet::Parameter> m_params;
+	QStringList m_extentions, m_categories;
+	bool m_callIsAutomatic;
 };	
 
 

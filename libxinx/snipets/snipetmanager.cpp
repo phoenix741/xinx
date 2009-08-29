@@ -73,6 +73,19 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 	return true;
 }
 
+bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
+	QSqlQuery insertCategoryQuery(
+				    "", database() );
+	QSqlQuery insertSnipetQuery(
+				    "", database() );
+	QSqlQuery insertSnipetParamsQuery(
+				    "", database() );
+	QSqlQuery insertSnipetExtentionsQuery(
+				    "", database() );
+	foreach( const Snipet & s, list ) {
+	}
+}
+
 bool SnipetDatabaseManager::openDatabase() {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "SNIPETBASE" );

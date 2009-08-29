@@ -30,6 +30,9 @@
 #include <QHash>
 #include <QVector>
 
+// Xinx header
+#include "snipetlist.h"
+
 /* SnipetItemModel */
 
 class SnipetItemModel : public QAbstractProxyModel {
@@ -52,6 +55,10 @@ public:
 	SnipetList getSnipetList() const;
 	*/
 
+	/*!
+	 * Import a list of snipet into the base.
+	 */
+	void importSnipetList( const SnipetList & list );
 	/*!
 	 * Remove snipets from the database where the indexes is indicate.
 	 */

@@ -56,7 +56,6 @@ public:
 	virtual ~MainformImpl();
 public slots:
 	void newFile( const QString &filename );
-	void newTemplate( const QString &name, const QString &category, const QString &description, const QString &text, const QStringList &arguments = QStringList(), const QString &key = QString(), const QString &type = QString() );
 	void openFile( const QString & filename );
 	void saveFileAs( const QString & filename = QString() );
 	void saveAllFile();

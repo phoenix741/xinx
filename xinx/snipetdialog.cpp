@@ -57,7 +57,7 @@ SnipetDialogImpl::SnipetDialogImpl( const Snipet & snipet, QWidget * parent, Qt:
 	while( i.hasNext() ) {
 		QPair<QLabel*,QLineEdit*> pair = i.next();
 		if( index < snipet.params().size() )
-			( pair.second )->setText( snipet.params().at( index++ ) );
+			( pair.second )->setText( snipet.params().at( index++ ).name );
 	}
 }
 
@@ -132,7 +132,9 @@ Snipet SnipetDialogImpl::getSnipet() {
 	s.params().clear();
 	while( i.hasNext() ) {
 		QPair<QLabel*,QLineEdit*> pair = i.next();
-		s.params().append( (pair.second)->text() );
+		Snipet::Parameter parameter;
+		parameter.name = (pair.second)->text();
+		s.params().append( parameter );
 	}
 	return s;
 }

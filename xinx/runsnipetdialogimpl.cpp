@@ -36,8 +36,8 @@ RunSnipetDialogImpl::RunSnipetDialogImpl( const Snipet & snipet, QWidget * paren
 
 	m_labelName->setText( QString( "<b>%1</b>" ).arg( snipet.name() ) );
 	m_descriptionLabel->setText( snipet.description() );
-	foreach( const QString & params, snipet.params() ) {
-		QLabel * label = new QLabel( params, m_paramGroupBox );
+	foreach( const Snipet::Parameter & params, snipet.params() ) {
+		QLabel * label = new QLabel( params.name, m_paramGroupBox );
 		QLineEdit * edit = new QLineEdit( m_paramGroupBox );
 
 		m_paramGrid->addWidget( label, m_paramList.size(), 0 );

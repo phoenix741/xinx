@@ -1828,25 +1828,6 @@ void MainformImpl::newTemplate() {
 	}
 }
 
-void MainformImpl::newTemplate( const QString &name, const QString &category, const QString &description, const QString &text, const QStringList &arguments, const QString &key, const QString &type ) {
-	// On créé un template �  partir des informations indiqué.
-	Snipet s;
-	s.setName( name );
-	s.setCategory( category );
-	s.setDescription( description );
-	s.setText( text );
-	s.setType( type );
-	s.setKey( key );
-	s.params() = arguments;
-
-	SnipetList list = SnipetListManager::self()->snipets();
-	list.append( s );
-	SnipetListManager::self()->setSnipets( list );
-
-	SnipetListManager::self()->saveToSnipetFile();
-}
-
-
 void MainformImpl::openFile( const QString & filename ) {
 	if( filename.isEmpty() ) return; // The file name must not to be empty
 
