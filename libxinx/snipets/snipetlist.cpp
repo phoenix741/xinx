@@ -115,7 +115,7 @@ void SnipetList::saveToFile( const QString & filename ) {
 		}
 		
 		foreach( const QString & extention, snipet.extentions() ) {
-			QDomElement extentionElement = document.createElement( "Extentions" );
+			QDomElement extentionElement = document.createElement( "Extention" );
 			s.appendChild( extentionElement );
 			extentionElement.setAttribute( "value", extention );
 		}
