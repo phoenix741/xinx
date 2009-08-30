@@ -185,7 +185,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		} else {
 			QDomElement categoryElement = snipet.firstChildElement( "Category" );
 			while( ! categoryElement.isNull() ) {
-				category = categoryElement.attribute( "value" );
+				category = categoryElement.attribute( "name" );
 				newSnipet.categories().append( category );
 				categoryElement = categoryElement.firstChildElement( "Category" );
 			}

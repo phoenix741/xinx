@@ -309,7 +309,7 @@ void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QStr
 AppSettings::AppSettings::struct_descriptions AppSettings::getDefaultDescriptions() {
 	struct_descriptions value;
 
-	value.datas = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../xml" );
+	value.datas = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../datas" );
 
 	return value;
 }

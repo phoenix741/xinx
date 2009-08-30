@@ -18,7 +18,7 @@
 		<value name="Can Be Commit To RCS" type="bool" default="yes"/>
 	</type>
 	<type name="Descriptions">
-		<value name="Datas" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../xml&quot; )"/>
+		<value name="Datas" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../datas&quot; )"/>
 	</type>
 	<type name="Project">
 		<value name="Last opened project" type="string"/>

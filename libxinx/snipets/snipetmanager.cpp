@@ -94,8 +94,24 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 	                       "DELETE FROM snipets "
 	                       "WHERE id=:id", database() );
 	removeSnipetQuery.bindValue( ":id", id );
+	QSqlQuery removeSnipetParamsQuery(
+	                       "DELETE FROM snipets_params "
+	                       "WHERE snipet_id=:id", database() );
+	removeSnipetParamsQuery.bindValue( ":id", id );
+	QSqlQuery removeSnipetExtQuery(
+	                       "DELETE FROM snipets_extentions "
+	                       "WHERE snipet_id=:id", database() );
+	removeSnipetExtQuery.bindValue( ":id", id );
 
 	if( ! removeSnipetQuery.exec() ) {
+		qWarning( qPrintable( removeSnipetQuery.lastError().text() ) );
+		return false;
+	}
+	if( ! removeSnipetParamsQuery.exec() ) {
+		qWarning( qPrintable( removeSnipetQuery.lastError().text() ) );
+		return false;
+	}
+	if( ! removeSnipetExtQuery.exec() ) {
 		qWarning( qPrintable( removeSnipetQuery.lastError().text() ) );
 		return false;
 	}
