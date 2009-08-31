@@ -63,7 +63,6 @@ XINXConfig& XINXConfig::operator=(const XINXConfig& p) {
 
 void XINXConfig::load() {
 	AppSettings::load();
-	setXinxDataFiles( config().descriptions.datas );
 	updateFormatsSchemeFromConfig();
 }
 
@@ -143,11 +142,6 @@ void XINXConfig::addDefaultExtention( const QString & type, const struct AppSett
 		AppSettingsSettings settings("Shadoware.Org", "XINX");
 		setSettingsHash_struct_extentions( &settings, "Files", config().files );
 	}
-}
-
-void XINXConfig::setXinxDataFiles( const QString & path ) {
-	config().descriptions.datas = path;
-	QDir::setSearchPaths( "datas", QStringList() << path );
 }
 
 XINXConfig * XINXConfig::self() {

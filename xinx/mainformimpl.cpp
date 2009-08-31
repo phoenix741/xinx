@@ -1126,7 +1126,6 @@ void MainformImpl::customize() {
 		custom.saveToConfig( XINXConfig::self() );
 		XINXConfig::self()->updateFormatsSchemeFromConfig();
 		XINXConfig::self()->save();
-		SnipetListManager::self()->saveToSnipetFile();
 		createPluginsActions();
 
 		if( ! XINXConfig::self()->config().style.isEmpty() ) {

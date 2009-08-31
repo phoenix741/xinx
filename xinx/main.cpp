@@ -104,7 +104,8 @@ int main(int argc, char *argv[]) {
 			// Initialize search path for datas ...
 			splash.showMessage( QApplication::translate("SplashScreen", "Initialize search path ...") );
 			app.processEvents();
-			QDir::setSearchPaths( "datas", QStringList() ); // Modify by XinxConfig
+			QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
+			QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
 
 			// ... for scripts ...
 			QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
@@ -154,15 +155,6 @@ int main(int argc, char *argv[]) {
 			splash.showMessage( QApplication::translate("SplashScreen", "Load plugins ...") );
 			app.processEvents();
 			XinxPluginsLoader::self()->loadPlugins();
-
-			splash.showMessage( QApplication::translate("SplashScreen", "Load snipets ...") );
-			app.processEvents();
-			try {
-				SnipetListManager::self()->loadFromSnipetFile();
-			} catch( SnipetListException ) {
-				splash.showMessage( QApplication::translate("SplashScreen", "Can't load snipet file.") );
-				app.processEvents();
-			}
 
 			splash.showMessage( QApplication::translate("SplashScreen", "Load main window ...") );
 			app.processEvents();

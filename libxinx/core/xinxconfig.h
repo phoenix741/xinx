@@ -74,9 +74,6 @@ public:
 	/*! Save the configuration to the QSettings (Registry, INI File, ...) */
 	virtual void save();
 
-	/*! Set the search path of data files. The Search path is accessible with datas:filename.xml */
-	void setXinxDataFiles( const QString & path );
-
 	/*!
 	 * Get the tool name from the configuration, and if the tool doesn't exist or
 	 * is not defined a dialog box to ask the user to define the tool.

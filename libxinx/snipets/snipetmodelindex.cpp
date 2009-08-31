@@ -35,6 +35,8 @@ SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : QAbstrac
 	// This will be automatically deleted.
 	m_sourceModel = new QSqlQueryModel( this );
 	setSourceModel( m_sourceModel );
+
+	createMapping();
 }
 
 SnipetItemModel::~SnipetItemModel() {

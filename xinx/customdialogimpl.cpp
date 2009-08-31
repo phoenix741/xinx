@@ -47,9 +47,6 @@
 CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( parent, f ), m_snipetModel( 0 ) {
 	setupUi( this );
 
-	// General
-	connect( m_descriptionPathLineEdit->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(m_descriptionPathLineEdit_textChanged(QString)) );
-
 	// XML Pres
 	m_hideElementList->setDefaultVisible( false );
 
@@ -72,7 +69,6 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	SnipetDatabaseManager::self()->database().transaction();
 
 	m_snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_snipetTreeView );
-	new ModelTest( m_snipetModel, this );
 	m_snipetTreeView->setModel( m_snipetModel );
 	connect( m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(m_snipetTreeView_selectionChanged()) );
 
@@ -114,9 +110,6 @@ void CustomDialogImpl::saveToConfig( XINXConfig * config ) {
 }
 
 void CustomDialogImpl::showConfig() {//m_specifiqueTableView
-	// Application description path
-	m_descriptionPathLineEdit->lineEdit()->setText( QDir::toNativeSeparators( m_config.config().descriptions.datas ) );
-
 	// Language
 	m_langComboBox->setCurrentIndex( 0 );
 	for( int i = 0; i < m_langComboBox->count(); i++ ) {
@@ -275,9 +268,6 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 }
 
 void CustomDialogImpl::storeConfig() {
-	// Application description path
-	m_config.setXinxDataFiles( QDir::fromNativeSeparators( m_descriptionPathLineEdit->lineEdit()->text() ) );
-
 	// Language
 	QRegExp exp("^\\((.*)\\).*$");
 	if( exp.indexIn( m_langComboBox->currentText() ) >= 0 )
@@ -559,21 +549,6 @@ void CustomDialogImpl::aboutScript( PluginElement * plugin ) {
 	connect( buttonBox, SIGNAL(accepted()), &informationDialog, SLOT(accept()) );
 
 	informationDialog.exec();
-}
-
-void CustomDialogImpl::m_descriptionPathLineEdit_textChanged( QString text ) {
-	if( ! m_snipetModel ) return;
-	SnipetList list;
-	try {
-		// TODO
-		// m_snipetModel->clear();
-		list.loadFromFile( QDir( text ).absoluteFilePath( "template.xml" ) );
-		// TODO
-		// m_snipetModel->loadSnipetList( list );
-	} catch( SnipetListException e ) {
-		qWarning( qPrintable(e.getMessage() )) ;
-	}
-	m_snipetTreeView->expandAll();
 }
 
 void CustomDialogImpl::on_m_importPushButton_clicked() {

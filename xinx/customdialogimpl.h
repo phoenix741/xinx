@@ -53,8 +53,6 @@ public:
 	 */
 	void saveToConfig( XINXConfig * config );
 private slots:
-	void m_descriptionPathLineEdit_textChanged( QString text );
-
 	void on_m_buttonBox_clicked( QAbstractButton * button );
 	void on_m_highlighterComboBox_activated( QString text );
 	void on_m_labelLink_linkActivated( const QString & link );
