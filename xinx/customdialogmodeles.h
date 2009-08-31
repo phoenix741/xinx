@@ -29,7 +29,7 @@
 #include <QApplication>
 
 // Xinx header
-#include "scriptmanager.h"
+#include <scripts/scriptmanager.h>
 #include <plugins/xinxpluginsloader.h>
 
 class ToolsModelIndex : public QAbstractTableModel {

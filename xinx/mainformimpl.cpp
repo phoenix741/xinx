@@ -36,7 +36,6 @@
 #include "runsnipetdialogimpl.h"
 #include "specifiquedlgimpl.h"
 #include "newprojectwizard.h"
-#include "scriptmanager.h"
 #include "searchfilethread.h"
 #include "xinxprojectwizard/projectwizard.h"
 #include <core/xinxproject.h>
@@ -46,6 +45,7 @@
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 #include <rcs/rcs.h>
+#include <scripts/scriptmanager.h>
 
 // Qt header
 #include <QObject>

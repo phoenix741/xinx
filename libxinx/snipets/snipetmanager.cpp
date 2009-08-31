@@ -167,6 +167,10 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 	return true;
 }
 
+bool SnipetDatabaseManager::callSnipet( int id ) {
+	return false;
+}
+
 bool SnipetDatabaseManager::openDatabase() {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "SNIPETBASE" );

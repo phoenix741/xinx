@@ -68,6 +68,14 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	m_customScheme->setFont( font );
 	*/
 
+	// Snipet
+	SnipetDatabaseManager::self()->database().transaction();
+
+	m_snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_snipetTreeView );
+	new ModelTest( m_snipetModel, this );
+	m_snipetTreeView->setModel( m_snipetModel );
+	connect( m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(m_snipetTreeView_selectionChanged()) );
+
 	// Plugins
 	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), this, SLOT(configurePlugin(PluginElement*)) );
 	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutPlugin(PluginElement*)) );
@@ -245,15 +253,11 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
 
 	// Snipet
-	m_snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_snipetTreeView );
 	m_snipetModel->select();
-	new ModelTest( m_snipetModel, this );
-	m_snipetTreeView->setModel( m_snipetModel );
 	m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
 	m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
-	connect( m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(m_snipetTreeView_selectionChanged()) );
 
 	// Load Script
 	m_scriptListView->clear();
@@ -664,9 +668,19 @@ void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 
 void CustomDialogImpl::on_m_buttonBox_clicked( QAbstractButton * button ) {
 	if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::ResetRole ) {
+		// Snipet
+		SnipetDatabaseManager::self()->database().rollback();
+
 		m_config.setDefault();
 		showConfig();
+	} else if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::AcceptRole ) {
+		// Snipet
+		SnipetDatabaseManager::self()->database().commit();
+	} else if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::RejectRole ) {
+		// Snipet
+		SnipetDatabaseManager::self()->database().rollback();
 	}
+
 }
 
 void CustomDialogImpl::on_m_labelLink_linkActivated( const QString & link ) {

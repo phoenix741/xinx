@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "runsnipetdialogimpl.h"
-#include "scriptmanager.h"
+#include <scripts/scriptmanager.h>
 
 // Qt header
 #include <QMessageBox>

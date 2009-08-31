@@ -19,13 +19,13 @@
 
 // Xinx header
 #include "scriptmanager.h"
-#include <core/xinxcore.h>
-#include <core/xinxproject.h>
-#include <editors/abstracteditor.h>
-#include <editors/textfileeditor.h>
-#include <editors/xinxcodeedit.h>
-#include <core/configurationfile.h>
-#include "script/documentsearch.h"
+#include "core/xinxcore.h"
+#include "core/xinxproject.h"
+#include "editors/abstracteditor.h"
+#include "editors/textfileeditor.h"
+#include "editors/xinxcodeedit.h"
+#include "core/configurationfile.h"
+#include "scripts/documentsearch.h"
 
 // Qt header
 #include <QApplication>

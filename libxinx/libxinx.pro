@@ -4,10 +4,12 @@ unix:VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns \
-    sql
+    sql \
+	script
 TARGET = sharedxinx
 DESTDIR += ./
-INCLUDEPATH += ../components \
+INCLUDEPATH += ./ \
+	../components \
     ../ext/qcodeedit/lib \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
@@ -51,7 +53,9 @@ HEADERS = rcs/rcs.h \
     snipets/snipet.h \
     snipets/snipetlist.h \
     snipets/snipetmanager.h \
-    snipets/snipetmodelindex.h
+    snipets/snipetmodelindex.h \
+    scripts/scriptmanager.h \
+    scripts/documentsearch.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -80,6 +84,8 @@ SOURCES = rcs/rcs.cpp \
     snipets/snipet.cpp \
     snipets/snipetlist.cpp \
     snipets/snipetmanager.cpp \
-    snipets/snipetmodelindex.cpp
+    snipets/snipetmodelindex.cpp \
+    scripts/scriptmanager.cpp \
+	scripts/documentsearch.cpp
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 
