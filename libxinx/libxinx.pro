@@ -87,5 +87,7 @@ SOURCES = rcs/rcs.cpp \
     snipets/snipetmodelindex.cpp \
     scripts/scriptmanager.cpp \
 	scripts/documentsearch.cpp
+FORMS = snipets/callingsnipetdlg.ui \
+	snipets/snipetpropertydlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 
