@@ -45,11 +45,11 @@ void Snipet::setKey( const QString & key ) {
 	m_key = key;
 }
 
-bool Snipet::callIsAutomatic() const {
+int Snipet::callIsAutomatic() const {
 	return m_callIsAutomatic;
 }
 
-void Snipet::setCallIsAutomatic( bool value ) {
+void Snipet::setCallIsAutomatic( int value ) {
 	m_callIsAutomatic = value;
 }
 

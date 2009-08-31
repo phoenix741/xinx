@@ -147,7 +147,7 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		newSnipet.setName( snipet.attribute( "name" ) );
 		newSnipet.setKey( snipet.attribute( "key" ) );
 		newSnipet.setIcon( snipet.attribute( "icon" ) );
-		newSnipet.setCallIsAutomatic( snipet.attribute( "automatique" ).toInt() != 1 );
+		newSnipet.setCallIsAutomatic( snipet.attribute( "automatique" ).toInt() );
 
 		QDomElement description = snipet.firstChildElement( "Description" );
 		newSnipet.setDescription( description.text() );
