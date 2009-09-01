@@ -54,6 +54,7 @@ HEADERS = rcs/rcs.h \
     snipets/snipetlist.h \
     snipets/snipetmanager.h \
     snipets/snipetmodelindex.h \
+	snipets/callsnipetdlg.h \
     scripts/scriptmanager.h \
     scripts/documentsearch.h
 SOURCES = rcs/rcs.cpp \
@@ -85,9 +86,10 @@ SOURCES = rcs/rcs.cpp \
     snipets/snipetlist.cpp \
     snipets/snipetmanager.cpp \
     snipets/snipetmodelindex.cpp \
+	snipets/callsnipetdlg.cpp \
     scripts/scriptmanager.cpp \
 	scripts/documentsearch.cpp
-FORMS = snipets/callingsnipetdlg.ui \
+FORMS = snipets/callsnipetdlg.ui \
 	snipets/snipetpropertydlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 

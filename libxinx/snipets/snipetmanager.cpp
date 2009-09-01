@@ -191,9 +191,10 @@ bool SnipetDatabaseManager::openDatabase() {
 
 bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	QSqlQuery createQuery( db );
+	/* Create tables */
 	if( !
 		createQuery.exec( "CREATE TABLE categories ("
-						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    id INTEGER PRIMARY KEY,"
 						  "    parent_id INTEGER NOT NULL DEFAULT(0),"
 						  "    name TEXT NOT NULL,"
 						  "    description TEXT,"
@@ -204,7 +205,7 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	}
 	if( !
 		createQuery.exec( "CREATE TABLE snipets ("
-						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    id INTEGER PRIMARY KEY,"
 						  "    name TEXT,"
 						  "    description TEXT,"
 						  "    shortcut TEXT,"
@@ -220,7 +221,7 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	}
 	if( !
 		createQuery.exec( "CREATE TABLE snipets_extentions ("
-						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    id INTEGER PRIMARY KEY,"
 						  "    snipet_id INTEGER NOT NULL,"
 						  "    extention TEXT,"
 						  "    FOREIGN KEY(snipet_id) REFERENCES snipet)" ) ) {
@@ -229,11 +230,58 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	}
 	if( !
 		createQuery.exec( "CREATE TABLE snipets_params ("
-						  "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
+						  "    id INTEGER PRIMARY KEY,"
 						  "    snipet_id INTEGER NOT NULL,"
 						  "    name TEXT,"
 						  "    default_value TEXT,"
+						  "    params_order INTEGER,"
 						  "    FOREIGN KEY(snipet_id) REFERENCES snipet)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	/* Create Index */
+	if( !
+		createQuery.exec( "CREATE INDEX categories_idx1 on categories (parent_id ASC, name ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX categories_idx2 on categories (parent_id ASC, name ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX categories_idx3 on categories (category_order ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX snipets_idx1 on snipets (id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX snipets_idx2 on snipets (name ASC, description ASC, shortcut ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE UNIQUE INDEX snipets_idx3 on snipets (name ASC, category_id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX snipets_idx4 on snipets (snipet_order ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX snipets_extentions_idx1 on snipets_extentions (snipet_id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX snipets_params_idx1 on snipets_params (snipet_id ASC)" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}
