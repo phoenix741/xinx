@@ -48,6 +48,8 @@ public:
 	bool importSnipetList( const SnipetList & list );
 	bool callSnipet( int id );
 
+	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
+
 	int getCategoryId( const QStringList & category );
 private:
 	SnipetDatabaseManager();

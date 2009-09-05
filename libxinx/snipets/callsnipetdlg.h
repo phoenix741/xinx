@@ -76,6 +76,7 @@ public:
 	 */
 	virtual ~CallSnipetDialogImpl();
 private slots:
+	void m_resultTabWidget_currentChanged( int );
 private:
 	void setupUi( QSqlDatabase db, int snipetId, QDialog * parent );
 

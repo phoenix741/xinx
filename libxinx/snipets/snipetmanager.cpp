@@ -20,11 +20,13 @@
 // Xinx header
 #include "core/xinxcore.h"
 #include "snipets/snipetmanager.h"
+#include "scripts/scriptmanager.h"
 
 // Qt header
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QFileInfo>
+#include <QScriptEngine>
 
 /* Static member */
 
@@ -169,6 +171,51 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 
 bool SnipetDatabaseManager::callSnipet( int id ) {
 	return false;
+}
+
+bool SnipetDatabaseManager::executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const {
+	/* Process arguments */
+	QString text = script;
+	for( int i = 0 ; i < values.size() ; i++ ) {
+		text = text.arg( values.at( i ) );
+	}
+
+	/* Process script */
+	QScriptEngine & engine = ScriptManager::self()->engine();
+
+	engine.pushContext();
+	QRegExp jsString( "<\\?[^x][^m][^l].*\\?>" );
+	jsString.setMinimal( true );
+	int from = 0;
+	QString processedString;
+	while( jsString.indexIn( text, from ) >= 0 ) {
+		processedString += text.mid( from, jsString.pos() - from );
+
+		QString js = text.mid( jsString.pos() + 2, jsString.matchedLength() - 4 );
+		if( js.at(0) == '=' ) {
+			QScriptValue result = engine.evaluate( js.mid(1) );
+			if( ! result.isError() )
+				processedString += result.toString();
+			else {
+				qCritical( qPrintable( result.toString() ) );
+				engine.popContext();
+				return false;
+			}
+		} else {
+			engine.evaluate( js ); // Only for define variable or make pre-process.
+			if( engine.hasUncaughtException() ) {
+				qCritical( qPrintable( engine.uncaughtException().toString() ) );
+				engine.popContext();
+				return false;
+			}
+		}
+		from = jsString.pos() + jsString.matchedLength();
+	}
+	processedString += text.mid( from );
+
+	engine.popContext();
+	*result = processedString;
+	return true;
 }
 
 bool SnipetDatabaseManager::openDatabase() {

@@ -21,7 +21,7 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="m_resultTabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -64,9 +64,16 @@ p, li { white-space: pre-wrap; }
             <attribute name="horizontalHeaderMinimumSectionSize">
              <number>1</number>
             </attribute>
-            <attribute name="horizontalHeaderMinimumSectionSize">
-             <number>1</number>
-            </attribute>
+            <column>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Value</string>
+             </property>
+            </column>
            </widget>
           </item>
          </layout>

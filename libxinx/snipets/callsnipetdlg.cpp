@@ -19,6 +19,7 @@
 
 // Xinx header
 #include "snipets/callsnipetdlg.h"
+#include "snipets/snipetmanager.h"
 
 // Qt header
 #include <QSqlQuery>
@@ -68,6 +69,20 @@ CallSnipetDialogImpl::~CallSnipetDialogImpl() {
 
 }
 
+void CallSnipetDialogImpl::m_resultTabWidget_currentChanged( int value ) {
+	if( value == 2 ) { // Show result tab, so we calculate the result
+		QString result;
+		QStringList parameters;
+		for( int row = 0 ; row < m_paramTableWidget->rowCount() ; row++ ) {
+			parameters += m_paramTableWidget->item( row, 1 )->data( Qt::DisplayRole ).toString();
+		}
+		if( SnipetDatabaseManager::self()->executeSnipetScript( m_snipetText, parameters, &result ) )
+			m_resultEdit->setPlainText( result );
+		else
+			m_resultEdit->setPlainText( tr("Cannot execute the snipet. Please check the script in the snipet in configuration dialog.") );
+	}
+}
+
 void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * parent ) {
 	Ui::CallSnipetDialog::setupUi( parent );
 
@@ -90,8 +105,15 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	result = paramsQuery.exec();
 	Q_ASSERT( result );
 
+	int row = 0;
 	while( paramsQuery.next() ) {
 		SnipetParameterNameItem * name = new SnipetParameterNameItem( paramsQuery.value( 0 ).toString() );
 		SnipetParameterValueItem * defaultValue = new SnipetParameterValueItem( paramsQuery.value( 1 ).toString() );
+
+		m_paramTableWidget->setVerticalHeaderItem( row, new QTableWidgetItem( tr("Parameter %1").arg( row ) ) );
+		m_paramTableWidget->setItem( row, 0, name );
+		m_paramTableWidget->setItem( row, 1, defaultValue );
+	
+		row++;
 	}
 }
