@@ -27,6 +27,33 @@
 // Qt header
 #include <QDialog>
 #include <QSqlDatabase>
+#include <QTableWidgetItem>
+
+/*!
+ * \internal
+ */
+class SnipetParameterNameItem : public QTableWidgetItem {
+public:
+	SnipetParameterNameItem();
+	SnipetParameterNameItem( const QString & name );
+private:
+
+};
+
+/*!
+ * \internal
+ */
+class SnipetParameterValueItem : public QTableWidgetItem {
+public:
+	SnipetParameterValueItem();
+	SnipetParameterValueItem( const QString & defaultValue );
+
+	void setDefault();
+	void setDefaultValue( const QString & value );
+	const QString & defaultValue() const;
+private:
+	QString m_defaultValue;
+};
 
 /*!
  * Implementation of snipet dialog. This dialog permit to create, modify.

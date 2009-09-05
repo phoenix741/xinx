@@ -20,6 +20,44 @@
 // Xinx header
 #include "snipets/callsnipetdlg.h"
 
+// Qt header
+#include <QSqlQuery>
+
+/* SnipetParameterNameItem */
+
+SnipetParameterNameItem::SnipetParameterNameItem() : QTableWidgetItem() {
+}
+
+SnipetParameterNameItem::SnipetParameterNameItem( const QString & name ) : QTableWidgetItem() {
+	setData( Qt::DisplayRole, name );
+}
+
+/* SnipetParameterValueItem */
+
+SnipetParameterValueItem::SnipetParameterValueItem() : QTableWidgetItem() {
+}
+
+SnipetParameterValueItem::SnipetParameterValueItem( const QString & defaultValue ) : QTableWidgetItem(), m_defaultValue( defaultValue ) {
+	setData( Qt::DisplayRole, m_defaultValue );
+}
+
+void SnipetParameterValueItem::setDefault() {
+	setData( Qt::DisplayRole, m_defaultValue );
+}
+
+void SnipetParameterValueItem::setDefaultValue( const QString & value ) {
+	if( m_defaultValue != value ) {
+		if( data( Qt::DisplayRole ) == m_defaultValue ) {
+			setData( Qt::DisplayRole, m_defaultValue );
+		}
+		m_defaultValue = value;
+	}
+}
+
+const QString & SnipetParameterValueItem::defaultValue() const {
+	return m_defaultValue;
+}
+
 /* CallSnipetDialogImpl */
 
 CallSnipetDialogImpl::CallSnipetDialogImpl( QSqlDatabase db, int snipetId, QWidget * parent, Qt::WFlags f ) : QDialog( parent, f ) {
@@ -31,7 +69,7 @@ CallSnipetDialogImpl::~CallSnipetDialogImpl() {
 }
 
 void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * parent ) {
-	Ui::SnipetDialog::setupUi( parent );
+	Ui::CallSnipetDialog::setupUi( parent );
 
 	/* Initialise the snipet description */
 	QSqlQuery snipetQuery( "SELECT name, description, text FROM snipets WHERE snipet_id=:id", db );
@@ -40,10 +78,10 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	bool result = snipetQuery.exec();
 	Q_ASSERT( result );
 
-	setWindowTitle( tr("Use the snipet \"%1\"").arg( snipetQuery.value( "name" ).toString() ) );
-	m_labelName->setText( snipetQuery.value( "name" ).toString() );
-	m_descriptionLabel->setText( snipetQuery.value( "description" ).toString() );
-	m_snipetText = snipetQuery.value( "text" ).toString();
+	setWindowTitle( tr("Use the snipet \"%1\"").arg( snipetQuery.value( 0 ).toString() ) );
+	m_labelName->setText( snipetQuery.value( 0 ).toString() );
+	m_descriptionLabel->setText( snipetQuery.value( 1 ).toString() );
+	m_snipetText = snipetQuery.value( 2 ).toString();
 
 	/* Initialise the snipet parameter */
 	QSqlQuery paramsQuery( "SELECT name, default FROM snipets_params WHERE snipet_id=:id ORDER BY params_order", db );
@@ -52,5 +90,8 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	result = paramsQuery.exec();
 	Q_ASSERT( result );
 
-
+	while( paramsQuery.next() ) {
+		SnipetParameterNameItem * name = new SnipetParameterNameItem( paramsQuery.value( 0 ).toString() );
+		SnipetParameterValueItem * defaultValue = new SnipetParameterValueItem( paramsQuery.value( 1 ).toString() );
+	}
 }
