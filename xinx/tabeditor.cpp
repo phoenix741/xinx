@@ -25,11 +25,12 @@
 #include <editors/xinxcodeedit.h>
 #include <editors/textfileeditor.h>
 #include <plugins/xinxpluginsloader.h>
-#include "runsnipetdialogimpl.h"
 #include <snipets/snipet.h>
 #include <snipets/snipetlist.h>
+#include <snipets/snipetmanager.h>
 
 // Qt header
+#include <QApplication>
 #include <QDir>
 #include <QTabBar>
 #include <QDragEnterEvent>
@@ -377,15 +378,10 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 }
 
 void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
-	int index = SnipetListManager::self()->snipets().indexOf( snipet );
-	if( index == -1 ) return ;
-
-	const Snipet & s = SnipetListManager::self()->snipets().at( index );
-
-	RunSnipetDialogImpl dlg( s );
-	if( ( s.params().count() == 0 ) || dlg.exec() ) {
+	QString result;
+	if( SnipetDatabaseManager::self()->callSnipet( snipet, &result, qApp->activeWindow() ) ) {
 		XinxCodeEdit * textEdit = qobject_cast<XinxCodeEdit*>( sender() );
-		textEdit->insertText( dlg.getResult() );
+		textEdit->insertText( result );
 	}
 }
 

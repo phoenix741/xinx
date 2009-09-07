@@ -20,9 +20,11 @@
 // Xinx header
 #include "snipets/callsnipetdlg.h"
 #include "snipets/snipetmanager.h"
+#include "snipets/snipet.h"
 
 // Qt header
 #include <QSqlQuery>
+#include <QDebug>
 
 /* SnipetParameterNameItem */
 
@@ -69,13 +71,44 @@ CallSnipetDialogImpl::~CallSnipetDialogImpl() {
 
 }
 
-void CallSnipetDialogImpl::m_resultTabWidget_currentChanged( int value ) {
+int CallSnipetDialogImpl::isAutomatic() const {
+	return m_isAutomatic;
+}
+
+const QString & CallSnipetDialogImpl::snipetText() const {
+	return m_snipetText;
+}
+
+QStringList CallSnipetDialogImpl::values() const {
+	QStringList parameters;
+	for( int row = 0 ; row < m_paramTableWidget->rowCount() ; row++ ) {
+		parameters += m_paramTableWidget->item( row, 1 )->data( Qt::DisplayRole ).toString();
+	}
+	return parameters;
+}
+
+int CallSnipetDialogImpl::exec( int mode ) {
+	// TODO
+	// Si paramétrage "Show Snipet Dialog" alors afficher la boite de dialogue quelque soit le mode.
+	switch( mode ) {
+	case Snipet::AUTOMATIC: 
+	case Snipet::NO_DIALOG:
+		if( values().contains( "" ) ) {
+			return QDialog::exec();
+		} else
+			return QDialog::Accepted;
+		break;
+	case Snipet::MANUEL:
+		return QDialog::exec();
+		break;
+	}
+	return QDialog::Rejected;
+}
+
+void CallSnipetDialogImpl::on_m_tabWidget_currentChanged( int value ) {
 	if( value == 2 ) { // Show result tab, so we calculate the result
 		QString result;
-		QStringList parameters;
-		for( int row = 0 ; row < m_paramTableWidget->rowCount() ; row++ ) {
-			parameters += m_paramTableWidget->item( row, 1 )->data( Qt::DisplayRole ).toString();
-		}
+		QStringList parameters = values();
 		if( SnipetDatabaseManager::self()->executeSnipetScript( m_snipetText, parameters, &result ) )
 			m_resultEdit->setPlainText( result );
 		else
@@ -87,19 +120,25 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	Ui::CallSnipetDialog::setupUi( parent );
 
 	/* Initialise the snipet description */
-	QSqlQuery snipetQuery( "SELECT name, description, text FROM snipets WHERE snipet_id=:id", db );
+	QSqlQuery snipetQuery( "SELECT name, description, text, auto FROM snipets WHERE id=:id", db );
 	snipetQuery.bindValue( ":id", snipetId );
 
 	bool result = snipetQuery.exec();
 	Q_ASSERT( result );
 
+	if( ! snipetQuery.next() ) {
+		qCritical() << tr("CallSnipetDialogImpl: Can't find snipet id '%1'").arg( snipetId );
+		return;
+	}
+
 	setWindowTitle( tr("Use the snipet \"%1\"").arg( snipetQuery.value( 0 ).toString() ) );
-	m_labelName->setText( snipetQuery.value( 0 ).toString() );
+	m_labelName->setText( "<b>" + snipetQuery.value( 0 ).toString() + "</b>" );
 	m_descriptionLabel->setText( snipetQuery.value( 1 ).toString() );
 	m_snipetText = snipetQuery.value( 2 ).toString();
+	m_isAutomatic = snipetQuery.value( 3 ).toInt();
 
 	/* Initialise the snipet parameter */
-	QSqlQuery paramsQuery( "SELECT name, default FROM snipets_params WHERE snipet_id=:id ORDER BY params_order", db );
+	QSqlQuery paramsQuery( "SELECT name, default_value FROM snipets_params WHERE snipet_id=:id ORDER BY params_order", db );
 	paramsQuery.bindValue( ":id", snipetId );
 
 	result = paramsQuery.exec();
@@ -107,6 +146,8 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 
 	int row = 0;
 	while( paramsQuery.next() ) {
+		m_paramTableWidget->setRowCount( row + 1 );
+
 		SnipetParameterNameItem * name = new SnipetParameterNameItem( paramsQuery.value( 0 ).toString() );
 		SnipetParameterValueItem * defaultValue = new SnipetParameterValueItem( paramsQuery.value( 1 ).toString() );
 
@@ -117,3 +158,4 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 		row++;
 	}
 }
+

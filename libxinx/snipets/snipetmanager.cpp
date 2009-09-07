@@ -20,6 +20,7 @@
 // Xinx header
 #include "core/xinxcore.h"
 #include "snipets/snipetmanager.h"
+#include "snipets/callsnipetdlg.h"
 #include "scripts/scriptmanager.h"
 
 // Qt header
@@ -169,9 +170,56 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 	return true;
 }
 
-bool SnipetDatabaseManager::callSnipet( int id ) {
-	return false;
+bool SnipetDatabaseManager::callSnipet( int id, QString * result, QWidget * parent ) {
+	Q_ASSERT( result );
+
+	CallSnipetDialogImpl dlg( database(), id, parent );
+	if( dlg.exec( dlg.isAutomatic() ) != QDialog::Accepted ) return false;
+	if( ! executeSnipetScript( dlg.snipetText(), dlg.values(), result ) ) return false;
+	return true;
 }
+
+bool SnipetDatabaseManager::callSnipet( QString key, QString * result, QWidget * parent ) {
+	Q_ASSERT( result );
+
+	QSqlQuery searchId( "select id from snipets where lower(shortcut) = lower(:shortcut)", database() );
+	searchId.bindValue( ":shortcut", key );
+
+	if( ! searchId.exec() ) {
+		qWarning( qPrintable( tr("Can't search id for key '%1' : %2").arg( key ).arg( searchId.lastError().text() ) ) );
+		return false;
+	}
+
+	if( ! searchId.next() ) {
+		// Id not found
+		return false;
+	}
+
+	int snipet_id = searchId.value( 0 ).toInt();
+
+	return callSnipet( snipet_id, result, parent );
+}
+
+bool SnipetDatabaseManager::callAutomaticSnipet( QString key, QString * result, QWidget * parent ) {
+	QSqlQuery searchId( "select id from snipets where lower(key) = lower(:key) and auto=:auto", database() );
+	searchId.bindValue( ":key", key );
+	searchId.bindValue( ":auto", Snipet::AUTOMATIC );
+
+	if( ! searchId.exec() ) {
+		qWarning( qPrintable( tr("Can't search id for key '%1' : %2").arg( key ).arg( searchId.lastError().text() ) ) );
+		return false;
+	}
+
+	if( ! searchId.next() ) {
+		// Id not found
+		return false;
+	}
+
+	int snipet_id = searchId.value( 0 ).toInt();
+
+	return callSnipet( snipet_id, result, parent );
+}
+
 
 bool SnipetDatabaseManager::executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const {
 	/* Process arguments */

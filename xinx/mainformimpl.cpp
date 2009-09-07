@@ -33,7 +33,6 @@
 #include "projectpropertyimpl.h"
 #include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
-#include "runsnipetdialogimpl.h"
 #include "specifiquedlgimpl.h"
 #include "newprojectwizard.h"
 #include "searchfilethread.h"
@@ -922,11 +921,14 @@ void MainformImpl::callSnipetMenu() {
 	if( action && TabEditor::isTextFileEditor( m_tabEditors->currentEditor() ) ) {
 		const Snipet & snipet = action->data().value<Snipet>();
 
+		// TODO : Replace by new snipet
+		/*
 		RunSnipetDialogImpl dlg( snipet );
 		if( dlg.exec() ) {
 			XinxCodeEdit * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 			editor->insertText( dlg.getResult() );
 		}
+		*/
 	}
 }
 

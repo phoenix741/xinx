@@ -39,7 +39,6 @@ FORMS += ui/specifiquedlg.ui \
     ui/projectdirectorywidget.ui \
     ui/projectproperty.ui \
     ui/replace.ui \
-    ui/runsnipet.ui \
     ui/snipetproperty.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
@@ -59,7 +58,6 @@ HEADERS += customdialogmodeles.h \
     projectdirectorydockwidget.h \
     projectpropertyimpl.h \
     replacedialogimpl.h \
-    runsnipetdialogimpl.h \
     snipetdialog.h \
     tabeditor.h \
     threadedconfigurationfile.h \
@@ -83,7 +81,6 @@ SOURCES += customdialogmodeles.cpp \
     projectdirectorydockwidget.cpp \
     projectpropertyimpl.cpp \
     replacedialogimpl.cpp \
-    runsnipetdialogimpl.cpp \
     snipetdialog.cpp \
     tabeditor.cpp \
     threadedconfigurationfile.cpp \

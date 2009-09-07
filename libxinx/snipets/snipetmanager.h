@@ -46,7 +46,9 @@ public:
 
 	bool removeSnipet( int id );
 	bool importSnipetList( const SnipetList & list );
-	bool callSnipet( int id );
+	bool callSnipet( int id, QString * result, QWidget * parent = 0 );
+	bool callSnipet( QString key, QString * result, QWidget * parent = 0 );
+	bool callAutomaticSnipet( QString key, QString * result, QWidget * parent = 0 );
 
 	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
 

@@ -20,7 +20,6 @@
 // Xinx header
 #include "snipetdockwidget.h"
 #include <snipets/snipetlist.h>
-#include "runsnipetdialogimpl.h"
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 
@@ -84,12 +83,15 @@ QWidget * SnipetDockWidget::createSnipetWidget( const Snipet & s ) {
 }
 
 void SnipetDockWidget::callSnipet() {
+	// TODO
+	/*
 	const Snipet & s = sender()->property( "Snipet" ).value<Snipet>();
 	RunSnipetDialogImpl dlg( s, this );
 	if( qobject_cast<TextFileEditor*>( m_editor ) && dlg.exec() ) {
 		QString text = dlg.getResult();
 		qobject_cast<TextFileEditor*>( m_editor )->textEdit()->insertText( text );
 	}
+	*/
 }
 
 void SnipetDockWidget::updateSnipets() {

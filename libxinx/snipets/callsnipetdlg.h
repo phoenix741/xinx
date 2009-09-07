@@ -75,12 +75,19 @@ public:
 	 * Destroy the dialog.
 	 */
 	virtual ~CallSnipetDialogImpl();
+
+	int isAutomatic() const;
+	const QString & snipetText() const;
+	QStringList values() const;
+
+	int exec( int mode );
 private slots:
-	void m_resultTabWidget_currentChanged( int );
+	void on_m_tabWidget_currentChanged( int );
 private:
 	void setupUi( QSqlDatabase db, int snipetId, QDialog * parent );
 
 	QString m_snipetText;
+	int m_isAutomatic;
 };
 
 #endif // __CALLSNIPETDIALOG_H__
