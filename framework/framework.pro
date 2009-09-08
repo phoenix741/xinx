@@ -6,7 +6,7 @@ QT += xml \
     xmlpatterns \
     sql \
 	script
-TARGET = sharedxinx
+TARGET = xinxframework
 DESTDIR += ./
 INCLUDEPATH += ./ \
 	../components \

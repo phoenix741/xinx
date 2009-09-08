@@ -5,7 +5,7 @@ CONFIG += plugin
 QT += network \
     xml
 DESTDIR += ../
-INCLUDEPATH += ../../libxinx \
+INCLUDEPATH += ../../framework \
     ../../components \
     ../webplugin/xsl \
     ../../ext/qcodeedit/lib \
@@ -13,13 +13,13 @@ INCLUDEPATH += ../../libxinx \
     ../../ext/qcodeedit/lib/language \
     ../../ext/qcodeedit/lib/qnfa \
     ../../ext/qcodeedit/lib/widgets
-LIBS = -L../../libxinx \
+LIBS = -L../../framework \
     -L../../components \
     -L../ \
     -L../../ext/qcodeedit \
     -lxinxcmp \
     -lwebplugin \
-    -lsharedxinx \
+    -lxinxframework \
     -lqcodeedit
 PRE_TARGETDEPS = ../libwebplugin.a
 TARGET = services

@@ -4,10 +4,10 @@ TEMPLATE = lib
 VERSION = 1.0.0.1
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx \
-		-lsharedxinx
+LIBS = -L../../framework \
+		-lxinxframework
 TARGET = dictionary
-INCLUDEPATH += ../../libxinx
+INCLUDEPATH += ../../framework
 RESOURCES = dictionary.qrc
 TRANSLATIONS += translations/dictionary_fr.ts
 HEADERS = dictionary.h \

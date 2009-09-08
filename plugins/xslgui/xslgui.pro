@@ -3,9 +3,9 @@ include(../../project_mode.pri)
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx -L../../components -lsharedxinx -lxinxcmp
+LIBS = -L../../framework -L../../components -lxinxframework -lxinxcmp
 TARGET = xslgui
-INCLUDEPATH += ../../libxinx ../../components
+INCLUDEPATH += ../../framework ../../components
 RESOURCES = xslgui.qrc
 TRANSLATIONS += translations/xslgui_fr.ts
 HEADERS = xslgui.h \

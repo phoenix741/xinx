@@ -3,12 +3,12 @@ include(../../project_mode.pri)
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx \
+LIBS = -L../../framework \
     -L../../components \
-    -lsharedxinx \
+    -lxinxframework \
     -lxinxcmp
 TARGET = xsd
-INCLUDEPATH += ../../libxinx \
+INCLUDEPATH += ../../framework \
     ../../components
 RESOURCES = xsdedit.qrc
 TRANSLATIONS += translations/xsledit_fr.ts

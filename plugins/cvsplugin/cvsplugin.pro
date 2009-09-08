@@ -4,9 +4,9 @@ TEMPLATE = lib
 VERSION = 0.1.0.1
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx -lsharedxinx
+LIBS = -L../../framework -lxinxframework
 TARGET = cvsplugin
-INCLUDEPATH += ../../libxinx ../../components
+INCLUDEPATH += ../../framework ../../components
 HEADERS = entries.h \
     cvsthread.h \
     rcs_cvs.h \

@@ -1,9 +1,9 @@
 <RCC>
 	<qresource prefix="/" >
 		<file alias="translations/xinxcomponents_fr.qm" >../components/translations/xinxcomponents_fr.qm</file>
-		<file alias="translations/libxinx_fr.qm" >../libxinx/translations/libxinx_fr.qm</file>
-		<file alias="qcodeedit/marks.qxm" >../libxinx/editors/marks.qxm</file>
-		<file alias="qcodeedit/lan/none.qnfa" >../libxinx/editors/none.qnfa</file>
+		<file alias="translations/libxinx_fr.qm" >../framework/translations/libxinx_fr.qm</file>
+		<file alias="qcodeedit/marks.qxm" >../framework/editors/marks.qxm</file>
+		<file alias="qcodeedit/lan/none.qnfa" >../framework/editors/none.qnfa</file>
 		<file>translations/qt_fr.qm</file>
 		<file>translations/xinx_fr.qm</file>
 		<file>images/1downarrow.png</file>

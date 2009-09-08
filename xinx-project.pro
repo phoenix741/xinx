@@ -18,7 +18,7 @@ external_qcodeedit.subdir = ext/qcodeedit
 xinx_components.subdir = components
 xinx_components.depends = external_qcodeedit
 
-xinx_library.subdir = libxinx
+xinx_library.subdir = framework
 xinx_library.depends = external_qcodeedit xinx_components
 
 xinx_test1.subdir = unittest/guixinxcodeedit

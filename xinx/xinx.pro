@@ -15,21 +15,21 @@ QT += xml \
 		sql
 DESTDIR += ./
 INCLUDEPATH += ../components \
-    ../libxinx \
+    ../framework \
     ../xinx \
     ../ext/qcodeedit/lib \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
     ../ext/qcodeedit/lib/qnfa \
     ../ext/qcodeedit/lib/widgets
-LIBS = -L../libxinx \
+LIBS = -L../framework \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
 	-lxmlpres \
     -lwebplugin \
-		-lsharedxinx \
-		-lxinxcmp \
+	-lxinxframework \
+	-lxinxcmp \
     -lqcodeedit
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \

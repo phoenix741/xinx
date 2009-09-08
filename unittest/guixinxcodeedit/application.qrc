@@ -1,7 +1,7 @@
 <RCC>
 	<qresource prefix="/" >
-		<file alias="qcodeedit/marks.qxm" >../../libxinx/editors/marks.qxm</file>
-		<file alias="qcodeedit/lan/none.qnfa" >../../libxinx/editors/none.qnfa</file>
+		<file alias="qcodeedit/marks.qxm" >../../framework/editors/marks.qxm</file>
+		<file alias="qcodeedit/lan/none.qnfa" >../../framework/editors/none.qnfa</file>
 		<file alias="images/bookmark.png">../../xinx/images/bookmark.png</file>
 		<file alias="images/warning.png">../../xinx/images/warning.png</file>
 	</qresource>

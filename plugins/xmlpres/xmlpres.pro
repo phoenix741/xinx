@@ -7,7 +7,7 @@ QT += xml \
 		xmlpatterns
 DESTDIR += ../
 TARGET = xmlpres
-INCLUDEPATH += ../../libxinx  \
+INCLUDEPATH += ../../framework  \
 		../../components \
 		../../ext/qcodeedit/lib \
 		../../ext/qcodeedit/lib/document \

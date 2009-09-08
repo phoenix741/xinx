@@ -3,9 +3,9 @@ include(../../project_mode.pri)
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx -lsharedxinx
+LIBS = -L../../framework -lxinxframework
 TARGET = empty
-INCLUDEPATH += ../../libxinx 
+INCLUDEPATH += ../../framework 
 RESOURCES = empty.qrc
 TRANSLATIONS += translations/empty_fr.ts
 HEADERS = empty.h

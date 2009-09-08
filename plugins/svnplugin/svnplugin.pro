@@ -4,9 +4,9 @@ TEMPLATE = lib
 VERSION = 0.1.0.1
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../libxinx -lsharedxinx
+LIBS = -L../../framework -lxinxframework
 TARGET = svnplugin
-INCLUDEPATH += ../../libxinx ../../components
+INCLUDEPATH += ../../framework ../../components
 HEADERS = rcs_svn.h \
     svnplugin.h
 SOURCES = rcs_svn.cpp \

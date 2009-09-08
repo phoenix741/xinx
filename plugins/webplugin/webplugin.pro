@@ -10,7 +10,7 @@ DESTDIR += ../
 RESOURCES += webplugin.qrc
 TARGET = webplugin
 INCLUDEPATH += ./ \
-    ../../libxinx \
+    ../../framework \
     ../../components \
     ../../ext/qcodeedit/lib \
     ../../ext/qcodeedit/lib/document \
