@@ -30,16 +30,25 @@ class QMenuView : public QMenu {
 public:
 	QMenuView( QWidget * parent = 0 );
 
-	QAbstractItemModel * model () const;
-	QAction * actionWidget ( const QModelIndex & index ) const;
-	QModelIndex rootIndex () const;
 	virtual void setModel ( QAbstractItemModel * model );
-public slots:
+	QAbstractItemModel * model () const;
+
 	virtual void setRootIndex ( const QModelIndex & index );
-	void update ( const QModelIndex & index );
+	QModelIndex rootIndex () const;
 signals:
+	void activated( const QModelIndex &index );
+	void hovered( const QString &text );
 	void triggered( const QModelIndex & index ) const;
+private slots:
+	void aboutToShow();
+	void triggered(QAction *action);
+	void hovered(QAction *action);
 private:
+	void createMenu( const QModelIndex &parent, QMenu *parentMenu = 0, QMenu *menu = 0 );
+	QAction *makeAction( const QModelIndex &index );
+
+	QAbstractItemModel * m_model;
+	QPersistentModelIndex m_root;
 };
 
 
