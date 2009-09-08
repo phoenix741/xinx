@@ -111,7 +111,7 @@ int CallSnipetDialogImpl::exec( int mode ) {
 }
 
 void CallSnipetDialogImpl::on_m_tabWidget_currentChanged( int value ) {
-	if( value == 2 ) { // Show result tab, so we calculate the result
+	if( value == 1 ) { // Show result tab, so we calculate the result
 		QString result;
 		QStringList parameters = values();
 		if( SnipetDatabaseManager::self()->executeSnipetScript( m_snipetText, parameters, &result ) )

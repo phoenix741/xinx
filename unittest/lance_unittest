@@ -1,5 +1,5 @@
 #!/bin/sh
-LD_LIBRARY_PATH=../libxinx:../components:../ext/qcodeedit:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=../framework:../components:../ext/qcodeedit:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 # Test au format xml
 xvfb-run ./testxinxcodeedit/testxinxcodeedit -xml > unittest.xml

@@ -22,14 +22,16 @@ HEADERS = p_pluginselector.h \
     xinxlistwidgetimpl.h \
     pluginelement.h \
     borderlayout.h \
- customschemeimpl.h
+    customschemeimpl.h \
+	qmenuview.h
 SOURCES = directoryedit.cpp \
     xinxcolorcombo.cpp \
     pluginselector.cpp \
     xinxlistwidgetimpl.cpp \
     pluginelement.cpp \
     borderlayout.cpp \
- customschemeimpl.cpp
+    customschemeimpl.cpp \
+	qmenuview.cpp
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
 
