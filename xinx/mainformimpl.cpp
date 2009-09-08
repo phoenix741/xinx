@@ -23,10 +23,7 @@
 #include "projectdirectorydockwidget.h"
 #include "replacedialogimpl.h"
 #include "logdialogimpl.h"
-#include <snipets/snipet.h>
 #include "snipetdockwidget.h"
-#include <snipets/snipet.h>
-#include <snipets/snipetlist.h>
 #include "snipetdialog.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
@@ -45,6 +42,8 @@
 #include <editors/xinxcodeedit.h>
 #include <rcs/rcs.h>
 #include <scripts/scriptmanager.h>
+#include <qmenuview.h>
+#include <snipets/snipetmanager.h>
 
 // Qt header
 #include <QObject>
@@ -75,12 +74,7 @@
 #include <QIcon>
 #include <QThreadPool>
 
-/* Meta type */
-
-Q_DECLARE_METATYPE(Snipet*);
-
 /* MainformImpl */
-
 
 MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ),  m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_closeTabBtn(0) {
 	createMainForm();
@@ -134,7 +128,10 @@ void MainformImpl::createMenus() {
 	m_menus.insert( "tools", toolsMenu = new QMenu( tr("&Tools"), m_menuBar ) );
 	m_menus.insert( "help", helpMenu = new QMenu( tr("&Help"), m_menuBar ) );
 	m_scriptMenu = new QMenu( tr("&Script"), m_menuBar );
-	m_templateMenu = new QMenu( tr("&Template"), m_menuBar );
+	//m_templateMenu = new QMenu( tr("&Template"), m_menuBar );
+	QMenuView * m_templateMenu = new QMenuView( m_menuBar );
+	m_templateMenu->setTitle( tr("&Template") );
+	//m_templateMenu->setModel( SnipetDatabaseManager::self()->createSnipetItemModel( m_templateMenu ) );
 
 	m_toolBars.insert( "project", projectToolBar = new QToolBar( this ) );
 	m_toolBars.insert( "file", fileToolBar = new QToolBar( this ) );
@@ -185,10 +182,6 @@ void MainformImpl::createMenus() {
 	toolsMenu->addAction(m_scriptMenu->menuAction());
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_customApplicationAct);
-
-	m_templateMenu->addAction(m_refreshSnipet);
-	m_templateMenu->addSeparator();
-	m_templateMenu->addAction(m_createTemplate);
 
 	m_scriptMenu->addAction(m_refreshScripts);
 	m_scriptMenu->addSeparator();
@@ -692,14 +685,6 @@ void MainformImpl::createActions() {
 	m_customApplicationAct = new QAction( QIcon(":/images/configure.png"), tr( "Customize ..."), this );
 	connect( m_customApplicationAct, SIGNAL(triggered()), this, SLOT(customize()) );
 
-	// Create tempalte
-	m_createTemplate = new QAction( tr( "Create &template"), this );
-	connect( m_createTemplate, SIGNAL(triggered()), this, SLOT(newTemplate()) );
-
-	// Refresh snipet
-	m_refreshSnipet = new QAction( tr( "&Refresh Snipets"), this );
-	connect( m_refreshSnipet, SIGNAL(triggered()), SnipetListManager::self(), SLOT(loadFromSnipetFile()) );
-
 	// Refresh scripts
 	m_refreshScripts = new QAction( tr( "&Refresh Scripts"), this );
 	connect( m_refreshScripts, SIGNAL(triggered()), ScriptManager::self(), SLOT(loadScripts()) );
@@ -916,27 +901,8 @@ void MainformImpl::createStatusBar() {
 }
 
 void MainformImpl::createTools() {
-	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateToolsMenu()) );
 	connect( ScriptManager::self(), SIGNAL(changed()), this, SLOT(updateToolsMenu()) );
 	updateToolsMenu();
-}
-
-void MainformImpl::callSnipetMenu() {
-	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
-
-	QAction * action = qobject_cast<QAction*>( sender() );
-	if( action && TabEditor::isTextFileEditor( m_tabEditors->currentEditor() ) ) {
-		const Snipet & snipet = action->data().value<Snipet>();
-
-		// TODO : Replace by new snipet
-		/*
-		RunSnipetDialogImpl dlg( snipet );
-		if( dlg.exec() ) {
-			XinxCodeEdit * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
-			editor->insertText( dlg.getResult() );
-		}
-		*/
-	}
 }
 
 void MainformImpl::callScriptAction() {
@@ -948,30 +914,6 @@ void MainformImpl::callScriptAction() {
 }
 
 void MainformImpl::updateToolsMenu() {
-	/* Snipet */
-	qDeleteAllLater( m_snipetActs );
-	m_snipetActs.clear();
-
-	qDeleteAllLater( m_snipetCategoryActs.values() );
-	m_snipetCategoryActs.clear();
-
-	if( SnipetListManager::self()->snipets().count() > 0 ) {
-		foreach( const QString & category, SnipetListManager::self()->snipets().categories() ) {
-			QAction * act = new QAction( category, this );
-			m_snipetCategoryActs[ category ] = act;
-			act->setMenu( new QMenu( this ) );
-		}
-		for( int i = 0 ; i < SnipetListManager::self()->snipets().count() ; i++ ) {
-			const Snipet & snipet = SnipetListManager::self()->snipets().at( i );
-			QAction * act = new QAction( QIcon( snipet.icon() ), snipet.name(), this );
-			m_snipetActs.append( act );
-			m_snipetCategoryActs[ snipet.category() ]->menu()->addAction( act );
-			act->setData( QVariant::fromValue( snipet ) );
-			connect( act, SIGNAL(triggered()), this, SLOT(callSnipetMenu()) );
-		}
-		m_templateMenu->insertActions( m_createTemplate, m_snipetCategoryActs.values() );
-	}
-
 	/* Scripts */
 	qDeleteAllLater( m_scriptActs );
 	m_scriptActs.clear();
@@ -1265,10 +1207,6 @@ void MainformImpl::updateActions() {
 	m_printAct->setEnabled( m_tabEditors->count() );
 	m_previousTabAct->setEnabled( m_tabEditors->count() );
 	m_nextTabAct->setEnabled( m_tabEditors->count() );
-	m_createTemplate->setEnabled( m_tabEditors->count() );
-	foreach( QAction * act, m_snipetActs ) {
-		act->setEnabled( m_tabEditors->count() );
-	}
 	m_bookmarkAct->setEnabled( m_tabEditors->count() );
 	m_nextBookmarkAct->setEnabled( m_tabEditors->count() );
 	m_previousBookmarkAct->setEnabled( m_tabEditors->count() );
@@ -1826,25 +1764,6 @@ void MainformImpl::timerEvent( QTimerEvent * ) {
 		threadCountText = "<font color=\"red\">" + threadCountText + "</font>";
 
 	m_threadCount->setText( threadCountText );
-}
-
-void MainformImpl::newTemplate() {
-	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
-	if( TabEditor::isTextFileEditor( m_tabEditors->currentEditor() ) ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() );
-		QString selectedText = editor->textEdit()->textCursor().selectedText();
-
-		SnipetDialogImpl dlg( selectedText );
-		if( dlg.exec() == QDialog::Accepted ) {
-			Snipet s = dlg.getSnipet();
-			SnipetList list = SnipetListManager::self()->snipets();
-			list.append( s );
-			SnipetListManager::self()->setSnipets( list );
-
-			SnipetListManager::self()->saveToSnipetFile();
-		}
-
-	}
 }
 
 void MainformImpl::openFile( const QString & filename ) {

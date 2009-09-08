@@ -25,7 +25,11 @@ Q_DECLARE_METATYPE(QModelIndex);
 /* QMenuView */
 
 QMenuView::QMenuView( QWidget * parent ) : QMenu( parent ) {
-    connect(this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+	connect(this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+}
+
+QMenuView::~QMenuView() {
+	setModel( 0 );
 }
 
 void QMenuView::setModel ( QAbstractItemModel * model ) {
@@ -62,7 +66,7 @@ void QMenuView::hovered( QAction *action ) {
 	}
 }
 
-void QMenuView::aboutToShow() {
+void QMenuView::aboutToShow() {/*
 	QMenu * menu = qobject_cast<QMenu*>( sender() );
 	if( menu ) {
 		QVariant v = menu->menuAction()->data();
@@ -76,7 +80,7 @@ void QMenuView::aboutToShow() {
 
 	clear();
 
-	createMenu( m_root, this, this );
+	createMenu( m_root, this, this );*/
 }
 
 void QMenuView::createMenu( const QModelIndex &parent, QMenu *parentMenu, QMenu *menu ) {

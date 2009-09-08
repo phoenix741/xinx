@@ -29,6 +29,7 @@ class QMenuView : public QMenu {
 	Q_OBJECT
 public:
 	QMenuView( QWidget * parent = 0 );
+	virtual ~QMenuView();
 
 	virtual void setModel ( QAbstractItemModel * model );
 	QAbstractItemModel * model () const;

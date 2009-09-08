@@ -14,14 +14,6 @@ QT += xml \
 		webkit \
 		sql
 DESTDIR += ./
-INCLUDEPATH += ../components \
-    ../framework \
-    ../xinx \
-    ../ext/qcodeedit/lib \
-    ../ext/qcodeedit/lib/document \
-    ../ext/qcodeedit/lib/language \
-    ../ext/qcodeedit/lib/qnfa \
-    ../ext/qcodeedit/lib/widgets
 LIBS = -L../framework \
     -L../plugins \
     -L../components \
@@ -30,7 +22,8 @@ LIBS = -L../framework \
     -lwebplugin \
 	-lxinxframework \
 	-lxinxcmp \
-    -lqcodeedit
+    -lqcodeedit \
+ -L../framework/
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \
     ui/about.ui \
@@ -91,12 +84,21 @@ SOURCES += customdialogmodeles.cpp \
     xinxprojectwizard/projectconverter.cpp \
     xinxprojectwizard/projectwizard.cpp
 TRANSLATIONS += translations/xinx_fr.ts
-CONFIG(debug, debug|release) {
-	exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) {
-		message( "Add GDB Macro to program..." )
-		SOURCES += $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp
-	}
+CONFIG(debug, debug|release){
+    exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ){
+        message( "Add GDB Macro to program..." )
+        SOURCES += $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp
+    }
 }
 
 include(../ext/qmodeltest/modeltest.pri)
 include(../ext/qtsingleapplication/src/qtsingleapplication.pri)
+INCLUDEPATH += ../framework \
+  ../components \
+  ../ext/qcodeedit/lib \
+  ../xinx \
+  ../ext/qcodeedit/lib/document \
+  ../ext/qcodeedit/lib/language \
+  ../ext/qcodeedit/lib/qnfa \
+  ../ext/qcodeedit/lib/widgets
+

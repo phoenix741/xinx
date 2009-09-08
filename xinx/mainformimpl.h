@@ -48,6 +48,7 @@ class QLabel;
 class QMessageBox;
 class QAction;
 class QToolButton;
+class QMenuView;
 
 class MainformImpl : public QMainWindow {
 	Q_OBJECT
@@ -134,7 +135,8 @@ private:
 	QMenuBar * m_menuBar;
 	QHash<QString, QMenu*> m_menus;
 	QHash<QString, QToolBar*> m_toolBars;
-	QMenu * m_newMenu, * m_scriptMenu, *m_templateMenu;
+	QMenu * m_newMenu, * m_scriptMenu;
+	QMenuView *m_templateMenu;
 
 	// Plugins Actions
 	QList<QAction*> m_pluginsAction;
@@ -147,9 +149,7 @@ private:
 
 	void setupRecentMenu( QMenu * menu, QAction * & seperator, QAction * recentActions[ MAXRECENTFILES ] );
 
-	// Snipet
-	QHash<QString,QAction*> m_snipetCategoryActs;
-	QList<QAction*> m_snipetActs;
+	// Scripts
 	QList<QAction*> m_scriptActs;
 
 	// Find/Replace
@@ -179,7 +179,7 @@ private:
 			*m_selectedAddToRCSAct, *m_selectedRemoveFromRCSAct, *m_toggledFlatView;
 	QAction *m_nextTabAct, *m_previousTabAct;
 	QAction *m_aboutAct, *m_aboutQtAct;
-	QAction *m_createTemplate, *m_customApplicationAct, *m_refreshSnipet, *m_refreshScripts, *m_alwaysShowRunDialog;
+	QAction *m_customApplicationAct, *m_refreshScripts, *m_alwaysShowRunDialog;
 
 	// Tab Editors
 	TabEditor * m_tabEditors;
@@ -247,8 +247,6 @@ private slots:
 	void changeShowSnipetDialogAction();
 
 	// Tools
-	void newTemplate();
-	void callSnipetMenu();
 	void callScriptAction();
 	void updateToolsMenu();
 	void customize();
