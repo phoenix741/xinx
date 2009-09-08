@@ -5,7 +5,7 @@
 #include <QDir>
 #include <QApplication>
 
-#include "core/appsettings.h"
+#include "appsettings.h"
 
 /* AppSettingsSettings */
 
@@ -90,6 +90,33 @@ void AppSettings::load() {
 	d->createSettings();
 	d->m_globals = getSettingsGlobals( d->m_settings, "", getDefaultGlobals() );
 	d->deleteSettings();
+}
+
+AppSettings::AppSettings::struct_snipets AppSettings::getDefaultSnipets() {
+	struct_snipets value;
+
+	value.alwaysShowDialog = false;
+
+	return value;
+}
+
+AppSettings::AppSettings::struct_snipets AppSettings::getSettingsSnipets( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_snipets & defaultValue ) {
+	struct_snipets value;
+	settings->beginGroup( path );
+
+	value.alwaysShowDialog = settings->value( "Always Show Dialog", defaultValue.alwaysShowDialog ).toBool();
+
+	settings->endGroup();
+	return value;
+}
+
+void AppSettings::setSettingsSnipets( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_snipets & value ) {
+	struct_snipets defaultValue = getDefaultSnipets();
+	settings->beginGroup( path );
+
+	settings->setValue( "Always Show Dialog", value.alwaysShowDialog, defaultValue.alwaysShowDialog );
+
+	settings->endGroup();
 }
 
 AppSettings::AppSettings::struct_qformat AppSettings::getDefaultQformat() {
@@ -306,33 +333,6 @@ void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QStr
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_descriptions AppSettings::getDefaultDescriptions() {
-	struct_descriptions value;
-
-	value.datas = QDir( qApp->applicationDirPath() ).absoluteFilePath( "../datas" );
-
-	return value;
-}
-
-AppSettings::AppSettings::struct_descriptions AppSettings::getSettingsDescriptions( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_descriptions & defaultValue ) {
-	struct_descriptions value;
-	settings->beginGroup( path );
-
-	value.datas = settings->value( "Datas", defaultValue.datas ).toString();
-
-	settings->endGroup();
-	return value;
-}
-
-void AppSettings::setSettingsDescriptions( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_descriptions & value ) {
-	struct_descriptions defaultValue = getDefaultDescriptions();
-	settings->beginGroup( path );
-
-	settings->setValue( "Datas", value.datas, defaultValue.datas );
-
-	settings->endGroup();
-}
-
 AppSettings::AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
 	struct_extentions value;
 
@@ -420,13 +420,12 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.position = QPoint( 200,200 );
 	value.size = QSize( 400,400 );
 	value.maximized = false;
-	value.descriptions = getDefaultDescriptions();
 	value.project = getDefaultProject();
 	value.rcs = getDefaultRcs();
 	value.editor = getDefaultEditor();
 	value.configurationEditor = getDefaultConfigurationEditor();
 	value.xmlPres = getDefaultXmlpres();
-	value.tools = getDefaultHash_QString();
+	value.snipets = getDefaultSnipets();
 	value.files = getDefaultHash_struct_extentions();
 	value.formats = getDefaultHash_struct_qformat();
 
@@ -445,12 +444,12 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSet
 	value.xinxTrace = settings->value( "XINX Trace", defaultValue.xinxTrace ).toString();
 	value.style = settings->value( "Style", defaultValue.style ).toString();
 	value.plugins = getSettingsHash_bool( settings, "Plugins", defaultValue.plugins );
-	value.descriptions = getSettingsDescriptions( settings, "Descriptions", defaultValue.descriptions );
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
 	value.rcs = getSettingsRcs( settings, "RCS", defaultValue.rcs );
 	value.editor = getSettingsEditor( settings, "Editor", defaultValue.editor );
 	value.configurationEditor = getSettingsConfigurationEditor( settings, "Configuration Editor", defaultValue.configurationEditor );
 	value.xmlPres = getSettingsXmlpres( settings, "Xml Pres", defaultValue.xmlPres );
+	value.snipets = getSettingsSnipets( settings, "Snipets", defaultValue.snipets );
 	value.tools = getSettingsHash_QString( settings, "Tools", defaultValue.tools );
 	value.files = getSettingsHash_struct_extentions( settings, "Files", defaultValue.files );
 	value.formats = getSettingsHash_struct_qformat( settings, "Formats", defaultValue.formats );
@@ -471,12 +470,12 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	settings->setValue( "XINX Trace", value.xinxTrace, defaultValue.xinxTrace );
 	settings->setValue( "Style", value.style, defaultValue.style );
 	setSettingsHash_bool( settings, "Plugins", value.plugins );
-	setSettingsDescriptions( settings, "Descriptions", value.descriptions );
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsRcs( settings, "RCS", value.rcs );
 	setSettingsEditor( settings, "Editor", value.editor );
 	setSettingsConfigurationEditor( settings, "Configuration Editor", value.configurationEditor );
 	setSettingsXmlpres( settings, "Xml Pres", value.xmlPres );
+	setSettingsSnipets( settings, "Snipets", value.snipets );
 	setSettingsHash_QString( settings, "Tools", value.tools );
 	setSettingsHash_struct_extentions( settings, "Files", value.files );
 	setSettingsHash_struct_qformat( settings, "Formats", value.formats );
@@ -513,14 +512,6 @@ void AppSettings::setSettingsHash_bool( AppSettingsSettings * settings, const QS
 	settings->endGroup();
 }
 
-QHash<QString,QString> AppSettings::getDefaultHash_QString() {
-	QHash<QString,QString> value;
-
-	value[ "diff" ] = "/usr/bin/kompare";
-
-	return value;
-}
-
 QHash<QString,QString> AppSettings::getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & defaultValue ) {
 	QHash<QString,QString> value;
 	settings->beginGroup( path );
@@ -541,11 +532,10 @@ QHash<QString,QString> AppSettings::getSettingsHash_QString( AppSettingsSettings
 }
 
 void AppSettings::setSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & value ) {
-	QHash<QString,QString> defaultValue = getDefaultHash_QString();
 	settings->beginGroup( path );
 
 	foreach( const QString & key, value.keys() ) {
-		settings->setValue( key, value[ key ], defaultValue[ key ] );
+		settings->setValue( key, value[ key ], QString() );
 	}
 
 	settings->endGroup();

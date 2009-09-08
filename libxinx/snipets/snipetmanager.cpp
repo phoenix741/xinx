@@ -201,7 +201,7 @@ bool SnipetDatabaseManager::callSnipet( QString key, QString * result, QWidget *
 }
 
 bool SnipetDatabaseManager::callAutomaticSnipet( QString key, QString * result, QWidget * parent ) {
-	QSqlQuery searchId( "select id from snipets where lower(key) = lower(:key) and auto=:auto", database() );
+	QSqlQuery searchId( "select id from snipets where lower(shortcut) = lower(:shortcut) and auto>=:auto", database() );
 	searchId.bindValue( ":key", key );
 	searchId.bindValue( ":auto", Snipet::AUTOMATIC );
 
@@ -287,6 +287,13 @@ bool SnipetDatabaseManager::openDatabase() {
 bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	QSqlQuery createQuery( db );
 	/* Create tables */
+	if( !
+		createQuery.exec( "CREATE TABLE snipet_config ("
+						  "    name TEXT PRIMARY KEY,"
+						  "    value TEXT)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
 	if( !
 		createQuery.exec( "CREATE TABLE categories ("
 						  "    id INTEGER PRIMARY KEY,"
@@ -377,6 +384,12 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	}
 	if( !
 		createQuery.exec( "CREATE INDEX snipets_params_idx1 on snipets_params (snipet_id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	/* DATAS */
+	if( !
+		createQuery.exec( "INSERT INTO snipet_config(name, value) VALUES( 'version', '1.0' )" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}

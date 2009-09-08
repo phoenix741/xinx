@@ -123,7 +123,6 @@ private slots:
 
 	void slotCursorPositionChanged();
 
-	void slotNeedInsertSnipet( const QString & snipet );
 	void fileEditorOpen( const QString & name, int line );
 private:
 	int tabPositionIcon( QPoint point );

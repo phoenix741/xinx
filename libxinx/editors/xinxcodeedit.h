@@ -282,9 +282,6 @@ public slots:
 	/*! Highlight all text equals of the current word under the cursor */
 	void callTextHighlighter();
 signals:
-	/*! The user press Ctrl+Space and call the snipet given */
-	void needInsertSnipet( QString snipet );
-
 	/*! The model is destroyed or created and need to be updated in the content dialog */
 	void modelUpdated( QAbstractItemModel * model );
 
@@ -321,7 +318,7 @@ protected:
 	 * This method is called when the editor ask to add some text automatically. (ie:
 	 * close a bracket, ...)
 	 */
-	virtual bool processKeyPress( QKeyEvent * ) { return true; };
+	virtual bool processKeyPress( QKeyEvent * ) { return true; }
 	/*!
 	 * Process to do when a user press a key
 	 * This method is called when the editor ask to process some shortcut.
@@ -333,7 +330,8 @@ private:
 	void init( bool action );
 	void uploSelectedText( bool upper = true );
 	void key_home( bool );
-        bool isModified();
+	void key_snipet();
+	bool isModified();
 
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;

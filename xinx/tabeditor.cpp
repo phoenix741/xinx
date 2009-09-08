@@ -25,9 +25,6 @@
 #include <editors/xinxcodeedit.h>
 #include <editors/textfileeditor.h>
 #include <plugins/xinxpluginsloader.h>
-#include <snipets/snipet.h>
-#include <snipets/snipetlist.h>
-#include <snipets/snipetmanager.h>
 
 // Qt header
 #include <QApplication>
@@ -115,7 +112,6 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 	if( isTextFileEditor( editor ) ) {
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
 		connect( qobject_cast<TextFileEditor*>( editor )->textEdit()->editor(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
-		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
 		connect( editor, SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL( positionChanged(QModelIndex) ) );
 	}
 
@@ -375,14 +371,6 @@ void TabEditor::slotCurrentTabChanged( int index ) {
 		emit modelChanged( ed->model() );
 	else
 		emit modelChanged( 0 );
-}
-
-void TabEditor::slotNeedInsertSnipet( const QString & snipet ) {
-	QString result;
-	if( SnipetDatabaseManager::self()->callSnipet( snipet, &result, qApp->activeWindow() ) ) {
-		XinxCodeEdit * textEdit = qobject_cast<XinxCodeEdit*>( sender() );
-		textEdit->insertText( result );
-	}
 }
 
 int TabEditor::getClickedTab() {

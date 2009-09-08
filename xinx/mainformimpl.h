@@ -179,7 +179,7 @@ private:
 			*m_selectedAddToRCSAct, *m_selectedRemoveFromRCSAct, *m_toggledFlatView;
 	QAction *m_nextTabAct, *m_previousTabAct;
 	QAction *m_aboutAct, *m_aboutQtAct;
-	QAction *m_createTemplate, *m_customApplicationAct, *m_refreshSnipet, *m_refreshScripts;
+	QAction *m_createTemplate, *m_customApplicationAct, *m_refreshSnipet, *m_refreshScripts, *m_alwaysShowRunDialog;
 
 	// Tab Editors
 	TabEditor * m_tabEditors;
@@ -244,6 +244,7 @@ private slots:
 	void previousTab();
 	void currentTabChanged(int);
 	void setEditorPosition( int line, int column );
+	void changeShowSnipetDialogAction();
 
 	// Tools
 	void newTemplate();

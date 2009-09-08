@@ -178,6 +178,7 @@ void MainformImpl::createMenus() {
 	windowsMenu->addAction(m_previousTabAct);
 	windowsMenu->addSeparator();
 	windowsMenu->addAction(m_toggledFlatView);
+	windowsMenu->addAction(m_alwaysShowRunDialog);
 	windowsMenu->addSeparator();
 
 	toolsMenu->addAction(m_templateMenu->menuAction());
@@ -747,6 +748,12 @@ void MainformImpl::createActions() {
 	// Timer LOG
 	m_timer = new QTimer( this );
 	connect( m_timer, SIGNAL(timeout()), this, SLOT(logTimeout()) );
+
+	/* WINDOW */
+	m_alwaysShowRunDialog = new QAction( tr("Always show run snipet dialog"), this );
+	m_alwaysShowRunDialog->setCheckable( true );
+	m_alwaysShowRunDialog->setChecked( XINXConfig::self()->config().snipets.alwaysShowDialog );
+	connect( m_alwaysShowRunDialog, SIGNAL(triggered()), this, SLOT(changeShowSnipetDialogAction()) );
 }
 
 void MainformImpl::createPluginsActions() {
@@ -1219,6 +1226,10 @@ void MainformImpl::createTabEditorButton() {
 void MainformImpl::updateConfigElement() {
 	if( m_showSpaceAndTabAct->isChecked() != XINXConfig::self()->config().editor.showTabulationAndSpace )
 		m_showSpaceAndTabAct->setChecked( XINXConfig::self()->config().editor.showTabulationAndSpace );
+
+	if( m_alwaysShowRunDialog->isChecked() != XINXConfig::self()->config().snipets.alwaysShowDialog )
+		m_alwaysShowRunDialog->setChecked( XINXConfig::self()->config().snipets.alwaysShowDialog );
+
 	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
 
 	createNewSubMenu();
@@ -1529,6 +1540,13 @@ void MainformImpl::copyPath() {
 void MainformImpl::updateSpaceAndTab() {
 	if( XINXConfig::self()->config().editor.showTabulationAndSpace != m_showSpaceAndTabAct->isChecked() ) {
 		XINXConfig::self()->config().editor.showTabulationAndSpace = m_showSpaceAndTabAct->isChecked();
+		XINXConfig::self()->save();
+	}
+}
+
+void MainformImpl::changeShowSnipetDialogAction() {
+	if( XINXConfig::self()->config().snipets.alwaysShowDialog != m_alwaysShowRunDialog->isChecked() ) {
+		XINXConfig::self()->config().snipets.alwaysShowDialog = m_alwaysShowRunDialog->isChecked();
 		XINXConfig::self()->save();
 	}
 }

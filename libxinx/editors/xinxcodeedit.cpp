@@ -22,6 +22,7 @@
 #include "core/xinxconfig.h"
 #include "editors/xinxlanguagefactory.h"
 #include "editors/xinxformatscheme.h"
+#include "snipets/snipetmanager.h"
 
 // Qt header
 #include <QHBoxLayout>
@@ -631,13 +632,19 @@ bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
 		e->accept();
 		return false;
 	} else if( isShortcut ) {
-		QString snipet = textUnderCursor( textCursor(), true );
-		emit needInsertSnipet( snipet );
+		key_snipet();
 		e->ignore();
 		return false;
 	}
 
 	return true;
+}
+
+void XinxCodeEdit::key_snipet() {
+	QString snipet = textUnderCursor( textCursor(), true ), result;
+	if( SnipetDatabaseManager::self()->callSnipet( snipet, &result, qApp->activeWindow() ) ) {
+		insertText( result );
+	}
 }
 
 void XinxCodeEdit::key_home( bool select ) {
@@ -701,7 +708,14 @@ void XinxCodeEdit::postKeyPressEvent( QKeyEvent * e, QEditor * editor ) {
 
 	static QString eow( EOW ); // end of word
 	bool hasModifier = ( e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) );// && !ctrlOrShift;
-	QString completionPrefix = textUnderCursor( textCursor() );
+	QString completionPrefix = textUnderCursor( textCursor() ), result;
+
+	if( completionPrefix.length() && SnipetDatabaseManager::self()->callAutomaticSnipet( completionPrefix, &result, qApp->activeWindow() ) ) {
+		textUnderCursor( textCursor(), true );
+		insertText( result );
+		c->popup()->hide();
+		return ;
+	}
 
 	if( !isShortcut && ( hasModifier || e->text().isEmpty() || completionPrefix.length() < 2 || eow.contains( e->text().right(1) ) ) ) {
 		c->popup()->hide();

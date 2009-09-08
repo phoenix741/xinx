@@ -17,9 +17,6 @@
 		<value name="Can Be Find In Configuration" type="bool" default="no"/>
 		<value name="Can Be Commit To RCS" type="bool" default="yes"/>
 	</type>
-	<type name="Descriptions">
-		<value name="Datas" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;../datas&quot; )"/>
-	</type>
 	<type name="Project">
 		<value name="Last opened project" type="string"/>
 		<value name="Open the last project at start" type="bool" default="no"/>
@@ -63,6 +60,9 @@
 		<value name="foreground" type="color"/>
 		<value name="background" type="color"/>
 	</type>
+	<type name="Snipets">
+		<value name="Always Show Dialog" type="bool" default="false"/>
+	</type>
 
 	<value name="Language" type="string" defaultInstruction="QLocale::system().name()"/>
 
@@ -72,19 +72,17 @@
 	<value name="State" type="blob"/>
 	<value name="XINX Trace" type="string"/>
 	<value name="Style" type="string"/>
-	<value name="Plugins" type="hash:bool"/>
+	<value name="Plugins" type="hash:bool" default="true"/>
 
-	<value name="Descriptions" type="Descriptions"/>
 	<value name="Project" type="Project"/>
 	<value name="RCS" type="RCS"/>
 	<value name="Editor" type="Editor"/>
 	<value name="Configuration Editor" type="Configuration Editor"/>
 
 	<value name="Xml Pres" type="XmlPres"/>
+	<value name="Snipets" type="Snipets"/>
 
-	<value name="Tools" type="hash:string">
-		<default name="diff" default="/usr/bin/kompare"/>
-	</value>
+	<value name="Tools" type="hash:string" default="QString()"/>
 	<value name="Files" type="hash:Extentions"/>
 	<value name="Formats" type="hash:QFormat"/>
 </config>

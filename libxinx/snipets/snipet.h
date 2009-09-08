@@ -49,7 +49,8 @@ public:
 	enum AutomaticCallType {
 		MANUEL = 0,
 		NO_DIALOG = 1,
-		AUTOMATIC = 2
+		AUTOMATIC = 2,
+		AUTOMATIC_NO_DIALOG = 3
 	};
 
 	/*!

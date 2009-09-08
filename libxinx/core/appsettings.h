@@ -29,6 +29,10 @@ public:
 
 class AppSettings {
 public:
+	struct struct_snipets {
+		bool alwaysShowDialog;
+	};
+
 	struct struct_qformat {
 		bool italic;
 		bool bold;
@@ -77,10 +81,6 @@ public:
 		int automaticProjectDirectoryRefreshTimeout;
 	};
 
-	struct struct_descriptions {
-		QString datas;
-	};
-
 	struct struct_extentions {
 		QString specifiqueSubDirectory;
 		bool canBeSaveAsSpecifique;
@@ -107,12 +107,12 @@ public:
 		QString xinxTrace;
 		QString style;
 		QHash<QString,bool> plugins;
-		struct_descriptions descriptions;
 		struct_project project;
 		struct_rcs rcs;
 		struct_editor editor;
 		struct_configurationEditor configurationEditor;
 		struct_xmlpres xmlPres;
+		struct_snipets snipets;
 		QHash<QString,QString> tools;
 		QHash<QString,struct_extentions> files;
 		QHash<QString,struct_qformat> formats;
@@ -131,6 +131,10 @@ public:
 
 	AppSettings& operator=(const AppSettings& p);
 protected:
+	virtual struct_snipets getDefaultSnipets();
+	virtual AppSettings::struct_snipets getSettingsSnipets( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & defaultValue );
+	virtual void setSettingsSnipets( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_snipets & value );
+
 	virtual struct_qformat getDefaultQformat();
 	virtual AppSettings::struct_qformat getSettingsQformat( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & defaultValue );
 	virtual void setSettingsQformat( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & value );
@@ -151,10 +155,6 @@ protected:
 	virtual AppSettings::struct_project getSettingsProject( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & defaultValue );
 	virtual void setSettingsProject( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & value );
 
-	virtual struct_descriptions getDefaultDescriptions();
-	virtual AppSettings::struct_descriptions getSettingsDescriptions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_descriptions & defaultValue );
-	virtual void setSettingsDescriptions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_descriptions & value );
-
 	virtual struct_extentions getDefaultExtentions();
 	virtual AppSettings::struct_extentions getSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_extentions & defaultValue );
 	virtual void setSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_extentions & value );
@@ -170,7 +170,6 @@ protected:
 	virtual QHash<QString,bool> getSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & defaultValue );
 	virtual void setSettingsHash_bool( AppSettingsSettings * settings, const QString & path, const QHash<QString,bool> & value );
 
-	virtual QHash<QString,QString> getDefaultHash_QString();
 	virtual QHash<QString,QString> getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & defaultValue );
 	virtual void setSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & value );
 

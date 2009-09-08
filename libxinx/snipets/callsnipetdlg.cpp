@@ -18,6 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
+#include "core/xinxconfig.h"
 #include "snipets/callsnipetdlg.h"
 #include "snipets/snipetmanager.h"
 #include "snipets/snipet.h"
@@ -88,21 +89,25 @@ QStringList CallSnipetDialogImpl::values() const {
 }
 
 int CallSnipetDialogImpl::exec( int mode ) {
-	// TODO
-	// Si paramétrage "Show Snipet Dialog" alors afficher la boite de dialogue quelque soit le mode.
-	switch( mode ) {
-	case Snipet::AUTOMATIC: 
-	case Snipet::NO_DIALOG:
-		if( values().contains( "" ) ) {
-			return QDialog::exec();
-		} else
-			return QDialog::Accepted;
-		break;
-	case Snipet::MANUEL:
+	if( XINXConfig::self()->config().snipets.alwaysShowDialog ) {
 		return QDialog::exec();
-		break;
+	} else {
+		switch( mode ) {
+		case Snipet::AUTOMATIC_NO_DIALOG:
+			return QDialog::Accepted;
+		case Snipet::AUTOMATIC:
+		case Snipet::NO_DIALOG:
+			if( values().contains( "" ) ) {
+				return QDialog::exec();
+			} else
+				return QDialog::Accepted;
+			break;
+		case Snipet::MANUEL:
+			return QDialog::exec();
+			break;
+		}
+		return QDialog::Rejected;
 	}
-	return QDialog::Rejected;
 }
 
 void CallSnipetDialogImpl::on_m_tabWidget_currentChanged( int value ) {
