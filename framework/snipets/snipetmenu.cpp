@@ -1,4 +1,4 @@
-/* *********************************************************************** *
+/* *********************************************************************'{}'** *
  * XINX                                                                    *
  * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
@@ -19,7 +19,77 @@
 
 // Xinx header
 #include "snipets/snipetmenu.h"
-#include "snipets/snipetmodelindex.h"
+#include "editors/editormanager.h"
+#include "editors/abstracteditor.h"
+#include "scripts/scriptmanager.h"
+
+// Qt header
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QDebug>
+
+/* SnipetMenuModel */
+
+SnipetMenuModel::SnipetMenuModel( QSqlDatabase db, QObject * parent ) : SnipetItemModel( db, parent ) {
+}
+
+Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
+	if( index.isValid() ) {
+		QModelIndex sourceIndex = mapToSource( index );
+		QSqlRecord record = sourceModel()->record( sourceIndex.row() );
+
+		// Enable the snipet according to the script stored on the snipet or category
+		QString availableScript = record.value( list_availablejs ).toString();
+		if( ! availableScript.isEmpty() ) {
+			QScriptEngine & engine = ScriptManager::self()->engine();
+
+			engine.pushContext();
+			QScriptValue result = engine.evaluate( availableScript );
+			engine.popContext();
+
+			if( ! result.isBool() ) {
+				qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.";
+			} else {
+				if( ! result.toBool() )
+					return Qt::ItemIsSelectable;
+			}
+		}
+
+		// The script is the only restriction for category
+		if( record.value( list_type ).toString() == "CATEGORY" ) {
+			return Qt::ItemIsEnabled;
+		}
+
+		// If no editor open, we can't call snipet
+		if( EditorManager::self()->currentEditor() ) {
+			// Get the filename in the editor
+			QString filename = EditorManager::self()->currentEditor()->getTitle();
+
+			// Check extentions to know if the snipet can be used with this editor
+			QSqlQuery extentionsQuery( "SELECT DISTINCT extention FROM snipets_extentions WHERE snipet_id=:id", database() );
+			extentionsQuery.bindValue( ":id", record.value( list_id ).toInt() );
+			if( ! extentionsQuery.exec() ) {
+				qWarning() << "Can't lookup extentions for snipet " << record.value( list_id ).toInt();
+				return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+			}
+
+			// If no extention selected, all can be used
+			if( ! extentionsQuery.next() ) {
+				return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+			}
+
+			do {
+				QRegExp regExp( extentionsQuery.value( 0 ).toString(), Qt::CaseInsensitive, QRegExp::Wildcard );
+				if( regExp.exactMatch( filename ) )
+					return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+			} while( extentionsQuery.next() );
+		}
+
+		// The snipet can't be called
+		return Qt::ItemIsSelectable;
+	}
+	return 0;
+}
 
 /* SnipetMenu */
 

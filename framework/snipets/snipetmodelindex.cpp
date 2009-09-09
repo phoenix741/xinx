@@ -46,10 +46,10 @@ SnipetItemModel::~SnipetItemModel() {
 void SnipetItemModel::select() {
 	// Set the query used all snipet
 	m_sourceModel->setQuery(
-			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type "
+			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type, ifnull(available_script,'') "
 			"FROM categories "
 			"UNION ALL "
-			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type "
+			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type, ifnull(available_script,'') "
 			"FROM snipets "
 			"ORDER BY list_order", m_db
 			);
@@ -63,6 +63,7 @@ void SnipetItemModel::select() {
 	m_sourceModel->setHeaderData( list_shortcut, Qt::Horizontal, tr("Shortcut") );
 	m_sourceModel->setHeaderData( list_order, Qt::Horizontal, tr("Order") );
 	m_sourceModel->setHeaderData( list_type, Qt::Horizontal, tr("Type") );
+	m_sourceModel->setHeaderData( list_availablejs, Qt::Horizontal, tr("Available Script") );
 
 	// Initialize the mapping
 	createMapping();
@@ -135,6 +136,18 @@ SnipetList SnipetItemModel::getSnipetList() const {
 
 QSqlQueryModel * SnipetItemModel::sourceModel() {
 	return m_sourceModel;
+}
+
+QSqlQueryModel * SnipetItemModel::sourceModel() const {
+	return m_sourceModel;
+}
+
+QSqlDatabase SnipetItemModel::database() {
+	return m_db;
+}
+
+QSqlDatabase SnipetItemModel::database() const {
+	return m_db;
 }
 
 int SnipetItemModel::proxyColumnToSource( int proxyColumn ) const {

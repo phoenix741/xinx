@@ -68,7 +68,7 @@ SnipetMenu * SnipetDatabaseManager::createSnipetMenu( const QString & title, QWi
 	SnipetMenu * menu = new SnipetMenu( parent );
 	menu->setTitle( title );
 
-	SnipetItemModel * snipetModel = createSnipetItemModel( menu );
+	SnipetItemModel * snipetModel = new SnipetMenuModel( database(), menu );
 
 	menu->setModel( snipetModel );
 

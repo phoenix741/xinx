@@ -23,6 +23,18 @@
 
 // Xinx header
 #include <qmenuview.h>
+#include "snipets/snipetmodelindex.h"
+
+class SnipetMenuModel : public SnipetItemModel {
+	Q_OBJECT
+public:
+	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+protected:
+	friend class SnipetDatabaseManager;
+
+	SnipetMenuModel( QSqlDatabase db, QObject * parent = 0 );
+private:
+};
 
 /* SnipetMenu */
 

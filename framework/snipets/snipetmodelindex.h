@@ -78,11 +78,8 @@ public:
 
 	void select();
 protected:
-	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
-
-	QSqlQueryModel * sourceModel();
-private:
 	friend class SnipetDatabaseManager;
+	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 
 	enum {
 		list_id          = 0,
@@ -92,9 +89,16 @@ private:
 		list_description = 4,
 		list_shortcut    = 5,
 		list_order       = 6,
-		list_type        = 7
+		list_type        = 7,
+		list_availablejs = 8
 	};
 
+	QSqlQueryModel * sourceModel();
+	QSqlQueryModel * sourceModel() const;
+
+	QSqlDatabase database();
+	QSqlDatabase database() const;
+private:
 	struct Mapping {
 		bool is_category;  // Has debug information only.
 		int id, parrentId; // Has debug information only.
