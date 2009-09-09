@@ -38,6 +38,10 @@
 class SnipetItemModel : public QAbstractProxyModel {
 	Q_OBJECT
 public:
+	enum SnipetItemRole {
+		SnipetIdRole = Qt::UserRole
+	};
+
 	virtual ~SnipetItemModel();
 
 	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;

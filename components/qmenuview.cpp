@@ -16,6 +16,10 @@
  * You should have received a copy of the GNU General Public License       *
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
+/*
+ * This class is inspired from the Nokia class MenuModel, used in the browser
+ * application in demos.
+ */
 
 // Xinx header
 #include "qmenuview.h"

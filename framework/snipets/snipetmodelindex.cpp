@@ -289,6 +289,14 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 			currentFont.setBold( true );
 			return currentFont;
 		}
+	} else if( role == Qt::StatusTipRole ) {
+		QModelIndex sourceIndex = mapToSource( index );
+		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+		return record.value( list_description );
+	} else if( role == SnipetItemModel::SnipetIdRole ) {
+		QModelIndex sourceIndex = mapToSource( index );
+		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+		return record.value( list_id );
 	}
 
 	return QAbstractProxyModel::data( index, role );
