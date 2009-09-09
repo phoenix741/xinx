@@ -27,10 +27,6 @@
 #include <QTextStream>
 #include <QApplication>
 
-/* Static member */
-
-SnipetListManager * SnipetListManager::s_self = 0;
-
 /* SnipetListException */
 
 SnipetListException::SnipetListException( const QString & message ) : XinxException( message ) {
@@ -203,46 +199,5 @@ SnipetList SnipetList::categorie( const QString & category ) {
 		if( s.category() == category ) result += s;
 	}
 	return result;
-}
-
-
-/* SnipetListManager */
-
-SnipetListManager::SnipetListManager() {
-
-}
-
-SnipetListManager::~SnipetListManager() {
-	if( s_self == this )
-		s_self = 0;
-}
-
-SnipetListManager * SnipetListManager::self() {
-	if( s_self == 0 ) {
-		s_self = new SnipetListManager();
-		XINXStaticDeleter::self()->addObject( s_self );
-	}
-	return s_self;
-}
-
-void SnipetListManager::loadFromSnipetFile() {
-	m_snipets.clear();
-	m_snipets.loadFromFile( "datas:template.xml" );
-	emit listChanged();
-}
-
-void SnipetListManager::saveToSnipetFile() {
-	m_snipets.saveToFile( "datas:template.xml" );
-}
-
-const SnipetList & SnipetListManager::snipets() const {
-	return m_snipets;
-}
-
-void SnipetListManager::setSnipets( const SnipetList & list ) {
-	if( list != m_snipets ) {
-		m_snipets = list;
-		emit listChanged();
-	}
 }
 

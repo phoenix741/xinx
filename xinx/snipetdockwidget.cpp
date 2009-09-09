@@ -58,8 +58,11 @@ void SnipetDockWidget::setupUi() {
 
 	setWidget( snipetsWidget );
 
+	// TODO : Update the dock
+	/*
 	updateSnipets();
 	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateSnipets()) );
+	*/
 }
 
 QWidget * SnipetDockWidget::createWidget() {
@@ -95,6 +98,7 @@ void SnipetDockWidget::callSnipet() {
 }
 
 void SnipetDockWidget::updateSnipets() {
+	/*
 	qDeleteAll( m_pages );
 	m_pages.clear();
 
@@ -108,6 +112,7 @@ void SnipetDockWidget::updateSnipets() {
 	foreach( QWidget * w, m_pages ) {
 		qobject_cast<QBoxLayout*>( w->layout() )->addStretch();
 	}
+	*/
 }
 
 void SnipetDockWidget::setEditor( AbstractEditor * ed ) {

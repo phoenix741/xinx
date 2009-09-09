@@ -71,7 +71,7 @@ void SnipetDialogImpl::setupUi( QDialog * parent ) {
 	connect( m_textEdit->document(), SIGNAL(contentsChanged()), this, SLOT(m_textEdit_textChanged()) );
 
 	m_categoryComboBox->clear();
-	m_categoryComboBox->addItems( SnipetListManager::self()->snipets().categories() );
+//	m_categoryComboBox->addItems( SnipetListManager::self()->snipets().categories() );
 
 	m_paramGrid = new QGridLayout( m_paramGroupBox );
 	m_paramGroupBox->setVisible( false );

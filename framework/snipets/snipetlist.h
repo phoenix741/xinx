@@ -80,25 +80,4 @@ public:
 private:
 };
 
-class SnipetListManager : public QObject {
-	Q_OBJECT
-public:
-	SnipetListManager();
-	~SnipetListManager();
-
-	static SnipetListManager * self();
-
-	const SnipetList & snipets() const;
-	void setSnipets( const SnipetList & list );
-public slots:
-	void loadFromSnipetFile();
-	void saveToSnipetFile();
-signals:
-	void listChanged();
-private:
-	static SnipetListManager * s_self;
-
-	SnipetList m_snipets;
-};
-
 #endif // __SNIPETLIST_H__
