@@ -27,6 +27,7 @@
 #pragma once
 
 // Qt header
+#include <QObject>
 #include <QString>
 
 class AbstractEditor;
@@ -67,13 +68,14 @@ public:
 	//! Return the editor manager of the application
 	static EditorManager * self();
 
+signals:
 	/*!
-	 * \fn currentChanged( int index )
+	 * \fn void EditorManager::currentChanged( int index )
+	 * \param index the index of the new editor
 	 * This signal is called when the current editor is changed. This class doesn't
 	 * declare the signal (because don't inherit of QObject) but child should.
 	 */
-//signals:
-//	void currentChanged( int index );
+	//void currentChanged( int index );
 private:
 	static EditorManager * s_self;
 };

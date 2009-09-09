@@ -132,6 +132,7 @@ void QMenuView::createMenu( const QModelIndex &parent, QMenu *parentMenu, QMenu 
 QAction * QMenuView::makeAction( const QModelIndex &index ) {
 	QIcon icon = qvariant_cast<QIcon>( index.data(Qt::DecorationRole) );
 	QAction * action = new QAction( icon, index.data().toString(), this );
+	action->setEnabled( index.flags().testFlag( Qt::ItemIsEnabled ) );
 	QVariant v;
 	v.setValue(index);
 	action->setData(v);
