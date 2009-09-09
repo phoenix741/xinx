@@ -66,7 +66,7 @@ void QMenuView::hovered( QAction *action ) {
 	}
 }
 
-void QMenuView::aboutToShow() {/*
+void QMenuView::aboutToShow() {
 	QMenu * menu = qobject_cast<QMenu*>( sender() );
 	if( menu ) {
 		QVariant v = menu->menuAction()->data();
@@ -80,7 +80,7 @@ void QMenuView::aboutToShow() {/*
 
 	clear();
 
-	createMenu( m_root, this, this );*/
+	createMenu( m_root, this, this );
 }
 
 void QMenuView::createMenu( const QModelIndex &parent, QMenu *parentMenu, QMenu *menu ) {
@@ -99,10 +99,10 @@ void QMenuView::createMenu( const QModelIndex &parent, QMenu *parentMenu, QMenu 
 
 		return;
 	}
-	
+
 	connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)));
 	connect(menu, SIGNAL(hovered(QAction*)), this, SLOT(hovered(QAction*)));
-	
+
 	int end = m_model->rowCount( parent );
 	for( int i = 0; i < end; ++i ) {
 		QModelIndex idx = m_model->index( i, 0, parent );

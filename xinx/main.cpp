@@ -181,7 +181,13 @@ int main(int argc, char *argv[]) {
 			mainWin->show();
 			splash.finish(mainWin);
 
-			return app.exec();
+			int result = app.exec();
+
+			// Free memory
+			delete mainWin;
+			delete XINXStaticDeleter::self();
+
+			return result;
 		} else {
 			// Send Parameter to open
 			if(args.count() > 0) {

@@ -40,6 +40,7 @@ SnipetDatabaseManager::SnipetDatabaseManager() {
 }
 
 SnipetDatabaseManager::~SnipetDatabaseManager() {
+	closeDatabase();
 	if( s_self == this )
 		s_self = NULL;
 }
@@ -69,22 +70,22 @@ int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", database() );
 	for( int index = 0; index < category.count(); index++ ) {
 		const QString & categoryLevelName = category.at( index );
-	
+
 		selectQuery.bindValue( ":parentCategory", parentCategory );
 		selectQuery.bindValue( ":name", categoryLevelName );
-		
+
 		bool result = selectQuery.exec();
 		Q_ASSERT( result );
-		
+
 		if( selectQuery.next() ) {
 			parentCategory = selectQuery.value( 0 ).toInt();
 		} else {
 			insertQuery.bindValue( ":parentCategory", parentCategory );
 			insertQuery.bindValue( ":name", categoryLevelName );
 			result = insertQuery.exec();
-			
+
 			Q_ASSERT( result );
-			
+
 			// Afin de relancer la recherche courante.
 			index--;
 		}
@@ -126,10 +127,10 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 				     "VALUES(:name, :description, :shortcut, :icon, :auto, :text, :available_script, :category_id)", database() );
 	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );
 	QSqlQuery insertSnipetParamsQuery( "INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database() );
-	
+
 	foreach( const Snipet & s, list ) {
 		int categoryId = getCategoryId( s.categories() );
-		
+
 		insertSnipetQuery.bindValue( ":name", s.name() );
 		insertSnipetQuery.bindValue( ":description", s.description() );
 		insertSnipetQuery.bindValue( ":shortcut", s.key() );
@@ -138,17 +139,17 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 		insertSnipetQuery.bindValue( ":text", s.text() );
 		insertSnipetQuery.bindValue( ":available_script", s.availableScript() );
 		insertSnipetQuery.bindValue( ":category_id", categoryId );
-		
+
 		if( ! insertSnipetQuery.exec() ) {
 			qWarning( qPrintable( insertSnipetQuery.lastError().text() ) );
 			return false;
 		}
-		
+
 		int snipetId = insertSnipetQuery.lastInsertId().toInt();
-		
+
 		insertSnipetExtentionsQuery.bindValue( ":snipet_id", snipetId );
 		insertSnipetParamsQuery.bindValue( ":snipet_id", snipetId );
-		
+
 		foreach( const QString & ext, s.extentions() ) {
 			insertSnipetExtentionsQuery.bindValue( ":extention", ext );
 			if( ! insertSnipetExtentionsQuery.exec() ) {
@@ -156,17 +157,17 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 				return false;
 			}
 		}
-		
+
 		foreach( const Snipet::Parameter & param, s.params() ) {
 			insertSnipetParamsQuery.bindValue( ":name", param.name );
-			insertSnipetParamsQuery.bindValue( ":default_value", param.defaultValue );	
+			insertSnipetParamsQuery.bindValue( ":default_value", param.defaultValue );
 			if( ! insertSnipetParamsQuery.exec() ) {
 				qWarning( qPrintable( insertSnipetParamsQuery.lastError().text() ) );
 				return false;
 			}
 		}
 	}
-	
+
 	return true;
 }
 

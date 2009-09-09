@@ -21,7 +21,9 @@
 #define _UNIQUEAPPLICATION_H_
 #pragma once
 
+// Qt hearder
 #include "qtsingleapplication.h"
+#include <QPointer>
 
 class MainformImpl;
 
@@ -37,7 +39,7 @@ public:
 public slots:
 	void slotErrorTriggered();
 private:
-	MainformImpl * m_mainform;
+	QPointer<MainformImpl> m_mainform;
 };
 
 #endif

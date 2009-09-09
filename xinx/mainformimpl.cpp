@@ -131,7 +131,7 @@ void MainformImpl::createMenus() {
 	//m_templateMenu = new QMenu( tr("&Template"), m_menuBar );
 	QMenuView * m_templateMenu = new QMenuView( m_menuBar );
 	m_templateMenu->setTitle( tr("&Template") );
-	//m_templateMenu->setModel( SnipetDatabaseManager::self()->createSnipetItemModel( m_templateMenu ) );
+	m_templateMenu->setModel( SnipetDatabaseManager::self()->createSnipetItemModel( m_templateMenu ) );
 
 	m_toolBars.insert( "project", projectToolBar = new QToolBar( this ) );
 	m_toolBars.insert( "file", fileToolBar = new QToolBar( this ) );
@@ -1746,7 +1746,6 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 		return;
 	}
 
-	delete XINXStaticDeleter::self();
 	event->accept();
 }
 
