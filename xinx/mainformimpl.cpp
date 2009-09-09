@@ -24,7 +24,6 @@
 #include "replacedialogimpl.h"
 #include "logdialogimpl.h"
 #include "snipetdockwidget.h"
-#include "snipetdialog.h"
 #include "aboutdialogimpl.h"
 #include "customdialogimpl.h"
 #include "projectpropertyimpl.h"
@@ -42,7 +41,6 @@
 #include <editors/xinxcodeedit.h>
 #include <rcs/rcs.h>
 #include <scripts/scriptmanager.h>
-#include <qmenuview.h>
 #include <snipets/snipetmanager.h>
 
 // Qt header
@@ -73,6 +71,7 @@
 #include <QTextCodec>
 #include <QIcon>
 #include <QThreadPool>
+#include <QDebug>
 
 /* MainformImpl */
 
@@ -128,12 +127,8 @@ void MainformImpl::createMenus() {
 	m_menus.insert( "tools", toolsMenu = new QMenu( tr("&Tools"), m_menuBar ) );
 	m_menus.insert( "help", helpMenu = new QMenu( tr("&Help"), m_menuBar ) );
 	m_scriptMenu = new QMenu( tr("&Script"), m_menuBar );
-	//m_templateMenu = new QMenu( tr("&Template"), m_menuBar );
-	QMenuView * m_templateMenu = new QMenuView( m_menuBar );
-	m_templateMenu->setTitle( tr("&Template") );
-	SnipetItemModel * snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_templateMenu );
-	snipetModel->select();
-	m_templateMenu->setModel( snipetModel );
+	m_snipetMenu = SnipetDatabaseManager::self()->createSnipetMenu( tr("&Snipet"), m_menuBar );
+	connect( m_snipetMenu, SIGNAL(snipetTriggered(int)), this, SLOT(callSnipetAction(int)) );
 
 	m_toolBars.insert( "project", projectToolBar = new QToolBar( this ) );
 	m_toolBars.insert( "file", fileToolBar = new QToolBar( this ) );
@@ -180,7 +175,7 @@ void MainformImpl::createMenus() {
 	windowsMenu->addAction(m_alwaysShowRunDialog);
 	windowsMenu->addSeparator();
 
-	toolsMenu->addAction(m_templateMenu->menuAction());
+	toolsMenu->addAction(m_snipetMenu->menuAction());
 	toolsMenu->addAction(m_scriptMenu->menuAction());
 	toolsMenu->addSeparator();
 	toolsMenu->addAction(m_customApplicationAct);
@@ -905,6 +900,22 @@ void MainformImpl::createStatusBar() {
 void MainformImpl::createTools() {
 	connect( ScriptManager::self(), SIGNAL(changed()), this, SLOT(updateToolsMenu()) );
 	updateToolsMenu();
+}
+
+void MainformImpl::callSnipetAction( int snipetId ) {
+	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
+
+	// TODO : Merge with xinxcodeedit
+	// TODO : If no editor, if script return false ... disable action. maybe manage a setEditor on the menu.
+	if( TabEditor::isTextFileEditor( m_tabEditors->currentEditor() ) ) {
+		QString result;
+		if( SnipetDatabaseManager::self()->callSnipet( snipetId, &result, this ) ) {
+			XinxCodeEdit * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
+			editor->insertText( result );
+		}
+	} else {
+		qWarning() << tr("Snipet is not supported in this kind of editor.");
+	}
 }
 
 void MainformImpl::callScriptAction() {

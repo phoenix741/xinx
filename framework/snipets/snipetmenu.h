@@ -17,45 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _QMENUVIEW_H_
-#define _QMENUVIEW_H_
+#ifndef SNIPETMENU_H
+#define SNIPETMENU_H
 #pragma once
 
-// Qt header
-#include <QMenu>
-#include <QAbstractItemModel>
+// Xinx header
+#include <qmenuview.h>
 
-class QMenuView : public QMenu {
+/* SnipetMenu */
+
+class SnipetMenu : public QMenuView {
 	Q_OBJECT
 public:
-	QMenuView( QWidget * parent = 0 );
-	virtual ~QMenuView();
-
-	virtual void setModel ( QAbstractItemModel * model );
-	QAbstractItemModel * model () const;
-
-	virtual void setRootIndex ( const QModelIndex & index );
-	QModelIndex rootIndex () const;
-protected:
-	// add any actions before the tree, return true if any actions are added.
-	virtual bool prePopulated();
-	// add any actions after the tree
-	virtual void postPopulated();
-	// put all of the children of parent into menu
-	void createMenu( const QModelIndex &parent, QMenu *parentMenu = 0, QMenu *menu = 0 );
+	SnipetMenu( QWidget * parent = 0 );
+	virtual ~SnipetMenu();
 signals:
-	void hovered( const QString &text ) const;
-	void triggered( const QModelIndex & index ) const;
+	void snipetTriggered( int snipetId ) const;
+protected:
+	virtual bool prePopulated();
 private slots:
-	void aboutToShow();
-	void triggered(QAction *action);
-	void hovered(QAction *action);
+	void snipetTriggered( const QModelIndex & index ) const;
 private:
-	QAction *makeAction( const QModelIndex &index );
-
-	QAbstractItemModel * m_model;
-	QPersistentModelIndex m_root;
+	QAction * m_createAction;
 };
 
-
-#endif /* _QMENUVIEW_H_ */
+#endif /* SNIPETMENU_H */

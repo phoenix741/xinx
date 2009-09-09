@@ -29,11 +29,20 @@ Q_DECLARE_METATYPE(QModelIndex);
 /* QMenuView */
 
 QMenuView::QMenuView( QWidget * parent ) : QMenu( parent ) {
-	connect(this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+	connect( this, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)) );
+	connect( this, SIGNAL(hovered(QAction*)), this, SLOT(hovered(QAction*)) );
+	connect( this, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()) );
 }
 
 QMenuView::~QMenuView() {
 	setModel( 0 );
+}
+
+bool QMenuView::prePopulated() {
+	return false;
+}
+
+void QMenuView::postPopulated() {
 }
 
 void QMenuView::setModel ( QAbstractItemModel * model ) {
@@ -56,7 +65,7 @@ void QMenuView::triggered( QAction *action ) {
 	QVariant v = action->data();
 	if( v.canConvert<QModelIndex>() ) {
 		QModelIndex idx = qvariant_cast<QModelIndex>(v);
-		emit activated( idx );
+		emit triggered( idx );
 	}
 }
 
@@ -84,7 +93,12 @@ void QMenuView::aboutToShow() {
 
 	clear();
 
+	if( prePopulated() )
+		addSeparator();
+
 	createMenu( m_root, this, this );
+
+	postPopulated();
 }
 
 void QMenuView::createMenu( const QModelIndex &parent, QMenu *parentMenu, QMenu *menu ) {
@@ -104,9 +118,6 @@ void QMenuView::createMenu( const QModelIndex &parent, QMenu *parentMenu, QMenu 
 		return;
 	}
 
-	connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(triggered(QAction*)));
-	connect(menu, SIGNAL(hovered(QAction*)), this, SLOT(hovered(QAction*)));
-
 	int end = m_model->rowCount( parent );
 	for( int i = 0; i < end; ++i ) {
 		QModelIndex idx = m_model->index( i, 0, parent );
@@ -124,5 +135,6 @@ QAction * QMenuView::makeAction( const QModelIndex &index ) {
 	QVariant v;
 	v.setValue(index);
 	action->setData(v);
+
 	return action;
 }

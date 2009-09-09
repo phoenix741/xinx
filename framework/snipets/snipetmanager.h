@@ -24,6 +24,7 @@
 // Xinx header
 #include "snipets/snipetlist.h"
 #include "snipets/snipetmodelindex.h"
+#include "snipets/snipetmenu.h"
 
 // Qt header
 #include <QObject>
@@ -43,6 +44,7 @@ public:
 	QSqlDatabase database();
 
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
+	SnipetMenu * createSnipetMenu( const QString & title = QString(), QWidget * parent = 0 );
 
 	bool removeSnipet( int id );
 	bool importSnipetList( const SnipetList & list );

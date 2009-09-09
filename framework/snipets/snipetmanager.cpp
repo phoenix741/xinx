@@ -64,6 +64,17 @@ SnipetItemModel * SnipetDatabaseManager::createSnipetItemModel( QObject * parent
 	return new SnipetItemModel( database(), parent );
 }
 
+SnipetMenu * SnipetDatabaseManager::createSnipetMenu( const QString & title, QWidget * parent ) {
+	SnipetMenu * menu = new SnipetMenu( parent );
+	menu->setTitle( title );
+
+	SnipetItemModel * snipetModel = createSnipetItemModel( menu );
+
+	menu->setModel( snipetModel );
+
+	return menu;
+}
+
 int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 	int parentCategory = 0;
 	QSqlQuery selectQuery( "SELECT id FROM categories WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database() );

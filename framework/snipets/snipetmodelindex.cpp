@@ -133,6 +133,10 @@ SnipetList SnipetItemModel::getSnipetList() const {
 }
 */
 
+QSqlQueryModel * SnipetItemModel::sourceModel() {
+	return m_sourceModel;
+}
+
 int SnipetItemModel::proxyColumnToSource( int proxyColumn ) const {
 	switch( proxyColumn ) {
 	case 0 :

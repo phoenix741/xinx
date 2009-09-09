@@ -48,7 +48,7 @@ class QLabel;
 class QMessageBox;
 class QAction;
 class QToolButton;
-class QMenuView;
+class SnipetMenu;
 
 class MainformImpl : public QMainWindow {
 	Q_OBJECT
@@ -136,7 +136,7 @@ private:
 	QHash<QString, QMenu*> m_menus;
 	QHash<QString, QToolBar*> m_toolBars;
 	QMenu * m_newMenu, * m_scriptMenu;
-	QMenuView *m_templateMenu;
+	SnipetMenu *m_snipetMenu;
 
 	// Plugins Actions
 	QList<QAction*> m_pluginsAction;
@@ -247,6 +247,7 @@ private slots:
 	void changeShowSnipetDialogAction();
 
 	// Tools
+	void callSnipetAction( int snipetId );
 	void callScriptAction();
 	void updateToolsMenu();
 	void customize();

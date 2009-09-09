@@ -77,8 +77,11 @@ public:
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
 
 	void select();
-private:
+protected:
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+
+	QSqlQueryModel * sourceModel();
+private:
 	friend class SnipetDatabaseManager;
 
 	enum {
