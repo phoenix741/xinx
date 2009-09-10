@@ -48,6 +48,9 @@
             <property name="text">
              <string>&amp;Image :</string>
             </property>
+            <property name="buddy">
+             <cstring>m_iconComboBox</cstring>
+            </property>
            </widget>
           </item>
           <item row="0" column="0">
@@ -121,6 +124,9 @@
             <property name="text">
              <string>&amp;Extention :</string>
             </property>
+            <property name="buddy">
+             <cstring>m_extentionListWidget</cstring>
+            </property>
            </widget>
           </item>
           <item row="6" column="2">
@@ -146,17 +152,22 @@
            <widget class="QComboBox" name="comboBox">
             <item>
              <property name="text">
-              <string>Manuel</string>
+              <string>Call manually and always show calling dialog</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Default Value</string>
+              <string>Call manually and only show calling dialog if all parameter as value</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Automatique</string>
+              <string>Call automatically and only show calling dialog if all parameter as value</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Call automatically and never show calling dialog</string>
              </property>
             </item>
            </widget>
@@ -240,8 +251,6 @@
         </widget>
        </item>
       </layout>
-      <zorder>m_paramGroupBox</zorder>
-      <zorder>m_templateGroupBox</zorder>
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -280,9 +289,7 @@
   <tabstop>m_descriptionTextEdit</tabstop>
   <tabstop>m_textEdit</tabstop>
  </tabstops>
- <resources>
-  <include location="../../xinx/application.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
@@ -291,8 +298,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>463</x>
-     <y>434</y>
+     <x>472</x>
+     <y>429</y>
     </hint>
     <hint type="destinationlabel">
      <x>510</x>
@@ -307,8 +314,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>317</x>
-     <y>434</y>
+     <x>326</x>
+     <y>429</y>
     </hint>
     <hint type="destinationlabel">
      <x>510</x>
