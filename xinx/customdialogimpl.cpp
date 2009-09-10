@@ -601,14 +601,9 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
-	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
-	SnipetDialogImpl dlg( s, this );
-	if( dlg.exec() ) {
-		// TODO
-		//m_snipetModel->removeSnipet( index );
-		//m_snipetModel->addSnipet( dlg.getSnipet() );
-		m_snipetTreeView->expandAll();
-	}
+	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
+	SnipetDatabaseManager::self()->modifySnipet( snipetId );
+	m_snipetTreeView->expandAll();
 }
 
 void CustomDialogImpl::on_m_duplicatePushButton_clicked() {

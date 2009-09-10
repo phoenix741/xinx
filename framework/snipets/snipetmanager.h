@@ -46,6 +46,7 @@ public:
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
 	SnipetMenu * createSnipetMenu( const QString & title = QString(), QWidget * parent = 0 );
 
+	void modifySnipet( int id );
 	bool removeSnipet( int id );
 	bool importSnipetList( const SnipetList & list );
 	bool callSnipet( int id, QString * result, QWidget * parent = 0 );

@@ -21,6 +21,7 @@
 #include "core/xinxcore.h"
 #include "snipets/snipetmanager.h"
 #include "snipets/callsnipetdlg.h"
+#include "snipets/snipetpropertydlgimpl.h"
 #include "scripts/scriptmanager.h"
 
 // Qt header
@@ -102,6 +103,11 @@ int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 		}
 	}
 	return parentCategory;
+}
+
+void SnipetDatabaseManager::modifySnipet( int id ) {
+	SnipetPropertyDlgImpl dlg( id, database() );
+	dlg.exec();
 }
 
 bool SnipetDatabaseManager::removeSnipet( int id ) {

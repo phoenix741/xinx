@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
+    <width>573</width>
     <height>439</height>
    </rect>
   </property>
@@ -149,7 +149,7 @@
            <widget class="QListWidget" name="m_extentionListWidget"/>
           </item>
           <item row="4" column="2">
-           <widget class="QComboBox" name="comboBox">
+           <widget class="QComboBox" name="m_autoComboBox">
             <item>
              <property name="text">
               <string>Call manually and always show calling dialog</string>
@@ -178,7 +178,7 @@
              <string>&amp;Auto :</string>
             </property>
             <property name="buddy">
-             <cstring>comboBox</cstring>
+             <cstring>m_autoComboBox</cstring>
             </property>
            </widget>
           </item>
@@ -264,7 +264,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
-           <widget class="QPlainTextEdit" name="plainTextEdit"/>
+           <widget class="QPlainTextEdit" name="m_availablePlainTextEdit"/>
           </item>
          </layout>
         </widget>
