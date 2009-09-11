@@ -66,6 +66,7 @@ private slots:
 	void on_m_duplicatePushButton_clicked();
 
 	void m_snipetTreeView_selectionChanged();
+	void on_m_snipetFilterLineEdit_textChanged( const QString & filterText );
 private slots:
 	void configurePlugin( PluginElement * plugin );
 	void aboutPlugin( PluginElement * plugin );

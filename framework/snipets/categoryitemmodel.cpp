@@ -190,6 +190,23 @@ QModelIndex CategoryItemModel::index( int row, int column, const QModelIndex & p
 	return createIndex( row, column, *it );
 }
 
+QModelIndex CategoryItemModel::index( int categoryId ) {
+	foreach( Mapping * m, m_sourcesIndexMapping ) {
+		if( m->id == categoryId ) {
+			int parentRow = m->parentIndex;
+			IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
+			Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
+
+			Mapping * parrentMapping = parentIt.value();
+
+			int proxyRow = parrentMapping->source_rows.indexOf( m->map_iter.key() );
+
+			return createIndex( proxyRow, 0, *parentIt );
+		}
+	}
+	return QModelIndex();
+}
+
 QModelIndex CategoryItemModel::parent( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return QModelIndex();
 

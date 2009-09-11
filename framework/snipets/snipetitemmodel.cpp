@@ -26,6 +26,7 @@
 #include <QColor>
 #include <QFont>
 #include <QVariant>
+#include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
 
@@ -43,16 +44,36 @@ SnipetItemModel::~SnipetItemModel() {
 	qDeleteAll( m_sourcesIndexMapping );
 }
 
-void SnipetItemModel::select() {
-	// Set the query used all snipet
-	m_sourceModel->setQuery(
+void SnipetItemModel::select( const QString & filter ) {
+	m_filter = filter;
+
+	QSqlQuery query( m_db );
+
+	if( filter.isEmpty() ) {
+		// Set the query used all snipet
+		query.prepare(
 			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type, ifnull(available_script,'') "
 			"FROM categories "
 			"UNION ALL "
 			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type, ifnull(available_script,'') "
 			"FROM snipets "
-			"ORDER BY list_order", m_db
-			);
+			"ORDER BY list_order"
+				);
+	} else {
+		query.prepare(
+			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type, ifnull(available_script,'') "
+			"FROM categories "
+			"UNION ALL "
+			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type, ifnull(available_script,'') "
+			"FROM snipets "
+			"WHERE name||description||shortcut like '%'||:filter||'%'"
+			"ORDER BY list_order"
+				);
+		query.bindValue( ":filter", filter );
+	}
+	Q_ASSERT( query.exec() );
+	m_sourceModel->setQuery( query );
+
 
 	// Define name for header column
 	m_sourceModel->setHeaderData( list_id, Qt::Horizontal, tr("Id") );
@@ -338,12 +359,12 @@ void SnipetItemModel::removeSnipet( const QModelIndexList & indexes ) {
 		SnipetDatabaseManager::self()->removeSnipet( rowMapping->id );
 	}
 
-	select();
+	select( m_filter );
 }
 
 void SnipetItemModel::importSnipetList( const SnipetList & list ) {
 	SnipetDatabaseManager::self()->importSnipetList( list );
-	select();
+	select( m_filter );
 }
 
 /*

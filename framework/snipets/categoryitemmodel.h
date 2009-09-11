@@ -41,6 +41,7 @@ public:
 
 	virtual ~CategoryItemModel();
 
+	QModelIndex index( int categoryId );
 	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
 	virtual QModelIndex parent( const QModelIndex & index ) const;
 

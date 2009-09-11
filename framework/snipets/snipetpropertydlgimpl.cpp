@@ -61,6 +61,7 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_mapper->addMapping( m_autoComboBox, m_snipetModel->fieldIndex( "auto" ), "currentIndex" );
 	m_mapper->addMapping( m_dialogComboBox, m_snipetModel->fieldIndex( "show_dialog" ), "currentIndex" );
 	m_mapper->addMapping( m_descriptionTextEdit, m_snipetModel->fieldIndex( "description" ) );
+	m_mapper->addMapping( m_categoryTreeView, m_snipetModel->fieldIndex( "category_id" ) );
 	m_mapper->addMapping( m_textEdit, m_snipetModel->fieldIndex( "text" ), "plainText" );
 	m_mapper->addMapping( m_availablePlainTextEdit, m_snipetModel->fieldIndex( "available_script" ) );
 

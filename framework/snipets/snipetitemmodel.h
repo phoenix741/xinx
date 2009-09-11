@@ -72,7 +72,7 @@ public:
 	 * \sa select()
 	 */
 	void clear();
-	void select();
+	void select( const QString & filter = QString() );
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
@@ -116,6 +116,7 @@ private:
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;
+	QString m_filter;
 };
 
 #endif // SNIPETMODELINDEX_H

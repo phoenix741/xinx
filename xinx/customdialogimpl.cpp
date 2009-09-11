@@ -619,6 +619,11 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 	m_exportPushButton->setEnabled( indexes.count() > 0 );
 }
 
+void CustomDialogImpl::on_m_snipetFilterLineEdit_textChanged( const QString & filterText ) {
+	m_snipetModel->select( filterText );
+	m_snipetTreeView->expandAll();
+}
+
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 	m_customScheme->setHiddenFormat( QStringList() << "normal" << "search" << "match" << "braceMatch" << "braceMismatch" );
 	m_customScheme->setFormatScheme( m_config.scheme( text ) );
