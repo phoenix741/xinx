@@ -20,12 +20,12 @@
 // Xinx header
 #include "customdialogimpl.h"
 #include "customdialogmodeles.h"
-#include "snipetdialog.h"
 #include <core/exceptions.h>
 #include <editors/xinxformatscheme.h>
 #include <editors/xinxlanguagefactory.h>
 #include <editors/xinxcodeedit.h>
 #include <snipets/snipetmanager.h>
+#include <snipets/snipetitemmodel.h>
 
 // QCodeEdit header
 #include <qnfadefinition.h>
@@ -580,13 +580,8 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_addPushButton_clicked() {
-	SnipetDialogImpl dlg( QString(), this );
-	if( dlg.exec() ) {
-		Snipet s = dlg.getSnipet();
-		// TODO
-		//m_snipetModel->addSnipet( s );
-		m_snipetTreeView->expandAll();
-	}
+	// TODO
+	m_snipetTreeView->expandAll();
 }
 
 void CustomDialogImpl::on_m_removePushButton_clicked() {
@@ -608,13 +603,9 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 
 void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
-	Snipet s = index.at( 0 ).data( Qt::UserRole ).value<Snipet>();
-	SnipetDialogImpl dlg( s, this );
-	if( dlg.exec() ) {
-		// TODO
-		//m_snipetModel->addSnipet( dlg.getSnipet() );
-		m_snipetTreeView->expandAll();
-	}
+	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
+	// TODO
+	m_snipetTreeView->expandAll();
 }
 
 void CustomDialogImpl::m_snipetTreeView_selectionChanged() {

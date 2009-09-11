@@ -17,40 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETMENU_H
-#define SNIPETMENU_H
+#ifndef _CATEGORYTREEVIEW_H_
+#define _CATEGORYTREEVIEW_H_
 #pragma once
 
-// Xinx header
-#include <qmenuview.h>
-#include "snipets/snipetitemmodel.h"
+// Qt header
+#include <QTreeView>
 
-class SnipetMenuModel : public SnipetItemModel {
+class CategoryTreeView : public QTreeView {
 	Q_OBJECT
+	Q_PROPERTY( int categoryId READ categoryId WRITE setCategoryId USER true )
 public:
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
-protected:
-	friend class SnipetDatabaseManager;
+	CategoryTreeView( QWidget * parent = 0 );
+	virtual ~CategoryTreeView();
 
-	SnipetMenuModel( QSqlDatabase db, QObject * parent = 0 );
-private:
+	int categoryId();
+public slots:
+	void setCategoryId( int id );
 };
 
-/* SnipetMenu */
-
-class SnipetMenu : public QMenuView {
-	Q_OBJECT
-public:
-	SnipetMenu( QWidget * parent = 0 );
-	virtual ~SnipetMenu();
-signals:
-	void snipetTriggered( int snipetId ) const;
-protected:
-	virtual bool prePopulated();
-private slots:
-	void snipetTriggered( const QModelIndex & index ) const;
-private:
-	QAction * m_createAction;
-};
-
-#endif /* SNIPETMENU_H */
+#endif // _CATEGORYLISTVIEW_H_

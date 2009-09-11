@@ -20,16 +20,32 @@
 // Xinx header
 #include "snipets/snipetmanager.h"
 #include "snipets/snipetpropertydlgimpl.h"
+#include "snipets/categoryitemmodel.h"
 
 // Qt header
 #include <QRegExp>
 #include <QSqlDatabase>
+#include <QDir>
 
 /* SnipetPropertyDlgImpl */
 
 SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
+
+	//m_iconComboBox
+	QDir iconsDir = QDir( ":/images" );
+
+	m_iconComboBox->addItem( QString() );
+	foreach( const QString & fileName, iconsDir.entryList( QDir::Files ) ) {
+		const QString completeFileName = iconsDir.absoluteFilePath( fileName );
+		m_iconComboBox->addItem( QIcon( completeFileName ), completeFileName );
+	}
+
 	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]" ), this ) );
+
+	CategoryItemModel * model = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
+	model->select();
+	m_categoryTreeView->setModel( model );
 
 	m_snipetModel = new QSqlRelationalTableModel( this, db );
 	m_snipetModel->setTable( "snipets" );
@@ -39,12 +55,14 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_mapper = new QDataWidgetMapper( this );
 	m_mapper->setSubmitPolicy( QDataWidgetMapper::ManualSubmit );
 	m_mapper->setModel( m_snipetModel );
-	m_mapper->addMapping( m_nameLineEdit, SnipetPropertyDlgImpl::Snipets_Name );
-	m_mapper->addMapping( m_iconComboBox, SnipetPropertyDlgImpl::Snipets_Icon );
-	m_mapper->addMapping( m_keyLineEdit, SnipetPropertyDlgImpl::Snipets_Shortcut );
-	m_mapper->addMapping( m_autoComboBox, SnipetPropertyDlgImpl::Snipets_Auto );
-	m_mapper->addMapping( m_descriptionTextEdit, SnipetPropertyDlgImpl::Snipets_Description );
-	m_mapper->addMapping( m_availablePlainTextEdit, SnipetPropertyDlgImpl::Snipets_AvailableScript );
+	m_mapper->addMapping( m_nameLineEdit, m_snipetModel->fieldIndex( "name" ) );
+	m_mapper->addMapping( m_iconComboBox, m_snipetModel->fieldIndex( "icon" ), "value" );
+	m_mapper->addMapping( m_keyLineEdit, m_snipetModel->fieldIndex( "shortcut" ) );
+	m_mapper->addMapping( m_autoComboBox, m_snipetModel->fieldIndex( "auto" ), "currentIndex" );
+	m_mapper->addMapping( m_dialogComboBox, m_snipetModel->fieldIndex( "show_dialog" ), "currentIndex" );
+	m_mapper->addMapping( m_descriptionTextEdit, m_snipetModel->fieldIndex( "description" ) );
+	m_mapper->addMapping( m_textEdit, m_snipetModel->fieldIndex( "text" ), "plainText" );
+	m_mapper->addMapping( m_availablePlainTextEdit, m_snipetModel->fieldIndex( "available_script" ) );
 
 	m_mapper->toFirst();
 }

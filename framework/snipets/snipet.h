@@ -46,13 +46,6 @@ public:
 		bool operator==( const Snipet::Parameter & p ) const;
 	};
 
-	enum AutomaticCallType {
-		MANUEL = 0,
-		NO_DIALOG = 1,
-		AUTOMATIC = 2,
-		AUTOMATIC_NO_DIALOG = 3
-	};
-
 	/*!
 	 * Name of the template. Use when show a list of snipet.
 	 * \return Name of the template.
@@ -85,13 +78,24 @@ public:
 	 * Return true if the call is automatic, else return false.
 	 * \return The value
 	 */
-	int callIsAutomatic() const;
+	bool callIsAutomatic() const;
 	/*!
 	 * If the \e value is true, the snipet must be called automatically.
 	 * Else the snipet is called with Ctrl+Space.
 	 */
-	void setCallIsAutomatic( int value );
-		
+	void setCallIsAutomatic( bool value );
+
+	/*!
+	 * Return true if the call is automatic, else return false.
+	 * \return The value
+	 */
+	bool showDialog() const;
+	/*!
+	 * If the \e value is true, the snipet must be called automatically.
+	 * Else the snipet is called with Ctrl+Space.
+	 */
+	void setShowDialog( bool value );
+
 	/*!
 	 * Type of template. The type of template help to filter.
 	 * \return Type of template.
@@ -207,7 +211,7 @@ private:
 	QString m_text, m_name, m_description, m_icon, m_key, m_availableScript;
 	QList<Snipet::Parameter> m_params;
 	QStringList m_extentions, m_categories;
-	int m_callIsAutomatic;
+	bool m_callIsAutomatic, m_showDialog;
 };	
 
 

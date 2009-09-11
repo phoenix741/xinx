@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <editors/xinxcodeedit.h>
 #include "webserviceseditor.h"
 #include "webservices.h"

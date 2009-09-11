@@ -20,7 +20,7 @@
 // Xinx header
 #include "editors/contentviewtexteditor.h"
 #include "core/xinxconfig.h"
-#include "core/xinxproject.h"
+#include "project/xinxproject.h"
 #include "editors/xinxcodeedit.h"
 #include "contentview/contentviewnode.h"
 #include "contentview/contentviewparser.h"

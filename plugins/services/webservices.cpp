@@ -32,7 +32,7 @@
 
 // Xinx header
 #include <core/xinxcore.h>
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include "webservices.h"
 #include "wsdl.h"
 #include "servicesprojectpropertyimpl.h"

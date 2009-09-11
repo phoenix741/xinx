@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETMODELINDEX_H
-#define SNIPETMODELINDEX_H
+#ifndef CATEGORYITEMMODEL_H
+#define CATEGORYITEMMODEL_H
 #pragma once
 
 // Qt header
@@ -30,19 +30,16 @@
 #include <QHash>
 #include <QVector>
 
-// Xinx header
-#include "snipetlist.h"
+/* CategoryItemModel */
 
-/* SnipetItemModel */
-
-class SnipetItemModel : public QAbstractProxyModel {
+class CategoryItemModel : public QAbstractProxyModel {
 	Q_OBJECT
 public:
-	enum SnipetItemRole {
-		SnipetIdRole = Qt::UserRole
+	enum CategoryItemRole {
+		CategoryIdRole = Qt::UserRole
 	};
 
-	virtual ~SnipetItemModel();
+	virtual ~CategoryItemModel();
 
 	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
 	virtual QModelIndex parent( const QModelIndex & index ) const;
@@ -52,45 +49,24 @@ public:
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 
-	/*
-	void loadSnipetList( const SnipetList & list );
-	void addSnipet( const Snipet & snipet );
-
-	SnipetList getSnipetList() const;
-	*/
-
-	/*!
-	 * Import a list of snipet into the base.
-	 */
-	void importSnipetList( const SnipetList & list );
-	/*!
-	 * Remove snipets from the database where the indexes is indicate.
-	 */
-	void removeSnipet( const QModelIndexList & indexes );
 	/*!
 	 * Clear all data of the snipet (you must call \e select after)
 	 * \sa select()
 	 */
 	void clear();
+	void select();
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
-
-	void select();
 protected:
 	friend class SnipetDatabaseManager;
-	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+	CategoryItemModel( QSqlDatabase db, QObject * parent = 0 );
 
 	enum {
 		list_id          = 0,
 		list_parentid    = 1,
-		list_icon        = 2,
-		list_name        = 3,
-		list_description = 4,
-		list_shortcut    = 5,
-		list_order       = 6,
-		list_type        = 7,
-		list_availablejs = 8
+		list_name        = 2,
+		list_order       = 3
 	};
 
 	QSqlQueryModel * sourceModel();
@@ -100,7 +76,6 @@ protected:
 	QSqlDatabase database() const;
 private:
 	struct Mapping {
-		bool is_category;  // Has debug information only.
 		int id, parrentId; // Has debug information only.
 		int parentIndex;
 		QVector<int> source_rows;
@@ -119,4 +94,4 @@ private:
 	QSqlQueryModel * m_sourceModel;
 };
 
-#endif // SNIPETMODELINDEX_H
+#endif // CATEGORYMODELINDEX_H

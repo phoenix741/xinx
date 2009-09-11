@@ -20,8 +20,8 @@
 // Xinx header
 #include "specifiquedlgimpl.h"
 #include <core/exceptions.h>
-#include <core/xinxproject.h>
 #include <core/xinxconfig.h>
+#include <project/xinxproject.h>
 #include <plugins/xinxpluginsloader.h>
 #include <core/configurationfile.h>
 #include "threadedconfigurationfile.h"

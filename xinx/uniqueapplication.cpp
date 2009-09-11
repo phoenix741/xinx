@@ -21,7 +21,7 @@
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
 #include <core/exceptions.h>
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 
 #include "mainformimpl.h"
 

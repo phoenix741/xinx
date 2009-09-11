@@ -72,10 +72,6 @@ CallSnipetDialogImpl::~CallSnipetDialogImpl() {
 
 }
 
-int CallSnipetDialogImpl::isAutomatic() const {
-	return m_isAutomatic;
-}
-
 const QString & CallSnipetDialogImpl::snipetText() const {
 	return m_snipetText;
 }
@@ -88,25 +84,11 @@ QStringList CallSnipetDialogImpl::values() const {
 	return parameters;
 }
 
-int CallSnipetDialogImpl::exec( int mode ) {
-	if( XINXConfig::self()->config().snipets.alwaysShowDialog ) {
+int CallSnipetDialogImpl::exec() {
+	if( XINXConfig::self()->config().snipets.alwaysShowDialog || m_showDialog ) {
 		return QDialog::exec();
 	} else {
-		switch( mode ) {
-		case Snipet::AUTOMATIC_NO_DIALOG:
-			return QDialog::Accepted;
-		case Snipet::AUTOMATIC:
-		case Snipet::NO_DIALOG:
-			if( values().contains( "" ) ) {
-				return QDialog::exec();
-			} else
-				return QDialog::Accepted;
-			break;
-		case Snipet::MANUEL:
-			return QDialog::exec();
-			break;
-		}
-		return QDialog::Rejected;
+		return QDialog::Accepted;
 	}
 }
 
@@ -125,7 +107,7 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	Ui::CallSnipetDialog::setupUi( parent );
 
 	/* Initialise the snipet description */
-	QSqlQuery snipetQuery( "SELECT name, description, text, auto FROM snipets WHERE id=:id", db );
+	QSqlQuery snipetQuery( "SELECT name, description, text, auto, show_dialog FROM snipets WHERE id=:id", db );
 	snipetQuery.bindValue( ":id", snipetId );
 
 	bool result = snipetQuery.exec();
@@ -140,7 +122,8 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	m_labelName->setText( "<b>" + snipetQuery.value( 0 ).toString() + "</b>" );
 	m_descriptionLabel->setText( snipetQuery.value( 1 ).toString() );
 	m_snipetText = snipetQuery.value( 2 ).toString();
-	m_isAutomatic = snipetQuery.value( 3 ).toInt();
+	m_isAutomatic = snipetQuery.value( 3 ).toBool();
+	m_showDialog  = snipetQuery.value( 4 ).toBool();
 
 	/* Initialise the snipet parameter */
 	QSqlQuery paramsQuery( "SELECT name, default_value FROM snipets_params WHERE snipet_id=:id ORDER BY params_order", db );

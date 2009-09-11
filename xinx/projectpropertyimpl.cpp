@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "projectpropertyimpl.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
 #include <plugins/xinxpluginsloader.h>

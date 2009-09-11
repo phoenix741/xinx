@@ -33,7 +33,7 @@
 #include "newprojectwizard.h"
 #include "searchfilethread.h"
 #include "xinxprojectwizard/projectwizard.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <core/exceptions.h>
 #include <core/xinxthread.h>
 #include <plugins/xinxpluginsloader.h>
@@ -42,6 +42,7 @@
 #include <rcs/rcs.h>
 #include <scripts/scriptmanager.h>
 #include <snipets/snipetmanager.h>
+#include <snipets/snipetmenu.h>
 
 // Qt header
 #include <QObject>

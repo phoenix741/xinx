@@ -27,7 +27,7 @@
 
 #include "xsl/stylesheetaction.h"
 
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include "webpluginprojectpropertyformimpl.h"
 
 // Qt header

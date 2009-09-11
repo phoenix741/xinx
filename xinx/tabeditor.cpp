@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "tabeditor.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <core/xinxconfig.h>
 #include <editors/abstracteditor.h>
 #include <editors/xinxcodeedit.h>

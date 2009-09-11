@@ -17,55 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _SNIPETMANAGER_H_
-#define _SNIPETMANAGER_H_
+#ifndef _STRINGCOMBOBOX_H_
+#define _STRINGCOMBOBOX_H_
 #pragma once
 
-// Xinx header
-#include "snipets/snipetlist.h"
-
 // Qt header
-#include <QObject>
-#include <QSqlDatabase>
+#include <QComboBox>
 
-class CategoryItemModel;
-class SnipetItemModel;
-class SnipetMenu;
+/* StringComboBox */
 
-/*!
- * The goal of SnipetDataBaseManager is too manage the new snipet interface
- * of XINX. This interface create table if necessary in the SQL database.
- */
-class SnipetDatabaseManager : public QObject {
+class StringComboBox : public QComboBox {
 	Q_OBJECT
+	Q_PROPERTY( QString value READ value WRITE setValue USER true )
 public:
-	~SnipetDatabaseManager();
+	StringComboBox( QWidget * parent = 0 );
+	virtual ~StringComboBox();
 
-	static SnipetDatabaseManager * self();
-
-	QSqlDatabase database();
-
-	CategoryItemModel * createCategoryItemModel( QObject * parent = 0 );
-	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
-	SnipetMenu * createSnipetMenu( const QString & title = QString(), QWidget * parent = 0 );
-
-	void modifySnipet( int id );
-	bool removeSnipet( int id );
-	bool importSnipetList( const SnipetList & list );
-	bool callSnipet( int id, QString * result, QWidget * parent = 0 );
-	bool callSnipet( QString key, QString * result, QWidget * parent = 0 );
-	bool callAutomaticSnipet( QString key, QString * result, QWidget * parent = 0 );
-
-	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
-
-	int getCategoryId( const QStringList & category );
+	QString value() const;
+public slots:
+	void setValue( const QString & value );
 private:
-	SnipetDatabaseManager();
-	bool openDatabase();
-	bool createDatabase( QSqlDatabase db );
-	void closeDatabase();
-
-	static SnipetDatabaseManager * s_self;
 };
 
-#endif /* _SNIPETMANAGER_H_ */
+#endif

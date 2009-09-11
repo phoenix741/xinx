@@ -75,9 +75,9 @@ void SnipetList::saveToFile( const QString & filename ) {
 
 		s.setAttribute( "name", snipet.name() );
 		s.setAttribute( "key", snipet.key() );
-		//s.setAttribute( "category", snipet.category() );
 		s.setAttribute( "icon", snipet.icon() );
-		s.setAttribute( "automatique", snipet.callIsAutomatic() );
+		s.setAttribute( "automatique", (int)snipet.callIsAutomatic() );
+		s.setAttribute( "showDialog", (int)snipet.showDialog() );
 
 		QDomElement description = document.createElement( "Description" );
 		s.appendChild( description );
@@ -143,7 +143,8 @@ void SnipetList::loadFromFile( const QString & filename ) {
 		newSnipet.setName( snipet.attribute( "name" ) );
 		newSnipet.setKey( snipet.attribute( "key" ) );
 		newSnipet.setIcon( snipet.attribute( "icon" ) );
-		newSnipet.setCallIsAutomatic( snipet.attribute( "automatique" ).toInt() );
+		newSnipet.setCallIsAutomatic( (bool)snipet.attribute( "automatique" ).toInt() );
+		newSnipet.setShowDialog( (bool)snipet.attribute( "showDialog" ).toInt() );
 
 		QDomElement description = snipet.firstChildElement( "Description" );
 		newSnipet.setDescription( description.text() );

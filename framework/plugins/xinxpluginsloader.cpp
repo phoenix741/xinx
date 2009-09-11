@@ -20,7 +20,6 @@
 // Xinx header
 #include "core/xinxcore.h"
 #include "core/xinxconfig.h"
-#include "core/xinxproject.h"
 #include "plugins/xinxpluginsloader.h"
 #include "editors/xinxformatscheme.h"
 #include "editors/xinxlanguagefactory.h"

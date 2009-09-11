@@ -17,40 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETMENU_H
-#define SNIPETMENU_H
-#pragma once
-
 // Xinx header
-#include <qmenuview.h>
-#include "snipets/snipetitemmodel.h"
+#include "stringcombobox.h"
 
-class SnipetMenuModel : public SnipetItemModel {
-	Q_OBJECT
-public:
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
-protected:
-	friend class SnipetDatabaseManager;
+StringComboBox::StringComboBox( QWidget * parent ) : QComboBox( parent ) {
+}
 
-	SnipetMenuModel( QSqlDatabase db, QObject * parent = 0 );
-private:
-};
+StringComboBox::~StringComboBox() {
+}
 
-/* SnipetMenu */
+QString StringComboBox::value() const {
+	return currentText();
+}
 
-class SnipetMenu : public QMenuView {
-	Q_OBJECT
-public:
-	SnipetMenu( QWidget * parent = 0 );
-	virtual ~SnipetMenu();
-signals:
-	void snipetTriggered( int snipetId ) const;
-protected:
-	virtual bool prePopulated();
-private slots:
-	void snipetTriggered( const QModelIndex & index ) const;
-private:
-	QAction * m_createAction;
-};
-
-#endif /* SNIPETMENU_H */
+void StringComboBox::setValue( const QString & value ) {
+	setCurrentIndex( findText( value ) );
+}

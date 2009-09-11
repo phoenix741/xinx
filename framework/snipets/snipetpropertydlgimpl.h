@@ -33,18 +33,6 @@
 class SnipetPropertyDlgImpl : public QDialog, private Ui::SnipetPropertyDialog {
 	Q_OBJECT
 public:
-	enum {
-		Snipets_Id = 0,
-		Snipets_Name = 1,
-		Snipets_Description = 2,
-		Snipets_Shortcut = 3,
-		Snipets_Icon = 4,
-		Snipets_Auto = 5,
-		Snipets_Text = 6,
-		Snipets_AvailableScript = 7,
-		Snipets_Order = 8,
-		Snipets_Category = 9
-	};
 
 	virtual ~SnipetPropertyDlgImpl();
 protected:

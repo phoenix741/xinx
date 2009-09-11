@@ -21,7 +21,7 @@
 #include "dictionary.h"
 #include <contentview/contentviewnode.h>
 #include "dictionaryparser.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 
 // Qt header
 #include <QString>

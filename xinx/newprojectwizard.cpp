@@ -20,7 +20,7 @@
 // Xinx header
 #include "newprojectwizard.h"
 #include <core/xinxconfig.h>
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <plugins/xinxpluginsloader.h>
 #include "projectpropertyimpl.h"
 

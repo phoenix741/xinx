@@ -31,7 +31,7 @@
 #include "../xmlpres/xmlpresentationdockwidget.h"
 #include "config/selfwebpluginsettings.h"
 #include <core/xinxconfig.h>
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 
 // Qt header
 #include <QXmlStreamReader>

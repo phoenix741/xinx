@@ -22,11 +22,11 @@
 #include <core/xinxcore.h>
 #include <core/exceptions.h>
 #include <core/xinxconfig.h>
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <plugins/xinxpluginsloader.h>
-#include "flattreeview.h"
-#include "dirrcsmodel.h"
-#include "iconprojectprovider.h"
+#include <project/flattreeview.h>
+#include <project/dirrcsmodel.h>
+#include <project/iconprojectprovider.h>
 
 // Qt header
 #include <QTimer>

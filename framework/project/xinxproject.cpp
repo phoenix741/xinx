@@ -27,7 +27,7 @@
 #include <QApplication>
 
 // Xinx header
-#include "core/xinxproject.h"
+#include "project/xinxproject.h"
 #include "core/xinxcore.h"
 #include "core/xinxconfig.h"
 #include "contentview/contentviewcache.h"

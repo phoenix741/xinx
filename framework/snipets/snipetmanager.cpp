@@ -23,6 +23,9 @@
 #include "snipets/callsnipetdlg.h"
 #include "snipets/snipetpropertydlgimpl.h"
 #include "scripts/scriptmanager.h"
+#include "snipets/snipetitemmodel.h"
+#include "snipets/categoryitemmodel.h"
+#include "snipets/snipetmenu.h"
 
 // Qt header
 #include <QSqlError>
@@ -63,6 +66,10 @@ QSqlDatabase SnipetDatabaseManager::database() {
 
 SnipetItemModel * SnipetDatabaseManager::createSnipetItemModel( QObject * parent ) {
 	return new SnipetItemModel( database(), parent );
+}
+
+CategoryItemModel * SnipetDatabaseManager::createCategoryItemModel( QObject * parent ) {
+	return new CategoryItemModel( database(), parent );
 }
 
 SnipetMenu * SnipetDatabaseManager::createSnipetMenu( const QString & title, QWidget * parent ) {
@@ -140,8 +147,8 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 }
 
 bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
-	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, text, available_script, category_id) "
-				     "VALUES(:name, :description, :shortcut, :icon, :auto, :text, :available_script, :category_id)", database() );
+	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
+					 "VALUES(:name, :description, :shortcut, :icon, :auto, ;dialog, :text, :available_script, :category_id)", database() );
 	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );
 	QSqlQuery insertSnipetParamsQuery( "INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database() );
 
@@ -153,6 +160,7 @@ bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 		insertSnipetQuery.bindValue( ":shortcut", s.key() );
 		insertSnipetQuery.bindValue( ":icon", s.icon() );
 		insertSnipetQuery.bindValue( ":auto", s.callIsAutomatic() );
+		insertSnipetQuery.bindValue( ":dialog", s.showDialog() );
 		insertSnipetQuery.bindValue( ":text", s.text() );
 		insertSnipetQuery.bindValue( ":available_script", s.availableScript() );
 		insertSnipetQuery.bindValue( ":category_id", categoryId );
@@ -192,7 +200,7 @@ bool SnipetDatabaseManager::callSnipet( int id, QString * result, QWidget * pare
 	Q_ASSERT( result );
 
 	CallSnipetDialogImpl dlg( database(), id, parent );
-	if( dlg.exec( dlg.isAutomatic() ) != QDialog::Accepted ) return false;
+	if( dlg.exec() != QDialog::Accepted ) return false;
 	if( ! executeSnipetScript( dlg.snipetText(), dlg.values(), result ) ) return false;
 	return true;
 }
@@ -221,7 +229,7 @@ bool SnipetDatabaseManager::callSnipet( QString key, QString * result, QWidget *
 bool SnipetDatabaseManager::callAutomaticSnipet( QString key, QString * result, QWidget * parent ) {
 	QSqlQuery searchId( "select id from snipets where lower(shortcut) = lower(:shortcut) and auto>=:auto", database() );
 	searchId.bindValue( ":key", key );
-	searchId.bindValue( ":auto", Snipet::AUTOMATIC );
+	searchId.bindValue( ":auto", true );
 
 	if( ! searchId.exec() ) {
 		qWarning( qPrintable( tr("Can't search id for key '%1' : %2").arg( key ).arg( searchId.lastError().text() ) ) );
@@ -331,6 +339,7 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 						  "    shortcut TEXT,"
 						  "    icon TEXT,"
 						  "    auto INTEGER,"
+						  "    show_dialog INTEGER,"
 						  "    text TEXT,"
 						  "    available_script TEXT,"
 						  "    snipet_order INTEGER,"
@@ -392,6 +401,16 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	}
 	if( !
 		createQuery.exec( "CREATE INDEX snipets_idx4 on snipets (snipet_order ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE UNIQUE INDEX snipets_idx5 on snipets (shortcut ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE UNIQUE INDEX snipets_idx6 on snipets (shortcut ASC, auto ASC)" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}

@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include "servicesprojectpropertyimpl.h"
 
 // Qt header

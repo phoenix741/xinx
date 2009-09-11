@@ -17,40 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETMENU_H
-#define SNIPETMENU_H
-#pragma once
-
 // Xinx header
-#include <qmenuview.h>
-#include "snipets/snipetitemmodel.h"
+#include "snipets/categorytreeview.h"
+#include "snipets/categoryitemmodel.h"
 
-class SnipetMenuModel : public SnipetItemModel {
-	Q_OBJECT
-public:
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
-protected:
-	friend class SnipetDatabaseManager;
+CategoryTreeView::CategoryTreeView( QWidget * parent ) : QTreeView( parent ) {
+}
 
-	SnipetMenuModel( QSqlDatabase db, QObject * parent = 0 );
-private:
-};
+CategoryTreeView::~CategoryTreeView() {
+}
 
-/* SnipetMenu */
+int CategoryTreeView::categoryId() {
+	QModelIndexList indexes = selectedIndexes();
+	if( indexes.count() == 0 ) return -1;
 
-class SnipetMenu : public QMenuView {
-	Q_OBJECT
-public:
-	SnipetMenu( QWidget * parent = 0 );
-	virtual ~SnipetMenu();
-signals:
-	void snipetTriggered( int snipetId ) const;
-protected:
-	virtual bool prePopulated();
-private slots:
-	void snipetTriggered( const QModelIndex & index ) const;
-private:
-	QAction * m_createAction;
-};
+	return indexes.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
+}
 
-#endif /* SNIPETMENU_H */
+void CategoryTreeView::setCategoryId( int id ) {
+}
+

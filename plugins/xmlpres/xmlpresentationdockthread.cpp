@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "xmlpresentationdockthread.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include <core/xinxconfig.h>
 #include "xquerydialogimpl.h"
 

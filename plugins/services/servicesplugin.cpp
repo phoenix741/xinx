@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include "servicesplugin.h"
 #include "servicesprojectpropertyimpl.h"
 #include "servicesprojectwizard.h"

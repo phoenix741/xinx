@@ -31,28 +31,12 @@
        <string>&amp;Description</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
+       <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>&amp;Description</string>
          </property>
-         <layout class="QGridLayout">
-          <property name="margin">
-           <number>9</number>
-          </property>
-          <property name="spacing">
-           <number>6</number>
-          </property>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>&amp;Image :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_iconComboBox</cstring>
-            </property>
-           </widget>
-          </item>
+         <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
@@ -63,7 +47,94 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="m_nameLineEdit">
+            <property name="whatsThis">
+             <string>Name of the snipet used in to identify the snipet in menus.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>&amp;Image :</string>
+            </property>
+            <property name="buddy">
+             <cstring>m_iconComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="StringComboBox" name="m_iconComboBox"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>&amp;Extention :</string>
+            </property>
+            <property name="buddy">
+             <cstring>m_extentionListWidget</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QListWidget" name="m_extentionListWidget"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>&amp;Snipet key :</string>
+            </property>
+            <property name="buddy">
+             <cstring>m_keyLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="m_keyLineEdit">
+            <property name="whatsThis">
+             <string>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it's not possible to call the template in the completion.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>&amp;Automatic feature : :</string>
+            </property>
+            <property name="buddy">
+             <cstring>m_autoComboBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="m_autoComboBox">
+            <item>
+             <property name="text">
+              <string>Declanched by Ctrl+Space</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Declanched automatically</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>&amp;Description :</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="buddy">
+             <cstring>m_descriptionTextEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
            <widget class="QPlainTextEdit" name="m_descriptionTextEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -82,54 +153,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0" colspan="2">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>&amp;Description :</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="buddy">
-             <cstring>m_descriptionTextEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLineEdit" name="m_nameLineEdit">
-            <property name="whatsThis">
-             <string>Name of the snipet used in to identify the snipet in menus.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QLineEdit" name="m_keyLineEdit">
-            <property name="whatsThis">
-             <string>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it's not possible to call the template in the completion.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>&amp;Snipet key :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_keyLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>&amp;Extention :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_extentionListWidget</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="2">
+          <item row="7" column="1">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -142,44 +166,18 @@
             </property>
            </spacer>
           </item>
-          <item row="1" column="2">
-           <widget class="QComboBox" name="m_iconComboBox"/>
-          </item>
-          <item row="2" column="2">
-           <widget class="QListWidget" name="m_extentionListWidget"/>
-          </item>
-          <item row="4" column="2">
-           <widget class="QComboBox" name="m_autoComboBox">
+          <item row="5" column="1">
+           <widget class="QComboBox" name="m_dialogComboBox">
             <item>
              <property name="text">
-              <string>Call manually and always show calling dialog</string>
+              <string>Always show parameters dialog</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Call manually and only show calling dialog if all parameter as value</string>
+              <string>Never show parameters dialog</string>
              </property>
             </item>
-            <item>
-             <property name="text">
-              <string>Call automatically and only show calling dialog if all parameter as value</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Call automatically and never show calling dialog</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>&amp;Auto :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_autoComboBox</cstring>
-            </property>
            </widget>
           </item>
          </layout>
@@ -199,7 +197,14 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
-           <widget class="QTreeView" name="treeView"/>
+           <widget class="CategoryTreeView" name="m_categoryTreeView">
+            <attribute name="headerVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="headerVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -281,6 +286,16 @@
    <extends>QWidget</extends>
    <header location="global">editors/xinxcodeedit.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StringComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">stringcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CategoryTreeView</class>
+   <extends>QTreeView</extends>
+   <header>snipets/categorytreeview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

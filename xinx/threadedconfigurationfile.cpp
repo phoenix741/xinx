@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "threadedconfigurationfile.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 
 // Qt header
 #include <QMetaType>

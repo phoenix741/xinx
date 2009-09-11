@@ -19,7 +19,7 @@
 
 // Xinx Action
 #include "webservicesaction.h"
-#include <core/xinxproject.h>
+#include <project/xinxproject.h>
 #include "webservices.h"
 #include "webserviceseditor.h"
 #include <editors/editormanager.h>
