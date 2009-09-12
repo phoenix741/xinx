@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SnipetPropertyDialog</class>
- <widget class="QDialog" name="SnipetPropertyDialog">
+ <class>CategoryPropertyDialog</class>
+ <widget class="QDialog" name="CategoryPropertyDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>573</width>
-    <height>439</height>
+    <height>291</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Snipet property</string>
+   <string>Category property</string>
   </property>
   <layout class="QGridLayout">
    <item row="1" column="0" colspan="2">
@@ -37,6 +37,9 @@
           <string>&amp;Description</string>
          </property>
          <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
@@ -55,73 +58,6 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>&amp;Image :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_iconComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="StringComboBox" name="m_iconComboBox"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>&amp;Extention :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_extentionListWidget</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QListWidget" name="m_extentionListWidget"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>&amp;Snipet key :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_keyLineEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="m_keyLineEdit">
-            <property name="whatsThis">
-             <string>Word key used to call the snipet in the &lt;b&gt;XINX&lt;/b&gt; editor. If no key is defined, it's not possible to call the template in the completion.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>&amp;Automatic feature : :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_autoComboBox</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="m_autoComboBox">
-            <item>
-             <property name="text">
-              <string>Declanched by Ctrl+Space</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Declanched automatically</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="6" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
              <string>&amp;Description :</string>
@@ -134,7 +70,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="1" column="1">
            <widget class="QPlainTextEdit" name="m_descriptionTextEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -151,33 +87,6 @@
             <property name="whatsThis">
              <string>Long descriptions of the snipet.</string>
             </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="m_dialogComboBox">
-            <item>
-             <property name="text">
-              <string>Always show parameters dialog</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Never show parameters dialog</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>
@@ -246,57 +155,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_3">
-      <attribute name="title">
-       <string>&amp;Snipet</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="m_templateGroupBox">
-         <property name="title">
-          <string>&amp;Template text :</string>
-         </property>
-         <layout class="QGridLayout">
-          <item row="0" column="0">
-           <widget class="XinxCodeEditAction" name="m_textEdit" native="true">
-            <property name="whatsThis">
-             <string>Templat to show to screen. In this template you can define parameter by used &lt;i&gt;%n&lt;/i&gt; keyword where &lt;i&gt;n&lt;/i&gt; is a number. More sophisticate snipet can use ECMAScript. Balise &lt;i&gt;&amp;lt;?= ?&amp;gt;&lt;/i&gt; is used to call script and show the text returned by the script. &lt;i&gt;&amp;lt;?    ?&amp;gt;&lt;/i&gt; can be used to init the script and make some pre-process.</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab_4">
-      <attribute name="title">
-       <string>&amp;Parameters</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="m_paramGroupBox">
-         <property name="minimumSize">
-          <size>
-           <width>250</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="whatsThis">
-          <string>List of name parameter used by the template. The first parameter replace the key word %1, the second parameter replace the key word %2, ...</string>
-         </property>
-         <property name="title">
-          <string>&amp;Parameter</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_7">
-          <item row="0" column="0">
-           <widget class="QTableView" name="m_parameterTable"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
        <string>&amp;Control</string>
@@ -322,17 +180,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>XinxCodeEditAction</class>
-   <extends>QWidget</extends>
-   <header location="global">editors/xinxcodeedit.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>StringComboBox</class>
-   <extends>QComboBox</extends>
-   <header location="global">stringcombobox.h</header>
-  </customwidget>
-  <customwidget>
    <class>CategoryTreeView</class>
    <extends>QTreeView</extends>
    <header>snipets/categorytreeview.h</header>
@@ -340,9 +187,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>m_nameLineEdit</tabstop>
-  <tabstop>m_keyLineEdit</tabstop>
   <tabstop>m_descriptionTextEdit</tabstop>
-  <tabstop>m_textEdit</tabstop>
  </tabstops>
  <resources>
   <include location="../../components/xinxpluginselector.qrc"/>
@@ -351,7 +196,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SnipetPropertyDialog</receiver>
+   <receiver>CategoryPropertyDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -367,7 +212,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SnipetPropertyDialog</receiver>
+   <receiver>CategoryPropertyDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

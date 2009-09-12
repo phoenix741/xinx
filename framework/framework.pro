@@ -1,6 +1,6 @@
 include(../project_mode.pri)
 TEMPLATE = lib
-unix:VERSION = 0.9.0.0
+unix : VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns \
@@ -19,9 +19,9 @@ LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
     -lqcodeedit
-win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
+win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
-win32:RC_FILE += rc/libxinx.rc
+win32 : RC_FILE += rc/libxinx.rc
 HEADERS = rcs/rcs.h \
     plugins/xinxpluginsloader.h \
     plugins/xinxpluginelement.h \
@@ -63,7 +63,8 @@ HEADERS = rcs/rcs.h \
     snipets/categorytreeview.h \
     scripts/scriptmanager.h \
     scripts/documentsearch.h \
-    snipets/snipetpropertydlgimpl.h
+    snipets/snipetpropertydlgimpl.h \
+ snipets/categorypropertydlgimpl.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -102,8 +103,10 @@ SOURCES = rcs/rcs.cpp \
     snipets/categorytreeview.cpp \
     scripts/scriptmanager.cpp \
     scripts/documentsearch.cpp \
-    snipets/snipetpropertydlgimpl.cpp
+    snipets/snipetpropertydlgimpl.cpp \
+ snipets/categorypropertydlgimpl.cpp
 FORMS = snipets/callsnipetdlg.ui \
-    snipets/snipetpropertydlg.ui
+    snipets/snipetpropertydlg.ui \
+ snipets/categorypropertydlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 

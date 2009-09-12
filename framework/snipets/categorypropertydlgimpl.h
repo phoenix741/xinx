@@ -17,27 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _SNIPETPROPERTYDLGIMPL_H_
-#define _SNIPETPROPERTYDLGIMPL_H_
+#ifndef _CATEGORYPROPERTYDLGIMPL_H_
+#define _CATEGORYPROPERTYDLGIMPL_H_
 #pragma once
 
 // Xinx header
-#include "ui_snipetpropertydlg.h"
+#include "ui_categorypropertydlg.h"
 #include "snipets/categoryitemmodel.h"
 
 // Qt header
 #include <QDialog>
-#include <QSqlRelationalTableModel>
+#include <QSqlTableModel>
 #include <QDataWidgetMapper>
 #include <QSqlDatabase>
 
-class SnipetPropertyDlgImpl : public QDialog, private Ui::SnipetPropertyDialog {
+class CategoryPropertyDlgImpl : public QDialog, private Ui::CategoryPropertyDialog {
 	Q_OBJECT
 public:
 
-	virtual ~SnipetPropertyDlgImpl();
+	virtual ~CategoryPropertyDlgImpl();
 protected:
-	SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	CategoryPropertyDlgImpl( int categoryId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
 
 private slots:
 	void on_m_categoryTreeView_activated ( const QModelIndex & index );
@@ -46,9 +46,9 @@ private slots:
 private:
 	friend class SnipetDatabaseManager;
 
-	QSqlRelationalTableModel * m_snipetModel;
+	QSqlTableModel * m_categoryTableModel;
 	QDataWidgetMapper * m_mapper;
 	CategoryItemModel * m_categoryModel;
 };
 
-#endif /* _SNIPETPROPERTYDLGIMPL_H_ */
+#endif /* _CATEGORYPROPERTYDLGIMPL_H_ */

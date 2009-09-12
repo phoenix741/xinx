@@ -22,6 +22,7 @@
 #include "snipets/snipetmanager.h"
 #include "snipets/callsnipetdlg.h"
 #include "snipets/snipetpropertydlgimpl.h"
+#include "snipets/categorypropertydlgimpl.h"
 #include "scripts/scriptmanager.h"
 #include "snipets/snipetitemmodel.h"
 #include "snipets/categoryitemmodel.h"
@@ -32,6 +33,8 @@
 #include <QSqlQuery>
 #include <QFileInfo>
 #include <QScriptEngine>
+#include <QInputDialog>
+#include <QMessageBox>
 
 /* Static member */
 
@@ -84,7 +87,7 @@ SnipetMenu * SnipetDatabaseManager::createSnipetMenu( const QString & title, QWi
 }
 
 int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
-	int parentCategory = 0;
+	int parentCategory = 1;
 	QSqlQuery selectQuery( "SELECT id FROM categories WHERE parent_id=:parentCategory AND LOWER(name) like LOWER(:name)", database() );
 	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", database() );
 	for( int index = 0; index < category.count(); index++ ) {
@@ -110,6 +113,52 @@ int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 		}
 	}
 	return parentCategory;
+}
+
+void SnipetDatabaseManager::addCategory( int parentId, QWidget * parent ) {
+	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", database() );
+	QString text = QInputDialog::getText( parent, tr( "Add a category" ), tr( "Give the name of the category to create :" ) );
+	if( ! text.isEmpty() ) {
+		insertQuery.bindValue( ":parentCategory", parentId );
+		insertQuery.bindValue( ":name", text );
+		bool result = insertQuery.exec();
+
+		Q_ASSERT( result );
+	}
+}
+
+void SnipetDatabaseManager::removeCategory( int id, QWidget * parent ) {
+	Q_ASSERT( id != 0 );
+
+	QSqlQuery countQuery( "select (select count(1) from categories where parent_id=:snipet_id1) + (select count(1) from snipets where category_id=:snipet_id2) as count", database() );
+	countQuery.bindValue( ":snipet_id1", id );
+	countQuery.bindValue( ":snipet_id2", id );
+	bool result = countQuery.exec();
+
+	Q_ASSERT( result );
+
+	countQuery.next();
+
+	int count = countQuery.value( 0 ).toInt();
+	if( count > 0 ) {
+		QMessageBox::critical( parent, tr("Remove a category"), tr("This category contains snipet or other category, you can't remove this category.") );
+		return;
+	}
+
+	int r = QMessageBox::question( parent, tr("Remove a category"), tr("Are you sure to delete the category %1").arg( id ), QMessageBox::Yes | QMessageBox::No );
+
+	if( r == QMessageBox::Yes ) {
+		QSqlQuery removeQuery( "DELETE FROM categories WHERE id=:id", database() );
+		removeQuery.bindValue( ":id", id );
+		result = removeQuery.exec();
+
+		Q_ASSERT( result );
+	}
+}
+
+void SnipetDatabaseManager::modifyCategory( int id ) {
+	CategoryPropertyDlgImpl dlg( id, database() );
+	dlg.exec();
 }
 
 void SnipetDatabaseManager::modifySnipet( int id ) {
@@ -148,12 +197,12 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 
 bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
 	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
-					 "VALUES(:name, :description, :shortcut, :icon, :auto, ;dialog, :text, :available_script, :category_id)", database() );
+	                             "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database() );
 	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );
 	QSqlQuery insertSnipetParamsQuery( "INSERT INTO snipets_params(snipet_id, name, default_value) VALUES (:snipet_id, :name, :default_value)", database() );
 
 	foreach( const Snipet & s, list ) {
-		int categoryId = getCategoryId( s.categories() );
+		int categoryId = getCategoryId( QStringList() << tr("Imported Snipets") << s.categories() );
 
 		insertSnipetQuery.bindValue( ":name", s.name() );
 		insertSnipetQuery.bindValue( ":description", s.description() );
@@ -426,10 +475,15 @@ bool SnipetDatabaseManager::createDatabase( QSqlDatabase db ) {
 	}
 	/* DATAS */
 	if( !
-		createQuery.exec( "INSERT INTO snipet_config(name, value) VALUES( 'version', '1.0' )" ) ) {
-		qWarning( qPrintable( createQuery.lastError().text() ) );
-		return false;
-	}
+	    createQuery.exec( "INSERT INTO snipet_config(name, value) VALUES( 'version', '1.0' )" ) ) {
+		    qWarning( qPrintable( createQuery.lastError().text() ) );
+		    return false;
+	    }
+	if( !
+	    createQuery.exec( QString( "INSERT INTO categories(parent_id, name, description) VALUES( 0, '%1', '%2' )" ).arg( tr("Categories") ).arg( tr( "List of all categories" ) ) ) ) {
+		    qWarning( qPrintable( createQuery.lastError().text() ) );
+		    return false;
+	    }
 	return true;
 }
 

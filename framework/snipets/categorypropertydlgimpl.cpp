@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "snipets/snipetmanager.h"
-#include "snipets/snipetpropertydlgimpl.h"
+#include "snipets/categorypropertydlgimpl.h"
 
 // Qt header
 #include <QRegExp>
@@ -29,57 +29,41 @@
 
 /* SnipetPropertyDlgImpl */
 
-SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( int categoryId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
-
-	//m_iconComboBox
-	QDir iconsDir = QDir( ":/images" );
-
-	m_iconComboBox->addItem( QString() );
-	foreach( const QString & fileName, iconsDir.entryList( QDir::Files ) ) {
-		const QString completeFileName = iconsDir.absoluteFilePath( fileName );
-		m_iconComboBox->addItem( QIcon( completeFileName ), completeFileName );
-	}
-
-	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]" ), this ) );
 
 	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
 	m_categoryModel->select();
 	m_categoryTreeView->setModel( m_categoryModel );
 	m_categoryTreeView->expandAll();
 
-	m_snipetModel = new QSqlRelationalTableModel( this, db );
-	m_snipetModel->setTable( "snipets" );
-	m_snipetModel->setFilter( QString( "id = %1" ).arg( snipetId ) );
-	m_snipetModel->select();
+	m_categoryTableModel = new QSqlTableModel( this, db );
+	m_categoryTableModel->setTable( "categories" );
+	m_categoryTableModel->setFilter( QString( "id = %1" ).arg( categoryId ) );
+	m_categoryTableModel->select();
 
 	m_mapper = new QDataWidgetMapper( this );
 	m_mapper->setSubmitPolicy( QDataWidgetMapper::ManualSubmit );
-	m_mapper->setModel( m_snipetModel );
-	m_mapper->addMapping( m_nameLineEdit, m_snipetModel->fieldIndex( "name" ) );
-	m_mapper->addMapping( m_iconComboBox, m_snipetModel->fieldIndex( "icon" ), "value" );
-	m_mapper->addMapping( m_keyLineEdit, m_snipetModel->fieldIndex( "shortcut" ) );
-	m_mapper->addMapping( m_autoComboBox, m_snipetModel->fieldIndex( "auto" ), "currentIndex" );
-	m_mapper->addMapping( m_dialogComboBox, m_snipetModel->fieldIndex( "show_dialog" ), "currentIndex" );
-	m_mapper->addMapping( m_descriptionTextEdit, m_snipetModel->fieldIndex( "description" ) );
-	m_mapper->addMapping( m_categoryTreeView, m_snipetModel->fieldIndex( "category_id" ) );
-	m_mapper->addMapping( m_textEdit, m_snipetModel->fieldIndex( "text" ), "plainText" );
-	m_mapper->addMapping( m_availablePlainTextEdit, m_snipetModel->fieldIndex( "available_script" ) );
+	m_mapper->setModel( m_categoryTableModel );
+	m_mapper->addMapping( m_nameLineEdit, m_categoryTableModel->fieldIndex( "name" ) );
+	m_mapper->addMapping( m_descriptionTextEdit, m_categoryTableModel->fieldIndex( "description" ) );
+	m_mapper->addMapping( m_categoryTreeView, m_categoryTableModel->fieldIndex( "parent_id" ) );
+	m_mapper->addMapping( m_availablePlainTextEdit, m_categoryTableModel->fieldIndex( "available_script" ) );
 
 	m_mapper->toFirst();
 }
 
-SnipetPropertyDlgImpl::~SnipetPropertyDlgImpl() {
+CategoryPropertyDlgImpl::~CategoryPropertyDlgImpl() {
 }
 
-void SnipetPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
+void CategoryPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
 	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
 
 	m_addCategoryButton->setEnabled( index != QModelIndex() );
 	m_removeCategoryButton->setEnabled( ( id != 0 ) && ( index != QModelIndex() ) );
 }
 
-void SnipetPropertyDlgImpl::on_m_addCategoryButton_clicked() {
+void CategoryPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 	QModelIndexList list = m_categoryTreeView->selectionModel()->selectedIndexes();
 	Q_ASSERT( list.size() );
 
@@ -91,7 +75,7 @@ void SnipetPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 	m_categoryTreeView->expandAll();
 }
 
-void SnipetPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
+void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 	QModelIndexList list = m_categoryTreeView->selectionModel()->selectedIndexes();
 	Q_ASSERT( list.size() );
 

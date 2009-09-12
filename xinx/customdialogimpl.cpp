@@ -247,6 +247,7 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Snipet
 	m_snipetModel->select();
+	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
 	m_snipetTreeView->expandAll();
@@ -581,6 +582,8 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 
 void CustomDialogImpl::on_m_addPushButton_clicked() {
 	// TODO
+	m_snipetModel->select();
+	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
 }
 
@@ -591,6 +594,8 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 	}
 
 	m_snipetModel->removeSnipet( indexes );
+	m_snipetModel->select();
+	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
 }
 
@@ -598,6 +603,8 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
 	SnipetDatabaseManager::self()->modifySnipet( snipetId );
+	m_snipetModel->select();
+	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
 }
 
@@ -605,6 +612,8 @@ void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
 	// TODO
+	m_snipetModel->select();
+	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
 }
 
