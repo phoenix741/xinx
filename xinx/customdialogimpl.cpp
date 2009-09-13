@@ -602,7 +602,7 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
-	SnipetDatabaseManager::self()->modifySnipet( snipetId );
+	SnipetDatabaseManager::self()->modifySnipet( snipetId, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();

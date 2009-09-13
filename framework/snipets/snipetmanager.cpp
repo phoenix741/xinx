@@ -116,15 +116,9 @@ int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 }
 
 void SnipetDatabaseManager::addCategory( int parentId, QWidget * parent ) {
-	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", database() );
-	QString text = QInputDialog::getText( parent, tr( "Add a category" ), tr( "Give the name of the category to create :" ) );
-	if( ! text.isEmpty() ) {
-		insertQuery.bindValue( ":parentCategory", parentId );
-		insertQuery.bindValue( ":name", text );
-		bool result = insertQuery.exec();
-
-		Q_ASSERT( result );
-	}
+	CategoryPropertyDlgImpl dlg( database(), parent );
+	dlg.setParentId( parentId );
+	dlg.exec();
 }
 
 void SnipetDatabaseManager::removeCategory( int id, QWidget * parent ) {
@@ -156,17 +150,17 @@ void SnipetDatabaseManager::removeCategory( int id, QWidget * parent ) {
 	}
 }
 
-void SnipetDatabaseManager::modifyCategory( int id ) {
-	CategoryPropertyDlgImpl dlg( id, database() );
+void SnipetDatabaseManager::modifyCategory( int id, QWidget * parent ) {
+	CategoryPropertyDlgImpl dlg( id, database(), parent );
 	dlg.exec();
 }
 
-void SnipetDatabaseManager::modifySnipet( int id ) {
-	SnipetPropertyDlgImpl dlg( id, database() );
+void SnipetDatabaseManager::modifySnipet( int id, QWidget * parent ) {
+	SnipetPropertyDlgImpl dlg( id, database(), parent );
 	dlg.exec();
 }
 
-bool SnipetDatabaseManager::removeSnipet( int id ) {
+bool SnipetDatabaseManager::removeSnipet( int id, QWidget * parent ) {
 	QSqlQuery removeSnipetQuery(
 	                       "DELETE FROM snipets "
 	                       "WHERE id=:id", database() );
@@ -195,7 +189,7 @@ bool SnipetDatabaseManager::removeSnipet( int id ) {
 	return true;
 }
 
-bool SnipetDatabaseManager::importSnipetList( const SnipetList & list ) {
+bool SnipetDatabaseManager::importSnipetList( const SnipetList & list, QWidget * parent ) {
 	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
 	                             "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database() );
 	QSqlQuery insertSnipetExtentionsQuery( "INSERT INTO snipets_extentions(snipet_id, extention) VALUES (:snipet_id, :extention)", database() );

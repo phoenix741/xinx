@@ -51,11 +51,11 @@ public:
 
 	void addCategory( int parentId = 0, QWidget * parent = 0 );
 	void removeCategory( int id, QWidget * parent = 0 );
-	void modifyCategory( int id );
+	void modifyCategory( int id, QWidget * parent = 0 );
 
-	void modifySnipet( int id );
-	bool removeSnipet( int id );
-	bool importSnipetList( const SnipetList & list );
+	void modifySnipet( int id, QWidget * parent = 0 );
+	bool removeSnipet( int id, QWidget * parent = 0 );
+	bool importSnipetList( const SnipetList & list, QWidget * parent = 0 );
 	bool callSnipet( int id, QString * result, QWidget * parent = 0 );
 	bool callSnipet( QString key, QString * result, QWidget * parent = 0 );
 	bool callAutomaticSnipet( QString key, QString * result, QWidget * parent = 0 );

@@ -30,9 +30,40 @@
 /* SnipetPropertyDlgImpl */
 
 SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
-	setupUi( this );
+	setupUi();
 
-	//m_iconComboBox
+	m_snipetModel = new QSqlRelationalTableModel( this, db );
+	m_snipetModel->setTable( "snipets" );
+	m_snipetModel->setFilter( QString( "id = %1" ).arg( snipetId ) );
+	m_snipetModel->select();
+
+	createMapper();
+
+	m_mapper->toFirst();
+}
+
+SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+	setupUi();
+
+	m_snipetModel = new QSqlRelationalTableModel( this, db );
+	m_snipetModel->setTable( "snipets" );
+	m_snipetModel->select();
+
+	int row = m_snipetModel->rowCount();
+	m_snipetModel->insertRow( row );
+
+	createMapper();
+
+	m_mapper->setCurrentIndex( row );
+}
+
+SnipetPropertyDlgImpl::~SnipetPropertyDlgImpl() {
+}
+
+void SnipetPropertyDlgImpl::setupUi() {
+	Ui::SnipetPropertyDialog::setupUi( this );
+
+	// List of icon
 	QDir iconsDir = QDir( ":/images" );
 
 	m_iconComboBox->addItem( QString() );
@@ -41,18 +72,17 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 		m_iconComboBox->addItem( QIcon( completeFileName ), completeFileName );
 	}
 
+	// Snipet shortcut
 	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]" ), this ) );
 
+	// List of category
 	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
 	m_categoryModel->select();
 	m_categoryTreeView->setModel( m_categoryModel );
 	m_categoryTreeView->expandAll();
+}
 
-	m_snipetModel = new QSqlRelationalTableModel( this, db );
-	m_snipetModel->setTable( "snipets" );
-	m_snipetModel->setFilter( QString( "id = %1" ).arg( snipetId ) );
-	m_snipetModel->select();
-
+void SnipetPropertyDlgImpl::createMapper() {
 	m_mapper = new QDataWidgetMapper( this );
 	m_mapper->setSubmitPolicy( QDataWidgetMapper::ManualSubmit );
 	m_mapper->setModel( m_snipetModel );
@@ -65,11 +95,6 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_mapper->addMapping( m_categoryTreeView, m_snipetModel->fieldIndex( "category_id" ) );
 	m_mapper->addMapping( m_textEdit, m_snipetModel->fieldIndex( "text" ), "plainText" );
 	m_mapper->addMapping( m_availablePlainTextEdit, m_snipetModel->fieldIndex( "available_script" ) );
-
-	m_mapper->toFirst();
-}
-
-SnipetPropertyDlgImpl::~SnipetPropertyDlgImpl() {
 }
 
 void SnipetPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
@@ -102,3 +127,8 @@ void SnipetPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();
 }
+
+void SnipetPropertyDlgImpl::on_m_buttons_accepted() {
+	m_mapper->submit();
+}
+

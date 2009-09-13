@@ -34,15 +34,20 @@
 class CategoryPropertyDlgImpl : public QDialog, private Ui::CategoryPropertyDialog {
 	Q_OBJECT
 public:
-
 	virtual ~CategoryPropertyDlgImpl();
+
+	void setParentId( int id );
 protected:
 	CategoryPropertyDlgImpl( int categoryId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	CategoryPropertyDlgImpl( QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
 
+	void setupUi();
+	void createMapper();
 private slots:
 	void on_m_categoryTreeView_activated ( const QModelIndex & index );
 	void on_m_addCategoryButton_clicked();
 	void on_m_removeCategoryButton_clicked();
+	void on_m_buttons_accepted();
 private:
 	friend class SnipetDatabaseManager;
 

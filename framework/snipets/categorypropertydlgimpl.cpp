@@ -27,21 +27,50 @@
 #include <QDir>
 #include <QDebug>
 
-/* SnipetPropertyDlgImpl */
+/* CategoryPropertyDlgImpl */
 
 CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( int categoryId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
-	setupUi( this );
-
-	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
-	m_categoryModel->select();
-	m_categoryTreeView->setModel( m_categoryModel );
-	m_categoryTreeView->expandAll();
+	setupUi();
 
 	m_categoryTableModel = new QSqlTableModel( this, db );
 	m_categoryTableModel->setTable( "categories" );
 	m_categoryTableModel->setFilter( QString( "id = %1" ).arg( categoryId ) );
 	m_categoryTableModel->select();
 
+	createMapper();
+
+	m_mapper->toFirst();
+}
+
+CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+	setupUi();
+
+	m_categoryTableModel = new QSqlTableModel( this, db );
+	m_categoryTableModel->setTable( "categories" );
+	m_categoryTableModel->select();
+
+	int row = m_categoryTableModel->rowCount();
+	m_categoryTableModel->insertRow( row );
+
+	createMapper();
+
+	m_mapper->setCurrentIndex( row );
+}
+
+CategoryPropertyDlgImpl::~CategoryPropertyDlgImpl() {
+}
+
+void CategoryPropertyDlgImpl::setupUi() {
+	Ui::CategoryPropertyDialog::setupUi( this );
+
+	// List of category
+	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
+	m_categoryModel->select();
+	m_categoryTreeView->setModel( m_categoryModel );
+	m_categoryTreeView->expandAll();
+}
+
+void CategoryPropertyDlgImpl::createMapper() {
 	m_mapper = new QDataWidgetMapper( this );
 	m_mapper->setSubmitPolicy( QDataWidgetMapper::ManualSubmit );
 	m_mapper->setModel( m_categoryTableModel );
@@ -49,11 +78,10 @@ CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( int categoryId, QSqlDatabase d
 	m_mapper->addMapping( m_descriptionTextEdit, m_categoryTableModel->fieldIndex( "description" ) );
 	m_mapper->addMapping( m_categoryTreeView, m_categoryTableModel->fieldIndex( "parent_id" ) );
 	m_mapper->addMapping( m_availablePlainTextEdit, m_categoryTableModel->fieldIndex( "available_script" ) );
-
-	m_mapper->toFirst();
 }
 
-CategoryPropertyDlgImpl::~CategoryPropertyDlgImpl() {
+void CategoryPropertyDlgImpl::setParentId( int id ) {
+	m_categoryTreeView->setCategoryId( id );
 }
 
 void CategoryPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
@@ -85,4 +113,8 @@ void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();
+}
+
+void CategoryPropertyDlgImpl::on_m_buttons_accepted() {
+	m_mapper->submit();
 }
