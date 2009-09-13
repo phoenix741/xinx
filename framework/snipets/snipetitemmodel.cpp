@@ -106,6 +106,9 @@ void SnipetItemModel::createMapping() {
 		Mapping * m = new Mapping;
 		IndexMap::const_iterator it = IndexMap::const_iterator( m_sourcesIndexMapping.insert( i, m ) );
 		m->map_iter = it;
+		m->is_category = false;
+		m->parrentId = 0;
+		m->parentIndex = 0;
 
 		if( i >= 0 ) {
 			QSqlRecord record = m_sourceModel->record( i );

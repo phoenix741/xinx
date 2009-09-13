@@ -35,6 +35,9 @@ class SnipetPropertyDlgImpl : public QDialog, private Ui::SnipetPropertyDialog {
 	Q_OBJECT
 public:
 	virtual ~SnipetPropertyDlgImpl();
+
+	void setParentId( int id );
+	void duplicate();
 protected:
 	SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );

@@ -49,8 +49,11 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent,
 	m_snipetModel->setTable( "snipets" );
 	m_snipetModel->select();
 
+	int field = m_snipetModel->fieldIndex( "category_id" );
 	int row = m_snipetModel->rowCount();
 	m_snipetModel->insertRow( row );
+	QModelIndex index = m_snipetModel->index( row, field );
+	m_snipetModel->setData( index, 0 );
 
 	createMapper();
 
@@ -73,7 +76,7 @@ void SnipetPropertyDlgImpl::setupUi() {
 	}
 
 	// Snipet shortcut
-	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]" ), this ) );
+	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]*" ), this ) );
 
 	// List of category
 	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
@@ -95,6 +98,19 @@ void SnipetPropertyDlgImpl::createMapper() {
 	m_mapper->addMapping( m_categoryTreeView, m_snipetModel->fieldIndex( "category_id" ) );
 	m_mapper->addMapping( m_textEdit, m_snipetModel->fieldIndex( "text" ), "plainText" );
 	m_mapper->addMapping( m_availablePlainTextEdit, m_snipetModel->fieldIndex( "available_script" ) );
+}
+
+void SnipetPropertyDlgImpl::duplicate() {
+	int field = m_snipetModel->fieldIndex( "category_id" );
+	int row = m_snipetModel->rowCount();
+	m_snipetModel->insertRow( row );
+	QModelIndex index = m_snipetModel->index( row, field );
+	m_snipetModel->setData( index, 0 );
+	m_mapper->setCurrentIndex( row );
+}
+
+void SnipetPropertyDlgImpl::setParentId( int id ) {
+	m_categoryTreeView->setCategoryId( id );
 }
 
 void SnipetPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {

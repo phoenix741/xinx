@@ -155,8 +155,20 @@ void SnipetDatabaseManager::modifyCategory( int id, QWidget * parent ) {
 	dlg.exec();
 }
 
+void SnipetDatabaseManager::addSnipet( int parentId, QWidget * parent ) {
+	SnipetPropertyDlgImpl dlg( database(), parent );
+	dlg.setParentId( parentId );
+	dlg.exec();
+}
+
 void SnipetDatabaseManager::modifySnipet( int id, QWidget * parent ) {
 	SnipetPropertyDlgImpl dlg( id, database(), parent );
+	dlg.exec();
+}
+
+void SnipetDatabaseManager::duplicateSnipet( int id, QWidget * parent ) {
+	SnipetPropertyDlgImpl dlg( id, database(), parent );
+	dlg.duplicate();
 	dlg.exec();
 }
 

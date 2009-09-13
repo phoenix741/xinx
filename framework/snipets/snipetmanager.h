@@ -53,7 +53,9 @@ public:
 	void removeCategory( int id, QWidget * parent = 0 );
 	void modifyCategory( int id, QWidget * parent = 0 );
 
+	void addSnipet( int parentId, QWidget * parent = 0 );
 	void modifySnipet( int id, QWidget * parent = 0 );
+	void duplicateSnipet( int id, QWidget * parent = 0 );
 	bool removeSnipet( int id, QWidget * parent = 0 );
 	bool importSnipetList( const SnipetList & list, QWidget * parent = 0 );
 	bool callSnipet( int id, QString * result, QWidget * parent = 0 );

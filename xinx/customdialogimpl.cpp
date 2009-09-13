@@ -581,7 +581,7 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_addPushButton_clicked() {
-	// TODO
+	SnipetDatabaseManager::self()->addSnipet( 0, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
@@ -611,7 +611,9 @@ void CustomDialogImpl::on_m_modifyPushButton_clicked() {
 void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
-	// TODO
+
+	SnipetDatabaseManager::self()->duplicateSnipet( snipetId, this );
+
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();

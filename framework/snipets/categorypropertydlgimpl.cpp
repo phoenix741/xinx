@@ -49,8 +49,11 @@ CategoryPropertyDlgImpl::CategoryPropertyDlgImpl( QSqlDatabase db, QWidget * par
 	m_categoryTableModel->setTable( "categories" );
 	m_categoryTableModel->select();
 
+	int field = m_categoryTableModel->fieldIndex( "parent_id" );
 	int row = m_categoryTableModel->rowCount();
 	m_categoryTableModel->insertRow( row );
+	QModelIndex index = m_categoryTableModel->index( row, field );
+	m_categoryTableModel->setData( index, 0 );
 
 	createMapper();
 
