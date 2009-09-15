@@ -47,12 +47,21 @@ Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
 			QScriptValue result = engine.evaluate( availableScript );
 			engine.popContext();
 
+#ifdef QT_VERSION > 0x040500
 			if( ! result.isBool() ) {
 				qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.";
 			} else {
 				if( ! result.toBool() )
 					return Qt::ItemIsSelectable;
 			}
+#else
+			if( ! result.isBoolean() ) {
+				qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.";
+			} else {
+				if( ! result.toBoolean() )
+					return Qt::ItemIsSelectable;
+			}
+#endif
 		}
 
 		// The script is the only restriction for category
