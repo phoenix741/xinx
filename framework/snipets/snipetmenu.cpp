@@ -47,7 +47,7 @@ Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
 			QScriptValue result = engine.evaluate( availableScript );
 			engine.popContext();
 
-#ifdef QT_VERSION > 0x040500
+#if QT_VERSION > 0x040500
 			if( ! result.isBool() ) {
 				qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.";
 			} else {
