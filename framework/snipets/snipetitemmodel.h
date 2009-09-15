@@ -39,7 +39,8 @@ class SnipetItemModel : public QAbstractProxyModel {
 	Q_OBJECT
 public:
 	enum SnipetItemRole {
-		SnipetIdRole = Qt::UserRole
+		SnipetIdRole = Qt::UserRole,
+		SnipetTypeRole = Qt::UserRole + 1
 	};
 
 	virtual ~SnipetItemModel();

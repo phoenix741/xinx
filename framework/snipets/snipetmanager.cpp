@@ -115,9 +115,10 @@ int SnipetDatabaseManager::getCategoryId( const QStringList & category ) {
 	return parentCategory;
 }
 
-void SnipetDatabaseManager::addCategory( int parentId, QWidget * parent ) {
+void SnipetDatabaseManager::addCategory( int parentId, bool categoryAccess, QWidget * parent ) {
 	CategoryPropertyDlgImpl dlg( database(), parent );
 	dlg.setParentId( parentId );
+	dlg.setCategoryAccess( categoryAccess );
 	dlg.exec();
 }
 

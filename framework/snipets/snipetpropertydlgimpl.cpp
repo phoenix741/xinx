@@ -126,7 +126,7 @@ void SnipetPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 
 	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->addCategory( id, this );
+	SnipetDatabaseManager::self()->addCategory( id, false, this );
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();

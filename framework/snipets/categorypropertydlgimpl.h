@@ -43,6 +43,7 @@ protected:
 
 	void setupUi();
 	void createMapper();
+	void setCategoryAccess( bool value );
 private slots:
 	void on_m_categoryTreeView_activated ( const QModelIndex & index );
 	void on_m_addCategoryButton_clicked();

@@ -87,6 +87,11 @@ void CategoryPropertyDlgImpl::setParentId( int id ) {
 	m_categoryTreeView->setCategoryId( id );
 }
 
+void CategoryPropertyDlgImpl::setCategoryAccess( bool value ) {
+	m_addCategoryButton->setVisible( value );
+	m_removeCategoryButton->setVisible( value );
+}
+
 void CategoryPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
 	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
 
@@ -100,7 +105,7 @@ void CategoryPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 
 	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->addCategory( id, this );
+	SnipetDatabaseManager::self()->addCategory( id, false, this );
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();

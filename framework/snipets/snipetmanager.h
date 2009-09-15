@@ -49,7 +49,7 @@ public:
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
 	SnipetMenu * createSnipetMenu( const QString & title = QString(), QWidget * parent = 0 );
 
-	void addCategory( int parentId = 0, QWidget * parent = 0 );
+	void addCategory( int parentId = 0, bool categoryAccess = true, QWidget * parent = 0 );
 	void removeCategory( int id, QWidget * parent = 0 );
 	void modifyCategory( int id, QWidget * parent = 0 );
 

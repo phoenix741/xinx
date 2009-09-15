@@ -296,11 +296,13 @@ int SnipetItemModel::columnCount( const QModelIndex & index ) const {
 
 Qt::ItemFlags SnipetItemModel::flags( const QModelIndex & index ) const {
 	if( index.isValid() ) {
+		/*
 		QModelIndex sourceIndex = mapToSource( index );
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		if( record.value( list_type ).toString() == "CATEGORY" ) {
 			return Qt::ItemIsEnabled;
 		}
+		*/
 		return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 	}
 	return 0;
@@ -338,6 +340,10 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 		QModelIndex sourceIndex = mapToSource( index );
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		return record.value( list_id );
+	} else if( role == SnipetItemModel::SnipetTypeRole ) {
+		QModelIndex sourceIndex = mapToSource( index );
+		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+		return record.value( list_type );
 	}
 
 	return QAbstractProxyModel::data( index, role );

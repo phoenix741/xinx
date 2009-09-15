@@ -60,12 +60,14 @@ private slots:
 	void on_m_importPushButton_clicked();
 	void on_m_exportPushButton_clicked();
 
-	void on_m_addPushButton_clicked();
+	void m_addSnipetPushButton_clicked();
+	void m_addCategoryPushButton_clicked();
 	void on_m_removePushButton_clicked();
 	void on_m_modifyPushButton_clicked();
 	void on_m_duplicatePushButton_clicked();
 
 	void m_snipetTreeView_selectionChanged();
+	void on_m_snipetTreeView_doubleClicked( const QModelIndex & index );
 	void on_m_snipetFilterLineEdit_textChanged( const QString & filterText );
 private slots:
 	void configurePlugin( PluginElement * plugin );
