@@ -27,7 +27,7 @@
 
 // Qt header
 #include <QDialog>
-#include <QSqlRelationalTableModel>
+#include <QSqlTableModel>
 #include <QDataWidgetMapper>
 #include <QSqlDatabase>
 
@@ -49,12 +49,22 @@ private slots:
 	void on_m_addCategoryButton_clicked();
 	void on_m_removeCategoryButton_clicked();
 	void on_m_buttons_accepted();
+	void m_mapper_currentIndexChanged( int index );
 private:
+	enum {
+		snipet_params_id = 0,
+		snipet_params_snipet_id = 1,
+		snipet_params_name = 2,
+		snipet_params_default_value = 3,
+		snipet_params_order = 4
+	};
 	friend class SnipetDatabaseManager;
 
-	QSqlRelationalTableModel * m_snipetModel;
+	QSqlDatabase m_db;
+	QSqlTableModel * m_snipetModel, * m_paramsModel;
 	QDataWidgetMapper * m_mapper;
 	CategoryItemModel * m_categoryModel;
+	int m_id;
 };
 
 #endif /* _SNIPETPROPERTYDLGIMPL_H_ */

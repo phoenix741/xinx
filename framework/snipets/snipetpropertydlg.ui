@@ -37,6 +37,9 @@
           <string>&amp;Description</string>
          </property>
          <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
@@ -77,9 +80,6 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QListWidget" name="m_extentionListWidget"/>
-          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
@@ -97,31 +97,28 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>&amp;Automatic feature : :</string>
-            </property>
-            <property name="buddy">
-             <cstring>m_autoComboBox</cstring>
+             <string>&amp;Automatic feature :</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="m_autoComboBox">
-            <item>
-             <property name="text">
-              <string>Declanched by Ctrl+Space</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Declanched automatically</string>
-             </property>
-            </item>
+          <item row="5" column="1">
+           <widget class="QCheckBox" name="m_autoChk">
+            <property name="text">
+             <string>Call snipet automatically (not only by Ctrl+Space)</string>
+            </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="6" column="1">
+           <widget class="QCheckBox" name="m_dialogChk">
+            <property name="text">
+             <string>Show description dialog, with parameters customization</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
              <string>&amp;Description :</string>
@@ -134,7 +131,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="1">
            <widget class="QPlainTextEdit" name="m_descriptionTextEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -153,7 +150,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="8" column="1">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -166,18 +163,11 @@
             </property>
            </spacer>
           </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="m_dialogComboBox">
-            <item>
-             <property name="text">
-              <string>Always show parameters dialog</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Never show parameters dialog</string>
-             </property>
-            </item>
+          <item row="2" column="1">
+           <widget class="QListWidget" name="m_extentionListWidget">
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
            </widget>
           </item>
          </layout>
@@ -290,7 +280,14 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
           <item row="0" column="0">
-           <widget class="QTableView" name="m_parameterTable"/>
+           <widget class="QTableView" name="m_parameterTable">
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+           </widget>
           </item>
          </layout>
         </widget>

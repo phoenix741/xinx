@@ -20,33 +20,51 @@
 // Xinx header
 #include "snipets/snipetmanager.h"
 #include "snipets/snipetpropertydlgimpl.h"
+#include "plugins/xinxpluginsloader.h"
 
 // Qt header
 #include <QRegExp>
 #include <QSqlDatabase>
 #include <QDir>
 #include <QDebug>
+#include <QSqlQuery>
+#include <QSqlRecord>
 
 /* SnipetPropertyDlgImpl */
 
-SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ), m_db( db ), m_id( snipetId ) {
 	setupUi();
 
-	m_snipetModel = new QSqlRelationalTableModel( this, db );
+	m_snipetModel = new QSqlTableModel( this, db );
 	m_snipetModel->setTable( "snipets" );
 	m_snipetModel->setFilter( QString( "id = %1" ).arg( snipetId ) );
 	m_snipetModel->select();
+
+	m_paramsModel = new QSqlTableModel( this, db );
+	m_paramsModel->setTable( "snipets_params" );
+	m_paramsModel->setFilter( QString( "snipet_id = %1" ).arg( snipetId ) );
+	m_paramsModel->setSort( snipet_params_order, Qt::AscendingOrder );
+	m_paramsModel->select();
+	m_paramsModel->setHeaderData( snipet_params_name, Qt::Horizontal, tr("Name") );
+	m_paramsModel->setHeaderData( snipet_params_default_value, Qt::Horizontal, tr("Default Value") );
+
+	m_parameterTable->setModel( m_paramsModel );
+	m_parameterTable->setColumnHidden( snipet_params_id, true );
+	m_parameterTable->setColumnHidden( snipet_params_snipet_id, true );
+	m_parameterTable->setColumnHidden( snipet_params_order, true );
+	m_parameterTable->resizeColumnToContents( snipet_params_name );
 
 	createMapper();
 
 	m_mapper->toFirst();
 }
 
-SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
+SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ), m_db( db ), m_id( -1 ) {
 	setupUi();
 
-	m_snipetModel = new QSqlRelationalTableModel( this, db );
+	m_snipetModel = new QSqlTableModel( this, db );
 	m_snipetModel->setTable( "snipets" );
+	m_snipetModel->setFilter( "id is null" );
 	m_snipetModel->select();
 
 	int field = m_snipetModel->fieldIndex( "category_id" );
@@ -75,6 +93,12 @@ void SnipetPropertyDlgImpl::setupUi() {
 		m_iconComboBox->addItem( QIcon( completeFileName ), completeFileName );
 	}
 
+	// Extentions
+	foreach( IFileTypePlugin * fileType, XinxPluginsLoader::self()->fileTypes() ) {
+		QListWidgetItem * item = new QListWidgetItem( XinxPluginsLoader::self()->fileTypeFilter( fileType ), m_extentionListWidget );
+		item->setData( Qt::UserRole, fileType->match() );
+	}
+
 	// Snipet shortcut
 	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]*" ), this ) );
 
@@ -87,13 +111,14 @@ void SnipetPropertyDlgImpl::setupUi() {
 
 void SnipetPropertyDlgImpl::createMapper() {
 	m_mapper = new QDataWidgetMapper( this );
+	connect( m_mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(m_mapper_currentIndexChanged(int)) );
 	m_mapper->setSubmitPolicy( QDataWidgetMapper::ManualSubmit );
 	m_mapper->setModel( m_snipetModel );
 	m_mapper->addMapping( m_nameLineEdit, m_snipetModel->fieldIndex( "name" ) );
 	m_mapper->addMapping( m_iconComboBox, m_snipetModel->fieldIndex( "icon" ), "value" );
 	m_mapper->addMapping( m_keyLineEdit, m_snipetModel->fieldIndex( "shortcut" ) );
-	m_mapper->addMapping( m_autoComboBox, m_snipetModel->fieldIndex( "auto" ), "currentIndex" );
-	m_mapper->addMapping( m_dialogComboBox, m_snipetModel->fieldIndex( "show_dialog" ), "currentIndex" );
+	m_mapper->addMapping( m_autoChk, m_snipetModel->fieldIndex( "auto" ) );
+	m_mapper->addMapping( m_dialogChk, m_snipetModel->fieldIndex( "show_dialog" ) );
 	m_mapper->addMapping( m_descriptionTextEdit, m_snipetModel->fieldIndex( "description" ) );
 	m_mapper->addMapping( m_categoryTreeView, m_snipetModel->fieldIndex( "category_id" ) );
 	m_mapper->addMapping( m_textEdit, m_snipetModel->fieldIndex( "text" ), "plainText" );
@@ -111,6 +136,30 @@ void SnipetPropertyDlgImpl::duplicate() {
 
 void SnipetPropertyDlgImpl::setParentId( int id ) {
 	m_categoryTreeView->setCategoryId( id );
+}
+
+void SnipetPropertyDlgImpl::m_mapper_currentIndexChanged( int index ) {
+	m_extentionListWidget->selectionModel()->clearSelection();
+	if( m_id == -1 ) return ; // In creation, no row to read
+
+	QSqlQuery extentionsQuery( m_db );
+	extentionsQuery.prepare( "SELECT distinct extention FROM snipets_extentions WHERE snipet_id=:id" );
+	extentionsQuery.bindValue( ":id", m_id );
+
+	bool result = extentionsQuery.exec();
+	Q_ASSERT( result );
+
+	while( extentionsQuery.next() ) {
+		QString extention = extentionsQuery.value( 0 ).toString();
+
+		for( int i = 0 ; i < m_extentionListWidget->count() ; i++ ) {
+			QListWidgetItem * item = m_extentionListWidget->item( i );
+			if( item->data( Qt::UserRole ).toString().contains( extention ) ) {
+				item->setSelected( true );
+				break;
+			}
+		}
+	}
 }
 
 void SnipetPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
@@ -145,6 +194,51 @@ void SnipetPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 }
 
 void SnipetPropertyDlgImpl::on_m_buttons_accepted() {
+	// To create the Id if necessary
 	m_mapper->submit();
+
+	if( m_id == -1 )
+		m_id = m_snipetModel->query().lastInsertId().toInt();
+
+	// Extentions
+	for( int i = 0 ; i < m_extentionListWidget->count() ; i++ ) {
+		const QListWidgetItem * item = m_extentionListWidget->item( i );
+		const bool isSelected = item->isSelected();
+		const QStringList extentions = item->data( Qt::UserRole ).toString().split( " " );
+
+		foreach( QString extention, extentions ) {
+			// A line with the extention exist ?
+			QSqlQuery countQuery( "SELECT count(1) FROM snipets_extentions WHERE snipet_id=:id AND extention=:ext", m_db );
+			countQuery.bindValue( ":id", m_id );
+			countQuery.bindValue( ":ext", extention );
+
+			bool result = countQuery.exec();
+			Q_ASSERT( result );
+
+			result = countQuery.next();
+			Q_ASSERT( result );
+
+			int count = countQuery.value( 0 ).toInt();
+			if( isSelected ) {
+				if( count == 0 ) {
+					QSqlQuery insertQuery( "INSERT INTO snipets_extentions( snipet_id, extention ) VALUES (:id, :ext)", m_db );
+					insertQuery.bindValue( ":id", m_id );
+					insertQuery.bindValue( ":ext", extention );
+
+					result = insertQuery.exec();
+					Q_ASSERT( result );
+				}
+			} else {
+				if( count > 0 ) {
+					QSqlQuery deleteQuery( "DELETE FROM snipets_extentions WHERE snipet_id=:id AND extention=:ext", m_db );
+					deleteQuery.bindValue( ":id", m_id );
+					deleteQuery.bindValue( ":ext", extention );
+
+					result = deleteQuery.exec();
+					Q_ASSERT( result );
+				}
+			}
+		}
+	}
 }
 
