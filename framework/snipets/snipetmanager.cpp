@@ -82,7 +82,6 @@ SnipetMenu * SnipetDatabaseManager::createSnipetMenu( const QString & title, QWi
 	SnipetItemModel * snipetModel = new SnipetMenuModel( database(), menu );
 
 	menu->setModel( snipetModel );
-	menu->setRootIndex( snipetModel->index( 0, 0 ) );
 
 	return menu;
 }

@@ -116,6 +116,7 @@ void SnipetMenu::snipetTriggered( const QModelIndex & index ) const {
 bool SnipetMenu::prePopulated() {
 	SnipetItemModel * m = static_cast<SnipetItemModel*>( model() );
 	m->select();
+	setRootIndex( m->index( 0, 0 ) );
 
 	// Create snipet action
 	m_createAction = new QAction( tr("&Create Snipet ..."), this );
