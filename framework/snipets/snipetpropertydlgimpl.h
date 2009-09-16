@@ -31,6 +31,8 @@
 #include <QDataWidgetMapper>
 #include <QSqlDatabase>
 
+class ParametersDelegate;
+
 class SnipetPropertyDlgImpl : public QDialog, private Ui::SnipetPropertyDialog {
 	Q_OBJECT
 public:
@@ -50,6 +52,7 @@ private slots:
 	void on_m_removeCategoryButton_clicked();
 	void on_m_buttons_accepted();
 	void m_mapper_currentIndexChanged( int index );
+	void m_textEdit_textChanged();
 private:
 	enum {
 		snipet_params_id = 0,
@@ -64,6 +67,7 @@ private:
 	QSqlTableModel * m_snipetModel, * m_paramsModel;
 	QDataWidgetMapper * m_mapper;
 	CategoryItemModel * m_categoryModel;
+	ParametersDelegate * m_delegate;
 	int m_id;
 };
 

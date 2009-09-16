@@ -29,6 +29,51 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QItemDelegate>
+#include <QPainter>
+
+/* ParametersDelegate */
+
+class ParametersDelegate : public QItemDelegate {
+public:
+	ParametersDelegate( QObject * parent = 0 );
+
+	virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+
+	void setCountParameter( int parameter );
+	int countParameter() const;
+private:
+	int m_countParameter;
+};
+
+ParametersDelegate::ParametersDelegate( QObject * parent ) : QItemDelegate( parent ) {
+}
+
+void ParametersDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
+	if( index.row() >= m_countParameter ) {
+		QStyleOptionViewItem myOption = option;
+		myOption.palette.setColor( QPalette::Normal, QPalette::Window, QColor( 0xff, 0xc0, 0xc0 ) );
+
+		if (option.showDecorationSelected && (option.state & QStyle::State_Selected)) {
+			painter->fillRect(myOption.rect, myOption.palette.brush( QPalette::Normal, QPalette::Highlight));
+		} else {
+			painter->fillRect(myOption.rect, myOption.palette.brush( QPalette::Normal, QPalette::Window));
+		}
+
+		QItemDelegate::paint( painter, myOption, index );
+	} else
+		QItemDelegate::paint( painter, option, index );
+}
+
+int ParametersDelegate::countParameter() const {
+	return m_countParameter;
+}
+
+void ParametersDelegate::setCountParameter( int parameter ) {
+	if( m_countParameter != parameter ) {
+		m_countParameter = parameter;
+	}
+}
 
 /* SnipetPropertyDlgImpl */
 
@@ -53,6 +98,9 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_parameterTable->setColumnHidden( snipet_params_snipet_id, true );
 	m_parameterTable->setColumnHidden( snipet_params_order, true );
 	m_parameterTable->resizeColumnToContents( snipet_params_name );
+
+	m_delegate = new ParametersDelegate( m_parameterTable );
+	m_parameterTable->setItemDelegate( m_delegate );
 
 	createMapper();
 
@@ -107,6 +155,9 @@ void SnipetPropertyDlgImpl::setupUi() {
 	m_categoryModel->select();
 	m_categoryTreeView->setModel( m_categoryModel );
 	m_categoryTreeView->expandAll();
+
+	// Text Edit
+	connect( m_textEdit->document(), SIGNAL(contentsChanged()), this, SLOT(m_textEdit_textChanged()) );
 }
 
 void SnipetPropertyDlgImpl::createMapper() {
@@ -136,6 +187,26 @@ void SnipetPropertyDlgImpl::duplicate() {
 
 void SnipetPropertyDlgImpl::setParentId( int id ) {
 	m_categoryTreeView->setCategoryId( id );
+}
+
+void SnipetPropertyDlgImpl::m_textEdit_textChanged() {
+	QString text = m_textEdit->toPlainText();
+	int countParameter = 0, pos = 0;
+	QRegExp regExpParameter( "%(\\d+)" );
+	while( ( pos = regExpParameter.indexIn( text, pos ) ) != -1 ) {
+		int parameterNum = regExpParameter.cap( 1 ).toInt();
+		if( parameterNum > countParameter )
+			countParameter = parameterNum;
+		pos += regExpParameter.matchedLength();
+	}
+
+	int rc = m_paramsModel->rowCount();
+	if( countParameter > rc ) {
+		for( int i = rc ; i < countParameter; i++ ) {
+			m_paramsModel->insertRow( i );
+		}
+	}
+	m_delegate->setCountParameter( countParameter );
 }
 
 void SnipetPropertyDlgImpl::m_mapper_currentIndexChanged( int index ) {
@@ -240,5 +311,13 @@ void SnipetPropertyDlgImpl::on_m_buttons_accepted() {
 			}
 		}
 	}
+
+	// Parameters
+	int countParameter = m_delegate->countParameter();
+	int rw = m_paramsModel->rowCount();
+	if( countParameter < rw )
+		m_paramsModel->removeRows( countParameter, rw - countParameter );
+
+	m_paramsModel->submit();
 }
 

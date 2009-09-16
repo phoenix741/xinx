@@ -102,6 +102,9 @@
             <property name="text">
              <string>&amp;Automatic feature :</string>
             </property>
+            <property name="buddy">
+             <cstring>m_autoChk</cstring>
+            </property>
            </widget>
           </item>
           <item row="5" column="1">
@@ -284,9 +287,6 @@
             <attribute name="horizontalHeaderStretchLastSection">
              <bool>true</bool>
             </attribute>
-            <attribute name="horizontalHeaderStretchLastSection">
-             <bool>true</bool>
-            </attribute>
            </widget>
           </item>
          </layout>
@@ -337,9 +337,19 @@
  </customwidgets>
  <tabstops>
   <tabstop>m_nameLineEdit</tabstop>
+  <tabstop>m_iconComboBox</tabstop>
+  <tabstop>m_extentionListWidget</tabstop>
   <tabstop>m_keyLineEdit</tabstop>
+  <tabstop>m_autoChk</tabstop>
+  <tabstop>m_dialogChk</tabstop>
   <tabstop>m_descriptionTextEdit</tabstop>
-  <tabstop>m_textEdit</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>m_categoryTreeView</tabstop>
+  <tabstop>m_addCategoryButton</tabstop>
+  <tabstop>m_removeCategoryButton</tabstop>
+  <tabstop>m_buttons</tabstop>
+  <tabstop>m_parameterTable</tabstop>
+  <tabstop>m_availablePlainTextEdit</tabstop>
  </tabstops>
  <resources>
   <include location="../../components/xinxpluginselector.qrc"/>
