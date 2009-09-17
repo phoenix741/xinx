@@ -75,6 +75,8 @@ private slots:
 	void aboutScript( PluginElement * plugin );
 
 private:
+	int getCategory( const QModelIndex & index );
+
 	void showConfig();
 	void storeConfig();
 

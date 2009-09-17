@@ -40,6 +40,7 @@ class SnipetItemModel : public QAbstractProxyModel {
 public:
 	enum SnipetItemRole {
 		SnipetIdRole = Qt::UserRole,
+		SnipetParentIdRole = Qt::UserRole + 2,
 		SnipetTypeRole = Qt::UserRole + 1
 	};
 
@@ -67,7 +68,7 @@ public:
 	/*!
 	 * Remove snipets from the database where the indexes is indicate.
 	 */
-	void removeSnipet( const QModelIndexList & indexes );
+	void removeIndexes( const QModelIndexList & indexes, QWidget * parent = 0 );
 	/*!
 	 * Clear all data of the snipet (you must call \e select after)
 	 * \sa select()

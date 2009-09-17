@@ -51,8 +51,10 @@ private slots:
 	void on_m_addCategoryButton_clicked();
 	void on_m_removeCategoryButton_clicked();
 	void on_m_buttons_accepted();
+	void on_m_buttons_rejected();
 	void m_mapper_currentIndexChanged( int index );
 	void m_textEdit_textChanged();
+	void m_paramsModel_primeInsert( int row, QSqlRecord & record );
 	void m_paramsModel_beforeInsert ( QSqlRecord & record );
 private:
 	enum {

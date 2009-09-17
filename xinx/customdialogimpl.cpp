@@ -565,6 +565,19 @@ void CustomDialogImpl::aboutScript( PluginElement * plugin ) {
 	informationDialog.exec();
 }
 
+/*!
+ * \internal
+ * Get the id of the selected category, or if a snipet is selected, get the
+ * id of the parent category
+ */
+int CustomDialogImpl::getCategory( const QModelIndex & index ) {
+	if( index.data( SnipetItemModel::SnipetTypeRole ).toString() == "CATEGORY" ) {
+		return index.data( SnipetItemModel::SnipetIdRole ).toInt();
+	} else {
+		return index.data( SnipetItemModel::SnipetParentIdRole ).toInt();
+	}
+}
+
 void CustomDialogImpl::on_m_importPushButton_clicked() {
 	QString importedFilename = QFileDialog::getOpenFileName( this, tr("Import snipets"), "datas:/", "*.xml" );
 	if( ! importedFilename.isEmpty() ) {
@@ -594,7 +607,10 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 }
 
 void CustomDialogImpl::m_addSnipetPushButton_clicked() {
-	SnipetDatabaseManager::self()->addSnipet( 0, this );
+	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
+	int categoryId = index.size() ? getCategory( index.at(0) ) : 1;
+
+	SnipetDatabaseManager::self()->addSnipet( categoryId, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
@@ -602,7 +618,10 @@ void CustomDialogImpl::m_addSnipetPushButton_clicked() {
 }
 
 void CustomDialogImpl::m_addCategoryPushButton_clicked() {
-	SnipetDatabaseManager::self()->addCategory( 0, true, this );
+	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
+	int categoryId = index.size() ? getCategory( index.at(0) ) : 1;
+
+	SnipetDatabaseManager::self()->addCategory( categoryId, true, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
@@ -615,7 +634,7 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 		if( i.internalId() == -1 ) indexes.removeAll( i );
 	}
 
-	m_snipetModel->removeSnipet( indexes );
+	m_snipetModel->removeIndexes( indexes, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();

@@ -140,7 +140,16 @@ void SnipetDatabaseManager::removeCategory( int id, QWidget * parent ) {
 		return;
 	}
 
-	int r = QMessageBox::question( parent, tr("Remove a category"), tr("Are you sure to delete the category %1").arg( id ), QMessageBox::Yes | QMessageBox::No );
+	QSqlQuery titleQuery( "select name from categories where id=:id", database() );
+	titleQuery.bindValue( ":id", id );
+
+	result = titleQuery.exec();
+	Q_ASSERT( result );
+
+	result = titleQuery.next();
+	Q_ASSERT( result );
+
+	int r = QMessageBox::question( parent, tr("Remove a category"), tr("Are you sure to delete the category \"%1\"").arg( titleQuery.value( 0 ).toString() ), QMessageBox::Yes | QMessageBox::No );
 
 	if( r == QMessageBox::Yes ) {
 		QSqlQuery removeQuery( "DELETE FROM categories WHERE id=:id", database() );

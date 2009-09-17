@@ -82,12 +82,17 @@ Q_DECLARE_METATYPE( QSqlRecord );
 SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ), m_db( db ), m_id( snipetId ) {
 	setupUi();
 
+	// Snipet
 	m_snipetModel = new QSqlTableModel( this, db );
 	m_snipetModel->setTable( "snipets" );
 	m_snipetModel->setFilter( QString( "id = %1" ).arg( snipetId ) );
 	m_snipetModel->select();
 
+	createMapper();
+
+	// Parameters
 	m_paramsModel = new QSqlTableModel( this, db );
+	m_paramsModel->setEditStrategy( QSqlTableModel::OnManualSubmit );
 	m_paramsModel->setTable( "snipets_params" );
 	m_paramsModel->setFilter( QString( "snipet_id = %1" ).arg( snipetId ) );
 	m_paramsModel->setSort( snipet_params_order, Qt::AscendingOrder );
@@ -95,6 +100,7 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_paramsModel->setHeaderData( snipet_params_name, Qt::Horizontal, tr("Name") );
 	m_paramsModel->setHeaderData( snipet_params_default_value, Qt::Horizontal, tr("Default Value") );
 	connect( m_paramsModel, SIGNAL(beforeInsert(QSqlRecord&)), this, SLOT(m_paramsModel_beforeInsert(QSqlRecord&)) );
+	connect( m_paramsModel, SIGNAL(primeInsert(int,QSqlRecord&)), this, SLOT(m_paramsModel_primeInsert(int,QSqlRecord&)) );
 
 	m_parameterTable->setModel( m_paramsModel );
 	m_parameterTable->setColumnHidden( snipet_params_id, true );
@@ -105,14 +111,14 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_delegate = new ParametersDelegate( m_parameterTable );
 	m_parameterTable->setItemDelegate( m_delegate );
 
-	createMapper();
-
+	// Go to snipet
 	m_mapper->toFirst();
 }
 
 SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ), m_db( db ), m_id( -1 ) {
 	setupUi();
 
+	// Snipet
 	m_snipetModel = new QSqlTableModel( this, db );
 	m_snipetModel->setTable( "snipets" );
 	m_snipetModel->setFilter( "id is null" );
@@ -126,6 +132,28 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent,
 
 	createMapper();
 
+	// Parameters
+	m_paramsModel = new QSqlTableModel( this, db );
+	m_paramsModel->setEditStrategy( QSqlTableModel::OnManualSubmit );
+	m_paramsModel->setTable( "snipets_params" );
+	m_paramsModel->setFilter( "snipet_id is null" );
+	m_paramsModel->setSort( snipet_params_order, Qt::AscendingOrder );
+	m_paramsModel->select();
+	m_paramsModel->setHeaderData( snipet_params_name, Qt::Horizontal, tr("Name") );
+	m_paramsModel->setHeaderData( snipet_params_default_value, Qt::Horizontal, tr("Default Value") );
+	connect( m_paramsModel, SIGNAL(beforeInsert(QSqlRecord&)), this, SLOT(m_paramsModel_beforeInsert(QSqlRecord&)) );
+	connect( m_paramsModel, SIGNAL(primeInsert(int,QSqlRecord&)), this, SLOT(m_paramsModel_primeInsert(int,QSqlRecord&)) );
+
+	m_parameterTable->setModel( m_paramsModel );
+	m_parameterTable->setColumnHidden( snipet_params_id, true );
+	m_parameterTable->setColumnHidden( snipet_params_snipet_id, true );
+	m_parameterTable->setColumnHidden( snipet_params_order, true );
+	m_parameterTable->resizeColumnToContents( snipet_params_name );
+
+	m_delegate = new ParametersDelegate( m_parameterTable );
+	m_parameterTable->setItemDelegate( m_delegate );
+
+	// Go to snipet
 	m_mapper->setCurrentIndex( row );
 }
 
@@ -195,6 +223,10 @@ void SnipetPropertyDlgImpl::setParentId( int id ) {
 void SnipetPropertyDlgImpl::m_paramsModel_beforeInsert ( QSqlRecord & record ) {
 	// The id is normally created
 	record.setValue( snipet_params_snipet_id, m_id );
+}
+
+void SnipetPropertyDlgImpl::m_paramsModel_primeInsert( int row, QSqlRecord & record ) {
+	record.setValue( snipet_params_name, tr("Parameter %1").arg( row + 1 ) );
 }
 
 void SnipetPropertyDlgImpl::m_textEdit_textChanged() {
@@ -272,6 +304,11 @@ void SnipetPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 	m_categoryTreeView->expandAll();
 }
 
+void SnipetPropertyDlgImpl::on_m_buttons_rejected() {
+	m_mapper->revert();
+	m_paramsModel->revertAll();
+}
+
 void SnipetPropertyDlgImpl::on_m_buttons_accepted() {
 	// To create the Id if necessary
 	m_mapper->submit();
@@ -326,6 +363,6 @@ void SnipetPropertyDlgImpl::on_m_buttons_accepted() {
 	if( countParameter < rw )
 		m_paramsModel->removeRows( countParameter, rw - countParameter );
 
-	m_paramsModel->submit();
+	m_paramsModel->submitAll();
 }
 

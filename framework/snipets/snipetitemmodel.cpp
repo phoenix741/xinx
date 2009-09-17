@@ -344,6 +344,10 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 		QModelIndex sourceIndex = mapToSource( index );
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		return record.value( list_type );
+	} else if( role == SnipetItemModel::SnipetParentIdRole ) {
+		QModelIndex sourceIndex = mapToSource( index );
+		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+		return record.value( list_parentid );
 	}
 
 	return QAbstractProxyModel::data( index, role );
@@ -359,13 +363,17 @@ void SnipetItemModel::clear() {
 	emit layoutChanged();
 }
 
-void SnipetItemModel::removeSnipet( const QModelIndexList & indexes ) {
+void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * parent ) {
 	foreach( const QModelIndex & index, indexes ) {
 		Mapping * parrentMapping = static_cast<Mapping*>( index.internalPointer() );
 		int sourceRowIndex = parrentMapping->source_rows.at( index.row() );
 		Mapping * rowMapping = m_sourcesIndexMapping.value( sourceRowIndex );
 
-		SnipetDatabaseManager::self()->removeSnipet( rowMapping->id );
+		if( rowMapping->is_category ) {
+			SnipetDatabaseManager::self()->removeCategory( rowMapping->id, parent );
+		} else {
+			SnipetDatabaseManager::self()->removeSnipet( rowMapping->id, parent );
+		}
 	}
 
 	select( m_filter );
