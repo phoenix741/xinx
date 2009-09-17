@@ -309,24 +309,45 @@ Qt::ItemFlags SnipetItemModel::flags( const QModelIndex & index ) const {
 	return 0;
 }
 
+QStringList SnipetItemModel::mimeTypes() const {
+	QStringList types = QAbstractProxyModel::mimeTypes();
+	types << "application/snipet.id.list";
+	return types;
+}
+
 Qt::DropActions SnipetItemModel::supportedDropActions() const {
 	return Qt::MoveAction;
 }
 
+QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
+	QMimeData * mimeData = QAbstractProxyModel::mimeData( indexes );
+	QByteArray encodedData;
+	QDataStream stream( &encodedData, QIODevice::WriteOnly );
+	
+	foreach( QModelIndex index, indexes ) {
+		if( index.isValid() ) {
+			QString type = data( index, SnipetTypeRole ).toString();
+			int id = data( index, SnipetIdRole ).toInt();
+			stream << id << type;
+		}
+	}
+	
+	mimeData->setData( "application/snipet.id.list", encodedData );
+	return mimeData;
+}
+
 bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent ) {
-	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/x-qabstractitemmodeldatalist" ) ) {
+	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/snipet.id.list" ) ) {
 		qDebug() << "Move item to " << row << ", " << column << " with parent " << parent;
 		qDebug() << data->formats();
 
-		QByteArray itemData = data->data("application/x-qabstractitemmodeldatalist");
+		QByteArray itemData = data->data("application/snipet.id.list");
 		QDataStream stream(&itemData, QIODevice::ReadOnly);
-		QModelIndexList list;
-		QModelIndex index;
-		//int copiedRow, copiedColumn;
-		//QMap<int, QVariant> variant;
-		stream >> index;
+		int id;
+		QString type;
+		stream >> id >> type;
 
-		qDebug() << "Datas : "<< list;
+		qDebug() << "Datas : "<< id << type;
 
 		return true;
 	}
