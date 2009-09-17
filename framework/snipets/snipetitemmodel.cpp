@@ -304,7 +304,7 @@ Qt::ItemFlags SnipetItemModel::flags( const QModelIndex & index ) const {
 			return Qt::ItemIsEnabled;
 		}
 		*/
-		return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 	}
 	return 0;
 }
