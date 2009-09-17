@@ -29,6 +29,8 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
+#include <QDebug>
+#include <QMimeData>
 
 /* SnipetItemModel */
 
@@ -297,16 +299,38 @@ int SnipetItemModel::columnCount( const QModelIndex & index ) const {
 
 Qt::ItemFlags SnipetItemModel::flags( const QModelIndex & index ) const {
 	if( index.isValid() ) {
-		/*
 		QModelIndex sourceIndex = mapToSource( index );
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		if( record.value( list_type ).toString() == "CATEGORY" ) {
-			return Qt::ItemIsEnabled;
+			return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 		}
-		*/
-		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
 	}
 	return 0;
+}
+
+Qt::DropActions SnipetItemModel::supportedDropActions() const {
+	return Qt::MoveAction;
+}
+
+bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent ) {
+	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/x-qabstractitemmodeldatalist" ) ) {
+		qDebug() << "Move item to " << row << ", " << column << " with parent " << parent;
+		qDebug() << data->formats();
+
+		QByteArray itemData = data->data("application/x-qabstractitemmodeldatalist");
+		QDataStream stream(&itemData, QIODevice::ReadOnly);
+		QModelIndexList list;
+		QModelIndex index;
+		//int copiedRow, copiedColumn;
+		//QMap<int, QVariant> variant;
+		stream >> index;
+
+		qDebug() << "Datas : "<< list;
+
+		return true;
+	}
+	return false;
 }
 
 QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
