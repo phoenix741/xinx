@@ -75,6 +75,8 @@ void ParametersDelegate::setCountParameter( int parameter ) {
 	}
 }
 
+Q_DECLARE_METATYPE( QSqlRecord );
+
 /* SnipetPropertyDlgImpl */
 
 SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ), m_db( db ), m_id( snipetId ) {
@@ -92,6 +94,7 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_paramsModel->select();
 	m_paramsModel->setHeaderData( snipet_params_name, Qt::Horizontal, tr("Name") );
 	m_paramsModel->setHeaderData( snipet_params_default_value, Qt::Horizontal, tr("Default Value") );
+	connect( m_paramsModel, SIGNAL(beforeInsert(QSqlRecord&)), this, SLOT(m_paramsModel_beforeInsert(QSqlRecord&)) );
 
 	m_parameterTable->setModel( m_paramsModel );
 	m_parameterTable->setColumnHidden( snipet_params_id, true );
@@ -187,6 +190,11 @@ void SnipetPropertyDlgImpl::duplicate() {
 
 void SnipetPropertyDlgImpl::setParentId( int id ) {
 	m_categoryTreeView->setCategoryId( id );
+}
+
+void SnipetPropertyDlgImpl::m_paramsModel_beforeInsert ( QSqlRecord & record ) {
+	// The id is normally created
+	record.setValue( snipet_params_snipet_id, m_id );
 }
 
 void SnipetPropertyDlgImpl::m_textEdit_textChanged() {

@@ -53,6 +53,7 @@ private slots:
 	void on_m_buttons_accepted();
 	void m_mapper_currentIndexChanged( int index );
 	void m_textEdit_textChanged();
+	void m_paramsModel_beforeInsert ( QSqlRecord & record );
 private:
 	enum {
 		snipet_params_id = 0,
