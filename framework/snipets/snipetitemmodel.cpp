@@ -327,8 +327,9 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 	foreach( QModelIndex index, indexes ) {
 		if( index.isValid() ) {
 			QString type = data( index, SnipetTypeRole ).toString();
+			QString name = data( index, Qt::DisplayRole ).toString();
 			int id = data( index, SnipetIdRole ).toInt();
-			stream << id << type;
+			stream << id << type << name;
 		}
 	}
 	
@@ -343,11 +344,14 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 
 		QByteArray itemData = data->data("application/snipet.id.list");
 		QDataStream stream(&itemData, QIODevice::ReadOnly);
-		int id;
-		QString type;
-		stream >> id >> type;
 
-		qDebug() << "Datas : "<< id << type;
+		while( ! stream.atEnd() ) {
+			int id;
+			QString type, name;
+			stream >> id >> type >> name;
+
+			qDebug() << "Datas : "<< id << type;
+		}
 
 		return true;
 	}
