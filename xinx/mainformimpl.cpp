@@ -128,7 +128,7 @@ void MainformImpl::createMenus() {
 	m_menus.insert( "tools", toolsMenu = new QMenu( tr("&Tools"), m_menuBar ) );
 	m_menus.insert( "help", helpMenu = new QMenu( tr("&Help"), m_menuBar ) );
 	m_scriptMenu = new QMenu( tr("&Script"), m_menuBar );
-	m_snipetMenu = SnipetDatabaseManager::self()->createSnipetMenu( tr("&Snipet"), m_menuBar );
+	m_snipetMenu = SnipetManager::self()->createSnipetMenu( tr("&Snipet"), m_menuBar );
 	connect( m_snipetMenu, SIGNAL(snipetTriggered(int)), this, SLOT(callSnipetAction(int)) );
 
 	m_toolBars.insert( "project", projectToolBar = new QToolBar( this ) );
@@ -910,7 +910,7 @@ void MainformImpl::callSnipetAction( int snipetId ) {
 	// TODO : If no editor, if script return false ... disable action. maybe manage a setEditor on the menu.
 	if( TabEditor::isTextFileEditor( m_tabEditors->currentEditor() ) ) {
 		QString result;
-		if( SnipetDatabaseManager::self()->callSnipet( snipetId, &result, this ) ) {
+		if( SnipetManager::self()->callSnipet( snipetId, &result, this ) ) {
 			XinxCodeEdit * editor = static_cast<TextFileEditor*>( m_tabEditors->currentEditor() )->textEdit();
 			editor->insertText( result );
 		}

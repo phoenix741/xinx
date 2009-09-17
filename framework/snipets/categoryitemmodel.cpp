@@ -46,16 +46,15 @@ CategoryItemModel::~CategoryItemModel() {
 void CategoryItemModel::select() {
 	// Set the query used all snipet
 	m_sourceModel->setQuery(
-			"SELECT id, parent_id, name, ifnull(category_order,0) as list_order "
+			"SELECT id, parent_id, name "
 			"FROM categories "
-			"ORDER BY list_order", m_db
+			"ORDER BY name", m_db
 			);
 
 	// Define name for header column
 	m_sourceModel->setHeaderData( list_id, Qt::Horizontal, tr("Id") );
 	m_sourceModel->setHeaderData( list_parentid, Qt::Horizontal, tr("Parent") );
 	m_sourceModel->setHeaderData( list_name, Qt::Horizontal, tr("Name") );
-	m_sourceModel->setHeaderData( list_order, Qt::Horizontal, tr("Order") );
 
 	// Initialize the mapping
 	createMapping();

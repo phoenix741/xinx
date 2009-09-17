@@ -67,7 +67,7 @@ void CategoryPropertyDlgImpl::setupUi() {
 	Ui::CategoryPropertyDialog::setupUi( this );
 
 	// List of category
-	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
+	m_categoryModel = SnipetManager::self()->createCategoryItemModel( m_categoryTreeView );
 	m_categoryModel->select();
 	m_categoryTreeView->setModel( m_categoryModel );
 	m_categoryTreeView->expandAll();
@@ -105,7 +105,7 @@ void CategoryPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 
 	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->addCategory( id, false, this );
+	SnipetManager::self()->addCategory( id, false, this );
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();
@@ -117,7 +117,7 @@ void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 
 	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->removeCategory( id, this );
+	SnipetManager::self()->removeCategory( id, this );
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();

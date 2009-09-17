@@ -60,14 +60,13 @@ public:
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
 protected:
-	friend class SnipetDatabaseManager;
+	friend class SnipetManager;
 	CategoryItemModel( QSqlDatabase db, QObject * parent = 0 );
 
 	enum {
 		list_id          = 0,
 		list_parentid    = 1,
-		list_name        = 2,
-		list_order       = 3
+		list_name        = 2
 	};
 
 	QSqlQueryModel * sourceModel();

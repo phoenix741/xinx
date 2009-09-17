@@ -79,9 +79,9 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	*/
 
 	// Snipet
-	SnipetDatabaseManager::self()->database().transaction();
+	SnipetManager::self()->database().transaction();
 
-	m_snipetModel = SnipetDatabaseManager::self()->createSnipetItemModel( m_snipetTreeView );
+	m_snipetModel = SnipetManager::self()->createSnipetItemModel( m_snipetTreeView );
 	m_snipetTreeView->setModel( m_snipetModel );
 	connect( m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(m_snipetTreeView_selectionChanged()) );
 
@@ -584,6 +584,7 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 		SnipetList list;
 		list.loadFromFile( importedFilename );
 		m_snipetModel->importSnipetList( list );
+		m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 		m_snipetTreeView->expandAll();
 	}
 }
@@ -610,7 +611,7 @@ void CustomDialogImpl::m_addSnipetPushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int categoryId = index.size() ? getCategory( index.at(0) ) : 1;
 
-	SnipetDatabaseManager::self()->addSnipet( categoryId, this );
+	SnipetManager::self()->addSnipet( categoryId, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
@@ -621,7 +622,7 @@ void CustomDialogImpl::m_addCategoryPushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int categoryId = index.size() ? getCategory( index.at(0) ) : 1;
 
-	SnipetDatabaseManager::self()->addCategory( categoryId, true, this );
+	SnipetManager::self()->addCategory( categoryId, true, this );
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
@@ -650,7 +651,7 @@ void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
 	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->duplicateSnipet( snipetId, this );
+	SnipetManager::self()->duplicateSnipet( snipetId, this );
 
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
@@ -662,9 +663,9 @@ void CustomDialogImpl::on_m_snipetTreeView_doubleClicked( const QModelIndex & in
 	/* Modify */
 	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
 	if( index.data( SnipetItemModel::SnipetTypeRole ).toString() == "CATEGORY" ) {
-		SnipetDatabaseManager::self()->modifyCategory( id, this );
+		SnipetManager::self()->modifyCategory( id, this );
 	} else {
-		SnipetDatabaseManager::self()->modifySnipet( id, this );
+		SnipetManager::self()->modifySnipet( id, this );
 	}
 	m_snipetModel->select();
 	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
@@ -687,6 +688,7 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 
 void CustomDialogImpl::on_m_snipetFilterLineEdit_textChanged( const QString & filterText ) {
 	m_snipetModel->select( filterText );
+	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 	m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
@@ -702,16 +704,16 @@ void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
 void CustomDialogImpl::on_m_buttonBox_clicked( QAbstractButton * button ) {
 	if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::ResetRole ) {
 		// Snipet
-		SnipetDatabaseManager::self()->database().rollback();
+		SnipetManager::self()->database().rollback();
 
 		m_config.setDefault();
 		showConfig();
 	} else if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::AcceptRole ) {
 		// Snipet
-		SnipetDatabaseManager::self()->database().commit();
+		SnipetManager::self()->database().commit();
 	} else if( m_buttonBox->buttonRole( button ) == QDialogButtonBox::RejectRole ) {
 		// Snipet
-		SnipetDatabaseManager::self()->database().rollback();
+		SnipetManager::self()->database().rollback();
 	}
 
 }

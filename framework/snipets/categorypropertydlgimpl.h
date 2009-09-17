@@ -50,7 +50,7 @@ private slots:
 	void on_m_removeCategoryButton_clicked();
 	void on_m_buttons_accepted();
 private:
-	friend class SnipetDatabaseManager;
+	friend class SnipetManager;
 
 	QSqlTableModel * m_categoryTableModel;
 	QDataWidgetMapper * m_mapper;

@@ -31,7 +31,7 @@
 #include <QVector>
 
 // Xinx header
-#include "snipetlist.h"
+#include "snipets/snipetlist.h"
 
 /* SnipetItemModel */
 
@@ -79,7 +79,7 @@ public:
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
 protected:
-	friend class SnipetDatabaseManager;
+	friend class SnipetManager;
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 
 	enum {
@@ -89,9 +89,8 @@ protected:
 		list_name        = 3,
 		list_description = 4,
 		list_shortcut    = 5,
-		list_order       = 6,
-		list_type        = 7,
-		list_availablejs = 8
+		list_type        = 6,
+		list_availablejs = 7
 	};
 
 	QSqlQueryModel * sourceModel();
@@ -101,8 +100,8 @@ protected:
 	QSqlDatabase database() const;
 private:
 	struct Mapping {
-		bool is_category;  // Has debug information only.
-		int id, parrentId; // Has debug information only.
+		bool is_category;
+		int id, parrentId;
 		int parentIndex;
 		QVector<int> source_rows;
 		QMap<int,Mapping*>::const_iterator map_iter;
@@ -111,6 +110,7 @@ private:
 
 	IndexMap m_sourcesIndexMapping;
 	QHash<int,int> m_categoryIdMapping;
+	QHash<int,int> m_snipetIdMapping;
 
 	int proxyColumnToSource( int proxyColumn ) const;
 	int sourceColumnToProxy( int sourceColumn ) const;

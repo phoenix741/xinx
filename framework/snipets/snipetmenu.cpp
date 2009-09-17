@@ -45,23 +45,26 @@ Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
 
 			engine.pushContext();
 			QScriptValue result = engine.evaluate( availableScript );
-			engine.popContext();
-
+			if( result.isError() ) {
+				qWarning() << "Error when calling script for record " << record.value( list_id ).toInt() << " : " << result.toString();
+			} else {
 #if QT_VERSION > 0x040500
-			if( ! result.isBool() ) {
-				qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.";
-			} else {
-				if( ! result.toBool() )
-					return Qt::ItemIsSelectable;
-			}
+				if( ! result.isBool() ) {
+					qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.\n"<< result.toString();
+				} else {
+					if( ! result.toBool() )
+						return Qt::ItemIsSelectable;
+				}
 #else
-			if( ! result.isBoolean() ) {
-				qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.";
-			} else {
-				if( ! result.toBoolean() )
-					return Qt::ItemIsSelectable;
-			}
+				if( ! result.isBoolean() ) {
+					qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.\n"<< result.toString();
+				} else {
+					if( ! result.toBoolean() )
+						return Qt::ItemIsSelectable;
+				}
 #endif
+			}
+			engine.popContext();
 		}
 
 		// The script is the only restriction for category

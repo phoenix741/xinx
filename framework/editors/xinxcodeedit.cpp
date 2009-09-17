@@ -642,7 +642,7 @@ bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
 
 void XinxCodeEdit::key_snipet() {
 	QString snipet = textUnderCursor( textCursor(), true ), result;
-	if( SnipetDatabaseManager::self()->callSnipet( snipet, &result, qApp->activeWindow() ) ) {
+	if( SnipetManager::self()->callSnipet( snipet, &result, qApp->activeWindow() ) ) {
 		insertText( result );
 	}
 }
@@ -710,7 +710,7 @@ void XinxCodeEdit::postKeyPressEvent( QKeyEvent * e, QEditor * editor ) {
 	bool hasModifier = ( e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) );// && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor( textCursor() ), result;
 
-	if( completionPrefix.length() && SnipetDatabaseManager::self()->callAutomaticSnipet( completionPrefix, &result, qApp->activeWindow() ) ) {
+	if( completionPrefix.length() && SnipetManager::self()->callAutomaticSnipet( completionPrefix, &result, qApp->activeWindow() ) ) {
 		textUnderCursor( textCursor(), true );
 		insertText( result );
 		c->popup()->hide();

@@ -36,12 +36,12 @@ class SnipetMenu;
  * The goal of SnipetDataBaseManager is too manage the new snipet interface
  * of XINX. This interface create table if necessary in the SQL database.
  */
-class SnipetDatabaseManager : public QObject {
+class SnipetManager : public QObject {
 	Q_OBJECT
 public:
-	~SnipetDatabaseManager();
+	~SnipetManager();
 
-	static SnipetDatabaseManager * self();
+	static SnipetManager * self();
 
 	QSqlDatabase database();
 
@@ -66,12 +66,12 @@ public:
 
 	int getCategoryId( const QStringList & category );
 private:
-	SnipetDatabaseManager();
+	SnipetManager();
 	bool openDatabase();
 	bool createDatabase( QSqlDatabase db );
 	void closeDatabase();
 
-	static SnipetDatabaseManager * s_self;
+	static SnipetManager * s_self;
 };
 
 #endif /* _SNIPETMANAGER_H_ */

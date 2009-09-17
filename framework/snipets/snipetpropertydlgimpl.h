@@ -39,7 +39,7 @@ public:
 	virtual ~SnipetPropertyDlgImpl();
 
 	void setParentId( int id );
-	void duplicate();
+	void duplicate( int id );
 protected:
 	SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
@@ -57,14 +57,15 @@ private slots:
 	void m_paramsModel_primeInsert( int row, QSqlRecord & record );
 	void m_paramsModel_beforeInsert ( QSqlRecord & record );
 private:
+	void initialiseExtentions( int id );
+
 	enum {
 		snipet_params_id = 0,
 		snipet_params_snipet_id = 1,
 		snipet_params_name = 2,
-		snipet_params_default_value = 3,
-		snipet_params_order = 4
+		snipet_params_default_value = 3
 	};
-	friend class SnipetDatabaseManager;
+	friend class SnipetManager;
 
 	QSqlDatabase m_db;
 	QSqlTableModel * m_snipetModel, * m_paramsModel;

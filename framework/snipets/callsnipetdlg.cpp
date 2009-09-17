@@ -96,7 +96,7 @@ void CallSnipetDialogImpl::on_m_tabWidget_currentChanged( int value ) {
 	if( value == 1 ) { // Show result tab, so we calculate the result
 		QString result;
 		QStringList parameters = values();
-		if( SnipetDatabaseManager::self()->executeSnipetScript( m_snipetText, parameters, &result ) )
+		if( SnipetManager::self()->executeSnipetScript( m_snipetText, parameters, &result ) )
 			m_resultEdit->setPlainText( result );
 		else
 			m_resultEdit->setPlainText( tr("Cannot execute the snipet. Please check the script in the snipet in configuration dialog.") );
@@ -126,7 +126,7 @@ void CallSnipetDialogImpl::setupUi( QSqlDatabase db, int snipetId, QDialog * par
 	m_showDialog  = snipetQuery.value( 4 ).toBool();
 
 	/* Initialise the snipet parameter */
-	QSqlQuery paramsQuery( "SELECT name, default_value FROM snipets_params WHERE snipet_id=:id ORDER BY params_order", db );
+	QSqlQuery paramsQuery( "SELECT name, default_value FROM snipets_params WHERE snipet_id=:id ORDER BY id", db );
 	paramsQuery.bindValue( ":id", snipetId );
 
 	result = paramsQuery.exec();

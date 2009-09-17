@@ -30,7 +30,7 @@ class SnipetMenuModel : public SnipetItemModel {
 public:
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 protected:
-	friend class SnipetDatabaseManager;
+	friend class SnipetManager;
 
 	SnipetMenuModel( QSqlDatabase db, QObject * parent = 0 );
 private:

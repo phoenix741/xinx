@@ -66,10 +66,11 @@ QString Snipet::type() const {
 }
 
 void Snipet::setType( const QString & type ) {
+	QString extention = "*." + type;
 	if( m_extentions.size() ) {
-		m_extentions[0] = type;
+		m_extentions[0] = extention;
 	} else {
-		m_extentions << type;
+		m_extentions << extention;
 	}
 }
 

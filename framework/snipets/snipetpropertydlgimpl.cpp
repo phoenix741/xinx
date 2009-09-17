@@ -95,7 +95,7 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_paramsModel->setEditStrategy( QSqlTableModel::OnManualSubmit );
 	m_paramsModel->setTable( "snipets_params" );
 	m_paramsModel->setFilter( QString( "snipet_id = %1" ).arg( snipetId ) );
-	m_paramsModel->setSort( snipet_params_order, Qt::AscendingOrder );
+	m_paramsModel->setSort( snipet_params_id, Qt::AscendingOrder );
 	m_paramsModel->select();
 	m_paramsModel->setHeaderData( snipet_params_name, Qt::Horizontal, tr("Name") );
 	m_paramsModel->setHeaderData( snipet_params_default_value, Qt::Horizontal, tr("Default Value") );
@@ -105,7 +105,6 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( int snipetId, QSqlDatabase db, QWi
 	m_parameterTable->setModel( m_paramsModel );
 	m_parameterTable->setColumnHidden( snipet_params_id, true );
 	m_parameterTable->setColumnHidden( snipet_params_snipet_id, true );
-	m_parameterTable->setColumnHidden( snipet_params_order, true );
 	m_parameterTable->resizeColumnToContents( snipet_params_name );
 
 	m_delegate = new ParametersDelegate( m_parameterTable );
@@ -137,7 +136,7 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent,
 	m_paramsModel->setEditStrategy( QSqlTableModel::OnManualSubmit );
 	m_paramsModel->setTable( "snipets_params" );
 	m_paramsModel->setFilter( "snipet_id is null" );
-	m_paramsModel->setSort( snipet_params_order, Qt::AscendingOrder );
+	m_paramsModel->setSort( snipet_params_id, Qt::AscendingOrder );
 	m_paramsModel->select();
 	m_paramsModel->setHeaderData( snipet_params_name, Qt::Horizontal, tr("Name") );
 	m_paramsModel->setHeaderData( snipet_params_default_value, Qt::Horizontal, tr("Default Value") );
@@ -147,7 +146,6 @@ SnipetPropertyDlgImpl::SnipetPropertyDlgImpl( QSqlDatabase db, QWidget * parent,
 	m_parameterTable->setModel( m_paramsModel );
 	m_parameterTable->setColumnHidden( snipet_params_id, true );
 	m_parameterTable->setColumnHidden( snipet_params_snipet_id, true );
-	m_parameterTable->setColumnHidden( snipet_params_order, true );
 	m_parameterTable->resizeColumnToContents( snipet_params_name );
 
 	m_delegate = new ParametersDelegate( m_parameterTable );
@@ -182,7 +180,7 @@ void SnipetPropertyDlgImpl::setupUi() {
 	m_keyLineEdit->setValidator( new QRegExpValidator( QRegExp( "[a-zA-Z0-9\\:\\-]*" ), this ) );
 
 	// List of category
-	m_categoryModel = SnipetDatabaseManager::self()->createCategoryItemModel( m_categoryTreeView );
+	m_categoryModel = SnipetManager::self()->createCategoryItemModel( m_categoryTreeView );
 	m_categoryModel->select();
 	m_categoryTreeView->setModel( m_categoryModel );
 	m_categoryTreeView->expandAll();
@@ -207,13 +205,31 @@ void SnipetPropertyDlgImpl::createMapper() {
 	m_mapper->addMapping( m_availablePlainTextEdit, m_snipetModel->fieldIndex( "available_script" ) );
 }
 
-void SnipetPropertyDlgImpl::duplicate() {
-	int field = m_snipetModel->fieldIndex( "category_id" );
-	int row = m_snipetModel->rowCount();
-	m_snipetModel->insertRow( row );
-	QModelIndex index = m_snipetModel->index( row, field );
-	m_snipetModel->setData( index, 0 );
-	m_mapper->setCurrentIndex( row );
+void SnipetPropertyDlgImpl::duplicate( int id ) {
+	QSqlTableModel duplicateModel( this, m_db );
+	duplicateModel.setTable( "snipets" );
+	duplicateModel.setFilter( QString( "id = %1" ).arg( id ) );
+	duplicateModel.select();
+
+	QSqlRecord duplicateRecord = duplicateModel.record( 0 );
+	duplicateRecord.setValue( m_snipetModel->fieldIndex( "id" ), 0 );
+
+	m_snipetModel->setRecord( 0, duplicateRecord );
+	m_mapper->toFirst();
+
+	initialiseExtentions( id );
+
+	QSqlTableModel duplicateParamsModel( this, m_db );
+	duplicateParamsModel.setTable( "snipets_params" );
+	duplicateParamsModel.setFilter( QString( "snipet_id = %1" ).arg( id ) );
+	duplicateParamsModel.setSort( snipet_params_id, Qt::AscendingOrder );
+	duplicateParamsModel.select();
+
+	for( int i = 0 ; i < duplicateParamsModel.rowCount() ; i++ ) {
+		QSqlRecord duplicateParamsRecord = duplicateParamsModel.record( i );
+		duplicateParamsRecord.setValue( snipet_params_id, 0 );
+		m_paramsModel->setRecord( i, duplicateParamsRecord );
+	}
 }
 
 void SnipetPropertyDlgImpl::setParentId( int id ) {
@@ -249,13 +265,13 @@ void SnipetPropertyDlgImpl::m_textEdit_textChanged() {
 	m_delegate->setCountParameter( countParameter );
 }
 
-void SnipetPropertyDlgImpl::m_mapper_currentIndexChanged( int index ) {
+void SnipetPropertyDlgImpl::initialiseExtentions( int id ) {
 	m_extentionListWidget->selectionModel()->clearSelection();
-	if( m_id == -1 ) return ; // In creation, no row to read
+	if( id == -1 ) return ; // In creation, no row to read
 
 	QSqlQuery extentionsQuery( m_db );
 	extentionsQuery.prepare( "SELECT distinct extention FROM snipets_extentions WHERE snipet_id=:id" );
-	extentionsQuery.bindValue( ":id", m_id );
+	extentionsQuery.bindValue( ":id", id );
 
 	bool result = extentionsQuery.exec();
 	Q_ASSERT( result );
@@ -273,6 +289,12 @@ void SnipetPropertyDlgImpl::m_mapper_currentIndexChanged( int index ) {
 	}
 }
 
+void SnipetPropertyDlgImpl::m_mapper_currentIndexChanged( int index ) {
+	Q_UNUSED( index );
+
+	initialiseExtentions( m_id );
+}
+
 void SnipetPropertyDlgImpl::on_m_categoryTreeView_activated ( const QModelIndex & index ) {
 	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
 
@@ -286,7 +308,7 @@ void SnipetPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 
 	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->addCategory( id, false, this );
+	SnipetManager::self()->addCategory( id, false, this );
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();
@@ -298,7 +320,7 @@ void SnipetPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 
 	int id = list.at( 0 ).data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	SnipetDatabaseManager::self()->removeCategory( id, this );
+	SnipetManager::self()->removeCategory( id, this );
 
 	m_categoryModel->select();
 	m_categoryTreeView->expandAll();

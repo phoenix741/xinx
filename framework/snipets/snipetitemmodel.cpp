@@ -52,22 +52,22 @@ void SnipetItemModel::select( const QString & filter ) {
 	if( filter.isEmpty() ) {
 		// Set the query used all snipet
 		query.prepare(
-			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type, ifnull(available_script,'') "
+			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
 			"FROM categories "
 			"UNION ALL "
-			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type, ifnull(available_script,'') "
+			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
 			"FROM snipets "
-			"ORDER BY list_order"
+			"ORDER BY type, name"
 				);
 	} else {
 		query.prepare(
-			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'C' || ifnull(category_order,0) as list_order, 'CATEGORY' as type, ifnull(available_script,'') "
+			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
 			"FROM categories "
 			"UNION ALL "
-			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'S' || ifnull(snipet_order,0) as list_order, 'SNIPET' as type, ifnull(available_script,'') "
+			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
 			"FROM snipets "
 			"WHERE name||description||shortcut like '%'||:filter||'%'"
-			"ORDER BY list_order"
+			"ORDER BY type, name"
 				);
 		query.bindValue( ":filter", filter );
 	}
@@ -82,7 +82,6 @@ void SnipetItemModel::select( const QString & filter ) {
 	m_sourceModel->setHeaderData( list_name, Qt::Horizontal, tr("Name") );
 	m_sourceModel->setHeaderData( list_description, Qt::Horizontal, tr("Description") );
 	m_sourceModel->setHeaderData( list_shortcut, Qt::Horizontal, tr("Shortcut") );
-	m_sourceModel->setHeaderData( list_order, Qt::Horizontal, tr("Order") );
 	m_sourceModel->setHeaderData( list_type, Qt::Horizontal, tr("Type") );
 	m_sourceModel->setHeaderData( list_availablejs, Qt::Horizontal, tr("Available Script") );
 
@@ -116,8 +115,10 @@ void SnipetItemModel::createMapping() {
 			if( record.value( list_type ).toString() == "CATEGORY" ) {
 				m->is_category = true;
 				m_categoryIdMapping[ record.value( list_id ).toInt() ] = i;
-			} else
+			} else {
 				m->is_category = false;
+				m_snipetIdMapping[ record.value( list_id ).toInt() ] = i;
+			}
 
 			m->id = record.value( list_id ).toInt();
 		} else { // Create the root Item
@@ -370,9 +371,9 @@ void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * 
 		Mapping * rowMapping = m_sourcesIndexMapping.value( sourceRowIndex );
 
 		if( rowMapping->is_category ) {
-			SnipetDatabaseManager::self()->removeCategory( rowMapping->id, parent );
+			SnipetManager::self()->removeCategory( rowMapping->id, parent );
 		} else {
-			SnipetDatabaseManager::self()->removeSnipet( rowMapping->id, parent );
+			SnipetManager::self()->removeSnipet( rowMapping->id, parent );
 		}
 	}
 
@@ -380,7 +381,7 @@ void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * 
 }
 
 void SnipetItemModel::importSnipetList( const SnipetList & list ) {
-	SnipetDatabaseManager::self()->importSnipetList( list );
+	SnipetManager::self()->importSnipetList( list );
 	select( m_filter );
 }
 
