@@ -46,6 +46,7 @@ public:
 
 	virtual ~SnipetItemModel();
 
+	virtual QModelIndex index( bool isCategory, int id ) const;
 	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
 	virtual QModelIndex parent( const QModelIndex & index ) const;
 
@@ -106,9 +107,8 @@ private:
 	struct Mapping {
 		bool is_category;
 		int id, parrentId;
-		int parentIndex;
+		int index, parentIndex;
 		QVector<int> source_rows;
-		QMap<int,Mapping*>::const_iterator map_iter;
 	};
 	typedef QMap<int,Mapping*> IndexMap;
 

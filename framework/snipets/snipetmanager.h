@@ -27,6 +27,7 @@
 // Qt header
 #include <QObject>
 #include <QSqlDatabase>
+#include <QObjectCleanupHandler>
 
 class CategoryItemModel;
 class SnipetItemModel;
@@ -71,6 +72,7 @@ private:
 	bool createDatabase( QSqlDatabase db );
 	void closeDatabase();
 
+	QObjectCleanupHandler m_handler;
 	static SnipetManager * s_self;
 };
 

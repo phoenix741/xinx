@@ -41,6 +41,7 @@ CategoryItemModel::CategoryItemModel( QSqlDatabase db, QObject * parent ) : QAbs
 
 CategoryItemModel::~CategoryItemModel() {
 	qDeleteAll( m_sourcesIndexMapping );
+	delete m_sourceModel;
 }
 
 void CategoryItemModel::select() {
@@ -192,18 +193,19 @@ QModelIndex CategoryItemModel::index( int row, int column, const QModelIndex & p
 }
 
 QModelIndex CategoryItemModel::index( int categoryId ) {
-	foreach( Mapping * m, m_sourcesIndexMapping ) {
-		if( m->id == categoryId ) {
-			int parentRow = m->parentIndex;
-			IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
-			Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
+	int sourceRow = m_categoryIdMapping.value( categoryId, -1 );
+	if( sourceRow >= 0 ) {
+		Mapping * m = m_sourcesIndexMapping.value( sourceRow );
 
-			Mapping * parrentMapping = parentIt.value();
+		int parentRow = m->parentIndex;
+		IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
+		Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
 
-			int proxyRow = parrentMapping->source_rows.indexOf( m->map_iter.key() );
+		Mapping * parrentMapping = parentIt.value();
 
-			return createIndex( proxyRow, 0, *parentIt );
-		}
+		int proxyRow = parrentMapping->source_rows.indexOf( m->map_iter.key() );
+
+		return createIndex( proxyRow, 0, *parentIt );
 	}
 	return QModelIndex();
 }

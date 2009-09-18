@@ -47,6 +47,7 @@ SnipetManager::SnipetManager() {
 }
 
 SnipetManager::~SnipetManager() {
+	m_handler.clear();
 	closeDatabase();
 	if( s_self == this )
 		s_self = NULL;
@@ -68,11 +69,15 @@ QSqlDatabase SnipetManager::database() {
 }
 
 SnipetItemModel * SnipetManager::createSnipetItemModel( QObject * parent ) {
-	return new SnipetItemModel( database(), parent );
+	SnipetItemModel * model = new SnipetItemModel( database(), parent );
+	m_handler.add( model );
+	return model;
 }
 
 CategoryItemModel * SnipetManager::createCategoryItemModel( QObject * parent ) {
-	return new CategoryItemModel( database(), parent );
+	CategoryItemModel * model = new CategoryItemModel( database(), parent );
+	m_handler.add( model );
+	return model;
 }
 
 SnipetMenu * SnipetManager::createSnipetMenu( const QString & title, QWidget * parent ) {
@@ -80,7 +85,7 @@ SnipetMenu * SnipetManager::createSnipetMenu( const QString & title, QWidget * p
 	menu->setTitle( title );
 
 	SnipetItemModel * snipetModel = new SnipetMenuModel( database(), menu );
-
+	m_handler.add( snipetModel );
 	menu->setModel( snipetModel );
 
 	return menu;

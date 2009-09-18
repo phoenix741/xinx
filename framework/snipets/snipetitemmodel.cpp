@@ -44,6 +44,7 @@ SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : QAbstrac
 
 SnipetItemModel::~SnipetItemModel() {
 	qDeleteAll( m_sourcesIndexMapping );
+	delete m_sourceModel;
 }
 
 void SnipetItemModel::select( const QString & filter ) {
@@ -105,24 +106,24 @@ void SnipetItemModel::createMapping() {
 	int source_rows = m_sourceModel->rowCount();
 	for( int i = -1; i < source_rows; ++i ) {
 		Mapping * m = new Mapping;
-		IndexMap::const_iterator it = IndexMap::const_iterator( m_sourcesIndexMapping.insert( i, m ) );
-		m->map_iter = it;
+		m_sourcesIndexMapping.insert( i, m );
 		m->is_category = false;
 		m->parrentId = 0;
+		m->index = i;
 		m->parentIndex = 0;
 
 		if( i >= 0 ) {
-			QSqlRecord record = m_sourceModel->record( i );
+		QSqlRecord record = m_sourceModel->record( i );
 
-			if( record.value( list_type ).toString() == "CATEGORY" ) {
-				m->is_category = true;
-				m_categoryIdMapping[ record.value( list_id ).toInt() ] = i;
-			} else {
-				m->is_category = false;
-				m_snipetIdMapping[ record.value( list_id ).toInt() ] = i;
-			}
+		if( record.value( list_type ).toString() == "CATEGORY" ) {
+			m->is_category = true;
+			m_categoryIdMapping[ record.value( list_id ).toInt() ] = i;
+		} else {
+			m->is_category = false;
+			m_snipetIdMapping[ record.value( list_id ).toInt() ] = i;
+		}
 
-			m->id = record.value( list_id ).toInt();
+		m->id = record.value( list_id ).toInt();
 		} else { // Create the root Item
 			m->is_category = true;
 			m->id = 0;
@@ -234,15 +235,37 @@ QModelIndex SnipetItemModel::mapToSource ( const QModelIndex & proxyIndex ) cons
 		return QModelIndex();
 	}
 
-	IndexMap::const_iterator it = static_cast<Mapping*>( proxyIndex.internalPointer() )->map_iter;
+	Mapping * m = static_cast<Mapping*>( proxyIndex.internalPointer() );
 
 	int sourceColumn = proxyColumnToSource( proxyIndex.column() );
 	if( sourceColumn == -1 ) return QModelIndex();
 
-	Mapping * m = it.value();
 	int sourceRow = m->source_rows.at( proxyIndex.row() );
 
 	return m_sourceModel->index( sourceRow, sourceColumn );
+}
+
+QModelIndex SnipetItemModel::index( bool isCategory, int id ) const {
+	int sourceRow = -1;
+	if( isCategory )
+		sourceRow = m_categoryIdMapping.value( id, -1 );
+	else
+		sourceRow = m_snipetIdMapping.value( id, -1 );
+
+	if( sourceRow >= 0 ) {
+		Mapping * m = m_sourcesIndexMapping.value( sourceRow );
+
+		int parentRow = m->parentIndex;
+		IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
+		Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
+
+		Mapping * parrentMapping = parentIt.value();
+
+		int proxyRow = parrentMapping->source_rows.indexOf( m->index );
+
+		return createIndex( proxyRow, 0, *parentIt );
+	}
+	return QModelIndex();
 }
 
 QModelIndex SnipetItemModel::index( int row, int column, const QModelIndex & parent ) const {
@@ -265,10 +288,9 @@ QModelIndex SnipetItemModel::index( int row, int column, const QModelIndex & par
 QModelIndex SnipetItemModel::parent( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return QModelIndex();
 
-	IndexMap::const_iterator it = static_cast<Mapping*>( index.internalPointer() )->map_iter;
-	Q_ASSERT( it != m_sourcesIndexMapping.constEnd() );
+	Mapping * m = static_cast<Mapping*>( index.internalPointer() );
 
-	int sourceRow = it.key();
+	int sourceRow = m->index;
 	if( sourceRow == -1 ) return QModelIndex();
 
 	QModelIndex sourceParent = m_sourceModel->index( sourceRow, proxyColumnToSource( 0 ) );
@@ -339,8 +361,10 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 
 bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent ) {
 	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/snipet.id.list" ) ) {
-		qDebug() << "Move item to " << row << ", " << column << " with parent " << parent;
-		qDebug() << data->formats();
+		int parentId = parent.data( SnipetIdRole ).toInt();
+
+//		qDebug() << "Move item to " << parentId << " at " << row << ", " << column << " with parent " << parent;
+//		qDebug() << data->formats();
 
 		QByteArray itemData = data->data("application/snipet.id.list");
 		QDataStream stream(&itemData, QIODevice::ReadOnly);
@@ -350,7 +374,29 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 			QString type, name;
 			stream >> id >> type >> name;
 
-			qDebug() << "Datas : "<< id << type;
+//			int sourceRow;
+			QSqlQuery updateQuery( m_db );
+			if( type == "CATEGORY" ) {
+//				sourceRow = m_categoryIdMapping.value( id );
+				updateQuery.prepare( "UPDATE categories SET parent_id=:new_parent WHERE id=:id" );
+			} else {
+//				sourceRow = m_snipetIdMapping.value( id );
+				updateQuery.prepare( "UPDATE snipets SET category_id=:new_parent WHERE id=:id" );
+			}
+			updateQuery.bindValue( ":new_parent", parentId );
+			updateQuery.bindValue( ":id", id );
+
+			bool result = updateQuery.exec();
+			Q_ASSERT( result );
+
+
+//			Mapping * mapping = m_sourcesIndexMapping.value( sourceRow );
+//			Mapping * parrentMapping = m_sourcesIndexMapping.value( mapping->parentIndex );
+
+
+
+//			qDebug() << "Datas : "<< id << type;
+			select( m_filter );
 		}
 
 		return true;
