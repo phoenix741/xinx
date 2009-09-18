@@ -103,6 +103,7 @@ protected:
 
 	QSqlDatabase database();
 	QSqlDatabase database() const;
+
 private:
 	struct Mapping {
 		bool is_category;

@@ -345,7 +345,7 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 	QMimeData * mimeData = QAbstractProxyModel::mimeData( indexes );
 	QByteArray encodedData;
 	QDataStream stream( &encodedData, QIODevice::WriteOnly );
-	
+
 	foreach( QModelIndex index, indexes ) {
 		if( index.isValid() ) {
 			QString type = data( index, SnipetTypeRole ).toString();
@@ -354,7 +354,7 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 			stream << id << type << name;
 		}
 	}
-	
+
 	mimeData->setData( "application/snipet.id.list", encodedData );
 	return mimeData;
 }
@@ -362,9 +362,6 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent ) {
 	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/snipet.id.list" ) ) {
 		int parentId = parent.data( SnipetIdRole ).toInt();
-
-//		qDebug() << "Move item to " << parentId << " at " << row << ", " << column << " with parent " << parent;
-//		qDebug() << data->formats();
 
 		QByteArray itemData = data->data("application/snipet.id.list");
 		QDataStream stream(&itemData, QIODevice::ReadOnly);
@@ -374,13 +371,10 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 			QString type, name;
 			stream >> id >> type >> name;
 
-//			int sourceRow;
 			QSqlQuery updateQuery( m_db );
 			if( type == "CATEGORY" ) {
-//				sourceRow = m_categoryIdMapping.value( id );
 				updateQuery.prepare( "UPDATE categories SET parent_id=:new_parent WHERE id=:id" );
 			} else {
-//				sourceRow = m_snipetIdMapping.value( id );
 				updateQuery.prepare( "UPDATE snipets SET category_id=:new_parent WHERE id=:id" );
 			}
 			updateQuery.bindValue( ":new_parent", parentId );
@@ -390,12 +384,6 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 			Q_ASSERT( result );
 
 
-//			Mapping * mapping = m_sourcesIndexMapping.value( sourceRow );
-//			Mapping * parrentMapping = m_sourcesIndexMapping.value( mapping->parentIndex );
-
-
-
-//			qDebug() << "Datas : "<< id << type;
 			select( m_filter );
 		}
 
