@@ -76,7 +76,7 @@ void CategoryItemModel::createMapping() {
 	for( int i = -1; i < source_rows; ++i ) {
 		Mapping * m = new Mapping;
 		IndexMap::const_iterator it = IndexMap::const_iterator( m_sourcesIndexMapping.insert( i, m ) );
-		m->map_iter = it;
+		m->index = i;
 		m->parrentId = 0;
 		m->parentIndex = 0;
 
@@ -164,12 +164,11 @@ QModelIndex CategoryItemModel::mapToSource ( const QModelIndex & proxyIndex ) co
 		return QModelIndex();
 	}
 
-	IndexMap::const_iterator it = static_cast<Mapping*>( proxyIndex.internalPointer() )->map_iter;
+	Mapping * m = static_cast<Mapping*>( proxyIndex.internalPointer() );
 
 	int sourceColumn = proxyColumnToSource( proxyIndex.column() );
 	if( sourceColumn == -1 ) return QModelIndex();
 
-	Mapping * m = it.value();
 	int sourceRow = m->source_rows.at( proxyIndex.row() );
 
 	return m_sourceModel->index( sourceRow, sourceColumn );
@@ -203,7 +202,7 @@ QModelIndex CategoryItemModel::index( int categoryId ) {
 
 		Mapping * parrentMapping = parentIt.value();
 
-		int proxyRow = parrentMapping->source_rows.indexOf( m->map_iter.key() );
+		int proxyRow = parrentMapping->source_rows.indexOf( m->index );
 
 		return createIndex( proxyRow, 0, *parentIt );
 	}
@@ -213,10 +212,9 @@ QModelIndex CategoryItemModel::index( int categoryId ) {
 QModelIndex CategoryItemModel::parent( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return QModelIndex();
 
-	IndexMap::const_iterator it = static_cast<Mapping*>( index.internalPointer() )->map_iter;
-	Q_ASSERT( it != m_sourcesIndexMapping.constEnd() );
+	Mapping * m = static_cast<Mapping*>( index.internalPointer() );
 
-	int sourceRow = it.key();
+	int sourceRow = m->index;
 	if( sourceRow == -1 ) return QModelIndex();
 
 	QModelIndex sourceParent = m_sourceModel->index( sourceRow, proxyColumnToSource( 0 ) );

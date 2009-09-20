@@ -76,10 +76,9 @@ protected:
 	QSqlDatabase database() const;
 private:
 	struct Mapping {
-		int id, parrentId; // Has debug information only.
-		int parentIndex;
+		int id, parrentId;
+		int parentIndex, index;
 		QVector<int> source_rows;
-		QMap<int,Mapping*>::const_iterator map_iter;
 	};
 	typedef QMap<int,Mapping*> IndexMap;
 
