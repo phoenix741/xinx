@@ -61,10 +61,11 @@ HEADERS = rcs/rcs.h \
     snipets/snipetmenu.h \
     snipets/categoryitemmodel.h \
     snipets/categorytreeview.h \
-    scripts/scriptmanager.h \
-    scripts/documentsearch.h \
     snipets/snipetpropertydlgimpl.h \
- snipets/categorypropertydlgimpl.h
+    snipets/categorypropertydlgimpl.h \
+    snipets/treeproxyitemmodel.h \
+    scripts/scriptmanager.h \
+    scripts/documentsearch.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -101,10 +102,11 @@ SOURCES = rcs/rcs.cpp \
     snipets/snipetmenu.cpp \
     snipets/categoryitemmodel.cpp \
     snipets/categorytreeview.cpp \
-    scripts/scriptmanager.cpp \
-    scripts/documentsearch.cpp \
     snipets/snipetpropertydlgimpl.cpp \
- snipets/categorypropertydlgimpl.cpp
+    snipets/categorypropertydlgimpl.cpp \
+    snipets/treeproxyitemmodel.cpp \
+    scripts/scriptmanager.cpp \
+    scripts/documentsearch.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
  snipets/categorypropertydlg.ui
