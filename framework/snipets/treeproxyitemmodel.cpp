@@ -23,7 +23,7 @@
 // Qt header
 #include <QVariant>
 
-/* SnipetItemModel */
+/* TreeProxyItemModel */
 
 TreeProxyItemModel::TreeProxyItemModel( QObject * parent ) : QAbstractProxyModel( parent ) {
 
@@ -38,8 +38,8 @@ void TreeProxyItemModel::setSourceModel( QAbstractItemModel * sourceModel ) {
 	createMapping();
 }
 
-Mapping * TreeProxyItemModel::getMapping( int id ) {
-	Mapping * mapping = m_id.value( id, 0 );
+TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( int id ) const {
+	Mapping * mapping = m_idMapping.value( id, 0 );
 	if( ! mapping ) {
 		mapping = new Mapping;
 		mapping->id = id;
@@ -48,9 +48,22 @@ Mapping * TreeProxyItemModel::getMapping( int id ) {
 	return mapping;
 }
 
+TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( const QModelIndex & index ) const {
+	if( ! index.isValid() ) return getMapping( 0 );
+
+	Mapping * parentMapping = static_cast<Mapping*>( index.internalPointer() );
+	Q_ASSERT( parentMapping );
+
+	int id = parentMapping->childs.at( index.row() );
+	Mapping * childMapping = getMapping( id );
+	Q_ASSERT( childMapping );
+
+	return childMapping;
+}
+
 
 /*! \internal
-	Create the mapping of all index in the table.
+ * Create the mapping of all index in the table.
 */
 void TreeProxyItemModel::createMapping() {
 	qDeleteAll( m_idMapping );
@@ -60,57 +73,47 @@ void TreeProxyItemModel::createMapping() {
 	int source_rows = sourceModel()->rowCount();
 
 	for( int i = 0; i < source_rows; ++i ) {
-		Mapping * m = new Mapping;
-		m->id        = getUniqueIdentifier( sourceModel()->index( i, 0 ) );
-		m->parrentId = getParentUniqueIdentifier( sourceModel()->index( i, 0 ) );
+		QModelIndex index = sourceModel()->index( i, 0 );
+		int id            = getUniqueIdentifier( index );
+		int parentId      = getParentUniqueIdentifier( index );
+
+		Mapping * m       = getMapping( id );
+		m->parrentId      = parentId;
 
 		m_idMapping.insert( m->id, m );
 
 		m_id2IndexMapping[ m->id ] = i;
 		m_index2IdMapping[ i     ] = m->id;
+
+		Mapping * parrentMapping = getMapping( parentId );
+		parrentMapping->childs.append( id );
 	}
 
-	for( int i = 0; i < source_rows; ++i ) {
-		QSqlRecord record = m_sourceModel->record( i );
-
-		int parentCategoryId = record.value( list_parentid ).toInt();
-		int parentCategoryIndex = m_categoryIdMapping.value( parentCategoryId, -2 );
-		Q_ASSERT( parentCategoryIndex > -2 );
-		Mapping * mapping = m_sourcesIndexMapping.value( i );
-		mapping->parentIndex = parentCategoryIndex;
-		mapping->parrentId   = parentCategoryId;
-
-		Mapping * categoryMapping = m_sourcesIndexMapping.value( parentCategoryIndex );
-		categoryMapping->source_rows.append( i );
-	}
-}
-
-Mapping * TreeProxyItemModel::getMapping( int index ) {
-
+	reset();
 }
 
 /// For the given source index, this method return the corresponding index in the proxy
 QModelIndex TreeProxyItemModel::mapFromSource ( const QModelIndex & sourceIndex ) const {
 	if( ! sourceIndex.isValid() ) return QModelIndex();
-	if( sourceIndex.model() != m_sourceModel ) {
+	if( sourceIndex.model() != sourceModel() ) {
 		qWarning( "TreeProxyItemModel: index from wrong model passed to mapFromSource" );
 		return QModelIndex();
 	}
 
-	int row = sourceIndex.row();
-	IndexMap::const_iterator it = m_sourcesIndexMapping.constFind( row );
-	Q_ASSERT( it != m_sourcesIndexMapping.constEnd() );
+	int sourceRow = sourceIndex.row();
+	int id        = m_index2IdMapping.value( sourceRow, -1 );
+	Q_ASSERT( id >= 0 );
 
-	int parentRow = it.value()->parentIndex;
-	IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
-	Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
+	Mapping * mapping = getMapping( id );
+	int parentId = mapping->parrentId;
 
-	Mapping * m = parentIt.value();
+	Mapping * parentMapping = getMapping( parentId );
+	Q_ASSERT( parentMapping );
 
-	int proxyRow = m->source_rows.indexOf( row ), proxyColumn = sourceColumnToProxy( sourceIndex.column() );
-	if( proxyColumn == -1 ) return QModelIndex();
+	int 	proxyRow = parentMapping->childs.indexOf( id ),
+		proxyColumn = sourceIndex.column();
 
-	return createIndex( proxyRow, proxyColumn, *parentIt );
+	return createIndex( proxyRow, proxyColumn, parentMapping );
 }
 
 QModelIndex TreeProxyItemModel::mapToSource ( const QModelIndex & proxyIndex ) const {
@@ -120,59 +123,52 @@ QModelIndex TreeProxyItemModel::mapToSource ( const QModelIndex & proxyIndex ) c
 		return QModelIndex();
 	}
 
-	Mapping * m = static_cast<Mapping*>( proxyIndex.internalPointer() );
+	Mapping * mapping = static_cast<Mapping*>( proxyIndex.internalPointer() );
 
-	int sourceColumn = proxyColumnToSource( proxyIndex.column() );
+	int sourceColumn = proxyIndex.column();
 	if( sourceColumn == -1 ) return QModelIndex();
 
-	int sourceRow = m->source_rows.at( proxyIndex.row() );
+	int sourceId  = mapping->childs.at( proxyIndex.row() );
+	int sourceRow = m_id2IndexMapping.value( sourceId, -1 );
+	Q_ASSERT( sourceRow >= 0 );
 
-	return m_sourceModel->index( sourceRow, sourceColumn );
+	return sourceModel()->index( sourceRow, sourceColumn );
 }
 
 QModelIndex TreeProxyItemModel::index( int row, int column, const QModelIndex & parent ) const {
 	if( ( row < 0 ) || ( column < 0 ) ) return QModelIndex();
 
-	IndexMap::const_iterator it = m_sourcesIndexMapping.constFind( -1 );
+	Mapping * parentMapping = getMapping( parent );
+	Q_ASSERT( parentMapping );
 
-	QModelIndex sourceParent = mapToSource( parent );
-	if( sourceParent.isValid() ) {
-		it = m_sourcesIndexMapping.constFind( sourceParent.row() );
-	}
-
-	Q_ASSERT( it != m_sourcesIndexMapping.constEnd() );
-	if( it.value()->source_rows.count() <= row )
-		return QModelIndex();
-
-	return createIndex( row, column, *it );
+	return createIndex( row, column, parentMapping );
 }
 
 QModelIndex TreeProxyItemModel::parent( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return QModelIndex();
+	if( index.column() > 0 ) return QModelIndex();
 
-	Mapping * m = static_cast<Mapping*>( index.internalPointer() );
+	Mapping * mapping = static_cast<Mapping*>( index.internalPointer() );
 
-	int sourceRow = m->index;
-	if( sourceRow == -1 ) return QModelIndex();
+	int parentId = mapping->parrentId;
+	if( parentId == 0 ) return QModelIndex();
 
-	QModelIndex sourceParent = m_sourceModel->index( sourceRow, proxyColumnToSource( 0 ) );
-	QModelIndex proxyParent = mapFromSource( sourceParent );
+	Mapping * parentMapping = getMapping( parentId );
 
-	return proxyParent;
+	int grandParentId = parentMapping->parrentId;
+	Mapping * grandParentMapping = getMapping( grandParentId );
+
+	int parentRow = grandParentMapping->childs.indexOf( parentId );
+	int parentCol = index.column();
+
+	return createIndex( parentRow, parentCol, grandParentMapping );
 }
 
 int TreeProxyItemModel::rowCount( const QModelIndex & index ) const {
 	if( index.column() > 0 ) return 0;
-	if( ! index.isValid() ) {
-		Mapping * rootMapping = m_sourcesIndexMapping.value( -1 );
-		return rootMapping->source_rows.count();
-	} else {
-		Mapping * parrentMapping = static_cast<Mapping*>( index.internalPointer() );
-		int sourceRowIndex = parrentMapping->source_rows.at( index.row() );
-		Mapping * rowMapping = m_sourcesIndexMapping.value( sourceRowIndex );
 
-		return rowMapping->source_rows.count();
-	}
+	Mapping * m = getMapping( index );
+	return m->childs.count();
 }
 
 int TreeProxyItemModel::columnCount( const QModelIndex & index ) const {

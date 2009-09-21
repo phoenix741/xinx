@@ -24,7 +24,6 @@
 // Qt header
 #include <QString>
 #include <QAbstractProxyModel>
-#include <QMap>
 #include <QHash>
 #include <QVector>
 
@@ -51,8 +50,6 @@ protected:
 	virtual void setSourceModel( QAbstractItemModel * sourceModel );
 	virtual void createMapping();
 private:
-	Mapping * getMapping( int id );
-
 	struct Mapping {
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
 		int parrentId; //! Define the parent id of this structure
@@ -62,12 +59,15 @@ private:
 	 * Map of id/structure.
 	 * This map associate id with a stucture contains id, parentId, and rows.
 	 */
-	typedef QMap<int,Mapping*> IndexMap;
+	typedef QHash<int,Mapping*> IndexMap;
 
 	/// Map of id/structure
-	IndexMap m_idMapping;
+	mutable IndexMap m_idMapping;
 	QHash<int,int> m_id2IndexMapping;
 	QHash<int,int> m_index2IdMapping;
+
+	Mapping * getMapping( int id ) const;
+	Mapping * getMapping( const QModelIndex & index ) const;
 };
 
 #endif // TREEPROXYITEMMODEL_H

@@ -163,14 +163,14 @@ QModelIndex CategoryItemModel::mapToSource ( const QModelIndex & proxyIndex ) co
 		qWarning( "CategoryItemModel: index from wrong model passed to mapToSource" );
 		return QModelIndex();
 	}
-
+	
 	Mapping * m = static_cast<Mapping*>( proxyIndex.internalPointer() );
-
+	
 	int sourceColumn = proxyColumnToSource( proxyIndex.column() );
 	if( sourceColumn == -1 ) return QModelIndex();
-
+	
 	int sourceRow = m->source_rows.at( proxyIndex.row() );
-
+	
 	return m_sourceModel->index( sourceRow, sourceColumn );
 }
 
