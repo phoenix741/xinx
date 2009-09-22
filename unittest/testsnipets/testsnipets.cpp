@@ -26,6 +26,7 @@
 // Qt header
 #include <QtTest/QtTest>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 #include <modeltest.h>
 
 class TestSnipets : public QObject {
@@ -37,103 +38,98 @@ private slots:
 
 	void testEmptyCategoryItemModel();
 	void testSelectCategoryItemModel();
-	void testDoubleSelectCategoryItemModel();
+	void testAddCategoryItemModel();
 	void testSearchCategoryId();
+	void testRemoveCategoryItemModel();
 
+	/*
 	void testEmptySnipetItemModel();
 	void testSelectSnipetItemModel();
+	*/
 
 	void cleanupTestCase();
 private:
+	CategoryItemModel * m_categoryModel;
+	SnipetItemModel * m_snipetModel;
 };
 
 void TestSnipets::initTestCase() {
 	qsrand( time(NULL) );
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../datas" ) );
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../share/xinx/datas" ) );
+
+	SnipetManager::self()->database().transaction();
+	m_categoryModel = SnipetManager::self()->createCategoryItemModel( this );
+	m_snipetModel = SnipetManager::self()->createSnipetItemModel( this );
 }
 
 void TestSnipets::testConnection() {
 	SnipetManager::self();
 	QVERIFY( SnipetManager::self()->database().isValid() );
 	QVERIFY( SnipetManager::self()->database().isOpen() );
-
 }
 
 void TestSnipets::testEmptyCategoryItemModel() {
-	CategoryItemModel * model = SnipetManager::self()->createCategoryItemModel( this );
-	new ModelTest( model );
-	QVERIFY( model != 0 );
-
-	delete model;
+	new ModelTest( m_categoryModel );
 }
 
 void TestSnipets::testSelectCategoryItemModel() {
-	CategoryItemModel * model = SnipetManager::self()->createCategoryItemModel( this );
-	model->select();
-	new ModelTest( model );
-	QVERIFY( model != 0 );
-
-	delete model;
+	m_categoryModel->select();
 }
 
-void TestSnipets::testDoubleSelectCategoryItemModel() {
-	CategoryItemModel * model = SnipetManager::self()->createCategoryItemModel( this );
-	new ModelTest( model );
-	QVERIFY( model != 0 );
+void TestSnipets::testAddCategoryItemModel() {
+	int row = ( qrand() % m_categoryModel->sourceModel()->rowCount() );
+	int testId = m_categoryModel->sourceModel()->index( row, 0 ).data().toInt();
 
-	model->select();
+	QSqlQuery query( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", SnipetManager::self()->database() );
+	query.bindValue( ":parent_id", testId );
+	query.bindValue( ":name", QString("testDoubleSelectCategoryItemModel(%1)").arg( testId ) );
 
-	model->select();
+	bool result = query.exec();
+	QVERIFY( result );
 
-	delete model;
+	m_categoryModel->select();
+}
+
+void TestSnipets::testRemoveCategoryItemModel() {
+	QSqlQuery query( "DELETE FROM categories WHERE id not in (select parent_id from categories)", SnipetManager::self()->database() );
+
+	m_categoryModel->select();
 }
 
 void TestSnipets::testSearchCategoryId() {
-	CategoryItemModel * model = SnipetManager::self()->createCategoryItemModel( this );
-	model->select();
-	new ModelTest( model );
-	QVERIFY( model != 0 );
-
-	QModelIndex rootIndex = model->index( 0 );
+	QModelIndex rootIndex = m_categoryModel->index( 0 );
 	QVERIFY( ! rootIndex.isValid() );
 
-	if( model->sourceModel()->rowCount() == 0 ) {
+	if( m_categoryModel->sourceModel()->rowCount() == 0 ) {
 		QSKIP( "Empty base", SkipSingle );
-		delete model;
 		return;
 	}
 
-	int row = ( qrand() % model->sourceModel()->rowCount() );
-	int testId = model->sourceModel()->index( row, 0 ).data().toInt();
-	QModelIndex index = model->index( testId );
+	int row = ( qrand() % m_categoryModel->sourceModel()->rowCount() );
+	int testId = m_categoryModel->sourceModel()->index( row, 0 ).data().toInt();
+	QModelIndex index = m_categoryModel->index( testId );
 	QVERIFY( index.isValid() );
 
 	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
 
 	QVERIFY( id == testId );
-
-	delete model;
 }
 
+/*
 void TestSnipets::testEmptySnipetItemModel() {
-	SnipetItemModel * model = SnipetManager::self()->createSnipetItemModel( this );
-	new ModelTest( model );
-	QVERIFY( model != 0 );
-
-	delete model;
+	new ModelTest( m_snipetModel );
 }
 
 void TestSnipets::testSelectSnipetItemModel() {
-	SnipetItemModel * model = SnipetManager::self()->createSnipetItemModel( this );
-	model->select();
-	new ModelTest( model );
-	QVERIFY( model != 0 );
-
-	delete model;
+	m_snipetModel->select();
 }
+*/
 
 void TestSnipets::cleanupTestCase() {
+	delete m_snipetModel;
+	delete m_categoryModel;
+	SnipetManager::self()->database().rollback();
 }
 
 QTEST_MAIN(TestSnipets)

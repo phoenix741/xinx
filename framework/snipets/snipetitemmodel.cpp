@@ -102,6 +102,7 @@ void SnipetItemModel::createMapping() {
 	qDeleteAll( m_sourcesIndexMapping );
 	m_sourcesIndexMapping.clear();
 	m_categoryIdMapping.clear();
+	m_snipetIdMapping.clear();
 
 	int source_rows = m_sourceModel->rowCount();
 	for( int i = -1; i < source_rows; ++i ) {

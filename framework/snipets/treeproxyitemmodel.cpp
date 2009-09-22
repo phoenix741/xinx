@@ -108,6 +108,8 @@ void TreeProxyItemModel::createMapping() {
 	}
 
 	QList<int> currentIds = m_idMapping.keys();
+	QList< QPair<int,int> > idsList;
+	currentIds.removeAll( 0 );
 
 	m_id2IndexMapping.clear();
 	m_index2IdMapping.clear();
@@ -122,7 +124,7 @@ void TreeProxyItemModel::createMapping() {
 		m_id2IndexMapping[ id ] = i;
 		m_index2IdMapping[ i  ] = id;
 
-		setParentId( id, parentId );
+		idsList.append( qMakePair( id, parentId ) );
 		currentIds.removeAll( id );
 	}
 
@@ -133,6 +135,18 @@ void TreeProxyItemModel::createMapping() {
 		m_idMapping.erase( it );
 	}
 
+	for( int i = 0; i < source_rows; ++i ) {
+		int id            = idsList.at( i ).first;
+		int parentId      = idsList.at( i ).second;
+
+		setParentId( id, parentId );
+	}
+
+	/*
+	printMapping( 0 );
+	qDebug() << m_id2IndexMapping.keys();
+	qDebug() << m_index2IdMapping.keys();
+	*/
 }
 
 void TreeProxyItemModel::printMapping( int id, int niveau ) const {
@@ -238,5 +252,24 @@ int TreeProxyItemModel::rowCount( const QModelIndex & index ) const {
 
 int TreeProxyItemModel::columnCount( const QModelIndex & index ) const {
 	return sourceModel()->columnCount( mapToSource( index ) );
+}
+
+QVariant TreeProxyItemModel::data( const QModelIndex &proxyIndex, int role ) const {
+	Mapping * m = getMapping( proxyIndex );
+	if( -1 == m_id2IndexMapping.value( m->id, -1 ) ) {
+		if( role == Qt::DisplayRole ) {
+			return tr("<deleted>");
+		} else {
+			return QVariant();
+		}
+	}
+	return QAbstractProxyModel::data( proxyIndex, role );
+}
+
+Qt::ItemFlags TreeProxyItemModel::flags( const QModelIndex &index ) const {
+	Mapping * m = getMapping( index );
+	int sourceRow = m_id2IndexMapping.value( m->id, -1 );
+	if( sourceRow == -1 ) return 0;
+	return QAbstractProxyModel::flags( index );
 }
 
