@@ -30,7 +30,7 @@
 #include <QtTest/QtTest>
 #include <QRegExp>
 
-class TextXinxCodeEdit: public QObject {
+class TestXinxCodeEdit: public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();
@@ -68,7 +68,7 @@ private:
 	XinxCodeEdit * m_edit;
 };
 
-void TextXinxCodeEdit::initTestCase() {
+void TestXinxCodeEdit::initTestCase() {
 	QLineMarksInfoCenter::instance()->loadMarkTypes( "../../libxinx/marks.qxm" );
 	QLineMarksInfoCenter::instance()->loadMarkTypes( "../libxinx/marks.qxm" );
 	QLineMarksInfoCenter::instance()->loadMarkTypes( "./libxinx/marks.qxm" );
@@ -82,13 +82,13 @@ void TextXinxCodeEdit::initTestCase() {
 	QVERIFY( m_edit != 0 );
 }
 
-void TextXinxCodeEdit::testGetSetPlainText() {
+void TestXinxCodeEdit::testGetSetPlainText() {
 	QString textDeTest = "Hello, ceci est un texte. Trop cool :)";
 	m_edit->setPlainText( textDeTest );
 	QCOMPARE( m_edit->toPlainText().trimmed(), textDeTest );
 }
 
-void TextXinxCodeEdit::testFindTextNormal_data() {
+void TestXinxCodeEdit::testFindTextNormal_data() {
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<QString>("searchStr");
 
@@ -99,7 +99,7 @@ void TextXinxCodeEdit::testFindTextNormal_data() {
 	QTest::newRow("espcace") << "Il etait une fois dans un petit chateau ..." << " ";
 }
 
-void TextXinxCodeEdit::testFindTextNormal() {
+void TestXinxCodeEdit::testFindTextNormal() {
 	QFETCH(QString, text);
 	QFETCH(QString, searchStr);
 
@@ -122,7 +122,7 @@ void TextXinxCodeEdit::testFindTextNormal() {
 	QCOMPARE( count, text.count( searchStr, Qt::CaseInsensitive ) );
 }
 
-void TextXinxCodeEdit::testFindTextRegExp_data() {
+void TestXinxCodeEdit::testFindTextRegExp_data() {
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<QRegExp>("searchStr");
 
@@ -133,7 +133,7 @@ void TextXinxCodeEdit::testFindTextRegExp_data() {
 	QTest::newRow("espcace") << "Il etait une fois dans un petit chateau ..." << QRegExp("[^A-Za-z0-9_:\\-\\.]");
 }
 
-void TextXinxCodeEdit::testFindTextRegExp() {
+void TestXinxCodeEdit::testFindTextRegExp() {
 	QFETCH(QString, text);
 	QFETCH(QRegExp, searchStr);
 
@@ -156,7 +156,7 @@ void TextXinxCodeEdit::testFindTextRegExp() {
 	QCOMPARE( count, text.count( searchStr ) );
 }
 
-void TextXinxCodeEdit::testTextUnderCursor_data() {
+void TestXinxCodeEdit::testTextUnderCursor_data() {
 	QTest::addColumn<QStringList>("text");
 	QTest::addColumn<int>("nextword");
 	QTest::addColumn<int>("right");
@@ -176,7 +176,7 @@ void TextXinxCodeEdit::testTextUnderCursor_data() {
 	QTest::newRow("cas 7") << list << 1 << 3 << "bbb";
 }
 
-void TextXinxCodeEdit::testTextUnderCursor() {
+void TestXinxCodeEdit::testTextUnderCursor() {
 	QFETCH(QStringList, text);
 	QFETCH(int, nextword);
 	QFETCH(int, right);
@@ -196,7 +196,7 @@ void TextXinxCodeEdit::testTextUnderCursor() {
 	QCOMPARE( m_edit->textUnderCursor( m_edit->textCursor() ), result );
 }
 
-void TextXinxCodeEdit::testTabStop_data() {
+void TestXinxCodeEdit::testTabStop_data() {
 	QTest::addColumn<int>("tabulation");
 
 	QTest::newRow("tabulation de 1") << 1;
@@ -205,14 +205,14 @@ void TextXinxCodeEdit::testTabStop_data() {
 	QTest::newRow("tabulation de 8") << 8;
 }
 
-void TextXinxCodeEdit::testTabStop() {
+void TestXinxCodeEdit::testTabStop() {
 	QFETCH(int, tabulation);
 
 	m_edit->setTabStopWidth( tabulation );
 	QCOMPARE( m_edit->tabStopWidth(), tabulation );
 }
 
-void TextXinxCodeEdit::testUpperCase() {
+void TestXinxCodeEdit::testUpperCase() {
 	QString textOriginal    = "Il etait une fois, dans un petit pays, un editeur surper puissant pour editer un fichier texte.";
 	QString textDestination = "Il etait une fois, danS UN PETIT PAYs, un editeur surper puissant pour editer un fichier texte.";
 
@@ -227,7 +227,7 @@ void TextXinxCodeEdit::testUpperCase() {
 	QCOMPARE( m_edit->toPlainText().trimmed(), textDestination );
 }
 
-void TextXinxCodeEdit::testLowerCase() {
+void TestXinxCodeEdit::testLowerCase() {
 	QString textOriginal    = "Il etait une fois, danS UN PETIT PAYs, un editeur surper puissant pour editer un fichier texte.";
 	QString textDestination = "Il etait une fois, dans un petit pays, un editeur surper puissant pour editer un fichier texte.";
 
@@ -242,7 +242,7 @@ void TextXinxCodeEdit::testLowerCase() {
 	QCOMPARE( m_edit->toPlainText().trimmed(), textDestination );
 }
 
-void TextXinxCodeEdit::testDuplicateLines_data() {
+void TestXinxCodeEdit::testDuplicateLines_data() {
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<int>("selectionStart");
 	QTest::addColumn<int>("selectionLength");
@@ -252,7 +252,7 @@ void TextXinxCodeEdit::testDuplicateLines_data() {
 	QTest::newRow("Duplicate a selected part of line") << "aaa\nbxbb\nccc\nddd\neee"<< 5 << 1 << "aaa\nbxxbb\nccc\nddd\neee";
 }
 
-void TextXinxCodeEdit::testDuplicateLines() {
+void TestXinxCodeEdit::testDuplicateLines() {
 	QFETCH(QString, text);
 	QFETCH(int, selectionStart);
 	QFETCH(int, selectionLength);
@@ -271,7 +271,7 @@ void TextXinxCodeEdit::testDuplicateLines() {
 	QCOMPARE( m_edit->toPlainText().trimmed(), result );
 }
 
-void TextXinxCodeEdit::testMoveLineUp_data() {
+void TestXinxCodeEdit::testMoveLineUp_data() {
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<int>("selectionStart");
 	QTest::addColumn<int>("selectionLength");
@@ -283,7 +283,7 @@ void TextXinxCodeEdit::testMoveLineUp_data() {
 	QTest::newRow("Move selected lines") << "aaa\nbbb\nccc\nddd\neee"<< 9 << 4 << "aaa\nccc\nddd\nbbb\neee";
 }
 
-void TextXinxCodeEdit::testMoveLineUp() {
+void TestXinxCodeEdit::testMoveLineUp() {
 	QFETCH(QString, text);
 	QFETCH(int, selectionStart);
 	QFETCH(int, selectionLength);
@@ -300,7 +300,7 @@ void TextXinxCodeEdit::testMoveLineUp() {
 	QCOMPARE( m_edit->toPlainText().trimmed(), result );
 }
 
-void TextXinxCodeEdit::testMoveLineDown_data() {
+void TestXinxCodeEdit::testMoveLineDown_data() {
 	QTest::addColumn<QString>("text");
 	QTest::addColumn<int>("selectionStart");
 	QTest::addColumn<int>("selectionLength");
@@ -312,7 +312,7 @@ void TextXinxCodeEdit::testMoveLineDown_data() {
 	QTest::newRow("Move selected lines") << "aaa\nbbb\nccc\nddd\neee"<< 9 << 4 << "aaa\nbbb\neee\nccc\nddd";
 }
 
-void TextXinxCodeEdit::testMoveLineDown() {
+void TestXinxCodeEdit::testMoveLineDown() {
 	QFETCH(QString, text);
 	QFETCH(int, selectionStart);
 	QFETCH(int, selectionLength);
@@ -329,7 +329,7 @@ void TextXinxCodeEdit::testMoveLineDown() {
 	QCOMPARE( m_edit->toPlainText().trimmed(), result );
 }
 
-void TextXinxCodeEdit::testBookmark() {
+void TestXinxCodeEdit::testBookmark() {
 	m_edit->setPlainText( "aaa\nbbb\nccc\nddd\neee\nfff\nggg\nhhh\niii\njjj\nkkk\nlll\nmmm\nnnn\nooo\nppp" );
 
 	m_edit->setBookmark( 2, true );
@@ -342,15 +342,15 @@ void TextXinxCodeEdit::testBookmark() {
 	QCOMPARE( m_edit->listOfBookmark(), QList<int>() << 2 << 8 << 11 << 13 );
 }
 
-void TextXinxCodeEdit::testError() {
+void TestXinxCodeEdit::testError() {
 	m_edit->setPlainText( "aaa\nbbb\nccc\nddd\neee\nfff\nggg\nhhh\niii\njjj\nkkk\nlll\nmmm\nnnn\nooo\nppp" );
 
 	m_edit->setErrors( QList<int>() << 5 << 12 << 44 );
 }
 
-void TextXinxCodeEdit::cleanupTestCase() {
+void TestXinxCodeEdit::cleanupTestCase() {
 	delete m_edit;
 }
 
-QTEST_MAIN(TextXinxCodeEdit)
+QTEST_MAIN(TestXinxCodeEdit)
 #include "testxinxcodeedit.moc"

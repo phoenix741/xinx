@@ -67,9 +67,12 @@ private:
 	QHash<int,int> m_id2IndexMapping;
 	QHash<int,int> m_index2IdMapping;
 
+	int m_sourceColumnCount;
+
 	Mapping * getMapping( int id ) const;
 	Mapping * getMapping( const QModelIndex & index ) const;
 	void printMapping( int id, int niveau = 0 ) const;
+	void setParentId( int id, int parentId );
 };
 
 #endif // TREEPROXYITEMMODEL_H

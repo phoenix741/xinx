@@ -26,8 +26,7 @@
 
 /* TreeProxyItemModel */
 
-TreeProxyItemModel::TreeProxyItemModel( QObject * parent ) : QAbstractProxyModel( parent ) {
-
+TreeProxyItemModel::TreeProxyItemModel( QObject * parent ) : QAbstractProxyModel( parent ), m_sourceColumnCount( 0 ) {
 }
 
 TreeProxyItemModel::~TreeProxyItemModel() {
@@ -44,7 +43,7 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( int id ) const {
 	if( ! mapping ) {
 		mapping = new Mapping;
 		mapping->id = id;
-		mapping->parentId = 0;
+		mapping->parentId = -1;
 		m_idMapping.insert( id, mapping );
 	}
 	return mapping;
@@ -63,13 +62,53 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( const QModelIndex 
 	return childMapping;
 }
 
+void TreeProxyItemModel::setParentId( int id, int parentId ) {
+	Mapping * mapping = getMapping( id );
+	Q_ASSERT( mapping );
+
+	if( parentId != mapping->parentId ) {
+		if( mapping->parentId >= 0 ) {
+			Mapping * parentMapping = getMapping( mapping->parentId );
+			int row = parentMapping->childs.indexOf( mapping->id );
+			beginRemoveRows( index( mapping->parentId ), row, row );
+
+			parentMapping->childs.remove( row );
+			mapping->parentId = -1;
+
+			endRemoveRows();
+		}
+		if( parentId != -1 ) {
+			Mapping * parentMapping = getMapping( parentId );
+			int row = parentMapping->childs.size();
+			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
+				beginInsertRows( index( parentMapping->id ), row, row);
+
+			parentMapping->childs.insert( row, mapping->id );
+			mapping->parentId = parentId;
+
+			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
+				endInsertRows();
+		}
+	}
+}
 
 /*! \internal
  * Create the mapping of all index in the table.
 */
 void TreeProxyItemModel::createMapping() {
-	qDeleteAll( m_idMapping );
-	m_idMapping.clear();
+	if( m_sourceColumnCount != sourceModel()->columnCount() ) {
+		// The model completly change
+		qDeleteAll( m_idMapping );
+		m_idMapping.clear();
+		m_sourceColumnCount = sourceModel()->columnCount();
+		m_id2IndexMapping.clear();
+		m_index2IdMapping.clear();
+
+		reset();
+	}
+
+	QList<int> currentIds = m_idMapping.keys();
+
 	m_id2IndexMapping.clear();
 	m_index2IdMapping.clear();
 
@@ -80,17 +119,20 @@ void TreeProxyItemModel::createMapping() {
 		int id            = getUniqueIdentifier( index );
 		int parentId      = getParentUniqueIdentifier( index );
 
-		Mapping * m       = getMapping( id );
-		m->parentId       = parentId;
+		m_id2IndexMapping[ id ] = i;
+		m_index2IdMapping[ i  ] = id;
 
-		m_id2IndexMapping[ m->id ] = i;
-		m_index2IdMapping[ i     ] = m->id;
-
-		Mapping * parrentMapping = getMapping( parentId );
-		parrentMapping->childs.append( id );
+		setParentId( id, parentId );
+		currentIds.removeAll( id );
 	}
 
-	reset();
+	foreach( int id, currentIds ) {
+		setParentId( id, -1 );
+		IndexMap::iterator it = m_idMapping.find( id );
+		delete it.value();
+		m_idMapping.erase( it );
+	}
+
 }
 
 void TreeProxyItemModel::printMapping( int id, int niveau ) const {

@@ -37,6 +37,7 @@ private slots:
 
 	void testEmptyCategoryItemModel();
 	void testSelectCategoryItemModel();
+	void testDoubleSelectCategoryItemModel();
 	void testSearchCategoryId();
 
 	void testEmptySnipetItemModel();
@@ -72,6 +73,18 @@ void TestSnipets::testSelectCategoryItemModel() {
 	model->select();
 	new ModelTest( model );
 	QVERIFY( model != 0 );
+
+	delete model;
+}
+
+void TestSnipets::testDoubleSelectCategoryItemModel() {
+	CategoryItemModel * model = SnipetManager::self()->createCategoryItemModel( this );
+	new ModelTest( model );
+	QVERIFY( model != 0 );
+
+	model->select();
+
+	model->select();
 
 	delete model;
 }
