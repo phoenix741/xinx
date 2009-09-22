@@ -6,7 +6,11 @@ xvfb-run ./testxinxcodeedit/testxinxcodeedit -xml > unittest.xml
 sleep 1
 xvfb-run ./testcontentview/testcontentview -xml >> unittest2.xml
 sleep 1
+xvfb-run ./testcontentview/testsnipets -xml >> unittest3.xml
+sleep 1
 # Test au format log
 xvfb-run ./testxinxcodeedit/testxinxcodeedit
 sleep 1
 xvfb-run ./testcontentview/testcontentview
+sleep 1
+xvfb-run ./testcontentview/testsnipets

@@ -90,8 +90,6 @@ void TreeProxyItemModel::createMapping() {
 		parrentMapping->childs.append( id );
 	}
 
-	printMapping( 0 );
-
 	reset();
 }
 
@@ -175,12 +173,10 @@ QModelIndex TreeProxyItemModel::parent( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return QModelIndex();
 	if( index.column() > 0 ) return QModelIndex();
 
-	Mapping * mapping = static_cast<Mapping*>( index.internalPointer() );
+	Mapping * parentMapping = static_cast<Mapping*>( index.internalPointer() );
 
-	int parentId = mapping->parentId;
+	int parentId = parentMapping->id;
 	if( parentId == 0 ) return QModelIndex();
-
-	Mapping * parentMapping = getMapping( parentId );
 
 	int grandParentId = parentMapping->parentId;
 	Mapping * grandParentMapping = getMapping( grandParentId );
