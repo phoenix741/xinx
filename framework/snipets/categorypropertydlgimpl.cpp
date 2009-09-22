@@ -70,7 +70,7 @@ void CategoryPropertyDlgImpl::setupUi() {
 	m_categoryModel = SnipetManager::self()->createCategoryItemModel( m_categoryTreeView );
 	m_categoryModel->select();
 	m_categoryTreeView->setModel( m_categoryModel );
-	m_categoryTreeView->expandAll();
+	//m_categoryTreeView->expandAll();
 }
 
 void CategoryPropertyDlgImpl::createMapper() {
@@ -108,7 +108,7 @@ void CategoryPropertyDlgImpl::on_m_addCategoryButton_clicked() {
 	SnipetManager::self()->addCategory( id, false, this );
 
 	m_categoryModel->select();
-	m_categoryTreeView->expandAll();
+	//m_categoryTreeView->expandAll();
 }
 
 void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
@@ -120,7 +120,7 @@ void CategoryPropertyDlgImpl::on_m_removeCategoryButton_clicked() {
 	SnipetManager::self()->removeCategory( id, this );
 
 	m_categoryModel->select();
-	m_categoryTreeView->expandAll();
+	//m_categoryTreeView->expandAll();
 }
 
 void CategoryPropertyDlgImpl::on_m_buttons_accepted() {

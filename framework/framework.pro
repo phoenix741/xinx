@@ -112,3 +112,4 @@ FORMS = snipets/callsnipetdlg.ui \
  snipets/categorypropertydlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 
+include(../ext/qmodeltest/modeltest.pri)

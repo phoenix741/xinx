@@ -35,6 +35,7 @@
 #include <QScriptEngine>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <modeltest.h>
 
 /* Static member */
 
@@ -77,6 +78,7 @@ SnipetItemModel * SnipetManager::createSnipetItemModel( QObject * parent ) {
 CategoryItemModel * SnipetManager::createCategoryItemModel( QObject * parent ) {
 	CategoryItemModel * model = new CategoryItemModel( database(), parent );
 	m_handler.add( model );
+	new ModelTest( model );
 	return model;
 }
 

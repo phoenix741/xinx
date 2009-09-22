@@ -14,6 +14,14 @@ QT += xml \
 		webkit \
 		sql
 DESTDIR += ./
+INCLUDEPATH += ../framework \
+  ../components \
+  ../ext/qcodeedit/lib \
+  ../xinx \
+  ../ext/qcodeedit/lib/document \
+  ../ext/qcodeedit/lib/language \
+  ../ext/qcodeedit/lib/qnfa \
+  ../ext/qcodeedit/lib/widgets
 LIBS = -L../framework \
     -L../plugins \
     -L../components \
@@ -82,14 +90,4 @@ CONFIG(debug, debug|release){
     }
 }
 
-include(../ext/qmodeltest/modeltest.pri)
 include(../ext/qtsingleapplication/src/qtsingleapplication.pri)
-INCLUDEPATH += ../framework \
-  ../components \
-  ../ext/qcodeedit/lib \
-  ../xinx \
-  ../ext/qcodeedit/lib/document \
-  ../ext/qcodeedit/lib/language \
-  ../ext/qcodeedit/lib/qnfa \
-  ../ext/qcodeedit/lib/widgets
-

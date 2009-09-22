@@ -69,6 +69,7 @@ private:
 
 	Mapping * getMapping( int id ) const;
 	Mapping * getMapping( const QModelIndex & index ) const;
+	void printMapping( int id, int niveau = 0 ) const;
 };
 
 #endif // TREEPROXYITEMMODEL_H

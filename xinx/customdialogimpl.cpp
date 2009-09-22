@@ -40,8 +40,6 @@
 #include <QStyleFactory>
 #include <QDomDocument>
 #include <QMenu>
-#include <modeltest.h>
-
 
 /* CustomDialogImpl */
 

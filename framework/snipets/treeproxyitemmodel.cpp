@@ -22,6 +22,7 @@
 
 // Qt header
 #include <QVariant>
+#include <QDebug>
 
 /* TreeProxyItemModel */
 
@@ -44,6 +45,7 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( int id ) const {
 		mapping = new Mapping;
 		mapping->id = id;
 		mapping->parentId = 0;
+		m_idMapping.insert( id, mapping );
 	}
 	return mapping;
 }
@@ -67,6 +69,7 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( const QModelIndex 
 */
 void TreeProxyItemModel::createMapping() {
 	qDeleteAll( m_idMapping );
+	m_idMapping.clear();
 	m_id2IndexMapping.clear();
 	m_index2IdMapping.clear();
 
@@ -78,9 +81,7 @@ void TreeProxyItemModel::createMapping() {
 		int parentId      = getParentUniqueIdentifier( index );
 
 		Mapping * m       = getMapping( id );
-		m->parentId      = parentId;
-
-		m_idMapping.insert( m->id, m );
+		m->parentId       = parentId;
 
 		m_id2IndexMapping[ m->id ] = i;
 		m_index2IdMapping[ i     ] = m->id;
@@ -89,7 +90,18 @@ void TreeProxyItemModel::createMapping() {
 		parrentMapping->childs.append( id );
 	}
 
+	printMapping( 0 );
+
 	reset();
+}
+
+void TreeProxyItemModel::printMapping( int id, int niveau ) const {
+	Mapping * m = getMapping( id );
+	qDebug() << "Niveau : " << niveau << ", Id : " << m->id << ", Parent : " << m->parentId << ", childs : " << m->childs.size();
+
+	foreach( int child, m->childs ) {
+		printMapping( child, niveau + 1 );
+	}
 }
 
 /// For the given source index, this method return the corresponding index in the proxy
