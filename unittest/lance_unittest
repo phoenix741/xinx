@@ -13,4 +13,4 @@ xvfb-run ./testxinxcodeedit/testxinxcodeedit
 sleep 1
 xvfb-run ./testcontentview/testcontentview
 sleep 1
-xvfb-run ./testcontentview/testsnipets
+xvfb-run ./testsnipets/testsnipets
