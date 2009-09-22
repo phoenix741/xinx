@@ -21,18 +21,17 @@
 #define CATEGORYITEMMODEL_H
 #pragma once
 
+// Xinx header
+#include "snipets/treeproxyitemmodel.h"
+
 // Qt header
 #include <QString>
-#include <QAbstractProxyModel>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
-#include <QMap>
-#include <QHash>
-#include <QVector>
 
 /* CategoryItemModel */
 
-class CategoryItemModel : public QAbstractProxyModel {
+class CategoryItemModel : public TreeProxyItemModel {
 	Q_OBJECT
 public:
 	enum CategoryItemRole {
@@ -41,11 +40,6 @@ public:
 
 	virtual ~CategoryItemModel();
 
-	QModelIndex index( int categoryId );
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
-	virtual QModelIndex parent( const QModelIndex & index ) const;
-
-	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
@@ -63,31 +57,17 @@ protected:
 	friend class SnipetManager;
 	CategoryItemModel( QSqlDatabase db, QObject * parent = 0 );
 
+	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+private:
 	enum {
 		list_id          = 0,
-		list_parentid    = 1,
-		list_name        = 2
+			list_parentid    = 1,
+			list_name        = 2
 	};
-
-	QSqlQueryModel * sourceModel();
-	QSqlQueryModel * sourceModel() const;
-
-	QSqlDatabase database();
-	QSqlDatabase database() const;
-private:
-	struct Mapping {
-		int id, parrentId;
-		int parentIndex, index;
-		QVector<int> source_rows;
-	};
-	typedef QMap<int,Mapping*> IndexMap;
-
-	IndexMap m_sourcesIndexMapping;
-	QHash<int,int> m_categoryIdMapping;
 
 	int proxyColumnToSource( int proxyColumn ) const;
 	int sourceColumnToProxy( int sourceColumn ) const;
-	void createMapping();
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;

@@ -31,7 +31,7 @@
 
 /* CategoryItemModel */
 
-CategoryItemModel::CategoryItemModel( QSqlDatabase db, QObject * parent ) : QAbstractProxyModel( parent ), m_db( db ) {
+CategoryItemModel::CategoryItemModel( QSqlDatabase db, QObject * parent ) : TreeProxyItemModel( parent ), m_db( db ) {
 	// This will be automatically deleted.
 	m_sourceModel = new QSqlQueryModel( this );
 	setSourceModel( m_sourceModel );
@@ -40,8 +40,6 @@ CategoryItemModel::CategoryItemModel( QSqlDatabase db, QObject * parent ) : QAbs
 }
 
 CategoryItemModel::~CategoryItemModel() {
-	qDeleteAll( m_sourcesIndexMapping );
-	delete m_sourceModel;
 }
 
 void CategoryItemModel::select() {
@@ -59,66 +57,18 @@ void CategoryItemModel::select() {
 
 	// Initialize the mapping
 	createMapping();
-
-	// Reset the layout
-	reset();
 }
 
-/*! \internal
-	Create the mapping of all index in the table.
-*/
-void CategoryItemModel::createMapping() {
-	qDeleteAll( m_sourcesIndexMapping );
-	m_sourcesIndexMapping.clear();
-	m_categoryIdMapping.clear();
+void CategoryItemModel::clear() {
+	m_sourceModel->setQuery( "SELECT id, parent_id, name FROM categories WHERE id is null" );
 
-	int source_rows = m_sourceModel->rowCount();
-	for( int i = -1; i < source_rows; ++i ) {
-		Mapping * m = new Mapping;
-		IndexMap::const_iterator it = IndexMap::const_iterator( m_sourcesIndexMapping.insert( i, m ) );
-		m->index = i;
-		m->parrentId = 0;
-		m->parentIndex = 0;
+	// Define name for header column
+	m_sourceModel->setHeaderData( list_id, Qt::Horizontal, tr("Id") );
+	m_sourceModel->setHeaderData( list_parentid, Qt::Horizontal, tr("Parent") );
+	m_sourceModel->setHeaderData( list_name, Qt::Horizontal, tr("Name") );
 
-		if( i >= 0 ) {
-			QSqlRecord record = m_sourceModel->record( i );
-			m_categoryIdMapping[ record.value( list_id ).toInt() ] = i;
-			m->id = record.value( list_id ).toInt();
-		} else { // Create the root Item
-			m->id = 0;
-			m_categoryIdMapping[ 0 ] = -1;
-		}
-	}
-
-	for( int i = 0; i < source_rows; ++i ) {
-		QSqlRecord record = m_sourceModel->record( i );
-
-		int parentCategoryId = record.value( list_parentid ).toInt();
-		int parentCategoryIndex = m_categoryIdMapping.value( parentCategoryId, -2 );
-		Q_ASSERT( parentCategoryIndex > -2 );
-		Mapping * mapping = m_sourcesIndexMapping.value( i );
-		mapping->parentIndex = parentCategoryIndex;
-		mapping->parrentId   = parentCategoryId;
-
-		Mapping * categoryMapping = m_sourcesIndexMapping.value( parentCategoryIndex );
-		categoryMapping->source_rows.append( i );
-	}
-}
-
-QSqlQueryModel * CategoryItemModel::sourceModel() {
-	return m_sourceModel;
-}
-
-QSqlQueryModel * CategoryItemModel::sourceModel() const {
-	return m_sourceModel;
-}
-
-QSqlDatabase CategoryItemModel::database() {
-	return m_db;
-}
-
-QSqlDatabase CategoryItemModel::database() const {
-	return m_db;
+	// Initialize the mapping
+	createMapping();
 }
 
 int CategoryItemModel::proxyColumnToSource( int proxyColumn ) const {
@@ -133,108 +83,31 @@ int CategoryItemModel::sourceColumnToProxy( int sourceColumn ) const {
 	return -1;
 }
 
+int CategoryItemModel::getUniqueIdentifier( const QModelIndex & sourceIndex ) const {
+	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+	return record.value( list_id ).toInt();
+}
+
+int CategoryItemModel::getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const {
+	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+	return record.value( list_parentid ).toInt();
+}
+
 /// For the given source index, this method return the corresponding index in the proxy
 QModelIndex CategoryItemModel::mapFromSource ( const QModelIndex & sourceIndex ) const {
-	if( ! sourceIndex.isValid() ) return QModelIndex();
-	if( sourceIndex.model() != m_sourceModel ) {
-		qWarning( "CategoryItemModel: index from wrong model passed to mapFromSource" );
-		return QModelIndex();
-	}
+	QModelIndex index = mapFromSource( sourceIndex );
+	int column = sourceColumnToProxy( index.column() );
+	if( column == -1 ) return QModelIndex();
 
-	int row = sourceIndex.row();
-	IndexMap::const_iterator it = m_sourcesIndexMapping.constFind( row );
-	Q_ASSERT( it != m_sourcesIndexMapping.constEnd() );
-
-	int parentRow = it.value()->parentIndex;
-	IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
-	Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
-
-	Mapping * m = parentIt.value();
-
-	int proxyRow = m->source_rows.indexOf( row ), proxyColumn = sourceColumnToProxy( sourceIndex.column() );
-	if( proxyColumn == -1 ) return QModelIndex();
-
-	return createIndex( proxyRow, proxyColumn, *parentIt );
+	return TreeProxyItemModel::createIndex( index.row(), column, index.internalPointer() );
 }
 
 QModelIndex CategoryItemModel::mapToSource ( const QModelIndex & proxyIndex ) const {
-	if( ! proxyIndex.isValid() ) return QModelIndex();
-	if( proxyIndex.model() != this ) {
-		qWarning( "CategoryItemModel: index from wrong model passed to mapToSource" );
-		return QModelIndex();
-	}
-	
-	Mapping * m = static_cast<Mapping*>( proxyIndex.internalPointer() );
-	
-	int sourceColumn = proxyColumnToSource( proxyIndex.column() );
-	if( sourceColumn == -1 ) return QModelIndex();
-	
-	int sourceRow = m->source_rows.at( proxyIndex.row() );
-	
-	return m_sourceModel->index( sourceRow, sourceColumn );
-}
+	QModelIndex index = proxyIndex;
+	int column = proxyColumnToSource( index.column() );
+	if( column == -1 ) return QModelIndex();
 
-QModelIndex CategoryItemModel::index( int row, int column, const QModelIndex & parent ) const {
-	if( ( row < 0 ) || ( column < 0 ) ) return QModelIndex();
-
-	IndexMap::const_iterator it = m_sourcesIndexMapping.constFind( -1 );
-
-	QModelIndex sourceParent = mapToSource( parent );
-	if( sourceParent.isValid() ) {
-		it = m_sourcesIndexMapping.constFind( sourceParent.row() );
-	}
-
-	Q_ASSERT( it != m_sourcesIndexMapping.constEnd() );
-	if( it.value()->source_rows.count() <= row )
-		return QModelIndex();
-
-	return createIndex( row, column, *it );
-}
-
-QModelIndex CategoryItemModel::index( int categoryId ) {
-	int sourceRow = m_categoryIdMapping.value( categoryId, -1 );
-	if( sourceRow >= 0 ) {
-		Mapping * m = m_sourcesIndexMapping.value( sourceRow );
-
-		int parentRow = m->parentIndex;
-		IndexMap::const_iterator parentIt = m_sourcesIndexMapping.constFind( parentRow );
-		Q_ASSERT( parentIt != m_sourcesIndexMapping.constEnd() );
-
-		Mapping * parrentMapping = parentIt.value();
-
-		int proxyRow = parrentMapping->source_rows.indexOf( m->index );
-
-		return createIndex( proxyRow, 0, *parentIt );
-	}
-	return QModelIndex();
-}
-
-QModelIndex CategoryItemModel::parent( const QModelIndex & index ) const {
-	if( ! index.isValid() ) return QModelIndex();
-
-	Mapping * m = static_cast<Mapping*>( index.internalPointer() );
-
-	int sourceRow = m->index;
-	if( sourceRow == -1 ) return QModelIndex();
-
-	QModelIndex sourceParent = m_sourceModel->index( sourceRow, proxyColumnToSource( 0 ) );
-	QModelIndex proxyParent = mapFromSource( sourceParent );
-
-	return proxyParent;
-}
-
-int CategoryItemModel::rowCount( const QModelIndex & index ) const {
-	if( index.column() > 0 ) return 0;
-	if( ! index.isValid() ) {
-		Mapping * rootMapping = m_sourcesIndexMapping.value( -1 );
-		return rootMapping->source_rows.count();
-	} else {
-		Mapping * parrentMapping = static_cast<Mapping*>( index.internalPointer() );
-		int sourceRowIndex = parrentMapping->source_rows.at( index.row() );
-		Mapping * rowMapping = m_sourcesIndexMapping.value( sourceRowIndex );
-
-		return rowMapping->source_rows.count();
-	}
+	return TreeProxyItemModel::mapToSource( createIndex( index.row(), column, index.internalPointer() ) );
 }
 
 int CategoryItemModel::columnCount( const QModelIndex & index ) const {
@@ -263,16 +136,5 @@ QVariant CategoryItemModel::data( const QModelIndex & index, int role ) const {
 		return record.value( list_id );
 	}
 
-	return QAbstractProxyModel::data( index, role );
+	return TreeProxyItemModel::data( index, role );
 }
-
-void CategoryItemModel::clear() {
-	emit layoutAboutToBeChanged();
-
-	qDeleteAll( m_sourcesIndexMapping );
-	m_sourcesIndexMapping.clear();
-	m_categoryIdMapping.clear();
-
-	emit layoutChanged();
-}
-

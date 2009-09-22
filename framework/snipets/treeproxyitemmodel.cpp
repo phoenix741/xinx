@@ -43,7 +43,7 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( int id ) const {
 	if( ! mapping ) {
 		mapping = new Mapping;
 		mapping->id = id;
-		mapping->parrentId = 0;
+		mapping->parentId = 0;
 	}
 	return mapping;
 }
@@ -78,7 +78,7 @@ void TreeProxyItemModel::createMapping() {
 		int parentId      = getParentUniqueIdentifier( index );
 
 		Mapping * m       = getMapping( id );
-		m->parrentId      = parentId;
+		m->parentId      = parentId;
 
 		m_idMapping.insert( m->id, m );
 
@@ -105,7 +105,7 @@ QModelIndex TreeProxyItemModel::mapFromSource ( const QModelIndex & sourceIndex 
 	Q_ASSERT( id >= 0 );
 
 	Mapping * mapping = getMapping( id );
-	int parentId = mapping->parrentId;
+	int parentId = mapping->parentId;
 
 	Mapping * parentMapping = getMapping( parentId );
 	Q_ASSERT( parentMapping );
@@ -135,11 +135,26 @@ QModelIndex TreeProxyItemModel::mapToSource ( const QModelIndex & proxyIndex ) c
 	return sourceModel()->index( sourceRow, sourceColumn );
 }
 
+QModelIndex TreeProxyItemModel::index( int id ) const {
+	if( id == 0 ) return QModelIndex();
+
+	Mapping * mapping = getMapping( id );
+	int parentId = mapping->parentId;
+
+	Mapping * parentMapping = getMapping( parentId );
+	int row = parentMapping->childs.indexOf( id );
+
+	return createIndex( row, 0, parentMapping );
+}
+
 QModelIndex TreeProxyItemModel::index( int row, int column, const QModelIndex & parent ) const {
 	if( ( row < 0 ) || ( column < 0 ) ) return QModelIndex();
 
 	Mapping * parentMapping = getMapping( parent );
 	Q_ASSERT( parentMapping );
+
+	if( row >= parentMapping->childs.count() ) return QModelIndex();
+	if( column >= sourceModel()->columnCount() ) return QModelIndex();
 
 	return createIndex( row, column, parentMapping );
 }
@@ -150,12 +165,12 @@ QModelIndex TreeProxyItemModel::parent( const QModelIndex & index ) const {
 
 	Mapping * mapping = static_cast<Mapping*>( index.internalPointer() );
 
-	int parentId = mapping->parrentId;
+	int parentId = mapping->parentId;
 	if( parentId == 0 ) return QModelIndex();
 
 	Mapping * parentMapping = getMapping( parentId );
 
-	int grandParentId = parentMapping->parrentId;
+	int grandParentId = parentMapping->parentId;
 	Mapping * grandParentMapping = getMapping( grandParentId );
 
 	int parentRow = grandParentMapping->childs.indexOf( parentId );

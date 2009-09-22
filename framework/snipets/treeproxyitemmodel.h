@@ -35,6 +35,7 @@ public:
 	TreeProxyItemModel( QObject * parent = 0 );
 	virtual ~TreeProxyItemModel();
 
+	virtual QModelIndex index( int id ) const;
 	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
 	virtual QModelIndex parent( const QModelIndex & index ) const;
 
@@ -44,15 +45,15 @@ public:
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
 protected:
-	virtual int getUniqueIdentifier( const QModelIndex & index ) const = 0;
-	virtual int getParentUniqueIdentifier( const QModelIndex & index ) const = 0;
+	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const = 0;
+	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const = 0;
 
 	virtual void setSourceModel( QAbstractItemModel * sourceModel );
 	virtual void createMapping();
 private:
 	struct Mapping {
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
-		int parrentId; //! Define the parent id of this structure
+		int parentId; //! Define the parent id of this structure
 		QVector<int> childs; //!< Define a list of id, child of this element
 	};
 	/*!
