@@ -227,7 +227,6 @@ QModelIndex TreeProxyItemModel::index( int row, int column, const QModelIndex & 
 
 QModelIndex TreeProxyItemModel::parent( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return QModelIndex();
-	if( index.column() > 0 ) return QModelIndex();
 
 	Mapping * parentMapping = static_cast<Mapping*>( index.internalPointer() );
 
@@ -238,7 +237,7 @@ QModelIndex TreeProxyItemModel::parent( const QModelIndex & index ) const {
 	Mapping * grandParentMapping = getMapping( grandParentId );
 
 	int parentRow = grandParentMapping->childs.indexOf( parentId );
-	int parentCol = index.column();
+	int parentCol = 0;
 
 	return createIndex( parentRow, parentCol, grandParentMapping );
 }

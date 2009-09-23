@@ -44,11 +44,6 @@ public:
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 
-	/*!
-	 * Clear all data of the snipet (you must call \e select after)
-	 * \sa select()
-	 */
-	void clear();
 	void select();
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
@@ -62,8 +57,8 @@ protected:
 private:
 	enum {
 		list_id          = 0,
-			list_parentid    = 1,
-			list_name        = 2
+		list_parentid    = 1,
+		list_name        = 2
 	};
 
 	int proxyColumnToSource( int proxyColumn ) const;

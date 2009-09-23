@@ -42,10 +42,9 @@ private slots:
 	void testSearchCategoryId();
 	void testRemoveCategoryItemModel();
 
-	/*
 	void testEmptySnipetItemModel();
 	void testSelectSnipetItemModel();
-	*/
+	void testSearchSnipetId();
 
 	void cleanupTestCase();
 private:
@@ -92,7 +91,7 @@ void TestSnipets::testAddCategoryItemModel() {
 }
 
 void TestSnipets::testRemoveCategoryItemModel() {
-	QSqlQuery query( "DELETE FROM categories WHERE id not in (select parent_id from categories)", SnipetManager::self()->database() );
+	QSqlQuery query( "DELETE FROM categories WHERE id not in (select distinct parent_id from categories) and id not in (select distinct category_id from snipets)", SnipetManager::self()->database() );
 
 	m_categoryModel->select();
 }
@@ -116,7 +115,6 @@ void TestSnipets::testSearchCategoryId() {
 	QVERIFY( id == testId );
 }
 
-/*
 void TestSnipets::testEmptySnipetItemModel() {
 	new ModelTest( m_snipetModel );
 }
@@ -124,7 +122,26 @@ void TestSnipets::testEmptySnipetItemModel() {
 void TestSnipets::testSelectSnipetItemModel() {
 	m_snipetModel->select();
 }
-*/
+
+void TestSnipets::testSearchSnipetId() {
+	QModelIndex rootIndex = m_snipetModel->index( true, 0 );
+	QVERIFY( ! rootIndex.isValid() );
+
+	if( m_snipetModel->sourceModel()->rowCount() == 0 ) {
+		QSKIP( "Empty base", SkipSingle );
+		return;
+	}
+
+	int row = ( qrand() % m_snipetModel->sourceModel()->rowCount() );
+	bool isCategory = m_snipetModel->sourceModel()->index( row, 6 ).data().toString() == "CATEGORY";
+	int testId = m_snipetModel->sourceModel()->index( row, 0 ).data().toInt();
+	QModelIndex index = m_snipetModel->index( isCategory, testId );
+	QVERIFY( index.isValid() );
+
+	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
+
+	QVERIFY( id == testId );
+}
 
 void TestSnipets::cleanupTestCase() {
 	delete m_snipetModel;

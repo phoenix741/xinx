@@ -57,17 +57,6 @@ void CategoryItemModel::select() {
 	createMapping();
 }
 
-void CategoryItemModel::clear() {
-	m_sourceModel->setQuery( "SELECT id, parent_id, name FROM categories WHERE id is null" );
-
-	// Define name for header column
-	m_sourceModel->setHeaderData( list_id, Qt::Horizontal, tr("Id") );
-	m_sourceModel->setHeaderData( list_parentid, Qt::Horizontal, tr("Parent") );
-	m_sourceModel->setHeaderData( list_name, Qt::Horizontal, tr("Name") );
-
-	// Initialize the mapping
-	createMapping();
-}
 
 int CategoryItemModel::proxyColumnToSource( int proxyColumn ) const {
 	if( proxyColumn == 0 )

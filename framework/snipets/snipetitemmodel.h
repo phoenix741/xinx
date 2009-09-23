@@ -21,21 +21,18 @@
 #define SNIPETITEMMODEL_H
 #pragma once
 
+// Xinx header
+#include "snipets/treeproxyitemmodel.h"
+#include "snipets/snipetlist.h"
+
 // Qt header
 #include <QString>
-#include <QAbstractProxyModel>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
-#include <QMap>
-#include <QHash>
-#include <QVector>
-
-// Xinx header
-#include "snipets/snipetlist.h"
 
 /* SnipetItemModel */
 
-class SnipetItemModel : public QAbstractProxyModel {
+class SnipetItemModel : public TreeProxyItemModel {
 	Q_OBJECT
 public:
 	enum SnipetItemRole {
@@ -47,13 +44,11 @@ public:
 	virtual ~SnipetItemModel();
 
 	virtual QModelIndex index( bool isCategory, int id ) const;
-	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
-	virtual QModelIndex parent( const QModelIndex & index ) const;
 
-	virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
+
 	virtual Qt::DropActions supportedDropActions() const;
 	virtual QStringList mimeTypes() const;
 	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
@@ -74,18 +69,20 @@ public:
 	 * Remove snipets from the database where the indexes is indicate.
 	 */
 	void removeIndexes( const QModelIndexList & indexes, QWidget * parent = 0 );
-	/*!
-	 * Clear all data of the snipet (you must call \e select after)
-	 * \sa select()
-	 */
-	void clear();
 	void select( const QString & filter = QString() );
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+
+	QSqlQueryModel * sourceModel();
+	QSqlQueryModel * sourceModel() const;
 protected:
 	friend class SnipetManager;
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+
+
+	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
 
 	enum {
 		list_id          = 0,
@@ -98,28 +95,11 @@ protected:
 		list_availablejs = 7
 	};
 
-	QSqlQueryModel * sourceModel();
-	QSqlQueryModel * sourceModel() const;
-
 	QSqlDatabase database();
 	QSqlDatabase database() const;
-
 private:
-	struct Mapping {
-		bool is_category;
-		int id, parrentId;
-		int index, parentIndex;
-		QVector<int> source_rows;
-	};
-	typedef QMap<int,Mapping*> IndexMap;
-
-	IndexMap m_sourcesIndexMapping;
-	QHash<int,int> m_categoryIdMapping;
-	QHash<int,int> m_snipetIdMapping;
-
 	int proxyColumnToSource( int proxyColumn ) const;
 	int sourceColumnToProxy( int sourceColumn ) const;
-	void createMapping();
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;
