@@ -47,6 +47,9 @@ public:
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+
+	bool resetModel() const;
+	void setResetModel( bool value );
 protected:
 	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const = 0;
 	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const = 0;
@@ -71,6 +74,7 @@ private:
 	QHash<int,int> m_index2IdMapping;
 
 	int m_sourceColumnCount;
+	bool m_resetModel;
 
 	Mapping * getMapping( int id ) const;
 	Mapping * getMapping( const QModelIndex & index ) const;

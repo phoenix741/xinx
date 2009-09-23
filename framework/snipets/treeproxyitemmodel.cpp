@@ -26,7 +26,7 @@
 
 /* TreeProxyItemModel */
 
-TreeProxyItemModel::TreeProxyItemModel( QObject * parent ) : QAbstractProxyModel( parent ), m_sourceColumnCount( 0 ) {
+TreeProxyItemModel::TreeProxyItemModel( QObject * parent ) : QAbstractProxyModel( parent ), m_sourceColumnCount( 0 ), m_resetModel( false ) {
 }
 
 TreeProxyItemModel::~TreeProxyItemModel() {
@@ -36,6 +36,14 @@ TreeProxyItemModel::~TreeProxyItemModel() {
 void TreeProxyItemModel::setSourceModel( QAbstractItemModel * sourceModel ) {
 	QAbstractProxyModel::setSourceModel( sourceModel );
 	createMapping();
+}
+
+bool TreeProxyItemModel::resetModel() const {
+	return m_resetModel;
+}
+
+void TreeProxyItemModel::setResetModel( bool value ) {
+	m_resetModel = value;
 }
 
 TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( int id ) const {
@@ -99,7 +107,7 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
  * Create the mapping of all index in the table.
 */
 void TreeProxyItemModel::createMapping() {
-	if( m_sourceColumnCount != sourceModel()->columnCount() ) {
+	if( m_resetModel || ( m_sourceColumnCount != sourceModel()->columnCount() ) ) {
 		// The model completly change
 		qDeleteAll( m_idMapping );
 		m_idMapping.clear();
