@@ -80,7 +80,7 @@ protected:
 	friend class SnipetManager;
 	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 
-
+	int getTreeModelIdentifier( QString type, int id ) const;
 	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
 	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
 

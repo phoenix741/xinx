@@ -97,10 +97,10 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
 				endInsertRows();
 		}
-	} else {
+	}/* else {
 		QModelIndex idx = index( id );
 		emit dataChanged( idx, idx );
-	}
+	}*/
 }
 
 /*! \internal

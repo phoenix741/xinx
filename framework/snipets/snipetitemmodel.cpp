@@ -146,11 +146,7 @@ int SnipetItemModel::sourceColumnToProxy( int sourceColumn ) const {
 	}
 }
 
-int SnipetItemModel::getUniqueIdentifier( const QModelIndex & sourceIndex ) const {
-	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
-	QString type = record.value( list_type ).toString();
-	int id       = record.value( list_id ).toInt();
-
+int SnipetItemModel::getTreeModelIdentifier( QString type, int id ) const {
 	if( type == "CATEGORY" ) {
 		if( id == 0 ) return 0;
 		return qHash( QString("C%1").arg( id ) );
@@ -159,12 +155,19 @@ int SnipetItemModel::getUniqueIdentifier( const QModelIndex & sourceIndex ) cons
 	}
 }
 
+int SnipetItemModel::getUniqueIdentifier( const QModelIndex & sourceIndex ) const {
+	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
+	QString type = record.value( list_type ).toString();
+	int id       = record.value( list_id ).toInt();
+	return getTreeModelIdentifier( type, id );
+}
+
 int SnipetItemModel::getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const {
 	QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 	int parentId = record.value( list_parentid ).toInt();
 	if( parentId == 0 ) return 0;
 
-	return qHash( QString("C%1").arg( parentId ) );
+	return getTreeModelIdentifier( "CATEGORY", parentId );
 }
 
 /// For the given source index, this method return the corresponding index in the proxy
@@ -187,8 +190,8 @@ QModelIndex SnipetItemModel::mapToSource ( const QModelIndex & proxyIndex ) cons
 QModelIndex SnipetItemModel::index( bool isCategory, int id ) const {
 	if( isCategory && ( id == 0 ) ) return QModelIndex();
 
-	QString type = isCategory ? "C" : "S";
-	return TreeProxyItemModel::index( qHash( QString("%1%2").arg( type ).arg( id ) ) );
+	QString type = isCategory ? "CATEGORY" : "SNIPET";
+	return TreeProxyItemModel::index( getTreeModelIdentifier( type, id ) );
 }
 
 int SnipetItemModel::columnCount( const QModelIndex & index ) const {
@@ -261,8 +264,11 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 			bool result = updateQuery.exec();
 			Q_ASSERT( result );
 
+			int parentIdentifier = getTreeModelIdentifier( "CATEGORY", parentId );
+			int identifier = getTreeModelIdentifier( type, id );
 
-			select( m_filter );
+			setParentId( identifier, parentIdentifier );
+			//select( m_filter );
 		}
 
 		return true;
@@ -329,8 +335,10 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 
 void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * parent ) {
 	foreach( const QModelIndex & index, indexes ) {
-		bool isCategory = index.data( SnipetTypeRole ).toString() == "CATEGORY";
+		QString type = index.data( SnipetTypeRole ).toString();
+		bool isCategory = type == "CATEGORY";
 		int id = index.data( SnipetIdRole ).toInt();
+		int treeId = getTreeModelIdentifier( type, id );
 
 		if( isCategory ) {
 			SnipetManager::self()->removeCategory( id, parent );

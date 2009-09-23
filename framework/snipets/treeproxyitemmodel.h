@@ -56,6 +56,8 @@ protected:
 
 	virtual void setSourceModel( QAbstractItemModel * sourceModel );
 	virtual void createMapping();
+	void setParentId( int id, int parentId );
+	void printMapping( int id, int niveau = 0 ) const;
 private:
 	struct Mapping {
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
@@ -78,8 +80,6 @@ private:
 
 	Mapping * getMapping( int id ) const;
 	Mapping * getMapping( const QModelIndex & index ) const;
-	void printMapping( int id, int niveau = 0 ) const;
-	void setParentId( int id, int parentId );
 };
 
 #endif // TREEPROXYITEMMODEL_H

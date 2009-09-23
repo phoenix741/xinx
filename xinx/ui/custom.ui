@@ -1563,6 +1563,9 @@
          <property name="selectionMode">
           <enum>QAbstractItemView::ExtendedSelection</enum>
          </property>
+         <property name="autoExpandDelay">
+          <number>5</number>
+         </property>
          <property name="rootIsDecorated">
           <bool>false</bool>
          </property>
@@ -1570,6 +1573,9 @@
           <bool>true</bool>
          </property>
          <property name="itemsExpandable">
+          <bool>true</bool>
+         </property>
+         <property name="expandsOnDoubleClick">
           <bool>false</bool>
          </property>
         </widget>
