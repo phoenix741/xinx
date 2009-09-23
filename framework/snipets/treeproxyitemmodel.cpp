@@ -89,6 +89,9 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
 				endInsertRows();
 		}
+	} else {
+		QModelIndex idx = index( id );
+		emit dataChanged( idx, idx );
 	}
 }
 
@@ -177,7 +180,7 @@ QModelIndex TreeProxyItemModel::mapFromSource ( const QModelIndex & sourceIndex 
 	Q_ASSERT( parentMapping );
 
 	int 	proxyRow = parentMapping->childs.indexOf( id ),
-		proxyColumn = sourceIndex.column();
+			proxyColumn = sourceIndex.column();
 
 	return createIndex( proxyRow, proxyColumn, parentMapping );
 }
@@ -196,7 +199,9 @@ QModelIndex TreeProxyItemModel::mapToSource ( const QModelIndex & proxyIndex ) c
 
 	int sourceId  = mapping->childs.at( proxyIndex.row() );
 	int sourceRow = m_id2IndexMapping.value( sourceId, -1 );
-	Q_ASSERT( sourceRow >= 0 );
+	if( sourceRow == -1 ) { // Source Row deleted
+		return QModelIndex();
+	}
 
 	return sourceModel()->index( sourceRow, sourceColumn );
 }

@@ -282,12 +282,16 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 		}
 	} else if( role == Qt::BackgroundRole ) {
 		QModelIndex sourceIndex = mapToSource( index );
+		if( ! sourceIndex.isValid() ) return QVariant();
+
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		if( record.value( list_type ).toString() == "CATEGORY" ) {
 			return QColor( 0xFF, 0xFF, 0xCC );
 		}
 	} else if( role == Qt::FontRole ) {
 		QModelIndex sourceIndex = mapToSource( index );
+		if( ! sourceIndex.isValid() ) return QVariant();
+
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		if( record.value( list_type ).toString() == "CATEGORY" ) {
 			QFont currentFont;
@@ -296,18 +300,26 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 		}
 	} else if( role == Qt::StatusTipRole ) {
 		QModelIndex sourceIndex = mapToSource( index );
+		if( ! sourceIndex.isValid() ) return QVariant();
+
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		return record.value( list_description );
 	} else if( role == SnipetItemModel::SnipetIdRole ) {
 		QModelIndex sourceIndex = mapToSource( index );
+		if( ! sourceIndex.isValid() ) return QVariant();
+
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		return record.value( list_id );
 	} else if( role == SnipetItemModel::SnipetTypeRole ) {
 		QModelIndex sourceIndex = mapToSource( index );
+		if( ! sourceIndex.isValid() ) return QVariant();
+
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		return record.value( list_type );
 	} else if( role == SnipetItemModel::SnipetParentIdRole ) {
 		QModelIndex sourceIndex = mapToSource( index );
+		if( ! sourceIndex.isValid() ) return QVariant();
+
 		QSqlRecord record = m_sourceModel->record( sourceIndex.row() );
 		return record.value( list_parentid );
 	}
