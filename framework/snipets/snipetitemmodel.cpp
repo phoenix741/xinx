@@ -88,22 +88,6 @@ void SnipetItemModel::select( const QString & filter ) {
 	createMapping();
 }
 
-/*
-void SnipetItemModel::loadSnipetList( const SnipetList & list ) {
-	foreach( const Snipet & s, list )
-		m_snipetList[ s.category() ].append( s );
-	reset();
-}
-
-
-SnipetList SnipetItemModel::getSnipetList() const {
-	SnipetList result;
-	foreach( const SnipetList & list, m_snipetList )
-		result += list;
-	return result;
-}
-*/
-
 QSqlQueryModel * SnipetItemModel::sourceModel() {
 	return m_sourceModel;
 }
@@ -241,6 +225,9 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 }
 
 bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent ) {
+	Q_UNUSED( row );
+	Q_UNUSED( column );
+
 	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/snipet.id.list" ) ) {
 		int parentId = parent.data( SnipetIdRole ).toInt();
 
@@ -268,7 +255,6 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 			int identifier = getTreeModelIdentifier( type, id );
 
 			setParentId( identifier, parentIdentifier );
-			//select( m_filter );
 		}
 
 		return true;
@@ -345,9 +331,9 @@ void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * 
 		} else {
 			SnipetManager::self()->removeSnipet( id, parent );
 		}
-	}
 
-	select( m_filter );
+		setParentId( treeId, -1 );
+	}
 }
 
 void SnipetItemModel::importSnipetList( const SnipetList & list ) {
@@ -355,40 +341,31 @@ void SnipetItemModel::importSnipetList( const SnipetList & list ) {
 	select( m_filter );
 }
 
-/*
-void SnipetItemModel::removeSnipet( const QModelIndexList & indexes ) {
-	QMultiMap<QString,int> deletedValue;
-	foreach( const QModelIndex & index, indexes ) {
-		deletedValue.insert( index.parent().data().toString(), index.row() );
-	}
+void SnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) {
+	QString type = index.data( SnipetTypeRole ).toString();
+	bool isCategory = type == "CATEGORY";
+	int id = index.data( SnipetIdRole ).toInt();
 
-	foreach( const QString & category, deletedValue.uniqueKeys() ) {
-		QList<int> lines = deletedValue.values( category );
-		qSort( lines.begin(), lines.end(), qGreater<int>() );
-		foreach( int line, lines ) {
-			beginRemoveRows( index( m_snipetList.keys().indexOf( category ), 0 ), line, line );
-			m_snipetList[ category ].removeAt( line );
-			endRemoveRows();
+	if( isCategory ) {
+		int row = index.model()->rowCount( index );
+		for( int i = 0 ; i < row ; i++ ) {
+			QModelIndex child = index.child( i, 0 );
+			addIndexToList( child, ids );
 		}
+	} else {
+		ids->append( id );
 	}
 }
 
-void SnipetItemModel::addSnipet( const Snipet & snipet ) {
-	QString category = snipet.category();
-	int indexOfCategory = m_snipetList.keys().indexOf( category );
+SnipetList SnipetItemModel::exportSnipetList( const QModelIndexList & indexes ) {
+	QList<int> ids;
+	SnipetList list;
 
-	if( indexOfCategory < 0 ) {
-		m_snipetList[ category ] = SnipetList();
-		reset();
-		indexOfCategory = m_snipetList.keys().indexOf( category );
+	foreach( const QModelIndex & index, indexes ) {
+		addIndexToList( index, &ids );
 	}
 
-	SnipetList list = m_snipetList.value( category );
+	SnipetManager::self()->exportSnipetList( ids, &list );
 
-	SnipetList::iterator i = qLowerBound( list.begin(), list.end(), snipet );
-	beginInsertRows( index( indexOfCategory, 0 ), i - list.begin(), i - list.begin() );
-	list.insert( i, snipet );
-	m_snipetList[ category ] = list;
-	endInsertRows();
+	return list;
 }
-*/

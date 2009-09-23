@@ -55,7 +55,7 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 
 	menu->addAction( actionAddSnipet );
 	menu->addAction( actionAddCategory );
-	
+
 	m_addPushButton->setMenu( menu );
 
 	// XML Pres
@@ -582,7 +582,6 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 		SnipetList list;
 		list.loadFromFile( importedFilename );
 		m_snipetModel->importSnipetList( list );
-		//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
 		m_snipetTreeView->expandAll();
 	}
 }
@@ -611,8 +610,6 @@ void CustomDialogImpl::m_addSnipetPushButton_clicked() {
 
 	SnipetManager::self()->addSnipet( categoryId, this );
 	m_snipetModel->select();
-	//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
-	//m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 
@@ -622,8 +619,6 @@ void CustomDialogImpl::m_addCategoryPushButton_clicked() {
 
 	SnipetManager::self()->addCategory( categoryId, true, this );
 	m_snipetModel->select();
-	//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
-	//m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 
@@ -635,8 +630,6 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 
 	m_snipetModel->removeIndexes( indexes, this );
 	m_snipetModel->select();
-	//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
-	//m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 
@@ -652,8 +645,6 @@ void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 	SnipetManager::self()->duplicateSnipet( snipetId, this );
 
 	m_snipetModel->select();
-	//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
-	//m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 
@@ -666,8 +657,6 @@ void CustomDialogImpl::on_m_snipetTreeView_doubleClicked( const QModelIndex & in
 		SnipetManager::self()->modifySnipet( id, this );
 	}
 	m_snipetModel->select();
-	//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
-	//m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 
@@ -686,8 +675,6 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 
 void CustomDialogImpl::on_m_snipetFilterLineEdit_textChanged( const QString & filterText ) {
 	m_snipetModel->select( filterText );
-	//m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
-	//m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 

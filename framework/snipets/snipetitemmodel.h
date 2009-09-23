@@ -54,17 +54,14 @@ public:
 	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
 	virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
 
-	/*
-	void loadSnipetList( const SnipetList & list );
-	void addSnipet( const Snipet & snipet );
-
-	SnipetList getSnipetList() const;
-	*/
-
 	/*!
 	 * Import a list of snipet into the base.
 	 */
 	void importSnipetList( const SnipetList & list );
+	/*!
+	 * Export a list of snipet to base
+	 */
+	SnipetList exportSnipetList( const QModelIndexList & indexes );
 	/*!
 	 * Remove snipets from the database where the indexes is indicate.
 	 */
@@ -98,6 +95,7 @@ protected:
 	QSqlDatabase database();
 	QSqlDatabase database() const;
 private:
+	void addIndexToList( QModelIndex index, QList<int> * ids );
 	int proxyColumnToSource( int proxyColumn ) const;
 	int sourceColumnToProxy( int sourceColumn ) const;
 

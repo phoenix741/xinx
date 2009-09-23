@@ -216,6 +216,17 @@ bool SnipetManager::removeSnipet( int id, QWidget * parent ) {
 	return true;
 }
 
+bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent ) {
+	QSqlQuery selectQuery( "SELECT name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id FROM snipets WHERE id=?", database() );
+	foreach( int id, list ) {
+		selectQuery.bindValue( ":id", id );
+		bool result = selectQuery.exec();
+		Q_ASSERT( result );
+
+			//const QString &
+	}
+}
+
 bool SnipetManager::importSnipetList( const SnipetList & list, QWidget * parent ) {
 	QSqlQuery insertSnipetQuery( "INSERT INTO snipets(name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id) "
 	                             "VALUES(:name, :description, :shortcut, :icon, :auto, :dialog, :text, :available_script, :category_id)", database() );

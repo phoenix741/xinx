@@ -58,7 +58,10 @@ public:
 	void modifySnipet( int id, QWidget * parent = 0 );
 	void duplicateSnipet( int id, QWidget * parent = 0 );
 	bool removeSnipet( int id, QWidget * parent = 0 );
+
 	bool importSnipetList( const SnipetList & list, QWidget * parent = 0 );
+	bool exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent = 0 );
+
 	bool callSnipet( int id, QString * result, QWidget * parent = 0 );
 	bool callSnipet( QString key, QString * result, QWidget * parent = 0 );
 	bool callAutomaticSnipet( QString key, QString * result, QWidget * parent = 0 );
