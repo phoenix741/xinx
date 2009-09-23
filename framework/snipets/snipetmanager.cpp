@@ -27,6 +27,7 @@
 #include "snipets/snipetitemmodel.h"
 #include "snipets/categoryitemmodel.h"
 #include "snipets/snipetmenu.h"
+#include "snipets/snipet.h"
 
 // Qt header
 #include <QSqlError>
@@ -217,13 +218,29 @@ bool SnipetManager::removeSnipet( int id, QWidget * parent ) {
 }
 
 bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent ) {
-	QSqlQuery selectQuery( "SELECT name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id FROM snipets WHERE id=?", database() );
+	QSqlQuery selectQuery( "SELECT name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id FROM snipets WHERE id=:id", database() );
+	QSqlQuery paramsQuery( "SELECT name, default_value FROM snipets_params WHERE snipet_id=:id", database() );
+	QSqlQuery extentionsQuery( "SELECT extention FROM snipets_extentions WHERE snipet_id=:id", database() );
 	foreach( int id, list ) {
+		Snipet snipet;
 		selectQuery.bindValue( ":id", id );
+		paramsQuery.bindValue( ":id", id );
+		extentionsQuery.bindValue( ":id", id );
+
 		bool result = selectQuery.exec();
 		Q_ASSERT( result );
 
-			//const QString &
+		snipet.setName(            selectQuery.value( 0 ).toString() );
+		snipet.setDescription(     selectQuery.value( 1 ).toString() );
+		snipet.setKey(             selectQuery.value( 2 ).toString() );
+		snipet.setIcon(            selectQuery.value( 3 ).toString() );
+		snipet.setCallIsAutomatic( selectQuery.value( 4 ).toBool() );
+		snipet.setShowDialog(      selectQuery.value( 5 ).toBool() );
+		snipet.setText(            selectQuery.value( 6 ).toString() );
+		snipet.setAvailableScript( selectQuery.value( 7 ).toString() );
+
+		int categoryId =           selectQuery.value( 8 ).toInt();
+
 	}
 }
 
