@@ -20,6 +20,9 @@
 // Xinx header
 #include "recursivesortfilterproxymodel.h"
 
+// Qt header
+#include <QDebug>
+
 /* RecursiveSortFilterProxyModel */
 
 RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ) {
@@ -28,6 +31,7 @@ RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel( QObject * parent )
 
 void RecursiveSortFilterProxyModel::setHidePath( const QStringList & hidePath ) {
 	if( m_hidePath != hidePath ) {
+		m_indexCache.clear();
 		m_hidePath = hidePath;
 	}
 }
@@ -35,14 +39,6 @@ void RecursiveSortFilterProxyModel::setHidePath( const QStringList & hidePath ) 
 bool RecursiveSortFilterProxyModel::canBeShow( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return true;
 	if( m_indexCache.contains( index ) ) return m_indexCache.value( index );
-
-	QList<int> columns;
-	if( filterKeyColumn() > -1 ) {
-		columns += filterKeyColumn();
-	} else {
-		for( int i = 0 ; sourceModel()->columnCount() ; i++ )
-			columns += i;
-	}
 
 	bool show = false;
 	QString data = sourceModel()->data( index ).toString();
@@ -83,6 +79,7 @@ bool RecursiveSortFilterProxyModel::filterAcceptsRow ( int source_row, const QMo
 	Q_ASSERT( filterKeyColumn() != -1 );
 
 	QModelIndex index = sourceModel()->index( source_row, filterKeyColumn(), source_parent );
+
 	return canBeShow( index );
 }
 

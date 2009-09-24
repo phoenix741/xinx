@@ -83,6 +83,7 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	m_snipetFilterModel = new RecursiveSortFilterProxyModel( m_snipetTreeView );
 	m_snipetFilterModel->setShowAllChild( true );
 	m_snipetFilterModel->setDynamicSortFilter( true );
+	m_snipetFilterModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
 	//m_snipetFilterModel->setFilterKeyColumn( -1 );
 
 	m_snipetModel = SnipetManager::self()->createSnipetItemModel( m_snipetFilterModel );
@@ -700,9 +701,10 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 }
 
 void CustomDialogImpl::on_m_snipetFilterLineEdit_textChanged( const QString & filterText ) {
+	m_snipetFilterModel->invalidate();
 	m_snipetFilterModel->setFilterRegExp( filterText );
 	m_snipetTreeView->expandAll();
-	m_snipetTreeView_selectionChanged();
+	//m_snipetTreeView_selectionChanged();
 }
 
 void CustomDialogImpl::on_m_highlighterComboBox_activated( QString text ) {
