@@ -24,6 +24,7 @@
 // Qt header
 #include <QSortFilterProxyModel>
 #include <QStringList>
+#include <QHash>
 
 class RecursiveSortFilterProxyModel : public QSortFilterProxyModel {
 public:
