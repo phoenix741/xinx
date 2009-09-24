@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include "snipets/treeproxyitemmodel.h"
+#include "utils/treeproxyitemmodel.h"
 #include "snipets/snipetlist.h"
 
 // Qt header
@@ -55,10 +55,6 @@ public:
 	virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
 
 	/*!
-	 * Import a list of snipet into the base.
-	 */
-	void importSnipetList( const SnipetList & list );
-	/*!
 	 * Export a list of snipet to base
 	 */
 	SnipetList exportSnipetList( const QModelIndexList & indexes );
@@ -66,7 +62,7 @@ public:
 	 * Remove snipets from the database where the indexes is indicate.
 	 */
 	void removeIndexes( const QModelIndexList & indexes, QWidget * parent = 0 );
-	void select( const QString & filter = QString() );
+	void select();
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
@@ -101,7 +97,6 @@ private:
 
 	QSqlDatabase m_db;
 	QSqlQueryModel * m_sourceModel;
-	QString m_filter;
 };
 
 #endif // SNIPETMODELINDEX_H

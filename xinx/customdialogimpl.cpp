@@ -26,6 +26,7 @@
 #include <editors/xinxcodeedit.h>
 #include <snipets/snipetmanager.h>
 #include <snipets/snipetitemmodel.h>
+#include <utils/recursivesortfilterproxymodel.h>
 
 // QCodeEdit header
 #include <qnfadefinition.h>
@@ -38,8 +39,8 @@
 #include <QHeaderView>
 #include <QTextCodec>
 #include <QStyleFactory>
-#include <QDomDocument>
 #include <QMenu>
+#include <QDomDocument>
 
 /* CustomDialogImpl */
 
@@ -79,8 +80,16 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	// Snipet
 	SnipetManager::self()->database().transaction();
 
-	m_snipetModel = SnipetManager::self()->createSnipetItemModel( m_snipetTreeView );
-	m_snipetTreeView->setModel( m_snipetModel );
+	m_snipetFilterModel = new RecursiveSortFilterProxyModel( m_snipetTreeView );
+	m_snipetFilterModel->setShowAllChild( true );
+	m_snipetFilterModel->setDynamicSortFilter( true );
+	//m_snipetFilterModel->setFilterKeyColumn( -1 );
+
+	m_snipetModel = SnipetManager::self()->createSnipetItemModel( m_snipetFilterModel );
+	m_snipetFilterModel->setSourceModel( m_snipetModel );
+
+	m_snipetTreeView->setModel( m_snipetFilterModel );
+	m_snipetTreeView->setSortingEnabled( true );
 	connect( m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(m_snipetTreeView_selectionChanged()) );
 
 	// Plugins
@@ -258,9 +267,11 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 	// Snipet
 	m_snipetModel->select();
-	m_snipetTreeView->setRootIndex( m_snipetModel->index( 0, 0 ) );
+	m_snipetFilterModel->setIncludeIndex( QModelIndexList() << m_snipetFilterModel->mapToSource( m_snipetFilterModel->index( 0, 0 ) ) );
+	m_snipetTreeView->setRootIndex( m_snipetFilterModel->index( 0, 0 ) );
 	m_snipetTreeView->header()->setResizeMode( QHeaderView::ResizeToContents );
 	m_snipetTreeView->header()->setResizeMode( 2, QHeaderView::Stretch );
+	m_snipetTreeView->sortByColumn( 0, Qt::AscendingOrder );
 	m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 
@@ -581,7 +592,8 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 	if( ! importedFilename.isEmpty() ) {
 		SnipetList list;
 		list.loadFromFile( importedFilename );
-		m_snipetModel->importSnipetList( list );
+		SnipetManager::self()->importSnipetList( list );
+		m_snipetModel->select();
 		m_snipetTreeView->expandAll();
 	}
 }
@@ -674,7 +686,8 @@ void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
 }
 
 void CustomDialogImpl::on_m_snipetFilterLineEdit_textChanged( const QString & filterText ) {
-	m_snipetModel->select( filterText );
+	m_snipetFilterModel->setFilterRegExp( filterText );
+	m_snipetTreeView->expandAll();
 	m_snipetTreeView_selectionChanged();
 }
 

@@ -32,72 +32,6 @@
 #include <QFileInfo>
 #include <QDateTime>
 
-/* RecursiveFilterProxyModel */
-
-RecursiveFilterProxyModel::RecursiveFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ) {
-
-}
-
-bool RecursiveFilterProxyModel::canBeShow( const QModelIndex & index ) const {
-	if( m_indexCache.contains( index ) ) return m_indexCache.value( index );
-
-	QString data = sourceModel()->data( index ).toString();
-	if( XINXConfig::self()->config().xmlPres.hidePath.contains( data ) ) {
-		m_indexCache.insert( QPersistentModelIndex( index ), false );
-		return false;
-	}
-
-	bool show = data.contains( filterRegExp() );
-
-	if( ! show ) {
-		int r = sourceModel()->rowCount( index );
-		for( int i = 0; i < r; i++ ) {
-			QModelIndex child = sourceModel()->index( i, filterKeyColumn(), index );
-			if( canBeShow( child ) ) {
-				m_indexCache.insert( QPersistentModelIndex( index ), true );
-				return true;
-			}
-		}
-
-		show = m_showAllChild && mustBeShow( index );
-		m_indexCache.insert( QPersistentModelIndex( index ), show );
-		return show;
-	} else {
-		m_indexCache.insert( QPersistentModelIndex( index ), true );
-		return true;
-	}
-}
-
-bool RecursiveFilterProxyModel::mustBeShow( const QModelIndex & index ) const {
-	QModelIndex parent = index.parent();
-	if( ! parent.isValid() ) return false;
-	bool show = parent.data().toString().contains( filterRegExp() );
-	return show || mustBeShow( parent );
-}
-
-bool RecursiveFilterProxyModel::filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const {
-	Q_ASSERT( filterKeyColumn() != -1 );
-
-	QModelIndex index = sourceModel()->index( source_row, filterKeyColumn(), source_parent );
-	return canBeShow( index );
-}
-
-bool RecursiveFilterProxyModel::showAllChild() const {
-	return m_showAllChild;
-}
-
-void RecursiveFilterProxyModel::setShowAllChild( bool value ) {
-	if( m_showAllChild != value ) {
-		m_indexCache.clear();
-		m_showAllChild = value;
-	}
-}
-
-void RecursiveFilterProxyModel::setFilterRegExp( const QString & regExp ) {
-	m_indexCache.clear();
-	QSortFilterProxyModel::setFilterRegExp( regExp );
-}
-
 /* XmlPresentationDockThread */
 
 XmlPresentationDockThread::XmlPresentationDockThread( XmlPresentationDockWidget * parent ) : m_model(0), m_sortFilterModel(0), m_watcher(0), m_parent( parent ) {
@@ -265,6 +199,7 @@ void XmlPresentationDockThread::open( const QString& filename ) {
 	m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
 	m_filteredElement = XINXConfig::self()->config().xmlPres.showFilteredSubTree;
 
+
 	delete m_sortFilterModel; delete m_model; delete m_watcher;
 
 	if( !QFileInfo( filename ).exists() ) {
@@ -299,8 +234,9 @@ void XmlPresentationDockThread::threadrun() {
 		}
 	}
 	if( m_model ) {
-		m_sortFilterModel = new RecursiveFilterProxyModel( m_model );
+		m_sortFilterModel = new RecursiveSortFilterProxyModel( m_model );
 		m_sortFilterModel->setSourceModel( m_model );
+		m_sortFilterModel->setHidePath( m_filterHidePath );
 		m_sortFilterModel->setShowAllChild( m_filteredElement );
 		m_sortFilterModel->setFilterRegExp( m_filteredText );
 		m_model->moveToThread( qApp->thread() );
@@ -386,6 +322,7 @@ void XmlPresentationDockThread::filterTextChangedTimer() {
 
 		m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
 		m_filteredElement = XINXConfig::self()->config().xmlPres.showFilteredSubTree;
+		m_filterHidePath = XINXConfig::self()->config().xmlPres.hidePath;
 
 		m_model->moveToThread( this );
 

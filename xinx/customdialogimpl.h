@@ -26,6 +26,7 @@
 #include <core/xinxconfig.h>
 
 class SnipetItemModel;
+class RecursiveSortFilterProxyModel;
 
 /*!
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
@@ -81,6 +82,7 @@ private:
 	void storeConfig();
 
 	XINXConfig m_config;
+	RecursiveSortFilterProxyModel * m_snipetFilterModel;
 	SnipetItemModel * m_snipetModel;
 };
 

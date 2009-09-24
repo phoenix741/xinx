@@ -27,29 +27,13 @@
 #include "xmlpresentationdockwidget.h"
 #include "ui_xmlpresentationwidget.h"
 #include "xmlpresentationitem.h"
+#include <utils/recursivesortfilterproxymodel.h>
 
 // Qt header
 #include <QThread>
-#include <QSortFilterProxyModel>
 #include <QTimer>
 #include <QPointer>
-
-class RecursiveFilterProxyModel : public QSortFilterProxyModel {
-public:
-	RecursiveFilterProxyModel( QObject * parent = 0 );
-
-	bool showAllChild() const;
-	void setShowAllChild( bool value );
-	void setFilterRegExp( const QString & regExp );
-protected:
-	virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
-	bool canBeShow( const QModelIndex & index ) const;
-	bool mustBeShow( const QModelIndex & index ) const; // true if a parent is equals
-private:
-	bool m_showAllChild;
-
-	mutable QHash<QPersistentModelIndex,bool> m_indexCache;
-};
+#include <QStringList>
 
 class XmlPresentationDockThread : public XinxThread {
 	Q_OBJECT
@@ -61,9 +45,10 @@ public:
 	QString m_logPath, m_openingFile;
 
 	QPointer<XmlPresentationModel> m_model;
-	QPointer<RecursiveFilterProxyModel> m_sortFilterModel;
+	QPointer<RecursiveSortFilterProxyModel> m_sortFilterModel;
 	QPointer<FileWatcher> m_watcher;
 
+	QStringList m_filterHidePath;
 	QString m_filteredText, m_currentXpath;
 	bool m_filteredElement;
 	QTimer m_timerTextChanged;

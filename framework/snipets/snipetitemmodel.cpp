@@ -43,36 +43,20 @@ SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : TreeProx
 SnipetItemModel::~SnipetItemModel() {
 }
 
-void SnipetItemModel::select( const QString & filter ) {
-	m_filter = filter;
-
+void SnipetItemModel::select() {
 	QSqlQuery query( m_db );
 
-	if( filter.isEmpty() ) {
-		// Set the query used all snipet
-		query.prepare(
-			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
-			"FROM categories "
-			"UNION ALL "
-			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
-			"FROM snipets "
-			"ORDER BY type, name"
-				);
-	} else {
-		query.prepare(
-			"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
-			"FROM categories "
-			"UNION ALL "
-			"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
-			"FROM snipets "
-			"WHERE name||description||shortcut like '%'||:filter||'%'"
-			"ORDER BY type, name"
-				);
-		query.bindValue( ":filter", filter );
-	}
+	// Set the query used all snipet
+	query.prepare(
+		"SELECT id, parent_id, ':/images/folder.png' as icon, name, ifnull(description,''), '' as shortcut, 'CATEGORY' as type, ifnull(available_script,'') "
+		"FROM categories "
+		"UNION ALL "
+		"SELECT id, category_id as parent_id, icon, name, ifnull(description,''), shortcut, 'SNIPET' as type, ifnull(available_script,'') "
+		"FROM snipets "
+		"ORDER BY type, name"
+			);
 	Q_ASSERT( query.exec() );
 	m_sourceModel->setQuery( query );
-
 
 	// Define name for header column
 	m_sourceModel->setHeaderData( list_id, Qt::Horizontal, tr("Id") );
@@ -334,11 +318,6 @@ void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * 
 
 		setParentId( treeId, -1 );
 	}
-}
-
-void SnipetItemModel::importSnipetList( const SnipetList & list ) {
-	SnipetManager::self()->importSnipetList( list );
-	select( m_filter );
 }
 
 void SnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) {

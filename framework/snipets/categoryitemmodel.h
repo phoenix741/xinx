@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include "snipets/treeproxyitemmodel.h"
+#include "utils/treeproxyitemmodel.h"
 
 // Qt header
 #include <QString>
