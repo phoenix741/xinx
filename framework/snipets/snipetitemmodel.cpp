@@ -162,6 +162,10 @@ QModelIndex SnipetItemModel::index( bool isCategory, int id ) const {
 	return TreeProxyItemModel::index( getTreeModelIdentifier( type, id ) );
 }
 
+QModelIndex SnipetItemModel::index( int row, int column, const QModelIndex & parent ) const {
+	return TreeProxyItemModel::index( row, column, parent );
+}
+
 int SnipetItemModel::columnCount( const QModelIndex & index ) const {
 	Q_UNUSED( index );
 
@@ -332,7 +336,8 @@ void SnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) {
 			addIndexToList( child, ids );
 		}
 	} else {
-		ids->append( id );
+		if( ! ids->contains( id ) )
+			ids->append( id );
 	}
 }
 
@@ -344,6 +349,7 @@ SnipetList SnipetItemModel::exportSnipetList( const QModelIndexList & indexes ) 
 		addIndexToList( index, &ids );
 	}
 
+	qSort( ids );
 	SnipetManager::self()->exportSnipetList( ids, &list );
 
 	return list;

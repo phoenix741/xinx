@@ -45,7 +45,6 @@ private slots:
 	void testEmptySnipetItemModel();
 	void testSelectSnipetItemModel();
 	void testSearchSnipetId();
-	void testSnipetFiltre();
 
 	void cleanupTestCase();
 private:
@@ -142,15 +141,6 @@ void TestSnipets::testSearchSnipetId() {
 	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
 
 	QVERIFY( id == testId );
-}
-
-void TestSnipets::testSnipetFiltre() {
-	m_snipetModel->select();
-	m_snipetModel->select( "button" );
-	m_snipetModel->select( "label" );
-	m_snipetModel->select( "azerty" );
-	m_snipetModel->select( "" );
-	m_snipetModel->select();
 }
 
 void TestSnipets::cleanupTestCase() {

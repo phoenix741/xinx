@@ -599,26 +599,28 @@ void CustomDialogImpl::on_m_importPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_exportPushButton_clicked() {
-	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	QItemSelection selection = m_snipetTreeView->selectionModel()->selection();
+	QItemSelection sourceSelection = m_snipetFilterModel->mapSelectionToSource( selection );
+	QModelIndexList indexes = sourceSelection.indexes();
+
 	foreach( const QModelIndex & i, indexes ) {
-		if( i.internalId() == -1 ) indexes.removeAll( i );
+		if( i.column() > 0 ) indexes.removeAll( i );
 	}
 
 	QString exportedFilename = QFileDialog::getSaveFileName( this, tr("Export snipets"), "datas:/", "*.xml" );
 	if( ! exportedFilename.isEmpty() ) {
-		SnipetList list;
-		for( int i = 0 ; i < indexes.size() ; i++ ) {
-			const Snipet & s = indexes.at( i ).data( Qt::UserRole ).value<Snipet>();
-
-			list << s;
-		}
+		SnipetList list = m_snipetModel->exportSnipetList( indexes );
 		list.saveToFile( exportedFilename );
 	}
 }
 
 void CustomDialogImpl::m_addSnipetPushButton_clicked() {
-	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
-	int categoryId = index.size() ? getCategory( index.at(0) ) : 1;
+	int categoryId = 1;
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	if( indexes.size() ) {
+		QModelIndex index = m_snipetFilterModel->mapToSource( indexes.at(0) );
+		categoryId = getCategory( index );
+	}
 
 	SnipetManager::self()->addSnipet( categoryId, this );
 	m_snipetModel->select();
@@ -626,8 +628,12 @@ void CustomDialogImpl::m_addSnipetPushButton_clicked() {
 }
 
 void CustomDialogImpl::m_addCategoryPushButton_clicked() {
-	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
-	int categoryId = index.size() ? getCategory( index.at(0) ) : 1;
+	int categoryId = 1;
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	if( indexes.size() ) {
+		QModelIndex index = m_snipetFilterModel->mapToSource( indexes.at(0) );
+		categoryId = getCategory( index );
+	}
 
 	SnipetManager::self()->addCategory( categoryId, true, this );
 	m_snipetModel->select();
@@ -635,9 +641,12 @@ void CustomDialogImpl::m_addCategoryPushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_removePushButton_clicked() {
-	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
-	foreach( const QModelIndex & i, indexes ) {
-		if( i.internalId() == -1 ) indexes.removeAll( i );
+	QItemSelection selection = m_snipetTreeView->selectionModel()->selection();
+	QItemSelection sourceSelection = m_snipetFilterModel->mapSelectionToSource( selection );
+	QModelIndexList indexes = sourceSelection.indexes();
+
+	foreach( QModelIndex i, indexes ) {
+		if( i.column() > 0 ) indexes.removeAll( i );
 	}
 
 	m_snipetModel->removeIndexes( indexes, this );
@@ -646,13 +655,14 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 }
 
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {
-	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
-	on_m_snipetTreeView_doubleClicked( index.at( 0 ) );
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	on_m_snipetTreeView_doubleClicked( indexes.at( 0 ) );
 }
 
 void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
-	QModelIndexList index = m_snipetTreeView->selectionModel()->selectedRows();
-	int snipetId = index.at( 0 ).data( SnipetItemModel::SnipetIdRole ).toInt();
+	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	QModelIndex index = m_snipetFilterModel->mapToSource( indexes.at(0) );
+	int snipetId = index.data( SnipetItemModel::SnipetIdRole ).toInt();
 
 	SnipetManager::self()->duplicateSnipet( snipetId, this );
 
@@ -662,8 +672,9 @@ void CustomDialogImpl::on_m_duplicatePushButton_clicked() {
 
 void CustomDialogImpl::on_m_snipetTreeView_doubleClicked( const QModelIndex & index ) {
 	/* Modify */
-	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
-	if( index.data( SnipetItemModel::SnipetTypeRole ).toString() == "CATEGORY" ) {
+	QModelIndex sourceIndex = m_snipetFilterModel->mapToSource( index );
+	int id = sourceIndex.data( SnipetItemModel::SnipetIdRole ).toInt();
+	if( sourceIndex.data( SnipetItemModel::SnipetTypeRole ).toString() == "CATEGORY" ) {
 		SnipetManager::self()->modifyCategory( id, this );
 	} else {
 		SnipetManager::self()->modifySnipet( id, this );
@@ -673,10 +684,13 @@ void CustomDialogImpl::on_m_snipetTreeView_doubleClicked( const QModelIndex & in
 }
 
 void CustomDialogImpl::m_snipetTreeView_selectionChanged() {
-	QModelIndexList indexes = m_snipetTreeView->selectionModel()->selectedRows();
+	QItemSelection selection = m_snipetTreeView->selectionModel()->selection();
+	QItemSelection sourceSelection = m_snipetFilterModel->mapSelectionToSource( selection );
+	QModelIndexList indexes = sourceSelection.indexes();
+
 	bool hasCategory = false;
 	foreach( const QModelIndex & i, indexes ) {
-		if( i.internalId() == -1 ) indexes.removeAll( i );
+		if( i.column() > 0 ) indexes.removeAll( i );
 		if( i.data( SnipetItemModel::SnipetTypeRole ).toString() == "CATEGORY" ) hasCategory = true;
 	}
 	m_removePushButton->setEnabled( indexes.count() > 0 );

@@ -69,6 +69,7 @@ public:
 	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
 
 	int getCategoryId( const QStringList & category );
+	QStringList getCategoryName( int id );
 private:
 	SnipetManager();
 	bool openDatabase();

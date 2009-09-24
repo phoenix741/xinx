@@ -121,6 +121,26 @@ int SnipetManager::getCategoryId( const QStringList & category ) {
 	return parentCategory;
 }
 
+QStringList SnipetManager::getCategoryName( int id ) {
+	if( id == 0 ) return QStringList();
+	QSqlQuery selectQuery( "SELECT parent_id, name FROM categories WHERE id=:id", database() );
+	QStringList categories;
+	int parent_id = id;
+	while( parent_id > 1 ) {
+		selectQuery.bindValue( ":id", parent_id );
+		bool result = selectQuery.exec();
+		Q_ASSERT( result );
+
+		if( ! selectQuery.next() ) {
+			break;
+		}
+
+		categories << selectQuery.value( 1 ).toString();
+		parent_id = selectQuery.value( 0 ).toInt();
+	}
+	return categories;
+}
+
 void SnipetManager::addCategory( int parentId, bool categoryAccess, QWidget * parent ) {
 	CategoryPropertyDlgImpl dlg( database(), parent );
 	dlg.setParentId( parentId );
@@ -229,6 +249,13 @@ bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snip
 
 		bool result = selectQuery.exec();
 		Q_ASSERT( result );
+		if( ! result ) {
+			qWarning( qPrintable( selectQuery.lastError().text() ) );
+			return false;
+		}
+
+		result = selectQuery.next();
+		Q_ASSERT( result );
 
 		snipet.setName(            selectQuery.value( 0 ).toString() );
 		snipet.setDescription(     selectQuery.value( 1 ).toString() );
@@ -240,8 +267,36 @@ bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snip
 		snipet.setAvailableScript( selectQuery.value( 7 ).toString() );
 
 		int categoryId =           selectQuery.value( 8 ).toInt();
+		snipet.categories()    =   getCategoryName( categoryId );
 
+		result = extentionsQuery.exec();
+		Q_ASSERT( result );
+		if( ! result ) {
+			qWarning( qPrintable( extentionsQuery.lastError().text() ) );
+			return false;
+		}
+
+		while( extentionsQuery.next() ) {
+			snipet.extentions() += extentionsQuery.value( 0 ).toString();
+		}
+
+		result = paramsQuery.exec();
+		Q_ASSERT( result );
+		if( ! result ) {
+			qWarning( qPrintable( paramsQuery.lastError().text() ) );
+			return false;
+		}
+
+		while( paramsQuery.next() ) {
+			Snipet::Parameter p;
+			p.name = paramsQuery.value( 0 ).toString();
+			p.defaultValue = paramsQuery.value( 1 ).toString();
+			snipet.params() += p;
+		}
+
+		*snipets << snipet;
 	}
+	return true;
 }
 
 bool SnipetManager::importSnipetList( const SnipetList & list, QWidget * parent ) {
