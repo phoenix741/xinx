@@ -38,6 +38,15 @@
 #include <QInputDialog>
 #include <QTextEdit>
 
+/* Constante */
+
+#if QT_VERSION <= 0x040500
+#	define UndefinedValue QScriptValue()
+#else
+#	define UndefinedValue QScriptValue::UndefinedValue
+#endif
+
+
 /* Static member */
 
 ScriptManager * ScriptManager::s_self = 0;
@@ -312,8 +321,8 @@ void ScriptManager::projectChange() {
 		m_engine.globalObject().setProperty( "project", qsProject );
 		m_engine.globalObject().setProperty( "configuration", qsConfiguration );
 	} else {
-		m_engine.globalObject().setProperty( "project", QScriptValue::UndefinedValue );
-		m_engine.globalObject().setProperty( "configuration", QScriptValue::UndefinedValue );
+		m_engine.globalObject().setProperty( "project", UndefinedValue );
+		m_engine.globalObject().setProperty( "configuration", UndefinedValue );
 	}
 }
 
@@ -330,11 +339,11 @@ void ScriptManager::setCurrentEditeur( AbstractEditor * editor ) {
 			qsTextEdit.setProperty( "document", qsDocument );
 			m_engine.globalObject().setProperty( "textEdit", qsTextEdit );
 		} else {
-			m_engine.globalObject().setProperty( "textEdit", QScriptValue::UndefinedValue );
+			m_engine.globalObject().setProperty( "textEdit", UndefinedValue );
 		}
 	} else {
-		m_engine.globalObject().setProperty( "textEdit", QScriptValue::UndefinedValue );
-		m_engine.globalObject().setProperty( "editor", QScriptValue::UndefinedValue );
+		m_engine.globalObject().setProperty( "textEdit", UndefinedValue );
+		m_engine.globalObject().setProperty( "editor", UndefinedValue );
 	}
 }
 
