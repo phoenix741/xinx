@@ -312,8 +312,8 @@ void ScriptManager::projectChange() {
 		m_engine.globalObject().setProperty( "project", qsProject );
 		m_engine.globalObject().setProperty( "configuration", qsConfiguration );
 	} else {
-		m_engine.globalObject().setProperty( "project", QScriptValue() );
-		m_engine.globalObject().setProperty( "configuration", QScriptValue() );
+		m_engine.globalObject().setProperty( "project", QScriptValue::UndefinedValue );
+		m_engine.globalObject().setProperty( "configuration", QScriptValue::UndefinedValue );
 	}
 }
 
@@ -330,11 +330,11 @@ void ScriptManager::setCurrentEditeur( AbstractEditor * editor ) {
 			qsTextEdit.setProperty( "document", qsDocument );
 			m_engine.globalObject().setProperty( "textEdit", qsTextEdit );
 		} else {
-			m_engine.globalObject().setProperty( "textEdit", QScriptValue() );
+			m_engine.globalObject().setProperty( "textEdit", QScriptValue::UndefinedValue );
 		}
 	} else {
-		m_engine.globalObject().setProperty( "textEdit", QScriptValue() );
-		m_engine.globalObject().setProperty( "editor", QScriptValue() );
+		m_engine.globalObject().setProperty( "textEdit", QScriptValue::UndefinedValue );
+		m_engine.globalObject().setProperty( "editor", QScriptValue::UndefinedValue );
 	}
 }
 
