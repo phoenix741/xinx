@@ -41,6 +41,7 @@ SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : TreeProx
 }
 
 SnipetItemModel::~SnipetItemModel() {
+
 }
 
 void SnipetItemModel::select() {

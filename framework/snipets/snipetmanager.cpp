@@ -579,8 +579,7 @@ bool SnipetManager::createDatabase( QSqlDatabase db ) {
 }
 
 void SnipetManager::closeDatabase() {
-	QSqlDatabase db = database();
-	db.close();
+	database().close();
 	QSqlDatabase::removeDatabase( "SNIPETBASE" );
 }
 
