@@ -308,24 +308,22 @@ QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
 	return TreeProxyItemModel::data( index, role );
 }
 
-void SnipetItemModel::removeIndexes( const QModelIndexList & indexes, QWidget * parent ) {
+void SnipetItemModel::indexesToIds( const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds ) const {
 	foreach( const QModelIndex & index, indexes ) {
 		QString type = index.data( SnipetTypeRole ).toString();
 		bool isCategory = type == "CATEGORY";
 		int id = index.data( SnipetIdRole ).toInt();
-		int treeId = getTreeModelIdentifier( type, id );
 
 		if( isCategory ) {
-			SnipetManager::self()->removeCategory( id, parent );
+			categoryIds.append( id );
 		} else {
-			SnipetManager::self()->removeSnipet( id, parent );
+			snipetIds.append( id );
 		}
 
-		setParentId( treeId, -1 );
 	}
 }
 
-void SnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) {
+void SnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) const {
 	QString type = index.data( SnipetTypeRole ).toString();
 	bool isCategory = type == "CATEGORY";
 	int id = index.data( SnipetIdRole ).toInt();
@@ -342,16 +340,13 @@ void SnipetItemModel::addIndexToList( QModelIndex index, QList<int> * ids ) {
 	}
 }
 
-SnipetList SnipetItemModel::exportSnipetList( const QModelIndexList & indexes ) {
+QList<int> SnipetItemModel::indexesToIds( const QModelIndexList & indexes ) const {
 	QList<int> ids;
-	SnipetList list;
-
 	foreach( const QModelIndex & index, indexes ) {
 		addIndexToList( index, &ids );
 	}
 
 	qSort( ids );
-	SnipetManager::self()->exportSnipetList( ids, &list );
-
-	return list;
+	return ids;
 }
+

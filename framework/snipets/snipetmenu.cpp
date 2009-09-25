@@ -22,11 +22,13 @@
 #include "editors/editormanager.h"
 #include "editors/abstracteditor.h"
 #include "scripts/scriptmanager.h"
+#include "snipets/snipetmanager.h"
 
 // Qt header
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QDebug>
+#include <QApplication>
 
 /* SnipetMenuModel */
 
@@ -116,6 +118,10 @@ void SnipetMenu::snipetTriggered( const QModelIndex & index ) const {
 	emit snipetTriggered( index.data( SnipetItemModel::SnipetIdRole ).toInt() );
 }
 
+void SnipetMenu::createSnipet() const {
+	SnipetManager::self()->addSnipet( 1, qApp->activeWindow() );
+}
+
 bool SnipetMenu::prePopulated() {
 	SnipetItemModel * m = static_cast<SnipetItemModel*>( model() );
 	m->select();
@@ -123,6 +129,7 @@ bool SnipetMenu::prePopulated() {
 
 	// Create snipet action
 	m_createAction = new QAction( tr("&Create Snipet ..."), this );
+	connect( m_createAction, SIGNAL(triggered()), this, SLOT(createSnipet()) );
 	addAction( m_createAction );
 
 	return true;

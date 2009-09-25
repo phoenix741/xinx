@@ -610,8 +610,10 @@ void CustomDialogImpl::on_m_exportPushButton_clicked() {
 
 	QString exportedFilename = QFileDialog::getSaveFileName( this, tr("Export snipets"), "datas:/", "*.xml" );
 	if( ! exportedFilename.isEmpty() ) {
-		SnipetList list = m_snipetModel->exportSnipetList( indexes );
-		list.saveToFile( exportedFilename );
+		QList<int> ids = m_snipetModel->indexesToIds( indexes );
+		SnipetList list;
+		if( SnipetManager::self()->exportSnipetList( ids, &list, this ) )
+			list.saveToFile( exportedFilename );
 	}
 }
 
@@ -650,9 +652,18 @@ void CustomDialogImpl::on_m_removePushButton_clicked() {
 		if( i.column() > 0 ) indexes.removeAll( i );
 	}
 
-	m_snipetModel->removeIndexes( indexes, this );
+	QList<int> snipetIds, categoryIds;
+	m_snipetModel->indexesToIds( indexes, snipetIds, categoryIds );
+
+	foreach( int id, snipetIds ) {
+		SnipetManager::self()->removeSnipet( id, this );
+	}
+
+	foreach( int id, categoryIds ) {
+		SnipetManager::self()->removeCategory( id, this );
+	}
+
 	m_snipetModel->select();
-	m_snipetTreeView_selectionChanged();
 }
 
 void CustomDialogImpl::on_m_modifyPushButton_clicked() {

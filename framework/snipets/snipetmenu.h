@@ -49,6 +49,7 @@ protected:
 	virtual bool prePopulated();
 private slots:
 	void snipetTriggered( const QModelIndex & index ) const;
+	void createSnipet() const;
 private:
 	QAction * m_createAction;
 };
