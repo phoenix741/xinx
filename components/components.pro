@@ -24,7 +24,8 @@ HEADERS = p_pluginselector.h \
     borderlayout.h \
     customschemeimpl.h \
 	qmenuview.h \
-	stringcombobox.h
+	stringcombobox.h \
+	xinxlineedit.h
 SOURCES = directoryedit.cpp \
     xinxcolorcombo.cpp \
     pluginselector.cpp \
@@ -33,7 +34,8 @@ SOURCES = directoryedit.cpp \
     borderlayout.cpp \
     customschemeimpl.cpp \
 	qmenuview.cpp \
-	stringcombobox.cpp
+	stringcombobox.cpp \
+	xinxlineedit.cpp
 TRANSLATIONS += translations/xinxcomponents_fr.ts
 RESOURCES = xinxpluginselector.qrc
 

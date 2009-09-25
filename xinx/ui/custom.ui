@@ -1528,18 +1528,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButton">
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../application.qrc">
-             <normaloff>:/images/edit-clear-locationbar-ltr.png</normaloff>:/images/edit-clear-locationbar-ltr.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="m_snipetFilterLineEdit"/>
+          <widget class="XinxLineEdit" name="m_snipetFilterLineEdit"/>
          </item>
         </layout>
        </item>
@@ -1741,6 +1730,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>XinxLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">xinxlineedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>XinxColorCombo</class>
    <extends>QComboBox</extends>
    <header>xinxcolorcombo.h</header>
@@ -1875,22 +1869,6 @@
     <hint type="destinationlabel">
      <x>667</x>
      <y>402</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>toolButton</sender>
-   <signal>clicked()</signal>
-   <receiver>m_snipetFilterLineEdit</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>204</x>
-     <y>91</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>243</x>
-     <y>92</y>
     </hint>
    </hints>
   </connection>

@@ -70,7 +70,7 @@ void ProjectDirectoryDockWidget::init() {
 	connect( this, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(setFocus()) );
 	connect( this, SIGNAL(visibilityChanged(bool)), m_projectDirWidget->m_filtreLineEdit, SLOT(selectAll()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_m_filtreLineEdit_textChanged(QString)) );
-	connect( m_projectDirWidget->m_clearToolButton, SIGNAL(clicked()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
+	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(clearButtonClicked()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(returnPressed()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
 	connect( m_projectDirWidget->m_projectDirectoryTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_projectDirectoryTreeView_doubleClicked(QModelIndex)) );
 	connect( m_projectDirWidget->m_prefixComboBox, SIGNAL(activated(QString)), this, SLOT(on_m_prefixComboBox_activated(QString)) );

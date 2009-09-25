@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>SnipersDockWidget</class>
+ <widget class="QWidget" name="SnipersDockWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Snipets</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -49,16 +49,6 @@
        <property name="editable">
         <bool>false</bool>
        </property>
-       <item>
-        <property name="text">
-         <string>GCE130</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>GCE140</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -66,18 +56,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QToolButton" name="toolButton">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../application.qrc">
-         <normaloff>:/images/edit-clear-locationbar-ltr.png</normaloff>:/images/edit-clear-locationbar-ltr.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="XinxLineEdit" name="lineEdit"/>
      </item>
     </layout>
    </item>
@@ -86,6 +65,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">xinxlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../components/xinxpluginselector.qrc"/>
   <include location="../application.qrc"/>

@@ -184,7 +184,6 @@ void XmlPresentationDockThread::open( const QString& filename ) {
 
 	m_xmlPresentationWidget->m_presentationProgressBar->show();
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
-	m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
@@ -209,7 +208,6 @@ void XmlPresentationDockThread::open( const QString& filename ) {
 		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
 		m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
 		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
-		m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
 		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 		m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
 		return;
@@ -284,7 +282,6 @@ void XmlPresentationDockThread::threadTerminated() {
 	m_xmlPresentationWidget->m_presentationComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_filterComboBox->setEnabled( true );
 	m_xmlPresentationWidget->m_refreshToolButton->setEnabled( true );
-	m_xmlPresentationWidget->m_clearToolButton->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setText( m_filteredText ); // Au cas o� des caract�res n'ont pas �t� pris en compte
 	m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( true );
 	m_xmlPresentationWidget->m_filtreLineEdit->setFocus();
@@ -307,7 +304,6 @@ void XmlPresentationDockThread::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_filtreLineEdit->clearFocus();
 		m_xmlPresentationWidget->m_filtreLineEdit->setEnabled( false );
 		m_xmlPresentationWidget->m_presentationComboBox->setEnabled( false );
-		m_xmlPresentationWidget->m_clearToolButton->setEnabled( false );
 		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
 

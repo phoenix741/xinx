@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>XmlPresentationWidget</class>
- <widget class="QWidget" name="XmlPresentationWidget" >
-  <property name="geometry" >
+ <widget class="QWidget" name="XmlPresentationWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,143 +10,119 @@
     <height>309</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string/>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
     <number>0</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="0" >
-    <widget class="QToolButton" name="m_refreshToolButton" >
-     <property name="whatsThis" >
-      <string>Refresh the list of file present in the &lt;i>log&lt;/i> directory.</string>
+   <item row="0" column="0">
+    <widget class="QToolButton" name="m_refreshToolButton">
+     <property name="whatsThis">
+      <string>Refresh the list of file present in the &lt;i&gt;log&lt;/i&gt; directory.</string>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>...</string>
      </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >
+     <property name="icon">
+      <iconset resource="../../../xinx/application.qrc">
        <normaloff>:/images/reload.png</normaloff>:/images/reload.png</iconset>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" colspan="2" >
-    <widget class="QComboBox" name="m_presentationComboBox" >
-     <property name="whatsThis" >
-      <string>List of file in the &lt;i>log&lt;/i> directory. If you select a file the view is updated with the content of the file.&lt;/p>
-&lt;p>You can open a file of the list, or a file in another directory.&lt;/p></string>
+   <item row="0" column="1" colspan="2">
+    <widget class="QComboBox" name="m_presentationComboBox">
+     <property name="whatsThis">
+      <string>List of file in the &lt;i&gt;log&lt;/i&gt; directory. If you select a file the view is updated with the content of the file.&lt;/p&gt;
+&lt;p&gt;You can open a file of the list, or a file in another directory.&lt;/p&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="3" >
-    <widget class="QToolButton" name="m_evaluateToolButton" >
-     <property name="text" >
+   <item row="0" column="3">
+    <widget class="QToolButton" name="m_evaluateToolButton">
+     <property name="text">
       <string>Evaluate</string>
      </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >
+     <property name="icon">
+      <iconset resource="../../../xinx/application.qrc">
        <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="4" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
+   <item row="1" column="0" colspan="4">
+    <widget class="QLabel" name="label">
+     <property name="text">
       <string>&amp;Filtre :</string>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>m_filtreLineEdit</cstring>
      </property>
     </widget>
    </item>
-   <item rowspan="2" row="2" column="0" >
-    <widget class="QToolButton" name="m_clearToolButton" >
-     <property name="whatsThis" >
-      <string>Clear the text filter at right.</string>
-     </property>
-     <property name="text" >
-      <string>...</string>
-     </property>
-     <property name="icon" >
-      <iconset resource="../application.qrc" >
-       <normaloff>:/images/edit-clear-locationbar-ltr.png</normaloff>:/images/edit-clear-locationbar-ltr.png</iconset>
+   <item row="2" column="0" colspan="2">
+    <widget class="XinxLineEdit" name="m_filtreLineEdit">
+     <property name="whatsThis">
+      <string>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; search node where name match the filter (literal or regular expression).</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1" >
-    <widget class="QLineEdit" name="m_filtreLineEdit" >
-     <property name="whatsThis" >
-      <string>Filter to use in the view. &lt;b>XINX&lt;/b> search node where name match the filter (literal or regular expression).</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2" colspan="2" >
-    <widget class="QComboBox" name="m_filterComboBox" >
-     <property name="whatsThis" >
-      <string>&lt;p>If &lt;i>Sub-element&lt;/i> is selected when an element is finded, all sub-element is showed. &lt;/p>
-&lt;p>If &lt;i>None&lt;/i> is selected only matched element is showed.&lt;/p></string>
+   <item row="2" column="2" colspan="2">
+    <widget class="QComboBox" name="m_filterComboBox">
+     <property name="whatsThis">
+      <string>&lt;p&gt;If &lt;i&gt;Sub-element&lt;/i&gt; is selected when an element is finded, all sub-element is showed. &lt;/p&gt;
+&lt;p&gt;If &lt;i&gt;None&lt;/i&gt; is selected only matched element is showed.&lt;/p&gt;</string>
      </property>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Sub-element</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>None</string>
       </property>
      </item>
     </widget>
    </item>
-   <item row="4" column="0" colspan="4" >
-    <widget class="QTreeView" name="m_presentationTreeView" >
-     <property name="dragEnabled" >
+   <item row="3" column="0" colspan="4">
+    <widget class="QTreeView" name="m_presentationTreeView">
+     <property name="dragEnabled">
       <bool>true</bool>
      </property>
-     <property name="selectionBehavior" >
+     <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectItems</enum>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="4" >
-    <widget class="QProgressBar" name="m_presentationProgressBar" >
-     <property name="maximum" >
+   <item row="4" column="0" colspan="4">
+    <widget class="QProgressBar" name="m_presentationProgressBar">
+     <property name="maximum">
       <number>0</number>
      </property>
-     <property name="value" >
-      <number>0</number>
+     <property name="value">
+      <number>326</number>
      </property>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">xinxlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="../application.qrc" />
-  <include location="../application.qrc" />
+  <include location="../../../xinx/application.qrc"/>
+  <include location="../xmlpres.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>m_clearToolButton</sender>
-   <signal>clicked()</signal>
-   <receiver>m_filtreLineEdit</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>17</x>
-     <y>57</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>78</x>
-     <y>56</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
