@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETITEMMODEL_H
-#define SNIPETITEMMODEL_H
+#ifndef BASESNIPETITEMMODEL_H
+#define BASESNIPETITEMMODEL_H
 #pragma once
 
 // Xinx header
-#include "snipets/basesnipetitemmodel.h"
+#include "utils/treeproxyitemmodel.h"
 #include "snipets/snipetlist.h"
 
 // Qt header
@@ -30,32 +30,57 @@
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
 
-/* SnipetItemModel */
+/* BaseSnipetItemModel */
 
-class SnipetItemModel : public BaseSnipetItemModel {
+class BaseSnipetItemModel : public TreeProxyItemModel {
 	Q_OBJECT
 public:
-	virtual ~SnipetItemModel();
+	enum SnipetItemRole {
+		SnipetIdRole = Qt::UserRole,
+		SnipetParentIdRole = Qt::UserRole + 2,
+		SnipetTypeRole = Qt::UserRole + 1
+	};
 
-	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual ~BaseSnipetItemModel();
+
+	virtual QModelIndex index( bool isCategory, int id ) const;
+	virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
+
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
 
-	virtual Qt::DropActions supportedDropActions() const;
-	virtual QStringList mimeTypes() const;
-	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
-	virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
+	void indexesToIds( const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds ) const;
+	QList<int> indexesToIds( const QModelIndexList & indexes ) const;
 
-	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+	void select();
 
+	QSqlQueryModel * sourceModel();
+	QSqlQueryModel * sourceModel() const;
 protected:
 	friend class SnipetManager;
-	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+	BaseSnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
 
+	int getTreeModelIdentifier( QString type, int id ) const;
+	virtual int getUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+	virtual int getParentUniqueIdentifier( const QModelIndex & sourceIndex ) const;
+
+	enum {
+		list_id          = 0,
+		list_parentid    = 1,
+		list_icon        = 2,
+		list_name        = 3,
+		list_description = 4,
+		list_shortcut    = 5,
+		list_type        = 6,
+		list_availablejs = 7
+	};
+
+	QSqlDatabase database();
+	QSqlDatabase database() const;
 private:
-	int proxyColumnToSource( int proxyColumn ) const;
-	int sourceColumnToProxy( int sourceColumn ) const;
+	void addIndexToList( QModelIndex index, QList<int> * ids ) const;
+
+	QSqlDatabase m_db;
+	QSqlQueryModel * m_sourceModel;
 };
 
-#endif // SNIPETMODELINDEX_H
+#endif // BASESNIPETMODELINDEX_H

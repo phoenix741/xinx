@@ -63,6 +63,8 @@ HEADERS = rcs/rcs.h \
     snipets/categorytreeview.h \
     snipets/snipetpropertydlgimpl.h \
     snipets/categorypropertydlgimpl.h \
+    snipets/basesnipetitemmodel.h \
+    snipets/snipetdockitemmodel.h \
     utils/treeproxyitemmodel.h \
 	utils/recursivesortfilterproxymodel.h \
     scripts/scriptmanager.h \
@@ -105,6 +107,8 @@ SOURCES = rcs/rcs.cpp \
     snipets/categorytreeview.cpp \
     snipets/snipetpropertydlgimpl.cpp \
     snipets/categorypropertydlgimpl.cpp \
+    snipets/basesnipetitemmodel.cpp \
+    snipets/snipetdockitemmodel.cpp \
     utils/treeproxyitemmodel.cpp \
 	utils/recursivesortfilterproxymodel.cpp \
     scripts/scriptmanager.cpp \

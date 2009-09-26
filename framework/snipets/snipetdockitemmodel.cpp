@@ -18,10 +18,10 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "snipetitemmodel.h"
+#include "snipetdockitemmodel.h"
 #include "snipetmanager.h"
 
-// Qt header
+// // Qt header
 #include <QIcon>
 #include <QColor>
 #include <QFont>
@@ -32,44 +32,36 @@
 #include <QDebug>
 #include <QMimeData>
 
-/* SnipetItemModel */
+/* SnipetDockItemModel */
 
-SnipetItemModel::SnipetItemModel( QSqlDatabase db, QObject * parent ) : BaseSnipetItemModel( db, parent ) {
-
-}
-
-SnipetItemModel::~SnipetItemModel() {
+SnipetDockItemModel::SnipetDockItemModel( QSqlDatabase db, QObject * parent ) : BaseSnipetItemModel( db, parent ) {
 
 }
 
-int SnipetItemModel::proxyColumnToSource( int proxyColumn ) const {
+SnipetDockItemModel::~SnipetDockItemModel() {
+
+}
+
+int SnipetDockItemModel::proxyColumnToSource( int proxyColumn ) const {
 	switch( proxyColumn ) {
 	case 0 :
 		return list_name;
-	case 1 :
-		return list_shortcut;
-	case 2 :
-		return list_description;
 	default:
 		return -1;
 	}
 }
 
-int SnipetItemModel::sourceColumnToProxy( int sourceColumn ) const {
+int SnipetDockItemModel::sourceColumnToProxy( int sourceColumn ) const {
 	switch( sourceColumn ) {
 	case list_name :
 		return 0;
-	case list_shortcut :
-		return 1;
-	case list_description :
-		return 2;
 	default:
 		return -1;
 	}
 }
 
 /// For the given source index, this method return the corresponding index in the proxy
-QModelIndex SnipetItemModel::mapFromSource ( const QModelIndex & sourceIndex ) const {
+QModelIndex SnipetDockItemModel::mapFromSource ( const QModelIndex & sourceIndex ) const {
 	QModelIndex index = mapFromSource( sourceIndex );
 	int column = sourceColumnToProxy( index.column() );
 	if( column == -1 ) return QModelIndex();
@@ -77,7 +69,7 @@ QModelIndex SnipetItemModel::mapFromSource ( const QModelIndex & sourceIndex ) c
 	return BaseSnipetItemModel::createIndex( index.row(), column, index.internalPointer() );
 }
 
-QModelIndex SnipetItemModel::mapToSource ( const QModelIndex & proxyIndex ) const {
+QModelIndex SnipetDockItemModel::mapToSource ( const QModelIndex & proxyIndex ) const {
 	QModelIndex index = proxyIndex;
 	int column = proxyColumnToSource( index.column() );
 	if( column == -1 ) return QModelIndex();
@@ -85,35 +77,30 @@ QModelIndex SnipetItemModel::mapToSource ( const QModelIndex & proxyIndex ) cons
 	return BaseSnipetItemModel::mapToSource( createIndex( index.row(), column, index.internalPointer() ) );
 }
 
-int SnipetItemModel::columnCount( const QModelIndex & index ) const {
+int SnipetDockItemModel::columnCount( const QModelIndex & index ) const {
 	Q_UNUSED( index );
 
-	return 3;
+	return 1;
 }
 
-Qt::ItemFlags SnipetItemModel::flags( const QModelIndex & index ) const {
+Qt::ItemFlags SnipetDockItemModel::flags( const QModelIndex & index ) const {
 	if( index.isValid() ) {
-		QModelIndex sourceIndex = mapToSource( index );
-		QSqlRecord record = sourceModel()->record( sourceIndex.row() );
-		if( record.value( list_type ).toString() == "CATEGORY" ) {
-			return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
-		}
 		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
 	}
 	return 0;
 }
 
-QStringList SnipetItemModel::mimeTypes() const {
+QStringList SnipetDockItemModel::mimeTypes() const {
 	QStringList types = BaseSnipetItemModel::mimeTypes();
 	types << "application/snipet.id.list";
 	return types;
 }
 
-Qt::DropActions SnipetItemModel::supportedDropActions() const {
+Qt::DropActions SnipetDockItemModel::supportedDropActions() const {
 	return Qt::MoveAction;
 }
 
-QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
+QMimeData * SnipetDockItemModel::mimeData( const QModelIndexList &indexes ) const {
 	QMimeData * mimeData = BaseSnipetItemModel::mimeData( indexes );
 	QByteArray encodedData;
 	QDataStream stream( &encodedData, QIODevice::WriteOnly );
@@ -131,45 +118,7 @@ QMimeData * SnipetItemModel::mimeData( const QModelIndexList &indexes ) const {
 	return mimeData;
 }
 
-bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent ) {
-	Q_UNUSED( row );
-	Q_UNUSED( column );
-
-	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/snipet.id.list" ) ) {
-		int parentId = parent.data( SnipetIdRole ).toInt();
-
-		QByteArray itemData = data->data("application/snipet.id.list");
-		QDataStream stream(&itemData, QIODevice::ReadOnly);
-
-		while( ! stream.atEnd() ) {
-			int id;
-			QString type, name;
-			stream >> id >> type >> name;
-
-			QSqlQuery updateQuery( database() );
-			if( type == "CATEGORY" ) {
-				updateQuery.prepare( "UPDATE categories SET parent_id=:new_parent WHERE id=:id" );
-			} else {
-				updateQuery.prepare( "UPDATE snipets SET category_id=:new_parent WHERE id=:id" );
-			}
-			updateQuery.bindValue( ":new_parent", parentId );
-			updateQuery.bindValue( ":id", id );
-
-			bool result = updateQuery.exec();
-			Q_ASSERT( result );
-
-			int parentIdentifier = getTreeModelIdentifier( "CATEGORY", parentId );
-			int identifier = getTreeModelIdentifier( type, id );
-
-			setParentId( identifier, parentIdentifier );
-		}
-
-		return true;
-	}
-	return false;
-}
-
-QVariant SnipetItemModel::data( const QModelIndex & index, int role ) const {
+QVariant SnipetDockItemModel::data( const QModelIndex & index, int role ) const {
 	if( ! index.isValid() ) return QVariant();
 
 

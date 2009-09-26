@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETITEMMODEL_H
-#define SNIPETITEMMODEL_H
+#ifndef SNIPETDOCKITEMMODEL_H
+#define SNIPETDOCKITEMMODEL_H
 #pragma once
 
 // Xinx header
@@ -30,12 +30,12 @@
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
 
-/* SnipetItemModel */
+/* SnipetDockItemModel */
 
-class SnipetItemModel : public BaseSnipetItemModel {
+class SnipetDockItemModel : public BaseSnipetItemModel {
 	Q_OBJECT
 public:
-	virtual ~SnipetItemModel();
+	virtual ~SnipetDockItemModel();
 
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 	virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
@@ -44,18 +44,17 @@ public:
 	virtual Qt::DropActions supportedDropActions() const;
 	virtual QStringList mimeTypes() const;
 	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
-	virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
 
 	virtual QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
 	virtual QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
 
 protected:
 	friend class SnipetManager;
-	SnipetItemModel( QSqlDatabase db, QObject * parent = 0 );
+	SnipetDockItemModel( QSqlDatabase db, QObject * parent = 0 );
 
 private:
 	int proxyColumnToSource( int proxyColumn ) const;
 	int sourceColumnToProxy( int sourceColumn ) const;
 };
 
-#endif // SNIPETMODELINDEX_H
+#endif // SNIPETDOCKMODELINDEX_H

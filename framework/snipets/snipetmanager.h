@@ -31,6 +31,7 @@
 
 class CategoryItemModel;
 class SnipetItemModel;
+class SnipetDockItemModel;
 class SnipetMenu;
 
 /*!
@@ -48,6 +49,7 @@ public:
 
 	CategoryItemModel * createCategoryItemModel( QObject * parent = 0 );
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
+	SnipetDockItemModel * createSnipetDockItemModel( QObject * parent = 0 );
 	SnipetMenu * createSnipetMenu( const QString & title = QString(), QWidget * parent = 0 );
 
 	void addCategory( int parentId = 0, bool categoryAccess = true, QWidget * parent = 0 );

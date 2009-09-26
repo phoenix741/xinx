@@ -34,6 +34,17 @@
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="m_callBtn">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../application.qrc">
+         <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="m_paramSnipetBtn">
        <property name="text">
         <string>...</string>
@@ -44,24 +55,17 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QComboBox" name="comboBox">
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="XinxLineEdit" name="lineEdit"/>
+      <widget class="XinxLineEdit" name="m_snipetFilter"/>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTreeView" name="treeView"/>
+    <widget class="QTreeView" name="m_snipetTreeView"/>
    </item>
   </layout>
  </widget>

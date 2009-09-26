@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <snipets/snipetdockitemmodel.h>
 #include <editors/abstracteditor.h>
 #include <ui_snipetlistwidget.h>
 
@@ -30,6 +31,9 @@
 #include <QString>
 #include <QToolBox>
 #include <QHash>
+
+class RecursiveSortFilterProxyModel;
+class SnipetDockItemModel;
 
 /*!
  * This dock represent a Snipet Dock Widget to search and place snipet
@@ -47,10 +51,13 @@ public slots:
 private slots:
 	void createSnipet();
 	void customizeSnipet();
+	void filterChanged( const QString & filterText );
 private:
 	void init();
 
 	AbstractEditor * m_editor;
+	RecursiveSortFilterProxyModel * m_snipetFilterModel;
+	SnipetDockItemModel * m_snipetModel;
 	Ui::SnipetsDockWidget * m_dock;
 };
 

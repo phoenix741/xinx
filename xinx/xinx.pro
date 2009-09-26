@@ -62,7 +62,7 @@ HEADERS += customdialogmodeles.h \
     searchfilethread.h \
     logdialogimpl.h \
     xinxprojectwizard/projectconverter.h \
-    xinxprojectwizard/projectwizard.h
+    xinxprojectwizard/projectwizard.h 
 SOURCES += customdialogmodeles.cpp \
     snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \

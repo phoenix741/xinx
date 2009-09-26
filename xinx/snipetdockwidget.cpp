@@ -19,7 +19,8 @@
 
 // Xinx header
 #include "snipetdockwidget.h"
-#include <snipets/snipetlist.h>
+#include <utils/recursivesortfilterproxymodel.h>
+#include <snipets/snipetdockitemmodel.h>
 #include <snipets/snipetmanager.h>
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
@@ -55,6 +56,26 @@ void SnipetDockWidget::init() {
 	connect( m_dock->m_createSnipetBtn, SIGNAL(clicked()), this, SLOT(createSnipet()) );
 	connect( m_dock->m_paramSnipetBtn, SIGNAL(clicked()), this, SLOT(customizeSnipet()) );
 
+	/* Snipets Tree */
+	m_snipetFilterModel = new RecursiveSortFilterProxyModel( m_dock->m_snipetTreeView );
+	m_snipetFilterModel->setShowAllChild( true );
+	m_snipetFilterModel->setDynamicSortFilter( true );
+	m_snipetFilterModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+	//m_snipetFilterModel->setFilterKeyColumn( -1 );
+
+	m_snipetModel = SnipetManager::self()->createSnipetDockItemModel( m_snipetFilterModel );
+	m_snipetFilterModel->setSourceModel( m_snipetModel );
+
+	m_dock->m_snipetTreeView->setModel( m_snipetFilterModel );
+	m_dock->m_snipetTreeView->setSortingEnabled( true );
+
+	m_snipetModel->select();
+	m_dock->m_snipetTreeView->setRootIndex( m_snipetFilterModel->index( 0, 0 ) );
+	m_dock->m_snipetTreeView->sortByColumn( 0, Qt::AscendingOrder );
+	m_dock->m_snipetTreeView->expandAll();
+
+	connect( m_dock->m_snipetFilter, SIGNAL(textChanged(QString)), this, SLOT(filterChanged(QString)) );
+
 	setEditor( 0 );
 }
 
@@ -81,4 +102,10 @@ void SnipetDockWidget::customizeSnipet() {
 		dlg.saveToConfig( XINXConfig::self() );
 		XINXConfig::self()->save();
 	}
+}
+
+void SnipetDockWidget::filterChanged( const QString & filterText ) {
+	m_snipetFilterModel->invalidate();
+	m_snipetFilterModel->setFilterRegExp( filterText );
+	m_dock->m_snipetTreeView->expandAll();
 }

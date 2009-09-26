@@ -25,6 +25,7 @@
 #include "snipets/categorypropertydlgimpl.h"
 #include "scripts/scriptmanager.h"
 #include "snipets/snipetitemmodel.h"
+#include "snipets/snipetdockitemmodel.h"
 #include "snipets/categoryitemmodel.h"
 #include "snipets/snipetmenu.h"
 #include "snipets/snipet.h"
@@ -71,6 +72,12 @@ QSqlDatabase SnipetManager::database() {
 
 SnipetItemModel * SnipetManager::createSnipetItemModel( QObject * parent ) {
 	SnipetItemModel * model = new SnipetItemModel( database(), parent );
+	m_handler.add( model );
+	return model;
+}
+
+SnipetDockItemModel * SnipetManager::createSnipetDockItemModel( QObject * parent ) {
+	SnipetDockItemModel * model = new SnipetDockItemModel( database(), parent );
 	m_handler.add( model );
 	return model;
 }
