@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SnipersDockWidget</class>
- <widget class="QWidget" name="SnipersDockWidget">
+ <class>SnipetsDockWidget</class>
+ <widget class="QWidget" name="SnipetsDockWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QToolButton" name="toolButton_2">
+      <widget class="QToolButton" name="m_createSnipetBtn">
        <property name="text">
         <string>...</string>
        </property>
@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_3">
+      <widget class="QToolButton" name="m_paramSnipetBtn">
        <property name="text">
         <string>...</string>
        </property>

@@ -43,7 +43,7 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
     ui/logform.ui \
-	ui/snipetlistwidget.ui
+    ui/snipetlistwidget.ui
 HEADERS += customdialogmodeles.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \

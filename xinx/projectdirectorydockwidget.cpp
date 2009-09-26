@@ -79,7 +79,7 @@ void ProjectDirectoryDockWidget::init() {
 
 
 ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget() {
-
+	delete m_projectDirWidget;
 }
 
 void ProjectDirectoryDockWidget::setGlobalUpdateAction( QAction * action ) {

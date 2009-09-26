@@ -20,8 +20,10 @@
 // Xinx header
 #include "snipetdockwidget.h"
 #include <snipets/snipetlist.h>
+#include <snipets/snipetmanager.h>
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
+#include "customdialogimpl.h"
 
 // Qt header
 #include <QVBoxLayout>
@@ -32,87 +34,28 @@
 /* SnipetDockWidget */
 
 SnipetDockWidget::SnipetDockWidget( const QString & title, QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( title, parent, flags ) {
-	setupUi();
-	setEditor( 0 );
+	init();
 }
 
 SnipetDockWidget::SnipetDockWidget( QWidget * parent, Qt::WindowFlags flags ) : QDockWidget( parent, flags ) {
-	setupUi();
-	setEditor( 0 );
+	init();
 }
 
 SnipetDockWidget::~SnipetDockWidget() {
+	delete m_dock;
 
 }
 
-void SnipetDockWidget::setupUi() {
-	m_snipetsToolBox = new QToolBox( this );
+void SnipetDockWidget::init() {
+	QWidget * contentWidget = new QWidget( this );
+	m_dock = new Ui::SnipetsDockWidget();
+	m_dock->setupUi( contentWidget );
+	setWidget( contentWidget );
 
-	QVBoxLayout * vlayout = new QVBoxLayout();
-	vlayout->setSpacing( 0 );
-	vlayout->setMargin( 0 );
-	vlayout->addWidget( m_snipetsToolBox );
+	connect( m_dock->m_createSnipetBtn, SIGNAL(clicked()), this, SLOT(createSnipet()) );
+	connect( m_dock->m_paramSnipetBtn, SIGNAL(clicked()), this, SLOT(customizeSnipet()) );
 
-	QWidget * snipetsWidget = new QWidget( this );
-	snipetsWidget->setLayout( vlayout );
-
-	setWidget( snipetsWidget );
-
-	// TODO : Update the dock
-	/*
-	updateSnipets();
-	connect( SnipetListManager::self(), SIGNAL(listChanged()), this, SLOT(updateSnipets()) );
-	*/
-}
-
-QWidget * SnipetDockWidget::createWidget() {
-	QWidget * result = new QWidget( m_snipetsToolBox );
-	result->setBackgroundRole( QPalette::Base );
-	result->setLayout( new QVBoxLayout );
-	result->layout()->setSpacing( 0 );
-	return result;
-}
-
-QWidget * SnipetDockWidget::createSnipetWidget( const Snipet & s ) {
-	QPushButton * p = new QPushButton( QIcon( s.icon() ), s.name() );
-	if( s.icon().isEmpty() ) {
-		p->setIcon( QIcon( ":/images/colors.png" ) );
-	}
-	p->setFlat( true );
-	p->setStyleSheet( "text-align: left" );
-	p->setProperty( "Snipet", QVariant::fromValue( s ) );
-	connect( p, SIGNAL(clicked()), this, SLOT(callSnipet()) );
-	return p;
-}
-
-void SnipetDockWidget::callSnipet() {
-	// TODO
-	/*
-	const Snipet & s = sender()->property( "Snipet" ).value<Snipet>();
-	RunSnipetDialogImpl dlg( s, this );
-	if( qobject_cast<TextFileEditor*>( m_editor ) && dlg.exec() ) {
-		QString text = dlg.getResult();
-		qobject_cast<TextFileEditor*>( m_editor )->textEdit()->insertText( text );
-	}
-	*/
-}
-
-void SnipetDockWidget::updateSnipets() {
-	/*
-	qDeleteAll( m_pages );
-	m_pages.clear();
-
-	foreach( const Snipet & s, SnipetListManager::self()->snipets() ) {
-		if( m_pages.value( s.category(), 0 ) == 0 ) {
-			m_pages[ s.category() ] = createWidget();
-			m_snipetsToolBox->addItem( m_pages[ s.category() ], s.category() );
-		}
-		m_pages[ s.category() ]->layout()->addWidget( createSnipetWidget( s ) );
-	}
-	foreach( QWidget * w, m_pages ) {
-		qobject_cast<QBoxLayout*>( w->layout() )->addStretch();
-	}
-	*/
+	setEditor( 0 );
 }
 
 void SnipetDockWidget::setEditor( AbstractEditor * ed ) {
@@ -121,10 +64,21 @@ void SnipetDockWidget::setEditor( AbstractEditor * ed ) {
 		bool enabled = false;
 		if( qobject_cast<TextFileEditor*>( ed ) )
 			enabled = true;
+	}
+}
 
-		QList<QPushButton*> btnList = m_snipetsToolBox->findChildren<QPushButton*>();
-		foreach( QPushButton * btn, btnList ) {
-			btn->setEnabled( enabled );
-		}
+void SnipetDockWidget::createSnipet() {
+	SnipetManager::self()->addSnipet( 1, this );
+}
+
+void SnipetDockWidget::customizeSnipet() {
+	CustomDialogImpl dlg;
+	dlg.loadFromConfig( XINXConfig::self() );
+
+	dlg.m_listWidget->setCurrentRow( 7 );
+	dlg.m_listWidget->setVisible( false );
+	if( dlg.exec() ) {
+		dlg.saveToConfig( XINXConfig::self() );
+		XINXConfig::self()->save();
 	}
 }

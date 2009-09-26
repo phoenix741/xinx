@@ -22,8 +22,8 @@
 #pragma once
 
 // Xinx header
-#include <snipets/snipet.h>
 #include <editors/abstracteditor.h>
+#include <ui_snipetlistwidget.h>
 
 // Qt header
 #include <QDockWidget>
@@ -45,16 +45,13 @@ public:
 public slots:
 	void setEditor( AbstractEditor * ed );
 private slots:
-	void updateSnipets();
-	void callSnipet();
+	void createSnipet();
+	void customizeSnipet();
 private:
-	QWidget * createWidget();
-	QWidget * createSnipetWidget( const Snipet & s );
-	void setupUi();
+	void init();
 
-	QToolBox * m_snipetsToolBox;
-	QHash<QString,QWidget*> m_pages;
 	AbstractEditor * m_editor;
+	Ui::SnipetsDockWidget * m_dock;
 };
 
 #endif /*__SNIPETDOCKWIDGET_H__*/
