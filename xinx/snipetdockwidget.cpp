@@ -64,12 +64,13 @@ void SnipetDockWidget::init() {
 	//m_snipetFilterModel->setFilterKeyColumn( -1 );
 
 	m_snipetModel = SnipetManager::self()->createSnipetDockItemModel( m_snipetFilterModel );
+	m_snipetModel->select();
 	m_snipetFilterModel->setSourceModel( m_snipetModel );
+	m_snipetFilterModel->setIncludeIndex( QModelIndexList() << m_snipetFilterModel->mapToSource( m_snipetFilterModel->index( 0, 0 ) ) );
 
 	m_dock->m_snipetTreeView->setModel( m_snipetFilterModel );
 	m_dock->m_snipetTreeView->setSortingEnabled( true );
 
-	m_snipetModel->select();
 	m_dock->m_snipetTreeView->setRootIndex( m_snipetFilterModel->index( 0, 0 ) );
 	m_dock->m_snipetTreeView->sortByColumn( 0, Qt::AscendingOrder );
 	m_dock->m_snipetTreeView->expandAll();

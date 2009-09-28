@@ -25,7 +25,7 @@
 
 /* RecursiveSortFilterProxyModel */
 
-RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ) {
+RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ), m_disabledVisible( true ) {
 
 }
 
@@ -36,9 +36,26 @@ void RecursiveSortFilterProxyModel::setHidePath( const QStringList & hidePath ) 
 	}
 }
 
+void RecursiveSortFilterProxyModel::setDisabledVisible( bool value ) {
+	if( value != m_disabledVisible ) {
+		m_indexCache.clear();
+		m_disabledVisible = value;
+		invalidate();
+	}
+}
+
+bool RecursiveSortFilterProxyModel::disabledVisible() const {
+	return m_disabledVisible;
+}
+
 bool RecursiveSortFilterProxyModel::canBeShow( const QModelIndex & index ) const {
 	if( ! index.isValid() ) return true;
 	if( m_indexCache.contains( index ) ) return m_indexCache.value( index );
+
+	if( ( ! m_disabledVisible ) && ( ! index.flags().testFlag( Qt::ItemIsEnabled ) ) ) {
+		m_indexCache.insert( QPersistentModelIndex( index ), false );
+		return false;
+	}
 
 	bool show = false;
 	QString data = sourceModel()->data( index ).toString();

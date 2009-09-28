@@ -45,7 +45,7 @@ public:
 
 	static SnipetManager * self();
 
-	QSqlDatabase database();
+	QSqlDatabase database() const;
 
 	CategoryItemModel * createCategoryItemModel( QObject * parent = 0 );
 	SnipetItemModel * createSnipetItemModel( QObject * parent = 0 );
@@ -69,14 +69,16 @@ public:
 	bool callAutomaticSnipet( QString key, QString * result, QWidget * parent = 0 );
 
 	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
+	bool isAvailable( const QString & script, const QString & type, int id ) const;
+	bool isSnipetMatch( const QString & filename, int snipetId ) const;
 
 	int getCategoryId( const QStringList & category );
 	QStringList getCategoryName( int id );
 private:
 	SnipetManager();
-	bool openDatabase();
-	bool createDatabase( QSqlDatabase db );
-	void closeDatabase();
+	bool openDatabase() const;
+	bool createDatabase( QSqlDatabase db ) const;
+	void closeDatabase() const;
 
 	QObjectCleanupHandler m_handler;
 	static SnipetManager * s_self;

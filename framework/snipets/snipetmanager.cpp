@@ -37,6 +37,7 @@
 #include <QScriptEngine>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QDebug>
 
 /* Static member */
 
@@ -63,7 +64,7 @@ SnipetManager * SnipetManager::self() {
 	return s_self;
 }
 
-QSqlDatabase SnipetManager::database() {
+QSqlDatabase SnipetManager::database() const {
 	if( !QSqlDatabase::contains( "SNIPETBASE" ) ) {
 		openDatabase();
 	}
@@ -452,7 +453,64 @@ bool SnipetManager::executeSnipetScript( const QString & script, const QStringLi
 	return true;
 }
 
-bool SnipetManager::openDatabase() {
+bool SnipetManager::isAvailable( const QString & script, const QString & type, int id ) const {
+	if( ! script.isEmpty() ) {
+		QScriptEngine & engine = ScriptManager::self()->engine();
+
+		engine.pushContext();
+		QScriptValue result = engine.evaluate( script );
+		if( result.isError() ) {
+			qWarning() << tr( "Error when calling script for record %1 : %2" ).arg( id ).arg( result.toString() );
+		} else {
+#if QT_VERSION > 0x040500
+			if( ! result.isBool() ) {
+				qWarning() << tr( "The script %1 %2 return neither true or false.\n%3" ).arg( type ).arg( id ).arg( result.toString() );
+			} else {
+				if( ! result.toBool() ) {
+					engine.popContext();
+					return false;
+				}
+			}
+#else
+			if( ! result.isBoolean() ) {
+				qWarning() << tr( "The script %1 %2 return neither true or false.\n%3" ).arg( type ).arg( id ).arg( result.toString() );
+			} else {
+				if( ! result.toBoolean() ) {
+					engine.popContext();
+					return false;
+				}
+			}
+#endif
+		}
+		engine.popContext();
+	}
+	return true;
+}
+
+bool SnipetManager::isSnipetMatch( const QString & filename, int snipetId ) const {
+	// Check extentions to know if the snipet can be used with this editor
+	QSqlQuery extentionsQuery( "SELECT DISTINCT extention FROM snipets_extentions WHERE snipet_id=:id", database() );
+	extentionsQuery.bindValue( ":id", snipetId );
+	if( ! extentionsQuery.exec() ) {
+		qWarning() << "Can't lookup extentions for snipet " << snipetId;
+		return true;
+	}
+
+	// If no extention selected, all can be used
+	if( ! extentionsQuery.next() ) {
+		return true;
+	}
+
+	do {
+		QRegExp regExp( extentionsQuery.value( 0 ).toString(), Qt::CaseInsensitive, QRegExp::Wildcard );
+		if( regExp.exactMatch( filename ) )
+			return true;
+	} while( extentionsQuery.next() );
+
+	return false;
+}
+
+bool SnipetManager::openDatabase() const {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "SNIPETBASE" );
 	QString databaseFileName = QFileInfo( "datas:snipets.db" ).absoluteFilePath();
@@ -470,7 +528,7 @@ bool SnipetManager::openDatabase() {
 	return true;
 }
 
-bool SnipetManager::createDatabase( QSqlDatabase db ) {
+bool SnipetManager::createDatabase( QSqlDatabase db ) const {
 	QSqlQuery createQuery( db );
 	/* Create tables */
 	if( !
@@ -585,7 +643,7 @@ bool SnipetManager::createDatabase( QSqlDatabase db ) {
 	return true;
 }
 
-void SnipetManager::closeDatabase() {
+void SnipetManager::closeDatabase() const {
 	database().close();
 	QSqlDatabase::removeDatabase( "SNIPETBASE" );
 }

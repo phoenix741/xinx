@@ -20,6 +20,8 @@
 // Xinx header
 #include "snipetdockitemmodel.h"
 #include "snipetmanager.h"
+#include "editors/editormanager.h"
+#include "editors/abstracteditor.h"
 
 // // Qt header
 #include <QIcon>
@@ -85,7 +87,35 @@ int SnipetDockItemModel::columnCount( const QModelIndex & index ) const {
 
 Qt::ItemFlags SnipetDockItemModel::flags( const QModelIndex & index ) const {
 	if( index.isValid() ) {
-		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
+		QModelIndex sourceIndex = mapToSource( index );
+		QSqlRecord record = sourceModel()->record( sourceIndex.row() );
+
+		// Enable the snipet according to the script stored on the snipet or category
+		QString availableScript = record.value( list_availablejs ).toString();
+		if( ! SnipetManager::self()->isAvailable( availableScript, record.value( list_type ).toString(), record.value( list_id ).toInt() ) )
+			return Qt::ItemIsSelectable;
+
+		// The script is the only restriction for category
+		if( record.value( list_type ).toString() == "CATEGORY" ) {
+			if( index.parent().isValid() )
+				return index.parent().flags();
+			else
+				return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+		}
+
+		// If no editor open, we can't call snipet
+		if( EditorManager::self()->currentEditor() ) {
+			// Get the filename in the editor
+			QString filename = EditorManager::self()->currentEditor()->getTitle();
+
+			if( SnipetManager::self()->isSnipetMatch( filename, record.value( list_id ).toInt() ) ) {
+				if( index.parent().flags().testFlag( Qt::ItemIsEnabled ) )
+					return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
+			}
+		}
+
+		// The snipet can't be called
+		return Qt::ItemIsSelectable;
 	}
 	return 0;
 }

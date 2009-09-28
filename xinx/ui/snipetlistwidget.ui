@@ -23,6 +23,19 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QToolButton" name="m_createSnipetBtn">
        <property name="text">
         <string>...</string>
@@ -39,7 +52,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset resource="../application.qrc">
+        <iconset resource="../../plugins/webplugin/webplugin.qrc">
          <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
        </property>
       </widget>
@@ -65,7 +78,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QTreeView" name="m_snipetTreeView"/>
+    <widget class="QTreeView" name="m_snipetTreeView">
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::DragOnly</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -78,7 +98,7 @@
  </customwidgets>
  <resources>
   <include location="../../components/xinxpluginselector.qrc"/>
-  <include location="../application.qrc"/>
+  <include location="../../plugins/webplugin/webplugin.qrc"/>
  </resources>
  <connections/>
 </ui>

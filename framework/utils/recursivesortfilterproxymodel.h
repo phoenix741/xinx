@@ -35,12 +35,15 @@ public:
 	void setFilterRegExp( const QString & regExp );
 	void setHidePath( const QStringList & hidePath );
 	void setIncludeIndex( const QModelIndexList & indexes );
+
+	void setDisabledVisible( bool value );
+	bool disabledVisible() const;
 protected:
 	virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
 	bool canBeShow( const QModelIndex & index ) const;
 	bool mustBeShow( const QModelIndex & index ) const; // true if a parent is equals
 private:
-	bool m_showAllChild;
+	bool m_showAllChild, m_disabledVisible;
 	QStringList m_hidePath;
 	QList<QPersistentModelIndex> m_indexes;
 

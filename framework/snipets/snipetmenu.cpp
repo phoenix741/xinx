@@ -42,32 +42,8 @@ Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
 
 		// Enable the snipet according to the script stored on the snipet or category
 		QString availableScript = record.value( list_availablejs ).toString();
-		if( ! availableScript.isEmpty() ) {
-			QScriptEngine & engine = ScriptManager::self()->engine();
-
-			engine.pushContext();
-			QScriptValue result = engine.evaluate( availableScript );
-			if( result.isError() ) {
-				qWarning() << "Error when calling script for record " << record.value( list_id ).toInt() << " : " << result.toString();
-			} else {
-#if QT_VERSION > 0x040500
-				if( ! result.isBool() ) {
-					qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.\n"<< result.toString();
-				} else {
-					if( ! result.toBool() )
-						return Qt::ItemIsSelectable;
-				}
-#else
-				if( ! result.isBoolean() ) {
-					qWarning() << "The script " << record.value( list_id ).toInt() << " of " << record.value( list_type ).toString() << " return neither true or false.\n"<< result.toString();
-				} else {
-					if( ! result.toBoolean() )
-						return Qt::ItemIsSelectable;
-				}
-#endif
-			}
-			engine.popContext();
-		}
+		if( ! SnipetManager::self()->isAvailable( availableScript, record.value( list_type ).toString(), record.value( list_id ).toInt() ) )
+			return Qt::ItemIsSelectable;
 
 		// The script is the only restriction for category
 		if( record.value( list_type ).toString() == "CATEGORY" ) {
@@ -79,24 +55,8 @@ Qt::ItemFlags SnipetMenuModel::flags( const QModelIndex & index ) const {
 			// Get the filename in the editor
 			QString filename = EditorManager::self()->currentEditor()->getTitle();
 
-			// Check extentions to know if the snipet can be used with this editor
-			QSqlQuery extentionsQuery( "SELECT DISTINCT extention FROM snipets_extentions WHERE snipet_id=:id", database() );
-			extentionsQuery.bindValue( ":id", record.value( list_id ).toInt() );
-			if( ! extentionsQuery.exec() ) {
-				qWarning() << "Can't lookup extentions for snipet " << record.value( list_id ).toInt();
+			if( SnipetManager::self()->isSnipetMatch( filename, record.value( list_id ).toInt() ) )
 				return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-			}
-
-			// If no extention selected, all can be used
-			if( ! extentionsQuery.next() ) {
-				return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-			}
-
-			do {
-				QRegExp regExp( extentionsQuery.value( 0 ).toString(), Qt::CaseInsensitive, QRegExp::Wildcard );
-				if( regExp.exactMatch( filename ) )
-					return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-			} while( extentionsQuery.next() );
 		}
 
 		// The snipet can't be called
