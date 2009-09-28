@@ -1,0 +1,151 @@
+--- lib/qeditor.cpp	Mon Sep 28 18:06:50 2009
++++ lib/qeditor.cpp	Mon Sep 28 18:05:59 2009
+@@ -12,6 +12,10 @@
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ****************************************************************************/
++/*
++ * 16/01/2009 : We can paste all type of text (uri too). This can be use when
++ * an application store a text with uri-list tag.
++ */
+ 
+ #include "qeditor.h"
+ 
+@@ -1282,6 +1286,7 @@
+ 	if ( !a )
+ 		return;
+ 
++	a->setShortcutContext( Qt::WidgetShortcut );
+ 	QWidget::addAction(a);
+ 	
+ 	m_actions[a->objectName()] = a;
+@@ -4359,7 +4364,7 @@
+ {
+ 	bool s = m_cursor.hasSelection();
+ 	
+-	if ( d && m_cursor.isValid() && !d->hasFormat("text/uri-list") )
++	if ( d && m_cursor.isValid() ) /* && !d->hasFormat("text/uri-list") */ // VAU : No restriction about uri-list : this is text
+ 	{
+ 		
+ 		if ( d->hasFormat("text/column-selection") )
+--- lib/qnfa/qnfadefinition.cpp	Mon Sep 28 18:07:03 2009
++++ lib/qnfa/qnfadefinition.cpp	Mon Sep 28 17:31:24 2009
+@@ -797,7 +797,7 @@
+ 	load(&f, d, s);
+ }
+ 
+-void QNFADefinition::load(QFile *f, QLanguageFactory::LangData *d, QFormatScheme *s)
++void QNFADefinition::load(QIODevice *f, QLanguageFactory::LangData *d, QFormatScheme *s)
+ {
+ 	QDomDocument doc;
+ 	doc.setContent(f);
+--- lib/qnfa/qnfadefinition.h	Mon Sep 28 18:07:23 2009
++++ lib/qnfa/qnfadefinition.h	Mon Sep 28 16:57:29 2009
+@@ -32,7 +32,7 @@
+ 
+ class QParenthesis;
+ 
+-class QFile;
++class QIODevice;
+ class QDomDocument;
+ 
+ class QNFAAction
+@@ -89,7 +89,7 @@
+ 		virtual void collapse(QDocument *d, int line);
+ 		virtual int blockFlags(QDocument *d, int line, int depth) const;
+ 		
+-		static void load(QFile *f, QLanguageFactory::LangData *d, QFormatScheme *s);
++		static void load(QIODevice *f, QLanguageFactory::LangData *d, QFormatScheme *s);
+ 		static void load(const QString& file, QLanguageFactory::LangData *d, QFormatScheme *s);
+ 		static void load(const QDomDocument& doc, QLanguageFactory::LangData *d, QFormatScheme *s);
+ 		
+--- lib/widgets/qlinemarkpanel.cpp	Mon Sep 28 18:07:31 2009
++++ lib/widgets/qlinemarkpanel.cpp	Mon Sep 28 17:31:24 2009
+@@ -205,6 +205,17 @@
+ /*!
+ 	\internal
+ */
++void QLineMarkPanel::actionBookmarkTriggered()
++{
++	QAction * s = qobject_cast<QAction*>( sender() );
++	if( s && m_currentLine.isValid() ) {
++		m_currentLine.toggleMark( QLineMarksInfoCenter::instance()->markTypeId( s->text() ) );
++	}
++}
++
++/*!
++	\internal
++*/
+ void QLineMarkPanel::contextMenuEvent(QContextMenuEvent *e)
+ {
+ 	if ( !editor() || !editor()->document() )
+@@ -213,6 +224,30 @@
+ 		return;
+ 	}
+ 	
++	m_currentLine = QDocumentLine();
++	for ( int i = 0; i < m_rects.count(); ++i )
++	{
++		if ( m_rects.at(i).contains(e->pos()) )
++		{
++			m_currentLine = editor()->document()->line(m_lines.at(i));
++			break;
++		}
++	}
++
++	QMenu * menu = new QMenu( editor() );
++
++	QStringList marks = QLineMarksInfoCenter::instance()->availableMarkTypes();
++	foreach( QString mark, marks )
++	{
++		QLineMarkType type = QLineMarksInfoCenter::instance()->markType( mark );
++		if( type.user )
++			menu->addAction( type.icon, mark, this, SLOT(actionBookmarkTriggered()) );
++	}
++
++	menu->exec( e->globalPos() );
++	delete menu;
++	m_currentLine = QDocumentLine();
++
+ 	/*
+ 	QTextBlock b;
+ 	QMarker *m = editor()->marker();
+--- lib/widgets/qlinemarkpanel.h	Mon Sep 28 18:07:39 2009
++++ lib/widgets/qlinemarkpanel.h	Mon Sep 28 17:31:24 2009
+@@ -27,8 +27,7 @@
+ 
+ #include <QHash>
+ #include <QIcon>
+-
+-class QDocumentLine;
++#include "qdocumentline.h"
+ 
+ class QCE_EXPORT QLineMarkPanel : public QPanel
+ {
+@@ -47,10 +46,13 @@
+ 		virtual void mousePressEvent(QMouseEvent *e);
+ 		virtual void mouseReleaseEvent(QMouseEvent *e);
+ 		virtual void contextMenuEvent(QContextMenuEvent *e);
+-		
++	private slots:
++		void actionBookmarkTriggered();
+ 	private:
+ 		QList<QRect> m_rects;
+ 		QList<int> m_lines;
++		QDocumentLine m_currentLine;
++
+ };
+ 
+ #endif // _QLINE_MARK_PANEL_H_
+--- lib/widgets/qsearchreplacepanel.cpp	Mon Sep 28 18:07:49 2009
++++ lib/widgets/qsearchreplacepanel.cpp	Mon Sep 28 17:31:24 2009
+@@ -393,6 +393,9 @@
+ 		if ( cbHighlight->isChecked() )
+ 			m_search->next(false);
+ 	}
++	
++	if ( cbHighlight->isChecked() )
++		m_search->next(false);
+ 	
+ 	leFind->setFocus();
+ }
