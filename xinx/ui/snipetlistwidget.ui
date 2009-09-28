@@ -23,6 +23,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>&amp;Filter :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_snipetFilter</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -43,17 +53,6 @@
        <property name="icon">
         <iconset resource="../../components/xinxpluginselector.qrc">
          <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_callBtn">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../plugins/webplugin/webplugin.qrc">
-         <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
        </property>
       </widget>
      </item>
@@ -98,7 +97,6 @@
  </customwidgets>
  <resources>
   <include location="../../components/xinxpluginselector.qrc"/>
-  <include location="../../plugins/webplugin/webplugin.qrc"/>
  </resources>
  <connections/>
 </ui>
