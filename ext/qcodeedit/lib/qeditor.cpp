@@ -3031,8 +3031,9 @@ void QEditor::dragEnterEvent(QDragEnterEvent *e)
 {
 	if ( m_binding )
 	{
-		if ( m_binding->dragEnterEvent(e, this) )
+		if ( m_binding->dragEnterEvent(e, this) ) {
 			return;
+		}
 	}
 
 
@@ -3049,11 +3050,11 @@ void QEditor::dragEnterEvent(QDragEnterEvent *e)
 		&&
 			!e->mimeData()->hasFormat("text/uri-list")
 		)
+	{
 		e->acceptProposedAction();
-	else
-		return;
 
-	m_dragAndDrop = QDocumentCursor();
+		m_dragAndDrop = QDocumentCursor();
+	}
 
 	if ( m_binding )
 		m_binding->postDragEnterEvent(e, this);
@@ -3133,18 +3134,18 @@ void QEditor::dragMoveEvent(QDragMoveEvent *e)
 */
 void QEditor::dropEvent(QDropEvent *e)
 {
-	if ( m_binding )
-	{
-		if ( m_binding->dropEvent(e, this) )
-			return;
-	}
-
 	m_dragAndDrop = QDocumentCursor();
 
 	QDocumentCursor c(cursorForPosition(mapToContents(e->pos())));
 
 	if ( (e->source() == this) && (m_cursor.isWithinSelection(c)) )
 		return;
+
+	if ( m_binding )
+	{
+		if ( m_binding->dropEvent(e, this) )
+			return;
+	}
 
 	if (
 			e

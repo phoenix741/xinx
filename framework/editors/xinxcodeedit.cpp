@@ -70,6 +70,7 @@ void XinxCodeEdit::init( bool action ) {
 	setHighlighter( QString() );
 
 	m_editor->editor()->document()->setLineEnding( QDocument::Unix );
+	m_editor->editor()->setAcceptDrops( true );
 	m_editor->editor()->setWindowTitle( "[*]" );
 	m_editor->editor()->addInputBinding( this );
 	m_editor->editor()->setInputBinding( this );
@@ -418,13 +419,13 @@ void XinxCodeEdit::insertText( const QString & text ) {
 
 	QStringListIterator i( lines );
 	if( i.hasNext() ) {
-		cursor.insertText( i.next().trimmed() );
+		cursor.insertText( i.next() );
 		if( i.hasNext() )
 			cursor.insertLine();
 	}
 
 	while( i.hasNext() ) {
-		cursor.insertText( indent + i.next().trimmed() );
+		cursor.insertText( indent + i.next() );
 		if( i.hasNext() )
 			cursor.insertLine();
 	}
@@ -740,6 +741,40 @@ void XinxCodeEdit::postMousePressEvent( QMouseEvent *event, QEditor * editor ) {
 	if( ( event->type() == QEvent::MouseButtonPress ) && ( dynamic_cast<QMouseEvent*>( event )->button() == Qt::LeftButton ) && ( event->modifiers() == Qt::ControlModifier ) ) {
 		QMetaObject::invokeMethod( this, "searchWord", Qt::QueuedConnection, Q_ARG( QString, textUnderCursor( textCursor(), false ) ) );
 	}
+}
+
+bool XinxCodeEdit::dropEvent( QDropEvent *e, QEditor *editor ) {
+	if ( e && e->mimeData() && e->mimeData()->hasFormat("application/snipet.id.list") ) {
+		e->acceptProposedAction();
+
+		editor->cursor().beginEditBlock();
+		editor->cursor().clearSelection();
+
+		editor->clearCursorMirrors();
+		setTextCursor( editor->cursorForPosition( editor->mapToContents(e->pos()) ) );
+
+		QByteArray itemData = e->mimeData()->data("application/snipet.id.list");
+		QDataStream stream( &itemData, QIODevice::ReadOnly );
+
+		while( ! stream.atEnd() ) {
+			int id;
+			QString type, name;
+			stream >> id >> type >> name;
+
+			if( type == "SNIPET" ) {
+				QString result;
+				if( SnipetManager::self()->callSnipet( id, &result, qApp->activeWindow() ) ) {
+					insertText( result );
+				}
+			}
+		}
+
+		editor->cursor().endEditBlock();
+		editor->selectionChange();
+
+		return true;
+	}
+	return false;
 }
 
 /* XinxCodeEditAction */

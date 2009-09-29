@@ -1,0 +1,56 @@
+Index: lib/qeditor.cpp
+===================================================================
+--- lib/qeditor.cpp	(révision 1564)
++++ lib/qeditor.cpp	(copie de travail)
+@@ -3031,8 +3031,9 @@
+ {
+ 	if ( m_binding )
+ 	{
+-		if ( m_binding->dragEnterEvent(e, this) )
++		if ( m_binding->dragEnterEvent(e, this) ) {
+ 			return;
++		}
+ 	}
+ 
+ 
+@@ -3049,11 +3050,11 @@
+ 		&&
+ 			!e->mimeData()->hasFormat("text/uri-list")
+ 		)
++	{
+ 		e->acceptProposedAction();
+-	else
+-		return;
+ 
+-	m_dragAndDrop = QDocumentCursor();
++		m_dragAndDrop = QDocumentCursor();
++	}
+ 
+ 	if ( m_binding )
+ 		m_binding->postDragEnterEvent(e, this);
+@@ -3133,12 +3134,6 @@
+ */
+ void QEditor::dropEvent(QDropEvent *e)
+ {
+-	if ( m_binding )
+-	{
+-		if ( m_binding->dropEvent(e, this) )
+-			return;
+-	}
+-
+ 	m_dragAndDrop = QDocumentCursor();
+ 
+ 	QDocumentCursor c(cursorForPosition(mapToContents(e->pos())));
+@@ -3146,6 +3141,12 @@
+ 	if ( (e->source() == this) && (m_cursor.isWithinSelection(c)) )
+ 		return;
+ 
++	if ( m_binding )
++	{
++		if ( m_binding->dropEvent(e, this) )
++			return;
++	}
++
+ 	if (
+ 			e
+ 		&&

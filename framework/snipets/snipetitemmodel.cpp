@@ -138,8 +138,8 @@ bool SnipetItemModel::dropMimeData( const QMimeData * data, Qt::DropAction actio
 	if( ( action == Qt::MoveAction ) && data->hasFormat( "application/snipet.id.list" ) ) {
 		int parentId = parent.data( SnipetIdRole ).toInt();
 
-		QByteArray itemData = data->data("application/snipet.id.list");
-		QDataStream stream(&itemData, QIODevice::ReadOnly);
+		QByteArray itemData = data->data( "application/snipet.id.list" );
+		QDataStream stream( &itemData, QIODevice::ReadOnly );
 
 		while( ! stream.atEnd() ) {
 			int id;

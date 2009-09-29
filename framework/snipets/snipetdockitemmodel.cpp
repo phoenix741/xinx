@@ -123,6 +123,7 @@ Qt::ItemFlags SnipetDockItemModel::flags( const QModelIndex & index ) const {
 QStringList SnipetDockItemModel::mimeTypes() const {
 	QStringList types = BaseSnipetItemModel::mimeTypes();
 	types << "application/snipet.id.list";
+	types << "text/plain";
 	return types;
 }
 
@@ -133,6 +134,7 @@ Qt::DropActions SnipetDockItemModel::supportedDropActions() const {
 QMimeData * SnipetDockItemModel::mimeData( const QModelIndexList &indexes ) const {
 	QMimeData * mimeData = BaseSnipetItemModel::mimeData( indexes );
 	QByteArray encodedData;
+	QStringList names;
 	QDataStream stream( &encodedData, QIODevice::WriteOnly );
 
 	foreach( QModelIndex index, indexes ) {
@@ -141,10 +143,12 @@ QMimeData * SnipetDockItemModel::mimeData( const QModelIndexList &indexes ) cons
 			QString name = data( index, Qt::DisplayRole ).toString();
 			int id = data( index, SnipetIdRole ).toInt();
 			stream << id << type << name;
+			names += name;
 		}
 	}
 
 	mimeData->setData( "application/snipet.id.list", encodedData );
+	mimeData->setText( names.join( "," ) );
 	return mimeData;
 }
 

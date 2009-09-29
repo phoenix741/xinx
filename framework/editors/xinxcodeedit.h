@@ -312,6 +312,7 @@ protected:
 	virtual bool keyPressEvent( QKeyEvent * event, QEditor * editor );
 	virtual void postKeyPressEvent( QKeyEvent * event, QEditor * editor );
 	virtual void postMousePressEvent( QMouseEvent * event, QEditor * editor );
+	virtual bool dropEvent( QDropEvent *e, QEditor *editor );
 
 	/*!
 	 * Process to do when a user press a key.
@@ -337,6 +338,7 @@ private:
 	QDocumentSearch * m_matchingText;
 	QCompleter * m_completer;
 	QString m_matchingTextString;
+	//QDocumentCursor m_dragAndDrop;
 };
 
 /*!
