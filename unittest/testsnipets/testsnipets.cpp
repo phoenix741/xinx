@@ -46,6 +46,11 @@ private slots:
 	void testSelectSnipetItemModel();
 	void testSearchSnipetId();
 
+	void testExport();
+	void testImport();
+
+	void testDeleteAll();
+
 	void cleanupTestCase();
 private:
 	CategoryItemModel * m_categoryModel;
@@ -141,6 +146,37 @@ void TestSnipets::testSearchSnipetId() {
 	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
 
 	QVERIFY( id == testId );
+}
+
+void TestSnipets::testExport() {
+	QString filename = QDir::temp().absoluteFilePath( "testImportExport.xml" );
+
+	QList<int> ids = SnipetManager::self()->snipets();
+
+	SnipetList list;
+	if( SnipetManager::self()->exportSnipetList( ids, &list ) )
+	list.saveToFile( filename );
+
+	m_snipetModel->select();
+}
+
+void TestSnipets::testImport() {
+	QString filename = QDir::temp().absoluteFilePath( "testImportExport.xml" );
+
+	SnipetList list;
+	list.loadFromFile( filename );
+	SnipetManager::self()->importSnipetList( list );
+
+	m_snipetModel->select();
+}
+
+void TestSnipets::testDeleteAll() {
+	QList<int> ids = SnipetManager::self()->snipets();
+
+	foreach( int id, ids ) {
+		SnipetManager::self()->removeSnipet( id );
+		m_snipetModel->select();
+	}
 }
 
 void TestSnipets::cleanupTestCase() {
