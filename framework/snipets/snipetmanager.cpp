@@ -263,6 +263,9 @@ QList<int> SnipetManager::snipets() const {
 	return ids;
 }
 
+QList<int> SnipetManager::snipets( int categoryId ) const {
+}
+
 bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent ) {
 	QSqlQuery selectQuery( "SELECT name, description, shortcut, icon, auto, show_dialog, text, available_script, category_id FROM snipets WHERE id=:id", database() );
 	QSqlQuery paramsQuery( "SELECT name, default_value FROM snipets_params WHERE snipet_id=:id", database() );

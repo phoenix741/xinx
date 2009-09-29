@@ -62,6 +62,7 @@ public:
 	bool removeSnipet( int id, QWidget * parent = 0 );
 
 	QList<int> snipets() const;
+	QList<int> snipets( int categoryId ) const;
 	bool importSnipetList( const SnipetList & list, QWidget * parent = 0 );
 	bool exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent = 0 );
 
