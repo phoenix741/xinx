@@ -52,6 +52,7 @@ private slots:
 	void createSnipet();
 	void customizeSnipet();
 	void filterChanged( const QString & filterText );
+	void callSnipet( const QModelIndex & index );
 private:
 	void init();
 

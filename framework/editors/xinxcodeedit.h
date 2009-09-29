@@ -281,6 +281,12 @@ public slots:
 
 	/*! Highlight all text equals of the current word under the cursor */
 	void callTextHighlighter();
+
+	/*! Set the filename used by callSnipet */
+	void setFilename( const QString & filename );
+
+	/*! Get the filename set to the editor */
+	const QString & filename() const;
 signals:
 	/*! The model is destroyed or created and need to be updated in the content dialog */
 	void modelUpdated( QAbstractItemModel * model );
@@ -337,8 +343,7 @@ private:
 	QCodeEdit * m_editor;
 	QDocumentSearch * m_matchingText;
 	QCompleter * m_completer;
-	QString m_matchingTextString;
-	//QDocumentCursor m_dragAndDrop;
+	QString m_matchingTextString, m_filename;
 };
 
 /*!

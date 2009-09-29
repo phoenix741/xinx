@@ -95,6 +95,8 @@ public:
 	 */
 	virtual QList<int> bookmarks() const;
 
+	virtual void loadFromFile( const QString & fileName = QString() );
+	virtual void saveToFile( const QString & fileName = QString() );
 	virtual void loadFromDevice( QIODevice & d );
 	virtual void saveToDevice( QIODevice & d );
 

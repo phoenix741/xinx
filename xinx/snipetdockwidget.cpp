@@ -24,6 +24,7 @@
 #include <snipets/snipetmanager.h>
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
+#include <editors/editormanager.h>
 #include "customdialogimpl.h"
 
 // Qt header
@@ -53,9 +54,6 @@ void SnipetDockWidget::init() {
 	m_dock->setupUi( contentWidget );
 	setWidget( contentWidget );
 
-	connect( m_dock->m_createSnipetBtn, SIGNAL(clicked()), this, SLOT(createSnipet()) );
-	connect( m_dock->m_paramSnipetBtn, SIGNAL(clicked()), this, SLOT(customizeSnipet()) );
-
 	/* Snipets Tree */
 	m_snipetFilterModel = new RecursiveSortFilterProxyModel( m_dock->m_snipetTreeView );
 	m_snipetFilterModel->setShowAllChild( true );
@@ -75,7 +73,13 @@ void SnipetDockWidget::init() {
 	m_dock->m_snipetTreeView->sortByColumn( 0, Qt::AscendingOrder );
 	m_dock->m_snipetTreeView->expandAll();
 
+	connect( m_dock->m_createSnipetBtn, SIGNAL(clicked()), this, SLOT(createSnipet()) );
+	connect( m_dock->m_paramSnipetBtn, SIGNAL(clicked()), this, SLOT(customizeSnipet()) );
+
 	connect( m_dock->m_snipetFilter, SIGNAL(textChanged(QString)), this, SLOT(filterChanged(QString)) );
+	connect( m_dock->m_snipetTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(callSnipet(QModelIndex)) );
+
+	connect( XINXConfig::self(), SIGNAL(changed()), m_snipetModel, SLOT(select()) );
 
 	setEditor( 0 );
 }
@@ -91,6 +95,7 @@ void SnipetDockWidget::setEditor( AbstractEditor * ed ) {
 
 void SnipetDockWidget::createSnipet() {
 	SnipetManager::self()->addSnipet( 1, this );
+	m_snipetModel->select();
 }
 
 void SnipetDockWidget::customizeSnipet() {
@@ -102,6 +107,19 @@ void SnipetDockWidget::customizeSnipet() {
 	if( dlg.exec() ) {
 		dlg.saveToConfig( XINXConfig::self() );
 		XINXConfig::self()->save();
+	}
+}
+
+void SnipetDockWidget::callSnipet( const QModelIndex & index ) {
+	if( index.isValid() && EditorManager::self()->currentEditor() ) {
+		if( index.data( SnipetDockItemModel::SnipetTypeRole ).toString() == "SNIPET" ) {
+			TextFileEditor * ed = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
+			int id = index.data( SnipetDockItemModel::SnipetIdRole ).toInt();
+			QString result;
+			if( SnipetManager::self()->callSnipet( id, &result, this ) ) {
+				ed->textEdit()->insertText( result );
+			}
+		}
 	}
 }
 

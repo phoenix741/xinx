@@ -107,6 +107,14 @@ XinxCodeEdit::~XinxCodeEdit() {
 	delete m_editor;
 }
 
+void XinxCodeEdit::setFilename( const QString & filename ) {
+	m_filename = filename;
+}
+
+const QString & XinxCodeEdit::filename() const {
+	return m_filename;
+}
+
 bool XinxCodeEdit::isModified() {
     return m_editor->editor()->document()->isClean();
 }
@@ -643,7 +651,7 @@ bool XinxCodeEdit::localKeyPressExecute( QKeyEvent * e ) {
 
 void XinxCodeEdit::key_snipet() {
 	QString snipet = textUnderCursor( textCursor(), true ), result;
-	if( SnipetManager::self()->callSnipet( snipet, &result, qApp->activeWindow() ) ) {
+	if( SnipetManager::self()->callSnipet( snipet, &result, m_filename, qApp->activeWindow() ) ) {
 		insertText( result );
 	}
 }
@@ -711,7 +719,7 @@ void XinxCodeEdit::postKeyPressEvent( QKeyEvent * e, QEditor * editor ) {
 	bool hasModifier = ( e->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) );// && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor( textCursor() ), result;
 
-	if( completionPrefix.length() && SnipetManager::self()->callAutomaticSnipet( completionPrefix, &result, qApp->activeWindow() ) ) {
+	if( completionPrefix.length() && SnipetManager::self()->callAutomaticSnipet( completionPrefix, &result, m_filename, qApp->activeWindow() ) ) {
 		textUnderCursor( textCursor(), true );
 		insertText( result );
 		c->popup()->hide();

@@ -153,6 +153,16 @@ void TextFileEditor::selectAll() {
 	textEdit()->editor()->selectAll();
 }
 
+void TextFileEditor::loadFromFile( const QString & fileName ) {
+	AbstractEditor::loadFromFile( fileName );
+	textEdit()->setFilename( fileName );
+}
+
+void TextFileEditor::saveToFile( const QString & fileName ) {
+	AbstractEditor::saveToFile( fileName );
+	textEdit()->setFilename( fileName );
+}
+
 void TextFileEditor::loadFromDevice( QIODevice & d ) {
 	// Get the EOL of the file.
 	char c;
@@ -408,6 +418,7 @@ void TextFileEditor::deserialize( XinxProjectSessionEditor * data ) {
 		if( ! lastFileName().isEmpty() )
 			loadFromFile( lastFileName() );
 	}
+	m_view->setFilename( lastFileName() );
 
 	int bc = data->readProperty( "BookmarkCount" ).toInt();
 	for( int i = 0 ; i < bc; i++ ) {

@@ -366,10 +366,10 @@ bool SnipetManager::callSnipet( int id, QString * result, QWidget * parent ) {
 	return true;
 }
 
-bool SnipetManager::callSnipet( QString key, QString * result, QWidget * parent ) {
+bool SnipetManager::callSnipet( QString key, QString * result, const QString & filename, QWidget * parent ) {
 	Q_ASSERT( result );
 
-	QSqlQuery searchId( "select id from snipets where lower(shortcut) = lower(:shortcut)", database() );
+	QSqlQuery searchId( "select id, available_script from snipets where lower(shortcut) = lower(:shortcut)", database() );
 	searchId.bindValue( ":shortcut", key );
 
 	if( ! searchId.exec() ) {
@@ -377,18 +377,19 @@ bool SnipetManager::callSnipet( QString key, QString * result, QWidget * parent 
 		return false;
 	}
 
-	if( ! searchId.next() ) {
-		// Id not found
-		return false;
+	while( searchId.next() ) {
+		int snipet_id  = searchId.value( 0 ).toInt();
+		QString script = searchId.value( 1 ).toString();
+		if( isAvailable( script, "SNIPET", snipet_id ) && ( filename.isEmpty() || isSnipetMatch( filename, snipet_id ) ) ) {
+			return callSnipet( snipet_id, result, parent );
+		}
 	}
 
-	int snipet_id = searchId.value( 0 ).toInt();
-
-	return callSnipet( snipet_id, result, parent );
+	return false;
 }
 
-bool SnipetManager::callAutomaticSnipet( QString key, QString * result, QWidget * parent ) {
-	QSqlQuery searchId( "select id from snipets where lower(shortcut) = lower(:shortcut) and auto>=:auto", database() );
+bool SnipetManager::callAutomaticSnipet( QString key, QString * result, const QString & filename, QWidget * parent ) {
+	QSqlQuery searchId( "select id, available_script from snipets where lower(shortcut) = lower(:shortcut) and auto>=:auto", database() );
 	searchId.bindValue( ":key", key );
 	searchId.bindValue( ":auto", true );
 
@@ -397,14 +398,15 @@ bool SnipetManager::callAutomaticSnipet( QString key, QString * result, QWidget 
 		return false;
 	}
 
-	if( ! searchId.next() ) {
-		// Id not found
-		return false;
+	while( searchId.next() ) {
+		int snipet_id  = searchId.value( 0 ).toInt();
+		QString script = searchId.value( 1 ).toString();
+		if( isAvailable( script, "SNIPET", snipet_id ) && ( filename.isEmpty() || isSnipetMatch( filename, snipet_id ) ) ) {
+			return callSnipet( snipet_id, result, parent );
+		}
 	}
 
-	int snipet_id = searchId.value( 0 ).toInt();
-
-	return callSnipet( snipet_id, result, parent );
+	return false;
 }
 
 

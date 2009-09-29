@@ -51,10 +51,11 @@ public:
 	void indexesToIds( const QModelIndexList & indexes, QList<int> & snipetIds, QList<int> & categoryIds ) const;
 	QList<int> indexesToIds( const QModelIndexList & indexes ) const;
 
-	void select();
-
 	QSqlQueryModel * sourceModel();
 	QSqlQueryModel * sourceModel() const;
+public slots:
+	void select();
+
 protected:
 	friend class SnipetManager;
 	BaseSnipetItemModel( QSqlDatabase db, QObject * parent = 0 );

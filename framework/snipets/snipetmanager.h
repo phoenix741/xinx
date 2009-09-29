@@ -65,8 +65,8 @@ public:
 	bool exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent = 0 );
 
 	bool callSnipet( int id, QString * result, QWidget * parent = 0 );
-	bool callSnipet( QString key, QString * result, QWidget * parent = 0 );
-	bool callAutomaticSnipet( QString key, QString * result, QWidget * parent = 0 );
+	bool callSnipet( QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0 );
+	bool callAutomaticSnipet( QString key, QString * result, const QString & filename = QString(), QWidget * parent = 0 );
 
 	bool executeSnipetScript( const QString & script, const QStringList & values, QString * result ) const;
 	bool isAvailable( const QString & script, const QString & type, int id ) const;
