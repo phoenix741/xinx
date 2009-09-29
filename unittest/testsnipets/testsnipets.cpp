@@ -179,7 +179,7 @@ void TestSnipets::testExport() {
 	QList<int> ids = SnipetManager::self()->snipets();
 
 	SnipetList list;
-	if( SnipetManager::self()->exportSnipetList( ids, &list ) )
+	QVERIFY( SnipetManager::self()->exportSnipetList( ids, &list ) );
 	list.saveToFile( filename );
 
 	m_snipetModel->select();
@@ -192,7 +192,7 @@ void TestSnipets::testImport() {
 
 	SnipetList list;
 	list.loadFromFile( filename );
-	SnipetManager::self()->importSnipetList( list );
+	QVERIFY( SnipetManager::self()->importSnipetList( list ) );
 
 	m_snipetModel->select();
 	m_treeSnipet->expandAll();
