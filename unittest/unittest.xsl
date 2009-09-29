@@ -16,7 +16,7 @@
 				<file>unittest/<xsl:value-of select="Incident/@file"/></file>
 			</xsl:if>
 			<fixture>
-				<xsl:value-of select="@name"/>
+				<xsl:value-of select="../@name"/>::<xsl:value-of select="@name"/>
 			</fixture>
 			<xsl:choose>
 				<xsl:when test="Incident/@type='fail'">
