@@ -25,6 +25,8 @@
 
 // Qt header
 #include <QtTest/QtTest>
+#include <QTreeView>
+#include <QApplication>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <modeltest.h>
@@ -55,6 +57,7 @@ private slots:
 private:
 	CategoryItemModel * m_categoryModel;
 	SnipetItemModel * m_snipetModel;
+	QTreeView * m_treeCategory, * m_treeSnipet;
 };
 
 void TestSnipets::initTestCase() {
@@ -65,6 +68,20 @@ void TestSnipets::initTestCase() {
 	SnipetManager::self()->database().transaction();
 	m_categoryModel = SnipetManager::self()->createCategoryItemModel( this );
 	m_snipetModel = SnipetManager::self()->createSnipetItemModel( this );
+
+   m_treeCategory = new QTreeView;
+   m_treeCategory->setModel( m_categoryModel );
+
+   m_treeCategory->setWindowTitle( QTreeView::tr("Category View") );
+   m_treeCategory->resize(640, 480);
+   m_treeCategory->show();
+
+   m_treeSnipet = new QTreeView;
+   m_treeSnipet->setModel( m_snipetModel );
+
+   m_treeSnipet->setWindowTitle( QTreeView::tr("Snipet View") );
+   m_treeSnipet->resize(640, 480);
+   m_treeSnipet->show();
 }
 
 void TestSnipets::testConnection() {
@@ -79,6 +96,8 @@ void TestSnipets::testEmptyCategoryItemModel() {
 
 void TestSnipets::testSelectCategoryItemModel() {
 	m_categoryModel->select();
+	m_treeCategory->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testAddCategoryItemModel() {
@@ -93,12 +112,16 @@ void TestSnipets::testAddCategoryItemModel() {
 	QVERIFY( result );
 
 	m_categoryModel->select();
+	m_treeCategory->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testRemoveCategoryItemModel() {
 	QSqlQuery query( "DELETE FROM categories WHERE id not in (select distinct parent_id from categories) and id not in (select distinct category_id from snipets)", SnipetManager::self()->database() );
 
 	m_categoryModel->select();
+	m_treeCategory->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testSearchCategoryId() {
@@ -117,7 +140,7 @@ void TestSnipets::testSearchCategoryId() {
 
 	int id = index.data( CategoryItemModel::CategoryIdRole ).toInt();
 
-	QVERIFY( id == testId );
+	QCOMPARE( id, testId );
 }
 
 void TestSnipets::testEmptySnipetItemModel() {
@@ -126,6 +149,8 @@ void TestSnipets::testEmptySnipetItemModel() {
 
 void TestSnipets::testSelectSnipetItemModel() {
 	m_snipetModel->select();
+	m_treeSnipet->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testSearchSnipetId() {
@@ -145,7 +170,7 @@ void TestSnipets::testSearchSnipetId() {
 
 	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
 
-	QVERIFY( id == testId );
+	QCOMPARE( id, testId );
 }
 
 void TestSnipets::testExport() {
@@ -158,6 +183,8 @@ void TestSnipets::testExport() {
 	list.saveToFile( filename );
 
 	m_snipetModel->select();
+	m_treeSnipet->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testImport() {
@@ -168,6 +195,8 @@ void TestSnipets::testImport() {
 	SnipetManager::self()->importSnipetList( list );
 
 	m_snipetModel->select();
+	m_treeSnipet->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testDeleteAll() {
@@ -176,7 +205,13 @@ void TestSnipets::testDeleteAll() {
 	foreach( int id, ids ) {
 		SnipetManager::self()->removeSnipet( id );
 		m_snipetModel->select();
+		m_treeSnipet->expandAll();
+		qApp->processEvents();
 	}
+
+	ids = SnipetManager::self()->snipets();
+
+	QCOMPARE( ids.size(), 0 );
 }
 
 void TestSnipets::cleanupTestCase() {
