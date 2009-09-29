@@ -5,6 +5,6 @@ SOURCES = testsnipets.cpp
 CONFIG  += qtestlib
 QT += sql
 INCLUDEPATH += ../../framework
-LIBS = -L ../../components -L../../framework -L../../ext/qcodeedit -lxinxframework -lxinxcmp -lqcodeedit
+LIBS += -L ../../components -L../../framework -L../../ext/qcodeedit -lxinxframework -lxinxcmp -lqcodeedit
 
 include(../../ext/qmodeltest/modeltest.pri)
