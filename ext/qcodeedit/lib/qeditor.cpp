@@ -3029,6 +3029,13 @@ void QEditor::mouseDoubleClickEvent(QMouseEvent *e)
 */
 void QEditor::dragEnterEvent(QDragEnterEvent *e)
 {
+	if ( m_binding )
+	{
+		if ( m_binding->dragEnterEvent(e, this) )
+			return;
+	}
+
+
 	if (
 			e
 		&&
@@ -3047,19 +3054,30 @@ void QEditor::dragEnterEvent(QDragEnterEvent *e)
 		return;
 
 	m_dragAndDrop = QDocumentCursor();
+
+	if ( m_binding )
+		m_binding->postDragEnterEvent(e, this);
 }
 
 /*!
 	\internal
 */
-void QEditor::dragLeaveEvent(QDragLeaveEvent *)
+void QEditor::dragLeaveEvent(QDragLeaveEvent * e)
 {
+	if ( m_binding )
+	{
+		if ( m_binding->dragLeaveEvent(e, this) )
+			return;
+	}
+
 	const QRect crect = cursorRect(m_dragAndDrop);
 	m_dragAndDrop = QDocumentCursor();
 
 	if ( crect.isValid() )
 		viewport()->update(crect);
 
+	if ( m_binding )
+		m_binding->postDragLeaveEvent(e, this);
 }
 
 /*!
@@ -3067,6 +3085,12 @@ void QEditor::dragLeaveEvent(QDragLeaveEvent *)
 */
 void QEditor::dragMoveEvent(QDragMoveEvent *e)
 {
+	if ( m_binding )
+	{
+		if ( m_binding->dragMoveEvent(e, this) )
+			return;
+	}
+
 	if (
 			e
 		&&
@@ -3100,6 +3124,8 @@ void QEditor::dragMoveEvent(QDragMoveEvent *e)
 	}
 
 	//e->acceptProposedAction();
+	if ( m_binding )
+		m_binding->postDragMoveEvent(e, this);
 }
 
 /*!
@@ -3107,6 +3133,12 @@ void QEditor::dragMoveEvent(QDragMoveEvent *e)
 */
 void QEditor::dropEvent(QDropEvent *e)
 {
+	if ( m_binding )
+	{
+		if ( m_binding->dropEvent(e, this) )
+			return;
+	}
+
 	m_dragAndDrop = QDocumentCursor();
 
 	QDocumentCursor c(cursorForPosition(mapToContents(e->pos())));
@@ -3168,6 +3200,9 @@ void QEditor::dropEvent(QDropEvent *e)
 	m_doc->endMacro();
 
 	selectionChange();
+
+	if ( m_binding )
+		m_binding->postDropEvent(e, this);
 }
 
 /*!

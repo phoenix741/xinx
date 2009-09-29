@@ -1,0 +1,162 @@
+Index: lib/qeditor.cpp
+===================================================================
+--- lib/qeditor.cpp	(révision 1563)
++++ lib/qeditor.cpp	(copie de travail)
+@@ -3029,6 +3029,13 @@
+ */
+ void QEditor::dragEnterEvent(QDragEnterEvent *e)
+ {
++	if ( m_binding )
++	{
++		if ( m_binding->dragEnterEvent(e, this) )
++			return;
++	}
++
++
+ 	if (
+ 			e
+ 		&&
+@@ -3047,19 +3054,30 @@
+ 		return;
+ 
+ 	m_dragAndDrop = QDocumentCursor();
++
++	if ( m_binding )
++		m_binding->postDragEnterEvent(e, this);
+ }
+ 
+ /*!
+ 	\internal
+ */
+-void QEditor::dragLeaveEvent(QDragLeaveEvent *)
++void QEditor::dragLeaveEvent(QDragLeaveEvent * e)
+ {
++	if ( m_binding )
++	{
++		if ( m_binding->dragLeaveEvent(e, this) )
++			return;
++	}
++
+ 	const QRect crect = cursorRect(m_dragAndDrop);
+ 	m_dragAndDrop = QDocumentCursor();
+ 
+ 	if ( crect.isValid() )
+ 		viewport()->update(crect);
+ 
++	if ( m_binding )
++		m_binding->postDragLeaveEvent(e, this);
+ }
+ 
+ /*!
+@@ -3067,6 +3085,12 @@
+ */
+ void QEditor::dragMoveEvent(QDragMoveEvent *e)
+ {
++	if ( m_binding )
++	{
++		if ( m_binding->dragMoveEvent(e, this) )
++			return;
++	}
++
+ 	if (
+ 			e
+ 		&&
+@@ -3100,6 +3124,8 @@
+ 	}
+ 
+ 	//e->acceptProposedAction();
++	if ( m_binding )
++		m_binding->postDragMoveEvent(e, this);
+ }
+ 
+ /*!
+@@ -3107,6 +3133,12 @@
+ */
+ void QEditor::dropEvent(QDropEvent *e)
+ {
++	if ( m_binding )
++	{
++		if ( m_binding->dropEvent(e, this) )
++			return;
++	}
++
+ 	m_dragAndDrop = QDocumentCursor();
+ 
+ 	QDocumentCursor c(cursorForPosition(mapToContents(e->pos())));
+@@ -3168,6 +3200,9 @@
+ 	m_doc->endMacro();
+ 
+ 	selectionChange();
++
++	if ( m_binding )
++		m_binding->postDropEvent(e, this);
+ }
+ 
+ /*!
+Index: lib/qeditor.h
+===================================================================
+--- lib/qeditor.h	(révision 1563)
++++ lib/qeditor.h	(copie de travail)
+@@ -196,6 +196,54 @@
+ 
+ 					return false;
+ 				}
++
++				virtual bool dragEnterEvent( QDragEnterEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++
++					return false;
++				}
++
++				virtual void postDragEnterEvent( QDragEnterEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++				}
++
++				virtual bool dragLeaveEvent( QDragLeaveEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++
++					return false;
++				}
++
++				virtual void postDragLeaveEvent( QDragLeaveEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++				}
++
++				virtual bool dragMoveEvent( QDragMoveEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++
++					return false;
++				}
++
++				virtual void postDragMoveEvent( QDragMoveEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++				}
++
++				virtual bool dropEvent( QDropEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++
++					return false;
++				}
++
++				virtual void postDropEvent( QDropEvent *e, QEditor *editor ) {
++					Q_UNUSED( e );
++					Q_UNUSED( editor );
++				}
+ 		};
+ 		
+ 		Q_DECLARE_FLAGS(State, EditFlag)
+@@ -441,6 +489,7 @@
+ 		virtual bool isProcessingKeyEvent(QKeyEvent *e, int *offset = 0);
+ 		virtual bool processCursor(QDocumentCursor& c, QKeyEvent *e, bool& b);
+ 		
++		QStringList mimeTypes() const;
+ 		virtual void startDrag();
+ 		virtual QMimeData* createMimeDataFromSelection() const;
+ 		virtual void insertFromMimeData(const QMimeData *d);
