@@ -38,6 +38,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QDebug>
+#include <QDir>
 
 /* Static member */
 
@@ -143,7 +144,7 @@ QStringList SnipetManager::getCategoryName( int id ) {
 			break;
 		}
 
-		categories << selectQuery.value( 1 ).toString();
+		categories.insert( 0, selectQuery.value( 1 ).toString() );
 		parent_id = selectQuery.value( 0 ).toInt();
 	}
 	return categories;
@@ -243,6 +244,23 @@ bool SnipetManager::removeSnipet( int id, QWidget * parent ) {
 		return false;
 	}
 	return true;
+}
+
+QList<int> SnipetManager::snipets() const {
+	QList<int> ids;
+	QSqlQuery selectQuery( "SELECT id FROM snipets", database() );
+
+	bool result = selectQuery.exec();
+	Q_ASSERT( result );
+	if( ! result ) {
+		qWarning( qPrintable( selectQuery.lastError().text() ) );
+		return ids;
+	}
+
+	while( selectQuery.next() ) {
+		ids += selectQuery.value( 0 ).toInt();
+	}
+	return ids;
 }
 
 bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent ) {
@@ -515,7 +533,13 @@ bool SnipetManager::isSnipetMatch( const QString & filename, int snipetId ) cons
 bool SnipetManager::openDatabase() const {
 	// Create the db object
 	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "SNIPETBASE" );
-	QString databaseFileName = QFileInfo( "datas:snipets.db" ).absoluteFilePath();
+	QFileInfo fileInfo( "datas:snipets.db" );
+	QString databaseFileName = fileInfo.absoluteFilePath();
+	if( ! fileInfo.exists() ) {
+		databaseFileName = QDir( QDir::searchPaths( "datas" ).at( 0 ) ).absoluteFilePath( "snipets.db" );
+	}
+
+
 	db.setDatabaseName( databaseFileName );
 	if( ! db.open() ) {
 		qWarning( qPrintable( tr("Can't load snipet database : %1" ).arg( db.lastError().text() ) ) );
@@ -607,17 +631,17 @@ bool SnipetManager::createDatabase( QSqlDatabase db ) const {
 		return false;
 	}
 	if( !
-		createQuery.exec( "CREATE UNIQUE INDEX snipets_idx3 on snipets (name ASC, category_id ASC)" ) ) {
+		createQuery.exec( "CREATE INDEX snipets_idx3 on snipets (name ASC, category_id ASC)" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}
 	if( !
-		createQuery.exec( "CREATE UNIQUE INDEX snipets_idx5 on snipets (shortcut ASC)" ) ) {
+		createQuery.exec( "CREATE INDEX snipets_idx5 on snipets (shortcut ASC)" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}
 	if( !
-		createQuery.exec( "CREATE UNIQUE INDEX snipets_idx6 on snipets (shortcut ASC, auto ASC)" ) ) {
+		createQuery.exec( "CREATE INDEX snipets_idx6 on snipets (shortcut ASC, auto ASC)" ) ) {
 		qWarning( qPrintable( createQuery.lastError().text() ) );
 		return false;
 	}

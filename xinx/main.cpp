@@ -20,6 +20,7 @@
 // Xinx header
 #include "uniqueapplication.h"
 #include "mainformimpl.h"
+#include <snipets/snipetmanager.h>
 #include <snipets/snipetlist.h>
 #include <core/xinxconfig.h>
 #include <core/exceptions.h>
@@ -66,6 +67,51 @@ void backup_appli_signal( int signal ) {
 	throw SignalSegFaultException( signal );
 }
 
+void initSearchPath() {
+#ifdef Q_WS_WIN
+	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
+#else
+	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
+#endif /* Q_WS_WIN */
+
+	// ... for scripts ...
+#ifdef Q_WS_WIN
+	QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
+#else
+	QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
+#endif /* Q_WS_WIN */
+
+	// ... for plugins ...
+#ifdef Q_WS_WIN
+	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
+#else
+	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+#endif /* Q_WS_WIN */
+}
+
+void processSnipetArguments( const QStringList & args ) {
+	initSearchPath();
+	for( int i = 0 ; i < args.count() ; i++ ) {
+		if( i + 1 >= args.count() ) break;
+
+		const QString & arg = args.at( i );
+		const QString & filename = args.at( i + 1 );
+
+
+		if( arg == "--import" ) {
+			SnipetList list;
+			list.loadFromFile( filename );
+			SnipetManager::self()->importSnipetList( list );
+		} else if( arg == "--export" ) {
+			QList<int> ids = SnipetManager::self()->snipets();
+			
+			SnipetList list;
+			if( SnipetManager::self()->exportSnipetList( ids, &list ) )
+			list.saveToFile( filename );
+		}
+	}
+}
+
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
 
@@ -87,6 +133,11 @@ int main(int argc, char *argv[]) {
 		app.setOrganizationDomain( "Shadoware.Org" );
 		app.setApplicationName( "XINX" );
 
+		if( args.contains( "--snipet" ) ) {
+			processSnipetArguments( args );
+			return 0;
+		}
+
 		// .. If application is not started
 		if( ! app.isRunning() ) {
 			// Create the splash screen
@@ -104,16 +155,7 @@ int main(int argc, char *argv[]) {
 			// Initialize search path for datas ...
 			splash.showMessage( QApplication::translate("SplashScreen", "Initialize search path ...") );
 			app.processEvents();
-			QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
-			QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
-
-			// ... for scripts ...
-			QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
-			QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
-
-			// ... for plugins ...
-			QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
-			QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+			initSearchPath();
 			app.addLibraryPath( "plugins:" );
 
 			/*
