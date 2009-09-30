@@ -121,6 +121,6 @@ OTHER_FILES +=
 
 
 profiling {
-  QMAKE_CXXFLAGS += --coverage
+  QMAKE_CXXFLAGS += --coverage -O0
   QMAKE_LFLAGS   += --coverage
 }
