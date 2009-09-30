@@ -118,3 +118,9 @@ FORMS = snipets/callsnipetdlg.ui \
  snipets/categorypropertydlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 
+
+
+profiling {
+  QMAKE_CXXFLAGS += --coverage
+  QMAKE_LFLAGS   += --coverage
+}

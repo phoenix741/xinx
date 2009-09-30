@@ -12,3 +12,8 @@ SOURCES += codedialogimpl.cpp \
 
 RESOURCES += application.qrc
 
+
+profiling {
+  QMAKE_CXXFLAGS += --coverage
+  QMAKE_LFLAGS   += --coverage
+}

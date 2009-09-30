@@ -14,8 +14,3 @@ RCC_DIR = .
 QMAKE_CXXFLAGS_RELEASE = "-Os"
 
 #PRECOMPILED_HEADER = stable_header.h
-
-profiling {
-  QMAKE_CXXFLAGS = --coverage
-  QMAKE_LFLAGS   = --coverage
-}
