@@ -76,8 +76,11 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 
 	if( parentId != mapping->parentId ) {
 		if( mapping->parentId >= 0 ) {
+			Q_ASSERT( m_idMapping.value( mapping->parentId, 0 ) );
 			Mapping * parentMapping = getMapping( mapping->parentId );
 			int row = parentMapping->childs.indexOf( mapping->id );
+			Q_ASSERT( row >= 0 );
+
 			beginRemoveRows( index( mapping->parentId ), row, row );
 
 			parentMapping->childs.remove( row );
@@ -153,16 +156,16 @@ void TreeProxyItemModel::createMapping() {
 		setParentId( id, parentId );
 	}
 
-	/*
+
 	printMapping( 0 );
 	qDebug() << m_id2IndexMapping.keys();
 	qDebug() << m_index2IdMapping.keys();
-	*/
+
 }
 
 void TreeProxyItemModel::printMapping( int id, int niveau ) const {
 	Mapping * m = getMapping( id );
-	qDebug() << "Niveau : " << niveau << ", Id : " << m->id << ", Parent : " << m->parentId << ", childs : " << m->childs.size();
+	qDebug() << "Niveau : " << niveau << ", Id : " << m->id << ", Parent : " << m->parentId << ", childs : " << m->childs.size() << ", string : " << index( id ).data().toString();
 
 	foreach( int child, m->childs ) {
 		printMapping( child, niveau + 1 );

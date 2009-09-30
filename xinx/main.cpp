@@ -68,23 +68,20 @@ void backup_appli_signal( int signal ) {
 }
 
 void initSearchPath() {
-#ifdef Q_WS_WIN
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
-#else
+#ifndef Q_WS_WIN
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
 #endif /* Q_WS_WIN */
 
 	// ... for scripts ...
-#ifdef Q_WS_WIN
 	QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../scripts" ) );
-#else
+#ifndef Q_WS_WIN
 	QDir::addSearchPath( "scripts", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/scripts" ) );
 #endif /* Q_WS_WIN */
 
 	// ... for plugins ...
-#ifdef Q_WS_WIN
 	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
-#else
+#ifndef Q_WS_WIN
 	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
 #endif /* Q_WS_WIN */
 }
@@ -104,7 +101,7 @@ void processSnipetArguments( const QStringList & args ) {
 			SnipetManager::self()->importSnipetList( list );
 		} else if( arg == "--export" ) {
 			QList<int> ids = SnipetManager::self()->snipets();
-			
+
 			SnipetList list;
 			if( SnipetManager::self()->exportSnipetList( ids, &list ) )
 			list.saveToFile( filename );
