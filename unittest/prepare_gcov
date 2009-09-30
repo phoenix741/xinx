@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd ../framework
+for filename in `ls *.gcda *.gcno` ; do
+	src_filename=`find -name ${filename%.*}.cpp`
+	src_directory=`dirname $src_filename`
+
+	if [ $src_directory != "." ] ; then 
+		mv $filename $src_directory/
+	fi
+done
