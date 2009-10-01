@@ -161,9 +161,9 @@ AppSettings::struct_globals XINXConfig::getDefaultGlobals() {
 	struct_globals value = AppSettings::getDefaultGlobals();
 
 #ifndef Q_WS_WIN
-	value.xinxTrace = "/tmp/xinx_trace.html";
+	value.xinxTrace = "/tmp/xinx_trace.log";
 #else
-	value.xinxTrace = "c:\\xinx_trace.html";
+	value.xinxTrace = "c:\\xinx_trace.log";
 #endif
 
 	return value;

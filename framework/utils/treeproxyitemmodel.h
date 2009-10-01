@@ -57,7 +57,9 @@ protected:
 	virtual void setSourceModel( QAbstractItemModel * sourceModel );
 	virtual void createMapping();
 	void setParentId( int id, int parentId );
-	void printMapping( int id, int niveau = 0 ) const;
+
+protected slots:
+	void printMapping( int id = 0, int niveau = 0 ) const;
 private:
 	struct Mapping {
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model

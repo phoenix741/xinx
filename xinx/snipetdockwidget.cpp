@@ -99,7 +99,7 @@ void SnipetDockWidget::createSnipet() {
 }
 
 void SnipetDockWidget::customizeSnipet() {
-	CustomDialogImpl dlg;
+	CustomDialogImpl dlg( this );
 	dlg.loadFromConfig( XINXConfig::self() );
 
 	dlg.m_listWidget->setCurrentRow( 7 );
