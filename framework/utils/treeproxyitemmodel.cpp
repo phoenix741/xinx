@@ -76,6 +76,8 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 
 	if( parentId != mapping->parentId ) {
 		if( mapping->parentId >= 0 ) {
+			//qDebug() << "About to unassign id " << id << " with old parent " << mapping->parentId;
+
 			Q_ASSERT( m_idMapping.value( mapping->parentId, 0 ) );
 			Mapping * parentMapping = getMapping( mapping->parentId );
 			int row = parentMapping->childs.indexOf( mapping->id );
@@ -87,8 +89,12 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 			mapping->parentId = -1;
 
 			endRemoveRows();
+
+			//qDebug() << "Success unassin id " << id << " with old parent " << mapping->parentId;
 		}
 		if( parentId != -1 ) {
+			//qDebug() << "About to assign id " << id << " with new parent " << parentId;
+
 			Mapping * parentMapping = getMapping( parentId );
 			int row = parentMapping->childs.size();
 			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
@@ -99,6 +105,8 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 
 			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
 				endInsertRows();
+
+			//qDebug() << "Success assign id " << id << " with new parent " << parentId;
 		}
 	}/* else {
 		QModelIndex idx = index( id );
@@ -156,11 +164,11 @@ void TreeProxyItemModel::createMapping() {
 		setParentId( id, parentId );
 	}
 
-
+	/*
 	printMapping( 0 );
 	qDebug() << m_id2IndexMapping.keys();
 	qDebug() << m_index2IdMapping.keys();
-
+	*/
 }
 
 void TreeProxyItemModel::printMapping( int id, int niveau ) const {
@@ -262,7 +270,9 @@ int TreeProxyItemModel::rowCount( const QModelIndex & index ) const {
 	if( index.column() > 0 ) return 0;
 
 	Mapping * m = getMapping( index );
-	return m->childs.count();
+	int count   = m->childs.count();
+
+	return count;
 }
 
 int TreeProxyItemModel::columnCount( const QModelIndex & index ) const {
@@ -278,6 +288,11 @@ QVariant TreeProxyItemModel::data( const QModelIndex &proxyIndex, int role ) con
 			return QVariant();
 		}
 	}
+	/*
+	if( ( proxyIndex.column() == 0 ) && ( role == Qt::DisplayRole ) ) {
+		return QAbstractProxyModel::data( proxyIndex, role ).toString() + QString(" (%1)").arg( m->id );
+	}
+	*/
 	return QAbstractProxyModel::data( proxyIndex, role );
 }
 

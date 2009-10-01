@@ -97,7 +97,7 @@ public:
 	 * \param error Message to store in the file
 	 * \param stack Stack to store when the error occure.
 	 */
-	void notifyError( QString error, QtMsgType t = QtWarningMsg );
+	void notifyError( QString error, QString plainError, QtMsgType t = QtWarningMsg );
 signals:
 	/*!
 	 * Signal emited when \e notifyError is called and the exception manager is set to be fatal.

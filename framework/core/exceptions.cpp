@@ -53,18 +53,19 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
 	if( t == QtDebugMsg ) return;
 #endif /* _XINX_RELEASE_MODE_ */
 
-	QString rich;
+	QString rich, plain;
 
 	switch (t) {
 	case QtDebugMsg:
 	default:
 		rich = QErrorMessage::tr("Debug Message:");
+		plain = QErrorMessage::tr("DEBUG");
 		break;
 	case QtWarningMsg:
-		rich = QErrorMessage::tr("Warning:");
+		rich = QErrorMessage::tr("WARNING");
 		break;
 	case QtFatalMsg:
-		rich = QErrorMessage::tr("Fatal Error:");
+		rich = QErrorMessage::tr("FATAL");
 	}
 	rich = QString::fromLatin1("<p><b>%1</b></p>").arg( rich );
 	rich += Qt::escape(QLatin1String( m ));
@@ -73,7 +74,9 @@ static void xinxMessageHandler( QtMsgType t, const char * m ) {
 	if (rich.endsWith(QLatin1String("</p>")))
 			rich.chop(4);
 
-	ExceptionManager::self()->notifyError( rich, t );
+	plain += " : " + QLatin1String( m );
+
+	ExceptionManager::self()->notifyError( rich, plain, t );
 }
 
 /* ExceptionManager */
@@ -125,9 +128,9 @@ QErrorMessage * ExceptionManager::errorDialog() const {
 	return m_dialog;
 }
 
-void ExceptionManager::notifyError( QString error, QtMsgType t ) {
+void ExceptionManager::notifyError( QString error, QString plainError, QtMsgType t ) {
 	if( t == QtFatalMsg ) {
-		// On restore les signaux pour éviter d'être perturbé pendant la phase de sauvegarde ...
+		// On restore les signaux pour ï¿½viter d'ï¿½tre perturbï¿½ pendant la phase de sauvegarde ...
 		std::signal(SIGSEGV, SIG_DFL);
 		std::signal(SIGABRT, SIG_DFL);
 		std::signal(SIGINT, SIG_DFL);
@@ -141,24 +144,20 @@ void ExceptionManager::notifyError( QString error, QtMsgType t ) {
 			return;
 	}
 
-	QStringList stack = stackTrace();
+	//QStringList stack = stackTrace();
 
 	// Create a file where write error
 	QFile file( XINXConfig::self()->config().xinxTrace );
 	if( file.open( QIODevice::Append ) ) {
 		QTextStream text( &file );
-		text << "<br/><u><i>";
 		text << QDateTime::currentDateTime().toString();
-		text << "</i></u><br/>\n";
-		text << "<b>Backtrace :</b><br/>\n";
-		text << "<p>\n";
-		text << stack.join( "<br/>\n" );
-		text << "</p>\n";
-		text << error.replace( "\n", "<br/>\n" );;
+		text << " : ";
+		text << plainError;
+		text << "\n";
 		file.close();
 	}
 
-	std::cout << qPrintable( error ) << std::endl;
+	std::cout << qPrintable( plainError ) << std::endl;
 
 	if( t == QtDebugMsg ) return;
 

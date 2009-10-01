@@ -51,6 +51,8 @@ private slots:
 	void testExport();
 	void testImport();
 
+	void testCategoryDeletion();
+
 	void testDeleteAll();
 
 	void cleanupTestCase();
@@ -197,6 +199,38 @@ void TestSnipets::testImport() {
 	m_snipetModel->select();
 	m_treeSnipet->expandAll();
 	qApp->processEvents();
+}
+
+void TestSnipets::testCategoryDeletion() {
+	int firstCat, secondCat;
+	QSqlQuery insertQuery( "INSERT INTO categories(parent_id, name) VALUES(:parentCategory, :name)", SnipetManager::self()->database() );
+	insertQuery.bindValue( ":parentCategory", 1 );
+	insertQuery.bindValue( ":name", "A" );
+
+	bool result = insertQuery.exec();
+	QVERIFY( result );
+
+	firstCat = insertQuery.lastInsertId().toInt();
+
+	insertQuery.bindValue( ":parentCategory", firstCat );
+	insertQuery.bindValue( ":name", "B" );
+
+	result = insertQuery.exec();
+	QVERIFY( result );
+
+	secondCat = insertQuery.lastInsertId().toInt();
+
+	m_snipetModel->select();
+
+	QSqlQuery removeQuery( "DELETE FROM categories WHERE id=:id", SnipetManager::self()->database() );
+	removeQuery.bindValue( ":id", secondCat );
+	result = removeQuery.exec();
+	QVERIFY( result );
+	removeQuery.bindValue( ":id", firstCat );
+	result = removeQuery.exec();
+	QVERIFY( result );
+
+	m_snipetModel->select();
 }
 
 void TestSnipets::testDeleteAll() {
