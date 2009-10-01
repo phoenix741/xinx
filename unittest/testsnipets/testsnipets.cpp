@@ -22,6 +22,8 @@
 #include <snipets/snipetmanager.h>
 #include <snipets/categoryitemmodel.h>
 #include <snipets/snipetitemmodel.h>
+#include <snipets/snipetdockitemmodel.h>
+#include <snipets/categorytreeview.h>
 
 // Qt header
 #include <QtTest/QtTest>
@@ -40,6 +42,7 @@ private slots:
 
 	void testEmptyCategoryItemModel();
 	void testSelectCategoryItemModel();
+	void testCategoryView();
 	void testAddCategoryItemModel();
 	void testSearchCategoryId();
 	void testRemoveCategoryItemModel();
@@ -47,6 +50,9 @@ private slots:
 	void testEmptySnipetItemModel();
 	void testSelectSnipetItemModel();
 	void testSearchSnipetId();
+
+	void testEmptySnipetDockItemModel();
+	void testSelectSnipetDockItemModel();
 
 	void testExport();
 	void testImport();
@@ -59,7 +65,8 @@ private slots:
 private:
 	CategoryItemModel * m_categoryModel;
 	SnipetItemModel * m_snipetModel;
-	QTreeView * m_treeCategory, * m_treeSnipet;
+	SnipetDockItemModel * m_snipetDockModel;
+	QTreeView * m_treeCategory, * m_treeSnipet, * m_treeDock;
 };
 
 void TestSnipets::initTestCase() {
@@ -71,6 +78,7 @@ void TestSnipets::initTestCase() {
 	SnipetManager::self()->database().transaction();
 	m_categoryModel = SnipetManager::self()->createCategoryItemModel( this );
 	m_snipetModel = SnipetManager::self()->createSnipetItemModel( this );
+	m_snipetDockModel = SnipetManager::self()->createSnipetDockItemModel( this );
 
 	m_treeCategory = new QTreeView;
 	m_treeCategory->setModel( m_categoryModel );
@@ -85,6 +93,13 @@ void TestSnipets::initTestCase() {
 	m_treeSnipet->setWindowTitle( QTreeView::tr("Snipet View") );
 	m_treeSnipet->resize(640, 480);
 	m_treeSnipet->show();
+
+	m_treeDock = new QTreeView;
+	m_treeDock->setModel( m_snipetDockModel );
+
+	m_treeDock->setWindowTitle( QTreeView::tr("Dock View") );
+	m_treeDock->resize(640, 480);
+	m_treeDock->show();
 }
 
 void TestSnipets::testConnection() {
@@ -101,6 +116,20 @@ void TestSnipets::testSelectCategoryItemModel() {
 	m_categoryModel->select();
 	m_treeCategory->expandAll();
 	qApp->processEvents();
+}
+
+void TestSnipets::testCategoryView() {
+	CategoryTreeView view;
+	view.setModel( m_categoryModel );
+	view.show();
+	view.setCategoryId( 1 );
+
+	int row = ( qrand() % m_categoryModel->sourceModel()->rowCount() );
+	int testId = m_categoryModel->sourceModel()->index( row, 0 ).data().toInt();
+
+	view.setCategoryId( testId );
+
+	QCOMPARE( view.categoryId(), testId );
 }
 
 void TestSnipets::testAddCategoryItemModel() {
@@ -174,6 +203,16 @@ void TestSnipets::testSearchSnipetId() {
 	int id = index.data( SnipetItemModel::SnipetIdRole ).toInt();
 
 	QCOMPARE( id, testId );
+}
+
+void TestSnipets::testEmptySnipetDockItemModel() {
+	new ModelTest( m_snipetDockModel );
+}
+
+void TestSnipets::testSelectSnipetDockItemModel() {
+	m_snipetDockModel->select();
+	m_treeDock->expandAll();
+	qApp->processEvents();
 }
 
 void TestSnipets::testExport() {
@@ -250,8 +289,6 @@ void TestSnipets::testDeleteAll() {
 }
 
 void TestSnipets::cleanupTestCase() {
-	delete m_snipetModel;
-	delete m_categoryModel;
 	SnipetManager::self()->database().rollback();
 }
 

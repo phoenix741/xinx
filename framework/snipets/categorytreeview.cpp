@@ -37,7 +37,7 @@ int CategoryTreeView::categoryId() {
 void CategoryTreeView::setCategoryId( int id ) {
 	CategoryItemModel * categoryModel = qobject_cast<CategoryItemModel*>( model() );
 	Q_ASSERT( categoryModel );
-
+	selectionModel()->select( QModelIndex(), QItemSelectionModel::Clear );
 	selectionModel()->select( categoryModel->index( id ), QItemSelectionModel::Select );
 }
 

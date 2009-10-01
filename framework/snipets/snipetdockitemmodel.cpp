@@ -104,7 +104,7 @@ Qt::ItemFlags SnipetDockItemModel::flags( const QModelIndex & index ) const {
 		}
 
 		// If no editor open, we can't call snipet
-		if( EditorManager::self()->currentEditor() ) {
+		if( EditorManager::self() && EditorManager::self()->currentEditor() ) {
 			// Get the filename in the editor
 			QString filename = EditorManager::self()->currentEditor()->getTitle();
 
