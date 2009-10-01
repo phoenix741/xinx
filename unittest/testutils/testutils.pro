@@ -1,6 +1,6 @@
 include(../../project_mode.pri)
 
-DESTDIR += ../
+DESTDIR += ../bin/
 SOURCES = testutils.cpp
 CONFIG += qtestlib
 QT += sql

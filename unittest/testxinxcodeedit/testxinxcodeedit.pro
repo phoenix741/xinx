@@ -1,6 +1,6 @@
 include(../../project_mode.pri)
 
-DESTDIR += ../
+DESTDIR += ../bin/
 SOURCES = testxinxcodeedit.cpp
 CONFIG  += qtestlib
 INCLUDEPATH += ../../framework ../../ext/qcodeedit/lib ../../ext/qcodeedit/lib/document ../../ext/qcodeedit/lib/language

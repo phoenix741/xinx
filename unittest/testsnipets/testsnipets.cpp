@@ -65,6 +65,7 @@ private:
 void TestSnipets::initTestCase() {
 	qsrand( time(NULL) );
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
+	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../datas" ) );
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
 
 	SnipetManager::self()->database().transaction();

@@ -2,19 +2,19 @@
 LD_LIBRARY_PATH=../framework:../components:../ext/qcodeedit:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 # Test au format xml
-xvfb-run ./testxinxcodeedit -xml > unittest.xml
+xvfb-run ./bin/testxinxcodeedit -xml > unittest.xml
 sleep 1
-xvfb-run ./testcontentview -xml > unittest2.xml
+xvfb-run ./bin/testcontentview -xml > unittest2.xml
 sleep 1
-xvfb-run ./testsnipets -xml > unittest3.xml
+xvfb-run ./bin/testsnipets -xml > unittest3.xml
 sleep 1
-xvfb-run ./testutils -xml > unittest4.xml
+xvfb-run ./bin/testutils -xml > unittest4.xml
 sleep 1
 # Test au format log
-xvfb-run ./testxinxcodeedit
+xvfb-run ./bin/testxinxcodeedit
 sleep 1
-xvfb-run ./testcontentview
+xvfb-run ./bin/testcontentview
 sleep 1
-xvfb-run ./testsnipets
+xvfb-run ./bin/testsnipets
 sleep 1
-xvfb-run ./testutils
+xvfb-run ./bin/testutils

@@ -1,6 +1,6 @@
 include(../../project_mode.pri)
 
-DESTDIR += ./
+DESTDIR += ../bin/
 INCLUDEPATH += ../../framework ../../ext/qcodeedit/lib ../../ext/qcodeedit/lib/document
 LIBS = -L ../../components -L../../framework -L../../ext/qcodeedit -lxinxframework -lxinxcmp -lqcodeedit
 FORMS += codedialog.ui
