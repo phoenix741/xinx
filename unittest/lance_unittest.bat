@@ -1,10 +1,12 @@
 @echo off
 PATH=..\framework\;..\components\;..\ext\qcodeedit;%PATH%
 rem Test au format XML
-.\testxinxcodeedit\testxinxcodeedit.exe -xml > unittest.xml
-.\testcontentview\testcontentview.exe -xml > unittest2.xml
-.\testsnipets\testsnipets.exe -xml > unittest3.xml
+.\testxinxcodeedit.exe -xml > unittest.xml
+.\testcontentview.exe -xml > unittest2.xml
+.\testsnipets.exe -xml > unittest3.xml
+.\testutils.exe -xml > unittest4.xml
 rem Test pour le log
-.\testxinxcodeedit\testxinxcodeedit.exe
-.\testcontentview\testcontentview.exe
-.\testsnipets\testsnipets.exe
+.\testxinxcodeedit.exe
+.\testcontentview.exe
+.\testsnipets.exe
+.\testutils.exe

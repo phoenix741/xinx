@@ -44,7 +44,7 @@
 
 /* CustomDialogImpl */
 
-CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( parent, f ), m_snipetModel( 0 ) {
+CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( parent, f ) {
 	setupUi( this );
 	// Change Button
 	QMenu * menu = new QMenu( this );

@@ -64,26 +64,26 @@ private:
 
 void TestSnipets::initTestCase() {
 	qsrand( time(NULL) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../datas" ) );
-	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../../share/xinx/datas" ) );
+	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
+	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
 
 	SnipetManager::self()->database().transaction();
 	m_categoryModel = SnipetManager::self()->createCategoryItemModel( this );
 	m_snipetModel = SnipetManager::self()->createSnipetItemModel( this );
 
-   m_treeCategory = new QTreeView;
-   m_treeCategory->setModel( m_categoryModel );
+	m_treeCategory = new QTreeView;
+	m_treeCategory->setModel( m_categoryModel );
 
-   m_treeCategory->setWindowTitle( QTreeView::tr("Category View") );
-   m_treeCategory->resize(640, 480);
-   m_treeCategory->show();
+	m_treeCategory->setWindowTitle( QTreeView::tr("Category View") );
+	m_treeCategory->resize(640, 480);
+	m_treeCategory->show();
 
-   m_treeSnipet = new QTreeView;
-   m_treeSnipet->setModel( m_snipetModel );
+	m_treeSnipet = new QTreeView;
+	m_treeSnipet->setModel( m_snipetModel );
 
-   m_treeSnipet->setWindowTitle( QTreeView::tr("Snipet View") );
-   m_treeSnipet->resize(640, 480);
-   m_treeSnipet->show();
+	m_treeSnipet->setWindowTitle( QTreeView::tr("Snipet View") );
+	m_treeSnipet->resize(640, 480);
+	m_treeSnipet->show();
 }
 
 void TestSnipets::testConnection() {

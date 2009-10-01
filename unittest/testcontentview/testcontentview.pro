@@ -1,6 +1,6 @@
 include(../../project_mode.pri)
 
-DESTDIR += ./
+DESTDIR += ../
 SOURCES = testcontentview.cpp
 CONFIG  += qtestlib
 INCLUDEPATH += ../../framework

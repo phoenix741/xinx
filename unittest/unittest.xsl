@@ -7,6 +7,7 @@
 			<xsl:apply-templates select="document('unittest.xml')/TestCase/TestFunction"/>
 			<xsl:apply-templates select="document('unittest2.xml')/TestCase/TestFunction"/>
 			<xsl:apply-templates select="document('unittest3.xml')/TestCase/TestFunction"/>
+			<xsl:apply-templates select="document('unittest4.xml')/TestCase/TestFunction"/>
 		</report>
 	</xsl:template>
 

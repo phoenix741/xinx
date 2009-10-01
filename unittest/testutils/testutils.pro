@@ -1,7 +1,7 @@
 include(../../project_mode.pri)
 
 DESTDIR += ../
-SOURCES = testsnipets.cpp
+SOURCES = testutils.cpp
 CONFIG += qtestlib
 QT += sql
 INCLUDEPATH += ../../framework

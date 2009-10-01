@@ -81,7 +81,7 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 	if( parentId != mapping->parentId ) {
 		if( mapping->parentId >= 0 ) {
 			int oldParentId = mapping->parentId;
-			qDebug() << "About to unassign id " << id << " with old parent " << oldParentId;
+//			qDebug() << "About to unassign id " << id << " with old parent " << oldParentId;
 
 			if( m_idMapping.value( mapping->parentId, 0 ) > 0 ) {
 				// Test obligatoire pour eviter le cas où le parent vient d'être supprimé.
@@ -99,10 +99,10 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 			if( m_idMapping.value( oldParentId, 0 ) > 0 )
 				endRemoveRows();
 
-			qDebug() << "Success unassin id " << id << " with old parent " << oldParentId;
+//			qDebug() << "Success unassin id " << id << " with old parent " << oldParentId;
 		}
 		if( parentId != -1 ) {
-			qDebug() << "About to assign id " << id << " with new parent " << parentId;
+//			qDebug() << "About to assign id " << id << " with new parent " << parentId;
 
 			Mapping * parentMapping = getMapping( parentId );
 			int row = parentMapping->childs.size();
@@ -115,7 +115,7 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
 				endInsertRows();
 
-			qDebug() << "Success assign id " << id << " with new parent " << parentId;
+//			qDebug() << "Success assign id " << id << " with new parent " << parentId;
 		}
 	}/* else {
 		QModelIndex idx = index( id );
