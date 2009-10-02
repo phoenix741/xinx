@@ -84,7 +84,7 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 //			qDebug() << "About to unassign id " << id << " with old parent " << oldParentId;
 
 			if( m_idMapping.value( mapping->parentId, 0 ) > 0 ) {
-				// Test obligatoire pour eviter le cas où le parent vient d'être supprimé.
+				// Test obligatoire pour eviter le cas oï¿½ le parent vient d'ï¿½tre supprimï¿½.
 				Mapping * parentMapping = getMapping( oldParentId );
 				int row = parentMapping->childs.indexOf( mapping->id );
 				Q_ASSERT( row >= 0 );
@@ -112,8 +112,9 @@ void TreeProxyItemModel::setParentId( int id, int parentId ) {
 			parentMapping->childs.insert( row, mapping->id );
 			mapping->parentId = parentId;
 
-			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
+			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) ) {
 				endInsertRows();
+			}
 
 //			qDebug() << "Success assign id " << id << " with new parent " << parentId;
 		}
