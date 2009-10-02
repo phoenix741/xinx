@@ -113,11 +113,13 @@ void TreeProxyItemModel::unassignId( Mapping * mapping ) {
 }
 
 void TreeProxyItemModel::validAssignement( Mapping * mapping ) {
-	int row = mapping->childs.size();
-	beginInsertRows( index( mapping->id ), row, row + mapping->new_childs.size() - 1 );
-	mapping->childs << mapping->new_childs;
-	mapping->new_childs.clear();
-	endInsertRows();
+	if( mapping->new_childs.size() > 0 ) {
+		int row = mapping->childs.size();
+		beginInsertRows( index( mapping->id ), row, row + mapping->new_childs.size() - 1 );
+		mapping->childs << mapping->new_childs;
+		mapping->new_childs.clear();
+		endInsertRows();
+	}
 
 	foreach( int childId, mapping->childs ) {
 		Q_ASSERT( m_idMapping.value( childId ) );
