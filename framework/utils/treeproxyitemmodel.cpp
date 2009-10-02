@@ -74,54 +74,80 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( const QModelIndex 
 	return childMapping;
 }
 
+/*!
+ * \internal
+ * This method is used to know if the element is attached to
+ * the root element (root element has id 0).
+ * This must be done because, QSortFilterProxyModel don't work
+ * if a row is added and childs are attached to the row.
+ */
+void TreeProxyItemModel::isAttachedToRoot( Mapping * mapping ) {
+	if( mapping->parentId == -1 ) return false;
+	if( mapping->parentId == 0 ) return true;
+
+	Mapping * parentMapping = m_idMapping.value( mapping->parentId );
+	return isAttachedToRoot( parentMapping );
+}
+
+void TreeProxyItemModel::unassignId( Mapping * mapping ) {
+	Q_ASSERT( mapping );
+	if( mapping->parentId < 0 ) return /* Already unassigned */;
+
+	int oldParentId = mapping->parentId;
+	if( m_idMapping.value( mapping->parentId, 0 ) > 0 ) {
+		// Test obligatoire pour eviter le cas où le parent a déjà été déssasigné.
+		Mapping * parentMapping = getMapping( oldParentId );
+		int row = parentMapping->childs.indexOf( mapping->id );
+		Q_ASSERT( row >= 0 );
+
+		beginRemoveRows( index( oldParentId ), row, row );
+
+		parentMapping->childs.remove( row );
+	}
+
+	mapping->parentId = -1;
+
+	if( m_idMapping.value( oldParentId, 0 ) > 0 )
+		endRemoveRows();
+
+}
+
+void TreeProxyItemModel::validAssignement( Mapping * mapping ) {
+	if( ( mapping->parentId >= 0 ) || ( mapping->id == 0 ) ) {
+		int row = mapping->childs.size();
+		beginInsertRows( index( mapping->id ), row, row + mapping->new_childs.size() - 1 );
+		mapping->childs << mapping->new_childs;
+		mapping->new_childs.clear();
+		endInsertRows();
+	}
+	foreach( int childId, mapping->childs ) {
+		Q_ASSERT( m_idMapping.value( childId ) );
+		Mapping * child = getMapping( childId );
+		validAssignement( child );
+	}
+}
+
+void TreeProxyItemModel::assignId( Mapping * mapping, int parentId ) {
+	Q_ASSERT( mapping );
+	Q_ASSERT( parentId >= 0 );
+
+	Mapping * parentMapping = getMapping( parentId );
+	parentMapping->new_childs.append( mapping->id );
+	mapping->parentId = parentId;
+
+	validAssignement( parentMapping );
+}
+
 void TreeProxyItemModel::setParentId( int id, int parentId ) {
 	Mapping * mapping = getMapping( id );
 	Q_ASSERT( mapping );
 
 	if( parentId != mapping->parentId ) {
-		if( mapping->parentId >= 0 ) {
-			int oldParentId = mapping->parentId;
-//			qDebug() << "About to unassign id " << id << " with old parent " << oldParentId;
-
-			if( m_idMapping.value( mapping->parentId, 0 ) > 0 ) {
-				// Test obligatoire pour eviter le cas oï¿½ le parent vient d'ï¿½tre supprimï¿½.
-				Mapping * parentMapping = getMapping( oldParentId );
-				int row = parentMapping->childs.indexOf( mapping->id );
-				Q_ASSERT( row >= 0 );
-
-				beginRemoveRows( index( oldParentId ), row, row );
-
-				parentMapping->childs.remove( row );
-			}
-
-			mapping->parentId = -1;
-
-			if( m_idMapping.value( oldParentId, 0 ) > 0 )
-				endRemoveRows();
-
-//			qDebug() << "Success unassin id " << id << " with old parent " << oldParentId;
-		}
+		unassignId( mapping );
 		if( parentId != -1 ) {
-//			qDebug() << "About to assign id " << id << " with new parent " << parentId;
-
-			Mapping * parentMapping = getMapping( parentId );
-			int row = parentMapping->childs.size();
-			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) )
-				beginInsertRows( index( parentMapping->id ), row, row);
-
-			parentMapping->childs.insert( row, mapping->id );
-			mapping->parentId = parentId;
-
-			if( ( parentMapping->parentId >= 0 ) || ( parentMapping->id == 0 ) ) {
-				endInsertRows();
-			}
-
-//			qDebug() << "Success assign id " << id << " with new parent " << parentId;
+			assignId( mapping, parentId );
 		}
-	}/* else {
-		QModelIndex idx = index( id );
-		emit dataChanged( idx, idx );
-	}*/
+	}
 }
 
 /*! \internal

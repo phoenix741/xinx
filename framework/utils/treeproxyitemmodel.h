@@ -65,6 +65,7 @@ private:
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model
 		int parentId; //! Define the parent id of this structure
 		QVector<int> childs; //!< Define a list of id, child of this element
+		QVector<int> new_childs; //!< Structure used to know who are the new childs inserted
 	};
 	/*!
 	 * Map of id/structure.
@@ -82,6 +83,10 @@ private:
 
 	Mapping * getMapping( int id ) const;
 	Mapping * getMapping( const QModelIndex & index ) const;
+	void unassignId( Mapping * mapping );
+	void assignId( Mapping * mapping, int parentId );
+	void validAssignement( Mapping * mapping );
+	void isAttachedToRoot( Mapping * mapping );
 };
 
 #endif // TREEPROXYITEMMODEL_H
