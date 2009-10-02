@@ -86,7 +86,7 @@ private:
 	void unassignId( Mapping * mapping );
 	void assignId( Mapping * mapping, int parentId );
 	void validAssignement( Mapping * mapping );
-	void isAttachedToRoot( Mapping * mapping );
+	bool isAttachedToRoot( Mapping * mapping );
 };
 
 #endif // TREEPROXYITEMMODEL_H

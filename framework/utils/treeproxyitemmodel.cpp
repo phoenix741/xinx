@@ -81,7 +81,7 @@ TreeProxyItemModel::Mapping * TreeProxyItemModel::getMapping( const QModelIndex 
  * This must be done because, QSortFilterProxyModel don't work
  * if a row is added and childs are attached to the row.
  */
-void TreeProxyItemModel::isAttachedToRoot( Mapping * mapping ) {
+bool TreeProxyItemModel::isAttachedToRoot( Mapping * mapping ) {
 	if( mapping->parentId == -1 ) return false;
 	if( mapping->parentId == 0 ) return true;
 
@@ -95,7 +95,7 @@ void TreeProxyItemModel::unassignId( Mapping * mapping ) {
 
 	int oldParentId = mapping->parentId;
 	if( m_idMapping.value( mapping->parentId, 0 ) > 0 ) {
-		// Test obligatoire pour eviter le cas où le parent a déjà été déssasigné.
+		// Test obligatoire pour eviter le cas oï¿½ le parent a dï¿½jï¿½ ï¿½tï¿½ dï¿½ssasignï¿½.
 		Mapping * parentMapping = getMapping( oldParentId );
 		int row = parentMapping->childs.indexOf( mapping->id );
 		Q_ASSERT( row >= 0 );
@@ -113,13 +113,12 @@ void TreeProxyItemModel::unassignId( Mapping * mapping ) {
 }
 
 void TreeProxyItemModel::validAssignement( Mapping * mapping ) {
-	if( ( mapping->parentId >= 0 ) || ( mapping->id == 0 ) ) {
-		int row = mapping->childs.size();
-		beginInsertRows( index( mapping->id ), row, row + mapping->new_childs.size() - 1 );
-		mapping->childs << mapping->new_childs;
-		mapping->new_childs.clear();
-		endInsertRows();
-	}
+	int row = mapping->childs.size();
+	beginInsertRows( index( mapping->id ), row, row + mapping->new_childs.size() - 1 );
+	mapping->childs << mapping->new_childs;
+	mapping->new_childs.clear();
+	endInsertRows();
+
 	foreach( int childId, mapping->childs ) {
 		Q_ASSERT( m_idMapping.value( childId ) );
 		Mapping * child = getMapping( childId );
@@ -135,7 +134,10 @@ void TreeProxyItemModel::assignId( Mapping * mapping, int parentId ) {
 	parentMapping->new_childs.append( mapping->id );
 	mapping->parentId = parentId;
 
-	validAssignement( parentMapping );
+	//if( ( mapping->parentId >= 0 ) || ( mapping->id == 0 ) ) {
+	//}
+	if( isAttachedToRoot( mapping ) )
+		validAssignement( parentMapping );
 }
 
 void TreeProxyItemModel::setParentId( int id, int parentId ) {
