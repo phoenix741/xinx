@@ -6,6 +6,6 @@ for filename in `ls *.gcda *.gcno *.o` ; do
 	src_directory=`dirname $src_filename`
 
 	if [ $src_directory != "." ] ; then 
-		mv $filename $src_directory/
+		cp -l $filename $src_directory/
 	fi
 done
