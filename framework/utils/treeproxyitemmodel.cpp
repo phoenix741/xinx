@@ -27,6 +27,13 @@
 
 /* TreeProxyItemModel */
 
+/*!
+ * \class TreeProxyItemModel 
+ * This class is used to transform a table model (with only row and column) to a tree model. To do this
+ * the subclass must redefine getParentIndentifier() and getUniqueIdentifier() to give for a QModelIndex
+ * in the source model, 
+ */
+
 TreeProxyItemModel::TreeProxyItemModel( QObject * parent ) : QAbstractProxyModel( parent ), m_sourceColumnCount( 0 ), m_resetModel( false ) {
 #ifndef _XINX_RELEASE_MODE_
 	connect( ExceptionManager::self(), SIGNAL(errorTriggered()), this, SLOT(printMapping()) );
