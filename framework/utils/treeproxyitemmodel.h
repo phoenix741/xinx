@@ -31,6 +31,7 @@
 
 class TreeProxyItemModel : public QAbstractProxyModel {
 	Q_OBJECT
+	Q_PROPERTY( bool resetModel READ resetModel WRITE setResetModel )
 public:
 	TreeProxyItemModel( QObject * parent = 0 );
 	virtual ~TreeProxyItemModel();
@@ -59,7 +60,9 @@ protected:
 	void setParentId( int id, int parentId );
 
 protected slots:
+#ifndef _XINX_RELEASE_MODE_
 	void printMapping( int id = 0, int niveau = 0 ) const;
+#endif
 private:
 	struct Mapping {
 		int id; //!< Define the id of the line. This id have nothing to do with the line in the source model

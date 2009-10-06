@@ -69,7 +69,7 @@ public:
 	 
 	/*!
 	 * Set the key to use when complete a snipet.
-	 * \param The new Key to use.
+	 * \param key The new Key to use.
 	 * \sa key();
 	 */
 	void setKey( const QString & key );
@@ -126,7 +126,7 @@ public:
 	
 	/*!
 	 * Set the description of the template.
-	 * \param name New description of the template.
+	 * \param description New description of the template.
 	 * \sa description()
 	 */
 	void setDescription( const QString & description );
@@ -141,7 +141,7 @@ public:
 	
 	/*!
 	 * Set the category used to store the template.
-	 * \param value The new category used to store the template.
+	 * \param category The new category used to store the template.
 	 * \sa category()
 	 */
 	void setCategory( const QString & category );
@@ -165,7 +165,7 @@ public:
 	
 	/*!
 	 * Set the icon of the template.
-	 * \param name New icon of the template.
+	 * \param icon New icon of the template.
 	 * \sa icon()
 	 */
 	void setIcon( const QString & icon );
