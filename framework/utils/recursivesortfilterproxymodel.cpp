@@ -25,6 +25,19 @@
 
 /* RecursiveSortFilterProxyModel */
 
+/*!
+ * \class RecursiveSortFilterProxyModel
+ * \brief This model filter source model as QSortFilterProxyModel to search an element in the hierachy
+ *
+ * In a hierarchy, you can search an element by it's name. But if it's parrent don't have the same
+ * pattern, the index will not be found.
+ * This sub-class of QSortFilterProxyModel, will automatically show parent, if a child match the
+ * searching string. This model work only with filterRegExp().
+ *
+ * This object can hide some path too, even if this path match the the searching string, or conversely,
+ * force to show a path.
+ */
+
 RecursiveSortFilterProxyModel::RecursiveSortFilterProxyModel( QObject * parent ) : QSortFilterProxyModel( parent ), m_showAllChild( true ), m_disabledVisible( true ) {
 
 }
