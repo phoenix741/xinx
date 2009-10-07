@@ -83,7 +83,9 @@ void BaseSnipetItemModel::select() {
 		"FROM snipets "
 		"ORDER BY type, name"
 			);
-	Q_ASSERT( query.exec() );
+
+	bool result = query.exec();
+	Q_ASSERT( result );
 	m_sourceModel->setQuery( query );
 
 	// Define name for header column
