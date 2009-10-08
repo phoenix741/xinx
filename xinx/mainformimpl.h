@@ -73,6 +73,8 @@ public slots:
 	void commitToVersionManager( const QStringList & list = QStringList() );
 	void addFilesToVersionManager( const QStringList & list );
 	void removeFilesFromVersionManager( const QStringList & list );
+
+	void openWelcomDialog();
 signals:
 	void aboutToClose();
 protected:

@@ -1,37 +1,35 @@
 include(../project_mode.pri)
-
 TEMPLATE = app
 VERSION = 0.9.0.0
-
 DEFINES += XINX_VERSION=$$replace(VERSION,"\.",",")
-win32 : QMAKE_RC = windres -DXINX_VERSION=$$replace(VERSION,"\.",",")
-win32 : RC_FILE += rc/xinx.rc
-
+win32:QMAKE_RC = windres \
+    -DXINX_VERSION=$$replace(VERSION,"\.",",")
+win32:RC_FILE += rc/xinx.rc
 CONFIG += warn_on
 QT += xml \
-		script \
-		xmlpatterns \
-		webkit \
-		sql
+    script \
+    xmlpatterns \
+    webkit \
+    sql
 DESTDIR += ./
 INCLUDEPATH += ../framework \
-  ../components \
-  ../ext/qcodeedit/lib \
-  ../xinx \
-  ../ext/qcodeedit/lib/document \
-  ../ext/qcodeedit/lib/language \
-  ../ext/qcodeedit/lib/qnfa \
-  ../ext/qcodeedit/lib/widgets
+    ../components \
+    ../ext/qcodeedit/lib \
+    ../xinx \
+    ../ext/qcodeedit/lib/document \
+    ../ext/qcodeedit/lib/language \
+    ../ext/qcodeedit/lib/qnfa \
+    ../ext/qcodeedit/lib/widgets
 LIBS = -L../framework \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
-	-lxmlpres \
+    -lxmlpres \
     -lwebplugin \
-	-lxinxframework \
-	-lxinxcmp \
+    -lxinxframework \
+    -lxinxcmp \
     -lqcodeedit \
- -L../framework/
+    -L../framework/
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \
     ui/about.ui \
@@ -43,7 +41,8 @@ FORMS += ui/specifiquedlg.ui \
     ui/newprojectwizard_project.ui \
     ui/newprojectwizard_specifique.ui \
     ui/logform.ui \
-    ui/snipetlistwidget.ui
+    ui/snipetlistwidget.ui \
+    ui/welcomdlg.ui
 HEADERS += customdialogmodeles.h \
     snipetdockwidget.h \
     specifiquedlgimpl.h \
@@ -62,7 +61,9 @@ HEADERS += customdialogmodeles.h \
     searchfilethread.h \
     logdialogimpl.h \
     xinxprojectwizard/projectconverter.h \
-    xinxprojectwizard/projectwizard.h 
+    xinxprojectwizard/projectwizard.h \
+    welcomdlgimpl.h \
+    welcomdlgimpl_p.h
 SOURCES += customdialogmodeles.cpp \
     snipetdockwidget.cpp \
     specifiquedlgimpl.cpp \
@@ -82,13 +83,11 @@ SOURCES += customdialogmodeles.cpp \
     searchfilethread.cpp \
     logdialogimpl.cpp \
     xinxprojectwizard/projectconverter.cpp \
-    xinxprojectwizard/projectwizard.cpp
+    xinxprojectwizard/projectwizard.cpp \
+    welcomdlgimpl.cpp
 TRANSLATIONS += translations/xinx_fr.ts
-CONFIG(debug, debug|release){
-    exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ){
-        message( "Add GDB Macro to program..." )
-        SOURCES += $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp
-    }
+CONFIG(debug, debug|release):exists( $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp ) { 
+    message( "Add GDB Macro to program..." )
+    SOURCES += $$[QT_INSTALL_DATA]/qtc-debugging-helper/gdbmacros.cpp
 }
-
 include(../ext/qtsingleapplication/src/qtsingleapplication.pri)

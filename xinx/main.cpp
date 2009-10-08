@@ -220,6 +220,10 @@ int main(int argc, char *argv[]) {
 			mainWin->show();
 			splash.finish(mainWin);
 
+			if(! ( ( args.count() == 1 ) && ( XINXConfig::self()->config().project.openTheLastProjectAtStart ) && (! XINXConfig::self()->config().project.lastOpenedProject.isEmpty()) ) ) {
+				mainWin->openWelcomDialog();
+			}
+
 			int result = app.exec();
 
 			// Free memory

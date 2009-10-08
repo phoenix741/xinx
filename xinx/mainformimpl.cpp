@@ -43,6 +43,7 @@
 #include <scripts/scriptmanager.h>
 #include <snipets/snipetmanager.h>
 #include <snipets/snipetmenu.h>
+#include "welcomdlgimpl.h"
 
 // Qt header
 #include <QObject>
@@ -981,6 +982,11 @@ void MainformImpl::updateEditorInformations() {
 		m_codecLabel->setText( tr("No codec") );
 		m_lineFeedLabel->setText( tr("Unknown") );
 	}
+}
+
+void MainformImpl::openWelcomDialog() {
+	WelcomDialogImpl dlg( this );
+	dlg.exec();
 }
 
 void MainformImpl::newFile() {
