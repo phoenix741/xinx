@@ -17,8 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+// Xinx header
 #include "welcomdlgimpl.h"
 #include "welcomdlgimpl_p.h"
+
+// Qt header
+#include <QHeaderView>
 
 /* WelcomDialogImpl */
 
