@@ -35,6 +35,13 @@ public:
 	virtual ~WelcomDialogImpl();
 
 	void addProjectFile( const QString & filename );
+public slots:
+	void slotUrlClicked( const QString &data );
+	void slotProjectClicked( const QString &data );
+
+signals:
+	void requestProject( const QString & data );
+	void createNewProject();
 private:
 	void createWebsiteList();
 	void updateTipOfTheDay();

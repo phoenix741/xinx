@@ -110,5 +110,7 @@
         <file>rc/exceptionfilter.txt</file>
         <file>images/bullet_arrow.png</file>
         <file>rc/tipoftheday_fr_FR.txt</file>
+        <file>images/banner.png</file>
+        <file>rc/tipoftheday_en.txt</file>
     </qresource>
 </RCC>

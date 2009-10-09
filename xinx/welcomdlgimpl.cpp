@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
+#include <QDesktopServices>
 
 /* WelcomDialogImpl */
 
@@ -33,6 +34,11 @@ WelcomDialogImpl::WelcomDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDia
 	setupUi( this );
 	createWebsiteList();
 	updateTipOfTheDay();
+
+	connect(m_projectWidget, SIGNAL(activated(QString)), SLOT(slotProjectClicked(QString)));
+	connect(m_sitesWidget, SIGNAL(activated(QString)), SLOT(slotUrlClicked(QString)));
+	connect(m_createNewProjectBtn, SIGNAL(clicked()), SLOT(accept()));
+	connect(m_createNewProjectBtn, SIGNAL(clicked()), SIGNAL(createNewProject()));
 }
 
 WelcomDialogImpl::~WelcomDialogImpl() {
@@ -61,15 +67,23 @@ void WelcomDialogImpl::updateTipOfTheDay() {
 }
 
 void WelcomDialogImpl::createWebsiteList() {
-	sitesTreeWidget->addItem( tr("Documentation"), QLatin1String("http://xinx.shadoware.org/wiki") );
-	sitesTreeWidget->addItem( tr("Report a bug"), QLatin1String("http://xinx.shadoware.org/newticket") );
-	sitesTreeWidget->addItem( tr("Downloads"), QLatin1String("http://xinx.shadoware.org/downloads") );
+	m_sitesWidget->addItem( tr("Documentation"), QLatin1String("http://xinx.shadoware.org/wiki") );
+	m_sitesWidget->addItem( tr("Report a bug"), QLatin1String("http://xinx.shadoware.org/newticket") );
+	m_sitesWidget->addItem( tr("Downloads"), QLatin1String("http://xinx.shadoware.org/downloads") );
 }
 
 void WelcomDialogImpl::addProjectFile( const QString & filename ) {
-	projectWidget->addItem( QFileInfo( filename ).fileName(), filename );
+	m_projectWidget->addItem( QFileInfo( filename ).fileName(), filename );
 }
 
+void WelcomDialogImpl::slotProjectClicked( const QString &data ) {
+	accept();
+	emit requestProject( data );
+}
+
+void WelcomDialogImpl::slotUrlClicked( const QString &data ) {
+	QDesktopServices::openUrl( QUrl( data ) );
+}
 
 /* WelcomTreeWidget */
 

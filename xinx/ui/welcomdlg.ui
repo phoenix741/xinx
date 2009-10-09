@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>429</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" rowspan="2">
+   <item row="1" column="0" rowspan="2">
     <widget class="QFrame" name="recentProjectsFrame">
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -32,14 +32,14 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
       <property name="horizontalSpacing">
        <number>0</number>
       </property>
       <property name="verticalSpacing">
        <number>3</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
       </property>
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="projTitleLabel">
@@ -66,7 +66,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QPushButton" name="createNewProjectButton">
+       <widget class="QPushButton" name="m_createNewProjectBtn">
         <property name="text">
          <string>Create New Project...</string>
         </property>
@@ -86,7 +86,7 @@
        </spacer>
       </item>
       <item row="1" column="0" colspan="3">
-       <widget class="WelcomTreeWidget" name="projectWidget">
+       <widget class="WelcomTreeWidget" name="m_projectWidget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -110,7 +110,7 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QFrame" name="sitesFrame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -150,7 +150,7 @@
        </widget>
       </item>
       <item>
-       <widget class="WelcomTreeWidget" name="sitesTreeWidget">
+       <widget class="WelcomTreeWidget" name="m_sitesWidget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -174,7 +174,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <widget class="QFrame" name="tipFrame">
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -217,13 +217,30 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Close|QDialogButtonBox::Open</set>
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QFrame" name="banner">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>101</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string>#banner {
+    border-image: url(:/images/banner.png) 0;
+    border-width: 0;
+}
+</string>
      </property>
     </widget>
    </item>

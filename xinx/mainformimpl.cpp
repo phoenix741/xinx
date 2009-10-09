@@ -992,6 +992,9 @@ void MainformImpl::openWelcomDialog() {
 		dlg.addProjectFile( XINXConfig::self()->config().project.recentProjectFiles[i] );
 	}
 
+	connect( &dlg, SIGNAL(createNewProject()), SLOT(newProject()) );
+	connect( &dlg, SIGNAL(requestProject(QString)), SLOT(openProject(QString)) );
+
 	dlg.exec();
 }
 
