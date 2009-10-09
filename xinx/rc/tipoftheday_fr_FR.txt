@@ -1,0 +1,17 @@
+Vous pouvez ré-indenter votre code par la combinaison de touche <b>Ctrl+Shift+F</b>.
+Les sources de <b>XINX</b> sont disponible et modifiable par tous et pour tous.
+Vous pouvez écrire vos propres script et vos propre template pour augmenter votre rapidité de developpement avec <b>XINX</b>.
+Afin que le chargement des feuilles de style soit plus rapide, il est possible de pré-charger certain includes dans les propriétées du projet.
+La configuration de l'emplacement de la ServletControl peut permettre de tester la page XSL sans rebasculer sur le navigateur.
+Il est possible de dupliquer une ligne à l'aide de la commande <b>Ctrl+D</b>
+Il est possible de déplacer (par <i>Drag & Drop</i>), un snipet ou un noeud de votre flux de présentation directement sur la feuille de style.
+Les filtres sur les noeuds du flux de présentation, ou sur les snipets peuvent être écris en utilisant des expressions régulières.
+Le filtre de recherche d'un fichier dans un projet peut utiliser des jokers (tel que * ?).
+En mode projet, la vue contenue vous affiche le contenue des imports.
+En mode projet, la completion fonctionne avec les variables, template, ... des imports.
+Un mode prévisualisation permet d'afficher le contenu d'un fichier XML.
+Il vous est possible de tester vos X-PATH XSL dans l'éditeur de requêtte de l'outil <i>flux de présentation</i>.
+Le raccourcis <b>Ctrl+U</b> vous permet d'afficher les mots identiques dans le fichier.
+Vous trouvez Windows moche, plusieurs thèmes vous sont proposé dans les propiétés de XINX.
+N'hesitez pas à contribuez : vous pouvez developpez, écrire la documentation, des snipets, des scripts, ou juste signaler un bug ou demander une évolution. C'est gratuit et vous rester auteur de vos patchs.
+Si vous voulez supporter le projet envoyer des dons à l'auteur, il les acceptera.

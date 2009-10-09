@@ -34,9 +34,10 @@ public:
 	WelcomDialogImpl( QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	virtual ~WelcomDialogImpl();
 
-	void createWebsiteList();
 	void addProjectFile( const QString & filename );
 private:
+	void createWebsiteList();
+	void updateTipOfTheDay();
 };
 
 #endif // WELCOMDLGIMPL_H

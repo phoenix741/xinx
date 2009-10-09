@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>421</height>
+    <height>429</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,7 +175,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QFrame" name="sitesFrame_2">
+    <widget class="QFrame" name="tipFrame">
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>

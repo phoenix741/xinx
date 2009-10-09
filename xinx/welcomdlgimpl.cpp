@@ -20,19 +20,44 @@
 // Xinx header
 #include "welcomdlgimpl.h"
 #include "welcomdlgimpl_p.h"
+#include <core/xinxconfig.h>
 
 // Qt header
-#include <QHeaderView>
 #include <QFileInfo>
+#include <QFile>
+#include <QTextStream>
 
 /* WelcomDialogImpl */
 
 WelcomDialogImpl::WelcomDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDialog( parent, f ) {
 	setupUi( this );
 	createWebsiteList();
+	updateTipOfTheDay();
 }
 
 WelcomDialogImpl::~WelcomDialogImpl() {
+}
+
+void WelcomDialogImpl::updateTipOfTheDay() {
+	QString filename = QString( ":/rc/tipoftheday_%1.txt" ).arg( XINXConfig::self()->config().language );
+	QFile tipFile( filename );
+	if( tipFile.open( QFile::ReadOnly ) ) {
+		QTextStream textStream( &tipFile );
+		tipFrame->show();
+		QStringList tips;
+		do {
+			tips.append( textStream.readLine() );
+		} while (! textStream.atEnd() );
+
+		if( tips.count() > 0 ) {
+			int row = ( qrand() % tips.count() );
+			textBrowser->setHtml( tips.at( row ) );
+		}
+
+		tipFile.close();
+	} else {
+		tipFrame->hide();
+	}
 }
 
 void WelcomDialogImpl::createWebsiteList() {

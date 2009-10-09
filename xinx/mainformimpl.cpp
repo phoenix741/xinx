@@ -1709,6 +1709,8 @@ bool MainformImpl::closeProject( bool session ) {
 		}
 	}
 
+	openWelcomDialog();
+
 	return true;
 }
 

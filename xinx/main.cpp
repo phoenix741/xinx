@@ -111,6 +111,7 @@ void processSnipetArguments( const QStringList & args ) {
 
 int main(int argc, char *argv[]) {
 	Q_INIT_RESOURCE(application);
+	qsrand( time( NULL ) );
 
 	std::signal(SIGSEGV, backup_appli_signal);
 	std::signal(SIGABRT, backup_appli_signal);
