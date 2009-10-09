@@ -21,16 +21,13 @@
 #define WELCOMDLGIMPL_P_H
 
 // Qt header
-#include <QTreeWidget>
+#include <QListWidget>
 
-class WelcomTreeWidget : public QTreeWidget {
+class WelcomTreeWidget : public QListWidget {
 	Q_OBJECT
 public:
 	WelcomTreeWidget(QWidget *parent = 0);
-	QTreeWidgetItem *addItem(const QString &label, const QString &data);
-
-public slots:
-	void slotAddNewsItem(const QString &title, const QString &description, const QString &link);
+	QListWidgetItem *addItem(const QString &label, const QString &data);
 
 signals:
 	void activated(const QString &data);
@@ -40,7 +37,7 @@ protected:
 	virtual QSize sizeHint() const;
 
 private slots:
-	void slotItemClicked(QTreeWidgetItem *item);
+	void slotItemClicked(QListWidgetItem *item);
 
 private:
 	QIcon m_bullet;

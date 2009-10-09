@@ -35,6 +35,7 @@ public:
 	virtual ~WelcomDialogImpl();
 
 	void createWebsiteList();
+	void addProjectFile( const QString & filename );
 private:
 };
 

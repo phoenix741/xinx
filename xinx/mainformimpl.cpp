@@ -986,6 +986,12 @@ void MainformImpl::updateEditorInformations() {
 
 void MainformImpl::openWelcomDialog() {
 	WelcomDialogImpl dlg( this );
+
+	int numRecentFiles = qMin( XINXConfig::self()->config().project.recentProjectFiles.size(), MAXRECENTFILES );
+	for( int i = 0; i < numRecentFiles; i++ ) {
+		dlg.addProjectFile( XINXConfig::self()->config().project.recentProjectFiles[i] );
+	}
+
 	dlg.exec();
 }
 

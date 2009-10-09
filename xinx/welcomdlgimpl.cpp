@@ -23,6 +23,7 @@
 
 // Qt header
 #include <QHeaderView>
+#include <QFileInfo>
 
 /* WelcomDialogImpl */
 
@@ -40,11 +41,16 @@ void WelcomDialogImpl::createWebsiteList() {
 	sitesTreeWidget->addItem( tr("Downloads"), QLatin1String("http://xinx.shadoware.org/downloads") );
 }
 
+void WelcomDialogImpl::addProjectFile( const QString & filename ) {
+	projectWidget->addItem( QFileInfo( filename ).fileName(), filename );
+}
+
+
 /* WelcomTreeWidget */
 
 
-WelcomTreeWidget::WelcomTreeWidget( QWidget *parent ) : QTreeWidget( parent ), m_bullet(QLatin1String(":/images/bullet_arrow.png")) {
-	connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), SLOT(slotItemClicked(QTreeWidgetItem *)));
+WelcomTreeWidget::WelcomTreeWidget( QWidget *parent ) : QListWidget( parent ), m_bullet(QLatin1String(":/images/bullet_arrow.png")) {
+	connect(this, SIGNAL(itemClicked(QListWidgetItem *)), SLOT(slotItemClicked(QListWidgetItem *)));
 }
 
 QSize WelcomTreeWidget::minimumSizeHint() const {
@@ -52,13 +58,13 @@ QSize WelcomTreeWidget::minimumSizeHint() const {
 }
 
 QSize WelcomTreeWidget::sizeHint() const {
-	return QSize( QTreeWidget::sizeHint().width(), 30 * topLevelItemCount() );
+	return QSize( QListWidget::sizeHint().width(), 30 * count() );
 }
 
-QTreeWidgetItem *WelcomTreeWidget::addItem( const QString &label, const QString &data ) {
-	QTreeWidgetItem *item = new QTreeWidgetItem( this );
-	item->setIcon( 0, m_bullet );
-	item->setSizeHint( 0, QSize(24, 30) );
+QListWidgetItem *WelcomTreeWidget::addItem( const QString &label, const QString &data ) {
+	QListWidgetItem *item = new QListWidgetItem( this );
+	item->setIcon( m_bullet );
+	item->setSizeHint( QSize(24, 30) );
 
 	QLabel * lbl = new QLabel( label );
 	lbl->setTextInteractionFlags( Qt::NoTextInteraction );
@@ -71,24 +77,12 @@ QTreeWidgetItem *WelcomTreeWidget::addItem( const QString &label, const QString 
 
 	QWidget *wdg = new QWidget;
 	wdg->setLayout( lay );
-	setItemWidget( item, 1, wdg );
-	item->setData( 0, Qt::UserRole, data );
+	setItemWidget( item, wdg );
+	item->setData( Qt::UserRole, data );
 
 	return item;
 }
 
-void WelcomTreeWidget::slotAddNewsItem( const QString &title, const QString &description, const QString &link ) {
-	int itemWidth = width()-header()->sectionSize(0);
-	QFont f = font();
-	QString elidedText = QFontMetrics(f).elidedText(description, Qt::ElideRight, itemWidth);
-
-	f.setBold(true);
-	QString elidedTitle = QFontMetrics(f).elidedText(title, Qt::ElideRight, itemWidth);
-	QString data = QString::fromLatin1("<b>%1</b><br />%2").arg(elidedTitle).arg(elidedText);
-
-	addTopLevelItem( addItem( data,link ) );
-}
-
-void WelcomTreeWidget::slotItemClicked( QTreeWidgetItem * item ) {
-	emit activated( item->data( 0, Qt::UserRole ).toString() );
+void WelcomTreeWidget::slotItemClicked( QListWidgetItem * item ) {
+	emit activated( item->data( Qt::UserRole ).toString() );
 }
