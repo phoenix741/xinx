@@ -417,13 +417,13 @@ void XinxCodeEdit::insertText( const QString & text ) {
 
 	QStringListIterator i( lines );
 	if( i.hasNext() ) {
-		cursor.insertText( i.next().trimmed() );
+		cursor.insertText( i.next() );
 		if( i.hasNext() )
 			cursor.insertLine();
 	}
 
 	while( i.hasNext() ) {
-		cursor.insertText( indent + i.next().trimmed() );
+		cursor.insertText( indent + i.next() );
 		if( i.hasNext() )
 			cursor.insertLine();
 	}
