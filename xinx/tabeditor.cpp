@@ -115,7 +115,8 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
 		connect( qobject_cast<TextFileEditor*>( editor )->textEdit()->editor(), SIGNAL( cursorPositionChanged() ), this, SLOT( slotCursorPositionChanged() ) );
 		connect( qobject_cast<TextFileEditor*>( editor )->textEdit(), SIGNAL( needInsertSnipet(QString) ), this, SLOT( slotNeedInsertSnipet(QString) ) );
-		connect( editor, SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL( positionChanged(QModelIndex) ) );
+		if( editor->metaObject()->indexOfSignal( SIGNAL(positionInEditorChanged(QModelIndex)) ) >= 0 )
+			connect( editor, SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL( positionChanged(QModelIndex) ) );
 	}
 
 	int index = addTab( editor, QString() );
