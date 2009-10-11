@@ -141,7 +141,13 @@ void XQueryDialogImpl::evaluate() {
 	// Get the XPath
 	QString xpath = m_queryTextEdit->toPlainText();
 	if( xpath.isEmpty() ) return;
-	xpath = "doc($d)" + m_xpathTextEdit->text() + "/\n(" + xpath + ")";
+	QString xquery;
+	xquery += "<result>\n";
+	xquery += "{\n";
+	xquery += "doc($d)" + m_xpathTextEdit->text() + "/\n";
+	xquery += "(" + xpath + ")\n";
+	xquery += "}\n";
+	xquery += "</result>\n";
 
 	// Prepare the query
 	QBuffer result;
@@ -153,7 +159,7 @@ void XQueryDialogImpl::evaluate() {
 
 	// Execute the query
 	query.bindVariable( "d", &sourceDocument );
-	query.setQuery( xpath );
+	query.setQuery( xquery );
 
 	QTime bench;
 	bench.start();
