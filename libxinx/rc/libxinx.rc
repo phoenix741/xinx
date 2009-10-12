@@ -1,5 +1,5 @@
 1 VERSIONINFO
-FILEVERSION 0, 8, 1, 3
+FILEVERSION 0, 8, 1, 4
 PRODUCTVERSION 0, 8, 1, 0
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -18,7 +18,7 @@ BEGIN
 		VALUE "Comments", "\0"
 		VALUE "CompanyName", "Ulrich Van Den Hekke"
 		VALUE "FileDescription", "XINX Shared Library"
-        VALUE "FileVersion", "0, 8, 1, 3"
+        VALUE "FileVersion", "0, 8, 1, 4"
         VALUE "InternalName", "libsharedxinx"
         VALUE "LegalCopyright", "Copyleft (C) U. Van Den Hekke 2009"
 		VALUE "LegalTrademarks", "\0"

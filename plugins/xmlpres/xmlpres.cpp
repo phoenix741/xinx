@@ -58,7 +58,7 @@ QVariant XmlPresPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttrib
 	case PLG_WEBSITE:
 		return "http://www.shadoware.org";
 	case PLG_VERSION:
-		return "1.0";
+		return "1.0.0.1";
 	case PLG_LICENCE:
 		return "GPL v2.0 or later";
 	}

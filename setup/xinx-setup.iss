@@ -71,7 +71,8 @@ DestDir: {app}\scripts; Source: ..\scripts\*.xq; Components: application
 Source: ..\src.7z; DestDir: {app}; Components: source; Flags: replacesameversion;
 Source: ..\doc\html\*.*; DestDir: {app}\doc\api; Components: documentation; Flags: replacesameversion
 
-DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
+; Plugin livré séparément.
+;DestDir: {app}\plugins; Source: ..\plugins\services.dll; Components: services
 DestDir: {app}\plugins; Source: ..\plugins\cvsplugin.dll; Components: cvsplugin
 DestDir: {app}\plugins; Source: ..\plugins\svnplugin.dll; Components: svnplugin
 DestDir: {app}\plugins; Source: ..\plugins\dictionary.dll; Components: dictionaryplugin
@@ -112,10 +113,11 @@ Root: HKCR; SubKey: Fichier javascript; ValueType: string; ValueData: Fichier so
 Root: HKCR; SubKey: Fichier javascript\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assojs
 Root: HKCR; Subkey: Fichier javascript\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assojs
 
-Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: uninsdeletekey; Tasks: assofws
-Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServices; Flags: uninsdeletekey; Tasks: assofws
-Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
-Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
+; Plugin livré séparément.
+;Root: HKCR; SubKey: .fws; ValueType: string; ValueData: Fichier FWS; Flags: uninsdeletekey; Tasks: assofws
+;Root: HKCR; SubKey: Fichier FWS; ValueType: string; ValueData: Fichier WebServices; Flags: uninsdeletekey; Tasks: assofws
+;Root: HKCR; SubKey: Fichier FWS\Shell\Open\Command; ValueType: string; ValueData: """{app}\bin\xinx.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assofws
+;Root: HKCR; Subkey: Fichier FWS\DefaultIcon; ValueType: string; ValueData: {app}\bin\xinx.exe,0; Flags: uninsdeletevalue; Tasks: assofws
 
 [Components]
 Name: application; Description: Application; Flags: fixed; Types: custom compact full; Languages: 
@@ -124,7 +126,8 @@ Name: documentation; Description: Technical documentation of XINX; Types: full
 Name: dictionaryplugin; Description: Show a Dictionary Dock; Types: custom full
 Name: cvsplugin; Description: Plugin's Wrapper for CVS; Types: custom full
 Name: svnplugin; Description: Plugin's Wrapper for SubVersion; Types: custom full
-Name: services; Description: Plugin with a WebServices editor; Types: custom full
+; Plugin livré séparément.
+;Name: services; Description: Plugin with a WebServices editor; Types: custom full
 Name: scripts; Description: Scriptes utilitaire; Types: custom compact full
 Name: styles; Description: Styles Supplémentaires (Vista only); Types: full; MinVersion: 0,6.0.6000
 

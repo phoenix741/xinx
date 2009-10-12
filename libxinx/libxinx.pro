@@ -6,7 +6,8 @@ QT += xml \
     xmlpatterns
 TARGET = sharedxinx
 DESTDIR += ./
-INCLUDEPATH += ../components \
+INCLUDEPATH += ./ \
+	../components \
     ../ext/qcodeedit/lib \
     ../ext/qcodeedit/lib/document \
     ../ext/qcodeedit/lib/language \
