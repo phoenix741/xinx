@@ -1,3 +1,9 @@
+XINX - 0.8.1.4
+==============
+- 320 : Erreur lors de l'execution du XPATH
+- 324 : Indentation automatique
+- 317 : Warning lors de la manipulation de fichier XML
+
 XINX - 0.8.1.3
 ==============
 - 300 : Recheche (Ctrl + f)
