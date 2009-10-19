@@ -18,9 +18,9 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "dictionary.h"
+#include "generix.h"
 #include <contentview/contentviewnode.h>
-#include "dictionaryparser.h"
+#include "docks/dictionary/dictionaryparser.h"
 #include <project/xinxproject.h>
 
 // Qt header
@@ -31,29 +31,29 @@
 #include <QDockWidget>
 #include <QDir>
 
-/* DictionaryPlugin */
+/* GenerixPlugin */
 
-DictionaryPlugin::DictionaryPlugin() : m_dock( 0 ) {
-		Q_INIT_RESOURCE(dictionary);
+GenerixPlugin::GenerixPlugin() : m_dock( 0 ) {
+		Q_INIT_RESOURCE(generix);
 }
 
-DictionaryPlugin::~DictionaryPlugin() {
+GenerixPlugin::~GenerixPlugin() {
 }
 
-bool DictionaryPlugin::initializePlugin( const QString & lang ) {
+bool GenerixPlugin::initializePlugin( const QString & lang ) {
 	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/dictionary/translations/dictionary_%1").arg( lang ) );
+	tranlator->load( QString(":/dictionary/translations/generix_%1").arg( lang ) );
 	qApp->installTranslator(tranlator);
 
 	return true;
 }
 
-QVariant DictionaryPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
+QVariant GenerixPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("XINX Dictionary Plugin");
+		return tr("Generix Plugins");
 	case PLG_DESCRIPTION:
-		return tr("This small plugin show a new dock with the dictionary of the application");
+		return tr("This plugin add some fonctionnality usefull for Generix Group");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
     case PLG_ICON:
@@ -70,7 +70,7 @@ QVariant DictionaryPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAtt
 	return QVariant();
 }
 
-bool DictionaryPlugin::initializeProject( XinxProject * project ) {
+bool GenerixPlugin::initializeProject( XinxProject * project ) {
 	Q_ASSERT( m_dock );
 
 	m_dock->loadDictionaryList( QDir( project->projectPath() ).absoluteFilePath( "configurationdef.xml" ) );
@@ -78,7 +78,7 @@ bool DictionaryPlugin::initializeProject( XinxProject * project ) {
 	return true;
 }
 
-bool DictionaryPlugin::destroyProject( XinxProject * project ) {
+bool GenerixPlugin::destroyProject( XinxProject * project ) {
 	Q_ASSERT( m_dock );
 
 	m_dock->clearDictionaryList();
@@ -86,7 +86,7 @@ bool DictionaryPlugin::destroyProject( XinxProject * project ) {
 	return true;
 }
 
-QDockWidget * DictionaryPlugin::createDockWidget( QWidget * parent ) {
+QDockWidget * GenerixPlugin::createDockWidget( QWidget * parent ) {
 	if( ! m_dock ) {
 		m_dock = new DictionaryDockWidgetImpl( parent );
 		m_dock->setObjectName( QString::fromUtf8( "m_dictionaryDock" ) );
@@ -94,4 +94,4 @@ QDockWidget * DictionaryPlugin::createDockWidget( QWidget * parent ) {
 	return m_dock;
 }
 
-Q_EXPORT_PLUGIN2(dictionaryplugin, DictionaryPlugin)
+Q_EXPORT_PLUGIN2(GenerixPlugin, GenerixPlugin)

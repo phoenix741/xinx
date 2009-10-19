@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/dictionary" >
-        <file>images/dictionary.png</file>
-        <file>translations/dictionary_fr.qm</file>
-        <file>images/dictionary16.png</file>
-        <file>images/label.png</file>
-    </qresource>
-</RCC>

@@ -8,13 +8,13 @@ LIBS = -L../../framework \
 		-lxinxframework
 TARGET = generix
 INCLUDEPATH += ../../framework
-RESOURCES = dictionary.qrc
+RESOURCES = plugindefinition/generix.qrc
 TRANSLATIONS += translations/dictionary_fr.ts
-HEADERS = dictionary.h \
-		dictionarydockwidgetimpl.h \
-    dictionaryparser.h
-SOURCES = dictionary.cpp \
-		dictionarydockwidgetimpl.cpp \
-    dictionaryparser.cpp
+HEADERS = plugindefinition/generix.h \
+		docks/dictionary/dictionarydockwidgetimpl.h \
+		docks/dictionary/dictionaryparser.h
+SOURCES = plugindefinition/generix.cpp \
+		docks/dictionary/dictionarydockwidgetimpl.cpp \
+		docks/dictionary/dictionaryparser.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui

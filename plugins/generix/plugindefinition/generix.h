@@ -23,15 +23,15 @@
 
 // Xinx header
 #include <plugins/plugininterfaces.h>
-#include "dictionarydockwidgetimpl.h"
+#include "docks/dictionary/dictionarydockwidgetimpl.h"
 
-class DictionaryPlugin : public QObject, public IDockPlugin {
+class GenerixPlugin : public QObject, public IDockPlugin {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IDockPlugin)
 public:
-	DictionaryPlugin();
-	virtual ~DictionaryPlugin();
+	GenerixPlugin();
+	virtual ~GenerixPlugin();
 
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
