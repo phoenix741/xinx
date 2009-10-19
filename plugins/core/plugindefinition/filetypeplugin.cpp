@@ -24,6 +24,64 @@
 #include "editors/widgeteditor/xsl/xsltexteditor.h"
 #include "editors/models/js/jscontentviewparser.h"
 
+/* TextFileType */
+
+QString TextFileType::description() {
+	return tr( "Text File" );
+}
+
+QString TextFileType::match() {
+	return "*.txt *.log *.spl";
+}
+
+QString TextFileType::icon() {
+	return ":/images/typeunknown.png";
+}
+
+AppSettings::struct_extentions TextFileType::properties() {
+	AppSettings::struct_extentions p;
+	p.canBeCommitToRcs = true;
+	p.canBeFindInConfiguration = false;
+	p.canBeSaveAsSpecifique = false;
+	p.specifiqueSubDirectory = QString();
+	return p;
+}
+
+AbstractEditor * TextFileType::createEditor( const QString & filename ) {
+	TextFileEditor * editor = new TextFileEditor();
+
+	if( ! filename.isEmpty() )
+		editor->loadFromFile( filename );
+
+	return editor;
+}
+
+QString TextFileType::highlighterId() const {
+	return "TEXT";
+}
+
+XinxFormatScheme * TextFileType::createFormatScheme( XINXConfig * config ) const {
+	return new XinxFormatScheme( config );
+}
+
+QString TextFileType::createLanguageDescription() const {
+	QString result;
+	QFile description( ":/qcodeedit/lan/none.qnfa" );
+	if( description.open( QIODevice::ReadOnly ) ) {
+		QTextStream textDescription( &description );
+		result = textDescription.readAll();
+	}
+	return result;
+}
+
+QString TextFileType::fileExample() const {
+	return "This is a small text.\nOn multiple line";
+}
+
+ContentViewParser * TextFileType::createParser() {
+	return 0;
+}
+
 /* XMLFileType */
 
 QString XMLFileType::description() {

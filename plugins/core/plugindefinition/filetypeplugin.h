@@ -67,6 +67,26 @@ static const QColor DEFAULT_RESERVEDWORD	= Qt::black;
 static const QColor DEFAULT_NUMBER			= Qt::blue;
 static const QColor DEFAULT_STRING			= Qt::red;
 
+/* TextFileType */
+
+class TextFileType : public QObject, public IFileTextPlugin {
+	Q_OBJECT
+public:
+	virtual QString description();
+	virtual QString match();
+	virtual QString icon();
+
+	virtual AppSettings::struct_extentions properties();
+	virtual AbstractEditor * createEditor( const QString & filename );
+
+	virtual QString highlighterId() const;
+	virtual XinxFormatScheme * createFormatScheme( XINXConfig * config ) const;
+	virtual QString createLanguageDescription() const;
+	virtual QString fileExample() const;
+
+	virtual ContentViewParser * createParser();
+};
+
 /* XMLFileType */
 
 class XMLFileType : public QObject, public IFileTextPlugin {

@@ -58,6 +58,7 @@ CorePlugin::CorePlugin() : m_dock( 0 ) {
 	m_fileTypes << new JSFileType;
 	m_fileTypes << new CSSFileType;
 	m_fileTypes << new XQFileType;
+	m_fileTypes << new TextFileType;
 }
 
 CorePlugin::~CorePlugin() {

@@ -114,9 +114,10 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 			if( textPlugin ) {
 				// Format
 				QFormatScheme * scheme = textPlugin->createFormatScheme( XINXConfig::self() );
-				XINXConfig::self()->addFormatScheme( textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>( scheme ) );
 				if( ! scheme ) {
 					scheme = XINXConfig::self()->languageFactory()->defaultFormatScheme();
+				} else {
+					XINXConfig::self()->addFormatScheme( textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>( scheme ) );
 				}
 
 				// Language

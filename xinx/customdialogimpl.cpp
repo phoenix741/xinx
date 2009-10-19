@@ -228,8 +228,9 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 			// Format
 			QFormatScheme * scheme = textPlugin->createFormatScheme( &m_config );
 			if( ! scheme ) {
-				m_config.addFormatScheme( textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>( scheme ) );
 				scheme = m_config.languageFactory()->defaultFormatScheme();
+			} else {
+				m_config.addFormatScheme( textPlugin->highlighterId(), qobject_cast<XinxFormatScheme*>( scheme ) );
 			}
 
 			// Language
