@@ -38,6 +38,7 @@ HEADERS = rcs/rcs.h \
     project/flattreeview.h \
     project/iconprojectprovider.h \
     plugins/plugininterfaces.h \
+    editors/bookmarkeditorinterface.h \
     editors/xinxformatscheme.h \
     editors/xinxlanguagefactory.h \
     editors/textfileeditor.h \
@@ -69,7 +70,8 @@ HEADERS = rcs/rcs.h \
     utils/recursivesortfilterproxymodel.h \
     scripts/scriptmanager.h \
     scripts/documentsearch.h \
-    editors/editorfactory.h
+    editors/editorfactory.h \
+    editors/bookmarktexteditorinterface.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -84,6 +86,7 @@ SOURCES = rcs/rcs.cpp \
     project/dirrcsmodel.cpp \
     project/flattreeview.cpp \
     project/iconprojectprovider.cpp \
+    editors/bookmarkeditorinterface.cpp \
     editors/xinxformatscheme.cpp \
     editors/xinxlanguagefactory.cpp \
     editors/abstracteditor.cpp \
@@ -114,7 +117,8 @@ SOURCES = rcs/rcs.cpp \
     utils/recursivesortfilterproxymodel.cpp \
     scripts/scriptmanager.cpp \
     scripts/documentsearch.cpp \
-    editors/editorfactory.cpp
+    editors/editorfactory.cpp \
+    editors/bookmarktexteditorinterface.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui

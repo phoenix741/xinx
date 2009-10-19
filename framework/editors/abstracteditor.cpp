@@ -141,16 +141,6 @@ void AbstractEditor::saveToFile( const QString & fileName ) {
 	setModified( false );
 }
 
-void AbstractEditor::firstBookmark() {
-	if( bookmarkCount() > 0 )
-		gotoBookmarkAt( 0 );
-}
-
-void AbstractEditor::lastBookmark() {
-	if( bookmarkCount() > 0 )
-		gotoBookmarkAt( bookmarkCount() - 1 );
-}
-
 QAction * AbstractEditor::undoAction() {
 	return m_undoAction;
 }

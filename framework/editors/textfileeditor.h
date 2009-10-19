@@ -90,11 +90,6 @@ public:
 	 */
 	QAction * uncommentAction();
 
-	/*!
-	 * List of bookmarks of the editor
-	 */
-	virtual QList<int> bookmarks() const;
-
 	virtual void loadFromFile( const QString & fileName = QString() );
 	virtual void saveToFile( const QString & fileName = QString() );
 	virtual void loadFromDevice( QIODevice & d );
@@ -120,14 +115,6 @@ public:
 	virtual void serialize( XinxProjectSessionEditor * data, bool content );
 	virtual void deserialize( XinxProjectSessionEditor * data );
 
-	void setBookmark( int line, bool enabled );
-	virtual void toogledBookmark();
-	virtual void gotoBookmarkAt( int i );
-	virtual QString bookmarkAt( int i );
-	virtual int bookmarkCount();
-	virtual bool previousBookmark();
-	virtual bool nextBookmark();
-	virtual void clearAllBookmark();
 public slots :
 	virtual void initSearch( SearchOptions & options );
 	virtual bool find( const QString & text, SearchOptions options );
@@ -164,10 +151,6 @@ signals:
 	 * \param yes The value is true if a part of the text is selected, else the value is false.
 	 */
 	void selectionAvailable ( bool yes );
-
-protected slots:
-	/*! Slot called when the bookmark is toogled on a line. This slot change the project settings. */
-	void slotBookmarkToggled( int line, bool enabled );
 
 protected:
 	virtual void setModified( bool isModified );

@@ -103,53 +103,6 @@ void TextFileEditor::initLayout() {
 	setLayout( hbox );
 }
 
-void TextFileEditor::slotBookmarkToggled( int line, bool enabled ) {
-	Q_UNUSED( enabled );
-	Q_UNUSED( line );
-
-	if( enabled ) {
-		gotoBookmarkAt( m_view->listOfBookmark().indexOf( line ) );
-	}
-	emit bookmarkModified( 0, bookmarkCount() );
-}
-
-QList<int> TextFileEditor::bookmarks() const {
-	return m_view->listOfBookmark();
-}
-
-void TextFileEditor::setBookmark( int line, bool enabled ) {
-	m_view->setBookmark( line, enabled );
-}
-
-void TextFileEditor::toogledBookmark() {
-	m_view->setBookmark( m_view->currentRow(), !m_view->listOfBookmark().contains( m_view->currentRow() ) );
-}
-
-void TextFileEditor::gotoBookmarkAt( int i ) {
-	m_view->gotoLine( m_view->listOfBookmark().at( i ) );
-}
-
-QString TextFileEditor::bookmarkAt( int i ) {
-	QString description = tr( "In editor '%1' at line %2" );
-	description = description.arg( getTitle() ).arg( m_view->listOfBookmark().at( i ) );
-	return description;
-}
-
-int TextFileEditor::bookmarkCount() {
-	return m_view->listOfBookmark().count();
-}
-
-bool TextFileEditor::previousBookmark() {
-	return m_view->previousBookmark();
-}
-
-bool TextFileEditor::nextBookmark() {
-	return m_view->nextBookmark();
-}
-
-void TextFileEditor::clearAllBookmark() {
-	m_view->clearBookmark();
-}
 
 XinxCodeEdit * TextFileEditor::textEdit() const {
 	return m_view;
