@@ -47,8 +47,7 @@
 #include <iostream>
 
 // Import plugins
-Q_IMPORT_PLUGIN(xmlpresplugin);
-Q_IMPORT_PLUGIN(webplugin);
+Q_IMPORT_PLUGIN(coreplugin);
 
 MainformImpl * mainWin = NULL;
 

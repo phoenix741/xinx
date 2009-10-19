@@ -43,7 +43,6 @@
 #include <QCompleter>
 #include <QAbstractItemView>
 #include <QTextCodec>
-#include <QSplitter>
 
 /* TextFileEditor */
 
@@ -58,6 +57,14 @@
 #endif
 
 TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : AbstractEditor( parent ), m_view( editor ), m_eol( DEFAULT_EOL ) {
+	initObjects();
+}
+
+TextFileEditor::~TextFileEditor() {
+
+}
+
+void TextFileEditor::initObjects() {
 	m_commentAction = new QAction( tr("Comment"), this );
 	m_commentAction->setEnabled( false );
 	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
@@ -85,12 +92,15 @@ TextFileEditor::TextFileEditor( XinxCodeEdit * editor, QWidget *parent ) : Abstr
 	connect( m_view->document(), SIGNAL(contentsChanged()), this, SIGNAL(contentChanged()) );
 
 	connect( m_view, SIGNAL( searchWord(QString) ), this, SLOT( searchWord(QString) ) );
-
-	splitter()->addWidget( m_view );
 }
 
-TextFileEditor::~TextFileEditor() {
+void TextFileEditor::initLayout() {
+	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addWidget( m_view );
 
+	hbox->setMargin( 0 );
+
+	setLayout( hbox );
 }
 
 void TextFileEditor::slotBookmarkToggled( int line, bool enabled ) {
@@ -313,7 +323,7 @@ TextFileEditor::EndOfLineType TextFileEditor::eol() const {
 }
 
 bool TextFileEditor::autoIndent() {
-	setMessage( tr("Can't indent this type of document") );
+	emit message( lastFileName(), tr("Can't indent this type of document"), WARNING_MESSAGE );
 	return false;
 }
 
@@ -321,7 +331,7 @@ void TextFileEditor::commentSelectedText( bool uncomment ) {
 	try {
 		m_view->commentSelectedText( uncomment );
 	} catch( XinxException e ) {
-		setMessage( e.getMessage() );
+		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
 	}
 }
 
@@ -374,7 +384,7 @@ bool TextFileEditor::eventFilter( QObject *obj, QEvent *event ) {
 }
 
 void TextFileEditor::searchWord( const QString & ) {
-	setMessage( tr("Not implemented") );
+	emit message( lastFileName(), tr("Not implemented"), WARNING_MESSAGE );
 }
 
 void TextFileEditor::comment() {

@@ -21,6 +21,7 @@
 #include "welcomdlgimpl.h"
 #include "welcomdlgimpl_p.h"
 #include <core/xinxconfig.h>
+#include <project/xinxproject.h>
 
 // Qt header
 #include <QFileInfo>
@@ -73,7 +74,13 @@ void WelcomDialogImpl::createWebsiteList() {
 }
 
 void WelcomDialogImpl::addProjectFile( const QString & filename ) {
-	m_projectWidget->addItem( QFileInfo( filename ).fileName(), filename );
+	if( QFile::exists( filename ) ) {
+		try {
+			m_projectWidget->addItem( XinxProject( filename ).projectName(), filename );
+		} catch( XinxProjectException e ) {
+			m_projectWidget->addItem( QString( "%1 (%2)" ).arg( QFile( filename ).fileName() ).arg( e.getMessage() ), filename );
+		}
+	}
 }
 
 void WelcomDialogImpl::slotProjectClicked( const QString &data ) {

@@ -145,6 +145,41 @@ void LogDockWidget::find( const QString & filename, const QString & text, int li
 	m_logwidget->m_tabWidget->setCurrentWidget( m_logwidget->m_searchTab );
 }
 
+void LogDockWidget::clearMessage( const QString & file ) {
+	QTreeWidgetItem * item = m_messageItemFile.value( file );
+	if( item ) {
+		m_messageItemFile.remove( file );
+		delete item;
+	}
+}
+
+void LogDockWidget::addMessage( const QString & file, const QString & message, AbstractEditor::LevelMessage level ) {
+	QTreeWidgetItem * fileItem = m_messageItemFile.value( file );
+	if( ! fileItem ) {
+		fileItem = new QTreeWidgetItem( m_logwidget->m_messagesWidget );
+		fileItem->setText( 0, file );
+		m_messageItemFile.insert( file, fileItem );
+	}
+
+	QTreeWidgetItem * msgItem = new QTreeWidgetItem( fileItem );
+	msgItem->setText( 0, message );
+	switch( level ) {
+	case AbstractEditor::ERROR_MESSAGE:
+		msgItem->setIcon( 0, style()->standardIcon( QStyle::SP_MessageBoxCritical ) );
+		break;
+	case AbstractEditor::WARNING_MESSAGE:
+		msgItem->setIcon( 0, style()->standardIcon( QStyle::SP_MessageBoxWarning ) );
+		break;
+	case AbstractEditor::INFORMATION_MESSAGE:
+		msgItem->setIcon( 0, style()->standardIcon( QStyle::SP_MessageBoxInformation ) );
+		break;
+	}
+
+	m_logwidget->m_messagesWidget->expandItem( fileItem );
+	m_logwidget->m_tabWidget->setCurrentWidget( m_logwidget->m_messageTab );
+	setVisible( true );
+}
+
 void LogDockWidget::on_m_searchTreeWidget_doubleClicked( const QModelIndex & index ) {
 	QTreeWidgetItem * item = static_cast<SearchLogWidget*>( m_logwidget->m_searchTreeWidget )->itemFromIndex( index );
 	QString filename = item->data( 0, Qt::UserRole ).toString();

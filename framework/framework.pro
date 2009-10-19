@@ -1,6 +1,6 @@
 include(../project_mode.pri)
 TEMPLATE = lib
-unix : VERSION = 0.9.0.0
+unix:VERSION = 0.9.0.0
 CONFIG += dll
 QT += xml \
     xmlpatterns \
@@ -19,9 +19,9 @@ LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
     -lqcodeedit
-win32 : QMAKE_LFLAGS_SHLIB *= -no-undefined \
+win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
-win32 : RC_FILE += rc/libxinx.rc
+win32:RC_FILE += rc/libxinx.rc
 HEADERS = rcs/rcs.h \
     plugins/xinxpluginsloader.h \
     plugins/xinxpluginelement.h \
@@ -66,9 +66,10 @@ HEADERS = rcs/rcs.h \
     snipets/basesnipetitemmodel.h \
     snipets/snipetdockitemmodel.h \
     utils/treeproxyitemmodel.h \
-	utils/recursivesortfilterproxymodel.h \
+    utils/recursivesortfilterproxymodel.h \
     scripts/scriptmanager.h \
-    scripts/documentsearch.h
+    scripts/documentsearch.h \
+    editors/editorfactory.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -110,17 +111,17 @@ SOURCES = rcs/rcs.cpp \
     snipets/basesnipetitemmodel.cpp \
     snipets/snipetdockitemmodel.cpp \
     utils/treeproxyitemmodel.cpp \
-	utils/recursivesortfilterproxymodel.cpp \
+    utils/recursivesortfilterproxymodel.cpp \
     scripts/scriptmanager.cpp \
-    scripts/documentsearch.cpp
+    scripts/documentsearch.cpp \
+    editors/editorfactory.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
- snipets/categorypropertydlg.ui
+    snipets/categorypropertydlg.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 
-
-
-profiling {
-  QMAKE_CXXFLAGS += --coverage -O0
-  QMAKE_LFLAGS   += --coverage
+profiling { 
+    QMAKE_CXXFLAGS += --coverage \
+        -O0
+    QMAKE_LFLAGS += --coverage
 }

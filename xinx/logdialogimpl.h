@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <rcs/rcs.h>
+#include <editors/abstracteditor.h>
 #include "ui_logform.h"
 
 // Qt header
@@ -42,12 +43,16 @@ public:
 public slots:
 	void log( RCS::rcsLog niveau, const QString & info );
 	void find( const QString & filename, const QString & text, int line );
+
+	void clearMessage( const QString & file );
+	void addMessage( const QString & file, const QString & message, AbstractEditor::LevelMessage level );
 signals:
 	void open( const QString & filename, int line );
 protected slots:
 	void on_m_searchTreeWidget_doubleClicked( const QModelIndex & index );;
 private:
 	Ui::LogWidget * m_logwidget;
+	QHash<QString,QTreeWidgetItem*>  m_messageItemFile;
 };
 #endif
 

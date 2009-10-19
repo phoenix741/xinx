@@ -699,7 +699,6 @@ bool XinxProject::blockSignals( bool block ) {
 	return result;
 }
 
-
 /* XINXProjectManager */
 
 XINXProjectManager::XINXProjectManager() : m_project(0) {

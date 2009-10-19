@@ -23,6 +23,7 @@
 
 // Xinx header
 #include <editors/editormanager.h>
+#include <editors/abstracteditor.h>
 
 // Qt header
 #include <QTabWidget>
@@ -38,6 +39,9 @@ public:
 	TabEditor( QWidget * parent = 0 );
 	virtual ~TabEditor();
 
+	void newEditor( IFileTypePlugin * interface = 0 );
+	void openFilename( const QString & filename );
+
 	virtual AbstractEditor * currentEditor() const;
 	virtual AbstractEditor * editor( int index ) const;
 	virtual AbstractEditor * editor( const QString & filename ) const;
@@ -51,10 +55,6 @@ public:
 
 	static bool isTextFileEditor( AbstractEditor * editor );
 
-	void newTextFileEditor( AbstractEditor * editor );
-
-	AbstractEditor * createEditor( IFileTypePlugin * plugin, const QString & filename = QString() );
-
 	int getClickedTab();
 
 	void setRefreshAction( QAction * action );
@@ -65,6 +65,8 @@ public:
 	void setCopyPathAction( QAction * action );
 
 	void updateTabWidget( AbstractEditor * editor );
+
+	void addTab( AbstractEditor * editor );
 public slots:
 	void bookmark();
 	void nextBookmark();
@@ -112,6 +114,9 @@ signals:
 	void fileOpened( const QString & filename );
 	void setEditorPosition( int, int );
 	void contentChanged();
+
+	void messageTranslation( const QString & filename, const QString & message, AbstractEditor::LevelMessage level );
+	void clearMessageTranslation( const QString & filename );
 protected:
 	bool eventFilter( QObject *obj, QEvent *event );
 	virtual void dragEnterEvent( QDragEnterEvent *event );
@@ -125,6 +130,8 @@ private slots:
 
 	void fileEditorOpen( const QString & name, int line );
 private:
+	void connectEditor( AbstractEditor * editor );
+
 	int tabPositionIcon( QPoint point );
 	int tabPosition( QPoint point );
 

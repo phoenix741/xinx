@@ -7,7 +7,7 @@ QT += network \
 DESTDIR += ../
 INCLUDEPATH += ../../framework \
     ../../components \
-    ../webplugin/xsl \
+	../core \
     ../../ext/qcodeedit/lib \
     ../../ext/qcodeedit/lib/document \
     ../../ext/qcodeedit/lib/language \
@@ -18,10 +18,10 @@ LIBS = -L../../framework \
     -L../ \
     -L../../ext/qcodeedit \
     -lxinxcmp \
-    -lwebplugin \
+	-lcoreplugin \
     -lxinxframework \
     -lqcodeedit
-PRE_TARGETDEPS = ../libwebplugin.a
+PRE_TARGETDEPS = ../libcoreplugin.a
 TARGET = services
 RESOURCES = servicesplugin.qrc
 TRANSLATIONS += translations/servicesplugin_fr.ts

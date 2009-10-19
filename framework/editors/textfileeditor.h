@@ -172,10 +172,15 @@ protected slots:
 protected:
 	virtual void setModified( bool isModified );
 	virtual bool eventFilter( QObject *obj, QEvent *event );
+
+	virtual void initLayout();
+	friend class EditorFactory;
 private slots:
 	void comment();
 	void uncomment();
 private:
+	void initObjects();
+
 	QAction * m_commentAction, * m_uncommentAction;
 
 	XinxCodeEdit * m_view;

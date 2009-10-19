@@ -23,8 +23,8 @@
 #include "webserviceseditor.h"
 #include "webservices.h"
 #include "borderlayout.h"
-#include <xmlprettyprinter.h>
-#include <xmltexteditor.h>
+#include <editors/prettyprint/xmlprettyprinter.h>
+#include <editors/widgeteditor/xml/xmltexteditor.h>
 
 // Qt header
 #include <QToolButton>
@@ -45,64 +45,38 @@
 /* WebServicesEditor */
 
 WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new XmlTextEditor(), parent ) {
+	initObjects();
+}
+
+WebServicesEditor::~WebServicesEditor() {
+
+}
+
+void WebServicesEditor::initObjects() {
 	m_http = new QtSoapHttpTransport( this );
 
 	m_oldParamValue = QString();
 
-	QLabel * label1 = new QLabel( tr("WebServices : "), this );
 	m_servicesList = new QComboBox( this );
-
-	QLabel * label2 = new QLabel( tr("Action : "), this );
 	m_actionList = new QComboBox( this );
-
-	QLabel * label3 = new QLabel( tr("Parameter : "), this );
 	m_paramList = new QComboBox( this );
 	m_paramList->setEditable( true );
 
-	QHBoxLayout * hbox = new QHBoxLayout;
-	hbox->addWidget( label1 );
-	hbox->addWidget( m_servicesList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( label2 );
-	hbox->addWidget( m_actionList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( label3 );
-	hbox->addWidget( m_paramList );
-	//hbox->addStretch();
+	m_resultWidget = new QWidget( this );
 
-	borderLayout()->add( hbox, BorderLayout::North );
-
-	QWidget * resultWidget = new QWidget( this );
-	QVBoxLayout * vbox = new QVBoxLayout( resultWidget );
-	hbox = new QHBoxLayout;
-
-	QLabel * label4 = new QLabel( tr("Result values: "), resultWidget );
-	hbox->addWidget( label4 );
-
-	m_progressBar = new QProgressBar( resultWidget );
+	m_progressBar = new QProgressBar( m_resultWidget );
 	m_progressBar->setMinimum( 0 );
 	m_progressBar->setMaximum( 0 );
 	m_progressBar->setVisible( false );
 
-	m_benchmark = new QLabel( resultWidget );
+	m_benchmark = new QLabel( m_resultWidget );
 
-	m_resultList = new QComboBox( resultWidget );
-	hbox->addWidget( m_resultList );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( m_progressBar );
-	hbox->addSpacing( 10 );
-	hbox->addWidget( m_benchmark );
-	hbox->addStretch();
+	m_resultList = new QComboBox( m_resultWidget );
 
-	vbox->addLayout( hbox );
-
-	m_resultEdit = new XinxCodeEdit( true, resultWidget );
+	m_resultEdit = new XinxCodeEdit( true, m_resultWidget );
 	m_resultEdit->editor()->setFlag( QEditor::ReadOnly, true );
 	//m_resultEdit->editor()->setContextMenuPolicy( Qt::NoContextMenu );
 	m_resultEdit->setHighlighter( "XML" );
-	vbox->addWidget( m_resultEdit );
-
-	splitter()->addWidget( resultWidget );
 
 	connect( WebServicesManager::self(), SIGNAL(changed()), this, SLOT(webServicesChanged()) );
 	connect( m_servicesList, SIGNAL(activated(int)), this, SLOT(webServicesActivated(int)) );
@@ -120,8 +94,53 @@ WebServicesEditor::WebServicesEditor( QWidget *parent ) : TextFileEditor( new Xm
 	setModified( false );
 }
 
-WebServicesEditor::~WebServicesEditor() {
+void WebServicesEditor::initLayout() {
+	/* Widget for message */
+	QSplitter * splitter = new QSplitter( Qt::Vertical, this );
 
+	/* Layouts */
+	BorderLayout * grid = new BorderLayout( this, 0, 0 );
+	grid->addWidget( splitter, BorderLayout::Center );
+
+	setLayout( grid );
+
+	QLabel * label1 = new QLabel( tr("WebServices : "), this );
+	QLabel * label2 = new QLabel( tr("Action : "), this );
+	QLabel * label3 = new QLabel( tr("Parameter : "), this );
+
+	QHBoxLayout * hbox = new QHBoxLayout;
+	hbox->addWidget( label1 );
+	hbox->addWidget( m_servicesList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( label2 );
+	hbox->addWidget( m_actionList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( label3 );
+	hbox->addWidget( m_paramList );
+	//hbox->addStretch();
+
+	grid->add( hbox, BorderLayout::North );
+
+	/* Layout of the result widget */
+	QVBoxLayout * vbox = new QVBoxLayout( m_resultWidget );
+	hbox = new QHBoxLayout;
+
+	QLabel * label4 = new QLabel( tr("Result values: "), m_resultWidget );
+	hbox->addWidget( label4 );
+
+	hbox->addWidget( m_resultList );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( m_progressBar );
+	hbox->addSpacing( 10 );
+	hbox->addWidget( m_benchmark );
+	hbox->addStretch();
+
+	/* Edit part */
+	vbox->addLayout( hbox );
+	vbox->addWidget( m_resultEdit );
+
+	splitter->addWidget( textEdit() );
+	splitter->addWidget( m_resultWidget );
 }
 
 bool WebServicesEditor::autoIndent() {
@@ -135,7 +154,7 @@ bool WebServicesEditor::autoIndent() {
 		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
 		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {
-		setMessage( e.getMessage() );
+		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
 		return false;
 	}
 	return true;

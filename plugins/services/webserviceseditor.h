@@ -63,6 +63,8 @@ public:
 	virtual QString defaultFileName() const;
 signals:
 	void updateActions();
+protected:
+	virtual void initLayout();
 private slots:
 	void readResponse();
 	void paramListEditingFinished();
@@ -73,6 +75,8 @@ private slots:
 	void webServicesValueActivated();
 
 private:
+	void initObjects();
+
 	void loadServicesList();
 	void loadActionsList( int index );
 	void loadValuesList( int index );
@@ -80,6 +84,7 @@ private:
 	void store( const QString & );
 	void restore( const QString & );
 
+	QWidget * m_resultWidget;
 	QString m_serviceName, m_operationName, m_oldParamValue;
 	QComboBox * m_servicesList, * m_paramList, * m_actionList, * m_resultList;
 	QProgressBar * m_progressBar;

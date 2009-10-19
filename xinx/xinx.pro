@@ -12,6 +12,7 @@ QT += xml \
     webkit \
     sql
 DESTDIR += ./
+PRE_TARGETDEPS = ../plugins/libcoreplugin.a
 INCLUDEPATH += ../framework \
     ../components \
     ../ext/qcodeedit/lib \
@@ -24,12 +25,13 @@ LIBS = -L../framework \
     -L../plugins \
     -L../components \
     -L../ext/qcodeedit \
-    -lxmlpres \
-    -lwebplugin \
+	-lcoreplugin \
     -lxinxframework \
     -lxinxcmp \
     -lqcodeedit \
-    -L../framework/
+	-L../framework/ \
+	-lxslt \
+	-lxml2
 RESOURCES += application.qrc
 FORMS += ui/specifiquedlg.ui \
     ui/about.ui \

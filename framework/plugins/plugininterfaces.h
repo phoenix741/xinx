@@ -190,14 +190,15 @@ public:
 
 	//! Return some properties for the file type
 	virtual AppSettings::struct_extentions properties() = 0;
-
-	//! Create an editor with the given filename
-	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
 	/*!
 	 * Create a content view parser, this content view parser will any file (of the correct type of course)
 	 * If the parser is null, no content view will be load.
 	 */
 	virtual ContentViewParser * createParser() = 0;
+protected:
+	//! Create an editor with the given filename
+	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;
+	friend class EditorFactory;
 };
 
 /*!

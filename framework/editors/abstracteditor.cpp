@@ -36,14 +36,17 @@
 /* AbstractEditor */
 
 AbstractEditor::AbstractEditor( QWidget * parent )  : QFrame( parent ), m_isSaving( false ), m_modified( false ) {
-	init();
+	initObjects();
 }
 
 AbstractEditor::AbstractEditor( const AbstractEditor & editor ) : QFrame( qobject_cast<QWidget*>( editor.parent() ) ), m_isSaving( false ), m_modified( false ) {
-	init();
+	initObjects();
 }
 
-void AbstractEditor::init() {
+void AbstractEditor::initObjects() {
+	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+	setLineWidth( 2 );
+
 	m_undoAction = new QAction( QIcon(":/images/undo.png"), AbstractEditor::tr("&Undo"), this );
 	m_undoAction->setEnabled( false );
 	QObject::connect( m_undoAction, SIGNAL(triggered()), this, SLOT(undo()) );
@@ -65,36 +68,14 @@ void AbstractEditor::init() {
 	m_pasteAction->setEnabled( true );
 	QObject::connect( m_pasteAction, SIGNAL(triggered()), this, SLOT(paste()) );
 	QObject::connect( this, SIGNAL(pasteAvailable(bool)), m_pasteAction, SLOT(setEnabled(bool)) );
+}
 
-	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
-	setLineWidth( 2 );
+void AbstractEditor::initLayout() {
 
-	/* Widget for message */
-	m_messageWidget = new QWidget( this );
-	m_messageLabel = new QLabel( "erreur text" );
-	QPushButton * messageClose = new QPushButton( tr("&Close"), this );
-
-	QHBoxLayout * messageWidgetLayout = new QHBoxLayout( m_messageWidget );
-	messageWidgetLayout->addWidget( m_messageLabel );
-	messageWidgetLayout->addWidget( messageClose );
-	messageWidgetLayout->setMargin( 0 );
-
-	connect( messageClose, SIGNAL(clicked()), m_messageWidget, SLOT(hide()) );
-
-	m_splitter = new QSplitter( Qt::Vertical, this );
-
-	/* Layouts */
-	BorderLayout * grid = new BorderLayout( this, 0, 0 );
-	grid->addWidget( m_messageWidget, BorderLayout::South );
-	grid->addWidget( m_splitter, BorderLayout::Center );
-
-	setLayout( grid );
-
-	/* Widget not visible */
-	m_messageWidget->hide();
 }
 
 AbstractEditor::~AbstractEditor() {
+	emit clearMessage( lastFileName() );
 	desactivateWatcher();
 	delete m_watcher;
 
@@ -158,22 +139,6 @@ void AbstractEditor::saveToFile( const QString & fileName ) {
 	m_isSaving = false;
 	activateWatcher();
 	setModified( false );
-}
-
-void AbstractEditor::setMessage( QString message ) {
-	m_messageLabel->setText( message );
-	if( message.isEmpty() )
-		m_messageWidget->hide();
-	else
-		m_messageWidget->show();
-}
-
-BorderLayout * AbstractEditor::borderLayout() {
-	return dynamic_cast<BorderLayout*>( layout() );
-}
-
-QSplitter * AbstractEditor::splitter() const {
-	return m_splitter;
 }
 
 void AbstractEditor::firstBookmark() {

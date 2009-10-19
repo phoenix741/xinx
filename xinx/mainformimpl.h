@@ -106,7 +106,7 @@ private:
 	void fileEditorRefreshFile( int index );
 
 	// Project
-	bool closeProject( bool session );
+	bool closeProject( bool session, bool showWelcome = true );
 
 	// Settings
 	void readWindowSettings();

@@ -108,10 +108,10 @@ void ContentViewTextEditor::updateModel() {
 		m_parser->loadFromContent( m_rootNode, encodedText );
 		emit contentChanged();
 		textEdit()->setErrors( QList<int>() );
-		setMessage( QString() );
+		emit clearMessage( lastFileName() );
 	} catch( ContentViewException e ) {
 		textEdit()->setErrors( QList<int>() << e.getLine() );
-		setMessage( e.getMessage() );
+		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
 	}
 }
 

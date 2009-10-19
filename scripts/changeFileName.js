@@ -20,11 +20,12 @@ obj.run = function()
 	search.replaceText = "\\1" + filename + "\\2";
 
 	while( search.next() ) {}
-	
+	/*
 	search.searchText = "(<xsl:variable name=\"CTXTRD\">).*(</xsl:variable>)";
 	search.replaceText = "\\1" + filename + "\\2";
 
 	while( search.next() ) {}
+*/
 };
 
 obj;

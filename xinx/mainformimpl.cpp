@@ -39,6 +39,7 @@
 #include <plugins/xinxpluginsloader.h>
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
+#include <editors/editorfactory.h>
 #include <rcs/rcs.h>
 #include <scripts/scriptmanager.h>
 #include <snipets/snipetmanager.h>
@@ -860,6 +861,8 @@ void MainformImpl::createDockWidget() {
 
 	m_logDock = new LogDockWidget( tr("Log"), this );
 	connect( m_logDock, SIGNAL(open(QString,int)), this, SLOT(openFile(QString,int)) );
+	connect( m_tabEditors, SIGNAL(messageTranslation(QString,QString,AbstractEditor::LevelMessage)), m_logDock, SLOT(addMessage(QString,QString,AbstractEditor::LevelMessage)));
+	connect( m_tabEditors, SIGNAL(clearMessageTranslation(QString)), m_logDock, SLOT(clearMessage(QString)) );
 	m_logDock->setObjectName( QString::fromUtf8("m_logDock") );
 	addDockWidget( Qt::BottomDockWidgetArea, m_logDock );
 	action = m_logDock->toggleViewAction();
@@ -1001,15 +1004,14 @@ void MainformImpl::openWelcomDialog() {
 void MainformImpl::newFile() {
 	if( qobject_cast<QAction*>( sender() ) ) {
 		IFileTypePlugin* plugin = qobject_cast<QAction*>( sender() )->data().value<IFileTypePlugin*>();
-		m_tabEditors->createEditor( plugin );
+		m_tabEditors->newEditor( plugin );
 		updateActions();
 	}
 }
 
 void MainformImpl::newFile( const QString &filename ) {
 	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType( filename );
-	// TabEditor gère le cas où le plugins est null ....
-	m_tabEditors->createEditor( plugin ); // Pas de nom de fichier car on créé un nouveau fichier
+	m_tabEditors->newEditor( plugin );
 }
 
 void MainformImpl::openRecentProject() {
@@ -1150,7 +1152,15 @@ void MainformImpl::updateRecentProjects() {
 	int numRecentFiles = qMin( XINXConfig::self()->config().project.recentProjectFiles.size(), MAXRECENTFILES );
 
 	for( int i = 0; i < numRecentFiles; i++ ) {
-		QString text = tr("&%1 %2").arg(i + 1).arg( QFileInfo( XINXConfig::self()->config().project.recentProjectFiles[i] ).fileName() );
+		QString filename, projectName;
+		filename = XINXConfig::self()->config().project.recentProjectFiles[i];
+		try {
+			projectName = QString( "%1 (%2)" ).arg( XinxProject( filename ).projectName() ).arg( QFileInfo( filename ).fileName() );
+		} catch( XinxProjectException e ) {
+			projectName = QFileInfo( filename ).fileName();
+		}
+
+		QString text = tr("&%1 %2").arg(i + 1).arg( projectName );
 		m_recentProjectActs[i]->setText( text );
 		m_recentProjectActs[i]->setData( XINXConfig::self()->config().project.recentProjectFiles[i] );
 		m_recentProjectActs[i]->setVisible( true );
@@ -1676,7 +1686,7 @@ void MainformImpl::replace() {
 	m_findDialog->exec();
 }
 
-bool MainformImpl::closeProject( bool session ) {
+bool MainformImpl::closeProject( bool session, bool showWelcome ) {
 	if( ! XINXProjectManager::self()->project() ) return false;
 
 	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
@@ -1712,7 +1722,8 @@ bool MainformImpl::closeProject( bool session ) {
 		}
 	}
 
-	openWelcomDialog();
+	if( showWelcome )
+		openWelcomDialog();
 
 	return true;
 }
@@ -1767,7 +1778,7 @@ void MainformImpl::closeEvent( QCloseEvent *event ) {
 	storeWindowSettings(); // Store before the project is closed
 
 	if( XINXProjectManager::self()->project() ) {
-		if( ! closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault ) ) {
+		if( ! closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault, false ) ) {
 			event->ignore();
 			return;
 		}
@@ -1810,7 +1821,7 @@ void MainformImpl::openFile( const QString & filename ) {
 
 	// Load the file in the editor
 	ScriptManager::self()->callScriptsBeforeLoad();
-	m_tabEditors->createEditor( XinxPluginsLoader::self()->matchedFileType( filename ), QDir::fromNativeSeparators( filename ) );
+	m_tabEditors->openFilename( QDir::fromNativeSeparators( filename ) );
 	updateRecentFiles();
 	updateActions();
 	ScriptManager::self()->callScriptsAfterLoad();
@@ -1925,11 +1936,7 @@ void MainformImpl::openProject( const QString & filename ) {
 
 		m_tabEditors->setUpdatesEnabled( false );
 		foreach( XinxProjectSessionEditor * data, project->session()->serializedEditors() ) {
-			AbstractEditor * editor = AbstractEditor::deserializeEditor( data );
-			if( editor )
-				m_tabEditors->newTextFileEditor( editor );
-			else
-				qWarning( qPrintable( tr("Error when restoring editor for %1").arg( data->readProperty( "FileName" ).toString() ) ) );
+			m_tabEditors->addTab( EditorFactory::self()->createEditor( data ) );
 		}
 		if( m_tabEditors->count() > 0 ) m_tabEditors->setCurrentIndex( 0 );
 		m_tabEditors->setUpdatesEnabled( true );

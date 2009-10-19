@@ -253,7 +253,7 @@
        x2="577.33002"
        y2="383.42969"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.4442575,0,0,1.0006935,-19.69359,-619.34954)" />
+       gradientTransform="matrix(0.4442923,0,0,0.9510176,-19.705727,-601.20936)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3671"
@@ -366,14 +366,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.188"
-     inkscape:cx="247.06339"
+     inkscape:cx="131.74352"
      inkscape:cy="257.64471"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="1272"
      inkscape:window-height="853"
      inkscape:window-x="0"
-     inkscape:window-y="41"
+     inkscape:window-y="142"
      width="500px"
      height="500px"
      showborder="true"
@@ -403,20 +403,20 @@
        y="11.044218"
        ry="11"
        rx="11"
-       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/xmlvisualstudio/images/splash.png"
+       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/trunk/xinx/images/splash.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        ry="10.999999"
-       y="-482.67935"
-       x="33.467911"
-       height="457.5076"
-       width="203.11044"
+       y="-471.32367"
+       x="33.459946"
+       height="434.79626"
+       width="203.12637"
        id="rect2784"
-       style="fill:url(#linearGradient3677);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.63475364;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:url(#linearGradient3677);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.61882228;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        rx="10.999999"
        transform="matrix(0,1,-1,0,0,0)"
-       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx-trunk/xinx/images/splash.png"
+       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/trunk/xinx/images/splash.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
@@ -425,7 +425,7 @@
        x="131.51877"
        y="189.4091"
        id="text3683"
-       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/xmlvisualstudio/images/splash.png"
+       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/trunk/xinx/images/splash.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        sodipodi:linespacing="125%"
@@ -438,7 +438,7 @@
     <g
        id="g8733"
        transform="matrix(1.3181771,-1.108494,0.6521145,0.7754687,-33.674,164.00814)"
-       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/xmlvisualstudio/images/splash.png"
+       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/trunk/xinx/images/splash.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
       <symbol
@@ -614,7 +614,10 @@
        x="99.326599"
        y="421.71716"
        id="text2465"
-       transform="translate(0.847766,1.251415)"><tspan
+       transform="translate(0.847766,1.251415)"
+       inkscape:export-filename="/home/phoenix/logiciels/linux/qt/xinx/trunk/xinx/images/splash.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan2467"
          x="99.326599"

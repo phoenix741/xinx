@@ -31,11 +31,8 @@
 #include <QPointer>
 
 class QAction;
-class QLabel;
 class XinxProjectSessionEditor;
-class BorderLayout;
 class QAbstractItemModel;
-class QSplitter;
 
 /*!
  * Base class for construct editor for XINX. This base class contains minimum method
@@ -53,6 +50,11 @@ class AbstractEditor : public QFrame {
 	Q_PROPERTY( bool isModified READ isModified WRITE setModified )
 	Q_PROPERTY( QString filename READ lastFileName WRITE setWatcher )
 public:
+	enum LevelMessage {
+		ERROR_MESSAGE = 0,
+		WARNING_MESSAGE = 1,
+		INFORMATION_MESSAGE = 2
+	};
 
 	/*! Options used for search text in the editor. */
 	enum SearchOption {
@@ -347,32 +349,26 @@ signals:
 	 * Signal emited when the content of the editor change.
 	 */
 	void contentChanged();
+
+	/*!
+	 * Need to show a message for the editor
+	 * \param filename the name of the file
+	 * \param message the message to show
+	 * \param level the level error of the message
+	 */
+	void message( const QString & filename, const QString & message, AbstractEditor::LevelMessage level );
+
+	/*!
+	 * Clear message
+	 * \param filename the name of the file
+	 */
+	void clearMessage( const QString & filename );
 protected:
 	/*! Constructor used to copy the editor content. This constructor must exist for serialization works. */
 	AbstractEditor( const AbstractEditor & editor );
 
-	/*!
-	 * The layout used for the editor. This layout is decomposed with a center widget and
-	 * four border.
-	 *
-	 *    +---------------------------+
-	 *    |            TOP            |
-	 *    +-------+------------+------+
-	 *    |       |            |      |
-	 *    |       |            |      |
-	 *    | RIGHT |   CENTER   | LEFT |
-	 *    |       |            |      |
-	 *    |       |            |      |
-	 *    +-------+------------+------+
-	 *    |           BOTTOM          |
-	 *    +---------------------------+
-	 */
-	BorderLayout * borderLayout();
-
-	/*!
-	 * Used for the center widget to have a horizontal splitter
-	 */
-	QSplitter * splitter() const;
+	virtual void initLayout();
+	friend class EditorFactory;
 protected slots:
 	/*!
 	 * Set the modified attribute in local.
@@ -380,15 +376,10 @@ protected slots:
 	 */
 	virtual void setModified( bool isModified );
 
-	/*!
-	 * Set a message and show it on the screen in a no blocking popup.
-	 * \param message When the message is set, the message is show on the screen. If the message is blank, the popup is hidden.
-	 */
-	void setMessage( QString message );
 private slots:
 	void fileChanged();
 private:
-	void init();
+	void initObjects();
 	void desactivateWatcher();
 	void activateWatcher();
 	void setWatcher( const QString & path );
@@ -397,9 +388,6 @@ private:
 	QPointer<FileWatcher> m_watcher;
 	QString m_lastFileName;
 	QAction * m_undoAction, * m_redoAction, * m_cutAction, * m_copyAction, * m_pasteAction;
-	QWidget * m_messageWidget;
-	QLabel * m_messageLabel;
-	QSplitter * m_splitter;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( AbstractEditor::SearchOptions );

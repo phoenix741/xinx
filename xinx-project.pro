@@ -7,12 +7,11 @@ SUBDIRS += external_qcodeedit \
 	xinx_test3 \
 	xinx_test4 \
 	xinx_test5 \
-	plugins_xmlpres \
-	plugins_webplugin \
+	plugins_core \
 	plugins_cvsplugin \
 	plugins_svnplugin \
 	plugins_services \
-	plugins_dictionary \
+	plugins_generix \
 	xinx_application
 	
 external_qcodeedit.subdir = ext/qcodeedit
@@ -34,20 +33,20 @@ xinx_test4.depends = external_qcodeedit xinx_components xinx_library
 xinx_test5.subdir = unittest/testutils
 xinx_test5.depends = external_qcodeedit xinx_components xinx_library
 
-plugins_xmlpres.subdir = plugins/xmlpres
-plugins_webplugin.subdir = plugins/webplugin
+plugins_core.subdir = plugins/core
+
 plugins_cvsplugin.depends = xinx_components
 plugins_cvsplugin.subdir = plugins/cvsplugin
 plugins_cvsplugin.depends = xinx_components xinx_library
 plugins_svnplugin.subdir = plugins/svnplugin
 plugins_svnplugin.depends = xinx_components xinx_library
 plugins_services.subdir = plugins/services
-plugins_services.depends = external_qcodeedit xinx_components xinx_library plugins_webplugin
-plugins_dictionary.subdir = plugins/dictionary
-plugins_dictionary.depends = xinx_components xinx_library
+plugins_services.depends = external_qcodeedit xinx_components xinx_library plugins_core
+plugins_generix.subdir = plugins/generix
+plugins_generix.depends = xinx_components xinx_library
 
 xinx_application.subdir = xinx
-xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_xmlpres plugins_webplugin
+xinx_application.depends = external_qcodeedit xinx_components xinx_library plugins_core
 
 dox.target = doc
 dox.commands = doxygen Doxyfile

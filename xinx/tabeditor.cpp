@@ -21,10 +21,10 @@
 #include "tabeditor.h"
 #include <project/xinxproject.h>
 #include <core/xinxconfig.h>
-#include <editors/abstracteditor.h>
-#include <editors/xinxcodeedit.h>
-#include <editors/textfileeditor.h>
 #include <plugins/xinxpluginsloader.h>
+#include <editors/editorfactory.h>
+#include <editors/textfileeditor.h>
+#include <editors/xinxcodeedit.h>
 
 // Qt header
 #include <QApplication>
@@ -98,7 +98,7 @@ void TabEditor::changeToEditor( int index ) {
 	setCurrentIndex( index );
 }
 
-void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
+void TabEditor::addTab( AbstractEditor * editor ) {
 	Q_ASSERT( editor );
 
 	connect( editor, SIGNAL(open(QString,int)), this, SLOT(fileEditorOpen(QString,int)) );
@@ -108,6 +108,8 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 	connect( editor, SIGNAL(pasteAvailable(bool)), this, SIGNAL(pasteAvailable(bool)) );
 	connect( editor, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
 	connect( editor, SIGNAL(redoAvailable(bool)), this, SIGNAL(redoAvailable(bool)) );
+	connect( editor, SIGNAL(message(QString,QString,AbstractEditor::LevelMessage)), this, SIGNAL(messageTranslation(QString,QString,AbstractEditor::LevelMessage)) );
+	connect( editor, SIGNAL(clearMessage(QString)), this, SIGNAL(clearMessageTranslation(QString)) );
 
 	if( isTextFileEditor( editor ) ) {
 		connect( editor, SIGNAL( selectionAvailable(bool) ), this, SIGNAL( hasTextSelection(bool) ) );
@@ -116,35 +118,35 @@ void TabEditor::newTextFileEditor( AbstractEditor * editor ) {
 			connect( editor, SIGNAL(positionInEditorChanged(QModelIndex)), this, SIGNAL( positionChanged(QModelIndex) ) );
 	}
 
-	int index = addTab( editor, QString() );
+	int index = QTabWidget::addTab( editor, QString() );
 	updateTabWidget( editor );
 
 	setCurrentIndex( index );
 	emit currentChanged( currentIndex() );
 }
 
-AbstractEditor * TabEditor::createEditor( IFileTypePlugin * plugin, const QString & filename ) {
-	AbstractEditor * ed = 0;
-	if( !filename.isEmpty() ) ed = editor( filename );
-	if( ! ed ) {
-		AbstractEditor * ed;
-		if( plugin )
-			ed = plugin->createEditor( filename );
-		else {
-			ed = new TextFileEditor( new XinxCodeEdit() );
-			ed->loadFromFile( filename );
-		}
+void TabEditor::newEditor( IFileTypePlugin * interface ) {
+	AbstractEditor * editor = EditorFactory::self()->createEditor( interface );
+	addTab( editor );
 
-		if( !ed ) return 0; // Maybe a dialog box or other
-
-		newTextFileEditor( ed );
-		updateTabWidget( ed );
-	}
-	setCurrentWidget( ed );
+	setCurrentWidget( editor );
 	dynamic_cast<QWidget*>( parent() )->activateWindow();
 	emit currentChanged( currentIndex() );
+}
 
-	return ed;
+void TabEditor::openFilename( const QString & filename ) {
+	Q_ASSERT( ! filename.isEmpty() );
+
+	AbstractEditor * editor = TabEditor::editor( filename );
+	if( ! editor ) {
+		editor = EditorFactory::self()->createEditor( filename );
+
+		addTab( editor );
+	}
+
+	setCurrentWidget( editor );
+	dynamic_cast<QWidget*>( parent() )->activateWindow();
+	emit currentChanged( currentIndex() );
 }
 
 void TabEditor::updateTabWidget( AbstractEditor * editor ) {
@@ -167,7 +169,7 @@ void TabEditor::updateTabWidget( AbstractEditor * editor ) {
 
 void TabEditor::fileEditorOpen( const QString & name, int line ) {
 	if( !name.isEmpty() )
-		createEditor( XinxPluginsLoader::self()->matchedFileType( name ), name );
+		openFilename( name );
 
 	emit fileOpened( name );
 
@@ -313,7 +315,7 @@ void TabEditor::dropEvent( QDropEvent *event ) {
 	if (mimeData->hasUrls()) {
 		for(int i = 0; i < urls.size(); i++) {
 			if((!urls.at(i).toLocalFile().isEmpty()))
-				createEditor( XinxPluginsLoader::self()->matchedFileType( urls.at(i).toLocalFile() ), urls.at(i).toLocalFile() );
+				openFilename( urls.at(i).toLocalFile() );
 				emit fileOpened( urls.at(i).toLocalFile() );
 		}
 
