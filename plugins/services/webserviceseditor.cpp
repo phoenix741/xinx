@@ -25,6 +25,7 @@
 #include "borderlayout.h"
 #include <editors/prettyprint/xmlprettyprinter.h>
 #include <editors/widgeteditor/xml/xmltexteditor.h>
+#include <editors/bookmarktexteditorinterface.h>
 
 // Qt header
 #include <QToolButton>
@@ -270,7 +271,7 @@ void WebServicesEditor::serialize( XinxProjectSessionEditor * data, bool content
 	}
 
 	i = 0;
-	foreach( int line, bookmarks() ) {
+	foreach( int line, bookmarkTextInterface()->bookmarks() ) {
 		data->writeProperty( QString( "Bookmark_%1" ).arg( i++ ), QVariant( line ) );
 	}
 	data->writeProperty( "BookmarkCount", QVariant( i ) );
@@ -286,7 +287,7 @@ void WebServicesEditor::deserialize( XinxProjectSessionEditor * data ) {
 
 	int bc = data->readProperty( "BookmarkCount" ).toInt();
 	for( int i = 0 ; i < bc; i++ ) {
-		setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
+		bookmarkTextInterface()->setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
 	}
 
 	m_serviceName = data->readProperty( "Service" ).toString();

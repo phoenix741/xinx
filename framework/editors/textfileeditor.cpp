@@ -24,6 +24,7 @@
 #include "editors/xinxcodeedit.h"
 #include "plugins/xinxpluginsloader.h"
 #include "borderlayout.h"
+#include "bookmarktexteditorinterface.h"
 
 // Qt header
 #include <QScrollBar>
@@ -83,6 +84,10 @@ void TextFileEditor::initObjects() {
 
 	m_view->installEventFilter( this );
 	m_view->editor()->setContextMenuPolicy( Qt::NoContextMenu );
+
+	m_bookmarkInterface = new BookmarkTextEditorInterface( this );
+	m_bookmarkInterface->setTextEditor( m_view );
+
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(copyAvailable(bool)) );
 	connect( m_view, SIGNAL(copyAvailable(bool)), this, SIGNAL(selectionAvailable(bool)) );
 	connect( m_view, SIGNAL(undoAvailable(bool)), this, SIGNAL(undoAvailable(bool)) );
@@ -103,6 +108,13 @@ void TextFileEditor::initLayout() {
 	setLayout( hbox );
 }
 
+BookmarkEditorInterface * TextFileEditor::bookmarkInterface() {
+	return m_bookmarkInterface;
+}
+
+BookmarkTextEditorInterface * TextFileEditor::bookmarkTextInterface() {
+	return m_bookmarkInterface;
+}
 
 XinxCodeEdit * TextFileEditor::textEdit() const {
 	return m_view;
@@ -385,7 +397,7 @@ void TextFileEditor::deserialize( XinxProjectSessionEditor * data ) {
 
 	int bc = data->readProperty( "BookmarkCount" ).toInt();
 	for( int i = 0 ; i < bc; i++ ) {
-		setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
+		m_bookmarkInterface->setBookmark( data->readProperty( QString( "Bookmark_%1" ).arg( i ) ).toInt(), true );
 	}
 
 	QDocumentCursor tc( textEdit()->editor()->document() );

@@ -17,9 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+// Xinx header
 #include "bookmarktexteditorinterface.h"
+#include "editors/xinxcodeedit.h"
+#include "editors/textfileeditor.h"
 
-BookmarkTextEditorInterface::BookmarkTextEditorInterface() :  {
+/* BookmarkTextEditorInterface */
+
+BookmarkTextEditorInterface::BookmarkTextEditorInterface( TextFileEditor * parent ) : BookmarkEditorInterface( parent ) {
 }
 
 void BookmarkTextEditorInterface::slotBookmarkToggled( int line, bool enabled ) {
@@ -50,7 +55,7 @@ void BookmarkTextEditorInterface::gotoBookmarkAt( int i ) {
 
 QString BookmarkTextEditorInterface::bookmarkAt( int i ) {
 	QString description = tr( "In editor '%1' at line %2" );
-	description = description.arg( getTitle() ).arg( m_view->listOfBookmark().at( i ) );
+	description = description.arg( m_textEdit->getTitle() ).arg( m_view->listOfBookmark().at( i ) );
 	return description;
 }
 
@@ -68,4 +73,10 @@ bool BookmarkTextEditorInterface::nextBookmark() {
 
 void BookmarkTextEditorInterface::clearAllBookmark() {
 	m_view->clearBookmark();
+}
+
+void BookmarkTextEditorInterface::setTextEditor( XinxCodeEdit * textEdit ) {
+	if( m_view == textEdit ) {
+		m_view = textEdit;
+	}
 }

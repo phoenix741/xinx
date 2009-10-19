@@ -491,34 +491,34 @@ bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 }
 
 void TabEditor::bookmark() {
-	currentEditor()->toogledBookmark();
+	currentEditor()->bookmarkInterface()->toogledBookmark();
 }
 
 void TabEditor::nextBookmark() {
-	if( ( ! currentEditor()->nextBookmark() ) && ( currentIndex() < count() ) ) {
+	if( ( ! currentEditor()->bookmarkInterface()->nextBookmark() ) && ( currentIndex() < count() ) ) {
 		int index = currentIndex();
-		do { index ++ ; } while( ( index < count() ) && ( editor( index )->bookmarkCount() == 0 ) );
+		do { index ++ ; } while( ( index < count() ) && ( editor( index )->bookmarkInterface()->bookmarkCount() == 0 ) );
 		if( index < count() ) {
 			setCurrentIndex( index );
-			currentEditor()->firstBookmark();
+			currentEditor()->bookmarkInterface()->firstBookmark();
 		}
 	}
 }
 
 void TabEditor::previousBookmark() {
-	if( ( ! currentEditor()->previousBookmark() ) && ( currentIndex() > 0 ) ) {
+	if( ( ! currentEditor()->bookmarkInterface()->previousBookmark() ) && ( currentIndex() > 0 ) ) {
 		int index = currentIndex();
-		do { index -- ; } while( ( index >= 0 ) && ( editor( index )->bookmarkCount() == 0 ) );
+		do { index -- ; } while( ( index >= 0 ) && ( editor( index )->bookmarkInterface()->bookmarkCount() == 0 ) );
 		if( index >= 0 ) {
 			setCurrentIndex( index );
-			currentEditor()->lastBookmark();
+			currentEditor()->bookmarkInterface()->lastBookmark();
 		}
 	}
 }
 
 void TabEditor::clearAllBookmark() {
 	for( int i = 0; i < count() ; i++ ) {
-		editor( i )->clearAllBookmark();
+		editor( i )->bookmarkInterface()->clearAllBookmark();
 	}
 }
 

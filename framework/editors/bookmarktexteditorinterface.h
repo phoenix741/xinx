@@ -20,12 +20,16 @@
 #ifndef BOOKMARKTEXTEDITORINTERFACE_H
 #define BOOKMARKTEXTEDITORINTERFACE_H
 
+// Xinx header
 #include "editors/bookmarkeditorinterface.h"
+
+class XinxCodeEdit;
+class TextFileEditor;
 
 class BookmarkTextEditorInterface : public BookmarkEditorInterface {
 	Q_OBJECT
 public:
-    BookmarkTextEditorInterface();
+	BookmarkTextEditorInterface( TextFileEditor * parent );
 
 	/*!
 	 * List of bookmarks of the editor
@@ -42,9 +46,14 @@ public:
 	virtual bool nextBookmark();
 	virtual void clearAllBookmark();
 
+	void setTextEditor( XinxCodeEdit * textEdit );
 public slots:
 	/*! Slot called when the bookmark is toogled on a line. This slot change the project settings. */
 	void slotBookmarkToggled( int line, bool enabled );
+
+private:
+	XinxCodeEdit * m_view;
+	TextFileEditor * m_textEdit;
 };
 
 #endif // BOOKMARKTEXTEDITORINTERFACE_H

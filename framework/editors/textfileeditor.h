@@ -38,6 +38,7 @@ class QLabel;
 class QAction;
 class FileWatcher;
 class SyntaxHighlighter;
+class BookmarkTextEditorInterface;
 
 
 /*!
@@ -115,6 +116,8 @@ public:
 	virtual void serialize( XinxProjectSessionEditor * data, bool content );
 	virtual void deserialize( XinxProjectSessionEditor * data );
 
+	virtual BookmarkEditorInterface * bookmarkInterface();
+	virtual BookmarkTextEditorInterface * bookmarkTextInterface();
 public slots :
 	virtual void initSearch( SearchOptions & options );
 	virtual bool find( const QString & text, SearchOptions options );
@@ -169,6 +172,8 @@ private:
 	XinxCodeEdit * m_view;
 	EndOfLineType m_eol;
 	QDocumentCursor m_cursorStart, m_cursorEnd;
+
+	BookmarkTextEditorInterface * m_bookmarkInterface;
 };
 
 #endif // __FILEEDITOR_H__

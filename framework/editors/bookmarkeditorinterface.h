@@ -70,7 +70,7 @@ signals:
 	 * \param minValue The first bound
 	 * \param maxValue The second bound
 	 */
-	virtual void bookmarkModified( int minValue, int maxValue ) = 0;
+	virtual void bookmarkModified( int minValue, int maxValue );
 };
 
 #endif // BOOKMARKEDITORINTERFACE_H
