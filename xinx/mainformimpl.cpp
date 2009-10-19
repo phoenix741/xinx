@@ -138,6 +138,11 @@ void MainformImpl::createMenus() {
 	m_toolBars.insert( "edit", editToolBar = new QToolBar( this ) );
 	m_toolBars.insert( "search", searchToolBar = new QToolBar( this ) );
 
+	projectToolBar->setWindowTitle( tr("&Project") );
+	fileToolBar->setWindowTitle( tr("&File") );
+	editToolBar->setWindowTitle( tr("&Edit") );
+	searchToolBar->setWindowTitle( tr("&Search") );
+
 	createActions();
 
 	m_menuBar->addAction(fileMenu->menuAction());
@@ -790,6 +795,7 @@ void MainformImpl::createPluginsActions() {
 							if( ! m_toolBars.value( menuName ) ) {
 								QToolBar * newToolBar = 0;
 								newToolBar = new QToolBar( this );
+								newToolBar->setWindowTitle( menuName );
 								newToolBar->setObjectName( menuName );
 								addToolBar( Qt::TopToolBarArea, newToolBar );
 								m_toolBars[ menuName ] = newToolBar;
@@ -1908,7 +1914,7 @@ void MainformImpl::openProject( const QString & filename ) {
 	if( filename.isEmpty() ) return; // The project filename is not empty
 
 	if( XINXProjectManager::self()->project() )
-		closeProject();
+		closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault, false );
 	else
 		closeAllFile();
 
