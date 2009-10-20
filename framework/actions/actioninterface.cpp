@@ -63,6 +63,10 @@ bool Action::isInToolBar() const {
 	return true;
 }
 
+bool Action::isInPopupMenu() const {
+	return true;
+}
+
 void Action::updateActionState() {
 	m_action->setVisible( isActionVisible() );
 	m_action->setEnabled( isActionEnabled() );

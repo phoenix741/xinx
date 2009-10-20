@@ -157,7 +157,7 @@ signals:
 
 protected:
 	virtual void setModified( bool isModified );
-	virtual bool eventFilter( QObject *obj, QEvent *event );
+	virtual void contextMenuEvent ( QContextMenuEvent * contextMenuEvent );
 
 	virtual void initLayout();
 	friend class EditorFactory;

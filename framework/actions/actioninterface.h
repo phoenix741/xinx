@@ -87,6 +87,8 @@ public:
 	virtual bool isActionEnabled() const;
 	//! Return true if the action can be add to the toolbar
 	virtual bool isInToolBar() const;
+	//! Return true if the action can be add to the popup menu
+	virtual bool isInPopupMenu() const;
 
 public slots:
 	//! Use methode isActionVisible() and isActionEnabled() to update the status of the action.

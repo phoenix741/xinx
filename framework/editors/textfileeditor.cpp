@@ -19,12 +19,13 @@
 
 // xinx header
 #include "editors/textfileeditor.h"
+#include "editors/xinxcodeedit.h"
+#include "editors/bookmarktexteditorinterface.h"
+#include "actions/actioninterface.h"
+#include "plugins/xinxpluginsloader.h"
 #include "project/xinxproject.h"
 #include "core/xinxconfig.h"
-#include "editors/xinxcodeedit.h"
-#include "plugins/xinxpluginsloader.h"
 #include "borderlayout.h"
-#include "bookmarktexteditorinterface.h"
 
 // Qt header
 #include <QScrollBar>
@@ -82,8 +83,11 @@ void TextFileEditor::initObjects() {
 	else
 		m_view->setParent( this );
 
-	m_view->installEventFilter( this );
+	setContextMenuPolicy( Qt::DefaultContextMenu );
+	m_view->setContextMenuPolicy( Qt::NoContextMenu );
 	m_view->editor()->setContextMenuPolicy( Qt::NoContextMenu );
+	//installEventFilter( this );
+	//m_view->installEventFilter( this );
 
 	m_bookmarkInterface = new BookmarkTextEditorInterface( this );
 	m_bookmarkInterface->setTextEditor( m_view );
@@ -323,29 +327,45 @@ void TextFileEditor::complete() {
 	}
 }
 
-bool TextFileEditor::eventFilter( QObject *obj, QEvent *event ) {
-	if ( obj != m_view )
-		return QFrame::eventFilter( obj, event );
+void TextFileEditor::contextMenuEvent( QContextMenuEvent * contextMenuEvent ) {
+	QMenu * menu = new QMenu( m_view );
 
-	if( event->type() == QEvent::ContextMenu ) {
-		QContextMenuEvent * contextMenuEvent = static_cast<QContextMenuEvent*>( event );
-		QMenu * menu = new QMenu( m_view );
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
 
-		menu->addAction( m_commentAction );
-		menu->addAction( m_uncommentAction );
-		menu->addSeparator();
-		menu->addAction( undoAction() );
-		menu->addAction( redoAction() );
-		menu->addSeparator();
-		menu->addAction( cutAction() );
-		menu->addAction( copyAction() );
-		menu->addAction( pasteAction() );
+		// Si le plugin est activé
+		if( e->isActivated() && qobject_cast<IXinxPlugin*>( e->plugin() ) ) {
+			XinxAction::MenuList menuList = qobject_cast<IXinxPlugin*>( e->plugin() )->actions();
 
-		menu->exec( contextMenuEvent->globalPos() );
-		delete menu;
+			// Pour chaque menu
+			foreach( const XinxAction::ActionList & aMenu, menuList ) {
+
+				// Pour chaque élemént du menu
+				foreach( XinxAction::MenuItem * item, aMenu ) {
+					XinxAction::Action* xinxAction = dynamic_cast<XinxAction::Action*>( item );
+					if( xinxAction && xinxAction->isInPopupMenu() ) {
+						xinxAction->updateActionState();
+
+						menu->addAction( xinxAction->action() );
+					}
+				}
+
+				menu->addSeparator();
+			}
+		}
 	}
+	
+	menu->addAction( m_commentAction );
+	menu->addAction( m_uncommentAction );
+	menu->addSeparator();
+	menu->addAction( undoAction() );
+	menu->addAction( redoAction() );
+	menu->addSeparator();
+	menu->addAction( cutAction() );
+	menu->addAction( copyAction() );
+	menu->addAction( pasteAction() );
 
-	return false;
+	menu->exec( contextMenuEvent->globalPos() );
+	delete menu;
 }
 
 void TextFileEditor::searchWord( const QString & ) {

@@ -1002,6 +1002,7 @@ void MainformImpl::openWelcomDialog() {
 	}
 
 	connect( &dlg, SIGNAL(createNewProject()), SLOT(newProject()) );
+	connect( &dlg, SIGNAL(openExistingProject()), SLOT(openProject()) );
 	connect( &dlg, SIGNAL(requestProject(QString)), SLOT(openProject(QString)) );
 
 	dlg.exec();

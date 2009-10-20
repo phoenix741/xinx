@@ -42,6 +42,7 @@ public slots:
 signals:
 	void requestProject( const QString & data );
 	void createNewProject();
+	void openExistingProject();
 private:
 	void createWebsiteList();
 	void updateTipOfTheDay();

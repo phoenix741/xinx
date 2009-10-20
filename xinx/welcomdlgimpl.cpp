@@ -40,6 +40,8 @@ WelcomDialogImpl::WelcomDialogImpl( QWidget * parent, Qt::WindowFlags f ) : QDia
 	connect(m_sitesWidget, SIGNAL(activated(QString)), SLOT(slotUrlClicked(QString)));
 	connect(m_createNewProjectBtn, SIGNAL(clicked()), SLOT(accept()));
 	connect(m_createNewProjectBtn, SIGNAL(clicked()), SIGNAL(createNewProject()));
+	connect(m_openProjectBtn, SIGNAL(clicked()), SLOT(accept()));
+	connect(m_openProjectBtn, SIGNAL(clicked()), SIGNAL(openExistingProject()));
 }
 
 WelcomDialogImpl::~WelcomDialogImpl() {
