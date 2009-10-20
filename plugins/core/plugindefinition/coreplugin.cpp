@@ -26,6 +26,7 @@
 #include "filetypeplugin.h"
 
 #include "actions/stylesheetaction.h"
+#include "actions/commentactions.h"
 
 #include <project/xinxproject.h>
 #include "pluginproperty/webpluginprojectpropertyformimpl.h"
@@ -116,11 +117,20 @@ QList<IFileTypePlugin*> CorePlugin::fileTypes() {
 
 XinxAction::MenuList CorePlugin::actions() {
 	if( m_menus.size() == 0 ) {
+		XinxAction::Action * commentAction = new CommentAction( tr("&Comment"), QString( "Ctrl+Shift+C" ), this );
+		XinxAction::Action * uncommentAction = new UncommentAction( tr("&Uncomment"), QString( "Ctrl+Shift+D" ), this );
+
 		XinxAction::Action * runAction = new StyleSheetAction( QIcon( ":/images/run.png" ), tr("Process stylesheet"), QString( "F9" ), this );
 
-		XinxAction::ActionList menu( tr("&Execute") );
-		menu.append( runAction );
-		m_menus.append( menu );
+		XinxAction::ActionList editMenu( tr("&Edit") );
+		XinxAction::ActionList runMenu( tr("&Execute") );
+
+		editMenu.append( commentAction );
+		editMenu.append( uncommentAction );
+		runMenu.append( runAction );
+
+		m_menus.append( editMenu );
+		m_menus.append( runMenu );
 	}
 	return m_menus;
 }

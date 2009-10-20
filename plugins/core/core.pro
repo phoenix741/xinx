@@ -4,7 +4,7 @@ VERSION = 0.9.0.0
 CONFIG += plugin \
     staticlib
 QT += xml \
-	xmlpatterns \
+    xmlpatterns \
     webkit
 DESTDIR += ../
 RESOURCES += plugindefinition/coreplugin.qrc
@@ -51,7 +51,8 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     editors/widgeteditor/css/csstexteditor.h \
     plugindefinition/coreplugin.h \
     plugindefinition/filetypeplugin.h \
-    actions/stylesheetaction.h
+    actions/stylesheetaction.h \
+    actions/commentactions.h
 SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     docks/datastream/xquerydialogimpl.cpp \
     docks/datastream/xmlpresentationdockwidget.cpp \
@@ -86,12 +87,12 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     editors/widgeteditor/css/csstexteditor.cpp \
     plugindefinition/coreplugin.cpp \
     plugindefinition/filetypeplugin.cpp \
-    actions/stylesheetaction.cpp
+    actions/stylesheetaction.cpp \
+    actions/commentactions.cpp
 TRANSLATIONS += translations/coreplugin_fr.ts
 FORMS += config/config.ui \
     config/webpluginform.ui \
     config/webpluginprojectpropertyform.ui \
     docks/datastream/xquery.ui \
     docks/datastream/xmlpresentationwidget.ui
-
 unix:INCLUDEPATH += /usr/include/libxml2
