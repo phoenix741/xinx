@@ -90,9 +90,6 @@ public slots:
 	void upperSelectedText();
 	void lowerSelectedText();
 
-	void commentSelectedText();
-	void uncommentSelectedText();
-
 	void indent();
 	void unindent();
 	void autoindent();

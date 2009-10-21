@@ -63,6 +63,10 @@ QCompleter * XmlTextEditor::completer() {
 	return XinxCodeEdit::completer();
 }
 
+bool XmlTextEditor::isCommentAvailable() {
+	return true;
+}
+
 void XmlTextEditor::commentSelectedText( bool uncomment ) {
 	QString nodeName, paramName;
 

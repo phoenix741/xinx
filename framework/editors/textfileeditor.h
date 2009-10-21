@@ -76,21 +76,6 @@ public:
 	virtual XinxCodeEdit * textEdit() const;
 	virtual QString defaultFileName() const;
 
-	/*!
-	 * Return the action used to comment text in the editor. This action call the \e commentSelectedText() with
-	 * no parameters.
-	 * \return Return the action to comment.
-	 * \sa commentSelectedText()
-	 */
-	QAction * commentAction();
-	/*!
-	 * Return the action used to uncomment text in the editor. This action call the \e commentSelectedText().with
-	 * true in the parameters
-	 * \return Return the action to uncomment.
-	 * \sa uncommentSelectedText()
-	 */
-	QAction * uncommentAction();
-
 	virtual void loadFromFile( const QString & fileName = QString() );
 	virtual void saveToFile( const QString & fileName = QString() );
 	virtual void loadFromDevice( QIODevice & d );
@@ -135,13 +120,7 @@ public slots :
 
 	/*! Method used to select all the text in the editor. The call is sent to the TextEditor. */
 	void selectAll();
-	/*!
-	 * Comment or Uncomment the selected text depending on the parrameter.
-	 * If a part of a text is already (un)commented, the balise is moved to comment all the text.
-	 * Warning: If you comment code with comment, the comment can be merged with code.
-	 * \param uncomment If false (by default) the text is commented, else the text is uncommented
-	 */
-	void commentSelectedText( bool uncomment = false );
+
 	/*! Auto indent all the document (named Pretty Print). */
 	virtual bool autoIndent();
 	/*! Call the completer of the text on the current position of the cursor, if possible. */
@@ -161,13 +140,8 @@ protected:
 
 	virtual void initLayout();
 	friend class EditorFactory;
-private slots:
-	void comment();
-	void uncomment();
 private:
 	void initObjects();
-
-	QAction * m_commentAction, * m_uncommentAction;
 
 	XinxCodeEdit * m_view;
 	EndOfLineType m_eol;

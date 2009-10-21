@@ -49,6 +49,8 @@ public:
 	QList<XPathBalise> xpath( const QDocumentCursor & cursor, const QStringList & includeOnly = QStringList(), const QString & prefix = QString(), const  QStringList & attributeName = QStringList() );
 
 	static QString xpathToString( const QList<XPathBalise> & xp );
+
+	virtual bool isCommentAvailable();
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected slots:

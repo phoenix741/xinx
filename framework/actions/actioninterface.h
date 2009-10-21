@@ -108,17 +108,22 @@ private:
  */
 class ActionList : public QList<MenuItem*> {
 public:
-	//! Create the list with the name \e menu
+	//! Create the list with the name \e menu and the id \e menu
 	ActionList( const QString & menu );
+	//! Create the list with the name \e menu and the id \e id
+	ActionList( const QString & menu, const QString & id );
 
 	//! Return the name of the list
 	const QString & menu() const;
+
+	//! Return the id of the menu
+	const QString & menuId() const;
 
 	//! Update the state (visible, and enable) of all actions in the menu
 	void updateActionsState();
 protected:
 private:
-	QString m_menu;
+	QString m_menu, m_menuId;
 };
 
 /*!

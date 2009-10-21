@@ -35,6 +35,8 @@ public:
 	virtual QCompleter * completer();
 
 	void setModel( JavascriptModelCompleter * model );
+
+	virtual bool isCommentAvailable();
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected:

@@ -2,6 +2,101 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr_FR">
 <context>
+    <name> Form</name>
+    <message>
+        <source>Customize Web Plugin</source>
+        <translation type="obsolete">Personnaliser le module Web</translation>
+    </message>
+    <message>
+        <source>XML</source>
+        <translation type="obsolete">XML</translation>
+    </message>
+    <message>
+        <source>Active completion on XML</source>
+        <translation type="obsolete">Activer la complétion sur l&apos;XML</translation>
+    </message>
+    <message>
+        <source>&amp;Add closed balise automatically</source>
+        <translation type="obsolete">&amp;Ajouter la balise de fermeture automatiquement</translation>
+    </message>
+    <message>
+        <source>Add default a&amp;ttribute automatically</source>
+        <translation type="obsolete">Ajouter les a&amp;ttributs par défaut automatiquement</translation>
+    </message>
+    <message>
+        <source>Add default sub-&amp;balise automatically</source>
+        <translation type="obsolete">Ajouter le sous-&amp;balises par défaut automatiquement </translation>
+    </message>
+    <message>
+        <source>JavaScript</source>
+        <translation type="obsolete">JavaScript</translation>
+    </message>
+    <message>
+        <source>Active completion on JavaScript</source>
+        <translation type="obsolete">Activer la complétion sur le JavaScript</translation>
+    </message>
+    <message>
+        <source>Auto close bracket</source>
+        <translation type="obsolete">Fermer automatiquement les parenthèses</translation>
+    </message>
+    <message>
+        <source>Stylesheet parsing</source>
+        <translation type="obsolete">Traitement de la feuille de style</translation>
+    </message>
+    <message>
+        <source>&amp;Viewer :</source>
+        <translation type="obsolete">&amp;Lecteur :</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="obsolete">Aucun</translation>
+    </message>
+    <message>
+        <source>Internal Viewer (Webkit)</source>
+        <translation type="obsolete">Lecteur interne (Webkit)</translation>
+    </message>
+    <message>
+        <source>External brownser</source>
+        <translation type="obsolete">Lecteur externe</translation>
+    </message>
+    <message>
+        <source>&amp;Parser :</source>
+        <translation type="obsolete">&amp;Parser :</translation>
+    </message>
+    <message>
+        <source>Oracle Parser</source>
+        <translation type="obsolete">Parseur Oracle</translation>
+    </message>
+    <message>
+        <source>Xsltproc Parser</source>
+        <translation type="obsolete">Parseur Xsltproc</translation>
+    </message>
+    <message>
+        <source>Internal Parser (experimental)</source>
+        <translation type="obsolete">Parseur interne (expérimental)</translation>
+    </message>
+    <message>
+        <source>Class &amp;Path :</source>
+        <translation type="obsolete">Class &amp;Path :</translation>
+    </message>
+    <message>
+        <source>&amp;Main class :</source>
+        <translation type="obsolete">Classe &amp;principale :</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;This parser is really experimental in XINX and probably not work. No correction will be made, in this parser. This parser use the XmlPattern module of Nokia/Qt.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Ce parseur est vraiment expérimental dans XINX et ne devrait probablement pas marcher. Aucune correction ni sera apporté. Le parseur utilise le module XmlPattern de Nokia/Qt.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
     <name>CSSFileContentParser</name>
     <message>
         <source>Element at line : %1
@@ -44,12 +139,114 @@ Valeur : %2</translation>
     </message>
 </context>
 <context>
+    <name>CorePlugin</name>
+    <message>
+        <source>XSL Stylesheet</source>
+        <translation type="obsolete">Feuille de style XSL</translation>
+    </message>
+    <message>
+        <source>Webservices input stream</source>
+        <translation type="obsolete">Flux d&apos;entrée pour WebServices</translation>
+    </message>
+    <message>
+        <source>XML File</source>
+        <translation type="obsolete">Fichier XML</translation>
+    </message>
+    <message>
+        <source>HTML File</source>
+        <translation type="obsolete">Fichier HTML</translation>
+    </message>
+    <message>
+        <source>JavaScript</source>
+        <translation type="obsolete">JavaScript</translation>
+    </message>
+    <message>
+        <source>Cascading Style Sheet</source>
+        <translation type="obsolete">Feuille de style en cascade CSS</translation>
+    </message>
+    <message>
+        <source>XML, XSL, HTML</source>
+        <translation type="obsolete">XML, XSL, HTML</translation>
+    </message>
+    <message>
+        <source>XML, XSL, XHTML</source>
+        <translation type="obsolete">XML, XSL, XHTML</translation>
+    </message>
+    <message>
+        <source>HTML</source>
+        <translation type="obsolete">HTML</translation>
+    </message>
+    <message>
+        <source>XML</source>
+        <translation type="obsolete">XML</translation>
+    </message>
+    <message>
+        <source>XSL</source>
+        <translation type="obsolete">XSL</translation>
+    </message>
+    <message>
+        <source>Can&apos;t read baseplugin_xml file</source>
+        <translation type="obsolete">Ne peut lire le fichier baseplugin_xml</translation>
+    </message>
+    <message>
+        <source>Web Plugin</source>
+        <translation type="obsolete">Plugin Internet</translation>
+    </message>
+    <message>
+        <source>Editor helper for HTML, XSL, XML, JS, CSS files.</source>
+        <translation type="obsolete">Aide à la saisie pour le HTML, le XML, le XSL, le JavaScript, les feuilles de styles CSS.</translation>
+    </message>
+    <message>
+        <source>Process stylesheet</source>
+        <translation>Traitement de la feuille de style</translation>
+    </message>
+    <message>
+        <source>Execute</source>
+        <translation type="obsolete">Executer</translation>
+    </message>
+    <message>
+        <source>&amp;Execute</source>
+        <translation>&amp;Exécuter</translation>
+    </message>
+    <message>
+        <source>Core Plugin</source>
+        <translation>Plugin noyau</translation>
+    </message>
+    <message>
+        <source>Necessary editor, actions, and dock used by XINX.</source>
+        <translation>Les éditeurs, actions, et fenêtetre dockable necessaire à l&apos;utilisation de XINX.</translation>
+    </message>
+    <message>
+        <source>&amp;Comment</source>
+        <translation>&amp;Commenter</translation>
+    </message>
+    <message>
+        <source>&amp;Uncomment</source>
+        <translation>&amp;Décommenter</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Edition</translation>
+    </message>
+</context>
+<context>
     <name>CssFileContentProperty</name>
     <message>
         <source>
 Value : %2</source>
         <translation type="obsolete">
 Valeur : %2</translation>
+    </message>
+</context>
+<context>
+    <name>EmptyPlugin</name>
+    <message>
+        <source>XINX Demo Empty Plugin</source>
+        <translation type="obsolete">Plugin vide de démonstration pour XINX</translation>
+    </message>
+    <message>
+        <source>This small plugin do nothing and is just a demo</source>
+        <translation type="obsolete">Ce petit plugin est une démonstration et ne fait rien</translation>
     </message>
 </context>
 <context>
@@ -71,7 +268,15 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>Can&apos;t open file %1.</source>
-        <translation>Ne peux ouvrir le fichier %1.</translation>
+        <translation type="obsolete">Ne peux ouvrir le fichier %1.</translation>
+    </message>
+    <message>
+        <source>HTML Source</source>
+        <translation>Source HTML</translation>
+    </message>
+    <message>
+        <source>Web View</source>
+        <translation>Réprésentation HTML</translation>
     </message>
 </context>
 <context>
@@ -180,7 +385,7 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>Stylesheet Parsing</source>
-        <translation>Traitement de la Feuille de style</translation>
+        <translation type="obsolete">Traitement de la Feuille de style</translation>
     </message>
     <message>
         <source>Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project</source>
@@ -192,90 +397,42 @@ Valeur : %2</translation>
     </message>
     <message>
         <source>The internal parsing is not yet supported. Please choose other</source>
-        <translation>Le parser interne n&apos;est pas encore supporté. Choisissez-en un autre</translation>
+        <translation type="obsolete">Le parser interne n&apos;est pas encore supporté. Choisissez-en un autre</translation>
     </message>
     <message>
         <source>No parser defined</source>
-        <translation>Pas de parseur définit</translation>
+        <translation type="obsolete">Pas de parseur définit</translation>
     </message>
     <message>
         <source>No viewer defined</source>
-        <translation>Pas de lecteur définit</translation>
+        <translation type="obsolete">Pas de lecteur définit</translation>
     </message>
     <message>
         <source>Can&apos;t open file %1.</source>
-        <translation>Ne peux ouvrir le fichier %1.</translation>
+        <translation type="obsolete">Ne peux ouvrir le fichier %1.</translation>
+    </message>
+    <message>
+        <source>XSL Source</source>
+        <translation>Source XSL</translation>
+    </message>
+    <message>
+        <source>HTML Source</source>
+        <translation>Source HTML</translation>
+    </message>
+    <message>
+        <source>Web View</source>
+        <translation>Réprésentation HTML</translation>
+    </message>
+    <message>
+        <source>Can&apos;t parse stylesheet</source>
+        <translation>Ne peux parser la feuille de style</translation>
     </message>
 </context>
 <context>
-    <name>WebPlugin</name>
+    <name>TextFileType</name>
     <message>
-        <source>XSL Stylesheet</source>
-        <translation type="obsolete">Feuille de style XSL</translation>
-    </message>
-    <message>
-        <source>Webservices input stream</source>
-        <translation type="obsolete">Flux d&apos;entrée pour WebServices</translation>
-    </message>
-    <message>
-        <source>XML File</source>
-        <translation type="obsolete">Fichier XML</translation>
-    </message>
-    <message>
-        <source>HTML File</source>
-        <translation type="obsolete">Fichier HTML</translation>
-    </message>
-    <message>
-        <source>JavaScript</source>
-        <translation type="obsolete">JavaScript</translation>
-    </message>
-    <message>
-        <source>Cascading Style Sheet</source>
-        <translation type="obsolete">Feuille de style en cascade CSS</translation>
-    </message>
-    <message>
-        <source>XML, XSL, HTML</source>
-        <translation type="obsolete">XML, XSL, HTML</translation>
-    </message>
-    <message>
-        <source>XML, XSL, XHTML</source>
-        <translation type="obsolete">XML, XSL, XHTML</translation>
-    </message>
-    <message>
-        <source>HTML</source>
-        <translation type="obsolete">HTML</translation>
-    </message>
-    <message>
-        <source>XML</source>
-        <translation type="obsolete">XML</translation>
-    </message>
-    <message>
-        <source>XSL</source>
-        <translation type="obsolete">XSL</translation>
-    </message>
-    <message>
-        <source>Can&apos;t read baseplugin_xml file</source>
-        <translation type="obsolete">Ne peut lire le fichier baseplugin_xml</translation>
-    </message>
-    <message>
-        <source>Web Plugin</source>
-        <translation>Plugin Internet</translation>
-    </message>
-    <message>
-        <source>Editor helper for HTML, XSL, XML, JS, CSS files.</source>
-        <translation>Aide à la saisie pour le HTML, le XML, le XSL, le JavaScript, les feuilles de styles CSS.</translation>
-    </message>
-    <message>
-        <source>Process stylesheet</source>
-        <translation>Traitement de la feuille de style</translation>
-    </message>
-    <message>
-        <source>Execute</source>
-        <translation type="obsolete">Executer</translation>
-    </message>
-    <message>
-        <source>&amp;Execute</source>
-        <translation>&amp;Exécuter</translation>
+        <source>Text File</source>
+        <translation>Fichier Texte</translation>
     </message>
 </context>
 <context>
@@ -315,62 +472,6 @@ Valeur : %2</translation>
     <message>
         <source>Auto close bracket</source>
         <translation>Fermer automatiquement les parenthèses</translation>
-    </message>
-    <message>
-        <source>Stylesheet parsing</source>
-        <translation>Traitement de la feuille de style</translation>
-    </message>
-    <message>
-        <source>&amp;Viewer :</source>
-        <translation>&amp;Lecteur :</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>Aucun</translation>
-    </message>
-    <message>
-        <source>Internal Viewer (Webkit)</source>
-        <translation>Lecteur interne (Webkit)</translation>
-    </message>
-    <message>
-        <source>External brownser</source>
-        <translation>Lecteur externe</translation>
-    </message>
-    <message>
-        <source>&amp;Parser :</source>
-        <translation>&amp;Parser :</translation>
-    </message>
-    <message>
-        <source>Oracle Parser</source>
-        <translation>Parseur Oracle</translation>
-    </message>
-    <message>
-        <source>Xsltproc Parser</source>
-        <translation>Parseur Xsltproc</translation>
-    </message>
-    <message>
-        <source>Internal Parser (experimental)</source>
-        <translation>Parseur interne (expérimental)</translation>
-    </message>
-    <message>
-        <source>Class &amp;Path :</source>
-        <translation>Class &amp;Path :</translation>
-    </message>
-    <message>
-        <source>&amp;Main class :</source>
-        <translation>Classe &amp;principale :</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;This parser is really experimental in XINX and probably not work. No correction will be made, in this parser. This parser use the XmlPattern module of Nokia/Qt.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Ce parseur est vraiment expérimental dans XINX et ne devrait probablement pas marcher. Aucune correction ni sera apporté. Le parseur utilise le module XmlPattern de Nokia/Qt.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -414,6 +515,91 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>XQuery</source>
         <translation>XQuery</translation>
+    </message>
+</context>
+<context>
+    <name>XQueryDialog</name>
+    <message>
+        <source>Evaluate X-PATH</source>
+        <translation>Evaluer le X-PATH</translation>
+    </message>
+    <message>
+        <source>Your Query</source>
+        <translation>Votre requête</translation>
+    </message>
+    <message>
+        <source>&amp;Current X-PATH :</source>
+        <translation>X-PATH &amp;courrant :</translation>
+    </message>
+    <message>
+        <source>count()</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>sum()</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>format-number()</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>concat()</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>normalize-space()</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>not()</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>&amp;Query :</source>
+        <translation>&amp;Requête :</translation>
+    </message>
+    <message>
+        <source>&amp;Result</source>
+        <translation type="obsolete">&amp;Résultat</translation>
+    </message>
+    <message>
+        <source>&amp;Result (encapsulate in Result balise)</source>
+        <translation>&amp;Résultat (encapsuler dans la balise &quot;Result&quot;)</translation>
+    </message>
+</context>
+<context>
+    <name>XQueryDialogImpl</name>
+    <message>
+        <source>&amp;Evaluate</source>
+        <translation>&amp;Evaluer</translation>
+    </message>
+    <message>
+        <source>Error while opening presentation file : %1</source>
+        <translation>Erreur lors de l&apos;ouverture du fichier de présentation : %1</translation>
+    </message>
+    <message>
+        <source>Resolved in %1 ms</source>
+        <translation>Résolu en %1 ms</translation>
+    </message>
+</context>
+<context>
+    <name>XQueryDialogMessageHandler</name>
+    <message>
+        <source>Warning in %1, at line %2, column %3: %4</source>
+        <translation>Attention dans %1, ligne %2, colonne %3 : %4</translation>
+    </message>
+    <message>
+        <source>Warning in %1: %2</source>
+        <translation>Attention dans %1 : %2</translation>
+    </message>
+    <message>
+        <source>Error %1 in %2, at line %3, column %4: %5</source>
+        <translation>Erreur %1 dans %2, à la ligne %3, colonne %4 : %5</translation>
+    </message>
+    <message>
+        <source>Error %1 in %2: %3</source>
+        <translation>Erreur %1 dans %2 : %3</translation>
     </message>
 </context>
 <context>
@@ -471,121 +657,6 @@ Valeur : %2</translation>
     <message>
         <source>noname.xml</source>
         <translation>sansnom.xml</translation>
-    </message>
-</context>
-<context>
-    <name>XslContentViewParser</name>
-    <message>
-        <source>The file is not an Stylesheet file.</source>
-        <translation>Le fichier n&apos;est pas une feuille de style.</translation>
-    </message>
-    <message>
-        <source>Element at line : %1
-Mode = %2</source>
-        <translation>Element à la ligne : %1
-Mode = %2</translation>
-    </message>
-    <message>
-        <source>Element at line : %1
-Value = %2</source>
-        <translation>Element à la ligne : %1
-Valeur = %2</translation>
-    </message>
-    <message>
-        <source>Element at line : %1</source>
-        <translation>Element à la ligne : %1</translation>
-    </message>
-</context>
-<context>
-    <name>EmptyPlugin</name>
-    <message>
-        <source>XINX Demo Empty Plugin</source>
-        <translation type="obsolete">Plugin vide de démonstration pour XINX</translation>
-    </message>
-    <message>
-        <source>This small plugin do nothing and is just a demo</source>
-        <translation type="obsolete">Ce petit plugin est une démonstration et ne fait rien</translation>
-    </message>
-</context>
-<context>
-    <name>XQueryDialog</name>
-    <message>
-        <source>Evaluate X-PATH</source>
-        <translation>Evaluer le X-PATH</translation>
-    </message>
-    <message>
-        <source>Your Query</source>
-        <translation>Votre requête</translation>
-    </message>
-    <message>
-        <source>&amp;Current X-PATH :</source>
-        <translation>X-PATH &amp;courrant :</translation>
-    </message>
-    <message>
-        <source>count()</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>sum()</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>format-number()</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>concat()</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>normalize-space()</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>not()</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>&amp;Query :</source>
-        <translation>&amp;Requête :</translation>
-    </message>
-    <message>
-        <source>&amp;Result</source>
-        <translation>&amp;Résultat</translation>
-    </message>
-</context>
-<context>
-    <name>XQueryDialogImpl</name>
-    <message>
-        <source>&amp;Evaluate</source>
-        <translation>&amp;Evaluer</translation>
-    </message>
-    <message>
-        <source>Error while opening presentation file : %1</source>
-        <translation>Erreur lors de l&apos;ouverture du fichier de présentation : %1</translation>
-    </message>
-    <message>
-        <source>Resolved in %1 ms</source>
-        <translation>Résolu en %1 ms</translation>
-    </message>
-</context>
-<context>
-    <name>XQueryDialogMessageHandler</name>
-    <message>
-        <source>Warning in %1, at line %2, column %3: %4</source>
-        <translation>Attention dans %1, ligne %2, colonne %3 : %4</translation>
-    </message>
-    <message>
-        <source>Warning in %1: %2</source>
-        <translation>Attention dans %1 : %2</translation>
-    </message>
-    <message>
-        <source>Error %1 in %2, at line %3, column %4: %5</source>
-        <translation>Erreur %1 dans %2, à la ligne %3, colonne %4 : %5</translation>
-    </message>
-    <message>
-        <source>Error %1 in %2: %3</source>
-        <translation>Erreur %1 dans %2 : %3</translation>
     </message>
 </context>
 <context>
@@ -737,11 +808,11 @@ Valeur = %2</translation>
     <name>XmlPresPlugin</name>
     <message>
         <source>Xml Pres Plugin</source>
-        <translation>Plugin Xmlpres</translation>
+        <translation type="obsolete">Plugin Xmlpres</translation>
     </message>
     <message>
         <source>This plugin manage a dock for Xml Pres</source>
-        <translation>Ce plugin gère un dock pour les flux de présentation</translation>
+        <translation type="obsolete">Ce plugin gère un dock pour les flux de présentation</translation>
     </message>
 </context>
 <context>
@@ -815,7 +886,7 @@ Date du fichier :%4</translation>
     </message>
     <message>
         <source>Clear the text filter at right.</source>
-        <translation>Efface le filtre à droite.</translation>
+        <translation type="obsolete">Efface le filtre à droite.</translation>
     </message>
     <message>
         <source>Filter to use in the view. &lt;b&gt;XINX&lt;/b&gt; search node where name match the filter (literal or regular expression).</source>
@@ -834,6 +905,36 @@ Date du fichier :%4</translation>
     <message>
         <source>None</source>
         <translation>Aucun</translation>
+    </message>
+</context>
+<context>
+    <name>XslContentViewParser</name>
+    <message>
+        <source>The file is not an Stylesheet file.</source>
+        <translation>Le fichier n&apos;est pas une feuille de style.</translation>
+    </message>
+    <message>
+        <source>Element at line : %1
+Mode = %2</source>
+        <translation>Element à la ligne : %1
+Mode = %2</translation>
+    </message>
+    <message>
+        <source>Element at line : %1
+Value = %2</source>
+        <translation>Element à la ligne : %1
+Valeur = %2</translation>
+    </message>
+    <message>
+        <source>Element at line : %1</source>
+        <translation>Element à la ligne : %1</translation>
+    </message>
+</context>
+<context>
+    <name>XsltParser</name>
+    <message>
+        <source>Failed to load external entity : &quot;%1&quot;</source>
+        <translation>Echec lors de la lecture de l&apos;entité externe : &quot;%1&quot;</translation>
     </message>
 </context>
 </TS>

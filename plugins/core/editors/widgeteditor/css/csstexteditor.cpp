@@ -40,6 +40,10 @@ CSSTextEditor::~CSSTextEditor() {
 
 }
 
+bool CSSTextEditor::isCommentAvailable() {
+	return false;
+}
+
 void CSSTextEditor::commentSelectedText( bool uncomment ) {
 	QDocumentCursor cursor( textCursor() );
 

@@ -120,10 +120,16 @@ XinxAction::MenuList CorePlugin::actions() {
 		XinxAction::Action * commentAction = new CommentAction( tr("&Comment"), QString( "Ctrl+Shift+C" ), this );
 		XinxAction::Action * uncommentAction = new UncommentAction( tr("&Uncomment"), QString( "Ctrl+Shift+D" ), this );
 
+		commentAction->action()->setStatusTip(tr( "Comment the selected text"));
+		commentAction->action()->setWhatsThis(tr( "Comment the selected text with the specifique guidelines of the language. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
+
+		uncommentAction->action()->setStatusTip(tr( "Uncomment the selected text if commented"));
+		uncommentAction->action()->setWhatsThis(tr( "See the comment helper function"));
+
 		XinxAction::Action * runAction = new StyleSheetAction( QIcon( ":/images/run.png" ), tr("Process stylesheet"), QString( "F9" ), this );
 
-		XinxAction::ActionList editMenu( tr("&Edit") );
-		XinxAction::ActionList runMenu( tr("&Execute") );
+		XinxAction::ActionList editMenu( tr("&Edit"), "edit" );
+		XinxAction::ActionList runMenu( tr("&Execute"), "execute" );
 
 		editMenu.append( commentAction );
 		editMenu.append( uncommentAction );

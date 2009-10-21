@@ -611,6 +611,10 @@ void XinxCodeEdit::commentSelectedText( bool uncomment ) {
 	throw XinxException( tr("Can't comment this type of document") );
 }
 
+bool XinxCodeEdit::isCommentAvailable() {
+	return false;
+}
+
 void XinxCodeEdit::refreshTextHighlighter() {
 	if( XINXConfig::self()->config().editor.autoHighlight && (!textCursor().isNull()) )
 		setMatchingText( textUnderCursor( textCursor(), false, false ) );

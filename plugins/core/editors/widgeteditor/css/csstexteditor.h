@@ -29,6 +29,8 @@ class CSSTextEditor : public XinxCodeEdit {
 public:
 	CSSTextEditor( QWidget * parent = 0 );
 	virtual ~CSSTextEditor();
+
+	virtual bool isCommentAvailable();
 public slots:
 	virtual void commentSelectedText( bool uncomment = false );
 protected:

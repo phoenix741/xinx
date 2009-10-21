@@ -206,6 +206,11 @@ public:
 
 	/*! Return true if the editor is read only */
 	bool isReadOnly() const;
+
+	/*!
+	 * Return if the editor can comment the code
+	 */
+	virtual bool isCommentAvailable();
 public slots:
 	//! Change the highlighter to \e highlighter
 	void setHighlighter( const QString & highlighter );

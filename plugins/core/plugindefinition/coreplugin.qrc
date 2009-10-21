@@ -3,16 +3,16 @@
         <file alias="qcodeedit/lan/css.qnfa" >../editors/qcodeedit/css.qnfa</file>
         <file alias="qcodeedit/lan/js.qnfa" >../editors/qcodeedit/js.qnfa</file>
         <file alias="qcodeedit/lan/xml.qnfa" >../editors/qcodeedit/xml.qnfa</file>
-        <file alias="images/planet.png">../images/planet.png</file>
-        <file alias="images/typecss.png">../images/typecss.png</file>
-        <file alias="images/typehtml.png">../images/typehtml.png</file>
-        <file alias="images/typejs.png">../images/typejs.png</file>
-        <file alias="images/typexml.png">../images/typexml.png</file>
-        <file alias="images/typexsl.png">../images/typexsl.png</file>
-        <file alias="images/typexq.png">../images/typexq.png</file>
-        <file alias="images/complete_fn.png">../images/complete_fn.png</file>
-        <file alias="images/coreplugin_fr.qm">../translations/coreplugin_fr.qm</file>
-        <file alias="images/run.png">../images/run.png</file>
-        <file alias="images/xmlpres.png">../images/xmlpres.png</file>
+        <file alias="images/planet.png" >../images/planet.png</file>
+        <file alias="images/typecss.png" >../images/typecss.png</file>
+        <file alias="images/typehtml.png" >../images/typehtml.png</file>
+        <file alias="images/typejs.png" >../images/typejs.png</file>
+        <file alias="images/typexml.png" >../images/typexml.png</file>
+        <file alias="images/typexsl.png" >../images/typexsl.png</file>
+        <file alias="images/typexq.png" >../images/typexq.png</file>
+        <file alias="images/complete_fn.png" >../images/complete_fn.png</file>
+        <file alias="translations/coreplugin_fr.qm" >../translations/coreplugin_fr.qm</file>
+        <file alias="images/run.png" >../images/run.png</file>
+        <file alias="images/xmlpres.png" >../images/xmlpres.png</file>
     </qresource>
 </RCC>

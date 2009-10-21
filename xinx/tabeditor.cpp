@@ -251,20 +251,6 @@ void TabEditor::lowerSelectedText() {
 	}
 }
 
-void TabEditor::commentSelectedText() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
-		editor->commentSelectedText();
-	}
-}
-
-void TabEditor::uncommentSelectedText() {
-	if( currentEditor() && isTextFileEditor( currentEditor() ) && currentEditor()->canCopy() ) {
-		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );
-		editor->commentSelectedText( true );
-	}
-}
-
 void TabEditor::indent() {
 	if( currentEditor() && isTextFileEditor( currentEditor() ) ) {
 		TextFileEditor * editor = static_cast<TextFileEditor*>( currentEditor() );

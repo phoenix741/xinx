@@ -220,8 +220,6 @@ void MainformImpl::createMenus() {
 	editMenu->addAction(m_indentAct);
 	editMenu->addAction(m_unindentAct);
 	editMenu->addSeparator();
-	editMenu->addAction(m_commentLineAct);
-	editMenu->addAction(m_uncommentLineAct);
 	editMenu->addAction(m_prettyPrintAct);
 	editMenu->addAction(m_highlightWord);
 	editMenu->addAction(m_completeAct);
@@ -469,24 +467,6 @@ void MainformImpl::createActions() {
 	m_lowerTextAct->setEnabled(false);
 	connect( m_lowerTextAct, SIGNAL(triggered()), m_tabEditors, SLOT(lowerSelectedText()) );
 	connect( m_tabEditors, SIGNAL(hasTextSelection(bool)), m_lowerTextAct, SLOT(setEnabled(bool)) );
-
-	// Comment
-	m_commentLineAct = new QAction( tr( "&Comment"), this );
-	m_commentLineAct->setStatusTip(tr( "Comment the selected text"));
-	m_commentLineAct->setWhatsThis(tr( "Comment the selected text with the specifique guidelines of the language. <ul><li>In <b>XML</b> like format <i>&lt;!-- comment --&gt;</i></li> <li>In <b>Javascript</b> : <i>/* comment */</i> </li></ul>"));
-	m_commentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+C" ) );
-	m_commentLineAct->setEnabled(false);
-	connect( m_commentLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(commentSelectedText()) );
-	connect( m_tabEditors, SIGNAL(hasTextSelection(bool)), m_commentLineAct, SLOT(setEnabled(bool)) );
-
-	// Uncomment
-	m_uncommentLineAct = new QAction( tr( "&Uncomment"), this );
-	m_uncommentLineAct->setStatusTip(tr( "Uncomment the selected text if commented"));
-	m_uncommentLineAct->setWhatsThis(tr( "See the comment helper function"));
-	m_uncommentLineAct->setShortcut( QKeySequence( "Ctrl+Shift+D" ) );
-	m_uncommentLineAct->setEnabled(false);
-	connect( m_uncommentLineAct, SIGNAL(triggered()), m_tabEditors, SLOT(uncommentSelectedText()) );
-	connect( m_tabEditors, SIGNAL(hasTextSelection(bool)), m_uncommentLineAct, SLOT(setEnabled(bool)) );
 
 	// Indent
 	m_indentAct = new QAction( QIcon(":/images/format-indent-more.png"), tr( "Indent Code"), this );
@@ -762,19 +742,20 @@ void MainformImpl::createPluginsActions() {
 			// Pour chaque menu
 			foreach( const XinxAction::ActionList & menu, menuList ) {
 				const QString & menuName = menu.menu();
+				const QString & menuId = menu.menuId();
 
 				// Pour chaque élemént du menu
 				foreach( XinxAction::MenuItem * item, menu ) {
 
 					// Si l'élément est un séparateur
 					if( dynamic_cast<XinxAction::Separator*>( item ) ) {
-						if( ! m_menus.value( menuName ) ) {
+						if( ! m_menus.value( menuId ) ) {
 							QMenu * newMenu = 0;
 							newMenu = new QMenu( menuName, m_menuBar );
 							m_menuBar->insertMenu( m_menus[ "tools" ]->menuAction(), newMenu );
-							m_menus[ menuName ] = newMenu;
+							m_menus[ menuId ] = newMenu;
 						}
-						m_menus[ menuName ]->addSeparator();
+						m_menus[ menuId ]->addSeparator();
 
 					// Si l'élément est une action
 					} else if( dynamic_cast<XinxAction::Action*>( item ) ) {
@@ -782,25 +763,25 @@ void MainformImpl::createPluginsActions() {
 						dynamic_cast<XinxAction::Action*>( item )->updateActionState();
 
 						// Si le menu n'existe pas alors le créer.
-						if( ! m_menus.value( menuName ) ) {
+						if( ! m_menus.value( menuId ) ) {
 							QMenu * newMenu = 0;
 							newMenu = new QMenu( menuName, m_menuBar );
 							m_menuBar->insertMenu( m_menus[ "tools" ]->menuAction(), newMenu );
-							m_menus[ menuName ] = newMenu;
+							m_menus[ menuId ] = newMenu;
 						}
-						m_menus[ menuName ]->addAction( actionToAdd );
+						m_menus[ menuId ]->addAction( actionToAdd );
 
 						// Gestion de la toolbar
 						if( dynamic_cast<XinxAction::Action*>( item )->isInToolBar() ) {
-							if( ! m_toolBars.value( menuName ) ) {
+							if( ! m_toolBars.value( menuId ) ) {
 								QToolBar * newToolBar = 0;
 								newToolBar = new QToolBar( this );
 								newToolBar->setWindowTitle( menuName );
-								newToolBar->setObjectName( menuName );
+								newToolBar->setObjectName( menuId );
 								addToolBar( Qt::TopToolBarArea, newToolBar );
-								m_toolBars[ menuName ] = newToolBar;
+								m_toolBars[ menuId ] = newToolBar;
 							}
-							m_toolBars[ menuName ]->addAction( actionToAdd );
+							m_toolBars[ menuId ]->addAction( actionToAdd );
 						}
 
 						m_pluginsAction.append( actionToAdd );

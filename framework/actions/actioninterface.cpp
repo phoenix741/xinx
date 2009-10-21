@@ -49,7 +49,7 @@ Action::~Action() {
 
 QAction * Action::action() const {
 	return m_action;
-};
+}
 
 bool Action::isActionVisible() const {
 	return true;
@@ -77,11 +77,18 @@ void Action::actionTriggered() {
 
 /* ActionList */
 
-ActionList::ActionList( const QString & menu ) : m_menu( menu ) {
+ActionList::ActionList( const QString & menu ) : m_menu( menu ), m_menuId( menu ) {
+}
+
+ActionList::ActionList( const QString & menu, const QString & id ) : m_menu( menu ), m_menuId( id ) {
 }
 
 const QString & ActionList::menu() const {
 	return m_menu;
+}
+
+const QString & ActionList::menuId() const {
+	return m_menuId;
 }
 
 void ActionList::updateActionsState() {

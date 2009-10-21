@@ -46,15 +46,10 @@ CommentAction::CommentAction( const QIcon & icon, const QString & text, const QK
 }
 
 bool CommentAction::isActionVisible() const {
-	bool result =
-		EditorManager::self() && (
-		qobject_cast<CSSFileEditor*>( EditorManager::self()->currentEditor() )  ||
-		qobject_cast<HtmlFileEditor*>( EditorManager::self()->currentEditor() ) ||
-		qobject_cast<JSFileEditor*>( EditorManager::self()->currentEditor() )   ||
-		qobject_cast<XmlFileEditor*>( EditorManager::self()->currentEditor() )  ||
-		qobject_cast<StyleSheetEditor*>( EditorManager::self()->currentEditor() ) );
-
-	return result;
+	if( ! EditorManager::self() ) return false;
+	TextFileEditor * tfe = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
+	if( ! tfe )                   return false;
+	return tfe->textEdit()->isCommentAvailable();
 }
 
 bool CommentAction::isActionEnabled() const {
@@ -64,7 +59,13 @@ bool CommentAction::isActionEnabled() const {
 	return editor->textEdit()->textCursor().hasSelection();
 }
 
+bool CommentAction::isInToolBar() const {
+	return false;
+}
+
 void CommentAction::actionTriggered() {
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
+	editor->textEdit()->commentSelectedText();
 }
 
 void CommentAction::updateSignals() {
@@ -91,5 +92,7 @@ UncommentAction::UncommentAction( const QIcon & icon, const QString & text, cons
 }
 
 void UncommentAction::actionTriggered() {
+	TextFileEditor * editor = qobject_cast<TextFileEditor*>( EditorManager::self()->currentEditor() );
+	editor->textEdit()->commentSelectedText( true );
 }
 

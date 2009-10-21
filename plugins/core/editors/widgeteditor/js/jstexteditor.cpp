@@ -54,6 +54,10 @@ QCompleter * JSTextEditor::completer() {
 	return XinxCodeEdit::completer();
 }
 
+bool JSTextEditor::isCommentAvailable() {
+	return true;
+}
+
 void JSTextEditor::commentSelectedText( bool uncomment ) {
 	QString functionName;
 

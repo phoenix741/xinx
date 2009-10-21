@@ -36,6 +36,7 @@ public:
 	CommentAction( const QString & text, const QKeySequence & shortcut, QObject * parent );
 	CommentAction( const QIcon & icon, const QString & text, const QKeySequence & shortcut, QObject * parent );
 
+	virtual bool isInToolBar() const;
 	virtual bool isActionVisible() const;
 	virtual bool isActionEnabled() const;
 protected slots:

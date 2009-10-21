@@ -67,16 +67,6 @@ TextFileEditor::~TextFileEditor() {
 }
 
 void TextFileEditor::initObjects() {
-	m_commentAction = new QAction( tr("Comment"), this );
-	m_commentAction->setEnabled( false );
-	connect( m_commentAction, SIGNAL(triggered()), this, SLOT(comment()) );
-	connect( this, SIGNAL(copyAvailable(bool)), m_commentAction, SLOT(setEnabled(bool)) );
-
-	m_uncommentAction = new QAction( tr("Uncomment"), this );
-	m_uncommentAction->setEnabled( false );
-	connect( m_uncommentAction, SIGNAL(triggered()), this, SLOT(uncomment()) );
-	connect( this, SIGNAL(copyAvailable(bool)), m_uncommentAction, SLOT(setEnabled(bool)) );
-
 	// Set filter event layout.
 	if( ! m_view )
 		m_view = new XinxCodeEdit( this );
@@ -296,14 +286,6 @@ bool TextFileEditor::autoIndent() {
 	return false;
 }
 
-void TextFileEditor::commentSelectedText( bool uncomment ) {
-	try {
-		m_view->commentSelectedText( uncomment );
-	} catch( XinxException e ) {
-		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
-	}
-}
-
 void TextFileEditor::complete() {
 	QDocumentCursor cursor = textEdit()->textCursor();
 
@@ -354,9 +336,6 @@ void TextFileEditor::contextMenuEvent( QContextMenuEvent * contextMenuEvent ) {
 		}
 	}
 	
-	menu->addAction( m_commentAction );
-	menu->addAction( m_uncommentAction );
-	menu->addSeparator();
 	menu->addAction( undoAction() );
 	menu->addAction( redoAction() );
 	menu->addSeparator();
@@ -370,14 +349,6 @@ void TextFileEditor::contextMenuEvent( QContextMenuEvent * contextMenuEvent ) {
 
 void TextFileEditor::searchWord( const QString & ) {
 	emit message( lastFileName(), tr("Not implemented"), WARNING_MESSAGE );
-}
-
-void TextFileEditor::comment() {
-	commentSelectedText();
-}
-
-void TextFileEditor::uncomment() {
-	commentSelectedText( true );
 }
 
 void TextFileEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
@@ -460,12 +431,3 @@ void TextFileEditor::copy() {
 void TextFileEditor::paste() {
 	textEdit()->editor()->paste();
 }
-
-QAction * TextFileEditor::commentAction() {
-	return m_commentAction;
-}
-
-QAction * TextFileEditor::uncommentAction() {
-	return m_uncommentAction;
-}
-
