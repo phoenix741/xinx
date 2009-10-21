@@ -75,6 +75,10 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
+QList<IXinxPluginConfigurationPage*> CVSPlugin::createSettingsDialog() {
+	return QList<IXinxPluginConfigurationPage*>();
+}
+/*
 QWidget * CVSPlugin::createSettingsDialog() {
 	return new CustomizePlugin();
 }
@@ -134,6 +138,7 @@ bool CVSPlugin::saveSettingsDialog( QWidget * widget ) {
 	m_settings->save();
 	return true;
 }
+*/
 
 QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
 	QList< QPair<QString,QString> > tools;

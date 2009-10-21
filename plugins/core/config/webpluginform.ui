@@ -6,100 +6,76 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
-    <height>241</height>
+    <width>602</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Customize Web Plugin</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
-   <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>0</number>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="m_activeXmlGroupBox">
+     <property name="title">
+      <string>Active completion on XML</string>
      </property>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>XML</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QGroupBox" name="m_activeXmlGroupBox">
-         <property name="title">
-          <string>Active completion on XML</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
-          </property>
-          <property name="labelAlignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="m_addClosedBaliseCheckBox">
-            <property name="text">
-             <string>&amp;Add closed balise automatically</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="m_addDefaultAttributeCheckBox">
-            <property name="text">
-             <string>Add default a&amp;ttribute automatically</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="m_addDefaultSubBaliseCheckBox">
-            <property name="text">
-             <string>Add default sub-&amp;balise automatically</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>JavaScript</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="m_javaScriptGroupBox">
-         <property name="title">
-          <string>Active completion on JavaScript</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox_4">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Auto close bracket</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="m_addClosedBaliseCheckBox">
+        <property name="text">
+         <string>&amp;Add closed balise automatically</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="m_addDefaultAttributeCheckBox">
+        <property name="text">
+         <string>Add default a&amp;ttribute automatically</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="m_addDefaultSubBaliseCheckBox">
+        <property name="text">
+         <string>Add default sub-&amp;balise automatically</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="m_javaScriptGroupBox">
+     <property name="title">
+      <string>Active completion on JavaScript</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="checkBox_4">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Auto close bracket</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

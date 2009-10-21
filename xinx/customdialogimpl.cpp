@@ -412,6 +412,8 @@ void CustomDialogImpl::configurePlugin( PluginElement * plugin ) {
 	Q_ASSERT( dynamic_cast<XinxPluginElement*>( plugin ) );
 	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( dynamic_cast<XinxPluginElement*>( plugin )->plugin() ) );
 
+	QMessageBox::warning( this, tr("In developpement"), tr("Action of this button is now in developpement, please hit the author, if you are in the release version.") );
+	/*
 	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>( plugin );
 	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( xinxPlugin->plugin() );
 
@@ -437,6 +439,7 @@ void CustomDialogImpl::configurePlugin( PluginElement * plugin ) {
 		if( ! p->saveSettingsDialog( settings ) )
 			QMessageBox::warning( this, tr("Plugin Customization"), tr("Can't save the plugin configuration") );
 	}
+	*/
 }
 
 void CustomDialogImpl::aboutPlugin( PluginElement * plugin ) {

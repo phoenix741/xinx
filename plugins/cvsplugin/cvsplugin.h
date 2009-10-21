@@ -39,9 +39,7 @@ public:
 
 	virtual QList< QPair<QString,QString> > pluginTools();
 
-	virtual QWidget * createSettingsDialog();
-	virtual bool loadSettingsDialog( QWidget * widget );
-	virtual bool saveSettingsDialog( QWidget * widget );
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog();
 
 	virtual QStringList rcs();
 	virtual QString descriptionOfRCS( const QString & rcs );

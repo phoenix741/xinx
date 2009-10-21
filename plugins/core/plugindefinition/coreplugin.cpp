@@ -141,7 +141,11 @@ XinxAction::MenuList CorePlugin::actions() {
 	return m_menus;
 }
 
+QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog() {
+	return QList<IXinxPluginConfigurationPage*>();
+}
 
+/*
 QWidget * CorePlugin::createSettingsDialog() {
 	return new WebPluginFormImpl();
 }
@@ -175,6 +179,7 @@ bool CorePlugin::saveSettingsDialog( QWidget * widget ) {
 	settings->save();
 	return true;
 }
+*/
 
 QWidget * CorePlugin::createProjectSettingsPage() {
 	return new WebPluginProjectPropertyFormImpl();

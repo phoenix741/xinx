@@ -92,13 +92,33 @@ public:
 };
 
 /*!
+ * This interface is used to propose one page of configuration. For each page, the program
+ * can modify settings and save or restore value.
+ */
+class IXinxPluginConfigurationPage {
+	virtual ~IXinxPluginConfigurationPage() {}
+
+	//! Return an image for the configration page.
+	virtual QPixmap image();
+	//! Return a name for the configuration page. The name must be short
+	virtual QPixmap name();
+
+	//! Create a widget used in a wrapper for the configuration dialog box.
+	virtual QWidget * settingsDialog() = 0;
+	//! Load settings to dialog box
+	virtual bool loadSettingsDialog() = 0;
+	//! Save settings to dialog box
+	virtual bool saveSettingsDialog() = 0;
+};
+
+/*!
  * This class is used to propose to the user modify their options. If the Plugins inherits from this interface
- * the XinxPluginSelector propose automatically a custom button.
+ * the custom dialog show pages.
  *
  * The Plugin create a wigdet contains the user interface, and have two method for put and get the configuration
  * in the dialog.
  *
- * Xinx create the dialog with the Ok and Cancel button.
+ * Xinx integrate the widget in the configuration dialog.
  */
 class IXinxPluginConfiguration {
 public:
@@ -106,11 +126,7 @@ public:
 	virtual ~IXinxPluginConfiguration() {}
 
 	//! Create a widget used in a wrapper for the configuration dialog box.
-	virtual QWidget * createSettingsDialog() = 0;
-	//! Load settings to dialog box
-	virtual bool loadSettingsDialog( QWidget * widget ) = 0;
-	//! Save settings to dialog box
-	virtual bool saveSettingsDialog( QWidget * widget ) = 0;
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog() = 0;
 };
 
 /*!
