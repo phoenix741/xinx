@@ -75,7 +75,7 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 	return QVariant();
 }
 
-QList<IXinxPluginConfigurationPage*> CVSPlugin::createSettingsDialog() {
+QList<IXinxPluginConfigurationPage*> CVSPlugin::createSettingsDialog( QWidget * parent ) {
 	return QList<IXinxPluginConfigurationPage*>();
 }
 /*

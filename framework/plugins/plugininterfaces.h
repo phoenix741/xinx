@@ -96,12 +96,13 @@ public:
  * can modify settings and save or restore value.
  */
 class IXinxPluginConfigurationPage {
+public:
 	virtual ~IXinxPluginConfigurationPage() {}
 
 	//! Return an image for the configration page.
-	virtual QPixmap image();
+	virtual QPixmap image() = 0;
 	//! Return a name for the configuration page. The name must be short
-	virtual QPixmap name();
+	virtual QString name() = 0;
 
 	//! Create a widget used in a wrapper for the configuration dialog box.
 	virtual QWidget * settingsDialog() = 0;
@@ -126,7 +127,7 @@ public:
 	virtual ~IXinxPluginConfiguration() {}
 
 	//! Create a widget used in a wrapper for the configuration dialog box.
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog() = 0;
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent ) = 0;
 };
 
 /*!

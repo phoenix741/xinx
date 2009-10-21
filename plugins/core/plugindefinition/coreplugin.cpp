@@ -20,7 +20,7 @@
 // Xinx header
 #include "coreplugin.h"
 
-#include "config/webpluginformimpl.h"
+#include "config/editorsconfigformimpl.h"
 #include "config/selfwebpluginsettings.h"
 
 #include "filetypeplugin.h"
@@ -82,7 +82,7 @@ QVariant CorePlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute
 	case PLG_DESCRIPTION:
 		return tr("Necessary editor, actions, and dock used by XINX.");
 	case PLG_ICON:
-		return QPixmap( ":/images/planet.png" );
+		return QPixmap( ":/images/coreplugin.png" );
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
 	case PLG_EMAIL:
@@ -141,45 +141,11 @@ XinxAction::MenuList CorePlugin::actions() {
 	return m_menus;
 }
 
-QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog() {
-	return QList<IXinxPluginConfigurationPage*>();
+QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog( QWidget * parent ) {
+	QList<IXinxPluginConfigurationPage*> pages;
+	pages << new EditorsConfigFormImpl( parent );
+	return pages;
 }
-
-/*
-QWidget * CorePlugin::createSettingsDialog() {
-	return new WebPluginFormImpl();
-}
-
-bool CorePlugin::loadSettingsDialog( QWidget * widget ) {
-	SelfWebPluginSettings * settings = SelfWebPluginSettings::self();
-	WebPluginFormImpl * form = qobject_cast<WebPluginFormImpl*>( widget );
-	Q_ASSERT( form );
-
-	form->m_activeXmlGroupBox->setChecked( settings->config().xml.activeCompletion );
-	form->m_addClosedBaliseCheckBox->setChecked( settings->config().xml.addClosedBalise );
-	form->m_addDefaultAttributeCheckBox->setChecked( settings->config().xml.addDefaultAttribute );
-	form->m_addDefaultSubBaliseCheckBox->setChecked( settings->config().xml.addDefaultSubBalise );
-
-	form->m_javaScriptGroupBox->setChecked( settings->config().javascript.activeCompletion );
-	return true;
-}
-
-bool CorePlugin::saveSettingsDialog( QWidget * widget ) {
-	SelfWebPluginSettings * settings = SelfWebPluginSettings::self();
-	WebPluginFormImpl * form = qobject_cast<WebPluginFormImpl*>( widget );
-	Q_ASSERT( form );
-
-	settings->config().xml.activeCompletion = form->m_activeXmlGroupBox->isChecked();
-	settings->config().xml.addClosedBalise = form->m_addClosedBaliseCheckBox->isChecked();
-	settings->config().xml.addDefaultAttribute = form->m_addDefaultAttributeCheckBox->isChecked();
-	settings->config().xml.addDefaultSubBalise = form->m_addDefaultSubBaliseCheckBox->isChecked();
-
-	settings->config().javascript.activeCompletion = form->m_javaScriptGroupBox->isChecked();
-
-	settings->save();
-	return true;
-}
-*/
 
 QWidget * CorePlugin::createProjectSettingsPage() {
 	return new WebPluginProjectPropertyFormImpl();

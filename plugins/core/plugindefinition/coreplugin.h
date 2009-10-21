@@ -48,7 +48,7 @@ public:
 
 	virtual XinxAction::MenuList actions();
 
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog();
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
 
 	virtual QWidget * createProjectSettingsPage();
 	virtual bool loadProjectSettingsPage( QWidget * widget );

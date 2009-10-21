@@ -17,15 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#include "webpluginformimpl.h"
+#ifndef WEBPLUGINFORMIMPL_H_
+#define WEBPLUGINFORMIMPL_H_
+#pragma once
 
-/* WebPluginFormImpl */
+// Xinx header
+#include "ui_editorsconfigform.h"
+#include <plugins/plugininterfaces.h>
 
-WebPluginFormImpl::WebPluginFormImpl( QWidget * parent ) : QWidget( parent ) {
-	setupUi( this );
+class EditorsConfigFormImpl : public QWidget, public Ui::EditorsConfigForm, public IXinxPluginConfigurationPage {
+	Q_OBJECT
+public:
+	EditorsConfigFormImpl( QWidget * parent = 0 );
+	virtual ~EditorsConfigFormImpl();
+
+	virtual QPixmap image();
+	virtual QString name();
+
+	virtual QWidget * settingsDialog();
+	virtual bool loadSettingsDialog();
+	virtual bool saveSettingsDialog();
+private:
 	
-}
+};
 
-WebPluginFormImpl::~WebPluginFormImpl() {
-	
-}
+#endif /*WEBPLUGINFORMIMPL_H_*/

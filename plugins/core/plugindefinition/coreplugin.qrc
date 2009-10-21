@@ -3,7 +3,9 @@
         <file alias="qcodeedit/lan/css.qnfa" >../editors/qcodeedit/css.qnfa</file>
         <file alias="qcodeedit/lan/js.qnfa" >../editors/qcodeedit/js.qnfa</file>
         <file alias="qcodeedit/lan/xml.qnfa" >../editors/qcodeedit/xml.qnfa</file>
-        <file alias="images/planet.png" >../images/planet.png</file>
+        <file alias="images/preferences-editors.png" >../images/preferences-editors.png</file>
+        <file alias="images/preferences-xmlpres.png" >../images/preferences-xmlpres.png</file>
+        <file alias="images/coreplugin.png" >../images/coreplugin.png</file>
         <file alias="images/typecss.png" >../images/typecss.png</file>
         <file alias="images/typehtml.png" >../images/typehtml.png</file>
         <file alias="images/typejs.png" >../images/typejs.png</file>

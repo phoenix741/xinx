@@ -289,6 +289,22 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 		XinxPluginElement * e = new XinxPluginElement( plugin->plugin(), plugin->isStatic() );
 		e->setActivated( plugin->isActivated() );
 		m_pluginListView->addPlugin( e );
+
+		IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( e->plugin() );
+		if( ! p ) continue;
+
+		QList<IXinxPluginConfigurationPage*> pages = p->createSettingsDialog( this );
+
+		foreach( IXinxPluginConfigurationPage * page, pages ) {
+			QListWidgetItem * item = new QListWidgetItem( QIcon( page->image() ), page->name() );
+			m_listWidget->insertItem( 9, item );
+
+			m_stackedWidget->insertWidget( 9, page->settingsDialog() );
+
+			page->loadSettingsDialog();
+
+			m_pages.insertMulti( e, page );
+		}
 	}
 }
 
@@ -404,6 +420,10 @@ void CustomDialogImpl::storeConfig() {
 		if( XinxPluginsLoader::self()->plugin( name ) ) {
 			XinxPluginsLoader::self()->plugin( name )->setActivated( isActivated );
 		}
+	}
+
+	foreach( IXinxPluginConfigurationPage * page, m_pages ) {
+		page->saveSettingsDialog();
 	}
 }
 

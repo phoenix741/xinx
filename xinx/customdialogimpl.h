@@ -27,6 +27,7 @@
 
 class SnipetItemModel;
 class RecursiveSortFilterProxyModel;
+class IXinxPluginConfigurationPage;
 
 /*!
  * Implementation of dialog used to configure custom options in XINX. The options is globals for the application.
@@ -84,6 +85,7 @@ private:
 	XINXConfig m_config;
 	RecursiveSortFilterProxyModel * m_snipetFilterModel;
 	SnipetItemModel * m_snipetModel;
+	QMultiHash<PluginElement*,IXinxPluginConfigurationPage*> m_pages;
 };
 
 #endif

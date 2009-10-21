@@ -18,13 +18,13 @@
     <widget class="QListWidget" name="m_listWidget">
      <property name="minimumSize">
       <size>
-       <width>128</width>
+       <width>150</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>128</width>
+       <width>150</width>
        <height>16777215</height>
       </size>
      </property>
@@ -37,8 +37,11 @@
      <property name="movement">
       <enum>QListView::Static</enum>
      </property>
-     <property name="spacing">
-      <number>12</number>
+     <property name="gridSize">
+      <size>
+       <width>120</width>
+       <height>90</height>
+      </size>
      </property>
      <property name="viewMode">
       <enum>QListView::IconMode</enum>
@@ -163,7 +166,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QStackedWidget" name="stackedWidget">
+    <widget class="QStackedWidget" name="m_stackedWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -1827,7 +1830,7 @@
   <connection>
    <sender>m_listWidget</sender>
    <signal>currentRowChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
+   <receiver>m_stackedWidget</receiver>
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">

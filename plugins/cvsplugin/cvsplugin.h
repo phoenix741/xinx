@@ -39,7 +39,7 @@ public:
 
 	virtual QList< QPair<QString,QString> > pluginTools();
 
-	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog();
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
 
 	virtual QStringList rcs();
 	virtual QString descriptionOfRCS( const QString & rcs );

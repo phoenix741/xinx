@@ -23,7 +23,7 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     docks/datastream/xmlpresentationitem.h \
     pluginproperty/webpluginprojectpropertyformimpl.h \
     config/webpluginsettings.h \
-    config/webpluginformimpl.h \
+    config/editorsconfigformimpl.h \
     config/selfwebpluginsettings.h \
     editors/scheme/xmlformatscheme.h \
     editors/scheme/jsformatscheme.h \
@@ -58,7 +58,7 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     docks/datastream/xmlpresentationdockwidget.cpp \
     docks/datastream/xmlpresentationitem.cpp \
     pluginproperty/webpluginprojectproperyformimpl.cpp \
-    config/webpluginformimpl.cpp \
+    config/editorsconfigformimpl.cpp \
     config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \
     editors/scheme/xmlformatscheme.cpp \
@@ -90,9 +90,9 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     actions/stylesheetaction.cpp \
     actions/commentactions.cpp
 TRANSLATIONS += translations/coreplugin_fr.ts
-FORMS += config/config.ui \
-    config/webpluginform.ui \
+FORMS += config/editorsconfigform.ui \
     config/webpluginprojectpropertyform.ui \
+    config/xmlpresconfigform.ui \
     docks/datastream/xquery.ui \
     docks/datastream/xmlpresentationwidget.ui
 unix:INCLUDEPATH += /usr/include/libxml2
