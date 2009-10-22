@@ -23,13 +23,23 @@
 
 // Xinx header
 #include "ui_customize.h"
+#include "plugins/plugininterfaces.h"
+#include "pluginsettings.h"
 
-class CustomizePlugin : public QWidget, public Ui::CustomizePlugin {
+class CustomizePlugin : public QWidget, public Ui::CustomizePlugin, public IXinxPluginConfigurationPage {
 	Q_OBJECT
 public:
-	CustomizePlugin( QWidget * parent = 0 );
+	CustomizePlugin( PluginSettings * settings, QWidget * parent = 0 );
 	virtual ~CustomizePlugin();
+
+	virtual QPixmap image();
+	virtual QString name();
+
+	virtual QWidget * settingsDialog();
+	virtual bool loadSettingsDialog();
+	virtual bool saveSettingsDialog();
 private:
+	PluginSettings * m_settings;
 };
 
 #endif /*CUSTOMIZEPLUGIN_H_*/

@@ -76,69 +76,11 @@ QVariant CVSPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute 
 }
 
 QList<IXinxPluginConfigurationPage*> CVSPlugin::createSettingsDialog( QWidget * parent ) {
-	return QList<IXinxPluginConfigurationPage*>();
-}
-/*
-QWidget * CVSPlugin::createSettingsDialog() {
-	return new CustomizePlugin();
+	QList<IXinxPluginConfigurationPage*> list;
+	list << new CustomizePlugin( m_settings, parent );
+	return list;
 }
 
-bool CVSPlugin::loadSettingsDialog( QWidget * widget ) {
-	CustomizePlugin * dlg = qobject_cast<CustomizePlugin*>( widget );
-	Q_ASSERT( dlg );
-
-	// CVS: Progress message
-	if( m_settings->config().progressMessages.isEmpty() ) 
-		dlg->m_cvsVerboseComboBox->setCurrentIndex( 2 );
-	else
-	if( m_settings->config().progressMessages == "-q" ) 
-		dlg->m_cvsVerboseComboBox->setCurrentIndex( 1 );
-	else
-	if( m_settings->config().progressMessages == "-Q" ) 
-		dlg->m_cvsVerboseComboBox->setCurrentIndex( 0 );
-	
-	// CVS: Compression
-	dlg->m_cvsCompressionComboBox->setCurrentIndex( m_settings->config().compressionLevel );
-	
-	// CVS: Prune empty directories
-	dlg->m_cvsPruneCheckBox->setChecked( m_settings->config().pruneEmptyDirectories );
-	
-	// CVS: Create any directories that exist in the repository
-	dlg->m_cvsCreateDirCheckBox->setChecked( m_settings->config().createDirectories );
-	
-	return true;
-}
-
-bool CVSPlugin::saveSettingsDialog( QWidget * widget ) {
-	CustomizePlugin * dlg = qobject_cast<CustomizePlugin*>( widget );
-	Q_ASSERT( dlg );
-
-	// CVS: Progress message
-	switch( dlg->m_cvsVerboseComboBox->currentIndex() ) {
-	case 2: 
-		m_settings->config().progressMessages = "";
-		break;
-	case 1: 
-		m_settings->config().progressMessages = "-q";
-		break;
-	case 0: 
-		m_settings->config().progressMessages = "-Q";
-		break;
-	}
-
-	// CVS: Compression
-	m_settings->config().compressionLevel = dlg->m_cvsCompressionComboBox->currentIndex();
-	
-	// CVS: Prune empty directories
-	m_settings->config().pruneEmptyDirectories = dlg->m_cvsPruneCheckBox->isChecked();
-	
-	// CVS: Create any directories that exist in the repository
-	m_settings->config().createDirectories = dlg->m_cvsCreateDirCheckBox->isChecked();
-
-	m_settings->save();
-	return true;
-}
-*/
 
 QList< QPair<QString,QString> > CVSPlugin::pluginTools() {
 	QList< QPair<QString,QString> > tools;
