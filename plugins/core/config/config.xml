@@ -1,4 +1,14 @@
 <config classname="Web Plugin Settings" organization="Shadoware.Org" application="XINX" path="PluginsSettings/webplugin">
+	<type name="XmlPres">
+		<value name="Auto expanded path" type="string" default="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
+		<value name="Hide path" type="stringlist" default="debug,application_data"/>
+		<value name="Show filtered sub-tree" type="bool" default="true"/>
+		<value name="View Color" type="color" default="blue"/>
+		<value name="Error Color" type="color" default="red"/>
+		<value name="Screen data Color" type="color" default="darkRed"/>
+		<value name="Show name attribute if exists" type="bool" default="true"/>
+	</type>
+
 	<type name="XML">
 		<value name="Active completion" type="bool" default="true"/>
 		<value name="Add closed balise" type="bool" default="true"/>
@@ -29,6 +39,7 @@
 		<value name="Active completion" type="bool" default="true"/>
 	</type>
 
+	<value name="Xml Pres" type="XmlPres"/>
 	<value name="XML" type="XML"/>
 	<value name="Stylesheet Parsing" type="Stylesheet Parsing"/>
 	<value name="JavaScript" type="JavaScript"/>

@@ -59,9 +59,6 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 
 	m_addPushButton->setMenu( menu );
 
-	// XML Pres
-	m_hideElementList->setDefaultVisible( false );
-
 	// Font encodingas
 	QList<QByteArray> encodings = QTextCodec::availableCodecs();
 	qSort( encodings );
@@ -258,15 +255,6 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 	m_specifiqueTableView->resizeColumnsToContents();
 	QObject::connect( specifiqueModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), m_specifiqueTableView, SLOT(resizeColumnsToContents()) );
 
-	// Xml pres
-	m_expandPathLineEdit->setText( m_config.config().xmlPres.autoExpandedPath );
-	m_hideElementList->setValues( m_config.config().xmlPres.hidePath );
-	m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
-	m_showNameAttributeCheckBox->setChecked( m_config.config().xmlPres.showNameAttributeIfExists );
-	m_viewColorBox->setColor( m_config.config().xmlPres.viewColor );
-	m_errorColorBox->setColor( m_config.config().xmlPres.errorColor );
-	m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
-
 	// Snipet
 	m_snipetModel->select();
 	m_snipetFilterModel->setIncludeIndex( QModelIndexList() << m_snipetFilterModel->mapToSource( m_snipetFilterModel->index( 0, 0 ) ) );
@@ -394,15 +382,6 @@ void CustomDialogImpl::storeConfig() {
 	SpecifiqueModelIndex * specifiqueModel = qobject_cast<SpecifiqueModelIndex*>( m_specifiqueTableView->model() );
 	m_config.config().files.clear();
 	m_config.config().files = specifiqueModel->extentions();
-
-	// Xml pres
-	m_config.config().xmlPres.autoExpandedPath = m_expandPathLineEdit->text();
-	m_config.config().xmlPres.hidePath = m_hideElementList->values();
-	m_config.config().xmlPres.showFilteredSubTree = m_showSubEltCheckBox->isChecked();
-	m_config.config().xmlPres.viewColor = m_viewColorBox->color();
-	m_config.config().xmlPres.errorColor = m_errorColorBox->color();
-	m_config.config().xmlPres.screenDataColor = m_screenColorBox->color();
-	m_config.config().xmlPres.showNameAttributeIfExists = m_showNameAttributeCheckBox->isChecked();
 
 	// Syntax highlighter
 	m_config.putFormatsSchemeToConfig();

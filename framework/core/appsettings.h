@@ -88,16 +88,6 @@ public:
 		bool canBeCommitToRcs;
 	};
 
-	struct struct_xmlpres {
-		QString autoExpandedPath;
-		QStringList hidePath;
-		bool showFilteredSubTree;
-		QColor viewColor;
-		QColor errorColor;
-		QColor screenDataColor;
-		bool showNameAttributeIfExists;
-	};
-
 	struct struct_globals {
 		QString language;
 		QPoint position;
@@ -111,7 +101,6 @@ public:
 		struct_rcs rcs;
 		struct_editor editor;
 		struct_configurationEditor configurationEditor;
-		struct_xmlpres xmlPres;
 		struct_snipets snipets;
 		QHash<QString,QString> tools;
 		QHash<QString,struct_extentions> files;
@@ -158,10 +147,6 @@ protected:
 	virtual struct_extentions getDefaultExtentions();
 	virtual AppSettings::struct_extentions getSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_extentions & defaultValue );
 	virtual void setSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_extentions & value );
-
-	virtual struct_xmlpres getDefaultXmlpres();
-	virtual AppSettings::struct_xmlpres getSettingsXmlpres( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_xmlpres & defaultValue );
-	virtual void setSettingsXmlpres( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_xmlpres & value );
 
 	virtual struct_globals getDefaultGlobals();
 	virtual AppSettings::struct_globals getSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & defaultValue );

@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef WEBPLUGINFORMIMPL_H_
-#define WEBPLUGINFORMIMPL_H_
+#ifndef EDITORSCONFIGFORMIMPL_H_
+#define EDITORSCONFIGFORMIMPL_H_
 #pragma once
 
 // Xinx header
@@ -41,4 +41,4 @@ private:
 	
 };
 
-#endif /*WEBPLUGINFORMIMPL_H_*/
+#endif /*EDITORSCONFIGFORMIMPL_H_*/

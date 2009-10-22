@@ -24,6 +24,7 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     pluginproperty/webpluginprojectpropertyformimpl.h \
     config/webpluginsettings.h \
     config/editorsconfigformimpl.h \
+    config/xmlpresconfigformimpl.h \
     config/selfwebpluginsettings.h \
     editors/scheme/xmlformatscheme.h \
     editors/scheme/jsformatscheme.h \
@@ -59,6 +60,7 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     docks/datastream/xmlpresentationitem.cpp \
     pluginproperty/webpluginprojectproperyformimpl.cpp \
     config/editorsconfigformimpl.cpp \
+    config/xmlpresconfigformimpl.cpp \
     config/selfwebpluginsettings.cpp \
     config/webpluginsettings.cpp \
     editors/scheme/xmlformatscheme.cpp \

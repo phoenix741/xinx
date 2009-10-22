@@ -89,6 +89,51 @@ void WebPluginSettings::load() {
 	d->deleteSettings();
 }
 
+WebPluginSettings::struct_xmlpres WebPluginSettings::getDefaultXmlpres() {
+	struct_xmlpres value;
+
+	value.autoExpandedPath = "/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow";
+	value.hidePath = QString("debug,application_data").split(",");
+	value.showFilteredSubTree = true;
+	value.viewColor = Qt::blue;
+	value.errorColor = Qt::red;
+	value.screenDataColor = Qt::darkRed;
+	value.showNameAttributeIfExists = true;
+
+	return value;
+}
+
+WebPluginSettings::struct_xmlpres WebPluginSettings::getSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & defaultValue ) {
+	struct_xmlpres value;
+	settings->beginGroup( path );
+
+	value.autoExpandedPath = settings->value( "Auto expanded path", defaultValue.autoExpandedPath ).toString();
+	value.hidePath = settings->value( "Hide path", defaultValue.hidePath ).toStringList();
+	value.showFilteredSubTree = settings->value( "Show filtered sub-tree", defaultValue.showFilteredSubTree ).toBool();
+	value.viewColor = settings->value( "View Color", defaultValue.viewColor ).value<QColor>();
+	value.errorColor = settings->value( "Error Color", defaultValue.errorColor ).value<QColor>();
+	value.screenDataColor = settings->value( "Screen data Color", defaultValue.screenDataColor ).value<QColor>();
+	value.showNameAttributeIfExists = settings->value( "Show name attribute if exists", defaultValue.showNameAttributeIfExists ).toBool();
+
+	settings->endGroup();
+	return value;
+}
+
+void WebPluginSettings::setSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & value ) {
+	struct_xmlpres defaultValue = getDefaultXmlpres();
+	settings->beginGroup( path );
+
+	settings->setValue( "Auto expanded path", value.autoExpandedPath, defaultValue.autoExpandedPath );
+	settings->setValue( "Hide path", value.hidePath, defaultValue.hidePath );
+	settings->setValue( "Show filtered sub-tree", value.showFilteredSubTree, defaultValue.showFilteredSubTree );
+	settings->setValue( "View Color", value.viewColor, defaultValue.viewColor );
+	settings->setValue( "Error Color", value.errorColor, defaultValue.errorColor );
+	settings->setValue( "Screen data Color", value.screenDataColor, defaultValue.screenDataColor );
+	settings->setValue( "Show name attribute if exists", value.showNameAttributeIfExists, defaultValue.showNameAttributeIfExists );
+
+	settings->endGroup();
+}
+
 WebPluginSettings::struct_javascript WebPluginSettings::getDefaultJavascript() {
 	struct_javascript value;
 
@@ -272,6 +317,7 @@ void WebPluginSettings::setSettingsXml( WebPluginSettingsSettings * settings, co
 WebPluginSettings::struct_globals WebPluginSettings::getDefaultGlobals() {
 	struct_globals value;
 
+	value.xmlPres = getDefaultXmlpres();
 	value.xml = getDefaultXml();
 	value.stylesheetParsing = getDefaultStylesheetParsing();
 	value.javascript = getDefaultJavascript();
@@ -283,6 +329,7 @@ WebPluginSettings::struct_globals WebPluginSettings::getSettingsGlobals( WebPlug
 	struct_globals value;
 	settings->beginGroup( path );
 
+	value.xmlPres = getSettingsXmlpres( settings, "Xml Pres", defaultValue.xmlPres );
 	value.xml = getSettingsXml( settings, "XML", defaultValue.xml );
 	value.stylesheetParsing = getSettingsStylesheetParsing( settings, "Stylesheet Parsing", defaultValue.stylesheetParsing );
 	value.javascript = getSettingsJavascript( settings, "JavaScript", defaultValue.javascript );
@@ -295,6 +342,7 @@ void WebPluginSettings::setSettingsGlobals( WebPluginSettingsSettings * settings
 	struct_globals defaultValue = getDefaultGlobals();
 	settings->beginGroup( path );
 
+	setSettingsXmlpres( settings, "Xml Pres", value.xmlPres );
 	setSettingsXml( settings, "XML", value.xml );
 	setSettingsStylesheetParsing( settings, "Stylesheet Parsing", value.stylesheetParsing );
 	setSettingsJavascript( settings, "JavaScript", value.javascript );

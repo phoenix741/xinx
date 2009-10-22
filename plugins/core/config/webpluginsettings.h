@@ -7,6 +7,8 @@
 
 #include <QSettings>
 #include <QString>
+#include <QStringList>
+#include <QColor>
 
 class PrivateWebPluginSettings;
 
@@ -19,6 +21,16 @@ public:
 
 class WebPluginSettings {
 public:
+	struct struct_xmlpres {
+		QString autoExpandedPath;
+		QStringList hidePath;
+		bool showFilteredSubTree;
+		QColor viewColor;
+		QColor errorColor;
+		QColor screenDataColor;
+		bool showNameAttributeIfExists;
+	};
+
 	struct struct_javascript {
 		bool activeCompletion;
 	};
@@ -50,6 +62,7 @@ public:
 	};
 
 	struct struct_globals {
+		struct_xmlpres xmlPres;
 		struct_xml xml;
 		struct_stylesheetParsing stylesheetParsing;
 		struct_javascript javascript;
@@ -86,6 +99,10 @@ protected:
 	virtual struct_viewerInformation getDefaultViewerInformation();
 	virtual WebPluginSettings::struct_viewerInformation getSettingsViewerInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & defaultValue );
 	virtual void setSettingsViewerInformation( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_viewerInformation & value );
+
+	virtual struct_xmlpres getDefaultXmlpres();
+	virtual WebPluginSettings::struct_xmlpres getSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & defaultValue );
+	virtual void setSettingsXmlpres( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xmlpres & value );
 
 	virtual struct_xml getDefaultXml();
 	virtual WebPluginSettings::struct_xml getSettingsXml( WebPluginSettingsSettings * settings, const QString & path, const WebPluginSettings::struct_xml & defaultValue );

@@ -20,7 +20,7 @@
 // Xinx header
 #include "xmlpresentationdockthread.h"
 #include <project/xinxproject.h>
-#include <core/xinxconfig.h>
+#include <config/selfwebpluginsettings.h>
 #include "xquerydialogimpl.h"
 
 // Qt header
@@ -47,7 +47,7 @@ XmlPresentationDockThread::XmlPresentationDockThread( XmlPresentationDockWidget 
 	m_timerTextChanged.setSingleShot( true );
 	m_timerTextChanged.setInterval( 1000 );
 
-	m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
+	m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
 
 	initXmlPresentationCombo();
 
@@ -63,7 +63,7 @@ XmlPresentationDockThread::XmlPresentationDockThread( XmlPresentationDockWidget 
 
 	connect( m_xmlPresentationWidget->m_filterComboBox, SIGNAL(activated(int)), this, SLOT(updateXinxConf(int)) );
 	connect( &m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()) );
-	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()) );
+	connect( SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()) );
 }
 
 
@@ -196,7 +196,7 @@ void XmlPresentationDockThread::open( const QString& filename ) {
 	m_openingFile = filename;
 
 	m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
-	m_filteredElement = XINXConfig::self()->config().xmlPres.showFilteredSubTree;
+	m_filteredElement = SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree;
 
 
 	delete m_sortFilterModel; delete m_model; delete m_watcher;
@@ -258,7 +258,7 @@ void XmlPresentationDockThread::threadTerminated() {
 			expandIndex = m_sortFilterModel->index( 0, 0, expandIndex );
 		}
 	} else {
-		QStringList xpath = m_currentXpath.isEmpty() ? XINXConfig::self()->config().xmlPres.autoExpandedPath.split( '/' ) : m_currentXpath.split( '/' );
+		QStringList xpath = m_currentXpath.isEmpty() ? SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath.split( '/' ) : m_currentXpath.split( '/' );
 		foreach( const QString & path, xpath ) {
 			m_xmlPresentationWidget->m_presentationTreeView->expand( expandIndex );
 			if( ! path.isEmpty() && m_sortFilterModel->rowCount( expandIndex ) ) {
@@ -307,8 +307,8 @@ void XmlPresentationDockThread::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_filterComboBox->setEnabled( false );
 		m_xmlPresentationWidget->m_refreshToolButton->setEnabled( false );
 
-		if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
-			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( XINXConfig::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
+		if( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != ( m_xmlPresentationWidget->m_filterComboBox->currentIndex() == 0 ) ) {
+			m_xmlPresentationWidget->m_filterComboBox->setCurrentIndex( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree ? 0 : 1 );
 		}
 
 		m_currentXpath = m_sortFilterModel->data( m_xmlPresentationWidget->m_presentationTreeView->currentIndex(), Qt::UserRole ).toString();
@@ -317,8 +317,8 @@ void XmlPresentationDockThread::filterTextChangedTimer() {
 		m_xmlPresentationWidget->m_presentationProgressBar->show();
 
 		m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
-		m_filteredElement = XINXConfig::self()->config().xmlPres.showFilteredSubTree;
-		m_filterHidePath = XINXConfig::self()->config().xmlPres.hidePath;
+		m_filteredElement = SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree;
+		m_filterHidePath = SelfWebPluginSettings::self()->config().xmlPres.hidePath;
 
 		m_model->moveToThread( this );
 
@@ -329,8 +329,8 @@ void XmlPresentationDockThread::filterTextChangedTimer() {
 
 void XmlPresentationDockThread::updateXinxConf( int value ) {
 	bool filteredElement = value == 0;
-	if( XINXConfig::self()->config().xmlPres.showFilteredSubTree != filteredElement ) {
-		XINXConfig::self()->config().xmlPres.showFilteredSubTree = filteredElement;
-		XINXConfig::self()->save();
+	if( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != filteredElement ) {
+		SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree = filteredElement;
+		SelfWebPluginSettings::self()->save();
 	}
 }

@@ -21,6 +21,7 @@
 #include "coreplugin.h"
 
 #include "config/editorsconfigformimpl.h"
+#include "config/xmlpresconfigformimpl.h"
 #include "config/selfwebpluginsettings.h"
 
 #include "filetypeplugin.h"
@@ -144,6 +145,7 @@ XinxAction::MenuList CorePlugin::actions() {
 QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog( QWidget * parent ) {
 	QList<IXinxPluginConfigurationPage*> pages;
 	pages << new EditorsConfigFormImpl( parent );
+	pages << new XmlPresConfigFormImpl( parent );
 	return pages;
 }
 

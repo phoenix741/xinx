@@ -2,15 +2,6 @@
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>
-	<type name="XmlPres">
-		<value name="Auto expanded path" type="string" default="/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow"/>
-		<value name="Hide path" type="stringlist" default="debug,application_data"/>
-		<value name="Show filtered sub-tree" type="bool" default="true"/>
-		<value name="View Color" type="color" default="blue"/>
-		<value name="Error Color" type="color" default="red"/>
-		<value name="Screen data Color" type="color" default="darkRed"/>
-		<value name="Show name attribute if exists" type="bool" default="true"/>
-	</type>
 	<type name="Extentions">
 		<value name="Specifique Sub Directory" type="string"/>
 		<value name="Can Be Save As Specifique" type="bool" default="yes"/>
@@ -79,7 +70,6 @@
 	<value name="Editor" type="Editor"/>
 	<value name="Configuration Editor" type="Configuration Editor"/>
 
-	<value name="Xml Pres" type="XmlPres"/>
 	<value name="Snipets" type="Snipets"/>
 
 	<value name="Tools" type="hash:string" default="QString()"/>

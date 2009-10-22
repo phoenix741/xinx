@@ -20,7 +20,7 @@
 // Xinx header
 #include "xmlpresentationitem.h"
 #include <core/exceptions.h>
-#include <core/xinxconfig.h>
+#include "config/selfwebpluginsettings.h"
 
 // Qt header
 #include <QStringList>
@@ -212,11 +212,11 @@ QVariant XmlPresentationModel::data(const QModelIndex &index, int role) const {
 	} else if( role == Qt::ForegroundRole ) {
 		XmlPresentationNodeItem * node = dynamic_cast<XmlPresentationNodeItem*>( item );
 		if( node && node->isView() )
-			return XINXConfig::self()->config().xmlPres.viewColor;
+			return SelfWebPluginSettings::self()->config().xmlPres.viewColor;
 		else if( ! item->errorData().isEmpty() )
-			return XINXConfig::self()->config().xmlPres.errorColor;
+			return SelfWebPluginSettings::self()->config().xmlPres.errorColor;
 		else if( ! item->screenData().isEmpty() )
-			return XINXConfig::self()->config().xmlPres.screenDataColor;
+			return SelfWebPluginSettings::self()->config().xmlPres.screenDataColor;
 	}
 
 	return QVariant();
@@ -300,7 +300,7 @@ QMimeData * XmlPresentationModel::mimeData( const QModelIndexList &indexes ) con
 
 	foreach( const QModelIndex & index, indexes ) {
 		if ( index.isValid() ) {
-			if( XINXConfig::self()->config().xmlPres.showNameAttributeIfExists )
+			if( SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists )
 				text += data( index, XmlPresentationModel::XNamedPathRole ).toString();
 			else
 				text += data( index, XmlPresentationModel::XPathRole ).toString();

@@ -368,51 +368,6 @@ void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const Q
 	settings->endGroup();
 }
 
-AppSettings::AppSettings::struct_xmlpres AppSettings::getDefaultXmlpres() {
-	struct_xmlpres value;
-
-	value.autoExpandedPath = "/layout_data/VueUtilisateurCourantSociete/JUt_UtiView/JUt_UtiViewRow";
-	value.hidePath = QString("debug,application_data").split(",");
-	value.showFilteredSubTree = true;
-	value.viewColor = Qt::blue;
-	value.errorColor = Qt::red;
-	value.screenDataColor = Qt::darkRed;
-	value.showNameAttributeIfExists = true;
-
-	return value;
-}
-
-AppSettings::AppSettings::struct_xmlpres AppSettings::getSettingsXmlpres( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_xmlpres & defaultValue ) {
-	struct_xmlpres value;
-	settings->beginGroup( path );
-
-	value.autoExpandedPath = settings->value( "Auto expanded path", defaultValue.autoExpandedPath ).toString();
-	value.hidePath = settings->value( "Hide path", defaultValue.hidePath ).toStringList();
-	value.showFilteredSubTree = settings->value( "Show filtered sub-tree", defaultValue.showFilteredSubTree ).toBool();
-	value.viewColor = settings->value( "View Color", defaultValue.viewColor ).value<QColor>();
-	value.errorColor = settings->value( "Error Color", defaultValue.errorColor ).value<QColor>();
-	value.screenDataColor = settings->value( "Screen data Color", defaultValue.screenDataColor ).value<QColor>();
-	value.showNameAttributeIfExists = settings->value( "Show name attribute if exists", defaultValue.showNameAttributeIfExists ).toBool();
-
-	settings->endGroup();
-	return value;
-}
-
-void AppSettings::setSettingsXmlpres( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_xmlpres & value ) {
-	struct_xmlpres defaultValue = getDefaultXmlpres();
-	settings->beginGroup( path );
-
-	settings->setValue( "Auto expanded path", value.autoExpandedPath, defaultValue.autoExpandedPath );
-	settings->setValue( "Hide path", value.hidePath, defaultValue.hidePath );
-	settings->setValue( "Show filtered sub-tree", value.showFilteredSubTree, defaultValue.showFilteredSubTree );
-	settings->setValue( "View Color", value.viewColor, defaultValue.viewColor );
-	settings->setValue( "Error Color", value.errorColor, defaultValue.errorColor );
-	settings->setValue( "Screen data Color", value.screenDataColor, defaultValue.screenDataColor );
-	settings->setValue( "Show name attribute if exists", value.showNameAttributeIfExists, defaultValue.showNameAttributeIfExists );
-
-	settings->endGroup();
-}
-
 AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	struct_globals value;
 
@@ -424,7 +379,6 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.rcs = getDefaultRcs();
 	value.editor = getDefaultEditor();
 	value.configurationEditor = getDefaultConfigurationEditor();
-	value.xmlPres = getDefaultXmlpres();
 	value.snipets = getDefaultSnipets();
 	value.files = getDefaultHash_struct_extentions();
 	value.formats = getDefaultHash_struct_qformat();
@@ -448,7 +402,6 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSet
 	value.rcs = getSettingsRcs( settings, "RCS", defaultValue.rcs );
 	value.editor = getSettingsEditor( settings, "Editor", defaultValue.editor );
 	value.configurationEditor = getSettingsConfigurationEditor( settings, "Configuration Editor", defaultValue.configurationEditor );
-	value.xmlPres = getSettingsXmlpres( settings, "Xml Pres", defaultValue.xmlPres );
 	value.snipets = getSettingsSnipets( settings, "Snipets", defaultValue.snipets );
 	value.tools = getSettingsHash_QString( settings, "Tools", defaultValue.tools );
 	value.files = getSettingsHash_struct_extentions( settings, "Files", defaultValue.files );
@@ -474,7 +427,6 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	setSettingsRcs( settings, "RCS", value.rcs );
 	setSettingsEditor( settings, "Editor", value.editor );
 	setSettingsConfigurationEditor( settings, "Configuration Editor", value.configurationEditor );
-	setSettingsXmlpres( settings, "Xml Pres", value.xmlPres );
 	setSettingsSnipets( settings, "Snipets", value.snipets );
 	setSettingsHash_QString( settings, "Tools", value.tools );
 	setSettingsHash_struct_extentions( settings, "Files", value.files );
