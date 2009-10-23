@@ -46,28 +46,23 @@ QWidget * XmlPresConfigFormImpl::settingsDialog() {
 }
 
 bool XmlPresConfigFormImpl::loadSettingsDialog() {
-	/*
-	m_expandPathLineEdit->setText( m_config.config().xmlPres.autoExpandedPath );
-	m_hideElementList->setValues( m_config.config().xmlPres.hidePath );
-	m_showSubEltCheckBox->setChecked( m_config.config().xmlPres.showFilteredSubTree );
-	m_showNameAttributeCheckBox->setChecked( m_config.config().xmlPres.showNameAttributeIfExists );
-	m_viewColorBox->setColor( m_config.config().xmlPres.viewColor );
-	m_errorColorBox->setColor( m_config.config().xmlPres.errorColor );
-	m_screenColorBox->setColor( m_config.config().xmlPres.screenDataColor );
-	*/
+	m_expandPathLineEdit->setText( SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath );
+	m_hideElementList->setValues( SelfWebPluginSettings::self()->config().xmlPres.hidePath );
+	m_showSubEltCheckBox->setChecked( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree );
+	m_showNameAttributeCheckBox->setChecked( SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists );
+	m_viewColorBox->setColor( SelfWebPluginSettings::self()->config().xmlPres.viewColor );
+	m_errorColorBox->setColor( SelfWebPluginSettings::self()->config().xmlPres.errorColor );
+	m_screenColorBox->setColor( SelfWebPluginSettings::self()->config().xmlPres.screenDataColor );
 	return true;
 }
 
 bool XmlPresConfigFormImpl::saveSettingsDialog() {
-	/*
-	m_config.config().xmlPres.autoExpandedPath = m_expandPathLineEdit->text();
-	m_config.config().xmlPres.hidePath = m_hideElementList->values();
-	m_config.config().xmlPres.showFilteredSubTree = m_showSubEltCheckBox->isChecked();
-	m_config.config().xmlPres.viewColor = m_viewColorBox->color();
-	m_config.config().xmlPres.errorColor = m_errorColorBox->color();
-	m_config.config().xmlPres.screenDataColor = m_screenColorBox->color();
-	m_config.config().xmlPres.showNameAttributeIfExists = m_showNameAttributeCheckBox->isChecked();
-
-	*/
+	SelfWebPluginSettings::self()->config().xmlPres.autoExpandedPath = m_expandPathLineEdit->text();
+	SelfWebPluginSettings::self()->config().xmlPres.hidePath = m_hideElementList->values();
+	SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree = m_showSubEltCheckBox->isChecked();
+	SelfWebPluginSettings::self()->config().xmlPres.viewColor = m_viewColorBox->color();
+	SelfWebPluginSettings::self()->config().xmlPres.errorColor = m_errorColorBox->color();
+	SelfWebPluginSettings::self()->config().xmlPres.screenDataColor = m_screenColorBox->color();
+	SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists = m_showNameAttributeCheckBox->isChecked();
 	return true;
 }
