@@ -1,8 +1,10 @@
 <RCC>
     <qresource prefix="/dictionary" >
-        <file alias="images/dictionary.png">../images/dictionary.png</file>
-        <file alias="translations/dictionary_fr.qm">../translations/dictionary_fr.qm</file>
-        <file alias="images/dictionary16.png">../images/dictionary16.png</file>
-        <file alias="images/label.png">../images/label.png</file>
+        <file>images/logo_gce32.png</file>
+        <file>images/logo_gce64.png</file>
+        <file>images/dictionary.png</file>
+        <file>translations/dictionary_fr.qm</file>
+        <file>images/dictionary16.png</file>
+        <file>images/label.png</file>
     </qresource>
 </RCC>

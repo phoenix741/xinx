@@ -14,7 +14,7 @@
    <string>Customize</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0" rowspan="4">
+   <item row="0" column="0" rowspan="6">
     <widget class="QListWidget" name="m_listWidget">
      <property name="minimumSize">
       <size>
@@ -66,15 +66,6 @@
      </item>
      <item>
       <property name="text">
-       <string>Revision</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../application.qrc">
-        <normaloff>:/images/preference-rcs.png</normaloff>:/images/preference-rcs.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>Editor</string>
       </property>
       <property name="icon">
@@ -120,6 +111,15 @@
      </item>
      <item>
       <property name="text">
+       <string>Generix</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../application.qrc">
+        <normaloff>:/images/warning.png</normaloff>:/images/warning.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Modules</string>
       </property>
       <property name="icon">
@@ -142,14 +142,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
+   <item row="5" column="1">
     <widget class="QDialogButtonBox" name="m_buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
@@ -247,145 +240,126 @@
      <widget class="QWidget" name="m_project">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QFormLayout" name="formLayout_2">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>&amp;Application server path :</string>
-           </property>
-           <property name="buddy">
-            <cstring>m_projectPathLineEdit</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="DirectoryEditWidget" name="m_projectPathLineEdit" native="true">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="whatsThis">
-            <string>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Project &amp;Management</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Default open &amp;project directory :</string>
+            </property>
+            <property name="buddy">
+             <cstring>m_projectPathLineEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="DirectoryEditWidget" name="m_projectPathLineEdit" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;p&gt;This the path where the save dialog must be opened when you create a new project.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;As the author set the project path to the Application Server path, this path is now the project path. You can safely use another path, but in &lt;i&gt;New Project Wizard&lt;/i&gt;, the Application Server path would be wrong.&lt;/i&gt;&lt;/p&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>Default &amp;specifique path name :</string>
-           </property>
-           <property name="buddy">
-            <cstring>m_lineEditDefaultProjectPathName</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName">
-           <property name="whatsThis">
-            <string>&lt;p&gt;This is the path where derivated files are stored in derivated project mode.&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;In &lt;b&gt;Generix&lt;/b&gt;, this is a sub-directory of langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_20">
-           <property name="text">
-            <string>Refresh Directory &amp;Timeout :</string>
-           </property>
-           <property name="buddy">
-            <cstring>m_refreshProjectTimoutSpinBox</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="m_refreshProjectTimoutSpinBox">
-           <property name="whatsThis">
-            <string>Timeout before the directory view is reloaded with your filter.</string>
-           </property>
-           <property name="suffix">
-            <string> ms</string>
-           </property>
-           <property name="minimum">
-            <number>0</number>
-           </property>
-           <property name="maximum">
-            <number>10000</number>
-           </property>
-           <property name="singleStep">
-            <number>10</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="m_openLastProjectCheckBox">
-         <property name="whatsThis">
-          <string>Open the last opened project (&lt;i&gt;if any, it's the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
-         </property>
-         <property name="text">
-          <string>&amp;Open the last project at start</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="m_saveSessionCheckBox">
-         <property name="whatsThis">
-          <string>&lt;p&gt;This define the default way to close the project.&lt;/p&gt;
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>Refresh Directory &amp;Timeout :</string>
+            </property>
+            <property name="buddy">
+             <cstring>m_refreshProjectTimoutSpinBox</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="m_refreshProjectTimoutSpinBox">
+            <property name="whatsThis">
+             <string>Timeout before the directory view is reloaded with your filter.</string>
+            </property>
+            <property name="suffix">
+             <string> ms</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="m_openLastProjectCheckBox">
+            <property name="whatsThis">
+             <string>Open the last opened project (&lt;i&gt;if any, it's the opened project when &lt;b&gt;XINX&lt;/b&gt; is closed&lt;/i&gt;), when &lt;b&gt;XINX&lt;/b&gt; is started.</string>
+            </property>
+            <property name="text">
+             <string>&amp;Open the last project at start</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QCheckBox" name="m_saveSessionCheckBox">
+            <property name="whatsThis">
+             <string>&lt;p&gt;This define the default way to close the project.&lt;/p&gt;
 &lt;p&gt;If checked, when the project, or the application is closed informations about unsaved files are stored in a session file.&lt;/p&gt;
 &lt;p&gt;Else, the XINX ask the user about unsaved file.&lt;/p&gt;
 &lt;p/&gt;
 &lt;p&gt;&lt;i&gt;In case of crash &lt;b&gt;XINX&lt;/b&gt; save the project in session mode automatically.&lt;/i&gt;&lt;/p&gt;</string>
-         </property>
-         <property name="text">
-          <string>&amp;Save project with session information by default (content of modified file)</string>
-         </property>
+            </property>
+            <property name="text">
+             <string>&amp;Save project with session information by default (content of modified file)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+         <zorder>m_refreshProjectTimoutSpinBox</zorder>
+         <zorder>label_20</zorder>
+         <zorder>m_projectPathLineEdit</zorder>
+         <zorder>label_2</zorder>
+         <zorder>m_openLastProjectCheckBox</zorder>
+         <zorder>m_saveSessionCheckBox</zorder>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>&amp;Specifique file :</string>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>General &amp;Revision Control System Options</string>
          </property>
-         <property name="buddy">
-          <cstring>m_specifiqueTableView</cstring>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTableView" name="m_specifiqueTableView">
-         <property name="whatsThis">
-          <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="m_revision">
-      <layout class="QGridLayout">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="m_closeLogCheckBox">
-         <property name="whatsThis">
-          <string>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="m_closeLogCheckBox">
+            <property name="whatsThis">
+             <string>&lt;p&gt;When an action with the revision control system is made, a log window is open and show information about the progress.&lt;/p&gt;
 &lt;p&gt;If checked, the log windows is automaticallyclosed when action (like update, commit ...) finished.&lt;/p&gt;</string>
-         </property>
-         <property name="text">
-          <string>&amp;Close the Version management Log automatically.</string>
-         </property>
+            </property>
+            <property name="text">
+             <string>&amp;Close the Version management Log automatically.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="m_changeLogCheckBox">
+            <property name="whatsThis">
+             <string>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string>&amp;Update &quot;ChangeLog&quot; automatically.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="m_changeLogCheckBox">
-         <property name="whatsThis">
-          <string>&lt;p&gt;When checked, a &lt;i&gt;ChangeLog&lt;/i&gt; file is created/appended at each commit with date, hour, and the commit messages.&lt;/p&gt;</string>
-         </property>
-         <property name="text">
-          <string>&amp;Update &quot;ChangeLog&quot; automatically.</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <spacer>
+       <item>
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -396,16 +370,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="m_labelLink">
-         <property name="text">
-          <string>&lt;i&gt;Options related to a named revision manager (such as CVS or Subversion) must be changed in the &lt;a href=&quot;#modules&quot;&gt;Modules&lt;/a&gt; section.&lt;/i&gt;</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
@@ -963,6 +927,67 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="m_generixPage">
+      <widget class="QTableView" name="m_specifiqueTableView">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>639</width>
+         <height>163</height>
+        </rect>
+       </property>
+       <property name="whatsThis">
+        <string>For each type of files, you can choose a sub-directory of the default specifique path name (ie. &lt;i&gt;langue/fra/nav/projet/js&lt;/i&gt;). You can choose if the type of file can be Specifique or not. If not, the sub-directory is ignored.</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>639</width>
+         <height>14</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&amp;Specifique file :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_specifiqueTableView</cstring>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="m_lineEditDefaultProjectPathName">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>10</y>
+         <width>479</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;p&gt;This is the path where derivated files are stored in derivated project mode.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;In &lt;b&gt;Generix&lt;/b&gt;, this is a sub-directory of langue/fra/nav/&lt;/i&gt;&lt;/p&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>147</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Default &amp;specifique path name :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_lineEditDefaultProjectPathName</cstring>
+       </property>
+      </widget>
+     </widget>
      <widget class="QWidget" name="m_modules">
       <layout class="QGridLayout">
        <item row="0" column="0">
@@ -1001,6 +1026,13 @@
      </widget>
     </widget>
    </item>
+   <item row="1" column="1">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -1034,10 +1066,6 @@
  <tabstops>
   <tabstop>m_langComboBox</tabstop>
   <tabstop>m_projectPathLineEdit</tabstop>
-  <tabstop>m_lineEditDefaultProjectPathName</tabstop>
-  <tabstop>m_specifiqueTableView</tabstop>
-  <tabstop>m_closeLogCheckBox</tabstop>
-  <tabstop>m_changeLogCheckBox</tabstop>
   <tabstop>m_popupWhenFileModifiedCheckBox</tabstop>
   <tabstop>m_createBakCheckBox</tabstop>
   <tabstop>m_prettyPrintOnSavingCheckBox</tabstop>

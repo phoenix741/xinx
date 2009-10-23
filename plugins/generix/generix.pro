@@ -9,7 +9,7 @@ LIBS = -L../../framework \
 TARGET = generix
 INCLUDEPATH += ../../framework
 RESOURCES = plugindefinition/generix.qrc
-TRANSLATIONS += translations/dictionary_fr.ts
+TRANSLATIONS += plugindefinition/translations/dictionary_fr.ts
 HEADERS = plugindefinition/generix.h \
 		docks/dictionary/dictionarydockwidgetimpl.h \
 		docks/dictionary/dictionaryparser.h

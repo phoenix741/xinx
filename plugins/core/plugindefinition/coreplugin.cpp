@@ -98,20 +98,6 @@ QVariant CorePlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute
 	return QVariant();
 }
 
-QList< QPair<QString,QString> > CorePlugin::pluginTools() {
-	QList< QPair<QString,QString> > tools;
-#ifdef Q_WS_WIN
-	tools.append( qMakePair( QString("java"), QString("c:\\jdk") ) );
-	tools.append( qMakePair( QString("viewer"), QString("c:\\Program Files\\Internet Explorer\\iexplorer.exe") ) );
-	tools.append( qMakePair( QString("xsltproc"), QString() ) );
-#else
-	tools.append( qMakePair( QString("java"), QString("/usr/bin/java") ) );
-	tools.append( qMakePair( QString("viewer"), QString("/usr/bin/www-browser") ) );
-	tools.append( qMakePair( QString("xsltproc"), QString("/usr/bin/xsltproc") ) );
-#endif // Q_WS_WIN
-	return tools;
-}
-
 QList<IFileTypePlugin*> CorePlugin::fileTypes() {
 	return m_fileTypes;
 }

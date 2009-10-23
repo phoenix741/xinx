@@ -41,8 +41,9 @@ public:
 	/*! Return true if the plugin is modifiable (no static) */
 	virtual bool isModifiable() const;
 	/*!
-	 * Return true if the plugin is configurable. A plugin is configurable
-	 * if \e plugin() is \e IXinxPluginConfiguration.
+	 * Return always false even if the plugin inherits from IXinxPluginConfiguration.
+	 * This hide the configuration button. Now the plugin have it's pages in the
+	 * configuration dialog.
 	 */
 	virtual bool isConfigurable() const;
 

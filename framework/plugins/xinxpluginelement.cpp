@@ -36,7 +36,7 @@ bool XinxPluginElement::isModifiable() const {
 }
 
 bool XinxPluginElement::isConfigurable() const {
-	return qobject_cast<IXinxPluginConfiguration*>( m_plugin );
+	return false;
 }
 
 QPixmap XinxPluginElement::pixmap() const {

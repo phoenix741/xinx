@@ -91,7 +91,6 @@ CustomDialogImpl::CustomDialogImpl( QWidget * parent, Qt::WFlags f)  : QDialog( 
 	connect( m_snipetTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(m_snipetTreeView_selectionChanged()) );
 
 	// Plugins
-	connect( m_pluginListView, SIGNAL(configurePlugin(PluginElement*)), this, SLOT(configurePlugin(PluginElement*)) );
 	connect( m_pluginListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutPlugin(PluginElement*)) );
 	connect( m_scriptListView, SIGNAL(aboutPlugin(PluginElement*)), this, SLOT(aboutScript(PluginElement*)) );
 
@@ -285,9 +284,9 @@ void CustomDialogImpl::showConfig() {//m_specifiqueTableView
 
 		foreach( IXinxPluginConfigurationPage * page, pages ) {
 			QListWidgetItem * item = new QListWidgetItem( QIcon( page->image() ), page->name() );
-			m_listWidget->insertItem( 9, item );
+			m_listWidget->insertItem( 7, item );
 
-			m_stackedWidget->insertWidget( 9, page->settingsDialog() );
+			m_stackedWidget->insertWidget( 7, page->settingsDialog() );
 
 			page->loadSettingsDialog();
 
@@ -404,41 +403,6 @@ void CustomDialogImpl::storeConfig() {
 	foreach( IXinxPluginConfigurationPage * page, m_pages ) {
 		page->saveSettingsDialog();
 	}
-}
-
-void CustomDialogImpl::configurePlugin( PluginElement * plugin ) {
-	Q_ASSERT( plugin );
-	Q_ASSERT( dynamic_cast<XinxPluginElement*>( plugin ) );
-	Q_ASSERT( dynamic_cast<IXinxPluginConfiguration*>( dynamic_cast<XinxPluginElement*>( plugin )->plugin() ) );
-
-	QMessageBox::warning( this, tr("In developpement"), tr("Action of this button is now in developpement, please hit the author, if you are in the release version.") );
-	/*
-	XinxPluginElement * xinxPlugin = dynamic_cast<XinxPluginElement*>( plugin );
-	IXinxPluginConfiguration * p = dynamic_cast<IXinxPluginConfiguration*>( xinxPlugin->plugin() );
-
-	QDialog configureDialog;
-	configureDialog.setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
-
-	QWidget * settings = p->createSettingsDialog();
-	if( ! p->loadSettingsDialog( settings ) )
-		QMessageBox::warning( this, tr("Plugin Customization"), tr("Can't load the plugin configuration") );
-
-	QDialogButtonBox * buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
-
-	QVBoxLayout * vbox = new QVBoxLayout;
-	vbox->addWidget( settings );
-	vbox->addWidget( buttonBox );
-
-	configureDialog.setLayout( vbox );
-
-	connect( buttonBox, SIGNAL(accepted()), &configureDialog, SLOT(accept()) );
-	connect( buttonBox, SIGNAL(rejected()), &configureDialog, SLOT(reject()) );
-
-	if( configureDialog.exec() == QDialog::Accepted ) {
-		if( ! p->saveSettingsDialog( settings ) )
-			QMessageBox::warning( this, tr("Plugin Customization"), tr("Can't save the plugin configuration") );
-	}
-	*/
 }
 
 void CustomDialogImpl::aboutPlugin( PluginElement * plugin ) {
@@ -744,9 +708,4 @@ void CustomDialogImpl::on_m_buttonBox_clicked( QAbstractButton * button ) {
 		SnipetManager::self()->database().rollback();
 	}
 
-}
-
-void CustomDialogImpl::on_m_labelLink_linkActivated( const QString & link ) {
-	if( link == "#modules" )
-		m_listWidget->setCurrentRow( 9 );
 }

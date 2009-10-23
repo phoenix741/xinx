@@ -42,8 +42,6 @@ public:
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
-	virtual QList< QPair<QString,QString> > pluginTools();
-
 	virtual QList<IFileTypePlugin*> fileTypes();
 
 	virtual XinxAction::MenuList actions();

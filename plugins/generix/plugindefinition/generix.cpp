@@ -51,13 +51,13 @@ bool GenerixPlugin::initializePlugin( const QString & lang ) {
 QVariant GenerixPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr ) {
 	switch( attr ) {
 	case PLG_NAME:
-		return tr("Generix Plugins");
+		return tr("Plugin for Generix");
 	case PLG_DESCRIPTION:
-		return tr("This plugin add some fonctionnality usefull for Generix Group");
+		return tr("This plugin add some fonctionnality usefull for Generix Group's XINX users");
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
     case PLG_ICON:
-		return QPixmap( ":/dictionary/images/dictionary.png" );
+		return QPixmap( ":/dictionary/images/logo_gce32.png" );
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:

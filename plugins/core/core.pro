@@ -91,7 +91,7 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     plugindefinition/filetypeplugin.cpp \
     actions/stylesheetaction.cpp \
     actions/commentactions.cpp
-TRANSLATIONS += translations/coreplugin_fr.ts
+TRANSLATIONS += plugindefinition/translations/coreplugin_fr.ts
 FORMS += config/editorsconfigform.ui \
     config/webpluginprojectpropertyform.ui \
     config/xmlpresconfigform.ui \

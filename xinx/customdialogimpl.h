@@ -57,7 +57,6 @@ public:
 private slots:
 	void on_m_buttonBox_clicked( QAbstractButton * button );
 	void on_m_highlighterComboBox_activated( QString text );
-	void on_m_labelLink_linkActivated( const QString & link );
 
 	void on_m_importPushButton_clicked();
 	void on_m_exportPushButton_clicked();
@@ -72,7 +71,6 @@ private slots:
 	void on_m_snipetTreeView_doubleClicked( const QModelIndex & index );
 	void on_m_snipetFilterLineEdit_textChanged( const QString & filterText );
 private slots:
-	void configurePlugin( PluginElement * plugin );
 	void aboutPlugin( PluginElement * plugin );
 	void aboutScript( PluginElement * plugin );
 
