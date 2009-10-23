@@ -170,7 +170,8 @@ bool CorePlugin::saveNewProjectSettingsPage( XinxProject * project, QWizardPage 
 	return true;
 }
 
-QDockWidget * CorePlugin::createDockWidget( QWidget * parent ) {
+QList<QDockWidget*> CorePlugin::createDocksWidget( QWidget * parent ) {
+	QList<QDockWidget*> docks;
     if( ! m_dock ) {
         m_dock = new XmlPresentationDockWidget( parent );
         m_dock->setObjectName( QString::fromUtf8( "m_xmlPresDock" ) );
@@ -178,11 +179,13 @@ QDockWidget * CorePlugin::createDockWidget( QWidget * parent ) {
     if( ( m_dock->parent() != parent ) && ( parent != 0 ) ) {
         m_dock->setParent( parent );
     }
-    return m_dock;
+
+	docks << m_dock;
+	return docks;
 }
 
 XmlPresentationDockWidget * CorePlugin::dock() {
-    return static_cast<XmlPresentationDockWidget*>( createDockWidget( 0 ) );
+	return m_dock;
 }
 
 Q_EXPORT_PLUGIN2(coreplugin, CorePlugin)

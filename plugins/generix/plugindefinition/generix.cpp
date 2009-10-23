@@ -86,12 +86,14 @@ bool GenerixPlugin::destroyProject( XinxProject * project ) {
 	return true;
 }
 
-QDockWidget * GenerixPlugin::createDockWidget( QWidget * parent ) {
+QList<QDockWidget*> GenerixPlugin::createDocksWidget( QWidget * parent ) {
+	QList<QDockWidget*> docks;
 	if( ! m_dock ) {
 		m_dock = new DictionaryDockWidgetImpl( parent );
 		m_dock->setObjectName( QString::fromUtf8( "m_dictionaryDock" ) );
 	}
-	return m_dock;
+	docks << m_dock;
+	return docks;
 }
 
 Q_EXPORT_PLUGIN2(GenerixPlugin, GenerixPlugin)

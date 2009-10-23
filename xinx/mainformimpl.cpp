@@ -838,11 +838,13 @@ void MainformImpl::createDockWidget() {
 	foreach( XinxPluginElement * pluginElement, XinxPluginsLoader::self()->plugins() ) {
 		IDockPlugin * dockPlugin = qobject_cast<IDockPlugin*>( pluginElement->plugin() );
 		if( pluginElement->isActivated() && dockPlugin ) {
-			QDockWidget * dock = dockPlugin->createDockWidget( this );
-			addDockWidget( Qt::RightDockWidgetArea, dock );
-			action = dock->toggleViewAction();
-			action->setShortcut( QString( "Alt+%1" ).arg( dockShortcut++ ) );
-			m_menus["windows"]->addAction( action );
+			QList<QDockWidget*> docks = dockPlugin->createDocksWidget( this );
+			foreach( QDockWidget * dock, docks ) {
+				addDockWidget( Qt::RightDockWidgetArea, dock );
+				action = dock->toggleViewAction();
+				action->setShortcut( QString( "Alt+%1" ).arg( dockShortcut++ ) );
+				m_menus["windows"]->addAction( action );
+			}
 		}
 	}
 

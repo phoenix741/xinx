@@ -39,7 +39,7 @@ public:
 	virtual bool initializeProject( XinxProject * project );
 	virtual bool destroyProject( XinxProject * project );
 
-	virtual QDockWidget * createDockWidget( QWidget * parent );
+	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent );
 private:
 	DictionaryDockWidgetImpl * m_dock;
 };

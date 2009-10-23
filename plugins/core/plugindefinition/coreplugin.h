@@ -55,7 +55,7 @@ public:
 	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
 	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page );
 
-    virtual QDockWidget * createDockWidget( QWidget * parent );
+	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent );
 
     XmlPresentationDockWidget * dock();
 private:
