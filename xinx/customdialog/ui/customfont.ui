@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomFont</class>
+ <widget class="QWidget" name="CustomFont">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>619</width>
+    <height>319</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Font</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>&amp;Font name :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_fontComboBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QFontComboBox" name="m_fontComboBox">
+     <property name="whatsThis">
+      <string>Name of the font to use in all editors.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>Font &amp;size :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_fontSizeSpinBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QSpinBox" name="m_fontSizeSpinBox">
+     <property name="whatsThis">
+      <string>Size of the font in the editor. The value is a global value.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="m_showCurrentLineCheckBox">
+     <property name="whatsThis">
+      <string>Show the current line in a different color. Usually a blue-gray.</string>
+     </property>
+     <property name="text">
+      <string>Show current &amp;line</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="m_autoHighlightCheckBox">
+     <property name="whatsThis">
+      <string>&lt;p&gt;Highlight automatically all same word in the editor in the same color.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;This can be slow down the edition mode.&lt;/i&gt;&lt;/p&gt;</string>
+     </property>
+     <property name="text">
+      <string>Auto highlight same &amp;word</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_17">
+     <property name="text">
+      <string>&amp;Color of highlight:</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_highlightTextColorComboBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1" colspan="2">
+    <widget class="XinxColorCombo" name="m_highlightTextColorComboBox">
+     <property name="whatsThis">
+      <string>Color used for highlight same word</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Custom...</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Red</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Green</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Blue</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Cyan</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Magenta</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Yellow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Red</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Green</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Blue</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Cyan</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Magenta</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Yellow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>White</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Light Gray</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Gray</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dark Gray</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Black</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QCheckBox" name="m_showTabulationCheckBox">
+     <property name="whatsThis">
+      <string>Show tabulation and space in the editor with specialcharacter (in greyed colour).</string>
+     </property>
+     <property name="text">
+      <string>Show &amp;tabulation and space in the editor</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_14">
+     <property name="text">
+      <string>Size of a &amp;tabulation :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_sizeOfTabSpinBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1" colspan="2">
+    <widget class="QSpinBox" name="m_sizeOfTabSpinBox">
+     <property name="whatsThis">
+      <string>Size of tabulation in number of character. This is the number of character that tabulation replaces.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>113</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxColorCombo</class>
+   <extends>QComboBox</extends>
+   <header>xinxcolorcombo.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

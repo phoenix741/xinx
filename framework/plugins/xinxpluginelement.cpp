@@ -47,6 +47,10 @@ QPixmap XinxPluginElement::pixmap() const {
 		return PluginElement::pixmap();
 }
 
+QString XinxPluginElement::objectName() const {
+	return m_plugin->metaObject()->className();
+}
+
 QString XinxPluginElement::name() const {
 	IXinxPlugin * plugin = qobject_cast<IXinxPlugin*>( m_plugin );
 	return plugin->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString();

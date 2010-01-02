@@ -17,18 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef DICTIONARYPLUGIN_H_
-#define DICTIONARYPLUGIN_H_
+#ifndef GENERIXPLUGIN_H_
+#define GENERIXPLUGIN_H_
 #pragma once
 
 // Xinx header
 #include <plugins/plugininterfaces.h>
 #include "docks/dictionary/dictionarydockwidgetimpl.h"
+#include "docks/project/generixprojectdock.h"
 
-class GenerixPlugin : public QObject, public IDockPlugin {
+class Gce150FileResolver;
+
+/* GenerixPlugin */
+
+class GenerixPlugin : public QObject, public IXinxInputOutputPlugin, public IDockPlugin, public IResolverPlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
+	Q_INTERFACES(IXinxInputOutputPlugin)
 	Q_INTERFACES(IDockPlugin)
+	Q_INTERFACES(IResolverPlugin)
+	Q_INTERFACES(IXinxPluginConfiguration)
+	Q_INTERFACES(IXinxPluginProjectConfiguration)
 public:
 	GenerixPlugin();
 	virtual ~GenerixPlugin();
@@ -36,12 +45,25 @@ public:
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
 
-	virtual bool initializeProject( XinxProject * project );
-	virtual bool destroyProject( XinxProject * project );
+	virtual bool loadProject( XinxProject * project );
+	virtual bool closeProject( XinxProject * project );
+
+	virtual QIODevice * loadFile( const QString & filename );
+	virtual QIODevice * saveFile( const QString & filename, const QString & oldfilename );
+	virtual QString getFilename( const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0 );
 
 	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent );
+
+	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
+
+	virtual QList<IFileResolverPlugin*> fileResolvers();
+
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent );
+	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:
+	GenerixProjectDockImpl * m_gnxDock;
 	DictionaryDockWidgetImpl * m_dock;
+	Gce150FileResolver * m_resolver;
 };
 
-#endif /* DICTIONARYPLUGIN_H_*/
+#endif /* GENERIXPLUGIN_H_ */

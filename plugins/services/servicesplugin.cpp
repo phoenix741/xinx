@@ -95,53 +95,16 @@ XinxAction::MenuList ServicesPlugin::actions() {
 	return m_menus;
 }
 
-QWidget * ServicesPlugin::createProjectSettingsPage() {
-	return new ServicesProjectPropertyImpl();
+QList<IXinxPluginProjectConfigurationPage*> ServicesPlugin::createProjectSettingsPage( QWidget * parent ) {
+	QList<IXinxPluginProjectConfigurationPage*> list;
+	list << new ServicesProjectPropertyImpl( parent );
+	return list;
 }
 
-bool ServicesPlugin::loadProjectSettingsPage( QWidget * widget ) {
-	ServicesProjectPropertyImpl * page = qobject_cast<ServicesProjectPropertyImpl*>( widget );
-	Q_ASSERT( page );
-
-	page->loadProjectProperty();
-	return true;
-}
-
-bool ServicesPlugin::saveProjectSettingsPage( QWidget * widget ) {
-	ServicesProjectPropertyImpl * page = qobject_cast<ServicesProjectPropertyImpl*>( widget );
-	Q_ASSERT( page );
-
-	page->saveProjectProperty();
-	return true;
-}
-
-QList<QWizardPage*> ServicesPlugin::createNewProjectSettingsPages( int nextid ) {
-	QList<QWizardPage*> pages;
-	pages << new ServicesPageImpl( nextid );
-	pages << new ServicesListPageImpl( nextid );
+QList<IXinxPluginNewProjectConfigurationPage*> ServicesPlugin::createNewProjectSettingsPages() {
+	QList<IXinxPluginNewProjectConfigurationPage*> pages;
+	pages << new ServicesListPageImpl();
 	return pages;
-}
-
-bool ServicesPlugin::saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) {
-	ServicesListPageImpl * servicesPage = qobject_cast<ServicesListPageImpl*>( page );
-	if( servicesPage && servicesPage->field( "project.services" ).toBool() ) {
-		XinxProject::ProjectOptions options = project->options();
-		options |= XinxProject::hasWebServices;
-		project->setOptions( options );
-
-		QStringList services;
-		foreach( const QString & value, servicesPage->m_webServicesWidget->values() )
-			services += value;
-
-
-		int index = 0;
-		foreach( const QString & link, services ) {
-			project->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
-			index++;
-		}
-	}
-
-	return true;
 }
 
 Q_EXPORT_PLUGIN2(servicesplugin, ServicesPlugin)

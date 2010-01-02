@@ -60,6 +60,7 @@ class DirectoryEdit : public QLineEdit {
 	Q_CLASSINFO("Author", "Ulrich Van Den Hekke")
 	Q_CLASSINFO("URL", "http://xinx.shadoware.org")
 	Q_CLASSINFO("Licence", "GPL v2 or later")
+	Q_PROPERTY( bool fileMustExist READ fileMustExist WRITE setFileMustExist )
 public:
 	/*!
 	 * Construct a DirectoryEdit object.
@@ -72,6 +73,31 @@ public:
 	 * \param parent The parent widget of the object.
 	 */
 	DirectoryEdit( const QString & contents, QWidget * parent = 0 );
+
+	/*!
+	 * Set to false, if the file can't not exist and you don't want to warn user
+	 * \param value true if you want the user
+	 * \sa warnIfExist
+	 */
+	void setFileMustExist( bool value );
+
+	/*!
+	 * Return true if you want to warn the user when the file doesn't exist.
+	 * \sa setWarnIfExist
+	 */
+	bool fileMustExist() const;
+
+	/*!
+	 * Set the filter to use to change load a file
+	 * \param filter The new filter to use
+	 * \sa filter
+	 */
+	void setFilter( const QString & filter );
+	/*!
+	 * Get the filter used to change the file
+	 * \sa setFilter
+	 */
+	const QString & filter() const;
 public slots:
 	/*!
 	 * Open a dialog to change the path in the line editor.
@@ -86,6 +112,10 @@ protected slots:
 	 * directory \e text not exist.
 	 */
 	void slotTextChanged( QString text );
+
+private:
+	bool m_fileMustExist;
+	QString m_filter;
 };
 
 class PrivateDirectoryEditWidget;

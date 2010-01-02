@@ -7,7 +7,7 @@ QT += network \
 DESTDIR += ../
 INCLUDEPATH += ../../framework \
     ../../components \
-	../core \
+    ../core \
     ../../ext/qcodeedit/lib \
     ../../ext/qcodeedit/lib/document \
     ../../ext/qcodeedit/lib/language \
@@ -18,7 +18,7 @@ LIBS = -L../../framework \
     -L../ \
     -L../../ext/qcodeedit \
     -lxinxcmp \
-	-lcoreplugin \
+    -lcoreplugin \
     -lxinxframework \
     -lqcodeedit
 PRE_TARGETDEPS = ../libcoreplugin.a
@@ -41,7 +41,6 @@ SOURCES = servicesplugin.cpp \
     webserviceseditor.cpp \
     webservicesaction.cpp
 FORMS += ui/newprojectwizard_serviceslist.ui \
-    ui/newprojectwizard_services.ui \
     ui/servicesprojectproperty.ui
 win32:RC_FILE += rc/plugin.rc
 include(../../ext/qtsoap/src/qtsoap.pri)

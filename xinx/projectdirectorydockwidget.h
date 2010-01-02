@@ -50,13 +50,11 @@ public:
 	void setSelectedAddAction( QAction * action );
 	void setSelectedRemoveAction( QAction * action );
 	void setSelectedCompareWithHeadAction( QAction * action );
-	void setSelectedCompareWithStdAction( QAction * action );
 	void setSelectedCompareAction( QAction * action );
 	void setToggledViewAction( QAction * action );
 
 	bool isViewFlat();
 	QStringList selectedFiles();
-	void setProjectPath( XinxProject * project );
 
 	void refreshPath( const QString & path );
 	bool removeFile( const QString & path );
@@ -74,7 +72,6 @@ private slots:
 	void on_m_filtreLineEdit_returnPressed();
 	void on_m_filtreLineEdit_textChanged( QString filtre );
 	void on_m_projectDirectoryTreeView_doubleClicked( QModelIndex index );
-	void on_m_prefixComboBox_activated( QString prefix );
 
 	void copyFileNameTriggered();
 	void copyPathNameTriggered();
@@ -82,13 +79,13 @@ private slots:
 private:
 	void init();
 	bool eventFilter( QObject *obj, QEvent *event );
+	void setProjectPath( XinxProject * project );
 
 	QPointer<QAction> m_selectedUpdateAction;
 	QPointer<QAction> m_selectedCommitAction;
 	QPointer<QAction> m_selectedAddAction;
 	QPointer<QAction> m_selectedRemoveAction;
 	QPointer<QAction> m_selectedCompareWithHeadAction;
-	QPointer<QAction> m_selectedCompareWithStdAction;
 	QPointer<QAction> m_selectedCompareAction;
 	QPointer<QAction> m_copyFileNameAction;
 	QPointer<QAction> m_copyPathNameAction;
@@ -99,6 +96,7 @@ private:
 	IconProjectProvider* m_iconProvider;
 
 	QPointer<XinxProject> m_project;
+	QString m_projectPath;
 
 	Ui::ProjectDirectoryWidget * m_projectDirWidget;
 };

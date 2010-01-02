@@ -45,6 +45,7 @@
 // C++ header
 #include <csignal>
 #include <iostream>
+#include <time.h>
 
 // Import plugins
 Q_IMPORT_PLUGIN(coreplugin);
@@ -67,6 +68,7 @@ void backup_appli_signal( int signal ) {
 }
 
 void initSearchPath() {
+	// .. for datas ...
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../datas" ) );
 #ifndef Q_WS_WIN
 	QDir::addSearchPath( "datas", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/datas" ) );
@@ -82,6 +84,12 @@ void initSearchPath() {
 	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../plugins" ) );
 #ifndef Q_WS_WIN
 	QDir::addSearchPath( "plugins", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/plugins" ) );
+#endif /* Q_WS_WIN */
+
+	// ... for tempalte ...
+	QDir::addSearchPath( "templates", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../templates" ) );
+#ifndef Q_WS_WIN
+	QDir::addSearchPath( "templates", QDir( QApplication::applicationDirPath() ).absoluteFilePath( "../share/xinx/templates" ) );
 #endif /* Q_WS_WIN */
 }
 

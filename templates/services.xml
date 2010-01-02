@@ -1,0 +1,11 @@
+<ProjectTemplate name="Services">
+	<Plugins>
+		<Plugin name="ServicesPlugin"/>
+	</Plugins>
+    <WizardPage>
+        <Page name="StdProjectName"/>
+        <Page name="StdProjectRevision"/>
+        <Page name="CoreInformation"/>
+        <Page name="ServiceInformation"/>
+    </WizardPage>
+</ProjectTemplate>

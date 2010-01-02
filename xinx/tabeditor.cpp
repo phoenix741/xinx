@@ -41,12 +41,13 @@
 
 //
 TabEditor::TabEditor( QWidget * parent ) : QTabWidget( parent ), m_refreshAction(0), m_saveAction(0), m_saveAsAction(0), m_closeAction(0), m_clickedItem( -1 ) { //, m_previous(NULL) {
-	setAcceptDrops(true);
+	setAcceptDrops( true );
 
 	tabBar()->installEventFilter(this);
 	tabBar()->setAttribute( Qt::WA_Hover );
 
-	connect(this, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentTabChanged(int)) );
+	connect(this, SIGNAL(currentChanged(int)), SLOT(slotCurrentTabChanged(int)) );
+	connect(this, SIGNAL(tabCloseRequested(int)), SLOT(slotTabCloseRequested(int)) );
 }
 //
 TabEditor::~TabEditor() {
@@ -337,6 +338,11 @@ void TabEditor::slotCursorPositionChanged() {
 	emit setEditorPosition( qobject_cast<TextFileEditor*>( editor )->textEdit()->currentRow(), qobject_cast<TextFileEditor*>( editor )->textEdit()->currentColumn() );
 }
 
+void TabEditor::slotTabCloseRequested( int index ) {
+	m_clickedItem = index;
+	m_closeAction->trigger();
+}
+
 void TabEditor::slotCurrentTabChanged( int index ) {
 	if( index == -1 ) return;
 
@@ -423,31 +429,6 @@ int TabEditor::tabPosition( QPoint point ) {
 
 bool TabEditor::eventFilter( QObject *obj, QEvent *event ) {
 	if ( obj==tabBar() ) {
-        if( event->type() == QEvent::Leave ) {
-        	for( int i = 0 ; i < tabBar()->count(); i++ )
-        		setTabIcon( i, editor( i )->icon() );
-
-			return true;
-		} else
-		if( ( event->type() == QEvent::HoverMove ) && XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
-        	for( int i = 0 ; i < tabBar()->count(); i++ )
-        		setTabIcon( i, editor( i )->icon() );
-
-			QHoverEvent *mouseEvent = static_cast<QHoverEvent *>(event);
-        	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
-			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
-
-			setTabIcon( m_clickedItem, QIcon( ":/images/fileclose.png" ) );
-
-			return true;
-		} else
-		if( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton ) && XINXConfig::self()->config().editor.closeButtonOnEachTab ) {
-        	QMouseEvent * mouseEvent = static_cast<QMouseEvent *>( event );
-        	m_clickedItem = tabPositionIcon( mouseEvent->pos() );
-			if( m_clickedItem == -1 ) return QTabWidget::eventFilter( obj, event );
-
-			m_closeAction->trigger();
-		} else
  		if ( ( ( event->type() == QEvent::MouseButtonPress ) && ( static_cast<QMouseEvent *>(event)->button() == Qt::RightButton ) ) || ( event->type() == QEvent::MouseButtonDblClick ) ) {
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 			m_clickedItem = tabPosition( mouseEvent->pos() );

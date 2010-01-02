@@ -20,6 +20,7 @@
 // Xinx header
 #include "xsltparser.h"
 #include <project/xinxproject.h>
+#include <project/externalfileresolver.h>
 
 // Qt header
 #include <QDir>
@@ -37,10 +38,21 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
-extern int xmlLoadExtDtdDefaultValue;
+#include <libxslt/extensions.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
+
+/* PrivateXsltParser */
+
+class PrivateXsltParser {
+public:
+	xsltStylesheetPtr m_stylesheet;
+	xmlDocPtr m_xmlDoc, m_res;
+};
 
 /* Static methode */
 
+extern int xmlLoadExtDtdDefaultValue;
 xmlExternalEntityLoader defaultEntityLoader = NULL;
 
 static xmlParserInputPtr xsltprocExternalEntityLoader( const char *URL, const char *ID, xmlParserCtxtPtr ctxt ) {
@@ -61,29 +73,92 @@ static xmlParserInputPtr xsltprocExternalEntityLoader( const char *URL, const ch
 		return ret;
 	}
 
-	QStringList searchPaths = XINXProjectManager::self()->project()->processedSearchPathList();
-	foreach( QString searchPath, searchPaths ) {
-		QString newUrl = QDir( searchPath ).absoluteFilePath( QLatin1String( URL ) );
-
-		ret = defaultEntityLoader( qPrintable(newUrl), ID, ctxt);
-		if( ret != NULL ) {
-			if( warning != NULL )
-				ctxt->sax->warning = warning;
-			return ret;
-		}
+	QString newUrl = ExternalFileResolver::self()->resolveFileName( URL, QString() );
+	ret = defaultEntityLoader( qPrintable(newUrl), ID, ctxt);
+	if( ret != NULL ) {
+		if( warning != NULL )
+			ctxt->sax->warning = warning;
+		return ret;
 	}
 
 	qWarning() << XsltParser::tr("Failed to load external entity : \"%1\"").arg( QLatin1String( URL ) );
 	return NULL;
 }
 
-/* PrivateXsltParser */
+static void xsltExtFunctionGnxTrad( xmlXPathParserContextPtr ctxt, int nargs ) {
+	if( nargs != 3 ) {
+		//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+		return;
+	}
 
-class PrivateXsltParser {
-public:
-	xsltStylesheetPtr m_stylesheet;
-	xmlDocPtr m_xmlDoc, m_res;
-};
+	xmlXPathObjectPtr lang = valuePop(ctxt);
+	xmlXPathObjectPtr label = valuePop(ctxt);
+	xmlXPathObjectPtr context = valuePop(ctxt);
+
+	qDebug() << "Lang: " << lang->stringval << ", label: " << label->stringval << ", context: " << context->stringval;
+
+	valuePush(ctxt, label);
+
+	xmlXPathFreeObject(lang);
+	xmlXPathFreeObject(context);
+}
+
+static void xsltExtFunctionGnxTradJS( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+
+static void xsltExtFunctionGnxMessage( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+static void xsltExtFunctionGnxTime( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+static void xsltExtFunctionGnxEncode( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+static void xsltExtFunctionGnxNormalizeJS( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+static void xsltExtFunctionGnxTrim( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+static void xsltExtFunctionGnxLpad( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
+
+
+void* xsltExtInitFunc(xsltTransformContextPtr ctxt, const xmlChar *URI) {
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"trad", URI, xsltExtFunctionGnxTrad );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"tradJS", URI, xsltExtFunctionGnxTradJS );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"message", URI, xsltExtFunctionGnxMessage );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"time", URI, xsltExtFunctionGnxTime );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"encode", URI, xsltExtFunctionGnxEncode );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"normalizeJS", URI, xsltExtFunctionGnxNormalizeJS );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"trim", URI, xsltExtFunctionGnxTrim );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"lpad", URI, xsltExtFunctionGnxLpad );
+
+	return 0;
+}
+
+void xsltExtShutdownFunc(xsltTransformContextPtr ctxt, const xmlChar *URI, void *data) {
+	Q_UNUSED( ctxt );
+	Q_UNUSED( URI );
+	Q_UNUSED( data );
+}
+
 
 /* XsltParser */
 
@@ -100,6 +175,7 @@ XsltParser::XsltParser() {
 
 		xmlSubstituteEntitiesDefault(1);
 		xmlLoadExtDtdDefaultValue = 1;
+
 	}
 }
 
@@ -114,12 +190,12 @@ XsltParser::~XsltParser() {
 	delete d;
 }
 
-bool XsltParser::loadStylesheet( const QByteArray & data ) {
+/*bool XsltParser::loadStylesheet( const QByteArray & data ) {
 	xmlDocPtr xslDoc = xmlParseMemory( data, data.size() );
 	d->m_stylesheet = xsltParseStylesheetDoc( xslDoc );
 
 	return d->m_stylesheet;
-}
+}*/
 
 bool XsltParser::loadStylesheet( const QString & filename ) {
 	d->m_stylesheet = xsltParseStylesheetFile( (const xmlChar *) qPrintable( filename ) );
@@ -157,7 +233,13 @@ bool XsltParser::process() {
 	if( d->m_res )
 		xmlFreeDoc( d->m_res );
 
-	d->m_res = xsltApplyStylesheet( d->m_stylesheet, d->m_xmlDoc, 0 );
+	xsltTransformContextPtr ctxt = xsltNewTransformContext( d->m_stylesheet, d->m_xmlDoc );
+	if( ctxt == NULL )
+		return 0;
+
+	xsltExtInitFunc( ctxt, (xmlChar*)"http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" );
+
+	d->m_res = xsltApplyStylesheetUser( d->m_stylesheet, d->m_xmlDoc, 0, 0, 0, ctxt );
 
 	return d->m_res;
 }

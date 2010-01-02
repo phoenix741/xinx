@@ -36,11 +36,11 @@ WebServicesRefreshAction::WebServicesRefreshAction( const QIcon & icon, const QS
 }
 
 bool WebServicesRefreshAction::isActionVisible() const {
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->options().testFlag( XinxProject::hasWebServices );
+	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains( "ServicesPlugin" );
 }
 
 bool WebServicesRefreshAction::isActionEnabled() const {
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->options().testFlag( XinxProject::hasWebServices );
+	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains( "ServicesPlugin" );
 }
 
 bool WebServicesRefreshAction::isInToolBar() const {
@@ -63,13 +63,13 @@ WebServicesRunAction::WebServicesRunAction( const QIcon & icon, const QString & 
 }
 
 bool WebServicesRunAction::isActionVisible() const {
-	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->options().testFlag( XinxProject::hasWebServices );
+	return XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains( "ServicesPlugin" );
 }
 
 bool WebServicesRunAction::isActionEnabled() const {
 	if( qobject_cast<WebServicesEditor*>( EditorManager::self()->currentEditor() ) ) {
 		WebServicesEditor * editor = qobject_cast<WebServicesEditor*>( EditorManager::self()->currentEditor() );
-		return editor->service() && editor->operation() && XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->options().testFlag( XinxProject::hasWebServices );
+		return editor->service() && editor->operation() && XINXProjectManager::self()->project() && XINXProjectManager::self()->project()->activatedPlugin().contains( "ServicesPlugin" );
 	}
 	return false;
 }

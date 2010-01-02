@@ -47,7 +47,7 @@ QVariant CompleterDirModel::data( const QModelIndex &index, int role ) const {
  
 /* DirectoryEdit */
 
-DirectoryEdit::DirectoryEdit( QWidget * parent ) : QLineEdit( parent ) {
+DirectoryEdit::DirectoryEdit( QWidget * parent ) : QLineEdit( parent ), m_fileMustExist( true ) {
 	connect( this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)) );
 	QCompleter * completer = new QCompleter( this );
 	this->setCompleter( completer );
@@ -58,11 +58,30 @@ DirectoryEdit::DirectoryEdit( const QString & contents, QWidget * parent ) : QLi
 	connect( this, SIGNAL(textChanged(QString)), this, SLOT(slotTextChanged(QString)) );
 }
 
+void DirectoryEdit::setFileMustExist( bool value ) {
+	if( value != m_fileMustExist ) {
+		m_fileMustExist = value;
+		slotTextChanged( this->text() );
+	}
+}
+
+bool DirectoryEdit::fileMustExist() const {
+	return m_fileMustExist;
+}
+
+void DirectoryEdit::setFilter( const QString & filter ) {
+	m_filter = filter;
+}
+
+const QString & DirectoryEdit::filter() const {
+	return m_filter;
+}
+
 void DirectoryEdit::slotTextChanged( QString text ) {
 	QFile file ( text );
 	QPalette palette( this->palette() );
 	
-	if( file.exists() ) {
+	if( (!m_fileMustExist) || file.exists() ) {
 		palette.setColor( QPalette::Text, QColor() );
 	} else {
 		palette.setColor( QPalette::Text, Qt::red );
@@ -77,8 +96,10 @@ void DirectoryEdit::changePath( QWidget * parent, const QString & defaultValue, 
 		
 	if( directory )
 		value = QFileDialog::getExistingDirectory( parent, tr("Change the path"), value );
+	else if( m_fileMustExist )
+		value = QFileDialog::getOpenFileName( parent, tr("Change the file"), value, m_filter, &m_filter );
 	else
-		value = QFileDialog::getOpenFileName( parent, tr("Change the file"), value );
+		value = QFileDialog::getSaveFileName( parent, tr("Change the file"), value, m_filter, &m_filter );
 	
 	if( ! value.isEmpty() ) {
 		this->setText( QDir::toNativeSeparators( value ) );		

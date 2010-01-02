@@ -180,7 +180,8 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 	QString utf8Text = textEdit()->toPlainText();
 	QByteArray byte  = codec()->fromUnicode( utf8Text );
 
-	if( ! xsltParser.loadStylesheet( byte ) ) goto error;
+	//if( ! xsltParser.loadStylesheet( byte ) ) goto error;
+	if( ! xsltParser.loadStylesheet( textEdit()->filename() ) ) goto error;
 	if( ! xsltParser.loadXmlFile( xmlfile ) ) goto error;
 	if( ! xsltParser.process() )              goto error;
 

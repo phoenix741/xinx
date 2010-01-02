@@ -6,6 +6,8 @@
         <file alias="qcodeedit/lan/none.qnfa" >../framework/editors/none.qnfa</file>
         <file>translations/qt_fr.qm</file>
         <file>translations/xinx_fr.qm</file>
+        <file>images/france.png</file>
+        <file>images/usa.png</file>
         <file>images/1downarrow.png</file>
         <file>images/1uparrow.png</file>
         <file>images/balise.png</file>
@@ -44,23 +46,18 @@
         <file>images/filesaveall.png</file>
         <file>images/filesaveas.png</file>
         <file>images/find.png</file>
-        <file>images/firefox_logo.png</file>
         <file>images/flatlist.png</file>
         <file>images/folder.png</file>
         <file>images/fontsizedown.png</file>
         <file>images/fontsizeup.png</file>
         <file>images/format-indent-less.png</file>
         <file>images/format-indent-more.png</file>
-        <file>images/france.png</file>
-        <file>images/germany.png</file>
         <file>images/help-about.png</file>
         <file>images/help-contents.png</file>
         <file>images/help-contextual.png</file>
         <file>images/help-hint.png</file>
         <file>images/html_value.png</file>
-        <file>images/ie_logo.png</file>
         <file>images/import.png</file>
-        <file>images/italy.png</file>
         <file>images/label.png</file>
         <file>images/lineedit.png</file>
         <file>images/listbox.png</file>
@@ -69,7 +66,6 @@
         <file>images/network_incoming_lan.png</file>
         <file>images/network_outgoing_lan.png</file>
         <file>images/noeud.png</file>
-        <file>images/portugal.png</file>
         <file>images/preference-rcs.png</file>
         <file>images/preferences-color.png</file>
         <file>images/preferences-desktop-keyboard.png</file>
@@ -80,7 +76,6 @@
         <file>images/preferences-project.png</file>
         <file>images/preferences-tools.png</file>
         <file>images/preferences-ui.png</file>
-        <file>images/preferences-xmlpres.png</file>
         <file>images/project_close.png</file>
         <file>images/project_open.png</file>
         <file>images/pushbutton.png</file>
@@ -88,7 +83,6 @@
         <file>images/redo.png</file>
         <file>images/reload.png</file>
         <file>images/run.png</file>
-        <file>images/spain.png</file>
         <file>images/splash.png</file>
         <file>images/style.png</file>
         <file>images/tabclose.png</file>
@@ -96,7 +90,6 @@
         <file>images/textedit.png</file>
         <file>images/typeunknown.png</file>
         <file>images/undo.png</file>
-        <file>images/usa.png</file>
         <file>images/variable.png</file>
         <file>images/vcs_add.png</file>
         <file>images/vcs_commit.png</file>
@@ -112,5 +105,6 @@
         <file>rc/tipoftheday_fr_FR.txt</file>
         <file>images/banner.png</file>
         <file>rc/tipoftheday_en.txt</file>
+        <file>images/newprojectwatermark.png</file>
     </qresource>
 </RCC>

@@ -19,28 +19,11 @@
 
 // Xinx header
 #include "servicesprojectwizard.h"
-
-/* ServicesPageImpl */
-
-ServicesPageImpl::ServicesPageImpl( int nextId, QWidget * parent ) : QWizardPage( parent ), m_nextId( nextId ) {
-	setupUi( this );
-	setTitle( windowTitle() );
-	setSubTitle( tr("Define if the project contains WebServices. WebServices can be used to "
-					"query database.") );
-
-	registerField( "project.services", m_addWebServicesButton );
-}
-
-int ServicesPageImpl::nextId() const {
-	if( m_addWebServicesButton->isChecked() )
-		return m_nextId + 1;
-	else
-		return m_nextId + 2;
-}
+#include <project/xinxproject.h>
 
 /* ServicesListPageImpl */
 
-ServicesListPageImpl::ServicesListPageImpl( int nextId, QWidget * parent ) : QWizardPage( parent ), m_nextId( nextId ) {
+ServicesListPageImpl::ServicesListPageImpl() {
 	setupUi( this );
 	setTitle( windowTitle() );
 	setSubTitle( tr("Define the list of WSDL. WSDL is used to describe the web services. This"
@@ -56,6 +39,27 @@ QVariant ServicesListPageImpl::field( const QString &name ) const {
 	return QWizardPage::field( name );
 }
 
-int ServicesListPageImpl::nextId() const {
-	return m_nextId + 2;
+QString ServicesListPageImpl::pagePluginId() const {
+	return "ServiceInformation";
+}
+
+bool ServicesListPageImpl::pageIsVisible() const {
+	return true;
+}
+
+bool ServicesListPageImpl::saveSettingsDialog( XinxProject * project ) {
+	project->writeProperty( "hasWebServices", true );
+
+	QStringList services;
+	foreach( const QString & value, m_webServicesWidget->values() )
+		services += value;
+
+
+	int index = 0;
+	foreach( const QString & link, services ) {
+		project->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
+		index++;
+	}
+
+	return true;
 }

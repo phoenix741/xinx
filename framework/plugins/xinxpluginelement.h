@@ -47,6 +47,7 @@ public:
 	 */
 	virtual bool isConfigurable() const;
 
+	virtual QString objectName() const;
 	virtual QPixmap pixmap() const;
 	virtual QString name() const;
 	virtual QString description() const;

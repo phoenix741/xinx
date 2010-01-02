@@ -66,3 +66,15 @@ bool XmlPresConfigFormImpl::saveSettingsDialog() {
 	SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists = m_showNameAttributeCheckBox->isChecked();
 	return true;
 }
+
+bool XmlPresConfigFormImpl::cancelSettingsDialog() {
+	return true;
+}
+
+bool XmlPresConfigFormImpl::isSettingsValid() {
+	return true;
+}
+
+bool XmlPresConfigFormImpl::isVisible() {
+	return true;
+}

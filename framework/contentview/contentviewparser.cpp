@@ -22,6 +22,7 @@
 #include <contentview/contentviewcache.h>
 #include <contentview/contentviewnode.h>
 #include <project/xinxproject.h>
+#include <project/externalfileresolver.h>
 
 // Qt header
 #include <QStack>
@@ -105,29 +106,13 @@ void ContentViewParser::removeAttachedNode( ContentViewNode * n ) {
 }
 
 QString ContentViewParser::locationOf( const QString & relativeFilename ) {
-	QStringList searchList;
-	const QString name = filename();
+	QString fn = filename();
+	if( XINXProjectManager::self()->project() && fn.isEmpty() )
+		fn = XINXProjectManager::self()->project()->projectPath();
+	else
+		fn = QFileInfo( filename() ).absolutePath();
 
-	if( ! name.isEmpty() )
-		searchList << QFileInfo( name ).absolutePath();
-
-	if( XINXProjectManager::self()->project() )
-		searchList += XINXProjectManager::self()->project()->processedSearchPathList();
-
-	QString absPath = QString();
-	bool finded = false;
-	foreach( const QString & path, searchList ) {
-		absPath = QDir( path ).absoluteFilePath( relativeFilename );
-		if( QFile::exists( absPath ) ) {
-			finded = true;
-			break;
-		}
-	}
-
-	if( finded )
-		return absPath;
-
-	return relativeFilename;
+	return ExternalFileResolver::self()->resolveFileName( relativeFilename, fn );
 }
 
 void ContentViewParser::createContentViewNode( ContentViewNode * parent, const QString & filename ) {

@@ -22,10 +22,9 @@
 #pragma once
 
 #include "ui_projectproperty.h"
-#include "threadedconfigurationfile.h"
 
 class XinxProject;
-class IXinxPluginProjectConfiguration;
+class IXinxPluginProjectConfigurationPage;
 
 class ProjectPropertyImpl : public QDialog, public Ui::ProjectProperty {
 	Q_OBJECT
@@ -36,20 +35,13 @@ public:
 	void loadFromProject( XinxProject * );
 	void saveToProject( XinxProject * );
 private:
-	void updateOkButton();
-	ThreadedConfigurationFile * m_versionInstance;
-
-	QList< QPair<IXinxPluginProjectConfiguration*,QWidget*> > m_pluginPages;
+	QList< IXinxPluginProjectConfigurationPage* > m_pluginPages;
+	QHash< QString, QTreeWidgetItem* > m_pluginsCheck;
 private slots:
-	void on_m_logButton_clicked();
-	void on_m_specifiqueGroupBox_clicked();
-	void on_m_projectLineEdit_textChanged( QString );
-	void on_m_projectButton_clicked();
-	void on_m_prefixList_defaultValueChanged( QString );
+	void on_m_tree_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
+	void updateOkButton();
 	void on_m_addPreloadedFile_clicked();
 	void on_m_preloadedFiles_itemSelectionChanged();
-
-	void versionFinded( ConfigurationFile configuration );
 };
 
 #endif

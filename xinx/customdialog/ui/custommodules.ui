@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomModules</class>
+ <widget class="QWidget" name="CustomModules">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>619</width>
+    <height>321</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Modules</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="modulesTabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Plugins</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="PluginSelector" name="m_pluginListView">
+         <property name="whatsThis">
+          <string>&lt;p&gt;List of plugins of &lt;b&gt;XINX&lt;/b&gt;. Plugins are piece of software that can be added without reinstall &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;XINX&lt;/b&gt; is now modular, so you can wrote your own plugins and enjoy. Plugins are writte in &lt;i&gt;C++&lt;/i&gt;, use &lt;i&gt;Qt&lt;/i&gt;, and must be in licence accepted by &lt;i&gt;Qt&lt;/i&gt;.&lt;/p&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="Tab_2">
+      <attribute name="title">
+       <string>Scripts</string>
+      </attribute>
+      <layout class="QGridLayout" name="_2">
+       <item row="0" column="0">
+        <widget class="PluginSelector" name="m_scriptListView"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PluginSelector</class>
+   <extends>QListView</extends>
+   <header>pluginselector.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

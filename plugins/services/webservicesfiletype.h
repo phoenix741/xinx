@@ -33,15 +33,6 @@ public:
 	virtual QString match() { return "*.fws"; };
 	virtual QString icon() { return ":/services/images/typefws.png"; };
 
-	virtual AppSettings::struct_extentions properties() {
-		AppSettings::struct_extentions p;
-		p.canBeCommitToRcs = true;
-		p.canBeFindInConfiguration = false;
-		p.canBeSaveAsSpecifique = false;
-		p.specifiqueSubDirectory = QString();
-		return p;
-	};
-
 	virtual AbstractEditor * createEditor( const QString & filename ) {
 		WebServicesEditor * editor = new WebServicesEditor();
 

@@ -25,28 +25,20 @@
 #include <QWizard>
 
 // Xinx header
-#include "ui_newprojectwizard_services.h"
+#include <plugins/plugininterfaces.h>
 #include "ui_newprojectwizard_serviceslist.h"
 
-class ServicesPageImpl : public QWizardPage, public Ui::ServicesPage {
+class ServicesListPageImpl : public IXinxPluginNewProjectConfigurationPage, public Ui::ServicesListPage {
 	Q_OBJECT
 public:
-	ServicesPageImpl( int nextId, QWidget * parent = 0 );
+	ServicesListPageImpl();
 
-	int nextId() const;
-private:
-	int m_nextId;
-};
-
-class ServicesListPageImpl : public QWizardPage, public Ui::ServicesListPage {
-	Q_OBJECT
-public:
-	ServicesListPageImpl( int nextId, QWidget * parent = 0 );
-
-	int nextId() const;
 	QVariant field(const QString &name) const;
-private:
-	int m_nextId;
+
+	virtual bool saveSettingsDialog( XinxProject * project );
+
+	virtual QString pagePluginId() const;
+	virtual bool pageIsVisible() const;
 };
 
 #endif // _SERVICESPROJECTWIZARD_H_

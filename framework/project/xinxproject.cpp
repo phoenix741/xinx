@@ -31,13 +31,7 @@
 #include "core/xinxcore.h"
 #include "core/xinxconfig.h"
 #include "contentview/contentviewcache.h"
-
-#define XINX_PROJECT_VERSION_0 0
-#define XINX_PROJECT_VERSION_1 1
-#define XINX_PROJECT_VERSION_2 2
-#define XINX_PROJECT_VERSION_3 3
-#define XINX_PROJECT_VERSION_4 4
-#define XINX_PROJECT_VERSION 4
+#include "plugins/xinxpluginsloader.h"
 
 /* Static member */
 
@@ -220,8 +214,6 @@ public:
 	static QStringList loadList( QDomDocument document, const QString & list, const QString & element );
 	static void saveList( QDomDocument & document, const QString & list, const QString & element, const QStringList & slist );
 
-	QString processPath( QString path );
-
 	PrivateXinxProject& operator=( const PrivateXinxProject& p );
 
 	XinxProjectSession * m_session;
@@ -229,13 +221,11 @@ public:
 	QString m_fileName;
 	int m_version;
 
-	QStringList m_searchPathList, m_specifiquePrefixes, m_preloadedFiles;
-	int m_indexOfSpecifiquePath;
-	QString m_projectName, m_defaultLang, m_defaultNav;
-	QString m_projectPath, m_specifiquePathName, m_specifiquePrefix;
-	QString m_logProjectDirectory;
-	XinxProject::ProjectOptions m_projectOptions;
+	QStringList m_activatedPlugin;
+	QStringList m_preloadedFiles;
+	QString m_projectName, m_projectPath;
 	QString m_projectRCS;
+
 
 	QHash<QString,QVariant> m_properties;
 
@@ -249,21 +239,6 @@ PrivateXinxProject::PrivateXinxProject( XinxProject * parent ) {
 
 	m_cache = 0;
 
-	m_defaultLang = "FRA";
-	m_defaultNav  = "NAV/MIC";
-
-	m_searchPathList.append( "langue/<lang>/nav/<project>" );
-	m_searchPathList.append( "langue/<lang>/nav" );
-	m_searchPathList.append( "." );
-	m_searchPathList.append( "langue/<lang>" );
-	m_searchPathList.append( "langue" );
-	m_indexOfSpecifiquePath = 0;
-
-	m_specifiquePathName = XINXConfig::self()->config().project.defaultProjectPathName;
-	m_projectOptions |= XinxProject::hasSpecifique;
-
-	m_preloadedFiles.append( "langue/js/generix.js" );
-
 	m_session = new XinxProjectSession();
 }
 
@@ -272,18 +247,10 @@ PrivateXinxProject::~PrivateXinxProject() {
 }
 
 PrivateXinxProject& PrivateXinxProject::operator=( const PrivateXinxProject& p ) {
-	m_searchPathList        = p.m_searchPathList;
-	m_indexOfSpecifiquePath = p.m_indexOfSpecifiquePath;
-	m_projectName		= p.m_projectName;
-	m_defaultLang		= p.m_defaultLang;
-	m_defaultNav		= p.m_defaultNav;
-	m_projectPath		= p.m_projectPath;
-	m_specifiquePathName	= p.m_specifiquePathName;
-	m_specifiquePrefix	= p.m_specifiquePrefix;
-	m_projectOptions	= p.m_projectOptions;
-	m_projectRCS		= p.m_projectRCS;
-	m_logProjectDirectory   = p.m_logProjectDirectory;
-	m_preloadedFiles	= p.m_preloadedFiles;
+	m_projectName			= p.m_projectName;
+	m_projectPath			= p.m_projectPath;
+	m_projectRCS			= p.m_projectRCS;
+	m_preloadedFiles		= p.m_preloadedFiles;
 
 	return *this;
 }
@@ -344,19 +311,6 @@ void PrivateXinxProject::saveList( QDomDocument & document, const QString & list
 	}
 }
 
-QString PrivateXinxProject::processPath( QString path ) {
-	path.replace( "<lang>", m_defaultLang.toLower() );
-	path.replace( "<LANG>", m_defaultLang.toUpper() );
-	path.replace( "<nav>", m_defaultNav.toLower() );
-	path.replace( "<NAV>", m_defaultNav.toUpper() );
-	path.replace( "<project>", m_specifiquePathName.toLower() );
-	path.replace( "<PROJECT>", m_specifiquePathName.toUpper() );
-	path.replace( "<prefix>", m_specifiquePrefix.toLower() );
-	path.replace( "<PREFIX>", m_specifiquePrefix.toUpper() );
-
-	return QDir( m_parent->projectPath() ).absoluteFilePath( path );
-}
-
 /* XinxProject */
 
 XinxProject::XinxProject() : QObject() {
@@ -400,7 +354,7 @@ void XinxProject::loadFromFile( const QString & filename ) {
 	QDomElement root = document.documentElement();
 
 	// Test if Project File
-	if( ( root.tagName() != "XinxProject" ) && ( root.tagName() != "XSLProject" ) )
+	if( root.tagName() != "XinxProject" )
 		throw XinxProjectException( tr("The file isn't a XINX Project. The root name must be \"XinxProject\", not \"%1\".").arg( root.tagName() ) );
 
 	d->m_version = PrivateXinxProject::getValue( document, "xinx_version" ).isEmpty() ? 0 : PrivateXinxProject::getValue( document, "xinx_version" ).toInt();
@@ -414,30 +368,10 @@ void XinxProject::loadFromFile( const QString & filename ) {
 
 	// Load values
 	d->m_projectName         = PrivateXinxProject::getValue( document, "name" );
-	d->m_defaultLang         = PrivateXinxProject::getValue( document, "lang" );
-	d->m_defaultNav          = PrivateXinxProject::getValue( document, "nav" );
 	d->m_projectPath         = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXinxProject::getValue( document, "project" ) );
-	d->m_specifiquePrefix    = PrivateXinxProject::getValue( document, "prefix" );
 	d->m_projectRCS 		 = PrivateXinxProject::getValue( document, "rcs" );
-	QString path;
-
-	QStringList spl = PrivateXinxProject::loadList( document, "paths", "path" );
-	if( spl.size() > 0 ) {
-		d->m_searchPathList = spl;
-		d->m_indexOfSpecifiquePath = PrivateXinxProject::getValue( document, "indexOfSpecifiquePath" ).toInt();
-		if( ( d->m_indexOfSpecifiquePath < 0 ) || ( d->m_indexOfSpecifiquePath >= spl.size() ) ) d->m_indexOfSpecifiquePath = 0;
-	} else {
-		d->m_indexOfSpecifiquePath = 0;
-	}
-	d->m_specifiquePathName = PrivateXinxProject::getValue( document, "specifiquePathName" );
-	d->m_projectOptions = ProjectOptions( PrivateXinxProject::getValue( document, "options" ).toInt() );
-	d->m_logProjectDirectory = QFileInfo( d->m_fileName ).absoluteDir().absoluteFilePath( PrivateXinxProject::getValue( document, "logProjectDirectory" ) );
-	d->m_specifiquePrefixes = PrivateXinxProject::loadList( document, "prefixes", "prefix" );
-
-	if( d->m_specifiquePrefixes.size() == 0 )
-		d->m_specifiquePrefixes.append( d->m_specifiquePrefix );
-
-	d->m_preloadedFiles = PrivateXinxProject::loadList( document, "preloadedFiles", "file" );
+	d->m_preloadedFiles		 = PrivateXinxProject::loadList( document, "preloadedFiles", "file" );
+	d->m_activatedPlugin	 = PrivateXinxProject::loadList( document, "activatedPlugin", "name" );
 
 	QDomElement propertiesElement = root.firstChildElement( "properties" );
 
@@ -448,7 +382,9 @@ void XinxProject::loadFromFile( const QString & filename ) {
 				name  = node.tagName(),
 				value = node.text();
 
-		if( ! value.isEmpty() ) {
+		if( ( type == "QStringList" ) && ( ! value.isEmpty() ) ) {
+			d->m_properties[ name ] = QVariant::fromValue( value.split( ";;;" ) );
+		} else if( ! value.isEmpty() ) {
 			QVariant::Type variantType = QVariant::nameToType( qPrintable( type ) );
 			QVariant p( variantType );
 			p.setValue( value );
@@ -462,7 +398,9 @@ void XinxProject::loadFromFile( const QString & filename ) {
 		throw XinxProjectException( tr( "Project path (%1) don't exists." ).arg( projectPath() ) );
 
 	try {
-		d->m_session->loadFromFile( d->m_fileName + ".session" );
+		QString sessionFileName = d->m_fileName;
+		sessionFileName.replace( XINX_PROJECT_EXTENTION, XINX_SESSION_EXTENTION );
+		d->m_session->loadFromFile( sessionFileName );
 	} catch( XinxProjectException e ) {
 		qWarning( qPrintable( e.getMessage() ) );
 	}
@@ -475,7 +413,9 @@ void XinxProject::saveToFile( const QString & filename ) {
 	if( d->m_fileName.isEmpty() ) return;
 
 	// Save the session file
-	d->m_session->saveToFile( d->m_fileName + ".session" );
+	QString sessionFileName = d->m_fileName;
+	sessionFileName.replace( XINX_PROJECT_EXTENTION, XINX_SESSION_EXTENTION );
+	d->m_session->saveToFile( sessionFileName );
 
 	// Save attributes
 	QDomDocument document( "XinxProject" );
@@ -484,27 +424,22 @@ void XinxProject::saveToFile( const QString & filename ) {
 
 	PrivateXinxProject::setValue( document, "xinx_version", QString( "%1" ).arg( XINX_PROJECT_VERSION ) );
 	PrivateXinxProject::setValue( document, "name", d->m_projectName );
-	PrivateXinxProject::setValue( document, "lang", d->m_defaultLang );
-	PrivateXinxProject::setValue( document, "nav", d->m_defaultNav );
 	PrivateXinxProject::setValue( document, "project", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_projectPath ) );
-	PrivateXinxProject::setValue( document, "prefix", d->m_specifiquePrefix );
 	PrivateXinxProject::setValue( document, "rcs", d->m_projectRCS );
-	PrivateXinxProject::saveList( document, "prefixes", "prefix", d->m_specifiquePrefixes );
-	PrivateXinxProject::saveList( document, "paths", "path", d->m_searchPathList );
 	PrivateXinxProject::saveList( document, "preloadedFiles", "file", d->m_preloadedFiles );
-	PrivateXinxProject::setValue( document, "indexOfSpecifiquePath", QString("%1").arg( d->m_indexOfSpecifiquePath ) );
-	PrivateXinxProject::setValue( document, "specifiquePathName", d->m_specifiquePathName );
-	PrivateXinxProject::setValue( document, "options", QString("%1").arg( d->m_projectOptions ) );
-	PrivateXinxProject::setValue( document, "logProjectDirectory", QFileInfo( d->m_fileName ).absoluteDir().relativeFilePath( d->m_logProjectDirectory ) );
+	PrivateXinxProject::saveList( document, "activatedPlugin", "name", d->m_activatedPlugin );
 
 	QDomElement propertiesElement = document.createElement( "properties" );
 	root.appendChild( propertiesElement );
 
 	foreach( const QString & key, d->m_properties.keys() ) {
+		const QString typeName = d->m_properties[ key ].typeName();
+		const QString value = typeName == "QStringList" ? d->m_properties[ key ].toStringList().join( ";;;" ) : d->m_properties[ key ].toString();
+
 		QDomElement propertyElement = document.createElement( key );
-		QDomText text = document.createTextNode( d->m_properties[ key ].toString() );
+		QDomText text = document.createTextNode( value );
 		propertyElement.appendChild( text );
-		propertyElement.setAttribute( "type", d->m_properties[ key ].typeName() );
+		propertyElement.setAttribute( "type", typeName );
 		propertiesElement.appendChild( propertyElement );
 	}
 
@@ -521,17 +456,6 @@ void XinxProject::saveToFile( const QString & filename ) {
 void XinxProject::saveOnlySession() {
 	if( d->m_fileName.isEmpty() ) return;
 	d->m_session->saveToFile();
-}
-
-XinxProject::ProjectOptions & XinxProject::options() {
-	return d->m_projectOptions;
-}
-
-void XinxProject::setOptions( XinxProject::ProjectOptions options ) {
-	if( d->m_projectOptions != options ) {
-		d->m_projectOptions = options;
-		emit changed();
-	}
 }
 
 const QString & XinxProject::projectRCS() const {
@@ -556,28 +480,6 @@ void XinxProject::setProjectName( const QString & value ) {
 	}
 }
 
-QString XinxProject::defaultLang() const {
-	return d->m_defaultLang;
-}
-
-void XinxProject::setDefaultLang( const QString & value ) {
-	if( d->m_defaultLang != value ) {
-		d->m_defaultLang = value;
-		emit changed();
-	}
-}
-
-QString XinxProject::defaultNav() const {
-	return d->m_defaultNav;
-}
-
-void XinxProject::setDefaultNav( const QString & value ) {
-	if( d->m_defaultNav != value ) {
-		d->m_defaultNav = value;
-		emit changed();
-	}
-}
-
 QString XinxProject::projectPath() const {
 	return QDir( d->m_projectPath ).absolutePath();
 }
@@ -587,61 +489,6 @@ void XinxProject::setProjectPath( const QString & value ) {
 		d->m_projectPath = value;
 		emit changed();
 	}
-}
-
-void XinxProject::setSpecifiquePathName( const QString & value ) {
-	if( d->m_specifiquePathName != value ) {
-		d->m_specifiquePathName = value;
-		emit changed();
-	}
-}
-
-QString XinxProject::specifiquePathName() {
-	return d->m_specifiquePathName;
-}
-
-QString XinxProject::specifiquePrefix() const {
-	return d->m_specifiquePrefix;
-}
-
-void XinxProject::setSpecifiquePrefix( const QString & value ) {
-	if( d->m_specifiquePrefix != value ) {
-		d->m_specifiquePrefix = value;
-		if( ! d->m_specifiquePrefixes.contains( value ) )
-			d->m_specifiquePrefixes.append( value );
-		emit changed();
-	}
-}
-
-QStringList & XinxProject::specifiquePrefixes() {
-	return d->m_specifiquePrefixes;
-}
-
-QStringList & XinxProject::searchPathList() {
-	return d->m_searchPathList;
-}
-
-QString XinxProject::processedSpecifiquePath() const {
-	Q_ASSERT( d->m_indexOfSpecifiquePath >= 0 );
-	Q_ASSERT( d->m_searchPathList.size() > 0 );
-
-	return d->processPath( d->m_searchPathList.at( d->m_indexOfSpecifiquePath ) );
-}
-
-QStringList XinxProject::processedSearchPathList() {
-	QStringList list;
-	foreach( const QString & path, searchPathList() ) {
-		list << d->processPath( path );
-	}
-	return list;
-}
-
-int XinxProject::indexOfSpecifiquePath() const {
-	return d->m_indexOfSpecifiquePath;
-}
-
-void XinxProject::setIndexOfSpecifiquePath( int value ) {
-	d->m_indexOfSpecifiquePath = value;
 }
 
 QStringList & XinxProject::preloadedFiles() {
@@ -663,20 +510,18 @@ ContentViewCache * XinxProject::preloadedFilesCache() {
 	return d->m_cache;
 }
 
+QStringList XinxProject::activatedPlugin() const {
+	return d->m_activatedPlugin;
+}
+
+void XinxProject::setActivatedPlugin( const QStringList & value ) {
+	d->m_activatedPlugin = value;
+}
+
 const QString & XinxProject::fileName() const {
 	return d->m_fileName;
 }
 
-void XinxProject::setLogProjectDirectory( const QString & value ) {
-	if( d->m_logProjectDirectory != value ) {
-		d->m_logProjectDirectory = value;
-		emit changed();
-	}
-}
-
-const QString & XinxProject::logProjectDirectory() {
-	return d->m_logProjectDirectory;
-}
 
 XinxProjectSession * XinxProject::session() const {
 	return d->m_session;
@@ -689,14 +534,8 @@ void XinxProject::writeProperty( const QString & key, QVariant value ) {
 	}
 }
 
-QVariant XinxProject::readProperty( const QString & key ) {
+QVariant XinxProject::readProperty( const QString & key ) const {
 	return d->m_properties.value( key );
-}
-
-bool XinxProject::blockSignals( bool block ) {
-	bool result = QObject::blockSignals( block );
-	if( ! block ) emit changed();
-	return result;
 }
 
 /* XINXProjectManager */
@@ -736,8 +575,14 @@ XinxProject * XINXProjectManager::project() const {
 }
 
 void XINXProjectManager::deleteProject() {
-	delete m_project;
-	XINXConfig::self()->config().project.lastOpenedProject = QString();
+	if( ! m_project ) return;
+
+	XinxProject * backup = m_project;
+
+	m_project->disconnect( this );
 	m_project = NULL;
 	emit changed();
+
+	delete backup;
+	XINXConfig::self()->config().project.lastOpenedProject = QString();
 }

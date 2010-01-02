@@ -25,7 +25,7 @@
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 #include <editors/editormanager.h>
-#include "customdialogimpl.h"
+#include "customdialog/customdialogimpl.h"
 
 // Qt header
 #include <QVBoxLayout>
@@ -100,12 +100,12 @@ void SnipetDockWidget::createSnipet() {
 
 void SnipetDockWidget::customizeSnipet() {
 	CustomDialogImpl dlg( this );
-	dlg.loadFromConfig( XINXConfig::self() );
+	dlg.loadConfig();
 
-	dlg.m_listWidget->setCurrentRow( 7 );
+	dlg.m_listWidget->setCurrentRow( 5 );
 	dlg.m_listWidget->setVisible( false );
 	if( dlg.exec() ) {
-		dlg.saveToConfig( XINXConfig::self() );
+		dlg.saveConfig();
 		XINXConfig::self()->save();
 	}
 }

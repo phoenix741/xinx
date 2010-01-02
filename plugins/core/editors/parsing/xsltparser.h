@@ -34,7 +34,7 @@ public:
     XsltParser();
 	~XsltParser();
 
-	bool loadStylesheet( const QByteArray & data );
+	//bool loadStylesheet( const QByteArray & data );
 	bool loadStylesheet( const QString & filename );
 
 	bool loadXmlFile( const QByteArray & data );

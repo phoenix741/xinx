@@ -82,13 +82,13 @@ void AppSettings::setDefault() {
 
 void AppSettings::save() {
 	d->createSettings();
-	setSettingsGlobals( d->m_settings, "", d->m_globals );
+	setSettingsGlobals( d->m_settings, "0.9", d->m_globals );
 	d->deleteSettings();
 }
 
 void AppSettings::load() {
 	d->createSettings();
-	d->m_globals = getSettingsGlobals( d->m_settings, "", getDefaultGlobals() );
+	d->m_globals = getSettingsGlobals( d->m_settings, "0.9", getDefaultGlobals() );
 	d->deleteSettings();
 }
 
@@ -161,39 +161,6 @@ void AppSettings::setSettingsQformat( AppSettingsSettings * settings, const QStr
 	settings->setValue( "waveunderline", value.waveunderline, defaultValue.waveunderline );
 	settings->setValue( "foreground", value.foreground, defaultValue.foreground );
 	settings->setValue( "background", value.background, defaultValue.background );
-
-	settings->endGroup();
-}
-
-AppSettings::AppSettings::struct_configurationEditor AppSettings::getDefaultConfigurationEditor() {
-	struct_configurationEditor value;
-
-	value.activateConfigurationEditor = false;
-	value.autoLoadConfigurationFile = true;
-	value.autoSaveConfigurationFile = false;
-
-	return value;
-}
-
-AppSettings::AppSettings::struct_configurationEditor AppSettings::getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_configurationEditor & defaultValue ) {
-	struct_configurationEditor value;
-	settings->beginGroup( path );
-
-	value.activateConfigurationEditor = settings->value( "Activate Configuration Editor", defaultValue.activateConfigurationEditor ).toBool();
-	value.autoLoadConfigurationFile = settings->value( "Auto load configuration file", defaultValue.autoLoadConfigurationFile ).toBool();
-	value.autoSaveConfigurationFile = settings->value( "Auto save configuration file", defaultValue.autoSaveConfigurationFile ).toBool();
-
-	settings->endGroup();
-	return value;
-}
-
-void AppSettings::setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_configurationEditor & value ) {
-	struct_configurationEditor defaultValue = getDefaultConfigurationEditor();
-	settings->beginGroup( path );
-
-	settings->setValue( "Activate Configuration Editor", value.activateConfigurationEditor, defaultValue.activateConfigurationEditor );
-	settings->setValue( "Auto load configuration file", value.autoLoadConfigurationFile, defaultValue.autoLoadConfigurationFile );
-	settings->setValue( "Auto save configuration file", value.autoSaveConfigurationFile, defaultValue.autoSaveConfigurationFile );
 
 	settings->endGroup();
 }
@@ -293,7 +260,6 @@ AppSettings::AppSettings::struct_project AppSettings::getDefaultProject() {
 	value.openTheLastProjectAtStart = false;
 	value.saveWithSessionByDefault = false;
 	value.defaultPath = QDir( qApp->applicationDirPath() ).absoluteFilePath( "project" );
-	value.defaultProjectPathName = "projet";
 	value.closeVersionManagementLog = true;
 	value.automaticProjectDirectoryRefreshTimeout = 500;
 
@@ -309,7 +275,6 @@ AppSettings::AppSettings::struct_project AppSettings::getSettingsProject( AppSet
 	value.saveWithSessionByDefault = settings->value( "Save With Session By Default", defaultValue.saveWithSessionByDefault ).toBool();
 	value.defaultPath = settings->value( "Default Path", defaultValue.defaultPath ).toString();
 	value.recentProjectFiles = settings->value( "Recent Project Files", defaultValue.recentProjectFiles ).toStringList();
-	value.defaultProjectPathName = settings->value( "Default Project Path Name", defaultValue.defaultProjectPathName ).toString();
 	value.closeVersionManagementLog = settings->value( "Close Version Management Log", defaultValue.closeVersionManagementLog ).toBool();
 	value.automaticProjectDirectoryRefreshTimeout = settings->value( "Automatic Project Directory Refresh Timeout", defaultValue.automaticProjectDirectoryRefreshTimeout ).toInt();
 
@@ -326,44 +291,8 @@ void AppSettings::setSettingsProject( AppSettingsSettings * settings, const QStr
 	settings->setValue( "Save With Session By Default", value.saveWithSessionByDefault, defaultValue.saveWithSessionByDefault );
 	settings->setValue( "Default Path", value.defaultPath, defaultValue.defaultPath );
 	settings->setValue( "Recent Project Files", value.recentProjectFiles, defaultValue.recentProjectFiles );
-	settings->setValue( "Default Project Path Name", value.defaultProjectPathName, defaultValue.defaultProjectPathName );
 	settings->setValue( "Close Version Management Log", value.closeVersionManagementLog, defaultValue.closeVersionManagementLog );
 	settings->setValue( "Automatic Project Directory Refresh Timeout", value.automaticProjectDirectoryRefreshTimeout, defaultValue.automaticProjectDirectoryRefreshTimeout );
-
-	settings->endGroup();
-}
-
-AppSettings::AppSettings::struct_extentions AppSettings::getDefaultExtentions() {
-	struct_extentions value;
-
-	value.canBeSaveAsSpecifique = true;
-	value.canBeFindInConfiguration = false;
-	value.canBeCommitToRcs = true;
-
-	return value;
-}
-
-AppSettings::AppSettings::struct_extentions AppSettings::getSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_extentions & defaultValue ) {
-	struct_extentions value;
-	settings->beginGroup( path );
-
-	value.specifiqueSubDirectory = settings->value( "Specifique Sub Directory", defaultValue.specifiqueSubDirectory ).toString();
-	value.canBeSaveAsSpecifique = settings->value( "Can Be Save As Specifique", defaultValue.canBeSaveAsSpecifique ).toBool();
-	value.canBeFindInConfiguration = settings->value( "Can Be Find In Configuration", defaultValue.canBeFindInConfiguration ).toBool();
-	value.canBeCommitToRcs = settings->value( "Can Be Commit To RCS", defaultValue.canBeCommitToRcs ).toBool();
-
-	settings->endGroup();
-	return value;
-}
-
-void AppSettings::setSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::AppSettings::struct_extentions & value ) {
-	struct_extentions defaultValue = getDefaultExtentions();
-	settings->beginGroup( path );
-
-	settings->setValue( "Specifique Sub Directory", value.specifiqueSubDirectory, defaultValue.specifiqueSubDirectory );
-	settings->setValue( "Can Be Save As Specifique", value.canBeSaveAsSpecifique, defaultValue.canBeSaveAsSpecifique );
-	settings->setValue( "Can Be Find In Configuration", value.canBeFindInConfiguration, defaultValue.canBeFindInConfiguration );
-	settings->setValue( "Can Be Commit To RCS", value.canBeCommitToRcs, defaultValue.canBeCommitToRcs );
 
 	settings->endGroup();
 }
@@ -378,9 +307,7 @@ AppSettings::AppSettings::struct_globals AppSettings::getDefaultGlobals() {
 	value.project = getDefaultProject();
 	value.rcs = getDefaultRcs();
 	value.editor = getDefaultEditor();
-	value.configurationEditor = getDefaultConfigurationEditor();
 	value.snipets = getDefaultSnipets();
-	value.files = getDefaultHash_struct_extentions();
 	value.formats = getDefaultHash_struct_qformat();
 
 	return value;
@@ -401,10 +328,8 @@ AppSettings::AppSettings::struct_globals AppSettings::getSettingsGlobals( AppSet
 	value.project = getSettingsProject( settings, "Project", defaultValue.project );
 	value.rcs = getSettingsRcs( settings, "RCS", defaultValue.rcs );
 	value.editor = getSettingsEditor( settings, "Editor", defaultValue.editor );
-	value.configurationEditor = getSettingsConfigurationEditor( settings, "Configuration Editor", defaultValue.configurationEditor );
 	value.snipets = getSettingsSnipets( settings, "Snipets", defaultValue.snipets );
 	value.tools = getSettingsHash_QString( settings, "Tools", defaultValue.tools );
-	value.files = getSettingsHash_struct_extentions( settings, "Files", defaultValue.files );
 	value.formats = getSettingsHash_struct_qformat( settings, "Formats", defaultValue.formats );
 
 	settings->endGroup();
@@ -426,10 +351,8 @@ void AppSettings::setSettingsGlobals( AppSettingsSettings * settings, const QStr
 	setSettingsProject( settings, "Project", value.project );
 	setSettingsRcs( settings, "RCS", value.rcs );
 	setSettingsEditor( settings, "Editor", value.editor );
-	setSettingsConfigurationEditor( settings, "Configuration Editor", value.configurationEditor );
 	setSettingsSnipets( settings, "Snipets", value.snipets );
 	setSettingsHash_QString( settings, "Tools", value.tools );
-	setSettingsHash_struct_extentions( settings, "Files", value.files );
 	setSettingsHash_struct_qformat( settings, "Formats", value.formats );
 
 	settings->endGroup();
@@ -488,47 +411,6 @@ void AppSettings::setSettingsHash_QString( AppSettingsSettings * settings, const
 
 	foreach( const QString & key, value.keys() ) {
 		settings->setValue( key, value[ key ], QString() );
-	}
-
-	settings->endGroup();
-}
-
-QHash<QString,AppSettings::struct_extentions> AppSettings::getDefaultHash_struct_extentions() {
-	QHash<QString,struct_extentions> value;
-
-
-	return value;
-}
-
-QHash<QString,AppSettings::struct_extentions> AppSettings::getSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_extentions> & defaultValue ) {
-	QHash<QString,struct_extentions> value;
-	settings->beginGroup( path );
-
-	QStringList keys = settings->childKeys() + settings->childGroups();
-	foreach( const QString & key, keys ) {
-		struct_extentions def;
-		if( defaultValue.contains( key ) )
-			def = defaultValue[ key ];
-		else
-			def = getDefaultExtentions();
-		value[ key ] = getSettingsExtentions( settings, key, def );
-	}
-	foreach( const QString & defaultValueKey, defaultValue.keys() ) {
-		if( ! value.contains( defaultValueKey ) ) {
-			value[ defaultValueKey ] = defaultValue[ defaultValueKey ];
-		}
-	}
-
-	settings->endGroup();
-	return value;
-}
-
-void AppSettings::setSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_extentions> & value ) {
-	QHash<QString,struct_extentions> defaultValue = getDefaultHash_struct_extentions();
-	settings->beginGroup( path );
-
-	foreach( const QString & key, value.keys() ) {
-		setSettingsExtentions( settings, key, value[ key ] );
 	}
 
 	settings->endGroup();

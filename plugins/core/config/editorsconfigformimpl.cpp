@@ -68,3 +68,16 @@ bool EditorsConfigFormImpl::saveSettingsDialog() {
 	settings->save();
 	return true;
 }
+
+bool EditorsConfigFormImpl::isSettingsValid() {
+	return true;
+}
+
+bool EditorsConfigFormImpl::cancelSettingsDialog() {
+	return true;
+}
+
+bool EditorsConfigFormImpl::isVisible() {
+	return true;
+}
+

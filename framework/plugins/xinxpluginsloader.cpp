@@ -106,9 +106,6 @@ void XinxPluginsLoader::addPlugin( QObject * plugin, bool staticLoaded ) {
 	IFilePlugin * interface = qobject_cast<IFilePlugin*>( plugin );
 	if( interface ) {
 		foreach( IFileTypePlugin * t, interface->fileTypes() ) {
-			struct AppSettings::struct_extentions properties = t->properties();
-			XINXConfig::self()->addDefaultExtention( t->description(), properties );
-
 			// If the plugin contains format and language description, we loaded it.
 			IFileTextPlugin * textPlugin = dynamic_cast<IFileTextPlugin*>( t );
 			if( textPlugin ) {

@@ -89,3 +89,15 @@ bool CustomizePlugin::saveSettingsDialog() {
 	m_settings->save();
 	return true;
 }
+
+bool CustomizePlugin::cancelSettingsDialog() {
+	return true;
+}
+
+bool CustomizePlugin::isSettingsValid() {
+	return true;
+}
+
+bool CustomizePlugin::isVisible() {
+	return true;
+}

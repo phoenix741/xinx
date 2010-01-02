@@ -1,0 +1,19 @@
+<ProjectTemplate name="Generix With Services">
+	<Plugins>
+		<Plugin name="ServicesPlugin"/>
+		<Plugin name="GenerixPlugin"/>
+	</Plugins>
+    <Properties>
+        <Property name="searchPathList" value="langue/fra/nav/&lt;project&gt;;;langue/fra/nav;;.;;langue/fra;;langue"/>
+    </Properties>
+    <WizardPage>
+        <Page name="StdProjectName"/>
+        <Page name="GenerixInformation"/>
+        <Page name="GenerixDerivation1"/>
+        <Page name="GenerixDerivation2"/>
+        <Page name="GenerixDerivation3"/>
+        <Page name="StdProjectRevision"/>
+        <Page name="CoreInformation"/>
+        <Page name="ServiceInformation"/>
+    </WizardPage>
+</ProjectTemplate>

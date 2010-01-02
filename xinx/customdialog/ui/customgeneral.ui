@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomGeneral</class>
+ <widget class="QWidget" name="CustomGeneral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>598</width>
+    <height>195</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>General</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&amp;Language :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_langComboBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="m_langComboBox">
+     <property name="whatsThis">
+      <string>&lt;p&gt;Langue in which &lt;b&gt;XINX&lt;/b&gt; must be used.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Modification take effect at restart.&lt;/i&gt;&lt;/p&gt;</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>(en) English</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>:/images/usa.png</normaloff>:/images/usa.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>(fr_FR) French</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>:/images/france.png</normaloff>:/images/france.png</iconset>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_19">
+     <property name="text">
+      <string>&amp;Trace Log File :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_traceLogWidget</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="DirectoryEditWidget" name="m_traceLogWidget" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="directory" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_22">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Force current &amp;style :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_styleComboBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="m_styleComboBox"/>
+   </item>
+   <item row="3" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DirectoryEditWidget</class>
+   <extends>QWidget</extends>
+   <header>directoryedit.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

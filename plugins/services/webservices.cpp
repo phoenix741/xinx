@@ -214,7 +214,7 @@ WebServicesManager * WebServicesManager::self() {
 
 void WebServicesManager::setProject( XinxProject * project ) {
 	if( m_isUpdate ) return ;
-	bool enabled = project && project->options().testFlag( XinxProject::hasWebServices );
+	bool enabled = project && project->activatedPlugin().contains( "ServicesPlugin" );
 
 	qDeleteAll( *this );
 	clear();

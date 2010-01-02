@@ -32,7 +32,6 @@ HEADERS = rcs/rcs.h \
     core/xinxconfig.h \
     core/xinxcore.h \
     core/xinxthread.h \
-    core/configurationfile.h \
     project/xinxproject.h \
     project/dirrcsmodel.h \
     project/flattreeview.h \
@@ -71,7 +70,10 @@ HEADERS = rcs/rcs.h \
     scripts/scriptmanager.h \
     scripts/documentsearch.h \
     editors/editorfactory.h \
-    editors/bookmarktexteditorinterface.h
+    editors/bookmarktexteditorinterface.h \
+    project/externalfileresolver.h \
+    rcs/rcsmanager.h \
+    project/newprojecttemplate.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -81,7 +83,6 @@ SOURCES = rcs/rcs.cpp \
     core/xinxcore.cpp \
     core/xinxthread.cpp \
     core/exceptions.cpp \
-    core/configurationfile.cpp \
     project/xinxproject.cpp \
     project/dirrcsmodel.cpp \
     project/flattreeview.cpp \
@@ -118,7 +119,10 @@ SOURCES = rcs/rcs.cpp \
     scripts/scriptmanager.cpp \
     scripts/documentsearch.cpp \
     editors/editorfactory.cpp \
-    editors/bookmarktexteditorinterface.cpp
+    editors/bookmarktexteditorinterface.cpp \
+    project/externalfileresolver.cpp \
+    rcs/rcsmanager.cpp \
+    project/newprojecttemplate.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui

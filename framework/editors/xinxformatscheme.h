@@ -33,9 +33,14 @@ class XinxFormatScheme : public QFormatScheme {
 	Q_OBJECT
 public:
 	/*!
-	 * Create a XinxFormatFactory.
+	 * Create a XinxFormatScheme.
 	 */
 	XinxFormatScheme( XINXConfig * parent );
+
+	/*!
+	 * Create a XinxFormatScheme from nothing
+	 */
+	XinxFormatScheme();
 
 	//! Destroy the format factory
 	virtual ~XinxFormatScheme();
@@ -43,6 +48,9 @@ public:
 	//! Update the list of format (can't delete existing format)
 	void updateFormatsFromConfig();
 	void putFormatsToConfig();
+
+	//! Copy value from a format scheme to another
+	XinxFormatScheme& operator=(const XinxFormatScheme& p);
 protected:
 	//! Create standards formats
 	void createStandardFormat();

@@ -22,7 +22,7 @@
 #include <contentview/contentviewmodel.h>
 #include <contentview/contentviewnode.h>
 #include "dictionaryparser.h"
-#include <core/configurationfile.h>
+#include <configuration/configurationfile.h>
 #include <project/xinxproject.h>
 
 // Qt header

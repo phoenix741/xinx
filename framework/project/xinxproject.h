@@ -30,6 +30,16 @@
 #include <QPair>
 #include <QVariant>
 
+/* Constante */
+
+#define XINX_PROJECT_VERSION_0 0
+#define XINX_PROJECT_VERSION 0
+
+#define XINX_PROJECT_EXTENTION ".xinx_project"
+#define XINX_SESSION_EXTENTION ".xinx_session"
+
+/* Classes */
+
 class QDomDocument;
 class QDomElement;
 
@@ -164,29 +174,9 @@ class XinxProject : public QObject {
 	Q_PROPERTY( QString fileName READ fileName )
 	Q_PROPERTY( XinxProjectSession* session READ session )
 	Q_PROPERTY( QString projectName READ projectName WRITE setProjectName )
-	Q_PROPERTY( ProjectOptions options READ options WRITE setOptions )
 	Q_PROPERTY( QString projectRCS READ projectRCS WRITE setProjectRCS )
-	Q_PROPERTY( QString defaultLang READ defaultLang WRITE setDefaultLang )
-	Q_PROPERTY( QString defaultNav READ defaultNav WRITE setDefaultNav )
 	Q_PROPERTY( QString projectPath READ projectPath WRITE setProjectPath )
-	Q_PROPERTY( QString specifiquePathName READ specifiquePathName WRITE setSpecifiquePathName )
-	Q_PROPERTY( QString logProjectDirectory READ logProjectDirectory WRITE setLogProjectDirectory )
-	Q_PROPERTY( QString specifiquePrefix READ specifiquePrefix WRITE setSpecifiquePrefix )
-	Q_PROPERTY( QStringList specifiquePrefixes READ specifiquePrefixes )
-	Q_PROPERTY( QStringList searchPathList READ searchPathList )
 public:
-	/*!
-	 * This enumeration is a list of options that can be used by a project. This options active
-	 * some functionnalities in XINX has the customization of stylesheet (make it specifique) and
-	 * usability of webservices.
-	 */
-	enum ProjectOption {
-		NoOptions = 0x0, ///< No options are defined.
-		hasSpecifique = 0x1, ///< The project can have specifique stylesheet
-		hasWebServices = 0x2 ///< The project can connect to WebServices (plugin must be activated)
-	};
-	Q_DECLARE_FLAGS( ProjectOptions, ProjectOption );
-
 	/*! Create an empty project. */
 	XinxProject();
 	/*!
@@ -255,21 +245,8 @@ public:
 	void setProjectName( const QString & value );
 
 	/*!
-	 * Return the options of the project.
-	 * \return The options of the project.
-	 * \sa setOptions()
-	 */
-	ProjectOptions & options();
-	/*!
-	 * Set the options of the project
-	 * \param options The new options of the project.
-	 * \sa options()
-	 */
-	void setOptions( ProjectOptions options );
-
-	/*!
-	 * The concurent file system used by XINX (only CVS can be used).
-	 * \return Return the number version.
+	 * The concurent file system used by XINX.
+	 * \return Return the name of the RCS.
 	 * \sa setProjectRCS()
 	 */
 	const QString & projectRCS() const;
@@ -279,35 +256,6 @@ public:
 	 * \sa projectRCS()
 	 */
 	void setProjectRCS( const QString & value );
-
-	/*!
-	 * Langue used by Generix. Used to determine the project path.
-	 * \todo How the langue is managed on GCE130 ? and GCE140 ? with the new traduction
-	 * method.
-	 * \return The lang used by the project.
-	 * \sa setDefaultLang()
-	 */
-	QString defaultLang() const;
-	/*!
-	 * Set the langue used by Generix.
-	 * \param value The new value for the langue.
-	 * \sa defaultLang()
-	 */
-	void setDefaultLang( const QString & value );
-
-	/*!
-	 * Get the navigator defined as defined in the configuration file.
-	 * This is used for information, this not used by XINX.
-	 * \return Return the default navigator.
-	 * \sa setDefaultNav()
-	 */
-	QString defaultNav() const;
-	/*!
-	 * Get the default navigator.
-	 * \param value The navigator saved in XINX.
-	 * \sa defaultNav()
-	 */
-	void setDefaultNav( const QString & value );
 
 	/*!
 	 * Get the project path. The project path is the path where the configuration file
@@ -323,47 +271,6 @@ public:
 	 */
 	void setProjectPath( const QString & value );
 
-	/*!
-	 * Set the specifique project path name with the value stored in \e value. The specifique project
-	 * path name is the project that must be replaced by &lt;project&gt;
-	 */
-	void setSpecifiquePathName( const QString & value );
-	/*!
-	 * Return the specifique project path name.
-	 * \return specifique project path name
-	 */
-	QString specifiquePathName();
-
-	/*! Set the log projet directory with the new \e value. */
-	void setLogProjectDirectory( const QString & value );
-	/*! Return the log project directory. */
-	const QString & logProjectDirectory();
-
-	/*!
-	 * Get the specifique prefix.
-	 * \return the specifique prefix.
-	 * \sa setSpecifPrefix()
-	 */
-	QString specifiquePrefix() const;
-	/*!
-	 * Set the specifique prefix.
-	 * \param value Value of prefix.
-	 * \sa setSpecifPrefix()
-	 */
-	void setSpecifiquePrefix( const QString & value );
-
-	/*! List of all specifique prefix. */
-	QStringList & specifiquePrefixes();
-
-	/*!
-	 * List of path where the application must search. This list is used in importations.
-	 * \return List of search path
-	 */
-	QStringList & searchPathList();
-
-	/*! List of processed path where the application must searh. */
-	QStringList processedSearchPathList();
-
 	/*! List of file to preload at XINX start */
 	QStringList & preloadedFiles();
 
@@ -373,28 +280,11 @@ public:
 	/*! Preload file that can be used later */
 	void preloadFilesCache();
 
-	/*!
-	 * Get the specifique project path (as &lt;project&gt;/langue/&lt;langue&gt;/nav/projet). The specifique
-	 * project path is in the QStringList.
-	 * \return the path
-	 * \sa projectPath(), setProjectPath(), setSpecifPath()
-	 */
-	int indexOfSpecifiquePath() const;
-	/*!
-	 * Set the specifique project path (as &lt;project>/langue/&lt;langue&gt;/nav/projet)
-	 * \param value The specifique path
-	 * \sa projectPath(), setProjectPath(), languePath(), navPath(), languesPath(), specifPath()
-	 */
-	void setIndexOfSpecifiquePath( int value );
-	/*!
-	 * Get the specifique project path but replace &lt;lang&gt;,&lt;nav&gt;, and &lt;project&gt; pattern.
-	 * \return the pattern modified path
-	 * \sa specifPath(), setSpecifPath()
-	 */
-	QString processedSpecifiquePath() const;
+	/*! Activated plugin for the project (the plugin must control this it-self, it's not a XINX control) */
+	QStringList activatedPlugin() const;
 
-	/*! Block the signal temporary */
-	bool blockSignals( bool block );
+	/*! Set activated plugin for the project */
+	void setActivatedPlugin( const QStringList & value );
 public slots:
 	/*!
 	 * Write a property in the project file (used by the plugin).
@@ -407,7 +297,7 @@ public slots:
 	 * \param key The Property to read
 	 * \return The value of the property
 	 */
-	QVariant readProperty( const QString & key );
+	QVariant readProperty( const QString & key ) const;
 signals:
 	/*! Emited when a property has changed. */
 	void changed();
@@ -415,8 +305,6 @@ private:
 	PrivateXinxProject * d;
 	friend class PrivateXinxProject;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(XinxProject::ProjectOptions);
 
 /*!
  * The XINX Project Manager is used to manage \e XinxProject file. One project

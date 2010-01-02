@@ -40,7 +40,7 @@ ProjectWizard::ProjectWizard( QString filename, QWidget * parent ) : QWizard( pa
 	addPage( new ConclusionWizardPage );
 
 	setPixmap( QWizard::LogoPixmap, QPixmap(":/images/splash.png").scaled( QSize( 48, 48 ) ) );
-	setPixmap( QWizard::BannerPixmap, QPixmap(":/images/banner.png") );
+	setPixmap( QWizard::BannerPixmap, QPixmap(":/images/banner_wizard.png") );
 
 	button( QWizard::CancelButton )->setIcon( QPixmap( ":/images/button_cancel.png" ) );
 	button( QWizard::BackButton )->setIcon( QPixmap( ":/images/bookmarkprevious.png" ) );
@@ -62,11 +62,6 @@ void ProjectWizard::setConverter( ProjectConverter * c ) {
 void ProjectWizard::accept() {
 	if( m_converter )
 		m_converter->save();
-
-	/*if( field( "project.open" ).toBool() ) {
-		OrgShadowareXinxInterface * interface = new OrgShadowareXinxInterface( "org.shadoware.xinx", "/", QDBusConnection::sessionBus(), this );
-		interface->openProject( field( "project.name" ).toString() );
-	}*/
 
 	QWizard::accept();
 }

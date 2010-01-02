@@ -8,12 +8,11 @@
 #include <QSettings>
 #include <QString>
 #include <QStringList>
-#include <QColor>
 #include <QFont>
+#include <QColor>
 #include <QPoint>
 #include <QSize>
 #include <QByteArray>
-#include <QHash>
 #include <QHash>
 #include <QHash>
 #include <QHash>
@@ -44,12 +43,6 @@ public:
 		QColor background;
 	};
 
-	struct struct_configurationEditor {
-		bool activateConfigurationEditor;
-		bool autoLoadConfigurationFile;
-		bool autoSaveConfigurationFile;
-	};
-
 	struct struct_editor {
 		QString defaultTextCodec;
 		bool autoindentOnSaving;
@@ -76,16 +69,8 @@ public:
 		bool saveWithSessionByDefault;
 		QString defaultPath;
 		QStringList recentProjectFiles;
-		QString defaultProjectPathName;
 		bool closeVersionManagementLog;
 		int automaticProjectDirectoryRefreshTimeout;
-	};
-
-	struct struct_extentions {
-		QString specifiqueSubDirectory;
-		bool canBeSaveAsSpecifique;
-		bool canBeFindInConfiguration;
-		bool canBeCommitToRcs;
 	};
 
 	struct struct_globals {
@@ -100,10 +85,8 @@ public:
 		struct_project project;
 		struct_rcs rcs;
 		struct_editor editor;
-		struct_configurationEditor configurationEditor;
 		struct_snipets snipets;
 		QHash<QString,QString> tools;
-		QHash<QString,struct_extentions> files;
 		QHash<QString,struct_qformat> formats;
 	};
 
@@ -128,10 +111,6 @@ protected:
 	virtual AppSettings::struct_qformat getSettingsQformat( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & defaultValue );
 	virtual void setSettingsQformat( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_qformat & value );
 
-	virtual struct_configurationEditor getDefaultConfigurationEditor();
-	virtual AppSettings::struct_configurationEditor getSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_configurationEditor & defaultValue );
-	virtual void setSettingsConfigurationEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_configurationEditor & value );
-
 	virtual struct_editor getDefaultEditor();
 	virtual AppSettings::struct_editor getSettingsEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & defaultValue );
 	virtual void setSettingsEditor( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_editor & value );
@@ -144,10 +123,6 @@ protected:
 	virtual AppSettings::struct_project getSettingsProject( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & defaultValue );
 	virtual void setSettingsProject( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_project & value );
 
-	virtual struct_extentions getDefaultExtentions();
-	virtual AppSettings::struct_extentions getSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_extentions & defaultValue );
-	virtual void setSettingsExtentions( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_extentions & value );
-
 	virtual struct_globals getDefaultGlobals();
 	virtual AppSettings::struct_globals getSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & defaultValue );
 	virtual void setSettingsGlobals( AppSettingsSettings * settings, const QString & path, const AppSettings::struct_globals & value );
@@ -157,10 +132,6 @@ protected:
 
 	virtual QHash<QString,QString> getSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & defaultValue );
 	virtual void setSettingsHash_QString( AppSettingsSettings * settings, const QString & path, const QHash<QString,QString> & value );
-
-	virtual QHash<QString,struct_extentions> getDefaultHash_struct_extentions();
-	virtual QHash<QString,AppSettings::struct_extentions> getSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_extentions> & defaultValue );
-	virtual void setSettingsHash_struct_extentions( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_extentions> & value );
 
 	virtual QHash<QString,struct_qformat> getDefaultHash_struct_qformat();
 	virtual QHash<QString,AppSettings::struct_qformat> getSettingsHash_struct_qformat( AppSettingsSettings * settings, const QString & path, const QHash<QString,AppSettings::struct_qformat> & defaultValue );

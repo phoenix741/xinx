@@ -73,7 +73,6 @@ void ProjectDirectoryDockWidget::init() {
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(clearButtonClicked()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
 	connect( m_projectDirWidget->m_filtreLineEdit, SIGNAL(returnPressed()), this, SLOT(on_m_filtreLineEdit_returnPressed()) );
 	connect( m_projectDirWidget->m_projectDirectoryTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_m_projectDirectoryTreeView_doubleClicked(QModelIndex)) );
-	connect( m_projectDirWidget->m_prefixComboBox, SIGNAL(activated(QString)), this, SLOT(on_m_prefixComboBox_activated(QString)) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChange()) );
 }
 
@@ -110,10 +109,6 @@ void ProjectDirectoryDockWidget::setSelectedCompareWithHeadAction( QAction * act
 	m_selectedCompareWithHeadAction = action;
 }
 
-void ProjectDirectoryDockWidget::setSelectedCompareWithStdAction( QAction * action ) {
-	m_selectedCompareWithStdAction = action;
-}
-
 void ProjectDirectoryDockWidget::setSelectedCompareAction( QAction * action ) {
 	m_selectedCompareAction = action;
 }
@@ -147,13 +142,13 @@ void ProjectDirectoryDockWidget::toggledView() {
 
 void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 	if( flat ) {
-		m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( m_project->projectPath() ) );
+		m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( m_projectPath ) );
 		m_projectDirWidget->m_projectDirectoryTreeView->setModel( m_flatModel );
 		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( QModelIndex() );
 		m_projectDirWidget->m_projectDirectoryTreeView->setRootIsDecorated( false );
 	} else  {
 		m_projectDirWidget->m_projectDirectoryTreeView->setModel( m_dirModel );
-		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
+		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_projectPath ) );
 		m_projectDirWidget->m_projectDirectoryTreeView->setRootIsDecorated( true );
 		delete m_flatModel;
 	}
@@ -168,16 +163,17 @@ void ProjectDirectoryDockWidget::toggledView( bool flat ) {
 void ProjectDirectoryDockWidget::setProjectPath( XinxProject * project ) {
 	if( m_projectDirWidget->m_flatListBtn->isChecked() )
 		m_projectDirWidget->m_flatListBtn->click();
+
 	m_projectDirWidget->m_filtreLineEdit->setText( "" );
 	m_modelTimer->stop();
 	m_projectDirWidget->m_projectDirectoryTreeView->setModel( NULL );
 	delete m_dirModel;
 	delete m_iconProvider; m_iconProvider = NULL;
-	m_projectDirWidget->m_prefixComboBox->clear();
 
 	m_project = project;
 
 	if( project ) {
+		m_projectPath = project->projectPath();
 		m_dirModel = new DirRCSModel( XinxPluginsLoader::self()->managedFilters(), DEFAULT_PROJECT_FILTRE_OPTIONS, QDir::DirsFirst, m_projectDirWidget->m_projectDirectoryTreeView );
 		m_iconProvider = new IconProjectProvider();
 		m_dirModel->setIconProvider( m_iconProvider );
@@ -188,14 +184,12 @@ void ProjectDirectoryDockWidget::setProjectPath( XinxProject * project ) {
 
 		for(int i = 2; i < m_dirModel->columnCount(); i++ )
 			m_projectDirWidget->m_projectDirectoryTreeView->hideColumn( i );
-		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
-
-		m_projectDirWidget->m_prefixComboBox->addItems( project->specifiquePrefixes() );
+		m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_projectPath ) );
 	}
 }
 
 void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
-	if( ! ( m_project && path.contains( m_project->projectPath() )) ) return;
+	if( ! ( m_project && path.contains( m_projectPath )) ) return;
 
 	if( m_dirModel ) {
 		QModelIndex index = m_dirModel->index( path );
@@ -204,7 +198,7 @@ void ProjectDirectoryDockWidget::refreshPath( const QString & path ) {
 }
 
 bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
-	Q_ASSERT( path.contains( m_project->projectPath() ) );
+	Q_ASSERT( path.contains( m_projectPath ) );
 
 	if( m_dirModel ) {
 		QModelIndex index = m_dirModel->index( path );
@@ -227,22 +221,23 @@ RCS * ProjectDirectoryDockWidget::rcs() {
 }
 
 void ProjectDirectoryDockWidget::projectChange() {
-	m_projectDirWidget->m_prefixComboBox->clear();
-	if( m_project ) {
+	if( m_project != XINXProjectManager::self()->project() ) {
+		setProjectPath( XINXProjectManager::self()->project() );
+	}
+
+	if( m_project && ( m_projectPath != XINXProjectManager::self()->project()->projectPath() ) ) {
+		m_projectPath = XINXProjectManager::self()->project()->projectPath();
+
 		if( m_flatModel ) {
 			m_projectDirWidget->m_projectDirectoryTreeView->setModel( NULL );
 			delete m_flatModel;
-			m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( m_project->projectPath() ) );
+			m_flatModel = new FlatModel( m_dirModel, m_dirModel->index( m_projectPath ) );
 			m_projectDirWidget->m_projectDirectoryTreeView->setModel( m_flatModel );
 			m_projectDirWidget->m_projectDirectoryTreeView->header()->setResizeMode( QHeaderView::Fixed );
 			m_projectDirWidget->m_projectDirectoryTreeView->header()->resizeSection( 0, 1024 );
 		} else {
-			m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_project->projectPath() ) );
+			m_projectDirWidget->m_projectDirectoryTreeView->setRootIndex( m_dirModel->index( m_projectPath ) );
 		}
-
-		m_projectDirWidget->m_prefixComboBox->addItems( m_project->specifiquePrefixes() );
-		m_projectDirWidget->m_prefixComboBox->setCurrentIndex(
-				m_projectDirWidget->m_prefixComboBox->findText( m_project->specifiquePrefix() ) );
 	}
 }
 
@@ -258,10 +253,6 @@ void ProjectDirectoryDockWidget::copyFileNameTriggered() {
 void ProjectDirectoryDockWidget::copyPathNameTriggered() {
 	QStringList list = selectedFiles();
 	qApp->clipboard()->setText( list.join( "\n" ) );
-}
-
-void ProjectDirectoryDockWidget::on_m_prefixComboBox_activated( QString prefix ) {
-	m_project->setSpecifiquePrefix( prefix );
 }
 
 void ProjectDirectoryDockWidget::filtreChange() {
@@ -305,9 +296,6 @@ bool ProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event ) {
 		int nbSelected = m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size();
 		QMenu *menu = new QMenu( m_projectDirWidget->m_projectDirectoryTreeView );
 
-		if( nbSelected == 1 ) {
-			menu->addAction( m_selectedCompareWithStdAction );
-		} else
 		if( nbSelected == 2 ) {
 			menu->addAction( m_selectedCompareAction );
 			if( rcs() )

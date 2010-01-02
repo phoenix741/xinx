@@ -51,7 +51,7 @@ XmlPresentationDockThread::XmlPresentationDockThread( XmlPresentationDockWidget 
 
 	initXmlPresentationCombo();
 
-	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(initXmlPresentationCombo()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()) );
 	connect( m_xmlPresentationWidget->m_refreshToolButton, SIGNAL(clicked()), this, SLOT(initXmlPresentationCombo()) );
 	connect( m_xmlPresentationWidget->m_evaluateToolButton, SIGNAL(clicked()), this, SLOT(evaluate()) );
 
@@ -88,6 +88,16 @@ void XmlPresentationDockThread::adaptColumns() {
   	m_xmlPresentationWidget->m_presentationTreeView->resizeColumnToContents(0);
 }
 
+void XmlPresentationDockThread::projectChanged() {
+	QString dataStreamLocation;
+	if( XINXProjectManager::self()->project() ) {
+		dataStreamLocation = XINXProjectManager::self()->project()->readProperty( "dataStreamLocation" ).toString();
+	}
+	if( dataStreamLocation != m_dataStreamLocation ) {
+		m_dataStreamLocation = dataStreamLocation;
+		initXmlPresentationCombo();
+	}
+}
 
 void XmlPresentationDockThread::initXmlPresentationCombo() {
 	int index;
@@ -100,10 +110,9 @@ void XmlPresentationDockThread::initXmlPresentationCombo() {
 	m_xmlPresentationWidget->m_presentationComboBox->addItem( tr("<Choose an XML file ...>") );
 
 	if( XINXProjectManager::self()->project() ) {
-		m_logPath = XINXProjectManager::self()->project()->logProjectDirectory();
-		QDir logDir( m_logPath );
-		if( logDir.exists() ) {
-			QStringList files = logDir.entryList( QStringList() << "Presentation_*.xml", QDir::Files | QDir::Readable );
+		QDir dataStreamDir( m_dataStreamLocation );
+		if( dataStreamDir.exists() ) {
+			QStringList files = dataStreamDir.entryList( QStringList() << "*.xml", QDir::Files | QDir::Readable );
 			foreach( const QString & file, files )
 				m_xmlPresentationWidget->m_presentationComboBox->addItem( file );
 		}
@@ -137,7 +146,7 @@ void XmlPresentationDockThread::presentationActivated( int index ) {
 		// Open a file
 		QString name = QFileDialog::getOpenFileName( m_parent,
 			tr("Open a presentation file"),
-			m_logPath,
+			m_dataStreamLocation,
 			tr("Presentation XML File (*.xml)") );
 		if( name.isEmpty() ) {
 			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
@@ -147,7 +156,7 @@ void XmlPresentationDockThread::presentationActivated( int index ) {
 		}
 	} else {
 		// Open the file
-		QString name = QDir( m_logPath ).absoluteFilePath( m_xmlPresentationWidget->m_presentationComboBox->itemText( index ) );
+		QString name = QDir( m_dataStreamLocation ).absoluteFilePath( m_xmlPresentationWidget->m_presentationComboBox->itemText( index ) );
 		setComboToolTip( name );
 		open( name );
 	}

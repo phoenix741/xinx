@@ -22,6 +22,7 @@
 #include "project/xinxproject.h"
 #include "borderlayout.h"
 #include "core/xinxconfig.h"
+#include "plugins/xinxpluginsloader.h"
 
 // Qt header
 #include <QAction>
@@ -99,12 +100,23 @@ QString AbstractEditor::getLongTitle() const {
 void AbstractEditor::loadFromFile( const QString & fileName ) {
 	if( ! fileName.isEmpty() ) setWatcher( fileName );
 
-	QFile file( m_lastFileName );
-	if( ! file.open( QIODevice::ReadOnly ) ) {
-		qCritical( qPrintable(tr("Can't open file for reading %1 : %2").arg( m_lastFileName ).arg( file.errorString() )) );
+	QIODevice * file = new QFile( m_lastFileName );
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+		if( e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>( e->plugin() ) ) {
+			file = qobject_cast<IXinxInputOutputPlugin*>( e->plugin() )->loadFile( m_lastFileName );
+			if( file ) break;
+		}
+	}
+	if( ! file )
+		file = new QFile( m_lastFileName );
+
+	if( ! file->open( QIODevice::ReadOnly ) ) {
+		qCritical( qPrintable(tr("Can't open file for reading %1 : %2").arg( m_lastFileName ).arg( file->errorString() )) );
 		return;
 	}
-	loadFromDevice( file );
+	loadFromDevice( *file );
+
+	delete file;
 
 	setModified( false );
 }
@@ -114,9 +126,21 @@ void AbstractEditor::saveToFile( const QString & fileName ) {
 	if( ( fileName.isEmpty() || ( fileName == m_lastFileName ) )
 	    && XINXConfig::self()->config().editor.createBackupFile ) {
 
-		    if( QFile::exists( fileName + ".bak" ) ) 	QFile::remove( fileName + ".bak" );
-		    QFile::copy( fileName, fileName + ".bak" );
-	    }
+			if( QFile::exists( fileName + ".bak" ) )
+				QFile::remove( fileName + ".bak" );
+			QFile::copy( fileName, fileName + ".bak" );
+		}
+
+	/* Create the device */
+	QIODevice * file = 0;
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+		if( e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>( e->plugin() ) ) {
+			file = qobject_cast<IXinxInputOutputPlugin*>( e->plugin() )->saveFile( fileName, m_lastFileName );
+			if( file ) break;
+		}
+	}
+	if( ! file )
+		file = new QFile( fileName );
 
 	/* Change the file name */
 	if( ! fileName.isEmpty() ) setWatcher( fileName );
@@ -126,15 +150,17 @@ void AbstractEditor::saveToFile( const QString & fileName ) {
 	qApp->processEvents();
 
 	/* Open the file for writting an save */
-	QFile file( m_lastFileName );
-	if( ! file.open( QIODevice::WriteOnly ) ) {
-		qCritical( qPrintable(tr("Can't open file for writing %1 : %2").arg( m_lastFileName ).arg( file.errorString() )) );
+	if( ! file->open( QIODevice::WriteOnly ) ) {
+		delete file;
+		qCritical( qPrintable(tr("Can't open file for writing %1 : %2").arg( m_lastFileName ).arg( file->errorString() )) );
 		m_isSaving = false;
 		activateWatcher();
 		return;
 	}
-	saveToDevice( file );
-	file.close();
+	saveToDevice( *file );
+	file->close();
+
+	delete file;
 
 	m_isSaving = false;
 	activateWatcher();

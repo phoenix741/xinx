@@ -263,7 +263,9 @@ QList<int> SnipetManager::snipets() const {
 	return ids;
 }
 
+//! TODO
 QList<int> SnipetManager::snipets( int categoryId ) const {
+	return QList<int>();
 }
 
 bool SnipetManager::exportSnipetList( const QList<int> & list, SnipetList * snipets, QWidget * parent ) {

@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>XinxListWidget</class>
- <widget class="QWidget" name="XinxListWidget" >
-  <property name="geometry" >
+ <widget class="QWidget" name="XinxListWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,97 +10,104 @@
     <height>240</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string/>
   </property>
-  <layout class="QHBoxLayout" >
-   <property name="margin" >
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
-    <widget class="QListWidget" name="m_list" />
+    <widget class="QLineEdit" name="m_addEdit"/>
    </item>
    <item>
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QToolButton" name="m_btnAdd" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>Add</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../xinxpluginselector.qrc" >
-         <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
-       </property>
-      </widget>
+      <widget class="QListWidget" name="m_list"/>
      </item>
      <item>
-      <widget class="QToolButton" name="m_btnDel" >
-       <property name="text" >
-        <string>Delete</string>
+      <layout class="QVBoxLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-       <property name="icon" >
-        <iconset resource="../xinxpluginselector.qrc" >
-         <normaloff>:/images/remove.png</normaloff>:/images/remove.png</iconset>
+       <property name="margin">
+        <number>0</number>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_btnDef" >
-       <property name="text" >
-        <string>Default</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../xinxpluginselector.qrc" >
-         <normaloff>:/images/checkbox.png</normaloff>:/images/checkbox.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_btnUp" >
-       <property name="text" >
-        <string>Up</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../xinxpluginselector.qrc" >
-         <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_btnDown" >
-       <property name="text" >
-        <string>Down</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../xinxpluginselector.qrc" >
-         <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
-       </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="m_btnAdd">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>&amp;Add</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../xinxpluginselector.qrc">
+           <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="m_btnDel">
+         <property name="text">
+          <string>&amp;Remove</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../xinxpluginselector.qrc">
+           <normaloff>:/images/remove.png</normaloff>:/images/remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="m_btnDef">
+         <property name="text">
+          <string>&amp;Default</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../xinxpluginselector.qrc">
+           <normaloff>:/images/checkbox.png</normaloff>:/images/checkbox.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="m_btnUp">
+         <property name="text">
+          <string>Move &amp;Up</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../xinxpluginselector.qrc">
+           <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="m_btnDown">
+         <property name="text">
+          <string>Move &amp;Down</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../xinxpluginselector.qrc">
+           <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -112,7 +120,7 @@
   <tabstop>m_btnDef</tabstop>
  </tabstops>
  <resources>
-  <include location="../xinxpluginselector.qrc" />
+  <include location="../xinxpluginselector.qrc"/>
  </resources>
  <connections/>
 </ui>

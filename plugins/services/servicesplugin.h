@@ -41,12 +41,9 @@ public:
 
 	virtual XinxAction::MenuList actions();
 
-	virtual QWidget * createProjectSettingsPage();
-	virtual bool loadProjectSettingsPage( QWidget * widget );
-	virtual bool saveProjectSettingsPage( QWidget * widget );
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent );
 
-	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
-	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page );
+	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 	XinxAction::MenuList m_menus;

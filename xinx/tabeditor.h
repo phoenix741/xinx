@@ -120,7 +120,8 @@ protected:
 	virtual void dropEvent( QDropEvent *event );
 	virtual void tabRemoved ( int index );
 private slots:
-	void slotCurrentTabChanged( int );
+	void slotTabCloseRequested( int index );
+	void slotCurrentTabChanged( int index );
 	void slotModifiedChange();
 
 	void slotCursorPositionChanged();

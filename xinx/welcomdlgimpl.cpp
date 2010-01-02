@@ -80,7 +80,7 @@ void WelcomDialogImpl::addProjectFile( const QString & filename ) {
 		try {
 			m_projectWidget->addItem( XinxProject( filename ).projectName(), filename );
 		} catch( XinxProjectException e ) {
-			m_projectWidget->addItem( QString( "%1 (%2)" ).arg( QFile( filename ).fileName() ).arg( e.getMessage() ), filename );
+			m_projectWidget->addItem( QString( "%1 (%2)" ).arg( QFileInfo( filename ).fileName() ).arg( e.getMessage() ), filename );
 		}
 	}
 }

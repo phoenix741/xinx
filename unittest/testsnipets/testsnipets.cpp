@@ -33,6 +33,9 @@
 #include <QSqlQuery>
 #include <modeltest.h>
 
+// Std header
+#include <time.h>
+
 class TestSnipets : public QObject {
 	Q_OBJECT
 private slots:

@@ -37,6 +37,9 @@ public:
 	virtual QWidget * settingsDialog();
 	virtual bool loadSettingsDialog();
 	virtual bool saveSettingsDialog();
+	virtual bool cancelSettingsDialog();
+	virtual bool isSettingsValid();
+	virtual bool isVisible();
 private:
 	
 };

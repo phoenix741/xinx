@@ -1,10 +1,18 @@
 <RCC>
-    <qresource prefix="/dictionary" >
+    <qresource prefix="/generix" >
         <file>images/logo_gce32.png</file>
         <file>images/logo_gce64.png</file>
         <file>images/dictionary.png</file>
         <file>translations/dictionary_fr.qm</file>
         <file>images/dictionary16.png</file>
         <file>images/label.png</file>
+        <file>images/spain.png</file>
+        <file>images/portugal.png</file>
+        <file>images/italy.png</file>
+        <file>images/ie_logo.png</file>
+        <file>images/france.png</file>
+        <file>images/germany.png</file>
+        <file>images/firefox_logo.png</file>
+        <file>images/usa.png</file>
     </qresource>
 </RCC>

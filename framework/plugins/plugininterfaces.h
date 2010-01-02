@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QTextCharFormat>
 #include <QIcon>
+#include <QWizardPage>
 
 // Xinx header
 #include <core/appsettings.h>
@@ -83,12 +84,33 @@ public:
 	/*! List of tools with the default value where find the tool */
 	virtual QList< QPair<QString,QString> > pluginTools() { return QList< QPair<QString,QString> >(); }
 
-	//! Call when a new project is created or opened
-	virtual bool initializeProject( XinxProject * project ) { Q_UNUSED( project ); return true; }
-	//! Call before the project is closed
-	virtual bool destroyProject( XinxProject * project ) { Q_UNUSED( project ); return true; }
 	//! Return a list of action (order in menu) used for dynamic action
 	virtual XinxAction::MenuList actions() { return XinxAction::MenuList(); }
+};
+
+/*!
+ * This interface is used to change the input/output of XINX
+ */
+class IXinxInputOutputPlugin : public virtual IXinxPlugin {
+public:
+	//! Destroy a Input/Output plugin
+	virtual ~IXinxInputOutputPlugin() {};
+
+	//! Call when a new project is created or opened
+	virtual bool loadProject( XinxProject * project ) = 0;
+	//! Call before the project is closed
+	virtual bool closeProject( XinxProject * project ) = 0;
+
+	//! Call when a file is loaded
+	virtual QIODevice * loadFile( const QString & filename ) = 0;
+	/*!
+	 * For the given \e filename, get a a dialog box to save the file. If the
+	 * the accept boolean is true, XINX don't call other plugin. If the file
+	 * return false, the save is cancelled, else, the save is called.
+	 */
+	virtual QString getFilename( const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget = 0 ) = 0;
+	//! Call when a file is saved
+	virtual QIODevice * saveFile( const QString & filename, const QString & oldfilename ) = 0;
 };
 
 /*!
@@ -110,6 +132,23 @@ public:
 	virtual bool loadSettingsDialog() = 0;
 	//! Save settings to dialog box
 	virtual bool saveSettingsDialog() = 0;
+	//! This method is called in the inverse case of \e saveSettingsDialog(). If the dialog must made process on cancel.
+	virtual bool cancelSettingsDialog() = 0;
+	//! Validate dialog
+	virtual bool isSettingsValid() = 0;
+	//! Is visible
+	virtual bool isVisible() = 0;
+};
+
+/*!
+ * This class contains necessary method to use in a project property page.
+ */
+class IXinxPluginProjectConfigurationPage : public IXinxPluginConfigurationPage {
+public:
+	virtual ~IXinxPluginProjectConfigurationPage() {}
+
+	//! Set the project to use in the dialog to load and save settings.
+	virtual void setProject( XinxProject * project ) = 0;
 };
 
 /*!
@@ -121,7 +160,7 @@ public:
  *
  * Xinx integrate the widget in the configuration dialog.
  */
-class IXinxPluginConfiguration {
+class IXinxPluginConfiguration : virtual public IXinxPlugin {
 public:
 	//! Destroy the interface
 	virtual ~IXinxPluginConfiguration() {}
@@ -131,25 +170,33 @@ public:
 };
 
 /*!
+ * New WizardPage to use in XINX.
+ */
+class IXinxPluginNewProjectConfigurationPage : public QWizardPage {
+public:
+	//! Return the page id used in project template
+	virtual QString pagePluginId() const = 0;
+	//! Return true if this page can be the next page
+	virtual bool pageIsVisible() const = 0;
+	//! Save the wizard settings page in the project
+	virtual bool saveSettingsDialog( XinxProject * project ) = 0;
+private:
+};
+
+/*!
  * This class is used to permit to read and save some property in the project file. To do this the plugin can
  * also propose an user interface and a list of wizard pages.
  */
-class IXinxPluginProjectConfiguration {
+class IXinxPluginProjectConfiguration : virtual public IXinxPlugin {
 public:
 	//! Destroy the interface
 	virtual ~IXinxPluginProjectConfiguration() {}
 
 	//! Create a widget used in the project dialog
-	virtual QWidget * createProjectSettingsPage() = 0;
-	//! Load the settings in the settings page
-	virtual bool loadProjectSettingsPage( QWidget * widget ) = 0;
-	//! Save the settings in the settings page
-	virtual bool saveProjectSettingsPage( QWidget * widget ) = 0;
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent ) = 0;
 
 	//! Create some page used in the wizard page
-	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid ) = 0;
-	//! Save the wizard settings page in the project
-	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) = 0;
+	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages() = 0;
 };
 
 class IDockPlugin : virtual public IXinxPlugin {
@@ -205,8 +252,6 @@ public:
 	//! Return the icon for the filte type.
 	virtual QString icon() = 0;
 
-	//! Return some properties for the file type
-	virtual AppSettings::struct_extentions properties() = 0;
 	/*!
 	 * Create a content view parser, this content view parser will any file (of the correct type of course)
 	 * If the parser is null, no content view will be load.
@@ -248,11 +293,44 @@ public:
 	virtual QList<IFileTypePlugin*> fileTypes() = 0;
 };
 
+/*! 
+  * Define a filename resolver  object used to find the import, and find file in parsing of stylesheet
+  */
+class IFileResolverPlugin {
+public:
+	//! Destroy the interface. Used to hide warning when using the interface
+	virtual ~IFileResolverPlugin() {}
+
+	//! Return the name of the resolver
+	virtual QString name() = 0;
+	//! Resolver id
+	virtual QString id() = 0;
+	//! Return true if the resolver can be called, else return false.
+	virtual bool isActivated() = 0;
+	//! Resolve the file \e nameToResolve. The \e currentPath, can be used to find the file relatively of the current open editor.
+	virtual QString resolveFileName( const QString & nameToResolve, const QString & currentPath = QString() ) = 0;
+};
+
+/*!
+ * Return the list of resolver than can be used in the application. 
+ * Actually, only resolver of imported file exists.
+ */
+class IResolverPlugin : virtual public IXinxPlugin {
+public:
+	//! Destroy the interface. Used to hide warning when using the interface
+	virtual ~IResolverPlugin() {}
+
+	//! Return the list of resolver used to find import
+	virtual QList<IFileResolverPlugin*> fileResolvers() = 0;
+};
+
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0");
+Q_DECLARE_INTERFACE(IXinxInputOutputPlugin, "org.shadoware.xinx.IXinxInputOutputPlugin/1.0");
 Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0");
 Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0");
 Q_DECLARE_INTERFACE(IDockPlugin, "org.shadoware.xinx.IDockPlugin/1.0");
 Q_DECLARE_INTERFACE(IRCSPlugin, "org.shadoware.xinx.IRCSPlugin/1.0");
 Q_DECLARE_INTERFACE(IFilePlugin, "org.shadoware.xinx.IFilePlugin/1.2");
+Q_DECLARE_INTERFACE(IResolverPlugin, "org.shadoware.xinx.IResolverPlugin/1.0");
 
 #endif /*INTERFACES_H_*/

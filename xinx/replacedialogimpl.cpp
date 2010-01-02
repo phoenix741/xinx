@@ -47,7 +47,8 @@ void ReplaceDialogImpl::initialize( bool hasEditor ) {
 	m_searchAllRadioButton->setEnabled( hasEditor );
 	m_searchSelectionRadioButton->setEnabled( hasEditor );
 	m_searchAllRadioButton->setChecked( hasEditor );
-	m_projectFilesRadioButton->setChecked( ! hasEditor );
+	m_projectFilesRadioButton->setChecked( ( ! hasEditor ) && (  XINXProjectManager::self()->project() != 0 ) );
+	m_customFilesRadioButton->setChecked( ( ! hasEditor ) && (  XINXProjectManager::self()->project() == 0 ) );
 
 	m_comboFind->lineEdit()->selectAll();
 	m_comboFind->lineEdit()->setFocus( Qt::ActiveWindowFocusReason );
@@ -75,7 +76,7 @@ void ReplaceDialogImpl::setReplace( bool value ) {
 }
 
 void ReplaceDialogImpl::on_m_projectFilesRadioButton_toggled(bool checked) {
-	if( checked ) {
+	if( checked && XINXProjectManager::self()->project() ) {
 		m_directoryWidget->lineEdit()->setText( XINXProjectManager::self()->project()->projectPath() );
 	}
 }

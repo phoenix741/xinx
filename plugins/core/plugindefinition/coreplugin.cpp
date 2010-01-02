@@ -30,7 +30,10 @@
 #include "actions/commentactions.h"
 
 #include <project/xinxproject.h>
-#include "pluginproperty/webpluginprojectpropertyformimpl.h"
+#include "pluginproperty/parserprojectpropertyimpl.h"
+#include "pluginproperty/searchpathlistprjpageform.h"
+
+#include "pluginresolver/manualfileresolver.h"
 
 // Qt header
 #include <QStringList>
@@ -72,6 +75,8 @@ bool CorePlugin::initializePlugin( const QString & lang ) {
 	QTranslator * tranlator = new QTranslator( this );
 	tranlator->load( QString(":/translations/coreplugin_%1").arg( lang ) );
 	qApp->installTranslator(tranlator);
+
+	m_resolver = new ManualFileResolver();
 
 	return true;
 }
@@ -128,6 +133,16 @@ XinxAction::MenuList CorePlugin::actions() {
 	return m_menus;
 }
 
+QList< QPair<QString,QString> > CorePlugin::pluginTools() {
+	QList< QPair<QString,QString> > tools;
+#ifdef Q_WS_WIN
+	tools.append( qMakePair( QString("diff"), QString("%1/Winmerge/WinmergeU.exe").arg( "C:/Program Files" ) ) );
+#else
+	tools.append( qMakePair( QString("diff"), QString("/usr/bin/kompare") ) );
+#endif // Q_WS_WIN
+	return tools;
+}
+
 QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog( QWidget * parent ) {
 	QList<IXinxPluginConfigurationPage*> pages;
 	pages << new EditorsConfigFormImpl( parent );
@@ -135,39 +150,17 @@ QList<IXinxPluginConfigurationPage*> CorePlugin::createSettingsDialog( QWidget *
 	return pages;
 }
 
-QWidget * CorePlugin::createProjectSettingsPage() {
-	return new WebPluginProjectPropertyFormImpl();
+QList<IXinxPluginProjectConfigurationPage*> CorePlugin::createProjectSettingsPage( QWidget * parent ) {
+	QList<IXinxPluginProjectConfigurationPage*> list;
+	list << new ParserProjectPropertyImpl( parent );
+	list << new SearchPathListFormImpl( parent );
+	return list;
 }
 
-bool CorePlugin::loadProjectSettingsPage( QWidget * widget ) {
-	WebPluginProjectPropertyFormImpl * page = qobject_cast<WebPluginProjectPropertyFormImpl*>( widget );
-	Q_ASSERT( page );
-
-	page->m_internetAdresseLineEdit->setText( XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString() );
-	return true;
-}
-
-bool CorePlugin::saveProjectSettingsPage( QWidget * widget ) {
-	WebPluginProjectPropertyFormImpl * page = qobject_cast<WebPluginProjectPropertyFormImpl*>( widget );
-	Q_ASSERT( page );
-
-	XINXProjectManager::self()->project()->writeProperty( "moduleInternetAdresse", page->m_internetAdresseLineEdit->text() );
-	return true;
-}
-
-QList<QWizardPage*> CorePlugin::createNewProjectSettingsPages( int nextid ) {
-	QList<QWizardPage*> pages;
-	pages << new WebPluginProjectPropertyWizard( nextid );
+QList<IXinxPluginNewProjectConfigurationPage*> CorePlugin::createNewProjectSettingsPages() {
+	QList<IXinxPluginNewProjectConfigurationPage*> pages;
+	pages << new WebPluginProjectPropertyWizard();
 	return pages;
-}
-
-bool CorePlugin::saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page ) {
-	WebPluginProjectPropertyWizard * modulePage = qobject_cast<WebPluginProjectPropertyWizard*>( page );
-	if( modulePage ) {
-		project->writeProperty( "moduleInternetAdresse", modulePage->m_internetAdresseLineEdit->text() );
-	}
-
-	return true;
 }
 
 QList<QDockWidget*> CorePlugin::createDocksWidget( QWidget * parent ) {
@@ -186,6 +179,10 @@ QList<QDockWidget*> CorePlugin::createDocksWidget( QWidget * parent ) {
 
 XmlPresentationDockWidget * CorePlugin::dock() {
 	return m_dock;
+}
+
+QList<IFileResolverPlugin*> CorePlugin::fileResolvers() {
+	return QList<IFileResolverPlugin*>() << m_resolver;
 }
 
 Q_EXPORT_PLUGIN2(coreplugin, CorePlugin)

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomEditor</class>
+ <widget class="QWidget" name="CustomEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>619</width>
+    <height>254</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Editor</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>&amp;Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="_2">
+      <item>
+       <widget class="QCheckBox" name="m_popupWhenFileModifiedCheckBox">
+        <property name="whatsThis">
+         <string>&lt;p&gt;Alert user when the file is modified by an extern application. The user has the choice to open the new file (&lt;u&gt;and loose his change&lt;/u&gt;) or keep current file.&lt;/p&gt;</string>
+        </property>
+        <property name="text">
+         <string>&amp;Popup when file modifed</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="m_createBakCheckBox">
+        <property name="whatsThis">
+         <string>&lt;p&gt;Create a backup file before saving the file. The backup file is stored in the same directory that the original file. &lt;/p&gt;
+&lt;p&gt;The backup is created by copy the modified file before he his saved.&lt;/p&gt;</string>
+        </property>
+        <property name="text">
+         <string>&amp;Create backup file when saving (.bak)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="m_prettyPrintOnSavingCheckBox">
+        <property name="whatsThis">
+         <string>&lt;p&gt;If the box is checked, when saving the file, &lt;b&gt;XINX &lt;/b&gt;apply the pretty print function on the text. This format the code on saving file. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Saving file can be slower.&lt;/i&gt;&lt;/p&gt;</string>
+        </property>
+        <property name="text">
+         <string>P&amp;retty print on saving</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QGroupBox" name="groupBox_8">
+     <property name="title">
+      <string>Close Tab Button</string>
+     </property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="m_closeBtnRadioButton">
+        <property name="whatsThis">
+         <string>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot;/&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt;.&lt;/p&gt;</string>
+        </property>
+        <property name="text">
+         <string>Close button on the &amp;tab widget</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="m_cornerBtnRadioButton">
+        <property name="whatsThis">
+         <string>&lt;p&gt;&lt;img src=&quot;:/images/fileclose.png&quot;/&gt;Show a close button on each tab.&lt;/p&gt;</string>
+        </property>
+        <property name="text">
+         <string>Close button on right &amp;corner</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="m_closeAndCornerBtnRadioButton">
+        <property name="whatsThis">
+         <string>&lt;p&gt;&lt;img src=&quot;:/images/tabclose.png&quot; /&gt;&lt;img src=&quot;:/images/fileclose.png&quot; /&gt;Show a button on the right corner of &lt;b&gt;XINX&lt;/b&gt; and another on each tab. This option is the concatenation of the two other options&lt;/p&gt;</string>
+        </property>
+        <property name="text">
+         <string>Close button on the tab widget &amp;and the corner</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_15">
+     <property name="text">
+      <string>Default text &amp;encoding :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_encodingComboBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="m_encodingComboBox">
+     <property name="whatsThis">
+      <string>&lt;p&gt;Choose the default text encoding, when the text encoding can't be found.
+
+&lt;i&gt;Some editor, can redefined the text encoding (ie: XML and derivated editor). This encoding is used by editor as JavaScript and other&lt;/i&gt;&lt;/p&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_21">
+     <property name="text">
+      <string>&amp;Text content refresh :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_refreshContentTimeoutSpinBox</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="m_refreshContentTimeoutSpinBox">
+     <property name="whatsThis">
+      <string>Number of ms to wait before reloading of the editor content. This timeout is reseted when you hit your keyboard.</string>
+     </property>
+     <property name="suffix">
+      <string> ms</string>
+     </property>
+     <property name="minimum">
+      <number>200</number>
+     </property>
+     <property name="maximum">
+      <number>10000</number>
+     </property>
+     <property name="singleStep">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="2">
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>166</width>
+       <height>64</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

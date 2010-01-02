@@ -58,13 +58,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="m_prefixComboBox">
-       <property name="whatsThis">
-        <string>This is a list of prefix used in the project. This list is used to check if a file is standard or derived. The selected prefix is used when saving standard file, to propose automatically the file name prefixed of the selected value.</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

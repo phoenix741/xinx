@@ -76,7 +76,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual QString highlighterId() const;
@@ -96,7 +95,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual QString highlighterId() const;
@@ -116,7 +114,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual ContentViewParser * createParser();
@@ -131,7 +128,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 };
 
@@ -144,7 +140,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual QString highlighterId() const;
@@ -164,7 +159,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual QString highlighterId() const;
@@ -187,7 +181,6 @@ public:
 	virtual QString match();
 	virtual QString icon();
 
-	virtual AppSettings::struct_extentions properties();
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual QString highlighterId() const;

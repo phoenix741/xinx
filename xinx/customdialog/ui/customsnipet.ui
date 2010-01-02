@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomSnipet</class>
+ <widget class="QWidget" name="CustomSnipet">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>619</width>
+    <height>295</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Snipet</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>&amp;Filter :</string>
+       </property>
+       <property name="buddy">
+        <cstring>m_snipetFilterLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="XinxLineEdit" name="m_snipetFilterLineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_13">
+     <property name="text">
+      <string>List of snipet that could be used as a completion (with the snipet key) or called manually in the menu. You can also import snipet in &lt;b&gt;XINX&lt;/b&gt; file or export snipet to a &lt;i&gt;XML&lt;/i&gt; file.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTreeView" name="m_snipetTreeView">
+     <property name="acceptDrops">
+      <bool>true</bool>
+     </property>
+     <property name="whatsThis">
+      <string>List of snipet (or template) that &lt;b&gt;XINX&lt;/b&gt; can use. A snipet is a piece of code quickly accessible by a key word, or by a menu.</string>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="autoExpandDelay">
+      <number>5</number>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="uniformRowHeights">
+      <bool>true</bool>
+     </property>
+     <property name="itemsExpandable">
+      <bool>true</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="m_addPushButton">
+       <property name="whatsThis">
+        <string>Open a dialog to create a new snipet.</string>
+       </property>
+       <property name="text">
+        <string>&amp;Add</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../components/xinxpluginselector.qrc">
+         <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_removePushButton">
+       <property name="whatsThis">
+        <string>Delete selected snipet in the list below.</string>
+       </property>
+       <property name="text">
+        <string>&amp;Delete</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../components/xinxpluginselector.qrc">
+         <normaloff>:/images/remove.png</normaloff>:/images/remove.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_modifyPushButton">
+       <property name="whatsThis">
+        <string>Modify the selected snipet.</string>
+       </property>
+       <property name="text">
+        <string>&amp;Modify</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../application.qrc">
+         <normaloff>:/images/document-properties.png</normaloff>:/images/document-properties.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_duplicatePushButton">
+       <property name="whatsThis">
+        <string>Duplicate the selected snipet</string>
+       </property>
+       <property name="text">
+        <string>D&amp;uplicate</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../application.qrc">
+         <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_importPushButton">
+       <property name="whatsThis">
+        <string>Import a list of snipet from an XML file.</string>
+       </property>
+       <property name="text">
+        <string>&amp;Import ...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../application.qrc">
+         <normaloff>:/images/document-import.png</normaloff>:/images/document-import.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_exportPushButton">
+       <property name="whatsThis">
+        <string>Export selected snipet to an XML file.</string>
+       </property>
+       <property name="text">
+        <string>&amp;Export ...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../application.qrc">
+         <normaloff>:/images/document-export.png</normaloff>:/images/document-export.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XinxLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">xinxlineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

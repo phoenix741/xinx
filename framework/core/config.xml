@@ -1,20 +1,13 @@
-<config classname="App Settings" organization="Shadoware.Org" application="XINX">
+<config classname="App Settings" organization="Shadoware.Org" application="XINX" path="0.9">
 	<include>#include &lt;QLocale&gt;</include>
 	<include>#include &lt;QDir&gt;</include>
 	<include>#include &lt;QApplication&gt;</include>
-	<type name="Extentions">
-		<value name="Specifique Sub Directory" type="string"/>
-		<value name="Can Be Save As Specifique" type="bool" default="yes"/>
-		<value name="Can Be Find In Configuration" type="bool" default="no"/>
-		<value name="Can Be Commit To RCS" type="bool" default="yes"/>
-	</type>
 	<type name="Project">
 		<value name="Last opened project" type="string"/>
 		<value name="Open the last project at start" type="bool" default="no"/>
 		<value name="Save With Session By Default" type="bool" default="no"/>
 		<value name="Default Path" type="string" defaultInstruction="QDir( qApp->applicationDirPath() ).absoluteFilePath( &quot;project&quot; )"/>
 		<value name="Recent Project Files" type="stringlist"/>
-		<value name="Default Project Path Name" type="string" default="projet"/>
 		<value name="Close Version Management Log" type="bool" default="true"/>
 		<value name="Automatic Project Directory Refresh Timeout" type="int" default="500"/>
 	</type>
@@ -35,11 +28,6 @@
 		<value name="Hide Close Tab" type="bool" default="false"/>
 		<value name="Close Button on each Tab" type="bool" default="false"/>
 		<value name="Automatic Model Refresh Timeout" type="int" default="1000"/>
-	</type>
-	<type name="Configuration Editor">
-		<value name="Activate Configuration Editor" type="bool" default="no"/>
-		<value name="Auto load configuration file" type="bool" default="true"/>
-		<value name="Auto save configuration file" type="bool" default="false"/>
 	</type>
 	<type name="QFormat">
 		<value name="italic" type="bool" default="false"/>
@@ -68,11 +56,8 @@
 	<value name="Project" type="Project"/>
 	<value name="RCS" type="RCS"/>
 	<value name="Editor" type="Editor"/>
-	<value name="Configuration Editor" type="Configuration Editor"/>
-
 	<value name="Snipets" type="Snipets"/>
 
 	<value name="Tools" type="hash:string" default="QString()"/>
-	<value name="Files" type="hash:Extentions"/>
 	<value name="Formats" type="hash:QFormat"/>
 </config>

@@ -27,20 +27,31 @@
 
 // Xinx header
 #include "ui_servicesprojectproperty.h"
+#include <plugins/plugininterfaces.h>
 
 // Qt header
 #include <QWidget>
 #include <QHttp>
 #include <QProgressDialog>
 
-class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectProperty {
+class ServicesProjectPropertyImpl : public QWidget, public Ui::ServicesProjectProperty, public IXinxPluginProjectConfigurationPage {
 	Q_OBJECT
 public:
 	ServicesProjectPropertyImpl( QWidget* parent = 0, Qt::WFlags fl = 0 );
 	~ServicesProjectPropertyImpl();
 
-	void loadProjectProperty();
-	void saveProjectProperty();
+	virtual QPixmap image();
+	virtual QString name();
+
+	virtual void setProject( XinxProject * project );
+
+	virtual bool loadSettingsDialog();
+	virtual bool saveSettingsDialog();
+	virtual bool cancelSettingsDialog();
+	virtual QWidget * settingsDialog();
+	virtual bool isSettingsValid();
+	virtual bool isVisible();
+
 private slots:
 	void wsdlSelectionChanged();
 	void on_m_refreshWSDL_clicked();
@@ -55,6 +66,7 @@ private:
 	QHttp * m_http;
 	QProgressDialog * m_httpProgressDialog;
 	QString m_url;
+	XinxProject * m_project;
 };
 
 #endif // SERVICESPROJECTPROPERTYIMPL_H

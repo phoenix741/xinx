@@ -25,8 +25,10 @@
 #include <QObject>
 #include <QStringList>
 #include <QScriptEngine>
+#include <QPointer>
 
 class AbstractEditor;
+class XinxProject;
 
 class ScriptValue {
 public:
@@ -84,6 +86,7 @@ private:
 	QStringList m_filenames;
 	QScriptEngine m_engine;
 	QList<ScriptValue> m_objects;
+	QPointer<XinxProject> m_project;
 
 	static ScriptManager * s_self;
 };

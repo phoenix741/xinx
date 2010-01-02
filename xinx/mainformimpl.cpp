@@ -25,11 +25,10 @@
 #include "logdialogimpl.h"
 #include "snipetdockwidget.h"
 #include "aboutdialogimpl.h"
-#include "customdialogimpl.h"
+#include "customdialog/customdialogimpl.h"
 #include "projectpropertyimpl.h"
 #include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
-#include "specifiquedlgimpl.h"
 #include "newprojectwizard.h"
 #include "searchfilethread.h"
 #include "xinxprojectwizard/projectwizard.h"
@@ -45,6 +44,7 @@
 #include <snipets/snipetmanager.h>
 #include <snipets/snipetmenu.h>
 #include "welcomdlgimpl.h"
+#include <project/externalfileresolver.h>
 
 // Qt header
 #include <QObject>
@@ -78,7 +78,7 @@
 
 /* MainformImpl */
 
-MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ),  m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_closeTabBtn(0) {
+MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ),  m_lastFileName( QDir::currentPath() ), m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_closeTabBtn(0) {
 	createMainForm();
 	createMenus();
 
@@ -109,6 +109,13 @@ void MainformImpl::createMainForm() {
 	setObjectName( "MainForm" );
 	setWindowIcon( QIcon( ":/images/splash.png" ) );
 	setWindowTitle( "XINX" );
+
+	setCorner( Qt::TopLeftCorner,     Qt::LeftDockWidgetArea  );
+	setCorner( Qt::BottomLeftCorner,  Qt::LeftDockWidgetArea  );
+	setCorner( Qt::TopRightCorner,    Qt::RightDockWidgetArea );
+	setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea );
+
+	setDockOptions( AnimatedDocks | AllowTabbedDocks | VerticalTabs );
 
 	m_tabEditors = new TabEditor( this );
 	setCentralWidget(m_tabEditors);
@@ -631,10 +638,6 @@ void MainformImpl::createActions() {
 	m_compareTwoFileAct = new QAction( tr( "Compare files"), this );
 	connect( m_compareTwoFileAct, SIGNAL(triggered()), this, SLOT(selectedCompare()) );
 
-	// Compare with std
-	m_compareWithStdAct = new QAction( tr( "Compare with standard"), this );
-	connect( m_compareWithStdAct, SIGNAL(triggered()), this, SLOT(selectedCompareWithStd()) );
-
 	// Selected update
 	m_selectedUpdateFromRCSAct = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
 	connect( m_selectedUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedUpdateFromVersionManager()) );
@@ -806,7 +809,6 @@ void MainformImpl::createDockWidget() {
 	m_projectDock->setSelectedAddAction( m_selectedAddToRCSAct );
 	m_projectDock->setSelectedRemoveAction( m_selectedRemoveFromRCSAct );
 	m_projectDock->setSelectedCompareWithHeadAction( m_compareWithHeadAct );
-	m_projectDock->setSelectedCompareWithStdAction( m_compareWithStdAct );
 	m_projectDock->setSelectedCompareAction( m_compareTwoFileAct );
 	m_projectDock->setToggledViewAction( m_toggledFlatView );
 	addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
@@ -1029,11 +1031,11 @@ void MainformImpl::openFile( const QString & name, int line ) {
 void MainformImpl::openFile() {
 	Q_ASSERT( XINXConfig::self() );
 
-	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), SpecifiqueDialogImpl::lastPlace(), XinxPluginsLoader::self()->openDialogBoxFilters().join(";;") );
+	QStringList selectedFiles = QFileDialog::getOpenFileNames( this, tr("Open text file"), m_lastFileName, XinxPluginsLoader::self()->openDialogBoxFilters().join(";;") );
 
 	m_tabEditors->setUpdatesEnabled( false );
 	foreach( const QString & filename, selectedFiles ) {
-		SpecifiqueDialogImpl::setLastPlace( QFileInfo( filename ).absolutePath() );
+		m_lastFileName = QFileInfo( filename ).absolutePath();
 		openFile( filename );
 	}
 	m_tabEditors->setUpdatesEnabled( true );
@@ -1092,10 +1094,10 @@ void MainformImpl::about() {
 
 void MainformImpl::customize() {
 	CustomDialogImpl custom( this );
-	custom.loadFromConfig( XINXConfig::self() );
+	custom.loadConfig();
 
 	if( custom.exec() ) {
-		custom.saveToConfig( XINXConfig::self() );
+		custom.saveConfig();
 		XINXConfig::self()->updateFormatsSchemeFromConfig();
 		XINXConfig::self()->save();
 		createPluginsActions();
@@ -1188,8 +1190,11 @@ void MainformImpl::createTabEditorButton() {
 	m_closeTabBtn = new QToolButton( m_tabEditors );
 	m_closeTabBtn->setIcon( QIcon( ":/images/tabclose.png" ) );
 	connect( m_closeTabBtn, SIGNAL(clicked()), this, SLOT(currentCloseFile()) );
-	if( ! XINXConfig::self()->config().editor.hideCloseTab )
-		m_tabEditors->setCornerWidget( m_closeTabBtn );
+
+	m_tabEditors->setCornerWidget( m_closeTabBtn );
+
+	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
+	m_tabEditors->setTabsClosable( XINXConfig::self()->config().editor.closeButtonOnEachTab );
 
 	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateConfigElement()) );
 }
@@ -1202,6 +1207,7 @@ void MainformImpl::updateConfigElement() {
 		m_alwaysShowRunDialog->setChecked( XINXConfig::self()->config().snipets.alwaysShowDialog );
 
 	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
+	m_tabEditors->setTabsClosable( XINXConfig::self()->config().editor.closeButtonOnEachTab );
 
 	createNewSubMenu();
 }
@@ -1265,29 +1271,54 @@ bool MainformImpl::fileEditorMayBeSave( int index ) {
 	return true;
 }
 
+void MainformImpl::fileEditorSave( int index, bool saveAs ) {
+	Q_ASSERT( index >= 0 );
+	Q_ASSERT( index < m_tabEditors->count() );
+	Q_ASSERT( qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) ) );
+
+	const QString filename     = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->lastFileName();
+	const QString deffilename  = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->defaultFileName();
+	const QString filter       = XinxPluginsLoader::self()->fileTypeFilter( XinxPluginsLoader::self()->matchedFileType( filename.isEmpty() ? deffilename : filename ) );
+	const bool    emptyname    = filename.isEmpty();
+
+	bool    accept      = false;
+	QString newFilename;
+
+	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
+		IXinxInputOutputPlugin * plugin = qobject_cast<IXinxInputOutputPlugin*>( e->plugin() );
+
+		if( e->isActivated() && plugin ) {
+			newFilename = plugin->getFilename( filename, filter, saveAs, accept, this );
+			if( accept ) break;
+		}
+	}
+	if( ! accept ) {
+		newFilename = filename;
+		if( saveAs || emptyname ) {
+			if( newFilename.isEmpty() && XINXProjectManager::self()->project() ) {
+				newFilename = XINXProjectManager::self()->project()->projectPath();
+			}
+			newFilename = QFileDialog::getSaveFileName( this, tr("Save text file"), newFilename, filter, const_cast<QString*>(&filter) );
+		}
+	}
+	if( newFilename.isEmpty() )
+		return;
+
+	ScriptManager::self()->callScriptsBeforeSave();
+
+	qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->saveToFile( newFilename );
+	m_projectDock->refreshPath( QFileInfo( newFilename ).absoluteFilePath() );
+
+	ScriptManager::self()->callScriptsAfterSave();
+	statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
+}
+
 void MainformImpl::fileEditorSave( int index ) {
 	Q_ASSERT( index >= 0 );
 	Q_ASSERT( index < m_tabEditors->count() );
 	Q_ASSERT( qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) ) );
 
-	QString editorFileName = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->lastFileName();
-	bool hasName = ! editorFileName.isEmpty();
-
-	if ( ! hasName ) {
-		fileEditorSaveAs( index );
-	} else {
-		QString fileName = SpecifiqueDialogImpl::saveFileAsIfStandard( editorFileName, m_fileToAdd );
-		if( ! fileName.isEmpty() ) {
-			ScriptManager::self()->callScriptsBeforeSave();
-			qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
-			if( m_fileToAdd.count() > 0 )
-				addFilesToVersionManager( m_fileToAdd );
-			m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
-			ScriptManager::self()->callScriptsAfterSave();
-			statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
-		}
-		m_fileToAdd.clear();
-	}
+	fileEditorSave( index, false );
 }
 
 void MainformImpl::fileEditorSaveAs( int index ) {
@@ -1295,22 +1326,7 @@ void MainformImpl::fileEditorSaveAs( int index ) {
 	Q_ASSERT( index < m_tabEditors->count() );
 	Q_ASSERT( qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) ) );
 
-	QString fileName = qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->lastFileName();
-
-	fileName = SpecifiqueDialogImpl::saveFileAs( fileName,
-				qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->defaultFileName(),
-				m_fileToAdd );
-
-	if( ! fileName.isEmpty() ) {
-		ScriptManager::self()->callScriptsBeforeSave();
-		qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->saveToFile( fileName );
-		ScriptManager::self()->callScriptsAfterSave();
-		if( m_fileToAdd.count() > 0 )
-			addFilesToVersionManager( m_fileToAdd );
-		m_projectDock->refreshPath( QFileInfo( fileName ).absoluteFilePath() );
-		statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
-	}
-	m_fileToAdd.clear();
+	fileEditorSave( index, true );
 }
 
 void MainformImpl::fileEditorClose( int index ) {
@@ -1432,40 +1448,6 @@ void MainformImpl::rcsLogTerminated() {
 	m_logDock->end();
 	if( (!m_rcsVisible) && m_logDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
 		m_timer->start( 5000 );
-}
-
-void MainformImpl::selectedCompareWithStd() {
-	try {
-		QStringList list = m_projectDock->selectedFiles();
-		Q_ASSERT( list.size() == 1 && XINXProjectManager::self()->project() );
-
-		QString customFilename = list.at( 0 ), stdFilename, path, filename;
-		bool isSpecifique = false;
-
-		path = QFileInfo( customFilename ).absolutePath();
-		filename = QFileInfo( customFilename ).fileName();
-
-		foreach( const QString & prefix, XINXProjectManager::self()->project()->specifiquePrefixes() ) {
-			if( filename.startsWith( prefix + "_", Qt::CaseInsensitive ) ) {
-				isSpecifique = true;
-				stdFilename = filename;
-				stdFilename.remove( 0, prefix.size() + 1 );
-				stdFilename = QDir( path ).absoluteFilePath( stdFilename );
-
-				if( QFileInfo( stdFilename ).exists() ) {
-					QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << customFilename << stdFilename );
-					return;
-				}
-			}
-		}
-
-		if( isSpecifique )
-			QMessageBox::information( this, tr("Compare"), tr("Standard file for %1 not found or not in specifique directory.").arg( filename ), QMessageBox::Ok );
-		else
-			QMessageBox::information( this, tr("Compare"), tr("Not a specifique file"), QMessageBox::Ok );
-	} catch( ToolsNotDefinedException e ) {
-		QMessageBox::warning( this, tr( "Tools" ), e.getMessage() );
-	}
 }
 
 void MainformImpl::selectedCompare() {
@@ -1679,11 +1661,6 @@ void MainformImpl::replace() {
 bool MainformImpl::closeProject( bool session, bool showWelcome ) {
 	if( ! XINXProjectManager::self()->project() ) return false;
 
-	foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
-		if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->destroyProject( XINXProjectManager::self()->project() ) ))
-			qWarning( qPrintable(tr("Can't stop a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
-	}
-
 	saveProject( session );
 
 	if( ! session ) {
@@ -1699,7 +1676,6 @@ bool MainformImpl::closeProject( bool session, bool showWelcome ) {
 		}
 		m_tabEditors->setUpdatesEnabled( true );
 	}
-	m_projectDock->setProjectPath( NULL );
 	m_contentDock->updateModel( NULL );
 
 	XINXProjectManager::self()->deleteProject();
@@ -1727,7 +1703,7 @@ void MainformImpl::updateTitle() {
 }
 
 void MainformImpl::openProject() {
-	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), XINXConfig::self()->config().project.defaultPath, "Projet (*.prj)" );
+	QString fileName = QFileDialog::getOpenFileName( this, tr("Open a project"), XINXConfig::self()->config().project.defaultPath, tr( "Projet (*%1)" ).arg( XINX_PROJECT_EXTENTION ) );
 	if( ! fileName.isEmpty() )
 		openProject( fileName );
 }
@@ -1741,22 +1717,12 @@ void MainformImpl::projectProperty() {
 	if( property.exec() ) {
 		property.saveToProject( XINXProjectManager::self()->project() );
 		XINXProjectManager::self()->project()->saveToFile();
+		ExternalFileResolver::self()->clearCache();
 	}
 }
 
 void MainformImpl::closeProject() {
 	closeProject( XINXConfig::self()->config().project.saveWithSessionByDefault );
-}
-
-AppSettings::struct_extentions MainformImpl::extentionOfFileName( const QString & name ) {
-	AppSettings::struct_extentions result;
-	int dotPosition = name.lastIndexOf( "." );
-	QString suffix = name.toLower();
-	if( dotPosition >= 0 )
-		suffix = suffix.mid( dotPosition + 1 );
-	if( XINXConfig::self()->config().files.count( suffix ) > 0 )
-		result = XINXConfig::self()->config().files[ suffix ];
-	return result;
 }
 
 void MainformImpl::setEditorPosition( int line, int column ) {
@@ -1811,6 +1777,7 @@ void MainformImpl::openFile( const QString & filename ) {
 
 	// Load the file in the editor
 	ScriptManager::self()->callScriptsBeforeLoad();
+
 	m_tabEditors->openFilename( QDir::fromNativeSeparators( filename ) );
 	updateRecentFiles();
 	updateActions();
@@ -1862,7 +1829,7 @@ void MainformImpl::newProject() {
 	if( wizard.exec() ) {
 		XinxProject * project = wizard.createProject();
 
-		QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), "Projet (*.prj)" );
+		QString filename = QFileDialog::getSaveFileName( this, tr("Save a project"), project->projectPath(), tr( "Projet (*%1)" ).arg( XINX_PROJECT_EXTENTION ) );
 		if( filename.isEmpty() ) {
 			delete project;
 			return;
@@ -1873,24 +1840,6 @@ void MainformImpl::newProject() {
 		delete project;
 
 		openProject( filename );
-	}
-}
-
-void MainformImpl::newProject( const QString &name, const QString &path, bool isDerivated, const QString &prefix, const QString &filename ) {
-	try {
-		XinxProject * project = new XinxProject();
-		project->setProjectName( name );
-		project->setProjectPath( path );
-		if( isDerivated ) {
-			project->setSpecifiquePrefix( prefix );
-			project->setOptions( XinxProject::hasSpecifique );
-		}
-		project->saveToFile( filename );
-
-		delete project;
-
-		openProject( filename );
-	} catch (XinxProjectException e) {
 	}
 }
 
@@ -1909,7 +1858,7 @@ void MainformImpl::openProject( const QString & filename ) {
 		project = new XinxProject( filename );
 
 		m_lastProjectOpenedPlace = QFileInfo( filename ).absolutePath();
-		SpecifiqueDialogImpl::setLastPlace( project->projectPath() );
+		m_lastFileName           = m_lastProjectOpenedPlace;
 
 		XINXConfig::self()->config().project.recentProjectFiles.prepend( filename );
 		while( XINXConfig::self()->config().project.recentProjectFiles.size() > MAXRECENTFILES )
@@ -1917,10 +1866,9 @@ void MainformImpl::openProject( const QString & filename ) {
 
 		XINXProjectManager::self()->deleteProject();
 		XINXProjectManager::self()->setCurrentProject( project );
-		m_projectDock->setProjectPath( XINXProjectManager::self()->project() );
 
 		foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {
-			if( e->isActivated() && (! qobject_cast<IXinxPlugin*>( e->plugin() )->initializeProject( XINXProjectManager::self()->project() ) ))
+			if( e->isActivated() && qobject_cast<IXinxInputOutputPlugin*>( e->plugin() ) && (! qobject_cast<IXinxInputOutputPlugin*>( e->plugin() )->loadProject( XINXProjectManager::self()->project() ) ))
 				qWarning( qPrintable(tr("Can't start a project for plugin \"%1\"").arg( qobject_cast<IXinxPlugin*>( e->plugin() )->getPluginAttribute( IXinxPlugin::PLG_NAME ).toString() )) );
 		}
 

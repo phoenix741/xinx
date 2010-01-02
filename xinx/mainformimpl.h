@@ -63,7 +63,6 @@ public slots:
 	void closeFile();
 	bool closeAllFile();
 
-	void newProject( const QString &name, const QString &path, bool isDerivated, const QString &prefix, const QString &filename );
 	void openProject( const QString & filename );
 	void saveProject( bool withSessionData );
 	void closeProjectNoSessionData();
@@ -96,10 +95,12 @@ private:
 	void registerTypes();
 
 	// Editor
+	QString m_lastFileName;
 	QString m_lastProjectOpenedPlace;
 	QStringList m_fileToAdd;
 
 	bool fileEditorMayBeSave( int index );
+	void fileEditorSave( int index, bool saveAs );
 	void fileEditorSave( int index );
 	void fileEditorSaveAs( int index );
 	void fileEditorClose( int index );
@@ -163,7 +164,6 @@ private:
 	AbstractEditor::SearchOptions m_findOptions;
 
 	// Customize
-	AppSettings::struct_extentions extentionOfFileName( const QString & name );
 	QToolButton * m_closeTabBtn;
 
 	// Actions
@@ -177,7 +177,7 @@ private:
 			*m_closeProjectWithSessionAct,  *m_recentProjectAct, *m_closeProjectAct;
 	QAction *m_nextBookmarkAct, *m_bookmarkAct, *m_previousBookmarkAct, *m_clearAllBookmarkAct;
 	QAction *m_globalUpdateFromRCSAct, *m_globalCommitToRCSAct, *m_cancelRCSOperationAct, *m_compareWithHeadAct,
-			*m_compareTwoFileAct, *m_compareWithStdAct, *m_selectedUpdateFromRCSAct, *m_selectedCommitToRCSAct,
+			*m_compareTwoFileAct, *m_selectedUpdateFromRCSAct, *m_selectedCommitToRCSAct,
 			*m_selectedAddToRCSAct, *m_selectedRemoveFromRCSAct, *m_toggledFlatView;
 	QAction *m_nextTabAct, *m_previousTabAct;
 	QAction *m_aboutAct, *m_aboutQtAct;
@@ -234,7 +234,6 @@ private slots:
 	void selectedAddToVersionManager();
 	void selectedRemoveFromVersionManager();
 	void selectedCompareWithVersionManager();
-	void selectedCompareWithStd();
 	void selectedCompare();
 	void rcsLogTerminated();
 

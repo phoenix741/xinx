@@ -38,15 +38,6 @@ QString TextFileType::icon() {
 	return ":/images/typeunknown.png";
 }
 
-AppSettings::struct_extentions TextFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = true;
-	p.canBeFindInConfiguration = false;
-	p.canBeSaveAsSpecifique = false;
-	p.specifiqueSubDirectory = QString();
-	return p;
-}
-
 AbstractEditor * TextFileType::createEditor( const QString & filename ) {
 	TextFileEditor * editor = new TextFileEditor();
 
@@ -94,15 +85,6 @@ QString XMLFileType::match() {
 
 QString XMLFileType::icon() {
 	return ":/images/typexml.png";
-}
-
-AppSettings::struct_extentions XMLFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = true;
-	p.canBeFindInConfiguration = false;
-	p.canBeSaveAsSpecifique = true;
-	p.specifiqueSubDirectory = "xml/";
-	return p;
 }
 
 AbstractEditor * XMLFileType::createEditor( const QString & filename ) {
@@ -170,15 +152,6 @@ QString XSLStyleSheetFileType::icon() {
 	return ":/images/typexsl.png";
 }
 
-AppSettings::struct_extentions XSLStyleSheetFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = true;
-	p.canBeFindInConfiguration = true;
-	p.canBeSaveAsSpecifique = true;
-	p.specifiqueSubDirectory = QString();
-	return p;
-}
-
 AbstractEditor * XSLStyleSheetFileType::createEditor( const QString & filename ) {
   StyleSheetEditor * editor = new StyleSheetEditor();
 
@@ -206,15 +179,6 @@ QString HTMLFileType::icon() {
 	return ":/images/typehtml.png";
 }
 
-AppSettings::struct_extentions HTMLFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = true;
-	p.canBeFindInConfiguration = false;
-	p.canBeSaveAsSpecifique = false;
-	p.specifiqueSubDirectory = QString();
-	return p;
-}
-
 AbstractEditor * HTMLFileType::createEditor( const QString & filename ) {
 	HtmlFileEditor * editor = new HtmlFileEditor();
 
@@ -236,15 +200,6 @@ QString JSFileType::match() {
 
 QString JSFileType::icon() {
 	return ":/images/typejs.png";
-}
-
-AppSettings::struct_extentions JSFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = true;
-	p.canBeFindInConfiguration = false;
-	p.canBeSaveAsSpecifique = true;
-	p.specifiqueSubDirectory = "js/";
-	return p;
 }
 
 AbstractEditor * JSFileType::createEditor( const QString & filename ) {
@@ -304,15 +259,6 @@ QString CSSFileType::match() {
 
 QString CSSFileType::icon() {
 	return ":/images/typecss.png";
-}
-
-AppSettings::struct_extentions CSSFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = true;
-	p.canBeFindInConfiguration = false;
-	p.canBeSaveAsSpecifique = true;
-	p.specifiqueSubDirectory = "css/";
-	return p;
 }
 
 AbstractEditor * CSSFileType::createEditor( const QString & filename ) {
@@ -377,15 +323,6 @@ QString XQFileType::match() {
 
 QString XQFileType::icon() {
 	return ":/images/typexq.png";
-}
-
-AppSettings::struct_extentions XQFileType::properties() {
-	AppSettings::struct_extentions p;
-	p.canBeCommitToRcs = false;
-	p.canBeFindInConfiguration = false;
-	p.canBeSaveAsSpecifique = false;
-	p.specifiqueSubDirectory = QString();
-	return p;
 }
 
 AbstractEditor * XQFileType::createEditor( const QString & filename ) {

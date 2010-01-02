@@ -29,132 +29,94 @@
 #include <QDir>
 #include <QInputDialog>
 #include <QPushButton>
+#include <QTimer>
 
-ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f), m_versionInstance( NULL ) {
+/* ProjectPropertyImpl */
+
+ProjectPropertyImpl::ProjectPropertyImpl( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
 
 	m_buttonBox->button( QDialogButtonBox::Ok )->setDisabled( true );
 
-	m_pathListLabel->setBuddy( m_searchPathList );
-	m_prefixLabel->setBuddy( m_prefixList );
-	m_specifiqueProjectPathLineEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w-]*" ), m_specifiqueProjectPathLineEdit ) );
+	QTreeWidgetItem * generalElement = new QTreeWidgetItem( m_tree, QStringList() << tr("General") );
+	generalElement->setIcon( 0, QIcon( ":/images/preferences-general.png" ) );
 
-	m_preloadedProjectFiles->setDefaultVisible( false );
+	/* Project Definition */
+
+	QTreeWidgetItem * projectDefinition = new QTreeWidgetItem( generalElement, QStringList() << tr("Project Definition") );
+	generalElement->setData( 0, Qt::UserRole, QVariant::fromValue( m_projectDefinitionPage ) );
 
 	m_projectRCSComboBox->addItem( tr("<No Revision Control System>") );
 	QPair<QString,QString> revisionControl;
 	foreach( revisionControl, XinxPluginsLoader::self()->revisionsControls() )
 		m_projectRCSComboBox->addItem( revisionControl.second, revisionControl.first );
 
+	projectDefinition->setData( 0, Qt::UserRole, QVariant::fromValue( m_projectDefinitionPage ) );
+
+	m_projectLineEdit->setDefaultValue( XINXConfig::self()->config().project.defaultPath );
+
+
+	/* Preloaded Page */
+
+	QTreeWidgetItem * preloadedFiles = new QTreeWidgetItem( generalElement, QStringList() << tr("Preloaded files") );
+	preloadedFiles->setData( 0, Qt::UserRole, QVariant::fromValue( m_preloadedFilesPage ) );
+	m_preloadedProjectFiles->setDefaultVisible( false );
+
+	/* Plugin */
+
 	foreach( XinxPluginElement * element, XinxPluginsLoader::self()->plugins() ) {
 		if( element->isActivated() && qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() ) ) {
-			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() );
-			QWidget* widget = interface->createProjectSettingsPage();
-			if( widget ) {
-				m_pluginPages.append( qMakePair( interface, widget ) );
-				m_tabWidget->addTab( widget, widget->windowTitle() );
+			IXinxPluginProjectConfiguration * interface = qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() );
+			QList<IXinxPluginProjectConfigurationPage*> pages = interface->createProjectSettingsPage( this );
+			QTreeWidgetItem * rootElement = new QTreeWidgetItem( m_tree, QStringList() << element->name() );
+			rootElement->setIcon( 0, element->pixmap() );
+			if( element->isModifiable() ) {
+				m_pluginsCheck.insert( element->objectName(), rootElement );
+			}
+
+			foreach( IXinxPluginProjectConfigurationPage * page, pages ) {
+				QTreeWidgetItem * pageElement = new QTreeWidgetItem( rootElement, QStringList() << page->name() );
+				pageElement->setData( 0, Qt::UserRole, QVariant::fromValue( page->settingsDialog() ) );
+
+				m_pluginPages.append( page );
+				m_pages->addWidget( page->settingsDialog() );
 			}
 		}
 	}
+
+	/* Update button */
+
+	QTimer * updateOkTimer = new QTimer( this );
+	updateOkTimer->setInterval( 250 );
+	updateOkTimer->setSingleShot( false );
+	connect( updateOkTimer, SIGNAL(timeout()), SLOT(updateOkButton()) );
+
+	updateOkTimer->start();
+
+	/* Final Tree */
+
+	m_tree->expandAll();
 }
 
 ProjectPropertyImpl::~ProjectPropertyImpl() {
-	if( m_versionInstance ) {
-		m_versionInstance->wait();
-		delete m_versionInstance;
-	}
+
 }
 
 void ProjectPropertyImpl::on_m_preloadedFiles_itemSelectionChanged() {
 	m_addPreloadedFile->setEnabled( m_preloadedFiles->currentItem() );
 }
 
-void ProjectPropertyImpl::on_m_projectButton_clicked() {
-	m_projectLineEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
-}
-
 void ProjectPropertyImpl::on_m_addPreloadedFile_clicked() {
 	m_preloadedProjectFiles->add( m_preloadedFiles->currentItem()->text() );
 }
 
-void ProjectPropertyImpl::on_m_prefixList_defaultValueChanged( QString text ) {
-	Q_UNUSED( text );
-
-	updateOkButton();
-}
-
-void ProjectPropertyImpl::on_m_projectLineEdit_textChanged( QString text ) {
-	QDir dir (text);
-	QPalette paletteVerion( m_configurationVersionLabel->palette() );
-
-	if( m_versionInstance ) {
-		m_versionInstance->wait();
-		delete m_versionInstance;
-		m_versionInstance = NULL;
-	}
-
-	if( dir.exists() ) {
-		paletteVerion.setColor( QPalette::WindowText, Qt::red );
-
-		if( ConfigurationFile::exists( text ) || MetaConfigurationFile::exists( text ) ) {
-			m_configurationVersionLabel->setText( tr("Search version of file ...") );
-			m_presentationLabel->setText( "" );
-			m_versionInstance = ThreadedConfigurationFile::simpleConfigurationFile( text );
-			connect( m_versionInstance, SIGNAL(versionFinded(ConfigurationFile)), this, SLOT(versionFinded(ConfigurationFile)) );
-			m_versionInstance->start();
-		} else {
-			m_configurationVersionLabel->setText( tr("warning: The configuration file is not in this directory.") );
-			m_presentationLabel->setText( "" );
-		}
-	} else {
-		paletteVerion.setColor( QPalette::WindowText, QColor() );
-		m_configurationVersionLabel->setText( QString() );
-	}
-	m_configurationVersionLabel->setPalette( paletteVerion );
-
-	updateOkButton();
-}
-
-void ProjectPropertyImpl::versionFinded( ConfigurationFile configuration ) {
-	QPalette paletteVerion( m_configurationVersionLabel->palette() );
-	if( configuration.version().isValid() ) {
-		paletteVerion.setColor( QPalette::WindowText, QColor() );
-		m_configurationVersionLabel->setText( configuration.version().toString() );
-		m_presentationLabel->setText( configuration.xmlPresentationFile() );
-	} else {
-		paletteVerion.setColor( QPalette::WindowText, Qt::red );
-		m_configurationVersionLabel->setText( tr("warning: A valid version cannot be found in the configuration file (may be 4xx).") );
-		m_presentationLabel->setText( configuration.xmlPresentationFile() );
-	}
-	m_configurationVersionLabel->setPalette( paletteVerion );
-}
-
 void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 	m_nameLineEdit->setText( project->projectName() );
-	m_projectLineEdit->setText( QDir::toNativeSeparators( project->projectPath() ) );
-	if( m_langComboBox->findText( project->defaultLang() ) < 0 ) m_langComboBox->addItem( project->defaultLang() );
-	m_langComboBox->setCurrentIndex( m_langComboBox->findText( project->defaultLang() ) );
-	if( m_navigatorComboBox->findText( project->defaultNav() ) < 0 ) m_navigatorComboBox->addItem( project->defaultNav() );
-	m_navigatorComboBox->setCurrentIndex( m_navigatorComboBox->findText( project->defaultNav() ) );
-	m_specifiqueProjectPathLineEdit->setText( project->specifiquePathName() );
-
-	m_prefixList->setDefaultValue( project->specifiquePrefix() );
-	m_prefixList->setValues( project->specifiquePrefixes() );
-
-	m_specifiqueGroupBox->setChecked( project->options().testFlag( XinxProject::hasSpecifique ) );
-	m_logLineEdit->setText( QDir::toNativeSeparators( project->logProjectDirectory() ) );
+	m_projectLineEdit->lineEdit()->setText( QDir::toNativeSeparators( project->projectPath() ) );
 
 	int index = m_projectRCSComboBox->findData( project->projectRCS() );
 	if( index < 0 ) index = 0;
 	m_projectRCSComboBox->setCurrentIndex( index );
-
-	QString defSearchPath;
-	int indexOfSpecifquePath = project->indexOfSpecifiquePath();
-	if( ( indexOfSpecifquePath >= 0 ) && ( indexOfSpecifquePath < project->searchPathList().size() ) )
-		defSearchPath = project->searchPathList().at( indexOfSpecifquePath );
-
-	m_searchPathList->setDefaultValue( defSearchPath );
-	m_searchPathList->setValues( project->searchPathList() ); // fromNativeSeparators
 
 	m_preloadedProjectFiles->setValues( project->preloadedFiles() );
 
@@ -167,62 +129,66 @@ void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 			new QListWidgetItem ( fn, m_preloadedFiles );
 	}
 
-	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
-	foreach( page, m_pluginPages ) {
-		if( ! page.first->loadProjectSettingsPage( page.second ) ) qWarning( qPrintable( tr("Can't load \"%1\" page").arg( page.second->windowTitle() ) ) );
+	QStringList activatedPlugin = project->activatedPlugin();
+	foreach( const QString & plugin, m_pluginsCheck.keys() ) {
+		if( activatedPlugin.contains( plugin ) )
+			m_pluginsCheck.value( plugin )->setCheckState( 0, Qt::Checked );
+		else
+			m_pluginsCheck.value( plugin )->setCheckState( 0, Qt::Unchecked );
 	}
 
-	updateOkButton();
+	foreach( IXinxPluginProjectConfigurationPage * page, m_pluginPages ) {
+		page->setProject( project );
+		if( ! page->loadSettingsDialog() )
+			qWarning( qPrintable( tr("Can't load \"%1\" page").arg( page->name() ) ) );
+	}
 }
 
 void ProjectPropertyImpl::saveToProject( XinxProject * project ) {
-	project->blockSignals( true );
-
 	project->setProjectName( m_nameLineEdit->text() );
-	project->setProjectPath( QDir::fromNativeSeparators( m_projectLineEdit->text() ) );
-	project->setDefaultLang( m_langComboBox->currentText() );
-	project->setDefaultNav( m_navigatorComboBox->currentText() );
-	project->setSpecifiquePathName( m_specifiqueProjectPathLineEdit->text() );
-
-	project->searchPathList() = m_searchPathList->values(); // toNativeSeparators
-	project->setIndexOfSpecifiquePath( project->searchPathList().indexOf( m_searchPathList->defaultValue() ) );
-
-	project->setSpecifiquePrefix( m_prefixList->defaultValue() );
-	project->specifiquePrefixes() = m_prefixList->values();
+	project->setProjectPath( QDir::fromNativeSeparators( m_projectLineEdit->lineEdit()->text() ) );
 
 	project->setProjectRCS( m_projectRCSComboBox->itemData( m_projectRCSComboBox->currentIndex() ).toString() );
-	project->setLogProjectDirectory( QDir::fromNativeSeparators( m_logLineEdit->text() ) );
-
 
 	project->preloadedFiles() = m_preloadedProjectFiles->values();
 
-	XinxProject::ProjectOptions options;
-	if( m_specifiqueGroupBox->isChecked() )
-		options |= XinxProject::hasSpecifique;
-	project->setOptions( options );
-
-	QPair<IXinxPluginProjectConfiguration*,QWidget*> page;
-	foreach( page, m_pluginPages ) {
-		if( ! page.first->saveProjectSettingsPage( page.second ) ) qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page.second->windowTitle() ) ) );
+	foreach( IXinxPluginProjectConfigurationPage * page, m_pluginPages ) {
+		page->setProject( project );
+		if( ! page->saveSettingsDialog() )
+			qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page->name() ) ) );
 	}
 
-	project->blockSignals( false );
+	QStringList activatedPlugin;
+	foreach( const QString & plugin, m_pluginsCheck.keys() ) {
+		if( m_pluginsCheck.value( plugin )->checkState(0) == Qt::Checked )
+			activatedPlugin << plugin;
+	}
+	project->setActivatedPlugin( activatedPlugin );
 }
 
 void ProjectPropertyImpl::updateOkButton() {
-	bool projectLineOk = ! ( m_projectLineEdit->text().isEmpty() || !QDir( m_projectLineEdit->text() ).exists() ),
-	     hasSpecif     = m_specifiqueGroupBox->isChecked(),
-	     specifLineOk  = true,//! ( m_specifiquePathLineEdit->text().isEmpty() || !QDir( m_specifiquePathLineEdit->text() ).exists() ),
-	     prefixLineOk  = ! m_prefixList->defaultValue().isEmpty(),
-	     okButtonEnabled = projectLineOk && ( (!hasSpecif) || ( specifLineOk && prefixLineOk ) );
+	bool projectLineOk = ! ( m_projectLineEdit->lineEdit()->text().isEmpty() || !QDir( m_projectLineEdit->lineEdit()->text() ).exists() );
+	if( ! projectLineOk ) {
+		m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+		return;
+	}
 
-	m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( okButtonEnabled );
+	foreach( IXinxPluginProjectConfigurationPage * page, m_pluginPages ) {
+		if( ! page->isSettingsValid() ) {
+			m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+			return;
+		}
+	}
+
+	m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( true );
 }
 
-void ProjectPropertyImpl::on_m_specifiqueGroupBox_clicked() {
-	updateOkButton();
-}
 
-void ProjectPropertyImpl::on_m_logButton_clicked() {
-	m_logLineEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
+void ProjectPropertyImpl::on_m_tree_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {
+	Q_UNUSED( previous );
+
+	QWidget * widget = current->data( 0, Qt::UserRole ).value<QWidget*>();
+	if( widget )
+		m_pages->setCurrentWidget( widget );
+
 }

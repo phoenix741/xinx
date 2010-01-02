@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomSyntax</class>
+ <widget class="QWidget" name="CustomSyntax">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>619</width>
+    <height>387</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Syntax</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QComboBox" name="m_highlighterComboBox">
+     <property name="whatsThis">
+      <string>&lt;p&gt;List of highlighter. Highlighter is used to color a text in an editor. &lt;/p&gt;
+&lt;p&gt;&lt;i&gt;To add new highlighter, you must add the corresponding plugin.&lt;/i&gt;&lt;/p&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomSchemeImpl" name="m_customScheme" native="true"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomSchemeImpl</class>
+   <extends>QWidget</extends>
+   <header>customschemeimpl.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../components/xinxpluginselector.qrc"/>
+  <include location="../../application.qrc"/>
+ </resources>
+ <connections/>
+</ui>

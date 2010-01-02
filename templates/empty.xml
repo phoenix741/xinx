@@ -1,0 +1,7 @@
+<ProjectTemplate name="Empty">
+    <WizardPage>
+        <Page name="StdProjectName"/>
+        <Page name="StdProjectRevision"/>
+        <Page name="CoreInformation"/>
+    </WizardPage>
+</ProjectTemplate>

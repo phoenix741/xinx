@@ -42,7 +42,8 @@ public:
 	~XmlPresentationDockThread();
 
 	Ui::XmlPresentationWidget * m_xmlPresentationWidget;
-	QString m_logPath, m_openingFile;
+	QString m_openingFile;
+	QString m_dataStreamLocation;
 
 	QPointer<XmlPresentationModel> m_model;
 	QPointer<RecursiveSortFilterProxyModel> m_sortFilterModel;
@@ -58,6 +59,7 @@ public:
 	void open( const QString& filename );
 	void setComboToolTip( const QString & filename );
 public slots:
+	void projectChanged();
 	void adaptColumns();
 	void open();
 	void initXmlPresentationCombo();

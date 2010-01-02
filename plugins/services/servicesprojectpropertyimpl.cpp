@@ -31,6 +31,8 @@
 ServicesProjectPropertyImpl::ServicesProjectPropertyImpl( QWidget* parent, Qt::WFlags fl ) : QWidget( parent, fl ), Ui::ServicesProjectProperty() {
 	setupUi( this );
 
+	m_project = XINXProjectManager::self()->project();
+
 	m_http = new QHttp( this );
 	m_httpProgressDialog = new QProgressDialog( this );
 	connect( m_http, SIGNAL(dataReadProgress(int,int)), this, SLOT(httpDataReadProgress(int,int)) );
@@ -45,42 +47,64 @@ ServicesProjectPropertyImpl::ServicesProjectPropertyImpl( QWidget* parent, Qt::W
 ServicesProjectPropertyImpl::~ServicesProjectPropertyImpl() {
 }
 
-void ServicesProjectPropertyImpl::loadProjectProperty() {
-	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
-	m_webServiceGroupBox->setChecked( options.testFlag( XinxProject::hasWebServices ) );
+QPixmap ServicesProjectPropertyImpl::image() {
+	return QPixmap();
+}
 
+QString ServicesProjectPropertyImpl::name() {
+	return windowTitle();
+}
+
+void ServicesProjectPropertyImpl::setProject( XinxProject * project ) {
+	m_project = project;
+}
+
+bool ServicesProjectPropertyImpl::loadSettingsDialog() {
 	QStringList links;
 	QString link;
 	int index = 0;
-	int version = XINXProjectManager::self()->project()->readProperty( "webServiceVersion" ).toInt();
+	int version = m_project->readProperty( "webServiceVersion" ).toInt();
 	if( version == WEBSERVICE_VERSION_1 ) {
-		while( ! ( link = XINXProjectManager::self()->project()->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
+		while( ! ( link = m_project->readProperty( QString( "webServiceLink_%1" ).arg( index ) ).toString() ).isEmpty() ) {
 			links.append( link );
-			m_wsdlContent[ link ] = XINXProjectManager::self()->project()->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
+			m_wsdlContent[ link ] = m_project->readProperty( QString( "webServiceContent_%1" ).arg( index ) ).toString();
 
 			index++;
 		}
 		m_servicesList->setValues( links );
 	} else {
-		m_servicesList->setValues( XINXProjectManager::self()->project()->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts ) );
+		m_servicesList->setValues( m_project->readProperty( "webServiceLink" ).toString().split( ";;", QString::SkipEmptyParts ) );
 	}
+
+	return true;
 }
 
-void ServicesProjectPropertyImpl::saveProjectProperty() {
-	XinxProject::ProjectOptions options = XINXProjectManager::self()->project()->options();
-	if( m_webServiceGroupBox->isChecked() )
-		options |= XinxProject::hasWebServices;
-	else
-		options &= ~XinxProject::hasWebServices;
-	XINXProjectManager::self()->project()->setOptions( options );
-
+bool ServicesProjectPropertyImpl::saveSettingsDialog() {
 	int index = 0;
-	XINXProjectManager::self()->project()->writeProperty( "webServiceVersion", WEBSERVICE_VERSION_CURRENT );
+	m_project->writeProperty( "webServiceVersion", WEBSERVICE_VERSION_CURRENT );
 	foreach( const QString & link, m_servicesList->values() ) {
-		XINXProjectManager::self()->project()->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
-		XINXProjectManager::self()->project()->writeProperty( QString( "webServiceContent_%1" ).arg( index ), m_wsdlContent[ link ] );
+		m_project->writeProperty( QString( "webServiceLink_%1" ).arg( index ), link );
+		m_project->writeProperty( QString( "webServiceContent_%1" ).arg( index ), m_wsdlContent[ link ] );
 		index++;
 	}
+
+	return true;
+}
+
+bool ServicesProjectPropertyImpl::cancelSettingsDialog() {
+	return true;
+}
+
+QWidget * ServicesProjectPropertyImpl::settingsDialog() {
+	return this;
+}
+
+bool ServicesProjectPropertyImpl::isSettingsValid() {
+	return true;
+}
+
+bool ServicesProjectPropertyImpl::isVisible() {
+	return true;
 }
 
 void ServicesProjectPropertyImpl::wsdlSelectionChanged() {

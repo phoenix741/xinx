@@ -30,6 +30,10 @@ XinxFormatScheme::XinxFormatScheme( XINXConfig * parent ) : QFormatScheme( paren
 	createStandardFormat();
 }
 
+XinxFormatScheme::XinxFormatScheme() : m_config( 0 ) {
+	createStandardFormat();
+}
+
 XinxFormatScheme::~XinxFormatScheme() {
 
 }
@@ -38,7 +42,11 @@ void XinxFormatScheme::createStandardFormat() {
 	QFormat searchFormat, braceMatchFormat, braceMismatchFormat;
 
 	// Init search format
-	searchFormat.background = m_config->config().editor.highlightWord;
+	if( m_config )
+		searchFormat.background = m_config->config().editor.highlightWord;
+	else
+		searchFormat.background = Qt::yellow;
+
 	setFormat( "search", searchFormat );
 
 	// Init match format
@@ -58,6 +66,8 @@ void XinxFormatScheme::createStandardFormat() {
 void XinxFormatScheme::updateFormatsFromConfig() {
 	// Reload from config file ;)
 	createStandardFormat();
+
+	if( ! m_config ) return;
 
 	foreach( const QString & format, m_config->config().formats.keys() ) {
 		if( m_nameSpace.isEmpty() || format.startsWith( m_nameSpace + "_" ) ) {
@@ -82,6 +92,8 @@ void XinxFormatScheme::updateFormatsFromConfig() {
 }
 
 void XinxFormatScheme::putFormatsToConfig() {
+	if( ! m_config ) return;
+
 	foreach( const QString & f, formats() ) {
 		if( ( f == "normal" ) || ( f == "match" ) || ( f == "search" ) || ( f == "braceMatch" ) || ( f == "braceMismatch" ) ) continue;
 		XINXConfig::struct_qformat conf;
@@ -105,3 +117,12 @@ void XinxFormatScheme::setNameSpace( const QString & value ) {
 const QString & XinxFormatScheme::nameSpace() const {
 	return m_nameSpace;
 }
+
+XinxFormatScheme& XinxFormatScheme::operator=(const XinxFormatScheme& p) {
+	this->m_nameSpace = m_nameSpace;
+	foreach( const QString & f, p.formats() ) {
+		 this->setFormat( f, p.format( f ) );
+	}
+	return *this;
+}
+

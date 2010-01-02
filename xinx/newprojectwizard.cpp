@@ -23,6 +23,8 @@
 #include <project/xinxproject.h>
 #include <plugins/xinxpluginsloader.h>
 #include "projectpropertyimpl.h"
+#include "templatedialogimpl.h"
+#include <project/newprojecttemplate.h>
 
 // Qt header
 #include <QDir>
@@ -35,26 +37,35 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
 	setButtonText( QWizard::CustomButton1, tr("&Expert ...") );
 	connect( this, SIGNAL(customButtonClicked(int)), this, SLOT(on_customButton1_clicked()) );
 
-	setPage( Page_Projet, new ProjectPageImpl );
-    setPage( Page_Specifique, new SpecifiquePageImpl );
-    setPage( Page_Versions, m_versions = new VersionsPageImpl );
+	m_templateDialog = new TemplateDialogImpl;
+	m_projectPage = new ProjectPageImpl;
+	IXinxPluginNewProjectConfigurationPage * versionPage = new VersionsPageImpl;
+	m_lastDialog = new LastPageImpl;
 
-	int pageid = NewProjectWizard::Page_Versions + 1;
+	m_wizardPages.insert( m_templateDialog->pagePluginId(), m_templateDialog );
+	m_wizardPages.insert( m_projectPage->pagePluginId(),    m_projectPage );
+	m_wizardPages.insert( versionPage->pagePluginId(),      versionPage );
+	m_wizardPages.insert( m_lastDialog->pagePluginId(),     m_lastDialog );
+
 	foreach( XinxPluginElement * element, XinxPluginsLoader::self()->plugins() ) {
 		if( element->isActivated() && qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() ) ) {
 			IXinxPluginProjectConfiguration* interface = qobject_cast<IXinxPluginProjectConfiguration*>( element->plugin() );
-			QList<QWizardPage*> pages = interface->createNewProjectSettingsPages( pageid );
-			foreach( QWizardPage* page, pages ) {
-				m_wizardPages.append( qMakePair( interface, page ) );
-				setPage( pageid++, page );
+
+			QList<IXinxPluginNewProjectConfigurationPage*> pages = interface->createNewProjectSettingsPages();
+			foreach( IXinxPluginNewProjectConfigurationPage* page, pages ) {
+				m_wizardPages.insert( page->pagePluginId(), page );
 			}
 		}
 	}
-	m_lastPage = pageid;
-	setPage( m_lastPage, new LastPageImpl );
 
-    setStartId( Page_Projet );
+	foreach( IXinxPluginNewProjectConfigurationPage * page, m_wizardPages.values() ) {
+		setPage( qHash( page->pagePluginId() ), page );
+	}
 
+
+	setStartId( qHash( m_templateDialog->pagePluginId() ) );
+
+	m_templateDialog->setPixmap( QWizard::WatermarkPixmap, QPixmap(":/images/newprojectwatermark.png") );
 	setPixmap( QWizard::LogoPixmap, QPixmap(":/images/splash.png").scaled( QSize( 48, 48 ) ) );
 	setPixmap( QWizard::BannerPixmap, QPixmap(":/images/banner_wizard.png") );
 
@@ -70,34 +81,18 @@ NewProjectWizard::NewProjectWizard( QWidget * widget, Qt::WFlags f ) : QWizard( 
 XinxProject * NewProjectWizard::createProject() {
 	if( ! m_project ) {
 		m_project = new XinxProject();
+		m_project->setActivatedPlugin( m_plugins );
 
-		m_project->setProjectName( field( "project.name" ).toString() );
-		m_project->setProjectPath( QDir::fromNativeSeparators( field( "project.path" ).toString() ) );
-		m_project->setLogProjectDirectory( QDir::fromNativeSeparators( field( "project.log" ).toString() ) );
-
-		XinxProject::ProjectOptions options;
-		if( field( "project.derivated" ).toBool() ) {
-			m_project->setSpecifiquePrefix( field( "specifique.prefix" ).toString() );
-			m_project->setSpecifiquePathName( field( "specifique.path" ).toString() );
-			options |= XinxProject::hasSpecifique;
-		}
-		m_project->setOptions( options );
-
-		QString rcs = QString();
-		if( ! m_versions->m_noRevisionControl->isChecked() ) {
-			QPair<QRadioButton*,QString> btn;
-			foreach( btn, m_versions->m_revisionBtn ) {
-				if( btn.first->isChecked() ) {
-					rcs = btn.second;
-					break;
-				}
+		NewProjectTemplate * templateProject = m_templateDialog->currentTemplate();
+		if( templateProject ) {
+			foreach( NewProjectTemplate::Property p, templateProject->properties() ) {
+				m_project->writeProperty( p.first, p.second );
 			}
 		}
-		m_project->setProjectRCS( rcs );
 
-		QPair<IXinxPluginProjectConfiguration*,QWizardPage*> page;
-		foreach( page, m_wizardPages ) {
-			if(! page.first->saveNewProjectSettingsPage( m_project, page.second )) qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page.second->windowTitle() ) ) );
+		foreach( IXinxPluginNewProjectConfigurationPage * page, m_wizardPages ) {
+			if( ! page->saveSettingsDialog( m_project ) )
+				qWarning( qPrintable( tr("Can't save \"%1\" page").arg( page->windowTitle() ) ) );
 		}
 	}
 	return m_project;
@@ -106,6 +101,8 @@ XinxProject * NewProjectWizard::createProject() {
 void NewProjectWizard::on_customButton1_clicked() {
 	hide();
 	m_project = new XinxProject();
+	m_project->setActivatedPlugin( m_plugins );
+
 	ProjectPropertyImpl property ( this );
 	property.loadFromProject( m_project ); // Load an empty project;
 	if( ! property.exec() ) {
@@ -117,29 +114,43 @@ void NewProjectWizard::on_customButton1_clicked() {
 	accept();
 }
 
+int NewProjectWizard::nextId() const {
+	if( currentId() == startId() ) {
+		NewProjectTemplate * templateProject = m_templateDialog->currentTemplate();
+		if( ! templateProject )
+			return qHash( m_projectPage->pagePluginId() );
+
+		QString id = m_templateDialog->pagePluginId();
+		foreach( const QString & pageName, templateProject->wizardPages() ) {
+			m_nextId.insert( qHash( id ), pageName );
+			id = pageName;
+		}
+		m_nextId.insert( qHash( id ), m_lastDialog->pagePluginId() );
+		m_nextId.insert( qHash( m_lastDialog->pagePluginId() ), QString() );
+
+		m_plugins = templateProject->plugins();
+	}
+	QString id = m_nextId.value( currentId() );
+	while( ! id.isEmpty() ) {
+		IXinxPluginNewProjectConfigurationPage * page = m_wizardPages.value( id );
+		if( page && page->pageIsVisible() ) break;
+		id = m_nextId.value( qHash( id ) );
+	}
+
+	if( ! id.isEmpty() )
+		return qHash( id );
+	else
+		return -1;
+}
+
 /* ProjectPageImpl */
 
-ProjectPageImpl::ProjectPageImpl( QWidget * parent ) : QWizardPage( parent ) {
+ProjectPageImpl::ProjectPageImpl() {
 	setupUi( this );
 	setTitle( windowTitle() );
 
-	registerField( "project.derivated", m_derivatedRadio );
-
 	registerField( "project.name*",     m_projectNameEdit );
-    registerField( "project.as",        m_ASPathEdit );
-    registerField( "project.log*",      m_logPathEdit );
     registerField( "project.path*",     m_projectPathEdit );
-}
-
-void ProjectPageImpl::initializePage() {
-	m_ASPathEdit->setText( QDir::toNativeSeparators( XINXConfig::self()->config().project.defaultPath ) );
-}
-
-int ProjectPageImpl::nextId() const {
-	if( m_derivatedRadio->isChecked() )
-		return NewProjectWizard::Page_Specifique;
-	else
-		return NewProjectWizard::Page_Versions;
 }
 
 void ProjectPageImpl::setVisible( bool visible ) {
@@ -157,63 +168,33 @@ bool ProjectPageImpl::isComplete () const {
 	return true;
 }
 
-void ProjectPageImpl::on_m_ASPathBtn_clicked() {
-	m_ASPathEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
-}
-
-void ProjectPageImpl::on_m_logPathBtn_clicked() {
-	m_logPathEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
-}
-
 void ProjectPageImpl::on_m_projectPathBtn_clicked() {
 	m_projectPathEdit->changePath( this, XINXConfig::self()->config().project.defaultPath );
 }
 
 void ProjectPageImpl::on_m_projectNameEdit_textChanged( const QString & text ) {
-	m_projectPathEdit->setText( QDir::toNativeSeparators(
-			QDir( QDir::fromNativeSeparators( m_ASPathEdit->text() ) ).absoluteFilePath(
-					QString( "j2ee/home/applications/%1" ).arg( text )
-			) )
-	);
+	QString newProjectDirectory = QDir( XINXConfig::self()->config().project.defaultPath ).absoluteFilePath( text );
+	m_projectPathEdit->setText( QDir::toNativeSeparators( newProjectDirectory ) );
 }
 
-void ProjectPageImpl::on_m_ASPathEdit_textChanged( const QString & text ) {
-	m_projectPathEdit->setText( QDir::toNativeSeparators(
-			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath(
-					QString( "j2ee/home/applications/%1" ).arg( m_projectNameEdit->text() )
-			) )
-	);
-	m_logPathEdit->setText( QDir::toNativeSeparators(
-			QDir( QDir::fromNativeSeparators( text ) ).absoluteFilePath( "j2ee/home/log" )
-	) );
+QString ProjectPageImpl::pagePluginId() const {
+	return "StdProjectName";
 }
 
-/* SpecifiquePageImpl */
-
-SpecifiquePageImpl::SpecifiquePageImpl( QWidget * parent ) : QWizardPage( parent ) {
-	setupUi( this );
-	setTitle( windowTitle() );
-	setSubTitle( tr("Define if the project is specifique or not. A specifique (derivated) project "
-					"is used when original's file can't be modified.") );
-
-	m_specifiquePathNameEdit->setValidator( new QRegExpValidator( QRegExp( "[\\w-]*" ), m_specifiquePathNameEdit ) );
-
-    registerField( "specifique.prefix*",    m_prefixEdit );
-    registerField( "specifique.path*",      m_specifiquePathNameEdit );
+bool ProjectPageImpl::pageIsVisible() const {
+	return true;
 }
 
-void SpecifiquePageImpl::initializePage() {
-	m_prefixEdit->setText( QString("P%1").arg( field("project.name").toString().left( 2 ) ).toUpper() );
-	m_specifiquePathNameEdit->setText( XINXConfig::self()->config().project.defaultProjectPathName );
-}
+bool ProjectPageImpl::saveSettingsDialog( XinxProject * project ) {
+	project->setProjectName( field( "project.name" ).toString() );
+	project->setProjectPath( QDir::fromNativeSeparators( field( "project.path" ).toString() ) );
 
-int SpecifiquePageImpl::nextId() const {
-	return NewProjectWizard::Page_Versions;
+	return true;
 }
 
 /* VersionsPageImpl */
 
-VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
+VersionsPageImpl::VersionsPageImpl() {
 	setTitle( tr("Define Revision Control") );
 	setSubTitle( tr("Define the revision control used for the project if you want to used one.") );
 
@@ -235,13 +216,33 @@ VersionsPageImpl::VersionsPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 
 }
 
-int VersionsPageImpl::nextId() const {
-	return NewProjectWizard::Page_Versions + 1;
+QString VersionsPageImpl::pagePluginId() const {
+	return "StdProjectRevision";
+}
+
+bool VersionsPageImpl::pageIsVisible() const {
+	return true;
+}
+
+bool VersionsPageImpl::saveSettingsDialog( XinxProject * project ) {
+	QString rcs = QString();
+	if( ! m_noRevisionControl->isChecked() ) {
+		QPair<QRadioButton*,QString> btn;
+		foreach( btn, m_revisionBtn ) {
+			if( btn.first->isChecked() ) {
+				rcs = btn.second;
+				break;
+			}
+		}
+	}
+	project->setProjectRCS( rcs );
+
+	return true;
 }
 
 /* LastPageImpl */
 
-LastPageImpl::LastPageImpl( QWidget * parent ) : QWizardPage( parent ) {
+LastPageImpl::LastPageImpl() {
 	setTitle( tr("Project created") );
 	setSubTitle( tr("The project is now created.") );
 
@@ -253,6 +254,15 @@ LastPageImpl::LastPageImpl( QWidget * parent ) : QWizardPage( parent ) {
 
 }
 
-int LastPageImpl::nextId() const {
-	return -1;
+QString LastPageImpl::pagePluginId() const {
+	return "StdFinish";
+}
+
+bool LastPageImpl::pageIsVisible() const {
+	return true;
+}
+
+bool LastPageImpl::saveSettingsDialog( XinxProject * project ) {
+	Q_UNUSED( project );
+	return true;
 }

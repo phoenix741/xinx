@@ -22,6 +22,18 @@
 #include <contentview/contentviewnode.h>
 #include "docks/dictionary/dictionaryparser.h"
 #include <project/xinxproject.h>
+#include "pluginresolver/gce150fileresolver.h"
+#include <config/customgeneriximpl.h>
+#include "projectproperty/wizard/newgenerixinformationpageimpl.h"
+#include "projectproperty/wizard/newgenerixderivation1page.h"
+#include "projectproperty/wizard/newgenerixderivation2page.h"
+#include "projectproperty/wizard/newgenerixderivation3page.h"
+#include "projectproperty/std/generixderivationoptionspage.h"
+#include "projectproperty/std/generixderivationpage.h"
+#include "projectproperty/std/generixprojectpageform.h"
+#include <project/externalfileresolver.h>
+#include <configuration/configurationmanager.h>
+#include <savedialog/derivationdialogimpl.h>
 
 // Qt header
 #include <QString>
@@ -30,11 +42,67 @@
 #include <QApplication>
 #include <QDockWidget>
 #include <QDir>
+#include <QFile>
+#include <QBuffer>
+#include <QFileInfo>
+
+// Libxml2 header
+#include <libxml/xlink.h>
+
+/* xmlRegisterCallback */
+
+static int xsltParserInputMatchCallback(char const * filename) {
+	Q_UNUSED( filename );
+	return 1;
+}
+
+static void* xsltParserInputOpenCallback(char const * filename) {
+	QFile f( filename );
+	if( ! f.open( QIODevice::ReadOnly ) ) {
+		return 0;
+	}
+
+	QString bufferString( QString::fromLatin1( f.readAll() ) );
+
+	QRegExp importRegExp( "(<xsl:import[^>]+href\\s*=\\s*\")(\\{.*\\}.*)(\".*>)" );
+	importRegExp.setMinimal( true );
+	int position;
+	while( ( position = importRegExp.indexIn( bufferString, position ) ) >= 0 ) {
+		QString href = importRegExp.cap( 2 );
+		QString resolvedRef = ExternalFileResolver::self()->resolveFileName( href, QFileInfo( filename ).absolutePath() );
+
+		bufferString.replace( importRegExp.pos( 2 ), href.length(), resolvedRef );
+
+		position += importRegExp.matchedLength() + resolvedRef.length() - href.length();
+	}
+
+	QBuffer * b = new QBuffer;
+	b->setData( bufferString.toLatin1() );
+	if( ! b->open( QIODevice::ReadOnly ) ) {
+		delete b;
+		return 0;
+	}
+
+	return b;
+}
+
+static int xsltParserInputReadCallback(void * context, char * buffer, int len) {
+	QBuffer * f = static_cast<QBuffer*>( context );
+	return f->read( buffer, len );
+}
+
+static int xsltParserInputCloseCallback(void * context) {
+	delete static_cast<QBuffer*>( context );
+	return 0;
+}
 
 /* GenerixPlugin */
 
 GenerixPlugin::GenerixPlugin() : m_dock( 0 ) {
-		Q_INIT_RESOURCE(generix);
+	Q_INIT_RESOURCE(generix);
+	xmlRegisterInputCallbacks( xsltParserInputMatchCallback, xsltParserInputOpenCallback,
+							   xsltParserInputReadCallback,  xsltParserInputCloseCallback);
+
 }
 
 GenerixPlugin::~GenerixPlugin() {
@@ -42,8 +110,10 @@ GenerixPlugin::~GenerixPlugin() {
 
 bool GenerixPlugin::initializePlugin( const QString & lang ) {
 	QTranslator * tranlator = new QTranslator( this );
-	tranlator->load( QString(":/dictionary/translations/generix_%1").arg( lang ) );
+	tranlator->load( QString(":/generix/translations/generix_%1").arg( lang ) );
 	qApp->installTranslator(tranlator);
+
+	m_resolver = new Gce150FileResolver();
 
 	return true;
 }
@@ -57,7 +127,7 @@ QVariant GenerixPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttrib
 	case PLG_AUTHOR:
 		return "Ulrich Van Den Hekke";
     case PLG_ICON:
-		return QPixmap( ":/dictionary/images/logo_gce32.png" );
+		return QPixmap( ":/generix/images/logo_gce32.png" );
 	case PLG_EMAIL:
 		return "ulrich.vdh@shadoware.org";
 	case PLG_WEBSITE:
@@ -70,20 +140,69 @@ QVariant GenerixPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttrib
 	return QVariant();
 }
 
-bool GenerixPlugin::initializeProject( XinxProject * project ) {
+bool GenerixPlugin::loadProject( XinxProject * project ) {
 	Q_ASSERT( m_dock );
+	Q_UNUSED( project );
 
 	m_dock->loadDictionaryList( QDir( project->projectPath() ).absoluteFilePath( "configurationdef.xml" ) );
+	ConfigurationManager::self()->getInterfaceOfProject( project );
 
 	return true;
 }
 
-bool GenerixPlugin::destroyProject( XinxProject * project ) {
+bool GenerixPlugin::closeProject( XinxProject * project ) {
 	Q_ASSERT( m_dock );
+	Q_UNUSED( project );
 
 	m_dock->clearDictionaryList();
+	ConfigurationManager::self()->cleanCache();
 
 	return true;
+}
+
+QIODevice * GenerixPlugin::loadFile( const QString & filename ) {
+	return 0;
+}
+
+QIODevice * GenerixPlugin::saveFile( const QString & filename, const QString & oldfilename ) {
+	GenerixProject * gnxProject = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
+	if( !(gnxProject && gnxProject->isGenerixActivated() && gnxProject->copySourceFileInDerivationPath()) || ( filename == oldfilename ) ) {
+		return 0;
+	}
+
+	/* When saving the file, the plugin the standard file in the project directory */
+	const QString stdfilename = QDir( QFileInfo( filename ).absolutePath() ).absoluteFilePath( QFileInfo( oldfilename ).fileName() );
+
+	if( ! QFile::exists( stdfilename ) ) {
+		QFile::copy( oldfilename, stdfilename );
+	}
+	return 0;
+}
+
+QString GenerixPlugin::getFilename( const QString & filename, const QString & filter, bool saveAs, bool & accept, QWidget * widget ) {
+	GenerixProject * gnxProject = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
+	if( !(gnxProject && gnxProject->isGenerixActivated()) ) {
+		accept = false;
+		return QString();
+	}
+
+	accept = true;
+	if( saveAs || DerivationDialogImpl::isDerivableFile( filename ) ) {
+		DerivationDialogImpl dlg( widget );
+		dlg.load( filename, filter );
+		if( dlg.exec() == QDialog::Accepted ) {
+			const QString filename = dlg.getNewPath();
+			const QString pathname = QFileInfo( filename ).absolutePath();
+
+			if( gnxProject->createMissingDirectory() )
+				QDir::current().mkpath( pathname );
+
+			return filename;
+		} else {
+			return QString();
+		}
+	}
+	return filename;
 }
 
 QList<QDockWidget*> GenerixPlugin::createDocksWidget( QWidget * parent ) {
@@ -91,9 +210,42 @@ QList<QDockWidget*> GenerixPlugin::createDocksWidget( QWidget * parent ) {
 	if( ! m_dock ) {
 		m_dock = new DictionaryDockWidgetImpl( parent );
 		m_dock->setObjectName( QString::fromUtf8( "m_dictionaryDock" ) );
+
+		m_gnxDock = new GenerixProjectDockImpl( parent );
+		m_gnxDock->setObjectName( QString::fromUtf8( "m_gnxDock" ) );
 	}
-	docks << m_dock;
+	docks << m_dock << m_gnxDock;
 	return docks;
 }
+
+QList<IFileResolverPlugin*> GenerixPlugin::fileResolvers() {
+	return QList<IFileResolverPlugin*>() << m_resolver;
+}
+
+QList<IXinxPluginConfigurationPage*> GenerixPlugin::createSettingsDialog( QWidget * parent ) {
+	QList<IXinxPluginConfigurationPage*> pages;
+	pages << new CustomGenerixImpl( parent );
+	return pages;
+}
+
+QList<IXinxPluginProjectConfigurationPage*> GenerixPlugin::createProjectSettingsPage( QWidget * parent ) {
+	QList<IXinxPluginProjectConfigurationPage*> pages;
+
+	pages << new GenerixProjectPageFormImpl( parent );
+	pages << new GenerixDerivationPathPageImpl( parent );
+	pages << new GenerixDerivationOptionsPageImpl( parent );
+
+	return pages;
+}
+
+QList<IXinxPluginNewProjectConfigurationPage*> GenerixPlugin::createNewProjectSettingsPages() {
+	QList<IXinxPluginNewProjectConfigurationPage*> list;
+	list << new NewGenerixInformationPageImpl;
+	list << new NewGenerixDerivation1Page;
+	list << new NewGenerixDerivation2Page;
+	list << new NewGenerixDerivation3Page;
+	return list;
+}
+
 
 Q_EXPORT_PLUGIN2(GenerixPlugin, GenerixPlugin)

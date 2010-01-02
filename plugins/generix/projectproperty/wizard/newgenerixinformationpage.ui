@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewGenerixInformationPage</class>
+ <widget class="QWizardPage" name="NewGenerixInformationPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>578</width>
+    <height>353</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WizardPage</string>
+  </property>
+  <property name="title">
+   <string>Define informations used by the Generix module of XINX</string>
+  </property>
+  <property name="subTitle">
+   <string>In this page, youcan define the webmodule location (by default the project path). With this webmodule location, the Generix module can determine, the version, and the resolver to use.</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&amp;Webmodule location :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_webModuleLocation</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="DirectoryEditWidget" name="m_webModuleLocation" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="directory" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Version :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+	<widget class="ConfigurationVersionLabel" name="m_configurationVersionLabel">
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>&amp;Resolver :</string>
+     </property>
+     <property name="buddy">
+      <cstring>m_resolverList</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="m_resolverList"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DirectoryEditWidget</class>
+   <extends>QWidget</extends>
+   <header>directoryedit.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ConfigurationVersionLabel</class>
+   <extends>QLabel</extends>
+   <header>configuration/configurationfileedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

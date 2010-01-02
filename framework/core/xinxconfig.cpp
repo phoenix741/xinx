@@ -135,26 +135,12 @@ void XINXConfig::addDefaultTool( const QString & tool, const QString & defaultVa
 	}
 }
 
-void XINXConfig::addDefaultExtention( const QString & type, const struct AppSettings::struct_extentions & properties ) {
-	if( ! config().files.contains( type ) ) {
-		config().files[ type ] = properties;
-		// Store imediately the hashtable
-		AppSettingsSettings settings("Shadoware.Org", "XINX");
-		setSettingsHash_struct_extentions( &settings, "Files", config().files );
-	}
-}
-
 XINXConfig * XINXConfig::self() {
 	if( s_self == 0 ) {
 		s_self = new XINXConfig();
 		XINXStaticDeleter::self()->addObject( s_self );
 	}
 	return s_self;
-}
-
-AppSettings::struct_extentions XINXConfig::matchedFileType( const QString & filename ) {
-	IFileTypePlugin * plugin = XinxPluginsLoader::self()->matchedFileType( filename );
-	return config().files.value( plugin->description() );
 }
 
 AppSettings::struct_globals XINXConfig::getDefaultGlobals() {

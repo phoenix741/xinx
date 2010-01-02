@@ -27,12 +27,14 @@
 #include "docks/datastream/xmlpresentationdockwidget.h"
 
 class WebPluginSettings;
+class ManualFileResolver;
 
-class CorePlugin : public QObject, public IFilePlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration, public IDockPlugin {
+class CorePlugin : public QObject, public IFilePlugin, public IResolverPlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration, public IDockPlugin {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
+	Q_INTERFACES(IResolverPlugin)
 	Q_INTERFACES(IFilePlugin)
     Q_INTERFACES(IDockPlugin)
 public:
@@ -46,22 +48,23 @@ public:
 
 	virtual XinxAction::MenuList actions();
 
+	virtual QList< QPair<QString,QString> > pluginTools();
+
 	virtual QList<IXinxPluginConfigurationPage*> createSettingsDialog( QWidget * parent );
+	virtual QList<IXinxPluginProjectConfigurationPage*> createProjectSettingsPage( QWidget * parent );
 
-	virtual QWidget * createProjectSettingsPage();
-	virtual bool loadProjectSettingsPage( QWidget * widget );
-	virtual bool saveProjectSettingsPage( QWidget * widget );
-
-	virtual QList<QWizardPage*> createNewProjectSettingsPages( int nextid );
-	virtual bool saveNewProjectSettingsPage( XinxProject * project, QWizardPage * page );
+	virtual QList<IXinxPluginNewProjectConfigurationPage*> createNewProjectSettingsPages();
 
 	virtual QList<QDockWidget*> createDocksWidget( QWidget * parent );
+
+	virtual QList<IFileResolverPlugin*> fileResolvers();
 
     XmlPresentationDockWidget * dock();
 private:
 	QList<IFileTypePlugin*> m_fileTypes;
 	XinxAction::MenuList m_menus;
 
+	ManualFileResolver * m_resolver;
     XmlPresentationDockWidget * m_dock;
 };
 
