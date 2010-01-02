@@ -23,6 +23,9 @@
 #include "toolsmodelindex.h"
 #include "directoryeditdelegate.h"
 
+// Qt header
+#include <QHeaderView>
+
 /* CustomToolsImpl */
 
 CustomToolsImpl::CustomToolsImpl( QWidget * parent ) : QWidget( parent ) {
