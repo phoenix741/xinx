@@ -27,6 +27,7 @@
 // Qt header
 #include <QMenu>
 #include <QFileDialog>
+#include <QHeaderView>
 
 /* CustomSnipetImpl */
 
