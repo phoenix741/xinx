@@ -26,9 +26,17 @@ RCS::RCS( const QString & base ) : m_base( base ) {
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
+RCS::RCS() {
+	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
+}
+
 RCS::~RCS() {
 
 
+}
+
+void RCS::setBasePath( const QString & value ) {
+	m_base = value;
 }
 
 const QString & RCS::getBasePath() const {

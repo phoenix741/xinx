@@ -46,6 +46,10 @@ public:
 	 * \param basePath This is the project path, used in the RCS as the base path of operations.
 	 */
 	RCS( const QString & basePath );
+	/*!
+	 * Create a RCS base object.
+	 */
+	RCS();
 	/*! Destroy the object */
 	virtual ~RCS();
 
@@ -156,6 +160,9 @@ public:
 	 * \sa abort(), add(), commit(), updateToRevision(), update()
 	 */
 	virtual void remove( const QStringList & path ) = 0;
+
+	/// Set the base path of the revision control system class.
+	void setBasePath( const QString & value );
 
 	/// Return the base path of the revision control system class.
 	const QString & getBasePath() const;

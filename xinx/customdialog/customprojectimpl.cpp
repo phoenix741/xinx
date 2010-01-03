@@ -61,6 +61,9 @@ bool CustomProjectImpl::loadSettingsDialog() {
 	// CVS : Create Change Log automatically
 	m_changeLogCheckBox->setChecked( XINXConfig::self()->config().rcs.createChangelog );
 
+	// CVS : Auto add file
+	m_autoAddFileChk->setChecked( XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem );
+
 	return true;
 }
 
@@ -82,6 +85,9 @@ bool CustomProjectImpl::saveSettingsDialog() {
 
 	// CVS : Create Change Log automatically
 	XINXConfig::self()->config().rcs.createChangelog = m_changeLogCheckBox->isChecked();
+
+	// CVS : Auto add file
+	XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem = m_autoAddFileChk->isChecked();
 
 	return true;
 }

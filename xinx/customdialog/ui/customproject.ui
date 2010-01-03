@@ -130,6 +130,13 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="m_autoAddFileChk">
+        <property name="text">
+         <string>&amp;Auto add file to versionning system</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -156,9 +163,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

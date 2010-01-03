@@ -13,6 +13,7 @@
 	</type>
 	<type name="RCS">
 		<value name="Create ChangeLog" type="bool" default="no"/>
+		<value name="Auto add file to versionning system" type="bool" default="yes"/>
 	</type>
 	<type name="Editor">
 		<value name="Default Text Codec" type="string" default="ISO-8859-1"/>

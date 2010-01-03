@@ -21,6 +21,10 @@
 #include "rcsmanager.h"
 #include <core/xinxcore.h>
 #include <plugins/xinxpluginsloader.h>
+#include <core/xinxconfig.h>
+
+// Qt header
+#include <QMessageBox>
 
 /* Constante */
 
@@ -69,7 +73,7 @@ RCS * RCSManager::createRevisionControl( QString revision, QString basePath ) co
 	return rcs;
 }
 
-bool RCSManager::setCurrentRCS( const QString & rcs, const QString & rootPath ) {
+bool RCSManager::setCurrentRCS( const QString & rcs ) {
 	if( rcs != m_rcsName ) {
 		if( m_rcs ) {
 			delete m_rcs;
@@ -78,7 +82,7 @@ bool RCSManager::setCurrentRCS( const QString & rcs, const QString & rootPath ) 
 		}
 
 		if( ! rcs.isEmpty() ) {
-			m_rcs     = createRevisionControl( rcs, rootPath );
+			m_rcs     = createRevisionControl( rcs, m_rootPath );
 			m_rcsName = m_rcs ? rcs : QString();
 			if( ! m_rcs )
 				return false;
@@ -95,23 +99,44 @@ QString RCSManager::description() const {
 	return revisionControlIds().value( m_rcsName );
 }
 
-void RCSManager::addOperation( rcsManagerOperation op, const QStringList & filename ) {
-	m_operations.append( qMakePair( op, filename ) );
+void RCSManager::setCurrentRootPath( const QString & rootPath ) {
+	if( m_rootPath == rootPath ) {
+		if( m_rcs )
+			m_rcs->setBasePath( rootPath );
+		m_rootPath = rootPath;
+	}
 }
 
-void RCSManager::validOperations() {
+const QString & RCSManager::currentRootPath() const {
+	return m_rootPath;
+}
+
+void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent ) {
+	QStringList filenameList = filename;
+	if( ( ! XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem ) && ( op == RCSManager::RCS_ADD ) ) {
+		QMutableStringListIterator it( filenameList );
+		while( it.hasNext() ) {
+			const QString text = it.next();
+
+			if( QMessageBox::question( parent, tr("Add a file"), tr("Do you want to add the file '%1' to the repository").arg( text ), QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No ) {
+				it.remove();
+			}
+		}
+	}
+
+	m_operations.append( qMakePair( op, filenameList ) );
+}
+
+void RCSManager::validFileOperations() {
 	if( m_rcs ) {
 		while( m_operations.size() ) {
-			QPair<rcsManagerOperation,QStringList> operation = m_operations.dequeue();
+			QPair<rcsAddRemoveOperation,QStringList> operation = m_operations.dequeue();
 			switch( operation.first ) {
 			case RCSManager::RCS_ADD:
 				m_rcs->add( operation.second );
 				break;
 			case RCSManager::RCS_REMOVE:
 				m_rcs->remove( operation.second );
-				break;
-			case RCSManager::RCS_UPDATE:
-				m_rcs->update( operation.second );
 				break;
 			}
 		}
@@ -120,11 +145,22 @@ void RCSManager::validOperations() {
 	}
 }
 
-void RCSManager::abort() {
+void RCSManager::rollbackFileOperations() {
+	m_operations.clear();
 }
 
-void RCSManager::rollbackOperations() {
-	m_operations.clear();
+void RCSManager::validWorkingCopy( QWidget * parent ) {
+}
+
+void RCSManager::updateWorkingCopy() {
+}
+
+void RCSManager::loadWorkingCopyStatut( QStringList files ) {
+}
+
+void RCSManager::abort( QWidget * parent ) {
+	Q_UNUSED( parent );
+
 }
 
 

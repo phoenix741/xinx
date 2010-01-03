@@ -231,6 +231,7 @@ AppSettings::AppSettings::struct_rcs AppSettings::getDefaultRcs() {
 	struct_rcs value;
 
 	value.createChangelog = false;
+	value.autoAddFileToVersionningSystem = true;
 
 	return value;
 }
@@ -240,6 +241,7 @@ AppSettings::AppSettings::struct_rcs AppSettings::getSettingsRcs( AppSettingsSet
 	settings->beginGroup( path );
 
 	value.createChangelog = settings->value( "Create ChangeLog", defaultValue.createChangelog ).toBool();
+	value.autoAddFileToVersionningSystem = settings->value( "Auto add file to versionning system", defaultValue.autoAddFileToVersionningSystem ).toBool();
 
 	settings->endGroup();
 	return value;
@@ -250,6 +252,7 @@ void AppSettings::setSettingsRcs( AppSettingsSettings * settings, const QString 
 	settings->beginGroup( path );
 
 	settings->setValue( "Create ChangeLog", value.createChangelog, defaultValue.createChangelog );
+	settings->setValue( "Auto add file to versionning system", value.autoAddFileToVersionningSystem, defaultValue.autoAddFileToVersionningSystem );
 
 	settings->endGroup();
 }

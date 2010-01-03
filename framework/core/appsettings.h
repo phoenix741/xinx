@@ -61,6 +61,7 @@ public:
 
 	struct struct_rcs {
 		bool createChangelog;
+		bool autoAddFileToVersionningSystem;
 	};
 
 	struct struct_project {

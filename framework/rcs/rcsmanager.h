@@ -28,6 +28,7 @@
 #include <QMap>
 #include <QQueue>
 #include <QPair>
+#include <QStringList>
 
 /*!
  * The RCS Manager is the new interface to use to interact with RCS plugin.
@@ -35,12 +36,10 @@
 class RCSManager : public QObject {
 	Q_OBJECT
 public:
-	//! Operation that can be added to the RCS Manager
-	enum rcsManagerOperation {
+	//! Operations on file that XINX can made.
+	enum rcsAddRemoveOperation {
 		RCS_ADD,    //!< Add a file to RCS
-		RCS_REMOVE, //!< Remove a file to the RCS
-		RCS_STATUS,
-		RCS_UPDATE
+		RCS_REMOVE //!< Remove a file to the RCS
 	};
 
 	//! Destroy the RCS Manager
@@ -57,23 +56,39 @@ public:
 	 * \param revision The system to use.
 	 * \param basePath The path used in the constructor.
 	 */
-	bool setCurrentRCS( const QString & rcs, const QString & rootPath );
+	bool setCurrentRCS( const QString & rcs );
 	//! Return the name of the current RCS
 	QString currentRCS() const;
 	//! Return the description of the current RCS
 	QString description() const;
 
+	//! Set the current root path
+	void setCurrentRootPath( const QString & rootPath );
+	//! Get the current root path
+	const QString & currentRootPath() const;
+
 	//! Add an operation to the the RCS
-	void addOperation( rcsManagerOperation op, const QStringList & filename );
+	void addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent = 0 );
 	//! Validate all operation to the RCS (made in a separate thread).
-	void validOperations();
+	void validFileOperations();
 	//! Rollback all operation to the RCS (return imediatly).
-	void rollbackOperations();
+	void rollbackFileOperations();
+
+	//! Valide the working copy
+	void validWorkingCopy( QWidget * parent = 0 );
+	//! Update the working copy
+	void updateWorkingCopy();
+	/*!
+	 * Get the status of file in the working copy
+	 * \param files List of file to get the status. If empty, all file is updated
+	 */
+	void loadWorkingCopyStatut( QStringList files = QStringList() );
+
+	//! Abort all the opreration
+	void abort( QWidget * parent = 0 );
 
 	//! Return the single instance of the RCSManager
 	static RCSManager * self();
-
-	void abort();
 signals:
 	void statusChange( const QString & filename, RCS::struct_rcs_infos informations );
 	void log( RCS::rcsLog niveau, const QString & info );
@@ -83,9 +98,9 @@ private:
 
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 
-	QString m_rcsName;
+	QString m_rcsName, m_rootPath;
 	RCS * m_rcs;
-	QQueue< QPair<rcsManagerOperation,QStringList> > m_operations;
+	QQueue< QPair<rcsAddRemoveOperation,QStringList> > m_operations;
 	static RCSManager * s_self;
 };
 
