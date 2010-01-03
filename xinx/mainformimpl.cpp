@@ -1193,8 +1193,12 @@ void MainformImpl::createTabEditorButton() {
 
 	m_tabEditors->setCornerWidget( m_closeTabBtn );
 
+#if QT_VERSION >= 0x040500
 	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
 	m_tabEditors->setTabsClosable( XINXConfig::self()->config().editor.closeButtonOnEachTab );
+#else
+	m_closeTabBtn->setVisible( true );
+#endif
 
 	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(updateConfigElement()) );
 }
@@ -1206,8 +1210,12 @@ void MainformImpl::updateConfigElement() {
 	if( m_alwaysShowRunDialog->isChecked() != XINXConfig::self()->config().snipets.alwaysShowDialog )
 		m_alwaysShowRunDialog->setChecked( XINXConfig::self()->config().snipets.alwaysShowDialog );
 
+#if QT_VERSION >= 0x040500
 	m_closeTabBtn->setVisible( ! XINXConfig::self()->config().editor.hideCloseTab );
 	m_tabEditors->setTabsClosable( XINXConfig::self()->config().editor.closeButtonOnEachTab );
+#else
+	m_closeTabBtn->setVisible( true );
+#endif
 
 	createNewSubMenu();
 }

@@ -56,7 +56,7 @@
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QGroupBox" name="groupBox_8">
+    <widget class="QGroupBox" name="m_closeBtnGrp">
      <property name="title">
       <string>Close Tab Button</string>
      </property>
@@ -160,9 +160,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../../components/xinxpluginselector.qrc"/>
-  <include location="../../application.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

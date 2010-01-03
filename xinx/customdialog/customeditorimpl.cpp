@@ -35,6 +35,10 @@ CustomEditorImpl::CustomEditorImpl( QWidget * parent ) : QWidget( parent ) {
 	foreach( const QByteArray & encoding, encodings ) {
 		m_encodingComboBox->addItem( encoding );
 	}
+
+#if QT_VERSION <= 0x040500
+	m_closeBtnGrp->setEnabled( false );
+#endif
 }
 
 CustomEditorImpl::~CustomEditorImpl() {
