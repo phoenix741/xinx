@@ -206,7 +206,7 @@ void XmlPresentationDockThread::open( const QString& filename ) {
 
 	m_filteredText = m_xmlPresentationWidget->m_filtreLineEdit->text();
 	m_filteredElement = SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree;
-
+	m_filterHidePath = SelfWebPluginSettings::self()->config().xmlPres.hidePath;
 
 	delete m_sortFilterModel; delete m_model; delete m_watcher;
 

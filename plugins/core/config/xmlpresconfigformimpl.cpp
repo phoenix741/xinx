@@ -64,6 +64,8 @@ bool XmlPresConfigFormImpl::saveSettingsDialog() {
 	SelfWebPluginSettings::self()->config().xmlPres.errorColor = m_errorColorBox->color();
 	SelfWebPluginSettings::self()->config().xmlPres.screenDataColor = m_screenColorBox->color();
 	SelfWebPluginSettings::self()->config().xmlPres.showNameAttributeIfExists = m_showNameAttributeCheckBox->isChecked();
+
+	SelfWebPluginSettings::self()->save();
 	return true;
 }
 

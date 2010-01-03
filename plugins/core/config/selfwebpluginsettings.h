@@ -34,8 +34,6 @@ public:
 	virtual void save();
 signals:
 	void changed();
-protected:
-	virtual WebPluginSettings::struct_oracleParser getDefaultOracleParser();
 private:
 	SelfWebPluginSettings();
 

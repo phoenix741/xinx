@@ -123,10 +123,7 @@ QString XinxListWidgetImpl::defaultProposedValue() const {
 }
 
 void XinxListWidgetImpl::setDefaultProposedValue( const QString & value ) {
-	if( value != m_defaultProposedValue ) {
-		m_addEdit->setText( value );
-		m_defaultProposedValue = value;
-	}
+	m_defaultProposedValue = value;
 }
 
 void XinxListWidgetImpl::on_m_btnDef_clicked() {
@@ -139,9 +136,11 @@ void XinxListWidgetImpl::on_m_btnDef_clicked() {
 }
 
 void XinxListWidgetImpl::on_m_btnAdd_clicked() {
-	QListWidgetItem * item = new QListWidgetItem( m_addEdit->text(), m_list );
+	QListWidgetItem * item = new QListWidgetItem( m_defaultProposedValue.isEmpty() ? "..." : m_defaultProposedValue, m_list );
 	item->setFlags( item->flags() | Qt::ItemIsEditable );
 	m_list->addItem( item );
+	m_list->setCurrentItem( item );
+	m_list->editItem( item );
 
 	m_btnDel->setEnabled( m_list->count() > 0 );
 	m_btnDef->setEnabled( m_list->count() > 0 );

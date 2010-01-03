@@ -50,15 +50,4 @@ void SelfWebPluginSettings::save() {
 	emit changed();
 }
 
-WebPluginSettings::struct_oracleParser SelfWebPluginSettings::getDefaultOracleParser() {
-	WebPluginSettings::struct_oracleParser value = WebPluginSettings::getDefaultOracleParser();
-
-#ifdef Q_WS_WIN32
-	value.classPath = "WEB-INF/lib/xmlparserv2.jar;WEB-INF/lib/gce_xmlparserv2.jar;WEB-INF/lib/technical_divers.jar;WEB-INF/lib/technical_framework.jar;WEB-INF/lib/log4j-1.2.14.jar";
-#else
-	value.classPath = "WEB-INF/lib/xmlparserv2.jar:WEB-INF/lib/gce_xmlparserv2.jar:WEB-INF/lib/technical_divers.jar:WEB-INF/lib/technical_framework.jar:WEB-INF/lib/log4j-1.2.14.jar";
-#endif
-
-	return value;
-}
 
