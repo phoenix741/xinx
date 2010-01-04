@@ -32,8 +32,8 @@ DerivationDialogImpl::DerivationDialogImpl( QWidget * parent, Qt::WindowFlags f 
 	m_directoryEdit->setDirectory( false );
 	m_directoryEdit->lineEdit()->setFileMustExist( false );
 
-	connect( m_derivationPathList, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(changePath()) );
-	connect( m_prefixList, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(changePath()) );
+	connect( m_derivationPathList, SIGNAL(currentTextChanged(QString)), this, SLOT(changePath()) );
+	connect( m_prefixList, SIGNAL(currentTextChanged(QString)), this, SLOT(changePath()) );
 	connect( m_derivationChk, SIGNAL(toggled(bool)), this, SLOT(changePath()) );
 }
 
@@ -71,16 +71,18 @@ void DerivationDialogImpl::load( const QString & filename, const QString & filte
 	noprefix->setSelected( true );
 	noprefix->setData( Qt::UserRole, true );
 
+	QListWidgetItem * defaultItem = 0;
 	if( ! gnxProject->defaultPrefix().isEmpty() ) {
 		QStringList prefixes = gnxProject->prefixes();
 		foreach( const QString & prefix, prefixes ) {
 			QListWidgetItem * item = new QListWidgetItem( prefix, m_prefixList );
 			if( gnxProject->defaultPrefix() == prefix ) {
-				item->setSelected( true );
 				item->setData( Qt::UserRole, false );
+				defaultItem = item;
 			}
 		}
 	}
+	m_prefixList->setCurrentItem( defaultItem );
 
 	changePath();
 }
@@ -115,9 +117,9 @@ void DerivationDialogImpl::changePath() {
 	GenerixProject * gnxProject = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
 	if( ! gnxProject ) return;
 
-	if( m_derivationChk->isChecked() ) {
-		QListWidgetItem * derivationPathItem = m_derivationPathList->selectedItems().at( 0 );
-		QListWidgetItem * prefixItem         = m_prefixList->selectedItems().at( 0 );
+	if( m_derivationChk->isChecked() && m_derivationPathList->currentItem() && m_prefixList->currentItem() ) {
+		QListWidgetItem * derivationPathItem = m_derivationPathList->currentItem();
+		QListWidgetItem * prefixItem         = m_prefixList->currentItem();
 
 		const QString projectPath    = gnxProject->webModuleLocation();
 		const QString derivationPath = derivationPathItem->data( Qt::UserRole ).toString();
