@@ -226,7 +226,11 @@ void GceConfigurationDefParser::readPresentation() {
 void GceConfigurationDefParser::readPresentationElement() {
 	Q_ASSERT( isStartElement() );
 
-	m_fileRefToName.insert( attributes().value( "businessview" ).toString(), attributes().value( "fileRef" ).toString() );
+	const QString bv = attributes().value( "businessview" ).toString();
+	const QString fr = attributes().value( "fileRef" ).toString();
+
+	if( ! m_fileRefToName.values( bv ).contains( fr ) )
+		m_fileRefToName.insert( bv, fr );
 
 	readUnknownElement();
 }
