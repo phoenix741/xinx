@@ -33,7 +33,7 @@
 class DerivationDialogImpl : public QDialog, Ui::DerivationDialog {
 	Q_OBJECT
 public:
-	DerivationDialogImpl( QWidget * parent = 0, Qt::WindowFlags f = Qt::MSWindowsFixedSizeDialogHint );
+	DerivationDialogImpl( QWidget * parent = 0, Qt::WFlags f = Qt::MSWindowsFixedSizeDialogHint );
 	virtual ~DerivationDialogImpl();
 
 	void load( const QString & filename, const QString & filter );
