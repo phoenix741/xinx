@@ -29,6 +29,7 @@
 // Qt header
 #include <QPointer>
 #include <QFileSystemWatcher>
+#include <QProcess>
 
 class PluginSettings;
 class CVSThread;
@@ -39,13 +40,14 @@ public:
 	RCS_CVS( const QString & base );
 	virtual ~RCS_CVS();
 
-	virtual struct_rcs_infos infos( const QString & path );
-	virtual RCS::FilesOperation operations( const QStringList & path );
 	virtual void update( const QStringList & path );
-	virtual void commit( const FilesOperation & path, const QString & message );
+	virtual void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 );
+	virtual void commit( const QStringList & path, const QString & message );
+
 	virtual void add( const QStringList & path );
 	virtual void remove( const QStringList & path );
-	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
+	virtual void searchFileToAddOrRemove( const QStringList & path, QStringList & toAdd, QStringList & toRemove );
+	virtual struct_rcs_infos infos( const QString & path );
 public slots:
 	virtual void abort();
 private slots:

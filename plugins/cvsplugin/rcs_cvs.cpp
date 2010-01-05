@@ -49,6 +49,9 @@ RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
 	return rcsInfos;
 }
 
+void RCS_CVS::searchFileToAddOrRemove( const QStringList & path, QStringList & toAdd, QStringList & toRemove ) {
+}
+
 void RCS_CVS::update( const QStringList & path ) {
 	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
 
@@ -64,7 +67,7 @@ void RCS_CVS::update( const QStringList & path ) {
 	}
 }
 
-void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QString * content ) {
+void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QByteArray * content ) {
 	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
 
 	try {

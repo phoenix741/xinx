@@ -35,7 +35,7 @@ PluginSettings * CVSThread::m_settings = 0;
 
 /* CVSThread */
 
-CVSThread::CVSThread( QStringList paths, bool terminate ) : XinxThread() {
+CVSThread::CVSThread( QStringList paths ) : XinxThread() {
 	m_process = NULL;
 	m_paths = paths;
 	m_terminate = terminate;
@@ -151,7 +151,7 @@ void CVSThread::setPluginSettings( PluginSettings * settings ) {
 
 /* CVSUpdateThread */
 
-CVSUpdateThread::CVSUpdateThread( QStringList paths, bool terminate ) : CVSThread( paths, terminate ) {
+CVSUpdateThread::CVSUpdateThread( QStringList paths ) : CVSThread( paths ) {
 }
 
 void CVSUpdateThread::callCVS( const QString & path, const QStringList & files ) {
@@ -173,13 +173,11 @@ void CVSUpdateThread::threadrun() {
 	CVSThread::threadrun();
 
 	emit log( RCS::LogApplication, tr("Update terminated") );
-	if( m_terminate )
-		emit operationTerminated();
 }
 
 /* CVSUpdateRevisionThread */
 
-CVSUpdateRevisionThread::CVSUpdateRevisionThread( const QString & path, const QString & revision, QString * content ) : CVSThread( QStringList() << path, true ), m_content( content ), m_revision( revision )  {
+CVSUpdateRevisionThread::CVSUpdateRevisionThread( const QString & path, const QString & revision, QByteArray * content ) : CVSThread( QStringList() << path ), m_content( content ), m_revision( revision )  {
 
 }
 
@@ -218,13 +216,11 @@ void CVSUpdateRevisionThread::threadrun() {
 		CVSThread::threadrun();
 
 	emit log( RCS::LogApplication, tr("Update to revision %1 terminated").arg( m_revision ) );
-	if( m_terminate )
-		emit operationTerminated();
 }
 
 /* CVSAddThread */
 
-CVSAddThread::CVSAddThread( QStringList paths, bool terminate ) : CVSThread( paths, terminate ) {
+CVSAddThread::CVSAddThread( QStringList paths ) : CVSThread( paths ) {
 }
 
 
@@ -240,13 +236,11 @@ void CVSAddThread::threadrun() {
 	CVSThread::threadrun();
 
 	emit log( RCS::LogApplication, tr("Add terminated") );
-	if( m_terminate )
-		emit operationTerminated();
 }
 
 /* CVSRemoveThread */
 
-CVSRemoveThread::CVSRemoveThread( QStringList paths, bool terminate ) : CVSThread( paths, terminate ) {
+CVSRemoveThread::CVSRemoveThread( QStringList paths ) : CVSThread( paths ) {
 }
 
 
@@ -262,27 +256,18 @@ void CVSRemoveThread::threadrun() {
 	CVSThread::threadrun();
 
 	emit log( RCS::LogApplication, tr("Remove terminated") );
-	if( m_terminate )
-		emit operationTerminated();
 }
 
 /* CVSCommitThread */
 
-CVSCommitThread::CVSCommitThread( RCS::FilesOperation paths, QString message ) : CVSThread( QStringList(), true ) {
+CVSCommitThread::CVSCommitThread( QStringList paths, QString message ) : CVSThread( paths ) {
 	m_message = message;
 	m_message += "\n";
 	m_message += "\n";
 	m_message += tr("Files commited :") + "\n";
 	m_message += "\n";
-	foreach( RCS::FileOperation file, paths ) {
-		if( file.second != RCS::Nothing ) {
-			m_message += QFileInfo( file.first ).fileName() + "\n";
-			m_paths  << file.first;
-		}
-		if( file.second == RCS::RemoveAndCommit )
-			m_removeList  << file.first;
-		if( file.second == RCS::AddAndCommit )
-			m_addList  << file.first;
+	foreach( const QString & file, paths ) {
+		m_message += QFileInfo( file ).fileName() + "\n";
 	}
 }
 
@@ -298,26 +283,8 @@ void CVSCommitThread::callCVS( const QString & path, const QStringList & files )
 }
 
 void CVSCommitThread::threadrun() {
-	if( m_addList.size() > 0 ) {
-		CVSThread * thread = new CVSAddThread( m_addList, false );
-		connect( thread, SIGNAL(log()), this, SLOT(log()) );
-		thread->start();
-		thread->wait();
-		delete thread;
-	}
-	if( m_removeList.size() > 0 ) {
-		CVSThread * thread = new CVSRemoveThread( m_removeList, false );
-		connect( thread, SIGNAL(log()), this, SLOT(log()) );
-		thread->start();
-		thread->wait();
-		delete thread;
-	}
-
 	CVSThread::threadrun();
 
-
 	emit log( RCS::LogApplication, tr("Commit terminated") );
-	if( m_terminate )
-		emit operationTerminated();
 }
 

@@ -32,6 +32,11 @@
 
 /*!
  * The RCS Manager is the new interface to use to interact with RCS plugin.
+ *
+ * On validation :
+ *   The class must search file to add and file to remove, and show a dialog to
+ *   the user. After the validation of the dialog, the class must add, and remove files
+ *   and commit the class.
  */
 class RCSManager : public QObject {
 	Q_OBJECT

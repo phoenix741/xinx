@@ -102,7 +102,7 @@ QString RCSManager::description() const {
 void RCSManager::setCurrentRootPath( const QString & rootPath ) {
 	if( m_rootPath == rootPath ) {
 		if( m_rcs )
-			m_rcs->setBasePath( rootPath );
+			m_rcs->setWorkingDirectory( rootPath );
 		m_rootPath = rootPath;
 	}
 }

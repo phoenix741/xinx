@@ -22,7 +22,7 @@
 
 /* RCS */
 
-RCS::RCS( const QString & base ) : m_base( base ) {
+RCS::RCS( const QString & workingDirectory ) : m_workingDirectory( workingDirectory ) {
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
@@ -35,10 +35,10 @@ RCS::~RCS() {
 
 }
 
-void RCS::setBasePath( const QString & value ) {
-	m_base = value;
+void RCS::setWorkingDirectory( const QString & value ) {
+	m_workingDirectory = value;
 }
 
-const QString & RCS::getBasePath() const {
-	return m_base;
+const QString & RCS::getWorkingDirectory() const {
+	return m_workingDirectory;
 }

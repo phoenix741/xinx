@@ -52,7 +52,7 @@ public:
 	 * \param terminate If true, the thread must call \e operationTerminated() when the
 	 * process is terminated.
 	 */
-	CVSThread( QStringList paths, bool terminate = true );
+	CVSThread( QStringList paths );
 	/*!
 	 * Destroy the thread.
 	 */
@@ -73,11 +73,6 @@ signals:
 	 * \param info Infos of the thread (i.e. The name of the file ...).
 	 */
 	void log( RCS::rcsLog niveau, const QString & info );
-	/*!
-	 * The signal is emited when the operation is terminated.
-	 * If the terminate, at creation, is false, this signal is never emited.
-	 */
-	void operationTerminated();
 protected:
 	/*!
 	 * Called by the thread when there is data to read.
@@ -101,7 +96,6 @@ protected:
 
 	QProcess * m_process; ///< The CVS process executed.
 	QStringList m_paths; ///< List of path to pass in parameters.
-	bool m_terminate; ///< Determine if we want called \e operationTerminated().
 	QString m_cvs;
 
 	static PluginSettings * m_settings;
@@ -120,7 +114,7 @@ public:
 	 * \param paths List of file to update
 	 * \param terminate If true call signal operationTerminated()
 	 */
-	CVSUpdateThread( QStringList paths, bool terminate = true );
+	CVSUpdateThread( QStringList paths );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
@@ -142,14 +136,14 @@ public:
 	 * \param content The content where the file must be stored. If not defined the old
 	 * file is overwritten.
 	 */
-	CVSUpdateRevisionThread( const QString & path, const QString & revision, QString * content );
+	CVSUpdateRevisionThread( const QString & path, const QString & revision, QByteArray * content );
 public slots:
 	virtual void processReadOutput();
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 private:
-	QString * m_content;
+	QByteArray * m_content;
 	QString m_revision;
 };
 
@@ -166,7 +160,7 @@ public:
 	 * \param paths List of file to add
 	 * \param terminate If true call signal operationTerminated()
 	 */
-	CVSAddThread( QStringList paths, bool terminate = true );
+	CVSAddThread( QStringList paths );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
@@ -185,7 +179,7 @@ public:
 	 * \param paths List of file to update
 	 * \param terminate If true call signal operationTerminated()
 	 */
-	CVSRemoveThread( QStringList paths, bool terminate = true );
+	CVSRemoveThread( QStringList paths );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
@@ -208,14 +202,12 @@ public:
 	 * \param paths List of file to commit, add and remove.
 	 * \param message Message to use when commit.
 	 */
-	CVSCommitThread( RCS::FilesOperation paths, QString message );
+	CVSCommitThread( QStringList paths, QString message );
 protected:
 	virtual void callCVS( const QString & path, const QStringList & files );
 	virtual void threadrun();
 private:
 	QString m_message;
-	QStringList m_addList;
-	QStringList m_removeList;
 };
 
 
