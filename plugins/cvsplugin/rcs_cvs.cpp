@@ -31,6 +31,7 @@
 RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ) {
 	m_entriesList = new EntriesList();
 	m_watcher     = new QFileSystemWatcher( this );
+	m_cvs         = XINXConfig::self()->getTools( "cvs" );
 	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(entriesStateChanged(QString)) );
 }
 
@@ -53,37 +54,51 @@ void RCS_CVS::searchFileToAddOrRemove( const QStringList & path, QStringList & t
 }
 
 void RCS_CVS::update( const QStringList & path ) {
-	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+	Q_ASSERT( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) );
 
 	try {
-		if( m_thread ) delete m_thread;
+		QStringList parameters;
+		if( ! m_settings->config().progressMessages.isEmpty() )
+			parameters << m_settings->config().progressMessages;
+		parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "update";
+		if( m_settings->config().pruneEmptyDirectories )
+			parameters << "-P";
+		if( m_settings->config().createDirectories )
+			parameters << "-d";
 
-		m_thread = new CVSUpdateThread( path );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
-		m_thread->start();
+		callCVS( path, parameters );
+
+		emit log( RCS::LogApplication, tr("Update terminated") );
 	} catch( ToolsNotDefinedException e ) {
 		emit log( RCS::LogError, e.getMessage() );
 	}
 }
 
 void RCS_CVS::updateToRevision( const QString & path, const QString & revision, QByteArray * content ) {
-	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+	Q_ASSERT( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) );
 
 	try {
-		if( m_thread ) delete m_thread;
+		QStringList parameters;
+		if( ! m_settings->config().progressMessages.isEmpty() )
+			parameters << m_settings->config().progressMessages;
+		parameters << QString("-z%1").arg( m_settings->config().compressionLevel ) << "update";
+		if( content != NULL )
+			parameters << "-p";
+		parameters << "-r" << revision;
 
-		m_thread = new CVSUpdateRevisionThread( path, revision, content );
-		connect( m_thread, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
-		connect( m_thread, SIGNAL(operationTerminated()), this, SIGNAL(operationTerminated()) );
-		m_thread->start();
+		m_content = content;
+
+		if( m_paths.size() == 1 && QFileInfo( m_paths[ 0 ] ).exists() && !QFileInfo( m_paths[ 0 ] ).isDir() )
+			callCVS( QStringList() << path, parameters );
+
+		emit log( RCS::LogApplication, tr("Update to revision %1 terminated").arg( m_revision ) );
 	} catch( ToolsNotDefinedException e ) {
 		emit log( RCS::LogError, e.getMessage() );
 	}
 }
 
-void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
-	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+void RCS_CVS::commit( const QStringList & path, const QString & message ) {
+	Q_ASSERT( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) );
 
 	try {
 		if( m_thread ) delete m_thread;
@@ -98,7 +113,7 @@ void RCS_CVS::commit( const FilesOperation & path, const QString & message ) {
 }
 
 void RCS_CVS::add( const QStringList & path ) {
-	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+	Q_ASSERT( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) );
 
 	try {
 		if( m_thread ) delete m_thread;
@@ -113,7 +128,7 @@ void RCS_CVS::add( const QStringList & path ) {
 }
 
 void RCS_CVS::remove( const QStringList & path ) {
-	Q_ASSERT( !(m_thread && m_thread->isRunning()) );
+	Q_ASSERT( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) );
 
 	try {
 		if( m_thread ) delete m_thread;
@@ -128,8 +143,17 @@ void RCS_CVS::remove( const QStringList & path ) {
 }
 
 void RCS_CVS::abort() {
-	if( m_thread )
-		m_thread->abort();
+	if( ( ! m_process ) || ( m_process->state() == QProcess::NotRunning ) ) return ;
+
+	m_process->terminate();
+#ifdef Q_WS_WIN
+	if( GenerateConsoleCtrlEvent( CTRL_BREAK_EVENT, m_process->pid()->dwThreadId ) != 0 )
+		perror( "GenerateConsoleCtrlEvent" );
+	if( GenerateConsoleCtrlEvent( CTRL_C_EVENT, m_process->pid()->dwThreadId ) != 0 )
+		perror( "GenerateConsoleCtrlEvent" );
+	emit log( RCS::LogError, tr("I'M A PROCESS KILLER") );
+	m_process->kill();
+#endif
 }
 
 void RCS_CVS::entriesStateChanged( const QString & path ) {
@@ -235,4 +259,95 @@ RCS::FilesOperation RCS_CVS::recursiveOperationOf( const QString & path ) {
 		operations.append( file );
 	}
 	return operations;
+}
+
+void RCS_CVS::processLine( const QString & line ) {
+	QString lline = line.simplified();
+
+	if( lline.startsWith( "M " ) )
+		emit log( RCS::LogLocallyModified, lline );
+	else if( lline.startsWith( "A " ) )
+		emit log( RCS::LogLocallyModified, lline );
+	else if( lline.startsWith( "R " ) )
+		emit log( RCS::LogLocallyModified, lline );
+	else if( lline.startsWith( "U " ) )
+		emit log( RCS::LogRemotlyModified, lline );
+	else if( lline.startsWith( "P " ) )
+		emit log( RCS::LogRemotlyModified, lline );
+	else if( lline.startsWith( "C " ) )
+		emit log( RCS::LogConflict, lline );
+	else if( lline.startsWith( "? " ) )
+		emit log( RCS::LogNotManaged, lline );
+	else
+		emit log( RCS::LogNormal, lline );
+}
+
+void RCS_CVS::processReadOutput() {
+	if( ! m_content ) {
+		m_process->setReadChannel( QProcess::StandardOutput );
+		while( m_process->canReadLine() )
+			processLine( m_process->readLine() );
+
+		/* Process error */
+		m_process->setReadChannel( QProcess::StandardError );
+		while( m_process->canReadLine() )
+			emit log( RCS::LogError, m_process->readLine().simplified() );
+	} else {
+		m_process->setReadChannel( QProcess::StandardOutput );
+		while( m_process->canReadLine() ) {
+			m_content->append( m_process->readLine() );
+		}
+
+		/* Process error */
+		m_process->setReadChannel( QProcess::StandardError );
+		while( m_process->canReadLine() )
+			emit log( RCS::LogError, m_process->readLine().simplified() );
+	}
+}
+
+void RCS_CVS::callCVS( QStringList paths, const QStringList & options ) {
+	if( paths.size() <= 0 ) return;
+	if( paths.size() > 1 )
+		m_paths.sort();
+
+	int i = 0;
+	QString path;
+	QStringList files;
+
+	do {
+		files.clear();
+		QFileInfo info = QFileInfo( paths.at( i ) );
+		if( info.isDir() ) {
+			path = paths.at( i );
+		} else {
+			path = info.absolutePath();
+			files << info.fileName();
+		}
+		i++;
+		QFileInfo infoNext;
+		while( ( i < paths.size() ) && ( ( infoNext = QFileInfo( paths.at( i ) ) ).absolutePath() == path ) ) {
+			files << infoNext.fileName();
+			i++;
+		}
+
+		/* Create process */
+		QStringList processOptions = options;
+		processOptions << files;
+
+		m_process = new QProcess;
+
+		emit log( RCS::LogApplication, QString("Working dir : %1").arg( path ) );
+		m_process->setWorkingDirectory( path );
+
+		emit log( RCS::LogApplication, QString("%1 %2").arg( m_cvs ).arg( processOptions.join( " " ) ).simplified() );
+		m_process->start( m_cvs, processOptions, QIODevice::ReadWrite | QIODevice::Text );
+
+		while( m_process->state() != QProcess::NotRunning ) {
+			if( m_process->waitForReadyRead( 100 ) )
+				processReadOutput();
+		}
+		processReadOutput();
+
+		delete m_process;
+	} while( i < paths.size() );
 }

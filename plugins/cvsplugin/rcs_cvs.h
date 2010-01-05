@@ -32,7 +32,6 @@
 #include <QProcess>
 
 class PluginSettings;
-class CVSThread;
 
 class RCS_CVS : public RCS {
 	Q_OBJECT
@@ -50,18 +49,30 @@ public:
 	virtual struct_rcs_infos infos( const QString & path );
 public slots:
 	virtual void abort();
+
 private slots:
 	void entriesStateChanged( const QString & path );
 private:
+	void processLine( const QString & line );
+	void processReadOutput();
+
+	void callCVS( QStringList path, const QStringList & options );
+
 	void updateEntries();
 
 	RCS::rcsOperation operationOfState( RCS::rcsState state );
 	RCS::FilesOperation operationOf( const QString & path );
 	RCS::FilesOperation recursiveOperationOf( const QString & path );
 
-	QPointer<CVSThread> m_thread;
+
+	QPointer<QByteArray> m_content;
+	QPointer<QProcess> m_process;
+
 	EntriesList * m_entriesList;
 	QFileSystemWatcher * m_watcher;
+
+	QString m_cvs;
+	PluginSettings * m_settings;
 };
 
 #endif // __RCS_CVS_H__

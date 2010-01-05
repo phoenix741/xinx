@@ -38,7 +38,6 @@ PluginSettings * CVSThread::m_settings = 0;
 CVSThread::CVSThread( QStringList paths ) : XinxThread() {
 	m_process = NULL;
 	m_paths = paths;
-	m_terminate = terminate;
 	m_cvs = XINXConfig::self()->getTools( "cvs" );
 }
 
