@@ -45,11 +45,7 @@ public:
 	 * Create a RCS base object.
 	 * \param workingDirectory This is the project path, used in the RCS as the base path of operations.
 	 */
-	RCS( const QString & workingDirectory );
-	/*!
-	 * Create a RCS base object.
-	 */
-	RCS();
+	RCS( const QString & workingDirectory = QString() );
 	/*! Destroy the object */
 	virtual ~RCS();
 
@@ -81,6 +77,18 @@ public:
 		QString version;   ///< Version of the file on the disk
 		QDateTime rcsDate; ///< Date of the last modified time in the RCS
 	};
+	/*! Operation that can be made on a file when commit is asked */
+	enum rcsOperation {
+		RemoveAndCommit, ///< Remove the file and commit this change
+		AddAndCommit,    ///< Add the file and commit it.
+		Commit,          ///< Commit the file
+		Nothing          ///< Do nothing
+	};
+
+	/// Pair of file name and operation to do.
+	typedef QPair<QString,rcsOperation> FileOperation;
+	/// List of \e FileOperation
+	typedef QList<FileOperation> FilesOperation;
 
 	/* Method on file of the repository */
 
@@ -93,7 +101,7 @@ public:
 	 * \param path List of path or file to be updated.
 	 * \sa abort(), add(), remove(), commit(), updateToRevision()
 	 */
-	virtual void update( const QStringList & path ) = 0;
+	virtual void update( const QStringList & paths ) = 0;
 	/*!
 	 * Call the update command of the plugin for a file at a given revision.
 	 *
@@ -104,7 +112,7 @@ public:
 	 * \param content Where the content of the revision must be stored. If null, the revision must override the original file.
 	 * \sa abort(), add(), remove(), commit(), update()
 	 */
-	virtual QByteArray updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 ) = 0;
+	virtual void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 ) = 0;
 	/*!
 	 * Call the commit command of the plugin.
 	 *
@@ -114,7 +122,7 @@ public:
 	 * \param message Message used while commit.
 	 * \sa abort(), add(), remove(), updateToRevision(), update()
 	 */
-	virtual void commit( const QStringList & path, const QString & message ) = 0;
+	virtual void commit( const QStringList & paths, const QString & message ) = 0;
 
 	/* Operation on file of the working copy */
 
@@ -127,7 +135,7 @@ public:
 	 * \param path List of path or file to be added.
 	 * \sa abort(), remove(), commit(), updateToRevision(), update()
 	 */
-	virtual void add( const QStringList & path ) = 0;
+	virtual void add( const QStringList & paths ) = 0;
 	/*!
 	 * Call the remove command of the plugin.
 	 *
@@ -136,17 +144,15 @@ public:
 	 * \param path List of path or file to be removed.
 	 * \sa abort(), add(), commit(), updateToRevision(), update()
 	 */
-	virtual void remove( const QStringList & path ) = 0;
+	virtual void remove( const QStringList & paths ) = 0;
 
 	/*!
-	 * Return the current list of file to add or remove in the list of path given.
-	 *
-	 * \param path List of path, or file to check
-	 * \param toAdd List of file to add, returned by the method.
-	 * \param toRemove List of file to remove, returned by the method.
-	 * \sa infos()
+	 * Return a list of operation for a path or a list of path (in case of multiple selections. In function of
+	 * plugin and state of file, the operation can be \e RCS::RemoveAndCommit, \e RCS::AddAndCommit, and \e RCS::Commit.
+	 * This list will be used in the commit dialog to show files to Commit.
 	 */
-	virtual void searchFileToAddOrRemove( const QStringList & path, QStringList & toAdd, QStringList & toRemove ) = 0;
+	virtual FilesOperation operations( const QStringList & path ) = 0;
+
 	/*!
 	 * Take a file name in argument and return informations about the filename in a \e struct_rcs_infos structure.
 	 * The file name must be in the base path

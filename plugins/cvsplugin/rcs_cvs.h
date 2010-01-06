@@ -45,8 +45,11 @@ public:
 
 	virtual void add( const QStringList & path );
 	virtual void remove( const QStringList & path );
-	virtual void searchFileToAddOrRemove( const QStringList & path, QStringList & toAdd, QStringList & toRemove );
+	virtual FilesOperation operations( const QStringList & path );
 	virtual struct_rcs_infos infos( const QString & path );
+
+	void setPluginSettings( PluginSettings * settings );
+	PluginSettings * pluginSettings() const;
 public slots:
 	virtual void abort();
 
@@ -65,7 +68,7 @@ private:
 	RCS::FilesOperation recursiveOperationOf( const QString & path );
 
 
-	QPointer<QByteArray> m_content;
+	QByteArray * m_content;
 	QPointer<QProcess> m_process;
 
 	EntriesList * m_entriesList;

@@ -234,7 +234,7 @@ public:
 	 * Create a revision control system for the revision control system \e rcs
 	 * and the path \e basePath.
 	 */
-	virtual RCS * createRCS( const QString & rcs, const QString & basePath ) = 0;
+	virtual RCS * createRCS( const QString & rcs, const QString & basePath = QString() ) = 0;
 };
 
 /*!

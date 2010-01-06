@@ -38,10 +38,10 @@ public:
 	virtual struct_rcs_infos infos( const QString & path );
 	virtual FilesOperation operations( const QStringList & paths );
 	virtual void update( const QStringList & path );
-	virtual void commit( const FilesOperation & path, const QString & message );
+	virtual void commit( const QStringList & path, const QString & message );
 	virtual void add( const QStringList & path );
 	virtual void remove( const QStringList & path );
-	virtual void updateToRevision( const QString & path, const QString & revision, QString * content = 0 );
+	virtual void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 );
 
 public slots:
 	virtual void abort();
@@ -53,10 +53,10 @@ private:
 	virtual FilesOperation operations( const QString & path );
 
 	QPointer<QProcess> m_process;
-	QString * m_content, m_tmpfilename;
+	QByteArray * m_content;
+	QString m_tmpfilename;
 	QStringList m_fileChanged;
 	QHash<QString,RCS::struct_rcs_infos> m_infos;
-	bool m_isCommit;
 };
 
 #endif /*RCS_SVN_H_*/

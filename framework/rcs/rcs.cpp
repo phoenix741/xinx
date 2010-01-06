@@ -26,12 +26,7 @@ RCS::RCS( const QString & workingDirectory ) : m_workingDirectory( workingDirect
 	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
 }
 
-RCS::RCS() {
-	qRegisterMetaType<RCS::rcsLog>("RCS::rcsLog");
-}
-
 RCS::~RCS() {
-
 
 }
 

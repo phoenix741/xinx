@@ -1,20 +1,19 @@
 include(../../project_mode.pri)
-
 TEMPLATE = lib
 VERSION = 0.1.0.1
 CONFIG += plugin
 DESTDIR += ../
-LIBS = -L../../framework -lxinxframework
+LIBS = -L../../framework \
+    -lxinxframework
 TARGET = cvsplugin
-INCLUDEPATH += ../../framework ../../components
+INCLUDEPATH += ../../framework \
+    ../../components
 HEADERS = entries.h \
-    cvsthread.h \
     rcs_cvs.h \
     pluginsettings.h \
     customizeplugin.h \
     cvsplugin.h
 SOURCES = entries.cpp \
-    cvsthread.cpp \
     rcs_cvs.cpp \
     pluginsettings.cpp \
     customizeplugin.cpp \
@@ -22,4 +21,4 @@ SOURCES = entries.cpp \
 FORMS += ui/customize.ui
 RESOURCES = cvsplugin.qrc
 TRANSLATIONS += translations/cvsplugin_fr.ts
-win32 : RC_FILE += rc/plugin.rc
+win32:RC_FILE += rc/plugin.rc

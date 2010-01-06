@@ -35,7 +35,7 @@
 
 /* RCS_SVN */
 
-RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_content(0), m_isCommit( false ) {
+RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_content(0) {
 
 }
 
@@ -200,17 +200,12 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 	Q_UNUSED( exitCode );
 	Q_UNUSED( exitStatus );
 
-	if( ! m_isCommit ) {
-		emit log( RCS::LogApplication, tr("Process terminated") );
-		emit operationTerminated();
-	}
+	emit log( RCS::LogApplication, tr("Process terminated") );
 
 	foreach( const QString & file,  m_fileChanged ) {
 		m_infos.remove( QDir::fromNativeSeparators( file ) );
-		emit stateChanged( file );
+		emit stateChanged( file, infos( file ) );
 	}
-
-	m_process->deleteLater();
 }
 
 void RCS_SVN::update( const QStringList & path ) {
@@ -227,48 +222,27 @@ void RCS_SVN::update( const QStringList & path ) {
 		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
 		m_process->start( tool, args );
 		m_process->waitForStarted();
-		if( m_process->error() == QProcess::FailedToStart ) {
+		if( m_process->error() == QProcess::FailedToStart )
 			emit log( RCS::LogError, tr("Can't start svn program.") );
-			delete m_process;
-		}
+		else
+			m_process->waitForFinished();
+
+		delete m_process;
 	} catch( ToolsNotDefinedException e ) {
 		emit log( RCS::LogError, tr("Can't find the svn program.") );
 	}
 }
 
-void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message ) {
+void RCS_SVN::commit( const QStringList & path, const QString & message ) {
 	Q_ASSERT( !m_process );
-
-	QStringList addedFiles, removedFiles, commitedFiles;
-	foreach( const RCS::FileOperation & operation, path ) {
-		if( operation.second == RCS::Nothing ) continue;
-
-		if( operation.second == RCS::AddAndCommit )
-			addedFiles += operation.first;
-		if( operation.second == RCS::RemoveAndCommit )
-			removedFiles += operation.first;
-
-		commitedFiles += operation.first;
-	}
-
-	m_isCommit = true;
-	if( ! addedFiles.isEmpty() ) {
-		add( addedFiles );
-		while( m_process ) qApp->processEvents();
-	}
-	if( ! removedFiles.isEmpty() ) {
-		remove( removedFiles );
-		while( m_process ) qApp->processEvents();
-	}
-	m_isCommit = false;
 
 	try {
 		QString tool = XINXConfig::self()->getTools( "svn", true );
 		QStringList args = QStringList() << "commit";
 		if( ! message.isEmpty() )
 			args << "-m" << message;
-		args << commitedFiles;
-		m_fileChanged = commitedFiles;
+		args << path;
+		m_fileChanged = path;
 		m_process = new QProcess;
 		connect( m_process, SIGNAL(readyReadStandardError()), this, SLOT(logMessages()) );
 		connect( m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(logMessages()) );
@@ -276,10 +250,12 @@ void RCS_SVN::commit( const RCS::FilesOperation & path, const QString & message 
 		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
 		m_process->start( tool, args );
 		m_process->waitForStarted();
-		if( m_process->error() == QProcess::FailedToStart ) {
+		if( m_process->error() == QProcess::FailedToStart )
 			emit log( RCS::LogError, tr("Can't start svn program.") );
-			delete m_process;
-		}
+		else
+			m_process->waitForFinished();
+
+		delete m_process;
 	} catch( ToolsNotDefinedException e ) {
 		emit log( RCS::LogError, tr("Can't find the svn program.") );
 	}
@@ -299,10 +275,12 @@ void RCS_SVN::add( const QStringList & path ) {
 		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
 		m_process->start( tool, args );
 		m_process->waitForStarted();
-		if( m_process->error() == QProcess::FailedToStart ) {
+		if( m_process->error() == QProcess::FailedToStart )
 			emit log( RCS::LogError, tr("Can't start svn program.") );
-			delete m_process;
-		}
+		else
+			m_process->waitForFinished();
+
+		delete m_process;
 	} catch( ToolsNotDefinedException e ) {
 		emit log( RCS::LogError, tr("Can't find the svn program.") );
 	}
@@ -322,10 +300,12 @@ void RCS_SVN::remove( const QStringList & path ) {
 		emit log( RCS::LogApplication, tool + " " + args.join( " " ) );
 		m_process->start( tool, args );
 		m_process->waitForStarted();
-		if( m_process->error() == QProcess::FailedToStart ) {
+		if( m_process->error() == QProcess::FailedToStart )
 			emit log( RCS::LogError, tr("Can't start svn program.") );
-			delete m_process;
-		}
+		else
+			m_process->waitForFinished();
+
+		delete m_process;
 	} catch( ToolsNotDefinedException e ) {
 		emit log( RCS::LogError, tr("Can't find the svn program.") );
 	}
@@ -337,17 +317,14 @@ void RCS_SVN::updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitS
 
 	QFile temporaryFile( m_tmpfilename );
 	if( temporaryFile.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
-		*m_content = QString( temporaryFile.readAll() );
+		*m_content = temporaryFile.readAll();
 	}
 	temporaryFile.remove();
 
 	emit log( RCS::LogApplication, tr("Process terminated") );
-	emit operationTerminated();
-
-	m_process->deleteLater();
 }
 
-void RCS_SVN::updateToRevision( const QString & path, const QString & revision, QString * content ) {
+void RCS_SVN::updateToRevision( const QString & path, const QString & revision, QByteArray * content ) {
 	// svn export -r rev path temporyfile
 	m_content     = content;
 	m_tmpfilename =  QDir( QDir::tempPath() ).absoluteFilePath( QFileInfo( path ).fileName() + "." + revision );
@@ -363,8 +340,12 @@ void RCS_SVN::updateToRevision( const QString & path, const QString & revision, 
 		m_process->setWorkingDirectory( QFileInfo( path ).absolutePath() );
 		m_process->start( tool, args );
 		m_process->waitForStarted();
-		if( m_process->error() == QProcess::FailedToStart ) return;
-		m_process->waitForFinished();
+		if( m_process->error() == QProcess::FailedToStart )
+			emit log( RCS::LogError, tr("Can't start svn program.") );
+		else
+			m_process->waitForFinished();
+
+		delete m_process;
 	} catch( ToolsNotDefinedException e ) {
 	}
 }
