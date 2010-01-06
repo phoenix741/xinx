@@ -22,9 +22,12 @@
 #include <core/xinxcore.h>
 #include <plugins/xinxpluginsloader.h>
 #include <core/xinxconfig.h>
+#include <rcs/commitmessagedialogimpl.h>
+#include <project/xinxproject.h>
 
 // Qt header
 #include <QMessageBox>
+#include <QtConcurrentRun>
 
 /* Constante */
 
@@ -33,6 +36,7 @@ RCSManager * RCSManager::s_self = 0;
 /* RCSManager */
 
 RCSManager::RCSManager() {
+	connect( &m_rcsWatcher, SIGNAL(finished()), this, SIGNAL(operationTerminated()) );
 }
 
 RCSManager::~RCSManager() {
@@ -67,7 +71,11 @@ RCS * RCSManager::createRevisionControl( QString revision, QString basePath ) co
 		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element->plugin() );
 		if( element->isActivated() && interface ) {
 			rcs = interface->createRCS( revision, basePath );
-			if( rcs ) break;
+			if( rcs ) {
+				connect( m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+				connect( m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(statusChange(QString,RCS::struct_rcs_infos)) );
+				break;
+			}
 		}
 	}
 	return rcs;
@@ -76,6 +84,7 @@ RCS * RCSManager::createRevisionControl( QString revision, QString basePath ) co
 bool RCSManager::setCurrentRCS( const QString & rcs ) {
 	if( rcs != m_rcsName ) {
 		if( m_rcs ) {
+			m_rcsWatcher.waitForFinished();
 			delete m_rcs;
 			m_rcs     = 0;
 			m_rcsName = QString();
@@ -127,19 +136,31 @@ void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList &
 	m_operations.append( qMakePair( op, filenameList ) );
 }
 
+static void callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove ) {
+	rcs->add( toAdd );
+	rcs->remove( toRemove );
+}
+
 void RCSManager::validFileOperations() {
+	m_rcsWatcher.waitForFinished();
+
 	if( m_rcs ) {
+		QStringList fileToAdd, fileToRemove;
 		while( m_operations.size() ) {
 			QPair<rcsAddRemoveOperation,QStringList> operation = m_operations.dequeue();
+
 			switch( operation.first ) {
 			case RCSManager::RCS_ADD:
-				m_rcs->add( operation.second );
+				fileToAdd << operation.second;
 				break;
 			case RCSManager::RCS_REMOVE:
-				m_rcs->remove( operation.second );
+				fileToRemove << operation.second;
 				break;
 			}
 		}
+
+		m_rcsWatcher.setFuture( QtConcurrent::run( callRCSFileOperations, m_rcs, fileToAdd, fileToRemove ) );
+
 	} else {
 		m_operations.clear();
 	}
@@ -149,10 +170,76 @@ void RCSManager::rollbackFileOperations() {
 	m_operations.clear();
 }
 
-void RCSManager::validWorkingCopy( QWidget * parent ) {
+static void callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations, QString messages ) {
+	QStringList toAdd, toRemove, toCommit;
+
+	foreach( RCS::FileOperation operation, operations ) {
+		if( operation.second == RCS::AddAndCommit ) {
+			toAdd << operation.first;
+		}
+		if( operation.second == RCS::RemoveAndCommit ) {
+			toRemove << operation.first;
+		}
+		toCommit << operation.first;
+	}
+
+	rcs->add( toAdd );
+	rcs->remove( toRemove );
+	rcs->commit( toCommit, messages );
+}
+
+void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
+	Q_ASSERT( m_rcs );
+
+	m_rcsWatcher.waitForFinished();
+
+	QString changeLog;
+	CommitMessageDialogImpl dlg( parent );
+	RCS::FilesOperation operations;
+
+	if( files.count() == 0 ) {
+		if( XINXProjectManager::self()->project() )
+			files << XINXProjectManager::self()->project()->projectPath();
+
+	}
+
+	if( files.count() > 0 ) {
+		operations = m_rcs->operations( files );
+
+		if( XINXConfig::self()->config().rcs.createChangelog ) {
+			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
+			if( QFile::exists( changeLog ) )
+				operations << qMakePair( changeLog, RCS::Commit );
+			else
+				operations << qMakePair( changeLog, RCS::AddAndCommit );
+		}
+	}
+
+	dlg.setFilesOperation( operations );
+
+	if( dlg.exec() ) {
+		QString message = dlg.messages();
+
+		if( XINXConfig::self()->config().rcs.createChangelog ) {
+			QFile changeLogFile( changeLog );
+			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
+				QTextStream stream( &changeLogFile );
+				stream << QDate::currentDate().toString( Qt::ISODate ) << " " << QTime::currentTime().toString( Qt::ISODate ) << " : ";
+				if( message.isEmpty() )
+					stream << tr( "<Commit with no text>" );
+				else
+					stream << message;
+				stream << endl;
+			}
+		}
+
+		m_rcsWatcher.setFuture( QtConcurrent::run( callRCSValideWorkingCopy, m_rcs, dlg.filesOperation(), message ) );
+	}
 }
 
 void RCSManager::updateWorkingCopy() {
+	m_rcsWatcher.waitForFinished();
+
 }
 
 void RCSManager::loadWorkingCopyStatut( QStringList files ) {

@@ -27,7 +27,6 @@
 #include "aboutdialogimpl.h"
 #include "customdialog/customdialogimpl.h"
 #include "projectpropertyimpl.h"
-#include "commitmessagedialogimpl.h"
 #include "uniqueapplication.h"
 #include "newprojectwizard.h"
 #include "searchfilethread.h"
@@ -39,7 +38,7 @@
 #include <editors/textfileeditor.h>
 #include <editors/xinxcodeedit.h>
 #include <editors/editorfactory.h>
-#include <rcs/rcs.h>
+#include <rcs/rcsmanager.h>
 #include <scripts/scriptmanager.h>
 #include <snipets/snipetmanager.h>
 #include <snipets/snipetmenu.h>
@@ -1935,55 +1934,9 @@ void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 }
 
 void MainformImpl::commitToVersionManager( const QStringList & list ) {
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs ) {
-		QString changeLog;
-		CommitMessageDialogImpl dlg;
-		QStringList listOfFile = list;
-		RCS::FilesOperation operations;
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
 
-		if( listOfFile.count() == 0 )
-			listOfFile << XINXProjectManager::self()->project()->projectPath();
-
-		operations = rcs->operations( listOfFile );
-
-		if( XINXConfig::self()->config().rcs.createChangelog ) {
-			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
-			if( QFile::exists( changeLog ) )
-				operations << qMakePair(changeLog, RCS::Commit);
-			else
-				operations << qMakePair(changeLog, RCS::AddAndCommit);
-		}
-
-		dlg.setFilesOperation( operations );
-
-		if( ! dlg.exec() ) return ;
-		QString message = dlg.messages();
-
-		if( XINXConfig::self()->config().rcs.createChangelog ) {
-			QFile changeLogFile( changeLog );
-			if( changeLogFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) ) {
-				QTextStream stream( &changeLogFile );
-				stream << QDate::currentDate().toString( Qt::ISODate ) << " " << QTime::currentTime().toString( Qt::ISODate ) << " : ";
-				if( message.isEmpty() )
-					stream << tr( "<Commit with no text>" );
-				else
-					stream << message;
-				stream << endl;
-			}
-		}
-
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
-		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		m_logDock->init();
-		m_rcsExecute = true;
-
-		rcs->commit( dlg.filesOperation(), message );
-		updateActions();
-		m_rcsVisible = m_logDock->isVisible();
-		m_logDock->show();
-	}
+	RCSManager::self()->validWorkingCopy( list, this );
 }
 
 void MainformImpl::addFilesToVersionManager( const QStringList & list ) {

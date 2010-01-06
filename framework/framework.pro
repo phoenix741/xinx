@@ -73,6 +73,7 @@ HEADERS = rcs/rcs.h \
     editors/bookmarktexteditorinterface.h \
     project/externalfileresolver.h \
     rcs/rcsmanager.h \
+    rcs/commitmessagedialogimpl.h \
     project/newprojecttemplate.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
@@ -122,10 +123,12 @@ SOURCES = rcs/rcs.cpp \
     editors/bookmarktexteditorinterface.cpp \
     project/externalfileresolver.cpp \
     rcs/rcsmanager.cpp \
+    rcs/commitmessagedialogimpl.cpp \
     project/newprojecttemplate.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
-    snipets/categorypropertydlg.ui
+    snipets/categorypropertydlg.ui \
+    rcs/commitmessages.ui
 TRANSLATIONS += translations/libxinx_fr.ts
 OTHER_FILES += 
 profiling { 

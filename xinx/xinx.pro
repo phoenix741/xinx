@@ -34,7 +34,6 @@ LIBS += -L../framework \
     -lxml2
 RESOURCES += application.qrc
 FORMS += ui/about.ui \
-    ui/commitmessages.ui \
     ui/projectdirectorywidget.ui \
     ui/projectproperty.ui \
     ui/replace.ui \
@@ -66,7 +65,6 @@ HEADERS += customdialog/customgeneralimpl.h \
     customdialog/scriptelement.h \
     snipetdockwidget.h \
     aboutdialogimpl.h \
-    commitmessagedialogimpl.h \
     filecontentdockwidget.h \
     mainformimpl.h \
     newprojectwizard.h \
@@ -96,7 +94,6 @@ SOURCES += customdialog/customgeneralimpl.cpp \
     customdialog/customdialogimpl.cpp \
     snipetdockwidget.cpp \
     aboutdialogimpl.cpp \
-    commitmessagedialogimpl.cpp \
     filecontentdockwidget.cpp \
     main.cpp \
     mainformimpl.cpp \

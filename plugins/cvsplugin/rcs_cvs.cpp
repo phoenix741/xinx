@@ -26,6 +26,11 @@
 // Qt header
 #include <QDir>
 
+// Std header
+#ifdef Q_WS_WIN
+	#include <windows.h>
+#endif
+
 /* RCS_CVS */
 
 RCS_CVS::RCS_CVS( const QString & base ) : RCS( base ), m_content( 0 ) {

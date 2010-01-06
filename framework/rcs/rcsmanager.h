@@ -29,6 +29,7 @@
 #include <QQueue>
 #include <QPair>
 #include <QStringList>
+#include <QFutureWatcher>
 
 /*!
  * The RCS Manager is the new interface to use to interact with RCS plugin.
@@ -80,11 +81,12 @@ public:
 	void rollbackFileOperations();
 
 	//! Valide the working copy
-	void validWorkingCopy( QWidget * parent = 0 );
+	void validWorkingCopy( QStringList files, QWidget * parent = 0 );
 	//! Update the working copy
 	void updateWorkingCopy();
 	/*!
-	 * Get the status of file in the working copy
+	 * Get the status of file in the working copy. The method emit signal for each change
+	 * status.
 	 * \param files List of file to get the status. If empty, all file is updated
 	 */
 	void loadWorkingCopyStatut( QStringList files = QStringList() );
@@ -103,6 +105,7 @@ private:
 
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 
+	QFutureWatcher<void> m_rcsWatcher;
 	QString m_rcsName, m_rootPath;
 	RCS * m_rcs;
 	QQueue< QPair<rcsAddRemoveOperation,QStringList> > m_operations;
