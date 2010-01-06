@@ -83,7 +83,7 @@ public:
 	//! Valide the working copy
 	void validWorkingCopy( QStringList files, QWidget * parent = 0 );
 	//! Update the working copy
-	void updateWorkingCopy();
+	void updateWorkingCopy( QStringList list );
 	/*!
 	 * Get the status of file in the working copy. The method emit signal for each change
 	 * status.
@@ -92,7 +92,7 @@ public:
 	void loadWorkingCopyStatut( QStringList files = QStringList() );
 
 	//! Abort all the opreration
-	void abort( QWidget * parent = 0 );
+	void abort();
 
 	//! Return the single instance of the RCSManager
 	static RCSManager * self();

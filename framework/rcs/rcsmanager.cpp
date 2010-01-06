@@ -237,17 +237,27 @@ void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
 	}
 }
 
-void RCSManager::updateWorkingCopy() {
+static void callRCSUpdateWorkingCopy( RCS * rcs, QStringList list ) {
+	rcs->update( list );
+}
+
+void RCSManager::updateWorkingCopy( QStringList list ) {
 	m_rcsWatcher.waitForFinished();
 
+	if( list.count() == 0 )
+		list << XINXProjectManager::self()->project()->projectPath();
+
+	m_rcsWatcher.setFuture( QtConcurrent::run( callRCSUpdateWorkingCopy, m_rcs, list ) );
 }
 
 void RCSManager::loadWorkingCopyStatut( QStringList files ) {
 }
 
-void RCSManager::abort( QWidget * parent ) {
-	Q_UNUSED( parent );
+void RCSManager::abort() {
+	Q_ASSERT( m_rcs );
 
+	if( m_rcsWatcher.isRunning() )
+		m_rcs->abort();
 }
 
 
