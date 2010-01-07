@@ -1398,6 +1398,7 @@ void MainformImpl::selectedRemoveFromVersionManager() {
 }
 
 void MainformImpl::selectedCompareWithVersionManager() {
+	/*
 	QStringList list = m_projectDock->selectedFiles();
 	Q_ASSERT( list.size() == 1 );
 
@@ -1421,6 +1422,7 @@ void MainformImpl::selectedCompareWithVersionManager() {
 		m_logDock->show();
 		rcs->updateToRevision( m_compareFileName, revision, &m_headContent );
 	}
+	*/
 }
 
 void MainformImpl::logTimeout() {
@@ -1429,6 +1431,7 @@ void MainformImpl::logTimeout() {
 }
 
 void MainformImpl::rcsLogTerminated() {
+	/*
 	Q_ASSERT( m_projectDock->rcs() );
 
 	if( ! m_headContent.isEmpty() ) {
@@ -1455,6 +1458,7 @@ void MainformImpl::rcsLogTerminated() {
 	m_logDock->end();
 	if( (!m_rcsVisible) && m_logDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
 		m_timer->start( 5000 );
+		*/
 }
 
 void MainformImpl::selectedCompare() {
@@ -1916,6 +1920,10 @@ void MainformImpl::saveProject( bool withSessionData ) {
 }
 
 void MainformImpl::updateFromVersionManager( const QStringList & list ) {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	RCSManager::self()->updateWorkingCopy( list );
+/*
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs ) {
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
@@ -1930,7 +1938,7 @@ void MainformImpl::updateFromVersionManager( const QStringList & list ) {
 		updateActions();
 		m_rcsVisible = m_logDock->isVisible();
 		m_logDock->show();
-	}
+	}*/
 }
 
 void MainformImpl::commitToVersionManager( const QStringList & list ) {
@@ -1940,6 +1948,7 @@ void MainformImpl::commitToVersionManager( const QStringList & list ) {
 }
 
 void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
+	/*
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs ) {
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
@@ -1952,9 +1961,11 @@ void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
 		m_rcsVisible = m_logDock->isVisible();
 		m_logDock->show();
 	}
+	*/
 }
 
 void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
+	/*
 	RCS * rcs = m_projectDock->rcs();
 	if( rcs ) {
 		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
@@ -1970,4 +1981,5 @@ void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
 		m_rcsVisible = m_logDock->isVisible();
 		m_logDock->show();
 	}
+	*/
 }
