@@ -92,6 +92,7 @@ private:
 	void createActions();
 	void createFindReplace();
 	void createTools();
+	void createRCS();
 	void registerTypes();
 
 	// Editor
@@ -238,6 +239,7 @@ private slots:
 	void rcsLogTerminated();
 
 	// Log timer
+	void logStart();
 	void logTimeout();
 
 	// Windows

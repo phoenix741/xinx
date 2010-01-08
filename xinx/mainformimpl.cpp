@@ -87,6 +87,7 @@ MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( pare
 	createDockWidget();
 	createFindReplace();
 	createTools();
+	createRCS();
 	updateActions();
 	updateRecentFiles();
 	updateRecentProjects();
@@ -897,6 +898,12 @@ void MainformImpl::createTools() {
 	updateToolsMenu();
 }
 
+void MainformImpl::createRCS() {
+	connect( RCSManager::self(), SIGNAL(operationStarted()), this, SLOT(logStart()) );
+	connect( RCSManager::self(), SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+	connect( RCSManager::self(), SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
+}
+
 void MainformImpl::callSnipetAction( int snipetId ) {
 	Q_ASSERT( m_tabEditors->currentEditor() != NULL );
 
@@ -1425,13 +1432,21 @@ void MainformImpl::selectedCompareWithVersionManager() {
 	*/
 }
 
+void MainformImpl::logStart() {
+	m_logDock->init();
+	m_rcsExecute = true;
+
+	updateActions();
+	m_rcsVisible = m_logDock->isVisible();
+	m_logDock->show();
+}
+
 void MainformImpl::logTimeout() {
 	m_timer->stop();
 	m_logDock->setVisible( false );
 }
 
 void MainformImpl::rcsLogTerminated() {
-	/*
 	Q_ASSERT( m_projectDock->rcs() );
 
 	if( ! m_headContent.isEmpty() ) {
@@ -1450,15 +1465,11 @@ void MainformImpl::rcsLogTerminated() {
 	}
 
 	m_rcsExecute = false;
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs )
-		rcs->disconnect();
 	updateActions();
 
 	m_logDock->end();
 	if( (!m_rcsVisible) && m_logDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
 		m_timer->start( 5000 );
-		*/
 }
 
 void MainformImpl::selectedCompare() {

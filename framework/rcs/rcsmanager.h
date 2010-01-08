@@ -30,6 +30,7 @@
 #include <QPair>
 #include <QStringList>
 #include <QFutureWatcher>
+#include <QAction>
 
 /*!
  * The RCS Manager is the new interface to use to interact with RCS plugin.
@@ -101,10 +102,16 @@ signals:
 	void log( RCS::rcsLog niveau, const QString & info );
 	void operationStarted();
 	void operationTerminated();
+private slots:
+	void updateAll();
 private:
 	RCSManager();
 
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
+
+	QAction * m_updateAll, * m_commitAll;
+	QAction * m_abort, * m_compareHead, * m_compareSelect;
+	QAction * m_updateSelect, * m_commitSelect, * m_addSelect, * m_removeSelect;
 
 	QFutureWatcher<void> m_rcsWatcher;
 	QString m_rcsName, m_rootPath;
