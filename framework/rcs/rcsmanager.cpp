@@ -159,10 +159,13 @@ void RCSManager::validFileOperations() {
 			}
 		}
 
+		emit operationStarted();
 		m_rcsWatcher.setFuture( QtConcurrent::run( callRCSFileOperations, m_rcs, fileToAdd, fileToRemove ) );
 
 	} else {
+		emit operationStarted();
 		m_operations.clear();
+		emit operationTerminated();
 	}
 }
 
@@ -192,6 +195,8 @@ void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
 	Q_ASSERT( m_rcs );
 
 	m_rcsWatcher.waitForFinished();
+
+	emit operationStarted();
 
 	QString changeLog;
 	CommitMessageDialogImpl dlg( parent );
@@ -243,6 +248,8 @@ static void callRCSUpdateWorkingCopy( RCS * rcs, QStringList list ) {
 
 void RCSManager::updateWorkingCopy( QStringList list ) {
 	m_rcsWatcher.waitForFinished();
+
+	emit operationStarted();
 
 	if( list.count() == 0 )
 		list << XINXProjectManager::self()->project()->projectPath();

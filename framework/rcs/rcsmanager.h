@@ -99,6 +99,7 @@ public:
 signals:
 	void statusChange( const QString & filename, RCS::struct_rcs_infos informations );
 	void log( RCS::rcsLog niveau, const QString & info );
+	void operationStarted();
 	void operationTerminated();
 private:
 	RCSManager();
