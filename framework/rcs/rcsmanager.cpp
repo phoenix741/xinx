@@ -35,48 +35,24 @@ RCSManager * RCSManager::s_self = 0;
 
 /* RCSManager */
 
-RCSManager::RCSManager() {
+RCSManager::RCSManager() : m_rcs( 0 ) {
 	// Global Update
 	m_updateAll = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
 	m_updateAll->setWhatsThis(tr( "Call the update fonction of your <i>revision control system</i> for all the project directory."));
 	m_updateAll->setShortcut( QKeySequence::Refresh );
-	connect( m_updateAll, SIGNAL(triggered()), this, SLOT(globalUpdateFromVersionManager()) );
+	connect( m_updateAll, SIGNAL(triggered()), this, SLOT(updateWorkingCopy()) );
 
 	// Global Commit
 	m_commitAll = new QAction( QIcon(":/images/vcs_commit.png"), tr( "Commit project"), this );
 	m_commitAll->setWhatsThis(QApplication::translate("MainForm", "<p>Call the commit method of your <i>revision control sytem</i> for all the project directory. An optional message can be added.</p>\n"
 		"<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
 	m_commitAll->setShortcut( QKeySequence( "F6" ) );
-	connect( m_commitAll, SIGNAL(triggered()), this, SLOT(globalCommitToVersionManager()) );
+	connect( m_commitAll, SIGNAL(triggered()), this, SLOT(validWorkingCopy()) );
 
 	// Cancel
 	m_abort = new QAction( QIcon(":/images/button_cancel.png"), tr( "Cancel RCS operation"), this );
 	m_abort->setShortcut( QKeySequence( "Escape" ) );
 	connect( m_abort, SIGNAL(triggered()), this, SLOT(abort()) );
-
-	// Compare with head
-	m_compareHead = new QAction( QIcon(":/images/vcs_diff.png"), tr( "Compare with the version management"), this );
-	connect( m_compareHead, SIGNAL(triggered()), this, SLOT(selectedCompareWithVersionManager()) );
-
-	// Compare two file
-	m_compareSelect = new QAction( tr( "Compare files"), this );
-	connect( m_compareSelect, SIGNAL(triggered()), this, SLOT(selectedCompare()) );
-
-	// Selected update
-	m_updateSelect = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
-	connect( m_selectedUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedUpdateFromVersionManager()) );
-
-	// Selected commit
-	m_commitSelect = new QAction( QIcon(":/images/vcs_commit.png"), tr( "Commit project"), this );
-	connect( m_selectedCommitToRCSAct, SIGNAL(triggered()), this, SLOT(selectedCommitToVersionManager()) );
-
-	// Selected Add
-	m_addSelect = new QAction( QIcon(":/images/vcs_add.png"), tr( "Add file(s) to project"), this );
-	connect( m_selectedAddToRCSAct, SIGNAL(triggered()), this, SLOT(selectedAddToVersionManager()) );
-
-	// Selected Remove
-	m_removeSelect = new QAction( QIcon(":/images/vcs_remove.png"), tr( "Delete file(s) from project"), this );
-	connect( m_selectedRemoveFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedRemoveFromVersionManager()) );
 
 	connect( &m_rcsWatcher, SIGNAL(finished()), this, SIGNAL(operationTerminated()) );
 }
@@ -92,6 +68,18 @@ RCSManager * RCSManager::self() {
 		XINXStaticDeleter::self()->add( s_self );
 	}
 	return s_self;
+}
+
+QAction * RCSManager::updateAllAction() const {
+	return m_updateAll;
+}
+
+QAction * RCSManager::commitAllAction() const {
+	return m_commitAll;
+}
+
+QAction * RCSManager::abortAction() const {
+	return m_abort;
 }
 
 QMap<QString,QString> RCSManager::revisionControlIds() const {
@@ -289,6 +277,8 @@ static void callRCSUpdateWorkingCopy( RCS * rcs, QStringList list ) {
 }
 
 void RCSManager::updateWorkingCopy( QStringList list ) {
+	Q_ASSERT( m_rcs );
+
 	m_rcsWatcher.waitForFinished();
 
 	emit operationStarted();

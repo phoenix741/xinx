@@ -179,9 +179,9 @@ void MainformImpl::createMenus() {
 	projectMenu->addAction(m_closeProjectAct);
 	projectMenu->addAction(m_projectPropertyAct);
 	projectMenu->addSeparator();
-	projectMenu->addAction(m_globalUpdateFromRCSAct);
-	projectMenu->addAction(m_globalCommitToRCSAct);
-	projectMenu->addAction(m_cancelRCSOperationAct);
+	projectMenu->addAction( RCSManager::self()->updateAllAction() );
+	projectMenu->addAction( RCSManager::self()->commitAllAction() );
+	projectMenu->addAction( RCSManager::self()->abortAction() );
 
 	windowsMenu->addAction(m_nextTabAct);
 	windowsMenu->addAction(m_previousTabAct);
@@ -613,23 +613,6 @@ void MainformImpl::createActions() {
 	m_toggledFlatView->setWhatsThis(tr( "If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header."));
 	m_toggledFlatView->setCheckable(true);
 
-	// Global Update
-	m_globalUpdateFromRCSAct = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
-	m_globalUpdateFromRCSAct->setWhatsThis(tr( "Call the update fonction of your <i>revision control system</i> for all the project directory."));
-	m_globalUpdateFromRCSAct->setShortcut( QKeySequence::Refresh );
-	connect( m_globalUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(globalUpdateFromVersionManager()) );
-
-	// Global Commit
-	m_globalCommitToRCSAct = new QAction( QIcon(":/images/vcs_commit.png"), tr( "Commit project"), this );
-	m_globalCommitToRCSAct->setWhatsThis(QApplication::translate("MainForm", "<p>Call the commit method of your <i>revision control sytem</i> for all the project directory. An optional message can be added.</p>\n"
-		"<p><i>Only <b>XINX</b> managed files are commited to the repository.</i></p>", 0, QApplication::UnicodeUTF8));
-	m_globalCommitToRCSAct->setShortcut( QKeySequence( "F6" ) );
-	connect( m_globalCommitToRCSAct, SIGNAL(triggered()), this, SLOT(globalCommitToVersionManager()) );
-
-	// Cancel
-	m_cancelRCSOperationAct = new QAction( QIcon(":/images/button_cancel.png"), tr( "Cancel RCS operation"), this );
-	m_cancelRCSOperationAct->setShortcut( QKeySequence( "Escape" ) );
-
 	// Compare with head
 	m_compareWithHeadAct = new QAction( QIcon(":/images/vcs_diff.png"), tr( "Compare with the version management"), this );
 	connect( m_compareWithHeadAct, SIGNAL(triggered()), this, SLOT(selectedCompareWithVersionManager()) );
@@ -802,8 +785,7 @@ void MainformImpl::registerTypes() {
 void MainformImpl::createDockWidget() {
 	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), this );
 	m_projectDock->setObjectName( QString::fromUtf8("m_projectDock") );
-	m_projectDock->setGlobalUpdateAction( m_globalUpdateFromRCSAct );
-	m_projectDock->setGlobalCommitAction( m_globalCommitToRCSAct );
+
 	m_projectDock->setSelectedUpdateAction( m_selectedUpdateFromRCSAct );
 	m_projectDock->setSelectedCommitAction( m_selectedCommitToRCSAct );
 	m_projectDock->setSelectedAddAction( m_selectedAddToRCSAct );
@@ -1234,15 +1216,14 @@ void MainformImpl::updateActions() {
 	m_closeProjectNoSessionAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 	m_projectPropertyAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 
-	m_globalUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute ) );
-	m_globalCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
+	RCSManager::self()->updateAllAction()->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute ) );
+	RCSManager::self()->commitAllAction()->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
+	RCSManager::self()->abortAction()->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && m_rcsExecute );
 
 	m_selectedUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
 	m_selectedCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
 	m_selectedAddToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
 	m_selectedRemoveFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
-
-	m_cancelRCSOperationAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && m_rcsExecute );
 
 	m_toggledFlatView->setEnabled( XINXProjectManager::self()->project() != NULL );
 	m_projectDock->setEnabled( XINXProjectManager::self()->project() != NULL );
@@ -1372,36 +1353,32 @@ void MainformImpl::printFile() {
 	}
 }
 
-void MainformImpl::globalUpdateFromVersionManager() {
-	updateFromVersionManager();
-}
-
-void MainformImpl::globalCommitToVersionManager() {
-	commitToVersionManager();
-}
-
 void MainformImpl::selectedUpdateFromVersionManager() {
 	QStringList list = m_projectDock->selectedFiles();
 	if( list.count() > 0 )
-		updateFromVersionManager( list );
+		RCSManager::self()->updateWorkingCopy( list );
 }
 
 void MainformImpl::selectedCommitToVersionManager() {
 	QStringList list = m_projectDock->selectedFiles();
 	if( list.count() > 0 )
-		commitToVersionManager( list );
+		RCSManager::self()->validWorkingCopy( list, this );
 }
 
 void MainformImpl::selectedAddToVersionManager() {
 	QStringList list = m_projectDock->selectedFiles();
-	if( list.count() > 0 )
-		addFilesToVersionManager( list );
+	if( list.count() > 0 ) {
+		RCSManager::self()->addFileOperation( RCSManager::RCS_ADD, list, this );
+		RCSManager::self()->validFileOperations();
+	}
 }
 
 void MainformImpl::selectedRemoveFromVersionManager() {
 	QStringList list = m_projectDock->selectedFiles();
-	if( list.count() > 0 )
-		removeFilesFromVersionManager( list );
+	if( list.count() > 0 ) {
+		RCSManager::self()->addFileOperation( RCSManager::RCS_REMOVE, list, this );
+		RCSManager::self()->validFileOperations();
+	}
 }
 
 void MainformImpl::selectedCompareWithVersionManager() {
@@ -1930,67 +1907,3 @@ void MainformImpl::saveProject( bool withSessionData ) {
 	XINXProjectManager::self()->project()->saveOnlySession();
 }
 
-void MainformImpl::updateFromVersionManager( const QStringList & list ) {
-	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
-
-	RCSManager::self()->updateWorkingCopy( list );
-/*
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
-		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		m_logDock->init();
-		m_rcsExecute = true;
-		if( list.count() == 0 )
-			rcs->update( QStringList() << XINXProjectManager::self()->project()->projectPath() );
-		else
-			rcs->update( list );
-		updateActions();
-		m_rcsVisible = m_logDock->isVisible();
-		m_logDock->show();
-	}*/
-}
-
-void MainformImpl::commitToVersionManager( const QStringList & list ) {
-	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
-
-	RCSManager::self()->validWorkingCopy( list, this );
-}
-
-void MainformImpl::addFilesToVersionManager( const QStringList & list ) {
-	/*
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
-		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		m_logDock->init();
-		m_rcsExecute = true;
-		rcs->add( list );
-		updateActions();
-		m_rcsVisible = m_logDock->isVisible();
-		m_logDock->show();
-	}
-	*/
-}
-
-void MainformImpl::removeFilesFromVersionManager( const QStringList & list ) {
-	/*
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs ) {
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
-		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-		m_logDock->init();
-		m_rcsExecute = true;
-		foreach( const QString & file, list ) {
-			m_projectDock->removeFile( file );
-		}
-		rcs->remove( list );
-		updateActions();
-		m_rcsVisible = m_logDock->isVisible();
-		m_logDock->show();
-	}
-	*/
-}

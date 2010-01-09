@@ -68,11 +68,6 @@ public slots:
 	void closeProjectNoSessionData();
 	void closeProjectWithSessionData();
 
-	void updateFromVersionManager( const QStringList & list = QStringList() );
-	void commitToVersionManager( const QStringList & list = QStringList() );
-	void addFilesToVersionManager( const QStringList & list );
-	void removeFilesFromVersionManager( const QStringList & list );
-
 	void openWelcomDialog();
 signals:
 	void aboutToClose();
@@ -177,8 +172,7 @@ private:
 	QAction *m_newProjectAct, *m_openProjectAct, *m_saveProjectAct, *m_closeProjectNoSessionAct, *m_projectPropertyAct,
 			*m_closeProjectWithSessionAct,  *m_recentProjectAct, *m_closeProjectAct;
 	QAction *m_nextBookmarkAct, *m_bookmarkAct, *m_previousBookmarkAct, *m_clearAllBookmarkAct;
-	QAction *m_globalUpdateFromRCSAct, *m_globalCommitToRCSAct, *m_cancelRCSOperationAct, *m_compareWithHeadAct,
-			*m_compareTwoFileAct, *m_selectedUpdateFromRCSAct, *m_selectedCommitToRCSAct,
+	QAction *m_compareWithHeadAct, *m_compareTwoFileAct, *m_selectedUpdateFromRCSAct, *m_selectedCommitToRCSAct,
 			*m_selectedAddToRCSAct, *m_selectedRemoveFromRCSAct, *m_toggledFlatView;
 	QAction *m_nextTabAct, *m_previousTabAct;
 	QAction *m_aboutAct, *m_aboutQtAct;
@@ -228,8 +222,6 @@ private slots:
 	void openProject();
 	void projectProperty();
 	void closeProject();
-	void globalUpdateFromVersionManager();
-	void globalCommitToVersionManager();
 	void selectedUpdateFromVersionManager();
 	void selectedCommitToVersionManager();
 	void selectedAddToVersionManager();

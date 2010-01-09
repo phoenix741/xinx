@@ -27,6 +27,7 @@
 #include <project/flattreeview.h>
 #include <project/dirrcsmodel.h>
 #include <project/iconprojectprovider.h>
+#include <rcs/rcsmanager.h>
 
 // Qt header
 #include <QTimer>
@@ -62,6 +63,9 @@ void ProjectDirectoryDockWidget::init() {
 	m_modelTimer = new QTimer( this );
 	connect( m_modelTimer, SIGNAL(timeout()), this, SLOT(filtreChange()) );
 
+	m_projectDirWidget->m_updateProjectBtn->setDefaultAction( RCSManager::self()->updateAllAction() );
+	m_projectDirWidget->m_commitProjectBtn->setDefaultAction( RCSManager::self()->commitAllAction() );
+
 	m_projectDirWidget->m_projectDirectoryTreeView->header()->hide();
 	m_projectDirWidget->m_projectDirectoryTreeView->installEventFilter( this );
 
@@ -79,14 +83,6 @@ void ProjectDirectoryDockWidget::init() {
 
 ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget() {
 	delete m_projectDirWidget;
-}
-
-void ProjectDirectoryDockWidget::setGlobalUpdateAction( QAction * action ) {
-	m_projectDirWidget->m_updateProjectBtn->setDefaultAction( action );
-}
-
-void ProjectDirectoryDockWidget::setGlobalCommitAction( QAction * action ) {
-	m_projectDirWidget->m_commitProjectBtn->setDefaultAction( action );
 }
 
 void ProjectDirectoryDockWidget::setSelectedUpdateAction( QAction * action ) {

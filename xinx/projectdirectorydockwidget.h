@@ -43,8 +43,6 @@ public:
 	ProjectDirectoryDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
 	virtual ~ProjectDirectoryDockWidget();
 
-	void setGlobalUpdateAction( QAction * action );
-	void setGlobalCommitAction( QAction * action );
 	void setSelectedUpdateAction( QAction * action );
 	void setSelectedCommitAction( QAction * action );
 	void setSelectedAddAction( QAction * action );

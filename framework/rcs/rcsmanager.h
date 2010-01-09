@@ -76,15 +76,23 @@ public:
 
 	//! Add an operation to the the RCS
 	void addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent = 0 );
+
+	//! Return the single instance of the RCSManager
+	static RCSManager * self();
+
+	QAction * updateAllAction() const;
+	QAction * commitAllAction() const;
+	QAction * abortAction() const;
+public slots:
 	//! Validate all operation to the RCS (made in a separate thread).
 	void validFileOperations();
 	//! Rollback all operation to the RCS (return imediatly).
 	void rollbackFileOperations();
 
 	//! Valide the working copy
-	void validWorkingCopy( QStringList files, QWidget * parent = 0 );
+	void validWorkingCopy( QStringList files = QStringList(), QWidget * parent = 0 );
 	//! Update the working copy
-	void updateWorkingCopy( QStringList list );
+	void updateWorkingCopy( QStringList list = QStringList() );
 	/*!
 	 * Get the status of file in the working copy. The method emit signal for each change
 	 * status.
@@ -94,24 +102,17 @@ public:
 
 	//! Abort all the opreration
 	void abort();
-
-	//! Return the single instance of the RCSManager
-	static RCSManager * self();
 signals:
 	void statusChange( const QString & filename, RCS::struct_rcs_infos informations );
 	void log( RCS::rcsLog niveau, const QString & info );
 	void operationStarted();
 	void operationTerminated();
-private slots:
-	void updateAll();
 private:
 	RCSManager();
 
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 
-	QAction * m_updateAll, * m_commitAll;
-	QAction * m_abort, * m_compareHead, * m_compareSelect;
-	QAction * m_updateSelect, * m_commitSelect, * m_addSelect, * m_removeSelect;
+	QAction * m_updateAll, * m_commitAll, * m_abort;
 
 	QFutureWatcher<void> m_rcsWatcher;
 	QString m_rcsName, m_rootPath;
