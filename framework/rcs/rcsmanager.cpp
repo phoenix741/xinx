@@ -101,11 +101,8 @@ RCS * RCSManager::createRevisionControl( QString revision, QString basePath ) co
 		IRCSPlugin * interface = qobject_cast<IRCSPlugin*>( element->plugin() );
 		if( element->isActivated() && interface ) {
 			rcs = interface->createRCS( revision, basePath );
-			if( rcs ) {
-				connect( m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
-				connect( m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(statusChange(QString,RCS::struct_rcs_infos)) );
+			if( rcs )
 				break;
-			}
 		}
 	}
 	return rcs;
@@ -125,7 +122,9 @@ bool RCSManager::setCurrentRCS( const QString & rcs ) {
 			m_rcsName = m_rcs ? rcs : QString();
 			if( ! m_rcs )
 				return false;
-		} 
+			connect( m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+			connect( m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(statusChange(QString,RCS::struct_rcs_infos)) );
+		}
 	}
 	return true;
 }

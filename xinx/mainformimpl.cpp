@@ -555,6 +555,7 @@ void MainformImpl::createActions() {
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateTitle()) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateRecentProjects()) );
 	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateRecentFiles()) );
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(updateRCS()) );
 
 	// New Project
 	m_newProjectAct = new QAction( QIcon(":/images/window_new.png"), tr( "&New project ..."), this );
@@ -1244,6 +1245,13 @@ void MainformImpl::updateActions() {
 	if( m_tabEditors->count() == 0 ) {
 		m_contentDock->updateModel( NULL );
 	}
+}
+
+void MainformImpl::updateRCS() {
+	if( XINXProjectManager::self()->project() )
+		RCSManager::self()->setCurrentRCS( XINXProjectManager::self()->project()->projectRCS() );
+	else
+		RCSManager::self()->setCurrentRCS( QString() );
 }
 
 bool MainformImpl::fileEditorMayBeSave( int index ) {

@@ -188,6 +188,7 @@ private slots:
 	void updateEditorInformations();
 	void updateRecentFiles();
 	void updateRecentProjects();
+	void updateRCS();
 
 	// File
 	void newFile();
