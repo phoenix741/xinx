@@ -46,7 +46,8 @@ public:
 	virtual void add( const QStringList & path );
 	virtual void remove( const QStringList & path );
 	virtual FilesOperation operations( const QStringList & path );
-	virtual struct_rcs_infos infos( const QString & path );
+	virtual struct_rcs_infos info( const QString & path );
+	virtual QList<struct_rcs_infos> infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort );
 
 	void setPluginSettings( PluginSettings * settings );
 	PluginSettings * pluginSettings() const;

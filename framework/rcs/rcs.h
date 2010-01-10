@@ -30,6 +30,7 @@
 #include <QPair>
 #include <QList>
 #include <QDateTime>
+#include <QDir>
 
 /*!
  * Base class to create "revision control system" plugin. This plugin will create a derivated object when the project
@@ -164,7 +165,16 @@ public:
 	 * The file name must be in the base path
 	 * \sa getBasePath(), searchFileToAddOrRemove()
 	 */
-	virtual struct_rcs_infos infos( const QString & path ) = 0;
+	virtual struct_rcs_infos info( const QString & path ) = 0;
+
+	/*!
+	 * Return all the file for the directory \e path.
+	 * \param path Name of the directory where search the information
+	 * \param nameFilters Filter to use with the directory
+	 * \param filters Filter for the directory
+	 * \param sort Sort of the list
+	 */
+	virtual QList<struct_rcs_infos> infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort ) = 0;
 
 	/* Working Directory */
 

@@ -83,7 +83,7 @@ RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
 	}
 
 	value = new RCSCachedElement;
-	RCS::struct_rcs_infos infos = m_rcs->infos( path );
+	RCS::struct_rcs_infos infos = m_rcs->info( path );
 
 	value->fileName = path;
 	value->state    = infos.state;

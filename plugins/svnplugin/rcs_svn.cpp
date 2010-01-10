@@ -43,7 +43,7 @@ RCS_SVN::~RCS_SVN() {
 
 }
 
-RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
+RCS::struct_rcs_infos RCS_SVN::info( const QString & path ) {
 	if( m_infos.contains( QDir::fromNativeSeparators( path ) ) )
 		return m_infos.value( QDir::fromNativeSeparators( path ) );
 
@@ -131,6 +131,9 @@ RCS::struct_rcs_infos RCS_SVN::infos( const QString & path ) {
 	}
 }
 
+QList<RCS::struct_rcs_infos> RCS_SVN::infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort ) {
+}
+
 RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
 	QList<FileOperation> result;
 	QProcess process;
@@ -204,7 +207,7 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 
 	foreach( const QString & file,  m_fileChanged ) {
 		m_infos.remove( QDir::fromNativeSeparators( file ) );
-		emit stateChanged( file, infos( file ) );
+		emit stateChanged( file, info( file ) );
 	}
 }
 

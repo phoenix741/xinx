@@ -52,7 +52,7 @@ PluginSettings * RCS_CVS::pluginSettings() const {
 	return m_settings;
 }
 
-RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
+RCS::struct_rcs_infos RCS_CVS::info( const QString & path ) {
 	RCS::struct_rcs_infos rcsInfos;
 	QString localPath = QDir::fromNativeSeparators( path );
 	EntriesLine e    = m_entriesList->status( localPath );
@@ -62,6 +62,10 @@ RCS::struct_rcs_infos RCS_CVS::infos( const QString & path ) {
 	updateEntries();
 	return rcsInfos;
 }
+
+QList<RCS::struct_rcs_infos> RCS_CVS::infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort ) {
+}
+
 
 RCS::rcsOperation RCS_CVS::operationOfState( RCS::rcsState state ) {
 	RCS::rcsOperation operation;
@@ -265,7 +269,7 @@ void RCS_CVS::abort() {
 void RCS_CVS::entriesStateChanged( const QString & path ) {
 	const EntriesFile & e = m_entriesList->value( path );
 	foreach( const EntriesLine & l, e ) {
-		emit stateChanged( QDir( e.path ).absoluteFilePath( l.filename ), infos( QDir( e.path ).absoluteFilePath( l.filename ) ) );
+		emit stateChanged( QDir( e.path ).absoluteFilePath( l.filename ), info( QDir( e.path ).absoluteFilePath( l.filename ) ) );
 	}
 }
 

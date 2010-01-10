@@ -35,7 +35,8 @@ public:
 	RCS_SVN( const QString & basePath );
 	virtual ~RCS_SVN();
 
-	virtual struct_rcs_infos infos( const QString & path );
+	virtual struct_rcs_infos info( const QString & path );
+	virtual QList<struct_rcs_infos> infoList( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, QDir::SortFlags sort = QDir::NoSort );
 	virtual FilesOperation operations( const QStringList & paths );
 	virtual void update( const QStringList & path );
 	virtual void commit( const QStringList & path, const QString & message );
