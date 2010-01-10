@@ -268,6 +268,9 @@ void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
 		}
 
 		m_rcsWatcher.setFuture( QtConcurrent::run( callRCSValideWorkingCopy, m_rcs, dlg.filesOperation(), message ) );
+	} else {
+		emit log( RCS::LogApplication, tr("Operation cancelled") );
+		emit operationTerminated();
 	}
 }
 

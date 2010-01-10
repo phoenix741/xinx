@@ -166,12 +166,14 @@ void GenerixProjectDockImpl::editorChanged( int index ) {
 
 		GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject( m_gnxProject );
 		m_businessViewList->clear();
-		foreach( const BusinessViewInformation information, interface->businessView( filename ) ) {
-			QListWidgetItem * item = new QListWidgetItem( information.businesViewName(), m_businessViewList );
-			item->setData( Qt::UserRole + 0, information.configurationNumber() );
-			item->setData( Qt::UserRole + 1, information.configurationFileName() );
-			item->setData( Qt::UserRole + 2, information.targetName() );
-			m_businessViewList->addItem( item );
+		if( interface ) {
+			foreach( const BusinessViewInformation information, interface->businessView( filename ) ) {
+				QListWidgetItem * item = new QListWidgetItem( information.businesViewName(), m_businessViewList );
+				item->setData( Qt::UserRole + 0, information.configurationNumber() );
+				item->setData( Qt::UserRole + 1, information.configurationFileName() );
+				item->setData( Qt::UserRole + 2, information.targetName() );
+				m_businessViewList->addItem( item );
+			}
 		}
 	} else {
 		m_filenameLabel->setText( QString() );
