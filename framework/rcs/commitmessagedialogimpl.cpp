@@ -71,8 +71,8 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 	m_fileListWidget->clear();
 	d->m_files = files;
 	foreach( const RCS::FileOperation & file, d->m_files ) {
-		QString fileName = QDir( XINXProjectManager::self()->project()->projectPath() ).relativeFilePath( file.first );
-		switch( file.second ) {
+		QString fileName = QDir( XINXProjectManager::self()->project()->projectPath() ).relativeFilePath( file.filename );
+		switch( file.operation ) {
 		case RCS::Commit:
 			fileName += tr( " ( Commit )" );
 			break;
@@ -86,7 +86,7 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 		}
 		QListWidgetItem * item = new QListWidgetItem( fileName, m_fileListWidget );
 		item->setCheckState( Qt::Unchecked );
-		if( file.second == RCS::Commit ) {
+		if( file.operation == RCS::Commit ) {
 			item->setCheckState( Qt::Checked );
 		}
 	}
@@ -94,10 +94,11 @@ void CommitMessageDialogImpl::setFilesOperation( RCS::FilesOperation files ) {
 
 RCS::FilesOperation CommitMessageDialogImpl::filesOperation() {
 	for( int i = 0 ; i < m_fileListWidget->count(); i++ ) {
-		RCS::FileOperation op;
-		op = d->m_files.at( i );
-		if( m_fileListWidget->item( i )->checkState() == Qt::Unchecked )
-			d->m_files.replace( i , qMakePair( op.first, RCS::Nothing ) );
+		RCS::FileOperation op( d->m_files.at( i ) );
+		if( m_fileListWidget->item( i )->checkState() == Qt::Unchecked ) {
+			op.operation = RCS::Nothing;
+			d->m_files.replace( i , op );
+		}
 	}
 	return d->m_files;
 }

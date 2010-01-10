@@ -86,7 +86,13 @@ public:
 	};
 
 	/// Pair of file name and operation to do.
-	typedef QPair<QString,rcsOperation> FileOperation;
+	struct FileOperation {
+		FileOperation( const QString & f, rcsOperation o ) : filename( f ), operation( o ) {}
+		FileOperation() {}
+
+		QString filename;
+		rcsOperation operation;
+	};
 	/// List of \e FileOperation
 	typedef QList<FileOperation> FilesOperation;
 

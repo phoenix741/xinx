@@ -156,14 +156,14 @@ RCS::FilesOperation RCS_SVN::operations( const QString & path ) {
 		case 'D' :
 		case 'M' :
 		case 'R' :
-			result.append( qMakePair( filename, RCS::Commit ) );
+			result.append( RCS::FileOperation( filename, RCS::Commit ) );
 			break;
 		case 'X' :
 		case '?' :
-			result.append( qMakePair( filename, RCS::AddAndCommit ) );
+			result.append( RCS::FileOperation( filename, RCS::AddAndCommit ) );
 			break;
 		case '!' :
-			result.append( qMakePair( filename, RCS::RemoveAndCommit ) );
+			result.append( RCS::FileOperation( filename, RCS::RemoveAndCommit ) );
 			break;
 		default:
 			;

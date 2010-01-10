@@ -97,9 +97,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 			RCS::rcsState state = m_entriesList->status( filepath ).status( QFileInfo( filepath ).absolutePath() );
 			RCS::rcsOperation operation = operationOfState( state );
 			if( operation != RCS::Nothing ) {
-				RCS::FileOperation file;
-				file.first = filepath;
-				file.second = operation;
+				RCS::FileOperation file( filepath, operation );
 				operations.append( file );
 			}
 		}
@@ -110,9 +108,7 @@ RCS::FilesOperation RCS_CVS::operationOf( const QString & path ) {
 		if( ( state != RCS::NeedsCheckout ) && ( state != RCS::LocallyRemoved ) ) continue; // Géré au dessus
 		RCS::rcsOperation operation = operationOfState( state );
 		if( operation != RCS::Nothing ) {
-			RCS::FileOperation op;
-			op.first = QDir( path ).absoluteFilePath( e.filename );
-			op.second = operation;
+			RCS::FileOperation op( QDir( path ).absoluteFilePath( e.filename ), operation );
 			operations.append( op );
 		}
 	}
@@ -133,11 +129,9 @@ RCS::FilesOperation RCS_CVS::recursiveOperationOf( const QString & path ) {
 				}
 		}
 	} else {
-		RCS::FileOperation file;
 		RCS::rcsState state = m_entriesList->status( path ).status( QFileInfo( path ).absolutePath() );
 		RCS::rcsOperation operation = operationOfState( state );
-		file.first = path;
-		file.second = operation;
+		RCS::FileOperation file( path, operation );
 		operations.append( file );
 	}
 	return operations;

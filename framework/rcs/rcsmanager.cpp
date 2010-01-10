@@ -206,13 +206,13 @@ static void callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations,
 	QStringList toAdd, toRemove, toCommit;
 
 	foreach( RCS::FileOperation operation, operations ) {
-		if( operation.second == RCS::AddAndCommit ) {
-			toAdd << operation.first;
+		if( operation.operation == RCS::AddAndCommit ) {
+			toAdd << operation.filename;
 		}
-		if( operation.second == RCS::RemoveAndCommit ) {
-			toRemove << operation.first;
+		if( operation.operation == RCS::RemoveAndCommit ) {
+			toRemove << operation.filename;
 		}
-		toCommit << operation.first;
+		toCommit << operation.filename;
 	}
 
 	rcs->add( toAdd );
@@ -243,9 +243,9 @@ void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
 		if( XINXConfig::self()->config().rcs.createChangelog ) {
 			changeLog = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( "changelog" );
 			if( QFile::exists( changeLog ) )
-				operations << qMakePair( changeLog, RCS::Commit );
+				operations << RCS::FileOperation( changeLog, RCS::Commit );
 			else
-				operations << qMakePair( changeLog, RCS::AddAndCommit );
+				operations << RCS::FileOperation( changeLog, RCS::AddAndCommit );
 		}
 	}
 
@@ -289,9 +289,6 @@ void RCSManager::updateWorkingCopy( QStringList list ) {
 		list << XINXProjectManager::self()->project()->projectPath();
 
 	m_rcsWatcher.setFuture( QtConcurrent::run( callRCSUpdateWorkingCopy, m_rcs, list ) );
-}
-
-void RCSManager::loadWorkingCopyStatut( QStringList files ) {
 }
 
 void RCSManager::abort() {

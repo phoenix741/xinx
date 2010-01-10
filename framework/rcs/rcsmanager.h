@@ -93,12 +93,6 @@ public slots:
 	void validWorkingCopy( QStringList files = QStringList(), QWidget * parent = 0 );
 	//! Update the working copy
 	void updateWorkingCopy( QStringList list = QStringList() );
-	/*!
-	 * Get the status of file in the working copy. The method emit signal for each change
-	 * status.
-	 * \param files List of file to get the status. If empty, all file is updated
-	 */
-	void loadWorkingCopyStatut( QStringList files = QStringList() );
 
 	//! Abort all the opreration
 	void abort();
