@@ -21,6 +21,7 @@
 #include "project/dirrcsmodel.h"
 #include "project/xinxproject.h"
 #include "plugins/xinxpluginsloader.h"
+#include "rcs/rcsmanager.h"
 
 // Qt header
 #include <QBrush>
@@ -46,18 +47,15 @@ QString RCSCachedElement::stringState() const {
 		return DirRCSModel::tr("Locally added");
 	if( ( state == RCS::UnresolvedConflict ) || ( state == RCS::FileHadConflictsOnMerge ) )
 		return DirRCSModel::tr("Has conflict");
+	if( state == RCS::NeedsCheckout )
+		return DirRCSModel::tr("No modified") + ", " + DirRCSModel::tr("Need checkout");
 	return DirRCSModel::tr("No modified");
 }
 
 /* DirRCSModel */
 
 DirRCSModel::DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent ) : QDirModel( nameFilters, filters, sort, parent ), m_cache( 500 ) {
-	if( XINXProjectManager::self()->project() && ( !XINXProjectManager::self()->project()->projectRCS().isEmpty() ) )  {
-		QString rcsKey = XINXProjectManager::self()->project()->projectRCS();
-		m_rcs = XinxPluginsLoader::self()->createRevisionControl( rcsKey, XINXProjectManager::self()->project()->projectPath() );
-		connect( m_rcs, SIGNAL(stateChanged(QString)), this, SLOT(refresh(QString)) );
-	} else
-		m_rcs = NULL;
+	connect( RCSManager::self(), SIGNAL(stateChange(QString,RCS::struct_rcs_infos)), this, SLOT(refresh(QString)) );
 }
 
 DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
@@ -65,11 +63,6 @@ DirRCSModel::DirRCSModel(QObject *parent) : QDirModel(parent) {
 }
 
 DirRCSModel::~DirRCSModel() {
-	delete m_rcs;
-}
-
-RCS * DirRCSModel::rcs() {
-	return m_rcs;
 }
 
 RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
@@ -83,7 +76,7 @@ RCSCachedElement DirRCSModel::cachedValue( const QString & key ) const {
 	}
 
 	value = new RCSCachedElement;
-	RCS::struct_rcs_infos infos = m_rcs->info( path );
+	RCS::struct_rcs_infos infos = RCSManager::self()->currentRCSInterface()->info( path );
 
 	value->fileName = path;
 	value->state    = infos.state;
@@ -98,12 +91,14 @@ QVariant DirRCSModel::data(const QModelIndex &index, int role) const {
 	if( ! index.isValid() ) return QVariant();
 
 	QString path = filePath(index);
-	if( m_rcs ) {
+	if( RCSManager::self()->currentRCSInterface() ) {
 		if ( role == Qt::BackgroundRole && index.column() == 0 ) {
 			RCSCachedElement element = cachedValue( path );
 			RCS::rcsState state = element.state;
 			if( state == RCS::Unknown )
 				return QBrush( Qt::gray );
+			if( state == RCS::NeedsCheckout )
+				return QBrush( Qt::cyan );
 			if( state == RCS::LocallyModified )
 				return QBrush( Qt::yellow );
 			if( state == RCS::LocallyAdded )

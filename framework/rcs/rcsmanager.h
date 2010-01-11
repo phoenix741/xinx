@@ -68,6 +68,8 @@ public:
 	QString currentRCS() const;
 	//! Return the description of the current RCS
 	QString description() const;
+	//! RCS Object
+	RCS * currentRCSInterface() const;
 
 	//! Set the current root path
 	void setCurrentRootPath( const QString & rootPath );
@@ -75,13 +77,19 @@ public:
 	const QString & currentRootPath() const;
 
 	//! Add an operation to the the RCS
-	void addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent = 0 );
+	void addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent = 0, bool confirm = true );
 
 	//! Return the single instance of the RCSManager
 	static RCSManager * self();
 
+	//! Return true if an operation is executed
+	bool isExecuting() const;
+
+	//! Return the action that can be used to update the repository
 	QAction * updateAllAction() const;
+	//! Return the action that can be used to commit the repository
 	QAction * commitAllAction() const;
+	//! Call the action than can be used to cancel the execution of the operation
 	QAction * abortAction() const;
 public slots:
 	//! Validate all operation to the RCS (made in a separate thread).
@@ -94,15 +102,25 @@ public slots:
 	//! Update the working copy
 	void updateWorkingCopy( QStringList list = QStringList() );
 
+	//! Update one file to the given revision
+	void updateToRevision( const QString & path, const QString & revision, QByteArray * content = 0 );
+
 	//! Abort all the opreration
 	void abort();
 signals:
-	void statusChange( const QString & filename, RCS::struct_rcs_infos informations );
+	void stateChange( const QString & filename, RCS::struct_rcs_infos informations );
 	void log( RCS::rcsLog niveau, const QString & info );
 	void operationStarted();
 	void operationTerminated();
+private slots:
+	void updateActions();
 private:
 	RCSManager();
+
+	void callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove );
+	void callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations, QString messages );
+	void callRCSUpdateWorkingCopy( RCS * rcs, QStringList list );
+	void callRCSUpdateRevision( RCS * rcs, QString path, QString revision, QByteArray * content );
 
 	RCS * createRevisionControl( QString revision, QString basePath ) const;
 

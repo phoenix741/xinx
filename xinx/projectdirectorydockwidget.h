@@ -43,12 +43,6 @@ public:
 	ProjectDirectoryDockWidget( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
 	virtual ~ProjectDirectoryDockWidget();
 
-	void setSelectedUpdateAction( QAction * action );
-	void setSelectedCommitAction( QAction * action );
-	void setSelectedAddAction( QAction * action );
-	void setSelectedRemoveAction( QAction * action );
-	void setSelectedCompareWithHeadAction( QAction * action );
-	void setSelectedCompareAction( QAction * action );
 	void setToggledViewAction( QAction * action );
 
 	bool isViewFlat();
@@ -57,7 +51,6 @@ public:
 	void refreshPath( const QString & path );
 	bool removeFile( const QString & path );
 
-	RCS * rcs();
 public slots:
 	void toggledView();
 	void toggledView( bool flat );
@@ -74,27 +67,38 @@ private slots:
 	void copyFileNameTriggered();
 	void copyPathNameTriggered();
 
+	void selectedUpdateFromVersionManager();
+	void selectedCommitToVersionManager();
+	void selectedAddToVersionManager();
+	void selectedRemoveFromVersionManager();
+	void selectedCompareWithVersionManager();
+	void selectedCompare();
+	void rcsLogTerminated();
+
+	void updateActions();
 private:
 	void init();
 	bool eventFilter( QObject *obj, QEvent *event );
 	void setProjectPath( XinxProject * project );
 
-	QPointer<QAction> m_selectedUpdateAction;
-	QPointer<QAction> m_selectedCommitAction;
-	QPointer<QAction> m_selectedAddAction;
-	QPointer<QAction> m_selectedRemoveAction;
-	QPointer<QAction> m_selectedCompareWithHeadAction;
-	QPointer<QAction> m_selectedCompareAction;
-	QPointer<QAction> m_copyFileNameAction;
-	QPointer<QAction> m_copyPathNameAction;
+	QAction* m_selectedUpdateAction;
+	QAction* m_selectedCommitAction;
+	QAction* m_selectedAddAction;
+	QAction* m_selectedRemoveAction;
+	QAction* m_selectedCompareWithHeadAction;
+	QAction* m_selectedCompareAction;
+	QAction* m_copyFileNameAction;
+	QAction* m_copyPathNameAction;
 
-	QPointer<QTimer> m_modelTimer;
+	QTimer* m_modelTimer;
 	QPointer<QDirModel> m_dirModel;
 	QPointer<QAbstractItemModel> m_flatModel;
 	IconProjectProvider* m_iconProvider;
 
 	QPointer<XinxProject> m_project;
 	QString m_projectPath;
+	QString m_compareFileName;
+	QByteArray m_headContent;
 
 	Ui::ProjectDirectoryWidget * m_projectDirWidget;
 };

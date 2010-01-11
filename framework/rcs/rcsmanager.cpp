@@ -54,7 +54,13 @@ RCSManager::RCSManager() : m_rcs( 0 ) {
 	m_abort->setShortcut( QKeySequence( "Escape" ) );
 	connect( m_abort, SIGNAL(triggered()), this, SLOT(abort()) );
 
+	connect( &m_rcsWatcher, SIGNAL(started()), this, SIGNAL(operationStarted()) );
 	connect( &m_rcsWatcher, SIGNAL(finished()), this, SIGNAL(operationTerminated()) );
+
+	connect( &m_rcsWatcher, SIGNAL(started()), this, SLOT(updateActions()) );
+	connect( &m_rcsWatcher, SIGNAL(finished()), this, SLOT(updateActions()) );
+
+	updateActions();
 }
 
 RCSManager::~RCSManager() {
@@ -118,14 +124,25 @@ bool RCSManager::setCurrentRCS( const QString & rcs ) {
 		}
 
 		if( ! rcs.isEmpty() ) {
-			m_rcs     = createRevisionControl( rcs, m_rootPath );
-			m_rcsName = m_rcs ? rcs : QString();
-			if( ! m_rcs )
+			try {
+				m_rcs     = createRevisionControl( rcs, m_rootPath );
+				m_rcsName = m_rcs ? rcs : QString();
+				if( ! m_rcs ) {
+					updateActions();
+					return false;
+				}
+				connect( m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
+				connect( m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(stateChange(QString,RCS::struct_rcs_infos)) );
+			} catch( ToolsNotDefinedException e ) {
+				m_rcs     = 0;
+				m_rcsName = QString();
+				emit log( RCS::LogApplication, tr("No tools defined") );
+				updateActions();
 				return false;
-			connect( m_rcs, SIGNAL(log(RCS::rcsLog,QString)), this, SIGNAL(log(RCS::rcsLog,QString)) );
-			connect( m_rcs, SIGNAL(stateChanged(QString,RCS::struct_rcs_infos)), this, SIGNAL(statusChange(QString,RCS::struct_rcs_infos)) );
+			}
 		}
 	}
+	updateActions();
 	return true;
 }
 
@@ -135,6 +152,10 @@ QString RCSManager::currentRCS() const {
 
 QString RCSManager::description() const {
 	return revisionControlIds().value( m_rcsName );
+}
+
+RCS * RCSManager::currentRCSInterface() const {
+	return m_rcs;
 }
 
 void RCSManager::setCurrentRootPath( const QString & rootPath ) {
@@ -149,9 +170,13 @@ const QString & RCSManager::currentRootPath() const {
 	return m_rootPath;
 }
 
-void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent ) {
+bool RCSManager::isExecuting() const {
+	return m_rcsWatcher.isRunning();
+}
+
+void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList & filename, QWidget * parent, bool confirm ) {
 	QStringList filenameList = filename;
-	if( ( ! XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem ) && ( op == RCSManager::RCS_ADD ) ) {
+	if( ( ! XINXConfig::self()->config().rcs.autoAddFileToVersionningSystem ) && confirm && ( op == RCSManager::RCS_ADD ) ) {
 		QMutableStringListIterator it( filenameList );
 		while( it.hasNext() ) {
 			const QString text = it.next();
@@ -165,7 +190,7 @@ void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList &
 	m_operations.append( qMakePair( op, filenameList ) );
 }
 
-static void callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove ) {
+void RCSManager::callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove ) {
 	rcs->add( toAdd );
 	rcs->remove( toRemove );
 }
@@ -188,8 +213,7 @@ void RCSManager::validFileOperations() {
 			}
 		}
 
-		emit operationStarted();
-		m_rcsWatcher.setFuture( QtConcurrent::run( callRCSFileOperations, m_rcs, fileToAdd, fileToRemove ) );
+		m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSFileOperations, m_rcs, fileToAdd, fileToRemove ) );
 
 	} else {
 		emit operationStarted();
@@ -202,7 +226,7 @@ void RCSManager::rollbackFileOperations() {
 	m_operations.clear();
 }
 
-static void callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations, QString messages ) {
+void RCSManager::callRCSValideWorkingCopy( RCS * rcs, RCS::FilesOperation operations, QString messages ) {
 	QStringList toAdd, toRemove, toCommit;
 
 	foreach( RCS::FileOperation operation, operations ) {
@@ -224,8 +248,6 @@ void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
 	Q_ASSERT( m_rcs );
 
 	m_rcsWatcher.waitForFinished();
-
-	emit operationStarted();
 
 	QString changeLog;
 	CommitMessageDialogImpl dlg( parent );
@@ -267,14 +289,15 @@ void RCSManager::validWorkingCopy( QStringList files, QWidget * parent ) {
 			}
 		}
 
-		m_rcsWatcher.setFuture( QtConcurrent::run( callRCSValideWorkingCopy, m_rcs, dlg.filesOperation(), message ) );
+		m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSValideWorkingCopy, m_rcs, dlg.filesOperation(), message ) );
 	} else {
+		emit operationStarted();
 		emit log( RCS::LogApplication, tr("Operation cancelled") );
 		emit operationTerminated();
 	}
 }
 
-static void callRCSUpdateWorkingCopy( RCS * rcs, QStringList list ) {
+void RCSManager::callRCSUpdateWorkingCopy( RCS * rcs, QStringList list ) {
 	rcs->update( list );
 }
 
@@ -283,12 +306,22 @@ void RCSManager::updateWorkingCopy( QStringList list ) {
 
 	m_rcsWatcher.waitForFinished();
 
-	emit operationStarted();
-
 	if( list.count() == 0 )
 		list << XINXProjectManager::self()->project()->projectPath();
 
-	m_rcsWatcher.setFuture( QtConcurrent::run( callRCSUpdateWorkingCopy, m_rcs, list ) );
+	m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSUpdateWorkingCopy, m_rcs, list ) );
+}
+
+void RCSManager::callRCSUpdateRevision( RCS * rcs, QString path, QString revision, QByteArray * content ) {
+	rcs->updateToRevision( path, revision, content );
+}
+
+void RCSManager::updateToRevision( const QString & path, const QString & revision, QByteArray * content ) {
+	Q_ASSERT( m_rcs );
+
+	m_rcsWatcher.waitForFinished();
+
+	m_rcsWatcher.setFuture( QtConcurrent::run( this, &RCSManager::callRCSUpdateRevision, m_rcs, path, revision, content ) );
 }
 
 void RCSManager::abort() {
@@ -298,4 +331,12 @@ void RCSManager::abort() {
 		m_rcs->abort();
 }
 
+void RCSManager::updateActions() {
+	bool hasRCS     = (m_rcs != NULL);
+	bool isExecute  = hasRCS && RCSManager::self()->isExecuting();
+
+	m_updateAll->setEnabled( hasRCS && (!isExecute) );
+	m_commitAll->setEnabled( hasRCS && (!isExecute) );
+	m_abort->setEnabled( hasRCS && (!isExecute) );
+}
 

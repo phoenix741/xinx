@@ -117,8 +117,7 @@ private:
 	SnipetDockWidget * m_snipetsDock;
 
 	// RCS
-	bool m_rcsExecute, m_rcsVisible;
-	QString m_headContent, m_compareFileName;
+	bool m_rcsVisible;
 	QTimer * m_timer;
 
 	// Label text
@@ -172,8 +171,7 @@ private:
 	QAction *m_newProjectAct, *m_openProjectAct, *m_saveProjectAct, *m_closeProjectNoSessionAct, *m_projectPropertyAct,
 			*m_closeProjectWithSessionAct,  *m_recentProjectAct, *m_closeProjectAct;
 	QAction *m_nextBookmarkAct, *m_bookmarkAct, *m_previousBookmarkAct, *m_clearAllBookmarkAct;
-	QAction *m_compareWithHeadAct, *m_compareTwoFileAct, *m_selectedUpdateFromRCSAct, *m_selectedCommitToRCSAct,
-			*m_selectedAddToRCSAct, *m_selectedRemoveFromRCSAct, *m_toggledFlatView;
+	QAction *m_toggledFlatView;
 	QAction *m_nextTabAct, *m_previousTabAct;
 	QAction *m_aboutAct, *m_aboutQtAct;
 	QAction *m_customApplicationAct, *m_refreshScripts, *m_alwaysShowRunDialog;
@@ -223,12 +221,6 @@ private slots:
 	void openProject();
 	void projectProperty();
 	void closeProject();
-	void selectedUpdateFromVersionManager();
-	void selectedCommitToVersionManager();
-	void selectedAddToVersionManager();
-	void selectedRemoveFromVersionManager();
-	void selectedCompareWithVersionManager();
-	void selectedCompare();
 	void rcsLogTerminated();
 
 	// Log timer

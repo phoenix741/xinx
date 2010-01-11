@@ -55,10 +55,11 @@ PluginSettings * RCS_CVS::pluginSettings() const {
 RCS::struct_rcs_infos RCS_CVS::info( const QString & path ) {
 	RCS::struct_rcs_infos rcsInfos;
 	QString localPath = QDir::fromNativeSeparators( path );
-	EntriesLine e    = m_entriesList->status( localPath );
-	rcsInfos.state   = e.status( QFileInfo( localPath ).absolutePath() );
-	rcsInfos.rcsDate = e.date;
-	rcsInfos.version = e.version;
+	EntriesLine e     = m_entriesList->status( localPath );
+	rcsInfos.filename = localPath;
+	rcsInfos.state    = e.status( QFileInfo( localPath ).absolutePath() );
+	rcsInfos.rcsDate  = e.date;
+	rcsInfos.version  = e.version;
 	updateEntries();
 	return rcsInfos;
 }

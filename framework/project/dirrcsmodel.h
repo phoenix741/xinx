@@ -51,19 +51,11 @@ public:
 	virtual ~DirRCSModel();
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 
-	/*!
-	 * Return the rcs associate with the model. If RCS is not managed, this
-	 * function return NULL
-	 * \return The rcs object.
-	 */
-	RCS * rcs();
-
 public slots:
 	void refresh( const QString & path );
 private:
 	RCSCachedElement cachedValue( const QString & key ) const;
 
-	RCS * m_rcs;
 	mutable QCache<QString,RCSCachedElement> m_cache;
 };
 

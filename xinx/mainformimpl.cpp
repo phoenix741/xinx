@@ -77,7 +77,7 @@
 
 /* MainformImpl */
 
-MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ),  m_lastFileName( QDir::currentPath() ), m_lastProjectOpenedPlace( QDir::currentPath() ), m_rcsExecute( false ), m_headContent( QString() ), m_closeTabBtn(0) {
+MainformImpl::MainformImpl( QWidget * parent, Qt::WFlags f ) : QMainWindow( parent, f ),  m_lastFileName( QDir::currentPath() ), m_lastProjectOpenedPlace( QDir::currentPath() ), m_closeTabBtn(0) {
 	createMainForm();
 	createMenus();
 
@@ -614,30 +614,6 @@ void MainformImpl::createActions() {
 	m_toggledFlatView->setWhatsThis(tr( "If checked the list is showed as flat instead of tree. Each list of file is preceded of a directory header."));
 	m_toggledFlatView->setCheckable(true);
 
-	// Compare with head
-	m_compareWithHeadAct = new QAction( QIcon(":/images/vcs_diff.png"), tr( "Compare with the version management"), this );
-	connect( m_compareWithHeadAct, SIGNAL(triggered()), this, SLOT(selectedCompareWithVersionManager()) );
-
-	// Compare two file
-	m_compareTwoFileAct = new QAction( tr( "Compare files"), this );
-	connect( m_compareTwoFileAct, SIGNAL(triggered()), this, SLOT(selectedCompare()) );
-
-	// Selected update
-	m_selectedUpdateFromRCSAct = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
-	connect( m_selectedUpdateFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedUpdateFromVersionManager()) );
-
-	// Selected commit
-	m_selectedCommitToRCSAct = new QAction( QIcon(":/images/vcs_commit.png"), tr( "Commit project"), this );
-	connect( m_selectedCommitToRCSAct, SIGNAL(triggered()), this, SLOT(selectedCommitToVersionManager()) );
-
-	// Selected Add
-	m_selectedAddToRCSAct = new QAction( QIcon(":/images/vcs_add.png"), tr( "Add file(s) to project"), this );
-	connect( m_selectedAddToRCSAct, SIGNAL(triggered()), this, SLOT(selectedAddToVersionManager()) );
-
-	// Selected Remove
-	m_selectedRemoveFromRCSAct = new QAction( QIcon(":/images/vcs_remove.png"), tr( "Delete file(s) from project"), this );
-	connect( m_selectedRemoveFromRCSAct, SIGNAL(triggered()), this, SLOT(selectedRemoveFromVersionManager()) );
-
 	/* WINDOWS */
 
 	// Next Tab
@@ -787,12 +763,6 @@ void MainformImpl::createDockWidget() {
 	m_projectDock = new ProjectDirectoryDockWidget( tr("Project Directory"), this );
 	m_projectDock->setObjectName( QString::fromUtf8("m_projectDock") );
 
-	m_projectDock->setSelectedUpdateAction( m_selectedUpdateFromRCSAct );
-	m_projectDock->setSelectedCommitAction( m_selectedCommitToRCSAct );
-	m_projectDock->setSelectedAddAction( m_selectedAddToRCSAct );
-	m_projectDock->setSelectedRemoveAction( m_selectedRemoveFromRCSAct );
-	m_projectDock->setSelectedCompareWithHeadAction( m_compareWithHeadAct );
-	m_projectDock->setSelectedCompareAction( m_compareTwoFileAct );
 	m_projectDock->setToggledViewAction( m_toggledFlatView );
 	addDockWidget( Qt::LeftDockWidgetArea, m_projectDock );
 	QAction * action = m_projectDock->toggleViewAction();
@@ -1217,15 +1187,6 @@ void MainformImpl::updateActions() {
 	m_closeProjectNoSessionAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 	m_projectPropertyAct->setEnabled( XINXProjectManager::self()->project() != NULL );
 
-	RCSManager::self()->updateAllAction()->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute ) );
-	RCSManager::self()->commitAllAction()->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
-	RCSManager::self()->abortAction()->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && m_rcsExecute );
-
-	m_selectedUpdateFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
-	m_selectedCommitToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
-	m_selectedAddToRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
-	m_selectedRemoveFromRCSAct->setEnabled( (XINXProjectManager::self()->project() != NULL) && (!XINXProjectManager::self()->project()->projectRCS().isEmpty()) && ( ! m_rcsExecute )  );
-
 	m_toggledFlatView->setEnabled( XINXProjectManager::self()->project() != NULL );
 	m_projectDock->setEnabled( XINXProjectManager::self()->project() != NULL );
 
@@ -1307,12 +1268,16 @@ void MainformImpl::fileEditorSave( int index, bool saveAs ) {
 	if( newFilename.isEmpty() )
 		return;
 
-	ScriptManager::self()->callScriptsBeforeSave();
+	if( ! QFile( newFilename ).exists() )
+		RCSManager::self()->addFileOperation( RCSManager::RCS_ADD, QStringList() << newFilename, this );
 
+	ScriptManager::self()->callScriptsBeforeSave();
 	qobject_cast<AbstractEditor*>( m_tabEditors->editor( index ) )->saveToFile( newFilename );
 	m_projectDock->refreshPath( QFileInfo( newFilename ).absoluteFilePath() );
-
 	ScriptManager::self()->callScriptsAfterSave();
+
+	RCSManager::self()->validFileOperations();
+
 	statusBar()->showMessage( tr("File %1 saved").arg( m_tabEditors->editor(index)->getTitle() ), 2000 );
 }
 
@@ -1361,67 +1326,9 @@ void MainformImpl::printFile() {
 	}
 }
 
-void MainformImpl::selectedUpdateFromVersionManager() {
-	QStringList list = m_projectDock->selectedFiles();
-	if( list.count() > 0 )
-		RCSManager::self()->updateWorkingCopy( list );
-}
-
-void MainformImpl::selectedCommitToVersionManager() {
-	QStringList list = m_projectDock->selectedFiles();
-	if( list.count() > 0 )
-		RCSManager::self()->validWorkingCopy( list, this );
-}
-
-void MainformImpl::selectedAddToVersionManager() {
-	QStringList list = m_projectDock->selectedFiles();
-	if( list.count() > 0 ) {
-		RCSManager::self()->addFileOperation( RCSManager::RCS_ADD, list, this );
-		RCSManager::self()->validFileOperations();
-	}
-}
-
-void MainformImpl::selectedRemoveFromVersionManager() {
-	QStringList list = m_projectDock->selectedFiles();
-	if( list.count() > 0 ) {
-		RCSManager::self()->addFileOperation( RCSManager::RCS_REMOVE, list, this );
-		RCSManager::self()->validFileOperations();
-	}
-}
-
-void MainformImpl::selectedCompareWithVersionManager() {
-	/*
-	QStringList list = m_projectDock->selectedFiles();
-	Q_ASSERT( list.size() == 1 );
-
-	QString revision;
-	m_compareFileName = list.at( 0 );
-	m_headContent = QString();
-
-	RCS * rcs = m_projectDock->rcs();
-	if( rcs ) {
-		revision = rcs->infos( m_compareFileName ).version;
-
-		connect( rcs, SIGNAL(log(RCS::rcsLog,QString)), m_logDock, SLOT(log(RCS::rcsLog,QString)) );
-		connect( rcs, SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
-		connect( m_cancelRCSOperationAct, SIGNAL(triggered()), rcs, SLOT(abort()) );
-
-		m_logDock->init();
-		m_rcsExecute = true;
-
-		updateActions();
-		m_rcsVisible = m_logDock->isVisible();
-		m_logDock->show();
-		rcs->updateToRevision( m_compareFileName, revision, &m_headContent );
-	}
-	*/
-}
 
 void MainformImpl::logStart() {
 	m_logDock->init();
-	m_rcsExecute = true;
-
-	updateActions();
 	m_rcsVisible = m_logDock->isVisible();
 	m_logDock->show();
 }
@@ -1432,39 +1339,9 @@ void MainformImpl::logTimeout() {
 }
 
 void MainformImpl::rcsLogTerminated() {
-	Q_ASSERT( m_projectDock->rcs() );
-
-	if( ! m_headContent.isEmpty() ) {
-		try {
-			QTemporaryFile * headContentFile = new QTemporaryFile( this ); // Delete when the main windows is destroyed
-			if( headContentFile->open() ) {
-				headContentFile->setTextModeEnabled( true );
-				QTextStream out(headContentFile);
-				out << m_headContent;
-			}
-			QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << m_compareFileName << headContentFile->fileName() );
-			m_headContent = QString();
-		} catch( ToolsNotDefinedException e ) {
-			QMessageBox::warning( this, tr( "Tools" ), e.getMessage() );
-		}
-	}
-
-	m_rcsExecute = false;
-	updateActions();
-
 	m_logDock->end();
 	if( (!m_rcsVisible) && m_logDock->isVisible() && XINXConfig::self()->config().project.closeVersionManagementLog )
 		m_timer->start( 5000 );
-}
-
-void MainformImpl::selectedCompare() {
-	try {
-		QStringList list = m_projectDock->selectedFiles();
-		Q_ASSERT( list.size() == 2 );
-		QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << list.at( 0 ) << list.at( 1 ) );
-	} catch( ToolsNotDefinedException e ) {
-		QMessageBox::warning( this, tr( "Tools" ), e.getMessage() );
-	}
 }
 
 

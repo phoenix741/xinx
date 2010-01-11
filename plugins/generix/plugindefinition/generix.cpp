@@ -34,6 +34,7 @@
 #include <project/externalfileresolver.h>
 #include <configuration/configurationmanager.h>
 #include <savedialog/derivationdialogimpl.h>
+#include <rcs/rcsmanager.h>
 
 // Qt header
 #include <QString>
@@ -175,6 +176,7 @@ QIODevice * GenerixPlugin::saveFile( const QString & filename, const QString & o
 
 	if( ! QFile::exists( stdfilename ) ) {
 		QFile::copy( oldfilename, stdfilename );
+		RCSManager::self()->addFileOperation( RCSManager::RCS_ADD, QStringList() << stdfilename );
 	}
 	return 0;
 }

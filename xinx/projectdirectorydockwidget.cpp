@@ -40,6 +40,8 @@
 #include <QContextMenuEvent>
 #include <QMetaObject>
 #include <QClipboard>
+#include <QProcess>
+#include <QTemporaryFile>
 
 /* ProjectDirectoryDockWidget */
 
@@ -54,6 +56,24 @@ ProjectDirectoryDockWidget::ProjectDirectoryDockWidget( QWidget * parent, Qt::Wi
 void ProjectDirectoryDockWidget::init() {
 	m_copyFileNameAction = new QAction( tr("&Copy filename to Clipboard"), this );
 	m_copyPathNameAction = new QAction( tr("C&opy path to clipboard"), this );
+
+	m_selectedCompareWithHeadAction = new QAction( QIcon(":/images/vcs_diff.png"), tr( "Compare with the version management"), this );
+	m_selectedCompareAction = new QAction( tr( "Compare files"), this );
+	m_selectedUpdateAction = new QAction( QIcon(":/images/vcs_update.png"), tr( "Update project"), this );
+	m_selectedCommitAction = new QAction( QIcon(":/images/vcs_commit.png"), tr( "Commit project"), this );
+	m_selectedAddAction = new QAction( QIcon(":/images/vcs_add.png"), tr( "Add file(s) to project"), this );
+	m_selectedRemoveAction = new QAction( QIcon(":/images/vcs_remove.png"), tr( "Delete file(s) from project"), this );
+
+	connect( m_selectedCompareWithHeadAction, SIGNAL(triggered()), this, SLOT(selectedCompareWithVersionManager()) );
+	connect( m_selectedCompareAction, SIGNAL(triggered()), this, SLOT(selectedCompare()) );
+	connect( m_selectedUpdateAction, SIGNAL(triggered()), this, SLOT(selectedUpdateFromVersionManager()) );
+	connect( m_selectedCommitAction, SIGNAL(triggered()), this, SLOT(selectedCommitToVersionManager()) );
+	connect( m_selectedAddAction, SIGNAL(triggered()), this, SLOT(selectedAddToVersionManager()) );
+	connect( m_selectedRemoveAction, SIGNAL(triggered()), this, SLOT(selectedRemoveFromVersionManager()) );
+
+	connect( RCSManager::self(), SIGNAL(operationTerminated()), this, SLOT(rcsLogTerminated()) );
+	connect( RCSManager::self(), SIGNAL(operationStarted()), this, SLOT(updateActions()) );
+	connect( RCSManager::self(), SIGNAL(operationTerminated()), this, SLOT(updateActions()) );
 
 	QWidget * contentWidget = new QWidget( this );
 	m_projectDirWidget = new Ui::ProjectDirectoryWidget();
@@ -85,29 +105,6 @@ ProjectDirectoryDockWidget::~ProjectDirectoryDockWidget() {
 	delete m_projectDirWidget;
 }
 
-void ProjectDirectoryDockWidget::setSelectedUpdateAction( QAction * action ) {
-	m_selectedUpdateAction = action;
-}
-
-void ProjectDirectoryDockWidget::setSelectedCommitAction( QAction * action ) {
-	m_selectedCommitAction = action;
-}
-
-void ProjectDirectoryDockWidget::setSelectedAddAction( QAction * action ) {
-	m_selectedAddAction = action;
-}
-
-void ProjectDirectoryDockWidget::setSelectedRemoveAction( QAction * action ) {
-	m_selectedRemoveAction = action;
-}
-
-void ProjectDirectoryDockWidget::setSelectedCompareWithHeadAction( QAction * action ) {
-	m_selectedCompareWithHeadAction = action;
-}
-
-void ProjectDirectoryDockWidget::setSelectedCompareAction( QAction * action ) {
-	m_selectedCompareAction = action;
-}
 
 void ProjectDirectoryDockWidget::setToggledViewAction( QAction * action ) {
 	m_projectDirWidget->m_flatListBtn->setDefaultAction( action );
@@ -209,13 +206,6 @@ bool ProjectDirectoryDockWidget::removeFile( const QString & path ) {
 		return QFile::remove( path );
 }
 
-RCS * ProjectDirectoryDockWidget::rcs() {
-	if( qobject_cast<DirRCSModel*>( m_dirModel ) )
-		return qobject_cast<DirRCSModel*>( m_dirModel )->rcs();
-	else
-		return NULL;
-}
-
 void ProjectDirectoryDockWidget::projectChange() {
 	if( m_project != XINXProjectManager::self()->project() ) {
 		setProjectPath( XINXProjectManager::self()->project() );
@@ -294,11 +284,11 @@ bool ProjectDirectoryDockWidget::eventFilter( QObject *obj, QEvent *event ) {
 
 		if( nbSelected == 2 ) {
 			menu->addAction( m_selectedCompareAction );
-			if( rcs() )
+			if( ! RCSManager::self()->currentRCS().isEmpty() )
 				menu->addSeparator();
 		}
 
-		if( rcs() ) {
+		if( ! RCSManager::self()->currentRCS().isEmpty() ) {
 			if( m_projectDirWidget->m_projectDirectoryTreeView->selectionModel()->selectedRows().size() == 1 ) {
 				menu->addAction( m_selectedCompareWithHeadAction );
 				menu->addSeparator();
@@ -343,4 +333,94 @@ void ProjectDirectoryDockWidget::on_m_projectDirectoryTreeView_doubleClicked( QM
 		idx = qobject_cast<FlatModel*>( m_flatModel )->mappingToSource( index );
 	if( idx.isValid() && (! m_dirModel->isDir( idx )) )
 		emit open( m_dirModel->filePath( idx ) );
+}
+
+void ProjectDirectoryDockWidget::selectedUpdateFromVersionManager() {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	QStringList list = selectedFiles();
+	if( list.count() > 0 )
+		RCSManager::self()->updateWorkingCopy( list );
+}
+
+void ProjectDirectoryDockWidget::selectedCommitToVersionManager() {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	QStringList list = selectedFiles();
+	if( list.count() > 0 )
+		RCSManager::self()->validWorkingCopy( list, this );
+}
+
+void ProjectDirectoryDockWidget::selectedAddToVersionManager() {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	QStringList list = selectedFiles();
+	if( list.count() > 0 ) {
+		RCSManager::self()->addFileOperation( RCSManager::RCS_ADD, list, this, false );
+		RCSManager::self()->validFileOperations();
+	}
+}
+
+void ProjectDirectoryDockWidget::selectedRemoveFromVersionManager() {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	QStringList list = selectedFiles();
+	if( list.count() > 0 ) {
+		RCSManager::self()->addFileOperation( RCSManager::RCS_REMOVE, list, this, false );
+		RCSManager::self()->validFileOperations();
+	}
+}
+
+void ProjectDirectoryDockWidget::selectedCompareWithVersionManager() {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	QStringList list = selectedFiles();
+	Q_ASSERT( list.size() == 1 );
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	m_compareFileName = list.at( 0 );
+	m_headContent.clear();
+	QString revision = RCSManager::self()->currentRCSInterface()->info( m_compareFileName ).version;
+
+	RCSManager::self()->updateToRevision( m_compareFileName, revision, &m_headContent );
+}
+
+void ProjectDirectoryDockWidget::selectedCompare() {
+	Q_ASSERT( ! RCSManager::self()->currentRCS().isEmpty() );
+
+	try {
+		QStringList list = selectedFiles();
+		Q_ASSERT( list.size() == 2 );
+		QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << list.at( 0 ) << list.at( 1 ) );
+	} catch( ToolsNotDefinedException e ) {
+		qWarning() << e.getMessage();
+	}
+}
+
+void ProjectDirectoryDockWidget::rcsLogTerminated() {
+	if( ! m_headContent.isEmpty() ) {
+		try {
+			QTemporaryFile * headContentFile = new QTemporaryFile( this ); // Delete when the main windows is destroyed
+			if( headContentFile->open() ) {
+				headContentFile->write( m_headContent );
+				headContentFile->close();
+			}
+			QProcess::startDetached( XINXConfig::self()->getTools( "diff" ), QStringList() << m_compareFileName << headContentFile->fileName() );
+			m_headContent.clear();
+		} catch( ToolsNotDefinedException e ) {
+			qWarning() << e.getMessage();
+		}
+	}
+}
+
+void ProjectDirectoryDockWidget::updateActions() {
+	bool hasRCS     = ! RCSManager::self()->currentRCS().isEmpty();
+	bool isExecute  = hasRCS && RCSManager::self()->isExecuting();
+
+	m_selectedUpdateAction->setEnabled( hasRCS && (!isExecute) );
+	m_selectedCommitAction->setEnabled( hasRCS && (!isExecute) );
+	m_selectedAddAction->setEnabled( hasRCS && (!isExecute) );
+	m_selectedRemoveAction->setEnabled( hasRCS && (!isExecute) );
+	m_selectedCompareWithHeadAction->setEnabled( hasRCS && (!isExecute) );
+	m_selectedCompareAction->setEnabled( hasRCS && (!isExecute) );
 }

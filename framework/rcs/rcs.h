@@ -74,6 +74,7 @@ public:
 	};
 	/*! Informations about a file  */
 	struct struct_rcs_infos {
+		QString filename;  ///< The informations' filename
 		rcsState state;    ///< State of the file (see the enum \e rcsState)
 		QString version;   ///< Version of the file on the disk
 		QDateTime rcsDate; ///< Date of the last modified time in the RCS
