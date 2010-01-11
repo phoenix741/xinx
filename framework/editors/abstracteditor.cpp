@@ -151,10 +151,10 @@ void AbstractEditor::saveToFile( const QString & fileName ) {
 
 	/* Open the file for writting an save */
 	if( ! file->open( QIODevice::WriteOnly ) ) {
-		delete file;
 		qCritical( qPrintable(tr("Can't open file for writing %1 : %2").arg( m_lastFileName ).arg( file->errorString() )) );
 		m_isSaving = false;
 		activateWatcher();
+		delete file;
 		return;
 	}
 	saveToDevice( *file );

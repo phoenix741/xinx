@@ -54,7 +54,7 @@ private:
 	virtual FilesOperation operations( const QString & path );
 
 	QString m_tool;
-	QPointer<QProcess> m_process;
+	QProcess* m_process;
 	QByteArray * m_content;
 	QString m_tmpfilename;
 	QStringList m_fileChanged;

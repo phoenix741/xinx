@@ -35,7 +35,7 @@
 
 /* RCS_SVN */
 
-RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_content(0) {
+RCS_SVN::RCS_SVN( const QString & basePath ) : RCS( basePath ), m_process(0), m_content(0) {
 	qRegisterMetaType<QProcess::ExitStatus>( "QProcess::ExitStatus" );
 	m_tool = XINXConfig::self()->getTools( "svn" );
 }
@@ -207,7 +207,8 @@ void RCS_SVN::finished( int exitCode, QProcess::ExitStatus exitStatus ) {
 		emit stateChanged( file, info( file ) );
 	}
 
-	m_process->deleteLater();
+	delete m_process;
+	m_process = 0;
 }
 
 void RCS_SVN::update( const QStringList & path ) {
@@ -298,7 +299,8 @@ void RCS_SVN::updateToRevisionFinished( int exitCode, QProcess::ExitStatus exitS
 
 	emit log( RCS::LogApplication, tr("Process terminated") );
 
-	m_process->deleteLater();
+	delete m_process;
+	m_process = 0;
 }
 
 void RCS_SVN::updateToRevision( const QString & path, const QString & revision, QByteArray * content ) {

@@ -191,8 +191,10 @@ void RCSManager::addFileOperation( rcsAddRemoveOperation op, const QStringList &
 }
 
 void RCSManager::callRCSFileOperations( RCS * rcs, QStringList toAdd, QStringList toRemove ) {
-	rcs->add( toAdd );
-	rcs->remove( toRemove );
+	if( ! toAdd.isEmpty() )
+		rcs->add( toAdd );
+	if( ! toRemove.isEmpty() )
+		rcs->remove( toRemove );
 }
 
 void RCSManager::validFileOperations() {
