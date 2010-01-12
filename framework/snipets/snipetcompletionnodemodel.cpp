@@ -18,43 +18,24 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "javascriptmodelcompleter.h"
-#include <contentview/contentviewnode.h>
+#include "snipetcompletionnodemodel.h"
+#include "snipets/snipetnodes.h"
+#include "contentview/contentviewnode.h"
 
-// Qt header
-#include <QIcon>
-
-/* JavascriptModelCompleter */
-
-JavascriptModelCompleter::JavascriptModelCompleter( ContentViewNode * root, QObject *parent ) : SnipetCompletionNodeModel( root, parent ), m_functionFiltre( QString() ) {
-
+SnipetCompletionNodeModel::SnipetCompletionNodeModel( ContentViewNode * root, QObject *parent ) : CompletionNodeModel( root ? root : SnipetCompletionParser::self()->rootNode(), parent ) {
+	if( root )
+		startTimer( 0 );
 }
 
-JavascriptModelCompleter::~JavascriptModelCompleter() {
-
+SnipetCompletionNodeModel::~SnipetCompletionNodeModel() {
+	SnipetCompletionParser::self()->rootNode()->removeModel( this, (unsigned long)rootNode() );
 }
 
-void JavascriptModelCompleter::setFilter( const QString functionName ) {
-	if( m_functionFiltre != functionName ) {
-		m_functionFiltre = functionName;
-		reset();
-	}
+void SnipetCompletionNodeModel::timerEvent( QTimerEvent * event ) {
+	killTimer( event->timerId() );
+
+	QMutexLocker locker( mutex() );
+
+	SnipetCompletionParser::self()->rootNode()->addModel( this, (unsigned long)rootNode() );
+	addAllNodes( 0, SnipetCompletionParser::self()->rootNode() );
 }
-
-bool JavascriptModelCompleter::mustElementBeShowed( ContentViewNode * node ) {
-	if( node->data( ContentViewNode::NODE_TYPE ).toString() == "Snipet" ) {
-		return true;
-	}
-
-	ContentViewNode * p = parent( node );
-	if( p && ( p->data( ContentViewNode::NODE_TYPE ).toString() == "function" ) ) {
-		return true;
-	}
-
-	if( ! p ) {
-		return true;
-	}
-
-	return false;
-}
-

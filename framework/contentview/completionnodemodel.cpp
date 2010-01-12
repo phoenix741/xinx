@@ -20,7 +20,6 @@
 // Xinx header
 #include "contentview/completionnodemodel.h"
 #include "contentview/contentviewnode.h"
-#include "snipets/snipetnodes.h"
 
 // Qt header
 #include <QStack>
@@ -33,7 +32,6 @@ CompletionNodeModel::CompletionNodeModel( ContentViewNode * root, QObject *paren
 
 	//m_nodes.append( root );
 	addAllNodes( 0, root );
-	addAllNodes( 0, SnipetCompletionParser::self()->rootNode() );
 }
 
 CompletionNodeModel::~CompletionNodeModel() {
@@ -50,7 +48,10 @@ QVariant CompletionNodeModel::data( const QModelIndex &index, int role ) const {
 		switch( role ) {
 		case Qt::DecorationRole:
 			image = QImage( item->data( ContentViewNode::NODE_ICON ).toString() );
-			return image.scaled( QSize(16,16) );
+			if( ! image.isNull() )
+				return image.scaled( QSize(16,16) );
+			else
+				return QVariant();
 		case Qt::DisplayRole:
 			return item->data( ContentViewNode::NODE_DISPLAY_NAME );
 		case CompletionNodeModel::CompletionNodeName:

@@ -26,6 +26,7 @@
 #include "project/xinxproject.h"
 #include "core/xinxconfig.h"
 #include "borderlayout.h"
+#include "snipets/snipetcompletionnodemodel.h"
 
 // Qt header
 #include <QScrollBar>
@@ -78,6 +79,12 @@ void TextFileEditor::initObjects() {
 	m_view->editor()->setContextMenuPolicy( Qt::NoContextMenu );
 	//installEventFilter( this );
 	//m_view->installEventFilter( this );
+
+	SnipetCompletionNodeModel * completionModel = new SnipetCompletionNodeModel( 0, this );
+
+	QCompleter * completer = new QCompleter( textEdit() );
+	completer->setModel( completionModel );
+	textEdit()->setCompleter( completer );
 
 	m_bookmarkInterface = new BookmarkTextEditorInterface( this );
 	m_bookmarkInterface->setTextEditor( m_view );

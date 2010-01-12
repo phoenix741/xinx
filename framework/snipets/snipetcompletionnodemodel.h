@@ -17,44 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
+#ifndef SNIPETCOMPLETIONNODEMODEL_H
+#define SNIPETCOMPLETIONNODEMODEL_H
+
 // Xinx header
-#include "javascriptmodelcompleter.h"
-#include <contentview/contentviewnode.h>
+#include <contentview/completionnodemodel.h>
 
-// Qt header
-#include <QIcon>
+/* SnipetCompletionNodeModel */
 
-/* JavascriptModelCompleter */
+class SnipetCompletionNodeModel : public CompletionNodeModel {
+	Q_OBJECT
+public:
+	SnipetCompletionNodeModel( ContentViewNode * root, QObject *parent = 0 );
+	virtual ~SnipetCompletionNodeModel();
 
-JavascriptModelCompleter::JavascriptModelCompleter( ContentViewNode * root, QObject *parent ) : SnipetCompletionNodeModel( root, parent ), m_functionFiltre( QString() ) {
+protected:
+	virtual void timerEvent( QTimerEvent * event );
+};
 
-}
-
-JavascriptModelCompleter::~JavascriptModelCompleter() {
-
-}
-
-void JavascriptModelCompleter::setFilter( const QString functionName ) {
-	if( m_functionFiltre != functionName ) {
-		m_functionFiltre = functionName;
-		reset();
-	}
-}
-
-bool JavascriptModelCompleter::mustElementBeShowed( ContentViewNode * node ) {
-	if( node->data( ContentViewNode::NODE_TYPE ).toString() == "Snipet" ) {
-		return true;
-	}
-
-	ContentViewNode * p = parent( node );
-	if( p && ( p->data( ContentViewNode::NODE_TYPE ).toString() == "function" ) ) {
-		return true;
-	}
-
-	if( ! p ) {
-		return true;
-	}
-
-	return false;
-}
-
+#endif // SNIPETCOMPLETIONNODEMODEL_H

@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include <contentview/completionnodemodel.h>
+#include <snipets/snipetcompletionnodemodel.h>
 
 // Qt header
 #include <QAbstractListModel>
@@ -36,7 +36,7 @@ class ContentViewNode;
  * This class based on a parser show all variables, params, and function name,
  * that could be used in the JavaScript file.
  */
-class JavascriptModelCompleter : public CompletionNodeModel {
+class JavascriptModelCompleter : public SnipetCompletionNodeModel {
 	Q_OBJECT
 public:
 	/*!

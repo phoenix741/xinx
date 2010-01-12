@@ -22,7 +22,7 @@
 #pragma once
 
 // Xinx header
-#include <contentview/completionnodemodel.h>
+#include <snipets/snipetcompletionnodemodel.h>
 
 // Qt header
 #include <QStringList>
@@ -36,7 +36,7 @@ class ContentViewNode;
  *
  * This class is used to complete stylesheet.
  */
-class XslCompletionNodeModel : public CompletionNodeModel {
+class XslCompletionNodeModel : public SnipetCompletionNodeModel {
 	Q_OBJECT
 public:
 	enum CompletionTag { NoTags = 0x0, Html = 0x1, Xsl = 0x2 };
@@ -59,7 +59,7 @@ public:
 
 	QStringList modes( QString templateName ) const;
 	QStringList params( QString templateName ) const;
-  ContentViewNode * nodeOfWord( const QString & name ) const;
+	ContentViewNode * nodeOfWord( const QString & name ) const;
 protected:
 	virtual void addNode( ContentViewNode * parent, ContentViewNode * node );
 	virtual void removeNode( ContentViewNode * parent, ContentViewNode * node );
