@@ -189,6 +189,9 @@ void XslCompletionNodeModel::removeNode( ContentViewNode * parent, ContentViewNo
 
 bool XslCompletionNodeModel::mustElementBeShowed( ContentViewNode * n ) {
 	Q_ASSERT( n );
+	if( n->data( ContentViewNode::NODE_TYPE ).toString() == "Snipet" ) {
+		return true;
+	} else
 	if( m_completionMode == COMPLETION_NONE_MODE ) {
 		return false;
 	} else

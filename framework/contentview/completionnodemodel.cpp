@@ -20,6 +20,7 @@
 // Xinx header
 #include "contentview/completionnodemodel.h"
 #include "contentview/contentviewnode.h"
+#include "snipets/snipetnodes.h"
 
 // Qt header
 #include <QStack>
@@ -32,6 +33,7 @@ CompletionNodeModel::CompletionNodeModel( ContentViewNode * root, QObject *paren
 
 	//m_nodes.append( root );
 	addAllNodes( 0, root );
+	addAllNodes( 0, SnipetCompletionParser::self()->rootNode() );
 }
 
 CompletionNodeModel::~CompletionNodeModel() {

@@ -26,7 +26,19 @@
 class SnipetCompletionParser : public QObject, public ContentViewParser {
 	Q_OBJECT
 public:
+	enum SnipetCompletionRoleIndex {
+		NODE_SNIPET_KEY = 2
+	};
+
 	SnipetCompletionParser();
+	virtual ~SnipetCompletionParser();
+
+	static SnipetCompletionParser * self();
+protected:
+	virtual void loadFromDeviceImpl();
+
+private:
+	static SnipetCompletionParser * s_self;
 };
 
 #endif // SNIPETNODES_H
