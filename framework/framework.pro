@@ -74,7 +74,8 @@ HEADERS = rcs/rcs.h \
     project/externalfileresolver.h \
     rcs/rcsmanager.h \
     rcs/commitmessagedialogimpl.h \
-    project/newprojecttemplate.h
+    project/newprojecttemplate.h \
+    snipets/snipetnodes.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -124,7 +125,8 @@ SOURCES = rcs/rcs.cpp \
     project/externalfileresolver.cpp \
     rcs/rcsmanager.cpp \
     rcs/commitmessagedialogimpl.cpp \
-    project/newprojecttemplate.cpp
+    project/newprojecttemplate.cpp \
+    snipets/snipetnodes.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui \
