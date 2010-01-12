@@ -23,10 +23,10 @@
 // Xinx header
 #include <contentview/contentviewparser.h>
 
-class SnipetContentViewParser : public QObject, public ContentViewParser {
+class SnipetCompletionParser : public QObject, public ContentViewParser {
 	Q_OBJECT
 public:
-	SnipetContentViewParser();
+	SnipetCompletionParser();
 };
 
 #endif // SNIPETNODES_H

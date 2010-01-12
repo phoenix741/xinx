@@ -19,5 +19,5 @@
 
 #include "snipetnodes.h"
 
-SnipetContentViewParser::SnipetContentViewParser() {
+SnipetCompletionParser::SnipetCompletionParser() {
 }
