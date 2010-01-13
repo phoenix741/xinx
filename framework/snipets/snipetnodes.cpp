@@ -21,6 +21,7 @@
 #include "snipetnodes.h"
 #include "snipetmanager.h"
 #include "contentview/contentviewnode.h"
+#include "core/xinxconfig.h"
 
 // Qt header
 #include <QSqlQuery>
@@ -35,6 +36,11 @@ SnipetCompletionParser * SnipetCompletionParser::s_self = 0;
 /* SnipetCompletionParser */
 
 SnipetCompletionParser::SnipetCompletionParser() {
+	ContentViewNode * node = new ContentViewNode( "SnipetRoot", -1 );
+	node->setAutoDelete( false );
+	setRootNode( node );
+
+	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(refresh()) );
 }
 
 SnipetCompletionParser::~SnipetCompletionParser() {
@@ -44,18 +50,15 @@ SnipetCompletionParser::~SnipetCompletionParser() {
 SnipetCompletionParser * SnipetCompletionParser::self() {
 	if( ! s_self ) {
 		s_self = new SnipetCompletionParser();
-		try {
-			ContentViewNode * node = new ContentViewNode( "root", -1 );
-			node->setAutoDelete( false );
-			s_self->setRootNode( node );
-			QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
-		} catch( ContentViewException e ) {
-			qWarning( qPrintable( e.getMessage() ) );
-
-		}
 		XINXStaticDeleter::self()->add( s_self );
+
+		s_self->refresh();
 	}
 	return s_self;
+}
+
+void SnipetCompletionParser::refresh() {
+	QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
 }
 
 void SnipetCompletionParser::loadFromDeviceImpl() {

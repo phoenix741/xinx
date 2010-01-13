@@ -34,9 +34,10 @@ public:
 	virtual ~SnipetCompletionParser();
 
 	static SnipetCompletionParser * self();
+public slots:
+	void refresh();
 protected:
 	virtual void loadFromDeviceImpl();
-
 private:
 	static SnipetCompletionParser * s_self;
 };
