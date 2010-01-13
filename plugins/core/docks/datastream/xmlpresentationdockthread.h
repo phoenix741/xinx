@@ -72,6 +72,8 @@ public slots:
 	void updateXinxConf( int value );
 
 	void evaluate();
+
+	void editorChanged();
 protected:
 	virtual void threadrun();
 private:

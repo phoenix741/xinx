@@ -22,6 +22,8 @@
 #include <project/xinxproject.h>
 #include <config/selfwebpluginsettings.h>
 #include "xquerydialogimpl.h"
+#include <editors/editormanager.h>
+#include <editors/abstracteditor.h>
 
 // Qt header
 #include <QApplication>
@@ -64,6 +66,8 @@ XmlPresentationDockThread::XmlPresentationDockThread( XmlPresentationDockWidget 
 	connect( m_xmlPresentationWidget->m_filterComboBox, SIGNAL(activated(int)), this, SLOT(updateXinxConf(int)) );
 	connect( &m_timerTextChanged, SIGNAL(timeout()), this, SLOT(filterTextChangedTimer()) );
 	connect( SelfWebPluginSettings::self(), SIGNAL(changed()), this, SLOT(filterTextChangedTimer()) );
+
+	connect( dynamic_cast<QObject*>( EditorManager::self() ), SIGNAL(currentChanged(int)), this, SLOT(editorChanged()) );
 }
 
 
@@ -142,6 +146,8 @@ void XmlPresentationDockThread::presentationActivated( int index ) {
 		m_openingFile = QString();
 		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( false );
 		emit m_parent->filenameChanged( QString() );
+		if( EditorManager::self() && EditorManager::self()->currentEditor() )
+			EditorManager::self()->currentEditor()->setProperty( "XmlPresentationDockThread_filename", QString() );
 	} else if( index == 1 ) {
 		// Open a file
 		QString name = QFileDialog::getOpenFileName( m_parent,
@@ -255,6 +261,9 @@ void XmlPresentationDockThread::threadTerminated() {
 		m_xmlPresentationWidget->m_evaluateToolButton->setEnabled( true );
 		m_watcher = new FileWatcher( m_openingFile );
 		connect( m_watcher, SIGNAL(fileChanged()), this, SLOT(open()) );
+
+		if( EditorManager::self() && EditorManager::self()->currentEditor() )
+			EditorManager::self()->currentEditor()->setProperty( "XmlPresentationDockThread_filename", m_openingFile );
 	} else if( m_threadAct == THREAD_FILTERED ) {
 	}
 	m_xmlPresentationWidget->m_presentationTreeView->setModel( m_sortFilterModel );
@@ -341,5 +350,26 @@ void XmlPresentationDockThread::updateXinxConf( int value ) {
 	if( SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree != filteredElement ) {
 		SelfWebPluginSettings::self()->config().xmlPres.showFilteredSubTree = filteredElement;
 		SelfWebPluginSettings::self()->save();
+	}
+}
+
+void XmlPresentationDockThread::editorChanged() {
+	QString filename;
+	if( EditorManager::self() && EditorManager::self()->currentEditor() && !( filename = EditorManager::self()->currentEditor()->property( "XmlPresentationDockThread_filename" ).toString() ).isEmpty() ) {
+		int index;
+		if( ( index = m_xmlPresentationWidget->m_presentationComboBox->findText( QFileInfo( filename ).fileName() ) ) >= 0 ) {
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( index );
+			presentationActivated( index );
+		} else if( QFileInfo( filename ).exists() ) {
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 1 );
+			setComboToolTip( filename );
+			open( filename );
+		} else {
+			m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
+			presentationActivated( 0 );
+		}
+	}  else {
+		m_xmlPresentationWidget->m_presentationComboBox->setCurrentIndex( 0 );
+		presentationActivated( 0 );
 	}
 }
