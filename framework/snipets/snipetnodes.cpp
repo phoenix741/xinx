@@ -63,7 +63,8 @@ void SnipetCompletionParser::loadFromDeviceImpl() {
 
 	loadAttachedNode( rootNode() );
 
-	QSqlQuery selectQuery( "SELECT id, icon, shortcut, name FROM snipets", SnipetManager::self()->database() );
+	QSqlQuery selectQuery( "SELECT id, icon, shortcut, name FROM snipets WHERE auto>=:auto", SnipetManager::self()->database() );
+	selectQuery.bindValue( ":auto", true );
 
 	bool result = selectQuery.exec();
 	Q_ASSERT( result );

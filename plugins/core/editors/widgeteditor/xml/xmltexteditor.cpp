@@ -215,22 +215,25 @@ void XmlTextEditor::insertCompletion( const QModelIndex& index ) {
 	textUnderCursor( tc, true );
 	tc = textCursor();
 
-	tc.insertText( completion );
-
-	QString nodeName, paramName;
-	cursorPosition pos = editPosition( tc, nodeName, paramName );
-	if( pos == cpEditParamName ) {
-		insertCompletionValue( tc, nodeName, completion );
-	} else
-		if( pos == cpEditNodeName ) {
-			if( ! nodeName.isEmpty() )
-				insertCompletionParam( tc, completion );
-			else
-				tc.insertText( ">" );
+	if( c->completionModel()->data( index, ContentViewNode::NODE_TYPE ).toString() == "Snipet" ) {
+		insertSnipet( completion );
+	} else {
+		tc.insertText( completion );
+		QString nodeName, paramName;
+		cursorPosition pos = editPosition( tc, nodeName, paramName );
+		if( pos == cpEditParamName ) {
+			insertCompletionValue( tc, nodeName, completion );
 		} else
-			if( pos == cpEditParamValue ) {
-				insertCompletionAccolade( tc, nodeName, paramName, completion, index );
-			}
+			if( pos == cpEditNodeName ) {
+				if( ! nodeName.isEmpty() )
+					insertCompletionParam( tc, completion );
+				else
+					tc.insertText( ">" );
+			} else
+				if( pos == cpEditParamValue ) {
+					insertCompletionAccolade( tc, nodeName, paramName, completion, index );
+				}
+	}
 
 	setTextCursor( tc );
 }

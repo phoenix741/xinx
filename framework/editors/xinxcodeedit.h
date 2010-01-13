@@ -336,6 +336,11 @@ protected:
 	 * This method is called when the editor ask to process some shortcut.
 	 */
 	virtual bool localKeyPressExecute( QKeyEvent * e );
+
+	/*!
+	 * Insert the snipet \e snipet.
+	 */
+	virtual void insertSnipet( const QString & snipet );
 private slots:
 	void slotMarkChanged( QDocumentLineHandle* line, int type, bool enabled );
 private:
