@@ -85,11 +85,14 @@ int FileWatcherManager::indexOfWatchedFile( const QString & filename ) {
 
 void FileWatcherManager::addFile( const QString & filename ) {
 	m_watchedFilesMutex.lock();
-	if( indexOfWatchedFile( filename ) == -1 ) {
+	int index;
+	if( ( index = indexOfWatchedFile( filename ) ) == -1 ) {
 		FileWatched * file = new FileWatched( filename );
 		m_watchedfiles.append( file );
-	} else
+	} else {
+		m_watchedfiles.at( index )->ref();
 		qDebug() << QString("Duplicate entry for file %1").arg( filename );
+	}
 	m_watchedFilesMutex.unlock();
 	if( ( m_watchedfiles.count() > 0 ) && !isRunning() )
 		start();
@@ -98,7 +101,9 @@ void FileWatcherManager::addFile( const QString & filename ) {
 void FileWatcherManager::removeFile( const QString & filename ) {
 	m_watchedFilesMutex.lock();
 	int index = indexOfWatchedFile( filename );
-	m_watchedfiles.removeAt( index );
+	if( m_watchedfiles.at( index )->deref() == 0 ) {
+		m_watchedfiles.removeAt( index );
+	}
 	m_watchedFilesMutex.unlock();
 }
 

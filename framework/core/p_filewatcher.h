@@ -39,15 +39,19 @@
 class FileWatched : public QObject {
 	Q_OBJECT
 public:
-	FileWatched() {};
-	FileWatched( const FileWatched & o ) : QObject(), m_name( o.m_name ), m_date( o.m_date ) {};
-	FileWatched( const QString & name ) : m_name( name ) { initializeDate(); };
-	virtual ~FileWatched() {};
+	FileWatched() {}
+	FileWatched( const FileWatched & o ) : QObject(), m_name( o.m_name ), m_date( o.m_date ) {}
+	FileWatched( const QString & name ) : m_name( name ) { initializeDate(); }
+	virtual ~FileWatched() {}
 
-	const QString & name() const { return m_name; };
+	const QString & name() const { return m_name; }
 	bool isFileChanged();
 	void initializeDate();
+
+	inline int ref() { return ++count; }
+	inline int deref() { return --count; }
 private:
+	int count;
 	QString m_name;
 	QDateTime m_date;
 };
