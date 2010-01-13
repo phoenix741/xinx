@@ -1,8 +1,33 @@
-<book>
-	<book>
-		<name>La guitare pour les nuls</name>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<livres>
+	<livre>
+		<nom>La guitare pour les archi-nuls</nom>
 		<description>Un super livre pour apprendre la guitare</description>
-	</book>
-	<book>
-	</book>
-</books>
+		<annee>2009</annee>
+	</livre>
+	<livre>
+		<nom>Apprendre à programmer pour les kadors</nom>
+		<description>Un livre pour apprendre à programmer quand on sait déjà programmer</description>
+		<annee>2008</annee>
+	</livre>
+	<livre>
+		<nom>Apprendre à conduire pour les blondes</nom>
+		<description>Je ne sais pas ce qu'il y a dedans, je ne suis pas blond</description>
+		<annee>2010</annee>
+	</livre>
+	<livre>
+		<nom>Le programme télé du 28 dec 2009</nom>
+		<description>Un petit livret avec le programme télé</description>
+		<annee>2009</annee>
+	</livre>
+	<livre>
+		<nom>Le programme télé du 04 jan 2010</nom>
+		<description>Un petit livret avec le programme télé</description>
+		<annee>2010</annee>
+	</livre>
+	<livre>
+		<nom>Le programme télé du 11 jan 2010</nom>
+		<description>Un petit livret avec le programme télé</description>
+		<annee>2010</annee>
+	</livre>
+</livres>
