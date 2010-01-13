@@ -1,0 +1,18 @@
+<!DOCTYPE XinxProject>
+<XinxProject>
+   <xinx_version>0</xinx_version>
+   <name>books</name>
+   <project></project>
+   <rcs>svn</rcs>
+   <preloadedFiles/>
+   <activatedPlugin/>
+   <properties>
+      <generix.webModule type="QString" ></generix.webModule>
+      <dataStreamLocation type="QString" >/home/phoenix/logiciels/qt/xinx/trunk/doc/examples/books</dataStreamLocation>
+      <moduleInternetAdresse type="QString" >./</moduleInternetAdresse>
+      <generix.prefixes type="QStringList" ></generix.prefixes>
+      <generix.copySourceFileInDerivationPath type="bool" >false</generix.copySourceFileInDerivationPath>
+      <generix.createMissingDirectory type="bool" >false</generix.createMissingDirectory>
+      <hasWebServices type="bool" >true</hasWebServices>
+   </properties>
+</XinxProject>
