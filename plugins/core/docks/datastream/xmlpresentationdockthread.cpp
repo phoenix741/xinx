@@ -95,7 +95,8 @@ void XmlPresentationDockThread::adaptColumns() {
 void XmlPresentationDockThread::projectChanged() {
 	QString dataStreamLocation;
 	if( XINXProjectManager::self()->project() ) {
-		dataStreamLocation = XINXProjectManager::self()->project()->readProperty( "dataStreamLocation" ).toString();
+		const QString rel  = XINXProjectManager::self()->project()->readProperty( "dataStreamLocation" ).toString();
+		dataStreamLocation = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( rel );
 	}
 	if( dataStreamLocation != m_dataStreamLocation ) {
 		m_dataStreamLocation = dataStreamLocation;

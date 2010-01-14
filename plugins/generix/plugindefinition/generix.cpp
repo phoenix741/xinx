@@ -43,67 +43,11 @@
 #include <QApplication>
 #include <QDockWidget>
 #include <QDir>
-#include <QFile>
-#include <QBuffer>
-#include <QFileInfo>
-
-// Libxml2 header
-#include <libxml/xlink.h>
-
-/* xmlRegisterCallback */
-
-static int xsltParserInputMatchCallback(char const * filename) {
-	Q_UNUSED( filename );
-	return 1;
-}
-
-static void* xsltParserInputOpenCallback(char const * filename) {
-	QFile f( filename );
-	if( ! f.open( QIODevice::ReadOnly ) ) {
-		return 0;
-	}
-
-	QString bufferString( QString::fromLatin1( f.readAll() ) );
-
-	QRegExp importRegExp( "(<xsl:import[^>]+href\\s*=\\s*\")(\\{.*\\}.*)(\".*>)" );
-	importRegExp.setMinimal( true );
-	int position;
-	while( ( position = importRegExp.indexIn( bufferString, position ) ) >= 0 ) {
-		QString href = importRegExp.cap( 2 );
-		QString resolvedRef = ExternalFileResolver::self()->resolveFileName( href, QFileInfo( filename ).absolutePath() );
-
-		bufferString.replace( importRegExp.pos( 2 ), href.length(), resolvedRef );
-
-		position += importRegExp.matchedLength() + resolvedRef.length() - href.length();
-	}
-
-	QBuffer * b = new QBuffer;
-	b->setData( bufferString.toLatin1() );
-	if( ! b->open( QIODevice::ReadOnly ) ) {
-		delete b;
-		return 0;
-	}
-
-	return b;
-}
-
-static int xsltParserInputReadCallback(void * context, char * buffer, int len) {
-	QBuffer * f = static_cast<QBuffer*>( context );
-	return f->read( buffer, len );
-}
-
-static int xsltParserInputCloseCallback(void * context) {
-	delete static_cast<QBuffer*>( context );
-	return 0;
-}
 
 /* GenerixPlugin */
 
 GenerixPlugin::GenerixPlugin() : m_dock( 0 ) {
 	Q_INIT_RESOURCE(generix);
-	xmlRegisterInputCallbacks( xsltParserInputMatchCallback, xsltParserInputOpenCallback,
-							   xsltParserInputReadCallback,  xsltParserInputCloseCallback);
-
 }
 
 GenerixPlugin::~GenerixPlugin() {

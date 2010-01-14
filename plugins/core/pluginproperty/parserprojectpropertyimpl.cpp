@@ -46,14 +46,14 @@ QString ParserProjectPropertyImpl::name() {
 }
 
 bool ParserProjectPropertyImpl::loadSettingsDialog() {
-	m_dataStreamEdit->lineEdit()->setText( m_project->readProperty( "dataStreamLocation" ).toString() );
-	m_urlLocationEdit->setText( m_project->readProperty( "moduleInternetAdresse" ).toString() );
+	m_dataStreamEdit->lineEdit()->setText( QDir( m_project->projectPath() ).absoluteFilePath( m_project->readProperty( "dataStreamLocation" ).toString() ) );
+	m_urlLocationEdit->setText( QDir( m_project->projectPath() ).absoluteFilePath( m_project->readProperty( "moduleInternetAdresse" ).toString() ) );
 	return true;
 }
 
 bool ParserProjectPropertyImpl::saveSettingsDialog() {
-	m_project->writeProperty( "dataStreamLocation", m_dataStreamEdit->lineEdit()->text() );
-	m_project->writeProperty( "moduleInternetAdresse", m_urlLocationEdit->text() );
+	m_project->writeProperty( "dataStreamLocation", QDir( m_project->projectPath() ).relativeFilePath( m_dataStreamEdit->lineEdit()->text() ) );
+	m_project->writeProperty( "moduleInternetAdresse", QDir( m_project->projectPath() ).relativeFilePath(  m_urlLocationEdit->text() ) );
 	return true;
 }
 
@@ -97,7 +97,7 @@ WebPluginProjectPropertyWizard::WebPluginProjectPropertyWizard() {
 
 	labelUrl->setBuddy(m_urlLocationEdit);
 	labelUrl->setText( tr("Location of the &running page :") );
-	m_urlLocationEdit->setText( "http://localhost:8888/gce/btoe/GCE/ServletControl" );
+	m_urlLocationEdit->setText( field( "project.path" ).toString() );
 
 	labelDataStream->setBuddy(m_dataStreamEdit);
 	labelDataStream->setText( tr("Location of data stream :") );

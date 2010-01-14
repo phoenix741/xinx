@@ -7,16 +7,16 @@
    <preloadedFiles/>
    <activatedPlugin/>
    <properties>
-      <generix.webModule type="QString" ></generix.webModule>
-      <dataStreamLocation type="QString" >/home/phoenix/logiciels/linux/qt/xinx/trunk/doc/examples/imports2/log</dataStreamLocation>
-      <moduleInternetAdresse type="QString" >./</moduleInternetAdresse>
-      <searchPathList type="QStringList" >inc/</searchPathList>
-      <generix.prefixes type="QStringList" ></generix.prefixes>
-      <generix.derivationPath.count type="QString" >0</generix.derivationPath.count>
-      <generix.copySourceFileInDerivationPath type="QString" >false</generix.copySourceFileInDerivationPath>
-      <webServiceVersion type="QString" >1</webServiceVersion>
-      <generix.createMissingDirectory type="QString" >false</generix.createMissingDirectory>
-      <generix.defaultPrefix type="QString" ></generix.defaultPrefix>
-      <hasWebServices type="QString" >true</hasWebServices>
+      <generix.webModule type="QString"></generix.webModule>
+      <dataStreamLocation type="QString">log</dataStreamLocation>
+      <moduleInternetAdresse type="QString"></moduleInternetAdresse>
+      <searchPathList type="QStringList">inc/</searchPathList>
+      <generix.prefixes type="QStringList"></generix.prefixes>
+      <generix.derivationPath.count type="QString">0</generix.derivationPath.count>
+      <generix.copySourceFileInDerivationPath type="QString">false</generix.copySourceFileInDerivationPath>
+      <webServiceVersion type="QString">1</webServiceVersion>
+      <generix.createMissingDirectory type="QString">false</generix.createMissingDirectory>
+      <generix.defaultPrefix type="QString"></generix.defaultPrefix>
+      <hasWebServices type="QString">true</hasWebServices>
    </properties>
 </XinxProject>

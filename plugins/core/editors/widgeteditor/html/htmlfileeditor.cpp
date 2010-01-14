@@ -137,9 +137,11 @@ void HtmlFileEditor::showHtml() {
 	// Get HTML text
 	QString htmlText = textEdit()->toPlainText();
 
-	QString moduleInternetAdresse = XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString();
-	if( moduleInternetAdresse.isEmpty() )
-		qWarning( qPrintable( tr( "Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project" ) ) );
+	QString moduleInternetAdresse = XINXProjectManager::self()->project() ?
+			QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath(
+				XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString()
+				) : lastFileName();
+
 	m_htmlView->setHtml( htmlText, QUrl( moduleInternetAdresse ) );
 }
 

@@ -210,14 +210,14 @@ const QString & AbstractEditor::lastFileName() const {
 void AbstractEditor::serialize( XinxProjectSessionEditor * data, bool content ) {
 	Q_UNUSED( content );
 	data->writeProperty( "ClassName", metaObject()->className() ); // Store the class name
-	data->writeProperty( "FileName", QVariant( m_lastFileName ) );
+	data->writeProperty( "FileName", QVariant( QDir( data->projectPath() ).relativeFilePath( m_lastFileName ) ) );
 	data->writeProperty( "Modified", QVariant( m_modified ) );
 }
 
 void AbstractEditor::deserialize( XinxProjectSessionEditor * data ) {
 	// Dont't read the class name, already read.
 
-	m_lastFileName = data->readProperty( "FileName" ).toString();
+	m_lastFileName = QDir( data->projectPath() ).absoluteFilePath( data->readProperty( "FileName" ).toString() );
 	m_modified = data->readProperty( "Modified" ).toBool();
 
 	activateWatcher();

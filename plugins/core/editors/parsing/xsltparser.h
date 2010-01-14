@@ -32,7 +32,7 @@ class XsltParser {
 	Q_DECLARE_TR_FUNCTIONS(XsltParser)
 public:
     XsltParser();
-	~XsltParser();
+	virtual ~XsltParser();
 
 	//bool loadStylesheet( const QByteArray & data );
 	bool loadStylesheet( const QString & filename );

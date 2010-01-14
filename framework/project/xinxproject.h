@@ -100,10 +100,15 @@ public:
 	void writeProperty( const QString & key, QVariant value );
 	/*! Read the property \e key */
 	QVariant readProperty( const QString & key );
+
+	/*! Project path, used to have relative path */
+	QString projectPath() const;
 private:
 	QHash<QString,QVariant> m_properties;
 	XinxProjectSession * m_parent;
 };
+
+class XinxProject;
 
 /*!
  * An XinxProjectSession represents the .session file associate to the project and who contains
@@ -115,13 +120,13 @@ class XinxProjectSession : public QObject {
 	Q_PROPERTY( QStringList lastOpenedFile READ lastOpenedFile )
 public:
 	/*! Create an empty session */
-	XinxProjectSession();
+	XinxProjectSession( XinxProject * project );
 	/*!
 	 * Create a session object and load the file \e filename
 	 * \throw XinxProjectException When the application can't read the session file.
 	 * \sa loadFromFile
 	 */
-	XinxProjectSession( const QString & filename );
+	XinxProjectSession( XinxProject * project, const QString & filename );
 	/*! Destroy the session */
 	virtual ~XinxProjectSession();
 
@@ -147,7 +152,11 @@ public:
 
 	/*! List of serialized editor. */
 	const QList<XinxProjectSessionEditor*> & serializedEditors() const;
+
+	/*! The project of the session */
+	XinxProject * project() const;
 private:
+	XinxProject * m_project;
 	QString m_filename;
 	QStringList m_lastOpenedFile;
 	QList<XinxProjectSessionEditor*> m_sessions;

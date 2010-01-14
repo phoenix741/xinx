@@ -25,6 +25,9 @@
 // Qt header
 #include <QDir>
 #include <QDebug>
+#include <QFile>
+#include <QBuffer>
+#include <QFileInfo>
 
 // Libxml header
 #include <libxml/xmlmemory.h>
@@ -41,6 +44,9 @@
 #include <libxslt/extensions.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
+#include <libxml/xlink.h>
+
+static bool initialized = false;
 
 /* PrivateXsltParser */
 
@@ -51,39 +57,6 @@ public:
 };
 
 /* Static methode */
-
-extern int xmlLoadExtDtdDefaultValue;
-xmlExternalEntityLoader defaultEntityLoader = NULL;
-
-static xmlParserInputPtr xsltprocExternalEntityLoader( const char *URL, const char *ID, xmlParserCtxtPtr ctxt ) {
-	if( ! XINXProjectManager::self()->project() ) return defaultEntityLoader( URL, ID, ctxt );
-
-	xmlParserInputPtr ret;
-	warningSAXFunc warning = NULL;
-
-	if ((ctxt != NULL) && (ctxt->sax != NULL)) {
-		warning = ctxt->sax->warning;
-		ctxt->sax->warning = NULL;
-	}
-
-	ret = defaultEntityLoader( URL, ID, ctxt);
-	if( ret != NULL ) {
-		if( warning != NULL )
-			ctxt->sax->warning = warning;
-		return ret;
-	}
-
-	QString newUrl = ExternalFileResolver::self()->resolveFileName( URL, QString() );
-	ret = defaultEntityLoader( qPrintable(newUrl), ID, ctxt);
-	if( ret != NULL ) {
-		if( warning != NULL )
-			ctxt->sax->warning = warning;
-		return ret;
-	}
-
-	qWarning() << XsltParser::tr("Failed to load external entity : \"%1\"").arg( QLatin1String( URL ) );
-	return NULL;
-}
 
 static void xsltExtFunctionGnxTrad( xmlXPathParserContextPtr ctxt, int nargs ) {
 	if( nargs != 3 ) {
@@ -159,6 +132,54 @@ void xsltExtShutdownFunc(xsltTransformContextPtr ctxt, const xmlChar *URI, void 
 	Q_UNUSED( data );
 }
 
+/* xmlRegisterCallback */
+
+static int xsltParserInputMatchCallback(char const * filename) {
+	Q_UNUSED( filename );
+	return 1;
+}
+
+static void* xsltParserInputOpenCallback(char const * filename) {
+	QFile f( filename );
+	if( ! f.open( QIODevice::ReadOnly ) ) {
+		return 0;
+	}
+
+	QString bufferString( QString::fromLatin1( f.readAll() ) );
+
+	if( XINXProjectManager::self()->project() ) {
+		QRegExp importRegExp( "(<xsl:import[^>]+href\\s*=\\s*\")(.*)(\".*>)" );
+		importRegExp.setMinimal( true );
+		int position = 0;
+		while( ( position = importRegExp.indexIn( bufferString, position ) ) >= 0 ) {
+			QString href = importRegExp.cap( 2 );
+			QString resolvedRef = ExternalFileResolver::self()->resolveFileName( href, QFileInfo( filename ).absolutePath() );
+
+			bufferString.replace( importRegExp.pos( 2 ), href.length(), resolvedRef );
+
+			position += importRegExp.matchedLength() + resolvedRef.length() - href.length();
+		}
+	}
+
+	QBuffer * b = new QBuffer;
+	b->setData( bufferString.toLatin1() );
+	if( ! b->open( QIODevice::ReadOnly ) ) {
+		delete b;
+		return 0;
+	}
+
+	return b;
+}
+
+static int xsltParserInputReadCallback(void * context, char * buffer, int len) {
+	QBuffer * f = static_cast<QBuffer*>( context );
+	return f->read( buffer, len );
+}
+
+static int xsltParserInputCloseCallback(void * context) {
+	delete static_cast<QBuffer*>( context );
+	return 0;
+}
 
 /* XsltParser */
 
@@ -169,13 +190,13 @@ XsltParser::XsltParser() {
 	d->m_xmlDoc     = NULL;
 	d->m_res        = NULL;
 
-	if( ! defaultEntityLoader ) {
-		defaultEntityLoader = xmlGetExternalEntityLoader();
-		xmlSetExternalEntityLoader(xsltprocExternalEntityLoader);
-
+	if( ! initialized ) {
+		initialized = true;
 		xmlSubstituteEntitiesDefault(1);
 		xmlLoadExtDtdDefaultValue = 1;
 
+		xmlRegisterInputCallbacks( xsltParserInputMatchCallback, xsltParserInputOpenCallback,
+								   xsltParserInputReadCallback,  xsltParserInputCloseCallback);
 	}
 }
 
@@ -183,9 +204,6 @@ XsltParser::~XsltParser() {
 	xsltFreeStylesheet( d->m_stylesheet );
 	xmlFreeDoc( d->m_res );
 	xmlFreeDoc( d->m_xmlDoc );
-
-	xsltCleanupGlobals();
-	xmlCleanupParser();
 
 	delete d;
 }

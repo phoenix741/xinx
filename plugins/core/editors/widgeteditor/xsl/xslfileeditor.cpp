@@ -171,7 +171,10 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 		qWarning( qPrintable( tr("Please use the project mode for use parsing ;)") ) );
 		return;
 	}
-	QString moduleInternetAdresse = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString() : QString();
+	QString moduleInternetAdresse = XINXProjectManager::self()->project() ?
+			QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath(
+				XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString()
+				) : lastFileName();
 	if( moduleInternetAdresse.isEmpty() ) {
 		qWarning( qPrintable( tr( "Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project" ) ) );
 	}

@@ -92,18 +92,26 @@ QVariant XinxProjectSessionEditor::readProperty( const QString & key ) {
 	return m_properties.value( key );
 }
 
+QString XinxProjectSessionEditor::projectPath() const {
+	return m_parent->project()->projectPath();
+}
+
 /* XinxProjectSession */
 
-XinxProjectSession::XinxProjectSession() {
+XinxProjectSession::XinxProjectSession( XinxProject * project ) : m_project( project ) {
 
 }
 
-XinxProjectSession::XinxProjectSession( const QString & filename ) {
+XinxProjectSession::XinxProjectSession( XinxProject * project, const QString & filename ) : m_project( project ) {
 	loadFromFile( filename );
 }
 
 XinxProjectSession::~XinxProjectSession() {
 	qDeleteAll( m_sessions );
+}
+
+XinxProject * XinxProjectSession::project() const {
+	return m_project;
 }
 
 void XinxProjectSession::loadFromFile( const QString & filename ) {
@@ -239,7 +247,7 @@ PrivateXinxProject::PrivateXinxProject( XinxProject * parent ) {
 
 	m_cache = 0;
 
-	m_session = new XinxProjectSession();
+	m_session = new XinxProjectSession( parent );
 }
 
 PrivateXinxProject::~PrivateXinxProject() {
@@ -402,7 +410,7 @@ void XinxProject::loadFromFile( const QString & filename ) {
 		sessionFileName.replace( XINX_PROJECT_EXTENTION, XINX_SESSION_EXTENTION );
 		d->m_session->loadFromFile( sessionFileName );
 	} catch( XinxProjectException e ) {
-		qWarning( qPrintable( e.getMessage() ) );
+		qDebug( qPrintable( e.getMessage() ) );
 	}
 
 	emit changed();
