@@ -1,0 +1,24 @@
+<patients>
+	<patient sexe="F" age="55">
+		<nom>Dupont</nom>
+		<prenom>Marie</prenom>
+	</patient>
+	<patient sexe="M" age="41">
+		<nom>Dupond</nom>
+		<prenom>Jean</prenom>
+		<prenom>Philippe</prenom>
+	</patient>
+	<patient sexe="M" age="21">
+		<nom>Laroche</nom>
+		<prenom>Marc</prenom>
+	</patient>
+	<patient sexe="F" age="23">
+		<nom>Dutrain</nom>
+		<prenom>Lou</prenom>
+	</patient>
+	<patient sexe="F" age="26">
+		<nom>Foo</nom>
+		<prenom>Marie</prenom>
+		<prenom>Catherine</prenom>
+	</patient>
+</patients>
