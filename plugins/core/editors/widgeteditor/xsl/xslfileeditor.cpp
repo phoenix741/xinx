@@ -146,7 +146,7 @@ bool StyleSheetEditor::autoIndent() {
 		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
 		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {
-		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
+		addNewErrorMessages( e.m_line, e.getMessage(), ERROR_MESSAGE );
 		return false;
 	}
 	return true;
@@ -171,19 +171,22 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 		qWarning( qPrintable( tr("Please use the project mode for use parsing ;)") ) );
 		return;
 	}
-	QString moduleInternetAdresse = XINXProjectManager::self()->project() ?
-			QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath(
-				XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString()
-				) : lastFileName();
-	if( moduleInternetAdresse.isEmpty() ) {
-		qWarning( qPrintable( tr( "Please give the internet adresse of the servlet control of the web module (like http://localhost/ear/war/dir/Servlet) in property project" ) ) );
+	QString moduleInternetAdresse = lastFileName();
+	if( XINXProjectManager::self()->project() ) {
+		const QString resultPageAdresse = XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString();
+		if( QFileInfo( resultPageAdresse ).isRelative() ) {
+			moduleInternetAdresse = QDir( XINXProjectManager::self()->project()->projectPath() ).absoluteFilePath( resultPageAdresse );
+		} else {
+			moduleInternetAdresse = resultPageAdresse;
+		}
 	}
 
 	QString result;
 	QString utf8Text = textEdit()->toPlainText();
 	QByteArray byte  = codec()->fromUnicode( utf8Text );
 
-	//if( ! xsltParser.loadStylesheet( byte ) ) goto error;
+	clearErrorMessages();
+
 	if( ! xsltParser.loadStylesheet( textEdit()->filename() ) ) goto error;
 	if( ! xsltParser.loadXmlFile( xmlfile ) ) goto error;
 	if( ! xsltParser.process() )              goto error;
@@ -192,9 +195,10 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 	m_sourceView->setPlainText( result );
 	m_htmlView->setHtml( result, QUrl( moduleInternetAdresse ) );
 
-	return;
 error:
-	qWarning( qPrintable( tr( "Can't parse stylesheet" ) ) );
+	foreach( const XsltParser::ErrorMessage & e, xsltParser.errors() ) {
+		addNewErrorMessages( e.line, e.message, e.isWarning ? AbstractEditor::WARNING_MESSAGE : AbstractEditor::ERROR_MESSAGE );
+	}
 }
 
 XmlPresentationDockWidget * StyleSheetEditor::xmlPresentationDockWidget() {

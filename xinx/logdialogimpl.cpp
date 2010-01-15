@@ -145,7 +145,7 @@ void LogDockWidget::find( const QString & filename, const QString & text, int li
 	m_logwidget->m_tabWidget->setCurrentWidget( m_logwidget->m_searchTab );
 }
 
-void LogDockWidget::clearMessage( const QString & file ) {
+void LogDockWidget::clearMessages( const QString & file ) {
 	QTreeWidgetItem * item = m_messageItemFile.value( file );
 	if( item ) {
 		m_messageItemFile.remove( file );
@@ -153,7 +153,7 @@ void LogDockWidget::clearMessage( const QString & file ) {
 	}
 }
 
-void LogDockWidget::addMessage( const QString & file, const QString & message, AbstractEditor::LevelMessage level ) {
+void LogDockWidget::addMessage( const QString & file, int line, const QString & message, AbstractEditor::LevelMessage level ) {
 	QTreeWidgetItem * fileItem = m_messageItemFile.value( file );
 	if( ! fileItem ) {
 		fileItem = new QTreeWidgetItem( m_logwidget->m_messagesWidget );
@@ -162,7 +162,7 @@ void LogDockWidget::addMessage( const QString & file, const QString & message, A
 	}
 
 	QTreeWidgetItem * msgItem = new QTreeWidgetItem( fileItem );
-	msgItem->setText( 0, message );
+	msgItem->setText( 0, tr("%1: %2").arg( line, 4, 10, QChar('0') ).arg( message ) );
 	switch( level ) {
 	case AbstractEditor::ERROR_MESSAGE:
 		msgItem->setIcon( 0, style()->standardIcon( QStyle::SP_MessageBoxCritical ) );

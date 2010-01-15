@@ -54,6 +54,9 @@ class PrivateXsltParser {
 public:
 	xsltStylesheetPtr m_stylesheet;
 	xmlDocPtr m_xmlDoc, m_res;
+	QList<XsltParser::ErrorMessage> m_errors;
+
+	friend void xsltParserErrorFunc( void * parser, xmlErrorPtr error );
 };
 
 /* Static methode */
@@ -72,8 +75,8 @@ static void xsltExtFunctionGnxTrad( xmlXPathParserContextPtr ctxt, int nargs ) {
 
 	valuePush(ctxt, label);
 
-	xmlXPathFreeObject(lang);
-	xmlXPathFreeObject(context);
+	//xmlXPathFreeObject(lang);
+	//xmlXPathFreeObject(context);
 }
 
 static void xsltExtFunctionGnxTradJS( xmlXPathParserContextPtr ctxt, int nargs ) {
@@ -112,6 +115,10 @@ static void xsltExtFunctionGnxLpad( xmlXPathParserContextPtr ctxt, int nargs ) {
 	return;
 }
 
+static void xsltExtFunctionGnxFormat2Number( xmlXPathParserContextPtr ctxt, int nargs ) {
+	//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+	return;
+}
 
 void* xsltExtInitFunc(xsltTransformContextPtr ctxt, const xmlChar *URI) {
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"trad", URI, xsltExtFunctionGnxTrad );
@@ -122,6 +129,8 @@ void* xsltExtInitFunc(xsltTransformContextPtr ctxt, const xmlChar *URI) {
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"normalizeJS", URI, xsltExtFunctionGnxNormalizeJS );
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"trim", URI, xsltExtFunctionGnxTrim );
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"lpad", URI, xsltExtFunctionGnxLpad );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"format2Number", URI, xsltExtFunctionGnxFormat2Number );
+
 
 	return 0;
 }
@@ -181,6 +190,35 @@ static int xsltParserInputCloseCallback(void * context) {
 	return 0;
 }
 
+/* Error parsing */
+
+void xsltParserErrorFunc( void * parser, xmlErrorPtr error ) {
+	PrivateXsltParser * d = static_cast<PrivateXsltParser*>( parser );
+	if( d ) {
+		XsltParser::ErrorMessage m;
+		m.isWarning = error->level <= XML_ERR_WARNING;
+		m.message   = QLatin1String( error->message );
+		m.message   = m.message.simplified();
+		m.line      = error->line;
+
+		d->m_errors.append( m );
+	}
+}
+
+void xsltParserGenericErrorFunc( void * ctx, const char * msg, ... ) {
+	va_list ap;
+	va_start( ap, msg );
+
+	QString proceedMsg;
+	proceedMsg.vsprintf( msg, ap );
+
+	qDebug() << proceedMsg.simplified();
+
+	va_end( ap );
+}
+
+
+
 /* XsltParser */
 
 XsltParser::XsltParser() {
@@ -197,6 +235,7 @@ XsltParser::XsltParser() {
 
 		xmlRegisterInputCallbacks( xsltParserInputMatchCallback, xsltParserInputOpenCallback,
 								   xsltParserInputReadCallback,  xsltParserInputCloseCallback);
+
 	}
 }
 
@@ -208,6 +247,10 @@ XsltParser::~XsltParser() {
 	delete d;
 }
 
+const QList<XsltParser::ErrorMessage> & XsltParser::errors() const {
+	return d->m_errors;
+}
+
 /*bool XsltParser::loadStylesheet( const QByteArray & data ) {
 	xmlDocPtr xslDoc = xmlParseMemory( data, data.size() );
 	d->m_stylesheet = xsltParseStylesheetDoc( xslDoc );
@@ -216,21 +259,36 @@ XsltParser::~XsltParser() {
 }*/
 
 bool XsltParser::loadStylesheet( const QString & filename ) {
+	d->m_errors.clear();
+	xmlSetStructuredErrorFunc( d, xsltParserErrorFunc );
+	xmlSetGenericErrorFunc( d, xsltParserGenericErrorFunc );
 	d->m_stylesheet = xsltParseStylesheetFile( (const xmlChar *) qPrintable( filename ) );
+	xmlSetGenericErrorFunc( 0, 0 );
+	xmlSetStructuredErrorFunc( 0, 0 );
 
-	return d->m_stylesheet;
+	return ! d->m_errors.count();
 }
 
 bool XsltParser::loadXmlFile( const QByteArray & data ) {
+	d->m_errors.clear();
+	xmlSetStructuredErrorFunc( d, xsltParserErrorFunc );
+	xmlSetGenericErrorFunc( d, xsltParserGenericErrorFunc );
 	d->m_xmlDoc = xmlParseMemory( data, data.size() );
+	xmlSetGenericErrorFunc( 0, 0 );
+	xmlSetStructuredErrorFunc( 0, 0 );
 
-	return d->m_xmlDoc;
+	return ! d->m_errors.count();
 }
 
 bool XsltParser::loadXmlFile( const QString & filename ) {
+	d->m_errors.clear();
+	xmlSetStructuredErrorFunc( d, xsltParserErrorFunc );
+	xmlSetGenericErrorFunc( d, xsltParserGenericErrorFunc );
 	d->m_xmlDoc = xmlParseFile( qPrintable(filename) );
+	xmlSetGenericErrorFunc( 0, 0 );
+	xmlSetStructuredErrorFunc( 0, 0 );
 
-	return d->m_xmlDoc;
+	return ! d->m_errors.count();
 }
 
 QString XsltParser::getOutput() const {
@@ -239,7 +297,11 @@ QString XsltParser::getOutput() const {
 	xmlChar* buffer;
 	int bufferSize;
 
+	xmlSetStructuredErrorFunc( d, xsltParserErrorFunc );
+	xmlSetGenericErrorFunc( d, xsltParserGenericErrorFunc );
 	xsltSaveResultToString( &buffer, &bufferSize, d->m_res, d->m_stylesheet );
+	xmlSetGenericErrorFunc( 0, 0 );
+	xmlSetStructuredErrorFunc( 0, 0 );
 
 	return QLatin1String( (char*)buffer );
 }
@@ -248,16 +310,25 @@ bool XsltParser::process() {
 	Q_ASSERT( d->m_stylesheet );
 	Q_ASSERT( d->m_xmlDoc );
 
+	d->m_errors.clear();
+
 	if( d->m_res )
 		xmlFreeDoc( d->m_res );
 
+	xmlSetStructuredErrorFunc( d, xsltParserErrorFunc );
+	xmlSetGenericErrorFunc( d, xsltParserGenericErrorFunc );
 	xsltTransformContextPtr ctxt = xsltNewTransformContext( d->m_stylesheet, d->m_xmlDoc );
-	if( ctxt == NULL )
+	if( ctxt == NULL ) {
+		xmlSetGenericErrorFunc( 0, 0 );
+		xmlSetStructuredErrorFunc( 0, 0 );
 		return 0;
+	}
 
 	xsltExtInitFunc( ctxt, (xmlChar*)"http://www.oracle.com/XSL/Transform/java/fr.generix.technicalframework.application.translation.ParserTraduc" );
 
 	d->m_res = xsltApplyStylesheetUser( d->m_stylesheet, d->m_xmlDoc, 0, 0, 0, ctxt );
+	xmlSetGenericErrorFunc( 0, 0 );
+	xmlSetStructuredErrorFunc( 0, 0 );
 
-	return d->m_res;
+	return ! d->m_errors.count();;
 }

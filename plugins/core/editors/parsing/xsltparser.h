@@ -31,6 +31,13 @@ class PrivateXsltParser;
 class XsltParser {
 	Q_DECLARE_TR_FUNCTIONS(XsltParser)
 public:
+	class ErrorMessage {
+	public:
+		bool isWarning;
+		QString message;
+		int line;
+	};
+
     XsltParser();
 	virtual ~XsltParser();
 
@@ -43,6 +50,8 @@ public:
 	QString getOutput() const;
 
 	bool process();
+
+	const QList<XsltParser::ErrorMessage> & errors() const;
 private:
 	PrivateXsltParser * d;
 	friend class PrivateXsltParser;

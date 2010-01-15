@@ -119,7 +119,7 @@ bool HtmlFileEditor::autoIndent() {
 		textEdit()->textCursor().insertText( prettyPrinter.getResult() );
 		textEdit()->textCursor().endEditBlock();
 	} catch( XMLPrettyPrinterException e ) {
-		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
+		addNewErrorMessages( e.m_line, e.getMessage(), ERROR_MESSAGE );
 		return false;
 	}
 	return true;

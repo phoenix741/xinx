@@ -112,8 +112,8 @@ signals:
 	void setEditorPosition( int, int );
 	void contentChanged();
 
-	void messageTranslation( const QString & filename, const QString & message, AbstractEditor::LevelMessage level );
-	void clearMessageTranslation( const QString & filename );
+	void messageTranslation( const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level );
+	void clearMessagesTranslation( const QString & filename );
 protected:
 	bool eventFilter( QObject *obj, QEvent *event );
 	virtual void dragEnterEvent( QDragEnterEvent *event );

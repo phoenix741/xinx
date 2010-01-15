@@ -105,13 +105,14 @@ void ContentViewTextEditor::updateModel() {
 		}
 
 		// Re-load
+		clearErrorMessages();
+
 		m_parser->loadFromContent( m_rootNode, encodedText );
 		emit contentChanged();
 		textEdit()->setErrors( QList<int>() );
-		emit clearMessage( lastFileName() );
 	} catch( ContentViewException e ) {
 		textEdit()->setErrors( QList<int>() << e.getLine() );
-		emit message( lastFileName(), e.getMessage(), ERROR_MESSAGE );
+		addNewErrorMessages( e.getLine(), e.getMessage(), AbstractEditor::ERROR_MESSAGE );
 	}
 }
 

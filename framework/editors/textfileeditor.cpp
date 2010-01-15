@@ -289,7 +289,7 @@ TextFileEditor::EndOfLineType TextFileEditor::eol() const {
 }
 
 bool TextFileEditor::autoIndent() {
-	emit message( lastFileName(), tr("Can't indent this type of document"), WARNING_MESSAGE );
+	addNewErrorMessages( -1, tr("Can't indent this type of document"), WARNING_MESSAGE );
 	return false;
 }
 
@@ -355,7 +355,7 @@ void TextFileEditor::contextMenuEvent( QContextMenuEvent * contextMenuEvent ) {
 }
 
 void TextFileEditor::searchWord( const QString & ) {
-	emit message( lastFileName(), tr("Not implemented"), WARNING_MESSAGE );
+	addNewErrorMessages( -1, tr("Not implemented"), WARNING_MESSAGE );
 }
 
 void TextFileEditor::serialize( XinxProjectSessionEditor * data, bool content ) {

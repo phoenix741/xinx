@@ -318,19 +318,22 @@ signals:
 	 * \param message the message to show
 	 * \param level the level error of the message
 	 */
-	void message( const QString & filename, const QString & message, AbstractEditor::LevelMessage level );
+	void message( const QString & filename, int line, const QString & message, AbstractEditor::LevelMessage level );
 
 	/*!
 	 * Clear message
 	 * \param filename the name of the file
 	 */
-	void clearMessage( const QString & filename );
+	void clearMessages( const QString & filename );
 protected:
 	/*! Constructor used to copy the editor content. This constructor must exist for serialization works. */
 	AbstractEditor( const AbstractEditor & editor );
 
 	virtual void initLayout();
 	friend class EditorFactory;
+
+	void clearErrorMessages();
+	void addNewErrorMessages( int line, const QString & message, AbstractEditor::LevelMessage level );
 protected slots:
 	/*!
 	 * Set the modified attribute in local.

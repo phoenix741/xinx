@@ -31,7 +31,7 @@ LIBS += -L../framework \
     -lqcodeedit \
     -L../framework/ \
     -lxslt \
-    -lxml2
+	-lxml2
 RESOURCES += application.qrc
 FORMS += ui/about.ui \
     ui/projectdirectorywidget.ui \
