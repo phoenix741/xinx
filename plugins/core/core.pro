@@ -17,7 +17,6 @@ INCLUDEPATH += ./ \
     ../../ext/qcodeedit/lib/language \
     ../../ext/qcodeedit/lib/qnfa \
     ../../ext/qcodeedit/lib/widgets
-unix:INCLUDEPATH += /usr/include/libxml2
 HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     docks/datastream/xquerydialogimpl.h \
     docks/datastream/xmlpresentationdockthread.h \
@@ -39,7 +38,6 @@ HEADERS = docks/datastream/xmlpresentationdockwidget.h \
     editors/models/js/javascriptmodelcompleter.h \
     editors/models/js/jscontentviewparser.h \
     editors/models/css/cssmodeldata.h \
-    editors/parsing/xsltparser.h \
     editors/prettyprint/xmlprettyprinter.h \
     editors/widgeteditor/xq/xqtexteditor.h \
     editors/widgeteditor/xq/xqfileeditor.h \
@@ -78,7 +76,6 @@ SOURCES = docks/datastream/xmlpresentationdockthread.cpp \
     editors/models/js/javascriptmodelcompleter.cpp \
     editors/models/js/jscontentviewparser.cpp \
     editors/models/css/cssmodeldata.cpp \
-    editors/parsing/xsltparser.cpp \
     editors/prettyprint/xmlprettyprinter.cpp \
     editors/widgeteditor/xq/xqfileeditor.cpp \
     editors/widgeteditor/xq/xqtexteditor.cpp \

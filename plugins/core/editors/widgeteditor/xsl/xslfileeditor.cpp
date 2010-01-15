@@ -32,6 +32,8 @@
 #include "config/selfwebpluginsettings.h"
 #include <core/xinxconfig.h>
 #include <project/xinxproject.h>
+#include <utils/xsltparser.h>
+#include <plugins/xinxpluginsloader.h>
 
 // Qt header
 #include <QXmlStreamReader>
@@ -165,12 +167,17 @@ void StyleSheetEditor::tabIndexChange( int index ) {
 }
 
 void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
-	XsltParser xsltParser;
-
-	if( ! XINXProjectManager::self()->project() ) {
-		qWarning( qPrintable( tr("Please use the project mode for use parsing ;)") ) );
-		return;
+	XsltParser * xsltParser = 0;
+	foreach( XinxPluginElement * plugin, XinxPluginsLoader::self()->plugins() ) {
+		if( plugin->isActivated() && qobject_cast<IXinxXsltParser*>( plugin->plugin() ) ) {
+			xsltParser = qobject_cast<IXinxXsltParser*>( plugin->plugin() )->createParser();
+			if( xsltParser ) break;
+		}
 	}
+
+	if( ! xsltParser )
+		xsltParser = new XsltParser();
+
 	QString moduleInternetAdresse = lastFileName();
 	if( XINXProjectManager::self()->project() ) {
 		const QString resultPageAdresse = XINXProjectManager::self()->project()->readProperty( "moduleInternetAdresse" ).toString();
@@ -187,18 +194,20 @@ void StyleSheetEditor::launchStylesheetParsing( const QString & xmlfile ) {
 
 	clearErrorMessages();
 
-	if( ! xsltParser.loadStylesheet( textEdit()->filename() ) ) goto error;
-	if( ! xsltParser.loadXmlFile( xmlfile ) ) goto error;
-	if( ! xsltParser.process() )              goto error;
+	if( ! xsltParser->loadStylesheet( textEdit()->filename() ) ) goto error;
+	if( ! xsltParser->loadXmlFile( xmlfile ) ) goto error;
+	if( ! xsltParser->process() )              goto error;
 
-	result = xsltParser.getOutput();
+	result = xsltParser->getOutput();
 	m_sourceView->setPlainText( result );
 	m_htmlView->setHtml( result, QUrl( moduleInternetAdresse ) );
 
 error:
-	foreach( const XsltParser::ErrorMessage & e, xsltParser.errors() ) {
+	foreach( const XsltParser::ErrorMessage & e, xsltParser->errors() ) {
 		addNewErrorMessages( e.line, e.message, e.isWarning ? AbstractEditor::WARNING_MESSAGE : AbstractEditor::ERROR_MESSAGE );
 	}
+
+	delete xsltParser;
 }
 
 XmlPresentationDockWidget * StyleSheetEditor::xmlPresentationDockWidget() {

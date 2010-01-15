@@ -29,9 +29,7 @@ LIBS += -L../framework \
     -lxinxframework \
     -lxinxcmp \
     -lqcodeedit \
-    -L../framework/ \
-    -lxslt \
-	-lxml2
+	-L../framework/
 RESOURCES += application.qrc
 FORMS += ui/about.ui \
     ui/projectdirectorywidget.ui \

@@ -24,7 +24,6 @@
 // Xinx header
 #include <editors/textfileeditor.h>
 #include <editors/contentviewtexteditor.h>
-#include "editors/parsing/xsltparser.h"
 
 // Qt header
 #include <QProcess>

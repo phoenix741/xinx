@@ -18,10 +18,13 @@ INCLUDEPATH += ./ \
 LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
-    -lqcodeedit
+	-lqcodeedit \
+	-lxslt \
+	-lxml2
 win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
     -enable-runtime-pseudo-reloc
 win32:RC_FILE += rc/libxinx.rc
+unix:INCLUDEPATH += /usr/include/libxml2
 HEADERS = rcs/rcs.h \
     plugins/xinxpluginsloader.h \
     plugins/xinxpluginelement.h \
@@ -67,6 +70,7 @@ HEADERS = rcs/rcs.h \
     snipets/snipetdockitemmodel.h \
     utils/treeproxyitemmodel.h \
     utils/recursivesortfilterproxymodel.h \
+    utils/xsltparser.h \
     scripts/scriptmanager.h \
     scripts/documentsearch.h \
     editors/editorfactory.h \
@@ -119,6 +123,7 @@ SOURCES = rcs/rcs.cpp \
     snipets/snipetdockitemmodel.cpp \
     utils/treeproxyitemmodel.cpp \
     utils/recursivesortfilterproxymodel.cpp \
+    utils/xsltparser.cpp \
     scripts/scriptmanager.cpp \
     scripts/documentsearch.cpp \
     editors/editorfactory.cpp \

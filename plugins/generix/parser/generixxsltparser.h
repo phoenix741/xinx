@@ -17,44 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef _XMLFILEEDITOR_H_
-#define _XMLFILEEDITOR_H_
+#ifndef GENERIXXSLTPARSER_H
+#define GENERIXXSLTPARSER_H
 #pragma once
 
 // Xinx header
-#include <editors/textfileeditor.h>
-#include <editors/contentviewtexteditor.h>
+#include <utils/xsltparser.h>
 
-// Qt header
-#include <QProcess>
-
-class XslCompletionNodeModel;
-class QWebView;
-class XmlPresentationDockWidget;
-class QTemporaryFile;
-class QTabWidget;
-class XslTextEditor;
-
-/* XmlFileEditor */
-
-class XmlFileEditor : public TextFileEditor {
-	Q_OBJECT
+class GenerixXsltParser : public XsltParser {
 public:
-	XmlFileEditor( QWidget *parent = 0 );
-	virtual ~XmlFileEditor();
-
-	virtual QString defaultFileName() const;
-
-	virtual bool autoIndent();
-
-	virtual QIcon icon() const;
-	virtual QTextCodec * codec() const;
-
-	virtual void loadFromDevice( QIODevice & d );
-private:
-	void initObjects();
-
-	QTextCodec * m_codec;
+	GenerixXsltParser();
+protected:
+	virtual void registerPlugin( void* ctxt );
 };
 
-#endif //_XMLFILEEDITOR_H_
+#endif // GENERIXXSLTPARSER_H

@@ -35,6 +35,7 @@
 #include <configuration/configurationmanager.h>
 #include <savedialog/derivationdialogimpl.h>
 #include <rcs/rcsmanager.h>
+#include "parser/generixxsltparser.h"
 
 // Qt header
 #include <QString>
@@ -83,6 +84,14 @@ QVariant GenerixPlugin::getPluginAttribute( const enum IXinxPlugin::PluginAttrib
 		return "GPL v2.0 or later";
 	}
 	return QVariant();
+}
+
+XsltParser * GenerixPlugin::createParser() {
+	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
+	if( project && project->isGenerixActivated() ) {
+		return new GenerixXsltParser();
+	} else
+		return 0;
 }
 
 bool GenerixPlugin::loadProject( XinxProject * project ) {

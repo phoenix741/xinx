@@ -45,6 +45,7 @@ class XinxProject;
 class XinxFormatScheme;
 class ContentViewParser;
 class QDockWidget;
+class XsltParser;
 
 /*!
  * This intereface is used to create a plugin used by XINX.
@@ -86,6 +87,20 @@ public:
 
 	//! Return a list of action (order in menu) used for dynamic action
 	virtual XinxAction::MenuList actions() { return XinxAction::MenuList(); }
+};
+
+/*!
+ * This interface is used to create new XsltParser for XINX if necessary.
+ */
+class IXinxXsltParser : public virtual IXinxPlugin {
+public:
+	//! Destroy the plugin
+	virtual ~IXinxXsltParser() {}
+
+	/*!
+	 * Create a parser of Xslt Stylesheet.
+	 */
+	virtual XsltParser * createParser() = 0;
 };
 
 /*!
@@ -325,6 +340,7 @@ public:
 };
 
 Q_DECLARE_INTERFACE(IXinxPlugin, "org.shadoware.xinx.IXinxPlugin/1.0");
+Q_DECLARE_INTERFACE(IXinxXsltParser, "org.shadoware.xinx.IXinxXsltParser/1.0");
 Q_DECLARE_INTERFACE(IXinxInputOutputPlugin, "org.shadoware.xinx.IXinxInputOutputPlugin/1.0");
 Q_DECLARE_INTERFACE(IXinxPluginConfiguration, "org.shadoware.xinx.IXinxPluginConfiguration/1.0");
 Q_DECLARE_INTERFACE(IXinxPluginProjectConfiguration, "org.shadoware.xinx.IXinxPluginProjectConfiguration/1.0");

@@ -224,8 +224,13 @@ void AbstractEditor::serialize( XinxProjectSessionEditor * data, bool content ) 
 
 void AbstractEditor::deserialize( XinxProjectSessionEditor * data ) {
 	// Dont't read the class name, already read.
+	const QString lastFileName = data->readProperty( "FileName" ).toString();
 
-	m_lastFileName = QDir( data->projectPath() ).absoluteFilePath( data->readProperty( "FileName" ).toString() );
+	if( QFileInfo( lastFileName ).isRelative() )
+		m_lastFileName = QDir( data->projectPath() ).absoluteFilePath( lastFileName );
+	else
+		m_lastFileName = lastFileName;
+
 	m_modified = data->readProperty( "Modified" ).toBool();
 
 	activateWatcher();

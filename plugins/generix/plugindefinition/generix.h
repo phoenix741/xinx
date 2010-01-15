@@ -30,7 +30,7 @@ class Gce150FileResolver;
 
 /* GenerixPlugin */
 
-class GenerixPlugin : public QObject, public IXinxInputOutputPlugin, public IDockPlugin, public IResolverPlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration {
+class GenerixPlugin : public QObject, public IXinxInputOutputPlugin, public IDockPlugin, public IResolverPlugin, public IXinxPluginConfiguration, public IXinxPluginProjectConfiguration, public IXinxXsltParser {
 	Q_OBJECT
 	Q_INTERFACES(IXinxPlugin)
 	Q_INTERFACES(IXinxInputOutputPlugin)
@@ -38,12 +38,15 @@ class GenerixPlugin : public QObject, public IXinxInputOutputPlugin, public IDoc
 	Q_INTERFACES(IResolverPlugin)
 	Q_INTERFACES(IXinxPluginConfiguration)
 	Q_INTERFACES(IXinxPluginProjectConfiguration)
+	Q_INTERFACES(IXinxXsltParser);
 public:
 	GenerixPlugin();
 	virtual ~GenerixPlugin();
 
 	virtual bool initializePlugin( const QString & lang );
 	virtual QVariant getPluginAttribute( const enum IXinxPlugin::PluginAttribute & attr );
+
+	virtual XsltParser * createParser();
 
 	virtual bool loadProject( XinxProject * project );
 	virtual bool closeProject( XinxProject * project );

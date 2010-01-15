@@ -41,7 +41,8 @@ HEADERS = config/generixsettings.h \
     configuration/configurationfileedit.h \
     configuration/configurationmanager.h \
     docks/project/generixprojectdock.h \
-    savedialog/derivationdialogimpl.h
+    savedialog/derivationdialogimpl.h \
+    parser/generixxsltparser.h
 SOURCES = config/generixsettings.cpp \
     config/selfgenerixsettings.cpp \
     plugindefinition/generix.cpp \
@@ -67,7 +68,8 @@ SOURCES = config/generixsettings.cpp \
     configuration/configurationfileedit.cpp \
     configuration/configurationmanager.cpp \
     docks/project/generixprojectdock.cpp \
-    savedialog/derivationdialogimpl.cpp
+    savedialog/derivationdialogimpl.cpp \
+    parser/generixxsltparser.cpp
 win32:RC_FILE += rc/plugin.rc
 FORMS += ui/dictionarydockwidget.ui \
     config/customgenerix.ui \

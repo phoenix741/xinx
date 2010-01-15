@@ -52,6 +52,8 @@ public:
 	bool process();
 
 	const QList<XsltParser::ErrorMessage> & errors() const;
+protected:
+	virtual void registerPlugin( void* ctxt );
 private:
 	PrivateXsltParser * d;
 	friend class PrivateXsltParser;
