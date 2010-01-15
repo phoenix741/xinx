@@ -24,7 +24,7 @@
 
 /* BookmarkTextEditorInterface */
 
-BookmarkTextEditorInterface::BookmarkTextEditorInterface( TextFileEditor * parent ) : BookmarkEditorInterface( parent ) {
+BookmarkTextEditorInterface::BookmarkTextEditorInterface( TextFileEditor * parent ) : BookmarkEditorInterface( parent ), m_view( 0 ), m_textEdit( parent ) {
 }
 
 void BookmarkTextEditorInterface::slotBookmarkToggled( int line, bool enabled ) {
@@ -76,7 +76,7 @@ void BookmarkTextEditorInterface::clearAllBookmark() {
 }
 
 void BookmarkTextEditorInterface::setTextEditor( XinxCodeEdit * textEdit ) {
-	if( m_view == textEdit ) {
+	if( m_view != textEdit ) {
 		m_view = textEdit;
 	}
 }

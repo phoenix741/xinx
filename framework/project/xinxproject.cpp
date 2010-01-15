@@ -205,7 +205,7 @@ QStringList & XinxProjectSession::lastOpenedFile() {
 	return m_lastOpenedFile;
 }
 
-const QList<XinxProjectSessionEditor*> & XinxProjectSession::serializedEditors() const {
+QList<XinxProjectSessionEditor*> & XinxProjectSession::serializedEditors() {
 	return m_sessions;
 }
 

@@ -151,7 +151,7 @@ public:
 	QStringList & lastOpenedFile();
 
 	/*! List of serialized editor. */
-	const QList<XinxProjectSessionEditor*> & serializedEditors() const;
+	QList<XinxProjectSessionEditor*> & serializedEditors();
 
 	/*! The project of the session */
 	XinxProject * project() const;

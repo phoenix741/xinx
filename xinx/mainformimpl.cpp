@@ -1786,6 +1786,7 @@ void MainformImpl::saveProject( bool withSessionData ) {
 	Q_ASSERT( XINXProjectManager::self()->project() );
 
 	qDeleteAll( XINXProjectManager::self()->project()->session()->serializedEditors() );
+	XINXProjectManager::self()->project()->session()->serializedEditors().clear();
 	for( int i = 0; i < m_tabEditors->count(); i++ ) {
 		m_tabEditors->editor( i )->serialize( new XinxProjectSessionEditor( XINXProjectManager::self()->project()->session() ), withSessionData );
 	}
