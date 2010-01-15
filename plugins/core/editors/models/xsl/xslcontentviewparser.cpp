@@ -333,6 +333,9 @@ ContentViewNode * XslContentViewParser::attacheNewVariableNode( ContentViewNode 
 /* XmlCompletionParser */
 
 XmlCompletionParser::XmlCompletionParser() : ContentViewParser( false ), m_codec( 0 ) {
+	ContentViewNode * node = new ContentViewNode( "XmlRoot", -1 );
+	node->setAutoDelete( false );
+	setRootNode( node );
 }
 
 XmlCompletionParser::~XmlCompletionParser() {
@@ -343,9 +346,6 @@ XmlCompletionParser * XmlCompletionParser::self() {
 	if( ! s_self ) {
 		s_self = new XmlCompletionParser();
 		try {
-			ContentViewNode * node = new ContentViewNode( "root", -1 );
-			node->setAutoDelete( false );
-			s_self->setRootNode( node );
 			s_self->setFilename( "datas:baseplugin_xml.xml" );
 			QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
 		} catch( ContentViewException e ) {
