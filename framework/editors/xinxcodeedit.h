@@ -21,6 +21,9 @@
 #define _XINXCODEEDIT_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QWidget>
 
@@ -42,7 +45,7 @@ class XINXConfig;
  * \todo add method : undo(), redo(), cut(), copy(), paste()
  * \todo delete \e find method, we use QDocumentSearch.
  */
-class XinxCodeEdit : public QWidget, private QEditor::InputBinding {
+class LIBEXPORT XinxCodeEdit : public QWidget, private QEditor::InputBinding {
 	Q_OBJECT
 	Q_PROPERTY( bool readOnly READ isReadOnly WRITE setReadOnly );
 	Q_PROPERTY( QString selection READ selection WRITE setSelection  )

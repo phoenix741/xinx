@@ -21,9 +21,10 @@
 #define SNIPETNODES_H
 
 // Xinx header
+#include <core/lib-config.h>
 #include <contentview/contentviewparser.h>
 
-class SnipetCompletionParser : public QObject, public ContentViewParser {
+class LIBEXPORT SnipetCompletionParser : public QObject, public ContentViewParser {
 	Q_OBJECT
 public:
 	enum SnipetCompletionRoleIndex {

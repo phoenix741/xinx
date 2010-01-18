@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <pluginelement.h>
 #include <plugins/plugininterfaces.h>
 
@@ -29,7 +30,7 @@
  * A XinxPluginElement is a plugin (a library, PluginElement can be a script :).
  * It's used with PluginSelector.
  */
-class XinxPluginElement : public PluginElement {
+class LIBEXPORT XinxPluginElement : public PluginElement {
 public:
 	/*!
 	 * Create an object based on a \e plugin. If the plugin \e isStatic

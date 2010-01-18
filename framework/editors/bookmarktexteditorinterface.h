@@ -21,12 +21,15 @@
 #define BOOKMARKTEXTEDITORINTERFACE_H
 
 // Xinx header
-#include "editors/bookmarkeditorinterface.h"
+#include <core/lib-config.h>
+
+// Xinx header
+#include <editors/bookmarkeditorinterface.h>
 
 class XinxCodeEdit;
 class TextFileEditor;
 
-class BookmarkTextEditorInterface : public BookmarkEditorInterface {
+class LIBEXPORT BookmarkTextEditorInterface : public BookmarkEditorInterface {
 	Q_OBJECT
 public:
 	BookmarkTextEditorInterface( TextFileEditor * parent );

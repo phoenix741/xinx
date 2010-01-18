@@ -21,6 +21,9 @@
 #define _FILEWATCHER_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <qobject.h>
 
@@ -34,7 +37,7 @@ class PrivateWatcher;
  * FileWatcher. The watcher can be desactivate and reactivate without delete the object.
  * When the object is reactivated, the file date, in memory, is updated.
  */
-class FileWatcher : public QObject {
+class LIBEXPORT FileWatcher : public QObject {
 	Q_OBJECT
 public:
 	/*!

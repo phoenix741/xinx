@@ -28,6 +28,7 @@
 
 // Xinx header
 #include <core/exceptions.h>
+#include <core/lib-config.h>
 
 // Qt header
 #include <QCoreApplication>
@@ -38,7 +39,7 @@ class ContentViewNode;
  * \class ContentViewException
  * \brief Exception throw when the model can't be updated.
  */
-class  ContentViewException : public XinxException {
+class LIBEXPORT ContentViewException : public XinxException {
 public:
 	/*!
 	 * Create the exception with a message and a line.
@@ -78,7 +79,7 @@ private:
  * the method \e loadFromDevice().
  *
  */
-class ContentViewParser {
+class LIBEXPORT ContentViewParser {
 	Q_DECLARE_TR_FUNCTIONS(ContentViewParser);
 public:
 	/*!

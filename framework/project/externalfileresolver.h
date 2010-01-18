@@ -21,6 +21,9 @@
 #define EXTERNALFILERESOLVER_H
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QObject>
 #include <QHash>
@@ -29,7 +32,7 @@ class IFileResolverPlugin;
 
 /* ExternalFileResolver */
 
-class ExternalFileResolver : public QObject {
+class LIBEXPORT ExternalFileResolver : public QObject {
 	Q_OBJECT
 public:
 	virtual ~ExternalFileResolver();

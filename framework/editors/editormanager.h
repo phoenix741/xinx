@@ -26,6 +26,9 @@
 #define _EDITORMANAGER_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QObject>
 #include <QString>
@@ -39,7 +42,7 @@ class AbstractEditor;
  * editors. This class is not a QObject class but the inherited class must emit
  * signal currentChanged(int) when the current editor changed.
  */
-class EditorManager {
+class LIBEXPORT EditorManager {
 public:
 	//! Create an EditorManager
 	EditorManager();

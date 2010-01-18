@@ -145,7 +145,37 @@ namespace Gnx {
 			return;
 		}
 
+		static void rtrim( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void ltrim( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
 		static void lpad( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void rpad( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void formatNumber( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void formatDate( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void formatDateToGce( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
 			return;
 		}
@@ -154,6 +184,27 @@ namespace Gnx {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
 			return;
 		}
+
+		static void createMask( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void toUpperCase( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void toLowerCase( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
+		static void getScreenValue( xmlXPathParserContextPtr ctxt, int nargs ) {
+			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
+			return;
+		}
+
 	}
 }
 
@@ -187,7 +238,7 @@ void* xsltExtInitFunc(xsltTransformContextPtr ctxt, const xmlChar *URI) {
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"formatDate", URI, Gnx::XsltExtention::formatDate );
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"formatDateToGce", URI, Gnx::XsltExtention::formatDateToGce );
 
-	xsltRegisterExtFunction( ctxt, (xmlChar*)"getScreenValue", URI, Gnx::XsltExtention::formatDateToGce );
+	xsltRegisterExtFunction( ctxt, (xmlChar*)"getScreenValue", URI, Gnx::XsltExtention::getScreenValue );
 
 	xsltRegisterExtFunction( ctxt, (xmlChar*)"createMask", URI, Gnx::XsltExtention::createMask );
 

@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -26,6 +26,9 @@
 #define ACTIONINTERFACE_H
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QObject>
 #include <QAction>
@@ -44,7 +47,7 @@ namespace XinxAction {
  * Class represent a menu item. A menu item can be an action or a separator. This used by plugin, for define
  * which type of item the element is.
  */
-class MenuItem {
+class LIBEXPORT MenuItem {
 public:
 	//! Destroy the menu item
 	virtual ~MenuItem() {};
@@ -55,7 +58,7 @@ public:
  * \brief Represent a separator
  * Class represent a separator.
  */
-class Separator : public MenuItem {
+class LIBEXPORT Separator : public MenuItem {
 public:
 	//! Destroy the separator
 	virtual ~Separator() {};
@@ -67,7 +70,7 @@ public:
  * This class is a wrapper of a Qt action QAction. This wrapper is used to facilite
  * the enable, and visible feature of the action.
  */
-class Action : public QObject, public MenuItem {
+class LIBEXPORT Action : public QObject, public MenuItem {
 	Q_OBJECT
 public:
 	//! Create an action with \a a
@@ -106,7 +109,7 @@ private:
  * This class is a list of action. This list of action is
  * a menu too.
  */
-class ActionList : public QList<MenuItem*> {
+class LIBEXPORT ActionList : public QList<MenuItem*> {
 public:
 	//! Create the list with the name \e menu and the id \e menu
 	ActionList( const QString & menu );
@@ -131,7 +134,7 @@ private:
  * \brief Class to manage a list of ActionList (Menu)
  * This list is a list of menu used in the plugin interface.
  */
-class MenuList : public QList<ActionList> {
+class LIBEXPORT MenuList : public QList<ActionList> {
 public:
 	//! Create the menu list
 	MenuList();

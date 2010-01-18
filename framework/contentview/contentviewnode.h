@@ -26,6 +26,9 @@
 #define __CONTENTVIEWNODE_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QList>
 #include <QHash>
@@ -41,7 +44,7 @@ class ContentViewNode;
  * List of node.
  * Instead of compare pointer, we compare the node.
  */
-class ContentViewNodeList : public QList<ContentViewNode*> {
+class LIBEXPORT ContentViewNodeList : public QList<ContentViewNode*> {
 public:
 	int indexOfObject( ContentViewNode* t, int from = 0 ) const;
 	int indexOf( ContentViewNode* t, int from = 0 ) const;
@@ -69,7 +72,7 @@ public:
  * ContentViewNode is inspered from QCodeNode of Edyuk but is rewriting from null to
  * considere multiple modele and multiple parents.
  */
-class ContentViewNode {
+class LIBEXPORT ContentViewNode {
 public:
 	/*!
 	 * To simplify, the content view node will be not subclassed. Else data will

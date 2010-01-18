@@ -21,6 +21,9 @@
 #define XINXFORMATSCHEME_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // QCodeEdit header
 #include <qformatscheme.h>
 
@@ -29,7 +32,7 @@ class XINXConfig;
 /*!
  * This object base create standard format.
  */
-class XinxFormatScheme : public QFormatScheme {
+class LIBEXPORT XinxFormatScheme : public QFormatScheme {
 	Q_OBJECT
 public:
 	/*!

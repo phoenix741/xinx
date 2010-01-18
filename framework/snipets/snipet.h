@@ -21,6 +21,9 @@
 #define __SNIPET_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QString>
 #include <QStringList>
@@ -33,7 +36,7 @@
  * The text contains %1, %2, ... this data will be replaced by params.
  * The params of this class, is just names. 
  */
-class Snipet {
+class LIBEXPORT Snipet {
 public:
 	/*!
 	 * This structure represent a parameter used to complete

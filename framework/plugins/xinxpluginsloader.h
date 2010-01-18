@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/xinxcore.h>
 #include <plugins/xinxpluginelement.h>
 
@@ -35,7 +36,7 @@
 class RCS;
 
 /*! The class XINX Plugins Loader is used to load all plugins and proposed some facilities method. */
-class  XinxPluginsLoader : public QObject {
+class LIBEXPORT XinxPluginsLoader : public QObject {
 	Q_OBJECT
 public:
 	~XinxPluginsLoader();

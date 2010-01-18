@@ -22,8 +22,9 @@
 #pragma once
 
 // Xinx header
-#include "core/filewatcher.h"
-#include "editors/bookmarkeditorinterface.h"
+#include <core/lib-config.h>
+#include <core/filewatcher.h>
+#include <editors/bookmarkeditorinterface.h>
 
 // Qt header
 #include <QFrame>
@@ -45,7 +46,7 @@ class QAbstractItemModel;
  * This class is also an editor that can read and write from and to a file. This class
  * open the file (with the correct option) and call loadFromDevice and saveTofDevice.
  */
-class AbstractEditor : public QFrame {
+class LIBEXPORT AbstractEditor : public QFrame {
 	Q_OBJECT
 	Q_PROPERTY( QString title READ getTitle STORED false )
 	Q_PROPERTY( bool isModified READ isModified WRITE setModified )

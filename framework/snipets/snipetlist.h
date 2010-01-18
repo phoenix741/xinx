@@ -22,8 +22,9 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/exceptions.h>
-#include "snipet.h"
+#include <snipets/snipet.h>
 
 // Qt header
 #include <QObject>
@@ -33,7 +34,7 @@
  * \class SnipetListException
  * The snipet list exception, is throw when Snipet list load or save file.
  */
-class SnipetListException : public XinxException {
+class LIBEXPORT SnipetListException : public XinxException {
 public:
 	/*!
 	 * Exception throw by the Snipet list.
@@ -47,7 +48,7 @@ public:
  * The snipet list contains all snipet defined in XINX. This snipet is stored in a
  * file in XML format.
  */
-class SnipetList : public QList<Snipet> {
+class LIBEXPORT SnipetList : public QList<Snipet> {
 public:
 	SnipetList();
 	virtual ~SnipetList();

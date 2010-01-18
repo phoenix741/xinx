@@ -22,7 +22,8 @@
 #pragma once
 
 // Xinx header
-#include "utils/treeproxyitemmodel.h"
+#include <core/lib-config.h>
+#include <utils/treeproxyitemmodel.h>
 
 // Qt header
 #include <QString>
@@ -31,7 +32,7 @@
 
 /* CategoryItemModel */
 
-class CategoryItemModel : public TreeProxyItemModel {
+class LIBEXPORT CategoryItemModel : public TreeProxyItemModel {
 	Q_OBJECT
 public:
 	enum CategoryItemRole {

@@ -21,11 +21,12 @@
 #define SNIPETCOMPLETIONNODEMODEL_H
 
 // Xinx header
+#include <core/lib-config.h>
 #include <contentview/completionnodemodel.h>
 
 /* SnipetCompletionNodeModel */
 
-class SnipetCompletionNodeModel : public CompletionNodeModel {
+class LIBEXPORT SnipetCompletionNodeModel : public CompletionNodeModel {
 	Q_OBJECT
 public:
 	SnipetCompletionNodeModel( ContentViewNode * root, QObject *parent = 0 );

@@ -20,10 +20,13 @@
 #ifndef BOOKMARKEDITORINTERFACE_H
 #define BOOKMARKEDITORINTERFACE_H
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QObject>
 
-class BookmarkEditorInterface : public QObject {
+class LIBEXPORT BookmarkEditorInterface : public QObject {
 	Q_OBJECT
 public:
 	BookmarkEditorInterface( QObject * parent );

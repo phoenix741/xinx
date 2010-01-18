@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/xinxcore.h>
 #include <core/appsettings.h>
 #include <core/exceptions.h>
@@ -34,7 +35,7 @@ class XinxLanguageFactory;
 class XinxFormatScheme;
 class QWidget;
 
-class ToolsNotDefinedException : public XinxException {
+class LIBEXPORT ToolsNotDefinedException : public XinxException {
 public:
 	ToolsNotDefinedException( const QString & tool );
 };
@@ -43,7 +44,7 @@ public:
  * Represente the configuration of XINX. The configuration of unique for a
  * unique process.
  */
-class XINXConfig : public QObject, public AppSettings {
+class LIBEXPORT XINXConfig : public QObject, public AppSettings {
 	Q_OBJECT
 public:
 	/*! Create a configuration by assignation */

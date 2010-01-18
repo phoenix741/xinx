@@ -19,12 +19,11 @@ LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
 	-lqcodeedit \
-	-lxslt \
-	-lxml2
-win32:QMAKE_LFLAGS_SHLIB *= -no-undefined \
-    -enable-runtime-pseudo-reloc
+	-lxml2 \
+	-lxslt
 win32:RC_FILE += rc/libxinx.rc
 unix:INCLUDEPATH += /usr/include/libxml2
+DEFINES += _LIB_BUILD_
 HEADERS = rcs/rcs.h \
     plugins/xinxpluginsloader.h \
     plugins/xinxpluginelement.h \
@@ -139,7 +138,7 @@ FORMS = snipets/callsnipetdlg.ui \
     snipets/categorypropertydlg.ui \
     rcs/commitmessages.ui
 TRANSLATIONS += translations/libxinx_fr.ts
-OTHER_FILES += 
+
 profiling { 
     QMAKE_CXXFLAGS += --coverage \
         -O0

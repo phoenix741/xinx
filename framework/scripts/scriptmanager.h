@@ -21,6 +21,9 @@
 #define __SCRIPTMANAGER_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QObject>
 #include <QStringList>
@@ -30,7 +33,7 @@
 class AbstractEditor;
 class XinxProject;
 
-class ScriptValue {
+class LIBEXPORT ScriptValue {
 public:
 	ScriptValue();
 	ScriptValue( QScriptValue value );
@@ -57,7 +60,7 @@ private:
 };
 
 
-class ScriptManager : public QObject {
+class LIBEXPORT ScriptManager : public QObject {
 	Q_OBJECT
 public:
 	~ScriptManager();

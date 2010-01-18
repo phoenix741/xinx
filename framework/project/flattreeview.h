@@ -21,6 +21,9 @@
 #define __FLATTREEVIEW_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QAbstractItemModel>
 #include <QStringList>
@@ -31,7 +34,7 @@ class QDirModel;
  * Item model transform a tree Item model (QDirModel) on a Flat model. A flat model is a list.
  * Node in the tree is show as title, and leaf is show as it.
  */
-class FlatModel : public QAbstractItemModel {
+class LIBEXPORT FlatModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
 	/*!

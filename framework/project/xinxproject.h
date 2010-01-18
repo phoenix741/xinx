@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/exceptions.h>
 
 // Qt header
@@ -51,7 +52,7 @@ class QDomElement;
  * read, the exception is catched and the application continue. The project is
  * opened.
  */
-class XinxProjectException : public XinxException {
+class LIBEXPORT XinxProjectException : public XinxException {
 public:
 	/*!
 	 * Constructor of the exception.
@@ -76,7 +77,7 @@ class XinxProjectSession;
  *
  * The value is a QVariant but must be writtable in a text file. (QString, int, ...)
  */
-class XinxProjectSessionEditor : public QObject {
+class LIBEXPORT XinxProjectSessionEditor : public QObject {
 	Q_OBJECT
 public:
 	/*! Create a session editor with a session file as \e parent. */
@@ -115,7 +116,7 @@ class XinxProject;
  * tempory data as last opened file, current opened file. This file is extern of project file,
  * to permit project file to be saved in Revision Control System.
  */
-class XinxProjectSession : public QObject {
+class LIBEXPORT XinxProjectSession : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( QStringList lastOpenedFile READ lastOpenedFile )
 public:
@@ -178,7 +179,7 @@ class ContentViewCache;
  * \throw XinxProjectException When the application can't read a project file or can't
  * save it.
  */
-class XinxProject : public QObject {
+class LIBEXPORT XinxProject : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( QString fileName READ fileName )
 	Q_PROPERTY( XinxProjectSession* session READ session )
@@ -319,7 +320,7 @@ private:
  * The XINX Project Manager is used to manage \e XinxProject file. One project
  * only by process is authorized.
  */
-class XINXProjectManager : public QObject {
+class LIBEXPORT XINXProjectManager : public QObject {
 	Q_OBJECT
 public:
 	/*! Destroy the manager */

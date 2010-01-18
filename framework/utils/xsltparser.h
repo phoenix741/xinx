@@ -21,6 +21,9 @@
 #define XSLTPARSER_H
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QCoreApplication>
 #include <QByteArray>
@@ -28,7 +31,7 @@
 
 class PrivateXsltParser;
 
-class XsltParser {
+class LIBEXPORT XsltParser {
 	Q_DECLARE_TR_FUNCTIONS(XsltParser)
 public:
 	class ErrorMessage {

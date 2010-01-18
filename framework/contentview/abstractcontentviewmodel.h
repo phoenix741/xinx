@@ -26,6 +26,9 @@
 #define __ABSTRACTCONTENTVIEWMODEL_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QAbstractItemModel>
 #include <QMutex>
@@ -36,7 +39,7 @@ class ContentViewNode;
  * \class AbstractContentViewModel
  * \brief This class is used to show the content of the file in a tree view or in completion.
  */
-class AbstractContentViewModel : public QAbstractItemModel {
+class LIBEXPORT AbstractContentViewModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
 	/*!

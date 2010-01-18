@@ -20,6 +20,9 @@
 #ifndef EDITORFACTORY_H
 #define EDITORFACTORY_H
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QObject>
 
@@ -27,7 +30,7 @@ class AbstractEditor;
 class IFileTypePlugin;
 class XinxProjectSessionEditor;
 
-class EditorFactory : public QObject {
+class LIBEXPORT EditorFactory : public QObject {
 	Q_OBJECT
 public:
 	virtual ~EditorFactory();

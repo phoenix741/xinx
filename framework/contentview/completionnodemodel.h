@@ -27,6 +27,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <contentview/abstractcontentviewmodel.h>
 
 // Qt header
@@ -42,7 +43,7 @@ class ContentViewNode;
  * The goal of CompletionNodeModel is to manage a list of elements for the
  * completion. This completion model is used by an object like \e QCompleter.
  */
-class CompletionNodeModel : public AbstractContentViewModel {
+class LIBEXPORT CompletionNodeModel : public AbstractContentViewModel {
 	Q_OBJECT
 public:
 	enum CompletionNodeRole { CompletionNodeName = 0x77 };

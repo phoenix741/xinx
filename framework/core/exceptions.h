@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/xinxcore.h>
 
 // Qt header
@@ -36,7 +37,7 @@ class XinxErrorMessage;
  * Base class for exceptions in XINX. This base class include a message in the exception, and save
  * the stack.
  */
-class  XinxException {
+class LIBEXPORT XinxException {
 public:
 	XinxException( QString message );
 	/*!
@@ -59,7 +60,7 @@ private:
  * use qWarning, qCritical, qError, qDebug. When an fatal error occure, the signal \e errorTriggered
  * is emited.
  */
-class  ExceptionManager : public QObject {
+class LIBEXPORT ExceptionManager : public QObject {
 	Q_OBJECT
 public:
 	virtual ~ExceptionManager();

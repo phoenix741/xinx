@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/xinxcore.h>
 
 // Qt header
@@ -39,7 +40,7 @@
  * This object will be used along the project mode, to show to the user the \e status of a file, to \e update from repository,
  * to \e commit to the repository, to \e add a file to the repository, or to \e remove a file from the repository.
  */
-class  RCS : public QObject {
+class LIBEXPORT RCS : public QObject {
 	Q_OBJECT
 public:
 	/*!

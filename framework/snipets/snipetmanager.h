@@ -22,7 +22,8 @@
 #pragma once
 
 // Xinx header
-#include "snipets/snipetlist.h"
+#include <core/lib-config.h>
+#include <snipets/snipetlist.h>
 
 // Qt header
 #include <QObject>
@@ -38,7 +39,7 @@ class SnipetMenu;
  * The goal of SnipetDataBaseManager is too manage the new snipet interface
  * of XINX. This interface create table if necessary in the SQL database.
  */
-class SnipetManager : public QObject {
+class LIBEXPORT SnipetManager : public QObject {
 	Q_OBJECT
 public:
 	~SnipetManager();

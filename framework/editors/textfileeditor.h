@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx headeur
+#include <core/lib-config.h>
 #include <editors/abstracteditor.h>
 #include <plugins/plugininterfaces.h>
 
@@ -51,7 +52,7 @@ class BookmarkTextEditorInterface;
  *
  * FileEditor has also two methode for load and save file.
  */
-class TextFileEditor : public AbstractEditor {
+class LIBEXPORT TextFileEditor : public AbstractEditor {
 	Q_OBJECT
 public:
 	/*! Type of End Of Line that the editor can understand. */

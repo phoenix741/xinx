@@ -27,6 +27,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <editors/textfileeditor.h>
 
 // Qt header
@@ -44,7 +45,7 @@ class QModelIndex;
  * reading the device. The content model is based on a ContentViewParser and
  * some ContentViewNode.
  */
-class ContentViewTextEditor : public TextFileEditor {
+class LIBEXPORT ContentViewTextEditor : public TextFileEditor {
 	Q_OBJECT
 public:
 	/*!

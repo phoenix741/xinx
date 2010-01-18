@@ -22,8 +22,9 @@
 #pragma once
 
 // Xinx header
-#include "utils/treeproxyitemmodel.h"
-#include "snipets/snipetlist.h"
+#include <core/lib-config.h>
+#include <utils/treeproxyitemmodel.h>
+#include <snipets/snipetlist.h>
 
 // Qt header
 #include <QString>
@@ -32,7 +33,7 @@
 
 /* BaseSnipetItemModel */
 
-class BaseSnipetItemModel : public TreeProxyItemModel {
+class LIBEXPORT BaseSnipetItemModel : public TreeProxyItemModel {
 	Q_OBJECT
 public:
 	enum SnipetItemRole {

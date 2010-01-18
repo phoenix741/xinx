@@ -21,10 +21,13 @@
 #define _CATEGORYTREEVIEW_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QTreeView>
 
-class CategoryTreeView : public QTreeView {
+class LIBEXPORT CategoryTreeView : public QTreeView {
 	Q_OBJECT
 	Q_PROPERTY( int categoryId READ categoryId WRITE setCategoryId USER true )
 public:

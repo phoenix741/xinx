@@ -5,6 +5,10 @@
 #define _APPSETTINGS_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
+// Qt header
 #include <QSettings>
 #include <QString>
 #include <QStringList>
@@ -19,14 +23,14 @@
 
 class PrivateAppSettings;
 
-class AppSettingsSettings : public QSettings {
+class LIBEXPORT AppSettingsSettings : public QSettings {
 public:
 	AppSettingsSettings( const QString & organization, const QString & application );
 	void setValue( const QString & key, const QVariant & value, const QVariant & defaultValue );
 	void setValue( const QString & key, const QVariant & value );
 };
 
-class AppSettings {
+class LIBEXPORT AppSettings {
 public:
 	struct struct_snipets {
 		bool alwaysShowDialog;

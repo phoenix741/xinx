@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <rcs/rcs.h>
 
 // Qt header
@@ -43,7 +44,7 @@ class RCSCachedElement;
  * repository.
  * A tool tip show some information that the information manager supporte.
  */
-class DirRCSModel : public QDirModel {
+class LIBEXPORT DirRCSModel : public QDirModel {
 	Q_OBJECT
 public:
 	DirRCSModel( const QStringList & nameFilters, QDir::Filters filters, QDir::SortFlags sort, QObject * parent = 0 );

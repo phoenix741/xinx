@@ -21,6 +21,9 @@
 #define __ICONPROJECTPROVIDER_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QFileIconProvider>
 #include <QIcon>
@@ -31,7 +34,7 @@
  * This Icon provider is used by \e ProjectDirectoryDockWidget to show the tree
  * project with custom icons.
  */
-class IconProjectProvider : public QFileIconProvider {
+class LIBEXPORT IconProjectProvider : public QFileIconProvider {
 public:
 	IconProjectProvider();
 	~IconProjectProvider();

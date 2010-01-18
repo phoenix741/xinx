@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/exceptions.h>
 
 // Qt header
@@ -31,12 +32,12 @@
 #include <QStringList>
 #include <QPair>
 
-class NewProjectTemplateException : public XinxException {
+class LIBEXPORT NewProjectTemplateException : public XinxException {
 public:
 	NewProjectTemplateException( const QString & message );
 };
 
-class NewProjectTemplate {
+class LIBEXPORT NewProjectTemplate {
 	Q_DECLARE_TR_FUNCTIONS(NewProjectTemplate)
 public:
 	typedef QPair<QString,QString> Property;

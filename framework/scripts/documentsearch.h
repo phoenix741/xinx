@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <editors/xinxcodeedit.h>
 
 // QCodeEdit header
@@ -29,7 +30,7 @@
 
 /* DocumentSearchOption */
 
-class DocumentSearchOption : public QObject {
+class LIBEXPORT DocumentSearchOption : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( bool wholeWords READ isWholeWords WRITE setWholeWords )
 	Q_PROPERTY( bool caseSensitive READ isCaseSensitive WRITE setCaseSensitive )
@@ -53,7 +54,7 @@ private:
 
 /* DocumentSearch */
 
-class DocumentSearch : public QObject {
+class LIBEXPORT DocumentSearch : public QObject {
 	Q_OBJECT
 	Q_PROPERTY( DocumentSearchOption * options READ getOptions WRITE setOptions )
 	Q_PROPERTY( QString searchText READ getSearchText WRITE setSearchText )

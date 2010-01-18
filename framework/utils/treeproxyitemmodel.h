@@ -21,6 +21,9 @@
 #define TREEPROXYITEMMODEL_H
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QString>
 #include <QAbstractProxyModel>
@@ -29,7 +32,7 @@
 
 /* TreeProxyItemModel */
 
-class TreeProxyItemModel : public QAbstractProxyModel {
+class LIBEXPORT TreeProxyItemModel : public QAbstractProxyModel {
 	Q_OBJECT
 	Q_PROPERTY( bool resetModel READ resetModel WRITE setResetModel )
 public:

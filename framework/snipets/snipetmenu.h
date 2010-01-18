@@ -22,10 +22,11 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <qmenuview.h>
-#include "snipets/snipetitemmodel.h"
+#include <snipets/snipetitemmodel.h>
 
-class SnipetMenuModel : public SnipetItemModel {
+class LIBEXPORT SnipetMenuModel : public SnipetItemModel {
 	Q_OBJECT
 public:
 	virtual Qt::ItemFlags flags( const QModelIndex & index ) const;
@@ -38,7 +39,7 @@ private:
 
 /* SnipetMenu */
 
-class SnipetMenu : public QMenuView {
+class LIBEXPORT SnipetMenu : public QMenuView {
 	Q_OBJECT
 public:
 	SnipetMenu( QWidget * parent = 0 );

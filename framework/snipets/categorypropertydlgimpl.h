@@ -31,7 +31,7 @@
 #include <QDataWidgetMapper>
 #include <QSqlDatabase>
 
-class CategoryPropertyDlgImpl : public QDialog, private Ui::CategoryPropertyDialog {
+class LIBEXPORT CategoryPropertyDlgImpl : public QDialog, private Ui::CategoryPropertyDialog {
 	Q_OBJECT
 public:
 	virtual ~CategoryPropertyDlgImpl();

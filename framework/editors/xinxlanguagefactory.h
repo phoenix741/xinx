@@ -21,6 +21,9 @@
 #define _XINXLANGUAGEFACTORY_H_
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // QCodeEdit header
 #include <qlanguagefactory.h>
 
@@ -30,7 +33,7 @@ class XinxFormatScheme;
 /*!
  * This class used to create language definition for text editor in XINX.
  */
-class XinxLanguageFactory : public QLanguageFactory {
+class LIBEXPORT XinxLanguageFactory : public QLanguageFactory {
 	Q_OBJECT
 public:
 	//! Destroy the instance

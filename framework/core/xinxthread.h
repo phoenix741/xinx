@@ -22,6 +22,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <core/xinxcore.h>
 
 // Qt header
@@ -36,7 +37,7 @@ class XinxThread;
  *
  * To be used, each created thread must be a XinxThread (derivated from a QThread).
  */
-class  XinxThreadManager : public QObject {
+class LIBEXPORT XinxThreadManager : public QObject {
 	Q_OBJECT
 public:
 	/// Destroy the mananger
@@ -67,7 +68,7 @@ private:
  * This class is used to create thread in XINX and count the number of created Thread and
  * the number of running thread.
  */
-class  XinxThread : public QThread {
+class LIBEXPORT XinxThread : public QThread {
 	Q_OBJECT
 public:
 	/// Create a new thread object and increment XinxThreadManager::getThreadClassCount()

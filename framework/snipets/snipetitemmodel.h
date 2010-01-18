@@ -22,8 +22,9 @@
 #pragma once
 
 // Xinx header
-#include "snipets/basesnipetitemmodel.h"
-#include "snipets/snipetlist.h"
+#include <core/lib-config.h>
+#include <snipets/basesnipetitemmodel.h>
+#include <snipets/snipetlist.h>
 
 // Qt header
 #include <QString>
@@ -32,7 +33,7 @@
 
 /* SnipetItemModel */
 
-class SnipetItemModel : public BaseSnipetItemModel {
+class LIBEXPORT SnipetItemModel : public BaseSnipetItemModel {
 	Q_OBJECT
 public:
 	virtual ~SnipetItemModel();

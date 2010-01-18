@@ -21,12 +21,15 @@
 #define RECURSIVESORTFILTERPROXYMODEL_H
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QSortFilterProxyModel>
 #include <QStringList>
 #include <QHash>
 
-class RecursiveSortFilterProxyModel : public QSortFilterProxyModel {
+class LIBEXPORT RecursiveSortFilterProxyModel : public QSortFilterProxyModel {
 public:
 	RecursiveSortFilterProxyModel( QObject * parent = 0 );
 

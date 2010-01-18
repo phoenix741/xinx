@@ -27,6 +27,7 @@
 #pragma once
 
 // Xinx header
+#include <core/lib-config.h>
 #include <contentview/abstractcontentviewmodel.h>
 
 // Qt header
@@ -43,7 +44,7 @@ class ContentViewNode;
  * This class is used as a proxy of the tree view and content view nodes. It's
  * a sub-class of the Qt standard class QAbstractItemModel.
  */
-class ContentViewModel : public AbstractContentViewModel {
+class LIBEXPORT ContentViewModel : public AbstractContentViewModel {
 	Q_OBJECT
 public:
 	/*!

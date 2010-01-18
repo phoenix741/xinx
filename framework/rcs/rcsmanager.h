@@ -21,6 +21,7 @@
 #define RCSMANAGER_H
 
 // Xinx header
+#include <core/lib-config.h>
 #include <rcs/rcs.h>
 
 // Qt header
@@ -40,7 +41,7 @@
  *   the user. After the validation of the dialog, the class must add, and remove files
  *   and commit the class.
  */
-class RCSManager : public QObject {
+class LIBEXPORT RCSManager : public QObject {
 	Q_OBJECT
 public:
 	//! Operations on file that XINX can made.

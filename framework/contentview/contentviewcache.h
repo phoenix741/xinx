@@ -26,6 +26,9 @@
 #define __CONTENTVIEWCLASS_H__
 #pragma once
 
+// Xinx header
+#include <core/lib-config.h>
+
 // Qt header
 #include <QHash>
 #include <QFutureWatcher>
@@ -50,7 +53,7 @@ class QTimerEvent;
  *
  * The goal is to down the size in the memory, and speed up the loading of file and completion.
  */
-class ContentViewCache : public QObject {
+class LIBEXPORT ContentViewCache : public QObject {
 	Q_OBJECT
 public:
 	//! Create a content view cache and preloads project.

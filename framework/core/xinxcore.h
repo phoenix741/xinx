@@ -267,7 +267,10 @@
  *
  */
 
+// Xinx header
+#include <core/lib-config.h>
 
+// Qt header
 #include <QObject>
 #include <QObjectCleanupHandler>
 
@@ -275,7 +278,7 @@
  * All static class add self to the static deleter who delete all static class when the application is stopped
  * (if necessary).
  */
-class  XINXStaticDeleter : public QObjectCleanupHandler {
+class LIBEXPORT XINXStaticDeleter : public QObjectCleanupHandler {
 	Q_OBJECT
 public:
 	/*! Intialize default value of object. */
