@@ -260,6 +260,10 @@ QStringList GceConfiguration::dictionnaries() {
 	return QStringList();
 }
 
+DictionaryParser * GceConfiguration::dictionaryParser() {
+	return 0;
+}
+
 QList<BusinessViewInformation> GceConfiguration::businessView( const QString & filename ) {
 	return m_fileToInformation.values( filename );
 }

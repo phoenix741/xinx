@@ -28,6 +28,18 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QFile>
+#include <QtConcurrentRun>
+
+/* Static function */
+
+static QString loadDictionaryParser( DictionaryParser * parser ) {
+	try {
+		parser->loadFromMember();
+	} catch( ContentViewException e ) {
+		return e.getMessage();
+	}
+	return QString();
+}
 
 /* GceConfigurationDefParser */
 
@@ -241,7 +253,7 @@ GceConfigurationDef::GceConfigurationDef() {
 
 }
 
-GceConfigurationDef::GceConfigurationDef( const QString & filename ) {
+GceConfigurationDef::GceConfigurationDef( const QString & filename ) : m_dictionaryParser( 0 ) {
 	m_directoryPath = QFileInfo( filename ).absolutePath();
 
 	readConfigurationDef( filename );
@@ -284,6 +296,12 @@ void GceConfigurationDef::readConfigurationDef( const QString & configurationdef
 			translationFile = translationFile.nextSiblingElement( "file" );
 		}
 	}
+
+	if( ! m_dictionnaries.isEmpty() ) {
+		m_dictionaryParser = new DictionaryParser();
+		m_dictionaryParser->setFileList( m_dictionnaries );
+		QtConcurrent::run( loadDictionaryParser, m_dictionaryParser );
+	}
 }
 
 void GceConfigurationDef::readConfigurationFile( int configurationIndex, const QString & configurationFileName ) {
@@ -302,6 +320,10 @@ ConfigurationVersion GceConfigurationDef::version() {
 
 QStringList GceConfigurationDef::dictionnaries() {
 	return m_dictionnaries;
+}
+
+DictionaryParser * GceConfigurationDef::dictionaryParser() {
+	return m_dictionaryParser;
 }
 
 QString GceConfigurationDef::rootFilename() {

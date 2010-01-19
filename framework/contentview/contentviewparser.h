@@ -107,7 +107,7 @@ public:
 	ContentViewNode * rootNode() const;
 
 	/*! Set the filename */
-	void setFilename( const QString & filename );
+	virtual void setFilename( const QString & filename );
 	/*! Get the filename */
 	const QString & filename() const;
 	/*! Set the device */

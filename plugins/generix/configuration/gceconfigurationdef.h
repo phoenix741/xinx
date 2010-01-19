@@ -39,6 +39,7 @@ public:
 	virtual QStringList filenames();
 	virtual ConfigurationVersion version();
 	virtual QStringList dictionnaries();
+	virtual DictionaryParser * dictionaryParser();
 	virtual QList<BusinessViewInformation> businessView( const QString & filename );
 	virtual QList<BusinessViewInformation> businessViews();
 	virtual QString resolveFileName( const QString & filename );
@@ -50,6 +51,7 @@ protected:
 	QString m_configurationFileName, m_directoryPath;
 	ConfigurationVersion m_version;
 	QMultiHash<QString,BusinessViewInformation> m_fileToInformation;
+	DictionaryParser * m_dictionaryParser;
 };
 
 #endif // GCECONFIGURATIONDEF_H

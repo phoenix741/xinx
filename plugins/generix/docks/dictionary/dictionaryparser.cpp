@@ -26,9 +26,29 @@
 #include <QVariant>
 
 DictionaryParser::DictionaryParser( bool autoDelete ) : ContentViewParser( autoDelete ), m_codec( 0 ) {
+	m_rootNode = new ContentViewNode( "dictionary", -1 );
+	m_rootNode->setAutoDelete( false );
+	setRootNode( m_rootNode );
 }
 
 DictionaryParser::~DictionaryParser() {
+	setRootNode( 0 );
+	m_rootNode->setAutoDelete( true );
+}
+
+QString DictionaryParser::trad( const QString & text, const QString & lang ) const {
+}
+
+QString DictionaryParser::trad( const QString & text, const QString & lang, const QString & ctxt ) const {
+}
+
+void DictionaryParser::setFilename( const QString & filename ) {
+	m_files.clear();
+	m_files << filename;
+}
+
+void DictionaryParser::setFileList( const QStringList & files ) {
+	m_files = files;
 }
 
 /*
@@ -41,31 +61,35 @@ DictionaryParser::~DictionaryParser() {
  * </root>
  */
 void DictionaryParser::loadFromDeviceImpl() {
-	setDevice( inputDevice() );
-
 	rootNode()->setData( ":/images/typexml.png", ContentViewNode::NODE_ICON );
 
 	loadAttachedNode( rootNode() );
 
-	while( ! atEnd() ) {
-		readNext();
+	foreach( const QString & filename, m_files ) {
+		ContentViewParser::setFilename( filename );
+		setDevice( inputDevice() );
 
-		if( isStartDocument() ) {
-			m_codec = QTextCodec::codecForName( documentEncoding().toString().toLatin1() );
+		while( ! atEnd() ) {
+			readNext();
+
+			if( isStartDocument() ) {
+				m_codec = QTextCodec::codecForName( documentEncoding().toString().toLatin1() );
+			}
+
+			if( isStartElement() ) {
+				if( name() == "root" )
+					readRootNode();
+				else
+					raiseError(tr("The file is not an dictionary file."));
+			}
 		}
 
-		if( isStartElement() ) {
-			if( name() == "root" )
-				readRootNode();
-			else
-				raiseError(tr("The file is not an dictionary file."));
+		if( error() ) {
+			throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
 		}
 	}
 
-	if( !error() ) {
-		detachAttachedNode();
-	} else
-		throw ContentViewException( errorString(), rootNode()->fileName(), lineNumber(), columnNumber() );
+	detachAttachedNode();
 }
 
 

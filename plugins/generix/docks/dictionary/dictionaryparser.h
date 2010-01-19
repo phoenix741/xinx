@@ -34,6 +34,12 @@ public:
 	virtual ~DictionaryParser();
 
 	QTextCodec * codec() { return m_codec; }
+
+	QString trad( const QString & text, const QString & lang ) const;
+	QString trad( const QString & text, const QString & lang, const QString & ctxt ) const;
+
+	void setFileList( const QStringList & files );
+	virtual void setFilename( const QString & filename );
 protected:
 	virtual void loadFromDeviceImpl();
 private:
@@ -42,6 +48,8 @@ private:
 	void readLabelNode( ContentViewNode * parent );
 
 	QTextCodec * m_codec;
+	QStringList m_files;
+	ContentViewNode * m_rootNode;
 };
 
 #endif // DICTIONARYPARSER_H

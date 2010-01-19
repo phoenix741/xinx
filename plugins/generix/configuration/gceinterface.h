@@ -22,6 +22,7 @@
 
 // Xinx header
 #include "configuration/configurationfile.h"
+#include "docks/dictionary/dictionaryparser.h"
 #include <core/exceptions.h>
 
 class GceInterfaceException : public XinxException {
@@ -39,6 +40,8 @@ public:
 	virtual ConfigurationVersion version() = 0;
 
 	virtual QStringList dictionnaries() = 0;
+	virtual DictionaryParser * dictionaryParser() = 0;
+
 	virtual QList<BusinessViewInformation> businessView( const QString & filename ) = 0;
 	virtual QList<BusinessViewInformation> businessViews() = 0;
 	virtual QString resolveFileName( const QString & filename ) = 0;

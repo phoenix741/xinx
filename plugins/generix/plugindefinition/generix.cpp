@@ -115,6 +115,7 @@ bool GenerixPlugin::closeProject( XinxProject * project ) {
 }
 
 QIODevice * GenerixPlugin::loadFile( const QString & filename ) {
+	Q_UNUSED( filename );
 	return 0;
 }
 

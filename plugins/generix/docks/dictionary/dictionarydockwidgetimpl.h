@@ -37,8 +37,6 @@ public:
 	DictionaryDockWidgetImpl( QWidget * parent = 0 );
 	virtual ~DictionaryDockWidgetImpl();
 
-	ContentViewNode * dictionary() { return m_dictionaryNode; }
-
 	void loadDictionary( const QString & filename );
 	void loadDictionaryList( const QString & filename );
 	void clearDictionaryList();
@@ -47,9 +45,6 @@ private slots:
 	void on_m_dictionaryList_currentIndexChanged( int index );
 private:
 	ContentViewModel * m_dictionaryModel;
-	ContentViewNode * m_dictionaryNode;
-
-	QFutureWatcher<QString> m_watcher;
 };
 
 #endif // DICTIONARYDOCKWIDGET_H
