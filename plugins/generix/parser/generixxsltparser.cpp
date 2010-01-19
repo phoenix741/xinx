@@ -25,9 +25,8 @@
 
 // Libxml2
 #include <libxslt/extensions.h>
-#include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
-#include <libxml/xlink.h>
+
 
 /* Static methode */
 
@@ -60,78 +59,62 @@ namespace Gnx {
 
 		static void message( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-				remplace les différents @ par les paramètres (@ ou @1, @2, @3, @4)
-				De 1 à 4 @
-			*/
+//				remplace les différents @ par les paramètres (@ ou @1, @2, @3, @4)
+//				De 1 à 4 @
 			return;
 		}
 
 		static void time( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-			  Aucun paramètre:
-			  Retourne System.nanoTime()
-			  */
+//			  Aucun paramètre:
+//			  Retourne System.nanoTime()
 			return;
 		}
 
 		static void timeMs( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-			  Aucun paramètre:
-			  Retourne System.nanoTime() convertit en ms
-			  */
+//			  Aucun paramètre:
+//			  Retourne System.nanoTime() convertit en ms
 			return;
 		}
 
 		static void encode( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-				1 ou 2 paramètre.
-				2nd paramètre = UTF-8 par défaut
-
-				Appel java.net.URLEncoder.encode(s, cs);
-			*/
-
+//				1 ou 2 paramètre.
+//				2nd paramètre = UTF-8 par défaut
+//
+//				Appel java.net.URLEncoder.encode(s, cs);
 			return;
 		}
 
 		static void decode( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-				1 ou 2 paramètre.
-				2nd paramètre = UTF-8 par défaut
-
-				Appel java.net.URLEncoder.decode(s, cs);
-			*/
-
+//				1 ou 2 paramètre.
+//				2nd paramètre = UTF-8 par défaut
+//
+//				Appel java.net.URLEncoder.decode(s, cs);
 			return;
 		}
 
 		static void replace( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-			  3 paramètre :
-				s, regexp, replacement
-				dans s remplace toutes les expressions de regexp par replacement
-
-				retourne le résultat
-				*/
+//			  3 paramètre :
+//				s, regexp, replacement
+//				dans s remplace toutes les expressions de regexp par replacement
+//
+//				retourne le résultat
 			return;
 		}
 
 		static void match( xmlXPathParserContextPtr ctxt, int nargs ) {
 			//xsltGenericError(xsltGenericErrorContext, "gnxTrad: number of argument incorrect\n");
-			/*
-			  2 paramètre :
-				vrai si on trouve le second paramétre (regexp) dans le premier
-				*/
+//			  2 paramètre :
+//				vrai si on trouve le second paramétre (regexp) dans le premier
 			return;
 		}
 
 		static void replaceQuote( xmlXPathParserContextPtr ctxt, int nargs ) {
-			/* retourn en chaine le premier parametre avec ' remplacé par ¤ */
+//			 retourn en chaine le premier parametre avec ' remplacé par ¤
 		}
 
 

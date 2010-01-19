@@ -363,7 +363,7 @@ private:
  * XinxCodeEditAction is a wrapper of QCodeEdit editor. This editor active
  * action in QCodeEdit.
  */
-class XinxCodeEditAction : public XinxCodeEdit {
+class LIBEXPORT XinxCodeEditAction : public XinxCodeEdit {
 	Q_OBJECT
 public:
 	/*!

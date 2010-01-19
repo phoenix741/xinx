@@ -3,13 +3,14 @@ TEMPLATE = lib
 VERSION = 1.0.0.1
 CONFIG += plugin
 QT += xml \
-    xmlpatterns
+	xmlpatterns
 DESTDIR += ../
-LIBS = -L../../components \
+LIBS += -L../../components \
     -lxinxcmp \
     -L../../framework \
-    -lxinxframework \
-    -lxml2
+	-lxinxframework \
+	-lxml2 \
+	-lxslt
 TARGET = generix
 INCLUDEPATH += ../../framework \
     ../../components
