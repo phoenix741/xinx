@@ -54,6 +54,8 @@ void DictionaryDockWidgetImpl::projectChanged() {
 			if( parser ) {
 				m_dictionaryModel = new ContentViewModel( parser->rootNode(), m_dictionaryTreeView );
 				m_dictionaryTreeView->setModel( m_dictionaryModel );
+
+				m_informationLbl->setText( tr("%1 label(s) loaded.").arg( m_dictionaryModel->rowCount() ) );
 			}
 		}
 	}

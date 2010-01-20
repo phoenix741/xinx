@@ -169,7 +169,7 @@ void ContentViewNode::detach( ContentViewNode * parent, unsigned long id ) {
 	QList<AbstractContentViewModel*> lockedModels = callModelsLock( id );
 
 	// Search the line to remove
-	int removingRow = parent->m_childs.indexOf( this );
+	int removingRow = parent->m_childs.indexOfObject( this );
 	if( removingRow < 0 ) return;
 
 	// If model, we alert it of removing row
