@@ -95,20 +95,16 @@ XsltParser * GenerixPlugin::createParser() {
 }
 
 bool GenerixPlugin::loadProject( XinxProject * project ) {
-	Q_ASSERT( m_dock );
 	Q_UNUSED( project );
 
-	m_dock->loadDictionaryList( QDir( project->projectPath() ).absoluteFilePath( "configurationdef.xml" ) );
 	ConfigurationManager::self()->getInterfaceOfProject( project );
 
 	return true;
 }
 
 bool GenerixPlugin::closeProject( XinxProject * project ) {
-	Q_ASSERT( m_dock );
 	Q_UNUSED( project );
 
-	m_dock->clearDictionaryList();
 	ConfigurationManager::self()->cleanCache();
 
 	return true;

@@ -20,51 +20,44 @@
 // Xinx header
 #include "dictionarydockwidgetimpl.h"
 #include <contentview/contentviewmodel.h>
-#include <contentview/contentviewnode.h>
+#include <configuration/configurationmanager.h>
+#include "projectproperty/generixproject.h"
 #include "dictionaryparser.h"
-#include <configuration/configurationfile.h>
-#include <project/xinxproject.h>
-
-// Qt header
-#include <QVBoxLayout>
-#include <QtConcurrentRun>
-#include <QFileDialog>
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl( QWidget * parent ) : QDockWidget( parent ), m_dictionaryModel(0)  {
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl( QWidget * parent ) : QDockWidget( parent ), m_dictionaryModel( 0 )  {
 	setupUi( this );
 
 	// Create node and model to use for the dictionary
 	//m_dictionaryModel = new ContentViewModel( m_dictionaryNode, m_dictionaryTreeView );
 	//m_dictionaryTreeView->setModel( m_dictionaryModel );
+
+	connect( XINXProjectManager::self(), SIGNAL(changed()), this, SLOT(projectChanged()) );
 }
 
 DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl() {
 
 }
 
-void DictionaryDockWidgetImpl::loadDictionaryList( const QString & filename ) {
+void DictionaryDockWidgetImpl::projectChanged() {
+	// Desactivate the dictionary
+	m_dictionaryTreeView->setModel( 0 );
+	delete m_dictionaryModel; m_dictionaryModel = 0;
 
-
-}
-
-void DictionaryDockWidgetImpl::clearDictionaryList() {
-	m_dictionaryList->setCurrentIndex( 0 );
-	while( m_dictionaryList->count() > 2 ) {
-		m_dictionaryList->removeItem( 2 );
+	// Create the new dictionary
+	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
+	if( project && project->isGenerixActivated() ) {
+		GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject( project );
+		if( interface ) {
+			DictionaryParser * parser = interface->dictionaryParser();
+			if( parser ) {
+				m_dictionaryModel = new ContentViewModel( parser->rootNode(), m_dictionaryTreeView );
+				m_dictionaryTreeView->setModel( m_dictionaryModel );
+			}
+		}
 	}
 }
 
-void DictionaryDockWidgetImpl::dictionaryLoaded() {
-	m_dictionaryList->setEnabled( true );
-}
 
-void DictionaryDockWidgetImpl::on_m_dictionaryList_currentIndexChanged( int index ) {
-
-}
-
-void DictionaryDockWidgetImpl::loadDictionary( const QString & filename ) {
-
-}
 

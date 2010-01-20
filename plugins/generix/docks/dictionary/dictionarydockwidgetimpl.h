@@ -36,13 +36,8 @@ class DictionaryDockWidgetImpl : public QDockWidget, private Ui::DictionaryDockW
 public:
 	DictionaryDockWidgetImpl( QWidget * parent = 0 );
 	virtual ~DictionaryDockWidgetImpl();
-
-	void loadDictionary( const QString & filename );
-	void loadDictionaryList( const QString & filename );
-	void clearDictionaryList();
 private slots:
-	void dictionaryLoaded();
-	void on_m_dictionaryList_currentIndexChanged( int index );
+	void projectChanged();
 private:
 	ContentViewModel * m_dictionaryModel;
 };
