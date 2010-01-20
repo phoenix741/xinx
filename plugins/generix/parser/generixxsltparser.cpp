@@ -27,7 +27,6 @@
 #include <libxslt/extensions.h>
 #include <libxml/xpathInternals.h>
 
-
 /* Static methode */
 
 namespace Gnx {

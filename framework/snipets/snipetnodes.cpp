@@ -52,7 +52,8 @@ SnipetCompletionParser * SnipetCompletionParser::self() {
 		s_self = new SnipetCompletionParser();
 		XINXStaticDeleter::self()->add( s_self );
 
-		s_self->refresh();
+		// Pas besoin de future, la première fois, l'opération est faite une unique fois et n'est pas très longue.
+		s_self->loadFromMember();
 	}
 	return s_self;
 }

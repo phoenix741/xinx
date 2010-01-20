@@ -108,7 +108,7 @@ int ContentViewNodeList::count() const {
 
 /* ContentViewNode */
 
-ContentViewNode::ContentViewNode( const QString & name, int line, bool cachedNode ) : m_autoDelete( true ), m_cachedNode( cachedNode ), m_line( line ) {
+ContentViewNode::ContentViewNode( const QString & name, int line, bool cachedNode ) : m_autoDelete( true ), m_cachedNode( cachedNode ), m_line( line ), m_testKeyData( ContentViewNode::NODE_ALL ) {
 	m_datas.insert( ContentViewNode::NODE_NAME, name );
 	m_datas.insert( ContentViewNode::NODE_DISPLAY_NAME, name );
 }
@@ -299,16 +299,20 @@ const ContentViewNodeList & ContentViewNode::childs() const {
 }
 
 bool ContentViewNode::operator==( const ContentViewNode & node ) const {
-	//	if( node.m_filename     != m_filename     ) return false;
-	if( node.m_line         != m_line         ) return false;
-	if( node.m_datas.size() != m_datas.size() ) return false;
+	if( m_testKeyData == ContentViewNode::NODE_ALL ) {
+		//	if( node.m_filename     != m_filename     ) return false;
+		if( node.m_line         != m_line         ) return false;
+		if( node.m_datas.size() != m_datas.size() ) return false;
 
-	foreach( int index, m_datas.keys() ) {
-		if( m_datas.value( index ) != node.m_datas.value( index ) )
-			return false;
+		foreach( int index, m_datas.keys() ) {
+			if( m_datas.value( index ) != node.m_datas.value( index ) )
+				return false;
+		}
+
+		return true;
+	} else {
+		return m_datas.value( m_testKeyData ) == node.m_datas.value( m_testKeyData );
 	}
-
-	return true;
 }
 
 ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
@@ -318,6 +322,11 @@ ContentViewNode & ContentViewNode::operator=( const ContentViewNode & node ) {
 
 	return *this;
 }
+
+void ContentViewNode::setCompareData( int index ) {
+	m_testKeyData = index;
+}
+
 
 /*
  * Pour empecher les deadlocks, il y a deux possibilit� :

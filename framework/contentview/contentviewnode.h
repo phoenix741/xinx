@@ -80,6 +80,7 @@ public:
 	 * as user value, if needed.
 	 */
 	enum RoleIndex {
+			NODE_ALL          = -1,  //!< Used in test only (to test all attribute)
 			NODE_DISPLAY_NAME = 0,   //!< The waiting content is a QString.
 			NODE_ICON         = 1,   //!< The waiting content is a QIcon.
 			NODE_NAME         = 2,   //!< The waiting content is a QString.
@@ -188,6 +189,13 @@ public:
 	 * in \e datas.
 	 */
 	ContentViewNode & operator=( const ContentViewNode & node );
+
+	/*!
+	 * Used by \fn operator== to test only one data, instead of test
+	 * filename, lineNumber() and all data. Used for performance.
+	 * \sa operator==()
+	 */
+	void setCompareData( int index = ContentViewNode::NODE_ALL );
 private:
 	/*!
 	 * Only the object itself can auto destroy
@@ -212,6 +220,7 @@ private:
 	int m_line;
 	QString m_filename;
 	QHash<int,QVariant> m_datas;
+	int m_testKeyData;
 
 	ContentViewNodeList m_childs;
 

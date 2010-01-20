@@ -179,7 +179,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QListWidget" name="m_preloadedFiles"/>
+        <widget class="QListWidget" name="m_preloadedFiles">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ExtendedSelection</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

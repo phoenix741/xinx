@@ -347,7 +347,9 @@ XmlCompletionParser * XmlCompletionParser::self() {
 		s_self = new XmlCompletionParser();
 		try {
 			s_self->setFilename( "datas:baseplugin_xml.xml" );
-			QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
+			//QFuture<void> future = QtConcurrent::run( (ContentViewParser*)s_self, &ContentViewParser::loadFromMember );
+			// Pas besoin de future, l'opération est faite une unique fois et n'est pas très longue.
+			s_self->loadFromMember();
 		} catch( ContentViewException e ) {
 			qWarning( qPrintable( e.getMessage() ) );
 

@@ -116,8 +116,9 @@ void DictionaryParser::readLabelsNode() {
 
 	QString code = attributes().value( "code" ).toString();
 	ContentViewNode * labels = new ContentViewNode( code, lineNumber() );
+	labels->setCompareData( ContentViewNode::NODE_DISPLAY_NAME );
 	labels->setData( "DICTIONARY_LABELS", ContentViewNode::NODE_TYPE );
-	labels->setData( ":/dictionary/images/dictionary16.png", ContentViewNode::NODE_ICON );
+	labels->setData( ":/generix/images/dictionary16.png", ContentViewNode::NODE_ICON );
 	labels = attachNode( rootNode(), labels );
 
 	while( !atEnd() ) {
@@ -144,7 +145,7 @@ void DictionaryParser::readLabelNode( ContentViewNode * parent ) {
 	ContentViewNode * label = new ContentViewNode( value, lineNumber() );
 	label->setData( QString( "%1 [Langue=%2] [Ctx=%3]" ).arg( value ).arg( lang ).arg( ctx ), ContentViewNode::NODE_DISPLAY_NAME );
 	label->setData( "DICTIONARY_LABEL", ContentViewNode::NODE_TYPE );
-	label->setData( ":/dictionary/images/label.png", ContentViewNode::NODE_ICON );
+	label->setData( ":/generix/images/label.png", ContentViewNode::NODE_ICON );
 	label->setData( lang, ContentViewNode::NODE_USER_VALUE );
 	label->setData( ctx, ContentViewNode::NODE_USER_VALUE + 1 );
 	attachNode( parent, label );

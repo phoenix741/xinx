@@ -107,7 +107,13 @@ void ProjectPropertyImpl::on_m_preloadedFiles_itemSelectionChanged() {
 }
 
 void ProjectPropertyImpl::on_m_addPreloadedFile_clicked() {
-	m_preloadedProjectFiles->add( m_preloadedFiles->currentItem()->text() );
+	foreach( QListWidgetItem * item, m_preloadedFiles->selectedItems() ) {
+		const QString filename = item->text();
+
+		if( ! m_preloadedProjectFiles->values().contains( filename ) ) {
+			m_preloadedProjectFiles->add( filename );
+		}
+	}
 }
 
 void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {

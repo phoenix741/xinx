@@ -28,18 +28,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QFile>
-#include <QtConcurrentRun>
-
-/* Static function */
-
-static QString loadDictionaryParser( DictionaryParser * parser ) {
-	try {
-		parser->loadFromMember();
-	} catch( ContentViewException e ) {
-		return e.getMessage();
-	}
-	return QString();
-}
 
 /* GceConfigurationDefParser */
 
@@ -300,7 +288,11 @@ void GceConfigurationDef::readConfigurationDef( const QString & configurationdef
 	if( ! m_dictionnaries.isEmpty() ) {
 		m_dictionaryParser = new DictionaryParser();
 		m_dictionaryParser->setFileList( m_dictionnaries );
-		QtConcurrent::run( loadDictionaryParser, m_dictionaryParser );
+		try {
+			m_dictionaryParser->loadFromMember();
+		} catch( ContentViewException e ) {
+			qWarning() << e.getMessage();
+		}
 	}
 }
 
