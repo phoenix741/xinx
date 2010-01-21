@@ -37,7 +37,7 @@ class QTextCodec;
 class XslContentViewParser : public ContentViewParser, private QXmlStreamReader {
 	Q_DECLARE_TR_FUNCTIONS(XslContentViewParser)
 public:
-	XslContentViewParser( bool autoDelete = false );
+	XslContentViewParser( bool persistent = false );
 	virtual ~XslContentViewParser();
 
 	QTextCodec * codec() { return m_codec; };

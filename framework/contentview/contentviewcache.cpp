@@ -51,7 +51,9 @@ ContentViewParser * parserLoading( ContentViewParser * parser ) {
 ContentViewCache::ContentViewCache( XinxProject * project ) : QObject( project ), m_project( project ) {
 	m_watcher = new QFutureWatcher<ContentViewParser*> ( this );
 	connect( m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)) );
-	m_timerId = startTimer( 200 );
+	connect( m_watcher, SIGNAL(finished()), this, SIGNAL(cacheLoaded()) );
+	connect( m_watcher, SIGNAL(progressRangeChanged(int,int)), this, SIGNAL(progressRangeChanged(int,int)) );
+	connect( m_watcher, SIGNAL(progressValueChanged(int)), this, SIGNAL(progressValueChanged(int)) );
 }
 
 ContentViewCache::~ContentViewCache() {
@@ -68,12 +70,10 @@ ContentViewCache::~ContentViewCache() {
 	}
 }
 
-void ContentViewCache::initializeCache( QWidget * parent ) {
+void ContentViewCache::initializeCache() {
 	if( m_watcher->isRunning() ) {
 		m_watcher->waitForFinished();
 	}
-
-	killTimer( m_timerId );
 
 	// Initialise the first list
 	QStringList preloadedFiles;
@@ -84,12 +84,12 @@ void ContentViewCache::initializeCache( QWidget * parent ) {
 		}
 	}
 
-	loadCache( preloadedFiles, parent );
+	loadCache( preloadedFiles );
 
-	m_timerId = startTimer( 200 );
+	m_timerId = startTimer( 1000 );
 }
 
-void ContentViewCache::loadCache( QStringList filenames, QWidget * parent ) {
+void ContentViewCache::loadCache( QStringList filenames ) {
 	const QStringList & keys = m_nodes.keys();
 
 	QQueue<QString> imports;
@@ -130,24 +130,17 @@ void ContentViewCache::loadCache( QStringList filenames, QWidget * parent ) {
 	if( parsers.isEmpty() )
 		return;
 
-	// Watcher
-	QFutureWatcher<ContentViewParser*> watcher;
+	m_parsers.append( parsers );
 
-	// Create the progress dialog
-	QProgressDialog progressDlg( parent );
-	progressDlg.setLabelText( tr( "Progressing using %1 thread(s) ..." ).arg( QThread::idealThreadCount() ) );
-	connect( &watcher, SIGNAL(finished()), &progressDlg, SLOT(reset()) );
-	connect( &watcher, SIGNAL(progressRangeChanged(int,int)), &progressDlg, SLOT(setRange(int,int)) );
-	connect( &watcher, SIGNAL(progressValueChanged(int)), &progressDlg, SLOT(setValue(int)) );
+}
 
-	watcher.setFuture( QtConcurrent::mapped( parsers, parserLoading ) );
-	progressDlg.exec();
-	watcher.waitForFinished();
+void ContentViewCache::addToCache( ContentViewParser * parser ) {
+	m_parsers.append( parser );
 }
 
 void ContentViewCache::resultReadyAt( int index ) {
 	ContentViewParser * parser = m_watcher->resultAt( index );
-	if( parser ) {
+	if( parser && ! parser->isPersistent() ) {
 		delete parser;
 	}
 }

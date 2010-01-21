@@ -34,8 +34,8 @@ class ConfigurationManager : public QObject {
 public:
 	virtual ~ConfigurationManager();
 
-	GceInterface * getInterfaceOf( const QString & directory );
 	GceInterface * getInterfaceOfProject( XinxProject * project );
+	GceInterface * getInterfaceOfDirectory( const QString & directory );
 
 	void cleanCache();
 
@@ -43,6 +43,7 @@ public:
 private slots:
 	void clearCache( const QString & filename );
 private:
+
 	ConfigurationManager();
 
 	QFileSystemWatcher * m_watcher;

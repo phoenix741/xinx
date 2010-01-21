@@ -44,6 +44,7 @@
 #include <snipets/snipetmenu.h>
 #include "welcomdlgimpl.h"
 #include <project/externalfileresolver.h>
+#include <contentview/contentviewcache.h>
 
 // Qt header
 #include <QObject>
@@ -835,10 +836,14 @@ void MainformImpl::createStatusBar() {
 	m_statusBar = new QStatusBar( this );
 	setStatusBar( m_statusBar );
 
+	m_indexingBar = new QProgressBar( this );
+	m_indexingBar->setMaximumWidth( 150 );
+
 	m_codecLabel = new QLabel( tr("Unknown") );
 	m_lineFeedLabel = new QLabel( tr("Unknown") );
 	m_editorPosition = new QLabel( "000x000" );
 	m_threadCount = new QLabel( "000 (000)" );
+	statusBar()->addPermanentWidget( m_indexingBar );
 	statusBar()->addPermanentWidget( m_codecLabel );
 	statusBar()->addPermanentWidget( m_lineFeedLabel );
 	statusBar()->addPermanentWidget( m_editorPosition );
@@ -1749,6 +1754,12 @@ void MainformImpl::openProject( const QString & filename ) {
 			XINXConfig::self()->config().project.recentProjectFiles.removeLast();
 
 		XINXProjectManager::self()->deleteProject();
+
+		connect( project->filesCache(), SIGNAL(cacheLoaded()), m_indexingBar, SLOT(hide()) );
+		connect( project->filesCache(), SIGNAL(progressRangeChanged(int,int)), m_indexingBar, SLOT(setRange(int,int)) );
+		connect( project->filesCache(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(setValue(int)) );
+		connect( project->filesCache(), SIGNAL(progressValueChanged(int)), m_indexingBar, SLOT(show()) );
+
 		XINXProjectManager::self()->setCurrentProject( project );
 
 		foreach( XinxPluginElement * e, XinxPluginsLoader::self()->plugins() ) {

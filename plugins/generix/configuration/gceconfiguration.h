@@ -38,7 +38,6 @@ public:
 	virtual QStringList filenames();
 	virtual ConfigurationVersion version();
 	virtual QStringList dictionnaries();
-	virtual DictionaryParser * dictionaryParser();
 	virtual QList<BusinessViewInformation> businessView( const QString & filename );
 	virtual QList<BusinessViewInformation> businessViews();
 	virtual QString resolveFileName( const QString & filename );

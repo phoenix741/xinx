@@ -49,19 +49,19 @@ int ContentViewException::getColumn() const {
 
 /* ContentViewParser */
 
-ContentViewParser::ContentViewParser( bool autoDelete ) : m_autoDelete( autoDelete ), m_alreadyRunning( false ), m_rootNode( 0 ), m_device( 0 ), m_id( 0 ), m_decaledLine( 0 ) {
+ContentViewParser::ContentViewParser( bool persistent ) : m_persistent( persistent ), m_alreadyRunning( false ), m_rootNode( 0 ), m_device( 0 ), m_id( 0 ), m_decaledLine( 0 ) {
 }
 
 ContentViewParser::~ContentViewParser() {
 	delete m_device;
 }
 
-void ContentViewParser::setAutoDelete( bool value ) {
-	m_autoDelete = value;
+void ContentViewParser::setPersistent( bool value ) {
+	m_persistent = value;
 }
 
-bool ContentViewParser::isAutoDelete() const {
-	return m_autoDelete;
+bool ContentViewParser::isPersistent() const {
+	return m_persistent;
 }
 
 void ContentViewParser::setAttachId( unsigned long value ) {
@@ -125,7 +125,7 @@ void ContentViewParser::createContentViewNode( ContentViewNode * parent, const Q
 	ContentViewNode * node = 0;
 
 	// If cache (so if we have project opened)
-	ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->preloadedFilesCache() : 0;
+	ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->filesCache() : 0;
 	if( cache ) {
 		// Get the node from the cache
 		node = cache->contentOfFileName( absFilename );
@@ -204,14 +204,12 @@ void ContentViewParser::loadFromContent( ContentViewNode * rootNode, const QByte
 		m_device   = 0;
 
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
 		m_rootNode = 0;
 		m_device   = 0;
 
 		m_alreadyRunning = false;
 
-		if( m_autoDelete ) delete this;
 		throw e;
 	}
 }
@@ -243,14 +241,12 @@ void ContentViewParser::loadFromFile( ContentViewNode * rootNode, const QString 
 		m_filename = QString();
 
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
 		m_rootNode = 0;
 		m_device   = 0;
 		m_filename = QString();
 
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 
 		throw e;
 	}
@@ -273,13 +269,11 @@ void ContentViewParser::loadFromDevice( ContentViewNode * rootNode, QIODevice * 
 		m_device   = 0;
 
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
 		m_rootNode = 0;
 		m_device   = 0;
 
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 
 		throw e;
 	}
@@ -297,10 +291,8 @@ void ContentViewParser::loadFromMember() {
 		loadFromDeviceImpl();
 
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 	} catch( ContentViewException e ) {
 		m_alreadyRunning = false;
-		if( m_autoDelete ) delete this;
 
 		throw e;
 	}

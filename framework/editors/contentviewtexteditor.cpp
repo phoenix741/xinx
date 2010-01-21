@@ -93,7 +93,7 @@ void ContentViewTextEditor::updateModel() {
 		}
 
 		// Search imports
-		ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->preloadedFilesCache() : 0;
+		ContentViewCache * cache = XINXProjectManager::self()->project() ? XINXProjectManager::self()->project()->filesCache() : 0;
 		if( cache ) {
 			m_parser->loadFromContent( 0, encodedText );
 			QStringList imports = m_parser->imports();		
@@ -101,7 +101,7 @@ void ContentViewTextEditor::updateModel() {
 			while( i.hasNext() ) {
 				i.setValue( QDir::cleanPath( i.next() ) );
 			}
-			cache->loadCache( imports, this );
+			cache->loadCache( imports );
 		}
 
 		// Re-load

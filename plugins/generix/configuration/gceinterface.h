@@ -40,7 +40,6 @@ public:
 	virtual ConfigurationVersion version() = 0;
 
 	virtual QStringList dictionnaries() = 0;
-	virtual DictionaryParser * dictionaryParser() = 0;
 
 	virtual QList<BusinessViewInformation> businessView( const QString & filename ) = 0;
 	virtual QList<BusinessViewInformation> businessViews() = 0;

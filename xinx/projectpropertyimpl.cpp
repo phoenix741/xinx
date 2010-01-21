@@ -126,7 +126,7 @@ void ProjectPropertyImpl::loadFromProject( XinxProject * project ) {
 
 	m_preloadedProjectFiles->setValues( project->preloadedFiles() );
 
-	foreach( QString filename, project->preloadedFilesCache()->contentsViewLoaded() ) {
+	foreach( QString filename, project->filesCache()->contentsViewLoaded() ) {
 		IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType( filename );
 		QString fn = QDir( project->projectPath() ).relativeFilePath( filename );
 		if( fileType )

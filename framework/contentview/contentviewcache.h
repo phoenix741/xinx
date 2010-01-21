@@ -73,9 +73,15 @@ public:
 	QStringList contentsViewLoaded() const;
 
 	//! Intialize a cache from the content of preloaded files.
-	void initializeCache( QWidget * parent = 0 );
+	void initializeCache();
 	//! Load file and import to cache
-	void loadCache( QStringList filenames, QWidget * parent = 0 );
+	void loadCache( QStringList filenames );	
+	//! Load and add the parser to cache
+	void addToCache( ContentViewParser * parser );
+signals:
+	void cacheLoaded();
+	void progressRangeChanged( int min, int max );
+	void progressValueChanged( int value );
 protected:
 	virtual void timerEvent( QTimerEvent * event );
 private slots:

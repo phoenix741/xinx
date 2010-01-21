@@ -46,6 +46,7 @@ void DictionaryDockWidgetImpl::projectChanged() {
 	delete m_dictionaryModel; m_dictionaryModel = 0;
 
 	// Create the new dictionary
+	/*
 	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
 	if( project && project->isGenerixActivated() ) {
 		GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject( project );
@@ -59,6 +60,7 @@ void DictionaryDockWidgetImpl::projectChanged() {
 			}
 		}
 	}
+	*/
 }
 
 

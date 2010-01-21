@@ -30,7 +30,7 @@
 class DictionaryParser : public ContentViewParser, private QXmlStreamReader {
 	Q_DECLARE_TR_FUNCTIONS(DictionaryParser)
 public:
-	DictionaryParser( bool autoDelete = false );
+	DictionaryParser();
 	virtual ~DictionaryParser();
 
 	QTextCodec * codec() { return m_codec; }
@@ -40,9 +40,12 @@ public:
 
 	void setFileList( const QStringList & files );
 	virtual void setFilename( const QString & filename );
+
+	void refresh();
 protected:
 	virtual void loadFromDeviceImpl();
 private:
+	void loads();
 	void readRootNode();
 	void readLabelsNode();
 	void readLabelNode( ContentViewNode * parent );

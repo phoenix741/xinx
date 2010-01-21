@@ -87,7 +87,7 @@ public:
 	 * If \e autoDelete is se to true, the object will be self destroyed after
 	 * the content of the node read.
 	 */
-	ContentViewParser( bool autoDelete = false );
+	ContentViewParser( bool persistent = false );
 	virtual ~ContentViewParser();
 
 	/*! Load the content of the givent device and return true if sucessfully loaded */
@@ -121,9 +121,9 @@ public:
 	unsigned long attachId();
 
 	/*! Change the autodelete member to \e value. */
-	void setAutoDelete( bool value );
+	void setPersistent( bool value );
 	/*! Return wethere the object will be auto deleted */
-	bool isAutoDelete() const;
+	bool isPersistent() const;
 
 	/*! Set a decalage when attach a node to the parent */
 	void setDecalage( int line );
@@ -160,7 +160,7 @@ protected:
 	QString locationOf( const QString & relativeFilename );
 private:
 	QList< QPair<ContentViewNode*,ContentViewNode*> > m_attachedNode;
-	bool m_autoDelete, m_alreadyRunning;
+	bool m_persistent, m_alreadyRunning;
 	QString m_filename;
 	ContentViewNode * m_rootNode;
 	QIODevice * m_device;

@@ -24,8 +24,9 @@
 // Qt header
 #include <QTextCodec>
 #include <QVariant>
+#include <QtConcurrentRun>
 
-DictionaryParser::DictionaryParser( bool autoDelete ) : ContentViewParser( autoDelete ), m_codec( 0 ) {
+DictionaryParser::DictionaryParser() : ContentViewParser( true ), m_codec( 0 ) {
 	m_rootNode = new ContentViewNode( "dictionary", -1 );
 	m_rootNode->setAutoDelete( false );
 	setRootNode( m_rootNode );
@@ -51,12 +52,24 @@ void DictionaryParser::setFileList( const QStringList & files ) {
 	m_files = files;
 }
 
+void DictionaryParser::loads() {
+	try {
+		this->loadFromMember();
+	} catch( ContentViewException e ) {
+		qWarning() << e.getMessage();
+	}
+}
+
+void DictionaryParser::refresh() {
+	QFuture<void> f = QtConcurrent::run( this, &DictionaryParser::loads );
+}
+
 /*
  * <?xml version = '1.0' encoding = 'ISO-8859-1'?>
  * <root default="FRA" xsi:noNamespaceSchemaLocation="trad.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  *   <labels code="LBL.A">
- *      <label lang="FRA" ctx="a_client_dossier.xsl" value="�"/>
- *      <label lang="FRA" ctx="f_balance_agee_criteres.xsl" value="�"/>
+ *      <label lang="FRA" ctx="a_client_dossier.xsl" value="a"/>
+ *      <label lang="FRA" ctx="f_balance_agee_criteres.xsl" value="a"/>
  *   </labels>
  * </root>
  */

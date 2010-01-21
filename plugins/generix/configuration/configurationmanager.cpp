@@ -79,7 +79,7 @@ void ConfigurationManager::clearCache( const QString & filename ) {
 	}
 }
 
-GceInterface * ConfigurationManager::getInterfaceOf( const QString & directory ) {
+GceInterface * ConfigurationManager::getInterfaceOfDirectory( const QString & directory ) {
 	if( m_interface.contains( directory ) ) {
 		return m_interface.value( directory );
 	}
@@ -100,7 +100,7 @@ GceInterface * ConfigurationManager::getInterfaceOf( const QString & directory )
 GceInterface * ConfigurationManager::getInterfaceOfProject( XinxProject * project ) {
 	GenerixProject * gnxProject = static_cast<GenerixProject*>( project );
 	if( gnxProject ) {
-		return getInterfaceOf( gnxProject->webModuleLocation() );
+		return getInterfaceOfDirectory( gnxProject->webModuleLocation() );
 	} else {
 		return 0;
 	}

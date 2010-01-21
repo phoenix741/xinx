@@ -37,7 +37,7 @@ XmlCompletionParser * XmlCompletionParser::s_self = 0;
 
 /* XslContentViewParser */
 
-XslContentViewParser::XslContentViewParser( bool autoDelete ) : ContentViewParser( autoDelete ), m_codec( 0 ) {
+XslContentViewParser::XslContentViewParser( bool persistent ) : ContentViewParser( persistent ), m_codec( 0 ) {
 }
 
 XslContentViewParser::~XslContentViewParser() {

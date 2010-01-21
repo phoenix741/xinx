@@ -35,7 +35,7 @@ SnipetCompletionParser * SnipetCompletionParser::s_self = 0;
 
 /* SnipetCompletionParser */
 
-SnipetCompletionParser::SnipetCompletionParser() {
+SnipetCompletionParser::SnipetCompletionParser() : ContentViewParser( true ) {
 	ContentViewNode * node = new ContentViewNode( "SnipetRoot", -1 );
 	node->setAutoDelete( false );
 	setRootNode( node );

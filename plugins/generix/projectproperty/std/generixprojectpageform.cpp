@@ -81,7 +81,7 @@ bool GenerixProjectPageFormImpl::isVisible() {
 
 
 void GenerixProjectPageFormImpl::updateInformations() {
-	GceInterface * interface = ConfigurationManager::self()->getInterfaceOf( m_webModuleLocation->lineEdit()->text() );
+	GceInterface * interface = ConfigurationManager::self()->getInterfaceOfDirectory( m_webModuleLocation->lineEdit()->text() );
 	if( interface ) {
 		m_propertyFileLabel->setText( QDir( m_webModuleLocation->lineEdit()->text() ).relativeFilePath( interface->rootFilename() ) );
 		m_configurationVersionLabel->setVersion( interface->version() );

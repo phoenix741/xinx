@@ -285,7 +285,7 @@ public:
 	QStringList & preloadedFiles();
 
 	/*! Content the cache of preloaded files */
-	ContentViewCache * preloadedFilesCache();
+	ContentViewCache * filesCache();
 
 	/*! Preload file that can be used later */
 	void preloadFilesCache();

@@ -36,6 +36,7 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QToolBar>
+#include <QProgressBar>
 
 class FileContentDockWidget;
 class ProjectDirectoryDockWidget;
@@ -120,11 +121,13 @@ private:
 	bool m_rcsVisible;
 	QTimer * m_timer;
 
-	// Label text
+	// Status bar
 	QLabel * m_editorPosition;
 	QLabel * m_threadCount;
 	QLabel * m_codecLabel;
 	QLabel * m_lineFeedLabel;
+
+	QProgressBar * m_indexingBar;
 
 	// Status bar
 	QStatusBar * m_statusBar;
