@@ -28,7 +28,7 @@ SnipetCompletionNodeModel::SnipetCompletionNodeModel( ContentViewNode * root, QO
 }
 
 SnipetCompletionNodeModel::~SnipetCompletionNodeModel() {
-	SnipetCompletionParser::self()->rootNode()->removeModel( this, (unsigned long)rootNode() );
+	SnipetCompletionParser::self()->rootNode()->removeModel( this, (unsigned long)SnipetCompletionParser::self()->rootNode() );
 }
 
 void SnipetCompletionNodeModel::timerEvent( QTimerEvent * event ) {
@@ -36,6 +36,6 @@ void SnipetCompletionNodeModel::timerEvent( QTimerEvent * event ) {
 
 	QMutexLocker locker( mutex() );
 
-	SnipetCompletionParser::self()->rootNode()->addModel( this, (unsigned long)rootNode() );
+	SnipetCompletionParser::self()->rootNode()->addModel( this, (unsigned long)SnipetCompletionParser::self()->rootNode() );
 	addAllNodes( 0, SnipetCompletionParser::self()->rootNode() );
 }

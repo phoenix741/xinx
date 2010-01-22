@@ -37,6 +37,8 @@ public:
 	GceInterface * getInterfaceOfProject( XinxProject * project );
 	GceInterface * getInterfaceOfDirectory( const QString & directory );
 
+	DictionaryParser * dictionaryOfProject( XinxProject * project );
+
 	void cleanCache();
 
 	static ConfigurationManager * self();
@@ -47,8 +49,11 @@ private:
 	ConfigurationManager();
 
 	QFileSystemWatcher * m_watcher;
-	QHash<QString,QString> m_fileToDirectory;
+	QHash<QString,QString> m_fileToGceInterfaceKey;
+	QHash<QString,XinxProject*> m_fileToDictionaryKey;
+
 	QHash<QString,GceInterface*> m_interface;
+	QHash<XinxProject*,DictionaryParser*> m_dictionary;
 
 	static ConfigurationManager * s_self;
 };

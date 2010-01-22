@@ -39,12 +39,13 @@ SnipetCompletionParser::SnipetCompletionParser() : ContentViewParser( true ) {
 	ContentViewNode * node = new ContentViewNode( "SnipetRoot", -1 );
 	node->setAutoDelete( false );
 	setRootNode( node );
+	setAttachId( (unsigned long)node );
 
 	connect( XINXConfig::self(), SIGNAL(changed()), this, SLOT(refresh()) );
 }
 
 SnipetCompletionParser::~SnipetCompletionParser() {
-
+	rootNode()->setAutoDelete( true );
 }
 
 SnipetCompletionParser * SnipetCompletionParser::self() {

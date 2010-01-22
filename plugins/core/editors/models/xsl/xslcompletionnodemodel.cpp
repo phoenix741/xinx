@@ -32,7 +32,7 @@ XslCompletionNodeModel::XslCompletionNodeModel( ContentViewNode * root, QObject 
 }
 
 XslCompletionNodeModel::~XslCompletionNodeModel() {
-	XmlCompletionParser::self()->rootNode()->removeModel( this, (unsigned long)rootNode() );
+	XmlCompletionParser::self()->rootNode()->removeModel( this, (unsigned long)XmlCompletionParser::self()->rootNode() );
 }
 
 void XslCompletionNodeModel::timerEvent( QTimerEvent * event ) {
@@ -40,7 +40,7 @@ void XslCompletionNodeModel::timerEvent( QTimerEvent * event ) {
 
 	QMutexLocker locker( mutex() );
 
-	XmlCompletionParser::self()->rootNode()->addModel( this, (unsigned long)rootNode() );
+	XmlCompletionParser::self()->rootNode()->addModel( this, (unsigned long)XmlCompletionParser::self()->rootNode() );
 	addAllNodes( 0, XmlCompletionParser::self()->rootNode() );
 }
 

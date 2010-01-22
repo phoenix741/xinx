@@ -23,6 +23,7 @@
 #include <configuration/configurationmanager.h>
 #include "projectproperty/generixproject.h"
 #include "dictionaryparser.h"
+#include <modeltest.h>
 
 /* DictionaryDockWidgetImpl */
 
@@ -46,21 +47,17 @@ void DictionaryDockWidgetImpl::projectChanged() {
 	delete m_dictionaryModel; m_dictionaryModel = 0;
 
 	// Create the new dictionary
-	/*
 	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
 	if( project && project->isGenerixActivated() ) {
-		GceInterface * interface = ConfigurationManager::self()->getInterfaceOfProject( project );
-		if( interface ) {
-			DictionaryParser * parser = interface->dictionaryParser();
-			if( parser ) {
-				m_dictionaryModel = new ContentViewModel( parser->rootNode(), m_dictionaryTreeView );
-				m_dictionaryTreeView->setModel( m_dictionaryModel );
+		DictionaryParser * parser = ConfigurationManager::self()->dictionaryOfProject( project );
+		if( parser ) {
+			m_dictionaryModel = new ContentViewModel( parser->rootNode(), m_dictionaryTreeView );
+			new ModelTest( m_dictionaryModel );
+			m_dictionaryTreeView->setModel( m_dictionaryModel );
 
-				m_informationLbl->setText( tr("%1 label(s) loaded.").arg( m_dictionaryModel->rowCount() ) );
-			}
+			m_informationLbl->setText( tr("%1 label(s) loaded.").arg( m_dictionaryModel->rowCount() ) );
 		}
 	}
-	*/
 }
 
 

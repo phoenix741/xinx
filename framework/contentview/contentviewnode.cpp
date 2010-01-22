@@ -361,8 +361,24 @@ QList<AbstractContentViewModel*> ContentViewNode::callModelsLock( unsigned long 
 	qSort( models );
 	models.removeAll( 0 );
 
-	foreach( AbstractContentViewModel * model, models ) {
-		model->mutex()->lock();
+	AbstractContentViewModel * model = 0;
+	for( int i = 0 ; i < models.size(); i++ ) {
+		if( models.at( i ) == model ) continue; // Remove duplicate entries
+		if( ! models.at( i ) ) continue;        // Ignore empty model
+
+		model = models.at( i );
+
+		// Le but ici est d'empecher les dead lock. Si l'un des modeles est déjç utilisé alors on ne le lock pas.
+		// Ce point n'est peut-être pas necessaire car nous ordonons les models.
+		if( ! model->mutex()->tryLock() ) {
+			//qDebug() << QThread::currentThread() << " unlock " << result;
+			foreach( AbstractContentViewModel * lockedModel, result ) {
+				lockedModel->mutex()->unlock();
+			}
+			result.clear();
+			i = 0;
+			continue;
+		}
 		result += model;
 	}
 

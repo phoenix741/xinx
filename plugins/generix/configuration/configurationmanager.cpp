@@ -23,6 +23,7 @@
 #include <core/filewatcher.h>
 #include "configuration/gceinterfacefactory.h"
 #include "projectproperty/generixproject.h"
+#include <contentview/contentviewcache.h>
 
 /* Global */
 
@@ -42,6 +43,9 @@ ConfigurationManager::~ConfigurationManager() {
 	foreach( GceInterface * interface, m_interface.values() ) {
 		delete interface;
 	}
+	foreach( DictionaryParser * parser, m_dictionary.values() ) {
+		delete parser;
+	}
 }
 
 ConfigurationManager * ConfigurationManager::self() {
@@ -57,24 +61,29 @@ void ConfigurationManager::cleanCache() {
 		delete interface;
 	}
 
+	foreach( DictionaryParser * parser, m_dictionary.values() ) {
+		delete parser;
+	}
+
 	foreach( const QString & key, m_interface.keys() ) {
 		m_watcher->removePath( key );
 	}
 
-	m_fileToDirectory.clear();
+	m_dictionary.clear();
+	m_fileToGceInterfaceKey.clear();
 	m_interface.clear();
 }
 
 void ConfigurationManager::clearCache( const QString & filename ) {
-	QString directory = m_fileToDirectory.value( filename );
+	QString directory = m_fileToGceInterfaceKey.value( filename );
 	if( ! directory.isEmpty() ) {
 		foreach( GceInterface * interface, m_interface.values( directory ) ) {
 			delete interface;
 		}
 		m_interface.remove( directory );
-		foreach( const QString & key, m_fileToDirectory.keys( directory ) ) {
+		foreach( const QString & key, m_fileToGceInterfaceKey.keys( directory ) ) {
 			m_watcher->removePath( key );
-			m_fileToDirectory.remove( key );
+			m_fileToGceInterfaceKey.remove( key );
 		}
 	}
 }
@@ -89,7 +98,7 @@ GceInterface * ConfigurationManager::getInterfaceOfDirectory( const QString & di
 	if( interface ) {
 		m_interface.insert( directory, interface );
 		foreach( const QString & file, interface->filenames() ) {
-			m_fileToDirectory.insert( file, directory );
+			m_fileToGceInterfaceKey.insert( file, directory );
 			m_watcher->addPath( file );
 		}
 	}
@@ -105,4 +114,26 @@ GceInterface * ConfigurationManager::getInterfaceOfProject( XinxProject * projec
 		return 0;
 	}
 }
+
+DictionaryParser * ConfigurationManager::dictionaryOfProject( XinxProject * project ) {
+	if( ! m_dictionary.contains( project ) )  {
+		QStringList dictionaries = getInterfaceOfProject( project )->dictionnaries();
+		DictionaryParser * parser = 0;
+		if( dictionaries.size() ) {
+			parser = new DictionaryParser();
+			parser->setFileList( dictionaries );
+
+			if( project->filesCache() ) {
+				project->filesCache()->addToCache( parser );
+			} else {
+				parser->loadFromMember();
+			}
+		}
+
+		m_dictionary.insert( project, parser );
+	}
+
+	return m_dictionary.value( project );
+}
+
 

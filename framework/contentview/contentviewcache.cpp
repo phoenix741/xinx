@@ -49,6 +49,8 @@ ContentViewParser * parserLoading( ContentViewParser * parser ) {
 /* ContentViewCache */
 
 ContentViewCache::ContentViewCache( XinxProject * project ) : QObject( project ), m_project( project ) {
+	//QThreadPool::globalInstance()->setMaxThreadCount( 1 );
+
 	m_watcher = new QFutureWatcher<ContentViewParser*> ( this );
 	connect( m_watcher, SIGNAL(resultReadyAt(int)), this, SLOT(resultReadyAt(int)) );
 	connect( m_watcher, SIGNAL(finished()), this, SIGNAL(cacheLoaded()) );
@@ -121,16 +123,10 @@ void ContentViewCache::loadCache( QStringList filenames ) {
 		}
 	}
 
-	QList<ContentViewParser*> parsers;
 	foreach( QString filename, filenames ) {
 		ContentViewParser * parser = createParserAndNode( filename );
-		if( parser ) parsers << parser;
+		if( parser ) m_parsers << parser;
 	}
-
-	if( parsers.isEmpty() )
-		return;
-
-	m_parsers.append( parsers );
 
 }
 

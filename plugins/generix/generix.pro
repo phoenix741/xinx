@@ -83,3 +83,5 @@ FORMS += ui/dictionarydockwidget.ui \
     projectproperty/wizard/newgenerixderivation3page.ui \
     docks/project/gnxprojectdock.ui \
     savedialog/derivationdialog.ui
+
+include(../../ext/qmodeltest/modeltest.pri)

@@ -30,6 +30,7 @@ DictionaryParser::DictionaryParser() : ContentViewParser( true ), m_codec( 0 ) {
 	m_rootNode = new ContentViewNode( "dictionary", -1 );
 	m_rootNode->setAutoDelete( false );
 	setRootNode( m_rootNode );
+	setAttachId( (unsigned long)m_rootNode );
 }
 
 DictionaryParser::~DictionaryParser() {

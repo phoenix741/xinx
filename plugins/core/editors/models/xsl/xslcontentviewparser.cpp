@@ -336,6 +336,7 @@ XmlCompletionParser::XmlCompletionParser() : ContentViewParser( false ), m_codec
 	ContentViewNode * node = new ContentViewNode( "XmlRoot", -1 );
 	node->setAutoDelete( false );
 	setRootNode( node );
+	setAttachId( (unsigned long)node );
 }
 
 XmlCompletionParser::~XmlCompletionParser() {
