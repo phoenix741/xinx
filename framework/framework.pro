@@ -78,7 +78,7 @@ HEADERS = rcs/rcs.h \
     rcs/rcsmanager.h \
     rcs/commitmessagedialogimpl.h \
     project/newprojecttemplate.h \
-    snipets/snipetnodes.h \
+	snipets/snipetcompletionparser.h \
     snipets/snipetcompletionnodemodel.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
@@ -131,7 +131,7 @@ SOURCES = rcs/rcs.cpp \
     rcs/rcsmanager.cpp \
     rcs/commitmessagedialogimpl.cpp \
     project/newprojecttemplate.cpp \
-    snipets/snipetnodes.cpp \
+	snipets/snipetcompletionparser.cpp \
     snipets/snipetcompletionnodemodel.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \

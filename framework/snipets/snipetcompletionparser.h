@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef SNIPETNODES_H
-#define SNIPETNODES_H
+#ifndef SNIPETCOMPLETIONPARSER_H
+#define SNIPETCOMPLETIONPARSER_H
 
 // Xinx header
 #include <core/lib-config.h>
@@ -43,4 +43,4 @@ private:
 	static SnipetCompletionParser * s_self;
 };
 
-#endif // SNIPETNODES_H
+#endif // SNIPETCOMPLETIONPARSER_H

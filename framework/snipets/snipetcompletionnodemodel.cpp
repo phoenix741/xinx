@@ -19,7 +19,7 @@
 
 // Xinx header
 #include "snipetcompletionnodemodel.h"
-#include "snipets/snipetnodes.h"
+#include "snipets/snipetcompletionparser.h"
 #include "contentview/contentviewnode.h"
 
 SnipetCompletionNodeModel::SnipetCompletionNodeModel( ContentViewNode * root, QObject *parent ) : CompletionNodeModel( root ? root : SnipetCompletionParser::self()->rootNode(), parent ) {

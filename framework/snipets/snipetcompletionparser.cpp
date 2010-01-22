@@ -18,7 +18,7 @@
  * *********************************************************************** */
 
 // Xinx header
-#include "snipetnodes.h"
+#include "snipetcompletionparser.h"
 #include "snipetmanager.h"
 #include "contentview/contentviewnode.h"
 #include "core/xinxconfig.h"
