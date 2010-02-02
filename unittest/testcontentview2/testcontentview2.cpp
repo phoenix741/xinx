@@ -47,6 +47,8 @@ private slots:
 
 	void testTreeModel();
 
+	void testContentViewCache();
+
 	void cleanupTestCase();
 private:
 	int m_rootId;
@@ -176,6 +178,28 @@ void TestContentView2::testTreeModel() {
 
 	delete tree;
 	delete model;
+}
+
+void TestContentView2::testContentViewCache() {
+	m_cache->initializeCache();
+	m_cache->wait();
+
+	QString filename = QFileInfo( "../doc/examples/imports1/patients.xsl" ).canonicalFilePath();
+	m_cache->refreshCache( filename );
+	m_cache->wait();
+
+	m_cache->destroyCache( filename );
+	try {
+		QSqlDatabase db = XINXProjectManager::self()->session()->database();
+		db.transaction();
+		uint rootId = m_cache->createRootId( filename, true );
+		db.rollback();
+
+		ContentView2::Node rootNode( db, rootId );
+
+		QFAIL( "An exception will be thrown in this case" );
+	} catch( ContentView2::NodeException e ) {
+	}
 }
 
 void TestContentView2::cleanupTestCase() {

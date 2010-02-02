@@ -36,7 +36,7 @@ namespace ContentView2 {
 
 Cache::Cache( XinxProject * project ) : m_project( project ) {
 	m_watcher = new QFileSystemWatcher( this );
-	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
+	connect( m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(refreshCache(QString)) );
 }
 
 Cache::~Cache() {
@@ -49,24 +49,25 @@ QStringList Cache::contentsViewLoaded() const {
 void Cache::initializeCache() {
 	QSqlQuery cacheQuery( "SELECT id, path, datmod, root_id, loaded FROM cv_file WHERE cached = :cached", XINXProjectManager::self()->session()->database() );
 	cacheQuery.bindValue( ":cached", true );
-	if( ! cacheQuery.exec() ) {
-		qWarning() << cacheQuery.lastError().text();
-		return;
-	}
+	bool result = cacheQuery.exec();
+	Q_ASSERT_X( result, "Cache::initializeCache", qPrintable( cacheQuery.lastError().text() ) );
 
 	while( cacheQuery.next() ) {
-		const QString path   = cacheQuery.value( 1 ).toString();
-		const QString datmod = cacheQuery.value( 2 ).toString();
-		const uint    nodeId = cacheQuery.value( 3 ).toUInt();
-		const bool    loaded = cacheQuery.value( 4 ).toBool();
+		const uint      id           = cacheQuery.value( 0 ).toUInt();
+		const QString   path         = cacheQuery.value( 1 ).toString();
+		const QString   datmod       = cacheQuery.value( 2 ).toString();
+		const uint      nodeId       = cacheQuery.value( 3 ).toUInt();
+		const bool      loaded       = cacheQuery.value( 4 ).toBool();
+		const QDateTime lastModified = QDateTime::fromString( QFileInfo( path ).lastModified().toString( Qt::ISODate ), Qt::ISODate );
+		const QDateTime cacheDate    = QDateTime::fromString( datmod, Qt::ISODate );
 
-		if( ( QFileInfo( path ).lastModified() > QDateTime::fromString( datmod ) ) || !loaded ) {
+		if( ( lastModified > cacheDate ) || !loaded ) {
 			Parser * parser = 0;
 			try {
 				parser = createParser( path, false );
 				parser->setFilename( path );
 				parser->setRootNode( Node( XINXProjectManager::self()->session()->database(), nodeId ) );
-
+				changeDatmod( XINXProjectManager::self()->session()->database(), id, lastModified );
 				m_parsers.append( parser );
 				m_watcher->addPath( path );
 			} catch( ParserException e ) {
@@ -91,7 +92,7 @@ int Cache::createRootId( const QString & filename, bool get, bool cached ) {
 
 	QSqlQuery createQuery( "INSERT INTO cv_file( path, datmod, root_id, loaded, cached ) VALUES( :path, :datmod, -1, :loaded, :cached )", XINXProjectManager::self()->session()->database() );
 	createQuery.bindValue( ":path", filename );
-	createQuery.bindValue( ":datmod", QFileInfo( filename ).lastModified().toString() );
+	createQuery.bindValue( ":datmod", QFileInfo( filename ).lastModified().toString( Qt::ISODate ) );
 	createQuery.bindValue( ":loaded", false );
 	createQuery.bindValue( ":cached", cached );
 	result = createQuery.exec();
@@ -114,6 +115,15 @@ int Cache::createRootId( const QString & filename, bool get, bool cached ) {
 	Q_ASSERT_X( result, "Cache::createRootId", qPrintable( updateQuery.lastError().text() ) );
 
 	return rootId;
+}
+
+void Cache::changeDatmod( QSqlDatabase db, uint fileId, const QDateTime & datmod ) {
+	QSqlQuery updateQuery( "UPDATE cv_file SET datmod=:datmod, loaded=:loaded WHERE id=:fileId", db );
+	updateQuery.bindValue( ":datmod", QVariant::fromValue( datmod.toString( Qt::ISODate ) ) );
+	updateQuery.bindValue( ":loaded", false );
+	updateQuery.bindValue( ":fileId", QVariant::fromValue( fileId ) );
+	bool result = updateQuery.exec();
+	Q_ASSERT_X( result, "Cache::markAsLoaded", qPrintable( updateQuery.lastError().text() ) );
 }
 
 void Cache::markAsLoaded( QSqlDatabase db, uint rootId ) {
@@ -166,10 +176,8 @@ void Cache::addToCache( Parser * parser ) {
 void Cache::run() {
 	{
 		QSqlDatabase db = QSqlDatabase::cloneDatabase( XINXProjectManager::self()->session()->database(), "CONTENTVIEW_THREAD" );
-		if( ! db.open() ) {
-			qCritical() << tr("Can't load session file in the cache for update: %1" ).arg( db.lastError().text() );
-			return;
-		}
+		bool result =  db.open();
+		Q_ASSERT_X( result, "Cache::run", "Can't load session file in the cache for update" );
 		// To be quick
 		db.exec( "PRAGMA synchronous = OFF" );
 
@@ -223,9 +231,10 @@ void Cache::run() {
 	QSqlDatabase::removeDatabase( "CONTENTVIEW_THREAD" );
 }
 
-void Cache::fileChanged( const QString & filename ) {
+void Cache::refreshCache( const QString & filename ) {
 	if( QFileInfo( filename ).exists()  ) {
-		QSqlQuery selectQuery( "SELECT root_id FROM cv_file WHERE path = :path", XINXProjectManager::self()->session()->database() );
+		QSqlQuery selectQuery( "SELECT id, root_id FROM cv_file WHERE path = :path", XINXProjectManager::self()->session()->database() );
+		selectQuery.bindValue( ":path", filename );
 		bool result = selectQuery.exec();
 		Q_ASSERT_X( result, "Cache::fileChanged", qPrintable( selectQuery.lastError().text() ) );
 
@@ -236,13 +245,16 @@ void Cache::fileChanged( const QString & filename ) {
 
 		XINXProjectManager::self()->session()->database().transaction();
 
-		const uint nodeId = selectQuery.value( 0 ).toUInt();
+		const uint     id = selectQuery.value( 0 ).toUInt();
+		const uint nodeId = selectQuery.value( 1 ).toUInt();
 
 		Parser * parser = 0;
 		try {
 			parser = createParser( filename, false );
 			parser->setFilename( filename );
 			parser->setRootNode( Node( XINXProjectManager::self()->session()->database(), nodeId ) );
+
+			changeDatmod( XINXProjectManager::self()->session()->database(), id, QFileInfo( filename ).lastModified() );
 
 			addToCache( parser );
 			XINXProjectManager::self()->session()->database().commit();

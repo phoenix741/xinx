@@ -35,8 +35,10 @@
 #include <QThread>
 #include <QQueue>
 #include <QFileSystemWatcher>
+#include <QDateTime>
 
 class XinxProject;
+class TestContentView2;
 
 namespace ContentView2 {
 
@@ -73,6 +75,12 @@ public:
 	int createRootId( const QString & filename, bool get = true, bool cached = true );
 	//! Top the file as loaded
 	void markAsLoaded( QSqlDatabase db, uint rootId );
+
+	//! Method to destroy the cache for a file \e filename
+	void destroyCache( const QString & filename );
+public slots:
+	//! Call this method if you want refresh the cache for a given file
+	void refreshCache( const QString & filename );
 signals:
 	void cacheLoaded( uint file_id, const QString & filename );
 	void cacheLoaded();
@@ -80,11 +88,9 @@ signals:
 	void progressValueChanged( int value );
 protected:
 	virtual void run();
-private slots:
-	void fileChanged( const QString & filename );
 private:
+	void changeDatmod( QSqlDatabase db, uint fileId, const QDateTime & datmod );
 	Parser * createParser( const QString & filename, bool persistent );
-	void destroyCache( const QString & filename );
 
 	QFileSystemWatcher * m_watcher;
 	QQueue< Parser* > m_parsers;
