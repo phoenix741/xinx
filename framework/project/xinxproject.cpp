@@ -25,6 +25,8 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QApplication>
+#include <QSqlQuery>
+#include <QSqlError>
 
 // Xinx header
 #include "project/xinxproject.h"
@@ -208,6 +210,144 @@ QStringList & XinxProjectSession::lastOpenedFile() {
 QList<XinxProjectSessionEditor*> & XinxProjectSession::serializedEditors() {
 	return m_sessions;
 }
+
+/* XinxProjectSession2 */
+
+XinxProjectSession2::XinxProjectSession2() {
+	m_filename.clear();
+	openDatabase();
+}
+
+XinxProjectSession2::XinxProjectSession2( const QString & filename ) : m_filename( filename ) {
+	openDatabase();
+}
+
+XinxProjectSession2::~XinxProjectSession2() {
+	closeDatabase();
+}
+
+void XinxProjectSession2::loadFromFile( const QString & filename ) {
+	closeDatabase();
+	m_filename = filename;
+	openDatabase();
+}
+
+QSqlDatabase XinxProjectSession2::database() const {
+	return QSqlDatabase::database( "PROJECT_SESSION", false );
+}
+
+bool XinxProjectSession2::openDatabase() const {
+	// Create the db object
+	QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "PROJECT_SESSION" );
+	db.setDatabaseName( m_filename.isEmpty() ? ":memory:" : m_filename );
+	if( ! db.open() ) {
+		qWarning( qPrintable( tr("Can't load session file : %1" ).arg( db.lastError().text() ) ) );
+		return false;
+	}
+
+	// Check the content
+	QStringList tables = db.tables();
+	if( ! tables.contains("cv_file") )
+		return createDatabase( db );
+
+	return true;
+}
+
+bool XinxProjectSession2::createDatabase( QSqlDatabase db ) const {
+	QSqlQuery createQuery( db );
+	/* Create tables */
+	if( !
+		createQuery.exec( "CREATE TABLE cv_file ("
+						  "    id INTEGER PRIMARY KEY,"
+						  "    path TEXT NOT NULL,"
+						  "    datmod TEXT,"
+						  "    root_id INTEGER,"
+						  "    cached TEXT,"
+						  "    loaded TEXT)") ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE TABLE cv_node ("
+						  "    id INTEGER PRIMARY KEY,"
+						  "    name TEXT NOT NULL,"
+						  "    type TEXT NOT NULL,"
+						  "    icon TEXT,"
+						  "    display_name TEXT NOT NULL,"
+						  "    tips TEXT,"
+						  "    line INTEGER,"
+						  "    file_id INTEGER NOT NULL,"
+						  "    hash INTEGER NOT NULL,"
+						  "    FOREIGN KEY(file_id) REFERENCES cv_file)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE TABLE cv_node_property ("
+						  "    node_id INTEGER NOT NULL,"
+						  "    ord INTEGER NOT NULL,"
+						  "    value TEXT,"
+						  "    FOREIGN KEY(node_id) REFERENCES cv_node)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE TABLE cv_link ("
+						  "    parent_id INTEGER NOT NULL,"
+						  "    child_id INTEGER NOT NULL,"
+						  "    FOREIGN KEY(parent_id) REFERENCES cv_node,"
+						  "    FOREIGN KEY(child_id) REFERENCES cv_node)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	/* Create Index */
+	if( !
+		createQuery.exec( "CREATE INDEX cv_file_idx1 on cv_file (id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX cv_file_idx2 on cv_file (path ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX cv_node_idx1 on cv_node (id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX cv_node_idx2 on cv_node (file_id ASC, name ASC, type ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX cv_node_property_idx1 on cv_node_property (node_id ASC, ord ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX cv_link_idx1 on cv_link (parent_id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	if( !
+		createQuery.exec( "CREATE INDEX cv_link_idx2 on cv_link (child_id ASC)" ) ) {
+		qWarning( qPrintable( createQuery.lastError().text() ) );
+		return false;
+	}
+	return true;
+}
+
+void XinxProjectSession2::closeDatabase() const {
+	{
+		QSqlDatabase db = QSqlDatabase::database( "PROJECT_SESSION", false );
+		if( db.isOpen() )
+			db.close();
+	}
+	QSqlDatabase::removeDatabase( "PROJECT_SESSION" );
+}
+
 
 /* PrivateXinxProject */
 
@@ -546,13 +686,14 @@ QVariant XinxProject::readProperty( const QString & key ) const {
 /* XINXProjectManager */
 
 XINXProjectManager::XINXProjectManager() : m_project(0) {
-
+	m_session = new XinxProjectSession2;
 }
 
 XINXProjectManager::~XINXProjectManager() {
 	if( s_self == this )
 		s_self = 0;
 	delete m_project;
+	delete m_session;
 }
 
 XINXProjectManager * XINXProjectManager::self() {
@@ -569,6 +710,7 @@ void XINXProjectManager::setCurrentProject( XinxProject * project ) {
 
 	m_project = project;
 	XINXConfig::self()->config().project.lastOpenedProject = project->fileName();
+	m_session->loadFromFile( QString( project->fileName() ).replace( XINX_PROJECT_EXTENTION, XINX_SESSION_EXTENTION2 ) );
 	m_project->preloadFilesCache();
 
 	connect( m_project, SIGNAL(changed()), this, SIGNAL(changed()) );
@@ -579,6 +721,10 @@ XinxProject * XINXProjectManager::project() const {
 	return m_project;
 }
 
+XinxProjectSession2 * XINXProjectManager::session() const {
+	return m_session;
+}
+
 void XINXProjectManager::deleteProject() {
 	if( ! m_project ) return;
 
@@ -586,6 +732,7 @@ void XINXProjectManager::deleteProject() {
 
 	m_project->disconnect( this );
 	m_project = NULL;
+	m_session->loadFromFile( QString() );
 	emit changed();
 
 	delete backup;

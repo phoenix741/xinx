@@ -25,7 +25,7 @@
 //#include <QApplication>
 #include <QtTest/QtTest>
 
-class TextContentView : public QObject {
+class TestContentView : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();
@@ -37,12 +37,12 @@ private:
 	ContentViewNode * m_nodes;
 };
 
-void TextContentView::initTestCase() {
+void TestContentView::initTestCase() {
 	m_nodes = new ContentViewNode( "root", 0 );
 	QVERIFY( m_nodes != 0 );
 }
 
-void TextContentView::testCreateAttachNode() {
+void TestContentView::testCreateAttachNode() {
 	QList<ContentViewNode*> list;
 	list.append( new ContentViewNode( "child1", list.size() ) );
 	list.append( new ContentViewNode( "child2", list.size() ) );
@@ -61,10 +61,10 @@ void TextContentView::testCreateAttachNode() {
 	}
 }
 
-void TextContentView::cleanupTestCase() {
+void TestContentView::cleanupTestCase() {
 	m_nodes->deleteInstance();
 }
 
-QTEST_MAIN(TextContentView)
+QTEST_MAIN(TestContentView)
 
 #include "testcontentview.moc"

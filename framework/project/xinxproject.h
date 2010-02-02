@@ -30,6 +30,7 @@
 #include <QStringList>
 #include <QPair>
 #include <QVariant>
+#include <QSqlDatabase>
 
 /* Constante */
 
@@ -38,6 +39,7 @@
 
 #define XINX_PROJECT_EXTENTION ".xinx_project"
 #define XINX_SESSION_EXTENTION ".xinx_session"
+#define XINX_SESSION_EXTENTION2 ".xinx_session2"
 
 /* Classes */
 
@@ -110,6 +112,51 @@ private:
 };
 
 class XinxProject;
+
+/*!
+ * \class XinxProjectSession2
+ * \brief Session file for XINX project
+ *
+ * A XinxProjectSession2 class is a special object used in the same time of the
+ * project file for storing tempory informations.
+ * The second version of the project session is stored a SQL database. If the project
+ * doesn't exist the session exist but is stored in memory.
+ *
+ * The new ContentView System used this project session, so when no project  is defined
+ * the contentview is stored in memory, and continue to work.
+ *
+ * The session is saved by commit in the database. For this session file be quick, the
+ * synchronisation with the disk is stopped. So the file can be corrupted easyly if
+ * XINX crash.
+ */
+class LIBEXPORT XinxProjectSession2 : public QObject {
+	Q_OBJECT
+public:
+	/*! Create an empty session */
+	XinxProjectSession2();
+	/*!
+	 * Create a session object and load the file \e filename
+	 * \throw XinxProjectException When the application can't read the session file.
+	 * \sa loadFromFile
+	 */
+	XinxProjectSession2( const QString & filename );
+	/*! Destroy the session */
+	virtual ~XinxProjectSession2();
+
+	/*!
+	 * Load the file \e filename
+	 * \throw XinxProjectException When the application can't read the session file.
+	 */
+	void loadFromFile( const QString & filename );
+
+	QSqlDatabase database() const;
+private:
+	bool openDatabase() const;
+	bool createDatabase( QSqlDatabase db ) const;
+	void closeDatabase() const;
+
+	QString m_filename;
+};
 
 /*!
  * An XinxProjectSession represents the .session file associate to the project and who contains
@@ -334,6 +381,9 @@ public:
 	/*! Return the project */
 	XinxProject * project() const;
 
+	/*! Return the current session file */
+	XinxProjectSession2 * session() const;
+
 	/*! Delete the project */
 	void deleteProject();
 signals:
@@ -344,6 +394,7 @@ private:
 	XINXProjectManager();
 
 	XinxProject * m_project;
+	XinxProjectSession2 * m_session;
 	static XINXProjectManager * s_self;
 };
 

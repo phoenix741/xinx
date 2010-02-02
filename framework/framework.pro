@@ -18,9 +18,9 @@ INCLUDEPATH += ./ \
 LIBS = -L../components \
     -L../ext/qcodeedit \
     -lxinxcmp \
-	-lqcodeedit \
-	-lxml2 \
-	-lxslt
+    -lqcodeedit \
+    -lxml2 \
+    -lxslt
 win32:RC_FILE += rc/libxinx.rc
 unix:INCLUDEPATH += /usr/include/libxml2
 DEFINES += _LIB_BUILD_
@@ -53,6 +53,9 @@ HEADERS = rcs/rcs.h \
     contentview/contentviewparser.h \
     contentview/completionnodemodel.h \
     contentview/abstractcontentviewmodel.h \
+    contentview2/contentview2cache.h \
+    contentview2/contentview2node.h \
+    contentview2/contentview2parser.h \
     actions/actioninterface.h \
     editors/editormanager.h \
     snipets/snipet.h \
@@ -78,8 +81,9 @@ HEADERS = rcs/rcs.h \
     rcs/rcsmanager.h \
     rcs/commitmessagedialogimpl.h \
     project/newprojecttemplate.h \
-	snipets/snipetcompletionparser.h \
-    snipets/snipetcompletionnodemodel.h
+    snipets/snipetcompletionparser.h \
+    snipets/snipetcompletionnodemodel.h \
+    contentview2/contentview2treemodel.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -105,6 +109,9 @@ SOURCES = rcs/rcs.cpp \
     contentview/contentviewcache.cpp \
     contentview/abstractcontentviewmodel.cpp \
     contentview/completionnodemodel.cpp \
+    contentview2/contentview2cache.cpp \
+    contentview2/contentview2node.cpp \
+    contentview2/contentview2parser.cpp \
     editors/contentviewtexteditor.cpp \
     actions/actioninterface.cpp \
     editors/editormanager.cpp \
@@ -131,14 +138,14 @@ SOURCES = rcs/rcs.cpp \
     rcs/rcsmanager.cpp \
     rcs/commitmessagedialogimpl.cpp \
     project/newprojecttemplate.cpp \
-	snipets/snipetcompletionparser.cpp \
-    snipets/snipetcompletionnodemodel.cpp
+    snipets/snipetcompletionparser.cpp \
+    snipets/snipetcompletionnodemodel.cpp \
+    contentview2/contentview2treemodel.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui \
     rcs/commitmessages.ui
 TRANSLATIONS += translations/libxinx_fr.ts
-
 profiling { 
     QMAKE_CXXFLAGS += --coverage \
         -O0

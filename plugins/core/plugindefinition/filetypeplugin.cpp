@@ -20,6 +20,7 @@
 // Xinx header
 #include "filetypeplugin.h"
 #include "editors/models/xsl/xslcontentviewparser.h"
+#include "editors/models/xsl/xslcv2parser.h"
 #include "editors/widgeteditor/xml/xmltexteditor.h"
 #include "editors/widgeteditor/xsl/xsltexteditor.h"
 #include "editors/models/js/jscontentviewparser.h"
@@ -163,6 +164,10 @@ AbstractEditor * XSLStyleSheetFileType::createEditor( const QString & filename )
 
 ContentViewParser * XSLStyleSheetFileType::createParser() {
 	return new XslContentViewParser();
+}
+
+ContentView2::Parser * XSLStyleSheetFileType::createParser2() {
+	return new XslContentView2Parser();
 }
 
 /* HTMLFileType */

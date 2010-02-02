@@ -3,7 +3,8 @@ TEMPLATE = lib
 VERSION = 1.0.0.0
 CONFIG += plugin
 QT += network \
-    xml
+	xml \
+	sql
 DESTDIR += ../
 INCLUDEPATH += ../../framework \
     ../../components \

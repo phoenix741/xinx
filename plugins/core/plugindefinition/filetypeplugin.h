@@ -117,6 +117,7 @@ public:
 	virtual AbstractEditor * createEditor( const QString & filename );
 
 	virtual ContentViewParser * createParser();
+	virtual ContentView2::Parser * createParser2();
 };
 
 /* HTMLFileType */

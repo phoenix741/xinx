@@ -5,10 +5,13 @@
 		<html>
 			<h1>Liste des patients</h1>
 			<body>
-				<ul>
-					<xsl:apply-templates select="/patients/patient"/>
-				</ul>
+					<xsl:apply-templates select="/patients"/>
 			</body>
 		</html>
+	</xsl:template>
+	<xsl:template match="patients">
+		<ul>
+			<xsl:apply-templates select="patient"/>
+		</ul>
 	</xsl:template>
 </xsl:stylesheet>

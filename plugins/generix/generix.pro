@@ -3,7 +3,8 @@ TEMPLATE = lib
 VERSION = 1.0.0.1
 CONFIG += plugin
 QT += xml \
-	xmlpatterns
+	xmlpatterns \
+	sql
 DESTDIR += ../
 LIBS += -L../../components \
     -lxinxcmp \

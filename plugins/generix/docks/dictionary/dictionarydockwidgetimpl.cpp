@@ -47,17 +47,19 @@ void DictionaryDockWidgetImpl::projectChanged() {
 	delete m_dictionaryModel; m_dictionaryModel = 0;
 
 	// Create the new dictionary
+	/*
 	GenerixProject * project = static_cast<GenerixProject*>( XINXProjectManager::self()->project() );
 	if( project && project->isGenerixActivated() ) {
 		DictionaryParser * parser = ConfigurationManager::self()->dictionaryOfProject( project );
 		if( parser ) {
 			m_dictionaryModel = new ContentViewModel( parser->rootNode(), m_dictionaryTreeView );
-			new ModelTest( m_dictionaryModel );
+			//new ModelTest( m_dictionaryModel );
 			m_dictionaryTreeView->setModel( m_dictionaryModel );
 
 			m_informationLbl->setText( tr("%1 label(s) loaded.").arg( m_dictionaryModel->rowCount() ) );
 		}
 	}
+	*/
 }
 
 

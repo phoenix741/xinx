@@ -46,6 +46,9 @@ class XinxFormatScheme;
 class ContentViewParser;
 class QDockWidget;
 class XsltParser;
+namespace ContentView2 {
+	class Parser;
+}
 
 /*!
  * This intereface is used to create a plugin used by XINX.
@@ -272,6 +275,11 @@ public:
 	 * If the parser is null, no content view will be load.
 	 */
 	virtual ContentViewParser * createParser() = 0;
+	/*!
+	 * Create a content view parser (version 2).
+	 * If the parser is null, no content view will be load.
+	 */
+	virtual ContentView2::Parser * createParser2() { return 0; }
 protected:
 	//! Create an editor with the given filename
 	virtual AbstractEditor * createEditor( const QString & filename = QString() ) = 0;

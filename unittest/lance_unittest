@@ -10,6 +10,8 @@ xvfb-run ./bin/testsnipets -xml > unittest3.xml
 sleep 1
 xvfb-run ./bin/testutils -xml > unittest4.xml
 sleep 1
+xvfb-run ./bin/testcontentview2 -xml > unittest5.xml
+sleep 1
 # Test au format log
 xvfb-run ./bin/testxinxcodeedit
 sleep 1
@@ -18,3 +20,5 @@ sleep 1
 xvfb-run ./bin/testsnipets
 sleep 1
 xvfb-run ./bin/testutils
+sleep 1
+xvfb-run ./bin/testcontentview2
