@@ -3,22 +3,22 @@ LD_LIBRARY_PATH=../framework:../components:../ext/qcodeedit:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 # Test au format xml
 xvfb-run ./bin/testxinxcodeedit -xml > unittest.xml
-sleep 1
+sleep 10
 xvfb-run ./bin/testcontentview -xml > unittest2.xml
-sleep 1
+sleep 10
 xvfb-run ./bin/testsnipets -xml > unittest3.xml
-sleep 1
+sleep 10
 xvfb-run ./bin/testutils -xml > unittest4.xml
-sleep 1
+sleep 10
 xvfb-run ./bin/testcontentview2 -xml > unittest5.xml
-sleep 1
+sleep 10
 # Test au format log
 xvfb-run ./bin/testxinxcodeedit
-sleep 1
+sleep 10
 xvfb-run ./bin/testcontentview
-sleep 1
+sleep 10
 xvfb-run ./bin/testsnipets
-sleep 1
+sleep 10
 xvfb-run ./bin/testutils
-sleep 1
+sleep 10
 xvfb-run ./bin/testcontentview2
