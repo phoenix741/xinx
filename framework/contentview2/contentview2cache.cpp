@@ -151,10 +151,10 @@ void Cache::loadCache( const QStringList & filenames ) {
 				parser->setFilename( filename );
 				parser->setRootNode( Node( db, rootId ) );
 
+				db.commit();
+
 				m_parsers.append( parser );
 				m_watcher->addPath( filename );
-
-				db.commit();
 			} else {
 				db.rollback();
 			}
@@ -255,9 +255,9 @@ void Cache::refreshCache( const QString & filename ) {
 			parser->setRootNode( Node( XINXProjectManager::self()->session()->database(), nodeId ) );
 
 			changeDatmod( XINXProjectManager::self()->session()->database(), id, QFileInfo( filename ).lastModified() );
+			XINXProjectManager::self()->session()->database().commit();
 
 			addToCache( parser );
-			XINXProjectManager::self()->session()->database().commit();
 		} catch( ParserException e ) {
 			XINXProjectManager::self()->session()->database().rollback();
 			delete parser;
