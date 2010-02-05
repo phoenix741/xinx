@@ -83,7 +83,8 @@ HEADERS = rcs/rcs.h \
     project/newprojecttemplate.h \
     snipets/snipetcompletionparser.h \
     snipets/snipetcompletionnodemodel.h \
-    contentview2/contentview2treemodel.h
+    contentview2/contentview2treemodel.h \
+    contentview2/contentview2completionmodel.h
 SOURCES = rcs/rcs.cpp \
     plugins/xinxpluginsloader.cpp \
     plugins/xinxpluginelement.cpp \
@@ -140,7 +141,8 @@ SOURCES = rcs/rcs.cpp \
     project/newprojecttemplate.cpp \
     snipets/snipetcompletionparser.cpp \
     snipets/snipetcompletionnodemodel.cpp \
-    contentview2/contentview2treemodel.cpp
+    contentview2/contentview2treemodel.cpp \
+    contentview2/contentview2completionmodel.cpp
 FORMS = snipets/callsnipetdlg.ui \
     snipets/snipetpropertydlg.ui \
     snipets/categorypropertydlg.ui \

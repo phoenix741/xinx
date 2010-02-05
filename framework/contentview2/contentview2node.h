@@ -157,6 +157,11 @@ public:
 	 * \see attach(), detach()
 	 */
 	QList<int> childs( QSqlDatabase db ) const;
+	/*!
+	 * List of id of the childs node of this node.
+	 * \see attach(), detach()
+	 */
+	QList<int> parents( QSqlDatabase db ) const;
 
 	//! Make a hash of the node and search the node having the same hash.
 	int indexOfChild( QSqlDatabase db, const Node & node ) const;

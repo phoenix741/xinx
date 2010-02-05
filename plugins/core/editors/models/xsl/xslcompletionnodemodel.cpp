@@ -154,7 +154,7 @@ void XslCompletionNodeModel::addNode( ContentViewNode * parentNode, ContentViewN
 		QString parentType = parentNode->data( ContentViewNode::NODE_TYPE ).toString();
 		QString parentName = parentNode->data().toString();
 
-    if( ( parentType == "XslTemplate" ) && ( ! m_params.contains( parentName, nodeName ) ) )
+		if( ( parentType == "XslTemplate" ) && ( ! m_params.contains( parentName, nodeName ) ) )
 			m_params.insert( parentName, nodeName );
 	}
 

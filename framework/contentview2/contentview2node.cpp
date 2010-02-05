@@ -328,7 +328,22 @@ QList<int> Node::childs( QSqlDatabase db ) const {
 	QSqlQuery select( "SELECT child_id FROM cv_link WHERE parent_id=:parent_id", db );
 	select.bindValue( ":parent_id", QVariant::fromValue( d->m_id ) );
 	bool r = select.exec();
-	Q_ASSERT_X( r, "Node::attach", qPrintable( select.lastError().text() ) );
+	Q_ASSERT_X( r, "Node::childs", qPrintable( select.lastError().text() ) );
+
+	while( select.next() ) {
+		result += select.value( 0 ).toInt();
+	}
+
+	return result;
+}
+
+QList<int> Node::parents( QSqlDatabase db ) const {
+	QList<int> result;
+
+	QSqlQuery select( "SELECT parent_id FROM cv_link WHERE child_id=:child_id", db );
+	select.bindValue( ":child_id", QVariant::fromValue( d->m_id ) );
+	bool r = select.exec();
+	Q_ASSERT_X( r, "Node::parents", qPrintable( select.lastError().text() ) );
 
 	while( select.next() ) {
 		result += select.value( 0 ).toInt();
