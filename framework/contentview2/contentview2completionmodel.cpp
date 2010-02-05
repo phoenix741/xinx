@@ -21,35 +21,86 @@
 #include "contentview2completionmodel.h"
 #include "project/xinxproject.h"
 
+// Qt header
+#include <QSqlQueryModel>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlError>
+#include <QIcon>
+
 namespace ContentView2 {
-
-/* CompletionModelSort */
-
-bool CompletionModelSort( uint node1, uint node2 ) {
-	ContentView2::Node d1( XINXProjectManager::self()->session()->database(), node1 );
-	ContentView2::Node d2( XINXProjectManager::self()->session()->database(), node2 );
-	return d1.data( ContentView2::Node::NODE_DISPLAY_NAME ).toString().compare( d2.data( ContentView2::Node::NODE_DISPLAY_NAME ).toString(), Qt::CaseInsensitive ) < 0;
-}
 
 /* CompletionModel */
 
-CompletionModel::CompletionModel( QSqlDatabase db, uint fileId, QObject * parent ) : QAbstractListModel( parent ) {
+CompletionModel::CompletionModel( QSqlDatabase db, QObject * parent ) : QSqlQueryModel( parent ), m_db( db ) {
+
 }
 
 CompletionModel::~CompletionModel() {
+
 }
 
-QVariant CompletionModel::data( const QModelIndex &index, int role ) const {
+QVariant CompletionModel::data( const QModelIndex &idx, int role ) const {
+	if( ! idx.isValid() ) return QVariant();
+	if( idx.column() != 0 ) return QVariant();
+
+	if( role == Qt::DecorationRole ) {
+		return QIcon( record( idx.row() ).value( 2 ).toString() );
+	} else if( role == CompletionModel::CompletionIdRole ) {
+		return record( idx.row() ).value( 2 ).toInt();
+	}
+
+	return QSqlQueryModel::data( idx, role );
 }
 
-int CompletionModel::rowCount( const QModelIndex &parent ) const {
-
+int CompletionModel::columnCount( const QModelIndex & parent ) const {
+	Q_UNUSED( parent );
+	return 1;
 }
 
 void CompletionModel::select() {
+	QSqlQuery query( m_db );
+
+	QString queryStr =
+		"SELECT cv_node.display_name, cv_node.name, cv_node.icon, cv_node.id "
+		"FROM cv_node ";
+
+	if( ! (m_filesId.isEmpty() && m_whereClauses.isEmpty()) ) {
+		queryStr += "WHERE ";
+	}
+
+	if( ! m_filesId.isEmpty() ) {
+		QStringList ids;
+		foreach( uint id, m_filesId ) {
+			ids << QString( "%1" ).arg( id );
+		}
+		queryStr += QString( "cv_node.file_id in ( %1 ) ").arg( ids.join( ", " ) );
+	}
+
+	if( ! m_whereClauses.isEmpty() ) {
+		queryStr += QString( "AND ( ( %1 ) )" ).arg( m_whereClauses.join( " ) OR ( " ) );
+	}
+
+	// Set the query used all snipet
+	query.prepare( queryStr );
+
+	bool result = query.exec();
+	Q_ASSERT_X( result, "CompletionModel::select", qPrintable( query.lastError().text() ) );
+	setQuery( query );
 }
 
 void CompletionModel::addWhereClause( const QString & whereClause ) {
+	if( ! m_whereClauses.contains( whereClause ) ) {
+		m_whereClauses.append( whereClause );
+		select();
+	}
+}
+
+void CompletionModel::addFile( uint file ) {
+	if( ! m_filesId.contains( file ) ) {
+		m_filesId.append( file );
+		select();
+	}
 }
 
 } // namespace ContentView2

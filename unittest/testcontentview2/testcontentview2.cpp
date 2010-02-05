@@ -22,6 +22,7 @@
 #include <contentview2/contentview2node.h>
 #include <contentview2/contentview2cache.h>
 #include <contentview2/contentview2treemodel.h>
+#include <contentview2/contentview2completionmodel.h>
 #include <project/xinxproject.h>
 #include <editors/models/xsl/xslcv2parser.h>
 #include <plugins/xinxpluginsloader.h>
@@ -29,7 +30,8 @@
 // Qt header
 #include <QApplication>
 #include <QtTest/QtTest>
-#include <QTreeWidget>
+#include <QTreeView>
+#include <QListView>
 #include <modeltest.h>
 
 Q_IMPORT_PLUGIN(coreplugin);
@@ -46,6 +48,7 @@ private slots:
 	void testParseImportsFile();
 
 	void testTreeModel();
+	void testListModel();
 
 	void testContentViewCache();
 
@@ -163,7 +166,7 @@ void TestContentView2::testTreeModel() {
 	}
 
 	QTreeView * tree = new QTreeView;
-	tree->setWindowTitle( QTreeView::tr("Content View 2") );
+	tree->setWindowTitle( QTreeView::tr("Content View 2 : Tree") );
 	tree->resize(640, 480);
 	tree->show();
 
@@ -177,6 +180,31 @@ void TestContentView2::testTreeModel() {
 	qApp->processEvents();
 
 	delete tree;
+	delete model;
+}
+
+void TestContentView2::testListModel() {
+	if( m_rootId == -1 ) {
+		QSKIP( "No root ID defined ...", SkipSingle );
+	}
+
+	QListView * list = new QListView;
+	list->setWindowTitle( QListView::tr("Content View 2 : List") );
+	list->resize(640, 480);
+	list->show();
+
+	ContentView2::CompletionModel * model = new ContentView2::CompletionModel( XINXProjectManager::self()->session()->database(), this );
+	list->setModel( model );
+
+	model->addFile( m_rootId );
+	model->addWhereClause( "cv_node.type = 'XslTemplate'" );
+
+	new ModelTest( model, model );
+	model->select();
+
+	qApp->processEvents();
+
+	delete list;
 	delete model;
 }
 

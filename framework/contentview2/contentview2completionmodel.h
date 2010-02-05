@@ -24,20 +24,20 @@
 #include <contentview2/contentview2node.h>
 
 // Qt header
-#include <QAbstractListModel>
-
-class QSqlQueryModel;
+#include <QSqlQueryModel>
 
 namespace ContentView2 {
 
-class CompletionModel : public QAbstractListModel {
+class CompletionModel : public QSqlQueryModel {
 	Q_OBJECT
 public:
-	CompletionModel( QSqlDatabase db, uint fileId, QObject * parent = 0 );
+	enum CompletionModelRole { CompletionIdRole = 0x77 };
+
+	CompletionModel( QSqlDatabase db, QObject * parent = 0 );
 	virtual ~CompletionModel();
 
 	virtual QVariant data( const QModelIndex &index, int role ) const;
-	virtual int rowCount( const QModelIndex &parent = QModelIndex() ) const;
+	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
 
 	void addWhereClause( const QString & whereClause );
 	void addFile( uint file );
@@ -47,7 +47,9 @@ public slots:
 
 private:
 	QSqlDatabase m_db;
-	QSqlQueryModel * m_sourceModel;
+
+	QList<int> m_filesId;
+	QStringList m_whereClauses;
 };
 
 } // namespace ContentView2

@@ -143,15 +143,7 @@ void TreeModel::select() {
 	Q_ASSERT_X( result, "TreeModel::select", qPrintable( query.lastError().text() ) );
 	m_sourceModel->setQuery( query );
 
-	// Define name for header column
-	//m_sourceModel->removeColumns( list_name, 1 );
-	//m_sourceModel->removeColumns( list_type, 1 );
-	//m_sourceModel->removeColumns( list_icon, 1 );
 	m_sourceModel->setHeaderData( list_display_name, Qt::Horizontal, tr("Name") );
-	//m_sourceModel->removeColumns( list_tips, 1 );
-	//m_sourceModel->removeColumns( list_line, 1 );
-	//m_sourceModel->removeColumns( list_id, 1 );
-	//m_sourceModel->removeColumns( list_parent_id, 1 );
 
 	// Initialize the mapping
 	createMapping();
