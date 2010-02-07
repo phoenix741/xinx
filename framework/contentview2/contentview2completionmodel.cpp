@@ -53,6 +53,14 @@ QVariant CompletionModel::data( const QModelIndex &idx, int role ) const {
 	return QSqlQueryModel::data( idx, role );
 }
 
+bool CompletionModel::setHeaderData( int section, Qt::Orientation orientation, const QVariant & value, int role ) {
+	Q_UNUSED( section );
+	Q_UNUSED( orientation );
+	Q_UNUSED( value );
+	Q_UNUSED( role );
+	return false;
+}
+
 int CompletionModel::columnCount( const QModelIndex & parent ) const {
 	Q_UNUSED( parent );
 	return 1;

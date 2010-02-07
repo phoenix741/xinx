@@ -38,6 +38,7 @@ public:
 
 	virtual QVariant data( const QModelIndex &index, int role ) const;
 	virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+	virtual bool setHeaderData( int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole );
 
 	void addWhereClause( const QString & whereClause );
 	void addFile( uint file );

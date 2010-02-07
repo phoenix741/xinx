@@ -194,12 +194,11 @@ void TestContentView2::testListModel() {
 	list->show();
 
 	ContentView2::CompletionModel * model = new ContentView2::CompletionModel( XINXProjectManager::self()->session()->database(), this );
+	new ModelTest( model, model );
 	list->setModel( model );
 
 	model->addFile( m_rootId );
 	model->addWhereClause( "cv_node.type = 'XslTemplate'" );
-
-	new ModelTest( model, model );
 	model->select();
 
 	qApp->processEvents();
