@@ -28,7 +28,7 @@
 
 namespace ContentView2 {
 
-class CompletionModel : public QSqlQueryModel {
+class LIBEXPORT CompletionModel : public QSqlQueryModel {
 	Q_OBJECT
 public:
 	enum CompletionModelRole { CompletionIdRole = 0x77 };
