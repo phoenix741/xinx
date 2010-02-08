@@ -1,24 +1,3 @@
-- We must find a method to tell if a file can be save to subversion/cvs !!
-
-- XINXConfig : Delete the storing of extentions, and matchedFileType ==> Think to a new mode of work
-- FileTypePlugin : Remove the properties type (where we said if the file can be in conf, repository, and project direcoty).
-- XINX Project : ProjectOption ==> Find a new method to do this.
-- XINX Project : Replace logProjectDirectory by dataFileDirectory (configuration of xmlpresentation ?) ==> à réinclude dans le plugin de présentation
-- XINX Project : Replace searchPathList by a new way to resolve import.
-- XINX Project : Move preloadedCache (the preloaded file can be stored in the project directory)
-- XINX Project : Remove default lang, and default nav, specifique path name, specifique prefix, searchPathList, indexOfSpecifiquePath, processSpecifiquePath...
-- ConfigurationFile : Remove file configurationfile.cpp/.h
-- XINX Project : Remove the method that replace <PROJECT>, <NAV>, ... in processed file path from the project
-- SpecifiqueDialogImpl : Move in the plugin directory. This dialog should be rewritten
-- MainFormImpl : Remove extentionOfFileName in the mainform dialog (i think that this method is not used)
-- MainFormImpl : Add link to the open, save, ... dialog (don't forget add all file to RCS, maybe have a RCS Manager)
-- MainFormImpl : selectedCompareWithStd removed
-- In the project directory dock : remove the list of prefix
-- ProjectPropertyImpl : cleaned
-
-- To Test : Custom dialog ==> Generix page of custom dialog is now in generix plugin.
-- Manage a type of project (to plugin know if the project is authorized). The type of plugin can be defined by the plugin
-- Change the type of XINX project (.xinx_project). 
-
 - Make the new XINX version wizard.
-- Check each page to validate value
+	- Check each page to validate value
+- Manage the new file (with the custom generix page)
