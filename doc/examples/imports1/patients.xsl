@@ -15,4 +15,7 @@
 			<xsl:value-of select="."/>
 		</i>
 	</xsl:template>
+	<xsl:template name="title">
+		<h1>Liste des patients</h1>
+	</xsl:template>
 </xsl:stylesheet>

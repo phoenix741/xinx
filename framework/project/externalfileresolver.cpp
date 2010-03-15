@@ -114,13 +114,13 @@ QString ExternalFileResolver::resolveFileName(const QString & nameToResolve, con
 				if (QFile::exists(resolvedName))
 				{
 					m_externalFileResolverCache.insert(qMakePair(nameToResolve, currentPath), resolvedName);
-					return resolvedName;
+					return QFileInfo(resolvedName).canonicalFilePath();
 				}
 			}
 		}
 	}
 
-	return QDir(currentPath).absoluteFilePath(nameToResolve);
+	return QFileInfo(QDir(currentPath).absoluteFilePath(nameToResolve)).canonicalFilePath();
 }
 
 void ExternalFileResolver::clearCache()

@@ -67,11 +67,14 @@ QStringList XslCompletionNodeModel::params(QString templateName) const
 	QStringList list;
 
 	QString paramsQueryStr
-	= "SELECT cv_node.name, child.name "
-	  "FROM cv_node, cv_node child, cv_link " + ContentView2::CompletionModel::whereClause() + " AND cv_node.id = cv_link.parent_id "
+	= "SELECT child.name "
+	  "FROM cv_file, cv_node, cv_node child, cv_link " + ContentView2::CompletionModel::whereClause() + " AND cv_node.id = cv_link.parent_id "
 	  "AND child.id = cv_link.child_id AND cv_node.type=:type AND child.type=:param AND cv_node.name=:name";
 
 	QSqlQuery paramsQuery(paramsQueryStr, database());
+	paramsQuery.bindValue(":project_id", file().file(database()).projectId());
+	paramsQuery.bindValue(":id1", file().file(database()).fileId());
+	paramsQuery.bindValue(":id2", file().file(database()).fileId());
 	paramsQuery.bindValue(":type", "XslTemplate");
 	paramsQuery.bindValue(":param", "XslParam");
 	paramsQuery.bindValue(":name", templateName);

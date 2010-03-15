@@ -137,7 +137,27 @@ void XslContentView2Parser::readStyleSheet()
 				readTemplate();
 			else if ((QXmlStreamReader::name() == "import") || (QXmlStreamReader::name() == "include"))
 			{
-				addImport(attributes().value("href").toString());
+				const QString import = attributes().value("href").toString();
+				addImport(import);
+
+				ContentView2::Node node;
+				node.setLine(lineNumber());
+				node.setFileId(rootNode().fileId());
+				node.setData(import, ContentView2::Node::NODE_NAME);
+				node.setData(QFileInfo(import).fileName(), ContentView2::Node::NODE_DISPLAY_NAME);
+				node.setData("Import", ContentView2::Node::NODE_TYPE);
+
+				IFileTypePlugin * fileType = XinxPluginsLoader::self()->matchedFileType(import);
+				if( fileType )
+				{
+					node.setData(fileType->icon(), ContentView2::Node::NODE_ICON);
+				}
+				else
+				{
+					node.setData(":/images/import.png", ContentView2::Node::NODE_ICON);
+				}
+				attachNode(rootNode(), node);
+
 				readElementText();
 			}
 			else

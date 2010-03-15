@@ -49,6 +49,7 @@ public slots:
 
 protected:
 	virtual QString whereClause() const;
+	FileContainer file() const;
 private:
 	QSqlDatabase m_db;
 	QString m_prefix;

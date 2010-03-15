@@ -276,13 +276,16 @@ void Cache::regenerateImport(QSqlDatabase db)
 			{
 				foreach(int node, imports.keys(key))
 				{
-					imports.insert(node, value);
-					QSqlQuery insertImportQuery("INSERT INTO cv_import(parent_id, child_id, automatic_import) VALUES(:parent_id, :child_id, :automatic)", db);
-					insertImportQuery.bindValue(":parent_id", node);
-					insertImportQuery.bindValue(":child_id",value);
-					insertImportQuery.bindValue(":automatic", true);
-					result = insertImportQuery.exec();
-					Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(insertImportQuery.lastError().text()));
+					if(!imports.contains(node, value))
+					{
+						imports.insert(node, value);
+						QSqlQuery insertImportQuery("INSERT INTO cv_import(parent_id, child_id, automatic_import) VALUES(:parent_id, :child_id, :automatic)", db);
+						insertImportQuery.bindValue(":parent_id", node);
+						insertImportQuery.bindValue(":child_id",value);
+						insertImportQuery.bindValue(":automatic", true);
+						result = insertImportQuery.exec();
+						Q_ASSERT_X(result, "Cache::regenerateImport", qPrintable(insertImportQuery.lastError().text()));
+					}
 				}
 			}
 		}
@@ -523,6 +526,7 @@ void Cache::refreshCache(const QString & filename)
 		fileCache.parser       = 0;
 
 		addToCache(fileCache);
+		startTimer(1000);
 	}
 	else
 	{

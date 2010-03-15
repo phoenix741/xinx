@@ -184,6 +184,7 @@ void TreeModel::select()
 			"case when cv_link.parent_id=:root_id2 then 0 when cv_node.id=:root_id3 then -1 else cv_link.parent_id end as parent_id "
 			"FROM cv_node left join cv_link on cv_link.child_id=cv_node.id "
 			"WHERE cv_node.file_id=:file_id "
+			"ORDER BY lower(cv_node.display_name)"
 		);
 
 		query.bindValue(":root_id1", m_container.file(m_db).rootId());

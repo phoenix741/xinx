@@ -120,10 +120,10 @@ QString CompletionModel::whereClause() const
 {
 	return	"WHERE (cv_file.project_id=0 OR cv_file.project_id=:project_id) "
 			"AND cv_file.id=cv_node.file_id "
-			"AND (cv_file.selection='*' OR cv_node.file_id=:id OR EXISTS (	SELECT 1 FROM cv_import import, cv_file child_file"
-			"																WHERE import.child_id = child_file.id "
-			"																AND child_file.id = cv_node.file_id "
-			"																AND import.parent_id = cv_file.id)) ";
+			"AND (cv_file.selection='*' OR cv_node.file_id=:id1 OR "
+						"EXISTS (	 SELECT 1 FROM cv_import import "
+									"WHERE import.child_id = cv_node.file_id "
+									"AND import.parent_id = :id2)) ";
 }
 
 void CompletionModel::select()
@@ -142,7 +142,8 @@ void CompletionModel::select()
 		// Set the query used all snipet
 		query.prepare(queryStr);
 		query.bindValue(":project_id", m_file.file(m_db).projectId());
-		query.bindValue(":id", m_file.file(m_db).fileId());
+		query.bindValue(":id1", m_file.file(m_db).fileId());
+		query.bindValue(":id2", m_file.file(m_db).fileId());
 		query.bindValue(":prefix", m_prefix);
 
 		bool result = query.exec();
@@ -150,6 +151,12 @@ void CompletionModel::select()
 		setQuery(query);
 	}
 }
+
+FileContainer CompletionModel::file() const
+{
+	return m_file;
+}
+
 
 QSqlDatabase CompletionModel::database() const
 {
