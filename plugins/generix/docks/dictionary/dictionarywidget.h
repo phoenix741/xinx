@@ -1,6 +1,6 @@
 /* *********************************************************************** *
  * XINX                                                                    *
- * Copyright (C) 2009 by Ulrich Van Den Hekke                              *
+ * Copyright (C) 2010 by Ulrich Van Den Hekke                              *
  * ulrich.vdh@shadoware.org                                                *
  *                                                                         *
  * This program is free software: you can redistribute it and/or modify    *
@@ -17,36 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  * *********************************************************************** */
 
-#ifndef DICTIONARYMODEL_H
-#define DICTIONARYMODEL_H
-#pragma once
+#ifndef DICTIONARYWIDGET_H
+#define DICTIONARYWIDGET_H
 
-// Qt header
-#include <QAbstractItemModel>
-#include <QSqlQuery>
-#include <QSqlError>
-#include <QSqlRecord>
-#include <QSqlDatabase>
+#include <QTreeWidget>
 
-class DictionaryModel : public QAbstractItemModel
+class DictionaryWidget : public QTreeWidget
 {
 	Q_OBJECT
 public:
-	DictionaryModel(QString uuid, QObject * parent = 0);
-	virtual ~DictionaryModel();
+	DictionaryWidget(QWidget * parent = 0);
 
-	virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
-	virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-	virtual QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
-	virtual QModelIndex parent(const QModelIndex & index) const;
-	virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
-
-	void select( QSqlDatabase db, const QString & filter, const QString & order );
-private:
-	mutable QSqlQuery m_query;
-	int m_size;
-
-	QString m_uuid;
+	void loadDictionaries(const QString & prefix);
 };
 
-#endif // DICTIONARYMODEL_H
+#endif // DICTIONARYWIDGET_H

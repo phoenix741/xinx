@@ -24,11 +24,10 @@
 #include <configuration/configurationmanager.h>
 #include "projectproperty/generixproject.h"
 #include "dictionaryparser.h"
-#include "dictionarymodel.h"
 
 /* DictionaryDockWidgetImpl */
 
-DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QDockWidget(parent), m_dictionaryModel(0)
+DictionaryDockWidgetImpl::DictionaryDockWidgetImpl(QWidget * parent) : QDockWidget(parent)
 {
 	setupUi(this);
 
@@ -43,29 +42,32 @@ DictionaryDockWidgetImpl::~DictionaryDockWidgetImpl()
 
 void DictionaryDockWidgetImpl::update(const ContentView2::File & file)
 {
-	if (file.path() == "GenerixDictionary")
+	if (file.type() == "GNX_DICO")
 	{
-		//m_dictionaryModel->select( ContentView2::Manager::self()->database(), "CREA", "" );
-		m_informationLbl->setText(tr("%1 label(s) loaded.").arg(m_dictionaryModel->rowCount()));
+		startTimer(500);
 	}
 }
 
 void DictionaryDockWidgetImpl::projectChanged()
 {
-	// Desactivate the dictionary
-	m_dictionaryTreeView->setModel(0);
-	delete m_dictionaryModel;
-	m_dictionaryModel = 0;
-
 	// Create the new dictionary
 	GenerixProject * project = static_cast<GenerixProject*>(XINXProjectManager::self()->project().data());
 	if (project && project->isGenerixActivated())
 	{
 		ConfigurationManager::self()->loadDictionary(project);
-		//m_dictionaryModel = new DictionaryModel("GenerixDictionary", m_dictionaryTreeView);
-		//m_dictionaryTreeView->setModel(m_dictionaryModel);
 	}
 }
 
+void DictionaryDockWidgetImpl::on_m_filterLine_textChanged(QString filter)
+{
+	Q_UNUSED(filter);
+	startTimer(500);
+}
 
+void DictionaryDockWidgetImpl::timerEvent(QTimerEvent * event)
+{
+	killTimer(event->timerId());
 
+	m_dictionaryTreeWidget->loadDictionaries(m_filterLine->text());
+	m_informationLbl->setText(tr("%1 label(s) loaded.").arg(m_dictionaryTreeWidget->invisibleRootItem()->childCount()));
+}

@@ -24,10 +24,17 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QComboBox" name="m_dictionaryList"/>
+       <widget class="QComboBox" name="m_dictionaryList">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QToolButton" name="m_addToDico">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -39,6 +46,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="m_updateBase">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -54,7 +64,16 @@
      <widget class="XinxLineEdit" name="m_filterLine"/>
     </item>
     <item>
-     <widget class="QTreeView" name="m_dictionaryTreeView"/>
+     <widget class="DictionaryWidget" name="m_dictionaryTreeWidget">
+      <attribute name="headerVisible">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string notr="true">1</string>
+       </property>
+      </column>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="m_informationLbl">
@@ -71,6 +90,11 @@
    <class>XinxLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">xinxlineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DictionaryWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>docks/dictionary/dictionarywidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

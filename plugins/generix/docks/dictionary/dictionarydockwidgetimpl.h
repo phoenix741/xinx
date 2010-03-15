@@ -41,10 +41,12 @@ public:
 	DictionaryDockWidgetImpl(QWidget * parent = 0);
 	virtual ~DictionaryDockWidgetImpl();
 private slots:
+	void on_m_filterLine_textChanged(QString filter);
 	void projectChanged();
 	void update(const ContentView2::File & file);
 private:
-	DictionaryModel * m_dictionaryModel;
+	virtual void timerEvent(QTimerEvent * event);
+
 };
 
 #endif // DICTIONARYDOCKWIDGET_H

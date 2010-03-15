@@ -344,6 +344,7 @@ void Cache::run()
 							result = db.commit();
 							Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 							emit progressValueChanged(progress++);
+							emit cacheLoaded(file);
 							continue;
 						}
 					}
@@ -355,6 +356,7 @@ void Cache::run()
 						result = db.commit();
 						Q_ASSERT_X(result, "Cache::run", qPrintable(db.lastError().text()));
 						emit progressValueChanged(progress++);
+						emit cacheLoaded(file);
 						continue;
 					}
 
